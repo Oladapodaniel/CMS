@@ -152,7 +152,6 @@ const membershipService = {
                 maritalStatusID: data.maritalStatusID,
                 ageGroupID: data.ageGroupID
             }
-
             store.dispatch("membership/addMember", person);
         }
     },

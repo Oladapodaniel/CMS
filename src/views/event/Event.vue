@@ -147,7 +147,6 @@
           </div>
         </div>
         <div class="col-sm-12 offset-sm-1 add">Add Attendance</div>
-
         <div class="attendance-header d-none d-md-block">
           <div class="row">
             <div class="col-sm-3">Attendance Type</div>
@@ -2220,7 +2219,6 @@ export default {
         } else {
           this.eventObj.activity.eventCategoryId = this.selectedEventCategoryId;
         }
-
       }
 
 

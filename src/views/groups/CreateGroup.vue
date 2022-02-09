@@ -268,14 +268,12 @@
                                         <li
                                           style="list-style: none"
                                           class="m-dd-item"
-
                                         >
                                           <input
                                             type="text"
                                             class="border-0 m-dd-item text outline-none"
                                             ref="memberSelectInput"
                                             @input="searchForMembers"
-
                                             :class="{
                                               'w-100':
                                                 selectedMembers.length === 0,
@@ -1513,7 +1511,6 @@ export default {
     const getGroupById = async () => {
       try {
         loadingMembers.value = true;
-
         const { data } = await axios.get(
           `/api/GetGroupsFromId/${route.params.groupId}`,
           groupData.value
@@ -1962,7 +1959,6 @@ export default {
   border-top: 1px solid #dde2e6;
   border-radius: 8px 8px 0 0;
 }
-
 
 .hidden-header {
   display: none;

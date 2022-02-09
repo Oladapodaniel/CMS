@@ -53,7 +53,6 @@
   .cursor-pointer {
     cursor: pointer !important;
   }
-
   .primary-btn {
     padding: 8px 10px;
     border: none;
@@ -72,7 +71,6 @@
   .default-btn:disabled {
     cursor: not-allowed !important;
   }
-
   .secondary-btn {
     padding: 8px 10px;
     border: none;
@@ -118,7 +116,6 @@
     text-decoration: none;
     box-sizing: border-box;
   }
-
   .button:hover {
     cursor: pointer;
   }
@@ -204,14 +201,12 @@
     /* border: 0.4000000059604645px solid #dde2e6; */
     border-radius: 10px;
   }
-
   .table {
     width: 95%;
     margin: 24px auto;
     box-shadow: 0px 3px 6px #2c28281c;
     border-radius: 30px;
   }
-
   .table-top,
   .table-header,
   .table-body .data-row {
@@ -219,7 +214,6 @@
     padding: 4px;
     align-items: center;
   }
-
   .table-top {
     background: #fff;
     color: #172b4d;
@@ -234,7 +228,6 @@
     text-align: left;
     box-shadow: 0px 3px 6px #2c28281c;
   }
-
   .table-header .check {
     width: 22px;
     text-align: center;
@@ -321,7 +314,6 @@
     border: 1px solid #8898aa80;
     outline: transparent;
   }
-
   .action-icon {
     text-align: center;
   }
@@ -419,7 +411,6 @@
   .c-pointer {
     cursor: pointer;
   }
-
   @media screen and (max-width: 500px) {
     .picture,
     .firstname,
@@ -427,7 +418,6 @@
     .phone {
       width: 100%;
     }
-
     .table-body .check {
       width: 100%;
       display: flex;
@@ -448,7 +438,6 @@
       display: flex;
       justify-content: space-between;
     }
-
     .action-icon {
       width: 100%;
       text-align: right;
@@ -462,18 +451,15 @@
       flex-direction: column;
       align-items: center;
     }
-
     .chart-con {
       flex-direction: column !important;
       align-items: center;
     }
-
     .chart-con div {
       width: 100% !important;
       margin-top: 10px;
     }
   }
-
   @media screen and (min-width: 501px) and (max-width: 768px) {
     .boards {
       flex-direction: column;
@@ -508,28 +494,23 @@
       width: 20%;
     }
   }
-
   @media screen and (max-width: 1024px) {
     .my-con {
       flex-direction: column;
     }
-
     .table {
       width: 98%;
       margin: 24px auto;
     }
-
     .summary {
       width: 98%;
       margin: auto;
     }
   }
-
   .row-divider {
     border: 1px solid #0020440a;
     margin: 0;
   }
-
   .table-footer {
     display: flex;
     justify-content: flex-end;
@@ -615,7 +596,6 @@
     color: #b2c2cd;
     letter-spacing: 1.5px;
   }
-
   .celeb-info select {
     transition: border 0.1s linear;
     border: 1px solid #b2c2cd;
@@ -633,7 +613,6 @@
     margin: 20px auto;
     max-width: 267px;
   }
-
   .person-img {
     width: 50%;
     margin: auto;
@@ -652,7 +631,6 @@
     outline: none;
     color: #fff;
   }
-
   .upload-btn:hover {
     background: #136acd;
     cursor: pointer;
@@ -700,7 +678,6 @@
   .short-btn {
     min-width: 90px !important;
   }
-
   .file-input {
     width: 85% !important;
     margin: 24px 0;
@@ -720,7 +697,6 @@
     width: 160px;
     font-size: 12px;
   }
-
   /* Datepicker */
   /* wrapper-div for including arrow */
   .cstm-select {
@@ -729,7 +705,6 @@
     margin-right: 10px;
     position: relative;
   }
-
   .cstm-select select {
     -moz-appearance: none;
     -webkit-appearance: none;
@@ -744,7 +719,6 @@
     margin: 0;
     outline: none;
   }
-
   /* drop arrow */
   .cstm-select:after {
     /* content: "\25bc"; */
@@ -755,24 +729,20 @@
     top: 18px;
   }
   /* End */
-
   .hr {
     border: 1px solid #00204412;
     margin: 0 4px;
   }
-
   .add-info--con {
     display: flex;
     width: 100%;
     overflow: hidden;
   }
-
   .label-text-box {
     width: calc(62% - 344px);
     padding: 10px;
     text-align: right;
   }
-
   .info-box {
     width: calc(100% - (62% - 350px));
     background: #ffffff91;
@@ -781,19 +751,16 @@
     margin-right: 20px;
     border-radius: 5px;
   }
-
   .nav-bar {
     display: flex;
     background: #dde2e6;
     /* padding: 10px 0; */
   }
-
   .info-box .box {
     width: 25%;
     text-align: center;
     padding: 10px 0;
   }
-
   .info-box .box:hover {
     cursor: pointer;
     /* background: #afbce2; */
@@ -811,18 +778,15 @@
     height: fit-content;
     padding: 54px 10px;
   }
-
   .form-section-header {
     font-weight: 600;
     font-size: 18px;
   }
-
   .white-bg {
     background: white;
     border-radius: 6px;
     box-shadow: 0px 1px 3px #00000029;
   }
-
   .info-btn {
     background: #dde2e6;
     border-radius: 22px;
@@ -850,14 +814,12 @@
     box-shadow: 0px 1px 4px #02172e45;
     border: 1px solid #dde2e6;
   }
-
   .submit-div {
     display: flex;
     justify-content: center;
     text-align: center;
     margin-bottom: 24px;
   }
-
   .submit-btn {
     background: #136acd;
     border: none;
@@ -905,21 +867,18 @@
     width: auto;
     color: #002044;
   }
-
   .hide-tab {
     height: 0;
     /* display: none; */
     transition: all 0.5s ease-in-out;
     overflow: hidden;
   }
-
   .tbb-icon {
     transition: all 0.5s ease-in-out;
     transform: rotate(0deg);
     color: #190138;
     font-size: 20px;
   }
-
   .tb-icon-span {
     display: flex;
     justify-content: center;
@@ -930,7 +889,6 @@
     border-radius: 50%;
     opacity: 0.5;
   }
-
   .tb-icon {
     transition: all 0.5s ease-in-out;
     transform: rotate(180deg);
@@ -963,13 +921,11 @@
     align-items: center;
     border-radius: 4px;
   }
-
   .choose-file {
     background: #dde2e6;
     padding: 3px 10px;
     margin-bottom: 0;
   }
-
   .choose-file:hover {
     cursor: pointer;
   }
@@ -1074,24 +1030,20 @@
     .celeb-info .celeb-date {
       width: 87px;
     }
-
     .celeb-info .celeb-year {
       width: 113px;
     }
   }
-
   @media screen and (max-width: 898px) {
     .add-info--con {
       /* flex-direction: column; */
       justify-content: center;
     }
-
     .label-text-box {
       width: calc(62% - 344px);
       align-self: center;
       text-align: left;
     }
-
     .info-box {
       width: calc(100% - (62% - 350px));
       align-self: center;
@@ -1107,7 +1059,6 @@
       margin: 0;
     }
   }
-
   @media screen and (min-width: 1560px) {
     .label-text-box {
       width: calc(62% - 336px);

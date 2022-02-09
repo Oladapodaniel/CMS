@@ -70,7 +70,6 @@ axios.interceptors.request.use((config) => {
     NProgress.start()
     return config;
   })
-
   // before a response is returned stop nprogress
   axios.interceptors.response.use(response => {
     NProgress.done()
