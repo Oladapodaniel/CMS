@@ -1721,12 +1721,21 @@ const routes = [
     },
     {
         path: '/createmember/:id',
-        name: 'RegisterPersonID',
+        name: 'PublicPerson',
         meta: {
-            title: 'RegisterPerson',
+            title: 'Register member',
         },
         component: () =>
-            import ( /* webpackChunkName: "emailsent" */ '../views/people/RegisterPersonID.vue')
+            import ( /* webpackChunkName: "emailsent" */ '../views/people/PublicPerson.vue')
+    },
+    {
+        path: '/createfirsttimer/:id',
+        name: 'PublicFirstTimer',
+        meta: {
+            title: 'Register firsttimer',
+        },
+        component: () =>
+            import ( /* webpackChunkName: "emailsent" */ '../views/people/PublicFirstTimer.vue')
     },
     {
         path: '/errorpage',

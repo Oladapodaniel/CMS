@@ -52,6 +52,7 @@
                 <img
                   src="../../../assets/link.svg" class="w-100"
                   alt="marked Attendance image"
+                  style="width: 60px; height: 60px"
                 />
               </div>
               <div class="col-md-10 col-sm-10 mt-3">

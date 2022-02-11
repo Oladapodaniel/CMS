@@ -36,6 +36,7 @@
                         <div class="row">
                             <div class="col mt-4 enlargen-font">{{ item.description }}</div>
                         </div>
+                        <div class="text-right c-pointer"><i class="pi pi-trash" @click="showConfirmModal(item, index, indx)"></i></div>
                         <transition name="fade">
                             <div class="row mt-4" v-if="item.noteIcon">
                                 <div class="col font-weight-700 uniform-primary-color">Add Comment</div>
@@ -47,8 +48,8 @@
 
 
             <!-- Card for tasks (visit/sms) -->
-            <div class="col-12 mt-4" v-if="(item.type === 87 || item.type === 88 || item.type === 90 || item.type === 91 || item.type === 92) && item.loggedTask">
-                <div class="col-12 card-bg p-4">
+            <div class="col-12 mt-4 " v-if="(item.type === 87 || item.type === 88 || item.type === 90 || item.type === 91 || item.type === 92) && item.loggedTask">
+                <div class="col-12 card-bg p-4 shadow-overlay">
                 <div class="row d-flex justify-content-between">
                     <div>
                         <div class="col align-self-center"><span class="font-weight-700 c-pointer"><i class="pi pi-angle-up uniform-primary-color" :class="{'roll-note-icon' : item.taskIcon, 'unroll-note-icon' : !item.taskIcon}" @click="toggleTaskIcon(index, indx)"></i>&nbsp;&nbsp;{{ item.selectedActivity && Object.keys(item.selectedActivity).length > 0 ? item.selectedActivity.value : item.loggedTask && item.loggedTask.type && activityType.find(i => i.id === item.loggedTask.type) ? activityType.find(i => i.id === item.loggedTask.type).value : item.typeText }} {{ item.person ? 'task' : 'logged' }}</span> {{ item.person ? `assigned to ` : '' }} <span class="font-weight-700">{{ item.person ? item.person : "" }}</span></div>
@@ -240,6 +241,7 @@
                         </transition>
                     </div>
                 </div>
+                <div class="text-right"><i class="pi pi-trash c-pointer" @click="showConfirmModal(item, index, indx)"></i></div>
             <transition name="fade">
                 <div class="container" v-if="item.taskIcon">
                     <div class="row mt-4" v-show="!displayComment">
@@ -314,6 +316,7 @@
                         <div class="p-2 col-2 mt-3 save-btn btn-btn pointer-cursor" @click="saveLogDesc" v-if="item.editLog">Save</div>
                         <div class="cancel-btn btn-btn col-2 ml-3 p-2 mt-3" v-if="item.editLog" @click="cancelTaskEdit">Cancel</div> -->
                     </div>
+                    <div class="text-right c-pointer"><i class="pi pi-trash" @click="showConfirmModal(item, index, indx)"></i></div>
                     <transition name="fade">
                         <div class="row" v-if="item.logIcon">
                             <div class="col-12">
@@ -360,6 +363,7 @@
             You have not performed any activities yet
         </div>
     </div>
+    <ConfirmDialog />
 </template>
 
 
@@ -371,13 +375,15 @@ import frmservice from "@/services/FRM/firsttimermanagement";
 import { useRoute } from "vue-router"
 import SearchMember from "../../../../components/membership/MembersSearch.vue"
 import { useToast } from "primevue/usetoast";
+import axios from "@/gateway/backendapi";
+import { useConfirm } from "primevue/useConfirm";
 export default {
     components: {
         Dropdown,
         SearchMember
     },
     props: ['personDetails', 'addNotes', 'addTask', 'dueDate', 'activities', 'loader', 'getReminder', 'activityType', 'taskPriority'],
-    emits: ['individualtoggle', 'individualtoggletask', 'individualcallicon', 'edittask', 'edittask2', 'savetask', 'hovertask', 'outhovertask', "commentindex", "removecommetfromview", "editcommentinview", "setduedate"],
+    emits: ['individualtoggle', 'individualtoggletask', 'individualcallicon', 'edittask', 'edittask2', 'savetask', 'hovertask', 'outhovertask', "commentindex", "removecommetfromview", "editcommentinview", "setduedate", "removelog"],
     setup(props, { emit }) {
         const route = useRoute()
         const toast = useToast()
@@ -690,6 +696,49 @@ export default {
                 console.log(err)
             }
         }
+
+        const deleteLog = async(item, index, indx) => {
+            try {
+                const res = await axios.delete(`/api/FirsttimerManager/activity/log/${item.id}`)
+                console.log(res)
+                let body = {
+                    parentIndex: index,
+                    childIndex: indx
+                }
+                emit("removelog", body)
+                toast.add({
+                    severity: "success",
+                    summary: "Success",
+                    detail: "Deleted successfully",
+                    life: 5000,
+                });
+            }
+            catch (err) {
+                console.log(err)
+            }
+        }
+
+        const confirm = useConfirm();
+         const showConfirmModal = (item, index, indx) => {
+            confirm.require({
+            message: "Are you sure you want to proceed?",
+            header: "Confirmation",
+            icon: "pi pi-exclamation-triangle",
+            acceptClass: "confirm-delete",
+            rejectClass: "cancel-delete",
+            accept: () => {
+                deleteLog(item, index, indx);
+            },
+            reject: () => {
+                toast.add({
+                severity: "info",
+                summary: "Rejected",
+                detail: "You have rejected",
+                life: 3000,
+                });
+            },
+            });
+        };
         
 
     
@@ -743,7 +792,9 @@ export default {
             statuses,
             taskStatusOp,
             toggleTaskStatus,
-            setTaskStatus
+            setTaskStatus,
+            deleteLog,
+            showConfirmModal
         }
     }
 }
@@ -921,4 +972,64 @@ export default {
     height: 35px;
     background: #eee;
 }
+/* 
+.shadow-overlay {
+    position: absolute;
+    margin-top: 44px;
+    font-size: 34px;
+    color: white;
+    z-index: 1;
+    opacity: 0;
+    -webkit-transition: opacity 0.3s ease;
+    -moz-transition: opacity 0.3s ease;
+    -ms-transition: opacity 0.3s ease;
+    -o-transition: opacity 0.3s ease;
+    transition:  opacity 0.3s ease-in-out;
+} */
+
+/* .shadow-overlay {
+    overflow: hidden;
+    position: relative;
+    transition: all 3s ease-in-out
+}
+
+.shadow-overlay > div {
+    position: relative;
+    z-index: 0;
+    inset: 0;
+    width: 130;
+    height: 130px;
+    object-fit: cover;
+    transition: all 3s ease-in-out
+}
+
+.shadow-overlay::before,
+.shadow-overlay::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    transition: all 3s ease-in-out
+}
+
+.shadow-overlay:before {
+    z-index: 1;
+    background: black;
+    border-radius: 50%;
+    position: absolute;
+    margin: 0 auto;
+    opacity: .3;
+    width: 130px;
+    opacity: 0;
+    -webkit-transition: opacity 0.3s ease;
+    -moz-transition: opacity 0.3s ease;
+    -ms-transition: opacity 0.3s ease;
+    -o-transition: opacity 0.3s ease;
+    transition:  opacity 0.3s ease-in-out;
+    
+}
+
+.shadow-overlay:hover:before {
+    opacity: .6;
+} */
+
 </style>

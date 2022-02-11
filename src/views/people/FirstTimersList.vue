@@ -7,7 +7,7 @@
                     <div class="" :class="{ 'baseline' : showDashboard, 'hide-base' : !showDashboard }"></div>
                 </div>
                 <div class="col-12 col-sm-6  c-pointer" @click="firstTimerTable">
-                    <div class="font-weight-bold h5 col-12  ">FirstTimer</div>
+                    <div class="font-weight-bold h5 col-12  ">First Timers</div>
                     <div class="" :class="{ 'baselinetwo' : showFirstTimer, 'hide-basetwo' : !showFirstTimer }"></div>
                 </div>
                 <!-- <div class="hr"><hr /></div> -->
@@ -789,14 +789,6 @@
                       >
                         <a
                           class="dropdown-item elipsis-items"
-                          @mouseover="toggle($event, person.id)"
-                          href="#"
-                        >
-                          Convert to member
-                        </a>
-
-                        <a
-                          class="dropdown-item elipsis-items"
                           v-if="person.phoneNumber"
                         >
                           <router-link
@@ -823,6 +815,13 @@
                           @click.prevent="showConfirmModal(person.id, index)"
                           >Delete</a
                         >
+                        <a
+                          class="dropdown-item elipsis-items"
+                          @mouseover="toggle($event, person.id)"
+                          href="#"
+                        >
+                          Convert to member
+                        </a>
                       </div>
                     </div>
                   </div>

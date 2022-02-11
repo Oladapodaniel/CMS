@@ -680,6 +680,10 @@ export default {
           eventDate: moment(new Date(selectedEvent.value.name.split("(")[1].split(")")[0]).toISOString()).format().split("T")[0],
         }
         slot.value ? checkinEvent.registrationSlot = slot.value : ""
+        checkinSMS.value ? checkinEvent.checkinSMS = checkinSMS.value : ""
+        checkinEmail.value ? checkinEvent.checkinEmail = checkinEmail.value : ""
+        registrationSMS.value ? checkinEvent.registrationSMS = registrationSMS.value : ""
+        registrationEmail.value ? checkinEvent.registrationEmail = registrationEmail.value : ""
       //   console.log(checkinEvent)
       const formData = new FormData();
         // disabled.value = false
