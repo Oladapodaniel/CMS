@@ -1406,6 +1406,7 @@
                         data-toggle="dropdown"
                         v-model="userSearchString"
                         @input="searchForUsers"
+                        autocomplete="off"
                       />
                       <div
                         class="dropdown-menu w-100"

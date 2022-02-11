@@ -10,6 +10,7 @@
             ref="searchRef"
             data-toggle="dropdown"
             placeholder="Search from members"
+            autocomplete="off"
         />
         <div
         class="dropdown-menu w-100 dropdown-height"

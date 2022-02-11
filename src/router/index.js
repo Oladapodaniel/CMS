@@ -1496,8 +1496,47 @@ const routes = [
                 component: () =>
                     import ( /* webpackChunkName: "giving" */ '@/views/mobile/mobileapp/DonationSetup')
             },
+            {
+                path: 'pledgedefinition',
+                meta: {
+                    title: 'Churchplus - Pledge',
+                },
+                component: () =>
+                    import ( /* webpackChunkName: "peopleempty" */ '../views/pledge/PledgeDefinition.vue')
+            },
 
         ],
+    },
+    {
+        path: '/pledge',
+        component: () =>
+            import ( /* webpackChunkName: "pledge" */ '../views/pledge/Index.vue'),
+            children: [
+                {
+                    path: 'makepledge',
+                    meta: {
+                        title: 'Churchplus - Pledge',
+                    },
+                    component: () =>
+                        import ( /* webpackChunkName: "peopleempty" */ '../views/pledge/MakePledge.vue')
+                },
+                {
+                    path: 'redeempledge',
+                    meta: {
+                        title: 'Churchplus - Pledge',
+                    },
+                    component: () =>
+                        import ( /* webpackChunkName: "peopleempty" */ '../views/pledge/RedeemPledge.vue')
+                },
+                {
+                    path: 'pledgepayment',
+                    meta: {
+                        title: 'Churchplus - Church Pledge',
+                    },
+                    component: () =>
+                        import ( /* webpackChunkName: "peopleempty" */ '../views/pledge/PledgePayment.vue')
+                },
+            ]
     },
     {
         path: '/checkin/e/:code',

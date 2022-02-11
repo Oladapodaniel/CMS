@@ -275,6 +275,7 @@
                                             class="border-0 m-dd-item text outline-none"
                                             ref="memberSelectInput"
                                             @input="searchForMembers"
+                                            autocomplete="off"
 
                                             :class="{
                                               'w-100':
