@@ -5,7 +5,7 @@
 
 
         <!-- <div class="col-sm-12"> -->
-        <div class="top container-wide mt-3">
+        <div class="top container-wide mt-3 px-0">
           <div class="header">
             <div class="events">First Timers Analytics
             </div>
