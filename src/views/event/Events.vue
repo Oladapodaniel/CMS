@@ -5,7 +5,6 @@
   <div class="whole-con">
     <div class="main-con">
       <div class="main-body">
-        <!-- <div class="col-sm-12"> -->
         <div class="top container-wide mt-3 p-0">
           <div class="header">
             <div class="events">Events</div>

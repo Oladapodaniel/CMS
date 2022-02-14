@@ -10,10 +10,10 @@
         <img src="../../assets/churchplus-logo.png" class="link-image" />
         <!-- <img src="../../assets/dashboardlinks/churchcloud.png" class="link-image" /> -->
       </div>
-      <div class="col-md-8 mb-md-5"><h2 class="font-weight-700">Subscription  Expired</h2></div>
+      <div class="col-md-8 mb-md-5"><h2 class="font-weight-700">Member Capacity Exceeded</h2></div>
       <div class="col-md-4 mb-md-5 mt-2 mb-3 d-md-flex justify-content-md-end text-primary text-center" ><router-link to="/subexpired" class="text-decoration-none default-btn primary-bg text-white border-0">Click here to Subscibe</router-link></div>  
       <div class="col-md-8">
-        <div class="mb-3">Hey, this page is not publicly available because your subscription has expired.</div>
+        <div class="mb-3">Sorry, you have reached you membership capacity limit, you'll have to upgrage to continue using the software.</div>
         <div class="mt-md-2">
           <div>Things you can still do:</div>
           <ul class="list-unstyled mt-3">

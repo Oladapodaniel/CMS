@@ -166,7 +166,7 @@
               <div class="col-md-12 col-12 d-flex justify-content-end mb-4">
                 <div
                   class="border outline-none font-weight-bold mr-3 c-pointer"
-                  data-toggle="modal"
+                  :data-toggle="route.params.groupId ? 'modal' : ''"
                   data-target="#importgroup"
                   ref="modalBtn"
                   style="border-radius: 3rem; padding: 0.5rem 1.25rem;"
@@ -1594,9 +1594,9 @@ export default {
       if (!route.params.groupId) {
          toast.add({
             severity: "warn",
-            summary: "Add a group",
-            detail: "Please ensure a group is added before you import",
-            life: 4000,
+            summary: "Create a group",
+            detail: "Please ensure you create the group first before you import",
+            life: 5000,
           });
       }
     }
@@ -1778,9 +1778,8 @@ export default {
     positionArchive,
     displayPositionArchive,
     closeArchiveModal,
-    importMember
-
-
+    importMember,
+    route
     };
   },
 };
