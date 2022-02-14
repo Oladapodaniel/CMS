@@ -646,7 +646,7 @@
           aria-labelledby="exampleModalLabel"
           aria-hidden="true"
         >
-          <div class="modal-dialog modal-lg" role="document">
+          <div class="modal-dialog" role="document">
             <div class="modal-content">
               <div class="modal-header">
                 <h5 class="modal-title font-weight-bold" id="exampleModalLabel">
@@ -668,15 +668,20 @@
                   </div>
                   <div class="col-md-7">
                     <div class="dropdown">
+                      <div class="input-group" id="dropdownMenuButton" data-toggle="dropdown">
+                        <input
+                          type="text"
+                          class="form-control"
+                          v-model="userSearchString"
+                          @input="searchForUsers"
+                        />
+                        <div class="input-group-append">
+                          <span class="input-group-text"><i class="pi pi-chevron-down"></i></span>
+                        </div>
+                      </div>
                       
-                      <input
-                        type="text"
-                        class="form-control"
-                        id="dropdownMenuButton"
-                        data-toggle="dropdown"
-                        v-model="userSearchString"
-                        @input="searchForUsers"
-                      />
+                      
+                  
                       <div
                         class="dropdown-menu w-100"
                         aria-labelledby="dropdownMenuButton"
@@ -714,7 +719,7 @@
                             searchedMembers.length === 0
                           "
                         >
-                          Enter 3 or moore characters
+                          Enter 3 or more characters
                         </p>
                         <a
                           class="font-weight-bold small-text d-flex justify-content-center py-2 text-decoration-none primary-text c-pointer"
@@ -2060,4 +2065,9 @@ export default {
         text-decoration:none;
         font-weight: 700;
       }
+
+    .dropdown-menu {
+      max-height: 400px;
+      overflow: scroll;
+    }
 </style>
