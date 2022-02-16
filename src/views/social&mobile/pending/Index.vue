@@ -291,7 +291,25 @@ export default {
         const tenantId = store.getters.currentUser.tenantId;
         const pendingPosts = ref([ ])
         const pageData = ref({})
-        const feed = ref([]);
+
+        const deletePost = async (post) => {
+            try {
+              await social_service.deletePost(post.postId);
+              toast.add({
+                severity: "success",
+                summary: "Post Deleted",
+                detail: "The post has been deleted successfully",
+                life: 3000,
+              });
+            } catch (error) {
+              toast.add({
+                severity: "error",
+                summary: "Delete Error",
+                detail: "Post could not be deleted, please reload and try again",
+                life: 3000,
+              });
+            }
+          };
 
         const showDeleteModal = (post) => {
             console.log(post, "post");
@@ -310,25 +328,6 @@ export default {
             });
           };
 
-        const deletePost = async (post) => {
-            try {
-              await social_service.deletePost(post.postId);
-              feed.value = feed.value.filter(i => i.postId !== post.postId);
-              toast.add({
-                severity: "success",
-                summary: "Post Deleted",
-                detail: "The post has been deleted successfully",
-                life: 3000,
-              });
-            } catch (error) {
-              toast.add({
-                severity: "error",
-                summary: "Delete Error",
-                detail: "Post could not be deleted, please reload and try again",
-                life: 3000,
-              });
-            }
-          };
 
         const getPendingPosts = async (tenantId) => {
             try {
@@ -370,7 +369,6 @@ export default {
 
         return {
             showDeleteModal,
-            feed,
             pendingPosts,
             formatDate,
             loading,

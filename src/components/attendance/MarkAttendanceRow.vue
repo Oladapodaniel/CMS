@@ -292,7 +292,7 @@ export default {
 .custom-checkbox {
   border: 2px solid red !important;
   background: #ffffff;
-  width: 20px;
+  width: 20px !important;
   height: 20px;
   color: #495057;
   border-radius: 3px;

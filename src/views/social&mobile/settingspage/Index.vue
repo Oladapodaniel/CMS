@@ -401,6 +401,7 @@
     </div>
   </div>
 </div>
+
       <!-- <Dialog header="Connected Successfully" v-model:visible="display" :modal="true" :breakpoints="{'960px': '75vw'}" :style="{width: '60vw'}" >
            <div class="container">
              <div class="row">
@@ -569,10 +570,19 @@ export default {
     const pagesBtn = ref()
 
     const twitterLogin = async () =>{
-      const client = new TwitterApi({ appKey: 'vUtt1RW0dlLSgsSWyS8YN5MkP', appSecret: '8A3Ok8OYPUijQ3WlNNlAeklFStUVLln0ZbydGTTuxvQmgfqS4U' });
-      // const client = new TwitterApi({ appKey: CONSUMER_KEY, appSecret: CONSUMER_SECRET });
-      const authLink = await client.generateAuthLink('https://my.churchplus.co', { linkMode: 'authorize' });
-      console.log(authLink, 'many are call')
+      // const client = new TwitterApi({ appKey: 'vUtt1RW0dlLSgsSWyS8YN5MkP', appSecret: '8A3Ok8OYPUijQ3WlNNlAeklFStUVLln0ZbydGTTuxvQmgfqS4U' });
+      // // const client = new TwitterApi({ appKey: CONSUMER_KEY, appSecret: CONSUMER_SECRET });
+      // const authLink = await client.generateAuthLink('https://my.churchplus.co', { linkMode: 'authorize' });
+      // console.log(authLink, 'many are call')
+      let url = encodeURIComponent('my.churchplus.co/tenant/social/category')
+
+      try {
+        let data = await axios.post(`https://api.twitter.com/oauth/request_token?oauth_callback=${url}&oauth_consumer_key=vUtt1RW0dlLSgsSWyS8YN5MkP`)
+        console.log(data)
+      }
+      catch (err) {
+        console.log(err)
+      }
     }
     //Local storage
     

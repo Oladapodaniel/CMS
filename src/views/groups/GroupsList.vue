@@ -13,7 +13,7 @@
             <ConfirmDialog />
             
           </div>
-          <div class="col-md-6 col-8 d-flex justify-content-end mt-2 my-1 link">
+          <div class="col-md-6 col-8 d-flex justify-content-end mt-2 my-1 link" v-if="!groupLeader">
             <router-link
               to="/tenant/createpeoplegroup"
               class="
@@ -74,27 +74,27 @@
             <div>
               <div class="container-fluid d-none d-md-block">
                 <div class="row t-header">
-                  <div class="col-md-1"></div>
+                  <!-- <div class="col-md-1"></div>
                   <div
                     class="small-text text-capitalize col-md-2 font-weight-bold"
                   >
                     <input class="my-2" type="checkbox" />
-                  </div>
+                  </div> -->
                   <div
-                    class="small-text text-capitalize col-md-4 font-weight-bold"
+                    class="small-text text-capitalize col-md-6 font-weight-bold"
                   >
                     Group Name
                   </div>
                   <div
-                    class="small-text text-capitalize col-md-2 font-weight-bold"
+                    class="small-text text-capitalize col-md-5 font-weight-bold"
                   >
                     Membership Size
                   </div>
-                  <div
+                  <!-- <div
                     class="small-text text-capitalize col-md-2 font-weight-bold"
                   >
                     <span></span>
-                  </div>
+                  </div> -->
                   <div
                     class="small-text text-capitalize col-md-1 font-weight-bold"
                   >
@@ -107,7 +107,7 @@
               <div class="row" style="margin: 0">
 
                 <div
-                  class=" col-12 parent-desc py-2 px-0">
+                  class=" col-12 parent-desc pb-2 px-0">
                   <!-- removed v-for above -->     <!-- loading group -->
                   <div class="row" v-if="!loading && groups.length === 0">
                     <div class="col-md-12">
@@ -145,7 +145,7 @@
                           "
                         >
                           <i
-                            class="fas fa-circle-notch fa-spin py-4"
+                            class="pi pi-spin pi-spinner py-4"
                             v-if="loading"
                           ></i>
                         </div>
@@ -162,18 +162,18 @@
               
 
 
-                  <div class="row w-100 c-pointer text-dark border-top hover d-flex align-items-center" style="margin: 0" v-for="(group, index) in searchGroup" :key="index">
+                  <div class="row w-100 c-pointer text-dark border-bottom p-1 hover d-flex align-items-center" style="margin: 0" v-for="(group, index) in searchGroup" :key="index">
                   
-                    <div class="col-md-1 d-flex d-md-block px-3 justify-content-end"></div>
+                    <!-- <div class="col-md-1 d-flex d-md-block px-3 justify-content-end"></div> -->
 
-                    <div class="col-md-2 col-sm-2 d-md-flex align-items-center">
+                    <!-- <div class="col-md-2 col-sm-2 d-md-flex align-items-center">
                       <input
                         class="my-2 d-flex justify-content-end"
                         type="checkbox"
                       />
-                    </div>
+                    </div> -->
 
-                    <div class="col-md-4 desc" @click="groupClick(group.id)">
+                    <div class="col-md-6 desc" @click="groupClick(group.id)">
                       <p class="mb-0 d-flex justify-content-between">
                         <span
                           class=" text-dark font-weight-bold d-flex d-md-none fontIncrease"
@@ -186,7 +186,7 @@
                       </p>
                     </div>
 
-                    <div class="col-md-2">
+                    <div class="col-md-5">
                       <div class="d-flex small justify-content-between">
                         <span class="text-dark font-weight-bold d-flex d-md-none fontIncrease" style="font-size:15px">Membership Size</span>
                           <div class="desc small-text text-right text-md-center">
@@ -195,7 +195,7 @@
                       </div>
                     </div>
 
-                    <div class="col-md-2"></div>
+                    <!-- <div class="col-md-2"></div> -->
 
                     <div class="col-md-1">
                       <div>
@@ -403,6 +403,10 @@ export default {
           } 
     }
 
+    const groupLeader = computed(() => {
+      return JSON.parse(localStorage.getItem('roles')).some(i => i.toLowerCase() == 'groupleader')
+    })
+
     return {
       // showSide,
       // sendSms,
@@ -421,6 +425,7 @@ export default {
       toggleSearch,
       searchGroup,
       removeSearchText,
+      groupLeader
       // route
     };
   },

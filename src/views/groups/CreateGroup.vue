@@ -165,7 +165,7 @@
            <div class="row">
               <div class="col-md-12 col-12 d-flex justify-content-end mb-4">
                 <div
-                  class="border outline-none font-weight-bold mr-3 c-pointer"
+                  class="border outline-none font-weight-bold mr-3 c-pointer text-center"
                   :data-toggle="route.params.groupId ? 'modal' : ''"
                   data-target="#importgroup"
                   ref="modalBtn"
