@@ -574,7 +574,7 @@ export default {
         hello.init({
           twitter : 'vUtt1RW0dlLSgsSWyS8YN5MkP'
         },{
-          // scope : 'email',
+          scope : 'email',
           redirect_uri: 'https://my.churchplus.co/tenant/social/setting'
         });
       }
