@@ -576,7 +576,7 @@ export default {
         },{
           scope : 'email',
           redirect_uri: 'https://my.churchplus.co/tenant/social/setting',
-          oauth_proxy : 'https://auth-server.herokuapp.com',
+          // oauth_proxy : 'https://auth-server.herokuapp.com',
           oauth_version: '1.0a' // probably 1.0a with hello.js
         });
         console.log('initialized')
