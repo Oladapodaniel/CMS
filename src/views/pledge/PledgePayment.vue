@@ -72,7 +72,8 @@
                         </div>
                     </div>  
                     <div class="heading-text"> Payment </div>
-                     <div class="col-md-10  offset-md-2 mt-3 ">
+                    <div class="row  mt-1">
+                        <div class="col-md-10  offset-md-2 mt-2 ">
                             <div class="row">
                                 <div class="col-md-4 text-md-right align-self-center">
                                     <label for="" class="">Amount <sup class="text-danger">*</sup> </label>
@@ -85,16 +86,21 @@
                                     <!-- <CascadeSelect v-model="value" :options="branches" optionLabel="clabel" optionGroupLabel="label" :optionGroupChildren="['children']" class="w-100"  /> -->
                                 </div>
                             </div>
-                            <div class="row mt-3">
-                                <div class="col-md-4 text-md-right align-self-center">
-                                    <label for="" class="">Channel <sup class="text-danger">*</sup> </label>
+                         </div>
+                    </div>
+                    <div class="row  mt-3"> 
+                            <div class="col-md-10  offset-md-2  ">  
+                                <div class="row   mt-3">
+                                    <div class="col-md-4 text-md-right align-self-center">
+                                        <label for="" class="">Channel <sup class="text-danger">*</sup> </label>
+                                    </div>
+                            
+                                    <div class="col-md-8 d-flex flex-wrap">
+                                        <Dropdown v-model="selectedChannel" class="w-100 font-weight-normal" :options="channel"  optionLabel="name" placeholder="Select Channel" />
+                                    </div>
                                 </div>
-                        
-                                <div class="col-md-8 d-flex flex-wrap">
-                                    <Dropdown v-model="selectedChannel" class="w-100 font-weight-normal" :options="channel"  optionLabel="name" placeholder="Select Channel" />
-                                </div>
-                            </div>
-                        </div>
+                            </div>  
+                    </div>
                     <div class="col-md-9 offset-md-5 mt-4">
                             <div class="row d-flex justify-content-center ">
                                 <div class="mt-4 col-md-5">
