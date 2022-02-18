@@ -24,6 +24,7 @@ import router from "@/router/index";
 // import Multiselect from '@vueform/multiselect'
 import ConnectionBar from "@/components/connectivity/ConnectionStatus.vue";
 import setupService from "./services/setup/setupservice"
+import mixin from "@/mixins/memberLimit.mixin.js"
 // import celebAnim from "./services/celebration-animation/party"
 // import speed from "./services/network/networkSpeed"
 
@@ -31,7 +32,7 @@ export default {
   name: "App",
 
   components: { ConnectionBar },
-
+  mixins: [mixin],
   data() {
     return {
       transitionName: null,

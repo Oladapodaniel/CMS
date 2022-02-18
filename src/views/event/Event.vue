@@ -1376,7 +1376,7 @@
           aria-labelledby="exampleModalLabel"
           aria-hidden="true"
         >
-          <div class="modal-dialog modal-lg" role="document">
+          <div class="modal-dialog" role="document">
             <div class="modal-content">
               <div class="modal-header">
                 <h5 class="modal-title font-weight-bold" id="exampleModalLabel">
@@ -1398,16 +1398,18 @@
                   </div>
                   <div class="col-md-7">
                     <div class="dropdown">
-                      
-                      <input
-                        type="text"
-                        class="form-control"
-                        id="dropdownMenuButton"
-                        data-toggle="dropdown"
-                        v-model="userSearchString"
-                        @input="searchForUsers"
-                        autocomplete="off"
-                      />
+                      <div class="input-group" id="dropdownMenuButton" data-toggle="dropdown">
+                        <input
+                          type="text"
+                          class="form-control"
+                          v-model="userSearchString"
+                          @input="searchForUsers"
+                          autocomplete="off"
+                        />
+                        <div class="input-group-append">
+                          <span class="input-group-text"><i class="pi pi-chevron-down"></i></span>
+                        </div>
+                      </div>
                       <div
                         class="dropdown-menu w-100"
                         aria-labelledby="dropdownMenuButton"
@@ -1445,7 +1447,7 @@
                             searchedMembers.length === 0
                           "
                         >
-                          Enter 3 or moore characters
+                          Enter 3 or more characters
                         </p>
                         <a
                           class="font-weight-bold small-text d-flex justify-content-center py-2 text-decoration-none primary-text c-pointer"
@@ -1579,6 +1581,20 @@
                 <Button label="Go to Chart Of Accounts" icon="pi pi-check" @click="closeResponsive" autofocus />
             </template>
         </Dialog>
+
+        <Dialog
+        header="Create New Member"
+        v-model:visible="display"
+        :style="{ width: '70vw', maxWidth: '600px' }"
+        :modal="true"
+        position="top"
+        >
+        <div class="row">
+            <div class="col-md-12">
+            <NewDonor @cancel="() => display = false" @person-id="getPersonId($event)"/>
+            </div>
+      </div>
+    </Dialog>
   </div>
   <ConfirmDialog />
 </template>
@@ -1593,10 +1609,11 @@ import Dropdown from 'primevue/dropdown';
 import CurrencyConverterService from '../../services/currency-converter/currencyConverter'
 import finish from "../../services/progressbar/progress";
 import SearchMembers from "../../components/membership/MembersSearch.vue"
+import NewDonor from '../../components/membership/NewDonor.vue';
 
 export default {
   components: {
-    CurrencyConverter, Dropdown, Toast, SearchMembers
+    CurrencyConverter, Dropdown, Toast, SearchMembers, NewDonor
   },
   data() {
     return {
@@ -1710,7 +1727,8 @@ export default {
       isEmailValidNewConvert: true,
       currencyRate: [],
       convertedResult: 0,
-      displayResponsive: false
+      displayResponsive: false,
+      display: false
     };
   },
 
@@ -2747,9 +2765,10 @@ export default {
         console.log(this.userSearchString, member)
       },
       getPersonId (payload) {
-        personId.value = payload
-        offeringItem.value[offeringToAddDonor.value].donor = payload.personFirstName
-        offeringItem.value[offeringToAddDonor.value].personID = payload.personId
+        console.log(payload)
+        // personId.value = payload
+        this.offeringItem[this.offeringToAddDonor].donor = payload.personFirstName
+        this.offeringItem[this.offeringToAddDonor].personID = payload.personId
       },
       async getCurrentlySignedInUser () {
         try {
@@ -3045,6 +3064,9 @@ export default {
           });
         }
         this.firstTimersObj.contactOwnerId = payload.id
+      },
+      showAddMemberForm () {
+        this.display = true;
       }
         
   },
@@ -3863,6 +3885,11 @@ input.codeInput {
     font-weight: 700;
     margin-bottom: 10px;
     border-radius: 25px
+  }
+
+  .dropdown-menu {
+    max-height: 400px;
+    overflow: scroll;
   }
 
 @media (min-width: 576px) {

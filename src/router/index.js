@@ -1753,6 +1753,12 @@ const routes = [
                 name: 'Unauthorized',
                 component: () =>
                     import ( /* webpackChunkName: "sentemails" */ '@/components/errorpages/Unauthorized')
+            },
+            {
+                path: 'member-capacity-reached',
+                name: 'MemberMaxCap',
+                component: () =>
+                    import ( /* webpackChunkName: "sentemails" */ '@/components/errorpages/MemberMaxCap')
             }
         ]
     },
@@ -1813,7 +1819,8 @@ router.beforeEach((to, from, next) => {
             to.name === "SignInPayment" ||
             to.name === "TransactionPage" ||
             to.name === "PublicResetPassword" ||
-            to.name === "RegisterPersonID" ||
+            to.name === "PublicPerson" ||
+            to.name === "PublicFirstTimer" ||
             to.name === "EventRegistration") && !tokenIsValid) return next(true)
 
 

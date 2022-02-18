@@ -10,7 +10,7 @@
 
           <Dialog
             header="Select Date nad Time"
-            v-model:visible="display"
+            v-model:visible="display" 
             :style="{ width: '50vw', maxWidth: '600px' }"
             :modal="true"
           >
