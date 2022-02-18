@@ -641,6 +641,8 @@ export default {
         console.log(p, network)
         // document.getElementById('profile').innerHTML = "<img src='"+ p.thumbnail + "' width=24/>Connected to "+ network +" as " + p.name;
       });
+      var fb = hello(network).getAuthResponse()
+      console.log(fb, 'hereee')
       // const facebook = hello.use("facebook"); //This is the new line
       // facebook.api("me").then(function(r){
       //   console.log("Successful login: ", r);
