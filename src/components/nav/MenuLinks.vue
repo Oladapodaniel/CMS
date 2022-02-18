@@ -359,6 +359,15 @@
                 Media Library
               </router-link>
 
+              <router-link  to="/tenant/archivedpeople" class="link routelink text-decoration-none">
+                <img
+                  src="../../assets/dashboardlinks/people.svg"
+                  class="link-icon"
+                  alt=""
+                />
+                Archived People
+              </router-link>
+
               <a v-if="false"  class="link routelink">
                 <img
                   src="../../assets/dashboardlinks/media.svg"
