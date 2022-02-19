@@ -216,7 +216,7 @@ export default {
         }, 5000);
         if (data.roles.length === 1 && data.roles[0] === 'GroupLeader') {
           router.push( {
-            name: "Groups"
+            name: "GroupLeaderDashboard"
           });
           return false;
         }

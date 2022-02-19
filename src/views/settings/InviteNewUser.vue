@@ -38,7 +38,7 @@
                             </div>
                             <div class="col-lg-8 col-sm-12 "> <InputText type="Text"  class="form-control" required v-model="phoneNumber"  /></div>
                         </div>
-                         <div class="row mb-3 mt-5">
+                         <!-- <div class="row mb-3 mt-5">
                           <div class="col-lg-4 col-sm-12 text-lg-right text-sm-left"> <span class="">Password</span>
                             </div>
                             <div class="col-lg-8 col-sm-12 "> <Password class="form-control" :disabled="disabled" required v-model="password1"  /></div>
@@ -47,7 +47,7 @@
                          <div class="col-lg-4 col-sm-12 text-lg-right text-sm-left"> <span class="">Confirm Password</span>
                             </div>
                             <div class="col-lg-8 col-sm-12 "> <Password class="form-control" :disabled="disabled" v-model="password2" required /></div>
-                        </div>
+                        </div> -->
 
                         <!-- <div class="row mb-3">
 
