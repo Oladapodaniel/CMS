@@ -1044,6 +1044,15 @@ const routes = [
                     import ( /* webpackChunkName: "createpeoplegroup" */ '@/views/groups/CreateGroup')
             },
             {
+                path: 'groupleader',
+                name: 'GroupLeaderDashboard',
+                meta: {
+                    title: 'Churchplus - Gorup Leader',
+                },
+                component: () =>
+                    import ( /* webpackChunkName: "createpeoplegroup" */ '@/views/groups/GroupLeaderDashboard')
+            },
+            {
                 path: 'units',
                 name: 'BuyUnits',
                 meta: {

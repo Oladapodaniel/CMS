@@ -1012,7 +1012,7 @@
       justify-content: start;
     }
 
-    .inputs, input {
+    .inputs, .input {
       width: 100% !important;
     }
 

@@ -3,7 +3,7 @@
      <div class="bg col-md-10 offset-md-1">
      <div class="container">
         <div class="row">
-          <div class="text-center text-sm-left col-sm-5 events pt-2">Offering</div>
+          <div class="text-center text-sm-left col-sm-5 page-header pt-2">Offering</div>
           <div class=" text-center text-sm-right col-sm-7 ">
             <div class="row">
               <div class="col-md-12 d-lg-flex justify-content-end">
@@ -1750,7 +1750,7 @@ export default {
 </script>
 
 <style scoped>
-    .events {
+    .page-header {
         font: normal normal 800 29px Nunito sans;
         }
 
