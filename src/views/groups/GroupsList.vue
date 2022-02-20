@@ -32,6 +32,10 @@
           </div>
         </div>
 
+        <div class="font-weight-700" v-if="route.query.actionType == 'attendance'">Choose the group you want to the mark attendance of your members.</div>
+        <div class="font-weight-700" v-if="route.query.actionType == 'sendsms'">Choose the group you want to send SMS to.</div>
+        <div class="font-weight-700" v-if="route.query.actionType == 'sendemail'">Choose the group you want to send email to.</div>
+
         <!-- tosin working on tables -->
         <div class="row table">
           <div class="col-12 px-0" id="table">
@@ -162,7 +166,7 @@
               
 
 
-                  <div class="row w-100 c-pointer text-dark border-bottom p-1 hover d-flex align-items-center" style="margin: 0" v-for="(group, index) in searchGroup" :key="index">
+                  <div class="row w-100 c-pointer text-dark border-top p-1 hover d-flex align-items-center" style="margin: 0" v-for="(group, index) in searchGroup" :key="index">
                   
                     <!-- <div class="col-md-1 d-flex d-md-block px-3 justify-content-end"></div> -->
 
@@ -274,7 +278,7 @@
 
 <script>
 import { ref, computed } from "vue";
-import { useRouter } from 'vue-router';
+import { useRoute, useRouter } from 'vue-router';
 import groupsService from "../../services/groups/groupsservice";
 import { useStore } from "vuex";
 import { useConfirm } from "primevue/useConfirm";
@@ -302,7 +306,7 @@ export default {
     const showSMS = ref(false)
     const showEmail = ref(false)
     const router = useRouter()
-    // const route = useRoute();
+    const route = useRoute();
 
     // const showSide = ref(false);
 
@@ -425,8 +429,8 @@ export default {
       toggleSearch,
       searchGroup,
       removeSearchText,
-      groupLeader
-      // route
+      groupLeader,
+      route
     };
   },
 };

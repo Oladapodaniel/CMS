@@ -1017,7 +1017,7 @@ const routes = [
                     }]
             },
             {
-                path: 'peoplegroups',
+                path: 'peoplegroups:actionType?',
                 name: 'Groups',
                 meta: {
                     title: 'Churchplus - Groups',
