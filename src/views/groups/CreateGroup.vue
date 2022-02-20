@@ -983,7 +983,7 @@
             </div>
       </div>
     </Dialog>
-    <Dialog header="Archive members" v-model:visible="displayPositionArchive" :style="{width: '50vw'}" :position="positionArchive" :modal="true">
+    <Dialog header="Archive members" v-model:visible="displayPositionArchive" :breakpoints="{'960px': '75vw'}" :style="{width: window.innerWidth > 767 ? '50vw' : '100vw'}" :position="positionArchive" :modal="true">
         <p class="p-m-0">You are about to archive your member(s). Do you want to continue ?</p>
         <template #footer>
             <div class="d-flex justify-content-end">
@@ -1704,6 +1704,10 @@ export default {
         }
     }
 
+    const innerWidth = computed(() => {
+            return window.innerWidth;
+        })
+
     return {
       groupData,
       selectedAttendanceId,
@@ -1777,7 +1781,9 @@ export default {
     displayPositionArchive,
     closeArchiveModal,
     importMember,
-    route
+    route,
+    window,
+    innerWidth
     };
   },
 };
