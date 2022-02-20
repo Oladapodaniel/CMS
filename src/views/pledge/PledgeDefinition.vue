@@ -12,7 +12,7 @@
                                 </div>
                         
                                 <div class="col-md-8">
-                                    <input type="text" v-model="Name" class="form-control" :class="{ 'is-invalid' : !isNameValid }" @blur="checkNameValue"/>
+                                    <input type="text" v-model="PledgeName" class="form-control" :class="{ 'is-invalid' : !isNameValid }" @blur="checkNameValue"/>
                                     <div class="invalid-feedback">
                                         Please enter your name.
                                     </div>
@@ -28,7 +28,21 @@
                                 </div>
                         
                                 <div class="col-md-8">
-                                    <CascadeSelect v-model="value" :options="branches" optionLabel="clabel" optionGroupLabel="label" :optionGroupChildren="['children']" class="w-100" placeholder="Select Contribution" />
+                                    <Dropdown v-model="selectedContribution" class="w-100 font-weight-normal" :options="ContributionType"  optionLabel="name" placeholder="Select Contribution" />
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-10  offset-md-2 mt-3 ">
+                            <div class="row">
+                                <div class="col-md-4 text-md-right align-self-center">
+                                    <label for="" class="">Total target amount <sup class="text-danger">*</sup> </label>
+                                </div>
+                        
+                                <div class="col-md-8 d-flex flex-wrap">
+                                    <div class="border col-2 bg-secondary  align-self-center py-1 ">NGN</div>
+                                    <!-- <span class="border">NGN</span> -->
+                                    <div class="col-10  m-0 p-0"><input type="text" v-model="targetAmount" class="form-control" placeholder=" Enter Amount" /></div>
+                                    <!-- <CascadeSelect v-model="value" :options="branches" optionLabel="clabel" optionGroupLabel="label" :optionGroupChildren="['children']" class="w-100"  /> -->
                                 </div>
                             </div>
                         </div>
@@ -39,7 +53,22 @@
                                 </div>
                         
                                 <div class="col-md-8">
-                                    <CascadeSelect v-model="value" :options="branches" optionLabel="clabel" optionGroupLabel="label" :optionGroupChildren="['children']" class="w-100" placeholder="Select Currency" />
+                                     <Dropdown v-model="selectedCurrency" class="w-100  font-weight-normal" :options="currencyList" optionLabel="name" :filter="true" placeholder="Select Currency" >
+                                        <template #value="slotProps">
+                                            <div class="country-item country-item-value" v-if="slotProps.value">
+                                                <div>{{slotProps.value.name}}</div>
+                                                <!-- <div>{{slotProps.placeholder}}</div> -->
+                                            </div>
+                                            <span v-else>
+                                                {{slotProps.placeholder}}
+                                            </span>
+                                        </template>
+                                        <template #option="slotProps">
+                                            <div class="country-item">
+                                                <div>{{slotProps.option.name}} - {{slotProps.option.country}}</div>
+                                            </div>
+                                        </template>
+                                    </Dropdown>
                                 </div>
                             </div>
                         </div>
@@ -48,17 +77,17 @@
                         <div class="col-md-10  offset-md-2">
                             <div class="row">
                                 <div class="col-md-4 text-md-right align-self-center">
-                                    <label for="" class="">Pledge </label>
+                                    <label for="" class="">Pledge type </label>
                                 </div>
                                 <div class="col-md-8 d-flex justify-content-between flex-wrap">
+                                    <div class="col-md-4 mt-2 mt-md-0  border py-2 c-pointer free-will " :class="{ 'show-free-will' : pledgeCategory == 'freewill' }" @click="freeWill">
+                                        Free Will
+                                    </div>
                                     <div class="col-md-4 border py-2 c-pointer" :class="{ 'show-specific' : pledgeCategory == 'specific' }"  @click="specific" >
                                         Specific
                                     </div>
-                                    <div class="col-md-3 mt-2 mt-md-0 border py-2 c-pointer" :class="{ 'show-range' : pledgeCategory == 'range' }" @click="range">
+                                    <div class="col-md-4 mt-2 mt-md-0 border py-2 c-pointer" :class="{ 'show-range' : pledgeCategory == 'range' }" @click="range">
                                         Range
-                                    </div>
-                                    <div class="col-md-4 mt-2 mt-md-0  border py-2 c-pointer free-will " :class="{ 'show-free-will' : pledgeCategory == 'freewill' }" @click="freeWill">
-                                        Free Will
                                     </div>
                                 </div>
                                 <div class="col-md-12  mt-3 " v-if="pledgeCategory == 'specific' " >
@@ -77,25 +106,12 @@
                                             <label for="" class=""> Amount </label>
                                         </div>
                                         <div class="col-md-4">
-                                            <input type="text" v-model="phoneNumber" class="form-control" placeholder="From" />
+                                            <input type="text" v-model="amountFrom" class="form-control" placeholder="From" />
                                         </div>
                                         <div class="col-md-4">
-                                            <input type="text" v-model="phoneNumber" class="form-control" placeholder="To" />
+                                            <input type="text" v-model="amountTo" class="form-control" placeholder="To" />
                                         </div>
                                     </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                     <div class="row my-1 mt-3">
-                        <div class="col-md-10  offset-md-2">
-                            <div class="row">
-                                <div class="col-md-4 text-md-right align-self-center">
-                                    <label for="" class="">Phone number </label>
-                                </div>
-                        
-                                <div class="col-md-8">
-                                    <input type="text" v-model="phoneNumber" class="form-control" />
                                 </div>
                             </div>
                         </div>
@@ -104,13 +120,41 @@
                         <div class="col-md-10  offset-md-2">
                             <div class="row">
                                 <div class="col-md-4 text-md-right align-self-center">
-                                    <label for="" class="">Email <sup class="text-danger">*</sup> </label>
+                                    <label for="" class=""> Frequency <sup class="text-danger">*</sup> </label>
                                 </div>
                         
-                                <div class="col-md-8">
-                                    <input type="text" v-model="pastorEmail" class="form-control" :class="{ 'is-invalid' : !isEmailValid }" @blur="checkEmailValue" />
-                                    <div class="invalid-feedback">
-                                        Please enter your email.
+                                <div class="col-md-8 d-flex flex-wrap">
+                                    <div class="col-md-6 mt-2 mt-md-0  border py-2 c-pointer free-will " :class="{ 'show-one-time' : pledgeFrequency == 'onetime' }" @click="oneTime">
+                                        One time
+                                    </div>
+                                    <div class="col-md-6 border py-2 c-pointer" :class="{ 'show-reoccuring' : pledgeFrequency == 'reoccuring' }"  @click="reOccuring" >
+                                        Reoccuring
+                                    </div>
+                                </div>
+                                <div class="col-md-12  mt-3 " v-if="pledgeFrequency == 'onetime' " >
+                                    <div class="row">
+                                        <div class="col-md-4 text-md-right align-self-center">
+                                            <label for="" class=""> Start Date </label>
+                                        </div>
+                                        <div class="col-md-8">
+                                            <Calendar dateFormat="dd/mm/yy" class="w-100" id="icon" v-model="startDate" :showIcon="true" />
+                                        </div>
+                                        <div class="col-md-4 text-md-right mt-2 align-self-center">
+                                            <label for="" class=""> End Date </label>
+                                        </div>
+                                        <div class="col-md-8 mt-2 ">
+                                            <Calendar dateFormat="dd/mm/yy" class="w-100" id="icon" v-model="endDate" :showIcon="true" />
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-md-12  mt-3 " v-if="pledgeFrequency == 'reoccuring' " >
+                                    <div class="row">
+                                        <div class="col-md-4 text-md-right align-self-center">
+                                            <label for="" class=""> Range </label>
+                                        </div>
+                                        <div class="col-md-8">
+                                            <Dropdown v-model="selectedRange" class="w-100 font-weight-normal" :options="reOccuringRange"  optionLabel="name" placeholder="Range" />
+                                        </div>
                                     </div>
                                 </div>
                             </div>
@@ -142,38 +186,74 @@
 </template>
 
 <script>
-// import axios from "@/gateway/backendapi";
+import axios from "@/gateway/backendapi";
 import { ref } from "vue";
 import Dropdown from "primevue/dropdown";
 import InputText from "primevue/inputtext";
 import { useToast } from "primevue/usetoast";
+import Calendar from "primevue/calendar";
 // import router from '../../router';
 // import store from "../../store/store";
 import CascadeSelect from 'primevue/cascadeselect';
 export default {
     components: {
         Dropdown,
+        Calendar,
         InputText,
         CascadeSelect
     },
     setup() {
         const toast = useToast()
-        const churchName = ref('');
+        const startDate = ref("");
+        const endDate = ref("");
         const Address = ref('');
         const loading = ref(false)
-        const loadingCode = ref(false)
         const value = ref()
-        const isNameValid = ref(true)
-        const isEmailValid = ref(true)
-        const pledgeCategory = ref("specific")
+        const pledgeCategory = ref("freewill")
+        const pledgeFrequency = ref("onetime")
         const showRange = ref(false)
         const showFreeWill = ref(false)
-
+        const selectedRange = ref({})
+        const selectedContribution = ref({})
+        const selectedCurrency = ref("")
+        const isNameValid = ref(true)
+        const PledgeName = ref('')
+        const amountFrom = ref('')
+        const amountTo = ref('')
+        const currencyList = ref([])
+        const reOccuringRange = ref([
+            {name: 'Daily'},
+            {name: 'Weekly'},
+            {name: 'Monthly'},
+            {name: 'Six Monthly'}
+        ])
+        const ContributionType = ref([
+            {name: 'Church Service'},
+            {name: 'Building'},
+            {name: 'Concert'},
+            {name: 'Children Program'}
+        ])
 
 
         const savePledge = async () => {
 
         }
+        const getAllCurrencies = () => {
+          axios.get('/api/lookup/getallcurrencies')
+            .then(res => {
+              currencyList.value = res.data.map(i => {
+                return {
+                  name:  i.shortCode,
+                  id: i.id,
+                  country: i.country
+                }
+              })
+              
+            })
+            .catch(err => console.log(err))
+      }
+      getAllCurrencies()
+
         const specific = () =>{
             pledgeCategory.value = "specific"
         }
@@ -183,9 +263,12 @@ export default {
         const freeWill = () =>{
             pledgeCategory.value = "freewill"
         }
-
-
-        
+        const oneTime = () =>{
+            pledgeFrequency.value = "onetime"
+        }
+        const reOccuring = () =>{
+            pledgeFrequency.value = "reoccuring"
+        }
 
         const checkNameValue = () => {
             if(churchName.value.length == 0) {
@@ -194,38 +277,51 @@ export default {
                 isNameValid.value = true
             }
         }
-        
-        const checkEmailValue = () => {
-            if(pastorEmail.value.length == 0) {
-                isEmailValid.value = false
-            }   else {
-                isEmailValid.value = true
-            }
-        }
+
 
         return {
+            currencyList,
+            isNameValid,
+            PledgeName,
+            amountFrom,
+            amountTo,
+            checkNameValue,
+            selectedCurrency,
+            ContributionType,
+            selectedContribution,
+            startDate,
+            endDate,
             showRange,
             showFreeWill,
             freeWill,
+            oneTime,
+            reOccuring,
             range,
             specific,
             pledgeCategory,
+            pledgeFrequency,
             savePledge,
-            checkEmailValue,
-            churchName,
             Address,
             value,
             loading,
-            loadingCode,
-            checkNameValue,
-            isNameValid,
-            isEmailValid
+            reOccuringRange,
+            selectedRange
         }
     },
 }
 </script>
 
 <style scoped>
+        .p-dropdown {
+    width: 14rem;
+}
+
+.country-item {
+    
+        width: 17px;
+        margin-right: 0.5rem;
+
+}
        .heading-text {
         font: normal normal 800 1.5rem Nunito sans;
 }
@@ -240,6 +336,16 @@ export default {
             font-weight: bold;
         }
         .show-free-will{
+            background-color: #136acd;
+            color: white;
+            font-weight: bold;
+        }
+        .show-one-time{
+            background-color: #136acd;
+            color: white;
+            font-weight: bold;
+        }
+        .show-reoccuring{
             background-color: #136acd;
             color: white;
             font-weight: bold;
