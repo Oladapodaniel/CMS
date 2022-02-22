@@ -23,7 +23,7 @@
                <div class="row">
                    <div class="col-lg-7 col-sm-12 pr-3 mt-3 mt-lg-3 pr-lg-5 pr-sm-3" style="">
                        <div class="row mb-3">
-                          <div class="col-lg-4 col-sm-12 text-lg-right text-sm-left"> <label class="">Name</label>
+                          <div class="col-lg-4 col-sm-12 text-lg-right text-sm-left"> <label class="">Username</label>
                             </div>
                             <div class="col-lg-8 col-sm-12"> <InputText type="text" required v-model="userName" class="form-control" /></div>
                         </div>
@@ -38,16 +38,16 @@
                             </div>
                             <div class="col-lg-8 col-sm-12 "> <InputText type="Text"  class="form-control" required v-model="phoneNumber"  /></div>
                         </div>
-                         <!-- <div class="row mb-3 mt-5">
+                         <div class="row mb-3 mt-5" v-if="!disabled">
                           <div class="col-lg-4 col-sm-12 text-lg-right text-sm-left"> <span class="">Password</span>
                             </div>
                             <div class="col-lg-8 col-sm-12 "> <Password class="form-control" :disabled="disabled" required v-model="password1"  /></div>
                         </div>
-                        <div class="row mt-5">
+                        <div class="row mt-5" v-if="!disabled">
                          <div class="col-lg-4 col-sm-12 text-lg-right text-sm-left"> <span class="">Confirm Password</span>
                             </div>
                             <div class="col-lg-8 col-sm-12 "> <Password class="form-control" :disabled="disabled" v-model="password2" required /></div>
-                        </div> -->
+                        </div>
                         <div class="row">
                     <div class="col-sm-12 mt-sm-4 mt-4 mt-lg-3">
                         <div class="ml-5 mt-2 mt-lg-0">
