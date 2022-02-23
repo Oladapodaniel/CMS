@@ -28,7 +28,7 @@
                                 </div>
                         
                                 <div class="col-md-8">
-                                    <Dropdown v-model="selectedContribution" class="w-100 font-weight-normal" :options="ContributionType"  optionLabel="name" placeholder="Select Contribution" />
+                                    <Dropdown v-model="selectedContribution" class="w-100 font-weight-normal" :options="contributionItems"  optionLabel="name" placeholder="Select Contribution" />
                                 </div>
                             </div>
                         </div>
@@ -124,7 +124,7 @@
                                 </div>
                         
                                 <div class="col-md-8 d-flex flex-wrap">
-                                    <div class="col-md-6 mt-2 mt-md-0  border py-2 c-pointer free-will " :class="{ 'show-one-time' : pledgeFrequency == 'onetime' }" @click="oneTime">
+                                    <div class="col-md-6 mt-2 mt-md-0  border py-2 c-pointer  " :class="{ 'show-one-time' : pledgeFrequency == 'onetime' }" @click="oneTime">
                                         One time
                                     </div>
                                     <div class="col-md-6 border py-2 c-pointer" :class="{ 'show-reoccuring' : pledgeFrequency == 'reoccuring' }"  @click="reOccuring" >
@@ -164,9 +164,9 @@
                         <div class="col-md-9   offset-md-5   mt-4">
                                 <div class="row d-flex justify-content-center ">
                                     <!-- <div class="col-md-2"></div> -->
-                                    <div class=" col-md-5 ">
+                                    <!-- <div class=" col-md-5 ">
                                         <button class="default-btn" data-dismiss="modal">Pay now</button>
-                                    </div>
+                                    </div> -->
                                     <div class=" col-md-5 mt-2 mt-md-0 ">
                                         <button class="default-btn primary-bg border-0 text-white" data-dismiss="modal" @click="savePledge">
                                             <i class="pi pi-spin pi-spinner" v-if="loading"></i> Save
@@ -188,10 +188,12 @@
 <script>
 import axios from "@/gateway/backendapi";
 import { ref } from "vue";
+import { useStore } from 'vuex'
 import Dropdown from "primevue/dropdown";
 import InputText from "primevue/inputtext";
 import { useToast } from "primevue/usetoast";
 import Calendar from "primevue/calendar";
+import finish from '../../services/progressbar/progress';
 // import router from '../../router';
 // import store from "../../store/store";
 import CascadeSelect from 'primevue/cascadeselect';
@@ -210,7 +212,7 @@ export default {
         const loading = ref(false)
         const value = ref()
         const pledgeCategory = ref("freewill")
-        const pledgeFrequency = ref("onetime")
+        const pledgeFrequency = ref("")
         const showRange = ref(false)
         const showFreeWill = ref(false)
         const selectedRange = ref({})
@@ -221,19 +223,57 @@ export default {
         const amountFrom = ref('')
         const amountTo = ref('')
         const currencyList = ref([])
+        const contributionItems = ref([])
         const reOccuringRange = ref([
             {name: 'Daily'},
             {name: 'Weekly'},
             {name: 'Monthly'},
             {name: 'Six Monthly'}
         ])
-        const ContributionType = ref([
-            {name: 'Church Service'},
-            {name: 'Building'},
-            {name: 'Concert'},
-            {name: 'Children Program'}
-        ])
+        // const ContributionType = ref([
+        //     {name: 'Church Service'},
+        //     {name: 'Building'},
+        //     {name: 'Concert'},
+        //     {name: 'Children Program'}
+        // ])
 
+     const getContributionCategory = () => {
+            let store = useStore()
+            console.log(store.getters['contributions/contributionItems'])
+            if (store.getters['contributions/contributionItems'].length > 0) {
+                contributionItems.value = store.getters['contributions/contributionItems']
+            } else {
+                loading.value = true
+                axios
+                    .get("/api/financials/contributions/items")
+                    .then((res) => {
+                        loading.value = false
+                    contributionItems.value = res.data.map(i =>{
+                        return {
+                            name: i.name,
+                            id: i.id
+                        }
+                    });
+                    console.log(res.data, '🎁🍾🍾s');
+                    })
+                    .catch((err) => {
+                      finish()
+                        loading.value = false
+                        if(err.toString().toLowerCase().includes("network error")) {
+                          networkError.value = true
+                        } else {
+                          networkError.value = false
+                        }
+                        console.log(err)
+                    });
+            }
+
+    // get from  to store
+
+    // savev to sstore
+    // store.dispatch('contributions/contributionList')
+    };
+    getContributionCategory();
 
         const savePledge = async () => {
 
@@ -281,13 +321,14 @@ export default {
 
         return {
             currencyList,
+            contributionItems,
             isNameValid,
             PledgeName,
             amountFrom,
             amountTo,
             checkNameValue,
             selectedCurrency,
-            ContributionType,
+            // ContributionType,
             selectedContribution,
             startDate,
             endDate,
