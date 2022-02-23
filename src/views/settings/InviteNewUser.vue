@@ -27,21 +27,23 @@
                             </div>
                             <div class="col-lg-8 col-sm-12"> <InputText type="text" required v-model="userName" class="form-control" /></div>
                         </div>
-                        <div class="row mb-3 mt-5">
+                        <!-- <div class="row mb-3 mt-5">
 
                             <div class="col-lg-4 col-sm-12 text-lg-right text-sm-left"> <span class="">Email</span>
                             </div>
                             <div class="col-lg-8 col-sm-12 "> <InputText type="text" :disabled="disabled" required v-model="mail" class="form-control"/></div>
-                        </div>
+                        </div> -->
                         <div class="row mb-3 mt-5">
                           <div class="col-lg-4 col-sm-12 text-lg-right text-sm-left"> <span class="">Phone Number</span>
                             </div>
-                            <div class="col-lg-8 col-sm-12 "> <InputText type="Text"  class="form-control" required v-model="phoneNumber"  /></div>
+                            <div class="col-lg-8 col-sm-12 "> <InputText type="number"    class="form-control" required v-model="phoneNumber"  /></div>
+                            <!-- <div class="col-lg-8 col-sm-12 "> <input type="number"    class="form-control" required v-model="phoneNumber"  /></div> -->
                         </div>
                          <div class="row mb-3 mt-5" v-if="!disabled">
                           <div class="col-lg-4 col-sm-12 text-lg-right text-sm-left"> <span class="">Password</span>
                             </div>
-                            <div class="col-lg-8 col-sm-12 "> <Password class="form-control" :disabled="disabled" required v-model="password1"  /></div>
+                            <!-- <div class="col-lg-8 col-sm-12 "> <Password class="form-control" :disabled="disabled" required v-model="password1"  /></div> -->
+                            <div class="col-lg-8 col-sm-12 "> <input type="password"  autocomplete="new-password"  :disabled="disabled"  class="form-control" required v-model="password1"  /></div>
                         </div>
                         <div class="row mt-5" v-if="!disabled">
                          <div class="col-lg-4 col-sm-12 text-lg-right text-sm-left"> <span class="">Confirm Password</span>
