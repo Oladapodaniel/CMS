@@ -49,9 +49,9 @@
                             <div class="col-lg-8 col-sm-12 "> <Password class="form-control" :disabled="disabled" v-model="password2" required /></div>
                         </div>
                         <div class="row">
-                    <div class="col-sm-12 mt-sm-4 mt-4 mt-lg-3">
+                    <div class="col-sm-12 mt-4">
                         <div class="ml-5 mt-2 mt-lg-0">
-                             <span class="col-lg-1 mb-lg-0 mb-3 font-weight-bold">Role</span> 
+                             <span class="col-lg-1 mb-lg-0 mb-3 font-weight-bold">Roles</span> 
                             <div class="col-12 mt-2" v-for="(item, index) in roles" :key="index">
                             <Checkbox
                                 v-model="selectedRole"
@@ -61,7 +61,8 @@
                             </div>
                         </div>
                     </div>
-                    <div class="col-lg-5 ">
+                    <div class=" col-12 text-center p-5"  v-if="loading">
+                    <i class="pi pi-spin pi-spinner text-center text-primary" style="fontSize: 3rem"></i>
                     </div>
                 </div>
 
@@ -152,7 +153,8 @@ import userRoles from "../../services/user/userRoles"
             name2: '',
             info: null,
             defaultEmail: {},
-            currentUser: store.getters.currentUser
+            currentUser: store.getters.currentUser,
+            loading: false
 		}
 	},
     methods:{
@@ -255,13 +257,6 @@ import userRoles from "../../services/user/userRoles"
       if (this.$route.query.email) {
           try{
             const {data} = await axios.get(`/api/Settings/GetChurchUserByEmail?email=${this.$route.query.email}`);
-                // this.defaultEmail = data;
-                // this.mail= data.Object.email
-                // this.message = data.returnObject.message;
-                // this.subject = data.returnObject.subject;
-                // this.selectCategory = this.Membership.find(i =>i.value === data.returnObject.messageType)
-                // this.selectType = this.Sms.find(i => i.value === data.returnObject.category )
-                // console.log(this.defaultEmail);
                 this.userName = data.name;
                 this.mail = data.email;
                 this.password1 = data.password;
@@ -276,15 +271,15 @@ import userRoles from "../../services/user/userRoles"
       }
     },
      async userRole() {
+         this.loading = true
           try {
             let roles = await userRoles()
-            console.log(roles)
+            this.loading = false
             this.roles = roles.data
           } catch (err){
             console.log(err)
+            this.loading = false
           }
-          // console.log(userRoles)
-
         },
     },
     created(){
