@@ -337,7 +337,7 @@
               </div>
             </div>
             <div class="col-md-4 mt-2 mt-md-0 d-md-flex justify-content-end">
-              <button class="btn default-btn btnfb" @click="facebookLogin">Connect</button>
+              <button class="btn default-btn btnfb" @click="facebookLogin('facebook')">Connect</button>
               <div id="status"></div>
             </div>
           </div>
@@ -572,15 +572,19 @@ export default {
 
     const twws = () => {
         hello.init({
-          twitter : 'vUtt1RW0dlLSgsSWyS8YN5MkP'
+          twitter : 'vUtt1RW0dlLSgsSWyS8YN5MkP',
+          facebook: '479314263454002'
         },{
-          // scope : 'email',
-          redirect_uri: 'https://my.churchplus.co/tenant/social/setting'
+          scope : 'email',
+          redirect_uri: 'https://my.churchplus.co/tenant/social/setting',
+          // oauth_proxy : 'https://auth-server.herokuapp.com',
+          oauth_version: '1.0a' // probably 1.0a with hello.js
         });
+        console.log('initialized')
       }
       twws()
 
-      // http://localhost:8080/tenant/social/setting?proxy_url=http%3A%2F%2Fauth-server.herokuapp.com%2F&state=%7B%22client_id%22%3A%22vUtt1RW0dlLSgsSWyS8YN5MkP%22%2C%22network%22%3A%22twitter%22%2C%22display%22%3A%22popup%22%2C%22callback%22%3A%22_hellojs_4zt9n0x9%22%2C%22state%22%3A%22%22%2C%22redirect_uri%22%3A%22http%3A%2F%2Flocalhost%3A8080%2Ftenant%2Fsocial%2Fsetting%22%2C%22scope%22%3A%22email%22%2C%22oauth%22%3A%7B%22version%22%3A%221.0a%22%2C%22auth%22%3A%22https%3A%2F%2Fapi.twitter.com%2Foauth%2Fauthenticate%22%2C%22request%22%3A%22https%3A%2F%2Fapi.twitter.com%2Foauth%2Frequest_token%22%2C%22token%22%3A%22https%3A%2F%2Fapi.twitter.com%2Foauth%2Faccess_token%22%7D%2C%22oauth_proxy%22%3A%22https%3A%2F%2Fauth-server.herokuapp.com%2Fproxy%22%7D&client_id=vUtt1RW0dlLSgsSWyS8YN5MkP&oauth_token=gjN6RAAAAAABYk--AAABfwc_pnQ&oauth_verifier=UZe04LnD6669jHbQ4FUF0VKiGk4oOovM
+      // https://my.churchplus.co/tenant/social/setting?proxy_url=http%3A%2F%2Fauth-server.herokuapp.com%2F&state=%7B%22client_id%22%3A%22vUtt1RW0dlLSgsSWyS8YN5MkP%22%2C%22network%22%3A%22twitter%22%2C%22display%22%3A%22popup%22%2C%22callback%22%3A%22_hellojs_4x7qkh7y%22%2C%22state%22%3A%22%22%2C%22redirect_uri%22%3A%22https%3A%2F%2Fmy.churchplus.co%2Ftenant%2Fsocial%2Fsetting%22%2C%22scope%22%3A%22email%22%2C%22oauth%22%3A%7B%22version%22%3A%221.0a%22%2C%22auth%22%3A%22https%3A%2F%2Fapi.twitter.com%2Foauth%2Fauthenticate%22%2C%22request%22%3A%22https%3A%2F%2Fapi.twitter.com%2Foauth%2Frequest_token%22%2C%22token%22%3A%22https%3A%2F%2Fapi.twitter.com%2Foauth%2Faccess_token%22%7D%2C%22oauth_proxy%22%3A%22https%3A%2F%2Fauth-server.herokuapp.com%2Fproxy%22%7D&client_id=vUtt1RW0dlLSgsSWyS8YN5MkP&oauth_token=xT2T4QAAAAABYk--AAABfwhMHRE&oauth_verifier=bZqXsaKQavp36DNHQ1wF2ObXkqBQew4Y
 
       // 1687726021-jodtB4kv3uauMqCq7gmdk3ARCjIGQtb0MGUur0p:66l3eGUi7MieqrzbS2AVOzH9vuINgRGedQe6q6LIEeh49@vUtt1RW0dlLSgsSWyS8YN5MkP
 
@@ -589,7 +593,6 @@ export default {
       // // const client = new TwitterApi({ appKey: CONSUMER_KEY, appSecret: CONSUMER_SECRET });
       // const authLink = await client.generateAuthLink('https://my.churchplus.co', { linkMode: 'authorize' });
       // console.log(authLink, 'many are call')
-      let url = encodeURIComponent('my.churchplus.co/tenant/social/category')
 
       // try {
       //   let data = await axios.post(`https://api.twitter.com/oauth/request_token?oauth_callback=${url}&oauth_consumer_key=vUtt1RW0dlLSgsSWyS8YN5MkP`)
@@ -629,15 +632,35 @@ export default {
       pagesBtn.value.click()
     })
   }
-    const facebookLogin = () => {
-      FB.login(
-        function(response) {
-          showPageList(response)
-          console.log(response)
+    const facebookLogin = (network) => {
+      var facebook = hello(network);
+      facebook.login().then(function() {
+        // get user profile data
+        return facebook.api('me');
+      }).then(function(p) {
+        console.log(p, network)
+        // document.getElementById('profile').innerHTML = "<img src='"+ p.thumbnail + "' width=24/>Connected to "+ network +" as " + p.name;
+        var fb1 = hello(network).getAuthResponse()
+      console.log(fb1, 'hereee')
+      });
+      var fb2 = hello(network).getAuthResponse()
+      console.log(fb2, 'hereee')
+      // const facebook = hello.use("facebook"); //This is the new line
+      // facebook.api("me").then(function(r){
+      //   console.log("Successful login: ", r);
+      //   // this.setState({askForLogin: false});
+      // }, function(e) {
+      //   console.log("Not successful yet");
+      //   // this.setState({askForLogin: true});
+      // });
+      // FB.login(
+      //   function(response) {
+      //     showPageList(response)
+      //     console.log(response)
           
-        },
-        { scope: ["email", "public_profile"] }
-      );
+      //   },
+      //   { scope: ["email", "public_profile"] }
+      // );
     };
 
     // const saveSelectedPage = () => {
