@@ -216,12 +216,11 @@ export default {
         }, 5000);
         if (data.roles.length === 1 && data.roles[0] === 'GroupLeader') {
           router.push( {
-            name: "Groups"
+            name: "GroupLeaderDashboard"
           });
           return false;
         }
 
-        // i.toLowerCase() == "admin" || i.toLowerCase() == "basicuser" || i.toLowerCase() == "canaccessfirsttimers" || i.toLowerCase() == "canaccessfollowups" || i.toLowerCase() == "centerleader" || i.toLowerCase() == "financialaccount" || i.toLowerCase() == "mobileadmin" || i.toLowerCase() == "reports"
         if(data.roles.length > 0){
         let roleIndex = data.roles.findIndex(i => {
           return i.toLowerCase() == "family" || i.toLowerCase() == "mobileuser"
@@ -235,10 +234,14 @@ export default {
           setTimeout(() => {
             setupService.setup();
               }, 5000);
-              if (data.churchSize > 0) {
-                router.push("/tenant");
+              if (data.churchSize >= data.subscribedChurchSize) {
+                router.push("/errorpage/member-capacity-reached")
               } else {
-                router.push("/next");
+                if (data.churchSize > 0) {
+                    router.push("/tenant");
+                  } else {
+                    router.push("/next");
+                  }
               }
         } else if (adminIndex === -1 && roleIndex !== -1) {
             localStorage.clear()
@@ -249,26 +252,28 @@ export default {
               life: 10000}) 
             router.push('/')
           } else {
-            console.log(data.roles)
-            console.log( data.roles.indexOf("FinancialAccount"))
-            if (data.roles.indexOf("FollowUp") !== -1) {
-              router.push("/tenant/followup");
-            } else if (data.roles.indexOf("FinancialAccount") !== -1) {
-              router.push("/tenant/offering");
-            }else if (data.roles.indexOf("MobileAdmin") !== -1) {
-              router.push("/tenant/social");
-            }else if (data.roles.indexOf("Reports") !== -1) {
-              router.push("/tenant/reports");
-            }else {
-              setTimeout(() => {
-                setupService.setup();
-              }, 5000);
-              if (data.churchSize > 0) {
-                router.push("/tenant");
+              if (data.churchSize >= data.subscribedChurchSize) {
+                router.push("/errorpage/member-capacity-reached")
               } else {
-                router.push("/next");
+                if (data.roles.indexOf("FollowUp") !== -1) {
+                  router.push("/tenant/followup");
+                } else if (data.roles.indexOf("FinancialAccount") !== -1) {
+                  router.push("/tenant/offering");
+                }else if (data.roles.indexOf("MobileAdmin") !== -1) {
+                  router.push("/tenant/social");
+                }else if (data.roles.indexOf("Reports") !== -1) {
+                  router.push("/tenant/reports");
+                }else {
+                  setTimeout(() => {
+                    setupService.setup();
+                  }, 5000);
+                  if (data.churchSize > 0) {
+                    router.push("/tenant");
+                  } else {
+                    router.push("/next");
+                  }
+                }
               }
-            }
           }
         }
         loading.value = false

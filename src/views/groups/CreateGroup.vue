@@ -117,7 +117,7 @@
                             v-model="groupData.description"
                             name="description"
                             id="description"
-                            rows="4"
+                            rows="1"
                             class="form-control w-100"
                           ></textarea>
                         </div>
@@ -165,8 +165,8 @@
            <div class="row">
               <div class="col-md-12 col-12 d-flex justify-content-end mb-4">
                 <div
-                  class="border outline-none font-weight-bold mr-3 c-pointer"
-                  data-toggle="modal"
+                  class="border outline-none font-weight-bold mr-3 c-pointer text-center"
+                  :data-toggle="route.params.groupId ? 'modal' : ''"
                   data-target="#importgroup"
                   ref="modalBtn"
                   style="border-radius: 3rem; padding: 0.5rem 1.25rem;"
@@ -274,6 +274,8 @@
                                             class="border-0 m-dd-item text outline-none"
                                             ref="memberSelectInput"
                                             @input="searchForMembers"
+                                            autocomplete="off"
+
                                             :class="{
                                               'w-100':
                                                 selectedMembers.length === 0,
@@ -653,14 +655,7 @@
 
               <div class="row table-header-row py-2">
                 <div class="col-md-1" v-if="groupMembers.length > 0">
-                  <input
-                    type="checkbox"
-                    @change="markAllItem"
-                    :checked="marked.length === groupMembers.length"
-                    id="all"
-                    name="all"
-                    class="py-2"
-                  />
+                  
                 </div>
                 <div class="col-md-3">
                   <span class="py-2 font-weight-bold">NAME</span>
@@ -721,6 +716,14 @@
               </div>
 
               <div class="row" style="border-bottom: 1px solid #00204412;" v-if="groupMembers.length > 0">
+                <input
+                    type="checkbox"
+                    @change="markAllItem"
+                    :checked="marked.length === groupMembers.length"
+                    id="all"
+                    name="all"
+                    class="py-2 ml-3"
+                  />
                 <div class="col text-center p-3 text-success font-weight-700">
                   Approved
                 </div>
@@ -979,7 +982,7 @@
             </div>
       </div>
     </Dialog>
-    <Dialog header="Archive members" v-model:visible="displayPositionArchive" :style="{width: '50vw'}" :position="positionArchive" :modal="true">
+    <Dialog header="Archive members" v-model:visible="displayPositionArchive" :breakpoints="{'960px': '75vw'}" :style="{width: window.innerWidth > 767 ? '50vw' : '100vw'}" :position="positionArchive" :modal="true">
         <p class="p-m-0">You are about to archive your member(s). Do you want to continue ?</p>
         <template #footer>
             <div class="d-flex justify-content-end">
@@ -1257,9 +1260,6 @@ export default {
       } else {
         marked.value.splice(0, marked.value.length);
       }
-      console.log(marked.value, "I am awesome");
-      console.log(marked.value.length, "I am grp");
-      console.log(groupMembers.value.length, "I am grp");
     };
 
     const confirmDelete = (id, index) => {
@@ -1590,9 +1590,9 @@ export default {
       if (!route.params.groupId) {
          toast.add({
             severity: "warn",
-            summary: "Add a group",
-            detail: "Please ensure a group is added before you import",
-            life: 4000,
+            summary: "Create a group",
+            detail: "Please ensure you create the group first before you import",
+            life: 5000,
           });
       }
     }
@@ -1702,6 +1702,10 @@ export default {
         }
     }
 
+    const innerWidth = computed(() => {
+            return window.innerWidth;
+        })
+
     return {
       groupData,
       selectedAttendanceId,
@@ -1774,9 +1778,10 @@ export default {
     positionArchive,
     displayPositionArchive,
     closeArchiveModal,
-    importMember
-
-
+    importMember,
+    route,
+    window,
+    innerWidth
     };
   },
 };

@@ -26,19 +26,19 @@
    <div class="col-md-12">
      <div class="border-0 bg-danger">
       <div class="row table-header-row py-2  small-text">
-        <div class="col-md-3">
+        <!-- <div class="col-md-3">
           <span class="py-2 font-weight-bold">Name</span>
+        </div> -->
+          <div class="col-md-4">
+          <span class="py-3 font-weight-bold">Username</span>
         </div>
-          <div class="col-md-2">
-          <span class="py-3 font-weight-bold">Email</span>
-        </div>
-        <div class="col-md-2">
+        <!-- <div class="col-md-3">
           <span class="py-2 font-weight-bold">Phone</span>
-        </div>
-        <div class="col-md-2">
+        </div> -->
+        <div class="col-md-4">
           <span class="py-2 font-weight-bold">Status</span>
         </div>
-        <div class="col-md-2">
+        <div class="col-md-3">
           <span class="py-2 font-weight-bold">Roles</span>
         </div>
         <div class="col-md-1">
@@ -49,36 +49,36 @@
    </div>
    <div class="col-md-12">
       <div class="row small-text tr-border-bottom py-1 header2" v-for="(churchMem, index) in churchUsers.users" :key="index">
-            <div
+            <!-- <div
               class="col-md-3 d-flex justify-content-between"
             >
               <span class="py-2 hidden-header">NAME</span>
                <span class="py-2" v-if="churchMem.name && churchMem.name.length<20"> <router-link class="route" :to="{path:'/tenant/settings/invitenewuser', query:{ email:churchMem.email } }" >{{ churchMem.name}}</router-link></span>
               <span v-else v-tooltip.top="`${churchMem.name}`" class="route"> <router-link  class="route" :to="{path:'/tenant/settings/invitenewuser', query:{ email:churchMem.email } }" >{{ churchMem.name && churchMem.name.substring(0,20)+ "..."}}</router-link></span>
-            </div>
+            </div> -->
              <div
-              class="col-md-2 d-flex justify-content-between align-items-center"
+              class="col-md-4 d-flex justify-content-between align-items-center"
             >
-              <span class="py-2 hidden-header">EMAIL</span>
+              <span class="py-2 hidden-header">USERNAME</span>
               <span class="py-2 text-xs-left"  v-if=" churchMem.email && churchMem.email.length<10"> <router-link class="route" :to="{path:'/tenant/settings/invitenewuser', query:{ email:churchMem.email } }">{{ churchMem.email}}</router-link></span>
               <span v-else v-tooltip.top="`${churchMem.email}`"> <router-link class="route" :to="{path:'/tenant/settings/invitenewuser', query:{ email:churchMem.email } }" >{{ churchMem.email && churchMem.email.substring(0,10)+ "..."}} </router-link></span>
             </div>
-             <div
-              class="col-md-2 d-flex justify-content-between align-items-center"
+             <!-- <div
+              class="col-md-4 d-flex justify-content-between align-items-center"
             >
               <span class="py-2 hidden-header">PHONE</span>
               <span class="py-2" v-if=" churchMem.phone && churchMem.phone.length < 11"> <router-link class="route" :to="{path:'/tenant/settings/invitenewuser', query:{ email:churchMem.email } }">{{ churchMem.phone}}</router-link></span>
               <span v-else v-tooltip.top="`${churchMem.phone}`"> <router-link class="route" :to="{path:'/tenant/settings/invitenewuser', query:{ email:churchMem.email } }" >{{ churchMem.phone && churchMem.phone.substring(0,11)+ "..."}}</router-link></span>
-            </div>
+            </div> -->
            
             <div
-              class="col-md-2 d-flex justify-content-between align-items-center"
+              class="col-md-4 d-flex justify-content-between align-items-center"
             >
               <span class="py-2 hidden-header">STATUS</span>
               <span class="py-2"><router-link class="route" :to="{path:'/tenant/settings/invitenewuser', query:{ email:churchMem.email } }" >{{churchMem.status}}</router-link></span>
             </div>
             <div
-              class="col-md-2 d-flex justify-content-between align-items-center"
+              class="col-md-3 d-flex justify-content-between align-items-center"
             >
               <span class="py-2 hidden-header">ROLES</span>
               <span class="py-2" v-tooltip.top="`${churchMem.roles.join(', ')}`"

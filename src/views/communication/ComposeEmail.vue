@@ -8,7 +8,7 @@
           <Toast />
 
           <Dialog
-            header="Select Date nad Time"
+            header="Select Date and Time"
             v-model:visible="display"
             :style="{ width: '50vw', maxWidth: '600px' }"
             :modal="true"

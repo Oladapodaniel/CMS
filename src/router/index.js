@@ -1017,7 +1017,7 @@ const routes = [
                     }]
             },
             {
-                path: 'peoplegroups',
+                path: 'peoplegroups:actionType?',
                 name: 'Groups',
                 meta: {
                     title: 'Churchplus - Groups',
@@ -1042,6 +1042,15 @@ const routes = [
                 },
                 component: () =>
                     import ( /* webpackChunkName: "createpeoplegroup" */ '@/views/groups/CreateGroup')
+            },
+            {
+                path: 'groupleader',
+                name: 'GroupLeaderDashboard',
+                meta: {
+                    title: 'Churchplus - Gorup Leader',
+                },
+                component: () =>
+                    import ( /* webpackChunkName: "createpeoplegroup" */ '@/views/groups/GroupLeaderDashboard')
             },
             {
                 path: 'units',
@@ -1496,8 +1505,47 @@ const routes = [
                 component: () =>
                     import ( /* webpackChunkName: "giving" */ '@/views/mobile/mobileapp/DonationSetup')
             },
+            {
+                path: 'pledgedefinition',
+                meta: {
+                    title: 'Churchplus - Pledge',
+                },
+                component: () =>
+                    import ( /* webpackChunkName: "peopleempty" */ '../views/pledge/PledgeDefinition.vue')
+            },
 
         ],
+    },
+    {
+        path: '/pledge',
+        component: () =>
+            import ( /* webpackChunkName: "pledge" */ '../views/pledge/Index.vue'),
+            children: [
+                {
+                    path: 'makepledge',
+                    meta: {
+                        title: 'Churchplus - Pledge',
+                    },
+                    component: () =>
+                        import ( /* webpackChunkName: "peopleempty" */ '../views/pledge/MakePledge.vue')
+                },
+                {
+                    path: 'redeempledge',
+                    meta: {
+                        title: 'Churchplus - Pledge',
+                    },
+                    component: () =>
+                        import ( /* webpackChunkName: "peopleempty" */ '../views/pledge/RedeemPledge.vue')
+                },
+                {
+                    path: 'pledgepayment',
+                    meta: {
+                        title: 'Churchplus - Church Pledge',
+                    },
+                    component: () =>
+                        import ( /* webpackChunkName: "peopleempty" */ '../views/pledge/PledgePayment.vue')
+                },
+            ]
     },
     {
         path: '/checkin/e/:code',
@@ -1714,6 +1762,12 @@ const routes = [
                 name: 'Unauthorized',
                 component: () =>
                     import ( /* webpackChunkName: "sentemails" */ '@/components/errorpages/Unauthorized')
+            },
+            {
+                path: 'member-capacity-reached',
+                name: 'MemberMaxCap',
+                component: () =>
+                    import ( /* webpackChunkName: "sentemails" */ '@/components/errorpages/MemberMaxCap')
             }
         ]
     },
@@ -1775,6 +1829,7 @@ router.beforeEach((to, from, next) => {
             to.name === "TransactionPage" ||
             to.name === "PublicResetPassword" ||
             to.name === "PublicPerson" ||
+            to.name === "PublicFirstTimer" ||
             to.name === "EventRegistration") && !tokenIsValid) return next(true)
 
 

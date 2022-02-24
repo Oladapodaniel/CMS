@@ -1,16 +1,20 @@
 <template>
     <div class="dropdown">
-        <input
+        <div class="input-group mb-3" id="dropdownMenuButton" data-toggle="dropdown">
+            <input
             type="text"
-            class="form-control dropdown-toggle"
+            class="form-control"
             :class="{ 'phone-input' : stylesidebarinput }"
-            id="dropdownMenuButton"
             v-model="userSearchString"
             @input="searchForUsers"
-            ref="searchRef"
-            data-toggle="dropdown"
+            ref="searchRef"   
             placeholder="Search from members"
+            autocomplete="off"
         />
+            <div class="input-group-append c-pointer">
+                <span class="input-group-text"><i class="pi pi-chevron-down"></i></span>
+            </div>
+        </div>
         <div
         class="dropdown-menu w-100 dropdown-height"
         aria-labelledby="dropdownMenuButton"
@@ -21,7 +25,7 @@
             v-for="(member, index) in members"
             :key="index"
             @click="selectMember(member)"
-            >{{ member.name }}</a
+            >{{ member.name }} - {{ member.phone }}</a
         >
         <p class="pl-1 bg-secondary m-0" v-if="userSearchString.length < 3"> Enter 3 or more characters </p>
         <!-- <p class="pl-1 m-0 text-danger" v-if="members.length === 0 && userSearchString.length >= 3 && !loading">No member found, try again</p> -->

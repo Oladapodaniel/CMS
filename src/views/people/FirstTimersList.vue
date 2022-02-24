@@ -1,5 +1,14 @@
 <template>
   <div class="container-wide">
+           <div class="row mt-4">
+               <div class="col-12">
+                 <div class="font-weight-bold">Share the link to your first timers to enable them to add their details to your church .</div>
+                  <div class="p-inputgroup form-group mt-1">
+                      <input placeholder="Link" class="form-control" ref="selectedLink" type="text" v-model="firstTimerLink" style="height: 3rem;"  />
+                      <Button icon="pi pi-copy" @click="copylink" class="p-button-secondary"/>
+                  </div>
+            </div> 
+          </div>
      <div class="row mt-3 botom">
             <!-- <div class="col-12"> -->
                 <div class="col-12 col-sm-6 c-pointer "  @click="dashboard">
@@ -7,7 +16,7 @@
                     <div class="" :class="{ 'baseline' : showDashboard, 'hide-base' : !showDashboard }"></div>
                 </div>
                 <div class="col-12 col-sm-6  c-pointer" @click="firstTimerTable">
-                    <div class="font-weight-bold h5 col-12  ">FirstTimer</div>
+                    <div class="font-weight-bold h5 col-12  ">First Timers</div>
                     <div class="" :class="{ 'baselinetwo' : showFirstTimer, 'hide-basetwo' : !showFirstTimer }"></div>
                 </div>
                 <!-- <div class="hr"><hr /></div> -->
@@ -19,401 +28,7 @@
           <FirstTimersChartArea @firsttimers="setFirsttimer"/>
       </div>
     
-      <!-- <div class="table">
-        <div class="top-con">
-          <div class="table-top px-2">
-            <div class="select-all" v-if="churchMembers.length > 0">
-              <input
-                type="checkbox"
-                name="all"
-                id="all"
-                @change="markAllFirsttimer"
-                :checked="checkedFirstTimer.length === churchMembers.length"
-              />
-              <label>SELECT ALL </label>
-              <i
-                class="
-                  pi pi-trash
-                  text-danger
-                  ml-3
-                  c-pointer
-                  d-flex-inline
-                  align-items-center
-                "
-                style="font-size: 20px"
-                v-if="checkedFirstTimer.length > 0"
-                @click="modal"
-              >
-              </i>
-            </div>
-            <div class="filter">
-              <p @click="toggleFilterFormVissibility" class="mt-2">
-                <i class="pi pi-filter"></i>
-                FILTER
-              </p>
-            </div>
-            <p @click="toggleSearch" class="search-text mt-2">
-              <i class="pi pi-search"></i> SEARCH
-            </p>
-            <div class="search d-flex">
-              <label
-                class="label-search d-flex"
-                :class="{
-                  'show-search': searchIsVisible,
-                  'hide-search': !searchIsVisible,
-                }"
-              >
-                <input
-                  type="text"
-                  placeholder="Search..."
-                  v-model="searchText"
-                  @input="searchMemberInDB"
-                />
-                <span class="empty-btn" @click="clearInput"
-                  ><i class="pi pi-times"></i
-                ></span>
-                <span class="search-btn">
-                  <i class="pi pi-search"></i>
-                </span>
-              </label>
-            </div>
-          </div>
-        </div>
-        <div
-          class="filter-options"
-          :class="{ 'filter-options-shown': filterFormIsVissible }"
-        >
-          <div class="container-fluid">
-            <div class="row">
-              <div class="col-md-9">
-                <div class="row">
-                  <div
-                    class="
-                      col-12 col-sm-6
-                      offset-sm-3 offset-md-0
-                      form-group
-                      inp
-                      w-100
-                    "
-                  >
-           
-
-                    <input
-                      type="text"
-                      class="input w-100 mb-n3"
-                      placeholder="Name"
-                      v-model="filter.name"
-                    />
-                
-                  </div>
-
-                  <div class="col-12 col-sm-6 form-group d-none d-md-block">
-                    <input
-                      type="text"
-                      class="input w-100"
-                      placeholder="Phone Number"
-                      v-model="filter.phoneNumber"
-                    />
-                  </div>
-                </div>
-
-                <div class="row"></div>
-              </div>
-
-              <div class="col-md-3 d-flex flex-column align-items-center">
-                <button class="apply-btn text-white" @click="applyFilter">
-                  Apply
-                </button>
-                <span class="mt-2">
-                  <a class="clear-link mr-2" @click="clearAll">Clear all</a>
-                  <span class="mx-2"
-                    ><i class="fas fa-circle" style="font-size: 4px"></i></span
-                  ><a class="hide-link ml-2" @click="hide">Hide</a>
-                </span>
-              </div>
-            </div>
-          </div>
-        </div>
-
-  
-        <div class="table-header font-weight-700">
-          <div class="check"></div>
-          <div
-            class="
-              picture
-              text-dark
-              small-text
-              text-capitalize
-              font-weight-bold
-            "
-            style="font-size: 11px"
-          >
-            <p>NAME</p>
-          </div>
-          <div
-            class="
-              firstname
-              small-text
-              text-dark text-capitalize
-              font-weight-bold
-              pl-3
-            "
-            style="font-size: 11px"
-          >
-            <p>PHONE NUMBER</p>
-          </div>
-          <div
-            class="
-              lastname
-              small-text
-              text-dark text-capitalize
-              font-weight-bold
-            "
-            style="font-size: 11px"
-          >
-            <p>SOURCE</p>
-          </div>
-          <div
-            class="phone small-text text-dark text-capitalize font-weight-bold"
-            style="font-size: 11px"
-          >
-            <p>INTERESTED</p>
-          </div>
-          <div
-            class="action small-text text-dark text-capitalize font-weight-bold"
-            style="font-size: 11px"
-          >
-            <p>DATE</p>
-          </div>
-          <div
-            class="action small-text text-dark text-capitalize font-weight-bold"
-            style="font-size: 11px"
-          >
-            <p>STATUS</p>
-          </div>
-          <div
-            class="action small-text text-dark text-capitalize font-weight-bold"
-            style="font-size: 11px"
-          >
-            <p>ACTION</p>
-          </div>
-        </div>
-       
-        <loadingComponent :loading="loading" />
-        <div v-if="!loading">
-          <div
-          class="table-body mt-2 py-1"
-          v-for="person in searchMember"
-          :key="person.id"
-        >
-          <div class="data-row">
-            <div class="mr-2"></div>
-            <div class="check data">
-              <input
-                type="checkbox"
-                name=""
-                id=""
-                @change="check1item(person)"
-                :checked="
-                  checkedFirstTimer.findIndex((i) => i.id === person.id) >= 0
-                "
-              />
-            </div>
-
-            <div class="mr-4"></div>
-
-            <div class="firstname data">
-              <div class="data-con">
-                <div class="data-text">
-                  <p>Name</p>
-                </div>
-                <router-link
-                  :to="`/tenant/firsttimermanagement/${person.id}?memberType=0`"
-                  class="itemroute-color"
-                  >{{
-                    person.fullName
-                      ? person.fullName
-                      : `${person.firstName} ${person.lastName}`
-                  }}</router-link
-                >
-              </div>
-            </div>
-        
-            <div class="lastname data">
-              <div class="data-con">
-                <div class="data-text">
-                  <p>Phone</p>
-                </div>
-                <router-link
-                  :to="`/tenant/firsttimermanagement/${person.id}?memberType=0`"
-                  class="data-value itemroute-color"
-                  >{{ person.phoneNumber }}</router-link
-                >
-              </div>
-            </div>
      
-            <div class="phone data">
-              <div class="data-con mr-4" style="text-align: right">
-                <div class="data-text">
-                  <p>Source</p>
-                </div>
-                <router-link
-                  :to="`/tenant/firsttimermanagement/${person.id}?memberType=0`"
-                  class="itemroute-color"
-                  >{{ person.howDidYouAboutUsName }}</router-link
-                >
-              </div>
-            </div>
-
-            <div class="phone data" style="text-align: right">
-              <div class="data-con mr-4">
-                <div class="data-text">
-                  <p>Interested</p>
-                </div>
-                <router-link
-                  :to="`/tenant/firsttimermanagement/${person.id}?memberType=0`"
-                  class="itemroute-color"
-                  >{{
-                    person.interestedInJoining === "Not_Specified"
-                      ? "Not Sure"
-                      : person.interestedInJoining
-                  }}</router-link
-                >
-              </div>
-            </div>
-
-            <div class="mr-4"></div>
-            <div class="phone data">
-              <div class="data-con" style="text-align: right">
-                <div class="data-text text-right">
-                  <p>Date</p>
-                </div>
-                <router-link
-                  :to="`/tenant/firsttimermanagement/${person.id}?memberType=0`"
-                  class="itemroute-color"
-                  >{{
-                    moment
-                      .parseZone(
-                        new Date(person.date).toDateString(),
-                        "YYYY MM DD HH ZZ"
-                      )
-                      ._i.substr(4, 11)
-                  }}</router-link
-                >
-              </div>
-            </div>
-            
-            <div class="phone data">
-              <div class="data-con" style="text-align: right">
-                <div class="data-text text-right">
-                  <p>Movement</p>
-                </div>
-                <router-link
-                  :to="`/tenant/firsttimermanagement/${person.id}?memberType=0`"
-                  class="itemroute-color"
-                  >{{
-                    person.movement
-                  }}</router-link
-                >
-              </div>
-            </div>
-
-            <div>
-              <router-link
-                :to="`/tenant/firsttimermanagement/${person.id}?memberType=0`"
-                class="data-value itemroute-color"
-              ></router-link>
-            </div>
-
-            <div class="phone data">
-              <div class="data-con mr-4">
-                <div class="data-text">
-                  <p>Action</p>
-                </div>
-                <div class="dropdown text-right">
-                  <i
-                    class="fas fa-ellipsis-v cursor-pointer"
-                    id="dropdownMenuButton"
-                    data-toggle="dropdown"
-                    aria-haspopup="true"
-                    aria-expanded="false"
-                  ></i>
-                  <div
-                    class="dropdown-menu"
-                    aria-labelledby="dropdownMenuButton"
-                  >
-                    <a
-                      class="dropdown-item elipsis-items"
-                      @mouseover="toggle($event, person.id)"
-                      href="#"
-                    >
-                      Convert to member
-                    </a>
-
-                    <a
-                      class="dropdown-item elipsis-items"
-                      v-if="person.phoneNumber"
-                    >
-                      <router-link
-                        :to="`/tenant/sms/compose?phone=${person.phoneNumber}`"
-                        >Send SMS</router-link
-                      >
-                    </a>
-
-                    <a class="dropdown-item elipsis-items" v-if="person.email">
-                      <router-link
-                        :to="`/tenant/email/compose?phone=${person.email}`"
-                      >
-                        Send Email
-                      </router-link>
-                    </a>
-                    <a
-                      class="
-                        dropdown-item
-                        elipsis-items
-                        text-color
-                        cursor-pointer
-                      "
-                      href="#"
-                      @click.prevent="showConfirmModal(person.id)"
-                      >Delete</a
-                    >
-                  </div>
-                </div>
-              </div>
-            </div>
-          </div>
-
-          <hr class="row-divider" />
-        </div>
-        </div>
-
-
-        <div
-          class="col-md-12 col py-3"
-          v-if="
-            listOfFirsttimers.length === 0 &&
-            churchMembers.length !== 0 &&
-            !loading && searchText.length === 0
-          "
-        >
-          <p class="text-danger d-flex justify-content-center">
-            Record not available in database
-          </p>
-        </div>
-       
-
-        <ConfirmDialog />
-        <Toast />
-        <div class="table-footer">
-          <Pagination
-            @getcontent="getPeopleByPage"
-            :itemsCount="membersCount"
-            :totalItems="totalFirsttimersCount"
-            :currentPage="currentPage"
-          />
-        </div>
-      </div> -->
       <div v-if="showFirstTimer">
       <div class="row table">
       <div class="col-12 px-0" id="table">
@@ -789,14 +404,6 @@
                       >
                         <a
                           class="dropdown-item elipsis-items"
-                          @mouseover="toggle($event, person.id)"
-                          href="#"
-                        >
-                          Convert to member
-                        </a>
-
-                        <a
-                          class="dropdown-item elipsis-items"
                           v-if="person.phoneNumber"
                         >
                           <router-link
@@ -823,6 +430,13 @@
                           @click.prevent="showConfirmModal(person.id, index)"
                           >Delete</a
                         >
+                        <a
+                          class="dropdown-item elipsis-items"
+                          @mouseover="toggle($event, person.id)"
+                          href="#"
+                        >
+                          Convert to member
+                        </a>
                       </div>
                     </div>
                   </div>
@@ -929,6 +543,8 @@ export default {
     const searchText = ref("");
     const membershipCategory = ref([]);
     const selectedPersonId = ref("");
+    const tenantID = ref("")
+    const selectedLink = ref(null)
 
     const route = useRoute();
     const filterFormIsVissible = ref(false);
@@ -1362,6 +978,36 @@ filter.value.phoneNumber ="";
       churchMembers.value = payload
     }
 
+     const getCurrentlySignedInUser = async () => {
+      try {
+        const res = await axios.get("/api/Membership/GetCurrentSignedInUser");
+        tenantID.value = res.data.tenantId
+      } catch (err) {
+        console.log(err);
+      }
+    };
+    getCurrentlySignedInUser();
+
+    const firstTimerLink = computed(() => {
+      if (!tenantID.value) return ""
+      return `${window.location.origin}/createfirsttimer/${tenantID.value}`
+    })
+
+    const copylink = () => {
+      console.log(selectedLink.value.value);
+          selectedLink.value.setSelectionRange(0, selectedLink.value.value.length); /* For mobile devices */
+        selectedLink.value.select();
+
+          /* Copy the text inside the text field */
+          document.execCommand("copy");
+       toast.add({
+              severity: "info",
+              summary: "Link Copied",
+              detail: "copied to your clipboard",
+              life: 3000,
+        });
+    }
+
     return {
       dashboard,
       firstTimerTable,
@@ -1406,7 +1052,11 @@ filter.value.phoneNumber ="";
       searchMember,
       clearAll,
       hide,
-      setFirsttimer
+      setFirsttimer,
+      firstTimerLink,
+      tenantID,
+      selectedLink,
+      copylink
     };
   },
 };

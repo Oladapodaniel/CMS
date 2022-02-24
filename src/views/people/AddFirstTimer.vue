@@ -962,11 +962,11 @@ export default {
           .catch((err) => {
             finish()
             loading.value = false;
-            if (err.response) {
+            if (err.response && err.response.data) {
               toast.add({
               severity: "warn",
-              summary: "Record Exist",
-              detail: `${err.response.data}`,
+              summary: "Sorry",
+              detail: `${err.response.data.message}`,
               life: 8000,
             });
             } else {

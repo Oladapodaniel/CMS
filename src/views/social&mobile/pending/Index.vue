@@ -80,7 +80,7 @@
                   <div class="col-md-12 d-flex flex-wrap">
                     <a
                       class="text-decoration-none c-pointer default-btn text-dark mr-3"
-                      @click="showDeleteModal(post)"
+                      @click="showDeleteModal(post, index)"
                     >
                       <span>Delete</span>
                       <span class="ml-3"><i class="pi pi-times"></i></span>
@@ -89,7 +89,7 @@
                       class="text-decoration-none c-pointer default-btn text-dark mr-auto"
                       @click="approvePost(post.postId, index)"
                     >
-                      <span>Approved</span>
+                      <span>Approve</span>
                       <span class="ml-3"><i class="pi pi-check"></i></span>
                     </a>
                     <a
@@ -281,6 +281,7 @@ import membershipService from '../../../services/membership/membershipservice';
 import dateFormatter from '../../../services/dates/dateformatter';
 import Chart from "./components/DoughnutChart";
 import { useToast } from "primevue/usetoast";
+import { useConfirm } from "primevue/useConfirm";
 
 export default {
     components: { Chart },
@@ -288,38 +289,21 @@ export default {
         const toast = useToast();
         const store = useStore();
         const loading = ref(true);
-        const tenantId = store.getters.currentUser.tenantId;
+        const tenantId = store && store.getters && store.getters.currentUser && store.getters.currentUser.tenantId ? store.getters.currentUser.tenantId : "";
         const pendingPosts = ref([ ])
         const pageData = ref({})
-        const feed = ref([]);
+        const confirm = useConfirm();
 
-        const showDeleteModal = (post) => {
-            console.log(post, "post");
-            confirm.require({
-              message: "Are you sure you want to delete this post?",
-              header: "Confirmation",
-              icon: "pi pi-exclamation-triangle",
-              acceptClass: "confirm-delete",
-              rejectClass: "cancel-delete",
-              accept: () => {
-                deletePost(post);
-              },
-              reject: () => {
-                console.log("rejected");
-              },
-            });
-          };
-
-        const deletePost = async (post) => {
+        const deletePost = async (post, index) => {
             try {
               await social_service.deletePost(post.postId);
-              feed.value = feed.value.filter(i => i.postId !== post.postId);
+              pendingPosts.value.splice(index, 1)
               toast.add({
-                severity: "success",
-                summary: "Post Deleted",
-                detail: "The post has been deleted successfully",
-                life: 3000,
-              });
+                  severity: "success",
+                  summary: "Post Deleted",
+                  detail: "The post has been deleted successfully",
+                  life: 5000,
+                });
             } catch (error) {
               toast.add({
                 severity: "error",
@@ -329,6 +313,24 @@ export default {
               });
             }
           };
+
+        const showDeleteModal = (post, index) => {
+            console.log(post, "post");
+            confirm.require({
+              message: "Are you sure you want to delete this post?",
+              header: "Confirmation",
+              icon: "pi pi-exclamation-triangle",
+              acceptClass: "confirm-delete",
+              rejectClass: "cancel-delete",
+              accept: () => {
+                deletePost(post, index);
+              },
+              reject: () => {
+                console.log("rejected");
+              },
+            });
+          };
+
 
         const getPendingPosts = async (tenantId) => {
             try {
@@ -370,7 +372,6 @@ export default {
 
         return {
             showDeleteModal,
-            feed,
             pendingPosts,
             formatDate,
             loading,
