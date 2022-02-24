@@ -5,14 +5,8 @@
               <div class="table-top w-100 my-3 select-all  px-4">
                 <!-- <div class="select-all col-1"></div> -->
                 <div class="row w-100">
-                    <div class="col-md-6 col-sm-6 col-12 text-center ">
-                      <p @click="toggleFilterFormVissibility" class="mt-2">
-                        <i class="fas fa-filter"></i>
-                        FILTER
-                      </p>
-                    </div>
                       
-                <div class="col-md-6 col-sm-6 col-12">
+                <div class="col-12 d-flex justify-content-center">
                   <p @click="toggleSearch" class=" mt-2 ">
                       <i class="pi pi-search"></i>{{!searchIsVisible ? 'SEARCH' : ""}}
                     </p>
@@ -25,7 +19,7 @@
                       placeholder="Search..."
                       v-model="searchText"
                     />
-                    <span class="empty-btn">x</span>
+                    <span class="empty-btn" @click="removeSearchText">x</span>
                     <span class="search-btn">
                       <i class="pi pi-search"></i>
                     </span>
@@ -34,7 +28,7 @@
                 </div>
               </div>
             </div>
-            <div
+            <!-- <div
               class="filter-options"
               :class="{ 'filter-options-shown': filterFormIsVissible }"
             >
@@ -45,7 +39,7 @@
                       <div
                         class="col-12 col-sm-6 offset-sm-3 offset-md-0 form-group inp w-100"
                       >
-                        <!-- <div class="input-field"> -->
+                        
 
                         <input
                           type="text"
@@ -53,7 +47,6 @@
                           placeholder="Contribution"
                       
                         />
-                        <!-- </div> -->
                       </div>
 
                       <div class="col-12 col-sm-6 form-group d-none d-md-block">
@@ -102,7 +95,7 @@
                   </div>
                 </div>
               </div>
-            </div>
+            </div> -->
 
            
             <div class="row table-header">
@@ -122,7 +115,7 @@
                     STATUS
                 </div>
             </div>
-            <div class="table-body row" v-for="item in paymentList" :key="item.id">
+            <div class="table-body row" v-for="item in searchPaymentList" :key="item.id">
                 <div class="col-6 d-block d-sm-none">
                 <div class="col-sm-4">
                     NAME
@@ -206,7 +199,7 @@
 </template>
 
 <script>
-import { ref } from 'vue'
+import { ref, computed } from 'vue'
 import moment from "moment";
 import { useConfirm } from "primevue/useConfirm";
 import { useToast } from "primevue/usetoast";
@@ -223,6 +216,23 @@ export default {
         const banks = ref([])
         const loading = ref(false)
         const getPaymentGateway = ref([])
+
+        let searchText = ref("");
+          const searchPaymentList = computed(() => {
+            if (searchText.value !== "" && props.paymentList.length > 0) {
+              return props.paymentList.filter((i) => {
+                return i.name.toLowerCase().includes(searchText.value.toLowerCase())
+              })
+            } else {
+              return props.paymentList
+            }
+
+          });
+
+           const removeSearchText = () => {
+              searchText = "";
+             }
+
 
 
         const toggleFilterFormVissibility = () =>
@@ -324,7 +334,7 @@ export default {
       }
 
         return  {
-            moment, showConfirmModal, deleteOffering, filterFormIsVissible, toggleFilterFormVissibility, toggleSearch, searchIsVisible,banks,
+            moment,searchPaymentList, showConfirmModal,searchText, removeSearchText, deleteOffering, filterFormIsVissible, toggleFilterFormVissibility, toggleSearch, searchIsVisible,banks,
             loading, getPaymentGateway, date
         }
     }

@@ -288,6 +288,7 @@ export default {
                   country: i.country
                 }
               })
+              console.log(currencyList.value, "all currency");
               
             })
             .catch(err => console.log(err))
