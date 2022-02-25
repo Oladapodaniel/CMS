@@ -96,7 +96,7 @@
                                             <label for="" class=""> Amount </label>
                                         </div>
                                         <div class="col-md-8">
-                                            <input type="text" v-model="amount" class="form-control" />
+                                            <input type="text" v-model="SpecificAmount" class="form-control" />
                                         </div>
                                     </div>
                                 </div>
@@ -180,6 +180,7 @@
                         
                    
             </div>
+            
         </div>
     </div>
     <Toast />
@@ -216,14 +217,16 @@ export default {
         const showRange = ref(false)
         const showFreeWill = ref(false)
         const selectedRange = ref({})
-        const selectedContribution = ref({})
+        const selectedContribution = ref("")
         const selectedCurrency = ref("")
         const isNameValid = ref(true)
         const PledgeName = ref('')
         const amountFrom = ref('')
         const amountTo = ref('')
+        const SpecificAmount = ref('')
         const currencyList = ref([])
         const contributionItems = ref([])
+        const targetAmount = ref("")
         const reOccuringRange = ref([
             {name: 'Daily'},
             {name: 'Weekly'},
@@ -276,6 +279,29 @@ export default {
     getContributionCategory();
 
         const savePledge = async () => {
+            const pledgeDetails = {
+                    contributionID: selectedContribution.value.id,
+                    totalTargetAmount: targetAmount.value,
+                    // donorPaymentType: 0,
+                    donorPaymentSpecificAmount: SpecificAmount.value,
+                    donorPaymentRangeFromAmount: amountFrom.value,
+                    donorPaymentRangeToAmount: amountTo.value,
+                    // pledgeTypeFrequency: 
+                    pledgeTypeFrequencyOneTimeStartDate: startDate.value,
+                    pledgeTypeFrequencyOneTimeEndDate: endDate.value,
+                    pledgeTypeFrequencyReOccuring: selectedRange.value.name,
+                    currencyID: selectedCurrency.value.id,
+                    // isActive: true
+                    
+                }
+                console.log(pledgeDetails, 'pledgedetails')
+            try{
+                const res = await axios.post('/api/Pledge/CreatePledgeDefinition', pledgeDetails)
+                console.log(res)
+            }
+            catch (error){
+                console.log(error)
+            }
 
         }
         const getAllCurrencies = () => {
@@ -312,7 +338,7 @@ export default {
         }
 
         const checkNameValue = () => {
-            if(churchName.value.length == 0) {
+            if(PledgeName.value.length == 0) {
                 isNameValid.value = false
             }   else {
                 isNameValid.value = true
@@ -323,10 +349,12 @@ export default {
         return {
             currencyList,
             contributionItems,
+            targetAmount,
             isNameValid,
             PledgeName,
             amountFrom,
             amountTo,
+            SpecificAmount,
             checkNameValue,
             selectedCurrency,
             // ContributionType,
