@@ -966,7 +966,7 @@ export default {
               toast.add({
               severity: "warn",
               summary: "Sorry",
-              detail: `${err.response.data.message}`,
+              detail: `${err.response.data}`,
               life: 8000,
             });
             } else {

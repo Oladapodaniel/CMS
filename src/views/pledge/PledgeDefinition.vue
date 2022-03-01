@@ -278,6 +278,18 @@ export default {
     };
     getContributionCategory();
 
+    const getPledgeDefinition = async () =>{
+        try{
+            const res = await axios.get('getPledgeDefinition')
+            console.log(res,'getPledgeList');
+        }
+        catch (error){
+            console.log(error)
+        }
+    }
+
+    getPledgeDefinition()
+
         const savePledge = async () => {
             const pledgeDetails = {
                     contributionID: selectedContribution.value.id,
@@ -297,7 +309,7 @@ export default {
                 console.log(pledgeDetails, 'pledgedetails')
             try{
                 const res = await axios.post('/api/Pledge/CreatePledgeDefinition', pledgeDetails)
-                console.log(res)
+                console.log(res,'PledgeDefinition')
             }
             catch (error){
                 console.log(error)

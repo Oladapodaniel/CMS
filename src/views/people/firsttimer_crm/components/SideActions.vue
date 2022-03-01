@@ -464,7 +464,7 @@
            </div>
         </Dialog>
     <Toast />
-    <Dialog header="Confirm" v-model:visible="displayConfirm" :breakpoints="{'960px': '75vw'}" :style="{width: '50vw'}" :modal="true">
+    <Dialog header="Confirm" v-model:visible="displayConfirm" :breakpoints="{'960px': '75vw'}"  :style="{width: window.innerWidth > 767 ? '50vw' : '100vw'}"  :modal="true">
             <p>You are about to convert this first timer to a member, this action cannot be undone, do you want to continue?</p>
             <template #footer>
                 <div class="d-flex justify-content-end">
