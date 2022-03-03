@@ -546,12 +546,12 @@
               data-target="#sendsmsbtn"
             ></SplitButton> -->
           </span>
-          <router-link
-          to="/tenant/email/sent"
+          <!-- <router-link
+          to="/tenant/peoplegroups:actionType"
             class="default-btn d-flex justify-content-center short-btn align-items-center ml-3 text-decoration-none text-dark"
-          >
-            Discard
-          </router-link>
+          > -->
+            <span class="btn default-btn ml-3" @click="closeModal" >Discard</span>
+          <!-- </router-link> -->
         </div>
 
         <div class="row">
@@ -733,7 +733,7 @@ props: ['selectedGroupMembers', 'groupData'],
     // ckeditor: CKEditor.component,
     DecoupledEditor,
   },
-  setup(props) {
+  setup(props, { emit }) {
     const router = useRouter()
     const toast = useToast();
     const editorData = ref("");
@@ -1134,6 +1134,10 @@ props: ['selectedGroupMembers', 'groupData'],
 
     const allGroups = ref([]);
     const categories = ref([]);
+     const closeModal = () => {
+            emit('closesidemodal')
+            
+        }
     onMounted(() => {
       composeService
         .getCommunicationGroups()
@@ -1236,6 +1240,7 @@ props: ['selectedGroupMembers', 'groupData'],
       isPersonalized,
       email,
       onReady,
+      closeModal
     };
   },
 };

@@ -561,7 +561,7 @@
           <!-- <router-link :to=" route.fullPath === '/tenant/sms/compose' ? '/tenant/sms/sent' : '/errorpage/expiredSubscription'"
             class="default-btn d-flex justify-content-center short-btn align-items-center ml-3 text-decoration-none text-dark"
           > -->
-            <span class="btn default-btn ml-3">Discard</span>
+            <span class="btn default-btn ml-3" @click="closeModal" >Discard</span>
           <!-- </router-link> -->
         </div> 
         <div class="row">
@@ -764,7 +764,7 @@ import moment from 'moment'
 
 export default {
     props: ['phoneNumbers', 'groupData'],
-  setup(props) {
+  setup(props, { emit }){
     const toast = useToast();
     const router = useRouter();
     const editorData = ref("");
@@ -774,6 +774,12 @@ export default {
       // The configuration of the editor.
       height: "800",
     };
+
+     const closeModal = () => {
+            emit('closesidemodal')
+            
+        }
+
     const possibleSMSDestinations = composeService.possibleSMSDestinations;
     const groupsAreVissible = ref(false);
     const groupSelectionTab = ref(false);
@@ -1512,6 +1518,7 @@ export default {
       senderIdRef,
       searchSenderIDs,
       requestbtn,
+      closeModal
     };
   },
 };

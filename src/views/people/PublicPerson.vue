@@ -741,6 +741,22 @@ export default {
             "success"
           );
           } 
+          selectedGender.value = '';
+          selectedAgeGroup.value = '';
+          selectedMaritalStatus.value = '';
+          person.firstName = '';
+          person.lastName = '';
+          person.mobilePhone = '';
+          person.email = '';
+          person.address = '';
+          person.dayOfBirth = '';
+          person.monthOfBirth = '';
+          person.yearOfBirth = '';
+          person.dayOfWedding = '';
+          person.monthOfWedding = '';
+          person.yearOfWedding = '';
+          person.occupation = '';
+
         } catch (err) {
           console.log(err)
           loading.value = false;

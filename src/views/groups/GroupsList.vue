@@ -258,14 +258,14 @@
       <!-- <div :class="{ 'show-Times' : showSMS, 'hide-Times' : !showSMS }"> -->
         <SideBar :show="showSMS" :title="'Compose SMS'" @closesidemodal="() => showSMS = false">
         <div class="m-wrapper" :class="{ 'm-wrapper': showSMS, 'no-show': !showSMS }">
-          <smsComponent :groupData ="groupListDetails" />
+          <smsComponent :groupData ="groupListDetails" @closesidemodal="() => showSMS = false" />
         </div>
       </SideBar>
       <!-- </div> -->
       <!-- <div :class="{ 'show-Times' : showSMS, 'hide-Times' : !showSMS }"> -->
       <SideBar :show="showEmail" :title="'Compose Email'" @closesidemodal="() => showEmail = false">
         <div class="m-wrapper2">
-          <emailComponent :groupData ="groupListDetails" />
+          <emailComponent :groupData ="groupListDetails"  @closesidemodal="() => showEmail = false" />
         </div>
       </SideBar>
       <!-- </div> -->

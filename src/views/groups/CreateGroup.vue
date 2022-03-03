@@ -994,12 +994,12 @@
     </Dialog>
      <SideBar :show="showSMS" :title="'Compose SMS'" @closesidemodal="() => showSMS = false">
        <div class="m-wrapper" >
-          <smsComponent :phoneNumbers="contacts"/>
+          <smsComponent :phoneNumbers="contacts" @closesidemodal="() => showSMS = false" />
        </div>
     </SideBar>
      <SideBar :show="showEmail" :title="'Compose Email'" @closesidemodal="() => showEmail = false">
        <div class="m-wrapper2">
-         <emailComponent :selectedGroupMembers="selectedGroupMembers"/>
+         <emailComponent :selectedGroupMembers="selectedGroupMembers" @closesidemodal="() => showEmail = false" />
        </div>
     </SideBar>
   </div>
