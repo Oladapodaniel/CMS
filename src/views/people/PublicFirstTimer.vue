@@ -399,6 +399,12 @@ export default {
                     "First timer created successfully!",
                     "success"
                 );
+
+                firstTimersObj.value = '';
+                selectedEventAttended.value = '';
+                selectedMaritalStatus.value = '';
+                selectedGender.value = '';
+                birthMonth.value = '';
               
     
           })
@@ -422,7 +428,7 @@ export default {
             }
             console.log(err.response);
           });
-      
+          // router.push('/onboarding')
     };
 
     const onCancel = () => {

@@ -556,7 +556,7 @@
               @click="data" data-toggle="modal" data-target="#sendsmsbtn"
             ></SplitButton>
           </span>
-          <router-link :to=" route.fullPath === '/tenant/sms/compose' ? '/tenant/sms/sent' : '/errorpage/expiredSubscription'"
+          <router-link :to=" route.fullPath.includes('/tenant/sms/compose') ? '/tenant/sms/sent' : '/errorpage/expiredSubscription'"
             class="default-btn d-flex justify-content-center short-btn align-items-center ml-3 text-decoration-none text-dark"
           >
             Discard

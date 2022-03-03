@@ -286,10 +286,20 @@ export default {
 
         const { status } = err.response;
         const { onboarded } = err.response.data;
-        if (status && status == 400 && onboarded === false) {
+
+        // if (err.status.code ===  401 ){
+        //   localStorage.clear()
+        //   router.push('/')
+        //   store.dispatch('clearCurrentUser', {})
+        //   store.dispatch('groups/clearGroup')
+        //   store.dispatch('membership/clearMember')
+        //   setupService.clearStore();
+        // }
+
+        if (status && status == 400 && onboarded === false ) {
           router.push("/onboarding");
         } else {
-          if (status === 404) {
+          if (status === 404 ) {
             state.notAUser = true;
           } else {
             state.errorMessage = err.response.data.message;

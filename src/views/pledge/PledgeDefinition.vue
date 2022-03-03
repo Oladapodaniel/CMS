@@ -180,10 +180,9 @@
                         
                    
             </div>
-            
+            <Toast />
         </div>
     </div>
-    <Toast />
 </template>
 
 <script>
@@ -309,7 +308,18 @@ export default {
                 console.log(pledgeDetails, 'pledgedetails')
             try{
                 const res = await axios.post('/api/Pledge/CreatePledgeDefinition', pledgeDetails)
+                finish()
                 console.log(res,'PledgeDefinition')
+                loading.value = false
+                
+
+                toast.add({
+                severity: "success",
+                summary: "Successful",
+                detail: "Pledge definition created successfully",
+                life: 2000,
+              });
+              
             }
             catch (error){
                 console.log(error)
