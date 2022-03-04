@@ -53,7 +53,7 @@
               
                 <div class="row mt-4">
                     <div class="col-12" v-if="showActivity" transition="bounce">
-                        <Activity :activities="searchActivities" :addNotes="noteList" @individualtoggle="setIconProp" :addTask="taskList" @individualtoggletask="setIconPropTask" @individualcallicon="setIconPropLog" @edittask="setEditTaskProp" @edittask2="setEditTaskProp2" @savetask="saveTaskItem" @hovertask="setHoverTaskProp" @outhovertask="setOutHoverTaskProp"  :loader="loader" :dueDate="dueDate" :getReminder="getReminder" :activityType="activityType" :taskPriority="taskPriority" :personDetails="personDetails" @commentindex="pushToComment" @removecommetfromview="removeCommentFromView" @editcommentinview="editCommentInView" @setduedate="setDueDateTask" @removelog="removeLogFromView"/>
+                        <Activity :activities="searchActivities" :addNotes="noteList" @individualtoggle="setIconProp" :addTask="taskList" @individualtoggletask="setIconPropTask" @individualcallicon="setIconPropLog" @edittask="setEditTaskProp" @edittask2="setEditTaskProp2" @savetask="saveTaskItem" @hovertask="setHoverTaskProp" @outhovertask="setOutHoverTaskProp"  :loader="loader" :dueDate="dueDate" :getReminder="getReminder" :activityType="activityType" :taskPriority="taskPriority" :personDetails="personDetails" @commentindex="pushToComment" @removecommetfromview="removeCommentFromView" @editcommentinview="editCommentInView" @setduedate="setDueDateTask" @removelog="removeLogFromView" @setstatus="setTaskStatus"/>
                     </div>
                     <div class="col-12 px-0" v-if="showNotes" transition="bounce">
                         <Notes :addNotes="noteList" @individualtoggle="setIconProp" @opennoteeditor="openNoteEditor"/>
@@ -734,7 +734,7 @@ export default {
             try {
                 let logs = await frmservice.getAllLogs(route.params.personId)
                 console.log(logs)
-                activities.value = logs.returnObject.reverse()
+                activities.value = logs && logs.returnObject ? logs.returnObject.reverse() : []
                 groupActivities()
                 loader.value = false
             }
@@ -884,6 +884,10 @@ export default {
             searchActivities.value[parentIndex].value.splice(childIndex, 1)
         }
 
+        const setTaskStatus = ({ parentIndex, mainIndex, value }) => {
+            searchActivities.value[parentIndex].value[mainIndex].loggedTask.status = value
+        }
+
         return {
             toggleActivity,
             toggleNotes,
@@ -987,7 +991,8 @@ export default {
             setDisplayAnim,
             window,
             innerWidth,
-            removeLogFromView
+            removeLogFromView,
+            setTaskStatus
         }
     }
 }

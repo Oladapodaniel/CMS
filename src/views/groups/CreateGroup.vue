@@ -48,9 +48,6 @@
                     <Attendancecheckin :list="attendanceData" :totalItems="totalItems" />
                     <!-- <Attendancecheckin :attendanceID="selectedAttendanceId"  /> -->
                   </div>
-                  <div v-if="attendance && attendance.length === 0">
-                    No checkin attendance for this group
-                  </div>
                 </div>  
             </div>
         </div>

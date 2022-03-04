@@ -376,7 +376,6 @@ export default {
     const formatDate = (date) => {
       return dateFormatter.monthDayYear(date);
     };
-    console.log(props.errorOccurred, "error cooo");
 
     const deleteAttendance = (id, index) => {
       axios

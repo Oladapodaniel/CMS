@@ -36,7 +36,7 @@
                         <div class="row">
                             <div class="col mt-4 enlargen-font">{{ item.description }}</div>
                         </div>
-                        <div class="text-right c-pointer"><i class="pi pi-trash" @click="showConfirmModal(item, index, indx)"></i></div>
+                        <div class="text-right c-pointer"><i class="pi pi-trash text-danger" @click="showConfirmModal(item, index, indx)"></i></div>
                         <transition name="fade">
                             <div class="row mt-4" v-if="item.noteIcon">
                                 <div class="col font-weight-700 uniform-primary-color">Add Comment</div>
@@ -121,7 +121,7 @@
                                 <OverlayPanel ref="taskStatusOp" appendTo="body" :showCloseIcon="false" id="overlay_panel" :breakpoints="{'960px': '75vw'}">
                                     <div class="container-fluid p-0">
                                         <div class="row hover-log" v-for="(taskItem, taskStatusIndex) in statuses" :key="taskStatusIndex">
-                                            <div class="py-2 px-3" @click="setTaskStatus(taskItem, item.loggedTask)">{{ taskItem.name }}</div>
+                                            <div class="py-2 px-3" @click="setTaskStatus(taskItem, item.loggedTask, index, indx)">{{ taskItem.name }}</div>
                                         </div>
                                     </div>
                                 </OverlayPanel>
@@ -182,7 +182,7 @@
                                 <OverlayPanel ref="taskStatusOp" appendTo="body" :showCloseIcon="false" id="overlay_panel" :breakpoints="{'960px': '75vw'}">
                                     <div class="container-fluid p-0">
                                         <div class="row hover-log" v-for="(taskItem, taskStatusIndex) in statuses" :key="taskStatusIndex">
-                                            <div class="py-2 px-3" @click="setTaskStatus(taskItem, item.loggedTask)">{{ taskItem.name }}</div>
+                                            <div class="py-2 px-3" @click="setTaskStatus(taskItem, item.loggedTask, index, indx)">{{ taskItem.name }}</div>
                                         </div>
                                     </div>
                                 </OverlayPanel>
@@ -241,14 +241,14 @@
                         </transition>
                     </div>
                 </div>
-                <div class="text-right"><i class="pi pi-trash c-pointer" @click="showConfirmModal(item, index, indx)"></i></div>
+                <div class="text-right"><i class="pi pi-trash c-pointer text-danger" @click="showConfirmModal(item, index, indx)"></i></div>
             <transition name="fade">
                 <div class="container" v-if="item.taskIcon">
                     <div class="row mt-4" v-show="!displayComment">
                         <div class="col font-weight-700 c-pointer" @click="toggleDisplayComment">Add Comment</div>
                         <!-- <div class="col text-right font-weight-700 c-pointer">1 Association</div> -->
                     </div>
-                    <div class="row" v-if="displayComment">
+                    <div class="row" v-if="displayComment || item.loggedTask.comments.length > 0">
                         <div class="col-12 mt-4">
                             <div class="row comment-bg border py-3 mt-2" v-for="(comment, indexx) in item.loggedTask.comments" :key="indexx">
                                 <div class="col-2">
@@ -316,7 +316,7 @@
                         <div class="p-2 col-2 mt-3 save-btn btn-btn pointer-cursor" @click="saveLogDesc" v-if="item.editLog">Save</div>
                         <div class="cancel-btn btn-btn col-2 ml-3 p-2 mt-3" v-if="item.editLog" @click="cancelTaskEdit">Cancel</div> -->
                     </div>
-                    <div class="text-right c-pointer"><i class="pi pi-trash" @click="showConfirmModal(item, index, indx)"></i></div>
+                    <div class="text-right c-pointer"><i class="pi pi-trash text-danger" @click="showConfirmModal(item, index, indx)"></i></div>
                     <transition name="fade">
                         <div class="row" v-if="item.logIcon">
                             <div class="col-12">
@@ -383,7 +383,7 @@ export default {
         SearchMember
     },
     props: ['personDetails', 'addNotes', 'addTask', 'dueDate', 'activities', 'loader', 'getReminder', 'activityType', 'taskPriority'],
-    emits: ['individualtoggle', 'individualtoggletask', 'individualcallicon', 'edittask', 'edittask2', 'savetask', 'hovertask', 'outhovertask', "commentindex", "removecommetfromview", "editcommentinview", "setduedate", "removelog"],
+    emits: ['individualtoggle', 'individualtoggletask', 'individualcallicon', 'edittask', 'edittask2', 'savetask', 'hovertask', 'outhovertask', "commentindex", "removecommetfromview", "editcommentinview", "setduedate", "removelog", "setstatus"],
     setup(props, { emit }) {
         const route = useRoute()
         const toast = useToast()
@@ -663,9 +663,16 @@ export default {
             dueDateOp.value.hide();
         }
 
-        const setTaskStatus = async(item, task) => {
+        const setTaskStatus = async(item, task, index, indx) => {
             selectedTask.value = item
-            taskStatusOp.value.hide()
+            taskStatusOp.value.hide();
+
+            let payload = {
+                parentIndex: index,
+                mainIndex: indx,
+                value: item.value
+            }
+            emit('setstatus', payload)
        
             const body = {
                 id: task.id,
