@@ -7,11 +7,11 @@
                      <div class="row my-2 mt-3">
                         <div class="col-md-10 offset-md-2">
                             <div class="row">
-                                <div class="col-md-4 text-md-right align-self-center">
+                                <div class="col-12 col-sm-12 col-lg-4 text-sm-left text-lg-right align-self-center">
                                     <label for="" class="">Name <sup class="text-danger">*</sup> </label>
                                 </div>
                         
-                                <div class="col-md-8">
+                                <div class="col-12 col-sm-12  col-lg-8">
                                     <input type="text" v-model="PledgeName" class="form-control" :class="{ 'is-invalid' : !isNameValid }" @blur="checkNameValue"/>
                                     <div class="invalid-feedback">
                                         Please enter your name.
@@ -23,23 +23,23 @@
                      <div class="row my-1 mt-3">
                         <div class="col-md-10  offset-md-2">
                             <div class="row">
-                                <div class="col-md-4 text-md-right align-self-center">
+                                <div class="col-12 col-sm-12 col-lg-4 text-sm-left text-lg-right align-self-center">
                                     <label for="" class="">Contribution <sup class="text-danger">*</sup> </label>
                                 </div>
                         
-                                <div class="col-md-8">
+                                <div class="col-12 col-sm-12  col-lg-8">
                                     <Dropdown v-model="selectedContribution" class="w-100 font-weight-normal" :options="contributionItems"  optionLabel="name" placeholder="Select Contribution" />
                                 </div>
                             </div>
                         </div>
                         <div class="col-md-10  offset-md-2 mt-3 ">
                             <div class="row">
-                                <div class="col-md-4 text-md-right align-self-center">
+                                <div class="col-12 col-sm-12 col-lg-4 text-sm-left text-lg-right align-self-center">
                                     <label for="" class="">Total target amount <sup class="text-danger">*</sup> </label>
                                 </div>
                         
-                                <div class="col-md-8 d-flex flex-wrap">
-                                    <div class="border col-2 bg-secondary  align-self-center py-1 ">NGN</div>
+                                <div class="col-12 col-sm-12  col-lg-8 d-flex flex-wrap align-self-center">
+                                    <span class="border bg-secondary pt-1 col-2 ">NGN</span>
                                     <!-- <span class="border">NGN</span> -->
                                     <div class="col-10  m-0 p-0"><input type="text" v-model="targetAmount" class="form-control" placeholder=" Enter Amount" /></div>
                                     <!-- <CascadeSelect v-model="value" :options="branches" optionLabel="clabel" optionGroupLabel="label" :optionGroupChildren="['children']" class="w-100"  /> -->
@@ -48,11 +48,11 @@
                         </div>
                         <div class="col-md-10  offset-md-2 mt-3 ">
                             <div class="row">
-                                <div class="col-md-4 text-md-right align-self-center">
+                                <div class="col-12 col-sm-12 col-lg-4 text-sm-left text-lg-right align-self-center">
                                     <label for="" class="">Currency  <sup class="text-danger">*</sup> </label>
                                 </div>
                         
-                                <div class="col-md-8">
+                                <div class="col-12 col-sm-12  col-lg-8">
                                      <Dropdown v-model="selectedCurrency" class="w-100  font-weight-normal" :options="currencyList" optionLabel="name" :filter="true" placeholder="Select Currency" >
                                         <template #value="slotProps">
                                             <div class="country-item country-item-value" v-if="slotProps.value">
@@ -76,10 +76,10 @@
                      <div class="row my-1 mt-3">
                         <div class="col-md-10  offset-md-2">
                             <div class="row">
-                                <div class="col-md-4 text-md-right align-self-center">
+                                <div class="col-12 col-sm-12 col-lg-4 text-sm-left text-lg-right align-self-center">
                                     <label for="" class="">Pledge type </label>
                                 </div>
-                                <div class="col-md-8 d-flex justify-content-between flex-wrap">
+                                <div class="col-12 col-sm-12  col-lg-8 d-flex justify-content-between flex-wrap">
                                     <div class="col-md-4 mt-2 mt-md-0  border py-2 c-pointer free-will " :class="{ 'show-free-will' : pledgeCategory == 'freewill' }" @click="freeWill">
                                         Free Will
                                     </div>
@@ -92,23 +92,23 @@
                                 </div>
                                 <div class="col-md-12  mt-3 " v-if="pledgeCategory == 'specific' " >
                                     <div class="row">
-                                        <div class="col-md-4 text-md-right align-self-center">
+                                        <div class="col-12 col-sm-12 col-lg-4 text-sm-left text-lg-right align-self-center">
                                             <label for="" class=""> Amount </label>
                                         </div>
-                                        <div class="col-md-8">
+                                        <div class="col-12 col-sm-12  col-lg-8">
                                             <input type="text" v-model="SpecificAmount" class="form-control" />
                                         </div>
                                     </div>
                                 </div>
                                 <div class="col-md-12  mt-3" v-if="pledgeCategory == 'range' "  >
                                     <div class="row">
-                                        <div class="col-md-4 text-md-right align-self-center">
+                                        <div class="col-12 col-sm-12 col-lg-4 text-sm-left text-lg-right align-self-center">
                                             <label for="" class=""> Amount </label>
                                         </div>
-                                        <div class="col-md-4">
+                                        <div class="col-12 col-sm-12  col-lg-4">
                                             <input type="text" v-model="amountFrom" class="form-control" placeholder="From" />
                                         </div>
-                                        <div class="col-md-4">
+                                        <div class="col-12 col-sm-12  col-lg-4">
                                             <input type="text" v-model="amountTo" class="form-control" placeholder="To" />
                                         </div>
                                     </div>
@@ -119,40 +119,40 @@
                     <div class="row my-1 mt-3">
                         <div class="col-md-10  offset-md-2">
                             <div class="row">
-                                <div class="col-md-4 text-md-right align-self-center">
+                                <div class="col-12 col-sm-12 col-lg-4 text-sm-left text-lg-right align-self-center">
                                     <label for="" class=""> Frequency <sup class="text-danger">*</sup> </label>
                                 </div>
                         
-                                <div class="col-md-8 d-flex flex-wrap">
-                                    <div class="col-md-6 mt-2 mt-md-0  border py-2 c-pointer  " :class="{ 'show-one-time' : pledgeFrequency == 'onetime' }" @click="oneTime">
+                                <div class="col-12 col-sm-12  col-lg-8 d-flex flex-wrap">
+                                    <div class="col-12 col-sm-12  col-lg-6 mt-2 mt-md-0  border py-2 c-pointer  " :class="{ 'show-one-time' : pledgeFrequency == 'onetime' }" @click="oneTime">
                                         One time
                                     </div>
-                                    <div class="col-md-6 border py-2 c-pointer" :class="{ 'show-reoccuring' : pledgeFrequency == 'reoccuring' }"  @click="reOccuring" >
+                                    <div class="col-12 col-sm-12  col-lg-6 border py-2 c-pointer" :class="{ 'show-reoccuring' : pledgeFrequency == 'reoccuring' }"  @click="reOccuring" >
                                         Reoccuring
                                     </div>
                                 </div>
                                 <div class="col-md-12  mt-3 " v-if="pledgeFrequency == 'onetime' " >
                                     <div class="row">
-                                        <div class="col-md-4 text-md-right align-self-center">
+                                        <div class="col-12 col-sm-12 col-lg-4 text-sm-left text-lg-right align-self-center">
                                             <label for="" class=""> Start Date </label>
                                         </div>
-                                        <div class="col-md-8">
+                                        <div class="col-12 col-sm-12  col-lg-8">
                                             <Calendar dateFormat="dd/mm/yy" class="w-100" id="icon" v-model="startDate" :showIcon="true" />
                                         </div>
-                                        <div class="col-md-4 text-md-right mt-2 align-self-center">
+                                        <div class="col-12 col-sm-12 col-lg-4 text-sm-left text-lg-right mt-2 align-self-center">
                                             <label for="" class=""> End Date </label>
                                         </div>
-                                        <div class="col-md-8 mt-2 ">
+                                        <div class="col-12 col-sm-12  col-lg-8 mt-2 ">
                                             <Calendar dateFormat="dd/mm/yy" class="w-100" id="icon" v-model="endDate" :showIcon="true" />
                                         </div>
                                     </div>
                                 </div>
                                 <div class="col-md-12  mt-3 " v-if="pledgeFrequency == 'reoccuring' " >
                                     <div class="row">
-                                        <div class="col-md-4 text-md-right align-self-center">
+                                        <div class="col-12 col-sm-12 col-lg-4 text-sm-left text-lg-right align-self-center">
                                             <label for="" class=""> Range </label>
                                         </div>
-                                        <div class="col-md-8">
+                                        <div class="col-12 col-sm-12  col-lg-8">
                                             <Dropdown v-model="selectedRange" class="w-100 font-weight-normal" :options="reOccuringRange"  optionLabel="name" placeholder="Range" />
                                         </div>
                                     </div>
@@ -245,7 +245,7 @@ export default {
             if (store.getters['contributions/contributionItems'].length > 0) {
                 contributionItems.value = store.getters['contributions/contributionItems']
             } else {
-                loading.value = true
+                // loading.value = true
                 axios
                     .get("/api/financials/contributions/items")
                     .then((res) => {
