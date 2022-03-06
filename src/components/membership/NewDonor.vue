@@ -1,65 +1,5 @@
 <template>
     <div class="container main">
-        <!-- <div class="container main">
-         <div class="row">
-             <div class="col">
-        
-                <div class="mt-4">
-               
-             <div class="row">
-                <div class="col-md-4 text-md-right">
-                    <h4 class="header4 text-md-right">First Name <span class="text-danger">*</span></h4>
-                 </div>
-                 <div class="col-md-7 px-0">
-                     <input type="text" class="form-control" v-model="donor.firstName" required>
-                 </div>
-            </div> 
-            </div> 
-            <div class="mt-4">
-             <div class="row">
-                <div class="col-md-4 text-md-right">
-                    <h4 class="header4 text-md-right">Last Name</h4>
-                 </div>
-                 <div class="col-md-7 px-0">
-                     <input type="text" class="form-control" v-model="donor.lastName">
-                     
-                 </div>
-            </div> 
-            </div>
-            <div class="mt-4">
-            </div> 
-             <div class="row">
-                <div class="col-md-4 text-md-right">
-                    <h4 class="header4 text-md-right">Phone number</h4>
-                 </div>
-                 <div class="col-md-7 px-0">
-                     <input type="text" class="form-control" v-model="donor.mobilePhone">
-                 </div>
-            </div> 
-            <div class="mt-4">
-            </div> 
-             <div class="row">
-                <div class="col-md-4 text-md-right">
-                    <h4 class="header4 text-md-right">Email</h4>
-                 </div>
-                 <div class="col-md-7 px-0">
-                     <input type="text" class="form-control"  v-model="donor.email">
-                 </div>
-            </div>
-            <div class="mt-4">
-            </div> 
-             <div class="row">
-                <div class="col-md-4 text-md-right">
-                    <h4 class="header4 text-md-right"></h4>
-                 </div>
-                 <div class="col-md-7 px-0 d-flex justify-content-center">
-                     <Button label="Cancel" class="p-button-outlined p-button-secondary mr-3 px-5 p-button-rounded" @click="onCancel" />
-                     <Button label="Save"  class="p-button-primary p-button-rounded px-5 mr-3 max" @click="saveDonor" />
-                 </div>
-            </div>
-             </div>
-             </div> 
-        </div> -->
         <!-- import word -->
         <div class="row">
            <div class="col-md-12 px-0">
@@ -123,48 +63,48 @@
                                     <label for="" class="font-weight-700">Date of birth</label>
                                 </div>
                                 <div class="col-md-8  d-flex justify-content-between flex-wrap">
-                                    <div class="col-12 col-md-5 border cursor-pointer py-2 rounded col-lg-5">
+                                    <div class="mt-2 col-12 col-md-5 border cursor-pointer py-2 rounded col-lg-5">
                                         <div class="dropdown col-12">
                                             <div id="dropdownMenuButton"  class="w-100   " data-toggle="dropdown">{{ birthDay ? birthDay: 'Days'}}</div>
                                             <div class="dropdown-menu flowY  w-100" aria-labelledby="dropdownMenuButton" >
-                                                <a
+                                                <div
                                                         class="dropdown-item"
                                                         v-for="(birthDays, index) in birthDaysArr" :key="index" 
                                                             @click="addbirthDays(birthDays)">
                                                     
                                                     <div class="hover-text cursor-pointer" >{{birthDays}}</div>
-                                                </a>
+                                                </div>
                                             </div>
                                         </div>
                                         
                                     </div>
-                                    <div class=" col-12 col-md-6 border cursor-pointer py-2 rounded col-lg-6">
+                                    <div class="mt-2 col-12 col-md-6 border cursor-pointer py-2 rounded col-lg-6">
                                         <div class="dropdown col-12  ">
                                             <div id="dropdownMenuButton"  class=" w-100  " data-toggle="dropdown">{{ birthMonth ? birthMonth : 'Month'}}</div>
                                             <div class="dropdown-menu flowY w-100"  aria-labelledby="dropdownMenuButton" >
-                                                <a
+                                                <div
                                                         class="dropdown-item"
                                                         v-for="(month, index) in months" :key="index" 
                                                             @click="addBirthMonth(month)">
                                                     
                                                     <div class="hover-text cursor-pointer " >{{month}}</div>
-                                                </a>
+                                                </div>
                                             </div>
                                         </div>
                                         
                                     </div>
-                                    <div class=" col-12 text-center cursor-pointer mt-2 mx-md-auto border rounded ">
-                                        <div class="col-12  py-2 rounded  ">
-                                            <div   class="w-100 col-12 " data-toggle="dropdown">{{ birthYear ? birthYear: 'Year'}} </div>
+                                    <div class=" col-12 cursor-pointer mt-2 mx-md-auto border rounded ">
+                                        <div class="col-12  py-2 rounded text-md-center ">
+                                            <div   class="w-100" data-toggle="dropdown">{{ birthYear ? birthYear: 'Year'}} </div>
                                             <!-- <i class="pi pi-angle-down arrow-icon  "></i> -->
                                             <div class="dropdown-menu flowY  w-100"  aria-labelledby="dropdownMenuButton" >
-                                                <a
+                                                <div
                                                         class="dropdown-item"
                                                         v-for="(birthYears, index) in birthYearsArr" :key="index" 
                                                             @click="addBirthYears(birthYears)">
                                                     
                                                     <div class="hover-text cursor-pointer" >{{birthYears}}</div>
-                                                </a>
+                                                </div>
                                             </div>
                                         </div>
                                         
@@ -280,22 +220,6 @@ import Dropdown from "primevue/dropdown";
                  }
             // let genders = ref(store.getters["lookups/genders"]);
             let genders = ref('');
-           // if (!genders.value || genders.value.length === 0) getLookUps();
-
-            // const gendersArr = computed(() => {
-            //     return genders.value.map((i) => i.value);
-            //     });
-            // const getPersonGenderId = () => {
-            //     if (memberToEdit.value && memberToEdit.value.personId) {
-            //         if (genders.value && genders.value.length > 0) {
-            //         donor.gender.value = genders.value.find(
-            //             (i) => i.id === memberToEdit.value.genderID
-            //         );
-            //         } else {
-            //         getLookUps();
-            //         }
-            //     }
-            //     };
             const getLookUps = () => {
             axios
                 .get("/api/LookUp/GetAllLookUps")
@@ -305,25 +229,6 @@ import Dropdown from "primevue/dropdown";
                     (i) => i.type.toLowerCase() === "gender"
                 ).lookUps;
                 console.log(genders.value , "gender")
-                // try {
-                //   selectedGender.value = genders.value.find(
-                //     (i) => i.id === memberToEdit.value.genderID
-                //   );
-                // } catch (error) {
-                //   console.log(error);
-                // }
-
-                //   maritalStatus.value = res.data.find(
-                //     (i) => i.type.toLowerCase() === "maritalstatus"
-                //   ).lookUps;
-                // try {
-                //   selectedMaritalStatus.value = maritalStatus.value.find(
-                //     (i) => i.id === memberToEdit.value.maritalStatusID
-                //   );
-                // } catch (error) {
-                //   console.log(error);
-                // }
-                //   console.log(maritalStatus, "MS");
                 })
                 .catch((err) => console.log(err.response));
             };
@@ -333,23 +238,23 @@ import Dropdown from "primevue/dropdown";
             const saveDonor = async () => {
                 emit("cancel");
                 console.log(route.fullPath)
-                if (route.fullPath.includes("/tenant/addfamily") || route.fullPath.includes("/tenant/createpeoplegroup") ) {
+                if (route.fullPath.includes("/tenant/addfamily") || route.fullPath.includes("/tenant/createpeoplegroup") || route.fullPath.includes("/tenant/takeattendance") ) {
                     emit("show-ward-modal", true)
                     emit("show-group-modal", true)
                 }
                  console.log(birthMonth.value)
                 console.log(months.value.indexOf(birthMonth.value) + 1)
                 const formData = new FormData()
-                formData.append("firstName", donor.firstName)
-                formData.append("lastName", donor.lastName)
-                formData.append("mobilePhone", donor.mobilePhone)
-                formData.append("email", donor.email)
-                formData.append("gender", genderType.value.id)
+                formData.append("firstName", donor.firstName ? donor.firstName : "")
+                formData.append("lastName", donor.lastName ? donor.lastName : "")
+                formData.append("mobilePhone", donor.mobilePhone ? donor.mobilePhone : "")
+                formData.append("email", donor.email ? donor.email : "")
+                formData.append("gender", genderType.value.id ? genderType.value.id : "")
 
-                formData.append("dayOfBirth", birthDay.value )
-                formData.append("monthOfBirth", months.value.indexOf(birthMonth.value) + 1 )
-                formData.append("yearOfBirth", birthYear.value )
-                formData.append("picture", image.value )
+                formData.append("dayOfBirth", birthDay.value ? birthDay.value : "")
+                formData.append("monthOfBirth", months.value.indexOf(birthMonth.value) + 1 ? months.value.indexOf(birthMonth.value) + 1 : "")
+                formData.append("yearOfBirth", birthYear.value ? birthYear.value : "" )
+                formData.append("picture", image.value ? image.value : "" )
                 try {
                      return new Promise((resolve, reject) => {
                         axios.post("/api/People/createPerson", formData)

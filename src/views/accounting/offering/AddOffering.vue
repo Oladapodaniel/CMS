@@ -1016,44 +1016,6 @@ export default {
                 return { id: i.id, name: i.name };
                 });
             });
-
-            // axios
-            //     .get("/api/LookUp/GetAllLookUps")
-            //     .then((res) => {
-            //     // console.log(res.data, 'all lkups')
-            //     res.data.find((i) => {
-            //         if (i.type.toLowerCase() === "gender") {
-            //         genderArr.value = i.lookUps;
-            //         console.log(genderArr.value);
-            //         }
-            //         if (i.type.toLowerCase() === "maritalstatus") {
-            //         maritalStatusArr.value = i.lookUps;
-            //         }
-            //     });
-            //     })
-            //     .catch((err) => {
-            //     if (err.response && err.response.status === 401) {
-            //         localStorage.setItem("token", "");
-            //         router.push("/");
-            //     }
-            //     });
-
-            // axios.get("/api/membership/howyouheardaboutus").then((res) => {
-            //     howDidYouAboutUs.value = res.data.map((i) => {
-            //     return { name: i.name, id: i.id };
-            //     });
-            //     // console.log(res.data)
-            // });
-
-            // console.log(route.params.firstTimerId);
-            // if (route.params.firstTimerId) {
-            //     axios
-            //     .get(`/api/People/firstTimer/${route.params.firstTimerId}`)
-            //     .then((res) => {
-            //         console.log(res.data, "DFGHG");
-            //         firstTimersObj.value = res.data;
-            //     });
-            // }
             });
 
         const closeManualModalIfOpen = (e) => {
