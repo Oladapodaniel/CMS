@@ -49,7 +49,7 @@
       <!-- </div> -->
         <hr class="hr container-wide" />
         <div v-if="firstTimersList.length > 0 && !loading && !networkError" class="event-list">
-            <FirstTimersList />
+            <FirstTimersList @firsttimers="setFirsttimer" @loading="setLoading" @loaded="setLoaded" />
         </div>
          <div v-if="firstTimersList.length === 0 && !loading && !networkError" class="no-person" >
         <div class="empty-img">
@@ -121,6 +121,7 @@
     import Dialog from 'primevue/dialog';
 // import store from "@/store/index";
 import router from "@/router/index";
+import membershipService from '../../services/membership/membershipservice';
 // import { useRoute } from "vue-router";
 
 
@@ -137,16 +138,16 @@ export default {
       const firstTimerData = ref([])
       const networkError = ref(false)
 
-      const getFirstTmersList = () => {
+      const getFirstTmersList = async() => {
         loading.value = true
-          axios.get("/api/People/FirstTimer")
-          .then(res => {
-            firstTimersList.value = res.data;
-            loading.value = false
-            console.log(res.data)
-          })
-          .catch(err => {
-            finish()
+        try {
+          let data = await membershipService.getFirstTimers()
+          firstTimersList.value = data;
+          loading.value = false
+          console.log(data)
+        }
+        catch (err) {
+          finish()
             console.log(err)
           if(err.toString().toLowerCase().includes("network error")) {
             networkError.value = true
@@ -154,7 +155,16 @@ export default {
             networkError.value = false
           }
             loading.value = false
-          })
+        }
+        
+          // axios.get("/api/People/FirstTimer")
+          // .then(res => {
+            
+          //   console.log(res.data)
+          // })
+          // .catch(err => {
+            
+          // })
       }
       getFirstTmersList()
 
@@ -267,8 +277,19 @@ export default {
       router.push({ name: 'ImportInstruction', query: { query: 'importfirsttimer' } })
     }
 
-    return { firstTimersList, getFirstTmersList, loading, fileUpload, imageSelected, image, displayModal, importFile, firstTimerData, addToFirstTimers, closeModal, importFirstTimer, networkError };
+    const setFirsttimer = (payload) => {
+      firstTimersList.value = payload
+    }
 
+    const setLoading = (payload) => {
+      loading.value = payload
+    }
+    
+    const setLoaded = (payload) => {
+      loading.value = payload
+    }
+
+    return { firstTimersList, getFirstTmersList, loading, fileUpload, imageSelected, image, displayModal, importFile, firstTimerData, addToFirstTimers, closeModal, importFirstTimer, networkError, setFirsttimer, setLoading, setLoaded };
   },
 };
 

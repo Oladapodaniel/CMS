@@ -88,15 +88,15 @@ export default {
 
     },
 
-    async getMembers({ commit }) {
-      try {
-        const res = await axios.get("/api/People/FirstTimer");
-        commit("setCurrentUser", res.data)
-      } catch (err) {
-        console.log(err);
-      }
+    // async getMembers({ commit }) {
+    //   try {
+    //     const res = await axios.get("/api/People/FirstTimer");
+    //     commit("setCurrentUser", res.data)
+    //   } catch (err) {
+    //     console.log(err);
+    //   }
 
-    },
+    // },
 
     setUserEmail({ commit }, payload) {
       commit("setUserEmail", payload)

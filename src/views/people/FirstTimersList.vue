@@ -519,9 +519,10 @@ import { useToast } from "primevue/usetoast";
 import stopProgressBar from "../../services/progressbar/progress";
 import OverlayPanel from "primevue/overlaypanel";
 import loadingComponent from "@/components/loading/LoadingComponent"
+import membershipService from '../../services/membership/membershipservice';
 
 export default {
-  props: ["list"],
+  emits: ["firsttimers"],
   components: {
     // ByGenderChart,
     // ByMaritalStatusChart,
@@ -531,7 +532,7 @@ export default {
     FirstTimersChartArea
   },
 
-  setup() {
+  setup(props, { emit }) {
     const showDashboard = ref(true)
     const showFirstTimer = ref(false)
     const churchMembers = ref([]);
@@ -624,12 +625,25 @@ export default {
       });
     };
 
-    const getFirstTimers = () => {
-      axios.get("/api/People/getAllFirstTimers").then((res) => {
-        churchMembers.value = res.data;
-      });
-    };
-    getFirstTimers();
+    // const getFirstTimers = () => {
+    //   axios.get("/api/People/getAllFirstTimers").then((res) => {
+    //     churchMembers.value = res.data;
+    //   });
+    // };
+    // getFirstTimers();
+
+    const getFirstTmersList = async() => {
+        try {
+          let data = await membershipService.getFirstTimers()
+          churchMembers.value = data;
+          emit("firsttimers", data)
+          console.log(data)
+        }
+        catch (err) {
+            console.log(err)
+      }
+    }
+      getFirstTmersList()
 
     const applyFilter = () => {
       filter.value.name =

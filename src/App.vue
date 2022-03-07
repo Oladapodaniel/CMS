@@ -44,7 +44,7 @@ export default {
     async getCurrentUser() {
       try {
         const res = await axios.get("/api/Membership/GetCurrentSignedInUser");
-        console.log( res,'something')
+        console.log(res)
         store.dispatch("setCurrentUser", res.data);
         if (res.data.subStatus.toLowerCase() === 'expired'){
             return router.push('/errorpage/expiredSubscription')
