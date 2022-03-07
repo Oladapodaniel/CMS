@@ -808,7 +808,7 @@
                           </a>
                           <a
                             class="dropdown-item c-pointer"
-                            @click="confirmDelete(member.personID, index)"
+                            @click="confirmDelete(member,member.id, index)"
                             >Remove</a
                           >
                         </div>
@@ -917,7 +917,7 @@
                           </a>
                           <a
                             class="dropdown-item c-pointer"
-                            @click="confirmDelete(member.personID, index)"
+                            @click="confirmDelete(member, member.id, index)"
                             >Remove</a
                           >
                         </div>
@@ -1059,15 +1059,11 @@ export default {
     const searchGroupMemberText = ref("")
     
     const closeGroupModal = ref()
-    // const moveMembers =() =>{
-    //   let memberChange = convert(marked.value);
-    //   console.log(memberChange,'wisdom')
-    // }
+  
     onMounted(async () => {
       try {
         const { data } = await axios.get("/api/GetAllGroupBasicInformation");
         getAllGroup.value = data;
-        console.log(getAllGroup);
       } catch (error) {
         console.log(error);
       }
@@ -1101,10 +1097,8 @@ export default {
 
         const attendanceCheckin = async () => {
             const response = await attendanceservice.getItems();
-            console.log(response, 'response attendance');
             attendanceData.value = response.items.filter((i) => i.groupID === route.params.groupId);
             totalItems.value = response.totalItems
-            console.log(totalItems.value, 'totalItems');
             const attendanceItem = response.items.find((i) => i.groupID === route.params.groupId);
             if(attendanceItem && attendanceItem.id) selectedAttendanceId.value = attendanceItem.id;
             return attendanceItem;
@@ -1115,19 +1109,7 @@ export default {
             showAttendanceCheckin.value = false;
            
         }
-    //   const setGroupModal = (payload) => {
-    //     showWardModal.value = payload
-    // }
-    // const getFatherId = (payload) => {
-    //       console.log(payload)
-    //       userSearchString.value = payload.personFirstName
 
-    //       father.value = {
-    //           firstName: payload.personFirstName,
-    //           id: payload.personId
-    //       }
-    //       console.log(father.value)
-    //     }
     const moveMembers = () => {
       let memberMove = {
         memberIDList: marked.value.map((i) => i.personID),
@@ -1233,7 +1215,6 @@ export default {
       } else {
         marked.value.splice(memberIndex, 1);
       }
-      console.log(marked.value, "wisdom");
     };
     const markAllItem = () => {
       if (marked.value.length < groupMembers.value.length) {
@@ -1260,11 +1241,10 @@ export default {
         accept: () => {
           groupsService
             .removeFromGroup(route.params.groupId, {
-              groupId: route.params.id,
+              groupId: route.params.groupId,
               personIds: [`${id}`],
             })
             .then((res) => {
-              console.log(res);
               if (res !== false) {
                 groupMembers.value.splice(index, 1);
                 toast.add({
@@ -1295,7 +1275,6 @@ export default {
        i.id = i.personID
        return i
      });
-     console.log(  selectedGroupMembers.value , 'rrrrr');
      showEmail.value = true;
     }
     const searchForMembers = (e) => {
@@ -1305,8 +1284,6 @@ export default {
         composeService
           .searchMemberDB("/api/Membership/GetSearchedUSers", e.target.value)
           .then((res) => {
-            console.log(res, "res");
-            console.log(groupMembers);
             loading.value = false;
             // memberSearchResults.value = res;
             memberSearchResults.value = res.filter((i) => {
@@ -1335,7 +1312,6 @@ export default {
 
     const selectedMembers = ref([]);
     const selectMember = (member, index) => {
-      console.log(member, "member");
       selectedMembers.value.push(member);
       memberSearchResults.value.splice(index, 1);
       searchText.value = "";
@@ -1351,7 +1327,6 @@ export default {
     const groupMembers = ref([]);
 
     const getWardId = (payload) => {
-          console.log(payload)
         let body = {
           name: payload.personFirstName,
           personId: payload.personId,
@@ -1361,7 +1336,6 @@ export default {
         selectedMembers.value.push(body)
         }
     const addSelectedMembersToGroup = () => {
-      // alert('qwerty')
       if (selectedMembers.value.length === 0) {
         modalStatus.value = "modal";
         return false;
@@ -1373,9 +1347,8 @@ export default {
         i.enableLogin = enableLogin.value;
         i.isGroupLeader = isGroupLeader.value;
         groupMembers.value.push(i);
-        // alert('qwerty')
       });
-      console.log(groupMembers.value, "groupMember");
+    
       if (route.params.groupId) {
         groupData.value.peopleInGroups = groupMembers.value;
         updateGroup(groupData.value, false);
@@ -1427,7 +1400,7 @@ export default {
         .then((res) => {
           savingGroup.value = false;
           groupsService.editGroupInStore(res.data, groupMembers.value.length);
-          console.log(res.data, "saved");
+  
           // store.dispatch("groups/getGroups")
           if (redirect) {
             router.push("/tenant/peoplegroups");
@@ -1435,7 +1408,7 @@ export default {
             toast.add({
               severity: "success",
               summary: "Group Updated",
-              detail: "Group members update successfull",
+              detail: "Group members update successfully",
               life: 2500,
             });
           }
@@ -1492,7 +1465,6 @@ export default {
           `/api/GetGroupsFromId/${route.params.groupId}`,
           groupData.value
         );
-        console.log(data, "group info");
         loadingMembers.value = false;
         groupData.value.name = data.name;
         groupData.value.description = data.description;
@@ -1500,15 +1472,14 @@ export default {
 
         data.peopleInGroups.forEach((i) => {
           const person = {
+            id: i.id,
             personID: i.person.id,
             address: i.person.address,
             email: i.person.email,
             name: `${i.person.firstName ? i.person.firstName : ""} ${i.person.lastName ? i.person.lastName : ""}`,
             phone: i.person.phoneNumber,
             position: i.position
-
           };
-
           groupMembers.value.push(person);
         });
 

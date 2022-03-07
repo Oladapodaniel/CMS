@@ -50,14 +50,14 @@
       </div>
       <div
         class="col-6 col-md-3"
-        v-tooltip.left="`${eventSummary.offeringAverage.monthly}`"
+        v-tooltip.left="`${eventSummary && eventSummary.offeringAverage && eventSummary.offeringAverage.monthly ? eventSummary.offeringAverage.monthly : '-- --'}`"
       >
         <div>
           Offering<span style="font-size: 15px" class="font-weight-700"
             >({{ userCurrency }})</span
           >
         </div>
-        <div>{{ convert(eventSummary.offeringAverage.monthly) }}</div>
+        <div>{{ eventSummary && eventSummary.offeringAverage && eventSummary.offeringAverage.monthly ? convert(eventSummary.offeringAverage.monthly) : "-- --" }}</div>
       </div>
       <div
         class="col-6 col-md-3"
@@ -89,14 +89,14 @@
       </div>
       <div
         class="col-6 col-md-3"
-        v-tooltip.left="`${eventSummary.offeringAverage.yearly}`"
+        v-tooltip.left="`${eventSummary && eventSummary.offeringAverage && eventSummary.offeringAverage.yearly ? eventSummary.offeringAverage.yearly : '-- --'}`"
       >
         <div>
           Offering<span style="font-size: 15px" class="font-weight-700"
             >({{ userCurrency }})</span
           >
         </div>
-        <div>{{ convert(eventSummary.offeringAverage.yearly) }}</div>
+        <div>{{ eventSummary && eventSummary.offeringAverage && eventSummary.offeringAverage.yearly ? convert(eventSummary.offeringAverage.yearly) : "-- --" }}</div>
       </div>
       <div
         class="col-6 col-md-3"
@@ -129,14 +129,14 @@
       </div>
       <div
         class="col-6 col-md-3"
-        v-tooltip.left="`${eventSummary.offeringAverage.allTime}`"
+        v-tooltip.left="`${eventSummary && eventSummary.offeringAverage && eventSummary.offeringAverage.allTime ? eventSummary.offeringAverage.allTime : '-- --'}`"
       >
         <div>
           Offering<span style="font-size: 15px" class="font-weight-700"
             >({{ userCurrency }})</span
           >
         </div>
-        <div>{{ convert(eventSummary.offeringAverage.allTime) }}</div>
+        <div>{{ eventSummary && eventSummary.offeringAverage && eventSummary.offeringAverage.allTime ? convert(eventSummary.offeringAverage.allTime) : "-- --" }}</div>
       </div>
       <div
         class="col-6 col-md-3"
