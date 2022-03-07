@@ -11,8 +11,8 @@
             <router-link to="/tenant/peoplegroups">
               <div class="boxes border font-weight-700 mt-3 mt-md-0 bor-radius"><i class="pi pi-list text-center pi-icons mr-3"></i>View Groups</div>
             </router-link>
-            <router-link to="/tenant/peoplegroups?actionType=attendance">
-            <div class="boxes border font-weight-700 mt-3 mt-md-0 bor-radius"><i class="pi pi-check text-center pi-icons mr-3"></i>Mark Attendance</div>
+            <router-link to="/tenant/groupleaderattendance">
+            <div class="boxes border font-weight-700 mt-3 mt-md-0 bor-radius"><i class="pi pi-check text-center pi-icons mr-3"></i>Report & Attendance</div>
             </router-link>
           </div>
           <div class="d-flex justify-content-around flex-column flex-md-row align-items-center w-100 mt-md-4">

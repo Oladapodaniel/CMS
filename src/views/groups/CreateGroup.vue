@@ -48,9 +48,6 @@
                     <Attendancecheckin :list="attendanceData" :totalItems="totalItems" />
                     <!-- <Attendancecheckin :attendanceID="selectedAttendanceId"  /> -->
                   </div>
-                  <div v-if="attendance && attendance.length === 0">
-                    No checkin attendance for this group
-                  </div>
                 </div>  
             </div>
         </div>
@@ -188,10 +185,18 @@
           <div class="row pb-4 bottom-box group-form">
             <div class="col-md-12">
               <div class="row mid-header-row py-3">
-                <div class="col-md-4 text-lg-center pl-0">
+                <div class="col-md-6 text-lg-center">
                   <span class="mid-header-text py-1 px-1"
                     >Members in group</span
                   >
+                </div>
+                <div class="col-md-6">
+                  <div class="input-group">
+                        <input type="text" class="form-control w-25"  placeholder="Search for group member by name" v-model="searchGroupMemberText">
+                        <div class="input-group-append">
+                            <span class="input-group-text"><i class="pi pi-search"></i></span>
+                        </div>
+                    </div>
                 </div>
               </div>
 
@@ -482,23 +487,6 @@
                             </div>
                           </div>
                         </div>
-                        <!-- <div class="modal-footer mb-2">
-                          <button
-                            type="button"
-                            class="default-btn cancel bg-white text-dark"
-                            data-dismiss="modal"
-                          >
-                            Cancel
-                          </button>
-
-                          <button
-                            class="primary-btn default-btn primary-bg border-0 outline-none"
-                            @click="addSelectedMembersToGroup"
-                            :data-dismiss="modalStatus"
-                          >
-                            Add member
-                          </button>
-                        </div> -->
                       </div>
                     </div>
                   </div>
@@ -732,7 +720,7 @@
 
               <div style="border-bottom: 1px solid #00204412;"
                 class="row py-2"
-                v-for="(member, index) in groupMembers"
+                v-for="(member, index) in searchGroupMembers"
                 :key="index"
               >
                 <div class="col-md-12">
@@ -1068,6 +1056,7 @@ export default {
     const totalItems = ref("")
     const positionArchive = ref('center');
     const displayPositionArchive = ref(false);
+    const searchGroupMemberText = ref("")
     
     const closeGroupModal = ref()
     // const moveMembers =() =>{
@@ -1102,10 +1091,8 @@ export default {
     }
     const selectedAttendanceId = ref('')
      const showAddMemberForm = () => {
-
           display.value = true;
-
-        };
+    };
 
         const  displayView = () => {
            showGroup.value = false;
@@ -1365,7 +1352,6 @@ export default {
 
     const getWardId = (payload) => {
           console.log(payload)
-          // wardSearchString.value = payload.personFirstName
         let body = {
           name: payload.personFirstName,
           personId: payload.personId,
@@ -1373,18 +1359,7 @@ export default {
           phoneNumber: payload.personNumber
         }
         selectedMembers.value.push(body)
-        //   const constructSelectedMember = new Object()
-          // selectedMembers.value.name = payload.personFirstName
-          // selectedMembers.value.id = payload.personId
-        //   familyMembers.value.push(constructSelectedMember)
-          console.log(selectedMembers)
         }
-        //  const wardSearchForUsers = () => {
-        //   if (wardSearchString.value.length >= 3) {
-        //     wardStartSearch(wardSearchString.value);
-        //   }
-        // };
-
     const addSelectedMembersToGroup = () => {
       // alert('qwerty')
       if (selectedMembers.value.length === 0) {
@@ -1705,8 +1680,13 @@ export default {
     }
 
     const innerWidth = computed(() => {
-            return window.innerWidth;
-        })
+        return window.innerWidth;
+    })
+
+    const searchGroupMembers = computed(() => {
+      if (groupMembers.value.length > 0 && searchGroupMemberText.value == "") return groupMembers.value
+      return groupMembers.value.filter(i => i.name.toLowerCase().includes(searchGroupMemberText.value.toLowerCase()))
+    })
 
     return {
       groupData,
@@ -1783,7 +1763,9 @@ export default {
     importMember,
     route,
     window,
-    innerWidth
+    innerWidth,
+    searchGroupMemberText,
+    searchGroupMembers
     };
   },
 };

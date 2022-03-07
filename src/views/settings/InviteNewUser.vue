@@ -25,7 +25,7 @@
                        <div class="row mb-3">
                           <div class="col-lg-4 col-sm-12 text-lg-right text-sm-left"> <label class="">Username</label>
                             </div>
-                            <div class="col-lg-8 col-sm-12"> <InputText type="text" required v-model="userName" class="form-control" /></div>
+                            <div class="col-lg-8 col-sm-12"> <InputText type="text" required v-model="mail" class="form-control" /></div>
                         </div>
                         <!-- <div class="row mb-3 mt-5">
 
@@ -48,7 +48,7 @@
                         <div class="row mt-5" v-if="!disabled">
                          <div class="col-lg-4 col-sm-12 text-lg-right text-sm-left"> <span class="">Confirm Password</span>
                             </div>
-                            <div class="col-lg-8 col-sm-12 "> <Password class="form-control" :disabled="disabled" v-model="password2" required /></div>
+                            <div class="col-lg-8 col-sm-12 "> <input type="password" class="form-control" autocomplete="new-password" :disabled="disabled" v-model="password2" required /></div>
                         </div>
                         <div class="row">
                     <div class="col-sm-12 mt-4">
@@ -131,7 +131,7 @@
 import InputText from 'primevue/inputtext';
 // import ProgressSpinner from 'primvue/progressspinner';
 import Toast from 'primevue/toast'
-import Password from 'primevue/password';
+// import Password from 'primevue/password';
 import Checkbox from 'primevue/checkbox';
 import axios from "@/gateway/backendapi";
 import store from "@/store/store";
@@ -139,7 +139,7 @@ import userRoles from "../../services/user/userRoles"
 // import { error } from 'highcharts';
 // import ref from 'Vue'
     export default {
-        components:{InputText, Password, Checkbox,Toast},
+        components:{InputText, Checkbox,Toast},
         data() {
 		return {
             inviteNew: 'Invite New User',
@@ -169,7 +169,7 @@ import userRoles from "../../services/user/userRoles"
 
     },
         createNewUser(){
-            if(this.userName === '' || this.mail === '' || this.phoneNumber === ''){
+            if(this.mail === '') {
                 this.$toast.add({
                 severity:'error',
                 summary:'Confirmed',
@@ -259,14 +259,12 @@ import userRoles from "../../services/user/userRoles"
       if (this.$route.query.email) {
           try{
             const {data} = await axios.get(`/api/Settings/GetChurchUserByEmail?email=${this.$route.query.email}`);
-                this.userName = data.name;
+                // this.userName = data.name;
                 this.mail = data.email;
                 this.password1 = data.password;
                 this.password2 = data.password;
                 this.phoneNumber = data.phone;
                 this.selectedRole = data.roles;
-                console.log(data);
-
             }catch(error){
                 console.log(error);
             }

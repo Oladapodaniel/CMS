@@ -214,12 +214,7 @@ export default {
         setTimeout(() => {
           setupService.setup();
         }, 5000);
-        if (data.roles.length === 1 && data.roles[0] === 'GroupLeader') {
-          router.push( {
-            name: "GroupLeaderDashboard"
-          });
-          return false;
-        }
+        
 
         if(data.roles.length > 0){
         let roleIndex = data.roles.findIndex(i => {
@@ -255,7 +250,11 @@ export default {
               if (data.churchSize >= data.subscribedChurchSize) {
                 router.push("/errorpage/member-capacity-reached")
               } else {
-                if (data.roles.indexOf("FollowUp") !== -1) {
+                if (data.roles.indexOf("GroupLeader") !== -1) {
+                  router.push( {
+                    name: "GroupLeaderDashboard"
+                  });
+                } else if (data.roles.length === 1 && data.roles[0] === 'FollowUp' ) {
                   router.push("/tenant/followup");
                 } else if (data.roles.indexOf("FinancialAccount") !== -1) {
                   router.push("/tenant/offering");
