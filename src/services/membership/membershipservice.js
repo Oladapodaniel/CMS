@@ -59,10 +59,10 @@ const membershipService = {
 
     getFirstTimers() {
         return new Promise((resolve, reject) => {
-            axios.get("/api/People/FirstTimer")
+            axios.get("/api/People/getAllFirstTimers")
                 .then(res => {
                     resolve(res.data);
-                    store.dispatch("setFirstTimers", res.data);
+                    // store.dispatch("setFirstTimers", res.data);
                 })
                 .catch(error => {
                     /*eslint no-undef: "warn"*/

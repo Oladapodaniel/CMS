@@ -1050,7 +1050,25 @@ const routes = [
                     title: 'Churchplus - Gorup Leader',
                 },
                 component: () =>
-                    import ( /* webpackChunkName: "createpeoplegroup" */ '@/views/groups/GroupLeaderDashboard')
+                    import ( /* webpackChunkName: "createpeoplegroup" */ '@/views/groups/groupleader/GroupLeaderDashboard')
+            },
+            {
+                path: 'groupleaderattendance',
+                name: 'GroupLeaderAttendanceReport',
+                meta: {
+                    title: 'Churchplus - Gorup Leader',
+                },
+                component: () =>
+                    import ( /* webpackChunkName: "createpeoplegroup" */ '@/views/groups/groupleader/GroupLeaderAttendanceReport')
+            },
+            {
+                path: 'takeattendance',
+                name: 'TakeAttendance',
+                meta: {
+                    title: 'Churchplus - Gorup Leader',
+                },
+                component: () =>
+                    import ( /* webpackChunkName: "createpeoplegroup" */ '@/views/groups/groupleader/TakeAttendance')
             },
             {
                 path: 'units',

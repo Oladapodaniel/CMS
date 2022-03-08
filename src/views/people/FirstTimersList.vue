@@ -25,7 +25,7 @@
         </div>
     <div class="my-con">
       <div v-if="showDashboard">
-          <FirstTimersChartArea @firsttimers="setFirsttimer"/>
+          <FirstTimersChartArea @firsttimers="setFirsttimer" @totalfirstimer="setTotalFirstTimer"/>
       </div>
     
      
@@ -519,9 +519,10 @@ import { useToast } from "primevue/usetoast";
 import stopProgressBar from "../../services/progressbar/progress";
 import OverlayPanel from "primevue/overlaypanel";
 import loadingComponent from "@/components/loading/LoadingComponent"
+import membershipService from '../../services/membership/membershipservice';
 
 export default {
-  props: ["list"],
+  emits: ["firsttimers"],
   components: {
     // ByGenderChart,
     // ByMaritalStatusChart,
@@ -531,11 +532,10 @@ export default {
     FirstTimersChartArea
   },
 
-  setup() {
+  setup(props, { emit }) {
     const showDashboard = ref(true)
     const showFirstTimer = ref(false)
     const churchMembers = ref([]);
-    const getFirstTimerSummary = ref({});
     const filter = ref({});
     const searchIsVisible = ref(false);
     const filterResult = ref([]);
@@ -545,6 +545,7 @@ export default {
     const selectedPersonId = ref("");
     const tenantID = ref("")
     const selectedLink = ref(null)
+    const totalFirstTimer = ref("")
 
     const route = useRoute();
     const filterFormIsVissible = ref(false);
@@ -555,30 +556,20 @@ export default {
       searchIsVisible.value = !searchIsVisible.value;
     };
 
-    const firstTimerSummary = () => {
-      axios
-        .get("/api/People/GetFirsttimerSummary")
-        .then((res) => {
-          getFirstTimerSummary.value = res.data;
-        })
-        .catch((err) => console.log(err));
-    };
-    firstTimerSummary();
 
     const totalFirsttimersCount = computed(() => {
       if (
-        getFirstTimerSummary.value ||
-        !getFirstTimerSummary.value.totalFirstTimer
+        !totalFirstTimer.value
       )
         return 0;
-      return getFirstTimerSummary.value.totalFirstTimer;
+      return totalFirstTimer.value;
     });
 
     const deleteMember = (id) => {
       //  delete firtimer
       axios
         .delete(`/api/People/DeleteOnePerson/${id}`)
-        .then((res) => {
+        .then(() => {
           toast.add({
             severity: "success",
             summary: "Confirmed",
@@ -588,14 +579,6 @@ export default {
           churchMembers.value = churchMembers.value.filter(
             (item) => item.id !== id
           );
-
-          // update first timer summary while deleting
-          axios
-            .get("/api/People/GetFirsttimerSummary")
-            .then((res) => {
-              getFirstTimerSummary.value = res.data;
-            })
-            .catch((err) => console.log(err));
         })
         .catch((err) => {
           /eslint no-undef: "warn"/
@@ -642,12 +625,25 @@ export default {
       });
     };
 
-    const getFirstTimers = () => {
-      axios.get("/api/People/FirstTimer").then((res) => {
-        churchMembers.value = res.data;
-      });
-    };
-    getFirstTimers();
+    // const getFirstTimers = () => {
+    //   axios.get("/api/People/getAllFirstTimers").then((res) => {
+    //     churchMembers.value = res.data;
+    //   });
+    // };
+    // getFirstTimers();
+
+    const getFirstTmersList = async() => {
+        try {
+          let data = await membershipService.getFirstTimers()
+          churchMembers.value = data;
+          emit("firsttimers", data)
+          console.log(data)
+        }
+        catch (err) {
+            console.log(err)
+      }
+    }
+      getFirstTmersList()
 
     const applyFilter = () => {
       filter.value.name =
@@ -724,8 +720,8 @@ export default {
     };
 
     const membersCount = computed(() => {
-      if (getFirstTimerSummary.value.totalFirstTimer > 100)
-        return Math.ceil(getFirstTimerSummary.value.totalFirstTimer / 100);
+      if (totalFirstTimer.value > 100)
+        return Math.ceil(totalFirstTimer.value / 100);
       return 1;
     });
 
@@ -824,7 +820,7 @@ filter.value.phoneNumber ="";
           } else {
             let resArr = incomingRes.split("@");
             toast.add({
-              severity: "success",
+              severity: "info",
               summary: "Confirmed",
               detail: resArr[0],
             });
@@ -1008,6 +1004,10 @@ filter.value.phoneNumber ="";
         });
     }
 
+    const setTotalFirstTimer = (payload) => {
+      totalFirstTimer.value = payload
+    }
+
     return {
       dashboard,
       firstTimerTable,
@@ -1017,8 +1017,6 @@ filter.value.phoneNumber ="";
       filterFormIsVissible,
       toggleFilterFormVissibility,
       moment,
-      firstTimerSummary,
-      getFirstTimerSummary,
       applyFilter,
       filter,
       toggleSearch,
@@ -1056,7 +1054,9 @@ filter.value.phoneNumber ="";
       firstTimerLink,
       tenantID,
       selectedLink,
-      copylink
+      copylink,
+      setTotalFirstTimer,
+      totalFirstTimer
     };
   },
 };

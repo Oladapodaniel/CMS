@@ -128,9 +128,10 @@
                         >
                         <a
                             class="dropdown-item font-weight-bold small-text d-flex justify-content-center py-2 text-decoration-none primary-text c-pointer"
-                            style="border-top: 1px solid rgb(0, 32, 68); color: rgb(19, 106, 205);" @click="openConfirm"
+                            style="border-top: 1px solid rgb(0, 32, 68); color: rgb(19, 106, 205);" data-toggle="modal" data-target="#convertToMemberModal" 
                             >Convert to member</a
                         >
+                        <!-- @click="openConfirm" -->
                         </div>
                     </div>
                 </div>
@@ -466,6 +467,19 @@
     <Toast />
     <Dialog header="Confirm" v-model:visible="displayConfirm" :breakpoints="{'960px': '75vw'}"  :style="{width: window.innerWidth > 767 ? '50vw' : '100vw'}"  :modal="true">
             <p>You are about to convert this first timer to a member, this action cannot be undone, do you want to continue?</p>
+                <div class="dropdown w-100 ">
+                    <div id="dropdownMenuButton"  class="w-100  border py-2 pl-3 rounded" data-toggle="dropdown">{{ Object.keys(genderType).length > 0 ? genderType.value : 'Gender'}}</div>
+                    <div class="dropdown-menu w-100" aria-labelledby="dropdownMenuButton" >
+                        <a
+                                    class="dropdown-item  " href="#"
+                                    v-for="(gender, index) in genders" :key="index" 
+                                    @click="addGenderType(gender)">
+                                
+                            <div class="hover-text cursor-pointer" >{{gender.value}}</div>
+                        </a>
+                    
+                </div>
+            </div>
             <template #footer>
                 <div class="d-flex justify-content-end">
                     <div class="default-btn text-center c-pointer" @click="() => displayConfirm = false">No</div>
@@ -473,6 +487,40 @@
                 </div>
             </template>
     </Dialog>
+
+    <!-- Convert to member modal -->
+        <div class="modal fade" id="convertToMemberModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+          <div class="modal-dialog modal-dialog-centered" role="document">
+            <div class="modal-content">
+              <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLongTitle">Convert to member</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                  <span aria-hidden="true">&times;</span>
+                </button>
+              </div>
+              <div class="modal-body">
+                <div class="container">
+                  <div class="row">
+                    <div class="col-12"><p>To continue, you have to select the membership category you want to convert this first timer to.</p></div>
+                    <div class="col-12">
+                        <Dropdown v-model="selectedMembershipClassification" :filter="false" :options="membershipCategory" class="w-100 phone-input" optionLabel="name" placeholder="Select membership category" />
+                    </div>
+                    
+                  </div>
+                </div>
+              </div>
+              <div class="modal-footer border-0">
+                  <div class="d-flex justify-content-end">
+                    <div class="default-btn text-center c-pointer" data-dismiss="modal">Close</div>
+                    <button class="primary-bg default-btn border-0 text-white text-center ml-3 c-pointer" :disabled="Object.keys(selectedMembershipClassification).length === 0" @click="convertToMember($event)"><i class="pi pi-spin pi-spinner" v-if="loading"></i> Proceed</button>
+                </div>
+                <!-- <button type="button" class="btn default-btn " data-dismiss="modal">Close</button>
+                <button type="button" class="btn default-btn primary-bg border-0 text-white" data-dismiss="modal" @click="saveSenderId" :disabled="requestbtn">Request sender id</button> -->
+              </div>
+            </div>
+          </div>
+        </div>
+
     <!-- Create sender id modal -->
         <div class="modal fade" id="senderIdModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
           <div class="modal-dialog modal-dialog-centered" role="document">
@@ -609,6 +657,7 @@ export default {
         const senderIdRef = ref()
         const requestbtn = ref(false)
         const tenantId = ref("")
+        const selectedMembershipClassification = ref({})
 
 
         const selectedContactLog = computed(() => {
@@ -1134,7 +1183,7 @@ export default {
             loading.value = true
             try {
                 let { data } = await axios.post(
-                `/api/People/ConvertFirstTimerToMember?personId=${route.params.personId}&membershipCategoryId=${membershipCategory.value[0].id}`
+                `/api/People/ConvertFirstTimerToMember?personId=${route.params.personId}&membershipCategoryId=${selectedMembershipClassification.value.id}`
                 );
                 console.log(data);
                 party.confetti(element);
@@ -1164,6 +1213,7 @@ export default {
                 }
             } catch (err) {
                 console.log(err);
+                loading.value = false
                 if (err.response) {
                 toast.add({
                     severity: "warn",
@@ -1416,7 +1466,8 @@ export default {
             tenantId,
             route,
             window,
-            innerWidth
+            innerWidth,
+            selectedMembershipClassification
         }
             
     }

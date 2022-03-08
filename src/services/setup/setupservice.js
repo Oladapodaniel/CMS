@@ -13,7 +13,7 @@ const setupService = {
         store.dispatch("lookups/getPeopleClassifications");
         store.dispatch("lookups/getUserSources");
         store.dispatch("membership/getMembers");
-        store.dispatch("membership/getFirstTimers");
+        // store.dispatch("membership/getFirstTimers");
         store.dispatch("groups/getGroups");
         store.dispatch('contributions/contributionList')
         store.dispatch("communication/addSmsToSentList");
