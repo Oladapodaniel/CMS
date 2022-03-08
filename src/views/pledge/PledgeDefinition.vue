@@ -277,27 +277,7 @@ export default {
     };
     getContributionCategory();
 
-    const getAllPledgeDefinition = async () =>{
-        try{
-            const res = await axios.get('/api/Pledge/GetAllPledgeDefinitions')
-            finish()
-            console.log(res,'getPledgeList');
-        }
-        catch (error){
-            console.log(error)
-        }
-    }
-    getAllPledgeDefinition()
-
-    //  const getAllPledgeDefinition = () => {
-    //       axios.get("/api/Pledge/GetAllPledgeDefinitions")
-    //         .then(res => {
-    //           console.log(res,'getPledgeList');
-              
-    //         })
-    //         .catch(err => console.log(err))
-    //   }
-    //   getAllPledgeDefinition()
+   
 
         const savePledge = async () => {
             const pledgeDetails = {
