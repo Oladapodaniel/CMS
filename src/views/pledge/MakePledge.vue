@@ -11,7 +11,7 @@
                                     <label for="" class="">Select Person <sup class="text-danger">*</sup> </label>
                                 </div>
                                 <div class="col-md-8">
-                                    <MembersSearch />
+                                    <MembersSearch @memberdetail="chooseContact" />
                                     <!-- <Dropdown v-model="selectMember" class="w-100 font-weight-normal" :options="MembersType"  optionLabel="name" placeholder="Select Member" /> -->
                                 </div>
                             </div>
@@ -23,9 +23,9 @@
                                 <div class="col-md-4 text-md-right align-self-center">
                                     <label for="" class="">Select Pledge <sup class="text-danger">*</sup> </label>
                                 </div>
-                        
+                                <!-- <div>{{allPledgeList}}</div> -->
                                 <div class="col-md-8">
-                                    <Dropdown v-model="selectedPledge" class="w-100 font-weight-normal" :options="pledgeCategory"  optionLabel="name" placeholder="Select Pledge" />
+                                    <Dropdown v-model="selectedPledge" class="w-100 font-weight-normal" :options="allPledgeList"  optionLabel="totalTargetAmount" placeholder="Select Pledge" />
                                 </div>
                             </div>
                         </div>
@@ -51,7 +51,7 @@
                                 </div>
                         
                                 <div class="col-md-8">
-                                    <input type="text" v-model="allPledgeList.donorPaymentSpecificAmount" class="form-control" />
+                                    <input type="text" v-model="donorPaymentSpecificAmount" class="form-control" />
                                 </div>
                             </div>
                         </div>
@@ -63,10 +63,13 @@
                                     <label for="" class="">Pledge Amount </label>
                                 </div>
                                 <div class="col-md-4">
-                                    <input type="text" v-model="pledge.donorPaymentRangeFromAmount" class="form-control" placeholder="From" />
+                                    <input type="text" v-model="allPledgeList.donorPaymentRangeFromAmount" class="form-control" placeholder="From" />
                                 </div>
                                 <div class="col-md-4">
-                                    <input type="text" v-model="pledge.donorPaymentRangeToAmount" class="form-control" placeholder="To" />
+                                    <input type="text" v-model="allPledgeList.donorPaymentRangeToAmount" class="form-control" placeholder="To" />
+                                </div>
+                                <div class="col-md-8">
+                                    <input type="text" v-model="allPledgeList.donorPaymentRangeToAmount" class="form-control" placeholder="Enter Amount" />
                                 </div>
                             </div>
                         </div>
@@ -158,6 +161,7 @@ export default {
         const selectedPledge = ref('')
         const allPledgeList = ref([]);
         const amountFrom = ref('')
+        const selectedContact = ref({})
         const amountTo = ref('')
         const pledgeCategory = ref(
             [
@@ -177,11 +181,16 @@ export default {
             router.push('/pledge/pledgepayment')
         }
 
+         const chooseContact = (payload) => {
+            // contactRef.value.hide();
+            selectedContact.value = payload
+        }
+
         const getAllPledgeDefinition = async () =>{
                 try{
                     const res = await axios.get('/api/Pledge/GetAllPledgeDefinitions')
                     finish()
-                    allPledgeList.value = res.data.returnObject;
+                    allPledgeList.value = res.data.returnObject
                     console.log(allPledgeList.value,'getPledgeList');
                 }
                 catch (error){
@@ -223,6 +232,7 @@ export default {
 
         return {
             allPledgeList,
+            chooseContact,
             selectedPledge,
             makePayment,
             pledgeCategory,

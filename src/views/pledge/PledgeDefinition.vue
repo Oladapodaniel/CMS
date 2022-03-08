@@ -330,8 +330,14 @@ export default {
               
             })
             .catch(err => console.log(err))
-      }
-      getAllCurrencies()
+        }
+            getAllCurrencies()
+
+    //   const updatePledge = () =>{
+
+    //   }
+
+    //   updatePledge()
 
         const specific = () =>{
             pledgeCategory.value = "specific"
