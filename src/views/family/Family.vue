@@ -91,7 +91,7 @@ export default {
       }
 
       const navigateToAddFamily = () => {
-        router.push({ name: 'AddFamily' })
+        router.push('/tenant/addfamily')
       }
 
       return {

@@ -808,7 +808,7 @@
                           </a>
                           <a
                             class="dropdown-item c-pointer"
-                            @click="confirmDelete(member,member.id, index)"
+                            @click="confirmDelete(member.id, index)"
                             >Remove</a
                           >
                         </div>
@@ -917,7 +917,7 @@
                           </a>
                           <a
                             class="dropdown-item c-pointer"
-                            @click="confirmDelete(member, member.id, index)"
+                            @click="confirmDelete(member.id, index)"
                             >Remove</a
                           >
                         </div>

@@ -20,7 +20,7 @@
                     </div>
             
                     <div class="col-md-8">
-                        <input type="text" v-model="familyName" class="form-control" />
+                        <input type="text" v-model="familyName" class="form-control" autocomplete="off" />
                     </div>
                 </div>
             </div>
@@ -42,6 +42,7 @@
                             v-model="userSearchString"
                             @input="searchForUsers"
                             :disabled="routeParams !== ''"
+                            autocomplete="off"
                         />
                         <div
                             class="dropdown-menu w-100"
@@ -121,6 +122,7 @@
                                 v-model="motherSearchString"
                                 @input="motherSearchForUsers"
                                 :disabled="routeParams !== ''"
+                                autocomplete="off"
                             />
                             <div
                                 class="dropdown-menu w-100"
@@ -185,7 +187,7 @@
                     </div>
         
                     <div class="col-md-8">
-                        <input type="text" v-model="email" class="form-control" />
+                        <input type="text" v-model="email" class="form-control" autocomplete="off" />
                     </div>
                 </div>
             </div>
@@ -197,7 +199,7 @@
                     </div>
         
                     <div class="col-md-8">
-                        <input type="text" v-model="homePhone" class="form-control" />
+                        <input type="text" v-model="homePhone" class="form-control" autocomplete="off" />
                     </div>
                 </div>
             </div>
@@ -374,7 +376,7 @@
       </div>
     </Dialog>
 
-        
+    <Toast />
     </div>
 </template>
 
@@ -389,6 +391,7 @@ import axios from "@/gateway/backendapi";
 import router from "@/router/index";
 import { useRoute } from "vue-router"
 import Dropdown from 'primevue/dropdown';
+import { useToast } from "primevue/usetoast";
 
 export default {
     components: { 
@@ -399,6 +402,7 @@ export default {
         Dropdown
      },
     setup () {
+        const toast = useToast()
         const route = useRoute()
         const familyMembers = ref([])
         const memberRoles = ref([])
@@ -619,6 +623,16 @@ export default {
 
         const addWard = async() => {
             console.log(wardState.value)
+            if (!selectedMember.value.id) {
+                toast.add({
+                        severity: "info",
+                        summary: "The ward has to be selected from the church",
+                        detail: "Kindly choose the ward from the church membership list or create him/her as a member first",
+                        life: 10000,
+                    });
+                    wardSearchString.value = ""
+                return false
+            }
             if (wardState.value === 1 && !route.params.familyId) {
                 const constructSelectedMember = new Object()
                 constructSelectedMember.name = selectedMember.value.name
@@ -722,6 +736,27 @@ export default {
 
             
             if (!route.params.familyId) {
+                if (!father.value.id) {
+                    toast.add({
+                        severity: "info",
+                        summary: "The father has to be selected from the church",
+                        detail: "Kindly choose the father from the church membership list or create him as a member first",
+                        life: 10000,
+                    });
+                    userSearchString.value = ""
+                    return false
+                }
+                if (!mother.value.id) {
+                    console.log("Select mother")
+                    toast.add({
+                        severity: "info",
+                        summary: "The mother has to be selected from the church",
+                        detail: "Kindly choose the mother from the church membership list or create her as a member first",
+                        life: 10000,
+                    });
+                    motherSearchString.value = ""
+                    return false
+                }
                 try {
                     let res = await axios.post("/api/family/createFamily", family)
                     console.log(res)

@@ -1062,7 +1062,7 @@ const routes = [
                     import ( /* webpackChunkName: "createpeoplegroup" */ '@/views/groups/groupleader/GroupLeaderAttendanceReport')
             },
             {
-                path: 'takeattendance',
+                path: 'takeattendance/:id',
                 name: 'TakeAttendance',
                 meta: {
                     title: 'Churchplus - Gorup Leader',
