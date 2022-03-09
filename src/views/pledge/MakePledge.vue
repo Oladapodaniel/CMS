@@ -2,7 +2,7 @@
     <div class="container  container-top  ">
         <div class="container-fluid">
             <div class="row">
-                <div class="col-md-8  ">
+                <div class="col-md-8  " >
                     <div class="heading-text"> Make a Pledge </div>
                      <div class="row my-1 mt-3">
                         <div class="col-md-10  offset-md-2">
@@ -11,7 +11,7 @@
                                     <label for="" class="">Select Person <sup class="text-danger">*</sup> </label>
                                 </div>
                                 <div class="col-md-8">
-                                    <MembersSearch />
+                                    <MembersSearch @memberdetail="chooseContact" />
                                     <!-- <Dropdown v-model="selectMember" class="w-100 font-weight-normal" :options="MembersType"  optionLabel="name" placeholder="Select Member" /> -->
                                 </div>
                             </div>
@@ -23,9 +23,9 @@
                                 <div class="col-md-4 text-md-right align-self-center">
                                     <label for="" class="">Select Pledge <sup class="text-danger">*</sup> </label>
                                 </div>
-                        
+                                <!-- <div>{{allPledgeList}}</div> -->
                                 <div class="col-md-8">
-                                    <Dropdown v-model="selectedPledge" class="w-100 font-weight-normal" :options="pledgeCategory"  optionLabel="name" placeholder="Select Pledge" />
+                                    <Dropdown v-model="selectedPledge" class="w-100 font-weight-normal" :options="allPledgeList"  optionLabel="totalTargetAmount" placeholder="Select Pledge" />
                                 </div>
                             </div>
                         </div>
@@ -51,7 +51,7 @@
                                 </div>
                         
                                 <div class="col-md-8">
-                                    <input type="text" v-model="Amount" class="form-control" />
+                                    <input type="text" v-model="donorPaymentSpecificAmount" class="form-control" />
                                 </div>
                             </div>
                         </div>
@@ -63,10 +63,13 @@
                                     <label for="" class="">Pledge Amount </label>
                                 </div>
                                 <div class="col-md-4">
-                                    <input type="text" v-model="amountFrom" class="form-control" placeholder="From" />
+                                    <input type="text" v-model="allPledgeList.donorPaymentRangeFromAmount" class="form-control" placeholder="From" />
                                 </div>
                                 <div class="col-md-4">
-                                    <input type="text" v-model="amountTo" class="form-control" placeholder="To" />
+                                    <input type="text" v-model="allPledgeList.donorPaymentRangeToAmount" class="form-control" placeholder="To" />
+                                </div>
+                                <div class="col-md-8">
+                                    <input type="text" v-model="allPledgeList.donorPaymentRangeToAmount" class="form-control" placeholder="Enter Amount" />
                                 </div>
                             </div>
                         </div>
@@ -129,13 +132,14 @@
 </template>
 
 <script>
-// import axios from "@/gateway/backendapi";
+import axios from "@/gateway/backendapi";
 import { ref } from "vue";
 import Dropdown from "primevue/dropdown";
 import InputText from "primevue/inputtext";
 import { useToast } from "primevue/usetoast";
 import MembersSearch from "../../components/membership/MembersSearch.vue"
 import router from '../../router';
+import finish from '../../services/progressbar/progress';
 // import store from "../../store/store";
 import CascadeSelect from 'primevue/cascadeselect';
 export default {
@@ -155,7 +159,9 @@ export default {
         const isNameValid = ref(true)
         const isEmailValid = ref(true)
         const selectedPledge = ref('')
+        const allPledgeList = ref([]);
         const amountFrom = ref('')
+        const selectedContact = ref({})
         const amountTo = ref('')
         const pledgeCategory = ref(
             [
@@ -174,6 +180,36 @@ export default {
         const makePayment = () =>{
             router.push('/pledge/pledgepayment')
         }
+
+         const chooseContact = (payload) => {
+            // contactRef.value.hide();
+            selectedContact.value = payload
+        }
+
+        const getAllPledgeDefinition = async () =>{
+                try{
+                    const res = await axios.get('/api/Pledge/GetAllPledgeDefinitions')
+                    finish()
+                    allPledgeList.value = res.data.returnObject
+                    console.log(allPledgeList.value,'getPledgeList');
+                }
+                catch (error){
+                    console.log(error)
+                }
+            }
+            getAllPledgeDefinition()
+
+        // const getSinglePledgeDefinition = async () =>{
+        //         try{
+        //             const res = await axios.get(`/api/Pledge/GetSinglePledgeDefinitions?ID${allPledgeList.value.id}`)
+        //             finish()
+        //             console.log(res,'getSinglePledge');
+        //         }
+        //         catch (error){
+        //             console.log(error)
+        //         }
+        //     }
+        //     getSinglePledgeDefinition()
 
 
         
@@ -195,6 +231,8 @@ export default {
         }
 
         return {
+            allPledgeList,
+            chooseContact,
             selectedPledge,
             makePayment,
             pledgeCategory,

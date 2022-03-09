@@ -277,17 +277,7 @@ export default {
     };
     getContributionCategory();
 
-    const getPledgeDefinition = async () =>{
-        try{
-            const res = await axios.get('getPledgeDefinition')
-            console.log(res,'getPledgeList');
-        }
-        catch (error){
-            console.log(error)
-        }
-    }
-
-    getPledgeDefinition()
+   
 
         const savePledge = async () => {
             const pledgeDetails = {
@@ -340,8 +330,14 @@ export default {
               
             })
             .catch(err => console.log(err))
-      }
-      getAllCurrencies()
+        }
+            getAllCurrencies()
+
+    //   const updatePledge = () =>{
+
+    //   }
+
+    //   updatePledge()
 
         const specific = () =>{
             pledgeCategory.value = "specific"

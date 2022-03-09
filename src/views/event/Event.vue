@@ -94,6 +94,7 @@
               <h4>{{ selectedEventCategoryName }}</h4>
               <div class="event-buttons">
                 <a @click="changeSelectedEventCategory('edit')">Edit Event</a>
+                <a @click="deleteSelectedEventCategory(selectedEventCategoryId, index)">Delete Event</a>
                 <a @click="changeSelectedEventCategory('change')"
                   >Change Event</a
                 >
@@ -2059,6 +2060,71 @@ export default {
       
     },
 
+    delEventCategory(id, index) {
+      if (id) {
+          axios
+        .delete(`/api/EventCategory?ID=${id}`)
+        .then((res) => {
+          console.log(res, 'delete response from back');
+          if (res.data) {
+            this.$toast.add({
+              severity: "success",
+              summary: "Confirmed",
+              detail: `Event Category Successfully Deleted`,
+              life: 3000,
+            });
+            this.attendanceItem = this.attendanceItem.filter(i => id !== i.attendanceId)
+          } else {
+            toast.add({
+              severity: "warn",
+              summary: "Delete Failed",
+              detail: `Please Try Again`,
+              life: 3000,
+            });
+          }
+        })
+        .catch((err) => {
+          finish();
+          if (err.response) {
+            console.log(err.response);
+            this.$toast.add({
+              severity: "error",
+              summary: "Unable to delete",
+              detail: `${err.response}`,
+              life: 3000,
+            });
+          }
+        });
+      } else {
+          this.attendanceItem.splice(index, 1);
+      }
+        // this.convertedAmount2.splice(index, 1)
+    },
+    
+    deleteSelectedEventCategory(id,index) {
+       this.$confirm.require({
+        message: "Are you sure you want to proceed?",
+        header: "Confirmation",
+        icon: "pi pi-exclamation-triangle",
+        acceptClass: "confirm-delete",
+        rejectClass: "cancel-delete",
+        accept: () => {
+          this.delEventCategory(id, index);
+          // toast.add({severity:'info', summary:'Confirmed', detail:'Member Deleted', life: 3000});
+        },
+        reject: () => {
+          //  this.$toast.add({severity:'info', summary:'Confirmed', detail:'Record deleted', life: 3000});
+            this.$toast.add({
+            severity: "info",
+            summary: "Rejected",
+            detail: "You have rejected",
+            life: 3000,
+          });
+        },
+      });
+      
+    },
+
     deleteOffering(id, index) {
       if (id) {
           axios
@@ -2158,7 +2224,7 @@ export default {
             });
         return false;
      }
-      console.log(this.selectedEventCategoryId);
+      console.log(this.selectedEventCategoryId, 'my particular id');
       // let event = {
       //   date: this.eventDate === "" ? "01.01.0001 00:00:00" : this.eventDate,
       //   topic: this.topic,
@@ -2342,6 +2408,9 @@ export default {
         });
       });
     },
+
+    
+
     changeSelectedEventCategory(action) {
       if (action === "edit") {
         // do something
