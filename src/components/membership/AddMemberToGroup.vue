@@ -207,8 +207,8 @@
 
                     <button
                     class="primary-btn default-btn primary-bg border-0 outline-none"
-                    @click="addSelectedMembersToGroup"
-                    :data-dismiss="modalStatus"
+                    @click="addMemberToGroup"
+                    data-dismiss="modal"
                     >
                     Add member
                     </button>
@@ -218,12 +218,16 @@
 
 <script>
 import { ref } from '@vue/reactivity'
-import composeService from "../../../services/communication/composer";
+import composeService from "../../services/communication/composer";
 import { watchEffect } from '@vue/runtime-core';
+import { useRoute } from "vue-router"
+import axios from "@/gateway/backendapi";
 
 export default {
     props: ["newPerson"],
+    emits: ["memberadded"],
     setup (props, { emit }) {
+        const route = useRoute()
         const selectedMembers = ref([]);
         const memberSelectInput = ref(null);
         const memberListShown = ref(false);
@@ -235,7 +239,6 @@ export default {
         const isGroupLeader = ref(false)
         const enableLogin = ref(false)
         const groupMembers = ref([])
-        const modalStatus = ref("")
 
         const showMemberList = () => {
             memberListShown.value = true;
@@ -298,6 +301,23 @@ export default {
             }
         })
 
+        const addMemberToGroup = () => {
+            let data = {
+                groupId: route.query.groupId,
+                personIDs: selectedMembers.value.map(i => i.id)
+            }
+            console.log(data)
+            axios
+            .put(`/api/UpdateGroup/${route.query.groupId}`, data)
+            .then((res) => {
+                console.log(res)
+                emit("memberadded", res)
+            })
+            .catch((err) => {
+            console.log(err.response);
+            });
+        }
+
 
         return {
             selectedMembers,
@@ -316,7 +336,7 @@ export default {
             selectMember,
             removeMember,
             showAddMemberForm,
-            modalStatus
+            addMemberToGroup
         }
     }
 }
