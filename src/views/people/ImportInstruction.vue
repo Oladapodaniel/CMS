@@ -305,7 +305,8 @@ export default {
                 store.dispatch('membership/showImportedPeople', memberData.value)
                 displayModal.value = false
                 loading.value = false
-                router.push("/tenant/people")
+                // router.push("")
+                window.location.href = 'https://my.churchplus.co/tenant/people';
                 
                 toast.add({
                 severity: "info",
