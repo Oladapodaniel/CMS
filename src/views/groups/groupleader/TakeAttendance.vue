@@ -2,7 +2,8 @@
    <div class="container container-top">
         <div class="row d-flex justify-content-center justify-content-sm-between">
           <div class="col-12 col-sm-6 page-header text-center text-sm-left">Mark attendance</div>
-          <div class="default-btn mt-3 mt-sm-0 c-pointer" data-toggle="modal" data-target="#addMemberModal" ref="modalBtn">Add member</div>
+          <div class="default-btn mt-3 mt-sm-0 c-pointer" ref="modalBtn" @click="setDisplayForm">Add member</div>
+          <!-- data-toggle="modal" data-target="#addMemberModal" -->
         </div>
         <div class="row mt-5 box-boundary">
             <div class="col-12 border-bottom"> 
@@ -33,21 +34,28 @@
                 </div>
                 <div class="row my-3" v-if="searchMembers.length == 0 && !loading">
                     <div class="col-12 text-center font-weight-700">
-                        <div>There are no members in this group yet, start by adding members header</div>
-                        <div class="default-btn border-0 text-white primary-bg" data-toggle="modal" data-target="#addMemberModal" ref="modalBtn">Add member</div>
+                        <div class="mt-3">There are no members in this group yet, start by adding members</div>
+                        <div class="mt-3 default-btn border-0 text-white primary-bg" data-toggle="modal" data-target="#addMemberModal" ref="modalBtn">Add member</div>
                     </div>
                 </div>
             </div>
         </div>
-        <div class="row mt-5" v-if="contributionItems.length > 0">
-            <div class="col-12 font-weight-700" style="font-size: 1.5em">
+        <div class="row mt-5" v-if="contributionItems.length > 0" @click="toggleOffering">
+            <div class="col-6 font-weight-700" style="font-size: 1.5em">
                 Contributions
             </div>
+            <div class="col-6 text-right">
+                <i class="pi pi-chevron-up"></i>
+            </div>
         </div>
-        <div class="row box-boundary mt-4 p-3" v-for="item in contributionItems" :key="item.id">
-            <div class="col-md-8 mt-3 align-self-center font-weight-700">{{ item.name }}</div>
-            <div class="col-md-4 mt-3 mt-md-0">
-                <input type="text" class="form-control" placeholder="amount"/>
+        <div class="row box-boundary mt-4 p-3" :class="{ 'show-offering' : showOfferings, 'hide-offering' : !showOfferings }">
+            <div class="col-12 py-2 border-top" v-for="item in contributionItems" :key="item.id">
+                <div class="row">
+                    <div class="col-md-8 mt-3 align-self-center font-weight-700">{{ item.name }}</div>
+                    <div class="col-md-4 mt-3 mt-md-0">
+                        <input type="text" class="form-control" placeholder="amount"/>
+                    </div>
+                </div>
             </div>
         </div>
         <div class="row mt-5">
@@ -85,9 +93,9 @@
             <span aria-hidden="true">&times;</span>
             </button>
         </div>
-        <div class="modal-body">
+        <!-- <div class="modal-body">
             <AddToGroup @displayForm="setDisplayForm" :newPerson="newPerson" @memberadded="displayMessage"/>
-        </div>
+        </div> -->
         <!-- <div class="modal-footer mb-2">
             
         </div> -->
@@ -113,15 +121,15 @@
 <script>
 import { ref, computed } from '@vue/reactivity'
 import axios from "@/gateway/backendapi";
-import AddToGroup from "../component/AddMemberToGroup.vue"
+// import AddToGroup from "../../../components/membership/AddMemberToGroup.vue"
 import Dialog from "primevue/dialog";
-import NewPerson from '../../../components/membership/NewDonor.vue';
+import NewPerson from '../component/AddNewMemberToGroup.vue';
 import { useRoute } from 'vue-router'
 import attendanceservice from '../../../services/attendance/attendanceservice';
 import { useToast } from "primevue/usetoast";
 export default {
     components: {
-        AddToGroup,
+        // AddToGroup,
         Dialog,
         NewPerson
     },
@@ -135,6 +143,7 @@ export default {
         const groupDetail = ref({})
         const searchText = ref("")
         const loading = ref(false)
+        const showOfferings = ref(false)
 
         const getContributionsItem = async() => {
             try {
@@ -211,6 +220,10 @@ export default {
             });
         }
 
+        const toggleOffering = () => {
+            showOfferings.value = !showOfferings.value
+        }
+
         
 
         return {
@@ -226,7 +239,9 @@ export default {
             searchText,
             markAttendance,
             loading,
-            displayMessage
+            displayMessage,
+            toggleOffering,
+            showOfferings
         }
     }
 }
@@ -243,5 +258,15 @@ export default {
     /* box-shadow: rgba(50, 50, 93, 0.25) 0px 50px 100px -20px, rgba(0, 0, 0, 0.3) 0px 30px 60px -30px, rgba(10, 37, 64, 0.35) 0px -2px 6px 0px inset; */
     /* width: 100%; */
     box-shadow: rgba(0, 0, 0, 0.1) 0px 4px 12px;
+}
+
+.show-offering {
+    height: auto;
+}
+
+.hide-offering {
+    display: none;
+    /* height: 0;
+    overflow: hidden; */
 }
 </style>
