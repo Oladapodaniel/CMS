@@ -40,11 +40,11 @@
                 </div>
             </div>
         </div>
-        <div class="row mt-5" v-if="contributionItems.length > 0" @click="toggleOffering">
+        <div class="row mt-5 border box-boundary py-3" v-if="contributionItems.length > 0" @click="toggleOffering">
             <div class="col-6 font-weight-700" style="font-size: 1.5em">
                 Contributions
             </div>
-            <div class="col-6 text-right">
+            <div class="col-6 text-right align-self-center">
                 <i class="pi pi-chevron-up"></i>
             </div>
         </div>
@@ -58,10 +58,28 @@
                 </div>
             </div>
         </div>
+        <div class="row mt-5 border box-boundary py-3" v-if="contributionItems.length > 0" @click="toggleAttendance">
+            <div class="col-10 font-weight-700" style="font-size: 1.5em">
+                Attendance category
+            </div>
+            <div class="col-2 text-right align-self-center">
+                <i class="pi pi-chevron-up"></i>
+            </div>
+        </div>
+        <div class="row box-boundary mt-4 p-3" :class="{ 'show-offering' : showAttendance, 'hide-offering' : !showAttendance }">
+            <div class="col-12 py-2 border-top" v-for="item in contributionItems" :key="item.id">
+                <div class="row">
+                    <div class="col-md-8 mt-3 align-self-center font-weight-700">{{ item.name }}</div>
+                    <div class="col-md-4 mt-3 mt-md-0">
+                        <input type="text" class="form-control" placeholder="amount"/>
+                    </div>
+                </div>
+            </div>
+        </div>
         <div class="row mt-5">
             <textarea class="form-control" rows="5" placeholder="Enter your note here"></textarea>
         </div>
-        <div class="row d-flex justify-content-end my-4">
+        <div class="row d-flex justify-content-center justify-content-md-end my-4">
             <div class="default-btn primary-bg border-0 text-white text-center">Save</div>
         </div>
    </div>
@@ -144,6 +162,7 @@ export default {
         const searchText = ref("")
         const loading = ref(false)
         const showOfferings = ref(false)
+        const showAttendance = ref(false)
 
         const getContributionsItem = async() => {
             try {
@@ -223,6 +242,10 @@ export default {
         const toggleOffering = () => {
             showOfferings.value = !showOfferings.value
         }
+        
+        const toggleAttendance = () => {
+            showAttendance.value = !showAttendance.value
+        }
 
         
 
@@ -241,7 +264,9 @@ export default {
             loading,
             displayMessage,
             toggleOffering,
-            showOfferings
+            showOfferings,
+            toggleAttendance,
+            showAttendance
         }
     }
 }
