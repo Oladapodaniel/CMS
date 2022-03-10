@@ -143,6 +143,46 @@
                                 {{ sendBtnText }}
                               </a>
                             </div>
+                            <div class="row">
+                              <div class="col-md-12">
+                                <div
+                                  class="modal fade"
+                                  id="sendReport"
+                                  tabindex="-1"
+                                  aria-labelledby="exampleModalLabel"
+                                  aria-hidden="true"
+                                  :show="true"
+                                >
+                                  <div class="modal-dialog modal-lg"  >
+                                    <div class="modal-content">
+                                      <div class="modal-header">
+                                        <h5 class="modal-title font-weight-bold" id="sendReport">
+                                          Send this report
+                                        </h5>
+                                        <button
+                                          type="button"
+                                          class="close"
+                                          data-dismiss="modal"
+                                          aria-label="Close"
+                                        >
+                                          <span aria-hidden="true">&times;</span>
+                                        </button>
+                                      </div>
+                                      <div class="modal-body pt-0 px-0"  :data-dismiss="btnState">
+                                        <!-- <ReportModal :eventName="eventDataResponse.name"/> -->
+                                        <ReportModal
+                                          :eventName="
+                                            stats.activityToday ? stats.activityToday.name : ''
+                                          "
+                                          @sendreport="sendReport"
+                                          :stats="stats"
+                                        />
+                                      </div>
+                                    </div>
+                                  </div>
+                                </div>
+                              </div>
+                            </div>
                             <div class="col-6">
                               <a class="def-btn edit-btn" @click="copyLink"
                                 >Get share link</a
@@ -927,58 +967,7 @@
             </div>
           </div>
 
-          <div class="row">
-            <div class="col-md-12">
-              <div
-                class="modal fade"
-                id="sendReport"
-                tabindex="-1"
-                aria-labelledby="exampleModalLabel"
-                aria-hidden="true"
-                :show="true"
-              >
-                <div class="modal-dialog modal-lg">
-                  <div class="modal-content">
-                    <div class="modal-header">
-                      <h5 class="modal-title font-weight-bold" id="sendReport">
-                        Send this report
-                      </h5>
-                      <button
-                        type="button"
-                        class="close"
-                        data-dismiss="modal"
-                        aria-label="Close"
-                      >
-                        <span aria-hidden="true">&times;</span>
-                      </button>
-                    </div>
-                    <div class="modal-body pt-0 px-0" :data-dismiss="btnState">
-                      <!-- <ReportModal :eventName="eventDataResponse.name"/> -->
-                      <ReportModal
-                        :eventName="
-                          stats.activityToday ? stats.activityToday.name : ''
-                        "
-                        @sendreport="sendReport"
-                        :stats="stats"
-                      />
-                    </div>
-                    <!-- <div class="modal-footer">
-                <button
-                  type="button"
-                  class="btn btn-secondary"
-                  data-dismiss="modal"
-                >
-                  Close
-                </button>
-                <button type="button" class="btn btn-primary">
-                  Save changes
-                </button>
-              </div> -->
-                  </div>
-                </div>
-              </div>
-            </div>
-          </div>
+          
 
           <div class="row email-data" ref="emaildata">
             <table
@@ -2265,7 +2254,7 @@ export default {
     // const markedAsSent = ref(false);
     const sendBtnText = ref("Send report");
     // const eventDataResponse = ref({});
-    const topmost = ref(null);
+    // const topmost = ref(null);
     const middle = ref(null);
     const emaildata = ref(null);
     const bottom = ref(null);
@@ -2295,6 +2284,11 @@ export default {
     };
 
     const stats = ref(store.getters.reportData);
+
+    const innerWidth = computed(() => {
+            return window.innerWidth;
+        })
+
     const offeringArr = ref([]);
 
     const eventDateString = computed(() => {
@@ -2329,7 +2323,7 @@ export default {
                       }
 
                       .topmost-box2{
-                        width: 30%;display:flex;flex-direction:column;height:133px;align-items:center;justify-content:center
+                        width: 30%;display:flex; flex-direction:column; height:133px; align-items:center; justify-content:center
                       }
                     </style>
                   </head>
@@ -2475,7 +2469,9 @@ export default {
       stats,
       offeringArr,
       eventDateString,
-      topmost,
+      innerWidth,
+      window,
+      // topmost,
       middle,
       bottom,
       sendReport,
@@ -2496,18 +2492,18 @@ export default {
 </script>
 
 <style scoped>
-.topmost {
+/* .topmost {
   display: flex;
-}
+} */
 
 .email-data {
   height: 0 !important;
   overflow: hidden !important;
 }
 
-.topmost-box {
+/* .topmost-box {
   width: 50%;
-}
+} */
 
 * {
   color: #1c252c;
@@ -2741,10 +2737,6 @@ a {
   width: 100%;
   border: 1px solid #ebeff4;
   border-radius: 5px;
-}
-
-.modal-lg {
-  width: 639px !important;
 }
 
 .resend-btn {
