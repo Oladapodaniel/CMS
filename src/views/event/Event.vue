@@ -2717,7 +2717,9 @@ export default {
             }
           })
           this.firstTimers = res.data.activityFirstTimers
+          if (this.firstTimers.length > 0) this.showForm3 = true
           this.newConverts = res.data.activityNewConverts
+          if (this.newConverts.length > 0) this.showForm3 = true
           this.updatePreEvent = res.data.preEvent
           // this.offeringItem.find(i => console.log(i))
           console.log(res.data)

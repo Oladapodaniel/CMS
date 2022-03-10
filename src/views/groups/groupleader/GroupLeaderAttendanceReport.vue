@@ -1,40 +1,30 @@
 <template>
     <div class="container container-top">
         <div class="row d-flex justify-content-center justify-content-sm-between">
-          <div class="col-12 col-sm-6 page-header">Attendance and report</div>
+          <div class="col-12 col-sm-6 page-header text-center text-sm-left">Attendance and report</div>
           <div class="default-btn mt-3 mt-sm-0">Add event</div>
         </div>
         <div class="row border mt-5">
             <div class="col-12 my-3">
                 <div class="font-weight-700">Upcoming events</div>
                 <div class="row mt-3">
-                    <div class="col-10 offset-1  boxes py-3 mt-5 bg-white">
+                    <div class="col-10 offset-1  boxes py-3 mt-5 bg-white" v-for="item in futureEvents" :key="item.id">
                         <div class="d-flex flex-column flex-sm-row justify-content-between w-100 font-adjustment">
-                            <div class="text-center">Sunday Service</div>
-                            <div class="text-center">Choir</div>
-                            <div class="text-center">Date</div>
+                            <div class="text-center">{{ item.fullEventName }}</div>
+                            <div class="text-center">{{ item.fullGroupName }}</div>
+                            <div class="text-center">{{ formatDate(item.eventDate)}}</div>
                         </div>
                         <!-- <div class="text-center col-12 col-sm-6 col-lg-4 mt-3 primary-bg text-white default-btn border-0">Take attendance</div> -->
-                        <router-link :to="{ name: 'TakeAttendance' }">
+                        <router-link :to="{ name: 'TakeAttendance', params: { id: item.id }, query: { groupId: item.groupID }}">
                         <div class="text-center col-12 col-sm-6 col-lg-4 mt-3 primary-bg text-white default-btn border-0">Take attendance</div>
                         </router-link>
                     </div>
-                    <div class="col-10 offset-1  boxes py-3 mt-5 bg-white">
-                        <div class="d-flex flex-column flex-sm-row justify-content-between w-100 font-adjustment">
-                            <div class="text-center">Sunday Service</div>
-                            <div class="text-center">Choir</div>
-                            <div class="text-center">Date</div>
-                        </div>
-                        <div class="text-center col-12 col-sm-6 col-lg-4 mt-3 primary-bg text-white default-btn border-0">Take attendance</div>
+                    <div class="col-10 offset-1  boxes py-3 mt-5 bg-white mb-4" v-if="futureEvents.length == 0 && !loading">
+                        No upcoming event has been created yet.
                     </div>
-                    <div class="col-10 offset-1 boxes py-3 mt-5 bg-white">
-                        <div class="d-flex flex-column flex-sm-row justify-content-between w-100 font-adjustment">
-                            <div class="text-center">Sunday Service</div>
-                            <div class="text-center">Choir</div>
-                            <div class="text-center">Date</div>
-                        </div>
-                        <div class="text-center col-12 col-sm-6 col-lg-4 mt-3 primary-bg text-white default-btn border-0">Take attendance</div>
-                    </div>
+                    <div class="col-10 offset-1 text-center" v-if="futureEvents.length == 0 && loading">
+                        <i class="pi pi-spin pi-spinner primary-text" style="fontSize: 3rem"></i>
+                    </div> 
                 </div>
             </div>
         </div>
@@ -42,28 +32,11 @@
             <div class="col-12 mt-3">
                 <div class="font-weight-700">Past events</div>
                <div class="row mt-3">
-                    <div class="col-10 offset-1  boxes py-3 mt-5 bg-white">
+                    <div class="col-10 offset-1  boxes py-3 mt-5 bg-white mb-3" v-for="item in pastEvents" :key="item.id">
                         <div class="d-flex flex-column flex-sm-row justify-content-between w-100 font-adjustment">
-                            <div class="text-center">Sunday Service</div>
-                            <div class="text-center">Choir</div>
-                            <div class="text-center">Date</div>
-                        </div>
-                        <!-- <div class="text-center col-12 col-sm-6 col-lg-4 mt-3 primary-bg text-white default-btn border-0">Take attendance</div> -->
-                        <div class="text-center col-12 col-sm-6 col-lg-4 mt-3 primary-bg text-white default-btn border-0">Take attendance</div>
-                    </div>
-                    <div class="col-10 offset-1  boxes py-3 mt-5 bg-white">
-                        <div class="d-flex flex-column flex-sm-row justify-content-between w-100 font-adjustment">
-                            <div class="text-center">Sunday Service</div>
-                            <div class="text-center">Choir</div>
-                            <div class="text-center">Date</div>
-                        </div>
-                        <div class="text-center col-12 col-sm-6 col-lg-4 mt-3 primary-bg text-white default-btn border-0">Take attendance</div>
-                    </div>
-                    <div class="col-10 offset-1 boxes py-3 mt-5 bg-white">
-                        <div class="d-flex flex-column flex-sm-row justify-content-between w-100 font-adjustment">
-                            <div class="text-center">Sunday Service</div>
-                            <div class="text-center">Choir</div>
-                            <div class="text-center">Date</div>
+                            <div class="text-center">{{ item.fullEventName }}</div>
+                            <div class="text-center">{{ item.fullGroupName }}</div>
+                            <div class="text-center">{{ formatDate(item.eventDate) }}</div>
                         </div>
                         <div class="text-center col-12 col-sm-6 col-lg-4 mt-3 primary-bg text-white default-btn border-0">Take attendance</div>
                     </div>
@@ -74,19 +47,43 @@
 </template>
 
 <script>
-import attendanceservice from '../../../services/attendance/attendanceservice';
+import axios from "@/gateway/backendapi";
+import { ref } from '@vue/reactivity';
+import dateFormatter from '../../../services/dates/dateformatter';
 export default {
     setup () {
+        const pastEvents = ref([])
+        const futureEvents = ref([])
+        const loading = ref(false)
 
-
+        const formatDate = (date) => {
+            return dateFormatter.monthDayYear(date)
+        }
         const getCheckinAttendances = async() => {
-            const response = await attendanceservice.getItems();
-            console.log(response, 'egdfsdf')
+            loading.value = true
+            try {
+                let res = await axios.get("/api/checkinattendance/AllCheckInAttendancesForAGroupLeader")
+                console.log(res)
+                loading.value = false
+                let resSorted = res.data.items.sort((a, b) => {
+                    return new Date(a.eventDate.split("T")[0]) - new Date(b.eventDate.split("T")[0])
+                })
+                pastEvents.value = resSorted.filter(i => i.eventDate.split("T")[0] < new Date().toISOString().split("T")[0])
+                futureEvents.value = resSorted.filter(i => i.eventDate.split("T")[0] >= new Date().toISOString().split("T")[0])
+
+            }
+            catch (err) {
+                console.log(err)
+                loading.value = false
+            }
         }
         getCheckinAttendances()
 
         return {
-            
+            pastEvents,
+            futureEvents,
+            formatDate,
+            loading
         }
     }
 }

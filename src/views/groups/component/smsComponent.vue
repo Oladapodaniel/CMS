@@ -710,42 +710,42 @@
           </div>
         </div>
       </div>
-      <!-- Create sender id modal -->
-        <!-- Modal -->
-        <div class="modal fade" id="senderIdModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
-          <div class="modal-dialog modal-dialog-centered" role="document">
-            <div class="modal-content">
-              <div class="modal-header">
-                <h5 class="modal-title" id="exampleModalLongTitle">Create sender id</h5>
-                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                  <span aria-hidden="true">&times;</span>
-                </button>
-              </div>
-              <div class="modal-body">
-                <div class="container">
-                  <div class="row">
-                    <div class="col-12">Enter sender id</div>
-                    <div class="col-12 mt-2">
-                      <input type="text" class="form-control" placeholder="Enter sender id" v-model="senderIdText" @input="validateSenderId" ref="senderIdRef"/>
-                      <div class="invalid-feedback text-danger pl-2">
-                        <ul>
-                          <li>Should not contain any special characters</li>
-                          <li>Should not be less than 3 characters and more than 11 characters</li>
-                        </ul>
-                      </div>
-                    </div>
+    </div>
+  </div>
+  <!-- Create sender id modal -->
+    <!-- Modal -->
+    <div class="modal fade" id="senderIdModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+      <div class="modal-dialog modal-dialog-centered" role="document">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h5 class="modal-title" id="exampleModalLongTitle">Create sender id</h5>
+            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+              <span aria-hidden="true">&times;</span>
+            </button>
+          </div>
+          <div class="modal-body">
+            <div class="container">
+              <div class="row">
+                <div class="col-12">Enter sender id</div>
+                <div class="col-12 mt-2">
+                  <input type="text" class="form-control" placeholder="Enter sender id" v-model="senderIdText" @input="validateSenderId" ref="senderIdRef"/>
+                  <div class="invalid-feedback text-danger pl-2">
+                    <ul>
+                      <li>Should not contain any special characters</li>
+                      <li>Should not be less than 3 characters and more than 11 characters</li>
+                    </ul>
                   </div>
                 </div>
               </div>
-              <div class="modal-footer">
-                <button type="button" class="btn default-btn " data-dismiss="modal">Close</button>
-                <button type="button" class="btn default-btn primary-bg border-0 text-white" data-dismiss="modal" @click="saveSenderId" :disabled="requestbtn">Request sender id</button>
-              </div>
             </div>
           </div>
+          <div class="modal-footer">
+            <button type="button" class="btn default-btn " data-dismiss="modal">Close</button>
+            <button type="button" class="btn default-btn primary-bg border-0 text-white" data-dismiss="modal" @click="saveSenderId" :disabled="requestbtn">Request sender id</button>
+          </div>
         </div>
+      </div>
     </div>
-  </div>
 </template>
 
 <script>
@@ -1777,5 +1777,9 @@ color: rgb(15, 71, 134)
 .create-new-bg:hover {
   background: #dadadad2;
   color: rgb(15, 71, 134)
+}
+
+.modal-backdrop {
+  z-index: -1;
 }
 </style>

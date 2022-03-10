@@ -765,7 +765,7 @@ props: ['selectedGroupMembers', 'groupData'],
     })
      watchEffect( () => {
         // alert(props.phoneNumbers)
-         if (props.groupData) selectedMembers.value = props.groupData
+         if (props.groupData) selectedGroups.value = props.groupData
     } )
     const showSection = (index) => {
       if (index === 1) groupSelectionTab.value = true;
