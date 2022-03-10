@@ -53,34 +53,34 @@
                 <div class="row">
                     <div class="col-md-8 mt-3 align-self-center font-weight-700">{{ item.name }}</div>
                     <div class="col-md-4 mt-3 mt-md-0">
-                        <input type="text" class="form-control" placeholder="amount"/>
+                        <input type="text" class="form-control" placeholder="amount" v-model="item.amount"/>
                     </div>
                 </div>
             </div>
         </div>
-        <div class="row mt-5 border box-boundary py-3" v-if="contributionItems.length > 0" @click="toggleAttendance">
+        <div class="row mt-5 border box-boundary py-3" v-if="attendanceType.length > 0" @click="toggleAttendance">
             <div class="col-10 font-weight-700" style="font-size: 1.5em">
-                Attendance category
+                Summary attendance
             </div>
             <div class="col-2 text-right align-self-center">
                 <i class="pi pi-chevron-up"></i>
             </div>
         </div>
         <div class="row box-boundary mt-4 p-3" :class="{ 'show-offering' : showAttendance, 'hide-offering' : !showAttendance }">
-            <div class="col-12 py-2 border-top" v-for="item in contributionItems" :key="item.id">
+            <div class="col-12 py-2 border-top" v-for="item in attendanceType" :key="item.id">
                 <div class="row">
                     <div class="col-md-8 mt-3 align-self-center font-weight-700">{{ item.name }}</div>
                     <div class="col-md-4 mt-3 mt-md-0">
-                        <input type="text" class="form-control" placeholder="amount"/>
+                        <input type="text" class="form-control" placeholder="Enter count" v-model="item.number"/>
                     </div>
                 </div>
             </div>
         </div>
         <div class="row mt-5">
-            <textarea class="form-control" rows="5" placeholder="Enter your note here"></textarea>
+            <textarea class="form-control" rows="5" placeholder="Enter your note here" v-model="note"></textarea>
         </div>
         <div class="row d-flex justify-content-center justify-content-md-end my-4">
-            <div class="default-btn primary-bg border-0 text-white text-center">Save</div>
+            <div class="default-btn primary-bg border-0 text-white text-center" @click="updateAttendanceCheckin">Save</div>
         </div>
    </div>
 
@@ -153,6 +153,7 @@ export default {
     },
     setup () {
         const contributionItems = ref([])
+        const attendanceType = ref([])
         const display = ref(false)
         const modalBtn = ref(null);
         const newPerson = ref({})
@@ -163,6 +164,7 @@ export default {
         const loading = ref(false)
         const showOfferings = ref(false)
         const showAttendance = ref(false)
+        const note = ref("")
 
         const getContributionsItem = async() => {
             try {
@@ -175,6 +177,18 @@ export default {
             }
         }
         getContributionsItem() 
+       
+       const getAttendanceType = async() => {
+            try {
+                let { data } = await axios.get("/GetAttendanceType")
+                console.log(data)
+                attendanceType.value = data
+            }
+            catch (err) {
+                console.log(err)
+            }
+        }
+        getAttendanceType() 
 
         const setGroupModal = () => {
             modalBtn.value.click()
@@ -247,6 +261,30 @@ export default {
             showAttendance.value = !showAttendance.value
         }
 
+        const updateAttendanceCheckin = async() => {
+            groupDetail.value.note = note.value
+            groupDetail.value.summaryAttendance = attendanceType.value.map(i => {
+                return {
+                    attendanceTypeID: i.id,
+                    number: i.number
+                }
+            })
+            groupDetail.value.offerings = contributionItems.value.map(i => {
+                return {
+                    financialContributionID: i.id,
+                    amount: i.amount
+                }
+            })
+            console.log(groupDetail.value)
+            try {
+                let data = await axios.post("/api/CheckInAttendance/UpdateCheckInAttendance", groupDetail.value)
+                console.log(data)
+            }
+            catch (err) {
+                console.log(err)
+            }
+        }
+
         
 
         return {
@@ -266,7 +304,10 @@ export default {
             toggleOffering,
             showOfferings,
             toggleAttendance,
-            showAttendance
+            showAttendance,
+            attendanceType,
+            updateAttendanceCheckin,
+            note
         }
     }
 }

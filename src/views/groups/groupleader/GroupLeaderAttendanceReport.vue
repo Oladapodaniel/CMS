@@ -19,6 +19,9 @@
                         <div class="text-center col-12 col-sm-6 col-lg-4 mt-3 primary-bg text-white default-btn border-0">Take attendance</div>
                         </router-link>
                     </div>
+                    <div class="col-10 offset-1  boxes py-3 mt-5 bg-white mb-4" v-if="futureEvents.length == 0 && !loading">
+                        No upcoming event has been created yet.
+                    </div>
                     <div class="col-10 offset-1 text-center" v-if="futureEvents.length == 0 && loading">
                         <i class="pi pi-spin pi-spinner primary-text" style="fontSize: 3rem"></i>
                     </div> 

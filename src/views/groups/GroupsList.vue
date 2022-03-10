@@ -178,22 +178,18 @@
                     </div> -->
 
                     <div class="col-md-6 desc" @click="groupClick(group.id)">
-                      <p class="mb-0 d-flex justify-content-between">
+                      <p class="mb-0 d-flex justify-content-between text-primary">
                         <span
                           class=" text-dark font-weight-bold d-flex d-md-none fontIncrease"
                         style="font-size:15px">Group Name</span>
-                        <router-link
-                          :to="`/tenant/createpeoplegroup/${group.id}`"
-                        >
-                          {{ group.name }}</router-link
-                        >
+                          {{ group.name }}
                       </p>
                     </div>
 
-                    <div class="col-md-5">
-                      <div class="d-flex small justify-content-between">
+                    <div class="col-md-5" @click="groupClick(group.id)">
+                      <div class="d-flex small justify-content-between text-primary">
                         <span class="text-dark font-weight-bold d-flex d-md-none fontIncrease" style="font-size:15px">Membership Size</span>
-                          <div class="desc small-text text-right text-md-center">
+                          <div class="small-text text-right text-md-center">
                             {{ group.peopleInGroupsCount }}
                           </div>
                       </div>
@@ -402,7 +398,17 @@ export default {
       }
     }
     const groupClick = (id) => {
-          if (searchGroup.value.length) {
+        if (route && route.query && route.query.actionType == "sendsms") {
+          let group = {
+            id: id
+          }
+          sendGroupSms(group)
+        } else if (route && route.query && route.query.actionType == "sendemail") {
+          let group = {
+            id: id
+          }
+          sendGroupEmail(group)
+        } else {
                 router.push(`/tenant/createpeoplegroup/${id}`)
           } 
     }
