@@ -305,7 +305,7 @@ export default {
                 toast.add({
                     severity: "success",
                     summary: "Success",
-                    detail: "Saved successfullyl",
+                    detail: "Saved successfully",
                     life: 5000,
                     });
                     setTimeout(() => {
