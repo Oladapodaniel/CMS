@@ -93,10 +93,10 @@
               <p><i class="pi pi-calendar mr-2"></i> Events</p>
               <h4>{{ selectedEventCategoryName }}</h4>
               <div class="event-buttons">
-                <a @click="changeSelectedEventCategory('edit')">Edit Event</a>
-                <a @click="deleteSelectedEventCategory(selectedEventCategoryId, index)">Delete Event</a>
+                <a @click="changeSelectedEventCategory('edit')">Edit</a>
+                <a @click="deleteSelectedEventCategory(selectedEventCategoryId, index)">Delete</a>
                 <a @click="changeSelectedEventCategory('change')"
-                  >Change Event</a
+                  >Change</a
                 >
               </div>
             </div>
@@ -2066,7 +2066,7 @@ export default {
         .delete(`/api/EventCategory?ID=${id}`)
         .then((res) => {
           console.log(res, 'delete response from back');
-          if (res.data) {
+          if (res.data === true) {
             this.$toast.add({
               severity: "success",
               summary: "Confirmed",
@@ -2074,6 +2074,13 @@ export default {
               life: 3000,
             });
             this.attendanceItem = this.attendanceItem.filter(i => id !== i.attendanceId)
+          } else if (res.data === false ) {
+            this.$toast.add({
+              severity: "warn",
+              summary: "Delete Failed",
+              detail: `This event category has been used to create event or Attendance report, delete any of the report then proceed by deleting the event category`,
+              life: 3000,
+            });
           } else {
             toast.add({
               severity: "warn",
