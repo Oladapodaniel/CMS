@@ -1,9 +1,12 @@
 <template>
     <div class="container  container-top  ">
+        <div class="row d-flex justify-content-between px-3">
+                <div class="heading-text"> Pledge Payment </div>
+                <div><ToggleButton @is-active="isActive" :active="isActive" /></div>
+        </div>
         <div class="container-fluid">
             <div class="row">
                 <div class="col-md-8  ">
-                    <div class="heading-text"> Pledge Payment </div>
                      <div class="row my-1 mt-3">
                         <div class="col-md-10  offset-md-2">
                             <div class="row">
@@ -131,12 +134,14 @@ import MembersSearch from "../../components/membership/MembersSearch.vue"
 // import router from '../../router';
 // import store from "../../store/store";
 import CascadeSelect from 'primevue/cascadeselect';
+import ToggleButton from '../donation/toggleButton.vue';
 export default {
     components: {
         MembersSearch,
         Dropdown,
         InputText,
-        CascadeSelect
+        CascadeSelect,
+        ToggleButton
     },
     setup() {
         const toast = useToast()

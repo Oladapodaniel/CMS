@@ -809,7 +809,7 @@ const paymentGatewayNeeded = ref({});
             secondTemplate, thirdTemplate, toggleFirstTemplate, toggleSecondTemplate,
             toggleThirdTemplate, sourceModal, togglePopup, booleanModal, closeModal,
             paymentGateWaysDb, paymentGateWays, toggleCheckBox, gateways, removeContributionIDs,
-            removePaymentGatewayIDs, isActive, active, routeParams, theContributionItems,
+            removePaymentGatewayIDs, isActive, routeParams, theContributionItems,
             templateDisplay, toggleTemplate, showConfirmModal,paymentGatewayNeeded, showPaymentSection, paymentSectionIsShown
         }
     }

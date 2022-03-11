@@ -1,9 +1,12 @@
 <template>
-    <div class="container  container-top  ">
+    <div class="container  container-top container-wide ">
+        <div class="row d-flex justify-content-between px-3">
+                <div class="heading-text"> Make a Pledge </div>
+                <div><ToggleButton @is-active="isActive" :active="isActive" /></div>
+        </div>
         <div class="container-fluid">
             <div class="row">
                 <div class="col-md-8  " >
-                    <div class="heading-text"> Make a Pledge </div>
                      <div class="row my-1 mt-3">
                         <div class="col-md-10  offset-md-2">
                             <div class="row">
@@ -25,7 +28,7 @@
                                 </div>
                                 <!-- <div>{{allPledgeList}}</div> -->
                                 <div class="col-md-8">
-                                    <Dropdown v-model="selectedPledge" class="w-100 font-weight-normal" :options="allPledgeList"  optionLabel="totalTargetAmount" placeholder="Select Pledge" />
+                                    <Dropdown v-model="selectedPledge" class="w-100 font-weight-normal" :options="allPledgeList"  optionLabel="name" placeholder="Select Pledge" />
                                 </div>
                             </div>
                         </div>
@@ -79,7 +82,7 @@
                             <div class="row d-flex justify-content-center ">
                                 <div class="mt-4 col-md-5">
                                     <button class="default-btn primary-bg border-0 text-white" type="button" data-toggle="modal" data-target="#exampleModalCenter" data-dismiss="modal" @click="savePledge">
-                                        <i class="pi pi-spin pi-spinner" v-if="loading"></i> Save & Continue
+                                        <i class="pi pi-spin pi-spinner" @click="makePledge" v-if="loading"></i> Save & Continue
                                     </button>
                                 </div>
                             </div>
@@ -113,9 +116,9 @@
                                     </div>
                                     
                                     
-                                    <div class="col-sm-12 mt-3" v-if="applyRem">
+                                    <!-- <div class="col-sm-12 mt-3" v-if="applyRem">
                                         <hr class="hr"/>
-                                    </div>
+                                    </div> -->
                                 </div>
                         </div>
                         </div>
@@ -142,12 +145,14 @@ import router from '../../router';
 import finish from '../../services/progressbar/progress';
 // import store from "../../store/store";
 import CascadeSelect from 'primevue/cascadeselect';
+import ToggleButton from '../donation/toggleButton.vue'
 export default {
     components: {
         MembersSearch,
         Dropdown,
         InputText,
-        CascadeSelect
+        CascadeSelect,
+        ToggleButton
     },
     setup() {
         const toast = useToast()
@@ -162,6 +167,7 @@ export default {
         const allPledgeList = ref([]);
         const amountFrom = ref('')
         const selectedContact = ref({})
+        const isActive = ref(null)
         const amountTo = ref('')
         const pledgeCategory = ref(
             [
@@ -185,12 +191,19 @@ export default {
             // contactRef.value.hide();
             selectedContact.value = payload
         }
-
+        const active = (payload) => {
+            isActive.value = payload
+        }
         const getAllPledgeDefinition = async () =>{
                 try{
                     const res = await axios.get('/api/Pledge/GetAllPledgeDefinitions')
                     finish()
                     allPledgeList.value = res.data.returnObject
+                    isActive.value = res.data.returnObject.map( i => {
+                        return {
+                            isActive : i.isActive
+                        }
+                    })
                     console.log(allPledgeList.value,'getPledgeList');
                 }
                 catch (error){
@@ -198,6 +211,35 @@ export default {
                 }
             }
             getAllPledgeDefinition()
+
+            const makePledge = async () =>{
+
+                 const makePledgeDetails = {
+                    personID: selectedContribution.value.id,
+                    totalTargetAmount: targetAmount.value,
+                    donorPaymentType: pledgType.value,
+                    name: PledgeName.value,
+                    donorPaymentSpecificAmount: SpecificAmount.value,
+                    donorPaymentRangeFromAmount: amountFrom.value,
+                    donorPaymentRangeToAmount: amountTo.value,
+                    // pledgeTypeFrequency: 
+                    pledgeTypeFrequencyOneTimeStartDate: startDate.value,
+                    pledgeTypeFrequencyOneTimeEndDate: endDate.value,
+                    pledgeTypeFrequencyReOccuring: selectedRange.value.name,
+                    currencyID: selectedCurrency.value.id,
+                    // isActive: true
+                    
+                }
+
+                try{
+                    const res = await axios.get('api/Pledge/SavePledge', makePledgeDetails)
+                    finish()
+                    console.log(res,'getSinglePledge');
+                }
+                catch (error){
+                    console.log(error)
+                }
+            }
 
         // const getSinglePledgeDefinition = async () =>{
         //         try{
@@ -232,6 +274,7 @@ export default {
 
         return {
             allPledgeList,
+            makePledge,
             chooseContact,
             selectedPledge,
             makePayment,
@@ -247,7 +290,9 @@ export default {
             loadingCode,
             checkNameValue,
             isNameValid,
-            isEmailValid
+            isEmailValid,
+            isActive,
+            active
         }
     },
 }

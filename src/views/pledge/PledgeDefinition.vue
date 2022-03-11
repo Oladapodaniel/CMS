@@ -1,9 +1,12 @@
 <template>
-    <div class="container container-top  ">
+    <div class="container container-top container-wide ">
         <div class="container-fluid">
+            <div class="row d-flex justify-content-between px-3">
+                <div class="heading-text"> Pledge Definition </div>
+                <!-- <div><ToggleButton @is-active /></div> -->
+            </div>
             <div class="row">
                 <div class="col-md-8  ">
-                    <div class="heading-text"> Pledge Definition </div>
                      <div class="row my-2 mt-3">
                         <div class="col-md-10 offset-md-2">
                             <div class="row">
@@ -14,7 +17,7 @@
                                 <div class="col-12 col-sm-12  col-lg-8">
                                     <input type="text" v-model="PledgeName" class="form-control" :class="{ 'is-invalid' : !isNameValid }" @blur="checkNameValue"/>
                                     <div class="invalid-feedback">
-                                        Please enter your name.
+                                        Please enter your pledge name.
                                     </div>
                                 </div>
                             </div>
@@ -196,13 +199,15 @@ import Calendar from "primevue/calendar";
 import finish from '../../services/progressbar/progress';
 // import router from '../../router';
 // import store from "../../store/store";
+import ToggleButton from '../donation/toggleButton.vue'
 import CascadeSelect from 'primevue/cascadeselect';
 export default {
     components: {
         Dropdown,
         Calendar,
         InputText,
-        CascadeSelect
+        CascadeSelect,
+        ToggleButton
     },
     setup() {
         const toast = useToast()
@@ -223,6 +228,7 @@ export default {
         const amountFrom = ref('')
         const amountTo = ref('')
         const SpecificAmount = ref('')
+        const pledgType = ref(0)
         const currencyList = ref([])
         const contributionItems = ref([])
         const targetAmount = ref("")
@@ -283,7 +289,8 @@ export default {
             const pledgeDetails = {
                     contributionID: selectedContribution.value.id,
                     totalTargetAmount: targetAmount.value,
-                    // donorPaymentType: 0,
+                    donorPaymentType: pledgType.value,
+                    name: PledgeName.value,
                     donorPaymentSpecificAmount: SpecificAmount.value,
                     donorPaymentRangeFromAmount: amountFrom.value,
                     donorPaymentRangeToAmount: amountTo.value,
@@ -309,6 +316,12 @@ export default {
                 detail: "Pledge definition created successfully",
                 life: 2000,
               });
+
+                targetAmount.value = "";
+                amountTo.value = "";
+                amountFrom.value = "";
+                selectedCurrency.value = "";
+                PledgeName.value = '';
               
             }
             catch (error){
@@ -341,12 +354,16 @@ export default {
 
         const specific = () =>{
             pledgeCategory.value = "specific"
+
+            pledgType.value =  1
         }
         const range = () =>{
             pledgeCategory.value = "range"
+            pledgType.value =  2
         }
         const freeWill = () =>{
             pledgeCategory.value = "freewill"
+            pledgType.value =  0
         }
         const oneTime = () =>{
             pledgeFrequency.value = "onetime"
@@ -388,6 +405,7 @@ export default {
             specific,
             pledgeCategory,
             pledgeFrequency,
+            pledgType,
             savePledge,
             Address,
             value,
