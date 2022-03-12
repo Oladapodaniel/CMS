@@ -32,10 +32,15 @@
                         <i class="pi pi-spin pi-spinner primary-text" style="fontSize: 3rem"></i>
                     </div>
                 </div>
-                <div class="row my-3" v-if="searchMembers.length == 0 && !loading">
+                <div class="row my-3" v-if="searchMembers.length == 0 && !loading && !searchText">
                     <div class="col-12 text-center font-weight-700">
                         <div class="mt-3">There are no members in this group yet, start by adding members</div>
                         <div class="mt-3 default-btn border-0 text-white primary-bg" data-toggle="modal" data-target="#addMemberModal" ref="modalBtn">Add member</div>
+                    </div>
+                </div>
+                <div class="row my-3" v-if="searchMembers.length == 0 && !loading && searchText">
+                    <div class="col-12 text-center font-weight-700">
+                        <div class="mt-3">There is no member in this group with that name</div>
                     </div>
                 </div>
             </div>

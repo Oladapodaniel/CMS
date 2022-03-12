@@ -350,6 +350,16 @@ const routes = [
 
                     },
                     {
+                        path: 'overallsummaryreport/:id?',
+                        name: "DailySummaryReport",
+                        meta: {
+                            title: 'Churchplus - Reports',
+                        },
+                        component: () =>
+                            import ( /* webpackChunkName: "addfirsttimer" */ '../views/Reports/Performancereport/DailySummaryReport.vue')
+
+                    },
+                    {
                         path: 'attendanceperformancereport',
                         name: "AttendancePerformanceReport",
                         meta: {
