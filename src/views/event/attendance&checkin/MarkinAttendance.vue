@@ -53,6 +53,7 @@
         <span class="p-input-icon-left w-100">
           <i class="pi pi-phone icon" />
           <InputText
+            @input="CheckXterAfterEleven"
             @blur="checkCharacter"
             class="w-100"
             type="text"
@@ -188,6 +189,7 @@
                   :options="days"
                   style="width: 100%"
                   placeholder="Day"
+                  :disabled="person.personId"
                 />
               </div>
               <div class="col-6">
@@ -196,6 +198,7 @@
                   :options="months"
                   style="width: 100%"
                   placeholder="Month"
+                  :disabled="person.personId"
                   
                 />
               </div>
@@ -528,6 +531,12 @@ export default {
       confirm();
     };
 
+    const CheckXterAfterEleven = (e) => {
+      if (e.target.value.length > 11) {
+        checkCharacter()
+      }
+    }
+
     // function to clear input
     const clearNames = () => {
       names.value = [];
@@ -650,6 +659,7 @@ export default {
       birthDay,
       // birthYear,
       personData,
+      CheckXterAfterEleven
     };
   },
 };
