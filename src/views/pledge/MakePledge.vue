@@ -34,7 +34,7 @@
                         </div>
                     </div>
                     <div class="row my-1 mt-3">
-                        <div class="col-md-10  offset-md-2 " v-if="selectedPledge.name === 'Free will' ">
+                        <div class="col-md-10  offset-md-2 " v-if="selectedPledge.donorPaymentType == 0 " >
                             <div class="row">
                                 <div class="col-md-4 text-md-right align-self-center">
                                     <label for="" class=""> Pledge Amount </label>
@@ -47,32 +47,32 @@
                         </div>
                     </div>  
                     <div class="row my-1 mt-3">
-                        <div class="col-md-10  offset-md-2 " v-if="selectedPledge.name === 'Specific' ">
+                        <div class="col-md-10  offset-md-2 " v-if="selectedPledge.donorPaymentType == 1 ">
                             <div class="row">
                                 <div class="col-md-4 text-md-right align-self-center">
                                     <label for="" class=""> Pledge Amount </label>
                                 </div>
                         
                                 <div class="col-md-8">
-                                    <input type="text" v-model="donorPaymentSpecificAmount" class="form-control" />
+                                    <input type="text" v-model="selectedPledge.donorPaymentSpecificAmount" class="form-control" />
                                 </div>
                             </div>
                         </div>
                     </div>  
                     <div class="row my-1 mt-3">
-                         <div class="col-md-10 offset-md-2 " v-if="selectedPledge.name === 'Range' "  >
+                         <div class="col-md-10 offset-md-2 " v-if="selectedPledge.donorPaymentType == 2 "  >
                             <div class="row">
-                                <div class="col-md-4 text-md-right align-self-center">
+                                <div class="col-12 col-sm-12 col-lg-4 text-sm-left text-lg-right align-self-center">
                                     <label for="" class="">Pledge Amount </label>
                                 </div>
-                                <div class="col-md-4">
-                                    <input type="text" v-model="allPledgeList.donorPaymentRangeFromAmount" class="form-control" placeholder="From" />
+                                <div class="col-12 col-sm-12  col-lg-4">
+                                    <input type="text" v-model="selectedPledge.donorPaymentRangeFromAmount" class="form-control" placeholder="From" />
                                 </div>
-                                <div class="col-md-4">
-                                    <input type="text" v-model="allPledgeList.donorPaymentRangeToAmount" class="form-control" placeholder="To" />
+                                <div class="col-12 col-sm-12  col-lg-4 my-3 my-sm-0 my-md-0">
+                                    <input type="text" v-model="selectedPledge.donorPaymentRangeToAmount" class="form-control" placeholder="To" />
                                 </div>
-                                <div class="col-md-8">
-                                    <input type="text" v-model="allPledgeList.donorPaymentRangeToAmount" class="form-control" placeholder="Enter Amount" />
+                                <div class="col-12 col-sm-12  col-lg-8">
+                                    <input type="text" v-model="amountInRange" class="form-control" placeholder="Enter Amount" />
                                 </div>
                             </div>
                         </div>
@@ -216,6 +216,7 @@ export default {
 
                  const makePledgeDetails = {
                     personID: selectedContribution.value.id,
+                    pledgeTypeID: selectedPledge.id,
                     totalTargetAmount: targetAmount.value,
                     donorPaymentType: pledgType.value,
                     name: PledgeName.value,
