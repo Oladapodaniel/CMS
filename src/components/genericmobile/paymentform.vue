@@ -1,5 +1,5 @@
 <template>
-    <div class="container-wide">
+    <div class="container-fluid">
         <form class="form  px-0 pt-2">
             <div class="row">
 
@@ -263,6 +263,7 @@ export default {
         Dropdown, ContributionItems, ImageModal
     },
     props: [ "header"],
+    emits: ["formcreated"],
     directives: {
         'tooltip': Tooltip
     },
@@ -327,45 +328,11 @@ export default {
                         console.log(error)
                     }
             }
-            // {
-            //     name: "Global Conference",
-            //     bankID: "029c3a8a-35be-4f14-aca5-ff267e6ef2eb",
-        //  //     bank: "Guaranty Trust Bank",
-            //     accountName: "OLASUNKANMI OLADAPO DANIEL",
-            //     accountNumber: "0222909641",
-            //     contributionItems: [{"financialContributionID":"e3dd486f-5c8a-497b-9a24-1ad86622dfc7"},{"id":"d015fe29-78b8-4fe9-a1e0-8c943a47ef71"}],
-            //     paymentGateWays: [{"paymentGateWayID":"a6e25a93-eb1f-4ddb-ab70-29ee48434038"}, {"paymentGateWayID": "b0845ed6-e94b-4b4e-8ccd-0a9efadbe301"},{"paymentGateWayID": "029c3a8a-35be-4f14-aca5-ff267e6ef2eb"}]
-            // }
+    
         }
         getContributionItems()
 
-        // const getListofBanks = () => {
-        //     axios.get('https://api.paystack.co/bank')/api/Financials/GetBanks
-        //         .then(res => {
-
-        //             console.log(res)
-        //         nigerianBanks.value = res.data.data
-        //         })
-        //         .catch(err => {
-
-        //             console.log(err)
-        //         })
-        //     }
-            // getListofBanks()
-            // const Banko = () => {
-            // axio.get('https://api.paystack.co/bank', { headers: { Authorization: 'Bearer 771901a47711ceb27bc0e325ddfefd92f2191534' } })
-            //         .then(res => {
-
-            //             console.log(res)
-            //         bankList.value = res.data
-            //         })
-            //         .catch(err => {
-
-            //             console.log(err)
-            //         })
-
-            // }
-            // Banko()
+   
 
         const getBanks = () => {
             axios.get('/api/Financials/GetBanks')
@@ -509,54 +476,39 @@ const paymentGatewayNeeded = ref({});
         });
     };
 
-        // const getPaymentDetails = async() => {
-        //     try {
-        //         const res = await axios.post("/api/PaymentForm/Save", );
-        //         console.log(res)
-        //     }
-        //     catch (err) {
-        //         console.log(err)
-        //     }
-        // }
-        // getPaymentDetails()
-
-
-        // const getCurrentlySignedInUser = async() => {
-        //     try {
-        //         const res = await axios.get("/api/Membership/GetCurrentSignedInUser");
-        //         console.log(res.data.country)
-                // if(res.data.country == "Nigeria") {
-                //     isPaystackChecked.value = true
-                //     isFlutterwave.value = true
-                //     isPaypal.value = true
-                // } else {
-                //     isPaypal.value = true
-                //     isFlutterwave.value = true
-                // }
-
-        //     } catch (err) {
-        //         /*eslint no-undef: "warn"*/
-        //         NProgress.done();
-        //         console.log(err);
-        //     }
-        // }
-        // getCurrentlySignedInUser()
+       
 
         const resolveCustomerDetail = async() => {
             loading.value = true
-            try {
-                let header = { headers: { Authorization: `Bearer ${process.env.VUE_APP_PAYSTACK_SECRET_KEY}` }}
-                console.log(header, "header");
-
-                let { data } = await axio.get(`https://api.paystack.co/bank/resolve?account_number=${accountNumber.value}&bank_code=${selectedBank.value.code}`, header)
+       
+             try {
+       
+                let { data } = await axio.post(`https://api.ravepay.co/flwv3-pug/getpaidx/api/resolve_account`, {
+                    recipientaccount: accountNumber.value,
+                    destbankcode: selectedBank.value.code,
+                    PBFPubKey: process.env.VUE_APP_FLUTTERWAVE_PUBLIC_KEY_LIVE
+                })
                 console.log(data)
-                accountName.value = data.data.account_name
-                // accNameRef.value.focus()
+                accountName.value = data.data.data.accountname
                 disabled.value = false
 
                 loading.value = false
 
-                toast.add({severity:'success', summary: 'Account Check Successful', detail:'The account check was successful', life: 4000});
+                if (data.data.data.responsemessage.toLowerCase().includes('sorry')) {
+                    toast.add({
+                    severity:'warn', 
+                    summary: 'Unable to verify', 
+                    detail: data.data.data.responsemessage, 
+                    life: 8000
+                });
+                }   else {
+                    toast.add({
+                    severity:'success', 
+                    summary: 'Account Check Successful', 
+                    detail:'The account check was successful', 
+                    life: 8000
+                });
+                }
 
             }
             catch (error) {
@@ -565,13 +517,19 @@ const paymentGatewayNeeded = ref({});
 
                 loading.value = false
 
-                if (!accountNumber.value || accountNumber.value === "") {
-                    toast.add({severity:'warn', summary: 'No account number found', detail:'Please enter your account number', life: 4000});
-                }   else if (!selectedBank.value.code) {
-                    toast.add({severity:'warn', summary: 'No bank selected', detail:'Please select your bank', life: 4000});
-                } else {
-                    toast.add({severity:'error', summary: 'Account Check Error', detail:'Please check your banks details again', life: 4000});
-                }
+                // if (error.toString().includes('422') || error.toString().includes('400')) {
+                //     console.log('didnt verify')
+                //     const gatewayIndex = gateways.value.findIndex(i => i.name.toLowerCase().includes('flutterwave'))
+                //     gateways.value.splice(gatewayIndex, 1)
+                // }   else {
+                    if (!accountNumber.value || accountNumber.value === "") {
+                        toast.add({severity:'warn', summary: 'No account number found', detail:'Please enter your account number', life: 4000});
+                    }   else {
+                        toast.add({severity:'error', summary: 'Account Check Error', detail:'Please check your banks details again', life: 4000});
+                    }
+                // }
+
+                
             }
             console.log(selectedBank.value.code, accountNumber.value)
         }
@@ -604,7 +562,7 @@ const paymentGatewayNeeded = ref({});
 
             let paymentForm = {
                 name: newContribution.value.name,
-                bankID: selectedBank.value.id,
+                bankCode: selectedBank.value.code,
                 accountName: accountName.value,
                 accountNumber: accountNumber.value,
                 isActive: isActive.value,
@@ -617,15 +575,12 @@ const paymentGatewayNeeded = ref({});
                  ]
             }
 
-            console.log(newContribution.value.payments)
-
-            console.log(paymentForm)
 
 
             if (!route.params.editPayment) {
 
                 try {
-                    const res = await axios.post("/api/PaymentForm/Save", paymentForm);
+                    const res = await axios.post("/api/PaymentForm/newpaymentform", paymentForm);
                     console.log(res)
                     loadingSave.value = false
                     // toast.add({severity:'success', summary: 'Account Check Error', detail:'Please check your banks details again', life: 3000});
@@ -633,7 +588,7 @@ const paymentGatewayNeeded = ref({});
 
                     finish()
                     paymentForm.bank = selectedBank.value.name;
-                    emit('form-created', paymentForm)
+                    emit('formcreated', paymentForm)
                 }
                 catch (err) {
                     finish()

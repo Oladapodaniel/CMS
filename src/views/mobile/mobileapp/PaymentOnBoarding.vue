@@ -1,9 +1,6 @@
 <template>
 <Toast></Toast>
     <div class="row">
-        <div class="col-12">
-            <hr class="mt-4"/>
-        </div>
         <div class="col-md-12">
             <div class="mt-3 p-0 col-10 offset-sm-1 offset-md-0 col-md-3 col-lg-4  align-self-center">
                 <div>Choose Bank </div>
@@ -45,17 +42,17 @@
         <div class="col-sm-3 align-self-end">
         </div>
 
-        <div class="col-10 col-md-12 mt-5 d-flex align-items-center c-pointer" >
+        <!-- <div class="col-10 col-md-12 mt-5 d-flex align-items-center c-pointer" >
             <p class="mb-0" style="width:100px">Payment</p><hr class="mt-4" style="width: calc(100% - 80px)"/><span><i class="pi pi-angle-down"></i></span>
-        </div>
+        </div> -->
         <!-- <div class="mt-3 col-10 offset-sm-1 offset-md-0 col-md-3 col-lg-4  align-self-center">
             <div>Payment Gateway</div>
         </div> -->
-        <div class="d-flex justify-content-center   col-12 col-sm-10 offset-sm-1 offset-md-0 col-md-6 col-lg-5 pl-md-0 mt-3">
+        <!-- <div class="d-flex justify-content-center   col-12 col-sm-10 offset-sm-1 offset-md-0 col-md-6 col-lg-5 pl-md-0 mt-3">
             <input type="checkbox" class="px-2" checked  >
-                <!-- <h6 class="px-2">{{ paymentGatewayNeeded.name }}</h6> -->
-        </div>
-        <div class="text-left col-md-12 offset-md-8">
+     
+        </div> -->
+        <div class="text-left col-md-12 offset-md-8 mt-5">
             <button type="button" @click="submitForm" class="btn-primary default-btn primary-bg border-0 font-weight-700 text-white">
              Save
             </button>
@@ -97,9 +94,10 @@ export default {
         getBanks()
 
        const submitForm = () => {
-            form.value.bankId = selectedBank.value.id
-            console.log(selectedBank.value, 'selected bank ooooooooooo');
-            axios.post('https://churchplusv3coreapi.azurewebsites.net/saveTenantBank', form.value)
+            form.value.bank = {
+                code: selectedBank.value.id
+            }
+            axios.post('/saveTenantBank', form.value)
             .then(res => {
                 console.log(res, 'posted successfully');
                 context.emit('closemodal', {

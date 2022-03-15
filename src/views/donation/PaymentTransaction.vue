@@ -596,8 +596,8 @@ export default {
             }
             
             try {
-                let header = { headers: { Authorization: `Bearer ${process.env.VUE_APP_PAYSTACK_SECRET_KEY}` }}
-                console.log(header, "header");
+                // let header = { headers: { Authorization: `Bearer ${process.env.VUE_APP_PAYSTACK_SECRET_KEY}` }}
+                // console.log(header, "header");
 
                 let { data } = await axio.post(`https://api.ravepay.co/flwv3-pug/getpaidx/api/resolve_account`, {
                     recipientaccount: accountNumber.value,
