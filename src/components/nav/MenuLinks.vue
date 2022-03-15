@@ -70,6 +70,11 @@
                 >First Timers</router-link
               >
             </li>
+            <li class="dd-list-item" v-if="groupLeader">
+              <router-link class="dd-link-item routelink" to="/tenant/groupleader"
+                >Dashboard</router-link
+              >
+            </li>
             <li class="dd-list-item" v-if="admin || basicUser || groupLeader">
               <router-link class="dd-link-item routelink" to="/tenant/peoplegroups"
                 >Groups</router-link

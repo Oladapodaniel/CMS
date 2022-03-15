@@ -2,7 +2,6 @@
   <div class="container-fluid">
     <div class="row">
       <div class="col-md-12 px-0">
-        <div class="container">
           <div class="row mt-4">
             <div class="col-md-5">
               <h2 class="font-weight-bold page-hder">New Event and Report</h2>
@@ -20,8 +19,7 @@
             <Toast />
           </div>
           <hr class="mb-4" />
-        </div>
-        <div class="container" style="width: 80%" v-if="!isPending && !errorGettingReport">
+        <div v-if="!isPending && !errorGettingReport">
           <div class="row mx-1 mb-4 mt-3">
             <div class="col-md-2 pl-0">
               <span class="theader mb-1">Status</span>
@@ -31,13 +29,13 @@
             </div>
 
             <div class="col-md-7">
-              <!-- <span class="theader">Event</span>
+              <span class="theader">Event</span>
               <div class="my-3">
                 <span class="evt-name">
                   {{ stats.activityToday ? stats.activityToday.name : "" }}
                   <i class="pi pi-info-circle"></i>
                 </span>
-              </div> -->
+              </div>
             </div>
 
             <div class="col-md-3">
@@ -245,11 +243,11 @@
               </div>
             </div>
 
-            <div class="row py-5 px-5" ref="middle">
+            <!-- <div class="row py-5 px-5" ref="middle">
               <div class="col-md-7">
                 <span class="evt-label grey-text">Event Name</span>
                 <h2 class="font-weight-bold mb-3" style="font-size: 25px">
-                  1st Service
+                  {{ stats.activityToday ? stats.activityToday.name : "" }}
                 </h2>
                 <span class="evt-date text-danger">{{ eventDateString }}.</span>
               </div>
@@ -295,9 +293,217 @@
                   </div>
                 </div>
               </div>
-            </div>
+            </div> -->
 
             <div class="row mb-5" ref="bottom">
+              <div class="col-md-12">
+                <div class="row mb-4">
+                  <div class="col-md-12 mt-4">
+                    <span class="attendance-header">Overview</span>
+                  </div>
+                </div>
+                <div class="row px-5">
+                  <div class="col-md-12">
+                    <div class="row">
+                      <div class="col-sm-3">
+                        <span class="bold-700">Events</span>
+                      </div>
+                      <div class="col-sm-2">
+                        <span class="bold-700">Attendance</span>
+                      </div>
+                      <div class="col-sm-2">
+                        <span class="bold-700">Offering</span>
+                      </div>
+                      <div class="col-sm-2">
+                        <span class="bold-700">First Timers</span>
+                      </div>
+                      <div class="col-sm-3">
+                        <span class="bold-700">New Convert</span>
+                      </div>
+
+
+                    </div>
+                  </div>
+                </div>
+                <div class="row">
+                  <div class="col-sm-12">
+                    <hr class="hr-dark" />
+                  </div>
+                </div>
+                            <!-- v-for="(attendance, index) in activityAttendances"
+                    :key="index" -->
+                <div class="row">
+                  <div
+                    class="col-sm-12 py-2"
+                  >
+                    <div class="row px-5">
+                      <div class="col-sm-12">
+                        <div class="row">
+                          <div class="col-sm-3">
+                            <span class="bold-400">1st service</span>
+                          </div>
+                          <div class="col-sm-2">
+                            <span class="bold-400">765</span>
+                          </div>
+                          <div class="col-sm-2">
+                            <span class="bold-400">321</span>
+                          </div>
+                          <div class="col-sm-2">
+                            <span class="bold-400">9876</span>
+                          </div>
+                          <div class="col-sm-3">
+                            <span class="bold-400">433</span>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                    <div class="row">
+                      <div class="col-sm-12 pt-2">
+                        <hr class="hr" />
+                      </div>
+                    </div>
+                  </div>
+                  <div
+                    class="col-sm-12 py-2"
+                  >
+                    <div class="row px-5">
+                      <div class="col-sm-12">
+                        <div class="row">
+                          <div class="col-sm-3">
+                            <span class="bold-400">2nd service</span>
+                          </div>
+                          <div class="col-sm-2">
+                            <span class="bold-400">765</span>
+                          </div>
+                          <div class="col-sm-2">
+                            <span class="bold-400">321</span>
+                          </div>
+                          <div class="col-sm-2">
+                            <span class="bold-400">9876</span>
+                          </div>
+                          <div class="col-sm-3">
+                            <span class="bold-400">433</span>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                    <div class="row">
+                      <div class="col-sm-12 pt-2">
+                        <hr class="hr" />
+                      </div>
+                    </div>
+                  </div>
+                  <div
+                    class="col-sm-12 py-2"
+                  >
+                    <div class="row px-5">
+                      <div class="col-sm-12">
+                        <div class="row">
+                          <div class="col-sm-3">
+                            <span class="bold-400">3rd service</span>
+                          </div>
+                          <div class="col-sm-2">
+                            <span class="bold-400">765</span>
+                          </div>
+                          <div class="col-sm-2">
+                            <span class="bold-400">321</span>
+                          </div>
+                          <div class="col-sm-2">
+                            <span class="bold-400">9876</span>
+                          </div>
+                          <div class="col-sm-3">
+                            <span class="bold-400">433</span>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                    <div class="row">
+                      <div class="col-sm-12 pt-2">
+                        <hr class="hr" />
+                      </div>
+                    </div>
+                  </div>
+                  <div
+                    class="col-sm-12 py-2"
+                  >
+                    <div class="row px-5">
+                      <div class="col-sm-12">
+                        <div class="row">
+                          <div class="col-sm-3">
+                            <span class="bold-400">4th</span>
+                          </div>
+                          <div class="col-sm-2">
+                            <span class="bold-400">765</span>
+                          </div>
+                          <div class="col-sm-2">
+                            <span class="bold-400">321</span>
+                          </div>
+                          <div class="col-sm-2">
+                            <span class="bold-400">9876</span>
+                          </div>
+                          <div class="col-sm-3">
+                            <span class="bold-400">433</span>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                    <div class="row">
+                      <div class="col-sm-12 pt-2">
+                        <hr class="hr" />
+                      </div>
+                    </div>
+                  </div>
+                  <div
+                    class="col-sm-12 py-2"
+                  >
+                    <div class="row px-5">
+                      <div class="col-sm-12">
+                        <div class="row">
+                          <div class="col-sm-3">
+                            <span class="bold-400">5th Service</span>
+                          </div>
+                          <div class="col-sm-2">
+                            <span class="bold-400">765</span>
+                          </div>
+                          <div class="col-sm-2">
+                            <span class="bold-400">321</span>
+                          </div>
+                          <div class="col-sm-2">
+                            <span class="bold-400">9876</span>
+                          </div>
+                          <div class="col-sm-3">
+                            <span class="bold-400">433</span>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                    <div class="row">
+                      <div class="col-sm-12 pt-2">
+                        <hr class="hr" />
+                      </div>
+                    </div>
+                  </div>
+                </div>
+       
+                <div class="row px-5">
+                  <div class="col-sm-12">
+                    <div class="row">
+                      <div class="col-sm-8"></div>
+                      <div class="col-sm-2">
+                        <span class="bold-700">Total</span>
+                      </div>
+                      <div class="col-sm-1">
+                        <span class="bold-700">{{
+                          stats.todayAttendance
+                        }}</span>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+            
+            <!-- <div class="row mb-5" ref="bottom">
               <div class="col-md-12">
                 <div class="row mb-4">
                   <div class="col-md-12">
@@ -314,9 +520,6 @@
                         <span class="bold-700">Count</span>
                       </div>
 
-                      <!-- <div class="col-sm-3 text-sm-center">
-                  <span class="bold-700 fs-1 fw-bolder">Total</span>
-                </div> -->
                     </div>
                   </div>
                 </div>
@@ -344,9 +547,7 @@
                               attendance.number
                             }}</span>
                           </div>
-                          <!-- <div class="col-sm-3 text-sm-center">
-                      <span class="bold-400">{{ attendance.number }}</span>
-                    </div> -->
+                  
                         </div>
                       </div>
                     </div>
@@ -357,9 +558,7 @@
                     </div>
                   </div>
                 </div>
-                <!-- tosin -->
-
-                <!-- <div class="col-sm-12"> -->
+       
                 <div class="row px-5">
                   <div class="col-sm-12">
                     <div class="row">
@@ -375,7 +574,6 @@
                     </div>
                   </div>
                 </div>
-                <!-- </div> -->
               </div>
             </div>
 
@@ -399,9 +597,7 @@
                         <span class="bold-700">Amount</span>
                       </div>
 
-                      <!-- <div class="col-sm-3 text-sm-center">
-                  <span class="bold-700 fs-1 fw-bolder">Total</span>
-                </div> -->
+             
                     </div>
                   </div>
                 </div>
@@ -435,9 +631,7 @@
                               >&nbsp; {{ offering.amount }}</span
                             >
                           </div>
-                          <!-- <div class="col-sm-3 text-sm-center">
-                      <span class="bold-400">{{ offering.amount }}</span>
-                    </div> -->
+                   
                         </div>
                       </div>
                     </div>
@@ -472,463 +666,7 @@
                 </div>
               </div>
             </div>
-            <div class="row py-5 px-5" ref="middle">
-              <div class="col-md-7">
-                <span class="evt-label grey-text">Event Name</span>
-                <h2 class="font-weight-bold mb-3" style="font-size: 25px">
-                  2nd Service
-                </h2>
-                <span class="evt-date text-danger">{{ eventDateString }}.</span>
-              </div>
-              <div class="col-md-5 pl-0">
-                <div class="row">
-                  <div class="col-md-6 d-md-flex justify-content-end">
-                    <span class="bold-700">Preacher: </span>
-                  </div>
-                  <div class="col-md-6 pl-md-0">
-                    <span>{{
-                      stats.activityToday ? stats.activityToday.preacher : ""
-                    }}</span>
-                  </div>
-                </div>
-                <div class="row">
-                  <div class="col-md-6 d-md-flex justify-content-end">
-                    <span class="bold-700">Topic: </span>
-                  </div>
-                  <div class="col-md-6 pl-md-0">
-                    <span>{{
-                      stats.activityToday ? stats.activityToday.topic : ""
-                    }}</span>
-                  </div>
-                </div>
-                <div class="row">
-                  <div class="col-md-6 d-md-flex justify-content-end">
-                    <span class="bold-700">First timers: </span>
-                  </div>
-                  <div class="col-md-6 pl-md-0">
-                    <span>{{
-                      stats.todayFirstTimer ? stats.todayFirstTimer : 0
-                    }}</span>
-                  </div>
-                </div>
-                <div class="row">
-                  <div class="col-md-6 d-md-flex justify-content-end">
-                    <span class="bold-700">New converts: </span>
-                  </div>
-                  <div class="col-md-6 pl-md-0">
-                    <span>{{
-                      stats.todayNewConvert ? stats.todayNewConvert : 0
-                    }}</span>
-                  </div>
-                </div>
-              </div>
-            </div>
-
-            <div class="row mb-5" ref="bottom">
-              <div class="col-md-12">
-                <div class="row mb-4">
-                  <div class="col-md-12">
-                    <span class="attendance-header">Attendance</span>
-                  </div>
-                </div>
-                <div class="row px-5">
-                  <div class="col-md-12">
-                    <div class="row">
-                      <div class="col-sm-10">
-                        <span class="bold-700">Attendance Item</span>
-                      </div>
-                      <div class="col-sm-2">
-                        <span class="bold-700">Count</span>
-                      </div>
-
-                      <!-- <div class="col-sm-3 text-sm-center">
-                  <span class="bold-700 fs-1 fw-bolder">Total</span>
-                </div> -->
-                    </div>
-                  </div>
-                </div>
-                <div class="row">
-                  <div class="col-sm-12">
-                    <hr class="hr-dark" />
-                  </div>
-                </div>
-                <div class="row">
-                  <div
-                    class="col-sm-12 py-2"
-                    v-for="(attendance, index) in activityAttendances"
-                    :key="index"
-                  >
-                    <div class="row px-5">
-                      <div class="col-sm-12">
-                        <div class="row">
-                          <div class="col-sm-10">
-                            <span class="bold-400">{{
-                              attendance.attendanceTypeName
-                            }}</span>
-                          </div>
-                          <div class="col-sm-2">
-                            <span class="bold-400">{{
-                              attendance.number
-                            }}</span>
-                          </div>
-                          <!-- <div class="col-sm-3 text-sm-center">
-                      <span class="bold-400">{{ attendance.number }}</span>
-                    </div> -->
-                        </div>
-                      </div>
-                    </div>
-                    <div class="row">
-                      <div class="col-sm-12 pt-2">
-                        <hr class="hr" />
-                      </div>
-                    </div>
-                  </div>
-                </div>
-                <!-- tosin -->
-
-                <!-- <div class="col-sm-12"> -->
-                <div class="row px-5">
-                  <div class="col-sm-12">
-                    <div class="row">
-                      <div class="col-sm-8"></div>
-                      <div class="col-sm-2">
-                        <span class="bold-700">Total</span>
-                      </div>
-                      <div class="col-sm-1">
-                        <span class="bold-700">{{
-                          stats.todayAttendance
-                        }}</span>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-                <!-- </div> -->
-              </div>
-            </div>
-
-            <div class="row mb-5">
-              <div class="col-md-12">
-                <div class="row mb-4">
-                  <div class="col-md-12">
-                    <span class="attendance-header">Offering</span>
-                  </div>
-                </div>
-                <div class="row px-5">
-                  <div class="col-md-12">
-                    <div class="row">
-                      <div class="col-sm-5">
-                        <span class="bold-700">Offering Item</span>
-                      </div>
-                      <div class="col-sm-5">
-                        <span class="bold-700">Channel</span>
-                      </div>
-                      <div class="col-sm-2">
-                        <span class="bold-700">Amount</span>
-                      </div>
-
-                      <!-- <div class="col-sm-3 text-sm-center">
-                  <span class="bold-700 fs-1 fw-bolder">Total</span>
-                </div> -->
-                    </div>
-                  </div>
-                </div>
-                <div class="row">
-                  <div class="col-sm-12">
-                    <hr class="hr-dark" />
-                  </div>
-                </div>
-                <div
-                  class="row"
-                  v-for="(offering, index) in activityOfferings"
-                  :key="index"
-                >
-                  <div class="col-md-12 py-2">
-                    <div class="row px-5">
-                      <div class="col-sm-12">
-                        <div class="row">
-                          <div class="col-sm-5">
-                            <span class="bold-400">{{
-                              offering.contribution
-                            }}</span>
-                          </div>
-                          <div class="col-sm-5">
-                            <span class="bold-400">{{ offering.channel }}</span>
-                          </div>
-                          <div class="col-sm-2">
-                            <span class="bold-400"
-                              ><span class="bold-700">{{
-                                offering.currencyName
-                              }}</span
-                              >&nbsp; {{ offering.amount }}</span
-                            >
-                          </div>
-                          <!-- <div class="col-sm-3 text-sm-center">
-                      <span class="bold-400">{{ offering.amount }}</span>
-                    </div> -->
-                        </div>
-                      </div>
-                    </div>
-                    <div class="row" v-if="index !== stats.todayOffering - 1">
-                      <div class="col-sm-12 pt-2">
-                        <hr class="hr" />
-                      </div>
-                    </div>
-                  </div>
-                </div>
-                <div class="row">
-                  <div class="col-sm-12">
-                    <hr class="hr-dark" v-if="stats.todayOffering > 0" />
-                  </div>
-                </div>
-                <div class="row px-5" v-if="stats.todayOffering > 0">
-                  <div class="col-sm-12">
-                    <div class="row">
-                      <div class="col-sm-8"></div>
-                      <div class="col-sm-2">
-                        <span class="bold-700">Total</span>
-                      </div>
-                      <div class="col-sm-2">
-                        <span class="bold-700"
-                          >{{ stats.tenantCurrencyName }}&nbsp;{{
-                            stats.todayOffering
-                          }}</span
-                        >
-                      </div>
-                    </div>
-                  </div>
-                </div>
-              </div>
-            </div>
-            <div class="row py-5 px-5" ref="middle">
-              <div class="col-md-7">
-                <span class="evt-label grey-text">Event Name</span>
-                <h2 class="font-weight-bold mb-3" style="font-size: 25px">
-                  3rd Service
-                </h2>
-                <span class="evt-date text-danger">{{ eventDateString }}.</span>
-              </div>
-              <div class="col-md-5 pl-0">
-                <div class="row">
-                  <div class="col-md-6 d-md-flex justify-content-end">
-                    <span class="bold-700">Preacher: </span>
-                  </div>
-                  <div class="col-md-6 pl-md-0">
-                    <span>{{
-                      stats.activityToday ? stats.activityToday.preacher : ""
-                    }}</span>
-                  </div>
-                </div>
-                <div class="row">
-                  <div class="col-md-6 d-md-flex justify-content-end">
-                    <span class="bold-700">Topic: </span>
-                  </div>
-                  <div class="col-md-6 pl-md-0">
-                    <span>{{
-                      stats.activityToday ? stats.activityToday.topic : ""
-                    }}</span>
-                  </div>
-                </div>
-                <div class="row">
-                  <div class="col-md-6 d-md-flex justify-content-end">
-                    <span class="bold-700">First timers: </span>
-                  </div>
-                  <div class="col-md-6 pl-md-0">
-                    <span>{{
-                      stats.todayFirstTimer ? stats.todayFirstTimer : 0
-                    }}</span>
-                  </div>
-                </div>
-                <div class="row">
-                  <div class="col-md-6 d-md-flex justify-content-end">
-                    <span class="bold-700">New converts: </span>
-                  </div>
-                  <div class="col-md-6 pl-md-0">
-                    <span>{{
-                      stats.todayNewConvert ? stats.todayNewConvert : 0
-                    }}</span>
-                  </div>
-                </div>
-              </div>
-            </div>
-
-            <div class="row mb-5" ref="bottom">
-              <div class="col-md-12">
-                <div class="row mb-4">
-                  <div class="col-md-12">
-                    <span class="attendance-header">Attendance</span>
-                  </div>
-                </div>
-                <div class="row px-5">
-                  <div class="col-md-12">
-                    <div class="row">
-                      <div class="col-sm-10">
-                        <span class="bold-700">Attendance Item</span>
-                      </div>
-                      <div class="col-sm-2">
-                        <span class="bold-700">Count</span>
-                      </div>
-
-                      <!-- <div class="col-sm-3 text-sm-center">
-                  <span class="bold-700 fs-1 fw-bolder">Total</span>
-                </div> -->
-                    </div>
-                  </div>
-                </div>
-                <div class="row">
-                  <div class="col-sm-12">
-                    <hr class="hr-dark" />
-                  </div>
-                </div>
-                <div class="row">
-                  <div
-                    class="col-sm-12 py-2"
-                    v-for="(attendance, index) in activityAttendances"
-                    :key="index"
-                  >
-                    <div class="row px-5">
-                      <div class="col-sm-12">
-                        <div class="row">
-                          <div class="col-sm-10">
-                            <span class="bold-400">{{
-                              attendance.attendanceTypeName
-                            }}</span>
-                          </div>
-                          <div class="col-sm-2">
-                            <span class="bold-400">{{
-                              attendance.number
-                            }}</span>
-                          </div>
-                          <!-- <div class="col-sm-3 text-sm-center">
-                      <span class="bold-400">{{ attendance.number }}</span>
-                    </div> -->
-                        </div>
-                      </div>
-                    </div>
-                    <div class="row">
-                      <div class="col-sm-12 pt-2">
-                        <hr class="hr" />
-                      </div>
-                    </div>
-                  </div>
-                </div>
-                <!-- tosin -->
-
-                <!-- <div class="col-sm-12"> -->
-                <div class="row px-5">
-                  <div class="col-sm-12">
-                    <div class="row">
-                      <div class="col-sm-8"></div>
-                      <div class="col-sm-2">
-                        <span class="bold-700">Total</span>
-                      </div>
-                      <div class="col-sm-1">
-                        <span class="bold-700">{{
-                          stats.todayAttendance
-                        }}</span>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-                <!-- </div> -->
-              </div>
-            </div>
-
-            <div class="row mb-5">
-              <div class="col-md-12">
-                <div class="row mb-4">
-                  <div class="col-md-12">
-                    <span class="attendance-header">Offering</span>
-                  </div>
-                </div>
-                <div class="row px-5">
-                  <div class="col-md-12">
-                    <div class="row">
-                      <div class="col-sm-5">
-                        <span class="bold-700">Offering Item</span>
-                      </div>
-                      <div class="col-sm-5">
-                        <span class="bold-700">Channel</span>
-                      </div>
-                      <div class="col-sm-2">
-                        <span class="bold-700">Amount</span>
-                      </div>
-
-                      <!-- <div class="col-sm-3 text-sm-center">
-                  <span class="bold-700 fs-1 fw-bolder">Total</span>
-                </div> -->
-                    </div>
-                  </div>
-                </div>
-                <div class="row">
-                  <div class="col-sm-12">
-                    <hr class="hr-dark" />
-                  </div>
-                </div>
-                <div
-                  class="row"
-                  v-for="(offering, index) in activityOfferings"
-                  :key="index"
-                >
-                  <div class="col-md-12 py-2">
-                    <div class="row px-5">
-                      <div class="col-sm-12">
-                        <div class="row">
-                          <div class="col-sm-5">
-                            <span class="bold-400">{{
-                              offering.contribution
-                            }}</span>
-                          </div>
-                          <div class="col-sm-5">
-                            <span class="bold-400">{{ offering.channel }}</span>
-                          </div>
-                          <div class="col-sm-2">
-                            <span class="bold-400"
-                              ><span class="bold-700">{{
-                                offering.currencyName
-                              }}</span
-                              >&nbsp; {{ offering.amount }}</span
-                            >
-                          </div>
-                          <!-- <div class="col-sm-3 text-sm-center">
-                      <span class="bold-400">{{ offering.amount }}</span>
-                    </div> -->
-                        </div>
-                      </div>
-                    </div>
-                    <div class="row" v-if="index !== stats.todayOffering - 1">
-                      <div class="col-sm-12 pt-2">
-                        <hr class="hr" />
-                      </div>
-                    </div>
-                  </div>
-                </div>
-                <div class="row">
-                  <div class="col-sm-12">
-                    <hr class="hr-dark" v-if="stats.todayOffering > 0" />
-                  </div>
-                </div>
-                <div class="row px-5" v-if="stats.todayOffering > 0">
-                  <div class="col-sm-12">
-                    <div class="row">
-                      <div class="col-sm-8"></div>
-                      <div class="col-sm-2">
-                        <span class="bold-700">Total</span>
-                      </div>
-                      <div class="col-sm-2">
-                        <span class="bold-700"
-                          >{{ stats.tenantCurrencyName }}&nbsp;{{
-                            stats.todayOffering
-                          }}</span
-                        >
-                      </div>
-                    </div>
-                  </div>
-                </div>
-              </div>
-            </div>
-            <!-- <div class="stats">
-          <EventReportStats />
-      </div> -->
+      -->
             <div class="row">
               <div class="col-md-12">
                 <div class="pg-content">

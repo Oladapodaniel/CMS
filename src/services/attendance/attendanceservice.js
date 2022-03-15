@@ -149,12 +149,12 @@ const generateEventReportDefaultMessage = (eventAnalysisData) => {
     }
     if (eventAnalysisData.todayContributions) {
         // let message = `OFFERING REPORT\n          ======\n\nTotal Offering: ${eventAnalysisData.totalToday}`
-        let message = `OFFERING REPORT\n          ======\n${eventAnalysisData.todayContributions[0].eventName}\nDate: ${new Date(eventAnalysisData.todayContributions[0].date).toLocaleDateString()}\n\nTotal Amount: ${eventAnalysisData.todayContributions[0].amount}\nTotal Offering: ${eventAnalysisData.tenantCurrency} ${eventAnalysisData.totalToday}`;
+        let message = `OFFERING REPORT\n          ======\n${eventAnalysisData.todayContributions[0].eventName}\nDate: ${new Date(eventAnalysisData.todayContributions[0].date).toLocaleDateString()}\n\nTotal Offering: ${eventAnalysisData.tenantCurrency} ${Math.abs(eventAnalysisData.totalToday).toLocaleString()}`;
 
 
-    if (eventAnalysisData.todayVsLastWeek > 0) {
+    if (eventAnalysisData.totalToday > 0) {
         message += `\n\nWe recorded ${eventAnalysisData.todayVsLastWeek.toFixed(2)}% increase in offering since last week.`;
-    } else if (eventAnalysisData.todayVsLastWeek < 0) {
+    } else if (eventAnalysisData.totalToday < 0) {
         message += `\n\nThere was a ${Math.abs(eventAnalysisData.todayVsLastWeek).toFixed(2)}% decrease in offering since last week.`;
         // message += `\nThere was a ${Number.parseFloat(Math.abs(eventAnalysisData.todayVsLastweekOfferingPercentage)).toPrecision(4)}% decrease in offering since last week`;
     } else {
