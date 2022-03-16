@@ -465,14 +465,26 @@
                 <label for="" class="font-weight-600">Name</label>
               </div>
               <div class="col-md-7">
-                <Dropdown
+                <!-- <Dropdown
                   v-model="groupToAddTo"
                   :options="allGroups"
                   style="width: 100%"
                   :filter="false"
                   placeholder="Select a group"
                   optionLabel="name"
-                />
+                /> -->
+                <div class="dropdown show">
+                  <button class="btn border w-100 d-flex justify-content-between align-items-center" type="button" id="dropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" @click="focusInput">
+                    <div>{{ Object.keys(groupToAddTo).length > 0 ? groupToAddTo.name : 'Select a group' }}</div>
+                    <i class="pi pi-chevron-down"></i>
+                  </button>
+                  <div class="dropdown-menu w-100 scroll-card" aria-labelledby="dropdownMenuLink">
+                    <input type="text" class="form-control input-width-adjust" placeholder="Search groups" ref="searchRef" v-focus/>
+                    <a class="dropdown-item" v-for="item in allGroups" :key="item.id">
+                      <div class="c-pointer" @click="selectGroup(item)">{{ item.name }}</div>
+                    </a>
+                  </div>
+                </div>
               </div>
             </div>
 
@@ -545,6 +557,10 @@ export default {
     Dropdown,
     SearchMembers
   },
+  directives: {
+    // enables v-focus in template
+    focus
+  },
   setup() {
     // const $toast = getCurrentInstance().ctx.$toast;
     const toast = useToast();
@@ -557,6 +573,7 @@ export default {
     const peopleInGroupIDs = ref([])
     const followupPerson = ref({})
     const currentContact = ref({})
+    const searchRef = ref(null)
 
     const loading = ref(false);
     // const day = ref([ 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30, 31 ]);
@@ -1113,6 +1130,16 @@ export default {
         followupPerson.value = payload
       }
 
+    const selectGroup = (item) => {
+      groupToAddTo.value = item
+    }
+
+    const focusInput = () => {
+        setTimeout(() => {
+            searchRef.value.focus()
+        }, 1000)
+    }
+
     return {
       months,
       numberofYears,
@@ -1167,7 +1194,10 @@ export default {
       peopleInGroupIDs,
       setContact,
       followupPerson,
-      currentContact
+      currentContact,
+      selectGroup,
+      focusInput,
+      searchRef
     };
   },
 };
@@ -1263,5 +1293,15 @@ export default {
 
 .text-grey {
   color: rgb(90, 90, 90)
+}
+
+.scroll-card {
+    max-height: 400px;
+    overflow: scroll;
+}
+
+.input-width-adjust {
+    width: 90%;
+    margin: auto;
 }
 </style>
