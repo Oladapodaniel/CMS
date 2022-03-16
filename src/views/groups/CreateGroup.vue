@@ -1722,7 +1722,7 @@ export default {
      sendMarkedMemberSms,
      sendMarkedMemberEmail,
       // showWardModal
-     getWardId,
+    //  getWardId,
      uploadToGroup,
      closeGroupModal,
      displayView,
