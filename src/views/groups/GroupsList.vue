@@ -1,8 +1,5 @@
 <template>
   <div>
-        <!-- <div style="min-height:100vh; background:#ebeff4;z-index:-1;min-width:100vw;position:fixed" :style="{ 'z-index': showSMS || showEmail ? 1 : '-1'}">
-
-      </div> -->
     <div class="container-slim">
       <div class="container-fluid">
         <div class="row d-md-flex yu mt-5">
@@ -251,20 +248,16 @@
         </div>
         <!-- tosin working on tables -->
       </div>
-      <!-- <div :class="{ 'show-Times' : showSMS, 'hide-Times' : !showSMS }"> -->
         <SideBar :show="showSMS" :title="'Compose SMS'" @closesidemodal="() => showSMS = false">
         <div class="m-wrapper" :class="{ 'm-wrapper': showSMS, 'no-show': !showSMS }">
           <smsComponent :groupData ="groupListDetails" @closesidemodal="() => showSMS = false" />
         </div>
       </SideBar>
-      <!-- </div> -->
-      <!-- <div :class="{ 'show-Times' : showSMS, 'hide-Times' : !showSMS }"> -->
       <SideBar :show="showEmail" :title="'Compose Email'" @closesidemodal="() => showEmail = false">
         <div class="m-wrapper2">
           <emailComponent :groupData ="groupListDetails"  @closesidemodal="() => showEmail = false" />
         </div>
       </SideBar>
-      <!-- </div> -->
       
       
       
@@ -384,14 +377,12 @@ export default {
         searchText = "";
     }
     const sendGroupSms = (group) => {
-      // showEmail.value = false;
       showSMS.value = true
       if (group.id) {
         groupListDetails.value = [{data:`group_${group.id}`}]
       }
     }
     const sendGroupEmail = (group) => {
-      // showSMS.value = false;
       showEmail.value = true
       if (group.id) {
         groupListDetails.value = [{data:`group_${group.id}`}]

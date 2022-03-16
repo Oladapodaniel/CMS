@@ -137,7 +137,7 @@
     <!-- group box area to add all members -->
   
     <div class="table mx-0" :class="{ 'mt-0': marked.length > 0 }">
-      <div class="table-top">
+      <div class="table-top ">
         <div class="select-all">
           <input
             type="checkbox"
@@ -508,12 +508,18 @@
           </div>
       </template>
   </Dialog>
+
   <SideBar :show="showSMS" :title="'Compose SMS'" @closesidemodal="() => showSMS = false">
-    <smsComponent :phoneNumbers="contacts"/>
+    <div class="m-wrapper" :class="{ 'm-wrapper': showSMS, 'no-show': !showSMS }">
+      <smsComponent :phoneNumbers="contacts"  @closesidemodal="() => showSMS = false"/>
+    </div>
   </SideBar>
   <SideBar :show="showEmail" :title="'Compose Email'" @closesidemodal="() => showEmail = false">
-    <emailComponent :selectedGroupMembers="markedMembers"/>
+    <div class="m-wrapper2">
+      <emailComponent :selectedGroupMembers="markedMembers"  @closesidemodal="() => showEmail = false"/>
+    </div>
   </SideBar>
+
 </template>
 
 <script>
@@ -975,11 +981,12 @@ export default {
     }
 
     const sendMarkedMemberEmail = () => {
+      showEmail.value = true;
      markedMembers.value = marked.value.map( (i) => {
        i.id = i.id
        return i
      });
-     showEmail.value = true;
+     
     }
 
     const getAllMembersAndAddToGroup = () => {
@@ -1126,6 +1133,32 @@ a {
   text-decoration: none;
 }
 
+.m-wrapper {
+    background-color: white!important;
+    width: 875px;
+    position: absolute;
+    right: 0px;
+    top: 0;
+    height: 100%;
+    padding: 70px;
+    transition: all 3s ease-out;
+}
+
+.m-wrapper2 {
+    background-color: white!important;
+    width: 875px;
+    position: absolute;
+    right: 0px;
+    top: 0;
+    height: 100%;
+    padding: 70px;
+}
+.no-show {
+  width: -875px;
+  transition: all 3s ease-out;
+  /* transition: all  8s cubic-bezier(0.645, 0.045, 0.355, 1); */
+}
+
 .picture,
 .firstname,
 .lastname,
@@ -1248,6 +1281,10 @@ a {
   height: 0;
   overflow: hidden;
   transition: all 0.5s ease-in-out;
+}
+
+.select-all input {
+  margin: 0 8px 0 -5px !important;
 }
 
 .filter-options-shown {
@@ -1419,4 +1456,37 @@ a {
   padding: 10px 0;
   border-radius: 0px 0px 22px 22px;
 }
+
+@media screen and (max-width: 947px ){
+    .m-wrapper, .m-wrapper2 {
+      width: 700px;
+      padding: 50px;
+  }
+}
+
+@media screen and (max-width: 767px ){
+    /* .baseline {
+        width: 40%;
+    }
+    .hide-base {
+        width: 40%;
+    } */
+      .m-wrapper, .m-wrapper2 {
+        width: 400px;
+        padding: 40px;
+    }
+}
+@media screen and (max-width: 575px ){
+    /* .baseline {
+        width: 20%;
+    }
+    .hide-base {
+        width: 20%;
+    } */
+    .m-wrapper, .m-wrapper2 {
+        width: 350px;
+        padding: 20px;
+    }
+}
+
 </style>

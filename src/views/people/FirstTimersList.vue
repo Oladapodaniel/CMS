@@ -33,8 +33,9 @@
       <div class="row table">
       <div class="col-12 px-0" id="table">
         <div class="top-con">
-          <div class="table-top  d-flex justify-content-end">
-            <input
+          <div class="table-top  d-flex justify-content-end mr-2">
+            <div class="select-All mr-3">
+              <input
               class="d-block d-md-none"
               type="checkbox"
               name="all"
@@ -57,6 +58,11 @@
                 @click="modal"
               >
               </i>
+              &nbsp; &nbsp;
+              <span class="c-pointer" v-if="checkedFirstTimer.length > 0" @click="sendMarkedMemberSms">Send SMS</span> &nbsp; &nbsp;
+              <span class="c-pointer" v-if="checkedFirstTimer.length > 0" @click="sendMarkedMemberEmail">Send Email</span>
+            </div>
+            
               <div class="filter">
                 <p @click="toggleFilterFormVissibility" class="mt-2">
                   <i class="pi pi-filter"></i>
@@ -503,12 +509,27 @@
     <ConfirmDialog />
         <Toast />
   </div>
+
+  <SideBar :show="showSMS" :title="'Compose SMS'" @closesidemodal="() => showSMS = false">
+    <div class="m-wrapper" :class="{ 'm-wrapper': showSMS, 'no-show': !showSMS }">
+      <smsComponent :phoneNumbers="contacts"  @closesidemodal="() => showSMS = false"/>
+    </div>
+  </SideBar>
+  <SideBar :show="showEmail" :title="'Compose Email'" @closesidemodal="() => showEmail = false">
+    <div class="m-wrapper2">
+      <emailComponent :selectedGroupMembers="markedFirsttimers"  @closesidemodal="() => showEmail = false"/>
+    </div>
+  </SideBar>
+
 </template>
 
 <script>
 import { ref, computed } from "vue";
 // import ByGenderChart from "@/components/charts/PieChart.vue";
 // import ByMaritalStatusChart from "@/components/charts/PieChart.vue";
+import SideBar from "../groups/sidemodal/SideModal.vue";
+import smsComponent from "../groups/component/smsComponent.vue";
+import emailComponent from "../groups/component/emailComponent.vue";
 import FirstTimersChartArea from "./FirstTimersChartArea.vue"
 import axios from "@/gateway/backendapi";
 import Pagination from "../../components/pagination/PaginationButtons";
@@ -529,7 +550,10 @@ export default {
     Pagination,
     OverlayPanel,
     loadingComponent,
-    FirstTimersChartArea
+    FirstTimersChartArea,
+    smsComponent,
+    emailComponent,
+    SideBar
   },
 
   setup(props, { emit }) {
@@ -539,13 +563,17 @@ export default {
     const filter = ref({});
     const searchIsVisible = ref(false);
     const filterResult = ref([]);
+    const markedFirsttimers = ref([]);
     const noRecords = ref(false);
     const searchText = ref("");
     const membershipCategory = ref([]);
+    const contacts = ref([]);
     const selectedPersonId = ref("");
     const tenantID = ref("")
     const selectedLink = ref(null)
     const totalFirstTimer = ref("")
+    const showSMS = ref(false)
+    const showEmail = ref(false)
 
     const route = useRoute();
     const filterFormIsVissible = ref(false);
@@ -799,6 +827,7 @@ filter.value.phoneNumber ="";
     const display = ref(false);
     const deleteFirstTimer = () => {
       let dft = convert(checkedFirstTimer.value);
+      console.log(dft, "ththhtth")
       axios
         .post(`/api/People/DeletePeople`, dft)
         .then((res) => {
@@ -869,6 +898,22 @@ filter.value.phoneNumber ="";
           console.log(err);
         });
     };
+
+    const sendMarkedMemberSms = () => {
+     contacts.value = checkedFirstTimer.value.filter( (i) => i.phoneNumber ).map( (i) => i.phoneNumber ).join()
+     showSMS.value = true;
+
+     console.log(contacts.value, "number")
+    }
+
+    const sendMarkedMemberEmail = () => {
+      showEmail.value = true;
+     markedFirsttimers.value = checkedFirstTimer.value.map( (i) => {
+       i.id = i.id
+       return i
+     });
+     
+    }
 
     const modal = () => {
       confirm.require({
@@ -1037,6 +1082,8 @@ filter.value.phoneNumber ="";
       modal,
       deleteMessage,
       display,
+      sendMarkedMemberSms,
+      sendMarkedMemberEmail,
       membershipCategory,
       op,
       toggle,
@@ -1049,11 +1096,15 @@ filter.value.phoneNumber ="";
       loading,
       searchMember,
       clearAll,
+      contacts,
       hide,
       setFirsttimer,
       firstTimerLink,
+      markedFirsttimers,
       tenantID,
       selectedLink,
+      showSMS,
+      showEmail,
       copylink,
       setTotalFirstTimer,
       totalFirstTimer
@@ -1358,6 +1409,33 @@ a {
   text-decoration: underline;
 }
 
+.m-wrapper {
+    background-color: white!important;
+    width: 875px;
+    position: absolute;
+    right: 0px;
+    top: 0;
+    height: 100%;
+    padding: 70px;
+    transition: all 3s ease-out;
+}
+
+.m-wrapper2 {
+    background-color: white!important;
+    width: 875px;
+    position: absolute;
+    right: 0px;
+    top: 0;
+    height: 100%;
+    padding: 70px;
+}
+.no-show {
+  width: -875px;
+  transition: all 3s ease-out;
+  /* transition: all  8s cubic-bezier(0.645, 0.045, 0.355, 1); */
+}
+
+
 @media screen and (max-width: 500px) {
   .picture,
   .firstname,
@@ -1398,6 +1476,38 @@ a {
     width: 100%;
     text-align: right;
   }
+}
+
+@media screen and (max-width: 947px ){
+    .m-wrapper, .m-wrapper2 {
+      width: 700px;
+      padding: 50px;
+  }
+}
+
+@media screen and (max-width: 767px ){
+    /* .baseline {
+        width: 40%;
+    }
+    .hide-base {
+        width: 40%;
+    } */
+      .m-wrapper, .m-wrapper2 {
+        width: 400px;
+        padding: 40px;
+    }
+}
+@media screen and (max-width: 575px ){
+    /* .baseline {
+        width: 20%;
+    }
+    .hide-base {
+        width: 20%;
+    } */
+    .m-wrapper, .m-wrapper2 {
+        width: 350px;
+        padding: 20px;
+    }
 }
 
 @media screen and (max-width: 500px) {

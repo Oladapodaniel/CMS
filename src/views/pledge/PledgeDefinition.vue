@@ -8,7 +8,20 @@
             <div class="row">
                 <div class="col-md-8  ">
                      <div class="row my-2 mt-3">
-                        <div class="col-md-10 offset-md-2">
+                         <div class="col-md-10  offset-md-2">
+                            <div class="row">
+                                <div class="col-12 col-sm-12 col-lg-4 text-sm-left text-lg-right align-self-center">
+                                    <label for="" class="">Contribution <sup class="text-danger">*</sup> </label>
+                                </div>
+                        
+                                <div class="col-12 col-sm-12  col-lg-8">
+                                    <Dropdown v-model="selectedContribution" class="w-100 font-weight-normal" :options="contributionItems"  optionLabel="name" placeholder="Select Contribution" />
+                                </div>
+                            </div>
+                        </div>
+                    </div> 
+                     <div class="row my-1 mt-3">
+                         <div class="col-md-10 offset-md-2">
                             <div class="row">
                                 <div class="col-12 col-sm-12 col-lg-4 text-sm-left text-lg-right align-self-center">
                                     <label for="" class="">Name <sup class="text-danger">*</sup> </label>
@@ -19,19 +32,6 @@
                                     <div class="invalid-feedback">
                                         Please enter your pledge name.
                                     </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div> 
-                     <div class="row my-1 mt-3">
-                        <div class="col-md-10  offset-md-2">
-                            <div class="row">
-                                <div class="col-12 col-sm-12 col-lg-4 text-sm-left text-lg-right align-self-center">
-                                    <label for="" class="">Contribution <sup class="text-danger">*</sup> </label>
-                                </div>
-                        
-                                <div class="col-12 col-sm-12  col-lg-8">
-                                    <Dropdown v-model="selectedContribution" class="w-100 font-weight-normal" :options="contributionItems"  optionLabel="name" placeholder="Select Contribution" />
                                 </div>
                             </div>
                         </div>
@@ -294,10 +294,9 @@ export default {
                     donorPaymentSpecificAmount: SpecificAmount.value,
                     donorPaymentRangeFromAmount: amountFrom.value,
                     donorPaymentRangeToAmount: amountTo.value,
-                    // pledgeTypeFrequency: 
                     pledgeTypeFrequencyOneTimeStartDate: startDate.value,
                     pledgeTypeFrequencyOneTimeEndDate: endDate.value,
-                    pledgeTypeFrequencyReOccuring: selectedRange.value.name,
+                    pledgeTypeFrequencyReOccuring: selectedRange.value,
                     currencyID: selectedCurrency.value.id,
                     // isActive: true
                     
@@ -321,7 +320,12 @@ export default {
                 amountTo.value = "";
                 amountFrom.value = "";
                 selectedCurrency.value = "";
-                PledgeName.value = '';
+                PledgeName.value = "";
+                selectedContribution.value = "";
+                SpecificAmount.value = "";
+                selectedRange.value = "";
+                startDate.value  = "";
+                endDate.value = "";
               
             }
             catch (error){
