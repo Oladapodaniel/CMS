@@ -379,8 +379,8 @@
             <div class="info-box-body py-3">
             <div class="font-weight-700 " v-if="peopleInGroupIDs.length > 0 && areaInView === 'groups'">Groups added</div>
               <div v-if="areaInView === 'groups'">
-                <span v-for="item in peopleInGroupIDs" :key="item.id" >| &nbsp;
-                <span class="text-grey">{{ item.name }}</span>&nbsp; | &nbsp;
+                <span v-for="(item, index) in peopleInGroupIDs" :key="item.id" >| &nbsp;
+                <span class="text-grey">{{ item.name }} &nbsp; <i v-if="!routeParams" class="pi pi-times-circle text-danger c-pointer"  @click="removeFromGroup(index)"></i></span>&nbsp; | &nbsp;
               </span>
               </div>
               <button
@@ -465,14 +465,6 @@
                 <label for="" class="font-weight-600">Name</label>
               </div>
               <div class="col-md-7">
-                <!-- <Dropdown
-                  v-model="groupToAddTo"
-                  :options="allGroups"
-                  style="width: 100%"
-                  :filter="false"
-                  placeholder="Select a group"
-                  optionLabel="name"
-                /> -->
                 <div class="dropdown show">
                   <button class="btn border w-100 d-flex justify-content-between align-items-center" type="button" id="dropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" @click="focusInput">
                     <div>{{ Object.keys(groupToAddTo).length > 0 ? groupToAddTo.name : 'Select a group' }}</div>
@@ -1140,6 +1132,10 @@ export default {
         }, 1000)
     }
 
+    const removeFromGroup = (index) => {
+      peopleInGroupIDs.value.splice(index, 1)
+    }
+
     return {
       months,
       numberofYears,
@@ -1197,7 +1193,8 @@ export default {
       currentContact,
       selectGroup,
       focusInput,
-      searchRef
+      searchRef,
+      removeFromGroup
     };
   },
 };
