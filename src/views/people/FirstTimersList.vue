@@ -827,7 +827,6 @@ filter.value.phoneNumber ="";
     const display = ref(false);
     const deleteFirstTimer = () => {
       let dft = convert(checkedFirstTimer.value);
-      console.log(dft, "ththhtth")
       axios
         .post(`/api/People/DeletePeople`, dft)
         .then((res) => {
@@ -902,8 +901,6 @@ filter.value.phoneNumber ="";
     const sendMarkedMemberSms = () => {
      contacts.value = checkedFirstTimer.value.filter( (i) => i.phoneNumber ).map( (i) => i.phoneNumber ).join()
      showSMS.value = true;
-
-     console.log(contacts.value, "number")
     }
 
     const sendMarkedMemberEmail = () => {
