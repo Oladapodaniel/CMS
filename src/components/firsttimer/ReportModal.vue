@@ -100,8 +100,6 @@
                     <div class="col-sm-8 form-group" v-show="activeTab === 'churchplus'">
                         <div class="row">
                             <div class="col-sm-1">
-                                <!-- <input type="checkbox" v-model="sendToMyself" name="" id="" @change="test"> -->
-                                <!-- <input type="checkbox" name="" id="" @click="test"> -->
                                 <Checkbox id="binary" v-model="sendToMysef" :binary="true"/>
                             </div>
                             <div class="col-sm-10">
@@ -109,12 +107,6 @@
                             </div>
                         </div>
                         <div class="row">
-                            <!-- <div class="col-sm-1">
-                                 <Checkbox id="binary" v-model="attachReport" :binary="true"/>
-                            </div>
-                            <div class="col-sm-10">
-                                <span>Attach the report as a PDF</span>
-                            </div> -->
                         </div>
                     </div>
                     <div class="col-sm-8 form-group" v-if="activeTab === 'sms'">
@@ -156,6 +148,7 @@ import { ref, watch } from 'vue'
 import axios from "@/gateway/backendapi";
 import attendanceservice from '../../services/attendance/attendanceservice';
 import { useToast } from "primevue/usetoast";
+import { useRoute } from "vue-router"
 
 
     
@@ -163,6 +156,7 @@ import { useToast } from "primevue/usetoast";
         props: ['eventName', 'stats'],
         setup(props, { emit }) {
             const toast = useToast();
+            const route = useRoute()
             const activeTab = ref("churchplus");
             const userEmail = ref("")
             const message = ref("");
@@ -205,12 +199,15 @@ import { useToast } from "primevue/usetoast";
            
           
             const sendReport = () => {
-                axios.get(`/api/Events/markAsSent?activityId=${props.stats.activityToday.id}`)
-                 .then(res =>{
-                     console.log(res)
-                 }).catch(err => {
-                     console.log(err)
-                 })
+                if (!route.fullPath.includes("/tenant/offeringreport")) {
+                    axios.get(`/api/Events/markAsSent?activityId=${props.stats.activityToday.id}`)
+                    .then(res =>{
+                        console.log(res)
+                    }).catch(err => {
+                        console.log(err)
+                    })
+                }
+                
                 const messageObj = {
                     contacts: [],
                     // contacts: recipients.value,
@@ -220,21 +217,23 @@ import { useToast } from "primevue/usetoast";
                 }
 
                 if (activeTab.value === 'sms') {
+                    messageObj.contacts = recipients.value;
                     messageObj.toOthers = recipients.value.map(i => i.phone).join();
                 } else {
                     messageObj.contacts = recipients.value;
                 }
 
-                // const validDestination = messageObj.contacts.find(i => i.phone);
-                // console.log(invalidDestination.value, "validDestination");
-                // if (activeTab.value === "sms" && !validDestination) {
-                //     invalidDestination.value = true;
-                //     return false;
-                // }
+                const validDestination = messageObj.contacts.find(i => i.phone);
+                console.log(invalidDestination.value, "validDestination");
+                if (activeTab.value === "sms" && !validDestination) {
+                    invalidDestination.value = true;
+                    return false;
+                }
 
                 if (sendToMysef.value) {
                     messageObj.contacts.push({ email: userEmail.value });
                 }
+                console.log(messageObj, activeTab.value)
                 emit("sendreport", { data: messageObj, medium: activeTab.value });
             }
 

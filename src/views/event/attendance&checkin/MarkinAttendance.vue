@@ -53,7 +53,8 @@
         <span class="p-input-icon-left w-100">
           <i class="pi pi-phone icon" />
           <InputText
-            @input="checkCharacter"
+            @input="CheckXterAfterEleven"
+            @blur="checkCharacter"
             class="w-100"
             type="text"
             v-model="enteredValue"
@@ -148,7 +149,7 @@
           </div>
         </div>
 
-        <div class="row my-2">
+        <div class="row my-2" v-if="false">
           <div
             class="col-md-3 d-md-flex align-items-center justify-content-end text-md-right mt-2 font-weight-700"
           >
@@ -173,8 +174,8 @@
             </p>
           </div>
         </div>
-
-        <div class="row my-3" v-if="!personData.dayOfBirth && personData.monthOfBirth">
+<!-- v-if="!personData.dayOfBirth && personData.monthOfBirth" -->
+        <div class="row my-3" >
           <div
             class="col-md-3 d-md-flex align-items-center justify-content-end text-md-right mt-2 font-weight-700"
           >
@@ -188,7 +189,7 @@
                   :options="days"
                   style="width: 100%"
                   placeholder="Day"
-                   v-if="!personData.dayOfBirth"
+                  :disabled="person.personId"
                 />
               </div>
               <div class="col-6">
@@ -197,9 +198,19 @@
                   :options="months"
                   style="width: 100%"
                   placeholder="Month"
+                  :disabled="person.personId"
                   
                 />
               </div>
+              <!-- <div class="col-12 col-sm-4 mt-3 mt-sm-0">
+                <Dropdown
+                  v-model="birthYear"
+                  :options="year"
+                  style="width: 100%"
+                  placeholder="Year"
+                  
+                />
+              </div> -->
             </div>
           </div>
         </div>
@@ -212,8 +223,7 @@
               class="default-btn add-btn"
               @click="confirmCheck"
               :disabled="
-                !person.name || person.name.length < 1 || !person.address
-              "
+                !person.name || person.name.length < 1"
             >
               Confirm
             </button>
@@ -270,6 +280,7 @@ export default {
     const loaded = ref(false);
 
     const birthMonth = ref("");
+    // const birthYear = ref("");
     const months = [
       "January",
       "February",
@@ -286,38 +297,17 @@ export default {
     ];
 
     const birthDay = ref("");
-    const days = ref([
-      1,
-      2,
-      3,
-      4,
-      5,
-      6,
-      7,
-      8,
-      9,
-      10,
-      11,
-      12,
-      13,
-      14,
-      15,
-      16,
-      17,
-      18,
-      19,
-      20,
-      22,
-      23,
-      24,
-      25,
-      26,
-      27,
-      28,
-      29,
-      30,
-      31,
-    ]);
+    const days = ref([ 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 22, 23, 24, 25, 26, 27, 28, 29, 30, 31 ]);
+
+    // const year = computed(() => {
+    //   const arrOfYears = [];
+    //   let currentYear = new Date().getFullYear();
+    //   while (arrOfYears.length <= 100) {
+    //     arrOfYears.push(currentYear);
+    //     currentYear = currentYear - 1;
+    //   }
+    //   return arrOfYears;
+    // });
 
     const toggleBase = () => {
       appltoggle.value = !appltoggle.value;
@@ -341,20 +331,20 @@ export default {
     const fetchingFailed = ref(false);
     const personHasAddress = ref(false);
     const personData = ref({});
-    const checkCharacter = (e) => {
-      if (e.target.value.length < 11) {
-        person.value = {};
-        personHasAddress.value = false;
-        return false;
-      }
-      loaded.value = false;
-      personHasAddress.value = false;
-      fetchingFailed.value = false;
-      showNoPhoneError.value = false;
-      if (!enteredValue.value) {
-        showNoPhoneError.value = true;
-        return false;
-      }
+    const checkCharacter = () => {
+      // if (e.target.value.length < 11) {
+      //   person.value = {};
+      //   personHasAddress.value = false;
+      //   return false;
+      // }
+      // loaded.value = false;
+      // personHasAddress.value = false;
+      // fetchingFailed.value = false;
+      // showNoPhoneError.value = false;
+      // if (!enteredValue.value) {
+      //   showNoPhoneError.value = true;
+      //   return false;
+      // }
       // if (e.target.value.length > 0) {
       loading.value = true;
       autosearch.value = true;
@@ -380,6 +370,7 @@ export default {
           person.value = res.data[0] ? res.data[0] : {};
           birthDay.value = res.data[0] && res.data[0].dayOfBirth ? Number(res.data[0].dayOfBirth) : 0;
           birthMonth.value = res.data[0] && res.data[0].monthOfBirth ? months[Number(res.data[0].monthOfBirth)] : 0;
+          // birthYear.value = res.data[0] && res.data[0].yearOfBirth ? Number(res.data[0].yearOfBirth) : 0;
 
           if (
             person.value.personId &&
@@ -484,10 +475,10 @@ export default {
           attendanceCode: +route.params.code,
         };
       }
-      newPerson.person.monthOfBirth = birthMonth.value && !personData.value.monthOfBirth
-        ? months.indexOf(birthMonth.value) + 1
+      newPerson.person.monthOfBirth = birthMonth.value ? months.indexOf(birthMonth.value) + 1
         : null;
-      newPerson.person.dayOfBirth = birthDay.value && !personData.value.monthOfBirth ? birthDay.value : null;
+      newPerson.person.dayOfBirth = birthDay.value ? birthDay.value : null;
+      // newPerson.person.yearOfBirth = birthYear.value ? birthYear.value : null;
 
       console.log(personData.value, "p data");
       console.log(newPerson);
@@ -539,6 +530,12 @@ export default {
     const confirmCheck = () => {
       confirm();
     };
+
+    const CheckXterAfterEleven = (e) => {
+      if (e.target.value.length > 11) {
+        checkCharacter()
+      }
+    }
 
     // function to clear input
     const clearNames = () => {
@@ -656,10 +653,13 @@ export default {
       fetchingFailed,
       personHasAddress,
       months,
+      // year,
       days,
       birthMonth,
       birthDay,
+      // birthYear,
       personData,
+      CheckXterAfterEleven
     };
   },
 };

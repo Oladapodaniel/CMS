@@ -1,6 +1,6 @@
 <template>
 <!-- v-if="churchSetupSaved -->
-    <div class="container container-top font">
+    <div class="container container-top">
         <div class="row">
             <div class="col-6 mt-2 col-md-3 d-flex justify-content-between align-items-center cursor-pointer" @click="showChurchSetup">
                     <div  v-if="churchSetup" :class="{ 'active-tab' : churchSetup, 'circle' : !churchSetup }">1</div>    

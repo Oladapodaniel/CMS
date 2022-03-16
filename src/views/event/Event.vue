@@ -482,6 +482,7 @@
           class="col-sm-12 textarea form-control"
           placeholder="Notes..."
           rows="5"
+          v-model="note"
         >
         </textarea>
         <!-- </div> -->
@@ -1729,7 +1730,8 @@ export default {
       currencyRate: [],
       convertedResult: 0,
       displayResponsive: false,
-      display: false
+      display: false,
+      note: ""
     };
   },
 
@@ -2300,6 +2302,7 @@ export default {
           date: this.eventDate === "" ? "01.01.0001 00:00:00" : this.eventDate,
           topic: this.topic,
           preacher: this.preacher,
+          note: this.note
         };
 
         // If you chose an event activity, send the id in the event object, else if a new activity was created send the name
@@ -2891,7 +2894,6 @@ export default {
     },
     async sendAmount (e, index) {
       let amount = this.offeringItem[index].amount.toString()
-  
       let removeCharacters = amount.replace(/[^0-9.]/g, "");
       let toNumber = parseFloat(removeCharacters)
 

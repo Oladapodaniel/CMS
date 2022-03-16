@@ -214,16 +214,26 @@ import userRoles from "../../services/user/userRoles"
                 life: 4000
                 });
                 console.log(res);
-                console.log('wisdom is great');
                 this.$router.push('/tenant/settings')
             }).catch((error)=>{
                 console.log(error);
-                this.$toast.add({
-                severity:'error', 
+                console.log(error.response.data)
+                if (error.response.data) {
+                    this.$toast.add({
+                severity:'warn', 
                 summary:'Not successful', 
-                detail:'Please check your network and try again', 
-                life: 4000
+                detail: error.response.data, 
+                life: 5000
                 });
+                }   else {
+                    this.$toast.add({
+                    severity:'error', 
+                    summary:'Not successful', 
+                    detail:'Please check your network and try again', 
+                    life: 5000
+                    });
+                }
+                
             })
 
 

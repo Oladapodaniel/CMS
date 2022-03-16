@@ -32,10 +32,15 @@
                         <i class="pi pi-spin pi-spinner primary-text" style="fontSize: 3rem"></i>
                     </div>
                 </div>
-                <div class="row my-3" v-if="searchMembers.length == 0 && !loading">
+                <div class="row my-3" v-if="searchMembers.length == 0 && !loading && !searchText">
                     <div class="col-12 text-center font-weight-700">
                         <div class="mt-3">There are no members in this group yet, start by adding members</div>
                         <div class="mt-3 default-btn border-0 text-white primary-bg" data-toggle="modal" data-target="#addMemberModal" ref="modalBtn">Add member</div>
+                    </div>
+                </div>
+                <div class="row my-3" v-if="searchMembers.length == 0 && !loading && searchText">
+                    <div class="col-12 text-center font-weight-700">
+                        <div class="mt-3">There is no member in this group with that name</div>
                     </div>
                 </div>
             </div>
@@ -145,6 +150,7 @@ import NewPerson from '../component/AddNewMemberToGroup.vue';
 import { useRoute } from 'vue-router'
 import attendanceservice from '../../../services/attendance/attendanceservice';
 import { useToast } from "primevue/usetoast";
+import router from '../../../router';
 export default {
     components: {
         // AddToGroup,
@@ -275,10 +281,41 @@ export default {
                     amount: i.amount
                 }
             })
-            console.log(groupDetail.value)
+            let body = {
+                eventName: groupDetail.value.eventName,
+                eventDate: groupDetail.value.eventDate,
+                details: groupDetail.value.details,
+                status: groupDetail.value.status,
+                title: groupDetail.value.title,
+                bannerImage: groupDetail.value.bannerImage,
+                id: route.params.id,
+                offerings: contributionItems.value.map(i => {
+                return {
+                        financialContributionID: i.id,
+                        amount: i.amount
+                    }
+                }),
+                attendances: attendanceType.value.map(i => {
+                return {
+                        attendanceTypeID: i.id,
+                        number: i.number
+                    }
+                }),
+                note: note.value
+            }
+            console.log(body)
             try {
-                let data = await axios.post("/api/CheckInAttendance/UpdateCheckInAttendance", groupDetail.value)
+                let data = await axios.post("/api/CheckInAttendance/UpdateCheckInAttendance", body)
                 console.log(data)
+                toast.add({
+                    severity: "success",
+                    summary: "Success",
+                    detail: "Saved successfully",
+                    life: 5000,
+                    });
+                    setTimeout(() => {
+                        router.push("/tenant/groupleader")         
+                    }, 3000);
             }
             catch (err) {
                 console.log(err)

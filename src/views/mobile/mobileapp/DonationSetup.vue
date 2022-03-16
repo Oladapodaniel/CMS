@@ -113,11 +113,11 @@
                     class="btn-close border-0"
                     data-dismiss="modal"
                     aria-label="Close"
-                    ref="closeModalButton"
+                    ref="closeModalButtonForm"
                   >X</button>
                 </div>
                 <div class="modal-body pt-0">
-                  <paymentform @form-created="formCreated" />
+                  <paymentform @formcreated="formCreated" />
                 </div>
                 <!-- <div class="modal-footer">
                    <button
@@ -157,7 +157,7 @@
                   >X</button>
                 </div>
                 <div class="modal-body pt-0">
-                  <paymentonboarding @form-created="formCreated" @closemodal="closeModal" />
+                  <paymentonboarding @formcreated="formCreated" @closemodal="closeModal" />
                 </div>
                 <!-- <div class="modal-footer">
                    <button
@@ -228,6 +228,7 @@ export default {
     const accountName = ref("");
     const loading = ref(false);
     const accNameRef = ref("");
+    const closeModalButtonForm = ref(null)
     // const toast = useToast();
 
     // const pastors = ref([{}]);
@@ -314,6 +315,7 @@ export default {
     const formsArr = ref([ ]);
     const formCreated = data => {
       closeModalButton.value.click();
+      closeModalButtonForm.value.click();
       console.log(data)
       formsArr.value.push({ name: data.name, accountName: data.accountName, bank: data.bank });
     }
@@ -434,7 +436,8 @@ export default {
       closeModal,
       bankAccounts,
       deleteBankUser,
-      showConfirmModalBank
+      showConfirmModalBank,
+      closeModalButtonForm
     };
   },
 };

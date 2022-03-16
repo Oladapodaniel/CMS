@@ -463,9 +463,9 @@
             </div>
             <div class="col-6 col-lg-3">
               <input
-                type="number"
+                type="text"
                 class="form-control"
-                v-model.number="item.amount"
+                v-model="item.amount"
                 placeholder="Enter Amount"
                 @input="sendAmount($event, index)"
               />
@@ -1175,7 +1175,6 @@ export default {
               currencyID: currencyList.value && tenantCurrency.value ? currencyList.value.find(i => i.name === tenantCurrency.value).id : "",
               fromCurrencyRate: `usd${tenantCurrency.value ? tenantCurrency.value.toLowerCase() : ""}`
             });
-      console.log(currencyList.value, tenantCurrency.value)
           } 
 
           // const currentSignedIn = () => {
@@ -1261,7 +1260,6 @@ export default {
                   .then(res => {
                     tenantCurrency.value = res.data.currency
                     getOneContribution()
-                    console.log(res.data)
                   })
                   .catch(err => console.log(err))
                 console.log(store.getters.currentUser)  
@@ -1427,11 +1425,14 @@ export default {
               // }
           loading.value = true
         let contributions = offeringItem.value.map(i => {
+          let amount = i.amount.toString()
+          const removeCharacters = amount.replace(/[^0-9.]/g, "");
+          const toNumber = parseFloat(removeCharacters)
                 return {
                   name: i.name,
                   financialContributionID: i.financialContributionID,
                   date: i.date,
-                  amount: i.amount ? i.amount : 0,
+                  amount: toNumber ? toNumber : 0,
                   paymentChannel: i.paymentChannel,
                   activityID: i.activityID,
                   personID: i.personID ? i.personID : "",
@@ -1597,7 +1598,6 @@ export default {
         const getRates = async() => {
             try {
                 let { data } = await axios.get('/fxRates')
-                console.log(data)
                 store.dispatch("getRates", data)
             }   catch (error) {
                     console.log(error);
@@ -1606,6 +1606,9 @@ export default {
         getRates()
 
         const sendAmount = async(e, index) => {
+          let amount = offeringItem.value[index].amount.toString()
+          let removeCharacters = amount.replace(/[^0-9.]/g, "");
+          let toNumber = parseFloat(removeCharacters)
 
           currencyAmount.value = e.target.value
           currencyIndex.value = index
@@ -1613,11 +1616,12 @@ export default {
 
           let toDestinationCurrencyRate = `usd${tenantCurrency.value.toLowerCase()}`
           let fromCurrencyRate = offeringItem.value[index].fromCurrencyRate
-          let amount = offeringItem.value[index].amount ? +offeringItem.value[index].amount : 0
+          // let amount = offeringItem.value[index].amount ? +offeringItem.value[index].amount : 0
+          let amountToConvert = toNumber ? toNumber : 0
 
   
           try {
-            let result = await CurrencyConverterService.currencyConverter(amount, fromCurrencyRate, toDestinationCurrencyRate)
+            let result = await CurrencyConverterService.currencyConverter(amountToConvert, fromCurrencyRate, toDestinationCurrencyRate)
             console.log(result)
             convertedAmount.value[index] = result
           }

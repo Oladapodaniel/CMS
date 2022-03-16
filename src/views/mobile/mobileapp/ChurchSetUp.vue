@@ -729,7 +729,7 @@ export default {
     };
 
     const getTenantId = async () => {
-      if (Object.keys(store.getters.currentUser).length > 0) {
+      if (store && store.getters && store.getters.currentUser && Object.keys(store.getters.currentUser).length > 0) {
         console.log(store.getters.currentUser);
         tenantId.value = store.getters.currentUser.tenantId;
       } else {

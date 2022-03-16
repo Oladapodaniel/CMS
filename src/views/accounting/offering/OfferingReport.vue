@@ -271,7 +271,7 @@
         >
           <span>
             <span>Total Offering: </span> <br />
-            <span class="recieve">{{ contributionReport.tenantCurrency }} {{ contributionReport ? contributionReport.totalToday : 0 }} </span>
+            <span class="recieve">{{ contributionReport.tenantCurrency }} {{ contributionReport ? Math.abs(contributionReport.totalToday).toLocaleString() : 0 }} </span>
           </span>
         </div>
 
@@ -431,16 +431,16 @@
                 <div class="col-sm-12">
                   <div class="row">
                     <div class="col-sm-4 py-2">
-                      <span class="bold-400">{{ item.contribution }}</span>
+                      <span class="font-weight-700">{{ item.contribution }}</span>
                     </div>
                     <div class="col-sm-3 py-2">
                       <span class="bold-400">{{ item.channel }}</span>
                     </div>
                     <div class="col-sm-3 py-2">
-                      <span class="bold-400">{{ item.currencyName }} {{ item.amount }}</span>
+                      <span class="bold-400">{{ item.currencyName }} {{ Math.abs(item.amount).toLocaleString() }}</span>
                     </div>
                     <div class="col-sm-2 py-2">
-                      <span class="bold-400">{{ item.currencyName }} {{ item.amount }}</span>
+                      <span class="bold-400">{{ item.currencyName }} {{ Math.abs(item.amount).toLocaleString() }}</span>
                     </div>
                   </div>
                 </div>
