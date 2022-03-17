@@ -1,7 +1,7 @@
 <template>
     <div class="container  container-top container-wide ">
         <div class="row d-flex justify-content-between px-3">
-                <div class="heading-text"> Make a Pledge </div>
+                <div class="heading-text"> Pledge Making </div>
                 <!-- <div><ToggleButton @is-active="isActive" :active="isActive" /></div> -->
         </div>
         <div class="container-fluid">
