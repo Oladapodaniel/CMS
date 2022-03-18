@@ -4,12 +4,12 @@
                 <div class="heading-text"> Pledge Making </div>
                 <!-- <div><ToggleButton @is-active="isActive" :active="isActive" /></div> -->
         </div>
-        <div class="container-fluid">
+        <div class="container-fluid border rounder  sub-con ">
             <div class="row">
-                <div class="col-md-8  " >
-                     <div class="row my-1 mt-3">
-                        <div class="col-md-10  offset-md-2">
-                            <div class="row">
+                <div class="col-md-12 border-bottom mt-4 " >
+                     <div class="row my-1 mt-3 d-flex justify-content-center ">
+                        <div class="col-md-7  ">
+                            <div class="row ">
                                 <div class="col-md-4 text-md-right align-self-center">
                                     <label for="" class="">Select Person <sup class="text-danger">*</sup> </label>
                                 </div>
@@ -20,8 +20,8 @@
                             </div>
                         </div>
                     </div>
-                     <div class="row my-1 mt-3">
-                        <div class="col-md-10  offset-md-2">
+                     <div class="row my-1 mt-3 d-flex justify-content-center">
+                        <div class="col-md-7  ">
                             <div class="row">
                                 <div class="col-md-4 text-md-right align-self-center">
                                     <label for="" class="">Select Pledge <sup class="text-danger">*</sup> </label>
@@ -33,8 +33,8 @@
                             </div>
                         </div>
                     </div>
-                    <div class="row my-1 mt-3">
-                        <div class="col-md-10  offset-md-2 " v-if="selectedPledge.donorPaymentType == 0 " >
+                    <div class="row my-1 mt-3 d-flex justify-content-center">
+                        <div class="col-md-7  " v-if="selectedPledge.donorPaymentType == 0 " >
                             <div class="row">
                                 <div class="col-md-4 text-md-right align-self-center">
                                     <label for="" class=""> Pledge Amount </label>
@@ -46,8 +46,8 @@
                             </div>
                         </div>
                     </div>  
-                    <div class="row my-1 mt-3">
-                        <div class="col-md-10  offset-md-2 " v-if="selectedPledge.donorPaymentType == 1 ">
+                    <div class="row my-1 mt-3 d-flex justify-content-center">
+                        <div class="col-md-7  " v-if="selectedPledge.donorPaymentType == 1 ">
                             <div class="row">
                                 <div class="col-md-4 text-md-right align-self-center">
                                     <label for="" class=""> Pledge Amount </label>
@@ -59,8 +59,8 @@
                             </div>
                         </div>
                     </div>  
-                    <div class="row my-1 mt-2  ">
-                         <div class="col-md-10 offset-md-2 " v-if="selectedPledge.donorPaymentType == 2 "  >
+                    <div class="row my-1 mt-2 d-flex justify-content-center  ">
+                         <div class="col-md-7 " v-if="selectedPledge.donorPaymentType == 2 "  >
                             <div class="row">
                                 <div class="col-12 col-sm-12 col-lg-4 text-sm-left text-lg-right align-self-center">
                                     <label for="" class="">Pledge Amount </label>
@@ -82,55 +82,103 @@
                             </div>
                         </div>
                     </div>  
+                    <!-- <div class="row w-100" v-if="eventRegLink"> -->
+             
+                </div>
 
-                     <div class="col-md-9 offset-md-5 mt-4">
+                    <div class="container mt-4">
+                         <div class="row d-flex justify-content-center" >
+                            <div
+                                class="col-md-10 col-sm-11  col-lg-8  border rounded"
+                            >
+                                <div class="row">
+                                <div class="col-md-2 col-sm-2 d-flex align-self-center image mt-3">
+                                    <img
+                                    src="../../assets/link.svg" class="w-100"
+                                    alt="marked Attendance image"
+                                    style="width: 60px; height: 60px"
+                                    />
+                                </div>
+                                <div class="col-md-10 col-sm-10 mt-3">
+                                    <a class="text-decoration-none"
+                                    ><h4 class="header4 link-color c-pointer" @click="copyRegLink">Online Payment Link</h4></a
+                                    >
+                                    <!-- <a class="c-pointer text-decoration-none"><h4 class="header4"><router-link class="text-decoration-none text-dark" :to="{ name: 'WebCheckin', params: { code: route.query.code} }">Registration Link</router-link></h4></a> -->
+                                    
+                                    <p class="para">
+                                    <span class="d-flex align-items-center"
+                                        ><input
+                                        type="text"
+                                        ref="regLink"
+                                        @keydown="preventChangingOfCheckinLink"
+                                        @click="copyRegLink"
+                                        :value="eventRegLink"
+                                        class="form-control"
+                                        style="width: 95%" />
+                                        <i
+                                        class="pi pi-copy ml-2 c-pointer"
+                                        @click="copyRegLink"
+                                        style="font-size: 22px"
+                                        ></i
+                                    ></span>
+                                    </p>
+                                </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="container ">
+                        <div class="row  mt-3 d-flex justify-content-center">
+                            <div
+                                class="col-md-10  col-sm-11  col-lg-8  border rounded"
+                            >
+                                <div class="row">
+                                <div class="col-md-2 col-sm-2 d-flex justify-content-center image mt-3">
+                                    <img
+                                    src="../../assets/link.svg" 
+                                    alt="marked Attendance image"
+                                    style="width: 60px; height: 60px"
+                                    />
+                                </div>
+                                <div class="col-md-10 col-sm-10 mt-3">
+                                    <a class="text-decoration-none"
+                                    ><h4 class="header4 link-color c-pointer" @click="copyLink">Virtual payment Link</h4></a
+                                    >
+                                    <!-- <a class="c-pointer text-decoration-none"><h4 class="header4"><router-link class="text-decoration-none text-dark" :to="{ name: 'WebCheckin', params: { code: route.query.code} }">Registration Link</router-link></h4></a> -->
+                                    <p class="para">
+                                    <span class="d-flex align-items-center"
+                                        ><input
+                                        type="text"
+                                        ref="checkinLink"
+                                        @keydown="preventChangingOfCheckinLink"
+                                        @click="copyLink"
+                                        :value="link"
+                                        class="form-control"
+                                        style="width: 95%" />
+                                        <i
+                                        class="pi pi-copy ml-2 c-pointer"
+                                        @click="copyLink"
+                                        style="font-size: 22px"
+                                        ></i
+                                    ></span>
+                                    </p>
+                                </div>
+                                </div>
+                            </div>
+                        </div>   
+                    </div>      
+
+                     <div class="col-md-12  mt-4">
                             <div class="row  ">
-                                <div class=" col-md-12 d-flex justify-content-center">
-                                    <button class="default-btn primary-bg border-0 text-white" type="button" data-toggle="modal" data-target="#exampleModalCente" data-dismiss="modal" @click="makePledge">
-                                        <i class="pi pi-spin pi-spinner"  v-if="loading"></i> Save and Continue
+                                <div class=" col-md-12 d-flex justify-content-center mb-2  ">
+                                    <button class="default-btn primary-bg border-0 text-white" type="button" data-toggle="modal" data-target="#exampleModalCente" data-dismiss="modal" @click="makePayment">
+                                        <i class="pi pi-spin pi-spinner"  v-if="loading"></i> Make Payment
                                     </button>
                                 </div>
                             </div>
                         </div>
-                </div>
-
-                <!-- Modal --->
-                <div class="modal fade" id="exampleModalCenter" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
-                    <div class="modal-dialog modal-lg modal-dialog-centered" role="document">
-                        <div class="modal-content">
-                        <div class="modal-header" style="border: none">
-                            <h5 class="modal-title" id="exampleModalLongTitle">Pledge Payment Link</h5>
-                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                            <span aria-hidden="true">&times;</span>
-                            </button>
-                        </div>
-                        <div class="modal-body">
-                            <div class="container">
-                                <div class="row">
-                                    <div class="col-sm-10  pr-0 align-self-center">
-                                    <a href="">Online Payment Link </a>
-                                    </div>
-                                    <div class="col-sm-10 mt-3  pr-0 align-self-center">
-                                            <a href="">Virtual Account Link</a>
-                                    </div>
-                                    <!-- <div class="col-lg-10 col-sm-12 mt-3">
-                                    <a href="">Send SMS</a>
-                                    </div>
-                                    <div class="col-sm-10 mt-3  pr-0">
-                                        <a href="">Send Email</a>
-                                    </div> -->
-                                    
-                                    
-                                    
-                                </div>
-                        </div>
-                        </div>
-                        <div class="modal-footer d-flex justify-content-center mt-4  ml-5" style="border: none">
-                                <button class="default-btn primary-bg border-0 text-white" @click="makePayment" type="button" data-dismiss="modal">Make payment</button>
-                        </div>
-                        </div>
-                    </div>
-                </div>
+                
             </div>
         </div>
     </div>
@@ -309,4 +357,16 @@ export default {
        .heading-text {
         font: normal normal 800 1.5rem Nunito sans;
 }
+
+.header4 {
+  font: var(--unnamed-font-style-normal) normal var(--unnamed-font-weight-bold)
+    18px/24px var(--unnamed-font-family-nunito-sans);
+  letter-spacing: var(--unnamed-character-spacing-0);
+  text-align: left;
+  font: normal normal bold 18px/24px Nunito Sans;
+  letter-spacing: 0px;
+  color: #02172e;
+  opacity: 0.8;
+}
+
 </style>

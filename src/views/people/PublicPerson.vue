@@ -278,24 +278,21 @@
           </div>
         </div>
         <div class="bio-div">
-          <span class="celeb-tab row" @click="showAddInfoTab">
+          <span class="celeb-tab row">
             <span class="tab-header col-3">Additional information:</span>
             <span class="h-rule col-7"><hr class="hr" /></span>
             <span class="col-2">
-              <span class="tb-icon-span"
+              <!-- <span class="tb-icon-span"
                 ><i
                   class="pi pi-angle-down tbb-icon"
                   :class="{ 'tb-icon': !hideAddInfoTab }"
                 ></i
-              ></span>
+              ></span> -->
             </span>
           </span>
           <div
             class="bio-info"
-            :class="{
-              'hide-tab': hideAddInfoTab,
-              'show-occ-tab': !hideAddInfoTab,
-            }"
+            
           >
             <div class="inputs">
               <div class="input-field">
@@ -331,13 +328,17 @@
         </div>
 
         <!-- DISABLED -->
-        <div
+        <!-- <div
           v-if="true"
           class="add-info--con"
           :class="{
             'hide-tab': hideAddInfoTab,
             'show-addinfo-tab': !hideAddInfoTab,
           }"
+        > -->
+        <div
+          v-if="true"
+          class="add-info--con"
         >
           <div class="label-text-box">
             <p>Related information</p>

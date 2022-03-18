@@ -132,9 +132,9 @@
                     </div>
                 </div>
             </div>
+            <Toast />
         </div>
     </div>
-    <Toast />
 </template>
 
 <script>
@@ -230,7 +230,7 @@ export default {
                     pledgeTypeID: selectedPledge.value.id,
                     amountBase: selectedPledge.value.donorPaymentRangeFromAmount,
                     amountTop: selectedPledge.value.donorPaymentRangeToAmount,
-                    amountBase: selectedPledge.donorPaymentSpecificAmount,
+                    // amountBase: selectedPledge.value.donorPaymentSpecificAmount,
                     amountBase:  freewillAmount.value                  
                 }
 
@@ -238,9 +238,31 @@ export default {
                     const res = await axios.post('api/Pledge/SavePledge', makePledgeDetails)
                     finish()
                     console.log(res,'getSinglePledge');
-                    router.push('/pledge/pledgepayment')
+                     toast.add({
+                        severity: "success",
+                        summary: "Successful",
+                        detail: "You are successfully make a Pledge",
+                        life: 2000,
+                    });
+                    
+                    router.push('/pledge/pledgemaking')
                 }
                 catch (error){
+                    if (error.response) {
+                        toast.add({
+                        severity: "warn",
+                        summary: 'Not successful',
+                        detail: `${error.response.data}`,
+                        life: 8000,
+                        });
+                    } else {
+                        toast.add({
+                        severity: "error",
+                        summary: "Network Error",
+                        detail: `Please ensure you have a strong internet  connection`,
+                        life: 4000,
+                        });
+                    }
                     console.log(error)
                 }
             }

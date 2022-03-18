@@ -1150,7 +1150,7 @@ a {
     position: absolute;
     right: 0px;
     top: 0;
-    height: 100%;
+    /* height: 100%; */
     padding: 70px;
 }
 .no-show {
