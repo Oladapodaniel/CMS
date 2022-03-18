@@ -383,6 +383,12 @@
                 <span class="text-grey">{{ item.name }} &nbsp; <i v-if="!routeParams" class="pi pi-times-circle text-danger c-pointer"  @click="removeFromGroup(index)"></i></span>&nbsp; | &nbsp;
               </span>
               </div>
+              <div v-if="areaInView === 'notes'">
+                <div v-for="(item, index) in personNotes" :key="index" >
+                  <div class="font-weight-700">{{ item.title }}</div>  
+                  <div class="mb-2">{{ item.description }}</div>  
+              </div>
+              </div>
               <button
                 @click.prevent="uploadImage"
                 class="info-btn"
@@ -403,6 +409,8 @@
                 @click.prevent="uploadImage"
                 class="info-btn"
                 v-if="areaInView === 'notes'"
+                data-toggle="modal"
+                data-target="#personNote"
               >
                 New Notes
               </button>
@@ -435,7 +443,7 @@
       </form>
     </div>
 
-    <!-- Modal -->
+    <!-- Group Modal -->
     <div
       class="modal fade"
       id="addToGroup"
@@ -471,8 +479,8 @@
                     <i class="pi pi-chevron-down"></i>
                   </button>
                   <div class="dropdown-menu w-100 scroll-card" aria-labelledby="dropdownMenuLink">
-                    <input type="text" class="form-control input-width-adjust" placeholder="Search groups" ref="searchRef" v-focus/>
-                    <a class="dropdown-item" v-for="item in allGroups" :key="item.id">
+                    <input type="text" v-model="searchGroupText" class="form-control input-width-adjust" placeholder="Search groups" ref="searchRef" v-focus/>
+                    <a class="dropdown-item" v-for="item in searchAllGroups" :key="item.id">
                       <div class="c-pointer" @click="selectGroup(item)">{{ item.name }}</div>
                     </a>
                   </div>
@@ -525,12 +533,82 @@
         </div>
       </div>
     </div>
+    
+    <!-- Note Modal -->
+    <div
+      class="modal fade"
+      id="personNote"
+      tabindex="-1"
+      role="dialog"
+      aria-labelledby="personNote"
+      aria-hidden="true"
+    >
+      <div class="modal-dialog modal-lg" role="document">
+        <div class="modal-content">
+          <div class="modal-header" style="background: #ebeff4">
+            <h5 class="modal-title font-weight-bold" id="personNote">
+              Add Note
+            </h5>
+            <button
+              type="button"
+              class="close"
+              data-dismiss="modal"
+              aria-label="Close"
+            >
+              <span aria-hidden="true">&times;</span>
+            </button>
+          </div>
+          <div class="modal-body">
+            <div class="row my-4">
+              <div class="col-md-4 text-md-right">
+                <label for="" class="font-weight-600">Title</label>
+              </div>
+              <div class="col-md-7">
+                <input type="text" class="form-control" v-model="noteDetails.noteTitle" placeholder="Enter title"/>
+              </div>
+            </div>
+
+            <div class="row">
+              <div class="col-md-4 text-md-right">
+                <label for="" class="font-weight-600">Description</label>
+              </div>
+              <div class="col-md-7">
+                <textarea rows="5" class="form-control" v-model="noteDetails.noteDesc" placeholder="Enter note description"></textarea>
+              </div>
+            </div>
+
+            <div class="row">
+              <div class="col-md-4">
+                <label for="" class="font-weight-600"></label>
+              </div>
+
+              <div class="col-md-7 mt-3">
+                <div class="row mt-2">
+                  <div class="col-md-6 d-md-flex justify-content-end">
+                    <button class="default-btn" data-dismiss="modal">Cancel</button>
+                  </div>
+                  <div class="col-md-6">
+                    <button
+                      class="default-btn primary-bg border-0 text-white"
+                      :data-dismiss="dismissAddToGroupModal"
+                      @click="savePersonNote"
+                    >
+                      Save
+                    </button>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
   </div>
 </template>
 
 <script>
 import moment from "moment";
-import { ref, reactive, computed, onUpdated } from "vue";
+import { ref, reactive, computed } from "vue";
 import router from "@/router/index";
 // import store from "../../store/store"
 import axios from "@/gateway/backendapi";
@@ -566,6 +644,9 @@ export default {
     const followupPerson = ref({})
     const currentContact = ref({})
     const searchRef = ref(null)
+    const personNotes = ref([])
+    const noteDetails = ref({})
+    const searchGroupText = ref("")
 
     const loading = ref(false);
     // const day = ref([ 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30, 31 ]);
@@ -627,10 +708,6 @@ export default {
       // return arrOfDays;
       return daysinMonth.value
     });
-
-    onUpdated(() => {
-      console.log(moment().daysInMonth())
-    })
 
     const editAnnDateValue = (unit, val) => {
       anniversaryDate.set(unit, val);
@@ -743,6 +820,10 @@ export default {
       formData.append(
         "followupPersonID",
         followupPerson.value.id ? followupPerson.value.id : "00000000-0000-0000-0000-000000000000"
+      );
+      formData.append(
+        "note",
+        personNotes.value ? JSON.stringify(personNotes.value) : []
       );
       console.log(formData);
       /*eslint no-undef: "warn"*/
@@ -1105,6 +1186,8 @@ export default {
           groupId: groupToAddTo.value.id,
           position: position.value
         })
+        groupToAddTo.value = {}
+        position.value = ""
       }
       console.log(peopleInGroupIDs.value)
       
@@ -1135,6 +1218,20 @@ export default {
     const removeFromGroup = (index) => {
       peopleInGroupIDs.value.splice(index, 1)
     }
+
+    const savePersonNote = () => {
+      personNotes.value.push({
+        title: noteDetails.value.noteTitle,
+        description: noteDetails.value.noteDesc
+      })
+      noteDetails.value = {}
+      dismissAddToGroupModal.value = "modal";
+    }
+
+    const searchAllGroups = computed(() => {
+      if (!searchGroupText.value && allGroups.value > 0) return allGroups.value
+      return allGroups.value.filter(i => i.name.toLowerCase().includes(searchGroupText.value))
+    })
 
     return {
       months,
@@ -1194,7 +1291,12 @@ export default {
       selectGroup,
       focusInput,
       searchRef,
-      removeFromGroup
+      removeFromGroup,
+      personNotes,
+      noteDetails,
+      savePersonNote,
+      searchGroupText,
+      searchAllGroups
     };
   },
 };
@@ -1300,5 +1402,15 @@ export default {
 .input-width-adjust {
     width: 90%;
     margin: auto;
+}
+
+.nav-bar {
+  position: sticky;
+  top: 0;
+  left: 0;
+}
+
+.info-box {
+  overflow: scroll;
 }
 </style>
