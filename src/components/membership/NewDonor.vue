@@ -129,9 +129,10 @@
                 <div class="col-md-3 text-md-right">
                     <h4 class="header4 text-md-right"></h4>
                  </div>
-                 <div class="col-md-7 px-0">
+                 <div class="col-md-9 px-0">
                      <Button label="Cancel" class="p-button-outlined p-button-secondary mr-3 px-5 p-button-rounded" @click="onCancel" />
-                     <Button label="Save"  class="p-button-primary p-button-rounded px-5 mr-3 max" @click="saveDonor" />
+                     <Button label="Save" class="p-button-primary p-button-rounded px-5 mr-3 max" @click="saveDonor"> Save &nbsp; &nbsp; <i class="pi pi-spin pi-spinner" v-if="loading"></i>
+                     </Button>
                  </div>
             </div>
            </div>
@@ -139,7 +140,7 @@
         <!-- import word -->
 
     </div>
-    
+    <Toast />
 </template>
 
 <script>
@@ -152,11 +153,14 @@ import { useRoute } from "vue-router";
 import axios from "@/gateway/backendapi";
 import ImageForm from './ImageForm'
 import Dropdown from "primevue/dropdown";
+import { useToast } from "primevue/usetoast";
     export default {
         components:{ Button, ImageForm, Dropdown  },
 
         setup(props, { emit }) {
             const route = useRoute();
+            const toast = useToast();
+            const loading = ref(false)
             // const store = useStore();
             const donor = reactive({ });
             const image = ref('');
@@ -236,12 +240,8 @@ import Dropdown from "primevue/dropdown";
 
 
             const saveDonor = async () => {
-                emit("cancel");
-                console.log(route.fullPath)
-                if (route.fullPath.includes("/tenant/addfamily") || route.fullPath.includes("/tenant/createpeoplegroup") || route.fullPath.includes("/tenant/takeattendance") ) {
-                    emit("show-ward-modal", true)
-                    emit("show-group-modal", true)
-                }
+                loading.value = true
+                
                  console.log(birthMonth.value)
                 console.log(months.value.indexOf(birthMonth.value) + 1)
                 const formData = new FormData()
@@ -260,6 +260,20 @@ import Dropdown from "primevue/dropdown";
                         axios.post("/api/People/createPerson", formData)
                             .then(res => {
                                 console.log(res)
+                                loading.value = false
+                                emit("cancel");
+                                console.log(route.fullPath)
+                                if (route.fullPath.includes("/tenant/addfamily") || route.fullPath.includes("/tenant/createpeoplegroup") || route.fullPath.includes("/tenant/takeattendance") ) {
+                                    emit("show-ward-modal", true)
+                                    emit("show-group-modal", true)
+                                }
+
+                                toast.add({
+                                    severity: "success",
+                                    summary: "Success",
+                                    detail: "Member created successfully",
+                                    life: 5000,
+                                });
                                 emit('person-id', {
                                     personId: res.data.personId, 
                                     personFirstName: donor.firstName, 
@@ -271,11 +285,17 @@ import Dropdown from "primevue/dropdown";
                                 
                             })
                             .catch(error => {
+                                loading.value = false
                                 console.log(error)
-                                /*eslint no-undef: "warn"*/
-                                NProgress.done();
                                 if (error.response) {
-                                    reject(error.response);
+                                    console.log(error.response)
+                                    toast.add({
+                                        severity: "error",
+                                        summary: "Sorry, member not created",
+                                        detail: error.response.data.message,
+                                        life: 5000,
+                                    });
+                                    // reject(error.response);
                                 } else {
                                     reject(error);
                                 }
@@ -307,7 +327,8 @@ import Dropdown from "primevue/dropdown";
                 genderType,
                 addbirthDays,
                 addBirthMonth,
-                addBirthYears
+                addBirthYears,
+                loading
 
                 // getLookUps
                 // gendersArr,

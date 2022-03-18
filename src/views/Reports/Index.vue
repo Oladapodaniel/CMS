@@ -4,15 +4,15 @@
             <div ><h3 class="font-weight-bold"> Reports</h3></div>
         </div>
         <div class="row" style=" background: #f5f8fa;">
-            <div class="col-12 col-sm-4  c-pointer " @click="togglePeople">
+            <div class="col-12  c-pointer" v-if="!financialAccount" :class="{ 'col-sm-6' : !canAccessFinancial, 'col-sm-4' : canAccessFinancial }" @click="togglePeople">
                 <div class="p-3 header4"> Membership </div> 
                 <div :class="{ 'baseline' : showPeople, 'hide-base' : !showPeople }"></div>
             </div>
-            <div class="col-12 col-sm-4 c-pointer" @click="togglePerformance">
+            <div class="col-12 c-pointer" v-if="!financialAccount" :class="{ 'col-sm-6' : !canAccessFinancial, 'col-sm-4' : canAccessFinancial }" @click="togglePerformance">
                 <div class="p-3 header4"> Attendance </div> 
                 <div :class="{ 'baseline' : showPerformance, 'hide-base' : !showPerformance }"></div>
             </div>
-            <div class="col-12 col-sm-4 c-pointer" @click="toggleFinancial">
+            <div class="col-12 col-sm-4 c-pointer"  @click="toggleFinancial" v-if="canAccessFinancial || financialAccount">
                 <div class="p-3 header4 "> Financial </div> 
                 <div :class="{ 'baseline' : showFinancial, 'hide-base' : !showFinancial }"></div>
             </div>
@@ -54,7 +54,7 @@
 
 <script>
 
-import { ref } from "vue"
+import { ref, computed } from "vue"
 import People from "./Membershipreport/Index.vue"
 import Performance from "./Performancereport/Index.vue"
 import Financial from "./Financialreport/Index.vue"
@@ -74,12 +74,23 @@ export default {
     },
     
     setup() {
-        const showPeople = ref(true)
+
+        const roleOfCurrentUser = computed(() => {
+        if (!localStorage.getItem('roles')) return []
+        return JSON.parse(localStorage.getItem('roles'))
+        })
+       
+       const canAccessFinancial = ref(roleOfCurrentUser.value.some(i => i.toLowerCase() == 'admin' || i.toLowerCase() == 'reports'))
+       const financialAccount = ref(roleOfCurrentUser.value.length  == 1 && roleOfCurrentUser.value.some(i => i.toLowerCase() == 'financialaccount'))
+
+
+        const showPeople = ref(!financialAccount.value ? true : false)
         const showPerformance = ref(false)
-        const showFinancial = ref(false)
+        const showFinancial = ref(financialAccount.value ? true : false)
         const showMobile = ref(false)
         const showFollowup = ref(false)
         const showOthers = ref(false)
+        
 
         // const route = useRoute()
         const togglePeople = () => {
@@ -130,6 +141,7 @@ export default {
             showFollowup.value = false
             showOthers.value = true
         }
+
        
 
 
@@ -147,7 +159,9 @@ export default {
             toggleFollowup,
             toggleMobile,
             toggleOthers,
-            // route
+            roleOfCurrentUser,
+            canAccessFinancial,
+            financialAccount
         }
     }
 }

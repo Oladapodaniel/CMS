@@ -55,11 +55,15 @@
                         <div class="ml-5 mt-2 mt-lg-0">
                              <span class="col-lg-1 mb-lg-0 mb-3 font-weight-bold">Roles</span> 
                             <div class="col-12 mt-2" v-for="(item, index) in roles" :key="index">
-                            <Checkbox
+                            <div v-if="item !== 'FollowUp' && item !== 'GroupLeader' && item !== 'FirsttimerFollowUp' && item !== 'CanAccessNewConverts' && item !== 'CanAccessFollowUps'">
+                                <Checkbox
                                 v-model="selectedRole"
                                 :value="item"
+                                
                                 />
                             {{ item }}
+                            </div>
+                            
                             </div>
                         </div>
                     </div>
@@ -99,8 +103,8 @@
                                 <table class="table border-none m-0">
                                     <tbody>
                                         <tr v-for="(item, index) in roles" :key="index">
-                                        <td>{{ item }}</td>
-                                        <td :class ="{ 'text-success' : selectedRole.find(i => i == item) || selectedRole.some(i => i.toLowerCase() == 'admin') }">
+                                        <td v-if="item !== 'FollowUp' && item !== 'GroupLeader' && item !== 'FirsttimerFollowUp' && item !== 'CanAccessNewConverts' && item !== 'CanAccessFollowUps'">{{ item }}</td>
+                                        <td v-if="item !== 'FollowUp' && item !== 'GroupLeader' && item !== 'FirsttimerFollowUp' && item !== 'CanAccessNewConverts' && item !== 'CanAccessFollowUps'" :class ="{ 'text-success' : selectedRole.find(i => i == item) || selectedRole.some(i => i.toLowerCase() == 'admin') }">
                                              {{ selectedRole.find(i => i == item) || selectedRole.some(i => i.toLowerCase() == "admin") ? "Full Access" : "No Access"}}
                                         </td>
                                         </tr>
