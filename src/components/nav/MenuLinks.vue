@@ -301,7 +301,7 @@
 
           <!-- Hidden -->
           <!-- <router-link to="tenant/reports"> -->
-          <a class="link routelink" @click="goToReport" v-if="admin || basicUser || report">
+          <a class="link routelink" @click="goToReport" v-if="admin || basicUser || report || financialAccount">
             <img
               src="../../assets/dashboardlinks/reports-icon.svg"
               class="link-icon"

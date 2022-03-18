@@ -478,7 +478,7 @@
                 </a
               >
               <a
-                class="dropdown-item c-pointer font-weight-700 text-center create-new-bg border-top py-2" data-toggle="modal" data-target="#senderIdModal"
+                class="dropdown-item c-pointer font-weight-700 text-center create-new-bg border-top py-2" data-toggle="modal" data-target="#senderIdModal" data-backdrop="false" 
                 ><i class="pi pi-plus-circle"></i>&nbsp;Request new sender id
                 </a
               >
@@ -1777,9 +1777,5 @@ color: rgb(15, 71, 134)
 .create-new-bg:hover {
   background: #dadadad2;
   color: rgb(15, 71, 134)
-}
-
-.modal-backdrop {
-  z-index: -1;
 }
 </style>
