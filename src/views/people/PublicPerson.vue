@@ -1194,7 +1194,7 @@ export default {
 
     const searchAllGroups = computed(() => {
       if (!searchGroupText.value && allGroups.value > 0) return allGroups.value
-      return allGroups.value.filter(i => i.name.toLowerCase().includes(searchGroupText.value))
+      return allGroups.value.filter(i => i.name.toLowerCase().includes(searchGroupText.value.toLowerCase()))
     })
 
     const focusInput = () => {
