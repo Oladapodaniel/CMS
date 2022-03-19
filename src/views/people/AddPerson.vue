@@ -487,7 +487,7 @@
                     <i class="pi pi-chevron-down"></i>
                   </button>
                   <div class="dropdown-menu w-100 scroll-card" aria-labelledby="dropdownMenuLink">
-                    <input type="text" v-model="searchGroupText" class="form-control input-width-adjust" placeholder="Search groups" ref="searchRef" v-focus/>
+                    <input type="text" v-model="searchGroupText" class="form-control input-width-adjust" placeholder="Search groups" ref="searchRef"/>
                     <a class="dropdown-item" v-for="item in searchAllGroups" :key="item.id">
                       <div class="c-pointer" @click="selectGroup(item)">{{ item.name }}</div>
                     </a>
@@ -634,10 +634,6 @@ export default {
   components: {
     Dropdown,
     SearchMembers
-  },
-  directives: {
-    // enables v-focus in template
-    focus
   },
   setup() {
     // const $toast = getCurrentInstance().ctx.$toast;
@@ -1196,9 +1192,7 @@ export default {
         })
         groupToAddTo.value = {}
         position.value = ""
-      }
-      console.log(peopleInGroupIDs.value)
-      
+      }  
     };
 
     const setContact = (payload) => {

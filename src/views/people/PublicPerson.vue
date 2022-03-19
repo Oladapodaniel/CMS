@@ -11,7 +11,7 @@
           <p class="form-section-header">Bio:</p>
           <div class="bio-info">
             <div class="inputs">
-               <!-- <div class="input-field">
+               <div class="input-field">
                 <label for="" class="label">Membership</label>
                 <div class="cstm-select">
                   <div style="width: 330px">
@@ -24,7 +24,7 @@
                     />
                   </div>
                 </div>
-              </div> -->
+              </div>
               <div class="input-field">
                 <label for="" class=" label"
                   >Firstname<span style="color: red"> *</span></label
@@ -376,7 +376,7 @@
             <div class="font-weight-700 " v-if="peopleInGroupIDs.length > 0 && areaInView === 'groups'">Groups added</div>
               <div v-if="areaInView === 'groups'">
                 <span v-for="item in peopleInGroupIDs" :key="item.id" >| &nbsp;
-                <span class="text-grey">{{ item.name }}</span>&nbsp; | &nbsp;
+                <span class="text-grey">{{ item.name }}  &nbsp; <i v-if="!routeParams" class="pi pi-times-circle text-danger c-pointer"  @click="removeFromGroup(index)"></i></span>&nbsp; | &nbsp;
               </span>
               </div>
               <button
@@ -431,7 +431,7 @@
       </form>
     </div>
 
-    <!-- Modal -->
+    <!-- Modal
     <div
       class="modal fade"
       id="addToGroup"
@@ -516,7 +516,167 @@
           </div>
         </div>
       </div>
+    </div> -->
+    <!-- Group Modal -->
+    <div
+      class="modal fade"
+      id="addToGroup"
+      tabindex="-1"
+      role="dialog"
+      aria-labelledby="addToGroup"
+      aria-hidden="true"
+    >
+      <div class="modal-dialog modal-lg" role="document">
+        <div class="modal-content">
+          <div class="modal-header" style="background: #ebeff4">
+            <h5 class="modal-title font-weight-bold" id="addToGroup">
+              Group Membership
+            </h5>
+            <button
+              type="button"
+              class="close"
+              data-dismiss="modal"
+              aria-label="Close"
+            >
+              <span aria-hidden="true">&times;</span>
+            </button>
+          </div>
+          <div class="modal-body">
+            <div class="row my-4">
+              <div class="col-md-4 text-md-right">
+                <label for="" class="font-weight-600">Name</label>
+              </div>
+              <div class="col-md-7">
+                <div class="dropdown show">
+                  <button class="btn border w-100 d-flex justify-content-between align-items-center" type="button" id="dropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" @click="focusInput">
+                    <div>{{ Object.keys(groupToAddTo).length > 0 ? groupToAddTo.name : 'Select a group' }}</div>
+                    <i class="pi pi-chevron-down"></i>
+                  </button>
+                  <div class="dropdown-menu w-100 scroll-card" aria-labelledby="dropdownMenuLink">
+                    <input type="text" v-model="searchGroupText" class="form-control input-width-adjust" placeholder="Search groups" ref="searchRef"/>
+                    <a class="dropdown-item" v-for="item in searchAllGroups" :key="item.id">
+                      <div class="c-pointer" @click="selectGroup(item)">{{ item.name }}</div>
+                    </a>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <div class="row">
+              <div class="col-md-4 text-md-right">
+                <label for="" class="font-weight-600">Position</label>
+              </div>
+              <div class="col-md-7">
+                <input
+                  type="text"
+                  v-model="position"
+                  class="form-control"
+                  placeholder="e.g Member"
+                />
+              </div>
+            </div>
+
+            <div class="row">
+              <div class="col-md-4">
+                <label for="" class="font-weight-600"></label>
+              </div>
+
+              <div class="col-md-7">
+                <div class="col-md-12 mt-3 text-center">
+                  <p class="my-1 text-danger" v-if="addToGroupError">
+                    Please select a group
+                  </p>
+                </div>
+                <div class="row mt-2">
+                  <div class="col-md-6 d-md-flex justify-content-end">
+                    <button class="default-btn" data-dismiss="modal">Cancel</button>
+                  </div>
+                  <div class="col-md-6">
+                    <button
+                      class="default-btn primary-bg border-0 text-white"
+                      :data-dismiss="dismissAddToGroupModal"
+                      @click="addMemberToGroup"
+                    >
+                      Save
+                    </button>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
     </div>
+    
+    <!-- Note Modal -->
+    <!-- <div
+      class="modal fade"
+      id="personNote"
+      tabindex="-1"
+      role="dialog"
+      aria-labelledby="personNote"
+      aria-hidden="true"
+    >
+      <div class="modal-dialog modal-lg" role="document">
+        <div class="modal-content">
+          <div class="modal-header" style="background: #ebeff4">
+            <h5 class="modal-title font-weight-bold" id="personNote">
+              Add Note
+            </h5>
+            <button
+              type="button"
+              class="close"
+              data-dismiss="modal"
+              aria-label="Close"
+            >
+              <span aria-hidden="true">&times;</span>
+            </button>
+          </div>
+          <div class="modal-body">
+            <div class="row my-4">
+              <div class="col-md-4 text-md-right">
+                <label for="" class="font-weight-600">Title</label>
+              </div>
+              <div class="col-md-7">
+                <input type="text" class="form-control" v-model="noteDetails.noteTitle" placeholder="Enter title"/>
+              </div>
+            </div>
+
+            <div class="row">
+              <div class="col-md-4 text-md-right">
+                <label for="" class="font-weight-600">Description</label>
+              </div>
+              <div class="col-md-7">
+                <textarea rows="5" class="form-control" v-model="noteDetails.noteDesc" placeholder="Enter note description"></textarea>
+              </div>
+            </div>
+
+            <div class="row">
+              <div class="col-md-4">
+                <label for="" class="font-weight-600"></label>
+              </div>
+
+              <div class="col-md-7 mt-3">
+                <div class="row mt-2">
+                  <div class="col-md-6 d-md-flex justify-content-end">
+                    <button class="default-btn" data-dismiss="modal">Cancel</button>
+                  </div>
+                  <div class="col-md-6">
+                    <button
+                      class="default-btn primary-bg border-0 text-white"
+                      :data-dismiss="dismissAddToGroupModal"
+                      @click="savePersonNote"
+                    >
+                      Save
+                    </button>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div> -->
   </div>
 </template>
 
@@ -548,6 +708,8 @@ export default {
     const routeParams = ref("");
     const peopleInGroupIDs = ref([])
     const route = useRoute();
+    const searchGroupText = ref("")
+    const searchRef = ref(null)
 
     const loading = ref(false);
     const months = [
@@ -1015,10 +1177,29 @@ export default {
           groupId: groupToAddTo.value.id,
           position: position.value
         })
+        groupToAddTo.value = {}
+        position.value = ""
       }
-      console.log(peopleInGroupIDs.value)
-      
     };
+
+    const searchAllGroups = computed(() => {
+      if (!searchGroupText.value && allGroups.value > 0) return allGroups.value
+      return allGroups.value.filter(i => i.name.toLowerCase().includes(searchGroupText.value))
+    })
+
+    const focusInput = () => {
+        setTimeout(() => {
+            searchRef.value.focus()
+        }, 1000)
+    }
+
+    const selectGroup = (item) => {
+      groupToAddTo.value = item
+    }
+
+    const removeFromGroup = (index) => {
+      peopleInGroupIDs.value.splice(index, 1)
+    }
 
     return {
       disableClick,
@@ -1071,7 +1252,13 @@ export default {
       addToGroupError,
       dismissAddToGroupModal,
       routeParams,
-      peopleInGroupIDs
+      peopleInGroupIDs,
+      searchGroupText,
+      searchAllGroups,
+      focusInput,
+      searchRef,
+      selectGroup,
+      removeFromGroup
     };
   },
 };
@@ -1190,5 +1377,25 @@ export default {
 
 .text-grey {
   color: rgb(90, 90, 90)
+}
+
+.nav-bar {
+  position: sticky;
+  top: 0;
+  left: 0;
+}
+
+.info-box {
+  overflow: scroll;
+}
+
+.scroll-card {
+    max-height: 400px;
+    overflow: scroll;
+}
+
+.input-width-adjust {
+    width: 90%;
+    margin: auto;
 }
 </style>
