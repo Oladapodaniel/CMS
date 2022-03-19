@@ -379,6 +379,12 @@
                 <span class="text-grey">{{ item.name }}  &nbsp; <i v-if="!routeParams" class="pi pi-times-circle text-danger c-pointer"  @click="removeFromGroup(index)"></i></span>&nbsp; | &nbsp;
               </span>
               </div>
+               <div v-if="areaInView === 'notes'">
+                <div v-for="(item, index) in personNotes" :key="index" >
+                  <div class="font-weight-700">{{ item.title }}</div>  
+                  <div class="mb-2">{{ item.description }}</div>  
+              </div>
+              </div>
               <button
                 @click.prevent="uploadImage"
                 class="info-btn"
@@ -399,6 +405,8 @@
                 @click.prevent="uploadImage"
                 class="info-btn"
                 v-if="areaInView === 'notes'"
+                data-toggle="modal"
+                data-target="#personNote"
               >
                 New Notes
               </button>
@@ -609,7 +617,7 @@
     </div>
     
     <!-- Note Modal -->
-    <!-- <div
+    <div
       class="modal fade"
       id="personNote"
       tabindex="-1"
@@ -676,7 +684,7 @@
           </div>
         </div>
       </div>
-    </div> -->
+    </div>
   </div>
 </template>
 
@@ -710,6 +718,8 @@ export default {
     const route = useRoute();
     const searchGroupText = ref("")
     const searchRef = ref(null)
+    const personNotes = ref([])
+    const noteDetails = ref({})
 
     const loading = ref(false);
     const months = [
@@ -884,6 +894,10 @@ export default {
       formData.append(
         "ageGroupID",
         selectedAgeGroup.value ? selectedAgeGroup.value.id : ""
+      );
+      formData.append(
+        "note",
+        personNotes.value ? JSON.stringify(personNotes.value) : []
       );
       console.log(formData);
       /*eslint no-undef: "warn"*/
@@ -1201,6 +1215,15 @@ export default {
       peopleInGroupIDs.value.splice(index, 1)
     }
 
+    const savePersonNote = () => {
+      personNotes.value.push({
+        title: noteDetails.value.noteTitle,
+        description: noteDetails.value.noteDesc
+      })
+      noteDetails.value = {}
+      dismissAddToGroupModal.value = "modal";
+    }
+
     return {
       disableClick,
       months,
@@ -1258,7 +1281,10 @@ export default {
       focusInput,
       searchRef,
       selectGroup,
-      removeFromGroup
+      removeFromGroup,
+      personNotes,
+      noteDetails,
+      savePersonNote
     };
   },
 };

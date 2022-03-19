@@ -432,7 +432,7 @@
         <div class="submit-div">
           <button
             class="primary-bg px-md-4 outline-none default-btn text-white border-0"
-            :disabled="loading"
+            :disabled="loading || !person.firstName"
           >
             <i class="fas fa-circle-notch fa-spin mr-2" v-if="loading"></i>
             <span>Save</span>
