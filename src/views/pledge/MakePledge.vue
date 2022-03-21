@@ -15,7 +15,6 @@
                                 </div>
                                 <div class="col-md-8">
                                     <MembersSearch @memberdetail="chooseContact" />
-                                    <!-- <Dropdown v-model="selectMember" class="w-100 font-weight-normal" :options="MembersType"  optionLabel="name" placeholder="Select Member" /> -->
                                 </div>
                             </div>
                         </div>
@@ -26,7 +25,6 @@
                                 <div class="col-md-4 text-md-right align-self-center">
                                     <label for="" class="">Select Pledge <sup class="text-danger">*</sup> </label>
                                 </div>
-                                <!-- <div>{{allPledgeList}}</div> -->
                                 <div class="col-md-8">
                                     <Dropdown v-model="selectedPledge" class="w-100 font-weight-normal" :options="allPledgeList"  optionLabel="name" placeholder="Select Pledge" />
                                 </div>
