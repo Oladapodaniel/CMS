@@ -52,32 +52,39 @@
                                 </div>
                         
                                 <div class="col-md-8">
-                                    <input type="text" v-model="selectedPledge.donorPaymentSpecificAmount" class="form-control" />
+                                    <input type="text" v-model="selectedPledge.donorPaymentSpecificAmount" :disabled="checking" class="form-control" />
                                 </div>
                             </div>
                         </div>
                     </div>  
-                    <div class="row my-1 mt-3">
+                    <div class="row my-1 mt-2  ">
                          <div class="col-md-10 offset-md-2 " v-if="selectedPledge.donorPaymentType == 2 "  >
                             <div class="row">
                                 <div class="col-12 col-sm-12 col-lg-4 text-sm-left text-lg-right align-self-center">
                                     <label for="" class="">Pledge Amount </label>
                                 </div>
                                 <div class="col-12 col-sm-12  col-lg-4">
-                                    <input type="text" v-model="selectedPledge.donorPaymentRangeFromAmount" class="form-control" placeholder="From" />
+                                    <div > <span>From:</span>  {{Math.abs(selectedPledge.donorPaymentRangeFromAmount).toLocaleString()}}.00 </div>
+                                    <!-- <input type="text" v-model="selectedPledge.donorPaymentRangeFromAmount" class="form-control" :disabled="checking" placeholder="From" /> -->
                                 </div>
                                 <div class="col-12 col-sm-12  col-lg-4 my-3 my-sm-0 my-md-0 text-left text-md-right ">
                                     <div ><span>To:</span> {{Math.abs(selectedPledge.donorPaymentRangeToAmount).toLocaleString()}}.00 </div>
                                 </div>
+                                <!-- <div class="col-12 d-flex justify-content-end mt-3 ">
+                                    <div class="col-12 col-sm-12  col-lg-8  ">
+                                        <input type="text" v-model="amountInRange" class="form-control" placeholder="Enter Amount" />
+                                    </div>
+                                </div> -->
+                                
                             </div>
                         </div>
                     </div>  
 
                      <div class="col-md-9 offset-md-5 mt-4">
-                            <div class="row d-flex justify-content-center ">
-                                <div class="mt-4 col-md-5">
-                                    <button class="default-btn primary-bg border-0 text-white" type="button" data-toggle="modal" data-target="#exampleModalCenter" data-dismiss="modal" @click="savePledge">
-                                        <i class="pi pi-spin pi-spinner" @click="makePledge" v-if="loading"></i> Save & Continue
+                            <div class="row  ">
+                                <div class=" col-md-12 d-flex justify-content-center">
+                                    <button class="default-btn primary-bg border-0 text-white" type="button" data-toggle="modal" data-target="#exampleModalCente" data-dismiss="modal" @click="makePledge">
+                                        <i class="pi pi-spin pi-spinner"  v-if="loading"></i> Save and Continue
                                     </button>
                                 </div>
                             </div>
@@ -103,17 +110,15 @@
                                     <div class="col-sm-10 mt-3  pr-0 align-self-center">
                                             <a href="">Virtual Account Link</a>
                                     </div>
-                                    <div class="col-lg-10 col-sm-12 mt-3">
+                                    <!-- <div class="col-lg-10 col-sm-12 mt-3">
                                     <a href="">Send SMS</a>
                                     </div>
                                     <div class="col-sm-10 mt-3  pr-0">
                                         <a href="">Send Email</a>
-                                    </div>
-                                    
-                                    
-                                    <!-- <div class="col-sm-12 mt-3" v-if="applyRem">
-                                        <hr class="hr"/>
                                     </div> -->
+                                    
+                                    
+                                    
                                 </div>
                         </div>
                         </div>
@@ -124,9 +129,9 @@
                     </div>
                 </div>
             </div>
+            <Toast />
         </div>
     </div>
-    <Toast />
 </template>
 
 <script>
@@ -155,6 +160,8 @@ export default {
         const Address = ref('');
         const loading = ref(false)
         const loadingCode = ref(false)
+        const freewillAmount = ref('');
+        const checking = ref(false);
         const value = ref()
         const isNameValid = ref(true)
         const isEmailValid = ref(true)
@@ -174,9 +181,9 @@ export default {
 
 
 
-        const savePledge = async () => {
+        // const savePledge = async () => {
 
-        }
+        // }
 
         const makePayment = () =>{
             router.push('/pledge/pledgepayment')
@@ -185,12 +192,17 @@ export default {
          const chooseContact = (payload) => {
             // contactRef.value.hide();
             selectedContact.value = payload
-        }
+
+            // console.log(payload, 'my allll')
+         }
+        
+
         const active = (payload) => {
             isActive.value = payload
         }
         const getAllPledgeDefinition = async () =>{
                 try{
+                    checking.value = false;
                     const res = await axios.get('/api/Pledge/GetAllPledgeDefinitions')
                     finish()
                     allPledgeList.value = res.data.returnObject
@@ -200,6 +212,7 @@ export default {
                         }
                     })
                     console.log(allPledgeList.value,'getPledgeList');
+                    checking.value = true;
                 }
                 catch (error){
                     console.log(error)
@@ -210,29 +223,43 @@ export default {
             const makePledge = async () =>{
 
                  const makePledgeDetails = {
-                    personID: selectedContribution.value.id,
-                    id: selectedPledge.id,
-                    totalTargetAmount: targetAmount.value,
-                    donorPaymentType: pledgType.value,
-                    name: PledgeName.value,
-                    donorPaymentSpecificAmount: SpecificAmount.value,
-                    donorPaymentRangeFromAmount: amountFrom.value,
-                    donorPaymentRangeToAmount: amountTo.value,
-                    // pledgeTypeFrequency: 
-                    pledgeTypeFrequencyOneTimeStartDate: startDate.value,
-                    pledgeTypeFrequencyOneTimeEndDate: endDate.value,
-                    pledgeTypeFrequencyReOccuring: selectedRange.value.name,
-                    currencyID: selectedCurrency.value.id,
-                    // isActive: true
-                    
+                    personID: selectedContact.value.id,
+                    pledgeTypeID: selectedPledge.value.id,
+                    amountBase: selectedPledge.value.donorPaymentRangeFromAmount,
+                    amountTop: selectedPledge.value.donorPaymentRangeToAmount,
+                    // amountBase: selectedPledge.value.donorPaymentSpecificAmount,
+                    amountBase:  freewillAmount.value                  
                 }
 
                 try{
-                    const res = await axios.get('api/Pledge/SavePledge', makePledgeDetails)
+                    const res = await axios.post('api/Pledge/SavePledge', makePledgeDetails)
                     finish()
                     console.log(res,'getSinglePledge');
+                     toast.add({
+                        severity: "success",
+                        summary: "Successful",
+                        detail: "You are successfully make a Pledge",
+                        life: 2000,
+                    });
+                    
+                    router.push('/pledge/pledgemaking')
                 }
                 catch (error){
+                    if (error.response) {
+                        toast.add({
+                        severity: "warn",
+                        summary: 'Not successful',
+                        detail: `${error.response.data}`,
+                        life: 8000,
+                        });
+                    } else {
+                        toast.add({
+                        severity: "error",
+                        summary: "Network Error",
+                        detail: `Please ensure you have a strong internet  connection`,
+                        life: 4000,
+                        });
+                    }
                     console.log(error)
                 }
             }
@@ -270,6 +297,7 @@ export default {
 
         return {
             allPledgeList,
+            checking,
             makePledge,
             chooseContact,
             selectedPledge,
@@ -277,9 +305,11 @@ export default {
             pledgeCategory,
             amountTo,
             amountFrom,
-            savePledge,
+            freewillAmount,
+            // savePledge,
             checkEmailValue,
             churchName,
+            selectedContact,
             Address,
             value,
             loading,
