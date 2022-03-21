@@ -350,12 +350,6 @@ export default {
         }
             getAllCurrencies()
 
-    //   const updatePledge = () =>{
-
-    //   }
-
-    //   updatePledge()
-
         const specific = () =>{
             pledgeCategory.value = "specific"
 
@@ -396,7 +390,6 @@ export default {
             SpecificAmount,
             checkNameValue,
             selectedCurrency,
-            // ContributionType,
             selectedContribution,
             startDate,
             endDate,
