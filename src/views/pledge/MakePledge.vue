@@ -71,7 +71,6 @@
                                 </div>
                                 <div class="col-12 col-sm-12  col-lg-4 my-3 my-sm-0 my-md-0 text-left text-md-right ">
                                     <div ><span>To:</span> {{Math.abs(selectedPledge.donorPaymentRangeToAmount).toLocaleString()}}.00 </div>
-                                    <!-- <input type="text" v-model="selectedPledge.donorPaymentRangeToAmount" class="form-control" :disabled="checking" placeholder="To" /> -->
                                 </div>
                                 <!-- <div class="col-12 d-flex justify-content-end mt-3 ">
                                     <div class="col-12 col-sm-12  col-lg-8  ">
