@@ -68,16 +68,8 @@
                                 <div class="col-12 col-sm-12  col-lg-4">
                                     <input type="text" v-model="selectedPledge.donorPaymentRangeFromAmount" class="form-control" placeholder="From" />
                                 </div>
-<<<<<<< HEAD
-                                <div class="col-12 col-sm-12  col-lg-4 my-3 my-sm-0 my-md-0">
-                                    <input type="text" v-model="selectedPledge.donorPaymentRangeToAmount" class="form-control" placeholder="To" />
-                                </div>
-                                <div class="col-12 col-sm-12  col-lg-8">
-                                    <input type="text" v-model="amountInRange" class="form-control" placeholder="Enter Amount" />
-=======
                                 <div class="col-12 col-sm-12  col-lg-4 my-3 my-sm-0 my-md-0 text-left text-md-right ">
                                     <div ><span>To:</span> {{Math.abs(selectedPledge.donorPaymentRangeToAmount).toLocaleString()}}.00 </div>
->>>>>>> a389dd5d13b740ace0337542e5b831065644d5b8
                                 </div>
                             </div>
                         </div>
