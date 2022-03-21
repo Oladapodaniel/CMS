@@ -39,7 +39,7 @@
                                 </div>
                         
                                 <div class="col-md-8">
-                                    <input type="text" v-model="Amount" class="form-control" />
+                                    <input type="text" v-model="freewillAmount" class="form-control" />
                                 </div>
                             </div>
                         </div>
