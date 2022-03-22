@@ -1,5 +1,5 @@
 <template>
-   <div class="container container-top">
+   <div class="container container-top">{{churchContributionItems}}
         <div class="row d-flex justify-content-center justify-content-sm-between">
           <div class="col-12 col-sm-6 page-header text-center text-sm-left">Mark attendance</div>
           <div class="default-btn mt-3 mt-sm-0 c-pointer" ref="modalBtn" @click="setDisplayForm">Add member</div>
@@ -54,7 +54,7 @@
             </div>
         </div>
         <div class="row box-boundary mt-4 p-3" :class="{ 'show-offering' : showOfferings, 'hide-offering' : !showOfferings }">
-            <div class="col-12 py-2 border-top" v-for="item in contributionItems" :key="item.id">
+            <div class="col-12 py-2 border-top" v-for="item in churchContributionItems" :key="item.id">
                 <div class="row">
                     <div class="col-md-8 mt-3 align-self-center font-weight-700">{{ item.name }}</div>
                     <div class="col-md-4 mt-3 mt-md-0">
@@ -72,7 +72,7 @@
             </div>
         </div>
         <div class="row box-boundary mt-4 p-3" :class="{ 'show-offering' : showAttendance, 'hide-offering' : !showAttendance }">
-            <div class="col-12 py-2 border-top" v-for="item in attendanceType" :key="item.id">
+            <div class="col-12 py-2 border-top" v-for="item in churchAttendanceCategory" :key="item.id">
                 <div class="row">
                     <div class="col-md-8 mt-3 align-self-center font-weight-700">{{ item.name }}</div>
                     <div class="col-md-4 mt-3 mt-md-0">
@@ -215,6 +215,8 @@ export default {
                 let data = await attendanceservice.getReport(route.params.id)
                 console.log(data)
                 groupDetail.value = data
+
+                console.log(contributionItems.value)
                 loading.value = false
             }
             catch (err) {
@@ -223,6 +225,29 @@ export default {
             }
         }
         getGroupDetails()
+
+        const churchContributionItems = computed(() => {
+             if (groupDetail.value && groupDetail.value.offerings && groupDetail.value.offerings.length > 0 && contributionItems.value.length > 0) return contributionItems.value.map(i => {
+                //  if (groupDetail.value && Object.keys(groupDetail.value).length > 0) {
+                        const y = groupDetail.value.offerings.findIndex(j => j.financialContributionID == i.id)
+                        if (y >= 0) i.amount = groupDetail.value.offerings[y].amount
+                        return i
+                    // }
+                })
+            return contributionItems.value
+        })
+        
+        const churchAttendanceCategory = computed(() => {
+            if (groupDetail.value && groupDetail.value.attendances && groupDetail.value.attendances.length > 0 && attendanceType.value.length > 0) return attendanceType.value.map(i => {
+                //   if (groupDetail.value && Object.keys(groupDetail.value).length > 0) {
+                        const y = groupDetail.value.attendances.findIndex(j => j.attendanceTypeID == i.id)
+                        console.log(y, groupDetail.value.attendances[y].number)
+                        if (y >= 0) i.number = groupDetail.value.attendances[y].number
+                        return i
+                //   }
+                })
+            return attendanceType.value
+        })
 
         const searchMembers = computed(() => {
             if (groupDetail.value && groupDetail.value && groupDetail.value.peopoleAttendancesDTOs && groupDetail.value.peopoleAttendancesDTOs.length > 0 && searchText.value == "") return groupDetail.value.peopoleAttendancesDTOs
@@ -288,7 +313,7 @@ export default {
                 status: groupDetail.value.status,
                 title: groupDetail.value.title,
                 bannerImage: groupDetail.value.bannerImage,
-                id: route.params.id,
+                id: groupDetail.value.id,
                 offerings: contributionItems.value.map(i => {
                 return {
                         financialContributionID: i.id,
@@ -344,7 +369,9 @@ export default {
             showAttendance,
             attendanceType,
             updateAttendanceCheckin,
-            note
+            note,
+            churchContributionItems,
+            churchAttendanceCategory
         }
     }
 }
