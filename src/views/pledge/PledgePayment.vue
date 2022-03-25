@@ -85,7 +85,7 @@
                                 <div class="col-md-8 d-flex flex-wrap">
                                     <div class="border col-2 bg-secondary  align-self-center py-1 ">NGN</div>
                                     <!-- <span class="border">NGN</span> -->
-                                    <div class="col-10  m-0 p-0"><input type="text" v-model="targetAmount" class="form-control" placeholder=" Enter Amount" /></div>
+                                    <div class="col-10  m-0 p-0"><input type="text" v-model="paymentAmount" class="form-control" placeholder=" Enter Amount" /></div>
                                     <!-- <CascadeSelect v-model="value" :options="branches" optionLabel="clabel" optionGroupLabel="label" :optionGroupChildren="['children']" class="w-100"  /> -->
                                 </div>
                             </div>
@@ -112,7 +112,7 @@
                                     </button>
                                 </div>
                                 <div class="mt-4 col-md-5">
-                                    <button class="default-btn primary-bg border-0 text-white" data-dismiss="modal" @click="savePledge">
+                                    <button class="default-btn primary-bg border-0 text-white" data-dismiss="modal" @click="savePayment">
                                         <i class="pi pi-spin pi-spinner" v-if="loading"></i> Save
                                     </button>
                                 </div>
@@ -230,6 +230,7 @@ export default {
         const isEmailValid = ref(true)
         const selectedPledge = ref('')
         const amountFrom = ref('')
+        const paymentAmount = ref('')
         const amountTo = ref('')
         const selectedChannel = ref('')
         const pledgeCategory = ref(
@@ -254,8 +255,17 @@ export default {
             
         }
 
-        const savePledge = async () => {
-
+        const savePayment = async () => {
+            let paymentData = {
+                amount: paymentAmount.value,
+                channel: selectedChannel.value.name
+            }
+            try {
+                const res = await axios.post('/api/Pledge/SavePledgePayment', paymentData)
+                    console.log(res,'paypledge');
+            } catch (error) {
+                console.log(error);
+            }
         }
 
 
@@ -285,7 +295,8 @@ export default {
             pledgeCategory,
             amountTo,
             amountFrom,
-            savePledge,
+            savePayment,
+            paymentAmount,
             checkEmailValue,
             churchName,
             Address,

@@ -14,7 +14,9 @@
                                     <label for="" class="">Select Person <sup class="text-danger">*</sup> </label>
                                 </div>
                                 <div class="col-md-8">
-                                    <MembersSearch @memberdetail="chooseContact" />
+                                    <input type="text" v-model="memberName" class="form-control w-100" />
+                                    <!-- <MembersSearch @memberdetail="chooseContact" />
+                                     -->
                                     <!-- <Dropdown v-model="selectMember" class="w-100 font-weight-normal" :options="MembersType"  optionLabel="name" placeholder="Select Member" /> -->
                                 </div>
                             </div>
@@ -119,8 +121,10 @@
                                         class="pi pi-copy ml-2 c-pointer"
                                         @click="copyRegLink"
                                         style="font-size: 22px"
-                                        ></i
-                                    ></span>
+                                        ></i>
+                                        <span class="font-weight-bold small ml-1 c-pointer" style="width: 20%">Send Email</span>
+                                        <span class="font-weight-bold small c-pointer" style="width: 20%">Send Sms</span>
+                                    </span>
                                     </p>
                                 </div>
                                 </div>
@@ -160,8 +164,10 @@
                                         class="pi pi-copy ml-2 c-pointer"
                                         @click="copyLink"
                                         style="font-size: 22px"
-                                        ></i
-                                    ></span>
+                                        ></i>
+                                        <span class="font-weight-bold small ml-1 c-pointer" style="width: 20%" >Send Email</span>
+                                        <span class="font-weight-bold small c-pointer" style="width: 20%" >Send Sms</span>
+                                    </span>
                                     </p>
                                 </div>
                                 </div>
@@ -193,6 +199,7 @@ import InputText from "primevue/inputtext";
 import { useToast } from "primevue/usetoast";
 import MembersSearch from "../../components/membership/MembersSearch.vue"
 import router from '../../router';
+import { useRoute } from "vue-router"
 import finish from '../../services/progressbar/progress';
 // import store from "../../store/store";
 import CascadeSelect from 'primevue/cascadeselect';
@@ -207,6 +214,7 @@ export default {
     },
     setup() {
         const toast = useToast()
+        const route = useRoute();
         const churchName = ref('');
         const Address = ref('');
         const loading = ref(false)
@@ -217,6 +225,7 @@ export default {
         const isNameValid = ref(true)
         const isEmailValid = ref(true)
         const selectedPledge = ref('')
+        const memberName = ref('')
         const allPledgeList = ref([]);
         const amountFrom = ref('')
         const selectedContact = ref({})
@@ -230,8 +239,7 @@ export default {
             ]
         )
 
-
-
+        
         // const savePledge = async () => {
 
         // }
@@ -257,6 +265,9 @@ export default {
                     const res = await axios.get('/api/Pledge/GetAllPledgeDefinitions')
                     finish()
                     allPledgeList.value = res.data.returnObject
+
+                    getDetails()
+                    
                     isActive.value = res.data.returnObject.map( i => {
                         return {
                             isActive : i.isActive
@@ -264,12 +275,20 @@ export default {
                     })
                     console.log(allPledgeList.value,'getPledgeList');
                     checking.value = true;
+                    
                 }
                 catch (error){
                     console.log(error)
                 }
             }
             getAllPledgeDefinition()
+
+            const getDetails = () =>{
+            selectedPledge.value = allPledgeList.value.find(i => i.id === route.query.id)
+            memberName.value = route.query.name
+
+                }
+            
 
             const makePledge = async () =>{
 
@@ -326,6 +345,7 @@ export default {
 
         return {
             allPledgeList,
+            memberName,
             checking,
             makePledge,
             chooseContact,

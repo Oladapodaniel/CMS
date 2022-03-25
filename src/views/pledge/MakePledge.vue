@@ -156,6 +156,7 @@ export default {
     },
     setup() {
         const toast = useToast()
+        // const route = useRoute();
         const churchName = ref('');
         const Address = ref('');
         const loading = ref(false)
@@ -254,7 +255,13 @@ export default {
                         life: 2000,
                     });
                     
-                    router.push('/pledge/pledgemaking')
+                    router.push({  
+                        name: 'PledgeMaking',
+                        query: {
+                            id: selectedPledge.value.id,
+                            name: selectedContact.value.name
+                        }
+                    })
                 }
                 catch (error){
                     if (error.response) {
