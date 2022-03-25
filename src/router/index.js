@@ -1534,13 +1534,28 @@ const routes = [
                     import ( /* webpackChunkName: "giving" */ '@/views/mobile/mobileapp/DonationSetup')
             },
             {
-                path: 'pledgedefinition',
-                meta: {
-                    title: 'Churchplus - Pledge',
-                },
-                component: () =>
-                    import ( /* webpackChunkName: "peopleempty" */ '../views/pledge/PledgeDefinition.vue')
-            },
+                path: 'pledge',
+                component: () => 
+                    import ( /* webpackChunkName: "pledge" */ '../views/pledge/Pledge.vue'),
+                    children: [
+                        {
+                            path: 'pledgedefinition',
+                            meta: {
+                                title: 'Churchplus - Pledge',
+                            },
+                            component: () =>
+                                import ( /* webpackChunkName: "peopleempty" */ '../views/pledge/PledgeDefinition.vue')
+                        },
+                        {
+                            path: 'pledgedefinitionlist',
+                            meta: {
+                                title: 'Churchplus - Pledge',
+                            },
+                            component: () =>
+                                import ( /* webpackChunkName: "peopleempty" */ '../views/pledge/PledgeDefinitionList.vue')
+                        },
+                    ]
+            }
 
         ],
     },

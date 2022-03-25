@@ -2,7 +2,7 @@
     <div class="container  container-top  ">
         <div class="row d-flex justify-content-between px-3">
                 <div class="heading-text"> Pledge Payment </div>
-                <div><ToggleButton @is-active="isActive" :active="isActive" /></div>
+                <!-- <div><ToggleButton @is-active="isActive" :active="isActive" /></div> -->
         </div>
         <div class="container-fluid">
             <div class="row">
@@ -107,6 +107,11 @@
                     <div class="col-md-9 offset-md-5 mt-4">
                             <div class="row d-flex justify-content-center ">
                                 <div class="mt-4 col-md-5">
+                                    <button class="default-btn  " data-dismiss="modal" data-toggle="modal" data-target="#PaymentOptionModal" @click="payPledge">
+                                        <i class="pi pi-spin pi-spinner" v-if="loading"></i> Pay Now
+                                    </button>
+                                </div>
+                                <div class="mt-4 col-md-5">
                                     <button class="default-btn primary-bg border-0 text-white" data-dismiss="modal" @click="savePledge">
                                         <i class="pi pi-spin pi-spinner" v-if="loading"></i> Save
                                     </button>
@@ -115,6 +120,77 @@
                     </div>
                     
                 </div>
+
+                 <!-- Modal -->
+      <div
+        class="modal fade"
+        id="PaymentOptionModal"
+        tabindex="-1"
+        role="dialog"
+        aria-labelledby="exampleModalCenterTitle"
+        aria-hidden="true"
+      >
+        <div class="modal-dialog modal-dialog-centered" role="document">
+          <div class="modal-content">
+            <div class="modal-header bg-modal">
+              <h5 class="modal-title" id="exampleModalLongTitle">
+                Payment methods
+              </h5>
+              <button
+                type="button"
+                class="close"
+                data-dismiss="modal"
+                aria-label="Close"
+              >
+                <span aria-hidden="true" ref="close">&times;</span>
+              </button>
+            </div>
+            <div class="modal-body p-0 bg-modal pb-5">
+              <div class="row">
+                <div class="col-sm-12 p-4 text-center continue-text">
+                  Continue payment with
+                </div>
+              </div>
+              <div class="row row-button c-pointer" @click="payWithPaystack">
+                <div class="col-12 col-md-4 col-sm-7 offset-1">
+                  <img
+                    style="width: 150px"
+                    src="../../assets/4PaystackLogo.png"
+                    alt="paystack"
+                  />
+                </div>
+              </div>
+              <div class="row row-button c-pointer" @click="payWithFlutterwave">
+                <div class="col-12 col-md-4 col-sm-7 offset-1">
+                  <img
+                    style="width: 150px"
+                    src="../../assets/flutterwave_logo_color@2x.png"
+                    alt="flutterwave"
+                  />
+                </div>
+              </div>
+              <!-- <div class="row row-button c-pointer" @click="makePayment">
+                <div class="col-4 col-sm-7 offset-2">
+                  <img
+                    class="w-100"
+                    src="../../assets/flutterwave_logo_color@2x.png"
+                    alt="flutterwave"
+                  />
+                </div>
+
+                <div class="col-7 col-sm-4 option-text">Flutterwave</div>
+                <div class="row">
+                  <div class="col-1 mt-n1 d-none d-sm-block">
+                    <i class="fas fa-circle circle"></i>
+                  </div>
+                  <div class="col-8 pl-0 d-none d-sm-block">Nigeria</div>
+                </div>
+              </div> -->
+            </div>
+          </div>
+        </div>
+      </div>
+
                 <!-- <div class="row my-1 pt-4"> -->
                        
                     <!-- </div>  -->
@@ -174,7 +250,9 @@ export default {
             ]
         )
 
-
+        const payPledge = async () => {
+            
+        }
 
         const savePledge = async () => {
 
@@ -201,6 +279,7 @@ export default {
 
         return {
             channel,
+            payPledge,
             selectedPledge,
             selectedChannel,
             pledgeCategory,
@@ -225,4 +304,22 @@ export default {
        .heading-text {
         font: normal normal 800 1.5rem Nunito sans;
 }
+
+.continue-text {
+  font-family: Nunito Sans !important;
+  font-size: 24px;
+  font-weight: 700;
+  text-align: center;
+}
+
+.row-button {
+  padding: 10px;
+  border-radius: 25px;
+  box-shadow: 0 4px 12px rgb(0 0 0 / 10%);
+  background: #fff;
+  margin: 12px 70px 15px 70px;
+  transition: all 0.4s ease-in-out;
+  max-height: 45px;
+}
+
 </style>

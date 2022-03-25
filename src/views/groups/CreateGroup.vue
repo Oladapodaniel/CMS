@@ -832,7 +832,6 @@
               >
              
                 <div class="col-md-12">
-                   {{member}}
                   <div class="row">
                     <div
                       class="col-md-1 d-flex justify-content-between align-items-center"

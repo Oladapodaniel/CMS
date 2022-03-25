@@ -197,6 +197,7 @@ import InputText from "primevue/inputtext";
 import { useToast } from "primevue/usetoast";
 import Calendar from "primevue/calendar";
 import finish from '../../services/progressbar/progress';
+import { useRoute } from "vue-router"
 // import router from '../../router';
 // import store from "../../store/store";
 import ToggleButton from '../donation/toggleButton.vue'
@@ -211,6 +212,7 @@ export default {
     },
     setup() {
         const toast = useToast()
+        const route = useRoute();
         const startDate = ref("");
         const endDate = ref("");
         const Address = ref('');
@@ -231,6 +233,7 @@ export default {
         const pledgType = ref(0)
         const currencyList = ref([])
         const contributionItems = ref([])
+        const singlePledge = ref({})
         const targetAmount = ref("")
         const reOccuringRange = ref([
             {name: 'Daily'},
@@ -244,6 +247,31 @@ export default {
         //     {name: 'Concert'},
         //     {name: 'Children Program'}
         // ])
+
+    const getSinglePledgeDefinition = async () => {
+          try{
+            const res = await axios.get(`/api/Pledge/GetSinglePledgeDefinitions?ID=${route.query.id}`)
+                    finish()
+                    targetAmount.value = res.data.returnObject.totalTargetAmount
+                    PledgeName.value = res.data.returnObject.name
+                    SpecificAmount.value = res.data.returnObject.donorPaymentSpecificAmount
+                    amountFrom.value = res.data.returnObject.donorPaymentRangeFromAmount
+                    amountTo.value = res.data.returnObject.donorPaymentRangeToAmount
+                    endDate.value = res.data.returnObject.pledgeTypeFrequencyOneTimeEndDate
+                    startDate.value = res.data.returnObject.pledgeTypeFrequencyOneTimeStartDate
+                    selectedRange.value.name = res.data.returnObject.pledgeTypeFrequencyReOccuring
+                    // isActive.value = res.data.returnObject.map( i => {
+                    //     return {
+                    //         isActive : i.isActive
+                    //     }
+                    // })
+                    console.log(singlePledge.value,'getSinglePledgeList');
+          }
+          catch (error){
+            console.log(error)
+          }
+        }
+        getSinglePledgeDefinition()
 
      const getContributionCategory = () => {
             let store = useStore()
@@ -296,41 +324,59 @@ export default {
                     donorPaymentRangeToAmount: amountTo.value,
                     pledgeTypeFrequencyOneTimeStartDate: startDate.value,
                     pledgeTypeFrequencyOneTimeEndDate: endDate.value,
-                    pledgeTypeFrequencyReOccuring: selectedRange.value,
+                    pledgeTypeFrequencyReOccuring: selectedRange.value.name,
                     currencyID: selectedCurrency.value.id,
                     // isActive: true
                     
                 }
                 console.log(pledgeDetails, 'pledgedetails')
-            try{
-                const res = await axios.post('/api/Pledge/CreatePledgeDefinition', pledgeDetails)
-                finish()
-                console.log(res,'PledgeDefinition')
-                loading.value = false
-                
 
-                toast.add({
-                severity: "success",
-                summary: "Successful",
-                detail: "Pledge definition created successfully",
-                life: 2000,
-              });
+                if(route.query.id){
+                    try{
+                        loading.value = true;
+                        const response = await axios.put('/api/Pledge/UpdatePledgeDefinition', pledgeDetails );
+                        console.log(response, "response");
+                        if (response.status === 200 ) {
+                            // store.dispatch("membership/getMembers")
+                            loading.value = false;
+                            router.push("/tenant/pledge/pledgedefintionlist");
+                        }
+                    }
+                    catch(error){
+                        console.log(error)
+                    }
+                }else{
+                    try{
+                        const res = await axios.post('/api/Pledge/CreatePledgeDefinition', pledgeDetails)
+                        finish()
+                        console.log(res,'PledgeDefinition')
+                        loading.value = false
+                        
 
-                targetAmount.value = "";
-                amountTo.value = "";
-                amountFrom.value = "";
-                selectedCurrency.value = "";
-                PledgeName.value = "";
-                selectedContribution.value = "";
-                SpecificAmount.value = "";
-                selectedRange.value = "";
-                startDate.value  = "";
-                endDate.value = "";
-              
-            }
-            catch (error){
-                console.log(error)
-            }
+                        toast.add({
+                        severity: "success",
+                        summary: "Successful",
+                        detail: "Pledge definition created successfully",
+                        life: 2000,
+                    });
+
+                        targetAmount.value = "";
+                        amountTo.value = "";
+                        amountFrom.value = "";
+                        selectedCurrency.value = "";
+                        PledgeName.value = "";
+                        selectedContribution.value = "";
+                        SpecificAmount.value = "";
+                        selectedRange.value = "";
+                        startDate.value  = "";
+                        endDate.value = "";
+                    
+                    }
+                    catch (error){
+                        console.log(error)
+                    }
+                }
+            
 
         }
         const getAllCurrencies = () => {
@@ -408,7 +454,8 @@ export default {
             value,
             loading,
             reOccuringRange,
-            selectedRange
+            selectedRange,
+            singlePledge
         }
     },
 }

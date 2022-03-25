@@ -221,15 +221,27 @@ export default {
             getAllPledgeDefinition()
 
             const makePledge = async () =>{
+                let donorAmountBase = '';
+                 if(selectedPledge.value.donorPaymentType == 0 ){
+                     donorAmountBase = freewillAmount.value 
+                 } else if(selectedPledge.value.donorPaymentType == 1){
+                     donorAmountBase = selectedPledge.value.donorPaymentSpecificAmount
+                 }else if(selectedPledge.value.donorPaymentType == 2){
+                     donorAmountBase = selectedPledge.value.donorPaymentRangeFromAmount
+                 }else{
+                     return donorAmountbase;
+                 }
 
                  const makePledgeDetails = {
                     personID: selectedContact.value.id,
                     pledgeTypeID: selectedPledge.value.id,
-                    amountBase: selectedPledge.value.donorPaymentRangeFromAmount,
-                    amountTop: selectedPledge.value.donorPaymentRangeToAmount,
+                    amountBase: donorAmountBase,
+                    amountTop: selectedPledge.value.donorPaymentRangeToAmount
                     // amountBase: selectedPledge.value.donorPaymentSpecificAmount,
-                    amountBase:  freewillAmount.value                  
+                    // amountBase:  freewillAmount.value                  
                 }
+                // selectedPledge.value.donorPaymentType == 0 ? makePledgeDetails.
+                console.log(makePledgeDetails, "makepledgeObject");
 
                 try{
                     const res = await axios.post('api/Pledge/SavePledge', makePledgeDetails)
