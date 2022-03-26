@@ -210,7 +210,7 @@ import PaginationButtons from "../../components/pagination/PaginationButtons";
 import axios from "@/gateway/backendapi";
 import Loading from "../../components/loading/LoadingComponent";
 import Tooltip from "primevue/tooltip";
-import { useConfirm } from "primevue/useConfirm";
+import { useConfirm } from "primevue/useconfirm";
 import { useToast } from "primevue/usetoast";
 import stopProgressBar from "../../services/progressbar/progress";
 import store from '../../store/store';

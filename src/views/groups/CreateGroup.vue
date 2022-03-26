@@ -158,9 +158,11 @@
 
             </div>
           </div>
-
            <div class="row">
               <div class="col-md-12 col-12 d-flex justify-content-end mb-4">
+                <div class="border outline-none font-weight-bold mr-3 c-pointer text-center" style="border-radius: 3rem; padding: 0.5rem 1.25rem;" type="button" data-toggle="collapse" data-target="#collapseExample" aria-expanded="false" aria-controls="collapseExample">
+                      Make this group a sub-group
+                  </div>
                 <div
                   class="border outline-none font-weight-bold mr-3 c-pointer text-center"
                   :data-toggle="route.params.groupId ? 'modal' : ''"
@@ -180,6 +182,36 @@
                   Add member
                 </button>
               </div>
+            </div>
+
+            <div class="row mb-4">
+              <div class="col-12">
+              <div>
+                  <div class="collapse" id="collapseExample">
+                    <div class="card card-body">
+                      <div class="font-weight-700 mb-3">
+                        Select the group or sub-group you want this group to be a child of.
+                      </div>
+                        <treeview :data-source="complexLocalDataSource"
+                            :data-text-field="['categoryName', 'subCategoryName']" :checkboxes="false"
+                            :drag-and-drop="true"
+                            @change="onChange"
+                            @check="onCheck"
+                            @collapse="onCollapse"
+                            @dataBound="onDataBound"
+                            @drag="onDrag"
+                            @dragStart="onDragStart"
+                            @dragEnd="onDragEnd"
+                            @drop="onDrop"
+                            @expand="onExpand"
+                            @navigate="onNavigate"
+                            @select="onSelect">
+                       </treeview>
+                    </div>
+                  </div>
+                        
+            </div>
+            </div>
             </div>
 
           <div class="row pb-4 bottom-box group-form">
@@ -994,13 +1026,13 @@
 </template>
 
 <script>
-import { computed, onMounted, ref } from "vue";
+import { computed, onMounted, ref, markRaw } from "vue";
 import composeService from "../../services/communication/composer";
 import axios from "@/gateway/backendapi";
 import router from "@/router/index";
 import { useRoute } from "vue-router";
 import { useToast } from "primevue/usetoast";
-import { useConfirm } from "primevue/useConfirm";
+import { useConfirm } from "primevue/useconfirm";
 import groupsService from "../../services/groups/groupsservice";
 import Tooltip from "primevue/tooltip";
 import Dropdown from "primevue/dropdown";
@@ -1017,12 +1049,32 @@ import Attendancecheckin from "../event/attendance&checkin/AttendanceAndCheckinL
 // import Attendancecheckin from "../event/attendance&checkin/MarkAttendance.vue"
 import attendanceservice from '../../services/attendance/attendanceservice';
 import ImportToGroup from "../people/ImportInstruction"
+import { TreeView } from '@progress/kendo-treeview-vue-wrapper';
+// import Tree from 'primevue/tree';
+// import Tree from "vue3-treeview";
+// import "vue3-treeview/dist/style.css";
+// import { TreeViewComponent } from '@syncfusion/ej2-vue-navigations';
+import '@progress/kendo-ui';
+import '@progress/kendo-theme-default/dist/all.css'
+
+
+
 
 export default {
   directives: {
     tooltip: Tooltip,
   },
-  components: { Dropdown, Dialog, NewPerson, Attendancecheckin, smsComponent, SideBar, emailComponent, ImportToGroup },
+  components: { 
+    Dropdown, 
+    Dialog, 
+    NewPerson, 
+    Attendancecheckin, 
+    smsComponent, 
+    SideBar, 
+    emailComponent, 
+    ImportToGroup, 
+    'treeview': TreeView,
+  },
   setup() {
      const display = ref(false);
     //  const showWardModal = ref(false)
@@ -1057,6 +1109,41 @@ export default {
     const positionArchive = ref('center');
     const displayPositionArchive = ref(false);
     const searchGroupMemberText = ref("")
+    const field = ref();
+
+const complexLocalDataSource  = ref(markRaw(new kendo.data.HierarchicalDataSource({
+                data: [
+                    {
+                        categoryName: 'Storage',
+                        subCategories: [
+                            { subCategoryName: 'Wall Shelving', subCategories: [
+                            { subCategoryName: 'Wall Shelving' },
+                            { subCategoryName: 'Floor Shelving' },
+                            { subCategoryName: 'Kids Storage' }
+                        ] },
+                            { subCategoryName: 'Floor Shelving' },
+                            { subCategoryName: 'Kids Storage' }
+                        ]
+                    },
+                    {
+                        categoryName: 'Lights',
+                        subCategories: [
+                            { subCategoryName: 'Ceiling' },
+                            { subCategoryName: 'Table' },
+                            { subCategoryName: 'Floor' }
+                        ]
+                    }
+                ],
+                schema: {
+                    model: {
+                    children: 'subCategories'
+                    }
+                }
+            })))
+
+    const searchTextTree = ref("");
+    const selectedNode = ref();
+   
     
     const closeGroupModal = ref()
   
@@ -1659,6 +1746,35 @@ export default {
       return groupMembers.value.filter(i => i.name.toLowerCase().includes(searchGroupMemberText.value.toLowerCase()))
     })
 
+    const itemClick = (node, item, e) => {
+          console.log(node + ' node !')
+          console.log(node.model.text + ' clicked !')
+          console.log(item + ' item !')
+          console.log(e + ' e !')
+        }
+
+
+    const onNodeExpanded = (node, state) => {
+      console.log('state: ', state)
+      console.log('node: ', node)
+    };
+    const onCheckboxToggle = (node, state) => {
+      console.log('checkbox state: ', state)
+      console.log('checkbox node: ', node)
+    };
+    const onToggleParentCheckbox = (node, state) => {
+      console.log('parent checkbox state: ', state)
+      console.log('parent checkbox node: ', node)
+    }
+    const log = (s) => {
+      console.log(s);
+    }
+
+    const onSelect = (ev, payload) => {
+            console.log("Event :: select", ev, payload);
+        }
+
+ 
     return {
       groupData,
       selectedAttendanceId,
@@ -1736,13 +1852,24 @@ export default {
     window,
     innerWidth,
     searchGroupMemberText,
-    searchGroupMembers
+    searchGroupMembers,
+    field,
+    itemClick,
+    searchTextTree,
+    onNodeExpanded,
+    onCheckboxToggle,
+    onToggleParentCheckbox,
+    complexLocalDataSource,
+    log,
+    onSelect
     };
   },
 };
 </script>
 
 <style scoped>
+
+
 * {
   box-sizing: border-box;
 }

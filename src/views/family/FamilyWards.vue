@@ -58,7 +58,7 @@
 import { ref } from "vue"
 import { watch } from '@vue/runtime-core'
 import axios from "@/gateway/backendapi";
-import { useConfirm } from "primevue/useConfirm";
+import { useConfirm } from "primevue/useconfirm";
 import { useToast } from "primevue/usetoast";
 
 export default {

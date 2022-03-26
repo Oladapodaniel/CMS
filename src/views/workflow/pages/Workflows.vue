@@ -40,7 +40,7 @@
 import { ref } from '@vue/reactivity'
 import LoadingComponent from "../../../components/loading/LoadingComponent.vue"
 import workflowFunctions from '../utlity/workflow_service'
-import { useConfirm } from "primevue/useConfirm";
+import { useConfirm } from "primevue/useconfirm";
 import { useToast } from "primevue/usetoast";
 import axios from 'axios';
 

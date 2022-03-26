@@ -209,7 +209,7 @@ import paymentform from "../../../components/genericmobile/paymentform";
 import store from '../../../store/store';
 import { useToast } from "primevue/usetoast";
 import Paymentonboarding from './PaymentOnBoarding';
-import { useConfirm } from "primevue/useConfirm";
+import { useConfirm } from "primevue/useconfirm";
 // import paymentonboarding from './PaymentOnBoarding';
 export default {
   components: {

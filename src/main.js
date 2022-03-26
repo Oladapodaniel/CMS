@@ -10,6 +10,9 @@ import axios from "./gateway/backendapi";
 // import NProgress from "nprogress";
 import CKEditor from '@ckeditor/ckeditor5-vue';
 import Toaster from '@meforma/vue-toaster';
+import { TreeView,
+  // TreeViewItem,
+  TreeViewInstaller } from '@progress/kendo-treeview-vue-wrapper'
 
 
 
@@ -76,6 +79,7 @@ axios.interceptors.request.use((config) => {
     NProgress.done()
     return response
   }, error => {
+    console.log(error,"there is the error path")
       NProgress.done()
       if (error && error.response && error.response.status == 403) {
         router.push('/errorpage/unauthorized')
@@ -115,7 +119,6 @@ loadFunnel(Highcharts);
 // app.use(VueHighcharts, { Highcharts });
 
 
-app.use(store).use(router).use(VueHighcharts, { Highcharts }).use( CKEditor).use(Toaster).use(PrimeVue).use(ToastService).use(ConfirmationService).mount('#app')
 
 // createApp(App).use(store).use(router).use(VueHighcharts, { Highcharts }).use( CKEditor).use(Toaster).use(PrimeVue).use(ToastService).mount('#app')
 app.component("Toast", Toast);
@@ -129,3 +132,6 @@ app.component("SplitButton", SplitButton);
 app.component("Checkbox", Checkbox);
 app.component("Tag", Tag);
 app.component("Editor", Editor);
+app.component("TreeView", TreeView);
+
+app.use(store).use(router).use(VueHighcharts, { Highcharts }).use( CKEditor).use(Toaster).use(PrimeVue).use(ToastService).use(ConfirmationService).use(TreeViewInstaller).mount('#app')

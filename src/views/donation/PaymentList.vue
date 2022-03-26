@@ -201,7 +201,7 @@
 <script>
 import { ref, computed } from 'vue'
 import moment from "moment";
-import { useConfirm } from "primevue/useConfirm";
+import { useConfirm } from "primevue/useconfirm";
 import { useToast } from "primevue/usetoast";
 import axios from "@/gateway/backendapi";
 import finish from '../../services/progressbar/progress'
