@@ -139,7 +139,7 @@ import Dropdown from "primevue/dropdown";
 import chart_of_accounts from "../../../services/financials/chart_of_accounts";
 import { useToast } from 'primevue/usetoast';
 import transactionals from './utilities/transactionals';
-import { useConfirm } from "primevue/useConfirm";
+import { useConfirm } from "primevue/useconfirm";
 
 
 export default {

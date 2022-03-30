@@ -1601,7 +1601,7 @@ const routes = [
             import ( /* webpackChunkName: "defaultmessage" */ '@/views/event/attendance&checkin/MarkinAttendance')
     },
     {
-        path: '/event/:eventId',
+        path: '/event/:checkinId',
         name: 'EventRegistration',
         meta: {
             title: 'Churchplus - Event Registration',

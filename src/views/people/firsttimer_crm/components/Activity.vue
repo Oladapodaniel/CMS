@@ -376,7 +376,7 @@ import { useRoute } from "vue-router"
 import SearchMember from "../../../../components/membership/MembersSearch.vue"
 import { useToast } from "primevue/usetoast";
 import axios from "@/gateway/backendapi";
-import { useConfirm } from "primevue/useConfirm";
+import { useConfirm } from "primevue/useconfirm";
 export default {
     components: {
         Dropdown,

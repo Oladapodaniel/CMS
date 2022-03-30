@@ -595,9 +595,9 @@ export default {
         !attendanceCheckinInStore.value ||
         !attendanceCheckinInStore.value.eventID
       )
-        return`https://my.churchplus.co/event/${eventLinkResponse.value.eventID}`;
+        return`https://my.churchplus.co/event/${eventLinkResponse.value.id}`;
       // return attendanceCheckinInStore.value.eventRegistrationLink
-      return `https://my.churchplus.co/event/${attendanceCheckinInStore.value.eventID}`
+      return `https://my.churchplus.co/event/${attendanceCheckinInStore.value.id}`
     });
     
     // const paymentFormID = computed(() => {

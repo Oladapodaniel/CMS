@@ -532,7 +532,7 @@ export default {
     };
 
     const CheckXterAfterEleven = (e) => {
-      if (e.target.value.length > 11) {
+      if (e.target.value.length >= 11) {
         checkCharacter()
       }
     }

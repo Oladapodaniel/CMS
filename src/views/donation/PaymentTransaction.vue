@@ -300,7 +300,7 @@ import store from '../../store/store';
 import ContributionItems from "@/components/firsttimer/contributionItemModal"
 import ImageModal from './ImageModal'
 import ToggleButton from './toggleButton'
-import { useConfirm } from "primevue/useConfirm";
+import { useConfirm } from "primevue/useconfirm";
 
 export default {
     components: {

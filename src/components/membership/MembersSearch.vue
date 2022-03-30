@@ -60,8 +60,8 @@ import axios from "@/gateway/backendapi";
 import NewPerson from './NewDonor.vue';
 import Dialog from "primevue/dialog";
 export default {
-    emits: ['memberdetail'],
-    props: ['currentMember', 'stylesidebarinput'],
+    emits: ['memberdetail', 'resetclearpersonvalue'],
+    props: ['currentMember', 'stylesidebarinput', 'clearPersonValue'],
     components: {
         NewPerson,
         Dialog
@@ -103,13 +103,16 @@ export default {
 
         watchEffect(() => {
             if (props.currentMember && Object.keys(props.currentMember).length > 0 && Object.keys(props.currentMember).find(i => i == 'id')) {
-                console.log(props.currentMember)
                 userSearchString.value = `${props.currentMember.name}`
+            }
+
+            if (props.clearPersonValue) {
+                userSearchString.value = ""
+                emit('resetclearpersonvalue', false)
             }
         })
 
         const getPersonId = ({ personEmail, personFirstName, personLastName, personId, personNumber }) => {
-            // console.log(payload)
             const formatPayload = {
                 email: personEmail,
                 id: personId,

@@ -311,10 +311,10 @@
 </template>
 
 <script>
-import Chart from "primevue/chart";
+// import Chart from "primevue/chart";
 export default {
   components: {
-    Chart,
+    // Chart,
   },
 
   data() {

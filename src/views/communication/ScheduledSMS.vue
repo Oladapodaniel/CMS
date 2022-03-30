@@ -177,7 +177,7 @@ import dateFormatter from "../../services/dates/dateformatter";
 import axios from "@/gateway/backendapi";
 import { useToast } from "primevue/usetoast";
 import stopProgressBar from "../../services/progressbar/progress";
-import { useConfirm } from "primevue/useConfirm";
+import { useConfirm } from "primevue/useconfirm";
 
 export default {
   components: { UnitsArea },

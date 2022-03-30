@@ -273,7 +273,7 @@
 import { ref, computed } from "vue";
 import Memberform from "./FormMember";
 import axios from "@/gateway/backendapi";
-import { useConfirm } from "primevue/useConfirm";
+import { useConfirm } from "primevue/useconfirm";
 import { useToast } from "primevue/usetoast";
 import ProgressSpinner from 'primevue/progressspinner';
 export default {

@@ -270,7 +270,7 @@ import { ref, computed } from "vue";
 import { useRoute, useRouter } from 'vue-router';
 import groupsService from "../../services/groups/groupsservice";
 import { useStore } from "vuex";
-import { useConfirm } from "primevue/useConfirm";
+import { useConfirm } from "primevue/useconfirm";
 import { useToast } from "primevue/usetoast";
 import smsComponent from "./component/smsComponent.vue";
 import emailComponent from "./component/emailComponent.vue";
@@ -405,7 +405,7 @@ export default {
     }
 
     const groupLeader = computed(() => {
-      return JSON.parse(localStorage.getItem('roles')).some(i => i.toLowerCase() == 'groupleader')
+      return JSON.parse(localStorage.getItem('roles')).every(i => i.toLowerCase() == 'groupleader')
     })
 
     return {

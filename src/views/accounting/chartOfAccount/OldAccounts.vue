@@ -124,7 +124,7 @@ import { ref, computed, nextTick } from "vue";
 import UpdateAccountModal from "./components/UpdateOldAccount";
 import transactionals from './utilities/transactionals';
 import ConfirmDialog from 'primevue/confirmdialog';
-import { useConfirm } from "primevue/useConfirm";
+import { useConfirm } from "primevue/useconfirm";
 import { useToast } from "primevue/usetoast";
 import chart_of_accounts from '../../../services/financials/chart_of_accounts';
 import transaction_service from '../../../services/financials/transaction_service';

@@ -312,7 +312,7 @@
 import { ref, computed } from '@vue/runtime-core';
 import BranchSelect from "../component/BranchSelect.vue"
 import axios from "@/gateway/backendapi";
-import { useConfirm } from "primevue/useConfirm";
+import { useConfirm } from "primevue/useconfirm";
 import { useToast } from "primevue/usetoast";
 import loadingComponent from "@/components/loading/LoadingComponent";
 import dateFormatter from '../../../services/dates/dateformatter';

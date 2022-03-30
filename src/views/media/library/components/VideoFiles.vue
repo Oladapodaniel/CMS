@@ -29,7 +29,7 @@
 <script>
 import dateFormatter from '../../../../services/dates/dateformatter';
 import media_service from '../../../../services/media/media_service';
-import { useConfirm } from 'primevue/useConfirm'
+import { useConfirm } from 'primevue/useconfirm'
 import { useToast } from 'primevue/usetoast'
 import ConfirmPopup from 'primevue/confirmpopup';
 

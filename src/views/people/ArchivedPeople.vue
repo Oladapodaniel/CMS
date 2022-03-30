@@ -174,7 +174,7 @@
 import  { ref } from "vue";
 import axios from "@/gateway/backendapi";
 import { useToast } from "primevue/usetoast";
-import { useConfirm } from "primevue/useConfirm";
+import { useConfirm } from "primevue/useconfirm";
 // import { useRoute } from "vue-router";
 export default {
 

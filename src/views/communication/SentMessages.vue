@@ -256,7 +256,7 @@
 
 <script>
 import axios from "@/gateway/backendapi";
-import { useConfirm } from "primevue/useConfirm";
+import { useConfirm } from "primevue/useconfirm";
 import { computed, ref } from "vue";
 // import router from "@/router/index";
 import communicationService from "../../services/communication/communicationservice";
