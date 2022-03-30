@@ -7,7 +7,7 @@
             </div>
             <div class="row">
                 <div class="col-md-8  ">
-                     <div class="row my-2 mt-3">
+                     <div class="row  mt-3">
                          <div class="col-md-10  offset-md-2">
                             <div class="row">
                                 <div class="col-12 col-sm-12 col-lg-4 text-sm-left text-lg-right align-self-center">
@@ -20,7 +20,7 @@
                             </div>
                         </div>
                     </div> 
-                     <div class="row my-1 mt-3">
+                     <div class="row my-1 mt-4">
                          <div class="col-md-10 offset-md-2">
                             <div class="row">
                                 <div class="col-12 col-sm-12 col-lg-4 text-sm-left text-lg-right align-self-center">
@@ -35,7 +35,7 @@
                                 </div>
                             </div>
                         </div>
-                        <div class="col-md-10  offset-md-2 mt-3 ">
+                        <div class="col-md-10 my-1 offset-md-2 mt-3 ">
                             <div class="row">
                                 <div class="col-12 col-sm-12 col-lg-4 text-sm-left text-lg-right align-self-center">
                                     <label for="" class="">Total target amount <sup class="text-danger">*</sup> </label>
@@ -76,20 +76,20 @@
                             </div>
                         </div>
                     </div>
-                     <div class="row my-1 mt-3">
-                        <div class="col-md-10  offset-md-2">
+                     <div class="row my-1 mt-4">
+                        <div class="col-md-10 mt-1 offset-md-2">
                             <div class="row">
                                 <div class="col-12 col-sm-12 col-lg-4 text-sm-left text-lg-right align-self-center">
                                     <label for="" class="">Pledge type </label>
                                 </div>
                                 <div class="col-12 col-sm-12  col-lg-8 d-flex justify-content-between flex-wrap">
-                                    <div class="col-md-4 mt-2 mt-md-0  border py-2 c-pointer free-will " :class="{ 'show-free-will' : pledgeCategory == 'freewill' }" @click="freeWill">
+                                    <div class="col-md-4   border py-2 c-pointer free-will " :class="{ 'show-free-will' : pledgeCategory == 'freewill' }" @click="freeWill">
                                         Free Will
                                     </div>
-                                    <div class="col-md-4 border py-2 c-pointer" :class="{ 'show-specific' : pledgeCategory == 'specific' }"  @click="specific" >
+                                    <div class="col-md-4 mt-4 mt-md-0 border py-2 c-pointer" :class="{ 'show-specific' : pledgeCategory == 'specific' }"  @click="specific" >
                                         Specific
                                     </div>
-                                    <div class="col-md-4 mt-2 mt-md-0 border py-2 c-pointer" :class="{ 'show-range' : pledgeCategory == 'range' }" @click="range">
+                                    <div class="col-md-4 mt-4 mt-md-0 border py-2 c-pointer" :class="{ 'show-range' : pledgeCategory == 'range' }" @click="range">
                                         Range
                                     </div>
                                 </div>
@@ -106,12 +106,14 @@
                                 <div class="col-md-12  mt-3" v-if="pledgeCategory == 'range' "  >
                                     <div class="row">
                                         <div class="col-12 col-sm-12 col-lg-4 text-sm-left text-lg-right align-self-center">
-                                            <label for="" class=""> Amount </label>
+                                            <label for="" class="d-none d-lg-block"> Amount </label>
                                         </div>
                                         <div class="col-12 col-sm-12  col-lg-4">
+                                            <label for="" class="d-block  d-lg-none"> Amount From </label>
                                             <input type="text" v-model="amountFrom" class="form-control" placeholder="From" />
                                         </div>
-                                        <div class="col-12 col-sm-12  col-lg-4">
+                                        <div class="col-12 col-sm-12 mt-3 mt-md-0 mt-lg-0 col-lg-4">
+                                            <label for="" class="d-block d-lg-none"> Amount To </label>
                                             <input type="text" v-model="amountTo" class="form-control" placeholder="To" />
                                         </div>
                                     </div>
@@ -119,7 +121,7 @@
                             </div>
                         </div>
                     </div>
-                    <div class="row my-1 mt-3">
+                    <div class="row my-1 mt-4">
                         <div class="col-md-10  offset-md-2">
                             <div class="row">
                                 <div class="col-12 col-sm-12 col-lg-4 text-sm-left text-lg-right align-self-center">
@@ -127,10 +129,10 @@
                                 </div>
                         
                                 <div class="col-12 col-sm-12  col-lg-8 d-flex flex-wrap">
-                                    <div class="col-12 col-sm-12  col-lg-6 mt-2 mt-md-0  border py-2 c-pointer  " :class="{ 'show-one-time' : pledgeFrequency == 'onetime' }" @click="oneTime">
+                                    <div class="col-12 col-sm-12  col-lg-6  border py-2 c-pointer  " :class="{ 'show-one-time' : pledgeFrequency == 'onetime' }" @click="oneTime">
                                         One time
                                     </div>
-                                    <div class="col-12 col-sm-12  col-lg-6 border py-2 c-pointer" :class="{ 'show-reoccuring' : pledgeFrequency == 'reoccuring' }"  @click="reOccuring" >
+                                    <div class="col-12 mt-4 mt-lg-0 col-sm-12  col-lg-6 border py-2 c-pointer" :class="{ 'show-reoccuring' : pledgeFrequency == 'reoccuring' }"  @click="reOccuring" >
                                         Reoccuring
                                     </div>
                                 </div>

@@ -2,6 +2,7 @@
     <div class="container  container-top container-wide ">
         <div class="row d-flex justify-content-between px-3">
                 <div class="heading-text"> Make a Pledge </div>
+                <Toast />
                 <!-- <div><ToggleButton @is-active="isActive" :active="isActive" /></div> -->
         </div>
         <div class="container-fluid">
@@ -60,16 +61,20 @@
                     <div class="row my-1 mt-2  ">
                          <div class="col-md-10 offset-md-2 " v-if="selectedPledge.donorPaymentType == 2 "  >
                             <div class="row">
-                                <div class="col-12 col-sm-12 col-lg-4 text-sm-left text-lg-right align-self-center">
+                                <div class="col-12 col-md-4 col-lg-4 text-sm-left text-lg-right align-self-center">
                                     <label for="" class="">Pledge Amount </label>
                                 </div>
-                                <div class="col-12 col-sm-12  col-lg-4">
-                                    <div > <span>From:</span>  {{Math.abs(selectedPledge.donorPaymentRangeFromAmount).toLocaleString()}}.00 </div>
+                                <div class="d-flex flex-wrap col-12  col-md-8 ">
+                                    <div class=" col-sm-6 ">
+                                        <div class="font-weight-bold" > <span>From:</span>  {{Math.abs(selectedPledge.donorPaymentRangeFromAmount).toLocaleString()}}.00 </div>
                                     <!-- <input type="text" v-model="selectedPledge.donorPaymentRangeFromAmount" class="form-control" :disabled="checking" placeholder="From" /> -->
+                                    </div>
+                                    <div class="col-12  col-sm-6   ">
+                                        <div class="font-weight-bold  " ><span>To:</span> {{Math.abs(selectedPledge.donorPaymentRangeToAmount).toLocaleString()}}.00 </div>
+                                    </div>
+
                                 </div>
-                                <div class="col-12 col-sm-12  col-lg-4 my-3 my-sm-0 my-md-0 text-left text-md-right ">
-                                    <div ><span>To:</span> {{Math.abs(selectedPledge.donorPaymentRangeToAmount).toLocaleString()}}.00 </div>
-                                </div>
+                                
                                 <!-- <div class="col-12 d-flex justify-content-end mt-3 ">
                                     <div class="col-12 col-sm-12  col-lg-8  ">
                                         <input type="text" v-model="amountInRange" class="form-control" placeholder="Enter Amount" />
@@ -129,7 +134,6 @@
                     </div>
                 </div>
             </div>
-            <Toast />
         </div>
     </div>
 </template>
@@ -248,6 +252,7 @@ export default {
                     const res = await axios.post('api/Pledge/SavePledge', makePledgeDetails)
                     finish()
                     console.log(res,'getSinglePledge');
+
                      toast.add({
                         severity: "success",
                         summary: "Successful",
@@ -262,6 +267,7 @@ export default {
                             name: selectedContact.value.name
                         }
                     })
+                    
                 }
                 catch (error){
                     if (error.response) {

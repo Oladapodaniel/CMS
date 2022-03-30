@@ -1583,6 +1583,7 @@ const routes = [
                 },
                 {
                     path: 'pledgepayment',
+                    name: 'PledgePayment',
                     meta: {
                         title: 'Churchplus - Church Pledge',
                     },

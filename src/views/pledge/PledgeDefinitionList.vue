@@ -269,28 +269,6 @@ export default {
             }
             getAllPledgeDefinition()
 
-            const showConfirmModal = (id, index) => {
-                confirm.require({
-                    message: "Are you sure you want to proceed?",
-                    header: "Confirmation",
-                    icon: "pi pi-exclamation-triangle",
-                    acceptClass: "confirm-delete",
-                    rejectClass: "cancel-delete",
-                    accept: () => {
-                    deletePledge(id, index);
-                    // toast.add({severity:'info', summary:'Confirmed', detail:'Member Deleted', life: 3000});
-                    },
-                    reject: () => {
-                    toast.add({
-                        severity: "info",
-                        summary: "Rejected",
-                        detail: "You have rejected",
-                        life: 3000,
-                    });
-                    },
-                });
-            };
-
             const deletePledge = (id) => {
 
             axios
@@ -303,6 +281,9 @@ export default {
                     detail: "Pledge form deleted",
                     life: 3000,
                 });
+
+                allPledgeList.value = allPledgeList.value.filter( (pledgelist) => pledgelist.id !== id
+          );
 
                 })
                 .catch((err) => {
@@ -325,6 +306,28 @@ export default {
                 });
             };
 
+
+            const showConfirmModal = (id, index) => {
+                confirm.require({
+                    message: "Are you sure you want to proceed?",
+                    header: "Confirmation",
+                    icon: "pi pi-exclamation-triangle",
+                    acceptClass: "confirm-delete",
+                    rejectClass: "cancel-delete",
+                    accept: () => {
+                    deletePledge(id, index);
+                    // toast.add({severity:'info', summary:'Confirmed', detail:'Member Deleted', life: 3000});
+                    },
+                    reject: () => {
+                    toast.add({
+                        severity: "info",
+                        summary: "Rejected",
+                        detail: "You have rejected",
+                        life: 3000,
+                    });
+                    },
+                });
+            };
 
             return {
                 allPledgeList,
