@@ -11,10 +11,11 @@
                         <div class="col-md-10  offset-md-2">
                             <div class="row">
                                 <div class="col-md-4 text-md-right align-self-center">
-                                    <label for="" class="">Select Person <sup class="text-danger">*</sup> </label>
+                                    <label for="" class="">Person <sup class="text-danger">*</sup> </label>
                                 </div>
                                 <div class="col-md-8">
-                                    <MembersSearch />
+                                    <input type="text" v-model="memberName"  :disabled="checking"  class="form-control w-100" />
+                                    <!-- <MembersSearch /> -->
                                     <!-- <Dropdown v-model="selectMember" class="w-100 font-weight-normal" :options="MembersType"  optionLabel="name" placeholder="Select Member" /> -->
                                 </div>
                             </div>
@@ -24,56 +25,60 @@
                         <div class="col-md-10  offset-md-2">
                             <div class="row">
                                 <div class="col-md-4 text-md-right align-self-center">
-                                    <label for="" class="">Select Pledge <sup class="text-danger">*</sup> </label>
+                                    <label for="" class=""> Pledge Type <sup class="text-danger">*</sup> </label>
                                 </div>
                         
                                 <div class="col-md-8">
-                                    <Dropdown v-model="selectedPledge" class="w-100 font-weight-normal" :options="pledgeCategory"  optionLabel="name" placeholder="Select Pledge" />
+                                    <Dropdown v-model="selectedPledge" :disabled="checking"  class="w-100 font-weight-normal" :options="allPledgeList"  optionLabel="name" placeholder="Select Pledge" />
                                 </div>
                             </div>
                         </div>
                     </div>
-                    <div class="row my-1 mt-3">
-                        <div class="col-md-10  offset-md-2 " v-if="selectedPledge.name === 'Free will' ">
+                   <div class="row my-1 mt-3">
+                        <div class="col-md-10  offset-md-2 " v-if="selectedPledge.donorPaymentType == 0 " >
                             <div class="row">
                                 <div class="col-md-4 text-md-right align-self-center">
                                     <label for="" class=""> Pledge Amount </label>
                                 </div>
                         
                                 <div class="col-md-8">
-                                    <input type="text" v-model="Amount" class="form-control" />
+                                    <input type="text" v-model="freewillAmount" class="form-control" />
                                 </div>
                             </div>
                         </div>
-                    </div>  
-                    <div class="row my-1 mt-3">
-                        <div class="col-md-10  offset-md-2 " v-if="selectedPledge.name === 'Specific' ">
+                    </div>   
+                   <div class="row my-1 mt-3">
+                        <div class="col-md-10  offset-md-2 " v-if="selectedPledge.donorPaymentType == 1 ">
                             <div class="row">
                                 <div class="col-md-4 text-md-right align-self-center">
                                     <label for="" class=""> Pledge Amount </label>
                                 </div>
                         
                                 <div class="col-md-8">
-                                    <input type="text" v-model="Amount" class="form-control" />
+                                    <input type="text" v-model="selectedPledge.donorPaymentSpecificAmount" :disabled="checking" class="form-control" />
                                 </div>
                             </div>
                         </div>
                     </div>  
-                    <div class="row my-1 mt-3">
-                         <div class="col-md-10 offset-md-2 " v-if="selectedPledge.name === 'Range' "  >
+                     <div class="row my-1 mt-2  ">
+                        <div class="col-md-10 offset-md-2 " v-if="selectedPledge.donorPaymentType == 2 "  >
                             <div class="row">
-                                <div class="col-md-4 text-md-right align-self-center">
+                                <div class="col-12 col-md-4 col-lg-4 text-sm-left text-lg-right align-self-center">
                                     <label for="" class="">Pledge Amount </label>
                                 </div>
-                                <div class="col-md-4">
-                                    <input type="text" v-model="amountFrom" class="form-control" placeholder="From" />
-                                </div>
-                                <div class="col-md-4">
-                                    <input type="text" v-model="amountTo" class="form-control" placeholder="To" />
+                                <div class="d-flex flex-wrap col-12  col-md-8 ">
+                                    <div class=" col-sm-6 ">
+                                        <div class="font-weight-bold" > <span>From:</span>  {{Math.abs(selectedPledge.donorPaymentRangeFromAmount).toLocaleString()}}.00 </div>
+                                    <!-- <input type="text" v-model="selectedPledge.donorPaymentRangeFromAmount" class="form-control" :disabled="checking" placeholder="From" /> -->
+                                    </div>
+                                    <div class="col-12  col-sm-6   ">
+                                        <div class="font-weight-bold  " ><span>To:</span> {{Math.abs(selectedPledge.donorPaymentRangeToAmount).toLocaleString()}}.00 </div>
+                                    </div>
+
                                 </div>
                             </div>
                         </div>
-                    </div>  
+                    </div> 
                     <div class="heading-text"> Payment </div>
                     <div class="row  mt-1">
                         <div class="col-md-10  offset-md-2 mt-2 ">
@@ -195,21 +200,25 @@
                        
                     <!-- </div>  -->
             </div>
+            <Toast />
         </div>
     </div>
-    <Toast />
+    
 </template>
 
 <script>
-// import axios from "@/gateway/backendapi";
+import axios from "@/gateway/backendapi";
 import { ref } from "vue";
 import Dropdown from "primevue/dropdown";
 import InputText from "primevue/inputtext";
 import { useToast } from "primevue/usetoast";
 import MembersSearch from "../../components/membership/MembersSearch.vue"
+import { useRoute } from "vue-router"
+import { useStore } from "vuex";
 // import router from '../../router';
 // import store from "../../store/store";
 import CascadeSelect from 'primevue/cascadeselect';
+import finish from '../../services/progressbar/progress';
 import ToggleButton from '../donation/toggleButton.vue';
 export default {
     components: {
@@ -221,14 +230,21 @@ export default {
     },
     setup() {
         const toast = useToast()
+        const store = useStore();
+        const currentUser = ref(store.getters.currentUser);
+        const tenantId = ref(currentUser.tenantId);
+        const route = useRoute();
         const churchName = ref('');
+        const memberName = ref('');
         const Address = ref('');
         const loading = ref(false)
-        const loadingCode = ref(false)
+        const freewillAmount = ref('');
+        const checking = ref(false);
         const value = ref()
         const isNameValid = ref(true)
         const isEmailValid = ref(true)
         const selectedPledge = ref('')
+        const allPledgeList = ref([]);
         const amountFrom = ref('')
         const paymentAmount = ref('')
         const amountTo = ref('')
@@ -254,15 +270,147 @@ export default {
         const payPledge = async () => {
             
         }
+        const getAllPledgeDefinition = async () =>{
+                try{
+                    checking.value = false;
+                    const res = await axios.get('/api/Pledge/GetAllPledgeDefinitions')
+                    finish()
+                    allPledgeList.value = res.data.returnObject
+
+                    getDetails()
+                    
+                    // isActive.value = res.data.returnObject.map( i => {
+                    //     return {
+                    //         isActive : i.isActive
+                    //     }
+                    // })
+                    console.log(allPledgeList.value,'getPledgeList');
+                    checking.value = true;
+                    
+                }
+                catch (error){
+                    console.log(error)
+                }
+            }
+            getAllPledgeDefinition()
+
+            const getDetails = () =>{
+            selectedPledge.value = allPledgeList.value.find(i => i.id === route.query.id)
+            // console.log(selectedPledge.value, 'jnjhkjhajkshkjashkhahk');
+            memberName.value = route.query.name
+
+                }
+
+            const payWithPaystack = () => {
+                initializePayment(0);
+                /*eslint no-undef: "warn"*/
+                let handler = PaystackPop.setup({
+                    key: process.env.VUE_APP_PAYSTACK_PUBLIC_KEY_LIVE,
+                    // key: process.env.VUE_APP_PAYSTACK_API_KEY,
+
+                    email: "info@churchplus.co",
+                    amount: TotalAmount.value * 100,
+                    ref: `${formattedDate.substring(0, 4)}${uuidv4().substring(0, 4)}sub`,
+                    currency: Plans.value.paymentCurrency,
+                    onClose: function() {
+                    // swal("Transaction Canceled!", { icon: "error" });
+                    toast.add({
+                        severity: "info",
+                        summary: "Transaction cancelled",
+                        detail: "You have cancelled the transaction",
+                        life: 3000,
+                    });
+                    },
+                    callback: function(response) {
+                    subscriptionPayment(response, 0);
+                    //Route to where you confirm payment status
+                    },
+                });
+                handler.openIframe();
+        };
+
+        const initializePayment = (paymentGateway) => {
+            const payload = {
+            gateway: paymentGateway === 0 ? 'paystack' : 'flutterwave',
+            totalAmount: TotalAmount.value,
+            tenantId: currentUser.value.tenantId,
+            orderId: uuidv4()
+            }
+            axios
+            .post('/api/payment/initializesubscription',payload)
+            .then((res) => {
+            close.value.click();
+            initializedOrder.value = res.data;
+            })
+        }
+
+        const payWithFlutterwave = () => {
+      console.log(TotalAmount.value, 'total amount calculated')
+      initializePayment(1)
+
+      let country = "";
+
+      switch (selectedCurrency.value) {
+            case 'KES':
+             country = 'KE';
+              break;
+            case 'GHS':
+              country = 'GH';
+              break;
+            case 'ZAR':
+              country = 'ZA';
+              break;
+            case 'TZS':
+              country = 'TZ';
+              break;
+            
+            default:
+              country = 'NG';
+              break;
+        }
+  
+      window.FlutterwaveCheckout({
+                public_key: process.env.VUE_APP_FLUTTERWAVE_PUBLIC_KEY_LIVE,
+                tx_ref: uuidv4().substring(0,8),
+                amount: paymentAmount.value,
+                // amount: TotalAmount.value,
+                currency: selectedCurrency.value,
+                country: country,
+                payment_options: 'card,ussd',
+                customer: {
+                  email: currentUser.value.userEmail
+                },
+                callback: (response) => {
+                  console.log("Payment callback", response)
+                    subscriptionPayment(response, 1)
+                  },
+                onclose: () => console.log('Payment closed'),
+                customizations: {
+                  title: 'Subscription',
+                  description: "Payment for Subcription ",
+                  logo: logoUrl,
+                },
+              });
+    }
 
         const savePayment = async () => {
             let paymentData = {
+                id: route.query.id,
                 amount: paymentAmount.value,
-                channel: selectedChannel.value.name
+                channel: selectedChannel.value.name,
+                currencyID: selectedPledge.value.currencyID
             }
             try {
                 const res = await axios.post('/api/Pledge/SavePledgePayment', paymentData)
                     console.log(res,'paypledge');
+
+                    toast.add({
+                        severity: "success",
+                        summary: "Successful",
+                        detail: "Pledge Payment created successfully",
+                        life: 2000,
+                    });
+
             } catch (error) {
                 console.log(error);
             }
@@ -289,23 +437,31 @@ export default {
 
         return {
             channel,
+            currentUser,
+            tenantId,
             payPledge,
             selectedPledge,
+            allPledgeList,
             selectedChannel,
             pledgeCategory,
+            payWithPaystack,
             amountTo,
             amountFrom,
             savePayment,
             paymentAmount,
             checkEmailValue,
+            initializePayment,
             churchName,
             Address,
             value,
             loading,
-            loadingCode,
+            checking,
+            freewillAmount,
             checkNameValue,
             isNameValid,
-            isEmailValid
+            isEmailValid,
+            memberName,
+            payWithFlutterwave
         }
     },
 }

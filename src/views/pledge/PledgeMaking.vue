@@ -4,17 +4,17 @@
                 <div class="heading-text"> Pledge Making </div>
                 <!-- <div><ToggleButton @is-active="isActive" :active="isActive" /></div> -->
         </div>
-        <div class="container-fluid border rounder  sub-con ">
+        <div class="container border rounder  sub-con ">
             <div class="row">
                 <div class="col-md-12 border-bottom mt-4 " >
                      <div class="row my-1 mt-3 d-flex justify-content-center ">
                         <div class="col-md-7  ">
                             <div class="row ">
                                 <div class="col-md-4 text-md-right align-self-center">
-                                    <label for="" class="">Select Person <sup class="text-danger">*</sup> </label>
+                                    <label for="" class=""> Person <sup class="text-danger">*</sup> </label>
                                 </div>
                                 <div class="col-md-8">
-                                    <input type="text" v-model="memberName" class="form-control w-100" />
+                                    <input type="text" v-model="memberName" :disabled="checking" class="form-control w-100" />
                                     <!-- <MembersSearch @memberdetail="chooseContact" />
                                      -->
                                     <!-- <Dropdown v-model="selectMember" class="w-100 font-weight-normal" :options="MembersType"  optionLabel="name" placeholder="Select Member" /> -->
@@ -26,11 +26,11 @@
                         <div class="col-md-7  ">
                             <div class="row">
                                 <div class="col-md-4 text-md-right align-self-center">
-                                    <label for="" class="">Select Pledge <sup class="text-danger">*</sup> </label>
+                                    <label for="" class="">Pledge Type <sup class="text-danger">*</sup> </label>
                                 </div>
                                 <!-- <div>{{allPledgeList}}</div> -->
                                 <div class="col-md-8">
-                                    <Dropdown v-model="selectedPledge" class="w-100 font-weight-normal" :options="allPledgeList"  optionLabel="name" placeholder="Select Pledge" />
+                                    <Dropdown v-model="selectedPledge" class="w-100 font-weight-normal" :disabled="checking" :options="allPledgeList"  optionLabel="name" placeholder="Select Pledge" />
                                 </div>
                             </div>
                         </div>
@@ -48,7 +48,7 @@
                             </div>
                         </div>
                     </div>  
-                    <div class="row my-1 mt-3 d-flex justify-content-center">
+                    <div class="row my-1 mt-2 d-flex justify-content-center">
                         <div class="col-md-7  " v-if="selectedPledge.donorPaymentType == 1 ">
                             <div class="row">
                                 <div class="col-md-4 text-md-right align-self-center">
@@ -64,17 +64,20 @@
                     <div class="row my-1 mt-2 d-flex justify-content-center  ">
                          <div class="col-md-7 " v-if="selectedPledge.donorPaymentType == 2 "  >
                             <div class="row">
-                                <div class="col-12 col-sm-12 col-lg-4 text-sm-left text-lg-right align-self-center">
+                                <div class="col-12 col-md-4 col-lg-4 text-sm-left text-lg-right align-self-center">
                                     <label for="" class="">Pledge Amount </label>
                                 </div>
-                                <div class="col-12 col-sm-12  col-lg-4">
-                                    <div > <span>From:</span>  {{Math.abs(selectedPledge.donorPaymentRangeFromAmount).toLocaleString()}}.00 </div>
+                                <div class="d-flex flex-wrap col-12  col-md-8 ">
+                                    <div class=" col-sm-6 ">
+                                        <div class="font-weight-bold" > <span>From:</span>  {{Math.abs(selectedPledge.donorPaymentRangeFromAmount).toLocaleString()}}.00 </div>
                                     <!-- <input type="text" v-model="selectedPledge.donorPaymentRangeFromAmount" class="form-control" :disabled="checking" placeholder="From" /> -->
+                                    </div>
+                                    <div class="col-12  col-sm-6   ">
+                                        <div class="font-weight-bold  " ><span>To:</span> {{Math.abs(selectedPledge.donorPaymentRangeToAmount).toLocaleString()}}.00 </div>
+                                    </div>
+
                                 </div>
-                                <div class="col-12 col-sm-12  col-lg-4 my-3 my-sm-0 my-md-0 text-left text-md-right ">
-                                    <div ><span>To:</span> {{Math.abs(selectedPledge.donorPaymentRangeToAmount).toLocaleString()}}.00 </div>
-                                    <!-- <input type="text" v-model="selectedPledge.donorPaymentRangeToAmount" class="form-control" :disabled="checking" placeholder="To" /> -->
-                                </div>
+                                
                                 <!-- <div class="col-12 d-flex justify-content-end mt-3 ">
                                     <div class="col-12 col-sm-12  col-lg-8  ">
                                         <input type="text" v-model="amountInRange" class="form-control" placeholder="Enter Amount" />
@@ -218,7 +221,6 @@ export default {
         const churchName = ref('');
         const Address = ref('');
         const loading = ref(false)
-        const loadingCode = ref(false)
         const freewillAmount = ref('');
         const checking = ref(false);
         const value = ref()
@@ -245,7 +247,8 @@ export default {
         // }
 
         const makePayment = () =>{
-            router.push('/pledge/pledgepayment')
+            // router.push('/pledge/pledgepayment')
+            router.push(`/pledge/pledgepayment?id=${route.query.id}&name=${route.query.name}`)
         }
 
          const chooseContact = (payload) => {
@@ -305,7 +308,8 @@ export default {
                     const res = await axios.post('api/Pledge/SavePledge', makePledgeDetails)
                     finish()
                     console.log(res,'getSinglePledge');
-                    router.push('/pledge/pledgepayment')
+                    router.push(`/pledge/pledgepayment?ID=${route.query.id}&name=${route.query.name}`)
+                    
                 }
                 catch (error){
                     console.log(error)
@@ -362,7 +366,6 @@ export default {
             Address,
             value,
             loading,
-            loadingCode,
             checkNameValue,
             isNameValid,
             isEmailValid,
