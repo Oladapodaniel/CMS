@@ -160,7 +160,7 @@
           </div>
            <div class="row">
               <div class="col-md-12 col-12 d-flex justify-content-end mb-4">
-                <div class="border outline-none font-weight-bold mr-3 c-pointer text-center" style="border-radius: 3rem; padding: 0.5rem 1.25rem;" type="button" data-toggle="collapse" data-target="#collapseExample" aria-expanded="false" aria-controls="collapseExample">
+                <div v-if="false" class="border outline-none font-weight-bold mr-3 c-pointer text-center" style="border-radius: 3rem; padding: 0.5rem 1.25rem;" type="button" data-toggle="collapse" data-target="#collapseExample" aria-expanded="false" aria-controls="collapseExample">
                       Make this group a sub-group
                   </div>
                 <div

@@ -405,7 +405,7 @@ export default {
     }
 
     const groupLeader = computed(() => {
-      return JSON.parse(localStorage.getItem('roles')).some(i => i.toLowerCase() == 'groupleader')
+      return JSON.parse(localStorage.getItem('roles')).every(i => i.toLowerCase() == 'groupleader')
     })
 
     return {

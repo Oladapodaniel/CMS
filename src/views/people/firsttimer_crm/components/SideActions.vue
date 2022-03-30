@@ -95,11 +95,11 @@
                         </div>
                 </div>
             </div>
-            
             <div class="row">
                 <div class="col-12 mt-4 label-text">Contact owner</div>
                 <div class="col-12 mt-2">
-                    <SearchMember v-bind:currentMember="selectedContact" @memberdetail="updateOwner" :stylesidebarinput="true"/>
+                    <SearchMember v-bind:currentMember="selectedContact" @memberdetail="updateOwner($event, 1)" :stylesidebarinput="true" :clearPersonValue="clearPersonValue" @resetclearpersonvalue="resetClearPersonValue"/>
+                    <div @click="updateOwner($event, 2)" class="text-danger remove-contact" v-if="Object.keys(selectedContact).length > 0 && selectedContact.id !== null || hasContactOwner">Remove contact owner</div>
                 </div>
             </div>
 
@@ -658,6 +658,8 @@ export default {
         const requestbtn = ref(false)
         const tenantId = ref("")
         const selectedMembershipClassification = ref({})
+        const clearPersonValue = ref(false)
+        const hasContactOwner = ref(false)
 
 
         const selectedContactLog = computed(() => {
@@ -928,20 +930,38 @@ export default {
         // };
         // getMembers();
 
-        const updateOwner = async(payload) => {
+        const updateOwner = async(payload, type) => {
             const body = {
                 firstTimerID: route.params.personId,
-                ownerID: payload.id
+                ownerID: type === 1 ? payload.id : null
             }
             try {
                 let res = await frmservice.updateContactOwner(route.params.personId, body)
+                if (type === 1) {
+                    hasContactOwner.value = true
+                }
                 console.log(res)
                 emit('updatelogtoview')
+                if (type === 2) {
+                    toast.add({
+                        severity: "success",
+                        summary: "Removed",
+                        detail: "Contact owner removed successfully",
+                        life: 5000,
+                    });
+                    clearPersonValue.value = true
+                }
             }
             catch (err) {
                 console.log(err)
             }
 
+        }
+
+        const resetClearPersonValue = (payload) => {
+            clearPersonValue.value = payload
+            selectedContact.value = new Object()
+            hasContactOwner.value = false
         }
         
         const getLifeCycle = async() => {
@@ -1467,7 +1487,10 @@ export default {
             route,
             window,
             innerWidth,
-            selectedMembershipClassification
+            selectedMembershipClassification,
+            clearPersonValue,
+            resetClearPersonValue,
+            hasContactOwner
         }
             
     }
@@ -1596,7 +1619,7 @@ export default {
 }
 
 .show-contact {
-    height: 480px;
+    height: 520px;
     transition: all 0.5s ease-in-out;
     /* overflow: hidden; */
 }
@@ -1702,5 +1725,10 @@ export default {
     -ms-transition: opacity 0.3s ease;
     -o-transition: opacity 0.3s ease;
     transition:  opacity 0.3s ease-in-out;
+}
+
+.remove-contact {
+    font-size: 0.9em;
+    text-decoration: underline;
 }
 </style>

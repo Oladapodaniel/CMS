@@ -388,7 +388,7 @@
             <div class="font-weight-700 " v-if="peopleInGroupIDs.length > 0 && areaInView === 'groups'">Groups added</div>
               <div v-if="areaInView === 'groups'">
                 <span v-for="(item, index) in peopleInGroupIDs" :key="item.id" >| &nbsp;
-                <span class="text-grey">{{ item.name }} &nbsp; <i v-if="!routeParams" class="pi pi-times-circle text-danger c-pointer"  @click="removeFromGroup(index)"></i></span>&nbsp; | &nbsp;
+                <span class="text-grey">{{ item.name }} &nbsp; <i class="pi pi-times-circle text-danger c-pointer"  @click="showConfirmModal(index, item)"></i></span>&nbsp; | &nbsp;
               </span>
               </div>
               <div v-if="areaInView === 'notes'">
@@ -612,6 +612,7 @@
       </div>
     </div>
   </div>
+  <ConfirmDialog />
 </template>
 
 <script>
@@ -629,6 +630,7 @@ import membershipService from "../../services/membership/membershipservice";
 import grousService from "../../services/groups/groupsservice";
 // import lookupService from "../../services/lookup/lookupservice";
 import SearchMembers from "../../components/membership/MembersSearch.vue"
+import { useConfirm } from "primevue/useconfirm";
 
 export default {
   components: {
@@ -639,6 +641,7 @@ export default {
     // const $toast = getCurrentInstance().ctx.$toast;
     const toast = useToast();
     const store = useStore();
+    const confirm = useConfirm();
     const hideCelebTab = ref(false);
     const hideAddInfoTab = ref(true);
     const showCelebTab = () => (hideCelebTab.value = !hideCelebTab.value);
@@ -1086,7 +1089,8 @@ export default {
       peopleInGroupIDs.value = data.personSpecificGroups.map(i => {
         return {
           groupId: i.id,
-          name: i.name
+          name: i.name,
+          personInGroupID: i.personInGroupID
         }
       })
 
@@ -1217,8 +1221,52 @@ export default {
         }, 1000)
     }
 
-    const removeFromGroup = (index) => {
-      peopleInGroupIDs.value.splice(index, 1)
+    const removeFromGroup = (index, item) => {
+      if (!route.params.personId) {
+        peopleInGroupIDs.value.splice(index, 1)
+      } else {
+        let body = {
+          groupId: item.groupId,
+          personIds: [
+            item.personInGroupID
+          ]
+        }
+
+        grousService
+            .removeFromGroup(item.groupId, body)
+            .then((res) => {
+              if (res !== false) {
+                peopleInGroupIDs.value.splice(index, 1)
+                toast.add({
+                  severity: "success",
+                  summary: "Removed",
+                  detail: `${person.firstName} is removed from ${item.name} group`,
+                  life: 5000,
+                });
+              }
+            })
+            .catch (err => {
+              console.log(err)
+            })
+      }
+    }
+
+    const showConfirmModal = (index, item) => {
+      confirm.require({
+          message: `Are you sure you want to remove ${person.firstName} from this ${item.name} group?`,
+          header: 'Confirm',
+          icon: 'pi pi-info-circle',
+          accept: () => {
+              removeFromGroup(index, item)
+          },
+          reject: () => {
+              toast.add({
+                  severity:'error', 
+                  summary:'Rejected', 
+                  detail:'You have rejected', 
+                  life: 3000});
+          }
+      });
     }
 
     const savePersonNote = () => {
@@ -1298,7 +1346,8 @@ export default {
       noteDetails,
       savePersonNote,
       searchGroupText,
-      searchAllGroups
+      searchAllGroups,
+      showConfirmModal
     };
   },
 };

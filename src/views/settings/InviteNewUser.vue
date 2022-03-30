@@ -55,7 +55,7 @@
                         <div class="ml-5 mt-2 mt-lg-0">
                              <span class="col-lg-1 mb-lg-0 mb-3 font-weight-bold">Roles</span> 
                             <div class="col-12 mt-2" v-for="(item, index) in roles" :key="index">
-                            <div v-if="item !== 'FollowUp' && item !== 'FirsttimerFollowUp' && item !== 'CanAccessNewConverts' && item !== 'CanAccessFollowUps'">
+                            <div v-if="item !== 'FollowUp' && item !== 'FirsttimerFollowUp' && item !== 'CanAccessNewConverts' && item !== 'CanAccessFollowUps' && item !== 'GroupLeader'">
                                 <Checkbox
                                 v-model="selectedRole"
                                 :value="item"

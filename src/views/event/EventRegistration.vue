@@ -60,6 +60,7 @@
           <i class="pi pi-phone icon" />
           <InputText
             @blur="checkCharacter"
+            @input="CheckXterAfterEleven"
             class="w-100"
             type="text"
             v-model="enteredValue"
@@ -178,16 +179,16 @@
                 :disabled="personHasAddress"
               />
             </span>
-            <p
+            <!-- <p
               class="font-weight-7 small-text text-danger mb-0"
               v-if="person.personId && !person.address"
             >
               school is required
-            </p>
+            </p> -->
           </div>
         </div>
 
-        <div class="row my-3" v-if="!personData.dayOfBirth && personData.monthOfBirth">
+        <div class="row my-3">
           <div
             class="col-md-3 d-md-flex align-items-center justify-content-end text-md-right mt-2 font-weight-700"
           >
@@ -201,7 +202,6 @@
                   :options="days"
                   style="width: 100%"
                   placeholder="Day"
-                   v-if="!personData.dayOfBirth"
                 />
               </div>
               <div class="col-6">
@@ -209,8 +209,7 @@
                   v-model="birthMonth"
                   :options="months"
                   style="width: 100%"
-                  placeholder="Month"
-                  
+                  placeholder="Month"   
                 />
               </div>
             </div>
@@ -467,13 +466,13 @@ export default {
         return false;
       }
 
-      console.log(route.params.eventId)
+      console.log(route.params.checkinId)
       // if (e.target.value.length > 0) {
       loading.value = true;
       autosearch.value = true;
       axios
         .get(
-          `/searchregistrationbyphone?searchtext=${enteredValue.value}&&eventId=${route.params.eventId}`
+          `/searchregistrationbyphone?searchtext=${enteredValue.value}&id=${route.params.checkinId}`
         )
 
         .then((res) => {
@@ -487,12 +486,12 @@ export default {
           personData.value.email = res.data[0] ? res.data[0].email : "";
           personData.value.homeAddress = res.data[0] ? res.data[0].address : "";
           personData.value.personId = res.data[0] ? res.data[0].personId : "";
-          personData.value.dayOfBirth = res.data[0] ? res.data[0].dayOfBirth : null;
-          personData.value.monthOfBirth = res.data[0] ? res.data[0].monthOfBirth : null;
+          personData.value.dayOfBirth = res.data[0] ? res.data[0].dayOfBirth : "";
+          personData.value.monthOfBirth = res.data[0] ? res.data[0].monthOfBirth : "";
           personData.value.mobilePhone = enteredValue.value;
           person.value = res.data[0] ? res.data[0] : {};
           birthDay.value = res.data[0] && res.data[0].dayOfBirth ? Number(res.data[0].dayOfBirth) : 0;
-          birthMonth.value = res.data[0] && res.data[0].monthOfBirth ? months[Number(res.data[0].monthOfBirth)] : 0;
+          birthMonth.value = res.data[0] && res.data[0].monthOfBirth ? months[Number(res.data[0].monthOfBirth) - 1] : 0;
 
           getFamilyDetails(personData.value.personId)
           console.log(personData.value.personId)
@@ -548,6 +547,13 @@ export default {
     };
     //end of searching through the attendance details
 
+    const CheckXterAfterEleven = (e) => {
+      if (e.target.value.length >= 11) {
+        checkCharacter()
+      }
+    }
+
+
     // populate input fields
     const populateInputfields = (obj) => {
       person.value = obj;
@@ -577,7 +583,7 @@ export default {
             homeAddress: personData.value.homeAddress ? personData.value.homeAddress : '',
             email: personData.value.email ? person.value.email : '',
           },
-          activityID: route.params.eventId
+          id: route.params.checkinId
         };
       } else {
         newPerson = {
@@ -587,14 +593,13 @@ export default {
             homeAddress: person.value.address,
             mobilePhone: enteredValue.value,
           },
-          activityID: route.params.eventId
+          id: route.params.checkinId
         };
         newPerson.person.personId = idOfNewPerson ? idOfNewPerson : ""
       }
-      newPerson.person.monthOfBirth = birthMonth.value && !personData.value.monthOfBirth
-        ? months.indexOf(birthMonth.value) + 1
-        : null;
-      newPerson.person.dayOfBirth = birthDay.value && !personData.value.monthOfBirth ? birthDay.value : null;
+      newPerson.person.monthOfBirth =  months.indexOf(birthMonth.value) + 1
+  
+      newPerson.person.dayOfBirth = birthDay.value
 
       console.log(personData.value, "p data");
       console.log(newPerson);
@@ -723,7 +728,7 @@ export default {
                   // }).map(i => {
                   //   return { personId: i.person.id }
                   // }),
-                  activityID: route.params.eventId
+                  id: route.params.checkinId
                 };
                 console.log(newFamily)
 
@@ -735,7 +740,7 @@ export default {
                           person: {
                             personId: i.person.id
                           },
-                          activityID: route.params.eventId
+                          id: route.params.checkinId
                         }
                         axios.post("/EventRegistration", regFamMembers).then(res => {
                           console.log(res)
@@ -769,7 +774,7 @@ export default {
                   // }).map(i => {
                   //   return { personId: i.person.id }
                   // }),
-                  activityID: route.params.eventId
+                  activityID: route.params.checkinId
                 };
                 console.log(newFamily)
 
@@ -781,7 +786,7 @@ export default {
                         person: {
                           personId: i.person.id
                         },
-                        activityID: route.params.eventId
+                        id: route.params.checkinId
                       }
                       axios.post("/EventRegistration", regFamMembers).then(res => {
                         console.log(res)
@@ -866,7 +871,7 @@ export default {
                   // }).map(i => {
                   //   return { personId: i.person.id }
                   // }),
-                  activityID: route.params.eventId
+                  id: route.params.checkinId
                 };
                 // console.log(newFamily)
 
@@ -878,7 +883,7 @@ export default {
                       person: {
                         personId: i.person.id
                       },
-                      activityID: route.params.eventId
+                      id: route.params.checkinId
                     }
                     axios.post("/EventRegistration", regFamMembers).then(res => {
                       console.log(res)
@@ -928,7 +933,7 @@ export default {
     const getDateAndEvent = () => {
       axios
         .get(
-          `/api/publiccontent/WebRegistrationEventDetails?activityId=${route.params.eventId}`
+          `/api/publiccontent/WebRegistrationEventDetails?id=${route.params.checkinId}`
         )
         .then((res) => {
           eventData.value.name = res.data.fullEventName;
@@ -1009,10 +1014,12 @@ export default {
                     const res = await axios.get(`/family?tenantID=${fullEventData.value.tenantID}&&personId=${id}`)
                     console.log(res)
                     familyWards.value = res.data
-                    familyWards.value.familyMembers.map(i => {
-                      i.checkMember = true
-                      return i
-                    })
+                    if (familyWards.value) {
+                      familyWards.value.familyMembers.map(i => {
+                        i.checkMember = true
+                        return i
+                      })
+                    }
 
                     console.log(familyWards.value.familyMembers)
                 }
@@ -1068,6 +1075,7 @@ export default {
       toggleBase,
       checkCharacter,
       populateInputfields,
+      CheckXterAfterEleven,
       InputText,
       appltoggle,
       names,
