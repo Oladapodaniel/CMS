@@ -114,15 +114,14 @@
                                     <span class="d-flex align-items-center"
                                         ><input
                                         type="text"
-                                        ref="regLink"
-                                        @keydown="preventChangingOfCheckinLink"
-                                        @click="copyRegLink"
-                                        :value="eventRegLink"
+                                        ref="selectedLink"
+                                        v-model="pledgePaymentLink"
                                         class="form-control"
+                                        placeholder="Link"
                                         style="width: 95%" />
                                         <i
                                         class="pi pi-copy ml-2 c-pointer"
-                                        @click="copyRegLink"
+                                        @click="copyLink"
                                         style="font-size: 22px"
                                         ></i>
                                         <span class="font-weight-bold small ml-1 c-pointer" style="width: 20%">Send Email</span>
@@ -158,9 +157,7 @@
                                         ><input
                                         type="text"
                                         ref="checkinLink"
-                                        @keydown="preventChangingOfCheckinLink"
                                         @click="copyLink"
-                                        :value="link"
                                         class="form-control"
                                         style="width: 95%" />
                                         <i
@@ -196,7 +193,7 @@
 
 <script>
 import axios from "@/gateway/backendapi";
-import { ref } from "vue";
+import { ref, computed } from "vue";
 import Dropdown from "primevue/dropdown";
 import InputText from "primevue/inputtext";
 import { useToast } from "primevue/usetoast";
@@ -217,6 +214,8 @@ export default {
     },
     setup() {
         const toast = useToast()
+        const selectedLink = ref(null)
+        const tenantID = ref('')
         const route = useRoute();
         const churchName = ref('');
         const Address = ref('');
@@ -248,7 +247,7 @@ export default {
 
         const makePayment = () =>{
             // router.push('/pledge/pledgepayment')
-            router.push(`/pledge/pledgepayment?id=${route.query.id}&name=${route.query.name}`)
+            router.push(`/pledge/pledgepayment?pledgeTypeID=${route.query.pledgeTypeID}&id=${route.query.id}&name=${route.query.name}`)
         }
 
          const chooseContact = (payload) => {
@@ -257,6 +256,37 @@ export default {
 
             // console.log(payload, 'my allll')
          }
+
+         const pledgePaymentLink = computed(() => {
+                if (!route.query.id) return ""
+                return `${window.location.origin}/pledge/pledgepayment?id=${route.query.id}`
+        })
+
+        const copylink = () => {
+            console.log(selectedLink.value.value, "jkjjhkj");
+                selectedLink.value.setSelectionRange(0, selectedLink.value.value.length); /* For mobile devices */
+                selectedLink.value.select();
+
+                /* Copy the text inside the text field */
+                document.execCommand("copy");
+            toast.add({
+                    severity: "info",
+                    summary: "Link Copied",
+                    detail: "copied to your clipboard",
+                    life: 3000,
+                });
+            }
+
+        const getCurrentlySignedInUser = async () => {
+            try {
+                const res = await axios.get("/api/Membership/GetCurrentSignedInUser");
+                tenantID.value = res.data.tenantId
+            } catch (err) {
+                console.log(err);
+            }
+            };
+
+        getCurrentlySignedInUser();
         
 
         const active = (payload) => {
@@ -350,6 +380,7 @@ export default {
         return {
             allPledgeList,
             memberName,
+            tenantID,
             checking,
             makePledge,
             chooseContact,
@@ -359,6 +390,7 @@ export default {
             amountTo,
             amountFrom,
             freewillAmount,
+            pledgePaymentLink,
             // savePledge,
             checkEmailValue,
             churchName,
@@ -369,8 +401,10 @@ export default {
             checkNameValue,
             isNameValid,
             isEmailValid,
+            selectedLink,
             isActive,
-            active
+            active,
+            copylink
         }
     },
 }

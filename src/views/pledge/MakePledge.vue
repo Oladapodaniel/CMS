@@ -173,6 +173,7 @@ export default {
         const selectedPledge = ref('')
         const allPledgeList = ref([]);
         const amountFrom = ref('')
+        const makePledgeData = ref('')
         const selectedContact = ref({})
         const isActive = ref(null)
         const amountTo = ref('')
@@ -251,7 +252,8 @@ export default {
                 try{
                     const res = await axios.post('api/Pledge/SavePledge', makePledgeDetails)
                     finish()
-                    console.log(res,'getSinglePledge');
+                    console.log(res.data,'getSinglePledge');
+                    makePledgeData.value = res.data.returnObject
 
                      toast.add({
                         severity: "success",
@@ -263,7 +265,8 @@ export default {
                     router.push({  
                         name: 'PledgeMaking',
                         query: {
-                            id: selectedPledge.value.id,
+                            id: makePledgeData.value.pledgeTypeID,
+                            pledgeTypeID: makePledgeData.value.id,
                             name: selectedContact.value.name
                         }
                     })
@@ -339,6 +342,7 @@ export default {
             value,
             loading,
             loadingCode,
+            makePledgeData,
             checkNameValue,
             isNameValid,
             isEmailValid,

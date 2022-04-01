@@ -200,7 +200,7 @@ import { useToast } from "primevue/usetoast";
 import Calendar from "primevue/calendar";
 import finish from '../../services/progressbar/progress';
 import { useRoute } from "vue-router"
-// import router from '../../router';
+import router from '../../router';
 // import store from "../../store/store";
 import ToggleButton from '../donation/toggleButton.vue'
 import CascadeSelect from 'primevue/cascadeselect';
@@ -334,15 +334,40 @@ export default {
                 console.log(pledgeDetails, 'pledgedetails')
 
                 if(route.query.id){
+                    const pledgeDetail = {
+                    id: route.query.id,
+                    contributionID: selectedContribution.value.id,
+                    totalTargetAmount: targetAmount.value,
+                    donorPaymentType: pledgType.value,
+                    name: PledgeName.value,
+                    donorPaymentSpecificAmount: SpecificAmount.value,
+                    donorPaymentRangeFromAmount: amountFrom.value,
+                    donorPaymentRangeToAmount: amountTo.value,
+                    pledgeTypeFrequencyOneTimeStartDate: startDate.value,
+                    pledgeTypeFrequencyOneTimeEndDate: endDate.value,
+                    pledgeTypeFrequencyReOccuring: selectedRange.value.name,
+                    currencyID: selectedCurrency.value.id,
+                    // isActive: true
+                    
+                }
                     try{
                         loading.value = true;
-                        const response = await axios.put('/api/Pledge/UpdatePledgeDefinition', pledgeDetails );
+                        const response = await axios.put('/api/Pledge/UpdatePledgeDefinition', pledgeDetail );
+
+                        toast.add({
+                        severity: "success",
+                        summary: "Successful",
+                        detail: "Pledge definition updated successfully",
+                        life: 3000,
+                         })
+                         
                         console.log(response, "response");
-                        if (response.status === 200 ) {
-                            // store.dispatch("membership/getMembers")
-                            loading.value = false;
-                            router.push("/tenant/pledge/pledgedefintionlist");
-                        }
+
+                         
+                        router.push("/tenant/pledge/pledgedefinitionlist");
+
+
+                        loading.value = false;
                     }
                     catch(error){
                         console.log(error)

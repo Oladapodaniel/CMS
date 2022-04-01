@@ -396,6 +396,7 @@ export default {
         const savePayment = async () => {
             let paymentData = {
                 id: route.query.id,
+                pledgeID: route.query.pledgeTypeID,
                 amount: paymentAmount.value,
                 channel: selectedChannel.value.name,
                 currencyID: selectedPledge.value.currencyID
