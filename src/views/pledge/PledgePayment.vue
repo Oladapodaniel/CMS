@@ -302,7 +302,7 @@ export default {
                 }
 
             const payWithPaystack = () => {
-                initializePayment(0);
+                // initializePayment(0);
                 /*eslint no-undef: "warn"*/
                 let handler = PaystackPop.setup({
                     key: process.env.VUE_APP_PAYSTACK_PUBLIC_KEY_LIVE,
