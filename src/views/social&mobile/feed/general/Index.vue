@@ -344,7 +344,7 @@ import social_service from "../../../../services/social/social_service";
 import membershipService from "../../../../services/membership/membershipservice";
 import dateFormatter from "../../../../services/dates/dateformatter";
 import { useToast } from "primevue/usetoast";
-import { useConfirm } from "primevue/useConfirm";
+import { useConfirm } from "primevue/useconfirm";
 import { useStore } from "vuex";
 
 export default {

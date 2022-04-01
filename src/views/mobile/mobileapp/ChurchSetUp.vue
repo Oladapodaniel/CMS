@@ -515,7 +515,7 @@ import axios from "@/gateway/backendapi";
 import store from "../../../store/store";
 import { useToast } from "primevue/usetoast";
 import stopProgressBar from "../../../services/progressbar/progress";
-import { useConfirm } from "primevue/useConfirm";
+import { useConfirm } from "primevue/useconfirm";
 // import { useStore } from "vuex"
 
 export default {

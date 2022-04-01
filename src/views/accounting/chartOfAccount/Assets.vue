@@ -99,7 +99,7 @@ import axios from "@/gateway/backendapi";
 import CreateAccountModal from "./components/CreateAccountForm";
 import transactionals from './utilities/transactionals';
 import ConfirmDialog from 'primevue/confirmdialog';
-import { useConfirm } from "primevue/useConfirm";
+import { useConfirm } from "primevue/useconfirm";
 import { useToast } from "primevue/usetoast";
 import chart_of_accounts from '../../../services/financials/chart_of_accounts';
 

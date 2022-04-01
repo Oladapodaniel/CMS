@@ -146,7 +146,7 @@
 import { ref, computed } from "vue";
 import router from "@/router/index";
 import UnitsArea from "../../components/units/UnitsArea";
-import { useConfirm } from "primevue/useConfirm";
+import { useConfirm } from "primevue/useconfirm";
 import axios from "@/gateway/backendapi";
 import communicationService from "../../services/communication/communicationservice";
 import store from "../../store/store";

@@ -245,7 +245,7 @@ import PaginationButtons from "../../components/pagination/PaginationButtons";
 import { useStore } from "vuex";
 import Tooltip from "primevue/tooltip";
 import axios from "@/gateway/backendapi";
-import { useConfirm } from "primevue/useConfirm";
+import { useConfirm } from "primevue/useconfirm";
 import { useToast } from "primevue/usetoast";
 import stopProgressBar from "../../services/progressbar/progress";
 

@@ -167,7 +167,7 @@ import { useRoute } from 'vue-router';
 import { useRouter } from 'vue-router';
 import { useStore } from 'vuex';
 import communicationService from '../../services/communication/communicationservice';
-import { useConfirm } from "primevue/useConfirm";
+import { useConfirm } from "primevue/useconfirm";
 import { useToast } from "primevue/usetoast";
 import Loading from "../../components/loading/LoadingComponent"
 

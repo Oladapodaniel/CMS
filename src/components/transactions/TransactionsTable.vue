@@ -297,7 +297,7 @@ import dateFormatter from "../../services/dates/dateformatter";
 import LedgerForm from "../../views/accounting/transaction/components/LedgerForm";
 import LoadingComponent from "../loading/LoadingComponent";
 import numbers_formatter from "../../services/numbers/numbers_formatter"
-import { useConfirm } from "primevue/useConfirm";
+import { useConfirm } from "primevue/useconfirm";
 import { useToast } from "primevue/usetoast";
 
 export default {

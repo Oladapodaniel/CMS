@@ -3,7 +3,7 @@
         <div class="row my-3">
             <div class="col-md-10 mx-auto d-flex justify-content-end">
                 <button class="default-btn font-weight-bold border primary-text add-ward-btn c-pointer" ref="showModal"
-                    data-toggle="modal" data-target="#addWard" @click="addNewWard"
+                    data-toggle="modal" data-target="#addWard"
                 >Add ward</button>
             </div>
         </div>
@@ -128,9 +128,7 @@ export default {
         //     emit('member-index', index)
         // }
 
-        // const addNewWard = () => {
-        //     emit("clear-field", { name: "", roleId: new Object() })
-        // }
+    
 
         watch(() => {
             console.log(props.showWardModal)
@@ -317,7 +315,6 @@ export default {
 
         return {
             // editMember,
-            // addNewWard,
             showModal,
             // deleteMember,
             // showConfirmModal,

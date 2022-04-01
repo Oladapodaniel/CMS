@@ -200,7 +200,7 @@ import axios from "@/gateway/backendapi";
 import Pagination from "../../../components/pagination/PaginationButtons";
 // import { useRoute } from "vue-router";
 import moment from "moment";
-import { useConfirm } from "primevue/useConfirm";
+import { useConfirm } from "primevue/useconfirm";
 import { useToast } from "primevue/usetoast";
 import finish from '../../../services/progressbar/progress'
 

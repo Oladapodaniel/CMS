@@ -19,7 +19,7 @@
                         class="d-flex flex-wrap px-1 mb-0 m-dd-item"
                         @click="() => memberSelectInput.focus()"
                         >
-                        <li
+                        <!-- <li
                             style="
                             list-style: none;
                             min-width: 100px;
@@ -36,6 +36,21 @@
                             @click="removeMember(indx)"
                             >x</span
                             >
+                        </li> -->
+                        <li
+                            style="
+                            list-style: none;
+                            width: 100%;
+                            "
+                            v-if="Object.keys(selectedMember).length > 0"
+                            class="email-destination d-flex justify-content-between m-1"
+                        >
+                            <span>{{ selectedMember.name }}</span>
+                            <span
+                            class="ml-2 remove-email"
+                            @click="removeMember(indx)"
+                            >x</span
+                            >
                         </li>
                         <li
                             style="list-style: none"
@@ -44,28 +59,17 @@
                         >
                             <input
                             type="text"
-                            class="border-0 m-dd-item text outline-none"
+                            class="border-0 m-dd-item text outline-none w-100"
                             ref="memberSelectInput"
                             @input="searchForMembers"
                             autocomplete="off"
-
-                            :class="{
-                                'w-100':
-                                selectedMembers.length === 0,
-                                'minimized-input-width':
-                                selectedMembers.length > 0,
-                            }"
                             @focus="showMemberList"
                             @click="showMemberList"
                             v-model="searchText"
                             style="padding: 0.5rem"
-                            :placeholder="`${
-                                selectedMembers.length > 0
-                                ? ''
-                                : 'Select from members'
-                            }`"
+                            placeholder="Select from members"
                             @blur="() => (inputBlurred = true)"
-
+                            v-if="Object.keys(selectedMember).length === 0"
                             />
                         </li>
                         </ul>
@@ -156,7 +160,7 @@
                 </div>
                 <!-- End -->
 
-                <div class="row mb-3">
+                <!-- <div class="row mb-3">
                 <div
                     class="col-md-4 text-right d-flex align-items-center justify-content-md-end"
                 >
@@ -172,28 +176,28 @@
                     v-model="position"
                     />
                 </div>
-                </div>
-                            <!-- check box start -->
-                <div class="row">
+                </div> -->
+                     
+                <!-- <div class="row">
                     <div class="col-6 d-flex mt-2" v-if="true">
-                    <!-- <div class="mt-n3"> -->
+  
                         <label for="description" class="font-weight-600">
                         Is Group Leader
                         </label>
                         <Checkbox v-model="isGroupLeader" :binary="true" class="ml-3"/>
-                    <!-- </div> -->
+            
                     </div>
 
                     <div class="col-6 d-flex mt-2">
-                    <!-- <div class="mt-n3"> -->
+             
                         <label for="description" class="font-weight-600">
                         Enable Login
                         </label>
                         <Checkbox v-model="enableLogin" :binary="true" class="ml-3"/>
-                    <!-- </div> -->
+              
                     </div>
-                </div>
-                <!-- check box end -->
+                </div> -->
+        
             </div>
             </div>
             <div class="row mt-4 justify-content-end">
@@ -221,14 +225,15 @@ import { ref } from '@vue/reactivity'
 import composeService from "../../services/communication/composer";
 import { watchEffect } from '@vue/runtime-core';
 import { useRoute } from "vue-router"
-import axios from "@/gateway/backendapi";
+// import axios from "@/gateway/backendapi";
+import attendanceservice from '../../services/attendance/attendanceservice';
 
 export default {
     props: ["newPerson"],
-    emits: ["memberadded"],
+    emits: ["reloadmembers"],
     setup (props, { emit }) {
         const route = useRoute()
-        const selectedMembers = ref([]);
+        const selectedMember = ref({});
         const memberSelectInput = ref(null);
         const memberListShown = ref(false);
         const inputBlurred = ref(true);
@@ -254,17 +259,7 @@ export default {
                 .then((res) => {
                     console.log(res, "res");
                     loading.value = false;
-                    memberSearchResults.value = res.filter((i) => {
-                    const memberInExistingMembers = selectedMembers.value.findIndex(
-                        (j) => j.id === i.id
-                    );
-                    if (
-                        memberInExistingMembers >= 0 ||
-                        groupMembers.value.findIndex((k) => k.personID === i.id) >= 0
-                    )
-                        return false;
-                    return true;
-                    });
+                    memberSearchResults.value = res
                 });
             } else {
                 memberSearchResults.value = [];
@@ -273,15 +268,15 @@ export default {
 
         const selectMember = (member, index) => {
             console.log(member, "member");
-            selectedMembers.value.push(member);
+            selectedMember.value = member;
             memberSearchResults.value.splice(index, 1);
             searchText.value = "";
             memberListShown.value = false;
             memberSearchResults.value = [];
             };
 
-         const removeMember = (index) => {
-          selectedMembers.value.splice(index, 1);
+         const removeMember = () => {
+          selectedMember.value = new Object()
         };
 
         const showAddMemberForm = () => {
@@ -290,37 +285,40 @@ export default {
 
         watchEffect(() => {
             if(Object.keys(props.newPerson).length > 0) {
-                let body = {
-                    name: props.newPerson.personFirstName,
-                    personId: props.newPerson.personId,
-                    email: props.newPerson.personEmail,
-                    phoneNumber: props.newPerson.personNumber
-                }
-                selectedMembers.value.push(body)
-                console.log(selectedMembers)
+                // let body = {
+                //     name: props.newPerson.personFirstName,
+                //     personId: props.newPerson.personId,
+                //     email: props.newPerson.personEmail,
+                //     phoneNumber: props.newPerson.personNumber
+                // }
+                // selectedMembers.value.push(body)
+        
             }
         })
 
-        const addMemberToGroup = () => {
+        const addMemberToGroup = async() => {
             let data = {
-                groupId: route.query.groupId,
-                personIDs: selectedMembers.value.map(i => i.id)
+                person: {
+                    personId: selectedMember.value.id
+                },
+                checkInAttendanceID: route.params.id
             }
             console.log(data)
-            axios
-            .put(`/api/UpdateGroup/${route.query.groupId}`, data)
-            .then((res) => {
+
+           try {
+                let  res  = await attendanceservice.checkin(data);
                 console.log(res)
-                emit("memberadded", res)
-            })
-            .catch((err) => {
-            console.log(err.response);
-            });
+                emit("reloadmembers")
+                selectedMember.value = new Object()
+           }
+           catch (err) {
+               console.log(err)
+           }
         }
 
 
         return {
-            selectedMembers,
+            selectedMember,
             memberSelectInput,
             showMemberList,
             memberListShown,

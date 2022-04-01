@@ -379,6 +379,12 @@
                 <span class="text-grey">{{ item.name }}  &nbsp; <i v-if="!routeParams" class="pi pi-times-circle text-danger c-pointer"  @click="removeFromGroup(index)"></i></span>&nbsp; | &nbsp;
               </span>
               </div>
+               <div v-if="areaInView === 'notes'">
+                <div v-for="(item, index) in personNotes" :key="index" >
+                  <div class="font-weight-700">{{ item.title }}</div>  
+                  <div class="mb-2">{{ item.description }}</div>  
+              </div>
+              </div>
               <button
                 @click.prevent="uploadImage"
                 class="info-btn"
@@ -399,6 +405,8 @@
                 @click.prevent="uploadImage"
                 class="info-btn"
                 v-if="areaInView === 'notes'"
+                data-toggle="modal"
+                data-target="#personNote"
               >
                 New Notes
               </button>
@@ -609,7 +617,7 @@
     </div>
     
     <!-- Note Modal -->
-    <!-- <div
+    <div
       class="modal fade"
       id="personNote"
       tabindex="-1"
@@ -676,7 +684,7 @@
           </div>
         </div>
       </div>
-    </div> -->
+    </div>
   </div>
 </template>
 
@@ -710,6 +718,8 @@ export default {
     const route = useRoute();
     const searchGroupText = ref("")
     const searchRef = ref(null)
+    const personNotes = ref([])
+    const noteDetails = ref({})
 
     const loading = ref(false);
     const months = [
@@ -885,6 +895,10 @@ export default {
         "ageGroupID",
         selectedAgeGroup.value ? selectedAgeGroup.value.id : ""
       );
+      formData.append(
+        "note",
+        personNotes.value ? JSON.stringify(personNotes.value) : []
+      );
       console.log(formData);
       /*eslint no-undef: "warn"*/
       NProgress.start();
@@ -954,7 +968,7 @@ export default {
     let ageGroups = ref([]);
     let genders = ref(store.getters["lookups/genders"]);
     let maritalStatus = ref(store.getters["lookups/maritalStatus"]);
-    let memberships = ref(store.getters["lookups/peopleClassifications"]);
+    let memberships = ref([]);
 
     const selectedMaritalStatus = ref(null);
     const selectedGender = ref(null);
@@ -977,22 +991,18 @@ export default {
     const getPeopleClassifications = async () => {
       try {
         const response = await axios.get(
-          "/api/Settings/GetTenantPeopleClassification"
+          `/public/PeopleClassifications?tenantId=${route.params.id}`
         );
         const { data } = response;
         memberships.value = data;
         console.log(memberships.value, "ms");
-        peopleClassifications.value = data.map((i) => i.name);
-        getPersonPeopleClassificationId();
+        // peopleClassifications.value = data.map((i) => i.name);
+        // getPersonPeopleClassificationId();
       } catch (err) {
-        if (err.response && err.response.status === 401) {
-          localStorage.removeItem("token");
-
-          router.push("/");
-        }
         console.log(err);
       }
     };
+    getPeopleClassifications();
 
     const getAgeGroups = () => {
       axios
@@ -1008,7 +1018,7 @@ export default {
     if (!genders.value || genders.value.length === 0) getLookUps();
     if (!ageGroups.value || ageGroups.value.length === 0) getAgeGroups();
     // if (!memberships.value || memberships.value.length === 0)
-    // getPeopleClassifications();
+    // 
 
     const gendersArr = computed(() => {
       return genders.value.map((i) => i.value);
@@ -1018,7 +1028,7 @@ export default {
     });
 
     
-    const memberToEdit = ref({});
+    // const memberToEdit = ref({});
 
     // const getPersonGenderId = () => {
     //   if (memberToEdit.value && memberToEdit.value.personId) {
@@ -1032,25 +1042,25 @@ export default {
     //   }
     // };
 
-    const getPersonMaritalStatusId = () => {
-      if (memberToEdit.value && memberToEdit.value.personId) {
-        selectedMaritalStatus.value = maritalStatus.value.find(
-          (i) => i.id === memberToEdit.value.maritalStatusID
-        );
-      }
-    };
+    // const getPersonMaritalStatusId = () => {
+    //   if (memberToEdit.value && memberToEdit.value.personId) {
+    //     selectedMaritalStatus.value = maritalStatus.value.find(
+    //       (i) => i.id === memberToEdit.value.maritalStatusID
+    //     );
+    //   }
+    // };
 
-    const getPersonPeopleClassificationId = () => {
-      if (memberToEdit.value && memberToEdit.value.personId) {
-        if (memberships.value && memberships.value.length > 0) {
-          selectedMembership.value = memberships.value.find(
-            (i) => i.id === memberToEdit.value.peopleClassificationID
-          );
-        } else {
-          getPeopleClassifications();
-        }
-      }
-    };
+    // const getPersonPeopleClassificationId = () => {
+    //   if (memberToEdit.value && memberToEdit.value.personId) {
+    //     if (memberships.value && memberships.value.length > 0) {
+    //       selectedMembership.value = memberships.value.find(
+    //         (i) => i.id === memberToEdit.value.peopleClassificationID
+    //       );
+    //     } else {
+    //       getPeopleClassifications();
+    //     }
+    //   }
+    // };
 
     // const getPersonAgeGroupId = () => {
     //   if (memberToEdit.value && memberToEdit.value.personId) {
@@ -1104,9 +1114,9 @@ export default {
     //   });
     // };
 
-    if (route.params.personId) {
-      getMemberToEdit(route.params.personId);
-    }
+    // if (route.params.personId) {
+    //   getMemberToEdit(route.params.personId);
+    // }
 
     const areaInView = ref("groups");
     const position = ref("");
@@ -1184,7 +1194,7 @@ export default {
 
     const searchAllGroups = computed(() => {
       if (!searchGroupText.value && allGroups.value > 0) return allGroups.value
-      return allGroups.value.filter(i => i.name.toLowerCase().includes(searchGroupText.value))
+      return allGroups.value.filter(i => i.name.toLowerCase().includes(searchGroupText.value.toLowerCase()))
     })
 
     const focusInput = () => {
@@ -1199,6 +1209,15 @@ export default {
 
     const removeFromGroup = (index) => {
       peopleInGroupIDs.value.splice(index, 1)
+    }
+
+    const savePersonNote = () => {
+      personNotes.value.push({
+        title: noteDetails.value.noteTitle,
+        description: noteDetails.value.noteDesc
+      })
+      noteDetails.value = {}
+      dismissAddToGroupModal.value = "modal";
     }
 
     return {
@@ -1221,7 +1240,7 @@ export default {
       addPerson,
       peopleClassifications,
       url,
-      memberToEdit,
+      // memberToEdit,
       imageSelected,
       uploadImage,
       loading,
@@ -1258,7 +1277,10 @@ export default {
       focusInput,
       searchRef,
       selectGroup,
-      removeFromGroup
+      removeFromGroup,
+      personNotes,
+      noteDetails,
+      savePersonNote
     };
   },
 };
