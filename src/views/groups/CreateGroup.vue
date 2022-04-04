@@ -192,7 +192,7 @@
                       <div class="font-weight-700 mb-3">
                         Select the group or sub-group you want this group to be a child of.
                       </div>
-                        <treeview :data-source="complexLocalDataSource"
+                        <!-- <treeview :data-source="complexLocalDataSource"
                             :data-text-field="['categoryName', 'subCategoryName']" :checkboxes="false"
                             :drag-and-drop="true"
                             @change="onChange"
@@ -206,7 +206,7 @@
                             @expand="onExpand"
                             @navigate="onNavigate"
                             @select="onSelect">
-                       </treeview>
+                       </treeview> -->
                     </div>
                   </div>
                         
@@ -1429,7 +1429,6 @@ const complexLocalDataSource  = ref(markRaw(new kendo.data.HierarchicalDataSourc
       selectedMembers.value.forEach((i) => {
         i.position = position.value;
         i.personID = i.id;
-        i.id = "";
         i.enableLogin = enableLogin.value;
         i.isGroupLeader = isGroupLeader.value;
         groupMembers.value.push(i);
@@ -1486,7 +1485,15 @@ const complexLocalDataSource  = ref(markRaw(new kendo.data.HierarchicalDataSourc
         .then((res) => {
           savingGroup.value = false;
           groupsService.editGroupInStore(res.data, groupMembers.value.length);
-  
+
+          groupMembers.value.map(i => {
+            const findData = res.data.peopleInGroups.findIndex(j => j.personID == i.personID )
+            if (findData >= 0) {
+              i.id = res.data.peopleInGroups[findData].id
+            }
+            return i
+          })
+    
           // store.dispatch("groups/getGroups")
           if (redirect) {
             router.push("/tenant/peoplegroups");
@@ -1502,7 +1509,7 @@ const complexLocalDataSource  = ref(markRaw(new kendo.data.HierarchicalDataSourc
         .catch((err) => {
           finish();
           savingGroup.value = false;
-          console.log(err.response);
+          console.log(err);
           toast.add({
             severity: "error",
             summary: "Update Error",

@@ -45,7 +45,9 @@
                 </div>
             </div>
         </div>
-        <div class="row mt-5 border box-boundary py-3 c-pointer" v-if="contributionItems.length > 0" data-toggle="collapse" data-target="#collapseExampleOffering">
+
+        <AttendanceCheckinUpdate :contributionItems="contributionItems" :attendanceType="attendanceType" :groupDetail="groupDetail"/>
+        <!-- <div class="row mt-5 border box-boundary py-3 c-pointer" v-if="contributionItems.length > 0" data-toggle="collapse" data-target="#collapseExampleOffering">
             <div class="col-6 font-weight-700" style="font-size: 1.5em">
                 Contributions
             </div>
@@ -98,7 +100,7 @@
         </div>
         <div class="row d-flex justify-content-center justify-content-md-end my-4">
             <div class="default-btn primary-bg border-0 text-white text-center" @click="updateAttendanceCheckin">Save</div>
-        </div>
+        </div> -->
    </div>
 
    <div
@@ -162,13 +164,15 @@ import NewPerson from '../component/AddNewMemberToGroup.vue';
 import { useRoute } from 'vue-router'
 import attendanceservice from '../../../services/attendance/attendanceservice';
 import { useToast } from "primevue/usetoast";
-import router from '../../../router';
+// import router from '../../../router';
+import AttendanceCheckinUpdate from "../../../components/attendance/updateAttendanceChekin.vue"
 // import grousService from '../../../services/groups/groupsservice';
 export default {
     components: {
         AddToGroup,
         Dialog,
-        NewPerson
+        NewPerson,
+        AttendanceCheckinUpdate
     },
     setup () {
         const contributionItems = ref([])
@@ -182,8 +186,8 @@ export default {
         const searchText = ref("")
         const loading = ref(false)
         const showOfferings = ref(false)
-        const showAttendance = ref(false)
-        const note = ref("")
+        // const showAttendance = ref(false)
+        // const note = ref("")
 
         const getContributionsItem = async() => {
             try {
@@ -239,31 +243,31 @@ export default {
         }
         getGroupDetails()
 
-        const churchContributionItems = computed(() => {
-             if (groupDetail.value && groupDetail.value.offerings && groupDetail.value.offerings.length > 0 && contributionItems.value.length > 0) return contributionItems.value.map(i => {
-                        const y = groupDetail.value.offerings.findIndex(j => j.financialContributionID == i.id)
-                        if (y >= 0) {
-                            i.amount = groupDetail.value.offerings[y].amount
-                            i.contributionAttendanceID = groupDetail.value.offerings[y].id
-                        }
-                        return i
-                })
+        // const churchContributionItems = computed(() => {
+        //      if (groupDetail.value && groupDetail.value.offerings && groupDetail.value.offerings.length > 0 && contributionItems.value.length > 0) return contributionItems.value.map(i => {
+        //                 const y = groupDetail.value.offerings.findIndex(j => j.financialContributionID == i.id)
+        //                 if (y >= 0) {
+        //                     i.amount = groupDetail.value.offerings[y].amount
+        //                     i.contributionAttendanceID = groupDetail.value.offerings[y].id
+        //                 }
+        //                 return i
+        //         })
                 
-            return contributionItems.value
-        })
+        //     return contributionItems.value
+        // })
         
-        const churchAttendanceCategory = computed(() => {
-            if (groupDetail.value && groupDetail.value.attendances && groupDetail.value.attendances.length > 0 && attendanceType.value.length > 0) return attendanceType.value.map(i => {
-                        const y = groupDetail.value.attendances.findIndex(j => j.attendanceTypeID == i.id)
-                        console.log(y, groupDetail.value.attendances[y].number)
-                        if (y >= 0) {
-                            i.number = groupDetail.value.attendances[y].number
-                            i.attendanceTypeAttendanceID = groupDetail.value.attendances[y].id
-                        }
-                        return i
-                })
-            return attendanceType.value
-        })
+        // const churchAttendanceCategory = computed(() => {
+        //     if (groupDetail.value && groupDetail.value.attendances && groupDetail.value.attendances.length > 0 && attendanceType.value.length > 0) return attendanceType.value.map(i => {
+        //                 const y = groupDetail.value.attendances.findIndex(j => j.attendanceTypeID == i.id)
+        //                 console.log(y, groupDetail.value.attendances[y].number)
+        //                 if (y >= 0) {
+        //                     i.number = groupDetail.value.attendances[y].number
+        //                     i.attendanceTypeAttendanceID = groupDetail.value.attendances[y].id
+        //                 }
+        //                 return i
+        //         })
+        //     return attendanceType.value
+        // })
 
         const searchMembers = computed(() => {
             if (groupDetail.value && groupDetail.value && groupDetail.value.peopoleAttendancesDTOs && groupDetail.value.peopoleAttendancesDTOs.length > 0 && searchText.value == "") return groupDetail.value.peopoleAttendancesDTOs
@@ -308,62 +312,49 @@ export default {
         //     showAttendance.value = !showAttendance.value
         // }
 
-        const updateAttendanceCheckin = async() => {
-            // groupDetail.value.note = note.value
-            // groupDetail.value.summaryAttendance = attendanceType.value.map(i => {
-            //     return {
-            //         attendanceTypeID: i.id,
-            //         number: i.number
-            //     }
-            // })
-            // groupDetail.value.offerings = contributionItems.value.map(i => {
-            //     return {
-            //         financialContributionID: i.id,
-            //         amount: i.amount
-            //     }
-            // })
-            let body = {
-                eventName: groupDetail.value.eventName,
-                eventDate: groupDetail.value.eventDate,
-                details: groupDetail.value.details,
-                status: groupDetail.value.status,
-                title: groupDetail.value.title,
-                bannerImage: groupDetail.value.bannerImage,
-                id: groupDetail.value.id,
-                offerings: contributionItems.value.map(i => {
-                return {
-                        id: i.contributionAttendanceID,
-                        financialContributionID: i.id,
-                        amount: i.amount ? Number(i.amount) : 0
-                    }
-                }),
-                attendances: attendanceType.value.map(i => {
-                return {
-                        id: i.attendanceTypeAttendanceID,
-                        attendanceTypeID: i.id,
-                        number: i.number ? Number(i.number) : 0
-                    }
-                }),
-                note: note.value
-            }
-            console.log(body)
-            try {
-                let data = await axios.put("/api/CheckInAttendance/UpdateCheckInAttendance", body)
-                console.log(data)
-                toast.add({
-                    severity: "success",
-                    summary: "Success",
-                    detail: "Saved successfully",
-                    life: 5000,
-                    });
-                    setTimeout(() => {
-                        router.push("/tenant/groupleader")         
-                    }, 3000);
-            }
-            catch (err) {
-                console.log(err)
-            }
-        }
+        // const updateAttendanceCheckin = async() => {
+        //     let body = {
+        //         eventName: groupDetail.value.eventName,
+        //         eventDate: groupDetail.value.eventDate,
+        //         details: groupDetail.value.details,
+        //         status: groupDetail.value.status,
+        //         title: groupDetail.value.title,
+        //         bannerImage: groupDetail.value.bannerImage,
+        //         id: groupDetail.value.id,
+        //         offerings: contributionItems.value.map(i => {
+        //         return {
+        //                 id: i.contributionAttendanceID,
+        //                 financialContributionID: i.id,
+        //                 amount: i.amount ? Number(i.amount) : 0
+        //             }
+        //         }),
+        //         attendances: attendanceType.value.map(i => {
+        //         return {
+        //                 id: i.attendanceTypeAttendanceID,
+        //                 attendanceTypeID: i.id,
+        //                 number: i.number ? Number(i.number) : 0
+        //             }
+        //         }),
+        //         note: note.value
+        //     }
+        //     console.log(body)
+        //     try {
+        //         let data = await axios.put("/api/CheckInAttendance/UpdateCheckInAttendance", body)
+        //         console.log(data)
+        //         toast.add({
+        //             severity: "success",
+        //             summary: "Success",
+        //             detail: "Saved successfully",
+        //             life: 5000,
+        //             });
+        //             setTimeout(() => {
+        //                 router.push("/tenant/groupleader")         
+        //             }, 3000);
+        //     }
+        //     catch (err) {
+        //         console.log(err)
+        //     }
+        // }
 
         
 
@@ -386,10 +377,10 @@ export default {
             // toggleAttendance,
             // showAttendance,
             attendanceType,
-            updateAttendanceCheckin,
-            note,
-            churchContributionItems,
-            churchAttendanceCategory
+            // updateAttendanceCheckin,
+            // note,
+            // churchContributionItems,
+            // churchAttendanceCategory
         }
     }
 }

@@ -81,7 +81,10 @@
         <div class="row pt-2" :class="{ 'kiosk-tb-size': isKioskMode }">
               <Suspense>
                 <template #default>
+                  <div>
                     <TableData :isKiosk="isKioskMode" @refreshed="refreshed" :fetchUsers="fetchUsers" :attendanceId="attendanceID" :searchText="searchText" />
+                    <AttendanceCheckinUpdate :contributionItems="contributionItems" :attendanceType="attendanceType" :groupDetail="groupDetail"/>
+                  </div>
                 </template>
                 <template #fallback>
                     <div class="row">
@@ -218,10 +221,16 @@ import TableData from "../../../components/attendance/EventAttendanceList";
 import membershipService from "../../../services/membership/membershipservice";
 import attendanceservice from '../../../services/attendance/attendanceservice';
 import { useToast } from 'primevue/usetoast';
+import AttendanceCheckinUpdate from "../../../components/attendance/updateAttendanceChekin.vue"
+import axios from "@/gateway/backendapi";
 
 export default {
     props: [ "attendanceID" ],
-  components: { NewMember, TableData },
+  components: { 
+    NewMember, 
+    TableData,
+    AttendanceCheckinUpdate
+  },
   setup() {
     const toast = useToast();
     const isKioskMode = ref(false);
@@ -230,6 +239,9 @@ export default {
     const searchingForMembers = ref(false);
     const searchText = ref("");
     const fetchUsers = ref(false);
+    const contributionItems = ref([]);
+    const attendanceType = ref([]);
+    const groupDetail = ref({});
 
     const enterKioskMode = () => {
       isKioskMode.value = !isKioskMode.value;
@@ -310,6 +322,38 @@ export default {
       fetchUsers.value = false;
     }
 
+    const getContributionsItem = async() => {
+        try {
+            let { data } = await axios.get("/api/Financials/Contributions/Items")
+            contributionItems.value = data
+        }
+        catch (err) {
+            console.log(err)
+        }
+    }
+    getContributionsItem() 
+    
+    const getAttendanceType = async() => {
+        try {
+            let { data } = await axios.get("/GetAttendanceType")
+            attendanceType.value = data
+        }
+        catch (err) {
+            console.log(err)
+        }
+    }
+    getAttendanceType() 
+
+    const getGroupDetails = async() => {
+      try {
+          let data = await attendanceservice.getReport(route.query.id)
+          groupDetail.value = data
+      }
+      catch (err) {
+          console.log(err)
+      }
+  }
+  getGroupDetails()
     return {
       isKioskMode,
       enterKioskMode,
@@ -326,6 +370,9 @@ export default {
       refresh,
       fetchUsers,
       refreshed,
+      contributionItems,
+      attendanceType,
+      groupDetail
     };
   },
 };
