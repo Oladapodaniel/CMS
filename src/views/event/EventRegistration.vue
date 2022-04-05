@@ -139,7 +139,6 @@
             </span>
           </div>
         </div>
-
         <div class="row">
           <div
             class="col-md-3 d-md-flex align-items-center justify-content-end text-md-right mt-2 font-weight-700"
@@ -155,7 +154,7 @@
                 type="text"
                 aria-required=""
                 v-model="person.email"
-                :disabled="person.personId && person.email"
+                :disabled="person.personId && person.email || person.email !== '' && person.email !== null"
               />
             </span>
           </div>
