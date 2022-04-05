@@ -154,7 +154,7 @@
                 type="text"
                 aria-required=""
                 v-model="person.email"
-                :disabled="person.personId && person.email || person.email !== '' && person.email !== null"
+                :disabled="person.personId && personData.email || personData.email !== '' && personData.email !== null"
               />
             </span>
           </div>
