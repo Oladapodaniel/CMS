@@ -9,7 +9,7 @@
             <ConfirmDialog />
             
           </div>
-          <div class="col-md-6 col-8 d-flex justify-content-end mt-2 my-1 link" v-if="!groupLeader">
+          <div class="col-md-6 col-8 d-flex justify-content-end mt-2 my-1 link">
             <router-link
               to="/tenant/pledge/pledgedefinition"
               class="
@@ -241,12 +241,15 @@ import { ref } from 'vue'
 import finish from '../../services/progressbar/progress';
 import axios from "@/gateway/backendapi";
 import { useToast } from "primevue/usetoast";
-// import { useConfirm } from "primevue/useconfirm";
+import { useConfirm } from "primevue/useconfirm";
 
 export default {
     setup() {
 
         const toast = useToast()
+        const loading = ref(false)
+        const searchText = ref('')
+        const searchIsVisible = ref('')
         const allPledgeList = ref([]);
         // const singlePledge = ref([]);
         const confirm = useConfirm();
@@ -333,6 +336,9 @@ export default {
                 allPledgeList,
                 showConfirmModal,
                 deletePledge,
+                loading,
+                searchText,
+                searchIsVisible
                 // singlePledge
             }
     },

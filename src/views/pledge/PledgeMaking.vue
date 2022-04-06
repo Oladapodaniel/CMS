@@ -259,10 +259,10 @@ export default {
 
          const pledgePaymentLink = computed(() => {
                 if (!route.query.id) return ""
-                return `${window.location.origin}/pledge/pledgepayment?id=${route.query.id}`
+                return `${window.location.origin}/pledge/pledgepayment?pledgeTypeID=${route.query.pledgeTypeID}&id=${route.query.id}&name=${route.query.name}`
         })
 
-        const copylink = () => {
+        const copyLink = () => {
             console.log(selectedLink.value.value, "jkjjhkj");
                 selectedLink.value.setSelectionRange(0, selectedLink.value.value.length); /* For mobile devices */
                 selectedLink.value.select();
@@ -404,7 +404,7 @@ export default {
             selectedLink,
             isActive,
             active,
-            copylink
+            copyLink
         }
     },
 }

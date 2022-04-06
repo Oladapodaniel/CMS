@@ -103,6 +103,21 @@
                 >Branch Level Settings</router-link
               >
             </div>
+            <div class="col-md-12 my-2">
+              <router-link class="font-weight-bold link dd-list-item" to="/tenant/settings/custommembersettings"
+                >Custom Memebership Settings</router-link
+              >
+            </div>
+            <div class="col-md-12 my-2">
+              <router-link class="font-weight-bold link dd-list-item" to="/tenant/settings/customfirsttimersettings"
+                >Custom Firsttimer Settings</router-link
+              >
+            </div>
+            <div class="col-md-12 my-2">
+              <router-link class="font-weight-bold link dd-list-item" to="/tenant/settings/customeventregistration"
+                >Custom Event Registration Settings</router-link
+              >
+            </div>
             
             
             

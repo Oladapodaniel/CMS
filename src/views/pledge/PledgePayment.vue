@@ -212,11 +212,13 @@ import { ref } from "vue";
 import Dropdown from "primevue/dropdown";
 import InputText from "primevue/inputtext";
 import { useToast } from "primevue/usetoast";
+import userService from "../../services/user/userservice";
 import MembersSearch from "../../components/membership/MembersSearch.vue"
 import { useRoute } from "vue-router"
 import { useStore } from "vuex";
 // import router from '../../router';
 // import store from "../../store/store";
+import { v4 as uuidv4 } from "uuid";
 import CascadeSelect from 'primevue/cascadeselect';
 import finish from '../../services/progressbar/progress';
 import ToggleButton from '../donation/toggleButton.vue';
@@ -233,6 +235,7 @@ export default {
         const store = useStore();
         const currentUser = ref(store.getters.currentUser);
         const tenantId = ref(currentUser.tenantId);
+        const selectedCurrency = ref("");
         const route = useRoute();
         const churchName = ref('');
         const memberName = ref('');
@@ -246,8 +249,10 @@ export default {
         const selectedPledge = ref('')
         const allPledgeList = ref([]);
         const amountFrom = ref('')
-        const paymentAmount = ref('')
+        const paymentAmount = ref()
         const amountTo = ref('')
+        const logoUrl = `https://flutterwave.com/images/logo-colored.svg`
+        const isProduction = true;
         const selectedChannel = ref('')
         const pledgeCategory = ref(
             [
@@ -301,6 +306,23 @@ export default {
 
                 }
 
+                const appendLeadingZeroes = (n) => {
+                    if (n <= 9) {
+                        return "0" + n;
+                    }
+                    return n;
+                    };
+
+                let currentDate = new Date();
+                let formattedDate = `${currentDate.getFullYear()}${appendLeadingZeroes(
+                currentDate.getMonth() + 1
+                )}${appendLeadingZeroes(currentDate.getDate())}${appendLeadingZeroes(
+                currentDate.getHours()
+                )}${appendLeadingZeroes(currentDate.getMinutes())}
+            ${appendLeadingZeroes(currentDate.getSeconds())}${appendLeadingZeroes(
+                currentDate.getMilliseconds()
+                )}`;
+
             const payWithPaystack = () => {
                 // initializePayment(0);
                 /*eslint no-undef: "warn"*/
@@ -309,9 +331,9 @@ export default {
                     // key: process.env.VUE_APP_PAYSTACK_API_KEY,
 
                     email: "info@churchplus.co",
-                    amount: TotalAmount.value * 100,
-                    ref: `${formattedDate.substring(0, 4)}${uuidv4().substring(0, 4)}sub`,
-                    currency: Plans.value.paymentCurrency,
+                    amount: paymentAmount.value * 100,
+                    ref: `${formattedDate.substring(0, 4)}sub`,
+                    // currency: Plans.value.paymentCurrency,
                     onClose: function() {
                     // swal("Transaction Canceled!", { icon: "error" });
                     toast.add({
@@ -343,10 +365,44 @@ export default {
             initializedOrder.value = res.data;
             })
         }
+        const setSelectedPaymentCurrency = () => {
+            if ( currentUser.value) {
+                selectedCurrency.value = currentUser.value.currency;
+                } 
+            }
+        const getFlutterwaveModules = () => {
+        const script = document.createElement("script");
+                script.src = !isProduction
+                ? "https://ravemodal-dev.herokuapp.com/v3.js"
+                : "https://checkout.flutterwave.com/v3.js";
+                document.getElementsByTagName("head")[0].appendChild(script);
+                // console.log(process.env.VUE_APP_FLUTTERWAVE_TEST_KEY)
+        }
+        getFlutterwaveModules()
+
+        const getCurrencySymbol = async () => {
+            userService
+                .getCurrentUser()
+                .then((res) => {
+                currentUser.value = res;
+                setSelectedPaymentCurrency()
+                })
+                .catch((err) => {
+                console.log(err);
+                });
+            };
+
+        
+
+            if (!currentUser.value || !currentUser.value.currency) {
+            getCurrencySymbol();
+            } else {
+            setSelectedPaymentCurrency()
+            }
 
         const payWithFlutterwave = () => {
-      console.log(TotalAmount.value, 'total amount calculated')
-      initializePayment(1)
+    //   console.log(TotalAmount.value, 'total amount calculated')
+    //   initializePayment(1)
 
       let country = "";
 
@@ -368,6 +424,7 @@ export default {
               country = 'NG';
               break;
         }
+        
   
       window.FlutterwaveCheckout({
                 public_key: process.env.VUE_APP_FLUTTERWAVE_PUBLIC_KEY_LIVE,
@@ -386,8 +443,8 @@ export default {
                   },
                 onclose: () => console.log('Payment closed'),
                 customizations: {
-                  title: 'Subscription',
-                  description: "Payment for Subcription ",
+                  title: 'Pledge',
+                  description: "Payment for Pledge ",
                   logo: logoUrl,
                 },
               });

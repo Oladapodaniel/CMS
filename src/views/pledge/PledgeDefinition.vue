@@ -223,25 +223,26 @@ export default {
         const pledgeCategory = ref("freewill")
         const pledgeFrequency = ref("")
         const showRange = ref(false)
-        const showFreeWill = ref(false)
+        // const showFreeWill = ref(false)
+        // const showPledgeType = ref(false)
         const selectedRange = ref({})
         const selectedContribution = ref("")
         const selectedCurrency = ref("")
         const isNameValid = ref(true)
         const PledgeName = ref('')
-        const amountFrom = ref('')
-        const amountTo = ref('')
-        const SpecificAmount = ref('')
-        const pledgType = ref(0)
+        const amountFrom = ref()
+        const amountTo = ref()
+        const SpecificAmount = ref()
+        const pledgType = ref('')
         const currencyList = ref([])
         const contributionItems = ref([])
         const singlePledge = ref({})
-        const targetAmount = ref("")
+        const targetAmount = ref('')
         const reOccuringRange = ref([
             {name: 'Daily'},
             {name: 'Weekly'},
             {name: 'Monthly'},
-            {name: 'Six Monthly'}
+            {name: 'Six weeks' }
         ])
         // const ContributionType = ref([
         //     {name: 'Church Service'},
@@ -262,6 +263,31 @@ export default {
                     endDate.value = res.data.returnObject.pledgeTypeFrequencyOneTimeEndDate
                     startDate.value = res.data.returnObject.pledgeTypeFrequencyOneTimeStartDate
                     selectedRange.value.name = res.data.returnObject.pledgeTypeFrequencyReOccuring
+                    // showPledgeType.value = res.data.returnObject.donorPaymentType
+                    if(startDate.value && endDate.value){
+                        pledgeFrequency.value = "onetime"
+                    }
+
+                    if(selectedRange.value.name){
+                        pledgeFrequency.value = "reoccuring"
+                    }
+                    
+
+                    if(res.data.returnObject.donorPaymentType ===  0 ){
+                        pledgeCategory.value = "freewill"
+                        pledgType.value =  0
+                        console.log(pledgType.value, 'freewill')
+                    } else if(res.data.returnObject.donorPaymentType ===  1){
+                         pledgeCategory.value = "specific"
+                         pledgType.value =  1
+                         console.log(pledgType.value, 'specific')
+                    } else if(res.data.returnObject.donorPaymentType ===  2){
+                         pledgeCategory.value = "range"
+                         pledgType.value =  2
+                         console.log(pledgType.value, 'range')
+                    }else{
+                         res.data.returnObject.donorPaymentType
+                    }
                     // isActive.value = res.data.returnObject.map( i => {
                     //     return {
                     //         isActive : i.isActive
@@ -360,7 +386,7 @@ export default {
                         detail: "Pledge definition updated successfully",
                         life: 3000,
                          })
-                         
+
                         console.log(response, "response");
 
                          
@@ -386,6 +412,8 @@ export default {
                         detail: "Pledge definition created successfully",
                         life: 2000,
                     });
+
+                    router.push("/tenant/pledge/pledgedefinitionlist");
 
                         targetAmount.value = "";
                         amountTo.value = "";
@@ -467,7 +495,6 @@ export default {
             startDate,
             endDate,
             showRange,
-            showFreeWill,
             freeWill,
             oneTime,
             reOccuring,
