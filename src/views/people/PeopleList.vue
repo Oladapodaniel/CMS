@@ -1489,4 +1489,8 @@ a {
     }
 }
 
+.fa-ellipsis-v {
+  padding: 10px
+}
+
 </style>

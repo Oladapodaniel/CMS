@@ -648,6 +648,10 @@ export default {
 .fa-ellipsis-v:hover {
   cursor: pointer;
 }
+
+.fa-ellipsis-v {
+  padding: 10px;
+}
 .board.members-count {
   padding: 24px;
 }
