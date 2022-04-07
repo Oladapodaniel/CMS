@@ -52,7 +52,7 @@ export default {
     // PaystackPay
     // paystack
   },
-  props: ['close', 'donation'],
+  props: ['close', 'donation', 'donorEmail'],
   emits: ['selected-gateway', 'payment-successful', 'set-props'],
 //   'orderId', 'donation', , 'amount', 'converted', 'name', 'email', 'gateways', 'currency'
   setup (props, { emit }) {
@@ -106,7 +106,7 @@ export default {
       let handler = PaystackPop.setup({
         key: process.env.VUE_APP_PAYSTACK_PUBLIC_KEY_LIVE,
         // key: process.env.VUE_APP_PAYSTACK_API_KEY,
-        email: email.value,
+        email: props.donorEmail,
         amount: props.donation.contributionItems[0].amount * 100,
         // firstname: props.name,
         ref: props.donation.orderID,
