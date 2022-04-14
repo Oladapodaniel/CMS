@@ -284,14 +284,14 @@ export default {
         };
 
         watchEffect(() => {
-            if(Object.keys(props.newPerson).length > 0) {
-                // let body = {
-                //     name: props.newPerson.personFirstName,
-                //     personId: props.newPerson.personId,
-                //     email: props.newPerson.personEmail,
-                //     phoneNumber: props.newPerson.personNumber
-                // }
-                // selectedMembers.value.push(body)
+            if(props.newPerson && Object.keys(props.newPerson).length > 0) {
+                let body = {
+                    name: props.newPerson.personFirstName,
+                    id: props.newPerson.personId,
+                    email: props.newPerson.personEmail,
+                    phoneNumber: props.newPerson.personNumber
+                }
+                selectedMember.value = body
         
             }
         })
