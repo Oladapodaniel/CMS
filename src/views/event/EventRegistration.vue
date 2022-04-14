@@ -926,7 +926,7 @@ export default {
             try {
                 let { data } = await axios.get('/api/LookUp/GetAllLookUps')
                 console.log(data)
-                maritalStatus.value = data.find(i => i.type === "MaritalStaus")
+                maritalStatus.value = data.find(i => i.type === "MaritalStatus")
     
             }
             catch (err) {
