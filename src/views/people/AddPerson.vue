@@ -331,6 +331,74 @@
                   </div>
                 </div>
               </div>
+              <!-- <div v-for="(classification, index) in classifications" :key="index">
+                <div class="input-field" v-if="classification.controlType == 'Dropdown' " >
+                  <label for="" class="mr-2" >{{classification.label}}</label>
+                  <div class="cstm-select search-box">
+                    <div class="cs-select" style="width: 330px">
+                      <Dropdown
+                        v-model="selectedAgeGroup"
+                        :options="ageGroups"
+                        optionLabel="name"
+                        placeholder="--Select age range--"
+                        style="width: 100%"
+                      />
+                  </div>
+                  </div>
+                </div>
+                <div class="input-field" v-if="classification.controlType == 'number' " >
+                  <label for="" class="label">{{classification.label}}</label>
+                  <input
+                    type="number"
+                    class="input"
+                    placeholder=""
+                    v-model="person.occupation"
+                  />
+                </div>
+                <div class="input-field" v-if="classification.controlType == 'email' " >
+                  <label for="" class="label">{{classification.label}}</label>
+                  <input
+                    type="email"
+                    class="input"
+                    placeholder=""
+                    v-model="person.occupation"
+                  />
+                </div>
+                <div class="input-field" v-if="classification.controlType == 'text' " >
+                  <label for="" class="label">{{classification.label}}</label>
+                  <input
+                    type="text"
+                    class="input"
+                    placeholder=""
+                    v-model="person.occupation"
+                  />
+                </div>
+                <div class="input-field" v-if="classification.controlType == 'password' " >
+                  <label for="" class="label">{{classification.label}}</label>
+                  <input
+                    type="password"
+                    class="input"
+                    placeholder=""
+                    v-model="person.occupation"
+                  />
+                </div>
+                <div class="input-field" v-if="classification.controlType == 'file' " >
+                  <label for="" class="label">{{classification.label}}</label>
+                  <input
+                    type="file"
+                    class="input"
+                    placeholder=""
+                  />
+                </div>
+                <div class="input-field" v-if="classification.controlType == 'date' " >
+                  <label for="" class="label">{{classification.label}}</label>
+                  <input
+                    type="date"
+                    class="input"
+                    placeholder=""
+                  />
+                </div>
+              </div> -->
             </div>
 
             <div class="image-div other">
@@ -946,6 +1014,16 @@ export default {
     const selectedGender = ref(null);
     const selectedAgeGroup = ref(null);
 
+     const classifications = ref([
+              {label: 'Your Phone Number', controlType: 'number'},
+              {label: 'Age', controlType: 'Dropdown'},
+              {label: 'Enter Your role', controlType: 'text'},
+              {label: 'Password', controlType: 'password'},
+              {label: 'Choose your file', controlType: 'file'},
+              {label: 'Enter your Email', controlType: 'email'},
+              {label: 'Date', controlType: 'date'}
+    ]);
+
     const getLookUps = () => {
       axios
         .get("/api/LookUp/GetAllLookUps")
@@ -1347,6 +1425,7 @@ export default {
       savePersonNote,
       searchGroupText,
       searchAllGroups,
+      classifications,
       showConfirmModal
     };
   },

@@ -1321,10 +1321,10 @@ const routes = [
                             import ( /* webpackChunkName: "defaultmessage" */ '@/views/settings/BranchLevelSettings')
                     },
                     {
-                        path: 'custommembersettings',
-                        name: 'CustomMemberSettings',
+                        path: 'customfieldsetup',
+                        name: 'CustomFieldSetup',
                         component: () =>
-                            import ( /* webpackChunkName: "defaultmessage" */ '@/views/settings/CustomMemberSettings')
+                            import ( /* webpackChunkName: "defaultmessage" */ '@/views/settings/CustomFieldSetup')
                     },
                     {
                         path: 'customfirsttimersettings',

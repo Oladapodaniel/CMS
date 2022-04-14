@@ -308,7 +308,9 @@ export default {
                 }
                 });
             };
-
+            const removeSearchText = () => {
+              searchText = "";
+            }
 
             const showConfirmModal = (id, index) => {
                 confirm.require({
@@ -338,7 +340,8 @@ export default {
                 deletePledge,
                 loading,
                 searchText,
-                searchIsVisible
+                searchIsVisible,
+                removeSearchText
                 // singlePledge
             }
     },

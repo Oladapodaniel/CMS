@@ -45,22 +45,39 @@
         </div>
         <div class="row w-100" v-if="eventRegLink">
           <div
-            class="col-md-10 offset-md-1 col-sm-11 offset-1 col-lg-7 offset-lg-2 border rounded"
+            class="
+              col-md-10
+              offset-md-1
+              col-sm-11
+              offset-1
+              col-lg-7
+              offset-lg-2
+              border
+              rounded
+            "
           >
             <div class="row">
-              <div class="col-md-2 col-sm-2 d-flex align-self-center image mt-3">
+              <div
+                class="col-md-2 col-sm-2 d-flex align-self-center image mt-3"
+              >
                 <img
-                  src="../../../assets/link.svg" class="w-100"
+                  src="../../../assets/link.svg"
+                  class="w-100"
                   alt="marked Attendance image"
                   style="width: 60px; height: 60px"
                 />
               </div>
               <div class="col-md-10 col-sm-10 mt-3">
                 <a class="text-decoration-none"
-                  ><h4 class="header4 link-color c-pointer" @click="copyRegLink">Registration Link</h4></a
+                  ><h4
+                    class="header4 link-color c-pointer"
+                    @click="copyRegLink"
+                  >
+                    Registration Link
+                  </h4></a
                 >
                 <!-- <a class="c-pointer text-decoration-none"><h4 class="header4"><router-link class="text-decoration-none text-dark" :to="{ name: 'WebCheckin', params: { code: route.query.code} }">Registration Link</router-link></h4></a> -->
-                
+
                 <p class="para">
                   <span class="d-flex align-items-center"
                     ><input
@@ -82,7 +99,7 @@
             </div>
           </div>
         </div>
-        
+
         <!-- <div class="row w-100 mt-3" v-if="paymentFormID">
           <div
             class="col-md-10 offset-md-1 col-sm-11 offset-1 col-lg-7 offset-lg-2 border rounded"
@@ -120,7 +137,7 @@
             </div>
           </div>
         </div> -->
-        
+
         <!-- <div class="row w-100 mt-3" v-if="paymentFormID">
           <div
             class="col-md-10 offset-md-1 col-sm-11 offset-1 col-lg-7 offset-lg-2 border rounded"
@@ -156,19 +173,32 @@
         </div> -->
         <div class="row w-100 mt-3">
           <div
-            class="col-md-10 offset-md-1 col-sm-11 offset-1 col-lg-7 offset-lg-2 border rounded"
+            class="
+              col-md-10
+              offset-md-1
+              col-sm-11
+              offset-1
+              col-lg-7
+              offset-lg-2
+              border
+              rounded
+            "
           >
             <div class="row">
-              <div class="col-md-2 col-sm-2 d-flex align-self-center image mt-3">
+              <div
+                class="col-md-2 col-sm-2 d-flex align-self-center image mt-3"
+              >
                 <img
-                  src="../../../assets/link.svg" 
+                  src="../../../assets/link.svg"
                   alt="marked Attendance image"
                   style="width: 60px; height: 60px"
                 />
               </div>
               <div class="col-md-10 col-sm-10 mt-3">
                 <a class="text-decoration-none"
-                  ><h4 class="header4 link-color c-pointer" @click="copyLink">Checkin Link</h4></a
+                  ><h4 class="header4 link-color c-pointer" @click="copyLink">
+                    Checkin Link
+                  </h4></a
                 >
                 <!-- <a class="c-pointer text-decoration-none"><h4 class="header4"><router-link class="text-decoration-none text-dark" :to="{ name: 'WebCheckin', params: { code: route.query.code} }">Registration Link</router-link></h4></a> -->
                 <p class="para">
@@ -195,7 +225,16 @@
         <div class="col-md-12 mb-3"></div>
         <div class="row w-100" v-if="!route.query.fromBranch">
           <div
-            class="col-md-10 offset-md-1 col-sm-11 offset-1 col-lg-7 offset-lg-2 border rounded"
+            class="
+              col-md-10
+              offset-md-1
+              col-sm-11
+              offset-1
+              col-lg-7
+              offset-lg-2
+              border
+              rounded
+            "
           >
             <div class="row">
               <div class="col-md-2 col-sm-2 image mt-3">
@@ -224,19 +263,28 @@
 
         <div class="row w-100">
           <div
-            class="col-md-10 offset-md-1 col-sm-11 offset-1 col-lg-7 offset-lg-2 border rounded"
+            class="
+              col-md-10
+              offset-md-1
+              col-sm-11
+              offset-1
+              col-lg-7
+              offset-lg-2
+              border
+              rounded
+            "
           >
             <div class="row">
               <div class="col-md-2 col-sm-2 image mt-3">
                 <img
-                  src="../../../assets/childcheckin.svg" style="width:54px; height:54px"
+                  src="../../../assets/childcheckin.svg"
+                  style="width: 54px; height: 54px"
                   alt="marked Attendance image"
                 />
               </div>
               <div class="col-md-10 col-sm-10 mt-3">
                 <h4 class="header4">
-                  <a
-                    class="text-decoration-none link-color"
+                  <a class="text-decoration-none link-color"
                     >Family Registration</a
                   >
                 </h4>
@@ -251,7 +299,7 @@
                       :value="`https://child-checkin-seven.vercel.app/${tenantId}`"
                       class="form-control"
                       style="width: 95%" />
-                      <!-- :value="childCheckinLink" -->
+                    <!-- :value="childCheckinLink" -->
                     <i
                       class="pi pi-copy ml-2 c-pointer"
                       @click="copyFamilyLink"
@@ -263,28 +311,33 @@
             </div>
           </div>
         </div>
-       
+
         <div class="row w-100 c-pointer mt-3" @click="routeToChildCheckin">
           <div
-            class="col-md-10 offset-md-1 col-sm-11 offset-1 col-lg-7 offset-lg-2 border rounded"
+            class="
+              col-md-10
+              offset-md-1
+              col-sm-11
+              offset-1
+              col-lg-7
+              offset-lg-2
+              border
+              rounded
+            "
           >
             <div class="row">
               <div class="col-md-2 col-sm-2 image mt-3">
                 <img
-                  src="../../../assets/childcheckin.svg" style="width:54px; height:54px"
+                  src="../../../assets/childcheckin.svg"
+                  style="width: 54px; height: 54px"
                   alt="marked Attendance image"
                 />
               </div>
               <div class="col-md-10 col-sm-10 mt-3">
                 <h4 class="header4">
-                  <a
-                    class="text-decoration-none link-color"
-                    >Child Checkin</a
-                  >
-             
+                  <a class="text-decoration-none link-color">Child Checkin</a>
                 </h4>
                 <p class="para">Click to checkin your children</p>
-               
               </div>
             </div>
           </div>
@@ -292,7 +345,16 @@
 
         <div class="row w-100 mt-3">
           <div
-            class="col-md-10 offset-md-1 col-sm-11 offset-1 col-lg-7 offset-lg-2 border rounded"
+            class="
+              col-md-10
+              offset-md-1
+              col-sm-11
+              offset-1
+              col-lg-7
+              offset-lg-2
+              border
+              rounded
+            "
           >
             <div class="row">
               <div class="col-md-2 col-sm-2 image mt-3">
@@ -312,8 +374,9 @@
                     >QR</router-link
                   >
                 </h4>
-                <p class="para">Printable Check-in Quick
-                   Response code for mobile users.</p>
+                <p class="para">
+                  Printable Check-in Quick Response code for mobile users.
+                </p>
               </div>
             </div>
           </div>
@@ -321,7 +384,16 @@
         <div class="col-md-12 mb-3"></div>
         <div class="row w-100">
           <div
-            class="col-md-10 offset-md-1 col-sm-11 offset-1 col-lg-7 offset-lg-2 border rounded"
+            class="
+              col-md-10
+              offset-md-1
+              col-sm-11
+              offset-1
+              col-lg-7
+              offset-lg-2
+              border
+              rounded
+            "
           >
             <div class="row">
               <div class="col-md-2 col-sm-2 image mt-3">
@@ -338,7 +410,93 @@
                     >SMS</router-link
                   >
                 </h4>
-                <p class="para">SMS number for marking attendance through mobile phones.</p>
+                <p class="para">
+                  SMS number for marking attendance through mobile phones.
+                </p>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="row w-100">
+          <div
+            class="
+              col-md-10
+              offset-md-1
+              col-sm-11
+              offset-1
+              col-lg-7
+              offset-lg-2
+              border
+              mt-3
+              rounded
+            "
+          ></div>
+        </div>
+        <div class="row w-100 mt-3">
+          <div
+            class="
+              col-md-10
+              offset-md-1
+              col-sm-11
+              offset-1
+              col-lg-7
+              offset-lg-2
+              border
+              rounded
+            "
+          >
+            <div class="row">
+              <div class="col-md-2 col-sm-2 image mt-3">
+                <img
+                  src="../../../assets/group1.svg"
+                  alt="marked Attendance image"
+                />
+              </div>
+              <div class="col-md-10 col-sm-10 mt-3">
+                <h4
+                  class="header4 mt-3 text-primary cursor-pointer"
+                  @click="showAdditionalField"
+                >
+                  Additional Custom Field
+                  <!-- <router-link
+                    class="text-decoration-none link-color"
+                    :to="{ name: 'SMSCheckin', query: { id: route.query.id } }"
+                    >SMS</router-link
+                  > -->
+                </h4>
+                <!-- <p class="para">SMS number for marking attendance through mobile phones.</p> -->
+              </div>
+            </div>
+
+            <div
+              class="row d-flex justify-content-start mb-3"
+              :class="{ 'dd-hide-list': !showMoreField }"
+            >
+              <!-- <div class="col-md-2 col-sm-2 image mt-3">
+                <img
+                  src="../../../assets/group1.svg"
+                  alt="marked Attendance image"
+                />
+              </div> -->
+              <div
+                class="col-md-10 col-sm-10 mt-3 d-flex flex-wrap"
+                v-for="(showfieldList, index) in showFormList"
+                :key="index"
+              >
+                <div class="col-md-3">
+                  <!-- <input type="checkbox" name="" > -->
+                  <Checkbox
+                    id="binary"
+                    v-model="showfieldList.value"
+                    :binary="true"
+                    @change="customFieldValue(showfieldList)"
+                  />
+                </div>
+                <div class="col-md-8">
+                  <div class="">{{ showfieldList.label }}</div>
+                </div>
+
+                <!-- <p class="para">SMS number for marking attendance through mobile phones.</p> -->
               </div>
             </div>
           </div>
@@ -346,42 +504,49 @@
 
         <div class="col-md-12 mb-3"></div>
 
-        
-
         <div class="col-md-12 px-0 tr-border-bottom mt-3">
-            <!-- <hr class="tr-border-bottom"> -->
+          <!-- <hr class="tr-border-bottom"> -->
         </div>
 
-        <div class="col-md-12 py-2" style="opacity:.4">
+        <div class="col-md-12 py-2" style="opacity: 0.4">
           <h5 class="check">Not Currently Available</h5>
         </div>
-        
+
         <div class="col-md-12 mb-3"></div>
 
-        <div class="row w-100"  style="opacity:.3">
+        <div class="row w-100" style="opacity: 0.3">
           <div
-            class="col-md-10 offset-md-1 col-sm-11 offset-1 col-lg-7 offset-lg-2 border rounded"
+            class="
+              col-md-10
+              offset-md-1
+              col-sm-11
+              offset-1
+              col-lg-7
+              offset-lg-2
+              border
+              rounded
+            "
           >
             <div class="row">
               <div class="col-md-2 col-sm-2 image mt-3">
                 <img
-                  src="../../../assets/USSD.svg"  style="width:58px; height:58px"
+                  src="../../../assets/USSD.svg"
+                  style="width: 58px; height: 58px"
                   alt="marked Attendance image"
                 />
               </div>
               <div class="col-md-10 col-sm-10 mt-3">
                 <h4 class="header4">
-                  <a
-                    class="text-decoration-none link-color"
-                    >USSD</a
-                  >
+                  <a class="text-decoration-none link-color">USSD</a>
                   <!-- <router-link
                     class="text-decoration-none link-color"
                     :to="{ name: 'USSDCheckin', query: { id: route.query.id } }"
                     >USSD</router-link
                   > -->
                 </h4>
-                <p class="para">USSD code for marking attendance through mobile phones</p>
+                <p class="para">
+                  USSD code for marking attendance through mobile phones
+                </p>
               </div>
             </div>
           </div>
@@ -402,7 +567,7 @@ import { computed, ref } from "vue";
 import attendanceservice from "../../../services/attendance/attendanceservice";
 import { useStore } from "vuex";
 import { useToast } from "primevue/usetoast";
-import router from '../../../router';
+import router from "../../../router";
 
 export default {
   components: { Dropdown, MultiSelect },
@@ -416,14 +581,16 @@ export default {
     const store = useStore();
     const checkinLink = ref(null);
     const familyLink = ref(null);
+    const showMoreField = ref(false);
     const regLink = ref(null);
     const paymentFormLink = ref(null);
     const iframeLink = ref(null);
     const toast = useToast();
-    const eventLinkResponse = ref("")
-    const paymentFormIdResponse = ref("")
-    const tenantId = ref("")
-    
+    const eventLinkResponse = ref("");
+    const paymentFormIdResponse = ref("");
+    const tenantId = ref("");
+    const customFieldList = ref([]);
+    const joinSelectedFields = ref("");
 
     if (route.query.activityID) {
       events.value.push({
@@ -456,13 +623,54 @@ export default {
     //     }
     // }
 
+    const showAdditionalField = () => {
+      showMoreField.value = !showMoreField.value;
+    };
+
+    const customFieldValue = (item) => {
+      if (customFieldList.value.length <= 0) {
+        customFieldList.value.push(`${item.label}=${item.value}`);
+      } else {
+        const labelIndex = customFieldList.value.findIndex((i) =>
+          i.toLowerCase().includes(item.label.toLowerCase())
+        );
+        if (labelIndex >= 0) {
+          if (labelIndex == 0) {
+            customFieldList.value.splice(
+              labelIndex,
+              1,
+              `${item.label}=${item.value}`
+            );
+          } else {
+            customFieldList.value.splice(
+              labelIndex,
+              1,
+              `&&${item.label}=${item.value}`
+            );
+          }
+        } else {
+          customFieldList.value.push(`&&${item.label}=${item.value}`);
+        }
+      }
+      let joinSelectedField = customFieldList.value.join("");
+      joinSelectedFields.value = joinSelectedField;
+    };
+
+    // Check ifthe label is there, if its there dont push it, if it's there, just change the value
+
     const attendanceCheckinInStore = ref(
       store.getters["attendance/attendanceItemData"]
     );
-    
-    const eventRegistration = ref(
-      store.getters["attendance/eventRegItemData"]
-    );
+    const showFormList = ref([
+      { label: "Card/Checkin Number", value: false },
+      { label: "Address", value: false },
+      { label: "Gender", value: false },
+      { label: "Marital Status", value: false },
+      { label: "Birthday", value: false },
+      { label: "Wedding", value: false },
+    ]);
+
+    const eventRegistration = ref(store.getters["attendance/eventRegItemData"]);
 
     const initCheckinAttendanceInStore = async () => {
       try {
@@ -472,12 +680,11 @@ export default {
         store.dispatch("attendance/setItemData", response);
         attendanceCheckinInStore.value = response;
 
-
-        eventLinkResponse.value = response
-        paymentFormIdResponse.value = response.paymentFormId
-        tenantId.value = response.tenantID
-        console.log(response.paymentFormId)
-        console.log(response)
+        eventLinkResponse.value = response;
+        paymentFormIdResponse.value = response.paymentFormId;
+        tenantId.value = response.tenantID;
+        console.log(response.paymentFormId);
+        console.log(response);
       } catch (error) {
         console.log(error);
       }
@@ -498,10 +705,10 @@ export default {
         detail: "Checkin link copied to your clipboard",
         life: 3000,
       });
-      console.log(attendanceCheckinInStore.value)
-      console.log(eventRegistration.value)
+      console.log(attendanceCheckinInStore.value);
+      console.log(eventRegistration.value);
     };
-    
+
     const copyRegLink = () => {
       regLink.value.select();
       regLink.value.setSelectionRange(
@@ -534,10 +741,9 @@ export default {
         detail: "Payment form link copied to your clipboard",
         life: 3000,
       });
-    }
+    };
 
     const copyIframeLink = () => {
-      
       iframeLink.value.select();
       iframeLink.value.setSelectionRange(
         0,
@@ -552,10 +758,9 @@ export default {
         detail: "iFrame copied to your clipboard",
         life: 3000,
       });
-    }
-    
+    };
+
     const copyFamilyLink = () => {
-      
       familyLink.value.select();
       familyLink.value.setSelectionRange(
         0,
@@ -570,7 +775,7 @@ export default {
         detail: "Family link copied to your clipboard",
         life: 3000,
       });
-    }
+    };
 
     const link = computed(() => {
       if (
@@ -580,7 +785,7 @@ export default {
         return "";
       return attendanceCheckinInStore.value.attendanceRegistrationLink;
     });
-    
+
     // const eventRegLink = computed(() => {
     //   if (
     //     !eventRegistration.value ||
@@ -595,11 +800,16 @@ export default {
         !attendanceCheckinInStore.value ||
         !attendanceCheckinInStore.value.eventID
       )
-        return`https://my.churchplus.co/event/${eventLinkResponse.value.id}`;
-      // return attendanceCheckinInStore.value.eventRegistrationLink
-      return `https://my.churchplus.co/event/${attendanceCheckinInStore.value.id}`
+        return `https://my.churchplus.co/event/${eventLinkResponse.value.id}${
+          joinSelectedFields.value ? `?${joinSelectedFields.value}` : ""
+        }`;
+      // return attendanceCheckinInStore.value.eventRegistrationLink)
+
+      return `https://my.churchplus.co/event/${
+        attendanceCheckinInStore.value.id
+      }${joinSelectedFields.value ? `?${joinSelectedFields.value}` : ""}`;
     });
-    
+
     // const paymentFormID = computed(() => {
     //   if (
     //     !attendanceCheckinInStore.value ||
@@ -615,9 +825,10 @@ export default {
     // })
 
     const childCheckinLink = computed(() => {
-      if (!tenantId.value) return `https://my.churchplus.co/childcheckin/${attendanceCheckinInStore.value.tenantID}`
-      return `https://my.churchplus.co/childcheckin/${tenantId.value}`
-    })
+      if (!tenantId.value)
+        return `https://my.churchplus.co/childcheckin/${attendanceCheckinInStore.value.tenantID}`;
+      return `https://my.churchplus.co/childcheckin/${tenantId.value}`;
+    });
 
     const preventChangingOfCheckinLink = (e) => {
       e.preventDefault();
@@ -632,12 +843,15 @@ export default {
     // getDetails()
 
     const routeToChildCheckin = () => {
-      router.push('/tenant/childcheckin')
-    }
+      router.push("/tenant/childcheckin");
+    };
 
     return {
       groups,
+      showAdditionalField,
+      customFieldValue,
       selectedEvent,
+      showFormList,
       events,
       selectedGroups,
       route,
@@ -646,6 +860,7 @@ export default {
       regLink,
       copyLink,
       copyFamilyLink,
+      showMoreField,
       preventChangingOfCheckinLink,
       link,
       eventRegistration,
@@ -661,13 +876,21 @@ export default {
       // iFrameLink,
       tenantId,
       childCheckinLink,
-      routeToChildCheckin
+      routeToChildCheckin,
+      customFieldList,
+      joinSelectedFields,
     };
   },
 };
 </script>
 
 <style scoped>
+.dd-hide-list {
+  height: 0;
+  overflow: hidden;
+  transition: all 0.5s ease-in-out;
+}
+
 .aten {
   text-align: left;
   font: normal 800 30px Nunito Sans !important;

@@ -1,5 +1,5 @@
 
-<template>
+<template>{{selectedCustomField}}
   <div
     class="container-slim p-3 mb-5 mt-5"
   >
@@ -161,18 +161,18 @@
           </div>
         </div>
 
-        <div class="row my-2">
+        <div class="row my-2" v-if="selectedCustomField.find(i => i.toLowerCase () == 'address')">
           <div
             class="col-md-3 d-md-flex align-items-center justify-content-end text-md-right mt-2 font-weight-700"
           >
-            <label for="">Chapter / Sex</label>
+            <label for="">Address</label>
           </div>
           <div class="col-md-7">
             <span class="p-input-icon-left w-100">
               <i class="pi pi-map-marker icon" />
               <InputText
                 class="w-100 border"
-                placeholder="Chapter / Sex"
+                placeholder="Address"
                 type="text"
                 aria-required=""
                 v-model="person.address"
@@ -188,7 +188,7 @@
           </div>
         </div>
 
-        <div class="row my-3">
+        <div class="row my-3" v-if="selectedCustomField.find(i => i.toLowerCase() == 'birthday')">
           <div
             class="col-md-3 d-md-flex align-items-center justify-content-end text-md-right mt-2 font-weight-700"
           >
@@ -213,6 +213,24 @@
                 />
               </div>
             </div>
+          </div>
+        </div>
+        
+        
+        <div class="row my-3" v-if="selectedCustomField.find(i => i.toLowerCase() == 'card/checkin number')">
+          <div
+            class="col-md-3 d-md-flex align-items-center justify-content-end text-md-right mt-2 font-weight-700"
+          >
+            <label for="">Card number</label>
+          </div>
+          <div class="col-md-7">
+            <InputText
+                class="w-100 border"
+                placeholder="Card Number"
+                type="text"
+                aria-required=""
+                v-model="person.cardcode"
+              />
           </div>
         </div>
         
@@ -436,6 +454,7 @@ export default {
     const personData = ref({});
     const bannerUrl = ref("")
     const tenantCurrency = ref("")
+    const selectedCustomField = ref([])
 
 
 
@@ -1070,6 +1089,18 @@ export default {
       confirmCheck()
     }
 
+    const getAllRouteQueries = () => {
+      console.log(route.query)
+      for (let i in route.query) {
+        console.log(route.query[i])
+        if(route.query[i] == 'true') {
+          selectedCustomField.value.push(i)
+          console.log(i, route.query[i], selectedCustomField)
+        }
+      }
+    }
+      getAllRouteQueries()
+
     return {
       disableClick,
       toggleBase,
@@ -1138,7 +1169,8 @@ export default {
       usedPaymentGateway,
       initializePayment,
       setDonationProperties,
-      donationNewProps
+      donationNewProps,
+      selectedCustomField
       // callIt
     };
   },
