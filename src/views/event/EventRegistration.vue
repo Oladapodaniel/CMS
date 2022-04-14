@@ -1,9 +1,5 @@
 
 <template>
-<<<<<<< HEAD
-{{selectedCustomField}}
-=======
->>>>>>> 7e08cf4c1dfa3e71f7706695f219d096c42252b2
   <div
     class="container-slim p-3 mb-5 mt-5"
   >
@@ -257,7 +253,6 @@
                 placeholder="Card Number"
                 type="text"
                 aria-required=""
-<<<<<<< HEAD
                 v-model="person.cardCode"
               /> -->
           </div>
@@ -277,10 +272,6 @@
                   placeholder="Select gender"
                   style="width: 100%"  
                 />
-=======
-                v-model="checkinCode"
-              />
->>>>>>> 7e08cf4c1dfa3e71f7706695f219d096c42252b2
           </div>
         </div>
         
