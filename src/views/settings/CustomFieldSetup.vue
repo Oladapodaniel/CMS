@@ -226,23 +226,23 @@ export default {
     const getCustomizableField = ref([])
     const controlType = ref(
           [
-            { name:'Text', id: '0'},
-            { name:'DropdownList', id: '1'}, 
-            { name:'CheckBox', id: '2'},
-            { name:'DateTime', id: '3'},
-            { name:'Email', id: '4'},
-            { name:'Image', id: '5'},
-            { name:'Number', id: '6'}
+            { name:'Text', id: '1'},
+            { name:'DropdownList', id: '2'}, 
+            { name:'CheckBox', id: '3'},
+            { name:'DateTime', id: '4'},
+            { name:'Email', id: '5'},
+            { name:'Image', id: '6'},
+            { name:'Number', id: '7'}
             
           ] 
       )
     const entityType = ref(
           [
-            { name:'Member', id: '0'},
-            { name:'FirstTimers', id: '1'},
-            { name:'NewConverts', id: '2'},
-            { name:'Activity', id: '3'},
-            { name:'EventRegistrationForm', id: '4'},
+            { name:'Member', id: '1'},
+            { name:'FirstTimers', id: '2'},
+            { name:'NewConverts', id: '3'},
+            { name:'Activity', id: '4'},
+            { name:'EventRegistrationForm', id: '5'},
           ]
       )
 

@@ -1,5 +1,6 @@
 
-<template>{{selectedCustomField}}
+<template>
+{{selectedCustomField}}
   <div
     class="container-slim p-3 mb-5 mt-5"
   >
@@ -74,6 +75,7 @@
         <div class="default-btn primary-bg text-white border-0 text-center c-pointer">Register</div>
       </div>
     </div>
+    
     <div class="row mb-4">
       <div class="col-md-3"></div>
       <div class="col-md-5 offset-1">
@@ -119,7 +121,25 @@
     <!-- start of bottom area -->
     <div class="row" v-if="appltoggle && !showLoading">
       <div class="col-md-12">
-        <div class="row mt-n2 my-2">
+        
+        <div class="row mb-3 " v-if="selectedCustomField.find(i => i.toLowerCase() == 'card/checkin number')">
+          <div
+            class="col-md-3 d-md-flex align-items-center justify-content-end text-md-right mt-2 font-weight-700"
+          >
+            <label for="">Card number</label>
+          </div>
+          <div class="col-md-7">
+            <InputText
+                class="w-100 border"
+                placeholder="Card Number"
+                type="text"
+                aria-required=""
+                v-model="person.cardCode"
+              />
+          </div>
+        </div>
+
+        <div class="row mt-2  my-2">
           <div
             class="col-md-3 d-md-flex align-items-center justify-content-end text-md-right mt-2 font-weight-700"
           >
@@ -215,22 +235,45 @@
             </div>
           </div>
         </div>
-        
-        
-        <div class="row my-3" v-if="selectedCustomField.find(i => i.toLowerCase() == 'card/checkin number')">
+
+        <div class="row my-3" v-if="selectedCustomField.find(i => i.toLowerCase() == 'marital status')">
           <div
             class="col-md-3 d-md-flex align-items-center justify-content-end text-md-right mt-2 font-weight-700"
           >
-            <label for="">Card number</label>
+            <label for="">Marital Status</label>
           </div>
           <div class="col-md-7">
-            <InputText
+            <Dropdown
+                  v-model="SelectMaritalStatus"
+                  :options="maritalStatus.lookUps"
+                  optionLabel="value"
+                  style="width: 100%"
+                  placeholder="Maritalstatus"   
+                />
+            <!-- <InputText
                 class="w-100 border"
                 placeholder="Card Number"
                 type="text"
                 aria-required=""
-                v-model="person.cardcode"
-              />
+                v-model="person.cardCode"
+              /> -->
+          </div>
+        </div>
+
+        <div class="row my-3" v-if="selectedCustomField.find(i => i.toLowerCase() == 'gender')">
+          <div
+            class="col-md-3 d-md-flex align-items-center justify-content-end text-md-right mt-2 font-weight-700"
+          >
+            <label for="">Gender</label>
+          </div>
+          <div class="col-md-7">
+            <Dropdown
+                  v-model="SelectGender"
+                  :options="gender.lookUps"
+                  optionLabel="value"
+                  placeholder="Select gender"
+                  style="width: 100%"  
+                />
           </div>
         </div>
         
@@ -358,6 +401,7 @@ export default {
     const autosearch = ref(false);
     const noError = ref(true);
     const person = ref({});
+    const maritalStatus = ref({})
     const checkedIn = ref(false);
     const route = useRoute();
     const toast = useToast();
@@ -381,6 +425,8 @@ export default {
     const donationNewProps = ref({})
 
     const birthMonth = ref("");
+
+    const gender = ref({})
     const months = [
       "January",
       "February",
@@ -596,6 +642,7 @@ export default {
       let newPerson = {};
       if (person.value.personId) {
         newPerson = {
+          checkInCode: person.value.cardCode,
           person: {
             personId: personData.value.personId,
             mobilePhone: enteredValue.value,
@@ -861,6 +908,32 @@ export default {
             console.log(error)
           }
     }
+
+    const getGender = async () => {
+            try {
+                let { data } = await axios.get('/api/LookUp/GetAllLookUps')
+                console.log(data,'jjhujwhuwhe')
+                gender.value = data.find(i => i.type === "Gender")
+    
+            }
+            catch (err) {
+                console.log(err)
+            } console.log(route.fullPath)
+    }
+    getGender()
+
+    const getMaritalStatus = async () => {
+            try {
+                let { data } = await axios.get('/api/LookUp/GetAllLookUps')
+                console.log(data)
+                maritalStatus.value = data.find(i => i.type === "MaritalStaus")
+    
+            }
+            catch (err) {
+                console.log(err)
+            } console.log(route.fullPath)
+    }
+    getMaritalStatus()
 
     const createNewFamily = (id) => {
       disableClick.value = true;
@@ -1131,6 +1204,7 @@ export default {
       maskEmail,
       name,
       email,
+      maritalStatus,
       userAddress,
       showNoPhoneError,
       notme,
@@ -1141,6 +1215,7 @@ export default {
       fetchingFailed,
       personHasAddress,
       months,
+      gender,
       days,
       birthMonth,
       birthDay,
