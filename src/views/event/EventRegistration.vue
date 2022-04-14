@@ -1,5 +1,5 @@
 
-<template>{{selectedCustomField}}
+<template>
   <div
     class="container-slim p-3 mb-5 mt-5"
   >
@@ -228,7 +228,7 @@
                 placeholder="Card Number"
                 type="text"
                 aria-required=""
-                v-model="person.cardcode"
+                v-model="checkinCode"
               />
           </div>
         </div>
@@ -454,6 +454,7 @@ export default {
     const bannerUrl = ref("")
     const tenantCurrency = ref("")
     const selectedCustomField = ref([])
+    const checkinCode = ref("")
 
 
 
@@ -616,8 +617,8 @@ export default {
         newPerson.person.personId = idOfNewPerson ? idOfNewPerson : ""
       }
       newPerson.person.monthOfBirth =  months.indexOf(birthMonth.value) + 1
-  
       newPerson.person.dayOfBirth = birthDay.value
+      newPerson.checkinCode = checkinCode.value
 
       console.log(personData.value, "p data");
       console.log(newPerson);
@@ -1089,12 +1090,9 @@ export default {
     }
 
     const getAllRouteQueries = () => {
-      console.log(route.query)
       for (let i in route.query) {
-        console.log(route.query[i])
         if(route.query[i] == 'true') {
           selectedCustomField.value.push(i)
-          console.log(i, route.query[i], selectedCustomField)
         }
       }
     }
@@ -1169,7 +1167,8 @@ export default {
       initializePayment,
       setDonationProperties,
       donationNewProps,
-      selectedCustomField
+      selectedCustomField,
+      checkinCode
       // callIt
     };
   },
