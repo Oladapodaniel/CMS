@@ -616,28 +616,28 @@ export default {
     //   }
     });
 
-    const getUserSource = sourceId => {
-      if (sourceId && howDidYouAboutUs.value && howDidYouAboutUs.value.length > 0) return howDidYouAboutUs.value.find(i => i.id === sourceId);
-      if (!sourceId) {
-        axios.get("/api/membership/howyouheardaboutus").then((res) => {
-          howDidYouAboutUs.value = res.data.map((i) => {
-            return { name: i.name, id: i.id };
-          });
-          return howDidYouAboutUs.value.find(i => i.id === res.data.howDidYouAboutUsId);
-        });
-      } else {
-        return null;
-      }
-    }
+    // const getUserSource = sourceId => {
+    //   if (sourceId && howDidYouAboutUs.value && howDidYouAboutUs.value.length > 0) return howDidYouAboutUs.value.find(i => i.id === sourceId);
+    //   if (!sourceId) {
+    //     axios.get("/api/membership/howyouheardaboutus").then((res) => {
+    //       howDidYouAboutUs.value = res.data.map((i) => {
+    //         return { name: i.name, id: i.id };
+    //       });
+    //       return howDidYouAboutUs.value.find(i => i.id === res.data.howDidYouAboutUsId);
+    //     });
+    //   } else {
+    //     return null;
+    //   }
+    // }
 
-    const getEventUserAttended = userEventId => {
-      if (!userEventId) return { };
-      if (eventsAttended.value && eventsAttended.value.length > 0) return eventsAttended.value.find(i => i.activityID === userEventId);
-      axios.get("/api/Events/EventActivity").then((res) => {
-        eventsAttended.value = res.data;
-        return eventsAttended.value.find(i => i.activityID === userEventId);
-      });
-    }
+    // const getEventUserAttended = userEventId => {
+    //   if (!userEventId) return { };
+    //   if (eventsAttended.value && eventsAttended.value.length > 0) return eventsAttended.value.find(i => i.activityID === userEventId);
+    //   axios.get("/api/Events/EventActivity").then((res) => {
+    //     eventsAttended.value = res.data;
+    //     return eventsAttended.value.find(i => i.activityID === userEventId);
+    //   });
+    // }
 
     const year = computed(() => {
       const arrOfYears = [];

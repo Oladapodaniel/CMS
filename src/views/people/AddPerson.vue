@@ -659,11 +659,11 @@
               </div>
 
               <div class="col-md-7 mt-3">
-                <div class="row mt-2">
-                  <div class="col-md-6 d-md-flex justify-content-end">
+                <div class="row mt-2 d-flex justify-content-end">
+                  <div class="col-6">
                     <button class="default-btn" data-dismiss="modal">Cancel</button>
                   </div>
-                  <div class="col-md-6">
+                  <div class="col-6">
                     <button
                       class="default-btn primary-bg border-0 text-white"
                       :data-dismiss="dismissAddToGroupModal"
