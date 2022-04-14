@@ -172,7 +172,6 @@
                         data-toggle="dropdown"
                         aria-haspopup="true"
                         aria-expanded="false"
-                        style="font-size: 1.6em;"
                       ></i>
                       <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
                         <!-- <router-link to="">
@@ -357,6 +356,10 @@ export default {
 
 .tr-border-bottom {
     border-bottom: 1px solid #4762f01f;
+}
+
+.fa-ellipsis-v {
+  padding: 10px;
 }
 
 </style>

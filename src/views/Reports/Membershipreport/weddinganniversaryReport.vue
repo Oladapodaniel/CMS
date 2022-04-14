@@ -216,8 +216,8 @@
                   v-for="(anniversary, index) in weddingAnniversary"
                   :key="index"
                 >
-                  <td>{{ anniversary.FirstName }}</td>
-                  <td>{{ anniversary.LastName }}</td>
+                  <td>{{ anniversary.firstName }}</td>
+                  <td>{{ anniversary.lastName }}</td>
                   <td>{{ formatDate(anniversary.weddingDay) }}</td>
                   <td>{{ anniversary.mobilePhone }}</td>
                   <td>{{ anniversary.email }}</td>

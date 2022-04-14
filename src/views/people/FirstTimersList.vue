@@ -1373,6 +1373,10 @@ a {
   cursor: pointer;
 }
 
+.fa-ellipsis-v {
+  padding: 10px
+}
+
 #chart {
   width: 48%;
   max-height: 310px;

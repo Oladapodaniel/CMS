@@ -1320,4 +1320,8 @@ export default {
   padding: 0px;
   border-bottom: 1.5px solid #6d6d6d19;
 }
+
+.fa-ellipsis-v {
+  padding: 10px;
+}
 </style>

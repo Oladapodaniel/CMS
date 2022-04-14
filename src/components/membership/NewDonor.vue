@@ -140,7 +140,7 @@
         <!-- import word -->
 
     </div>
-    <Toast />
+    <!-- <Toast /> -->
 </template>
 
 <script>
@@ -153,13 +153,13 @@ import { useRoute } from "vue-router";
 import axios from "@/gateway/backendapi";
 import ImageForm from './ImageForm'
 import Dropdown from "primevue/dropdown";
-import { useToast } from "primevue/usetoast";
+// import { useToast } from "primevue/usetoast";
     export default {
         components:{ Button, ImageForm, Dropdown  },
 
         setup(props, { emit }) {
             const route = useRoute();
-            const toast = useToast();
+            // const toast = useToast();
             const loading = ref(false)
             // const store = useStore();
             const donor = reactive({ });
@@ -268,12 +268,12 @@ import { useToast } from "primevue/usetoast";
                                     emit("show-group-modal", true)
                                 }
 
-                                toast.add({
-                                    severity: "success",
-                                    summary: "Success",
-                                    detail: "Member created successfully",
-                                    life: 5000,
-                                });
+                                // toast.add({
+                                //     severity: "success",
+                                //     summary: "Success",
+                                //     detail: "Member created successfully",
+                                //     life: 5000,
+                                // });
                                 emit('person-id', {
                                     personId: res.data.personId, 
                                     personFirstName: donor.firstName, 
@@ -289,12 +289,12 @@ import { useToast } from "primevue/usetoast";
                                 console.log(error)
                                 if (error.response) {
                                     console.log(error.response)
-                                    toast.add({
-                                        severity: "error",
-                                        summary: "Sorry, member not created",
-                                        detail: error.response.data.message,
-                                        life: 5000,
-                                    });
+                                    // toast.add({
+                                    //     severity: "error",
+                                    //     summary: "Sorry, member not created",
+                                    //     detail: error.response.data.message,
+                                    //     life: 5000,
+                                    // });
                                     // reject(error.response);
                                 } else {
                                     reject(error);

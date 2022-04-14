@@ -2196,4 +2196,8 @@ const complexLocalDataSource  = ref(markRaw(new kendo.data.HierarchicalDataSourc
     display: none;
   }
 }
+
+.fa-ellipsis-v {
+  padding: 10px
+}
 </style>

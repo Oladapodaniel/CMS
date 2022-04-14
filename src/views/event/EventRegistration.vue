@@ -1,6 +1,9 @@
 
 <template>
+<<<<<<< HEAD
 {{selectedCustomField}}
+=======
+>>>>>>> 7e08cf4c1dfa3e71f7706695f219d096c42252b2
   <div
     class="container-slim p-3 mb-5 mt-5"
   >
@@ -159,7 +162,6 @@
             </span>
           </div>
         </div>
-
         <div class="row">
           <div
             class="col-md-3 d-md-flex align-items-center justify-content-end text-md-right mt-2 font-weight-700"
@@ -175,7 +177,7 @@
                 type="text"
                 aria-required=""
                 v-model="person.email"
-                :disabled="person.personId && person.email"
+                :disabled="person.personId && personData.email || personData.email !== '' && personData.email !== null"
               />
             </span>
           </div>
@@ -255,6 +257,7 @@
                 placeholder="Card Number"
                 type="text"
                 aria-required=""
+<<<<<<< HEAD
                 v-model="person.cardCode"
               /> -->
           </div>
@@ -274,6 +277,10 @@
                   placeholder="Select gender"
                   style="width: 100%"  
                 />
+=======
+                v-model="checkinCode"
+              />
+>>>>>>> 7e08cf4c1dfa3e71f7706695f219d096c42252b2
           </div>
         </div>
         
@@ -345,7 +352,7 @@
                   </button>
                 </div>
                 <div class="modal-body p-0 bg-modal pb-5">
-                  <PaymentOptionModal :close="close" :donation="donationObj" @selected-gateway="setGateway" @donation-confirmed="setConfirmDonation" @set-props="setDonationProperties"/>
+                  <PaymentOptionModal :close="close" :donation="donationObj" @selected-gateway="setGateway" @donation-confirmed="setConfirmDonation" @set-props="setDonationProperties" :donorEmail="person.email"/>
                   <!-- :orderId="formResponse.orderId" :donation="donationObj"  :name="name" :amount="amount" :converted="convertedAmount" :email="email" @payment-successful="successfulPayment" :gateways="formResponse.paymentGateWays" :currency="dfaultCurrency.shortCode" @selected-gateway="gatewaySelected" -->
                 </div>
                 <!-- <div class="modal-footer bg-modal">
@@ -501,6 +508,7 @@ export default {
     const bannerUrl = ref("")
     const tenantCurrency = ref("")
     const selectedCustomField = ref([])
+    const checkinCode = ref("")
 
 
 
@@ -664,8 +672,8 @@ export default {
         newPerson.person.personId = idOfNewPerson ? idOfNewPerson : ""
       }
       newPerson.person.monthOfBirth =  months.indexOf(birthMonth.value) + 1
-  
       newPerson.person.dayOfBirth = birthDay.value
+      newPerson.checkinCode = checkinCode.value
 
       console.log(personData.value, "p data");
       console.log(newPerson);
@@ -1163,12 +1171,9 @@ export default {
     }
 
     const getAllRouteQueries = () => {
-      console.log(route.query)
       for (let i in route.query) {
-        console.log(route.query[i])
         if(route.query[i] == 'true') {
           selectedCustomField.value.push(i)
-          console.log(i, route.query[i], selectedCustomField)
         }
       }
     }
@@ -1245,7 +1250,8 @@ export default {
       initializePayment,
       setDonationProperties,
       donationNewProps,
-      selectedCustomField
+      selectedCustomField,
+      checkinCode
       // callIt
     };
   },
