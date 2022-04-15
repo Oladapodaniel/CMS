@@ -133,7 +133,7 @@
                 placeholder="Card Number"
                 type="text"
                 aria-required=""
-                v-model="person.cardCode"
+                v-model="checkinCode"
               />
           </div>
         </div>
@@ -234,6 +234,42 @@
           </div>
         </div>
 
+        <div class="row my-3" v-if="selectedCustomField.find(i => i.toLowerCase() == 'wedding')">
+          <div
+            class="col-md-3 d-md-flex align-items-center justify-content-end text-md-right mt-2 font-weight-700"
+          >
+            <label for="">Wedding</label>
+          </div>
+          <div class="col-md-7">
+            <div class="row">
+              <div class="col-4">
+                <Dropdown
+                  v-model="dayOfWedding"
+                  :options="days"
+                  style="width: 100%"
+                  placeholder="Day"
+                />
+              </div>
+              <div class="col-4">
+                <Dropdown
+                  v-model="monthOfWedding"
+                  :options="months"
+                  style="width: 100%"
+                  placeholder="Month"   
+                />
+              </div>
+              <div class="col-4">
+                <Dropdown
+                  v-model="yearOfWedding"
+                  :options="weddingYearsArr"
+                  style="width: 100%"
+                  placeholder="Year"   
+                />
+              </div>
+            </div>
+          </div>
+        </div>
+
         <div class="row my-3" v-if="selectedCustomField.find(i => i.toLowerCase() == 'marital status')">
           <div
             class="col-md-3 d-md-flex align-items-center justify-content-end text-md-right mt-2 font-weight-700"
@@ -242,11 +278,11 @@
           </div>
           <div class="col-md-7">
             <Dropdown
-                  v-model="SelectMaritalStatus"
-                  :options="maritalStatus.lookUps"
+                  v-model="selectedMaritalStatus"
+                  :options="maritalStatus"
                   optionLabel="value"
                   style="width: 100%"
-                  placeholder="Maritalstatus"   
+                  placeholder="Marital Status"   
                 />
             <!-- <InputText
                 class="w-100 border"
@@ -266,8 +302,8 @@
           </div>
           <div class="col-md-7">
             <Dropdown
-                  v-model="SelectGender"
-                  :options="gender.lookUps"
+                  v-model="selectedGender"
+                  :options="gender"
                   optionLabel="value"
                   placeholder="Select gender"
                   style="width: 100%"  
@@ -390,6 +426,11 @@ export default {
   },
   setup() {
     const connectName = ref("");
+    const yearOfWedding = ref(null)
+    const monthOfWedding = ref(null)
+    const dayOfWedding = ref(null)
+    const selectedMaritalStatus = ref("");
+    const selectedGender = ref("");
     const appltoggle = ref(false);
     const names = ref("");
     const emails = ref("");
@@ -473,6 +514,16 @@ export default {
       30,
       31,
     ]);
+
+    const weddingYearsArr = computed(() => {
+      const arrOfYears = [];
+      let currentYear = new Date().getFullYear();
+      while (arrOfYears.length <= 100) {
+        arrOfYears.push(currentYear);
+        currentYear = currentYear - 1;
+      }
+      return arrOfYears;
+    });
 
     const toggleBase = () => {
       appltoggle.value = !appltoggle.value;
@@ -641,7 +692,7 @@ export default {
       let newPerson = {};
       if (person.value.personId) {
         newPerson = {
-          checkInCode: person.value.cardCode,
+
           person: {
             personId: personData.value.personId,
             mobilePhone: enteredValue.value,
@@ -665,6 +716,11 @@ export default {
       newPerson.person.monthOfBirth =  months.indexOf(birthMonth.value) + 1
       newPerson.person.dayOfBirth = birthDay.value
       newPerson.checkinCode = checkinCode.value
+      newPerson.person.maritalStatusID = selectedMaritalStatus.value.id
+      newPerson.person.genderID = selectedGender.value.id
+      newPerson.person.yearOfWedding = yearOfWedding.value
+      newPerson.person.monthOfWedding = monthOfWedding.value
+      newPerson.person.dayOfWedding = dayOfWedding.value
 
       console.log(personData.value, "p data");
       console.log(newPerson);
@@ -912,7 +968,8 @@ export default {
             try {
                 let { data } = await axios.get('/api/LookUp/GetAllLookUps')
                 console.log(data,'jjhujwhuwhe')
-                gender.value = data.find(i => i.type === "Gender")
+                gender.value = data.find(i => i.type === "Gender").lookUps;
+                console.log(gender.value, "jhjhjjhljjjj");
     
             }
             catch (err) {
@@ -925,7 +982,8 @@ export default {
             try {
                 let { data } = await axios.get('/api/LookUp/GetAllLookUps')
                 console.log(data)
-                maritalStatus.value = data.find(i => i.type === "MaritalStatus")
+                maritalStatus.value = data.find(i => i.type === "MaritalStatus").lookUps;
+                console.log(maritalStatus.value, "jhjhjjhljjjj");
     
             }
             catch (err) {
@@ -1242,7 +1300,13 @@ export default {
       setDonationProperties,
       donationNewProps,
       selectedCustomField,
-      checkinCode
+      checkinCode,
+      selectedMaritalStatus,
+      selectedGender,
+      weddingYearsArr,
+      dayOfWedding,
+      monthOfWedding,
+      yearOfWedding
       // callIt
     };
   },

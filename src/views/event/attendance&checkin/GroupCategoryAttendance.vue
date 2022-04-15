@@ -664,10 +664,10 @@ export default {
     const showFormList = ref([
       { label: "Card/Checkin Number", value: false },
       { label: "Address", value: false },
-      // { label: "Gender", value: false },
-      // { label: "Marital Status", value: false },
+      { label: "Gender", value: false },
+      { label: "Marital Status", value: false },
       { label: "Birthday", value: false },
-      // { label: "Wedding", value: false },
+      { label: "Wedding", value: false },
     ]);
 
     const eventRegistration = ref(store.getters["attendance/eventRegItemData"]);
