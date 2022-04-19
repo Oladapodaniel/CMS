@@ -232,6 +232,7 @@
                     class="input w-100"
                     placeholder="First Name"
                     v-model="filter.name"
+                    @input="setFilteredValue"
                   />
                   <!-- </div> -->
                 </div>
@@ -579,6 +580,7 @@ export default {
     // const store = useStore();
     const positionArchive = ref('center');
     const displayPositionArchive = ref(false);
+    const filtered = ref(false);
 
     const toggleFilterFormVissibility = () =>
       (filterFormIsVissible.value = !filterFormIsVissible.value);
@@ -834,7 +836,12 @@ export default {
       selectAll.value = !selectAll.value;
     };
 
+    const setFilteredValue = (e) => {
+      console.log(e)
+    }
+
     const applyFilter = () => {
+      
       filter.value.name =
         filter.value.name == undefined ? "" : filter.value.name;
       filter.value.phoneNumber =
@@ -851,6 +858,7 @@ export default {
       axios
         .get(url)
         .then((res) => {
+          filtered.value = true
           noRecords.value = true;
           filterResult.value = res.data;
           console.log(res.data);
@@ -904,6 +912,8 @@ export default {
         return searchPeopleNamesInDB.value;
       } else if (filterResult.value.length > 0) {
         return filterResult.value;
+      } else if (filterResult.value.length == 0 && filtered.value && filter.value.name) {
+        return []
       } else {
         return churchMembers.value;
       }
@@ -1113,7 +1123,9 @@ export default {
       openPositionArchive,
       positionArchive,
       displayPositionArchive,
-      closeArchiveModal
+      closeArchiveModal,
+      filtered,
+      setFilteredValue
     };
   },
 };
