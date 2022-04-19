@@ -23,7 +23,7 @@
                <div class="row">
                    <div class="col-lg-7 col-sm-12 pr-3 mt-3 mt-lg-3 pr-lg-5 pr-sm-3" style="">
                        <div class="row mb-3">
-                          <div class="col-lg-4 col-sm-12 text-lg-right text-sm-left"> <label class="">Username</label>
+                          <div class="col-lg-4 col-sm-12 text-lg-right text-sm-left"> <label class="">Email</label>
                             </div>
                             <div class="col-lg-8 col-sm-12"> <InputText type="text" required v-model="mail" class="form-control" /></div>
                         </div>
