@@ -483,7 +483,7 @@
       <div
         class="col-md-12 col py-3"
         v-if="
-          listOfPeople.length === 0 && churchMembers.length !== 0 && !loading
+          (listOfPeople.length === 0 && churchMembers.length !== 0) || searchMember.length === 0 && !loading
         "
       >
         <p class="text-danger d-flex justify-content-center">
@@ -837,7 +837,11 @@ export default {
     };
 
     const setFilteredValue = (e) => {
-      console.log(e)
+
+      if (e.target.value.length == 0) {
+        console.log('herrreee')
+        filtered.value = false
+      }
     }
 
     const applyFilter = () => {
@@ -883,6 +887,7 @@ export default {
       axios
         .get(url)
         .then((res) => {
+          console.log(res, 'wefwef')
           loading.value = false;
           searchPeopleNamesInDB.value = res.data.map((i) => {
               return {
@@ -910,7 +915,9 @@ export default {
       if (searchText.value !== "" && searchPeopleNamesInDB.value.length > 0) {
         // return searchPeopleInDB()
         return searchPeopleNamesInDB.value;
-      } else if (filterResult.value.length > 0) {
+      } else if (searchText.value !== "" && searchPeopleNamesInDB.value.length == 0) {
+        return []
+      } else if (filterResult.value.length > 0 && filtered.value && filter.value.name) {
         return filterResult.value;
       } else if (filterResult.value.length == 0 && filtered.value && filter.value.name) {
         return []
