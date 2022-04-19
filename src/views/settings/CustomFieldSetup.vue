@@ -351,8 +351,8 @@ export default {
       vissibleTab.value = `tab_${index}`;
       customLabel.value = allCustomFieldList.value[index].label;
       customDropdownList.value = allCustomFieldList.value[index].parameterValues;
-      customEntityType.value = entityType.value.find(i => i.id == entityType.value[index].id);
-      customControlType.value = controlType.value.find(i => i.id == controlType.value[index].id);
+      customEntityType.value = entityType.value.find(i => i.id == allCustomFieldList.value[index].entityType);
+      customControlType.value = controlType.value.find(i => i.id == allCustomFieldList.value[index].controlType);
       // customControlType.value = getAllcontrolType.value[index];
       console.log(customControlType.value,'lbell');
       console.log(customLabel.value,'lbell');
