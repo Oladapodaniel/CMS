@@ -39,12 +39,13 @@
                       </div>
                       <div class="col-md-12 col-sm-12 mt-3 " v-if="selectedControl.name == 'DropdownList' " >
                         <label for=""> Enter your Dropdown list here seperated by comma..</label>
-                        <input
+                        <Chips v-model="dropdownList" style="background: white, width: 100%;" separator="," />
+                        <!-- <input
                           type="text"
                           class="form-control"
                           placeholder="Enter the list here.."
                           v-model="dropdownList"
-                        />
+                        /> -->
                       </div>
                       <div class="col-md-12 col-sm-12 mt-3  ">
                           <label for="">Select the Entity Type you want to Extend </label>
@@ -200,16 +201,18 @@ import Dropdown from "primevue/dropdown";
 import ConfirmDialog from 'primevue/confirmdialog';
 // import axios from 'axios';
 import finish from "../../services/progressbar/progress"
+import Chips from 'primevue/chips';
 
 export default {
   components:{
      Toast,
     ConfirmDialog,
-    Dropdown
+    Dropdown,
+    Chips
   },
   setup() {
     const selectedControl = ref([]);
-    const dropdownList = ref('');
+    const dropdownList = ref([]);
     const customDropdownList = ref('');
     const vissibleTab = ref(false)
     const selectedEntityType = ref([]);
@@ -387,11 +390,12 @@ export default {
         }
 
       const saveCustomFields = async () =>{
+        console.log(dropdownList.value)
         const body = {
             entityType: selectedEntityType.value.name,
             tenantID: tenantId.value,
             label: customFieldLabel.value,
-            parameterValues: dropdownList.value,
+            parameterValues: dropdownList.value ? dropdownList.value.join(",") : "",
             controlType: selectedControl.value.name
             // parameterValues: ,
           }
@@ -402,21 +406,18 @@ export default {
           console.log(data, 'saveCustomizable');
           
           toast.add({
-                        severity: "success",
-                        summary: "Successful",
-                        detail: "Custom Field created successfully",
-                        life: 2000,
-                    });
+              severity: "success",
+              summary: "Successful",
+              detail: "Custom Field created successfully",
+              life: 2000,
+          });
 
-                    selectedEntityType.value = "";
-                    customFieldLabel.value = "";
-                    dropdownList.value = "";
-                    selectedControl.value = ""
+          selectedEntityType.value = "";
+          customFieldLabel.value = "";
+          dropdownList.value = "";
+          selectedControl.value = ""
                     
-              getAllCustomFields()
-
-              
-
+          // getAllCustomFields()
         }
 
         catch (error) {

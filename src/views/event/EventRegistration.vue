@@ -311,6 +311,56 @@
           </div>
         </div>
         
+        
+        <div class="row my-3" v-for="item in dynamicCustomFields" :key="item.id">
+          <div
+            class="col-md-3 d-md-flex align-items-center justify-content-end text-md-right mt-2 font-weight-700"
+          >
+            <label for="">{{ item.label }}</label>
+          </div>
+          <div class="col-md-7">
+             <InputText
+                v-if="item.controlType == 0"
+                class="w-100 border"
+                type="text"
+                aria-required=""
+                v-model="item.data"
+              />
+            <Dropdown
+                  v-else-if="item.controlType == 1"
+                  v-model="item.data"
+                  :options="item.parameterValues.split(',')"
+                  placeholder="Select option"
+                  style="width: 100%"  
+                />
+            <Checkbox v-else-if="item.controlType == 2" v-model="item.data" :binary="true"/>
+            <Calendar v-if="item.controlType == 3" id="time24" v-model="item.data" :showTime="true" :showSeconds="true" class="w-100" />
+            <InputText
+                v-if="item.controlType == 4"
+                class="w-100 border"
+                type="email"
+                aria-required=""
+                v-model="item.data"
+              />
+            <input 
+                v-if="item.controlType == 5"
+                class="w-100 border"
+                type="file"
+                aria-required=""
+                
+              />
+              <!-- <InputNumber  id="integeronly" v-model="item.data" class="w-100"/> -->
+              <input
+                v-if="item.controlType == 6"
+                class="w-100 border form-control"
+                type="number"
+                aria-required=""
+                v-model="item.data"
+              />
+          </div>
+        </div>
+        <!-- <input type="date"> -->
+        
         <div class="row">
           <div class="col-md-8 offset-md-3 mt-3 align-self-center"><Checkbox v-model="displayFamily" :binary="true" /> <span class="ml-3">Do you want to register your family for this event?</span></div>
         </div>
@@ -415,6 +465,7 @@ import PaymentOptionModal from "../../components/paymentoption/EventRegPayment.v
 import finish from '../../services/progressbar/progress';
 import store from '../../store/store';
 import FamilyWards from './component/EventRegFamilyWards.vue'
+import Calendar from "primevue/calendar";
 // import Calendarjs from "../../services/google/calendarAPI"
 // import Dialog from 'primevue/dialog';
 
@@ -422,7 +473,8 @@ export default {
   components: {
     Dropdown,
     PaymentOptionModal,
-    FamilyWards
+    FamilyWards,
+    Calendar
   },
   setup() {
     const connectName = ref("");
@@ -515,6 +567,29 @@ export default {
       31,
     ]);
 
+    const controlType = ref(
+          [
+            { name:'Text', id: '0'},
+            { name:'DropdownList', id: '1'}, 
+            { name:'CheckBox', id: '2'},
+            { name:'DateTime', id: '3'},
+            { name:'Email', id: '4'},
+            { name:'Image', id: '5'},
+            { name:'Number', id: '6'}
+            
+          ] 
+      )
+
+    const entityType = ref(
+          [
+            { name:'Member', id: '0'},
+            { name:'FirstTimers', id: '1'},
+            { name:'NewConverts', id: '2'},
+            { name:'Activity', id: '3'},
+            { name:'EventRegistrationForm', id: '4'},
+          ]
+      )
+
     const weddingYearsArr = computed(() => {
       const arrOfYears = [];
       let currentYear = new Date().getFullYear();
@@ -551,6 +626,8 @@ export default {
     const tenantCurrency = ref("")
     const selectedCustomField = ref([])
     const checkinCode = ref("")
+    const dynamicCustomFields = ref([])
+    const date7 = ref()
 
 
 
@@ -721,6 +798,12 @@ export default {
       newPerson.person.yearOfWedding = yearOfWedding.value
       newPerson.person.monthOfWedding = monthOfWedding.value
       newPerson.person.dayOfWedding = dayOfWedding.value
+      newPerson.customAttributeData = dynamicCustomFields.value.map(i => ({
+        customAttributeID: i.id,
+        data: i.data,
+        entityID: person.value.personId ? person.value.personId : idOfNewPerson
+      }))
+
 
       console.log(personData.value, "p data");
       console.log(newPerson);
@@ -1092,7 +1175,8 @@ export default {
           fullEventData.value = res.data
           console.log(eventData);
           console.log(res, "response");
-           getTenantCurrency()
+           getTenantCurrency();
+           getCustomFields();
         })
         .catch((err) => {
           console.log(err);
@@ -1228,6 +1312,18 @@ export default {
     }
       getAllRouteQueries()
 
+    const getCustomFields = async() => {
+      try {
+        let { data } = await axios.get(`/GetAllCustomFields?entityType=4&&tenantID=${fullEventData.value.tenantID}`);
+        console.log(data)
+        dynamicCustomFields.value = data
+      }
+      catch (err) {
+        console.log(err)
+      }
+    }
+    
+
     return {
       disableClick,
       toggleBase,
@@ -1306,7 +1402,10 @@ export default {
       weddingYearsArr,
       dayOfWedding,
       monthOfWedding,
-      yearOfWedding
+      yearOfWedding,
+      controlType,
+      dynamicCustomFields,
+      date7
       // callIt
     };
   },
