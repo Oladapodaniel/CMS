@@ -631,6 +631,8 @@ export default {
       if (customFieldList.value.length <= 0) {
         customFieldList.value.push(`${item.label}=${item.value}`);
       } else {
+         // Check ifthe label is there, if its there dont push it, if it's there, just change the value
+
         const labelIndex = customFieldList.value.findIndex((i) =>
           i.toLowerCase().includes(item.label.toLowerCase())
         );
@@ -654,9 +656,25 @@ export default {
       }
       let joinSelectedField = customFieldList.value.join("");
       joinSelectedFields.value = joinSelectedField;
+      
+      // Toast to display message
+      if (item.value) {
+        toast.add({
+          severity: "success",
+          summary: "Added",
+          detail: `${item.label} field added to public event registration form`,
+          life: 3000,
+        });
+      } else {
+        toast.add({
+          severity: "info",
+          summary: "Removed",
+          detail: `${item.label} field removed from public event registration form`,
+          life: 3000,
+        });
+      }
     };
 
-    // Check ifthe label is there, if its there dont push it, if it's there, just change the value
 
     const attendanceCheckinInStore = ref(
       store.getters["attendance/attendanceItemData"]
