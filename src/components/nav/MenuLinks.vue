@@ -397,7 +397,7 @@
           </div>
           <div class="w-100 align-self-end">
             <hr class="hr" />
-            <router-link class="text-dark" :to="basicUser ? '/tenant/settings/profile' : '/tenant/settings'" v-if="admin || basicUser"> 
+            <router-link class="text-dark" to="/tenant/settings" v-if="admin"> 
               <div class="link">
                 Settings
               </div>
