@@ -135,7 +135,6 @@ export default {
     getCurrencies();
 
     const currencies = computed(() => {
-        console.log(currencyList.value, "c list");
         if (!currencyList.value || currencyList.value.length === 0) return [ ];
         return currencyList.value;
     })

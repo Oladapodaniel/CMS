@@ -38,7 +38,9 @@
                             <div class="text-center">{{ item.fullGroupName }}</div>
                             <div class="text-center">{{ formatDate(item.eventDate) }}</div>
                         </div>
-                        <div class="text-center col-12 col-sm-6 col-lg-4 mt-3 primary-bg text-white default-btn border-0">Take attendance</div>
+                        <router-link :to="{ name: 'TakeAttendance', params: { id: item.id }, query: { groupId: item.groupID }}">
+                            <div class="text-center col-12 col-sm-6 col-lg-4 mt-3 primary-bg text-white default-btn border-0">Take attendance</div>
+                        </router-link>
                     </div>
                 </div>
             </div>
