@@ -1327,18 +1327,6 @@ const routes = [
                             import ( /* webpackChunkName: "defaultmessage" */ '@/views/settings/CustomFieldSetup')
                     },
                     {
-                        path: 'customfirsttimersettings',
-                        name: 'CustomFirsttimerSettings',
-                        component: () =>
-                            import ( /* webpackChunkName: "defaultmessage" */ '@/views/settings/CustomFirsttimerSettings')
-                    },
-                    {
-                        path: 'customeventregistration',
-                        name: 'CustomEventRegistration',
-                        component: () =>
-                            import ( /* webpackChunkName: "defaultmessage" */ '@/views/settings/CustomEventRegistration')
-                    },
-                    {
                         path: 'followupstatus',
                         name: 'FollowUpStatus',
                         component: () =>

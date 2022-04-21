@@ -89,7 +89,7 @@
                         
                                 <div class="col-md-8 d-flex flex-wrap">
                                     <!-- <div class="border col-2 bg-secondary  align-self-center py-1 ">NGN</div> -->
-                                    <span class=" bg-secondary  align-self-center py-1 border">NGN</span>
+                                    <span class=" bg-secondary col-2 align-self-center py-1 border">NGN</span>
                                     <div class="col-10  m-0 p-0"><input type="text" v-model="paymentAmount" class="form-control" placeholder=" Enter Amount" /></div>
                                     <!-- <CascadeSelect v-model="value" :options="branches" optionLabel="clabel" optionGroupLabel="label" :optionGroupChildren="['children']" class="w-100"  /> -->
                                 </div>
