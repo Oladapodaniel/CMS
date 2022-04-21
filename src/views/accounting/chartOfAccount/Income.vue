@@ -116,7 +116,6 @@ export default {
     const getAccounts = async () => {
       try {
         accounts.value = await transactionals.getTransactionalAccounts();
-        console.log(accounts.value);
       } catch (error) {
         console.log(error);
       }
@@ -135,7 +134,6 @@ export default {
     getCurrencies();
 
     const currencies = computed(() => {
-      console.log(currencyList.value, "c list");
       if (!currencyList.value || currencyList.value.length === 0) return [];
       return currencyList.value;
     });

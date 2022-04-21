@@ -58,7 +58,7 @@
 </template>
 
 <script>
-import { computed, ref } from '@vue/runtime-core';
+import { computed, ref, watchEffect } from '@vue/runtime-core';
 import axios from "@/gateway/backendapi";
 import { useToast } from "primevue/usetoast";
 import { useRoute } from "vue-router";
@@ -93,6 +93,12 @@ export default {
                         return i
                 })
             return props.attendanceType
+        })
+
+        watchEffect(() => {
+            if (props.groupDetail) {
+                note.value = props.groupDetail.note
+            }
         })
 
          const updateAttendanceCheckin = async() => {

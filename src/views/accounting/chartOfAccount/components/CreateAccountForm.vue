@@ -87,14 +87,25 @@
                 <div class="row my-3" v-if="currency">
                   <div class="col-md-4 text-md-right">Account Currency</div>
                   <div class="col-md-7" id="currencySelect">
-                    <Dropdown
+                    <!-- <Dropdown
                       v-model="selectedCurrency"
                       :options="accountCurrencies"
                       optionLabel="displayName"
                       placeholder="Select account currency"
                       style="width: 100%"
                       :filter="true"
-                    />
+                    /> -->
+                    <div class="dropdown show">
+                      <a class="btn border w-100 d-flex justify-content-between align-items-center" href="#" role="button" id="dropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" style="min-height: 37px;">
+                        <span>{{ selectedCurrency && Object.keys(selectedCurrency).length > 0 ? selectedCurrency.displayName : 'Select account currency' }}</span>
+                        <i class="pi pi-chevron-down"></i>
+                      </a>
+                      <div class="dropdown-menu w-100" aria-labelledby="dropdownMenuLink">
+                        <a class="dropdown-item c-pointer" v-for="(item, index) in accountCurrencies" :key="index">
+                          <div @click="setCurrencyValue(item)">{{ item.displayName }}</div>
+                        </a>
+                      </div>
+                    </div>
                   </div>
                 </div>
 
@@ -108,16 +119,28 @@
                     />
                   </div>
                 </div> -->
+                
 
                 <div class="row my-3" v-if="showFundsField">
                   <div class="col-md-4 text-md-right">Fund</div>
                   <div class="col-md-7">
-                    <Dropdown
+                    <!-- <Dropdown
                       v-model="selectedFund"
                       :options="funds"
                       optionLabel="name"
                       style="width: 100%"
-                    />
+                    /> -->
+                    <div class="dropdown show">
+                      <a class="btn border w-100 d-flex justify-content-between align-items-center" href="#" role="button" id="dropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" style="min-height: 37px;">
+                        <span>{{ selectedFund && Object.keys(selectedFund).length > 0 ? selectedFund.name : '' }}</span>
+                        <i class="pi pi-chevron-down"></i>
+                      </a>
+                      <div class="dropdown-menu w-100" aria-labelledby="dropdownMenuLink">
+                        <a class="dropdown-item c-pointer" v-for="(item, index) in funds" :key="index">
+                          <div @click="setFundValue(item)">{{ item.name }}</div>
+                        </a>
+                      </div>
+                    </div>
                   </div>
                 </div>
 
@@ -202,7 +225,7 @@ export default {
     const selectedCurrency = ref({});
     const selectedFund = ref({});
     const newAccount = ref({});
-    const userCurrency = ref(store.getters.currentUser.currency);
+    const userCurrency = ref(store.getters.currentUser ? store.getters.currentUser.currency : '');
 
     const selectAccountType = (account) => {
       selectedAccountType.value = account;
@@ -341,16 +364,24 @@ export default {
     getCurrencies();
 
     watch(() => {
-      if (props.accountGroupId) {
+      if (props.accountGroupId && props.transactionalAccounts && props.index) {
         selectedAccountType.value = props.transactionalAccounts[props.index].find(i => i.name === props.accountGroupId)
       }
       if (props.account) {
-        console.log(props.account);
         newAccount.value.name = props.account ? props.account.name : "";
         newAccount.value.description = props.account ? props.account.description : "";
         selectedFund.value = funds.value.find(i => i.id === props.account.financialFundID);
       }
     })
+
+    const setFundValue = (item) => {
+      selectedFund.value = item
+    }
+    
+    const setCurrencyValue = (item) => {
+      selectedCurrency.value = item
+    }
+
     
 
     return {
@@ -365,6 +396,8 @@ export default {
       invalidAccountDetails,
       savingAccount,
       accountCurrencies,
+      setFundValue,
+      setCurrencyValue
     };
   },
 };
@@ -373,5 +406,10 @@ export default {
 <style scoped>
 .p-dropdown-items {
   width: 100px !important;
+}
+
+.dropdown-menu {
+    max-height: 400px;
+    overflow: scroll;
 }
 </style>

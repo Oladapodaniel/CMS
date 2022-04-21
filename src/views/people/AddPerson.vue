@@ -1361,6 +1361,18 @@ export default {
       return allGroups.value.filter(i => i.name.toLowerCase().includes(searchGroupText.value.toLowerCase()))
     })
 
+    const getCustomFields = async() => {
+      try {
+        let { data } = await axios.get(`/api/CustomFields/GetAllCustomFields`);
+        console.log(data)
+        // dynamicCustomFields.value = data
+      }
+      catch (err) {
+        console.log(err)
+      }
+    }
+    getCustomFields();
+
     return {
       months,
       numberofYears,
