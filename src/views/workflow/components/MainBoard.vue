@@ -22,7 +22,7 @@
                     </div>
                 </div>
 
-                <div class="row mt-4">
+                <div class="row mt-4" style="border: 2px solid red">
                     <div class="col-md-12">
                         <div class="row">
                             <div class="border animate col-4 scroll-div scr-height our-grey-bg" style="height: 400px" :class="{ 'col-md-4': showTriggers || done || selectedTriggerIndex === null, 'col-md-1': !showTriggers &&  workflow.triggers.length > 0 }">
@@ -37,12 +37,12 @@
                                         </div>
                                     </div>
                                 </div>
-                                <div class="row" >
+                                <div class="row">
                                     <div class="col-md-12 trigger-btn-con" :class="{ 'trigger-btn-con-height': showTriggers }">
                                         <div class="row d-flex justify-content-around">
                                             <div class="col-md-12">
                                                 <ul class="list-group w-100">
-                                                <li class="list-group-item c-pointer" :class="{ 'mb-4': j === triggers.length - 1 }" v-for="(i, j) in triggers" :key="j" @click="selectTrigger(i)">
+                                                <li style="border: 2px solid yellow" class="list-group-item c-pointer" :class="{ 'mb-4': j === triggers.length - 1 }" v-for="(i, j) in triggers" :key="j" @click="selectTrigger(i)">
                                                     <h5 class="mb-0">
                                                         <span class="mr-2"><i :class="[ i.icon ]" style="font-size: 1rem"></i></span>
                                                         <span :class="{ 'd-none': !showTriggers &&  workflow.triggers.length > 0 }">{{ i.name }}</span>
@@ -180,9 +180,9 @@
                                                         <ul class="list-group w-100">
                                                             <li class="list-group-item c-pointer py-4 border" 
                                                                 :class="{ 'bg-white': selectedAction && i.id === selectedAction.id, 'bg-transparent': selectedAction && i.id !== selectedAction.id, 'd-none': showActions }" 
-                                                                v-for="(i, j) in triggerActions" :key="j" @click="setActiveAction(j)"
+                                                                v-for="(i, j) in triggerActions" :key="j" @click="setActiveAction(i, j)"
                                                             >
-                                                                <h5 class="mb-0">
+                                                                <h5 class="mb-0" style="border: 2px solid purple">
                                                                     <span class="mr-2"><i :class="[ i.icon ]" style="font-size: 1rem"></i></span>
                                                                     <span class="font-weight">{{ i.name }}</span>
                                                                 </h5>
@@ -190,8 +190,8 @@
                                                         </ul>
                                                     </div>
                                                 </div>
-                                                <div class="row" style="overflow-y: scroll;max-height:100%" >
-                                                    <div class="col-md-12 trigger-btn-con" :class="{ 'trigger-btn-con-height': showActions }">
+                                                <div class="row" style="overflow-y: scroll;max-height:100%">
+                                                    <div class="col-md-12 trigger-btn-con" :class="{ 'trigger-btn-con-height': showActions }" style="border: 2px solid pink">
                                                         <div class="row d-flex justify-content-around">
                                                             <div class="col-md-5 card my-2" v-for="(i, j) in actions" :key="j" @click="selectAction(i)">
                                                                 <div class="row card-body c-pointer">
@@ -217,7 +217,7 @@
                                                     </div>
                                                     <div class="col-md-12 trigger-btn-div">
                                                         <button class="btn btn-secondary w-100 trigger-btn d-flex justify-content-center btn-100 font-weight-bold"
-                                                            @click="toggleActions">
+                                                            @click="toggleActions" style="background: red">
                                                             Actions
                                                         </button>
                                                     </div>
@@ -262,8 +262,9 @@
                                                             v-if="selectedAction && selectedAction.actionType === 1"
                                                             :selectedActionIndex="selectedActionIndex"
                                                             :parameters="getAction(1, selectedTriggerIndex)"
+                                                            :selectSMSList="triggerActions"
                                                         />
-                                                        <AdminMessage v-else-if="selectedAction && selectedAction.actionType === 6"
+                                                        <AdminMessage v-if="selectedAction && selectedAction.actionType === 6"
                                                             :selectedActionIndex="selectedActionIndex"
                                                             @updateaction="updateAction"
                                                             :parameters="getAction(6, selectedTriggerIndex)"
@@ -354,7 +355,7 @@ import AdminMessage from "./actions/AdminMessage"
 import MarkPresent from "./actions/MarkPresent"
 import UpdateProgress from "./actions/UpdateProgress"
 import Interactions from "./actions/InteractionsAction"
-import { computed, watch } from '@vue/runtime-core'
+import { computed } from '@vue/runtime-core'
 import EmailAction from "./actions/Email"
 import WhatsAppAction from "./actions/WhatsappAction"
 import AssignTask from "./actions/AssignTask"
@@ -367,6 +368,7 @@ import { useRouter } from 'vue-router'
 
 import descriptionHelper from '../helper/description';
 import TriggerDescription from './TriggerDescription.vue'
+import { v4 as uuidv4 } from "uuid";
 
 export default {
     components: { 
@@ -489,7 +491,7 @@ export default {
             {
                 name: "Email",
                 icon: "pi pi-envelope",
-                id: 1,
+                // id: 1,
                 actionType: 0
             },
             {
@@ -501,19 +503,19 @@ export default {
             {
                 name: "Add to group",
                 icon: "pi pi-users",
-                id: 3,
+                // id: 3,
                 actionType: 4
             },
             {
                 name: "Assign task",
                 icon: "pi pi-users",
-                id: 4,
+                // id: 4,
                 actionType: 5
             },
             {
                 name: "Message admin",
                 icon: "pi pi-users",
-                id: 5,
+                // id: 5,
                 actionType: 6
             },
             // {
@@ -524,19 +526,19 @@ export default {
             {
                 name: "Send voice note",
                 icon: "pi pi-volume-up",
-                id: 7,
+                // id: 7,
                 actionType: 2
             },
             {
                 name: "Timer",
                 icon: "pi pi-clock",
-                id: 8,
+                // id: 8,
                 actionType: 8
             },
             {
                 name: "Present In Group",
                 icon: "pi pi-clock",
-                id: 9,
+                // id: 9,
                 actionType: 9
             },
             // {
@@ -547,14 +549,14 @@ export default {
             {
                 name: "WhatsApp",
                 icon: "pi pi-volume-up",
-                id: 11,
+                // id: 11,
                 actionType: 3
 
             },
             {
                 name: "Add Note",
                 icon: "pi pi-volume-up",
-                id: 12,
+                // id: 12,
                 actionType: 10
             }
         ]
@@ -576,11 +578,11 @@ export default {
             const index = workflow.value.triggers.findIndex(t => t.name === trigger.name);
             return index >= 0 ? true : false;
         }
-        const checkIfActionIsAlreadySelected = trigger => {
-            if (!workflow.value.triggers[selectedTriggerIndex.value].triggerActions) return false;
-            const index = workflow.value.triggers[selectedTriggerIndex.value].triggerActions.findIndex(t => t.name === trigger.name);
-            return index >= 0 ? true : false;
-        }
+        // const checkIfActionIsAlreadySelected = trigger => {
+        //     if (!workflow.value.triggers[selectedTriggerIndex.value].triggerActions) return false;
+        //     const index = workflow.value.triggers[selectedTriggerIndex.value].triggerActions.findIndex(t => t.name === trigger.name);
+        //     return index >= 0 ? true : false;
+        // }
 
         const selectTrigger = (trigger) => {
             if (!checkIfAlreadySelected(trigger)) {
@@ -592,16 +594,26 @@ export default {
             done.value = false;
         }
         const selectAction = (trigger) => {
-            if (!checkIfActionIsAlreadySelected(trigger)) {
+            // console.log(workflow.value)
+      
+            const triggerRecreate = {
+                actionType: trigger.actionType,
+                icon: trigger.icon,
+                id: uuidv4(),
+                name: trigger.name
+            }
+
+            // if (!checkIfActionIsAlreadySelected(trigger)) {
                 if (!workflow.value.triggers[selectedTriggerIndex.value] || !workflow.value.triggers[selectedTriggerIndex.value].triggerActions) {
                     workflow.value.triggers[selectedTriggerIndex.value].triggerActions = [ trigger ];
                     selectedActionIndex.value = 0;
                 } else {
-                    workflow.value.triggers[selectedTriggerIndex.value].triggerActions.push(trigger)
+                    workflow.value.triggers[selectedTriggerIndex.value].triggerActions.push(triggerRecreate)
                     const index = workflow.value.triggers[selectedTriggerIndex.value].triggerActions.findIndex(i => i.actionType === trigger.actionType);
                     selectedActionIndex.value = index > 0 ? index : 0;
                 }
-            }
+                console.log(workflow.value)
+            // }
             showActions.value = false
             actionSelected.value = true;
         }
@@ -636,10 +648,14 @@ export default {
             workflow.value.triggers[selectedTriggerIndex.value].triggerActions[activeAction].Action = JSON.stringify({
                 ActionType: data.ActionType, JSONActionParameters: JSON.stringify(data.JSONActionParameters)
             })
+            console.log(workflow.value)
+            console.log(data, activeAction, 'workflowwwwwwwwwww')
         }
 
-        const setActiveAction = index => {
+        const setActiveAction = (item, index) => {
             selectedActionIndex.value = index;
+            console.log(item)
+            console.log(index)
             // workflow.value.triggers[selectedTriggerIndex].JSONActionParameters = selectedTriggers[selectedActionIndex];
         }
 
@@ -818,8 +834,13 @@ export default {
 
         const triggerDescriptions = ref(descriptionHelper(workflow.value.triggers, groups.value, contributionItems.value));
         const onDone = () => {
-            selectedTriggerIndex.value = null;
-            triggerDescriptions.value = descriptionHelper(workflow.value.triggers, groups.value, contributionItems.value)
+            // selectedTriggerIndex.value = null;
+            // // selectedTriggerIndex.value = index;
+            // selectedActionIndex.value = null;
+            // done.value = false;
+            // triggerDescriptions.value = descriptionHelper(workflow.value.triggers, groups.value, contributionItems.value)
+            showTriggers.value = false;
+            done.value = false;
         }
 
         return {

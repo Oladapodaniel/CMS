@@ -192,7 +192,7 @@
                       <div class="font-weight-700 mb-3">
                         Select the group or sub-group you want this group to be a child of.
                       </div>
-                        <!-- <treeview :data-source="complexLocalDataSource"
+                        <treeview :data-source="complexLocalDataSource"
                             :data-text-field="['categoryName', 'subCategoryName']" :checkboxes="false"
                             :drag-and-drop="true"
                             @change="onChange"
@@ -206,7 +206,7 @@
                             @expand="onExpand"
                             @navigate="onNavigate"
                             @select="onSelect">
-                       </treeview> -->
+                       </treeview>
                     </div>
                   </div>
                         

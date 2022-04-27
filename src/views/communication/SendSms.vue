@@ -468,7 +468,6 @@
               aria-labelledby="dropdownMenuButton"
             >
             <div class="px-2">
-            <!-- <input type="text" class="form-control" placeholder="Search sender id" ref="senderRef" v-model="searchSenderText"> -->
             </div>
               <a v-for="(item, index) in searchSenderIDs" :key="index"
                 class="dropdown-item c-pointer small-text font-weight-700 py-2" @click="setIdToSubject(item)"
@@ -1217,8 +1216,7 @@ export default {
         .then((res) => {
           isoCode.value = res.data.isoCode;
           userCountry.value = res.data.country;
-          tenantId.value = store.getters.tenantId
-          console.log(store.getters.currentUser)
+          tenantId.value = res.data.tenantId
         })
         .catch((err) => console.log(err));
     }

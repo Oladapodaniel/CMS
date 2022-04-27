@@ -567,28 +567,28 @@ export default {
       31,
     ]);
 
-    const controlType = ref(
-          [
-            { name:'Text', id: '0'},
-            { name:'DropdownList', id: '1'}, 
-            { name:'CheckBox', id: '2'},
-            { name:'DateTime', id: '3'},
-            { name:'Email', id: '4'},
-            { name:'Image', id: '5'},
-            { name:'Number', id: '6'}
+    // const controlType = ref(
+    //       [
+    //         { name:'Text', id: '0'},
+    //         { name:'DropdownList', id: '1'}, 
+    //         { name:'CheckBox', id: '2'},
+    //         { name:'DateTime', id: '3'},
+    //         { name:'Email', id: '4'},
+    //         { name:'Image', id: '5'},
+    //         { name:'Number', id: '6'}
             
-          ] 
-      )
+    //       ] 
+    //   )
 
-    const entityType = ref(
-          [
-            { name:'Member', id: '0'},
-            { name:'FirstTimers', id: '1'},
-            { name:'NewConverts', id: '2'},
-            { name:'Activity', id: '3'},
-            { name:'EventRegistrationForm', id: '4'},
-          ]
-      )
+    // const entityType = ref(
+    //       [
+    //         { name:'Member', id: '0'},
+    //         { name:'FirstTimers', id: '1'},
+    //         { name:'NewConverts', id: '2'},
+    //         { name:'Activity', id: '3'},
+    //         { name:'EventRegistrationForm', id: '4'},
+    //       ]
+    //   )
 
     const weddingYearsArr = computed(() => {
       const arrOfYears = [];
@@ -1403,7 +1403,7 @@ export default {
       dayOfWedding,
       monthOfWedding,
       yearOfWedding,
-      controlType,
+      // controlType,
       dynamicCustomFields,
       date7
       // callIt

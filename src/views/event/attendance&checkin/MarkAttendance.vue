@@ -81,7 +81,7 @@
         <div class="row pt-2" :class="{ 'kiosk-tb-size': isKioskMode }">
               <Suspense>
                 <template #default>
-                  <div>
+                  <div class="w-100">
                     <TableData :isKiosk="isKioskMode" @refreshed="refreshed" :fetchUsers="fetchUsers" :attendanceId="attendanceID" :searchText="searchText" />
                     <AttendanceCheckinUpdate :contributionItems="contributionItems" :attendanceType="attendanceType" :groupDetail="groupDetail"/>
                   </div>
