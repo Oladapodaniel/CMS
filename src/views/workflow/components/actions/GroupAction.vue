@@ -1,8 +1,8 @@
 <template>
-    <div class="container max-height px-0 scroll-div">
+    <div class="container max-height px-0 scroll-div" v-for="(item, index) in removeOthers" :key="index">
         <div class="row">
             <div class="col-md-12 my-3">
-                <Dropdown :options="['Add to', 'Remove from']" v-model="addOrRemove" @change="handleAddOrRemove" placeholder="Add the person to" class="w-100" />
+                <Dropdown :options="['Add to', 'Remove from']" v-model="item.addOrRemove" @change="handleAddOrRemove" placeholder="Add the person to" class="w-100" />
             </div>
 
             
@@ -11,7 +11,7 @@
             </div> -->
 
             <div class="col-md-12 my-3">
-                <MultiSelect :options="groups" v-model="selectedGroups" optionLabel="name" @change="handleSelectedGroups"  placeholder="Select groups" class="w-100"  display="chip" />
+                <MultiSelect :options="groups" v-model="item.selectedGroups" optionLabel="name" @change="handleSelectedGroups"  placeholder="Select groups" class="w-100"  display="chip" />
             </div>
         </div>
     </div>
@@ -25,19 +25,21 @@ import workflow_util from '../../utlity/workflow_util';
 import { watch } from '@vue/runtime-core';
 export default {
     components: { Dropdown, MultiSelect },
-    props: [ "groups", "selectedActionIndex", "parameters" ],
+    props: [ "groups", "selectedActionIndex", "parameters", "selectSMSList" ],
     setup (props, { emit }) {
         const data = reactive({ ActionType: 4, JSONActionParameters: { } })
 
         const selectedGroups = ref([ ]);
+        const removeOthers = ref([]);
         const handleSelectedGroups = (e) => {
-            const allGroupsIndex = selectedGroups.value.findIndex(i => i.id === "00000000-0000-0000-0000-000000000000");
+            const allGroupsIndex = removeOthers.value[0].selectedGroups.findIndex(i => i.id === "00000000-0000-0000-0000-000000000000");
             data.JSONActionParameters.groups = allGroupsIndex < 0 ? e.value.map(i => i.id).join(',') : "00000000-0000-0000-0000-000000000000";
             emit('updateaction', data, props.selectedActionIndex);
         }
         const addOrRemove = ref('');
         const handleAddOrRemove = (e) => {
-            data.JSONActionParameters.addOrRemove = e.value;
+            data.JSONActionParameters.addOrRemove = removeOthers.value[0].addOrRemove;
+            // data.JSONActionParameters.addOrRemove = e.value;
             emit('updateaction', data, props.selectedActionIndex);
         }
         
@@ -61,6 +63,11 @@ export default {
                 addOrRemove.value = parsedData.value.addOrRemove;
                 data.JSONActionParameters.addOrRemove = parsedData.value.addOrRemove;
             }
+            if (props.selectSMSList) {
+                removeOthers.value = props.selectSMSList.filter((i,index) => {
+                    return index == props.selectedActionIndex
+                })
+            }
         })
 
         return {
@@ -68,6 +75,7 @@ export default {
             handleSelectedGroups,
             handleAddOrRemove,
             addOrRemove,
+            removeOthers
         }
     }
 }

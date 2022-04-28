@@ -22,7 +22,7 @@
                     </div>
                 </div>
 
-                <div class="row mt-4" style="border: 2px solid red">
+                <div class="row mt-4">
                     <div class="col-md-12">
                         <div class="row">
                             <div class="border animate col-4 scroll-div scr-height our-grey-bg" style="height: 400px" :class="{ 'col-md-4': showTriggers || done || selectedTriggerIndex === null, 'col-md-1': !showTriggers &&  workflow.triggers.length > 0 }">
@@ -42,7 +42,7 @@
                                         <div class="row d-flex justify-content-around">
                                             <div class="col-md-12">
                                                 <ul class="list-group w-100">
-                                                <li style="border: 2px solid yellow" class="list-group-item c-pointer" :class="{ 'mb-4': j === triggers.length - 1 }" v-for="(i, j) in triggers" :key="j" @click="selectTrigger(i)">
+                                                <li class="list-group-item c-pointer" :class="{ 'mb-4': j === triggers.length - 1 }" v-for="(i, j) in triggers" :key="j" @click="selectTrigger(i)">
                                                     <h5 class="mb-0">
                                                         <span class="mr-2"><i :class="[ i.icon ]" style="font-size: 1rem"></i></span>
                                                         <span :class="{ 'd-none': !showTriggers &&  workflow.triggers.length > 0 }">{{ i.name }}</span>
@@ -182,7 +182,7 @@
                                                                 :class="{ 'bg-white': selectedAction && i.id === selectedAction.id, 'bg-transparent': selectedAction && i.id !== selectedAction.id, 'd-none': showActions }" 
                                                                 v-for="(i, j) in triggerActions" :key="j" @click="setActiveAction(i, j)"
                                                             >
-                                                                <h5 class="mb-0" style="border: 2px solid purple">
+                                                                <h5 class="mb-0" >
                                                                     <span class="mr-2"><i :class="[ i.icon ]" style="font-size: 1rem"></i></span>
                                                                     <span class="font-weight">{{ i.name }}</span>
                                                                 </h5>
@@ -191,7 +191,7 @@
                                                     </div>
                                                 </div>
                                                 <div class="row" style="overflow-y: scroll;max-height:100%">
-                                                    <div class="col-md-12 trigger-btn-con" :class="{ 'trigger-btn-con-height': showActions }" style="border: 2px solid pink">
+                                                    <div class="col-md-12 trigger-btn-con" :class="{ 'trigger-btn-con-height': showActions }" >
                                                         <div class="row d-flex justify-content-around">
                                                             <div class="col-md-5 card my-2" v-for="(i, j) in actions" :key="j" @click="selectAction(i)">
                                                                 <div class="row card-body c-pointer">
@@ -217,7 +217,7 @@
                                                     </div>
                                                     <div class="col-md-12 trigger-btn-div">
                                                         <button class="btn btn-secondary w-100 trigger-btn d-flex justify-content-center btn-100 font-weight-bold"
-                                                            @click="toggleActions" style="background: red">
+                                                            @click="toggleActions">
                                                             Actions
                                                         </button>
                                                     </div>
@@ -243,6 +243,7 @@
                                                             v-if="selectedAction && selectedAction.actionType === 0"
                                                             :selectedActionIndex="selectedActionIndex"
                                                             :parameters="getAction(0, selectedTriggerIndex)"
+                                                            :selectSMSList="triggerActions"
                                                         />
                                                         <GroupAction 
                                                             v-else-if="selectedAction && selectedAction.actionType === 4" 
@@ -250,12 +251,14 @@
                                                             @updateaction="updateAction"
                                                             :groups="groups"
                                                             :parameters="getAction(4, selectedTriggerIndex)"
+                                                            :selectSMSList="triggerActions"
                                                         />
                                                         <AssignTask
                                                             v-else-if="selectedAction && selectedAction.actionType === 5" 
                                                             :selectedActionIndex="selectedActionIndex"
                                                             @updateaction="updateAction"
                                                             :parameters="getAction(5, selectedTriggerIndex)"
+                                                            :selectSMSList="triggerActions"
                                                         />
                                                         <SMSAction
                                                             @updateaction="updateAction"
