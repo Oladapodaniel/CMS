@@ -647,7 +647,9 @@ export default {
             workflow.value.triggers[selectedTriggerIndex].jsonCondition = data;
         }
 
+        const allSelectedActions = ref([])
         const updateAction = (data, activeAction) => {
+            // allSelectedActions.value[activeAction] = 
             workflow.value.triggers[selectedTriggerIndex.value].triggerActions[activeAction].Action = JSON.stringify({
                 ActionType: data.ActionType, JSONActionParameters: JSON.stringify(data.JSONActionParameters)
             })
@@ -791,7 +793,7 @@ export default {
                     toast.add({severity:'error', summary:'Workflow Saved', detail:'Error getting workflow', life: 2000});
                     return false;
                 }
-
+                console.log(data)
                 name.value = data.name;
                 isActive.value = data.isActive;
                 workflow.value = {
@@ -813,6 +815,7 @@ export default {
                         }
                     })
                 }
+                console.log(workflow.value)
                
                 selectedActionIndex.value = 0;
                 actionSelected.value = true;
@@ -887,6 +890,7 @@ export default {
             getAction,
             onDone,
             triggerDescriptions,
+            allSelectedActions
         }
     }
 }

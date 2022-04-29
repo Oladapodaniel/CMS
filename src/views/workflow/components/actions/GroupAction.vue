@@ -37,7 +37,7 @@ export default {
             emit('updateaction', data, props.selectedActionIndex);
         }
         const addOrRemove = ref('');
-        const handleAddOrRemove = (e) => {
+        const handleAddOrRemove = () => {
             data.JSONActionParameters.addOrRemove = removeOthers.value[0].addOrRemove;
             // data.JSONActionParameters.addOrRemove = e.value;
             emit('updateaction', data, props.selectedActionIndex);

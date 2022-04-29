@@ -48,14 +48,14 @@ export default {
             emit("removetrigger")
         }
 
-        watch(() => {
-            if (props.condition.jsonCondition) {
-                parsedData.value = JSON.parse(props.condition.jsonCondition);
+        // watch(() => {
+        //     if (props.condition.jsonCondition) {
+        //         parsedData.value = JSON.parse(props.condition.jsonCondition);
 
-                selectedGroups.value = props.groups.length > 0 ? workflow_util.getGroups(parsedData.value.groups, props.groups) : [ ];
-                data.groups = parsedData.value.groups;
-            }
-        }) 
+        //         selectedGroups.value = props.groups.length > 0 ? workflow_util.getGroups(parsedData.value.groups, props.groups) : [ ];
+        //         data.groups = parsedData.value.groups;
+        //     }
+        // }) 
 
         return {
             handleSelectedGroups,

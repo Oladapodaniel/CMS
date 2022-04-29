@@ -82,14 +82,14 @@
 
 <script>
 import { reactive, ref } from '@vue/reactivity';
-import { watch } from '@vue/runtime-core';
+import { watchEffect } from '@vue/runtime-core';
 export default {
     props: [ "selectedActionIndex", "parameters", "selectSMSList" ],
     setup (props, { emit }) {
         const data = reactive({ ActionType: 0, JSONActionParameters: { } })
         const person = ref(false);
         const removeOthers = ref([])
-        const handleSendPersonMail = (e) => {
+        const handleSendPersonMail = () => {
             data.JSONActionParameters.person = removeOthers.value[0].person;
             // data.JSONActionParameters.person = e.target.checked;
             emit('updateaction', data, props.selectedActionIndex);
@@ -178,7 +178,7 @@ export default {
         }
 
         const parsedData = ref({ })
-        watch(() => {
+        watchEffect(() => {
             if (props.parameters.Action) {
                 const actn = JSON.parse(props.parameters.Action);
                 parsedData.value = JSON.parse(actn.JSONActionParameters);

@@ -224,6 +224,7 @@ export default {
 
         const parsedData = ref({ })
         watchEffect(() => {
+            console.log(props.parameters, props.selectedActionIndex)
             if (props.parameters.Action) {
                 const actn = JSON.parse(props.parameters.Action);
                 parsedData.value = JSON.parse(actn.JSONActionParameters);
@@ -250,8 +251,9 @@ export default {
                 data.JSONActionParameters.message = parsedData.value.message;
             } else if (props.parameters.action && props.parameters.action.jsonActionParameters) {
                 parsedData.value = JSON.parse(props.parameters.action.jsonActionParameters);
-                
-                person.value = parsedData.value.person;
+                // console.log(parsedData.value)
+                removeOthers.value.push({person: parsedData.value.person});
+                console.log(removeOthers.value)
                 data.JSONActionParameters.person = parsedData.value.person;
 
                 parent.value = parsedData.value.parent;

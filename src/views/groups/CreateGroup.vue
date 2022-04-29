@@ -160,8 +160,8 @@
           </div>
            <div class="row">
               <div class="col-md-12 col-12 d-flex justify-content-end mb-4">
-                <div v-if="false" class="border outline-none font-weight-bold mr-3 c-pointer text-center" style="border-radius: 3rem; padding: 0.5rem 1.25rem;" type="button" data-toggle="collapse" data-target="#collapseExample" aria-expanded="false" aria-controls="collapseExample">
-                      Make this group a sub-group
+                <div class="border outline-none font-weight-bold mr-3 c-pointer text-center" style="border-radius: 3rem; padding: 0.5rem 1.25rem;" type="button" data-toggle="collapse" data-target="#collapseExample" aria-expanded="false" aria-controls="collapseExample">
+                      Add sub-group
                   </div>
                 <div
                   class="border outline-none font-weight-bold mr-3 c-pointer text-center"
@@ -190,10 +190,10 @@
                   <div class="collapse" id="collapseExample">
                     <div class="card card-body">
                       <div class="font-weight-700 mb-3">
-                        Select the group or sub-group you want this group to be a child of.
+                        Select the group or sub-group you want to be a child of this group.
                       </div>
-                        <treeview :data-source="complexLocalDataSource"
-                            :data-text-field="['categoryName', 'subCategoryName']" :checkboxes="false"
+                        <!-- <treeview :data-source="complexLocalDataSource"
+                            :data-text-field="['name', 'name']" :checkboxes="false"
                             :drag-and-drop="true"
                             @change="onChange"
                             @check="onCheck"
@@ -206,7 +206,35 @@
                             @expand="onExpand"
                             @navigate="onNavigate"
                             @select="onSelect">
-                       </treeview>
+                       </treeview> -->
+                       
+                       <div class="row">
+                         <div class="col-4">
+                           <div class="mb-1 font-weight-600">ParentGroup</div>
+                           <input
+                            type="text"
+                            v-model="groupData.name"
+                            class="form-control"
+                            disabled
+                          />
+                         </div>
+                         <div class="col-5">
+                           <div class="mb-1 font-weight-600">Child group</div>
+                           <button class="form-control d-flex justify-content-between align-items-center" @click="setGroupProp">
+                             <span>{{ selectedIntendedSubGroup && Object.keys(selectedIntendedSubGroup).length > 0 ? selectedIntendedSubGroup.name : 'Select group' }}</span>
+                             <i class="pi pi-chevron-down"></i>
+                           </button>
+                         </div>
+                         <button class="default-btn primary-bg border-0 text-white align-self-end" @click="addSubGroup">Add sub group</button>
+                       </div>
+                       <div class="div-card" :class="{ 'd-none' : hideDiv, 'd-block' : !hideDiv }">
+                            <GroupTree
+                              :items="groups"
+                              @group="setSelectedGroup"
+                              />
+                          </div>
+                                <!-- v-if="group.children"
+                          class="node-height" -->
                     </div>
                   </div>
                         
@@ -1055,6 +1083,8 @@ import { TreeView } from '@progress/kendo-treeview-vue-wrapper';
 // import { TreeViewComponent } from '@syncfusion/ej2-vue-navigations';
 import '@progress/kendo-ui';
 import '@progress/kendo-theme-default/dist/all.css'
+import GroupTree from "./component/GroupTree.vue"
+
 
 
 
@@ -1072,7 +1102,9 @@ export default {
     SideBar, 
     emailComponent, 
     ImportToGroup, 
-    'treeview': TreeView,
+    // 'treeview': TreeView,
+    // TreeSelect,
+    GroupTree
   },
   setup() {
      const display = ref(false);
@@ -1109,41 +1141,44 @@ export default {
     const displayPositionArchive = ref(false);
     const searchGroupMemberText = ref("")
     const field = ref();
+    const groups = ref([])
+    const hideDiv = ref(true)
+    const selectedIntendedSubGroup = ref({})
 
-const complexLocalDataSource  = ref(markRaw(new kendo.data.HierarchicalDataSource({
-                data: [
-                    {
-                        categoryName: 'Storage',
-                        subCategories: [
-                            { subCategoryName: 'Wall Shelving', subCategories: [
-                            { subCategoryName: 'Wall Shelving' },
-                            { subCategoryName: 'Floor Shelving' },
-                            { subCategoryName: 'Kids Storage' }
-                        ] },
-                            { subCategoryName: 'Floor Shelving' },
-                            { subCategoryName: 'Kids Storage' }
-                        ]
-                    },
-                    {
-                        categoryName: 'Lights',
-                        subCategories: [
-                            { subCategoryName: 'Ceiling' },
-                            { subCategoryName: 'Table' },
-                            { subCategoryName: 'Floor' }
-                        ]
-                    }
-                ],
-                schema: {
-                    model: {
-                    children: 'subCategories'
-                    }
-                }
-            })))
+const nodes  = computed(() => {
+  if (groups.value && groups.value.length > 0) return groups.value
+    return []
+})
+            // [
+            //         {
+            //             categoryName: 'Storage',
+            //             subCategories: [
+            //                 { subCategoryName: 'Wall Shelving', subCategories: [
+            //                 { subCategoryName: 'Wall Shelving' },
+            //                 { subCategoryName: 'Floor Shelving' },
+            //                 { subCategoryName: 'Kids Storage' }
+            //             ] },
+            //                 { subCategoryName: 'Floor Shelving' },
+            //                 { subCategoryName: 'Kids Storage' }
+            //             ]
+            //         },
+            //         {
+            //             categoryName: 'Lights',
+            //             subCategories: [
+            //                 { subCategoryName: 'Ceiling' },
+            //                 { subCategoryName: 'Table' },
+            //                 { subCategoryName: 'Floor' }
+            //             ]
+            //         }
+            //     ],
+            //     schema: {
+            //         model: {
+            //         children: 'subCategories'
+            //         }
+            //     }
 
     const searchTextTree = ref("");
-    const selectedNode = ref();
-   
-    
+ 
     const closeGroupModal = ref()
   
     onMounted(async () => {
@@ -1780,6 +1815,69 @@ const complexLocalDataSource  = ref(markRaw(new kendo.data.HierarchicalDataSourc
             console.log("Event :: select", ev, payload);
         }
 
+        const visit = (o) => {
+          console.log(o, 'hereeeeeee')
+          let num  = 0
+            for (var i = 0; i<o.length; i++) {        
+              /* do something useful */
+              console.log(o[i].name);
+              o[i].label = o[i].name
+              
+              o[i].key = `${i}-${num++}`
+
+              if (Array.isArray(o[i].children)) {
+                o[i].key = `${i}`
+                visit(o[i].children);
+              }
+            }
+          }
+       
+
+     const getgroups = async () => {
+      try {
+        const data = await groupsService.getGroups();
+        
+          groups.value = data.map((i) => {
+            return {
+              // key:
+              dateCreated: i.dateCreated,
+              description: i.description,
+              name: i.name,
+              label: i.name,
+              id: i.id,
+              tenantID: i.tenantID,
+              peopleInGroupsCount: i.peopleInGroupsCount,
+              children: i.children
+            };
+          });
+           visit(groups.value)
+        console.log(groups.value);
+      } catch (error) {
+        (loading.value = false), console.log(error.response);
+      }
+    };
+    getgroups();
+
+
+    const setSelectedGroup = (payload) => {
+      hideDiv.value = true
+      console.log(payload)
+      selectedIntendedSubGroup.value = payload
+    }
+
+    const addSubGroup = async () => {
+      try {
+        const data = await axios.post(`/api/Group/AddSubGroupToGroup?SuperGroupID=${route.params.groupId}&&SubGroupID=${selectedIntendedSubGroup.value.id}`);
+        
+        console.log(data);
+      } catch (error) {
+        (loading.value = false), console.log(error.response);
+      }
+    };
+
+    const setGroupProp = () => {
+      hideDiv.value = !hideDiv.value
+    }
  
     return {
       groupData,
@@ -1865,9 +1963,17 @@ const complexLocalDataSource  = ref(markRaw(new kendo.data.HierarchicalDataSourc
     onNodeExpanded,
     onCheckboxToggle,
     onToggleParentCheckbox,
-    complexLocalDataSource,
+    // complexLocalDataSource,
     log,
-    onSelect
+    onSelect,
+    groups,
+    nodes,
+    visit,
+    setSelectedGroup,
+    setGroupProp,
+    hideDiv,
+    selectedIntendedSubGroup,
+    addSubGroup
     };
   },
 };
@@ -2200,4 +2306,16 @@ const complexLocalDataSource  = ref(markRaw(new kendo.data.HierarchicalDataSourc
 .fa-ellipsis-v {
   padding: 10px
 }
+
+.div-card {
+    position: absolute;
+    background: white;
+    z-index: 1;
+    width: 100%;
+    top: 136px;
+    box-shadow: 0 0 11px rgba(33, 33, 33, 0.2);
+    height: 400px;
+    overflow: scroll;
+}
+
 </style>
