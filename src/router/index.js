@@ -1327,18 +1327,6 @@ const routes = [
                             import ( /* webpackChunkName: "defaultmessage" */ '@/views/settings/CustomFieldSetup')
                     },
                     {
-                        path: 'customfirsttimersettings',
-                        name: 'CustomFirsttimerSettings',
-                        component: () =>
-                            import ( /* webpackChunkName: "defaultmessage" */ '@/views/settings/CustomFirsttimerSettings')
-                    },
-                    {
-                        path: 'customeventregistration',
-                        name: 'CustomEventRegistration',
-                        component: () =>
-                            import ( /* webpackChunkName: "defaultmessage" */ '@/views/settings/CustomEventRegistration')
-                    },
-                    {
                         path: 'followupstatus',
                         name: 'FollowUpStatus',
                         component: () =>
@@ -1572,6 +1560,14 @@ const routes = [
                             component: () =>
                                 import ( /* webpackChunkName: "peopleempty" */ '../views/pledge/PledgeDefinitionList.vue')
                         },
+                        {
+                            path: 'makepledge',
+                            meta: {
+                                title: 'Churchplus - Pledge',
+                            },
+                            component: () =>
+                                import ( /* webpackChunkName: "peopleempty" */ '../views/pledge/MakePledge.vue')
+                        }
                     ]
             }
 
@@ -1582,14 +1578,6 @@ const routes = [
         component: () =>
             import ( /* webpackChunkName: "pledge" */ '../views/pledge/Index.vue'),
             children: [
-                {
-                    path: 'makepledge',
-                    meta: {
-                        title: 'Churchplus - Pledge',
-                    },
-                    component: () =>
-                        import ( /* webpackChunkName: "peopleempty" */ '../views/pledge/MakePledge.vue')
-                },
                 {
                     path: 'pledgemaking',
                     name: 'PledgeMaking',

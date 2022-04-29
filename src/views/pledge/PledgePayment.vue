@@ -88,8 +88,8 @@
                                 </div>
                         
                                 <div class="col-md-8 d-flex flex-wrap">
-                                    <div class="border col-2 bg-secondary  align-self-center py-1 ">NGN</div>
-                                    <!-- <span class="border">NGN</span> -->
+                                    <!-- <div class="border col-2 bg-secondary  align-self-center py-1 ">NGN</div> -->
+                                    <span class=" bg-secondary col-2 align-self-center py-1 border">NGN</span>
                                     <div class="col-10  m-0 p-0"><input type="text" v-model="paymentAmount" class="form-control" placeholder=" Enter Amount" /></div>
                                     <!-- <CascadeSelect v-model="value" :options="branches" optionLabel="clabel" optionGroupLabel="label" :optionGroupChildren="['children']" class="w-100"  /> -->
                                 </div>
@@ -109,18 +109,19 @@
                                 </div>
                             </div>  
                     </div>
-                    <div class="col-md-9 offset-md-5 mt-4">
-                            <div class="row d-flex justify-content-center ">
-                                <div class="mt-4 col-md-5">
-                                    <button class="default-btn  " data-dismiss="modal" data-toggle="modal" data-target="#PaymentOptionModal" @click="payPledge">
-                                        <i class="pi pi-spin pi-spinner" v-if="loading"></i> Pay Now
-                                    </button>
-                                </div>
-                                <div class="mt-4 col-md-5">
+                    <div class="col-md-8 offset-md-5  mt-4">
+                            <div class="row d-flex flex-wrap justify-content-center ">
+                                <div class="mt-4 col-md-5 col-sm-5 col-sm-5 col-12 text-center ">
                                     <button class="default-btn primary-bg border-0 text-white" data-dismiss="modal" @click="savePayment">
                                         <i class="pi pi-spin pi-spinner" v-if="loading"></i> Save
                                     </button>
                                 </div>
+                                <div class="mt-4 col-md-5 col-sm-5 col-sm-5 col-12 text-center">
+                                    <button class="default-btn  " data-dismiss="modal" data-toggle="modal" data-target="#PaymentOptionModal" @click="payPledge">
+                                        <i class="pi pi-spin pi-spinner" v-if="loading"></i> Pay Now
+                                    </button>
+                                </div>
+                                
                             </div>
                     </div>
                     

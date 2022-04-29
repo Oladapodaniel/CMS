@@ -1,4 +1,5 @@
 <template>
+<!-- {{churchUsers && churchUsers.users ? churchUsers.users : ''}}{{searchText}} -->
   <div> 
     <div class="container">
       <div class="row d-md-flex justify-content-between mt-3 mb-4">
@@ -22,7 +23,44 @@
       </div>
         
  
- <div class="row header1 mt-5">
+ <div class="row table mt-5">
+  <div class="col-12 px-0" id="table">
+    <div class="top-con" id="ignore2">
+        <div class="table-top">
+          <div class="col-4">
+            <p @click="toggleSearch" class="search-text w-100 mt-2 d-flex justify-content-center">
+              <i class="pi pi-search"></i>SEARCH
+            </p>
+          </div>
+
+          <div class="search d-flex ml-2 mr-3"
+          >
+            <label
+              class="label-search d-flex"
+              :class="{
+                'show-search': searchIsVisible,
+                'hide-search': !searchIsVisible,
+              }"
+            >
+              <input
+                type="text"
+                placeholder="Search..."
+                v-model="searchText"
+              />
+              <!-- <span class="empty-btn">x</span> -->
+              <span class="empty-btn"
+                    @click="clearInput">
+                    <i class="pi pi-times"></i
+            ></span>
+              <span class="search-btn"
+              @click="removeSearchText">
+                <i class="pi pi-search"></i>
+              </span>
+            </label>
+          </div>
+        </div>
+    </div>
+  </div>
    <div class="col-md-12">
      <div class="border-0 bg-danger">
       <div class="row table-header-row py-2  small-text">
@@ -30,7 +68,7 @@
           <span class="py-2 font-weight-bold">Name</span>
         </div> -->
           <div class="col-md-4">
-          <span class="py-3 font-weight-bold">Username</span>
+          <span class="py-3 font-weight-bold">Email</span>
         </div>
         <!-- <div class="col-md-3">
           <span class="py-2 font-weight-bold">Phone</span>
@@ -48,20 +86,20 @@
  </div>
    </div>
    <div class="col-md-12">
-      <div class="row small-text tr-border-bottom py-1 header2" v-for="(churchMem, index) in churchUsers.users" :key="index">
+      <div class="row small-text tr-border-bottom py-1 header2" v-for="(churchMem, index) in searchChurchUser" :key="index">
             <!-- <div
               class="col-md-3 d-flex justify-content-between"
             >
               <span class="py-2 hidden-header">NAME</span>
                <span class="py-2" v-if="churchMem.name && churchMem.name.length<20"> <router-link class="route" :to="{path:'/tenant/settings/invitenewuser', query:{ email:churchMem.email } }" >{{ churchMem.name}}</router-link></span>
-              <span v-else v-tooltip.top="`${churchMem.name}`" class="route"> <router-link  class="route" :to="{path:'/tenant/settings/invitenewuser', query:{ email:churchMem.email } }" >{{ churchMem.name && churchMem.name.substring(0,20)+ "..."}}</router-link></span>
+              <span v-else v-tooltip.top="`${churchMem.name}`" class="route"> <router-link  class="route" :to="{path:'/tenant/settings/invitenewuser', query:{ email:churchMem.email } }" >{{ churchMem.name && churchMem.name.substring(0,10)+ "..."}}</router-link></span>
             </div> -->
              <div
               class="col-md-4 d-flex justify-content-between align-items-center"
             >
-              <span class="py-2 hidden-header">USERNAME</span>
+              <span class="py-2 hidden-header">EMAIL</span>
               <span class="py-2 text-xs-left"  v-if=" churchMem.email && churchMem.email.length<10"> <router-link class="route" :to="{path:'/tenant/settings/invitenewuser', query:{ email:churchMem.email } }">{{ churchMem.email}}</router-link></span>
-              <span v-else v-tooltip.top="`${churchMem.email}`"> <router-link class="route" :to="{path:'/tenant/settings/invitenewuser', query:{ email:churchMem.email } }" >{{ churchMem.email && churchMem.email.substring(0,10)+ "..."}} </router-link></span>
+              <span v-else v-tooltip.top="`${churchMem.email}`"> <router-link class="route" :to="{path:'/tenant/settings/invitenewuser', query:{ email:churchMem.email } }" >{{ churchMem.email && churchMem.email}} </router-link></span>
             </div>
              <!-- <div
               class="col-md-4 d-flex justify-content-between align-items-center"
@@ -167,12 +205,25 @@ export default {
     return{
       getCurrentUser: store.getters.currentUser,
       churchProfile: '',
+      searchText: '',
       churchUsers: [],
       churchNames: {},
       loading: false,
+      searchIsVisible: false
     }
   },
+
   computed:{
+
+    searchChurchUser(){
+      if (this.churchUsers && this.churchUsers.users && this.churchUsers.users.length > 0 && this.searchText == '' ) return this.churchUsers.users;
+       this.churchUsers && this.churchUsers.users ? this.churchUsers.users.forEach((i, index) => {
+         if (i.email == null) {
+           this.churchUsers.users.splice(index,1)
+         }
+       }) : []
+      return this.churchUsers && this.churchUsers.users ? this.churchUsers.users.filter(i => i.email.toLowerCase().includes(this.searchText.toLowerCase())) : []
+    }
     // churchProfile(){
     //   if(!this.getCurrentUser || !this.getCurrentUser.churchName) return "";
     //   return this.getCurrentUser.churchName;
@@ -180,6 +231,17 @@ export default {
 
   },
   methods:{
+
+      toggleSearch (){
+       this.searchIsVisible = !this.searchIsVisible;
+     },
+      removeSearchText (){
+        this.searchText = '';
+    },
+      clearInput (){
+        this.searchText = '';
+    },
+
     async churchUser(){
       this.loading = true
       try{
@@ -295,6 +357,15 @@ export default {
 
 }
 
+.table {
+  width: 100% !important;
+  box-shadow: 0px 1px 4px #02172e45;
+  border: 1px solid #dde2e6;
+  border-radius: 30px;
+  text-align: left;
+  margin-bottom: auto !important;
+}
+
 .route:hover{
   color: #136acd!important;
 
@@ -316,6 +387,18 @@ export default {
   cursor: pointer;
 
 }
+
+.table-top {
+  font-weight: 800;
+  font-size: 12px;
+  display: flex;
+  justify-content: flex-end;
+}
+.table-top label:hover,
+.table-top p:hover {
+  cursor: pointer;
+}
+
 .header2:hover{
   background-color: #eee;
 }
@@ -361,4 +444,19 @@ color: white!important;
 }
   
 }
+
+@media screen and (max-width: 1024px) {
+  .my-con {
+    flex-direction: column;
+  }
+  .table {
+    width: 98%;
+    margin: 24px auto;
+  }
+  .summary {
+    width: 98%;
+    margin: auto;
+  }
+}
+
 </style>
