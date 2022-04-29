@@ -1426,8 +1426,6 @@ import Attendancecheckin from "../event/attendance&checkin/AttendanceAndCheckinL
 // import Attendancecheckin from "../event/attendance&checkin/MarkAttendance.vue"
 import attendanceservice from "../../services/attendance/attendanceservice";
 import ImportToGroup from "../people/ImportInstruction";
-import "@progress/kendo-ui";
-import "@progress/kendo-theme-default/dist/all.css";
 import GroupTree from "./component/GroupTree.vue";
 
 export default {
