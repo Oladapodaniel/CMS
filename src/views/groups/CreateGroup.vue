@@ -1,70 +1,80 @@
 <template>
   <div class="container-wide container-top" @click="closeDropdownIfOpen">
     <div class="container-fluid">
-        <div class="row mt-3 botom">
-            <!-- <div class="col-12"> -->
-                <div class="col-12 col-sm-6 c-pointer "  @click="groupDetail">
-                    <div  class="font-weight-bold h5 col-12  ">Group Detail</div>
-                    <div class="" :class="{ 'baseline' : showGroup, 'hide-base' : !showGroup }"></div>
-                </div>
-                <div class="col-12 col-sm-6  c-pointer" @click="displayView">
-                    <div class="font-weight-bold h5 col-12  ">Attendance & Checkin</div>
-                    <div class="" :class="{ 'baselinetwo' : showAttendanceCheckin, 'hide-basetwo' : !showAttendanceCheckin }"></div>
-                </div>
-                <!-- <div class="hr"><hr /></div> -->
-            <!-- </div> -->
-            
+      <div class="row mt-3 botom">
+        <!-- <div class="col-12"> -->
+        <div class="col-12 col-sm-6 c-pointer" @click="groupDetail">
+          <div class="font-weight-bold h5 col-12">Group Detail</div>
+          <div
+            class=""
+            :class="{ baseline: showGroup, 'hide-base': !showGroup }"
+          ></div>
         </div>
-        <div class="row mt-3">
-             <div class="col-12" v-if="showAttendanceCheckin">
-                <!-- <div><Attendance/></div>  -->
-            <!-- <div class="col-sm-12"> -->
-            <!-- </div> -->
-                <div>
-                  <div >
-                    <div class="main-body">
-                      <div class=" row">
-                      <div class="top my-3 col-sm-12 col-md-12 d-flex flex-wrap pl-0">
-                        <div class="events col-md-6 ">
-                          <div> Attendance & Check-in </div>
-                        </div>
-                        <div class="actions col-md-6 d-flex justify-content-md-end">
-                            <router-link :to="{ name: 'AddCheckin' }" v-if="showAttendanceCheckin">
-                              <button class="buttonn add-person-btn">
-                                Add New Attendance
-                              </button>
-                            </router-link>
-                        </div>
-                      </div>
+        <div class="col-12 col-sm-6 c-pointer" @click="displayView">
+          <div class="font-weight-bold h5 col-12">Attendance & Checkin</div>
+          <div
+            class=""
+            :class="{
+              baselinetwo: showAttendanceCheckin,
+              'hide-basetwo': !showAttendanceCheckin,
+            }"
+          ></div>
+        </div>
+        <!-- <div class="hr"><hr /></div> -->
+        <!-- </div> -->
+      </div>
+      <div class="row mt-3">
+        <div class="col-12" v-if="showAttendanceCheckin">
+          <!-- <div><Attendance/></div>  -->
+          <!-- <div class="col-sm-12"> -->
+          <!-- </div> -->
+          <div>
+            <div>
+              <div class="main-body">
+                <div class="row">
+                  <div
+                    class="top my-3 col-sm-12 col-md-12 d-flex flex-wrap pl-0"
+                  >
+                    <div class="events col-md-6">
+                      <div>Attendance & Check-in</div>
                     </div>
-                    <hr class="hr" />
+                    <div class="actions col-md-6 d-flex justify-content-md-end">
+                      <router-link
+                        :to="{ name: 'AddCheckin' }"
+                        v-if="showAttendanceCheckin"
+                      >
+                        <button class="buttonn add-person-btn">
+                          Add New Attendance
+                        </button>
+                      </router-link>
+                    </div>
+                  </div>
+                </div>
+                <hr class="hr" />
 
-                      <!-- <div class="row">
+                <!-- <div class="row">
                           <div class="col-md-12">
                               <router-view></router-view>
                           </div>
                       </div> -->
-                  </div>
-                    <Attendancecheckin :list="attendanceData" :totalItems="totalItems" />
-                    <!-- <Attendancecheckin :attendanceID="selectedAttendanceId"  /> -->
-                  </div>
-                </div>  
+              </div>
+              <Attendancecheckin
+                :list="attendanceData"
+                :totalItems="totalItems"
+              />
+              <!-- <Attendancecheckin :attendanceID="selectedAttendanceId"  /> -->
             </div>
+          </div>
         </div>
-        
+      </div>
+
       <div class="row mt-3" v-if="showGroup">
         <div class="col-md-12">
           <h2 v-if="!route.params.groupId">Add Group</h2>
           <h2 v-else>Update Group</h2>
-          <!-- <emailComponent :selectedGroupMembers="selectedGroupMembers" /> -->
-          <!-- <smsComponent :phoneNumbers="contacts"/> -->
           <Toast />
           <ConfirmDialog />
         </div>
-        <!-- <div class=" col-md-4 mt-2 ">
-          <router-link class=" text-decoration-none text-white font-weight-bold primary-btn  default-btn primary-bg border-0 " :to="{ name: 'MarkAttendance', query: { id: route.query.id }, }"
-            >Attendance Checkin</router-link>
-        </div> -->
         <div class="col-md-12 my-3 px-0">
           <hr class="hr" />
         </div>
@@ -127,120 +137,207 @@
               <div class="row pb-2">
                 <div class="col-md-8 col-lg-7">
                   <div class="row">
-                    <div class="col-md-4 text-lg-right">
-                    </div>
+                    <div class="col-md-4 text-lg-right"></div>
                     <div class="col-md-8">
-                <div class="row">
-                  <div class="col-12 d-flex" v-if="false">
-                    <!-- <div class="mt-n3"> -->
-                      <Checkbox :binary="true" />
-                      <label for="description" class="font-weight-600 ml-3">
-                        Make Public
-                      </label>
-                    <!-- </div> -->
-                  </div>
+                      <div class="row">
+                        <div class="col-12 d-flex" v-if="false">
+                          <!-- <div class="mt-n3"> -->
+                          <Checkbox :binary="true" />
+                          <label for="description" class="font-weight-600 ml-3">
+                            Make Public
+                          </label>
+                          <!-- </div> -->
+                        </div>
 
-                   <div class="col-12 d-flex mt-2">
-                    <!-- <div class="mt-n3"> -->
-                      <Checkbox v-model="groupData.isMobileGroup" :binary="true" :disabled="groupData.isMobileGroup"/>
+                        <div class="col-12 d-flex mt-2">
+                          <!-- <div class="mt-n3"> -->
+                          <Checkbox
+                            v-model="groupData.isMobileGroup"
+                            :binary="true"
+                            :disabled="groupData.isMobileGroup"
+                          />
 
-                      <label for="description" class="font-weight-600 ml-3">
-                        Enable on Mobile App
-                      </label>
-                    <!-- </div> -->
-                  </div>
-                </div>
+                          <label for="description" class="font-weight-600 ml-3">
+                            Enable on Mobile App
+                          </label>
+                          <!-- </div> -->
+                        </div>
+                      </div>
                     </div>
                   </div>
                 </div>
               </div>
-
-
             </div>
           </div>
-           <div class="row">
-              <div class="col-md-12 col-12 d-flex justify-content-end mb-4">
-                <div class="border outline-none font-weight-bold mr-3 c-pointer text-center" style="border-radius: 3rem; padding: 0.5rem 1.25rem;" type="button" data-toggle="collapse" data-target="#collapseExample" aria-expanded="false" aria-controls="collapseExample">
-                      Add sub-group
-                  </div>
-                <div
-                  class="border outline-none font-weight-bold mr-3 c-pointer text-center"
-                  :data-toggle="route.params.groupId ? 'modal' : ''"
-                  data-target="#importgroup"
-                  ref="modalBtn"
-                  style="border-radius: 3rem; padding: 0.5rem 1.25rem;"
-                  @click="importMember"
-                >
-                  Import
-                </div>
-                <button
-                  class="default-btn outline-none primary-text font-weight-bold border-0 c-pointer"
-                  data-toggle="modal"
-                  data-target="#exampleModal"
-                  ref="modalBtn"
-                >
-                  Add member
-                </button>
+          <div class="row">
+            <div class="col-md-12 col-12 d-flex justify-content-end mb-4">
+              <div
+                class="
+                  border
+                  outline-none
+                  font-weight-bold
+                  mr-3
+                  c-pointer
+                  text-center
+                "
+                style="border-radius: 3rem; padding: 0.5rem 1.25rem"
+                type="button"
+                data-toggle="collapse"
+                data-target="#collapseExample"
+                aria-expanded="false"
+                aria-controls="collapseExample"
+              >
+                Sub-group
               </div>
+              <div
+                class="
+                  border
+                  outline-none
+                  font-weight-bold
+                  mr-3
+                  c-pointer
+                  text-center
+                "
+                :data-toggle="route.params.groupId ? 'modal' : ''"
+                data-target="#importgroup"
+                ref="modalBtn"
+                style="border-radius: 3rem; padding: 0.5rem 1.25rem"
+                @click="importMember"
+              >
+                Import
+              </div>
+              <button
+                class="
+                  default-btn
+                  outline-none
+                  primary-text
+                  font-weight-bold
+                  border-0
+                  c-pointer
+                "
+                data-toggle="modal"
+                data-target="#exampleModal"
+                ref="modalBtn"
+              >
+                Add member
+              </button>
             </div>
+          </div>
 
-            <div class="row mb-4">
-              <div class="col-12">
+          <div class="row mb-4">
+            <div class="col-12">
               <div>
-                  <div class="collapse" id="collapseExample">
-                    <div class="card card-body">
-                      <div class="font-weight-700 mb-3">
-                        Select the group or sub-group you want to be a child of this group.
-                      </div>
-                        <!-- <treeview :data-source="complexLocalDataSource"
-                            :data-text-field="['name', 'name']" :checkboxes="false"
-                            :drag-and-drop="true"
-                            @change="onChange"
-                            @check="onCheck"
-                            @collapse="onCollapse"
-                            @dataBound="onDataBound"
-                            @drag="onDrag"
-                            @dragStart="onDragStart"
-                            @dragEnd="onDragEnd"
-                            @drop="onDrop"
-                            @expand="onExpand"
-                            @navigate="onNavigate"
-                            @select="onSelect">
-                       </treeview> -->
-                       
-                       <div class="row">
-                         <div class="col-4">
-                           <div class="mb-1 font-weight-600">ParentGroup</div>
-                           <input
-                            type="text"
-                            v-model="groupData.name"
-                            class="form-control"
-                            disabled
-                          />
-                         </div>
-                         <div class="col-5">
-                           <div class="mb-1 font-weight-600">Child group</div>
-                           <button class="form-control d-flex justify-content-between align-items-center" @click="setGroupProp">
-                             <span>{{ selectedIntendedSubGroup && Object.keys(selectedIntendedSubGroup).length > 0 ? selectedIntendedSubGroup.name : 'Select group' }}</span>
-                             <i class="pi pi-chevron-down"></i>
-                           </button>
-                         </div>
-                         <button class="default-btn primary-bg border-0 text-white align-self-end" @click="addSubGroup">Add sub group</button>
-                       </div>
-                       <div class="div-card" :class="{ 'd-none' : hideDiv, 'd-block' : !hideDiv }">
-                            <GroupTree
-                              :items="groups"
-                              @group="setSelectedGroup"
+                <div class="collapse" id="collapseExample">
+                  <div class="card card-body">
+                    <div class="row">
+                      <div class="col-12">
+                        <div
+                          class="
+                            mb-3
+                            border
+                            outline-none
+                            font-weight-bold
+                            mr-3
+                            c-pointer
+                            text-center
+                          "
+                          style="
+                            border-radius: 3rem;
+                            padding: 0.5rem 1.25rem;
+                            width: 167px;
+                          "
+                          type="button"
+                          data-toggle="collapse"
+                          data-target="#addsubgroup"
+                          aria-expanded="false"
+                          aria-controls="collapseExample"
+                        >
+                          Add sub-group
+                        </div>
+
+                        <div class="collapse" id="addsubgroup">
+                          <div class="card card-body">
+                            <div class="font-weight-700 mb-3">
+                              Select the group or sub-group you want to be a
+                              child of this group.
+                            </div>
+
+                            <div class="row">
+                              <div class="col-4">
+                                <div class="mb-1 font-weight-600">
+                                  ParentGroup
+                                </div>
+                                <input
+                                  type="text"
+                                  v-model="groupData.name"
+                                  class="form-control"
+                                  disabled
+                                />
+                              </div>
+                              <div class="col-5">
+                                <div class="mb-1 font-weight-600">
+                                  Child group
+                                </div>
+                                <button
+                                  class="
+                                    form-control
+                                    d-flex
+                                    justify-content-between
+                                    align-items-center
+                                  "
+                                  @click="setGroupProp"
+                                >
+                                  <span>{{
+                                    selectedIntendedSubGroup &&
+                                    Object.keys(selectedIntendedSubGroup)
+                                      .length > 0
+                                      ? selectedIntendedSubGroup.name
+                                      : "Select group"
+                                  }}</span>
+                                  <i class="pi pi-chevron-down"></i>
+                                </button>
+                              </div>
+                              <button
+                                class="
+                                  default-btn
+                                  primary-bg
+                                  border-0
+                                  text-white
+                                  align-self-end
+                                "
+                                @click="addSubGroup"
+                              >
+                                Add sub group
+                              </button>
+                            </div>
+                            <div
+                              class="div-card"
+                              :class="{
+                                'd-none': hideDiv,
+                                'd-block': !hideDiv,
+                              }"
+                            >
+                              <GroupTree
+                                :items="getAllGroup"
+                                @group="setSelectedGroup"
+                                :addGroupValue="true"
                               />
+                            </div>
                           </div>
-                                <!-- v-if="group.children"
-                          class="node-height" -->
+                        </div>
+                      </div>
+                      <div class="col-12">
+                        <GroupTree
+                          :items="groupData.children"
+                          @group="setSelectedGroup"
+                        />
+                      </div>
                     </div>
                   </div>
-                        
+                </div>
+              </div>
             </div>
-            </div>
-            </div>
+          </div>
 
           <div class="row pb-4 bottom-box group-form">
             <div class="col-md-12">
@@ -252,17 +349,23 @@
                 </div>
                 <div class="col-md-6">
                   <div class="input-group">
-                        <input type="text" class="form-control w-25"  placeholder="Search for group member by name" v-model="searchGroupMemberText">
-                        <div class="input-group-append">
-                            <span class="input-group-text"><i class="pi pi-search"></i></span>
-                        </div>
+                    <input
+                      type="text"
+                      class="form-control w-25"
+                      placeholder="Search for group member by name"
+                      v-model="searchGroupMemberText"
+                    />
+                    <div class="input-group-append">
+                      <span class="input-group-text"
+                        ><i class="pi pi-search"></i
+                      ></span>
                     </div>
+                  </div>
                 </div>
               </div>
 
               <div class="row py-2">
                 <div class="col-md-12">
-
                   <!-- Add Member To Group Modal -->
                   <div
                     class="modal fade"
@@ -286,7 +389,6 @@
                             class="close"
                             data-dismiss="modal"
                             aria-label="Close"
-                            
                           >
                             <span aria-hidden="true">&times;</span>
                           </button>
@@ -296,7 +398,13 @@
                             <div class="col-md-12">
                               <div class="row my-3">
                                 <div
-                                  class="col-md-4 text-right d-flex align-items-center justify-content-md-end"
+                                  class="
+                                    col-md-4
+                                    text-right
+                                    d-flex
+                                    align-items-center
+                                    justify-content-md-end
+                                  "
                                 >
                                   <label class="font-weight-600"
                                     >Select Members</label
@@ -306,10 +414,15 @@
                                   <div class="row">
                                     <div
                                       class="col-md-12 pl-0 grey-rounded-border"
-
                                     >
                                       <ul
-                                        class="d-flex flex-wrap px-1 mb-0 m-dd-item"
+                                        class="
+                                          d-flex
+                                          flex-wrap
+                                          px-1
+                                          mb-0
+                                          m-dd-item
+                                        "
                                         @click="() => memberSelectInput.focus()"
                                       >
                                         <li
@@ -321,7 +434,12 @@
                                             member, indx
                                           ) in selectedMembers"
                                           :key="indx"
-                                          class="email-destination d-flex justify-content-between m-1"
+                                          class="
+                                            email-destination
+                                            d-flex
+                                            justify-content-between
+                                            m-1
+                                          "
                                         >
                                           <span>{{ member.name }}</span>
                                           <span
@@ -333,15 +451,18 @@
                                         <li
                                           style="list-style: none"
                                           class="m-dd-item"
-
                                         >
                                           <input
                                             type="text"
-                                            class="border-0 m-dd-item text outline-none"
+                                            class="
+                                              border-0
+                                              m-dd-item
+                                              text
+                                              outline-none
+                                            "
                                             ref="memberSelectInput"
                                             @input="searchForMembers"
                                             autocomplete="off"
-
                                             :class="{
                                               'w-100':
                                                 selectedMembers.length === 0,
@@ -358,21 +479,33 @@
                                                 : 'Select from members'
                                             }`"
                                             @blur="() => (inputBlurred = true)"
-
                                           />
                                         </li>
                                       </ul>
                                       <div
-                                        class="col-md-12 px-0 select-groups-dropdown m-dd-item"
+                                        class="
+                                          col-md-12
+                                          px-0
+                                          select-groups-dropdown
+                                          m-dd-item
+                                        "
                                         v-if="memberListShown"
-
                                       >
                                         <div
-                                          class="dropdownmenu pt-0 w-100 m-dd-item"
-
+                                          class="
+                                            dropdownmenu
+                                            pt-0
+                                            w-100
+                                            m-dd-item
+                                          "
                                         >
                                           <a
-                                            class="dropdown-item px-1 c-pointer m-dd-item"
+                                            class="
+                                              dropdown-item
+                                              px-1
+                                              c-pointer
+                                              m-dd-item
+                                            "
                                             v-for="(
                                               member, index
                                             ) in memberSearchResults"
@@ -391,13 +524,8 @@
 
 
                                           </p>  -->
-                                          <p
-
-                                            class="bg-secondary p-1 mb-0  "
-
-                                          >
+                                          <p class="bg-secondary p-1 mb-0">
                                             Enter 3 or more characters
-
                                           </p>
                                           <!-- v-if="
                                                   wardSearchString.length < 3 &&
@@ -406,7 +534,13 @@
 
                                           <p
                                             aria-disabled="true"
-                                            class="btn btn-default p-1 mb-0 disable m-dd-item"
+                                            class="
+                                              btn btn-default
+                                              p-1
+                                              mb-0
+                                              disable
+                                              m-dd-item
+                                            "
                                             v-if="
                                               memberSearchResults.length ===
                                                 0 &&
@@ -417,32 +551,57 @@
                                             No match found
                                           </p>
                                           <p
-                                            class="btn btn-default p-1 mb-0 disable m-dd-item"
+                                            class="
+                                              btn btn-default
+                                              p-1
+                                              mb-0
+                                              disable
+                                              m-dd-item
+                                            "
                                             v-if="
                                               loading && searchText.length >= 3
                                             "
                                           >
                                             <i
-                                              class="fas fa-circle-notch fa-spin m-dd-item"
+                                              class="
+                                                fas
+                                                fa-circle-notch fa-spin
+                                                m-dd-item
+                                              "
                                             ></i>
                                           </p>
                                           <a
-                                            class="font-weight-bold small-text d-flex justify-content-center py-2  text-decoration-none primary-text c-pointer"
-                                            style="border-top: 1px solid #002044; color: #136acd"
+                                            class="
+                                              font-weight-bold
+                                              small-text
+                                              d-flex
+                                              justify-content-center
+                                              py-2
+                                              text-decoration-none
+                                              primary-text
+                                              c-pointer
+                                            "
+                                            style="
+                                              border-top: 1px solid #002044;
+                                              color: #136acd;
+                                            "
                                             @click="showAddMemberForm"
                                             data-dismiss="modal"
-
-                                            >
+                                          >
                                             <i
-                                                class="pi pi-plus-circle mr-2 primary-text d-flex align-items-center"
-                                                style="color: #136acd"
+                                              class="
+                                                pi pi-plus-circle
+                                                mr-2
+                                                primary-text
+                                                d-flex
+                                                align-items-center
+                                              "
+                                              style="color: #136acd"
                                             ></i>
-                                                Add new member
-                                            </a>
+                                            Add new member
+                                          </a>
                                         </div>
-
                                       </div>
-
                                     </div>
                                   </div>
                                 </div>
@@ -451,7 +610,13 @@
 
                               <div class="row mb-3">
                                 <div
-                                  class="col-md-4 text-right d-flex align-items-center justify-content-md-end"
+                                  class="
+                                    col-md-4
+                                    text-right
+                                    d-flex
+                                    align-items-center
+                                    justify-content-md-end
+                                  "
                                 >
                                   <label class="font-weight-600"
                                     >Position in group</label
@@ -466,25 +631,39 @@
                                   />
                                 </div>
                               </div>
-                                          <!-- check box start -->
+                              <!-- check box start -->
                               <div class="row ml-4">
-                                  <div class="col-4 d-flex mt-2" v-if="true">
-                                    <!-- <div class="mt-n3"> -->
-                                      <label for="description" class="font-weight-600">
-                                        Is Group Leader
-                                      </label>
-                                      <Checkbox v-model="isGroupLeader" :binary="true" class="ml-3"/>
-                                    <!-- </div> -->
-                                  </div>
+                                <div class="col-4 d-flex mt-2" v-if="true">
+                                  <!-- <div class="mt-n3"> -->
+                                  <label
+                                    for="description"
+                                    class="font-weight-600"
+                                  >
+                                    Is Group Leader
+                                  </label>
+                                  <Checkbox
+                                    v-model="isGroupLeader"
+                                    :binary="true"
+                                    class="ml-3"
+                                  />
+                                  <!-- </div> -->
+                                </div>
 
-                                  <div class="col-4 d-flex mt-2">
-                                    <!-- <div class="mt-n3"> -->
-                                      <label for="description" class="font-weight-600">
-                                        Enable Login
-                                      </label>
-                                      <Checkbox v-model="enableLogin" :binary="true" class="ml-3"/>
-                                    <!-- </div> -->
-                                  </div>
+                                <div class="col-4 d-flex mt-2">
+                                  <!-- <div class="mt-n3"> -->
+                                  <label
+                                    for="description"
+                                    class="font-weight-600"
+                                  >
+                                    Enable Login
+                                  </label>
+                                  <Checkbox
+                                    v-model="enableLogin"
+                                    :binary="true"
+                                    class="ml-3"
+                                  />
+                                  <!-- </div> -->
+                                </div>
                               </div>
                               <!-- check box end -->
                             </div>
@@ -500,7 +679,13 @@
                           </button>
 
                           <button
-                            class="primary-btn default-btn primary-bg border-0 outline-none"
+                            class="
+                              primary-btn
+                              default-btn
+                              primary-bg
+                              border-0
+                              outline-none
+                            "
                             @click="addSelectedMembersToGroup"
                             :data-dismiss="modalStatus"
                           >
@@ -510,8 +695,7 @@
                       </div>
                     </div>
                   </div>
-                  
-                  
+
                   <!-- Import Member To Group Modal -->
                   <div
                     class="modal fade"
@@ -521,7 +705,11 @@
                     aria-labelledby="importgroupModalLabel"
                     aria-hidden="true"
                   >
-                    <div class="modal-dialog modal-lg modal-dialog-centered" role="document" ref="modal">
+                    <div
+                      class="modal-dialog modal-lg modal-dialog-centered"
+                      role="document"
+                      ref="modal"
+                    >
                       <div class="modal-content pr-2">
                         <div class="modal-header py-3">
                           <h5
@@ -543,7 +731,7 @@
                         <div class="modal-body">
                           <div class="row">
                             <div class="col-md-12">
-                              <ImportToGroup @uploadtogroup="uploadToGroup"/>
+                              <ImportToGroup @uploadtogroup="uploadToGroup" />
                             </div>
                           </div>
                         </div>
@@ -676,7 +864,14 @@
                     data-target="#myModal"
                   >
                     <i
-                      class="pi pi-reply text-primary c-pointer d-flex align-items-center mr-4"
+                      class="
+                        pi pi-reply
+                        text-primary
+                        c-pointer
+                        d-flex
+                        align-items-center
+                        mr-4
+                      "
                       style="font-size: 20px; font-weight: bold"
                       v-tooltip.top="'move to group'"
                     >
@@ -690,22 +885,37 @@
                     data-target="#myModal1"
                   >
                     <i
-                      class="pi pi-copy text-primary c-pointer d-flex align-items-center mr-4"
+                      class="
+                        pi pi-copy
+                        text-primary
+                        c-pointer
+                        d-flex
+                        align-items-center
+                        mr-4
+                      "
                       style="font-size: 20px; font-weight: bold"
                       v-tooltip.right="'copy to group'"
                     >
                     </i>
                   </a>
-                  <i class="fa fa-file-archive-o text-primary c-pointer mr-4" v-tooltip.top="'Archive member(s)'" @click="openPositionArchive('center')" aria-hidden="true" style="font-size: 20px"></i>
-                  <a href="#" @click="sendMarkedMemberSms"><i class="pi pi-comment"></i></a>
-                  <a href="#" @click="sendMarkedMemberEmail" class="pl-4"><i class="pi pi-envelope"></i></a>
+                  <i
+                    class="fa fa-file-archive-o text-primary c-pointer mr-4"
+                    v-tooltip.top="'Archive member(s)'"
+                    @click="openPositionArchive('center')"
+                    aria-hidden="true"
+                    style="font-size: 20px"
+                  ></i>
+                  <a href="#" @click="sendMarkedMemberSms"
+                    ><i class="pi pi-comment"></i
+                  ></a>
+                  <a href="#" @click="sendMarkedMemberEmail" class="pl-4"
+                    ><i class="pi pi-envelope"></i
+                  ></a>
                 </div>
               </div>
 
               <div class="row table-header-row py-2">
-                <div class="col-md-1" v-if="groupMembers.length > 0">
-                  
-                </div>
+                <div class="col-md-1" v-if="groupMembers.length > 0"></div>
                 <div class="col-md-3">
                   <span class="py-2 font-weight-bold">NAME</span>
                 </div>
@@ -729,7 +939,12 @@
                 <div class="col-md-12">
                   <div class="row">
                     <div
-                      class="col-md-12 d-flex align-items-center justify-content-center"
+                      class="
+                        col-md-12
+                        d-flex
+                        align-items-center
+                        justify-content-center
+                      "
                     >
                       <i class="fas fa-circle-notch fa-spin py-2"></i>
                     </div>
@@ -749,7 +964,12 @@
                 <div class="col-md-12">
                   <div class="row">
                     <div
-                      class="col-md-12 d-flex align-items-center justify-content-center"
+                      class="
+                        col-md-12
+                        d-flex
+                        align-items-center
+                        justify-content-center
+                      "
                     >
                       <p class="text-center font-weight-bold py-2">
                         No members yet
@@ -764,21 +984,26 @@
                 </div>
               </div>
 
-              <div class="row" style="border-bottom: 1px solid #00204412;" v-if="groupMembers.length > 0">
+              <div
+                class="row"
+                style="border-bottom: 1px solid #00204412"
+                v-if="groupMembers.length > 0"
+              >
                 <input
-                    type="checkbox"
-                    @change="markAllItem"
-                    :checked="marked.length === groupMembers.length"
-                    id="all"
-                    name="all"
-                    class="py-2 ml-3"
-                  />
+                  type="checkbox"
+                  @change="markAllItem"
+                  :checked="marked.length === groupMembers.length"
+                  id="all"
+                  name="all"
+                  class="py-2 ml-3"
+                />
                 <div class="col text-center p-3 text-success font-weight-700">
                   Approved
                 </div>
               </div>
 
-              <div style="border-bottom: 1px solid #00204412;"
+              <div
+                style="border-bottom: 1px solid #00204412"
                 class="row py-2"
                 v-for="(member, index) in searchGroupMembers"
                 :key="index"
@@ -786,115 +1011,12 @@
                 <div class="col-md-12">
                   <div class="row">
                     <div
-                      class="col-md-1 d-flex justify-content-between align-items-center"
-                    >
-                      <input
-                        type="checkbox"
-                        class="py-2"
-                        name=""
-                        id=""
-                        @change="mark1Item(member)"
-                        :checked=" marked.findIndex( (i) => i.personID === member.personID ) >= 0 "
-                      />
-                    </div>
-                    <div
-                      class="col-md-3 d-flex justify-content-between align-items-center"
-                    >
-                      <span class="py-2 hidden-header">NAME</span>
-                      <span class="py-2">{{ member.name }}</span>
-                    </div>
-                    <div
-                      class="col-md-2 d-flex justify-content-between align-items-center"
-                    >
-                      <span class="py-2 hidden-header">POSITION</span>
-                      <span class="py-2 text-xs-left">{{
-                        member.position
-                      }}</span>
-                    </div>
-                    <!-- <div
-                      class="col-md-2 d-flex justify-content-between align-items-center"
-                    >
-                      <span class="py-2 hidden-header">ADDRESS</span>
-                      <span class="py-2">{{ member.addres }}</span>
-                    </div> -->
-                    <div
-                      class="col-md-2 d-flex justify-content-between align-items-center"
-                    >
-                      <span class="py-2 hidden-header">EMAIL</span>
-                      <span class="py-2">{{
-                        member.email && member.email.length > 10
-                          ? `${member.email.split("").slice(0, 14).join("")}...`
-                          : member.email
-                          ? member.email
-                          : ""
-                      }}</span>
-                    </div>
-                    <div
-                      class="col-md-3 d-flex justify-content-between align-items-center"
-                    >
-                      <span class="py-2 hidden-header">PHONE</span>
-                      <span class="py-2">{{ member.phone }}</span>
-                    </div>
-                    <div
-                      class="col-md-1 d-flex justify-content-between align-items-center"
-                    >
-                      <div class="dropdown">
-                        <i
-                          class="fas fa-ellipsis-v cursor-pointer"
-                          id="dropdownMenuButton"
-                          data-toggle="dropdown"
-                          aria-haspopup="true"
-                          aria-expanded="false"
-                        ></i>
-                        <div
-                          class="dropdown-menu"
-                          aria-labelledby="dropdownMenuButton"
-                        >
-                          <!-- <a class="dropdown-item c-pointer" > -->
-                          <a class="dropdown-item c-pointer" v-if="member.phone">
-                            <a 
-                              @click="test(member)"
-                              > Send SMS</a
-                            >
-                          </a>
-                          <a class="dropdown-item c-pointer" v-if="member.email">
-                          <!-- <a class="dropdown-item c-pointer"> -->
-                            <a 
-                              @click="testEmail(member)"
-                            >Send Email</a>
-                          </a>
-                           <a class="dropdown-item cursor-pointer" @click="archive(member.personID, 'single')">
-                            Archive
-                          </a>
-                          <a
-                            class="dropdown-item c-pointer"
-                            @click="confirmDelete(member.id, index)"
-                            >Remove</a
-                          >
-                        </div>
-                      </div>
-                    </div>
-                  </div>
-
-                </div>
-              </div>
-
-              <div class="row" style="border-bottom: 1px solid #00204412;" v-if="awaitingApprovals.length > 0">
-                <div class="col text-center p-3 text-warning font-weight-700">
-                  Waiting Approval
-                </div>
-              </div>
-
-              <div style="border-bottom: 1px solid #00204412;"
-                class="row py-2"
-                v-for="(member, index) in awaitingApprovals"
-                :key="index"
-              >
-             
-                <div class="col-md-12">
-                  <div class="row">
-                    <div
-                      class="col-md-1 d-flex justify-content-between align-items-center"
+                      class="
+                        col-md-1
+                        d-flex
+                        justify-content-between
+                        align-items-center
+                      "
                     >
                       <input
                         type="checkbox"
@@ -910,13 +1032,23 @@
                       />
                     </div>
                     <div
-                      class="col-md-3 d-flex justify-content-between align-items-center"
+                      class="
+                        col-md-3
+                        d-flex
+                        justify-content-between
+                        align-items-center
+                      "
                     >
                       <span class="py-2 hidden-header">NAME</span>
                       <span class="py-2">{{ member.name }}</span>
                     </div>
                     <div
-                      class="col-md-2 d-flex justify-content-between align-items-center"
+                      class="
+                        col-md-2
+                        d-flex
+                        justify-content-between
+                        align-items-center
+                      "
                     >
                       <span class="py-2 hidden-header">POSITION</span>
                       <span class="py-2 text-xs-left">{{
@@ -930,7 +1062,12 @@
                       <span class="py-2">{{ member.addres }}</span>
                     </div> -->
                     <div
-                      class="col-md-2 d-flex justify-content-between align-items-center"
+                      class="
+                        col-md-2
+                        d-flex
+                        justify-content-between
+                        align-items-center
+                      "
                     >
                       <span class="py-2 hidden-header">EMAIL</span>
                       <span class="py-2">{{
@@ -942,13 +1079,23 @@
                       }}</span>
                     </div>
                     <div
-                      class="col-md-3 d-flex justify-content-between align-items-center"
+                      class="
+                        col-md-3
+                        d-flex
+                        justify-content-between
+                        align-items-center
+                      "
                     >
                       <span class="py-2 hidden-header">PHONE</span>
                       <span class="py-2">{{ member.phone }}</span>
                     </div>
                     <div
-                      class="col-md-1 d-flex justify-content-between align-items-center"
+                      class="
+                        col-md-1
+                        d-flex
+                        justify-content-between
+                        align-items-center
+                      "
                     >
                       <div class="dropdown">
                         <i
@@ -962,16 +1109,24 @@
                           class="dropdown-menu"
                           aria-labelledby="dropdownMenuButton"
                         >
-                          <a class="dropdown-item c-pointer" v-if="member.phone">
-                            <a @click="test(member)">Send SMS</a>
+                          <!-- <a class="dropdown-item c-pointer" > -->
+                          <a
+                            class="dropdown-item c-pointer"
+                            v-if="member.phone"
+                          >
+                            <a @click="test(member)"> Send SMS</a>
                           </a>
-                          <a class="dropdown-item c-pointer" v-if="member.email">
+                          <a
+                            class="dropdown-item c-pointer"
+                            v-if="member.email"
+                          >
+                            <!-- <a class="dropdown-item c-pointer"> -->
                             <a @click="testEmail(member)">Send Email</a>
                           </a>
-                          <a class="dropdown-item cursor-pointer" @click="requestApproval(member)">
-                            Request Approval
-                          </a>
-                          <a class="dropdown-item cursor-pointer" @click="archive(member.personID, 'single')">
+                          <a
+                            class="dropdown-item cursor-pointer"
+                            @click="archive(member.personID, 'single')"
+                          >
                             Archive
                           </a>
                           <a
@@ -983,7 +1138,159 @@
                       </div>
                     </div>
                   </div>
+                </div>
+              </div>
 
+              <div
+                class="row"
+                style="border-bottom: 1px solid #00204412"
+                v-if="awaitingApprovals.length > 0"
+              >
+                <div class="col text-center p-3 text-warning font-weight-700">
+                  Waiting Approval
+                </div>
+              </div>
+
+              <div
+                style="border-bottom: 1px solid #00204412"
+                class="row py-2"
+                v-for="(member, index) in awaitingApprovals"
+                :key="index"
+              >
+                <div class="col-md-12">
+                  <div class="row">
+                    <div
+                      class="
+                        col-md-1
+                        d-flex
+                        justify-content-between
+                        align-items-center
+                      "
+                    >
+                      <input
+                        type="checkbox"
+                        class="py-2"
+                        name=""
+                        id=""
+                        @change="mark1Item(member)"
+                        :checked="
+                          marked.findIndex(
+                            (i) => i.personID === member.personID
+                          ) >= 0
+                        "
+                      />
+                    </div>
+                    <div
+                      class="
+                        col-md-3
+                        d-flex
+                        justify-content-between
+                        align-items-center
+                      "
+                    >
+                      <span class="py-2 hidden-header">NAME</span>
+                      <span class="py-2">{{ member.name }}</span>
+                    </div>
+                    <div
+                      class="
+                        col-md-2
+                        d-flex
+                        justify-content-between
+                        align-items-center
+                      "
+                    >
+                      <span class="py-2 hidden-header">POSITION</span>
+                      <span class="py-2 text-xs-left">{{
+                        member.position
+                      }}</span>
+                    </div>
+                    <!-- <div
+                      class="col-md-2 d-flex justify-content-between align-items-center"
+                    >
+                      <span class="py-2 hidden-header">ADDRESS</span>
+                      <span class="py-2">{{ member.addres }}</span>
+                    </div> -->
+                    <div
+                      class="
+                        col-md-2
+                        d-flex
+                        justify-content-between
+                        align-items-center
+                      "
+                    >
+                      <span class="py-2 hidden-header">EMAIL</span>
+                      <span class="py-2">{{
+                        member.email && member.email.length > 10
+                          ? `${member.email.split("").slice(0, 14).join("")}...`
+                          : member.email
+                          ? member.email
+                          : ""
+                      }}</span>
+                    </div>
+                    <div
+                      class="
+                        col-md-3
+                        d-flex
+                        justify-content-between
+                        align-items-center
+                      "
+                    >
+                      <span class="py-2 hidden-header">PHONE</span>
+                      <span class="py-2">{{ member.phone }}</span>
+                    </div>
+                    <div
+                      class="
+                        col-md-1
+                        d-flex
+                        justify-content-between
+                        align-items-center
+                      "
+                    >
+                      <div class="dropdown">
+                        <i
+                          class="fas fa-ellipsis-v cursor-pointer"
+                          id="dropdownMenuButton"
+                          data-toggle="dropdown"
+                          aria-haspopup="true"
+                          aria-expanded="false"
+                        ></i>
+                        <div
+                          class="dropdown-menu"
+                          aria-labelledby="dropdownMenuButton"
+                        >
+                          <a
+                            class="dropdown-item c-pointer"
+                            v-if="member.phone"
+                          >
+                            <a @click="test(member)">Send SMS</a>
+                          </a>
+                          <a
+                            class="dropdown-item c-pointer"
+                            v-if="member.email"
+                          >
+                            <a @click="testEmail(member)">Send Email</a>
+                          </a>
+                          <a
+                            class="dropdown-item cursor-pointer"
+                            @click="requestApproval(member)"
+                          >
+                            Request Approval
+                          </a>
+                          <a
+                            class="dropdown-item cursor-pointer"
+                            @click="archive(member.personID, 'single')"
+                          >
+                            Archive
+                          </a>
+                          <a
+                            class="dropdown-item c-pointer"
+                            @click="confirmDelete(member.id, index)"
+                            >Remove</a
+                          >
+                        </div>
+                      </div>
+                    </div>
+                  </div>
                 </div>
               </div>
             </div>
@@ -1018,42 +1325,85 @@
       </div>
     </div>
     <Dialog
-        header="Create New Member"
-        v-model:visible="display"
-        :style="{ width: '70vw', maxWidth: '600px' }"
-        :modal="true"
-        position="top"
-        >
-        <div class="row">
-            <div class="col-md-12">
-            <NewPerson @cancel="() => display = false" @person-id="getWardId($event)"  @show-group-modal="setGroupModal" />
-            </div>
+      header="Create New Member"
+      v-model:visible="display"
+      :style="{ width: '70vw', maxWidth: '600px' }"
+      :modal="true"
+      position="top"
+    >
+      <div class="row">
+        <div class="col-md-12">
+          <NewPerson
+            @cancel="() => (display = false)"
+            @person-id="getWardId($event)"
+            @show-group-modal="setGroupModal"
+          />
+        </div>
       </div>
     </Dialog>
-    <Dialog header="Archive members" v-model:visible="displayPositionArchive" :breakpoints="{'960px': '75vw'}" :style="{width: window.innerWidth > 767 ? '50vw' : '100vw'}" :position="positionArchive" :modal="true">
-        <p class="p-m-0">You are about to archive your member(s). Do you want to continue ?</p>
-        <template #footer>
-            <div class="d-flex justify-content-end">
-              <div class="default-btn bg-white text-center mr-2 c-pointer" @click="closeArchiveModal">No</div>
-              <div class="default-btn border-0 primary-bg text-center text-white c-pointer" @click="archive('', 'multiple')">Yes</div>
-            </div>
-        </template>
+    <Dialog
+      header="Archive members"
+      v-model:visible="displayPositionArchive"
+      :breakpoints="{ '960px': '75vw' }"
+      :style="{ width: window.innerWidth > 767 ? '50vw' : '100vw' }"
+      :position="positionArchive"
+      :modal="true"
+    >
+      <p class="p-m-0">
+        You are about to archive your member(s). Do you want to continue ?
+      </p>
+      <template #footer>
+        <div class="d-flex justify-content-end">
+          <div
+            class="default-btn bg-white text-center mr-2 c-pointer"
+            @click="closeArchiveModal"
+          >
+            No
+          </div>
+          <div
+            class="
+              default-btn
+              border-0
+              primary-bg
+              text-center text-white
+              c-pointer
+            "
+            @click="archive('', 'multiple')"
+          >
+            Yes
+          </div>
+        </div>
+      </template>
     </Dialog>
-     <SideBar :show="showSMS" :title="'Compose SMS'" @closesidemodal="() => showSMS = false">
-       <div class="m-wrapper" >
-          <smsComponent :phoneNumbers="contacts" @closesidemodal="() => showSMS = false" />
-       </div>
+    <SideBar
+      :show="showSMS"
+      :title="'Compose SMS'"
+      @closesidemodal="() => (showSMS = false)"
+    >
+      <div class="m-wrapper">
+        <smsComponent
+          :phoneNumbers="contacts"
+          @closesidemodal="() => (showSMS = false)"
+        />
+      </div>
     </SideBar>
-     <SideBar :show="showEmail" :title="'Compose Email'" @closesidemodal="() => showEmail = false">
-       <div class="m-wrapper2">
-         <emailComponent :selectedGroupMembers="selectedGroupMembers" @closesidemodal="() => showEmail = false" />
-       </div>
+    <SideBar
+      :show="showEmail"
+      :title="'Compose Email'"
+      @closesidemodal="() => (showEmail = false)"
+    >
+      <div class="m-wrapper2">
+        <emailComponent
+          :selectedGroupMembers="selectedGroupMembers"
+          @closesidemodal="() => (showEmail = false)"
+        />
+      </div>
     </SideBar>
   </div>
 </template>
 
 <script>
-import { computed, onMounted, ref, markRaw } from "vue";
+import { computed, ref } from "vue";
 import composeService from "../../services/communication/composer";
 import axios from "@/gateway/backendapi";
 import router from "@/router/index";
@@ -1064,50 +1414,39 @@ import groupsService from "../../services/groups/groupsservice";
 import Tooltip from "primevue/tooltip";
 import Dropdown from "primevue/dropdown";
 import store from "../../store/store";
-import NewPerson from '../../components/membership/NewDonor.vue';
+import NewPerson from "../../components/membership/NewDonor.vue";
 import Dialog from "primevue/dialog";
 import finish from "../../services/progressbar/progress.js";
 import smsComponent from "./component/smsComponent.vue";
 import emailComponent from "./component/emailComponent.vue";
 import SideBar from "./sidemodal/SideModal.vue";
 // import Attendancecheckin from "../event/attendance&checkin/MarkAttendance.vue"
-import Attendancecheckin from "../event/attendance&checkin/AttendanceAndCheckinList.vue"
+import Attendancecheckin from "../event/attendance&checkin/AttendanceAndCheckinList.vue";
 // import Attendancevue from "../event/attendance&checkin/Attendance.vue"
 // import Attendancecheckin from "../event/attendance&checkin/MarkAttendance.vue"
-import attendanceservice from '../../services/attendance/attendanceservice';
-import ImportToGroup from "../people/ImportInstruction"
-import { TreeView } from '@progress/kendo-treeview-vue-wrapper';
-// import Tree from 'primevue/tree';
-// import Tree from "vue3-treeview";
-// import "vue3-treeview/dist/style.css";
-// import { TreeViewComponent } from '@syncfusion/ej2-vue-navigations';
-import '@progress/kendo-ui';
-import '@progress/kendo-theme-default/dist/all.css'
-import GroupTree from "./component/GroupTree.vue"
-
-
-
-
+import attendanceservice from "../../services/attendance/attendanceservice";
+import ImportToGroup from "../people/ImportInstruction";
+import "@progress/kendo-ui";
+import "@progress/kendo-theme-default/dist/all.css";
+import GroupTree from "./component/GroupTree.vue";
 
 export default {
   directives: {
     tooltip: Tooltip,
   },
-  components: { 
-    Dropdown, 
-    Dialog, 
-    NewPerson, 
-    Attendancecheckin, 
-    smsComponent, 
-    SideBar, 
-    emailComponent, 
-    ImportToGroup, 
-    // 'treeview': TreeView,
-    // TreeSelect,
-    GroupTree
+  components: {
+    Dropdown,
+    Dialog,
+    NewPerson,
+    Attendancecheckin,
+    smsComponent,
+    SideBar,
+    emailComponent,
+    ImportToGroup,
+    GroupTree,
   },
   setup() {
-     const display = ref(false);
+    const display = ref(false);
     //  const showWardModal = ref(false)
     const memberDia = ref(true);
     const modalBtn = ref(null);
@@ -1126,110 +1465,82 @@ export default {
     const getAllGroup = ref([]);
     const selectGroupTo = ref({});
     const copyGroupTo = ref({});
-    const awaitingApprovals = ref([])
-    const contacts = ref([])
-    const showGroup = ref(true)
-    const attendanceData = ref([])
-    const showAttendanceCheckin = ref(false)
-    const selectedGroupMembers = ref([])
-    const showSMS = ref(false)
-    const isGroupLeader = ref(false)
-    const enableLogin = ref(false)
-    const showEmail = ref(false)
-    const totalItems = ref("")
-    const positionArchive = ref('center');
+    const awaitingApprovals = ref([]);
+    const contacts = ref([]);
+    const showGroup = ref(true);
+    const attendanceData = ref([]);
+    const showAttendanceCheckin = ref(false);
+    const selectedGroupMembers = ref([]);
+    const showSMS = ref(false);
+    const isGroupLeader = ref(false);
+    const enableLogin = ref(false);
+    const showEmail = ref(false);
+    const totalItems = ref("");
+    const positionArchive = ref("center");
     const displayPositionArchive = ref(false);
-    const searchGroupMemberText = ref("")
+    const searchGroupMemberText = ref("");
     const field = ref();
-    const groups = ref([])
-    const hideDiv = ref(true)
-    const selectedIntendedSubGroup = ref({})
+    const groups = ref([]);
+    const hideDiv = ref(true);
+    const selectedIntendedSubGroup = ref({});
 
-const nodes  = computed(() => {
-  if (groups.value && groups.value.length > 0) return groups.value
-    return []
-})
-            // [
-            //         {
-            //             categoryName: 'Storage',
-            //             subCategories: [
-            //                 { subCategoryName: 'Wall Shelving', subCategories: [
-            //                 { subCategoryName: 'Wall Shelving' },
-            //                 { subCategoryName: 'Floor Shelving' },
-            //                 { subCategoryName: 'Kids Storage' }
-            //             ] },
-            //                 { subCategoryName: 'Floor Shelving' },
-            //                 { subCategoryName: 'Kids Storage' }
-            //             ]
-            //         },
-            //         {
-            //             categoryName: 'Lights',
-            //             subCategories: [
-            //                 { subCategoryName: 'Ceiling' },
-            //                 { subCategoryName: 'Table' },
-            //                 { subCategoryName: 'Floor' }
-            //             ]
-            //         }
-            //     ],
-            //     schema: {
-            //         model: {
-            //         children: 'subCategories'
-            //         }
-            //     }
+    const closeGroupModal = ref();
 
-    const searchTextTree = ref("");
- 
-    const closeGroupModal = ref()
-  
-    onMounted(async () => {
+    const getGroups = async () => {
       try {
         const { data } = await axios.get("/api/GetAllGroupBasicInformation");
+        console.log(getAllGroup.value);
         getAllGroup.value = data;
       } catch (error) {
         console.log(error);
       }
-    });
+    };
+    getGroups();
 
     const test = (member) => {
       if (member.phone) {
         showSMS.value = true;
         showEmail.value = false;
-        contacts.value = member.phone
-      }else {
-        alert('No phone number')
+        contacts.value = member.phone;
+      } else {
+        alert("No phone number");
       }
-    }
+    };
     const testEmail = (member) => {
       if (member.email) {
         showEmail.value = true;
         showSMS.value = false;
-        selectedGroupMembers.value.push({id:member.personID})
+        selectedGroupMembers.value.push({ id: member.personID });
       }
-    }
-    const selectedAttendanceId = ref('')
-     const showAddMemberForm = () => {
-          display.value = true;
+    };
+    const selectedAttendanceId = ref("");
+    const showAddMemberForm = () => {
+      display.value = true;
     };
 
-        const  displayView = () => {
-           showGroup.value = false;
-            showAttendanceCheckin.value = true;
-        }
+    const displayView = () => {
+      showGroup.value = false;
+      showAttendanceCheckin.value = true;
+    };
 
-        const attendanceCheckin = async () => {
-            const response = await attendanceservice.getItems();
-            attendanceData.value = response.items.filter((i) => i.groupID === route.params.groupId);
-            totalItems.value = response.totalItems
-            const attendanceItem = response.items.find((i) => i.groupID === route.params.groupId);
-            if(attendanceItem && attendanceItem.id) selectedAttendanceId.value = attendanceItem.id;
-            return attendanceItem;
-        }
-        attendanceCheckin()
-         const groupDetail = async () => {
-            showGroup.value = true;
-            showAttendanceCheckin.value = false;
-           
-        }
+    const attendanceCheckin = async () => {
+      const response = await attendanceservice.getItems();
+      attendanceData.value = response.items.filter(
+        (i) => i.groupID === route.params.groupId
+      );
+      totalItems.value = response.totalItems;
+      const attendanceItem = response.items.find(
+        (i) => i.groupID === route.params.groupId
+      );
+      if (attendanceItem && attendanceItem.id)
+        selectedAttendanceId.value = attendanceItem.id;
+      return attendanceItem;
+    };
+    attendanceCheckin();
+    const groupDetail = async () => {
+      showGroup.value = true;
+      showAttendanceCheckin.value = false;
+    };
 
     const moveMembers = () => {
       let memberMove = {
@@ -1386,18 +1697,21 @@ const nodes  = computed(() => {
         },
       });
     };
-    
+
     const sendMarkedMemberSms = () => {
-     contacts.value = marked.value.filter( (i) => i.phone ).map( (i) => i.phone ).join()
-     showSMS.value = true;
-    }
+      contacts.value = marked.value
+        .filter((i) => i.phone)
+        .map((i) => i.phone)
+        .join();
+      showSMS.value = true;
+    };
     const sendMarkedMemberEmail = () => {
-     selectedGroupMembers.value = marked.value.map( (i) => {
-       i.id = i.personID
-       return i
-     });
-     showEmail.value = true;
-    }
+      selectedGroupMembers.value = marked.value.map((i) => {
+        i.id = i.personID;
+        return i;
+      });
+      showEmail.value = true;
+    };
     const searchForMembers = (e) => {
       if (e.target.value.length >= 3) {
         memberSearchResults.value = [];
@@ -1448,14 +1762,14 @@ const nodes  = computed(() => {
     const groupMembers = ref([]);
 
     const getWardId = (payload) => {
-        let body = {
-          name: payload.personFirstName,
-          personId: payload.personId,
-          email: payload.personEmail,
-          phoneNumber: payload.personNumber
-        }
-        selectedMembers.value.push(body)
-        }
+      let body = {
+        name: payload.personFirstName,
+        personId: payload.personId,
+        email: payload.personEmail,
+        phoneNumber: payload.personNumber,
+      };
+      selectedMembers.value.push(body);
+    };
     const addSelectedMembersToGroup = () => {
       if (selectedMembers.value.length === 0) {
         modalStatus.value = "modal";
@@ -1468,7 +1782,7 @@ const nodes  = computed(() => {
         i.isGroupLeader = isGroupLeader.value;
         groupMembers.value.push(i);
       });
-    
+
       if (route.params.groupId) {
         groupData.value.peopleInGroups = groupMembers.value;
         updateGroup(groupData.value, false);
@@ -1493,9 +1807,9 @@ const nodes  = computed(() => {
 
     const setGroupModal = () => {
       //  modalStatus.value = "modal";
-      modalBtn.value.click()
-            // showWardModal.value = payload
-        }
+      modalBtn.value.click();
+      // showWardModal.value = payload
+    };
 
     const saveGroupData = () => {
       if (!groupData.value.name) {
@@ -1513,7 +1827,6 @@ const nodes  = computed(() => {
       }
     };
 
-
     const updateGroup = (data, redirect) => {
       axios
         .put(`/api/UpdateGroup/${route.params.groupId}`, data)
@@ -1521,14 +1834,16 @@ const nodes  = computed(() => {
           savingGroup.value = false;
           groupsService.editGroupInStore(res.data, groupMembers.value.length);
 
-          groupMembers.value.map(i => {
-            const findData = res.data.peopleInGroups.findIndex(j => j.personID == i.personID )
+          groupMembers.value.map((i) => {
+            const findData = res.data.peopleInGroups.findIndex(
+              (j) => j.personID == i.personID
+            );
             if (findData >= 0) {
-              i.id = res.data.peopleInGroups[findData].id
+              i.id = res.data.peopleInGroups[findData].id;
             }
-            return i
-          })
-    
+            return i;
+          });
+
           // store.dispatch("groups/getGroups")
           if (redirect) {
             router.push("/tenant/peoplegroups");
@@ -1596,7 +1911,8 @@ const nodes  = computed(() => {
         loadingMembers.value = false;
         groupData.value.name = data.name;
         groupData.value.description = data.description;
-        groupData.value.isMobileGroup = data.isMobileGroup
+        groupData.value.isMobileGroup = data.isMobileGroup;
+        groupData.value.children = data.children;
 
         data.peopleInGroups.forEach((i) => {
           const person = {
@@ -1604,24 +1920,28 @@ const nodes  = computed(() => {
             personID: i.person.id,
             address: i.person.address,
             email: i.person.email,
-            name: `${i.person.firstName ? i.person.firstName : ""} ${i.person.lastName ? i.person.lastName : ""}`,
+            name: `${i.person.firstName ? i.person.firstName : ""} ${
+              i.person.lastName ? i.person.lastName : ""
+            }`,
             phone: i.person.phoneNumber,
-            position: i.position
+            position: i.position,
           };
           groupMembers.value.push(person);
         });
 
-        awaitingApprovals.value = data.awaitingApprovals.map(i => {
-            return {
-              personID: i.person.id,
-              address: i.person.address,
-              email: i.person.email,
-              name:  `${i.person.firstName ? i.person.firstName : ""} ${i.person.lastName ? i.person.lastName : ""}`,
-              phone: i.person.phoneNumber,
-              position: i.position,
-              groupID: i.groupID
-            }
-          })
+        awaitingApprovals.value = data.awaitingApprovals.map((i) => {
+          return {
+            personID: i.person.id,
+            address: i.person.address,
+            email: i.person.email,
+            name: `${i.person.firstName ? i.person.firstName : ""} ${
+              i.person.lastName ? i.person.lastName : ""
+            }`,
+            phone: i.person.phoneNumber,
+            position: i.position,
+            groupID: i.groupID,
+          };
+        });
 
         console.log(selectedMembers.value, "SM");
       } catch (error) {
@@ -1664,40 +1984,42 @@ const nodes  = computed(() => {
 
     const importMember = () => {
       if (!route.params.groupId) {
-         toast.add({
-            severity: "warn",
-            summary: "Create a group",
-            detail: "Please ensure you create the group first before you import",
-            life: 5000,
-          });
-      }
-    }
-    const requestApproval = async(member) => {
-      const memberToApprove = {
-          groupId: member.groupID,
-          email: member.email,
-          personId: member.personID,
-          approvalName: member.name,
-          position: member.position,
-          phone: member.phone
-      }
-      console.log(memberToApprove)
-      try {
-        const res = await axios.post('/api/ApproveMemberFromApp', memberToApprove)
-        console.log(res)
         toast.add({
-            severity: "success",
-            summary: "Approved",
-            detail: "Member approved successfully",
-            life: 4000,
-          });
-          awaitingApprovals.value = awaitingApprovals.value.filter(i => {
-            return i.personID !== member.personID
-          })
-
-          groupMembers.value.push(member)
+          severity: "warn",
+          summary: "Create a group",
+          detail: "Please ensure you create the group first before you import",
+          life: 5000,
+        });
       }
-      catch (error) {
+    };
+    const requestApproval = async (member) => {
+      const memberToApprove = {
+        groupId: member.groupID,
+        email: member.email,
+        personId: member.personID,
+        approvalName: member.name,
+        position: member.position,
+        phone: member.phone,
+      };
+      console.log(memberToApprove);
+      try {
+        const res = await axios.post(
+          "/api/ApproveMemberFromApp",
+          memberToApprove
+        );
+        console.log(res);
+        toast.add({
+          severity: "success",
+          summary: "Approved",
+          detail: "Member approved successfully",
+          life: 4000,
+        });
+        awaitingApprovals.value = awaitingApprovals.value.filter((i) => {
+          return i.personID !== member.personID;
+        });
+
+        groupMembers.value.push(member);
+      } catch (error) {
         finish();
         if (error.toString().toLowerCase().includes("network error")) {
           toast.add({
@@ -1714,171 +2036,161 @@ const nodes  = computed(() => {
             life: 4000,
           });
         }
-        console.log(error)
+        console.log(error);
       }
-    }
+    };
 
     const uploadToGroup = (payload) => {
-      payload.forEach(i => {
+      payload.forEach((i) => {
         groupMembers.value.push({
-            personID: i.person.id,
-            address: i.person.address,
-            email: i.person.email,
-            name: `${i.person.firstName ? i.person.firstName : ""} ${i.person.lastName ? i.person.lastName : ""}`,
-            phone: i.person.mobilePhone,
-            position: i.position
-          })
-      })
+          personID: i.person.id,
+          address: i.person.address,
+          email: i.person.email,
+          name: `${i.person.firstName ? i.person.firstName : ""} ${
+            i.person.lastName ? i.person.lastName : ""
+          }`,
+          phone: i.person.mobilePhone,
+          position: i.position,
+        });
+      });
       closeGroupModal.value.click();
-    }
+    };
 
     const openPositionArchive = (pos) => {
-        positionArchive.value = pos;
-        displayPositionArchive.value = true;
+      positionArchive.value = pos;
+      displayPositionArchive.value = true;
     };
 
     const closeArchiveModal = () => {
-      displayPositionArchive.value = false
-    }
-
-
-    const archive = async(id, type) => {
-      console.log(marked.value)
-      let archiveBody = type == 'single' ? [id] : marked.value.map(i => i.personID)
-      console.log(archiveBody)
-      try {
-            const { data } = await axios.post("/api/People/archive", archiveBody);
-            if (data && type == 'single') {
-              groupMembers.value = groupMembers.value.filter((item) => {
-                return item.personID !== id
-              });
-              toast.add({
-                severity: "success",
-                summary: "Archived",
-                detail: "Member archived succesfully",
-                life: 5000,
-              });
-            }
-            if (data && type == 'multiple') {
-              groupMembers.value = groupMembers.value.filter((item) => {
-                let y = marked.value.findIndex(j => j.personID == item.personID)
-                if (y >= 0) return false
-                return true
-              });
-              toast.add({
-                severity: "success",
-                summary: "Archived",
-                detail: "Member(s) archived succesfully",
-                life: 5000,
-              });
-              displayPositionArchive.value = false
-            }
-        } catch (err) {
-            console.log(err);
-        }
-    }
-
-    const innerWidth = computed(() => {
-        return window.innerWidth;
-    })
-
-    const searchGroupMembers = computed(() => {
-      if (groupMembers.value.length > 0 && searchGroupMemberText.value == "") return groupMembers.value
-      return groupMembers.value.filter(i => i.name.toLowerCase().includes(searchGroupMemberText.value.toLowerCase()))
-    })
-
-    const itemClick = (node, item, e) => {
-          console.log(node + ' node !')
-          console.log(node.model.text + ' clicked !')
-          console.log(item + ' item !')
-          console.log(e + ' e !')
-        }
-
-
-    const onNodeExpanded = (node, state) => {
-      console.log('state: ', state)
-      console.log('node: ', node)
+      displayPositionArchive.value = false;
     };
-    const onCheckboxToggle = (node, state) => {
-      console.log('checkbox state: ', state)
-      console.log('checkbox node: ', node)
-    };
-    const onToggleParentCheckbox = (node, state) => {
-      console.log('parent checkbox state: ', state)
-      console.log('parent checkbox node: ', node)
-    }
-    const log = (s) => {
-      console.log(s);
-    }
 
-    const onSelect = (ev, payload) => {
-            console.log("Event :: select", ev, payload);
-        }
-
-        const visit = (o) => {
-          console.log(o, 'hereeeeeee')
-          let num  = 0
-            for (var i = 0; i<o.length; i++) {        
-              /* do something useful */
-              console.log(o[i].name);
-              o[i].label = o[i].name
-              
-              o[i].key = `${i}-${num++}`
-
-              if (Array.isArray(o[i].children)) {
-                o[i].key = `${i}`
-                visit(o[i].children);
-              }
-            }
-          }
-       
-
-     const getgroups = async () => {
+    const archive = async (id, type) => {
+      console.log(marked.value);
+      let archiveBody =
+        type == "single" ? [id] : marked.value.map((i) => i.personID);
+      console.log(archiveBody);
       try {
-        const data = await groupsService.getGroups();
-        
-          groups.value = data.map((i) => {
-            return {
-              // key:
-              dateCreated: i.dateCreated,
-              description: i.description,
-              name: i.name,
-              label: i.name,
-              id: i.id,
-              tenantID: i.tenantID,
-              peopleInGroupsCount: i.peopleInGroupsCount,
-              children: i.children
-            };
+        const { data } = await axios.post("/api/People/archive", archiveBody);
+        if (data && type == "single") {
+          groupMembers.value = groupMembers.value.filter((item) => {
+            return item.personID !== id;
           });
-           visit(groups.value)
-        console.log(groups.value);
-      } catch (error) {
-        (loading.value = false), console.log(error.response);
+          toast.add({
+            severity: "success",
+            summary: "Archived",
+            detail: "Member archived succesfully",
+            life: 5000,
+          });
+        }
+        if (data && type == "multiple") {
+          groupMembers.value = groupMembers.value.filter((item) => {
+            let y = marked.value.findIndex((j) => j.personID == item.personID);
+            if (y >= 0) return false;
+            return true;
+          });
+          toast.add({
+            severity: "success",
+            summary: "Archived",
+            detail: "Member(s) archived succesfully",
+            life: 5000,
+          });
+          displayPositionArchive.value = false;
+        }
+      } catch (err) {
+        console.log(err);
       }
     };
-    getgroups();
 
+    const innerWidth = computed(() => {
+      return window.innerWidth;
+    });
+
+    const searchGroupMembers = computed(() => {
+      if (groupMembers.value.length > 0 && searchGroupMemberText.value == "")
+        return groupMembers.value;
+      return groupMembers.value.filter((i) =>
+        i.name.toLowerCase().includes(searchGroupMemberText.value.toLowerCase())
+      );
+    });
+
+    // const visit = (o) => {
+    //   console.log(o, 'hereeeeeee')
+    //   let num  = 0
+    //     for (var i = 0; i<o.length; i++) {
+    //       /* do something useful */
+    //       console.log(o[i].name);
+    //       o[i].label = o[i].name
+
+    //       o[i].key = `${i}-${num++}`
+
+    //       if (Array.isArray(o[i].children)) {
+    //         o[i].key = `${i}`
+    //         visit(o[i].children);
+    //       }
+    //     }
+    //   }
+
+    //  const getgroups = async () => {
+    //   try {
+    //     const data = await groupsService.getGroups();
+
+    //       groups.value = data.map((i) => {
+    //         return {
+
+    //           dateCreated: i.dateCreated,
+    //           description: i.description,
+    //           name: i.name,
+    //           label: i.name,
+    //           id: i.id,
+    //           tenantID: i.tenantID,
+    //           peopleInGroupsCount: i.peopleInGroupsCount,
+    //           children: i.children
+    //         };
+    //       });
+    //       //  visit(groups.value)
+    //     console.log(groups.value);
+    //   } catch (error) {
+    //     (loading.value = false), console.log(error.response);
+    //   }
+    // };
+    // getgroups();
 
     const setSelectedGroup = (payload) => {
-      hideDiv.value = true
-      console.log(payload)
-      selectedIntendedSubGroup.value = payload
-    }
+      hideDiv.value = true;
+      selectedIntendedSubGroup.value = payload;
+    };
 
     const addSubGroup = async () => {
       try {
-        const data = await axios.post(`/api/Group/AddSubGroupToGroup?SuperGroupID=${route.params.groupId}&&SubGroupID=${selectedIntendedSubGroup.value.id}`);
-        
+        const { data } = await axios.post(
+          `/api/Group/AddSubGroupToGroup?SuperGroupID=${route.params.groupId}&&SubGroupID=${selectedIntendedSubGroup.value.id}`
+        );
+        toast.add({
+          severity: "success",
+          summary: "Successful",
+          detail: `${data.response}`,
+          life: 4000,
+        });
+        groupData.value.children.push(data.returnObject);
         console.log(data);
       } catch (error) {
-        (loading.value = false), console.log(error.response);
+        console.log(error.response);
+        if (error.response) {
+          toast.add({
+            severity: "error",
+            summary: "Unsuccessful",
+            detail: `${error.response}`,
+            life: 4000,
+          });
+        }
       }
     };
 
     const setGroupProp = () => {
-      hideDiv.value = !hideDiv.value
-    }
- 
+      hideDiv.value = !hideDiv.value;
+    };
+
     return {
       groupData,
       selectedAttendanceId,
@@ -1928,96 +2240,84 @@ const nodes  = computed(() => {
       attendanceCheckin,
       groupDetail,
       showGroup,
-      showAttendanceCheckin, 
+      showAttendanceCheckin,
       // wardSearchString,
-     getWardId,
-     totalItems,
-     attendanceData,
-     testEmail,
-     selectedGroupMembers,
-     showSMS,
-     showEmail,
-     isGroupLeader,
-     enableLogin,
-     sendMarkedMemberSms,
-     sendMarkedMemberEmail,
+      getWardId,
+      totalItems,
+      attendanceData,
+      testEmail,
+      selectedGroupMembers,
+      showSMS,
+      showEmail,
+      isGroupLeader,
+      enableLogin,
+      sendMarkedMemberSms,
+      sendMarkedMemberEmail,
       // showWardModal
-    //  getWardId,
-     uploadToGroup,
-     closeGroupModal,
-     displayView,
-    archive,
-    openPositionArchive,
-    positionArchive,
-    displayPositionArchive,
-    closeArchiveModal,
-    importMember,
-    route,
-    window,
-    innerWidth,
-    searchGroupMemberText,
-    searchGroupMembers,
-    field,
-    itemClick,
-    searchTextTree,
-    onNodeExpanded,
-    onCheckboxToggle,
-    onToggleParentCheckbox,
-    // complexLocalDataSource,
-    log,
-    onSelect,
-    groups,
-    nodes,
-    visit,
-    setSelectedGroup,
-    setGroupProp,
-    hideDiv,
-    selectedIntendedSubGroup,
-    addSubGroup
+      //  getWardId,
+      uploadToGroup,
+      closeGroupModal,
+      displayView,
+      archive,
+      openPositionArchive,
+      positionArchive,
+      displayPositionArchive,
+      closeArchiveModal,
+      importMember,
+      route,
+      window,
+      innerWidth,
+      searchGroupMemberText,
+      searchGroupMembers,
+      field,
+      groups,
+      setSelectedGroup,
+      setGroupProp,
+      hideDiv,
+      selectedIntendedSubGroup,
+      addSubGroup,
     };
   },
 };
 </script>
 
 <style scoped>
-
-
 * {
   box-sizing: border-box;
 }
-.botom{
+.botom {
   border-bottom: 7px solid rgb(252, 248, 248);
   border-radius: 2px;
   position: relative;
   /* border-bottom-right-radius: 10px;
   border-bottom-left-radius: 10px; */
-  
+
   /* height: 4px; */
 }
 .add-person-btn {
-        background: #136acd;
-        color: #fff;
-        }
- .buttonn {
-        padding: 8px 20px;
-        border: none;
-        border-radius: 22px;
-        font-size: 16px;
-        font-weight: 600;
-        margin: 0 8px;
-        outline: none;
-        text-decoration: none;
-        box-sizing: border-box;
-        }
+  background: #136acd;
+  color: #fff;
+}
+.buttonn {
+  padding: 8px 20px;
+  border: none;
+  border-radius: 22px;
+  font-size: 16px;
+  font-weight: 600;
+  margin: 0 8px;
+  outline: none;
+  text-decoration: none;
+  box-sizing: border-box;
+}
 
 .mid-header-row {
   border-bottom: 1px solid #dde2e6;
 }
 
 .events {
-        font: normal normal 800 29px Nunito sans;
-    }
-    /* hr{
+  font: normal normal 800 29px Nunito sans;
+}
+/* hr{
       color: gainsboro;
       background-color: hotpink;
       height: 5px;
@@ -2025,123 +2325,126 @@ const nodes  = computed(() => {
     } */
 
 .baseline {
-    transition: all 150ms ease-in-out;
-    background-color: #136acd;
-    position: relative;
-    border-radius: 10px;
-    height: 4px;
-    top: 5px;
-    left: 0px;
-    /* width: 35%; */
-    opacity: 1;
+  transition: all 150ms ease-in-out;
+  background-color: #136acd;
+  position: relative;
+  border-radius: 10px;
+  height: 4px;
+  top: 5px;
+  left: 0px;
+  /* width: 35%; */
+  opacity: 1;
 }
 
 .hide-base {
-     transition: all 150ms ease-in-out;
-    background-color: #136acd;
-    position: relative;
-    border-radius: 10px;
-    z-index: 175;
-    height: 4px;
-    top: 35px;
-    left: 0px;
-    opacity: 0;
+  transition: all 150ms ease-in-out;
+  background-color: #136acd;
+  position: relative;
+  border-radius: 10px;
+  z-index: 175;
+  height: 4px;
+  top: 35px;
+  left: 0px;
+  opacity: 0;
 }
 .baselinetwo {
-    transition: all 150ms ease-in-out;
-    background-color: #136acd;
-    position: relative;
-    border-radius: 10px;
-    height: 4px;
-    top: 5px;
-    left: 0px;
-    opacity: 1;
+  transition: all 150ms ease-in-out;
+  background-color: #136acd;
+  position: relative;
+  border-radius: 10px;
+  height: 4px;
+  top: 5px;
+  left: 0px;
+  opacity: 1;
 }
 .m-wrapper {
-    background-color: white!important;
-    width: 875px;
-    position: absolute;
-    right: 0px;
-    top: 0;
-    height: 100%;
-    padding: 70px;
+  background-color: white !important;
+  width: 875px;
+  position: absolute;
+  right: 0px;
+  top: 0;
+  height: 100%;
+  padding: 70px;
 }
 .m-wrapper2 {
-      background-color: white!important;
-    width: 875px;
-    position: absolute;
-    right: 0px;
-    top: 0;
-    /* height: 100%; */
-    padding: 70px;
+  background-color: white !important;
+  width: 875px;
+  position: absolute;
+  right: 0px;
+  top: 0;
+  /* height: 100%; */
+  padding: 70px;
 }
 
 .hide-basetwo {
-    transition: all 150ms ease-in-out;
-    background-color: #136acd;
-    position: absolute;
-    /* background-color: #33475b; */
-    /* color: #136acd" */
-    border-radius: 10px;
-    /* bottom: -2.5px; */
-    z-index: 175;
-    height: 4px;
-    top: 36px;
-    left: 0px;
-    width: 50%;
-    opacity: 0;
+  transition: all 150ms ease-in-out;
+  background-color: #136acd;
+  position: absolute;
+  /* background-color: #33475b; */
+  /* color: #136acd" */
+  border-radius: 10px;
+  /* bottom: -2.5px; */
+  z-index: 175;
+  height: 4px;
+  top: 36px;
+  left: 0px;
+  width: 50%;
+  opacity: 0;
 }
-    @media screen and (max-width: 947px ){
-        .m-wrapper, .m-wrapper2 {
-          width: 700px;
-          padding: 50px;
-      }
-    }
+@media screen and (max-width: 947px) {
+  .m-wrapper,
+  .m-wrapper2 {
+    width: 700px;
+    padding: 50px;
+  }
+}
 
-    @media screen and (max-width: 767px ){
-        /* .baseline {
+@media screen and (max-width: 767px) {
+  /* .baseline {
             width: 40%;
         }
         .hide-base {
             width: 40%;
         } */
-         .m-wrapper, .m-wrapper2 {
-            width: 400px;
-            padding: 40px;
-        }
-    }
-    @media screen and (max-width: 575px ){
-        /* .baseline {
+  .m-wrapper,
+  .m-wrapper2 {
+    width: 400px;
+    padding: 40px;
+  }
+}
+@media screen and (max-width: 575px) {
+  /* .baseline {
             width: 20%;
         }
         .hide-base {
             width: 20%;
         } */
-        .events {
-            padding-bottom: 22px;
-            font: normal normal 800 29px Nunito sans;
-            font-size: x-large;
-            /* padding-top: -10px; */
-          }
-        .botom {
-          display: flex;
-        }
-        .c-pointer {
-          cursor: pointer;
-          flex: 1;
-        }
-        .m-wrapper, .m-wrapper2 {
-            width: 350px;
-            padding: 20px;
-        }
-    }
-    
+  .events {
+    padding-bottom: 22px;
+    font: normal normal 800 29px Nunito sans;
+    font-size: x-large;
+    /* padding-top: -10px; */
+  }
+  .botom {
+    display: flex;
+  }
+  .c-pointer {
+    cursor: pointer;
+    flex: 1;
+  }
+  .m-wrapper,
+  .m-wrapper2 {
+    width: 350px;
+    padding: 20px;
+  }
+}
+
 @media (max-width: 399px) {
-    .actions {
-        display: flex;
-        flex-direction: column;
-        align-items: center;
-    }
+  .actions {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+  }
 }
 .remove-btn {
   background: red !important;
@@ -2158,7 +2461,6 @@ const nodes  = computed(() => {
   border-top: 1px solid #dde2e6;
   border-radius: 8px 8px 0 0;
 }
-
 
 .hidden-header {
   display: none;
@@ -2304,18 +2606,17 @@ const nodes  = computed(() => {
 }
 
 .fa-ellipsis-v {
-  padding: 10px
+  padding: 10px;
 }
 
 .div-card {
-    position: absolute;
-    background: white;
-    z-index: 1;
-    width: 100%;
-    top: 136px;
-    box-shadow: 0 0 11px rgba(33, 33, 33, 0.2);
-    height: 400px;
-    overflow: scroll;
+  position: absolute;
+  background: white;
+  z-index: 1;
+  width: 100%;
+  top: 136px;
+  box-shadow: 0 0 11px rgba(33, 33, 33, 0.2);
+  height: 400px;
+  overflow: scroll;
 }
-
 </style>

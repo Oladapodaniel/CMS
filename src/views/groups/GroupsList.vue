@@ -432,6 +432,8 @@ export default {
 
     const toggleItems = (i, e) => {
        console.log(i)
+       console.log(e)
+       console.log(e.target.parentElement.parentElement.parentElement.nextElementSibling)
       //  if (e.target.parentElement.parentElement.parentElement.nextElementSibling.classList.contains('node-height')) {
          e.target.parentElement.parentElement.parentElement.nextElementSibling.classList.toggle('node-height-open')
          e.target.classList.toggle('roll-icon')
