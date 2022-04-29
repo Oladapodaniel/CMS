@@ -1560,6 +1560,14 @@ const routes = [
                             component: () =>
                                 import ( /* webpackChunkName: "peopleempty" */ '../views/pledge/PledgeDefinitionList.vue')
                         },
+                        {
+                            path: 'makepledge',
+                            meta: {
+                                title: 'Churchplus - Pledge',
+                            },
+                            component: () =>
+                                import ( /* webpackChunkName: "peopleempty" */ '../views/pledge/MakePledge.vue')
+                        }
                     ]
             }
 
@@ -1570,14 +1578,6 @@ const routes = [
         component: () =>
             import ( /* webpackChunkName: "pledge" */ '../views/pledge/Index.vue'),
             children: [
-                {
-                    path: 'makepledge',
-                    meta: {
-                        title: 'Churchplus - Pledge',
-                    },
-                    component: () =>
-                        import ( /* webpackChunkName: "peopleempty" */ '../views/pledge/MakePledge.vue')
-                },
                 {
                     path: 'pledgemaking',
                     name: 'PledgeMaking',
