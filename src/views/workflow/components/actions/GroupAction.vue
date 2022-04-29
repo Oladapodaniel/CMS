@@ -25,7 +25,7 @@ import workflow_util from '../../utlity/workflow_util';
 import { watch } from '@vue/runtime-core';
 export default {
     components: { Dropdown, MultiSelect },
-    props: [ "groups", "selectedActionIndex", "parameters", "selectSMSList" ],
+    props: [ "groups", "selectedActionIndex", "parameters", "selectGroupList" ],
     setup (props, { emit }) {
         const data = reactive({ ActionType: 4, JSONActionParameters: { } })
 
@@ -45,6 +45,12 @@ export default {
         
         const parsedData = ref({ })
         watch(() => {
+            if (props.selectGroupList) {
+                removeOthers.value = props.selectGroupList.filter((i,index) => {
+                    return index == props.selectedActionIndex
+                })
+            }
+
             if (props.parameters.Action) {
                 const actn = JSON.parse(props.parameters.Action);
                 parsedData.value = JSON.parse(actn.JSONActionParameters);
@@ -54,19 +60,16 @@ export default {
 
                 addOrRemove.value = parsedData.value.addOrRemove;
                 data.JSONActionParameters.addOrRemove = parsedData.value.addOrRemove;
-            } else if (props.parameters.action && props.parameters.action.jsonActionParameters) {
-                parsedData.value = JSON.parse(props.parameters.action.jsonActionParameters);
+            } else if (removeOthers.value && removeOthers.value[0].action && removeOthers.value[0].action.jsonActionParameters) {
+            // } else if (props.parameters.action && props.parameters.action.jsonActionParameters) {
+                // parsedData.value = JSON.parse(props.parameters.action.jsonActionParameters);
+                parsedData.value = JSON.parse(removeOthers.value[0].action.jsonActionParameters);
                 
-                selectedGroups.value = workflow_util.getGroups(parsedData.value.groups, props.groups);
+                removeOthers.value[0].selectedGroups = workflow_util.getGroups(parsedData.value.groups, props.groups);
                 data.JSONActionParameters.groups = parsedData.value.groups;
 
-                addOrRemove.value = parsedData.value.addOrRemove;
+                removeOthers.value[0].addOrRemove = parsedData.value.addOrRemove;
                 data.JSONActionParameters.addOrRemove = parsedData.value.addOrRemove;
-            }
-            if (props.selectSMSList) {
-                removeOthers.value = props.selectSMSList.filter((i,index) => {
-                    return index == props.selectedActionIndex
-                })
             }
         })
 

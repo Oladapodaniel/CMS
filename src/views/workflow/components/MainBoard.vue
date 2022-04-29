@@ -243,7 +243,7 @@
                                                             v-if="selectedAction && selectedAction.actionType === 0"
                                                             :selectedActionIndex="selectedActionIndex"
                                                             :parameters="getAction(0, selectedTriggerIndex)"
-                                                            :selectSMSList="triggerActions"
+                                                            :selectEmailList="triggerActions"
                                                         />
                                                         <GroupAction 
                                                             v-else-if="selectedAction && selectedAction.actionType === 4" 
@@ -251,14 +251,14 @@
                                                             @updateaction="updateAction"
                                                             :groups="groups"
                                                             :parameters="getAction(4, selectedTriggerIndex)"
-                                                            :selectSMSList="triggerActions"
+                                                            :selectGroupList="triggerActions"
                                                         />
                                                         <AssignTask
                                                             v-else-if="selectedAction && selectedAction.actionType === 5" 
                                                             :selectedActionIndex="selectedActionIndex"
                                                             @updateaction="updateAction"
                                                             :parameters="getAction(5, selectedTriggerIndex)"
-                                                            :selectSMSList="triggerActions"
+                                                            :selectAssignTaskList="triggerActions"
                                                         />
                                                         <SMSAction
                                                             @updateaction="updateAction"
@@ -284,6 +284,7 @@
                                                             :selectedActionIndex="selectedActionIndex"
                                                             @updateaction="updateAction"
                                                             :parameters="getAction(8, selectedTriggerIndex)"
+                                                            :selectTimerList="triggerActions"
                                                         />
                                                         <MarkPresent
                                                             v-else-if="selectedAction && selectedAction.actionType === 9" 
