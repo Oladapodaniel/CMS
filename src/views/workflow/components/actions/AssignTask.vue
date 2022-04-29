@@ -5,7 +5,7 @@
                 <label for="" class="font-weight-600">Task Type</label>
             </div>
             <div class="col-md-12 px-0">
-                <Dropdown :options="taskTypes" optionLabel="name" class="w-100" v-model="item.selectedTaskType" @change="handleSelectedTaskType" />
+                <Dropdown :options="taskTypes" optionLabel="name" class="w-100" placeholder="Task type" v-model="item.selectedTaskType" @change="handleSelectedTaskType" />
             </div>
         </div>
 
@@ -65,7 +65,7 @@ import { watch } from '@vue/runtime-core';
 
 export default {
     components: { Dropdown, SearchWithDropdown },
-    props: [ "selectedActionIndex", "parameters", "selectSMSList" ],
+    props: [ "selectedActionIndex", "parameters", "selectAssignTaskList" ],
     setup (props, { emit }) {
         const data = reactive({ ActionType: 5, JSONActionParameters: { } })
 
@@ -119,6 +119,16 @@ export default {
 
         const parsedData = ref({ })
         watch(() => {
+
+            if (props.selectAssignTaskList) {
+                removeOthers.value = props.selectAssignTaskList.filter((i,index) => {
+                    return index == props.selectedActionIndex
+                }).map(i => {
+                    i.otherToContacts = []
+                    return i
+                })
+            }
+
             if (props.parameters.Action) {
                 const actn = JSON.parse(props.parameters.Action);
                 parsedData.value = JSON.parse(actn.JSONActionParameters)
@@ -131,26 +141,19 @@ export default {
 
                 instructions.value = parsedData.value.instructions;
                 data.JSONActionParameters.instructions = parsedData.value.instructions;
-            } else if (props.parameters.action && props.parameters.action.jsonActionParameters) {
-                parsedData.value = JSON.parse(props.parameters.action.jsonActionParameters);
+            } else if (removeOthers.value && removeOthers.value[0].action && removeOthers.value[0].action.jsonActionParameters) {
+            // } else if (props.parameters.action && props.parameters.action.jsonActionParameters) {
+                // parsedData.value = JSON.parse(props.parameters.action.jsonActionParameters);
+                parsedData.value = JSON.parse(removeOthers.value[0].action.jsonActionParameters);
                 
-                selectedTaskType.value = taskTypes.find(i => i.index === parsedData.value.taskType);
+                removeOthers.value[0].selectedTaskType = taskTypes.find(i => i.index === parsedData.value.taskType);
                 data.JSONActionParameters.taskType = parsedData.value.taskType;
 
-                groupLeaders.value = parsedData.value.groupLeaders;
+                removeOthers.value[0].groupLeaders = parsedData.value.groupLeaders;
                 data.JSONActionParameters.groupLeaders = parsedData.value.groupLeaders;
 
-                instructions.value = parsedData.value.instructions;
+                removeOthers.value[0].instructions = parsedData.value.instructions;
                 data.JSONActionParameters.instructions = parsedData.value.instructions;
-            }
-
-            if (props.selectSMSList) {
-                removeOthers.value = props.selectSMSList.filter((i,index) => {
-                    return index == props.selectedActionIndex
-                }).map(i => {
-                    i.otherToContacts = []
-                    return i
-                })
             }
         })
 

@@ -224,6 +224,14 @@ export default {
 
         const parsedData = ref({ })
         watchEffect(() => {
+            console.log(props.parameters, props.selectedActionIndex)
+            if (props.selectSMSList) {
+                removeOthers.value = props.selectSMSList.filter((i,index) => {
+                    return index == props.selectedActionIndex
+                })
+            }
+
+
             if (props.parameters.Action) {
                 const actn = JSON.parse(props.parameters.Action);
                 parsedData.value = JSON.parse(actn.JSONActionParameters);
@@ -248,37 +256,35 @@ export default {
 
                 message.value = parsedData.value.message;
                 data.JSONActionParameters.message = parsedData.value.message;
-            } else if (props.parameters.action && props.parameters.action.jsonActionParameters) {
-                parsedData.value = JSON.parse(props.parameters.action.jsonActionParameters);
-                
-                person.value = parsedData.value.person;
+            } else if (removeOthers.value && removeOthers.value[0].action && removeOthers.value[0].action.jsonActionParameters) {
+            // } else if (props.parameters.action && props.parameters.action.jsonActionParameters && removeOthers.value) {
+                // parsedData.value = JSON.parse(props.parameters.action.jsonActionParameters);
+                parsedData.value = JSON.parse(removeOthers.value[0].action.jsonActionParameters);
+        
+                removeOthers.value[0].person = parsedData.value.person
                 data.JSONActionParameters.person = parsedData.value.person;
 
-                parent.value = parsedData.value.parent;
+                removeOthers.value[0].parent = parsedData.value.parent;
                 data.JSONActionParameters.parent = parsedData.value.parent;
 
-                spouse.value = parsedData.value.spouse;
+                removeOthers.value[0].spouse = parsedData.value.spouse;
                 data.JSONActionParameters.spouse = parsedData.value.spouse;
 
-                groupLeader.value = parsedData.value.groupLeader;
+                removeOthers.value[0].groupLeader = parsedData.value.groupLeader;
                 data.JSONActionParameters.groupLeader = parsedData.value.groupLeader;
 
-                otherToContacts.value = parsedData.value.otherToContacts;
+                removeOthers.value[0].otherToContacts = parsedData.value.otherToContacts;
                 data.JSONActionParameters.otherToContacts = parsedData.value.otherToContacts;
 
-                subject.value = parsedData.value.subject;
+                removeOthers.value[0].subject = parsedData.value.subject;
                 data.JSONActionParameters.subject = parsedData.value.subject;
 
-                message.value = parsedData.value.message;
+                removeOthers.value[0].message = parsedData.value.message;
                 data.JSONActionParameters.message = parsedData.value.message;
+                console.log(removeOthers.value)
             }
 
-            if (props.selectSMSList) {
-                console.log(props.selectSMSList)
-                removeOthers.value = props.selectSMSList.filter((i,index) => {
-                    return index == props.selectedActionIndex
-                })
-            }
+            
         })
 
           

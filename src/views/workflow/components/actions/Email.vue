@@ -82,14 +82,14 @@
 
 <script>
 import { reactive, ref } from '@vue/reactivity';
-import { watch } from '@vue/runtime-core';
+import { watchEffect } from '@vue/runtime-core';
 export default {
-    props: [ "selectedActionIndex", "parameters", "selectSMSList" ],
+    props: [ "selectedActionIndex", "parameters", "selectEmailList" ],
     setup (props, { emit }) {
         const data = reactive({ ActionType: 0, JSONActionParameters: { } })
         const person = ref(false);
         const removeOthers = ref([])
-        const handleSendPersonMail = (e) => {
+        const handleSendPersonMail = () => {
             data.JSONActionParameters.person = removeOthers.value[0].person;
             // data.JSONActionParameters.person = e.target.checked;
             emit('updateaction', data, props.selectedActionIndex);
@@ -178,7 +178,14 @@ export default {
         }
 
         const parsedData = ref({ })
-        watch(() => {
+        watchEffect(() => {
+
+            if (props.selectEmailList) {
+                removeOthers.value = props.selectEmailList.filter((i,index) => {
+                    return index == props.selectedActionIndex
+                })
+            }
+
             if (props.parameters.Action) {
                 const actn = JSON.parse(props.parameters.Action);
                 parsedData.value = JSON.parse(actn.JSONActionParameters);
@@ -221,54 +228,52 @@ export default {
 
                 message.value = parsedData.value.message;
                 data.JSONActionParameters.message = parsedData.value.message;
-            } else if (props.parameters.action && props.parameters.action.jsonActionParameters) {
-                parsedData.value = JSON.parse(props.parameters.action.jsonActionParameters);
+            } else if (removeOthers.value && removeOthers.value[0].action && removeOthers.value[0].action.jsonActionParameters) {
+            // } else if (props.parameters.action && props.parameters.action.jsonActionParameters) {
+                // parsedData.value = JSON.parse(props.parameters.action.jsonActionParameters);
+                parsedData.value = JSON.parse(removeOthers.value[0].action.jsonActionParameters);
                 
-                person.value = parsedData.value.person;
+                removeOthers.value[0].person = parsedData.value.person;
                 data.JSONActionParameters.person = parsedData.value.person;
 
-                parent.value = parsedData.value.parent;
+                removeOthers.value[0].parent = parsedData.value.parent;
                 data.JSONActionParameters.parent = parsedData.value.parent;
 
-                spouse.value = parsedData.value.spouse;
+                removeOthers.value[0].spouse = parsedData.value.spouse;
                 data.JSONActionParameters.spouse = parsedData.value.spouse;
 
-                groupLeader.value = parsedData.value.groupLeader;
+                removeOthers.value[0].groupLeader = parsedData.value.groupLeader;
                 data.JSONActionParameters.groupLeader = parsedData.value.groupLeader;
 
-                otherToContacts.value = parsedData.value.otherToContacts;
+                removeOthers.value[0].otherToContacts = parsedData.value.otherToContacts;
                 data.JSONActionParameters.otherToContacts = parsedData.value.otherToContacts;
 
-                BCCParent.value = parsedData.value.BCCParent;
+                removeOthers.value[0].BCCParent = parsedData.value.BCCParent;
                 data.JSONActionParameters.BCCParent = parsedData.value.BCCParent;
 
-                BCCSpouse.value = parsedData.value.BCCSpouse;
+                removeOthers.value[0].BCCSpouse = parsedData.value.BCCSpouse;
                 data.JSONActionParameters.BCCSpouse = parsedData.value.BCCSpouse;
 
-                BCCGroupLeader.value = parsedData.value.BCCGroupLeader;
+                removeOthers.value[0].BCCGroupLeader = parsedData.value.BCCGroupLeader;
                 data.JSONActionParameters.BCCGroupLeader = parsedData.value.BCCGroupLeader;
 
-                otherBBC.value = parsedData.value.otherBBC;
+                removeOthers.value[0].otherBBC = parsedData.value.otherBBC;
                 data.JSONActionParameters.otherBBC = parsedData.value.otherBBC;
 
-                sendIndividualMails.value = parsedData.value.sendIndividualMails;
+                removeOthers.value[0].sendIndividualMails = parsedData.value.sendIndividualMails;
                 data.JSONActionParameters.sendIndividualMails = parsedData.value.sendIndividualMails;
 
-                replyToEmailAddress.value = parsedData.value.replyToEmailAddress;
+                removeOthers.value[0].replyToEmailAddress = parsedData.value.replyToEmailAddress;
                 data.JSONActionParameters.replyToEmailAddress = parsedData.value.replyToEmailAddress;
 
-                subject.value = parsedData.value.subject;
+                removeOthers.value[0].subject = parsedData.value.subject;
                 data.JSONActionParameters.subject = parsedData.value.subject;
 
-                message.value = parsedData.value.message;
+                removeOthers.value[0].message = parsedData.value.message;
                 data.JSONActionParameters.message = parsedData.value.message;
             }
 
-            if (props.selectSMSList) {
-                removeOthers.value = props.selectSMSList.filter((i,index) => {
-                    return index == props.selectedActionIndex
-                })
-            }
+            
         })
 
         return {

@@ -243,7 +243,7 @@
                                                             v-if="selectedAction && selectedAction.actionType === 0"
                                                             :selectedActionIndex="selectedActionIndex"
                                                             :parameters="getAction(0, selectedTriggerIndex)"
-                                                            :selectSMSList="triggerActions"
+                                                            :selectEmailList="triggerActions"
                                                         />
                                                         <GroupAction 
                                                             v-else-if="selectedAction && selectedAction.actionType === 4" 
@@ -251,14 +251,14 @@
                                                             @updateaction="updateAction"
                                                             :groups="groups"
                                                             :parameters="getAction(4, selectedTriggerIndex)"
-                                                            :selectSMSList="triggerActions"
+                                                            :selectGroupList="triggerActions"
                                                         />
                                                         <AssignTask
                                                             v-else-if="selectedAction && selectedAction.actionType === 5" 
                                                             :selectedActionIndex="selectedActionIndex"
                                                             @updateaction="updateAction"
                                                             :parameters="getAction(5, selectedTriggerIndex)"
-                                                            :selectSMSList="triggerActions"
+                                                            :selectAssignTaskList="triggerActions"
                                                         />
                                                         <SMSAction
                                                             @updateaction="updateAction"
@@ -284,6 +284,7 @@
                                                             :selectedActionIndex="selectedActionIndex"
                                                             @updateaction="updateAction"
                                                             :parameters="getAction(8, selectedTriggerIndex)"
+                                                            :selectTimerList="triggerActions"
                                                         />
                                                         <MarkPresent
                                                             v-else-if="selectedAction && selectedAction.actionType === 9" 
@@ -647,7 +648,9 @@ export default {
             workflow.value.triggers[selectedTriggerIndex].jsonCondition = data;
         }
 
+        const allSelectedActions = ref([])
         const updateAction = (data, activeAction) => {
+            // allSelectedActions.value[activeAction] = 
             workflow.value.triggers[selectedTriggerIndex.value].triggerActions[activeAction].Action = JSON.stringify({
                 ActionType: data.ActionType, JSONActionParameters: JSON.stringify(data.JSONActionParameters)
             })
@@ -791,7 +794,7 @@ export default {
                     toast.add({severity:'error', summary:'Workflow Saved', detail:'Error getting workflow', life: 2000});
                     return false;
                 }
-
+                console.log(data)
                 name.value = data.name;
                 isActive.value = data.isActive;
                 workflow.value = {
@@ -813,6 +816,7 @@ export default {
                         }
                     })
                 }
+                console.log(workflow.value)
                
                 selectedActionIndex.value = 0;
                 actionSelected.value = true;
@@ -887,6 +891,7 @@ export default {
             getAction,
             onDone,
             triggerDescriptions,
+            allSelectedActions
         }
     }
 }

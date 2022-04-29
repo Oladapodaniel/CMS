@@ -42,7 +42,7 @@ import LoadingComponent from "../../../components/loading/LoadingComponent.vue"
 import workflowFunctions from '../utlity/workflow_service'
 import { useConfirm } from "primevue/useconfirm";
 import { useToast } from "primevue/usetoast";
-import axios from 'axios';
+import axios from "@/gateway/backendapi";
 
 export default {
     components: { 
@@ -54,17 +54,13 @@ export default {
         const confirm = useConfirm()
         
         const loading = ref(false)
-        const workflows = ref([
-            { name: 'Hello', active: true },
-            { name: 'jhbvjh,e e,jhkers', active: false },
-            { name: 'Hello erikje', active: true }
-        ])
+        const workflows = ref([])
 
         const getWorkflows = async () => {
             try {
                 loading.value = true;
                 const { returnObject: data } = await workflowFunctions.getWorkflows();
-                console.log(data, 'cj test');
+                console.log(data)
                 workflows.value = data;
                 loading.value = false;
             } catch (error) {
@@ -77,7 +73,7 @@ export default {
         const deleteWorkflow = id => {
             if(id) {
                 axios
-                    .delete(`/api/workflow=${id}`)
+                    .delete(`/api/workflow?id=${id}`)
                     .then(res => {
                         console.log(res, 'delete response');
                     })
@@ -85,7 +81,7 @@ export default {
            }
         }
 
-        const confirmDelete = (id, index) => {
+        const confirmDelete = (id) => {
             confirm.require({
                 message: "Are you sure you want to proceed?",
                 header: "Confirmation",
