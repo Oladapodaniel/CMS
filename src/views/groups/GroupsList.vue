@@ -237,13 +237,15 @@
             </div>
           </div>
             
-            
+            <div class="d-none">
             <GroupTree
                 :items="group.children"
                 v-if="group.children"
-               class="node-height"
+               class="d-none"
                @click="groupClickk(group, $event)"
-                />         
+               @group="setSelectedGroup"
+                /> 
+              </div>        
         </li>
         </ul>
         <!-- <i class="pi pi-chevron-down"></i>{{ group.name }} -->
@@ -434,18 +436,23 @@ export default {
        console.log(i)
        console.log(e)
        console.log(e.target.parentElement.parentElement.parentElement.nextElementSibling)
-      //  if (e.target.parentElement.parentElement.parentElement.nextElementSibling.classList.contains('node-height')) {
-         e.target.parentElement.parentElement.parentElement.nextElementSibling.classList.toggle('node-height-open')
          e.target.classList.toggle('roll-icon')
-      //  }  else {
-      //    e.target.parentElement.parentElement.parentElement.nextElementSibling.classList.replace("node-height-open", "node-height")
-      //  }
+       if (e.target.parentElement.parentElement.parentElement.nextElementSibling.classList.contains('d-none')) {
+         e.target.parentElement.parentElement.parentElement.nextElementSibling.classList.replace('d-none', 'd-block')
+       }  else {
+         e.target.parentElement.parentElement.parentElement.nextElementSibling.classList.replace("d-block", "d-none")
+       }
      }
 
      const groupClickk = (i, e) => {
       //  console.log(i)
-      console.log()
+      console.log(i,e, 'fevfvweklmwfjn')
       router.push(`/tenant/createpeoplegroup/${i.children.find(i => i.name == e.target.textContent).id}`)
+     }
+
+     const setSelectedGroup = (payload) => {
+       console.log(payload)
+       router.push(`/tenant/createpeoplegroup/${payload.id}`)
      }
 
     return {
@@ -469,7 +476,8 @@ export default {
       groupLeader,
       route,
       toggleItems,
-      groupClickk
+      groupClickk,
+      setSelectedGroup
     };
   },
 };

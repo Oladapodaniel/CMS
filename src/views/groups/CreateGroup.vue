@@ -2157,6 +2157,7 @@ export default {
     // getgroups();
 
     const setSelectedGroup = (payload) => {
+      console.log(payload)
       hideDiv.value = true;
       selectedIntendedSubGroup.value = payload;
     };

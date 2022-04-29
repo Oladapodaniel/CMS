@@ -81,14 +81,12 @@
                  
             </div> -->
           </div>
-            
-            
+            <div class="d-none"  @click="checkForGroup(group, $event)">
             <GroupTree
                 :items="group.children"
                 v-if="group.children"
-               class="node-height"
-               @click="checkForGroup(group, $event)"
-                />                    
+              /> 
+            </div>                   
         </li>
         <li class="shadow-sm text-center border p-2 font-weight-700 c-pointer" @click="openCreateGroupModal" v-if="onDropDown">
           <i class="pi pi-plus-circle"></i>&nbsp;Add new group
@@ -140,14 +138,12 @@ export default {
     const toggleItems = (i, e) => {
       console.log(i);
       console.log(e)
-      //  if (e.target.parentElement.parentElement.parentElement.nextElementSibling.classList.contains('node-height')) {
-      e.target.parentElement.parentElement.parentElement.nextElementSibling.classList.toggle(
-        "node-height-open"
-      );
-      e.target.classList.toggle("roll-icon");
-      //  }  else {
-      //    e.target.parentElement.parentElement.parentElement.nextElementSibling.classList.replace("node-height-open", "node-height")
-      //  }
+        e.target.classList.toggle("roll-icon");
+      if (e.target.parentElement.parentElement.parentElement.nextElementSibling.classList.contains('d-none')) {
+         e.target.parentElement.parentElement.parentElement.nextElementSibling.classList.replace('d-none', 'd-block')
+       }  else {
+         e.target.parentElement.parentElement.parentElement.nextElementSibling.classList.replace("d-block", "d-none")
+       }
     };
 
     const groupClick = (group) => {
