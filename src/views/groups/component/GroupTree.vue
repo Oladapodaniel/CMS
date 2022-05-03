@@ -20,7 +20,7 @@
         <li v-for="(group, index) in items" :key="index" class="p-2  c-pointer parent-li border-top">
           <div class="row">
             <div class="text-primary">
-              <span><i class="pi pi-chevron-down roll-icon" v-if="group.children"  @click="toggleItems(group, $event)"></i></span>
+              <span><i class="pi pi-chevron-down roll-icon" v-if="group.children && group.children.length > 0"  @click="toggleItems(group, $event)"></i></span>
             </div>
             <div class="text-primary" @click="groupClick(group)">
               <span class="p-3">{{ group.name }}</span>
@@ -81,7 +81,7 @@
                  
             </div> -->
           </div>
-            <div class="d-none"  @click="checkForGroup(group, $event)">
+            <div class="d-none">
             <GroupTree
                 :items="group.children"
                 v-if="group.children"
@@ -123,14 +123,17 @@ import { ref } from '@vue/reactivity';
 import { useToast } from "primevue/usetoast";
 import axios from "@/gateway/backendapi";
 import { watchEffect } from '@vue/runtime-core';
+// import store from '../../../store/store';
+import { useStore } from "vuex"
 export default {
   name: "GroupTree",
   props: ["items", "addGroupValue"],
-  emits: ["group"],
+  emits: ["group", "groupp"],
   components: {
     Dialog
   },
   setup(props, { emit }) {
+    const store = useStore()
     const displayCreateGroup = ref(false)
     const newGroup = ref({})
     const toast = useToast();
@@ -147,24 +150,7 @@ export default {
     };
 
     const groupClick = (group) => {
-      //  let grouped = group
-
-      //  let child = group.children.find(i => i.name == e.target.textContent)
-      console.log(group);
-      emit("group", group);
-      // if (route && route.query && route.query.actionType == "sendsms") {
-      //   let group = {
-      //     id: id
-      //   }
-      //   sendGroupSms(group)
-      // } else if (route && route.query && route.query.actionType == "sendemail") {
-      //   let group = {
-      //     id: id
-      //   }
-      //   sendGroupEmail(group)
-      // } else {
-      // router.push(`/tenant/createpeoplegroup/${id}`)
-      // }
+      store.dispatch("groups/setSelectedTreeGroup", group)
     };
 
     watchEffect(() => {
@@ -173,11 +159,11 @@ export default {
       }
     })
 
-    const checkForGroup = (group, e) => {
-      console.log(e);
-      let grouped = group.children.find((i) => i.name == e.target.textContent);
-      emit("group", grouped);
-    };
+    // const checkForGroup = (group, e) => {
+    //   console.log(group);
+    //   // let grouped = group.children.find((i) => i.name == e.target.textContent);
+    //   emit("group", e.target);
+    // };
 
     const openCreateGroupModal = () => {
       displayCreateGroup.value = true
@@ -202,7 +188,7 @@ export default {
     return {
       toggleItems,
       groupClick,
-      checkForGroup,
+      // checkForGroup,
       openCreateGroupModal,
       displayCreateGroup,
       newGroup,

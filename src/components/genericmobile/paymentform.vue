@@ -314,7 +314,6 @@ export default {
         const getContributionItems = async() => {
             // To get from store use useStore, to save to store use the path that leads to store
             const store = useStore()
-            console.log(store.getters['contributions/contributionItems'])
             let storedItems = store.getters['contributions/contributionItems']
             if (storedItems.length > 0 ) {
                 contributionItems.value = store.getters['contributions/contributionItems']

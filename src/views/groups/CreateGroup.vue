@@ -311,15 +311,16 @@
                               </button>
                             </div>
                             <div
-                              class="div-card"
+                              class="div-card p-2"
                               :class="{
                                 'd-none': hideDiv,
                                 'd-block': !hideDiv,
                               }"
                             >
+                            <i class="pi pi-spin pi-spinner text-center" v-if="grouploading && getAllGroup.length === 0"></i>
+                            <input type="text" class="form-control" v-model="searchGroupText" ref="searchGroupRef" placeholder="Search for group"/>
                               <GroupTree
-                                :items="getAllGroup"
-                                @group="setSelectedGroup"
+                                :items="searchForGroups"
                                 :addGroupValue="true"
                               />
                             </div>
@@ -329,7 +330,6 @@
                       <div class="col-12">
                         <GroupTree
                           :items="groupData.children"
-                          @group="setSelectedGroup"
                         />
                       </div>
                     </div>
@@ -1403,7 +1403,7 @@
 </template>
 
 <script>
-import { computed, ref } from "vue";
+import { computed, nextTick, ref, watchEffect } from "vue";
 import composeService from "../../services/communication/composer";
 import axios from "@/gateway/backendapi";
 import router from "@/router/index";
@@ -1427,6 +1427,7 @@ import Attendancecheckin from "../event/attendance&checkin/AttendanceAndCheckinL
 import attendanceservice from "../../services/attendance/attendanceservice";
 import ImportToGroup from "../people/ImportInstruction";
 import GroupTree from "./component/GroupTree.vue";
+import { useStore } from "vuex"
 
 export default {
   directives: {
@@ -1444,6 +1445,7 @@ export default {
     GroupTree,
   },
   setup() {
+    const store = useStore();
     const display = ref(false);
     //  const showWardModal = ref(false)
     const memberDia = ref(true);
@@ -1481,16 +1483,22 @@ export default {
     const groups = ref([]);
     const hideDiv = ref(true);
     const selectedIntendedSubGroup = ref({});
+    const searchGroupText = ref("");
+    const grouploading = ref(false);
+    const searchGroupRef = ref();
 
     const closeGroupModal = ref();
 
     const getGroups = async () => {
+      grouploading.value = true
       try {
         const { data } = await axios.get("/api/GetAllGroupBasicInformation");
         console.log(getAllGroup.value);
         getAllGroup.value = data;
+        grouploading.value = false
       } catch (error) {
         console.log(error);
+        grouploading.value = false
       }
     };
     getGroups();
@@ -2154,11 +2162,22 @@ export default {
     // };
     // getgroups();
 
-    const setSelectedGroup = (payload) => {
-      console.log(payload)
-      hideDiv.value = true;
-      selectedIntendedSubGroup.value = payload;
-    };
+    // const setSelectedGroup = (payload) => {
+    //   console.log(payload)
+    //   // if (payload && payload.iconElement && payload.iconElement.classList.contains("pi-chevron-down")) return false
+
+    //   // hideDiv.value = true
+    //   // selectedIntendedSubGroup.value = payload.selectedGroup;
+    // };
+
+    watchEffect (() => {
+      if (store.getters['groups/selectedTreeGroup']) {
+        console.log(store.getters['groups/selectedTreeGroup'])
+        const selectedGroup = store.getters['groups/selectedTreeGroup']
+        hideDiv.value = true
+        selectedIntendedSubGroup.value = selectedGroup;
+      }
+    })
 
     const addSubGroup = async () => {
       try {
@@ -2188,7 +2207,19 @@ export default {
 
     const setGroupProp = () => {
       hideDiv.value = !hideDiv.value;
+      nextTick(() => {
+        searchGroupRef.value.focus()
+      })
     };
+
+    const searchForGroups = computed(() => {
+      if (!searchGroupText.value && getAllGroup.value.length > 0) return getAllGroup.value
+      return getAllGroup.value.filter(i => i.name.toLowerCase().includes(searchGroupText.value.toLowerCase()))
+    })
+
+    const setChildGroup = (payload) => {
+      console.log(payload)
+    }
 
     return {
       groupData,
@@ -2270,11 +2301,16 @@ export default {
       searchGroupMembers,
       field,
       groups,
-      setSelectedGroup,
+      // setSelectedGroup,
       setGroupProp,
       hideDiv,
       selectedIntendedSubGroup,
       addSubGroup,
+      searchGroupText,
+      searchForGroups,
+      searchGroupRef,
+      setChildGroup,
+      grouploading
     };
   },
 };

@@ -6,8 +6,12 @@ export default {
     
     state: {
         groups: [],
+        selectedTreeGroup: {}
     },
-
+    getters: {
+        groups: state => state.groups,
+        selectedTreeGroup: state => state.selectedTreeGroup,
+    },
 
     mutations: {
         setGroups(state, payload) {
@@ -30,9 +34,7 @@ export default {
         },
 
         updateGroup(state, payload) {
-            console.log(payload, "id");
             const targetGroupsIndex = state.groups.findIndex(i => i.id === payload.id);
-            console.log(targetGroupsIndex, "index");
             state.groups[targetGroupsIndex] = payload;
         },
 
@@ -44,8 +46,10 @@ export default {
             state.groups.slice(payload, 1);
         },
         clearGroup (state) {
-            console.log('state', state)
             state.groups = []
+        },
+        setSelectedTreeGroup (state, payload) {
+            state.selectedTreeGroup = payload
         }
     },
 
@@ -78,16 +82,15 @@ export default {
         async getGroups({ commit }) {
             try {
                 const { data } = await axios.get("/api/GetAllGroupBasicInformation");
-                console.log(data)
                 commit("setGroups", data);
             } catch (error) {
                 stopProgressBar();
                 console.log(error);
             }
-        }
-    },
+        },
 
-    getters: {
-        groups: state => state.groups,
-    },
+        setSelectedTreeGroup ({ commit }, payload) {
+            commit("setSelectedTreeGroup", payload)
+        }
+    }
 }
