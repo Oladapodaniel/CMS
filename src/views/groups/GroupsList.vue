@@ -284,7 +284,7 @@
 </template>
 
 <script>
-import { ref, computed } from "vue";
+import { ref, computed, watchEffect } from "vue";
 import { useRoute, useRouter } from 'vue-router';
 import groupsService from "../../services/groups/groupsservice";
 import { useStore } from "vuex";
@@ -308,9 +308,9 @@ export default {
 
   setup() {
     //   const $confirm = getCurrentInstance().ctx.$confirm;
+    const store = useStore();
     const loading = ref(false);
     const displayConfirmModal = ref(false);
-    const store = useStore();
     const groups = ref(store.getters["groups/groups"]);
     const groupListDetails = ref([]);
     const toast = useToast();
@@ -319,6 +319,7 @@ export default {
     const showEmail = ref(false)
     const router = useRouter()
     const route = useRoute();
+    const lastGroupChild = ref({});
 
     // const showSide = ref(false);
 
@@ -451,9 +452,18 @@ export default {
      }
 
      const setSelectedGroup = (payload) => {
-       console.log(payload)
-       router.push(`/tenant/createpeoplegroup/${payload.id}`)
+       if (payload.iconElement.classList.contains("p-3")) {
+          payload.selectedGroup ? router.push(`/tenant/createpeoplegroup/${payload.selectedGroup.id}`) : router.push(`/tenant/createpeoplegroup/${lastGroupChild.value.id}`)
+       }
      }
+
+     watchEffect(() => {
+       if (store.getters["groups/selectedTreeGroupList"]) {
+         const selectedGroup = store.getters["groups/selectedTreeGroupList"]
+         lastGroupChild.value = selectedGroup
+        //  router.push(`/tenant/createpeoplegroup/${selectedGroup.id}`)
+       }
+     })
 
     return {
       // showSide,
@@ -477,7 +487,8 @@ export default {
       route,
       toggleItems,
       groupClickk,
-      setSelectedGroup
+      setSelectedGroup,
+      lastGroupChild
     };
   },
 };

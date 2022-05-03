@@ -22,7 +22,7 @@
             <div class="text-primary">
               <span><i class="pi pi-chevron-down roll-icon" v-if="group.children && group.children.length > 0"  @click="toggleItems(group, $event)"></i></span>
             </div>
-            <div class="text-primary" @click="groupClick(group)">
+            <div class="text-primary" @click="groupClick(group, $event)">
               <span class="p-3">{{ group.name }}</span>
             </div>
             <!-- <div class="col-3 text-primary" @click="groupClick(group.id)">
@@ -81,7 +81,7 @@
                  
             </div> -->
           </div>
-            <div class="d-none">
+            <div class="d-none"  @click="checkForGroup(group, $event)">
             <GroupTree
                 :items="group.children"
                 v-if="group.children"
@@ -139,8 +139,7 @@ export default {
     const toast = useToast();
     const onDropDown = ref(false)
     const toggleItems = (i, e) => {
-      console.log(i);
-      console.log(e)
+
         e.target.classList.toggle("roll-icon");
       if (e.target.parentElement.parentElement.parentElement.nextElementSibling.classList.contains('d-none')) {
          e.target.parentElement.parentElement.parentElement.nextElementSibling.classList.replace('d-none', 'd-block')
@@ -149,8 +148,10 @@ export default {
        }
     };
 
-    const groupClick = (group) => {
+    const groupClick = (group, e) => {
+      store.dispatch("groups/setSelectedTreeGroupList", group)
       store.dispatch("groups/setSelectedTreeGroup", group)
+      emit("group", { selectedGroup: group, iconElement: e.target });
     };
 
     watchEffect(() => {
@@ -159,11 +160,11 @@ export default {
       }
     })
 
-    // const checkForGroup = (group, e) => {
-    //   console.log(group);
-    //   // let grouped = group.children.find((i) => i.name == e.target.textContent);
-    //   emit("group", e.target);
-    // };
+    const checkForGroup = (group, e) => {
+      let grouped = group.children.find((i) => i.name == e.target.textContent);
+      // emit("group", grouped);
+      emit("group", { selectedGroup: grouped, iconElement: e.target });
+    };
 
     const openCreateGroupModal = () => {
       displayCreateGroup.value = true
@@ -178,8 +179,8 @@ export default {
             detail: "Group created successfully",
             life: 4000,
           });
-          console.log(data)
           displayCreateGroup.value = false
+          console.log(data)
       }
       catch (err) {
         console.log(err)
@@ -188,7 +189,7 @@ export default {
     return {
       toggleItems,
       groupClick,
-      // checkForGroup,
+      checkForGroup,
       openCreateGroupModal,
       displayCreateGroup,
       newGroup,
