@@ -2651,7 +2651,7 @@ export default {
   width: 100%;
   top: 136px;
   box-shadow: 0 0 11px rgba(33, 33, 33, 0.2);
-  height: 400px;
+  max-height: 400px;
   overflow: scroll;
 }
 </style>
