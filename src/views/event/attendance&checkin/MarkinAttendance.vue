@@ -369,7 +369,7 @@ export default {
           personData.value.mobilePhone = enteredValue.value;
           person.value = res.data[0] ? res.data[0] : {};
           birthDay.value = res.data[0] && res.data[0].dayOfBirth ? Number(res.data[0].dayOfBirth) : 0;
-          birthMonth.value = res.data[0] && res.data[0].monthOfBirth ? months[Number(res.data[0].monthOfBirth)] : 0;
+          birthMonth.value = res.data[0] && res.data[0].monthOfBirth ? months[Number(res.data[0].monthOfBirth) - 1] : 0;
           // birthYear.value = res.data[0] && res.data[0].yearOfBirth ? Number(res.data[0].yearOfBirth) : 0;
 
           if (
