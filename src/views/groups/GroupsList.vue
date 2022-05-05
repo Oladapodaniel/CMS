@@ -1,5 +1,6 @@
 <template>
   <div>
+    <!-- <Treee :items="groups"/> -->
     <div class="container-slim">
       <div class="container-fluid">
         <div class="row d-md-flex yu mt-5">
@@ -161,53 +162,49 @@
                   <!-- loadding -->
 
               
+                <div
+    class=" row w-100  text-dark "
+    style="margin: 0"
+    
+  >
+    <!-- class="d-block -->
 
-
-                  <div class="row w-100 c-pointer text-dark border-top p-1 hover d-flex align-items-center" style="margin: 0" v-for="(group, index) in searchGroup" :key="index">
-                  
-                    <!-- <div class="col-md-1 d-flex d-md-block px-3 justify-content-end"></div> -->
-
-                    <!-- <div class="col-md-2 col-sm-2 d-md-flex align-items-center">
-                      <input
-                        class="my-2 d-flex justify-content-end"
-                        type="checkbox"
-                      />
-                    </div> -->
-
-                    <div class="col-md-6 desc" @click="groupClick(group.id)">
-                      <p class="mb-0 d-flex justify-content-between text-primary">
-                        <span
-                          class=" text-dark font-weight-bold d-flex d-md-none fontIncrease"
-                        style="font-size:15px">Group Name</span>
-                          {{ group.name }}
-                      </p>
+    <div class="col-md-12 desc">
+      <p class="">
+        <span
+          class="text-dark font-weight-bold d-flex d-md-none fontIncrease"
+          style="font-size: 15px"
+          >Group Name</span
+          
+        >
+        <ul class="w-100">
+        <!-- :class="{ 'd-block' : itemDisplay, 'd-none' : !itemDisplay }"  -->
+         <!-- @click="toggleItems(i, $event)" -->
+        <li v-for="(group, index) in searchGroup" :key="index" class="pt-2  c-pointer parent-li border-top">
+          <div class="row">
+    
+            <div class="col-6 text-primary" >
+              <span><i class="pi pi-chevron-down roll-icon" v-if="group.children"  @click="toggleItems(group, $event)"></i></span>
+              <span class="p-3" @click="groupClick(group.id)">{{ group.name }}</span>
+            </div>
+            <div class="col-4 text-primary" @click="groupClick(group.id)">
+              <div @click="groupClick(group.id)">
+                <div class="d-flex small justify-content-between text-primary">
+                  <span class="text-dark font-weight-bold d-flex d-md-none fontIncrease" style="font-size:15px">Membership Size</span>
+                    <div class="small-text text-right text-md-center">
+                      {{ group.peopleInGroupsCount }}
                     </div>
-
-                    <div class="col-md-5" @click="groupClick(group.id)">
-                      <div class="d-flex small justify-content-between text-primary">
-                        <span class="text-dark font-weight-bold d-flex d-md-none fontIncrease" style="font-size:15px">Membership Size</span>
-                          <div class="small-text text-right text-md-center">
-                            {{ group.peopleInGroupsCount }}
-                          </div>
-                      </div>
-                    </div>
-
-                    <!-- <div class="col-md-2"></div> -->
-
-                    <div class="col-md-1">
+                </div>
+              </div>
+            </div>
+            <div class="col-2">
+              <!-- <div class="col-md-1"> -->
                       <div>
                         <div class="dropdown">
                           <span class="d-flex justify-content-between">
                             <span class="d-md-none d-sm-flex"></span>
                             <span class="d-sm-flex small">
-                              <i
-                                class="
-                                  fas
-                                  fa-ellipsis-v
-                                  cursor-pointer
-                                  ml-2
-                                  fontIncrease
-                                "
+                              <i class=" fas fa-ellipsis-v cursor-pointer ml-2 fontIncrease"
                                 id="dropdownMenuButton"
                                 data-toggle="dropdown"
                                 aria-haspopup="true"
@@ -236,9 +233,30 @@
                           </span>
                         </div>
                       </div>
-                    </div>
-                
-                  </div>
+                    <!-- </div> -->
+            </div>
+          </div>
+            
+            <div class="d-none">
+            <GroupTree
+                :items="group.children"
+                v-if="group.children"
+               class="d-none"
+               @click="groupClickk(group, $event)"
+               @group="setSelectedGroup"
+                /> 
+              </div>        
+        </li>
+        </ul>
+        <!-- <i class="pi pi-chevron-down"></i>{{ group.name }} -->
+        
+      </p>
+    </div>
+
+    
+  </div>
+
+                 <!-- <GroupTree :items="searchGroup" /> -->
                 </div>
                 
               </div>
@@ -275,12 +293,17 @@ import { useToast } from "primevue/usetoast";
 import smsComponent from "./component/smsComponent.vue";
 import emailComponent from "./component/emailComponent.vue";
 import SideBar from "./sidemodal/SideModal.vue";
+import GroupTree from "./component/GroupTree.vue"
+// import Treee from "../../components/whatsapp/Treee.vue"
 
 export default {
+  // name: 'Tree',
   components : {
     SideBar,
     smsComponent,
-    emailComponent
+    emailComponent,
+    GroupTree
+    // Treee
   },
 
   setup() {
@@ -348,6 +371,7 @@ export default {
               id: i.id,
               tenantID: i.tenantID,
               peopleInGroupsCount: i.peopleInGroupsCount,
+              children: i.children
             };
           }));
         console.log(groups.value);
@@ -408,6 +432,29 @@ export default {
       return JSON.parse(localStorage.getItem('roles')).every(i => i.toLowerCase() == 'groupleader')
     })
 
+    const toggleItems = (i, e) => {
+       console.log(i)
+       console.log(e)
+       console.log(e.target.parentElement.parentElement.parentElement.nextElementSibling)
+         e.target.classList.toggle('roll-icon')
+       if (e.target.parentElement.parentElement.parentElement.nextElementSibling.classList.contains('d-none')) {
+         e.target.parentElement.parentElement.parentElement.nextElementSibling.classList.replace('d-none', 'd-block')
+       }  else {
+         e.target.parentElement.parentElement.parentElement.nextElementSibling.classList.replace("d-block", "d-none")
+       }
+     }
+
+     const groupClickk = (i, e) => {
+      //  console.log(i)
+      console.log(i,e, 'fevfvweklmwfjn')
+      router.push(`/tenant/createpeoplegroup/${i.children.find(i => i.name == e.target.textContent).id}`)
+     }
+
+     const setSelectedGroup = (payload) => {
+       console.log(payload)
+       router.push(`/tenant/createpeoplegroup/${payload.id}`)
+     }
+
     return {
       // showSide,
       // sendSms,
@@ -427,7 +474,10 @@ export default {
       searchGroup,
       removeSearchText,
       groupLeader,
-      route
+      route,
+      toggleItems,
+      groupClickk,
+      setSelectedGroup
     };
   },
 };
@@ -824,6 +874,33 @@ export default {
 .hover:hover {
   background: #eee;
 }
+
+li {
+  list-style-type: none;
+}
+
+li  li:hover {
+  /* border: 2px solid red; */
+  background: rgba(224, 223, 223, 0.46)
+}
+
+.node-height {
+  height: 0px;
+  overflow: hidden;
+  /* transition: all .5s ease-in-out; */
+}
+
+.node-height-open {
+  height: 100%;
+  overflow: hidden;
+  /* transition: all .5s ease-in-out; */
+}
+
+.roll-icon {
+  transform: rotate(-90deg);
+  /* transition: all .5s ease-in-out; */
+}
+
 /* @media Queries */
 @media (max-width: 771px) {
   .fontIncrease {

@@ -10,11 +10,6 @@ import axios from "./gateway/backendapi";
 // import NProgress from "nprogress";
 import CKEditor from '@ckeditor/ckeditor5-vue';
 import Toaster from '@meforma/vue-toaster';
-import { TreeView,
-  // TreeViewItem,
-  TreeViewInstaller } from '@progress/kendo-treeview-vue-wrapper'
-
-
 
 // Vue.prototype.$http = axios
 
@@ -132,6 +127,5 @@ app.component("SplitButton", SplitButton);
 app.component("Checkbox", Checkbox);
 app.component("Tag", Tag);
 app.component("Editor", Editor);
-app.component("TreeView", TreeView);
 
-app.use(store).use(router).use(VueHighcharts, { Highcharts }).use( CKEditor).use(Toaster).use(PrimeVue).use(ToastService).use(ConfirmationService).use(TreeViewInstaller).mount('#app')
+app.use(store).use(router).use(VueHighcharts, { Highcharts }).use( CKEditor).use(Toaster).use(PrimeVue).use(ToastService).use(ConfirmationService).mount('#app')

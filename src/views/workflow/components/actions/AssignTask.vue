@@ -1,18 +1,18 @@
 <template>
-    <div class="container max-height scroll-div">
+    <div class="container max-height scroll-div" v-for="(item, index) in removeOthers" :key="index">
         <div class="row mt-4">
             <div class="col-md-12 px-0">
                 <label for="" class="font-weight-600">Task Type</label>
             </div>
             <div class="col-md-12 px-0">
-                <Dropdown :options="taskTypes" optionLabel="name" class="w-100" v-model="selectedTaskType" @change="handleSelectedTaskType" />
+                <Dropdown :options="taskTypes" optionLabel="name" class="w-100" placeholder="Task type" v-model="item.selectedTaskType" @change="handleSelectedTaskType" />
             </div>
         </div>
 
         <div class="row mt-4">
             <div class="col-md-12 px-0">
                 <span class="d-flex align-items-center">
-                    <input type="checkbox" class="form-check mr-2" v-model="groupLeaders" @change="handleGroupLeaders"> <span>Group Leaders</span>
+                    <input type="checkbox" class="form-check mr-2" v-model="item.groupLeaders" @change="handleGroupLeaders"> <span>Group Leaders</span>
                 </span>
             </div>
         </div>
@@ -25,7 +25,7 @@
                 <div class="row">
                     <div class="col-md-12">
                         <span class="d-flex flex-wrap">
-                            <span v-for="(contact, index) in otherToContacts" :key="index" class="d-flex my-1 p-1 justify-content-between our-grey-bg mx-1" style="width: fit-content">
+                            <span v-for="(contact, index) in item.otherToContacts" :key="index" class="d-flex my-1 p-1 justify-content-between our-grey-bg mx-1" style="width: fit-content">
                                 <span>{{ contact.name }}</span>
                                 <span class="mx-2 font-weight-bold text-danger c-pointer" @click="removeContact(index)">x</span>
                             </span>
@@ -51,7 +51,7 @@
                 <label for="" class="font-weight-600">Instructions</label>
             </div>
             <div class="col-md-12 px-0">
-                <textarea name="" id="" class="w-100" rows="4" v-model="instructions" @change="handleInstructions"></textarea>
+                <textarea name="" id="" class="w-100" rows="4" v-model="item.instructions" @change="handleInstructions"></textarea>
             </div>
         </div>
     </div>
@@ -65,11 +65,17 @@ import { watch } from '@vue/runtime-core';
 
 export default {
     components: { Dropdown, SearchWithDropdown },
-    props: [ "selectedActionIndex", "parameters" ],
+    props: [ "selectedActionIndex", "parameters", "selectAssignTaskList" ],
     setup (props, { emit }) {
         const data = reactive({ ActionType: 5, JSONActionParameters: { } })
 
         const selectedTaskType = ref([ ]);
+        const removeOthers = ref([
+            {
+                otherToContacts: []
+            }
+        ]);
+
         const handleSelectedTaskType = (e) => {
             data.JSONActionParameters.taskType = e.value.index;
             emit('updateaction', data, props.selectedActionIndex);
@@ -100,8 +106,10 @@ export default {
         ]
 
         const memberSelected = memberData => {
-            if (memberData.member) otherToContacts.value.push(memberData.member);
-            data.JSONActionParameters.otherToContacts = otherToContacts.value.length > 0 ? otherToContacts.value.map(i => i.id).join(',') : "";
+            if (memberData.member && removeOthers.value[0] && removeOthers.value[0].otherToContacts)
+            removeOthers.value[0].otherToContacts.push(memberData.member);
+            data.JSONActionParameters.otherToContacts = removeOthers.value[0].otherToContacts && removeOthers.value[0].otherToContacts.length > 0 ? removeOthers.value[0].otherToContacts.map(i => i.id).join(',') : "";
+            console.log(removeOthers.value)
         }
 
         const removeContact = index => {
@@ -111,6 +119,16 @@ export default {
 
         const parsedData = ref({ })
         watch(() => {
+
+            if (props.selectAssignTaskList) {
+                removeOthers.value = props.selectAssignTaskList.filter((i,index) => {
+                    return index == props.selectedActionIndex
+                }).map(i => {
+                    i.otherToContacts = []
+                    return i
+                })
+            }
+
             if (props.parameters.Action) {
                 const actn = JSON.parse(props.parameters.Action);
                 parsedData.value = JSON.parse(actn.JSONActionParameters)
@@ -123,16 +141,18 @@ export default {
 
                 instructions.value = parsedData.value.instructions;
                 data.JSONActionParameters.instructions = parsedData.value.instructions;
-            } else if (props.parameters.action && props.parameters.action.jsonActionParameters) {
-                parsedData.value = JSON.parse(props.parameters.action.jsonActionParameters);
+            } else if (removeOthers.value && removeOthers.value[0].action && removeOthers.value[0].action.jsonActionParameters) {
+            // } else if (props.parameters.action && props.parameters.action.jsonActionParameters) {
+                // parsedData.value = JSON.parse(props.parameters.action.jsonActionParameters);
+                parsedData.value = JSON.parse(removeOthers.value[0].action.jsonActionParameters);
                 
-                selectedTaskType.value = taskTypes.find(i => i.index === parsedData.value.taskType);
+                removeOthers.value[0].selectedTaskType = taskTypes.find(i => i.index === parsedData.value.taskType);
                 data.JSONActionParameters.taskType = parsedData.value.taskType;
 
-                groupLeaders.value = parsedData.value.groupLeaders;
+                removeOthers.value[0].groupLeaders = parsedData.value.groupLeaders;
                 data.JSONActionParameters.groupLeaders = parsedData.value.groupLeaders;
 
-                instructions.value = parsedData.value.instructions;
+                removeOthers.value[0].instructions = parsedData.value.instructions;
                 data.JSONActionParameters.instructions = parsedData.value.instructions;
             }
         })
@@ -149,6 +169,7 @@ export default {
             instructions,
             memberSelected,
             removeContact,
+            removeOthers
         }
     }
 }
