@@ -174,7 +174,7 @@
                         </div>
                     </div>
                     <div class="col-12 col-sm-8 offset-sm-3 offset-md-0 col-md-4 dropdown-container">
-                        <div 
+                        <div v-if="selectedDetail.name"
                             class="select-elem-con pointer col-12  ofering"
                             id="eventCategorySelectElem"
                             @click="showPerson = !showPerson"
@@ -182,7 +182,23 @@
                             >
                             <span class="ofering"
                                 >
-                                <!-- <i class="pi pi-calendar ofering"></i> -->
+                                &nbsp;&nbsp;&nbsp;{{ selectedDetail.name ?  selectedDetail.name : 'Select Person' }} </span
+                            ><span v-if="!selectedDetail.name">
+                                <i 
+                                class="pi pi-angle-down offset-sm-2 ofering" 
+                                :class="{ roll3: showForm3 }"
+                                aria-hidden="true"
+                                ></i
+                            ></span>
+                        </div>
+                        <div v-else
+                            class="select-elem-con pointer col-12  ofering"
+                            id="eventCategorySelectElem"
+                            @click="showPerson = !showPerson"
+                            
+                            >
+                            <span class="ofering"
+                                >
                                 &nbsp;&nbsp;&nbsp;{{ selectedDetail.name ?  selectedDetail.name : 'Select Person' }} </span
                             ><span v-if="!selectedDetail.name">
                                 <i 
@@ -394,6 +410,9 @@ export default {
         const getSinglePledge = async () =>{
             try{
                 const res = await axios.get(`/api/Pledge/GetOnePledge?ID=${route.query.id}`)
+                selectedPledge.value = res.data.returnObject.pledgeType.name
+                console.log(selectedPledge.value,'selected');
+                selectedDetail.name.value = res.data.returnObject.person.firstName
                 console.log(res.data, 'getSinglePledge');
             }
             catch(error){

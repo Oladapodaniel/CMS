@@ -78,13 +78,13 @@
                      <input type="text" v-model="amountTo" class="form-control" placeholder="To" />
                   </div>
                   <div class="col-12 col-md-2">
-                    
-                      <input
+                    <button class=" default-btn "> Search...</button>
+                      <!-- <input
                         type="text"
                         class="w-100   form-control  "
                         placeholder="Search..."
                         v-model="searchText"
-                      />
+                      /> -->
                   </div>
                 </div>
               </div>
@@ -336,7 +336,7 @@ export default {
             return monthDayYear.monthDayYear(offDate);
           };
 
-        const getAllPledgeDefinition = async () =>{
+        const getAllPledges = async () =>{
                 try{
                     const res = await axios.get('/api/Pledge/GetAllPledges')
                     // const res = await axios.get('/api/Pledge/GetAllPledgeDefinitions')
@@ -348,7 +348,7 @@ export default {
                     console.log(error)
                 }
             }
-            getAllPledgeDefinition()
+            getAllPledges()
 
             const deletePledge = (id) => {
 
