@@ -527,6 +527,7 @@
       role="dialog"
       aria-labelledby="addToGroup"
       aria-hidden="true"
+      @click="hideGroupModal"
     >
       <div class="modal-dialog modal-lg" role="document">
         <div class="modal-content">
@@ -548,22 +549,23 @@
               <div class="col-md-4 text-md-right">
                 <label for="" class="font-weight-600">Name</label>
               </div>
-              <div class="col-md-7">
-                <button class="btn border w-100 d-flex justify-content-between align-items-center" type="button" @click="setGroupProp">
-                    <div>{{ Object.keys(groupToAddTo).length > 0 ? groupToAddTo.name : 'Select a group' }}</div>
-                    <i class="pi pi-chevron-down"></i>
+              <div class="col-md-7 exempt-hide">
+                <button class="btn border w-100 d-flex justify-content-between align-items-center exempt-hide" type="button" @click="setGroupProp">
+                    <div class="exempt-hide">{{ Object.keys(groupToAddTo).length > 0 ? groupToAddTo.name : 'Select a group' }}</div>
+                    <i class="pi pi-chevron-down exempt-hide"></i>
                   </button>
                   <div
-                    class="div-card p-2"
+                    class="div-card p-2 exempt-hide"
                     :class="{
                       'd-none': hideDiv,
                       'd-block': !hideDiv,
                     }"
                   >
-                  <i class="pi pi-spin pi-spinner text-center" v-if="grouploading && getAllGroup.length === 0"></i>
-                  <input type="text" class="form-control" v-model="searchGroupText" ref="searchRef" placeholder="Search for group"/>
+                  <i class="pi pi-spin pi-spinner text-center exempt-hide" v-if="grouploading && getAllGroup.length === 0"></i>
+                  <input type="text" class="form-control exempt-hide" v-model="searchGroupText" ref="searchRef" placeholder="Search for group"/>
                     <group-tree :items="searchAllGroups"
                       :addGroupValue="true"
+                      class="exempt-hide"
                     />
                   </div>
                 <!-- <div class="dropdown show">
@@ -1403,6 +1405,14 @@ export default {
       }
     })
 
+    const hideGroupModal = (e) => {
+      // console.log('hideGroupModal')
+      if (!e.target.classList.contains("exempt-hide")) {
+        console.log('does not contain')
+        hideDiv.value = true
+      }
+    }
+
     return {
       months,
       numberofYears,
@@ -1469,7 +1479,8 @@ export default {
       searchAllGroups,
       classifications,
       showConfirmModal,
-      hideDiv
+      hideDiv,
+      hideGroupModal
     };
   },
 };

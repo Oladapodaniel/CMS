@@ -17,13 +17,13 @@
         <ul class="p-0 w-100">
         <!-- :class="{ 'd-block' : itemDisplay, 'd-none' : !itemDisplay }"  -->
          <!-- @click="toggleItems(i, $event)" -->
-        <li v-for="(group, index) in items" :key="index" class="p-2  c-pointer parent-li border-top">
-          <div class="row">
-            <div class="text-primary">
-              <span><i class="pi pi-chevron-down roll-icon" v-if="group.children && group.children.length > 0"  @click="toggleItems(group, $event)"></i></span>
+        <li v-for="(group, index) in items" :key="index" class="p-2  c-pointer parent-li border-top exempt-hide">
+          <div class="row exempt-hide">
+            <div class="text-primary exempt-hide">
+              <span><i class="pi pi-chevron-down roll-icon exempt-hide" v-if="group.children && group.children.length > 0"  @click="toggleItems(group, $event)"></i></span>
             </div>
-            <div class="text-primary" @click="groupClick(group, $event)">
-              <span class="p-3">{{ group.name }}</span>
+            <div class="text-primary exempt-hide" @click="groupClick(group, $event)">
+              <span class="p-3 exempt-hide">{{ group.name }}</span>
             </div>
             <!-- <div class="col-3 text-primary" @click="groupClick(group.id)">
               <div @click="groupClick(group.id)">
