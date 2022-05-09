@@ -21,10 +21,12 @@
           <div class="row exempt-hide">
             <div class="text-primary exempt-hide">
               <span>
+                <Checkbox id="binary" v-model="group.displayCheck" :binary="true" class="exempt-hide" @change="getCheckedGroup(group)" /> 
                 <i class="pi pi-chevron-down roll-icon exempt-hide ml-4" v-if="group.children && group.children.length > 0"  @click="toggleItems(group, $event)"></i>
               </span>
             </div>
-            <div class="text-primary exempt-hide" @click="groupClick(group, $event)">
+            <!-- @click="groupClick(group, $event) -->
+            <div class="text-primary exempt-hide">
               <span class="p-3 exempt-hide">{{ group.name }}</span>
             </div>
             <!-- <div class="col-3 text-primary" @click="groupClick(group.id)">
@@ -87,8 +89,6 @@
             <GroupTree
                 :items="group.children"
                 v-if="group.children"
-                :class="{ 'd-none' : !showCheckBox }"
-                
               /> 
             </div>                   
         </li>
@@ -122,48 +122,58 @@
 </template>
 
 <script>
-import Dialog from 'primevue/dialog';
-import { ref } from '@vue/reactivity';
+import Dialog from "primevue/dialog";
+import { ref } from "@vue/reactivity";
 import { useToast } from "primevue/usetoast";
 import axios from "@/gateway/backendapi";
-import { computed, watchEffect } from '@vue/runtime-core';
+import { computed, watchEffect } from "@vue/runtime-core";
 // import store from '../../../store/store';
-import { useStore } from "vuex"
+import { useStore } from "vuex";
 export default {
   name: "GroupTree",
-  props: ["items", "addGroupValue", "showCheckBox"],
+  props: ["items", "addGroupValue"],
   emits: ["group", "groupp"],
-  inheritAttrs: false,
   components: {
-    Dialog
+    Dialog,
   },
   setup(props, { emit }) {
-    const store = useStore()
-    const displayCreateGroup = ref(false)
-    const newGroup = ref({})
+    const store = useStore();
+    const displayCreateGroup = ref(false);
+    const newGroup = ref({});
     const toast = useToast();
-    const onDropDown = ref(false)
+    const onDropDown = ref(false);
+    const multipleGroupsSelected = ref([]);
 
     const toggleItems = (i, e) => {
-        e.target.classList.toggle("roll-icon");
-      if (e.target.parentElement.parentElement.parentElement.nextElementSibling.classList.contains('d-none')) {
-         e.target.parentElement.parentElement.parentElement.nextElementSibling.classList.replace('d-none', 'd-block')
-       }  else {
-         e.target.parentElement.parentElement.parentElement.nextElementSibling.classList.replace("d-block", "d-none")
-       }
+      e.target.classList.toggle("roll-icon");
+      if (
+        e.target.parentElement.parentElement.parentElement.nextElementSibling.classList.contains(
+          "d-none"
+        )
+      ) {
+        e.target.parentElement.parentElement.parentElement.nextElementSibling.classList.replace(
+          "d-none",
+          "d-block"
+        );
+      } else {
+        e.target.parentElement.parentElement.parentElement.nextElementSibling.classList.replace(
+          "d-block",
+          "d-none"
+        );
+      }
     };
 
-    const groupClick = (group, e) => {
-      store.dispatch("groups/setSelectedTreeGroupList", group)
-      store.dispatch("groups/setSelectedTreeGroup", group)
-      emit("group", { selectedGroup: group, iconElement: e.target });
-    };
+    // const groupClick = (group, e) => {
+    //   store.dispatch("groups/setSelectedTreeGroupList", group)
+    //   store.dispatch("groups/setSelectedTreeGroup", group)
+    //   emit("group", { selectedGroup: group, iconElement: e.target });
+    // };
 
     watchEffect(() => {
       if (props.addGroupValue) {
-        onDropDown.value = true
+        onDropDown.value = true;
       }
-    })
+    });
 
     const checkForGroup = (group, e) => {
       let grouped = group.children.find((i) => i.name == e.target.textContent);
@@ -172,36 +182,79 @@ export default {
     };
 
     const openCreateGroupModal = () => {
-      displayCreateGroup.value = true
-    }
+      displayCreateGroup.value = true;
+    };
 
-    const createGroup = async() => {
+    const createGroup = async () => {
       try {
-        let { data } = await axios.post("/api/CreateGroup", newGroup.value)
-          toast.add({
-            severity: "success",
-            summary: "Success",
-            detail: "Group created successfully",
-            life: 4000,
-          });
-          displayCreateGroup.value = false
-          console.log(data)
+        let { data } = await axios.post("/api/CreateGroup", newGroup.value);
+        toast.add({
+          severity: "success",
+          summary: "Success",
+          detail: "Group created successfully",
+          life: 4000,
+        });
+        displayCreateGroup.value = false;
+        console.log(data);
+      } catch (err) {
+        console.log(err);
       }
-      catch (err) {
-        console.log(err)
-      }
-    }
+    };
 
-    
+    const getCheckedGroup = (item) => {
+      console.log(item.displayCheck);
+      console.log(item);
+      const groupData = item;
+      if (groupData.displayCheck) {
+        const getIndex = multipleGroupsSelected.value.findIndex(
+          (j) => j.id === item.id
+        );
+        if (getIndex < 0) {
+          multipleGroupsSelected.value.push(groupData);
+        }
+      }
+      checkChildren(groupData, multipleGroupsSelected.value);
+      //   Save to store
+      store.dispatch(
+        "groups/setCheckedTreeGroup",
+        multipleGroupsSelected.value.filter((i) => i.displayCheck)
+      );
+    };
+
+    const checkChildren = (item, destArray) => {
+      if (item && item.children && item.children.length > 0) {
+        console.log(item.displayCheck);
+        item.children.forEach((i) => {
+          console.log(i.displayCheck);
+          i.displayCheck = !i.displayCheck;
+          if (item.displayCheck) {
+            i.displayCheck = true;
+            const getIndex = destArray.findIndex((j) => j.id === i.id);
+            if (getIndex < 0) {
+              destArray.push(i);
+            }
+          }
+          if (!item.displayCheck) {
+            i.displayCheck = false;
+          }
+          if (i.children && i.children.length > 0) {
+            checkChildren(i, destArray);
+          }
+        });
+      }
+    };
+
     return {
       toggleItems,
-      groupClick,
+      //   groupClick,
       checkForGroup,
       openCreateGroupModal,
       displayCreateGroup,
       newGroup,
       createGroup,
-      onDropDown
+      onDropDown,
+      getCheckedGroup,
+      multipleGroupsSelected,
     };
   },
 };
@@ -233,5 +286,4 @@ li li:hover {
   transform: rotate(-90deg);
   /* transition: all .5s ease-in-out; */
 }
-
 </style>

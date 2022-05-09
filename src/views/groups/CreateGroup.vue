@@ -284,17 +284,18 @@
                                     d-flex
                                     justify-content-between
                                     align-items-center
+                                    exempt-hide
                                   "
                                   @click="setGroupProp"
                                 >
-                                  <span>{{
+                                  <span class="exempt-hide">{{
                                     selectedIntendedSubGroup &&
                                     Object.keys(selectedIntendedSubGroup)
                                       .length > 0
                                       ? selectedIntendedSubGroup.name
                                       : "Select group"
                                   }}</span>
-                                  <i class="pi pi-chevron-down"></i>
+                                  <i class="pi pi-chevron-down exempt-hide"></i>
                                 </button>
                               </div>
                               <button
@@ -311,17 +312,18 @@
                               </button>
                             </div>
                             <div
-                              class="div-card p-2"
+                              class="div-card p-2 exempt-hide"
                               :class="{
                                 'd-none': hideDiv,
                                 'd-block': !hideDiv,
                               }"
                             >
-                            <i class="pi pi-spin pi-spinner text-center" v-if="grouploading && getAllGroup.length === 0"></i>
-                            <input type="text" class="form-control" v-model="searchGroupText" ref="searchGroupRef" placeholder="Search for group"/>
+                            <i class="pi pi-spin pi-spinner text-center exempt-hide" v-if="grouploading && getAllGroup.length === 0"></i>
+                            <input type="text" class="form-control exempt-hide" v-model="searchGroupText" ref="searchGroupRef" placeholder="Search for group"/>
                               <GroupTree
                                 :items="searchForGroups"
                                 :addGroupValue="true"
+                                :showCheckBox="true"
                               />
                             </div>
                           </div>
@@ -1985,6 +1987,10 @@ export default {
         searchText.value = "";
         memberListShown.value = false;
         memberSearchResults.value = [];
+      }
+
+      if (!e.target.classList.contains("exempt-hide") && !e.target.classList.contains("p-hidden-accessible") && !e.target.classList.contains("p-checkbox-box") && !e.target.classList.contains("p-checkbox-icon")) {
+        hideDiv.value = true
       }
     };
 

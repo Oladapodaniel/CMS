@@ -1406,9 +1406,7 @@ export default {
     })
 
     const hideGroupModal = (e) => {
-      // console.log('hideGroupModal')
       if (!e.target.classList.contains("exempt-hide")) {
-        console.log('does not contain')
         hideDiv.value = true
       }
     }

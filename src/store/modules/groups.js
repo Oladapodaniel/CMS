@@ -7,12 +7,14 @@ export default {
     state: {
         groups: [],
         selectedTreeGroup: {},
-        selectedTreeGroupList: {}
+        selectedTreeGroupList: {},
+        checkedTreeGroup: []
     },
     getters: {
         groups: state => state.groups,
         selectedTreeGroup: state => state.selectedTreeGroup,
         selectedTreeGroupList: state => state.selectedTreeGroupList,
+        checkedTreeGroup: state => state.checkedTreeGroup,
     },
 
     mutations: {
@@ -55,6 +57,9 @@ export default {
         },
         setSelectedTreeGroupList (state, payload) {
             state.selectedTreeGroupList = payload
+        },
+        setCheckedTreeGroup (state, payload) {
+            state.checkedTreeGroup = payload
         }
     },
 
@@ -99,6 +104,9 @@ export default {
         },
         setSelectedTreeGroupList ({ commit }, payload) {
             commit("setSelectedTreeGroupList", payload)
+        },
+        setCheckedTreeGroup ({ commit }, payload) {
+            commit("setCheckedTreeGroup", payload)
         }
     }
 }
