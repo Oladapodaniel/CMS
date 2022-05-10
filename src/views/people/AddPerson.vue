@@ -172,7 +172,7 @@
 
         <div class="bio-div">
           <span class="celeb-tab row" @click="showCelebTab">
-            <span class="tab-header col-3">Celebrations:</span>
+            <span class="tab-header padd col-3" >Celebrations:</span>
             <span class="h-rule col-7"><hr class="hr" /></span>
             <span class="col-2">
               <span class="tb-icon-span"
@@ -285,7 +285,7 @@
         <div class="bio-div">
           <!-- <span class="celeb-tab row" @click="showAddInfoTab"> -->
           <span class="celeb-tab row">
-            <span class="tab-header col-3">Additional information:</span>
+            <span class="tab-header  col-3" >Additional information:</span>
             <span class="h-rule col-7"><hr class="hr" /></span>
             <span class="col-2">
               <!-- <span class="tb-icon-span"
@@ -1505,6 +1505,11 @@ export default {
   .input {
       width: 100%
     }
+}
+@media screen and (max-width: 202px) {
+  .padd{
+    padding: 1rem;
+  }
 }
 
 @media (max-width: 376px) {

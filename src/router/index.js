@@ -1562,12 +1562,22 @@ const routes = [
                         },
                         {
                             path: 'makepledge',
+                            name: 'MakePledge',
                             meta: {
                                 title: 'Churchplus - Pledge',
                             },
                             component: () =>
                                 import ( /* webpackChunkName: "peopleempty" */ '../views/pledge/MakePledge.vue')
-                        }
+                        },
+                        {
+                            path: 'pledgemaking',
+                            name: 'PledgeMaking',
+                            meta: {
+                                title: 'Churchplus - Pledge',
+                            },
+                            component: () =>
+                                import ( /* webpackChunkName: "peopleempty" */ '../views/pledge/PledgeMaking.vue')
+                        },
                     ]
             }
 
@@ -1579,15 +1589,6 @@ const routes = [
             import ( /* webpackChunkName: "pledge" */ '../views/pledge/Index.vue'),
             children: [
                 {
-                    path: 'pledgemaking',
-                    name: 'PledgeMaking',
-                    meta: {
-                        title: 'Churchplus - Pledge',
-                    },
-                    component: () =>
-                        import ( /* webpackChunkName: "peopleempty" */ '../views/pledge/PledgeMaking.vue')
-                },
-                {
                     path: 'pledgepayment',
                     name: 'PledgePayment',
                     meta: {
@@ -1595,6 +1596,24 @@ const routes = [
                     },
                     component: () =>
                         import ( /* webpackChunkName: "peopleempty" */ '../views/pledge/PledgePayment.vue')
+                },
+                {
+                    path: 'publicmakepledge',
+                    name: 'PublicMakePledge',
+                    meta: {
+                        title: 'Churchplus - Church Pledge',
+                    },
+                    component: () =>
+                        import ( /* webpackChunkName: "peopleempty" */ '../views/pledge/PublicMakePledge.vue')
+                },
+                {
+                    path: 'publicpledgemaking',
+                    name: 'PublicPledgeMaking',
+                    meta: {
+                        title: 'Churchplus - Church Pledge',
+                    },
+                    component: () =>
+                        import ( /* webpackChunkName: "peopleempty" */ '../views/pledge/PublicPledgeMaking.vue')
                 },
             ]
     },

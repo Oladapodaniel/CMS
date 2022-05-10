@@ -63,12 +63,12 @@
                 <div class="row">
                   <!-- {{pledgeSummary}} -->
                   <div class="col-12 col-md-3 ">
-                     <!-- <div class="col-12 col-sm-12  col-lg-8"> -->
-                        <Dropdown v-model="selectedPerson" class="w-100 font-weight-normal" :options="reOccuringRange"  optionLabel="name" placeholder="Select Person" />
-                      <!-- </div> -->
+                  
+                       <MembersSearch @memberdetail="chooseContact" />
+                        <!-- <Dropdown v-model="selectedPerson" class="w-100 font-weight-normal" :options="reOccuringRange"  optionLabel="name" placeholder="Select Person" /> -->
                   </div>
                   <div class="col-12 col-md-3 ">
-                    <Dropdown v-model="selectedPledge" class="w-100 font-weight-normal" :options="reOccuringRange"  optionLabel="name" placeholder="Pledge Type" />
+                    <Dropdown v-model="selectedPledge" class="w-100 font-weight-normal" :options="allPledgeType"  optionLabel="name" placeholder="Pledge Type" />
                   </div>
                   <div class="col-12 col-md-2 ">
                     <input type="text" v-model="amountFrom" class="form-control" placeholder="From" />
@@ -78,7 +78,7 @@
                      <input type="text" v-model="amountTo" class="form-control" placeholder="To" />
                   </div>
                   <div class="col-12 col-md-2">
-                    <button class=" default-btn "> Search...</button>
+                    <button class=" default-bt "> Search...</button>
                       <!-- <input
                         type="text"
                         class="w-100   form-control  "
@@ -305,6 +305,7 @@
 
 import { ref } from 'vue'
 import finish from '../../services/progressbar/progress';
+import MembersSearch from "../../components/membership/MembersSearch.vue";
 import axios from "@/gateway/backendapi";
 import Dropdown from "primevue/dropdown";
 import { useToast } from "primevue/usetoast";
@@ -315,6 +316,7 @@ import monthDayYear from "../../services/dates/dateformatter";
 export default {
   components:{
     Dropdown,
+    MembersSearch,
     InputText 
   },
     setup() {
@@ -326,6 +328,7 @@ export default {
         const searchText = ref('')
         const searchIsVisible = ref('')
         const selectedPledge = ref('')
+        const allPledgeType = ref([])
         const selectedPerson = ref('')
         const allPledgeList = ref([]);
         // const singlePledge = ref([]);
@@ -335,6 +338,12 @@ export default {
          const date = (offDate) => {
             return monthDayYear.monthDayYear(offDate);
           };
+          const chooseContact = (payload) => {
+            // contactRef.value.hide();
+            selectedContact.value = payload
+
+            // console.log(payload, 'my allll')
+         }
 
         const getAllPledges = async () =>{
                 try{
@@ -342,7 +351,11 @@ export default {
                     // const res = await axios.get('/api/Pledge/GetAllPledgeDefinitions')
                     finish()
                     allPledgeList.value = res.data.returnObject
-                    console.log(allPledgeList.value,'getPledgeList');
+                    allPledgeType.value = res.data.returnObject.map(i => ({
+                      name : i.pledgeType.name,
+                      id : i.pledgeType.id,
+                    })) 
+                    console.log(allPledgeType.value,'getPledgeList');
                 }
                 catch (error){
                     console.log(error)
@@ -415,6 +428,7 @@ export default {
 
             return {
                 allPledgeList,
+                chooseContact,
                 showConfirmModal,
                 deletePledge,
                 loading,
@@ -423,6 +437,7 @@ export default {
                 selectedPledge,
                 selectedPerson,
                 removeSearchText,
+                allPledgeType,
                 date
                 // singlePledge
             }
@@ -531,6 +546,20 @@ export default {
 }
 .desc {
   color: #9b9a9c;
+}
+.default-bt {
+  font-weight: 600;
+  white-space: initial;
+  font-size: 1rem;
+  border-radius: 0.5rem;
+  border: 1px solid #999fa5;
+  padding: 0.5rem 1.25rem;
+  width: auto;
+  /* border: none; */
+  /* outline: transparent !important; */
+  max-height: 40px;
+  background: #ffffff47 !important;
+  min-width: 121px;
 }
 
 
