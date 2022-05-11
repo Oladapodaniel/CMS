@@ -15,17 +15,14 @@
           
         >
         <ul class="p-0 w-100">
-        <!-- :class="{ 'd-block' : itemDisplay, 'd-none' : !itemDisplay }"  -->
-         <!-- @click="toggleItems(i, $event)" -->
         <li v-for="(group, index) in items" :key="index" class="p-2  c-pointer parent-li border-top exempt-hide">
           <div class="row exempt-hide">
             <div class="text-primary exempt-hide">
               <span>
-                <Checkbox id="binary" v-model="group.displayCheck" :binary="true" class="exempt-hide" @change="getCheckedGroup(group)" /> 
+                <Checkbox id="binary" v-model="group.displayCheck" :binary="true" class="exempt-hide all-check" @change="getCheckedGroup(group)" /> 
                 <i class="pi pi-chevron-down roll-icon exempt-hide ml-4" v-if="group.children && group.children.length > 0"  @click="toggleItems(group, $event)"></i>
               </span>
             </div>
-            <!-- @click="groupClick(group, $event) -->
             <div class="text-primary exempt-hide">
               <span class="p-3 exempt-hide">{{ group.name }}</span>
             </div>
@@ -126,13 +123,13 @@ import Dialog from "primevue/dialog";
 import { ref } from "@vue/reactivity";
 import { useToast } from "primevue/usetoast";
 import axios from "@/gateway/backendapi";
-import { computed, watchEffect } from "@vue/runtime-core";
+import { watchEffect } from "@vue/runtime-core";
 // import store from '../../../store/store';
 import { useStore } from "vuex";
 export default {
   name: "GroupTree",
-  props: ["items", "addGroupValue"],
-  emits: ["group", "groupp"],
+  props: ["items", "addGroupValue", "allChecked", "checked", "multipleGroupsSelected"],
+  emits: ["group", "groupp", "setcheckval", "resetchecked", "passitemvalue"],
   components: {
     Dialog,
   },
@@ -142,7 +139,10 @@ export default {
     const newGroup = ref({});
     const toast = useToast();
     const onDropDown = ref(false);
-    const multipleGroupsSelected = ref([]);
+    
+    // const removeCheckedGroup = ref([]);
+    
+    const markedItems = ref([])
 
     const toggleItems = (i, e) => {
       e.target.classList.toggle("roll-icon");
@@ -202,47 +202,58 @@ export default {
     };
 
     const getCheckedGroup = (item) => {
-      console.log(item.displayCheck);
-      console.log(item);
-      const groupData = item;
-      if (groupData.displayCheck) {
-        const getIndex = multipleGroupsSelected.value.findIndex(
-          (j) => j.id === item.id
-        );
-        if (getIndex < 0) {
-          multipleGroupsSelected.value.push(groupData);
-        }
-      }
-      checkChildren(groupData, multipleGroupsSelected.value);
-      //   Save to store
-      store.dispatch(
-        "groups/setCheckedTreeGroup",
-        multipleGroupsSelected.value.filter((i) => i.displayCheck)
-      );
+        emit("passitemvalue", item)
+
+    //   const groupData = item;
+    //   if (groupData.displayCheck) {
+    //     const getIndex = multipleGroupsSelected.value.findIndex(
+    //       (j) => j.id === item.id
+    //     );
+    //     if (getIndex < 0) {
+    //       multipleGroupsSelected.value.push(groupData);
+    //     }
+    //   } else {
+    //       console.log('Not children')
+    //   }
+    //   checkChildren(groupData, multipleGroupsSelected.value);
+    //   //   Save to store
+    //   store.dispatch(
+    //     "groups/setCheckedTreeGroup",
+    //     multipleGroupsSelected.value.filter((i) => i.displayCheck)
+    //   );
+    // //   console.log(multipleGroupsSelected.value, 'Nooooooo')
+    // //   console.log(multipleGroupsSelected.value.filter((i) => i.displayCheck), 'hereeee')
+ 
+    //    markedItems.value = props.items.filter(i => i.displayCheck)
     };
 
-    const checkChildren = (item, destArray) => {
-      if (item && item.children && item.children.length > 0) {
-        console.log(item.displayCheck);
-        item.children.forEach((i) => {
-          console.log(i.displayCheck);
-          i.displayCheck = !i.displayCheck;
-          if (item.displayCheck) {
-            i.displayCheck = true;
-            const getIndex = destArray.findIndex((j) => j.id === i.id);
-            if (getIndex < 0) {
-              destArray.push(i);
+    
+
+    const checkAll = () => {
+        props.items.forEach(i => {
+            if (props.allChecked) {
+                i.displayCheck = true
+            }   else {
+                i.displayCheck = false
             }
-          }
-          if (!item.displayCheck) {
-            i.displayCheck = false;
-          }
-          if (i.children && i.children.length > 0) {
-            checkChildren(i, destArray);
-          }
-        });
+            getCheckedGroup(i)
+        })
+            markedItems.value = props.items.filter(i => i.displayCheck)
+    }
+
+    watchEffect(() => {
+      if (props.items.length !== markedItems.value.length) {
+        emit('setcheckval', false)
+      } else {
+        emit('setcheckval', true)
       }
-    };
+
+      if (props.checked) {
+          checkAll()
+          emit('resetchecked', false)
+      }
+    })
+
 
     return {
       toggleItems,
@@ -254,7 +265,10 @@ export default {
       createGroup,
       onDropDown,
       getCheckedGroup,
-      multipleGroupsSelected,
+      
+      checkAll,
+      markedItems,
+    //   removeCheckedGroup
     };
   },
 };

@@ -265,7 +265,7 @@
                             <div class="row">
                               <div class="col-4">
                                 <div class="mb-1 font-weight-600">
-                                  ParentGroup
+                                  Parent Group
                                 </div>
                                 <input
                                   type="text"
@@ -330,8 +330,10 @@
                         </div>
                       </div>
                       <div class="col-12">
+                        <!-- @group="setGroupData" -->
                         <GroupTree
                           :items="groupData.children"
+                          
                         />
                       </div>
                     </div>
@@ -2227,6 +2229,10 @@ export default {
       console.log(payload)
     }
 
+    // const setGroupData = (payload) => {
+    //   console.log(payload)
+    // }
+
     return {
       groupData,
       selectedAttendanceId,
@@ -2316,7 +2322,8 @@ export default {
       searchForGroups,
       searchGroupRef,
       setChildGroup,
-      grouploading
+      grouploading,
+      // setGroupData
     };
   },
 };

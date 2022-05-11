@@ -724,8 +724,8 @@
                             <p class="ana-item-header">First timers</p>
                             <p class="ana-item-percentage">
                               {{
-                                todayVsLastMonthFirstTimerPercentage
-                                  ? todayVsLastMonthFirstTimerPercentage.toFixed(
+                                stats.todayVsLastMonthFirstTimerPercentage
+                                  ? stats.todayVsLastMonthFirstTimerPercentage.toFixed(
                                       2
                                     )
                                   : 0
@@ -867,8 +867,8 @@
                             <p class="ana-item-header">First timers</p>
                             <p class="ana-item-percentage">
                               {{
-                                todayVsLastYearFirstTimerPercentage
-                                  ? todayVsLastYearFirstTimerPercentage.toFixed(
+                                stats.todayVsLastYearFirstTimerPercentage
+                                  ? stats.todayVsLastYearFirstTimerPercentage.toFixed(
                                       2
                                     )
                                   : 0

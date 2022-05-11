@@ -184,7 +184,7 @@
           <div class="row">
     
             <div class="col-6 text-primary" >
-              <span><i class="pi pi-chevron-down roll-icon" v-if="group.children"  @click="toggleItems(group, $event)"></i></span>
+              <span><i class="pi pi-chevron-down roll-icon" v-if="group.children && group.children.length > 0"  @click="toggleItems(group, $event)"></i></span>
               <span class="p-3" @click="groupClick(group.id)">{{ group.name }}</span>
             </div>
             <div class="col-4 text-primary" @click="groupClick(group.id)">

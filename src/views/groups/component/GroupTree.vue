@@ -18,15 +18,16 @@
         <!-- :class="{ 'd-block' : itemDisplay, 'd-none' : !itemDisplay }"  -->
          <!-- @click="toggleItems(i, $event)" -->
         <li v-for="(group, index) in items" :key="index" class="p-2  c-pointer parent-li border-top exempt-hide">
-          <div class="row exempt-hide">
-            <div class="text-primary exempt-hide">
+          <div class="row exempt-hide justify-content-between">
+            <div class="text-primary exempt-hide" >
               <span>
-                <i class="pi pi-chevron-down roll-icon exempt-hide ml-4" v-if="group.children && group.children.length > 0"  @click="toggleItems(group, $event)"></i>
+                <i class="pi pi-chevron-down roll-icon exempt-hide ml-4"  v-if="group.children && group.children.length > 0" @click="toggleItems(group, $event)"></i>
+              </span>
+              <span class="text-primary exempt-hide" @click="groupClick(group, $event)">
+                <span class="p-3 exempt-hide">{{ group.name }}</span>
               </span>
             </div>
-            <div class="text-primary exempt-hide" @click="groupClick(group, $event)">
-              <span class="p-3 exempt-hide">{{ group.name }}</span>
-            </div>
+            
             <!-- <div class="col-3 text-primary" @click="groupClick(group.id)">
               <div @click="groupClick(group.id)">
                 <div class="d-flex small justify-content-between text-primary">
@@ -37,9 +38,10 @@
                 </div>
               </div>
             </div> -->
-            <!-- <div class="col-2">
+            <div class=" d-flex justify-content-end">
+              <!-- <i class="pi pi-trash text-danger" @click="removeSubGroup(group, $event)"></i> -->
         
-                      <div>
+                      <!-- <div>
                         <div class="dropdown">
                           <span class="d-flex justify-content-between">
                             <span class="d-md-none d-sm-flex"></span>
@@ -79,9 +81,9 @@
                             </span>
                           </span>
                         </div>
-                      </div>
+                      </div> -->
                  
-            </div> -->
+            </div>
           </div>
             <div class="d-none"  @click="checkForGroup(group, $event)">
             <GroupTree
@@ -126,7 +128,7 @@ import Dialog from 'primevue/dialog';
 import { ref } from '@vue/reactivity';
 import { useToast } from "primevue/usetoast";
 import axios from "@/gateway/backendapi";
-import { computed, watchEffect } from '@vue/runtime-core';
+import { watchEffect } from '@vue/runtime-core';
 // import store from '../../../store/store';
 import { useStore } from "vuex"
 export default {
@@ -166,6 +168,7 @@ export default {
     })
 
     const checkForGroup = (group, e) => {
+      console.log(group)
       let grouped = group.children.find((i) => i.name == e.target.textContent);
       // emit("group", grouped);
       emit("group", { selectedGroup: grouped, iconElement: e.target });
@@ -192,6 +195,11 @@ export default {
       }
     }
 
+    // const removeSubGroup = (group) => {
+    //   console.log(group)
+    //   emit("group", { selectedGroup: group, iconElement: e.target });
+    // }
+
     
     return {
       toggleItems,
@@ -201,7 +209,8 @@ export default {
       displayCreateGroup,
       newGroup,
       createGroup,
-      onDropDown
+      onDropDown,
+      // removeSubGroup
     };
   },
 };

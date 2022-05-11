@@ -93,7 +93,7 @@
                   ref="searchGroupRef"
                   placeholder="Search for group"
                 />
-                <GroupTree :items="searchForGroups" :addGroupValue="true" />
+                <GroupTree :items="searchForGroups" :addGroupValue="true"/>
               </div> -->
               <Dropdown placeholder="Select group" style="width: 100%" :options="groups" optionLabel="name" v-model="selectedGroups"/>
             </div>
@@ -172,7 +172,7 @@ import { useToast } from "primevue/usetoast";
 // import printJS from "print-js";
 import html2pdf from "html2pdf.js";
 // import axio from "axios"
-// import GroupTree from "../../groups/component/GroupTreeCheckbox.vue";
+// import GroupTree from "../../groups/component/GroupTreeCheckboxParent.vue";
 import grousService from "../../../services/groups/groupsservice";
 import { useStore } from "vuex";
 export default {
@@ -417,9 +417,8 @@ export default {
 
     watchEffect(() => {
       if (store.getters["groups/checkedTreeGroup"]) {
-        console.log(store.getters["groups/checkedTreeGroup"]);
         checkedGroup.value = store.getters["groups/checkedTreeGroup"];
-        console.log(checkedGroup);
+        // console.log(checkedGroup);
         // hideDiv.value = true
         // selectedIntendedSubGroup.value = selectedGroup;
       }
