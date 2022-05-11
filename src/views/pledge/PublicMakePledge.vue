@@ -3,7 +3,7 @@
         <div class="row d-flex justify-content-between px-3">
                 <div class="heading-text"> Make a Pledge </div>
                 <Toast />
-                <button
+                <!-- <button
                   class="default-btn primary-bg border-0 ml-3"
                   @click="makePledge"
                 >
@@ -13,9 +13,9 @@
                   ></i>
                   <span class="text-white">Save and Continue</span>
                   <span></span>
-                </button>
+                </button> -->
         </div>
-        <!-- <div class="container-fluid">
+        <div class="container-fluid">
             <div class="row">
                 <div class="col-md-8  " >
                      <div class="row my-1 mt-3">
@@ -126,37 +126,30 @@
                     </div>
                 </div>
             </div>
-        </div> -->
-        <div class="container">
+        </div>
+        <!-- <div class="container">
             <div class="form">
                 <div class=" row second-form first-row">
                     <div class="col-12 col-sm-8 offset-sm-3 offset-md-0 col-md-4 dropdown-container">
-                            <div class="dropdown ofering col-12  "  >
-                                <button class=" pr-3 btn select-elem-con col-12 dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                                    <span class="ofering">
-                                        &nbsp;&nbsp;&nbsp; {{ selectedPledge.name ?  selectedPledge.name : 'Select Pledge' }}
-                                    </span>
-                                </button>
-                                <div class="dropdown-menu scroll " aria-labelledby="dropdownMenuButton">
-                                    <a class="dropdown-item" v-for="(item, index) in allPledgeList" :key="index">
-                                       <div @click="PledgesType(item)"> {{item.name}}</div> 
-                                    </a>
-                                    <div class="dropdown-divider"></div>
-                                    <a class="dropdown-item">
-                                        <router-link
-                                        to="/tenant/pledge/pledgedefinition"
-                                        class="
-                                        border-0
-                                        font-weight-bold
-                                        "
-                                        >Create New Pledge
-                                        </router-link>
-                                    </a>
-                                </div>
-                            </div>
+                        <div
+                            class="select-elem-con pointer col-12 ofering"
+                            id="eventCategorySelectElem"
+                            @click="PledgesType"
                             
-                        <!-- </div> -->
-                        <!-- <div class="col-md-12" v-if="!selectedPledge.name">
+                            >
+                            <span class="ofering"
+                                >
+                                &nbsp;&nbsp;&nbsp; {{ selectedPledge.name ?  selectedPledge.name : 'Select Pledge' }}
+                                 </span
+                            ><span>
+                                <i
+                                class="pi pi-angle-down offset-sm-2 ofering"
+                                :class="{ roll3: showForm3 }"
+                                aria-hidden="true"
+                                ></i
+                            ></span>
+                        </div>
+                        <div class="col-md-12" v-if="!selectedPledge.name">
                             <div class="ofering col-md-12 " :class="{ 'style-pledge': showPledge }" v-if="showPledge"  >
                                 <Dropdown v-model="selectedPledge" class="w-100 font-weight-normal" :options="allPledgeList"  optionLabel="name" placeholder="Select Pledge" />
                                 <div class=" cursor-pointer small mt-1 col-md-12 cat ofering" >
@@ -170,11 +163,11 @@
                                     </router-link>
                                 </div>
                             </div>
-                        </div> -->
+                        </div>
                         
                     </div>
                     <div class="col-12 col-sm-8 offset-sm-3 offset-md-0 col-md-4 dropdown-container">
-                        <div
+                        <div 
                             class="select-elem-con pointer col-12  ofering"
                             id="eventCategorySelectElem"
                             @click="selectPerson"
@@ -182,7 +175,7 @@
                             >
                             <span class="ofering"
                                 >
-                                &nbsp;&nbsp;&nbsp;{{ selectedContact.firstName && selectedContact.lastName ?  `${selectedContact.firstName ? selectedContact.firstName : ""} ${selectedContact.lastName ? selectedContact.lastName : "" }`   : 'Select Person' }} </span
+                                &nbsp;&nbsp;&nbsp;{{ selectedDetail.name ?  selectedDetail.name : 'Select Person' }} </span
                             ><span>
                                 <i 
                                 class="pi pi-angle-down offset-sm-2 ofering" 
@@ -191,8 +184,7 @@
                                 ></i
                             ></span>
                         </div>
-                        
-                        <div class="col-md-12" v-if="!selectedContact.name"  >
+                        <div class="col-md-12"   v-if="!selectedDetail.name" >
                             <div  class="ofering col-md-12  " style="height: 10rem; "   :class="{ 'style-pledge': showPerson }" v-if="showPerson"  >
                                 <MembersSearch @memberdetail="chooseContact"  />
                             </div>
@@ -217,14 +209,14 @@
                                 <label for="topic">Number</label>
                             </div>
                             <div class=" col-12 col-sm-7 mt-2 ">
-                                <input type="text"  class="form-control" />
+                                <input type="text" v-model="topic" class="form-control" />
                             </div>
                         
                             <div class=" col-12 col-sm-5 ">
                                 <label for="preacher">Name</label>
                             </div>
                             <div class="col-12 col-sm-7 mt-2 ">
-                                <input type="text" class="form-control" />
+                                <input type="text" v-model="preacher" class="form-control" />
                             </div>
                         </div>
                     </div>
@@ -233,8 +225,6 @@
                 <div class="attendance-header d-none d-md-block">
                     <div class="row">
                         <div class="col-sm-3">Pledge</div>
-                        <!-- <div class="col-sm-3 offset-sm-2"></div> -->
-                        <!-- <div class="col-sm-2" style="margin-left: 74px;">Total</div> -->
                     </div>
                 </div>
                 <div
@@ -243,15 +233,13 @@
                     >
                     
                     <div class="row">
-                        <div class="col-md-10 mb-3 " v-if="selectedContact.name"  >
+                        <div class="col-md-10 mb-3 " v-if="selectedDetail.name"  >
                             <div class="row">
                                 <div class="col-12 col-md-4 col-lg-4 text-sm-left text-lg-right align-self-center">
                                     <label for="" class="">Person </label>
                                 </div>
                                 <div class=" col-12  col-md-8 ">
-                                    <!-- <div class=" col-sm-6 "> -->
-                                        <input type="text" v-model="selectedContact.name" class="form-control" />
-                                    <!-- </div> -->
+                                        <input type="text" v-model="selectedDetail.name" class="form-control" />
                                 </div>
                             </div>
                         </div>
@@ -293,9 +281,6 @@
                                 </div>
                             </div>
                         </div>
-                        <!-- <div class="col-1" @click="deleteAttendance(item.attendanceId, indx)">
-                        <i class="pi pi-trash" aria-hidden="true"></i>
-                        </div> -->
                     </div>
                 </div>
             </div>
@@ -312,7 +297,7 @@
                     </button>
                 </div>
             </div>
-        </div>
+        </div> -->
     </div>
 </template>
 
@@ -351,12 +336,12 @@ export default {
         const value = ref()
         const isNameValid = ref(true)
         const isEmailValid = ref(true)
-        const selectedPledge = ref({})
+        const selectedPledge = ref('')
         const allPledgeList = ref([]);
         const amountFrom = ref('')
         const makePledgeData = ref('')
         const selectedContact = ref({})
-        // const selectedDetail = ref({})
+        const selectedDetail = ref('')
         const isActive = ref(null)
         const amountTo = ref('')
         const pledgeCategory = ref(
@@ -367,12 +352,12 @@ export default {
             ]
         )
 
-        const PledgesType = (item) => {
-            selectedPledge.value = item;
-            // showPledge.value = !showPledge.value
+        const PledgesType = () => {
+            selectedPledge.value = {};
+            showPledge.value = !showPledge.value
         }
         const selectPerson = () => {
-            selectedContact.value = {};
+            selectedDetail.value = {};
             showPerson.value = !showPerson.value
         }
        
@@ -385,13 +370,16 @@ export default {
         const makePayment = () =>{
             router.push('/pledge/pledgepayment')
         }
-     
+        const selectedAllContact = () =>{
+            selectedDetail.value = selectedContact.value
+            console.log(selectedDetail.value, ' niceContact');
+        }
+        
        
 
          const chooseContact = (payload) => {
-             payload.firstName = payload.name
             selectedContact.value = payload
-            console.log(selectedContact.vaue, 'allContact');
+            selectedAllContact()
          }
         
 
@@ -402,10 +390,10 @@ export default {
         const getSinglePledge = async () =>{
             try{
                 const res = await axios.get(`/api/Pledge/GetOnePledge?ID=${route.query.id}`)
-                selectedPledge.value = res.data.returnObject.pledgeType
+                selectedPledge.value = res.data.returnObject.pledgeType.name
                 console.log(selectedPledge.value,'selected');
-                selectedContact.value = res.data.returnObject.person
-                console.log(selectedContact.value, 'getSinglePledge');
+                // selectedDetail.name.value = res.data.returnObject.person.firstName
+                console.log(res.data, 'getSinglePledge');
             }
             catch(error){
                 console.log(error)
@@ -498,7 +486,7 @@ export default {
                     });
                     
                     router.push({  
-                        name: 'PledgeMaking',
+                        name: 'PublicPledgeMaking',
                         query: {
                             id: makePledgeData.value.pledgeTypeID,
                             pledgeTypeID: makePledgeData.value.id,
@@ -573,8 +561,8 @@ export default {
             isActive,
             active,
             showPerson,
-            showPledge
-            // selectedDetail
+            showPledge,
+            selectedDetail
         }
     },
 }
@@ -583,11 +571,6 @@ export default {
 <style scoped>
        .heading-text {
         font: normal normal 800 1.5rem Nunito sans;
-}
-
-.scroll{
-    height: 10rem;
-    overflow-y: scroll;
 }
 
 .roll3 {
