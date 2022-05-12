@@ -134,23 +134,23 @@
                     >
                       Date
                     </div>
-                    <div
+                    <!-- <div
                       class="small-text text-capitalize col-md-2 font-weight-bold"
                     >
                       Number
+                    </div> --> 
+                    <div
+                      class="small-text text-capitalize col-md-3 font-weight-bold"
+                    >
+                      Contact
                     </div>
                     <div
                       class="small-text text-capitalize col-md-3 font-weight-bold"
                     >
-                      Person
+                      Pledge
                     </div>
                     <div
-                      class="small-text text-capitalize col-md-2 font-weight-bold"
-                    >
-                      Pledge Name
-                    </div>
-                    <div
-                      class="small-text text-capitalize col-md-2 font-weight-bold"
+                      class="small-text text-capitalize col-md-3 font-weight-bold"
                     >
                       Amount
                     </div>
@@ -205,31 +205,31 @@
                             {{ date(pledgelist.pledgeType.dateEntered) }}
                         </p>
                       </div>
-                      <div class="col-md-2 desc" @click="pledgeClick(pledgelist.id)">
+                      <!-- <div class="col-md-2 desc" @click="pledgeClick(pledgelist.id)">
                         <p class="mb-0 d-flex justify-content-between text-primary">
                           <span
                             class=" text-dark font-weight-bold d-flex d-md-none fontIncrease"
                           style="font-size:15px">Number</span>
                             {{ pledgelist.person.mobilePhone }}
                         </p>
+                      </div> -->
+                      <div class="col-md-3 desc" @click="pledgeClick(pledgelist.id)">
+                        <p class="mb-0 d-flex justify-content-between text-primary">
+                          <span
+                            class=" text-dark font-weight-bold d-flex d-md-none fontIncrease"
+                          style="font-size:15px">Contact</span>
+                            {{ pledgelist.person.firstName }} {{ pledgelist.person.lastName }}
+                        </p>
                       </div>
                       <div class="col-md-3 desc" @click="pledgeClick(pledgelist.id)">
                         <p class="mb-0 d-flex justify-content-between text-primary">
                           <span
                             class=" text-dark font-weight-bold d-flex d-md-none fontIncrease"
-                          style="font-size:15px">Person</span>
-                            {{ pledgelist.person.firstName }} {{ pledgelist.person.lastName }}
-                        </p>
-                      </div>
-                      <div class="col-md-2 desc" @click="pledgeClick(pledgelist.id)">
-                        <p class="mb-0 d-flex justify-content-between text-primary">
-                          <span
-                            class=" text-dark font-weight-bold d-flex d-md-none fontIncrease"
-                          style="font-size:15px">Pledge Name</span>
+                          style="font-size:15px">Pledge </span>
                             {{ pledgelist.pledgeType.name }}
                         </p>
                       </div>
-                      <div class="col-md-2" @click="groupClick(group.id)">
+                      <div class="col-md-3" @click="groupClick(group.id)">
                         <div class="d-flex small justify-content-between text-primary">
                           <span class="text-dark font-weight-bold d-flex d-md-none fontIncrease" style="font-size:15px">Amount</span>
                             <div class="small-text text-right text-md-center">

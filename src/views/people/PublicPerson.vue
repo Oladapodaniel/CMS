@@ -165,7 +165,7 @@
 
         <div class="bio-div">
           <span class="celeb-tab row" @click="showCelebTab">
-            <span class="tab-header col-3">Celebrations:</span>
+            <span class="tab-header padd col-3">Celebrations:</span>
             <span class="h-rule col-7"><hr class="hr" /></span>
             <span class="col-2">
               <span class="tb-icon-span"
@@ -744,7 +744,21 @@ export default {
     const numberofYears = 100;
 
     const birthDate = moment();
+
     const daysInBirthMonth = ref(birthDate.daysInMonth());
+
+    const getCustomFields = async() => {
+      try {
+        let { data } = await axios.get(`/GetAllCustomFields?entityType=0&&tenantID=${route.params.id}`);
+        console.log(data)
+        dynamicCustomFields.value = data
+      }
+      catch (err) {
+        console.log(err)
+      }
+    }
+    getCustomFields()
+
     const birthDaysArr = computed(() => {
       console.log(birthDate.month(), "month");
       const arrOfDays = [];
@@ -1295,7 +1309,11 @@ export default {
 .cs-select.month {
   width: 111px;
 }
-
+@media screen and (max-width: 241px) {
+  .padd{
+    padding: 1rem;
+  }
+}
 .contn-btn:disabled {
   opacity: 0.3;
 }

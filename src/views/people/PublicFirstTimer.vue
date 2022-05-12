@@ -7,16 +7,16 @@
         <div class="row">
             <div class="col-md-8 mt-3">
                 <div>
-                    <div class="d-md-flex justify-content-md-end">
-                   <label for="" class="label">Event or Service Attended</label>
-                   <Dropdown
-                        v-model="selectedEventAttended"
-                        :options="eventsAttended"
-                        optionLabel="name"
-                        placeholder="Select event"
-                        class="input dd small-text widen p-0"
-                    />
-                </div>
+                  <div class="d-md-flex justify-content-md-end">
+                    <label for="" class="label">Event or Service Attended</label>
+                    <Dropdown
+                          v-model="selectedEventAttended"
+                          :options="eventsAttended"
+                          optionLabel="name"
+                          placeholder="Select event"
+                          class="input dd small-text widen p-0"
+                      />
+                  </div>
                 </div>
                 <div>
                     <div class="d-md-flex justify-content-md-end mt-3">
@@ -76,6 +76,104 @@
                         <input type="text" class="input form-control" placeholder="" v-model="firstTimersObj.address" />
                     </div>
                 </div>
+                <div  v-for="item in dynamicCustomFields" :key="item.id">
+                    <div class=" d-md-flex flex-wrap justify-content-md-end mt-3">
+                        <label for="" class="label">{{ item.label }}</label>
+                       <InputText
+                        v-if="item.controlType == 0"
+                        class="w-100 border"
+                        type="text"
+                        aria-required=""
+                        v-model="item.data"
+                      />
+                      <Dropdown
+                          v-else-if="item.controlType == 1"
+                          v-model="item.data"
+                          :options="item.parameterValues.split(',')"
+                          placeholder="Select option"
+                          style="width: 100%"  
+                        />
+                    <Checkbox v-else-if="item.controlType == 2" v-model="item.data" :binary="true"/>
+                    <Calendar v-if="item.controlType == 3" id="time24" v-model="item.data" :showTime="true" :showSeconds="true" class="w-100" />
+                    <!-- <InputText
+                        v-if="item.controlType == 4"
+                        class=" border"
+                        type="email"
+                        aria-required=""
+                        v-model="item.data"
+                        style="width: 100%;" 
+                      /> -->
+                      <input 
+                        v-if="item.controlType == 4"
+                        class="w-100 border"
+                        type="email"
+                        aria-required=""
+                        v-model="item.data"
+                        
+                      />
+                    <input 
+                        v-if="item.controlType == 5"
+                        class="w-100 border"
+                        type="file"
+                        aria-required=""
+                        
+                      />
+                      <input
+                        v-if="item.controlType == 6"
+                        class="w-100 border form-control"
+                        type="number"
+                        aria-required=""
+                        v-model="item.data"
+                      />
+                    </div>
+                </div>
+                
+                <!-- <div class="row my-3" v-for="item in dynamicCustomFields" :key="item.id">
+                  <div
+                    class="col-md-3 d-md-flex align-items-center justify-content-end text-md-right mt-2 font-weight-700"
+                  >
+                    <label for="">{{ item.label }}</label>
+                  </div>
+                  <div class="col-md-7">
+                    <InputText
+                        v-if="item.controlType == 0"
+                        class="w-100 border"
+                        type="text"
+                        aria-required=""
+                        v-model="item.data"
+                      />
+                    <Dropdown
+                          v-else-if="item.controlType == 1"
+                          v-model="item.data"
+                          :options="item.parameterValues.split(',')"
+                          placeholder="Select option"
+                          style="width: 100%"  
+                        />
+                    <Checkbox v-else-if="item.controlType == 2" v-model="item.data" :binary="true"/>
+                    <Calendar v-if="item.controlType == 3" id="time24" v-model="item.data" :showTime="true" :showSeconds="true" class="w-100" />
+                    <InputText
+                        v-if="item.controlType == 4"
+                        class="w-100 border"
+                        type="email"
+                        aria-required=""
+                        v-model="item.data"
+                      />
+                    <input 
+                        v-if="item.controlType == 5"
+                        class="w-100 border"
+                        type="file"
+                        aria-required=""
+                        
+                      />
+                      <input
+                        v-if="item.controlType == 6"
+                        class="w-100 border form-control"
+                        type="number"
+                        aria-required=""
+                        v-model="item.data"
+                      />
+                  </div>
+                </div> -->
                 <div>
                     <div class="d-md-flex justify-content-md-end mt-3">
                         <label for="" class="label">Birthday</label>
@@ -212,6 +310,7 @@
 import { ref, onMounted, computed } from "vue";
 import axios from "@/gateway/backendapi";
 import router from "@/router/index";
+import InputText from "primevue/inputtext";
 import Dropdown from "primevue/dropdown";
 import { useRoute } from "vue-router";
 import { useToast } from "primevue/usetoast";
@@ -224,7 +323,7 @@ import { useStore } from "vuex"
 import swal from "sweetalert";
 
 export default {
-  components: { Dropdown, Dialog, ImageForm },
+  components: { Dropdown, Dialog, ImageForm, InputText },
 
   setup() {
     const toast = useToast();
@@ -260,16 +359,30 @@ export default {
     const firstTimerPhone = ref("")
     const firstTimerEmail = ref("")
     const firstTimerInGroup = ref([])
+    const dynamicCustomFields = ref([])
     const allGroups = ref([]);
     const groupToAddTo = ref({})
     const position = ref("")
     const addToGroupError = ref(false);
     const dismissAddToGroupModal = ref("");
+    const route = useRoute();
 
 
     const eventName = computed(() => {
       return newEvents.value.map((i) => i.name);
     });
+
+    const getCustomFields = async() => {
+      try {
+        let { data } = await axios.get(`/GetAllCustomFields?entityType=1&&tenantID=${route.params.id}`);
+        console.log(data, "🙌🙌🙌🙌🙌")
+        dynamicCustomFields.value = data
+      }
+      catch (err) {
+        console.log(err)
+      }
+    }
+    getCustomFields()
 
     const filterEventCategory = computed(() => {
       // let x;
@@ -520,7 +633,6 @@ export default {
 
     //   displayModal.value = false;
     // };
-    const route = useRoute();
     const ftimerId = ref("");
 
     onMounted(() => {
@@ -831,6 +943,7 @@ export default {
       allGroups,
       groupToAddTo,
       position,
+      dynamicCustomFields,
       addToGroupError,
       dismissAddToGroupModal,
       addMemberToGroup
