@@ -503,7 +503,19 @@
                   <div class="row">
                     <div class="col-12"><p>To continue, you have to select the membership category you want to convert this first timer to.</p></div>
                     <div class="col-12">
-                        <Dropdown v-model="selectedMembershipClassification" :filter="false" :options="membershipCategory" class="w-100 phone-input" optionLabel="name" placeholder="Select membership category" />
+                        <!-- <Dropdown v-model="selectedMembershipClassification" :filter="false" :options="membershipCategory" class="w-100 phone-input" optionLabel="name" placeholder="Select membership category" /> -->
+                        <div class="dropdown">
+                            <button class="btn w-100 phone-input d-flex justify-content-between" type="button" id="dropdownMemCat" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                <div>
+                                {{ selectedMembershipClassification && Object.keys(selectedMembershipClassification).length > 0 ? selectedMembershipClassification.name : 'Select membership category' }}</div>
+                                <i class="pi pi-chevron-down"></i>
+                            </button>
+                            <div class="dropdown-menu w-100" aria-labelledby="dropdownMemCat">
+                                <a class="dropdown-item c-pointer" v-for="item in membershipCategory" :key="item.id">
+                                    <div @click="setMemCat(item)">{{ item.name }}</div>
+                                </a>
+                            </div>
+                        </div>
                     </div>
                     
                   </div>
@@ -1371,6 +1383,10 @@ export default {
             }
         }
 
+        const setMemCat = (payload) => {
+            selectedMembershipClassification.value = payload
+        }
+
         return {
             selectedContact,
             // contacts,
@@ -1490,7 +1506,8 @@ export default {
             selectedMembershipClassification,
             clearPersonValue,
             resetClearPersonValue,
-            hasContactOwner
+            hasContactOwner,
+            setMemCat
         }
             
     }

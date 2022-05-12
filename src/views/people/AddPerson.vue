@@ -527,6 +527,7 @@
       role="dialog"
       aria-labelledby="addToGroup"
       aria-hidden="true"
+      @click="hideGroupModal"
     >
       <div class="modal-dialog modal-lg" role="document">
         <div class="modal-content">
@@ -548,19 +549,36 @@
               <div class="col-md-4 text-md-right">
                 <label for="" class="font-weight-600">Name</label>
               </div>
-              <div class="col-md-7">
-                <div class="dropdown show">
+              <div class="col-md-7 exempt-hide">
+                <button class="btn border w-100 d-flex justify-content-between align-items-center exempt-hide" type="button" @click="setGroupProp">
+                    <div class="exempt-hide">{{ Object.keys(groupToAddTo).length > 0 ? groupToAddTo.name : 'Select a group' }}</div>
+                    <i class="pi pi-chevron-down exempt-hide"></i>
+                  </button>
+                  <div
+                    class="div-card p-2 exempt-hide"
+                    :class="{
+                      'd-none': hideDiv,
+                      'd-block': !hideDiv,
+                    }"
+                  >
+                  <i class="pi pi-spin pi-spinner text-center exempt-hide" v-if="grouploading && getAllGroup.length === 0"></i>
+                  <input type="text" class="form-control exempt-hide" v-model="searchGroupText" ref="searchRef" placeholder="Search for group"/>
+                    <group-tree :items="searchAllGroups"
+                      :addGroupValue="true"
+                      class="exempt-hide"
+                    />
+                  </div>
+                <!-- <div class="dropdown show">
                   <button class="btn border w-100 d-flex justify-content-between align-items-center" type="button" id="dropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" @click="focusInput">
                     <div>{{ Object.keys(groupToAddTo).length > 0 ? groupToAddTo.name : 'Select a group' }}</div>
                     <i class="pi pi-chevron-down"></i>
                   </button>
                   <div class="dropdown-menu w-100 scroll-card" aria-labelledby="dropdownMenuLink">
                     <input type="text" v-model="searchGroupText" class="form-control input-width-adjust" placeholder="Search groups" ref="searchRef"/>
-                    <a class="dropdown-item" v-for="item in searchAllGroups" :key="item.id">
-                      <div class="c-pointer" @click="selectGroup(item)">{{ item.name }}</div>
-                    </a>
+                 
+                    <group-tree :items="searchAllGroups" />
                   </div>
-                </div>
+                </div> -->
               </div>
             </div>
 
@@ -685,7 +703,7 @@
 
 <script>
 import moment from "moment";
-import { ref, reactive, computed } from "vue";
+import { ref, reactive, computed, watchEffect, nextTick } from "vue";
 import router from "@/router/index";
 // import store from "../../store/store"
 import axios from "@/gateway/backendapi";
@@ -699,11 +717,13 @@ import grousService from "../../services/groups/groupsservice";
 // import lookupService from "../../services/lookup/lookupservice";
 import SearchMembers from "../../components/membership/MembersSearch.vue"
 import { useConfirm } from "primevue/useconfirm";
+import GroupTree from "../groups/component/GroupTree.vue"
 
 export default {
   components: {
     Dropdown,
-    SearchMembers
+    SearchMembers,
+    'group-tree': GroupTree
   },
   setup() {
     // const $toast = getCurrentInstance().ctx.$toast;
@@ -722,6 +742,7 @@ export default {
     const personNotes = ref([])
     const noteDetails = ref({})
     const searchGroupText = ref("")
+    const hideDiv = ref(true)
 
     const loading = ref(false);
     // const day = ref([ 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30, 31 ]);
@@ -1223,6 +1244,7 @@ export default {
     const dismissAddToGroupModal = ref("");
 
     const addMemberToGroup = async () => {
+      let groupObj = groupToAddTo.value
       console.log('personId:'+ route.params.personId, "groupId:"+ groupToAddTo.value.id,
           groupToAddTo.value.id)
       addToGroupError.value = false;
@@ -1255,8 +1277,8 @@ export default {
         });
 
         peopleInGroupIDs.value.push({
-          name: groupToAddTo.value.name,
-          groupId: groupToAddTo.value.id,
+          name: groupObj.name,
+          groupId: groupObj.id,
           position: position.value
         })
 
@@ -1268,8 +1290,8 @@ export default {
       } else {
         console.log(groupToAddTo.value)
         peopleInGroupIDs.value.push({
-          name: groupToAddTo.value.name,
-          groupId: groupToAddTo.value.id,
+          name: groupObj.name,
+          groupId: groupObj.id,
           position: position.value
         })
         groupToAddTo.value = {}
@@ -1289,15 +1311,16 @@ export default {
         followupPerson.value = payload
       }
 
-    const selectGroup = (item) => {
-      groupToAddTo.value = item
-    }
+    // const selectGroup = (item) => {
+    //   groupToAddTo.value = item
+    // }
 
-    const focusInput = () => {
-        setTimeout(() => {
-            searchRef.value.focus()
-        }, 1000)
-    }
+    const setGroupProp = () => {
+      hideDiv.value = !hideDiv.value;
+      nextTick(() => {
+        searchRef.value.focus()
+      })
+    };
 
     const removeFromGroup = (index, item) => {
       if (!route.params.personId) {
@@ -1370,8 +1393,23 @@ export default {
       catch (err) {
         console.log(err)
       }
-    }
+     }
     getCustomFields();
+
+    watchEffect (() => {
+      if (store.getters['groups/selectedTreeGroup']) {
+        console.log(store.getters['groups/selectedTreeGroup'])
+        const selectedGroup = store.getters['groups/selectedTreeGroup']
+        hideDiv.value = true
+        groupToAddTo.value = selectedGroup;
+      }
+    })
+
+    const hideGroupModal = (e) => {
+      if (!e.target.classList.contains("exempt-hide")) {
+        hideDiv.value = true
+      }
+    }
 
     return {
       months,
@@ -1428,8 +1466,8 @@ export default {
       setContact,
       followupPerson,
       currentContact,
-      selectGroup,
-      focusInput,
+      // selectGroup,
+      setGroupProp,
       searchRef,
       removeFromGroup,
       personNotes,
@@ -1438,7 +1476,9 @@ export default {
       searchGroupText,
       searchAllGroups,
       classifications,
-      showConfirmModal
+      showConfirmModal,
+      hideDiv,
+      hideGroupModal
     };
   },
 };
@@ -1470,6 +1510,16 @@ export default {
   transition: all 0.5s ease-in-out;
   height: 166px;
   /* overflow: hidden; */
+}
+
+.div-card {
+  position: absolute;
+  background: white;
+  z-index: 1;
+  width: 100%;
+  box-shadow: 0 0 11px rgba(33, 33, 33, 0.2);
+  max-height: 400px;
+  overflow: scroll;
 }
 
 @media (min-width: 769px) {

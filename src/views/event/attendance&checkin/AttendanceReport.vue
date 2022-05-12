@@ -14,7 +14,7 @@
         </div>
         <div class="col-md-2">
             <h6 class="font-weight-bold">Date</h6>
-            <p class="small-text">{{ formatDate(reportData.eventDate) }}</p>
+            <p class="small-text">{{ formatDate(reportData.date) }}</p>
         </div>
     </div>
 
