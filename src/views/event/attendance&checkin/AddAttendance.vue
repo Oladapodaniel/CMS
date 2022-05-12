@@ -1,5 +1,5 @@
 <template>
-  <div class="container-fluid mt-5">
+  <div class="container-fluid mt-5" @click="closeDropdownIfOpen">
     <div class="row mb-4">
       <div class="col-md-12">
         <h4>Add Attendance</h4>
@@ -217,7 +217,59 @@
             <label for="" class="font-weight-600">Group</label>
           </div>
           <div class="col-sm-7 col-md-6 col-lg-5">
-            <MultiSelect v-model="selectedGroups" :options="groups" optionLabel="name" placeholder="Select group" display="chip" class="w-100" />
+            <button
+                class="
+                  form-control
+                  d-flex
+                  justify-content-between
+                  align-items-center
+                  exempt-hide
+                "
+                @click="setGroupProp"
+              >
+                <span class="exempt-hide">
+                  <span
+                    v-if="selectedGroups.length > 0 && selectedGroups.length <= 2"
+                  >
+                    <span v-for="item in selectedGroups" :key="item.id"
+                      ><span class="eachGroup">{{ item.name }}</span></span
+                    >
+                  </span>
+                  <span
+                    v-if="selectedGroups.length > 0 && selectedGroups.length > 2"
+                  >
+                    <span
+                      v-for="item in selectedGroups.slice(0, 2)"
+                      :key="item.id"
+                      ><span class="eachGroup">{{ item.name }}</span></span
+                    >
+                    ...
+                  </span>
+                  <span v-if="selectedGroups.length === 0">Select group</span>
+                </span>
+                <i class="pi pi-chevron-down exempt-hide"></i>
+              </button>
+              <div
+                class="div-card p-2 exempt-hide"
+                :class="{
+                  'd-none': hideDiv,
+                  'd-block': !hideDiv,
+                }"
+              >
+                <i
+                  class="pi pi-spin pi-spinner text-center exempt-hide"
+                  v-if="grouploading && groups.length === 0"
+                ></i>
+                <input
+                  type="text"
+                  class="form-control exempt-hide"
+                  v-model="searchGroupText"
+                  ref="searchGroupRef"
+                  placeholder="Search for group"
+                />
+                <GroupTree :items="searchForGroups" :addGroupValue="true"/>
+              </div>
+            <!-- <MultiSelect v-model="selectedGroups" :options="groups" optionLabel="name" placeholder="Select group" display="chip" class="w-100" /> -->
 
             <!-- <Dropdown
               v-model="selectedGroup"
@@ -501,7 +553,7 @@
 <script>
 import Dropdown from "primevue/dropdown";
 import MultiSelect from 'primevue/multiselect';
-import { computed, ref } from "vue";
+import { computed, nextTick, ref, watchEffect } from "vue";
 import router from "@/router/index";
 import groupService from "../../../services/groups/groupsservice";
 import eventsService from "../../../services/events/eventsservice";
@@ -513,11 +565,12 @@ import axios from "@/gateway/backendapi";
 import finish from '../../../services/progressbar/progress'
 import axio from  'axios'
 import moment from "moment";
+import GroupTree from "../../groups/component/GroupTreeCheckboxParent.vue";
 
 
 
 export default {
-  components: { Dropdown, MultiSelect,CreateEventModal },
+  components: { Dropdown, MultiSelect,CreateEventModal, GroupTree },
 
   setup() {
     const store = useStore();
@@ -551,20 +604,25 @@ export default {
     const image = ref ("")
     const imageUrl = ref("")
     const slot = ref("")
+    const hideDiv = ref(true)
+    const searchGroupRef = ref(true)
+    const searchGroupText = ref("")
+    const grouploading = ref(false)
 
 
     // const selectedGroup = ref({});
     const selectedGroups = ref([]);
     const getGroups = async () => {
+      grouploading.value = true
       try {
         const response = await groupService.getGroups();
+        grouploading.value = false
         if (response && response.length > 0) {
-          groups.value = response.map((i) => {
-            return { id: i.id, name: i.name };
-          });
+          groups.value = response
         }
       } catch (error) {
         console.log(error);
+        grouploading.value = false
       }
     };
 
@@ -719,6 +777,7 @@ export default {
             const element = response.data[i];
             store.dispatch("attendance/setItemData", element);
           }
+          store.dispatch("groups/setCheckedTreeGroup", [])
           router.push({
             name: "CheckinType",
             query: {
@@ -730,6 +789,7 @@ export default {
               code: response.data[0].attendanceCode,
             },
           });
+          
         } catch (error) {
           console.log(error);
         }
@@ -890,6 +950,33 @@ export default {
           console.log(selectedBank.value)
         }
 
+        watchEffect(() => {
+          if (store.getters["groups/checkedTreeGroup"]) {
+            selectedGroups.value = store.getters["groups/checkedTreeGroup"];
+          }
+        });
+
+        const setGroupProp = () => {
+          hideDiv.value = !hideDiv.value;
+          nextTick(() => {
+            searchGroupRef.value.focus();
+          });
+        };
+
+        const searchForGroups = computed(() => {
+          if (!searchGroupText.value && groups.value.length > 0)
+            return groups.value;
+          return groups.value.filter((i) =>
+            i.name.toLowerCase().includes(searchGroupText.value.toLowerCase())
+          );
+        });
+
+        const closeDropdownIfOpen = (e) => {
+          if (!e.target.classList.contains("exempt-hide") && !e.target.classList.contains("p-hidden-accessible") && !e.target.classList.contains("p-checkbox-box") && !e.target.classList.contains("p-checkbox-icon")) {
+            hideDiv.value = true
+          }
+        };
+
     return {
       selectedEvent,
       onContinue,
@@ -947,7 +1034,14 @@ export default {
       bankSearchText,
       filteredBanks,
       slot,
-      selectedGroups
+      selectedGroups,
+      setGroupProp,
+      hideDiv,
+      searchGroupRef,
+      searchForGroups,
+      searchGroupText,
+      grouploading,
+      closeDropdownIfOpen
     };
   },
 };
@@ -1076,5 +1170,23 @@ export default {
 
 #second {
   width: 100%
+}
+
+.div-card {
+  position: absolute;
+  background: white;
+  z-index: 1;
+  width: 100%;
+  top: 40px;
+  box-shadow: 0 0 11px rgba(33, 33, 33, 0.2);
+  max-height: 400px;
+  overflow: scroll;
+}
+
+.eachGroup {
+  padding: 5px 10px;
+  background: #eee;
+  border-radius: 25px;
+  margin: 0 3px;
 }
 </style>

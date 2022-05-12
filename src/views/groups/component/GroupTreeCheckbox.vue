@@ -124,12 +124,11 @@ import { ref } from "@vue/reactivity";
 import { useToast } from "primevue/usetoast";
 import axios from "@/gateway/backendapi";
 import { watchEffect } from "@vue/runtime-core";
-// import store from '../../../store/store';
 import { useStore } from "vuex";
 export default {
   name: "GroupTree",
-  props: ["items", "addGroupValue", "allChecked", "checked", "multipleGroupsSelected"],
-  emits: ["group", "groupp", "setcheckval", "resetchecked", "passitemvalue"],
+  props: ["items", "addGroupValue", "allChecked", "checked"],
+  emits: ["group", "groupp", "setcheckval", "resetchecked"],
   components: {
     Dialog,
   },
@@ -139,10 +138,8 @@ export default {
     const newGroup = ref({});
     const toast = useToast();
     const onDropDown = ref(false);
-    
-    // const removeCheckedGroup = ref([]);
-    
-    const markedItems = ref([])
+    const multipleGroupsSelected = ref([]);
+    const markedItems = ref([]);
 
     const toggleItems = (i, e) => {
       e.target.classList.toggle("roll-icon");
@@ -162,12 +159,6 @@ export default {
         );
       }
     };
-
-    // const groupClick = (group, e) => {
-    //   store.dispatch("groups/setSelectedTreeGroupList", group)
-    //   store.dispatch("groups/setSelectedTreeGroup", group)
-    //   emit("group", { selectedGroup: group, iconElement: e.target });
-    // };
 
     watchEffect(() => {
       if (props.addGroupValue) {
@@ -202,62 +193,70 @@ export default {
     };
 
     const getCheckedGroup = (item) => {
-        emit("passitemvalue", item)
-
-    //   const groupData = item;
-    //   if (groupData.displayCheck) {
-    //     const getIndex = multipleGroupsSelected.value.findIndex(
-    //       (j) => j.id === item.id
-    //     );
-    //     if (getIndex < 0) {
-    //       multipleGroupsSelected.value.push(groupData);
-    //     }
-    //   } else {
-    //       console.log('Not children')
-    //   }
-    //   checkChildren(groupData, multipleGroupsSelected.value);
-    //   //   Save to store
-    //   store.dispatch(
-    //     "groups/setCheckedTreeGroup",
-    //     multipleGroupsSelected.value.filter((i) => i.displayCheck)
-    //   );
-    // //   console.log(multipleGroupsSelected.value, 'Nooooooo')
-    // //   console.log(multipleGroupsSelected.value.filter((i) => i.displayCheck), 'hereeee')
- 
-    //    markedItems.value = props.items.filter(i => i.displayCheck)
+      const groupData = item;
+      const getIndex = multipleGroupsSelected.value.findIndex(
+        (j) => j.id === item.id
+      );
+      if (getIndex < 0) {
+        multipleGroupsSelected.value.push(groupData);
+      }
+      checkChildren(groupData, multipleGroupsSelected.value);
+      store.dispatch(
+        "groups/setCheckedGroupChildren",
+        multipleGroupsSelected.value
+      );
+      markedItems.value = props.items.filter((i) => i.displayCheck);
     };
 
-    
+    const checkChildren = (item, destArray) => {
+      if (item && item.children && item.children.length > 0) {
+        item.children.forEach((i) => {
+          i.displayCheck = !i.displayCheck;
+          if (item.displayCheck) {
+            i.displayCheck = true;
+            const getIndex = destArray.findIndex((j) => j.id === i.id);
+            if (getIndex < 0) {
+              destArray.push(i);
+              console.log(destArray);
+            }
+          }
+          if (!item.displayCheck) {
+            i.displayCheck = false;
+          }
+          if (i.children && i.children.length > 0) {
+            checkChildren(i, destArray);
+          }
+        });
+      }
+    };
 
     const checkAll = () => {
-        props.items.forEach(i => {
-            if (props.allChecked) {
-                i.displayCheck = true
-            }   else {
-                i.displayCheck = false
-            }
-            getCheckedGroup(i)
-        })
-            markedItems.value = props.items.filter(i => i.displayCheck)
-    }
+      props.items.forEach((i) => {
+        if (props.allChecked) {
+          i.displayCheck = true;
+        } else {
+          i.displayCheck = false;
+        }
+        getCheckedGroup(i);
+      });
+      markedItems.value = props.items.filter((i) => i.displayCheck);
+    };
 
     watchEffect(() => {
       if (props.items.length !== markedItems.value.length) {
-        emit('setcheckval', false)
+        emit("setcheckval", false);
       } else {
-        emit('setcheckval', true)
+        emit("setcheckval", true);
       }
 
       if (props.checked) {
-          checkAll()
-          emit('resetchecked', false)
+        checkAll();
+        emit("resetchecked", false);
       }
-    })
-
+    });
 
     return {
       toggleItems,
-      //   groupClick,
       checkForGroup,
       openCreateGroupModal,
       displayCreateGroup,
@@ -265,10 +264,9 @@ export default {
       createGroup,
       onDropDown,
       getCheckedGroup,
-      
+      multipleGroupsSelected,
       checkAll,
       markedItems,
-    //   removeCheckedGroup
     };
   },
 };
