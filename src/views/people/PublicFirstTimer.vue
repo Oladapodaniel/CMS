@@ -26,13 +26,13 @@
                 </div>
                 <div>
                     <div class="d-md-flex justify-content-md-end mt-3">
-                    <label for="" class="label">Surname</label>
+                        <label for="" class="label">Surname</label>
                         <input type="text" class="input form-control" placeholder="" v-model="firstTimersObj.lastName" name="" /> 
                     </div>
                 </div>
                 <div>
                     <div class="d-md-flex justify-content-md-end mt-3">
-                    <label for="" class="label">Phone number</label>
+                        <label for="" class="label">Phone number</label>
                         <input class="input form-control" placeholder="" v-model="firstTimersObj.phoneNumber" type="text" :class="{ 'is-invalid' : !isPhoneValid }" id="phone number" ref="validatePhone" @blur="checkForDuplicatePhone" />
                     </div>
                 </div>
@@ -76,104 +76,53 @@
                         <input type="text" class="input form-control" placeholder="" v-model="firstTimersObj.address" />
                     </div>
                 </div>
+                 <!-- Additional field -->
                 <div  v-for="item in dynamicCustomFields" :key="item.id">
                     <div class=" d-md-flex flex-wrap justify-content-md-end mt-3">
                         <label for="" class="label">{{ item.label }}</label>
-                       <InputText
+                      <input 
                         v-if="item.controlType == 0"
-                        class="w-100 border"
+                        class=" input form-control "
                         type="text"
                         aria-required=""
                         v-model="item.data"
+                        
                       />
                       <Dropdown
                           v-else-if="item.controlType == 1"
                           v-model="item.data"
                           :options="item.parameterValues.split(',')"
                           placeholder="Select option"
-                          style="width: 100%"  
+                         class="input dd small-text widen p-0"  
                         />
-                    <Checkbox v-else-if="item.controlType == 2" v-model="item.data" :binary="true"/>
-                    <Calendar v-if="item.controlType == 3" id="time24" v-model="item.data" :showTime="true" :showSeconds="true" class="w-100" />
-                    <!-- <InputText
-                        v-if="item.controlType == 4"
-                        class=" border"
-                        type="email"
-                        aria-required=""
-                        v-model="item.data"
-                        style="width: 100%;" 
-                      /> -->
+                    <Checkbox class="" v-else-if="item.controlType == 2" v-model="item.data" :binary="true"/>
+                    <Calendar v-if="item.controlType == 3" id="time24" v-model="item.data" :showTime="true" :showSeconds="true" class="input dd small-text widen p-0"  />
+                   
                       <input 
                         v-if="item.controlType == 4"
-                        class="w-100 border"
+                        class=" input form-control "
                         type="email"
                         aria-required=""
                         v-model="item.data"
                         
                       />
-                    <input 
+                      <input 
                         v-if="item.controlType == 5"
-                        class="w-100 border"
+                        class="input"
                         type="file"
                         aria-required=""
                         
                       />
                       <input
                         v-if="item.controlType == 6"
-                        class="w-100 border form-control"
+                        class="input form-control"
+                        :class="{ 'is-invalid' : !isPhoneValid }"
                         type="number"
                         aria-required=""
                         v-model="item.data"
                       />
                     </div>
                 </div>
-                
-                <!-- <div class="row my-3" v-for="item in dynamicCustomFields" :key="item.id">
-                  <div
-                    class="col-md-3 d-md-flex align-items-center justify-content-end text-md-right mt-2 font-weight-700"
-                  >
-                    <label for="">{{ item.label }}</label>
-                  </div>
-                  <div class="col-md-7">
-                    <InputText
-                        v-if="item.controlType == 0"
-                        class="w-100 border"
-                        type="text"
-                        aria-required=""
-                        v-model="item.data"
-                      />
-                    <Dropdown
-                          v-else-if="item.controlType == 1"
-                          v-model="item.data"
-                          :options="item.parameterValues.split(',')"
-                          placeholder="Select option"
-                          style="width: 100%"  
-                        />
-                    <Checkbox v-else-if="item.controlType == 2" v-model="item.data" :binary="true"/>
-                    <Calendar v-if="item.controlType == 3" id="time24" v-model="item.data" :showTime="true" :showSeconds="true" class="w-100" />
-                    <InputText
-                        v-if="item.controlType == 4"
-                        class="w-100 border"
-                        type="email"
-                        aria-required=""
-                        v-model="item.data"
-                      />
-                    <input 
-                        v-if="item.controlType == 5"
-                        class="w-100 border"
-                        type="file"
-                        aria-required=""
-                        
-                      />
-                      <input
-                        v-if="item.controlType == 6"
-                        class="w-100 border form-control"
-                        type="number"
-                        aria-required=""
-                        v-model="item.data"
-                      />
-                  </div>
-                </div> -->
                 <div>
                     <div class="d-md-flex justify-content-md-end mt-3">
                         <label for="" class="label">Birthday</label>
@@ -314,6 +263,7 @@ import InputText from "primevue/inputtext";
 import Dropdown from "primevue/dropdown";
 import { useRoute } from "vue-router";
 import { useToast } from "primevue/usetoast";
+import Calendar from "primevue/calendar";
 import Dialog from "primevue/dialog";
 import finish from "../../services/progressbar/progress"
 import setupService from '../../services/setup/setupservice';
@@ -323,7 +273,7 @@ import { useStore } from "vuex"
 import swal from "sweetalert";
 
 export default {
-  components: { Dropdown, Dialog, ImageForm, InputText },
+  components: { Dropdown, Dialog, ImageForm, InputText, Calendar  },
 
   setup() {
     const toast = useToast();
@@ -1100,7 +1050,7 @@ export default {
   border-top: 1px solid #ecf0f3;
 }
 
-.form-control.input.dd {
+.form-control.input.dd.inputCal {
   text-align: left;
 }
 
@@ -1191,6 +1141,11 @@ export default {
 .input {
   height: 40px;
   border: 1px solid #b9c5cf;
+  margin: 0
+}
+.inputCal {
+  height: 40px;
+  /* border: 1px solid #b9c5cf; */
   margin: 0
 }
 
@@ -1305,6 +1260,9 @@ template.p-dropdown-parent {
   }
 
   .input {
+      width: 100%
+  }
+  .inputCal {
       width: 100%
   }
 }

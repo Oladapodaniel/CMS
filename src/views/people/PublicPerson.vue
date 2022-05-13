@@ -73,6 +73,63 @@
                   v-model="person.address"
                 />
               </div>
+              <div class="input-field" v-for="item in dynamicCustomFields" :key="item.id">
+                <label for="" class="label">{{ item.label }}</label>
+                <input 
+                        v-if="item.controlType == 0"
+                        class=" input "
+                        type="text"
+                        aria-required=""
+                        v-model="item.data"
+                        
+                      />
+                      <div class="cstm-select" v-else-if="item.controlType == 1">
+                        <div style="width: 330px">
+                          <Dropdown
+                            v-model="item.data"
+                            :options="item.parameterValues.split(',')"
+                            placeholder="Select option"
+                            style="width: 100%"
+                          />
+                        </div>
+                      </div>
+                    <Checkbox v-else-if="item.controlType == 2" v-model="item.data" :binary="true"/>
+                     <div class="cstm-select">
+                        <div style="width: 330px">
+                          <Calendar v-if="item.controlType == 3" id="time24" v-model="item.data" :showTime="true" :showSeconds="true" style="width: 100%" />
+                          <!-- <Dropdown
+                            v-model="selectedMembership"
+                            :options="memberships"
+                            optionLabel="name"
+                            placeholder="--Select membership--"
+                            
+                          /> -->
+                        </div>
+                      </div>
+                    <!-- <Calendar v-if="item.controlType == 3" id="time24" v-model="item.data" :showTime="true" :showSeconds="true" class="w-100" /> -->
+                      <input 
+                        v-if="item.controlType == 4"
+                        class=" input "
+                        type="email"
+                        aria-required=""
+                        v-model="item.data"
+                        
+                      />
+                    <input 
+                        v-if="item.controlType == 5"
+                        class="input file-input"
+                        type="file"
+                        aria-required=""
+                        
+                      />
+                      <input
+                        v-if="item.controlType == 6"
+                        class="input"
+                        type="number"
+                        aria-required=""
+                        v-model="item.data"
+                      />
+              </div>
               <div class="input-field">
                 <label for=""></label>
                 <div class="status-n-gender">
@@ -696,6 +753,7 @@ import router from "@/router/index";
 import axios from "@/gateway/backendapi";
 import { useRoute } from "vue-router";
 // import { getCurrentInstance } from "vue";
+import Calendar from "primevue/calendar";
 import Dropdown from "primevue/dropdown";
 import { useToast } from "primevue/usetoast";
 import { useStore } from "vuex";
@@ -704,7 +762,7 @@ import swal from "sweetalert";
 // import lookupService from "../../services/lookup/lookupservice";
 
 export default {
-  components: { Dropdown },
+  components: { Dropdown,Calendar },
   setup() {
     // const $toast = getCurrentInstance().ctx.$toast;
     const toast = useToast();
@@ -719,6 +777,7 @@ export default {
     const searchGroupText = ref("")
     const searchRef = ref(null)
     const personNotes = ref([])
+    const dynamicCustomFields = ref([])
     const noteDetails = ref({})
 
     const loading = ref(false);
@@ -750,7 +809,7 @@ export default {
     const getCustomFields = async() => {
       try {
         let { data } = await axios.get(`/GetAllCustomFields?entityType=0&&tenantID=${route.params.id}`);
-        console.log(data)
+        console.log(data, "❤❤")
         dynamicCustomFields.value = data
       }
       catch (err) {
@@ -1299,7 +1358,8 @@ export default {
       removeFromGroup,
       personNotes,
       noteDetails,
-      savePersonNote
+      savePersonNote,
+      dynamicCustomFields
     };
   },
 };

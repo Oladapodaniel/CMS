@@ -132,9 +132,16 @@
                 <div class=" row second-form first-row">
                     <div class="col-12 col-sm-8 offset-sm-3 offset-md-0 col-md-4 dropdown-container">
                             <div class="dropdown ofering col-12  "  >
-                                <button class=" pr-3 btn select-elem-con col-12 dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                <button class=" pr-3 btn select-elem-con col-12 " type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                                     <span class="ofering">
                                         &nbsp;&nbsp;&nbsp; {{ selectedPledge.name ?  selectedPledge.name : 'Select Pledge' }}
+                                    </span>
+                                    <span>
+                                        <i 
+                                        class="pi pi-angle-down offset-sm-2 ofering" 
+                                        :class="{ roll3: showForm3 }"
+                                        aria-hidden="true"
+                                        ></i>
                                     </span>
                                 </button>
                                 <div class="dropdown-menu scroll " aria-labelledby="dropdownMenuButton">
@@ -180,16 +187,16 @@
                             @click="selectPerson"
                             
                             >
-                            <span class="ofering"
-                                >
-                                &nbsp;&nbsp;&nbsp;{{ selectedContact.firstName && selectedContact.lastName ?  `${selectedContact.firstName ? selectedContact.firstName : ""} ${selectedContact.lastName ? selectedContact.lastName : "" }`   : 'Select Person' }} </span
-                            ><span>
+                            <span class="ofering">
+                                &nbsp;&nbsp;&nbsp;{{ selectedContact.firstName && selectedContact.lastName || selectedContact.name ?  `${selectedContact.firstName ? selectedContact.firstName : ""} ${selectedContact.lastName ? selectedContact.lastName : "" } `   : 'Select Person' }}
+                            </span>
+                            <span>
                                 <i 
                                 class="pi pi-angle-down offset-sm-2 ofering" 
                                 :class="{ roll3: showForm3 }"
                                 aria-hidden="true"
-                                ></i
-                            ></span>
+                                ></i>
+                            </span>
                         </div>
                         
                         <div class="col-md-12" v-if="!selectedContact.name"  >
