@@ -1,5 +1,5 @@
 <template>
-  <div class="container-wide container-top mb-5">
+  <div class="container-wide container-top mb-5" @click="closeDropdownIfOpen">
     <div class="row d-flex justify-content-between">
       <div class="header">Attendance Report</div>
       <div
@@ -43,7 +43,7 @@
           <div class="col-sm-6">
             <div class="font-weight-600">Select Group</div>
             <div class="mt-2">
-              <!-- <button
+              <button
                 class="
                   form-control
                   d-flex
@@ -94,8 +94,8 @@
                   placeholder="Search for group"
                 />
                 <GroupTree :items="searchForGroups" :addGroupValue="true"/>
-              </div> -->
-              <Dropdown placeholder="Select group" style="width: 100%" :options="groups" optionLabel="name" v-model="selectedGroups"/>
+              </div>
+              <!-- <Dropdown placeholder="Select group" style="width: 100%" :options="groups" optionLabel="name" v-model="selectedGroups"/> -->
             </div>
           </div>
           <div class="col-sm-6 mt-4">
@@ -172,7 +172,7 @@ import { useToast } from "primevue/usetoast";
 // import printJS from "print-js";
 import html2pdf from "html2pdf.js";
 // import axio from "axios"
-// import GroupTree from "../../groups/component/GroupTreeCheckboxParent.vue";
+import GroupTree from "../../groups/component/GroupTreeCheckboxParent.vue";
 import grousService from "../../../services/groups/groupsservice";
 import { useStore } from "vuex";
 export default {
@@ -182,7 +182,7 @@ export default {
     Listbox,
     // InputText,
     GroupReportTable,
-    // GroupTree,
+    GroupTree,
   },
   setup() {
     const store = useStore();
@@ -243,9 +243,17 @@ export default {
       let start = new Date(startDate.value).toLocaleDateString("en-US");
       let end = new Date(endDate.value).toLocaleDateString("en-US");
       loading.value = true;
+
+      const payload = {
+        groupIDs: checkedGroup.value.map(i => i.id),
+        eventID: selectedEvent.value.id,
+        startDate: start,
+        endDate: end
+      }
+
       try {
-        let { data } = await axios.get(
-          `/api/Reports/events/getCheckInAttendanceReport?groupID=${selectedGroups.value.id}&eventID=${selectedEvent.value.id}&startDate=${start}&endDate=${end}`
+        let { data } = await axios.post(
+          `/api/Reports/events/getCheckInAttendanceReport`, payload
         );
         searched.value = true;
         loading.value = false;
@@ -418,11 +426,14 @@ export default {
     watchEffect(() => {
       if (store.getters["groups/checkedTreeGroup"]) {
         checkedGroup.value = store.getters["groups/checkedTreeGroup"];
-        // console.log(checkedGroup);
-        // hideDiv.value = true
-        // selectedIntendedSubGroup.value = selectedGroup;
       }
     });
+
+    const closeDropdownIfOpen = (e) => {
+      if (!e.target.classList.contains("exempt-hide") && !e.target.classList.contains("p-hidden-accessible") && !e.target.classList.contains("p-checkbox-box") && !e.target.classList.contains("p-checkbox-icon")) {
+        hideDiv.value = true
+      }
+    };
 
     return {
       startDate,
@@ -457,6 +468,7 @@ export default {
       hideDiv,
       grouploading,
       checkedGroup,
+      closeDropdownIfOpen
     };
   },
 };
