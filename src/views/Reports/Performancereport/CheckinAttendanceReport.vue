@@ -43,7 +43,7 @@
           <div class="col-sm-6">
             <div class="font-weight-600">Select Group</div>
             <div class="mt-2">
-              <button
+              <!-- <button
                 class="
                   form-control
                   d-flex
@@ -94,8 +94,8 @@
                   placeholder="Search for group"
                 />
                 <GroupTree :items="searchForGroups" :addGroupValue="true"/>
-              </div>
-              <!-- <Dropdown placeholder="Select group" style="width: 100%" :options="groups" optionLabel="name" v-model="selectedGroups"/> -->
+              </div> -->
+              <Dropdown placeholder="Select group" style="width: 100%" :options="groups" optionLabel="name" v-model="selectedGroups"/>
             </div>
           </div>
           <div class="col-sm-6 mt-4">
@@ -240,6 +240,19 @@ export default {
     getGroups();
 
     const getAttendanceReport = async () => {
+
+      // const payload = {
+      //   groupIDs: checkedGroup.value.map(i => i.id),
+      //   eventID: selectedEvent.value.id,
+      //   startDate: start,
+      //   endDate: end
+      // }
+      // loading.value = true;
+      // try {
+      //   let { data } = await axios.post(
+      //     `/api/Reports/events/getCheckInAttendanceReport`, payload
+      //   );
+      //   sear
       let start = new Date(startDate.value).toLocaleDateString("en-US");
       let end = new Date(endDate.value).toLocaleDateString("en-US");
       loading.value = true;

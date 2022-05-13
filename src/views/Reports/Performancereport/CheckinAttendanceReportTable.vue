@@ -6,10 +6,19 @@
                             <th class="">Name</th>
                             <th class="">Gender</th>
                             <th class="">Phone</th>
+                            <th class="">Group</th>
                             <th class=" rotate-text" v-for="(item, index) in groupedReportByDate" :key="index">{{ formatDate(item.value[0].activityDate) }}</th>
                             <th class=" rotate-text">Total Absent</th>
                             <th class=" rotate-text">Total Present</th>
                             <th class=" rotate-text">Percentages</th>
+                        </tr>
+                        <tr class="table-row-bg font-weight-bold">
+                            <th class=""></th>
+                            <th class="text-right text-primary" colspan="3">Total Present / Total absent</th>
+                            <th class="text-primary" v-for="(item, index) in groupedReportByDate" :key="index">12/20</th>
+                            <th class=""></th>
+                            <th class=""></th>
+                            <th class=""></th>
                         </tr>
                     </thead>
                     <tbody class="small-text font-weight-bold text-nowrap">
@@ -17,6 +26,7 @@
                             <td>{{ item.value[0].name }}</td>
                             <td>{{ item.value[0].gender }}</td>
                             <td>{{ item.value[0].phone }}</td>
+                            <td>groups</td>
                             <td v-for="(itemm, index) in groupedReportByDate" :key='index'>{{ itemm.value.find(i => i.personId === item.value[0].personId) ? itemm.value.find(i => i.personId === item.value[0].personId).attendance : "" }}</td>
                             <td class="text-danger"> {{ attendance(item.value[0].personId, 1) }}</td>
                             <td class="text-success">{{ attendance(item.value[0].personId, 2) }}</td>
@@ -189,7 +199,7 @@ text-orientation: mixed;
     overflow-x: scroll;
 }
 
-.table thead th:nth-child(1), .table thead th:nth-child(2), .table thead th:nth-child(3) {
+.table thead th:nth-child(1), .table thead th:nth-child(2), .table thead th:nth-child(3), .table thead th:nth-child(4) {
     vertical-align: middle;
     border-bottom: 2px solid #dee2e6;
 }

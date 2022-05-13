@@ -984,7 +984,6 @@ export default {
       events,
       selectEvent,
       display,
-      // selectedGroup,
       closeModal,
       newActModal,
       eventCategories,
