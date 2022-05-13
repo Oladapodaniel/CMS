@@ -482,6 +482,31 @@
                   </div>
                 </div>   
             </div>
+           
+           
+            <div class="col-sm-2 col-lg-3"></div>
+
+          <div class="col-sm-3 col-md-4 col-lg-4 text-sm-right mt-3 align-self-center">
+              <label for="" class="font-weight-600">Cut-off time</label>
+            </div>
+            <div class="col-sm-7 col-md-6 col-lg-5 mt-3">
+                <ul class="nav nav-tabs" id="myTab" role="tablist">
+                  <li class="nav-item">
+                    <a class="nav-link active" id="home-tab" data-toggle="tab" href="#checkintime" role="tab" aria-controls="home" aria-selected="true">Checkin</a>
+                  </li>
+                  <li class="nav-item">
+                    <a class="nav-link" id="profile-tab" data-toggle="tab" href="#regTime" role="tab" aria-controls="profile" aria-selected="false">Registration</a>
+                  </li>
+                </ul>
+                <div class="tab-content" id="myTabContent">
+                  <div class="tab-pane fade show active" id="checkintime" role="tabpanel" aria-labelledby="home-tab">
+                     <input type="datetime-local" class="form-control my-3" />
+                  </div>
+                  <div class="tab-pane fade" id="regTime" role="tabpanel" aria-labelledby="profile-tab">
+                     <input type="datetime-local" class="form-control my-3" />
+                  </div>
+                </div>   
+            </div>
             
             <div class="col-sm-2 col-lg-3"></div>
 
