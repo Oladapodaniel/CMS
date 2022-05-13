@@ -15,7 +15,7 @@
                         <tr class="table-row-bg font-weight-bold">
                             <th class=""></th>
                             <th class="text-right text-primary" colspan="3">Total Present / Total absent</th>
-                            <th class="text-primary" v-for="(item, index) in groupedReportByDate" :key="index">12/20</th>
+                            <th class="text-primary" v-for="(item, index) in groupedReportByDate" :key="index">{{ item.value.filter(i => i.attendance.toLowerCase() == 'p').length }} / {{ item.value.filter(i => i.attendance.includes('--')).length }}</th>
                             <th class=""></th>
                             <th class=""></th>
                             <th class=""></th>
@@ -26,7 +26,7 @@
                             <td>{{ item.value[0].name }}</td>
                             <td>{{ item.value[0].gender }}</td>
                             <td>{{ item.value[0].phone }}</td>
-                            <td>groups</td>
+                            <td>{{ item.value[0].groupName }}</td>
                             <td v-for="(itemm, index) in groupedReportByDate" :key='index'>{{ itemm.value.find(i => i.personId === item.value[0].personId) ? itemm.value.find(i => i.personId === item.value[0].personId).attendance : "" }}</td>
                             <td class="text-danger"> {{ attendance(item.value[0].personId, 1) }}</td>
                             <td class="text-success">{{ attendance(item.value[0].personId, 2) }}</td>

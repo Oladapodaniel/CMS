@@ -500,10 +500,10 @@
                 </ul>
                 <div class="tab-content" id="myTabContent">
                   <div class="tab-pane fade show active" id="checkintime" role="tabpanel" aria-labelledby="home-tab">
-                     <input type="datetime-local" class="form-control my-3" />
+                     <input type="datetime-local" class="form-control my-3" v-model="checkinCutOffTime" />
                   </div>
                   <div class="tab-pane fade" id="regTime" role="tabpanel" aria-labelledby="profile-tab">
-                     <input type="datetime-local" class="form-control my-3" />
+                     <input type="datetime-local" class="form-control my-3" v-model="regCutOffTimer"/>
                   </div>
                 </div>   
             </div>
@@ -633,6 +633,8 @@ export default {
     const searchGroupRef = ref(true)
     const searchGroupText = ref("")
     const grouploading = ref(false)
+    const checkinCutOffTime = ref("")
+    const regCutOffTimer = ref("")
 
 
     // const selectedGroup = ref({});
@@ -767,6 +769,8 @@ export default {
         checkinEmail.value ? checkinEvent.checkinEmail = checkinEmail.value : ""
         registrationSMS.value ? checkinEvent.registrationSMS = registrationSMS.value : ""
         registrationEmail.value ? checkinEvent.registrationEmail = registrationEmail.value : ""
+        regCutOffTimer.value ? checkinEvent.registrationCutOffTime = regCutOffTimer.value : ""
+        checkinCutOffTime.value ? checkinEvent.checkInCutOffTime = checkinCutOffTime.value : ""
       //   console.log(checkinEvent)
       const formData = new FormData();
         // disabled.value = false
@@ -790,6 +794,8 @@ export default {
       selectedGroups.value ? formData.append("groupIDs", selectedGroups.value.map(i => i.id)) : ""
       formData.append("enableRegistration", true)
       slot.value ? formData.append("registrationSlot", slot.value) : ""
+      regCutOffTimer.value ? formData.append("registrationCutOffTime", regCutOffTimer.value) : ""
+      checkinCutOffTime.value ? formData.append("checkInCutOffTime", checkinCutOffTime.value) : ""
 
       if (!amount.value && !selectedBank.value && !accountNumber.value && !selectedCashAccount.value && !selectedIncomeAccount.value &&  !image.value) {
         console.log('free and no image')
@@ -1065,7 +1071,9 @@ export default {
       searchForGroups,
       searchGroupText,
       grouploading,
-      closeDropdownIfOpen
+      closeDropdownIfOpen,
+      regCutOffTimer,
+      checkinCutOffTime
     };
   },
 };
