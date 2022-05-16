@@ -391,7 +391,7 @@ export default {
     const searchGroup = computed(() => {
      if (searchText.value !== "" && groups.value.length > 0)  {
        return groups.value.filter((i) => {
-            return i.name.toLowerCase().includes(searchText.value.toLowerCase())
+            if (i.name) return i.name.toLowerCase().includes(searchText.value.toLowerCase())
       })
      }  else {
        return groups.value;
