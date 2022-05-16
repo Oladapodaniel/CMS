@@ -30,12 +30,14 @@ import { ref } from "@vue/reactivity";
 import GroupTreeCheckbox from "./GroupTreeCheckbox.vue";
 import { useStore } from "vuex";
 import { watchEffect } from "@vue/runtime-core";
+import { onBeforeRouteLeave } from 'vue-router';
 export default {
   props: ["items", "addGroupValue"],
+  emits: ["filteredGroup"],
   components: {
     GroupTreeCheckbox,
   },
-  setup() {
+  setup(props, { emit }) {
     const allChecked = ref(false);
     const checked = ref(false);
     const multipleGroupsSelected = ref([]);
@@ -60,12 +62,14 @@ export default {
             multipleGroupsSelected.value.push(i);
           }
         });
-        //   Save to store
-        store.dispatch(
-          "groups/setCheckedTreeGroup",
-          multipleGroupsSelected.value.filter((i) => i.displayCheck)
-        );
+        multipleGroupsSelected.value = multipleGroupsSelected.value.filter((i) => i.displayCheck)
+        emit('filteredGroup', multipleGroupsSelected.value)
       }
+    });
+
+    onBeforeRouteLeave(() => {
+        store.dispatch("groups/setCheckedGroupChildren", []);
+        multipleGroupsSelected.value = []
     });
 
 

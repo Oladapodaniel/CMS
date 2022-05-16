@@ -267,7 +267,7 @@
                   ref="searchGroupRef"
                   placeholder="Search for group"
                 />
-                <GroupTree :items="searchForGroups" :addGroupValue="true"/>
+                <GroupTree :items="searchForGroups" :addGroupValue="true" @filteredGroup="setFilterGroups"/>
               </div>
             <!-- <MultiSelect v-model="selectedGroups" :options="groups" optionLabel="name" placeholder="Select group" display="chip" class="w-100" /> -->
 
@@ -578,7 +578,7 @@
 <script>
 import Dropdown from "primevue/dropdown";
 import MultiSelect from 'primevue/multiselect';
-import { computed, nextTick, ref, watchEffect } from "vue";
+import { computed, nextTick, ref } from "vue";
 import router from "@/router/index";
 import groupService from "../../../services/groups/groupsservice";
 import eventsService from "../../../services/events/eventsservice";
@@ -981,11 +981,11 @@ export default {
           console.log(selectedBank.value)
         }
 
-        watchEffect(() => {
-          if (store.getters["groups/checkedTreeGroup"]) {
-            selectedGroups.value = store.getters["groups/checkedTreeGroup"];
-          }
-        });
+        // watchEffect(() => {
+        //   if (store.getters["groups/checkedTreeGroup"]) {
+        //     selectedGroups.value = store.getters["groups/checkedTreeGroup"];
+        //   }
+        // });
 
         const setGroupProp = () => {
           hideDiv.value = !hideDiv.value;
@@ -1007,6 +1007,10 @@ export default {
             hideDiv.value = true
           }
         };
+
+         const setFilterGroups = (payload) => {
+            selectedGroups.value = payload
+          }
 
     return {
       selectedEvent,
@@ -1073,7 +1077,8 @@ export default {
       grouploading,
       closeDropdownIfOpen,
       regCutOffTimer,
-      checkinCutOffTime
+      checkinCutOffTime,
+      setFilterGroups
     };
   },
 };
