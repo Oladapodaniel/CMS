@@ -94,19 +94,11 @@
                         </div>
                       </div>
                     <Checkbox v-else-if="item.controlType == 2" v-model="item.data" :binary="true"/>
-                     <div class="cstm-select">
+                      <div class="cstm-select">
                         <div style="width: 330px">
                           <Calendar v-if="item.controlType == 3" id="time24" v-model="item.data" :showTime="true" :showSeconds="true" style="width: 100%" />
-                          <!-- <Dropdown
-                            v-model="selectedMembership"
-                            :options="memberships"
-                            optionLabel="name"
-                            placeholder="--Select membership--"
-                            
-                          /> -->
                         </div>
                       </div>
-                    <!-- <Calendar v-if="item.controlType == 3" id="time24" v-model="item.data" :showTime="true" :showSeconds="true" class="w-100" /> -->
                       <input 
                         v-if="item.controlType == 4"
                         class=" input "
