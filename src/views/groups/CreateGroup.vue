@@ -753,7 +753,7 @@
 
                 <!-- The Modal -->
                 <div class="modal fade" id="myModal">
-                  <div class="modal-dialog modal-sm">
+                  <div class="modal-dialog">
                     <div class="modal-content">
                       <!-- Modal Header -->
                       <div class="modal-header">
@@ -775,13 +775,32 @@
                       <div class="modal-body">
                         <div class="col-md-12"></div>
                         <div class="col-md-12 form-group w-100">
-                          <Dropdown
+                          <!-- <Dropdown
                             :options="getAllGroup"
                             optionLabel="name"
                             placeholder="Select Groups"
                             style="width: 100%"
                             v-model="selectGroupTo"
-                          />
+                          /> -->
+                          <button @click="setMoveGroupProp" class="btn border d-flex justify-content-between align-items-center w-100">
+                            <div>{{ selectGroupTo && Object.keys(selectGroupTo).length > 0 ? selectGroupTo.name : 'Select group' }}</div>
+                            <i class="pi pi-chevron-down"></i>
+                          </button>
+                          <div
+                              class="move-card p-2 exempt-hide"
+                              :class="{
+                                'd-none': moveHideDiv,
+                                'd-block': !moveHideDiv,
+                              }"
+                            >
+                            <i class="pi pi-spin pi-spinner text-center exempt-hide" v-if="grouploading && getAllGroup.length === 0"></i>
+                            <input type="text" class="form-control exempt-hide" v-model="searchGroupText" ref="searchGroupRef" placeholder="Search for group"/>
+                              <GroupTree
+                                :items="searchForGroups"
+                                :addGroupValue="true"
+                                @group="setSelectedGroupToMove"
+                              />
+                            </div> 
                         </div>
                       </div>
 
@@ -789,7 +808,7 @@
                       <div class="modal-footer">
                         <button
                           type="button"
-                          class="btn btn-primary"
+                          class="btn primary-bg default-btn border-0 text-white"
                           data-dismiss="modal"
                           @click="moveMembers"
                         >
@@ -809,7 +828,7 @@
 
                 <!-- The Modal2 -->
                 <div class="modal fade" id="myModal1">
-                  <div class="modal-dialog modal-sm">
+                  <div class="modal-dialog">
                     <div class="modal-content">
                       <!-- Modal Header -->
                       <div class="modal-header">
@@ -831,13 +850,32 @@
                       <div class="modal-body">
                         <div class="col-md-12"></div>
                         <div class="col-md-12 form-group w-100">
-                          <Dropdown
+                          <!-- <Dropdown
                             :options="getAllGroup"
                             optionLabel="name"
                             placeholder="Select Groups"
                             style="width: 100%"
                             v-model="copyGroupTo"
-                          />
+                          /> -->
+                          <button @click="setCopyGroupProp" class="btn border d-flex justify-content-between align-items-center w-100">
+                            <div>{{ copyGroupTo && Object.keys(copyGroupTo).length > 0 ? copyGroupTo.name : 'Select group' }}</div>
+                            <i class="pi pi-chevron-down"></i>
+                          </button>
+                          <div
+                              class="move-card p-2 exempt-hide"
+                              :class="{
+                                'd-none': copyHideDiv,
+                                'd-block': !copyHideDiv,
+                              }"
+                            >
+                            <i class="pi pi-spin pi-spinner text-center exempt-hide" v-if="grouploading && getAllGroup.length === 0"></i>
+                            <input type="text" class="form-control exempt-hide" v-model="searchGroupText" ref="searchGroupRef" placeholder="Search for group"/>
+                              <GroupTree
+                                :items="searchForGroups"
+                                :addGroupValue="true"
+                                @group="setSelectedGroupToCopy"
+                              />
+                            </div> 
                         </div>
                       </div>
 
@@ -845,7 +883,7 @@
                       <div class="modal-footer">
                         <button
                           type="button"
-                          class="btn btn-primary"
+                          class="btn primary-bg default-btn border-0 text-white"
                           data-dismiss="modal"
                           @click="copyMemberToGroup"
                         >
@@ -1490,8 +1528,10 @@ export default {
     const searchGroupText = ref("");
     const grouploading = ref(false);
     const searchGroupRef = ref();
-
     const closeGroupModal = ref();
+    const lastGroupChild = ref({});
+    const moveHideDiv = ref(true)
+    const copyHideDiv = ref(true)
 
     const getGroups = async () => {
       grouploading.value = true
@@ -2213,6 +2253,20 @@ export default {
       }
     };
 
+    const setCopyGroupProp = () => {
+      copyHideDiv.value = !copyHideDiv.value;
+      nextTick(() => {
+        searchGroupRef.value.focus()
+      })
+    };
+
+    const setMoveGroupProp = () => {
+      moveHideDiv.value = !moveHideDiv.value;
+      nextTick(() => {
+        searchGroupRef.value.focus()
+      })
+    };
+    
     const setGroupProp = () => {
       hideDiv.value = !hideDiv.value;
       nextTick(() => {
@@ -2229,9 +2283,28 @@ export default {
       console.log(payload)
     }
 
-    // const setGroupData = (payload) => {
-    //   console.log(payload)
-    // }
+    watchEffect(() => {
+       if (store.getters["groups/selectedTreeGroupList"]) {
+         const selectedGroup = store.getters["groups/selectedTreeGroupList"]
+         lastGroupChild.value = selectedGroup
+        console.log(selectedGroup)
+        
+       }
+     })
+
+    const setSelectedGroupToMove = (payload) => {
+      if (payload.iconElement.classList.contains("p-3")) {
+        selectGroupTo.value = payload.selectedGroup ? payload.selectedGroup : lastGroupChild.value
+        moveHideDiv.value = true
+      }
+    }
+    
+    const setSelectedGroupToCopy = (payload) => {
+      if (payload.iconElement.classList.contains("p-3")) {
+        copyGroupTo.value = payload.selectedGroup ? payload.selectedGroup : lastGroupChild.value
+        copyHideDiv.value = true
+      }
+    }
 
     return {
       groupData,
@@ -2315,7 +2388,10 @@ export default {
       groups,
       // setSelectedGroup,
       setGroupProp,
+      setMoveGroupProp,
       hideDiv,
+      moveHideDiv,
+      copyHideDiv,
       selectedIntendedSubGroup,
       addSubGroup,
       searchGroupText,
@@ -2323,6 +2399,10 @@ export default {
       searchGroupRef,
       setChildGroup,
       grouploading,
+      setSelectedGroupToMove,
+      lastGroupChild,
+      setSelectedGroupToCopy,
+      setCopyGroupProp
       // setGroupData
     };
   },
@@ -2663,6 +2743,17 @@ export default {
   z-index: 1;
   width: 100%;
   top: 136px;
+  box-shadow: 0 0 11px rgba(33, 33, 33, 0.2);
+  max-height: 400px;
+  overflow: scroll;
+}
+
+.move-card {
+  position: absolute;
+  background: white;
+  z-index: 1;
+  width: 100%;
+  top: 40px;
   box-shadow: 0 0 11px rgba(33, 33, 33, 0.2);
   max-height: 400px;
   overflow: scroll;
