@@ -836,6 +836,7 @@ export default {
 
         const getAction = (type, index) => {
             const triggerAction = workflow.value.triggers[index].triggerActions.find(i => i.actionType === type);
+            console.log(triggerAction, 'selected Trigger actions')
             return triggerAction && (triggerAction.Action || triggerAction.action) ? triggerAction : { };
         }
 
