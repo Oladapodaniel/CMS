@@ -131,6 +131,7 @@ import axios from "@/gateway/backendapi";
 import { watchEffect } from '@vue/runtime-core';
 // import store from '../../../store/store';
 import { useStore } from "vuex"
+import { onBeforeRouteLeave } from 'vue-router';
 export default {
   name: "GroupTree",
   props: ["items", "addGroupValue", "showCheckBox"],
@@ -199,6 +200,12 @@ export default {
     //   console.log(group)
     //   emit("group", { selectedGroup: group, iconElement: e.target });
     // }
+
+    onBeforeRouteLeave(() => {
+      console.log("Left oooo")
+      store.dispatch("groups/setSelectedTreeGroupList", {})
+      store.dispatch("groups/setSelectedTreeGroup", {})
+    })
 
     
     return {
