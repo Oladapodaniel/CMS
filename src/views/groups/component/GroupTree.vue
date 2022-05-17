@@ -202,7 +202,6 @@ export default {
     // }
 
     onBeforeRouteLeave(() => {
-      console.log("Left oooo")
       store.dispatch("groups/setSelectedTreeGroupList", {})
       store.dispatch("groups/setSelectedTreeGroup", {})
     })
