@@ -81,6 +81,7 @@
         </div>
     </div>
 
+
     <!-- Create sender id modal -->
         <!-- Modal -->
         <div class="modal fade" id="senderIdModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
@@ -127,7 +128,10 @@ import { useToast } from "primevue/usetoast";
 export default {
     props: [ "selectedActionIndex", "parameters", "selectSMSList" ],
     setup (props, { emit }) {
-        const data = reactive({ ActionType: 1, JSONActionParameters: { } })
+        const data = reactive([])
+
+         const actionType = reactive(1)
+        // const data = reactive({ ActionType: 1, JSONActionParameters: { } })
         const person = ref(false);
         const searchSenderText = ref("")
         const senderIDs = ref([])
@@ -140,38 +144,86 @@ export default {
         const removeOthers = ref([])
 
         const handleSendPersonMail = () => {
-            console.log(removeOthers.value[0].person, 'hereee')
-            data.JSONActionParameters.person = removeOthers.value[0].person;
+            console.log(removeOthers.value[0], 'hereee')
+            // data[props.selectedActionIndex] = { JSONActionParameters: { } }
+
+            // data[props.selectedActionIndex].person = removeOthers.value[0].person;
             // data.JSONActionParameters.person = e.target.checked;
-            emit('updateaction', data, props.selectedActionIndex);
+            // emit('updateaction', data, props.selectedActionIndex);
+            if (data[props.selectedActionIndex]) {
+                data[props.selectedActionIndex].JSONActionParameters.person = removeOthers.value[0].person;
+            }   else {
+                data[props.selectedActionIndex] = new Object()
+                data[props.selectedActionIndex].JSONActionParameters = new Object()
+                data[props.selectedActionIndex].JSONActionParameters.person = removeOthers.value[0].person;
+            }
+
+            emit('updateaction', data, props.selectedActionIndex, actionType)
         }
 
         const parent = ref(false);
         const handleSendPersonsParentMail = () => {
-            data.JSONActionParameters.parent = removeOthers.value[0].parent;
+            // data[props.selectedActionIndex] = { JSONActionParameters: { } }
+            // data[props.selectedActionIndex].JSONActionParameters.parent = removeOthers.value[0].parent;
             // data.JSONActionParameters.parent = e.target.checked;
-            emit('updateaction', data, props.selectedActionIndex);
+            // emit('updateaction', data, props.selectedActionIndex);
+            if (data[props.selectedActionIndex]) {
+                console.log(data[props.selectedActionIndex])
+                data[props.selectedActionIndex].JSONActionParameters.parent = removeOthers.value[0].parent;
+            }   else {
+                console.log(data[props.selectedActionIndex])
+                data[props.selectedActionIndex] = new Object()
+                data[props.selectedActionIndex].JSONActionParameters = new Object()
+                data[props.selectedActionIndex].JSONActionParameters.parent = removeOthers.value[0].parent
+            }
+            emit('updateaction', data, props.selectedActionIndex, actionType)
         }
 
         const spouse = ref(false);
         const handleSendPersonsSpouseMail = () => {
-            data.JSONActionParameters.spouse = removeOthers.value[0].spouse;
+            // data[props.selectedActionIndex] = { JSONActionParameters: { } }
+            // data[props.selectedActionIndex].JSONActionParameters.spouse = removeOthers.value[0].spouse;
             // data.JSONActionParameters.spouse = e.target.checked;
-            emit('updateaction', data, props.selectedActionIndex);
+            // emit('updateaction', data, props.selectedActionIndex);
+            if (data[props.selectedActionIndex]) {
+                data[props.selectedActionIndex].JSONActionParameters.spouse = removeOthers.value[0].spouse;
+            }   else {
+                data[props.selectedActionIndex] = new Object()
+                data[props.selectedActionIndex].JSONActionParameters = new Object()
+                data[props.selectedActionIndex].JSONActionParameters.spouse = removeOthers.value[0].spouse;
+            }
+            emit('updateaction', data, props.selectedActionIndex, actionType)
         }
 
         const groupLeader = ref(false);
         const handleSendGroupLeaderMail = () => {
-            data.JSONActionParameters.groupLeader = removeOthers.value[0].groupLeader;
+            // data[props.selectedActionIndex] = { JSONActionParameters: { } }
+            // data[props.selectedActionIndex].JSONActionParameters.groupLeader = removeOthers.value[0].groupLeader;
             // data.JSONActionParameters.groupLeader = e.target.checked;
-            emit('updateaction', data, props.selectedActionIndex);
+            // emit('updateaction', data, props.selectedActionIndex);
+            if (data[props.selectedActionIndex]) {
+                data[props.selectedActionIndex].JSONActionParameters.groupLeader = removeOthers.value[0].groupLeader;
+            }   else {
+                data[props.selectedActionIndex] = new Object()
+                data[props.selectedActionIndex].JSONActionParameters = new Object()
+                data[props.selectedActionIndex].JSONActionParameters.groupLeader = removeOthers.value[0].groupLeader;
+            }
+            emit('updateaction', data, props.selectedActionIndex, actionType)
         }
 
         const otherToContacts = ref('');
         const handleOtherAddresses = () => {
-            data.JSONActionParameters.otherToContacts = removeOthers.value[0].otherToContacts;
+            if (data[props.selectedActionIndex]) {
+                data[props.selectedActionIndex].JSONActionParameters.otherToContacts = removeOthers.value[0].otherToContacts;
+            }   else {
+                data[props.selectedActionIndex] = new Object()
+                data[props.selectedActionIndex].JSONActionParameters = new Object()
+                data[props.selectedActionIndex].JSONActionParameters.otherToContacts = removeOthers.value[0].otherToContacts;
+            }
+
+            
             // data.JSONActionParameters.otherToContacts = e.target.value;
-            emit('updateaction', data, props.selectedActionIndex);
+            emit('updateaction', data, props.selectedActionIndex, actionType);
         }
 
         const BCCParent = ref('');
@@ -212,14 +264,30 @@ export default {
 
         const subject = ref('');
         const handleSubject = (subject) => {
-            data.JSONActionParameters.subject = subject;
-            emit('updateaction', data, props.selectedActionIndex);
+
+            if (data[props.selectedActionIndex]) {
+                data[props.selectedActionIndex].JSONActionParameters.subject = removeOthers.value[0].selectedSender;
+            }   else {
+                data[props.selectedActionIndex] = new Object()
+                data[props.selectedActionIndex].JSONActionParameters = new Object()
+                data[props.selectedActionIndex].JSONActionParameters.subject = removeOthers.value[0].selectedSender.mask;
+            }
+
+
+            
+            // data.JSONActionParameters.subject = subject;
+            emit('updateaction', data, props.selectedActionIndex, actionType);
         }
         const message = ref('');
         const handleMessage = () => {
-            data.JSONActionParameters.message = removeOthers.value[0].message;
-            // data.JSONActionParameters.message = e.target.value;
-            emit('updateaction', data, props.selectedActionIndex);
+            if (data[props.selectedActionIndex]) {
+                data[props.selectedActionIndex].JSONActionParameters.message = removeOthers.value[0].message;
+            }   else {
+                data[props.selectedActionIndex] = new Object()
+                data[props.selectedActionIndex].JSONActionParameters = new Object()
+                data[props.selectedActionIndex].JSONActionParameters.message = removeOthers.value[0].message;
+            }
+            emit('updateaction', data, props.selectedActionIndex, actionType);
         }
 
         const parsedData = ref({ })
@@ -233,54 +301,68 @@ export default {
 
 
             if (props.parameters.Action) {
-                const actn = JSON.parse(props.parameters.Action);
-                parsedData.value = JSON.parse(actn.JSONActionParameters);
+                // const actn = JSON.parse(props.parameters.Action);
+                // parsedData.value = JSON.parse(actn.JSONActionParameters);
 
-                person.value = parsedData.value.person;
-                data.JSONActionParameters.person = parsedData.value.person;
+                // person.value = parsedData.value.person;
+                // data.JSONActionParameters.person = parsedData.value.person;
 
-                parent.value = parsedData.value.parent;
-                data.JSONActionParameters.parent = parsedData.value.parent;
+                // parent.value = parsedData.value.parent;
+                // data.JSONActionParameters.parent = parsedData.value.parent;
 
-                spouse.value = parsedData.value.spouse;
-                data.JSONActionParameters.spouse = parsedData.value.spouse;
+                // spouse.value = parsedData.value.spouse;
+                // data.JSONActionParameters.spouse = parsedData.value.spouse;
 
-                groupLeader.value = parsedData.value.groupLeader;
-                data.JSONActionParameters.groupLeader = parsedData.value.groupLeader;
+                // groupLeader.value = parsedData.value.groupLeader;
+                // data.JSONActionParameters.groupLeader = parsedData.value.groupLeader;
 
-                otherToContacts.value = parsedData.value.otherToContacts;
-                data.JSONActionParameters.otherToContacts = parsedData.value.otherToContacts;
+                // otherToContacts.value = parsedData.value.otherToContacts;
+                // data.JSONActionParameters.otherToContacts = parsedData.value.otherToContacts;
 
-                subject.value = parsedData.value.subject;
-                data.JSONActionParameters.subject = parsedData.value.subject;
+                // subject.value = parsedData.value.subject;
+                // data.JSONActionParameters.subject = parsedData.value.subject;
 
-                message.value = parsedData.value.message;
-                data.JSONActionParameters.message = parsedData.value.message;
+                // message.value = parsedData.value.message;
+                // data.JSONActionParameters.message = parsedData.value.message;
             } else if (removeOthers.value && removeOthers.value[0].action && removeOthers.value[0].action.jsonActionParameters) {
             // } else if (props.parameters.action && props.parameters.action.jsonActionParameters && removeOthers.value) {
                 // parsedData.value = JSON.parse(props.parameters.action.jsonActionParameters);
                 parsedData.value = JSON.parse(removeOthers.value[0].action.jsonActionParameters);
         
                 removeOthers.value[0].person = parsedData.value.person
-                data.JSONActionParameters.person = parsedData.value.person;
+                data[props.selectedActionIndex] = new Object()
+                data[props.selectedActionIndex].JSONActionParameters = new Object()
+                data[props.selectedActionIndex].JSONActionParameters.person = parsedData.value.person;
 
                 removeOthers.value[0].parent = parsedData.value.parent;
-                data.JSONActionParameters.parent = parsedData.value.parent;
+                data[props.selectedActionIndex] = new Object()
+                data[props.selectedActionIndex].JSONActionParameters = new Object()
+                data[props.selectedActionIndex].JSONActionParameters.parent = parsedData.value.parent;
 
                 removeOthers.value[0].spouse = parsedData.value.spouse;
-                data.JSONActionParameters.spouse = parsedData.value.spouse;
+                data[props.selectedActionIndex] = new Object()
+                data[props.selectedActionIndex].JSONActionParameters = new Object()
+                data[props.selectedActionIndex].JSONActionParameters.spouse = parsedData.value.spouse;
 
                 removeOthers.value[0].groupLeader = parsedData.value.groupLeader;
-                data.JSONActionParameters.groupLeader = parsedData.value.groupLeader;
+                data[props.selectedActionIndex] = new Object()
+                data[props.selectedActionIndex].JSONActionParameters = new Object()
+                data[props.selectedActionIndex].JSONActionParameters.groupLeader = parsedData.value.groupLeader;
 
                 removeOthers.value[0].otherToContacts = parsedData.value.otherToContacts;
-                data.JSONActionParameters.otherToContacts = parsedData.value.otherToContacts;
+                data[props.selectedActionIndex] = new Object()
+                data[props.selectedActionIndex].JSONActionParameters = new Object()
+                data[props.selectedActionIndex].JSONActionParameters.otherToContacts = parsedData.value.otherToContacts;
 
-                removeOthers.value[0].subject = parsedData.value.subject;
-                data.JSONActionParameters.subject = parsedData.value.subject;
+                removeOthers.value[0].selectedSender = parsedData.value.subject;
+                data[props.selectedActionIndex] = new Object()
+                data[props.selectedActionIndex].JSONActionParameters = new Object()
+                data[props.selectedActionIndex].JSONActionParameters.subject = parsedData.value.subject;
 
                 removeOthers.value[0].message = parsedData.value.message;
-                data.JSONActionParameters.message = parsedData.value.message;
+                data[props.selectedActionIndex] = new Object()
+                data[props.selectedActionIndex].JSONActionParameters = new Object()
+                data[props.selectedActionIndex].JSONActionParameters.message = parsedData.value.message;
                 console.log(removeOthers.value)
             }
 
@@ -388,6 +470,7 @@ export default {
         console.log(err)
       }
     }
+
 
         return {
             person,

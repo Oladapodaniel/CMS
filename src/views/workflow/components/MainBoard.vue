@@ -649,10 +649,13 @@ export default {
         }
 
         const allSelectedActions = ref([])
-        const updateAction = (data, activeAction) => {
+        const updateAction = (data, activeAction, actionType) => {
+            console.log(data, 'here')
+            console.log(actionType)
             // allSelectedActions.value[activeAction] = 
             workflow.value.triggers[selectedTriggerIndex.value].triggerActions[activeAction].Action = JSON.stringify({
-                ActionType: data.ActionType, JSONActionParameters: JSON.stringify(data.JSONActionParameters)
+                ActionType: actionType,
+                JSONActionParameters: JSON.stringify(data[activeAction].JSONActionParameters)
             })
             console.log(workflow.value)
             console.log(data, activeAction, 'workflowwwwwwwwwww')
