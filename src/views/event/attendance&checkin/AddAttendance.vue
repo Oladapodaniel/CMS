@@ -267,7 +267,7 @@
                   ref="searchGroupRef"
                   placeholder="Search for group"
                 />
-                <GroupTree :items="searchForGroups" :addGroupValue="true"/>
+                <GroupTree :items="searchForGroups" :addGroupValue="true" @filteredGroup="setFilterGroups"/>
               </div>
             <!-- <MultiSelect v-model="selectedGroups" :options="groups" optionLabel="name" placeholder="Select group" display="chip" class="w-100" /> -->
 
@@ -347,7 +347,7 @@
                 <div class="col-sm-4 align-self-center">
                   <span class="font-weight-700 cursor-pointer" @click="showFreeTab" :class="{ 'active-tab' : addFreeClass }">Free</span>&nbsp;&nbsp;/&nbsp;&nbsp;<span class="font-weight-700 cursor-pointer" @click="showPaidTab" :class="{ 'active-tab' : addPaidClass }">Paid</span>
                 </div>
-                <div class="col-sm-8" :class="{ 'show-amount' : addPaidClass, 'hide-amount' : !addPaidClass }">
+                <div class="col-sm-8 mt-3 mt-sm-0" :class="{ 'show-amount' : addPaidClass, 'hide-amount' : !addPaidClass }">
                   <input type="text" class="form-control" placeholder="Enter amount" v-model="amount">
                 </div>
               </div>     
@@ -437,7 +437,7 @@
           
           
           <div class="row mt-3">
-            <div class="col-sm-3 col-md-4 col-lg-4 text-sm-right mt-5 align-self-center">
+            <div class="col-sm-3 col-md-4 col-lg-4 text-sm-right align-self-center">
               <label for="" class="font-weight-600">SMS</label>
             </div>
             <div class="col-sm-7 col-md-6 col-lg-5 mt-2">
@@ -552,7 +552,7 @@
               filterPlaceholder="Search grouped contacts"
               style="width: 100%"
             /> -->
-            <div class="row mt-5">
+            <div class="row">
               <div class="col-md-12 d-flex justify-content-center">
                 <button
                   class="default-btn primary-bg text-white border-0 contn-btn"
@@ -578,7 +578,7 @@
 <script>
 import Dropdown from "primevue/dropdown";
 import MultiSelect from 'primevue/multiselect';
-import { computed, nextTick, ref, watchEffect } from "vue";
+import { computed, nextTick, ref } from "vue";
 import router from "@/router/index";
 import groupService from "../../../services/groups/groupsservice";
 import eventsService from "../../../services/events/eventsservice";
@@ -981,11 +981,11 @@ export default {
           console.log(selectedBank.value)
         }
 
-        watchEffect(() => {
-          if (store.getters["groups/checkedTreeGroup"]) {
-            selectedGroups.value = store.getters["groups/checkedTreeGroup"];
-          }
-        });
+        // watchEffect(() => {
+        //   if (store.getters["groups/checkedTreeGroup"]) {
+        //     selectedGroups.value = store.getters["groups/checkedTreeGroup"];
+        //   }
+        // });
 
         const setGroupProp = () => {
           hideDiv.value = !hideDiv.value;
@@ -1007,6 +1007,10 @@ export default {
             hideDiv.value = true
           }
         };
+
+         const setFilterGroups = (payload) => {
+            selectedGroups.value = payload
+          }
 
     return {
       selectedEvent,
@@ -1073,7 +1077,8 @@ export default {
       grouploading,
       closeDropdownIfOpen,
       regCutOffTimer,
-      checkinCutOffTime
+      checkinCutOffTime,
+      setFilterGroups
     };
   },
 };
@@ -1121,7 +1126,7 @@ export default {
 }
 
 .show-tem-free {
-    /* height: 798px; */
+    height: 900px;
     overflow: hidden;
     transition: all 1s ease-in-out
 }
@@ -1168,17 +1173,17 @@ export default {
 
 @media (max-width: 576px) {
   .show-tem-free {
-    height: 1080px;
+    height: 1241px;
   }
 
   .show-tem {
-    height: 1550px;
+    height: 1774px;
     /* overflow: hidden; */
     transition: all 1s ease-in-out
 }
 
   .show-paid {
-    height: 508px;
+    height: 560px;
     /* overflow: hidden; */
     transition: all 0.6s ease-in-out
   }

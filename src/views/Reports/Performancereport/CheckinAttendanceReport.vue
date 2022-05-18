@@ -93,7 +93,7 @@
                   ref="searchGroupRef"
                   placeholder="Search for group"
                 />
-                <GroupTree :items="searchForGroups" :addGroupValue="true"/>
+                <GroupTree :items="searchForGroups" :addGroupValue="true" @filteredGroup="setFilterGroups"/>
               </div>
               <!-- <Dropdown placeholder="Select group" style="width: 100%" :options="groups" optionLabel="name" v-model="selectedGroups"/> -->
             </div>
@@ -160,7 +160,7 @@
 </template>
 
 <script>
-import { ref, computed, nextTick, watchEffect } from "vue";
+import { ref, computed, nextTick } from "vue";
 import Dropdown from "primevue/dropdown";
 // import InputText from 'primevue/inputtext';
 import Listbox from "primevue/listbox";
@@ -171,10 +171,9 @@ import ExcelExport from "../../../services/exportFile/exportToExcel";
 import { useToast } from "primevue/usetoast";
 // import printJS from "print-js";
 import html2pdf from "html2pdf.js";
-// import axio from "axios"
 import GroupTree from "../../groups/component/GroupTreeCheckboxParent.vue";
 import grousService from "../../../services/groups/groupsservice";
-import { useStore } from "vuex";
+// import { useStore } from "vuex";
 export default {
   components: {
     Dropdown,
@@ -185,7 +184,7 @@ export default {
     GroupTree,
   },
   setup() {
-    const store = useStore();
+    // const store = useStore();
     const toast = useToast();
     const startDate = ref("");
     const endDate = ref("");
@@ -423,17 +422,27 @@ export default {
       );
     });
 
-    watchEffect(() => {
-      if (store.getters["groups/checkedTreeGroup"]) {
-        checkedGroup.value = store.getters["groups/checkedTreeGroup"];
-      }
-    });
+    // watchEffect(() => {
+    //   if (store.getters["groups/checkedTreeGroup"]) {
+    //     checkedGroup.value = store.getters["groups/checkedTreeGroup"];
+    //   }
+    // });
 
     const closeDropdownIfOpen = (e) => {
       if (!e.target.classList.contains("exempt-hide") && !e.target.classList.contains("p-hidden-accessible") && !e.target.classList.contains("p-checkbox-box") && !e.target.classList.contains("p-checkbox-icon")) {
         hideDiv.value = true
       }
     };
+
+    const setFilterGroups = (payload) => {
+      console.log(payload)
+      checkedGroup.value = payload
+    }
+
+    // onBeforeRouteLeave(() => {
+    //   console.log("leaving route")
+    //   resetCheckedGroup.value = true
+    // })
 
     return {
       startDate,
@@ -468,7 +477,8 @@ export default {
       hideDiv,
       grouploading,
       checkedGroup,
-      closeDropdownIfOpen
+      closeDropdownIfOpen,
+      setFilterGroups,
     };
   },
 };
