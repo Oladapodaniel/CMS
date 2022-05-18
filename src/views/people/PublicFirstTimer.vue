@@ -85,7 +85,7 @@
                         class=" input form-control "
                         type="text"
                         aria-required=""
-                        v-model="item.data"
+                        vz-model="item.data"
                         
                       />
                       <Dropdown
@@ -95,8 +95,13 @@
                           placeholder="Select option"
                          class="input dd small-text widen p-0"  
                         />
-                    <Checkbox class="" v-else-if="item.controlType == 2" v-model="item.data" :binary="true"/>
-                    <Calendar v-if="item.controlType == 3" id="time24" v-model="item.data" :showTime="true" :showSeconds="true" class="input dd small-text widen p-0"  />
+                      <!-- <div class="cstm-select"  v-else-if="item.controlType == 2"> -->
+                        <div v-else-if="item.controlType == 2" style="width: 330px">
+                          <Checkbox  v-model="item.data" :binary="true"  style="width: 100%" />
+                        </div>
+                      <!-- </div> -->
+                    <!-- <Checkbox class="" v-else-if="item.controlType == 2" v-model="item.data" :binary="true"/> -->
+                    <Calendar v-if="item.controlType == 3" id="time24" v-model="item.data" :showTime="true" :showSeconds="true" class="input border-0 dd small-text widen p-0"  />
                    
                       <input 
                         v-if="item.controlType == 4"

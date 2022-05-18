@@ -5,11 +5,36 @@
     <div class="col-12 px-0" id="table">
       <div class="top-con" id="ignore2">
         <div class="table-top">
-          <div class="col-4">
-                <p @click="toggleSearch" class="search-text w-100 mt-2">
-                  <i class="pi pi-search"></i> SEARCH
-                </p>
-              </div>
+            <div class="select-All mr-3">
+                  <input
+                  class="d-block d-md-none"
+                  type="checkbox"
+                  name="all"
+                  id="all"
+                  @change="markAllAttendance"
+                  :checked="checkedAttendance.length === searchAttendance.length "
+                />
+                <label class="d-block d-md-none">SELECT ALL</label>
+                  <i
+                      class="
+                        pi pi-trash
+                        text-danger
+                        mr-3
+                        c-pointer
+                        d-flex-inline
+                        align-items-center
+                      "
+                      style="font-size: 20px; margin-bottom: 12px"
+                      v-if="checkedAttendance.length > 0"
+                      @click="modal"
+                    >
+                    </i>&nbsp; &nbsp;
+            </div>
+            <div class="col-4">
+              <p @click="toggleSearch" class="search-text w-100 mt-2">
+                <i class="pi pi-search"></i> SEARCH
+              </p>
+            </div>
 
           <div class="search d-flex ml-2">
             <label
@@ -34,7 +59,15 @@
       <div>
         <div class="container-fluid d-none d-md-block">
           <div class="row t-header">
-            <div class="col-md-1"></div>
+            <div class="col-md-1">
+              <input
+                  type="checkbox"
+                  name="all"
+                  id="all"
+                  @change="markAllAttendance"
+                  :checked="checkedAttendance.length === searchAttendance.length "
+                />
+            </div>
             <div class="small-text text-capitalize col-md-3 font-weight-bold">
               Event Name
             </div>
@@ -153,9 +186,17 @@
               v-for="(item, index) in searchAttendance"
               :key="index"
             >
-              <div
-                class="col-md-1 d-flex d-md-block px-3 justify-content-end"
-              ></div>
+              <div class="col-md-1 d-flex d-md-block px-3 justify-content-end">
+                <input
+                    type="checkbox"
+                    name=""
+                    id=""
+                    @change="check1item(item)"
+                    :checked="
+                      checkedAttendance.findIndex((i) => i.id === item.id) >= 0
+                    "
+                  />
+              </div>
 
               <div class="col-md-3 desc">
                 <p class="mb-0 d-flex justify-content-between">
@@ -367,7 +408,10 @@ export default {
   setup(props, { emit }) {
     let toast = useToast();
     const expose = ref(false);
-    const loading = ref(false)
+    const loading = ref(false);
+    const checkedAttendance = ref([]);
+    // const marked = ref([]);
+    // const AttendanceCheList = ref(props.list)
 
     const toggleEllips = () => {
       toggleEllips.value = !toggleEllips.value;
@@ -375,6 +419,84 @@ export default {
 
     const formatDate = (date) => {
       return dateFormatter.monthDayYear(date);
+    };
+
+      const convert = (x) => {
+        return x.map((i) => i.id);
+      };
+
+      const checkOutAttendance = () => {
+      let dft = convert(checkedAttendance.value);
+      axios
+        .post(`/api/CheckInAttendance/CheckOut`, dft)
+        .then((res) => {
+          let incomingRes = res.data.response;
+          console.log(incomingRes, "🙌❤🙌❤🙌")
+          if (incomingRes.toString().toLowerCase().includes("all")) {
+            toast.add({
+              severity: "success",
+              summary: "Confirmed",
+              detail: "Attendance(s) deleted successfully.",
+              life: 4000,
+            });
+        props.list = props.list.filter((item) => {
+              const y = checkedAttendance.value.findIndex(
+                (i) => i.id === item.id
+              );
+              if (y >= 0) return false;
+              return true;
+            });
+          } else {
+            let resArr = incomingRes.split("@");
+            toast.add({
+              severity: "info",
+              summary: "Confirmed",
+              detail: resArr[0],
+            });
+
+            if (resArr[1] !== "") {
+              if (!resArr[1].includes(",")) {
+                props.list = props.list.filter((item) => {
+                  return !item.id.includes(resArr[1]);
+                });
+              } else {
+                let IdArr = resArr[1].split(",");
+                props.list = props.list.filter((item) => {
+                  const y = IdArr.findIndex((i) => i === item.id);
+                  if (y >= 0) return false;
+                  return true;
+                });
+              }
+            }
+          }
+          checkedAttendance.value = [];
+        })
+        .catch((err) => {
+          stopProgressBar();
+          if (err.toString().toLowerCase().includes("network error")) {
+            toast.add({
+              severity: "warn",
+              summary: "Network Error",
+              detail: "Please ensure you have a strong internet connection",
+              life: 4000,
+            });
+          } else if (err.toString().toLowerCase().includes("timeout")) {
+            toast.add({
+              severity: "warn",
+              summary: "Request Delayed",
+              detail: "Request took too long to respond",
+              life: 4000,
+            });
+          } else {
+            toast.add({
+              severity: "warn",
+              summary: "Delete Failed",
+              detail: "Unable to delte first timer",
+              life: 4000,
+            });
+          }
+          console.log(err);
+        });
     };
 
     const deleteAttendance = (id, index) => {
@@ -423,6 +545,53 @@ export default {
     };
 
     const confirm = useConfirm();
+
+    const check1item = (ft) => {
+      const firstTimerIdx = checkedAttendance.value.findIndex(
+        (i) => i.id === ft.id
+      );
+      if (firstTimerIdx < 0) {
+        checkedAttendance.value.push(ft);
+      } else {
+        checkedAttendance.value.splice(firstTimerIdx, 1);
+      }
+    };
+    const modal = () => {
+      confirm.require({
+        message: "Are you sure you want to proceed?",
+        header: "Confirmation",
+        icon: "pi pi-exclamation-triangle",
+        acceptClass: "confirm-delete",
+        rejectClass: "cancel-delete",
+        accept: () => {
+          checkOutAttendance();
+        },
+        reject: () => {
+          toast.add({
+            severity: "info",
+            summary: "Rejected",
+            detail: "You have rejected",
+            life: 3000,
+          });
+        },
+      });
+    };
+
+    const markAllAttendance = () => {
+      if (checkedAttendance.value.length < props.list.length) {
+        props.list.forEach((i) => {
+          const ftInMarked = checkedAttendance.value.findIndex(
+            (f) => f.id === i.id
+          );
+          if (ftInMarked < 0) {
+            checkedAttendance.value.push(i);
+          }
+        });
+      } else {
+        checkedAttendance.value = [];
+      }
+    };
+
 
     const showConfirmModal = (id, index) => {
       confirm.require({
@@ -485,8 +654,13 @@ export default {
     };
 
     return {
+      modal,
+      checkOutAttendance,
       loading,
+      check1item,
+      markAllAttendance,
       expose,
+      checkedAttendance,
       toggleEllips,
       formatDate,
       showConfirmModal,

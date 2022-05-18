@@ -73,55 +73,73 @@
                   v-model="person.address"
                 />
               </div>
-              <div class="input-field" v-for="item in dynamicCustomFields" :key="item.id">
+              <!-- <div class="input-field"  v-for="item in dynamicCustomFields" :key="item.id">
                 <label for="" class="label">{{ item.label }}</label>
                 <input 
-                        v-if="item.controlType == 0"
-                        class=" input "
-                        type="text"
-                        aria-required=""
+                      v-if="item.controlType == 0"
+                      class=" input form-control "
+                      type="text"
+                      aria-required=""
+                      v-model="item.data"
+                  />
+              </div> -->
+              <!-- <div  > -->
+              <div  v-for="item in dynamicCustomFields" :key="item.id" style="margin: 0 10px 10px 10px;" class=" d-md-flex flex-wrap justify-content-md-end mt-3">
+                  <label for="" class="label">{{ item.label }}</label>
+                  <input 
+                          v-if="item.controlType == 0"
+                          class=" input form-control "
+                          type="text"
+                          aria-required=""
+                          v-model="item.data"
+                          
+                    />
+                  <div class="cstm-select" v-else-if="item.controlType == 1">
+                    <div style="width: 330px">
+                      <Dropdown
                         v-model="item.data"
-                        
+                        :options="item.parameterValues.split(',')"
+                        placeholder="Select option"
+                        style="width: 100%"
                       />
-                      <div class="cstm-select" v-else-if="item.controlType == 1">
-                        <div style="width: 330px">
-                          <Dropdown
-                            v-model="item.data"
-                            :options="item.parameterValues.split(',')"
-                            placeholder="Select option"
-                            style="width: 100%"
-                          />
-                        </div>
+                    </div>
+                  </div>
+                  <div class="cstm-select"  v-else-if="item.controlType == 2">
+                    <div style="width: 330px">
+                      <Checkbox  v-model="item.data" :binary="true"  style="width: 100%" />
+                    </div>
+                  </div>
+                   
+                    <div class="cstm-select">
+                      <div style="width: 330px">
+                        <Calendar v-if="item.controlType == 3" id="time24" v-model="item.data" :showTime="true" :showSeconds="true" style="width: 100%" />
                       </div>
-                    <Checkbox v-else-if="item.controlType == 2" v-model="item.data" :binary="true"/>
-                      <div class="cstm-select">
-                        <div style="width: 330px">
-                          <Calendar v-if="item.controlType == 3" id="time24" v-model="item.data" :showTime="true" :showSeconds="true" style="width: 100%" />
-                        </div>
-                      </div>
-                      <input 
-                        v-if="item.controlType == 4"
-                        class=" input "
-                        type="email"
-                        aria-required=""
-                        v-model="item.data"
-                        
-                      />
+                    </div>
                     <input 
-                        v-if="item.controlType == 5"
-                        class="input file-input"
-                        type="file"
-                        aria-required=""
-                        
-                      />
-                      <input
-                        v-if="item.controlType == 6"
-                        class="input"
-                        type="number"
-                        aria-required=""
-                        v-model="item.data"
-                      />
+                      v-if="item.controlType == 4"
+                      class=" input form-control "
+                      type="email"
+                      aria-required=""
+                      v-model="item.data"
+                      
+                    />
+                  <input 
+                      v-if="item.controlType == 5"
+                      class="input file-input"
+                      type="file"
+                      aria-required=""
+                      
+                    />
+                    <input
+                      v-if="item.controlType == 6"
+                      class="input"
+                      type="number"
+                      aria-required=""
+                      v-model="item.data"
+                    />
               </div>
+              <!-- </div> -->
+              
               <div class="input-field">
                 <label for=""></label>
                 <div class="status-n-gender">
