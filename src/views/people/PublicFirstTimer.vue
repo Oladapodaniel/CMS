@@ -112,14 +112,14 @@
                         
                       />
                       <input 
-                        v-if="item.controlType == 5"
+                        v-if="item.controlType == 6"
                         class="input"
                         type="file"
                         aria-required=""
                         
                       />
                       <input
-                        v-if="item.controlType == 6"
+                        v-if="item.controlType == 7"
                         class="input form-control"
                         :class="{ 'is-invalid' : !isPhoneValid }"
                         type="number"
