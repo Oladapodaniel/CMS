@@ -27,20 +27,38 @@ export default {
     components: { Dropdown, MultiSelect },
     props: [ "groups", "selectedActionIndex", "parameters", "selectGroupList" ],
     setup (props, { emit }) {
-        const data = reactive({ ActionType: 4, JSONActionParameters: { } })
+        const data = reactive([])
+        const actionType = reactive(4)
 
         const selectedGroups = ref([ ]);
         const removeOthers = ref([]);
         const handleSelectedGroups = (e) => {
             const allGroupsIndex = removeOthers.value[0].selectedGroups.findIndex(i => i.id === "00000000-0000-0000-0000-000000000000");
-            data.JSONActionParameters.groups = allGroupsIndex < 0 ? e.value.map(i => i.id).join(',') : "00000000-0000-0000-0000-000000000000";
-            emit('updateaction', data, props.selectedActionIndex);
+            
+             if (data[props.selectedActionIndex]) {
+                data[props.selectedActionIndex].JSONActionParameters.groups = allGroupsIndex < 0 ? e.value.map(i => i.id).join(',') : "00000000-0000-0000-0000-000000000000";
+            }   else {
+                data[props.selectedActionIndex] = new Object()
+                data[props.selectedActionIndex].JSONActionParameters = new Object()
+                data[props.selectedActionIndex].JSONActionParameters.groups = allGroupsIndex < 0 ? e.value.map(i => i.id).join(',') : "00000000-0000-0000-0000-000000000000";
+            }
+
+            // data.JSONActionParameters.groups = allGroupsIndex < 0 ? e.value.map(i => i.id).join(',') : "00000000-0000-0000-0000-000000000000";
+            emit('updateaction', data, props.selectedActionIndex, actionType);
         }
         const addOrRemove = ref('');
         const handleAddOrRemove = () => {
-            data.JSONActionParameters.addOrRemove = removeOthers.value[0].addOrRemove;
+            // data.JSONActionParameters.addOrRemove = removeOthers.value[0].addOrRemove;
             // data.JSONActionParameters.addOrRemove = e.value;
-            emit('updateaction', data, props.selectedActionIndex);
+            if (data[props.selectedActionIndex]) {
+                data[props.selectedActionIndex].JSONActionParameters.addOrRemove = removeOthers.value[0].addOrRemove;
+            }   else {
+                data[props.selectedActionIndex] = new Object()
+                data[props.selectedActionIndex].JSONActionParameters = new Object()
+                data[props.selectedActionIndex].JSONActionParameters.addOrRemove = removeOthers.value[0].addOrRemove;
+            }
+            
+            emit('updateaction', data, props.selectedActionIndex, actionType);
         }
         
         const parsedData = ref({ })
@@ -52,24 +70,28 @@ export default {
             }
 
             if (props.parameters.Action) {
-                const actn = JSON.parse(props.parameters.Action);
-                parsedData.value = JSON.parse(actn.JSONActionParameters);
+                // const actn = JSON.parse(props.parameters.Action);
+                // parsedData.value = JSON.parse(actn.JSONActionParameters);
 
-                selectedGroups.value = workflow_util.getGroups(parsedData.value.groups, props.groups);
-                data.JSONActionParameters.groups = parsedData.value.groups;
+                // selectedGroups.value = workflow_util.getGroups(parsedData.value.groups, props.groups);
+                // data.JSONActionParameters.groups = parsedData.value.groups;
 
-                addOrRemove.value = parsedData.value.addOrRemove;
-                data.JSONActionParameters.addOrRemove = parsedData.value.addOrRemove;
+                // addOrRemove.value = parsedData.value.addOrRemove;
+                // data.JSONActionParameters.addOrRemove = parsedData.value.addOrRemove;
             } else if (removeOthers.value && removeOthers.value[0].action && removeOthers.value[0].action.jsonActionParameters) {
             // } else if (props.parameters.action && props.parameters.action.jsonActionParameters) {
                 // parsedData.value = JSON.parse(props.parameters.action.jsonActionParameters);
                 parsedData.value = JSON.parse(removeOthers.value[0].action.jsonActionParameters);
                 
                 removeOthers.value[0].selectedGroups = workflow_util.getGroups(parsedData.value.groups, props.groups);
-                data.JSONActionParameters.groups = parsedData.value.groups;
+                data[props.selectedActionIndex] = new Object()
+                data[props.selectedActionIndex].JSONActionParameters = new Object()
+                data[props.selectedActionIndex].JSONActionParameters.groups = parsedData.value.groups;
 
                 removeOthers.value[0].addOrRemove = parsedData.value.addOrRemove;
-                data.JSONActionParameters.addOrRemove = parsedData.value.addOrRemove;
+                data[props.selectedActionIndex] = new Object()
+                data[props.selectedActionIndex].JSONActionParameters = new Object()
+                data[props.selectedActionIndex].JSONActionParameters.addOrRemove = parsedData.value.addOrRemove;
             }
         })
 
