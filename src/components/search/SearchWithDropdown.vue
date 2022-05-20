@@ -20,7 +20,7 @@
                                 <i class="pi pi-spin pi-spinner" style="fontSize: 1rem"></i>
                             </div>
                         </div>
-                        <a class="dropdown-item" v-for="member in memberSearchResults" :key="member.id" @click="selectMember(member)">{{ member.nameResult }}</a>
+                        <a class="dropdown-item c-pointer" v-for="member in memberSearchResults" :key="member.id" @click="selectMember(member)">{{ member.nameResult }}</a>
                     </div>
                 </div>
             </div>
