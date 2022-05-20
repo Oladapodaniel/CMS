@@ -74,7 +74,7 @@
                 <label for="" class="font-weight-600">And message</label>
             </div>
             <div class="col-md-12">
-                <textarea name="" id="" class="w-100" rows="3" v-model="item.message" @change="handleMessage"></textarea>
+                <textarea name="" id="" class="w-100 form-control" rows="3" v-model="item.message" @change="handleMessage"></textarea>
             </div>
         </div>
     </div>
@@ -288,7 +288,8 @@ export default {
                 })
             }
 
-            if (props.parameters.Action) {
+            // if (props.parameters.Action) {
+                // console.log('d11111111')
                 // const actn = JSON.parse(props.parameters.Action);
                 // parsedData.value = JSON.parse(actn.JSONActionParameters);
 
@@ -330,7 +331,8 @@ export default {
 
                 // message.value = parsedData.value.message;
                 // data.JSONActionParameters.message = parsedData.value.message;
-            } else if (removeOthers.value && removeOthers.value[0].action && removeOthers.value[0].action.jsonActionParameters) {
+            // } else 
+            if (removeOthers.value && removeOthers.value[0].action && removeOthers.value[0].action.jsonActionParameters) {
             // } else if (props.parameters.action && props.parameters.action.jsonActionParameters) {
                 // parsedData.value = JSON.parse(props.parameters.action.jsonActionParameters);
                 parsedData.value = JSON.parse(removeOthers.value[0].action.jsonActionParameters);
@@ -341,64 +343,42 @@ export default {
                 data[props.selectedActionIndex].JSONActionParameters.person = parsedData.value.person;
 
                 removeOthers.value[0].parent = parsedData.value.parent;
-                data[props.selectedActionIndex] = new Object()
-                data[props.selectedActionIndex].JSONActionParameters = new Object()
                 data[props.selectedActionIndex].JSONActionParameters.parent = parsedData.value.parent;
 
                 removeOthers.value[0].spouse = parsedData.value.spouse;
-                data[props.selectedActionIndex] = new Object()
-                data[props.selectedActionIndex].JSONActionParameters = new Object()
                 data[props.selectedActionIndex].JSONActionParameters.spouse = parsedData.value.spouse;
 
                 removeOthers.value[0].groupLeader = parsedData.value.groupLeader;
-                data[props.selectedActionIndex] = new Object()
-                data[props.selectedActionIndex].JSONActionParameters = new Object()
                 data[props.selectedActionIndex].JSONActionParameters.groupLeader = parsedData.value.groupLeader;
 
                 removeOthers.value[0].otherToContacts = parsedData.value.otherToContacts;
-                data[props.selectedActionIndex] = new Object()
-                data[props.selectedActionIndex].JSONActionParameters = new Object()
                 data[props.selectedActionIndex].JSONActionParameters.otherToContacts = parsedData.value.otherToContacts;
 
                 removeOthers.value[0].BCCParent = parsedData.value.BCCParent;
-                data[props.selectedActionIndex] = new Object()
-                data[props.selectedActionIndex].JSONActionParameters = new Object()
                 data[props.selectedActionIndex].JSONActionParameters.BCCParent = parsedData.value.BCCParent;
 
                 removeOthers.value[0].BCCSpouse = parsedData.value.BCCSpouse;
-                data[props.selectedActionIndex] = new Object()
-                data[props.selectedActionIndex].JSONActionParameters = new Object()
                 data[props.selectedActionIndex].JSONActionParameters.BCCSpouse = parsedData.value.BCCSpouse;
 
                 removeOthers.value[0].BCCGroupLeader = parsedData.value.BCCGroupLeader;
-                data[props.selectedActionIndex] = new Object()
-                data[props.selectedActionIndex].JSONActionParameters = new Object()
                 data[props.selectedActionIndex].JSONActionParameters.BCCGroupLeader = parsedData.value.BCCGroupLeader;
 
                 removeOthers.value[0].otherBBC = parsedData.value.otherBBC;
-                data[props.selectedActionIndex] = new Object()
-                data[props.selectedActionIndex].JSONActionParameters = new Object()
                 data[props.selectedActionIndex].JSONActionParameters.otherBBC = parsedData.value.otherBBC;
 
                 removeOthers.value[0].sendIndividualMails = parsedData.value.sendIndividualMails;
-                data[props.selectedActionIndex] = new Object()
-                data[props.selectedActionIndex].JSONActionParameters = new Object()
                 data[props.selectedActionIndex].JSONActionParameters.sendIndividualMails = parsedData.value.sendIndividualMails;
 
                 removeOthers.value[0].replyToEmailAddress = parsedData.value.replyToEmailAddress;
-                data[props.selectedActionIndex] = new Object()
-                data[props.selectedActionIndex].JSONActionParameters = new Object()
                 data[props.selectedActionIndex].JSONActionParameters.replyToEmailAddress = parsedData.value.replyToEmailAddress;
 
                 removeOthers.value[0].subject = parsedData.value.subject;
-                data[props.selectedActionIndex] = new Object()
-                data[props.selectedActionIndex].JSONActionParameters = new Object()
                 data[props.selectedActionIndex].JSONActionParameters.subject = parsedData.value.subject;
 
                 removeOthers.value[0].message = parsedData.value.message;
-                data[props.selectedActionIndex] = new Object()
-                data[props.selectedActionIndex].JSONActionParameters = new Object()
                 data[props.selectedActionIndex].JSONActionParameters.message = parsedData.value.message;
+
+                console.log(data, 'dataaaa')
             }
 
             

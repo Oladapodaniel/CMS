@@ -178,7 +178,7 @@
                                                 <div class="row h-100 scroll-div">
                                                     <div class="col-md-12">
                                                         <ul class="list-group w-100">
-                                                            <li class="list-group-item c-pointer py-4 border" 
+                                                            <li class="list-group-item c-pointer py-4 border"  style="border: 2px solid red"
                                                                 :class="{ 'bg-white': selectedAction && i.id === selectedAction.id, 'bg-transparent': selectedAction && i.id !== selectedAction.id, 'd-none': showActions }" 
                                                                 v-for="(i, j) in triggerActions" :key="j" @click="setActiveAction(i, j)"
                                                             >
@@ -613,7 +613,7 @@ export default {
                     selectedActionIndex.value = 0;
                 } else {
                     workflow.value.triggers[selectedTriggerIndex.value].triggerActions.push(triggerRecreate)
-                    const index = workflow.value.triggers[selectedTriggerIndex.value].triggerActions.findIndex(i => i.actionType === trigger.actionType);
+                    const index = workflow.value.triggers[selectedTriggerIndex.value].triggerActions.findIndex(i => i.id === triggerRecreate.id);
                     selectedActionIndex.value = index > 0 ? index : 0;
                 }
                 console.log(workflow.value)
@@ -672,7 +672,7 @@ export default {
             if (!workflow.value.triggers[selectedTriggerIndex.value] ||
                 !workflow.value.triggers[selectedTriggerIndex.value].triggerActions ||
                 workflow.value.triggers[selectedTriggerIndex.value].triggerActions.length === 0) return [ ];
-            return workflow.value.triggers[selectedTriggerIndex.value].triggerActions;
+            return workflow.value.triggers[selectedTriggerIndex.value].triggerActions.sort((a, b) => a.order - b.order)
         })
 
         const groups = ref([]);
