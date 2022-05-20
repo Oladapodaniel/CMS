@@ -588,7 +588,7 @@
         </div>
 
         <div class="row mt-3">
-          <div class="col-md-12 px-0">
+          <div class="col-md-12 px-0 d-flex justify-content-center my-3">
             <button
               class="default-btn border-0 primary-bg font-weight-700 text-white"
               @click="saveWorkflow"
