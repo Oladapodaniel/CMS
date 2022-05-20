@@ -86,15 +86,11 @@ import { watchEffect } from '@vue/runtime-core';
 export default {
     props: [ "selectedActionIndex", "parameters", "selectEmailList" ],
     setup (props, { emit }) {
-        // const data = reactive({ ActionType: 0, JSONActionParameters: { } })
         const data = reactive([])
         const actionType = reactive(0)
         const person = ref(false);
         const removeOthers = ref([])
         const handleSendPersonMail = () => {
-            // data.JSONActionParameters.person = removeOthers.value[0].person;
-            // data.JSONActionParameters.person = e.target.checked;
-
 
             if (data[props.selectedActionIndex]) {
                 data[props.selectedActionIndex].JSONActionParameters.person = removeOthers.value[0].person;
@@ -109,9 +105,6 @@ export default {
 
         const parent = ref(false);
         const handleSendPersonsParentMail = () => {
-            // data.JSONActionParameters.parent = removeOthers.value[0].parent;
-            // data.JSONActionParameters.parent = e.target.checked;
-
             if (data[props.selectedActionIndex]) {
                 console.log(data[props.selectedActionIndex])
                 data[props.selectedActionIndex].JSONActionParameters.parent = removeOthers.value[0].parent;
@@ -127,8 +120,6 @@ export default {
 
         const spouse = ref(false);
         const handleSendPersonsSpouseMail = () => {
-            // data.JSONActionParameters.spouse = removeOthers.value[0].spouse;
-            // data.JSONActionParameters.spouse = e.target.checked;
 
             if (data[props.selectedActionIndex]) {
                 data[props.selectedActionIndex].JSONActionParameters.spouse = removeOthers.value[0].spouse;
@@ -143,8 +134,6 @@ export default {
 
         const groupLeader = ref(false);
         const handleSendGroupLeaderMail = () => {
-            // data.JSONActionParameters.groupLeader = removeOthers.value[0].groupLeader;
-            // data.JSONActionParameters.groupLeader = e.target.checked;
             if (data[props.selectedActionIndex]) {
                 data[props.selectedActionIndex].JSONActionParameters.groupLeader = removeOthers.value[0].groupLeader;
             }   else {
@@ -158,8 +147,6 @@ export default {
 
         const otherToContacts = ref('');
         const handleOtherAddresses = () => {
-            // data.JSONActionParameters.otherToContacts = removeOthers.value[0].otherToContacts;
-            // data.JSONActionParameters.otherToContacts = e.target.value;
 
             if (data[props.selectedActionIndex]) {
                 data[props.selectedActionIndex].JSONActionParameters.otherToContacts = removeOthers.value[0].otherToContacts;
@@ -173,7 +160,7 @@ export default {
 
         const BCCParent = ref('');
         const handleParentBBC = () => {
-            // data.JSONActionParameters.BCCParent = removeOthers.value[0].parentBBC;
+
 
             if (data[props.selectedActionIndex]) {
                 data[props.selectedActionIndex].JSONActionParameters.BCCParent = removeOthers.value[0].parentBBC;
@@ -189,8 +176,6 @@ export default {
 
         const BCCSpouse = ref('');
         const handleSpouseBBC = () => {
-            // data.JSONActionParameters.BCCSpouse = removeOthers.value[0].spouseBBC;
-            // data.JSONActionParameters.BCCSpouse = e.target.checked;
 
             if (data[props.selectedActionIndex]) {
                 data[props.selectedActionIndex].JSONActionParameters.BCCSpouse = removeOthers.value[0].spouseBBC;
@@ -206,8 +191,6 @@ export default {
 
         const BCCGroupLeader = ref('');
         const handleBCCGroupLeader = () => {
-            // data.JSONActionParameters.BCCGroupLeader = removeOthers.value[0].BCCGroupLeader;
-            // data.JSONActionParameters.BCCGroupLeader = e.target.checked;
 
             if (data[props.selectedActionIndex]) {
                 data[props.selectedActionIndex].JSONActionParameters.BCCGroupLeader = removeOthers.value[0].BCCGroupLeader;
@@ -221,11 +204,6 @@ export default {
         }
 
         const otherBBC = ref('');
-        const handleOtherBBC = () => {
-            // data.JSONActionParameters.otherBBC = removeOthers.value[0].otherBBC;
-            // data.JSONActionParameters.otherBBC = e.target.checked;
-            // emit('updateaction', data, props.selectedActionIndex);
-        }
 
         const sendIndividualMails = ref(false);
         const handleSendIndividualMails = (e) => {
@@ -235,9 +213,6 @@ export default {
 
         const replyToEmailAddress = ref('');
         const handleReplyEmail = () => {
-            // data.JSONActionParameters.replyToEmailAddress = removeOthers.value[0].replyToEmailAddress;
-            // data.JSONActionParameters.replyToEmailAddress = e.target.value;
-
             if (data[props.selectedActionIndex]) {
                 data[props.selectedActionIndex].JSONActionParameters.replyToEmailAddress = removeOthers.value[0].replyToEmailAddress;
             }   else {
@@ -251,8 +226,6 @@ export default {
 
         const subject = ref('');
         const handleSubject = () => {
-            // data.JSONActionParameters.subject = removeOthers.value[0].subject;
-            // data.JSONActionParameters.subject = e.target.value;
 
             if (data[props.selectedActionIndex]) {
                 data[props.selectedActionIndex].JSONActionParameters.subject = removeOthers.value[0].subject;
@@ -266,8 +239,6 @@ export default {
         }
         const message = ref('');
         const handleMessage = () => {
-            // data.JSONActionParameters.message = removeOthers.value[0].message;
-            // data.JSONActionParameters.message = e.target.value;
             if (data[props.selectedActionIndex]) {
                 data[props.selectedActionIndex].JSONActionParameters.message = removeOthers.value[0].message;
             }   else {
@@ -287,54 +258,7 @@ export default {
                     return index == props.selectedActionIndex
                 })
             }
-
-            // if (props.parameters.Action) {
-                // console.log('d11111111')
-                // const actn = JSON.parse(props.parameters.Action);
-                // parsedData.value = JSON.parse(actn.JSONActionParameters);
-
-                // person.value = parsedData.value.person;
-                // data.JSONActionParameters.person = parsedData.value.person;
-
-                // parent.value = parsedData.value.parent;
-                // data.JSONActionParameters.parent = parsedData.value.parent;
-
-                // spouse.value = parsedData.value.spouse;
-                // data.JSONActionParameters.spouse = parsedData.value.spouse;
-
-                // groupLeader.value = parsedData.value.groupLeader;
-                // data.JSONActionParameters.groupLeader = parsedData.value.groupLeader;
-
-                // otherToContacts.value = parsedData.value.otherToContacts;
-                // data.JSONActionParameters.otherToContacts = parsedData.value.otherToContacts;
-
-                // BCCParent.value = parsedData.value.BCCParent;
-                // data.JSONActionParameters.BCCParent = parsedData.value.BCCParent;
-
-                // BCCSpouse.value = parsedData.value.BCCSpouse;
-                // data.JSONActionParameters.BCCSpouse = parsedData.value.BCCSpouse;
-
-                // BCCGroupLeader.value = parsedData.value.BCCGroupLeader;
-                // data.JSONActionParameters.BCCGroupLeader = parsedData.value.BCCGroupLeader;
-
-                // otherBBC.value = parsedData.value.otherBBC;
-                // data.JSONActionParameters.otherBBC = parsedData.value.otherBBC;
-
-                // sendIndividualMails.value = parsedData.value.sendIndividualMails;
-                // data.JSONActionParameters.sendIndividualMails = parsedData.value.sendIndividualMails;
-
-                // replyToEmailAddress.value = parsedData.value.replyToEmailAddress;
-                // data.JSONActionParameters.replyToEmailAddress = parsedData.value.replyToEmailAddress;
-
-                // subject.value = parsedData.value.subject;
-                // data.JSONActionParameters.subject = parsedData.value.subject;
-
-                // message.value = parsedData.value.message;
-                // data.JSONActionParameters.message = parsedData.value.message;
-            // } else 
             if (removeOthers.value && removeOthers.value[0].action && removeOthers.value[0].action.jsonActionParameters) {
-            // } else if (props.parameters.action && props.parameters.action.jsonActionParameters) {
-                // parsedData.value = JSON.parse(props.parameters.action.jsonActionParameters);
                 parsedData.value = JSON.parse(removeOthers.value[0].action.jsonActionParameters);
                 
                 removeOthers.value[0].person = parsedData.value.person;
@@ -401,7 +325,6 @@ export default {
             handleSpouseBBC,
             handleBCCGroupLeader,
             otherBBC,
-            handleOtherBBC,
             BCCGroupLeader,
             sendIndividualMails,
             handleSendIndividualMails,

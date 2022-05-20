@@ -15,10 +15,6 @@
         />
       </div>
 
-      <!-- <div class="col-md-12 my-3">
-                <label for="" class="font-weight-600">{{ addOrRemove }}</label>
-            </div> -->
-
       <div class="col-md-12 my-3">
         <MultiSelect
           :options="groups"
@@ -67,14 +63,10 @@ export default {
             ? e.value.map((i) => i.id).join(",")
             : "00000000-0000-0000-0000-000000000000";
       }
-
-      // data.JSONActionParameters.groups = allGroupsIndex < 0 ? e.value.map(i => i.id).join(',') : "00000000-0000-0000-0000-000000000000";
       emit("updateaction", data, props.selectedActionIndex, actionType);
     };
     const addOrRemove = ref("");
     const handleAddOrRemove = () => {
-      // data.JSONActionParameters.addOrRemove = removeOthers.value[0].addOrRemove;
-      // data.JSONActionParameters.addOrRemove = e.value;
       if (data[props.selectedActionIndex]) {
         data[props.selectedActionIndex].JSONActionParameters.addOrRemove =
           removeOthers.value[0].addOrRemove;
@@ -95,22 +87,11 @@ export default {
           return index == props.selectedActionIndex;
         });
       }
-
-    //   if (props.parameters.Action) {
-        // const actn = JSON.parse(props.parameters.Action);
-        // parsedData.value = JSON.parse(actn.JSONActionParameters);
-        // selectedGroups.value = workflow_util.getGroups(parsedData.value.groups, props.groups);
-        // data.JSONActionParameters.groups = parsedData.value.groups;
-        // addOrRemove.value = parsedData.value.addOrRemove;
-        // data.JSONActionParameters.addOrRemove = parsedData.value.addOrRemove;
-    //   } else 
       if (
         removeOthers.value &&
         removeOthers.value[0].action &&
         removeOthers.value[0].action.jsonActionParameters
       ) {
-        // } else if (props.parameters.action && props.parameters.action.jsonActionParameters) {
-        // parsedData.value = JSON.parse(props.parameters.action.jsonActionParameters);
         parsedData.value = JSON.parse(
           removeOthers.value[0].action.jsonActionParameters
         );
@@ -128,7 +109,6 @@ export default {
         data[props.selectedActionIndex].JSONActionParameters.addOrRemove =
           parsedData.value.addOrRemove;
       }
-      console.log('dataaa', data)
     });
 
     return {
