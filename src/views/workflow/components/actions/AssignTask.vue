@@ -36,16 +36,6 @@
             </div>
         </div>
 
-        <!-- <div class="row mt-4">
-            <div class="col-md-12 px-0">
-                <label for="" class="font-weight-600">Other Contacts</label>
-            </div>
-            <div class="col-md-12 px-0">
-                <input type="text" class="form-control" v-model="otherToContacts" @input="handleOtherToContacts">
-                <span class="small-text">Separate the addresses with comma</span>
-            </div>
-        </div> -->
-
         <div class="row mt-4 mb-5">
             <div class="col-md-12 px-0">
                 <label for="" class="font-weight-600">Instructions</label>
@@ -176,7 +166,7 @@ export default {
                 })
             }
 
-            if (props.parameters.Action) {
+            // if (props.parameters.Action) {
                 // const actn = JSON.parse(props.parameters.Action);
                 // parsedData.value = JSON.parse(actn.JSONActionParameters)
 
@@ -188,7 +178,8 @@ export default {
 
                 // instructions.value = parsedData.value.instructions;
                 // data.JSONActionParameters.instructions = parsedData.value.instructions;
-            } else if (removeOthers.value && removeOthers.value[0].action && removeOthers.value[0].action.jsonActionParameters) {
+            // } else 
+            if (removeOthers.value && removeOthers.value[0].action && removeOthers.value[0].action.jsonActionParameters) {
             // } else if (props.parameters.action && props.parameters.action.jsonActionParameters) {
                 // parsedData.value = JSON.parse(props.parameters.action.jsonActionParameters);
                 parsedData.value = JSON.parse(removeOthers.value[0].action.jsonActionParameters);
@@ -200,13 +191,9 @@ export default {
                 data[props.selectedActionIndex].JSONActionParameters.taskType = parsedData.value.taskType;
 
                 removeOthers.value[0].groupLeaders = parsedData.value.groupLeaders;
-                data[props.selectedActionIndex] = new Object()
-                data[props.selectedActionIndex].JSONActionParameters = new Object()
                 data[props.selectedActionIndex].JSONActionParameters.groupLeaders = parsedData.value.groupLeaders;
 
                 removeOthers.value[0].instructions = parsedData.value.instructions;
-                data[props.selectedActionIndex] = new Object()
-                data[props.selectedActionIndex].JSONActionParameters = new Object()
                 data[props.selectedActionIndex].JSONActionParameters.instructions = parsedData.value.instructions;
             }
         })
