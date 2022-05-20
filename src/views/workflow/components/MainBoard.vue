@@ -593,7 +593,7 @@
               class="default-btn border-0 primary-bg font-weight-700 text-white"
               @click="saveWorkflow"
             >
-              Save
+              <i class="pi pi-spin pi-spinner mr-1" v-if="loading"></i>Save
             </button>
           </div>
         </div>
@@ -658,7 +658,6 @@ export default {
     NewConvert,
     PledgeRedemption,
     PledgeCancellation,
-
     AdminMessage,
     AddNoteAction,
     TimerAction,
@@ -679,6 +678,7 @@ export default {
     const toast = useToast();
     const route = useRoute();
     const router = useRouter();
+    const loading = ref(false);
 
     const showTriggers = ref(false);
     const showActions = ref(false);
@@ -1037,10 +1037,12 @@ export default {
     };
 
     const saveNewWorkflow = async (reqBody) => {
+        loading.value = true
       try {
         const { status, response } = await workflow_service.saveWorkflow(
           reqBody
         );
+        loading.value = false
         if (status) {
           toast.add({
             severity: "success",
@@ -1064,15 +1066,18 @@ export default {
           });
         }
       } catch (error) {
+          loading.value = false
         console.log(error);
       }
     };
 
     const editWorkflow = async (reqBody) => {
+        loading.value = true
       try {
         const { status, response } = await workflow_service.editWorkflow(
           reqBody
         );
+        loading.value = false
         if (status) {
           toast.add({
             severity: "success",
@@ -1096,6 +1101,7 @@ export default {
           });
         }
       } catch (error) {
+          loading.value = false
         console.log(error);
       }
     };
@@ -1266,6 +1272,7 @@ export default {
       onDone,
       triggerDescriptions,
       allSelectedActions,
+      loading
     };
   },
 };
