@@ -39,18 +39,20 @@
             <div class="col-md-12">
                 <div class="dropdown">
             <button
-                class="btn btn-default dropdown-toggle small-text pl-md-0 border w-100"
+                class="btn btn-default border w-100 d-flex justify-content-between align-items-center"
                 type="button"
                 id="dropdownMenuButton"
                 data-toggle="dropdown"
                 aria-haspopup="true"
                 aria-expanded="false"
             >
-            <!-- @click="closeDropdownIfOpen" -->
+                <div>
                 {{ item.selectedSender && Object.keys(item.selectedSender).length > 0 ? item.selectedSender.mask : "Select Sender Id" }}
+                </div>
+                <i class="pi pi-chevron-down"></i>
             </button>
             <div
-                class="dropdown-menu w-100 pb-0"
+                class="dropdown-menu w-100 pb-0 overflow-card"
                 aria-labelledby="dropdownMenuButton"
             >
             <div class="px-2">
@@ -129,8 +131,7 @@ export default {
     props: [ "selectedActionIndex", "parameters", "selectSMSList" ],
     setup (props, { emit }) {
         const data = reactive([])
-
-         const actionType = reactive(1)
+        const actionType = reactive(1)
         // const data = reactive({ ActionType: 1, JSONActionParameters: { } })
         const person = ref(false);
         const searchSenderText = ref("")
@@ -144,7 +145,7 @@ export default {
         const removeOthers = ref([])
 
         const handleSendPersonMail = () => {
-            console.log(removeOthers.value[0], 'hereee')
+            
             // data[props.selectedActionIndex] = { JSONActionParameters: { } }
 
             // data[props.selectedActionIndex].person = removeOthers.value[0].person;
@@ -300,9 +301,16 @@ export default {
             }
 
 
-            if (props.parameters.Action) {
+            // if (props.parameters.Action) {
+                // console.log(props, 'hereeeeee')
                 // const actn = JSON.parse(props.parameters.Action);
                 // parsedData.value = JSON.parse(actn.JSONActionParameters);
+                // console.log(parsedData.value)
+                // removeOthers.value[0].person = parsedData.value.spouse
+                // data[props.selectedActionIndex] = new Object()
+                // data[props.selectedActionIndex].JSONActionParameters = new Object()
+                // data[props.selectedActionIndex].JSONActionParameters.person = parsedData.value.person;
+
 
                 // person.value = parsedData.value.person;
                 // data.JSONActionParameters.person = parsedData.value.person;
@@ -324,7 +332,9 @@ export default {
 
                 // message.value = parsedData.value.message;
                 // data.JSONActionParameters.message = parsedData.value.message;
-            } else if (removeOthers.value && removeOthers.value[0].action && removeOthers.value[0].action.jsonActionParameters) {
+            // } else
+            if (removeOthers.value && removeOthers.value[0].action && removeOthers.value[0].action.jsonActionParameters) {
+                console.log('here222222')
             // } else if (props.parameters.action && props.parameters.action.jsonActionParameters && removeOthers.value) {
                 // parsedData.value = JSON.parse(props.parameters.action.jsonActionParameters);
                 parsedData.value = JSON.parse(removeOthers.value[0].action.jsonActionParameters);
@@ -335,35 +345,26 @@ export default {
                 data[props.selectedActionIndex].JSONActionParameters.person = parsedData.value.person;
 
                 removeOthers.value[0].parent = parsedData.value.parent;
-                data[props.selectedActionIndex] = new Object()
-                data[props.selectedActionIndex].JSONActionParameters = new Object()
                 data[props.selectedActionIndex].JSONActionParameters.parent = parsedData.value.parent;
 
                 removeOthers.value[0].spouse = parsedData.value.spouse;
-                data[props.selectedActionIndex] = new Object()
-                data[props.selectedActionIndex].JSONActionParameters = new Object()
                 data[props.selectedActionIndex].JSONActionParameters.spouse = parsedData.value.spouse;
 
                 removeOthers.value[0].groupLeader = parsedData.value.groupLeader;
-                data[props.selectedActionIndex] = new Object()
-                data[props.selectedActionIndex].JSONActionParameters = new Object()
                 data[props.selectedActionIndex].JSONActionParameters.groupLeader = parsedData.value.groupLeader;
 
                 removeOthers.value[0].otherToContacts = parsedData.value.otherToContacts;
-                data[props.selectedActionIndex] = new Object()
-                data[props.selectedActionIndex].JSONActionParameters = new Object()
                 data[props.selectedActionIndex].JSONActionParameters.otherToContacts = parsedData.value.otherToContacts;
 
                 removeOthers.value[0].selectedSender = parsedData.value.subject;
-                data[props.selectedActionIndex] = new Object()
-                data[props.selectedActionIndex].JSONActionParameters = new Object()
                 data[props.selectedActionIndex].JSONActionParameters.subject = parsedData.value.subject;
 
                 removeOthers.value[0].message = parsedData.value.message;
-                data[props.selectedActionIndex] = new Object()
-                data[props.selectedActionIndex].JSONActionParameters = new Object()
                 data[props.selectedActionIndex].JSONActionParameters.message = parsedData.value.message;
+
                 console.log(removeOthers.value)
+                console.log(data, 'dataaaa')
+                // emit('updateaction', data, props.selectedActionIndex, actionType)
             }
 
             
@@ -519,6 +520,11 @@ export default {
 <style scoped>
     .max-height {
         max-height: calc(100vh - 300px);
+        overflow-y: scroll;
+    }
+
+    .overflow-card {
+        max-height: 300px;
         overflow-y: scroll;
     }
 </style>

@@ -719,6 +719,8 @@ export default {
                     })
                 }
             })
+            console.log(data)
+            console.log(workflow.value)
 
             const reqBody = { id: workflow.value.id, triggers: data, name: name.value, isActive: isActive.value };
             if (route.query.workflowId) {
@@ -813,7 +815,11 @@ export default {
                                     ...i,
                                     icon: actn ? actn.icon : '',
                                     name: actn.name ? actn.name : '',
-                                    actionType: i.action.actionType
+                                    actionType: i.action.actionType,
+                                    Action: JSON.stringify({
+                                        ActionType: i.action.actionType,
+                                        JSONActionParameters: i.action.jsonActionParameters
+                                    })
                                 }
                             })
                         }

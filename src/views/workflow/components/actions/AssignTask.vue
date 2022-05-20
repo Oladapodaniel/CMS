@@ -51,7 +51,7 @@
                 <label for="" class="font-weight-600">Instructions</label>
             </div>
             <div class="col-md-12 px-0">
-                <textarea name="" id="" class="w-100" rows="4" v-model="item.instructions" @change="handleInstructions"></textarea>
+                <textarea name="" id="" class="w-100 form-control" rows="4" v-model="item.instructions" @change="handleInstructions"></textarea>
             </div>
         </div>
     </div>
@@ -67,7 +67,9 @@ export default {
     components: { Dropdown, SearchWithDropdown },
     props: [ "selectedActionIndex", "parameters", "selectAssignTaskList" ],
     setup (props, { emit }) {
-        const data = reactive({ ActionType: 5, JSONActionParameters: { } })
+        // const data = reactive({ ActionType: 5, JSONActionParameters: { } })
+        const data = reactive([])
+        const actionType = reactive(5)
 
         const selectedTaskType = ref([ ]);
         const removeOthers = ref([
@@ -76,27 +78,62 @@ export default {
             }
         ]);
 
-        const handleSelectedTaskType = (e) => {
-            data.JSONActionParameters.taskType = e.value.index;
-            emit('updateaction', data, props.selectedActionIndex);
+        const handleSelectedTaskType = () => {
+
+            if (data[props.selectedActionIndex]) {
+                data[props.selectedActionIndex].JSONActionParameters.taskType = removeOthers.value[0].selectedTaskType.index;
+            }   else {
+                data[props.selectedActionIndex] = new Object()
+                data[props.selectedActionIndex].JSONActionParameters = new Object()
+                data[props.selectedActionIndex].JSONActionParameters.taskType = removeOthers.value[0].selectedTaskType.index;
+            }
+
+            // data.JSONActionParameters.taskType = e.value.index;
+            emit('updateaction', data, props.selectedActionIndex, actionType);
         }
 
         const groupLeaders = ref(false);
-        const handleGroupLeaders = (e) => {
-            data.JSONActionParameters.groupLeaders = e.target.checked;
-            emit('updateaction', data, props.selectedActionIndex);
+        const handleGroupLeaders = () => {
+
+            if (data[props.selectedActionIndex]) {
+                data[props.selectedActionIndex].JSONActionParameters.groupLeaders = removeOthers.value[0].groupLeaders;
+            }   else {
+                data[props.selectedActionIndex] = new Object()
+                data[props.selectedActionIndex].JSONActionParameters = new Object()
+                data[props.selectedActionIndex].JSONActionParameters.groupLeaders = removeOthers.value[0].groupLeaders;
+            }
+
+            // data.JSONActionParameters.groupLeaders = e.target.checked;
+            emit('updateaction', data, props.selectedActionIndex, actionType);
         }
 
         const otherToContacts = ref([ ]);
-        const handleOtherToContacts = (e) => {
-            data.JSONActionParameters.otherToContacts = e.target.value;
-            emit('updateaction', data, props.selectedActionIndex);
-        }
+        // const handleOtherToContacts = (e) => {
+
+        //     if (data[props.selectedActionIndex]) {
+        //         data[props.selectedActionIndex].JSONActionParameters.otherToContacts = removeOthers.value[0].otherToContacts;
+        //     }   else {
+        //         data[props.selectedActionIndex] = new Object()
+        //         data[props.selectedActionIndex].JSONActionParameters = new Object()
+        //         data[props.selectedActionIndex].JSONActionParameters.otherToContacts = removeOthers.value[0].otherToContacts;
+        //     }
+
+        //     // data.JSONActionParameters.otherToContacts = e.target.value;
+        //     emit('updateaction', data, props.selectedActionIndex);
+        // }
 
         const instructions = ref('');
-        const handleInstructions = (e) => {
-            data.JSONActionParameters.instructions = e.target.value;
-            emit('updateaction', data, props.selectedActionIndex);
+        const handleInstructions = () => {
+            // data.JSONActionParameters.instructions = e.target.value;
+            if (data[props.selectedActionIndex]) {
+                data[props.selectedActionIndex].JSONActionParameters.instructions = removeOthers.value[0].instructions;
+            }   else {
+                data[props.selectedActionIndex] = new Object()
+                data[props.selectedActionIndex].JSONActionParameters = new Object()
+                data[props.selectedActionIndex].JSONActionParameters.instructions = removeOthers.value[0].instructions;
+            }
+
+            emit('updateaction', data, props.selectedActionIndex, actionType);
         }
 
         const taskTypes = [
@@ -108,13 +145,23 @@ export default {
         const memberSelected = memberData => {
             if (memberData.member && removeOthers.value[0] && removeOthers.value[0].otherToContacts)
             removeOthers.value[0].otherToContacts.push(memberData.member);
-            data.JSONActionParameters.otherToContacts = removeOthers.value[0].otherToContacts && removeOthers.value[0].otherToContacts.length > 0 ? removeOthers.value[0].otherToContacts.map(i => i.id).join(',') : "";
-            console.log(removeOthers.value)
+
+            if (data[props.selectedActionIndex]) {
+                data[props.selectedActionIndex].JSONActionParameters.otherToContacts = removeOthers.value[0].otherToContacts && removeOthers.value[0].otherToContacts.length > 0 ? removeOthers.value[0].otherToContacts.map(i => i.id).join(',') : "";;
+            }   else {
+                data[props.selectedActionIndex] = new Object()
+                data[props.selectedActionIndex].JSONActionParameters = new Object()
+                data[props.selectedActionIndex].JSONActionParameters.otherToContacts = removeOthers.value[0].otherToContacts && removeOthers.value[0].otherToContacts.length > 0 ? removeOthers.value[0].otherToContacts.map(i => i.id).join(',') : "";;
+
+                emit('updateaction', data, props.selectedActionIndex, actionType);
+            }
+
+            // data.JSONActionParameters.otherToContacts = removeOthers.value[0].otherToContacts && removeOthers.value[0].otherToContacts.length > 0 ? removeOthers.value[0].otherToContacts.map(i => i.id).join(',') : "";
         }
 
         const removeContact = index => {
             otherToContacts.value.splice(index, 1);
-            data.JSONActionParameters.otherToContacts = otherToContacts.value.length > 0 ? otherToContacts.value.map(i => i.id).join(',') : "";
+            data[props.selectedActionIndex].JSONActionParameters.otherToContacts = otherToContacts.value.length > 0 ? otherToContacts.value.map(i => i.id).join(',') : "";
         }
 
         const parsedData = ref({ })
@@ -130,30 +177,37 @@ export default {
             }
 
             if (props.parameters.Action) {
-                const actn = JSON.parse(props.parameters.Action);
-                parsedData.value = JSON.parse(actn.JSONActionParameters)
+                // const actn = JSON.parse(props.parameters.Action);
+                // parsedData.value = JSON.parse(actn.JSONActionParameters)
 
-                selectedTaskType.value = taskTypes.find(i => i.index === parsedData.value.taskType);
-                data.JSONActionParameters.taskType = parsedData.value.taskType;
+                // selectedTaskType.value = taskTypes.find(i => i.index === parsedData.value.taskType);
+                // data.JSONActionParameters.taskType = parsedData.value.taskType;
 
-                groupLeaders.value = parsedData.value.groupLeaders;
-                data.JSONActionParameters.groupLeaders = parsedData.value.groupLeaders;
+                // groupLeaders.value = parsedData.value.groupLeaders;
+                // data.JSONActionParameters.groupLeaders = parsedData.value.groupLeaders;
 
-                instructions.value = parsedData.value.instructions;
-                data.JSONActionParameters.instructions = parsedData.value.instructions;
+                // instructions.value = parsedData.value.instructions;
+                // data.JSONActionParameters.instructions = parsedData.value.instructions;
             } else if (removeOthers.value && removeOthers.value[0].action && removeOthers.value[0].action.jsonActionParameters) {
             // } else if (props.parameters.action && props.parameters.action.jsonActionParameters) {
                 // parsedData.value = JSON.parse(props.parameters.action.jsonActionParameters);
                 parsedData.value = JSON.parse(removeOthers.value[0].action.jsonActionParameters);
                 
                 removeOthers.value[0].selectedTaskType = taskTypes.find(i => i.index === parsedData.value.taskType);
-                data.JSONActionParameters.taskType = parsedData.value.taskType;
+
+                data[props.selectedActionIndex] = new Object()
+                data[props.selectedActionIndex].JSONActionParameters = new Object()
+                data[props.selectedActionIndex].JSONActionParameters.taskType = parsedData.value.taskType;
 
                 removeOthers.value[0].groupLeaders = parsedData.value.groupLeaders;
-                data.JSONActionParameters.groupLeaders = parsedData.value.groupLeaders;
+                data[props.selectedActionIndex] = new Object()
+                data[props.selectedActionIndex].JSONActionParameters = new Object()
+                data[props.selectedActionIndex].JSONActionParameters.groupLeaders = parsedData.value.groupLeaders;
 
                 removeOthers.value[0].instructions = parsedData.value.instructions;
-                data.JSONActionParameters.instructions = parsedData.value.instructions;
+                data[props.selectedActionIndex] = new Object()
+                data[props.selectedActionIndex].JSONActionParameters = new Object()
+                data[props.selectedActionIndex].JSONActionParameters.instructions = parsedData.value.instructions;
             }
         })
 
@@ -163,7 +217,7 @@ export default {
             handleSelectedTaskType,
             handleGroupLeaders,
             groupLeaders,
-            handleOtherToContacts,
+            // handleOtherToContacts,
             otherToContacts,
             handleInstructions,
             instructions,
