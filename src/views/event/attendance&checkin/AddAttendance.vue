@@ -761,7 +761,7 @@ export default {
 
       let checkinEvent = {
           eventId: selectedEvent.value.id,
-          groupIDs: selectedGroups.value.map(i => i.id),
+          groupIDs: selectedGroups.value,
           eventDate: moment(new Date(selectedEvent.value.name.split("(")[1].split(")")[0]).toISOString()).format().split("T")[0],
         }
         slot.value ? checkinEvent.registrationSlot = slot.value : ""
@@ -791,7 +791,7 @@ export default {
       formData.append("isPaidFor", addPaidClass.value)
       amount.value ? formData.append("amount", amount.value) : ""
       selectedEvent.value ? formData.append("activityId", selectedEvent.value.id) : ""
-      selectedGroups.value ? formData.append("groupIDs", selectedGroups.value.map(i => i.id)) : ""
+      selectedGroups.value ? formData.append("groupIDs", selectedGroups.value) : ""
       formData.append("enableRegistration", true)
       slot.value ? formData.append("registrationSlot", slot.value) : ""
       regCutOffTimer.value ? formData.append("registrationCutOffTime", regCutOffTimer.value) : ""
@@ -981,11 +981,6 @@ export default {
           console.log(selectedBank.value)
         }
 
-        // watchEffect(() => {
-        //   if (store.getters["groups/checkedTreeGroup"]) {
-        //     selectedGroups.value = store.getters["groups/checkedTreeGroup"];
-        //   }
-        // });
 
         const setGroupProp = () => {
           hideDiv.value = !hideDiv.value;
@@ -1009,6 +1004,7 @@ export default {
         };
 
          const setFilterGroups = (payload) => {
+           console.log(payload)
             selectedGroups.value = payload
           }
 
