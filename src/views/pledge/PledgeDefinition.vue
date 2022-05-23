@@ -608,6 +608,7 @@ export default {
 .scroll{
     height: 10rem;
     overflow-y: scroll;
+    overflow-y: hidden;
 }
        .heading-text {
         font: normal normal 800 1.5rem Nunito sans;

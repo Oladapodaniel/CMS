@@ -595,6 +595,7 @@ export default {
 .scroll{
     height: 10rem;
     overflow-y: scroll;
+    overflow-y: hidden;
 }
 
 .roll3 {
