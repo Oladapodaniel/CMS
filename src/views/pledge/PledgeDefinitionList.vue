@@ -144,7 +144,7 @@
                     <div
                       class="small-text text-capitalize col-md-3 font-weight-bold"
                     >
-                      Amount
+                      Target Amount
                     </div>
                     
                     <div
@@ -194,7 +194,7 @@
                           <span
                             class=" text-dark font-weight-bold d-flex d-md-none fontIncrease"
                           style="font-size:15px">Date</span>
-                            {{ date(pledgelist.pledgeType.dateEntered) }}
+                            {{ date(pledgelist.dateEntered) }}
                         </p>
                       </div>
                       <!-- <div class="col-md-2 desc" @click="pledgeClick(pledgelist.id)">
@@ -210,7 +210,7 @@
                           <span
                             class=" text-dark font-weight-bold d-flex d-md-none fontIncrease"
                           style="font-size:15px">Contact</span>
-                            {{ pledgelist.person.firstName }} {{ pledgelist.person.lastName }}
+                            {{ pledgelist.name }}
                         </p>
                       </div>
                       <div class="col-md-3 desc" @click="pledgeClick(pledgelist.id)">
@@ -218,14 +218,14 @@
                           <span
                             class=" text-dark font-weight-bold d-flex d-md-none fontIncrease"
                           style="font-size:15px">Pledge </span>
-                            {{ pledgelist.pledgeType.name }}
+                            {{ pledgelist.name }}
                         </p>
                       </div>
                       <div class="col-md-3" @click="groupClick(group.id)">
                         <div class="d-flex small justify-content-between text-primary">
-                          <span class="text-dark font-weight-bold d-flex d-md-none fontIncrease" style="font-size:15px">Amount</span>
+                          <span class="text-dark font-weight-bold d-flex d-md-none fontIncrease" style="font-size:15px">Target Amount</span>
                             <div class="small-text text-right text-md-center">
-                              NGN {{Math.abs(pledgelist.pledgeType.totalTargetAmount).toLocaleString()}}.00
+                              NGN {{Math.abs(pledgelist.totalTargetAmount).toLocaleString()}}.00
                             </div>
                         </div>
                       </div>
@@ -270,7 +270,7 @@
                                   <a
                                     class="dropdown-item"
                                     ><router-link
-                                      :to="`/tenant/pledge/makepledge?id=${pledgelist.id}`"
+                                      :to="`/tenant/pledge/pledgedefinition?id=${pledgelist.id}`"
                                       class="text-color"
                                       >Edit</router-link
                                     ></a

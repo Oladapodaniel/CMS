@@ -9,57 +9,77 @@
                 <div class="col-md-8  ">
                     <div class="row  mt-3">
                          <div class="col-md-10  offset-md-2">
-                            <div class="row">
+                            <div class="row" v-for="(item, index) in newContribution.payment"  :key="index">
                                 <div class="col-12 col-sm-12 col-lg-4 text-sm-left text-lg-right align-self-center">
                                     <label for="" class="">Contribution <sup class="text-danger">*</sup> </label>
                                 </div>
                         
-                                <div class="col-12 col-sm-12 dropdown col-lg-8">
+                                <div class="col-12 col-sm-12  col-lg-8">
 
-                                    <div
-                                        class="dropdown-menu w-100"
-                                        aria-labelledby="dropdownMenuButton"
-                                    >
-                                        <div class="row w-100 mx-auto">
-                                        <div class="col-md-12">
-                                            <input type="text" class="form-control" placeholder="Select contribution item" />
-                                        </div>
-                                        </div>
+                                    <div class="col-12  col-md-12 col-lg-12 pl-md-0 pr-md-0 mt-2">
+                                        <button
 
-                                        <a class="dropdown-item font-weight-700 small-text py-2 c-pointer"
-                                        v-for="(item, indx) in contributionItems" :key="indx"
-                                        @click="selectContribution(item, index)"
-                                        >{{ item.name }}</a
+                                            class="default-btn w-100 text-left "
+                                            type="button"
+                                            style="
+                                            border-radius: 4px;
+                                            border: 1px solid #ced4da;
+                                            color: #6c757d;
+                                            "
+                                            id="dropdownMenuButton"
+                                            data-toggle="dropdown"
+                                            aria-haspopup="true"
+                                            aria-expanded="false"
                                         >
-                                        <a class="font-weight-bold small-text d-flex justify-content-center py-2 text-decoration-none primary-text" style="border-top: 1px solid #002044;color: #136ACD;" href="#"
-                                        type="button" data-toggle="modal" data-target="#exampleModalCenter"
+                                                {{ item && item.financialContribution ? item.financialContribution.name : "Select" }}
+                                            <i class="pi pi-chevron-down manual-dd-icon float-right pr-1"></i>
+                                        </button>
+                                        <div
+                                            class="dropdown-menu scroll  w-100"
+                                            aria-labelledby="dropdownMenuButton"
                                         >
-                                            <i class="pi pi-plus-circle mr-2 d-flex align-items-center" style="color: #136ACD;"></i>
-                                        Create new Contribution Item
-                                        </a>
+                                            <!-- <div class="row w-100 mx-auto">
+                                            <div class="col-md-12">
+                                                <input type="text" class="form-control" placeholder="Select contribution item" />
+                                            </div>
+                                            </div> -->
+
+                                            <a class="dropdown-item font-weight-700 small-text py-2 c-pointer"
+                                            v-for="(item, indx) in contributionItems" :key="indx"
+                                            @click="selectContribution(item, index)"
+                                            >{{ item.name }}</a
+                                            >
+                                            <a class="font-weight-bold small-text d-flex justify-content-center py-2 text-decoration-none primary-text" style="border-top: 1px solid #002044;color: #136ACD;" href="#"
+                                            type="button" data-toggle="modal" data-target="#exampleModalCenter"
+                                            >
+                                                <i class="pi pi-plus-circle mr-2 d-flex align-items-center" style="color: #136ACD;"></i>
+                                            Create new Contribution Item
+                                            </a>
+                                        </div>
                                     </div>
                                     <!-- <Dropdown v-model="selectedContribution" class="w-100 font-weight-normal" :options="contributionItems"  optionLabel="name" placeholder="Select Contribution" /> -->
                                 </div>
                             </div>
                         </div>
-                    </div> 
-                            <!-- Modal -->
-                    <div class="modal fade" id="exampleModalCenter" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
-                    <div class="modal-dialog modal-lg modal-dialog-centered" role="document">
-                        <div class="modal-content">
-                        <div class="modal-header" style="border: none">
-                            <h5 class="modal-title" id="exampleModalLongTitle">Add Contribution</h5>
-                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                            <span aria-hidden="true">&times;</span>
-                            </button>
-                        </div>
-                        <div class="modal-body">
-                            <ContributionItems @item-name="newConItems" />
-                        </div>
+                                 <!-- Modal -->
+                        <div class="modal fade" id="exampleModalCenter" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+                            <div class="modal-dialog modal-lg modal-dialog-centered" role="document">
+                                <div class="modal-content">
+                                <div class="modal-header" style="border: none">
+                                    <h5 class="modal-title" id="exampleModalLongTitle">Add Contribution</h5>
+                                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                    <span aria-hidden="true">&times;</span>
+                                    </button>
+                                </div>
+                                <div class="modal-body">
+                                    <ContributionItems @item-name="newConItems" />
+                                </div>
 
+                                </div>
+                            </div>
                         </div>
-                    </div>
-                    </div>
+                    </div> 
+                   
                     <div class="row my-1 mt-4">
                          <div class="col-md-10 offset-md-2">
                             <div class="row">
@@ -584,6 +604,10 @@ export default {
         width: 17px;
         margin-right: 0.5rem;
 
+}
+.scroll{
+    height: 10rem;
+    overflow-y: scroll;
 }
        .heading-text {
         font: normal normal 800 1.5rem Nunito sans;

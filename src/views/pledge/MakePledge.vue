@@ -131,8 +131,8 @@
             <div class="form">
                 <div class=" row second-form first-row">
                     <div class="col-12 col-sm-8 offset-sm-3 offset-md-0 col-md-4 dropdown-container">
-                            <div class="dropdown ofering col-12  "  >
-                                <button class=" pr-3 btn select-elem-con col-12 " type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                            <div class="dropdown select-elem-con ofering col-12  "  >
+                                <button class=" pr-3 btn  col-12  select-elem-con " type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                                     <span class="ofering">
                                         &nbsp;&nbsp;&nbsp; {{ selectedPledge.name ?  selectedPledge.name : 'Select Pledge' }}
                                     </span>
@@ -187,7 +187,7 @@
                             @click="selectPerson"
                             
                             >
-                            <span class="ofering">
+                            <span class="ofering small">
                                 &nbsp;&nbsp;&nbsp;{{ selectedContact.firstName && selectedContact.lastName || selectedContact.name ?  `${selectedContact.firstName ? selectedContact.firstName : ""} ${selectedContact.lastName ? selectedContact.lastName : "" } `   : 'Select Person' }}
                             </span>
                             <span>
@@ -227,12 +227,12 @@
                                 <input type="text"  class="form-control" />
                             </div>
                         
-                            <div class=" col-12 col-sm-5 ">
+                            <!-- <div class=" col-12 col-sm-5 ">
                                 <label for="preacher">Name</label>
                             </div>
                             <div class="col-12 col-sm-7 mt-2 ">
                                 <input type="text" class="form-control" />
-                            </div>
+                            </div> -->
                         </div>
                     </div>
                 </div>
@@ -699,7 +699,7 @@ export default {
 }
 
 .select-elem-con {
-  /* padding: 47px 0; */
+  padding: 47px 0;
   height: 150px;
   display: flex;
   align-items: center;
