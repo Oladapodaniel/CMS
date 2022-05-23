@@ -1,17 +1,28 @@
 <template>
     <div class="container-fluid">
         <div class="container-fluid">
-          <div class="row  yu mt-5">
-            <div class="col-md-4">
-              <div class="events">Pledge/Partnership Catergory</div>
+          <div class="row d-md-flex yu mt-5">
+            <div class="col-md-6 col-4">
+              <div class="events">Pledge</div>
               <Toast />
               <ConfirmDialog />
               
             </div>
-            <div class="col-md-8 d-flex head-button mt-2 my-1 link">
-              <router-link to="/tenant/pledge/pledgedefinitionlist">
-                <button class="default-btn mr-3">Pledge Category </button> 
-              </router-link>
+            <!-- <div class="col-md-6 col-8 d-flex justify-content-end mt-2 my-1 link">
+              <router-link
+                to="/tenant/pledge/pledgedefinition"
+                class="
+                  grey-border
+                  primary-btn
+                  default-btn
+                  primary-bg
+                  border-0
+                  small-screen
+                "
+                >Create Pledge</router-link
+              >
+            </div> -->
+            <div class="col-md-6 col-8 d-flex justify-content-end mt-2 my-1 link">
               <router-link
                 to="/tenant/pledge/makepledge"
                 class="
@@ -30,10 +41,9 @@
             </div>
             
           </div>
-          <div class="row table">
+          <!-- <div class="row table">
               <div class="col-12 mt-4 w-100">
                 <div class="row">
-                  <!-- {{pledgeSummary}} -->
                   <div class="col-12 col-md-4 ">
                     <div class="font-weight-bold col-12 ">Total Pledge</div>
                   </div>
@@ -46,15 +56,14 @@
                   </div>
                 </div>
               </div>
-          </div>
-          <div class="row">
+          </div> -->
+          <!-- <div class="row">
               <div class="col-12 mt-4 w-100">
                 <div class="row">
-                  <!-- {{pledgeSummary}} -->
                   <div class="col-12 col-md-3 ">
                   
                        <MembersSearch @memberdetail="chooseContact" />
-                        <!-- <Dropdown v-model="selectedPerson" class="w-100 font-weight-normal" :options="reOccuringRange"  optionLabel="name" placeholder="Select Person" /> -->
+                        <Dropdown v-model="selectedPerson" class="w-100 font-weight-normal" :options="reOccuringRange"  optionLabel="name" placeholder="Select Person" />
                   </div>
                   <div class="col-12 col-md-3 ">
                     <Dropdown v-model="selectedPledge" class="w-100 font-weight-normal" :options="allPledgeType"  optionLabel="name" placeholder="Pledge Type" />
@@ -68,16 +77,10 @@
                   </div>
                   <div class="col-12 col-md-2">
                     <button class=" default-bt "> Search...</button>
-                      <!-- <input
-                        type="text"
-                        class="w-100   form-control  "
-                        placeholder="Search..."
-                        v-model="searchText"
-                      /> -->
                   </div>
                 </div>
               </div>
-          </div>
+          </div> -->
           <div class="row table">
             <div class="col-12 px-0" id="table">
               <div class="top-con" id="ignore2">
@@ -294,7 +297,7 @@
 
 import { ref } from 'vue'
 import finish from '../../services/progressbar/progress';
-import MembersSearch from "../../components/membership/MembersSearch.vue";
+// import MembersSearch from "../../components/membership/MembersSearch.vue";
 import axios from "@/gateway/backendapi";
 import Dropdown from "primevue/dropdown";
 import { useToast } from "primevue/usetoast";
@@ -305,7 +308,7 @@ import monthDayYear from "../../services/dates/dateformatter";
 export default {
   components:{
     Dropdown,
-    MembersSearch,
+    // MembersSearch,
     InputText 
   },
     setup() {
@@ -334,29 +337,29 @@ export default {
             // console.log(payload, 'my allll')
          }
 
-        const getAllPledges = async () =>{
+        const getAllPledgeDefinition = async () =>{
                 try{
-                    const res = await axios.get('/api/Pledge/GetAllPledges')
-                    // const res = await axios.get('/api/Pledge/GetAllPledgeDefinitions')
+                    // const res = await axios.get('/api/Pledge/GetAllPledges')
+                    const res = await axios.get('/api/Pledge/GetAllPledgeDefinitions')
                     finish()
                     allPledgeList.value = res.data.returnObject
-                    allPledgeType.value = res.data.returnObject.map(i => ({
-                      name : i.pledgeType.name,
-                      id : i.pledgeType.id,
-                    })) 
-                    console.log(allPledgeType.value,'getPledgeList');
+                    // allPledgeType.value = res.data.returnObject.map(i => ({
+                    //   name : i.pledgeType.name,
+                    //   id : i.pledgeType.id,
+                    // })) 
+                    console.log(allPledgeList.value,'getPledgeDefinition');
                 }
                 catch (error){
                     console.log(error)
                 }
             }
-            getAllPledges()
+            getAllPledgeDefinition()
 
             const deletePledge = (id) => {
 
             axios
-                .delete(`/api/Pledge/DeletePledge?ID=${id}`)
-                // .delete(`/api/Pledge/DeletePledgeDefinition?ID=${id}`)
+                // .delete(`/api/Pledge/DeletePledge?ID=${id}`)
+                .delete(`/api/Pledge/DeletePledgeDefinition?ID=${id}`)
                 .then((res) => {
                 console.log(res);
                 toast.add({
@@ -435,7 +438,6 @@ export default {
 </script>
 
 <style scoped>
-
 .events {
   font: normal normal 800 29px Nunito sans;
 }
@@ -551,29 +553,10 @@ export default {
   background: #ffffff47 !important;
   min-width: 121px;
 }
-.head-button {
-  display: flex;
-  justify-content: flex-end;
-}
 
-@media (max-width: 577px) {
-  .head-button {
-    flex-direction: column;
-    align-items: center;
-  }
-}
-@media (max-width: 767px) {
 
-  .head-button {
-    display: flex;
-    justify-content: center
-  }
- }
 
- @media (max-width: 575px) {
-  .head-button {
-    display: flex;
-    justify-content: center;
-  }
-}
+/* .yu {
+  margin-top: 5rem !important;
+} */
 </style>

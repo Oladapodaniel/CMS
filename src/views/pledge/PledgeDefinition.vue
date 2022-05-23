@@ -7,7 +7,7 @@
             </div>
             <div class="row">
                 <div class="col-md-8  ">
-                     <div class="row  mt-3">
+                    <div class="row  mt-3">
                          <div class="col-md-10  offset-md-2">
                             <div class="row">
                                 <div class="col-12 col-sm-12 col-lg-4 text-sm-left text-lg-right align-self-center">
@@ -15,12 +15,40 @@
                                 </div>
                         
                                 <div class="col-12 col-sm-12  col-lg-8">
-                                    <Dropdown v-model="selectedContribution" class="w-100 font-weight-normal" :options="contributionItems"  optionLabel="name" placeholder="Select Contribution" />
+                                    <a class="dropdown-item font-weight-700 small-text py-2 c-pointer"
+                                        v-for="(item, indx) in contributionItems" :key="indx"
+                                        @click="selectContribution(item, index)"
+                                        >{{ item.name }}</a
+                                        >
+                                        <a class="font-weight-bold small-text d-flex justify-content-center py-2 text-decoration-none primary-text" style="border-top: 1px solid #002044;color: #136ACD;" href="#"
+                                        type="button" data-toggle="modal" data-target="#exampleModalCenter"
+                                        >
+                                            <i class="pi pi-plus-circle mr-2 d-flex align-items-center" style="color: #136ACD;"></i>
+                                        Create new Contribution Item
+                                    </a>
+                                    <!-- <Dropdown v-model="selectedContribution" class="w-100 font-weight-normal" :options="contributionItems"  optionLabel="name" placeholder="Select Contribution" /> -->
                                 </div>
                             </div>
                         </div>
                     </div> 
-                     <div class="row my-1 mt-4">
+                            <!-- Modal -->
+                    <div class="modal fade" id="exampleModalCenter" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+                    <div class="modal-dialog modal-lg modal-dialog-centered" role="document">
+                        <div class="modal-content">
+                        <div class="modal-header" style="border: none">
+                            <h5 class="modal-title" id="exampleModalLongTitle">Add Contribution</h5>
+                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                            </button>
+                        </div>
+                        <div class="modal-body">
+                            <ContributionItems @item-name="newConItems" />
+                        </div>
+
+                        </div>
+                    </div>
+                    </div>
+                    <div class="row my-1 mt-4">
                          <div class="col-md-10 offset-md-2">
                             <div class="row">
                                 <div class="col-12 col-sm-12 col-lg-4 text-sm-left text-lg-right align-self-center">
@@ -200,6 +228,7 @@ import { useToast } from "primevue/usetoast";
 import Calendar from "primevue/calendar";
 import finish from '../../services/progressbar/progress';
 import { useRoute } from "vue-router"
+import ContributionItems from "@/components/firsttimer/contributionItemModal";
 import router from '../../router';
 // import store from "../../store/store";
 import ToggleButton from '../donation/toggleButton.vue'
@@ -207,6 +236,7 @@ import CascadeSelect from 'primevue/cascadeselect';
 export default {
     components: {
         Dropdown,
+        ContributionItems,
         Calendar,
         InputText,
         CascadeSelect,
@@ -214,6 +244,7 @@ export default {
     },
     setup() {
         const toast = useToast()
+        const newContribution = ref({ payment: [{}]});
         const route = useRoute();
         const startDate = ref("");
         const endDate = ref("");
@@ -242,7 +273,9 @@ export default {
             {name: 'Daily'},
             {name: 'Weekly'},
             {name: 'Monthly'},
-            {name: 'Six weeks' }
+            {name: 'Quarterly' },
+            {name: 'Semiannually' },
+            {name: 'Annually' }
         ])
         // const ContributionType = ref([
         //     {name: 'Church Service'},
@@ -300,6 +333,18 @@ export default {
           }
         }
         getSinglePledgeDefinition()
+
+       const selectContribution = (item, index) => {
+            // if (newContribution.value.payment.findIndex(i => i.id === item.id) < 0) {
+                // newContribution.value.payment[newContribution.value.payment.length - 1] = item
+                newContribution.value.payment[index].financialContribution = item
+            // }   else {
+                console.log("Youve selected this, please select another")
+            // }
+            // newContribution.value.offType = e.target.innerText
+                // newContribution.value.payment.push(item)
+            console.log(item, index, newContribution.value.payment)
+        }
 
      const getContributionCategory = () => {
             let store = useStore()
@@ -482,6 +527,8 @@ export default {
 
         return {
             currencyList,
+            newContribution,
+            selectContribution,
             contributionItems,
             targetAmount,
             isNameValid,
