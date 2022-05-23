@@ -192,9 +192,7 @@
                     name=""
                     id=""
                     @change="check1item(item)"
-                    :checked="
-                      checkedAttendance.findIndex((i) => i.id === item.id) >= 0
-                    "
+                    :checked="checkedAttendance.findIndex((i) => i.id === item.id) >= 0"
                   />
               </div>
 
@@ -427,8 +425,9 @@ export default {
 
       const checkOutAttendance = () => {
       let dft = convert(checkedAttendance.value);
+      console.log(dft , "👌😂😂")
       axios
-        .post(`/api/CheckInAttendance/CheckOut`, dft)
+        .delete('/api/CheckInAttendance/Delete/Multiple', dft)
         .then((res) => {
           let incomingRes = res.data.response;
           console.log(incomingRes, "🙌❤🙌❤🙌")
