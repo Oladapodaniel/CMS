@@ -14,8 +14,19 @@
                                     <label for="" class="">Contribution <sup class="text-danger">*</sup> </label>
                                 </div>
                         
-                                <div class="col-12 col-sm-12  col-lg-8">
-                                    <a class="dropdown-item font-weight-700 small-text py-2 c-pointer"
+                                <div class="col-12 col-sm-12 dropdown col-lg-8">
+
+                                    <div
+                                        class="dropdown-menu w-100"
+                                        aria-labelledby="dropdownMenuButton"
+                                    >
+                                        <div class="row w-100 mx-auto">
+                                        <div class="col-md-12">
+                                            <input type="text" class="form-control" placeholder="Select contribution item" />
+                                        </div>
+                                        </div>
+
+                                        <a class="dropdown-item font-weight-700 small-text py-2 c-pointer"
                                         v-for="(item, indx) in contributionItems" :key="indx"
                                         @click="selectContribution(item, index)"
                                         >{{ item.name }}</a
@@ -25,7 +36,8 @@
                                         >
                                             <i class="pi pi-plus-circle mr-2 d-flex align-items-center" style="color: #136ACD;"></i>
                                         Create new Contribution Item
-                                    </a>
+                                        </a>
+                                    </div>
                                     <!-- <Dropdown v-model="selectedContribution" class="w-100 font-weight-normal" :options="contributionItems"  optionLabel="name" placeholder="Select Contribution" /> -->
                                 </div>
                             </div>
