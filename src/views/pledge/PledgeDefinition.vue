@@ -66,7 +66,7 @@
                         <div class="col-md-10 my-1 offset-md-2 mt-3 ">
                             <div class="row">
                                 <div class="col-12 col-sm-12 col-lg-4 text-sm-left text-lg-right align-self-center">
-                                    <label for="" class="">Total target amount <sup class="text-danger">*</sup> </label>
+                                    <label for="" class="">Target amount <sup class="text-danger">*</sup> </label>
                                 </div>
                         
                                 <div class="col-12 col-sm-12  col-lg-8 d-flex flex-wrap align-self-center">
