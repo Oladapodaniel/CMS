@@ -492,6 +492,7 @@
                               :selectedActionIndex="selectedActionIndex"
                               @updateaction="updateAction"
                               :parameters="getAction(6, selectedTriggerIndex)"
+                              :selectAdminMessageList="triggerActions"
                             />
                             <UpdateProgress
                               v-else-if="
