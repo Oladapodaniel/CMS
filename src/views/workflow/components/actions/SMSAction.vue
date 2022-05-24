@@ -379,7 +379,6 @@ export default {
 
     const parsedData = ref({});
     watchEffect(() => {
-      console.log(props.parameters, props.selectedActionIndex);
       if (props.selectSMSList) {
         removeOthers.value = props.selectSMSList.filter((i, index) => {
           return index == props.selectedActionIndex;

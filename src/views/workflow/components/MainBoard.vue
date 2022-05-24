@@ -476,7 +476,7 @@
                             />
                             <SMSAction
                               @updateaction="updateAction"
-                              v-if="
+                              v-else-if="
                                 selectedAction &&
                                 selectedAction.actionType === 1
                               "
@@ -485,7 +485,7 @@
                               :selectSMSList="triggerActions"
                             />
                             <AdminMessage
-                              v-if="
+                              v-else-if="
                                 selectedAction &&
                                 selectedAction.actionType === 6
                               "
@@ -508,6 +508,7 @@
                               :selectedActionIndex="selectedActionIndex"
                               @updateaction="updateAction"
                               :parameters="getAction(2, selectedTriggerIndex)"
+                              :selectVoiceList="triggerActions"
                             />
                             <TimerAction
                               v-else-if="
