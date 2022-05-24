@@ -289,7 +289,6 @@ export default {
                 let treeConstruted = unflatten(matchedValues)
                 const HQ = data.returnObject.find(i => i.parentID.includes('00000000-000'))
                 const belowHQ = data.returnObject[0]
-                console.log(belowHQ)
                 let treeData = {
                         key: '0',
                         type: 'person',
@@ -325,18 +324,14 @@ export default {
 
         const showBranchItem = async () => {
             if (!currentUserID.value) await  getCurrentUserID()
-             let y;
-                 
-             console.log(currentUserID, "userid");
              const x = branches.value.find(i => {
                  let a = i.children.find(j => j.id === currentUserID.value);
                  if (a) return i;
                 //  return i;
              })
-             console.log(x, "XXXXXXXXX");
              if (x)  {
                  selectedBranch.value = x.children.find(j => j.id === currentUserID.value)
-                 console.log(selectedBranch.value,'Ogbara');
+
              }
          }
          
@@ -346,7 +341,6 @@ export default {
                         axios
                         .get("/api/Branching/hierarchieswithbranches")
                         .then( async (res) => {
-                            console.log(res.data);
                             branches.value = res.data.returnObject.map(i => {
                                 return {
                                     label: i.name,
@@ -361,8 +355,6 @@ export default {
                             })
                             await showBranchItem()
                             getBranchAnalytics()
-
-                            console.log(branches.value, "ggggooostar")
                         })
                         .catch((err) => console.log(err));
                     } catch (err) {
@@ -419,10 +411,8 @@ export default {
         }
 
         const getBranchAnalytics = async() => {
-            console.log(selectedBranch.value)
             try {
                 let { data } = await axios.get(`/api/Branching/analytics?startDate=${selectedPeriod.value.code}&endDate=${new Date().toLocaleDateString("en-US")}&branchID=${selectedBranch.value.id}`)
-                console.log(data)
                 branchAnalytics.value = data
             }
             catch (err) {
