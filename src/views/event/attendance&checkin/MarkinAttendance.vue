@@ -189,7 +189,6 @@
                   :options="days"
                   style="width: 100%"
                   placeholder="Day"
-                  :disabled="person.personId"
                 />
               </div>
               <div class="col-6">
@@ -198,8 +197,6 @@
                   :options="months"
                   style="width: 100%"
                   placeholder="Month"
-                  :disabled="person.personId"
-                  
                 />
               </div>
               <!-- <div class="col-12 col-sm-4 mt-3 mt-sm-0">
