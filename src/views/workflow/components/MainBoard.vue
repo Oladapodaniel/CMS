@@ -544,6 +544,7 @@
                               :selectedActionIndex="selectedActionIndex"
                               @updateaction="updateAction"
                               :parameters="getAction(3, selectedTriggerIndex)"
+                              :selectWhatsappList="triggerActions"
                             />
                             <AddNoteAction
                               v-else-if="
