@@ -554,6 +554,7 @@
                               :selectedActionIndex="selectedActionIndex"
                               @updateaction="updateAction"
                               :parameters="getAction(10, selectedTriggerIndex)"
+                              :selectNoteList="triggerActions"
                             />
                             <!-- <AdminMessage v-else  /> -->
                           </div>
