@@ -161,51 +161,6 @@ export default {
                 });
             }
             
-            // if (props.parameters.Action) {
-            //     const actn = JSON.parse(props.parameters.Action);
-            //     parsedData.value = JSON.parse(actn.JSONActionParameters);
-
-            //     person.value = parsedData.value.person;
-            //     data.JSONActionParameters.person = parsedData.value.person;
-
-            //     parent.value = parsedData.value.parent;
-            //     data.JSONActionParameters.parent = parsedData.value.parent;
-
-            //     spouse.value = parsedData.value.spouse;
-            //     data.JSONActionParameters.spouse = parsedData.value.spouse;
-
-            //     groupLeader.value = parsedData.value.groupLeader;
-            //     data.JSONActionParameters.groupLeader = parsedData.value.groupLeader;
-
-            //     otherToContacts.value = parsedData.value.otherToContacts;
-            //     data.JSONActionParameters.otherToContacts = parsedData.value.otherToContacts;
-
-            //     voiceURL.value = parsedData.value.voiceUrl;
-            //     data.JSONActionParameters.voiceUrl = parsedData.value.voiceUrl;
-
-            // } else 
-
-            // if (props.parameters.action && props.parameters.action.jsonActionParameters) {
-            //     parsedData.value = JSON.parse(props.parameters.action.jsonActionParameters);
-                
-            //     person.value = parsedData.value.person;
-            //     data.JSONActionParameters.person = parsedData.value.person;
-
-            //     parent.value = parsedData.value.parent;
-            //     data.JSONActionParameters.parent = parsedData.value.parent;
-
-            //     spouse.value = parsedData.value.spouse;
-            //     data.JSONActionParameters.spouse = parsedData.value.spouse;
-
-            //     groupLeader.value = parsedData.value.groupLeader;
-            //     data.JSONActionParameters.groupLeader = parsedData.value.groupLeader;
-
-            //     otherToContacts.value = parsedData.value.otherToContacts;
-            //     data.JSONActionParameters.otherToContacts = parsedData.value.otherToContacts;
-
-            //     voiceURL.value = parsedData.value.voiceUrl;
-            //     data.JSONActionParameters.voiceUrl = parsedData.value.voiceUrl;
-            // }
             if (
                 removeOthers.value &&
                 removeOthers.value[0].action &&

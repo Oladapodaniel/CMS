@@ -528,6 +528,7 @@
                               :selectedActionIndex="selectedActionIndex"
                               @updateaction="updateAction"
                               :parameters="getAction(9, selectedTriggerIndex)"
+                              :selectMarkPresentList="triggerActions"
                             />
                             <Interactions
                               v-else-if="
