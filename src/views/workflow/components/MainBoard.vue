@@ -476,7 +476,7 @@
                             />
                             <SMSAction
                               @updateaction="updateAction"
-                              v-if="
+                              v-else-if="
                                 selectedAction &&
                                 selectedAction.actionType === 1
                               "
@@ -485,13 +485,14 @@
                               :selectSMSList="triggerActions"
                             />
                             <AdminMessage
-                              v-if="
+                              v-else-if="
                                 selectedAction &&
                                 selectedAction.actionType === 6
                               "
                               :selectedActionIndex="selectedActionIndex"
                               @updateaction="updateAction"
                               :parameters="getAction(6, selectedTriggerIndex)"
+                              :selectAdminMessageList="triggerActions"
                             />
                             <UpdateProgress
                               v-else-if="
@@ -507,6 +508,7 @@
                               :selectedActionIndex="selectedActionIndex"
                               @updateaction="updateAction"
                               :parameters="getAction(2, selectedTriggerIndex)"
+                              :selectVoiceList="triggerActions"
                             />
                             <TimerAction
                               v-else-if="
@@ -526,6 +528,7 @@
                               :selectedActionIndex="selectedActionIndex"
                               @updateaction="updateAction"
                               :parameters="getAction(9, selectedTriggerIndex)"
+                              :selectMarkPresentList="triggerActions"
                             />
                             <Interactions
                               v-else-if="
@@ -541,6 +544,7 @@
                               :selectedActionIndex="selectedActionIndex"
                               @updateaction="updateAction"
                               :parameters="getAction(3, selectedTriggerIndex)"
+                              :selectWhatsappList="triggerActions"
                             />
                             <AddNoteAction
                               v-else-if="
@@ -550,6 +554,7 @@
                               :selectedActionIndex="selectedActionIndex"
                               @updateaction="updateAction"
                               :parameters="getAction(10, selectedTriggerIndex)"
+                              :selectNoteList="triggerActions"
                             />
                             <!-- <AdminMessage v-else  /> -->
                           </div>
@@ -588,12 +593,12 @@
         </div>
 
         <div class="row mt-3">
-          <div class="col-md-12 px-0">
+          <div class="col-md-12 px-0 d-flex justify-content-center my-3">
             <button
               class="default-btn border-0 primary-bg font-weight-700 text-white"
               @click="saveWorkflow"
             >
-              Save
+              <i class="pi pi-spin pi-spinner mr-1" v-if="loading"></i>Save
             </button>
           </div>
         </div>
@@ -658,7 +663,6 @@ export default {
     NewConvert,
     PledgeRedemption,
     PledgeCancellation,
-
     AdminMessage,
     AddNoteAction,
     TimerAction,
@@ -679,6 +683,7 @@ export default {
     const toast = useToast();
     const route = useRoute();
     const router = useRouter();
+    const loading = ref(false);
 
     const showTriggers = ref(false);
     const showActions = ref(false);
@@ -1037,10 +1042,12 @@ export default {
     };
 
     const saveNewWorkflow = async (reqBody) => {
+        loading.value = true
       try {
         const { status, response } = await workflow_service.saveWorkflow(
           reqBody
         );
+        loading.value = false
         if (status) {
           toast.add({
             severity: "success",
@@ -1064,15 +1071,18 @@ export default {
           });
         }
       } catch (error) {
+          loading.value = false
         console.log(error);
       }
     };
 
     const editWorkflow = async (reqBody) => {
+        loading.value = true
       try {
         const { status, response } = await workflow_service.editWorkflow(
           reqBody
         );
+        loading.value = false
         if (status) {
           toast.add({
             severity: "success",
@@ -1096,6 +1106,7 @@ export default {
           });
         }
       } catch (error) {
+          loading.value = false
         console.log(error);
       }
     };
@@ -1266,6 +1277,7 @@ export default {
       onDone,
       triggerDescriptions,
       allSelectedActions,
+      loading
     };
   },
 };

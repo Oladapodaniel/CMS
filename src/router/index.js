@@ -642,7 +642,7 @@ const routes = [
                 path: 'attendancecheckin',
                 name: 'Attendance',
                 component: () =>
-                    import ( /* webpackChunkName: "defaultmessage" */ '@/views/event/attendance&checkin/Attendance'),
+                    import ( /* webpackChunkName: "attendancecheckin" */ '@/views/event/attendance&checkin/Attendance'),
                 children: [{
                         path: '',
                         name: 'AttendanceList',
@@ -1961,6 +1961,16 @@ router.beforeEach((to, from, next) => {
         .forEach(tag => document.head.appendChild(tag));
 
 })
+
+router.onError((error) => {
+    const pattern =/Loading chunk (\d)+ failed/g;
+    const isChunkLoadFailed = error.message.match(pattern);
+    const targetPath = router.history.pending.fullPath;
+    console.log(error, 'router error')
+    if (isChunkLoadFailed) {
+      router.replace(targetPath);
+    }
+  });
 
 
 

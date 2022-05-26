@@ -351,10 +351,10 @@ export default {
     };
 
     const subject = ref("");
-    const handleSubject = (subject) => {
+    const handleSubject = () => {
       if (data[props.selectedActionIndex]) {
         data[props.selectedActionIndex].JSONActionParameters.subject =
-          removeOthers.value[0].selectedSender;
+          removeOthers.value[0].selectedSender.mask;
       } else {
         data[props.selectedActionIndex] = new Object();
         data[props.selectedActionIndex].JSONActionParameters = new Object();
@@ -379,7 +379,6 @@ export default {
 
     const parsedData = ref({});
     watchEffect(() => {
-      console.log(props.parameters, props.selectedActionIndex);
       if (props.selectSMSList) {
         removeOthers.value = props.selectSMSList.filter((i, index) => {
           return index == props.selectedActionIndex;
@@ -464,7 +463,7 @@ export default {
       // subject.value = item.mask
       // selectedSender.value = item
       removeOthers.value[0].selectedSender = item;
-      handleSubject(item.mask);
+      handleSubject();
     };
 
     const validateSenderId = (e) => {

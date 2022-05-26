@@ -16,7 +16,7 @@
       <div class="col-md-5 mb-3">
         <h5 class="font-weight-bold text-center">ATTENDANCE & CHECKIN</h5>
         <p class="text-center font-weight-500">
-          {{ eventData.name }} - {{ eventData.date }}
+          {{ eventData.fullEventName }} - {{ dateFormatter.monthDayTime(eventData.eventDate) }}
         </p>
       </div>
     </div>
@@ -43,7 +43,13 @@
       </div>
     </div>
 
-    <div class="row">
+    <div class="row d-flex justify-content-center text-center"  v-if="eventData && Object.keys(eventData).length > 0 && eventData.checkInCutOffTime && new Date().toISOString() >= new Date(eventData.checkInCutOffTime).toISOString()">
+      <div class="mb-3 font-weight-700">Sorry, this event is closed, if you intend to check yourself in to a future or ongoing event, kindly request for the event checkin link from your church admin.</div>
+      <img src="../../../assets/closed_event.jpeg" class="closed_event"/>
+    </div>
+    
+    
+    <div class="row" v-if="!eventData.checkInCutOffTime || (eventData && eventData.checkInCutOffTime && Object.keys(eventData).length > 0 && new Date().toISOString() < new Date(eventData.checkInCutOffTime).toISOString())">
       <div
         class="col-md-3 d-md-flex align-items-center justify-content-end text-md-right mt-1 font-weight-700"
       >
@@ -189,7 +195,6 @@
                   :options="days"
                   style="width: 100%"
                   placeholder="Day"
-                  :disabled="person.personId"
                 />
               </div>
               <div class="col-6">
@@ -198,8 +203,6 @@
                   :options="months"
                   style="width: 100%"
                   placeholder="Month"
-                  :disabled="person.personId"
-                  
                 />
               </div>
               <!-- <div class="col-12 col-sm-4 mt-3 mt-sm-0">
@@ -392,7 +395,8 @@ export default {
           if (person.value.address) {
             person.value.address = formatString(person.value.address, 2, 4);
           }
-          populateInputfields(person.value);
+          // populateInputfields(person.value);
+          // person.value = obj;
 
           if (person.value) appltoggle.value = true;
         })
@@ -433,11 +437,11 @@ export default {
     };
     //end of searching through the attendance details
 
-    // populate input fields
-    const populateInputfields = (obj) => {
-      person.value = obj;
-      console.log(person);
-    };
+    // // populate input fields
+    // const populateInputfields = (obj) => {
+    //   person.value = obj;
+    //   console.log(person);
+    // };
 
     const disabled = computed(() => {
       if (person.value.personId) return true;
@@ -556,8 +560,8 @@ export default {
             .params.code}`
         )
         .then((res) => {
-          eventData.value.name = res.data.fullEventName;
-          eventData.value.date = dateFormatter.monthDayTime(res.data.eventDate);
+          eventData.value = res.data;
+          // eventData.value.date = dateFormatter.monthDayTime(res.data.eventDate);
 
           console.log(eventData);
           console.log(res, "response");
@@ -618,7 +622,7 @@ export default {
     return {
       toggleBase,
       checkCharacter,
-      populateInputfields,
+      // populateInputfields,
       InputText,
       appltoggle,
       names,
@@ -688,5 +692,11 @@ export default {
   display: flex;
   justify-content: center;
   align-items: center;
+}
+
+.closed_event {
+  width: 100%;
+  height: 375px;
+  object-fit: cover;
 }
 </style>

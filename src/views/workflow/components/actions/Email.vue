@@ -278,10 +278,10 @@ export default {
                 removeOthers.value[0].otherToContacts = parsedData.value.otherToContacts;
                 data[props.selectedActionIndex].JSONActionParameters.otherToContacts = parsedData.value.otherToContacts;
 
-                removeOthers.value[0].BCCParent = parsedData.value.BCCParent;
+                removeOthers.value[0].parentBBC = parsedData.value.BCCParent;
                 data[props.selectedActionIndex].JSONActionParameters.BCCParent = parsedData.value.BCCParent;
 
-                removeOthers.value[0].BCCSpouse = parsedData.value.BCCSpouse;
+                removeOthers.value[0].spouseBBC = parsedData.value.BCCSpouse;
                 data[props.selectedActionIndex].JSONActionParameters.BCCSpouse = parsedData.value.BCCSpouse;
 
                 removeOthers.value[0].BCCGroupLeader = parsedData.value.BCCGroupLeader;
@@ -302,7 +302,7 @@ export default {
                 removeOthers.value[0].message = parsedData.value.message;
                 data[props.selectedActionIndex].JSONActionParameters.message = parsedData.value.message;
 
-                console.log(data, 'dataaaa')
+                console.log(parsedData.value, 'dataaaa')
             }
 
             
