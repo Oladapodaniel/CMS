@@ -27,7 +27,7 @@
       </div>
     </div>
 
-    <div class="row d-flex justify-content-center" v-if="new Date().toISOString() >= new Date(fullEventData.registrationCutOffTime).toISOString()">
+    <div class="row d-flex justify-content-center" v-if="fullEventData.registrationCutOffTime && new Date().toISOString() >= new Date(fullEventData.registrationCutOffTime).toISOString()">
       <img src="../../assets/registration_closed.jpeg" class="event-closed"/>
     </div>
 
@@ -53,7 +53,7 @@
       </div>
     </div>
 
-    <div class="row" v-if="new Date().toISOString() <= new Date(fullEventData.registrationCutOffTime).toISOString()">
+    <div class="row" v-if="!fullEventData.registrationCutOffTime || new Date().toISOString() <= new Date(fullEventData.registrationCutOffTime).toISOString()">
       <div
         class="col-md-3 d-md-flex align-items-center justify-content-end text-md-right mt-1 font-weight-700"
       >
