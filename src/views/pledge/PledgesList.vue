@@ -2,13 +2,13 @@
     <div class="container-fluid">
         <div class="container-fluid">
           <div class="row  yu mt-5">
-            <div class="col-md-4">
-              <div class="events">Pledge/Partnership Catergory</div>
+            <div class="col-md-6">
+              <div class="events">Pledge/Partnership Category</div>
               <Toast />
               <ConfirmDialog />
               
             </div>
-            <div class="col-md-8 d-flex head-button mt-2 my-1 link">
+            <div class="col-md-6 d-flex head-button mt-2 my-1 link">
               <router-link to="/tenant/pledge/pledgedefinitionlist">
                 <button class="default-btn mr-3">Pledge Category </button> 
               </router-link>
@@ -60,14 +60,16 @@
                     <Dropdown v-model="selectedPledge" class="w-100 font-weight-normal" :options="allPledgeType"  optionLabel="name" placeholder="Pledge Type" />
                   </div>
                   <div class="col-12 col-md-2 ">
-                    <input type="text" v-model="amountFrom" class="form-control" placeholder="From" />
+                     <Calendar dateFormat="dd/mm/yy" placeholder="Start-date"  class="w-100" id="icon" v-model="startDate" :showIcon="true" />
+                    <!-- <input type="text" v-model="amountFrom" class="form-control" placeholder="From" /> -->
                   </div>
 
                   <div class="col-12 col-md-2">
-                     <input type="text" v-model="amountTo" class="form-control" placeholder="To" />
+                    <Calendar dateFormat="dd/mm/yy" placeholder="End-date"  class="w-100" id="icon" v-model="endDate" :showIcon="true" />
+                     <!-- <input type="text" v-model="amountTo" class="form-control" placeholder="To" /> -->
                   </div>
                   <div class="col-12 col-md-2">
-                    <button class=" default-bt "> Search...</button>
+                    <button class=" btn default-bt primary-pg "> Search...</button>
                       <!-- <input
                         type="text"
                         class="w-100   form-control  "
@@ -296,6 +298,7 @@ import { ref } from 'vue'
 import finish from '../../services/progressbar/progress';
 import MembersSearch from "../../components/membership/MembersSearch.vue";
 import axios from "@/gateway/backendapi";
+import Calendar from "primevue/calendar";
 import Dropdown from "primevue/dropdown";
 import { useToast } from "primevue/usetoast";
 import InputText from "primevue/inputtext";
@@ -305,6 +308,7 @@ import monthDayYear from "../../services/dates/dateformatter";
 export default {
   components:{
     Dropdown,
+    Calendar,
     MembersSearch,
     InputText 
   },
@@ -313,6 +317,9 @@ export default {
       
 
         const toast = useToast()
+        const startDate = ref("");
+        const endDate = ref("");
+        const Address = ref('');
         const loading = ref(false)
         const searchText = ref('')
         const searchIsVisible = ref('')
@@ -417,6 +424,8 @@ export default {
 
             return {
                 allPledgeList,
+                startDate,
+                endDate,
                 chooseContact,
                 showConfirmModal,
                 deletePledge,

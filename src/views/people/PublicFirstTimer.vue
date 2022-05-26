@@ -241,11 +241,13 @@
         <div class="row">
             <div class="col-12 mt-3">
                   <div class="mt-2">
-                <div class="submit-div">
+                <div class="d-flex justify-content-center">
                     <!-- <button class="default-btn cancel-btn btn ml-sm-3 mt-3" @click.prevent="onCancel">
                     Cancel
                     </button> -->
-                    <button class="ml-sm-3 mt-3  submit-btn text-white btn" @click.prevent="onSubmit">
+                    <button class="primary-bg px-md-4 outline-none default-btn text-white border-0 " @click.prevent="onSubmit"
+                    :disabled="loading || !firstTimersObj.firstName" >
+                      <i class="pi pi-spin pi-spinner text-white  mr-2" v-if="loading"></i>
                     Save
                     </button>
                 </div>
@@ -448,7 +450,7 @@ export default {
       }
       firstTimersObj.value.tenantId = route.params.id
 
-
+        loading.value = true;
         axios
           .post("/api/PublicContents/FirstTimer", firstTimersObj.value)
           .then((res) => {
@@ -468,11 +470,11 @@ export default {
                     "success"
                 );
 
-                firstTimersObj.value = '';
-                selectedEventAttended.value = '';
-                selectedMaritalStatus.value = '';
-                selectedGender.value = '';
-                birthMonth.value = '';
+                firstTimersObj.value = {};
+                selectedEventAttended.value = {};
+                selectedMaritalStatus.value = {};
+                selectedGender.value = {};
+                birthMonth.value = {};
               
     
           })
@@ -911,6 +913,9 @@ export default {
 * {
   box-sizing: border-box;
   color: #02172e;
+}
+.contn-btn:disabled {
+  opacity: 0.3;
 }
 
 .show-tab {

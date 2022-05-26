@@ -3,7 +3,7 @@
         <div class="container-fluid">
           <div class="row d-md-flex yu mt-5">
             <div class="col-md-6 col-4">
-              <div class="events">Pledge</div>
+              <div class="events">Pledge Category</div>
               <Toast />
               <ConfirmDialog />
               
@@ -24,7 +24,7 @@
             </div> -->
             <div class="col-md-6 col-8 d-flex justify-content-end mt-2 my-1 link">
               <router-link
-                to="/tenant/pledge/makepledge"
+                to="/tenant/pledge/pledgedefinition"
                 class="
                   grey-border
                   primary-btn
@@ -33,7 +33,7 @@
                   border-0
                   small-screen
                 "
-                >Make Pledge</router-link
+                >Create New </router-link
               >
             </div>
             <div class="col-md-12 px-0">

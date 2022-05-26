@@ -129,84 +129,93 @@
         </div> -->
         <div class="container">
             <div class="form">
-                <div class=" row second-form first-row">
-                    <div class="col-12 col-sm-8 offset-sm-3 offset-md-0 col-md-4 dropdown-container">
-                            <div class="dropdown select-elem-con ofering col-12  "  >
-                                <button class=" pr-3 btn  col-12  select-elem-con " type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                                    <span class="ofering">
-                                        &nbsp;&nbsp;&nbsp; {{ selectedPledge.name ?  selectedPledge.name : 'Select Pledge' }}
-                                    </span>
-                                    <span>
-                                        <i 
-                                        class="pi pi-angle-down offset-sm-2 ofering" 
-                                        :class="{ roll3: showForm3 }"
-                                        aria-hidden="true"
-                                        ></i>
-                                    </span>
-                                </button>
-                                <div class="dropdown-menu scroll " aria-labelledby="dropdownMenuButton">
-                                    <a class="dropdown-item" v-for="(item, index) in allPledgeList" :key="index">
-                                       <div @click="PledgesType(item)"> {{item.name}}</div> 
-                                    </a>
-                                    <div class="dropdown-divider"></div>
-                                    <a class="dropdown-item">
-                                        <router-link
-                                        to="/tenant/pledge/pledgedefinition"
-                                        class="
-                                        border-0
-                                        font-weight-bold
-                                        "
-                                        >Create New Pledge
-                                        </router-link>
-                                    </a>
+                <div class=" row second-form first-row mt-3 ">
+                    <div class="col-md-8  ">
+                            <div class=" row  dropdown-container">
+                                <div class="col-md-4 col-12 text-md-right text-left ">
+                                    <label for="">Select Pledge</label>
                                 </div>
-                            </div>
+                                
+                                <div class="dropdown  ofering col-md-8 col-12 "  >
+                                    <button class="  btn d-flex justify-content-between col-12  border " type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                        <span class="ofering    ">
+                                            &nbsp;&nbsp;&nbsp; {{ selectedPledge.name ?  selectedPledge.name : 'Select Pledge' }}
+                                        </span>
+                                        <span>
+                                            <i 
+                                            class="pi pi-angle-down offset-sm-2 ofering" 
+                                            :class="{ roll3: showForm3 }"
+                                            aria-hidden="true"
+                                            ></i>
+                                        </span>
+                                    </button>
+                                    <div class="dropdown-menu scroll w-100 " aria-labelledby="dropdownMenuButton">
+                                        <a class="dropdown-item" v-for="(item, index) in allPledgeList" :key="index">
+                                        <div @click="PledgesType(item)"> {{item.name}}</div> 
+                                        </a>
+                                        <div class="dropdown-divider"></div>
+                                        <a class="dropdown-item">
+                                            <router-link
+                                            to="/tenant/pledge/pledgedefinition"
+                                            class="
+                                            border-0
+                                            font-weight-bold
+                                            "
+                                            >Create New Pledge
+                                            </router-link>
+                                        </a>
+                                    </div>
+                                </div>
                             
-                        <!-- </div> -->
-                        <!-- <div class="col-md-12" v-if="!selectedPledge.name">
-                            <div class="ofering col-md-12 " :class="{ 'style-pledge': showPledge }" v-if="showPledge"  >
-                                <Dropdown v-model="selectedPledge" class="w-100 font-weight-normal" :options="allPledgeList"  optionLabel="name" placeholder="Select Pledge" />
-                                <div class=" cursor-pointer small mt-1 col-md-12 cat ofering" >
-                                    <router-link
-                                        to="/tenant/pledge/pledgedefinition"
-                                        class="
-                                        border-0
-                                        font-weight-bold
-                                        "
-                                        >Create New Pledge
-                                    </router-link>
-                                </div>
-                            </div>
-                        </div> -->
+                                <!-- </div> -->
+                                <!-- <div class="col-md-12" v-if="!selectedPledge.name">
+                                    <div class="ofering col-md-12 " :class="{ 'style-pledge': showPledge }" v-if="showPledge"  >
+                                        <Dropdown v-model="selectedPledge" class="w-100 font-weight-normal" :options="allPledgeList"  optionLabel="name" placeholder="Select Pledge" />
+                                        <div class=" cursor-pointer small mt-1 col-md-12 cat ofering" >
+                                            <router-link
+                                                to="/tenant/pledge/pledgedefinition"
+                                                class="
+                                                border-0
+                                                font-weight-bold
+                                                "
+                                                >Create New Pledge
+                                            </router-link>
+                                        </div>
+                                    </div>
+                                </div> -->
                         
-                    </div>
-                    <div class="col-12 col-sm-8 offset-sm-3 offset-md-0 col-md-4 dropdown-container">
-                        <div
-                            class="select-elem-con pointer col-12  ofering"
-                            id="eventCategorySelectElem"
-                            @click="selectPerson"
-                            
-                            >
-                            <span class="ofering small">
-                                &nbsp;&nbsp;&nbsp;{{ selectedContact.firstName && selectedContact.lastName || selectedContact.name ?  `${selectedContact.firstName ? selectedContact.firstName : ""} ${selectedContact.lastName ? selectedContact.lastName : "" } `   : 'Select Person' }}
-                            </span>
-                            <span>
-                                <i 
-                                class="pi pi-angle-down offset-sm-2 ofering" 
-                                :class="{ roll3: showForm3 }"
-                                aria-hidden="true"
-                                ></i>
-                            </span>
                         </div>
-                        
-                        <div class="col-md-12" v-if="!selectedContact.name"  >
-                            <div  class="ofering col-md-12  " style="height: 10rem; "   :class="{ 'style-pledge': showPerson }" v-if="showPerson"  >
+                        <div class="row mt-3">
+                            <!-- <div
+                                class=" border pointer col-12  ofering"
+                                id="eventCategorySelectElem"
+                                @click="selectPerson"
+                                
+                                >
+                                <span class="ofering font-weight-bold   ">
+                                    &nbsp;&nbsp;&nbsp;{{ selectedContact.firstName && selectedContact.lastName || selectedContact.name ?  `${selectedContact.firstName ? selectedContact.firstName : ""} ${selectedContact.lastName ? selectedContact.lastName : "" } `   : 'Select Person' }}
+                                </span>
+                                <span>
+                                    <i 
+                                    class="pi pi-angle-down offset-sm-2 ofering" 
+                                    :class="{ roll3: showForm3 }"
+                                    aria-hidden="true"
+                                    ></i>
+                                </span>
+                            </div> -->
+                            <div class="col-sm-12 col-md-4 text-md-right text-left   ">
+                                <label for="">Select Person</label>
+                            </div>
+                            <!-- <div class="col-sm-12 col-md-8"   > -->
+                            <div  class="ofering col-md-8 col-12 "   >
                                 <MembersSearch @memberdetail="chooseContact"  />
                             </div>
+                            <!-- </div> -->
+                            
                         </div>
-                        
-                    </div>              
-                    <div class="col-12 text-sm-right col-sm-10 col-md-4 mt-sm-2 mt-md-0">
+                    </div>
+                    <div class="col-md-4">
+                        <div class="col-12 text-sm-right col-sm-10 col-md-12 mt-sm-2 mt-md-0">
                         <div class="row nested-row">
                             <div class=" col-12 col-sm-5">
                                 <label for="date">Date</label>
@@ -214,16 +223,16 @@
                             <div class=" col-12 col-sm-7">
                                 <input
                                 placeholder=""
-                                v-model="eventDate"
+                                v-model="pledgeDate"
                                 type="date"
                                 class="form-control"
                                 required
                                 />
                             </div>
-                            <div class=" col-12 col-sm-5">
+                            <div class=" col-12 col-sm-5 mt-0 mt-sm-3 mt-md-3 ">
                                 <label for="topic">Number</label>
                             </div>
-                            <div class=" col-12 col-sm-7 mt-2 ">
+                            <div class=" col-12 col-sm-7 mt-0 mt-sm-3 mt-md-3 ">
                                 <input type="text"  class="form-control" />
                             </div>
                         
@@ -235,8 +244,12 @@
                             </div> -->
                         </div>
                     </div>
+                    </div>
+
+                                  
+                    
                 </div>
-                <div class="col-sm-12 offset-sm-1 add">Pledge Amount</div>
+                <!-- <div class="col-sm-12 offset-sm-1 add">Pledge Amount</div> -->
                 <div class="attendance-header d-none d-md-block">
                     <div class="row">
                         <div class="col-sm-3">Pledge</div>
@@ -244,58 +257,58 @@
                         <!-- <div class="col-sm-2" style="margin-left: 74px;">Total</div> -->
                     </div>
                 </div>
-                <div
+                <!-- <div
                     class="attendance-body"
                     id="attendanceBody"
-                    >
+                    > -->
                     
-                    <div class="row">
-                        <div class="col-md-10 mb-3 " v-if="selectedContact.name"  >
+                    <div class="row second-form first-row">
+                        <div class="col-md-8 mb-2 " v-if="selectedContact.name"  >
                             <div class="row">
-                                <div class="col-12 col-md-4 col-lg-4 text-sm-left text-lg-right align-self-center">
+                                <div class="  col-md-4 col-12  text-sm-left text-lg-right align-self-center ">
                                     <label for="" class="">Person </label>
                                 </div>
-                                <div class=" col-12  col-md-8 ">
+                                <div class="  col-md-8 col-12 ">
                                     <!-- <div class=" col-sm-6 "> -->
                                         <input type="text" v-model="selectedContact.name" class="form-control" />
                                     <!-- </div> -->
                                 </div>
                             </div>
                         </div>
-                        <div class="col-md-10 mb-3 " v-if="selectedPledge.donorPaymentType == 2 "  >
+                        <div class="col-md-8 mb-3 mt-2 " v-if="selectedPledge.donorPaymentType == 2 "  >
                             <div class="row">
-                                <div class="col-12 col-md-4 col-lg-4 text-sm-left text-lg-right align-self-center">
+                                <div class="col-12 col-md-4  text-sm-left text-lg-right align-self-center ">
                                     <label for="" class="">Pledge Amount </label>
                                 </div>
                                 <div class="d-flex flex-wrap col-12  col-md-8 ">
-                                    <div class=" col-sm-6 ">
+                                    <div class=" col-10 col-sm-6 ">
                                         <div class="font-weight-bold" > <span>From:</span>  {{Math.abs(selectedPledge.donorPaymentRangeFromAmount).toLocaleString()}}.00 </div>
                                     </div>
-                                    <div class="col-12  col-sm-6   ">
+                                    <div class="col-10  col-sm-6   ">
                                         <div class="font-weight-bold  " ><span>To:</span> {{Math.abs(selectedPledge.donorPaymentRangeToAmount).toLocaleString()}}.00 </div>
                                     </div>
 
                                 </div>
                             </div>
                         </div>
-                        <div class="col-md-10 mb-3  " v-if="selectedPledge.donorPaymentType == 1 ">
+                        <div class="col-md-8 mb-3 mt-2 " v-if="selectedPledge.donorPaymentType == 1 ">
                             <div class="row">
-                                <div class="col-md-4 text-md-right align-self-center">
+                                <div class="col-md-4 text-md-right align-self-center  ">
                                     <label for="" class=""> Pledge Amount </label>
                                 </div>
                         
-                                <div class="col-md-8">
+                                <div class="col-12  col-md-8 ">
                                     <input type="text" v-model="selectedPledge.donorPaymentSpecificAmount" :disabled="checking" class="form-control" />
                                 </div>
                             </div>
                         </div>
-                        <div class="col-md-10 mb-3  " v-if="selectedPledge.donorPaymentType == 0 " >
+                        <div class="col-md-8 mb-3 mt-2 " v-if="selectedPledge.donorPaymentType == 0 " >
                             <div class="row">
-                                <div class="col-md-4 text-md-right align-self-center">
+                                <div class="col-12 col-md-4 text-md-right align-self-center ">
                                     <label for="" class=""> Pledge Amount </label>
                                 </div>
                         
-                                <div class="col-md-8">
+                                <div class="col-md-8 col-12">
                                     <input type="text" v-model="freewillAmount" class="form-control" />
                                 </div>
                             </div>
@@ -304,7 +317,7 @@
                         <i class="pi pi-trash" aria-hidden="true"></i>
                         </div> -->
                     </div>
-                </div>
+                <!-- </div> -->
             </div>
             <div class="row mt-3 ">
                 <div class="col-md-12 d-lg-flex justify-content-end text-center text-sm-right">
@@ -333,6 +346,7 @@ import MembersSearch from "../../components/membership/MembersSearch.vue"
 import router from '../../router';
 import { useRoute } from "vue-router"
 import finish from '../../services/progressbar/progress';
+// import monthDayYear from "../../services/dates/dateformatter";
 // import store from "../../store/store";
 import CascadeSelect from 'primevue/cascadeselect';
 import ToggleButton from '../donation/toggleButton.vue'
@@ -362,6 +376,7 @@ export default {
         const allPledgeList = ref([]);
         const amountFrom = ref('')
         const makePledgeData = ref('')
+        const pledgeDate = ref('')
         const selectedContact = ref({})
         // const selectedDetail = ref({})
         const isActive = ref(null)
@@ -394,6 +409,10 @@ export default {
         }
      
        
+        const currentDate = () => {
+            pledgeDate.value = new Date().toISOString().substr(0, 10)
+          };
+          currentDate()
 
          const chooseContact = (payload) => {
              payload.firstName = payload.name
@@ -570,6 +589,7 @@ export default {
             churchName,
             selectedContact,
             Address,
+            pledgeDate,
             value,
             loading,
             loadingCode,
@@ -580,7 +600,7 @@ export default {
             isActive,
             active,
             showPerson,
-            showPledge
+            showPledge,
             // selectedDetail
         }
     },
@@ -593,9 +613,9 @@ export default {
 }
 
 .scroll{
-    height: 10rem;
+    max-height: 400px;
     overflow-y: scroll;
-    overflow-y: hidden;
+    overflow-x: hidden;
 }
 
 .roll3 {

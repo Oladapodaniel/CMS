@@ -69,9 +69,22 @@
                                 </div>
 
                                 <div class="col-sm-12 align-self-center mt-3">Relationship</div>
-                                <div class="col-sm-12 mt-2">
-                                    <Dropdown class="p-0 w-100" :options="memberRoles" v-model="roleId" optionLabel="name" :filter="false" placeholder="Select role" :showClear="false">
-                                    </Dropdown>
+                                <div class="col-sm-12 dropdown mt-2">
+                                    <button class="   btn d-flex justify-content-between  col-12 border   " type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                        <span class="ofering">
+                                            &nbsp;&nbsp;&nbsp; {{ roleId.name ?  roleId.name : 'Select role' }}
+                                        </span>
+                                        <span>
+                                            <i class="pi pi-angle-down offset-sm-2 ofering"></i>
+                                        </span>
+                                    </button>
+                                    <div class="dropdown-menu scroll w-100 " aria-labelledby="dropdownMenuButton">
+                                        <a class="dropdown-item" v-for="(item, index) in memberRoles" :key="index">
+                                            <div class="cursor-pointer" @click="selectRoleId(item)"> {{item.name}}</div> 
+                                        </a>
+                                    </div>
+                                    <!-- <Dropdown class="p-0 w-100" :options="memberRoles" v-model="roleId" optionLabel="name" :filter="false" placeholder="Select role" :showClear="false">
+                                    </Dropdown> -->
                                 </div>
                                 </div>
                                 <div class="row d-flex justify-content-end mr-4">
@@ -189,6 +202,9 @@ export default {
         //         },
         //     });
         //     };
+            const selectRoleId = (item) =>{
+                roleId.value = item
+            }
 
             const createPerson = () => {
                 if (props.family.id) {
@@ -316,6 +332,7 @@ export default {
         return {
             // editMember,
             showModal,
+            selectRoleId,
             // deleteMember,
             // showConfirmModal,
             // searchForUsersWard,
@@ -336,6 +353,12 @@ export default {
 <style  scoped>
     .th {
         background: #DDE2E6 0% 0% no-repeat padding-box;
+    }
+
+    .scroll{
+        max-height: 200px;
+        overflow-y: scroll;
+        overflow-x: hidden;
     }
 
     .ward-table-wrapper {

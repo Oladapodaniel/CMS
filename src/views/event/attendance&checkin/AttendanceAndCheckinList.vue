@@ -395,6 +395,7 @@ import dateFormatter from "../../../services/dates/dateformatter";
 import { useConfirm } from "primevue/useconfirm";
 import { useToast } from "primevue/usetoast";
 import ConfirmDialog from "primevue/confirmdialog";
+import stopProgressBar from "../../../services/progressbar/progress";
 import axios from "@/gateway/backendapi";
 import Toast from "primevue/toast";
 import Pagination from "../../../components/pagination/PaginationButtons.vue";
@@ -680,6 +681,7 @@ export default {
 .table {
   border-radius: 30px;
 }
+
 
 .table-header {
   padding: 10px;

@@ -10,16 +10,46 @@
         <div class="col-sm-4 mt-3 text-right pr-0 align-self-center">
             <label>Income Account</label>
         </div>
-        <div class="col-lg-5 col-sm-12 mt-3">
-            <Dropdown v-model="selectedIncomeAccount" class="w-100 " :options="incomeAccount" optionLabel="text" :filter="false" placeholder="Select" :showClear="false">
-            </Dropdown>
+        <div class="col-lg-5 dropdown col-sm-12 mt-3">
+            <!-- <div class="dropdown  ofering col-12  "  > -->
+                <button class="  btn d-flex justify-content-between col-12 border " type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                    <span class="ofering">
+                        &nbsp;&nbsp;&nbsp; {{ selectedIncomeAccount.text ?  selectedIncomeAccount.text : 'Select' }}
+                    </span>
+                    <span>
+                        <i class="pi pi-angle-down offset-sm-2 ofering"></i>
+                    </span>
+                </button>
+                <div class="dropdown-menu scroll w-100 " aria-labelledby="dropdownMenuButton">
+                    <a class="dropdown-item" v-for="(item, index) in incomeAccount" :key="index">
+                        <div @click="inComeAccount(item)"> {{item.text}}</div> 
+                    </a>
+                </div>
+            <!-- </div> -->
+            <!-- <Dropdown v-model="selectedIncomeAccount" class="w-100 " :options="incomeAccount" optionLabel="text" :filter="false" placeholder="Select" :showClear="false">
+            </Dropdown> -->
         </div>
         <div class="col-sm-4 mt-3 text-right pr-0">
             <label>Cash Account</label>
         </div>
-        <div class="col-lg-5 col-sm-12 mt-3">
-        <Dropdown v-model="selectedCashAccount" :options="cashBankAccount" optionLabel="text" :filter="false" placeholder="Select" class="w-100 p-0" :showClear="false">
-        </Dropdown>
+        <div class="col-lg-5 dropdown  col-sm-12 mt-3">
+            <!-- <div class="dropdown  ofering col-12  "  > -->
+                <button class="  btn d-flex justify-content-between  col-12 border  " type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                    <span class="ofering">
+                        &nbsp;&nbsp;&nbsp; {{ selectedCashAccount.text ?  selectedCashAccount.text: 'Select Account' }}
+                    </span>
+                    <span>
+                        <i class="pi pi-angle-down offset-sm-2 ofering"></i>
+                    </span>
+                </button>
+                <div class="dropdown-menu scroll w-100 " aria-labelledby="dropdownMenuButton">
+                    <a class="dropdown-item" v-for="(item, index) in cashBankAccount" :key="index">
+                        <div @click="cashAccountType(item)"> {{item.text}}</div> 
+                    </a>
+                </div>
+            <!-- </div> -->
+        <!-- <Dropdown v-model="selectedCashAccount" :options="cashBankAccount" optionLabel="text" :filter="false" placeholder="Select" class="w-100 p-0" :showClear="false">
+        </Dropdown> -->
         </div>
         <div class="col-sm-12 d-flex" @click="toggleRem">
             <i class="check-it mr-2">
@@ -38,8 +68,22 @@
             <label>Income Account</label>
         </div>
         <div class="col-lg-5 col-sm-12 mt-5">
-            <Dropdown v-model="item.account" class="w-100 " :options="incomeAccount" optionLabel="text" :filter="true" placeholder="Select" :showClear="false">
-            </Dropdown>
+            <button class="  btn d-flex justify-content-between  col-12 border  " type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                    <span class="ofering">
+                        &nbsp;&nbsp;&nbsp; {{ item && item.account ? item.account.text : "Select Account" }} 
+                        <!-- {{ item.account ? item.account : 'Select' }} -->
+                    </span>
+                    <span>
+                        <i class="pi pi-angle-down offset-sm-2 ofering"></i>
+                    </span>
+            </button>
+            <div class="dropdown-menu scroll w-100 " aria-labelledby="dropdownMenuButton">
+                <a class="dropdown-item" v-for="(itm, indx) in incomeAccount" :key="indx">
+                    <div class="cursor-pointer" @click="selectInComeAccount(itm, index)"> {{itm.text}}</div> 
+                </a>
+            </div>
+            <!-- <Dropdown v-model="item.account" class="w-100 " :options="incomeAccount" optionLabel="text" :filter="true" placeholder="Select" :showClear="false">
+            </Dropdown> -->
         </div>
 
         <div class="col-sm-4 text-right align-self-center mt-3">
@@ -93,9 +137,21 @@ export default {
         const cashBankAccount = ref([])
         const applyRem = ref(false)
         const remitance = ref([{}])
+        // const selectInComeAccount = ref({})
 
 
 
+        const cashAccountType = (item) =>{
+            selectedCashAccount.value = item
+        }
+        const inComeAccount = (item) =>{
+            selectedIncomeAccount.value = item
+            // item.account = item 
+        }
+        const selectInComeAccount = (item, index) =>{
+            remitance.value[index].account = item 
+
+        }
         const getIncomeAccount = ()=> {
           axios.get('/api/Financials/Accounts/GetIncomeAccounts')
             .then(res => {
@@ -174,7 +230,7 @@ export default {
             }
 
         return {
-            name, selectedIncomeAccount, incomeAccount, selectedCashAccount, cashBankAccount, applyRem, toggleRem, deleteItem, remitance, addRemittance, createNewCon
+            cashAccountType, inComeAccount,selectInComeAccount, name, selectedIncomeAccount, incomeAccount, selectedCashAccount, cashBankAccount, applyRem, toggleRem, deleteItem, remitance, addRemittance, createNewCon
 
         }
     }
@@ -188,6 +244,11 @@ export default {
     height: 20px;
     border-radius: 50%;
     margin-top: -1px;
+}
+.scroll{
+    max-height: 300px;
+    overflow-y: scroll;
+    overflow-x: hidden;
 }
 
 .check-it .child {

@@ -19,7 +19,7 @@
                                     <div class="col-12  col-md-12 col-lg-12 pl-md-0 pr-md-0 mt-2">
                                         <button
 
-                                            class="default-btn w-100 text-left "
+                                            class=" btn w-100 text-left "
                                             type="button"
                                             style="
                                             border-radius: 4px;
@@ -32,7 +32,7 @@
                                             aria-expanded="false"
                                         >
                                                 {{ item && item.financialContribution ? item.financialContribution.name : "Select" }}
-                                            <i class="pi pi-chevron-down manual-dd-icon float-right pr-1"></i>
+                                            <i class="pi pi-chevron-down manual-dd-icon float-right "></i>
                                         </button>
                                         <div
                                             class="dropdown-menu scroll  w-100"
@@ -102,7 +102,7 @@
                                 </div>
                         
                                 <div class="col-12 col-sm-12  col-lg-8 d-flex flex-wrap align-self-center">
-                                    <span class="border bg-secondary pt-1 col-2 ">NGN</span>
+                                    <span class="border bg-secondary p-1">NGN</span>
                                     <!-- <span class="border">NGN</span> -->
                                     <div class="col-10  m-0 p-0"><input type="text" v-model="targetAmount" class="form-control" placeholder=" Enter Amount" /></div>
                                     <!-- <CascadeSelect v-model="value" :options="branches" optionLabel="clabel" optionGroupLabel="label" :optionGroupChildren="['children']" class="w-100"  /> -->
@@ -606,9 +606,9 @@ export default {
 
 }
 .scroll{
-    height: 10rem;
+    max-height: 200px;
     overflow-y: scroll;
-    overflow-y: hidden;
+    overflow-x: hidden;
 }
        .heading-text {
         font: normal normal 800 1.5rem Nunito sans;
