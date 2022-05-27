@@ -2220,7 +2220,7 @@ export default {
 
     watchEffect (() => {
       if (store.getters['groups/selectedTreeGroup']) {
-        console.log(store.getters['groups/selectedTreeGroup'])
+        // console.log(store.getters['groups/selectedTreeGroup'])
         const selectedGroup = store.getters['groups/selectedTreeGroup']
         hideDiv.value = true
         selectedIntendedSubGroup.value = selectedGroup;

@@ -11,12 +11,21 @@
     <!-- top Address -->
     <div class="row">
       <div
-        class="col-md-3 d-md-flex align-items-center justify-content-end text-md-right mt-1 font-weight-700"
+        class="
+          col-md-3
+          d-md-flex
+          align-items-center
+          justify-content-end
+          text-md-right
+          mt-1
+          font-weight-700
+        "
       ></div>
       <div class="col-md-5 mb-3">
         <h5 class="font-weight-bold text-center">ATTENDANCE & CHECKIN</h5>
         <p class="text-center font-weight-500">
-          {{ eventData.name }} - {{ eventData.date }}
+          {{ eventData.fullEventName }} -
+          {{ dateFormatter.monthDayTime(eventData.eventDate) }}
         </p>
       </div>
     </div>
@@ -43,9 +52,45 @@
       </div>
     </div>
 
-    <div class="row">
+    <div
+      class="row d-flex justify-content-center text-center"
+      v-if="
+        eventData &&
+        Object.keys(eventData).length > 0 &&
+        eventData.checkInCutOffTime &&
+        new Date().toISOString() >=
+          new Date(eventData.checkInCutOffTime).toISOString()
+      "
+    >
+      <div class="mb-3 font-weight-700">
+        Sorry, this event is closed, if you intend to check yourself in to a
+        future or ongoing event, kindly request for the event checkin link from
+        your church admin.
+      </div>
+      <img src="../../../assets/closed_event.jpeg" class="closed_event" />
+    </div>
+
+    <div
+      class="row"
+      v-if="
+        !eventData.checkInCutOffTime ||
+        (eventData &&
+          eventData.checkInCutOffTime &&
+          Object.keys(eventData).length > 0 &&
+          new Date().toISOString() <
+            new Date(eventData.checkInCutOffTime).toISOString())
+      "
+    >
       <div
-        class="col-md-3 d-md-flex align-items-center justify-content-end text-md-right mt-1 font-weight-700"
+        class="
+          col-md-3
+          d-md-flex
+          align-items-center
+          justify-content-end
+          text-md-right
+          mt-1
+          font-weight-700
+        "
       >
         <label for="">Phone Number</label>
       </div>
@@ -111,7 +156,15 @@
       <div class="col-md-12">
         <div class="row mt-n2 my-2">
           <div
-            class="col-md-3 d-md-flex align-items-center justify-content-end text-md-right mt-2 font-weight-700"
+            class="
+              col-md-3
+              d-md-flex
+              align-items-center
+              justify-content-end
+              text-md-right
+              mt-2
+              font-weight-700
+            "
           >
             <label for="">Name</label>
           </div>
@@ -131,7 +184,15 @@
 
         <div class="row">
           <div
-            class="col-md-3 d-md-flex align-items-center justify-content-end text-md-right mt-2 font-weight-700"
+            class="
+              col-md-3
+              d-md-flex
+              align-items-center
+              justify-content-end
+              text-md-right
+              mt-2
+              font-weight-700
+            "
           >
             <label for="">Email</label>
           </div>
@@ -151,7 +212,15 @@
 
         <div class="row my-2" v-if="false">
           <div
-            class="col-md-3 d-md-flex align-items-center justify-content-end text-md-right mt-2 font-weight-700"
+            class="
+              col-md-3
+              d-md-flex
+              align-items-center
+              justify-content-end
+              text-md-right
+              mt-2
+              font-weight-700
+            "
           >
             <label for="">Address</label>
           </div>
@@ -174,10 +243,18 @@
             </p>
           </div>
         </div>
-<!-- v-if="!personData.dayOfBirth && personData.monthOfBirth" -->
-        <div class="row my-3" >
+        <!-- v-if="!personData.dayOfBirth && personData.monthOfBirth" -->
+        <div class="row my-3">
           <div
-            class="col-md-3 d-md-flex align-items-center justify-content-end text-md-right mt-2 font-weight-700"
+            class="
+              col-md-3
+              d-md-flex
+              align-items-center
+              justify-content-end
+              text-md-right
+              mt-2
+              font-weight-700
+            "
           >
             <label for="">Birthday</label>
           </div>
@@ -189,7 +266,6 @@
                   :options="days"
                   style="width: 100%"
                   placeholder="Day"
-                  :disabled="person.personId"
                 />
               </div>
               <div class="col-6">
@@ -198,8 +274,6 @@
                   :options="months"
                   style="width: 100%"
                   placeholder="Month"
-                  :disabled="person.personId"
-                  
                 />
               </div>
               <!-- <div class="col-12 col-sm-4 mt-3 mt-sm-0">
@@ -215,6 +289,51 @@
           </div>
         </div>
 
+        <div class="row my-2" v-if="person.avaliableGroups && person.avaliableGroups.length > 0">
+          <div
+            class="
+              col-md-3
+              d-md-flex
+              align-items-center
+              justify-content-end
+              text-md-right
+              mt-2
+              font-weight-700
+            "
+          >
+            <label for="">My groups</label>
+          </div>
+          <div class="col-md-7">
+            <div class="border p-1 my_groups">
+              <span v-for="(item, index) in selectedGroupList" :key="item.id">
+                <span>{{ index + 1 }}. {{ item.name }} &nbsp;</span>
+              </span>
+            </div>
+          </div>
+        </div>
+
+        <div class="row my-2" v-if="person.avaliableGroups && person.avaliableGroups.length > 0">
+          <div
+            class="
+              col-md-3
+              d-md-flex
+              align-items-center
+              justify-content-end
+              text-md-right
+              mt-2
+              font-weight-700
+            "
+          >
+            <label for="">Add to group</label>
+          </div>
+          <div class="col-md-7">
+            <span class="p-input-icon-left w-100">
+              <i class="pi pi-map-marker icon" />
+              <MultiSelect v-model="selectedGroups" :options="filteredGroups" optionLabel="name" placeholder="Select group(s)" display="chip" class="w-100" />
+            </span>
+          </div>
+        </div>
+
         <div class="row my-2">
           <div class="col-md-3"></div>
           <div class="col-md-7 py-4 text-center">
@@ -222,8 +341,7 @@
             <button
               class="default-btn add-btn"
               @click="confirmCheck"
-              :disabled="
-                !person.name || person.name.length < 1"
+              :disabled="!person.name || person.name.length < 1"
             >
               Confirm
             </button>
@@ -231,10 +349,18 @@
         </div>
       </div>
     </div>
-    
+
     <div class="row">
       <div
-        class="col-md-3 d-md-flex align-items-center justify-content-end text-md-right mt-3 font-weight-700"
+        class="
+          col-md-3
+          d-md-flex
+          align-items-center
+          justify-content-end
+          text-md-right
+          mt-3
+          font-weight-700
+        "
       ></div>
       <div class="col-md-7 mt-2">
         <p class="text-center fw-normal" style="color: #136acd">
@@ -259,9 +385,13 @@ import { useToast } from "primevue/usetoast";
 import stopProgressBar from "../../../services/progressbar/progress";
 import swal from "sweetalert";
 import Dropdown from "primevue/dropdown";
+import MultiSelect from "primevue/multiselect";
 
 export default {
-  components: { Dropdown },
+  components: { 
+    Dropdown, 
+    MultiSelect 
+  },
   setup() {
     const connectName = ref("");
     const appltoggle = ref(false);
@@ -278,6 +408,9 @@ export default {
     const toast = useToast();
     const submitBtn = ref(null);
     const loaded = ref(false);
+    const selectedGroups = ref([]);
+    const selectedGroupList = ref([]);
+    const filteredGroups = ref([]);
 
     const birthMonth = ref("");
     // const birthYear = ref("");
@@ -297,7 +430,10 @@ export default {
     ];
 
     const birthDay = ref("");
-    const days = ref([ 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 22, 23, 24, 25, 26, 27, 28, 29, 30, 31 ]);
+    const days = ref([
+      1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 22,
+      23, 24, 25, 26, 27, 28, 29, 30, 31,
+    ]);
 
     // const year = computed(() => {
     //   const arrOfYears = [];
@@ -350,11 +486,11 @@ export default {
       autosearch.value = true;
       axios
         .get(
-          `/searchmemberbyphone?searchtext=${enteredValue.value}&&attendanceCode=${route.params.code}`
+          `/searchmemberbyphone?searchtext=${enteredValue.value}&&checkinId=${eventData.value.id}`
         )
 
         .then((res) => {
-          const x = { ...res}
+          const x = { ...res };
           console.log(x, "RESPONSE");
           loading.value = false;
           autosearch.value = false;
@@ -364,12 +500,22 @@ export default {
           personData.value.email = res.data[0] ? res.data[0].email : "";
           personData.value.homeAddress = res.data[0] ? res.data[0].address : "";
           personData.value.personId = res.data[0] ? res.data[0].personId : "";
-          personData.value.dayOfBirth = res.data[0] ? res.data[0].dayOfBirth : null;
-          personData.value.monthOfBirth = res.data[0] ? res.data[0].monthOfBirth : null;
+          personData.value.dayOfBirth = res.data[0]
+            ? res.data[0].dayOfBirth
+            : null;
+          personData.value.monthOfBirth = res.data[0]
+            ? res.data[0].monthOfBirth
+            : null;
           personData.value.mobilePhone = enteredValue.value;
           person.value = res.data[0] ? res.data[0] : {};
-          birthDay.value = res.data[0] && res.data[0].dayOfBirth ? Number(res.data[0].dayOfBirth) : 0;
-          birthMonth.value = res.data[0] && res.data[0].monthOfBirth ? months[Number(res.data[0].monthOfBirth) - 1] : 0;
+          birthDay.value =
+            res.data[0] && res.data[0].dayOfBirth
+              ? Number(res.data[0].dayOfBirth)
+              : 0;
+          birthMonth.value =
+            res.data[0] && res.data[0].monthOfBirth
+              ? months[Number(res.data[0].monthOfBirth) - 1]
+              : 0;
           // birthYear.value = res.data[0] && res.data[0].yearOfBirth ? Number(res.data[0].yearOfBirth) : 0;
 
           if (
@@ -378,8 +524,7 @@ export default {
             person.value.address !== null &&
             person.value.address !== "" &&
             person.value.address.length >= 1
-          )
-          {
+          ) {
             personHasAddress.value = true;
           }
 
@@ -392,7 +537,20 @@ export default {
           if (person.value.address) {
             person.value.address = formatString(person.value.address, 2, 4);
           }
-          populateInputfields(person.value);
+          
+
+          if (person.value && person.value.groupsBelongingTo && person.value.groupsBelongingTo.length > 0 ) {
+            person.value.groupsBelongingTo.forEach(i => {
+              const groupIndx = person.value.avaliableGroups.findIndex(j => {
+                return i.groupId == j.groupId
+              })
+              person.value.avaliableGroups.splice(groupIndx, 1)
+              console.log(groupIndx)
+              console.log(filteredGroups.value)
+          })
+          filteredGroups.value = person.value.avaliableGroups
+          selectedGroupList.value = person.value.groupsBelongingTo
+          }
 
           if (person.value) appltoggle.value = true;
         })
@@ -420,9 +578,9 @@ export default {
             });
           } else {
             toast.add({
-              severity: "error",
-              summary: "Checkin Error",
-              detail: "An error occurred, reload and try again",
+              severity: "warn",
+              summary: "Not successful",
+              detail: "Please try again",
               life: 3000,
             });
           }
@@ -433,11 +591,11 @@ export default {
     };
     //end of searching through the attendance details
 
-    // populate input fields
-    const populateInputfields = (obj) => {
-      person.value = obj;
-      console.log(person);
-    };
+    // // populate input fields
+    // const populateInputfields = (obj) => {
+    //   person.value = obj;
+    //   console.log(person);
+    // };
 
     const disabled = computed(() => {
       if (person.value.personId) return true;
@@ -459,10 +617,13 @@ export default {
           person: {
             personId: personData.value.personId,
             mobilePhone: enteredValue.value,
-            homeAddress: personData.value.homeAddress ? '' : person.value.address,
-            email: personData.value.email ? '' : person.value.email,
+            homeAddress: personData.value.homeAddress
+              ? ""
+              : person.value.address,
+            email: personData.value.email ? "" : person.value.email,
+            peopleInGroups: selectedGroups.value.length > 0 ? selectedGroups.value.map(i => ({ id: i.id })) : []
           },
-          attendanceCode: +route.params.code,
+          attendanceCode: eventData.value.attendanceCode,
         };
       } else {
         newPerson = {
@@ -471,11 +632,13 @@ export default {
             email: person.value.email,
             homeAddress: person.value.address,
             mobilePhone: enteredValue.value,
+            peopleInGroups: selectedGroups.value.length > 0 ? selectedGroups.value.map(i => ({ id: i.id })) : []
           },
-          attendanceCode: +route.params.code,
+          attendanceCode: eventData.value.attendanceCode,
         };
       }
-      newPerson.person.monthOfBirth = birthMonth.value ? months.indexOf(birthMonth.value) + 1
+      newPerson.person.monthOfBirth = birthMonth.value
+        ? months.indexOf(birthMonth.value) + 1
         : null;
       newPerson.person.dayOfBirth = birthDay.value ? birthDay.value : null;
       // newPerson.person.yearOfBirth = birthYear.value ? birthYear.value : null;
@@ -533,9 +696,9 @@ export default {
 
     const CheckXterAfterEleven = (e) => {
       if (e.target.value.length >= 11) {
-        checkCharacter()
+        checkCharacter();
       }
-    }
+    };
 
     // function to clear input
     const clearNames = () => {
@@ -552,13 +715,10 @@ export default {
     const getDateAndEvent = () => {
       axios
         .get(
-          `/api/publiccontent/WebCheckInGetEventDetails?attendanceCode=${+route
-            .params.code}`
+          `/api/publiccontent/WebCheckInGetEventDetails?checkinId=${route.params.code}`
         )
         .then((res) => {
-          eventData.value.name = res.data.fullEventName;
-          eventData.value.date = dateFormatter.monthDayTime(res.data.eventDate);
-
+          eventData.value = res.data;
           console.log(eventData);
           console.log(res, "response");
         })
@@ -618,7 +778,7 @@ export default {
     return {
       toggleBase,
       checkCharacter,
-      populateInputfields,
+      // populateInputfields,
       InputText,
       appltoggle,
       names,
@@ -659,7 +819,10 @@ export default {
       birthDay,
       // birthYear,
       personData,
-      CheckXterAfterEleven
+      CheckXterAfterEleven,
+      selectedGroups,
+      selectedGroupList,
+      filteredGroups
     };
   },
 };
@@ -688,5 +851,16 @@ export default {
   display: flex;
   justify-content: center;
   align-items: center;
+}
+
+.closed_event {
+  width: 100%;
+  height: 375px;
+  object-fit: cover;
+}
+.my_groups {
+  background: #eee;
+  max-height: 400px;
+  overflow-y: scroll;
 }
 </style>

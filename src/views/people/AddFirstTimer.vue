@@ -587,14 +587,26 @@
                     <label for="" class="font-weight-600">Name</label>
                   </div>
                   <div class="col-md-7">
-                    <Dropdown
+                    <!-- <Dropdown
                       v-model="groupToAddTo"
                       :options="allGroups"
                       style="width: 100%"
                       :filter="false"
                       placeholder="Select a group"
                       optionLabel="name"
-                    />
+                    /> -->
+                    <div class="dropdown">
+                          <button class="btn w-100 phone-input d-flex justify-content-between align-items-center border" type="button" id="dropdownMemCat" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                              <div>
+                              {{ groupToAddTo && Object.keys(groupToAddTo).length > 0 ? groupToAddTo.name : 'Select group' }}</div>
+                              <i class="pi pi-chevron-down"></i>
+                          </button>
+                          <div class="dropdown-menu w-100" aria-labelledby="dropdownMemCat">
+                              <a class="dropdown-item c-pointer" v-for="item in allGroups" :key="item.id">
+                                  <div @click="setSelectedGroup(item)">{{ item.name }}</div>
+                              </a>
+                          </div>
+                      </div>
                   </div>
                 </div>
 
@@ -1381,6 +1393,10 @@ export default {
       console.log(firstTimerInGroup.value)
     };
 
+    const setSelectedGroup = (item) => {
+      groupToAddTo.value = item
+    }
+
     return {
       onSubmit,
       onCancel,
@@ -1453,7 +1469,8 @@ export default {
       position,
       addToGroupError,
       dismissAddToGroupModal,
-      addMemberToGroup
+      addMemberToGroup,
+      setSelectedGroup
     };
   },
 };
@@ -1820,6 +1837,12 @@ template.p-dropdown-parent {
     max-width: 650px;
     margin: 1.75rem auto;
     /* padding: 32px; */
+  }
+
+  .dropdown-menu {
+      max-height: 300px;
+      overflow: scroll;
+      box-shadow: 0 2px 4px -1px rgb(0 0 0 / 20%), 0 4px 5px 0 rgb(0 0 0 / 14%), 0 1px 10px 0 rgb(0 0 0 / 12%);
   }
 }
 </style>
