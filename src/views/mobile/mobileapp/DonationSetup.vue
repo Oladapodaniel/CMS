@@ -350,7 +350,11 @@ export default {
       });
       closeModalButton.value.click();
       console.log(bankDetails, "bankDetails list");
-      bankAccounts.value.push(bankDetails);
+      bankAccounts.value.push({
+        accountName: bankDetails.bankName,
+        accountNumber: bankDetails.bankNumber,
+        description: bankDetails.description
+      });
     };
 
     const getPaymentForm = () => {

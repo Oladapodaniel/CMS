@@ -424,9 +424,9 @@ export default {
             });
           } else {
             toast.add({
-              severity: "error",
-              summary: "Checkin Error",
-              detail: "An error occurred, reload and try again",
+              severity: "warn",
+              summary: "Not successful",
+              detail: "Please try again",
               life: 3000,
             });
           }
