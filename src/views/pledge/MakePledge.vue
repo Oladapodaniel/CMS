@@ -528,7 +528,9 @@ export default {
                         query: {
                             id: makePledgeData.value.pledgeTypeID,
                             pledgeTypeID: makePledgeData.value.id,
-                            name: selectedContact.value.name
+                            pledgeType: selectedPledge.value.name,
+                            name: selectedContact.value.name,
+                            date: selectedPledge.value.dateEntered
                         }
                     })
                     

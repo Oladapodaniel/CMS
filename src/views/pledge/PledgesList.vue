@@ -351,7 +351,8 @@ export default {
                       name : i.pledgeType.name,
                       id : i.pledgeType.id,
                     })) 
-                    console.log(allPledgeType.value,'getPledgeList');
+                    console.log(allPledgeType.value,'getPledgeType');
+                    // console.log(allPledgeList.value,'getPledgeList');
                 }
                 catch (error){
                     console.log(error)
