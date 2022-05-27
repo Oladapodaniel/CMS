@@ -505,7 +505,7 @@
                     <div class="col-12">
                         <!-- <Dropdown v-model="selectedMembershipClassification" :filter="false" :options="membershipCategory" class="w-100 phone-input" optionLabel="name" placeholder="Select membership category" /> -->
                         <div class="dropdown">
-                            <button class="btn w-100 phone-input d-flex justify-content-between" type="button" id="dropdownMemCat" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                            <button class="btn w-100 phone-input d-flex justify-content-between align-items-center" type="button" id="dropdownMemCat" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                                 <div>
                                 {{ selectedMembershipClassification && Object.keys(selectedMembershipClassification).length > 0 ? selectedMembershipClassification.name : 'Select membership category' }}</div>
                                 <i class="pi pi-chevron-down"></i>
