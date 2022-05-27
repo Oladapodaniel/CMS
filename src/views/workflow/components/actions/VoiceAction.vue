@@ -1,4 +1,4 @@
-<template>
+<template>{{ tenantId }}
     <div class="container max-height scroll-div" v-for="(item, index) in removeOthers"
     :key="index">
         <div class="row mt-4">
@@ -37,8 +37,9 @@
             <div class="col-md-12 px-0">
                 <label for="" class="font-weight-600">Voice URL</label>
             </div>
+            <!-- v-model="item.voiceURL"  -->
             <div class="col-md-12 px-0">
-                <input type="text" class="form-control" v-model="item.voiceURL" @input="handleVoice">
+                <input type="file" class="form-control" @change="handleVoice">
             </div>
         </div>
     </div>
@@ -47,6 +48,8 @@
 <script>
 import { reactive, ref } from '@vue/reactivity';
 import { watchEffect } from '@vue/runtime-core';
+import media_service from "../../../../services/media/media_service";
+import membershipService from "../../../../services/membership/membershipservice"
 export default {
     props: [ "selectedActionIndex", "parameters", "selectVoiceList" ],
     setup (props, { emit }) {
@@ -55,6 +58,7 @@ export default {
         const actionType = reactive(2);
         const person = ref(false);
         const removeOthers = ref([]);
+        const tenantId = ref("")
 
         const handleSendPersonMail = (e) => {
             // data.JSONActionParameters.person = e.target.checked;
@@ -137,20 +141,43 @@ export default {
             emit('updateaction', data, props.selectedActionIndex, actionType);
         }
 
+        const getTenantId = () => {
+            membershipService.getSignedInUser()
+                .then(res => {
+                    tenantId.value = res.tenantId;
+                })
+                .catch(err => {
+                    console.log(err);
+                })
+            }
+        getTenantId();
+
+
         const voiceURL = ref('');
-        const handleVoice = (e) => {
+        const handleVoice = async(e) => {
+            console.log(e.target.files[0])
+            let formData = new FormData()
+            formData.append("mediaFile", e.target.files[0])
+            formData.append("tenantId", tenantId.value);
+
+            try {
+                let data = await media_service.uploadMedia(formData)
+                console.log(data)
+            } catch (err) {
+                console.log(err)
+            }
             // data.JSONActionParameters.voiceUrl = e.target.value;
 
-            if (data[props.selectedActionIndex]) {
-                data[props.selectedActionIndex].JSONActionParameters.voiceUrl =
-                removeOthers.value[0].voiceURL;
-            } else {
-                data[props.selectedActionIndex] = new Object();
-                data[props.selectedActionIndex].JSONActionParameters = new Object();
-                data[props.selectedActionIndex].JSONActionParameters.voiceUrl =
-                removeOthers.value[0].voiceURL;
-            }
-            emit('updateaction', data, props.selectedActionIndex, actionType);
+            // if (data[props.selectedActionIndex]) {
+            //     data[props.selectedActionIndex].JSONActionParameters.voiceUrl =
+            //     removeOthers.value[0].voiceURL;
+            // } else {
+            //     data[props.selectedActionIndex] = new Object();
+            //     data[props.selectedActionIndex].JSONActionParameters = new Object();
+            //     data[props.selectedActionIndex].JSONActionParameters.voiceUrl =
+            //     removeOthers.value[0].voiceURL;
+            // }
+            // emit('updateaction', data, props.selectedActionIndex, actionType);
         }
 
         const parsedData = ref({ })
@@ -214,7 +241,8 @@ export default {
             handleOtherAddresses,
             voiceURL,
             handleVoice,
-            removeOthers
+            removeOthers,
+            tenantId
         }
     }
 }

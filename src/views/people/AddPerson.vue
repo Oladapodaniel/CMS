@@ -540,6 +540,7 @@
               class="close"
               data-dismiss="modal"
               aria-label="Close"
+              ref="closeAddToGroup"
             >
               <span aria-hidden="true">&times;</span>
             </button>
@@ -566,6 +567,7 @@
                     <group-tree :items="searchAllGroups"
                       :addGroupValue="true"
                       class="exempt-hide"
+                      @closemodal="setCloseGroupModal"
                     />
                   </div>
                 <!-- <div class="dropdown show">
@@ -743,6 +745,7 @@ export default {
     const noteDetails = ref({})
     const searchGroupText = ref("")
     const hideDiv = ref(true)
+    const closeAddToGroup = ref(null)
 
     const loading = ref(false);
     // const day = ref([ 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30, 31 ]);
@@ -1413,6 +1416,10 @@ export default {
       }
     }
 
+    const setCloseGroupModal = () => {
+      closeAddToGroup.value.click()
+    }
+
     return {
       months,
       numberofYears,
@@ -1480,7 +1487,9 @@ export default {
       classifications,
       showConfirmModal,
       hideDiv,
-      hideGroupModal
+      hideGroupModal,
+      closeAddToGroup,
+      setCloseGroupModal
     };
   },
 };
