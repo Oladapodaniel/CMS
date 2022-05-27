@@ -105,18 +105,18 @@
   <Dialog header="Create group" v-model:visible="displayCreateGroup"  style="width: 450px" :breakpoints="{'960px': '75vw'}" :modal="true">
       <div class="row">
         <div class="col-12">
-          <div>Group name</div>
-          <input class="form-control" v-model="newGroup.name" />
+          <div class="mb-1">Group name<sup class="text-danger">*</sup></div>
+          <input class="form-control" v-model="newGroup.name" required/>
         </div>
         <div class="col-12 mt-4">
-          <div>Description</div>
+          <div class="mb-1">Description</div>
           <textarea class="form-control" rows="4" v-model="newGroup.description"></textarea>
         </div>
       </div>
       <template #footer>
           <div class="d-flex justify-content-end">
             <div class="default-btn text-center c-pointer" @click="displayCreateGroup = false">Cancel</div>
-            <div class="ml-3 default-btn border-0 text-white primary-bg text-center c-pointer" @click="createGroup">Create group</div>
+            <div class="ml-3 default-btn border-0 text-white primary-bg text-center c-pointer" @click="createGroup"><i class="pi pi-spin pi-spinner" v-if="createGroupLoading"></i>&nbsp;Create group</div>
           </div>
       </template>
   </Dialog>
@@ -131,10 +131,11 @@ import axios from "@/gateway/backendapi";
 import { watchEffect } from '@vue/runtime-core';
 // import store from '../../../store/store';
 import { useStore } from "vuex"
+import { onBeforeRouteLeave } from 'vue-router';
 export default {
   name: "GroupTree",
   props: ["items", "addGroupValue", "showCheckBox"],
-  emits: ["group", "groupp"],
+  emits: ["group", "groupp", "closemodal"],
   inheritAttrs: false,
   components: {
     Dialog
@@ -145,6 +146,7 @@ export default {
     const newGroup = ref({})
     const toast = useToast();
     const onDropDown = ref(false)
+    const createGroupLoading = ref(false)
 
     const toggleItems = (i, e) => {
         e.target.classList.toggle("roll-icon");
@@ -176,11 +178,14 @@ export default {
 
     const openCreateGroupModal = () => {
       displayCreateGroup.value = true
+      emit("closemodal")
     }
 
     const createGroup = async() => {
+      createGroupLoading.value = true
       try {
         let { data } = await axios.post("/api/CreateGroup", newGroup.value)
+        createGroupLoading.value = false
           toast.add({
             severity: "success",
             summary: "Success",
@@ -191,14 +196,15 @@ export default {
           console.log(data)
       }
       catch (err) {
+        createGroupLoading.value = false
         console.log(err)
       }
     }
 
-    // const removeSubGroup = (group) => {
-    //   console.log(group)
-    //   emit("group", { selectedGroup: group, iconElement: e.target });
-    // }
+    onBeforeRouteLeave(() => {
+      store.dispatch("groups/setSelectedTreeGroupList", {})
+      store.dispatch("groups/setSelectedTreeGroup", {})
+    })
 
     
     return {
@@ -210,7 +216,7 @@ export default {
       newGroup,
       createGroup,
       onDropDown,
-      // removeSubGroup
+      createGroupLoading
     };
   },
 };

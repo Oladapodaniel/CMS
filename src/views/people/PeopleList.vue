@@ -621,6 +621,18 @@ export default {
             .catch((err) => {
               console.log(err);
             });
+
+            if (filterResult.value.length > 0 && filtered.value && filter.value.name) {
+              filterResult.value = filterResult.value.filter(
+                (item) => item.id !== id
+              );
+            }
+
+            if (searchText.value !== "" && searchPeopleNamesInDB.value.length > 0) {
+              searchPeopleNamesInDB.value = searchPeopleNamesInDB.value.filter(
+                (item) => item.id !== id
+              );
+            }
         })
         .catch((err) => {
           stopProgressBar();

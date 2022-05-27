@@ -127,7 +127,7 @@ import { watchEffect } from "@vue/runtime-core";
 import { useStore } from "vuex";
 export default {
   name: "GroupTree",
-  props: ["items", "addGroupValue", "allChecked", "checked"],
+  props: ["items", "addGroupValue", "allChecked", "checked", "autoCheck"],
   emits: ["group", "groupp", "setcheckval", "resetchecked"],
   components: {
     Dialog,
@@ -200,7 +200,9 @@ export default {
       if (getIndex < 0) {
         multipleGroupsSelected.value.push(groupData);
       }
-      checkChildren(groupData, multipleGroupsSelected.value);
+      if (props.autoCheck) {
+        checkChildren(groupData, multipleGroupsSelected.value);
+      }
       store.dispatch(
         "groups/setCheckedGroupChildren",
         multipleGroupsSelected.value

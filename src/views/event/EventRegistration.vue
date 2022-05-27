@@ -27,6 +27,10 @@
       </div>
     </div>
 
+    <div class="row d-flex justify-content-center" v-if="fullEventData.registrationCutOffTime && new Date().toISOString() >= new Date(fullEventData.registrationCutOffTime).toISOString()">
+      <img src="../../assets/registration_closed.jpeg" class="event-closed"/>
+    </div>
+
     <!--end top Address -->
 
     <!-- top area -->
@@ -49,7 +53,7 @@
       </div>
     </div>
 
-    <div class="row">
+    <div class="row" v-if="!fullEventData.registrationCutOffTime || new Date().toISOString() <= new Date(fullEventData.registrationCutOffTime).toISOString()">
       <div
         class="col-md-3 d-md-flex align-items-center justify-content-end text-md-right mt-1 font-weight-700"
       >
@@ -395,7 +399,7 @@
       </div>
     </div> -->
     
-    <div class="row">
+    <div class="row" v-if="new Date().toISOString() <= new Date(fullEventData.registrationCutOffTime).toISOString()">
       <div class="col-10 offset-1 col-md-3 offset-md-5">
         <!-- Button code -->
           <div title="Add to Calendar" class="addeventatc w-100">
@@ -1440,5 +1444,15 @@ export default {
 .italicize {
   font-style: italic;
   font-size: 15px;
+}
+
+.event-closed {
+    width: 50%
+  }
+
+@media (max-width: 400px) {
+  .event-closed {
+    width: 100%
+  }
 }
 </style>

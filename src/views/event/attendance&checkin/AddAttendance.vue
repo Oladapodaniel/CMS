@@ -659,7 +659,7 @@ export default {
         const response = await eventsService.getEvents();
         if (response && response.length > 0) {
           events.value = response.map((i) => {
-            return { id: i.activityID, name: i.name };
+            return { id: i.activityID, name: i.name, date: i.date };
           });
         }
       } catch (error) {
@@ -699,7 +699,7 @@ export default {
       if (!newAcctivityDate.value && !selectedCategory.value) return false;
       try {
         const response = await eventsService.createNewActivity({ activity: { date: newAcctivityDate.value, eventCategoryId: selectedCategory.value.id } });
-        const newActivity = { id: response.currentEvent.id, name: `${response.currentEvent.name} (${ new Date(response.currentEvent.activityDate).toDateString() })` };
+        const newActivity = { id: response.currentEvent.id, name: `${response.currentEvent.name} (${ new Date(response.currentEvent.activityDate).toDateString() })`, date: newAcctivityDate.value };
         selectedEvent.value = newActivity;
         events.value.push(newActivity);
         toast.add({severity:'success', summary:'Operation Successful', detail:'Event created successfully', life: 3000});
@@ -743,26 +743,12 @@ export default {
     getGroups();
 
     const onContinue = async () => {
-      console.log(addPaidClass.value)
-     
-
-      // const baseFormData = new FormData()
-      // selectedEvent.value ? baseFormData.append("eventId", selectedEvent.value.id) : ""
-      // selectedGroup.value ? baseFormData.append("groupId", selectedGroup.value.id) : ""
-      // baseFormData.append("eventDate", moment(new Date(selectedEvent.value.name.split("(")[1].split(")")[0]).toISOString()).format().split("T")[0])
-      // slot.value ? baseFormData.append("registrationSlot", slot.value) : ""
-      // eventDetails.value ? baseFormData.append("details", eventDetails.value) : ""
-      // registrationSMS.value ? baseFormData.append("registrationSMS", registrationSMS.value) : ""
-      // registrationEmail.value ? baseFormData.append("registrationEmail", registrationEmail.value) : ""
-      // checkinSMS.value ? baseFormData.append("checkinSMS", checkinSMS.value) : ""
-      // checkinEmail.value ? baseFormData.append("checkinEmail", checkinEmail.value) : ""
-      // image.value ? baseFormData.append("bannerPhoto", image.value) : ""
-      //  disabled.value = false
+      console.log(selectedEvent.value)
 
       let checkinEvent = {
           eventId: selectedEvent.value.id,
-          groupIDs: selectedGroups.value.map(i => i.id),
-          eventDate: moment(new Date(selectedEvent.value.name.split("(")[1].split(")")[0]).toISOString()).format().split("T")[0],
+          groupIDs: selectedGroups.value,
+          eventDate: selectedEvent.value.date.split("T")[0],
         }
         slot.value ? checkinEvent.registrationSlot = slot.value : ""
         checkinSMS.value ? checkinEvent.checkinSMS = checkinSMS.value : ""
@@ -771,9 +757,8 @@ export default {
         registrationEmail.value ? checkinEvent.registrationEmail = registrationEmail.value : ""
         regCutOffTimer.value ? checkinEvent.registrationCutOffTime = regCutOffTimer.value : ""
         checkinCutOffTime.value ? checkinEvent.checkInCutOffTime = checkinCutOffTime.value : ""
-      //   console.log(checkinEvent)
+
       const formData = new FormData();
-        // disabled.value = false
 
       image.value ? formData.append("bannerPhoto", image.value) : ""
       formData.append("details", eventDetails.value)
@@ -787,11 +772,11 @@ export default {
       registrationEmail.value ? formData.append("registrationEmail", registrationEmail.value) : ""
       checkinSMS.value ? formData.append("checkinSMS", checkinSMS.value) : ""
       checkinEmail.value ? formData.append("checkinEmail", checkinEmail.value) : ""
-      selectedEvent.value ? formData.append("activityDate", moment(new Date(selectedEvent.value.name.split("(")[1].split(")")[0]).toISOString()).format().split("T")[0]) : ""
+      selectedEvent.value ? formData.append("activityDate", selectedEvent.value.date.split("T")[0]) : ""
       formData.append("isPaidFor", addPaidClass.value)
       amount.value ? formData.append("amount", amount.value) : ""
       selectedEvent.value ? formData.append("activityId", selectedEvent.value.id) : ""
-      selectedGroups.value ? formData.append("groupIDs", selectedGroups.value.map(i => i.id)) : ""
+      
       formData.append("enableRegistration", true)
       slot.value ? formData.append("registrationSlot", slot.value) : ""
       regCutOffTimer.value ? formData.append("registrationCutOffTime", regCutOffTimer.value) : ""
@@ -799,6 +784,7 @@ export default {
 
       if (!amount.value && !selectedBank.value && !accountNumber.value && !selectedCashAccount.value && !selectedIncomeAccount.value &&  !image.value) {
         console.log('free and no image')
+        selectedGroups.value ? formData.append("groupIDs", selectedGroups.value) : ""
         
       try {
           // const response = await attendanceservice.saveCheckAttendanceItem(checkinEvent);
@@ -827,6 +813,7 @@ export default {
       console.log("Only Top")
       } else if (!amount.value && !selectedBank.value && !accountNumber.value && !selectedCashAccount.value && !selectedIncomeAccount.value &&  image.value) {
         console.log("Free and image")
+        selectedGroups.value ? formData.append("groupIDs", JSON.stringify(selectedGroups.value)) : ""
         try {
             let { data } = await axios.post('/api/CheckInAttendance/create/multiple', formData)
             // let { data } = await axios.post('/api/CheckInAttendance/EventRegister', formData)
@@ -854,6 +841,7 @@ export default {
         }
       } else if (amount.value && selectedBank.value && accountNumber.value && selectedCashAccount.value && selectedIncomeAccount.value) {
         console.log('image and paid')
+        selectedGroups.value ? formData.append("groupIDs", JSON.stringify(selectedGroups.value)) : ""
         try {
             let { data } = await axios.post('/api/CheckInAttendance/create/multiple', formData)
             let firstGroup = data.returnObject.checkInAttendanceResult.find(i => i.groupID == selectedGroups.value[0].id)
@@ -981,11 +969,6 @@ export default {
           console.log(selectedBank.value)
         }
 
-        // watchEffect(() => {
-        //   if (store.getters["groups/checkedTreeGroup"]) {
-        //     selectedGroups.value = store.getters["groups/checkedTreeGroup"];
-        //   }
-        // });
 
         const setGroupProp = () => {
           hideDiv.value = !hideDiv.value;
@@ -1009,6 +992,7 @@ export default {
         };
 
          const setFilterGroups = (payload) => {
+           console.log(payload)
             selectedGroups.value = payload
           }
 

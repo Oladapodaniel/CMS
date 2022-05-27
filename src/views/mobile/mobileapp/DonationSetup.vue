@@ -11,8 +11,10 @@
           </div>
           <div class="col-md-5 d-flex justify-content-end">
             <button
-              class="default-btn primary-bg border-0 font-weight-700 text-white" data-toggle="modal" data-target="#paymentModal"
-              style="font-size:13px"
+              class="default-btn primary-bg border-0 font-weight-700 text-white"
+              data-toggle="modal"
+              data-target="#paymentModal"
+              style="font-size: 13px"
             >
               Add Donation Form
             </button>
@@ -26,12 +28,14 @@
         </div>
         <div class="row">
           <div class="col-md-7">
-            <div class="col-md-7 mt-3 px-md-0 col-9 ">Bank Details</div>
+            <div class="col-md-7 mt-3 px-md-0 col-9">Bank Details</div>
           </div>
           <div class="col-md-5 d-flex justify-content-end">
             <button
-              class=" col-4 mt-2 col-md-4 mr-2 btnIcons c-pointer" data-toggle="modal" data-target="#paymentOnBoardingModal"
-              style="font-size:18px"
+              class="col-4 mt-2 col-md-4 mr-2 btnIcons c-pointer"
+              data-toggle="modal"
+              data-target="#paymentOnBoardingModal"
+              style="font-size: 18px"
             >
               Add
             </button>
@@ -47,19 +51,22 @@
               <th>Description</th>
             </tr>
           </thead>
-         <tbody>
-          <tr v-for="(bankAccount, index) in bankAccounts" :key="index">
-            <td>{{bankAccount.accountName}}</td>
-            <td>{{bankAccount.accountNumber}}</td>
-            <td>{{bankAccount.description}}</td>
-            <td>
-                <div class="col-2 align-self-center cursor-pointer" @click="showConfirmModalBank(bankAccount.id)">
+          <tbody>
+            <tr v-for="(bankAccount, index) in bankAccounts" :key="index">
+              <td>{{ bankAccount.accountName }}</td>
+              <td>{{ bankAccount.accountNumber }}</td>
+              <td>{{ bankAccount.description }}</td>
+              <td>
+                <div
+                  class="col-2 align-self-center cursor-pointer"
+                  @click="showConfirmModalBank(bankAccount.id)"
+                >
                   <i class="pi pi-trash"></i>
                 </div>
-            </td>
-          </tr>
-        </tbody>
-      </table>
+              </td>
+            </tr>
+          </tbody>
+        </table>
 
         <!-- <div class="row table table-border">
           <div class="col-md-12 px-0">
@@ -77,7 +84,7 @@
             </div>
           </div>
         </div> -->
-       
+
         <table class="table table-border">
           <thead class="thead-light">
             <tr>
@@ -93,106 +100,116 @@
           </tbody>
         </table>
 
-
-          <!-- Modal -->
-          <div
-            class="modal fade"
-            id="paymentModal"
-            tabindex="-1"
-            aria-labelledby="exampleModalLabel"
-            aria-hidden="true"
-          >
-            <div class="modal-dialog modal-lg" style="max-width: 600px;">
-              <div class="modal-content">
-                <div class="modal-header pb-0">
-                  <h5 class="modal-title" style="font: normal normal 800 28px Nunito sans;" id="exampleModalLabel">
-                  Online Donation
-                  </h5>
-                  <button
-                    type="button"
-                    class="btn-close border-0"
-                    data-dismiss="modal"
-                    aria-label="Close"
-                    ref="closeModalButtonForm"
-                  >X</button>
-                </div>
-                <div class="modal-body pt-0">
-                  <paymentform @formcreated="formCreated" />
-                </div>
-                <!-- <div class="modal-footer">
-                   <button
-                    type="button"
-                    class="btn btn-secondary"
-                    data-bs-dismiss="modal"
-                  >
-                    Close
-                  </button>
-                  <button type="button" class="btn-primary default-btn primary-bg border-0 font-weight-700 text-white">
-                    Save
-                  </button>
-                </div> -->
+        <!-- Modal -->
+        <div
+          class="modal fade"
+          id="paymentModal"
+          tabindex="-1"
+          aria-labelledby="exampleModalLabel"
+          aria-hidden="true"
+        >
+          <div class="modal-dialog modal-lg" style="max-width: 600px">
+            <div class="modal-content">
+              <div class="modal-header pb-0">
+                <h5
+                  class="modal-title"
+                  style="font: normal normal 800 28px Nunito sans"
+                  id="exampleModalLabel"
+                >
+                  Online donation form
+                </h5>
+                <button
+                  type="button"
+                  class="btn-close border-0"
+                  data-dismiss="modal"
+                  aria-label="Close"
+                  ref="closeModalButtonForm"
+                >
+                  X
+                </button>
+              </div>
+              <div class="modal-body pt-0">
+                <paymentform @formcreated="formCreated" />
               </div>
             </div>
           </div>
-          <!-- Modal -->
-          <div
-            class="modal fade"
-            id="paymentOnBoardingModal"
-            tabindex="-1"
-            aria-labelledby="exampleModalLabel"
-            aria-hidden="true"
-          >
-            <div class="modal-dialog modal-lg" style="max-width: 600px;">
-              <div class="modal-content">
-                <div class="modal-header pb-0">
-                  <h5 class="modal-title" style="font: normal normal 800 28px Nunito sans;" id="exampleModalLabel">
+        </div>
+        <!-- Modal -->
+        <div
+          class="modal fade"
+          id="paymentOnBoardingModal"
+          tabindex="-1"
+          aria-labelledby="exampleModalLabel"
+          aria-hidden="true"
+        >
+          <div class="modal-dialog modal-lg" style="max-width: 600px">
+            <div class="modal-content">
+              <div class="modal-header pb-0">
+                <h5
+                  class="modal-title"
+                  style="font: normal normal 800 28px Nunito sans"
+                  id="exampleModalLabel"
+                >
                   Bank Details
-                  </h5>
-                  <button
-                    type="button"
-                    class="btn-close border-0"
-                    data-dismiss="modal"
-                    aria-label="Close"
-                    ref="closeModalButton"
-                  >X</button>
-                </div>
-                <div class="modal-body pt-0">
-                  <paymentonboarding @formcreated="formCreated" @closemodal="closeModal" />
-                </div>
-                <!-- <div class="modal-footer">
-                   <button
-                    type="button"
-                    class="btn btn-secondary"
-                    data-bs-dismiss="modal"
-                  >
-                    Close
-                  </button>
-                  <button type="button" class="btn-primary default-btn primary-bg border-0 font-weight-700 text-white">
-                    Save
-                  </button>
-                </div> -->
+                </h5>
+                <button
+                  type="button"
+                  class="btn-close border-0"
+                  data-dismiss="modal"
+                  aria-label="Close"
+                  ref="closeModalButton"
+                >
+                  X
+                </button>
+              </div>
+              <div class="modal-body pt-0">
+                <paymentonboarding
+                  @formcreated="formCreated"
+                  @closemodal="closeModal"
+                />
               </div>
             </div>
           </div>
+        </div>
 
         <div class="row mt-4">
-        
           <div
-            class="col-11 ml-3
-             btn primary-bg my-2 text-white default-btn border-0"
+            class="
+              col-11
+              ml-3
+              btn
+              primary-bg
+              my-2
+              text-white
+              default-btn
+              border-0
+            "
             @click="completeSetUp"
-          ><i class="pi pi-spin pi-spinner text-white mr-2" v-show="setupSpinner"  style="fontSize: 16px"></i>
-             Finish Setup
+          >
+            <i
+              class="pi pi-spin pi-spinner text-white mr-2"
+              v-show="setupSpinner"
+              style="fontsize: 16px"
+            ></i>
+            Finish Setup
           </div>
           <div
             @click="skip"
-            class="btn my-3 mb-5 text-primary text-right col-12 col-sm-6 offset-sm-3">
+            class="
+              btn
+              my-3
+              mb-5
+              text-primary text-right
+              col-12 col-sm-6
+              offset-sm-3
+            "
+          >
             Skip >>>
           </div>
         </div>
       </div>
-      </div>
-   
+    </div>
+
     <!-- <Toast /> -->
   </div>
 </template>
@@ -206,21 +223,21 @@ import finish from "../../../services/progressbar/progress";
 import axio from "axios";
 // import store from "../../../store/store";
 import paymentform from "../../../components/genericmobile/paymentform";
-import store from '../../../store/store';
+import store from "../../../store/store";
 import { useToast } from "primevue/usetoast";
-import Paymentonboarding from './PaymentOnBoarding';
+import Paymentonboarding from "./PaymentOnBoarding";
 import { useConfirm } from "primevue/useconfirm";
 // import paymentonboarding from './PaymentOnBoarding';
 export default {
   components: {
     paymentform,
-    Paymentonboarding
+    Paymentonboarding,
     // DonationSetup,
     // Dropdown,
   },
   setup(props, context) {
-    const toast = useToast()
-    const confirm = useConfirm()
+    const toast = useToast();
+    const confirm = useConfirm();
     const nigerianBanks = ref([]);
     const bankAccounts = ref([]);
     const selectedBank = ref("");
@@ -228,7 +245,7 @@ export default {
     const accountName = ref("");
     const loading = ref(false);
     const accNameRef = ref("");
-    const closeModalButtonForm = ref(null)
+    const closeModalButtonForm = ref(null);
     // const toast = useToast();
 
     // const pastors = ref([{}]);
@@ -240,34 +257,35 @@ export default {
         banks: selectedBank.value,
       },
     ]);
-    const setupSpinner = ref(false)
+    const setupSpinner = ref(false);
 
     const completeSetUp = () => {
       let changeState = {
-            tab: true,
-            churchSetup: false,
-            socialMedia: false,
-            appBranding: false,
-            donationForm: true
-          }
-          context.emit('saved-donation', changeState)
+        tab: true,
+        churchSetup: false,
+        socialMedia: false,
+        appBranding: false,
+        donationForm: true,
+      };
+      context.emit("saved-donation", changeState);
 
-      const currentUser = store.getters.currentUser
-      setupSpinner.value = true
+      const currentUser = store.getters.currentUser;
+      setupSpinner.value = true;
       axios
-        .post(`/mobile/v1/Feeds/SetupChurchPostCategories?tenantID=${currentUser.tenantId}`)
+        .post(
+          `/mobile/v1/Feeds/SetupChurchPostCategories?tenantID=${currentUser.tenantId}`
+        )
         .then((res) => {
           console.log(res);
-          setupSpinner.value = false
+          setupSpinner.value = false;
 
           setTimeout(() => {
-            router.push({ name:'OnboardingSuccessful'});
-          }, 1000)
+            router.push({ name: "OnboardingSuccessful" });
+          }, 1000);
         })
         .catch((err) => {
           console.log(err);
         });
-        
     };
 
     const getBanks = () => {
@@ -302,7 +320,6 @@ export default {
         accNameRef.value.focus();
 
         loading.value = false;
-
       } catch (error) {
         finish();
         console.log(error);
@@ -312,27 +329,39 @@ export default {
     };
 
     const closeModalButton = ref(null);
-    const formsArr = ref([ ]);
-    const formCreated = data => {
+    const formsArr = ref([]);
+    const formCreated = (data) => {
       closeModalButton.value.click();
       closeModalButtonForm.value.click();
-      console.log(data)
-      formsArr.value.push({ name: data.name, accountName: data.accountName, bank: data.bank });
-    }
+      console.log(data);
+      formsArr.value.push({
+        name: data.name,
+        accountName: data.accountName,
+        bank: data.bank,
+      });
+    };
 
     const closeModal = (bankDetails) => {
-      toast.add({severity:'success', summary: 'Bank Details Successfully Added', detail:'The account was added successful', life: 4000});
+      toast.add({
+        severity: "success",
+        summary: "Bank Details Successfully Added",
+        detail: "The account was added successful",
+        life: 4000,
+      });
       closeModalButton.value.click();
-      console.log(bankDetails, 'bankDetails list');
-      bankAccounts.value.push(bankDetails)
-    }
+      console.log(bankDetails, "bankDetails list");
+      bankAccounts.value.push({
+        accountName: bankDetails.bankName,
+        accountNumber: bankDetails.bankNumber,
+        description: bankDetails.description
+      });
+    };
 
-    
     const getPaymentForm = () => {
       axios
         .get("/api/PaymentForm/GetAll")
         .then((res) => {
-          formsArr.value = res.data
+          formsArr.value = res.data;
         })
         .catch((err) => {
           console.log(err);
@@ -344,8 +373,8 @@ export default {
       axios
         .get("/getAllChurchBanks")
         .then((res) => {
-          console.log(res, 'all bank details');
-          bankAccounts.value = res.data.returnObject
+          console.log(res, "all bank details");
+          bankAccounts.value = res.data.returnObject;
         })
         .catch((err) => {
           console.log(err);
@@ -353,70 +382,71 @@ export default {
     };
     getAllChurchBank();
 
-      const showConfirmModalBank = (id) => {
-        confirm.require({
-          message: "Are you sure you want to proceed?",
-          header: "Confirmation",
-          icon: "pi pi-exclamation-triangle",
-          acceptClass: "confirm-delete",
-          rejectClass: "cancel-delete",
-          accept: () => {
-            deleteBankUser(id);
-            // toast.add({severity:'info', summary:'Confirmed', detail:'Member Deleted', life: 3000});
-          },
-          reject: () => {
-            toast.add({
-              severity: "info",
-              summary: "Rejected",
-              detail: "You have rejected",
-              life: 3000,
-            });
-          },
-        });
-      };
-       const deleteBankUser = (id) => {
-        axios
-          .delete(`deleteTenantBank?Id=${id}`)
-          .then((res) => {
-            // alert('deleted');
-            console.log(res, 'deleted bank user');
-            toast.add({
-              severity: "success",
-              summary: "Confirmed",
-              detail: `${res.data.response}`,
-              life: 4000,
-            });
-            bankAccounts.value = bankAccounts.value.filter(
-              (tenant) => tenant.id !== id
-            );
-
-          })
-          .catch((err) => {
-            console.log(err)
-              toast.add({
-                severity: "error",
-                summary: "Unable to delete",
-                detail: "An error occurred, please try again",
-                life: 4000,
-              });
+    const showConfirmModalBank = (id) => {
+      confirm.require({
+        message: "Are you sure you want to proceed?",
+        header: "Confirmation",
+        icon: "pi pi-exclamation-triangle",
+        acceptClass: "confirm-delete",
+        rejectClass: "cancel-delete",
+        accept: () => {
+          deleteBankUser(id);
+          // toast.add({severity:'info', summary:'Confirmed', detail:'Member Deleted', life: 3000});
+        },
+        reject: () => {
+          toast.add({
+            severity: "info",
+            summary: "Rejected",
+            detail: "You have rejected",
+            life: 3000,
           });
-      };
+        },
+      });
+    };
+    const deleteBankUser = (id) => {
+      axios
+        .delete(`deleteTenantBank?Id=${id}`)
+        .then((res) => {
+          // alert('deleted');
+          console.log(res, "deleted bank user");
+          toast.add({
+            severity: "success",
+            summary: "Confirmed",
+            detail: `${res.data.response}`,
+            life: 4000,
+          });
+          bankAccounts.value = bankAccounts.value.filter(
+            (tenant) => tenant.id !== id
+          );
+        })
+        .catch((err) => {
+          console.log(err);
+          toast.add({
+            severity: "error",
+            summary: "Unable to delete",
+            detail: "An error occurred, please try again",
+            life: 4000,
+          });
+        });
+    };
 
     const skip = () => {
-      setupSpinner.value = true
-      const currentUser = store.getters.currentUser
+      setupSpinner.value = true;
+      const currentUser = store.getters.currentUser;
       axios
-        .post(`/mobile/v1/Feeds/SetupChurchPostCategories?tenantID=${currentUser.tenantId}`)
+        .post(
+          `/mobile/v1/Feeds/SetupChurchPostCategories?tenantID=${currentUser.tenantId}`
+        )
         .then((res) => {
           console.log(res);
           setTimeout(() => {
-            router.push({ name: "OnboardingSuccessful" })
-          }, 1000)
+            router.push({ name: "OnboardingSuccessful" });
+          }, 1000);
         })
         .catch((err) => {
           console.log(err);
         });
-    }
+    };
     return {
       nigerianBanks,
       selectedBank,
@@ -437,7 +467,7 @@ export default {
       bankAccounts,
       deleteBankUser,
       showConfirmModalBank,
-      closeModalButtonForm
+      closeModalButtonForm,
     };
   },
 };
@@ -638,7 +668,6 @@ export default {
   background: rgba(0, 0, 0, 0.707);
   position: fixed;
   top: 32em;
-  width: 20%
+  width: 20%;
 }
-
 </style>

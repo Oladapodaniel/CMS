@@ -244,7 +244,7 @@ export default {
       loading.value = true;
 
       const payload = {
-        groupIDs: checkedGroup.value.map(i => i.id),
+        groupIDs: checkedGroup.value,
         eventID: selectedEvent.value.id,
         startDate: start,
         endDate: end
