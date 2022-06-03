@@ -13,7 +13,7 @@
 
         <div class="row" v-if="items.length > 0 && !loading">
           <div class="col-md-12 px-0">
-            <List :list="items" :errorOcurred="errorOccurred" @attendance-checkin="removeCheckin" :totalItems="totalItems" @pagedattendance="setPagedAttendance" />
+            <List :list="items" @checkedattendance="removeMultipleCheckin" :errorOcurred="errorOccurred" @attendance-checkin="removeCheckin" :totalItems="totalItems" @pagedattendance="setPagedAttendance" />
           </div>
         </div>
         <div class="row" v-if="cantGetItems">
@@ -65,12 +65,25 @@ export default {
         items.value.splice(payload, 1)
     }
 
+    const removeMultipleCheckin = (payload) => {
+      console.log(payload, "oiiipoii")
+      items.value = items.value.filter((item) => {
+              const y = payload.findIndex(
+                (i) => i.id === item.id
+              );
+               console.log(y , "old are u now");
+              if (y >= 0) return false;
+              return true;
+            });
+    }
+
     const setPagedAttendance = (payload) => {
       items.value = payload.items
     }
 
     return {
       items,
+      removeMultipleCheckin,
       loading,
       errorOccurred,
       cantGetItems,

@@ -32,7 +32,7 @@
                                             aria-expanded="false"
                                         >
                                                 {{ item && item.financialContribution ? item.financialContribution.name : "Select" }}
-                                            <i class="pi pi-chevron-down manual-dd-icon float-right "></i>
+                                            <i class="pi pi-chevron-down manual-dd-icon float-right pt-1 "></i>
                                         </button>
                                         <div
                                             class="dropdown-menu scroll  w-100"
@@ -45,9 +45,9 @@
                                             </div> -->
 
                                             <a class="dropdown-item font-weight-700 small-text py-2 c-pointer"
-                                            v-for="(item, indx) in contributionItems" :key="indx"
-                                            @click="selectContribution(item, index)"
-                                            >{{ item.name }}</a
+                                            v-for="(itm, indx) in contributionItems" :key="indx"
+                                            @click="selectContribution(itm, index)"
+                                            >{{ itm.name }}</a
                                             >
                                             <a class="font-weight-bold small-text d-flex justify-content-center py-2 text-decoration-none primary-text" style="border-top: 1px solid #002044;color: #136ACD;" href="#"
                                             type="button" data-toggle="modal" data-target="#exampleModalCenter"
@@ -57,7 +57,6 @@
                                             </a>
                                         </div>
                                     </div>
-                                    <!-- <Dropdown v-model="selectedContribution" class="w-100 font-weight-normal" :options="contributionItems"  optionLabel="name" placeholder="Select Contribution" /> -->
                                 </div>
                             </div>
                         </div>
@@ -88,7 +87,7 @@
                                 </div>
                         
                                 <div class="col-12 col-sm-12  col-lg-8">
-                                    <input type="text" v-model="PledgeName" class="form-control" :class="{ 'is-invalid' : !isNameValid }" @blur="checkNameValue"/>
+                                    <input type="text" v-model="pledgeName" class="form-control" :class="{ 'is-invalid' : !isNameValid }" @blur="checkNameValue"/>
                                     <div class="invalid-feedback">
                                         Please enter your pledge name.
                                     </div>
@@ -116,7 +115,7 @@
                                 </div>
                         
                                 <div class="col-12 col-sm-12  col-lg-8">
-                                     <Dropdown v-model="selectedCurrency" class="w-100  font-weight-normal" :options="currencyList" optionLabel="name" :filter="true" placeholder="Select Currency" >
+                                     <Dropdown v-model="selectedCurrency" class="w-100  font-weight-normal" :options="currencyList" optionLabel="name" :filter="false" placeholder="Select Currency" >
                                         <template #value="slotProps">
                                             <div class="country-item country-item-value" v-if="slotProps.value">
                                                 <div>{{slotProps.value.name}}</div>
@@ -159,7 +158,7 @@
                                             <label for="" class=""> Amount </label>
                                         </div>
                                         <div class="col-12 col-sm-12  col-lg-8">
-                                            <input type="text" v-model="SpecificAmount" class="form-control" />
+                                            <input type="text" v-model="specificAmount" class="form-control" />
                                         </div>
                                     </div>
                                 </div>
@@ -259,6 +258,7 @@ import InputText from "primevue/inputtext";
 import { useToast } from "primevue/usetoast";
 import Calendar from "primevue/calendar";
 import finish from '../../services/progressbar/progress';
+import monthDayYear from "../../services/dates/dateformatter";
 import { useRoute } from "vue-router"
 import ContributionItems from "@/components/firsttimer/contributionItemModal";
 import router from '../../router';
@@ -289,13 +289,13 @@ export default {
         // const showFreeWill = ref(false)
         // const showPledgeType = ref(false)
         const selectedRange = ref({})
-        const selectedContribution = ref("")
+        const selectedContribution = ref({})
         const selectedCurrency = ref("")
         const isNameValid = ref(true)
-        const PledgeName = ref('')
+        const pledgeName = ref('')
         const amountFrom = ref()
         const amountTo = ref()
-        const SpecificAmount = ref()
+        const specificAmount = ref("")
         const pledgType = ref('')
         const currencyList = ref([])
         const contributionItems = ref([])
@@ -315,17 +315,20 @@ export default {
         //     {name: 'Concert'},
         //     {name: 'Children Program'}
         // ])
+    const date = (offDate) => {
+            return monthDayYear.normalDate(offDate);
+          };
 
     const getSinglePledgeDefinition = async () => {
           try{
             const res = await axios.get(`/api/Pledge/GetSinglePledgeDefinitions?ID=${route.query.id}`)
                     finish()
                     targetAmount.value = res.data.returnObject.totalTargetAmount
-                    PledgeName.value = res.data.returnObject.name
-                    SpecificAmount.value = res.data.returnObject.donorPaymentSpecificAmount
+                    pledgeName.value = res.data.returnObject.name
+                    specificAmount.value = res.data.returnObject.donorPaymentSpecificAmount
                     amountFrom.value = res.data.returnObject.donorPaymentRangeFromAmount
                     amountTo.value = res.data.returnObject.donorPaymentRangeToAmount
-                    endDate.value = res.data.returnObject.pledgeTypeFrequencyOneTimeEndDate
+                    endDate.value = res.data.returnObject.pledgeTypeFrequencyOneTimeEndDate 
                     startDate.value = res.data.returnObject.pledgeTypeFrequencyOneTimeStartDate
                     selectedRange.value.name = res.data.returnObject.pledgeTypeFrequencyReOccuring
                     // showPledgeType.value = res.data.returnObject.donorPaymentType
@@ -366,16 +369,26 @@ export default {
         }
         getSinglePledgeDefinition()
 
+        const newConItems = (payload) => {
+            console.log(payload);
+            contributionItems.value.push(payload);
+            newContribution.value.payment[newContribution.value.payment.length - 1] =
+                payload;
+            };
+
+
        const selectContribution = (item, index) => {
             // if (newContribution.value.payment.findIndex(i => i.id === item.id) < 0) {
                 // newContribution.value.payment[newContribution.value.payment.length - 1] = item
                 newContribution.value.payment[index].financialContribution = item
+               selectedContribution.value = item
             // }   else {
                 console.log("Youve selected this, please select another")
             // }
             // newContribution.value.offType = e.target.innerText
                 // newContribution.value.payment.push(item)
-            console.log(item, index, newContribution.value.payment)
+            console.log(item, index, newContribution.value.payment, "The 🤣🤣🤣🤣")
+            console.log(selectedContribution.value, "They 😁😁😁😀 ")
         }
 
      const getContributionCategory = () => {
@@ -419,12 +432,16 @@ export default {
    
 
         const savePledge = async () => {
+            // let removeEmptyObj = newContribution.value.payment.filter((i) => {
+            //     return Object.keys(i.financialContribution).length > 0
+            //     })
+
             const pledgeDetails = {
                     contributionID: selectedContribution.value.id,
                     totalTargetAmount: targetAmount.value,
                     donorPaymentType: pledgType.value,
-                    name: PledgeName.value,
-                    donorPaymentSpecificAmount: SpecificAmount.value,
+                    name: pledgeName.value,
+                    donorPaymentSpecificAmount: specificAmount.value,
                     donorPaymentRangeFromAmount: amountFrom.value,
                     donorPaymentRangeToAmount: amountTo.value,
                     pledgeTypeFrequencyOneTimeStartDate: startDate.value,
@@ -442,8 +459,8 @@ export default {
                     contributionID: selectedContribution.value.id,
                     totalTargetAmount: targetAmount.value,
                     donorPaymentType: pledgType.value,
-                    name: PledgeName.value,
-                    donorPaymentSpecificAmount: SpecificAmount.value,
+                    name: pledgeName.value,
+                    donorPaymentSpecificAmount: specificAmount.value,
                     donorPaymentRangeFromAmount: amountFrom.value,
                     donorPaymentRangeToAmount: amountTo.value,
                     pledgeTypeFrequencyOneTimeStartDate: startDate.value,
@@ -479,7 +496,7 @@ export default {
                     try{
                         const res = await axios.post('/api/Pledge/CreatePledgeDefinition', pledgeDetails)
                         finish()
-                        console.log(res,'PledgeDefinition')
+                        console.log(res.data,'PledgeDefinition')
                         loading.value = false
                         
 
@@ -495,11 +512,11 @@ export default {
                         targetAmount.value = "";
                         amountTo.value = "";
                         amountFrom.value = "";
-                        selectedCurrency.value = "";
-                        PledgeName.value = "";
-                        selectedContribution.value = "";
-                        SpecificAmount.value = "";
-                        selectedRange.value = "";
+                        selectedCurrency.value = {};
+                        pledgeName.value = "";
+                        selectedContribution.value = {};
+                        specificAmount.value = "";
+                        selectedRange.value = {};
                         startDate.value  = "";
                         endDate.value = "";
                     
@@ -549,7 +566,7 @@ export default {
         }
 
         const checkNameValue = () => {
-            if(PledgeName.value.length == 0) {
+            if(pledgeName.value.length == 0) {
                 isNameValid.value = false
             }   else {
                 isNameValid.value = true
@@ -558,16 +575,18 @@ export default {
 
 
         return {
+            newConItems,
+            date,
             currencyList,
             newContribution,
             selectContribution,
             contributionItems,
             targetAmount,
             isNameValid,
-            PledgeName,
+            pledgeName,
             amountFrom,
             amountTo,
-            SpecificAmount,
+            specificAmount,
             checkNameValue,
             selectedCurrency,
             selectedContribution,

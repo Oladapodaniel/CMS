@@ -831,6 +831,7 @@ filter.value.phoneNumber ="";
         .post(`/api/People/DeletePeople`, dft)
         .then((res) => {
           let incomingRes = res.data.response;
+          console.log(incomingRes, "🙌❤🙌❤🙌")
           if (incomingRes.toString().toLowerCase().includes("all")) {
             toast.add({
               severity: "success",
@@ -842,6 +843,7 @@ filter.value.phoneNumber ="";
               const y = checkedFirstTimer.value.findIndex(
                 (i) => i.id === item.id
               );
+              console.log(y , "old are u now");
               if (y >= 0) return false;
               return true;
             });

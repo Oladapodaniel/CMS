@@ -399,8 +399,12 @@ export default {
 
     });
     const removeSearchText = () => {
-        searchText = "";
+        searchText.value = "";
     }
+    const clearInput = () => {
+        searchIsVisible.value = !searchIsVisible.value;
+    }
+
     const sendGroupSms = (group) => {
       showSMS.value = true
       if (group.id) {
@@ -470,6 +474,7 @@ export default {
       // showSide,
       // sendSms,
       groupClick,
+      clearInput,
       showSMS,
       showEmail,
       groups,
