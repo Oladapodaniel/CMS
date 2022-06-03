@@ -150,7 +150,7 @@
                                         </span>
                                     </button>
                                     <div class="dropdown-menu scroll w-100 " aria-labelledby="dropdownMenuButton">
-                                        <a class="dropdown-item" v-for="(item, index) in allPledgeList" :key="index">
+                                        <a class="dropdown-item cursor-pointer" v-for="(item, index) in allPledgeList" :key="index">
                                         <div @click="PledgesType(item)"> {{item.name}}</div> 
                                         </a>
                                         <div class="dropdown-divider"></div>
@@ -257,25 +257,30 @@
                         <!-- <div class="col-sm-2" style="margin-left: 74px;">Total</div> -->
                     </div>
                 </div>
+                <div class="row">
+                    <div class="col-md-12 mt-2 ">
+                        <div  v-if="selectedPledge.donorPaymentType == 0 " class="font-weight-bold col-md-4 ml-4 mt-2  ">Free will</div>
+                        <div  v-if="selectedPledge.donorPaymentType == 1 " class="font-weight-bold col-md-4 ml-4 mt-2  ">Specific</div>
+                        <div  v-if="selectedPledge.donorPaymentType == 2 " class="font-weight-bold col-md-4 ml-4 mt-2  ">Range</div>
+                    </div>
+                </div>
                 <!-- <div
                     class="attendance-body"
                     id="attendanceBody"
                     > -->
                     
-                    <div class="row second-form first-row">
-                        <div class="col-md-8 mb-2 " v-if="selectedContact.name"  >
+                    <div class="row mt-4 second-form first-row  pt-0 ">
+                        <!-- <div class="col-md-8 mb-2 " v-if="selectedContact.name"  >
                             <div class="row">
                                 <div class="  col-md-4 col-12  text-sm-left text-lg-right align-self-center ">
                                     <label for="" class="">Person </label>
                                 </div>
                                 <div class="  col-md-8 col-12 ">
-                                    <!-- <div class=" col-sm-6 "> -->
-                                        <input type="text" v-model="selectedContact.name" class="form-control" />
-                                    <!-- </div> -->
+                                        <input type="text" v-model="selectedContact.name" :disabled="checking" class="form-control" />
                                 </div>
                             </div>
-                        </div>
-                        <div class="col-md-8 mb-3 mt-2 " v-if="selectedPledge.donorPaymentType == 2 "  >
+                        </div> -->
+                        <div class="col-md-8 mb-3  " v-if="selectedPledge.donorPaymentType == 2 "  >
                             <div class="row">
                                 <div class="col-12 col-md-4  text-sm-left text-lg-right align-self-center ">
                                     <label for="" class="">Pledge Amount </label>
@@ -291,7 +296,7 @@
                                 </div>
                             </div>
                         </div>
-                        <div class="col-md-8 mb-3 mt-2 " v-if="selectedPledge.donorPaymentType == 1 ">
+                        <div class="col-md-8 mb-3 " v-if="selectedPledge.donorPaymentType == 1 ">
                             <div class="row">
                                 <div class="col-md-4 text-md-right align-self-center  ">
                                     <label for="" class=""> Pledge Amount </label>
@@ -302,7 +307,7 @@
                                 </div>
                             </div>
                         </div>
-                        <div class="col-md-8 mb-3 mt-2 " v-if="selectedPledge.donorPaymentType == 0 " >
+                        <div class="col-md-8 mb-3  " v-if="selectedPledge.donorPaymentType == 0 " >
                             <div class="row">
                                 <div class="col-12 col-md-4 text-md-right align-self-center ">
                                     <label for="" class=""> Pledge Amount </label>
@@ -648,7 +653,7 @@ export default {
   border-radius: 7px;
 }
 .form .second-form.row.first-row {
-  padding: 50px;
+  padding: 30px;
 }
 
 .attendance-header {

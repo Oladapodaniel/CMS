@@ -30,10 +30,9 @@
             </div>
             
           </div>
-          <div class="row table">
+          <!-- <div class="row table">
               <div class="col-12 mt-4 w-100">
                 <div class="row">
-                  <!-- {{pledgeSummary}} -->
                   <div class="col-12 col-md-4 ">
                     <div class="font-weight-bold col-12 ">Total Pledge</div>
                   </div>
@@ -46,7 +45,7 @@
                   </div>
                 </div>
               </div>
-          </div>
+          </div> -->
           <div class="row">
               <div class="col-12 mt-4 w-100">
                 <div class="row">
@@ -186,7 +185,7 @@
                 
 
 
-                    <div class="row w-100 c-pointer text-dark border-top py-2 hover d-flex align-items-center" style="margin: 0" v-for="(pledgelist, index) in allPledgeList" :key="index">
+                    <div class="row w-100 c-pointer text-dark border-top py-2 hover d-flex align-items-center" style="margin: 0" v-for="(pledgelist, index) in searchGroup" :key="index">
 
                       <div class="col-md-2 desc" @click="pledgeClick(pledgelist.id)">
                         <p class="mb-0 d-flex justify-content-between text-primary">
@@ -294,7 +293,7 @@
 
 <script>
 
-import { ref } from 'vue'
+import { ref, computed } from 'vue'
 import finish from '../../services/progressbar/progress';
 import MembersSearch from "../../components/membership/MembersSearch.vue";
 import axios from "@/gateway/backendapi";
@@ -319,10 +318,9 @@ export default {
         const toast = useToast()
         const startDate = ref("");
         const endDate = ref("");
-        const Address = ref('');
+        // const Address = ref('');
         const loading = ref(false)
         const searchText = ref('')
-        const searchIsVisible = ref('')
         const selectedPledge = ref('')
         const allPledgeType = ref([])
         const selectedPerson = ref('')
@@ -330,6 +328,18 @@ export default {
         // const singlePledge = ref([]);
         const confirm = useConfirm();
 
+
+
+        const searchGroup = computed(() => {
+          if (searchText.value !== "" && allPledgeList.value.length > 0)  {
+            return allPledgeList.value.filter((i) => {
+                  if (i.pledgeType.name) return i.pledgeType.name.toLowerCase().includes(searchText.value.toLowerCase())
+            })
+          }  else {
+            return allPledgeList.value;
+          }
+
+          });
 
          const date = (offDate) => {
             return monthDayYear.monthDayYear(offDate);
@@ -340,6 +350,12 @@ export default {
 
             // console.log(payload, 'my allll')
          }
+        
+        const searchIsVisible = ref(false);
+
+            const toggleSearch = () => {
+            searchIsVisible.value = !searchIsVisible.value;
+          };
 
         const getAllPledges = async () =>{
                 try{
@@ -397,9 +413,12 @@ export default {
                 }
                 });
             };
-            const removeSearchText = () => {
-              searchText = "";
-            }
+              const removeSearchText = () => {
+                  searchText.value = "";
+                }
+              const clearInput = () => {
+                  searchIsVisible.value = !searchIsVisible.value;
+                }
 
             const showConfirmModal = (id, index) => {
                 confirm.require({
@@ -425,6 +444,9 @@ export default {
 
             return {
                 allPledgeList,
+                clearInput,
+                searchGroup,
+                toggleSearch,
                 startDate,
                 endDate,
                 chooseContact,

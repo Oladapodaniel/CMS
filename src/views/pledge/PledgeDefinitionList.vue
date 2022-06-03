@@ -187,7 +187,7 @@
                 
 
 
-                    <div class="row w-100 c-pointer text-dark border-top py-2 hover d-flex align-items-center" style="margin: 0" v-for="(pledgelist, index) in allPledgeList" :key="index">
+                    <div class="row w-100 c-pointer text-dark border-top py-2 hover d-flex align-items-center" style="margin: 0" v-for="(pledgelist, index) in searchGroup" :key="index">
 
                       <div class="col-md-2 desc" @click="pledgeClick(pledgelist.id)">
                         <p class="mb-0 d-flex justify-content-between text-primary">
@@ -265,16 +265,14 @@
                                   <a
                                     class="dropdown-item"
                                     @click="showConfirmModal(pledgelist.id, index)"
-                                    >Delete</a
+                                    ><a class="text-decoration-none" >Delete </a></a
                                   >
-                                  <a
-                                    class="dropdown-item"
-                                    ><router-link
+                                 
+                                  <router-link
                                       :to="`/tenant/pledge/pledgedefinition?id=${pledgelist.id}`"
-                                      class="text-color"
-                                      >Edit</router-link
-                                    ></a
-                                  >
+                                      class="text-color dropdown-item"
+                                      > <a class="text-decoration-none" >Edit </a>
+                                  </router-link>
                                 </div>
                               </span>
                             </span>
@@ -295,7 +293,7 @@
 
 <script>
 
-import { ref } from 'vue'
+import { ref, computed } from 'vue'
 import finish from '../../services/progressbar/progress';
 // import MembersSearch from "../../components/membership/MembersSearch.vue";
 import axios from "@/gateway/backendapi";
@@ -318,7 +316,6 @@ export default {
         const toast = useToast()
         const loading = ref(false)
         const searchText = ref('')
-        const searchIsVisible = ref('')
         const selectedPledge = ref('')
         const allPledgeType = ref([])
         const selectedPerson = ref('')
@@ -354,6 +351,30 @@ export default {
                 }
             }
             getAllPledgeDefinition()
+
+            const searchIsVisible = ref(false);
+
+            const toggleSearch = () => {
+            searchIsVisible.value = !searchIsVisible.value;
+          };
+            const searchGroup = computed(() => {
+              if (searchText.value !== "" && allPledgeList.value.length > 0)  {
+                return allPledgeList.value.filter((i) => {
+                      if (i.name) return i.name.toLowerCase().includes(searchText.value.toLowerCase())
+                })
+              }  else {
+                return allPledgeList.value;
+              }
+
+              });
+
+            const removeSearchText = () => {
+                  searchText.value = "";
+                }
+              const clearInput = () => {
+                  searchIsVisible.value = !searchIsVisible.value;
+                }
+
 
             const deletePledge = (id) => {
 
@@ -392,9 +413,6 @@ export default {
                 }
                 });
             };
-            const removeSearchText = () => {
-              searchText = "";
-            }
 
             const showConfirmModal = (id, index) => {
                 confirm.require({
@@ -420,6 +438,9 @@ export default {
 
             return {
                 allPledgeList,
+                searchGroup,
+                clearInput,
+                toggleSearch,
                 chooseContact,
                 showConfirmModal,
                 deletePledge,
