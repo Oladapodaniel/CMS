@@ -6,14 +6,14 @@
       <div class="top-con" id="ignore2">
         <div class="table-top">
             <div class="select-All mr-3">
-                  <input
+                  <!-- <input
                   class="d-block d-md-none"
                   type="checkbox"
                   name="all"
                   id="all"
                   @change="markAllAttendance"
                   :checked="checkedAttendance.length === searchAttendance.length "
-                />
+                /> -->
                 <label class="d-block d-md-none">SELECT ALL</label>
                   <i
                       class="
@@ -60,13 +60,13 @@
         <div class="container-fluid d-none d-md-block">
           <div class="row t-header">
             <div class="col-md-1">
-              <input
+              <!-- <input
                   type="checkbox"
                   name="all"
                   id="all"
                   @change="markAllAttendance"
                   :checked="checkedAttendance.length === searchAttendance.length "
-                />
+                /> -->
             </div>
             <div class="small-text text-capitalize col-md-3 font-weight-bold">
               Event Name
@@ -187,13 +187,13 @@
               :key="index"
             >
               <div class="col-md-1 d-flex d-md-block px-3 justify-content-end">
-                <input
+                <!-- <input
                     type="checkbox"
                     name=""
                     id=""
                     @change="check1item(item)"
                     :checked="checkedAttendance.findIndex((i) => i.id === item.id) >= 0"
-                  />
+                  /> -->
               </div>
 
               <div class="col-md-3 desc">
@@ -433,8 +433,11 @@ export default {
       };
 
       const checkOutAttendance = () => {
+      // let newarray = []
       let dft = convert(checkedAttendance.value);
       // let obj = Object.assign({}, dft)
+      // newarray.push(obj)
+      // let obj2 = dft.reduce((a, v) => ({ ...a, [v]: v}), {}) 
       // console.log(obj , "😁😁😁😁😁😋😋😋")
       console.log(dft , "👌😂😂")
       axios
