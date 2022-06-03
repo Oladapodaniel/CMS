@@ -20,14 +20,6 @@
 
   <div class="container" style="width: 80%">
     <div class="row mx-1 mb-4 mt-3">
-      <!-- <div class="col-md-2 pl-0">
-        <span class="theader mb-1">Status</span>
-        <div class="my-3">
-          <div class="my-3">
-                <span class="draft">{{ status }}</span>
-              </div>
-        </div>
-      </div> -->
 
       <div class="col-md-7">
         <span class="theader">{{ contributionReport.activityName? 'Event' : "" }}</span>
@@ -83,11 +75,6 @@
                 <a class="def-btn approve-btn mr-4" @click="toggleReportState"
                   >Approve report</a
                 >
-                      <!-- <router-link
-                        :to="{ name: 'AddOffering', params: { offId: activityId } }"
-                      >
-                        <a class="def-btn edit-btn">Edit offering</a>
-                      </router-link> -->
               </div>
             </div>
           </div>
@@ -162,18 +149,6 @@
                                     :stats="contributionReport"
                                   />
                                 </div>
-                                <!-- <div class="modal-footer">
-                <button
-                  type="button"
-                  class="btn btn-secondary"
-                  data-dismiss="modal"
-                >
-                  Close
-                </button>
-                <button type="button" class="btn btn-primary">
-                  Save changes
-                </button>
-              </div> -->
                               </div>
                             </div>
                           </div>
@@ -219,46 +194,6 @@
       </div>
     </div>
 
-    <!-- <div
-      class="modal fade"
-      id="sendReport"
-      tabindex="-1"
-      aria-labelledby="exampleModalLabel"
-      aria-hidden="true"
-      :show="true"
-    > -->
-      <!-- <div class="modal-dialog modal-lg"> -->
-        <!-- <div class="modal-content"> -->
-          <!-- <div class="modal-header">
-            <h5 class="modal-title font-weight-bold" id="sendReport">
-              Send this report
-            </h5>
-            <button
-              type="button"
-              class="close"
-              data-dismiss="modal"
-              aria-label="Close"
-            >
-              <span aria-hidden="true">&times;</span>
-            </button>
-          </div> -->
-         
-        
-          <!-- <div class="modal-footer">
-      <button
-        type="button"
-        class="btn btn-secondary"
-        data-dismiss="modal"
-      >
-        Close
-      </button>
-      <button type="button" class="btn btn-primary">
-        Save changes
-      </button>
-    </div> -->
-        <!-- </div> -->
-      <!-- </div> -->
-    <!-- </div> -->
     
     <div class="container-fluid bottom-section px-0">
       <div class="row mx-0" ref="topmost">
@@ -271,20 +206,10 @@
         >
           <span>
             <span>Total Offering: </span> <br />
-            <span class="recieve">{{ contributionReport.tenantCurrency }} {{ contributionReport ? Math.abs(contributionReport.totalToday).toLocaleString() : 0 }} </span>
+            <span class="recieve">{{ contributionReport.tenantCurrency }} {{ contributionReport && Object.keys(contributionReport).length > 0 ? Math.abs(contributionReport.totalToday).toLocaleString() : 0 }} </span>
           </span>
         </div>
 
-        <!-- <div class="col-md-4 d-flex flex-column light-red-section pr-5">
-            <span>
-              <span>Total Attendance: </span>
-              <span>{{ stats.todayAttendance }}</span>
-            </span>
-            <span>
-              <span>Total Offering: </span>
-              <span>{{ stats.todayOffering }}</span>
-            </span>
-          </div> -->
       </div>
 
       <div class="row pt-5 px-5" ref="middle">
@@ -296,99 +221,13 @@
         <div class="col-md-4">
           <span class="evt-date text-danger">{{ format(routeParams) }}</span>
         </div>
-        <!-- <div class="col-md-5 pl-0">
-          <div class="row">
-            <div class="col-md-6 d-md-flex justify-content-end">
-              <span class="bold-700">Preacher: </span>
-            </div>
-            <div class="col-md-6 pl-md-0">
-              <span> eventDataResponse.preacher </span>
-            </div>
-          </div>
-          <div class="row">
-            <div class="col-md-6 d-md-flex justify-content-end">
-              <span class="bold-700">Topic: </span>
-            </div>
-            <div class="col-md-6 pl-md-0">
-              <span>He cannot fail</span>
-            </div>
-          </div>
-          <div class="row">
-            <div class="col-md-6 d-md-flex justify-content-end">
-              <span class="bold-700">First timers: </span>
-            </div>
-            <div class="col-md-6 pl-md-0">
-              <span>20</span>
-            </div>
-          </div>
-          <div class="row">
-            <div class="col-md-6 d-md-flex justify-content-end">
-              <span class="bold-700">New converts: </span>
-            </div>
-            <div class="col-md-6 pl-md-0">
-              <span>15</span>
-            </div>
-          </div>
-        </div> -->
+      
       </div>
 
-      <div class="row mb-3" ref="bottom">
+      <!-- <div class="row mb-3" ref="bottom">
         <div class="col-md-12">
-          <!-- <div class="row px-5">
-          <div class="col-sm-12">
-            <div class="row">
-              <div class="col-sm-4">
-                <span class="bold-700">Female</span>
-              </div>
-              <div class="col-sm-4">
-                <span class="bold-700">344</span>
-              </div>
-              <div class="col-sm-4 text-sm-center">
-                <span class="bold-700">344</span>
-              </div>
-            </div>
-          </div>
-        </div> -->
-          <!-- <div class="row">
-          <div class="col-sm-12">
-            <hr class="hr" />
-          </div>
-        </div> -->
-          <!-- <div class="row px-5">
-          <div class="col-sm-12">
-            <div class="row">
-              <div class="col-sm-4">
-                <span class="bold-700">Children</span>
-              </div>
-              <div class="col-sm-4">
-                <span class="bold-700">1222</span>
-              </div>
-              <div class="col-sm-4 text-sm-center">
-                <span class="bold-700">1222</span>
-              </div>
-            </div>
-          </div>
-        </div> -->
-          <!-- <div class="row">
-          <div class="col-sm-12">
-            <hr class="hr-dark" />
-          </div>
-        </div> -->
-          <!-- <div class="row px-5">
-          <div class="col-sm-12">
-            <div class="row">
-              <div class="col-sm-4"></div>
-              <div class="col-sm-4 text-sm-right">
-                <span class="bold-700">Total</span>
-              </div>
-              <div class="col-sm-4 text-sm-center">
-                <span class="bold-700">1689</span>
-              </div>
-            </div>
-          </div>
-        </div> -->
         </div>
-      </div>
+      </div> -->
 
       <div class="row mb-5">
         <div class="col-md-12">
