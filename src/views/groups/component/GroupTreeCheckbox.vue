@@ -128,7 +128,7 @@ import { useStore } from "vuex";
 export default {
   name: "GroupTree",
   props: ["items", "addGroupValue", "allChecked", "checked", "autoCheck"],
-  emits: ["group", "groupp", "setcheckval", "resetchecked"],
+  emits: ["group", "groupp", "setcheckval", "resetchecked", "newgroup"],
   components: {
     Dialog,
   },
@@ -187,6 +187,7 @@ export default {
         });
         displayCreateGroup.value = false;
         console.log(data);
+        emit("newgroup", data)
       } catch (err) {
         console.log(err);
       }
