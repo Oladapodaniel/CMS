@@ -14,7 +14,7 @@ export default {
     },
     mutations: {
         saveList(state, payload) {
-            state.contributionList = payload
+            state.contributionList = payload.returnObject.contribution
         },
         contributionItems(state, payload) {
             state.contributionItems = payload
@@ -25,6 +25,8 @@ export default {
         newlyAddedContribution(state, payload) {
             // state.contributionList.unshift(payload)
             payload.forEach(i => state.contributionList.unshift(i))
+            console.log(state.contributionList)
+            console.log(payload)
         },
 
         clearState(state) {
@@ -35,12 +37,13 @@ export default {
     },
     actions: {
         async contributionList({ commit }) {
-                // try {
-                //     const { data } = await axios.get("/api/Financials/Contributions/Transactions");
-                //     commit("saveList", data);
-                // } catch (error) {
-                //     console.log(error);
-                // }
+                try {
+                    const { data } = await axios.get("/api/Financials/Contributions/Transactions");
+                    commit("saveList", data);
+                    console.log(data)
+                } catch (error) {
+                    console.log(error);
+                }
         },
         async contributionItems({ commit }) {
             try {

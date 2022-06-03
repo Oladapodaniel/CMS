@@ -181,6 +181,8 @@ export default {
     },
 
     register() {
+      const routeQuery = this.$router.currentRoute.value.query
+      routeQuery.ref ? this.credentials.referrer = routeQuery.ref : ""
       this.loading = true;
       this.showError = false;
       axios
