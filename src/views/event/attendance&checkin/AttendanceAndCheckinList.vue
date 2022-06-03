@@ -14,7 +14,7 @@
                   @change="markAllAttendance"
                   :checked="checkedAttendance.length === searchAttendance.length "
                 /> -->
-                <!-- <label class="d-block d-md-none">SELECT ALL</label> -->
+                <label class="d-block d-md-none">SELECT ALL</label>
                   <i
                       class="
                         pi pi-trash
@@ -273,7 +273,7 @@
                     style="font-size: 15px"
                     >Group Name</span>
                   <div
-                    class="desc small-text text-right text-md-center ml-md-5"
+                    class="desc small-text text-right text-md-left ml-md-5"
                   >
                     <router-link
                       class="text-decoration-none font-weight-500 itemroute-color"
@@ -403,11 +403,12 @@ import Pagination from "../../../components/pagination/PaginationButtons.vue";
 export default {
   props: ["list", "errorOccurred", "totalItems"],
   components: { ConfirmDialog, Toast, Pagination },
-  emits: ["pagedattendance"],
+  emits: ["pagedattendance", "checkedattendance"],
   setup(props, { emit }) {
     let toast = useToast();
     const expose = ref(false);
     const loading = ref(false);
+    const attendanceList = ref([])
     const checkedAttendance = ref([]);
     // const marked = ref([]);
     // const AttendanceCheList = ref(props.list)
@@ -415,6 +416,13 @@ export default {
     const toggleEllips = () => {
       toggleEllips.value = !toggleEllips.value;
     };
+
+    const getPeopleList = () => {
+      // console.log(props.list, "props");
+      attendanceList.value = props.list;
+      // store.dispatch('churchMembers', props.list)
+    };
+    getPeopleList();
 
     const formatDate = (date) => {
       return dateFormatter.monthDayYear(date);
@@ -425,50 +433,36 @@ export default {
       };
 
       const checkOutAttendance = () => {
+      // let newarray = []
       let dft = convert(checkedAttendance.value);
+      // let obj = Object.assign({}, dft)
+      // newarray.push(obj)
+      // let obj2 = dft.reduce((a, v) => ({ ...a, [v]: v}), {}) 
+      // console.log(obj , "😁😁😁😁😁😋😋😋")
       console.log(dft , "👌😂😂")
       axios
-        .delete('/api/CheckInAttendance/Delete/Multiple', dft)
+        .post(`/api/CheckInAttendance/Delete/Multiple`, dft)
         .then((res) => {
-          let incomingRes = res.data.response;
+          let incomingRes = res.data;
           console.log(incomingRes, "🙌❤🙌❤🙌")
-          if (incomingRes.toString().toLowerCase().includes("all")) {
+          if (incomingRes.toString().toLowerCase().includes("attendance")) {
             toast.add({
               severity: "success",
               summary: "Confirmed",
               detail: "Attendance(s) deleted successfully.",
               life: 4000,
             });
-        props.list = props.list.filter((item) => {
-              const y = checkedAttendance.value.findIndex(
-                (i) => i.id === item.id
-              );
-              if (y >= 0) return false;
-              return true;
-            });
-          } else {
-            let resArr = incomingRes.split("@");
-            toast.add({
-              severity: "info",
-              summary: "Confirmed",
-              detail: resArr[0],
-            });
-
-            if (resArr[1] !== "") {
-              if (!resArr[1].includes(",")) {
-                props.list = props.list.filter((item) => {
-                  return !item.id.includes(resArr[1]);
-                });
-              } else {
-                let IdArr = resArr[1].split(",");
-                props.list = props.list.filter((item) => {
-                  const y = IdArr.findIndex((i) => i === item.id);
-                  if (y >= 0) return false;
-                  return true;
-                });
-              }
-            }
-          }
+        // attendanceList.value = attendanceList.value.filter((item) => {
+        //       const y = checkedAttendance.value.findIndex(
+        //         (i) => i.id === item.id
+        //       );
+        //        console.log(y , "old are u now");
+        //       if (y >= 0) return false;
+        //       return true;
+        //     });
+          emit('checkedattendance', checkedAttendance.value )
+           
+          } 
           checkedAttendance.value = [];
         })
         .catch((err) => {
@@ -491,7 +485,7 @@ export default {
             toast.add({
               severity: "warn",
               summary: "Delete Failed",
-              detail: "Unable to delte first timer",
+              detail: "Unable to delete attendance",
               life: 4000,
             });
           }
@@ -547,13 +541,15 @@ export default {
     const confirm = useConfirm();
 
     const check1item = (ft) => {
-      const firstTimerIdx = checkedAttendance.value.findIndex(
+      // console.log(ft, "chechbyOne");
+      const attendanceIdx = checkedAttendance.value.findIndex(
         (i) => i.id === ft.id
       );
-      if (firstTimerIdx < 0) {
+      console.log(attendanceIdx, "chechdetail");
+      if (attendanceIdx < 0) {
         checkedAttendance.value.push(ft);
       } else {
-        checkedAttendance.value.splice(firstTimerIdx, 1);
+        checkedAttendance.value.splice(attendanceIdx, 1);
       }
     };
     const modal = () => {
@@ -655,6 +651,7 @@ export default {
 
     return {
       modal,
+      attendanceList,
       checkOutAttendance,
       loading,
       check1item,

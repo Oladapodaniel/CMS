@@ -213,6 +213,9 @@
             <li class="dd-list-item">
               <router-link class="dd-link-item routelink" to="/tenant/onlinedonation">Online Donation</router-link>
             </li>
+            <!-- <li class="dd-list-item">
+              <router-link class="dd-link-item routelink" to="/tenant/pledge/pledgeslist">Partnership/Pledge</router-link>
+            </li> -->
             <li class="dd-list-item"  v-if="false">
               <router-link class="dd-link-item routelink" to="">Pledges</router-link>
             </li>

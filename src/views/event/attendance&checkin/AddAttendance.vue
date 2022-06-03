@@ -267,7 +267,7 @@
                   ref="searchGroupRef"
                   placeholder="Search for group"
                 />
-                <GroupTree :items="searchForGroups" :addGroupValue="true" @filteredGroup="setFilterGroups"/>
+                <GroupTree :items="searchForGroups" :addGroupValue="true" @filteredGroup="setFilterGroups" @newgroup="setNewGroup"/>
               </div>
             <!-- <MultiSelect v-model="selectedGroups" :options="groups" optionLabel="name" placeholder="Select group" display="chip" class="w-100" /> -->
 
@@ -996,6 +996,10 @@ export default {
             selectedGroups.value = payload
           }
 
+          const setNewGroup = (payload) => {
+            groups.value.push(payload)
+          }
+
     return {
       selectedEvent,
       onContinue,
@@ -1062,7 +1066,8 @@ export default {
       closeDropdownIfOpen,
       regCutOffTimer,
       checkinCutOffTime,
-      setFilterGroups
+      setFilterGroups,
+      setNewGroup
     };
   },
 };

@@ -149,7 +149,7 @@
                     <div>Account Name</div>
                 </div>
                 <div class="col-12 col-sm-10 offset-sm-1 offset-md-0 col-md-6 col-lg-5 pl-md-0 mt-3" style="height: 43px;">
-                    <input type="text" v-model="accountName" placeholder="Account name" ref="accNameRef" class="form-control h-100" />
+                    <input type="text" v-model="accountName" placeholder="Account name" ref="accNameRef" class="form-control h-100" disabled/>
                     <div class="mt-1">
                         <em class="mt-1">This will automatically come up, kindly confirm before clicking on save.</em>
                     </div>
@@ -658,7 +658,6 @@ export default {
                 if (item.name.toLowerCase().includes('flutterwave')) {
                         try {
                             axios.get(`/api/PaymentForm/subaccounts?accountNumber=${accountNumber.value}`).then(res => {
-                                console.log(res.data)
                                 if (res.data.length > 0) {
                                     confirm.require({
                                         message: `This account details has been recorded with Flutterwave as ${res.data[0].meta[0].meta_name}, Do you want to use it?`,
@@ -687,15 +686,15 @@ export default {
                                             selectedBank.value = new Object()
                                         }
                                     });
+                                }   else {
+                                    paymentGateWays.value.push(item)
                                 }
                             })                   
                         }
                         catch (err) {
                             console.log(err)
                         }
-                    } else {
-                    paymentGateWays.value.push(item)
-                }
+                    }
             } else {
                 paymentGateWays.value = paymentGateWays.value.filter(i => {
                     return i.id !== item.id
