@@ -847,6 +847,7 @@ filter.value.phoneNumber ="";
               if (y >= 0) return false;
               return true;
             });
+            console.log(churchMembers.value, 'the baddest bug')
           } else {
             let resArr = incomingRes.split("@");
             toast.add({
