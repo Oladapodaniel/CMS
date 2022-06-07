@@ -306,8 +306,8 @@ export default {
             {name: 'Weekly'},
             {name: 'Monthly'},
             {name: 'Quarterly' },
-            {name: 'Semiannually' },
-            {name: 'Annually' }
+            {name: 'SemiAnnually' },
+            {name: 'Yearly' }
         ])
         // const ContributionType = ref([
         //     {name: 'Church Service'},

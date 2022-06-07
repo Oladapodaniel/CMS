@@ -182,6 +182,10 @@
                     <a class="def-btn mr-3 px-md-4 my-sm-1" v-if="false"
                         >More Actions <i class="fad fa-caret-circle-down"></i
                     ></a>
+                    <!-- <router-link :to="`/tenant/pledge/pledgepaymentlist?id=${pledgeID}`"> -->
+                    <router-link to="/tenant/pledge/pledgepaymentlist">
+                        <button class="default-btn mr-3 my-sm-1 ">View Payment form </button> 
+                    </router-link>
                     <router-link :to="{ name: 'MakePledge', path: '/tenant/pledge/makepledge' }">
                         <a class="def-btn primary-bg text-white  border-0 px-sm-2 px-lg-4 my-sm-1"
                         >Create new pledge</a
@@ -194,12 +198,12 @@
                 </div>
                 <div class="container" style="width: 80%" v-if="!isPending && !errorGettingReport">
                 <div class="row mx-1 mb-4 mt-3">
-                    <div class="col-md-2 pl-0">
+                    <!-- <div class="col-md-2 pl-0">
                     <span class="theader mb-1">Status</span>
                     <div class="my-3">
                         <span class="draft font-weight-bold ">Unsent</span>
                     </div>
-                    </div>
+                    </div> -->
 
                     <div class="col-md-7">
                     <span class="theader"> Pledge Name </span>
@@ -211,7 +215,7 @@
                     </div>
                     </div>
 
-                    <div class="col-md-3">
+                    <div class="col-md-5">
                     <span class="theader">Date</span>
                     <div class="my-3">
                         <span class="date">{{ pledgeDate ? new Date(pledgeDate).toLocaleDateString() : ""}}</span>
@@ -219,9 +223,9 @@
                     </div>
                 </div>
 
-                <div class="row mx-1 mb-5">
+                <!-- <div class="row mx-1 mb-5">
                     <div class="col-md-12">
-                        <!-- Unapproved -->
+                        Unapproved
                     <div class="row unapproved">
                         <div class="col-md-12">
                         <div class="row" v-if="!reportApproved">
@@ -273,7 +277,7 @@
                         </div>
                         </div>
                     </div>
-                     <!-- Approved -->
+                     Approved
                     <div class="row unapproved mt-4">
                         <div class="col-md-12">
                         <div class="row my-3">
@@ -364,7 +368,7 @@
                             </div>
                             </div>
                             <div class="col-md-12 pt-2" v-if="willCopyLink">
-                            <span class="d-flex" @click="copyLink2">
+                            <span class="d-flex" @click="copyLink">
                                 <input
                                 type="text"
                                 name=""
@@ -381,7 +385,7 @@
                         </div>
                     </div>
                     </div>
-                </div>
+                </div> -->
 
                 <div class="container-fluid bottom-section px-0">
                     <div class="row mx-0" ref="topmost">
@@ -391,7 +395,7 @@
                     <div
                         class="col-md-4 d-flex flex-column light-red-section pr-5 text-center"
                     >
-                        <span>
+                        <!-- <span>
                         <span class="mb-n3">Total Pledge: </span> <br />
                         <span class="recieve">60</span>
                         </span>
@@ -399,7 +403,7 @@
                         <span>Total Amount: </span> <br />
                         <span class="recieve">NGN 600,000 &nbsp;</span
                         >
-                        </span>
+                        </span> -->
                     </div>
                     </div>
 
@@ -447,7 +451,7 @@
                         </div>
                         <div class="pg-content">
                             <div class="analytics-container first-con">
-                                    <div class="ana-group d-flex justify-content-center">
+                                    <div class="ana-group row d-flex justify-content-center">
                                 
                                         <div
                                             class="col-md-11 col-sm-12  col-lg-10  mb-5 border rounded"
@@ -478,8 +482,8 @@
                                                         @click="copyLink"
                                                         style="font-size: 22px"
                                                         ></i>
-                                                        <span class="font-weight-bold small ml-1 text-primary c-pointer" style="width: 30%">Send Email</span>
-                                                        <span class="font-weight-bold small text-primary c-pointer" style="width: 30%">Send Sms</span>
+                                                        <!-- <span class="font-weight-bold small ml-1 text-primary c-pointer" style="width: 30%">Send Email</span>
+                                                        <span class="font-weight-bold small text-primary c-pointer" style="width: 30%">Send Sms</span> -->
                                                     </span>
                                                     </p>
                                                 </div>
@@ -489,7 +493,7 @@
                                 <hr class="hr" />
                             </div>
                             <div class="analytics-container first-con">
-                                    <div class="ana-group d-flex justify-content-center">
+                                    <div class="ana-group row d-flex justify-content-center mb-4">
                                 
                                         <div
                                             class="col-md-11 col-sm-12  col-lg-10 mb-3  border rounded"
@@ -519,14 +523,45 @@
                                                             @click="copyLink"
                                                             style="font-size: 22px"
                                                             ></i>
-                                                            <span class="font-weight-bold small text-primary ml-1 c-pointer" style="width: 30%" >Send Email</span>
-                                                            <span class="font-weight-bold small text-primary c-pointer" style="width: 30%" >Send Sms</span>
+                                                            <!-- <span class="font-weight-bold small text-primary ml-1 c-pointer" style="width: 30%" >Send Email</span>
+                                                            <span class="font-weight-bold small text-primary c-pointer" style="width: 30%" >Send Sms</span> -->
                                                         </span>
                                                     </p>
                                                 </div>
                                             </div>
                                         </div>
                                     </div>
+                                <hr class="hr" />
+                            </div>
+                            <div class="analytics-container first-con">
+                                     <div class="ana-group row d-flex justify-content-center">
+                                
+                                        <div
+                                            class="col-md-11 col-sm-12  col-lg-10  mb-5 border rounded"
+                                        >
+                                            <div class="row">
+                                                <div class="col-md-2 col-sm-2 d-flex align-self-center image mt-3">
+                                                    <img
+                                                    src="../../assets/link.svg" class="w-100"
+                                                    alt="marked Attendance image"
+                                                    style="width: 60px; height: 60px"
+                                                    />
+                                                </div>
+                                                <div class="col-md-10 col-sm-10 mt-4">
+                                                    <a class="text-decoration-none"
+                                                    ><h4 class="header4 link-color c-pointer" @click="copyRegLink">Account detail</h4></a
+                                                    >
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                        <div class="row">
+                                            <div class=" col-md-12 mt-2 mt-md-0 mb-3 d-flex justify-content-center ">
+                                                <button class="default-btn primary-bg border-0 text-white" data-dismiss="modal" @click="makePayment">
+                                                    <i class="pi pi-spin pi-spinner" v-if="loading"></i> Make Payment now
+                                                </button>
+                                            </div>
+                                        </div>
                                 <hr class="hr" />
                             </div>
                         </div>
@@ -665,8 +700,8 @@ export default {
         // }
 
         const makePayment = () =>{
-            // router.push('/pledge/pledgepayment')
-            router.push(`/pledge/pledgepayment?pledgeTypeID=${route.query.pledgeTypeID}&id=${route.query.id}&name=${route.query.name}`)
+            // router.push('/tenant/pledge/pledgepayment')
+            router.push(`/tenant/pledge/pledgepayment?pledgeTypeID=${route.query.pledgeTypeID}&id=${route.query.id}&name=${route.query.name}`)
         }
 
         const toggleReportState = () => {

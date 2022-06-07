@@ -217,7 +217,7 @@ import userService from "../../services/user/userservice";
 import MembersSearch from "../../components/membership/MembersSearch.vue"
 import { useRoute } from "vue-router"
 import { useStore } from "vuex";
-// import router from '../../router';
+import router from '../../router';
 // import store from "../../store/store";
 import { v4 as uuidv4 } from "uuid";
 import CascadeSelect from 'primevue/cascadeselect';
@@ -247,7 +247,7 @@ export default {
         const value = ref()
         const isNameValid = ref(true)
         const isEmailValid = ref(true)
-        const selectedPledge = ref('')
+        const selectedPledge = ref({})
         const allPledgeList = ref([]);
         const amountFrom = ref('')
         const paymentAmount = ref()
@@ -299,7 +299,7 @@ export default {
                 }
             }
             getAllPledgeDefinition()
-
+            
             const getDetails = () =>{
             selectedPledge.value = allPledgeList.value.find(i => i.id === route.query.id)
             // console.log(selectedPledge.value, 'jnjhkjhajkshkjashkhahk');
@@ -469,11 +469,23 @@ export default {
                         detail: "Pledge Payment created successfully",
                         life: 2000,
                     });
+                    router.push("/tenant/pledge/pledgepaymentlist")
 
             } catch (error) {
                 console.log(error);
             }
         }
+
+        const getSinglePledgePayment = async () => {
+            try{
+                 const res = await axios.get(`/api/Pledge/GetOnePledgePayment?ID=${route.query.id}`)
+                 console.log(res, '🤣😂😃🤣🤣😂w');
+            }
+            catch (error) {
+                console.log(error)
+            }
+        }
+        getSinglePledgePayment()
 
 
         
