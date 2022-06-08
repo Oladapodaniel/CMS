@@ -1642,6 +1642,15 @@ const routes = [
                     component: () =>
                         import ( /* webpackChunkName: "peopleempty" */ '../views/pledge/PublicPledgeMaking.vue')
                 },
+                {
+                    path: 'publicpledgepayment',
+                    name: 'publicpledgepayment',
+                    meta: {
+                        title: 'Churchplus - Church Pledge',
+                    },
+                    component: () =>
+                        import ( /* webpackChunkName: "peopleempty" */ '../views/pledge/PublicPledgePayment.vue')
+                }
             ]
     },
     {

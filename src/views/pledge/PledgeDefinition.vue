@@ -101,7 +101,7 @@
                                 </div>
                         
                                 <div class="col-12 col-sm-12  col-lg-8 d-flex flex-wrap align-self-center">
-                                    <span class="border bg-secondary p-1">NGN</span>
+                                    <span class="border col-2 bg-secondary p-1">NGN</span>
                                     <!-- <span class="border">NGN</span> -->
                                     <div class="col-10  m-0 p-0"><input type="text" v-model="targetAmount" class="form-control" placeholder=" Enter Amount" /></div>
                                     <!-- <CascadeSelect v-model="value" :options="branches" optionLabel="clabel" optionGroupLabel="label" :optionGroupChildren="['children']" class="w-100"  /> -->

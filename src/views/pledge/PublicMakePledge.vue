@@ -22,10 +22,12 @@
                         <div class="col-md-10  offset-md-2">
                             <div class="row">
                                 <div class="col-md-4 text-md-right align-self-center">
-                                    <label for="" class="">Select Person <sup class="text-danger">*</sup> </label>
+                                    <label for="" class=""> Phone <sup class="text-danger">*</sup> </label>
                                 </div>
                                 <div class="col-md-8">
-                                    <MembersSearch @memberdetail="chooseContact" />
+                                    <input type="text" class="form-control" v-model="selectedContact" placeholder=""/>
+                                    <!-- <InputText /> -->
+                                    <!-- <MembersSearch @memberdetail="chooseContact" /> -->
                                 </div>
                             </div>
                         </div>
@@ -85,20 +87,19 @@
                                 </div>
                             </div>
                         </div>
-                    </div>  
-
-                     <div class="col-md-9 offset-md-5 mt-4">
-                            <div class="row  ">
-                                <div class=" col-md-12 d-flex justify-content-center">
-                                    <button class="default-btn primary-bg border-0 text-white" type="button" data-toggle="modal" data-target="#exampleModalCente" data-dismiss="modal" @click="makePledge">
-                                        <i class="pi pi-spin pi-spinner"  v-if="loading"></i> Save and Continue
-                                    </button>
-                                </div>
+                    </div> 
+                </div>
+                <div class="col-md-12 mt-4">
+                        <div class="row  ">
+                            <div class=" col-md-12 d-flex justify-content-center">
+                                <button class="default-btn primary-bg border-0 text-white" type="button" data-toggle="modal" data-target="#exampleModalCente" data-dismiss="modal" @click="makePledge">
+                                    <i class="pi pi-spin pi-spinner"  v-if="loading"></i> Save and Continue
+                                </button>
                             </div>
                         </div>
-                </div>
+                    </div>
 
-                <div class="modal fade" id="exampleModalCenter" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+                <!-- <div class="modal fade" id="exampleModalCenter" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
                     <div class="modal-dialog modal-lg modal-dialog-centered" role="document">
                         <div class="modal-content">
                         <div class="modal-header" style="border: none">
@@ -124,7 +125,7 @@
                         </div>
                         </div>
                     </div>
-                </div>
+                </div> -->
             </div>
         </div>
         <!-- <div class="container">
@@ -340,7 +341,7 @@ export default {
         const allPledgeList = ref([]);
         const amountFrom = ref('')
         const makePledgeData = ref('')
-        const selectedContact = ref({})
+        const selectedContact = ref('')
         const selectedDetail = ref('')
         const isActive = ref(null)
         const amountTo = ref('')
@@ -370,17 +371,17 @@ export default {
         const makePayment = () =>{
             router.push('/pledge/pledgepayment')
         }
-        const selectedAllContact = () =>{
-            selectedDetail.value = selectedContact.value
-            console.log(selectedDetail.value, ' niceContact');
-        }
+        // const selectedAllContact = () =>{
+        //     selectedDetail.value = selectedContact.value
+        //     console.log(selectedDetail.value, ' niceContact');
+        // }
         
        
 
-         const chooseContact = (payload) => {
-            selectedContact.value = payload
-            selectedAllContact()
-         }
+        //  const chooseContact = (payload) => {
+        //     selectedContact.value = payload
+        //     selectedAllContact()
+        //  }
         
 
         const active = (payload) => {
@@ -461,7 +462,7 @@ export default {
                         console.log(response, "response");
 
                          
-                        router.push("/tenant/pledge/pledgeslist");
+                        // router.push("/tenant/pledge/pledgeslist");
 
 
                         loading.value = false;
@@ -490,7 +491,7 @@ export default {
                         query: {
                             id: makePledgeData.value.pledgeTypeID,
                             pledgeTypeID: makePledgeData.value.id,
-                            name: selectedContact.value.name
+                            name: selectedContact.value
                         }
                     })
                     
@@ -538,7 +539,7 @@ export default {
             PledgesType,
             checking,
             makePledge,
-            chooseContact,
+            // chooseContact,
             selectedPledge,
             makePayment,
             pledgeCategory,

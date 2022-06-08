@@ -318,7 +318,7 @@ export default {
         const searchPledgePayment = computed(() => {
           if (searchText.value !== "" && allPledgePaymentList.value.length > 0)  {
             return allPledgePaymentList.value.filter((i) => {
-                  if (i.pledge.person.firstName) return i.pledge.person.firstName.toLowerCase().includes(searchText.value.toLowerCase())
+                  if (i.pledge.person.firstName || i.pledge.pledgeType.name ) return i.pledge.person.firstName.toLowerCase().includes(searchText.value.toLowerCase())
             })
           }  else {
             return allPledgePaymentList.value;

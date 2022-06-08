@@ -15,15 +15,23 @@
         <div class="centered-items">
           <h3 class="heading-text ml-n1">Income Statement Report</h3>
         </div>
+        <div class="default-btn border-secondary font-weight-normal c-pointer"
+            @click="() => (showExport = !showExport)"
+            style="width: fixed; position:relative">
+                    Export &nbsp; &nbsp; <i class="pi pi-angle-down" ></i>
+                    <div class=" c-pointer" style="width: 6rem; z-index:1000; position:absolute" v-if="showExport">
+                          <Listbox @click="downloadFile" v-model="selectedFileType" :options="bookTypeList" optionLabel="name"/>
+                    </div>
+        </div>
 
         <!-- <div class="centered-items pr-3">
           <button class="default-btn font-weight-normal"
           @click="() => (showExport = !showExport)">
             Export &nbsp; &nbsp; <i class="pi pi-angle-down"></i>
           </button>
-        </div> -->
+        </div>
 
-        <!-- <div
+        <div
           class="default-btn font-weight-normal c-pointer"
           @click="() => (showExport = !showExport)"
           style="width: fixed; position:relative">
@@ -140,10 +148,10 @@
       </div>
     </div>
     <!--end of date area -->
-
-    <section>
+    <div id="element-to-print" >
+      <section>
       <!-- chart area -->
-      <div
+      <div id=""
         class="chart row d-flex"
         :class="
           incomeStatement && incomeStatement.length > 0 ? 'graph-area' : ''
@@ -173,142 +181,144 @@
         </div>
       </div>
       <!--end of chart area-->
-    </section>
+      </section>
 
-    <section>
-      <!-- table header -->
-      <div v-if="groupedIncomeItemToDisplay.length > 0">
-        <div
-          class="
-            mt-2
-            container-fluid
-            table-main
-            px-0
-            remove-styles2 remove-border
-            responsiveness
-          "
-        >
-          <table id="table" class="table remove-styles mt-0 table-header-area">
-            <thead class="table-header-area-main">
-              <tr
-                class="small-text text-capitalize text-nowrap font-weight-bold"
-                style="border-bottom: 0; font-size: medium"
-              >
-                <!-- <th scope="col">Fund</th> -->
-                <th scope="col">Account Category</th>
-                <th scope="col">Account Name</th>
-                <th scope="col">Description</th>
-                <th scope="col">Amount</th>
-                <th scope="col">Date</th>
-              </tr>
-            </thead>
+      <section>
+        <!-- table header -->
+        <div v-if="groupedIncomeItemToDisplay.length > 0">
+          <div id=""
+            class="
+              mt-2
+              container-fluid
+              table-main
+              px-0
+              remove-styles2 remove-border
+              responsiveness
+            "
+          >
+            <table id="table" class="table remove-styles mt-0 table-header-area">
+              <thead class="table-header-area-main">
+                <tr
+                  class="small-text text-capitalize text-nowrap font-weight-bold"
+                  style="border-bottom: 0; font-size: medium"
+                >
+                  <!-- <th scope="col">Fund</th> -->
+                  <th scope="col">Account Category</th>
+                  <th scope="col">Account Name</th>
+                  <th scope="col">Description</th>
+                  <th scope="col">Amount</th>
+                  <th scope="col">Date</th>
+                </tr>
+              </thead>
 
-            <tbody
-              class="font-weight-bold text-nowrap"
-              style="font-size: small"
-              v-for="(row, index) in tableRows"
-              :key="index"
-            >
-              <tr>
-                <td class="fundType-color" style="font-size: medium">
-                  {{ row }}
-                </td>
-                <!-- <td></td> -->
-                <td></td>
-                <td></td>
-                <td></td>
-                <td></td>
-              </tr>
-              <tr
-                v-for="(account, indx) in tableData[row].expenses"
-                :key="indx"
+              <tbody
+                class="font-weight-bold text-nowrap"
+                style="font-size: small"
+                v-for="(row, index) in tableRows"
+                :key="index"
               >
-                <!-- <td></td> -->
-                <td class="accounType-color">
-                  {{ indx === 0 ? account.accountCategory : "" }}
-                </td>
-                <td>{{ account.accountName }}</td>
-                <td>{{ account.description }}</td>
-                <td>({{ Math.abs(account.amount).toLocaleString() }}.00)</td>
-                <td>{{ formatDate(account.date) }}</td>
-              </tr>
-              <tr class="answer-row" v-if="tableData[row].incomes.length > 0">
-                <td class="subtotal">Subtotal</td>
-                <!-- <td></td> -->
-                <td></td>
-                <td></td>
-                <td class="subtotal">
-                  NGN{{ sum(tableData[row].expenses).toLocaleString() }}.00
-                </td>
-                <td></td>
-              </tr>
-              <tr v-for="(account, indx) in tableData[row].incomes" :key="indx">
-                <!-- <td></td> -->
-                <td class="accounType-color">
-                  {{ indx === 0 ? account.accountCategory : "" }}
-                </td>
-                <td>{{ account.accountName }}</td>
-                <td>{{ account.description }}</td>
-                <td>{{ Math.abs(account.amount).toLocaleString() }}.00</td>
-                <td>{{ formatDate(account.date) }}</td>
-              </tr>
-              <tr class="answer-row" v-if="tableData[row].incomes.length > 0">
-                <td class="subtotal">Subtotal</td>
-                <!-- <td></td> -->
-                <td></td>
-                <td></td>
-                <td class="subtotal">
-                  NGN{{ sum(tableData[row].incomes).toLocaleString() }}.00
-                </td>
-                <td></td>
-              </tr>
-              <tr class="answer-row" v-if="tableData[row].incomes.length > 0">
-                <td class="total-answer">Total</td>
-                <!-- <td></td> -->
-                <td></td>
-                <td></td>
-                <td class="total-answer">
-                  NGN{{
-                    sumOfDiffAcctInFunds(tableData[row]).toLocaleString()
-                  }}.00
-                </td>
-                <td></td>
-              </tr>
-              <tr style="background-color: #fff">
-                <!-- <td>&nbsp;</td> -->
-                <td>&nbsp;</td>
-                <td>&nbsp;</td>
-                <td>&nbsp;</td>
-                <td>&nbsp;</td>
-              </tr>
-            </tbody>
-            <tbody
-              class="font-weight-bolder text-nowrap"
-              style="font-size: small"
-            >
-              <tr class="answer-row2">
-                <td class="gross-total">Gross Total</td>
-                <!-- <td></td> -->
-                <td></td>
-                <td></td>
-                <td class="gross-total responsive-horizontalrule">
-                  NGN{{
-                    Math.abs(diffBtwIncomeAndExpenses).toLocaleString()
-                  }}.00
-                  <hr class="horizontal-rule" />
-                </td>
-                <td></td>
-              </tr>
-            </tbody>
-          </table>
-          <div class="table-foot d-flex justify-content-end mt-3">
-            <!-- <PaginationButtons /> -->
+                <tr>
+                  <td class="fundType-color" style="font-size: medium">
+                    {{ row }}
+                  </td>
+                  <!-- <td></td> -->
+                  <td></td>
+                  <td></td>
+                  <td></td>
+                  <td></td>
+                </tr>
+                <tr
+                  v-for="(account, indx) in tableData[row].expenses"
+                  :key="indx"
+                >
+                  <!-- <td></td> -->
+                  <td class="accounType-color">
+                    {{ indx === 0 ? account.accountCategory : "" }}
+                  </td>
+                  <td>{{ account.accountName }}</td>
+                  <td>{{ account.description }}</td>
+                  <td>({{ Math.abs(account.amount).toLocaleString() }}.00)</td>
+                  <td>{{ formatDate(account.date) }}</td>
+                </tr>
+                <tr class="answer-row" v-if="tableData[row].incomes.length > 0">
+                  <td class="subtotal">Subtotal</td>
+                  <!-- <td></td> -->
+                  <td></td>
+                  <td></td>
+                  <td class="subtotal">
+                    NGN{{ sum(tableData[row].expenses).toLocaleString() }}.00
+                  </td>
+                  <td></td>
+                </tr>
+                <tr v-for="(account, indx) in tableData[row].incomes" :key="indx">
+                  <!-- <td></td> -->
+                  <td class="accounType-color">
+                    {{ indx === 0 ? account.accountCategory : "" }}
+                  </td>
+                  <td>{{ account.accountName }}</td>
+                  <td>{{ account.description }}</td>
+                  <td>{{ Math.abs(account.amount).toLocaleString() }}.00</td>
+                  <td>{{ formatDate(account.date) }}</td>
+                </tr>
+                <tr class="answer-row" v-if="tableData[row].incomes.length > 0">
+                  <td class="subtotal">Subtotal</td>
+                  <!-- <td></td> -->
+                  <td></td>
+                  <td></td>
+                  <td class="subtotal">
+                    NGN{{ sum(tableData[row].incomes).toLocaleString() }}.00
+                  </td>
+                  <td></td>
+                </tr>
+                <tr class="answer-row" v-if="tableData[row].incomes.length > 0">
+                  <td class="total-answer">Total</td>
+                  <!-- <td></td> -->
+                  <td></td>
+                  <td></td>
+                  <td class="total-answer">
+                    NGN{{
+                      sumOfDiffAcctInFunds(tableData[row]).toLocaleString()
+                    }}.00
+                  </td>
+                  <td></td>
+                </tr>
+                <tr style="background-color: #fff">
+                  <!-- <td>&nbsp;</td> -->
+                  <td>&nbsp;</td>
+                  <td>&nbsp;</td>
+                  <td>&nbsp;</td>
+                  <td>&nbsp;</td>
+                </tr>
+              </tbody>
+              <tbody
+                class="font-weight-bolder text-nowrap"
+                style="font-size: small"
+              >
+                <tr class="answer-row2">
+                  <td class="gross-total">Gross Total</td>
+                  <!-- <td></td> -->
+                  <td></td>
+                  <td></td>
+                  <td class="gross-total responsive-horizontalrule">
+                    NGN{{
+                      Math.abs(diffBtwIncomeAndExpenses).toLocaleString()
+                    }}.00
+                    <hr class="horizontal-rule" />
+                  </td>
+                  <td></td>
+                </tr>
+              </tbody>
+            </table>
+            <div class="table-foot d-flex justify-content-end mt-3">
+              <!-- <PaginationButtons /> -->
+            </div>
           </div>
         </div>
-      </div>
 
-      <!--end table header -->
-    </section>
+        <!--end table header -->
+      </section>
+    </div>
+    
   </div>
 </template>
 
@@ -324,7 +334,7 @@ import exportService from "../../../services/exportFile/exportserviceforincomest
 import groupResponse from "../../../services/groupArray/groupResponse.js";
 // import PaginationButtons from "../../../components/pagination/PaginationButtons";
 import incomeExpenseHelper from "./Helper/Incomeexpenses-helper.js";
-// import Listbox from 'primevue/listbox';
+import Listbox from 'primevue/listbox';
 
 export default {
   components: {
@@ -334,7 +344,7 @@ export default {
     // NegativeChart,
     // Dropdown,
     // InputText,
-    // Listbox,
+    Listbox,
     // PaginationButtons,
   },
   setup() {
@@ -355,7 +365,7 @@ export default {
       { name: "xlsx" },
       { name: "csv" },
       { name: "txt" },
-      { name: "" },
+      { name: "pdf" },
     ]);
     const selectedFileType = ref("");
     const fileHeaderToExport = ref([]);
@@ -480,7 +490,7 @@ export default {
     /* Code For Exporting File */
     const downloadFile = () => {
       exportService.downLoadExcel(
-        selectedFileType.value,
+        selectedFileType.value.name,
         document.getElementById("element-to-print"),
         fileName.value,
         fileHeaderToExport.value,
