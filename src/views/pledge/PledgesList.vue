@@ -52,30 +52,30 @@
                   <!-- {{pledgeSummary}} -->
                   <div class="col-12 col-md-3 ">
                   
-                       <MembersSearch @memberdetail="chooseContact" />
+                       <!-- <MembersSearch @memberdetail="chooseContact" /> -->
                         <!-- <Dropdown v-model="selectedPerson" class="w-100 font-weight-normal" :options="reOccuringRange"  optionLabel="name" placeholder="Select Person" /> -->
                   </div>
-                  <div class="col-12 col-md-3 ">
+                  <!-- <div class="col-12 col-md-3 ">
                     <Dropdown v-model="selectedPledge" class="w-100 font-weight-normal" :options="allPledgeType"  optionLabel="name" placeholder="Pledge Type" />
-                  </div>
+                  </div> -->
                   <div class="col-12 col-md-2 ">
-                     <Calendar dateFormat="dd/mm/yy" placeholder="Start-date"  class="w-100" id="icon" v-model="startDate" :showIcon="true" />
+                     <!-- <Calendar dateFormat="dd/mm/yy" placeholder="Start-date"  class="w-100" id="icon" v-model="startDate" :showIcon="true" /> -->
                     <!-- <input type="text" v-model="amountFrom" class="form-control" placeholder="From" /> -->
                   </div>
 
-                  <div class="col-12 col-md-2">
-                    <Calendar dateFormat="dd/mm/yy" placeholder="End-date"  class="w-100" id="icon" v-model="endDate" :showIcon="true" />
+                  <!-- <div class="col-12 col-md-2"> -->
+                    <!-- <Calendar dateFormat="dd/mm/yy" placeholder="End-date"  class="w-100" id="icon" v-model="endDate" :showIcon="true" /> -->
                      <!-- <input type="text" v-model="amountTo" class="form-control" placeholder="To" /> -->
-                  </div>
-                  <div class="col-12 col-md-2">
-                    <button class=" btn default-bt primary-pg "> Search...</button>
+                  <!-- </div> -->
+                  <!-- <div class="col-12 col-md-2"> -->
+                    <!-- <button class=" btn default-bt primary-pg "> Search...</button> -->
                       <!-- <input
                         type="text"
                         class="w-100   form-control  "
                         placeholder="Search..."
                         v-model="searchText"
                       /> -->
-                  </div>
+                  <!-- </div> -->
                 </div>
               </div>
           </div>
@@ -265,7 +265,7 @@
                                     @click="showConfirmModal(pledgelist.id, index)"
                                     >Delete</a
                                   >
-                                  <a
+                                 <a
                                     class="dropdown-item"
                                     ><router-link
                                       :to="`/tenant/pledge/makepledge?id=${pledgelist.id}`"
@@ -273,6 +273,13 @@
                                       >Edit</router-link
                                     ></a
                                   >
+                                  <a
+                                    class="dropdown-item"
+                                    ><router-link
+                                      :to="`/tenant/pledge/pledgepayment?id=${pledgelist.pledgeTypeID}&pledgeTypeID=${pledgelist.id}&name=${ pledgelist.person.firstName }${ pledgelist.person.lastName }`"
+                                      class="text-color"
+                                      >Make Payment</router-link
+                                    ></a>
                                 </div>
                               </span>
                             </span>
@@ -367,14 +374,18 @@ export default {
                       name : i.pledgeType.name,
                       id : i.pledgeType.id,
                     })) 
-                    console.log(allPledgeType.value,'getPledgeType');
-                    // console.log(allPledgeList.value,'getPledgeList');
+                    // console.log(allPledgeType.value,'getPledgeType');
+                    console.log(allPledgeList.value,'getPledgeList');
                 }
                 catch (error){
                     console.log(error)
                 }
             }
             getAllPledges()
+
+             const pledgeClick = (id) => {
+              router.push(`/tenant/pledge/pledgepaymentlist/${id}`)
+          }
 
             const deletePledge = (id) => {
 
@@ -444,6 +455,7 @@ export default {
 
             return {
                 allPledgeList,
+                pledgeClick,
                 clearInput,
                 searchGroup,
                 toggleSearch,

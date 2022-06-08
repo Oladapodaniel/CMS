@@ -172,15 +172,15 @@
                         </div>   
                     </div>       -->
 
-                     <div class="col-md-12  mt-4">
-                            <div class="row  ">
-                                <div class=" col-md-12 d-flex justify-content-center mb-2  ">
-                                    <button class="default-btn primary-bg border-0 text-white" type="button" data-toggle="modal" data-target="#exampleModalCente" data-dismiss="modal" @click="makePayment">
-                                        <i class="pi pi-spin pi-spinner"  v-if="loading"></i> Make Payment
-                                    </button>
-                                </div>
+                    <div class="col-md-12  mt-4">
+                        <div class="row  ">
+                            <div class=" col-md-12 d-flex justify-content-center mb-2  ">
+                                <button class="default-btn primary-bg border-0 text-white" type="button" data-toggle="modal" data-target="#exampleModalCente" data-dismiss="modal" @click="makePayment">
+                                    <i class="pi pi-spin pi-spinner"  v-if="loading"></i> Make Payment
+                                </button>
                             </div>
                         </div>
+                    </div>
                 
             </div>
         </div>
@@ -244,7 +244,7 @@ export default {
 
         const makePayment = () =>{
             // router.push('/pledge/pledgepayment')
-            router.push(`/pledge/pledgepayment?pledgeTypeID=${route.query.pledgeTypeID}&id=${route.query.id}&name=${route.query.name}`)
+            router.push(`/pledge/publicpledgepayment?pledgeTypeID=${route.query.pledgeTypeID}&id=${route.query.id}&name=${route.query.name}`)
         }
 
          const chooseContact = (payload) => {
@@ -256,7 +256,7 @@ export default {
 
          const pledgePaymentLink = computed(() => {
                 if (!route.query.id) return ""
-                return `${window.location.origin}/pledge/pledgepayment?pledgeTypeID=${route.query.pledgeTypeID}&id=${route.query.id}&name=${route.query.name}`
+                return `${window.location.origin}/pledge/publicpledgepayment?pledgeTypeID=${route.query.pledgeTypeID}&id=${route.query.id}&name=${route.query.name}`
         })
 
         const copyLink = () => {
@@ -335,7 +335,7 @@ export default {
                     const res = await axios.post('api/Pledge/SavePledge', makePledgeDetails)
                     finish()
                     console.log(res,'getSinglePledge');
-                    router.push(`/pledge/pledgepayment?ID=${route.query.id}&name=${route.query.name}`)
+                    router.push(`/pledge/publicpledgepayment?ID=${route.query.id}&name=${route.query.name}`)
                     
                 }
                 catch (error){
