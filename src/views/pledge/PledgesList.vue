@@ -329,12 +329,30 @@ export default {
         const loading = ref(false)
         const searchText = ref('')
         const selectedPledge = ref('')
+        const tenantID = ref('')
         const allPledgeType = ref([])
         const selectedPerson = ref('')
         const allPledgeList = ref([]);
         // const singlePledge = ref([]);
         const confirm = useConfirm();
 
+
+
+        const getCurrentlySignedInUser = async () => {
+            try {
+              const res = await axios.get("/api/Membership/GetCurrentSignedInUser");
+              tenantID.value = res.data.tenantId
+            } catch (err) {
+              console.log(err);
+            }
+          };
+
+          getCurrentlySignedInUser();
+
+          const memberlink = computed(() => {
+            if (!tenantID.value) return ""
+            return `${window.location.origin}/pledge/publicmakepledge/${tenantID.value}`
+          })
 
 
         const searchGroup = computed(() => {
@@ -455,6 +473,8 @@ export default {
 
             return {
                 allPledgeList,
+                tenantID,
+                memberlink,
                 pledgeClick,
                 clearInput,
                 searchGroup,
