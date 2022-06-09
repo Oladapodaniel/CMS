@@ -230,10 +230,10 @@
                                 />
                             </div>
                             <div class=" col-12 col-sm-5 mt-0 mt-sm-3 mt-md-3 ">
-                                <label for="topic">Number</label>
+                                <!-- <label for="topic">Number</label> -->
                             </div>
                             <div class=" col-12 col-sm-7 mt-0 mt-sm-3 mt-md-3 ">
-                                <input type="text"  class="form-control" />
+                                
                             </div>
                         
                             <!-- <div class=" col-12 col-sm-5 ">
