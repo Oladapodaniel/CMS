@@ -254,7 +254,7 @@ export default {
         const amountTo = ref('')
         const logoUrl = `https://flutterwave.com/images/logo-colored.svg`
         const isProduction = true;
-        const selectedChannel = ref('')
+        const selectedChannel = ref({})
         const pledgeCategory = ref(
             [
                 {name: 'Free will'},
@@ -480,6 +480,9 @@ export default {
             try{
                  const res = await axios.get(`/api/Pledge/GetOnePledgePayment?ID=${route.query.id}`)
                  console.log(res, '🤣😂😃🤣🤣😂w');
+
+                 paymentAmount.value = res.data.returnObject.amount
+                 selectedChannel.value = res.data.returnObject.channel
             }
             catch (error) {
                 console.log(error)
