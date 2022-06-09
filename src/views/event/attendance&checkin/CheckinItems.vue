@@ -75,6 +75,7 @@ export default {
               if (y >= 0) return false;
               return true;
             });
+            console.log(items.value, "the boy is good ")
     }
 
     const setPagedAttendance = (payload) => {

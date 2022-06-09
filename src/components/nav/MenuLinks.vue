@@ -238,6 +238,44 @@
               >
             </li> -->
           </ul>
+            <a
+            class="link dd"
+            :class="{
+              'router-link-exact-active': route.path.includes(
+                'tenant/pledge'
+              ),
+            }"
+
+          >
+            <span @click="togglePledgeDropDown" v-if="admin || basicUser" class="myimage">
+              <img
+                src="../../assets/dashboardlinks/partner-icon.png
+                "
+                class="link-icon"
+                alt=""
+              />
+              <span class="drop-link"
+                >Partner/Pledge<span class="ml-1 badge badge-warning">New</span>
+                <span class="user-link-icon">
+                  <i
+                    class="pi pi-angle-up more-icon"
+                    :class="{ 'tbb-icon-rotate': pledgeLinkDropped }"
+                  ></i></span
+              ></span>
+            </span>
+          </a>
+          <ul
+            class="dd-list pledge-list"
+            :class="{ 'dd-hide-list': !pledgeLinkDropped }"
+
+          >
+            <li class="dd-list-item">
+              <router-link class="dd-link-item routelink" to="/tenant/pledge/pledgeslist">Pledges</router-link>
+            </li>
+            <li class="dd-list-item">
+              <router-link class="dd-link-item routelink" to="/tenant/pledge/pledgepaymentlist">Payment</router-link>
+            </li>
+          </ul>
           <!-- multiBranching -->
             <a
             class="link dd"
@@ -483,6 +521,7 @@ export default {
       accLinkDropped.value = false;
       eventsLinkDropped.value = false;
       branchLinkDropped.value = false
+      pledgeLinkDropped.value = false;
     };
 
     const commLinkDropped = ref(false);
@@ -491,7 +530,8 @@ export default {
       peopleLinkDropped.value = false;
       eventsLinkDropped.value = false;
       accLinkDropped.value = false;
-      branchLinkDropped.value = false
+      branchLinkDropped.value = false;
+      pledgeLinkDropped.value = false;
     };
 
     const eventsLinkDropped = ref(false);
@@ -500,7 +540,8 @@ export default {
       commLinkDropped.value = false;
       accLinkDropped.value = false;
       peopleLinkDropped.value = false;
-      branchLinkDropped.value = false
+      branchLinkDropped.value = false;
+      pledgeLinkDropped.value = false;
     };
 
      const branchLinkDropped = ref(false);
@@ -509,11 +550,22 @@ export default {
       commLinkDropped.value = false;
       accLinkDropped.value = false;
       peopleLinkDropped.value = false;
+      pledgeLinkDropped.value = false;
     };
 
     const accLinkDropped = ref(false);
     const toggleAccDropDown = () => {
       accLinkDropped.value = !accLinkDropped.value;
+      commLinkDropped.value = false;
+      eventsLinkDropped.value = false;
+      peopleLinkDropped.value = false;
+      branchLinkDropped.value = false
+      pledgeLinkDropped.value = false
+    };
+
+    const pledgeLinkDropped  = ref(false);
+    const togglePledgeDropDown = () => {
+      pledgeLinkDropped.value = !pledgeLinkDropped.value;
       commLinkDropped.value = false;
       eventsLinkDropped.value = false;
       peopleLinkDropped.value = false;
@@ -584,6 +636,8 @@ export default {
 
     return {
       route,
+      pledgeLinkDropped,
+      togglePledgeDropDown,
       moreShown,
       showMore,
       dropDownText,
@@ -619,6 +673,10 @@ export default {
 <style scoped>
 * {
   box-sizing: border-box;
+}
+
+.myimage img{
+  height: 30px;
 }
 
 .user {
@@ -800,6 +858,9 @@ export default {
 
 .acc-list {
   height: 168px;
+}
+.pledge-list {
+  height: 90px;
 }
 
 .people-dd {
