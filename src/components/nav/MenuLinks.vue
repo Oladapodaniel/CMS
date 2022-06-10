@@ -239,7 +239,7 @@
             </li> -->
           </ul>
             <a
-            class="link dd"
+            class="link badges-hover dd"
             :class="{
               'router-link-exact-active': route.path.includes(
                 'tenant/pledge'
@@ -255,7 +255,7 @@
                 alt=""
               />
               <span class="drop-link"
-                >Partner/Pledge<span class="ml-1 badge badge-warning">New</span>
+                >Partner/Pledge<span class="ml-1 badge badge-warning badge-pill badges-hover ">New</span>
                 <span class="user-link-icon">
                   <i
                     class="pi pi-angle-up more-icon"
@@ -677,6 +677,7 @@ export default {
 
 .myimage img{
   height: 30px;
+  opacity: 0.5;
 }
 
 .user {
@@ -711,6 +712,13 @@ export default {
   width: 100%;
 }
 
+
+.badges-hover:hover {
+  /* background-color: yellow !important; */
+  filter:   
+    opacity(95%) !important ;
+}
+
 .user-link-icon {
   float: right;
   opacity: 0.5;
@@ -722,7 +730,7 @@ export default {
 }
 
 .nav router-link:hover {
-  color: #00204412;
+  color: #00204412 ;
 }
 
 .link:hover {

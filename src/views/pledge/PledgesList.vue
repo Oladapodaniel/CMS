@@ -46,7 +46,7 @@
                 </div>
               </div>
           </div> -->
-          <div class="row">
+          <div class="row" v-if="allPledgeList.length > 0 && !loading && !networkError">
               <div class="col-12 mt-4 w-100">
                 <div class="row">
                   <!-- {{pledgeSummary}} -->
@@ -79,7 +79,7 @@
                 </div>
               </div>
           </div>
-          <div class="row table">
+          <div class="row table" v-if=" allPledgeList.length > 0 && !loading && !networkError">
             <div class="col-12 px-0" id="table">
               <div class="top-con" id="ignore2">
                 <div class="table-top">
@@ -294,6 +294,18 @@
               </div>
             </div>
           </div>
+          <div class="no-person" v-else-if="allPledgeList.length === 0 && !loading && !networkError">
+              <div class="empty-img">
+                  <p><img src="../../assets/people/people-empty.svg" alt="" /></p>
+                  <p class="tip">You haven't added any Pledge yet</p>
+                  <div class="c-pointer primary-bg col-sm-6 col-md-4 offset-sm-3 offset-md-4 default-btn border-0 text-white" @click="navigateToMakePledge">Add Pledge </div>
+              </div>
+          </div>
+    
+          <div  class="adjust-network" v-else-if="networkError">
+            <img src="../../assets/network-disconnected.png" >
+            <div>Opps, Your internet connection was disrupted</div>
+          </div>
         </div>
     </div>
 </template>
@@ -321,7 +333,7 @@ export default {
     setup() {
 
       
-
+        const networkError = ref(false);
         const toast = useToast()
         const startDate = ref("");
         const endDate = ref("");
@@ -337,7 +349,9 @@ export default {
         const confirm = useConfirm();
 
 
-
+        const navigateToMakePledge = () => {
+          router.push('/tenant/pledge/makepledge')
+        }
         const getCurrentlySignedInUser = async () => {
             try {
               const res = await axios.get("/api/Membership/GetCurrentSignedInUser");
@@ -383,6 +397,7 @@ export default {
           };
 
         const getAllPledges = async () =>{
+          loading.value = true
                 try{
                     const res = await axios.get('/api/Pledge/GetAllPledges')
                     // const res = await axios.get('/api/Pledge/GetAllPledgeDefinitions')
@@ -394,9 +409,21 @@ export default {
                     })) 
                     // console.log(allPledgeType.value,'getPledgeType');
                     console.log(allPledgeList.value,'getPledgeList');
+                    loading.value = false
                 }
+                
                 catch (error){
-                    console.log(error)
+                  finish()
+                  console.log(error)
+                  loading.value = false
+                  networkError.value = true
+
+                  if(error.toString().toLowerCase().includes("network error")) {
+                    networkError.value = true
+                  } else {
+                    networkError.value = false
+                  }
+                    
                 }
             }
             getAllPledges()
@@ -473,6 +500,8 @@ export default {
 
             return {
                 allPledgeList,
+                navigateToMakePledge,
+                networkError,
                 tenantID,
                 memberlink,
                 pledgeClick,
@@ -499,7 +528,22 @@ export default {
 </script>
 
 <style scoped>
+.no-person {
+  height: 80vh;
+  display: flex;
+  text-align: center;
+}
 
+.empty-img {
+  width: 85%;
+  /* min-width: 397px; */
+  margin: auto;
+}
+
+.empty-img img {
+  width: 100%;
+  max-width: 200px;
+}
 .events {
   font: normal normal 800 29px Nunito sans;
 }

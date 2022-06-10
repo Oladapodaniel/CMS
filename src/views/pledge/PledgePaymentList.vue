@@ -30,47 +30,8 @@
             </div>
             
           </div>
-          <!-- <div class="row table">
-              <div class="col-12 mt-4 w-100">
-                <div class="row">
-                  <div class="col-12 col-md-4 ">
-                    <div class="font-weight-bold col-12 ">Total Pledge</div>
-                  </div>
 
-                  <div class="col-12 col-md-4">
-                    <div class="font-weight-bold col-12 ">How They Pledge </div>
-                  </div>
-                  <div class="col-12 col-md-4">
-                    <div class="font-weight-bold col-12 ">How They Redeem</div>
-                  </div>
-                </div>
-              </div>
-          </div> -->
-          <div class="row">
-              <div class="col-12 mt-4 w-100">
-                <!-- <div class="row">
-                  {{pledgeSummary}}
-                  <div class="col-12 col-md-3 ">
-                  
-                       <MembersSearch @memberdetail="chooseContact" />
-                  </div>
-                  <div class="col-12 col-md-3 ">
-                    <Dropdown v-model="selectedPledge" class="w-100 font-weight-normal" :options="allPledgeType"  optionLabel="name" placeholder="Pledge Type" />
-                  </div>
-                  <div class="col-12 col-md-2 ">
-                     <Calendar dateFormat="dd/mm/yy" placeholder="Start-date"  class="w-100" id="icon" v-model="startDate" :showIcon="true" />
-                  </div>
-
-                  <div class="col-12 col-md-2">
-                    <Calendar dateFormat="dd/mm/yy" placeholder="End-date"  class="w-100" id="icon" v-model="endDate" :showIcon="true" />
-                  </div>
-                  <div class="col-12 col-md-2">
-                    <button class=" btn default-bt primary-pg "> Search...</button>
-                  </div>
-                </div> -->
-              </div>
-          </div>
-          <div class="row table">
+          <div class="row table"  v-if=" allPledgePaymentList.length > 0 && !loading && !networkError">
             <div class="col-12 px-0" id="table">
               <div class="top-con" id="ignore2">
                 <div class="table-top">
@@ -270,6 +231,18 @@
               </div>
             </div>
           </div>
+          <div class="no-person" v-else-if="allPledgePaymentList.length === 0 && !loading && !networkError">
+              <div class="empty-img">
+                  <p><img src="../../assets/people/people-empty.svg" alt="" /></p>
+                  <p class="tip">You haven't added any Payment yet</p>
+                  <!-- <div class="c-pointer primary-bg col-sm-6 col-md-4 offset-sm-3 offset-md-4 default-btn border-0 text-white" @click="navigateToPledgePayment">Make a new Pledge </div> -->
+              </div>
+          </div>
+    
+          <div  class="adjust-network" v-else-if="networkError">
+            <img src="../../assets/network-disconnected.png" >
+            <div>Opps, Your internet connection was disrupted</div>
+          </div>
         </div>
     </div>
 </template>
@@ -298,7 +271,7 @@ export default {
     setup() {
 
       
-
+        const networkError = ref(false);
         const toast = useToast()
         const startDate = ref("");
         const endDate = ref("");
@@ -314,6 +287,9 @@ export default {
         const confirm = useConfirm();
 
 
+        const navigateToPledgePayment = () =>{
+          router.push('/tenant/pledge/pledgepayment')
+        }
 
         const searchPledgePayment = computed(() => {
           if (searchText.value !== "" && allPledgePaymentList.value.length > 0)  {
@@ -364,15 +340,23 @@ export default {
         //     getAllPledges()
 
             const getAllPledgePaymentList = async () => {
-                
+                loading.value = true
                   try{
                     const res = await axios.get('/api/Pledge/GetAllPledgePaymentsForTenant')
                     finish()
                     allPledgePaymentList.value = res.data.returnObject
                     console.log(allPledgePaymentList.value,'getPledgepayment😁😁');
+                    loading.value = false
                 }
                 catch (error){
                     console.log(error)
+                    loading.value = false;
+
+                    if(error.toString().toLowerCase().includes("network error")) {
+                    networkError.value = true
+                  } else {
+                    networkError.value = false
+                  }
                 }
             }
             getAllPledgePaymentList()
@@ -445,6 +429,8 @@ export default {
 
             return {
                 allPledgePaymentList,
+                navigateToPledgePayment,
+                networkError,
                 pledgeClick,
                 clearInput,
                 searchPledgePayment,
@@ -470,6 +456,23 @@ export default {
 </script>
 
 <style scoped>
+
+.no-person {
+  height: 80vh;
+  display: flex;
+  text-align: center;
+}
+
+.empty-img {
+  width: 85%;
+  /* min-width: 397px; */
+  margin: auto;
+}
+
+.empty-img img {
+  width: 100%;
+  max-width: 200px;
+}
 
 .events {
   font: normal normal 800 29px Nunito sans;
