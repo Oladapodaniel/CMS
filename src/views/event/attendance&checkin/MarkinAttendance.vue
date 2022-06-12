@@ -99,7 +99,6 @@
           <i class="pi pi-phone icon" />
           <InputText
             @input="CheckXterAfterEleven"
-            @blur="checkCharacter"
             class="w-100"
             type="text"
             v-model="enteredValue"
@@ -289,7 +288,10 @@
           </div>
         </div>
 
-        <div class="row my-2" v-if="person.avaliableGroups && person.avaliableGroups.length > 0">
+        <div
+          class="row my-2"
+          v-if="person.groupsBelongingTo && person.groupsBelongingTo.length > 0"
+        >
           <div
             class="
               col-md-3
@@ -312,7 +314,10 @@
           </div>
         </div>
 
-        <div class="row my-2" v-if="person.avaliableGroups && person.avaliableGroups.length > 0">
+        <div
+          class="row my-2"
+          v-if="person.avaliableGroups && person.avaliableGroups.length > 0"
+        >
           <div
             class="
               col-md-3
@@ -329,7 +334,14 @@
           <div class="col-md-7">
             <span class="p-input-icon-left w-100">
               <i class="pi pi-map-marker icon" />
-              <MultiSelect v-model="selectedGroups" :options="filteredGroups" optionLabel="name" placeholder="Select group(s)" display="chip" class="w-100" />
+              <MultiSelect
+                v-model="selectedGroups"
+                :options="filteredGroups"
+                optionLabel="name"
+                placeholder="Select group(s)"
+                display="chip"
+                class="w-100"
+              />
             </span>
           </div>
         </div>
@@ -388,9 +400,9 @@ import Dropdown from "primevue/dropdown";
 import MultiSelect from "primevue/multiselect";
 
 export default {
-  components: { 
-    Dropdown, 
-    MultiSelect 
+  components: {
+    Dropdown,
+    MultiSelect,
   },
   setup() {
     const connectName = ref("");
@@ -468,20 +480,6 @@ export default {
     const personHasAddress = ref(false);
     const personData = ref({});
     const checkCharacter = () => {
-      // if (e.target.value.length < 11) {
-      //   person.value = {};
-      //   personHasAddress.value = false;
-      //   return false;
-      // }
-      // loaded.value = false;
-      // personHasAddress.value = false;
-      // fetchingFailed.value = false;
-      // showNoPhoneError.value = false;
-      // if (!enteredValue.value) {
-      //   showNoPhoneError.value = true;
-      //   return false;
-      // }
-      // if (e.target.value.length > 0) {
       loading.value = true;
       autosearch.value = true;
       axios
@@ -537,21 +535,23 @@ export default {
           if (person.value.address) {
             person.value.address = formatString(person.value.address, 2, 4);
           }
-          
 
-          if (person.value && person.value.groupsBelongingTo && person.value.groupsBelongingTo.length > 0 ) {
-            person.value.groupsBelongingTo.forEach(i => {
-              const groupIndx = person.value.avaliableGroups.findIndex(j => {
-                return i.groupId == j.groupId
-              })
-              person.value.avaliableGroups.splice(groupIndx, 1)
-              console.log(groupIndx)
-              console.log(filteredGroups.value)
-          })
-          filteredGroups.value = person.value.avaliableGroups
-          selectedGroupList.value = person.value.groupsBelongingTo
+          if (
+            person.value &&
+            person.value.groupsBelongingTo &&
+            person.value.groupsBelongingTo.length > 0
+          ) {
+            person.value.groupsBelongingTo.forEach((i) => {
+              const groupIndx = person.value.avaliableGroups.findIndex((j) => {
+                return i.groupId == j.groupId;
+              });
+              person.value.avaliableGroups.splice(groupIndx, 1);
+            });
+            filteredGroups.value = person.value.avaliableGroups;
+            selectedGroupList.value = person.value.groupsBelongingTo;
+          } else {
+            filteredGroups.value = person.value.avaliableGroups;
           }
-
           if (person.value) appltoggle.value = true;
         })
         .catch((err) => {
@@ -621,7 +621,10 @@ export default {
               ? ""
               : person.value.address,
             email: personData.value.email ? "" : person.value.email,
-            peopleInGroups: selectedGroups.value.length > 0 ? selectedGroups.value.map(i => ({ id: i.id })) : []
+            peopleInGroups:
+              selectedGroups.value.length > 0
+                ? selectedGroups.value.map((i) => ({ id: i.id }))
+                : [],
           },
           attendanceCode: eventData.value.attendanceCode,
         };
@@ -632,7 +635,10 @@ export default {
             email: person.value.email,
             homeAddress: person.value.address,
             mobilePhone: enteredValue.value,
-            peopleInGroups: selectedGroups.value.length > 0 ? selectedGroups.value.map(i => ({ id: i.id })) : []
+            peopleInGroups:
+              selectedGroups.value.length > 0
+                ? selectedGroups.value.map((i) => ({ id: i.id }))
+                : [],
           },
           attendanceCode: eventData.value.attendanceCode,
         };
@@ -822,7 +828,7 @@ export default {
       CheckXterAfterEleven,
       selectedGroups,
       selectedGroupList,
-      filteredGroups
+      filteredGroups,
     };
   },
 };
