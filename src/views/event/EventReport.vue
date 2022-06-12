@@ -21,12 +21,18 @@
           </div>
           <hr class="mb-4" />
         </div>
-        <div class="container" style="width: 80%" v-if="!isPending && !errorGettingReport">
+        <div
+          class="container"
+          style="width: 80%"
+          v-if="!isPending && !errorGettingReport"
+        >
           <div class="row mx-1 mb-4 mt-3">
             <div class="col-md-2 pl-0">
               <span class="theader mb-1">Status</span>
               <div class="my-3">
-                <span class="draft font-weight-bold ">{{ stats.isSent ? 'Sent' : 'Unsent' }}</span>
+                <span class="draft font-weight-bold">{{
+                  stats.isSent ? "Sent" : "Unsent"
+                }}</span>
               </div>
             </div>
 
@@ -94,7 +100,6 @@
                       class="col-md-6 d-sm-flex justify-content-end"
                       v-if="!reportApproved"
                     >
-                    
                       <a
                         class="def-btn approve-btn mr-4"
                         @click="toggleReportState"
@@ -116,10 +121,7 @@
                   <div class="row my-3">
                     <div class="col-md-1 d-flex align-items-center">
                       <span class="file-icon"
-                        ><i
-                          class="pi pi-arrow-down"
-                          style="color: #136acd"
-                        ></i
+                        ><i class="pi pi-arrow-down" style="color: #136acd"></i
                       ></span>
                     </div>
                     <div class="col-md-5 grey-text">
@@ -153,10 +155,13 @@
                                   aria-hidden="true"
                                   :show="true"
                                 >
-                                  <div class="modal-dialog modal-lg"  >
+                                  <div class="modal-dialog modal-lg">
                                     <div class="modal-content">
                                       <div class="modal-header">
-                                        <h5 class="modal-title font-weight-bold" id="sendReport">
+                                        <h5
+                                          class="modal-title font-weight-bold"
+                                          id="sendReport"
+                                        >
                                           Send this report
                                         </h5>
                                         <button
@@ -165,14 +170,21 @@
                                           data-dismiss="modal"
                                           aria-label="Close"
                                         >
-                                          <span aria-hidden="true">&times;</span>
+                                          <span aria-hidden="true"
+                                            >&times;</span
+                                          >
                                         </button>
                                       </div>
-                                      <div class="modal-body pt-0 px-0"  :data-dismiss="btnState">
+                                      <div
+                                        class="modal-body pt-0 px-0"
+                                        :data-dismiss="btnState"
+                                      >
                                         <!-- <ReportModal :eventName="eventDataResponse.name"/> -->
                                         <ReportModal
                                           :eventName="
-                                            stats.activityToday ? stats.activityToday.name : ''
+                                            stats.activityToday
+                                              ? stats.activityToday.name
+                                              : ''
                                           "
                                           @sendreport="sendReport"
                                           :stats="stats"
@@ -211,9 +223,14 @@
                           class="form-control mr-2"
                           :value="location"
                           ref="shareableLinkField"
-                          style="width:90%"
+                          style="width: 90%"
                         />
-                        <span><i class="pi pi-copy c-pointer" style="font-size: 1.5rem"></i></span>
+                        <span
+                          ><i
+                            class="pi pi-copy c-pointer"
+                            style="font-size: 1.5rem"
+                          ></i
+                        ></span>
                       </span>
                     </div>
                   </div>
@@ -228,7 +245,14 @@
                 <h2 class="evt-report">Event and Report</h2>
               </div>
               <div
-                class="col-md-4 d-flex flex-column light-red-section pr-5 text-center"
+                class="
+                  col-md-4
+                  d-flex
+                  flex-column
+                  light-red-section
+                  pr-5
+                  text-center
+                "
               >
                 <span>
                   <span class="mb-n3">Total Attendance: </span> <br />
@@ -912,7 +936,7 @@
 
                   <div class="area-charts analytics-container mb-5">
                     <!-- <div id="chart" style="width:50%;height:500px"></div> -->
-                      <!-- {{stats.attendanceSoFar}} -->
+                    <!-- {{stats.attendanceSoFar}} -->
                     <div
                       class="area-chart mt-5"
                       v-if="
@@ -929,7 +953,7 @@
                         :series="stats.attendanceSoFar"
                       />
                     </div>
-                  
+
                     <div
                       class="area-chart mt-5"
                       v-if="
@@ -966,8 +990,6 @@
               </div>
             </div>
           </div>
-
-          
 
           <div class="row email-data" ref="emaildata">
             <table
@@ -1753,7 +1775,7 @@
                       "
                     >
                       <span style="font-weight: normal; font-size: 13px">{{
-                        offering.name
+                        offering.contribution
                       }}</span>
                     </p>
                   </td>
@@ -1799,9 +1821,11 @@
                         text-align: center;
                       "
                     >
-                      <span style="font-weight: normal; font-size: 13px">{{
-                        offering.amount
-                      }}</span>
+                      <span style="font-weight: normal; font-size: 13px"
+                        >{{ offering.currencyName }}&nbsp;{{
+                          offering.amount
+                        }}</span
+                      >
                     </p>
                   </td>
                   <td
@@ -1821,9 +1845,11 @@
                         text-align: center;
                       "
                     >
-                      <span style="font-weight: normal; font-size: 13px">{{
-                        offering.amount
-                      }}</span>
+                      <span style="font-weight: normal; font-size: 13px"
+                        >{{ offering.currencyName }}&nbsp;{{
+                          offering.amount
+                        }}</span
+                      >
                     </p>
                   </td>
                 </tr>
@@ -1914,9 +1940,11 @@
                         text-align: center;
                       "
                     >
-                      <span style="font-weight: bold; font-size: 16px">{{
-                        tottalOfferings
-                      }}</span>
+                      <span style="font-weight: bold; font-size: 16px"
+                        >{{ stats.tenantCurrencyName }}&nbsp;{{
+                          stats.todayOffering
+                        }}</span
+                      >
                     </p>
                   </td>
                 </tr>
@@ -2217,16 +2245,23 @@
 
         <div class="row" v-if="errorGettingReport">
           <div class="col-md-12 text-center text-danger font-weight-bold">
-            <p class="text-danger">Error generating report, please try reloading the page. </p>
-            <p class="mb-0">If this link was copied ensure you copied the whole link</p>
-            <p>Else if this continues, please contact us at <a href="mailto:info@churchplus.co" class="text-primary">info@churchplus.co</a></p>
+            <p class="text-danger">
+              Error generating report, please try reloading the page.
+            </p>
+            <p class="mb-0">
+              If this link was copied ensure you copied the whole link
+            </p>
+            <p>
+              Else if this continues, please contact us at
+              <a href="mailto:info@churchplus.co" class="text-primary"
+                >info@churchplus.co</a
+              >
+            </p>
           </div>
         </div>
       </div>
     </div>
   </div>
-
-  
 </template>
 
 
@@ -2242,7 +2277,7 @@ import stopProgressBar from "../../services/progressbar/progress";
 import { useToast } from "primevue/usetoast";
 import moment from "moment";
 import Loading from "../../components/loading/LoadingComponent";
-import store from "../../store/store"
+import store from "../../store/store";
 
 export default {
   components: { ReportAreaChart, ReportModal, Loading },
@@ -2269,25 +2304,26 @@ export default {
     };
 
     const markAsSent = () => {
-      axios.get(`/api/Events/markAsSent?activityId=${activityId.value}`)
-                .then(res => {
-                  stats.value.isSent = true;
-              lastSent.value = "Marked as sent today";
-              status.value = "Sent";
-              // markedAsSent.value = true;
-              sendBtnText.value = "Resend report";
-                  console.log(res)
-             
-                }).catch(err => {
-                  console.log(err)
-                })
+      axios
+        .get(`/api/Events/markAsSent?activityId=${activityId.value}`)
+        .then((res) => {
+          stats.value.isSent = true;
+          lastSent.value = "Marked as sent today";
+          status.value = "Sent";
+          // markedAsSent.value = true;
+          sendBtnText.value = "Resend report";
+          console.log(res);
+        })
+        .catch((err) => {
+          console.log(err);
+        });
     };
 
     const stats = ref(store.getters.reportData);
 
     const innerWidth = computed(() => {
-            return window.innerWidth;
-        })
+      return window.innerWidth;
+    });
 
     const offeringArr = ref([]);
 
@@ -2378,7 +2414,7 @@ export default {
               detail: "Your report has been sent",
               life: 3000,
             });
-            markAsSent()
+            markAsSent();
           }
         })
         .catch((err) => {
@@ -2424,27 +2460,32 @@ export default {
     const isPending = ref(true);
     const errorGettingReport = ref(false);
     const getStats = async () => {
-        errorGettingReport.value = false;
-        try {
-          const res = await axios.get(
-            `/api/Events/GetAnalysis?activityId=${activityId.value}`
-          );
-          stats.value = res.data;
-          console.log(stats.value)
-          isPending.value = false;
-          store.dispatch("setReportData", res.data);
-        } catch (err) {
-          isPending.value = false;
-          errorGettingReport.value = true;
-          console.log(err.response);
-          stopProgressBar();
-        }    
+      errorGettingReport.value = false;
+      try {
+        const res = await axios.get(
+          `/api/Events/GetAnalysis?activityId=${activityId.value}`
+        );
+        stats.value = res.data;
+        console.log(stats.value);
+        isPending.value = false;
+        store.dispatch("setReportData", res.data);
+      } catch (err) {
+        isPending.value = false;
+        errorGettingReport.value = true;
+        console.log(err.response);
+        stopProgressBar();
+      }
     };
-    if (!stats.value || !stats.value.activityToday || stats.value.activityToday.id !== route.params.id || route.query.edit) {
+    if (
+      !stats.value ||
+      !stats.value.activityToday ||
+      stats.value.activityToday.id !== route.params.id ||
+      route.query.edit
+    ) {
       getStats();
     } else {
       isPending.value = false;
-      reportApproved.value = stats.value.isSent
+      reportApproved.value = stats.value.isSent;
     }
 
     const activityOfferings = computed(() => {
