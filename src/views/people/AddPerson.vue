@@ -317,9 +317,9 @@
                 />
               </div>
               <div class="input-field">
-                <label for="" class="label">Age</label>
+                <label for="" class="label">Age group</label>
                 <div class="cstm-select search-box">
-                  <div class="cs-select" style="width: 330px">
+                  <div class="cs-select-dropdown">
                     <Dropdown
                       v-model="selectedAgeGroup"
                       :options="ageGroups"
@@ -331,74 +331,71 @@
                   </div>
                 </div>
               </div>
-              <!-- <div v-for="(classification, index) in classifications" :key="index">
-                <div class="input-field" v-if="classification.controlType == 'Dropdown' " >
-                  <label for="" class="mr-2" >{{classification.label}}</label>
+              <div v-for="(item, index) in dynamicCustomFields" :key="index">
+                <div class="input-field align-items-sm-center" v-if="item.controlType == 1" >
+                  <label for="" class="mr-2" >{{item.label}}</label>
                   <div class="cstm-select search-box">
-                    <div class="cs-select" style="width: 330px">
+                    <div class="cs-select-dropdown">
                       <Dropdown
-                        v-model="selectedAgeGroup"
-                        :options="ageGroups"
-                        optionLabel="name"
+                        v-model="item.data"
+                        :options="item.parameterValues.split(',')"
                         placeholder="--Select age range--"
                         style="width: 100%"
                       />
                   </div>
                   </div>
                 </div>
-                <div class="input-field" v-if="classification.controlType == 'number' " >
-                  <label for="" class="label">{{classification.label}}</label>
+                <div class="input-field align-items-sm-center" v-if="item.controlType == 7" >
+                  <label for="" class="label">{{item.label}}</label>
                   <input
                     type="number"
                     class="input"
                     placeholder=""
-                    v-model="person.occupation"
+                    v-model="item.data"
                   />
                 </div>
-                <div class="input-field" v-if="classification.controlType == 'email' " >
-                  <label for="" class="label">{{classification.label}}</label>
+                <div class="input-field align-items-sm-center" v-if="item.controlType == 4" >
+                  <label for="" class="label">{{item.label}}</label>
                   <input
                     type="email"
                     class="input"
                     placeholder=""
-                    v-model="person.occupation"
+                    v-model="item.data"
                   />
                 </div>
-                <div class="input-field" v-if="classification.controlType == 'text' " >
-                  <label for="" class="label">{{classification.label}}</label>
+                <div class="input-field align-items-sm-center" v-if="item.controlType == 0 " >
+                  <label for="" class="label">{{item.label}}</label>
                   <input
                     type="text"
                     class="input"
                     placeholder=""
-                    v-model="person.occupation"
+                    v-model="item.data"
                   />
                 </div>
-                <div class="input-field" v-if="classification.controlType == 'password' " >
-                  <label for="" class="label">{{classification.label}}</label>
-                  <input
-                    type="password"
-                    class="input"
-                    placeholder=""
-                    v-model="person.occupation"
-                  />
+                <div class="input-field align-items-sm-center" v-if="item.controlType == 2" >
+                  <label for="" class="label">{{item.label}}</label>
+                  <div class="input border-0 pl-0">
+                    <Checkbox id="binary" v-model="item.data" :binary="true" />
+                  </div> 
                 </div>
-                <div class="input-field" v-if="classification.controlType == 'file' " >
-                  <label for="" class="label">{{classification.label}}</label>
+                <div class="input-field align-items-sm-center" v-if="item.controlType == 6" >
+                  <label for="" class="label">{{item.label}}</label>
                   <input
                     type="file"
                     class="input"
                     placeholder=""
                   />
                 </div>
-                <div class="input-field" v-if="classification.controlType == 'date' " >
-                  <label for="" class="label">{{classification.label}}</label>
+                <div class="input-field align-items-sm-center" v-if="item.controlType == 3" >
+                  <label for="" class="label">{{item.label}}</label>
                   <input
                     type="date"
                     class="input"
                     placeholder=""
+                    v-model="item.data"
                   />
                 </div>
-              </div> -->
+              </div>
             </div>
 
             <div class="image-div other">
@@ -562,7 +559,7 @@
                       'd-block': !hideDiv,
                     }"
                   >
-                  <i class="pi pi-spin pi-spinner text-center exempt-hide" v-if="grouploading && getAllGroup.length === 0"></i>
+                  <!-- <i class="pi pi-spin pi-spinner text-center exempt-hide" v-if="grouploading && getAllGroup.length === 0"></i> -->
                   <input type="text" class="form-control exempt-hide" v-model="searchGroupText" ref="searchRef" placeholder="Search for group"/>
                     <group-tree :items="searchAllGroups"
                       :addGroupValue="true"
@@ -924,6 +921,17 @@ export default {
         "note",
         personNotes.value ? JSON.stringify(personNotes.value) : []
       );
+
+      formData.append(
+        "customAttributeData",
+          JSON.stringify(dynamicCustomFields.value.map(i => ({
+          customAttributeID: i.id,
+          data: i.data,
+          entityID: route.params.personId
+        }))
+        )
+      );
+      console.log(dynamicCustomFields.value)
       console.log(formData);
       /*eslint no-undef: "warn"*/
       NProgress.start();
@@ -1038,15 +1046,7 @@ export default {
     const selectedGender = ref(null);
     const selectedAgeGroup = ref(null);
 
-     const classifications = ref([
-              {label: 'Your Phone Number', controlType: 'number'},
-              {label: 'Age', controlType: 'Dropdown'},
-              {label: 'Enter Your role', controlType: 'text'},
-              {label: 'Password', controlType: 'password'},
-              {label: 'Choose your file', controlType: 'file'},
-              {label: 'Enter your Email', controlType: 'email'},
-              {label: 'Date', controlType: 'date'}
-    ]);
+     const dynamicCustomFields = ref([]);
 
     const getLookUps = () => {
       axios
@@ -1392,8 +1392,8 @@ export default {
     const getCustomFields = async() => {
       try {
         let { data } = await axios.get(`/api/CustomFields/GetAllCustomFields`);
-        console.log(data)
-        // dynamicCustomFields.value = data
+        dynamicCustomFields.value = data.filter(i => i.entityType === 0)
+        console.log(dynamicCustomFields.value)
       }
       catch (err) {
         console.log(err)
@@ -1484,12 +1484,12 @@ export default {
       savePersonNote,
       searchGroupText,
       searchAllGroups,
-      classifications,
       showConfirmModal,
       hideDiv,
       hideGroupModal,
       closeAddToGroup,
-      setCloseGroupModal
+      setCloseGroupModal,
+      dynamicCustomFields
     };
   },
 };
@@ -1533,6 +1533,10 @@ export default {
   overflow: scroll;
 }
 
+.cs-select-dropdown {
+  width: 330px;
+}
+
 @media (min-width: 769px) {
   .celeb-tab {
     margin-right: 147px;
@@ -1563,9 +1567,13 @@ export default {
 }*/
 
 @media screen and (max-width: 620px) {
-  .input {
+  .input, .cs-select-dropdown, .cstm-select.search-box {
       width: 100%
     }
+  
+  .input {
+    margin: 0
+  }
 }
 @media screen and (max-width: 202px) {
   .padd{
