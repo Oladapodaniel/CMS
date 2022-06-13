@@ -252,6 +252,74 @@
                   <div class="font-weight-700 text-primary border-top text-center c-pointer" data-toggle="modal" data-target="#addToGroup">Add</div>
                 </div>
               </div>
+              
+              <!-- Custom Field -->
+              <div v-for="(item, index) in dynamicCustomFields" :key="index">
+                <div class="input-field align-items-sm-center" v-if="item.controlType == 1" >
+                  <label for="" class="mr-2" >{{item.label}}</label>
+                  <div class="cstm-select search-box">
+                    <div class="cs-select-dropdown">
+                      <Dropdown
+                        v-model="item.data"
+                        :options="item.parameterValues.split(',')"
+                        placeholder="--Select age range--"
+                        style="width: 100%"
+                      />
+                  </div>
+                  </div>
+                </div>
+                <div class="input-field align-items-sm-center" v-if="item.controlType == 7" >
+                  <label for="" class="label">{{item.label}}</label>
+                  <input
+                    type="number"
+                    class="input"
+                    placeholder=""
+                    v-model="item.data"
+                  />
+                </div>
+                <div class="input-field align-items-sm-center" v-if="item.controlType == 4" >
+                  <label for="" class="label">{{item.label}}</label>
+                  <input
+                    type="email"
+                    class="input"
+                    placeholder=""
+                    v-model="item.data"
+                  />
+                </div>
+                <div class="input-field align-items-sm-center" v-if="item.controlType == 0 " >
+                  <label for="" class="label">{{item.label}}</label>
+                  <input
+                    type="text"
+                    class="input"
+                    placeholder=""
+                    v-model="item.data"
+                  />
+                </div>
+                <div class="input-field align-items-sm-center" v-if="item.controlType == 2" >
+                  <label for="" class="label">{{item.label}}</label>
+                  <div class="input border-0 pl-0">
+                    <Checkbox id="binary" v-model="item.data" :binary="true" />
+                  </div> 
+                </div>
+                <div class="input-field align-items-sm-center" v-if="item.controlType == 6" >
+                  <label for="" class="label">{{item.label}}</label>
+                  <input
+                    type="file"
+                    class="input"
+                    placeholder=""
+                  />
+                </div>
+                <div class="input-field align-items-sm-center" v-if="item.controlType == 3" >
+                  <label for="" class="label">{{item.label}}</label>
+                  <input
+                    type="date"
+                    class="input"
+                    placeholder=""
+                    v-model="item.data"
+                  />
+                </div>
+              </div>
+              
             </div>
             <div style="width: 225px; margin: 0 auto">
               <ImageForm @pictureurl="setImageToUrl" />
@@ -674,6 +742,7 @@ import ImageForm from '../../components/membership/ImageForm.vue';
 import SearchMembers from '../../components/membership/MembersSearch.vue';
 import grousService from "../../services/groups/groupsservice";
 import { useStore } from "vuex"
+import allCustomFields from "../../services/customfield/customField"
 
 export default {
   components: { Dropdown, Dialog, ImageForm, SearchMembers },
@@ -728,6 +797,7 @@ export default {
     const position = ref("")
     const addToGroupError = ref(false);
     const dismissAddToGroupModal = ref("");
+    const dynamicCustomFields = ref([])
 
 
     const eventName = computed(() => {
@@ -850,6 +920,12 @@ export default {
           break;
       }
 
+      firstTimersObj.value.customAttributeData = dynamicCustomFields.value.map(i => ({
+          customAttributeID: i.id,
+          data: i.data,
+          entityID: route.params.personId
+        }))
+
 
       if (route.params.firstTimerId) {
         let updateMember = {
@@ -857,15 +933,12 @@ export default {
           lastName: firstTimersObj.value.lastName,
           phoneNumber: firstTimersObj.value.phoneNumber,
           email: firstTimersObj.value.email,
-          // maritalStatusId: firstTimersObj.value.maritalStatusId,
-          // genderId: firstTimersObj.value.genderId,
           activityID: firstTimersObj.value.activityID,
           address: firstTimersObj.value.address,
           birthday: firstTimersObj.value.birthday,
           birthMonth: firstTimersObj.value.birthMonth,
           birthYear: firstTimersObj.value.birthYear,
           howDidYouAboutUsId: selectedAboutUsSource.value ? selectedAboutUsSource.value.id : null,
-          // howDidYouAboutUsId: firstTimersObj.value.howDidYouAboutUsId,
           communicationMeans: firstTimersObj.value.communicationMeans,
           interestedInJoining: firstTimersObj.value.interestedInJoining,
           wantsToBeVisited: firstTimersObj.value.wantToBeVisited,
@@ -879,8 +952,7 @@ export default {
         if (firstTimersObj.value.maritalStatusId)
           updateMember.maritalStatusId = firstTimersObj.value.maritalStatusId;
           console.log(updateMember)
-
-          // router.push('/tenant/people/firsttimerworkflow')
+      
 
         try {
           loading.value = true;
@@ -1397,6 +1469,18 @@ export default {
       groupToAddTo.value = item
     }
 
+    const getAllCustomFields = async () => {
+      try {
+        let data = await allCustomFields.allCustomFields()
+         dynamicCustomFields.value = data.filter(i => i.entityType === 1)
+         console.log(dynamicCustomFields.value)
+      }
+      catch (err) {
+        console.log(err)
+      }
+    }
+    getAllCustomFields()
+
     return {
       onSubmit,
       onCancel,
@@ -1470,7 +1554,8 @@ export default {
       addToGroupError,
       dismissAddToGroupModal,
       addMemberToGroup,
-      setSelectedGroup
+      setSelectedGroup,
+      dynamicCustomFields
     };
   },
 };
@@ -1494,11 +1579,9 @@ export default {
   /* overflow: hidden; */
 }
 
- @media (max-width: 620px) {
-    .show-occ-tab {
-      height: 144px;
-    }   
-  }
+.cs-select-dropdown {
+  width: 330px;
+}
 
 .submit-div {
   margin-left: 14em;
@@ -1668,6 +1751,14 @@ export default {
 
   .input-dropdown {
     width: 100%;
+  }
+
+  .show-occ-tab {
+    height: 144px;
+  }  
+  
+  .cs-select-dropdown, .cstm-select.search-box {
+    width: 100%
   }
 }
 
