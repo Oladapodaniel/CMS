@@ -448,6 +448,13 @@ export default {
           console.log("No month chosen");
           break;
       }
+      
+      firstTimersObj.value.customAttributeData = dynamicCustomFields.value.map(i => ({
+          customAttributeID: i.id,
+          data: i.data,
+          entityID: route.params.personId
+        }))
+
       firstTimersObj.value.tenantId = route.params.id
 
         loading.value = true;
