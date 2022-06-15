@@ -717,6 +717,7 @@ import grousService from "../../services/groups/groupsservice";
 import SearchMembers from "../../components/membership/MembersSearch.vue"
 import { useConfirm } from "primevue/useconfirm";
 import GroupTree from "../groups/component/GroupTree.vue"
+import allCustomFields from "../../services/customfield/customField"
 
 export default {
   components: {
@@ -1391,9 +1392,8 @@ export default {
 
     const getCustomFields = async() => {
       try {
-        let { data } = await axios.get(`/api/CustomFields/GetAllCustomFields`);
+        let data = await allCustomFields.allCustomFields()
         dynamicCustomFields.value = data.filter(i => i.entityType === 0)
-        console.log(dynamicCustomFields.value)
       }
       catch (err) {
         console.log(err)
