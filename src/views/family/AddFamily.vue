@@ -311,8 +311,21 @@
 
                                 <div class="col-sm-10 mt-3">Role</div>
                                 <div class="col-sm-10">
-                                    <Dropdown class="p-0 w-100" :options="memberRoles" v-model="roleId" optionLabel="name" :filter="false" placeholder="Select role" :showClear="false">
-                                    </Dropdown>
+                                    <!-- <Dropdown class="p-0 w-100" :options="memberRoles" v-model="roleId" optionLabel="name" :filter="false" placeholder="Select role" :showClear="false">
+                                    </Dropdown> -->
+                                    <div class="dropdown">
+                                        <button class="btn w-100 d-flex justify-content-between border " type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                           <span class="ofering">
+                                            &nbsp;&nbsp;&nbsp; {{ roleId.name ?  roleId.name : 'Select role' }}
+                                        </span>
+                                        <span>
+                                            <i class="pi pi-angle-down offset-sm-2 ofering"></i>
+                                        </span>
+                                        </button>
+                                        <div   class="dropdown-menu w-100" aria-labelledby="dropdownMenuButton">
+                                            <a v-for="(itm, indx) in memberRoles" :key="indx" @click="selectmemberRole(itm)" class="dropdown-item" href="#">{{itm.name}}</a>
+                                        </div>
+                                    </div>
                                 </div>
 
 
@@ -493,6 +506,11 @@ export default {
           display.value = true;
         };
 
+        const selectmemberRole = (itm) => {
+            roleId.value = itm
+            console.log(roleId.value, "nn😂😁😁")
+        }
+        
         const addExistingMember = (member) => {
           userSearchString.value = member.name;
           email.value = member.email
@@ -851,6 +869,7 @@ export default {
 
         return {
             memberRoles,
+            selectmemberRole,
             dismissModal,
             close,
             // pushToView,
