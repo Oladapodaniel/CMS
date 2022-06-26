@@ -271,7 +271,7 @@
                       @updatetrigger="updateTrigger"
                       @removetrigger="removeTrigger"
                       :selectedTriggerIndex="selectedTriggerIndex"
-                      :condition="getTrigger(7)"
+                      :condition="getTrigger(12)"
                     />
                     <FromSubmission
                       v-else-if="selectedTrigger.triggerType === 13"
@@ -901,7 +901,6 @@ export default {
         ].triggerActions.findIndex((i) => i.id === triggerRecreate.id);
         selectedActionIndex.value = index > 0 ? index : 0;
       }
-      console.log(workflow.value);
       // }
       showActions.value = false;
       actionSelected.value = true;
@@ -944,8 +943,6 @@ export default {
 
     const allSelectedActions = ref([]);
     const updateAction = (data, activeAction, actionType) => {
-      console.log(data, "here");
-      console.log(actionType);
       // allSelectedActions.value[activeAction] =
       workflow.value.triggers[selectedTriggerIndex.value].triggerActions[
         activeAction
@@ -955,14 +952,10 @@ export default {
           data[activeAction].JSONActionParameters
         ),
       });
-      console.log(workflow.value);
-      console.log(data, activeAction, "workflowwwwwwwwwww");
     };
 
     const setActiveAction = (item, index) => {
       selectedActionIndex.value = index;
-      console.log(item);
-      console.log(index);
       // workflow.value.triggers[selectedTriggerIndex].JSONActionParameters = selectedTriggers[selectedActionIndex];
     };
 
@@ -1025,8 +1018,6 @@ export default {
           }),
         };
       });
-      console.log(data);
-      console.log(workflow.value);
 
       const reqBody = {
         id: workflow.value.id,
@@ -1160,7 +1151,6 @@ export default {
           });
           return false;
         }
-        console.log(data);
         name.value = data.name;
         isActive.value = data.isActive;
         workflow.value = {
@@ -1188,7 +1178,6 @@ export default {
             };
           }),
         };
-        console.log(workflow.value);
 
         selectedActionIndex.value = 0;
         actionSelected.value = true;
@@ -1212,7 +1201,6 @@ export default {
       const triggerAction = workflow.value.triggers[index].triggerActions.find(
         (i) => i.actionType === type
       );
-      console.log(triggerAction, "selected Trigger actions");
       return triggerAction && (triggerAction.Action || triggerAction.action)
         ? triggerAction
         : {};

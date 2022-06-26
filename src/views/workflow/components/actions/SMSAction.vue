@@ -417,9 +417,14 @@ export default {
         data[props.selectedActionIndex].JSONActionParameters.otherToContacts =
           parsedData.value.otherToContacts;
 
-        removeOthers.value[0].selectedSender = senderIDs.value.find(i => i.mask.toLowerCase() == parsedData.value.subject.toLowerCase());
-        data[props.selectedActionIndex].JSONActionParameters.subject =
-          parsedData.value.subject;
+        if (parsedData.value.subject) {
+          removeOthers.value[0].selectedSender = senderIDs.value.find(
+            (i) =>
+              i.mask.toLowerCase() == parsedData.value.subject.toLowerCase()
+          );
+          data[props.selectedActionIndex].JSONActionParameters.subject =
+            parsedData.value.subject;
+        }
 
         removeOthers.value[0].message = parsedData.value.message;
         data[props.selectedActionIndex].JSONActionParameters.message =
@@ -442,7 +447,6 @@ export default {
         let { data } = await axios.get(
           `/api/Messaging/RetrieveTenantSenderIDs`
         );
-        console.log(data);
         senderIDs.value = data.returnObject;
       } catch (err) {
         console.log(err);
