@@ -27,6 +27,47 @@
           </div>
 
           <div class="all-options">
+            <!-- <router-link :to="{ name: 'ProcessRequest', params: { option: '/tenant/sms/compose' }}" class="start-option">
+              <div class="icon">
+                <img
+                  class="link-icon"
+                  src="../../assets/sms-email.svg"
+                  alt="Sms Icon"
+                />
+              </div>
+              <div class="link-n-icon">
+                <a class="claim-offer">Claim your 500 unit now</a>
+                <p class="my-auto"><i class="fas fa-angle-right"></i></p>
+              </div>
+            </router-link> -->
+            <div class=" w-100 ml-2 ">
+              <button type="button" class="btn start-option" @click="toggleSmsOffer" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                <span class="icon  ">
+                  <img
+                  class="link-icon "
+                  src="../../assets/claim-sms-offer.png"
+                  alt="Sms Icon"
+                />
+                </span>
+                <span class=" ml-2 pl-1 font-weight-bold text-warning">
+                    Claim your 500 unit now
+                </span>
+                <span class="d-flex justify-content-end  font-weight-bold" style="font-size: 25px; width: 16%;">
+                    <!-- <i class="fas fa-angle-down "></i> -->
+                    <i class="fas fa-angle-right " :class="{ 'tbb-icon-rotate': smsOfferDropped }" ></i>
+                </span>
+              </button>
+              <div class="dropdown-menu " >
+                <a class="dropdown-item " href="">
+                  <p class="font-weight-bold">Terms and Conditions</p>
+                  <p class="small font-weight-bold">1. Buy 1000units or above and get 500units free <br>2. Offer is open to both new and existing customers <br>3. This is a one time offer for the duration of this campaign</p>
+                </a>
+                <div class="dropdown-divider"></div>
+                <router-link :to="{name: 'BuyUnits', params: {option: '/tenant/units' }}" class="dropdown-item d-flex justify-content-between bg-primary text-white font-weight-bold">
+                  <span> Buy SMS</span> <i class="fas fa-angle-right"></i>
+                </router-link>
+              </div>
+            </div>
             <router-link :to="{ name: 'ProcessRequest', params: { option: '/tenant/sms/compose' }}" class="start-option">
               <div class="icon">
                 <img
@@ -108,6 +149,7 @@ export default {
 
   data() {
     return {
+      smsOfferDropped: false,
       processing: false,
       name: "",
       screenWidth: window.innerWidth,
@@ -116,6 +158,9 @@ export default {
   },
 
   methods: {
+    toggleSmsOffer(){
+      this.smsOfferDropped = !this.smsOfferDropped
+    },
     onboardUser(url) {
       const userData = this.$store.getters.onboardingData;
       axios
@@ -160,6 +205,14 @@ export default {
 </script>
 
 <style scoped>
+
+.tbb-icon-rotate {
+  transition: all 0.5s ease-in-out;
+  transform: rotate(90deg);
+  color: #190138;
+  font-size: 20px;
+}
+
 .main {
   position: relative;
   height: 100vh;
@@ -308,6 +361,13 @@ a {
   text-decoration: none;
   text-transform: capitalize;
   color: #215fc4;
+}
+.claim-offer {
+  font-weight: 900;
+  padding: 0 1rem;
+  text-decoration: none;
+  text-transform: capitalize;
+  color: #f39d34;
 }
 
 .loading-div {

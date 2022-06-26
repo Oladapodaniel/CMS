@@ -345,6 +345,89 @@
             </span>
           </div>
         </div>
+       
+       
+        <!-- <div v-for="(item, index) in dynamicCustomFields" :key="index" class="row my-3" >
+          <div
+            class="
+              col-md-3
+              d-md-flex
+              align-items-center
+              justify-content-end
+              text-md-right
+              mt-2
+              font-weight-700
+            "
+          >
+            <label for="">{{ item.label }}</label>
+          </div>
+          <div class="col-md-7" v-if="item.controlType == 1">
+            <span class="w-100">
+              <Dropdown
+                v-model="item.data"
+                :options="item.parameterValues.split(',')"
+                placeholder="--Select age range--"
+                style="width: 100%"
+              />
+            </span>
+          </div>
+          <div class="col-md-7" v-else-if="item.controlType == 7">
+            <span class="w-100">
+              <InputText
+                type="number"
+                class="w-100"
+                :placeholder="item.label"
+                v-model="item.data"
+              />
+            </span>
+          </div>
+          <div class="col-md-7" v-else-if="item.controlType == 4">
+            <span class="w-100">
+              <InputText
+                type="email"
+                class="w-100"
+                placeholder=""
+                v-model="item.data"
+              />
+            </span>
+          </div>
+          <div class="col-md-7" v-else-if="item.controlType == 0">
+            <span class="w-100">
+              <InputText
+                type="text"
+                class="w-100"
+                :placeholder="item.label"
+                v-model="item.data"
+              />
+            </span>
+          </div>
+          <div class="col-md-7" v-else-if="item.controlType == 2">
+            <span class="w-100">
+              <Checkbox id="binary" v-model="item.data" :binary="true" />
+            </span>
+          </div>
+          <div class="col-md-7" v-else-if="item.controlType == 6">
+            <span class="w-100">
+              <InputText
+                type="file"
+                class="w-100"
+                placeholder=""
+              />
+            </span>
+          </div>
+          <div class="col-md-7" v-else-if="item.controlType == 3">
+            <span class="p-input-icon-left w-100">
+              <InputText
+                type="date"
+                class="w-100"
+                placeholder=""
+                v-model="item.data"
+              />
+            </span>
+          </div>
+        </div> -->
+
+        
 
         <div class="row my-2">
           <div class="col-md-3"></div>
@@ -398,6 +481,7 @@ import stopProgressBar from "../../../services/progressbar/progress";
 import swal from "sweetalert";
 import Dropdown from "primevue/dropdown";
 import MultiSelect from "primevue/multiselect";
+import allCustomFields from "../../../services/customfield/customField"
 
 export default {
   components: {
@@ -423,6 +507,7 @@ export default {
     const selectedGroups = ref([]);
     const selectedGroupList = ref([]);
     const filteredGroups = ref([]);
+    // const dynamicCustomFields = ref([]);
 
     const birthMonth = ref("");
     // const birthYear = ref("");
@@ -647,6 +732,11 @@ export default {
         ? months.indexOf(birthMonth.value) + 1
         : null;
       newPerson.person.dayOfBirth = birthDay.value ? birthDay.value : null;
+      // newPerson.customAttributeData = dynamicCustomFields.value.map(i => ({
+      //     customAttributeID: i.id,
+      //     data: i.data,
+      //     entityID: personData.value.personId
+      //   }))
       // newPerson.person.yearOfBirth = birthYear.value ? birthYear.value : null;
 
       console.log(personData.value, "p data");
@@ -778,8 +868,16 @@ export default {
 
     /*end of masking functions */
 
-    //not me button
-    // const notMe = () => {};
+    // const getAllCustomFields = async () => {
+    //   try {
+    //     let data = await allCustomFields.allCustomFields()
+    //      dynamicCustomFields.value = data.filter(i => i.entityType === 5)
+    //   }
+    //   catch (err) {
+    //     console.log(err)
+    //   }
+    // }
+    // getAllCustomFields()
 
     return {
       toggleBase,
@@ -829,6 +927,7 @@ export default {
       selectedGroups,
       selectedGroupList,
       filteredGroups,
+      // dynamicCustomFields
     };
   },
 };

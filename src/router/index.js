@@ -337,7 +337,7 @@ const routes = [
                             title: 'Churchplus - Reports',
                         },
                         component: () =>
-                            import ( /* webpackChunkName: "addfirsttimer" */ '../views/Reports/Performancereport/FirstTimerPerformanceReport.vue')
+                            import ( /* webpackChunkName: "firsttimerperformance" */ '../views/Reports/Performancereport/FirstTimerPerformanceReport.vue')
                     },
                     {
                         path: 'summaryreport',
@@ -346,7 +346,7 @@ const routes = [
                             title: 'Churchplus - Reports',
                         },
                         component: () =>
-                            import ( /* webpackChunkName: "addfirsttimer" */ '../views/Reports/Performancereport/SummaryReport.vue')
+                            import ( /* webpackChunkName: "summaryreport" */ '../views/Reports/Performancereport/SummaryReport.vue')
 
                     },
                     {
@@ -356,7 +356,7 @@ const routes = [
                             title: 'Churchplus - Reports',
                         },
                         component: () =>
-                            import ( /* webpackChunkName: "addfirsttimer" */ '../views/Reports/Performancereport/DailySummaryReport.vue')
+                            import ( /* webpackChunkName: "overallsummary" */ '../views/Reports/Performancereport/DailySummaryReport.vue')
 
                     },
                     {
@@ -366,7 +366,27 @@ const routes = [
                             title: 'Churchplus - Reports',
                         },
                         component: () =>
-                            import ( /* webpackChunkName: "addfirsttimer" */ '../views/Reports/Performancereport/AttendancePerformanceReport.vue')
+                            import ( /* webpackChunkName: "performancereport" */ '../views/Reports/Performancereport/AttendancePerformanceReport.vue')
+
+                    },
+                    {
+                        path: 'groupattendancereport',
+                        name: "GroupAttendanceReport",
+                        meta: {
+                            title: 'Churchplus - Reports',
+                        },
+                        component: () =>
+                            import ( /* webpackChunkName: "presentabsentreport" */ '../views/Reports/Performancereport/GroupAttendanceReport.vue')
+
+                    },
+                    {
+                        path: 'summarygroupattendancereport',
+                        name: "GroupSummaryAttendanceReport",
+                        meta: {
+                            title: 'Churchplus - Reports',
+                        },
+                        component: () =>
+                            import ( /* webpackChunkName: "presentabsentreport" */ '../views/Reports/Performancereport/GroupSummaryAttendanceReport.vue')
 
                     },
 
