@@ -156,11 +156,15 @@ export default {
     const getSMSStats = (allSMS) => {
       const chartData = [];
       for (let status of statuses) {
-          const count = allSMS.filter(i => i.deliveryReport.includes(status)).length;
-        chartData.push({
-          name: status.includes("queued") ? "queued" : status,
-          y: count,
-        });
+          const finIndex = allSMS.findIndex(i => i.deliveryReport.includes(status))
+          console.log(finIndex)
+        //   const count = allSMS.filter(i => i.deliveryReport.includes(status)).length;
+        //   console.log(allSMS,'444')
+        // chartData.push({
+        //   name: status.includes("queued") ? "queued" : status,
+        //   y: count,
+        // });
+        // console.log(chartData, '[heree')
       }
       return chartData;
     };
