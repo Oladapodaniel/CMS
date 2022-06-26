@@ -982,14 +982,24 @@ export default {
         "note",
         personNotes.value ? JSON.stringify(personNotes.value) : []
       );
-      formData.append(
+      // formData.append(
+      //   "customAttributeData",
+      //   dynamicCustomFields.value.map(i => ({
+      //   customAttributeID: i.id,
+      //   data: i.data,
+      //   entityID: route.params.personId
+      // }))
+      // );
+        formData.append(
         "customAttributeData",
-        dynamicCustomFields.value.map(i => ({
-        customAttributeID: i.id,
-        data: i.data,
-        entityID: route.params.personId
-      }))
+          JSON.stringify(dynamicCustomFields.value.map(i => ({
+          customAttributeID: i.id,
+          data: i.data,
+          entityID: route.params.personId
+        }))
+        )
       );
+      console.log(dynamicCustomFields.value, '😊😍🤣🤣😂')
       console.log(formData);
       /*eslint no-undef: "warn"*/
       NProgress.start();
