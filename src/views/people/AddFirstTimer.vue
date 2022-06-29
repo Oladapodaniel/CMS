@@ -262,7 +262,7 @@
                       <Dropdown
                         v-model="item.data"
                         :options="item.parameterValues.split(',')"
-                        placeholder="--Select age range--"
+                        :placeholder="item.label"
                         style="width: 100%"
                       />
                   </div>

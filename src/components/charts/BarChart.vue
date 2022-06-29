@@ -18,7 +18,7 @@ export default {
     "titleMarginLeft",
     "height",
     "summary",
-    "percentage"
+    "percentage",
   ],
   setup(props) {
     const chart = ref(null);
@@ -33,6 +33,13 @@ export default {
           type: "pie",
           renderTo: props.domId,
           height: props.height ? props.height : 250,
+        },
+        legend: {
+          align: "bottom",
+          layout: "horizontal",
+          // verticalAlign: 'top',
+          x: 10,
+          y: 20,
         },
         title: {
           text: props.title,
@@ -49,10 +56,23 @@ export default {
           pie: {
             allowPointSelect: true,
             cursor: "pointer",
-            colors: ["#89b4e6", "#e7f0fa", "red",  "#e7f0fa"],
+            colors: [
+              "#89b4e6",
+              "#e7f0fa",
+              "red",
+              "#136acd",
+              "#dde2e6",
+              "#67a9cf",
+              "#708eb1",
+              "#61915e",
+              "#1f06ffc0",
+              "#078292de",
+              "#660792de",
+              "#927d07c2",
+            ],
             // colors: ["#136acd", "#0f0221", "#dde2e6", "#67a9cf", "#708eb1"],
             dataLabels: {
-              enabled: true,
+              enabled: false,
               format: "<b>{point.name}</b><br>{point.y}",
               distance: -40,
               filter: {
@@ -61,21 +81,24 @@ export default {
                 value: 4,
               },
             },
+            showInLegend: true,
           },
         },
         series: [
           {
             name: "Share",
-            data: props.summary ? props.summary : [
-              {
-                name: "Male",
-                y: 50,
-              },
-              {
-                name: "Female",
-                y: 50,
-              },
-            ],
+            data: props.summary
+              ? props.summary
+              : [
+                  {
+                    name: "Male",
+                    y: 50,
+                  },
+                  {
+                    name: "Female",
+                    y: 50,
+                  },
+                ],
           },
         ],
       };
@@ -83,7 +106,7 @@ export default {
       chart.value = new Highcharts.chart(highchartsOptions);
     });
 
-    return { 
+    return {
       chart,
       getSummary,
     };

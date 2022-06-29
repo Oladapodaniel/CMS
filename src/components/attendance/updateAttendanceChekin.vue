@@ -227,9 +227,17 @@ export default {
         });
     });
 
+    // const computedNote = computed(() => {
+    //   if (!props.groupDetail && Object.keys(props.groupDetail).length == 0) return 
+    //   return props.groupDetail.note
+    // })
+
     watchEffect(() => {
-      if (props.groupDetail) {
+      if (props.groupDetail && Object.keys(props.groupDetail).length > 0) {
         note.value = props.groupDetail.note;
+        console.log(props.groupDetail, 'hereee')
+      }else {
+        console.log('ddddd')
       }
     });
 

@@ -18,7 +18,7 @@ export default {
     "titleMarginLeft",
     "height",
     "summary",
-    "percentage"
+    "percentage",
   ],
   setup(props) {
     const chart = ref(null);
@@ -29,7 +29,9 @@ export default {
     //   return "<b>{point.name}</b><br>";
     // })
 
-    const pointFormat = props.percentage ? "<b>{point.name}</b><br>{point.y}" : "<b>{point.name}</b><br>{point.percentage:.1f} %";
+    const pointFormat = props.percentage
+      ? "<b>{point.name}</b><br>{point.y}"
+      : "<b>{point.name}</b><br>{point.percentage:.1f} %";
     console.log(pointFormat, props.percentage);
 
     onUpdated(() => {
@@ -42,11 +44,18 @@ export default {
           renderTo: props.domId,
           height: props.height ? props.height : 250,
         },
+        legend: {
+          align: "bottom",
+          layout: "horizontal",
+          // verticalAlign: 'top',
+          x: 10,
+          y: 20,
+        },
         title: {
           text: props.title,
         },
         tooltip: {
-          pointFormat: "{series.name}: <b>{point.percentage:.1f}%</b>",
+          pointFormat: "{point.name}: <b>{point.percentage:.1f}%</b>",
         },
         accessibility: {
           point: {
@@ -57,10 +66,23 @@ export default {
           pie: {
             allowPointSelect: true,
             cursor: "pointer",
-            colors: ["#89b4e6", "#e7f0fa", "red",  "#e7f0fa"],
+            colors: [
+              "#89b4e6",
+              "#e7f0fa",
+              "red",
+              "#136acd",
+              "#dde2e6",
+              "#67a9cf",
+              "#708eb1",
+              "#61915e",
+              "#1f06ffc0",
+              "#078292de",
+              "#660792de",
+              "#927d07c2",
+            ],
             // colors: ["#136acd",  "#708eb1", "#0f0221", "#dde2e6", "#67a9cf"],
             dataLabels: {
-              enabled: true,
+              enabled: false,
               format: "<b>{point.name}</b><br>{point.percentage:.1f} %",
               distance: -40,
               filter: {
@@ -69,21 +91,24 @@ export default {
                 value: 4,
               },
             },
+            showInLegend: true,
           },
         },
         series: [
           {
             name: "Series",
-            data: props.summary ? props.summary : [
-              {
-                name: "Male",
-                y: 50,
-              },
-              {
-                name: "Female",
-                y: 50,
-              },
-            ],
+            data: props.summary
+              ? props.summary
+              : [
+                  {
+                    name: "Male",
+                    y: 50,
+                  },
+                  {
+                    name: "Female",
+                    y: 50,
+                  },
+                ],
           },
         ],
       };
@@ -91,7 +116,7 @@ export default {
       chart.value = new Highcharts.chart(highchartsOptions);
     });
 
-    return { 
+    return {
       chart,
       getSummary,
       pointFormat,
