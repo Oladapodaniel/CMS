@@ -39,7 +39,7 @@
             </div>
           </div>
         </div>
-        <div class="col-md-4">
+        <div class="col-md-6">
           <ReportChart
             domId="reportChart"
             title=""
@@ -48,7 +48,7 @@
             :percentage="false"
           />
         </div>
-        <div class="col-md-4">
+        <!-- <div class="col-md-4">
           <SecondChart
             domId="reportBarChart"
             title=""
@@ -56,7 +56,7 @@
             :summary="chartData"
             :percentage="true"
           />
-        </div>
+        </div> -->
       </div>
 
       <div class="row mt-4">
@@ -133,14 +133,14 @@
 
 <script>
 import ReportChart from "@/components/charts/BarChart.vue";
-import SecondChart from "@/components/charts/SecondReportPie.vue";
+// import SecondChart from "@/components/charts/SecondReportPie.vue";
 import { useRoute } from "vue-router";
 import communicationService from "../../services/communication/communicationservice";
 import { computed, ref } from "vue";
 import ProgressSpinner from "primevue/progressspinner";
 
 export default {
-  components: { ReportChart, SecondChart, ProgressSpinner },
+  components: { ReportChart, ProgressSpinner },
 
   setup() {
     const route = useRoute();
@@ -171,17 +171,19 @@ export default {
 
     getMessageReport();
 
-    const doSMSAnalysis = (allSMS) => {
-      const chartData = [];
-      for (let status of statuses.value) {
-        const count = allSMS.filter((i) => i.deliveryReport === status).length;
-        chartData.push({
-          name: status.includes("queued") ? "queued" : status,
-          y: +((count / allSMS.length) * 100).toFixed(2),
-        });
-      }
-      return chartData;
-    };
+    // const doSMSAnalysis = (allSMS) => {
+    //   const chartData = [];
+    //   for (let status of statuses.value) {
+    //     const count = allSMS.filter((i) => i.deliveryReport === status).length;
+    //     chartData.push({
+    //       name: status.includes("queued") ? "queued" : status,
+    //       y: +((count / allSMS.length) * 100).toFixed(2),
+    //     });
+    //   }
+
+    //   console.log(chartData, 'hereee')
+    //   return chartData;
+    // };
 
     const getSMSStats = (allSMS) => {
       const chartData = [];
@@ -193,6 +195,7 @@ export default {
           name: status.includes("queued") ? "queued" : status,
           y: count,
         });
+        console.log(chartData, '222222')
       }
       return chartData;
     };
@@ -216,10 +219,10 @@ export default {
       return formattedDate;
     };
 
-    const chartData = computed(() => {
-      const data = doSMSAnalysis(messages.value);
-      return data;
-    });
+    // const chartData = computed(() => {
+    //   const data = doSMSAnalysis(messages.value);
+    //   return data;
+    // });
 
     const statsData = computed(() => {
       const data = getSMSStats(messages.value);
@@ -259,7 +262,7 @@ export default {
     return {
       messages,
       units,
-      chartData,
+      // chartData,
       loading,
       finished,
       statsData,

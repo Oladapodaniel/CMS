@@ -72,7 +72,7 @@ export default {
             ],
             // colors: ["#136acd", "#0f0221", "#dde2e6", "#67a9cf", "#708eb1"],
             dataLabels: {
-              enabled: false,
+              enabled: true,
               format: "<b>{point.name}</b><br>{point.y}",
               distance: -40,
               filter: {
