@@ -246,6 +246,7 @@ export default {
             { name:'NewConverts', id: '2'},
             { name:'Activity', id: '3'},
             { name:'EventRegistrationForm', id: '4'},
+            { name: 'CheckInAttendance', id: '5' }
           ]
       )
 
@@ -397,9 +398,10 @@ export default {
           }
         
         try{
-          const data = await axios.post('/api/CustomFields/SaveCustomFields', body)
+          const { data } = await axios.post('/api/CustomFields/SaveCustomFields', body)
           
           console.log(data, 'saveCustomizable');
+          allCustomFieldList.value.push(data)
           
           toast.add({
               severity: "success",

@@ -103,7 +103,11 @@
               value="All Contacts"
               disabled
             />
-            <span class="close-allcontacts c-pointer" @click="() => sendToAll = false"><i class="pi pi-times"></i></span>
+            <span
+              class="close-allcontacts c-pointer"
+              @click="() => (sendToAll = false)"
+              ><i class="pi pi-times"></i
+            ></span>
           </span>
         </div>
       </div>
@@ -422,16 +426,28 @@
           </div>
         </div>
       </div>
-      
+
       <!-- Start upload contact -->
       <div v-if="contactUpload" class="row my-1">
         <div class="col-sm-2"></div>
         <div class="col-sm-10 px-0 grey-rounded-border p-2">
           <div class="d-flex justify-content-between">
-            <input type="file" class="form-control-file" @change="uploadFile">
-            <div><i class="pi pi-times mr-2 c-pointer" @click="() => contactUpload = false"></i></div>
+            <input type="file" class="form-control-file" @change="uploadFile" />
+            <div>
+              <i
+                class="pi pi-times mr-2 c-pointer"
+                @click="() => (contactUpload = false)"
+              ></i>
+            </div>
           </div>
-          <div class="mt-1"><a href="/files/Upload_Contact Template.csv" class="template-text text-decoration-none font-weight-bold" download>Download template</a></div>
+          <div class="mt-1">
+            <a
+              href="/files/Upload_Contact Template.csv"
+              class="template-text text-decoration-none font-weight-bold"
+              download
+              >Download template</a
+            >
+          </div>
         </div>
       </div>
 
@@ -460,25 +476,39 @@
               aria-haspopup="true"
               aria-expanded="false"
             >
-            <!-- @click="closeDropdownIfOpen" -->
-              {{ Object.keys(selectedSender).length > 0 ? selectedSender.mask : "Select Sender Id" }}
+              <!-- @click="closeDropdownIfOpen" -->
+              {{
+                Object.keys(selectedSender).length > 0
+                  ? selectedSender.mask
+                  : "Select Sender Id"
+              }}
             </button>
             <div
               class="dropdown-menu w-100 pb-0"
               aria-labelledby="dropdownMenuButton"
             >
-            <div class="px-2">
-            </div>
-              <a v-for="(item, index) in searchSenderIDs" :key="index"
-                class="dropdown-item c-pointer small-text font-weight-700 py-2" @click="setIdToSubject(item)"
-                >{{ item.mask }}
-                </a
-              >
+              <div class="px-2"></div>
               <a
-                class="dropdown-item c-pointer font-weight-700 text-center create-new-bg border-top py-2" data-toggle="modal" data-target="#senderIdModal"
+                v-for="(item, index) in searchSenderIDs"
+                :key="index"
+                class="dropdown-item c-pointer small-text font-weight-700 py-2"
+                @click="setIdToSubject(item)"
+                >{{ item.mask }}
+              </a>
+              <a
+                class="
+                  dropdown-item
+                  c-pointer
+                  font-weight-700
+                  text-center
+                  create-new-bg
+                  border-top
+                  py-2
+                "
+                data-toggle="modal"
+                data-target="#senderIdModal"
                 ><i class="pi pi-plus-circle"></i>&nbsp;Request new sender id
-                </a
-              >
+              </a>
             </div>
           </div>
         </div>
@@ -547,20 +577,35 @@
           </p>
         </div>
         <div class="col-md-12 d-flex justify-content-end">
-          <span  :class="{ 'cursor-close' : disableBtn }">
+          <span :class="{ 'cursor-close': disableBtn }">
             <SplitButton
               label="Send"
               :model="sendOptions"
               :disabled="disableBtn"
-              @click="data" data-toggle="modal" data-target="#sendsmsbtn"
+              @click="data"
+              data-toggle="modal"
+              data-target="#sendsmsbtn"
             ></SplitButton>
           </span>
-          <router-link :to=" route.fullPath.includes('/tenant/sms/compose') ? '/tenant/sms/sent' : '/errorpage/expiredSubscription'"
-            class="default-btn d-flex justify-content-center short-btn align-items-center ml-3 text-decoration-none text-dark"
+          <router-link
+            :to="
+              route.fullPath.includes('/tenant/sms/compose')
+                ? '/tenant/sms/sent'
+                : '/errorpage/expiredSubscription'
+            "
+            class="
+              default-btn
+              d-flex
+              justify-content-center
+              short-btn
+              align-items-center
+              ml-3
+              text-decoration-none text-dark
+            "
           >
             Discard
           </router-link>
-        </div> 
+        </div>
         <div class="row">
           <div class="col-md-12">
             <div
@@ -590,7 +635,17 @@
                     <div class="row" v-if="!nigerian">
                       <div class="col-md-12 text-center">
                         <button
-                          class="primary-btn default-btn px-4 my-2 border-0 primary-bg text-white outline-none extra-btn"
+                          class="
+                            primary-btn
+                            default-btn
+                            px-4
+                            my-2
+                            border-0
+                            primary-bg
+                            text-white
+                            outline-none
+                            extra-btn
+                          "
                           data-dismiss="modal"
                           @click="contructScheduleMessageBody(1, '')"
                         >
@@ -624,16 +679,38 @@
                                   <label
                                     for=""
                                     class="small-text font-weight-600 py-2"
-                                    >NEW** HYBRID BULK SMS - 100% SMS DELIVERY</label
+                                    >NEW** HYBRID BULK SMS - 100% SMS
+                                    DELIVERY</label
                                   >
                                 </div>
                                 <div
-                                  class="col-md-12 send-now-div py-2 my-2 d-flex justify-content-center"
+                                  class="
+                                    col-md-12
+                                    send-now-div
+                                    py-2
+                                    my-2
+                                    d-flex
+                                    justify-content-center
+                                  "
                                 >
                                   <button
-                                    class="primary-btn default-btn border-0 primary-bg px-4 my-2 font-weight-600 outline-none"
+                                    class="
+                                      primary-btn
+                                      default-btn
+                                      border-0
+                                      primary-bg
+                                      px-4
+                                      my-2
+                                      font-weight-600
+                                      outline-none
+                                    "
                                     data-dismiss="modal"
-                                    @click="contructScheduleMessageBody(1,'hybridKonnect')"
+                                    @click="
+                                      contructScheduleMessageBody(
+                                        1,
+                                        'hybridKonnect'
+                                      )
+                                    "
                                   >
                                     Send SMS Now
                                   </button>
@@ -650,7 +727,8 @@
                                   <span>Sender ID Customization - YES</span>
                                   <span>Not Affected by DND.</span>
                                   <span
-                                    >Failed SMS are Retried with Other Options.</span
+                                    >Failed SMS are Retried with Other
+                                    Options.</span
                                   >
                                 </div>
                               </div>
@@ -708,39 +786,77 @@
         </div>
       </div>
       <!-- Create sender id modal -->
-        <!-- Modal -->
-        <div class="modal fade" id="senderIdModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
-          <div class="modal-dialog modal-dialog-centered" role="document">
-            <div class="modal-content">
-              <div class="modal-header">
-                <h5 class="modal-title" id="exampleModalLongTitle">Create sender id</h5>
-                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                  <span aria-hidden="true">&times;</span>
-                </button>
-              </div>
-              <div class="modal-body">
-                <div class="container">
-                  <div class="row">
-                    <div class="col-12">Enter sender id</div>
-                    <div class="col-12 mt-2">
-                      <input type="text" class="form-control" placeholder="Enter sender id" v-model="senderIdText" @input="validateSenderId" ref="senderIdRef"/>
-                      <div class="invalid-feedback text-danger pl-2">
-                        <ul>
-                          <li>Should not contain any special characters</li>
-                          <li>Should not be less than 3 characters and more than 11 characters</li>
-                        </ul>
-                      </div>
+      <!-- Modal -->
+      <div
+        class="modal fade"
+        id="senderIdModal"
+        tabindex="-1"
+        role="dialog"
+        aria-labelledby="exampleModalCenterTitle"
+        aria-hidden="true"
+      >
+        <div class="modal-dialog modal-dialog-centered" role="document">
+          <div class="modal-content">
+            <div class="modal-header">
+              <h5 class="modal-title" id="exampleModalLongTitle">
+                Create sender id
+              </h5>
+              <button
+                type="button"
+                class="close"
+                data-dismiss="modal"
+                aria-label="Close"
+              >
+                <span aria-hidden="true">&times;</span>
+              </button>
+            </div>
+            <div class="modal-body">
+              <div class="container">
+                <div class="row">
+                  <div class="col-12">Enter sender id</div>
+                  <div class="col-12 mt-2">
+                    <input
+                      type="text"
+                      class="form-control"
+                      placeholder="Enter sender id"
+                      v-model="senderIdText"
+                      @input="validateSenderId"
+                      ref="senderIdRef"
+                    />
+                    <div class="invalid-feedback text-danger pl-2">
+                      <ul>
+                        <li>Should not contain any special characters</li>
+                        <li>
+                          Should not be less than 3 characters and more than 11
+                          characters
+                        </li>
+                      </ul>
                     </div>
                   </div>
                 </div>
               </div>
-              <div class="modal-footer">
-                <button type="button" class="btn default-btn " data-dismiss="modal">Close</button>
-                <button type="button" class="btn default-btn primary-bg border-0 text-white" data-dismiss="modal" @click="saveSenderId" :disabled="requestbtn">Request sender id</button>
-              </div>
+            </div>
+            <div class="modal-footer">
+              <button
+                type="button"
+                class="btn default-btn"
+                data-dismiss="modal"
+              >
+                Close
+              </button>
+              <button
+                type="button"
+                class="btn default-btn primary-bg border-0 text-white"
+                data-dismiss="modal"
+                @click="saveSenderId"
+                :disabled="requestbtn"
+              >
+                Request sender id
+              </button>
             </div>
           </div>
         </div>
+      </div>
     </div>
   </div>
 </template>
@@ -936,43 +1052,35 @@ export default {
         .sendMessage("/api/Messaging/sendSms", data)
         .then((res) => {
           disableBtn.value = false
-          // if (res.status === 200) {
-            if (res.data.message.includes("You do not have")) {
-              toast.add({
+          if (res.data.status) {
+            toast.add({
+              severity: "success",
+              summary: "SMS Sent",
+              detail: `SMS Sent successfully`,
+              life: 7000
+          })
+          } else if (res.data && res.data.message && res.data.message.includes("You do not have")) {
+            toast.add({
               severity: "warn",
               summary: "Insufficient Unit",
               detail: `${res.data.message}`,
               life: 6000,
-            });
-
-            
-            } else {
-              toast.add({
-              severity: "success",
-              summary: "SMS Sent",
-              detail: `SMS Sent successfully`,
-              life: 7000,
-            });
+          })
+          } else {
+            toast.add({
+              severity: "warn",
+              summary: "Not sent",
+              detail: `Message not sent, please try again`,
+              life: 6000,
+          })
+          }
+        
 
             store.dispatch("removeSMSUnitCharge", res.data.unitsUsed);
             console.log(pageCount, "Page count ");
 
             console.log(res);
-            // Save the res to store in other to get it in the view sent sms page
-            // let sentObj = {
-            //     message: res.data.message,
-            //     id: res.data.returnObjects ? res.data.returnObjects[0].communicationReportID : '',
-            //     smsUnitsUsed: res.data.unitsUsed,
-            //     dateSent: res.data.returnObjects ? `Today | ${moment.parseZone(new Date(res.data.returnObjects[0].communicationReport.date).toLocaleDateString(), 'YYYY MM DD HH ZZ')._i}` : "",
-            //     deliveryReport: [{ report: res.data.messageStatus }]
-            //   }
-            //   console.log(sentObj)
-            //   store.dispatch("communication/addSmsToSentList", sentObj)
-            //   setTimeout(() => {
-            //     router.push({ name: "SentMessages" })
-            //   }, 3500)
-            
-            
+ 
             // Save the res to store in other to get it in the view sent sms page
             let sentObj = {
                 message: res.data.sentMessageDTO.message,
@@ -987,21 +1095,6 @@ export default {
               setTimeout(() => {
                 router.push({ name: "SentMessages" })
               }, 3500)
-
-            }
-            
-          // } else if (typeof res === "object") {
-          //   toast.add({
-          //     severity: "error",
-          //     summary: "Failed operation",
-          //     detail: typeof res === "object" ? "SMS sending failed" : res,
-          //     life: 2500,
-          //   });
-            
-            
-            
-          // }
-          
         })
         .catch((err) => {
           stopProgressBar();
@@ -1596,7 +1689,6 @@ input:focus {
   background: #02172e14;
 }
 
-
 .close-allcontacts {
   position: absolute;
   font-size: 18px;
@@ -1745,16 +1837,16 @@ input:focus {
 }
 
 .template-text {
-  color: rgb(15, 71, 134)
+  color: rgb(15, 71, 134);
 }
 
 .create-new-bg {
-background: #dadada;
-color: rgb(15, 71, 134)
+  background: #dadada;
+  color: rgb(15, 71, 134);
 }
 
 .create-new-bg:hover {
   background: #dadadad2;
-  color: rgb(15, 71, 134)
+  color: rgb(15, 71, 134);
 }
 </style>

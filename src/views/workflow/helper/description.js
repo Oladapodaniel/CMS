@@ -14,9 +14,6 @@ const getListofItems = (triggers, grps, contributionItems, triggerType) => {
 }
 
 export default (triggers, grps, contributionItems) => {
-   console.log(grps, 'groups');
-   console.log(triggers, 'triggers');
-   console.log(contributionItems, 'contri');
     return {
         //triggerType 0
         '0'() {

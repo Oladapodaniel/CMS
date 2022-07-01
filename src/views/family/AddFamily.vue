@@ -315,9 +315,9 @@
                                     </Dropdown> -->
                                     <div class="dropdown">
                                         <button class="btn w-100 d-flex justify-content-between border " type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                                           <span class="ofering">
-                                            &nbsp;&nbsp;&nbsp; {{ roleId.name ?  roleId.name : 'Select role' }}
-                                        </span>
+                                            <span class="ofering">
+                                                &nbsp;&nbsp;&nbsp; {{ roleId.name ?  roleId.name : 'Select role' }}
+                                            </span>
                                         <span>
                                             <i class="pi pi-angle-down offset-sm-2 ofering"></i>
                                         </span>
