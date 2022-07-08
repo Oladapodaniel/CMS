@@ -317,6 +317,7 @@ export default {
     const getUserEmail = async () => {
       userService.getCurrentUser()
         .then(res => {
+          console.log(res, 'hereee')
           userEmail.value = res.userEmail;
           churchName.value = res.churchName;
           tenantId.value = res.tenantId;
@@ -351,10 +352,10 @@ export default {
 
     // const userEmail = ref("");
      const userCurrencyName = computed(() => {
-        if (!currentUser.value) return "ngn";
+        // if (!currentUser.value) return "ngn";
         // console.log(currentUser, 'compute current user');
         if (currentUser.value.flutterwaveEnabled) return currentUser.value.currency;
-        return 'usd';
+        return 'USD';
       });
 
     const payWithPaystack = (e) => {

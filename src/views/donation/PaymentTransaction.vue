@@ -694,6 +694,8 @@ export default {
                         catch (err) {
                             console.log(err)
                         }
+                    }   else {
+                        paymentGateWays.value.push(item)
                     }
             } else {
                 paymentGateWays.value = paymentGateWays.value.filter(i => {
