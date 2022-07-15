@@ -1,229 +1,63 @@
 <template>
-    <!-- <div class="container  container-top container-wide ">
-        <div class="row d-flex justify-content-between px-3">
-                <div class="heading-text"> Pledge Making </div>
-        </div>
-        <div class="container border rounder  sub-con ">
-            <div class="row">
-                <div class="col-md-12 border-bottom mt-4 " >
-                     <div class="row my-1 mt-3 d-flex justify-content-center ">
-                        <div class="col-md-7  ">
-                            <div class="row ">
-                                <div class="col-md-4 text-md-right align-self-center">
-                                    <label for="" class=""> Person <sup class="text-danger">*</sup> </label>
-                                </div>
-                                <div class="col-md-8">
-                                    <input type="text" v-model="memberName" :disabled="checking" class="form-control w-100" />
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                     <div class="row my-1 mt-3 d-flex justify-content-center">
-                        <div class="col-md-7  ">
-                            <div class="row">
-                                <div class="col-md-4 text-md-right align-self-center">
-                                    <label for="" class="">Pledge Type <sup class="text-danger">*</sup> </label>
-                                </div>
-                                <div class="col-md-8">
-                                    <Dropdown v-model="selectedPledge" class="w-100 font-weight-normal" :disabled="checking" :options="allPledgeList"  optionLabel="name" placeholder="Select Pledge" />
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="row my-1 mt-3 d-flex justify-content-center">
-                        <div class="col-md-7  " v-if="selectedPledge.donorPaymentType == 0 " >
-                            <div class="row">
-                                <div class="col-md-4 text-md-right align-self-center">
-                                    <label for="" class=""> Pledge Amount </label>
-                                </div>
-                        
-                                <div class="col-md-8">
-                                    <input type="text" v-model="freewillAmount" class="form-control" />
-                                </div>
-                            </div>
-                        </div>
-                    </div>  
-                    <div class="row my-1 mt-2 d-flex justify-content-center">
-                        <div class="col-md-7  " v-if="selectedPledge.donorPaymentType == 1 ">
-                            <div class="row">
-                                <div class="col-md-4 text-md-right align-self-center">
-                                    <label for="" class=""> Pledge Amount </label>
-                                </div>
-                        
-                                <div class="col-md-8">
-                                    <input type="text" v-model="selectedPledge.donorPaymentSpecificAmount" :disabled="checking" class="form-control" />
-                                </div>
-                            </div>
-                        </div>
-                    </div>  
-                    <div class="row my-1 mt-2 d-flex justify-content-center  ">
-                         <div class="col-md-7 " v-if="selectedPledge.donorPaymentType == 2 "  >
-                            <div class="row">
-                                <div class="col-12 col-md-4 col-lg-4 text-sm-left text-lg-right align-self-center">
-                                    <label for="" class="">Pledge Amount </label>
-                                </div>
-                                <div class="d-flex flex-wrap col-12  col-md-8 ">
-                                    <div class=" col-sm-6 ">
-                                        <div class="font-weight-bold" > <span>From:</span>  {{Math.abs(selectedPledge.donorPaymentRangeFromAmount).toLocaleString()}}.00 </div>
-                                    </div>
-                                    <div class="col-12  col-sm-6   ">
-                                        <div class="font-weight-bold  " ><span>To:</span> {{Math.abs(selectedPledge.donorPaymentRangeToAmount).toLocaleString()}}.00 </div>
-                                    </div>
-
-                                </div>
-                            </div>
-                        </div>
-                    </div>  
-                </div>
-
-                    <div class="container mt-4">
-                         <div class="row d-flex justify-content-center" >
-                            <div
-                                class="col-md-10 col-sm-11  col-lg-8  border rounded"
-                            >
-                                <div class="row">
-                                <div class="col-md-2 col-sm-2 d-flex align-self-center image mt-3">
-                                    <img
-                                    src="../../assets/link.svg" class="w-100"
-                                    alt="marked Attendance image"
-                                    style="width: 60px; height: 60px"
-                                    />
-                                </div>
-                                <div class="col-md-10 col-sm-10 mt-3">
-                                    <a class="text-decoration-none"
-                                    ><h4 class="header4 link-color c-pointer" @click="copyRegLink">Online Payment Link</h4></a
-                                    >
-                                    <p class="para">
-                                    <span class="d-flex align-items-center"
-                                        ><input
-                                        type="text"
-                                        ref="selectedLink"
-                                        v-model="pledgePaymentLink"
-                                        class="form-control"
-                                        placeholder="Link"
-                                        style="width: 95%" />
-                                        <i
-                                        class="pi pi-copy ml-2 c-pointer"
-                                        @click="copyLink"
-                                        style="font-size: 22px"
-                                        ></i>
-                                        <span class="font-weight-bold small ml-1 c-pointer" style="width: 20%">Send Email</span>
-                                        <span class="font-weight-bold small c-pointer" style="width: 20%">Send Sms</span>
-                                    </span>
-                                    </p>
-                                </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                    
-                    <div class="container ">
-                        <div class="row  mt-3 d-flex justify-content-center">
-                            <div
-                                class="col-md-10  col-sm-11  col-lg-8  border rounded"
-                            >
-                                <div class="row">
-                                <div class="col-md-2 col-sm-2 d-flex justify-content-center image mt-3">
-                                    <img
-                                    src="../../assets/link.svg" 
-                                    alt="marked Attendance image"
-                                    style="width: 60px; height: 60px"
-                                    />
-                                </div>
-                                <div class="col-md-10 col-sm-10 mt-3">
-                                    <a class="text-decoration-none"
-                                    ><h4 class="header4 link-color c-pointer" @click="copyLink">Virtual payment Link</h4></a
-                                    >
-                                    <p class="para">
-                                    <span class="d-flex align-items-center"
-                                        ><input
-                                        type="text"
-                                        ref="checkinLink"
-                                        @click="copyLink"
-                                        class="form-control"
-                                        style="width: 95%" />
-                                        <i
-                                        class="pi pi-copy ml-2 c-pointer"
-                                        @click="copyLink"
-                                        style="font-size: 22px"
-                                        ></i>
-                                        <span class="font-weight-bold small ml-1 c-pointer" style="width: 20%" >Send Email</span>
-                                        <span class="font-weight-bold small c-pointer" style="width: 20%" >Send Sms</span>
-                                    </span>
-                                    </p>
-                                </div>
-                                </div>
-                            </div>
-                        </div>   
-                    </div>      
-
-                     <div class="col-md-12  mt-4">
-                            <div class="row  ">
-                                <div class=" col-md-12 d-flex justify-content-center mb-2  ">
-                                    <button class="default-btn primary-bg border-0 text-white" type="button" data-toggle="modal" data-target="#exampleModalCente" data-dismiss="modal" @click="makePayment">
-                                        <i class="pi pi-spin pi-spinner"  v-if="loading"></i> Make Payment
-                                    </button>
-                                </div>
-                            </div>
-                        </div>
-                
+  <div class="container-fluid">
+    <div class="row">
+      <div class="col-md-12 px-0">
+        <div class="container">
+          <div class="row mt-4">
+            <div class="col-md-5">
+              <h2 class="font-weight-bold page-hder">Pledge Overview</h2>
             </div>
+            <div class="col-md-7 d-sm-flex justify-content-md-end">
+              <a class="def-btn mr-3 px-md-4 my-sm-1" v-if="false"
+                >More Actions <i class="fad fa-caret-circle-down"></i
+              ></a>
+              <router-link
+                :to="{ name: 'MakePledge', path: '/tenant/pledge/makepledge' }"
+              >
+                <a
+                  class="
+                    def-btn
+                    primary-bg
+                    text-white
+                    border-0
+                    px-sm-2 px-lg-4
+                    my-sm-1
+                  "
+                  >Make new pledge</a
+                >
+              </router-link>
+            </div>
+            <Toast />
+          </div>
+          <hr class="mb-4" />
         </div>
-    </div> -->
-    <div class="container-fluid">
-        <div class="row">
-            <div class="col-md-12 px-0">
-                <div class="container">
-                <div class="row mt-4">
-                    <div class="col-md-5">
-                    <h2 class="font-weight-bold page-hder">Pledge view</h2>
-                    </div>
-                    <div class="col-md-7 d-sm-flex justify-content-md-end">
-                    <a class="def-btn mr-3 px-md-4 my-sm-1" v-if="false"
-                        >More Actions <i class="fad fa-caret-circle-down"></i
-                    ></a>
-                    <!-- <router-link :to="`/tenant/pledge/pledgepaymentlist?id=${pledgeID}`"> -->
-                    <router-link to="/tenant/pledge/pledgepaymentlist">
-                        <button class="default-btn mr-3 my-sm-1 ">View Payment form </button> 
-                    </router-link>
-                    <router-link :to="{ name: 'MakePledge', path: '/tenant/pledge/makepledge' }">
-                        <a class="def-btn primary-bg text-white  border-0 px-sm-2 px-lg-4 my-sm-1"
-                        >Create new pledge</a
-                        >
-                    </router-link>
-                    </div>
-                    <Toast />
-                </div>
-                <hr class="mb-4" />
-                </div>
-                <div class="container" style="width: 80%" v-if="!isPending && !errorGettingReport">
-                <div class="row mx-1 mb-4 mt-3">
-                    <!-- <div class="col-md-2 pl-0">
-                    <span class="theader mb-1">Status</span>
-                    <div class="my-3">
-                        <span class="draft font-weight-bold ">Unsent</span>
-                    </div>
-                    </div> -->
+        <div
+          class="container"
+          style="width: 80%"
+          v-if="!isPending && !errorGettingReport"
+        >
+          <div class="row mx-1 mb-4 mt-3">
+            <div class="col-md-7">
+              <span class="theader"> Pledge Name </span>
+              <div class="my-3">
+                <span class="evt-name">
+                  {{ pledgeName ? pledgeName : "" }}
+                  <i class="pi pi-info-circle"></i>
+                </span>
+              </div>
+            </div>
 
-                    <div class="col-md-7">
-                    <span class="theader"> Pledge Name </span>
-                    <div class="my-3">
-                        <span class="evt-name">
-                        {{ pledgeName ? pledgeName : "" }}
-                        <i class="pi pi-info-circle"></i>
-                        </span>
-                    </div>
-                    </div>
+            <div class="col-md-5">
+              <span class="theader">Date</span>
+              <div class="my-3">
+                <span class="date">{{
+                  pledgeDate ? new Date(pledgeDate).toLocaleDateString() : ""
+                }}</span>
+              </div>
+            </div>
+          </div>
 
-                    <div class="col-md-5">
-                    <span class="theader">Date</span>
-                    <div class="my-3">
-                        <span class="date">{{ pledgeDate ? new Date(pledgeDate).toLocaleDateString() : ""}}</span>
-                    </div>
-                    </div>
-                </div>
-
-                <!-- <div class="row mx-1 mb-5">
+          <!-- <div class="row mx-1 mb-5">
                     <div class="col-md-12">
                         Unapproved
                     <div class="row unapproved">
@@ -387,220 +221,282 @@
                     </div>
                 </div> -->
 
-                <div class="container-fluid bottom-section px-0">
-                    <div class="row mx-0" ref="topmost">
-                    <div class="col-md-8 dark-red-section pl-5">
-                        <h2 class="evt-report">Pledge</h2>
-                    </div>
-                    <div
-                        class="col-md-4 d-flex flex-column light-red-section pr-5 text-center"
-                    >
-                        <!-- <span>
-                        <span class="mb-n3">Total Pledge: </span> <br />
-                        <span class="recieve">60</span>
+          <div class="container-fluid bottom-section px-0">
+            <div class="row mx-0" ref="topmost">
+              <div class="col-md-8 dark-red-section pl-5">
+                <h2 class="evt-report">Pledge</h2>
+              </div>
+              <div
+                class="
+                  col-md-4
+                  d-flex
+                  flex-column
+                  light-red-section
+                  pr-5
+                  text-center
+                "
+              >
+                <span>
+                        <span class="mb-n3">Amount Pledged: </span> <br />
+                        <span class="recieve">{{ pledgeAmount }}</span>
                         </span>
                         <span>
-                        <span>Total Amount: </span> <br />
-                        <span class="recieve">NGN 600,000 &nbsp;</span
+                        <span>Total Target Amount: </span> <br />
+                        <span class="recieve">NGN {{ selectedPledge.totalTargetAmount }} &nbsp;</span
                         >
-                        </span> -->
-                    </div>
-                    </div>
-
-                    <div class="row py-5 px-5" ref="middle">
-                    <div class="col-md-7">
-                        <span class="evt-label grey-text"> Pledge Name </span>
-                        <h2 class="font-weight-bold mb-3" style="font-size: 25px">
-                            {{pledgeName}}
-                        </h2>
-                        <span class="evt-date text-danger"> 
-                            {{ pledgeDate ? new Date(pledgeDate).toString().split(" ").slice(0, 4).join(" ") : ""}}
                         </span>
-                    </div>
-                    <div class="col-md-5 pl-0">
-                        <div class="row">
-                        <div class="col-md-6 d-md-flex justify-content-end">
-                            <span class="bold-700">Pledge Type: </span>
-                        </div>
-                        <div class="col-md-6 pl-md-0">
-                            <span>{{pledgeName}}</span>
-                        </div>
-                        </div>
-                        <div class="row">
-                        <div class="col-md-6 d-md-flex justify-content-end">
-                            <span class="bold-700"> Person: </span>
-                        </div>
-                        <div class="col-md-6 pl-md-0">
-                            <span>{{personName}}</span>
-                        </div>
-                        </div>
-                    </div>
-                    </div>
-
-                    <div class="row mb-5" ref="bottom">
-                    <div class="col-md-12">
-                        <div class="row mb-4">
-                        <div class="col-md-12">
-                            <span class="attendance-header">Payment link</span>
-                        </div>
-                        </div>
-                        <div class="row">
-                        <div class="col-sm-12">
-                            <hr class="hr-dark" />
-                        </div>
-                        </div>
-                        <div class="pg-content">
-                            <div class="analytics-container first-con">
-                                    <div class="ana-group row d-flex justify-content-center">
-                                
-                                        <div
-                                            class="col-md-11 col-sm-12  col-lg-10  mb-5 border rounded"
-                                        >
-                                            <div class="row">
-                                                <div class="col-md-2 col-sm-2 d-flex align-self-center image mt-3">
-                                                    <img
-                                                    src="../../assets/link.svg" class="w-100"
-                                                    alt="marked Attendance image"
-                                                    style="width: 60px; height: 60px"
-                                                    />
-                                                </div>
-                                                <div class="col-md-10 col-sm-10 mt-3">
-                                                    <a class="text-decoration-none"
-                                                    ><h4 class="header4 link-color c-pointer" @click="copyRegLink">Online Payment Link</h4></a
-                                                    >
-                                                    <p class="para">
-                                                    <span class="d-flex align-items-center"
-                                                        ><input
-                                                        type="text"
-                                                        ref="selectedLink"
-                                                        v-model="pledgePaymentLink"
-                                                        class="form-control"
-                                                        placeholder="Link"
-                                                        style="width: 95%" />
-                                                        <i
-                                                        class="pi pi-copy ml-2 c-pointer"
-                                                        @click="copyLink"
-                                                        style="font-size: 22px"
-                                                        ></i>
-                                                        <!-- <span class="font-weight-bold small ml-1 text-primary c-pointer" style="width: 30%">Send Email</span>
-                                                        <span class="font-weight-bold small text-primary c-pointer" style="width: 30%">Send Sms</span> -->
-                                                    </span>
-                                                    </p>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                <hr class="hr" />
-                            </div>
-                            <div class="analytics-container first-con">
-                                    <div class="ana-group row d-flex justify-content-center mb-4">
-                                
-                                        <div
-                                            class="col-md-11 col-sm-12  col-lg-10 mb-3  border rounded"
-                                        >
-                                            <div class="row">
-                                                <div class="col-md-2 col-sm-2 d-flex align-self-center image mt-3">
-                                                    <img
-                                                    src="../../assets/link.svg" class="w-100"
-                                                    alt="marked Attendance image"
-                                                    style="width: 60px; height: 60px"
-                                                    />
-                                                </div>
-                                                <div class="col-md-10 col-sm-10 mt-3">
-                                                    <a class="text-decoration-none"
-                                                    ><h4 class="header4 link-color c-pointer" @click="copyLink">Virtual payment Link</h4></a
-                                                    >
-                                                   <p class="para">
-                                                        <span class="d-flex align-items-center"
-                                                            ><input
-                                                            type="text"
-                                                            ref="checkinLink"
-                                                            @click="copyLink"
-                                                            class="form-control"
-                                                            style="width: 95%" />
-                                                            <i
-                                                            class="pi pi-copy ml-2 c-pointer"
-                                                            @click="copyLink"
-                                                            style="font-size: 22px"
-                                                            ></i>
-                                                            <!-- <span class="font-weight-bold small text-primary ml-1 c-pointer" style="width: 30%" >Send Email</span>
-                                                            <span class="font-weight-bold small text-primary c-pointer" style="width: 30%" >Send Sms</span> -->
-                                                        </span>
-                                                    </p>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                <hr class="hr" />
-                            </div>
-                            <div class="analytics-container first-con">
-                                     <div class="ana-group row d-flex justify-content-center">
-                                
-                                        <div
-                                            class="col-md-11 col-sm-12  col-lg-10  mb-5 border rounded"
-                                        >
-                                            <div class="row">
-                                                <div class="col-md-2 col-sm-2 d-flex align-self-center image mt-3">
-                                                    <img
-                                                    src="../../assets/link.svg" class="w-100"
-                                                    alt="marked Attendance image"
-                                                    style="width: 60px; height: 60px"
-                                                    />
-                                                </div>
-                                                <div class="col-md-10 col-sm-10 mt-4">
-                                                    <a class="text-decoration-none"
-                                                    ><h4 class="header4 link-color c-pointer" @click="copyRegLink">Account detail</h4></a
-                                                    >
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                        <div class="row">
-                                            <div class=" col-md-12 mt-2 mt-md-0 mb-3 d-flex justify-content-center ">
-                                                <button class="default-btn primary-bg border-0 text-white" data-dismiss="modal" @click="makePayment">
-                                                    <i class="pi pi-spin pi-spinner" v-if="loading"></i> Make Payment now
-                                                </button>
-                                            </div>
-                                        </div>
-                                <hr class="hr" />
-                            </div>
-                        </div>
-                    </div>
-                    </div>
-
-                    <div class="row mb-5">
-                    </div>
-                    <div class="row">
-                    <div class="col-md-12">
-                        
-                    </div>
-                    </div>
-                </div>
-
-                </div>
-
-                <div class="row genarationg-report" v-if="isPending">
-                <div class="col-md-12 text-center mb-n4">
-                    <span class="primary-text font-weight-bold"
-                    >Generating Your Report ...</span
-                    >
-                </div>
-                <div class="col-md-12">
-                    <Loading :loading="isPending" />
-                </div>
-                </div>
-
-                <div class="row" v-if="errorGettingReport">
-                <div class="col-md-12 text-center text-danger font-weight-bold">
-                    <p class="text-danger">Error generating report, please try reloading the page. </p>
-                    <p class="mb-0">If this link was copied ensure you copied the whole link</p>
-                    <p>Else if this continues, please contact us at <a href="mailto:info@churchplus.co" class="text-primary">info@churchplus.co</a></p>
-                </div>
-                </div>
+              </div>
             </div>
+
+            <div class="row py-5 px-5" ref="middle">
+              <div class="col-md-7">
+                <span class="evt-label grey-text"> Pledge Name </span>
+                <h2 class="font-weight-bold mb-3" style="font-size: 25px">
+                  {{ pledgeName }}
+                </h2>
+                <span class="evt-date text-danger">
+                  {{
+                    pledgeDate
+                      ? new Date(pledgeDate)
+                          .toString()
+                          .split(" ")
+                          .slice(0, 4)
+                          .join(" ")
+                      : ""
+                  }}
+                </span>
+              </div>
+              <div class="col-md-5 pl-0">
+                <div class="row">
+                  <div class="col-md-6 d-md-flex justify-content-end">
+                    <span class="bold-700">Pledge Item: </span>
+                  </div>
+                  <div class="col-md-6 pl-md-0">
+                    <span>{{ pledgeName }}</span>
+                  </div>
+                </div>
+                <div class="row">
+                  <div class="col-md-6 d-md-flex justify-content-end">
+                    <span class="bold-700">Person: </span>
+                  </div>
+                  <div class="col-md-6 pl-md-0">
+                    <span>{{ personName }}</span>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <div class="row mb-5" ref="bottom">
+              <div class="col-md-12">
+                <div class="row mb-4">
+                  <div class="col-md-12">
+                    <span class="attendance-header">Payment link</span>
+                  </div>
+                </div>
+                <div class="row">
+                  <div class="col-sm-12">
+                    <hr class="hr-dark" />
+                  </div>
+                </div>
+                <div class="pg-content">
+                  <div class="analytics-container first-con">
+                    <div class="ana-group row d-flex justify-content-center">
+                      <div
+                        class="
+                          col-md-11 col-sm-12 col-lg-10
+                          mb-5
+                          border
+                          rounded
+                        "
+                      >
+                        <div class="row">
+                          <div
+                            class="
+                              col-md-2 col-sm-2
+                              d-flex
+                              align-self-center
+                              image
+                              mt-3
+                            "
+                          >
+                            <img
+                              src="../../assets/link.svg"
+                              class="w-100"
+                              alt="marked Attendance image"
+                              style="width: 60px; height: 60px"
+                            />
+                          </div>
+                          <div class="col-md-10 col-sm-10 mt-3">
+                            <a class="text-decoration-none"
+                              ><h4
+                                class="header4 link-color c-pointer"
+                                @click="copyRegLink"
+                              >
+                                Online Payment Link
+                              </h4></a
+                            >
+                            <p class="para">
+                              <span class="d-flex align-items-center"
+                                ><input
+                                  type="text"
+                                  ref="selectedLink"
+                                  v-model="pledgePaymentLink"
+                                  class="form-control"
+                                  placeholder="Link"
+                                  style="width: 95%"
+                                />
+                                <i
+                                  class="pi pi-copy ml-2 c-pointer"
+                                  @click="copyLink"
+                                  style="font-size: 22px"
+                                ></i>
+                                <!-- <span class="font-weight-bold small ml-1 text-primary c-pointer" style="width: 30%">Send Email</span>
+                                                        <span class="font-weight-bold small text-primary c-pointer" style="width: 30%">Send Sms</span> -->
+                              </span>
+                            </p>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                    <!-- <hr class="hr" /> -->
+                  </div>
+                  <!-- <div class="analytics-container first-con">
+                    <div
+                      class="ana-group row d-flex justify-content-center mb-4"
+                    >
+                      <div
+                        class="
+                          col-md-11 col-sm-12 col-lg-10
+                          mb-3
+                          border
+                          rounded
+                        "
+                      >
+                        <div class="row">
+                          <div
+                            class="
+                              col-md-2 col-sm-2
+                              d-flex
+                              align-self-center
+                              image
+                              mt-3
+                            "
+                          >
+                            <img
+                              src="../../assets/link.svg"
+                              class="w-100"
+                              alt="marked Attendance image"
+                              style="width: 60px; height: 60px"
+                            />
+                          </div>
+                          <div class="col-md-10 col-sm-10 mt-3">
+                            <a class="text-decoration-none"
+                              ><h4
+                                class="header4 link-color c-pointer"
+                                @click="copyLink"
+                              >
+                                Virtual payment Link
+                              </h4></a
+                            >
+                            <p class="para">
+                              <span class="d-flex align-items-center"
+                                ><input
+                                  type="text"
+                                  ref="checkinLink"
+                                  @click="copyLink"
+                                  class="form-control"
+                                  style="width: 95%"
+                                />
+                                <i
+                                  class="pi pi-copy ml-2 c-pointer"
+                                  @click="copyLink"
+                                  style="font-size: 22px"
+                                ></i>
+                                 <span class="font-weight-bold small text-primary ml-1 c-pointer" style="width: 30%" >Send Email</span>
+                                                            <span class="font-weight-bold small text-primary c-pointer" style="width: 30%" >Send Sms</span> -
+                              </span>
+                            </p>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                    <hr class="hr" />
+                  </div> -->
+                  <div class="analytics-container first-con">
+                    <!-- <div class="ana-group row d-flex justify-content-center">
+                      <div
+                        class="
+                          col-md-11 col-sm-12 col-lg-10
+                          mb-5
+                          border
+                          rounded
+                        "
+                      >
+                        <div class="row">
+                          <div
+                            class="
+                              col-md-2 col-sm-2
+                              d-flex
+                              align-self-center
+                              image
+                              mt-3
+                            "
+                          >
+                            <img
+                              src="../../assets/link.svg"
+                              class="w-100"
+                              alt="marked Attendance image"
+                              style="width: 60px; height: 60px"
+                            />
+                          </div>
+                          <div class="col-md-10 col-sm-10 mt-4">
+                            <a class="text-decoration-none"
+                              ><h4
+                                class="header4 link-color c-pointer"
+                                @click="copyRegLink"
+                              >
+                                Account detail
+                              </h4></a
+                            >
+                          </div>
+                        </div>
+                      </div>
+                    </div> -->
+                    <div class="row">
+                      <div
+                        class="
+                          col-md-12
+                          mt-2 mt-md-0
+                          mb-3
+                          d-flex
+                          justify-content-center
+                        "
+                      >
+                        <button
+                          class="default-btn primary-bg border-0 text-white"
+                          data-dismiss="modal"
+                          @click="makePayment"
+                        >
+                          <i class="pi pi-spin pi-spinner" v-if="loading"></i>
+                          Make Payment now
+                        </button>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <div class="row mb-5"></div>
+            <div class="row">
+              <div class="col-md-12"></div>
+            </div>
+          </div>
         </div>
+      </div>
     </div>
-    <Toast />
+  </div>
+  <Toast />
 </template>
 
 <script>
@@ -610,133 +506,119 @@ import { ref, computed } from "vue";
 import Dropdown from "primevue/dropdown";
 import InputText from "primevue/inputtext";
 import { useToast } from "primevue/usetoast";
-import MembersSearch from "../../components/membership/MembersSearch.vue"
+import MembersSearch from "../../components/membership/MembersSearch.vue";
 import Loading from "../../components/loading/LoadingComponent";
-import router from '../../router';
-import { useRoute } from "vue-router"
-import finish from '../../services/progressbar/progress';
-import CascadeSelect from 'primevue/cascadeselect';
-import ToggleButton from '../donation/toggleButton.vue'
+import router from "../../router";
+import { useRoute } from "vue-router";
+import finish from "../../services/progressbar/progress";
+import CascadeSelect from "primevue/cascadeselect";
+import ToggleButton from "../donation/toggleButton.vue";
 export default {
-    components: {
-        MembersSearch,
-        ReportModal,
-        Loading,
-        Dropdown,
-        InputText,
-        CascadeSelect,
-        ToggleButton
-    },
-    setup() {
-        const toast = useToast()
-        const selectedLink = ref(null)
-        const isPending = ref(true);
-        const errorGettingReport = ref(false);
-        const emaildata = ref(null);
-        const reportApproved = ref(false);
-        const status = ref("Draft");
-        const lastSent = ref("just a moment ago");
-        const sendBtnText = ref("Send report");
-        const tenantID = ref('')
-        const route = useRoute();
-        const churchName = ref('');
-        const Address = ref('');
-        const loading = ref(false)
-        const freewillAmount = ref('');
-        const checking = ref(false);
-        // const value = ref()
-        const isNameValid = ref(true)
-        const isEmailValid = ref(true)
-        const selectedPledge = ref('')
-        const memberName = ref('')
-        const allPledgeList = ref([]);
-        const amountFrom = ref('')
-        const selectedContact = ref({})
-        const isActive = ref(null)
-        const url = ref("");
-        const amountTo = ref('')
-        const pledgeCategory = ref(
-            [
-                {name: 'Free will'},
-                {name: 'Specific'},
-                {name: 'Range'}
-            ]
-        )
+  components: {
+    MembersSearch,
+    ReportModal,
+    Loading,
+    Dropdown,
+    InputText,
+    CascadeSelect,
+    ToggleButton,
+  },
+  setup() {
+    const toast = useToast();
+    const selectedLink = ref(null);
+    const emaildata = ref(null);
+    const tenantID = ref("");
+    const route = useRoute();
+    const churchName = ref("");
+    const Address = ref("");
+    const loading = ref(false);
+    const freewillAmount = ref("");
+    const checking = ref(false);
+    // const value = ref()
+    const isNameValid = ref(true);
+    const isEmailValid = ref(true);
+    const selectedPledge = ref("");
+    const memberName = ref("");
+    const allPledgeList = ref([]);
+    const amountFrom = ref("");
+    const selectedContact = ref({});
+    const isActive = ref(null);
+    const url = ref("");
+    const amountTo = ref("");
+    const pledgeCategory = ref([
+      { name: "Free will" },
+      { name: "Specific" },
+      { name: "Range" },
+    ]);
 
-        const personName = ref(route.query.name)
-        const pledgeName = ref(route.query.pledgeType)
-        const pledgeID = ref(route.query.pledgeTypeID)
-        const pledgeDate = ref(route.query.date)
+    const personName = ref(route.query.name);
+    const pledgeName = ref(route.query.pledgeType);
+    const pledgeID = ref(route.query.pledgeTypeID);
+    const pledgeDate = ref(route.query.date);
+    const pledgeAmount = ref(route.query.amount);
 
-        
-        const shareableLinkField = ref(null);
-        const locationTwo = ref(window.location);
-        const willCopyLink = ref(false);
-        
-        const copyLink2 = () => {
-            try {
-                willCopyLink.value = true;
-                const a = shareableLinkField.value;
-                a.select();
-                a.setSelectionRange(0, 200); /* For mobile devices */
+    const shareableLinkField = ref(null);
+    const locationTwo = ref(window.location);
+    const willCopyLink = ref(false);
 
-                /* Copy the text inside the text field */
-                document.execCommand("copy");
-                toast.add({
-                severity: "info",
-                summary: "Link Copied",
-                detail: "Shareable link copied to your clipboard",
-                life: 3000,
-                });
-            } catch (error) {
-                console.log(error);
-            }
-            };
-            url.value = `my.churchplus.co/tenant/pledge/pledgemaking/pledgeTypeID=${route.query.pledgeTypeID}&pledgeType=${pledgeName.value}&id=${route.query.id}&name=${route.query.name}`;
+    const copyLink2 = () => {
+      try {
+        willCopyLink.value = true;
+        const a = shareableLinkField.value;
+        a.select();
+        a.setSelectionRange(0, 200); /* For mobile devices */
 
-       
-        // const savePledge = async () => {
+        /* Copy the text inside the text field */
+        document.execCommand("copy");
+        toast.add({
+          severity: "info",
+          summary: "Link Copied",
+          detail: "Shareable link copied to your clipboard",
+          life: 3000,
+        });
+      } catch (error) {
+        console.log(error);
+      }
+    };
+    url.value = `my.churchplus.co/tenant/pledge/pledgemaking/pledgeTypeID=${route.query.pledgeTypeID}&pledgeType=${pledgeName.value}&id=${route.query.id}&name=${route.query.name}`;
 
-        // }
+    // const savePledge = async () => {
 
-        const makePayment = () =>{
-            // router.push('/tenant/pledge/pledgepayment')
-            router.push(`/tenant/pledge/pledgepayment?pledgeTypeID=${route.query.pledgeTypeID}&id=${route.query.id}&name=${route.query.name}`)
-        }
+    // }
 
-        const toggleReportState = () => {
-             reportApproved.value = !reportApproved.value;
-                status.value = "Unsent";
-            };
+    const makePayment = () => {
+      router.push(
+        `/tenant/pledge/pledgepayment?pledgeTypeID=${route.query.pledgeTypeID}&id=${route.query.id}&name=${route.query.name}`
+      );
+    };
+    const chooseContact = (payload) => {
+      // contactRef.value.hide();
+      selectedContact.value = payload;
+    };
 
+    const pledgePaymentLink = computed(() => {
+      if (!route.query.id) return "";
+      return `${window.location.origin}/tenant/pledge/pledgepayment?pledgeTypeID=${route.query.pledgeTypeID}&id=${route.query.id}&name=${route.query.name}`;
+    });
 
-         const chooseContact = (payload) => {
-            // contactRef.value.hide();
-            selectedContact.value = payload
+    const copyLink = () => {
+      console.log(selectedLink.value.value, "jkjjhkj");
+      selectedLink.value.setSelectionRange(
+        0,
+        selectedLink.value.value.length
+      ); /* For mobile devices */
+      selectedLink.value.select();
 
-            // console.log(payload, 'my allll')
-         }
-
-         const pledgePaymentLink = computed(() => {
-                if (!route.query.id) return ""
-                return `${window.location.origin}/tenant/pledge/pledgepayment?pledgeTypeID=${route.query.pledgeTypeID}&id=${route.query.id}&name=${route.query.name}`
-        })
-
-        const copyLink = () => {
-            console.log(selectedLink.value.value, "jkjjhkj");
-                selectedLink.value.setSelectionRange(0, selectedLink.value.value.length); /* For mobile devices */
-                selectedLink.value.select();
-
-                /* Copy the text inside the text field */
-                document.execCommand("copy");
-            toast.add({
-                    severity: "info",
-                    summary: "Link Copied",
-                    detail: "copied to your clipboard",
-                    life: 3000,
-                });
-            }
-        const sendReport = (messageObj) => {
+      /* Copy the text inside the text field */
+      document.execCommand("copy");
+      toast.add({
+        severity: "info",
+        summary: "Link Copied",
+        detail: "copied to your clipboard",
+        life: 3000,
+      });
+    };
+    const sendReport = (messageObj) => {
       const emailData = ref(emaildata.value.innerHTML);
       const message = `
                 <!DOCTYPE HTML PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
@@ -814,7 +696,7 @@ export default {
               detail: "Your report has been sent",
               life: 3000,
             });
-            markAsSent()
+            markAsSent();
           }
         })
         .catch((err) => {
@@ -831,166 +713,151 @@ export default {
       btnState.value = "modal";
     };
 
-        const getCurrentlySignedInUser = async () => {
-            try {
-                const res = await axios.get("/api/Membership/GetCurrentSignedInUser");
-                tenantID.value = res.data.tenantId
-            } catch (err) {
-                // errorGettingReport.value = true;
-                console.log(err);
-            }
-            };
+    // const getCurrentlySignedInUser = async () => {
+    //   try {
+    //     const res = await axios.get("/api/Membership/GetCurrentSignedInUser");
+    //     tenantID.value = res.data.tenantId;
+    //   } catch (err) {
+    //     console.log(err);
+    //   }
+    // };
 
-        getCurrentlySignedInUser();
-        
+    // getCurrentlySignedInUser();
 
-        const active = (payload) => {
-            isActive.value = payload
-        }
-        const getAllPledgeDefinition = async () =>{
-            // errorGettingReport.value = false;
-                try{
+    const active = (payload) => {
+      isActive.value = payload;
+    };
+    const getAllPledgeDefinition = async () => {
+      // errorGettingReport.value = false;
+      try {
+        checking.value = false;
+        const res = await axios.get("/api/Pledge/GetAllPledgeDefinitions");
+        finish();
+        allPledgeList.value = res.data.returnObject;
 
-                    checking.value = false;
-                    const res = await axios.get('/api/Pledge/GetAllPledgeDefinitions')
-                    finish()
-                    allPledgeList.value = res.data.returnObject
+        getDetails();
 
-                    getDetails()
-                    
-                    isActive.value = res.data.returnObject.map( i => {
-                        return {
-                            isActive : i.isActive
-                        }
-                    })
-                    console.log(allPledgeList.value,'getPledgeList');
-                    errorGettingReport.value = false;
-                    isPending.value = false;
-                    checking.value = true;
-                    
-                }
-                catch (error){
-                    console.log(error)
-                     isPending.value = false;
-                    errorGettingReport.value = true;
-                }
-            }
-            getAllPledgeDefinition()
+        isActive.value = res.data.returnObject.map((i) => {
+          return {
+            isActive: i.isActive,
+          };
+        });
+        console.log(allPledgeList.value, "getPledgeList");
+        checking.value = true;
+      } catch (error) {
+        console.log(error);
+      }
+    };
+    getAllPledgeDefinition();
 
-            const getDetails = () =>{
-            selectedPledge.value = allPledgeList.value.find(i => i.id === route.query.id)
-            memberName.value = route.query.name
-                }
-            
+    const getDetails = () => {
+      selectedPledge.value = allPledgeList.value.find(
+        (i) => i.id === route.query.id
+      );
+      memberName.value = route.query.name;
+    };
 
-            const makePledge = async () =>{
+    const makePledge = async () => {
+      const makePledgeDetails = {
+        personID: selectedContact.value.id,
+        pledgeTypeID: selectedPledge.value.id,
+        amountBase: selectedPledge.value.donorPaymentRangeFromAmount,
+        amountTop: selectedPledge.value.donorPaymentRangeToAmount,
+        amountBase: selectedPledge.donorPaymentSpecificAmount,
+        amountBase: freewillAmount.value,
+      };
 
-                 const makePledgeDetails = {
-                    personID: selectedContact.value.id,
-                    pledgeTypeID: selectedPledge.value.id,
-                    amountBase: selectedPledge.value.donorPaymentRangeFromAmount,
-                    amountTop: selectedPledge.value.donorPaymentRangeToAmount,
-                    amountBase: selectedPledge.donorPaymentSpecificAmount,
-                    amountBase:  freewillAmount.value                  
-                }
+      try {
+        const res = await axios.post(
+          "api/Pledge/SavePledge",
+          makePledgeDetails
+        );
+        finish();
+        console.log(res, "getSinglePledge");
+        router.push(
+          `/pledge/pledgepayment?ID=${route.query.id}&name=${route.query.name}`
+        );
+      } catch (error) {
+        console.log(error);
+      }
+    };
 
-                try{
-                    const res = await axios.post('api/Pledge/SavePledge', makePledgeDetails)
-                    finish()
-                    console.log(res,'getSinglePledge');
-                    router.push(`/pledge/pledgepayment?ID=${route.query.id}&name=${route.query.name}`)
-                    
-                }
-                catch (error){
-                    console.log(error)
-                }
-            }
+    // const getSinglePledgeDefinition = async () =>{
+    //         try{
+    //             const res = await axios.get(`/api/Pledge/GetSinglePledgeDefinitions?ID${allPledgeList.value.id}`)
+    //             finish()
+    //             console.log(res,'getSinglePledge');
+    //         }
+    //         catch (error){
+    //             console.log(error)
+    //         }
+    //     }
+    //     getSinglePledgeDefinition()
 
-        // const getSinglePledgeDefinition = async () =>{
-        //         try{
-        //             const res = await axios.get(`/api/Pledge/GetSinglePledgeDefinitions?ID${allPledgeList.value.id}`)
-        //             finish()
-        //             console.log(res,'getSinglePledge');
-        //         }
-        //         catch (error){
-        //             console.log(error)
-        //         }
-        //     }
-        //     getSinglePledgeDefinition()
+    const checkNameValue = () => {
+      if (churchName.value.length == 0) {
+        isNameValid.value = false;
+      } else {
+        isNameValid.value = true;
+      }
+    };
 
+    const checkEmailValue = () => {
+      if (pastorEmail.value.length == 0) {
+        isEmailValid.value = false;
+      } else {
+        isEmailValid.value = true;
+      }
+    };
 
-        
-
-        const checkNameValue = () => {
-            if(churchName.value.length == 0) {
-                isNameValid.value = false
-            }   else {
-                isNameValid.value = true
-            }
-        }
-        
-        const checkEmailValue = () => {
-            if(pastorEmail.value.length == 0) {
-                isEmailValid.value = false
-            }   else {
-                isEmailValid.value = true
-            }
-        }
-
-        return {
-            url,
-            allPledgeList,
-            locationTwo,
-            shareableLinkField,
-            copyLink2,
-            willCopyLink,
-            emaildata,
-            sendReport,
-            pledgeID,
-            lastSent,
-            status,
-            sendBtnText,
-            toggleReportState,
-            reportApproved,
-            isPending,
-            errorGettingReport,
-            personName,
-            pledgeName,
-            memberName,
-            tenantID,
-            checking,
-            makePledge,
-            chooseContact,
-            selectedPledge,
-            pledgeDate,
-            makePayment,
-            pledgeCategory,
-            amountTo,
-            amountFrom,
-            freewillAmount,
-            pledgePaymentLink,
-            // savePledge,
-            checkEmailValue,
-            churchName,
-            selectedContact,
-            Address,
-            // value,
-            loading,
-            checkNameValue,
-            isNameValid,
-            isEmailValid,
-            selectedLink,
-            isActive,
-            active,
-            copyLink
-        }
-    },
-}
+    return {
+      url,
+      allPledgeList,
+      locationTwo,
+      shareableLinkField,
+      copyLink2,
+      willCopyLink,
+      emaildata,
+      sendReport,
+      pledgeID,
+      personName,
+      pledgeName,
+      memberName,
+      tenantID,
+      checking,
+      makePledge,
+      chooseContact,
+      selectedPledge,
+      pledgeDate,
+      makePayment,
+      pledgeCategory,
+      amountTo,
+      amountFrom,
+      freewillAmount,
+      pledgePaymentLink,
+      // savePledge,
+      checkEmailValue,
+      churchName,
+      selectedContact,
+      Address,
+      // value,
+      loading,
+      checkNameValue,
+      isNameValid,
+      isEmailValid,
+      selectedLink,
+      isActive,
+      active,
+      copyLink,
+      pledgeAmount,
+    };
+  },
+};
 </script>
 
 <style scoped>
-       .heading-text {
-        font: normal normal 800 1.5rem Nunito sans;
+.heading-text {
+  font: normal normal 800 1.5rem Nunito sans;
 }
 
 .email-data {
@@ -1192,5 +1059,4 @@ a {
     max-width: 280px;
   }
 }
-
 </style>
