@@ -173,8 +173,9 @@
                               <th scope="col">Last Name</th>
                               <th scope="col">Phone</th>
                               <th scope="col">Email</th>
-                              <th scope="col">Home Address</th>
                               <th scope="col">Gender</th>
+                              <th scope="col">Home Address</th>
+                              <th scope="col">Birthday</th>
                               <!-- <th scope="col">Marital Status</th>
                               <th scope="col">Age Group</th>
                               <th scope="col">Birthday</th> -->
@@ -188,8 +189,9 @@
                               <td>{{member.lastName}}</td>
                               <td>{{member.mobilePhone}}</td>
                               <td>{{member.email}}</td>
-                              <td>{{member.homeAddress}}</td>
                               <td>{{member.gender}}</td>
+                              <td>{{member.homeAddress}}</td>
+                              <td>{{member.birthDay}}</td>
                               <!-- <td>{{member.maritalStatus}}</td>
                               <td>{{member.ageGroup}}</td>
                               <td>{{member.birthDay}}</td> -->

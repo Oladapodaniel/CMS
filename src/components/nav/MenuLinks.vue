@@ -190,7 +190,7 @@
                 alt=""
               />
               <span class="drop-link"
-                >Accounting
+                >Financials
                 <span class="user-link-icon">
                   <i
                     class="pi pi-angle-up more-icon"
@@ -216,8 +216,8 @@
             <!-- <li class="dd-list-item">
               <router-link class="dd-link-item routelink" to="/tenant/pledge/pledgeslist">Partnership/Pledge</router-link>
             </li> -->
-            <li class="dd-list-item"  v-if="false">
-              <router-link class="dd-link-item routelink" to="">Pledges</router-link>
+            <li class="dd-list-item">
+              <router-link class="dd-link-item routelink" to="/tenant/pledge/pledgeslist">Pledges</router-link>
             </li>
             <li class="dd-list-item">
               <router-link class="dd-link-item routelink" to="/tenant/transactionlist"
@@ -238,7 +238,7 @@
               >
             </li> -->
           </ul>
-            <a
+            <!-- <a
             class="link badges-hover dd"
             :class="{
               'router-link-exact-active': route.path.includes(
@@ -263,8 +263,8 @@
                   ></i></span
               ></span>
             </span>
-          </a>
-          <ul
+          </a> -->
+          <!-- <ul
             class="dd-list pledge-list"
             :class="{ 'dd-hide-list': !pledgeLinkDropped }"
 
@@ -275,7 +275,7 @@
             <li class="dd-list-item">
               <router-link class="dd-link-item routelink" to="/tenant/pledge/pledgepaymentlist">Payment</router-link>
             </li>
-          </ul>
+          </ul> -->
           <!-- multiBranching -->
             <a
             class="link dd"

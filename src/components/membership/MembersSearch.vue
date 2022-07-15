@@ -103,7 +103,7 @@ export default {
 
         watchEffect(() => {
             if (props.currentMember && Object.keys(props.currentMember).length > 0 && Object.keys(props.currentMember).find(i => i == 'id')) {
-                userSearchString.value = `${props.currentMember.name}`
+                userSearchString.value = props.currentMember.name ? props.currentMember.name : `${props.currentMember.firstName ? props.currentMember.firstName : ''} ${props.currentMember.lastName ? props.currentMember.lastName : ''} `
             }
 
             if (props.clearPersonValue) {
@@ -114,12 +114,13 @@ export default {
 
         const getPersonId = ({ personEmail, personFirstName, personLastName, personId, personNumber }) => {
             const formatPayload = {
-                email: personEmail,
+                email: personEmail ? personEmail : '',
                 id: personId,
-                name: `${personFirstName} ${personLastName}`,
-                nameResult: `${personFirstName} ${personLastName} - ${personNumber}`,
-                phone: personNumber
+                name: `${personFirstName ? personFirstName : ''} ${personLastName ? personLastName : ''}`,
+                nameResult: `${personFirstName ? personFirstName : ''} ${personLastName ? personLastName : ''} - ${personNumber ? personNumber : ''}`,
+                phone: personNumber ? personNumber : ''
             }
+            userSearchString.value = formatPayload.name
             emit("memberdetail", formatPayload)
         }
 
