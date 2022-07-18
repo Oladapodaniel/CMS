@@ -865,7 +865,7 @@ export default {
 }
 
 .acc-list {
-  height: 168px;
+  height: 211px;
 }
 .pledge-list {
   height: 90px;
