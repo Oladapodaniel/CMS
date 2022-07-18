@@ -807,7 +807,7 @@ const routes = [
             },
 
             {
-                path: 'addattendancecheckin',
+                path: 'addattendancecheckin/:id?',
                 name: 'AddAttendance',
                 meta: {
                     title: 'Churchplus - Create Attendance Checkin',
