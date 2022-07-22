@@ -3,7 +3,7 @@
         <div class="container-fluid">
           <div class="row   mt-5">
             <div class="col-md-6 ">
-              <div class="font-weight-bold fontfamily">Invoices</div>
+              <div class=" fontfamily">Invoices</div>
               <Toast />
               <ConfirmDialog />
               
@@ -36,11 +36,11 @@
                     <div>N 1,439,700 <span class="text-secondary small ">NGN</span> </div>
                     <div class="small text-secondary"> Last updated on July 9, 2022 at 1:07PM GMT+1</div>
                 </div>
-                <div class="col-md-4">
+                <div class="col-md-4 mt-3  mt-md-0">
                     <div class="text-secondary font-weight-bold small">Due within next 30days </div>
                     <div> N 0.00 <span class="text-secondary small ">NGN</span></div>
                 </div>
-                <div class="col-md-3 ">
+                <div class="col-md-3 mt-3  mt-md-0 ">
                     <div class="font-weight-bold small text-secondary">Average time to get paid</div>
                     <div> 21<span class="text-secondary small">days</span></div>
                 </div>
@@ -57,35 +57,42 @@
                 <div class="col-md-3">
                      <Dropdown v-model="selectedPledge" class="w-100 font-weight-normal" :options="allPledgeType"  optionLabel="name" placeholder="All customers" />
                 </div>
-                <div class="col-md-2">
+                <div class="col-md-2 mt-3 mt-md-0 ">
                      <Dropdown v-model="selectedPledge" class="w-100 font-weight-normal" :options="allPledgeType"  optionLabel="name" placeholder="All statuses" />
                 </div>
-                <div class="col-md-2">
+                <div class="col-md-2 mt-3  mt-md-0 ">
                       <Calendar dateFormat="dd/mm/yy" placeholder="From"  class="w-100" id="icon" v-model="startDate" :showIcon="true" />
                 </div>
-                <div class="col-md-2">
+                <div class="col-md-2 mt-3  mt-md-0 ">
                       <Calendar dateFormat="dd/mm/yy" placeholder="To"  class="w-100" id="icon" v-model="endDate" :showIcon="true" />
                 </div>
-                <div class="col-md-3">
-                    <div class="col-md-12 d-flex">
-                        <input type="text" class="form-control " placeholder="Enter invoice #">
+                <div class="col-md-3 mt-3  d-flex mt-md-0 ">
+                    <!-- <div class="col-md-12 d-flex"> -->
+                        <input type="text" class="form-control  " placeholder="Enter invoice #" >
                         <span class="border cursor-pointer bg-secondary pt-2 px-3"><i class="pi pi-search"></i></span>
-                    </div>
+                    <!-- </div> -->
                 </div>
             </div>
-            <div class="container-fluid  mt-4">
-              <div class="row mt-4">
-                <div class="col-md-12 mt-3 d-flex ">
-                    <div class="" style="width: 10%;">
-                        <div>Upload <span class="font-weight-bold bg-secondary rounded-circle py-1 px-2 border">0</span></div>
+            <!-- <div class="container-fluid  mt-4"> -->
+              <div class="row mt-4 mb-3">
+                <div class="col-md-12 mt-3  d-flex flex-wrap text-center botom ">
+                    <div class="col-12 col-sm-4  col-md-2 mt-2 mt-md-0 " @click="upload" >
+                        <div class=" col-md-12 pb-2 ">Upload <span class="font-weight-bold bg-secondary  rounded-circle py-1 px-2 border">8</span></div>
+                        <div :class="{ 'baseline' : showUpload, 'hide-base' : !showUpload }"></div>
                     </div>
-                    <div class=" " style="width: 10%;">
-                        <div>Draft <span class="font-weight-bold bg-secondary rounded-circle py-1 px-2 border">0</span></div>
+                    
+                    <div class="col-12 col-sm-4 col-md-2 mt-2 mt-md-0 " @click="draft" >
+                        <div class="col-md-12 pb-2 ">Draft <span class="font-weight-bold bg-secondary rounded-circle py-1 px-2 border">1</span></div>
+                        <div :class="{ 'baseline' : showDraft, 'hide-base' : !showDraft }"></div>
                     </div>
-                    <div class="" style="width: 10%;"> All invoice</div>
+                    <div class=" col-12  col-sm-4 col-md-2 mt-2 mt-md-0  " @click="invoice" > 
+                      <div class="col-12 pb-2"> All invoice</div>
+                      <div :class="{ 'baseline' : showInvoice, 'hide-base' : !showInvoice }"></div>
+                    </div>
+                    
                 </div>
               </div>
-            </div>
+            <!-- </div> -->
             
             <div class="container-fluid d-none mt-4  d-md-block">
               <div class="row t-header mt-4 border-bottom pb-2">
@@ -147,7 +154,7 @@
                     class="col-md-1 desc"
                     @click="pledgeClick(pledgelist.id)"
                   >
-                    <p class="mb-0 d-flex text-danger font-weight-bold justify-content-between text-primary">
+                    <p class="mb-0 d-flex text-danger font-weight-bold justify-content-between">
                       <span
                         class="
                           text-dark
@@ -158,7 +165,7 @@
                         style="font-size: 15px"
                         >Status</span
                       >
-                      Overdue
+                     <span class=" rounded small font-weight-bold statusbg py-1 px-2">Overdue</span>
                     </p>
                   </div>
                   <!-- <div class="col-md-2 desc" @click="pledgeClick(pledgelist.id)">
@@ -173,7 +180,7 @@
                     class="col-md-2 desc"
                     
                   >
-                    <p class="mb-0 d-flex text-danger justify-content-between text-primary">
+                    <p class="mb-0 d-flex text-danger justify-content-between ">
                       <span
                         class="
                           text-dark
@@ -191,7 +198,7 @@
                     class="col-md-2 desc"
                     @click="pledgeClick(pledgelist.id)"
                   >
-                    <p class="mb-0 d-flex justify-content-between text-primary">
+                    <p class="mb-0 d-flex justify-content-between ">
                       <span
                         class="
                           text-dark
@@ -207,7 +214,7 @@
                   </div>
                   <div class="col-md-1">
                     <div
-                      class="d-flex small justify-content-between text-primary"
+                      class="d-flex small justify-content-between "
                     >
                       <span
                         class="
@@ -226,7 +233,7 @@
                   </div>
                   <div class="col-md-2">
                     <div
-                      class="d-flex small justify-content-between text-primary"
+                      class="d-flex small justify-content-between"
                     >
                       <span
                         class="
@@ -245,7 +252,7 @@
                   </div>
                   <div class="col-md-2">
                     <div
-                      class="d-flex small justify-content-between text-primary"
+                      class="d-flex small justify-content-between "
                     >
                       <span
                         class="
@@ -267,7 +274,7 @@
                     <div class="d-flex">
                       <span
                         class="
-                          text-dark
+                          text-primary
                           font-weight-bold
                           
                           fontIncrease
@@ -275,16 +282,19 @@
                         style="font-size: 15px"
                         >Send reminder</span
                       >
-                      <div class="dropdown pt-1">
+                      <div class="dropdown ">
                         <span class="d-flex justify-content-between">
                           <span class="d-sm-flex small">
                             <i
                               class="
-                                fas
-                                fa-ellipsis-v
+                                pt-1 px-2
+                                text-primary
+                                border border-primary rounded-circle
+                                dropdown-toggle
                                 cursor-pointer
                                 ml-2
                                 fontIncrease
+                                font-weight-blod
                               "
                               id="dropdownMenuButton"
                               data-toggle="dropdown"
@@ -323,11 +333,39 @@ export default {
     setup() {
         const startDate = ref("");
         const endDate = ref("");
+        const showUpload = ref(true)
+        const showDraft = ref(false)
+        const showInvoice = ref(false)
+
+
+      const upload = () =>{
+        showUpload.value = true;
+        showDraft.value = false;
+        showInvoice.value = false
+      }
+
+      const draft = () =>{
+        showDraft.value = true
+        showUpload.value = false
+        showInvoice.value = false;
+      }
+
+      const invoice = () =>{
+        showInvoice.value = true;
+        showDraft.value = false;
+        showUpload.value = false;
+      }
         
 
         return {
+            upload,
+            draft,
+            invoice,
             startDate,
-            endDate
+            endDate,
+            showUpload,
+            showDraft,
+            showInvoice
         }
     },
 }
@@ -336,6 +374,42 @@ export default {
 <style scoped>
 .fontfamily {
   font: normal normal 800 29px Nunito sans;
+  
+}
+
+.baseline {
+    transition: all 150ms ease-in-out;
+    background-color: #136acd;
+    position: relative;
+    border-radius: 24px;
+    top: 5px;
+    height: 4px;
+    left: 0px;
+    opacity: 1;
+}
+
+.hide-base {
+    transition: all 150ms ease-in-out;
+    background-color: #136acd;
+    border-radius: 24px;
+    bottom: -2.5px;
+    height: 4px;
+    left: 0px;
+    opacity: 0;
+}
+
+.botom {
+  border-bottom: 7px solid rgb(252, 248, 248);
+  border-radius: 2px;
+  position: relative;
+  /* border-bottom-right-radius: 10px;
+  border-bottom-left-radius: 10px; */
+
+  /* height: 4px; */
+}
+
+.statusbg{
+  background-color: #fce1e1;
 }
 
 .head-button {
