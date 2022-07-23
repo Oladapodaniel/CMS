@@ -271,6 +271,8 @@
           <smsComponent :groupData ="groupListDetails" @closesidemodal="() => showSMS = false" />
         </div>
       </SideBar>
+      <Sidebar />
+      
       <SideBar :show="showEmail" :title="'Compose Email'" @closesidemodal="() => showEmail = false">
         <div class="m-wrapper2">
           <emailComponent :groupData ="groupListDetails"  @closesidemodal="() => showEmail = false" />
