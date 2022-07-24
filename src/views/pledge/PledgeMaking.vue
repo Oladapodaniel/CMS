@@ -65,6 +65,7 @@
               </div>
             </div>
           </div>
+
           <!-- =============
           <div class="container-fluid bottom-section px-0">
             <div class="row mx-0" ref="topmost">
@@ -134,63 +135,78 @@
 
           <div class="row mb-5">
             <div class="col-md-12">
-                <hr class="mb-0" />
+              <hr class="mb-0" />
               <div class="pg-content">
                 <div class="row mb-3">
                   <div class="col-md-12">
                     <span class="attendance-header">Payment link</span>
                   </div>
                 </div>
-                <div
-                  class=""
-                >
-                  <div class="ana-group row d-flex justify-content-center">
-                    <div
-                      class="col-md-11 col-sm-12 col-lg-10 mb-5 border rounded"
-                    >
-                      <div class="row">
-                        <div
-                          class="
-                            col-md-2 col-sm-2
-                            d-flex
-                            align-self-center
-                            image
-                            mt-3
-                          "
-                        >
-                          <img
-                            src="../../assets/link.svg"
-                            class="w-100"
-                            alt="marked Attendance image"
-                            style="width: 60px; height: 60px"
-                          />
-                        </div>
-                        <div class="col-md-10 col-sm-10 mt-3">
-                          <a class="text-decoration-none"
-                            ><h4
-                              class="header4 link-color c-pointer"
-                              @click="copyRegLink"
-                            >
-                              Online Payment Link
-                            </h4></a
+                <div class="row">
+                  <div class="col-12">
+                    <div class="row">
+                      <div
+                        class="
+                          col-12
+                          mb-5
+                          mx-3
+                          border
+                          rounded
+                        "
+                      >
+                        <div class="row">
+                          <div
+                            class="
+                              col-md-2 col-sm-2
+                              d-flex
+                              align-self-center
+                              image
+                              mt-3
+                            "
                           >
-                          <p class="para">
-                            <span class="d-flex align-items-center"
-                              ><input
-                                type="text"
-                                ref="selectedLink"
-                                v-model="pledgePaymentLink"
-                                class="form-control"
-                                placeholder="Link"
-                                style="width: 95%"
-                              />
-                              <i
-                                class="pi pi-copy ml-2 c-pointer"
-                                @click="copyLink"
-                                style="font-size: 22px"
-                              ></i>
-                            </span>
-                          </p>
+                            <img
+                              src="../../assets/link.svg"
+                              class="w-100"
+                              alt="marked Attendance image"
+                              style="width: 60px; height: 60px"
+                            />
+                          </div>
+                          <div class="col-md-10 col-sm-10 mt-3">
+                            <a class="text-decoration-none"
+                              ><h4
+                                class="header4 link-color c-pointer"
+                                @click="copyRegLink"
+                              >
+                                Online Payment Link
+                              </h4></a
+                            >
+                            <p class="">
+                              <span class="d-flex align-items-center justify-content-between"
+                                ><input
+                                  type="text"
+                                  ref="selectedLink"
+                                  v-model="pledgePaymentLink"
+                                  class="form-control"
+                                  placeholder="Link"
+                                  style="width: 80%"
+                                />
+                                <div>
+                                  <i
+                                    v-tooltip.top="'Copy link'"
+                                    class="pi pi-copy ml-2 c-pointer"
+                                    @click="copyLink"
+                                    style="font-size: 22px"
+                                  ></i>
+                                  <i
+                                    v-tooltip.top="'Send SMS'"
+                                    class="pi pi-envelope ml-4 c-pointer"
+                                    @click="copyLink"
+                                    style="font-size: 22px"
+                                  ></i>
+                                </div>
+                              </span>
+                            </p>
+                          </div>
                         </div>
                       </div>
                     </div>
@@ -221,11 +237,7 @@
               </div>
             </div>
             <!-- </div> -->
-
-            <div class="row mb-5"></div>
-            <div class="row">
-              <div class="col-md-12"></div>
-            </div>
+            <PledgeTransaction />
           </div>
         </div>
       </div>
@@ -248,6 +260,8 @@ import { useRoute } from "vue-router";
 import finish from "../../services/progressbar/progress";
 import CascadeSelect from "primevue/cascadeselect";
 import ToggleButton from "../donation/toggleButton.vue";
+import PledgeTransaction from "./PledgeTransaction.vue";
+import Tooltip from "primevue/tooltip";
 export default {
   components: {
     MembersSearch,
@@ -257,6 +271,10 @@ export default {
     InputText,
     CascadeSelect,
     ToggleButton,
+    PledgeTransaction,
+  },
+  directives: {
+      tooltip: Tooltip,
   },
   setup() {
     const toast = useToast();

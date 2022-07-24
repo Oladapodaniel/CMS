@@ -35,11 +35,18 @@
           </div>
         </div>
       </div>
-      
+
       <div class="form">
         <!-- <div class="container"> -->
         <div class="row second-form first-row">
-          <div class="col-12 col-sm-8 offset-sm-3 offset-md-0 col-md-5 dropdown-container">
+          <div
+            class="
+              col-12 col-sm-8
+              offset-sm-3 offset-md-0
+              col-md-5
+              dropdown-container
+            "
+          >
             <div
               class="select-elem-con pointer ofering"
               id="eventCategorySelectElem"
@@ -74,7 +81,10 @@
                 :key="index"
                 class="ofering"
               >
-                <div class="ofering p-1" @click="individualEvent(eventCategory, index)">
+                <div
+                  class="ofering p-1"
+                  @click="individualEvent(eventCategory, index)"
+                >
                   {{ eventCategory.name }}
                 </div>
               </div>
@@ -94,10 +104,13 @@
               <h4>{{ selectedEventCategoryName }}</h4>
               <div class="event-buttons">
                 <a @click="changeSelectedEventCategory('edit')">Edit</a>
-                <a @click="deleteSelectedEventCategory(selectedEventCategoryId, index)">Delete</a>
-                <a @click="changeSelectedEventCategory('change')"
-                  >Change</a
+                <a
+                  @click="
+                    deleteSelectedEventCategory(selectedEventCategoryId, index)
+                  "
+                  >Delete</a
                 >
+                <a @click="changeSelectedEventCategory('change')">Change</a>
               </div>
             </div>
             <div class="edit-category" v-if="showEditEventCategory">
@@ -119,10 +132,10 @@
 
           <div class="col-12 text-sm-right col-sm-10 col-md-7 mt-sm-2 mt-md-0">
             <div class="row nested-row">
-              <div class=" col-12 col-sm-5">
+              <div class="col-12 col-sm-5">
                 <label for="date">Date</label>
               </div>
-              <div class=" col-12 col-sm-7">
+              <div class="col-12 col-sm-7">
                 <input
                   placeholder=""
                   v-model="eventDate"
@@ -131,14 +144,14 @@
                   required
                 />
               </div>
-              <div class=" col-12 col-sm-5">
+              <div class="col-12 col-sm-5">
                 <label for="topic">Topic</label>
               </div>
-              <div class=" col-12 col-sm-7">
+              <div class="col-12 col-sm-7">
                 <input type="text" v-model="topic" class="form-control" />
               </div>
-              
-              <div class=" col-12 col-sm-5">
+
+              <div class="col-12 col-sm-5">
                 <label for="preacher">Preacher</label>
               </div>
               <div class="col-12 col-sm-7">
@@ -153,7 +166,7 @@
           <div class="row">
             <div class="col-sm-3">Attendance Type</div>
             <div class="col-sm-3 offset-sm-2">Count</div>
-            <div class="col-sm-2" style="margin-left: 74px;">Total</div>
+            <div class="col-sm-2" style="margin-left: 74px">Total</div>
           </div>
         </div>
         <!-- Attendance Items -->
@@ -165,7 +178,10 @@
         >
           <div class="row">
             <div class="col-6 col-md-3">
-              <select class="form-control" v-if="item.attendanceTypeID && !routeParams" >
+              <select
+                class="form-control"
+                v-if="item.attendanceTypeID && !routeParams"
+              >
                 <option
                   v-for="(newAttendance, index) in newAttendances"
                   :key="index"
@@ -177,7 +193,12 @@
                   {{ newAttendance.name }}
                 </option>
               </select>
-              <select class="form-control" v-if="item.attendanceTypeID && routeParams" v-model="item.attendanceTypeID" @change="updateAttendanceId" >
+              <select
+                class="form-control"
+                v-if="item.attendanceTypeID && routeParams"
+                v-model="item.attendanceTypeID"
+                @change="updateAttendanceId"
+              >
                 <option
                   v-for="(newAttendance, index) in newAttendances"
                   :key="index"
@@ -205,10 +226,16 @@
                 placeholder="Enter Count"
               />
             </div>
-            <div class="d-none d-md-block col-sm-1 offset-sm-1" style="margin-left: 74px;">
+            <div
+              class="d-none d-md-block col-sm-1 offset-sm-1"
+              style="margin-left: 74px"
+            >
               {{ item.number }}
             </div>
-            <div class="col-1" @click="deleteAttendance(item.attendanceId, indx)">
+            <div
+              class="col-1"
+              @click="deleteAttendance(item.attendanceId, indx)"
+            >
               <i class="pi pi-trash" aria-hidden="true"></i>
             </div>
           </div>
@@ -261,7 +288,9 @@
         <div class="col-sm-12 empty">
           <div class="row">
             <div class="offset-sm-7 px-0 col-2 offset-4">TOTAL</div>
-            <div class="col-3 px-0"><div style="margin-left: -3%">{{ addAttendanceTotal }}</div></div>
+            <div class="col-3 px-0">
+              <div style="margin-left: -3%">{{ addAttendanceTotal }}</div>
+            </div>
           </div>
         </div>
         <!-- <textarea class="col-sm-12 textarea form-control" rows="5">Note ...</textarea> -->
@@ -270,13 +299,13 @@
         <div class="attendance-header d-none d-lg-block">
           <div class="row">
             <div class="col-sm-3">Offering Item</div>
-            <div class="col-sm-2" >Channel</div>
-            <div class="col-sm-4" >Amount</div>
+            <div class="col-sm-2">Channel</div>
+            <div class="col-sm-4">Amount</div>
             <div class="col-sm-2">Total</div>
           </div>
         </div>
-<!-- <div>{{ offeringItem }}</div> -->
-<!-- <div>{{ newOfferings }}</div> -->
+        <!-- <div>{{ offeringItem }}</div> -->
+        <!-- <div>{{ newOfferings }}</div> -->
         <!-- Selected offerings -->
         <!-- <div>{{ convertedAmount2 }}</div> -->
         <div
@@ -287,7 +316,10 @@
         >
           <div class="row">
             <div class="col-12 col-sm-8 col-lg-3">
-              <select class="form-control" v-if="item.financialContributionID && !routeParams">
+              <select
+                class="form-control"
+                v-if="item.financialContributionID && !routeParams"
+              >
                 <option
                   v-for="(newOffering, index) in newOfferings"
                   :key="index"
@@ -297,8 +329,13 @@
                   {{ newOffering.name }}
                 </option>
               </select>
-            
-              <select class="form-control" v-else-if="item.financialContributionID && routeParams" v-model="item.financialContributionID" @change="updateOfferingId">
+
+              <select
+                class="form-control"
+                v-else-if="item.financialContributionID && routeParams"
+                v-model="item.financialContributionID"
+                @change="updateOfferingId"
+              >
                 <option
                   v-for="(newOffering, index) in newOfferings"
                   :key="index"
@@ -331,47 +368,64 @@
                 <option value="Text">Text</option>
               </select>
             </div>
-            
+
             <div class="col-3 col-sm-2 col-lg-1">
-                <div
-                class="currency pointer d-flex justify-content-around align-items-center close-modal"
+              <div
+                class="
+                  currency
+                  pointer
+                  d-flex
+                  justify-content-around
+                  align-items-center
+                  close-modal
+                "
                 @click="item.showCurrency = !item.showCurrency"
-                >
-                <span class="ofering close-modal">{{ item.currencyName ? item.currencyName : tenantCurrency.currency }}</span
+              >
+                <span class="ofering close-modal">{{
+                  item.currencyName
+                    ? item.currencyName
+                    : tenantCurrency.currency
+                }}</span
                 ><span style="margin-top: 4px">
-                    <i
-                    class="pi pi-angle-down close-modal"
-                    aria-hidden="true"
-                    ></i
+                  <i class="pi pi-angle-down close-modal" aria-hidden="true"></i
                 ></span>
+              </div>
+              <div
+                class="ofering close-modal"
+                :class="{ 'style-account': item.showCurrency }"
+                v-if="item.showCurrency"
+              >
+                <div class="p-2">
+                  <input
+                    type="text"
+                    placeholder="Search"
+                    class="form-control close-modal ofering mb-1"
+                    v-model="currencyText"
+                  />
                 </div>
                 <div
-                  class="ofering close-modal"
-                  :class="{ 'style-account': item.showCurrency }"
-                  v-if="item.showCurrency"
+                  class="header-border close-modal"
+                  v-if="filterCurrency.length > 0"
+                >
+                  <div
+                    class="manual-dd-item close-modal"
+                    v-for="item in filterCurrency"
+                    :key="item.id"
                   >
-                  <div class="p-2">
-                      <input
-                      type="text"
-                      placeholder="Search"
-                      class="form-control close-modal ofering mb-1"
-                      v-model="currencyText"
-                      
-                  />
+                    <div class="d-flex justify-content-between p-1 close-modal">
+                      <div
+                        class="close-modal offset-sm-1"
+                        @click="addCurrency($event, index, item)"
+                      >
+                        {{ item.name }} - {{ item.country }}
+                      </div>
+                    </div>
                   </div>
-                        <div class="header-border close-modal" v-if="filterCurrency.length > 0">
-                          <div class="manual-dd-item close-modal" v-for="item in filterCurrency" :key="item.id">
-                              <div class="d-flex justify-content-between p-1 close-modal">
-                                  <div class="close-modal offset-sm-1" @click="addCurrency($event, index, item)">{{ item.name }} - {{ item.country }}</div>      
-                              </div>                      
-                          </div>
-                        </div>
-                        <div class="header-border close-modal" v-else>
-                          <div class="p-3 text-center text-danger">No Match Found</div>
-                        </div>
-                  
-                  
-                  </div>
+                </div>
+                <div class="header-border close-modal" v-else>
+                  <div class="p-3 text-center text-danger">No Match Found</div>
+                </div>
+              </div>
             </div>
             <div class="col-6 col-lg-3">
               <input
@@ -382,22 +436,44 @@
                 @input="sendAmount($event, index)"
               />
             </div>
-            <div
-              class="col-1 d-none d-lg-block"
-            >
+            <div class="col-1 d-none d-lg-block">
               {{ item.amount }}
             </div>
-            <div
-              class="col-1"
-              @click="delOffering(item.id, index)"
-            >
+            <div class="col-1" @click="delOffering(item.id, index)">
               <i class="pi pi-trash" aria-hidden="true"></i>
             </div>
-            <div v-if="item.donor == '' " data-toggle="modal" data-target="#exampleModal" class="col-8 col-sm-3 offset-sm-5 donor-text pt-0 align-self-center" @click="setAddToDonor(index)">Add Donor</div>
-            <div v-else class="col-8 col-sm-5 offset-sm-5 donor-text-name pt-0 align-self-center mt-1"  @click="setAddToDonor(index)" data-toggle="modal" data-target="#exampleModal" >{{ item.donor }}     <span class="donor-text">edit</span></div>
-            
+            <div
+              v-if="item.donor == ''"
+              data-toggle="modal"
+              data-target="#exampleModal"
+              class="
+                col-8 col-sm-3
+                offset-sm-5
+                donor-text
+                pt-0
+                align-self-center
+              "
+              @click="setAddToDonor(index)"
+            >
+              Add Donor
+            </div>
+            <div
+              v-else
+              class="
+                col-8 col-sm-5
+                offset-sm-5
+                donor-text-name
+                pt-0
+                align-self-center
+                mt-1
+              "
+              @click="setAddToDonor(index)"
+              data-toggle="modal"
+              data-target="#exampleModal"
+            >
+              {{ item.donor }} <span class="donor-text">edit</span>
+            </div>
           </div>
-               
         </div>
 
         <div
@@ -428,10 +504,10 @@
           <!-- @click="offering(null)" -->
           <!-- class="create ofering pointer" -->
           <div
-            type="button" data-toggle="modal" data-target="#exampleModalCenter"
+            type="button"
+            data-toggle="modal"
+            data-target="#exampleModalCenter"
             class="create ofering pointer"
-            
-            
           >
             Create New Offering Item
           </div>
@@ -456,13 +532,32 @@
 
         <div class="col-sm-12 empty">
           <div class="row">
-            <div class="col-3 col-sm-3 total-2 text-sm-right offset-sm-5">TOTAL</div>
-            <div class="col-3 col-sm-3 offset-sm-1 ofering">
-             
-              <CurrencyConverter :tenantCurrency="tenantCurrency.currency" :selectedCurrency="selectedCurrencyName" :currencyList="currencyList" :currencyAmount="addContributionTotal" @conversion-result="convertResult" @currency-rate="setCurrencyRate" />
+            <div class="col-3 col-sm-3 total-2 text-sm-right offset-sm-5">
+              TOTAL
             </div>
-            <div v-if="convertedAmount" class="col-4 col-sm-2 align-self-center converted-amount">
-              {{ convertedResult ? convertedResult.toFixed(2) : addContributionTotal ? addContributionTotal.toString() !== "NaN" ? addContributionTotal.toFixed(2) : 0.00 : 0.00 }}
+            <div class="col-3 col-sm-3 offset-sm-1 ofering">
+              <CurrencyConverter
+                :tenantCurrency="tenantCurrency.currency"
+                :selectedCurrency="selectedCurrencyName"
+                :currencyList="currencyList"
+                :currencyAmount="addContributionTotal"
+                @conversion-result="convertResult"
+                @currency-rate="setCurrencyRate"
+              />
+            </div>
+            <div
+              v-if="convertedAmount"
+              class="col-4 col-sm-2 align-self-center converted-amount"
+            >
+              {{
+                convertedResult
+                  ? convertedResult.toFixed(2)
+                  : addContributionTotal
+                  ? addContributionTotal.toString() !== "NaN"
+                    ? addContributionTotal.toFixed(2)
+                    : 0.0
+                  : 0.0
+              }}
             </div>
           </div>
         </div>
@@ -489,130 +584,119 @@
       </div>
 
       <div class="form col-12 col-sm-12 offset-md-0 col-md-12">
-          <div class="row row-form form-header pointer" @click="toggleForm3">
-            <div class="col-10">
-              <div>First Timers and New Convert</div>
-            </div>
-            <div class="col-2 text-right">
-              <i
-                class="pi pi-angle-up"
-                :class="{ roll3: showForm3 }"
-                aria-hidden="true"
-              ></i>
-            </div>
+        <div class="row row-form form-header pointer" @click="toggleForm3">
+          <div class="col-10">
+            <div>First Timers and New Convert</div>
+          </div>
+          <div class="col-2 text-right">
+            <i
+              class="pi pi-angle-up"
+              :class="{ roll3: showForm3 }"
+              aria-hidden="true"
+            ></i>
+          </div>
+        </div>
+        <div
+          class="row form-body close-slide3"
+          :class="{ 'slide-down3': showForm3 }"
+        >
+          <!-- @click="toggleForm3" -->
+          <div
+            class="col-12 col-sm-3 add-first-timer pointer"
+            @click="createFirstTimers"
+          >
+            Add First Timers
           </div>
           <div
-            class="row form-body close-slide3"
-            :class="{ 'slide-down3': showForm3 }"
-            
+            class="
+              col-12
+              mt-3 mt-sm-0
+              col-sm-3
+              offset-sm-1
+              add-new-convert
+              pointer
+            "
+            id="modalTogglerFirstTimers"
+            data-toggle="modal"
+            data-target="#exampleModalNewConvert"
           >
-          <!-- @click="toggleForm3" -->
-            <div
-              class="col-12 col-sm-3 add-first-timer pointer"
-              @click="createFirstTimers"
-            >
-              Add First Timers
+            Add New Converts
+          </div>
+          <!-- First timer table -->
+          <div class="col-sm-12 box-table" v-if="firstTimers.length > 0">
+            <div class="row table-header">
+              <div class="col-12 table-title">First Timers</div>
+              <div class="col-sm-4 d-none d-sm-block">FIRSTNAME</div>
+              <div class="col-sm-4 d-none d-sm-block">LASTNAME</div>
+              <div class="col-sm-3 d-none d-sm-block">PHONE</div>
             </div>
-            <div class="col-12 mt-3 mt-sm-0 col-sm-3 offset-sm-1 add-new-convert pointer" id="modalTogglerFirstTimers" data-toggle="modal"  data-target="#exampleModalNewConvert">
-              Add New Converts
-            </div>
-            <!-- First timer table -->
-            <div class="col-sm-12 box-table" v-if="firstTimers.length > 0">
-      
-                <div class="row table-header">
-                  <div class="col-12 table-title">First Timers</div>
-                  <div class="col-sm-4 d-none d-sm-block">
-                      FIRSTNAME
-                  </div>
-                      <div class="col-sm-4 d-none d-sm-block">
-                      LASTNAME
-                  </div>
-                      <div class="col-sm-3 d-none d-sm-block">
-                      PHONE
-                  </div>
-              </div>
 
-              <div class="table-body row" v-for="(item, index) in firstTimers"
-                    :key="index">
-                  <div class="col-6 d-block d-sm-none">
-                  <div class="col-sm-3">
-                      FIRSTNAME
-                  </div>
-                      <div class="col-sm-2">
-                      LASTNAME
-                  </div>
-                      <div class="col-sm-2">
-                      PHONE
-                  </div>
+            <div
+              class="table-body row"
+              v-for="(item, index) in firstTimers"
+              :key="index"
+            >
+              <div class="col-6 d-block d-sm-none">
+                <div class="col-sm-3">FIRSTNAME</div>
+                <div class="col-sm-2">LASTNAME</div>
+                <div class="col-sm-2">PHONE</div>
               </div>
               <div class="col-6 col-sm-12">
-                  <div class="row">
+                <div class="row">
                   <div class="col-sm-4">
-                      <div>{{ item.firstName }}</div>
+                    <div>{{ item.firstName }}</div>
                   </div>
                   <div class="col-sm-4">
-                      <div>{{ item.lastName }}</div>
+                    <div>{{ item.lastName }}</div>
                   </div>
                   <div class="col-sm-3">
-                      <div>{{ item.phoneNumber }}</div>
+                    <div>{{ item.phoneNumber }}</div>
                   </div>
                   <div class="col-sm-1" @click="deleteFirstTimer(index)">
                     <i class="pi pi-trash"></i>
                   </div>
                 </div>
-            
-                  </div>
               </div>
             </div>
-            <!-- New convert table -->
-            <div class="col-sm-12 box-table" v-if="newConverts.length > 0">
-      
-                <div class="row table-header">
-                  <div class="col-12 table-title">New Converts</div>
-                  <div class="col-sm-4 d-none d-sm-block">
-                      FIRSTNAME
-                  </div>
-                      <div class="col-sm-4 d-none d-sm-block">
-                      LASTNAME
-                  </div>
-                      <div class="col-sm-3 d-none d-sm-block">
-                      PHONE
-                  </div>
-              </div>
+          </div>
+          <!-- New convert table -->
+          <div class="col-sm-12 box-table" v-if="newConverts.length > 0">
+            <div class="row table-header">
+              <div class="col-12 table-title">New Converts</div>
+              <div class="col-sm-4 d-none d-sm-block">FIRSTNAME</div>
+              <div class="col-sm-4 d-none d-sm-block">LASTNAME</div>
+              <div class="col-sm-3 d-none d-sm-block">PHONE</div>
+            </div>
 
-              <div class="table-body row" v-for="(item, index) in newConverts"
-                    :key="index">
-                  <div class="col-6 d-block d-sm-none">
-                  <div class="col-sm-3">
-                      FIRSTNAME
-                  </div>
-                      <div class="col-sm-2">
-                      LASTNAME
-                  </div>
-                      <div class="col-sm-2">
-                      PHONE
-                  </div>
+            <div
+              class="table-body row"
+              v-for="(item, index) in newConverts"
+              :key="index"
+            >
+              <div class="col-6 d-block d-sm-none">
+                <div class="col-sm-3">FIRSTNAME</div>
+                <div class="col-sm-2">LASTNAME</div>
+                <div class="col-sm-2">PHONE</div>
               </div>
               <div class="col-6 col-sm-12">
-                  <div class="row">
+                <div class="row">
                   <div class="col-sm-4">
-                      <div>{{ item.firstName }}</div>
+                    <div>{{ item.firstName }}</div>
                   </div>
                   <div class="col-sm-4">
-                      <div>{{ item.lastName }}</div>
+                    <div>{{ item.lastName }}</div>
                   </div>
                   <div class="col-sm-3">
-                      <div>{{ item.phoneNumber }}</div>
+                    <div>{{ item.phoneNumber }}</div>
                   </div>
                   <div class="col-sm-1" @click="deleteNewConvert(index)">
                     <i class="pi pi-trash"></i>
                   </div>
                 </div>
-            
-                  </div>
               </div>
             </div>
           </div>
+        </div>
       </div>
       <div class="container first-pane mt-3 mb-5">
         <div class="row">
@@ -624,7 +708,14 @@
         </div>
 
         <div class="row">
-          <div class="col-md-12 d-lg-flex justify-content-end text-center text-sm-right">
+          <div
+            class="
+              col-md-12
+              d-lg-flex
+              justify-content-end
+              text-center text-sm-right
+            "
+          >
             <button class="default-btn" v-if="false">Preview</button>
             <button class="default-btn primary-bg border-0 ml-3" @click="post">
               <i
@@ -642,15 +733,15 @@
     <!-- Event Modal Button -->
 
     <button
-              hidden
-              type="button"
-              id="modalTogglerEvent"
-              class="btn btn-primary"
-              data-toggle="modal"
-              data-target="#exampleModalEvent"
-            >
-              Launch demo modal
-            </button>
+      hidden
+      type="button"
+      id="modalTogglerEvent"
+      class="btn btn-primary"
+      data-toggle="modal"
+      data-target="#exampleModalEvent"
+    >
+      Launch demo modal
+    </button>
 
     <!-- Event Modal -->
     <div
@@ -676,7 +767,9 @@
           </div>
           <div class="modal-body">
             <div class="row">
-              <div class="offset-sm-1 col-sm-3 text-sm-right align-self-center">New Event</div>
+              <div class="offset-sm-1 col-sm-3 text-sm-right align-self-center">
+                New Event
+              </div>
               <div class="col-sm-7">
                 <input type="text" v-model="eventCreate" class="form-control" />
               </div>
@@ -804,18 +897,18 @@
       </div>
     </div>
 
-      <!-- Giver Modal Button -->
+    <!-- Giver Modal Button -->
     <button
-    hidden
-          ref="modalTogglerGiver"
-          type="button"
-          id="modalTogglerGiver"
-          class="btn btn-primary"
-          data-toggle="modal"
-          data-target="#exampleGiver"
-        >
-          Launch demo modal
-      </button>
+      hidden
+      ref="modalTogglerGiver"
+      type="button"
+      id="modalTogglerGiver"
+      class="btn btn-primary"
+      data-toggle="modal"
+      data-target="#exampleGiver"
+    >
+      Launch demo modal
+    </button>
 
     <!-- Giver Modal -->
     <div
@@ -841,9 +934,11 @@
           </div>
           <div class="modal-body">
             <div class="row">
-              <div class="offset-sm-1 col-sm-3 text-sm-right align-self-center">Name</div>
+              <div class="offset-sm-1 col-sm-3 text-sm-right align-self-center">
+                Name
+              </div>
               <div class="col-sm-7">
-                <input type="text" v-model="donorText" class="form-control"/>
+                <input type="text" v-model="donorText" class="form-control" />
               </div>
             </div>
           </div>
@@ -893,7 +988,9 @@
             <div class="container">
               <form>
                 <div class="form-group row">
-                  <label for="Firstname" class="col-sm-3 text-sm-right col-form-label"
+                  <label
+                    for="Firstname"
+                    class="col-sm-3 text-sm-right col-form-label"
                     >Firstname<sup class="text-danger">*</sup></label
                   >
                   <div class="col-sm-6">
@@ -907,7 +1004,9 @@
                   </div>
                 </div>
                 <div class="form-group row">
-                  <label for="LastName" class="col-sm-3 text-sm-right col-form-label"
+                  <label
+                    for="LastName"
+                    class="col-sm-3 text-sm-right col-form-label"
                     >Last Name</label
                   >
                   <div class="col-sm-6">
@@ -921,7 +1020,9 @@
                   </div>
                 </div>
                 <div class="form-group row">
-                  <label for="phone number" class="col-sm-3 text-sm-right col-form-label"
+                  <label
+                    for="phone number"
+                    class="col-sm-3 text-sm-right col-form-label"
                     >Phone number</label
                   >
                   <div class="col-sm-6">
@@ -929,25 +1030,27 @@
                       type="number"
                       v-model="firstTimersObj.phoneNumber"
                       class="form-control input-first"
-                      :class="{ 'is-invalid' : !isPhoneValid }"
+                      :class="{ 'is-invalid': !isPhoneValid }"
                       id="phone number"
                       ref="validatePhone"
                       @blur="checkForDuplicatePhone"
                     />
                     <div class="invalid-feedback">
-                    Phone number exist, type a unique phone number.
-                  </div>
+                      Phone number exist, type a unique phone number.
+                    </div>
                   </div>
                 </div>
                 <div class="form-group row">
-                  <label for="email" class="col-sm-3 text-sm-right col-form-label"
+                  <label
+                    for="email"
+                    class="col-sm-3 text-sm-right col-form-label"
                     >Email</label
                   >
                   <div class="col-sm-6">
                     <input
                       type="email"
                       class="form-control input-first"
-                      :class="{ 'is-invalid' : !isEmailValid}"
+                      :class="{ 'is-invalid': !isEmailValid }"
                       v-model="firstTimersObj.email"
                       id="email"
                       ref="validateEmail"
@@ -959,7 +1062,9 @@
                   </div>
                 </div>
                 <div class="form-group row">
-                  <label for="address" class="col-sm-3 text-sm-right col-form-label"
+                  <label
+                    for="address"
+                    class="col-sm-3 text-sm-right col-form-label"
                     >Address</label
                   >
                   <div class="col-sm-6">
@@ -972,43 +1077,81 @@
                   </div>
                 </div>
                 <div class="form-group row">
-                  <label for="address" class="col-sm-3 text-sm-right col-form-label"
+                  <label
+                    for="address"
+                    class="col-sm-3 text-sm-right col-form-label"
                     >Contact owner</label
                   >
                   <div class="col-sm-6">
                     <div class="p-0 border-0">
-                    <SearchMembers @memberdetail="setContact"/>
-                  </div>
+                      <SearchMembers @memberdetail="setContact" />
+                    </div>
                   </div>
                 </div>
 
                 <div class="form-group row">
-                  <label for="birthday" class="col-sm-3 text-sm-right col-form-label"
+                  <label
+                    for="birthday"
+                    class="col-sm-3 text-sm-right col-form-label"
                     >Birthday</label
                   >
                   <div class="col-sm-2 mb-4">
-  
-                    <Dropdown :options="[...day]" :filter="false" v-model="firstTimersObj.birthday" placeholder="Day" class="w-100" :showClear="false">
+                    <Dropdown
+                      :options="[...day]"
+                      :filter="false"
+                      v-model="firstTimersObj.birthday"
+                      placeholder="Day"
+                      class="w-100"
+                      :showClear="false"
+                    >
                     </Dropdown>
                   </div>
                   <div class="col-sm-2 mb-4 px-sm-0">
-       
-                    <Dropdown :options="[...months]" :filter="false" v-model="valueMonth" @change="dropDownMonth" placeholder="Month" class="w-100" :showClear="false">
+                    <Dropdown
+                      :options="[...months]"
+                      :filter="false"
+                      v-model="valueMonth"
+                      @change="dropDownMonth"
+                      placeholder="Month"
+                      class="w-100"
+                      :showClear="false"
+                    >
                     </Dropdown>
                   </div>
                   <div class="col-sm-2 mb-4">
-
-                    <Dropdown :options="[...birthYearsArr]" :filter="false" v-model="firstTimersObj.birthYear" placeholder="Year" class="w-100" :showClear="false">
+                    <Dropdown
+                      :options="[...birthYearsArr]"
+                      :filter="false"
+                      v-model="firstTimersObj.birthYear"
+                      placeholder="Year"
+                      class="w-100"
+                      :showClear="false"
+                    >
                     </Dropdown>
                   </div>
                   <div class="col-sm-3 mb-4 offset-sm-3 pr-sm-0">
- 
-                    <Dropdown :options="maritalStatusArr" optionLabel="value" :filter="false" v-model="valueMarital" @change="dropDownMarital" placeholder="Marital Status" class="w-100" :showClear="false">
+                    <Dropdown
+                      :options="maritalStatusArr"
+                      optionLabel="value"
+                      :filter="false"
+                      v-model="valueMarital"
+                      @change="dropDownMarital"
+                      placeholder="Marital Status"
+                      class="w-100"
+                      :showClear="false"
+                    >
                     </Dropdown>
                   </div>
                   <div class="col-sm-3 mb-4">
-
-                    <Dropdown :options="[...genders]" :filter="false" v-model="valueGender" @change="dropDownGender" placeholder="Gender" class="w-100" :showClear="false">
+                    <Dropdown
+                      :options="[...genders]"
+                      :filter="false"
+                      v-model="valueGender"
+                      @change="dropDownGender"
+                      placeholder="Gender"
+                      class="w-100"
+                      :showClear="false"
+                    >
                     </Dropdown>
                   </div>
                 </div>
@@ -1035,26 +1178,58 @@
                 >
                   <div class="col-sm-6 offset-sm-3 mb-4">
                     <div>How did you hear about us</div>
-        
-                    <Dropdown :options="[...howYouHeard]" :filter="false" v-model="valueHeard" @change="dropDownHeard" placeholder="Select" class="w-100" :showClear="false">
+
+                    <Dropdown
+                      :options="[...howYouHeard]"
+                      :filter="false"
+                      v-model="valueHeard"
+                      @change="dropDownHeard"
+                      placeholder="Select"
+                      class="w-100"
+                      :showClear="false"
+                    >
                     </Dropdown>
                   </div>
                   <div class="col-sm-6 offset-sm-3 mb-4">
                     <div>Preferred means of communication</div>
 
-                    <Dropdown :options="[...comMeansArr]" :filter="false" v-model="valueComm" @change="dropDownComm" placeholder="Select" class="w-100" :showClear="false">
+                    <Dropdown
+                      :options="[...comMeansArr]"
+                      :filter="false"
+                      v-model="valueComm"
+                      @change="dropDownComm"
+                      placeholder="Select"
+                      class="w-100"
+                      :showClear="false"
+                    >
                     </Dropdown>
                   </div>
                   <div class="col-sm-6 offset-sm-3 mb-4">
                     <div>Interested in joining us</div>
-    
-                    <Dropdown :options="[...joinInterest]" :filter="false" v-model="valueInterest" @change="dropDownInterest" placeholder="Select" class="w-100" :showClear="false">
+
+                    <Dropdown
+                      :options="[...joinInterest]"
+                      :filter="false"
+                      v-model="valueInterest"
+                      @change="dropDownInterest"
+                      placeholder="Select"
+                      class="w-100"
+                      :showClear="false"
+                    >
                     </Dropdown>
                   </div>
                   <div class="col-sm-6 offset-sm-3 mb-4">
                     <div>Want to be visited?</div>
 
-                    <Dropdown :options="[...wantVisitArr]" :filter="false" v-model="valueVisit" @change="dropDownVisit" placeholder="Select" class="w-100" :showClear="false">
+                    <Dropdown
+                      :options="[...wantVisitArr]"
+                      :filter="false"
+                      v-model="valueVisit"
+                      @change="dropDownVisit"
+                      placeholder="Select"
+                      class="w-100"
+                      :showClear="false"
+                    >
                     </Dropdown>
                   </div>
                 </div>
@@ -1116,9 +1291,7 @@
         </div>
       </div>
     </div>
-    
-    
-    
+
     <!-- New Convert Modal -->
     <div
       class="modal fade"
@@ -1147,7 +1320,9 @@
             <div class="container">
               <form>
                 <div class="form-group row">
-                  <label for="Firstname" class="col-sm-3 text-sm-right col-form-label"
+                  <label
+                    for="Firstname"
+                    class="col-sm-3 text-sm-right col-form-label"
                     >Firstname<sup class="text-danger">*</sup></label
                   >
                   <div class="col-sm-6">
@@ -1161,7 +1336,9 @@
                   </div>
                 </div>
                 <div class="form-group row">
-                  <label for="LastName" class="col-sm-3 text-sm-right col-form-label"
+                  <label
+                    for="LastName"
+                    class="col-sm-3 text-sm-right col-form-label"
                     >Last Name</label
                   >
                   <div class="col-sm-6">
@@ -1175,7 +1352,9 @@
                   </div>
                 </div>
                 <div class="form-group row">
-                  <label for="phone number" class="col-sm-3 text-sm-right col-form-label"
+                  <label
+                    for="phone number"
+                    class="col-sm-3 text-sm-right col-form-label"
                     >Phone number</label
                   >
                   <div class="col-sm-6">
@@ -1184,7 +1363,7 @@
                       class="form-control input-first"
                       id="phone number"
                       type="number"
-                      :class="{ 'is-invalid' : !isPhoneValidNewConvert }"
+                      :class="{ 'is-invalid': !isPhoneValidNewConvert }"
                       ref="validatePhoneNewConvert"
                       @blur="checkForDuplicatePhoneNewConvert"
                     />
@@ -1194,7 +1373,9 @@
                   </div>
                 </div>
                 <div class="form-group row">
-                  <label for="email" class="col-sm-3 text-sm-right col-form-label"
+                  <label
+                    for="email"
+                    class="col-sm-3 text-sm-right col-form-label"
                     >Email</label
                   >
                   <div class="col-sm-6">
@@ -1203,7 +1384,7 @@
                       id="email"
                       type="email"
                       class="form-control input-first"
-                      :class="{ 'is-invalid' : !isEmailValidNewConvert}"
+                      :class="{ 'is-invalid': !isEmailValidNewConvert }"
                       ref="validateEmailNewConvert"
                       @blur="checkForDuplicateEmailNewConvert"
                     />
@@ -1213,7 +1394,9 @@
                   </div>
                 </div>
                 <div class="form-group row">
-                  <label for="address" class="col-sm-3 text-sm-right col-form-label"
+                  <label
+                    for="address"
+                    class="col-sm-3 text-sm-right col-form-label"
                     >Address</label
                   >
                   <div class="col-sm-6">
@@ -1227,42 +1410,85 @@
                 </div>
 
                 <div class="form-group row">
-                  <label for="address" class="col-sm-3 text-sm-right col-form-label"
+                  <label
+                    for="address"
+                    class="col-sm-3 text-sm-right col-form-label"
                     >Contact owner</label
                   >
                   <div class="col-sm-6">
                     <div class="p-0 border-0">
-                    <SearchMembers @memberdetail="setContactNewConvert"/>
-                  </div>
+                      <SearchMembers @memberdetail="setContactNewConvert" />
+                    </div>
                   </div>
                 </div>
 
                 <div class="form-group row">
-                  <label for="birthday" class="col-sm-3 text-sm-right col-form-label"
+                  <label
+                    for="birthday"
+                    class="col-sm-3 text-sm-right col-form-label"
                     >Birthday</label
                   >
                   <div class="col-sm-2 mb-4">
-                    <Dropdown :options="[...day]" :filter="false" v-model="newConvertsObj.birthday" placeholder="Day" class="w-100" :showClear="false">
+                    <Dropdown
+                      :options="[...day]"
+                      :filter="false"
+                      v-model="newConvertsObj.birthday"
+                      placeholder="Day"
+                      class="w-100"
+                      :showClear="false"
+                    >
                     </Dropdown>
                   </div>
 
                   <div class="col-sm-2 mb-4 px-sm-0">
-                    <Dropdown :options="[...months]" :filter="false" v-model="valueMonth" @change="dropDownMonthNewConvert" placeholder="Month" class="w-100" :showClear="false">
+                    <Dropdown
+                      :options="[...months]"
+                      :filter="false"
+                      v-model="valueMonth"
+                      @change="dropDownMonthNewConvert"
+                      placeholder="Month"
+                      class="w-100"
+                      :showClear="false"
+                    >
                     </Dropdown>
                   </div>
 
                   <div class="col-sm-2 mb-4">
-                    <Dropdown :options="[...birthYearsArr]" :filter="false" v-model="firstTimersObj.birthYear" placeholder="Year" class="w-100" :showClear="false">
+                    <Dropdown
+                      :options="[...birthYearsArr]"
+                      :filter="false"
+                      v-model="firstTimersObj.birthYear"
+                      placeholder="Year"
+                      class="w-100"
+                      :showClear="false"
+                    >
                     </Dropdown>
                   </div>
 
                   <div class="col-sm-3 mb-4 offset-sm-3 pr-sm-0">
-                    <Dropdown :options="[...maritalStatusArr]" optionLabel="value" :filter="false" v-model="firstTimersObj.valueMarital" @change="dropDownMaritalNewConvert" placeholder="Marital Status" class="w-100" :showClear="false">
+                    <Dropdown
+                      :options="[...maritalStatusArr]"
+                      optionLabel="value"
+                      :filter="false"
+                      v-model="firstTimersObj.valueMarital"
+                      @change="dropDownMaritalNewConvert"
+                      placeholder="Marital Status"
+                      class="w-100"
+                      :showClear="false"
+                    >
                     </Dropdown>
                   </div>
 
                   <div class="col-sm-3 mb-4">
-                    <Dropdown :options="[...genders]" :filter="false" v-model="valueGender" @change="dropDownGenderNewConvert" placeholder="Gender" class="w-100" :showClear="false">
+                    <Dropdown
+                      :options="[...genders]"
+                      :filter="false"
+                      v-model="valueGender"
+                      @change="dropDownGenderNewConvert"
+                      placeholder="Gender"
+                      class="w-100"
+                      :showClear="false"
+                    >
                     </Dropdown>
                   </div>
                 </div>
@@ -1288,28 +1514,59 @@
                 >
                   <div class="col-sm-6 offset-sm-3 mb-4">
                     <div>How did you hear about us</div>
-                    <Dropdown :options="[...howYouHeard]" :filter="false" v-model="valueHeard" @change="dropDownHeardNewConvert" placeholder="Select" class="w-100" :showClear="false">
+                    <Dropdown
+                      :options="[...howYouHeard]"
+                      :filter="false"
+                      v-model="valueHeard"
+                      @change="dropDownHeardNewConvert"
+                      placeholder="Select"
+                      class="w-100"
+                      :showClear="false"
+                    >
                     </Dropdown>
                   </div>
 
                   <div class="col-sm-6 offset-sm-3 mb-4">
                     <div>Preferred means of communication</div>
-                    <Dropdown :options="[...comMeansArr]" :filter="false" v-model="valueComm" @change="dropDownCommNewConvert" placeholder="Select" class="w-100" :showClear="false">
+                    <Dropdown
+                      :options="[...comMeansArr]"
+                      :filter="false"
+                      v-model="valueComm"
+                      @change="dropDownCommNewConvert"
+                      placeholder="Select"
+                      class="w-100"
+                      :showClear="false"
+                    >
                     </Dropdown>
                   </div>
 
                   <div class="col-sm-6 offset-sm-3 mb-4">
                     <div>Interested in joining us</div>
-                    <Dropdown :options="[...joinInterest]" :filter="false" v-model="valueInterest" @change="dropDownInterestNewConvert" placeholder="Select" class="w-100" :showClear="false">
+                    <Dropdown
+                      :options="[...joinInterest]"
+                      :filter="false"
+                      v-model="valueInterest"
+                      @change="dropDownInterestNewConvert"
+                      placeholder="Select"
+                      class="w-100"
+                      :showClear="false"
+                    >
                     </Dropdown>
                   </div>
 
                   <div class="col-sm-6 offset-sm-3 mb-4">
                     <div>Want to be visited?</div>
-                    <Dropdown :options="[...wantVisitArr]" :filter="false" v-model="valueVisit" @change="dropDownVisitNewConvert" placeholder="Select" class="w-100" :showClear="false">
+                    <Dropdown
+                      :options="[...wantVisitArr]"
+                      :filter="false"
+                      v-model="valueVisit"
+                      @change="dropDownVisitNewConvert"
+                      placeholder="Select"
+                      class="w-100"
+                      :showClear="false"
+                    >
                     </Dropdown>
                   </div>
-
                 </div>
                 <span
                   class="d-flex justify-content-between align-items-center"
@@ -1370,182 +1627,255 @@
       </div>
     </div>
     <!-- Add donor Modal -->
-        <div
-          class="modal fade"
-          id="exampleModal"
-          tabindex="-1"
-          role="dialog"
-          aria-labelledby="exampleModalLabel"
-          aria-hidden="true"
-        >
-          <div class="modal-dialog" role="document">
-            <div class="modal-content">
-              <div class="modal-header">
-                <h5 class="modal-title font-weight-bold" id="exampleModalLabel">
-                  Add Donor
-                </h5>
-                <button
-                  type="button"
-                  class="close"
-                  data-dismiss="modal"
-                  aria-label="Close"
-                >
-                  <span aria-hidden="true">&times;</span>
-                </button>
+    <div
+      class="modal fade"
+      id="exampleModal"
+      tabindex="-1"
+      role="dialog"
+      aria-labelledby="exampleModalLabel"
+      aria-hidden="true"
+    >
+      <div class="modal-dialog" role="document">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h5 class="modal-title font-weight-bold" id="exampleModalLabel">
+              Add Donor
+            </h5>
+            <button
+              type="button"
+              class="close"
+              data-dismiss="modal"
+              aria-label="Close"
+            >
+              <span aria-hidden="true">&times;</span>
+            </button>
+          </div>
+          <div class="modal-body">
+            <div class="row my-4">
+              <div class="col-md-4 text-md-right">
+                <label for="" class="font-weight-600">Search Name</label>
               </div>
-              <div class="modal-body">
-                <div class="row my-4">
-                  <div class="col-md-4 text-md-right">
-                    <label for="" class="font-weight-600">Search Name</label>
+              <div class="col-md-7">
+                <div class="dropdown">
+                  <div
+                    class="input-group"
+                    id="dropdownMenuButton"
+                    data-toggle="dropdown"
+                  >
+                    <input
+                      type="text"
+                      class="form-control"
+                      v-model="userSearchString"
+                      @input="searchForUsers"
+                      autocomplete="off"
+                    />
+                    <div class="input-group-append">
+                      <span class="input-group-text"
+                        ><i class="pi pi-chevron-down"></i
+                      ></span>
+                    </div>
                   </div>
-                  <div class="col-md-7">
-                    <div class="dropdown">
-                      <div class="input-group" id="dropdownMenuButton" data-toggle="dropdown">
+                  <div
+                    class="dropdown-menu w-100"
+                    aria-labelledby="dropdownMenuButton"
+                  >
+                    <div class="row w-100 mx-auto" v-if="false">
+                      <div class="col-md-12">
                         <input
                           type="text"
                           class="form-control"
-                          v-model="userSearchString"
-                          @input="searchForUsers"
-                          autocomplete="off"
+                          placeholder="Find event"
                         />
-                        <div class="input-group-append">
-                          <span class="input-group-text"><i class="pi pi-chevron-down"></i></span>
-                        </div>
-                      </div>
-                      <div
-                        class="dropdown-menu w-100"
-                        aria-labelledby="dropdownMenuButton"
-                      >
-                        <div class="row w-100 mx-auto" v-if="false">
-                          <div class="col-md-12">
-                            <input
-                              type="text"
-                              class="form-control"
-                              placeholder="Find event"
-                            />
-                          </div>
-                        </div>
-
-                        <a
-                          class="dropdown-item font-weight-700 small-text"
-                          href="#"
-                          v-for="(member, index) in searchedMembers"
-                          :key="index"
-                           @click="addExistingMember(member)"
-                          >{{ member.name }}</a
-                        >
-                        <a
-                          class="dropdown-item font-weight-700 small-text"
-                          href="#"
-                          v-if="
-                            searchingForMembers && searchedMembers.length === 0
-                          "
-                          ><i class="pi pi-spin pi-spinner"></i
-                        ></a>
-                        <p
-                          class="modal-promt pl-1 bg-secondary m-0"
-                          v-if="
-                            userSearchString.length < 3 &&
-                            searchedMembers.length === 0
-                          "
-                        >
-                          Enter 3 or more characters
-                        </p>
-                        <a
-                          class="font-weight-bold small-text d-flex justify-content-center py-2 text-decoration-none primary-text c-pointer"
-                          style="border-top: 1px solid #002044; color: #136acd"
-                          @click="showAddMemberForm"
-                          data-dismiss="modal"
-                        >
-                          <i
-                            class="pi pi-plus-circle mr-2 primary-text d-flex align-items-center"
-                            style="color: #136acd"
-                          ></i>
-                            Add new donor
-                        </a>
                       </div>
                     </div>
 
-                    <div class="row mt-4 d-flex justify-content-between">
-                      <div class="col-6">
-                        <button class="default-btn" data-dismiss="modal">Cancel</button>
-                      </div>
-                      <div class="col-6">
-                        <button
-                          class="default-btn primary-bg border-0 text-white"
-                          data-dismiss="modal"
-                          @click="addDonor"
-                        >
-                          Save
-                        </button>
-                      </div>
-                    </div>
+                    <a
+                      class="dropdown-item font-weight-700 small-text"
+                      href="#"
+                      v-for="(member, index) in searchedMembers"
+                      :key="index"
+                      @click="addExistingMember(member)"
+                      >{{ member.name }}</a
+                    >
+                    <a
+                      class="dropdown-item font-weight-700 small-text"
+                      href="#"
+                      v-if="searchingForMembers && searchedMembers.length === 0"
+                      ><i class="pi pi-spin pi-spinner"></i
+                    ></a>
+                    <p
+                      class="modal-promt pl-1 bg-secondary m-0"
+                      v-if="
+                        userSearchString.length < 3 &&
+                        searchedMembers.length === 0
+                      "
+                    >
+                      Enter 3 or more characters
+                    </p>
+                    <a
+                      class="
+                        font-weight-bold
+                        small-text
+                        d-flex
+                        justify-content-center
+                        py-2
+                        text-decoration-none
+                        primary-text
+                        c-pointer
+                      "
+                      style="border-top: 1px solid #002044; color: #136acd"
+                      @click="showAddMemberForm"
+                      data-dismiss="modal"
+                    >
+                      <i
+                        class="
+                          pi pi-plus-circle
+                          mr-2
+                          primary-text
+                          d-flex
+                          align-items-center
+                        "
+                        style="color: #136acd"
+                      ></i>
+                      Add new donor
+                    </a>
+                  </div>
+                </div>
+
+                <div class="row mt-4 d-flex justify-content-between">
+                  <div class="col-6">
+                    <button class="default-btn" data-dismiss="modal">
+                      Cancel
+                    </button>
+                  </div>
+                  <div class="col-6">
+                    <button
+                      class="default-btn primary-bg border-0 text-white"
+                      data-dismiss="modal"
+                      @click="addDonor"
+                    >
+                      Save
+                    </button>
                   </div>
                 </div>
               </div>
             </div>
           </div>
         </div>
+      </div>
+    </div>
 
-        <!-- Add contribution Item Modal -->
-        <div class="modal fade" id="exampleModalCenter" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
-          <div class="modal-dialog modal-lg modal-dialog-centered" role="document">
-            <div class="modal-content">
-              <div class="modal-header" style="border: none">
-                <h5 class="modal-title" id="exampleModalLongTitle">Add Offering</h5>
-                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                  <span aria-hidden="true">&times;</span>
-                </button>
-              </div>
-              <div class="modal-body">
-                <div class="container">
-                  <div class="row">
-                    <div class="col-sm-4 text-right pr-0 align-self-center">
-                      <label>Name</label>
-                    </div>
-                  <div class="col-lg-5 col-sm-12 my-auto">
-                      <input type="text" class="form-control textbox-height w-100"  placeholder="" v-model="contributionItemName" required /> 
-                  </div>
-                  <div class="col-sm-4 mt-3 text-right pr-0 align-self-center">
-                      <label>Income Account</label>
-                  </div>
-                  <div class="col-lg-5 col-sm-12 mt-3">
-                      <Dropdown v-model="selectedIncomeAccount" class="w-100 " :options="incomeAccount" optionLabel="text" :filter="true" placeholder="Select" :showClear="false">
-                      </Dropdown>
-                  </div>
-                  <div class="col-sm-4 mt-3 text-right pr-0">
-                      <label>Cash Account</label>
-                    </div>
-                  <div class="col-lg-5 col-sm-12 mt-3">
-                    <Dropdown v-model="selectedCashAccount" :options="cashBankAccount" optionLabel="text" :filter="false" placeholder="Select" class="w-100 p-0" :showClear="false">
-                    </Dropdown>
-                  </div>
-                  <div class="col-sm-12 d-flex" @click="toggleRem">
-                      <i class="check-it mr-2">
-                      <span class="child" v-if="applyRem"></span>
-                    </i>
-                    <h6>Apply Remitance</h6>
-                  </div>
-                  <div class="col-sm-12 mt-3" v-if="applyRem">
-                    <hr class="hr"/>
-                  </div>
+    <!-- Add contribution Item Modal -->
+    <div
+      class="modal fade"
+      id="exampleModalCenter"
+      tabindex="-1"
+      role="dialog"
+      aria-labelledby="exampleModalCenterTitle"
+      aria-hidden="true"
+    >
+      <div class="modal-dialog modal-lg modal-dialog-centered" role="document">
+        <div class="modal-content">
+          <div class="modal-header" style="border: none">
+            <h5 class="modal-title" id="exampleModalLongTitle">Add Offering</h5>
+            <button
+              type="button"
+              class="close"
+              data-dismiss="modal"
+              aria-label="Close"
+            >
+              <span aria-hidden="true">&times;</span>
+            </button>
+          </div>
+          <div class="modal-body">
+            <div class="container">
+              <div class="row">
+                <div class="col-sm-4 text-right pr-0 align-self-center">
+                  <label>Name</label>
                 </div>
+                <div class="col-lg-5 col-sm-12 my-auto">
+                  <input
+                    type="text"
+                    class="form-control textbox-height w-100"
+                    placeholder=""
+                    v-model="contributionItemName"
+                    required
+                  />
+                </div>
+                <div class="col-sm-4 mt-3 text-right pr-0 align-self-center">
+                  <label>Income Account</label>
+                </div>
+                <div class="col-lg-5 col-sm-12 mt-3">
+                  <Dropdown
+                    v-model="selectedIncomeAccount"
+                    class="w-100"
+                    :options="incomeAccount"
+                    optionLabel="text"
+                    :filter="true"
+                    placeholder="Select"
+                    :showClear="false"
+                  >
+                  </Dropdown>
+                </div>
+                <div class="col-sm-4 mt-3 text-right pr-0">
+                  <label>Cash Account</label>
+                </div>
+                <div class="col-lg-5 col-sm-12 mt-3">
+                  <Dropdown
+                    v-model="selectedCashAccount"
+                    :options="cashBankAccount"
+                    optionLabel="text"
+                    :filter="false"
+                    placeholder="Select"
+                    class="w-100 p-0"
+                    :showClear="false"
+                  >
+                  </Dropdown>
+                </div>
+                <div class="col-sm-12 d-flex" @click="toggleRem">
+                  <i class="check-it mr-2">
+                    <span class="child" v-if="applyRem"></span>
+                  </i>
+                  <h6>Apply Remitance</h6>
+                </div>
+                <div class="col-sm-12 mt-3" v-if="applyRem">
+                  <hr class="hr" />
+                </div>
+              </div>
 
-                <div v-if="applyRem">
-                  <div class="row" v-for="(item, index) in remitance" :key="index">
+              <div v-if="applyRem">
+                <div
+                  class="row"
+                  v-for="(item, index) in remitance"
+                  :key="index"
+                >
                   <div class="col-sm-4 mt-5 text-right pr-0 align-self-center">
-                      <label>Income Account</label>
+                    <label>Income Account</label>
                   </div>
                   <div class="col-lg-5 col-sm-12 mt-5">
-                      <Dropdown v-model="item.account" class="w-100 " :options="incomeAccount" optionLabel="text" :filter="true" placeholder="Select" :showClear="false">
-                      </Dropdown>
+                    <Dropdown
+                      v-model="item.account"
+                      class="w-100"
+                      :options="incomeAccount"
+                      optionLabel="text"
+                      :filter="true"
+                      placeholder="Select"
+                      :showClear="false"
+                    >
+                    </Dropdown>
                   </div>
 
                   <div class="col-sm-4 text-right align-self-center mt-3">
-                      <label>Percentage %</label>
-                    </div>
+                    <label>Percentage %</label>
+                  </div>
                   <div class="col-lg-5 col-sm-12 mt-3">
-                      <input type="text" class="form-control textbox-height w-100"  placeholder="" v-model="item.percentage" required /> 
+                    <input
+                      type="text"
+                      class="form-control textbox-height w-100"
+                      placeholder=""
+                      v-model="item.percentage"
+                      required
+                    />
                   </div>
 
                   <div class="col-sm-2 col-12 adjust-down">
@@ -1561,40 +1891,66 @@
                     <i class="pi pi-trash"></i>
                   </div>
                 </div>
-                </div>
-              </div>
-            </div>
-              <div class="modal-footer d-flex justify-content-center mt-4  ml-5" style="border: none">
-                <button type="button" class="btn secondary-btn px-5" data-dismiss="modal">Close</button>
-                <!-- <button type="button" class="btn btn-primary">Save changes</button> -->
-               
-              <button class="add-person-btn button default-btn border-0" @click="createNewCon">
-                Save
-              </button>
-    
               </div>
             </div>
           </div>
-        </div>
-        <Dialog v-model:visible="displayResponsive" :breakpoints="{'960px': '75vw', '640px': '100vw'}" :style="{width: '80vw'}">
-            <p>You have no income account to create a offering item, go to Chart of Account and click 'Update Account' to update your accounts.</p>
-            <template #footer>
-                <!-- <Button label="No" icon="pi pi-times" @click="closeResponsive" class="p-button-text"/> -->
-                <Button label="Go to Chart Of Accounts" icon="pi pi-check" @click="closeResponsive" autofocus />
-            </template>
-        </Dialog>
+          <div
+            class="modal-footer d-flex justify-content-center mt-4 ml-5"
+            style="border: none"
+          >
+            <button
+              type="button"
+              class="btn secondary-btn px-5"
+              data-dismiss="modal"
+            >
+              Close
+            </button>
+            <!-- <button type="button" class="btn btn-primary">Save changes</button> -->
 
-        <Dialog
-        header="Create New Member"
-        v-model:visible="display"
-        :style="{ width: '70vw', maxWidth: '600px' }"
-        :modal="true"
-        position="top"
-        >
-        <div class="row">
-            <div class="col-md-12">
-            <NewDonor @cancel="() => display = false" @person-id="getPersonId($event)"/>
-            </div>
+            <button
+              class="add-person-btn button default-btn border-0"
+              @click="createNewCon"
+            >
+              Save
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+    <Dialog
+      v-model:visible="displayResponsive"
+      :breakpoints="{ '960px': '75vw', '640px': '100vw' }"
+      :style="{ width: '80vw' }"
+    >
+      <p>
+        You have no income account to create a offering item, go to Chart of
+        Account and click 'Update Account' to update your accounts.
+      </p>
+      <template #footer>
+        <!-- <Button label="No" icon="pi pi-times" @click="closeResponsive" class="p-button-text"/> -->
+        <Button
+          label="Go to Chart Of Accounts"
+          icon="pi pi-check"
+          @click="closeResponsive"
+          autofocus
+        />
+      </template>
+    </Dialog>
+
+    <Dialog
+      header="Create New Member"
+      v-model:visible="display"
+      :style="{ width: '70vw', maxWidth: '600px' }"
+      :modal="true"
+      position="top"
+    >
+      <div class="row">
+        <div class="col-md-12">
+          <NewDonor
+            @cancel="() => (display = false)"
+            @person-id="getPersonId($event)"
+          />
+        </div>
       </div>
     </Dialog>
   </div>
@@ -1603,19 +1959,23 @@
 
 <script>
 import axios from "@/gateway/backendapi";
-import store from "@/store/store.js"
-import Toast from 'primevue/usetoast';
+import store from "@/store/store.js";
+import Toast from "primevue/usetoast";
 import membershipService from "../../services/membership/membershipservice";
-import CurrencyConverter from "./CurrencyConverter"
-import Dropdown from 'primevue/dropdown';
-import CurrencyConverterService from '../../services/currency-converter/currencyConverter'
+import CurrencyConverter from "./CurrencyConverter";
+import Dropdown from "primevue/dropdown";
+import CurrencyConverterService from "../../services/currency-converter/currencyConverter";
 import finish from "../../services/progressbar/progress";
-import SearchMembers from "../../components/membership/MembersSearch.vue"
-import NewDonor from '../../components/membership/NewDonor.vue';
+import SearchMembers from "../../components/membership/MembersSearch.vue";
+import NewDonor from "../../components/membership/NewDonor.vue";
 
 export default {
   components: {
-    CurrencyConverter, Dropdown, Toast, SearchMembers, NewDonor
+    CurrencyConverter,
+    Dropdown,
+    Toast,
+    SearchMembers,
+    NewDonor,
   },
   data() {
     return {
@@ -1653,8 +2013,24 @@ export default {
       newEvents: [],
       attendanceText: "",
       offeringText: "",
-      day: [ 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30, 31 ],
-      months: [ "January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December" ],
+      day: [
+        1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20,
+        21, 22, 23, 24, 25, 26, 27, 28, 29, 30, 31,
+      ],
+      months: [
+        "January",
+        "February",
+        "March",
+        "April",
+        "May",
+        "June",
+        "July",
+        "August",
+        "September",
+        "October",
+        "November",
+        "December",
+      ],
       valueMonth: "",
       valueMarital: "",
       valueGender: "",
@@ -1731,23 +2107,22 @@ export default {
       convertedResult: 0,
       displayResponsive: false,
       display: false,
-      note: ""
+      note: "",
     };
   },
 
   methods: {
-    currentDate(){
-      this.currDate= this.eventDate
-      console.log(this.currDate)
+    currentDate() {
+      this.currDate = this.eventDate;
+      console.log(this.currDate);
     },
-   
+
     hideModals(e) {
       if (!e.target.classList.contains("ofering")) {
         this.$refs.offeringDrop.classList.remove("offering-drop");
         this.$refs.attendanceDrop.classList.remove("offering-drop");
         this.showCategory = false;
       }
-      
     },
     addAttendance() {
       const showAttendance = document.querySelector("#showAttendance");
@@ -1763,16 +2138,30 @@ export default {
         this.offeringItem.push({
           name: offObj.name,
           financialContributionID: offObj.id,
-          paymentChannel: offObj.paymentChannel == undefined || offObj.paymentChannel == "" || offObj.paymentChannel == null ? "Cash" : offObj.paymentChannel,
-          currencyID: offObj.currencyID == undefined || offObj.currencyID == "" || offObj.currencyID == null ? this.tenantCurrency.currencyId : offObj.currencyID,
+          paymentChannel:
+            offObj.paymentChannel == undefined ||
+            offObj.paymentChannel == "" ||
+            offObj.paymentChannel == null
+              ? "Cash"
+              : offObj.paymentChannel,
+          currencyID:
+            offObj.currencyID == undefined ||
+            offObj.currencyID == "" ||
+            offObj.currencyID == null
+              ? this.tenantCurrency.currencyId
+              : offObj.currencyID,
           donor: "",
-          fromCurrencyRate: `usd${this.tenantCurrency.currency ? this.tenantCurrency.currency.toLowerCase() : ""}`
+          fromCurrencyRate: `usd${
+            this.tenantCurrency.currency
+              ? this.tenantCurrency.currency.toLowerCase()
+              : ""
+          }`,
         });
-        console.log(offObj)
+        console.log(offObj);
       } else {
         this.offeringItem.push({
           currency: "NGN",
-          paymentChannel: "Cash"
+          paymentChannel: "Cash",
         });
         this.$nextTick(() => {
           this.$refs.offeringInput.focus();
@@ -1840,15 +2229,15 @@ export default {
       });
       this.firstTimersObj = {};
       console.log(this.firstTimers);
-        this.$refs.closeFirstTimers.setAttribute("data-dismiss", "modal");
+      this.$refs.closeFirstTimers.setAttribute("data-dismiss", "modal");
     },
-    saveNewConvert () {
+    saveNewConvert() {
       this.newConverts.push({
-        ...this.newConvertsObj
-      })
-      console.log(this.newConverts)
-      this.newConvertsObj = {}
-      this.$refs.closeNewConverts.setAttribute("data-dismiss", "modal")
+        ...this.newConvertsObj,
+      });
+      console.log(this.newConverts);
+      this.newConvertsObj = {};
+      this.$refs.closeNewConverts.setAttribute("data-dismiss", "modal");
     },
     changeValue(e) {
       this.selectedValue = e.target.value;
@@ -1864,10 +2253,10 @@ export default {
             return { id: i.id, name: i.name };
           });
         })
-        .then(err => {
+        .then((err) => {
           NProgress.done();
           console.log(err);
-        })
+        });
       this.offeringCreate = "";
       document
         .querySelector("#closeOffering")
@@ -1895,151 +2284,155 @@ export default {
     createNewEvent() {
       if (this.eventCreate) {
         this.selectedEventCategoryName = this.eventCreate;
-          axios.post(`/api/EventCategory?name=${this.eventCreate}`)
-              .then(res => {
-                console.log(res)
-                if (!res.data) {
-                this.$toast.add({
-                  severity:'info', 
-                  summary: 'Already exist', 
-                  detail: 'Event name already exist, please create the event category with a new name.', 
-                  life: 4000
-                });
-              } else {
-                let data = res.data.find(i => i.name === this.eventCreate)
-                this.newEvents.push({
-                  name: this.eventCreate,
-                  id: data.id,
-                });
-                console.log(data)
-                this.selectedEventCategoryId = data.id
-                this.eventCreate = "";
-                this.$toast.add({
-                  severity:'success', 
-                  summary: 'Confirmed', 
-                  detail: 'Event category saved successfully', 
-                  life: 4000
-                });
-              }
-              })
+        axios
+          .post(`/api/EventCategory?name=${this.eventCreate}`)
+          .then((res) => {
+            console.log(res);
+            if (!res.data) {
+              this.$toast.add({
+                severity: "info",
+                summary: "Already exist",
+                detail:
+                  "Event name already exist, please create the event category with a new name.",
+                life: 4000,
+              });
+            } else {
+              let data = res.data.find((i) => i.name === this.eventCreate);
+              this.newEvents.push({
+                name: this.eventCreate,
+                id: data.id,
+              });
+              console.log(data);
+              this.selectedEventCategoryId = data.id;
+              this.eventCreate = "";
+              this.$toast.add({
+                severity: "success",
+                summary: "Confirmed",
+                detail: "Event category saved successfully",
+                life: 4000,
+              });
+            }
+          });
 
-        
         this.showCategory = false;
         document
           .querySelector("#closeEvent")
           .setAttribute("data-dismiss", "modal");
       } else if (this.eventText) {
-        
-
         this.selectedEventCategoryName = this.eventText;
 
-        axios.post(`/api/EventCategory?name=${this.eventText}`)
-            .then(res => {
-              console.log(res)
-              if (!res.data) {
-                this.$toast.add({
-                  severity:'info', 
-                  summary: 'Already exist', 
-                  detail: 'Event name already exist, please create the event category with a new name.', 
-                  life: 4000
-                });
-              } else {
-                let data = res.data.find(i => i.name === this.eventText)
-                this.newEvents.push({
-                  name: this.eventText,
-                  id: data.id,
-                });
-                console.log(data)
-                this.selectedEventCategoryId = data.id
-                this.eventText = "";
-                this.$toast.add({
-                  severity:'success', 
-                  summary: 'Confirmed', 
-                  detail: 'Event category saved successfully', 
-                  life: 4000
-                });
-              }    
-            })
-      this.showCategory = false;
-      }
-      console.log(this.eventText, this.eventCreate)
-    },
-    async addCurrency (e, index, item) {
-
-      console.log(e.target.innerHTML, index)
-      this.offeringItem[index].currencyID = item.id
-      this.offeringItem[index].showCurrency = false
-      this.offeringItem[index].currencyName = item.name
-      this.selectedCurrencyName = e.target.innerHTML.split(" ")[0]
-
-      this.offeringItem[index].fromCurrencyRate = `usd${item.name.toLowerCase()}`
-
-      let toDestinationCurrencyRate = `usd${this.tenantCurrency.currency.toLowerCase()}`
-      let fromCurrencyRate = this.offeringItem[index].fromCurrencyRate
-
-      let amount = this.offeringItem[index].amount.toString()
-      const removeCharacters = amount.replace(/[^0-9.]/g, "");
-      const toNumber = parseFloat(removeCharacters)
-
-      let amountToConvert = toNumber ? toNumber : 0
-
-      try {
-        let result = await CurrencyConverterService.currencyConverter(amountToConvert, fromCurrencyRate, toDestinationCurrencyRate)
-        console.log(result)
-        this.convertedAmount2[index] = result
-      }
-      catch (err) {
-        console.log(err)
-      }
-
-    },
-    
-    setCurrencyRate (payload) {
-      this.currencyRate = payload
-    },
-
-     delAttendance(id, index) {
-      if (id) {
-          axios
-        .delete(`/deleteAttendance?ID=${id}`)
-        .then((res) => {
-          console.log(res, 'delete response from back');
-          if (res.data) {
+        axios.post(`/api/EventCategory?name=${this.eventText}`).then((res) => {
+          console.log(res);
+          if (!res.data) {
+            this.$toast.add({
+              severity: "info",
+              summary: "Already exist",
+              detail:
+                "Event name already exist, please create the event category with a new name.",
+              life: 4000,
+            });
+          } else {
+            let data = res.data.find((i) => i.name === this.eventText);
+            this.newEvents.push({
+              name: this.eventText,
+              id: data.id,
+            });
+            console.log(data);
+            this.selectedEventCategoryId = data.id;
+            this.eventText = "";
             this.$toast.add({
               severity: "success",
               summary: "Confirmed",
-              detail: `Attendance Successfully Deleted`,
-              life: 3000,
-            });
-            this.attendanceItem = this.attendanceItem.filter(i => id !== i.attendanceId)
-          } else {
-            toast.add({
-              severity: "warn",
-              summary: "Delete Failed",
-              detail: `Please Try Again`,
-              life: 3000,
-            });
-          }
-        })
-        .catch((err) => {
-          finish();
-          if (err.response) {
-            console.log(err.response);
-            this.$toast.add({
-              severity: "error",
-              summary: "Unable to delete",
-              detail: `${err.response}`,
-              life: 3000,
+              detail: "Event category saved successfully",
+              life: 4000,
             });
           }
         });
-      } else {
-          this.attendanceItem.splice(index, 1);
+        this.showCategory = false;
       }
-        // this.convertedAmount2.splice(index, 1)
+      console.log(this.eventText, this.eventCreate);
     },
-      deleteAttendance(id,index) {
-       this.$confirm.require({
+    async addCurrency(e, index, item) {
+      console.log(e.target.innerHTML, index);
+      this.offeringItem[index].currencyID = item.id;
+      this.offeringItem[index].showCurrency = false;
+      this.offeringItem[index].currencyName = item.name;
+      this.selectedCurrencyName = e.target.innerHTML.split(" ")[0];
+
+      this.offeringItem[
+        index
+      ].fromCurrencyRate = `usd${item.name.toLowerCase()}`;
+
+      let toDestinationCurrencyRate = `usd${this.tenantCurrency.currency.toLowerCase()}`;
+      let fromCurrencyRate = this.offeringItem[index].fromCurrencyRate;
+
+      let amount = this.offeringItem[index].amount.toString();
+      const removeCharacters = amount.replace(/[^0-9.]/g, "");
+      const toNumber = parseFloat(removeCharacters);
+
+      let amountToConvert = toNumber ? toNumber : 0;
+
+      try {
+        let result = await CurrencyConverterService.currencyConverter(
+          amountToConvert,
+          fromCurrencyRate,
+          toDestinationCurrencyRate
+        );
+        console.log(result);
+        this.convertedAmount2[index] = result;
+      } catch (err) {
+        console.log(err);
+      }
+    },
+
+    setCurrencyRate(payload) {
+      this.currencyRate = payload;
+    },
+
+    delAttendance(id, index) {
+      if (id) {
+        axios
+          .delete(`/deleteAttendance?ID=${id}`)
+          .then((res) => {
+            console.log(res, "delete response from back");
+            if (res.data) {
+              this.$toast.add({
+                severity: "success",
+                summary: "Confirmed",
+                detail: `Attendance Successfully Deleted`,
+                life: 3000,
+              });
+              this.attendanceItem = this.attendanceItem.filter(
+                (i) => id !== i.attendanceId
+              );
+            } else {
+              toast.add({
+                severity: "warn",
+                summary: "Delete Failed",
+                detail: `Please Try Again`,
+                life: 3000,
+              });
+            }
+          })
+          .catch((err) => {
+            finish();
+            if (err.response) {
+              console.log(err.response);
+              this.$toast.add({
+                severity: "error",
+                summary: "Unable to delete",
+                detail: `${err.response}`,
+                life: 3000,
+              });
+            }
+          });
+      } else {
+        this.attendanceItem.splice(index, 1);
+      }
+      // this.convertedAmount2.splice(index, 1)
+    },
+    deleteAttendance(id, index) {
+      this.$confirm.require({
         message: "Are you sure you want to proceed?",
         header: "Confirmation",
         icon: "pi pi-exclamation-triangle",
@@ -2051,7 +2444,7 @@ export default {
         },
         reject: () => {
           //  this.$toast.add({severity:'info', summary:'Confirmed', detail:'Record deleted', life: 3000});
-            this.$toast.add({
+          this.$toast.add({
             severity: "info",
             summary: "Rejected",
             detail: "You have rejected",
@@ -2059,59 +2452,60 @@ export default {
           });
         },
       });
-      
     },
 
     delEventCategory(id, index) {
       if (id) {
-          axios
-        .delete(`/api/EventCategory?ID=${id}`)
-        .then((res) => {
-          console.log(res, 'delete response from back');
-          if (res.data === true) {
-            this.$toast.add({
-              severity: "success",
-              summary: "Confirmed",
-              detail: `Event Category Successfully Deleted`,
-              life: 3000,
-            });
-            this.attendanceItem = this.attendanceItem.filter(i => id !== i.attendanceId)
-          } else if (res.data === false ) {
-            this.$toast.add({
-              severity: "warn",
-              summary: "Delete Failed",
-              detail: `This event category has been used to create event or Attendance report, delete any of the report then proceed by deleting the event category`,
-              life: 3000,
-            });
-          } else {
-            toast.add({
-              severity: "warn",
-              summary: "Delete Failed",
-              detail: `Please Try Again`,
-              life: 3000,
-            });
-          }
-        })
-        .catch((err) => {
-          finish();
-          if (err.response) {
-            console.log(err.response);
-            this.$toast.add({
-              severity: "error",
-              summary: "Unable to delete",
-              detail: `${err.response}`,
-              life: 3000,
-            });
-          }
-        });
+        axios
+          .delete(`/api/EventCategory?ID=${id}`)
+          .then((res) => {
+            console.log(res, "delete response from back");
+            if (res.data === true) {
+              this.$toast.add({
+                severity: "success",
+                summary: "Confirmed",
+                detail: `Event Category Successfully Deleted`,
+                life: 3000,
+              });
+              this.attendanceItem = this.attendanceItem.filter(
+                (i) => id !== i.attendanceId
+              );
+            } else if (res.data === false) {
+              this.$toast.add({
+                severity: "warn",
+                summary: "Delete Failed",
+                detail: `This event category has been used to create event or Attendance report, delete any of the report then proceed by deleting the event category`,
+                life: 3000,
+              });
+            } else {
+              toast.add({
+                severity: "warn",
+                summary: "Delete Failed",
+                detail: `Please Try Again`,
+                life: 3000,
+              });
+            }
+          })
+          .catch((err) => {
+            finish();
+            if (err.response) {
+              console.log(err.response);
+              this.$toast.add({
+                severity: "error",
+                summary: "Unable to delete",
+                detail: `${err.response}`,
+                life: 3000,
+              });
+            }
+          });
       } else {
-          this.attendanceItem.splice(index, 1);
+        this.attendanceItem.splice(index, 1);
       }
-        // this.convertedAmount2.splice(index, 1)
+      // this.convertedAmount2.splice(index, 1)
     },
-    
-    deleteSelectedEventCategory(id,index) {
-       this.$confirm.require({
+
+    deleteSelectedEventCategory(id, index) {
+      this.$confirm.require({
         message: "Are you sure you want to proceed?",
         header: "Confirmation",
         icon: "pi pi-exclamation-triangle",
@@ -2123,7 +2517,7 @@ export default {
         },
         reject: () => {
           //  this.$toast.add({severity:'info', summary:'Confirmed', detail:'Record deleted', life: 3000});
-            this.$toast.add({
+          this.$toast.add({
             severity: "info",
             summary: "Rejected",
             detail: "You have rejected",
@@ -2131,52 +2525,50 @@ export default {
           });
         },
       });
-      
     },
 
     deleteOffering(id, index) {
       if (id) {
-          axios
-        .delete(`/api/Financials/Contributions/Transactions/Delete?ID=${id}`)
-        .then((res) => {
-          console.log(res, 'delete response from back');
-          if (res.data.status) {
-            this.$toast.add({
-              severity: "success",
-              summary: "Confirmed",
-              detail: `Offering Successfully Deleted`,
-              life: 3000,
-            });
-            this.offeringItem = this.offeringItem.filter(i => id !== i.id)
-          } else {
-            toast.add({
-              severity: "warn",
-              summary: "Delete Failed",
-              detail: `Please Try Again`,
-              life: 3000,
-            });
-          }
-        })
-        .catch((err) => {
-          finish();
-          if (err.response) {
-            console.log(err.response);
-            this.$toast.add({
-              severity: "error",
-              summary: "Unable to delete",
-              detail: `${err.response}`,
-              life: 3000,
-            });
-          }
-        });
+        axios
+          .delete(`/api/Financials/Contributions/Transactions/Delete?ID=${id}`)
+          .then((res) => {
+            console.log(res, "delete response from back");
+            if (res.data.status) {
+              this.$toast.add({
+                severity: "success",
+                summary: "Confirmed",
+                detail: `Offering Successfully Deleted`,
+                life: 3000,
+              });
+              this.offeringItem = this.offeringItem.filter((i) => id !== i.id);
+            } else {
+              toast.add({
+                severity: "warn",
+                summary: "Delete Failed",
+                detail: `Please Try Again`,
+                life: 3000,
+              });
+            }
+          })
+          .catch((err) => {
+            finish();
+            if (err.response) {
+              console.log(err.response);
+              this.$toast.add({
+                severity: "error",
+                summary: "Unable to delete",
+                detail: `${err.response}`,
+                life: 3000,
+              });
+            }
+          });
       } else {
-          this.offeringItem.splice(index, 1);
+        this.offeringItem.splice(index, 1);
       }
-
     },
 
-    delOffering(id,index) {
-       this.$confirm.require({
+    delOffering(id, index) {
+      this.$confirm.require({
         message: "Are you sure you want to proceed?",
         header: "Confirmation",
         icon: "pi pi-exclamation-triangle",
@@ -2188,7 +2580,7 @@ export default {
         },
         reject: () => {
           //  this.$toast.add({severity:'info', summary:'Confirmed', detail:'Record deleted', life: 3000});
-            this.$toast.add({
+          this.$toast.add({
             severity: "info",
             summary: "Rejected",
             detail: "You have rejected",
@@ -2196,9 +2588,8 @@ export default {
           });
         },
       });
-      
     },
-    
+
     toggleForm1() {
       this.showForm1 = !this.showForm1;
     },
@@ -2212,69 +2603,40 @@ export default {
       this.showForm3 = !this.showForm3;
     },
     post() {
-      const invalidAttendanceItem = this.attendanceItem.find(i => !i.number);
+      const invalidAttendanceItem = this.attendanceItem.find((i) => !i.number);
       if (invalidAttendanceItem) {
-
         this.$toast.add({
-              severity: "warn",
-              summary: "Input the empty Field",
-              detail: `Enter count for all attendance item`,
-              life: 3000,
-            });
+          severity: "warn",
+          summary: "Input the empty Field",
+          detail: `Enter count for all attendance item`,
+          life: 3000,
+        });
         return false;
       }
-     const invalidOfferingItem = this.offeringItem.find(i => !i.amount)
-     if (invalidOfferingItem){
-             this.$toast.add({
-              severity: "warn",
-              summary: "Enter Amount",
-              detail: `Enter amount for Offering item`,
-              life: 3000,
-            });
+      const invalidOfferingItem = this.offeringItem.find((i) => !i.amount);
+      if (invalidOfferingItem) {
+        this.$toast.add({
+          severity: "warn",
+          summary: "Enter Amount",
+          detail: `Enter amount for Offering item`,
+          life: 3000,
+        });
         return false;
-     }
-      console.log(this.selectedEventCategoryId, 'my particular id');
-      // let event = {
-      //   date: this.eventDate === "" ? "01.01.0001 00:00:00" : this.eventDate,
-      //   topic: this.topic,
-      //   preacher: this.preacher,
-      //   preEvent: {
-      //     name: this.preEventName === "" ? this.selectedEventCategoryName : this.preEventName,
-      //     topic: this.preEventTopic,
-      //     preActivityId:
-      //       this.preActivityId === ""
-      //         ? "00000000-0000-0000-0000-000000000000"
-      //         : this.preActivityId,
-      //     details: this.details,
-      //     eventRules: this.eventRules,
-      //     enableRegistration: this.check,
-      //     isPaidFor: this.selectedValue === "Yes" ? true : false,
-      //     amount: this.preEventAmount,
-      //     venue: this.venue,
-      //     emailRegistration: this.emailRegistration,
-      //     SMSRegistration: this.SMSRegistration,
-      //     banner: this.banner,
-      //     isPublic: this.isPublic,
-      //   },
-      //   attendances: this.attendanceItem,
-      //   offerings: this.offeringItem,
-      //   eventCategoryId:
-      //     !this.selectedEventCategoryId.includes('-')
-      //       ? "00000000-0000-0000-0000-000000000000"
-      //       : this.selectedEventCategoryId,
-      //   activityFirstTimers: this.firstTimers,
-      // };
-
-        this.eventObj = {
+      }
+    
+      this.eventObj = {
         attendances: this.attendanceItem,
-        offerings: this.offeringItem.map(i => {
-           delete i.showCurrency
-           delete i.fromCurrencyRate
-           return i
+        offerings: this.offeringItem.map((i) => {
+          delete i.showCurrency;
+          delete i.fromCurrencyRate;
+          if (i.amount.includes(',')) {
+            i.amount = i.amount.split(',').join('')
+          }
+          return i;
         }),
-        
+
         activityFirstTimers: this.firstTimers,
-        activityNewConverts: this.newConverts
+        activityNewConverts: this.newConverts,
       };
 
       // If preactivity id is empty, dont send preevent as part of the event object, else send it
@@ -2302,7 +2664,7 @@ export default {
           date: this.eventDate === "" ? "01.01.0001 00:00:00" : this.eventDate,
           topic: this.topic,
           preacher: this.preacher,
-          note: this.note
+          note: this.note,
         };
 
         // If you chose an event activity, send the id in the event object, else if a new activity was created send the name
@@ -2311,21 +2673,19 @@ export default {
             "00000000-0000-0000-0000-000000000000" ||
           this.selectedEventCategoryId == this.newEvents.length
         ) {
-          this.eventObj.activity.newEventCategoryName = this.selectedEventCategoryName;
+          this.eventObj.activity.newEventCategoryName =
+            this.selectedEventCategoryName;
         } else {
           this.eventObj.activity.eventCategoryId = this.selectedEventCategoryId;
         }
-
       }
-
-
 
       let updateEvent = {
         activity: {
           date: this.eventDate,
           topic: this.topic,
           preacher: this.preacher,
-          eventCategoryId: this.selectedEventCategoryId
+          eventCategoryId: this.selectedEventCategoryId,
         },
         activityFirstTimers: this.firstTimers,
         activityNewConverts: this.newConverts,
@@ -2335,65 +2695,80 @@ export default {
         //   i.currency = i.currency.split(" ")[0]
         //   return i
         // }),
-        preEvent: this.updatePreEvent
-      }
+        preEvent: this.updatePreEvent,
+      };
 
       let currentEvent = {
         name: this.selectedEventCategoryName,
         preacher: this.preacher,
         topic: this.topic,
-        newConvertsCount: this.newConverts
-      }
-
+        newConvertsCount: this.newConverts,
+      };
 
       console.log(this.eventObj);
       this.loading = true;
       if (this.$route.params.event) {
-        axios.put('/api/events/updateActivity', updateEvent)
-          .then(res => {
-            this.loading = false
-                const activityId = this.$route.params.event
-              localStorage.setItem("eventData", JSON.stringify(updateEvent));
-              localStorage.setItem(
-                "eventDataResponse",
-                JSON.stringify(currentEvent )
-              );
-              this.$router.push({ name: "Report", params: { id: activityId }, query: { edit: true } });
-              console.log(res.data, currentEvent, 'markers')
+        axios
+          .put("/api/events/updateActivity", updateEvent)
+          .then((res) => {
+            this.loading = false;
+            const activityId = this.$route.params.event;
+            localStorage.setItem("eventData", JSON.stringify(updateEvent));
+            localStorage.setItem(
+              "eventDataResponse",
+              JSON.stringify(currentEvent)
+            );
+            this.$router.push({
+              name: "Report",
+              params: { id: activityId },
+              query: { edit: true },
+            });
+            console.log(res.data, currentEvent, "markers");
           })
-          .catch(err => {
-             NProgress.done();
-          this.loading = false;
-          if (err.response) {
-            const { data, status } = err.response;
-            if (status === 400) this.errorMessage = typeof data !== "string" ?  "Failed! ensure you provide activity name and date" : data.length < 100 ? data : "An error occurred, please check the fields and try again";
-          }
-            console.log(err)
-          })  
-      }
-      else {
-      axios
-        .post("api/Events/CreateActivity", this.eventObj)
-        .then((res) => {
-          this.loading = false;
-          console.log(res, "main post");
-          const activityId = res.data.currentEvent.id;
-          localStorage.setItem("eventData", JSON.stringify(this.eventObj));
-          localStorage.setItem(
-            "eventDataResponse",
-            JSON.stringify(res.data.currentEvent)
-          );
-          this.$router.push({ name: "Report", params: { id: activityId } });
-        })
-        .catch((err) => {
-          NProgress.done();
-          this.loading = false;
-          if (err.response) {
-            const { data, status } = err.response;
-            if (status === 400) this.errorMessage = typeof data !== "string" ?  "Failed! ensure you provide activity name and date" : data.length < 100 ? data : "An error occurred, please check the fields and try again";
-          }
-          console.log(err.response);
-        });
+          .catch((err) => {
+            NProgress.done();
+            this.loading = false;
+            if (err.response) {
+              const { data, status } = err.response;
+              if (status === 400)
+                this.errorMessage =
+                  typeof data !== "string"
+                    ? "Failed! ensure you provide activity name and date"
+                    : data.length < 100
+                    ? data
+                    : "An error occurred, please check the fields and try again";
+            }
+            console.log(err);
+          });
+      } else {
+        axios
+          .post("api/Events/CreateActivity", this.eventObj)
+          .then((res) => {
+            this.loading = false;
+            console.log(res, "main post");
+            const activityId = res.data.currentEvent.id;
+            localStorage.setItem("eventData", JSON.stringify(this.eventObj));
+            localStorage.setItem(
+              "eventDataResponse",
+              JSON.stringify(res.data.currentEvent)
+            );
+            this.$router.push({ name: "Report", params: { id: activityId } });
+          })
+          .catch((err) => {
+            NProgress.done();
+            this.loading = false;
+            if (err.response) {
+              const { data, status } = err.response;
+              if (status === 400)
+                this.errorMessage =
+                  typeof data !== "string"
+                    ? "Failed! ensure you provide activity name and date"
+                    : data.length < 100
+                    ? data
+                    : "An error occurred, please check the fields and try again";
+            }
+            console.log(err.response);
+          });
       }
     },
     getEventCategories() {
@@ -2419,46 +2794,45 @@ export default {
       });
     },
 
-    
-
     changeSelectedEventCategory(action) {
       if (action === "edit") {
         // do something
         // this.selectedEventCategoryId = "";
         this.showEditEventCategory = true;
-        this.categoryNametoEdit = this.selectedEventCategoryName
+        this.categoryNametoEdit = this.selectedEventCategoryName;
         console.log(this.selectedEventCategory);
       }
       if (action === "change") {
-        this.selectedEventCategoryId  = false
-        this.showEditEventCategory = false
-        
+        this.selectedEventCategoryId = false;
+        this.showEditEventCategory = false;
       }
     },
-    updateEventCategory () {
+    updateEventCategory() {
       const updatePayload = {
         eventID: this.selectedEventCategoryId,
-        eventName: this.categoryNametoEdit
-      }
-      axios.put(`/api/EventCategory`, updatePayload)
-            .then(res => {
-              console.log(res)
-              this.newEvents[this.selectedCategoryIndex].name = res.data[this.selectedCategoryIndex].name
-              // this.selectedEventCategoryName = res.data[this.selectedCategoryIndex].name
-              // this.selectedEventCategoryId = res.data[this.selectedCategoryIndex].id
-              this.showEditEventCategory = false
-              this.$toast.add({
-                severity: "success",
-                summary: "Confirmed",
-                detail: "Updated successfully",
-                life: 4000,
-              });
-            })
-            .catch(err =>  {
-              console.log(err)
-            })
-      console.log(this.selectedCategoryIndex)
-      console.log(this.selectedEventCategoryName)
+        eventName: this.categoryNametoEdit,
+      };
+      axios
+        .put(`/api/EventCategory`, updatePayload)
+        .then((res) => {
+          console.log(res);
+          this.newEvents[this.selectedCategoryIndex].name =
+            res.data[this.selectedCategoryIndex].name;
+          // this.selectedEventCategoryName = res.data[this.selectedCategoryIndex].name
+          // this.selectedEventCategoryId = res.data[this.selectedCategoryIndex].id
+          this.showEditEventCategory = false;
+          this.$toast.add({
+            severity: "success",
+            summary: "Confirmed",
+            detail: "Updated successfully",
+            life: 4000,
+          });
+        })
+        .catch((err) => {
+          console.log(err);
+        });
+      console.log(this.selectedCategoryIndex);
+      console.log(this.selectedEventCategoryName);
     },
     // categorySelected(data) {
     //   if (data.dataType === 'eventcategory') {
@@ -2467,165 +2841,159 @@ export default {
     //   }
     // },
     dropDownMonth(e) {
-      console.log(e)
+      console.log(e);
       switch (e.value) {
-          case "January":
-            this.firstTimersObj.birthMonth = "1";
-            break;
-          case "February":
-            this.firstTimersObj.birthMonth = "2";
-            break;
-          case "March":
-            this.firstTimersObj.birthMonth = "3";
-            break;
-          case "April":
-            this.firstTimersObj.birthMonth = "4";
-            break;
-          case "May":
-            this.firstTimersObj.birthMonth = "5";
-            break;
-          case "June":
-            this.firstTimersObj.birthMonth = "6";
-            break;
-          case "July":
-            this.firstTimersObj.birthMonth = "7";
-            break;
-          case "August":
-            this.firstTimersObj.birthMonth = "8";
-            break;
-          case "September":
-            this.firstTimersObj.birthMonth = "9";
-            break;
-          case "October":
-            this.firstTimersObj.birthMonth = "10";
-            break;
-          case "November":
-            this.firstTimersObj.birthMonth = "11";
-            break;
-          case "December":
-            this.firstTimersObj.birthMonth = "12";
-            break;
-          default:
-            // firstTimersObj.value.birthMonth = "12";
-            console.log("No month chosen");
-            break;
-        }
+        case "January":
+          this.firstTimersObj.birthMonth = "1";
+          break;
+        case "February":
+          this.firstTimersObj.birthMonth = "2";
+          break;
+        case "March":
+          this.firstTimersObj.birthMonth = "3";
+          break;
+        case "April":
+          this.firstTimersObj.birthMonth = "4";
+          break;
+        case "May":
+          this.firstTimersObj.birthMonth = "5";
+          break;
+        case "June":
+          this.firstTimersObj.birthMonth = "6";
+          break;
+        case "July":
+          this.firstTimersObj.birthMonth = "7";
+          break;
+        case "August":
+          this.firstTimersObj.birthMonth = "8";
+          break;
+        case "September":
+          this.firstTimersObj.birthMonth = "9";
+          break;
+        case "October":
+          this.firstTimersObj.birthMonth = "10";
+          break;
+        case "November":
+          this.firstTimersObj.birthMonth = "11";
+          break;
+        case "December":
+          this.firstTimersObj.birthMonth = "12";
+          break;
+        default:
+          // firstTimersObj.value.birthMonth = "12";
+          console.log("No month chosen");
+          break;
+      }
     },
-    dropDownMarital (e) {
-      this.firstTimersObj.maritalStatusId = this.maritalStatusArr.find(
-          (i) => {
-            return i.value === e.value.value
-          }
-        ).id;
+    dropDownMarital(e) {
+      this.firstTimersObj.maritalStatusId = this.maritalStatusArr.find((i) => {
+        return i.value === e.value.value;
+      }).id;
     },
-    dropDownGender (e) {
+    dropDownGender(e) {
       this.firstTimersObj.genderId = this.gender.find(
-          (i) => i.value === e.value
-        ).id;
+        (i) => i.value === e.value
+      ).id;
     },
-    dropDownHeard (e) {
+    dropDownHeard(e) {
       this.firstTimersObj.howDidYouAboutUsId = this.howDidYouAboutUsId.find(
-          (i) => i.name === e.value
-        ).id;
+        (i) => i.name === e.value
+      ).id;
     },
-    dropDownComm (e) {
+    dropDownComm(e) {
       this.firstTimersObj.communicationMeans = this.comMeansArr.indexOf(
-          e.value
-        );
+        e.value
+      );
     },
-    dropDownInterest (e) {
+    dropDownInterest(e) {
       this.firstTimersObj.interestedInJoining = this.joinInterest.indexOf(
-          e.value
-        );
+        e.value
+      );
     },
-    dropDownVisit (e) {
-      this.firstTimersObj.wantToBeVisited = this.wantVisitArr.indexOf(
-          e.value
-        );
+    dropDownVisit(e) {
+      this.firstTimersObj.wantToBeVisited = this.wantVisitArr.indexOf(e.value);
     },
-    deleteFirstTimer (index) {
-      this.firstTimers.splice(index, 1)
+    deleteFirstTimer(index) {
+      this.firstTimers.splice(index, 1);
     },
-    
+
     dropDownMonthNewConvert(e) {
-      console.log(e)
+      console.log(e);
       switch (e.value) {
-          case "January":
-            this.firstTimersObj.birthMonth = "1";
-            break;
-          case "February":
-            this.firstTimersObj.birthMonth = "2";
-            break;
-          case "March":
-            this.firstTimersObj.birthMonth = "3";
-            break;
-          case "April":
-            this.firstTimersObj.birthMonth = "4";
-            break;
-          case "May":
-            this.firstTimersObj.birthMonth = "5";
-            break;
-          case "June":
-            this.firstTimersObj.birthMonth = "6";
-            break;
-          case "July":
-            this.firstTimersObj.birthMonth = "7";
-            break;
-          case "August":
-            this.firstTimersObj.birthMonth = "8";
-            break;
-          case "September":
-            this.firstTimersObj.birthMonth = "9";
-            break;
-          case "October":
-            this.firstTimersObj.birthMonth = "10";
-            break;
-          case "November":
-            this.firstTimersObj.birthMonth = "11";
-            break;
-          case "December":
-            this.firstTimersObj.birthMonth = "12";
-            break;
-          default:
-            // firstTimersObj.value.birthMonth = "12";
-            console.log("No month chosen");
-            break;
-        }
+        case "January":
+          this.firstTimersObj.birthMonth = "1";
+          break;
+        case "February":
+          this.firstTimersObj.birthMonth = "2";
+          break;
+        case "March":
+          this.firstTimersObj.birthMonth = "3";
+          break;
+        case "April":
+          this.firstTimersObj.birthMonth = "4";
+          break;
+        case "May":
+          this.firstTimersObj.birthMonth = "5";
+          break;
+        case "June":
+          this.firstTimersObj.birthMonth = "6";
+          break;
+        case "July":
+          this.firstTimersObj.birthMonth = "7";
+          break;
+        case "August":
+          this.firstTimersObj.birthMonth = "8";
+          break;
+        case "September":
+          this.firstTimersObj.birthMonth = "9";
+          break;
+        case "October":
+          this.firstTimersObj.birthMonth = "10";
+          break;
+        case "November":
+          this.firstTimersObj.birthMonth = "11";
+          break;
+        case "December":
+          this.firstTimersObj.birthMonth = "12";
+          break;
+        default:
+          // firstTimersObj.value.birthMonth = "12";
+          console.log("No month chosen");
+          break;
+      }
     },
-    dropDownMaritalNewConvert (e) {
+    dropDownMaritalNewConvert(e) {
       this.newConvertsObj.maritalStatusId = this.maritalStatusArr.find(
-          (i) => i.value === e.value.value
-        ).id;
+        (i) => i.value === e.value.value
+      ).id;
     },
-    dropDownGenderNewConvert (e) {
+    dropDownGenderNewConvert(e) {
       this.newConvertsObj.genderId = this.gender.find(
-          (i) => i.value === e.value
-        ).id;
+        (i) => i.value === e.value
+      ).id;
     },
-    dropDownHeardNewConvert (e) {
+    dropDownHeardNewConvert(e) {
       this.newConvertsObj.howDidYouAboutUsId = this.howDidYouAboutUsId.find(
-          (i) => i.name === e.value
-        ).id;
+        (i) => i.name === e.value
+      ).id;
     },
-    dropDownCommNewConvert (e) {
+    dropDownCommNewConvert(e) {
       this.newConvertsObj.communicationMeans = this.comMeansArr.indexOf(
-          e.value
-        );
+        e.value
+      );
     },
-    dropDownInterestNewConvert (e) {
+    dropDownInterestNewConvert(e) {
       this.newConvertsObj.interestedInJoining = this.joinInterest.indexOf(
-          e.value
-        );
+        e.value
+      );
     },
-    dropDownVisitNewConvert (e) {
-      this.newConvertsObj.wantToBeVisited = this.wantVisitArr.indexOf(
-          e.value
-        );
+    dropDownVisitNewConvert(e) {
+      this.newConvertsObj.wantToBeVisited = this.wantVisitArr.indexOf(e.value);
     },
-    deleteNewConvert (index) {
-      this.newConverts.splice(index, 1)
+    deleteNewConvert(index) {
+      this.newConverts.splice(index, 1);
     },
-    
+
     select2Value(data) {
       if (data.dataType === "automatedFollowUp") {
         this.firstTimersObj.autoMatedFollowUp = data.value;
@@ -2657,7 +3025,7 @@ export default {
       this.showCategory = false;
 
       // Get the index  of the selected category to update the category from the update response
-      this.selectedCategoryIndex = index
+      this.selectedCategoryIndex = index;
     },
     getPreActivityId() {
       // console.log(this.check)
@@ -2674,7 +3042,7 @@ export default {
           })
           .catch((err) => {
             NProgress.done();
-            console.log(err.response)
+            console.log(err.response);
           });
       }
     },
@@ -2686,17 +3054,17 @@ export default {
         });
       });
     },
-    async getEventById () {
+    async getEventById() {
       if (this.$route.params.event) {
         try {
-          let res = await axios.get(`/api/Events/${this.$route.params.event}`)
-          this.routeParams = this.$route.params.event
-          this.eventDate = res.data.activity.date.substr(0, 10)
-          this.topic = res.data.activity.topic
-          this.preacher = res.data.activity.preacher
-          this.selectedEventCategoryId = res.data.activity.eventCategoryId
-          this.attendanceItem = res.data.attendances
-          this.offeringItem = res.data.offerings.map(i => {
+          let res = await axios.get(`/api/Events/${this.$route.params.event}`);
+          this.routeParams = this.$route.params.event;
+          this.eventDate = res.data.activity.date.substr(0, 10);
+          this.topic = res.data.activity.topic;
+          this.preacher = res.data.activity.preacher;
+          this.selectedEventCategoryId = res.data.activity.eventCategoryId;
+          this.attendanceItem = res.data.attendances;
+          this.offeringItem = res.data.offerings.map((i) => {
             return {
               activity: i.activity,
               activityID: i.activityID,
@@ -2716,48 +3084,54 @@ export default {
               donor: i.personName,
               personPhoneNumber: i.personPhoneNumber,
               tenantID: i.tenantID,
-              transactionNumber: i.transactionNumber
-            }
-          })
-          this.firstTimers = res.data.activityFirstTimers
-          if (this.firstTimers.length > 0) this.showForm3 = true
-          this.newConverts = res.data.activityNewConverts
-          if (this.newConverts.length > 0) this.showForm3 = true
-          this.updatePreEvent = res.data.preEvent
+              transactionNumber: i.transactionNumber,
+            };
+          });
+          this.firstTimers = res.data.activityFirstTimers;
+          if (this.firstTimers.length > 0) this.showForm3 = true;
+          this.newConverts = res.data.activityNewConverts;
+          if (this.newConverts.length > 0) this.showForm3 = true;
+          this.updatePreEvent = res.data.preEvent;
           // this.offeringItem.find(i => console.log(i))
-          console.log(res.data)
-          if (this.currencyList.length > 0 ) {
+          console.log(res.data);
+          if (this.currencyList.length > 0) {
             // this.currencyList.find(i => i.currencyId == )
           }
           for (let index = 0; index < this.offeringItem.length; index++) {
             const i = this.offeringItem[index];
 
-            let amount = i.amount.toString()
+            let amount = i.amount.toString();
             const removeCharacters = amount.replace(/[^0-9.]/g, "");
-            const toNumber = parseFloat(removeCharacters)
+            const toNumber = parseFloat(removeCharacters);
 
-            let toDestinationCurrencyRate = `usd${this.tenantCurrency.currency.toLowerCase()}`
-            let fromCurrencyRate = i.fromCurrencyRate
-            let amountToConvert = toNumber ? +toNumber : 0
-            console.log(amountToConvert, fromCurrencyRate, toDestinationCurrencyRate)
-          try {
-            let result = await CurrencyConverterService.currencyConverter(amountToConvert, fromCurrencyRate, toDestinationCurrencyRate)
-            this.convertedAmount2.push(result)
-            console.log(result, this.convertedAmount2)
+            let toDestinationCurrencyRate = `usd${this.tenantCurrency.currency.toLowerCase()}`;
+            let fromCurrencyRate = i.fromCurrencyRate;
+            let amountToConvert = toNumber ? +toNumber : 0;
+            console.log(
+              amountToConvert,
+              fromCurrencyRate,
+              toDestinationCurrencyRate
+            );
+            try {
+              let result = await CurrencyConverterService.currencyConverter(
+                amountToConvert,
+                fromCurrencyRate,
+                toDestinationCurrencyRate
+              );
+              this.convertedAmount2.push(result);
+              console.log(result, this.convertedAmount2);
+            } catch (err) {
+              console.log(err);
+            }
           }
-          catch (err) {
-            console.log(err)
-          }
-          }
+        } catch (err) {
+          console.log(err);
         }
-        catch (err) {
-          console.log(err)
-        }    
       }
     },
-      convertCurrencyForExistingEvent () {
-        console.log(this.offeringItem)
-       
+    convertCurrencyForExistingEvent() {
+      console.log(this.offeringItem);
+
       // this.offeringItem.forEach((i) => {
       //     let toDestinationCurrencyRate = `usd${this.tenantCurrency.currency.toLowerCase()}`
       //     let fromCurrencyRate = i.fromCurrencyRate
@@ -2772,149 +3146,155 @@ export default {
       //   console.log(err)
       // }
       //     })
-
     },
-    getCurrenciesFromCountries () {
-      let url = "/api/getallcountries"
-      axios.get(url)
-        .then(res => {
-          this.currencyList = res.data.map(i => {
-              // return `${i.currency} ${i.name}`
-              return {
+    getCurrenciesFromCountries() {
+      let url = "/api/getallcountries";
+      axios
+        .get(url)
+        .then((res) => {
+          this.currencyList = res.data.map((i) => {
+            // return `${i.currency} ${i.name}`
+            return {
               name: i.currency,
               id: i.currencyId,
-              country: i.name
-            }
-            
-          })
+              country: i.name,
+            };
+          });
         })
-        .catch(err => console.log(err))
+        .catch((err) => console.log(err));
     },
-    toggleCode () {
-      this.showCode = !this.showCode
+    toggleCode() {
+      this.showCode = !this.showCode;
     },
-    getCurrency (e) {
-      console.log(e.target.innerHTML)
-      this.showCode = false
+    getCurrency(e) {
+      console.log(e.target.innerHTML);
+      this.showCode = false;
     },
-    updateOfferingId (e) {
+    updateOfferingId(e) {
       // this.offeringItem[index].financialContributionID = id
-          let index = this.offeringItem.findIndex(i => i.financialContributionID === e.target.value)
-          console.log(e.target.value, index, 'target', e.target.textContent)
-           let offText = this.newOfferings.find(i => i.id === e.target.value).name
-           console.log(offText)
-           this.offeringItem[index].name = offText
+      let index = this.offeringItem.findIndex(
+        (i) => i.financialContributionID === e.target.value
+      );
+      console.log(e.target.value, index, "target", e.target.textContent);
+      let offText = this.newOfferings.find((i) => i.id === e.target.value).name;
+      console.log(offText);
+      this.offeringItem[index].name = offText;
     },
-    updateAttendanceId (e) {
-      
-          let index = this.attendanceItem.findIndex(i => i.attendanceTypeID === e.target.value)
-          console.log(e.target.value, index, 'target', e.target.textContent)
-          console.log(this.newAttendances, 'new attendances')
-           let attText = this.newAttendances.find(i => i.attendanceTypeID === e.target.value).name
-           
-           this.attendanceItem[index].attendanceTypeName = attText
-    },
-    setAddToDonor (index) {
-        this.offeringToAddDonor = index
-      },
-    addDonor () {
-        let donorName = this.userSearchString
-        this.offeringItem[this.offeringToAddDonor].donor = donorName
-        this.donorBoolean = true
-        this.userSearchString = ""
-      },
-      searchForUsers () {
-        if (this.userSearchString.length >= 3) {
-          this.startSearch(this.userSearchString);
-        }
-      },
+    updateAttendanceId(e) {
+      let index = this.attendanceItem.findIndex(
+        (i) => i.attendanceTypeID === e.target.value
+      );
+      console.log(e.target.value, index, "target", e.target.textContent);
+      console.log(this.newAttendances, "new attendances");
+      let attText = this.newAttendances.find(
+        (i) => i.attendanceTypeID === e.target.value
+      ).name;
 
-      async startSearch (str) {
-        try {
-          this.searchingForMembers = true;
-          const response = await membershipService.searchMembers(str);
-          this.searchingForMembers = false;
-          this.searchedMembers = response;
-        } catch (error) {
-          this.searchingForMembers = false;
-          console.log(error);
-        }
-      },
-      addExistingMember (member) {
-        this.userSearchString = member.name;
-        this.offeringItem[this.offeringToAddDonor].personID = member.id
-        console.log(this.userSearchString, member)
-      },
-      getPersonId (payload) {
-        console.log(payload)
-        // personId.value = payload
-        this.offeringItem[this.offeringToAddDonor].donor = payload.personFirstName
-        this.offeringItem[this.offeringToAddDonor].personID = payload.personId
-      },
-      async getCurrentlySignedInUser () {
-        try {
-            const res = await axios.get("/api/Membership/GetCurrentSignedInUser");
-            // console.log(res.data)
-            this.tenantId = res.data.tenantId
-            // if(res.data.country == "Nigeria") {
-            //     isPaystackChecked.value = true
-            //     isFlutterwave.value = true
-            //     isPaypal.value = true
-            // } else {
-            //     isPaypal.value = true
-            //     isFlutterwave.value = true
-            // }
-            // let store = useStore()
-            // if (store.getters.currentUser) {
-            //   axios.get(`/api/Lookup/TenantCurrency?tenantID=${store.getters.currentUser.tenantId}`)
-            //   .then(res => {
-            //     this.tenantCurrency = res.data.currency
-            //     console.log(res.data)
-            //   })
-            //   .catch(err => console.log(err))
-            //   console.log(store.getters.currentUser)
-            // } else {
-              axios.get(`/api/Lookup/TenantCurrency?tenantID=${res.data.tenantId}`)
-              .then(res => {
-                this.tenantCurrency = res.data
-                this.getEventById()
-                this.convertCurrencyForExistingEvent()
-                console.log(this.tenantCurrency)
-              })
-              .catch(err => console.log(err))
-              // console.log(store.getters.currentUser)
-            // }
-            
-            
-        } catch (err) {
-            /*eslint no-undef: "warn"*/
-            NProgress.done();
-            console.log(err);
-        }
+      this.attendanceItem[index].attendanceTypeName = attText;
     },
-    async sendAmount (e, index) {
-      let amount = this.offeringItem[index].amount.toString()
+    setAddToDonor(index) {
+      this.offeringToAddDonor = index;
+    },
+    addDonor() {
+      let donorName = this.userSearchString;
+      this.offeringItem[this.offeringToAddDonor].donor = donorName;
+      this.donorBoolean = true;
+      this.userSearchString = "";
+    },
+    searchForUsers() {
+      if (this.userSearchString.length >= 3) {
+        this.startSearch(this.userSearchString);
+      }
+    },
+
+    async startSearch(str) {
+      try {
+        this.searchingForMembers = true;
+        const response = await membershipService.searchMembers(str);
+        this.searchingForMembers = false;
+        this.searchedMembers = response;
+      } catch (error) {
+        this.searchingForMembers = false;
+        console.log(error);
+      }
+    },
+    addExistingMember(member) {
+      this.userSearchString = member.name;
+      this.offeringItem[this.offeringToAddDonor].personID = member.id;
+      console.log(this.userSearchString, member);
+    },
+    getPersonId(payload) {
+      console.log(payload);
+      // personId.value = payload
+      this.offeringItem[this.offeringToAddDonor].donor =
+        payload.personFirstName;
+      this.offeringItem[this.offeringToAddDonor].personID = payload.personId;
+    },
+    async getCurrentlySignedInUser() {
+      try {
+        const res = await axios.get("/api/Membership/GetCurrentSignedInUser");
+        // console.log(res.data)
+        this.tenantId = res.data.tenantId;
+        // if(res.data.country == "Nigeria") {
+        //     isPaystackChecked.value = true
+        //     isFlutterwave.value = true
+        //     isPaypal.value = true
+        // } else {
+        //     isPaypal.value = true
+        //     isFlutterwave.value = true
+        // }
+        // let store = useStore()
+        // if (store.getters.currentUser) {
+        //   axios.get(`/api/Lookup/TenantCurrency?tenantID=${store.getters.currentUser.tenantId}`)
+        //   .then(res => {
+        //     this.tenantCurrency = res.data.currency
+        //     console.log(res.data)
+        //   })
+        //   .catch(err => console.log(err))
+        //   console.log(store.getters.currentUser)
+        // } else {
+        axios
+          .get(`/api/Lookup/TenantCurrency?tenantID=${res.data.tenantId}`)
+          .then((res) => {
+            this.tenantCurrency = res.data;
+            this.getEventById();
+            this.convertCurrencyForExistingEvent();
+            console.log(this.tenantCurrency);
+          })
+          .catch((err) => console.log(err));
+        // console.log(store.getters.currentUser)
+        // }
+      } catch (err) {
+        /*eslint no-undef: "warn"*/
+        NProgress.done();
+        console.log(err);
+      }
+    },
+    async sendAmount(e, index) {
+      let amount = this.offeringItem[index].amount.toString();
       let removeCharacters = amount.replace(/[^0-9.]/g, "");
-      let toNumber = parseFloat(removeCharacters)
+      let toNumber = parseFloat(removeCharacters);
 
-      this.currencyAmount = e.target.value
-      this.currencyIndex = index
+      this.currencyAmount = e.target.value;
+      this.currencyIndex = index;
 
+      let toDestinationCurrencyRate = `usd${this.tenantCurrency.currency.toLowerCase()}`;
+      let fromCurrencyRate = this.offeringItem[index].fromCurrencyRate;
 
-      let toDestinationCurrencyRate = `usd${this.tenantCurrency.currency.toLowerCase()}`
-      let fromCurrencyRate = this.offeringItem[index].fromCurrencyRate
+      let amountToConvert = toNumber ? toNumber : 0;
 
-      let amountToConvert = toNumber ? toNumber : 0
-
-      console.log(amountToConvert, fromCurrencyRate, toDestinationCurrencyRate)
+      console.log(amountToConvert, fromCurrencyRate, toDestinationCurrencyRate);
 
       try {
-        let result = await CurrencyConverterService.currencyConverter(amountToConvert, fromCurrencyRate, toDestinationCurrencyRate)
-        console.log(result)
-        this.convertedAmount2[index] = result
-      }
-      catch (err) {
-        console.log(err)
+        let result = await CurrencyConverterService.currencyConverter(
+          amountToConvert,
+          fromCurrencyRate,
+          toDestinationCurrencyRate
+        );
+        console.log(result);
+        this.convertedAmount2[index] = result;
+      } catch (err) {
+        console.log(err);
       }
       // if (amount === 0) return false
       // let propertyArr = Object.keys(this.currencyRate)
@@ -2927,247 +3307,255 @@ export default {
       // // console.log(amount, fromIndex, toIndex, amount, fromRate, toRate)
       // let result = ( amount / fromRate ) * toRate
       // console.log(result)
-      // 
+      //
       // console.log(this.convertedAmount2)
     },
-    convertResult (payload) {
+    convertResult(payload) {
       // this.convertedAmount[this.currencyIndex] = payload
-      this.convertedResult = payload
+      this.convertedResult = payload;
     },
-    toggleRem () {
-      this.applyRem = !this.applyRem
+    toggleRem() {
+      this.applyRem = !this.applyRem;
     },
-    addRemittance () {
-      this.remitance.push({})
+    addRemittance() {
+      this.remitance.push({});
     },
-    deleteItem (index) {
-      this.remitance.splice(index, 1)
+    deleteItem(index) {
+      this.remitance.splice(index, 1);
     },
-    getIncomeAccount () {
-        axios.get('/api/Financials/Accounts/GetIncomeAccounts')
-          .then(res => {
-              /*eslint no-undef: "warn"*/
-              NProgress.done();
-              console.log(res)
-            this.incomeAccount = res.data
-            if (res.data.length < 1) {
-            this.displayResponsive = true
+    getIncomeAccount() {
+      axios
+        .get("/api/Financials/Accounts/GetIncomeAccounts")
+        .then((res) => {
+          /*eslint no-undef: "warn"*/
+          NProgress.done();
+          console.log(res);
+          this.incomeAccount = res.data;
+          if (res.data.length < 1) {
+            this.displayResponsive = true;
           }
-          })
-          .catch(err => {
-              NProgress.done();
-              console.log(err)
-          })
-      },
-      getCashBankAccount () {
-          axios.get('/api/financials/accounts/getcashbankaccounts')
-            .then(res => {
-              console.log(res.data)
-              this.cashBankAccount = res.data
-            })
-            .catch (err => {
-              console.log(err)
-            })
-      },
-       closeResponsive () {
-            this.displayResponsive = false;
-            this.$router.push({ name: "ChartOfAccount" })
-        },
-      createNewCon (e) {
-          let contributionCategory = {
-            name: this.contributionItemName,
-            incomeAccountId: this.selectedIncomeAccount.id,
+        })
+        .catch((err) => {
+          NProgress.done();
+          console.log(err);
+        });
+    },
+    getCashBankAccount() {
+      axios
+        .get("/api/financials/accounts/getcashbankaccounts")
+        .then((res) => {
+          console.log(res.data);
+          this.cashBankAccount = res.data;
+        })
+        .catch((err) => {
+          console.log(err);
+        });
+    },
+    closeResponsive() {
+      this.displayResponsive = false;
+      this.$router.push({ name: "ChartOfAccount" });
+    },
+    createNewCon(e) {
+      let contributionCategory = {
+        name: this.contributionItemName,
+        incomeAccountId: this.selectedIncomeAccount.id,
 
-            cashAccountId: this.selectedCashAccount.id,
-            
-          }
-              if (this.remitance[0].account || this.remitance[0].percentage) {
-                contributionCategory.incomeRemittance = this.remitance.map(i => {
-                  return {
-                    financialFundID: i.account.financialFundID,
-                    distinationIncomeAccount: i.account.id,
-                    percentage: i.percentage
-                  }
-                })
-              } else {
-                contributionCategory.incomeRemittance = null
-              }
-          console.log(contributionCategory)
-          axios.post('/api/financials/contributions/items/save', contributionCategory)
-                  .then(res => {
-
-                    this.newOfferings.push({
-                      name: this.contributionItemName,
-                      id: res.data.id
-                    })
-                    this.$toast.add({severity:'success', summary: 'Saved', detail:'Contribution Saved', life: 3000});
-                    console.log(res)
-
-                    this.offeringItem.push({
-                      name: res.data.name,
-                      financialContributionID: res.data.id,
-                      paymentChannel: "Cash",
-                      currencyID: this.tenantCurrency.currencyId,
-                      donor: ""
-                    });
-                    
-                  })
-                  .catch(err => {
-                    this.$toast.add({severity:'error', summary: 'Error', detail:'Not Successful', life: 3000});
-                    console.log(err)
-                  })
-                  e.target.setAttribute('data-dismiss', 'modal')
-        },
-        async checkForDuplicatePhone () {
-          try {
-            let { data } = await axios.get(`api/People/checkDuplicate?email=${this.firstTimersObj.email}&phoneNumber=${this.firstTimersObj.phoneNumber}`)
-            console.log(data)
-            if (this.isPhoneValid !== "") {
-              if (data === "phone number") {
-              this.isPhoneValid = false
-            } else if (data === "email and phone number") {
-              this.isPhoneValid = false
-              this.isEmailValid = false
-            } else {
-              this.isPhoneValid = true
-              this.$refs.validatePhone.classList.add('is-valid')
-              
-            }
-            } else {
-              this.$refs.validatePhone.classList.remove('is-valid')
-              this.$refs.validatePhone.classList.remove('is-invalid')
-            }
-      
-          }
-          catch (error) {
-            console.log(error)
-          }
-        },
-        async checkForDuplicateEmail () {
-          try {
-            let { data } = await axios.get(`api/People/checkDuplicate?email=${this.firstTimersObj.email}&phoneNumber=${this.firstTimersObj.phoneNumber}`)
-            console.log(data) 
-            if (this.isEmailValid !== "") {
-              if (data === "email") {
-              this.isEmailValid = false
-            } else if (data === "email and phone number") {
-              this.isEmailValid = false
-              this.isPhoneValid = false
-            } else {
-              this.isEmailValid = true
-              this.$refs.validateEmail.classList.add('is-valid')
-            }
-            } else {
-              this.$refs.validateEmail.classList.remove('is-valid')
-              this.$refs.validateEmail.classList.remove('is-invalid')
-            }
-          }
-          catch (error) {
-            console.log(error)
-          }
-        },
-        async checkForDuplicatePhoneNewConvert () {
-          try {
-            let { data } = await axios.get(`api/People/checkDuplicate?email=${this.newConvertsObj.email}&phoneNumber=${this.newConvertsObj.phoneNumber}`)
-            console.log(data)
-            if (this.isPhoneValidNewConvert !== "") {
-              if (data === "phone number") {
-              this.isPhoneValidNewConvert = false
-            } else if (data === "email and phone number") {
-              this.isPhoneValidNewConvert = false
-              this.isEmailValidNewConvert = false
-            } else {
-              this.isPhoneValidNewConvert = true
-              this.$refs.validatePhoneNewConvert.classList.add('is-valid')
-              
-            }
-            } else {
-              this.$refs.validatePhoneNewConvert.classList.remove('is-valid')
-              this.$refs.validatePhoneNewConvert.classList.remove('is-invalid')
-            }
-      
-          }
-          catch (error) {
-            console.log(error)
-          }
-        },
-        async checkForDuplicateEmailNewConvert () {
-          try {
-            let { data } = await axios.get(`api/People/checkDuplicate?email=${this.newConvertsObj.email}&phoneNumber=${this.newConvertsObj.phoneNumber}`)
-            console.log(data) 
-            if (this.isEmailValidNewConvert !== "") {
-              if (data === "email") {
-              this.isEmailValidNewConvert = false
-            } else if (data === "email and phone number") {
-              this.isEmailValidNewConvert = false
-              this.isPhoneValidNewConvert = false
-            } else {
-              this.isEmailValidNewConvert = true
-              this.$refs.validateEmailNewConvert.classList.add('is-valid')
-            }
-            } else {
-              this.$refs.validateEmailNewConvert.classList.remove('is-valid')
-              this.$refs.validateEmailNewConvert.classList.remove('is-invalid')
-            }
-          }
-          catch (error) {
-            console.log(error)
-          }
-        },
-         async getRates () {
-            try {
-                let { data } = await axios.get('/fxRates')
-                console.log(data)
-                this.$store.dispatch("getRates", data)
-            }   catch (error) {
-                    console.log(error);
-            }
-        },
-        setContact (payload) {
-        if (!payload.email) {
-          this.$toast.add({
-            severity: "warn",
-            summary: "No email associate with the person",
-            detail: "This contact does not have any email, communicate with this person to create him as a user",
-            life: 15000,
-          });
-        }
-        this.firstTimersObj.contactOwnerId = payload.id
-      },
-      setContactNewConvert (payload) {
-        if (!payload.email) {
-          this.$toast.add({
-            severity: "warn",
-            summary: "No email associate with the person",
-            detail: "This contact does not have any email, communicate with this person to create him as a user",
-            life: 15000,
-          });
-        }
-        this.firstTimersObj.contactOwnerId = payload.id
-      },
-      showAddMemberForm () {
-        this.display = true;
+        cashAccountId: this.selectedCashAccount.id,
+      };
+      if (this.remitance[0].account || this.remitance[0].percentage) {
+        contributionCategory.incomeRemittance = this.remitance.map((i) => {
+          return {
+            financialFundID: i.account.financialFundID,
+            distinationIncomeAccount: i.account.id,
+            percentage: i.percentage,
+          };
+        });
+      } else {
+        contributionCategory.incomeRemittance = null;
       }
-        
+      console.log(contributionCategory);
+      axios
+        .post("/api/financials/contributions/items/save", contributionCategory)
+        .then((res) => {
+          this.newOfferings.push({
+            name: this.contributionItemName,
+            id: res.data.id,
+          });
+          this.$toast.add({
+            severity: "success",
+            summary: "Saved",
+            detail: "Contribution Saved",
+            life: 3000,
+          });
+          console.log(res);
+
+          this.offeringItem.push({
+            name: res.data.name,
+            financialContributionID: res.data.id,
+            paymentChannel: "Cash",
+            currencyID: this.tenantCurrency.currencyId,
+            donor: "",
+          });
+        })
+        .catch((err) => {
+          this.$toast.add({
+            severity: "error",
+            summary: "Error",
+            detail: "Not Successful",
+            life: 3000,
+          });
+          console.log(err);
+        });
+      e.target.setAttribute("data-dismiss", "modal");
+    },
+    async checkForDuplicatePhone() {
+      try {
+        let { data } = await axios.get(
+          `api/People/checkDuplicate?email=${this.firstTimersObj.email}&phoneNumber=${this.firstTimersObj.phoneNumber}`
+        );
+        console.log(data);
+        if (this.isPhoneValid !== "") {
+          if (data === "phone number") {
+            this.isPhoneValid = false;
+          } else if (data === "email and phone number") {
+            this.isPhoneValid = false;
+            this.isEmailValid = false;
+          } else {
+            this.isPhoneValid = true;
+            this.$refs.validatePhone.classList.add("is-valid");
+          }
+        } else {
+          this.$refs.validatePhone.classList.remove("is-valid");
+          this.$refs.validatePhone.classList.remove("is-invalid");
+        }
+      } catch (error) {
+        console.log(error);
+      }
+    },
+    async checkForDuplicateEmail() {
+      try {
+        let { data } = await axios.get(
+          `api/People/checkDuplicate?email=${this.firstTimersObj.email}&phoneNumber=${this.firstTimersObj.phoneNumber}`
+        );
+        console.log(data);
+        if (this.isEmailValid !== "") {
+          if (data === "email") {
+            this.isEmailValid = false;
+          } else if (data === "email and phone number") {
+            this.isEmailValid = false;
+            this.isPhoneValid = false;
+          } else {
+            this.isEmailValid = true;
+            this.$refs.validateEmail.classList.add("is-valid");
+          }
+        } else {
+          this.$refs.validateEmail.classList.remove("is-valid");
+          this.$refs.validateEmail.classList.remove("is-invalid");
+        }
+      } catch (error) {
+        console.log(error);
+      }
+    },
+    async checkForDuplicatePhoneNewConvert() {
+      try {
+        let { data } = await axios.get(
+          `api/People/checkDuplicate?email=${this.newConvertsObj.email}&phoneNumber=${this.newConvertsObj.phoneNumber}`
+        );
+        console.log(data);
+        if (this.isPhoneValidNewConvert !== "") {
+          if (data === "phone number") {
+            this.isPhoneValidNewConvert = false;
+          } else if (data === "email and phone number") {
+            this.isPhoneValidNewConvert = false;
+            this.isEmailValidNewConvert = false;
+          } else {
+            this.isPhoneValidNewConvert = true;
+            this.$refs.validatePhoneNewConvert.classList.add("is-valid");
+          }
+        } else {
+          this.$refs.validatePhoneNewConvert.classList.remove("is-valid");
+          this.$refs.validatePhoneNewConvert.classList.remove("is-invalid");
+        }
+      } catch (error) {
+        console.log(error);
+      }
+    },
+    async checkForDuplicateEmailNewConvert() {
+      try {
+        let { data } = await axios.get(
+          `api/People/checkDuplicate?email=${this.newConvertsObj.email}&phoneNumber=${this.newConvertsObj.phoneNumber}`
+        );
+        console.log(data);
+        if (this.isEmailValidNewConvert !== "") {
+          if (data === "email") {
+            this.isEmailValidNewConvert = false;
+          } else if (data === "email and phone number") {
+            this.isEmailValidNewConvert = false;
+            this.isPhoneValidNewConvert = false;
+          } else {
+            this.isEmailValidNewConvert = true;
+            this.$refs.validateEmailNewConvert.classList.add("is-valid");
+          }
+        } else {
+          this.$refs.validateEmailNewConvert.classList.remove("is-valid");
+          this.$refs.validateEmailNewConvert.classList.remove("is-invalid");
+        }
+      } catch (error) {
+        console.log(error);
+      }
+    },
+    async getRates() {
+      try {
+        let { data } = await axios.get("/fxRates");
+        console.log(data);
+        this.$store.dispatch("getRates", data);
+      } catch (error) {
+        console.log(error);
+      }
+    },
+    setContact(payload) {
+      if (!payload.email) {
+        this.$toast.add({
+          severity: "warn",
+          summary: "No email associate with the person",
+          detail:
+            "This contact does not have any email, communicate with this person to create him as a user",
+          life: 15000,
+        });
+      }
+      this.firstTimersObj.contactOwnerId = payload.id;
+    },
+    setContactNewConvert(payload) {
+      if (!payload.email) {
+        this.$toast.add({
+          severity: "warn",
+          summary: "No email associate with the person",
+          detail:
+            "This contact does not have any email, communicate with this person to create him as a user",
+          life: 15000,
+        });
+      }
+      this.firstTimersObj.contactOwnerId = payload.id;
+    },
+    showAddMemberForm() {
+      this.display = true;
+    },
   },
   async created() {
-    if( (store.getters["lookups/maritalStatus"]).length > 0) {
-      this.maritalStatusArr = (store.getters["lookups/maritalStatus"])
-    }else {
-       await axios
+    if (store.getters["lookups/maritalStatus"].length > 0) {
+      this.maritalStatusArr = store.getters["lookups/maritalStatus"];
+    } else {
+      await axios
         .get("/api/LookUp/GetAllLookUps")
         .then((res) => {
           console.log(res, "lksa");
-          this.maritalStatusArr = res.data.find(
-            (i) => {
-              return i.type.toLowerCase() === "maritalstatus"
-            }
-          ).lookUps;
+          this.maritalStatusArr = res.data.find((i) => {
+            return i.type.toLowerCase() === "maritalstatus";
+          }).lookUps;
         })
         .catch((err) => console.log(err.response));
-    console.log(this.maritalStatus, 'maritalSS')
+      console.log(this.maritalStatus, "maritalSS");
     }
-
 
     axios.get("/api/Financials/Contributions/Items").then((res) => {
       this.newOfferings = res.data.map((i) => {
@@ -3181,19 +3569,16 @@ export default {
       });
     });
 
-    this.currentDate()
-    this.getCurrentlySignedInUser()
+    this.currentDate();
+    this.getCurrentlySignedInUser();
     this.getEventCategories();
     this.getLookUps();
     this.getHowDidYouAboutUsId();
-    
+
     this.getCurrenciesFromCountries();
-    this.getIncomeAccount()
-    this.getCashBankAccount()
-    this.getRates()
-
-
-
+    this.getIncomeAccount();
+    this.getCashBankAccount();
+    this.getRates();
   },
   computed: {
     filterAttendance() {
@@ -3248,8 +3633,8 @@ export default {
     addContributionTotal() {
       if (this.convertedAmount2.length <= 0) return 0;
       return this.convertedAmount2.reduce((a, b) => {
-        return +a + +b
-      })
+        return +a + +b;
+      });
     },
     addAttendanceTotal() {
       if (this.attendanceItem.length <= 0) return 0;
@@ -3263,9 +3648,10 @@ export default {
     selectedEventCategoryName() {
       console.log(this.selectedEventCategoryId);
       if (!this.selectedEventCategoryId) return "";
-      if (!this.newEvents.find((i) => i.id === this.selectedEventCategoryId)) return ""
-      return this.newEvents.find((i) => i.id === this.selectedEventCategoryId).name
-        
+      if (!this.newEvents.find((i) => i.id === this.selectedEventCategoryId))
+        return "";
+      return this.newEvents.find((i) => i.id === this.selectedEventCategoryId)
+        .name;
     },
     eventCategoriesArr() {
       const arr = this.newEvents.map((i) => i.name);
@@ -3286,19 +3672,26 @@ export default {
         return i.name;
       });
     },
-    filterCurrency () {
+    filterCurrency() {
       if (this.currencyText !== "" && this.currencyList.length > 0) {
         return this.currencyList.filter((i) => {
-          if (i.name) return i.name.toLowerCase().includes(this.currencyText.toLowerCase()) || i.country.toLowerCase().includes(this.currencyText.toLowerCase())
-        })
+          if (i.name)
+            return (
+              i.name.toLowerCase().includes(this.currencyText.toLowerCase()) ||
+              i.country.toLowerCase().includes(this.currencyText.toLowerCase())
+            );
+        });
       } else {
-        return this.currencyList
+        return this.currencyList;
       }
     },
-    fromCurrencyRate () {
-      if (this.selectedCurrencyName) return `usd${props.selectedCurrency.toLowerCase()}`
-      return `usd${props.tenantCurrency ? props.tenantCurrency.toLowerCase() : ""}`
-    }
+    fromCurrencyRate() {
+      if (this.selectedCurrencyName)
+        return `usd${props.selectedCurrency.toLowerCase()}`;
+      return `usd${
+        props.tenantCurrency ? props.tenantCurrency.toLowerCase() : ""
+      }`;
+    },
   },
 };
 </script>
@@ -3391,11 +3784,11 @@ export default {
   border-bottom: 1px solid rgb(204, 204, 204);
 }
 .attendance-body {
-  padding: 0 50px; 
+  padding: 0 50px;
   background-color: #ecf0f3;
 }
 
-.attendance-body.stretch{
+.attendance-body.stretch {
   height: 85px;
 }
 .attendance-type,
@@ -3643,9 +4036,10 @@ div .maintext {
         width: 58%
     }
 } */
-.table-header, .table-body {
+.table-header,
+.table-body {
   padding: 10px;
-  font-size: 15px
+  font-size: 15px;
 }
 
 .t-header {
@@ -3784,12 +4178,11 @@ tr.event-list td {
   border-radius: 8px;
   font-size: 1.2em;
   font-weight: 600;
-  
 }
 
 .select-elem-con:hover {
   background: rgba(166, 200, 232, 0.302);
-  transition: all 0.4s ease-in-out
+  transition: all 0.4s ease-in-out;
 }
 
 .edit-category {
@@ -3856,36 +4249,37 @@ tr.event-list td {
 }
 .donor-text-name {
   color: black;
-  text-decoration:none;
+  text-decoration: none;
   font-weight: 700;
 }
 
-.modal-header, .modal-footer {
+.modal-header,
+.modal-footer {
   border: none;
 }
 
 .flagCode {
-    width: 160px;
-    max-height: 15em;
-    overflow-y: scroll;
-    overflow-x: hidden;
-    box-shadow: -3px 3px 15px #797e8159;
-    position: absolute;
-    /* top: 49.5%; */
-    background: white;
-    z-index: 10;
-    display: block;
-    margin-top: -4px
+  width: 160px;
+  max-height: 15em;
+  overflow-y: scroll;
+  overflow-x: hidden;
+  box-shadow: -3px 3px 15px #797e8159;
+  position: absolute;
+  /* top: 49.5%; */
+  background: white;
+  z-index: 10;
+  display: block;
+  margin-top: -4px;
 }
 
-.flagCode div{
-        width: 35em;      
-    }
-    .flagCode div:hover {
-        background: rgb(238, 238, 238)
-    }
+.flagCode div {
+  width: 35em;
+}
+.flagCode div:hover {
+  background: rgb(238, 238, 238);
+}
 
-    .hide-code {
+.hide-code {
   display: none;
   height: 0;
   overflow: hidden;
@@ -3899,78 +4293,78 @@ input.codeInput {
 }
 
 .style-account {
-    box-shadow: 0px 3px 15px #797e8159;
-    position: absolute;
-    background: white;
-    z-index: 1;
-    width: 284%;
-    max-height: 14em;
-    overflow-y: scroll;
-    }
-    .style-account div div:hover {
-    background-color: #ecf0f3;
-    cursor: pointer;
-    }
+  box-shadow: 0px 3px 15px #797e8159;
+  position: absolute;
+  background: white;
+  z-index: 1;
+  width: 284%;
+  max-height: 14em;
+  overflow-y: scroll;
+}
+.style-account div div:hover {
+  background-color: #ecf0f3;
+  cursor: pointer;
+}
 
-    .check-it {
-      border: 2px solid #136acd;
-      width: 20px;
-      height: 20px;
-      border-radius: 50%;
-      margin-top: -1px;
-    }
+.check-it {
+  border: 2px solid #136acd;
+  width: 20px;
+  height: 20px;
+  border-radius: 50%;
+  margin-top: -1px;
+}
 
-    .check-it .child {
-      /* border: 2px solid red; */
-      display: inline-block;
-      width: 10px;
-      height: 10px;
-      border-radius: 50%;
-      background: #136acd;
-      position: relative;
-      left: 3px;
-      top: -4px;
-    }
+.check-it .child {
+  /* border: 2px solid red; */
+  display: inline-block;
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+  background: #136acd;
+  position: relative;
+  left: 3px;
+  top: -4px;
+}
 
-    .hr {
-        border: 0.8px solid #0020440a;
-      }
+.hr {
+  border: 0.8px solid #0020440a;
+}
 
-    .btnIcons {
-      width: 110px;
-      height: 41px;
-      color: #136acd;
-      background-color: #dde2e6;
-      border-radius: 40px;
-      border: none;
-    }
+.btnIcons {
+  width: 110px;
+  height: 41px;
+  color: #136acd;
+  background-color: #dde2e6;
+  border-radius: 40px;
+  border: none;
+}
 
-    .add-person-btn {
-      background: #136acd;
-      color: #fff;
-    }
+.add-person-btn {
+  background: #136acd;
+  color: #fff;
+}
 
-    .adjust-down {
-          align-self: flex-end;
-      }
+.adjust-down {
+  align-self: flex-end;
+}
 
-    .converted-amount {
-      margin-left: -16%
-    }
+.converted-amount {
+  margin-left: -16%;
+}
 
-  .table-title {
-    background: white;
-    text-align: center;
-    font-size: 25px;
-    font-weight: 700;
-    margin-bottom: 10px;
-    border-radius: 25px
-  }
+.table-title {
+  background: white;
+  text-align: center;
+  font-size: 25px;
+  font-weight: 700;
+  margin-bottom: 10px;
+  border-radius: 25px;
+}
 
-  .dropdown-menu {
-    max-height: 400px;
-    overflow: scroll;
-  }
+.dropdown-menu {
+  max-height: 400px;
+  overflow: scroll;
+}
 
 @media (min-width: 576px) {
   .offset-sm-1 {
@@ -3992,8 +4386,8 @@ input.codeInput {
     margin-top: 2em;
   }
   .converted-amount {
-      margin-left: -6%
-    }
+    margin-left: -6%;
+  }
 }
 @media (max-width: 991px) {
   .row.form-body.reg .row div {
@@ -4007,6 +4401,5 @@ input.codeInput {
   .events {
     margin-top: 2rem;
   }
-
 }
 </style>
