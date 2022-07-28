@@ -1,5 +1,5 @@
 <template>
-  <div class="container-fluid">
+  <div class="container-fluid container-top">
     <div class="row">
       <div class="col-md-12 px-0">
         <div class="container">
@@ -8,9 +8,6 @@
               <h2 class="font-weight-bold page-hder">Pledge Overview</h2>
             </div>
             <div class="col-md-7 d-sm-flex justify-content-md-end">
-              <a class="def-btn mr-3 px-md-4 my-sm-1" v-if="false"
-                >More Actions <i class="fad fa-caret-circle-down"></i
-              ></a>
               <router-link
                 :to="{ name: 'MakePledge', path: '/tenant/pledge/makepledge' }"
               >
@@ -31,196 +28,45 @@
           </div>
           <hr class="mb-4" />
         </div>
-        <div
-          class="container"
-          style="width: 80%"
-          v-if="!isPending && !errorGettingReport"
-        >
-          <div class="row mx-1 mb-4 mt-3">
+        <div class="container">
+          <div class="row mb-4 mt-3">
             <div class="col-md-7">
               <span class="theader"> Pledge Name </span>
               <div class="my-3">
                 <span class="evt-name">
                   {{ pledgeName ? pledgeName : "" }}
-                  <i class="pi pi-info-circle"></i>
                 </span>
               </div>
             </div>
 
             <div class="col-md-5">
-              <span class="theader">Date</span>
+              <span class="theader">Donor</span>
               <div class="my-3">
-                <span class="date">{{
-                  pledgeDate ? new Date(pledgeDate).toLocaleDateString() : ""
-                }}</span>
+                <span class="evt-name">{{ personName }}</span>
+              </div>
+            </div>
+            <div class="col-md-7">
+              <span class="theader"> Pledged Amount </span>
+              <div class="my-3">
+                <span class="evt-name">
+                  {{ pledgeAmount.toLocaleString() }}
+                </span>
+              </div>
+            </div>
+
+            <div class="col-md-5">
+              <span class="theader">Total Target Amount</span>
+              <div class="my-3">
+                <span class="evt-name">
+                  {{
+                    Number(selectedPledge.totalTargetAmount).toLocaleString()
+                  }}</span
+                >
               </div>
             </div>
           </div>
 
-          <!-- <div class="row mx-1 mb-5">
-                    <div class="col-md-12">
-                        Unapproved
-                    <div class="row unapproved">
-                        <div class="col-md-12">
-                        <div class="row" v-if="!reportApproved">
-                            <div class="col-md-12 py-3 info-div">
-                            <span class="px-2"
-                                ><i class="pi pi-info-circle"></i
-                            ></span>
-                            <span class="font-weight-bold"
-                                >This is a DRAFT pledge. You can take further actions
-                                once you approve it.</span
-                            >
-                            <span class="px-2"
-                                ><span style="color: #136acd">Learn more</span>
-                                <i class="pi pi-external-link ml-2"></i
-                            ></span>
-                            </div>
-                        </div>
-                        <div class="row my-3">
-                            <div class="col-md-1 d-flex align-items-center">
-                            <span class="file-icon"
-                                ><i class="pi pi-book" style="color: #136acd"></i
-                            ></span>
-                            </div>
-                            <div class="col-md-5">
-                            <span class="grey-text">Create </span>
-                            <p>
-                                <span class="dark-text">Created: </span>
-                                <span class="grey-text">
-                                just a moment ago
-                                </span>
-                            </p>
-                            </div>
-                            <div
-                            class="col-md-6 d-sm-flex justify-content-end"
-                            v-if="!reportApproved"
-                            >
-                            
-                            <a
-                                class="def-btn approve-btn mr-4"
-                                @click="toggleReportState"
-                                >Approve report</a
-                            >
-                            <router-link
-                                :to="`/tenant/pledge/makepledge?id=${pledgeID}`"
-                            >
-                                <a class="def-btn ">Edit report</a>
-                            </router-link>
-                            </div>
-                        </div>
-                        </div>
-                    </div>
-                     Approved
-                    <div class="row unapproved mt-4">
-                        <div class="col-md-12">
-                        <div class="row my-3">
-                            <div class="col-md-1 d-flex align-items-center">
-                            <span class="file-icon"
-                                ><i
-                                class="pi pi-arrow-down"
-                                style="color: #136acd"
-                                ></i
-                            ></span>
-                            </div>
-                            <div class="col-md-5 grey-text">
-                            <span class="grey-text">Send </span>
-                            <p>
-                                <span class="grey-text">Last sent: </span>
-                                <span class="grey-text"> {{ lastSent }}</span>
-                            </p>
-                            </div>
-                            <div class="col-md-6" v-if="reportApproved">
-                            <div class="row">
-                                <div class="col-md-12">
-                                <div class="row">
-                                    <div class="col-6">
-                                    <a
-                                        class="def-btn approve-btn"
-                                        data-toggle="modal"
-                                        data-target="#sendReport"
-                                        :class="{ 'resend-btn': markedAsSent }"
-                                    >
-                                        {{ sendBtnText }}
-                                    </a>
-                                    </div>
-                                    <div class="row">
-                                    <div class="col-md-12">
-                                        <div
-                                        class="modal fade"
-                                        id="sendReport"
-                                        tabindex="-1"
-                                        aria-labelledby="exampleModalLabel"
-                                        aria-hidden="true"
-                                        :show="true"
-                                        >
-                                        <div class="modal-dialog modal-lg"  >
-                                            <div class="modal-content">
-                                            <div class="modal-header">
-                                                <h5 class="modal-title font-weight-bold" id="sendReport">
-                                                Send this report
-                                                </h5>
-                                                <button
-                                                type="button"
-                                                class="close"
-                                                data-dismiss="modal"
-                                                aria-label="Close"
-                                                >
-                                                <span aria-hidden="true">&times;</span>
-                                                </button>
-                                            </div>
-                                            <div class="modal-body pt-0 px-0"  :data-dismiss="btnState">
-                                                <ReportModal
-                                                :eventName="pledgeName ? pledgeName : ''
-                                                "
-                                                @sendreport="sendReport"
-                                                :stats="stats"
-                                                />
-                                            </div>
-                                            </div>
-                                        </div>
-                                        </div>
-                                    </div>
-                                    </div>
-                                    <div class="col-6">
-                                    <a class="def-btn edit-btn" @click="copyLink2"
-                                        >Get share link</a
-                                    >
-                                    </div>
-                                </div>
-                                </div>
-                            </div>
-                            <div class="row">
-                                <div class="col-md-6 offset-md-1" style="">
-                                <span class="mr-2">or</span>
-                                <a
-                                    style="color: #136acd; cursor: pointer"
-                                    @click="markAsSent"
-                                    >mark as sent</a
-                                >
-                                </div>
-                            </div>
-                            </div>
-                            <div class="col-md-12 pt-2" v-if="willCopyLink">
-                            <span class="d-flex" @click="copyLink">
-                                <input
-                                type="text"
-                                name=""
-                                @keydown="(e) => e.preventDefault()"
-                                class="form-control mr-2"
-                                :value="locationTwo"
-                                ref="shareableLinkField"
-                                style="width:90%"
-                                />
-                                <span><i class="pi pi-copy c-pointer" style="font-size: 1.5rem"></i></span>
-                            </span>
-                            </div>
-                        </div>
-                        </div>
-                    </div>
-                    </div>
-                </div> -->
-
+          <!-- =============
           <div class="container-fluid bottom-section px-0">
             <div class="row mx-0" ref="topmost">
               <div class="col-md-8 dark-red-section pl-5">
@@ -237,14 +83,15 @@
                 "
               >
                 <span>
-                        <span class="mb-n3">Amount Pledged: </span> <br />
-                        <span class="recieve">{{ pledgeAmount }}</span>
-                        </span>
-                        <span>
-                        <span>Total Target Amount: </span> <br />
-                        <span class="recieve">NGN {{ selectedPledge.totalTargetAmount }} &nbsp;</span
-                        >
-                        </span>
+                  <span class="mb-n3">Amount Pledged: </span> <br />
+                  <span class="recieve">{{ pledgeAmount }}</span>
+                </span>
+                <span>
+                  <span>Total Target Amount: </span> <br />
+                  <span class="recieve"
+                    >NGN {{ selectedPledge.totalTargetAmount }} &nbsp;</span
+                  >
+                </span>
               </div>
             </div>
 
@@ -284,27 +131,25 @@
                   </div>
                 </div>
               </div>
-            </div>
+            </div> -->
 
-            <div class="row mb-5" ref="bottom">
-              <div class="col-md-12">
-                <div class="row mb-4">
+          <div class="row mb-5">
+            <div class="col-md-12">
+              <hr class="mb-0" />
+              <div class="pg-content">
+                <div class="row mb-3">
                   <div class="col-md-12">
                     <span class="attendance-header">Payment link</span>
                   </div>
                 </div>
                 <div class="row">
-                  <div class="col-sm-12">
-                    <hr class="hr-dark" />
-                  </div>
-                </div>
-                <div class="pg-content">
-                  <div class="analytics-container first-con">
-                    <div class="ana-group row d-flex justify-content-center">
+                  <div class="col-12">
+                    <div class="row">
                       <div
                         class="
-                          col-md-11 col-sm-12 col-lg-10
+                          col-12
                           mb-5
+                          mx-3
                           border
                           rounded
                         "
@@ -335,162 +180,64 @@
                                 Online Payment Link
                               </h4></a
                             >
-                            <p class="para">
-                              <span class="d-flex align-items-center"
+                            <p class="">
+                              <span class="d-flex align-items-center justify-content-between"
                                 ><input
                                   type="text"
                                   ref="selectedLink"
                                   v-model="pledgePaymentLink"
                                   class="form-control"
                                   placeholder="Link"
-                                  style="width: 95%"
+                                  style="width: 80%"
                                 />
-                                <i
-                                  class="pi pi-copy ml-2 c-pointer"
-                                  @click="copyLink"
-                                  style="font-size: 22px"
-                                ></i>
-                                <!-- <span class="font-weight-bold small ml-1 text-primary c-pointer" style="width: 30%">Send Email</span>
-                                                        <span class="font-weight-bold small text-primary c-pointer" style="width: 30%">Send Sms</span> -->
+                                <div>
+                                  <i
+                                    v-tooltip.top="'Copy link'"
+                                    class="pi pi-copy ml-2 c-pointer"
+                                    @click="copyLink"
+                                    style="font-size: 22px"
+                                  ></i>
+                                  <i
+                                    v-tooltip.top="'Send SMS'"
+                                    class="pi pi-envelope ml-4 c-pointer"
+                                    @click="copyLink"
+                                    style="font-size: 22px"
+                                  ></i>
+                                </div>
                               </span>
                             </p>
                           </div>
                         </div>
                       </div>
                     </div>
-                    <!-- <hr class="hr" /> -->
                   </div>
-                  <!-- <div class="analytics-container first-con">
+                </div>
+                <div class="analytics-container first-con">
+                  <div class="row">
                     <div
-                      class="ana-group row d-flex justify-content-center mb-4"
+                      class="
+                        col-md-12
+                        mt-2 mt-md-0
+                        mb-3
+                        d-flex
+                        justify-content-center
+                      "
                     >
-                      <div
-                        class="
-                          col-md-11 col-sm-12 col-lg-10
-                          mb-3
-                          border
-                          rounded
-                        "
+                      <button
+                        class="default-btn primary-bg border-0 text-white"
+                        data-dismiss="modal"
+                        @click="makePayment"
                       >
-                        <div class="row">
-                          <div
-                            class="
-                              col-md-2 col-sm-2
-                              d-flex
-                              align-self-center
-                              image
-                              mt-3
-                            "
-                          >
-                            <img
-                              src="../../assets/link.svg"
-                              class="w-100"
-                              alt="marked Attendance image"
-                              style="width: 60px; height: 60px"
-                            />
-                          </div>
-                          <div class="col-md-10 col-sm-10 mt-3">
-                            <a class="text-decoration-none"
-                              ><h4
-                                class="header4 link-color c-pointer"
-                                @click="copyLink"
-                              >
-                                Virtual payment Link
-                              </h4></a
-                            >
-                            <p class="para">
-                              <span class="d-flex align-items-center"
-                                ><input
-                                  type="text"
-                                  ref="checkinLink"
-                                  @click="copyLink"
-                                  class="form-control"
-                                  style="width: 95%"
-                                />
-                                <i
-                                  class="pi pi-copy ml-2 c-pointer"
-                                  @click="copyLink"
-                                  style="font-size: 22px"
-                                ></i>
-                                 <span class="font-weight-bold small text-primary ml-1 c-pointer" style="width: 30%" >Send Email</span>
-                                                            <span class="font-weight-bold small text-primary c-pointer" style="width: 30%" >Send Sms</span> -
-                              </span>
-                            </p>
-                          </div>
-                        </div>
-                      </div>
-                    </div>
-                    <hr class="hr" />
-                  </div> -->
-                  <div class="analytics-container first-con">
-                    <!-- <div class="ana-group row d-flex justify-content-center">
-                      <div
-                        class="
-                          col-md-11 col-sm-12 col-lg-10
-                          mb-5
-                          border
-                          rounded
-                        "
-                      >
-                        <div class="row">
-                          <div
-                            class="
-                              col-md-2 col-sm-2
-                              d-flex
-                              align-self-center
-                              image
-                              mt-3
-                            "
-                          >
-                            <img
-                              src="../../assets/link.svg"
-                              class="w-100"
-                              alt="marked Attendance image"
-                              style="width: 60px; height: 60px"
-                            />
-                          </div>
-                          <div class="col-md-10 col-sm-10 mt-4">
-                            <a class="text-decoration-none"
-                              ><h4
-                                class="header4 link-color c-pointer"
-                                @click="copyRegLink"
-                              >
-                                Account detail
-                              </h4></a
-                            >
-                          </div>
-                        </div>
-                      </div>
-                    </div> -->
-                    <div class="row">
-                      <div
-                        class="
-                          col-md-12
-                          mt-2 mt-md-0
-                          mb-3
-                          d-flex
-                          justify-content-center
-                        "
-                      >
-                        <button
-                          class="default-btn primary-bg border-0 text-white"
-                          data-dismiss="modal"
-                          @click="makePayment"
-                        >
-                          <i class="pi pi-spin pi-spinner" v-if="loading"></i>
-                          Make Payment now
-                        </button>
-                      </div>
+                        <i class="pi pi-spin pi-spinner" v-if="loading"></i>
+                        Make Payment now
+                      </button>
                     </div>
                   </div>
                 </div>
               </div>
             </div>
-
-            <div class="row mb-5"></div>
-            <div class="row">
-              <div class="col-md-12"></div>
-            </div>
+            <!-- </div> -->
+            <PledgeTransaction />
           </div>
         </div>
       </div>
@@ -513,6 +260,8 @@ import { useRoute } from "vue-router";
 import finish from "../../services/progressbar/progress";
 import CascadeSelect from "primevue/cascadeselect";
 import ToggleButton from "../donation/toggleButton.vue";
+import PledgeTransaction from "./PledgeTransaction.vue";
+import Tooltip from "primevue/tooltip";
 export default {
   components: {
     MembersSearch,
@@ -522,6 +271,10 @@ export default {
     InputText,
     CascadeSelect,
     ToggleButton,
+    PledgeTransaction,
+  },
+  directives: {
+      tooltip: Tooltip,
   },
   setup() {
     const toast = useToast();
@@ -555,7 +308,7 @@ export default {
     const pledgeName = ref(route.query.pledgeType);
     const pledgeID = ref(route.query.pledgeTypeID);
     const pledgeDate = ref(route.query.date);
-    const pledgeAmount = ref(route.query.amount);
+    const pledgeAmount = ref(Number(route.query.amount).toLocaleString());
 
     const shareableLinkField = ref(null);
     const locationTwo = ref(window.location);
@@ -931,15 +684,15 @@ a {
   border-radius: 5px;
 }
 
-.analytics-container {
-  /* padding: 0 24px 24px 24px; */
+/* .analytics-container {
+  
   width: 90%;
   margin: auto;
 }
 
 .first-con {
   margin-top: 50px;
-}
+} */
 
 .theader {
   font-size: 14px;

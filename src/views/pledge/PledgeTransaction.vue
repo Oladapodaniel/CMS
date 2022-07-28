@@ -33,16 +33,16 @@
             <div class="row border py-3 px-2 mt-3 rounded">
                 <div class="col-md-5">
                     <div class="text-secondary font-weight-bold small">Overdue</div>
-                    <div>N 1,439,700 <span class="text-secondary small ">NGN</span> </div>
+                    <h3 class="font-weight-700 mt-3">N 1,439,700 <span class="text-secondary small ">NGN</span> </h3>
                     <div class="small text-secondary"> Last updated on July 9, 2022 at 1:07PM GMT+1</div>
                 </div>
                 <div class="col-md-4 mt-3  mt-md-0">
                     <div class="text-secondary font-weight-bold small">Due within next 30days </div>
-                    <div> N 0.00 <span class="text-secondary small ">NGN</span></div>
+                    <h3 class="font-weight-700 mt-3"> N 0.00 <span class="text-secondary small ">NGN</span></h3>
                 </div>
                 <div class="col-md-3 mt-3  mt-md-0 ">
                     <div class="font-weight-bold small text-secondary">Average time to get paid</div>
-                    <div> 21<span class="text-secondary small">days</span></div>
+                    <h3 class="font-weight-700 mt-3"> 21<span class="text-secondary small">days</span></h3>
                 </div>
             </div>
           </div>
@@ -135,7 +135,7 @@
               </div>
             </div>
             <div class="row" style="margin: 0">
-              <div class="col-12 parent-desc pb-2 px-0">
+              <div class="col-12 pb-2 px-0">
                 <div
                   class="
                     row
@@ -151,8 +151,8 @@
                   style="margin: 0"
                 >
                   <div
-                    class="col-md-1 desc"
-                    @click="pledgeClick(pledgelist.id)"
+                    class="col-md-1 p-2"
+                    
                   >
                     <p class="mb-0 d-flex text-danger font-weight-bold justify-content-between">
                       <span
@@ -168,16 +168,9 @@
                      <span class=" rounded small font-weight-bold statusbg py-1 px-2">Overdue</span>
                     </p>
                   </div>
-                  <!-- <div class="col-md-2 desc" @click="pledgeClick(pledgelist.id)">
-                        <p class="mb-0 d-flex justify-content-between text-primary">
-                          <span
-                            class=" text-dark font-weight-bold d-flex d-md-none fontIncrease"
-                          style="font-size:15px">Number</span>
-                            {{ pledgelist.person.mobilePhone }}
-                        </p>
-                      </div> -->
+
                   <div
-                    class="col-md-2 desc"
+                    class="col-md-2 p-2"
                     
                   >
                     <p class="mb-0 d-flex text-danger justify-content-between ">
@@ -195,8 +188,8 @@
                     </p>
                   </div>
                   <div
-                    class="col-md-2 desc"
-                    @click="pledgeClick(pledgelist.id)"
+                    class="col-md-2 p-2"
+                    
                   >
                     <p class="mb-0 d-flex justify-content-between ">
                       <span
@@ -212,7 +205,7 @@
                       2020-07-16
                     </p>
                   </div>
-                  <div class="col-md-1">
+                  <div class="col-md-1 p-2">
                     <div
                       class="d-flex small justify-content-between "
                     >
@@ -231,7 +224,7 @@
                       </div>
                     </div>
                   </div>
-                  <div class="col-md-2">
+                  <div class="col-md-2 p-2">
                     <div
                       class="d-flex small justify-content-between"
                     >
@@ -250,7 +243,7 @@
                       </div>
                     </div>
                   </div>
-                  <div class="col-md-2">
+                  <div class="col-md-2 p-2">
                     <div
                       class="d-flex small justify-content-between "
                     >
@@ -270,7 +263,782 @@
                     </div>
                   </div>
 
-                  <div class="col-md-2">
+                  <div class="col-md-2 p-2">
+                    <div class="d-flex">
+                      <span
+                        class="
+                          text-primary
+                          font-weight-bold
+                          
+                          fontIncrease
+                        "
+                        style="font-size: 15px"
+                        >Send reminder</span
+                      >
+                      <div class="dropdown ">
+                        <span class="d-flex justify-content-between">
+                          <span class="d-sm-flex small">
+                            <i
+                              class="
+                                pt-1 px-2
+                                text-primary
+                                border border-primary rounded-circle
+                                dropdown-toggle
+                                cursor-pointer
+                                ml-2
+                                fontIncrease
+                                font-weight-blod
+                              "
+                              id="dropdownMenuButton"
+                              data-toggle="dropdown"
+                              aria-haspopup="true"
+                              aria-expanded="false"
+                            ></i>
+
+                            <div
+                              class="dropdown-menu"
+                              aria-labelledby="dropdownMenuButton"
+                            >
+                            </div>
+                          </span>
+                        </span>
+                      </div>
+                    </div>
+                  </div>
+                  <div
+                    class="col-md-1 p-2"
+                    
+                  >
+                    <p class="mb-0 d-flex text-danger font-weight-bold justify-content-between">
+                      <span
+                        class="
+                          text-dark
+                          font-weight-bold
+                          d-flex d-md-none
+                          fontIncrease
+                        "
+                        style="font-size: 15px"
+                        >Status</span
+                      >
+                     <span class=" rounded small font-weight-bold statusbg py-1 px-2">Overdue</span>
+                    </p>
+                  </div>
+
+                  <div
+                    class="col-md-2 p-2"
+                    
+                  >
+                    <p class="mb-0 d-flex text-danger justify-content-between ">
+                      <span
+                        class="
+                          text-dark
+                          font-weight-bold
+                          d-flex d-md-none
+                          fontIncrease
+                        "
+                        style="font-size: 15px"
+                        >Due</span
+                      >
+                     1098 days ago
+                    </p>
+                  </div>
+                  <div
+                    class="col-md-2 p-2"
+                    
+                  >
+                    <p class="mb-0 d-flex justify-content-between ">
+                      <span
+                        class="
+                          text-dark
+                          font-weight-bold
+                          d-flex d-md-none
+                          fontIncrease
+                        "
+                        style="font-size: 15px"
+                        >Date
+                      </span>
+                      2020-07-16
+                    </p>
+                  </div>
+                  <div class="col-md-1 p-2">
+                    <div
+                      class="d-flex small justify-content-between "
+                    >
+                      <span
+                        class="
+                          text-dark
+                          font-weight-bold
+                          d-flex d-md-none
+                          fontIncrease
+                        "
+                        style="font-size: 15px"
+                        >Number</span
+                      >
+                      <div class="small-text text-right text-md-center">
+                        25
+                      </div>
+                    </div>
+                  </div>
+                  <div class="col-md-2 p-2">
+                    <div
+                      class="d-flex small justify-content-between"
+                    >
+                      <span
+                        class="
+                          text-dark
+                          font-weight-bold
+                          d-flex d-md-none
+                          fontIncrease
+                        "
+                        style="font-size: 15px"
+                        >Customer</span
+                      >
+                      <div class="small-text text-right text-md-center">
+                        Anderson Udokoro
+                      </div>
+                    </div>
+                  </div>
+                  <div class="col-md-2 p-2">
+                    <div
+                      class="d-flex small justify-content-between "
+                    >
+                      <span
+                        class="
+                          text-dark
+                          font-weight-bold
+                          d-flex d-md-none
+                          fontIncrease
+                        "
+                        style="font-size: 15px"
+                        >Amount due</span
+                      >
+                      <div class="small-text text-right text-md-center">
+                        NGN 111,000.00
+                      </div>
+                    </div>
+                  </div>
+
+                  <div class="col-md-2 p-2">
+                    <div class="d-flex">
+                      <span
+                        class="
+                          text-primary
+                          font-weight-bold
+                          
+                          fontIncrease
+                        "
+                        style="font-size: 15px"
+                        >Send reminder</span
+                      >
+                      <div class="dropdown ">
+                        <span class="d-flex justify-content-between">
+                          <span class="d-sm-flex small">
+                            <i
+                              class="
+                                pt-1 px-2
+                                text-primary
+                                border border-primary rounded-circle
+                                dropdown-toggle
+                                cursor-pointer
+                                ml-2
+                                fontIncrease
+                                font-weight-blod
+                              "
+                              id="dropdownMenuButton"
+                              data-toggle="dropdown"
+                              aria-haspopup="true"
+                              aria-expanded="false"
+                            ></i>
+
+                            <div
+                              class="dropdown-menu"
+                              aria-labelledby="dropdownMenuButton"
+                            >
+                            </div>
+                          </span>
+                        </span>
+                      </div>
+                    </div>
+                  </div>
+                  <div
+                    class="col-md-1 p-2"
+                    
+                  >
+                    <p class="mb-0 d-flex text-danger font-weight-bold justify-content-between">
+                      <span
+                        class="
+                          text-dark
+                          font-weight-bold
+                          d-flex d-md-none
+                          fontIncrease
+                        "
+                        style="font-size: 15px"
+                        >Status</span
+                      >
+                     <span class=" rounded small font-weight-bold statusbg py-1 px-2">Overdue</span>
+                    </p>
+                  </div>
+
+                  <div
+                    class="col-md-2 p-2"
+                    
+                  >
+                    <p class="mb-0 d-flex text-danger justify-content-between ">
+                      <span
+                        class="
+                          text-dark
+                          font-weight-bold
+                          d-flex d-md-none
+                          fontIncrease
+                        "
+                        style="font-size: 15px"
+                        >Due</span
+                      >
+                     1098 days ago
+                    </p>
+                  </div>
+                  <div
+                    class="col-md-2 p-2"
+                    
+                  >
+                    <p class="mb-0 d-flex justify-content-between ">
+                      <span
+                        class="
+                          text-dark
+                          font-weight-bold
+                          d-flex d-md-none
+                          fontIncrease
+                        "
+                        style="font-size: 15px"
+                        >Date
+                      </span>
+                      2020-07-16
+                    </p>
+                  </div>
+                  <div class="col-md-1 p-2">
+                    <div
+                      class="d-flex small justify-content-between "
+                    >
+                      <span
+                        class="
+                          text-dark
+                          font-weight-bold
+                          d-flex d-md-none
+                          fontIncrease
+                        "
+                        style="font-size: 15px"
+                        >Number</span
+                      >
+                      <div class="small-text text-right text-md-center">
+                        25
+                      </div>
+                    </div>
+                  </div>
+                  <div class="col-md-2 p-2">
+                    <div
+                      class="d-flex small justify-content-between"
+                    >
+                      <span
+                        class="
+                          text-dark
+                          font-weight-bold
+                          d-flex d-md-none
+                          fontIncrease
+                        "
+                        style="font-size: 15px"
+                        >Customer</span
+                      >
+                      <div class="small-text text-right text-md-center">
+                        Anderson Udokoro
+                      </div>
+                    </div>
+                  </div>
+                  <div class="col-md-2 p-2">
+                    <div
+                      class="d-flex small justify-content-between "
+                    >
+                      <span
+                        class="
+                          text-dark
+                          font-weight-bold
+                          d-flex d-md-none
+                          fontIncrease
+                        "
+                        style="font-size: 15px"
+                        >Amount due</span
+                      >
+                      <div class="small-text text-right text-md-center">
+                        NGN 111,000.00
+                      </div>
+                    </div>
+                  </div>
+
+                  <div class="col-md-2 p-2">
+                    <div class="d-flex">
+                      <span
+                        class="
+                          text-primary
+                          font-weight-bold
+                          
+                          fontIncrease
+                        "
+                        style="font-size: 15px"
+                        >Send reminder</span
+                      >
+                      <div class="dropdown ">
+                        <span class="d-flex justify-content-between">
+                          <span class="d-sm-flex small">
+                            <i
+                              class="
+                                pt-1 px-2
+                                text-primary
+                                border border-primary rounded-circle
+                                dropdown-toggle
+                                cursor-pointer
+                                ml-2
+                                fontIncrease
+                                font-weight-blod
+                              "
+                              id="dropdownMenuButton"
+                              data-toggle="dropdown"
+                              aria-haspopup="true"
+                              aria-expanded="false"
+                            ></i>
+
+                            <div
+                              class="dropdown-menu"
+                              aria-labelledby="dropdownMenuButton"
+                            >
+                            </div>
+                          </span>
+                        </span>
+                      </div>
+                    </div>
+                  </div>
+                  <div
+                    class="col-md-1 p-2"
+                    
+                  >
+                    <p class="mb-0 d-flex text-danger font-weight-bold justify-content-between">
+                      <span
+                        class="
+                          text-dark
+                          font-weight-bold
+                          d-flex d-md-none
+                          fontIncrease
+                        "
+                        style="font-size: 15px"
+                        >Status</span
+                      >
+                     <span class=" rounded small font-weight-bold statusbg py-1 px-2">Overdue</span>
+                    </p>
+                  </div>
+
+                  <div
+                    class="col-md-2 p-2"
+                    
+                  >
+                    <p class="mb-0 d-flex text-danger justify-content-between ">
+                      <span
+                        class="
+                          text-dark
+                          font-weight-bold
+                          d-flex d-md-none
+                          fontIncrease
+                        "
+                        style="font-size: 15px"
+                        >Due</span
+                      >
+                     1098 days ago
+                    </p>
+                  </div>
+                  <div
+                    class="col-md-2 p-2"
+                    
+                  >
+                    <p class="mb-0 d-flex justify-content-between ">
+                      <span
+                        class="
+                          text-dark
+                          font-weight-bold
+                          d-flex d-md-none
+                          fontIncrease
+                        "
+                        style="font-size: 15px"
+                        >Date
+                      </span>
+                      2020-07-16
+                    </p>
+                  </div>
+                  <div class="col-md-1 p-2">
+                    <div
+                      class="d-flex small justify-content-between "
+                    >
+                      <span
+                        class="
+                          text-dark
+                          font-weight-bold
+                          d-flex d-md-none
+                          fontIncrease
+                        "
+                        style="font-size: 15px"
+                        >Number</span
+                      >
+                      <div class="small-text text-right text-md-center">
+                        25
+                      </div>
+                    </div>
+                  </div>
+                  <div class="col-md-2 p-2">
+                    <div
+                      class="d-flex small justify-content-between"
+                    >
+                      <span
+                        class="
+                          text-dark
+                          font-weight-bold
+                          d-flex d-md-none
+                          fontIncrease
+                        "
+                        style="font-size: 15px"
+                        >Customer</span
+                      >
+                      <div class="small-text text-right text-md-center">
+                        Anderson Udokoro
+                      </div>
+                    </div>
+                  </div>
+                  <div class="col-md-2 p-2">
+                    <div
+                      class="d-flex small justify-content-between "
+                    >
+                      <span
+                        class="
+                          text-dark
+                          font-weight-bold
+                          d-flex d-md-none
+                          fontIncrease
+                        "
+                        style="font-size: 15px"
+                        >Amount due</span
+                      >
+                      <div class="small-text text-right text-md-center">
+                        NGN 111,000.00
+                      </div>
+                    </div>
+                  </div>
+
+                  <div class="col-md-2 p-2">
+                    <div class="d-flex">
+                      <span
+                        class="
+                          text-primary
+                          font-weight-bold
+                          
+                          fontIncrease
+                        "
+                        style="font-size: 15px"
+                        >Send reminder</span
+                      >
+                      <div class="dropdown ">
+                        <span class="d-flex justify-content-between">
+                          <span class="d-sm-flex small">
+                            <i
+                              class="
+                                pt-1 px-2
+                                text-primary
+                                border border-primary rounded-circle
+                                dropdown-toggle
+                                cursor-pointer
+                                ml-2
+                                fontIncrease
+                                font-weight-blod
+                              "
+                              id="dropdownMenuButton"
+                              data-toggle="dropdown"
+                              aria-haspopup="true"
+                              aria-expanded="false"
+                            ></i>
+
+                            <div
+                              class="dropdown-menu"
+                              aria-labelledby="dropdownMenuButton"
+                            >
+                            </div>
+                          </span>
+                        </span>
+                      </div>
+                    </div>
+                  </div>
+                  <div
+                    class="col-md-1 p-2"
+                    
+                  >
+                    <p class="mb-0 d-flex text-danger font-weight-bold justify-content-between">
+                      <span
+                        class="
+                          text-dark
+                          font-weight-bold
+                          d-flex d-md-none
+                          fontIncrease
+                        "
+                        style="font-size: 15px"
+                        >Status</span
+                      >
+                     <span class=" rounded small font-weight-bold statusbg py-1 px-2">Overdue</span>
+                    </p>
+                  </div>
+
+                  <div
+                    class="col-md-2 p-2"
+                    
+                  >
+                    <p class="mb-0 d-flex text-danger justify-content-between ">
+                      <span
+                        class="
+                          text-dark
+                          font-weight-bold
+                          d-flex d-md-none
+                          fontIncrease
+                        "
+                        style="font-size: 15px"
+                        >Due</span
+                      >
+                     1098 days ago
+                    </p>
+                  </div>
+                  <div
+                    class="col-md-2 p-2"
+                    
+                  >
+                    <p class="mb-0 d-flex justify-content-between ">
+                      <span
+                        class="
+                          text-dark
+                          font-weight-bold
+                          d-flex d-md-none
+                          fontIncrease
+                        "
+                        style="font-size: 15px"
+                        >Date
+                      </span>
+                      2020-07-16
+                    </p>
+                  </div>
+                  <div class="col-md-1 p-2">
+                    <div
+                      class="d-flex small justify-content-between "
+                    >
+                      <span
+                        class="
+                          text-dark
+                          font-weight-bold
+                          d-flex d-md-none
+                          fontIncrease
+                        "
+                        style="font-size: 15px"
+                        >Number</span
+                      >
+                      <div class="small-text text-right text-md-center">
+                        25
+                      </div>
+                    </div>
+                  </div>
+                  <div class="col-md-2 p-2">
+                    <div
+                      class="d-flex small justify-content-between"
+                    >
+                      <span
+                        class="
+                          text-dark
+                          font-weight-bold
+                          d-flex d-md-none
+                          fontIncrease
+                        "
+                        style="font-size: 15px"
+                        >Customer</span
+                      >
+                      <div class="small-text text-right text-md-center">
+                        Anderson Udokoro
+                      </div>
+                    </div>
+                  </div>
+                  <div class="col-md-2 p-2">
+                    <div
+                      class="d-flex small justify-content-between "
+                    >
+                      <span
+                        class="
+                          text-dark
+                          font-weight-bold
+                          d-flex d-md-none
+                          fontIncrease
+                        "
+                        style="font-size: 15px"
+                        >Amount due</span
+                      >
+                      <div class="small-text text-right text-md-center">
+                        NGN 111,000.00
+                      </div>
+                    </div>
+                  </div>
+
+                  <div class="col-md-2 p-2">
+                    <div class="d-flex">
+                      <span
+                        class="
+                          text-primary
+                          font-weight-bold
+                          
+                          fontIncrease
+                        "
+                        style="font-size: 15px"
+                        >Send reminder</span
+                      >
+                      <div class="dropdown ">
+                        <span class="d-flex justify-content-between">
+                          <span class="d-sm-flex small">
+                            <i
+                              class="
+                                pt-1 px-2
+                                text-primary
+                                border border-primary rounded-circle
+                                dropdown-toggle
+                                cursor-pointer
+                                ml-2
+                                fontIncrease
+                                font-weight-blod
+                              "
+                              id="dropdownMenuButton"
+                              data-toggle="dropdown"
+                              aria-haspopup="true"
+                              aria-expanded="false"
+                            ></i>
+
+                            <div
+                              class="dropdown-menu"
+                              aria-labelledby="dropdownMenuButton"
+                            >
+                            </div>
+                          </span>
+                        </span>
+                      </div>
+                    </div>
+                  </div>
+                  <div
+                    class="col-md-1 p-2"
+                    
+                  >
+                    <p class="mb-0 d-flex text-danger font-weight-bold justify-content-between">
+                      <span
+                        class="
+                          text-dark
+                          font-weight-bold
+                          d-flex d-md-none
+                          fontIncrease
+                        "
+                        style="font-size: 15px"
+                        >Status</span
+                      >
+                     <span class=" rounded small font-weight-bold statusbg py-1 px-2">Overdue</span>
+                    </p>
+                  </div>
+
+                  <div
+                    class="col-md-2 p-2"
+                    
+                  >
+                    <p class="mb-0 d-flex text-danger justify-content-between ">
+                      <span
+                        class="
+                          text-dark
+                          font-weight-bold
+                          d-flex d-md-none
+                          fontIncrease
+                        "
+                        style="font-size: 15px"
+                        >Due</span
+                      >
+                     1098 days ago
+                    </p>
+                  </div>
+                  <div
+                    class="col-md-2 p-2"
+                    
+                  >
+                    <p class="mb-0 d-flex justify-content-between ">
+                      <span
+                        class="
+                          text-dark
+                          font-weight-bold
+                          d-flex d-md-none
+                          fontIncrease
+                        "
+                        style="font-size: 15px"
+                        >Date
+                      </span>
+                      2020-07-16
+                    </p>
+                  </div>
+                  <div class="col-md-1 p-2">
+                    <div
+                      class="d-flex small justify-content-between "
+                    >
+                      <span
+                        class="
+                          text-dark
+                          font-weight-bold
+                          d-flex d-md-none
+                          fontIncrease
+                        "
+                        style="font-size: 15px"
+                        >Number</span
+                      >
+                      <div class="small-text text-right text-md-center">
+                        25
+                      </div>
+                    </div>
+                  </div>
+                  <div class="col-md-2 p-2">
+                    <div
+                      class="d-flex small justify-content-between"
+                    >
+                      <span
+                        class="
+                          text-dark
+                          font-weight-bold
+                          d-flex d-md-none
+                          fontIncrease
+                        "
+                        style="font-size: 15px"
+                        >Customer</span
+                      >
+                      <div class="small-text text-right text-md-center">
+                        Anderson Udokoro
+                      </div>
+                    </div>
+                  </div>
+                  <div class="col-md-2 p-2">
+                    <div
+                      class="d-flex small justify-content-between "
+                    >
+                      <span
+                        class="
+                          text-dark
+                          font-weight-bold
+                          d-flex d-md-none
+                          fontIncrease
+                        "
+                        style="font-size: 15px"
+                        >Amount due</span
+                      >
+                      <div class="small-text text-right text-md-center">
+                        NGN 111,000.00
+                      </div>
+                    </div>
+                  </div>
+
+                  <div class="col-md-2 p-2">
                     <div class="d-flex">
                       <span
                         class="
