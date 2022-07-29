@@ -1,15 +1,15 @@
 <template>
   <div class="container-fluid">
-    <div class="container-wide">
+    <div class="container-fluid">
       <div class="row yu mt-5">
         <div class="col-md-6">
-          <div class="events">Pledges</div>
+          <div class="events">Partnership/Pledges</div>
           <Toast />
           <ConfirmDialog />
         </div>
         <div class="col-md-6 d-flex head-button mt-2 my-1 link">
           <router-link to="/tenant/pledge/pledgedefinitionlist">
-            <button class="default-btn mr-3">Pledge items</button>
+            <button class="default-btn more-btn border-0 mr-3">Partnership/Pledge items</button>
           </router-link>
           <router-link
             to="/tenant/pledge/makepledge"
@@ -29,19 +29,8 @@
         </div>
       </div>
 
-      <div class="row" v-if="loading">
-        <div class="col-md-12">
-          <div class="row">
-            <div
-              class="col-md-12 d-flex align-items-center justify-content-center"
-            >
-              <i class="pi pi-spin pi-spinner py-4" style="font-size: 3rem"></i>
-            </div>
-          </div>
-        </div>
-      </div>
 
-      <div
+      <!-- <div
         class="row table"
         v-if="allPledgeList.length > 0 && !loading && !networkError"
       >
@@ -153,14 +142,6 @@
                       {{ date(pledgelist.pledgeType.dateEntered) }}
                     </p>
                   </div>
-                  <!-- <div class="col-md-2 desc" @click="pledgeClick(pledgelist.id)">
-                        <p class="mb-0 d-flex justify-content-between text-primary">
-                          <span
-                            class=" text-dark font-weight-bold d-flex d-md-none fontIncrease"
-                          style="font-size:15px">Number</span>
-                            {{ pledgelist.person.mobilePhone }}
-                        </p>
-                      </div> -->
                   <div
                     class="col-md-3 desc"
                     @click="pledgeClick(pledgelist.id)"
@@ -300,7 +281,464 @@
             </div>
           </div>
         </div>
+      </div> -->
+    </div>
+
+
+  
+    <!-- <PledgeTransaction /> -->
+    
+
+
+
+ <div class="container-fluid">
+      <div class="container-fluid" >
+        <div class="row border py-3 px-2 mt-3 rounded"  v-if="allPledgeList.length > 0 && !loading && !networkError">
+          <div class="col-md-5">
+            <div class="text-secondary font-weight-bold small">
+              Total pledges Amount
+            </div>
+            <h3 class="font-weight-700 mt-3">
+              N 1,439,700 <span class="text-secondary small">NGN</span>
+            </h3>
+            <div class="small text-secondary">
+              Last updated on July 9, 2022 at 1:07PM GMT+1
+            </div>
+          </div>
+          <div class="col-md-4 mt-3 mt-md-0">
+            <div class="text-secondary font-weight-bold small">
+              Payment within the last 30day
+            </div>
+            <h3 class="font-weight-700 mt-3">
+              N 0.00 <span class="text-secondary small">NGN</span>
+            </h3>
+          </div>
+          <div class="col-md-3 mt-3 mt-md-0">
+            <div class="font-weight-bold small text-secondary">
+              Average time to redemption
+            </div>
+            <h3 class="font-weight-700 mt-3">
+              21<span class="text-secondary small">days</span>
+            </h3>
+          </div>
+        </div>
       </div>
+      <div class="row mt-4"  v-if="allPledgeList.length > 0 && !loading && !networkError">
+        <div class="col-md-12 mt-3 d-flex">
+          <div>
+            <span
+              class="
+                font-weight-bold
+                bg-secondary
+                rounded-circle
+                py-1
+                px-2
+                border
+              "
+              >0</span
+            >
+          </div>
+          <div class="col-md-5">active filters</div>
+        </div>
+      </div>
+      <div class="row mt-4"  v-if="allPledgeList.length > 0 && !loading && !networkError">
+        <div class="col-md-3">
+          <Dropdown
+            v-model="selectedPledge"
+            class="w-100 font-weight-normal"
+            :options="allPledgeType"
+            optionLabel="name"
+            placeholder="All customers"
+          />
+        </div>
+        <div class="col-md-2 mt-3 mt-md-0">
+          <Dropdown
+            v-model="selectedPledge"
+            class="w-100 font-weight-normal"
+            :options="allPledgeType"
+            optionLabel="name"
+            placeholder="All statuses"
+          />
+        </div>
+        <div class="col-md-2 mt-3 mt-md-0">
+          <Calendar
+            dateFormat="dd/mm/yy"
+            placeholder="From"
+            class="w-100"
+            id="icon"
+            v-model="startDate"
+            :showIcon="true"
+          />
+        </div>
+        <div class="col-md-2 mt-3 mt-md-0">
+          <Calendar
+            dateFormat="dd/mm/yy"
+            placeholder="To"
+            class="w-100"
+            id="icon"
+            v-model="endDate"
+            :showIcon="true"
+          />
+        </div>
+        <div class="col-md-3 mt-3 d-flex mt-md-0">
+          <input
+            type="text"
+            class="form-control"
+            placeholder="Enter invoice #"
+          />
+          <span class="border cursor-pointer bg-secondary pt-2 px-3"
+            ><i class="pi pi-search"></i
+          ></span>
+        </div>
+      </div>
+      <div class="row mt-4 mb-3"  v-if="allPledgeList.length > 0 && !loading && !networkError">
+        <div class="col-md-12 mt-3 d-flex flex-wrap text-center botom">
+          <div class="col-12 col-sm-4 col-md-2 mt-2 mt-md-0" @click="upload">
+            <div class="col-md-12 pb-2">
+              Upload
+              <span
+                class="
+                  font-weight-bold
+                  bg-secondary
+                  rounded-circle
+                  py-1
+                  px-2
+                  border
+                "
+                >8</span
+              >
+            </div>
+            <div
+              :class="{ baseline: showUpload, 'hide-base': !showUpload }"
+            ></div>
+          </div>
+
+          <div class="col-12 col-sm-4 col-md-2 mt-2 mt-md-0" @click="draft">
+            <div class="col-md-12 pb-2">
+              Draft
+              <span
+                class="
+                  font-weight-bold
+                  bg-secondary
+                  rounded-circle
+                  py-1
+                  px-2
+                  border
+                "
+                >1</span
+              >
+            </div>
+            <div
+              :class="{ baseline: showDraft, 'hide-base': !showDraft }"
+            ></div>
+          </div>
+          <div class="col-12 col-sm-4 col-md-2 mt-2 mt-md-0" @click="invoice">
+            <div class="col-12 pb-2">All invoice</div>
+            <div
+              :class="{ baseline: showInvoice, 'hide-base': !showInvoice }"
+            ></div>
+          </div>
+        </div>
+      </div>
+
+      <div class="container-fluid d-none mt-4 d-md-block"  v-if="allPledgeList.length > 0 && !loading && !networkError">
+        <div class="row t-header mt-4 border-bottom pb-2">
+          <div class="small-text text-capitalize col-md-1 font-weight-bold">
+            Status
+          </div>
+          <div class="small-text text-capitalize col-md-2 font-weight-bold">
+            Due
+          </div>
+          <div class="small-text text-capitalize col-md-2 font-weight-bold">
+            Date
+          </div>
+          <div class="small-text text-capitalize  col-md-1 font-weight-bold">
+            Number
+          </div>
+          <div class="small-text text-capitalize col-md-2 font-weight-bold">
+            Contact
+          </div>
+          <div
+            class="
+              small-text
+              text-capitalize
+              Text-center
+              col-md-2
+              font-weight-bold
+            "
+          >
+            Amount Pledge
+          </div>
+          <div
+            class="
+              small-text
+              text-capitalize
+              Text-center
+              col-md-1
+              font-weight-bold
+            "
+          >
+            Balance
+          </div>
+
+          <div
+            class="
+              small-text
+              text-capitalize
+              col-md-1
+              text-right
+              font-weight-bold
+            "
+          >
+            Action
+          </div>
+        </div>
+      </div>
+      <div class="row" style="margin: 0"  v-if="allPledgeList.length > 0 && !loading && !networkError" >
+        <div class="col-12 pb-2 px-0">
+          <div 
+            class="
+              row
+              w-100
+              c-pointer
+              text-dark
+              border-top
+              py-2
+              hover
+              d-flex
+              align-items-center
+            "
+            style="margin: 0"
+            v-for="(pledgelist, index) in searchGroup"
+                  :key="index"
+          >
+            <div class="col-md-1 p-2">
+              <p
+                class="
+                  mb-0
+                  d-flex
+                  text-danger
+                  font-weight-bold
+                  justify-content-between
+                "
+              >
+                <span
+                  class="
+                    text-dark
+                    font-weight-bold
+                    d-flex d-md-none
+                    fontIncrease
+                  "
+                  style="font-size: 15px"
+                  >Status</span
+                >
+                <span class="rounded small font-weight-bold statusbg py-1 px-2"
+                  >Overdue</span
+                >
+              </p>
+            </div>
+
+            <div class="col-md-2 p-2">
+              <p class="mb-0 d-flex text-danger justify-content-between">
+                <span
+                  class="
+                    text-dark
+                    font-weight-bold
+                    d-flex d-md-none
+                    fontIncrease
+                  "
+                  style="font-size: 15px"
+                  >Due</span
+                >
+                1098 days ago
+              </p>
+            </div>
+            <div class="col-md-2 p-2">
+              <p class="mb-0 d-flex justify-content-between">
+                <span
+                  class="
+                    text-dark
+                    font-weight-bold
+                    d-flex d-md-none
+                    fontIncrease
+                  "
+                  style="font-size: 15px"
+                  >Date
+                </span>
+                {{ date(pledgelist.pledgeType.dateEntered) }}
+              </p>
+            </div>
+            <div class="col-md-1 p-2">
+              <div class="d-flex small justify-content-between">
+                <span
+                  class="
+                    text-dark
+                    font-weight-bold
+                    d-flex d-md-none
+                    fontIncrease
+                  "
+                  style="font-size: 15px"
+                  >Number</span
+                >
+                <div class="small-text text-right text-md-center">25</div>
+              </div>
+            </div>
+            <div class="col-md-2 p-2">
+              <div class="d-flex small justify-content-between">
+                <span
+                  class="
+                    text-dark
+                    font-weight-bold
+                    d-flex d-md-none
+                    fontIncrease
+                  "
+                  style="font-size: 15px"
+                  >Contact</span
+                >
+                <div class="small-text text-right text-md-center">
+                    {{ pledgelist.person.firstName }}
+                    {{ pledgelist.person.lastName }}
+                </div>
+              </div>
+            </div>
+            <div class="col-md-2 p-2">
+              <div class="d-flex small justify-content-between">
+                <span
+                  class="
+                    text-dark
+                    font-weight-bold
+                    d-flex d-md-none
+                    fontIncrease
+                  "
+                  style="font-size: 15px"
+                  >Amount pledged</span
+                >
+                <div class="small-text text-right text-md-center">
+                  {{ pledgelist && pledgelist.pledgeType && pledgelist.pledgeType.currency ? pledgelist.pledgeType.currency.symbol : "" }}
+                        {{
+                          Math.abs(
+                            pledgelist.amount
+                          ).toLocaleString()
+                        }}.00
+                </div>
+              </div>
+            </div>
+            <div class="col-md-1 p-2">
+              <div class="d-flex small justify-content-between">
+                <span
+                  class="
+                    text-dark
+                    font-weight-bold
+                    d-flex d-md-none
+                    fontIncrease
+                  "
+                  style="font-size: 15px"
+                  >Balance</span
+                >
+                <div class="small-text text-right text-md-center">
+                  <!-- {{ pledgelist && pledgelist.pledgeType && pledgelist.pledgeType.currency ? pledgelist.pledgeType.currency.symbol : "" }}
+                        {{
+                          Math.abs(
+                            pledgelist.amount
+                          ).toLocaleString()
+                        }}.00 -->
+                </div>
+              </div>
+            </div>
+
+            <div class="col-md-1 p-2">
+              <div>
+                <!-- <span
+                  class="text-primary font-weight-bold fontIncrease"
+                  style="font-size: 15px"
+                  >Send reminder</span
+                > -->
+                <div class="dropdown">
+                  <span class="d-flex justify-content-between">
+                    <span class="d-md-none d-sm-flex"></span>
+                      <span class="d-sm-flex small">
+                            <i
+                              class="
+                                fas
+                                fa-ellipsis-v
+                                cursor-pointer
+                                ml-2
+                                fontIncrease
+                              "
+                              id="dropdownMenuButton"
+                              data-toggle="dropdown"
+                              aria-haspopup="true"
+                              aria-expanded="false"
+                            ></i>
+
+                            <div
+                              class="dropdown-menu"
+                              aria-labelledby="dropdownMenuButton"
+                            >
+                              <a class="dropdown-item"
+                                ><router-link
+                                  :to="`/tenant/pledge/pledgepayment?id=${pledgelist.pledgeTypeID}&pledgeTypeID=${pledgelist.id}&name=${ pledgelist.person.firstName ? pledgelist.person.firstName : '' }${ pledgelist.person.lastName ? pledgelist.person.lastName : '' }`"
+                                  class="text-color"
+                                  >Make Payment</router-link
+                                ></a
+                              >
+                              <a class="dropdown-item"
+                                ><router-link
+                                  :to="`/tenant/pledge/makepledge?id=${pledgelist.id}`"
+                                  class="text-color"
+                                  >Edit</router-link
+                                ></a
+                              >
+                              <a
+                                class="dropdown-item"
+                                @click="showConfirmModal(pledgelist.id, index)"
+                                >Delete</a
+                              >
+                            </div>
+                          </span>
+                      <!-- <i
+                        class="
+                          pt-1
+                          px-2
+                          text-primary
+                          border border-primary
+                          rounded-circle
+                          dropdown-toggle
+                          cursor-pointer
+                          ml-2
+                          fontIncrease
+                          font-weight-blod
+                        "
+                        id="dropdownMenuButton"
+                        data-toggle="dropdown"
+                        aria-haspopup="true"
+                        aria-expanded="false"
+                      ></i>
+
+                      <div
+                        class="dropdown-menu"
+                        aria-labelledby="dropdownMenuButton"
+                      ></div> -->
+                  </span>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="row" v-if="loading">
+        <div class="col-md-12">
+          <div class="row">
+            <div
+              class="col-md-12 d-flex align-items-center justify-content-center"
+            >
+              <i class="pi pi-spin pi-spinner py-4" style="font-size: 3rem"></i>
+            </div>
+          </div>
+        </div>
+      </div>
+
       <div
         class="no-person"
         v-else-if="allPledgeList.length === 0 && !loading && !networkError"
@@ -330,6 +768,7 @@
         <div>Opps, Your internet connection was disrupted</div>
       </div>
     </div>
+
   </div>
 </template>
 
@@ -344,6 +783,7 @@ import { useToast } from "primevue/usetoast";
 import InputText from "primevue/inputtext";
 import { useConfirm } from "primevue/useconfirm";
 import monthDayYear from "../../services/dates/dateformatter";
+// import PledgeTransaction from "./PledgeTransaction.vue";
 import router from "../../router";
 
 export default {
@@ -356,9 +796,6 @@ export default {
   setup() {
     const networkError = ref(false);
     const toast = useToast();
-    const startDate = ref("");
-    const endDate = ref("");
-    // const Address = ref('');
     const loading = ref(false);
     const searchText = ref("");
     const selectedPledge = ref("");
@@ -366,8 +803,32 @@ export default {
     const allPledgeType = ref([]);
     const selectedPerson = ref("");
     const allPledgeList = ref([]);
-    // const singlePledge = ref([]);
+    const startDate = ref("");
+    const endDate = ref("");
+    const showUpload = ref(true);
+    const showDraft = ref(false);
+    const showInvoice = ref(false);
+
+    
     const confirm = useConfirm();
+
+    const upload = () => {
+      showUpload.value = true;
+      showDraft.value = false;
+      showInvoice.value = false;
+    };
+
+    const draft = () => {
+      showDraft.value = true;
+      showUpload.value = false;
+      showInvoice.value = false;
+    };
+
+    const invoice = () => {
+      showInvoice.value = true;
+      showDraft.value = false;
+      showUpload.value = false;
+    };
 
     const navigateToMakePledge = () => {
       router.push("/tenant/pledge/makepledge");
@@ -516,6 +977,14 @@ export default {
     };
 
     return {
+      upload,
+      draft,
+      invoice,
+      startDate,
+      endDate,
+      showUpload,
+      showDraft,
+      showInvoice,
       allPledgeList,
       navigateToMakePledge,
       networkError,
@@ -549,6 +1018,9 @@ export default {
   height: 80vh;
   display: flex;
   text-align: center;
+}
+.more-btn {
+  background: #dde2e6;
 }
 
 .empty-img {
@@ -640,11 +1112,11 @@ export default {
   border-bottom: 1.5px solid #6d6d6d19;
 }
 
-.t-header {
+/* .t-header {
   background: #dde2e6 0% 0% no-repeat padding-box;
   font-size: 16px;
   padding: 0.5rem 0;
-}
+} */
 .hover:hover {
   background: #eee;
 }

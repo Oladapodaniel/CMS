@@ -3,7 +3,7 @@
     <div class="container-wide">
       <div class="row d-md-flex yu mt-5">
         <div class="col-md-6 col-4">
-          <div class="events">Pledge Items</div>
+          <div class="events">New Partnership/Pledge Item</div>
           <Toast />
           <ConfirmDialog />
         </div>
