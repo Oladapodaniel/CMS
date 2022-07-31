@@ -211,7 +211,7 @@
                 </div>
               </div>
             </div>
-            <div class="col-md-10 my-1 offset-md-2 mt-3">
+            <!-- <div class="col-md-10 my-1 offset-md-2 mt-3">
               <div class="row">
                 <div
                   class="
@@ -243,7 +243,7 @@
                   </div>
                 </div>
               </div>
-            </div>
+            </div> -->
           </div>
           <div class="row my-1 mt-4">
             <div class="col-md-10 mt-1 offset-md-2">

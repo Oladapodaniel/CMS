@@ -498,7 +498,6 @@ export default {
 }
 
 
-.default-btn {
     /* font-weight: 600;
     white-space: initial;
     font-size: 1rem;
@@ -513,7 +512,7 @@ export default {
     color:#000;
     text-decoration: none;
     min-width: 121px; */
-}
+
 
 .default-btn:hover {
   text-decoration: none;
