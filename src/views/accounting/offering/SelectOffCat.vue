@@ -102,7 +102,7 @@
             <div class="">Percentage %</div>
 
             <div class="mt-2">
-              <input type="text" v-model="item.percentage" class="form-control textbox-height" placeholder="" />
+              <input type="number" v-model="item.percentage" class="form-control textbox-height" placeholder="" />
             </div>
           </div>
           <div class="col-1 mt-4 align-self-center" @click="deleteItem(index)">
@@ -112,6 +112,7 @@
         </div>
         <div class="row">
           <div class="col-10 mt-3 text-right">Percentage Remaining: <span class="font-weight-700">{{ sumPercentage ? sumPercentage.percentage ? 100 - +sumPercentage.percentage : 0 : 0 }}%</span></div>
+          <div class="col-10 mt-3 text-right" v-if="selectedCashAccount">The percentage remaining goes to <span class="font-weight-700">{{ selectedCashAccount ? selectedCashAccount.text : "" }}</span></div>
         </div>
       </div>
 
@@ -229,7 +230,9 @@ export default {
           life: 5000,
         });
       }  else {
-        remitance.value.push({})
+        remitance.value.push({
+          percentage: 0
+        })
       }
     }
 
