@@ -3,32 +3,28 @@
     <div class="container-fluid">
       <div class="row yu mt-5">
         <div class="col-md-6">
-          <div class="events">Partnership/Pledges</div>
+          <div class="events">Partnership and Pledges</div>
           <Toast />
           <ConfirmDialog />
         </div>
-        <div class="col-md-6 d-flex head-button mt-2 my-1 link">
+        <div class="col-md-6 d-flex flex-column flex-sm-row mt-2 my-1 link">
           <router-link to="/tenant/pledge/pledgedefinitionlist">
-            <button class="default-btn more-btn border-0 mr-3">Partnership/Pledge items</button>
+            <button class="default-btn more-btn border-0 mr-3">
+              Partnership/Pledge items
+            </button>
           </router-link>
           <router-link
             to="/tenant/pledge/makepledge"
-            class="
-              grey-border
-              primary-btn
-              default-btn
-              primary-bg
-              border-0
-              small-screen
-            "
-            >Make a pledge</router-link
+           >
+            <button  class=" grey-border primary-btn default-btn primary-bg border-0 mt-3 mt-sm-0">
+              New Partnership/Pledge
+            </button></router-link
           >
         </div>
         <div class="col-md-12 px-0">
           <hr class="hr my-3" />
         </div>
       </div>
-
 
       <!-- <div
         class="row table"
@@ -284,19 +280,17 @@
       </div> -->
     </div>
 
-
-  
     <!-- <PledgeTransaction /> -->
-    
 
-
-
- <div class="container-fluid">
-      <div class="container-fluid" >
-        <div class="row border py-3 px-2 mt-3 rounded"  v-if="allPledgeList.length > 0 && !loading && !networkError">
+    <div class="container-fluid">
+      <div class="container-fluid">
+        <div
+          class="row border py-3 px-2 mt-3 rounded"
+          v-if="allPledgeList.length > 0 && !loading && !networkError"
+        >
           <div class="col-md-5">
             <div class="text-secondary font-weight-bold small">
-              Total pledges Amount
+              Total pledge
             </div>
             <h3 class="font-weight-700 mt-3">
               N 1,439,700 <span class="text-secondary small">NGN</span>
@@ -307,7 +301,7 @@
           </div>
           <div class="col-md-4 mt-3 mt-md-0">
             <div class="text-secondary font-weight-bold small">
-              Payment within the last 30day
+              Payment within the last 30 days
             </div>
             <h3 class="font-weight-700 mt-3">
               N 0.00 <span class="text-secondary small">NGN</span>
@@ -323,7 +317,10 @@
           </div>
         </div>
       </div>
-      <div class="row mt-4"  v-if="allPledgeList.length > 0 && !loading && !networkError">
+      <div
+        class="row mt-4"
+        v-if="allPledgeList.length > 0 && !loading && !networkError"
+      >
         <div class="col-md-12 mt-3 d-flex">
           <div>
             <span
@@ -341,7 +338,10 @@
           <div class="col-md-5">active filters</div>
         </div>
       </div>
-      <div class="row mt-4"  v-if="allPledgeList.length > 0 && !loading && !networkError">
+      <div
+        class="row mt-4"
+        v-if="allPledgeList.length > 0 && !loading && !networkError"
+      >
         <div class="col-md-3">
           <Dropdown
             v-model="selectedPledge"
@@ -381,17 +381,18 @@
           />
         </div>
         <div class="col-md-3 mt-3 d-flex mt-md-0">
-          <input
-            type="text"
-            class="form-control"
-            placeholder="Enter invoice #"
-          />
-          <span class="border cursor-pointer bg-secondary pt-2 px-3"
-            ><i class="pi pi-search"></i
-          ></span>
+           <input type="text" class="form-control h-100" id="validationCustomUsername" placeholder="Username" aria-describedby="inputGroupPrepend" required>
+        <div class="input-group-append">
+          <span class="input-group-text" id="inputGroupPrepend">
+            <i class="pi pi-search"></i>
+          </span>
+        </div>
+        <div class="invalid-feedback">
+          Please choose a username.
+        </div>
         </div>
       </div>
-      <div class="row mt-4 mb-3"  v-if="allPledgeList.length > 0 && !loading && !networkError">
+      <!-- <div class="row mt-4 mb-3"  v-if="allPledgeList.length > 0 && !loading && !networkError">
         <div class="col-md-12 mt-3 d-flex flex-wrap text-center botom">
           <div class="col-12 col-sm-4 col-md-2 mt-2 mt-md-0" @click="upload">
             <div class="col-md-12 pb-2">
@@ -439,9 +440,12 @@
             ></div>
           </div>
         </div>
-      </div>
+      </div> -->
 
-      <div class="container-fluid d-none mt-4 d-md-block"  v-if="allPledgeList.length > 0 && !loading && !networkError">
+      <div
+        class="container-fluid d-none mt-5 d-md-block"
+        v-if="allPledgeList.length > 0 && !loading && !networkError"
+      >
         <div class="row t-header mt-4 border-bottom pb-2">
           <div class="small-text text-capitalize col-md-1 font-weight-bold">
             Status
@@ -452,7 +456,7 @@
           <div class="small-text text-capitalize col-md-2 font-weight-bold">
             Date
           </div>
-          <div class="small-text text-capitalize  col-md-1 font-weight-bold">
+          <div class="small-text text-capitalize col-md-1 font-weight-bold">
             Number
           </div>
           <div class="small-text text-capitalize col-md-2 font-weight-bold">
@@ -494,9 +498,13 @@
           </div>
         </div>
       </div>
-      <div class="row" style="margin: 0"  v-if="allPledgeList.length > 0 && !loading && !networkError" >
+      <div
+        class="row"
+        style="margin: 0"
+        v-if="allPledgeList.length > 0 && !loading && !networkError"
+      >
         <div class="col-12 pb-2 px-0">
-          <div 
+          <div
             class="
               row
               w-100
@@ -510,9 +518,9 @@
             "
             style="margin: 0"
             v-for="(pledgelist, index) in searchGroup"
-                  :key="index"
+            :key="index"
           >
-            <div class="col-md-1 p-2">
+            <div class="col-md-1 py-2">
               <p
                 class="
                   mb-0
@@ -532,13 +540,13 @@
                   style="font-size: 15px"
                   >Status</span
                 >
-                <span class="rounded small font-weight-bold statusbg py-1 px-2"
+                <span class="rounded small font-weight-bold statusbg py-1"
                   >Overdue</span
                 >
               </p>
             </div>
 
-            <div class="col-md-2 p-2">
+            <div class="col-md-2 py-2">
               <p class="mb-0 d-flex text-danger justify-content-between">
                 <span
                   class="
@@ -553,7 +561,7 @@
                 1098 days ago
               </p>
             </div>
-            <div class="col-md-2 p-2">
+            <div class="col-md-2 py-2">
               <p class="mb-0 d-flex justify-content-between">
                 <span
                   class="
@@ -568,7 +576,7 @@
                 {{ date(pledgelist.pledgeType.dateEntered) }}
               </p>
             </div>
-            <div class="col-md-1 p-2">
+            <div class="col-md-1 py-2">
               <div class="d-flex small justify-content-between">
                 <span
                   class="
@@ -580,10 +588,10 @@
                   style="font-size: 15px"
                   >Number</span
                 >
-                <div class="small-text text-right text-md-center">25</div>
+                <div class="small-text">25</div>
               </div>
             </div>
-            <div class="col-md-2 p-2">
+            <div class="col-md-2 py-2">
               <div class="d-flex small justify-content-between">
                 <span
                   class="
@@ -595,13 +603,13 @@
                   style="font-size: 15px"
                   >Contact</span
                 >
-                <div class="small-text text-right text-md-center">
-                    {{ pledgelist.person.firstName }}
-                    {{ pledgelist.person.lastName }}
+                <div class="small-text">
+                  {{ pledgelist.person.firstName }}
+                  {{ pledgelist.person.lastName }}
                 </div>
               </div>
             </div>
-            <div class="col-md-2 p-2">
+            <div class="col-md-2 py-2">
               <div class="d-flex small justify-content-between">
                 <span
                   class="
@@ -613,17 +621,19 @@
                   style="font-size: 15px"
                   >Amount pledged</span
                 >
-                <div class="small-text text-right text-md-center">
-                  {{ pledgelist && pledgelist.pledgeType && pledgelist.pledgeType.currency ? pledgelist.pledgeType.currency.symbol : "" }}
-                        {{
-                          Math.abs(
-                            pledgelist.amount
-                          ).toLocaleString()
-                        }}.00
+                <div class="small-text">
+                  {{
+                    pledgelist &&
+                    pledgelist.pledgeType &&
+                    pledgelist.pledgeType.currency
+                      ? pledgelist.pledgeType.currency.symbol
+                      : ""
+                  }}
+                  {{ Math.abs(pledgelist.amount).toLocaleString() }}.00
                 </div>
               </div>
             </div>
-            <div class="col-md-1 p-2">
+            <div class="col-md-1 py-2">
               <div class="d-flex small justify-content-between">
                 <span
                   class="
@@ -635,79 +645,33 @@
                   style="font-size: 15px"
                   >Balance</span
                 >
-                <div class="small-text text-right text-md-center">
-                  <!-- {{ pledgelist && pledgelist.pledgeType && pledgelist.pledgeType.currency ? pledgelist.pledgeType.currency.symbol : "" }}
-                        {{
-                          Math.abs(
-                            pledgelist.amount
-                          ).toLocaleString()
-                        }}.00 -->
-                </div>
+                <div class="small-text">Balance</div>
               </div>
             </div>
 
-            <div class="col-md-1 p-2">
+            <div class="col-md-1 py-2">
               <div>
-                <!-- <span
-                  class="text-primary font-weight-bold fontIncrease"
-                  style="font-size: 15px"
-                  >Send reminder</span
-                > -->
                 <div class="dropdown">
                   <span class="d-flex justify-content-between">
-                    <span class="d-md-none d-sm-flex"></span>
-                      <span class="d-sm-flex small">
-                            <i
-                              class="
-                                fas
-                                fa-ellipsis-v
-                                cursor-pointer
-                                ml-2
-                                fontIncrease
-                              "
-                              id="dropdownMenuButton"
-                              data-toggle="dropdown"
-                              aria-haspopup="true"
-                              aria-expanded="false"
-                            ></i>
-
-                            <div
-                              class="dropdown-menu"
-                              aria-labelledby="dropdownMenuButton"
-                            >
-                              <a class="dropdown-item"
-                                ><router-link
-                                  :to="`/tenant/pledge/pledgepayment?id=${pledgelist.pledgeTypeID}&pledgeTypeID=${pledgelist.id}&name=${ pledgelist.person.firstName ? pledgelist.person.firstName : '' }${ pledgelist.person.lastName ? pledgelist.person.lastName : '' }`"
-                                  class="text-color"
-                                  >Make Payment</router-link
-                                ></a
-                              >
-                              <a class="dropdown-item"
-                                ><router-link
-                                  :to="`/tenant/pledge/makepledge?id=${pledgelist.id}`"
-                                  class="text-color"
-                                  >Edit</router-link
-                                ></a
-                              >
-                              <a
-                                class="dropdown-item"
-                                @click="showConfirmModal(pledgelist.id, index)"
-                                >Delete</a
-                              >
-                            </div>
-                          </span>
-                      <!-- <i
+                    <span
+                      class="
+                        d-md-none d-sm-flex
+                        text-dark
+                        font-weight-bold
+                        d-flex d-md-none
+                        fontIncrease
+                      "
+                      style="font-size: 15px"
+                      >Action</span
+                    >
+                    <span class="d-sm-flex small">
+                      <i
                         class="
-                          pt-1
-                          px-2
-                          text-primary
-                          border border-primary
-                          rounded-circle
-                          dropdown-toggle
+                          fas
+                          fa-ellipsis-v
                           cursor-pointer
                           ml-2
                           fontIncrease
-                          font-weight-blod
                         "
                         id="dropdownMenuButton"
                         data-toggle="dropdown"
@@ -718,7 +682,38 @@
                       <div
                         class="dropdown-menu"
                         aria-labelledby="dropdownMenuButton"
-                      ></div> -->
+                      >
+                        <a class="dropdown-item"
+                          ><router-link
+                            :to="`/tenant/pledge/pledgepayment?id=${
+                              pledgelist.pledgeTypeID
+                            }&pledgeTypeID=${pledgelist.id}&name=${
+                              pledgelist.person.firstName
+                                ? pledgelist.person.firstName
+                                : ''
+                            }${
+                              pledgelist.person.lastName
+                                ? pledgelist.person.lastName
+                                : ''
+                            }`"
+                            class="text-color"
+                            >Make Payment</router-link
+                          ></a
+                        >
+                        <a class="dropdown-item"
+                          ><router-link
+                            :to="`/tenant/pledge/makepledge?id=${pledgelist.id}`"
+                            class="text-color"
+                            >Edit</router-link
+                          ></a
+                        >
+                        <a
+                          class="dropdown-item"
+                          @click="showConfirmModal(pledgelist.id, index)"
+                          >Delete</a
+                        >
+                      </div>
+                    </span>
                   </span>
                 </div>
               </div>
@@ -768,7 +763,6 @@
         <div>Opps, Your internet connection was disrupted</div>
       </div>
     </div>
-
   </div>
 </template>
 
@@ -809,7 +803,6 @@ export default {
     const showDraft = ref(false);
     const showInvoice = ref(false);
 
-    
     const confirm = useConfirm();
 
     const upload = () => {
@@ -1112,11 +1105,6 @@ export default {
   border-bottom: 1.5px solid #6d6d6d19;
 }
 
-/* .t-header {
-  background: #dde2e6 0% 0% no-repeat padding-box;
-  font-size: 16px;
-  padding: 0.5rem 0;
-} */
 .hover:hover {
   background: #eee;
 }
@@ -1134,50 +1122,12 @@ export default {
 .desc {
   color: #9b9a9c;
 }
-.default-bt {
-  font-weight: 600;
-  white-space: initial;
-  font-size: 1rem;
-  border-radius: 0.5rem;
-  border: 1px solid #999fa5;
-  padding: 0.5rem 1.25rem;
-  width: auto;
-  /* border: none; */
-  /* outline: transparent !important; */
-  max-height: 40px;
-  background: #ffffff47 !important;
-  min-width: 121px;
-}
-.head-button {
-  display: flex;
-  justify-content: flex-end;
-}
-
-@media (max-width: 577px) {
-  .head-button {
-    flex-direction: column;
-    align-items: center;
-  }
-}
-@media (max-width: 767px) {
-  .head-button {
-    display: flex;
-    justify-content: center;
-  }
-}
-
-@media (max-width: 575px) {
-  .head-button {
-    display: flex;
-    justify-content: center;
-  }
-}
 
 .pi-spinner {
   color: #136acd;
 }
 
 .fa-ellipsis-v {
-    padding: 10px;
+  padding: 10px;
 }
 </style>
