@@ -7,30 +7,13 @@
             <div class="col-md-5">
               <h2 class="font-weight-bold page-hder">Pledge Overview</h2>
             </div>
-            <!-- <div class="col-md-7 d-sm-flex justify-content-md-end">
-              <router-link
-                :to="{ name: 'MakePledge', path: '/tenant/pledge/makepledge' }"
-              >
-                <a
-                  class="
-                    def-btn
-                    primary-bg
-                    text-white
-                    border-0
-                    px-sm-2 px-lg-4
-                    my-sm-1
-                  "
-                  >Make new pledge</a
-                >
-              </router-link>
-            </div> -->
             <Toast />
           </div>
           <hr class="mb-4" />
         </div>
         <div class="container">
           <div class="row mb-4 mt-3">
-            <div class="col-md-7">
+            <div class="col-md-8">
               <span class="theader"> Pledge Name </span>
               <div class="my-3">
                 <span class="evt-name">
@@ -39,14 +22,14 @@
               </div>
             </div>
 
-            <div class="col-md-5">
+            <div class="col-md-4">
               <span class="theader">Donor</span>
               <div class="my-3">
                 <span class="evt-name">{{ personName }}</span>
               </div>
             </div>
-            <div class="col-md-7">
-              <span class="theader"> Pledged Amount </span>
+            <div class="col-md-4">
+              <span class="theader">Total payment</span>
               <div class="my-3">
                 <span class="evt-name">
                   {{ pledgeAmount.toLocaleString() }}
@@ -54,13 +37,23 @@
               </div>
             </div>
 
-            <div class="col-md-5">
-              <span class="theader">Total Target Amount</span>
+            <div class="col-md-4">
+              <span class="theader">Balance</span>
               <div class="my-3">
                 <span class="evt-name">
                   {{
                     Number(selectedPledge.totalTargetAmount).toLocaleString()
                   }}</span
+                >
+              </div>
+            </div>
+
+            <div class="col-md-4">
+              <span class="theader">Date</span>
+              <div class="my-3">
+                <span class="evt-name">
+                  25th May, 2020
+                  </span
                 >
               </div>
             </div>
