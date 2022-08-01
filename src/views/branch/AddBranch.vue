@@ -339,6 +339,7 @@ export default {
                 formData.append( "image", image.value ? image.value : "");
                 //  formData.append( "countryID", 1275);
                 formData.append( "duplicateAttendances", replicateAttendance.value);
+                formData.append( "duplicateFinancials", replicateFinancial.value);
                 formData.append( "duplicateEvents", replicateEvent.value);
                 formData.append( "duplicateGroups", replicateGroup.value);
                 console.log(encodeURIComponent(formData))
