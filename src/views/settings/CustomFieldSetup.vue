@@ -37,9 +37,9 @@
                           <label for="">Select the type of control you want to use</label>
                           <Dropdown v-model="selectedControl" class="w-100 font-weight-normal" optionLabel="name" :options="controlType"  placeholder="Select type" />
                       </div>
-                      <div class="col-md-12 col-sm-12 mt-3 " v-if="selectedControl.name == 'DropdownList' " >
+                      <div class="col-md-12 col-sm-12 mt-3 w-100" v-if="selectedControl.name == 'DropdownList' " >
                         <label for=""> Enter your Dropdown list here seperated by comma..</label>
-                        <Chips v-model="dropdownList" style="background: white, width: 100%;" separator="," />
+                        <Chips v-model="dropdownList" style="background: white, width: 100%;" separator=","/>
                         <!-- <input
                           type="text"
                           class="form-control"
