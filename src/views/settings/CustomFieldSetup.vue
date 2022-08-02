@@ -87,7 +87,7 @@
                 <div
                   class="col-md-3 d-flex px-md-0 px-5 justify-content-between align-items-center  mb-md-0 mb-5 flex-wrap"
                 >
-                  <span class="py-2 hidden-header">CONTROL TYPE</span>
+                  <span class="py-2 hidden-header small ">CONTROL TYPE</span>
                   <span class="py-2 text-xs-left mr-md-0 ml-md-3 mr-4">{{ getControlName(customFieldList.controlType) }}</span>
                 </div>
                 <div
@@ -108,8 +108,8 @@
                   </div>
                 </div>
               </div>
+                <div class="row grey-background" v-if="vissibleTab === `tab_${index}`">
               <div :class="{'show-view-dropdown' : toggleCustomList, 'hide-view-dropdown' : !toggleCustomList}">
-                <div class="row grey-background py-2 mt-2" v-if="vissibleTab === `tab_${index}`">
                 <div
                   class="col-md-10 d-flex flex-wrap my-3 "
                 >
@@ -513,7 +513,7 @@ export default {
 }
 
 .show-view-dropdown {
-  height: 350px;
+  height: 450px;
   overflow: hidden;
   transition:  all .5s ease-in-out;
 }
@@ -522,6 +522,7 @@ export default {
   overflow: hidden;
   transition:  all .5s ease-in-out;
 }
+
 
 .hidden-header {
   display: none;
@@ -573,6 +574,7 @@ export default {
   .hidden-header {
     display: inline-block;
     font-weight: bold;
+    font-size: 0.7em;
   }
 
   .table-header-row {
