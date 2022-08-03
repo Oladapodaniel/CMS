@@ -80,21 +80,21 @@
           <div class="row py-2" v-for="(customFieldList, index) in allCustomFieldList" :key="index">
             <div class="col-md-12">
               <div class="row">
-                <div class="col-md-3 d-flex px-md-0 px-5 justify-content-between align-items-center  mb-md-0 mb-5 flex-wrap">
-                  <span class="py-2 hidden-header">LABEL</span>
-                  <span class="py-2 text-xs-left mr-md-0 ml-md-3 mr-4">{{ customFieldList.label }}</span>
+                <div class="col-md-3 d-flex px-md-0 px-4 justify-content-between align-items-center  mb-md-0 mb-5 flex-wrap">
+                  <span class="py-2 hidden-header">LABEL:</span>
+                  <span class="py-2 text-xs-left mr-md-0 ml-md-3 mr-4 font-text">{{ customFieldList.label }}</span>
                 </div>
                 <div
-                  class="col-md-3 d-flex px-md-0 px-5 justify-content-between align-items-center  mb-md-0 mb-5 flex-wrap"
+                  class="col-md-3 d-flex px-md-0 px-4 justify-content-between align-items-center  mb-md-0 mb-5 flex-wrap"
                 >
-                  <span class="py-2 hidden-header small ">CONTROL TYPE</span>
-                  <span class="py-2 text-xs-left mr-md-0 ml-md-3 mr-4">{{ getControlName(customFieldList.controlType) }}</span>
+                  <span class="py-2 hidden-header small ">CONTROL TYPE:</span>
+                  <span class="py-2 text-sm-end font-text">{{ getControlName(customFieldList.controlType) }}</span>
                 </div>
                 <div
-                  class="col-md-3 d-flex px-md-0 px-5 justify-content-between align-items-center  mb-md-0 mb-5 flex-wrap"
+                  class="col-md-3 d-flex px-md-0 px-4 justify-content-between align-items-center  mb-md-0 mb-5 flex-wrap"
                 >
-                  <span class="py-2 hidden-header">ENTITY TYPE</span>
-                  <span class="py-2 text-xs-left mr-md-0 ml-md-3 mr-4">{{ getEntityName(customFieldList.entityType) }}</span>
+                  <span class="py-2 hidden-header">ENTITY TYPE:</span>
+                  <span class="py-2 text-sm-end  font-text">{{ getEntityName(customFieldList.entityType) }}</span>
                 </div>
                 <div class="col-md-3 mb-md-0 mb-2 col-12 d-flex justify-md-content-end justify-content-start align-items-end">
                   <span class="py-md-4 hidden-header hidden-header1">ACTION</span>
@@ -573,9 +573,10 @@ export default {
   }
   .hidden-header {
     display: inline-block;
-    font-weight: bold;
-    font-size: 0.7em;
+    font-weight: 700;
+    font-size: 13px;
   }
+
 
   .table-header-row {
     display: none;
@@ -615,6 +616,10 @@ export default {
     flex-wrap: wrap;
   }
   
+  .font-text {
+    font-size: 13px;
+    font-weight: bold;
+  }
   
 }
 </style>
