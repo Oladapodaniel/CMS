@@ -239,7 +239,7 @@
                   </div>
                 </div>
 
-                <div class="desc-head col-md-2">
+                <div class="desc-head small-text col-md-2">
                   <div class="d-flex justify-content-between">
                     <span
                       class="
@@ -520,6 +520,103 @@
       <emailComponent :selectedGroupMembers="markedFirsttimers"  @closesidemodal="() => showEmail = false"/>
     </div>
   </SideBar>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
 
 </template>
 
@@ -1724,6 +1821,9 @@ a {
 @media (max-width: 767px) {
   .filter-options-shown {
     height: 150px;
+  }
+  .dropdown{
+    float: right;
   }
 }
 
