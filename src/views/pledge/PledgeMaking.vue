@@ -299,7 +299,6 @@
                 </div>
                 <div>
                   <div
-                    @click="recordPayment"
                     class="
                       cursor-pointer
                       grey-border
@@ -1394,7 +1393,7 @@
         aria-labelledby="exampleModalLongTitle"
         aria-hidden="true"
       >
-        <div class="modal-dialog" role="document">
+        <div class="modal-dialog modal-md modal-dialog-centered" role="document">
           <div class="modal-content">
             <div class="modal-body">
               <div class="container-fluid">
