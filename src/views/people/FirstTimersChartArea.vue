@@ -1,7 +1,7 @@
 <template>
   <div class="container">
     <div class="container-fluid">
-      <div class="row mb-4 px-0">
+      <div class="row mb-4 px-0" style="margin-left: -27px !important;">
         <div class="col-md-5 sub-header">
           Overview
         </div>
