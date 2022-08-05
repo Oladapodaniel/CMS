@@ -1467,7 +1467,7 @@
                                 border
                                 currency
                               "
-                              ></span
+                              >{{ selectedCurrency.name }}</span
                             >
                             <div class="col-8 col-lg-10 m-0 p-0">
               
@@ -1577,6 +1577,7 @@ export default {
     const selectedLink = ref(null);
     const emaildata = ref(null);
     const tenantID = ref("");
+    const selectedCurrency = ref("");
     const route = useRoute();
     const churchName = ref("");
     const Address = ref("");
@@ -1595,6 +1596,7 @@ export default {
     const url = ref("");
     const amountTo = ref("");
     const selectedChannel = ref({});
+    const currencyList = ref([]);
     const pledgeCategory = ref([
       { name: "Free will" },
       { name: "Specific" },
@@ -1826,7 +1828,6 @@ export default {
         allPledgeList.value = res.data.returnObject;
 
         getDetails();
-
         isActive.value = res.data.returnObject.map((i) => {
           return {
             isActive: i.isActive,
@@ -1846,6 +1847,7 @@ export default {
       );
       memberName.value = route.query.name;
     };
+   
 
     const makePledge = async () => {
       const makePledgeDetails = {
@@ -1863,7 +1865,6 @@ export default {
           makePledgeDetails
         );
         finish();
-        console.log(res, "getSinglePledge");
         router.push(
           `/pledge/pledgepayment?ID=${route.query.id}&name=${route.query.name}`
         );
@@ -1901,7 +1902,9 @@ export default {
     };
 
     return {
+      selectedCurrency,
       savePayment,
+      currencyList,
       url,
       channel,
       selectedChannel,
