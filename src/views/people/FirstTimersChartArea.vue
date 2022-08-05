@@ -1,7 +1,7 @@
 <template>
   <div class="container">
     <div class="container-fluid">
-      <div class="row mb-4 px-0" style="margin-left: -27px !important;">
+      <div class="row mb-4 px-0 overview">
         <div class="col-md-5 sub-header">
           Overview
         </div>
@@ -222,6 +222,10 @@ export default {
 </script>
 
 <style scoped>
+
+.overview{
+  margin-left: -27px!important;
+}
 
 /* .header1{
 text-align: left;
