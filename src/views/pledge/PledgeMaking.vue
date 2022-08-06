@@ -51,10 +51,7 @@
             <div class="col-md-4">
               <span class="theader">Date</span>
               <div class="my-3">
-                <span class="evt-name">
-                  25th May, 2020
-                  </span
-                >
+                <span class="evt-name"> 25th May, 2020 </span>
               </div>
             </div>
           </div>
@@ -138,15 +135,15 @@
                 <div class="row">
                   <div class="col-12">
                     <div class="row">
-                      <div class="col-12 mb-5 mx-3 border shadow rounded">
+                      <div class="col-12 mb-5 mx-3 pt-1 border shadow rounded">
                         <div class="row">
                           <div
                             class="
                               col-md-2 col-sm-2
                               d-flex
-                              align-self-center
+                              justify-content-center
                               image
-                              mt-4
+                              mt-2
                             "
                           >
                             <img
@@ -176,7 +173,7 @@
                                   type="text"
                                   ref="selectedLink"
                                   v-model="pledgePaymentLink"
-                                  class="form-control"
+                                  class="border-0"
                                   placeholder="Link"
                                   style="width: 80%"
                                 />
@@ -198,20 +195,14 @@
                             </p>
                           </div>
                         </div>
-                      </div>
-                    </div>
-                    
-                    
-                    <div class="row">
-                      <div class="col-12 mb-5 mx-3 border shadow rounded">
                         <div class="row">
                           <div
                             class="
                               col-md-2 col-sm-2
                               d-flex
-                              align-self-center
+                              mt-2
+                              justify-content-center
                               image
-                              mt-4
                             "
                           >
                             <img
@@ -230,11 +221,39 @@
                                 Virtual Account
                               </h4></a
                             >
-                            <div class="mb-4">
-                              <div class="p-2 border">
-                                <div class="font-weight-800 text-dark">GTB</div>
-                              <div class="font-weight-800 text-dark">0222909641</div>
-                              <div class="font-weight-800 text-dark">Sarah Church Account</div>
+                            <div
+                              class="
+                                align-item-center
+                                justify-content-between
+                                d-flex
+                              "
+                            >
+                              <div class="mb-2">
+                                <div class="p-2">
+                                  <div class="font-weight-800 text-dark">
+                                    GTB
+                                  </div>
+                                  <div class="font-weight-800 text-dark">
+                                    0222909641
+                                  </div>
+                                  <div class="font-weight-800 text-dark">
+                                    Sarah Church Account
+                                  </div>
+                                </div>
+                              </div>
+                              <div class="mt-4">
+                                <i
+                                  v-tooltip.top="'Copy link'"
+                                  class="pi pi-copy ml-2 c-pointer"
+                                  @click="copyLink"
+                                  style="font-size: 22px"
+                                ></i>
+                                <i
+                                  v-tooltip.top="'Send SMS'"
+                                  class="pi pi-envelope ml-4 c-pointer"
+                                  @click="copyLink"
+                                  style="font-size: 22px"
+                                ></i>
                               </div>
                             </div>
                           </div>
@@ -243,7 +262,7 @@
                     </div>
                   </div>
                 </div>
-                <div class="row">
+                <!-- <div class="row">
                   <div
                     class="
                       col-md-12
@@ -262,11 +281,19 @@
                       Make Payment
                     </button>
                   </div>
-                </div>
+                </div> -->
               </div>
             </div>
             <div class="container-fluid">
-              <div class="row d-flex justify-content-between align-items-center mt-5">
+              <div
+                class="
+                  row
+                  d-flex
+                  justify-content-between
+                  align-items-center
+                  mt-5
+                "
+              >
                 <div>
                   <div class="evt-name text-dark">Payments</div>
                 </div>
@@ -281,6 +308,8 @@
                       border-0
                       text-white
                     "
+                    data-toggle="modal"
+                    data-target="#exampleModalLong"
                   >
                     Record Payment
                   </div>
@@ -289,7 +318,7 @@
                   <hr class="my-3" />
                 </div>
               </div>
-        
+
               <div class="container-fluid d-none mt-4 d-md-block">
                 <div class="row t-header mt-4 border-bottom pb-2">
                   <div
@@ -330,12 +359,7 @@
                   </div>
 
                   <div
-                    class="
-                      small-text
-                      text-capitalize
-                      col-md-1
-                      font-weight-bold
-                    "
+                    class="small-text text-capitalize col-md-1 font-weight-bold"
                   >
                     Action
                   </div>
@@ -435,9 +459,7 @@
                           style="font-size: 15px"
                           >Payment day</span
                         >
-                        <div class="small-text">
-                          25
-                        </div>
+                        <div class="small-text">25</div>
                       </div>
                     </div>
                     <div class="col-md-2 py-2">
@@ -452,9 +474,7 @@
                           style="font-size: 15px"
                           >Amount paid</span
                         >
-                        <div class="small-text">
-                          Anderson Udokoro
-                        </div>
+                        <div class="small-text">Anderson Udokoro</div>
                       </div>
                     </div>
                     <div class="col-md-2 py-2">
@@ -469,9 +489,7 @@
                           style="font-size: 15px"
                           >Channel</span
                         >
-                        <div class="small-text">
-                          NGN 111,000.00
-                        </div>
+                        <div class="small-text">NGN 111,000.00</div>
                       </div>
                     </div>
 
@@ -499,7 +517,6 @@
                                 class="dropdown-menu"
                                 aria-labelledby="dropdownMenuButton"
                               >
-            
                                 <a class="dropdown-item"
                                   ><router-link
                                     :to="`/tenant/pledge/makepledge?id=`"
@@ -611,9 +628,7 @@
                           style="font-size: 15px"
                           >Payment day</span
                         >
-                        <div class="small-text">
-                          25
-                        </div>
+                        <div class="small-text">25</div>
                       </div>
                     </div>
                     <div class="col-md-2 py-2">
@@ -628,9 +643,7 @@
                           style="font-size: 15px"
                           >Amount paid</span
                         >
-                        <div class="small-text">
-                          Anderson Udokoro
-                        </div>
+                        <div class="small-text">Anderson Udokoro</div>
                       </div>
                     </div>
                     <div class="col-md-2 py-2">
@@ -645,9 +658,7 @@
                           style="font-size: 15px"
                           >Channel</span
                         >
-                        <div class="small-text">
-                          NGN 111,000.00
-                        </div>
+                        <div class="small-text">NGN 111,000.00</div>
                       </div>
                     </div>
 
@@ -675,7 +686,6 @@
                                 class="dropdown-menu"
                                 aria-labelledby="dropdownMenuButton"
                               >
-            
                                 <a class="dropdown-item"
                                   ><router-link
                                     :to="`/tenant/pledge/makepledge?id=`"
@@ -787,9 +797,7 @@
                           style="font-size: 15px"
                           >Payment day</span
                         >
-                        <div class="small-text">
-                          25
-                        </div>
+                        <div class="small-text">25</div>
                       </div>
                     </div>
                     <div class="col-md-2 py-2">
@@ -804,9 +812,7 @@
                           style="font-size: 15px"
                           >Amount paid</span
                         >
-                        <div class="small-text">
-                          Anderson Udokoro
-                        </div>
+                        <div class="small-text">Anderson Udokoro</div>
                       </div>
                     </div>
                     <div class="col-md-2 py-2">
@@ -821,9 +827,7 @@
                           style="font-size: 15px"
                           >Channel</span
                         >
-                        <div class="small-text">
-                          NGN 111,000.00
-                        </div>
+                        <div class="small-text">NGN 111,000.00</div>
                       </div>
                     </div>
 
@@ -851,7 +855,6 @@
                                 class="dropdown-menu"
                                 aria-labelledby="dropdownMenuButton"
                               >
-            
                                 <a class="dropdown-item"
                                   ><router-link
                                     :to="`/tenant/pledge/makepledge?id=`"
@@ -963,9 +966,7 @@
                           style="font-size: 15px"
                           >Payment day</span
                         >
-                        <div class="small-text">
-                          25
-                        </div>
+                        <div class="small-text">25</div>
                       </div>
                     </div>
                     <div class="col-md-2 py-2">
@@ -980,9 +981,7 @@
                           style="font-size: 15px"
                           >Amount paid</span
                         >
-                        <div class="small-text">
-                          Anderson Udokoro
-                        </div>
+                        <div class="small-text">Anderson Udokoro</div>
                       </div>
                     </div>
                     <div class="col-md-2 py-2">
@@ -997,9 +996,7 @@
                           style="font-size: 15px"
                           >Channel</span
                         >
-                        <div class="small-text">
-                          NGN 111,000.00
-                        </div>
+                        <div class="small-text">NGN 111,000.00</div>
                       </div>
                     </div>
 
@@ -1027,7 +1024,6 @@
                                 class="dropdown-menu"
                                 aria-labelledby="dropdownMenuButton"
                               >
-            
                                 <a class="dropdown-item"
                                   ><router-link
                                     :to="`/tenant/pledge/makepledge?id=`"
@@ -1139,9 +1135,7 @@
                           style="font-size: 15px"
                           >Payment day</span
                         >
-                        <div class="small-text">
-                          25
-                        </div>
+                        <div class="small-text">25</div>
                       </div>
                     </div>
                     <div class="col-md-2 py-2">
@@ -1156,9 +1150,7 @@
                           style="font-size: 15px"
                           >Amount paid</span
                         >
-                        <div class="small-text">
-                          Anderson Udokoro
-                        </div>
+                        <div class="small-text">Anderson Udokoro</div>
                       </div>
                     </div>
                     <div class="col-md-2 py-2">
@@ -1173,9 +1165,7 @@
                           style="font-size: 15px"
                           >Channel</span
                         >
-                        <div class="small-text">
-                          NGN 111,000.00
-                        </div>
+                        <div class="small-text">NGN 111,000.00</div>
                       </div>
                     </div>
 
@@ -1203,7 +1193,6 @@
                                 class="dropdown-menu"
                                 aria-labelledby="dropdownMenuButton"
                               >
-            
                                 <a class="dropdown-item"
                                   ><router-link
                                     :to="`/tenant/pledge/makepledge?id=`"
@@ -1315,9 +1304,7 @@
                           style="font-size: 15px"
                           >Payment day</span
                         >
-                        <div class="small-text">
-                          25
-                        </div>
+                        <div class="small-text">25</div>
                       </div>
                     </div>
                     <div class="col-md-2 py-2">
@@ -1332,9 +1319,7 @@
                           style="font-size: 15px"
                           >Amount paid</span
                         >
-                        <div class="small-text">
-                          Anderson Udokoro
-                        </div>
+                        <div class="small-text">Anderson Udokoro</div>
                       </div>
                     </div>
                     <div class="col-md-2 py-2">
@@ -1349,9 +1334,7 @@
                           style="font-size: 15px"
                           >Channel</span
                         >
-                        <div class="small-text">
-                          NGN 111,000.00
-                        </div>
+                        <div class="small-text">NGN 111,000.00</div>
                       </div>
                     </div>
 
@@ -1379,7 +1362,6 @@
                                 class="dropdown-menu"
                                 aria-labelledby="dropdownMenuButton"
                               >
-            
                                 <a class="dropdown-item"
                                   ><router-link
                                     :to="`/tenant/pledge/makepledge?id=`"
@@ -1399,6 +1381,158 @@
               </div>
             </div>
             <!-- <PledgeTransaction /> -->
+          </div>
+        </div>
+      </div>
+      <!-- Modal -->
+      <div
+        class="modal fade"
+        id="exampleModalLong"
+        tabindex="-1"
+        role="dialog"
+        aria-labelledby="exampleModalLongTitle"
+        aria-hidden="true"
+      >
+        <div class="modal-dialog modal-md modal-dialog-centered" role="document">
+          <div class="modal-content">
+            <div class="modal-body">
+              <div class="container-fluid">
+                <div class="row">
+                  <div class="col-md-12 mt-4">
+                    <div class="row my-1 mt-3">
+                      <div class="col-md-10 ">
+                        <div class="row">
+                          <div class="col-md-4 text-md-right align-self-center">
+                            <label for="" class=""
+                              >Person <sup class="text-danger">*</sup>
+                            </label>
+                          </div>
+                          <div class="col-md-8">
+                            <!-- <input
+                              type="text"
+                              v-model="memberName"
+                              :disabled="checking"
+                              class="form-control w-100"
+                            /> -->
+                            <h4 class="font-weight-600">{{ personName }}</h4>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                    <div class="row my-1 mt-3">
+                      <div class="col-md-10 ">
+                        <div class="row">
+                          <div class="col-md-4 text-md-right align-self-center">
+                            <label for="" class="">
+                              Pledge Name <sup class="text-danger">*</sup>
+                            </label>
+                          </div>
+
+                          <div class="col-md-8">
+                            <!-- <Dropdown
+                              v-model="selectedPledge"
+                              :disabled="checking"
+                              class="w-100 font-weight-normal"
+                              :options="allPledgeList"
+                              optionLabel="name"
+                              placeholder="Select Pledge"
+                            /> -->
+                            <!-- <input
+                              type="text"
+                              v-model="selectedPledge.name"
+                              :disabled="checking"
+                              class="form-control w-100"
+                            /> -->
+                            <h4 class="font-weight-100">
+                              {{ pledgeName ? pledgeName : "" }}
+                            </h4>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                    <div
+                      class="row my-1 mt-3"
+                    >
+                      <div class="col-md-10 ">
+                        <div class="row">
+                          <div class="col-md-4 text-md-right align-self-center">
+                            <label for="" class=""> Pledge Amount </label>
+                          </div>
+                          <div class="col-md-8 d-flex">
+                            <span
+                              class="
+                                bg-secondary
+                                align-self-center
+                                pt-1
+                                border
+                                currency
+                              "
+                              >{{ selectedCurrency.name }}</span
+                            >
+                            <div class="col-8 col-lg-10 m-0 p-0">
+              
+                              <h4 class="pledge-amount font-weight-100">
+                                {{ pledgeAmount.toLocaleString() }}
+                              </h4>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                    <div class="row mt-3">
+                      <div class="col-md-10 ">
+                        <div class="row">
+                          <div class="col-md-4 text-md-right align-self-center">
+                            <label for="" class=""
+                              >Channel <sup class="text-danger">*</sup>
+                            </label>
+                          </div>
+
+                          <div class="col-md-8 d-flex flex-wrap" >
+                            <button class="  btn d-flex justify-content-between  col-12 border  " type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                <span class="ofering">
+                                    &nbsp;&nbsp;&nbsp; {{ selectedChannel.name ?  selectedChannel.name : 'Select Channel' }}
+                                    <!-- {{ item.account ? item.account : 'Select' }} -->
+                                </span>
+                                <span>
+                                    <i class="pi pi-angle-down offset-sm-2 ofering"></i>
+                                </span>
+                            </button>
+                            <div class="dropdown-menu scroll w-100 " aria-labelledby="dropdownMenuButton">
+                                <a class="dropdown-item" v-for="(itm, indx) in channel" :key="indx">
+                                    <div class="cursor-pointer" @click="selectChannel(itm)"> {{itm.name}}</div> 
+                                </a>
+                            </div>
+                            <!-- <Dropdown
+                              v-model="selectedChannel"
+                              class="w-100 font-weight-normal"
+                              :options="channel"
+                              optionLabel="name"
+                              placeholder="Select Channel"
+                            /> -->
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                    <div class="col-md-8  mt-4">
+                      <div class="row d-flex flex-wrap justify-content-center">
+                        <div class="mt-4 col-sm-5 col-12 text-center">
+                          <button
+                            class="default-btn"
+                            data-dismiss="modal"
+                            @click="savePayment"
+                          >
+                            <i class="pi pi-spin pi-spinner" v-if="loading"></i>
+                            Save
+                          </button>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                <Toast />
+              </div>
+            </div>
           </div>
         </div>
       </div>
@@ -1443,6 +1577,7 @@ export default {
     const selectedLink = ref(null);
     const emaildata = ref(null);
     const tenantID = ref("");
+    const selectedCurrency = ref("");
     const route = useRoute();
     const churchName = ref("");
     const Address = ref("");
@@ -1460,10 +1595,47 @@ export default {
     const isActive = ref(null);
     const url = ref("");
     const amountTo = ref("");
+    const selectedChannel = ref({});
+    const currencyList = ref([]);
     const pledgeCategory = ref([
       { name: "Free will" },
       { name: "Specific" },
       { name: "Range" },
+    ]);
+
+    const savePayment = async () => {
+      let paymentData = {
+        id: route.query.id,
+        pledgeID: route.query.pledgeTypeID,
+        amount: pledgeAmount.value,
+        channel: selectedChannel.value.name,
+        currencyID: selectedPledge.value.currencyID,
+      };
+      try {
+        const res = await axios.post(
+          "/api/Pledge/SavePledgePayment",
+          paymentData
+        );
+        console.log(res, "paypledge");
+
+        toast.add({
+          severity: "success",
+          summary: "Successful",
+          detail: "Pledge Payment created successfully",
+          life: 2000,
+        });
+        router.push("/tenant/pledge/pledgepaymentlist");
+      } catch (error) {
+        console.log(error);
+      }
+    };
+    const channel = ref([
+      { name: "Bank Transfer" },
+      { name: "Cash" },
+      { name: "Online" },
+      { name: "POS" },
+      { name: "USSD" },
+      { name: "Cheque" },
     ]);
 
     const personName = ref(route.query.name);
@@ -1475,6 +1647,11 @@ export default {
     const shareableLinkField = ref(null);
     const locationTwo = ref(window.location);
     const willCopyLink = ref(false);
+
+    const selectChannel = (item) =>{
+        selectedChannel.value = item
+        console.log(selectedChannel.value, "😂🤗🤗");
+    }
 
     const copyLink2 = () => {
       try {
@@ -1651,7 +1828,6 @@ export default {
         allPledgeList.value = res.data.returnObject;
 
         getDetails();
-
         isActive.value = res.data.returnObject.map((i) => {
           return {
             isActive: i.isActive,
@@ -1671,6 +1847,7 @@ export default {
       );
       memberName.value = route.query.name;
     };
+   
 
     const makePledge = async () => {
       const makePledgeDetails = {
@@ -1688,7 +1865,6 @@ export default {
           makePledgeDetails
         );
         finish();
-        console.log(res, "getSinglePledge");
         router.push(
           `/pledge/pledgepayment?ID=${route.query.id}&name=${route.query.name}`
         );
@@ -1726,7 +1902,13 @@ export default {
     };
 
     return {
+      selectedCurrency,
+      savePayment,
+      currencyList,
       url,
+      channel,
+      selectedChannel,
+      selectChannel,
       allPledgeList,
       locationTwo,
       shareableLinkField,

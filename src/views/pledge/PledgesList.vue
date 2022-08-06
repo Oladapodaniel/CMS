@@ -117,7 +117,7 @@
                     align-items-center
                   "
                   style="margin: 0"
-                  v-for="(pledgelist, index) in searchGroup"
+                  v-for="(pledgelist, index) in searchPledges"
                   :key="index"
                 >
                   <div
@@ -293,28 +293,36 @@
               Total pledge
             </div>
             <h3 class="font-weight-700 mt-3">
-              N 1,439,700 <span class="text-secondary small">NGN</span>
+              {{ Math.abs(pledgesSummary.totalPledges).toLocaleString() }}.00 <span class="text-secondary small">NGN</span>
             </h3>
-            <div class="small text-secondary">
+            <!-- <div class="small text-secondary">
               Last updated on July 9, 2022 at 1:07PM GMT+1
+            </div> -->
+          </div>
+          <div class="col-md-3 mt-3 mt-md-0">
+            <div class="font-weight-bold small text-secondary">
+              Total Payments
             </div>
+            <h3 class="font-weight-700 mt-3">
+                {{ Math.abs(pledgesSummary.totalPayments).toLocaleString() }}.00<span class="text-secondary small">NGN</span>
+            </h3>
           </div>
           <div class="col-md-4 mt-3 mt-md-0">
             <div class="text-secondary font-weight-bold small">
               Payment within the last 30 days
             </div>
             <h3 class="font-weight-700 mt-3">
-              N 0.00 <span class="text-secondary small">NGN</span>
+             {{ Math.abs(pledgesSummary.paymentsInLast30Days).toLocaleString() }}.00 <span class="text-secondary small">NGN</span>
             </h3>
           </div>
-          <div class="col-md-3 mt-3 mt-md-0">
+          <!-- <div class="col-md-3 mt-3 mt-md-0">
             <div class="font-weight-bold small text-secondary">
               Average time to redemption
             </div>
             <h3 class="font-weight-700 mt-3">
               21<span class="text-secondary small">days</span>
             </h3>
-          </div>
+          </div> -->
         </div>
       </div>
       <div
@@ -450,11 +458,8 @@
           <div class="small-text text-capitalize col-md-1 font-weight-bold">
             Status
           </div>
-          <div class="small-text text-capitalize col-md-2 font-weight-bold">
+          <div class="small-text text-capitalize col-md-1 font-weight-bold">
             Due
-          </div>
-          <div class="small-text text-capitalize col-md-2 font-weight-bold">
-            Date
           </div>
           <div class="small-text text-capitalize col-md-1 font-weight-bold">
             Number
@@ -462,35 +467,40 @@
           <div class="small-text text-capitalize col-md-2 font-weight-bold">
             Contact
           </div>
+          <div class="small-text text-capitalize col-md-2 font-weight-bold">
+            Category
+          </div>
           <div
             class="
               small-text
               text-capitalize
-              Text-center
+              
               col-md-2
               font-weight-bold
             "
           >
-            Amount Pledge
+            Amount
           </div>
           <div
             class="
               small-text
               text-capitalize
-              Text-center
+              
               col-md-1
               font-weight-bold
             "
           >
-            Balance
+            Redemeed
           </div>
-
+          <div class="small-text text-capitalize col-md-1 font-weight-bold">
+            Date
+          </div>
           <div
             class="
               small-text
               text-capitalize
               col-md-1
-              text-right
+            
               font-weight-bold
             "
           >
@@ -517,7 +527,7 @@
               align-items-center
             "
             style="margin: 0"
-            v-for="(pledgelist, index) in searchGroup"
+            v-for="(pledgelist, index) in searchPledges"
             :key="index"
           >
             <div class="col-md-1 py-2">
@@ -541,12 +551,12 @@
                   >Status</span
                 >
                 <span class="rounded small font-weight-bold statusbg py-1"
-                  >Overdue</span
+                  >{{pledgelist.status}}</span
                 >
               </p>
             </div>
 
-            <div class="col-md-2 py-2">
+            <div class="col-md-1 py-2">
               <p class="mb-0 d-flex text-danger justify-content-between">
                 <span
                   class="
@@ -558,22 +568,7 @@
                   style="font-size: 15px"
                   >Due</span
                 >
-                1098 days ago
-              </p>
-            </div>
-            <div class="col-md-2 py-2">
-              <p class="mb-0 d-flex justify-content-between">
-                <span
-                  class="
-                    text-dark
-                    font-weight-bold
-                    d-flex d-md-none
-                    fontIncrease
-                  "
-                  style="font-size: 15px"
-                  >Date
-                </span>
-                {{ date(pledgelist.pledgeType.dateEntered) }}
+                {{pledgelist.overDueDays}}
               </p>
             </div>
             <div class="col-md-1 py-2">
@@ -588,7 +583,7 @@
                   style="font-size: 15px"
                   >Number</span
                 >
-                <div class="small-text">25</div>
+                <div class="small-text">{{pledgelist.pledgeNumber}}</div>
               </div>
             </div>
             <div class="col-md-2 py-2">
@@ -604,8 +599,7 @@
                   >Contact</span
                 >
                 <div class="small-text">
-                  {{ pledgelist.person.firstName }}
-                  {{ pledgelist.person.lastName }}
+                  {{ pledgelist.contact }}
                 </div>
               </div>
             </div>
@@ -619,14 +613,30 @@
                     fontIncrease
                   "
                   style="font-size: 15px"
-                  >Amount pledged</span
+                  >Category</span
+                >
+                <div class="small-text">
+                  {{ pledgelist.pledgeItemName }}
+                </div>
+              </div>
+            </div>
+            <div class="col-md-2 py-2">
+              <div class="d-flex small justify-content-between">
+                <span
+                  class="
+                    text-dark
+                    font-weight-bold
+                    d-flex d-md-none
+                    fontIncrease
+                  "
+                  style="font-size: 15px"
+                  >Amount</span
                 >
                 <div class="small-text">
                   {{
-                    pledgelist &&
-                    pledgelist.pledgeType &&
-                    pledgelist.pledgeType.currency
-                      ? pledgelist.pledgeType.currency.symbol
+                    pledgelist  &&
+                    pledgelist.currency
+                      ? pledgelist.currency
                       : ""
                   }}
                   {{ Math.abs(pledgelist.amount).toLocaleString() }}.00
@@ -643,10 +653,25 @@
                     fontIncrease
                   "
                   style="font-size: 15px"
-                  >Balance</span
+                  >Redemeed</span
                 >
-                <div class="small-text">Balance</div>
+                <div class="small-text">{{pledgelist.totalPaymentSum}}</div>
               </div>
+            </div>
+             <div class="col-md-1 py-2">
+              <p class="mb-0 d-flex justify-content-between">
+                <span
+                  class="
+                    text-dark
+                    font-weight-bold
+                    d-flex d-md-none
+                    fontIncrease
+                  "
+                  style="font-size: 15px"
+                  >Date
+                </span>
+                {{ date(pledgelist.date) }}
+              </p>
             </div>
 
             <div class="col-md-1 py-2">
@@ -688,12 +713,12 @@
                             :to="`/tenant/pledge/pledgepayment?id=${
                               pledgelist.pledgeTypeID
                             }&pledgeTypeID=${pledgelist.id}&name=${
-                              pledgelist.person.firstName
-                                ? pledgelist.person.firstName
+                              pledgelist.contact
+                                ? pledgelist.contact
                                 : ''
                             }${
-                              pledgelist.person.lastName
-                                ? pledgelist.person.lastName
+                              pledgelist.contact
+                                ? pledgelist.contact
                                 : ''
                             }`"
                             class="text-color"
@@ -797,6 +822,7 @@ export default {
     const allPledgeType = ref([]);
     const selectedPerson = ref("");
     const allPledgeList = ref([]);
+    const pledgesSummary = ref({});
     const startDate = ref("");
     const endDate = ref("");
     const showUpload = ref(true);
@@ -842,7 +868,7 @@ export default {
       return `${window.location.origin}/pledge/publicmakepledge/${tenantID.value}`;
     });
 
-    const searchGroup = computed(() => {
+    const searchPledges = computed(() => {
       if (searchText.value !== "" && allPledgeList.value.length > 0) {
         return allPledgeList.value.filter((i) => {
           if (i.pledgeType.name)
@@ -871,18 +897,29 @@ export default {
       searchIsVisible.value = !searchIsVisible.value;
     };
 
+    const getAllPledgesSummary =  async () =>{
+      try{
+        const res = await axios.get("/api/Pledge/GetAllPledgesSummary");
+        
+        pledgesSummary.value =  res.data.returnObject
+        console.log(pledgesSummary.value, "pledgesSummary");
+      }
+      catch(error){
+
+      }
+    }
+    getAllPledgesSummary()
+
     const getAllPledges = async () => {
       loading.value = true;
       try {
         const res = await axios.get("/api/Pledge/GetAllPledges");
-        // const res = await axios.get('/api/Pledge/GetAllPledgeDefinitions')
         finish();
         allPledgeList.value = res.data.returnObject;
-        allPledgeType.value = res.data.returnObject.map((i) => ({
-          name: i.pledgeType.name,
-          id: i.pledgeType.id,
-        }));
-        // console.log(allPledgeType.value,'getPledgeType');
+        // allPledgeType.value = res.data.returnObject.map((i) => ({
+        //   name: i.pledgeType.name,
+        //   id: i.pledgeType.id,
+        // }));
         console.log(allPledgeList.value, "getPledgeList");
         loading.value = false;
       } catch (error) {
@@ -985,7 +1022,8 @@ export default {
       memberlink,
       pledgeClick,
       clearInput,
-      searchGroup,
+      searchPledges,
+      pledgesSummary,
       toggleSearch,
       startDate,
       endDate,

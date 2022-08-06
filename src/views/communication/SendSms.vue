@@ -791,6 +791,21 @@
                               </div>
                             </div>
                           </div>
+                          
+                        </div>
+                        <div class="row mt-3">
+                          <div class="col-md-12 px-1">
+                            <hr class="hr" />
+                          </div>
+                        </div>
+                        <div class="row">
+                          <div class="col-md-12 small-text mt-2 notecolour font-weight-bold">
+                           <span class="text-dark font-weight-bold "> NB :</span>  Messages sent between 8pm to 8am (Night
+                            Messages) will be delivered using the dedicated
+                            phone number. If you wish to use sender ID, kindly
+                            send messages between 8am in the morning to 8pm in
+                            the evening.
+                          </div>
                         </div>
                       </div>
                     </div>
@@ -1239,16 +1254,12 @@ export default {
 
       // console.log(data);
       try {
-        await composerObj.sendMessage(
-          "/api/Messaging/saveSmsSchedule",
-          data
-        );
+        await composerObj.sendMessage("/api/Messaging/saveSmsSchedule", data);
         toast.add({
           severity: "success",
           summary: "message Scheduled",
           detail: `Message scheduled for ${data.time}`,
         });
-
       } catch (error) {
         console.log(error);
         toast.add({
@@ -1617,6 +1628,10 @@ export default {
 </script>
 
 <style scoped>
+.notecolour{
+  /* color: rgb(199, 129, 23);; */
+  color: rgb(252, 54, 87);
+}
 .input {
   display: block;
   width: 100%;

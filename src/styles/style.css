@@ -561,9 +561,7 @@
     /* height: 100vh; */
   }
 
-  .bio-div {
-    /* margin-top: 20px; */
-  }
+ 
 
   .bio-info {
     display: flex;
@@ -1126,4 +1124,10 @@
       width: 90%;
      max-width:1200px;
     }
+  }
+  .p-chips{
+    width: 100%;
+  }
+  .p-chips .p-chips-multiple-container{
+    width: 100%;
   }

@@ -21,19 +21,17 @@
               
           <div class="nav-show" @click="toggleSettingDropDown" >
               
-            <p>
-                <span class="small-text1 dd-list-item">{{dropDownText}}...
-                  
-                  </span>
-               
-              
-              
-                   <i
-                    class="fa fa-angle-up more-icon"
-                    :class="{ 'tbb-icon-rotate':settingLinkDropped }"
+            <div>
+                <span class="small-text1 dd-list-item">{{dropDownText}}...</span>
+                    <i v-if="settingLinkDropped"
+                    class="pi pi-angle-up more-icon1 ml-2 pt-2"
+                    :class="{ 'tbb-icon-rotate': !settingsIcon }"
                   ></i>
-                  
-              </p>
+                    <i v-if="!settingLinkDropped"
+                    class="pi pi-angle-down more-icon1 ml-2 pt-2 "
+                    :class="{ 'tbb-icon-rotate': settingsIcon }"
+                  ></i>
+              </div>
               
              <transition-group tag="span" name="fade"> 
         <div class="show-modal" :class="{ 'dd-hide-list': !settingLinkDropped }">
@@ -179,8 +177,10 @@ export default {
       const showp = ref(false)
         const route = useRoute()
          const settingLinkDropped = ref(false);
+         const settingsIcon = ref(false);
          const toggleSettingDropDown = ()=>{
            settingLinkDropped.value = !settingLinkDropped.value
+           settingsIcon.value = !settingsIcon.value
          };
          const moreShown = ref(false);
          const showMore = () => {
@@ -204,6 +204,7 @@ export default {
             dropDownText,
             moreShown,
             showp,
+            settingsIcon,
             // roleOfCurrentUser,
             // basicUser,
             // admin
@@ -239,6 +240,13 @@ export default {
 .fa-angle-up{
   display: none!important;
 }
+/* .tbb-icon-rotate{
+  display: none;
+} */
+
+.more-icon1{
+  display: none;
+}
 
 
 
@@ -265,13 +273,18 @@ export default {
   transition: all 0.5s ease-in-out;
   display: none;
 }
+    .more-icon1{
+      display: inline-block;
+
+    }
+
 .dd-list-item {
   list-style: none;
   padding-top: 19px;
 }
 .tbb-icon-rotate {
   transition: all 0.5s ease-in-out;
-  transform: rotate(0deg);
+  transform: rotate(180deg);
   color: #190138;
   font-size: 20px;
 }

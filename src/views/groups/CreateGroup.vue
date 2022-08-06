@@ -170,42 +170,39 @@
             </div>
           </div>
           <div class="row">
-            <div class="col-md-12 col-12 d-flex justify-content-end mb-4">
-              <div
+            <div class="col-md-12 col-12 btnn mb-4">
+              <button
                 class="
+                  default-btn
                   border
                   outline-none
                   font-weight-bold
-                  mr-3
                   c-pointer
                   text-center
                 "
-                style="border-radius: 3rem; padding: 0.5rem 1.25rem"
-                type="button"
                 data-toggle="collapse"
                 data-target="#collapseExample"
                 aria-expanded="false"
                 aria-controls="collapseExample"
               >
                 Sub-group
-              </div>
-              <div
+              </button>
+              <button
                 class="
+                  default-btn
                   border
                   outline-none
                   font-weight-bold
-                  mr-3
                   c-pointer
                   text-center
                 "
                 :data-toggle="route.params.groupId ? 'modal' : ''"
                 data-target="#importgroup"
                 ref="modalBtn"
-                style="border-radius: 3rem; padding: 0.5rem 1.25rem"
                 @click="importMember"
               >
                 Import
-              </div>
+              </button>
               <button
                 class="
                   default-btn
@@ -219,7 +216,7 @@
                 data-target="#exampleModal"
                 ref="modalBtn"
               >
-                Add member
+                Addmember
               </button>
             </div>
           </div>
@@ -2519,6 +2516,20 @@ export default {
   width: 50%;
   opacity: 0;
 }
+
+.btnn {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 1rem;
+  }
+
+  .dropdown {
+    display: flex;
+    align-items: flex-end;
+    justify-content: flex-end;
+    width: 100%;
+  }
 @media screen and (max-width: 947px) {
   .m-wrapper,
   .m-wrapper2 {
@@ -2555,6 +2566,7 @@ export default {
   }
   .botom {
     display: flex;
+    gap: 1.5rem;
   }
   .c-pointer {
     cursor: pointer;
@@ -2757,5 +2769,12 @@ export default {
   box-shadow: 0 0 11px rgba(33, 33, 33, 0.2);
   max-height: 400px;
   overflow: scroll;
+}
+
+@media (max-width: 600px) {
+  .btnn {
+
+    flex-wrap: wrap;
+  }
 }
 </style>

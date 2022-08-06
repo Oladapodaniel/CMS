@@ -193,8 +193,9 @@
               </div>
             </div>
           </div>
-        <div class="container-fluid">
-          <div class="row">
+          
+        <div class="container-fluid ">
+          <div class="wrap">
             <loadingComponent :loading="loading" />
             <div
               class=" col-12 py-2 px-0 c-pointer tr-border-bottom hover"
@@ -239,7 +240,7 @@
                   </div>
                 </div>
 
-                <div class="desc-head col-md-2">
+                <div class="desc-head small-text col-md-2">
                   <div class="d-flex justify-content-between">
                     <span
                       class="
@@ -520,7 +521,6 @@
       <emailComponent :selectedGroupMembers="markedFirsttimers"  @closesidemodal="() => showEmail = false"/>
     </div>
   </SideBar>
-
 </template>
 
 <script>
@@ -1553,6 +1553,12 @@ a {
   .more {
     margin-right: 0;
   }
+
+  .wrap {
+    display: flex;
+    flex-wrap: wrap;
+    flex-direction: column;
+  }
 }
 
 @media (max-width: 575px) {
@@ -1724,6 +1730,9 @@ a {
 @media (max-width: 767px) {
   .filter-options-shown {
     height: 150px;
+  }
+  .dropdown{
+    float: right;
   }
 }
 
