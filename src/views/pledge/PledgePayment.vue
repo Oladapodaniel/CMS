@@ -274,19 +274,19 @@ import { ref } from "vue";
 import Dropdown from "primevue/dropdown";
 import InputText from "primevue/inputtext";
 import { useToast } from "primevue/usetoast";
-import userService from "../../services/user/userservice";
-import MembersSearch from "../../components/membership/MembersSearch.vue";
+// import userService from "../../services/user/userservice";
+// import MembersSearch from "../../components/membership/MembersSearch.vue";
 import { useRoute } from "vue-router";
 import { useStore } from "vuex";
 import router from "../../router";
 // import store from "../../store/store";
 import { v4 as uuidv4 } from "uuid";
 import CascadeSelect from "primevue/cascadeselect";
-import finish from "../../services/progressbar/progress";
+// import finish from "../../services/progressbar/progress";
 import ToggleButton from "../donation/toggleButton.vue";
 export default {
   components: {
-    MembersSearch,
+    // MembersSearch,
     Dropdown,
     InputText,
     CascadeSelect,
