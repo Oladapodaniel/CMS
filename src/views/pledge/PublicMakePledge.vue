@@ -440,6 +440,16 @@ export default {
                     amountBase: donorAmountBase,
                     amountTop: selectedPledge.value.donorPaymentRangeToAmount             
                 }
+
+                router.push({  
+                        name: 'PublicPledgeMaking',
+                        query: {
+                            id: makePledgeData.value.pledgeTypeID,
+                            pledgeTypeID: makePledgeData.value.id,
+                            name: selectedContact.value
+                        }
+                    })
+                    
                 if(route.query.id){
                         const makePledgeDetail = {
                             id: route.query.id,

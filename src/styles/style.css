@@ -561,9 +561,7 @@
     /* height: 100vh; */
   }
 
-  .bio-div {
-    /* margin-top: 20px; */
-  }
+ 
 
   .bio-info {
     display: flex;
@@ -672,7 +670,7 @@
     padding: .5rem 1.25rem;
     width: auto;
     outline: transparent !important;
-    max-height: 40px;
+    /* max-height: 40px; */
     background: #fff;
     min-width: 121px;
   }
@@ -1126,4 +1124,10 @@
       width: 90%;
      max-width:1200px;
     }
+  }
+  .p-chips{
+    width: 100%;
+  }
+  .p-chips .p-chips-multiple-container{
+    width: 100%;
   }

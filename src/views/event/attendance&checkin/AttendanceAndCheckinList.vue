@@ -5,36 +5,37 @@
     <div class="col-12 px-0" id="table">
       <div class="top-con" id="ignore2">
         <div class="table-top">
-            <div class="select-All mr-3">
-                  <input
-                  class="d-block d-md-none"
-                  type="checkbox"
-                  name="all"
-                  id="all"
-                  @change="markAllAttendance"
-                  :checked="checkedAttendance.length === searchAttendance.length "
-                />
-                <label class="d-block d-md-none">SELECT ALL</label>
-                  <i
-                      class="
-                        pi pi-trash
-                        text-danger
-                        mr-3
-                        c-pointer
-                        d-flex-inline
-                        align-items-center
-                      "
-                      style="font-size: 20px; margin-bottom: 12px"
-                      v-if="checkedAttendance.length > 0"
-                      @click="modal"
-                    >
-                    </i>&nbsp; &nbsp;
-            </div>
-            <div class="col-4">
-              <p @click="toggleSearch" class="search-text w-100 mt-2">
-                <i class="pi pi-search"></i> SEARCH
-              </p>
-            </div>
+          <div class="select-All mr-3">
+            <input
+              class="d-block d-md-none"
+              type="checkbox"
+              name="all"
+              id="all"
+              @change="markAllAttendance"
+              :checked="checkedAttendance.length === searchAttendance.length"
+            />
+            <label class="d-block d-md-none">SELECT ALL</label>
+            <i
+              class="
+                pi pi-trash
+                text-danger
+                mr-3
+                c-pointer
+                d-flex-inline
+                align-items-center
+              "
+              style="font-size: 20px; margin-bottom: 12px"
+              v-if="checkedAttendance.length > 0"
+              @click="modal"
+            >
+            </i
+            >&nbsp; &nbsp;
+          </div>
+          <div class="col-4">
+            <p @click="toggleSearch" class="search-text w-100 mt-2">
+              <i class="pi pi-search"></i> SEARCH
+            </p>
+          </div>
 
           <div class="search d-flex ml-2">
             <label
@@ -45,8 +46,7 @@
               }"
             >
               <input type="text" placeholder="Search..." v-model="searchText" />
-              <span class="empty-btn"
-              @click="removeSearchText">x</span>
+              <span class="empty-btn" @click="removeSearchText">x</span>
               <span class="search-btn">
                 <i class="pi pi-search"></i>
               </span>
@@ -61,12 +61,12 @@
           <div class="row t-header">
             <div class="col-md-1">
               <input
-                  type="checkbox"
-                  name="all"
-                  id="all"
-                  @change="markAllAttendance"
-                  :checked="checkedAttendance.length === searchAttendance.length "
-                />
+                type="checkbox"
+                name="all"
+                id="all"
+                @change="markAllAttendance"
+                :checked="checkedAttendance.length === searchAttendance.length"
+              />
             </div>
             <div class="small-text text-capitalize col-md-3 font-weight-bold">
               Event Name
@@ -144,30 +144,30 @@
             <!-- loading group -->
 
             <!-- loadding -->
-           <div class="row" v-if="loading">
-                  <div class="col-md-12">
-                    <div class="row">
-                      <div
-                        class="
-                          col-md-12
-                          d-flex
-                          align-items-center
-                          justify-content-center
-                        "
-                      >
-                        <i
-                          class="fas fa-circle-notch fa-spin py-4"
-                          v-if="loading"
-                        ></i>
-                      </div>
-                    </div>
-                    <div class="row">
-                      <div class="col-md-12 px-0">
-                        <hr class="hr my-0" />
-                      </div>
-                    </div>
+            <div class="row" v-if="loading">
+              <div class="col-md-12">
+                <div class="row">
+                  <div
+                    class="
+                      col-md-12
+                      d-flex
+                      align-items-center
+                      justify-content-center
+                    "
+                  >
+                    <i
+                      class="fas fa-circle-notch fa-spin py-4"
+                      v-if="loading"
+                    ></i>
                   </div>
                 </div>
+                <div class="row">
+                  <div class="col-md-12 px-0">
+                    <hr class="hr my-0" />
+                  </div>
+                </div>
+              </div>
+            </div>
             <!-- loadding -->
 
             <div
@@ -188,12 +188,14 @@
             >
               <div class="col-md-1 d-flex d-md-block px-3 justify-content-end">
                 <input
-                    type="checkbox"
-                    name=""
-                    id=""
-                    @change="check1item(item)"
-                    :checked="checkedAttendance.findIndex((i) => i.id === item.id) >= 0"
-                  />
+                  type="checkbox"
+                  name=""
+                  id=""
+                  @change="check1item(item)"
+                  :checked="
+                    checkedAttendance.findIndex((i) => i.id === item.id) >= 0
+                  "
+                />
               </div>
 
               <div class="col-md-3 desc">
@@ -237,12 +239,16 @@
                       fontIncrease
                     "
                     style="font-size: 15px"
-                    >Date</span>
-                  <div
-                    class="desc small-text text-right text-md-center">
+                    >Date</span
+                  >
+                  <div class="desc small-text text-right text-md-center">
                     <router-link
-                      class="text-decoration-none font-weight-500 itemroute-color"
-                       style="margin-left: 4.5rem"
+                      class="
+                        text-decoration-none
+                        font-weight-500
+                        itemroute-color
+                      "
+                      style="margin-left: 4.5rem"
                       :to="{
                         name: 'CheckinType',
                         query: {
@@ -271,12 +277,15 @@
                       fontIncrease
                     "
                     style="font-size: 15px"
-                    >Group Name</span>
-                  <div
-                    class="desc small-text text-right text-md-left ml-md-5"
+                    >Group Name</span
                   >
+                  <div class="desc small-text text-right text-md-left ml-md-5">
                     <router-link
-                      class="text-decoration-none font-weight-500 itemroute-color"
+                      class="
+                        text-decoration-none
+                        font-weight-500
+                        itemroute-color
+                      "
                       :to="{
                         name: 'CheckinType',
                         query: {
@@ -348,6 +357,18 @@
                               >Checkin</router-link
                             >
                           </a>
+                          <a class="dropdown-item">
+                            <router-link
+                              class="text-decoration-none text-dark"
+                              :to="{
+                                name: 'AddAttendance',
+                                params: {
+                                  id: item.id,
+                                },
+                              }"
+                              >Edit</router-link
+                            >
+                          </a>
                           <a
                             class="dropdown-item elipsis-items"
                             href="#"
@@ -369,18 +390,18 @@
           <Pagination
             @getcontent="getPeopleByPage"
             :itemsCount="50"
-            :currentPage="currentPage" 
+            :currentPage="currentPage"
             :totalItems="totalItems"
           />
         </div>
       </div>
     </div>
     <!-- {{totalItems}} -->
-      <div  class="row" v-if="errorOccurred">
-        <div class="col-md-12 text-center">
-          <p>Error getting items</p>
-        </div>
+    <div class="row" v-if="errorOccurred">
+      <div class="col-md-12 text-center">
+        <p>Error getting items</p>
       </div>
+    </div>
   </div>
   <!-- tosin working on tables -->
 
@@ -408,7 +429,7 @@ export default {
     let toast = useToast();
     const expose = ref(false);
     const loading = ref(false);
-    const attendanceList = ref([])
+    const attendanceList = ref([]);
     const checkedAttendance = ref([]);
     // const marked = ref([]);
     // const AttendanceCheList = ref(props.list)
@@ -428,19 +449,19 @@ export default {
       return dateFormatter.monthDayYear(date);
     };
 
-      const convert = (x) => {
-        return x.map((i) => i.id);
-      };
+    const convert = (x) => {
+      return x.map((i) => i.id);
+    };
 
-      const checkOutAttendance = () => {
+    const checkOutAttendance = () => {
       // let newarray = []
       let dft = convert(checkedAttendance.value);
-      console.log(dft , "👌😂😂")
+      console.log(dft, "👌😂😂");
       axios
         .post(`/api/CheckInAttendance/Delete/Multiple`, dft)
         .then((res) => {
           let incomingRes = res.data;
-          console.log(incomingRes, "🙌❤🙌❤🙌")
+          console.log(incomingRes, "🙌❤🙌❤🙌");
           if (incomingRes.toString().toLowerCase().includes("attendance")) {
             toast.add({
               severity: "success",
@@ -448,17 +469,16 @@ export default {
               detail: "Attendance(s) deleted successfully.",
               life: 4000,
             });
-        // attendanceList.value = attendanceList.value.filter((item) => {
-        //       const y = checkedAttendance.value.findIndex(
-        //         (i) => i.id === item.id
-        //       );
-        //        console.log(y , "old are u now");
-        //       if (y >= 0) return false;
-        //       return true;
-        //     });
-          emit('checkedattendance', checkedAttendance.value )
-           
-          } 
+            // attendanceList.value = attendanceList.value.filter((item) => {
+            //       const y = checkedAttendance.value.findIndex(
+            //         (i) => i.id === item.id
+            //       );
+            //        console.log(y , "old are u now");
+            //       if (y >= 0) return false;
+            //       return true;
+            //     });
+            emit("checkedattendance", checkedAttendance.value);
+          }
           // checkedAttendance.value = [];
         })
         .catch((err) => {
@@ -584,7 +604,6 @@ export default {
       }
     };
 
-
     const showConfirmModal = (id, index) => {
       confirm.require({
         message: "Are you sure you want to proceed?",
@@ -607,25 +626,26 @@ export default {
       });
     };
 
-      const searchIsVisible = ref(false);
-      const toggleSearch = () => {
+    const searchIsVisible = ref(false);
+    const toggleSearch = () => {
       searchIsVisible.value = !searchIsVisible.value;
     };
     let searchText = ref("");
     const searchAttendance = computed(() => {
       if (searchText.value !== "" && props.list.length > 0) {
         return props.list.filter((i) => {
-          return i.fullEventName.toLowerCase().includes(searchText.value.toLowerCase())
-        })
+          return i.fullEventName
+            .toLowerCase()
+            .includes(searchText.value.toLowerCase());
+        });
       } else {
-        return props.list
+        return props.list;
       }
-
     });
 
-     const removeSearchText = () => {
-        searchText = "";
-    }
+    const removeSearchText = () => {
+      searchText = "";
+    };
 
     const currentPage = ref(0);
     const getPeopleByPage = async (page) => {
@@ -634,9 +654,9 @@ export default {
         const { data } = await axios.get(
           `/api/CheckInAttendance/AllCheckInAttendances?page=${page}`
         );
-        console.log(data)
+        console.log(data);
         if (data.items.length > 0) {
-          emit("pagedattendance", data)
+          emit("pagedattendance", data);
         }
         // branchTransactions.value = data.returnObject.contribution;
         currentPage.value = page;
@@ -664,7 +684,7 @@ export default {
       searchIsVisible,
       removeSearchText,
       currentPage,
-      getPeopleByPage
+      getPeopleByPage,
     };
   },
 };
@@ -674,7 +694,6 @@ export default {
 .table {
   border-radius: 30px;
 }
-
 
 .table-header {
   padding: 10px;

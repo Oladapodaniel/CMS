@@ -97,7 +97,11 @@
             </div>
             <div class="col-md-3">
               <span class="hidden-header">Status</span>
-              <span class="small-text">{{ message.deliveryReport }}</span>
+              <span
+                class="small-text badge badge-pill"
+                :class="{ 'badge-success' : message.deliveryReport.toLowerCase().includes('sent'), 'badge-warning' : message.deliveryReport.toLowerCase().includes('processed'), 'badge-danger' : message.deliveryReport.toLowerCase().includes('fail') }"
+                >{{ message.deliveryReport }}</span
+              >
               <!-- <span class="small-text" v-if="message.deliveryReport.includes('sent')">
                 sent
               </span>
@@ -147,7 +151,7 @@ export default {
     const messages = ref([]);
     const units = route.query.units;
     const loading = ref(false);
-    const statuses = ref([])
+    const statuses = ref([]);
 
     const getMessageReport = async () => {
       try {
@@ -157,12 +161,12 @@ export default {
         );
         console.log(reportData, "xxx");
         messages.value = reportData;
-        statuses.value =  [
+        statuses.value = [
           ...new Map(
             messages.value.map((item) => [item["deliveryReport"], item])
           ).values(),
-        ].map((i) => i.deliveryReport)
-        console.log(statuses)
+        ].map((i) => i.deliveryReport);
+        console.log(statuses);
       } catch (error) {
         loading.value = false;
         console.log(error);
@@ -195,7 +199,7 @@ export default {
           name: status.includes("queued") ? "queued" : status,
           y: count,
         });
-        console.log(chartData, '222222')
+        console.log(chartData, "222222");
       }
       return chartData;
     };
@@ -268,7 +272,7 @@ export default {
       statsData,
       formatDate,
       sortAttendanceDataByPresent,
-      statuses
+      statuses,
     };
   },
 };

@@ -217,7 +217,7 @@
               <router-link class="dd-link-item routelink" to="/tenant/pledge/pledgeslist">Partnership/Pledge</router-link>
             </li> -->
             <li class="dd-list-item">
-              <router-link class="dd-link-item routelink" to="/tenant/pledge/pledgeslist">Pledges</router-link>
+              <router-link class="dd-link-item routelink" to="/tenant/pledge/pledgeslist">Partnership/Pledges</router-link>
             </li>
             <li class="dd-list-item">
               <router-link class="dd-link-item routelink" to="/tenant/transactionlist"

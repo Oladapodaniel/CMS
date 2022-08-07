@@ -1,606 +1,1546 @@
 <template>
-    <!-- <div class="container  container-top container-wide ">
-        <div class="row d-flex justify-content-between px-3">
-                <div class="heading-text"> Pledge Making </div>
-        </div>
-        <div class="container border rounder  sub-con ">
-            <div class="row">
-                <div class="col-md-12 border-bottom mt-4 " >
-                     <div class="row my-1 mt-3 d-flex justify-content-center ">
-                        <div class="col-md-7  ">
-                            <div class="row ">
-                                <div class="col-md-4 text-md-right align-self-center">
-                                    <label for="" class=""> Person <sup class="text-danger">*</sup> </label>
-                                </div>
-                                <div class="col-md-8">
-                                    <input type="text" v-model="memberName" :disabled="checking" class="form-control w-100" />
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                     <div class="row my-1 mt-3 d-flex justify-content-center">
-                        <div class="col-md-7  ">
-                            <div class="row">
-                                <div class="col-md-4 text-md-right align-self-center">
-                                    <label for="" class="">Pledge Type <sup class="text-danger">*</sup> </label>
-                                </div>
-                                <div class="col-md-8">
-                                    <Dropdown v-model="selectedPledge" class="w-100 font-weight-normal" :disabled="checking" :options="allPledgeList"  optionLabel="name" placeholder="Select Pledge" />
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="row my-1 mt-3 d-flex justify-content-center">
-                        <div class="col-md-7  " v-if="selectedPledge.donorPaymentType == 0 " >
-                            <div class="row">
-                                <div class="col-md-4 text-md-right align-self-center">
-                                    <label for="" class=""> Pledge Amount </label>
-                                </div>
-                        
-                                <div class="col-md-8">
-                                    <input type="text" v-model="freewillAmount" class="form-control" />
-                                </div>
-                            </div>
-                        </div>
-                    </div>  
-                    <div class="row my-1 mt-2 d-flex justify-content-center">
-                        <div class="col-md-7  " v-if="selectedPledge.donorPaymentType == 1 ">
-                            <div class="row">
-                                <div class="col-md-4 text-md-right align-self-center">
-                                    <label for="" class=""> Pledge Amount </label>
-                                </div>
-                        
-                                <div class="col-md-8">
-                                    <input type="text" v-model="selectedPledge.donorPaymentSpecificAmount" :disabled="checking" class="form-control" />
-                                </div>
-                            </div>
-                        </div>
-                    </div>  
-                    <div class="row my-1 mt-2 d-flex justify-content-center  ">
-                         <div class="col-md-7 " v-if="selectedPledge.donorPaymentType == 2 "  >
-                            <div class="row">
-                                <div class="col-12 col-md-4 col-lg-4 text-sm-left text-lg-right align-self-center">
-                                    <label for="" class="">Pledge Amount </label>
-                                </div>
-                                <div class="d-flex flex-wrap col-12  col-md-8 ">
-                                    <div class=" col-sm-6 ">
-                                        <div class="font-weight-bold" > <span>From:</span>  {{Math.abs(selectedPledge.donorPaymentRangeFromAmount).toLocaleString()}}.00 </div>
-                                    </div>
-                                    <div class="col-12  col-sm-6   ">
-                                        <div class="font-weight-bold  " ><span>To:</span> {{Math.abs(selectedPledge.donorPaymentRangeToAmount).toLocaleString()}}.00 </div>
-                                    </div>
-
-                                </div>
-                            </div>
-                        </div>
-                    </div>  
-                </div>
-
-                    <div class="container mt-4">
-                         <div class="row d-flex justify-content-center" >
-                            <div
-                                class="col-md-10 col-sm-11  col-lg-8  border rounded"
-                            >
-                                <div class="row">
-                                <div class="col-md-2 col-sm-2 d-flex align-self-center image mt-3">
-                                    <img
-                                    src="../../assets/link.svg" class="w-100"
-                                    alt="marked Attendance image"
-                                    style="width: 60px; height: 60px"
-                                    />
-                                </div>
-                                <div class="col-md-10 col-sm-10 mt-3">
-                                    <a class="text-decoration-none"
-                                    ><h4 class="header4 link-color c-pointer" @click="copyRegLink">Online Payment Link</h4></a
-                                    >
-                                    <p class="para">
-                                    <span class="d-flex align-items-center"
-                                        ><input
-                                        type="text"
-                                        ref="selectedLink"
-                                        v-model="pledgePaymentLink"
-                                        class="form-control"
-                                        placeholder="Link"
-                                        style="width: 95%" />
-                                        <i
-                                        class="pi pi-copy ml-2 c-pointer"
-                                        @click="copyLink"
-                                        style="font-size: 22px"
-                                        ></i>
-                                        <span class="font-weight-bold small ml-1 c-pointer" style="width: 20%">Send Email</span>
-                                        <span class="font-weight-bold small c-pointer" style="width: 20%">Send Sms</span>
-                                    </span>
-                                    </p>
-                                </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                    
-                    <div class="container ">
-                        <div class="row  mt-3 d-flex justify-content-center">
-                            <div
-                                class="col-md-10  col-sm-11  col-lg-8  border rounded"
-                            >
-                                <div class="row">
-                                <div class="col-md-2 col-sm-2 d-flex justify-content-center image mt-3">
-                                    <img
-                                    src="../../assets/link.svg" 
-                                    alt="marked Attendance image"
-                                    style="width: 60px; height: 60px"
-                                    />
-                                </div>
-                                <div class="col-md-10 col-sm-10 mt-3">
-                                    <a class="text-decoration-none"
-                                    ><h4 class="header4 link-color c-pointer" @click="copyLink">Virtual payment Link</h4></a
-                                    >
-                                    <p class="para">
-                                    <span class="d-flex align-items-center"
-                                        ><input
-                                        type="text"
-                                        ref="checkinLink"
-                                        @click="copyLink"
-                                        class="form-control"
-                                        style="width: 95%" />
-                                        <i
-                                        class="pi pi-copy ml-2 c-pointer"
-                                        @click="copyLink"
-                                        style="font-size: 22px"
-                                        ></i>
-                                        <span class="font-weight-bold small ml-1 c-pointer" style="width: 20%" >Send Email</span>
-                                        <span class="font-weight-bold small c-pointer" style="width: 20%" >Send Sms</span>
-                                    </span>
-                                    </p>
-                                </div>
-                                </div>
-                            </div>
-                        </div>   
-                    </div>      
-
-                     <div class="col-md-12  mt-4">
-                            <div class="row  ">
-                                <div class=" col-md-12 d-flex justify-content-center mb-2  ">
-                                    <button class="default-btn primary-bg border-0 text-white" type="button" data-toggle="modal" data-target="#exampleModalCente" data-dismiss="modal" @click="makePayment">
-                                        <i class="pi pi-spin pi-spinner"  v-if="loading"></i> Make Payment
-                                    </button>
-                                </div>
-                            </div>
-                        </div>
-                
+  <div class="container-fluid container-top">
+    <div class="row">
+      <div class="col-md-12 px-0">
+        <div class="container">
+          <div class="row mt-4">
+            <div class="col-md-5">
+              <h2 class="font-weight-bold page-hder">Pledge Overview</h2>
             </div>
+            <Toast />
+          </div>
+          <hr class="mb-4" />
         </div>
-    </div> -->
-    <div class="container-fluid">
-        <div class="row">
-            <div class="col-md-12 px-0">
-                <div class="container">
-                <div class="row mt-4">
-                    <div class="col-md-5">
-                    <h2 class="font-weight-bold page-hder">Pledge view</h2>
-                    </div>
-                    <div class="col-md-7 d-sm-flex justify-content-md-end">
-                    <a class="def-btn mr-3 px-md-4 my-sm-1" v-if="false"
-                        >More Actions <i class="fad fa-caret-circle-down"></i
-                    ></a>
-                    <!-- <router-link :to="`/tenant/pledge/pledgepaymentlist?id=${pledgeID}`"> -->
-                    <router-link to="/tenant/pledge/pledgepaymentlist">
-                        <button class="default-btn mr-3 my-sm-1 ">View Payment form </button> 
-                    </router-link>
-                    <router-link :to="{ name: 'MakePledge', path: '/tenant/pledge/makepledge' }">
-                        <a class="def-btn primary-bg text-white  border-0 px-sm-2 px-lg-4 my-sm-1"
-                        >Create new pledge</a
-                        >
-                    </router-link>
-                    </div>
-                    <Toast />
-                </div>
-                <hr class="mb-4" />
-                </div>
-                <div class="container" style="width: 80%" v-if="!isPending && !errorGettingReport">
-                <div class="row mx-1 mb-4 mt-3">
-                    <!-- <div class="col-md-2 pl-0">
-                    <span class="theader mb-1">Status</span>
-                    <div class="my-3">
-                        <span class="draft font-weight-bold ">Unsent</span>
-                    </div>
-                    </div> -->
+        <div class="container">
+          <div class="row mb-4 mt-3">
+            <div class="col-md-8">
+              <span class="theader"> Pledge Name </span>
+              <div class="my-3">
+                <span class="evt-name">
+                  {{ pledgeName ? pledgeName : "" }}
+                </span>
+              </div>
+            </div>
 
-                    <div class="col-md-7">
-                    <span class="theader"> Pledge Name </span>
-                    <div class="my-3">
-                        <span class="evt-name">
-                        {{ pledgeName ? pledgeName : "" }}
-                        <i class="pi pi-info-circle"></i>
-                        </span>
-                    </div>
-                    </div>
+            <div class="col-md-4">
+              <span class="theader">Donor</span>
+              <div class="my-3">
+                <span class="evt-name">{{ personName }}</span>
+              </div>
+            </div>
+            <div class="col-md-4">
+              <span class="theader">Total payment</span>
+              <div class="my-3">
+                <span class="evt-name">
+                  {{ pledgeAmount.toLocaleString() }}
+                </span>
+              </div>
+            </div>
 
-                    <div class="col-md-5">
-                    <span class="theader">Date</span>
-                    <div class="my-3">
-                        <span class="date">{{ pledgeDate ? new Date(pledgeDate).toLocaleDateString() : ""}}</span>
-                    </div>
-                    </div>
+            <div class="col-md-4">
+              <span class="theader">Balance</span>
+              <div class="my-3">
+                <span class="evt-name">
+                  {{
+                    Number(selectedPledge.totalTargetAmount).toLocaleString()
+                  }}</span
+                >
+              </div>
+            </div>
+
+            <div class="col-md-4">
+              <span class="theader">Date</span>
+              <div class="my-3">
+                <span class="evt-name"> 25th May, 2020 </span>
+              </div>
+            </div>
+          </div>
+
+          <!-- =============
+          <div class="container-fluid bottom-section px-0">
+            <div class="row mx-0" ref="topmost">
+              <div class="col-md-8 dark-red-section pl-5">
+                <h2 class="evt-report">Pledge</h2>
+              </div>
+              <div
+                class="
+                  col-md-4
+                  d-flex
+                  flex-column
+                  light-red-section
+                  pr-5
+                  text-center
+                "
+              >
+                <span>
+                  <span class="mb-n3">Amount Pledged: </span> <br />
+                  <span class="recieve">{{ pledgeAmount }}</span>
+                </span>
+                <span>
+                  <span>Total Target Amount: </span> <br />
+                  <span class="recieve"
+                    >NGN {{ selectedPledge.totalTargetAmount }} &nbsp;</span
+                  >
+                </span>
+              </div>
+            </div>
+
+            <div class="row py-5 px-5" ref="middle">
+              <div class="col-md-7">
+                <span class="evt-label grey-text"> Pledge Name </span>
+                <h2 class="font-weight-bold mb-3" style="font-size: 25px">
+                  {{ pledgeName }}
+                </h2>
+                <span class="evt-date text-danger">
+                  {{
+                    pledgeDate
+                      ? new Date(pledgeDate)
+                          .toString()
+                          .split(" ")
+                          .slice(0, 4)
+                          .join(" ")
+                      : ""
+                  }}
+                </span>
+              </div>
+              <div class="col-md-5 pl-0">
+                <div class="row">
+                  <div class="col-md-6 d-md-flex justify-content-end">
+                    <span class="bold-700">Pledge Item: </span>
+                  </div>
+                  <div class="col-md-6 pl-md-0">
+                    <span>{{ pledgeName }}</span>
+                  </div>
                 </div>
+                <div class="row">
+                  <div class="col-md-6 d-md-flex justify-content-end">
+                    <span class="bold-700">Person: </span>
+                  </div>
+                  <div class="col-md-6 pl-md-0">
+                    <span>{{ personName }}</span>
+                  </div>
+                </div>
+              </div>
+            </div> -->
 
-                <!-- <div class="row mx-1 mb-5">
-                    <div class="col-md-12">
-                        Unapproved
-                    <div class="row unapproved">
-                        <div class="col-md-12">
-                        <div class="row" v-if="!reportApproved">
-                            <div class="col-md-12 py-3 info-div">
-                            <span class="px-2"
-                                ><i class="pi pi-info-circle"></i
-                            ></span>
-                            <span class="font-weight-bold"
-                                >This is a DRAFT pledge. You can take further actions
-                                once you approve it.</span
+          <div class="row mb-5">
+            <div class="col-md-12">
+              <hr class="mb-0" />
+              <div class="pg-content">
+                <div class="row mb-3">
+                  <div class="col-md-12">
+                    <span class="attendance-header">Payment link</span>
+                  </div>
+                </div>
+                <div class="row">
+                  <div class="col-12">
+                    <div class="row">
+                      <div class="col-12 mb-5 mx-3 pt-1 border shadow rounded">
+                        <div class="row">
+                          <div
+                            class="
+                              col-md-2 col-sm-2
+                              d-flex
+                              justify-content-center
+                              image
+                              mt-2
+                            "
+                          >
+                            <img
+                              src="../../assets/link.svg"
+                              class="w-100"
+                              alt="marked Attendance image"
+                              style="width: 60px; height: 60px"
+                            />
+                          </div>
+                          <div class="col-md-10 col-sm-10 mt-3">
+                            <a class="text-decoration-none"
+                              ><h4
+                                class="header4 link-color c-pointer"
+                                @click="copyRegLink"
+                              >
+                                Online Payment Link
+                              </h4></a
                             >
-                            <span class="px-2"
-                                ><span style="color: #136acd">Learn more</span>
-                                <i class="pi pi-external-link ml-2"></i
-                            ></span>
-                            </div>
-                        </div>
-                        <div class="row my-3">
-                            <div class="col-md-1 d-flex align-items-center">
-                            <span class="file-icon"
-                                ><i class="pi pi-book" style="color: #136acd"></i
-                            ></span>
-                            </div>
-                            <div class="col-md-5">
-                            <span class="grey-text">Create </span>
-                            <p>
-                                <span class="dark-text">Created: </span>
-                                <span class="grey-text">
-                                just a moment ago
-                                </span>
-                            </p>
-                            </div>
-                            <div
-                            class="col-md-6 d-sm-flex justify-content-end"
-                            v-if="!reportApproved"
-                            >
-                            
-                            <a
-                                class="def-btn approve-btn mr-4"
-                                @click="toggleReportState"
-                                >Approve report</a
-                            >
-                            <router-link
-                                :to="`/tenant/pledge/makepledge?id=${pledgeID}`"
-                            >
-                                <a class="def-btn ">Edit report</a>
-                            </router-link>
-                            </div>
-                        </div>
-                        </div>
-                    </div>
-                     Approved
-                    <div class="row unapproved mt-4">
-                        <div class="col-md-12">
-                        <div class="row my-3">
-                            <div class="col-md-1 d-flex align-items-center">
-                            <span class="file-icon"
-                                ><i
-                                class="pi pi-arrow-down"
-                                style="color: #136acd"
-                                ></i
-                            ></span>
-                            </div>
-                            <div class="col-md-5 grey-text">
-                            <span class="grey-text">Send </span>
-                            <p>
-                                <span class="grey-text">Last sent: </span>
-                                <span class="grey-text"> {{ lastSent }}</span>
-                            </p>
-                            </div>
-                            <div class="col-md-6" v-if="reportApproved">
-                            <div class="row">
-                                <div class="col-md-12">
-                                <div class="row">
-                                    <div class="col-6">
-                                    <a
-                                        class="def-btn approve-btn"
-                                        data-toggle="modal"
-                                        data-target="#sendReport"
-                                        :class="{ 'resend-btn': markedAsSent }"
-                                    >
-                                        {{ sendBtnText }}
-                                    </a>
-                                    </div>
-                                    <div class="row">
-                                    <div class="col-md-12">
-                                        <div
-                                        class="modal fade"
-                                        id="sendReport"
-                                        tabindex="-1"
-                                        aria-labelledby="exampleModalLabel"
-                                        aria-hidden="true"
-                                        :show="true"
-                                        >
-                                        <div class="modal-dialog modal-lg"  >
-                                            <div class="modal-content">
-                                            <div class="modal-header">
-                                                <h5 class="modal-title font-weight-bold" id="sendReport">
-                                                Send this report
-                                                </h5>
-                                                <button
-                                                type="button"
-                                                class="close"
-                                                data-dismiss="modal"
-                                                aria-label="Close"
-                                                >
-                                                <span aria-hidden="true">&times;</span>
-                                                </button>
-                                            </div>
-                                            <div class="modal-body pt-0 px-0"  :data-dismiss="btnState">
-                                                <ReportModal
-                                                :eventName="pledgeName ? pledgeName : ''
-                                                "
-                                                @sendreport="sendReport"
-                                                :stats="stats"
-                                                />
-                                            </div>
-                                            </div>
-                                        </div>
-                                        </div>
-                                    </div>
-                                    </div>
-                                    <div class="col-6">
-                                    <a class="def-btn edit-btn" @click="copyLink2"
-                                        >Get share link</a
-                                    >
-                                    </div>
-                                </div>
-                                </div>
-                            </div>
-                            <div class="row">
-                                <div class="col-md-6 offset-md-1" style="">
-                                <span class="mr-2">or</span>
-                                <a
-                                    style="color: #136acd; cursor: pointer"
-                                    @click="markAsSent"
-                                    >mark as sent</a
-                                >
-                                </div>
-                            </div>
-                            </div>
-                            <div class="col-md-12 pt-2" v-if="willCopyLink">
-                            <span class="d-flex" @click="copyLink">
-                                <input
-                                type="text"
-                                name=""
-                                @keydown="(e) => e.preventDefault()"
-                                class="form-control mr-2"
-                                :value="locationTwo"
-                                ref="shareableLinkField"
-                                style="width:90%"
+                            <p class="mb-4">
+                              <span
+                                class="
+                                  d-flex
+                                  align-items-center
+                                  justify-content-between
+                                "
+                                ><input
+                                  type="text"
+                                  ref="selectedLink"
+                                  v-model="pledgePaymentLink"
+                                  class="border-0"
+                                  placeholder="Link"
+                                  style="width: 80%"
                                 />
-                                <span><i class="pi pi-copy c-pointer" style="font-size: 1.5rem"></i></span>
-                            </span>
+                                <div>
+                                  <i
+                                    v-tooltip.top="'Copy link'"
+                                    class="pi pi-copy ml-2 c-pointer"
+                                    @click="copyLink"
+                                    style="font-size: 22px"
+                                  ></i>
+                                  <i
+                                    v-tooltip.top="'Send SMS'"
+                                    class="pi pi-envelope ml-4 c-pointer"
+                                    @click="copyLink"
+                                    style="font-size: 22px"
+                                  ></i>
+                                </div>
+                              </span>
+                            </p>
+                          </div>
+                        </div>
+                        <div class="row">
+                          <div
+                            class="
+                              col-md-2 col-sm-2
+                              d-flex
+                              mt-2
+                              justify-content-center
+                              image
+                            "
+                          >
+                            <img
+                              src="../../assets/link.svg"
+                              class="w-100"
+                              alt="marked Attendance image"
+                              style="width: 60px; height: 60px"
+                            />
+                          </div>
+                          <div class="col-md-10 col-sm-10 mt-3">
+                            <a class="text-decoration-none"
+                              ><h4
+                                class="header4 link-color c-pointer"
+                                @click="copyRegLink"
+                              >
+                                Virtual Account
+                              </h4></a
+                            >
+                            <div
+                              class="
+                                align-item-center
+                                justify-content-between
+                                d-flex
+                              "
+                            >
+                              <div class="mb-2">
+                                <div class="p-2">
+                                  <div class="font-weight-800 text-dark">
+                                    GTB
+                                  </div>
+                                  <div class="font-weight-800 text-dark">
+                                    0222909641
+                                  </div>
+                                  <div class="font-weight-800 text-dark">
+                                    Sarah Church Account
+                                  </div>
+                                </div>
+                              </div>
+                              <div class="mt-4">
+                                <i
+                                  v-tooltip.top="'Copy link'"
+                                  class="pi pi-copy ml-2 c-pointer"
+                                  @click="copyLink"
+                                  style="font-size: 22px"
+                                ></i>
+                                <i
+                                  v-tooltip.top="'Send SMS'"
+                                  class="pi pi-envelope ml-4 c-pointer"
+                                  @click="copyLink"
+                                  style="font-size: 22px"
+                                ></i>
+                              </div>
                             </div>
+                          </div>
                         </div>
-                        </div>
+                      </div>
                     </div>
-                    </div>
+                  </div>
+                </div>
+                <!-- <div class="row">
+                  <div
+                    class="
+                      col-md-12
+                      mt-2 mt-md-0
+                      mb-3
+                      d-flex
+                      justify-content-end
+                      
+                    "
+                  >
+                    <button
+                      class="default-btn secondary-bg"
+                      data-dismiss="modal"
+                      @click="makePayment"
+                    >
+                      Make Payment
+                    </button>
+                  </div>
                 </div> -->
+              </div>
+            </div>
+            <div class="container-fluid">
+              <div
+                class="
+                  row
+                  d-flex
+                  justify-content-between
+                  align-items-center
+                  mt-5
+                "
+              >
+                <div>
+                  <div class="evt-name text-dark">Payments</div>
+                </div>
+                <div>
+                  <div
+                    @click="recordPayment"
+                    class="
+                      cursor-pointer
+                      grey-border
+                      primary-btn
+                      default-btn
+                      primary-bg
+                      border-0
+                      text-white
+                    "
+                    data-toggle="modal"
+                    data-target="#exampleModalLong"
+                  >
+                    Record Payment
+                  </div>
+                </div>
+                <div class="col-md-12 px-0">
+                  <hr class="my-3" />
+                </div>
+              </div>
 
-                <div class="container-fluid bottom-section px-0">
-                    <div class="row mx-0" ref="topmost">
-                    <div class="col-md-8 dark-red-section pl-5">
-                        <h2 class="evt-report">Pledge</h2>
+              <div class="container-fluid d-none mt-4 d-md-block">
+                <div class="row t-header mt-4 border-bottom pb-2">
+                  <div
+                    class="small-text text-capitalize col-md-1 font-weight-bold"
+                  >
+                    Status
+                  </div>
+                  <div
+                    class="small-text text-capitalize col-md-2 font-weight-bold"
+                  >
+                    Due
+                  </div>
+                  <div
+                    class="small-text text-capitalize col-md-2 font-weight-bold"
+                  >
+                    Date
+                  </div>
+                  <div
+                    class="small-text text-capitalize col-md-2 font-weight-bold"
+                  >
+                    Payment day
+                  </div>
+                  <div
+                    class="small-text text-capitalize col-md-2 font-weight-bold"
+                  >
+                    amount paid
+                  </div>
+                  <div
+                    class="
+                      small-text
+                      text-capitalize
+                      Text-center
+                      col-md-2
+                      font-weight-bold
+                    "
+                  >
+                    Channel
+                  </div>
+
+                  <div
+                    class="small-text text-capitalize col-md-1 font-weight-bold"
+                  >
+                    Action
+                  </div>
+                </div>
+              </div>
+              <div class="row" style="margin: 0">
+                <div class="col-12 pb-2 px-0">
+                  <div
+                    class="
+                      row
+                      w-100
+                      c-pointer
+                      text-dark
+                      border-top
+                      py-2
+                      hover
+                      d-flex
+                      align-items-center
+                    "
+                    style="margin: 0"
+                  >
+                    <div class="col-md-1 p-2">
+                      <p
+                        class="
+                          mb-0
+                          d-flex
+                          text-danger
+                          font-weight-bold
+                          justify-content-between
+                        "
+                      >
+                        <span
+                          class="
+                            text-dark
+                            font-weight-bold
+                            d-flex d-md-none
+                            fontIncrease
+                          "
+                          style="font-size: 15px"
+                          >Status</span
+                        >
+                        <span
+                          class="
+                            rounded
+                            small
+                            font-weight-bold
+                            statusbg
+                            py-1
+                            px-2
+                          "
+                          >Overdue</span
+                        >
+                      </p>
+                    </div>
+
+                    <div class="col-md-2 py-2">
+                      <p
+                        class="mb-0 d-flex text-danger justify-content-between"
+                      >
+                        <span
+                          class="
+                            text-dark
+                            font-weight-bold
+                            d-flex d-md-none
+                            fontIncrease
+                          "
+                          style="font-size: 15px"
+                          >Due</span
+                        >
+                        1098 days ago
+                      </p>
+                    </div>
+                    <div class="col-md-2 py-2">
+                      <p class="mb-0 d-flex justify-content-between">
+                        <span
+                          class="
+                            text-dark
+                            font-weight-bold
+                            d-flex d-md-none
+                            fontIncrease
+                          "
+                          style="font-size: 15px"
+                          >Date
+                        </span>
+                        2020-07-16
+                      </p>
+                    </div>
+                    <div class="col-md-2 py-2">
+                      <div class="d-flex small justify-content-between">
+                        <span
+                          class="
+                            text-dark
+                            font-weight-bold
+                            d-flex d-md-none
+                            fontIncrease
+                          "
+                          style="font-size: 15px"
+                          >Payment day</span
+                        >
+                        <div class="small-text">25</div>
+                      </div>
+                    </div>
+                    <div class="col-md-2 py-2">
+                      <div class="d-flex small justify-content-between">
+                        <span
+                          class="
+                            text-dark
+                            font-weight-bold
+                            d-flex d-md-none
+                            fontIncrease
+                          "
+                          style="font-size: 15px"
+                          >Amount paid</span
+                        >
+                        <div class="small-text">Anderson Udokoro</div>
+                      </div>
+                    </div>
+                    <div class="col-md-2 py-2">
+                      <div class="d-flex small justify-content-between">
+                        <span
+                          class="
+                            text-dark
+                            font-weight-bold
+                            d-flex d-md-none
+                            fontIncrease
+                          "
+                          style="font-size: 15px"
+                          >Channel</span
+                        >
+                        <div class="small-text">NGN 111,000.00</div>
+                      </div>
+                    </div>
+
+                    <div class="col-md-1 py-2">
+                      <div class="">
+                        <div class="dropdown">
+                          <span class="d-flex justify-content-between">
+                            <span class="d-md-none d-sm-flex"></span>
+                            <span class="d-sm-flex small">
+                              <i
+                                class="
+                                  fas
+                                  fa-ellipsis-v
+                                  cursor-pointer
+                                  ml-2
+                                  fontIncrease
+                                "
+                                id="dropdownMenuButton"
+                                data-toggle="dropdown"
+                                aria-haspopup="true"
+                                aria-expanded="false"
+                              ></i>
+
+                              <div
+                                class="dropdown-menu"
+                                aria-labelledby="dropdownMenuButton"
+                              >
+                                <a class="dropdown-item"
+                                  ><router-link
+                                    :to="`/tenant/pledge/makepledge?id=`"
+                                    class="text-color"
+                                    >Edit</router-link
+                                  ></a
+                                >
+                                <a class="dropdown-item">Delete</a>
+                              </div>
+                            </span>
+                          </span>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <div class="row" style="margin: 0">
+                <div class="col-12 pb-2 px-0">
+                  <div
+                    class="
+                      row
+                      w-100
+                      c-pointer
+                      text-dark
+                      border-top
+                      py-2
+                      hover
+                      d-flex
+                      align-items-center
+                    "
+                    style="margin: 0"
+                  >
+                    <div class="col-md-1 p-2">
+                      <p
+                        class="
+                          mb-0
+                          d-flex
+                          text-danger
+                          font-weight-bold
+                          justify-content-between
+                        "
+                      >
+                        <span
+                          class="
+                            text-dark
+                            font-weight-bold
+                            d-flex d-md-none
+                            fontIncrease
+                          "
+                          style="font-size: 15px"
+                          >Status</span
+                        >
+                        <span
+                          class="
+                            rounded
+                            small
+                            font-weight-bold
+                            statusbg
+                            py-1
+                            px-2
+                          "
+                          >Overdue</span
+                        >
+                      </p>
+                    </div>
+
+                    <div class="col-md-2 py-2">
+                      <p
+                        class="mb-0 d-flex text-danger justify-content-between"
+                      >
+                        <span
+                          class="
+                            text-dark
+                            font-weight-bold
+                            d-flex d-md-none
+                            fontIncrease
+                          "
+                          style="font-size: 15px"
+                          >Due</span
+                        >
+                        1098 days ago
+                      </p>
+                    </div>
+                    <div class="col-md-2 py-2">
+                      <p class="mb-0 d-flex justify-content-between">
+                        <span
+                          class="
+                            text-dark
+                            font-weight-bold
+                            d-flex d-md-none
+                            fontIncrease
+                          "
+                          style="font-size: 15px"
+                          >Date
+                        </span>
+                        2020-07-16
+                      </p>
+                    </div>
+                    <div class="col-md-2 py-2">
+                      <div class="d-flex small justify-content-between">
+                        <span
+                          class="
+                            text-dark
+                            font-weight-bold
+                            d-flex d-md-none
+                            fontIncrease
+                          "
+                          style="font-size: 15px"
+                          >Payment day</span
+                        >
+                        <div class="small-text">25</div>
+                      </div>
+                    </div>
+                    <div class="col-md-2 py-2">
+                      <div class="d-flex small justify-content-between">
+                        <span
+                          class="
+                            text-dark
+                            font-weight-bold
+                            d-flex d-md-none
+                            fontIncrease
+                          "
+                          style="font-size: 15px"
+                          >Amount paid</span
+                        >
+                        <div class="small-text">Anderson Udokoro</div>
+                      </div>
+                    </div>
+                    <div class="col-md-2 py-2">
+                      <div class="d-flex small justify-content-between">
+                        <span
+                          class="
+                            text-dark
+                            font-weight-bold
+                            d-flex d-md-none
+                            fontIncrease
+                          "
+                          style="font-size: 15px"
+                          >Channel</span
+                        >
+                        <div class="small-text">NGN 111,000.00</div>
+                      </div>
+                    </div>
+
+                    <div class="col-md-1 py-2">
+                      <div class="">
+                        <div class="dropdown">
+                          <span class="d-flex justify-content-between">
+                            <span class="d-md-none d-sm-flex"></span>
+                            <span class="d-sm-flex small">
+                              <i
+                                class="
+                                  fas
+                                  fa-ellipsis-v
+                                  cursor-pointer
+                                  ml-2
+                                  fontIncrease
+                                "
+                                id="dropdownMenuButton"
+                                data-toggle="dropdown"
+                                aria-haspopup="true"
+                                aria-expanded="false"
+                              ></i>
+
+                              <div
+                                class="dropdown-menu"
+                                aria-labelledby="dropdownMenuButton"
+                              >
+                                <a class="dropdown-item"
+                                  ><router-link
+                                    :to="`/tenant/pledge/makepledge?id=`"
+                                    class="text-color"
+                                    >Edit</router-link
+                                  ></a
+                                >
+                                <a class="dropdown-item">Delete</a>
+                              </div>
+                            </span>
+                          </span>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <div class="row" style="margin: 0">
+                <div class="col-12 pb-2 px-0">
+                  <div
+                    class="
+                      row
+                      w-100
+                      c-pointer
+                      text-dark
+                      border-top
+                      py-2
+                      hover
+                      d-flex
+                      align-items-center
+                    "
+                    style="margin: 0"
+                  >
+                    <div class="col-md-1 p-2">
+                      <p
+                        class="
+                          mb-0
+                          d-flex
+                          text-danger
+                          font-weight-bold
+                          justify-content-between
+                        "
+                      >
+                        <span
+                          class="
+                            text-dark
+                            font-weight-bold
+                            d-flex d-md-none
+                            fontIncrease
+                          "
+                          style="font-size: 15px"
+                          >Status</span
+                        >
+                        <span
+                          class="
+                            rounded
+                            small
+                            font-weight-bold
+                            statusbg
+                            py-1
+                            px-2
+                          "
+                          >Overdue</span
+                        >
+                      </p>
+                    </div>
+
+                    <div class="col-md-2 py-2">
+                      <p
+                        class="mb-0 d-flex text-danger justify-content-between"
+                      >
+                        <span
+                          class="
+                            text-dark
+                            font-weight-bold
+                            d-flex d-md-none
+                            fontIncrease
+                          "
+                          style="font-size: 15px"
+                          >Due</span
+                        >
+                        1098 days ago
+                      </p>
+                    </div>
+                    <div class="col-md-2 py-2">
+                      <p class="mb-0 d-flex justify-content-between">
+                        <span
+                          class="
+                            text-dark
+                            font-weight-bold
+                            d-flex d-md-none
+                            fontIncrease
+                          "
+                          style="font-size: 15px"
+                          >Date
+                        </span>
+                        2020-07-16
+                      </p>
+                    </div>
+                    <div class="col-md-2 py-2">
+                      <div class="d-flex small justify-content-between">
+                        <span
+                          class="
+                            text-dark
+                            font-weight-bold
+                            d-flex d-md-none
+                            fontIncrease
+                          "
+                          style="font-size: 15px"
+                          >Payment day</span
+                        >
+                        <div class="small-text">25</div>
+                      </div>
+                    </div>
+                    <div class="col-md-2 py-2">
+                      <div class="d-flex small justify-content-between">
+                        <span
+                          class="
+                            text-dark
+                            font-weight-bold
+                            d-flex d-md-none
+                            fontIncrease
+                          "
+                          style="font-size: 15px"
+                          >Amount paid</span
+                        >
+                        <div class="small-text">Anderson Udokoro</div>
+                      </div>
+                    </div>
+                    <div class="col-md-2 py-2">
+                      <div class="d-flex small justify-content-between">
+                        <span
+                          class="
+                            text-dark
+                            font-weight-bold
+                            d-flex d-md-none
+                            fontIncrease
+                          "
+                          style="font-size: 15px"
+                          >Channel</span
+                        >
+                        <div class="small-text">NGN 111,000.00</div>
+                      </div>
+                    </div>
+
+                    <div class="col-md-1 py-2">
+                      <div class="">
+                        <div class="dropdown">
+                          <span class="d-flex justify-content-between">
+                            <span class="d-md-none d-sm-flex"></span>
+                            <span class="d-sm-flex small">
+                              <i
+                                class="
+                                  fas
+                                  fa-ellipsis-v
+                                  cursor-pointer
+                                  ml-2
+                                  fontIncrease
+                                "
+                                id="dropdownMenuButton"
+                                data-toggle="dropdown"
+                                aria-haspopup="true"
+                                aria-expanded="false"
+                              ></i>
+
+                              <div
+                                class="dropdown-menu"
+                                aria-labelledby="dropdownMenuButton"
+                              >
+                                <a class="dropdown-item"
+                                  ><router-link
+                                    :to="`/tenant/pledge/makepledge?id=`"
+                                    class="text-color"
+                                    >Edit</router-link
+                                  ></a
+                                >
+                                <a class="dropdown-item">Delete</a>
+                              </div>
+                            </span>
+                          </span>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <div class="row" style="margin: 0">
+                <div class="col-12 pb-2 px-0">
+                  <div
+                    class="
+                      row
+                      w-100
+                      c-pointer
+                      text-dark
+                      border-top
+                      py-2
+                      hover
+                      d-flex
+                      align-items-center
+                    "
+                    style="margin: 0"
+                  >
+                    <div class="col-md-1 p-2">
+                      <p
+                        class="
+                          mb-0
+                          d-flex
+                          text-danger
+                          font-weight-bold
+                          justify-content-between
+                        "
+                      >
+                        <span
+                          class="
+                            text-dark
+                            font-weight-bold
+                            d-flex d-md-none
+                            fontIncrease
+                          "
+                          style="font-size: 15px"
+                          >Status</span
+                        >
+                        <span
+                          class="
+                            rounded
+                            small
+                            font-weight-bold
+                            statusbg
+                            py-1
+                            px-2
+                          "
+                          >Overdue</span
+                        >
+                      </p>
+                    </div>
+
+                    <div class="col-md-2 py-2">
+                      <p
+                        class="mb-0 d-flex text-danger justify-content-between"
+                      >
+                        <span
+                          class="
+                            text-dark
+                            font-weight-bold
+                            d-flex d-md-none
+                            fontIncrease
+                          "
+                          style="font-size: 15px"
+                          >Due</span
+                        >
+                        1098 days ago
+                      </p>
+                    </div>
+                    <div class="col-md-2 py-2">
+                      <p class="mb-0 d-flex justify-content-between">
+                        <span
+                          class="
+                            text-dark
+                            font-weight-bold
+                            d-flex d-md-none
+                            fontIncrease
+                          "
+                          style="font-size: 15px"
+                          >Date
+                        </span>
+                        2020-07-16
+                      </p>
+                    </div>
+                    <div class="col-md-2 py-2">
+                      <div class="d-flex small justify-content-between">
+                        <span
+                          class="
+                            text-dark
+                            font-weight-bold
+                            d-flex d-md-none
+                            fontIncrease
+                          "
+                          style="font-size: 15px"
+                          >Payment day</span
+                        >
+                        <div class="small-text">25</div>
+                      </div>
+                    </div>
+                    <div class="col-md-2 py-2">
+                      <div class="d-flex small justify-content-between">
+                        <span
+                          class="
+                            text-dark
+                            font-weight-bold
+                            d-flex d-md-none
+                            fontIncrease
+                          "
+                          style="font-size: 15px"
+                          >Amount paid</span
+                        >
+                        <div class="small-text">Anderson Udokoro</div>
+                      </div>
+                    </div>
+                    <div class="col-md-2 py-2">
+                      <div class="d-flex small justify-content-between">
+                        <span
+                          class="
+                            text-dark
+                            font-weight-bold
+                            d-flex d-md-none
+                            fontIncrease
+                          "
+                          style="font-size: 15px"
+                          >Channel</span
+                        >
+                        <div class="small-text">NGN 111,000.00</div>
+                      </div>
+                    </div>
+
+                    <div class="col-md-1 py-2">
+                      <div class="">
+                        <div class="dropdown">
+                          <span class="d-flex justify-content-between">
+                            <span class="d-md-none d-sm-flex"></span>
+                            <span class="d-sm-flex small">
+                              <i
+                                class="
+                                  fas
+                                  fa-ellipsis-v
+                                  cursor-pointer
+                                  ml-2
+                                  fontIncrease
+                                "
+                                id="dropdownMenuButton"
+                                data-toggle="dropdown"
+                                aria-haspopup="true"
+                                aria-expanded="false"
+                              ></i>
+
+                              <div
+                                class="dropdown-menu"
+                                aria-labelledby="dropdownMenuButton"
+                              >
+                                <a class="dropdown-item"
+                                  ><router-link
+                                    :to="`/tenant/pledge/makepledge?id=`"
+                                    class="text-color"
+                                    >Edit</router-link
+                                  ></a
+                                >
+                                <a class="dropdown-item">Delete</a>
+                              </div>
+                            </span>
+                          </span>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <div class="row" style="margin: 0">
+                <div class="col-12 pb-2 px-0">
+                  <div
+                    class="
+                      row
+                      w-100
+                      c-pointer
+                      text-dark
+                      border-top
+                      py-2
+                      hover
+                      d-flex
+                      align-items-center
+                    "
+                    style="margin: 0"
+                  >
+                    <div class="col-md-1 p-2">
+                      <p
+                        class="
+                          mb-0
+                          d-flex
+                          text-danger
+                          font-weight-bold
+                          justify-content-between
+                        "
+                      >
+                        <span
+                          class="
+                            text-dark
+                            font-weight-bold
+                            d-flex d-md-none
+                            fontIncrease
+                          "
+                          style="font-size: 15px"
+                          >Status</span
+                        >
+                        <span
+                          class="
+                            rounded
+                            small
+                            font-weight-bold
+                            statusbg
+                            py-1
+                            px-2
+                          "
+                          >Overdue</span
+                        >
+                      </p>
+                    </div>
+
+                    <div class="col-md-2 py-2">
+                      <p
+                        class="mb-0 d-flex text-danger justify-content-between"
+                      >
+                        <span
+                          class="
+                            text-dark
+                            font-weight-bold
+                            d-flex d-md-none
+                            fontIncrease
+                          "
+                          style="font-size: 15px"
+                          >Due</span
+                        >
+                        1098 days ago
+                      </p>
+                    </div>
+                    <div class="col-md-2 py-2">
+                      <p class="mb-0 d-flex justify-content-between">
+                        <span
+                          class="
+                            text-dark
+                            font-weight-bold
+                            d-flex d-md-none
+                            fontIncrease
+                          "
+                          style="font-size: 15px"
+                          >Date
+                        </span>
+                        2020-07-16
+                      </p>
+                    </div>
+                    <div class="col-md-2 py-2">
+                      <div class="d-flex small justify-content-between">
+                        <span
+                          class="
+                            text-dark
+                            font-weight-bold
+                            d-flex d-md-none
+                            fontIncrease
+                          "
+                          style="font-size: 15px"
+                          >Payment day</span
+                        >
+                        <div class="small-text">25</div>
+                      </div>
+                    </div>
+                    <div class="col-md-2 py-2">
+                      <div class="d-flex small justify-content-between">
+                        <span
+                          class="
+                            text-dark
+                            font-weight-bold
+                            d-flex d-md-none
+                            fontIncrease
+                          "
+                          style="font-size: 15px"
+                          >Amount paid</span
+                        >
+                        <div class="small-text">Anderson Udokoro</div>
+                      </div>
+                    </div>
+                    <div class="col-md-2 py-2">
+                      <div class="d-flex small justify-content-between">
+                        <span
+                          class="
+                            text-dark
+                            font-weight-bold
+                            d-flex d-md-none
+                            fontIncrease
+                          "
+                          style="font-size: 15px"
+                          >Channel</span
+                        >
+                        <div class="small-text">NGN 111,000.00</div>
+                      </div>
+                    </div>
+
+                    <div class="col-md-1 py-2">
+                      <div class="">
+                        <div class="dropdown">
+                          <span class="d-flex justify-content-between">
+                            <span class="d-md-none d-sm-flex"></span>
+                            <span class="d-sm-flex small">
+                              <i
+                                class="
+                                  fas
+                                  fa-ellipsis-v
+                                  cursor-pointer
+                                  ml-2
+                                  fontIncrease
+                                "
+                                id="dropdownMenuButton"
+                                data-toggle="dropdown"
+                                aria-haspopup="true"
+                                aria-expanded="false"
+                              ></i>
+
+                              <div
+                                class="dropdown-menu"
+                                aria-labelledby="dropdownMenuButton"
+                              >
+                                <a class="dropdown-item"
+                                  ><router-link
+                                    :to="`/tenant/pledge/makepledge?id=`"
+                                    class="text-color"
+                                    >Edit</router-link
+                                  ></a
+                                >
+                                <a class="dropdown-item">Delete</a>
+                              </div>
+                            </span>
+                          </span>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <div class="row" style="margin: 0">
+                <div class="col-12 pb-2 px-0">
+                  <div
+                    class="
+                      row
+                      w-100
+                      c-pointer
+                      text-dark
+                      border-top
+                      py-2
+                      hover
+                      d-flex
+                      align-items-center
+                    "
+                    style="margin: 0"
+                  >
+                    <div class="col-md-1 p-2">
+                      <p
+                        class="
+                          mb-0
+                          d-flex
+                          text-danger
+                          font-weight-bold
+                          justify-content-between
+                        "
+                      >
+                        <span
+                          class="
+                            text-dark
+                            font-weight-bold
+                            d-flex d-md-none
+                            fontIncrease
+                          "
+                          style="font-size: 15px"
+                          >Status</span
+                        >
+                        <span
+                          class="
+                            rounded
+                            small
+                            font-weight-bold
+                            statusbg
+                            py-1
+                            px-2
+                          "
+                          >Overdue</span
+                        >
+                      </p>
+                    </div>
+
+                    <div class="col-md-2 py-2">
+                      <p
+                        class="mb-0 d-flex text-danger justify-content-between"
+                      >
+                        <span
+                          class="
+                            text-dark
+                            font-weight-bold
+                            d-flex d-md-none
+                            fontIncrease
+                          "
+                          style="font-size: 15px"
+                          >Due</span
+                        >
+                        1098 days ago
+                      </p>
+                    </div>
+                    <div class="col-md-2 py-2">
+                      <p class="mb-0 d-flex justify-content-between">
+                        <span
+                          class="
+                            text-dark
+                            font-weight-bold
+                            d-flex d-md-none
+                            fontIncrease
+                          "
+                          style="font-size: 15px"
+                          >Date
+                        </span>
+                        2020-07-16
+                      </p>
+                    </div>
+                    <div class="col-md-2 py-2">
+                      <div class="d-flex small justify-content-between">
+                        <span
+                          class="
+                            text-dark
+                            font-weight-bold
+                            d-flex d-md-none
+                            fontIncrease
+                          "
+                          style="font-size: 15px"
+                          >Payment day</span
+                        >
+                        <div class="small-text">25</div>
+                      </div>
+                    </div>
+                    <div class="col-md-2 py-2">
+                      <div class="d-flex small justify-content-between">
+                        <span
+                          class="
+                            text-dark
+                            font-weight-bold
+                            d-flex d-md-none
+                            fontIncrease
+                          "
+                          style="font-size: 15px"
+                          >Amount paid</span
+                        >
+                        <div class="small-text">Anderson Udokoro</div>
+                      </div>
+                    </div>
+                    <div class="col-md-2 py-2">
+                      <div class="d-flex small justify-content-between">
+                        <span
+                          class="
+                            text-dark
+                            font-weight-bold
+                            d-flex d-md-none
+                            fontIncrease
+                          "
+                          style="font-size: 15px"
+                          >Channel</span
+                        >
+                        <div class="small-text">NGN 111,000.00</div>
+                      </div>
+                    </div>
+
+                    <div class="col-md-1 py-2">
+                      <div class="">
+                        <div class="dropdown">
+                          <span class="d-flex justify-content-between">
+                            <span class="d-md-none d-sm-flex"></span>
+                            <span class="d-sm-flex small">
+                              <i
+                                class="
+                                  fas
+                                  fa-ellipsis-v
+                                  cursor-pointer
+                                  ml-2
+                                  fontIncrease
+                                "
+                                id="dropdownMenuButton"
+                                data-toggle="dropdown"
+                                aria-haspopup="true"
+                                aria-expanded="false"
+                              ></i>
+
+                              <div
+                                class="dropdown-menu"
+                                aria-labelledby="dropdownMenuButton"
+                              >
+                                <a class="dropdown-item"
+                                  ><router-link
+                                    :to="`/tenant/pledge/makepledge?id=`"
+                                    class="text-color"
+                                    >Edit</router-link
+                                  ></a
+                                >
+                                <a class="dropdown-item">Delete</a>
+                              </div>
+                            </span>
+                          </span>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <!-- <PledgeTransaction /> -->
+          </div>
+        </div>
+      </div>
+      <!-- Modal -->
+      <div
+        class="modal fade"
+        id="exampleModalLong"
+        tabindex="-1"
+        role="dialog"
+        aria-labelledby="exampleModalLongTitle"
+        aria-hidden="true"
+      >
+        <div class="modal-dialog" role="document">
+          <div class="modal-content">
+            <div class="modal-body">
+              <div class="container-fluid">
+                <div class="row">
+                  <div class="col-md-12 mt-4">
+                    <div class="row my-1 mt-3">
+                      <div class="col-md-10 ">
+                        <div class="row">
+                          <div class="col-md-4 text-md-right align-self-center">
+                            <label for="" class=""
+                              >Person <sup class="text-danger">*</sup>
+                            </label>
+                          </div>
+                          <div class="col-md-8">
+                            <!-- <input
+                              type="text"
+                              v-model="memberName"
+                              :disabled="checking"
+                              class="form-control w-100"
+                            /> -->
+                            <h4 class="font-weight-600">{{ personName }}</h4>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                    <div class="row my-1 mt-3">
+                      <div class="col-md-10 ">
+                        <div class="row">
+                          <div class="col-md-4 text-md-right align-self-center">
+                            <label for="" class="">
+                              Pledge Name <sup class="text-danger">*</sup>
+                            </label>
+                          </div>
+
+                          <div class="col-md-8">
+                            <!-- <Dropdown
+                              v-model="selectedPledge"
+                              :disabled="checking"
+                              class="w-100 font-weight-normal"
+                              :options="allPledgeList"
+                              optionLabel="name"
+                              placeholder="Select Pledge"
+                            /> -->
+                            <!-- <input
+                              type="text"
+                              v-model="selectedPledge.name"
+                              :disabled="checking"
+                              class="form-control w-100"
+                            /> -->
+                            <h4 class="font-weight-100">
+                              {{ pledgeName ? pledgeName : "" }}
+                            </h4>
+                          </div>
+                        </div>
+                      </div>
                     </div>
                     <div
-                        class="col-md-4 d-flex flex-column light-red-section pr-5 text-center"
+                      class="row my-1 mt-3"
                     >
-                        <!-- <span>
-                        <span class="mb-n3">Total Pledge: </span> <br />
-                        <span class="recieve">60</span>
-                        </span>
-                        <span>
-                        <span>Total Amount: </span> <br />
-                        <span class="recieve">NGN 600,000 &nbsp;</span
-                        >
-                        </span> -->
-                    </div>
-                    </div>
-
-                    <div class="row py-5 px-5" ref="middle">
-                    <div class="col-md-7">
-                        <span class="evt-label grey-text"> Pledge Name </span>
-                        <h2 class="font-weight-bold mb-3" style="font-size: 25px">
-                            {{pledgeName}}
-                        </h2>
-                        <span class="evt-date text-danger"> 
-                            {{ pledgeDate ? new Date(pledgeDate).toString().split(" ").slice(0, 4).join(" ") : ""}}
-                        </span>
-                    </div>
-                    <div class="col-md-5 pl-0">
+                      <div class="col-md-10 ">
                         <div class="row">
-                        <div class="col-md-6 d-md-flex justify-content-end">
-                            <span class="bold-700">Pledge Type: </span>
+                          <div class="col-md-4 text-md-right align-self-center">
+                            <label for="" class=""> Pledge Amount </label>
+                          </div>
+                          <div class="col-md-8 d-flex">
+                            <span
+                              class="
+                                bg-secondary
+                                align-self-center
+                                pt-1
+                                border
+                                currency
+                              "
+                              ></span
+                            >
+                            <div class="col-8 col-lg-10 m-0 p-0">
+              
+                              <h4 class="pledge-amount font-weight-100">
+                                {{ pledgeAmount.toLocaleString() }}
+                              </h4>
+                            </div>
+                          </div>
                         </div>
-                        <div class="col-md-6 pl-md-0">
-                            <span>{{pledgeName}}</span>
-                        </div>
-                        </div>
+                      </div>
+                    </div>
+                    <div class="row mt-3">
+                      <div class="col-md-10 ">
                         <div class="row">
-                        <div class="col-md-6 d-md-flex justify-content-end">
-                            <span class="bold-700"> Person: </span>
-                        </div>
-                        <div class="col-md-6 pl-md-0">
-                            <span>{{personName}}</span>
-                        </div>
-                        </div>
-                    </div>
-                    </div>
+                          <div class="col-md-4 text-md-right align-self-center">
+                            <label for="" class=""
+                              >Channel <sup class="text-danger">*</sup>
+                            </label>
+                          </div>
 
-                    <div class="row mb-5" ref="bottom">
-                    <div class="col-md-12">
-                        <div class="row mb-4">
-                        <div class="col-md-12">
-                            <span class="attendance-header">Payment link</span>
-                        </div>
-                        </div>
-                        <div class="row">
-                        <div class="col-sm-12">
-                            <hr class="hr-dark" />
-                        </div>
-                        </div>
-                        <div class="pg-content">
-                            <div class="analytics-container first-con">
-                                    <div class="ana-group row d-flex justify-content-center">
-                                
-                                        <div
-                                            class="col-md-11 col-sm-12  col-lg-10  mb-5 border rounded"
-                                        >
-                                            <div class="row">
-                                                <div class="col-md-2 col-sm-2 d-flex align-self-center image mt-3">
-                                                    <img
-                                                    src="../../assets/link.svg" class="w-100"
-                                                    alt="marked Attendance image"
-                                                    style="width: 60px; height: 60px"
-                                                    />
-                                                </div>
-                                                <div class="col-md-10 col-sm-10 mt-3">
-                                                    <a class="text-decoration-none"
-                                                    ><h4 class="header4 link-color c-pointer" @click="copyRegLink">Online Payment Link</h4></a
-                                                    >
-                                                    <p class="para">
-                                                    <span class="d-flex align-items-center"
-                                                        ><input
-                                                        type="text"
-                                                        ref="selectedLink"
-                                                        v-model="pledgePaymentLink"
-                                                        class="form-control"
-                                                        placeholder="Link"
-                                                        style="width: 95%" />
-                                                        <i
-                                                        class="pi pi-copy ml-2 c-pointer"
-                                                        @click="copyLink"
-                                                        style="font-size: 22px"
-                                                        ></i>
-                                                        <!-- <span class="font-weight-bold small ml-1 text-primary c-pointer" style="width: 30%">Send Email</span>
-                                                        <span class="font-weight-bold small text-primary c-pointer" style="width: 30%">Send Sms</span> -->
-                                                    </span>
-                                                    </p>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                <hr class="hr" />
+                          <div class="col-md-8 d-flex flex-wrap" >
+                            <button class="  btn d-flex justify-content-between  col-12 border  " type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                <span class="ofering">
+                                    &nbsp;&nbsp;&nbsp; {{ selectedChannel.name ?  selectedChannel.name : 'Select Channel' }}
+                                    <!-- {{ item.account ? item.account : 'Select' }} -->
+                                </span>
+                                <span>
+                                    <i class="pi pi-angle-down offset-sm-2 ofering"></i>
+                                </span>
+                            </button>
+                            <div class="dropdown-menu scroll w-100 " aria-labelledby="dropdownMenuButton">
+                                <a class="dropdown-item" v-for="(itm, indx) in channel" :key="indx">
+                                    <div class="cursor-pointer" @click="selectChannel(itm)"> {{itm.name}}</div> 
+                                </a>
                             </div>
-                            <div class="analytics-container first-con">
-                                    <div class="ana-group row d-flex justify-content-center mb-4">
-                                
-                                        <div
-                                            class="col-md-11 col-sm-12  col-lg-10 mb-3  border rounded"
-                                        >
-                                            <div class="row">
-                                                <div class="col-md-2 col-sm-2 d-flex align-self-center image mt-3">
-                                                    <img
-                                                    src="../../assets/link.svg" class="w-100"
-                                                    alt="marked Attendance image"
-                                                    style="width: 60px; height: 60px"
-                                                    />
-                                                </div>
-                                                <div class="col-md-10 col-sm-10 mt-3">
-                                                    <a class="text-decoration-none"
-                                                    ><h4 class="header4 link-color c-pointer" @click="copyLink">Virtual payment Link</h4></a
-                                                    >
-                                                   <p class="para">
-                                                        <span class="d-flex align-items-center"
-                                                            ><input
-                                                            type="text"
-                                                            ref="checkinLink"
-                                                            @click="copyLink"
-                                                            class="form-control"
-                                                            style="width: 95%" />
-                                                            <i
-                                                            class="pi pi-copy ml-2 c-pointer"
-                                                            @click="copyLink"
-                                                            style="font-size: 22px"
-                                                            ></i>
-                                                            <!-- <span class="font-weight-bold small text-primary ml-1 c-pointer" style="width: 30%" >Send Email</span>
-                                                            <span class="font-weight-bold small text-primary c-pointer" style="width: 30%" >Send Sms</span> -->
-                                                        </span>
-                                                    </p>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                <hr class="hr" />
-                            </div>
-                            <div class="analytics-container first-con">
-                                     <div class="ana-group row d-flex justify-content-center">
-                                
-                                        <div
-                                            class="col-md-11 col-sm-12  col-lg-10  mb-5 border rounded"
-                                        >
-                                            <div class="row">
-                                                <div class="col-md-2 col-sm-2 d-flex align-self-center image mt-3">
-                                                    <img
-                                                    src="../../assets/link.svg" class="w-100"
-                                                    alt="marked Attendance image"
-                                                    style="width: 60px; height: 60px"
-                                                    />
-                                                </div>
-                                                <div class="col-md-10 col-sm-10 mt-4">
-                                                    <a class="text-decoration-none"
-                                                    ><h4 class="header4 link-color c-pointer" @click="copyRegLink">Account detail</h4></a
-                                                    >
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                        <div class="row">
-                                            <div class=" col-md-12 mt-2 mt-md-0 mb-3 d-flex justify-content-center ">
-                                                <button class="default-btn primary-bg border-0 text-white" data-dismiss="modal" @click="makePayment">
-                                                    <i class="pi pi-spin pi-spinner" v-if="loading"></i> Make Payment now
-                                                </button>
-                                            </div>
-                                        </div>
-                                <hr class="hr" />
-                            </div>
+                            <!-- <Dropdown
+                              v-model="selectedChannel"
+                              class="w-100 font-weight-normal"
+                              :options="channel"
+                              optionLabel="name"
+                              placeholder="Select Channel"
+                            /> -->
+                          </div>
                         </div>
+                      </div>
                     </div>
+                    <div class="col-md-8  mt-4">
+                      <div class="row d-flex flex-wrap justify-content-center">
+                        <div class="mt-4 col-sm-5 col-12 text-center">
+                          <button
+                            class="default-btn"
+                            data-dismiss="modal"
+                            @click="savePayment"
+                          >
+                            <i class="pi pi-spin pi-spinner" v-if="loading"></i>
+                            Save
+                          </button>
+                        </div>
+                      </div>
                     </div>
-
-                    <div class="row mb-5">
-                    </div>
-                    <div class="row">
-                    <div class="col-md-12">
-                        
-                    </div>
-                    </div>
+                  </div>
                 </div>
-
-                </div>
-
-                <div class="row genarationg-report" v-if="isPending">
-                <div class="col-md-12 text-center mb-n4">
-                    <span class="primary-text font-weight-bold"
-                    >Generating Your Report ...</span
-                    >
-                </div>
-                <div class="col-md-12">
-                    <Loading :loading="isPending" />
-                </div>
-                </div>
-
-                <div class="row" v-if="errorGettingReport">
-                <div class="col-md-12 text-center text-danger font-weight-bold">
-                    <p class="text-danger">Error generating report, please try reloading the page. </p>
-                    <p class="mb-0">If this link was copied ensure you copied the whole link</p>
-                    <p>Else if this continues, please contact us at <a href="mailto:info@churchplus.co" class="text-primary">info@churchplus.co</a></p>
-                </div>
-                </div>
+                <Toast />
+              </div>
             </div>
+          </div>
         </div>
+      </div>
     </div>
-    <Toast />
+  </div>
+  <ConfirmDialog />
+  <Toast />
 </template>
 
 <script>
@@ -610,133 +1550,166 @@ import { ref, computed } from "vue";
 import Dropdown from "primevue/dropdown";
 import InputText from "primevue/inputtext";
 import { useToast } from "primevue/usetoast";
-import MembersSearch from "../../components/membership/MembersSearch.vue"
+import MembersSearch from "../../components/membership/MembersSearch.vue";
 import Loading from "../../components/loading/LoadingComponent";
-import router from '../../router';
-import { useRoute } from "vue-router"
-import finish from '../../services/progressbar/progress';
-import CascadeSelect from 'primevue/cascadeselect';
-import ToggleButton from '../donation/toggleButton.vue'
+import router from "../../router";
+import { useRoute } from "vue-router";
+import finish from "../../services/progressbar/progress";
+import CascadeSelect from "primevue/cascadeselect";
+import ToggleButton from "../donation/toggleButton.vue";
+import PledgeTransaction from "./PledgeTransaction.vue";
+import Tooltip from "primevue/tooltip";
 export default {
-    components: {
-        MembersSearch,
-        ReportModal,
-        Loading,
-        Dropdown,
-        InputText,
-        CascadeSelect,
-        ToggleButton
-    },
-    setup() {
-        const toast = useToast()
-        const selectedLink = ref(null)
-        const isPending = ref(true);
-        const errorGettingReport = ref(false);
-        const emaildata = ref(null);
-        const reportApproved = ref(false);
-        const status = ref("Draft");
-        const lastSent = ref("just a moment ago");
-        const sendBtnText = ref("Send report");
-        const tenantID = ref('')
-        const route = useRoute();
-        const churchName = ref('');
-        const Address = ref('');
-        const loading = ref(false)
-        const freewillAmount = ref('');
-        const checking = ref(false);
-        // const value = ref()
-        const isNameValid = ref(true)
-        const isEmailValid = ref(true)
-        const selectedPledge = ref('')
-        const memberName = ref('')
-        const allPledgeList = ref([]);
-        const amountFrom = ref('')
-        const selectedContact = ref({})
-        const isActive = ref(null)
-        const url = ref("");
-        const amountTo = ref('')
-        const pledgeCategory = ref(
-            [
-                {name: 'Free will'},
-                {name: 'Specific'},
-                {name: 'Range'}
-            ]
-        )
+  components: {
+    MembersSearch,
+    ReportModal,
+    Loading,
+    Dropdown,
+    InputText,
+    CascadeSelect,
+    ToggleButton,
+    PledgeTransaction,
+  },
+  directives: {
+    tooltip: Tooltip,
+  },
+  setup() {
+    const toast = useToast();
+    const selectedLink = ref(null);
+    const emaildata = ref(null);
+    const tenantID = ref("");
+    const route = useRoute();
+    const churchName = ref("");
+    const Address = ref("");
+    const loading = ref(false);
+    const freewillAmount = ref("");
+    const checking = ref(false);
+    // const value = ref()
+    const isNameValid = ref(true);
+    const isEmailValid = ref(true);
+    const selectedPledge = ref("");
+    const memberName = ref("");
+    const allPledgeList = ref([]);
+    const amountFrom = ref("");
+    const selectedContact = ref({});
+    const isActive = ref(null);
+    const url = ref("");
+    const amountTo = ref("");
+    const selectedChannel = ref({});
+    const pledgeCategory = ref([
+      { name: "Free will" },
+      { name: "Specific" },
+      { name: "Range" },
+    ]);
 
-        const personName = ref(route.query.name)
-        const pledgeName = ref(route.query.pledgeType)
-        const pledgeID = ref(route.query.pledgeTypeID)
-        const pledgeDate = ref(route.query.date)
+    const savePayment = async () => {
+      let paymentData = {
+        id: route.query.id,
+        pledgeID: route.query.pledgeTypeID,
+        amount: pledgeAmount.value,
+        channel: selectedChannel.value.name,
+        currencyID: selectedPledge.value.currencyID,
+      };
+      try {
+        const res = await axios.post(
+          "/api/Pledge/SavePledgePayment",
+          paymentData
+        );
+        console.log(res, "paypledge");
 
-        
-        const shareableLinkField = ref(null);
-        const locationTwo = ref(window.location);
-        const willCopyLink = ref(false);
-        
-        const copyLink2 = () => {
-            try {
-                willCopyLink.value = true;
-                const a = shareableLinkField.value;
-                a.select();
-                a.setSelectionRange(0, 200); /* For mobile devices */
+        toast.add({
+          severity: "success",
+          summary: "Successful",
+          detail: "Pledge Payment created successfully",
+          life: 2000,
+        });
+        router.push("/tenant/pledge/pledgepaymentlist");
+      } catch (error) {
+        console.log(error);
+      }
+    };
+    const channel = ref([
+      { name: "Bank Transfer" },
+      { name: "Cash" },
+      { name: "Online" },
+      { name: "POS" },
+      { name: "USSD" },
+      { name: "Cheque" },
+    ]);
 
-                /* Copy the text inside the text field */
-                document.execCommand("copy");
-                toast.add({
-                severity: "info",
-                summary: "Link Copied",
-                detail: "Shareable link copied to your clipboard",
-                life: 3000,
-                });
-            } catch (error) {
-                console.log(error);
-            }
-            };
-            url.value = `my.churchplus.co/tenant/pledge/pledgemaking/pledgeTypeID=${route.query.pledgeTypeID}&pledgeType=${pledgeName.value}&id=${route.query.id}&name=${route.query.name}`;
+    const personName = ref(route.query.name);
+    const pledgeName = ref(route.query.pledgeType);
+    const pledgeID = ref(route.query.pledgeTypeID);
+    const pledgeDate = ref(route.query.date);
+    const pledgeAmount = ref(Number(route.query.amount).toLocaleString());
 
-       
-        // const savePledge = async () => {
+    const shareableLinkField = ref(null);
+    const locationTwo = ref(window.location);
+    const willCopyLink = ref(false);
 
-        // }
+    const selectChannel = (item) =>{
+        selectedChannel.value = item
+        console.log(selectedChannel.value, "😂🤗🤗");
+    }
 
-        const makePayment = () =>{
-            // router.push('/tenant/pledge/pledgepayment')
-            router.push(`/tenant/pledge/pledgepayment?pledgeTypeID=${route.query.pledgeTypeID}&id=${route.query.id}&name=${route.query.name}`)
-        }
+    const copyLink2 = () => {
+      try {
+        willCopyLink.value = true;
+        const a = shareableLinkField.value;
+        a.select();
+        a.setSelectionRange(0, 200); /* For mobile devices */
 
-        const toggleReportState = () => {
-             reportApproved.value = !reportApproved.value;
-                status.value = "Unsent";
-            };
+        /* Copy the text inside the text field */
+        document.execCommand("copy");
+        toast.add({
+          severity: "info",
+          summary: "Link Copied",
+          detail: "Shareable link copied to your clipboard",
+          life: 3000,
+        });
+      } catch (error) {
+        console.log(error);
+      }
+    };
+    url.value = `my.churchplus.co/tenant/pledge/pledgemaking/pledgeTypeID=${route.query.pledgeTypeID}&pledgeType=${pledgeName.value}&id=${route.query.id}&name=${route.query.name}`;
 
+    // const savePledge = async () => {
 
-         const chooseContact = (payload) => {
-            // contactRef.value.hide();
-            selectedContact.value = payload
+    // }
 
-            // console.log(payload, 'my allll')
-         }
+    const makePayment = () => {
+      router.push(
+        `/tenant/pledge/pledgepayment?pledgeTypeID=${route.query.pledgeTypeID}&id=${route.query.id}&name=${route.query.name}`
+      );
+    };
+    const chooseContact = (payload) => {
+      // contactRef.value.hide();
+      selectedContact.value = payload;
+    };
 
-         const pledgePaymentLink = computed(() => {
-                if (!route.query.id) return ""
-                return `${window.location.origin}/tenant/pledge/pledgepayment?pledgeTypeID=${route.query.pledgeTypeID}&id=${route.query.id}&name=${route.query.name}`
-        })
+    const pledgePaymentLink = computed(() => {
+      if (!route.query.id) return "";
+      return `${window.location.origin}/tenant/pledge/pledgepayment?pledgeTypeID=${route.query.pledgeTypeID}&id=${route.query.id}&name=${route.query.name}`;
+    });
 
-        const copyLink = () => {
-            console.log(selectedLink.value.value, "jkjjhkj");
-                selectedLink.value.setSelectionRange(0, selectedLink.value.value.length); /* For mobile devices */
-                selectedLink.value.select();
+    const copyLink = () => {
+      console.log(selectedLink.value.value, "jkjjhkj");
+      selectedLink.value.setSelectionRange(
+        0,
+        selectedLink.value.value.length
+      ); /* For mobile devices */
+      selectedLink.value.select();
 
-                /* Copy the text inside the text field */
-                document.execCommand("copy");
-            toast.add({
-                    severity: "info",
-                    summary: "Link Copied",
-                    detail: "copied to your clipboard",
-                    life: 3000,
-                });
-            }
-        const sendReport = (messageObj) => {
+      /* Copy the text inside the text field */
+      document.execCommand("copy");
+      toast.add({
+        severity: "info",
+        summary: "Link Copied",
+        detail: "copied to your clipboard",
+        life: 3000,
+      });
+    };
+    const sendReport = (messageObj) => {
       const emailData = ref(emaildata.value.innerHTML);
       const message = `
                 <!DOCTYPE HTML PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
@@ -814,7 +1787,7 @@ export default {
               detail: "Your report has been sent",
               life: 3000,
             });
-            markAsSent()
+            markAsSent();
           }
         })
         .catch((err) => {
@@ -831,166 +1804,155 @@ export default {
       btnState.value = "modal";
     };
 
-        const getCurrentlySignedInUser = async () => {
-            try {
-                const res = await axios.get("/api/Membership/GetCurrentSignedInUser");
-                tenantID.value = res.data.tenantId
-            } catch (err) {
-                // errorGettingReport.value = true;
-                console.log(err);
-            }
-            };
+    // const getCurrentlySignedInUser = async () => {
+    //   try {
+    //     const res = await axios.get("/api/Membership/GetCurrentSignedInUser");
+    //     tenantID.value = res.data.tenantId;
+    //   } catch (err) {
+    //     console.log(err);
+    //   }
+    // };
 
-        getCurrentlySignedInUser();
-        
+    // getCurrentlySignedInUser();
 
-        const active = (payload) => {
-            isActive.value = payload
-        }
-        const getAllPledgeDefinition = async () =>{
-            // errorGettingReport.value = false;
-                try{
+    const active = (payload) => {
+      isActive.value = payload;
+    };
+    const getAllPledgeDefinition = async () => {
+      // errorGettingReport.value = false;
+      try {
+        checking.value = false;
+        const res = await axios.get("/api/Pledge/GetAllPledgeDefinitions");
+        finish();
+        allPledgeList.value = res.data.returnObject;
 
-                    checking.value = false;
-                    const res = await axios.get('/api/Pledge/GetAllPledgeDefinitions')
-                    finish()
-                    allPledgeList.value = res.data.returnObject
+        getDetails();
 
-                    getDetails()
-                    
-                    isActive.value = res.data.returnObject.map( i => {
-                        return {
-                            isActive : i.isActive
-                        }
-                    })
-                    console.log(allPledgeList.value,'getPledgeList');
-                    errorGettingReport.value = false;
-                    isPending.value = false;
-                    checking.value = true;
-                    
-                }
-                catch (error){
-                    console.log(error)
-                     isPending.value = false;
-                    errorGettingReport.value = true;
-                }
-            }
-            getAllPledgeDefinition()
+        isActive.value = res.data.returnObject.map((i) => {
+          return {
+            isActive: i.isActive,
+          };
+        });
+        console.log(allPledgeList.value, "getPledgeList");
+        checking.value = true;
+      } catch (error) {
+        console.log(error);
+      }
+    };
+    getAllPledgeDefinition();
 
-            const getDetails = () =>{
-            selectedPledge.value = allPledgeList.value.find(i => i.id === route.query.id)
-            memberName.value = route.query.name
-                }
-            
+    const getDetails = () => {
+      selectedPledge.value = allPledgeList.value.find(
+        (i) => i.id === route.query.id
+      );
+      memberName.value = route.query.name;
+    };
 
-            const makePledge = async () =>{
+    const makePledge = async () => {
+      const makePledgeDetails = {
+        personID: selectedContact.value.id,
+        pledgeTypeID: selectedPledge.value.id,
+        amountBase: selectedPledge.value.donorPaymentRangeFromAmount,
+        amountTop: selectedPledge.value.donorPaymentRangeToAmount,
+        amountBase: selectedPledge.donorPaymentSpecificAmount,
+        amountBase: freewillAmount.value,
+      };
 
-                 const makePledgeDetails = {
-                    personID: selectedContact.value.id,
-                    pledgeTypeID: selectedPledge.value.id,
-                    amountBase: selectedPledge.value.donorPaymentRangeFromAmount,
-                    amountTop: selectedPledge.value.donorPaymentRangeToAmount,
-                    amountBase: selectedPledge.donorPaymentSpecificAmount,
-                    amountBase:  freewillAmount.value                  
-                }
+      try {
+        const res = await axios.post(
+          "api/Pledge/SavePledge",
+          makePledgeDetails
+        );
+        finish();
+        console.log(res, "getSinglePledge");
+        router.push(
+          `/pledge/pledgepayment?ID=${route.query.id}&name=${route.query.name}`
+        );
+      } catch (error) {
+        console.log(error);
+      }
+    };
 
-                try{
-                    const res = await axios.post('api/Pledge/SavePledge', makePledgeDetails)
-                    finish()
-                    console.log(res,'getSinglePledge');
-                    router.push(`/pledge/pledgepayment?ID=${route.query.id}&name=${route.query.name}`)
-                    
-                }
-                catch (error){
-                    console.log(error)
-                }
-            }
+    // const getSinglePledgeDefinition = async () =>{
+    //         try{
+    //             const res = await axios.get(`/api/Pledge/GetSinglePledgeDefinitions?ID${allPledgeList.value.id}`)
+    //             finish()
+    //             console.log(res,'getSinglePledge');
+    //         }
+    //         catch (error){
+    //             console.log(error)
+    //         }
+    //     }
+    //     getSinglePledgeDefinition()
 
-        // const getSinglePledgeDefinition = async () =>{
-        //         try{
-        //             const res = await axios.get(`/api/Pledge/GetSinglePledgeDefinitions?ID${allPledgeList.value.id}`)
-        //             finish()
-        //             console.log(res,'getSinglePledge');
-        //         }
-        //         catch (error){
-        //             console.log(error)
-        //         }
-        //     }
-        //     getSinglePledgeDefinition()
+    const checkNameValue = () => {
+      if (churchName.value.length == 0) {
+        isNameValid.value = false;
+      } else {
+        isNameValid.value = true;
+      }
+    };
 
+    const checkEmailValue = () => {
+      if (pastorEmail.value.length == 0) {
+        isEmailValid.value = false;
+      } else {
+        isEmailValid.value = true;
+      }
+    };
 
-        
-
-        const checkNameValue = () => {
-            if(churchName.value.length == 0) {
-                isNameValid.value = false
-            }   else {
-                isNameValid.value = true
-            }
-        }
-        
-        const checkEmailValue = () => {
-            if(pastorEmail.value.length == 0) {
-                isEmailValid.value = false
-            }   else {
-                isEmailValid.value = true
-            }
-        }
-
-        return {
-            url,
-            allPledgeList,
-            locationTwo,
-            shareableLinkField,
-            copyLink2,
-            willCopyLink,
-            emaildata,
-            sendReport,
-            pledgeID,
-            lastSent,
-            status,
-            sendBtnText,
-            toggleReportState,
-            reportApproved,
-            isPending,
-            errorGettingReport,
-            personName,
-            pledgeName,
-            memberName,
-            tenantID,
-            checking,
-            makePledge,
-            chooseContact,
-            selectedPledge,
-            pledgeDate,
-            makePayment,
-            pledgeCategory,
-            amountTo,
-            amountFrom,
-            freewillAmount,
-            pledgePaymentLink,
-            // savePledge,
-            checkEmailValue,
-            churchName,
-            selectedContact,
-            Address,
-            // value,
-            loading,
-            checkNameValue,
-            isNameValid,
-            isEmailValid,
-            selectedLink,
-            isActive,
-            active,
-            copyLink
-        }
-    },
-}
+    return {
+      savePayment,
+      url,
+      channel,
+      selectedChannel,
+      selectChannel,
+      allPledgeList,
+      locationTwo,
+      shareableLinkField,
+      copyLink2,
+      willCopyLink,
+      emaildata,
+      sendReport,
+      pledgeID,
+      personName,
+      pledgeName,
+      memberName,
+      tenantID,
+      checking,
+      makePledge,
+      chooseContact,
+      selectedPledge,
+      pledgeDate,
+      makePayment,
+      pledgeCategory,
+      amountTo,
+      amountFrom,
+      freewillAmount,
+      pledgePaymentLink,
+      // savePledge,
+      checkEmailValue,
+      churchName,
+      selectedContact,
+      Address,
+      // value,
+      loading,
+      checkNameValue,
+      isNameValid,
+      isEmailValid,
+      selectedLink,
+      isActive,
+      active,
+      copyLink,
+      pledgeAmount,
+    };
+  },
+};
 </script>
 
 <style scoped>
-       .heading-text {
-        font: normal normal 800 1.5rem Nunito sans;
+.heading-text {
+  font: normal normal 800 1.5rem Nunito sans;
 }
 
 .email-data {
@@ -1064,15 +2026,15 @@ a {
   border-radius: 5px;
 }
 
-.analytics-container {
-  /* padding: 0 24px 24px 24px; */
+/* .analytics-container {
+  
   width: 90%;
   margin: auto;
 }
 
 .first-con {
   margin-top: 50px;
-}
+} */
 
 .theader {
   font-size: 14px;
@@ -1192,5 +2154,4 @@ a {
     max-width: 280px;
   }
 }
-
 </style>

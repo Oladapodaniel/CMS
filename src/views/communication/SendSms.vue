@@ -791,6 +791,21 @@
                               </div>
                             </div>
                           </div>
+                          
+                        </div>
+                        <div class="row mt-3">
+                          <div class="col-md-12 px-1">
+                            <hr class="hr" />
+                          </div>
+                        </div>
+                        <div class="row">
+                          <div class="col-md-12 small-text mt-2 notecolour font-weight-bold">
+                           <span class="text-dark font-weight-bold "> NB :</span>  Messages sent between 8pm to 8am (Night
+                            Messages) will be delivered using the dedicated
+                            phone number. If you wish to use sender ID, kindly
+                            send messages between 8am in the morning to 8pm in
+                            the evening.
+                          </div>
                         </div>
                       </div>
                     </div>
@@ -940,7 +955,6 @@ export default {
           name: "All Contacts",
         });
       }
-      // console.log(index)
     };
 
     const sendOptionsIsShown = ref(false);
@@ -969,7 +983,6 @@ export default {
       groupsAreVissible.value = false;
       allGroups.value[indexInCategories].splice(indexInGroup, 1);
       groupListShown.value = false;
-      console.log(selectedGroups);
     };
 
     const removeGroup = (index) => {
@@ -983,12 +996,10 @@ export default {
     const selectedMembers = ref([]);
     const selectMember = (selectedMember, index) => {
       selectedMembers.value.push(selectedMember);
-      console.log(memberSearchResults.value, "search members");
       memberSearchResults.value.splice(index, 1);
       memberListShown.value = false;
       searchText.value = "";
       memberSearchResults.value = [];
-      console.log(selectedMembers, "selected members");
     };
     const removeMember = (index) => {
       selectedMembers.value.splice(index, 1);
@@ -1012,14 +1023,11 @@ export default {
               const memberInExistingCollection = selectedMembers.value.find(
                 (j) => j.id === i.id
               );
-              console.log(memberInExistingCollection, "em");
               if (memberInExistingCollection && memberInExistingCollection.id)
                 return false;
               return true;
             });
-            console.log(memberSearchResults.value, "res");
           });
-        console.log(memberSearchResults.value);
       } else {
         memberSearchResults.value = [];
       }
@@ -1067,7 +1075,6 @@ export default {
         detail: "SMS is being sent....",
         life: 2500,
       });
-      console.log(data);
 
       // if (selectedMembers.value.length > 0) data.contacts = selectedMembers.value;
       disableBtn.value = true;
@@ -1103,9 +1110,6 @@ export default {
           }
 
           store.dispatch("removeSMSUnitCharge", res.data.unitsUsed);
-          console.log(pageCount, "Page count ");
-
-          console.log(res);
 
           // Save the res to store in other to get it in the view sent sms page
           let sentObj = {
@@ -1116,7 +1120,6 @@ export default {
             deliveryReport: [{ report: "-" }],
             report: res.data.sentMessageDTO.report,
           };
-          console.log(sentObj);
           store.dispatch("communication/addSmsToSentList", sentObj);
           setTimeout(() => {
             router.push({ name: "SentMessages" });
@@ -1163,7 +1166,6 @@ export default {
           "/api/Messaging/PostSmsDraft"
         );
         store.dispatch("communication/getSMSDrafts");
-        console.log(response, "draft response");
         toast.add({
           severity: "success",
           summary: "Draft Saved",
@@ -1171,7 +1173,7 @@ export default {
           life: 2500,
         });
       } catch (error) {
-        console.log(error, "drafting error");
+        console.log(error);
         toast.add({
           severity: "warn",
           summary: "Failed",
@@ -1214,7 +1216,6 @@ export default {
             : "";
         data.ToContacts += selectedMembers.value
           .map((i) => {
-            console.log(i, "person");
             if (i.id) return i.id;
           })
           .join();
@@ -1247,22 +1248,18 @@ export default {
 
     const scheduleMessage = async (data) => {
       display.value = false;
-      const formattedDate = dateFormatter.monthDayTime(data.executionDate);
-      console.log(formattedDate, "Formatted Date");
-      console.log(data.executionDate);
+      // const formattedDate = dateFormatter.monthDayTime(data.executionDate);
+      // console.log(formattedDate, "Formatted Date");
+      // console.log(data.executionDate);
 
-      console.log(data);
+      // console.log(data);
       try {
-        const response = await composerObj.sendMessage(
-          "/api/Messaging/saveSmsSchedule",
-          data
-        );
+        await composerObj.sendMessage("/api/Messaging/saveSmsSchedule", data);
         toast.add({
           severity: "success",
           summary: "message Scheduled",
           detail: `Message scheduled for ${data.time}`,
         });
-        console.log(response, "Schedule response");
       } catch (error) {
         console.log(error);
         toast.add({
@@ -1283,7 +1280,7 @@ export default {
 
       try {
         let { data } = await axios.post("/api/messaging/upload", formData);
-        console.log(data);
+        // console.log(data);
         toast.add({
           severity: "success",
           summary: "Success",
@@ -1321,7 +1318,6 @@ export default {
     if (route.query.draftId) {
       communicationService.getDraftsById(route.query.draftId).then((res) => {
         if (res) {
-          console.log(res, "Draft");
           editorData.value = res.body;
         } else {
           console.log(res, "error response");
@@ -1333,7 +1329,6 @@ export default {
       isoCode.value = store.getters.currentUser.isoCode;
       userCountry.value = store.getters.currentUser.country;
       tenantId.value = store.getters.tenantId;
-      console.log(store.getters.currentUser);
     } else {
       axios
         .get("/api/Membership/GetCurrentSignedInUser")
@@ -1360,7 +1355,6 @@ export default {
         label: "Schedule",
         icon: "pi pi-clock",
         command: () => {
-          console.log("Hello");
           showScheduleModal();
         },
       },
@@ -1388,7 +1382,6 @@ export default {
             categories.value.push(prop);
             allGroups.value.push(res[prop]);
           }
-          console.log(allGroups.value);
         })
         .catch((err) => console.log(err));
     });
@@ -1401,7 +1394,6 @@ export default {
     const groupListShown = ref(false);
     const showGroupList = () => {
       groupListShown.value = true;
-      console.log(groupSelectInput.value);
     };
 
     const memberListShown = ref(false);
@@ -1427,8 +1419,6 @@ export default {
         emailDisplayName: "",
         // gateWayToUse: gateway,
       };
-
-      console.log(data);
     };
 
     const getDefaultMessage = async (messageId) => {
@@ -1474,7 +1464,6 @@ export default {
         let { data } = await axios.get(
           `/api/Messaging/RetrieveTenantSenderIDs`
         );
-        console.log(data);
         senderIDs.value = data.returnObject;
       } catch (err) {
         console.log(err);
@@ -1492,7 +1481,6 @@ export default {
           `/api/Messaging/RequestSenderID`,
           payload
         );
-        console.log(data);
         if (data.status === 0) {
           toast.add({
             severity: "warn",
@@ -1543,7 +1531,6 @@ export default {
     });
 
     const setIdToSubject = (item) => {
-      console.log(item);
       subject.value = item.mask;
       selectedSender.value = item;
     };
@@ -1641,6 +1628,10 @@ export default {
 </script>
 
 <style scoped>
+.notecolour{
+  /* color: rgb(199, 129, 23);; */
+  color: rgb(252, 54, 87);
+}
 .input {
   display: block;
   width: 100%;

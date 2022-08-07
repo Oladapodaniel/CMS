@@ -64,7 +64,7 @@
                             :checked="marked.length === sentSMS.length"
                           />
                         </div>
-                        <div class="col-md-7 d-flex align-items-center">
+                        <div class="col-md-6 d-flex align-items-center">
                           <span class="th">Message</span>
                         </div>
                         <div class="col-md-2">
@@ -80,7 +80,7 @@
                         <div class="col-md-1">
                           <span class="th">Units</span>
                         </div>
-                        <div class="col-md-1">
+                        <div class="col-md-2">
                           <span class="th">Report</span>
                         </div>
                       </div>
@@ -110,7 +110,7 @@
                             "
                           />
                         </div>
-                        <div class="col-md-7 d-md-flex flex-column">
+                        <div class="col-md-6 d-md-flex flex-column">
                           <router-link
                             :to="{
                               name: 'SendMessage',
@@ -195,7 +195,7 @@
                           <span class="small-text">{{ sms.smsUnitsUsed }}</span>
                         </div>
                         <div
-                          class="col-md-1 col-ms-12 my-2 d-flex justify-content-between cursor-pointer"
+                          class="col-md-2 col-ms-12 my-2 d-flex justify-content-between cursor-pointer"
                         >
                           <span class="hidden-header font-weight-bold"
                             >DELIVER REPORT:
@@ -207,7 +207,7 @@
                               query: { units: sms.smsUnitsUsed },
                             }"
                             class="small-text text-decoration-none"
-                            >View</router-link
+                            >View report</router-link
                           >
                         </div>
                       </div>
