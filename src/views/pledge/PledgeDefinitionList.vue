@@ -107,29 +107,34 @@
                 <div
                   class="small-text text-capitalize col-md-2 font-weight-bold"
                 >
-                  Date
+                  Name
                 </div>
-                <!-- <div
+                <div
                       class="small-text text-capitalize col-md-2 font-weight-bold"
                     >
-                      Number
-                    </div> -->
-                <div
-                  class="small-text text-capitalize col-md-3 font-weight-bold"
-                >
-                  Contact
+                  Fund
                 </div>
                 <div
-                  class="small-text text-capitalize col-md-3 font-weight-bold"
+                  class="small-text text-capitalize col-md-2 font-weight-bold"
                 >
-                  Pledge
+                  Pledge Amount
                 </div>
                 <div
-                  class="small-text text-capitalize col-md-3 font-weight-bold"
+                  class="small-text text-capitalize col-md-2 font-weight-bold"
                 >
-                  Target Amount
+                  Redemeed
+                </div>
+                <div
+                  class="small-text text-capitalize col-md-2 font-weight-bold"
+                >
+                  Date
                 </div>
 
+                <div
+                  class="small-text text-capitalize col-md-1 font-weight-bold"
+                >
+                  Pledges
+                </div>
                 <div
                   class="small-text text-capitalize col-md-1 font-weight-bold"
                 >
@@ -189,31 +194,13 @@
                           fontIncrease
                         "
                         style="font-size: 15px"
-                        >Date</span
-                      >
-                      {{ date(pledgelist.dateEntered) }}
-                    </p>
-                  </div>
-                  <div
-                    class="col-md-3 desc"
-                    @click="pledgeClick(pledgelist.id)"
-                  >
-                    <p class="mb-0 d-flex justify-content-between text-primary">
-                      <span
-                        class="
-                          text-dark
-                          font-weight-bold
-                          d-flex d-md-none
-                          fontIncrease
-                        "
-                        style="font-size: 15px"
-                        >Contact</span
+                        >Name</span
                       >
                       {{ pledgelist.name }}
                     </p>
                   </div>
                   <div
-                    class="col-md-3 desc"
+                    class="col-md-2 desc"
                     @click="pledgeClick(pledgelist.id)"
                   >
                     <p class="mb-0 d-flex justify-content-between text-primary">
@@ -225,12 +212,30 @@
                           fontIncrease
                         "
                         style="font-size: 15px"
-                        >Pledge
+                        >Fund</span
+                      >
+                      {{ pledgelist.fund }}
+                    </p>
+                  </div>
+                  <div
+                    class="col-md-2 desc"
+                    @click="pledgeClick(pledgelist.id)"
+                  >
+                    <p class="mb-0 d-flex justify-content-between text-primary">
+                      <span
+                        class="
+                          text-dark
+                          font-weight-bold
+                          d-flex d-md-none
+                          fontIncrease
+                        "
+                        style="font-size: 15px"
+                        >Pledge Amount
                       </span>
-                      {{ pledgelist.name }}
+                      {{ pledgelist.totalPledgeAmount }}
                     </p>
                   </div>
-                  <div class="col-md-3" @click="groupClick(group.id)">
+                  <div class="col-md-2" @click="groupClick(group.id)">
                     <div
                       class="d-flex small justify-content-between text-primary"
                     >
@@ -242,15 +247,53 @@
                           fontIncrease
                         "
                         style="font-size: 15px"
-                        >Target Amount</span
+                        >Redeemed</span
                       >
                       <div class="small-text text-right text-md-center">
-                        {{ pledgelist.currency.symbol }}
+                        {{ pledgelist.currency }}
                         {{
                           Math.abs(
-                            pledgelist.totalTargetAmount
+                            pledgelist.totalPaymentsAmount
                           ).toLocaleString()
                         }}.00
+                      </div>
+                    </div>
+                  </div>
+                  <div class="col-md-2" @click="groupClick(group.id)">
+                    <div
+                      class="d-flex small justify-content-between text-primary"
+                    >
+                      <span
+                        class="
+                          text-dark
+                          font-weight-bold
+                          d-flex d-md-none
+                          fontIncrease
+                        "
+                        style="font-size: 15px"
+                        >Date</span
+                      >
+                      <div class="small-text text-right text-md-center">
+                        {{ date(pledgelist.date) }}
+                      </div>
+                    </div>
+                  </div>
+                  <div class="col-md-1" @click="groupClick(group.id)">
+                    <div
+                      class="d-flex small justify-content-between text-primary"
+                    >
+                      <span
+                        class="
+                          text-dark
+                          font-weight-bold
+                          d-flex d-md-none
+                          fontIncrease
+                        "
+                        style="font-size: 15px"
+                        >Pledges</span
+                      >
+                      <div class="small-text text-right text-md-center">
+                        {{ pledgelist.pledgeCount }}
                       </div>
                     </div>
                   </div>
