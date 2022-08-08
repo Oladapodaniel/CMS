@@ -326,7 +326,7 @@ export default {
       return markedEmails.map((i) => i.id).join(",");
     };
 
-    const deleteEmails = async id => {
+    const deleteEmails = async (id) => {
       try {
         let stringOfEmailIds = id ? id : getIdsOfEmailsToDelete(markedMail.value);
 
