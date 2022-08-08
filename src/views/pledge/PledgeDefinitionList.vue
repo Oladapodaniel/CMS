@@ -2,12 +2,12 @@
   <div class="container-fluid">
     <div class="container-wide">
       <div class="row d-md-flex yu mt-5">
-        <div class="col-md-6 col-4">
-          <div class="events">New Partnership/Pledge Item</div>
+        <div class="col-md-6 col-12">
+          <div class="events">Partnership and Pledge Item</div>
           <Toast />
           <ConfirmDialog />
         </div>
-        <div class="col-md-6 col-8 d-flex justify-content-end mt-2 my-1 link">
+        <div class="col-md-6 col-sm-12 d-flex justify-content-md-end justify-content-center mt-2 my-1 link">
           <router-link
             to="/tenant/pledge/pledgedefinition"
             class="
@@ -65,7 +65,7 @@
                 </div>
               </div>
           </div> -->
-      <div class="row table">
+      <div class="row ">
         <div class="col-12 px-0" id="table">
           <div class="top-con" id="ignore2">
             <div class="table-top">
@@ -103,7 +103,7 @@
           </div>
           <div>
             <div class="container-fluid d-none d-md-block">
-              <div class="row t-header">
+              <div class="row t-header mt-4 border-bottom pb-2">
                 <div
                   class="small-text text-capitalize col-md-2 font-weight-bold"
                 >
@@ -185,7 +185,7 @@
                     class="col-md-2 desc"
                     @click="pledgeClick(pledgelist.id)"
                   >
-                    <p class="mb-0 d-flex justify-content-between text-primary">
+                    <div class="mb-0  d-flex small justify-content-between ">
                       <span
                         class="
                           text-dark
@@ -196,14 +196,14 @@
                         style="font-size: 15px"
                         >Name</span
                       >
-                      {{ pledgelist.name }}
-                    </p>
+                      <div class="small-text">{{ pledgelist.name }}</div>
+                    </div>
                   </div>
                   <div
                     class="col-md-2 desc"
                     @click="pledgeClick(pledgelist.id)"
                   >
-                    <p class="mb-0 d-flex justify-content-between text-primary">
+                    <div class="mb-0 small d-flex justify-content-between ">
                       <span
                         class="
                           text-dark
@@ -214,14 +214,14 @@
                         style="font-size: 15px"
                         >Fund</span
                       >
-                      {{ pledgelist.fund }}
-                    </p>
+                      <div class="small-text">{{ pledgelist.fund }}</div> 
+                    </div>
                   </div>
                   <div
                     class="col-md-2 desc"
                     @click="pledgeClick(pledgelist.id)"
                   >
-                    <p class="mb-0 d-flex justify-content-between text-primary">
+                    <div class="mb-0 small d-flex justify-content-between ">
                       <span
                         class="
                           text-dark
@@ -232,12 +232,15 @@
                         style="font-size: 15px"
                         >Pledge Amount
                       </span>
-                      {{ pledgelist.totalPledgeAmount }}
-                    </p>
+                       <div class="small-text">
+                        {{ pledgelist.totalPledgeAmount }}
+                      </div>
+                      
+                    </div>
                   </div>
                   <div class="col-md-2" @click="groupClick(group.id)">
                     <div
-                      class="d-flex small justify-content-between text-primary"
+                      class="d-flex small justify-content-between "
                     >
                       <span
                         class="
@@ -261,7 +264,7 @@
                   </div>
                   <div class="col-md-2" @click="groupClick(group.id)">
                     <div
-                      class="d-flex small justify-content-between text-primary"
+                      class="d-flex small justify-content-between "
                     >
                       <span
                         class="
@@ -280,7 +283,7 @@
                   </div>
                   <div class="col-md-1" @click="groupClick(group.id)">
                     <div
-                      class="d-flex small justify-content-between text-primary"
+                      class="d-flex small justify-content-between "
                     >
                       <span
                         class="
@@ -606,28 +609,28 @@ export default {
   border-bottom: 1.5px solid #6d6d6d19;
 }
 
-.t-header {
+/* .t-header {
   background: #dde2e6 0% 0% no-repeat padding-box;
   font-size: 16px;
   padding: 0.5rem 0;
-}
+} */
 .hover:hover {
   background: #eee;
 }
 
-.parent-desc.first {
+/* .parent-desc.first {
   color: #8898aa;
   font-size: 14px;
   font-weight: 600;
   box-shadow: 0px 3px 6px #2c28281c;
   background: #dde2e6 0% 0% no-repeat padding-box;
-}
+} */
 .desc-head {
   font-weight: 700;
 }
-.desc {
+/* .desc {
   color: #9b9a9c;
-}
+} */
 .default-bt {
   font-weight: 600;
   white-space: initial;

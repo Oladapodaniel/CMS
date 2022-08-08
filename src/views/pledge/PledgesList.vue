@@ -557,7 +557,7 @@
             </div>
 
             <div class="col-md-1 py-2">
-              <p class="mb-0 d-flex text-danger justify-content-between">
+              <div class="mb-0 d-flex text-danger justify-content-between">
                 <span
                   class="
                     text-dark
@@ -568,8 +568,8 @@
                   style="font-size: 15px"
                   >Due</span
                 >
-                {{pledgelist.overDueDays}}
-              </p>
+                <div class="small">{{pledgelist.overDueDays }}</div>
+              </div>
             </div>
             <div class="col-md-1 py-2">
               <div class="d-flex small justify-content-between">
