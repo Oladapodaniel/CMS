@@ -193,9 +193,8 @@
               </div>
             </div>
           </div>
-          
-        <div class="container-fluid ">
-          <div class="wrap">
+        <div class="container-fluid">
+          <div class="row">
             <loadingComponent :loading="loading" />
             <div
               class=" col-12 py-2 px-0 c-pointer tr-border-bottom hover"
@@ -521,6 +520,104 @@
       <emailComponent :selectedGroupMembers="markedFirsttimers"  @closesidemodal="() => showEmail = false"/>
     </div>
   </SideBar>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
 </template>
 
 <script>
@@ -1126,7 +1223,7 @@ filter.value.phoneNumber ="";
     position: relative;
     border-radius: 10px;
     height: 4px;
-    top: 5px;
+    top: -4px;
     left: 0px;
     /* width: 35%; */
     opacity: 1;
@@ -1552,12 +1649,6 @@ a {
   } 
   .more {
     margin-right: 0;
-  }
-
-  .wrap {
-    display: flex;
-    flex-wrap: wrap;
-    flex-direction: column;
   }
 }
 
