@@ -62,7 +62,6 @@
                             <i class="fas fa-inbox mr-3 menu-icon"></i>
                             <span class="active">Schedules</span>
                           </router-link>
-                          <!-- <span class="inbox-count ml-md-2">3</span> -->
                           </span
                         >
                       </a>
@@ -180,6 +179,10 @@ export default {
 }
 
 .active-link {
+  background: rgba(19, 106, 205, 0.05) ;
+  border-left: 2px solid #136acd;
+}
+.active-link2 {
   background: rgba(19, 106, 205, 0.05) ;
   border-left: 2px solid #136acd;
 }
