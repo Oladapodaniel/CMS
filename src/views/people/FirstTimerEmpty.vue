@@ -332,7 +332,7 @@ export default {
   width: 180px;
   font-size: 16px;
   font-weight: 600;
-  margin: 0 8px;
+  margin: 4px 8px;
   outline: none;
   text-decoration: none;
   box-sizing: border-box;
@@ -376,6 +376,9 @@ export default {
   border: 0.8px solid #0020440a;
   margin: 0 45px;
 }
+.actions{
+  display:flex;
+}
 
 @media(max-width: 566px) {
   .button {
@@ -392,7 +395,7 @@ export default {
 }
 @media (max-width: 1500px) {
     .table {
-        border: 2px solid red;
+        /* border: 2px solid red; */
     }
 }
 
@@ -418,8 +421,7 @@ export default {
         flex-direction: column;
           }
     .actions {
-        margin-top: 15px;
-        display: flex;
+        flex-wrap: wrap;
     }
     .events {
       font: normal normal 800 29px Nunito sans;
@@ -434,12 +436,7 @@ export default {
 }
 
 @media (max-width: 399px) {
-    .actions {
-        display: flex;
-        flex-direction: row;
-        align-items: center;
-    }
-
+    
     .button {
         margin-top: 10px;
     }
