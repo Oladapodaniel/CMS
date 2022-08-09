@@ -6,6 +6,7 @@
       </div>
       <div class="row">
         <div class="col-md-8">
+          <!-- Contribution item -->
           <div class="row mt-5">
             <div class="col-md-10 offset-md-2">
               <div class="row">
@@ -135,6 +136,7 @@
             </div>
           </div>
 
+          <!-- Name -->
           <div class="row my-1 mt-4">
             <div class="col-md-10 offset-md-2">
               <div class="row">
@@ -245,6 +247,8 @@
               </div>
             </div> -->
           </div>
+
+          <!-- Pledge type -->
           <div class="row my-1 mt-4">
             <div class="col-md-10 mt-1 offset-md-2">
               <div class="row">
@@ -346,6 +350,8 @@
               </div>
             </div>
           </div>
+
+          <!-- Frequency -->
           <div class="row my-1 mt-4">
             <div class="col-md-10 offset-md-2">
               <div class="row">
@@ -356,9 +362,7 @@
                     align-self-center
                   "
                 >
-                  <label for="" class="">
-                    Frequency <sup class="text-danger">*</sup>
-                  </label>
+                  <label for="" class=""> Frequency </label>
                 </div>
 
                 <div class="col-12 col-sm-12 col-lg-8 d-flex flex-wrap">
@@ -455,6 +459,185 @@
               </div>
             </div>
           </div>
+
+          <!-- Bank -->
+          <div class="row my-1 mt-4">
+            <div class="col-md-10 offset-md-2">
+              <div class="row">
+                <div
+                  class="
+                    col-12 col-sm-12 col-lg-4
+                    text-sm-left text-lg-right
+                    align-self-center
+                  "
+                >
+                  <label for="" class="">Bank </label>
+                </div>
+
+                <div class="col-12 col-sm-12 col-lg-8">
+                  <div class="dropdown w-100">
+                    <button
+                      class="default-btn w-100 text-left pr-1"
+                      type="button"
+                      style="
+                        border-radius: 4px;
+                        border: 1px solid #ced4da;
+                        color: #6c757d;
+                      "
+                      id="dropdownMenuButton"
+                      data-toggle="dropdown"
+                      aria-haspopup="true"
+                      aria-expanded="false"
+                    >
+                      <div class="d-flex justify-content-between align-items-center">
+                        <span>{{
+                        !selectedBank
+                          ? "Choose bank"
+                          : selectedBank.name.length > 27
+                          ? `${selectedBank.name.slice(0, 27)}...`
+                          : selectedBank.name
+                      }}</span>
+                      <i class="pi pi-chevron-down pr-1"></i>
+                      </div>
+                    </button>
+                    <div
+                      class="dropdown-menu p-2 w-100"
+                      aria-labelledby="dropdownMenuButton"
+                      style="max-height: 350px; overflow-y: auto"
+                    >
+                      <input
+                        type="text"
+                        class="form-control"
+                        placeholder="Search bank"
+                        v-model="bankSearchText"
+                      />
+                      <a
+                        class="dropdown-item cursor-pointer"
+                        v-for="item in filteredBanks"
+                        :key="item.id"
+                      >
+                        <div @click="setBank(item)">
+                          {{ item ? item.name : "" }}
+                        </div>
+                      </a>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Account number -->
+          <div class="row my-1 mt-4">
+            <div class="col-md-10 offset-md-2">
+              <div class="row">
+                <div
+                  class="col-12 col-sm-12 col-lg-4 text-sm-left text-lg-right"
+                >
+                  <label for="" class="">Account Number </label>
+                </div>
+
+                <div class="col-12 col-sm-12 col-lg-8">
+                  <input
+                    type="text"
+                    class="form-control"
+                    placeholder="Enter account number"
+                    v-model="accountNumber"
+                    @blur="resolveCustomerDetail"
+                  />
+                  <div
+                    class="col-sm-2 col-lg-3 align-self-center mt-4"
+                    v-if="accountResolving"
+                  >
+                    <div
+                      class="spinner-border text-primary"
+                      style="width: 3rem; height: 3rem"
+                      role="status"
+                    >
+                      <span class="sr-only">Loading...</span>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Account name -->
+          <div class="row my-1 mt-4">
+            <div class="col-md-10 offset-md-2">
+              <div class="row">
+                <div
+                  class="col-12 col-sm-12 col-lg-4 text-sm-left text-lg-right"
+                >
+                  <label for="" class="">Account Name </label>
+                </div>
+
+                <div class="col-12 col-sm-12 col-lg-8">
+                  <input
+                    type="text"
+                    v-model="accountName"
+                    placeholder="Account name"
+                    class="form-control"
+                    disabled
+                  />
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Income account -->
+          <div class="row my-1 mt-4">
+            <div class="col-md-10 offset-md-2">
+              <div class="row">
+                <div
+                  class="col-12 col-sm-12 col-lg-4 text-sm-left text-lg-right"
+                >
+                  <label for="" class="">Income Account</label>
+                </div>
+
+                <div class="col-12 col-sm-12 col-lg-8">
+                  <Dropdown
+                    v-model="selectedIncomeAccount"
+                    class="w-100 p-0"
+                    :options="incomeAccount"
+                    optionLabel="text"
+                    :filter="false"
+                    placeholder="Select income account"
+                    :showClear="false"
+                  >
+                  </Dropdown>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Cash account -->
+          <div class="row my-1 mt-4">
+            <div class="col-md-10 offset-md-2">
+              <div class="row">
+                <div
+                  class="col-12 col-sm-12 col-lg-4 text-sm-left text-lg-right"
+                >
+                  <label for="" class="">Cash Account</label>
+                </div>
+
+                <div class="col-12 col-sm-12 col-lg-8">
+                  <Dropdown
+                    v-model="selectedCashAccount"
+                    :options="cashBankAccount"
+                    optionLabel="text"
+                    :filter="false"
+                    placeholder="Select cash account"
+                    class="w-100 p-0"
+                    :showClear="false"
+                  >
+                  </Dropdown>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Save button -->
           <div class="col-md-9 offset-md-5 mt-4">
             <div class="row d-flex justify-content-center">
               <div class="col-md-5 mt-2 mt-md-0">
@@ -462,6 +645,7 @@
                   class="default-btn primary-bg border-0 text-white"
                   data-dismiss="modal"
                   @click="savePledge"
+                  :disabled="disabled"
                 >
                   <i class="pi pi-spin pi-spinner" v-if="loading"></i> Save
                 </button>
@@ -477,8 +661,9 @@
 
 <script>
 import axios from "@/gateway/backendapi";
-import { ref } from "vue";
-import { useStore } from "vuex";
+import axio from "axios";
+import { ref, computed } from "vue";
+// import { useStore } from "vuex";
 import Dropdown from "primevue/dropdown";
 import InputText from "primevue/inputtext";
 import { useToast } from "primevue/usetoast";
@@ -515,7 +700,7 @@ export default {
     // const showPledgeType = ref(false)
     const selectedRange = ref({});
     const selectedContribution = ref({});
-    const selectedCurrency = ref({ name: 'Select currency'});
+    const selectedCurrency = ref({ name: "Select currency" });
     const isNameValid = ref(true);
     const pledgeName = ref("");
     const amountFrom = ref();
@@ -534,6 +719,18 @@ export default {
       { name: "SemiAnnually" },
       { name: "Yearly" },
     ]);
+    const selectedBank = ref("");
+    const bankSearchText = ref("");
+    const nigerianBanks = ref([]);
+    const accountNumber = ref("");
+    const accountName = ref("");
+    const accountResolving = ref(false);
+    const disabled = ref(true);
+    const selectedIncomeAccount = ref({});
+    const incomeAccount = ref([]);
+    const selectedCashAccount = ref({});
+    const cashBankAccount = ref([]);
+
     const date = (offDate) => {
       return monthDayYear.normalDate(offDate);
     };
@@ -545,8 +742,7 @@ export default {
         );
         finish();
         getAllCurrencies(res.data.returnObject.currencyID);
-        getContributionCategory(res.data.returnObject.financialContributionID)
-
+        getContributionCategory(res.data.returnObject.financialContributionID);
 
         console.log(res.data.returnObject.currencyID, selectedCurrency.value);
         console.log(currencyList);
@@ -559,7 +755,9 @@ export default {
         startDate.value =
           res.data.returnObject.pledgeTypeFrequencyOneTimeStartDate;
         selectedRange.value =
-          reOccuringRange.value[res.data.returnObject.pledgeTypeFrequencyReOccuring];
+          reOccuringRange.value[
+            res.data.returnObject.pledgeTypeFrequencyReOccuring
+          ];
         // showPledgeType.value = res.data.returnObject.donorPaymentType
         if (startDate.value && endDate.value) {
           pledgeFrequency.value = "onetime";
@@ -598,24 +796,26 @@ export default {
     };
 
     const getContributionCategory = (id) => {
-        axios
-          .get("/api/financials/contributions/items")
-          .then((res) => {
-            contributionItems.value = res.data;
+      axios
+        .get("/api/financials/contributions/items")
+        .then((res) => {
+          contributionItems.value = res.data;
 
-            if (id) {
-                selectedContribution.value = contributionItems.value.find(i => i.id == id)
-            }
-          })
-          .catch((err) => {
-            finish();
-            if (err.toString().toLowerCase().includes("network error")) {
-              networkError.value = true;
-            } else {
-              networkError.value = false;
-            }
-            console.log(err);
-          });
+          if (id) {
+            selectedContribution.value = contributionItems.value.find(
+              (i) => i.id == id
+            );
+          }
+        })
+        .catch((err) => {
+          finish();
+          if (err.toString().toLowerCase().includes("network error")) {
+            networkError.value = true;
+          } else {
+            networkError.value = false;
+          }
+          console.log(err);
+        });
     };
     getContributionCategory();
 
@@ -672,7 +872,7 @@ export default {
           loading.value = false;
         } catch (error) {
           console.log(error);
-          loading.value = false
+          loading.value = false;
         }
       } else {
         try {
@@ -704,7 +904,7 @@ export default {
           endDate.value = "";
         } catch (error) {
           console.log(error);
-          loading.value = false
+          loading.value = false;
         }
       }
     };
@@ -720,14 +920,12 @@ export default {
             };
           });
           if (id) {
-              selectedCurrency.value = currencyList.value.find(
-                (i) => i.id == id
-            );
+            selectedCurrency.value = currencyList.value.find((i) => i.id == id);
           }
         })
         .catch((err) => console.log(err));
     };
-     getAllCurrencies();
+    getAllCurrencies();
 
     const specific = () => {
       pledgeCategory.value = "specific";
@@ -756,6 +954,111 @@ export default {
         isNameValid.value = true;
       }
     };
+
+    const filteredBanks = computed(() => {
+      if (!bankSearchText.value) return nigerianBanks.value;
+      return nigerianBanks.value.filter((i) =>
+        i.name.toLowerCase().includes(bankSearchText.value.toLowerCase())
+      );
+    });
+
+    const getBanks = () => {
+      axios
+        .get("/api/Financials/GetBanks")
+        .then((res) => {
+          console.log(res);
+          nigerianBanks.value = res.data;
+        })
+        .catch((err) => {
+          console.log(err);
+        });
+    };
+    getBanks();
+
+    const setBank = (item) => {
+      selectedBank.value = item;
+    };
+
+    const resolveCustomerDetail = async () => {
+      accountResolving.value = true;
+
+      try {
+        let { data } = await axio.post(
+          `https://api.ravepay.co/flwv3-pug/getpaidx/api/resolve_account`,
+          {
+            recipientaccount: accountNumber.value,
+            destbankcode: selectedBank.value.code,
+            PBFPubKey: process.env.VUE_APP_FLUTTERWAVE_PUBLIC_KEY_LIVE,
+          }
+        );
+        console.log(data);
+        accountName.value = data.data.data.accountname;
+        disabled.value = false;
+
+        accountResolving.value = false;
+
+        if (data.data.data.responsemessage.toLowerCase().includes("sorry")) {
+          toast.add({
+            severity: "warn",
+            summary: "Unable to verify",
+            detail: data.data.data.responsemessage,
+            life: 8000,
+          });
+        } else {
+          toast.add({
+            severity: "success",
+            summary: "Account Check Successful",
+            detail: "The account check was successful",
+            life: 8000,
+          });
+        }
+      } catch (error) {
+        finish();
+        console.log(error);
+
+        accountResolving.value = false;
+
+        if (!accountNumber.value || accountNumber.value === "") {
+          toast.add({
+            severity: "warn",
+            summary: "No account number found",
+            detail: "Please enter your account number",
+            life: 4000,
+          });
+        } else {
+          toast.add({
+            severity: "error",
+            summary: "Account Check Error",
+            detail: "Please check your banks details again",
+            life: 4000,
+          });
+        }
+      }
+    };
+
+    const getIncomeAccount = () => {
+      axios
+        .get("/api/Financials/Accounts/GetIncomeAccounts")
+        .then((res) => {
+          incomeAccount.value = res.data;
+        })
+        .catch((err) => {
+          console.log(err);
+        });
+    };
+    getIncomeAccount();
+
+    const getCashBankAccount = () => {
+      axios
+        .get("/api/financials/accounts/getcashbankaccounts")
+        .then((res) => {
+          cashBankAccount.value = res.data;
+        })
+        .catch((err) => {
+          console.log(err);
+        });
+    };
+    getCashBankAccount();
 
     return {
       newConItems,
@@ -790,6 +1093,19 @@ export default {
       reOccuringRange,
       selectedRange,
       singlePledge,
+      selectedBank,
+      bankSearchText,
+      filteredBanks,
+      nigerianBanks,
+      setBank,
+      accountNumber,
+      resolveCustomerDetail,
+      accountName,
+      accountResolving,
+      selectedIncomeAccount,
+      incomeAccount,
+      selectedCashAccount,
+      cashBankAccount,
     };
   },
 };

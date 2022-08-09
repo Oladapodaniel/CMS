@@ -411,11 +411,6 @@
           </div>
         </div>
       </div>
-      <!-- <div class="row">
-                <div class="col-10 col-md-12 mt-2">
-                    <hr class="mt-1"/>
-                </div>
-            </div> -->
 
       <div class="row">
         <div
@@ -727,11 +722,6 @@ export default {
 
         loading.value = false;
 
-        // if (error.toString().includes('422') || error.toString().includes('400')) {
-        //     console.log('didnt verify')
-        //     const gatewayIndex = gateways.value.findIndex(i => i.name.toLowerCase().includes('flutterwave'))
-        //     gateways.value.splice(gatewayIndex, 1)
-        // }   else {
         if (!accountNumber.value || accountNumber.value === "") {
           toast.add({
             severity: "warn",
@@ -747,9 +737,7 @@ export default {
             life: 4000,
           });
         }
-        // }
       }
-      console.log(selectedBank.value.code, accountNumber.value);
     };
 
     const toggleCheckBox = (item) => {
@@ -1191,8 +1179,9 @@ export default {
 }
 
 .dropdown-menu {
-    max-height: 300px;
-    overflow: scroll;
-    box-shadow: 0 2px 4px -1px rgb(0 0 0 / 20%), 0 4px 5px 0 rgb(0 0 0 / 14%), 0 1px 10px 0 rgb(0 0 0 / 12%);
+  max-height: 300px;
+  overflow: scroll;
+  box-shadow: 0 2px 4px -1px rgb(0 0 0 / 20%), 0 4px 5px 0 rgb(0 0 0 / 14%),
+    0 1px 10px 0 rgb(0 0 0 / 12%);
 }
 </style>
