@@ -531,6 +531,7 @@ export default {
         freewillAmount.value = res.data.returnObject.amount;
         paymentAmount.value = res.data.returnObject.amount;
         selectedPledge.value = res.data.returnObject.pledgeType;
+        console.log(selectedPledge.value, "selected");
         getAllCurrencies(selectedPledge.value.currencyID);
         memberName.value = route.query.name;
         checking.value = true;

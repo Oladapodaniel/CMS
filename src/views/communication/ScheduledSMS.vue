@@ -31,7 +31,7 @@
                 class="pi pi-trash text-danger ml-n4 mb-2 c-pointer d-flex align-items-center px-4"
                 style="font-size: 15px"
                 v-if="markedSchedules ? markedSchedules.length > 0 :''"
-                @click="showConfirmModal">
+                @click="showConfirmModal(false)">
               </i>
               <div class="row table-box mb-4">
                 <div class="col-md-12">
@@ -108,7 +108,16 @@
                               formattedDate(sms.date)
                             }}</span>
                           </span>
+                          <span class="small-text ml-5 mr-n4">
+                              <i
+                                class="c-pointer pr-3 pi pi-trash delete-icon"
+                                @click="showConfirmModal(sms.id)"
+                                style="font-size: 18px"
+                              >
+                              </i
+                            ></span>
                         </div>
+                        
 
                         <!-- <div
                           class="col-md-3 col-ms-12 d-flex justify-content-between"
@@ -290,7 +299,7 @@ export default {
 
     const confirm = useConfirm();
     let toast = useToast();
-    const showConfirmModal = () => {
+    const showConfirmModal = (id) => {
       confirm.require({
         message: "Are you sure you want to proceed?",
         header: "Confirmation",
@@ -298,7 +307,7 @@ export default {
         acceptClass: "confirm-delete",
         rejectClass: "cancel-delete",
         accept: () => {
-          deleteSchedules();
+          deleteSchedules(id);
         },
         reject: () => {
           //  toast.add({severity:'info', summary:'Rejected',
