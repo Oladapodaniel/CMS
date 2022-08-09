@@ -602,6 +602,7 @@
                       placeholder="account name"
                       v-model="accountName"
                       ref="accNameRef"
+                      disabled
                     />
                   </div>
                   <div
