@@ -414,4 +414,10 @@ export default {
 .p-dropdown-items {
   width: 100px !important;
 }
+
+.scroll {
+  max-height: 200px;
+  overflow-y: scroll;
+  overflow-x: hidden;
+}
 </style>

@@ -76,11 +76,25 @@
                     <label for="">Fund type</label>
                   </div>
                   <div class="col-md-8">
-                    <Dropdown
+                    <button class="  btn d-flex justify-content-between  col-12 border  " type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                          <span class="ofering">
+                              &nbsp;&nbsp;&nbsp; {{ selectedFundType ?  selectedFundType : 'Select account currency' }}
+                              <!-- {{ item.account ? item.account : 'Select' }} -->
+                          </span>
+                          <span>
+                              <i class="pi pi-angle-down offset-sm-2 ofering"></i>
+                          </span>
+                      </button>
+                      <div class="dropdown-menu scroll w-100 " aria-labelledby="dropdownMenuButton">
+                          <a class="dropdown-item" v-for="(itm, indx) in fundTypes" :key="indx">
+                              <div class="cursor-pointer" @click="selectFundType(itm)"> {{itm}}</div> 
+                          </a>
+                      </div>
+                    <!-- <Dropdown
                       v-model="selectedFundType"
                       :options="fundTypes"
                       style="width: 100%"
-                    />
+                    /> -->
                   </div>
                 </div>
                 <div class="row my-3">
@@ -154,7 +168,11 @@ export default {
       "Unrestricted Funds",
       "Donor Restricted Funds",
     ];
-    const selectedFundType = ref("");
+    const selectedFundType = ref('');
+
+    const selectFundType = (item) =>{
+      selectedFundType.value = item
+    }
 
     const getAccounts = async () => {
       try {
@@ -267,6 +285,7 @@ export default {
 
     return {
       accountTypes,
+      selectFundType,
       currencyList,
       accounts,
       onSave,
