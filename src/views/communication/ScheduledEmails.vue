@@ -175,6 +175,7 @@ export default {
         );
         loading.value = false;
         schedules.value = res;
+        console.log(schedules.value, "SchedulesEmail");
       } catch (error) {
         console.log(error);
       }

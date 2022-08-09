@@ -322,44 +322,28 @@
               <div class="container-fluid d-none mt-4 d-md-block">
                 <div class="row t-header mt-4 border-bottom pb-2">
                   <div
-                    class="small-text text-capitalize col-md-1 font-weight-bold"
-                  >
-                    Status
-                  </div>
-                  <div
-                    class="small-text text-capitalize col-md-2 font-weight-bold"
-                  >
-                    Due
-                  </div>
-                  <div
-                    class="small-text text-capitalize col-md-2 font-weight-bold"
+                    class="small-text text-capitalize col-md-3 font-weight-bold"
                   >
                     Date
-                  </div>
-                  <div
-                    class="small-text text-capitalize col-md-2 font-weight-bold"
-                  >
-                    Payment day
-                  </div>
-                  <div
-                    class="small-text text-capitalize col-md-2 font-weight-bold"
-                  >
-                    amount paid
                   </div>
                   <div
                     class="
                       small-text
                       text-capitalize
                       Text-center
-                      col-md-2
+                      col-md-3
                       font-weight-bold
                     "
                   >
                     Channel
                   </div>
-
                   <div
-                    class="small-text text-capitalize col-md-1 font-weight-bold"
+                    class="small-text text-capitalize col-md-3 font-weight-bold"
+                  >
+                    amount paid
+                  </div>
+                  <div
+                    class="small-text text-capitalize col-md-3 font-weight-bold"
                   >
                     Action
                   </div>
@@ -381,58 +365,8 @@
                     "
                     style="margin: 0"
                   >
-                    <div class="col-md-1 p-2">
-                      <p
-                        class="
-                          mb-0
-                          d-flex
-                          text-danger
-                          font-weight-bold
-                          justify-content-between
-                        "
-                      >
-                        <span
-                          class="
-                            text-dark
-                            font-weight-bold
-                            d-flex d-md-none
-                            fontIncrease
-                          "
-                          style="font-size: 15px"
-                          >Status</span
-                        >
-                        <span
-                          class="
-                            rounded
-                            small
-                            font-weight-bold
-                            statusbg
-                            py-1
-                            px-2
-                          "
-                          >Overdue</span
-                        >
-                      </p>
-                    </div>
 
-                    <div class="col-md-2 py-2">
-                      <p
-                        class="mb-0 d-flex text-danger justify-content-between"
-                      >
-                        <span
-                          class="
-                            text-dark
-                            font-weight-bold
-                            d-flex d-md-none
-                            fontIncrease
-                          "
-                          style="font-size: 15px"
-                          >Due</span
-                        >
-                        1098 days ago
-                      </p>
-                    </div>
-                    <div class="col-md-2 py-2">
+                    <div class="col-md-3 py-2">
                       <p class="mb-0 d-flex justify-content-between">
                         <span
                           class="
@@ -447,37 +381,7 @@
                         2020-07-16
                       </p>
                     </div>
-                    <div class="col-md-2 py-2">
-                      <div class="d-flex small justify-content-between">
-                        <span
-                          class="
-                            text-dark
-                            font-weight-bold
-                            d-flex d-md-none
-                            fontIncrease
-                          "
-                          style="font-size: 15px"
-                          >Payment day</span
-                        >
-                        <div class="small-text">25</div>
-                      </div>
-                    </div>
-                    <div class="col-md-2 py-2">
-                      <div class="d-flex small justify-content-between">
-                        <span
-                          class="
-                            text-dark
-                            font-weight-bold
-                            d-flex d-md-none
-                            fontIncrease
-                          "
-                          style="font-size: 15px"
-                          >Amount paid</span
-                        >
-                        <div class="small-text">Anderson Udokoro</div>
-                      </div>
-                    </div>
-                    <div class="col-md-2 py-2">
+                       <div class="col-md-3 py-2">
                       <div class="d-flex small justify-content-between">
                         <span
                           class="
@@ -492,8 +396,22 @@
                         <div class="small-text">NGN 111,000.00</div>
                       </div>
                     </div>
-
-                    <div class="col-md-1 py-2">
+                    <div class="col-md-3 py-2">
+                      <div class="d-flex small justify-content-between">
+                        <span
+                          class="
+                            text-dark
+                            font-weight-bold
+                            d-flex d-md-none
+                            fontIncrease
+                          "
+                          style="font-size: 15px"
+                          >Amount paid</span
+                        >
+                        <div class="small-text">Anderson Udokoro</div>
+                      </div>
+                    </div>
+                    <div class="col-md-3 py-2">
                       <div class="">
                         <div class="dropdown">
                           <span class="d-flex justify-content-between">
@@ -534,851 +452,7 @@
                   </div>
                 </div>
               </div>
-              <div class="row" style="margin: 0">
-                <div class="col-12 pb-2 px-0">
-                  <div
-                    class="
-                      row
-                      w-100
-                      c-pointer
-                      text-dark
-                      border-top
-                      py-2
-                      hover
-                      d-flex
-                      align-items-center
-                    "
-                    style="margin: 0"
-                  >
-                    <div class="col-md-1 p-2">
-                      <p
-                        class="
-                          mb-0
-                          d-flex
-                          text-danger
-                          font-weight-bold
-                          justify-content-between
-                        "
-                      >
-                        <span
-                          class="
-                            text-dark
-                            font-weight-bold
-                            d-flex d-md-none
-                            fontIncrease
-                          "
-                          style="font-size: 15px"
-                          >Status</span
-                        >
-                        <span
-                          class="
-                            rounded
-                            small
-                            font-weight-bold
-                            statusbg
-                            py-1
-                            px-2
-                          "
-                          >Overdue</span
-                        >
-                      </p>
-                    </div>
-
-                    <div class="col-md-2 py-2">
-                      <p
-                        class="mb-0 d-flex text-danger justify-content-between"
-                      >
-                        <span
-                          class="
-                            text-dark
-                            font-weight-bold
-                            d-flex d-md-none
-                            fontIncrease
-                          "
-                          style="font-size: 15px"
-                          >Due</span
-                        >
-                        1098 days ago
-                      </p>
-                    </div>
-                    <div class="col-md-2 py-2">
-                      <p class="mb-0 d-flex justify-content-between">
-                        <span
-                          class="
-                            text-dark
-                            font-weight-bold
-                            d-flex d-md-none
-                            fontIncrease
-                          "
-                          style="font-size: 15px"
-                          >Date
-                        </span>
-                        2020-07-16
-                      </p>
-                    </div>
-                    <div class="col-md-2 py-2">
-                      <div class="d-flex small justify-content-between">
-                        <span
-                          class="
-                            text-dark
-                            font-weight-bold
-                            d-flex d-md-none
-                            fontIncrease
-                          "
-                          style="font-size: 15px"
-                          >Payment day</span
-                        >
-                        <div class="small-text">25</div>
-                      </div>
-                    </div>
-                    <div class="col-md-2 py-2">
-                      <div class="d-flex small justify-content-between">
-                        <span
-                          class="
-                            text-dark
-                            font-weight-bold
-                            d-flex d-md-none
-                            fontIncrease
-                          "
-                          style="font-size: 15px"
-                          >Amount paid</span
-                        >
-                        <div class="small-text">Anderson Udokoro</div>
-                      </div>
-                    </div>
-                    <div class="col-md-2 py-2">
-                      <div class="d-flex small justify-content-between">
-                        <span
-                          class="
-                            text-dark
-                            font-weight-bold
-                            d-flex d-md-none
-                            fontIncrease
-                          "
-                          style="font-size: 15px"
-                          >Channel</span
-                        >
-                        <div class="small-text">NGN 111,000.00</div>
-                      </div>
-                    </div>
-
-                    <div class="col-md-1 py-2">
-                      <div class="">
-                        <div class="dropdown">
-                          <span class="d-flex justify-content-between">
-                            <span class="d-md-none d-sm-flex"></span>
-                            <span class="d-sm-flex small">
-                              <i
-                                class="
-                                  fas
-                                  fa-ellipsis-v
-                                  cursor-pointer
-                                  ml-2
-                                  fontIncrease
-                                "
-                                id="dropdownMenuButton"
-                                data-toggle="dropdown"
-                                aria-haspopup="true"
-                                aria-expanded="false"
-                              ></i>
-
-                              <div
-                                class="dropdown-menu"
-                                aria-labelledby="dropdownMenuButton"
-                              >
-                                <a class="dropdown-item"
-                                  ><router-link
-                                    :to="`/tenant/pledge/makepledge?id=`"
-                                    class="text-color"
-                                    >Edit</router-link
-                                  ></a
-                                >
-                                <a class="dropdown-item">Delete</a>
-                              </div>
-                            </span>
-                          </span>
-                        </div>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-              </div>
-              <div class="row" style="margin: 0">
-                <div class="col-12 pb-2 px-0">
-                  <div
-                    class="
-                      row
-                      w-100
-                      c-pointer
-                      text-dark
-                      border-top
-                      py-2
-                      hover
-                      d-flex
-                      align-items-center
-                    "
-                    style="margin: 0"
-                  >
-                    <div class="col-md-1 p-2">
-                      <p
-                        class="
-                          mb-0
-                          d-flex
-                          text-danger
-                          font-weight-bold
-                          justify-content-between
-                        "
-                      >
-                        <span
-                          class="
-                            text-dark
-                            font-weight-bold
-                            d-flex d-md-none
-                            fontIncrease
-                          "
-                          style="font-size: 15px"
-                          >Status</span
-                        >
-                        <span
-                          class="
-                            rounded
-                            small
-                            font-weight-bold
-                            statusbg
-                            py-1
-                            px-2
-                          "
-                          >Overdue</span
-                        >
-                      </p>
-                    </div>
-
-                    <div class="col-md-2 py-2">
-                      <p
-                        class="mb-0 d-flex text-danger justify-content-between"
-                      >
-                        <span
-                          class="
-                            text-dark
-                            font-weight-bold
-                            d-flex d-md-none
-                            fontIncrease
-                          "
-                          style="font-size: 15px"
-                          >Due</span
-                        >
-                        1098 days ago
-                      </p>
-                    </div>
-                    <div class="col-md-2 py-2">
-                      <p class="mb-0 d-flex justify-content-between">
-                        <span
-                          class="
-                            text-dark
-                            font-weight-bold
-                            d-flex d-md-none
-                            fontIncrease
-                          "
-                          style="font-size: 15px"
-                          >Date
-                        </span>
-                        2020-07-16
-                      </p>
-                    </div>
-                    <div class="col-md-2 py-2">
-                      <div class="d-flex small justify-content-between">
-                        <span
-                          class="
-                            text-dark
-                            font-weight-bold
-                            d-flex d-md-none
-                            fontIncrease
-                          "
-                          style="font-size: 15px"
-                          >Payment day</span
-                        >
-                        <div class="small-text">25</div>
-                      </div>
-                    </div>
-                    <div class="col-md-2 py-2">
-                      <div class="d-flex small justify-content-between">
-                        <span
-                          class="
-                            text-dark
-                            font-weight-bold
-                            d-flex d-md-none
-                            fontIncrease
-                          "
-                          style="font-size: 15px"
-                          >Amount paid</span
-                        >
-                        <div class="small-text">Anderson Udokoro</div>
-                      </div>
-                    </div>
-                    <div class="col-md-2 py-2">
-                      <div class="d-flex small justify-content-between">
-                        <span
-                          class="
-                            text-dark
-                            font-weight-bold
-                            d-flex d-md-none
-                            fontIncrease
-                          "
-                          style="font-size: 15px"
-                          >Channel</span
-                        >
-                        <div class="small-text">NGN 111,000.00</div>
-                      </div>
-                    </div>
-
-                    <div class="col-md-1 py-2">
-                      <div class="">
-                        <div class="dropdown">
-                          <span class="d-flex justify-content-between">
-                            <span class="d-md-none d-sm-flex"></span>
-                            <span class="d-sm-flex small">
-                              <i
-                                class="
-                                  fas
-                                  fa-ellipsis-v
-                                  cursor-pointer
-                                  ml-2
-                                  fontIncrease
-                                "
-                                id="dropdownMenuButton"
-                                data-toggle="dropdown"
-                                aria-haspopup="true"
-                                aria-expanded="false"
-                              ></i>
-
-                              <div
-                                class="dropdown-menu"
-                                aria-labelledby="dropdownMenuButton"
-                              >
-                                <a class="dropdown-item"
-                                  ><router-link
-                                    :to="`/tenant/pledge/makepledge?id=`"
-                                    class="text-color"
-                                    >Edit</router-link
-                                  ></a
-                                >
-                                <a class="dropdown-item">Delete</a>
-                              </div>
-                            </span>
-                          </span>
-                        </div>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-              </div>
-              <div class="row" style="margin: 0">
-                <div class="col-12 pb-2 px-0">
-                  <div
-                    class="
-                      row
-                      w-100
-                      c-pointer
-                      text-dark
-                      border-top
-                      py-2
-                      hover
-                      d-flex
-                      align-items-center
-                    "
-                    style="margin: 0"
-                  >
-                    <div class="col-md-1 p-2">
-                      <p
-                        class="
-                          mb-0
-                          d-flex
-                          text-danger
-                          font-weight-bold
-                          justify-content-between
-                        "
-                      >
-                        <span
-                          class="
-                            text-dark
-                            font-weight-bold
-                            d-flex d-md-none
-                            fontIncrease
-                          "
-                          style="font-size: 15px"
-                          >Status</span
-                        >
-                        <span
-                          class="
-                            rounded
-                            small
-                            font-weight-bold
-                            statusbg
-                            py-1
-                            px-2
-                          "
-                          >Overdue</span
-                        >
-                      </p>
-                    </div>
-
-                    <div class="col-md-2 py-2">
-                      <p
-                        class="mb-0 d-flex text-danger justify-content-between"
-                      >
-                        <span
-                          class="
-                            text-dark
-                            font-weight-bold
-                            d-flex d-md-none
-                            fontIncrease
-                          "
-                          style="font-size: 15px"
-                          >Due</span
-                        >
-                        1098 days ago
-                      </p>
-                    </div>
-                    <div class="col-md-2 py-2">
-                      <p class="mb-0 d-flex justify-content-between">
-                        <span
-                          class="
-                            text-dark
-                            font-weight-bold
-                            d-flex d-md-none
-                            fontIncrease
-                          "
-                          style="font-size: 15px"
-                          >Date
-                        </span>
-                        2020-07-16
-                      </p>
-                    </div>
-                    <div class="col-md-2 py-2">
-                      <div class="d-flex small justify-content-between">
-                        <span
-                          class="
-                            text-dark
-                            font-weight-bold
-                            d-flex d-md-none
-                            fontIncrease
-                          "
-                          style="font-size: 15px"
-                          >Payment day</span
-                        >
-                        <div class="small-text">25</div>
-                      </div>
-                    </div>
-                    <div class="col-md-2 py-2">
-                      <div class="d-flex small justify-content-between">
-                        <span
-                          class="
-                            text-dark
-                            font-weight-bold
-                            d-flex d-md-none
-                            fontIncrease
-                          "
-                          style="font-size: 15px"
-                          >Amount paid</span
-                        >
-                        <div class="small-text">Anderson Udokoro</div>
-                      </div>
-                    </div>
-                    <div class="col-md-2 py-2">
-                      <div class="d-flex small justify-content-between">
-                        <span
-                          class="
-                            text-dark
-                            font-weight-bold
-                            d-flex d-md-none
-                            fontIncrease
-                          "
-                          style="font-size: 15px"
-                          >Channel</span
-                        >
-                        <div class="small-text">NGN 111,000.00</div>
-                      </div>
-                    </div>
-
-                    <div class="col-md-1 py-2">
-                      <div class="">
-                        <div class="dropdown">
-                          <span class="d-flex justify-content-between">
-                            <span class="d-md-none d-sm-flex"></span>
-                            <span class="d-sm-flex small">
-                              <i
-                                class="
-                                  fas
-                                  fa-ellipsis-v
-                                  cursor-pointer
-                                  ml-2
-                                  fontIncrease
-                                "
-                                id="dropdownMenuButton"
-                                data-toggle="dropdown"
-                                aria-haspopup="true"
-                                aria-expanded="false"
-                              ></i>
-
-                              <div
-                                class="dropdown-menu"
-                                aria-labelledby="dropdownMenuButton"
-                              >
-                                <a class="dropdown-item"
-                                  ><router-link
-                                    :to="`/tenant/pledge/makepledge?id=`"
-                                    class="text-color"
-                                    >Edit</router-link
-                                  ></a
-                                >
-                                <a class="dropdown-item">Delete</a>
-                              </div>
-                            </span>
-                          </span>
-                        </div>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-              </div>
-              <div class="row" style="margin: 0">
-                <div class="col-12 pb-2 px-0">
-                  <div
-                    class="
-                      row
-                      w-100
-                      c-pointer
-                      text-dark
-                      border-top
-                      py-2
-                      hover
-                      d-flex
-                      align-items-center
-                    "
-                    style="margin: 0"
-                  >
-                    <div class="col-md-1 p-2">
-                      <p
-                        class="
-                          mb-0
-                          d-flex
-                          text-danger
-                          font-weight-bold
-                          justify-content-between
-                        "
-                      >
-                        <span
-                          class="
-                            text-dark
-                            font-weight-bold
-                            d-flex d-md-none
-                            fontIncrease
-                          "
-                          style="font-size: 15px"
-                          >Status</span
-                        >
-                        <span
-                          class="
-                            rounded
-                            small
-                            font-weight-bold
-                            statusbg
-                            py-1
-                            px-2
-                          "
-                          >Overdue</span
-                        >
-                      </p>
-                    </div>
-
-                    <div class="col-md-2 py-2">
-                      <p
-                        class="mb-0 d-flex text-danger justify-content-between"
-                      >
-                        <span
-                          class="
-                            text-dark
-                            font-weight-bold
-                            d-flex d-md-none
-                            fontIncrease
-                          "
-                          style="font-size: 15px"
-                          >Due</span
-                        >
-                        1098 days ago
-                      </p>
-                    </div>
-                    <div class="col-md-2 py-2">
-                      <p class="mb-0 d-flex justify-content-between">
-                        <span
-                          class="
-                            text-dark
-                            font-weight-bold
-                            d-flex d-md-none
-                            fontIncrease
-                          "
-                          style="font-size: 15px"
-                          >Date
-                        </span>
-                        2020-07-16
-                      </p>
-                    </div>
-                    <div class="col-md-2 py-2">
-                      <div class="d-flex small justify-content-between">
-                        <span
-                          class="
-                            text-dark
-                            font-weight-bold
-                            d-flex d-md-none
-                            fontIncrease
-                          "
-                          style="font-size: 15px"
-                          >Payment day</span
-                        >
-                        <div class="small-text">25</div>
-                      </div>
-                    </div>
-                    <div class="col-md-2 py-2">
-                      <div class="d-flex small justify-content-between">
-                        <span
-                          class="
-                            text-dark
-                            font-weight-bold
-                            d-flex d-md-none
-                            fontIncrease
-                          "
-                          style="font-size: 15px"
-                          >Amount paid</span
-                        >
-                        <div class="small-text">Anderson Udokoro</div>
-                      </div>
-                    </div>
-                    <div class="col-md-2 py-2">
-                      <div class="d-flex small justify-content-between">
-                        <span
-                          class="
-                            text-dark
-                            font-weight-bold
-                            d-flex d-md-none
-                            fontIncrease
-                          "
-                          style="font-size: 15px"
-                          >Channel</span
-                        >
-                        <div class="small-text">NGN 111,000.00</div>
-                      </div>
-                    </div>
-
-                    <div class="col-md-1 py-2">
-                      <div class="">
-                        <div class="dropdown">
-                          <span class="d-flex justify-content-between">
-                            <span class="d-md-none d-sm-flex"></span>
-                            <span class="d-sm-flex small">
-                              <i
-                                class="
-                                  fas
-                                  fa-ellipsis-v
-                                  cursor-pointer
-                                  ml-2
-                                  fontIncrease
-                                "
-                                id="dropdownMenuButton"
-                                data-toggle="dropdown"
-                                aria-haspopup="true"
-                                aria-expanded="false"
-                              ></i>
-
-                              <div
-                                class="dropdown-menu"
-                                aria-labelledby="dropdownMenuButton"
-                              >
-                                <a class="dropdown-item"
-                                  ><router-link
-                                    :to="`/tenant/pledge/makepledge?id=`"
-                                    class="text-color"
-                                    >Edit</router-link
-                                  ></a
-                                >
-                                <a class="dropdown-item">Delete</a>
-                              </div>
-                            </span>
-                          </span>
-                        </div>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-              </div>
-              <div class="row" style="margin: 0">
-                <div class="col-12 pb-2 px-0">
-                  <div
-                    class="
-                      row
-                      w-100
-                      c-pointer
-                      text-dark
-                      border-top
-                      py-2
-                      hover
-                      d-flex
-                      align-items-center
-                    "
-                    style="margin: 0"
-                  >
-                    <div class="col-md-1 p-2">
-                      <p
-                        class="
-                          mb-0
-                          d-flex
-                          text-danger
-                          font-weight-bold
-                          justify-content-between
-                        "
-                      >
-                        <span
-                          class="
-                            text-dark
-                            font-weight-bold
-                            d-flex d-md-none
-                            fontIncrease
-                          "
-                          style="font-size: 15px"
-                          >Status</span
-                        >
-                        <span
-                          class="
-                            rounded
-                            small
-                            font-weight-bold
-                            statusbg
-                            py-1
-                            px-2
-                          "
-                          >Overdue</span
-                        >
-                      </p>
-                    </div>
-
-                    <div class="col-md-2 py-2">
-                      <p
-                        class="mb-0 d-flex text-danger justify-content-between"
-                      >
-                        <span
-                          class="
-                            text-dark
-                            font-weight-bold
-                            d-flex d-md-none
-                            fontIncrease
-                          "
-                          style="font-size: 15px"
-                          >Due</span
-                        >
-                        1098 days ago
-                      </p>
-                    </div>
-                    <div class="col-md-2 py-2">
-                      <p class="mb-0 d-flex justify-content-between">
-                        <span
-                          class="
-                            text-dark
-                            font-weight-bold
-                            d-flex d-md-none
-                            fontIncrease
-                          "
-                          style="font-size: 15px"
-                          >Date
-                        </span>
-                        2020-07-16
-                      </p>
-                    </div>
-                    <div class="col-md-2 py-2">
-                      <div class="d-flex small justify-content-between">
-                        <span
-                          class="
-                            text-dark
-                            font-weight-bold
-                            d-flex d-md-none
-                            fontIncrease
-                          "
-                          style="font-size: 15px"
-                          >Payment day</span
-                        >
-                        <div class="small-text">25</div>
-                      </div>
-                    </div>
-                    <div class="col-md-2 py-2">
-                      <div class="d-flex small justify-content-between">
-                        <span
-                          class="
-                            text-dark
-                            font-weight-bold
-                            d-flex d-md-none
-                            fontIncrease
-                          "
-                          style="font-size: 15px"
-                          >Amount paid</span
-                        >
-                        <div class="small-text">Anderson Udokoro</div>
-                      </div>
-                    </div>
-                    <div class="col-md-2 py-2">
-                      <div class="d-flex small justify-content-between">
-                        <span
-                          class="
-                            text-dark
-                            font-weight-bold
-                            d-flex d-md-none
-                            fontIncrease
-                          "
-                          style="font-size: 15px"
-                          >Channel</span
-                        >
-                        <div class="small-text">NGN 111,000.00</div>
-                      </div>
-                    </div>
-
-                    <div class="col-md-1 py-2">
-                      <div class="">
-                        <div class="dropdown">
-                          <span class="d-flex justify-content-between">
-                            <span class="d-md-none d-sm-flex"></span>
-                            <span class="d-sm-flex small">
-                              <i
-                                class="
-                                  fas
-                                  fa-ellipsis-v
-                                  cursor-pointer
-                                  ml-2
-                                  fontIncrease
-                                "
-                                id="dropdownMenuButton"
-                                data-toggle="dropdown"
-                                aria-haspopup="true"
-                                aria-expanded="false"
-                              ></i>
-
-                              <div
-                                class="dropdown-menu"
-                                aria-labelledby="dropdownMenuButton"
-                              >
-                                <a class="dropdown-item"
-                                  ><router-link
-                                    :to="`/tenant/pledge/makepledge?id=`"
-                                    class="text-color"
-                                    >Edit</router-link
-                                  ></a
-                                >
-                                <a class="dropdown-item">Delete</a>
-                              </div>
-                            </span>
-                          </span>
-                        </div>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-              </div>
+             
             </div>
             <!-- <PledgeTransaction /> -->
           </div>
@@ -1587,7 +661,7 @@ export default {
     // const value = ref()
     const isNameValid = ref(true);
     const isEmailValid = ref(true);
-    const selectedPledge = ref("");
+    const selectedPledge = ref({});
     const memberName = ref("");
     const allPledgeList = ref([]);
     const amountFrom = ref("");
@@ -1602,6 +676,21 @@ export default {
       { name: "Specific" },
       { name: "Range" },
     ]);
+
+
+    const getAllpaymentList =  async () => {
+        try{
+          const res = await axios.get(
+          "/api/Pledge/GetAllPledgePayments"
+        );
+        console.log(res, "😂🤗❤😍😆😆😆");
+        }
+        catch (error){
+          console.log(error)
+        }
+    }
+
+    getAllpaymentList()
 
     const savePayment = async () => {
       let paymentData = {
@@ -1848,6 +937,26 @@ export default {
       memberName.value = route.query.name;
     };
    
+
+    const getSinglePledge = async () => {
+      checking.value = false;
+      try {
+        const res = await axios.get(
+          `/api/Pledge/GetOnePledge?ID=${route.query.pledgeTypeID}`
+        );
+        console.log(res);
+        // freewillAmount.value = res.data.returnObject.amount;
+        // paymentAmount.value = res.data.returnObject.amount;
+        selectedPledge.value = res.data.returnObject;
+        console.log(selectedPledge.value, "selected");
+        // getAllCurrencies(selectedPledge.value.currencyID);
+        memberName.value = route.query.name;
+        checking.value = true;
+      } catch (error) {
+        console.log(error);
+      }
+    };
+    if (route.query.pledgeTypeID) getSinglePledge();
 
     const makePledge = async () => {
       const makePledgeDetails = {
