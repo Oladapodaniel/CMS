@@ -354,7 +354,7 @@ export default {
      const userCurrencyName = computed(() => {
         // if (!currentUser.value) return "ngn";
         // console.log(currentUser, 'compute current user');
-        if (currentUser.value.flutterwaveEnabled) return currentUser.value.currency;
+        if (currentUser.value && currentUser.value.flutterwaveEnabled) return currentUser.value.currency;
         return 'USD';
       });
 

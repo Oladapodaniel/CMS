@@ -2,10 +2,7 @@
   <div class="top-most" @click="hideModal">
     <div>
       <div id="onboarding">
-        <div
-          id="onboarding-form"
-          :class="{ 'swap-box1': toggle }"
-        >
+        <div id="onboarding-form" :class="{ 'swap-box1': toggle }">
           <div class="onboarding-form-container">
             <div class="title-div">
               <div class="main-title">
@@ -46,79 +43,160 @@
                   required
                 />
               </div>
-              
+
               <div class="input-div">
                 <label class="mb-0">What's your phone number?</label>
-                <div class="phone-input">
-                  
-                  <div style="width: 200px; margin-top:4px; cursor: pointer;" class="codeModal" @click="toggleCode">
+                <!-- <div class="phone-input">
+                  <div
+                    style="width: 200px; margin-top: 4px; cursor: pointer"
+                    class="codeModal"
+                    @click="toggleCode"
+                  >
                     <div class="country-code form-control codeModal">
-                      <div style="margin-top: -14px;" class="codeModal">
-                        <span class="codeModal"><img :src="selectedCountry.flagUrl" class="codeModal" style="width: 30px;height: 30px; margin: 10px; border-radius: 5px; position: relative; top: 2px;">
+                      <div style="margin-top: -14px" class="codeModal">
+                        <span class="codeModal"
+                          ><img
+                            :src="selectedCountry.flagUrl"
+                            class="codeModal"
+                            style="
+                              width: 30px;
+                              height: 30px;
+                              margin: 10px;
+                              border-radius: 5px;
+                              position: relative;
+                              top: 2px;
+                            "
+                          />
                         </span>
-                        <span style="display: inline-block; position: relative; top: 3px; width: 30%" class="codeModal">{{ selectedCountry.phoneCode ? selectedCountry.phoneCode.includes('+') ? selectedCountry.phoneCode : `+${selectedCountry.phoneCode}` : "" }}
+                        <span
+                          style="
+                            display: inline-block;
+                            position: relative;
+                            top: 3px;
+                            width: 30%;
+                          "
+                          class="codeModal"
+                          >{{
+                            selectedCountry.phoneCode
+                              ? selectedCountry.phoneCode.includes("+")
+                                ? selectedCountry.phoneCode
+                                : `+${selectedCountry.phoneCode}`
+                              : ""
+                          }}
                         </span>
-                        <i class="pi pi-angle-down" style="position: relative; top: 5px; right: -13px; z-index: -1"></i>
- 
+                        <i
+                          class="pi pi-angle-down"
+                          style="
+                            position: relative;
+                            top: 5px;
+                            right: -13px;
+                            z-index: -1;
+                          "
+                        ></i>
                       </div>
                     </div>
                   </div>
 
                   <div class="w-100">
                     <input
-                    v-model.trim="userDetails.phoneNumber"
-                    type="text"
-                    class="input phone-num form-control"
-                    :class="{ 'is-invalid' : !isValid, 'is-valid' : valid }"
-                    placeholder="Phone number"
-                    @blur="invalidResponse"
-                    required
-                  />
-                  <div class="invalid-feedback">
-                    Please provide a valid phone number.
+                      v-model.trim="userDetails.phoneNumber"
+                      type="text"
+                      class="input phone-num form-control"
+                      :class="{ 'is-invalid': !isValid, 'is-valid': valid }"
+                      placeholder="Phone number"
+                      @blur="invalidResponse"
+                      required
+                    />
+                    <div class="invalid-feedback">
+                      Please provide a valid phone number.
+                    </div>
                   </div>
-                  </div>
+                </div> -->
 
+                <div class="w-100">
+                  <vue-tel-input
+                    :value="userDetails.phoneNumber"
+                    @input="onInput"
+                    mode="international"
+                    style="height: 40px"
+                    @blur="invalidResponse"
+                  ></vue-tel-input>
                 </div>
               </div>
-
-              
 
               <div class="input-div cstm-select w-100" id="myInput">
                 <label class="mb-0"
                   >What's the membership size of your ministry?</label
                 >
-                  <!-- <SelectElem :typ="'churchsize'" name="churchSize" :options="['--Select size range--', 'Between 1 - 100', 'Between 100 - 1000', 'Between 1000 - 100000']" value="--Select size range--" @input="itemSelected"/> -->
+                <!-- <SelectElem :typ="'churchsize'" name="churchSize" :options="['--Select size range--', 'Between 1 - 100', 'Between 100 - 1000', 'Between 1000 - 100000']" value="--Select size range--" @input="itemSelected"/> -->
                 <Dropdown
                   v-model="userDetails.churchSize"
-                  :options="['1 - 100', '101 - 200', '201 - 500', '501 - 2000', '2001 - 10,000']"
+                  :options="[
+                    '1 - 100',
+                    '101 - 200',
+                    '201 - 500',
+                    '501 - 2000',
+                    '2001 - 10,000',
+                  ]"
                   style="width: 100%"
                   placeholder="Select size range"
                 />
               </div>
 
-              
               <button
                 type="submit"
-                class="submit-btn sign-in-btn get-started default-btn font-weight-700 codeModal"
+                class="
+                  submit-btn
+                  sign-in-btn
+                  get-started
+                  default-btn
+                  font-weight-700
+                  codeModal
+                "
                 :class="{ disabled: !disableNext, 'btn-loading': loading }"
                 :disabled="!disableNext"
               >
-                <i class="fas fa-circle-notch fa-spin codeModal" v-if="loading"></i>
+                <i
+                  class="fas fa-circle-notch fa-spin codeModal"
+                  v-if="loading"
+                ></i>
                 <span class="codeModal">Next</span>
                 <span class="codeModal"></span>
               </button>
             </form>
-            <div :class=" { 'flagCode' : showCode, 'hide-code' : !showCode } " class="codeModal">
-                <input class="codeInput input codeModal" v-model="searchText">
-              <div v-for="country in countryCodes" :key="country.id" class="codeModal" >
+            <!-- <div
+              :class="{ flagCode: showCode, 'hide-code': !showCode }"
+              class="codeModal"
+            >
+              <input class="codeInput input codeModal" v-model="searchText" />
+              <div
+                v-for="country in countryCodes"
+                :key="country.id"
+                class="codeModal"
+              >
                 <div class="codeModal c-pointer" @click="selectCode(country)">
-                  <span style="display: inline-block"><img :src="country.flagUrl"  style="width: 30px;height: 30px; margin: 10px; border-radius: 5px;"></span>
-                  <span style="font-weight:700">{{ country.name }}</span> &nbsp;
-                  <span style="display: inline-block; color: #6b6b6b;">{{ country.phoneCode ? country.phoneCode.includes('+') ? `(${country.phoneCode})` : `(+${country.phoneCode})`: "" }}</span>
+                  <span style="display: inline-block"
+                    ><img
+                      :src="country.flagUrl"
+                      style="
+                        width: 30px;
+                        height: 30px;
+                        margin: 10px;
+                        border-radius: 5px;
+                      "
+                  /></span>
+                  <span style="font-weight: 700">{{ country.name }}</span>
+                  &nbsp;
+                  <span style="display: inline-block; color: #6b6b6b">{{
+                    country.phoneCode
+                      ? country.phoneCode.includes("+")
+                        ? `(${country.phoneCode})`
+                        : `(+${country.phoneCode})`
+                      : ""
+                  }}</span>
                 </div>
               </div>
-            </div>
+            </div> -->
           </div>
           <!-- <SelectElem name="test" :options="[1, 2, 3]" value="2" v-if="false"/> -->
         </div>
@@ -143,27 +221,31 @@
         </div>
       </div>
     </div>
-    
+
     <!-- <select>
       <option v-for="country in countryCodes" :key="country.id">{{ countryCodes }}</option>
     </select> -->
-    
   </div>
 </template>
 
 <script>
 import axios from "@/gateway/backendapi";
 import Dropdown from "primevue/dropdown";
-import router from '../../router/index';
+import router from "../../router/index";
+import { VueTelInput } from "vue3-tel-input";
+import "vue3-tel-input/dist/vue3-tel-input.css";
 export default {
-  components: { Dropdown },
+  components: {
+    Dropdown,
+    VueTelInput,
+  },
   beforeRouteLeave() {
     const userEmail = localStorage.getItem("email");
     if (userEmail) localStorage.removeItem("email");
   },
 
   beforeRouteEnter() {
-    if (localStorage.getItem("token")) router.push("/next")
+    if (localStorage.getItem("token")) router.push("/next");
     // return next(false);
   },
 
@@ -176,38 +258,50 @@ export default {
         subscriptionPlanID: 1,
         countryId: 89,
         password: "password",
+        phoneNumber: "+234",
       },
 
-      myValue: '',
-      myOptions: ['op1', 'op2', 'op3'],
+      myValue: "",
+      myOptions: ["op1", "op2", "op3"],
 
-      selectedCountry: {
-      
-      },
-      countries: [{country: "Zambia", phoneCode: "234"}, {country: "Nigeria", phoneCode: "234"}, {country: "Congo", phoneCode: "235"}],
+      selectedCountry: {},
+      countries: [
+        { country: "Zambia", phoneCode: "234" },
+        { country: "Nigeria", phoneCode: "234" },
+        { country: "Congo", phoneCode: "235" },
+      ],
       loading: false,
-      showCode: false,
+      // showCode: false,
       codeUrl: {},
-      searchText: "",
-      isValid: true,
-      disableNext: false
+      // searchText: "",
+      // isValid: true,
+      disableNext: false,
     };
   },
   methods: {
-    myChangeEvent(val){
+    myChangeEvent(val) {
       console.log(val);
     },
-    mySelectEvent({id, text}){
-      console.log({id, text})
+    mySelectEvent({ id, text }) {
+      console.log({ id, text });
+    },
+    onInput(phone, phoneObject, input) {
+      if (phoneObject?.formatted) {
+        this.userDetails.phoneNumber = phoneObject.formatted;
+
+        this.selectedCountry = this.countries.find(
+          (i) => i.phoneCode == phoneObject.countryCallingCode
+        );
+      }
     },
 
     next() {
       if (!this.userDetails.email) return false;
-      this.userDetails.phoneNumber = this.userDetails.phoneNumber.includes("+")
-        ? this.userDetails.phoneNumber
-        : `+${this.selectedCountry.phoneCode}${this.userDetails.phoneNumber}`;
-        console.log(this.selectedCountry, "country");
-        this.userDetails.countryId = this.selectedCountry.id;
+      // this.userDetails.phoneNumber = this.userDetails.phoneNumber.includes("+")
+      //   ? this.userDetails.phoneNumber
+      //   : `+${this.selectedCountry.phoneCode}${this.userDetails.phoneNumber}`;
+      // console.log(this.selectedCountry, "country");
+      this.userDetails.countryId = this.selectedCountry.id;
       console.log(this.userDetails, "userDetails");
       this.loading = true;
       axios
@@ -220,7 +314,7 @@ export default {
             localStorage.removeItem("pretoken");
           } else {
             localStorage.setItem("token", res.data.token);
-            localStorage.setItem('roles', JSON.stringify(["Admin"]))
+            localStorage.setItem("roles", JSON.stringify(["Admin"]));
           }
           // this.$store.dispatch("setStartPoint", url)
           this.loading = false;
@@ -236,35 +330,34 @@ export default {
       // this.$store.dispatch("setOnboardingData", this.userDetails);
       // this.$router.push("/onboarding/step2");
     },
-    toggleCode () {
-      this.showCode = !this.showCode
-      console.log(this.showCode)
+    toggleCode() {
+      this.showCode = !this.showCode;
+      console.log(this.showCode);
     },
-    tobby (){
-      console.log("Its working")
-      this.showCode = !this.showCode
+    tobby() {
+      console.log("Its working");
+      this.showCode = !this.showCode;
     },
-    selectCode (country) {
-      console.log(country)
-      this.selectedCountry = country
-      this.showCode = false
+    selectCode(country) {
+      console.log(country);
+      this.selectedCountry = country;
+      this.showCode = false;
     },
-    hideModal (e) {
-    console.log(this.showCode)
-    if (!e.target.classList.contains("codeModal")){
-      this.showCode = false
-    }
-  },
-  invalidResponse () {
-      if (!this.userDetails.phoneNumber) {
-        this.isValid = false
-        
-      } else {
-        this.isValid = true
-        this.disableNext = true
+    hideModal(e) {
+      console.log(this.showCode);
+      if (!e.target.classList.contains("codeModal")) {
+        this.showCode = false;
       }
     },
-
+    invalidResponse() {
+      if (!this.userDetails.phoneNumber) {
+        // this.isValid = false;
+        this.disableNext = false;
+      } else {
+        // this.isValid = true;
+        this.disableNext = true;
+      }
+    },
   },
 
   computed: {
@@ -274,44 +367,48 @@ export default {
         ? this.userDetails.churchName
         : this.userDetails.churchName.slice(0, 20) + "...";
     },
-    valid () {
-      let regex  = /[0-9]{11}/
-      return regex.test(this.userDetails.phoneNumber)
+    valid() {
+      let regex = /[0-9]{11}/;
+      return regex.test(this.userDetails.phoneNumber);
     },
 
-    countryCodes() {
-      let codeFlag = []
-      // if (this.searchText ===  "") {
-      codeFlag = this.countries.map(i => {
-        return {
-          phoneCode: i.phoneCode,
-          flagUrl: i.flagUrl,
-          id: i.id,
-          name: i.name,
-          currency: i.currency
-        }        
-      })
+    // countryCodes() {
+    //   let codeFlag = [];
+    //   // if (this.searchText ===  "") {
+    //   codeFlag = this.countries.map((i) => {
+    //     return {
+    //       phoneCode: i.phoneCode,
+    //       flagUrl: i.flagUrl,
+    //       id: i.id,
+    //       name: i.name,
+    //       currency: i.currency,
+    //     };
+    //   });
 
-      if (this.searchText)  return codeFlag.filter(i => i.phoneCode && i.phoneCode.includes(this.searchText.toLowerCase()) || i.phoneCode && i.name.toLowerCase().includes(this.searchText.toLowerCase()))
-      
-      return codeFlag
-        
-    },
-    
+    //   if (this.searchText)
+    //     return codeFlag.filter(
+    //       (i) =>
+    //         (i.phoneCode &&
+    //           i.phoneCode.includes(this.searchText.toLowerCase())) ||
+    //         (i.phoneCode &&
+    //           i.name.toLowerCase().includes(this.searchText.toLowerCase()))
+    //     );
+
+    //   return codeFlag;
+    // },
   },
 
   beforeCreate() {
     if (!localStorage.getItem("email")) router.push("/");
   },
- 
+
   created() {
     this.userDetails.email = localStorage.getItem("email");
     axios.get("/api/GetAllCountries").then((res) => {
       this.countries = res.data;
-      console.log(res)
-      this.selectedCountry = res.data.find(i => i.phoneCode &&  i.phoneCode.includes("234"))
-        console.log(this.selectedCountry)
-        console.log(this.countries)
+      this.selectedCountry = res.data.find(
+        (i) => i.phoneCode && i.phoneCode.includes("234")
+      );
     });
   },
 };
@@ -381,10 +478,6 @@ export default {
   transition: border 0.1s linear;
   border: 1px solid #b2c2cd;
   margin: 4px 0;
-}
-
-option {
-  color: red;
 }
 
 .input::placeholder {
@@ -524,10 +617,10 @@ span .select2-selection--single {
   border: 1px solid #b2c2cd;
 }
 .select2-container .select2-choice {
-    padding: 5px 10px;
-    height: 100px;
-    width: 132px; 
-    font-size: 1.2em;  
+  padding: 5px 10px;
+  height: 100px;
+  width: 132px;
+  font-size: 1.2em;
 }
 
 /* #size {
@@ -556,27 +649,25 @@ span .select2-selection--single {
   flex-direction: column;
 }
 
-.flagCode {
-    width: 330px;
-    max-height: 19em;
-    overflow-y: scroll;
-    overflow-x: hidden;
-    box-shadow: -3px 3px 15px #797e8159;
-    position: absolute;
-    top: 54%;
-    /* left: 48px; */
-    background: white;
-    
-    /* display: block; */
+/* .flagCode {
+  width: 330px;
+  max-height: 19em;
+  overflow-y: scroll;
+  overflow-x: hidden;
+  box-shadow: -3px 3px 15px #797e8159;
+  position: absolute;
+  top: 54%;
 
-}
-/* .flagCode > div:first-of-type{ */
-  /* border: 2px solid green; */
-  /* width: 35em;      
+  background: white;
+
 } */
-.flagCode div:hover {
-  background: rgb(238, 238, 238)
-}
+/* .flagCode > div:first-of-type{ */
+/* border: 2px solid green; */
+/* width: 35em;      
+} */
+/* .flagCode div:hover {
+  background: rgb(238, 238, 238);
+} */
 
 @media screen and (max-width: 990px) {
   #onboarding {
@@ -595,10 +686,10 @@ span .select2-selection--single {
     display: none !important;
   }
 
-  .flagCode {
+  /* .flagCode {
     position: absolute;
     top: 30%;
-  }
+  } */
 }
 
 @media screen and (min-width: 480) {
@@ -607,7 +698,7 @@ span .select2-selection--single {
   }
 }
 
-@media (max-width: 504px) {
+/* @media (max-width: 504px) {
   .flagCode {
     margin-top: 11%;
   }
@@ -616,23 +707,23 @@ span .select2-selection--single {
   .flagCode {
     margin-top: 23%;
   }
-}
+} */
 
-div.country-code {
+/* div.country-code {
   height: 40.9px;
-  background: transparent
+  background: transparent;
 }
 
- input.codeInput {
+input.codeInput {
   width: 93%;
   margin-left: 12px;
   margin-top: 5px;
 }
 
 .hide-code {
-  /* display: none */
+  
   height: 0;
   overflow: hidden;
-  /* transition: all 0.4s ease-in-out */
-}
+  
+} */
 </style>
