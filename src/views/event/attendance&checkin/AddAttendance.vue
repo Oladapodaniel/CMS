@@ -1142,8 +1142,6 @@ export default {
     getGroups();
 
     const onContinue = async () => {
-      console.log(selectedEvent.value);
-
       let checkinEvent = {
         eventId: selectedEvent.value.id,
         groupIDs: selectedGroups.value,
@@ -1353,6 +1351,13 @@ export default {
         } catch (err) {
           console.log(err);
         }
+      } else {
+        toast.add({
+          severity: "warn",
+          summary: "Some field not filled",
+          detail: "Cannot create this event attendance, kindly fill all fields before saving.",
+          life: 6000,
+        });
       }
     };
 

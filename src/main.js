@@ -10,6 +10,26 @@ import axios from "./gateway/backendapi";
 // import NProgress from "nprogress";
 import CKEditor from '@ckeditor/ckeditor5-vue';
 import Toaster from '@meforma/vue-toaster';
+// import VueTelInput from 'vue-tel-input';
+// import 'vue-tel-input/dist/vue-tel-input.css';
+
+// const globalOptions = {
+//   mode: 'auto',
+// };
+import VueTelInput from 'vue3-tel-input'
+  import 'vue3-tel-input/dist/vue3-tel-input.css'
+
+  const VueTelInputOptions = {
+    mode: "international",
+    dropdownOptions: {
+      showSearchBox: true,
+      showDialCodeInSelection: true,
+      disabled: true
+      // showFlags: false
+    }
+    // onlyCountries: ['NG', 'GH', "GB", "US", "CA"]
+  }
+
 
 // Vue.prototype.$http = axios
 
@@ -128,4 +148,4 @@ app.component("Checkbox", Checkbox);
 app.component("Tag", Tag);
 app.component("Editor", Editor);
 
-app.use(store).use(router).use(VueHighcharts, { Highcharts }).use( CKEditor).use(Toaster).use(PrimeVue).use(ToastService).use(ConfirmationService).mount('#app')
+app.use(store).use(router).use(VueHighcharts, { Highcharts }).use( CKEditor).use(Toaster).use(PrimeVue).use(ToastService).use(ConfirmationService).use(VueTelInput, VueTelInputOptions).mount('#app')
