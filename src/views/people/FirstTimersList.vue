@@ -1223,8 +1223,9 @@ filter.value.phoneNumber ="";
     position: relative;
     border-radius: 10px;
     height: 4px;
-    top: -4px;
+    top: 5px;
     left: 0px;
+    /* border-radius:2px solid red; */
     /* width: 35%; */
     opacity: 1;
 }
@@ -1615,13 +1616,24 @@ a {
   .board {
     width: 100% !important;
   }
+  .baseline {
+    position:relative;
+    border-radius:10px;
+    z-index:175;
+    top: -4px;
+    left: 0px;
+    /* width: 35%; */
+    opacity: 1;
+}
 }
 
 @media screen and (min-width: 500px) {
   .theader {
     width: 23%;
   }
-
+.baseline{
+  top: -4px;
+}
   .table-body .check {
     width: 3%;
   }
@@ -1650,6 +1662,15 @@ a {
   .more {
     margin-right: 0;
   }
+  .baseline {
+    position:relative;
+    border-radius:10px;
+    z-index:175;
+    top: -4px;
+    left: 0px;
+    /* width: 35%; */
+    opacity: 1;
+}
 }
 
 @media (max-width: 575px) {
