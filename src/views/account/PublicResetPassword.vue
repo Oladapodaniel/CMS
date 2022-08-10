@@ -96,10 +96,6 @@ export default {
     const loading = ref(false);
     const toast = useToast();
     let passwordChanged = ref(false);
-<<<<<<< HEAD
-=======
-    // let pattern = /^\w+@[a-zA-Z_]+?\.[a-zA-Z]{2,3}$/;
->>>>>>> staging
     let pattern =  /^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@[a-zA-Z0-9-]+(?:\.[a-zA-Z0-9-]+)*$/
     const emailIsInvalid = ref(false);
 
