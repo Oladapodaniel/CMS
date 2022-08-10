@@ -96,7 +96,7 @@ export default {
     const loading = ref(false);
     const toast = useToast();
     let passwordChanged = ref(false);
-    let pattern = /^\w+@[a-zA-Z_]+?\.[a-zA-Z]{2,3}$/;
+    let pattern = /^\w+@[a-zA-Z_]+?\.[a-zA-Z]{2,3}$g/;
     const emailIsInvalid = ref(false);
 
     const getResetToken = () => {
