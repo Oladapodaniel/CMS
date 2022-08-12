@@ -632,6 +632,28 @@
                     </button>
                   </div>
                   <div class="modal-body">
+                    <div class="col-md-12">
+              <Dialog
+                header="Action Needed"
+                v-model:visible="displays"
+                :style="{ width: '70vw', maxWidth: '600px' }"
+                :modal="true"
+              >
+                <div class="row">
+                  <div class="col-md-12">
+                    <div class="col-md-12  mt-2 notecolour font-weight-bold">
+                           <span class="text-dark font-weight-bold "> NB :</span>  Messages sent between 8pm to 8am (Night
+                            Messages) will be delivered using the dedicated
+                            phone number. If you wish to use sender ID, kindly
+                            send messages between 8am in the morning to 8pm in
+                            the evening.
+                          </div>
+                    <!-- <h6>You have accounts that needs to be updated, click on the link below to continue</h6>
+                    <router-link class="text-decoration-none primary-text font-weight-bold" to="/tenant/chartofaccount/update">Update accounts</router-link> -->
+                  </div>
+                </div>
+              </Dialog>
+            </div>
                     <div class="row" v-if="!nigerian">
                       <div class="col-md-12 text-center">
                         <button
@@ -938,6 +960,7 @@ export default {
     const searchSenderText = ref("");
     const senderIdRef = ref();
     const requestbtn = ref(false);
+    const displays = ref(false);
 
     const toggleGroupsVissibility = () => {
       groupsAreVissible.value = !groupsAreVissible.value;
@@ -1404,6 +1427,7 @@ export default {
     const memberSelectInput = ref(null);
 
     const data = () => {
+      displays.value = true
       const data = {
         subject: subject.value,
         message: editorData.value,
@@ -1554,6 +1578,7 @@ export default {
 
     return {
       editorData,
+      displays,
       editorConfig,
       possibleSMSDestinations,
       groupsAreVissible,

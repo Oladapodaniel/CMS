@@ -122,7 +122,7 @@
             </div>
           </div>
         </div>
-        <!-- <div
+        <div
           class="col-md-3 pledge-shadow mb-3 mb-md-0 order-first order-md-last"
           v-if="selectedPledge.donorPaymentType == 2"
         >
@@ -198,7 +198,7 @@
           <h5 class="font-weight-600 font-italic text-center mt-3 mb-0">
             HAPPY PLEDGING !
           </h5>
-        </div> -->
+        </div>
       </div>
 
       <div class="row mt-3">

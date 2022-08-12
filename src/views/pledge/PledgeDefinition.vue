@@ -460,6 +460,16 @@
             </div>
           </div>
 
+          <div class="row my-1 mt-4">
+            <div class="col-md-10 offset-md-2">
+              <div class="row">
+                <div class="col-md-12">
+                  <hr class="hr my-3" />
+              </div>
+              </div>
+            </div>
+          </div>
+  
           <!-- Bank -->
           <div class="row my-1 mt-4">
             <div class="col-md-10 offset-md-2">
@@ -586,7 +596,7 @@
           </div>
 
           <!-- Income account -->
-          <div class="row my-1 mt-4">
+          <!-- <div class="row my-1 mt-4">
             <div class="col-md-10 offset-md-2">
               <div class="row">
                 <div
@@ -609,10 +619,10 @@
                 </div>
               </div>
             </div>
-          </div>
+          </div> -->
 
           <!-- Cash account -->
-          <div class="row my-1 mt-4">
+          <!-- <div class="row my-1 mt-4">
             <div class="col-md-10 offset-md-2">
               <div class="row">
                 <div
@@ -635,7 +645,7 @@
                 </div>
               </div>
             </div>
-          </div>
+          </div> -->
 
           <!-- Save button -->
           <div class="col-md-9 offset-md-5 mt-4">
