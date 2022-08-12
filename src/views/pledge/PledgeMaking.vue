@@ -17,7 +17,7 @@
               <span class="theader"> Pledge Name </span>
               <div class="my-3">
                 <span class="evt-name">
-                  {{ pledgeName ? pledgeName : "" }}
+                  {{ selectedPledge || selectedPledge.pledgeItemName ? selectedPledge.pledgeItemName : "" }}
                 </span>
               </div>
             </div>
@@ -25,14 +25,16 @@
             <div class="col-md-4">
               <span class="theader">Donor</span>
               <div class="my-3">
-                <span class="evt-name">{{ personName }}</span>
+                <!-- <span class="evt-name">{{ personName }}</span> -->
+                <span class="evt-name">{{ selectedPledge.contact }}</span>
               </div>
             </div>
             <div class="col-md-4">
               <span class="theader">Total payment</span>
               <div class="my-3">
                 <span class="evt-name">
-                  {{ pledgeAmount.toLocaleString() }}
+                  <!-- {{ pledgeAmount.toLocaleString() }} -->
+                  {{ selectedPledge.totalPaymentSum }}
                 </span>
               </div>
             </div>
@@ -42,7 +44,7 @@
               <div class="my-3">
                 <span class="evt-name">
                   {{
-                    Number(selectedPledge.totalTargetAmount).toLocaleString()
+                    Number(selectedPledge.balance).toLocaleString()
                   }}</span
                 >
               </div>
@@ -51,7 +53,15 @@
             <div class="col-md-4">
               <span class="theader">Date</span>
               <div class="my-3">
-                <span class="evt-name"> 25th May, 2020 </span>
+                <span class="evt-name"> {{
+                    pledgeDate
+                      ? new Date(selectedPledge.date)
+                          .toString()
+                          .split(" ")
+                          .slice(0, 4)
+                          .join(" ")
+                      : ""
+                  }} </span>
               </div>
             </div>
           </div>
@@ -488,7 +498,7 @@
                               :disabled="checking"
                               class="form-control w-100"
                             /> -->
-                            <h4 class="font-weight-600">{{ personName }}</h4>
+                            <h4 class="font-weight-600">{{ selectedPledge.contact }}</h4>
                           </div>
                         </div>
                       </div>
@@ -518,7 +528,7 @@
                               class="form-control w-100"
                             /> -->
                             <h4 class="font-weight-100">
-                              {{ pledgeName ? pledgeName : "" }}
+                              {{ selectedPledge.pledgeItemName ? selectedPledge.pledgeItemName : "" }}
                             </h4>
                           </div>
                         </div>
@@ -535,18 +545,15 @@
                           <div class="col-md-8 d-flex">
                             <span
                               class="
-                                bg-secondary
-                                align-self-center
                                 pt-1
-                                border
                                 currency
                               "
-                              >{{ selectedCurrency.name }}</span
+                              >{{ selectedPledge.currency }}</span
                             >
                             <div class="col-8 col-lg-10 m-0 p-0">
               
                               <h4 class="pledge-amount font-weight-100">
-                                {{ pledgeAmount.toLocaleString() }}
+                                {{ selectedPledge.amount }}
                               </h4>
                             </div>
                           </div>
