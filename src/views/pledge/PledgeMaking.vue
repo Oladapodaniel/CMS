@@ -17,7 +17,7 @@
               <span class="theader"> Pledge Name </span>
               <div class="my-3">
                 <span class="evt-name">
-                  {{ selectedPledge || selectedPledge.pledgeItemName ? selectedPledge.pledgeItemName : "" }}
+                  {{ selectedPledge.pledgeItemName}}
                 </span>
               </div>
             </div>
@@ -34,7 +34,11 @@
               <div class="my-3">
                 <span class="evt-name">
                   <!-- {{ pledgeAmount.toLocaleString() }} -->
-                  {{ selectedPledge.totalPaymentSum }}
+                   {{
+                          Math.abs(
+                            selectedPledge.totalPaymentSum
+                          ).toLocaleString()
+                        }}.00
                 </span>
               </div>
             </div>
@@ -44,8 +48,10 @@
               <div class="my-3">
                 <span class="evt-name">
                   {{
-                    Number(selectedPledge.balance).toLocaleString()
-                  }}</span
+                          Math.abs(
+                            selectedPledge.balance
+                          ).toLocaleString()
+                        }}.00</span
                 >
               </div>
             </div>
@@ -53,15 +59,7 @@
             <div class="col-md-4">
               <span class="theader">Date</span>
               <div class="my-3">
-                <span class="evt-name"> {{
-                    pledgeDate
-                      ? new Date(selectedPledge.date)
-                          .toString()
-                          .split(" ")
-                          .slice(0, 4)
-                          .join(" ")
-                      : ""
-                  }} </span>
+                <span class="evt-name"> {{ date(selectedPledge.date) }}</span>
               </div>
             </div>
           </div>
@@ -348,21 +346,22 @@
                     Channel
                   </div>
                   <div
-                    class="small-text text-capitalize col-md-3 font-weight-bold"
+                    class="small-text text-capitalize col-md-4 font-weight-bold"
                   >
                     amount paid
                   </div>
                   <div
-                    class="small-text text-capitalize col-md-3 font-weight-bold"
+                    class="small-text text-capitalize col-md-2 font-weight-bold"
                   >
                     Action
                   </div>
                 </div>
               </div>
-              <div class="row" style="margin: 0">
+             <div class="row" style="margin: 0">
                 <div class="col-12 pb-2 px-0">
-                  <div
+                  <div v-for="(pledgePaymnetList, index) in searchPledgePayment" :key="index"
                     class="
+                    
                       row
                       w-100
                       c-pointer
@@ -388,7 +387,7 @@
                           style="font-size: 15px"
                           >Date
                         </span>
-                        2020-07-16
+                        {{ date(pledgePaymnetList.date) }}
                       </p>
                     </div>
                        <div class="col-md-3 py-2">
@@ -403,10 +402,10 @@
                           style="font-size: 15px"
                           >Channel</span
                         >
-                        <div class="small-text">NGN 111,000.00</div>
+                        <div class="small-text">{{pledgePaymnetList.channel}}</div>
                       </div>
                     </div>
-                    <div class="col-md-3 py-2">
+                    <div class="col-md-4 py-2">
                       <div class="d-flex small justify-content-between">
                         <span
                           class="
@@ -418,10 +417,16 @@
                           style="font-size: 15px"
                           >Amount paid</span
                         >
-                        <div class="small-text">Anderson Udokoro</div>
+                        <div class="small-text">
+                            {{
+                          Math.abs(
+                            pledgePaymnetList.amount
+                          ).toLocaleString()
+                        }}.00
+                        </div>
                       </div>
                     </div>
-                    <div class="col-md-3 py-2">
+                    <div class="col-md-2 py-2">
                       <div class="">
                         <div class="dropdown">
                           <span class="d-flex justify-content-between">
@@ -462,7 +467,6 @@
                   </div>
                 </div>
               </div>
-             
             </div>
             <!-- <PledgeTransaction /> -->
           </div>
@@ -528,7 +532,7 @@
                               class="form-control w-100"
                             /> -->
                             <h4 class="font-weight-100">
-                              {{ selectedPledge.pledgeItemName ? selectedPledge.pledgeItemName : "" }}
+                              {{ selectedPledge.pledgeItemName  }}
                             </h4>
                           </div>
                         </div>
@@ -638,6 +642,7 @@ import finish from "../../services/progressbar/progress";
 import CascadeSelect from "primevue/cascadeselect";
 import ToggleButton from "../donation/toggleButton.vue";
 import PledgeTransaction from "./PledgeTransaction.vue";
+import monthDayYear from "../../services/dates/dateformatter";
 import Tooltip from "primevue/tooltip";
 export default {
   components: {
@@ -677,7 +682,9 @@ export default {
     const url = ref("");
     const amountTo = ref("");
     const selectedChannel = ref({});
+    const allPledgePaymentList = ref([])
     const currencyList = ref([]);
+    const searchText = ref("");
     const pledgeCategory = ref([
       { name: "Free will" },
       { name: "Specific" },
@@ -698,6 +705,43 @@ export default {
     }
 
     getAllpaymentList()
+
+    const searchPledgePayment = computed(() => {
+          if (searchText.value !== "" && allPledgePaymentList.value.length > 0)  {
+            return allPledgePaymentList.value.filter((i) => {
+                  if (i.pledge.person.firstName || i.pledge.pledgeType.name ) return i.pledge.person.firstName.toLowerCase().includes(searchText.value.toLowerCase())
+            })
+          }  else {
+            return allPledgePaymentList.value;
+          }
+
+          });
+
+            const getAllPledgePaymentList = async () => {
+                loading.value = true
+                  try{
+                    const res = await axios.get('/api/Pledge/GetAllPledgePaymentsForTenant')
+                    finish()
+                    allPledgePaymentList.value = res.data.returnObject
+                    console.log(allPledgePaymentList.value,'getPledgepayment😁😁');
+                    loading.value = false
+                }
+                catch (error){
+                    console.log(error)
+                    loading.value = false;
+
+                    if(error.toString().toLowerCase().includes("network error")) {
+                    networkError.value = true
+                  } else {
+                    networkError.value = false
+                  }
+                }
+            }
+            getAllPledgePaymentList()
+
+    const date = (offDate) => {
+      return monthDayYear.monthDayYear(offDate);
+    };
 
     const savePayment = async () => {
       let paymentData = {
@@ -1018,7 +1062,11 @@ export default {
     };
 
     return {
+      date,
       selectedCurrency,
+      allPledgePaymentList,
+      searchText,
+      searchPledgePayment,
       savePayment,
       currencyList,
       url,
