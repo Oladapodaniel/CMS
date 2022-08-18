@@ -52,8 +52,81 @@
 
     <div class="row table">
       <div class="col-12 px-0" id="table">
-        <div class="top-con" id="ignore2">
+        <div class="top-con" id="ignore2" :class="{ 'mt-0': marked.length > 0 }">
           <div class="table-top">
+            <div class="select-all">
+              <input
+                type="checkbox"
+                name="all"
+                id="all"
+                @change="markAll"
+                :checked="marked.length === searchContribution.length"
+              />
+              <label>SELECT ALL</label>
+              <i
+              class="
+                pi pi-trash
+                text-danger
+                mr-3
+                c-pointer
+                d-flex-inline
+                align-items-center
+              "
+              style="font-size: 20px; margin-bottom: 12px"
+              v-if="marked.length > 0"
+              @click="modal"
+            >
+            </i
+            >&nbsp; &nbsp;
+              <!-- <i
+                class="pi pi-trash color-deleteicon c-pointer pt-2 px-2"
+                v-tooltip.top="'Delete Offering(s)'"
+                style="font-size: 20px"
+                v-if="marked.length > 0"
+                @click="showConfirmModal1"
+              ></i
+              >&nbsp; &nbsp; -->
+              <!-- <a href="#" data-toggle="modal" data-target="#myGroupModal">
+                <i
+                  class="ml-3 mr-2 color-groupicon pi pi-plus-circle c-pointer"
+                  v-tooltip.top="'Add all member to Group'"
+                  style="font-size: 22px"
+                  v-if="marked.length == 0"
+                >
+                </i>
+              </a> -->
+              <!-- <a href="#" data-toggle="modal" data-target="#myModal">
+                <i
+                  class="ml-3 mr-2 color-groupicon pi pi-users c-pointer"
+                  v-tooltip.top="'Add to Group'"
+                  style="font-size: 22px"
+                  v-if="marked.length > 0"
+                >
+                </i>
+              </a> -->
+              <!-- <i
+                class="fa fa-file-archive-o color-groupicon c-pointer ml-2 mr-2"
+                v-if="marked.length > 0"
+                v-tooltip.top="'Archive member(s)'"
+                @click="openPositionArchive('center')"
+                aria-hidden="true"
+                style="font-size: 20px"
+              ></i> -->
+              
+              <!-- <span
+                class="c-pointer"
+                v-if="marked.length > 0"
+                @click="sendMarkedMemberSms"
+                >Send SMS</span
+              > -->
+              <!-- &nbsp; &nbsp;
+              <span
+                class="c-pointer"
+                v-if="marked.length > 0"
+                @click="sendMarkedMemberEmail"
+                >Send Email</span
+              > -->
+            </div>
             <div
               class="filter col-2"
               @click="
@@ -168,7 +241,7 @@
 
         <!-- contribution -->
 
- <div v-if="searchContribution.length > 0">
+        <div v-if="searchContribution.length > 0">
           <div class="container-fluid d-none d-md-block">
             <div class="row t-header">
               <div class="col-md-1"></div>
@@ -193,217 +266,229 @@
             </div>
           </div>
 
-        <loadingComponent :loading="loading" />
-        <div v-if="!loading">
-          <div class="row" style="margin: 0">
-            <div
-              class="
-                col-12
-                parent-desc
-                py-2
-                px-0
-                c-pointer
-                tr-border-bottom
-                hover
-              "
-              v-for="(item, index) in searchContribution"
-              :key="item.id"
-            >
-              <div class="row w-100" style="margin: 0">
-                <div
-                  class="col-md-1 d-flex d-md-block px-3 justify-content-end"
-                >
-                  <input
-                    type="checkbox"
-                    v-model="item.check"
-                    class="form-check"
-                  />
-                </div>
+          <loadingComponent :loading="loading" />
+          <div v-if="!loading">
+            <div class="row" style="margin: 0">
+              <div
+                class="
+                  col-12
+                  parent-desc
+                  py-2
+                  px-0
+                  c-pointer
+                  tr-border-bottom
+                  hover
+                "
+                v-for="(item, index) in searchContribution"
+                :key="item.id"
+              >
+                <div class="row w-100" style="margin: 0">
+                  <div
+                    class="col-md-1 d-flex d-md-block px-3 justify-content-end"
+                  >
+                    <input
+                      type="checkbox"
+                      class="form-check"
+                      @change="markOne(item)"
+                      :checked="marked.findIndex((i) => i.id === item.id) >= 0"
+                    />
+                  </div>
 
-                <div class="desc small-text col-md-2 px-1">
-                  <p class="mb-0 d-flex justify-content-between">
-                    <span
-                      class="
-                        text-dark
-                        font-weight-bold
-                        d-flex d-md-none
-                        fontIncrease
-                      "
-                      >Date</span
-                    >
-                    <router-link
-                      class="text-decoration-none fontIncrease"
-                      :to="{ name: 'AddOffering', params: { offId: item.id } }"
-                      ><span class="text-decoration-none">{{
-                        date(item.date)
-                      }}</span></router-link
-                    >
-                  </p>
-                </div>
+                  <div class="desc small-text col-md-2 px-1">
+                    <p class="mb-0 d-flex justify-content-between">
+                      <span
+                        class="
+                          text-dark
+                          font-weight-bold
+                          d-flex d-md-none
+                          fontIncrease
+                        "
+                        >Date</span
+                      >
+                      <router-link
+                        class="text-decoration-none fontIncrease"
+                        :to="{
+                          name: 'AddOffering',
+                          params: { offId: item.id },
+                        }"
+                        ><span class="text-decoration-none">{{
+                          date(item.date)
+                        }}</span></router-link
+                      >
+                    </p>
+                  </div>
 
-                <div class="col-md-2 px-1">
-                  <div class="d-flex small justify-content-between">
-                    <span
-                      class="
-                        text-dark
-                        font-weight-bold
-                        d-flex d-md-none
-                        fontIncrease
-                      "
-                      >Offering</span
-                    >
-                    <div>
-                      <div class="desc small-text text-right text-md-left">
-                        <router-link
-                          class="text-decoration-none fontIncrease"
-                          :to="{
-                            name: 'AddOffering',
-                            params: { offId: item.id },
-                          }"
-                          >{{ item.contribution }}</router-link
-                        >
+                  <div class="col-md-2 px-1">
+                    <div class="d-flex small justify-content-between">
+                      <span
+                        class="
+                          text-dark
+                          font-weight-bold
+                          d-flex d-md-none
+                          fontIncrease
+                        "
+                        >Offering</span
+                      >
+                      <div>
+                        <div class="desc small-text text-right text-md-left">
+                          <router-link
+                            class="text-decoration-none fontIncrease"
+                            :to="{
+                              name: 'AddOffering',
+                              params: { offId: item.id },
+                            }"
+                            >{{ item.contribution }}</router-link
+                          >
+                        </div>
                       </div>
                     </div>
                   </div>
-                </div>
 
-                <div class="desc-head small-text col-md-2 px-1">
-                  <p class="mb-0 d-flex justify-content-between">
-                    <span
-                      class="
-                        text-dark
-                        font-weight-bold
-                        d-flex d-md-none
-                        fontIncrease
-                      "
-                      >Amount</span
-                    >
-                    <span
-                      ><router-link
-                        class="text-decoration-none ml-3 fontIncrease"
-                        :to="{
-                          name: 'AddOffering',
-                          params: { offId: item.id },
-                        }"
-                        >{{ item.currencyName }} {{ item.amount }}</router-link
-                      ></span
-                    >
-                  </p>
-                </div>
-                
-                <div class="desc-head small-text col-md-2 px-1">
-                  <p class="mb-0 d-flex justify-content-between">
-                    <span
-                      class="
-                        text-dark
-                        font-weight-bold
-                        d-flex d-md-none
-                        fontIncrease
-                      "
-                      >Source</span
-                    >
-                    <span
-                      ><router-link
-                        class="text-decoration-none ml-3 fontIncrease"
-                        :to="{
-                          name: 'AddOffering',
-                          params: { offId: item.id },
-                        }"
-                        >{{ item.channel }}</router-link
-                      ></span
-                    >
-                  </p>
-                </div>
-
-                <div class="small-text col-md-2 px-1">
-                  <p class="mb-0 d-flex justify-content-between">
-                    <span
-                      class="
-                        text-dark
-                        font-weight-bold
-                        d-flex d-md-none
-                        fontIncrease
-                      "
-                      >Donor</span
-                    >
-                    <span
-                      ><span class="primary-text c-pointer"
+                  <div class="desc-head small-text col-md-2 px-1">
+                    <p class="mb-0 d-flex justify-content-between">
+                      <span
+                        class="
+                          text-dark
+                          font-weight-bold
+                          d-flex d-md-none
+                          fontIncrease
+                        "
+                        >Amount</span
+                      >
+                      <span
                         ><router-link
-                          class="text-decoration-none fontIncrease"
+                          class="text-decoration-none ml-3 fontIncrease"
                           :to="{
                             name: 'AddOffering',
                             params: { offId: item.id },
                           }"
-                          >{{ item.donor }}</router-link
+                          >{{ item.currencyName }}
+                          {{ item.amount }}</router-link
                         ></span
-                      ></span
-                    >
-                  </p>
-                </div>
+                      >
+                    </p>
+                  </div>
 
-                <div class="col-md-1">
-                  <div>
-                    <div class="dropdown">
-                      <span class="d-flex justify-content-between">
-                        <span class="d-md-none d-sm-flex"></span>
-                        <span class="d-sm-flex small">
-                          <i
-                            class="
-                              fas
-                              fa-ellipsis-v
-                              cursor-pointer
-                              ml-2
-                              fontIncrease
-                            "
-                            id="dropdownMenuButton"
-                            data-toggle="dropdown"
-                            aria-haspopup="true"
-                            aria-expanded="false"
-                          ></i>
-                          <div
-                            class="dropdown-menu"
-                            aria-labelledby="dropdownMenuButton"
-                          >
-                            <router-link
-                              :to="
-                                !item.activityId ||
-                                item.activityId ===
-                                  '00000000-0000-0000-0000-000000000000'
-                                  ? {
-                                      name: 'OfferingReport',
-                                      query: {
-                                        report: item.date.split('T')[0],
-                                      },
-                                    }
-                                  : {
-                                      name: 'OfferingReport',
-                                      query: {
-                                        report: item.date.split('T')[0],
-                                        activityID: item.activityId,
-                                      },
-                                    }
+                  <div class="desc-head small-text col-md-2 px-1">
+                    <p class="mb-0 d-flex justify-content-between">
+                      <span
+                        class="
+                          text-dark
+                          font-weight-bold
+                          d-flex d-md-none
+                          fontIncrease
+                        "
+                        >Source</span
+                      >
+                      <span
+                        ><router-link
+                          class="text-decoration-none ml-3 fontIncrease"
+                          :to="{
+                            name: 'AddOffering',
+                            params: { offId: item.id },
+                          }"
+                          >{{ item.channel }}</router-link
+                        ></span
+                      >
+                    </p>
+                  </div>
+
+                  <div class="small-text col-md-2 px-1">
+                    <p class="mb-0 d-flex justify-content-between">
+                      <span
+                        class="
+                          text-dark
+                          font-weight-bold
+                          d-flex d-md-none
+                          fontIncrease
+                        "
+                        >Donor</span
+                      >
+                      <span
+                        ><span class="primary-text c-pointer"
+                          ><router-link
+                            class="text-decoration-none fontIncrease"
+                            :to="{
+                              name: 'AddOffering',
+                              params: { offId: item.id },
+                            }"
+                            >{{ item.donor }}</router-link
+                          ></span
+                        ></span
+                      >
+                    </p>
+                  </div>
+
+                  <div class="col-md-1">
+                    <div>
+                      <div class="dropdown">
+                        <span class="d-flex justify-content-between">
+                          <span class="d-md-none d-sm-flex"></span>
+                          <span class="d-sm-flex small">
+                            <i
+                              class="
+                                fas
+                                fa-ellipsis-v
+                                cursor-pointer
+                                ml-2
+                                fontIncrease
                               "
+                              id="dropdownMenuButton"
+                              data-toggle="dropdown"
+                              aria-haspopup="true"
+                              aria-expanded="false"
+                            ></i>
+                            <div
+                              class="dropdown-menu"
+                              aria-labelledby="dropdownMenuButton"
                             >
-                              <a class="dropdown-item elipsis-items">
-                                View Report
-                              </a>
-                            </router-link>
-                            <router-link
-                              :to="{
-                                name: 'AddOffering',
-                                params: { offId: item.id },
-                              }"
-                            >
-                              <a class="dropdown-item elipsis-items"> Edit </a>
-                            </router-link>
-                            <a
-                              class="dropdown-item elipsis-items cursor-pointer"
-                              @click="showConfirmModal(item.id, index)"
-                              >Delete</a
-                            >
-                          </div>
+                              <router-link
+                                :to="
+                                  !item.activityId ||
+                                  item.activityId ===
+                                    '00000000-0000-0000-0000-000000000000'
+                                    ? {
+                                        name: 'OfferingReport',
+                                        query: {
+                                          report: item.date.split('T')[0],
+                                        },
+                                      }
+                                    : {
+                                        name: 'OfferingReport',
+                                        query: {
+                                          report: item.date.split('T')[0],
+                                          activityID: item.activityId,
+                                        },
+                                      }
+                                "
+                              >
+                                <a class="dropdown-item elipsis-items">
+                                  View Report
+                                </a>
+                              </router-link>
+                              <router-link
+                                :to="{
+                                  name: 'AddOffering',
+                                  params: { offId: item.id },
+                                }"
+                              >
+                                <a class="dropdown-item elipsis-items">
+                                  Edit
+                                </a>
+                              </router-link>
+                              <a
+                                class="
+                                  dropdown-item
+                                  elipsis-items
+                                  cursor-pointer
+                                "
+                                @click="showConfirmModal(item.id, index)"
+                                >Delete</a
+                              >
+                            </div>
+                          </span>
                         </span>
-                      </span>
+                      </div>
                     </div>
                   </div>
                 </div>
@@ -412,10 +497,7 @@
           </div>
         </div>
 
-</div>
-
-
-         <!-- <div
+        <!-- <div
           class="col-md-12 col py-3"
           v-if="
             listOfOfferingItems.length === 0 &&
@@ -427,7 +509,9 @@
             Record not available in database
           </p>
         </div> -->
-        <div class="text-danger d-flex justify-content-center" v-else>No records found</div>
+        <div class="text-danger d-flex justify-content-center" v-else>
+          No records found
+        </div>
 
         <div class="col-12">
           <div class="table-footer">
@@ -469,6 +553,7 @@ import store from "../../../store/store";
 import loadingComponent from "@/components/loading/LoadingComponent";
 export default {
   props: ["contributionTransactions", "totalItem"],
+  emits: ["marked"],
   components: {
     // ByGenderChart,
     // ByMaritalStatusChart,
@@ -521,6 +606,117 @@ export default {
       }
     };
     getRoute();
+
+    const marked = ref([]);
+
+    const convert = (x) => {
+      return x.map((i) => i.id);
+    };
+
+    const deleteMarked = () => {
+      // let newarray = []
+      let dft = convert(marked.value);
+      console.log(dft, "👌😂😂");
+      axios
+        .post(`/api/CheckInAttendance/Delete/Multiple`, dft)
+        .then((res) => {
+          let incomingRes = res.data;
+          console.log(incomingRes, "🙌❤🙌❤🙌");
+          if (incomingRes.toString().toLowerCase().includes("attendance")) {
+            toast.add({
+              severity: "success",
+              summary: "Confirmed",
+              detail: "Attendance(s) deleted successfully.",
+              life: 4000,
+            });
+            // attendanceList.value = attendanceList.value.filter((item) => {
+            //       const y = checkedAttendance.value.findIndex(
+            //         (i) => i.id === item.id
+            //       );
+            //        console.log(y , "old are u now");
+            //       if (y >= 0) return false;
+            //       return true;
+            //     });
+            emit("marked", marked.value);
+          }
+          // checkedAttendance.value = [];
+        })
+        .catch((err) => {
+          stopProgressBar();
+          if (err.toString().toLowerCase().includes("network error")) {
+            toast.add({
+              severity: "warn",
+              summary: "Network Error",
+              detail: "Please ensure you have a strong internet connection",
+              life: 4000,
+            });
+          } else if (err.toString().toLowerCase().includes("timeout")) {
+            toast.add({
+              severity: "warn",
+              summary: "Request Delayed",
+              detail: "Request took too long to respond",
+              life: 4000,
+            });
+          } else {
+            toast.add({
+              severity: "warn",
+              summary: "Delete Failed",
+              detail: "Unable to delete attendance",
+              life: 4000,
+            });
+          }
+          console.log(err);
+        });
+    };
+
+    const modal = () => {
+      confirm.require({
+        message: "Are you sure you want to proceed?",
+        header: "Confirmation",
+        icon: "pi pi-exclamation-triangle",
+        acceptClass: "confirm-delete",
+        rejectClass: "cancel-delete",
+        accept: () => {
+          deleteMarked();
+        },
+        reject: () => {
+          toast.add({
+            severity: "info",
+            summary: "Rejected",
+            detail: "You have rejected",
+            life: 3000,
+          });
+        },
+      });
+    };
+
+    const markOne = (item) => {
+      // console.log(ft, "chechbyOne");
+      const offeringIdx = marked.value.findIndex(
+        (i) => i.id === item.id
+      );
+      console.log(offeringIdx, "chechdetail");
+      if (offeringIdx < 0) {
+        marked.value.push(item);
+      } else {
+        marked.value.splice(offeringIdx, 1);
+      }
+    };
+
+    const markAll = () => {
+      console.log(marked.value);
+      if (marked.value.length < props.contributionTransactions.length) {
+        props.contributionTransactions.forEach((i) => {
+          const memberInmarked = marked.value.findIndex((j) => j.id === i.id);
+          if (memberInmarked < 0) {
+            marked.value.push(i);
+          }
+        });
+      } else {
+        marked.value = [];
+      }
+      console.log(marked.value, "all");
+    };
 
     const printContribution = computed(() => {
       if (props.contributionTransactions.length === 0) return [];
@@ -679,19 +875,19 @@ export default {
       return props.contributionTransactions;
     });
 
-  const clearAll = () => {
-    filter.value.contribution ="";
-     filter.value.donor = "";
+    const clearAll = () => {
+      filter.value.contribution = "";
+      filter.value.donor = "";
     };
 
-     const hide = () => {
+    const hide = () => {
       filterFormIsVissible.value = false;
     };
     // Tosin
 
- const searchContribution = computed(() => {
-      if (searchText.value !== "" && searchOfferingsInDB.value.length > 0 ) {
-             return searchOfferingsInDB.value
+    const searchContribution = computed(() => {
+      if (searchText.value !== "" && searchOfferingsInDB.value.length > 0) {
+        return searchOfferingsInDB.value;
         // return props.contributionTransactions.filter((i) => {
         //   return i.contribution
         //     .toLowerCase()
@@ -881,6 +1077,10 @@ export default {
       numbers_formatter.amountWithCommas(amount);
 
     return {
+      markAll,
+      modal,
+      markOne,
+      marked,
       // contributionTransactions,
       deleteOffering,
       filterFormIsVissible,
@@ -922,7 +1122,7 @@ export default {
       searchOfferingInDB,
       listOfOfferingItems,
       clearAll,
-        hide
+      hide,
     };
   },
 };

@@ -716,7 +716,7 @@ export default {
         }
 
         const chooseContact = (payload) => {
-            contactRef.value.hide();
+            // contactRef.value.hide();
             selectedContact.value = payload
         }
 
