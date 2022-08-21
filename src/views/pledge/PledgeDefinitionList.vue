@@ -117,7 +117,7 @@
                 <div
                   class="small-text text-capitalize col-md-2 font-weight-bold"
                 >
-                  Pledge Amount
+                 Pledge made 
                 </div>
                 <div
                   class="small-text text-capitalize col-md-2 font-weight-bold"
@@ -230,10 +230,16 @@
                           fontIncrease
                         "
                         style="font-size: 15px"
-                        >Pledge Amount
+                        >Pledge made 
                       </span>
                        <div class="small-text">
-                        {{ pledgelist.totalPledgeAmount }}
+                        <!-- {{ pledgelist.totalPledgeAmount }} -->
+                        {{ pledgelist.currency }}
+                        {{
+                          Math.abs(
+                            pledgelist.totalPledgeAmount
+                          ).toLocaleString()
+                        }}.00
                       </div>
                       
                     </div>

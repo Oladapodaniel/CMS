@@ -547,18 +547,23 @@
                             <label for="" class=""> Pledge Amount </label>
                           </div>
                           <div class="col-md-8 d-flex">
-                            <span
+                            <!-- <span
                               class="
                                 pt-1
                                 currency
                               "
                               >{{ selectedPledge.currency }}</span
-                            >
+                            > -->
                             <div class="col-8 col-lg-10 m-0 p-0">
-              
-                              <h4 class="pledge-amount font-weight-100">
+                                 <input
+                                  type="number"
+                                  v-model="selectedPledge.amount"
+                                  :disabled="false"
+                                  class="form-control"
+                                />
+                              <!-- <h4 class="pledge-amount font-weight-100">
                                 {{ selectedPledge.amount }}
-                              </h4>
+                              </h4> -->
                             </div>
                           </div>
                         </div>
@@ -603,7 +608,7 @@
                       <div class="row d-flex flex-wrap justify-content-center">
                         <div class="mt-4 col-sm-5 col-12 text-center">
                           <button
-                            class="default-btn"
+                            class="default-btn primary-bg text-white"
                             data-dismiss="modal"
                             @click="savePayment"
                           >
@@ -611,11 +616,11 @@
                             Save
                           </button>
                         </div>
+                        <Toast />
                       </div>
                     </div>
                   </div>
                 </div>
-                <Toast />
               </div>
             </div>
           </div>
@@ -745,9 +750,9 @@ export default {
 
     const savePayment = async () => {
       let paymentData = {
-        id: route.query.id,
+        id: selectedPledge.id,
         pledgeID: route.query.pledgeTypeID,
-        amount: pledgeAmount.value,
+        amount: selectedPledge.value.amount,
         channel: selectedChannel.value.name,
         currencyID: selectedPledge.value.currencyID,
       };
@@ -761,10 +766,11 @@ export default {
         toast.add({
           severity: "success",
           summary: "Successful",
-          detail: "Pledge Payment created successfully",
+          detail: "Pledge Payment successfully",
           life: 2000,
         });
-        router.push("/tenant/pledge/pledgepaymentlist");
+        router.push(`/tenant/pledge/pledgemaking?pledgeTypeID=${route.query.pledgeTypeID}`);
+        // router.push("/tenant/pledge/pledgepaymentlist");
       } catch (error) {
         console.log(error);
       }
@@ -1001,7 +1007,7 @@ export default {
         selectedPledge.value = res.data.returnObject;
         console.log(selectedPledge.value, "selected");
         // getAllCurrencies(selectedPledge.value.currencyID);
-        memberName.value = route.query.name;
+        // memberName.value = route.query.name;
         checking.value = true;
       } catch (error) {
         console.log(error);

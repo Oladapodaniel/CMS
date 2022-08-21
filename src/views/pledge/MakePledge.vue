@@ -393,12 +393,12 @@ export default {
           router.push({
             name: "PledgeMaking",
             query: {
-              id: makePledgeData.value.pledgeTypeID,
+              // id: makePledgeData.value.pledgeTypeID,
               pledgeTypeID: makePledgeData.value.id,
-              pledgeType: selectedPledge.value.name,
-              name: selectedContact.value.name,
-              date: pledgeDate.value,
-              amount: donorAmountBase
+              // pledgeType: selectedPledge.value.name,
+              // name: selectedContact.value.name,
+              // date: pledgeDate.value,
+              // amount: donorAmountBase
             },
           });
 
@@ -428,12 +428,12 @@ export default {
           router.push({
             name: "PledgeMaking",
             query: {
-              id: makePledgeData.value.pledgeTypeID,
+              // id: makePledgeData.value.pledgeTypeID,
               pledgeTypeID: makePledgeData.value.id,
-              pledgeType: selectedPledge.value.name,
-              name: selectedContact.value.name,
-              date: pledgeDate.value,
-              amount: donorAmountBase
+              // pledgeType: selectedPledge.value.name,
+              // name: selectedContact.value.name,
+              // date: pledgeDate.value,
+              // amount: donorAmountBase
             },
           });
         } catch (error) {
