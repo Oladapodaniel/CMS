@@ -5,8 +5,7 @@
       <div class="row">
         <div class="col-md-12 mb-3 mt-3 offset-3 offset-md-0">
           <h4 class="font-weight-bold">Compose SMS</h4>
-          <!-- {{ phoneNumbers }}phoneNumbers -->
-          <!-- {{groupData}} data -->
+          <!-- {{ phoneNumbers }}phoneNumbers {{ groupData }} data -->
           <Toast />
 
           <Dialog
@@ -94,7 +93,7 @@
         </div>
       </div>
 
-      <div  class="row" v-if="sendToAll">
+      <div class="row" v-if="sendToAll">
         <div class="col-md-2"></div>
         <div class="col-md-10 px-0">
           <span>
@@ -105,7 +104,11 @@
               value="All Contacts"
               disabled
             />
-            <span class="close-allcontacts c-pointer" @click="() => sendToAll = false"><i class="pi pi-times"></i></span>
+            <span
+              class="close-allcontacts c-pointer"
+              @click="() => (sendToAll = false)"
+              ><i class="pi pi-times"></i
+            ></span>
           </span>
         </div>
       </div>
@@ -386,7 +389,7 @@
       </div>
 
       <!-- Enter phone numbers -->
-      <div  class="col-md-12 my-1 px-0" v-if="phoneNumberSelectionTab">
+      <div class="col-md-12 my-1 px-0" v-if="phoneNumberSelectionTab">
         <div v-if="false" class="row">
           <div class="col-md-2"></div>
           <div class="col-md-10 py-2 px-0">
@@ -424,16 +427,28 @@
           </div>
         </div>
       </div>
-      
+
       <!-- Start upload contact -->
       <div v-if="contactUpload" class="row my-1">
         <div class="col-sm-2"></div>
         <div class="col-sm-10 px-0 grey-rounded-border p-2">
           <div class="d-flex justify-content-between">
-            <input type="file" class="form-control-file" @change="uploadFile">
-            <div><i class="pi pi-times mr-2 c-pointer" @click="() => contactUpload = false"></i></div>
+            <input type="file" class="form-control-file" @change="uploadFile" />
+            <div>
+              <i
+                class="pi pi-times mr-2 c-pointer"
+                @click="() => (contactUpload = false)"
+              ></i>
+            </div>
           </div>
-          <div class="mt-1"><a href="/files/Upload_Contact Template.csv" class="template-text text-decoration-none font-weight-bold" download>Download template</a></div>
+          <div class="mt-1">
+            <a
+              href="/files/Upload_Contact Template.csv"
+              class="template-text text-decoration-none font-weight-bold"
+              download
+              >Download template</a
+            >
+          </div>
         </div>
       </div>
 
@@ -462,26 +477,42 @@
               aria-haspopup="true"
               aria-expanded="false"
             >
-            <!-- @click="closeDropdownIfOpen" -->
-              {{ Object.keys(selectedSender).length > 0 ? selectedSender.mask : "Select Sender Id" }}
+              <!-- @click="closeDropdownIfOpen" -->
+              {{
+                Object.keys(selectedSender).length > 0
+                  ? selectedSender.mask
+                  : "Select Sender Id"
+              }}
             </button>
             <div
               class="dropdown-menu w-100 pb-0"
               aria-labelledby="dropdownMenuButton"
             >
-            <div class="px-2">
-            <!-- <input type="text" class="form-control" placeholder="Search sender id" ref="senderRef" v-model="searchSenderText"> -->
-            </div>
-              <a v-for="(item, index) in searchSenderIDs" :key="index"
-                class="dropdown-item c-pointer small-text font-weight-700 py-2" @click="setIdToSubject(item)"
-                >{{ item.mask }}
-                </a
-              >
+              <div class="px-2">
+                <!-- <input type="text" class="form-control" placeholder="Search sender id" ref="senderRef" v-model="searchSenderText"> -->
+              </div>
               <a
-                class="dropdown-item c-pointer font-weight-700 text-center create-new-bg border-top py-2" data-toggle="modal" data-target="#senderIdModal" data-backdrop="false" 
+                v-for="(item, index) in searchSenderIDs"
+                :key="index"
+                class="dropdown-item c-pointer small-text font-weight-700 py-2"
+                @click="setIdToSubject(item)"
+                >{{ item.mask }}
+              </a>
+              <a
+                class="
+                  dropdown-item
+                  c-pointer
+                  font-weight-700
+                  text-center
+                  create-new-bg
+                  border-top
+                  py-2
+                "
+                data-toggle="modal"
+                data-target="#senderIdModal"
+                data-backdrop="false"
                 ><i class="pi pi-plus-circle"></i>&nbsp;Request new sender id
-                </a
-              >
+              </a>
             </div>
           </div>
         </div>
@@ -550,20 +581,23 @@
           </p>
         </div>
         <div class="col-md-12 d-flex justify-content-end">
-          <span  :class="{ 'cursor-close' : disableBtn }">
+          <span :class="{ 'cursor-close': disableBtn }">
             <SplitButton
               label="Send"
               :model="sendOptions"
               :disabled="disableBtn"
-              @click="data" data-toggle="modal" data-backdrop="false" data-target="#sendsmsbtn"
+              @click="data"
+              data-toggle="modal"
+              data-backdrop="false"
+              data-target="#sendsmsbtn"
             ></SplitButton>
           </span>
           <!-- <router-link :to=" route.fullPath === '/tenant/sms/compose' ? '/tenant/sms/sent' : '/errorpage/expiredSubscription'"
             class="default-btn d-flex justify-content-center short-btn align-items-center ml-3 text-decoration-none text-dark"
           > -->
-            <span class="btn default-btn ml-3" @click="closeModal" >Discard</span>
+          <span class="btn default-btn ml-3" @click="closeModal">Discard</span>
           <!-- </router-link> -->
-        </div> 
+        </div>
         <div class="row">
           <div class="col-md-12">
             <div
@@ -593,7 +627,17 @@
                     <div class="row" v-if="!nigerian">
                       <div class="col-md-12 text-center">
                         <button
-                          class="primary-btn default-btn px-4 my-2 border-0 primary-bg text-white outline-none extra-btn"
+                          class="
+                            primary-btn
+                            default-btn
+                            px-4
+                            my-2
+                            border-0
+                            primary-bg
+                            text-white
+                            outline-none
+                            extra-btn
+                          "
                           data-dismiss="modal"
                           @click="contructScheduleMessageBody(1, '')"
                         >
@@ -627,16 +671,38 @@
                                   <label
                                     for=""
                                     class="small-text font-weight-600 py-2"
-                                    >NEW** HYBRID BULK SMS - 100% SMS DELIVERY</label
+                                    >NEW** HYBRID BULK SMS - 100% SMS
+                                    DELIVERY</label
                                   >
                                 </div>
                                 <div
-                                  class="col-md-12 send-now-div py-2 my-2 d-flex justify-content-center"
+                                  class="
+                                    col-md-12
+                                    send-now-div
+                                    py-2
+                                    my-2
+                                    d-flex
+                                    justify-content-center
+                                  "
                                 >
                                   <button
-                                    class="primary-btn default-btn border-0 primary-bg px-4 my-2 font-weight-600 outline-none"
+                                    class="
+                                      primary-btn
+                                      default-btn
+                                      border-0
+                                      primary-bg
+                                      px-4
+                                      my-2
+                                      font-weight-600
+                                      outline-none
+                                    "
                                     data-dismiss="modal"
-                                    @click="contructScheduleMessageBody(1,'hybridKonnect')"
+                                    @click="
+                                      contructScheduleMessageBody(
+                                        1,
+                                        'hybridKonnect'
+                                      )
+                                    "
                                   >
                                     Send SMS Now
                                   </button>
@@ -653,7 +719,8 @@
                                   <span>Sender ID Customization - YES</span>
                                   <span>Not Affected by DND.</span>
                                   <span
-                                    >Failed SMS are Retried with Other Options.</span
+                                    >Failed SMS are Retried with Other
+                                    Options.</span
                                   >
                                 </div>
                               </div>
@@ -713,39 +780,73 @@
     </div>
   </div>
   <!-- Create sender id modal -->
-    <!-- Modal -->
-    <div class="modal fade" id="senderIdModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
-      <div class="modal-dialog modal-dialog-centered" role="document">
-        <div class="modal-content">
-          <div class="modal-header">
-            <h5 class="modal-title" id="exampleModalLongTitle">Create sender id</h5>
-            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-              <span aria-hidden="true">&times;</span>
-            </button>
-          </div>
-          <div class="modal-body">
-            <div class="container">
-              <div class="row">
-                <div class="col-12">Enter sender id</div>
-                <div class="col-12 mt-2">
-                  <input type="text" class="form-control" placeholder="Enter sender id" v-model="senderIdText" @input="validateSenderId" ref="senderIdRef"/>
-                  <div class="invalid-feedback text-danger pl-2">
-                    <ul>
-                      <li>Should not contain any special characters</li>
-                      <li>Should not be less than 3 characters and more than 11 characters</li>
-                    </ul>
-                  </div>
+  <!-- Modal -->
+  <div
+    class="modal fade"
+    id="senderIdModal"
+    tabindex="-1"
+    role="dialog"
+    aria-labelledby="exampleModalCenterTitle"
+    aria-hidden="true"
+  >
+    <div class="modal-dialog modal-dialog-centered" role="document">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="exampleModalLongTitle">
+            Create sender id
+          </h5>
+          <button
+            type="button"
+            class="close"
+            data-dismiss="modal"
+            aria-label="Close"
+          >
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
+        <div class="modal-body">
+          <div class="container">
+            <div class="row">
+              <div class="col-12">Enter sender id</div>
+              <div class="col-12 mt-2">
+                <input
+                  type="text"
+                  class="form-control"
+                  placeholder="Enter sender id"
+                  v-model="senderIdText"
+                  @input="validateSenderId"
+                  ref="senderIdRef"
+                />
+                <div class="invalid-feedback text-danger pl-2">
+                  <ul>
+                    <li>Should not contain any special characters</li>
+                    <li>
+                      Should not be less than 3 characters and more than 11
+                      characters
+                    </li>
+                  </ul>
                 </div>
               </div>
             </div>
           </div>
-          <div class="modal-footer">
-            <button type="button" class="btn default-btn " data-dismiss="modal">Close</button>
-            <button type="button" class="btn default-btn primary-bg border-0 text-white" data-dismiss="modal" @click="saveSenderId" :disabled="requestbtn">Request sender id</button>
-          </div>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn default-btn" data-dismiss="modal">
+            Close
+          </button>
+          <button
+            type="button"
+            class="btn default-btn primary-bg border-0 text-white"
+            data-dismiss="modal"
+            @click="saveSenderId"
+            :disabled="requestbtn"
+          >
+            Request sender id
+          </button>
         </div>
       </div>
     </div>
+  </div>
 </template>
 
 <script>
@@ -760,25 +861,24 @@ import axios from "@/gateway/backendapi";
 import stopProgressBar from "../../../services/progressbar/progress";
 import communicationService from "../../../services/communication/communicationservice";
 import dateFormatter from "../../../services/dates/dateformatter";
-import moment from 'moment'
+import moment from "moment";
 
 export default {
-    props: ['phoneNumbers', 'groupData'],
-  setup(props, { emit }){
+  props: ["phoneNumbers", "groupData"],
+  setup(props, { emit }) {
     const toast = useToast();
     const router = useRouter();
     const editorData = ref("");
-    const disableBtn = ref(false)
+    const disableBtn = ref(false);
     const phoneNumber = ref("");
     const editorConfig = {
       // The configuration of the editor.
       height: "800",
     };
 
-     const closeModal = () => {
-            emit('closesidemodal')
-            
-        }
+    const closeModal = () => {
+      emit("closesidemodal");
+    };
 
     const possibleSMSDestinations = composeService.possibleSMSDestinations;
     const groupsAreVissible = ref(false);
@@ -788,26 +888,26 @@ export default {
     const selectedGroups = ref([]);
     const sendToAll = ref(false);
     const executionDate = ref("");
-    const contactUpload = ref(false)
-    const multipleContact = ref({})
-    const senderRef = ref(null)
-    const senderIdText = ref("")
-    const tenantId = ref("")
-    const senderIDs = ref([])
-    const selectedSender = ref({})
-    const searchSenderText = ref("")
-    const senderIdRef = ref()
-    const requestbtn = ref(false)
+    const contactUpload = ref(false);
+    const multipleContact = ref({});
+    const senderRef = ref(null);
+    const senderIdText = ref("");
+    const tenantId = ref("");
+    const senderIDs = ref([]);
+    const selectedSender = ref({});
+    const searchSenderText = ref("");
+    const senderIdRef = ref();
+    const requestbtn = ref(false);
     // const watchPhoneNumber = ref("")
 
-    watchEffect( () => {
-        // alert(props.phoneNumbers)
-         if (props.phoneNumbers) phoneNumber.value = props.phoneNumbers
-    } )
-    watchEffect( () => {
-        // alert(props.phoneNumbers)
-         if (props.groupData) selectedGroups.value = props.groupData
-    } )
+    watchEffect(() => {
+      // alert(props.phoneNumbers)
+      if (props.phoneNumbers) phoneNumber.value = props.phoneNumbers;
+    });
+    watchEffect(() => {
+      // alert(props.phoneNumbers)
+      if (props.groupData) selectedGroups.value = props.groupData;
+    });
 
     const toggleGroupsVissibility = () => {
       groupsAreVissible.value = !groupsAreVissible.value;
@@ -821,7 +921,10 @@ export default {
       if (index === 4) contactUpload.value = true;
       if (index === 0) {
         sendToAll.value = true;
-        selectedGroups.value.push({ data: "membership_00000000-0000-0000-0000-000000000000", name: "All Contacts" })
+        selectedGroups.value.push({
+          data: "membership_00000000-0000-0000-0000-000000000000",
+          name: "All Contacts",
+        });
       }
       // console.log(index)
     };
@@ -931,7 +1034,8 @@ export default {
         selectedGroups.value.length === 0 &&
         !phoneNumber.value &&
         selectedMembers.value.length === 0 &&
-        !sendToAll.value && !multipleContact.value instanceof File
+        !sendToAll.value &&
+        !multipleContact.value instanceof File
       ) {
         invalidDestination.value = true;
         return false;
@@ -946,87 +1050,54 @@ export default {
         severity: "info",
         summary: "Sending SMS",
         detail: "SMS is being sent....",
-        life: 2500,
+        life: 3000,
       });
-      console.log(data)
-
-      // if (selectedMembers.value.length > 0) data.contacts = selectedMembers.value;
-      disableBtn.value = true
+      
+      disableBtn.value = true;
       composeService
         .sendMessage("/api/Messaging/sendSms", data)
         .then((res) => {
-          disableBtn.value = false
-          // if (res.status === 200) {
-            if (res.data.message.includes("You do not have")) {
-              toast.add({
-              severity: "warn",
-              summary: "Insufficient Unit",
-              detail: `${res.data.message}`,
-              life: 6000,
-            });
-
-            
-            } else {
-              toast.add({
+          disableBtn.value = false;
+          if (res.status == 200 && res.data.status) {
+            toast.add({
               severity: "success",
               summary: "SMS Sent",
               detail: `SMS Sent successfully`,
               life: 7000,
             });
 
-            store.dispatch("removeSMSUnitCharge", res.data.unitsUsed);
-            console.log(pageCount, "Page count ");
-
-            console.log(res);
             // Save the res to store in other to get it in the view sent sms page
             // let sentObj = {
-            //     message: res.data.message,
-            //     id: res.data.returnObjects ? res.data.returnObjects[0].communicationReportID : '',
-            //     smsUnitsUsed: res.data.unitsUsed,
-            //     dateSent: res.data.returnObjects ? `Today | ${moment.parseZone(new Date(res.data.returnObjects[0].communicationReport.date).toLocaleDateString(), 'YYYY MM DD HH ZZ')._i}` : "",
-            //     deliveryReport: [{ report: res.data.messageStatus }]
-            //   }
-            //   console.log(sentObj)
-            //   store.dispatch("communication/addSmsToSentList", sentObj)
-            //   setTimeout(() => {
-            //     router.push({ name: "SentMessages" })
-            //   }, 3500)
-            
-            
-            // Save the res to store in other to get it in the view sent sms page
-            let sentObj = {
-                message: res.data.message,
-                id: res.data.channel,
-                smsUnitsUsed: res.data.unitsUsed,
-                dateSent: "",
-                deliveryReport: [{ report: "-" }]
-              }
-              console.log(sentObj)
-              store.dispatch("communication/addSmsToSentList", sentObj)
-              setTimeout(() => {
-                // router.push({ name: "SentMessages" })
-              }, 3500)
-
-            }
-            
-          // } else if (typeof res === "object") {
-          //   toast.add({
-          //     severity: "error",
-          //     summary: "Failed operation",
-          //     detail: typeof res === "object" ? "SMS sending failed" : res,
-          //     life: 2500,
-          //   });
-            
-            
-            
-          // }
+            //   message: res.data.message,
+            //   id: res.data.channel,
+            //   smsUnitsUsed: res.data.unitsUsed,
+            //   dateSent: "",
+            //   deliveryReport: [{ report: "-" }],
+            // };
+            // console.log(sentObj);
+            // store.dispatch("communication/addSmsToSentList", sentObj);
+          } else if (res && res.data && res.data.message && res.data.message.includes("You do not have")) {
+            toast.add({
+              severity: "warn",
+              summary: "Insufficient Unit",
+              detail: `${res.data.message}`,
+              life: 6000,
+            });
+          } else {
+            toast.add({
+              severity: "warn",
+              summary: "",
+              detail: `Message not sent, Try again`,
+              life: 6000,
+            });
+          }
           
         })
         .catch((err) => {
           stopProgressBar();
-          disableBtn.value = false
+          disableBtn.value = false;
           toast.removeAllGroups();
-          console.log(err)
+          console.log(err);
           if (err.toString().toLowerCase().includes("network error")) {
             toast.add({
               severity: "warn",
@@ -1034,11 +1105,12 @@ export default {
               detail: "Please ensure you have internet access",
               life: 4000,
             });
-          } else if (err.toString().toLowerCase().includes('timeout')) {
+          } else if (err.toString().toLowerCase().includes("timeout")) {
             toast.add({
               severity: "warn",
               summary: "Request Delayed",
-              detail: "SMS took too long, please check your network and try again",
+              detail:
+                "SMS took too long, please check your network and try again",
               life: 4000,
             });
           } else {
@@ -1095,17 +1167,22 @@ export default {
         gateWayToUse: gateway,
       };
 
-      const numbers = [ ];
-      phoneNumber.value.split(',').forEach(i => {
-        i.split('\n').forEach(j => {
+      const numbers = [];
+      phoneNumber.value.split(",").forEach((i) => {
+        i.split("\n").forEach((j) => {
           if (j) numbers.push(j);
-        })
-      })
+        });
+      });
 
       data.toOthers = numbers.join();
 
       if (selectedMembers.value.length > 0) {
-        data.ToContacts = data && data.ToContacts ? data.ToContacts.length > 0 ? "," : "" : "";
+        data.ToContacts =
+          data && data.ToContacts
+            ? data.ToContacts.length > 0
+              ? ","
+              : ""
+            : "";
         data.ToContacts += selectedMembers.value
           .map((i) => {
             console.log(i, "person");
@@ -1116,12 +1193,12 @@ export default {
 
       if (subject.value) {
         if (multipleContact.value instanceof File) {
-          sendSMSToUploadedContacts(gateway)
+          sendSMSToUploadedContacts(gateway);
         } else if (sendOrSchedule == 2) {
-          const dateToBeExecuted = executionDate.value
+          const dateToBeExecuted = executionDate.value;
           data.executionDate = dateToBeExecuted.split("T")[0];
-          data.date = dateToBeExecuted
-          data.time = dateToBeExecuted.split("T")[1]
+          data.date = dateToBeExecuted;
+          data.time = dateToBeExecuted.split("T")[1];
           scheduleMessage(data);
         } else {
           sendSMS(data);
@@ -1143,9 +1220,9 @@ export default {
       display.value = false;
       const formattedDate = dateFormatter.monthDayTime(data.executionDate);
       console.log(formattedDate, "Formatted Date");
-      console.log(data.executionDate)
-      
-      console.log(data)
+      console.log(data.executionDate);
+
+      console.log(data);
       try {
         const response = await composerObj.sendMessage(
           "/api/Messaging/saveSmsSchedule",
@@ -1167,34 +1244,33 @@ export default {
       }
     };
 
-    const sendSMSToUploadedContacts = async(gateway) => {
-      let formData = new FormData()
-      formData.append("file", multipleContact.value)
-      formData.append("message", editorData.value)
-      formData.append('category', '')
-      formData.append('gatewayToUse', gateway)
-      formData.append('isoCode', isoCode.value)
+    const sendSMSToUploadedContacts = async (gateway) => {
+      let formData = new FormData();
+      formData.append("file", multipleContact.value);
+      formData.append("message", editorData.value);
+      formData.append("category", "");
+      formData.append("gatewayToUse", gateway);
+      formData.append("isoCode", isoCode.value);
 
       try {
-        let { data } = await axios.post('/api/messaging/upload', formData)
-        console.log(data)
+        let { data } = await axios.post("/api/messaging/upload", formData);
+        console.log(data);
         toast.add({
           severity: "success",
           summary: "Success",
           detail: data.response,
-          life: 5000
+          life: 5000,
         });
-      }
-      catch (err) {
+      } catch (err) {
         console.log(err);
         toast.add({
           severity: "error",
           summary: "Not sent",
           detail: "Sending failed, please try again",
-          life: 5000
+          life: 5000,
         });
       }
-    }
+    };
 
     const userCountry = ref("");
 
@@ -1227,16 +1303,16 @@ export default {
     if (store.getters.currentUser && store.getters.currentUser.isoCode) {
       isoCode.value = store.getters.currentUser.isoCode;
       userCountry.value = store.getters.currentUser.country;
-      tenantId.value = store.getters.tenantId
-      console.log(store.getters.currentUser)
+      tenantId.value = store.getters.tenantId;
+      console.log(store.getters.currentUser);
     } else {
       axios
         .get("/api/Membership/GetCurrentSignedInUser")
         .then((res) => {
           isoCode.value = res.data.isoCode;
           userCountry.value = res.data.country;
-          tenantId.value = store.getters.tenantId
-          console.log(store.getters.currentUser)
+          tenantId.value = store.getters.tenantId;
+          console.log(store.getters.currentUser);
         })
         .catch((err) => console.log(err));
     }
@@ -1314,7 +1390,9 @@ export default {
         contacts: [],
         isPersonalized: isPersonalized.value,
         groupedContacts: selectedGroups.value.map((i) => i.data),
-        toContacts: sendToAll.value ? "allcontacts_00000000-0000-0000-0000-000000000000" : "",
+        toContacts: sendToAll.value
+          ? "allcontacts_00000000-0000-0000-0000-000000000000"
+          : "",
         isoCode: isoCode.value,
         category: "",
         emailAddress: "",
@@ -1322,132 +1400,143 @@ export default {
         // gateWayToUse: gateway,
       };
 
-      console.log(data)
-    }
+      console.log(data);
+    };
 
-    const getDefaultMessage = async messageId => {
+    const getDefaultMessage = async (messageId) => {
       try {
-        const { returnObject: { message }} = await communicationService.getDefaultMessage(messageId);
+        const {
+          returnObject: { message },
+        } = await communicationService.getDefaultMessage(messageId);
         editorData.value = message;
       } catch (error) {
         console.log(error);
       }
-    }
+    };
 
     if (route.query.defaultId) getDefaultMessage(route.query.defaultId);
 
-    const getMessage = async messageId => {
+    const getMessage = async (messageId) => {
       try {
-        const { message, subject: subj } = await composeService.getSMSById(messageId);
+        const { message, subject: subj } = await composeService.getSMSById(
+          messageId
+        );
         editorData.value = message;
         subject.value = subj;
       } catch (error) {
-        console.log(error)
+        console.log(error);
         toast.add({
           severity: "error",
           summary: "Error",
           detail: "Could not load message!",
         });
       }
-    }
+    };
 
     if (route.query.messageId) {
       getMessage(route.query.messageId);
     }
 
     const uploadFile = (e) => {
-      multipleContact.value = e.target.files[0]
-    }
+      multipleContact.value = e.target.files[0];
+    };
 
-    const getSenderId = async() => {
+    const getSenderId = async () => {
       try {
-        let { data } = await axios.get(`/api/Messaging/RetrieveTenantSenderIDs`)
-        console.log(data)
-        senderIDs.value = data.returnObject
+        let { data } = await axios.get(
+          `/api/Messaging/RetrieveTenantSenderIDs`
+        );
+        console.log(data);
+        senderIDs.value = data.returnObject;
+      } catch (err) {
+        console.log(err);
       }
-      catch (err) {
-        console.log(err)
-      }
-    }
-    getSenderId()
+    };
+    getSenderId();
 
-    const saveSenderId = async() => {
+    const saveSenderId = async () => {
       let payload = {
         tenantID: tenantId.value,
-        mask: senderIdText.value
-      }
+        mask: senderIdText.value,
+      };
       try {
-        let { data } = await axios.post(`/api/Messaging/RequestSenderID`, payload)
-        console.log(data)
-        if(data.status === 0) {
+        let { data } = await axios.post(
+          `/api/Messaging/RequestSenderID`,
+          payload
+        );
+        console.log(data);
+        if (data.status === 0) {
           toast.add({
             severity: "warn",
             summary: "Pending",
-            detail: "Sender id is pending for approval, when it is approved, you will see it among the sender id list",
-            life: 5000
+            detail:
+              "Sender id is pending for approval, when it is approved, you will see it among the sender id list",
+            life: 5000,
           });
         } else if (data.status === 1) {
           toast.add({
             severity: "warn",
             summary: "Processing",
-            detail: "Sender id is processing for approval, when it is approved, you will see it among the sender id list",
-            life: 5000
+            detail:
+              "Sender id is processing for approval, when it is approved, you will see it among the sender id list",
+            life: 5000,
           });
         } else if (data.status === 2) {
           toast.add({
             severity: "success",
             summary: "Approved",
             detail: "Sender id is approved!",
-            life: 6000
+            life: 6000,
           });
         } else {
           toast.add({
-              severity: "warn",
-              summary: "Not Approved",
-              detail: "Sender id is not approved, create another one.",
-              life: 4000
-          })
+            severity: "warn",
+            summary: "Not Approved",
+            detail: "Sender id is not approved, create another one.",
+            life: 4000,
+          });
         }
-        senderIdText.value = ""
-        senderIdRef.value.classList.remove('is-invalid')
-        senderIdRef.value.classList.remove('is-valid')
-        getSenderId()
+        senderIdText.value = "";
+        senderIdRef.value.classList.remove("is-invalid");
+        senderIdRef.value.classList.remove("is-valid");
+        getSenderId();
+      } catch (err) {
+        console.log(err);
       }
-      catch (err) {
-        console.log(err)
-      }
-    }
+    };
 
     const searchSenderIDs = computed(() => {
-      if (!searchSenderText.value) return senderIDs.value
-      return senderIDs.value.filter(i => {
-        return i.mask.toLowerCase().includes(searchSenderText.value.toLowerCase())
-      })
-    })
+      if (!searchSenderText.value) return senderIDs.value;
+      return senderIDs.value.filter((i) => {
+        return i.mask
+          .toLowerCase()
+          .includes(searchSenderText.value.toLowerCase());
+      });
+    });
 
     const setIdToSubject = (item) => {
-      console.log(item)
-      subject.value = item.mask
-      selectedSender.value = item
-    }
+      console.log(item);
+      subject.value = item.mask;
+      selectedSender.value = item;
+    };
 
     const validateSenderId = (e) => {
       var regExp = /^[a-zA-Z0-9]{3,11}$/;
       var testString = e.target.value;
-                  
-      if(regExp.test(testString)){
+
+      if (regExp.test(testString)) {
         /* do something if letters are found in your string */
-        senderIdRef.value.classList.add('is-valid')
-        senderIdRef.value.classList.remove('is-invalid')
-        requestbtn.value = false
+        senderIdRef.value.classList.add("is-valid");
+        senderIdRef.value.classList.remove("is-invalid");
+        requestbtn.value = false;
       } else {
         /* do something if letters are not found in your string */
-        senderIdRef.value.classList.add('is-invalid')
-        senderIdRef.value.classList.remove('is-valid')
-        requestbtn.value = true
+        senderIdRef.value.classList.add("is-invalid");
+        senderIdRef.value.classList.remove("is-valid");
+        requestbtn.value = true;
       }
-    }
-    
+    };
+
     return {
       editorData,
       editorConfig,
@@ -1518,7 +1607,7 @@ export default {
       senderIdRef,
       searchSenderIDs,
       requestbtn,
-      closeModal
+      closeModal,
     };
   },
 };
@@ -1616,7 +1705,6 @@ input:focus {
   border-radius: 8px;
   background: #02172e14;
 }
-
 
 .close-allcontacts {
   position: absolute;
@@ -1766,16 +1854,16 @@ input:focus {
 }
 
 .template-text {
-  color: rgb(15, 71, 134)
+  color: rgb(15, 71, 134);
 }
 
 .create-new-bg {
-background: #dadada;
-color: rgb(15, 71, 134)
+  background: #dadada;
+  color: rgb(15, 71, 134);
 }
 
 .create-new-bg:hover {
   background: #dadadad2;
-  color: rgb(15, 71, 134)
+  color: rgb(15, 71, 134);
 }
 </style>

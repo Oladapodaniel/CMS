@@ -163,123 +163,102 @@
 
               
                 <div
-    class=" row w-100  text-dark "
-    style="margin: 0"
-    
-  >
-    <!-- class="d-block -->
+                    class=" row w-100  text-dark "
+                    style="margin: 0"
+                    
+                  >
+                    <!-- class="d-block -->
 
-    <div class="col-md-12 desc">
-      <p class="">
-        <span
-          class="text-dark font-weight-bold d-flex d-md-none fontIncrease"
-          style="font-size: 15px"
-          >Group Name</span
-          
-        >
-        <ul class="w-100">
-        <!-- :class="{ 'd-block' : itemDisplay, 'd-none' : !itemDisplay }"  -->
-         <!-- @click="toggleItems(i, $event)" -->
-        <li v-for="(group, index) in searchGroup" :key="index" class="pt-2  c-pointer parent-li border-top">
-          <div class="row">
-    
-            <div class="col-6 text-primary" >
-              <span><i class="pi pi-chevron-down roll-icon" v-if="group.children && group.children.length > 0"  @click="toggleItems(group, $event)"></i></span>
-              <span class="p-3" @click="groupClick(group.id)">{{ group.name }}</span>
-            </div>
-            <div class="col-4 text-primary" @click="groupClick(group.id)">
-              <div @click="groupClick(group.id)">
-                <div class="d-flex small justify-content-between text-primary">
-                  <span class="text-dark font-weight-bold d-flex d-md-none fontIncrease" style="font-size:15px">Membership Size</span>
-                    <div class="small-text text-right text-md-center">
-                      {{ group.peopleInGroupsCount }}
-                    </div>
-                </div>
-              </div>
-            </div>
-            <div class="col-2">
-              <!-- <div class="col-md-1"> -->
-                      <div>
-                        <div class="dropdown">
-                          <span class="d-flex justify-content-between">
-                            <span class="d-md-none d-sm-flex"></span>
-                            <span class="d-sm-flex small">
-                              <i class=" fas fa-ellipsis-v cursor-pointer ml-2 fontIncrease"
-                                id="dropdownMenuButton"
-                                data-toggle="dropdown"
-                                aria-haspopup="true"
-                                aria-expanded="false"
-                              ></i>
-
-                              <div
-                                class="dropdown-menu"
-                                aria-labelledby="dropdownMenuButton"
-                              >
-                                <a class="dropdown-item">
-                                  <a
-                                    @click="sendGroupSms(group)"
-                                    >Send SMS</a>
-                                </a>
-                                <a class="dropdown-item" @click="sendGroupEmail(group)">
-                                    Send Email
-                                </a>
-                                <a
-                                  class="dropdown-item"
-                                  @click="confirmDelete(group.id, index)"
-                                  >Delete</a
-                                >
+                    <div class="col-md-12 desc">
+                      <p class="">
+                        <span
+                          class="text-dark font-weight-bold d-flex d-md-none fontIncrease"
+                          style="font-size: 15px"
+                          >Group Name</span
+                          
+                        >
+                        <ul class="w-100">
+                        <li v-for="(group, index) in searchGroup" :key="index" class="pt-2  c-pointer parent-li border-top">
+                          <div class="row">
+                    
+                            <div class="col-6 text-primary">
+                              <span><i class="pi pi-chevron-down roll-icon" v-if="group.children && group.children.length > 0"  @click="toggleItems(group, $event)"></i></span>
+                              <span class="p-3" @click="groupClick(group.id)">{{ group.name }}</span>
+                            </div>
+                            <div class="col-4 text-primary" @click="groupClick(group.id)">
+                              <div @click="groupClick(group.id)">
+                                <div class="d-flex small justify-content-between text-primary">
+                                  <span class="text-dark font-weight-bold d-flex d-md-none fontIncrease" style="font-size:15px">Membership Size</span>
+                                    <div class="small-text text-right text-md-center">
+                                      {{ group.peopleInGroupsCount }}
+                                    </div>
+                                </div>
                               </div>
-                            </span>
-                          </span>
-                        </div>
-                      </div>
-                    <!-- </div> -->
-            </div>
-          </div>
-            
-            <div class="d-none">
-            <GroupTree
-                :items="group.children"
-                v-if="group.children"
-               class="d-none"
-               @click="groupClickk(group, $event)"
-               @group="setSelectedGroup"
-                /> 
-              </div>        
-        </li>
-        </ul>
-        <!-- <i class="pi pi-chevron-down"></i>{{ group.name }} -->
-        
-      </p>
-    </div>
+                            </div>
+                            <div class="col-2">
+                                <div>
+                                  <div class="dropdown">
+                                    <span class="d-flex justify-content-between">
+                                        <i class=" fas fa-ellipsis-v cursor-pointer ml-2 fontIncrease"
+                                          id="dropdownMenuButton"
+                                          data-toggle="dropdown"
+                                          aria-haspopup="true"
+                                          aria-expanded="false"
+                                        ></i>
 
-    
-  </div>
+                                        <div
+                                          class="dropdown-menu"
+                                          aria-labelledby="dropdownMenuButton"
+                                        >
+                                          <a class="dropdown-item">
+                                            <a
+                                              @click="sendGroupSms(group)"
+                                              >Send SMS</a>
+                                          </a>
+                                          <a class="dropdown-item" @click="sendGroupEmail(group)">
+                                              Send Email
+                                          </a>
+                                          <a
+                                            class="dropdown-item"
+                                            @click="confirmDelete(group.id, index)"
+                                            >Delete</a
+                                          >
+                                        </div>
+                                    </span>
+                                  </div>
+                                </div>
 
-                 <!-- <GroupTree :items="searchGroup" /> -->
+                            </div>
+                          </div>
+                            
+                            <div class="d-none">
+                            <GroupTree
+                                :items="group.children"
+                                v-if="group.children"
+                              class="d-none"
+                              @click="groupClickk(group, $event)"
+                              @group="setSelectedGroup"
+                                /> 
+                            </div>        
+                        </li>
+                      </ul>   
+                    </p>
+                  </div>
                 </div>
-                
+                </div>
               </div>
             </div>
-            <!-- <div class="text-danger" v-else>No records found</div> -->
           </div>
         </div>
-        <!-- tosin working on tables -->
       </div>
-        <SideBar :show="showSMS" :title="'Compose SMS'" @closesidemodal="() => showSMS = false">
-        <div class="m-wrapper" :class="{ 'm-wrapper': showSMS, 'no-show': !showSMS }">
-          <smsComponent :groupData ="groupListDetails" @closesidemodal="() => showSMS = false" />
-        </div>
-      </SideBar>
-      <Sidebar />
       
-      <SideBar :show="showEmail" :title="'Compose Email'" @closesidemodal="() => showEmail = false">
-        <div class="m-wrapper2">
-          <emailComponent :groupData ="groupListDetails"  @closesidemodal="() => showEmail = false" />
-        </div>
-      </SideBar>
-      
-      
+       <Sidebar v-model:visible="showSMS" :baseZIndex="10000" position="right">
+            <smsComponent :groupData ="groupListDetails" @closesidemodal="() => showSMS = false" />
+        </Sidebar>
+       
+       <Sidebar v-model:visible="showEmail" :baseZIndex="10000" position="right">
+            <emailComponent :groupData ="groupListDetails"  @closesidemodal="() => showEmail = false" />
+        </Sidebar>
       
     </div>
   </div>
@@ -287,7 +266,7 @@
 
 <script>
 import { ref, computed, watchEffect } from "vue";
-import { useRoute, useRouter } from 'vue-router';
+import { useRoute, useRouter } from "vue-router";
 import groupsService from "../../services/groups/groupsservice";
 import { useStore } from "vuex";
 import { useConfirm } from "primevue/useconfirm";
@@ -295,16 +274,17 @@ import { useToast } from "primevue/usetoast";
 import smsComponent from "./component/smsComponent.vue";
 import emailComponent from "./component/emailComponent.vue";
 import SideBar from "./sidemodal/SideModal.vue";
-import GroupTree from "./component/GroupTree.vue"
-// import Treee from "../../components/whatsapp/Treee.vue"
+import GroupTree from "./component/GroupTree.vue";
+import Sidebar from "primevue/sidebar";
 
 export default {
   // name: 'Tree',
-  components : {
+  components: {
     SideBar,
     smsComponent,
     emailComponent,
-    GroupTree
+    GroupTree,
+    Sidebar,
     // Treee
   },
 
@@ -317,17 +297,13 @@ export default {
     const groupListDetails = ref([]);
     const toast = useToast();
     const confirm = useConfirm();
-    const showSMS = ref(false)
-    const showEmail = ref(false)
-    const router = useRouter()
+    const showSMS = ref(false);
+    const showEmail = ref(false);
+    const router = useRouter();
     const route = useRoute();
     const lastGroupChild = ref({});
-
-    // const showSide = ref(false);
-
-    // const sendSms = () =>{
-    //   showSide.value = !showSide.value
-    // }
+   
+   
     const confirmDelete = (id, index) => {
       confirm.require({
         message: "Do you want to delete this group?",
@@ -356,7 +332,7 @@ export default {
           }
         },
         reject: () => {
-          // toast.add({severity:'info', summary:'Rejected', detail:'You have rejected', life: 3000});
+         
         },
       });
     };
@@ -374,7 +350,7 @@ export default {
               id: i.id,
               tenantID: i.tenantID,
               peopleInGroupsCount: i.peopleInGroupsCount,
-              children: i.children
+              children: i.children,
             };
           }));
         console.log(groups.value);
@@ -385,92 +361,118 @@ export default {
     if (!groups.value || groups.value.length === 0) getgroups();
 
     const searchIsVisible = ref(false);
-      const toggleSearch = () => {
+    const toggleSearch = () => {
       searchIsVisible.value = !searchIsVisible.value;
     };
 
     let searchText = ref("");
     const searchGroup = computed(() => {
-     if (searchText.value !== "" && groups.value.length > 0)  {
-       return groups.value.filter((i) => {
-            if (i.name) return i.name.toLowerCase().includes(searchText.value.toLowerCase())
-      })
-     }  else {
-       return groups.value;
-     }
-
+      if (searchText.value !== "" && groups.value.length > 0) {
+        return groups.value.filter((i) => {
+          if (i.name)
+            return i.name
+              .toLowerCase()
+              .includes(searchText.value.toLowerCase());
+        });
+      } else {
+        return groups.value;
+      }
     });
     const removeSearchText = () => {
-        searchText.value = "";
-    }
+      searchText.value = "";
+    };
     const clearInput = () => {
-        searchIsVisible.value = !searchIsVisible.value;
-    }
+      searchIsVisible.value = !searchIsVisible.value;
+    };
 
     const sendGroupSms = (group) => {
-      showSMS.value = true
+      showSMS.value = true;
+      // visibleRight.value = true
       if (group.id) {
-        groupListDetails.value = [{data:`group_${group.id}`}]
+        groupListDetails.value = [{ data: `group_${group.id}` }];
       }
-    }
+    };
     const sendGroupEmail = (group) => {
-      showEmail.value = true
+      showEmail.value = true;
       if (group.id) {
-        groupListDetails.value = [{data:`group_${group.id}`}]
+        groupListDetails.value = [{ data: `group_${group.id}` }];
       }
-    }
+    };
     const groupClick = (id) => {
-        if (route && route.query && route.query.actionType == "sendsms") {
-          let group = {
-            id: id
-          }
-          sendGroupSms(group)
-        } else if (route && route.query && route.query.actionType == "sendemail") {
-          let group = {
-            id: id
-          }
-          sendGroupEmail(group)
-        } else {
-                router.push(`/tenant/createpeoplegroup/${id}`)
-          } 
-    }
+      if (route && route.query && route.query.actionType == "sendsms") {
+        let group = {
+          id: id,
+        };
+        sendGroupSms(group);
+      } else if (
+        route &&
+        route.query &&
+        route.query.actionType == "sendemail"
+      ) {
+        let group = {
+          id: id,
+        };
+        sendGroupEmail(group);
+      } else {
+        router.push(`/tenant/createpeoplegroup/${id}`);
+      }
+    };
 
     const groupLeader = computed(() => {
-      return JSON.parse(localStorage.getItem('roles')).every(i => i.toLowerCase() == 'groupleader')
-    })
+      return JSON.parse(localStorage.getItem("roles")).every(
+        (i) => i.toLowerCase() == "groupleader"
+      );
+    });
 
     const toggleItems = (i, e) => {
-       console.log(i)
-       console.log(e)
-       console.log(e.target.parentElement.parentElement.parentElement.nextElementSibling)
-         e.target.classList.toggle('roll-icon')
-       if (e.target.parentElement.parentElement.parentElement.nextElementSibling.classList.contains('d-none')) {
-         e.target.parentElement.parentElement.parentElement.nextElementSibling.classList.replace('d-none', 'd-block')
-       }  else {
-         e.target.parentElement.parentElement.parentElement.nextElementSibling.classList.replace("d-block", "d-none")
-       }
-     }
+      console.log(i);
+      console.log(e);
+      console.log(
+        e.target.parentElement.parentElement.parentElement.nextElementSibling
+      );
+      e.target.classList.toggle("roll-icon");
+      if (
+        e.target.parentElement.parentElement.parentElement.nextElementSibling.classList.contains(
+          "d-none"
+        )
+      ) {
+        e.target.parentElement.parentElement.parentElement.nextElementSibling.classList.replace(
+          "d-none",
+          "d-block"
+        );
+      } else {
+        e.target.parentElement.parentElement.parentElement.nextElementSibling.classList.replace(
+          "d-block",
+          "d-none"
+        );
+      }
+    };
 
-     const groupClickk = (i, e) => {
+    const groupClickk = (i, e) => {
       //  console.log(i)
-      console.log(i,e, 'fevfvweklmwfjn')
-      router.push(`/tenant/createpeoplegroup/${i.children.find(i => i.name == e.target.textContent).id}`)
-     }
+      console.log(i, e, "fevfvweklmwfjn");
+      router.push(
+        `/tenant/createpeoplegroup/${
+          i.children.find((i) => i.name == e.target.textContent).id
+        }`
+      );
+    };
 
-     const setSelectedGroup = (payload) => {
-       if (payload.iconElement.classList.contains("p-3")) {
-          payload.selectedGroup ? router.push(`/tenant/createpeoplegroup/${payload.selectedGroup.id}`) : router.push(`/tenant/createpeoplegroup/${lastGroupChild.value.id}`)
-       }
-     }
+    const setSelectedGroup = (payload) => {
+      if (payload.iconElement.classList.contains("p-3")) {
+        payload.selectedGroup
+          ? router.push(`/tenant/createpeoplegroup/${payload.selectedGroup.id}`)
+          : router.push(`/tenant/createpeoplegroup/${lastGroupChild.value.id}`);
+      }
+    };
 
-     watchEffect(() => {
-       if (store.getters["groups/selectedTreeGroupList"]) {
-         const selectedGroup = store.getters["groups/selectedTreeGroupList"]
-         lastGroupChild.value = selectedGroup
+    watchEffect(() => {
+      if (store.getters["groups/selectedTreeGroupList"]) {
+        const selectedGroup = store.getters["groups/selectedTreeGroupList"];
+        lastGroupChild.value = selectedGroup;
         //  router.push(`/tenant/createpeoplegroup/${selectedGroup.id}`)
-       }
-     })
-
+      }
+    });
 
     return {
       // showSide,
@@ -496,7 +498,8 @@ export default {
       toggleItems,
       groupClickk,
       setSelectedGroup,
-      lastGroupChild
+      lastGroupChild,
+      // visibleRight
     };
   },
 };
@@ -544,7 +547,7 @@ export default {
     display: none;
   }
   .yu {
-     margin-top: 3rem !important;
+    margin-top: 3rem !important;
   }
   .f-right {
     float: right;
@@ -858,37 +861,9 @@ export default {
 .desc-head {
   font-weight: 700;
 }
-.desc {
+/* .desc {
   color: #9b9a9c;
-}
-
-
-
-.m-wrapper {
-    background-color: white!important;
-    width: 875px;
-    position: absolute;
-    right: 0px;
-    top: 0;
-    height: 100%;
-    padding: 70px;
-    transition: all 3s ease-out;
-}
-
-.m-wrapper2 {
-      background-color: white!important;
-    width: 875px;
-    position: absolute;
-    right: 0px;
-    top: 0;
-    /* height: 100%; */
-    padding: 70px;
-}
-.no-show {
-  width: -875px;
-  transition: all 3s ease-out;
-  /* transition: all  8s cubic-bezier(0.645, 0.045, 0.355, 1); */
-}
+} */
 
 .hover:hover {
   background: #eee;
@@ -898,9 +873,9 @@ li {
   list-style-type: none;
 }
 
-li  li:hover {
+li li:hover {
   /* border: 2px solid red; */
-  background: rgba(224, 223, 223, 0.46)
+  background: rgba(224, 223, 223, 0.46);
 }
 
 .node-height {
@@ -918,44 +893,5 @@ li  li:hover {
 .roll-icon {
   transform: rotate(-90deg);
   /* transition: all .5s ease-in-out; */
-}
-
-/* @media Queries */
-@media (max-width: 771px) {
-  .fontIncrease {
-    font-size: 20px;
-  }
-}
-
-@media screen and (max-width: 947px ){
-    .m-wrapper, .m-wrapper2 {
-      width: 700px;
-      padding: 50px;
-  }
-}
-
-@media screen and (max-width: 767px ){
-    /* .baseline {
-        width: 40%;
-    }
-    .hide-base {
-        width: 40%;
-    } */
-      .m-wrapper, .m-wrapper2 {
-        width: 400px;
-        padding: 40px;
-    }
-}
-@media screen and (max-width: 575px ){
-    /* .baseline {
-        width: 20%;
-    }
-    .hide-base {
-        width: 20%;
-    } */
-    .m-wrapper, .m-wrapper2 {
-        width: 350px;
-        padding: 20px;
-    }
 }
 </style>

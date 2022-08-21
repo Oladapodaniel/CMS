@@ -218,16 +218,38 @@
                         </div>
                         <div class="col-4 mt-2">
                             <div @click="toggleContact" aria:haspopup="true" aria-controls="overlay_panel" class="uniform-primary-color font-weight-700 c-pointer">
-                                {{ selectedContact && Object.keys(selectedContact).length > 0 ? selectedContact.name ? selectedContact.name : `${selectedContact.firstName} ${selectedContact.lastName}` : "Select contact" }}&nbsp; <i class="pi pi-sort-down"></i>
+                                {{ selectedContact && Object.keys(selectedContact).length > 0 ? selectedContact.name ? selectedContact.name : selectedContact.firstName ? `${selectedContact.firstName} ${selectedContact.lastName}` : "Select contact" : "Select contact" }}&nbsp; <i class="pi pi-sort-down"></i>
                             </div>
-                            <OverlayPanel ref="contactRef" appendTo="body" :showCloseIcon="false" id="overlay_panel" :breakpoints="{'960px': '75vw'}" class="p-0">
+                            <Dialog header="Assign task" v-model:visible="searchmemberr" :position="positiondialog" :style="{height: window.innerHeight > 767 ? '50vw' : '100vw'}">
+                                <p class="py-2 px-3">Search whom you want to assign this task</p>
+                                <SearchMember v-bind:currentMember="selectedContact" @memberdetail="chooseContact"/>
+                                <!-- <div>======================================</div> -->
+                                    <br />
+                                    <br />
+                                    <br />
+                                    <br />
+                                    <br />
+                                    <br />
+                                    <br />
+                                    <br />
+                                    <br />
+                                    <br />
+                                    <br />
+                                    <br />
+                                    <br />
+                                    <br />
+                                    <br />
+                                <!-- <div>======================================</div> -->
+                            </Dialog>
+                            <!-- <OverlayPanel ref="contactRef" appendTo="body" :showCloseIcon="false" id="overlay_panel" :breakpoints="{'960px': '75vw'}" class="p-0">
                                 <div class="container-fluid p-0">
                                     <div class="py-2 px-3">Search whom you want to assign this task</div>
                                     <div class="py-2 px-3">
                                         <SearchMember v-bind:currentMember="selectedContact" @memberdetail="chooseContact"/>
+                                        <p class="font-weight-600 text-primary" @click="toggleNewMember">Add new member</p>
                                     </div>
                                 </div>
-                            </OverlayPanel>
+                            </OverlayPanel> -->
                         </div>
 
                         <div class="col-12">
@@ -241,6 +263,23 @@
             </div>
         </div>
     </Dialog>
+
+    <Dialog
+    header="Create New Member"
+    v-model:visible="displayNewMemberModal"
+    :style="{ width: '70vw', maxWidth: '600px' }"
+    :modal="true"
+    position="top"
+  >
+    <div class="row">
+      <div class="col-md-12">
+        <NewPerson
+          @cancel="() => (displayNewMemberModal = false)"
+          @person-id="getPersonId($event)"
+        />
+      </div>
+    </div>
+  </Dialog>
 </template>
 
 <script>
@@ -265,6 +304,7 @@ import dateFormatter from '../../../services/dates/dateformatter'
 import SearchMember from "../../../components/membership/MembersSearch.vue"
 import celebAnim from "../../../services/celebration-animation/party"
 import router from '../../../router'
+import NewPerson from '../../../components/membership/NewDonor.vue'
 export default {
     inheritAttrs: false,
     components: {
@@ -278,7 +318,8 @@ export default {
         Dialog,
         Editor,
         // SelectButton,
-        SearchMember
+        SearchMember,
+        NewPerson
     },
     setup () {
         const toast = useToast()
@@ -288,8 +329,6 @@ export default {
         const showEmails = ref(false)
         const showCalls = ref(false)
         const showTasks = ref(false)
-        // const options = ref(['Expand all', 'Collapse all']);
-        // const value1 = ref("")
         const displayPosition = ref(false)
         const position = ref('bottomright')
         const note = ref("")
@@ -322,13 +361,16 @@ export default {
         const selectedReminder = ref({})
         // const allContacts = ref([])
         const selectedContact = ref({})
-        const contactRef = ref("")
+        // const contactRef = ref("")
         const loader = ref(false)
         const groupedActivities = ref([])
         const searchActivitiesText = ref("")
         // const inputFocus = ref(false)
         const confeti = ref()
         const displayAnim = ref(false)
+        const displayNewMemberModal = ref(false)
+        const searchmemberr = ref(false)
+        const positiondialog = ref('bottomright')
         
 
         
@@ -386,8 +428,7 @@ export default {
             type: 96
             }
             try {
-                let res = await frmservice.saveNote(route.params.personId, body)
-                console.log(res)
+                await frmservice.saveNote(route.params.personId, body)
                 getLogs()
             }
             catch (err) {
@@ -458,8 +499,7 @@ export default {
             }
 
             try {
-                let response = await frmservice.sendEmail(route.params.personId, data)
-                console.log(response)
+                await frmservice.sendEmail(route.params.personId, data)
                     toast.add({
                         severity: "success",
                         summary: "Sent",
@@ -503,28 +543,24 @@ export default {
             reminderRef.value.toggle(event);
         };
         
-        const toggleContact = (event) => {
-            contactRef.value.toggle(event);
+        const toggleContact = () => {
+            // contactRef.value.toggle(event);
             // inputFocus.value = true
+            searchmemberr.value = true
         };
 
         const setDueDate = (item) => {
             dueDateRef.value.hide();
             selectedDueDate.value = item
-            console.log(selectedDueDate.value)
         }
         
         const setReminder = (item) => {
-            console.log(item)
             reminderRef.value.hide();
             selectedReminder.value = item
         }
 
         const saveTask = async() => {
             taskDisplayPosition.value = false;
-            // taskList.value.unshift({ body: theTask.value })
-            // activities.value.unshift({ body: theTask.value, type: 'task' })
-            
 
             let payload = {
                 instructions: theTask.value,
@@ -538,8 +574,7 @@ export default {
             }
 
             try {
-                const res = await frmservice.saveTask(payload)
-                console.log(res)
+                await frmservice.saveTask(payload)
                 getLogs()
             }
             catch (err) {
@@ -553,7 +588,6 @@ export default {
             axios
             .get(`/api/People/firstTimer/${route.params.personId}`)
             .then((res) => {
-                console.log(res)
                 personDetails.value = res.data
             })
             .catch(err => {
@@ -566,8 +600,6 @@ export default {
             axios
             .get(`/api/People/GetPersonInfoWithAssignments/${route.params.personId}`)
             .then((res) => {
-                console.log(res)
-                // personDetails.value = res.data
                 personDetails.value = {
                     pictureUrl: res.data.pictureUrl,
                     firstName: res.data.firstName,
@@ -661,7 +693,6 @@ export default {
         const getActivityType = async () => {
             try {
                 let data = await lookupTable.getLookUps()
-                console.log(data)
                 activityType.value = data.activityType.filter(i => !i.value.toLowerCase().includes("update"))
             }
             catch (err) {
@@ -673,13 +704,11 @@ export default {
         const setActivityType = (activity) => {
             selectedTodo.value = activity
             todoTask.value.hide()
-            console.log(selectedTodo.value)
         }
 
         const getDueDate = () => {
             try {
                 let result = frmservice.dueDate()
-                console.log(result);
                 dueDate.value = result
             } catch (err) {
                 console.log(err)
@@ -689,26 +718,13 @@ export default {
        
        const getReminder = computed(() => {
            if (Object.keys(selectedDueDate.value).length > 0) {
-            // try {
                 let result = frmservice.reminder(selectedDueDate.value.value)
-                console.log(result);
                 return result
-                // reminder.value = result
-            // } catch (err) {
-            //     console.log(err)
-            // }
            } else {
                let result = frmservice.reminder()
-                console.log(result);
-                // reminder.value = result
                 return result
            }
         })
-        // getReminder()
-
-        // const setAllContacts = (payload) => {
-        //     allContacts.value = payload
-        // }
 
         const setPriority = (payload) => {
             priorityRef.value.hide();
@@ -716,7 +732,6 @@ export default {
         }
 
         const chooseContact = (payload) => {
-            // contactRef.value.hide();
             selectedContact.value = payload
         }
 
@@ -733,7 +748,6 @@ export default {
             loader.value = true
             try {
                 let logs = await frmservice.getAllLogs(route.params.personId)
-                console.log(logs)
                 activities.value = logs && logs.returnObject ? logs.returnObject.reverse() : []
                 groupActivities()
                 loader.value = false
@@ -752,7 +766,6 @@ export default {
         const groupActivities = () => {
             // Group by type
             const type = groupResponse.groupData(activities.value, 'type')
-            console.log(type)
             noteList.value = type[96]
             taskList.value = activities.value.filter(i => i.person)
             emailList.value = type[90]
@@ -761,10 +774,6 @@ export default {
             let colors = ['rgba(148, 249, 192, 0.4)', 'rgba(148, 211, 249, 0.4)', 'rgba(232, 249, 148, 0.4)', 'rgba(249, 219, 148, 0.4)', 'rgba(249, 148, 239, 0.4)']
             let index = 0
             
-            // let col =  colorss[index++];
-            // Group by date
-            //  let r = () => Math.random() * 256 >> 0;
-            //  `rgb(${r()}, ${r()}, ${r()}, 0.2)`;
             const mappedActivities = activities.value.map(i => {
                 i.date = formatDate(i.date)
                 i.color = colors[index]
@@ -784,7 +793,6 @@ export default {
                 
             }
             const date = groupResponse.groupData(mappedActivities, 'date')
-            console.log(date)
              groupedActivities.value = []
             
             for (const prop in date) {
@@ -793,7 +801,6 @@ export default {
                 value: date[prop]
                 })
             }
-            console.log(groupedActivities.value)
         }
 
         const updateLogToView = () => {
@@ -817,7 +824,6 @@ export default {
         })
 
         const pushToComment = (payload) => {
-            console.log(searchActivities.value)
             searchActivities.value[payload.parentIndex].value[payload.mainIndex].loggedTask.comments.push(payload.body)
         }
 
@@ -858,13 +864,10 @@ export default {
         }
 
         const setDueDateTask = ({ parentIndex, mainIndex, body }) => {
-            // console.log(parentIndex, mainIndex, body, searchActivities.value)
             searchActivities.value[parentIndex].value[mainIndex].selectedDueDate =  body
-            // console.log(payload)
         }
 
         onMounted(() => {
-            console.log(confeti.value)
             celebAnim.party1(confeti.value)
         })
         
@@ -886,6 +889,10 @@ export default {
 
         const setTaskStatus = ({ parentIndex, mainIndex, value }) => {
             searchActivities.value[parentIndex].value[mainIndex].loggedTask.status = value
+        }
+
+        const toggleNewMember = () => {
+            displayNewMemberModal.value = true
         }
 
         return {
@@ -965,7 +972,7 @@ export default {
             // setAllContacts,
             selectedContact,
             chooseContact,
-            contactRef,
+            // contactRef,
             toggleContact,
             updateLogToView,
             loader,
@@ -992,7 +999,11 @@ export default {
             window,
             innerWidth,
             removeLogFromView,
-            setTaskStatus
+            setTaskStatus,
+            displayNewMemberModal,
+            toggleNewMember,
+            searchmemberr,
+            positiondialog
         }
     }
 }

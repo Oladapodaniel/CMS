@@ -559,7 +559,6 @@
                       'd-block': !hideDiv,
                     }"
                   >
-                  <!-- <i class="pi pi-spin pi-spinner text-center exempt-hide" v-if="grouploading && getAllGroup.length === 0"></i> -->
                   <input type="text" class="form-control exempt-hide" v-model="searchGroupText" ref="searchRef" placeholder="Search for group"/>
                     <group-tree :items="searchAllGroups"
                       :addGroupValue="true"
@@ -567,17 +566,6 @@
                       @closemodal="setCloseGroupModal"
                     />
                   </div>
-                <!-- <div class="dropdown show">
-                  <button class="btn border w-100 d-flex justify-content-between align-items-center" type="button" id="dropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" @click="focusInput">
-                    <div>{{ Object.keys(groupToAddTo).length > 0 ? groupToAddTo.name : 'Select a group' }}</div>
-                    <i class="pi pi-chevron-down"></i>
-                  </button>
-                  <div class="dropdown-menu w-100 scroll-card" aria-labelledby="dropdownMenuLink">
-                    <input type="text" v-model="searchGroupText" class="form-control input-width-adjust" placeholder="Search groups" ref="searchRef"/>
-                 
-                    <group-tree :items="searchAllGroups" />
-                  </div>
-                </div> -->
               </div>
             </div>
 

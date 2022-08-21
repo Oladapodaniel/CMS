@@ -1131,3 +1131,8 @@
   .p-chips .p-chips-multiple-container{
     width: 100%;
   }
+
+.p-sidebar-right {
+    width: auto !important;
+    max-width: 50rem !important;
+  }
