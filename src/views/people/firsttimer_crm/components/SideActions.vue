@@ -771,7 +771,6 @@ export default {
         const toggleLogPane = (e, item) => {
             logDropDown.value.hide();
             displayLogPane.value = true;
-            console.log(e)
             selectedLog.value = item
         }
         
@@ -780,7 +779,6 @@ export default {
             if (e.target.innerText.toLowerCase() === "call") {
                 call()
             }   else {
-                console.log('sms')
                 toggleSMSPane()
             }
         }
@@ -815,8 +813,7 @@ export default {
             }
 
             try {
-                let data = await frmservice.createLog(body)
-                console.log(data)
+                await frmservice.createLog(body)
                 emit('updatelogtoview')
                 callLogDesc.value = ""
             }
@@ -835,7 +832,6 @@ export default {
                 .then((res) => {
                 isoCode.value = res.data.isoCode;
                 tenantId.value = res.data.tenantId
-                console.log(res.data)
                 })
                 .catch((err) => console.log(err));
             }
@@ -843,7 +839,6 @@ export default {
         getIsoCode()
 
         const setIdToSubject = (item) => {
-            console.log(item)
             subject.value = item.mask
             selectedSender.value = item
         }
@@ -862,10 +857,9 @@ export default {
                 emailDisplayName: "",
                 groupedContacts: [],
             }
-            console.log(body)
+
             try {
-                let res = await frmservice.sendSms(route.params.personId, body)
-                console.log(res)
+                await frmservice.sendSms(route.params.personId, body)
                 toast.add({
                     severity: "success",
                     summary: "Success",
@@ -888,7 +882,6 @@ export default {
         })
 
         const toggleContactIcon = () => {
-            // toggle icon state
             contactIcon.value = !contactIcon.value
         }
         
@@ -903,7 +896,6 @@ export default {
         const getKnowlegdeSource = async() => {
             try {
                 let { data } = await axios.get("/api/membership/howyouheardaboutus")
-                console.log(data)
                 aboutUsSource.value = data
             } catch (error) {
                 console.log(error)
@@ -914,7 +906,6 @@ export default {
         const getCallOutcome = async () => {
             try {
                 let data = await lookupTable.getLookUps()
-                console.log(data)
                 outcomeList.value = data.outcome
                 genders.value = data.genders
                 maritalStatus.value = data.maritalStatus
@@ -952,7 +943,6 @@ export default {
                 if (type === 1) {
                     hasContactOwner.value = true
                 }
-                console.log(res)
                 emit('updatelogtoview')
                 if (type === 2) {
                     toast.add({
@@ -979,7 +969,6 @@ export default {
         const getLifeCycle = async() => {
             try {
                 let res = await frmservice.getLifeCycle()
-                console.log(res)
                 lifeCycle.value = res.returnObject.sort((a, b) => a.order - b.order);
             }
             catch (err) {
@@ -996,8 +985,7 @@ export default {
                 stageID: selectedLifeCycle.value.id
             }
             try {
-                let res = await frmservice.updateLifeCycle(route.params.personId, payload)
-                console.log(res)
+                await frmservice.updateLifeCycle(route.params.personId, payload)
                 emit('updatelogtoview')
             }
             catch (err) {
@@ -1055,7 +1043,6 @@ export default {
         const updateLeadStatus = async() => {
             try {
                 let res = await frmservice.updateLeadStatus(route.params.personId, selectedLeadStatus.value.id)
-                console.log(res)
                 emit('updatelogtoview')
             }
             catch (err) {
@@ -1096,12 +1083,9 @@ export default {
                 firstTimerId: route.params.personId,
                 pictureUrl: pictureUrl.value
             }
-            console.log(selectedBirthMonth.value)
-            console.log(payload)
 
             try {
-                let res = await frmservice.editBasicDetails(payload)
-                console.log(res)
+                frmservice.editBasicDetails(payload)
                 toast.add({
                     severity: "success",
                     summary: "Success",
@@ -1136,25 +1120,6 @@ export default {
                 formData.append("homeAddress", props.personDetails.address)
                 formData.append("followupPersonID", props.personDetails.followupPersonID)
                 formData.append("genderID", selectedGender.value && Object.keys(selectedGender.value).length > 0 ? selectedGender.value.id : props.personDetails.genderId)
-                // lastName: toghgr
-                // picture: 
-                // mobilePhone: 0890344443
-                // email: fkfmkk@de,m,f.com
-                // occupation: 
-                // dayOfBirth: 27
-                // monthOfBirth: 0
-                // yearOfBirth: 0
-                // occupation: 
-                // yearOfWedding: 0
-                // monthOfWedding: 0
-                // dayOfWedding: 0
-                // peopleClassificationID: 
-                // personGroups: 
-                // homeAddress: 
-                // maritalStatusID: 
-                // genderID: 1
-                // ageGroupID: 
-                // followupPersonID: 00000000-0000-0000-0000-000000000000
 
                 try {
                     let { data } = await axios.put(`/api/People/UpdatePerson/${route.params.personId}`, formData)
@@ -1172,7 +1137,6 @@ export default {
         const getSenderId = async() => {
         try {
             let { data } = await axios.get(`/api/Messaging/RetrieveTenantSenderIDs`)
-            console.log(data)
             senderIDs.value = data.returnObject
             }
             catch (err) {
@@ -1182,7 +1146,6 @@ export default {
         getSenderId()
 
         const uploadPicture = () => {
-            console.log(image.value)
             image.value.click()
         }
 
@@ -1193,7 +1156,6 @@ export default {
 
             axios.post("/api/Media/UploadProfilePicture", formData)
             .then(res => {
-                console.log(res)
                 pictureUrl.value = res.data.pictureUrl
                 emit("pictureurl", pictureUrl.value)
             })
@@ -1217,7 +1179,6 @@ export default {
                 let { data } = await axios.post(
                 `/api/People/ConvertFirstTimerToMember?personId=${route.params.personId}&membershipCategoryId=${selectedMembershipClassification.value.id}`
                 );
-                console.log(data);
                 party.confetti(element);
                 emit("displayanim", true)
                 swal(
@@ -1285,7 +1246,6 @@ export default {
                 "/api/Settings/GetTenantPeopleClassification"
                 );
                 membershipCategory.value = data;
-                console.log(data)
             } catch (err) {
                 console.log(err);
             }
@@ -1294,28 +1254,6 @@ export default {
 
         const openConfirm = () => {
             displayConfirm.value = true
-            // confirm.require({
-            //     message: `You are about to convert this first timer to a member, this action cannot be undone, do you want to continue?`,
-            //     header: 'Confirm',
-            //     icon: 'pi pi-info-circle',
-            //     accept: () => {
-            //         party.confetti(element);
-            //         emit("displayanim", true)
-            //             swal(
-            //                 "Congratulations!",
-            //                 `${props.personDetails.firstName ? props.personDetails.firstName : ""} ${props.personDetails.lastName ? props.personDetails.lastName : ""} is now a member of your church.`,
-            //                 "success"
-            //             );
-            //             // convertToMember()
-            //     },
-            //     reject: () => {
-            //         toast.add({
-            //             severity:'error', 
-            //             summary:'Rejected', 
-            //             detail:'You have rejected', 
-            //             life: 3000});
-            //     }
-            // });
         }
 
         const validateSenderId = (e) => {
@@ -1342,7 +1280,6 @@ export default {
             }
             try {
                 let { data } = await axios.post(`/api/Messaging/RequestSenderID`, payload)
-                console.log(data)
                 if(data.status === 0) {
                 toast.add({
                     severity: "warn",

@@ -107,15 +107,6 @@
                                                 </div>
                                             </div>
                                         </div>
-                                        
-                                        <!-- <div class="p-field cs-select day p-col-12">
-                                            <Dropdown
-                                            v-model="donor.yearOfBirth"
-                                            :options="birthYearsArr"
-                                            placeholder="Year"
-                                            style="width: 100%"
-                                            />
-                                        </div> -->
                                     </div>
                                 </div>
                             </div>

@@ -4,8 +4,6 @@
     style="margin: 0"
     
   >
-    <!-- class="d-block -->
-
     <div class="col-md-12 desc">
       <p class="">
         <span
@@ -15,8 +13,6 @@
           
         >
         <ul class="p-0 w-100">
-        <!-- :class="{ 'd-block' : itemDisplay, 'd-none' : !itemDisplay }"  -->
-         <!-- @click="toggleItems(i, $event)" -->
         <li v-for="(group, index) in items" :key="index" class="p-2  c-pointer parent-li border-top exempt-hide">
           <div class="row exempt-hide justify-content-between">
             <div class="text-primary exempt-hide" >
@@ -28,7 +24,7 @@
               </span>
             </div>
             
-            <!-- <div class="col-3 text-primary" @click="groupClick(group.id)">
+            <div class="col-3 text-primary" @click="groupClick(group.id)">
               <div @click="groupClick(group.id)">
                 <div class="d-flex small justify-content-between text-primary">
                   <span class="text-dark font-weight-bold d-flex d-md-none fontIncrease" style="font-size:15px">Membership Size</span>
@@ -37,15 +33,15 @@
                     </div>
                 </div>
               </div>
-            </div> -->
+            </div>
             <div class=" d-flex justify-content-end">
               <!-- <i class="pi pi-trash text-danger" @click="removeSubGroup(group, $event)"></i> -->
         
-                      <!-- <div>
+                      <div>
                         <div class="dropdown">
                           <span class="d-flex justify-content-between">
-                            <span class="d-md-none d-sm-flex"></span>
-                            <span class="d-sm-flex small">
+                            
+                            
                               <i
                                 class="
                                   fas
@@ -78,10 +74,10 @@
                                   >Delete</a
                                 >
                               </div>
-                            </span>
+                          
                           </span>
                         </div>
-                      </div> -->
+                      </div>
                  
             </div>
           </div>
@@ -121,92 +117,163 @@
       </template>
   </Dialog>
   <Toast />
+
+  <Sidebar v-model:visible="showSMS" :baseZIndex="10000" position="right">
+        <smsComponent :groupData ="groupListDetails" @closesidemodal="() => showSMS = false" />
+    </Sidebar>
+
+  <Sidebar v-model:visible="showEmail" :baseZIndex="10000" position="right">
+        <emailComponent :groupData ="groupListDetails"  @closesidemodal="() => showEmail = false" />
+    </Sidebar>
 </template>
 
 <script>
-import Dialog from 'primevue/dialog';
-import { ref } from '@vue/reactivity';
+import Dialog from "primevue/dialog";
+import { ref } from "@vue/reactivity";
 import { useToast } from "primevue/usetoast";
 import axios from "@/gateway/backendapi";
-import { watchEffect } from '@vue/runtime-core';
-// import store from '../../../store/store';
-import { useStore } from "vuex"
-import { onBeforeRouteLeave } from 'vue-router';
+import { watchEffect } from "@vue/runtime-core";
+import { useStore } from "vuex";
+import { useConfirm } from "primevue/useconfirm";
+import { onBeforeRouteLeave } from "vue-router";
+import Sidebar from "primevue/sidebar";
+import smsComponent from "../component/smsComponent.vue";
+import emailComponent from "../component/emailComponent.vue";
+import groupsService from "../../../services/groups/groupsservice";
 export default {
   name: "GroupTree",
   props: ["items", "addGroupValue", "showCheckBox"],
   emits: ["group", "groupp", "closemodal"],
   inheritAttrs: false,
   components: {
-    Dialog
+    Dialog,
+    Sidebar,
+    smsComponent,
+    emailComponent,
   },
   setup(props, { emit }) {
-    const store = useStore()
-    const displayCreateGroup = ref(false)
-    const newGroup = ref({})
+    const store = useStore();
+    const confirm = useConfirm()
+    const displayCreateGroup = ref(false);
+    const newGroup = ref({});
     const toast = useToast();
-    const onDropDown = ref(false)
-    const createGroupLoading = ref(false)
+    const onDropDown = ref(false);
+    const createGroupLoading = ref(false);
+    const showSMS = ref(false);
+    const showEmail = ref(false);
+    const groupListDetails = ref([]);
 
     const toggleItems = (i, e) => {
-        e.target.classList.toggle("roll-icon");
-      if (e.target.parentElement.parentElement.parentElement.nextElementSibling.classList.contains('d-none')) {
-         e.target.parentElement.parentElement.parentElement.nextElementSibling.classList.replace('d-none', 'd-block')
-       }  else {
-         e.target.parentElement.parentElement.parentElement.nextElementSibling.classList.replace("d-block", "d-none")
-       }
+      e.target.classList.toggle("roll-icon");
+      if (
+        e.target.parentElement.parentElement.parentElement.nextElementSibling.classList.contains(
+          "d-none"
+        )
+      ) {
+        e.target.parentElement.parentElement.parentElement.nextElementSibling.classList.replace(
+          "d-none",
+          "d-block"
+        );
+      } else {
+        e.target.parentElement.parentElement.parentElement.nextElementSibling.classList.replace(
+          "d-block",
+          "d-none"
+        );
+      }
     };
 
     const groupClick = (group, e) => {
-      store.dispatch("groups/setSelectedTreeGroupList", group)
-      store.dispatch("groups/setSelectedTreeGroup", group)
+      store.dispatch("groups/setSelectedTreeGroupList", group);
+      store.dispatch("groups/setSelectedTreeGroup", group);
       emit("group", { selectedGroup: group, iconElement: e.target });
     };
 
     watchEffect(() => {
       if (props.addGroupValue) {
-        onDropDown.value = true
+        onDropDown.value = true;
       }
-    })
+    });
 
     const checkForGroup = (group, e) => {
-      console.log(group)
+      console.log(group);
       let grouped = group.children.find((i) => i.name == e.target.textContent);
       // emit("group", grouped);
       emit("group", { selectedGroup: grouped, iconElement: e.target });
     };
 
     const openCreateGroupModal = () => {
-      displayCreateGroup.value = true
-      emit("closemodal")
-    }
+      displayCreateGroup.value = true;
+      emit("closemodal");
+    };
 
-    const createGroup = async() => {
-      createGroupLoading.value = true
+    const createGroup = async () => {
+      createGroupLoading.value = true;
       try {
-        let { data } = await axios.post("/api/CreateGroup", newGroup.value)
-        createGroupLoading.value = false
-          toast.add({
-            severity: "success",
-            summary: "Success",
-            detail: "Group created successfully",
-            life: 4000,
-          });
-          displayCreateGroup.value = false
-          console.log(data)
+        let { data } = await axios.post("/api/CreateGroup", newGroup.value);
+        createGroupLoading.value = false;
+        toast.add({
+          severity: "success",
+          summary: "Success",
+          detail: "Group created successfully",
+          life: 4000,
+        });
+        displayCreateGroup.value = false;
+        console.log(data);
+      } catch (err) {
+        createGroupLoading.value = false;
+        console.log(err);
       }
-      catch (err) {
-        createGroupLoading.value = false
-        console.log(err)
-      }
-    }
+    };
 
     onBeforeRouteLeave(() => {
-      store.dispatch("groups/setSelectedTreeGroupList", {})
-      store.dispatch("groups/setSelectedTreeGroup", {})
-    })
+      store.dispatch("groups/setSelectedTreeGroupList", {});
+      store.dispatch("groups/setSelectedTreeGroup", {});
+    });
 
-    
+    const sendGroupSms = (group) => {
+      showSMS.value = true;
+      if (group.id) {
+        groupListDetails.value = [{ data: `group_${group.id}` }];
+      }
+    };
+    const sendGroupEmail = (group) => {
+      showEmail.value = true;
+      if (group.id) {
+        groupListDetails.value = [{ data: `group_${group.id}` }];
+      }
+    };
+
+    const confirmDelete = (id, index) => {
+      confirm.require({
+        message: "Do you want to delete this group?",
+        header: "Delete Confirmation",
+        icon: "pi pi-info-circle",
+        acceptClass: "confirm-delete",
+        rejectClass: "cancel-delete",
+        accept: () => {
+          try {
+            groupsService.deleteGroup(id).then((res) => {
+              console.log(res, "Delete Response");
+              if (res !== false) {
+                groups.value.splice(index, 1);
+                store.dispatch("groups/getGroups");
+                toast.add({
+                  severity: "success",
+                  summary: "Deleted",
+                  detail: "Group was deleted",
+                  life: 3000,
+                });
+                groupsService.removeGroupFromStore(id);
+              }
+            });
+          } catch (error) {
+            console.log(error);
+          }
+        },
+        reject: () => {},
+      });
+    };
+
     return {
       toggleItems,
       groupClick,
@@ -216,7 +283,13 @@ export default {
       newGroup,
       createGroup,
       onDropDown,
-      createGroupLoading
+      createGroupLoading,
+      sendGroupSms,
+      sendGroupEmail,
+      showSMS,
+      showEmail,
+      groupListDetails,
+      confirmDelete,
     };
   },
 };
@@ -249,4 +322,11 @@ li li:hover {
   /* transition: all .5s ease-in-out; */
 }
 
+.fa-ellipsis-v:hover {
+  cursor: pointer;
+}
+
+.fa-ellipsis-v {
+  padding: 10px;
+}
 </style>

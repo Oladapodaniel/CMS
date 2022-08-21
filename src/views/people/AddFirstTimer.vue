@@ -6,7 +6,6 @@
     </div>
 
     <div class="form-div">
-      
       <form @submit.prevent="onSubmit">
         <div class="bio-div mt-2">
           <p class="form-section-header">Bio:</p>
@@ -38,12 +37,12 @@
               <div class="input-field">
                 <label for="" class="label">Phone number</label>
                 <div class="d-flex flex-column widen">
-                    <input
+                  <input
                     class="input form-control"
                     placeholder=""
                     v-model="firstTimersObj.phoneNumber"
                     type="text"
-                    :class="{ 'is-invalid' : !isPhoneValid }"
+                    :class="{ 'is-invalid': !isPhoneValid }"
                     id="phone number"
                     ref="validatePhone"
                     @blur="checkForDuplicatePhone"
@@ -52,7 +51,6 @@
                     Phone number exist, type a unique phone number.
                   </div>
                 </div>
-
               </div>
               <div class="input-field">
                 <label for=""></label>
@@ -83,13 +81,13 @@
               </div>
               <div class="input-field">
                 <label for="" class="label">Email</label>
-                  <div class="d-flex flex-column widen">
-                    <input
+                <div class="d-flex flex-column widen">
+                  <input
                     class="input form-control"
                     placeholder=""
                     v-model="firstTimersObj.email"
                     type="email"
-                    :class="{ 'is-invalid' : !isEmailValid}"
+                    :class="{ 'is-invalid': !isEmailValid }"
                     id="email"
                     ref="validateEmail"
                     @blur="checkForDuplicateEmail"
@@ -103,13 +101,20 @@
               <!-- Test -->
               <div class="input-field">
                 <label for="" class="label">Event or Service Attended</label>
-                <i class="pi pi-chevron-down dd manual-dd-icon" @click="selectEventAttended"></i>
+                <i
+                  class="pi pi-chevron-down dd manual-dd-icon"
+                  @click="selectEventAttended"
+                ></i>
 
                 <button
                   @click.prevent="selectEventAttended"
                   class="form-control input dd small-text widen"
                 >
-                  {{ selectedEventAttended ? selectedEventAttended.name : "Select service attended" }}
+                  {{
+                    selectedEventAttended
+                      ? selectedEventAttended.name
+                      : "Select service attended"
+                  }}
                   {{ newEvent.activity.date }}
                 </button>
               </div>
@@ -202,61 +207,81 @@
               <div class="input-field">
                 <label for="" class="label">Birthday</label>
                 <div class="status-n-gender">
-                    <div class="cstm-select">
-                      <div class="cs-select" style="width: 87px">
-                        <Dropdown
-                          v-model="firstTimersObj.birthday"
-                          :options="day"
-                          placeholder="Day"
-                          style="width: 100%"
-                        />
-                        <!-- <SelectElem :typ="'membership'" name="birthday" :options="['Day', ...birthDaysArr ]" value="Day" @input="itemSelected"/> -->
-                      </div>
+                  <div class="cstm-select">
+                    <div class="cs-select" style="width: 87px">
+                      <Dropdown
+                        v-model="firstTimersObj.birthday"
+                        :options="day"
+                        placeholder="Day"
+                        style="width: 100%"
+                      />
+                      <!-- <SelectElem :typ="'membership'" name="birthday" :options="['Day', ...birthDaysArr ]" value="Day" @input="itemSelected"/> -->
                     </div>
-                    <div class="cstm-select">
-                      <div class="cs-select" style="width: 111px">
-                        <Dropdown
-                          v-model="birthMonth"
-                          :options="month"
-                          placeholder="Month"
-                          style="width: 100%"
-                        />
-                      </div>
+                  </div>
+                  <div class="cstm-select">
+                    <div class="cs-select" style="width: 111px">
+                      <Dropdown
+                        v-model="birthMonth"
+                        :options="month"
+                        placeholder="Month"
+                        style="width: 100%"
+                      />
                     </div>
+                  </div>
 
-                    <div class="cstm-select">
-                      <div class="cs-select" style="width: 113px">
-                        <Dropdown
-                          v-model="firstTimersObj.birthYear"
-                          :options="year"
-                          placeholder="Year"
-                          style="width: 100%"
-                        />
-                      </div>
+                  <div class="cstm-select">
+                    <div class="cs-select" style="width: 113px">
+                      <Dropdown
+                        v-model="firstTimersObj.birthYear"
+                        :options="year"
+                        placeholder="Year"
+                        style="width: 100%"
+                      />
                     </div>
+                  </div>
                 </div>
               </div>
               <div class="input-field">
                 <label for="" class="label">Choose contact owner</label>
                 <div class="input p-0 border-0 widen">
-                  <SearchMembers v-bind:currentMember="firstTimersObj" @memberdetail="setContact"/>
+                  <SearchMembers
+                    v-bind:currentMember="firstTimersObj"
+                    @memberdetail="setContact"
+                  />
                 </div>
               </div>
               <div class="input-field">
                 <label for="" class="label">Add to group</label>
                 <div class="p-2 border add-group">
-                  <div v-for="(item, index) in firstTimerInGroup" :key='index'>
+                  <div v-for="(item, index) in firstTimerInGroup" :key="index">
                     <div class="pt-1">{{ index + 1 }}. {{ item.name }}</div>
                   </div>
-                  <div v-if="firstTimerInGroup.length === 0">No group added yet</div>
-                  <div class="font-weight-700 text-primary border-top text-center c-pointer" data-toggle="modal" data-target="#addToGroup">Add</div>
+                  <div v-if="firstTimerInGroup.length === 0">
+                    No group added yet
+                  </div>
+                  <div
+                    class="
+                      font-weight-700
+                      text-primary
+                      border-top
+                      text-center
+                      c-pointer
+                    "
+                    data-toggle="modal"
+                    data-target="#addToGroup"
+                  >
+                    Add
+                  </div>
                 </div>
               </div>
-              
+
               <!-- Custom Field -->
               <div v-for="(item, index) in dynamicCustomFields" :key="index">
-                <div class="input-field align-items-sm-center" v-if="item.controlType == 1" >
-                  <label for="" class="mr-2" >{{item.label}}</label>
+                <div
+                  class="input-field align-items-sm-center"
+                  v-if="item.controlType == 1"
+                >
+                  <label for="" class="mr-2">{{ item.label }}</label>
                   <div class="cstm-select search-box">
                     <div class="cs-select-dropdown">
                       <Dropdown
@@ -265,11 +290,14 @@
                         :placeholder="item.label"
                         style="width: 100%"
                       />
-                  </div>
+                    </div>
                   </div>
                 </div>
-                <div class="input-field align-items-sm-center" v-if="item.controlType == 7" >
-                  <label for="" class="label">{{item.label}}</label>
+                <div
+                  class="input-field align-items-sm-center"
+                  v-if="item.controlType == 7"
+                >
+                  <label for="" class="label">{{ item.label }}</label>
                   <input
                     type="number"
                     class="input"
@@ -277,8 +305,11 @@
                     v-model="item.data"
                   />
                 </div>
-                <div class="input-field align-items-sm-center" v-if="item.controlType == 4" >
-                  <label for="" class="label">{{item.label}}</label>
+                <div
+                  class="input-field align-items-sm-center"
+                  v-if="item.controlType == 4"
+                >
+                  <label for="" class="label">{{ item.label }}</label>
                   <input
                     type="email"
                     class="input"
@@ -286,8 +317,11 @@
                     v-model="item.data"
                   />
                 </div>
-                <div class="input-field align-items-sm-center" v-if="item.controlType == 0 " >
-                  <label for="" class="label">{{item.label}}</label>
+                <div
+                  class="input-field align-items-sm-center"
+                  v-if="item.controlType == 0"
+                >
+                  <label for="" class="label">{{ item.label }}</label>
                   <input
                     type="text"
                     class="input"
@@ -295,22 +329,27 @@
                     v-model="item.data"
                   />
                 </div>
-                <div class="input-field align-items-sm-center" v-if="item.controlType == 2" >
-                  <label for="" class="label">{{item.label}}</label>
+                <div
+                  class="input-field align-items-sm-center"
+                  v-if="item.controlType == 2"
+                >
+                  <label for="" class="label">{{ item.label }}</label>
                   <div class="input border-0 pl-0">
                     <Checkbox id="binary" v-model="item.data" :binary="true" />
-                  </div> 
+                  </div>
                 </div>
-                <div class="input-field align-items-sm-center" v-if="item.controlType == 6" >
-                  <label for="" class="label">{{item.label}}</label>
-                  <input
-                    type="file"
-                    class="input"
-                    placeholder=""
-                  />
+                <div
+                  class="input-field align-items-sm-center"
+                  v-if="item.controlType == 6"
+                >
+                  <label for="" class="label">{{ item.label }}</label>
+                  <input type="file" class="input" placeholder="" />
                 </div>
-                <div class="input-field align-items-sm-center" v-if="item.controlType == 3" >
-                  <label for="" class="label">{{item.label}}</label>
+                <div
+                  class="input-field align-items-sm-center"
+                  v-if="item.controlType == 3"
+                >
+                  <label for="" class="label">{{ item.label }}</label>
                   <input
                     type="date"
                     class="input"
@@ -319,7 +358,6 @@
                   />
                 </div>
               </div>
-              
             </div>
             <div style="width: 225px; margin: 0 auto">
               <ImageForm @pictureurl="setImageToUrl" />
@@ -334,11 +372,11 @@
             <span class="h-rule col-sm-7 pl-0"><hr class="hr" /></span>
             <span class="col-sm-2">
               <span class="tb-icon-span"
-              ><i
-                class="pi pi-angle-down tbb-icon"
-                :class="{ 'tb-icon': !hideCelebTab }"
-              ></i
-            ></span>
+                ><i
+                  class="pi pi-angle-down tbb-icon"
+                  :class="{ 'tb-icon': !hideCelebTab }"
+                ></i
+              ></span>
             </span>
           </span>
           <div
@@ -405,25 +443,28 @@
             </div>
           </div>
         </div>
-      
+
         <div class="inputs mt-2">
           <div class="submit-div">
-            <button class="default-btn cancel-btn btn ml-sm-3 mt-3" @click.prevent="onCancel">
+            <button
+              class="default-btn cancel-btn btn ml-sm-3 mt-3"
+              @click.prevent="onCancel"
+            >
               Cancel
             </button>
             <button
-                class="default-btn outline-none ml-sm-3 mt-3"
-                :class="{ 'btn-loading': loading }"
-                :disabled="loading"     
-              >
-                <i
-                  class="fas fa-circle-notch fa-spin mr-2"
-                  v-if="loading"
-                ></i>
-                <span>Save and add another</span>
-                <span></span>
-              </button>
-            <button class="ml-sm-3 mt-3  submit-btn text-white btn" @click.prevent="saveAndRoute">
+              class="default-btn outline-none ml-sm-3 mt-3"
+              :class="{ 'btn-loading': loading }"
+              :disabled="loading"
+            >
+              <i class="fas fa-circle-notch fa-spin mr-2" v-if="loading"></i>
+              <span>Save and add another</span>
+              <span></span>
+            </button>
+            <button
+              class="ml-sm-3 mt-3 submit-btn text-white btn"
+              @click.prevent="saveAndRoute"
+            >
               Save
             </button>
           </div>
@@ -467,17 +508,18 @@
                         </div>
                         <div class="col-md-7">
                           <div
-                            class="select-elem-con pointer d-flex justify-content-space-between"
+                            class="
+                              select-elem-con
+                              pointer
+                              d-flex
+                              justify-content-space-between
+                            "
                             @click="showCategory = !showCategory"
                           >
                             <span class="ofering">{{ selectEvent }}</span
                             ><span>
                               <!-- :class="{ roll3: showForm3 }" -->
-                              <i
-                                class="pi pi-angle-down"
-
-                                aria-hidden="true"
-                              ></i
+                              <i class="pi pi-angle-down" aria-hidden="true"></i
                             ></span>
                           </div>
                           <div
@@ -544,7 +586,12 @@
                               <!-- <Button label="No" icon="pi pi-times" @click="closeModal" class="p-button-text"/>
                                         <Button label="Yes" icon="pi pi-check" @click="closeModal" autofocus /> -->
                               <div
-                                class="col-md-12 d-md-flex justify-content-end p-0"
+                                class="
+                                  col-md-12
+                                  d-md-flex
+                                  justify-content-end
+                                  p-0
+                                "
                               >
                                 <button
                                   type="button"
@@ -625,7 +672,7 @@
           </div>
         </div>
 
-         <!-- Modal -->
+        <!-- Modal -->
         <div
           class="modal fade"
           id="addToGroup"
@@ -633,6 +680,7 @@
           role="dialog"
           aria-labelledby="addToGroup"
           aria-hidden="true"
+          @click="hideGroupModal"
         >
           <div class="modal-dialog modal-lg" role="document">
             <div class="modal-content">
@@ -663,7 +711,7 @@
                       placeholder="Select a group"
                       optionLabel="name"
                     /> -->
-                    <div class="dropdown">
+                    <!-- <div class="dropdown">
                           <button class="btn w-100 phone-input d-flex justify-content-between align-items-center border" type="button" id="dropdownMemCat" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                               <div>
                               {{ groupToAddTo && Object.keys(groupToAddTo).length > 0 ? groupToAddTo.name : 'Select group' }}</div>
@@ -674,6 +722,51 @@
                                   <div @click="setSelectedGroup(item)">{{ item.name }}</div>
                               </a>
                           </div>
+                      </div> -->
+
+
+                      <button
+                        class="
+                          btn
+                          border
+                          w-100
+                          d-flex
+                          justify-content-between
+                          align-items-center
+                          exempt-hide
+                        "
+                        type="button"
+                        @click="setGroupProp"
+                      >
+                        <div class="exempt-hide">
+                          {{
+                            Object.keys(groupToAddTo).length > 0
+                              ? groupToAddTo.name
+                              : "Select a group"
+                          }}
+                        </div>
+                        <i class="pi pi-chevron-down exempt-hide"></i>
+                      </button>
+                      <div
+                        class="div-card p-2 exempt-hide"
+                        :class="{
+                          'd-none': hideDiv,
+                          'd-block': !hideDiv,
+                        }"
+                      >
+                        <input
+                          type="text"
+                          class="form-control exempt-hide"
+                          v-model="searchGroupText"
+                          ref="searchRef"
+                          placeholder="Search for group"
+                        />
+                        <group-tree
+                          :items="searchAllGroups"
+                          :addGroupValue="true"
+                          class="exempt-hide"
+                          @closemodal="setCloseGroupModal"
+                        />
                       </div>
                   </div>
                 </div>
@@ -705,7 +798,9 @@
                     </div>
                     <div class="row mt-2">
                       <div class="col-md-6 d-md-flex justify-content-end">
-                        <button class="default-btn" data-dismiss="modal">Cancel</button>
+                        <button class="default-btn" data-dismiss="modal">
+                          Cancel
+                        </button>
                       </div>
                       <div class="col-md-6">
                         <button
@@ -729,28 +824,35 @@
 </template>
 
 <script>
-import { ref, onMounted, computed } from "vue";
+import { ref, onMounted, computed, nextTick, watchEffect } from "vue";
 import axios from "@/gateway/backendapi";
 import router from "@/router/index";
 import Dropdown from "primevue/dropdown";
 import { useRoute } from "vue-router";
 import { useToast } from "primevue/usetoast";
 import Dialog from "primevue/dialog";
-import finish from "../../services/progressbar/progress"
-import setupService from '../../services/setup/setupservice';
-import ImageForm from '../../components/membership/ImageForm.vue';
-import SearchMembers from '../../components/membership/MembersSearch.vue';
+import finish from "../../services/progressbar/progress";
+import setupService from "../../services/setup/setupservice";
+import ImageForm from "../../components/membership/ImageForm.vue";
+import SearchMembers from "../../components/membership/MembersSearch.vue";
 import grousService from "../../services/groups/groupsservice";
-import { useStore } from "vuex"
-import allCustomFields from "../../services/customfield/customField"
+import { useStore } from "vuex";
+import allCustomFields from "../../services/customfield/customField";
+import GroupTree from "../groups/component/GroupTree.vue";
 
 export default {
-  components: { Dropdown, Dialog, ImageForm, SearchMembers },
+  components: {
+    Dropdown,
+    Dialog,
+    ImageForm,
+    SearchMembers,
+    "group-tree": GroupTree,
+  },
 
   setup() {
     // const $toast = getCurrentInstance().ctx.$toast;
     const toast = useToast();
-    const store = useStore()
+    const store = useStore();
     const showEventList = ref(false);
     const selectEventAttended = () => {
       showEventList.value = !showEventList.value;
@@ -762,8 +864,24 @@ export default {
       e.preventDefault();
     };
 
-    const day = ref([ 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30, 31 ]);
-    const month = ref([ "January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December" ]);
+    const day = ref([
+      1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21,
+      22, 23, 24, 25, 26, 27, 28, 29, 30, 31,
+    ]);
+    const month = ref([
+      "January",
+      "February",
+      "March",
+      "April",
+      "May",
+      "June",
+      "July",
+      "August",
+      "September",
+      "October",
+      "November",
+      "December",
+    ]);
     const maritalStatusArr = ref([]);
     const selectedMaritalStatus = ref(null);
     const genderArr = ref([]);
@@ -779,26 +897,31 @@ export default {
     const howDidYouAboutUs = ref([]);
     const selectedAboutUsSource = ref(null);
     const selectedFollowUp = ref(null);
-    const firstTimersObj = ref({ sendWelcomeSMS: false, sendWelcomeEmail: true });
+    const firstTimersObj = ref({
+      sendWelcomeSMS: false,
+      sendWelcomeEmail: true,
+    });
     const showCategory = ref(false);
     const eventText = ref("");
     const displayModal = ref(false);
     const selectEvent = ref("Select Event");
-    const isPhoneValid = ref(true)
-    const isEmailValid = ref(true)
-    const validatePhone = ref("")
-    const validateEmail = ref("")
-    const firstTimerPhone = ref("")
-    const firstTimerEmail = ref("")
-    const routeToFRM = ref(false)
-    const firstTimerInGroup = ref([])
+    const isPhoneValid = ref(true);
+    const isEmailValid = ref(true);
+    const validatePhone = ref("");
+    const validateEmail = ref("");
+    const firstTimerPhone = ref("");
+    const firstTimerEmail = ref("");
+    const routeToFRM = ref(false);
+    const firstTimerInGroup = ref([]);
     const allGroups = ref([]);
-    const groupToAddTo = ref({})
-    const position = ref("")
+    const groupToAddTo = ref({});
+    const position = ref("");
     const addToGroupError = ref(false);
     const dismissAddToGroupModal = ref("");
-    const dynamicCustomFields = ref([])
-
+    const dynamicCustomFields = ref([]);
+    const searchGroupText = ref("");
+    const searchRef = ref(null)
+    const hideDiv = ref(true)
 
     const eventName = computed(() => {
       return newEvents.value.map((i) => i.name);
@@ -870,13 +993,16 @@ export default {
       firstTimersObj.value.wantToBeVisited = selectedVisitOption.value
         ? wantVisitArr.value.indexOf(selectedVisitOption.value) + 1
         : 0;
-      firstTimersObj.value.groups = firstTimerInGroup.value.length > 0 ? firstTimerInGroup.value.map(i => {
-        return {
-          groupId: i.groupId,
-          position: i.position
-        }
-      }) : []
-      
+      firstTimersObj.value.groups =
+        firstTimerInGroup.value.length > 0
+          ? firstTimerInGroup.value.map((i) => {
+              return {
+                groupId: i.groupId,
+                position: i.position,
+              };
+            })
+          : [];
+
       switch (birthMonth.value) {
         case "January":
           firstTimersObj.value.birthMonth = "1";
@@ -920,12 +1046,13 @@ export default {
           break;
       }
 
-      firstTimersObj.value.customAttributeData = dynamicCustomFields.value.map(i => ({
+      firstTimersObj.value.customAttributeData = dynamicCustomFields.value.map(
+        (i) => ({
           customAttributeID: i.id,
           data: i.data,
-          entityID: route.params.personId
-        }))
-
+          entityID: route.params.personId,
+        })
+      );
 
       if (route.params.firstTimerId) {
         let updateMember = {
@@ -938,7 +1065,9 @@ export default {
           birthday: firstTimersObj.value.birthday,
           birthMonth: firstTimersObj.value.birthMonth,
           birthYear: firstTimersObj.value.birthYear,
-          howDidYouAboutUsId: selectedAboutUsSource.value ? selectedAboutUsSource.value.id : null,
+          howDidYouAboutUsId: selectedAboutUsSource.value
+            ? selectedAboutUsSource.value.id
+            : null,
           communicationMeans: firstTimersObj.value.communicationMeans,
           interestedInJoining: firstTimersObj.value.interestedInJoining,
           wantsToBeVisited: firstTimersObj.value.wantToBeVisited,
@@ -951,8 +1080,7 @@ export default {
           updateMember.genderId = firstTimersObj.value.genderId;
         if (firstTimersObj.value.maritalStatusId)
           updateMember.maritalStatusId = firstTimersObj.value.maritalStatusId;
-          console.log(updateMember)
-      
+        console.log(updateMember);
 
         try {
           loading.value = true;
@@ -966,7 +1094,7 @@ export default {
           if (response.status === 200 || response.status === 201) {
             loading.value = false;
             // if(!routeToFRM.value) {
-              router.push("/tenant/firsttimerslist");
+            router.push("/tenant/firsttimerslist");
             // } else {
             //   router.push(`/tenant/firsttimermanagement/${res.data.personId}`)
             //   routeToFRM.value = false
@@ -982,7 +1110,7 @@ export default {
           }
         } catch (err) {
           loading.value = false;
-          finish()
+          finish();
           if (err.toString().toLowerCase().includes("network error")) {
             toast.add({
               severity: "warn",
@@ -1009,57 +1137,59 @@ export default {
         axios
           .post("/api/people/firsttimer", firstTimersObj.value)
           .then((res) => {
-            finish()
+            finish();
             console.log(res.data);
             loading.value = false;
-            
-            toast.add({
-                severity: "success",
-                summary: "Successful",
-                detail: "First timer created successfully",
-                life: 2000,
-              });
-              
-            if(!routeToFRM.value) {
-              // router.push("/tenant/firsttimerslist");
-              firstTimersObj.value = {}
-              selectedGender.value = {}
-              selectedMaritalStatus.value = {}
-              selectedEventAttended.value = {}
-              selectedAboutUsSource.value = {}
-              selectedCommunicationMeans.value = {}
-              selectedJoinInterest.value = {}
-              selectedVisitOption.value = {}
-              birthMonth.value = ""
 
-              validatePhone.value.classList.remove('is-valid')
-              validateEmail.value.classList.remove('is-valid')
-              validatePhone.value.classList.remove('is-invalid')
-              validateEmail.value.classList.remove('is-invalid')
+            toast.add({
+              severity: "success",
+              summary: "Successful",
+              detail: "First timer created successfully",
+              life: 2000,
+            });
+
+            if (!routeToFRM.value) {
+              // router.push("/tenant/firsttimerslist");
+              firstTimersObj.value = {};
+              selectedGender.value = {};
+              selectedMaritalStatus.value = {};
+              selectedEventAttended.value = {};
+              selectedAboutUsSource.value = {};
+              selectedCommunicationMeans.value = {};
+              selectedJoinInterest.value = {};
+              selectedVisitOption.value = {};
+              birthMonth.value = "";
+
+              validatePhone.value.classList.remove("is-valid");
+              validateEmail.value.classList.remove("is-valid");
+              validatePhone.value.classList.remove("is-invalid");
+              validateEmail.value.classList.remove("is-invalid");
             } else {
               setTimeout(() => {
-                router.push(`/tenant/firsttimermanagement/${res.data.personID}?memberType=0`)
-                routeToFRM.value = false
-              }, 2000)
+                router.push(
+                  `/tenant/firsttimermanagement/${res.data.personID}?memberType=0`
+                );
+                routeToFRM.value = false;
+              }, 2000);
             }
           })
           .catch((err) => {
-            finish()
+            finish();
             loading.value = false;
             if (err.response && err.response.data) {
               toast.add({
-              severity: "warn",
-              summary: "Sorry",
-              detail: `${err.response.data}`,
-              life: 8000,
-            });
+                severity: "warn",
+                summary: "Sorry",
+                detail: `${err.response.data}`,
+                life: 8000,
+              });
             } else {
               toast.add({
-              severity: "error",
-              summary: "Network Error",
-              detail: `Please ensure you have a strong internet  connection`,
-              life: 4000,
-            });
+                severity: "error",
+                summary: "Network Error",
+                detail: `Please ensure you have a strong internet  connection`,
+                life: 4000,
+              });
             }
             console.log(err.response);
           });
@@ -1067,9 +1197,9 @@ export default {
     };
 
     const saveAndRoute = () => {
-      routeToFRM.value = true
-      onSubmit()
-    }
+      routeToFRM.value = true;
+      onSubmit();
+    };
 
     const onCancel = () => {
       router.back();
@@ -1198,7 +1328,7 @@ export default {
       axios
         .get("/api/LookUp/GetAllLookUps")
         .then((res) => {
-          console.log(res.data, 'all lkups')
+          console.log(res.data, "all lkups");
           res.data.find((i) => {
             if (i.type.toLowerCase() === "gender") {
               genderArr.value = i.lookUps;
@@ -1206,14 +1336,18 @@ export default {
             if (i.type.toLowerCase() === "maritalstatus") {
               maritalStatusArr.value = i.lookUps;
               if (ftimerId.value) {
-                selectedMaritalStatus.value = maritalStatusArr.value.find(i => i.id === firstTimersObj.value.maritalStatusId);
-                selectedGender.value = genderArr.value.find(i => i.id === firstTimersObj.value.genderId);
+                selectedMaritalStatus.value = maritalStatusArr.value.find(
+                  (i) => i.id === firstTimersObj.value.maritalStatusId
+                );
+                selectedGender.value = genderArr.value.find(
+                  (i) => i.id === firstTimersObj.value.genderId
+                );
               }
             }
           });
         })
         .catch((err) => {
-          finish()
+          finish();
           if (err.response && err.response.status === 401) {
             localStorage.setItem("token", "");
             setupService.clearStore();
@@ -1225,7 +1359,7 @@ export default {
         howDidYouAboutUs.value = res.data.map((i) => {
           return { name: i.name, id: i.id };
         });
-        console.log(res.data, "HYH")
+        console.log(res.data, "HYH");
       });
 
       console.log(route.params.firstTimerId);
@@ -1240,63 +1374,97 @@ export default {
             firstTimersObj.value.sendWelcomeSMS = res.data.sendSms;
             firstTimersObj.value.sendWelcomeEmail = res.data.sendEmail;
 
-            selectedGender.value = res.data.genderId ? genderArr.value.find(i => i.id === res.data.genderId) : { };
+            selectedGender.value = res.data.genderId
+              ? genderArr.value.find((i) => i.id === res.data.genderId)
+              : {};
 
-            selectedMaritalStatus.value = res.data.maritalStatusId ? maritalStatusArr.value.find(i => i.id === res.data.maritalStatusId) : { };
+            selectedMaritalStatus.value = res.data.maritalStatusId
+              ? maritalStatusArr.value.find(
+                  (i) => i.id === res.data.maritalStatusId
+                )
+              : {};
 
-            selectedAboutUsSource.value = getUserSource(res.data.howDidYouAboutUsId)
+            selectedAboutUsSource.value = getUserSource(
+              res.data.howDidYouAboutUsId
+            );
 
-            selectedCommunicationMeans.value = res.data.communicationMeans ? comMeansArr.value[res.data.communicationMeans - 1] : ""
+            selectedCommunicationMeans.value = res.data.communicationMeans
+              ? comMeansArr.value[res.data.communicationMeans - 1]
+              : "";
 
-            selectedJoinInterest.value = res.data.interestedInJoining ? joinInterestArr.value[res.data.interestedInJoining - 1] : ""
+            selectedJoinInterest.value = res.data.interestedInJoining
+              ? joinInterestArr.value[res.data.interestedInJoining - 1]
+              : "";
 
-            selectedVisitOption.value = res.data.wantsToBeVisited ? wantVisitArr.value[res.data.wantsToBeVisited - 1] : ""
-            console.log(wantVisitArr.value[res.data.wantsToBeVisited - 1], res.data.wantsToBeVisited)
+            selectedVisitOption.value = res.data.wantsToBeVisited
+              ? wantVisitArr.value[res.data.wantsToBeVisited - 1]
+              : "";
+            console.log(
+              wantVisitArr.value[res.data.wantsToBeVisited - 1],
+              res.data.wantsToBeVisited
+            );
 
-            firstTimersObj.value.birthday = res.data.birthday ? Number(res.data.birthday) : "";
+            firstTimersObj.value.birthday = res.data.birthday
+              ? Number(res.data.birthday)
+              : "";
 
-            firstTimersObj.value.birthYear = res.data.birthYear ? +res.data.birthYear : "";
+            firstTimersObj.value.birthYear = res.data.birthYear
+              ? +res.data.birthYear
+              : "";
 
-            birthMonth.value = res.data.birthMonth ? month.value[Number(res.data.birthMonth) - 1] : "";
+            birthMonth.value = res.data.birthMonth
+              ? month.value[Number(res.data.birthMonth) - 1]
+              : "";
             console.log(eventsAttended.value, "EA");
 
-            selectedEventAttended.value = getEventUserAttended(res.data.activityID)
+            selectedEventAttended.value = getEventUserAttended(
+              res.data.activityID
+            );
           })
-          .catch(err => {
-            finish()
-            console.log(err)
+          .catch((err) => {
+            finish();
+            console.log(err);
             toast.add({
               severity: "error",
               summary: "Error getting details",
-              detail: "Unable to get person details, ensure you have a strong network connection",
+              detail:
+                "Unable to get person details, ensure you have a strong network connection",
               life: 5000,
             });
-          })
+          });
       }
     });
 
-    const getUserSource = sourceId => {
-      if (sourceId && howDidYouAboutUs.value && howDidYouAboutUs.value.length > 0) return howDidYouAboutUs.value.find(i => i.id === sourceId);
+    const getUserSource = (sourceId) => {
+      if (
+        sourceId &&
+        howDidYouAboutUs.value &&
+        howDidYouAboutUs.value.length > 0
+      )
+        return howDidYouAboutUs.value.find((i) => i.id === sourceId);
       if (!sourceId) {
         axios.get("/api/membership/howyouheardaboutus").then((res) => {
           howDidYouAboutUs.value = res.data.map((i) => {
             return { name: i.name, id: i.id };
           });
-          return howDidYouAboutUs.value.find(i => i.id === res.data.howDidYouAboutUsId);
+          return howDidYouAboutUs.value.find(
+            (i) => i.id === res.data.howDidYouAboutUsId
+          );
         });
       } else {
         return null;
       }
-    }
+    };
 
-    const getEventUserAttended = userEventId => {
-      if (!userEventId) return { };
-      if (eventsAttended.value && eventsAttended.value.length > 0) return eventsAttended.value.find(i => i.activityID === userEventId);
+    const getEventUserAttended = (userEventId) => {
+      if (!userEventId) return {};
+      if (eventsAttended.value && eventsAttended.value.length > 0)
+        return eventsAttended.value.find((i) => i.activityID === userEventId);
       axios.get("/api/Events/EventActivity").then((res) => {
         eventsAttended.value = res.data;
-        return eventsAttended.value.find(i => i.activityID === userEventId);
+        return eventsAttended.value.find((i) => i.activityID === userEventId);
       });
-    }
+    };
 
     const year = computed(() => {
       const arrOfYears = [];
@@ -1308,88 +1476,88 @@ export default {
       return arrOfYears;
     });
 
-    const checkForDuplicatePhone = async() => {
-          if (route.params.firstTimerId) {
-            try {
-              let { data } = await axios.get(`/api/People/firstTimer/${route.params.firstTimerId}`)
-              firstTimerPhone.value = data.phoneNumber
-              firstTimerEmail.value = data.email
-            }
-            catch (err) {
-              console.log(err)
-            }
+    const checkForDuplicatePhone = async () => {
+      if (route.params.firstTimerId) {
+        try {
+          let { data } = await axios.get(
+            `/api/People/firstTimer/${route.params.firstTimerId}`
+          );
+          firstTimerPhone.value = data.phoneNumber;
+          firstTimerEmail.value = data.email;
+        } catch (err) {
+          console.log(err);
+        }
+      }
+      if (firstTimersObj.value.phoneNumber !== firstTimerPhone.value) {
+        try {
+          let { data } = await axios.get(
+            `api/People/checkDuplicate?phoneNumber=${firstTimersObj.value.phoneNumber}`
+          );
+          console.log(data, validatePhone.value);
+          if (data === "phone number") {
+            isPhoneValid.value = false;
+          } else if (data === "email and phone number") {
+            isPhoneValid.value = false;
+            isEmailValid.value = false;
+          } else {
+            isPhoneValid.value = true;
+            validatePhone.value.classList.add("is-valid");
           }
-            if (firstTimersObj.value.phoneNumber !== firstTimerPhone.value) {
-              try {
+        } catch (error) {
+          console.log(error);
+        }
+      }
+    };
 
-            let { data } = await axios.get(`api/People/checkDuplicate?phoneNumber=${firstTimersObj.value.phoneNumber}`)
-            console.log(data, validatePhone.value)
-              if (data === "phone number") {
-              isPhoneValid.value = false
-            } else if (data === "email and phone number") {
-              isPhoneValid.value = false
-              isEmailValid.value = false
-            } else {
-              isPhoneValid.value = true
-              validatePhone.value.classList.add('is-valid')
-
-            }
-          }
-          catch (error) {
-            console.log(error)
-          }
+    const checkForDuplicateEmail = async () => {
+      if (route.params.firstTimerId) {
+        try {
+          let { data } = await axios.get(
+            `/api/People/firstTimer/${route.params.firstTimerId}`
+          );
+          firstTimerEmail.value = data.email;
+        } catch (err) {
+          console.log(err);
         }
       }
 
-      const checkForDuplicateEmail = async() => {
-
-        if (route.params.firstTimerId) {
-            try {
-              let { data } = await axios.get(`/api/People/firstTimer/${route.params.firstTimerId}`)
-              firstTimerEmail.value = data.email
-            }
-            catch (err) {
-              console.log(err)
-            }
+      if (firstTimersObj.value.email !== firstTimerEmail.value) {
+        try {
+          let { data } = await axios.get(
+            `api/People/checkDuplicate?email=${firstTimersObj.value.email}`
+          );
+          console.log(data);
+          if (data === "email") {
+            isEmailValid.value = false;
+          } else if (data === "email and phone number") {
+            isEmailValid.value = false;
+            isPhoneValid.value = false;
+          } else {
+            isEmailValid.value = true;
+            validateEmail.value.classList.add("is-valid");
           }
-
-          if (firstTimersObj.value.email !== firstTimerEmail.value) {
-          try {
-            let { data } = await axios.get(`api/People/checkDuplicate?email=${firstTimersObj.value.email}`)
-            console.log(data)
-              if (data === "email") {
-                isEmailValid.value = false
-              } else if (data === "email and phone number") {
-                isEmailValid.value = false
-                isPhoneValid.value = false
-              } else {
-                isEmailValid.value = true
-                validateEmail.value.classList.add('is-valid')
-              }
-            }
-          catch (error) {
-            console.log(error)
-          }
+        } catch (error) {
+          console.log(error);
         }
       }
+    };
 
-      const setImageToUrl = (payload) => {
-        firstTimersObj.value.imageUrl = payload
+    const setImageToUrl = (payload) => {
+      firstTimersObj.value.imageUrl = payload;
+    };
+
+    const setContact = (payload) => {
+      if (!payload.email) {
+        toast.add({
+          severity: "warn",
+          summary: "No email associate with the person",
+          detail:
+            "This contact does not have any email records, communicate with this person to create him as a user",
+          life: 15000,
+        });
       }
-
-      const setContact = (payload) => {
-        if (!payload.email) {
-          toast.add({
-              severity: "warn",
-              summary: "No email associate with the person",
-              detail: "This contact does not have any email records, communicate with this person to create him as a user",
-              life: 15000,
-            });
-        }
-        firstTimersObj.value.contactOwnerId = payload.id
-      }
-
-     
+      firstTimersObj.value.contactOwnerId = payload.id;
+    };
 
     const getGroups = async () => {
       try {
@@ -1452,34 +1620,62 @@ export default {
       //     console.log(error);
       //   }
       // } else {
-        console.log(groupToAddTo.value)
-        firstTimerInGroup.value.push({
-          name: groupToAddTo.value.name,
-          groupId: groupToAddTo.value.id,
-          position: position.value
-        })
+      console.log(groupToAddTo.value);
+      firstTimerInGroup.value.push({
+        name: groupToAddTo.value.name,
+        groupId: groupToAddTo.value.id,
+        position: position.value,
+      });
 
-        groupToAddTo.value = {}
-        position.value = ""
+      groupToAddTo.value = {};
+      position.value = "";
       // }
-      console.log(firstTimerInGroup.value)
+      console.log(firstTimerInGroup.value);
     };
 
     const setSelectedGroup = (item) => {
-      groupToAddTo.value = item
-    }
+      groupToAddTo.value = item;
+    };
 
     const getAllCustomFields = async () => {
       try {
-        let data = await allCustomFields.allCustomFields()
-         dynamicCustomFields.value = data.filter(i => i.entityType === 1)
-         console.log(dynamicCustomFields.value)
+        let data = await allCustomFields.allCustomFields();
+        dynamicCustomFields.value = data.filter((i) => i.entityType === 1);
+        console.log(dynamicCustomFields.value);
+      } catch (err) {
+        console.log(err);
       }
-      catch (err) {
-        console.log(err)
+    };
+    getAllCustomFields();
+
+    const searchAllGroups = computed(() => {
+      if (!searchGroupText.value && allGroups.value > 0) return allGroups.value
+      return allGroups.value.filter(i => {
+        if (i.name) return i.name.toLowerCase().includes(searchGroupText.value.toLowerCase())
+      })
+    })
+
+    const setGroupProp = () => {
+      hideDiv.value = !hideDiv.value;
+      nextTick(() => {
+        searchRef.value.focus()
+      })
+    };
+
+    watchEffect (() => {
+      if (store.getters['groups/selectedTreeGroup']) {
+        console.log(store.getters['groups/selectedTreeGroup'])
+        const selectedGroup = store.getters['groups/selectedTreeGroup']
+        hideDiv.value = true
+        groupToAddTo.value = selectedGroup;
+      }
+    })
+
+    const hideGroupModal = (e) => {
+      if (!e.target.classList.contains("exempt-hide")) {
+        hideDiv.value = true
       }
     }
-    getAllCustomFields()
 
     return {
       onSubmit,
@@ -1555,7 +1751,12 @@ export default {
       dismissAddToGroupModal,
       addMemberToGroup,
       setSelectedGroup,
-      dynamicCustomFields
+      dynamicCustomFields,
+      searchAllGroups,
+      searchRef,
+      setGroupProp,
+      hideDiv,
+      hideGroupModal
     };
   },
 };
@@ -1721,13 +1922,13 @@ export default {
 }
 
 .add-group {
-  width: 330px; 
-  margin: 4px 8px; 
-  border-radius: 3px
+  width: 330px;
+  margin: 4px 8px;
+  border-radius: 3px;
 }
 
 .input-dropdown {
-  width: 330px
+  width: 330px;
 }
 
 @media (max-width: 620px) {
@@ -1742,12 +1943,12 @@ export default {
   }
 
   .widen {
-    width: 100%
+    width: 100%;
   }
 
   .add-group {
-      width: 100%;
-    }
+    width: 100%;
+  }
 
   .input-dropdown {
     width: 100%;
@@ -1755,10 +1956,11 @@ export default {
 
   .show-occ-tab {
     height: 144px;
-  }  
-  
-  .cs-select-dropdown, .cstm-select.search-box {
-    width: 100%
+  }
+
+  .cs-select-dropdown,
+  .cstm-select.search-box {
+    width: 100%;
   }
 }
 
@@ -1931,9 +2133,20 @@ template.p-dropdown-parent {
   }
 
   .dropdown-menu {
-      max-height: 300px;
-      overflow: scroll;
-      box-shadow: 0 2px 4px -1px rgb(0 0 0 / 20%), 0 4px 5px 0 rgb(0 0 0 / 14%), 0 1px 10px 0 rgb(0 0 0 / 12%);
+    max-height: 300px;
+    overflow: scroll;
+    box-shadow: 0 2px 4px -1px rgb(0 0 0 / 20%), 0 4px 5px 0 rgb(0 0 0 / 14%),
+      0 1px 10px 0 rgb(0 0 0 / 12%);
   }
+}
+
+.div-card {
+  position: absolute;
+  background: white;
+  z-index: 1;
+  width: 100%;
+  box-shadow: 0 0 11px rgba(33, 33, 33, 0.2);
+  max-height: 400px;
+  overflow: scroll;
 }
 </style>

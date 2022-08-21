@@ -871,7 +871,7 @@ props: ['selectedGroupMembers', 'groupData'],
     const invalidMessage = ref(false);
     const invalidDestination = ref(false);
 
-    const sendSMS = (data) => {
+    const sendEmail = (data) => {
       console.log(data, "DATA");
       invalidDestination.value = false;
       invalidMessage.value = false;
@@ -903,25 +903,16 @@ props: ['selectedGroupMembers', 'groupData'],
         .then((res) => {
           if (res.status === 200) {
             store.dispatch('communication/addToSentEmail', res.data.mail)
-            swal({
-              title: "Success!",
-              text: "Your email has been sent successfully!",
-              icon: "success",
-              buttons: ["Send another", "Good"],
-              confirmButtonColor: '#8CD4F5',
-              dangerMode: true,
-            })
-            .then((willDelete) => {
-              if (willDelete) {
-                router.push({ name: 'SentEmails' })
-              }
-            });
-            
+             toast.add({
+              severity: "success",
+              summary: "Sent",
+              detail: "Email sent successfully",
+              life: 4000,
+            }); 
           }          
         })
         .catch((err) => {
           stopProgressBar();
-          toast.removeAllGroups();
           if (err.toString().toLowerCase().includes('network error')) {
             toast.add({
               severity: "warn",
@@ -975,13 +966,8 @@ props: ['selectedGroupMembers', 'groupData'],
               <div id="email-body" style="max-width: 1000px; margin: auto"> ${editorData.value} </div>
             </body>
           </html>`,
-        // contacts: [],
-        // contacts: selectedMembers.value.map(i => {
-        //   return { email: i.email }
-        // }),
         isPersonalized: isPersonalized.value,
         groupedContacts: selectedGroups.value.map((i) => i.data),
-        // toContacts: sendToAll.value ? 'allcontacts_00000000-0000-0000-0000-000000000000' : '',
       };
 
       if (selectedMembers.value.length > 0) {
@@ -998,7 +984,7 @@ props: ['selectedGroupMembers', 'groupData'],
         data.executionDate = executionDate.value;
         scheduleMessage(data);
       } else {
-        sendSMS(data);
+        sendEmail(data);
       }
     };
 
@@ -1209,7 +1195,7 @@ props: ['selectedGroupMembers', 'groupData'],
       selectMember,
       searchText,
       filteredMembers,
-      sendSMS,
+      sendEmail,
       phoneNumber,
       searchForPerson,
       loading,
