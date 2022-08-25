@@ -1,17 +1,20 @@
 <template>
     <div class="container-fluid">
         <div class="row my-4">
-            <div class="col-md-12">
-                <h1>Ministry Workflows</h1>
+            <div class="col-md-6">
+                <div class="heading-text">Ministry Workflows</div>
+            </div>
+            <div class="col-md-6 d-flex justify-content-end">
+                <router-link to="/tenant/workflow/add?fw=true" class="text-decoration-none font-weight-bold px-3 mx-2 p-2"><button class="default-btn border-0 primary-bg text-white ">Add</button></router-link>
             </div>
         </div>
-        <div class="row mt-3 mb-4">
+        <!-- <div class="row mt-3 mb-4">
             <div class="col-md-12 py-2 w-links-con">
                 <router-link to="/tenant/workflow/list" class="text-decoration-none font-weight-bold px-3 mx-2 p-2" :class="{ 'w-tab': route.path.includes('workflow/list') }">List</router-link>
                 <router-link to="/tenant/workflow/add?fw=true" class="text-decoration-none font-weight-bold px-3 mx-2 p-2" :class="{ 'w-tab': route.path.includes('workflow/add') }">Add</router-link>
                 <router-link to="/tenant/workflow/log" class="text-decoration-none font-weight-bold px-3 mx-2 p-2" :class="{ 'w-tab': route.path.includes('workflow/log') }">Log</router-link>
             </div>
-        </div>
+        </div> -->
 
         <div class="row">
             <div class="col-md-12">
@@ -50,5 +53,9 @@ export default {
 
     .router-link-exact-active {
         color: #000 !important;
+    }
+    .heading-text {
+        font: normal normal 800 1.5rem Nunito sans;
+        font-size: 35px;
     }
 </style>

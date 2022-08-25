@@ -710,16 +710,8 @@
                       >
                         <a class="dropdown-item"
                           ><router-link
-                            :to="`/tenant/pledge/pledgepayment?id=${
-                              pledgelist.pledgeTypeID
-                            }&pledgeTypeID=${pledgelist.id}&name=${
-                              pledgelist.contact
-                                ? pledgelist.contact
-                                : ''
-                            }${
-                              pledgelist.contact
-                                ? pledgelist.contact
-                                : ''
+                            :to="`/tenant/pledge/pledgemaking?id=${
+                              pledgelist.contactID
                             }`"
                             class="text-color"
                             >Make Payment</router-link

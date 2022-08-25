@@ -136,6 +136,31 @@
           <a
             class="link dd"
             :class="{
+              'router-link-exact-active': route.path.includes('communication'),
+            }"
+            
+          >
+            <span class="workflow" @click="workFlow" v-if="admin || basicUser">
+              <img
+                src="../../assets/workflow.png"
+                class="link-icon comm-link-icon"
+                alt=""
+              />
+              <span class="drop-link"
+                >Workflow
+                <!-- <span class="user-link-icon">
+                  <i
+                    class="pi pi-angle-up more-icon"
+                    :class="{ 'tbb-icon-rotate': commLinkDropped }"
+                  ></i></span
+              > -->
+              </span>
+            </span>
+          </a>
+
+          <a
+            class="link dd"
+            :class="{
               'router-link-exact-active': route.path.includes('/tenant/event'),
             }"
           >
@@ -632,10 +657,14 @@ export default {
     const goToReport = () => {
       router.push('/tenant/reports')
     }
+    const workFlow = () => {
+      router.push('/tenant/workflow/list')
+    }
     
 
     return {
       route,
+      workFlow,
       pledgeLinkDropped,
       togglePledgeDropDown,
       moreShown,
@@ -673,6 +702,12 @@ export default {
 <style scoped>
 * {
   box-sizing: border-box;
+}
+
+.workflow img{
+  margin-left: 0px;
+  height: 25px;
+  opacity: 0.5;
 }
 
 .myimage img{
