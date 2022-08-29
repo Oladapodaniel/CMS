@@ -130,32 +130,8 @@
             <li class="dd-list-item">
               <router-link class="dd-link-item routelink" to="/tenant/Voice">Voice</router-link>
             </li>
-          </ul>
-          <!-- </a> -->
-
-          <a
-            class="link2 dd"
-            
-            
-          >
-            <span class="workflow" @click="workFlow" v-if="admin || basicUser">
-              <img
-                src="../../assets/workflow.png"
-                class="link-icon comm-link-icon"
-                alt=""
-              />
-              <span class="drop-link"
-                >Workflow
-                <span class="ml-1 badge badge-warning badge-pill badges-hover ">New</span>
-                <!-- <span class="user-link-icon">
-                  <i
-                    class="pi pi-angle-up more-icon"
-                    :class="{ 'tbb-icon-rotate': commLinkDropped }"
-                  ></i></span
-              > -->
-              </span>
-            </span>
-          </a>
+            </ul>
+          
 
           <a
             class="link dd"
@@ -262,6 +238,33 @@
               >
             </li> -->
           </ul>
+
+          
+          <!-- </a> -->
+
+          <a
+            class="link2 dd"
+            
+            
+          >
+            <span class="workflow" @click="workFlow" v-if="admin || basicUser">
+              <img
+                src="../../assets/workflow.png"
+                class="link-icon comm-link-icon"
+                alt=""
+              />
+              <span class="drop-link"
+                >Workflow
+                <span class="ml-1 badge badge-warning badge-pill badges-hover ">New</span>
+                <!-- <span class="user-link-icon">
+                  <i
+                    class="pi pi-angle-up more-icon"
+                    :class="{ 'tbb-icon-rotate': commLinkDropped }"
+                  ></i></span
+              > -->
+              </span>
+            </span>
+          </a>
             <!-- <a
             class="link badges-hover dd"
             :class="{

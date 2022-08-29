@@ -633,7 +633,7 @@
                   </div>
                   <div class="modal-body">
                     <div class="col-md-12">
-              <Dialog
+              <!-- <Dialog
                 header="Action Needed"
                 v-model:visible="displays"
                 :style="{ width: '70vw', maxWidth: '600px' }"
@@ -648,11 +648,9 @@
                             send messages between 8am in the morning to 8pm in
                             the evening.
                           </div>
-                    <!-- <h6>You have accounts that needs to be updated, click on the link below to continue</h6>
-                    <router-link class="text-decoration-none primary-text font-weight-bold" to="/tenant/chartofaccount/update">Update accounts</router-link> -->
                   </div>
                 </div>
-              </Dialog>
+              </Dialog> -->
             </div>
                     <div class="row" v-if="!nigerian">
                       <div class="col-md-12 text-center">

@@ -1,5 +1,5 @@
 <template>
-    <div class="container-fluid">
+    <div class="container-fluid mt-3 container-wide">
         <div class="row my-4">
             <div class="col-md-6">
                 <div class="heading-text">Ministry Workflows</div>
