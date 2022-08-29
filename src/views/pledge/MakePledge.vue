@@ -309,15 +309,13 @@ export default {
         const res = await axios.get(
           `/api/Pledge/GetOnePledge?ID=${route.query.id}`
         );
-        selectedPledge.value = res.data.returnObject.pledgeType;
-        selectedContact.value = res.data.returnObject.person;
-        selectedContact.value.name = `${
-          res.data.returnObject.person.firstName
-            ? res.data.returnObject.person.firstName
-            : ""
-        } ${
-          res.data.returnObject.person.lastName
-            ? res.data.returnObject.person.lastName
+        console.log(res, 'jjjj');
+        // selectedPledge.value = res.data.returnObject.pledgeItemName;
+        selectedPledge.value = res.data.returnObject;
+        selectedContact.value = res.data.returnObject.contact;
+        selectedContact.value = `${
+          res.data.returnObject.contact
+            ? res.data.returnObject.contact
             : ""
         }`;
       } catch (error) {
