@@ -134,10 +134,8 @@
           <!-- </a> -->
 
           <a
-            class="link dd"
-            :class="{
-              'router-link-exact-active': route.path.includes('communication'),
-            }"
+            class="link2 dd"
+            
             
           >
             <span class="workflow" @click="workFlow" v-if="admin || basicUser">
@@ -148,6 +146,7 @@
               />
               <span class="drop-link"
                 >Workflow
+                <span class="ml-1 badge badge-warning badge-pill badges-hover ">New</span>
                 <!-- <span class="user-link-icon">
                   <i
                     class="pi pi-angle-up more-icon"
@@ -741,6 +740,15 @@ export default {
   margin: 22px 0 0 0;
   padding-left: 25px;
 }
+.nav .link2 {
+  display: flex;
+  justify-content: start;
+  color: #02172e;
+  text-decoration: none;
+  opacity: 0.8;
+  margin: 22px 0 0 0;
+  padding-left: 25px;
+}
 
 .user-link,
 .drop-link {
@@ -749,9 +757,10 @@ export default {
 
 
 .badges-hover:hover {
-  /* background-color: yellow !important; */
+  background-color: yellow !important;
+  color: rgb(0, 0, 0) !important;
   filter:   
-    opacity(95%) !important ;
+    opacity(95%) !important;
 }
 
 .user-link-icon {
@@ -759,6 +768,10 @@ export default {
   opacity: 0.5;
 }
 
+.nav .link2:hover {
+  filter: 
+    opacity(95%) ;
+}
 .nav .link:hover {
   filter: grayscale(29%) brightness(3%) hue-rotate(338deg) saturate(940%)
     opacity(95%) contrast(989%);
