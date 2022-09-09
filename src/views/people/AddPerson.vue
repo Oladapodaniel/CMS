@@ -324,7 +324,7 @@
                       v-model="selectedAgeGroup"
                       :options="ageGroups"
                       optionLabel="name"
-                      placeholder="--Select age range--"
+                      placeholder="--Select age group--"
                       style="width: 100%"
                     />
                     <!-- <SelectElem name="agegroup" :options="['-Select age range', ...groupsByAge]" value="-Select age range" @input="itemSelected"/> -->
@@ -333,13 +333,13 @@
               </div>
               <div v-for="(item, index) in dynamicCustomFields" :key="index">
                 <div class="input-field align-items-sm-center" v-if="item.controlType == 1" >
-                  <label for="" class="mr-2" >{{item.label}}</label>
+                  <label for="" class="mr-2"  >{{item.label}}</label>
                   <div class="cstm-select search-box">
                     <div class="cs-select-dropdown">
                       <Dropdown
                         v-model="item.data"
                         :options="item.parameterValues.split(',')"
-                        placeholder="--Select age range--"
+                        :placeholder="item.label"
                         style="width: 100%"
                       />
                   </div>
@@ -1382,6 +1382,7 @@ export default {
       try {
         let data = await allCustomFields.allCustomFields()
         dynamicCustomFields.value = data.filter(i => i.entityType === 0)
+        console.log(allCustomFields)
       }
       catch (err) {
         console.log(err)

@@ -120,7 +120,7 @@
                       <Dropdown
                         v-model="item.data"
                         :options="item.parameterValues.split(',')"
-                        placeholder="Select option"
+                        :placeholder="item.label"
                         style="width: 100%"
                       />
                     </div>
@@ -819,7 +819,6 @@ export default {
     const getCustomFields = async() => {
       try {
         let { data } = await axios.get(`/GetAllCustomFields?entityType=0&&tenantID=${route.params.id}`);
-        console.log(data, "❤❤")
         dynamicCustomFields.value = data
       }
       catch (err) {
