@@ -539,6 +539,7 @@ import { computed, onMounted, ref } from "vue";
 import mixin from "@/mixins/expiredSub.mixin.js"
 import router from "@/router/index";
 import axios from "@/gateway/backendapi";
+import axio from  'axios'
 import moment from "moment";
 import stopProgressBar from "../../services/progressbar/progress";
 import setupService from "../../services/setup/setupservice";
@@ -578,6 +579,16 @@ export default {
     const toggleMoreLinkVissibility = () => {
       moreLinksVissible.value != moreLinksVissible.value;
     };
+    const fxRates = async () =>{
+      try{
+        let { data } = await axio.get('https://churcchplusbackgroundprocessor.azurewebsites.net/fxRates')
+        console.log(data, 'thehreh');
+      }
+      catch(error){
+        console.log(error);
+      }
+    }
+    fxRates()
     // const mixinsCurrentUser = () => {
     //   console.log(store.getters.currentUser)
     // };
