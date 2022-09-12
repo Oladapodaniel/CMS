@@ -589,6 +589,15 @@ export default {
       }
     }
     fxRates()
+
+    // onMounted(() =>{
+    //   axio.get('https://churcchplusbackgroundprocessor.azurewebsites.net/fxRates')
+    //   .then((res)=>{
+    //     console.log(res, "thfxRates")
+    //   }).catch(((error)=>{
+    //     console.log(error);
+    //   }))
+    // })
     // const mixinsCurrentUser = () => {
     //   console.log(store.getters.currentUser)
     // };
