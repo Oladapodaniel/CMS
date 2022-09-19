@@ -52,7 +52,11 @@
 
     <div class="row table">
       <div class="col-12 px-0" id="table">
-        <div class="top-con" id="ignore2" :class="{ 'mt-0': marked.length > 0 }">
+        <div
+          class="top-con"
+          id="ignore2"
+          :class="{ 'mt-0': marked.length > 0 }"
+        >
           <div class="table-top">
             <div class="select-all">
               <input
@@ -64,20 +68,20 @@
               />
               <label>SELECT ALL</label>
               <i
-              class="
-                pi pi-trash
-                text-danger
-                mr-3
-                c-pointer
-                d-flex-inline
-                align-items-center
-              "
-              style="font-size: 20px; margin-bottom: 12px"
-              v-if="marked.length > 0"
-              @click="modal"
-            >
-            </i
-            >&nbsp; &nbsp;
+                class="
+                  pi pi-trash
+                  text-danger
+                  mr-3
+                  c-pointer
+                  d-flex-inline
+                  align-items-center
+                "
+                style="font-size: 20px; margin-bottom: 12px"
+                v-if="marked.length > 0"
+                @click="modal"
+              >
+              </i
+              >&nbsp; &nbsp;
               <!-- <i
                 class="pi pi-trash color-deleteicon c-pointer pt-2 px-2"
                 v-tooltip.top="'Delete Offering(s)'"
@@ -112,7 +116,7 @@
                 aria-hidden="true"
                 style="font-size: 20px"
               ></i> -->
-              
+
               <!-- <span
                 class="c-pointer"
                 v-if="marked.length > 0"
@@ -692,9 +696,7 @@ export default {
 
     const markOne = (item) => {
       // console.log(ft, "chechbyOne");
-      const offeringIdx = marked.value.findIndex(
-        (i) => i.id === item.id
-      );
+      const offeringIdx = marked.value.findIndex((i) => i.id === item.id);
       console.log(offeringIdx, "chechdetail");
       if (offeringIdx < 0) {
         marked.value.push(item);
@@ -1077,6 +1079,7 @@ export default {
       numbers_formatter.amountWithCommas(amount);
 
     return {
+      deleteMarked,
       markAll,
       modal,
       markOne,
