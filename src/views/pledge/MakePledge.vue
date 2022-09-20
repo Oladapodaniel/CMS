@@ -297,7 +297,7 @@ export default {
     const chooseContact = (payload) => {
       payload.firstName = payload.name;
       selectedContact.value = payload;
-      console.log(selectedContact.vaue, "allContact");
+      console.log(selectedContact.value, "allContact");
     };
 
     const active = (payload) => {
@@ -311,7 +311,7 @@ export default {
         );
         console.log(res, 'jjjj');
         // selectedPledge.value = res.data.returnObject.pledgeItemName;
-        selectedPledge.value = res.data.returnObject;
+        selectedPledge.value = res.data.returnObject.pledgeType;
         selectedContact.value = res.data.returnObject.contact;
         selectedContact.value = `${
           res.data.returnObject.contact

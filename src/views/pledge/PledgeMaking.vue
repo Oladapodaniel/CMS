@@ -17,7 +17,8 @@
               <span class="theader"> Pledge Name </span>
               <div class="my-3">
                 <span class="evt-name">
-                  {{ selectedPledge.pledgeItemName}}
+                  <!-- {{ selectedPledge || selectedPledge.pledgeItemName ? selectedPledge.pledgeItemName: ''}} -->
+                  {{ pledgeName}}
                 </span>
               </div>
             </div>
@@ -26,7 +27,7 @@
               <span class="theader">Donor</span>
               <div class="my-3">
                 <!-- <span class="evt-name">{{ personName }}</span> -->
-                <span class="evt-name">{{ selectedPledge.contact }}</span>
+                <span class="evt-name">{{ personName }}</span>
               </div>
             </div>
             <div class="col-md-4">
@@ -36,7 +37,7 @@
                   <!-- {{ pledgeAmount.toLocaleString() }} -->
                    {{
                           Math.abs(
-                            selectedPledge.totalPaymentSum
+                            pledgePaymentSum
                           ).toLocaleString()
                         }}.00
                 </span>
@@ -49,7 +50,7 @@
                 <span class="evt-name">
                   {{
                           Math.abs(
-                            selectedPledge.balance
+                            pledgeBalance
                           ).toLocaleString()
                         }}.00</span
                 >
@@ -59,7 +60,7 @@
             <div class="col-md-4">
               <span class="theader">Date</span>
               <div class="my-3">
-                <span class="evt-name"> {{ date(selectedPledge.date) }}</span>
+                <span class="evt-name"> {{ date(pledgeDate) }}</span>
               </div>
             </div>
           </div>
@@ -502,7 +503,7 @@
                               :disabled="checking"
                               class="form-control w-100"
                             /> -->
-                            <h4 class="font-weight-600">{{ selectedPledge.contact }}</h4>
+                            <h4 class="font-weight-600">{{ personName }}</h4>
                           </div>
                         </div>
                       </div>
@@ -532,7 +533,7 @@
                               class="form-control w-100"
                             /> -->
                             <h4 class="font-weight-100">
-                              {{ selectedPledge.pledgeItemName  }}
+                              {{ pledgeName  }}
                             </h4>
                           </div>
                         </div>
@@ -557,7 +558,7 @@
                             <div class="col-8 col-lg-10 m-0 p-0">
                                  <input
                                   type="number"
-                                  v-model="selectedPledge.amount"
+                                  v-model="pledgeAmount"
                                   :disabled="false"
                                   class="form-control"
                                 />
@@ -635,7 +636,7 @@
 <script>
 import axios from "@/gateway/backendapi";
 import ReportModal from "@/components/firsttimer/ReportModal.vue";
-import { ref, computed } from "vue";
+import { ref, computed, onMounted } from "vue";
 import Dropdown from "primevue/dropdown";
 import InputText from "primevue/inputtext";
 import { useToast } from "primevue/usetoast";
@@ -695,6 +696,14 @@ export default {
       { name: "Specific" },
       { name: "Range" },
     ]);
+    const personName = ref('');
+    const pledgeName = ref('');
+    const pledgeID = ref(route.query.pledgeTypeID);
+    const pledgePaymentSum = ref('');
+    const pledgeBalance = ref('');
+    const pledgeDate = ref('');
+    const pledgeAmount = ref('');
+    // const pledgeAmount = ref(Number(route.query.amount).toLocaleString());
 
 
     const getAllpaymentList =  async () => {
@@ -710,6 +719,39 @@ export default {
     }
 
     getAllpaymentList()
+
+    // onMounted(() =>{
+    //   axios.get(`/api/Pledge/GetOnePledge?ID=${route.query.pledgeTypeID}`)
+    //   .then((res) =>{
+    //     console.log(res, "thepledgesone");
+    //     selectedPledge.value = res.data.returnObject;
+    //   })
+    //   .catch((err)=>{
+    //     console.log(err);
+    //   })
+    // })
+
+    const getSinglePledge = async () => {
+      checking.value = false;
+      try {
+        const res = await axios.get(
+          `/api/Pledge/GetOnePledge?ID=${route.query.pledgeTypeID}`
+        );
+        console.log(res);
+        pledgeName.value = res.data.returnObject.pledgeItemName;
+        personName.value = res.data.returnObject.contact;
+        pledgePaymentSum.value = res.data.returnObject.totalPaymentSum;
+        pledgeBalance.value = res.data.returnObject.balance;
+        pledgeDate.value = res.data.returnObject.date;
+        pledgeAmount.value = res.data.returnObject.amount;
+        selectedPledge.value = res.data.returnObject;
+        console.log(selectedPledge.value, "selected");
+        checking.value = true;
+      } catch (error) {
+        console.log(error);
+      }
+    };
+    if (route.query.pledgeTypeID) getSinglePledge();
 
     const searchPledgePayment = computed(() => {
           if (searchText.value !== "" && allPledgePaymentList.value.length > 0)  {
@@ -783,13 +825,6 @@ export default {
       { name: "USSD" },
       { name: "Cheque" },
     ]);
-
-    const personName = ref(route.query.name);
-    const pledgeName = ref(route.query.pledgeType);
-    const pledgeID = ref(route.query.pledgeTypeID);
-    const pledgeDate = ref(route.query.date);
-    const pledgeAmount = ref(Number(route.query.amount).toLocaleString());
-
     const shareableLinkField = ref(null);
     const locationTwo = ref(window.location);
     const willCopyLink = ref(false);
@@ -995,49 +1030,31 @@ export default {
     };
    
 
-    const getSinglePledge = async () => {
-      checking.value = false;
-      try {
-        const res = await axios.get(
-          `/api/Pledge/GetOnePledge?ID=${route.query.pledgeTypeID}`
-        );
-        console.log(res);
-        // freewillAmount.value = res.data.returnObject.amount;
-        // paymentAmount.value = res.data.returnObject.amount;
-        selectedPledge.value = res.data.returnObject;
-        console.log(selectedPledge.value, "selected");
-        // getAllCurrencies(selectedPledge.value.currencyID);
-        // memberName.value = route.query.name;
-        checking.value = true;
-      } catch (error) {
-        console.log(error);
-      }
-    };
-    if (route.query.pledgeTypeID) getSinglePledge();
+    
 
-    const makePledge = async () => {
-      const makePledgeDetails = {
-        personID: selectedContact.value.id,
-        pledgeTypeID: selectedPledge.value.id,
-        amountBase: selectedPledge.value.donorPaymentRangeFromAmount,
-        amountTop: selectedPledge.value.donorPaymentRangeToAmount,
-        amountBase: selectedPledge.donorPaymentSpecificAmount,
-        amountBase: freewillAmount.value,
-      };
+    // const makePledge = async () => {
+    //   const makePledgeDetails = {
+    //     personID: selectedContact.value.id,
+    //     pledgeTypeID: selectedPledge.value.id,
+    //     amountBase: selectedPledge.value.donorPaymentRangeFromAmount,
+    //     amountTop: selectedPledge.value.donorPaymentRangeToAmount,
+    //     amountBase: selectedPledge.donorPaymentSpecificAmount,
+    //     amountBase: freewillAmount.value,
+    //   };
 
-      try {
-        const res = await axios.post(
-          "api/Pledge/SavePledge",
-          makePledgeDetails
-        );
-        finish();
-        router.push(
-          `/pledge/pledgepayment?ID=${route.query.id}&name=${route.query.name}`
-        );
-      } catch (error) {
-        console.log(error);
-      }
-    };
+    //   try {
+    //     const res = await axios.post(
+    //       "api/Pledge/SavePledge",
+    //       makePledgeDetails
+    //     );
+    //     finish();
+    //     router.push(
+    //       `/pledge/pledgepayment?ID=${route.query.id}&name=${route.query.name}`
+    //     );
+    //   } catch (error) {
+    //     console.log(error);
+    //   }
+    // };
 
     // const getSinglePledgeDefinition = async () =>{
     //         try{
@@ -1069,6 +1086,9 @@ export default {
 
     return {
       date,
+      pledgeDate,
+      pledgeBalance,
+      pledgePaymentSum,
       selectedCurrency,
       allPledgePaymentList,
       searchText,
@@ -1092,10 +1112,8 @@ export default {
       memberName,
       tenantID,
       checking,
-      makePledge,
       chooseContact,
       selectedPledge,
-      pledgeDate,
       makePayment,
       pledgeCategory,
       amountTo,

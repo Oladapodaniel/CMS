@@ -711,7 +711,7 @@
                         <a class="dropdown-item"
                           ><router-link
                             :to="`/tenant/pledge/pledgemaking?id=${
-                              pledgelist.id
+                              pledgelist.pledgeType.id
                             }`"
                             class="text-color"
                             >Make Payment</router-link
