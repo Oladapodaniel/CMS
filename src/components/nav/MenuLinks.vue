@@ -77,7 +77,7 @@
             </li>
             <li class="dd-list-item" v-if="admin || basicUser || groupLeader">
               <router-link class="dd-link-item routelink" to="/tenant/peoplegroups"
-                >Groups</router-link
+                >Groups/Department</router-link
               >
             </li>
             <!-- Hidden -->

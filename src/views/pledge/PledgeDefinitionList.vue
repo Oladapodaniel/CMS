@@ -234,7 +234,7 @@
                       </span>
                        <div class="small-text">
                         <!-- {{ pledgelist.totalPledgeAmount }} -->
-                        {{ pledgelist.currency }}
+                        {{ pledgelist && pledgelist.currency ? pledgelist.currency.symbol : "" }}
                         {{
                           Math.abs(
                             pledgelist.totalPledgeAmount
@@ -259,7 +259,7 @@
                         >Redeemed</span
                       >
                       <div class="small-text text-right text-md-center">
-                        {{ pledgelist.currency }}
+                        {{ pledgelist && pledgelist.currency ? pledgelist.currency.symbol : "" }}
                         {{
                           Math.abs(
                             pledgelist.totalPaymentsAmount
