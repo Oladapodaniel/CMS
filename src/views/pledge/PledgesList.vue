@@ -636,7 +636,7 @@
                   {{
                     pledgelist  &&
                     pledgelist.currency
-                      ? pledgelist.currency
+                      ? pledgelist.currency.symbol
                       : ""
                   }}
                   {{ Math.abs(pledgelist.amount).toLocaleString() }}.00

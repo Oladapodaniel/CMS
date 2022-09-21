@@ -343,6 +343,7 @@ export default {
                 loading.value = true
                   try{
                     const res = await axios.get('/api/Pledge/GetAllPledgePaymentsForTenant')
+                    // const res = await axios.get(`/api/Pledge/GetAllPledgePayments?ID=${id}`)
                     finish()
                     allPledgePaymentList.value = res.data.returnObject
                     console.log(allPledgePaymentList.value,'getPledgepayment😁😁');

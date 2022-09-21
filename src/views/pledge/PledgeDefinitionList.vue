@@ -259,7 +259,7 @@
                         >Redeemed</span
                       >
                       <div class="small-text text-right text-md-center">
-                        {{ pledgelist.currency }}
+                        {{ pledgelist.currency.symbol}}
                         {{
                           Math.abs(
                             pledgelist.totalPaymentsAmount

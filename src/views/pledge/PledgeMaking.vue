@@ -767,9 +767,10 @@ export default {
             const getAllPledgePaymentList = async () => {
                 loading.value = true
                   try{
-                    const res = await axios.get('/api/Pledge/GetAllPledgePaymentsForTenant')
+                    // const res = await axios.get('/api/Pledge/GetAllPledgePaymentsForTenant')
+                    const res = await axios.get(`/api/Pledge/GetAllPledgePayments?ID=${route.query.pledgeTypeID}`)
                     finish()
-                    allPledgePaymentList.value = res.data.returnObject
+                    allPledgePaymentList.value = res.data
                     console.log(allPledgePaymentList.value,'getPledgepayment😁😁');
                     loading.value = false
                 }
@@ -784,7 +785,7 @@ export default {
                   }
                 }
             }
-            getAllPledgePaymentList()
+           
 
     const date = (offDate) => {
       return monthDayYear.monthDayYear(offDate);
@@ -794,9 +795,9 @@ export default {
       let paymentData = {
         id: selectedPledge.id,
         pledgeID: route.query.pledgeTypeID,
-        amount: selectedPledge.value.amount,
+        amount: pledgeAmount.value,
         channel: selectedChannel.value.name,
-        currencyID: selectedPledge.value.currencyID,
+        currencyID: selectedPledge.value.currency.id,
       };
       try {
         const res = await axios.post(
@@ -811,6 +812,7 @@ export default {
           detail: "Pledge Payment successfully",
           life: 2000,
         });
+         getAllPledgePaymentList()
         router.push(`/tenant/pledge/pledgemaking?pledgeTypeID=${route.query.pledgeTypeID}`);
         // router.push("/tenant/pledge/pledgepaymentlist");
       } catch (error) {
