@@ -734,6 +734,7 @@ import CascadeSelect from "primevue/cascadeselect";
 import grousService from "../../services/groups/groupsservice";
 import MultiSelect from "primevue/multiselect";
 import InputSwitch from 'primevue/inputswitch';
+import store from '../../store/store';
 export default {
   components: {
     Dropdown,
@@ -803,11 +804,10 @@ export default {
           `/api/Pledge/GetSinglePledgeDefinitions?ID=${route.query.id}`
         );
         finish();
-        getAllCurrencies(res.data.returnObject.currencyID);
+        getAllCurrencies(res.data.returnObject.currency.id);
         getContributionCategory(res.data.returnObject.financialContributionID);
-
-        console.log(res.data.returnObject.currencyID, selectedCurrency.value);
-        console.log(currencyList);
+console.log(store.getters.currentUser, 'ggggg')
+   
         targetAmount.value = res.data.returnObject.totalTargetAmount;
         pledgeName.value = res.data.returnObject.name;
         specificAmount.value = res.data.returnObject.donorPaymentSpecificAmount;

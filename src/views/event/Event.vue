@@ -2627,9 +2627,10 @@ export default {
       this.eventObj = {
         attendances: this.attendanceItem,
         offerings: this.offeringItem.map((i) => {
+          console.log(i, "theman");
           delete i.showCurrency;
           delete i.fromCurrencyRate;
-          if (i.amount.toString().includes(',') ) {
+          if (i.amount.includes(',') ) {
             i.amount = i.amount.split(',').join('')
           }
           return i;
@@ -2638,6 +2639,7 @@ export default {
         activityFirstTimers: this.firstTimers,
         activityNewConverts: this.newConverts,
       };
+      console.log(this.eventObj, "the eventObject");
 
       // If preactivity id is empty, dont send preevent as part of the event object, else send it
       if (this.preActivityId) {
@@ -3058,6 +3060,7 @@ export default {
       if (this.$route.params.event) {
         try {
           let res = await axios.get(`/api/Events/${this.$route.params.event}`);
+          console.log(res, "rthrhh");
           this.routeParams = this.$route.params.event;
           this.eventDate = res.data.activity.date.substr(0, 10);
           this.topic = res.data.activity.topic;
@@ -3065,6 +3068,7 @@ export default {
           this.selectedEventCategoryId = res.data.activity.eventCategoryId;
           this.attendanceItem = res.data.attendances;
           this.offeringItem = res.data.offerings.map((i) => {
+            console.log(i, "rririririrlo");
             return {
               activity: i.activity,
               activityID: i.activityID,
