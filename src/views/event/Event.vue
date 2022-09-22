@@ -2629,7 +2629,7 @@ export default {
         offerings: this.offeringItem.map((i) => {
           delete i.showCurrency;
           delete i.fromCurrencyRate;
-          if (i.amount.includes(',')) {
+          if (i.amount.toString().includes(',') ) {
             i.amount = i.amount.split(',').join('')
           }
           return i;

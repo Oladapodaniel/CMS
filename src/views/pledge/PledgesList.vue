@@ -636,7 +636,7 @@
                   {{
                     pledgelist  &&
                     pledgelist.currency
-                      ? pledgelist.currency
+                      ? pledgelist.currency.symbol
                       : ""
                   }}
                   {{ Math.abs(pledgelist.amount).toLocaleString() }}.00
@@ -711,7 +711,7 @@
                         <a class="dropdown-item"
                           ><router-link
                             :to="`/tenant/pledge/pledgemaking?id=${
-                              pledgelist.id
+                              pledgelist.pledgeType.id
                             }`"
                             class="text-color"
                             >Make Payment</router-link

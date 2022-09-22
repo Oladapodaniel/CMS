@@ -456,6 +456,45 @@
                     </div>
                   </div>
                 </div>
+                <div class="col-md-12 mt-3">
+                  <div class="row">
+                    <div
+                      class="
+                        col-12 col-sm-12 col-lg-4
+                        text-sm-left text-lg-right
+                        align-self-center
+                      "
+                    >
+                      <label for="" class=""> Choose group(s) </label>
+                    </div>
+                    <div class="col-12 col-sm-12 col-lg-8">
+                      <MultiSelect
+                        v-model="selectedGroups"
+                        optionLabel="name"
+                        :options="groups"
+                        placeholder="Select groups"
+                        class="w-100"
+                        display="chip"
+                      />
+                    </div>
+                  </div>
+                </div>
+                <div class="col-md-12 mt-3">
+                  <div class="row">
+                    <div
+                      class="
+                        col-12 col-sm-12 col-lg-4
+                        text-sm-left text-lg-right
+                        align-self-center
+                      "
+                    >
+                      <label for="" class=""> Compulsory </label>
+                    </div>
+                    <div class="col-12 col-sm-12 col-lg-8">
+                      <InputSwitch v-model="checked" />
+                    </div>
+                  </div>
+                </div>
               </div>
             </div>
           </div>
@@ -465,11 +504,11 @@
               <div class="row">
                 <div class="col-md-12">
                   <hr class="hr my-3" />
-              </div>
+                </div>
               </div>
             </div>
           </div>
-  
+
           <!-- Bank -->
           <div class="row my-1 mt-4">
             <div class="col-md-10 offset-md-2">
@@ -499,15 +538,21 @@
                       aria-haspopup="true"
                       aria-expanded="false"
                     >
-                      <div class="d-flex justify-content-between align-items-center">
+                      <div
+                        class="
+                          d-flex
+                          justify-content-between
+                          align-items-center
+                        "
+                      >
                         <span>{{
-                        !selectedBank
-                          ? "Choose bank"
-                          : selectedBank.name.length > 27
-                          ? `${selectedBank.name.slice(0, 27)}...`
-                          : selectedBank.name
-                      }}</span>
-                      <i class="pi pi-chevron-down pr-1"></i>
+                          !selectedBank
+                            ? "Choose bank"
+                            : selectedBank.name.length > 27
+                            ? `${selectedBank.name.slice(0, 27)}...`
+                            : selectedBank.name
+                        }}</span>
+                        <i class="pi pi-chevron-down pr-1"></i>
                       </div>
                     </button>
                     <div
@@ -686,6 +731,9 @@ import router from "../../router";
 // import store from "../../store/store";
 import ToggleButton from "../donation/toggleButton.vue";
 import CascadeSelect from "primevue/cascadeselect";
+import grousService from "../../services/groups/groupsservice";
+import MultiSelect from "primevue/multiselect";
+import InputSwitch from 'primevue/inputswitch';
 export default {
   components: {
     Dropdown,
@@ -694,6 +742,8 @@ export default {
     InputText,
     CascadeSelect,
     ToggleButton,
+    MultiSelect,
+    InputSwitch
   },
   setup() {
     const toast = useToast();
@@ -740,6 +790,8 @@ export default {
     const incomeAccount = ref([]);
     const selectedCashAccount = ref({});
     const cashBankAccount = ref([]);
+    const selectedGroups = ref([]);
+    const checked = ref(false)
 
     const date = (offDate) => {
       return monthDayYear.normalDate(offDate);
@@ -1070,6 +1122,23 @@ export default {
     };
     getCashBankAccount();
 
+    const groups = ref([]);
+    const getGroups = async () => {
+      try {
+        const response = await grousService.getGroups();
+        groups.value = response.map((i) => {
+          return { id: i.id, name: i.name };
+        });
+        groups.value.unshift({
+          id: "0000-000-0000-0000-0000-0000",
+          name: "Entire ministry",
+        });
+      } catch (error) {
+        console.log(error);
+      }
+    };
+    getGroups();
+
     return {
       newConItems,
       date,
@@ -1116,6 +1185,9 @@ export default {
       incomeAccount,
       selectedCashAccount,
       cashBankAccount,
+      groups,
+      selectedGroups,
+      checked
     };
   },
 };

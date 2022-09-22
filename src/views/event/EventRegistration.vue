@@ -800,7 +800,7 @@ export default {
       newPerson.person.maritalStatusID = selectedMaritalStatus.value.id
       newPerson.person.genderID = selectedGender.value.id
       newPerson.person.yearOfWedding = yearOfWedding.value
-      newPerson.person.monthOfWedding = monthOfWedding.value
+      newPerson.person.monthOfWedding = months.indexOf(monthOfWedding.value) + 1
       newPerson.person.dayOfWedding = dayOfWedding.value
       newPerson.customAttributeData = dynamicCustomFields.value.map(i => ({
         customAttributeID: i.id,
