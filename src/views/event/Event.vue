@@ -2253,7 +2253,7 @@ export default {
             return { id: i.id, name: i.name };
           });
         })
-        .then((err) => {
+        .catch((err) => {
           NProgress.done();
           console.log(err);
         });
@@ -2630,7 +2630,7 @@ export default {
           console.log(i, "theman");
           delete i.showCurrency;
           delete i.fromCurrencyRate;
-          if (i.amount.includes(',') ) {
+          if (i.amount.toString().includes(',') ) {
             i.amount = i.amount.split(',').join('')
           }
           return i;

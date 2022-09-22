@@ -611,7 +611,7 @@
                           <button
                             class="default-btn primary-bg text-white"
                             data-dismiss="modal"
-                            @click="savePayment"
+                            @click="recordPayment"
                           >
                             <i class="pi pi-spin pi-spinner" v-if="loading"></i>
                             Save
@@ -680,7 +680,7 @@ export default {
     const isNameValid = ref(true);
     const isEmailValid = ref(true);
     const selectedPledge = ref({});
-    const memberName = ref("");
+    // const memberName = ref("");
     const allPledgeList = ref([]);
     const amountFrom = ref("");
     const selectedContact = ref({});
@@ -703,6 +703,8 @@ export default {
     const pledgeBalance = ref('');
     const pledgeDate = ref('');
     const pledgeAmount = ref('');
+    const pledgePaymentID = ref('');
+    const pledgeCurrencyID = ref('');
     // const pledgeAmount = ref(Number(route.query.amount).toLocaleString());
 
 
@@ -714,6 +716,7 @@ export default {
         console.log(res, "😂🤗❤😍😆😆😆");
         }
         catch (error){
+          NProgress.done();
           console.log(error)
         }
     }
@@ -744,10 +747,13 @@ export default {
         pledgeBalance.value = res.data.returnObject.balance;
         pledgeDate.value = res.data.returnObject.date;
         pledgeAmount.value = res.data.returnObject.amount;
+        pledgePaymentID.value = res.data.returnObject.id;
+        pledgeCurrencyID.value = res.data.returnObject.currency.id;
         selectedPledge.value = res.data.returnObject;
         console.log(selectedPledge.value, "selected");
         checking.value = true;
       } catch (error) {
+        NProgress.done();
         console.log(error);
       }
     };
@@ -767,14 +773,15 @@ export default {
             const getAllPledgePaymentList = async () => {
                 loading.value = true
                   try{
-                    // const res = await axios.get('/api/Pledge/GetAllPledgePaymentsForTenant')
-                    const res = await axios.get(`/api/Pledge/GetAllPledgePayments?ID=${route.query.pledgeTypeID}`)
+                    const res = await axios.get('/api/Pledge/GetAllPledgePaymentsForTenant')
+                    // const res = await axios.get(`/api/Pledge/GetAllPledgePayments?ID=${pledgeID.value}`)
                     finish()
-                    allPledgePaymentList.value = res.data
+                    allPledgePaymentList.value = res.data.returnObject
                     console.log(allPledgePaymentList.value,'getPledgepayment😁😁');
                     loading.value = false
                 }
                 catch (error){
+                  NProgress.done();
                     console.log(error)
                     loading.value = false;
 
@@ -785,19 +792,21 @@ export default {
                   }
                 }
             }
+            getAllPledgePaymentList()
            
 
     const date = (offDate) => {
       return monthDayYear.monthDayYear(offDate);
     };
 
-    const savePayment = async () => {
+    const recordPayment = async () => {
+      
       let paymentData = {
-        id: selectedPledge.id,
-        pledgeID: route.query.pledgeTypeID,
+        id: pledgePaymentID.value,
+        pledgeID:  route.query.pledgeTypeID,
         amount: pledgeAmount.value,
         channel: selectedChannel.value.name,
-        currencyID: selectedPledge.value.currency.id,
+        currencyID: pledgeCurrencyID.value,
       };
       try {
         const res = await axios.post(
@@ -812,10 +821,10 @@ export default {
           detail: "Pledge Payment successfully",
           life: 2000,
         });
-         getAllPledgePaymentList()
         router.push(`/tenant/pledge/pledgemaking?pledgeTypeID=${route.query.pledgeTypeID}`);
         // router.push("/tenant/pledge/pledgepaymentlist");
       } catch (error) {
+        NProgress.done();
         console.log(error);
       }
     };
@@ -861,19 +870,14 @@ export default {
 
     // }
 
-    const makePayment = () => {
-      router.push(
-        `/tenant/pledge/pledgepayment?pledgeTypeID=${route.query.pledgeTypeID}&id=${route.query.id}&name=${route.query.name}`
-      );
-    };
     const chooseContact = (payload) => {
       // contactRef.value.hide();
       selectedContact.value = payload;
     };
 
     const pledgePaymentLink = computed(() => {
-      if (!route.query.id) return "";
-      return `${window.location.origin}/tenant/pledge/pledgepayment?pledgeTypeID=${route.query.pledgeTypeID}&id=${route.query.id}&name=${route.query.name}`;
+      if (!route.query.pledgeTypeID) return "";
+      return `${window.location.origin}/pay/${route.query.pledgeTypeID}`;
     });
 
     const copyLink = () => {
@@ -1002,34 +1006,33 @@ export default {
     const active = (payload) => {
       isActive.value = payload;
     };
-    const getAllPledgeDefinition = async () => {
-      // errorGettingReport.value = false;
-      try {
-        checking.value = false;
-        const res = await axios.get("/api/Pledge/GetAllPledgeDefinitions");
-        finish();
-        allPledgeList.value = res.data.returnObject;
+    // const getAllPledgeDefinition = async () => {
+    //   try {
+    //     checking.value = false;
+    //     const res = await axios.get("/api/Pledge/GetAllPledgeDefinitions");
+    //     finish();
+    //     allPledgeList.value = res.data.returnObject;
 
-        getDetails();
-        isActive.value = res.data.returnObject.map((i) => {
-          return {
-            isActive: i.isActive,
-          };
-        });
-        console.log(allPledgeList.value, "getPledgeList");
-        checking.value = true;
-      } catch (error) {
-        console.log(error);
-      }
-    };
-    getAllPledgeDefinition();
+    //     getDetails();
+    //     isActive.value = res.data.returnObject.map((i) => {
+    //       return {
+    //         isActive: i.isActive,
+    //       };
+    //     });
+    //     console.log(allPledgeList.value, "getPledgeList");
+    //     checking.value = true;
+    //   } catch (error) {
+    //     console.log(error);
+    //   }
+    // };
+    // getAllPledgeDefinition();
 
-    const getDetails = () => {
-      selectedPledge.value = allPledgeList.value.find(
-        (i) => i.id === route.query.id
-      );
-      memberName.value = route.query.name;
-    };
+    // const getDetails = () => {
+    //   selectedPledge.value = allPledgeList.value.find(
+    //     (i) => i.id === route.query.id
+    //   );
+    //   memberName.value = route.query.name;
+    // };
    
 
     
@@ -1088,6 +1091,8 @@ export default {
 
     return {
       date,
+      pledgePaymentID,
+      pledgeCurrencyID,
       pledgeDate,
       pledgeBalance,
       pledgePaymentSum,
@@ -1095,7 +1100,7 @@ export default {
       allPledgePaymentList,
       searchText,
       searchPledgePayment,
-      savePayment,
+      recordPayment,
       currencyList,
       url,
       channel,
@@ -1111,12 +1116,11 @@ export default {
       pledgeID,
       personName,
       pledgeName,
-      memberName,
+      // memberName,
       tenantID,
       checking,
       chooseContact,
       selectedPledge,
-      makePayment,
       pledgeCategory,
       amountTo,
       amountFrom,
