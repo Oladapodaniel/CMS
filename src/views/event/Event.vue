@@ -2627,10 +2627,9 @@ export default {
       this.eventObj = {
         attendances: this.attendanceItem,
         offerings: this.offeringItem.map((i) => {
-          console.log(i, "lokikii");
           delete i.showCurrency;
           delete i.fromCurrencyRate;
-          if (i.amount.includes(',')) {
+          if (i.amount.toString().includes(',') ) {
             i.amount = i.amount.split(',').join('')
           }
           return i;
@@ -3059,7 +3058,6 @@ export default {
       if (this.$route.params.event) {
         try {
           let res = await axios.get(`/api/Events/${this.$route.params.event}`);
-          console.log(res, "that is all about me")
           this.routeParams = this.$route.params.event;
           this.eventDate = res.data.activity.date.substr(0, 10);
           this.topic = res.data.activity.topic;
@@ -3067,7 +3065,6 @@ export default {
           this.selectedEventCategoryId = res.data.activity.eventCategoryId;
           this.attendanceItem = res.data.attendances;
           this.offeringItem = res.data.offerings.map((i) => {
-            console.log(i, "gghhehehh");
             return {
               activity: i.activity,
               activityID: i.activityID,
