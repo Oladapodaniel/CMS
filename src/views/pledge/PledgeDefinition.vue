@@ -709,6 +709,257 @@
           </div>
         </div>
       </div>
+      <div class="row">
+         <div>
+            <div class="container-fluid d-none d-md-block">
+              <div class="row t-header mt-4 border-bottom pb-2">
+                <div
+                  class="small-text text-capitalize col-md-2 font-weight-bold"
+                >
+                  Name
+                </div>
+                <div
+                      class="small-text text-capitalize col-md-2 font-weight-bold"
+                    >
+                  Fund
+                </div>
+                <div
+                  class="small-text text-capitalize col-md-2 font-weight-bold"
+                >
+                 Pledge made 
+                </div>
+                <div
+                  class="small-text text-capitalize col-md-2 font-weight-bold"
+                >
+                  Redemeed
+                </div>
+                <div
+                  class="small-text text-capitalize col-md-2 font-weight-bold"
+                >
+                  Date
+                </div>
+
+                <div
+                  class="small-text text-capitalize col-md-1 font-weight-bold"
+                >
+                  Pledges
+                </div>
+                <div
+                  class="small-text text-capitalize col-md-1 font-weight-bold"
+                >
+                  Action
+                </div>
+              </div>
+            </div>
+
+            <div class="row" style="margin: 0">
+              <div class="col-12 parent-desc pb-2 px-0">
+                <div class="row" v-if="loading">
+                  <div class="col-md-12">
+                    <div class="row">
+                      <div
+                        class="
+                          col-md-12
+                          d-flex
+                          align-items-center
+                          justify-content-center
+                        "
+                      >
+                        <i
+                          class="pi pi-spin pi-spinner py-4"
+                          style="font-size: 3rem"
+                        ></i>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+
+                <div
+                  class="
+                    row
+                    w-100
+                    c-pointer
+                    text-dark
+                    border-top
+                    py-2
+                    hover
+                    d-flex
+                    align-items-center
+                  "
+                  style="margin: 0"
+                  v-for="(item, index) in pledgesBoundToItem"
+                  :key="index"
+                >
+                  <div
+                    class="col-md-2 desc"
+           
+                  >
+                    <div class="mb-0  d-flex small justify-content-between ">
+                      <span
+                        class="
+                          text-dark
+                          font-weight-bold
+                          d-flex d-md-none
+                          fontIncrease
+                        "
+                        style="font-size: 15px"
+                        >Name</span
+                      >
+                      <div class="small-text">{{ item.pledgeType.name }}</div>
+                    </div>
+                  </div>
+                  <div
+                    class="col-md-2 desc"
+     
+                  >
+                    <div class="mb-0 small d-flex justify-content-between ">
+                      <span
+                        class="
+                          text-dark
+                          font-weight-bold
+                          d-flex d-md-none
+                          fontIncrease
+                        "
+                        style="font-size: 15px"
+                        >Fund</span
+                      >
+                      <div class="small-text">pledgelist.fund</div> 
+                    </div>
+                  </div>
+                  <div
+                    class="col-md-2 desc"
+     
+                  >
+                    <div class="mb-0 small d-flex justify-content-between ">
+                      <span
+                        class="
+                          text-dark
+                          font-weight-bold
+                          d-flex d-md-none
+                          fontIncrease
+                        "
+                        style="font-size: 15px"
+                        >Pledge made 
+                      </span>
+                       <div class="small-text">
+                        <!-- {{ pledgelist.totalPledgeAmount }} -->
+                         pledgelis 
+                      
+                      </div>
+                      
+                    </div>
+                  </div>
+                  <div class="col-md-2">
+                    <div
+                      class="d-flex small justify-content-between "
+                    >
+                      <span
+                        class="
+                          text-dark
+                          font-weight-bold
+                          d-flex d-md-none
+                          fontIncrease
+                        "
+                        style="font-size: 15px"
+                        >Redeemed</span
+                      >
+                      <div class="small-text text-right text-md-center">
+                      pledgelist 
+                       
+                      </div>
+                    </div>
+                  </div>
+                  <div class="col-md-2" >
+                    <div
+                      class="d-flex small justify-content-between "
+                    >
+                      <span
+                        class="
+                          text-dark
+                          font-weight-bold
+                          d-flex d-md-none
+                          fontIncrease
+                        "
+                        style="font-size: 15px"
+                        >Date</span
+                      >
+                      <div class="small-text text-right text-md-center">
+             date
+                      </div>
+                    </div>
+                  </div>
+                  <div class="col-md-1">
+                    <div
+                      class="d-flex small justify-content-between "
+                    >
+                      <span
+                        class="
+                          text-dark
+                          font-weight-bold
+                          d-flex d-md-none
+                          fontIncrease
+                        "
+                        style="font-size: 15px"
+                        >Pledges</span
+                      >
+                      <div class="small-text text-right text-md-center">
+                        pledgelist.pledgeCount
+                      </div>
+                    </div>
+                  </div>
+
+                  <div class="col-md-1">
+                    <div>
+                      <div class="dropdown">
+                        <span class="d-flex justify-content-between">
+                          <span class="d-md-none d-sm-flex"></span>
+                          <span class="d-sm-flex small">
+                            <i
+                              class="
+                                fas
+                                fa-ellipsis-v
+                                cursor-pointer
+                                ml-2
+                                fontIncrease
+                              "
+                              id="dropdownMenuButton"
+                              data-toggle="dropdown"
+                              aria-haspopup="true"
+                              aria-expanded="false"
+                            ></i>
+
+                            <div
+                              class="dropdown-menu"
+                              aria-labelledby="dropdownMenuButton"
+                            >
+                              <!-- <a class="dropdown-item">
+                                    <a
+                                      @click="sendGroupSms(group)"
+                                      >Send SMS</a>
+                                  </a>
+                                  <a class="dropdown-item" @click="sendGroupEmail(group)">
+                                      Send Email
+                                  </a> -->
+                              <a
+                                class="dropdown-item"
+                             
+                                ><a class="text-decoration-none">Delete </a></a
+                              >
+
+                              
+                                <a class="text-decoration-none">Edit </a>
+                            
+                            </div>
+                          </span>
+                        </span>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+      </div>
       <Toast />
     </div>
   </div>
@@ -734,6 +985,7 @@ import CascadeSelect from "primevue/cascadeselect";
 import grousService from "../../services/groups/groupsservice";
 import MultiSelect from "primevue/multiselect";
 import InputSwitch from 'primevue/inputswitch';
+import store from '../../store/store';
 export default {
   components: {
     Dropdown,
@@ -791,7 +1043,8 @@ export default {
     const selectedCashAccount = ref({});
     const cashBankAccount = ref([]);
     const selectedGroups = ref([]);
-    const checked = ref(false)
+    const checked = ref(false);
+    const pledgesBoundToItem = ref([])
 
     const date = (offDate) => {
       return monthDayYear.normalDate(offDate);
@@ -803,11 +1056,10 @@ export default {
           `/api/Pledge/GetSinglePledgeDefinitions?ID=${route.query.id}`
         );
         finish();
-        getAllCurrencies(res.data.returnObject.currencyID);
+        getAllCurrencies(res.data.returnObject.currency.id);
         getContributionCategory(res.data.returnObject.financialContributionID);
-
-        console.log(res.data.returnObject.currencyID, selectedCurrency.value);
-        console.log(currencyList);
+console.log(store.getters.currentUser, 'ggggg')
+   
         targetAmount.value = res.data.returnObject.totalTargetAmount;
         pledgeName.value = res.data.returnObject.name;
         specificAmount.value = res.data.returnObject.donorPaymentSpecificAmount;
@@ -841,6 +1093,8 @@ export default {
         } else {
           res.data.returnObject.donorPaymentType;
         }
+
+        pledgesBoundToItem.value = res.data.returnObject.pledges
       } catch (error) {
         console.log(error);
       }
@@ -1187,7 +1441,8 @@ export default {
       cashBankAccount,
       groups,
       selectedGroups,
-      checked
+      checked,
+      pledgesBoundToItem
     };
   },
 };
