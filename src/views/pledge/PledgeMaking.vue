@@ -193,12 +193,12 @@
                                     @click="copyLink"
                                     style="font-size: 22px"
                                   ></i>
-                                  <i
+                                  <!-- <i
                                     v-tooltip.top="'Send SMS'"
                                     class="pi pi-envelope ml-4 c-pointer"
                                     @click="copyLink"
                                     style="font-size: 22px"
-                                  ></i>
+                                  ></i> -->
                                 </div>
                               </span>
                             </p>
@@ -239,15 +239,15 @@
                             >
                               <div class="mb-2">
                                 <div class="p-2">
-                                  <div class="font-weight-800 text-dark">
+                                  <!-- <div class="font-weight-800 text-dark">
                                     GTB
-                                  </div>
-                                  <div class="font-weight-800 text-dark">
+                                  </div> -->
+                                  <!-- <div class="font-weight-800 text-dark">
                                     0222909641
-                                  </div>
-                                  <div class="font-weight-800 text-dark">
+                                  </div> -->
+                                  <!-- <div class="font-weight-800 text-dark">
                                     Sarah Church Account
-                                  </div>
+                                  </div> -->
                                 </div>
                               </div>
                               <div class="mt-4">
@@ -257,12 +257,12 @@
                                   @click="copyLink"
                                   style="font-size: 22px"
                                 ></i>
-                                <i
+                                <!-- <i
                                   v-tooltip.top="'Send SMS'"
                                   class="pi pi-envelope ml-4 c-pointer"
                                   @click="copyLink"
                                   style="font-size: 22px"
-                                ></i>
+                                ></i> -->
                               </div>
                             </div>
                           </div>
