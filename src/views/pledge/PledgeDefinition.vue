@@ -805,7 +805,7 @@
                     >Contact
                   </span>
                   <div class="small-text">
-                    {{ item.person }}
+                    {{ item.person ? item.person.firstName : '' }} {{ item.person ? item.person.lastName : '' }}
                   </div>
                 </div>
               </div>
