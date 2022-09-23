@@ -1639,6 +1639,15 @@ const routes = [
 
         ],
     },
+    // {
+    //     path: 'payonline',
+    //     name: 'PublicPledgeMaking',
+    //     meta: {
+    //         title: 'Churchplus - Church Pledge',
+    //     },
+    //     component: () =>
+    //         import ( /* webpackChunkName: "peopleempty" */ '../views/pledge/PublicPledgeMaking.vue')
+    // },
     {
         path: '/pledge',
         component: () =>

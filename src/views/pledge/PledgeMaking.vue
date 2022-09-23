@@ -458,7 +458,9 @@
                                     >Edit</router-link
                                   ></a
                                 >
-                                <a class="dropdown-item">Delete</a>
+                                <a class="dropdown-item"
+                                 @click="showConfirmModal(pledgePaymnetList.id, index)"
+                                >Delete</a>
                               </div>
                             </span>
                           </span>
@@ -650,6 +652,7 @@ import ToggleButton from "../donation/toggleButton.vue";
 import PledgeTransaction from "./PledgeTransaction.vue";
 import monthDayYear from "../../services/dates/dateformatter";
 import Tooltip from "primevue/tooltip";
+import { useConfirm } from "primevue/useconfirm";
 export default {
   components: {
     MembersSearch,
@@ -666,6 +669,7 @@ export default {
   },
   setup() {
     const toast = useToast();
+    const confirm = useConfirm();
     const selectedLink = ref(null);
     const emaildata = ref(null);
     const tenantID = ref("");
@@ -674,6 +678,7 @@ export default {
     const churchName = ref("");
     const Address = ref("");
     const loading = ref(false);
+    const networkError = ref(false)
     const freewillAmount = ref("");
     const checking = ref(false);
     // const value = ref()
@@ -704,6 +709,7 @@ export default {
     const pledgeDate = ref('');
     const pledgeAmount = ref('');
     const pledgePaymentID = ref('');
+    const pledgeContactID = ref('');
     const pledgeCurrencyID = ref('');
     // const pledgeAmount = ref(Number(route.query.amount).toLocaleString());
 
@@ -747,10 +753,13 @@ export default {
         pledgeBalance.value = res.data.returnObject.balance;
         pledgeDate.value = res.data.returnObject.date;
         pledgeAmount.value = res.data.returnObject.amount;
-        pledgePaymentID.value = res.data.returnObject.id;
+        pledgeContactID.value = res.data.returnObject.contactID;
+        pledgePaymentID.value = res.data.returnObject.pledgeType.id;
         pledgeCurrencyID.value = res.data.returnObject.currency.id;
         selectedPledge.value = res.data.returnObject;
+        allPledgePaymentList.value = res.data.returnObject.pledgePayments;
         console.log(selectedPledge.value, "selected");
+        console.log(allPledgePaymentList.value, "allPledgePaymentList");
         checking.value = true;
       } catch (error) {
         NProgress.done();
@@ -770,29 +779,86 @@ export default {
 
           });
 
-            const getAllPledgePaymentList = async () => {
-                loading.value = true
-                  try{
-                    const res = await axios.get('/api/Pledge/GetAllPledgePaymentsForTenant')
-                    // const res = await axios.get(`/api/Pledge/GetAllPledgePayments?ID=${pledgeID.value}`)
-                    finish()
-                    allPledgePaymentList.value = res.data.returnObject
-                    console.log(allPledgePaymentList.value,'getPledgepayment😁😁');
-                    loading.value = false
-                }
-                catch (error){
-                  NProgress.done();
-                    console.log(error)
-                    loading.value = false;
+          const deletePledgePayment = (id) => {
 
-                    if(error.toString().toLowerCase().includes("network error")) {
-                    networkError.value = true
-                  } else {
-                    networkError.value = false
-                  }
+            axios
+                .delete(`/api/Pledge/DeletePledgePaymentPayment?ID=${id}`)
+                .then((res) => {
+                console.log(res);
+                toast.add({
+                    severity: "success",
+                    summary: "Confirmed",
+                    detail: "Pledge form deleted",
+                    life: 3000,
+                });
+
+                allPledgePaymentList.value = allPledgePaymentList.value.filter( (paymentlist) => paymentlist.id !== id
+          );
+
+                })
+                .catch((err) => {
+                finish()
+                if (err.response.status === 400) {
+                    toast.add({
+                    severity: "error",
+                    summary: "Unable to delete",
+                    detail: "Ensure this member is not in any group",
+                    life: 3000,
+                    });
+                } else {
+                    toast.add({
+                    severity: "error",
+                    summary: "Unable to delete",
+                    detail: "An error occurred, please try again",
+                    life: 3000,
+                    });
                 }
-            }
-            getAllPledgePaymentList()
+                });
+            };
+             const showConfirmModal = (id, index) => {
+                confirm.require({
+                    message: "Are you sure you want to proceed?",
+                    header: "Confirmation",
+                    icon: "pi pi-exclamation-triangle",
+                    acceptClass: "confirm-delete",
+                    rejectClass: "cancel-delete",
+                    accept: () => {
+                    deletePledgePayment(id, index);
+                    // toast.add({severity:'info', summary:'Confirmed', detail:'Member Deleted', life: 3000});
+                    },
+                    reject: () => {
+                    toast.add({
+                        severity: "info",
+                        summary: "Rejected",
+                        detail: "You have rejected",
+                        life: 3000,
+                    });
+                    },
+                });
+            };
+
+            // const getAllPledgePaymentList = async () => {
+            //     loading.value = true
+            //       try{
+            //         const res = await axios.get(`/api/Pledge/GetAllPledgePaymentsForTenant?ID=${route.query.pledgeTypeID}`)
+            //         finish()
+            //         allPledgePaymentList.value = res.data.returnObject
+            //         console.log(allPledgePaymentList.value,'getPledgepayment😁😁');
+            //         loading.value = false
+            //     }
+            //     catch (error){
+            //       NProgress.done();
+            //         console.log(error)
+            //         loading.value = false;
+
+            //         if(error.toString().toLowerCase().includes("network error")) {
+            //         networkError.value = true
+            //       } else {
+            //         networkError.value = false
+            //       }
+            //     }
+            // }
+            // getAllPledgePaymentList()
            
 
     const date = (offDate) => {
@@ -802,8 +868,8 @@ export default {
     const recordPayment = async () => {
       
       let paymentData = {
-        id: pledgePaymentID.value,
-        pledgeID:  route.query.pledgeTypeID,
+        id: route.query.pledgeTypeID,
+        pledgeID:   route.query.pledgeTypeID,
         amount: pledgeAmount.value,
         channel: selectedChannel.value.name,
         currencyID: pledgeCurrencyID.value,
@@ -821,6 +887,7 @@ export default {
           detail: "Pledge Payment successfully",
           life: 2000,
         });
+        getSinglePledge()
         router.push(`/tenant/pledge/pledgemaking?pledgeTypeID=${route.query.pledgeTypeID}`);
         // router.push("/tenant/pledge/pledgepaymentlist");
       } catch (error) {
@@ -1090,8 +1157,11 @@ export default {
     };
 
     return {
+      showConfirmModal,
+      networkError,
       date,
       pledgePaymentID,
+      pledgeContactID,
       pledgeCurrencyID,
       pledgeDate,
       pledgeBalance,
