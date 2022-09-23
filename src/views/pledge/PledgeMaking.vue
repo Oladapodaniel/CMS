@@ -557,7 +557,7 @@
                               "
                               >{{ selectedPledge.currency }}</span
                             > -->
-                            <div class="col-8 col-lg-10 m-0 p-0">
+                            <div class="col-8 col-lg-12 m-0 p-0 ">
                                  <input
                                   type="number"
                                   v-model="pledgeAmount"
@@ -607,9 +607,9 @@
                         </div>
                       </div>
                     </div>
-                    <div class="col-md-8  mt-4">
+                    <div class="col-md-12  mt-4">
                       <div class="row d-flex flex-wrap justify-content-center">
-                        <div class="mt-4 col-sm-5 col-12 text-center">
+                        <div class="mt-4  col-12  text-center">
                           <button
                             class="default-btn primary-bg text-white"
                             data-dismiss="modal"
