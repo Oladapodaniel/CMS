@@ -1,26 +1,21 @@
 <template>
   <div class="container-fluid">
     <div class="container-wide">
-      <div class="row d-md-flex yu mt-5">
-        <div class="col-md-6 col-12">
-          <div class="events">Partnership and Pledge Item</div>
-          <Toast />
-          <ConfirmDialog />
-        </div>
-        <div class="col-md-6 col-sm-12 d-flex justify-content-md-end justify-content-center mt-2 my-1 link">
-          <router-link
-            to="/tenant/pledge/pledgedefinition"
-            class="
-              grey-border
-              primary-btn
-              default-btn
-              primary-bg
-              border-0
-              small-screen
-            "
-            >Create New
-          </router-link>
-        </div>
+      <div class="row d-md-flex justify-content-md-between mt-5">
+        <div class="events">Partnership and Pledge Item</div>
+        <router-link
+          to="/tenant/pledge/pledgedefinition"
+          class="
+            grey-border
+            primary-btn
+            default-btn
+            primary-bg
+            border-0
+            mt-3
+            mt-md-0
+          "
+          >Create New
+        </router-link>
         <div class="col-md-12 px-0">
           <hr class="hr my-3" />
         </div>
@@ -65,7 +60,7 @@
                 </div>
               </div>
           </div> -->
-      <div class="row ">
+      <div class="row">
         <div class="col-12 px-0" id="table">
           <div class="top-con" id="ignore2">
             <div class="table-top">
@@ -110,14 +105,14 @@
                   Name
                 </div>
                 <div
-                      class="small-text text-capitalize col-md-2 font-weight-bold"
-                    >
+                  class="small-text text-capitalize col-md-2 font-weight-bold"
+                >
                   Fund
                 </div>
                 <div
                   class="small-text text-capitalize col-md-2 font-weight-bold"
                 >
-                 Pledge made 
+                  Pledge made
                 </div>
                 <div
                   class="small-text text-capitalize col-md-2 font-weight-bold"
@@ -185,7 +180,7 @@
                     class="col-md-2 desc"
                     @click="pledgeClick(pledgelist.id)"
                   >
-                    <div class="mb-0  d-flex small justify-content-between ">
+                    <div class="mb-0 d-flex small justify-content-between">
                       <span
                         class="
                           text-dark
@@ -203,7 +198,7 @@
                     class="col-md-2 desc"
                     @click="pledgeClick(pledgelist.id)"
                   >
-                    <div class="mb-0 small d-flex justify-content-between ">
+                    <div class="mb-0 small d-flex justify-content-between">
                       <span
                         class="
                           text-dark
@@ -214,14 +209,14 @@
                         style="font-size: 15px"
                         >Fund</span
                       >
-                      <div class="small-text">{{ pledgelist.fund }}</div> 
+                      <div class="small-text">{{ pledgelist.fund }}</div>
                     </div>
                   </div>
                   <div
                     class="col-md-2 desc"
                     @click="pledgeClick(pledgelist.id)"
                   >
-                    <div class="mb-0 small d-flex justify-content-between ">
+                    <div class="mb-0 small d-flex justify-content-between">
                       <span
                         class="
                           text-dark
@@ -230,24 +225,25 @@
                           fontIncrease
                         "
                         style="font-size: 15px"
-                        >Pledge made 
+                        >Pledge made
                       </span>
-                       <div class="small-text">
+                      <div class="small-text">
                         <!-- {{ pledgelist.totalPledgeAmount }} -->
-                        {{ pledgelist && pledgelist.currency ? pledgelist.currency.symbol : "" }}
+                        {{
+                          pledgelist && pledgelist.currency
+                            ? pledgelist.currency.symbol
+                            : ""
+                        }}
                         {{
                           Math.abs(
                             pledgelist.totalPledgeAmount
                           ).toLocaleString()
                         }}.00
                       </div>
-                      
                     </div>
                   </div>
                   <div class="col-md-2" @click="groupClick(group.id)">
-                    <div
-                      class="d-flex small justify-content-between "
-                    >
+                    <div class="d-flex small justify-content-between">
                       <span
                         class="
                           text-dark
@@ -259,7 +255,11 @@
                         >Redeemed</span
                       >
                       <div class="small-text text-right text-md-center">
-                        {{ pledgelist && pledgelist.currency ? pledgelist.currency.symbol : "" }}
+                        {{
+                          pledgelist && pledgelist.currency
+                            ? pledgelist.currency.symbol
+                            : ""
+                        }}
                         {{
                           Math.abs(
                             pledgelist.totalPaymentsAmount
@@ -269,9 +269,7 @@
                     </div>
                   </div>
                   <div class="col-md-2" @click="groupClick(group.id)">
-                    <div
-                      class="d-flex small justify-content-between "
-                    >
+                    <div class="d-flex small justify-content-between">
                       <span
                         class="
                           text-dark
@@ -288,9 +286,7 @@
                     </div>
                   </div>
                   <div class="col-md-1" @click="groupClick(group.id)">
-                    <div
-                      class="d-flex small justify-content-between "
-                    >
+                    <div class="d-flex small justify-content-between">
                       <span
                         class="
                           text-dark
@@ -364,6 +360,8 @@
         </div>
       </div>
     </div>
+    <Toast />
+    <ConfirmDialog />
   </div>
 </template>
 
@@ -377,7 +375,7 @@ import { useToast } from "primevue/usetoast";
 import InputText from "primevue/inputtext";
 import { useConfirm } from "primevue/useconfirm";
 import monthDayYear from "../../services/dates/dateformatter";
-import router from '../../router';
+import router from "../../router";
 
 export default {
   components: {
@@ -510,8 +508,8 @@ export default {
     };
 
     const pledgeClick = (id) => {
-      router.push(`/tenant/pledge/pledgedefinition?id=${id}`)
-    }
+      router.push(`/tenant/pledge/pledgedefinition?id=${id}`);
+    };
 
     return {
       allPledgeList,
@@ -529,7 +527,7 @@ export default {
       removeSearchText,
       allPledgeType,
       date,
-      pledgeClick
+      pledgeClick,
     };
   },
 };

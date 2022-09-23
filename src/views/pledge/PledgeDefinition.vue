@@ -4,6 +4,9 @@
       <div class="row d-flex justify-content-between px-3">
         <div class="heading-text">Create Pledge Item</div>
       </div>
+      <div class="mt-4 d-block d-md-none text-center" v-if="groupLoading">
+        <i class="pi pi-spin pi-spinner py-4" style="font-size: 3rem"></i>
+      </div>
       <div class="row">
         <div class="col-md-8">
           <!-- Contribution item -->
@@ -23,7 +26,7 @@
                 </div>
 
                 <div class="col-12 col-sm-12 col-lg-8">
-                  <div class="col-12 col-md-12 col-lg-12 pl-md-0 pr-md-0 mt-2">
+                  <div class="mt-2">
                     <button
                       class="btn w-100 text-left"
                       type="button"
@@ -479,22 +482,6 @@
                     </div>
                   </div>
                 </div>
-                <div class="col-md-12 mt-3">
-                  <div class="row">
-                    <div
-                      class="
-                        col-12 col-sm-12 col-lg-4
-                        text-sm-left text-lg-right
-                        align-self-center
-                      "
-                    >
-                      <label for="" class=""> Compulsory </label>
-                    </div>
-                    <div class="col-12 col-sm-12 col-lg-8">
-                      <InputSwitch v-model="checked" />
-                    </div>
-                  </div>
-                </div>
               </div>
             </div>
           </div>
@@ -693,202 +680,174 @@
           </div> -->
 
           <!-- Save button -->
-          <div class="col-md-9 offset-md-5 mt-4">
+          <div class="col-md-9 offset-md-5 my-4">
             <div class="row d-flex justify-content-center">
               <div class="col-md-5 mt-2 mt-md-0">
                 <button
                   class="default-btn primary-bg border-0 text-white"
                   data-dismiss="modal"
                   @click="savePledge"
-                  :disabled="disabled"
                 >
-                  <i class="pi pi-spin pi-spinner" v-if="loading"></i> Save
+                  <i
+                    class="pi pi-spin pi-spinner text-white"
+                    v-if="loading"
+                  ></i>
+                  Save
                 </button>
               </div>
             </div>
           </div>
         </div>
+        <div class="col-md-4">
+          <div class="mt-4 d-none d-md-block" v-if="groupLoading">
+            <i class="pi pi-spin pi-spinner py-4" style="font-size: 3rem"></i>
+          </div>
+        </div>
       </div>
-      <div class="row">
-         <div>
-            <div class="container-fluid d-none d-md-block">
-              <div class="row t-header mt-4 border-bottom pb-2">
-                <div
-                  class="small-text text-capitalize col-md-2 font-weight-bold"
-                >
-                  Name
-                </div>
-                <div
-                      class="small-text text-capitalize col-md-2 font-weight-bold"
-                    >
-                  Fund
-                </div>
-                <div
-                  class="small-text text-capitalize col-md-2 font-weight-bold"
-                >
-                 Pledge made 
-                </div>
-                <div
-                  class="small-text text-capitalize col-md-2 font-weight-bold"
-                >
-                  Redemeed
-                </div>
-                <div
-                  class="small-text text-capitalize col-md-2 font-weight-bold"
-                >
-                  Date
-                </div>
-
+      <div class="row mt-3" v-if="pledgesBoundToItem.length > 0">
+        <div class="container-fluid d-none d-md-block">
+          <div class="row t-header mt-4 border-bottom pb-2">
+            <div class="small-text text-capitalize col-md-3 font-weight-bold">
+              Name
+            </div>
+            <div class="small-text text-capitalize col-md-3 font-weight-bold">
+              Contribution
+            </div>
+            <div class="small-text text-capitalize col-md-2 font-weight-bold">
+              Contact
+            </div>
+            <div class="small-text text-capitalize col-md-2 font-weight-bold">
+              Redemeed
+            </div>
+            <div class="small-text text-capitalize col-md-2 font-weight-bold">
+              Date
+            </div>
+            <!-- 
                 <div
                   class="small-text text-capitalize col-md-1 font-weight-bold"
                 >
                   Pledges
-                </div>
-                <div
+                </div> -->
+            <!-- <div
                   class="small-text text-capitalize col-md-1 font-weight-bold"
                 >
                   Action
+                </div> -->
+          </div>
+        </div>
+
+        <div class="row w-100" style="margin: 0">
+          <div class="col-12 parent-desc pb-2 px-0">
+            <div
+              class="
+                row
+                w-100
+                c-pointer
+                text-dark
+                border-top
+                py-3
+                hover
+                d-flex
+                align-items-center
+              "
+              style="margin: 0"
+              v-for="(item, index) in pledgesBoundToItem"
+              :key="index"
+            >
+              <div class="col-md-3">
+                <div class="mb-0 d-flex small justify-content-between">
+                  <span
+                    class="
+                      text-dark
+                      font-weight-bold
+                      d-flex d-md-none
+                      fontIncrease
+                    "
+                    style="font-size: 15px"
+                    >Name</span
+                  >
+                  <div class="small-text">
+                    {{ item && item.pledgeType ? item.pledgeType.name : "" }}
+                  </div>
                 </div>
               </div>
-            </div>
-
-            <div class="row" style="margin: 0">
-              <div class="col-12 parent-desc pb-2 px-0">
-                <div class="row" v-if="loading">
-                  <div class="col-md-12">
-                    <div class="row">
-                      <div
-                        class="
-                          col-md-12
-                          d-flex
-                          align-items-center
-                          justify-content-center
-                        "
-                      >
-                        <i
-                          class="pi pi-spin pi-spinner py-4"
-                          style="font-size: 3rem"
-                        ></i>
-                      </div>
-                    </div>
+              <div class="col-md-3">
+                <div class="mb-0 small d-flex justify-content-between">
+                  <span
+                    class="
+                      text-dark
+                      font-weight-bold
+                      d-flex d-md-none
+                      fontIncrease
+                    "
+                    style="font-size: 15px"
+                    >Contribution</span
+                  >
+                  <div class="small-text">
+                    {{
+                      item && item.pledgeType && item.pledgeType.contribution
+                        ? item.pledgeType.contribution.name
+                        : ""
+                    }}
                   </div>
                 </div>
-
-                <div
-                  class="
-                    row
-                    w-100
-                    c-pointer
-                    text-dark
-                    border-top
-                    py-2
-                    hover
-                    d-flex
-                    align-items-center
-                  "
-                  style="margin: 0"
-                  v-for="(item, index) in pledgesBoundToItem"
-                  :key="index"
-                >
-                  <div
-                    class="col-md-2 desc"
-           
+              </div>
+              <div class="col-md-2">
+                <div class="mb-0 small d-flex justify-content-between">
+                  <span
+                    class="
+                      text-dark
+                      font-weight-bold
+                      d-flex d-md-none
+                      fontIncrease
+                    "
+                    style="font-size: 15px"
+                    >Contact
+                  </span>
+                  <div class="small-text">
+                    {{ item.person ? item.person.firstName : '' }} {{ item.person ? item.person.lastName : '' }}
+                  </div>
+                </div>
+              </div>
+              <div class="col-md-2">
+                <div class="d-flex small justify-content-between">
+                  <span
+                    class="
+                      text-dark
+                      font-weight-bold
+                      d-flex d-md-none
+                      fontIncrease
+                    "
+                    style="font-size: 15px"
+                    >Redeemed</span
                   >
-                    <div class="mb-0  d-flex small justify-content-between ">
-                      <span
-                        class="
-                          text-dark
-                          font-weight-bold
-                          d-flex d-md-none
-                          fontIncrease
-                        "
-                        style="font-size: 15px"
-                        >Name</span
-                      >
-                      <div class="small-text">{{ item.pledgeType.name }}</div>
-                    </div>
+                  <div class="small-text text-right text-md-center">
+                    {{
+                      item && item.pledgeType && item.pledgeType.currency
+                        ? item.pledgeType.currency.symbol
+                        : ""
+                    }}{{ item.amount }}
                   </div>
-                  <div
-                    class="col-md-2 desc"
-     
+                </div>
+              </div>
+              <div class="col-md-2">
+                <div class="d-flex small justify-content-between">
+                  <span
+                    class="
+                      text-dark
+                      font-weight-bold
+                      d-flex d-md-none
+                      fontIncrease
+                    "
+                    style="font-size: 15px"
+                    >Date</span
                   >
-                    <div class="mb-0 small d-flex justify-content-between ">
-                      <span
-                        class="
-                          text-dark
-                          font-weight-bold
-                          d-flex d-md-none
-                          fontIncrease
-                        "
-                        style="font-size: 15px"
-                        >Fund</span
-                      >
-                      <div class="small-text">pledgelist.fund</div> 
-                    </div>
+                  <div class="small-text text-right text-md-center">
+                    {{ dateFormat(item.date) }}
                   </div>
-                  <div
-                    class="col-md-2 desc"
-     
-                  >
-                    <div class="mb-0 small d-flex justify-content-between ">
-                      <span
-                        class="
-                          text-dark
-                          font-weight-bold
-                          d-flex d-md-none
-                          fontIncrease
-                        "
-                        style="font-size: 15px"
-                        >Pledge made 
-                      </span>
-                       <div class="small-text">
-                        <!-- {{ pledgelist.totalPledgeAmount }} -->
-                         pledgelis 
-                      
-                      </div>
-                      
-                    </div>
-                  </div>
-                  <div class="col-md-2">
-                    <div
-                      class="d-flex small justify-content-between "
-                    >
-                      <span
-                        class="
-                          text-dark
-                          font-weight-bold
-                          d-flex d-md-none
-                          fontIncrease
-                        "
-                        style="font-size: 15px"
-                        >Redeemed</span
-                      >
-                      <div class="small-text text-right text-md-center">
-                      pledgelist 
-                       
-                      </div>
-                    </div>
-                  </div>
-                  <div class="col-md-2" >
-                    <div
-                      class="d-flex small justify-content-between "
-                    >
-                      <span
-                        class="
-                          text-dark
-                          font-weight-bold
-                          d-flex d-md-none
-                          fontIncrease
-                        "
-                        style="font-size: 15px"
-                        >Date</span
-                      >
-                      <div class="small-text text-right text-md-center">
-             date
-                      </div>
-                    </div>
-                  </div>
-                  <div class="col-md-1">
+                </div>
+              </div>
+              <!-- <div class="col-md-1">
                     <div
                       class="d-flex small justify-content-between "
                     >
@@ -906,9 +865,9 @@
                         pledgelist.pledgeCount
                       </div>
                     </div>
-                  </div>
+                  </div> -->
 
-                  <div class="col-md-1">
+              <!-- <div class="col-md-1">
                     <div>
                       <div class="dropdown">
                         <span class="d-flex justify-content-between">
@@ -932,15 +891,7 @@
                               class="dropdown-menu"
                               aria-labelledby="dropdownMenuButton"
                             >
-                              <!-- <a class="dropdown-item">
-                                    <a
-                                      @click="sendGroupSms(group)"
-                                      >Send SMS</a>
-                                  </a>
-                                  <a class="dropdown-item" @click="sendGroupEmail(group)">
-                                      Send Email
-                                  </a> -->
-                              <a
+                          
                                 class="dropdown-item"
                              
                                 ><a class="text-decoration-none">Delete </a></a
@@ -954,11 +905,13 @@
                         </span>
                       </div>
                     </div>
-                  </div>
-                </div>
-              </div>
+                  </div> -->
             </div>
           </div>
+        </div>
+      </div>
+      <div class="row d-flex justify-content-center my-4" v-if="pledgeLoader">
+        <i class="pi pi-spin pi-spinner py-4" style="font-size: 3rem"></i>
       </div>
       <Toast />
     </div>
@@ -968,7 +921,7 @@
 <script>
 import axios from "@/gateway/backendapi";
 import axio from "axios";
-import { ref, computed } from "vue";
+import { ref, computed, watchEffect } from "vue";
 // import { useStore } from "vuex";
 import Dropdown from "primevue/dropdown";
 import InputText from "primevue/inputtext";
@@ -984,8 +937,9 @@ import ToggleButton from "../donation/toggleButton.vue";
 import CascadeSelect from "primevue/cascadeselect";
 import grousService from "../../services/groups/groupsservice";
 import MultiSelect from "primevue/multiselect";
-import InputSwitch from 'primevue/inputswitch';
-import store from '../../store/store';
+import InputSwitch from "primevue/inputswitch";
+import store from "../../store/store";
+import workflow_util from "../workflow/utlity/workflow_util.js";
 export default {
   components: {
     Dropdown,
@@ -995,7 +949,7 @@ export default {
     CascadeSelect,
     ToggleButton,
     MultiSelect,
-    InputSwitch
+    InputSwitch,
   },
   setup() {
     const toast = useToast();
@@ -1037,29 +991,38 @@ export default {
     const accountNumber = ref("");
     const accountName = ref("");
     const accountResolving = ref(false);
-    const disabled = ref(true);
+    // const disabled = ref(true);
     const selectedIncomeAccount = ref({});
     const incomeAccount = ref([]);
     const selectedCashAccount = ref({});
     const cashBankAccount = ref([]);
     const selectedGroups = ref([]);
     const checked = ref(false);
-    const pledgesBoundToItem = ref([])
+    const pledgesBoundToItem = ref([]);
+    const compulsoryCondition = ref("");
+    const pledgeLoader = ref(false);
+    const groupLoading = ref(false);
+    const paymentFormId = ref("");
 
     const date = (offDate) => {
       return monthDayYear.normalDate(offDate);
     };
 
     const getSinglePledgeDefinition = async () => {
+      pledgeLoader.value = true;
       try {
         const res = await axios.get(
           `/api/Pledge/GetSinglePledgeDefinitions?ID=${route.query.id}`
         );
         finish();
+        groupLoading.value = false;
+        pledgeLoader.value = false;
         getAllCurrencies(res.data.returnObject.currency.id);
         getContributionCategory(res.data.returnObject.financialContributionID);
-console.log(store.getters.currentUser, 'ggggg')
-   
+        selectedGroups.value = workflow_util.getGroups(
+          res.data.returnObject.compulsoryCondition,
+          groups.value
+        );
         targetAmount.value = res.data.returnObject.totalTargetAmount;
         pledgeName.value = res.data.returnObject.name;
         specificAmount.value = res.data.returnObject.donorPaymentSpecificAmount;
@@ -1094,12 +1057,14 @@ console.log(store.getters.currentUser, 'ggggg')
           res.data.returnObject.donorPaymentType;
         }
 
-        pledgesBoundToItem.value = res.data.returnObject.pledges
+        pledgesBoundToItem.value = res.data.returnObject.pledges;
+        paymentFormId.value = res.data.returnObject.paymentFormID;
       } catch (error) {
         console.log(error);
+        pledgeLoader.value = false;
+        groupLoading.value = false;
       }
     };
-    if (route.query.id) getSinglePledgeDefinition();
 
     const newConItems = (payload) => {
       console.log(payload);
@@ -1136,7 +1101,7 @@ console.log(store.getters.currentUser, 'ggggg')
     getContributionCategory();
 
     const savePledge = async () => {
-      const pledgeDetails = {
+      let pledgeDetails = {
         contributionID: selectedContribution.value.id,
         totalTargetAmount: targetAmount.value,
         donorPaymentType: pledgeType.value,
@@ -1146,32 +1111,25 @@ console.log(store.getters.currentUser, 'ggggg')
         donorPaymentRangeToAmount: amountTo.value,
         pledgeTypeFrequencyOneTimeStartDate: startDate.value,
         pledgeTypeFrequencyOneTimeEndDate: endDate.value,
-        pledgeTypeFrequencyReOccuring: selectedRange.value.name,
+        pledgeTypeFrequencyReOccuring: selectedRange.value
+          ? selectedRange.value.name
+          : "",
         currencyID: selectedCurrency.value.id,
+        compulsoryCondition: selectedGroups.value.map((i) => i.id).join(","),
+        bankName: selectedBank.value.name,
+        bankCode: selectedBank.value.code,
+        accountName: accountName.value,
+        accountNumber: accountNumber.value,
         // isActive: true
       };
-      console.log(pledgeDetails, "pledgedetails");
       loading.value = true;
       if (route.query.id) {
-        const pledgeDetail = {
-          id: route.query.id,
-          contributionID: selectedContribution.value.id,
-          totalTargetAmount: targetAmount.value,
-          donorPaymentType: pledgeType.value,
-          name: pledgeName.value,
-          donorPaymentSpecificAmount: specificAmount.value,
-          donorPaymentRangeFromAmount: amountFrom.value,
-          donorPaymentRangeToAmount: amountTo.value,
-          pledgeTypeFrequencyOneTimeStartDate: startDate.value,
-          pledgeTypeFrequencyOneTimeEndDate: endDate.value,
-          pledgeTypeFrequencyReOccuring: selectedRange.value.name,
-          currencyID: selectedCurrency.value.id,
-          // isActive: true
-        };
+        pledgeDetails.id = route.query.id;
+        pledgeDetails.paymentFormID = paymentFormId.value;
         try {
           const response = await axios.put(
             "/api/Pledge/UpdatePledgeDefinition",
-            pledgeDetail
+            pledgeDetails
           );
 
           toast.add({
@@ -1309,7 +1267,7 @@ console.log(store.getters.currentUser, 'ggggg')
         );
         console.log(data);
         accountName.value = data.data.data.accountname;
-        disabled.value = false;
+        // disabled.value = false;
 
         accountResolving.value = false;
 
@@ -1378,6 +1336,7 @@ console.log(store.getters.currentUser, 'ggggg')
 
     const groups = ref([]);
     const getGroups = async () => {
+      groupLoading.value = true;
       try {
         const response = await grousService.getGroups();
         groups.value = response.map((i) => {
@@ -1387,11 +1346,41 @@ console.log(store.getters.currentUser, 'ggggg')
           id: "0000-000-0000-0000-0000-0000",
           name: "Entire ministry",
         });
+        if (route.query.id) getSinglePledgeDefinition();
+        groupLoading.value = false;
       } catch (error) {
         console.log(error);
+        groupLoading.value = false;
       }
     };
     getGroups();
+
+    const dateFormat = (offDate) => {
+      return monthDayYear.monthDayYear(offDate);
+    };
+
+    const getTenantCurrency = (tenantId) => {
+      axios
+        .get(`/api/Lookup/TenantCurrency?tenantID=${tenantId}`)
+        .then((res) => {
+          selectedCurrency.value = {
+            name: res.data.currency,
+            id: res.data.currencyId,
+            country: res.data.tenantCountry,
+          };
+        })
+        .catch((err) => console.log(err));
+    };
+
+    watchEffect(() => {
+      if (
+        store.getters.currentUser &&
+        Object.keys(store.getters.currentUser).length > 0 &&
+        !route.query.id
+      ) {
+        getTenantCurrency(store.getters.currentUser.tenantId);
+      }
+    });
 
     return {
       newConItems,
@@ -1442,7 +1431,13 @@ console.log(store.getters.currentUser, 'ggggg')
       groups,
       selectedGroups,
       checked,
-      pledgesBoundToItem
+      pledgesBoundToItem,
+      dateFormat,
+      compulsoryCondition,
+      pledgeLoader,
+      // disabled,
+      paymentFormId,
+      groupLoading,
     };
   },
 };
@@ -1485,7 +1480,22 @@ console.log(store.getters.currentUser, 'ggggg')
   background-image: linear-gradient(to top, #accbee 0%, #e7f0fd 100%);
   font-weight: bold;
 }
-/* .free-will:hover{
-            background-color: #d4dce6;
-        } */
+
+.hover:hover {
+  background: #eee;
+}
+.desc-head {
+  font-weight: 700;
+}
+/* .desc {
+  color: #9b9a9c;
+} */
+
+.pi-spinner {
+  color: #136acd;
+}
+
+.fa-ellipsis-v {
+  padding: 10px;
+}
 </style>
