@@ -13,7 +13,7 @@
         </div>
         <div class="container">
           <div class="row mb-4 mt-3">
-            <div class="col-md-8">
+            <div class="col-md-4">
               <span class="theader"> Pledge Name </span>
               <div class="my-3">
                 <span class="evt-name">
@@ -22,12 +22,32 @@
                 </span>
               </div>
             </div>
-
             <div class="col-md-4">
-              <span class="theader">Donor</span>
+              <span class="theader"> Donor </span>
               <div class="my-3">
-                <!-- <span class="evt-name">{{ personName }}</span> -->
-                <span class="evt-name">{{ personName }}</span>
+                <span class="evt-name">
+                  <!-- {{ selectedPledge || selectedPledge.pledgeItemName ? selectedPledge.pledgeItemName: ''}} -->
+                  {{ personName}}
+                </span>
+              </div>
+            </div>
+             <div class="col-md-4">
+              <span class="theader">Date</span>
+              <div class="my-3">
+                <span class="evt-name"> {{ date(pledgeDate) }}</span>
+              </div>
+            </div>
+            <div class="col-md-4">
+              <span class="theader"> Pledge Amount</span>
+              <div class="my-3">
+                <span class="evt-name">
+                  <!-- {{ pledgeAmount.toLocaleString() }} -->
+                   {{
+                          Math.abs(
+                            pledgeAmount
+                          ).toLocaleString()
+                        }}.00
+                </span>
               </div>
             </div>
             <div class="col-md-4">
@@ -54,13 +74,6 @@
                           ).toLocaleString()
                         }}.00</span
                 >
-              </div>
-            </div>
-
-            <div class="col-md-4">
-              <span class="theader">Date</span>
-              <div class="my-3">
-                <span class="evt-name"> {{ date(pledgeDate) }}</span>
               </div>
             </div>
           </div>
