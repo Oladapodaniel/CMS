@@ -373,7 +373,6 @@ export default {
             )}${appendLeadingZeroes(currentDate.getMilliseconds())}`;
 
     const payWithPaystack = () => {
-      // initializePayment(0);
       /*eslint no-undef: "warn"*/
       let handler = PaystackPop.setup({
         key: process.env.VUE_APP_PAYSTACK_PUBLIC_KEY_LIVE,
@@ -382,9 +381,7 @@ export default {
         email: "info@churchplus.co",
         amount: paymentAmount.value * 100,
         ref: `${formattedDate.substring(0, 4)}sub`,
-        // currency: Plans.value.paymentCurrency,
         onClose: function () {
-          // swal("Transaction Canceled!", { icon: "error" });
           toast.add({
             severity: "info",
             summary: "Transaction cancelled",
@@ -394,7 +391,6 @@ export default {
         },
         callback: function (response) {
           subscriptionPayment(response, 0);
-          //Route to where you confirm payment status
         },
       });
       handler.openIframe();
@@ -412,11 +408,6 @@ export default {
         initializedOrder.value = res.data;
       });
     };
-    // const setSelectedPaymentCurrency = () => {
-    //   if (currentUser.value) {
-    //     selectedCurrency.value = currentUser.value.currency;
-    //   }
-    // };
     const getFlutterwaveModules = () => {
       const script = document.createElement("script");
       script.src = !isProduction
@@ -427,28 +418,7 @@ export default {
     };
     getFlutterwaveModules();
 
-    // const getCurrencySymbol = async () => {
-    //   userService
-    //     .getCurrentUser()
-    //     .then((res) => {
-    //       currentUser.value = res;
-    //     //   setSelectedPaymentCurrency();
-    //     })
-    //     .catch((err) => {
-    //       console.log(err);
-    //     });
-    // };
-
-    // if (!currentUser.value || !currentUser.value.currency) {
-    //   getCurrencySymbol();
-    // } else {
-    //   setSelectedPaymentCurrency();
-    // }
-
     const payWithFlutterwave = () => {
-      //   console.log(TotalAmount.value, 'total amount calculated')
-      //   initializePayment(1)
-
       let country = "";
 
       switch (selectedCurrency.value) {

@@ -710,11 +710,11 @@
             <div class="small-text text-capitalize col-md-3 font-weight-bold">
               Name
             </div>
-            <div class="small-text text-capitalize col-md-3 font-weight-bold">
-              Contribution
-            </div>
             <div class="small-text text-capitalize col-md-2 font-weight-bold">
               Contact
+            </div>
+            <div class="small-text text-capitalize col-md-3 font-weight-bold">
+              Pledge Amount
             </div>
             <div class="small-text text-capitalize col-md-2 font-weight-bold">
               Redemeed
@@ -771,7 +771,7 @@
                   </div>
                 </div>
               </div>
-              <div class="col-md-3">
+              <!-- <div class="col-md-3">
                 <div class="mb-0 small d-flex justify-content-between">
                   <span
                     class="
@@ -791,7 +791,7 @@
                     }}
                   </div>
                 </div>
-              </div>
+              </div> -->
               <div class="col-md-2">
                 <div class="mb-0 small d-flex justify-content-between">
                   <span
@@ -806,6 +806,27 @@
                   </span>
                   <div class="small-text">
                     {{ item.person ? item.person.firstName : '' }} {{ item.person ? item.person.lastName : '' }}
+                  </div>
+                </div>
+              </div>
+              <div class="col-md-3">
+                <div class="d-flex small justify-content-between">
+                  <span
+                    class="
+                      text-dark
+                      font-weight-bold
+                      d-flex d-md-none
+                      fontIncrease
+                    "
+                    style="font-size: 15px"
+                    >Pledge Amount</span
+                  >
+                  <div class="small-text text-right text-md-center">
+                    {{
+                      item && item.pledgeType && item.pledgeType.currency
+                        ? item.pledgeType.currency.symbol
+                        : ""
+                    }}{{ item.amount }}
                   </div>
                 </div>
               </div>
@@ -1058,6 +1079,7 @@ export default {
         }
 
         pledgesBoundToItem.value = res.data.returnObject.pledges;
+        console.log(pledgesBoundToItem.value, "pledgesBoundToItem");
         paymentFormId.value = res.data.returnObject.paymentFormID;
       } catch (error) {
         console.log(error);

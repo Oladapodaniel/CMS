@@ -957,7 +957,7 @@ export default {
 
     const pledgePaymentLink = computed(() => {
       if (!route.query.pledgeTypeID) return "";
-      return `${window.location.origin}/pay/${route.query.pledgeTypeID}`;
+      return `${window.location.origin}/pledgepublicpayment/${pledgePaymentID.value}`;
     });
 
     const copyLink = () => {
