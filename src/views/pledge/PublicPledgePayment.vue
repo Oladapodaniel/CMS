@@ -55,8 +55,8 @@
                 </div>
               </div>
             </div>
-            <div class="row justify-content-center mx-0" v-if="appltoggle && !showLoading">
-                <div class="col-md-10 mt-3" >
+            <!-- <div class="row justify-content-center mx-0" > -->
+                <div class="col-md-10 mt-3" v-if="appltoggle && !showLoading">
                     <div class="col-md-12">
                         <label for="">Name</label>
                     </div>
@@ -74,7 +74,7 @@
                         </span>
                     </div>
                 </div>
-                <div class="col-md-10 mt-3">
+                <div class="col-md-10 mt-3" v-if="appltoggle && !showLoading">
                     <div class="col-md-12">
                         <label for="">Email</label>
                     </div>
@@ -92,7 +92,7 @@
                         </span>
                     </div>
                 </div>
-            </div>
+            <!-- </div> -->
             <div
               class="col-md-10 mt-3"
               v-if="contributionDetail.donorPaymentType == 1 && appltoggle && !showLoading"
@@ -602,7 +602,7 @@ export default {
 
       window.FlutterwaveCheckout({
         public_key: process.env.VUE_APP_FLUTTERWAVE_PUBLIC_KEY_LIVE,
-        // public_key: process.env.VUE_APP_FLUTTERWAVE_TEST_KEY_TEST,
+        // public_key: process.env.VUE_APP_FLUTTERWAVE_TEST_KEY_TEST,us
         tx_ref: uuidv4().substring(0, 8),
         amount: amountPaid.value,
         currency: selectedCurrency.value,
