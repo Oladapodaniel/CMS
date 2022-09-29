@@ -754,7 +754,7 @@
               v-for="(item, index) in pledgesBoundToItem"
               :key="index"
             >
-              <div class="col-md-3">
+              <div class="col-md-2">
                 <div class="mb-0 d-flex small justify-content-between">
                   <span
                     class="
@@ -809,7 +809,7 @@
                   </div>
                 </div>
               </div>
-              <div class="col-md-3">
+              <div class="col-md-2">
                 <div class="d-flex small justify-content-between">
                   <span
                     class="
@@ -868,6 +868,34 @@
                   </div>
                 </div>
               </div>
+              <div class="col-md-2">
+                    <div class="d-flex small justify-content-between">
+                      <span
+                        class="
+                          text-dark
+                          font-weight-bold
+                          d-flex d-md-none
+                          fontIncrease
+                        "
+                        style="font-size: 15px"
+                        >PaymentLink</span
+                      >
+                      <div class="small-text text-right text-md-center">
+                        <router-link
+                          :to="`/partnership/pay/${pledgeItemID}`"
+                          class="text-color text-primary text-decoration-none"
+                        >
+                        PaymentLink
+                        </router-link>
+                        <!-- <router-link
+                          :to="`/partnership/pay/${item.id}`"
+                          class="text-color text-primary text-decoration-none"
+                        >
+                        PaymentLink
+                        </router-link> -->
+                      </div>
+                    </div>
+                  </div>
               <!-- <div class="col-md-1">
                     <div
                       class="d-flex small justify-content-between "
@@ -976,6 +1004,7 @@ export default {
     const toast = useToast();
     const route = useRoute();
     const startDate = ref("");
+    const pledgeItemID = ref(route.query.id)
     const endDate = ref("");
     const Address = ref("");
     const loading = ref(false);
@@ -1406,6 +1435,7 @@ export default {
 
     return {
       newConItems,
+      pledgeItemID,
       date,
       currencyList,
       selectContribution,

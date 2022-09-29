@@ -120,7 +120,7 @@
                   Redemeed
                 </div>
                 <div
-                  class="small-text text-capitalize col-md-2 font-weight-bold"
+                  class="small-text text-capitalize col-md-1 font-weight-bold"
                 >
                   Date
                 </div>
@@ -129,6 +129,11 @@
                   class="small-text text-capitalize col-md-1 font-weight-bold"
                 >
                   Pledges
+                </div>
+                <div
+                  class="small-text text-capitalize col-md-1 font-weight-bold"
+                >
+                  PaymentLink
                 </div>
                 <div
                   class="small-text text-capitalize col-md-1 font-weight-bold"
@@ -268,7 +273,7 @@
                       </div>
                     </div>
                   </div>
-                  <div class="col-md-2" @click="groupClick(group.id)">
+                  <div class="col-md-1" @click="groupClick(group.id)">
                     <div class="d-flex small justify-content-between">
                       <span
                         class="
@@ -299,6 +304,28 @@
                       >
                       <div class="small-text text-right text-md-center">
                         {{ pledgelist.pledgeCount }}
+                      </div>
+                    </div>
+                  </div>
+                  <div class="col-md-1" @click="groupClick(group.id)">
+                    <div class="d-flex small justify-content-between">
+                      <span
+                        class="
+                          text-dark
+                          font-weight-bold
+                          d-flex d-md-none
+                          fontIncrease
+                        "
+                        style="font-size: 15px"
+                        >PaymentLink</span
+                      >
+                      <div class="small-text text-right text-md-center">
+                        <router-link
+                          :to="`/partnership/pay/${pledgelist.id}`"
+                          class="text-color text-primary text-decoration-none"
+                        >
+                        PaymentLink
+                        </router-link>
                       </div>
                     </div>
                   </div>
@@ -385,6 +412,7 @@ export default {
   },
   setup() {
     const toast = useToast();
+    // const paymentUrl = ref(`${window.location.origin}/partnership/pay/${allPledgeList.value.id}`)
     const loading = ref(false);
     const searchText = ref("");
     const selectedPledge = ref("");
@@ -513,6 +541,7 @@ export default {
 
     return {
       allPledgeList,
+      // paymentUrl,
       searchGroup,
       clearInput,
       toggleSearch,
