@@ -497,8 +497,8 @@ export default {
       initializePayment(0);
       /*eslint no-undef: "warn"*/
       let handler = PaystackPop.setup({
-        // key: process.env.VUE_APP_PAYSTACK_PUBLIC_KEY_LIVE,
-        key: process.env.VUE_APP_PAYSTACK_API_KEY,
+        key: process.env.VUE_APP_PAYSTACK_PUBLIC_KEY_LIVE,
+        // key: process.env.VUE_APP_PAYSTACK_API_KEY,
 
         email: contactDetail.value.email,
         amount: amountPaid.value * 100,
