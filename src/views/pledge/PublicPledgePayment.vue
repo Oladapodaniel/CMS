@@ -497,8 +497,8 @@ export default {
       initializePayment(0);
       /*eslint no-undef: "warn"*/
       let handler = PaystackPop.setup({
-        key: process.env.VUE_APP_PAYSTACK_PUBLIC_KEY_LIVE,
-        // key: process.env.VUE_APP_PAYSTACK_API_KEY,
+        // key: process.env.VUE_APP_PAYSTACK_PUBLIC_KEY_LIVE,
+        key: process.env.VUE_APP_PAYSTACK_API_KEY,
 
         email: contactDetail.value.email,
         amount: amountPaid.value * 100,
@@ -634,8 +634,8 @@ export default {
       }
 
       window.FlutterwaveCheckout({
-        public_key: process.env.VUE_APP_FLUTTERWAVE_PUBLIC_KEY_LIVE,
-        // public_key: process.env.VUE_APP_FLUTTERWAVE_TEST_KEY_TEST,us
+        // public_key: process.env.VUE_APP_FLUTTERWAVE_PUBLIC_KEY_LIVE,
+        public_key: process.env.VUE_APP_FLUTTERWAVE_TEST_KEY_TEST,
         tx_ref: uuidv4().substring(0, 8),
         amount: amountPaid.value,
         currency: selectedCurrency.value,
