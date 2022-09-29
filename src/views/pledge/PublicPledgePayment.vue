@@ -87,7 +87,7 @@
                                 v-model="contactDetail.email"
                                 aria-required=""
                                 placeholder="Email"
-                                :disabled="contactDetail.personId && contactDetail.email "
+                                :disabled="contactDetail.personId && contactDetail.email && contactDetail.email !== null && contactDetail.email !== ''  "
                             />
                         </span>
                     </div>
@@ -178,9 +178,27 @@
                     <input
                       type="text"
                       v-model="amountPaid"
+                      :class="{ 'is-invalid': !withinRange }"
+                      @blur="validatePaidAmount"
                       class="form-control"
                       placeholder="Enter Amount"
                     />
+                    <div class="invalid-feedback" v-if="amountPaid < 0 || amountPaid == 0">
+                       Please make sure the amount is not below this
+                        {{
+                        Math.abs(
+                            pledgeAmount
+                        ).toLocaleString()
+                        }}
+                    </div>
+                    <!-- <div class="invalid-feedback" v-else-if="amountPaid > pledgeAmount ">
+                       Please make sure the amount is not above this
+                        {{
+                        Math.abs(
+                            pledgeAmount
+                        ).toLocaleString()
+                        }}
+                    </div> -->
                   </div>
             </div>
             <div class="col-md-12 mt-4 d-flex justify-content-center">
@@ -403,6 +421,20 @@ export default {
         withinRange.value = true;
       }
     };
+
+      const validatePaidAmount = () => {
+      if(amountPaid.value == 0 || amountPaid.value < 0 ) {
+        withinRange.value = false;
+        toast.add({
+          severity: "warn",
+          summary: "info",
+          detail: `Amount is less than ${Math.abs(pledgeAmount.value).toLocaleString()}`,
+          life: 4000,
+        });
+      } else{
+        withinRange.value = true;
+      }
+    };
     const getAllPledgeDefinition = async () => {
       try {
         checking.value = false;
@@ -460,17 +492,18 @@ export default {
             ${appendLeadingZeroes(
               currentDate.getSeconds()
             )}${appendLeadingZeroes(currentDate.getMilliseconds())}`;
-
+    console.log(formattedDate, "add new date");
     const payWithPaystack = () => {
       initializePayment(0);
       /*eslint no-undef: "warn"*/
       let handler = PaystackPop.setup({
-        key: process.env.VUE_APP_PAYSTACK_PUBLIC_KEY_LIVE,
-        // key: process.env.VUE_APP_PAYSTACK_API_KEY,
+        // key: process.env.VUE_APP_PAYSTACK_PUBLIC_KEY_LIVE,
+        key: process.env.VUE_APP_PAYSTACK_API_KEY,
 
         email: contactDetail.value.email,
         amount: amountPaid.value * 100,
-        ref: `${formattedDate.substring(0, 4)}sub`,
+        ref: uuidv4().substring(0, 8),
+        // ref: `${formattedDate.substring(0, 4)}sub`,
         // currency: Plans.value.paymentCurrency,
         onClose: function () {
           // swal("Transaction Canceled!", { icon: "error" });
@@ -662,6 +695,7 @@ export default {
       CheckAfterEleven,
       txnRef,
       validateRangeAmount,
+      validatePaidAmount,
       withinRange,
       setContact,
       pledgeDefineID,
