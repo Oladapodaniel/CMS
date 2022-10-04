@@ -241,7 +241,7 @@
                         }}
                         {{
                           Math.abs(
-                            pledgelist.totalPledgeAmount
+                            pledgelist.donorPaymentSpecificAmount ? pledgelist.donorPaymentSpecificAmount : pledgelist.totalPledgeAmount
                           ).toLocaleString()
                         }}.00
                       </div>
@@ -321,6 +321,7 @@
                       >
                       <div class="small-text text-right text-md-center">
                         <router-link
+                          target="_blank"
                           :to="`/partnership/pay/${pledgelist.id}`"
                           class="text-color text-primary text-decoration-none"
                         >
@@ -373,6 +374,13 @@
                                 class="text-color dropdown-item"
                               >
                                 <a class="text-decoration-none">Edit </a>
+                              </router-link>
+                              <router-link
+                                target="_blank"
+                                :to="`/partnership/pay/${pledgelist.id}`"
+                                class="text-color dropdown-item"
+                              >
+                                <a class="text-decoration-none">Payment link </a>
                               </router-link>
                             </div>
                           </span>

@@ -707,13 +707,13 @@
       <div class="row mt-3" v-if="pledgesBoundToItem.length > 0">
         <div class="container-fluid d-none d-md-block">
           <div class="row t-header mt-4 border-bottom pb-2">
-            <div class="small-text text-capitalize col-md-3 font-weight-bold">
+            <div class="small-text text-capitalize col-md-2 font-weight-bold">
               Name
             </div>
             <div class="small-text text-capitalize col-md-2 font-weight-bold">
               Contact
             </div>
-            <div class="small-text text-capitalize col-md-3 font-weight-bold">
+            <div class="small-text text-capitalize col-md-2 font-weight-bold">
               Pledge Amount
             </div>
             <div class="small-text text-capitalize col-md-2 font-weight-bold">
@@ -721,6 +721,9 @@
             </div>
             <div class="small-text text-capitalize col-md-2 font-weight-bold">
               Date
+            </div>
+            <div class="small-text text-capitalize col-md-2 font-weight-bold">
+              Payment link
             </div>
             <!-- 
                 <div
