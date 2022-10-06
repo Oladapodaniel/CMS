@@ -201,7 +201,7 @@
                     </div> -->
                   </div>
             </div>
-            <div class="col-md-12 mt-4 d-flex justify-content-center">
+            <div class="col-md-12 mt-4 mb-4 d-flex justify-content-center">
               <div class="mt-4">
                 <button
                   class="default-btn border-0 text-white"
@@ -215,11 +215,32 @@
                 </button>
               </div>
             </div>
+            <div class="col-md-12 d-flex justify-content-around paymentlogo  container-top" v-if="!appltoggle">
+                        <div class="col-md-9 d-flex">
+                          <div class="col-3">
+                            <img src="../../assets/VisaDebit.png" >
+                          </div>
+                          <div class="col-3 ">
+                              <img src="../../assets/MastercardDebit.png" >
+                          </div>
+                          <div class="col-3 ">
+                              <img src="../../assets/PayPal2.png" >
+                          </div>
+                          <div class="col-3 ">
+                              <img src="../../assets/Full-Flutterwave.png" class=" mt-4" >
+                          </div>
+                        </div>
+            </div>
+            <div class="col-md-12 d-flex justify-content-center mt-4" v-if="!appltoggle">
+              <div class="col-md-9 text-center churchpluslogog">
+                Powered by <img src="../../assets/logoblue.png" alt="" class="pl-1">
+              </div>
+            </div>
           </div>
         </div>
       </div>
       <div
-        class="col-md-12 col-lg-6 d-none d-lg-flex justify-content-center w-100"
+        class="col-md-12 col-lg-6 d-none d-lg-flex justify-content-center "
         id="walletpana"
         style="height: 100vh"
       >
@@ -736,6 +757,12 @@ export default {
 </script>
 
 <style scoped>
+.paymentlogo img{
+width: 100%;
+}
+.churchpluslogog img{
+width: 30%;
+}
 .heading-text {
   font: normal normal 800 1.5rem Nunito sans;
 }

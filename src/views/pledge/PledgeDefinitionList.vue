@@ -9,6 +9,8 @@
             grey-border
             primary-btn
             default-btn
+            text-white
+            text-decoration-none
             primary-bg
             border-0
             mt-3
@@ -104,11 +106,11 @@
                 >
                   Name
                 </div>
-                <div
+                <!-- <div
                   class="small-text text-capitalize col-md-2 font-weight-bold"
                 >
                   Fund
-                </div>
+                </div> -->
                 <div
                   class="small-text text-capitalize col-md-2 font-weight-bold"
                 >
@@ -120,20 +122,20 @@
                   Redemeed
                 </div>
                 <div
-                  class="small-text text-capitalize col-md-1 font-weight-bold"
+                  class="small-text text-capitalize col-md-2 font-weight-bold"
                 >
                   Date
                 </div>
 
                 <div
-                  class="small-text text-capitalize col-md-1 font-weight-bold"
+                  class="small-text text-capitalize col-md-2 font-weight-bold"
                 >
                   Pledges
                 </div>
                 <div
                   class="small-text text-capitalize col-md-1 font-weight-bold"
                 >
-                  PaymentLink
+                  Link
                 </div>
                 <div
                   class="small-text text-capitalize col-md-1 font-weight-bold"
@@ -199,7 +201,7 @@
                       <div class="small-text">{{ pledgelist.name }}</div>
                     </div>
                   </div>
-                  <div
+                  <!-- <div
                     class="col-md-2 desc"
                     @click="pledgeClick(pledgelist.id)"
                   >
@@ -216,7 +218,7 @@
                       >
                       <div class="small-text">{{ pledgelist.fund }}</div>
                     </div>
-                  </div>
+                  </div> -->
                   <div
                     class="col-md-2 desc"
                     @click="pledgeClick(pledgelist.id)"
@@ -273,7 +275,7 @@
                       </div>
                     </div>
                   </div>
-                  <div class="col-md-1" @click="groupClick(group.id)">
+                  <div class="col-md-2" @click="groupClick(group.id)">
                     <div class="d-flex small justify-content-between">
                       <span
                         class="
@@ -290,7 +292,7 @@
                       </div>
                     </div>
                   </div>
-                  <div class="col-md-1" @click="groupClick(group.id)">
+                  <div class="col-md-2" @click="groupClick(group.id)">
                     <div class="d-flex small justify-content-between">
                       <span
                         class="
@@ -317,7 +319,7 @@
                           fontIncrease
                         "
                         style="font-size: 15px"
-                        >PaymentLink</span
+                        >Link</span
                       >
                       <div class="small-text text-right text-md-center">
                         <router-link

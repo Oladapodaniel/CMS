@@ -723,7 +723,7 @@
               Date
             </div>
             <div class="small-text text-capitalize col-md-2 font-weight-bold">
-              Payment link
+              Link
             </div>
             <!-- 
                 <div
@@ -881,7 +881,7 @@
                           fontIncrease
                         "
                         style="font-size: 15px"
-                        >PaymentLink</span
+                        >Link</span
                       >
                       <div class="small-text text-right text-md-center">
                         <router-link
