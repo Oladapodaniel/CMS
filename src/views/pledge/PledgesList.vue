@@ -25,259 +25,6 @@
           <hr class="hr my-3" />
         </div>
       </div>
-
-      <!-- <div
-        class="row table"
-        v-if="allPledgeList.length > 0 && !loading && !networkError"
-      >
-        <div class="col-12 px-0" id="table">
-          <div class="top-con" id="ignore2">
-            <div class="table-top">
-              <div class="col-4">
-                <p
-                  @click="toggleSearch"
-                  class="search-text w-100 mt-2 d-flex justify-content-center"
-                >
-                  <i class="pi pi-search mr-2"></i>SEARCH
-                </p>
-              </div>
-
-              <div class="search d-flex ml-2 mr-3">
-                <label
-                  class="label-search d-flex"
-                  :class="{
-                    'show-search': searchIsVisible,
-                    'hide-search': !searchIsVisible,
-                  }"
-                >
-                  <input
-                    type="text"
-                    placeholder="Search..."
-                    v-model="searchText"
-                  />
-                  <span class="empty-btn" @click="clearInput">
-                    <i class="pi pi-times"></i
-                  ></span>
-                  <span class="search-btn" @click="removeSearchText">
-                    <i class="pi pi-search"></i>
-                  </span>
-                </label>
-              </div>
-            </div>
-          </div>
-          <div>
-            <div class="container-fluid d-none d-md-block">
-              <div class="row t-header">
-                <div
-                  class="small-text text-capitalize col-md-2 font-weight-bold"
-                >
-                  Date
-                </div>
-                <div
-                  class="small-text text-capitalize col-md-3 font-weight-bold"
-                >
-                  Contact
-                </div>
-                <div
-                  class="small-text text-capitalize col-md-2 font-weight-bold"
-                >
-                  Pledge
-                </div>
-                <div
-                  class="small-text text-capitalize col-md-2 font-weight-bold"
-                >
-                  Amount pledged
-                    </div>
-                <div
-                  class="small-text text-capitalize col-md-2 font-weight-bold"
-                >
-                  Amount Target
-                </div>
-
-                <div
-                  class="small-text text-capitalize col-md-1 font-weight-bold"
-                >
-                  Action
-                </div>
-              </div>
-            </div>
-
-            <div class="row" style="margin: 0">
-              <div class="col-12 parent-desc pb-2 px-0">
-                <div
-                  class="
-                    row
-                    w-100
-                    c-pointer
-                    text-dark
-                    border-top
-                    py-2
-                    hover
-                    d-flex
-                    align-items-center
-                  "
-                  style="margin: 0"
-                  v-for="(pledgelist, index) in searchPledges"
-                  :key="index"
-                >
-                  <div
-                    class="col-md-2 desc"
-                    @click="pledgeClick(pledgelist.id)"
-                  >
-                    <p class="mb-0 d-flex justify-content-between text-primary">
-                      <span
-                        class="
-                          text-dark
-                          font-weight-bold
-                          d-flex d-md-none
-                          fontIncrease
-                        "
-                        style="font-size: 15px"
-                        >Date</span
-                      >
-                      {{ date(pledgelist.pledgeType.dateEntered) }}
-                    </p>
-                  </div>
-                  <div
-                    class="col-md-3 desc"
-                    @click="pledgeClick(pledgelist.id)"
-                  >
-                    <p class="mb-0 d-flex justify-content-between text-primary">
-                      <span
-                        class="
-                          text-dark
-                          font-weight-bold
-                          d-flex d-md-none
-                          fontIncrease
-                        "
-                        style="font-size: 15px"
-                        >Contact</span
-                      >
-                      {{ pledgelist.person.firstName }}
-                      {{ pledgelist.person.lastName }}
-                    </p>
-                  </div>
-                  <div
-                    class="col-md-2 desc"
-                    @click="pledgeClick(pledgelist.id)"
-                  >
-                    <p class="mb-0 d-flex justify-content-between text-primary">
-                      <span
-                        class="
-                          text-dark
-                          font-weight-bold
-                          d-flex d-md-none
-                          fontIncrease
-                        "
-                        style="font-size: 15px"
-                        >Pledge
-                      </span>
-                      {{ pledgelist.pledgeType.name }}
-                    </p>
-                  </div>
-                  <div class="col-md-2">
-                    <div
-                      class="d-flex small justify-content-between text-primary"
-                    >
-                      <span
-                        class="
-                          text-dark
-                          font-weight-bold
-                          d-flex d-md-none
-                          fontIncrease
-                        "
-                        style="font-size: 15px"
-                        >Amount pledged</span
-                      >
-                      <div class="small-text text-right text-md-center">
-                        {{ pledgelist && pledgelist.pledgeType && pledgelist.pledgeType.currency ? pledgelist.pledgeType.currency.symbol : "" }}
-                        {{
-                          Math.abs(
-                            pledgelist.amount
-                          ).toLocaleString()
-                        }}.00
-                      </div>
-                    </div>
-                  </div>
-                  <div class="col-md-2">
-                    <div
-                      class="d-flex small justify-content-between text-primary"
-                    >
-                      <span
-                        class="
-                          text-dark
-                          font-weight-bold
-                          d-flex d-md-none
-                          fontIncrease
-                        "
-                        style="font-size: 15px"
-                        >Amount target</span
-                      >
-                      <div class="small-text text-right text-md-center">
-                        {{ pledgelist && pledgelist.pledgeType && pledgelist.pledgeType.currency ? pledgelist.pledgeType.currency.symbol : "" }}
-                        {{
-                          Math.abs(
-                            pledgelist.pledgeType.totalTargetAmount
-                          ).toLocaleString()
-                        }}.00
-                      </div>
-                    </div>
-                  </div>
-
-                  <div class="col-md-1">
-                    <div>
-                      <div class="dropdown">
-                        <span class="d-flex justify-content-between">
-                          <span class="d-sm-flex small">
-                            <i
-                              class="
-                                fas
-                                fa-ellipsis-v
-                                cursor-pointer
-                                ml-2
-                                fontIncrease
-                              "
-                              id="dropdownMenuButton"
-                              data-toggle="dropdown"
-                              aria-haspopup="true"
-                              aria-expanded="false"
-                            ></i>
-
-                            <div
-                              class="dropdown-menu"
-                              aria-labelledby="dropdownMenuButton"
-                            >
-                              <a class="dropdown-item"
-                                ><router-link
-                                  :to="`/tenant/pledge/pledgepayment?id=${pledgelist.pledgeTypeID}&pledgeTypeID=${pledgelist.id}&name=${ pledgelist.person.firstName ? pledgelist.person.firstName : '' }${ pledgelist.person.lastName ? pledgelist.person.lastName : '' }`"
-                                  class="text-color"
-                                  >Make Payment</router-link
-                                ></a
-                              >
-                              <a class="dropdown-item"
-                                ><router-link
-                                  :to="`/tenant/pledge/makepledge?id=${pledgelist.id}`"
-                                  class="text-color"
-                                  >Edit</router-link
-                                ></a
-                              >
-                              <a
-                                class="dropdown-item"
-                                @click="showConfirmModal(pledgelist.id, index)"
-                                >Delete</a
-                              >
-                            </div>
-                          </span>
-                        </span>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
-      </div> -->
     </div>
 
     <!-- <PledgeTransaction /> -->
@@ -350,21 +97,46 @@
         class="row mt-4"
         v-if="allPledgeList.length > 0 && !loading && !networkError"
       >
-        <div class="col-md-3">
-          <Dropdown
-            v-model="selectedPledge"
+        <div class="col-md-2">
+              <MembersSearch
+                @memberdetail="chooseContact"
+                :currentMember="selectedContact"
+              />
+          <!-- <Dropdown
+            v-model="selectedContact2"
             class="w-100 font-weight-normal"
-            :options="allPledgeType"
-            optionLabel="name"
-            placeholder="All customers"
-          />
+            :options="allPledgeList"
+            optionLabel="contact"
+            placeholder="Select contact"
+          /> -->
+           <!-- <input
+                type="text"
+                v-model="selectedContact2"
+                class="form-control"
+                placeholder="Contact"
+              /> -->
+        </div>
+        <div class="col-md-2">
+          <!-- <Dropdown
+            v-model="selectedCategory"
+            class="w-100 font-weight-normal"
+            :options="allPledgeList"
+            optionLabel="pledgeItemName"
+            placeholder="Select category"
+          /> -->
+          <input
+                type="text"
+                v-model="selectedCategory"
+                class="form-control"
+                placeholder="Category"
+              />
         </div>
         <div class="col-md-2 mt-3 mt-md-0">
           <Dropdown
-            v-model="selectedPledge"
+            v-model="selectedStatus"
             class="w-100 font-weight-normal"
-            :options="allPledgeType"
-            optionLabel="name"
+            :options="allPledgeStatus"
+            optionLabel="status"
             placeholder="All statuses"
           />
         </div>
@@ -388,68 +160,29 @@
             :showIcon="true"
           />
         </div>
-        <div class="col-md-3 mt-3 d-flex mt-md-0">
-           <input type="text" class="form-control h-100" id="validationCustomUsername" placeholder="Username" aria-describedby="inputGroupPrepend" required>
-        <div class="input-group-append">
-          <span class="input-group-text" id="inputGroupPrepend">
-            <i class="pi pi-search"></i>
-          </span>
-        </div>
-        <div class="invalid-feedback">
-          Please choose a username.
-        </div>
+        <div class="col-md-2 mt-3 d-flex mt-md-0">
+            <button
+              class="default-btn more-btn primary-bg border-0 "
+                @click="filterPledge"
+              >
+                <i
+                  class="fas fa-circle-notch fa-spin mr-2 text-white"
+                  v-if="loading"
+                ></i>
+                <span class="text-white">Apply</span>
+                <span></span>
+            </button>
+          <!-- <input type="text" class="form-control h-100" id="validationCustomUsername" placeholder="Username" aria-describedby="inputGroupPrepend" required>
+          <div class="input-group-append">
+            <span class="input-group-text" id="inputGroupPrepend">
+              <i class="pi pi-search"></i>
+            </span>
+          </div>
+          <div class="invalid-feedback">
+            Please choose a username.
+          </div> -->
         </div>
       </div>
-      <!-- <div class="row mt-4 mb-3"  v-if="allPledgeList.length > 0 && !loading && !networkError">
-        <div class="col-md-12 mt-3 d-flex flex-wrap text-center botom">
-          <div class="col-12 col-sm-4 col-md-2 mt-2 mt-md-0" @click="upload">
-            <div class="col-md-12 pb-2">
-              Upload
-              <span
-                class="
-                  font-weight-bold
-                  bg-secondary
-                  rounded-circle
-                  py-1
-                  px-2
-                  border
-                "
-                >8</span
-              >
-            </div>
-            <div
-              :class="{ baseline: showUpload, 'hide-base': !showUpload }"
-            ></div>
-          </div>
-
-          <div class="col-12 col-sm-4 col-md-2 mt-2 mt-md-0" @click="draft">
-            <div class="col-md-12 pb-2">
-              Draft
-              <span
-                class="
-                  font-weight-bold
-                  bg-secondary
-                  rounded-circle
-                  py-1
-                  px-2
-                  border
-                "
-                >1</span
-              >
-            </div>
-            <div
-              :class="{ baseline: showDraft, 'hide-base': !showDraft }"
-            ></div>
-          </div>
-          <div class="col-12 col-sm-4 col-md-2 mt-2 mt-md-0" @click="invoice">
-            <div class="col-12 pb-2">All invoice</div>
-            <div
-              :class="{ baseline: showInvoice, 'hide-base': !showInvoice }"
-            ></div>
-          </div>
-        </div>
-      </div> -->
-
       <div
         class="container-fluid d-none mt-5 d-md-block"
         v-if="allPledgeList.length > 0 && !loading && !networkError"
@@ -806,6 +539,9 @@ export default {
   },
   setup() {
     const networkError = ref(false);
+    const allPledgeStatus = ref([]);
+    const selectedCategory = ref("");
+    const selectedStatus = ref("")
     const toast = useToast();
     const loading = ref(false);
     const searchText = ref("");
@@ -820,6 +556,8 @@ export default {
     const showUpload = ref(true);
     const showDraft = ref(false);
     const showInvoice = ref(false);
+    const selectedContact = ref({});
+    const selectedContact2 = ref("");
 
     const confirm = useConfirm();
 
@@ -844,6 +582,16 @@ export default {
     const navigateToMakePledge = () => {
       router.push("/tenant/pledge/makepledge");
     };
+
+    const filterPledge = async () =>{
+      try{
+        const res = await axios.get(`/api/Pledge/GetAllPledgesSearch?personId${selectedContact.value.id}&status${selectedStatus.value.status}&pledgeItemName${selectedCategory.value}&startDate${new Date(startDate.value).toLocaleDateString("en-US")}&endDate${new Date(endDate.value).toLocaleDateString("en-US")}`)
+        console.log(res.data, "filterPledge");
+      }
+      catch(error){
+        console.log(error)
+      }
+    }
     const getCurrentlySignedInUser = async () => {
       try {
         const res = await axios.get("/api/Membership/GetCurrentSignedInUser");
@@ -880,7 +628,7 @@ export default {
       // contactRef.value.hide();
       selectedContact.value = payload;
 
-      // console.log(payload, 'my allll')
+      console.log(selectedContact.value, 'my allll')
     };
 
     const searchIsVisible = ref(false);
@@ -908,11 +656,15 @@ export default {
         const res = await axios.get("/api/Pledge/GetAllPledges");
         finish();
         allPledgeList.value = res.data.returnObject;
+        allPledgeStatus.value = res.data.returnObject.map((i)  => ({
+          status: i.status
+        }))
         // allPledgeType.value = res.data.returnObject.map((i) => ({
-        //   name: i.pledgeType.name,
+        //   status: i.status,
         //   id: i.pledgeType.id,
         // }));
         console.log(allPledgeList.value, "getPledgeList");
+        console.log(allPledgeStatus.value, "allPledgeStatus");
         loading.value = false;
       } catch (error) {
         finish();
@@ -1000,6 +752,10 @@ export default {
 
     return {
       upload,
+      filterPledge,
+      selectedContact2,
+      selectedCategory,
+      selectedContact,
       draft,
       invoice,
       startDate,
@@ -1029,6 +785,8 @@ export default {
       selectedPerson,
       removeSearchText,
       allPledgeType,
+      allPledgeStatus,
+      selectedStatus,
       date,
       // singlePledge
     };

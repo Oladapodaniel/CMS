@@ -4,8 +4,25 @@
       <div class="col-md-12 px-0">
         <div class="container">
           <div class="row mt-4">
-            <div class="col-md-5">
+            <div class="col-md-6">
               <h2 class="font-weight-bold page-hder">Pledge Overview</h2>
+            </div>
+            <div class="col-md-6 d-flex justify-content-md-end">
+               <div
+                    class="
+                      cursor-pointer
+                      grey-border
+                      primary-btn
+                      default-btn
+                      primary-bg
+                      border-0
+                      text-white
+                    "
+                    data-toggle="modal"
+                    data-target="#exampleModalLong"
+                  >
+                    Record Payment
+                  </div>
             </div>
             <Toast />
           </div>
@@ -490,44 +507,71 @@
       </div>
       <!-- Modal -->
       <div
-        class="modal fade"
+        class="modal fade " 
         id="exampleModalLong"
         tabindex="-1"
         role="dialog"
         aria-labelledby="exampleModalLongTitle"
         aria-hidden="true"
       >
-        <div class="modal-dialog modal-md modal-dialog-centered" role="document">
+        <div class="modal-dialog modal-lg modal-dialog-centered" role="document">
           <div class="modal-content">
+            <div class="modal-header">
+              <h5 class="modal-title font-weight-bold">Record a payment for this pledge</h5>
+              <div class="btn-close" data-dismiss="modal" aria-label="Close"><i class="pi pi-times"></i></div>
+            </div>
             <div class="modal-body">
               <div class="container-fluid">
                 <div class="row">
+                  <div class="col-md-12">
+                    Record a payment you've already recieved,such as cash, cheque, or bank payment
+                  </div>
                   <div class="col-md-12 mt-4">
                     <div class="row my-1 mt-3">
                       <div class="col-md-10 ">
                         <div class="row">
                           <div class="col-md-4 text-md-right align-self-center">
-                            <label for="" class=""
-                              >Person <sup class="text-danger">*</sup>
+                            <label for="" class="font-weight-bold"
+                              >Payment date <sup class="text-danger">*</sup>
                             </label>
                           </div>
                           <div class="col-md-8">
-                            <!-- <input
-                              type="text"
-                              v-model="memberName"
+                            <input
+                              type="date"
+                              v-model="pledgeDate"
                               :disabled="checking"
                               class="form-control w-100"
-                            /> -->
-                            <h4 class="font-weight-600">{{ personName }}</h4>
+                            />
+                            <!-- <h4 class="font-weight-600">{{ personName }}</h4> -->
                           </div>
                         </div>
                       </div>
                     </div>
-                    <div class="row my-1 mt-3">
+                    <div class="row my-2 mt-3">
                       <div class="col-md-10 ">
                         <div class="row">
                           <div class="col-md-4 text-md-right align-self-center">
-                            <label for="" class="">
+                            <label for="" class="font-weight-bold"
+                              >Donor <sup class="text-danger">*</sup>
+                            </label>
+                          </div>
+                          <div class="col-md-8">
+                            <input
+                              type="text"
+                              v-model="personName"
+                              :disabled="checking"
+                              class="form-control w-100"
+                            />
+                            <!-- <h4 class="font-weight-600">{{ personName }}</h4> -->
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                    <div class="row my-2 mt-3">
+                      <div class="col-md-10 ">
+                        <div class="row">
+                          <div class="col-md-4 text-md-right align-self-center">
+                            <label for="" class="font-weight-bold">
                               Pledge Name <sup class="text-danger">*</sup>
                             </label>
                           </div>
@@ -541,26 +585,26 @@
                               optionLabel="name"
                               placeholder="Select Pledge"
                             /> -->
-                            <!-- <input
+                            <input
                               type="text"
-                              v-model="selectedPledge.name"
+                              v-model="pledgeName"
                               :disabled="checking"
                               class="form-control w-100"
-                            /> -->
-                            <h4 class="font-weight-100">
+                            />
+                            <!-- <h4 class="font-weight-100">
                               {{ pledgeName  }}
-                            </h4>
+                            </h4> -->
                           </div>
                         </div>
                       </div>
                     </div>
                     <div
-                      class="row my-1 mt-3"
+                      class="row my-2 mt-3"
                     >
                       <div class="col-md-10 ">
                         <div class="row">
                           <div class="col-md-4 text-md-right align-self-center">
-                            <label for="" class=""> Pledge Amount </label>
+                            <label for="" class="font-weight-bold"> Pledge Amount </label>
                           </div>
                           <div class="col-md-8 d-flex">
                             <!-- <span
@@ -585,19 +629,19 @@
                         </div>
                       </div>
                     </div>
-                    <div class="row mt-3">
+                    <div class="row my-3 mt-3">
                       <div class="col-md-10 ">
                         <div class="row">
                           <div class="col-md-4 text-md-right align-self-center">
-                            <label for="" class=""
-                              >Channel <sup class="text-danger">*</sup>
+                            <label for="" class="font-weight-bold"
+                              >Payment method <sup class="text-danger">*</sup>
                             </label>
                           </div>
 
                           <div class="col-md-8 d-flex flex-wrap" >
                             <button class="  btn d-flex justify-content-between  col-12 border  " type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                                 <span class="ofering">
-                                    &nbsp;&nbsp;&nbsp; {{ selectedChannel.name ?  selectedChannel.name : 'Select Channel' }}
+                                    &nbsp;&nbsp;&nbsp; {{ selectedChannel.name ?  selectedChannel.name : 'Select a payment method' }}
                                     <!-- {{ item.account ? item.account : 'Select' }} -->
                                 </span>
                                 <span>
@@ -620,7 +664,7 @@
                         </div>
                       </div>
                     </div>
-                    <div class="col-md-12  mt-4">
+                    <!-- <div class="col-md-12  mt-4">
                       <div class="row d-flex flex-wrap justify-content-center">
                         <div class="mt-4  col-12  text-center">
                           <button
@@ -634,10 +678,18 @@
                         </div>
                         <Toast />
                       </div>
-                    </div>
+                    </div> -->
                   </div>
                 </div>
               </div>
+            </div>
+            <div class="modal-footer">
+              <!-- <div class="row"> -->
+                <!-- <div class="col-md-8 border d-flex"> -->
+                  <button  class="default-btn " data-dismiss="modal" >Cancel</button>
+                  <button  data-dismiss="modal" class=" default-btn primary-bg text-white"  @click="recordPayment"> <i class="pi pi-spin pi-spinner" v-if="loading"></i>Save</button>
+                <!-- </div> -->
+              <!-- </div> -->
             </div>
           </div>
         </div>

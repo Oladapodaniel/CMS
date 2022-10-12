@@ -619,18 +619,19 @@ export default {
 
     const deleteMarked = () => {
       // let newarray = []
+      // let dft = convert(marked.value);
       let dft = convert(marked.value);
       console.log(dft, "👌😂😂");
       axios
-        .post(`/api/CheckInAttendance/Delete/Multiple`, dft)
+        .post(`/api/Financials/Contributions/Transactions/DeleteMultiple`, dft)
         .then((res) => {
           let incomingRes = res.data;
           console.log(incomingRes, "🙌❤🙌❤🙌");
-          if (incomingRes.toString().toLowerCase().includes("attendance")) {
+          // if (incomingRes.response.toString().toLowerCase().includes("Successful")) {
             toast.add({
               severity: "success",
               summary: "Confirmed",
-              detail: "Attendance(s) deleted successfully.",
+              detail: "Offering(s) deleted successfully.",
               life: 4000,
             });
             // attendanceList.value = attendanceList.value.filter((item) => {
@@ -642,7 +643,7 @@ export default {
             //       return true;
             //     });
             emit("marked", marked.value);
-          }
+          // }
           // checkedAttendance.value = [];
         })
         .catch((err) => {
