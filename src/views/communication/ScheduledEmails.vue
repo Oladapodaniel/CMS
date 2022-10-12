@@ -52,8 +52,12 @@
                             :checked="markedMails.length === schedules.length"
                           />
                         </div>
-                        <div class="col-md-11">
+                        <div class="col-md-8">
                           <span class="th">Message</span>
+                        </div>
+
+                        <div class="col-md-3">
+                          <span class="th">Date & Time</span>
                         </div>
                       </div>
                     </div>
@@ -81,7 +85,7 @@
                             "
                           />
                         </div>
-                        <div class="col-md-8 d-md-flex flex-column small-text">
+                        <div class="col-md-7 d-md-flex flex-column small-text">
                           <router-link to="" class="text-decoration-none"
                             ><span class="msg-n-time">
                               <span class="font-weight-bold mr-2 text-dark">{{
@@ -100,11 +104,11 @@
                           >
                         </div>
 
-                        <div class="col-md-3 d-md-flex flex-column small-text">
-                          <div class="row">
+                        <div class="col-md-4 d-md-flex align-items-center justify-content-end small-text">
+                          
                             <span class="msg-n-time">
                               <span class="timestamp ml-4 small-text">{{
-                                formattedDate(email.date)
+                                formattedDate(email.executionDate)
                               }}</span>
                             </span>
 
@@ -116,7 +120,7 @@
                               >
                               </i
                             ></span>
-                          </div>
+                          
                         </div>
                       </div>
                       <div class="row" v-if="index !== schedules.length - 1">
@@ -192,11 +196,13 @@ export default {
     // function to search
     const searchScheduled = ref("");
     const scheduledMails = computed(() => {
+      console.log(scheduledMails, 'kingsley')
       if (searchScheduled.value === "" && schedules.value.length > 0)
         return schedules.value;
       return schedules.value.filter((i) => {
         i.message.toLowerCase().includes(searchScheduled.value.toLowerCase());
       });
+
     });
 
     // code to mark single object
@@ -238,7 +244,7 @@ export default {
 
       axios
         .delete(
-          `/api/Messaging/DeleteEmailScheduledMessages?ScheduledMessageIdList=${stringOfSchedulesIds}`
+          `/api/Messaging/DeleteEmailScheduledMessages?ScheduledMessageIdList=${stringOfSchedulesIds ? stringOfSchedulesIds : id}`
         )
         .then((res) => {
           if (res) {

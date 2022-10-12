@@ -51,8 +51,11 @@
                             class="mark-box"
                           />
                         </div>
-                        <div class="col-md-11">
+                        <div class="col-md-8">
                           <span class="th">Message</span>
+                        </div>
+                        <div class="col-md-3">
+                          <span class="th">Date & Time</span>
                         </div>
                       </div>
                     </div>
@@ -83,7 +86,7 @@
                             class="mark-box"
                           />
                         </div>
-                        <div class="col-md-8 d-md-flex flex-column small-text py-1">
+                        <div class="col-md-7 d-md-flex small-text py-1">
                           <router-link to="" class="text-decoration-none"
                             ><span class="msg-n-time">
                               <span class="font-weight-bold mr-2 text-dark">{{
@@ -102,13 +105,13 @@
                           >
                         </div>
 
-                        <div class="col-md-3 d-md-flex flex-column small-text">
+                        <div class="col-md-4 d-md-flex align-items-center justify-content-end small-text">
                           <span class="msg-n-time">
                             <span class="timestamp ml-4 small-text">{{
                               formattedDate(sms.date)
                             }}</span>
                           </span>
-                          <span class="small-text ml-5 mr-n4">
+                          <span class="small-text ml-5 mr-n4" @click="deleteSingleSms(sms)">
                               <i
                                 class="c-pointer pr-3 pi pi-trash delete-icon"
                                 @click="showConfirmModal(sms.id)"
@@ -261,12 +264,18 @@ export default {
       console.log(k, "wait a moment");
       return k.map((i) => i.id).join(",");
     };
-    const deleteSchedules = () => {
+    const deleteSingleSms = (id) => {
+      schedules.value = schedules.value.filter((del) => {
+        return del.id != id
+      })
+    };
+    const deleteSchedules = (id) => {
+      console.log(id)
       let sub = mainone(markedSchedules.value);
       console.log(sub, "Am here save and sound");
       axios
         .delete(
-          `/api/Messaging/DeleteSMSScheduledMessages?ScheduledMessageIdList=${sub}`
+          `/api/Messaging/DeleteSMSScheduledMessages?ScheduledMessageIdList=${sub ? sub : id}`
         )
         .then((res) => {
           console.log(res, "we good");
@@ -308,6 +317,7 @@ export default {
         rejectClass: "cancel-delete",
         accept: () => {
           deleteSchedules(id);
+          deleteSingleSms(id)
         },
         reject: () => {
           //  toast.add({severity:'info', summary:'Rejected',
@@ -326,6 +336,7 @@ export default {
       mark1Schedule,
       markAllSchedules,
       deleteSchedules,
+      deleteSingleSms,
       showConfirmModal,
     };
   },

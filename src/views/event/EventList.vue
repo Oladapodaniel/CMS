@@ -446,6 +446,7 @@
           </div>
           <ConfirmDialog />
           <Toast />
+          {{membersCount}} {{currentPage}}
 
           <div class="table-footer">
             <PaginationButtons
@@ -687,7 +688,7 @@ export default {
       try {
         const { data } = await axios.get(
           `/api/eventreports/eventReports?page=${page}`
-        );
+          );
         if (data.activities.length > 0) {
           filterEvents.value = [];
           emit("activity-per-page", data.activities);
