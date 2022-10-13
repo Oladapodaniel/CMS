@@ -700,8 +700,8 @@ export default {
     };
 
     const membersCount = computed(() => {
-      if (props.eventSummary.activities.length > 100)
-        return Math.ceil(props.eventSummary.activities.length / 100);
+      if (props.eventSummary.activities.length > 20)
+        return Math.ceil(props.eventSummary.activities.length / 20);
       return 1;
     });
 
