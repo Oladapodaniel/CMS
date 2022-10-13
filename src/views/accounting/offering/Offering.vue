@@ -30,7 +30,7 @@
     
 
     <div v-if="contributionTransactions.length > 0 && !loading && !networkError">
-        <OfferingList :contributionTransactions="contributionTransactions" @get-pages="getOfferingPages" @contri-transac="updateTransac" :totalItem="totalItem"/>
+        <OfferingList :contributionTransactions="contributionTransactions" @marked="removeMultipleOffering" @get-pages="getOfferingPages" @contri-transac="updateTransac" :totalItem="totalItem"/>
     </div> 
     <div class="no-person"  v-else-if="contributionTransactions.length === 0 && !loading && !networkError">
         <div class="empty-img">
@@ -66,7 +66,18 @@ export default {
         const loading = ref(false)
         const networkError = ref(false)
 
-
+        const removeMultipleOffering = (payload) => {
+          console.log(payload, "oiiipoii")
+          contributionTransactions.value = contributionTransactions.value.filter((item) => {
+                  const y = payload.findIndex(
+                    (i) => i.id === item.id
+                  );
+                  console.log(y , "old are u now");
+                  if (y >= 0) return false;
+                  return true;
+                });
+                console.log(contributionTransactions.value, "the boy is good ")
+        }
         const getContributionTransactions = () => {
             let store = useStore()
             console.log(store.getters['contributions/contributionList'])
@@ -108,7 +119,7 @@ export default {
       contributionTransactions.value.splice(payload, 1)
     }
         return {
-            contributionTransactions, loading, getOfferingPages, updateTransac, totalItem, networkError
+            contributionTransactions, loading, getOfferingPages, updateTransac, totalItem, networkError, removeMultipleOffering
         }
     }
 }
