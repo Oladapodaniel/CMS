@@ -98,17 +98,17 @@
         v-if="allPledgeList.length > 0 && !loading && !networkError"
       >
         <div class="col-md-2">
-              <!-- <MembersSearch
+              <MembersSearch
                 @memberdetail="chooseContact"
                 :currentMember="selectedContact"
-              /> -->
-          <Dropdown
+              />
+          <!-- <Dropdown
             v-model="selectedContact2"
             class="w-100 font-weight-normal"
             :options="allPerson"
             optionLabel="name"
             placeholder="Select contact"
-          />
+          /> -->
            <!-- <input
                 type="text"
                 v-model="selectedContact2"
@@ -117,19 +117,19 @@
               /> -->
         </div>
         <div class="col-md-2">
-          <!-- <Dropdown
+          <Dropdown
             v-model="selectedCategory"
             class="w-100 font-weight-normal"
-            :options="allPledgeList"
-            optionLabel="pledgeItemName"
+            :options="allPledgeDefinitionList"
+            optionLabel="name"
             placeholder="Select category"
-          /> -->
-          <input
+          />
+          <!-- <input
                 type="text"
                 v-model="selectedCategory"
                 class="form-control"
                 placeholder="Category"
-              />
+              /> -->
         </div>
         <div class="col-md-2 mt-3 mt-md-0">
           <Dropdown
@@ -160,7 +160,7 @@
             :showIcon="true"
           />
         </div>
-        <div class="col-md-2 mt-3 d-flex mt-md-0">
+        <div class="col-md-2 mt-3  mt-md-0">
             <button
               class="default-btn more-btn primary-bg border-0 "
                 @click="filterPledge"
@@ -172,15 +172,6 @@
                 <span class="text-white">Apply</span>
                 <span></span>
             </button>
-          <!-- <input type="text" class="form-control h-100" id="validationCustomUsername" placeholder="Username" aria-describedby="inputGroupPrepend" required>
-          <div class="input-group-append">
-            <span class="input-group-text" id="inputGroupPrepend">
-              <i class="pi pi-search"></i>
-            </span>
-          </div>
-          <div class="invalid-feedback">
-            Please choose a username.
-          </div> -->
         </div>
       </div>
       <div
@@ -540,8 +531,14 @@ export default {
   setup() {
     const networkError = ref(false);
     const allPerson = ref([]);
-    const allPledgeStatus = ref([]);
-    const selectedCategory = ref("");
+    const allPledgeStatus = ref([
+      {status: 'Paid'},
+      {status: 'Over Due'},
+      {status: 'No Payment'},
+      {status: '---'}
+    ]);
+    const allPledgeDefinitionList = ref([]);
+    const selectedCategory = ref({});
     const filterResult = ref([]);
     const selectedStatus = ref("")
     const toast = useToast();
@@ -584,16 +581,30 @@ export default {
     const navigateToMakePledge = () => {
       router.push("/tenant/pledge/makepledge");
     };
-   const pledgeListClick = (id) =>{
-    router.push(`/tenant/pledge/pledgemaking?pledgeTypeID=${id}`);
-   }
+    
+    const pledgeListClick = (id) =>{
+        router.push(`/tenant/pledge/pledgemaking?pledgeTypeID=${id}`);
+    }
+
+    const getAllPledgeDefinition = async () => {
+      try{
+        const res  = await axios.get('/api/Pledge/GetAllPledgeDefinitions')
+          allPledgeDefinitionList.value = res.data.returnObject;
+
+      }
+      catch(error){
+        console.log(error);
+        
+      }
+    }
+    getAllPledgeDefinition()
 
     const filterPledge = async () =>{
-      selectedContact2.value.name = selectedContact2.value.name == undefined ? "" : selectedContact2.value.name;
-      selectedCategory.value = selectedCategory.value == undefined ? "" : selectedCategory.value;
+      selectedContact.value.name = selectedContact.value.name == undefined ? "" : selectedContact.value.name;
+      selectedCategory.value.name = selectedCategory.value.name == undefined ? "" : selectedCategory.value.name;
       selectedStatus.value.status = selectedStatus.value.status == undefined ? "" : selectedStatus.value.status;
       try{
-        const res = await axios.get(`/api/Pledge/GetAllPledgesSearch?personId=${selectedContact2.value.personId}&status${selectedStatus.value.status}&pledgeItemName${selectedCategory.value}&startDate${new Date(startDate.value).toLocaleDateString("en-US")}&endDate${new Date(endDate.value).toLocaleDateString("en-US")}`)
+        const res = await axios.get(`/api/Pledge/GetAllPledgesSearch?personId=${selectedContact.value.id}&status${selectedStatus.value.status}&pledgeItemName${selectedCategory.value.name}&startDate${new Date(startDate.value).toLocaleDateString("en-US")}&endDate${new Date(endDate.value).toLocaleDateString("en-US")}`)
         filterResult.value = res.data.returnObject;
         console.log(filterResult.value, "filterPledge");
       }
@@ -625,7 +636,7 @@ export default {
               .toLowerCase()
               .includes(searchText.value.toLowerCase());
         });
-      } else if(filterResult.value.length > 0 && (selectedContact2.value.name || selectedStatus.value.status || selectedCategory.value  ))
+      } else if(filterResult.value.length > 0 && (selectedContact.value.name || selectedStatus.value.status || selectedCategory.value.name  ))
       {
         return filterResult.value
       }else{
@@ -668,9 +679,9 @@ export default {
         const res = await axios.get("/api/Pledge/GetAllPledges");
         finish();
         allPledgeList.value = res.data.returnObject;
-        allPledgeStatus.value = res.data.returnObject.map((i)  => ({
-          status: i.status
-        }))
+        // allPledgeStatus.value = res.data.returnObject.map((i)  => ({
+        //   status: i.status
+        // }))
         allPerson.value = res.data.returnObject.map((i)  => ({
           name: i.contact,
           personId: i.personID
@@ -768,6 +779,7 @@ export default {
 
     return {
       upload,
+      allPledgeDefinitionList,
       filterResult,
       allPerson,
       filterPledge,

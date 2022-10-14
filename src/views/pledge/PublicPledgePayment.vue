@@ -4,31 +4,39 @@
       <div class="col-md-12 ">
         <div class="container container-top">
           <div class="row mt-4 justify-content-center">
-            <div class="col-md-6  shadow  rounded  ">
-              <div class="col-md-12 d-flex justify-content-center mt-2 ">
-                <img
-                    :src="churchLogo"
-                    v-if="churchLogo"
-                    class="link-image"
-                    alt=""
-                  />
-                  <img
-                    src="../../assets/dashboardlinks/churchcloud.png"
-                    v-else
-                    class="link-image"
-                    alt=""
-                  />
-                  <a href="" class="text-decoration-none text-white mt-2 w-50"><span class="heading-text">CHURCHPLUS MAIN ACCOUNT</span> </a>
+            <div class="col-md-6  mt-3  ">
+              <div class="col-md-12 d-flex justify-content-around mt-2 ">
+                <div class="col-md-10 d-flex justify-content-center">
+                  <div class="col-md-4 px-0 mx-0 text-right ">
+                    <img
+                      :src="churchLogo"
+                      v-if="churchLogo"
+                      class="link-image"
+                      alt=""
+                    />
+                    <img
+                      src="../../assets/dashboardlinks/churchcloud.png"
+                      v-else
+                      class="link-image "
+                      alt=""
+                    />
+                  </div>
+                  <div class="col-md-8 ">
+                      <a href="" class="text-decoration-none text-dark mt-2 w-50"><span class="heading-text">Churchplus Main Account</span> </a>
+                      <div class="w-100 small my-3">BY DOMINION DONATIONS</div>
+                      <div> <hr class="w-100 my-3"> </div>
+                  </div>
+                </div>
               </div>
               <div class="col-md-12 d-flex justify-content-center  ">
-                <div class="col-md-12 text-center text-white font-weight-bold mt-2 ">
+                <div class="col-md-11 text-center text-secondary font-weight-medium mt-2 ">
                     Your donation is much appreciated. God richly bless you for your support.
                 </div>
               </div>
             </div>
           </div>
           <div class="row  justify-content-center ">
-            <div class="col-md-6 bg-white my-4 rounded">
+            <div class="col-md-6 bg-white border my-4 rounded">
               <div class="col-md-12 text-center mt-4 heading-text">Pledge Payment</div>
               <div class="col-md-12 d-flex justify-content-center mt-4">
                 <div class="col-md-12">
@@ -253,21 +261,39 @@
                 </button>
               </div>
             </div>
-              <div class="col-md-12 d-flex justify-content-center ">
-                <div class="col-md-7 d-flex">
-                     <div class="col-3 px-0 mx-0 mt-2">
+              <div class="col-12 col-sm-9 col-md-8  offset-sm-1 offset-md-3 offset-lg-2 pl-0 mt-5 ">
+                <div class="row">
+                        <div class="col-3">
+                            <img src="../../assets/VisaDebit.png" class="w-100">
+                            <!-- <img src="../../assets/paystack.png" class="w-100"> -->
+                        </div>
+                        <div class="col-3 pr-0">
+                            <img src="../../assets/Full-Flutterwave.png" class="w-100">
+                            <!-- <img src="../../assets/flutterwave.png" class="w-100"> -->
+                        </div>
+                        <div class="col-3 pr-0">
+                            <!-- <img src="../../assets/Full-Flutterwave.png" class="w-100"> -->
+                            <img src="../../assets/paystack.png" class="w-100">
+                        </div>
+                        <div class="col-3 pl-0 text-right">
+                            <img src="../../assets/paypal.png" class="w-50">
+                            <!-- <img src="../../assets/paypal.png" class="w-50"> -->
+                        </div>
+                    </div>
+                <!-- <div class="col-md-7 d-flex flex-wrap">
+                     <div class="col-6 col-sm-3 px-0 mx-0 mt-2">
                         <img src="../../assets/VisaDebit.png" class="" style="width: 90%">
                       </div>
-                      <div class="col-3 px-0 mx-0 d-flex justify-content-center align-ltems-center ">
+                      <div class="col-6 col-sm-3 px-0 mx-0 d-flex justify-content-center align-ltems-center ">
                           <img src="../../assets/MastercardDebit.png" class="" style="width: 80%">
                       </div>
-                      <div class="col-3 px-0 mx-0 mt-2 ">
+                      <div class="col-6 col-sm-3 px-0 mx-0 mt-2 ">
                           <img src="../../assets/PayPal2.png" class=" w-100"  >
                       </div>
-                      <div class="col-3 px-0 mx-0 paymentlogo mt-2">
+                      <div class="col-6 col-sm-3  px-0 mx-0 paymentlogo mt-2">
                           <img src="../../assets/Full-Flutterwave.png" class="" >
                       </div>
-                </div>
+                </div> -->
               </div>
               <div class="col-md-12 mb-3">
                 <div class="col-md-12 d-flex justify-content-center mt-4" v-if="!appltoggle">
@@ -830,12 +856,24 @@ export default {
 width: 8rem;
 height: 2rem;
 }
+
+.link-image {
+  width: 100%;
+  /* height: 50px; */
+  padding-right: 0;
+  padding-left: 0;
+  margin: 0;
+  object-fit: cover;
+}
+
 .img-background{
-  background-image:url(../../assets/paymentbackground.png) ;
+  background-image:url(../../assets/coloured-patterns.svg) ;
   background-repeat: no-repeat;
   background-size: cover;
-  background-position: center;
-}
+  object-fit: cover;
+  height: 60rem;
+  /* background-position: center; */
+} 
 .churchpluslogog img{
 width: 30%;
 }
