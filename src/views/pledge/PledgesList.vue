@@ -98,17 +98,17 @@
         v-if="allPledgeList.length > 0 && !loading && !networkError"
       >
         <div class="col-md-2">
-              <MembersSearch
+              <!-- <MembersSearch
                 @memberdetail="chooseContact"
                 :currentMember="selectedContact"
-              />
-          <!-- <Dropdown
+              /> -->
+          <Dropdown
             v-model="selectedContact2"
             class="w-100 font-weight-normal"
-            :options="allPledgeList"
-            optionLabel="contact"
+            :options="allPerson"
+            optionLabel="name"
             placeholder="Select contact"
-          /> -->
+          />
            <!-- <input
                 type="text"
                 v-model="selectedContact2"
@@ -263,7 +263,7 @@
             v-for="(pledgelist, index) in searchPledges"
             :key="index"
           >
-            <div class="col-md-1 py-2">
+            <div class="col-md-1 py-2" @click="pledgeListClick(pledgelist.id)">
               <p
                 class="
                   mb-0
@@ -289,7 +289,7 @@
               </p>
             </div>
 
-            <div class="col-md-1 py-2">
+            <div class="col-md-1 py-2" @click="pledgeListClick(pledgelist.id)">
               <div class="mb-0 d-flex text-danger justify-content-between">
                 <span
                   class="
@@ -304,7 +304,7 @@
                 <div class="small">{{pledgelist.overDueDays }}</div>
               </div>
             </div>
-            <div class="col-md-1 py-2">
+            <div class="col-md-1 py-2" @click="pledgeListClick(pledgelist.id)">
               <div class="d-flex small justify-content-between">
                 <span
                   class="
@@ -319,7 +319,7 @@
                 <div class="small-text">{{pledgelist.pledgeNumber}}</div>
               </div>
             </div>
-            <div class="col-md-2 py-2">
+            <div class="col-md-2 py-2" @click="pledgeListClick(pledgelist.id)">
               <div class="d-flex small justify-content-between">
                 <span
                   class="
@@ -336,7 +336,7 @@
                 </div>
               </div>
             </div>
-            <div class="col-md-2 py-2">
+            <div class="col-md-2 py-2" @click="pledgeListClick(pledgelist.id)">
               <div class="d-flex small justify-content-between">
                 <span
                   class="
@@ -353,7 +353,7 @@
                 </div>
               </div>
             </div>
-            <div class="col-md-2 py-2">
+            <div class="col-md-2 py-2" @click="pledgeListClick(pledgelist.id)">
               <div class="d-flex small justify-content-between">
                 <span
                   class="
@@ -376,7 +376,7 @@
                 </div>
               </div>
             </div>
-            <div class="col-md-1 py-2">
+            <div class="col-md-1 py-2" @click="pledgeListClick(pledgelist.id)"> 
               <div class="d-flex small justify-content-between">
                 <span
                   class="
@@ -391,7 +391,7 @@
                 <div class="small-text">{{pledgelist.totalPaymentSum}}</div>
               </div>
             </div>
-             <div class="col-md-1 py-2">
+             <div class="col-md-1 py-2" @click="pledgeListClick(pledgelist.id)">
               <p class="mb-0 d-flex justify-content-between">
                 <span
                   class="
@@ -539,8 +539,10 @@ export default {
   },
   setup() {
     const networkError = ref(false);
+    const allPerson = ref([]);
     const allPledgeStatus = ref([]);
     const selectedCategory = ref("");
+    const filterResult = ref([]);
     const selectedStatus = ref("")
     const toast = useToast();
     const loading = ref(false);
@@ -582,11 +584,18 @@ export default {
     const navigateToMakePledge = () => {
       router.push("/tenant/pledge/makepledge");
     };
+   const pledgeListClick = (id) =>{
+    router.push(`/tenant/pledge/pledgemaking?pledgeTypeID=${id}`);
+   }
 
     const filterPledge = async () =>{
+      selectedContact2.value.name = selectedContact2.value.name == undefined ? "" : selectedContact2.value.name;
+      selectedCategory.value = selectedCategory.value == undefined ? "" : selectedCategory.value;
+      selectedStatus.value.status = selectedStatus.value.status == undefined ? "" : selectedStatus.value.status;
       try{
-        const res = await axios.get(`/api/Pledge/GetAllPledgesSearch?personId${selectedContact.value.id}&status${selectedStatus.value.status}&pledgeItemName${selectedCategory.value}&startDate${new Date(startDate.value).toLocaleDateString("en-US")}&endDate${new Date(endDate.value).toLocaleDateString("en-US")}`)
-        console.log(res.data, "filterPledge");
+        const res = await axios.get(`/api/Pledge/GetAllPledgesSearch?personId=${selectedContact2.value.personId}&status${selectedStatus.value.status}&pledgeItemName${selectedCategory.value}&startDate${new Date(startDate.value).toLocaleDateString("en-US")}&endDate${new Date(endDate.value).toLocaleDateString("en-US")}`)
+        filterResult.value = res.data.returnObject;
+        console.log(filterResult.value, "filterPledge");
       }
       catch(error){
         console.log(error)
@@ -616,8 +625,11 @@ export default {
               .toLowerCase()
               .includes(searchText.value.toLowerCase());
         });
-      } else {
-        return allPledgeList.value;
+      } else if(filterResult.value.length > 0 && (selectedContact2.value.name || selectedStatus.value.status || selectedCategory.value  ))
+      {
+        return filterResult.value
+      }else{
+         return allPledgeList.value;
       }
     });
 
@@ -659,12 +671,16 @@ export default {
         allPledgeStatus.value = res.data.returnObject.map((i)  => ({
           status: i.status
         }))
+        allPerson.value = res.data.returnObject.map((i)  => ({
+          name: i.contact,
+          personId: i.personID
+        }))
         // allPledgeType.value = res.data.returnObject.map((i) => ({
         //   status: i.status,
         //   id: i.pledgeType.id,
         // }));
         console.log(allPledgeList.value, "getPledgeList");
-        console.log(allPledgeStatus.value, "allPledgeStatus");
+        console.log(allPerson.value , "allPledgeStatus");
         loading.value = false;
       } catch (error) {
         finish();
@@ -752,7 +768,10 @@ export default {
 
     return {
       upload,
+      filterResult,
+      allPerson,
       filterPledge,
+      pledgeListClick,
       selectedContact2,
       selectedCategory,
       selectedContact,

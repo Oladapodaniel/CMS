@@ -1,176 +1,214 @@
 <template>
-  <div class="container-fluid px-0 mx-0">
+  <div class="container-fluid   img-background">
     <div class="row">
-      <div class="col-md-12 col-lg-6">
+      <div class="col-md-12 ">
         <div class="container container-top">
           <div class="row mt-4 justify-content-center">
-            <div class="col-md-12 text-center heading-text">Pledge Payment</div>
-            <div class="col-md-10 mt-4">
-              <div class="col-md-12">
-                <label for="">Pledge Name</label>
+            <div class="col-md-6  shadow  rounded  ">
+              <div class="col-md-12 d-flex justify-content-center mt-2 ">
+                <img
+                    :src="churchLogo"
+                    v-if="churchLogo"
+                    class="link-image"
+                    alt=""
+                  />
+                  <img
+                    src="../../assets/dashboardlinks/churchcloud.png"
+                    v-else
+                    class="link-image"
+                    alt=""
+                  />
+                  <a href="" class="text-decoration-none text-white mt-2 w-50"><span class="heading-text">CHURCHPLUS MAIN ACCOUNT</span> </a>
               </div>
-              <div class="col-md-12">
-                <input
-                  type="text"
-                  v-model="contributionDetail.name"
-                  :disabled="checking"
-                  class="form-control"
-                />
+              <div class="col-md-12 d-flex justify-content-center  ">
+                <div class="col-md-12 text-center text-white font-weight-bold mt-2 ">
+                    Your donation is much appreciated. God richly bless you for your support.
+                </div>
               </div>
             </div>
-            <div class="col-md-10 mt-3">
-              <div class="col-md-12">
-                <label for="">Phone Number</label>
-              </div>
-              <div class="col-md-12">
-                <span class="p-input-icon-left w-100">
-                    <i class="pi pi-phone icon" />
-                    <InputText
-                        @blur="checkContact"
-                        @input="CheckAfterEleven"
-                        class="w-100"
-                        type="text"
-                        v-model="userSearchString"
-                        aria-required=""
-                        placeholder="Enter your phone number"
-                    />
-                </span>
-                <div class="col-12">
-                    <p
-                    class="text-danger"
-                    v-if="showNoPhoneError"
-                    :class="{ 'my-1': showLoading }"
-                    >
-                    Please enter your phone number
-                    </p>
-                </div>
+          </div>
+          <div class="row  justify-content-center ">
+            <div class="col-md-6 bg-white my-4 rounded">
+              <div class="col-md-12 text-center mt-4 heading-text">Pledge Payment</div>
+              <div class="col-md-12 d-flex justify-content-center mt-4">
                 <div class="col-md-12">
-                    <div class="loading-div my-5" v-if="showLoading">
-                        <i
-                            class="pi pi-spin pi-spinner loading-indicator"
-                            style="fontsize: 2rem"
-                        ></i>
-                        <p>Fetching your details...</p>
-                    </div>
-                </div>
-              </div>
-            </div>
-            <!-- <div class="row justify-content-center mx-0" > -->
-                <div class="col-md-10 mt-3" v-if="appltoggle && !showLoading">
-                    <div class="col-md-12">
-                        <label for="">Name</label>
-                    </div>
-                    <div class="col-md-12">
-                        <span class="p-input-icon-left w-100">
-                            <i class="pi pi-users icon" />
-                            <InputText
-                                class="w-100"
-                                type="text"
-                                v-model="contactDetail.name"
-                                aria-required=""
-                                placeholder="Name"
-                                :disabled="disabled"
-                            />
-                        </span>
-                    </div>
-                </div>
-                <div class="col-md-10 mt-3" v-if="appltoggle && !showLoading">
-                    <div class="col-md-12">
-                        <label for="">Email</label>
-                    </div>
-                    <div class="col-md-12">
-                        <span class="p-input-icon-left w-100 ">
-                            <i class="pi pi-envelope icon" />
-                            <InputText
-                                class="w-100"
-                                type="text"
-                                v-model="contactDetail.email"
-                                aria-required=""
-                                placeholder="Email"
-                                :disabled="contactDetail.personId && contactDetail.email && contactDetail.email !== null && contactDetail.email !== ''  "
-                            />
-                        </span>
-                    </div>
-                </div>
-            <!-- </div> -->
-            <div
-              class="col-md-10 mt-3"
-              v-if="contributionDetail.donorPaymentType == 1 && appltoggle && !showLoading"
-            >
-              <div class="col-md-12">
-                <label for="">Pledge Amount</label>
-              </div>
-              <div class="col-md-12">
-                <input
-                  type="text"
-                  v-model="amountPaid"
-                  :disabled="checking"
-                  class="form-control"
-                />
-              </div>
-            </div>
-            <div
-              class="col-md-10 mt-3"
-              v-if="contributionDetail.donorPaymentType == 2 && appltoggle && !showLoading"
-            >
-              <div class="col-md-12">
-                <label for=""
-                  >Amount Ranging from
-                  {{
-                    Math.abs(
-                      contributionDetail.donorPaymentRangeFromAmount
-                    ).toLocaleString()
-                  }}
-                  -
-                  {{
-                    Math.abs(
-                      contributionDetail.donorPaymentRangeToAmount
-                    ).toLocaleString()
-                  }}</label
-                >
-              </div>
-              <div class="col-md-12">
-                <input
-                  type="text"
-                  v-model="amountPaid"
-                  :class="{ 'is-invalid': !withinRange }"
-                  @blur="validateRangeAmount"
-                  class="form-control"
-                  placeholder="Enter amount"
-                />
-                <div class="invalid-feedback">
-                Please make sure the amount is within the range of
-                {{
-                  Math.abs(
-                    contributionDetail.donorPaymentRangeFromAmount
-                  ).toLocaleString()
-                }}
-                and
-                {{
-                  Math.abs(
-                    contributionDetail.donorPaymentRangeToAmount
-                  ).toLocaleString()
-                }}.
-              </div>
-              </div>
-            </div>
-            <div
-              class="col-md-10 mt-3 "
-              v-if="contributionDetail.donorPaymentType == 0 && appltoggle && !showLoading"
-            >
                   <div class="col-md-12">
-                    <label for="">How much do you want to pledge ?</label>
+                    <label for="">Pledge Name</label>
                   </div>
                   <div class="col-md-12">
                     <input
                       type="text"
-                      v-model="pledgeAmount"
+                      v-model="contributionDetail.name"
+                      :disabled="checking"
                       class="form-control"
-                      placeholder="Enter Amount"
                     />
                   </div>
+                </div>
+              </div>
+            <div class="col-md-12 d-flex justify-content-center mt-3">
+              <div class="col-md-12">
+                <div class="col-md-12">
+                  <label for="">Phone Number</label>
+                </div>
+                <div class="col-md-12">
+                  <span class="p-input-icon-left w-100">
+                      <i class="pi pi-phone icon" />
+                      <InputText
+                          @blur="checkContact"
+                          @input="CheckAfterEleven"
+                          class="w-100"
+                          type="text"
+                          v-model="userSearchString"
+                          aria-required=""
+                          placeholder="Enter your phone number"
+                      />
+                  </span>
+                  <div class="col-12">
+                      <p
+                      class="text-danger"
+                      v-if="showNoPhoneError"
+                      :class="{ 'my-1': showLoading }"
+                      >
+                      Please enter your phone number
+                      </p>
+                  </div>
+                  <div class="col-md-12">
+                      <div class="loading-div my-5" v-if="showLoading">
+                          <i
+                              class="pi pi-spin pi-spinner loading-indicator"
+                              style="fontsize: 2rem"
+                          ></i>
+                          <p>Fetching your details...</p>
+                      </div>
+                  </div>
+                </div>
+              </div>
+              
             </div>
-            <div class="col-md-10 mt-3" v-if="contributionDetail.donorPaymentType == 0 && appltoggle && !showLoading">
+            <div class="col-md-12 d-flex justify-content-center mt-3" v-if="appltoggle && !showLoading">
+              <div class="col-md-12">
+                  <div class="col-md-12">
+                    <label for="">Name</label>
+                  </div>
+                  <div class="col-md-12">
+                      <span class="p-input-icon-left w-100">
+                          <i class="pi pi-users icon" />
+                          <InputText
+                              class="w-100"
+                              type="text"
+                              v-model="contactDetail.name"
+                              aria-required=""
+                              placeholder="Name"
+                              :disabled="disabled"
+                          />
+                      </span>
+                  </div>
+              </div>
+            </div>
+            <div class="col-md-12 d-flex justify-content-center mt-3" v-if="appltoggle && !showLoading">
+              <div class="col-md-12">
+                  <div class="col-md-12">
+                    <label for="">Email</label>
+                  </div>
+                  <div class="col-md-12">
+                      <span class="p-input-icon-left w-100 ">
+                          <i class="pi pi-envelope icon" />
+                          <InputText
+                              class="w-100"
+                              type="text"
+                              v-model="contactDetail.email"
+                              aria-required=""
+                              placeholder="Email"
+                              :disabled="contactDetail.personId && contactDetail.email && contactDetail.email !== null && contactDetail.email !== ''  "
+                          />
+                      </span>
+                  </div>
+              </div>
+            </div>
+            <div
+              class="col-md-12 d-flex justify-content-center mt-3"
+              v-if="contributionDetail.donorPaymentType == 1 && appltoggle && !showLoading"
+            >
+              <div class="col-md-12">
+                <div class="col-md-12">
+                  <label for="">Pledge Amount</label>
+                </div>
+                <div class="col-md-12">
+                  <input
+                    type="text"
+                    v-model="amountPaid"
+                    :disabled="checking"
+                    class="form-control"
+                  />
+                </div>
+              </div>
+            </div>
+            <div
+              class="col-md-10 col-md-12 d-flex justify-content-center mt-3"
+              v-if="contributionDetail.donorPaymentType == 2 && appltoggle && !showLoading"
+            >
+              <div class="col-md-12">
+                  <div class="col-md-12">
+                    <label for=""
+                      >Amount Ranging from
+                      {{
+                        Math.abs(
+                          contributionDetail.donorPaymentRangeFromAmount
+                        ).toLocaleString()
+                      }}
+                      -
+                      {{
+                        Math.abs(
+                          contributionDetail.donorPaymentRangeToAmount
+                        ).toLocaleString()
+                      }}</label
+                    >
+                  </div>
+                  <div class="col-md-12">
+                    <input
+                      type="text"
+                      v-model="amountPaid"
+                      :class="{ 'is-invalid': !withinRange }"
+                      @blur="validateRangeAmount"
+                      class="form-control"
+                      placeholder="Enter amount"
+                    />
+                    <div class="invalid-feedback">
+                    Please make sure the amount is within the range of
+                    {{
+                      Math.abs(
+                        contributionDetail.donorPaymentRangeFromAmount
+                      ).toLocaleString()
+                    }}
+                    and
+                    {{
+                      Math.abs(
+                        contributionDetail.donorPaymentRangeToAmount
+                      ).toLocaleString()
+                    }}.
+                  </div>
+                  </div>
+              </div>
+            </div>
+            <div
+              class="col-md-10 col-md-12 d-flex justify-content-center mt-3 "
+              v-if="contributionDetail.donorPaymentType == 0 && appltoggle && !showLoading"
+            >     <div class="col-md-12">
+                     <div class="col-md-12">
+                        <label for="">How much do you want to pledge ?</label>
+                      </div>
+                      <div class="col-md-12">
+                        <input
+                          type="text"
+                          v-model="pledgeAmount"
+                          class="form-control"
+                          placeholder="Enter Amount"
+                        />
+                      </div>
+                  </div>
+            </div>
+            <div class="col-md-12 d-flex justify-content-center mt-3" v-if="contributionDetail.donorPaymentType == 0 && appltoggle && !showLoading">
+              <div class="col-md-12">
                   <div class="col-md-12">
                     <label for="">How much do you want to pay now ?</label>
                   </div>
@@ -200,6 +238,7 @@
                         }}
                     </div> -->
                   </div>
+              </div>
             </div>
             <div class="col-md-12 mt-4 mb-4 d-flex justify-content-center">
               <div class="mt-4">
@@ -209,43 +248,73 @@
                   data-dismiss="modal"
                   data-toggle="modal"
                   data-target="#PaymentOptionModal"
-                  v-if="appltoggle && !showLoading"
                 >
                   <i class="pi pi-spin pi-spinner" v-if="loading"></i> Pay Now
                 </button>
               </div>
             </div>
-            <div class="col-md-12 d-flex justify-content-around paymentlogo  container-top" v-if="!appltoggle">
-                        <div class="col-md-9 d-flex">
-                          <div class="col-3">
-                            <img src="../../assets/VisaDebit.png" >
-                          </div>
-                          <div class="col-3 ">
-                              <img src="../../assets/MastercardDebit.png" >
-                          </div>
-                          <div class="col-3 ">
-                              <img src="../../assets/PayPal2.png" >
-                          </div>
-                          <div class="col-3 ">
-                              <img src="../../assets/Full-Flutterwave.png" class=" mt-4" >
-                          </div>
-                        </div>
-            </div>
-            <div class="col-md-12 d-flex justify-content-center mt-4" v-if="!appltoggle">
-              <div class="col-md-9 text-center churchpluslogog">
-                Powered by <img src="../../assets/logoblue.png" alt="" class="pl-1">
+              <div class="col-md-12 d-flex justify-content-center ">
+                <div class="col-md-7 d-flex">
+                     <div class="col-3 px-0 mx-0 mt-2">
+                        <img src="../../assets/VisaDebit.png" class="" style="width: 90%">
+                      </div>
+                      <div class="col-3 px-0 mx-0 d-flex justify-content-center align-ltems-center ">
+                          <img src="../../assets/MastercardDebit.png" class="" style="width: 80%">
+                      </div>
+                      <div class="col-3 px-0 mx-0 mt-2 ">
+                          <img src="../../assets/PayPal2.png" class=" w-100"  >
+                      </div>
+                      <div class="col-3 px-0 mx-0 paymentlogo mt-2">
+                          <img src="../../assets/Full-Flutterwave.png" class="" >
+                      </div>
+                </div>
+              </div>
+              <div class="col-md-12 mb-3">
+                <div class="col-md-12 d-flex justify-content-center mt-4" v-if="!appltoggle">
+                  <div class="col-md-9 text-center churchpluslogog">
+                    Powered by <img src="../../assets/logoblue.png" alt="" class="pl-1">
+                  </div>
+                </div>
               </div>
             </div>
           </div>
+            
+            <!-- <div class="col-md-12 d-flex justify-content-around paymentlogo  container-top" v-if="!appltoggle"> -->
+              <!-- <div class="col-12 col-sm-10 col-md-6 col-lg-5 "> -->
+            <div class="row">
+                
+            </div>
+              <!-- </div> -->
+                <!-- <div class="col-12 col-sm-10 col-md-6 col-lg-5">
+                  <div class="row">
+                      <div class="col-3 paymentlogo">
+                        <img src="../../assets/VisaDebit.png" class="w-100" >
+                      </div>
+                      <div class="col-3 pr-0 ">
+                          <img src="../../assets/MastercardDebit.png" class="w-100">
+                      </div>
+                      <div class="col-3 pr-0 ">
+                          <img src="../../assets/PayPal2.png"  class="w-100">
+                      </div>
+                      <div class="col-3 pl-0 text-right">
+                          <img src="../../assets/Full-Flutterwave.png" class=" w-50" >
+                      </div>
+                  </div>
+                  
+                </div> -->
+            <!-- </div> -->
+            <div class="row">
+              
+            </div>
         </div>
       </div>
-      <div
+      <!-- <div
         class="col-md-12 col-lg-6 d-none d-lg-flex justify-content-center "
         id="walletpana"
         style="height: 100vh"
       >
         <img src="../../assets/E-Wallet-pana.svg" alt="" />
-      </div>
+      </div> -->
     </div>
     <div
       class="modal fade"
@@ -758,7 +827,14 @@ export default {
 
 <style scoped>
 .paymentlogo img{
-width: 100%;
+width: 8rem;
+height: 2rem;
+}
+.img-background{
+  background-image:url(../../assets/paymentbackground.png) ;
+  background-repeat: no-repeat;
+  background-size: cover;
+  background-position: center;
 }
 .churchpluslogog img{
 width: 30%;
