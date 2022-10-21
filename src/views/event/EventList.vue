@@ -700,7 +700,8 @@ export default {
     };
 
     const membersCount = computed(() => {
-      if (props.eventSummary.activities.length > 20)
+      console.log(props.eventSummary.activities.length, 'checking for pagination')
+      if (props.eventSummary.activities.length > 50)
         return Math.ceil(props.eventSummary.activities.length / 20);
       return 1;
     });

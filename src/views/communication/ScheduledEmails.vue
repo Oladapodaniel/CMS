@@ -176,6 +176,7 @@ export default {
         loading.value = true;
         const res = await communicationService.getSchedules(
           "/api/Messaging/getEmailSchedules"
+          
         );
         loading.value = false;
         schedules.value = res;
