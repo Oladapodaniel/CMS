@@ -538,7 +538,7 @@
                           <div class="col-md-8">
                             <input
                               type="date"
-                              v-model="pledgeDate"
+                              v-model="pledgeTime"
                               :disabled="checking"
                               class="form-control w-100"
                             />
@@ -793,6 +793,10 @@ export default {
     }
 
     getAllpaymentList()
+
+     const pledgeTime = computed(() =>{
+      return date(new Date())
+    }) 
 
     // onMounted(() =>{
     //   axios.get(`/api/Pledge/GetOnePledge?ID=${route.query.pledgeTypeID}`)
@@ -1224,6 +1228,7 @@ export default {
 
     return {
       showConfirmModal,
+      pledgeTime,
       networkError,
       date,
       pledgePaymentID,

@@ -951,6 +951,7 @@
 import Dropdown from "primevue/dropdown";
 import MultiSelect from "primevue/multiselect";
 import { computed, nextTick, ref } from "vue";
+import { useRoute } from 'vue-router'
 import router from "@/router/index";
 import groupService from "../../../services/groups/groupsservice";
 import eventsService from "../../../services/events/eventsservice";
@@ -969,6 +970,7 @@ export default {
 
   setup() {
     const store = useStore();
+    const route = useRoute();
     const groups = ref([]);
     const display = ref(false);
     const newActModal = ref(false);
@@ -1008,6 +1010,22 @@ export default {
 
     // const selectedGroup = ref({});
     const selectedGroups = ref([]);
+
+    const attendanceCheID = ref(route.params.id)
+
+    console.log(attendanceCheID.value);
+
+     const updateCheckinAttendance = async () =>{
+      try{
+        const res = await axios.get(`/api/CheckInAttendance/GetCheckInItem?${attendanceCheID.value}`)
+        console.log(res, "updateATTENDANCE");
+      }
+      catch(error){
+        console.log(error);
+      }
+    }
+    updateCheckinAttendance()
+    
     const getGroups = async () => {
       grouploading.value = true;
       try {
@@ -1510,6 +1528,7 @@ export default {
 
     return {
       selectedEvent,
+      attendanceCheID,
       onContinue,
       groups,
       events,

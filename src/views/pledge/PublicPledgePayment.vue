@@ -262,7 +262,7 @@
               </div>
             </div>
               <div class="col-12 col-sm-9 col-md-8  offset-sm-1 offset-md-3 offset-lg-2 pl-0 mt-5 ">
-                <div class="row">
+                  <div class="row">
                         <div class="col-3">
                             <img src="../../assets/VisaDebit.png" class="w-100">
                             <!-- <img src="../../assets/paystack.png" class="w-100"> -->
@@ -279,7 +279,7 @@
                             <img src="../../assets/paypal.png" class="w-50">
                             <!-- <img src="../../assets/paypal.png" class="w-50"> -->
                         </div>
-                    </div>
+                  </div>
                 <!-- <div class="col-md-7 d-flex flex-wrap">
                      <div class="col-6 col-sm-3 px-0 mx-0 mt-2">
                         <img src="../../assets/VisaDebit.png" class="" style="width: 90%">
@@ -869,9 +869,10 @@ height: 2rem;
 .img-background{
   background-image:url(../../assets/coloured-patterns.svg) ;
   background-repeat: no-repeat;
-  background-size: cover;
-  object-fit: cover;
-  height: 60rem;
+  width: 100%;
+  /* background-size: cover; */
+  /* object-fit: cover; */
+  height: 55rem;
   /* background-position: center; */
 } 
 .churchpluslogog img{

@@ -453,6 +453,8 @@ export default {
       return x.map((i) => i.id);
     };
 
+   
+
     const checkOutAttendance = () => {
       // let newarray = []
       let dft = convert(checkedAttendance.value);
