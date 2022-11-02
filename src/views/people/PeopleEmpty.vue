@@ -90,6 +90,7 @@ export default {
          NProgress.start()
         const { data } = await axios.get("/api/People/GetPeopleBasicInfo");
         people.value = data;
+        console.log(people.value, "getpeopleInfo");
         loading.value = false;
       } catch (err) {
         NProgress.done()
@@ -104,7 +105,7 @@ export default {
     onMounted(() => {
       if (peopleInStore.value.length > 0) {
       // if (store.getters.members && store.getters.members.length > 0) {
-        console.log(peopleInStore, 'pis');
+        console.log(peopleInStore.value, 'pisyytytu');
         people.value = peopleInStore.value;
         // people.value = store.getters.members;
       } else {

@@ -840,6 +840,7 @@ export default {
     const getPeopleList = () => {
       // console.log(props.list, "props");
       churchMembers.value = props.list;
+      console.log(churchMembers.value, "churcmember")
       // store.dispatch('churchMembers', props.list)
     };
     getPeopleList();

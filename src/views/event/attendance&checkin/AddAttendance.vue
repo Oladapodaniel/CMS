@@ -1014,17 +1014,22 @@ export default {
     const attendanceCheID = ref(route.params.id)
 
     console.log(attendanceCheID.value);
+    const eventNameDate = ref('')
 
-     const updateCheckinAttendance = async () =>{
+     const singleCheckinAttendance = async () =>{
       try{
-        const res = await axios.get(`/api/CheckInAttendance/GetCheckInItem?${attendanceCheID.value}`)
+        const res = await axios.get(`/api/CheckInAttendance/GetCheckInItem?checkinId=${attendanceCheID.value}`)
+         eventNameDate.value = `${res.data.fullEventName} (${new Date(res.data.eventDate).toDateString()})`
+        selectedEvent.value.name =  `${res.data.fullEventName} (${new Date(res.data.eventDate).toDateString()})`
+        console.log(eventNameDate.value, 'eventName');
+        eventSearchText.value = eventNameDate.value
         console.log(res, "updateATTENDANCE");
       }
       catch(error){
         console.log(error);
       }
     }
-    updateCheckinAttendance()
+    singleCheckinAttendance()
     
     const getGroups = async () => {
       grouploading.value = true;
@@ -1084,6 +1089,15 @@ export default {
     const newAcctivityDate = ref("");
     const createNewActivity = async () => {
       if (!newAcctivityDate.value && !selectedCategory.value) return false;
+      // if(route.params.id){
+      //   try{
+      //     const res = await axios.put('/api/CheckInAttendance/UpdateCheckInAttendance')
+      //     console.log(res);
+      //   }
+      //   catch(error){
+
+      //   }
+      // }
       try {
         const response = await eventsService.createNewActivity({
           activity: {
@@ -1528,6 +1542,7 @@ export default {
 
     return {
       selectedEvent,
+      eventNameDate,
       attendanceCheID,
       onContinue,
       groups,

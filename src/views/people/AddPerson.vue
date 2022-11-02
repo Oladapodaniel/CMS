@@ -1184,7 +1184,7 @@ export default {
           personInGroupID: i.personInGroupID
         }
       })
-
+      // item.value.data = data.customAttributeData[0].data
       currentContact.value = {
           name: `${data.followupPersonName}`,
           id: data.followupPersonID
@@ -1194,6 +1194,7 @@ export default {
     const getMemberToEdit = () => {
       membershipService.getMemberById(route.params.personId).then((res) => {
         memberToEdit.value = res;
+        console.log(memberToEdit.value, "memberToEdit");
         populatePersonDetails(res);
         getPersonGenderId();
         getPersonMaritalStatusId();
@@ -1382,7 +1383,7 @@ export default {
       try {
         let data = await allCustomFields.allCustomFields()
         dynamicCustomFields.value = data.filter(i => i.entityType === 0)
-        console.log(allCustomFields)
+        console.log(dynamicCustomFields.value,"allcustomfield")
       }
       catch (err) {
         console.log(err)

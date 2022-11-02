@@ -446,7 +446,7 @@
           </div>
           <ConfirmDialog />
           <Toast />
-          {{membersCount}} {{currentPage}}
+          <!-- {{membersCount}} {{currentPage}} -->
 
           <div class="table-footer">
             <PaginationButtons
