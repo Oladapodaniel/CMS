@@ -1,14 +1,10 @@
 <template>
-  <div class="container-fluid   img-background">
-    <div class="row">
-      <div class="col-md-12 ">
-        <div class="container container-top">
-          <div class="row mt-4 justify-content-center">
-            <div class="col-md-6  mt-3  ">
-              <div class="col-md-12 d-flex justify-content-around mt-2 ">
-                <div class="col-md-10 d-flex justify-content-center">
-                  <div class="col-md-4 px-0 mx-0 text-right ">
-                    <img
+  <div class="container-fluid  mx-0 tool">
+   <div class="row justify-content-center mx-0  ">
+      <div class="col-md-12   d-flex justify-content-center my-3  ">
+        <div class="col-md-3 mt-4  d-flex align-items-center">
+            <div class="pl-2">
+              <img
                       :src="churchLogo"
                       v-if="churchLogo"
                       class="link-image"
@@ -20,224 +16,326 @@
                       class="link-image "
                       alt=""
                     />
-                  </div>
-                  <div class="col-md-8 ">
-                      <a href="" class="text-decoration-none text-dark mt-2 w-50"><span class="heading-text">Churchplus Main Account</span> </a>
-                      <div class="w-100 small my-3">BY DOMINION DONATIONS</div>
-                      <div> <hr class="w-100 my-3"> </div>
-                  </div>
-                </div>
-              </div>
-              <div class="col-md-12 d-flex justify-content-center  ">
-                <div class="col-md-11 text-center text-secondary font-weight-medium mt-2 ">
-                    Your donation is much appreciated. God richly bless you for your support.
-                </div>
-              </div>
+              <!-- <img :src="associationLogo"
+                  v-if="associationLogo" style="width: 70px" />
+              <img v-else src="../../assets/memberly-logo.svg" style="width: 70px" /> -->
             </div>
-          </div>
-          <div class="row  justify-content-center ">
-            <div class="col-md-6 bg-white border my-4 rounded">
-              <div class="col-md-12 text-center mt-4 heading-text">Pledge Payment</div>
-              <div class="col-md-12 d-flex justify-content-center mt-4">
-                <div class="col-md-12">
-                  <div class="col-md-12">
-                    <label for="">Pledge Name</label>
-                  </div>
-                  <div class="col-md-12">
-                    <input
-                      type="text"
-                      v-model="contributionDetail.name"
-                      :disabled="checking"
-                      class="form-control"
-                    />
-                  </div>
-                </div>
-              </div>
-            <div class="col-md-12 d-flex justify-content-center mt-3">
-              <div class="col-md-12">
-                <div class="col-md-12">
-                  <label for="">Phone Number</label>
-                </div>
-                <div class="col-md-12">
-                  <span class="p-input-icon-left w-100">
-                      <i class="pi pi-phone icon" />
-                      <InputText
-                          @blur="checkContact"
-                          @input="CheckAfterEleven"
-                          class="w-100"
-                          type="text"
-                          v-model="userSearchString"
-                          aria-required=""
-                          placeholder="Enter your phone number"
-                      />
-                  </span>
-                  <div class="col-12">
-                      <p
-                      class="text-danger"
-                      v-if="showNoPhoneError"
-                      :class="{ 'my-1': showLoading }"
-                      >
-                      Please enter your phone number
-                      </p>
-                  </div>
-                  <div class="col-md-12">
-                      <div class="loading-div my-5" v-if="showLoading">
-                          <i
-                              class="pi pi-spin pi-spinner loading-indicator"
-                              style="fontsize: 2rem"
-                          ></i>
-                          <p>Fetching your details...</p>
-                      </div>
-                  </div>
-                </div>
-              </div>
-              
+            <!-- <span><h4 class="font-weight-bold mt-3">{{contributionDetail.tenantName ? contributionDetail.tenantName :  "Churchplus" }}</h4></span> -->
+            <span><h4 class="font-weight-bold mt-3">{{currentUser? currentUser.churchName :  "Churchplus" }}</h4></span>
+        </div>
+      </div>
+      <!-- <div class="d-flex justify-content-center col-md-12  text-dark mt-3 mb-2">
+        <div class="col-md-6 text-center">
+          Your contribution is much appreciated
+        </div>
+      </div> -->
+    </div>
+
+    <div class="row d-flex justify-content-center">
+      <div class="col-11 col-sm-8 col-md-7 col-lg-5 card pb-2">
+        <div class="container ">
+          <div class="row mt-4 justify-content-center">
+            <div class="col-md-12 text-center  heading-text">
+              {{contributionDetail.name}} Payment
             </div>
-            <div class="col-md-12 d-flex justify-content-center mt-3" v-if="appltoggle && !showLoading">
-              <div class="col-md-12">
-                  <div class="col-md-12">
-                    <label for="">Name</label>
-                  </div>
-                  <div class="col-md-12">
-                      <span class="p-input-icon-left w-100">
-                          <i class="pi pi-users icon" />
-                          <InputText
-                              class="w-100"
-                              type="text"
-                              v-model="contactDetail.name"
-                              aria-required=""
-                              placeholder="Name"
-                              :disabled="disabled"
-                          />
-                      </span>
-                  </div>
+            <div class="col-md-11 mt-4">
+              <!-- <div class="col-md-12">
+                <label for="">Contribution Name</label>
               </div>
-            </div>
-            <div class="col-md-12 d-flex justify-content-center mt-3" v-if="appltoggle && !showLoading">
               <div class="col-md-12">
-                  <div class="col-md-12">
-                    <label for="">Email</label>
+                <input
+                  type="text"
+                  v-model="contributionDetail.name"
+                  :disabled="checking"
+                  class="form-control"
+                />
+              </div> -->
+              <!-- <div class="col-12 d-flex  justify-content-between flex-wrap" >
+
+                  <div class="col-sm-6 mx-0 px-0 col-12 small d-flex justify-content-center  justify-content-sm-start  small font-weight-bold">
+                    <div v-if="contactDetail.name"><i class="pi pi-users icon" /> {{contactDetail.name}}</div>
                   </div>
-                  <div class="col-md-12">
-                      <span class="p-input-icon-left w-100 ">
-                          <i class="pi pi-envelope icon" />
-                          <InputText
-                              class="w-100"
-                              type="text"
-                              v-model="contactDetail.email"
-                              aria-required=""
-                              placeholder="Email"
-                              :disabled="contactDetail.personId && contactDetail.email && contactDetail.email !== null && contactDetail.email !== ''  "
-                          />
-                      </span>
+                  <div class="col-sm-6 mx-0 px-0 col-12 d-flex justify-content-center small justify-content-sm-end font-weight-bold" >
+                    <div v-if="contactDetail.email "><i class="pi pi-envelope icon" /> {{contactDetail.email}}</div>
                   </div>
+               
+              </div> -->
+            </div>
+            <div class="col-md-11 mt-3">
+              <div class="col-md-12">
+                <label for="">Phone Number<sup class="text-danger">*</sup></label>
               </div>
-            </div>
-            <div
-              class="col-md-12 d-flex justify-content-center mt-3"
-              v-if="contributionDetail.donorPaymentType == 1 && appltoggle && !showLoading"
-            >
               <div class="col-md-12">
-                <div class="col-md-12">
-                  <label for="">Pledge Amount</label>
-                </div>
-                <div class="col-md-12">
-                  <input
+                <span class="p-input-icon-left w-100">
+                  <i class="pi pi-phone icon" />
+                  <InputText
+                    @blur="checkContact"
+                    @input="CheckAfterEleven"
+                    class="w-100"
                     type="text"
-                    v-model="amountPaid"
-                    :disabled="checking"
-                    class="form-control"
+                    v-model="userSearchString"
+                    aria-required=""
+                    placeholder="Enter your phone number"
                   />
+                </span>
+                <div class="col-12">
+                  <p
+                    class="text-danger"
+                    v-if="showNoPhoneError"
+                    :class="{ 'my-1': showLoading }"
+                  >
+                    Please enter your phone number
+                  </p>
+                </div>
+                <div class="col-md-12">
+                  <div class="loading-div my-5" v-if="showLoading">
+                    <i
+                      class="pi pi-spin pi-spinner loading-indicator"
+                      style="fontsize: 2rem"
+                    ></i>
+                    <p>Fetching your details...</p>
+                  </div>
+                </div>
+              </div>
+              <div
+                 class=" col-md-12 mt-4 small"
+                 style="color: #f59b47;"
+                    v-if="personToggle "
+                    :class="{ 'mt-3': showLoading }"
+                  
+                >
+                  Your detail were not found kindly enter your detail below to continue!
+                </div>
+              <div class="col-12 d-flex  justify-content-between flex-wrap" >
+
+                  <div class="col-sm-6 mx-0 px-0 col-12 small d-flex justify-content-center  justify-content-sm-start  small">
+                    <div v-if="contactDetail.name"> {{contactDetail.name}}</div>
+                  </div>
+                  <div class="col-sm-6 mx-0 px-0 col-12 d-flex justify-content-center small justify-content-sm-end " >
+                    <div v-if="contactDetail.email "> {{contactDetail.email}}</div>
+                  </div>
+               
+              </div>
+            </div>
+            <!-- <div class="row justify-content-center mx-0" > -->
+            <!-- <div class="col-md-11 mt-3" v-if="appltoggle && !showLoading">
+              <div class="col-md-12">
+                <label for="">Name</label>
+              </div>
+              <div class="col-md-12">
+                <span class="p-input-icon-left w-100">
+                  <i class="pi pi-users icon" />
+                  <InputText
+                    class="w-100"
+                    type="text"
+                    v-model="contactDetailName"
+                    aria-required=""
+                    placeholder="Name"
+                    :disabled="disabled"
+                  />
+                </span>
+              </div>
+            </div> -->
+            <div class="col-md-11 mt-3" v-if=" personToggle">
+              <div class="col-md-12">
+                <label for="">Name</label>
+              </div>
+              <div class="col-md-12">
+                <span class="p-input-icon-left w-100">
+                  <i class="pi pi-users icon" />
+                  <InputText
+                    class="w-100"
+                    type="text"
+                    v-model="contactDetail.name"
+                    aria-required=""
+                    placeholder="Name"
+                  />
+                </span>
+              </div>
+            </div>
+            <div class="col-md-11 mt-3" v-if=" personToggle">
+              <div class="col-md-12">
+                <label for="">Email</label>
+              </div>
+              <div class="col-md-12">
+                <span class="p-input-icon-left w-100">
+                  <i class="pi pi-envelope icon" />
+                  <InputText
+                    class="w-100"
+                    type="text"
+                    v-model="contactDetail.email"
+                    aria-required=""
+                    placeholder="Email"
+                  />
+                </span>
+              </div>
+            </div>
+
+            <div v-if="personToggle" class=" mt-4 col-md-11"> <hr class="w-100"> </div>
+            <!-- <div class="col-md-11 mt-3" v-if="appltoggle && !showLoading">
+              <div class="col-md-12">
+                <label for="">Email</label>
+              </div>
+              <div class="col-md-12">
+                <span class="p-input-icon-left w-100">
+                  <i class="pi pi-envelope icon" />
+                  <InputText
+                    class="w-100"
+                    type="text"
+                    v-model="contactDetailEmail"
+                    aria-required=""
+                    placeholder="Email"
+                    :disabled="
+                      contactDetail.personId &&
+                      contactDetail.email &&
+                      contactDetail.email !== null &&
+                      contactDetail.email !== ''
+                    "
+                  />
+                </span>
+              </div>
+            </div> -->
+            <!-- </div> -->
+            <div
+              class="col-md-11 mt-3"
+              v-if="
+                donorDetail.donorPaymentType == 1 &&
+                appltoggle &&
+                !showLoading
+              "
+            >
+              <div class="col-md-12">
+                <label for="">Contribution Amount</label>
+              </div>
+              <div class="col-md-12">
+                <input
+                  type="text"
+                  v-model="amountPaid"
+                  :disabled="checking"
+                  class="form-control"
+                />
+              </div>
+            </div>
+            <div
+              class="col-md-11 mt-3"
+              v-if="
+                donorDetail.donorPaymentType == 2 &&
+                appltoggle &&
+                !showLoading
+              "
+            >
+              <div class="col-md-12">
+                <label for=""
+                  >Amount Ranging from
+                  {{
+                    Math.abs(
+                      donorDetail.donorPaymentRangeFromAmount
+                    ).toLocaleString()
+                  }}
+                  -
+                  {{
+                    Math.abs(
+                      donorDetail.donorPaymentRangeToAmount
+                    ).toLocaleString()
+                  }}</label
+                >
+              </div>
+              <div class="col-md-12">
+                <input
+                  type="text"
+                  v-model="amountPaid"
+                  :class="{ 'is-invalid': !withinRange }"
+                  @blur="validateRangeAmount"
+                  class="form-control"
+                  placeholder="Enter amount"
+                />
+                <div class="invalid-feedback">
+                  Please make sure the amount is within the range of
+                  {{
+                    Math.abs(
+                      donorDetail.donorPaymentRangeFromAmount
+                    ).toLocaleString()
+                  }}
+                  and
+                  {{
+                    Math.abs(
+                      donorDetail.donorPaymentRangeToAmount
+                    ).toLocaleString()
+                  }}.
                 </div>
               </div>
             </div>
             <div
-              class="col-md-10 col-md-12 d-flex justify-content-center mt-3"
-              v-if="contributionDetail.donorPaymentType == 2 && appltoggle && !showLoading"
+              class="col-md-11 mt-3"
+              v-if="
+                donorDetail.donorPaymentType == 0 &&
+                appltoggle &&
+                !showLoading
+              "
             >
               <div class="col-md-12">
-                  <div class="col-md-12">
-                    <label for=""
-                      >Amount Ranging from
-                      {{
-                        Math.abs(
-                          contributionDetail.donorPaymentRangeFromAmount
-                        ).toLocaleString()
-                      }}
-                      -
-                      {{
-                        Math.abs(
-                          contributionDetail.donorPaymentRangeToAmount
-                        ).toLocaleString()
-                      }}</label
-                    >
-                  </div>
-                  <div class="col-md-12">
-                    <input
-                      type="text"
-                      v-model="amountPaid"
-                      :class="{ 'is-invalid': !withinRange }"
-                      @blur="validateRangeAmount"
-                      class="form-control"
-                      placeholder="Enter amount"
-                    />
-                    <div class="invalid-feedback">
-                    Please make sure the amount is within the range of
-                    {{
-                      Math.abs(
-                        contributionDetail.donorPaymentRangeFromAmount
-                      ).toLocaleString()
-                    }}
-                    and
-                    {{
-                      Math.abs(
-                        contributionDetail.donorPaymentRangeToAmount
-                      ).toLocaleString()
-                    }}.
-                  </div>
-                  </div>
+                <input
+                  type="text"
+                  v-model="amountPaid"
+                  class="form-control"
+                  placeholder="Enter amount"
+                />
               </div>
             </div>
             <div
-              class="col-md-10 col-md-12 d-flex justify-content-center mt-3 "
-              v-if="contributionDetail.donorPaymentType == 0 && appltoggle && !showLoading"
-            >     <div class="col-md-12">
-                     <div class="col-md-12">
-                        <label for="">How much do you want to pledge ?</label>
-                      </div>
-                      <div class="col-md-12">
-                        <input
-                          type="text"
-                          v-model="pledgeAmount"
-                          class="form-control"
-                          placeholder="Enter Amount"
-                        />
-                      </div>
-                  </div>
-            </div>
-            <div class="col-md-12 d-flex justify-content-center mt-3" v-if="contributionDetail.donorPaymentType == 0 && appltoggle && !showLoading">
+              class="col-md-11 mt-3"
+              v-if="
+                 contactDetail.pledges && contactDetail.pledges.length ===  0  &&
+                appltoggle &&
+                !showLoading
+              "
+            >
+              <div class="col-md-12 ">
+                <label for="">How much do you want to contribute ?</label>
+              </div>
               <div class="col-md-12">
-                  <div class="col-md-12">
-                    <label for="">How much do you want to pay now ?</label>
-                  </div>
-                  <div class="col-md-12">
-                    <input
-                      type="text"
-                      v-model="amountPaid"
-                      :class="{ 'is-invalid': !withinRange }"
-                      @blur="validatePaidAmount"
-                      class="form-control"
-                      placeholder="Enter Amount"
-                    />
-                    <div class="invalid-feedback" v-if="amountPaid < 0 || amountPaid == 0">
-                       Please make sure the amount is not below this
-                        {{
-                        Math.abs(
-                            pledgeAmount
-                        ).toLocaleString()
-                        }}
-                    </div>
-                    <!-- <div class="invalid-feedback" v-else-if="amountPaid > pledgeAmount ">
+                <input
+                  type="text"
+                  v-model="pledgeAmount"
+                  class="form-control"
+                  placeholder="Enter Amount"
+                />
+              </div>
+            </div>
+            <div v-if="
+                contactDetail.pledges && contactDetail.pledges.length ===  0  &&
+                appltoggle &&
+                !showLoading
+              "
+               class="mt-4 col-md-11"> <hr class="w-100"> </div>
+            <div
+              class="col-md-11 mt-3"
+              v-if="
+                contactDetail.pledges && contactDetail.pledges.length ===  0  &&
+                appltoggle &&
+                !showLoading
+              "
+            >
+              <div class="col-md-12 font-weight-bold">
+                <label for="">How much do you want to pay now ?</label>
+              </div>
+              <div class="col-md-12">
+                <input
+                  type="text"
+                  v-model="amountPaid"
+                  :class="{ 'is-invalid': !withinRange }"
+                  @blur="validatePaidAmount"
+                  class="form-control input-border"
+                  placeholder="Enter Amount"
+                />
+                <div
+                  class="invalid-feedback"
+                  v-if="amountPaid < 0 || amountPaid == 0"
+                >
+                  Please make sure the amount is not below this
+                  {{ Math.abs(pledgeAmount).toLocaleString() }}
+                </div>
+                <!-- <div class="invalid-feedback" v-else-if="amountPaid > pledgeAmount ">
                        Please make sure the amount is not above this
                         {{
                         Math.abs(
@@ -245,23 +343,119 @@
                         ).toLocaleString()
                         }}
                     </div> -->
-                  </div>
               </div>
             </div>
-            <div class="col-md-12 mt-4 mb-4 d-flex justify-content-center">
-              <div class="mt-4">
+             <div
+              class="col-md-11 mt-3"
+              v-if="
+                 !contactDetail.pledges  &&
+                appltoggle &&
+                !showLoading
+              "
+            >
+              <div class="col-md-12 ">
+                <label for="">How much do you want to contribute ?</label>
+              </div>
+              <div class="col-md-12">
+                <input
+                  type="text"
+                  v-model="pledgeAmount"
+                  class="form-control"
+                  placeholder="Enter Amount"
+                />
+              </div>
+            </div>
+            <div v-if="
+                !contactDetail.pledges &&
+                appltoggle &&
+                !showLoading
+              "
+               class="mt-4 col-md-11"> <hr class="w-100"> </div>
+            <div
+              class="col-md-11 mt-3"
+              v-if="
+                !contactDetail.pledges &&
+                appltoggle &&
+                !showLoading
+              "
+            >
+              
+              <div class="col-md-12 font-weight-bold ">
+                <label for="">How much do you want to pay now ?</label>
+              </div>
+              <div class="col-md-12">
+                <input
+                  type="text"
+                  v-model="amountPaid"
+                  :class="{ 'is-invalid': !withinRange }"
+                  @blur="validatePaidAmount"
+                  class="form-control input-border"
+                  placeholder="Enter Amount"
+                />
+                <div
+                  class="invalid-feedback"
+                  v-if="amountPaid < 0 || amountPaid == 0"
+                >
+                  Please make sure the amount is not below this
+                  {{ Math.abs(pledgeAmount).toLocaleString() }}
+                </div>
+              </div>
+            </div>
+
+             <!-- <div class="row">
+              <div class="col-12 mt-3 text-center mb-5">
                 <button
-                  class="default-btn border-0 text-white"
-                  style="background: #486083"
+                  class="w-100 text-white border-0 pay"
+                  style="background: #3c7e58"
+                >
+                  PAY
+                </button>
+              </div>
+            </div> -->
+            <div class="col-md-11 mt-4 mb-4 d-flex justify-content-center">
+              <div class="col-md-12">
+                  <button
+                  class="w-100 border-0 default-btn primary-bg text-white font-weight-bold  pay"
                   data-dismiss="modal"
                   data-toggle="modal"
                   data-target="#PaymentOptionModal"
-                >
-                  <i class="pi pi-spin pi-spinner" v-if="loading"></i> Pay Now
-                </button>
+
+                  >
+                    <i class="pi pi-spin pi-spinner" v-if="loading"></i> PAY
+                  </button>
               </div>
+              
             </div>
-              <div class="col-12 col-sm-9 col-md-8  offset-sm-1 offset-md-3 offset-lg-2 pl-0 mt-5 ">
+
+             <div class="row justify-content-center">
+              <div
+                class="col-md-6  text-center align-item-center mb-4"
+              >
+                <div class="">Powered by</div>
+                <div>
+                   <img
+                  src="../../assets/logoblue.png"
+                  alt="churchplus Logo"
+                  class="w-50 mx-2 "
+                />
+              </div>
+              </div>
+                 
+            </div>
+
+            <div
+              class="
+                row
+                mt-3
+                d-flex
+                justify-content-center
+              "
+            >
+              <div
+                class="
+                  col-10 col-sm-8 col-md-7   pl-0 
+                "
+              >
                   <div class="row">
                         <div class="col-3">
                             <img src="../../assets/VisaDebit.png" class="w-100">
@@ -280,67 +474,34 @@
                             <!-- <img src="../../assets/paypal.png" class="w-50"> -->
                         </div>
                   </div>
-                <!-- <div class="col-md-7 d-flex flex-wrap">
-                     <div class="col-6 col-sm-3 px-0 mx-0 mt-2">
-                        <img src="../../assets/VisaDebit.png" class="" style="width: 90%">
-                      </div>
-                      <div class="col-6 col-sm-3 px-0 mx-0 d-flex justify-content-center align-ltems-center ">
-                          <img src="../../assets/MastercardDebit.png" class="" style="width: 80%">
-                      </div>
-                      <div class="col-6 col-sm-3 px-0 mx-0 mt-2 ">
-                          <img src="../../assets/PayPal2.png" class=" w-100"  >
-                      </div>
-                      <div class="col-6 col-sm-3  px-0 mx-0 paymentlogo mt-2">
-                          <img src="../../assets/Full-Flutterwave.png" class="" >
-                      </div>
-                </div> -->
-              </div>
-              <div class="col-md-12 mb-3">
-                <div class="col-md-12 d-flex justify-content-center mt-4" v-if="!appltoggle">
-                  <div class="col-md-9 text-center churchpluslogog">
-                    Powered by <img src="../../assets/logoblue.png" alt="" class="pl-1">
-                  </div>
+                <!-- <div class="col-2 p-0 m-0">
+                  <img class="w-100" src="../../assets/VisaDebit.png" alt="" />
                 </div>
+
+                <div class="col-2 p-0 m-0">
+                  <img
+                    class="w-100"
+                    src="../../assets/MastercardDebit.png"
+                    alt=""
+                  />
+                </div>
+
+                <div class="col-2 p-0 m-0">
+                  <img class="w-100" src="../../assets/PayPal2.png" alt="" />
+                </div>
+
+                <div class="col-md-3 p-0 m-0">
+                  <img
+                    class="w-100"
+                    src="../../assets/Full-Flutterwave.png"
+                    alt=""
+                  />
+                </div> -->
               </div>
             </div>
           </div>
-            
-            <!-- <div class="col-md-12 d-flex justify-content-around paymentlogo  container-top" v-if="!appltoggle"> -->
-              <!-- <div class="col-12 col-sm-10 col-md-6 col-lg-5 "> -->
-            <div class="row">
-                
-            </div>
-              <!-- </div> -->
-                <!-- <div class="col-12 col-sm-10 col-md-6 col-lg-5">
-                  <div class="row">
-                      <div class="col-3 paymentlogo">
-                        <img src="../../assets/VisaDebit.png" class="w-100" >
-                      </div>
-                      <div class="col-3 pr-0 ">
-                          <img src="../../assets/MastercardDebit.png" class="w-100">
-                      </div>
-                      <div class="col-3 pr-0 ">
-                          <img src="../../assets/PayPal2.png"  class="w-100">
-                      </div>
-                      <div class="col-3 pl-0 text-right">
-                          <img src="../../assets/Full-Flutterwave.png" class=" w-50" >
-                      </div>
-                  </div>
-                  
-                </div> -->
-            <!-- </div> -->
-            <div class="row">
-              
-            </div>
         </div>
       </div>
-      <!-- <div
-        class="col-md-12 col-lg-6 d-none d-lg-flex justify-content-center "
-        id="walletpana"
-        style="height: 100vh"
-      >
-        <img src="../../assets/E-Wallet-pana.svg" alt="" />
-      </div> -->
     </div>
     <div
       class="modal fade"
@@ -399,7 +560,7 @@
 
 <script>
 import axios from "@/gateway/backendapi";
-import { ref , computed } from "vue";
+import { ref, computed } from "vue";
 import Dropdown from "primevue/dropdown";
 import InputText from "primevue/inputtext";
 import { useToast } from "primevue/usetoast";
@@ -423,6 +584,10 @@ export default {
   setup() {
     const toast = useToast();
     const appltoggle = ref(false);
+    const personToggle = ref(false);
+    const associationLogo = ref("")
+    const contactDetailName = ref("")
+    const contactDetailEmail = ref("")
     const store = useStore();
     const withinRange = ref(true);
     const searchRef = ref("");
@@ -454,6 +619,8 @@ export default {
     const selectedChannel = ref("");
     const searchedContact = ref({});
     const selectedContact = ref({});
+    const donorDetail = ref({})
+    const donorDetails = ref({})
     const amountPaid = ref("");
     const pledgeAmount = ref("");
     const txnRef = ref("");
@@ -472,9 +639,11 @@ export default {
     ]);
 
     const populateInputfields = (obj) => {
-      contactDetail.value= obj;
+      contactDetail.value = obj;
       console.log(contactDetail.value);
     };
+
+    
 
     const disabled = computed(() => {
       if (contactDetail.value.personId) return true;
@@ -485,46 +654,65 @@ export default {
       return autosearch.value;
     });
 
-    const checkContact = async () =>{
-        if (!userSearchString.value) {
+    const checkContact = async () => {
+     if (!userSearchString.value) {
             showNoPhoneError.value = true;
             return false;
         }
-            loading.value = true;
-            autosearch.value = true;
-        try {
-          const { data } = await axios.get(
-            `/SearchContributionByPhoneOrMemberID?searchText=${userSearchString.value}&Id=${route.params.id}`
-          );
-          contactDetail.value = data[0] ? data[0] : {}
-          console.log(contactDetail.value, "contribution number");
-          loading.value = false;
-          autosearch.value = false;
+      loading.value = true;
+      autosearch.value = true;
+      // personToggle.value = true
+      try {
+        const { data } = await axios.get(
+          `/SearchContributionByPhoneOrMemberID?searchText=${userSearchString.value}&Id=${route.params.id}`
+        );
+        personToggle.value = true
+        contactDetail.value = data[0] ? data[0] : {};
+        console.log(contactDetail.value, "the contactDetail");
+        amountPaid.value = donorDetail.value.donorPaymentSpecificAmount
+        donorDetail.value = data[0] && data[0].pledges[0] ? data[0].pledges[0].pledgeType : {};
+        // donorDetails.value = data[0].pledges.map((i)=>{
+        //   return{
+        //     pledgeType : i.pledgeType
+        //   }
+        // })
 
-           populateInputfields(contactDetail.value);
-          if (contactDetail.value) appltoggle.value = true;
-        } catch (error) {
-            console.log(error);
-          loading.value = false;
-            autosearch.value = false;
+        // donorDetail.value = donorDetails.value[0] ? donorDetails.value[0] : {};
+        console.log(donorDetail.value, "donor")
+
+
+        console.log(contactDetail.value, "contribution number");
+        loading.value = false;
+        autosearch.value = false;
+
+        populateInputfields(contactDetail.value);
+        if (contactDetail.value ) appltoggle.value = true;
+        if (!contactDetail.value.email || !contactDetail.value.name ){
+           personToggle.value = true
+        }else{
+          return  personToggle.value = false
         }
-    }
+      } catch (error) {
+        console.log(error);
+        loading.value = false;
+        autosearch.value = false;
+      }
+    };
     const CheckAfterEleven = (e) => {
       if (e.target.value.length >= 11) {
-        checkContact()
+        checkContact();
       }
-    }
+    };
     const pledgeDefineID = ref(route.params.id);
     const setContact = (payload) => {
       console.log(payload, "payloadd");
       selectedContact.value = payload;
     };
-      const validateRangeAmount = () => {
+    const validateRangeAmount = () => {
       if (
         amountPaid.value <
           contributionDetail.value.donorPaymentRangeFromAmount ||
-        amountPaid.value >
-          contributionDetail.value.donorPaymentRangeToAmount
+        amountPaid.value > contributionDetail.value.donorPaymentRangeToAmount
       ) {
         withinRange.value = false;
         toast.add({
@@ -538,16 +726,18 @@ export default {
       }
     };
 
-      const validatePaidAmount = () => {
-      if(amountPaid.value == 0 || amountPaid.value < 0 ) {
+    const validatePaidAmount = () => {
+      if (amountPaid.value == 0 || amountPaid.value < 0) {
         withinRange.value = false;
         toast.add({
           severity: "warn",
           summary: "info",
-          detail: `Amount is less than ${Math.abs(pledgeAmount.value).toLocaleString()}`,
+          detail: `Amount is less than ${Math.abs(
+            pledgeAmount.value
+          ).toLocaleString()}`,
           life: 4000,
         });
-      } else{
+      } else {
         withinRange.value = true;
       }
     };
@@ -576,8 +766,9 @@ export default {
         );
         finish();
         contributionDetail.value = res.data;
+        associationLogo.value = res.data.tenantLogo
         console.log(contributionDetail.value, "contribution payment");
-        amountPaid.value = res.data.donorPaymentSpecificAmount;
+        // amountPaid.value = res.data.donorPaymentSpecificAmount;
         checking.value = true;
       } catch (error) {
         console.log(error);
@@ -619,10 +810,7 @@ export default {
         email: contactDetail.value.email,
         amount: amountPaid.value * 100,
         ref: uuidv4().substring(0, 8),
-        // ref: `${formattedDate.substring(0, 4)}sub`,
-        // currency: Plans.value.paymentCurrency,
         onClose: function () {
-          // swal("Transaction Canceled!", { icon: "error" });
           toast.add({
             severity: "info",
             summary: "Transaction cancelled",
@@ -631,8 +819,8 @@ export default {
           });
         },
         callback: function (response) {
-            console.log("payment callback", response)
-            txnRef.value = response.tx_ref
+          console.log("payment callback", response);
+          txnRef.value = response.tx_ref;
           //   subscriptionPayment(response, 0);
           confirmIntializePayment(0);
           //Route to where you confirm payment status
@@ -647,12 +835,12 @@ export default {
         tenantID: currentUser.value.tenantId,
         orderID: uuidv4(),
         pledgeItemId: contributionDetail.value.id,
-        // pledgeId: "3fa85f64-5717-4562-b3fc-2c963f66afa6",
+        pledgeId: contactDetail.value.pledges[0] ? contactDetail.value.pledges[0].id  : "",
         pledgeAmount: parseInt(pledgeAmount.value),
         amountPaid: parseInt(amountPaid.value),
         currencyId: contributionDetail.value.currency.id,
         personID: contactDetail.value.personId,
-        personName: contactDetail.value.name,
+        personName:  contactDetail.value.name, 
         personEmail: contactDetail.value.email,
         personPhone: userSearchString.value,
         // userID: "string",
@@ -698,13 +886,13 @@ export default {
       setSelectedPaymentCurrency();
     }
 
-     const confirmIntializePayment = async (paymentGateway) => {
-           const payload = {
+    const confirmIntializePayment = async (paymentGateway) => {
+      const payload = {
         gateway: paymentGateway === 0 ? "paystack" : "flutterwave",
         tenantID: currentUser.value.tenantId,
         orderID: uuidv4(),
         pledgeItemId: contributionDetail.value.id,
-        // pledgeId: "3fa85f64-5717-4562-b3fc-2c963f66afa6",
+        pledgeId: contactDetail.value.pledges[0] ? contactDetail.value.pledges[0].id  : "",
         pledgeAmount: parseInt(pledgeAmount.value),
         amountPaid: parseInt(amountPaid.value),
         currencyId: contributionDetail.value.currency.id,
@@ -716,7 +904,8 @@ export default {
       };
       try {
         const res = await axios.post(
-          `/ConfirmInitializeContributionAndPledgePayment?txnref=${txnRef.value}`,payload
+          `/ConfirmInitializeContributionAndPledgePayment?txnref=${txnRef.value}`,
+          payload
         );
         console.log(res, "ththhktjh");
       } catch (error) {
@@ -762,15 +951,15 @@ export default {
         },
         callback: (response) => {
           console.log("Payment callback", response);
-          txnRef.value = response.tx_ref
+          txnRef.value = response.tx_ref;
 
           //   subscriptionPayment(response, 1);
           confirmIntializePayment(1);
         },
         onclose: () => console.log("Payment closed"),
         customizations: {
-          title: "Pledge",
-          description: "Payment for Pledge ",
+          title: "Contribution",
+          description: "Payment for Contribution ",
           logo: logoUrl,
         },
       });
@@ -799,14 +988,20 @@ export default {
 
     return {
       channel,
+      associationLogo,
+      personToggle,
+      contactDetailEmail,
+      contactDetailName,
+      donorDetail,
+      donorDetails,
       disabled,
       populateInputfields,
       appltoggle,
-    //   toggleBase,
+      //   toggleBase,
       contactDetail,
       showNoPhoneError,
       autosearch,
-    //   enteredValue,
+      //   enteredValue,
       showLoading,
       CheckAfterEleven,
       txnRef,
@@ -842,45 +1037,29 @@ export default {
       memberName,
       payWithFlutterwave,
       searchedContact,
-    //   setEmptyValue,
+      //   setEmptyValue,
       selectedContact,
       pledgeAmount,
       amountPaid,
+      checkContact,
     };
   },
 };
 </script>
 
 <style scoped>
-.paymentlogo img{
-width: 8rem;
-height: 2rem;
-}
-
-.link-image {
-  width: 100%;
-  /* height: 50px; */
-  padding-right: 0;
-  padding-left: 0;
-  margin: 0;
-  object-fit: cover;
-}
-
-.img-background{
-  background-image:url(../../assets/coloured-patterns.svg) ;
-  background-repeat: no-repeat;
-  width: 100%;
-  /* background-size: cover; */
-  /* object-fit: cover; */
-  height: 55rem;
-  /* background-position: center; */
-} 
-.churchpluslogog img{
-width: 30%;
-}
 .heading-text {
   font: normal normal 800 1.5rem Nunito sans;
 }
+
+.input-border{
+  border: 1px solid  #3c7e58 !important;
+}
+.pay {
+  border-radius: 5px;
+  padding: 10px 17px;
+}
+
 .loading-indicator {
   font-size: 76px;
   position: absolute;
@@ -899,7 +1078,8 @@ width: 30%;
   border-radius: 0;
 }
 #walletpana {
-  background: #486083;
+  background: #3c7e58;
+  background: #f59b47;
 }
 
 #walletpana img {
@@ -923,4 +1103,16 @@ width: 30%;
   transition: all 0.4s ease-in-out;
   max-height: 45px;
 }
+.tool {
+  background-image: url("../../assets/coloured-patterns.svg");
+  height: 56rem;
+  object-fit: cover;
+  background-repeat: no-repeat;
+}
+/* .user image {
+  width: 30px;
+  padding-right: 0;
+  object-fit: cover;
+  
+} */
 </style>

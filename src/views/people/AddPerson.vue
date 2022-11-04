@@ -931,7 +931,7 @@ export default {
             `/api/People/UpdatePerson/${route.params.personId}`,
             formData
           );
-          console.log(response, "response");
+          console.log(response.data, "updateresponse");
           if (response.status === 200 || response.status === 201) {
             membershipService.updatePersonInStore(
               response.data.person,
@@ -990,7 +990,7 @@ export default {
 
           if (response.status === 200 || response.status === 201) {
             // store.dispatch("membership/getMembers")
-            console.log(response, "response");
+            console.log(response.data, "responsessss");
             membershipService.addPersonToStore(response.data.person);
             loading.value = false;
             router.push("/tenant/people");

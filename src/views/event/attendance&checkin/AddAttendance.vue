@@ -929,7 +929,11 @@
                 <button
                   class="default-btn primary-bg text-white border-0 contn-btn"
                   @click="onContinue"
-                  :disabled="!selectedEvent.id || selectedGroups.length === 0"
+                  :disabled="
+                    !selectedEvent.id ||
+                    selectedGroups.length === 0 ||
+                    !selectedEvent.name
+                  "
                 >
                   Save and Continue
                 </button>
@@ -951,7 +955,7 @@
 import Dropdown from "primevue/dropdown";
 import MultiSelect from "primevue/multiselect";
 import { computed, nextTick, ref } from "vue";
-import { useRoute } from 'vue-router'
+import { useRoute } from "vue-router";
 import router from "@/router/index";
 import groupService from "../../../services/groups/groupsservice";
 import eventsService from "../../../services/events/eventsservice";
@@ -1011,26 +1015,32 @@ export default {
     // const selectedGroup = ref({});
     const selectedGroups = ref([]);
 
-    const attendanceCheID = ref(route.params.id)
+    const attendanceCheID = ref(route.params.id);
 
     console.log(attendanceCheID.value);
-    const eventNameDate = ref('')
+    const eventNameDate = ref("");
+    // /api/CheckInAttendance/UpdateCheckInAttendance
 
-     const singleCheckinAttendance = async () =>{
-      try{
-        const res = await axios.get(`/api/CheckInAttendance/GetCheckInItem?checkinId=${attendanceCheID.value}`)
-         eventNameDate.value = `${res.data.fullEventName} (${new Date(res.data.eventDate).toDateString()})`
-        selectedEvent.value.name =  `${res.data.fullEventName} (${new Date(res.data.eventDate).toDateString()})`
-        console.log(eventNameDate.value, 'eventName');
-        eventSearchText.value = eventNameDate.value
+    const singleCheckinAttendance = async () => {
+      try {
+        const res = await axios.get(
+          `/api/CheckInAttendance/GetCheckInItem?checkinId=${attendanceCheID.value}`
+        );
+        eventNameDate.value = `${res.data.fullEventName} (${new Date(
+          res.data.eventDate
+        ).toDateString()})`;
+        selectedEvent.value.name = `${res.data.fullEventName} (${new Date(
+          res.data.eventDate
+        ).toDateString()})`;
+        console.log(eventNameDate.value, "eventName");
+        // eventSearchText.value = eventNameDate.value
         console.log(res, "updateATTENDANCE");
-      }
-      catch(error){
+      } catch (error) {
         console.log(error);
       }
-    }
-    singleCheckinAttendance()
-    
+    };
+    singleCheckinAttendance();
+
     const getGroups = async () => {
       grouploading.value = true;
       try {
@@ -1384,11 +1394,32 @@ export default {
         } catch (err) {
           console.log(err);
         }
+      } else if(route.params.id){
+         try{
+          let { data } = await axios.put('/api/CheckInAttendance/UpdateCheckInAttendance',
+          formData
+          )
+
+          toast.add({
+            severity: "success",
+            summary: "Successful",
+            detail: "Attendance updated successfully",
+            life: 3000,
+          });
+
+          console.log(data, "thedata");
+
+          router.push("/tenant/attendancecheckin");
+         }
+         catch(error){
+          console.log(error)
+         }
       } else {
         toast.add({
           severity: "warn",
           summary: "Some field not filled",
-          detail: "Cannot create this event attendance, kindly fill all fields before saving.",
+          detail:
+            "Cannot create this event attendance, kindly fill all fields before saving.",
           life: 6000,
         });
       }
