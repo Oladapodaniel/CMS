@@ -753,7 +753,7 @@ export default {
     // populate input fields
     const populateInputfields = (obj) => {
       person.value = obj;
-      console.log(person);
+      console.log(person.value);
     };
 
     const disabled = computed(() => {

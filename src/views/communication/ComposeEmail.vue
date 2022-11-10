@@ -421,10 +421,49 @@
         </div>
       </div>
 
+      <!-- Enter your Emails -->
+      <div class="col-md-12 my-1 px-0" v-if="emailSelectionTab">
+        <div class="row">
+          <div class="col-md-2"></div>
+          <div class="col-md-10 py-2 px-0">
+            <textarea
+              class="form-control w-100 px-1 grey-rounded-border"
+              placeholder="Enter email(s)"
+              v-model="email"
+            ></textarea>
+          </div>
+          <div
+            class="col-md-12 grey-rounded-border groups"
+            :class="{ hide: !groupsAreVissible }"
+          >
+            <div
+              class="row"
+              v-for="(category, index) in categories"
+              :key="index"
+            >
+              <div class="col-md-12">
+                <div class="row">
+                  <div class="col-md-12">
+                    <h4>{{ category }}</h4>
+                    <p
+                      v-for="(group, indx) in allGroups[index]"
+                      @click="selectGroup(group.category, group.id, group.name)"
+                      :key="indx"
+                    >
+                      {{ group.name }}
+                    </p>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
       <div
         class="row mt-1"
         v-if="
-          phoneNumberSelectionTab || membershipSelectionTab || groupSelectionTab
+          phoneNumberSelectionTab || membershipSelectionTab || groupSelectionTab || emailSelectionTab
         "
       >
         <div class="col-md-12 pr-0">
@@ -748,6 +787,8 @@ export default {
     const groupSelectionTab = ref(false);
     const membershipSelectionTab = ref(false);
     const phoneNumberSelectionTab = ref(false);
+    const emailSelectionTab = ref(false);
+    const email = ref("")
     const selectedGroups = ref([]);
     const sendToAll = ref(false);
     const executionDate = ref('');
@@ -759,7 +800,8 @@ export default {
     const showSection = (index) => {
       if (index === 1) groupSelectionTab.value = true;
       if (index === 2) membershipSelectionTab.value = true;
-      if (index === 3) phoneNumberSelectionTab.value = true;
+      if (index === 3) emailSelectionTab.value = true;
+      if (index === 4) phoneNumberSelectionTab.value = true;
       if (index === 0) {
         sendToAll.value = true;
         selectedGroups.value.push({ data: "membership_00000000-0000-0000-0000-000000000000", name: "All Contacts"
@@ -868,7 +910,7 @@ export default {
 
       if (
         selectedGroups.value.length === 0 &&
-        !phoneNumber.value &&
+        !phoneNumber.value && !email.value &&
         selectedMembers.value.length === 0 &&
         !sendToAll.value
       ) {
@@ -975,6 +1017,16 @@ export default {
         // toContacts: sendToAll.value ? 'allcontacts_00000000-0000-0000-0000-000000000000' : '',
       };
 
+      const emails = [];
+      email.value.split(",").forEach((i) => {
+        i.split("\n").forEach((j) => {
+          if (j) emails.push(j);
+        });
+      });
+      console.log(emails, "many email");
+
+      data.toOthers = emails.join();
+
       if (selectedMembers.value.length > 0) {
         data.ToContacts = data && data.ToContacts ? data.ToContacts.length > 0 ? "," : "" : "";
         data.ToContacts += selectedMembers.value
@@ -1052,6 +1104,10 @@ export default {
       phoneNumber.value = route.query.phone;
       phoneNumberSelectionTab.value = true;
     }
+    if(route.query.email){
+      email.value = route.query.email
+      emailSelectionTab.value = true
+    }
 
     if (route.query.group) {
       groupSelectionTab.value = true;
@@ -1060,6 +1116,7 @@ export default {
         name: route.query.group,
       });
       phoneNumberSelectionTab.value = true;
+      emailSelectionTab.value = true
     }
 
     
@@ -1189,6 +1246,8 @@ export default {
       groupSelectionTab,
       membershipSelectionTab,
       phoneNumberSelectionTab,
+      emailSelectionTab,
+      email,
       categories,
       allGroups,
       selectedMembers,

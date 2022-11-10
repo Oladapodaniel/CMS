@@ -112,7 +112,7 @@
                     <div v-if="contactDetail.name"> {{contactDetail.name}}</div>
                   </div>
                   <div class="col-sm-6 mx-0 px-0 col-12 d-flex justify-content-center small justify-content-sm-end " >
-                    <div v-if="contactDetail.email "> {{contactDetail.email}}</div>
+                    <div v-if="contactDetail.email "> {{maxEmail ? maxEmail :  ""}}</div>
                   </div>
                
               </div>
@@ -623,6 +623,7 @@ export default {
     const donorDetails = ref({})
     const amountPaid = ref("");
     const pledgeAmount = ref("");
+    const maxEmail = ref("")
     const txnRef = ref("");
     const pledgeCategory = ref([
       { name: "Free will" },
@@ -671,6 +672,7 @@ export default {
         console.log(contactDetail.value, "the contactDetail");
         amountPaid.value = donorDetail.value.donorPaymentSpecificAmount
         donorDetail.value = data[0] && data[0].pledges[0] ? data[0].pledges[0].pledgeType : {};
+        maxEmail.value = contactDetail.value.email.replace(/(\w{3})[\w.-]+@([\w.]+\w)/, "$1***@$2")
         // donorDetails.value = data[0].pledges.map((i)=>{
         //   return{
         //     pledgeType : i.pledgeType
@@ -988,6 +990,7 @@ export default {
 
     return {
       channel,
+      maxEmail,
       associationLogo,
       personToggle,
       contactDetailEmail,

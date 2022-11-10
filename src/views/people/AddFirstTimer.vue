@@ -242,7 +242,7 @@
                 </div>
               </div>
               <div class="input-field">
-                <label for="" class="label">Choose contact owner</label>
+                <label for="" class="label">Choose follow-up person</label>
                 <div class="input p-0 border-0 widen">
                   <SearchMembers
                     v-bind:currentMember="firstTimersObj"

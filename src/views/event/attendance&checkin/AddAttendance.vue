@@ -935,7 +935,12 @@
                     !selectedEvent.name
                   "
                 >
-                  Save and Continue
+                  <i
+                    class="fas fa-circle-notch fa-spin mr-2 text-white"
+                    v-if="loading"
+                  ></i>
+                  <span class="text-white">Save and Continue</span>
+                  <span></span>
                 </button>
               </div>
             </div>
@@ -1185,6 +1190,7 @@ export default {
     getGroups();
 
     const onContinue = async () => {
+      loading.value = true;
       let checkinEvent = {
         eventId: selectedEvent.value.id,
         groupIDs: selectedGroups.value,
@@ -1267,7 +1273,7 @@ export default {
       checkinCutOffTime.value
         ? formData.append("checkInCutOffTime", checkinCutOffTime.value)
         : "";
-
+        loading.value = true;
       if (
         !amount.value &&
         !selectedBank.value &&
@@ -1293,6 +1299,7 @@ export default {
             store.dispatch("attendance/setItemData", element);
           }
           store.dispatch("groups/setCheckedTreeGroup", []);
+          loading.value = false;
           router.push({
             name: "CheckinType",
             query: {
@@ -1306,8 +1313,10 @@ export default {
           });
         } catch (error) {
           console.log(error);
+          loading.value = false;
         }
         console.log("Only Top");
+
       } else if (
         !amount.value &&
         !selectedBank.value &&
@@ -1316,6 +1325,7 @@ export default {
         !selectedIncomeAccount.value &&
         image.value
       ) {
+        loading.value = true;
         console.log("Free and image");
         selectedGroups.value
           ? formData.append("groupIDs", JSON.stringify(selectedGroups.value))
@@ -1338,6 +1348,7 @@ export default {
             const element = data.returnObject.checkInAttendanceResult[i];
             store.dispatch("attendance/setEventReg", element);
           }
+          loading.value = false;
           router.push({
             name: "CheckinType",
             query: {
@@ -1351,6 +1362,7 @@ export default {
           });
         } catch (err) {
           console.log(err);
+          loading.value = false;
         }
       } else if (
         amount.value &&
@@ -1380,6 +1392,7 @@ export default {
             const element = data.returnObject.checkInAttendanceResult[i];
             store.dispatch("attendance/setEventReg", element);
           }
+          loading.value = false;
           router.push({
             name: "CheckinType",
             query: {
@@ -1393,12 +1406,17 @@ export default {
           });
         } catch (err) {
           console.log(err);
+          loading.value = false;
         }
-      } else if(route.params.id){
-         try{
-          let { data } = await axios.put('/api/CheckInAttendance/UpdateCheckInAttendance',
-          formData
-          )
+      } else if (route.params.id) {
+        loading.value = true;
+        try {
+          let { data } = await axios.put(
+            "/api/CheckInAttendance/UpdateCheckInAttendance",
+            formData
+          );
+
+          loading.value = false;
 
           toast.add({
             severity: "success",
@@ -1410,10 +1428,10 @@ export default {
           console.log(data, "thedata");
 
           router.push("/tenant/attendancecheckin");
-         }
-         catch(error){
-          console.log(error)
-         }
+        } catch (error) {
+          console.log(error);
+          loading.value = false;
+        }
       } else {
         toast.add({
           severity: "warn",
@@ -1422,6 +1440,7 @@ export default {
             "Cannot create this event attendance, kindly fill all fields before saving.",
           life: 6000,
         });
+        loading.value = false;
       }
     };
 
