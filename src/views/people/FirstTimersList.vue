@@ -35,46 +35,37 @@
         <div class="top-con">
           <div class="table-top  d-flex justify-content-end mr-2">
             <div class="select-All mr-3">
-              <input
-              class="d-block d-md-none"
-              type="checkbox"
-              name="all"
-              id="all"
-              @change="markAllFirsttimer"
-              :checked="checkedFirstTimer.length === churchMembers.length"
-            />
-            <label class="d-block d-md-none">SELECT ALL</label>
-            <i
-                class="
-                  pi pi-trash
-                  text-danger
-                  mr-3
-                  c-pointer
-                  d-flex-inline
-                  align-items-center
-                "
-                style="font-size: 20px; margin-bottom: 12px"
-                v-if="checkedFirstTimer.length > 0"
-                @click="modal"
-              >
-              </i>
-              &nbsp; &nbsp;
-              <span class="c-pointer" v-if="checkedFirstTimer.length > 0" @click="sendMarkedMemberSms">Send SMS</span> &nbsp; &nbsp;
-              <span class="c-pointer" v-if="checkedFirstTimer.length > 0" @click="sendMarkedMemberEmail">Send Email</span>
+            <div class="d-flex   w-100 ">
+                <input
+                class="d-block d-md-none mb-2"
+                type="checkbox"
+                name="all"
+                id="all"
+                @change="markAllFirsttimer"
+                :checked="checkedFirstTimer.length === churchMembers.length"
+              />
+              <label class="d-block d-md-none  ml-2">SELECT ALL</label>
+            </div>
+              <div class="d-none d-md-block d-lg-block">
+                 &nbsp; &nbsp;
+                  <span class="c-pointer" v-if="checkedFirstTimer.length > 0" @click="sendMarkedMemberSms">Send SMS</span> &nbsp; &nbsp;
+                  <span class="c-pointer" v-if="checkedFirstTimer.length > 0" @click="sendMarkedMemberEmail">Send Email</span>
+              </div>
+             
             </div>
             
-              <div class="filter">
-                <p @click="toggleFilterFormVissibility" class="mt-2">
-                  <i class="pi pi-filter"></i>
-                  FILTER
-                </p>
-              </div>
+            <div class="filter">
+              <p @click="toggleFilterFormVissibility" class="mt-2">
+                <i class="pi pi-filter"></i>
+                FILTER
+              </p>
+            </div>
             <div class="col-5 col-sm-3 col-md-2">
               <p @click="toggleSearch" class="search-text w-100 mt-2">
                 <i class="pi pi-search"></i> SEARCH
               </p>
             </div>
-
+            
             <div class="search d-flex ml-2">
               <label
                 class="label-search d-flex"
@@ -95,6 +86,28 @@
                 </span>
               </label>
             </div>
+            <div>
+               <i
+                class="
+                  pi pi-trash
+                  text-danger
+                  mr-3
+                  c-pointer
+                  d-flex-inline
+                  align-items-center
+                "
+                style="font-size: 20px; margin-bottom: 12px"
+                v-if="checkedFirstTimer.length > 0"
+                @click="modal"
+              >
+              </i>
+            </div>
+
+          </div>
+          <div class="d-block font-weight-bold small text-center w-100 d-md-none d-lg-none"> 
+            &nbsp; &nbsp;
+              <span class="c-pointer" v-if="checkedFirstTimer.length > 0" @click="sendMarkedMemberSms">Send SMS</span> &nbsp; &nbsp;
+              <span class="c-pointer" v-if="checkedFirstTimer.length > 0" @click="sendMarkedMemberEmail">Send Email</span>
           </div>
         </div>
         <div
