@@ -22,46 +22,6 @@
           <hr class="hr my-3" />
         </div>
       </div>
-      <!-- <div class="row table">
-              <div class="col-12 mt-4 w-100">
-                <div class="row">
-                  <div class="col-12 col-md-4 ">
-                    <div class="font-weight-bold col-12 ">Total Pledge</div>
-                  </div>
-
-                  <div class="col-12 col-md-4">
-                    <div class="font-weight-bold col-12 ">How They Pledge </div>
-                  </div>
-                  <div class="col-12 col-md-4">
-                    <div class="font-weight-bold col-12 ">How They Redeem</div>
-                  </div>
-                </div>
-              </div>
-          </div> -->
-      <!-- <div class="row">
-              <div class="col-12 mt-4 w-100">
-                <div class="row">
-                  <div class="col-12 col-md-3 ">
-                  
-                       <MembersSearch @memberdetail="chooseContact" />
-                        <Dropdown v-model="selectedPerson" class="w-100 font-weight-normal" :options="reOccuringRange"  optionLabel="name" placeholder="Select Person" />
-                  </div>
-                  <div class="col-12 col-md-3 ">
-                    <Dropdown v-model="selectedPledge" class="w-100 font-weight-normal" :options="allPledgeType"  optionLabel="name" placeholder="Pledge Type" />
-                  </div>
-                  <div class="col-12 col-md-2 ">
-                    <input type="text" v-model="amountFrom" class="form-control" placeholder="From" />
-                  </div>
-
-                  <div class="col-12 col-md-2">
-                     <input type="text" v-model="amountTo" class="form-control" placeholder="To" />
-                  </div>
-                  <div class="col-12 col-md-2">
-                    <button class=" default-bt "> Search...</button>
-                  </div>
-                </div>
-              </div>
-          </div> -->
       <div class="row">
         <div class="col-12 px-0" id="table">
           <div class="top-con" id="ignore2">

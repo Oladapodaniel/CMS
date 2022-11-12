@@ -167,7 +167,7 @@
           </div>
 
     
-    <!-- <div > -->
+    <div >
           <div class="container-fluid d-none d-md-block">
             <div class="row t-header">
               <div class="col-md-1">
@@ -206,15 +206,17 @@
               </div>
             </div>
           </div>
-        <div class="container-fluid">
+        <!-- <div class="container-fluid"> -->
           <div class="row">
             <loadingComponent :loading="loading" />
             <div
-              class=" col-12 py-2 px-0 c-pointer tr-border-bottom hover"
-              v-for="person in searchMember"
-              :key="person.id"
+              class=" col-12 py-2 c-pointer tr-border-bottom hover"
             >
-              <div class="row w-100" style="margin: 0">
+              <div class="row w-100 d-flex
+                    align-items-center" style="margin: 0" 
+                    v-for="person in searchMember"
+                    :key="person.id"
+                  >
                 <div
                   class="col-md-1 d-flex d-md-block px-3 justify-content-end"
                 >
@@ -463,9 +465,9 @@
               </div>
             </div>
           </div>
-        </div>
+        <!-- </div> -->
 
-<!-- </div> -->
+</div>
 
 
          <!-- <div
