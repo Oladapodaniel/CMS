@@ -996,6 +996,7 @@ export default {
     const accountName = ref("");
     const accNameRef = ref("");
     const loading = ref(false);
+    const loadingsave = ref(false);
     const eventDetails = ref("");
     const cashBankAccount = ref([]);
     const incomeAccount = ref([]);
@@ -1190,7 +1191,7 @@ export default {
     getGroups();
 
     const onContinue = async () => {
-      loading.value = true;
+      loadingsave.value = true;
       let checkinEvent = {
         eventId: selectedEvent.value.id,
         groupIDs: selectedGroups.value,
@@ -1273,7 +1274,6 @@ export default {
       checkinCutOffTime.value
         ? formData.append("checkInCutOffTime", checkinCutOffTime.value)
         : "";
-        loading.value = true;
       if (
         !amount.value &&
         !selectedBank.value &&
@@ -1286,7 +1286,7 @@ export default {
         selectedGroups.value
           ? formData.append("groupIDs", selectedGroups.value)
           : "";
-
+          loadingsave.value = true;
         try {
           // const response = await attendanceservice.saveCheckAttendanceItem(checkinEvent);
           const response = await axios.post(
@@ -1299,7 +1299,7 @@ export default {
             store.dispatch("attendance/setItemData", element);
           }
           store.dispatch("groups/setCheckedTreeGroup", []);
-          loading.value = false;
+          loadingsave.value = false;
           router.push({
             name: "CheckinType",
             query: {
@@ -1313,7 +1313,7 @@ export default {
           });
         } catch (error) {
           console.log(error);
-          loading.value = false;
+          loadingsave.value = false;
         }
         console.log("Only Top");
 
@@ -1325,11 +1325,13 @@ export default {
         !selectedIncomeAccount.value &&
         image.value
       ) {
-        loading.value = true;
+        
         console.log("Free and image");
         selectedGroups.value
           ? formData.append("groupIDs", JSON.stringify(selectedGroups.value))
           : "";
+
+          loadingsave.value = true;
         try {
           let { data } = await axios.post(
             "/api/CheckInAttendance/create/multiple",
@@ -1348,7 +1350,7 @@ export default {
             const element = data.returnObject.checkInAttendanceResult[i];
             store.dispatch("attendance/setEventReg", element);
           }
-          loading.value = false;
+          loadingsave.value = false;
           router.push({
             name: "CheckinType",
             query: {
@@ -1362,7 +1364,7 @@ export default {
           });
         } catch (err) {
           console.log(err);
-          loading.value = false;
+          loadingsave.value = false;
         }
       } else if (
         amount.value &&
@@ -1375,6 +1377,7 @@ export default {
         selectedGroups.value
           ? formData.append("groupIDs", JSON.stringify(selectedGroups.value))
           : "";
+          loadingsave.value = true;
         try {
           let { data } = await axios.post(
             "/api/CheckInAttendance/create/multiple",
@@ -1392,7 +1395,7 @@ export default {
             const element = data.returnObject.checkInAttendanceResult[i];
             store.dispatch("attendance/setEventReg", element);
           }
-          loading.value = false;
+          loadingsave.value = false;
           router.push({
             name: "CheckinType",
             query: {
@@ -1409,14 +1412,14 @@ export default {
           loading.value = false;
         }
       } else if (route.params.id) {
-        loading.value = true;
+        loadingsave.value = true;
         try {
           let { data } = await axios.put(
             "/api/CheckInAttendance/UpdateCheckInAttendance",
             formData
           );
 
-          loading.value = false;
+          
 
           toast.add({
             severity: "success",
@@ -1425,12 +1428,14 @@ export default {
             life: 3000,
           });
 
+          loadingsave.value = false;
+
           console.log(data, "thedata");
 
           router.push("/tenant/attendancecheckin");
         } catch (error) {
           console.log(error);
-          loading.value = false;
+          loadingsave.value = false;
         }
       } else {
         toast.add({
@@ -1440,7 +1445,7 @@ export default {
             "Cannot create this event attendance, kindly fill all fields before saving.",
           life: 6000,
         });
-        loading.value = false;
+        loadingsave.value = false;
       }
     };
 
@@ -1628,6 +1633,7 @@ export default {
       resolveCustomerDetail,
       accNameRef,
       loading,
+      loadingsave,
       eventDetails,
       cashBankAccount,
       incomeAccount,
