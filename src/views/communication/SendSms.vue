@@ -1103,6 +1103,7 @@ export default {
         .sendMessage("/api/Messaging/sendSms", data)
         .then((res) => {
           disableBtn.value = false;
+          // console.log(res.data.message, "God is good");
           if (res.data.status) {
             toast.add({
               severity: "success",
@@ -1110,6 +1111,14 @@ export default {
               detail: `SMS Sent successfully`,
               life: 7000,
             });
+          }else if(res.data.message.includes("You do not have sufficient")){
+            toast.add({
+              severity: "warn",
+              summary: "Insufficient Unit",
+              detail: `${res.data.message}`,
+              life: 6000,
+            });
+
           } else if (
             res.data &&
             res.data.message &&
