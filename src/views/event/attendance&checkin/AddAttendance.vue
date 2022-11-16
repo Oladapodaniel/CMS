@@ -387,30 +387,38 @@
                 <label for="" class="font-weight-600">Event Banner</label>
               </div>
               <div
-                class="col-sm-5 col-md-3 col-lg-3 offset-md-1"
+                class="col-sm-5 col-md-5 col-lg-5"
                 :class="{ 'img-border ': imageUrl === '' }"
               >
                 <img :src="imageUrl" class="w-100" />
               </div>
               <div
-                @click="altClick"
+                
                 class="
-                  col-5 col-sm-2
-                  offset-sm-1
-                  my-2 my-sm-0
-                  upload-button
+                  col-5 col-sm-12
                   align-self-center
+                  justify-content-center
+                  d-flex
                   text-center
                   cursor-pointer
                 "
-              >
+              ><div class="my-2 my-sm-0 col-md-3 
+                  upload-button
+                  align-self-center
+                  text-center
+                  cursor-pointer" @click="altClick">
                 Upload
                 <input type="file" @change="chooseFile" ref="binImage" hidden />
               </div>
-              <div class="col-sm-3 col-md-4"></div>
-              <div class="col-sm-7 col-md-6 col-lg-5 offset-sm-0 mt-2 px-0">
-                Browse or Drop your banner here.Maximum 5MB in size JPG, PNG, or
-                GIF formats.
+
+                
+              </div>
+              <!-- <div class="col-sm-3 col-md-4"></div> -->
+              <div class="col-sm-7 col-md-12 col-lg-12 d-flex justify-content-center mt-2 px-0">
+                <div class="col-md-5">
+                  Browse or Drop your banner here.Maximum 5MB in size JPG, PNG, or
+                  GIF formats.
+                </div>
               </div>
             </div>
 
