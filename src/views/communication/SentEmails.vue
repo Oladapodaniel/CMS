@@ -56,9 +56,9 @@
                             "
                           />
                         </div>
-                        <div class="col-md-6">
-                          <span class="th">Message</span>
-                        </div>
+                          <div class="col-md-6">
+                            <span class="th">Message</span>
+                          </div>
                         <div class="col-md-4">
                           <span class="th">Sent By</span>
                         </div>
@@ -236,14 +236,25 @@ export default {
     const searchMail = ref("");
 
     const getSentEmails = async () => {
-      const data = await communicationService.getSentEmails(0);
-      loading.value = false;
-      if (data && data.length > 0) {
-        emails.value = data;
+      
+      try{
+        loading.value = true;
+         /*eslint no-undef: "warn"*/
+        NProgress.start();
+          const data = await communicationService.getSentEmails(0);
+          loading.value = false;
+        if (data && data.length > 0) {
+          emails.value = data;
+        }
+      }
+      catch(error){
+         loading.value = false;
+        NProgress.done();
+        console.log(error);
       }
     };
 
-    if (!emails.value || emails.value.length === 0) {
+    if (!emails.value || emails.value.length === 0 || emails.value == undefined || !emails.value[0] ) {
       getSentEmails();
     } else {
       loading.value = false;

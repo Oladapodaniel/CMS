@@ -102,8 +102,8 @@ methods:{
         let newCreate = {
           subject: this.subject,
           message: this.message,
-          messageType: this.selectCategory.value,
-          category: this.selectType.value
+          messageType: this.selectType.value ,
+          category: this.selectCategory.value
         }
         axios.post(`/api/Settings/CreateDefaultMessage`,newCreate)
         .then((res)=>{
@@ -118,8 +118,8 @@ methods:{
             id: this.defaultMessage.returnObject.id,
             subject: this.subject,
             message: this.message,
-            messageType: this.selectCategory.value,
-            category: this.selectType.value
+            messageType: this.selectType.value,
+            category: this.selectCategory.value
         }
         axios.put(`/api/Settings/UpdateDefaultMessage`,newUpdate)
         .then((res)=>{

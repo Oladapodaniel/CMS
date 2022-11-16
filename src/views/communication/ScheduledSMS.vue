@@ -51,11 +51,20 @@
                             class="mark-box"
                           />
                         </div>
-                        <div class="col-md-8">
-                          <span class="th">Message</span>
+                         <div class="col-md-2">
+                          <span class="th">Subject</span>
                         </div>
                         <div class="col-md-3">
-                          <span class="th">Date & Time</span>
+                          <span class="th">Message</span>
+                        </div>
+                        <div class="col-md-2">
+                          <span class="th">Is Executed</span>
+                        </div>
+                        <div class="col-md-3   ">
+                          <span class="th">Execution Date</span>
+                        </div>
+                        <div class="col-md-1 ">
+                          <!-- <span class="th">Execution Date</span> -->
                         </div>
                       </div>
                     </div>
@@ -71,7 +80,7 @@
                     :key="index"
                   >
                     <div class="col-md-12">
-                      <div class="row">
+                      <div class="row py-1">
                         <div class="col-md-1">
                           <input
                             type="checkbox"
@@ -86,32 +95,46 @@
                             class="mark-box"
                           />
                         </div>
-                        <div class="col-md-7 d-md-flex small-text py-1">
+                        <div class="col-md-2  small-text ">
                           <router-link to="" class="text-decoration-none"
                             ><span class="msg-n-time">
-                              <span class="font-weight-bold mr-2 text-dark">{{
+                              <span class="font-weight-bold mr-1 text-dark">{{
                                 !sms.subject ? "(no subject)" : sms.subject
                               }}</span>
-                              <span
-                                class="brief-message font-weight-600 ml-2"
-                                >{{
-                                  `${sms.message
-                                    .split("")
-                                    .slice(0, 50)
-                                    .join("")}...`
-                                }}</span
-                              >
                             </span></router-link
                           >
                         </div>
+                        <div class="col-md-3">
+                           <router-link to="" class="text-decoration-none">
+                             <span
+                                class="brief-message font-weight-600 "
+                                >{{
+                                  `${sms.message
+                                    .split("")
+                                    .slice(0, 30)
+                                    .join("")}...`
+                                }}</span
+                              >
+                          </router-link
+                          >
+                        </div>
+                        <div class="col-md-2  small-text">
+                            <span class="msg-n-time">
+                              <span class="text-primary small-text ml-1">{{
+                                sms.isExecuted === false ? "No" : "Yes"
+                              }}</span>
+                            </span>
+                        </div>
 
-                        <div class="col-md-4 d-md-flex align-items-center justify-content-end small-text">
+                        <div class="col-md-3  small-text">
                           <span class="msg-n-time">
-                            <span class="timestamp ml-4 small-text">{{
-                              formattedDate(sms.date)
+                            <span class="timestamp ml-1 small-text">{{
+                              formattedDate(sms.executionDate)
                             }}</span>
                           </span>
-                          <span class="small-text ml-5 mr-n4" @click="deleteSingleSms(sms)">
+                        </div>
+                        <div class="col-md-1 d-md-flex  justify-content-end small-text">
+                          <span class="small-text mr-n4 " @click="deleteSingleSms(sms)">
                               <i
                                 class="c-pointer pr-3 pi pi-trash delete-icon"
                                 @click="showConfirmModal(sms.id)"

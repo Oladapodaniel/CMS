@@ -943,6 +943,7 @@ export default {
               confirmButtonColor: '#8CD4F5',
               dangerMode: true,
             })
+            // router.push('/tenant/email/sent')
             .then((willDelete) => {
               if (willDelete) {
                 router.push({ name: 'SentEmails' })
