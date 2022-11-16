@@ -197,10 +197,7 @@ export default {
     const getScheduledSMS = async () => {
       try {
         loading.value = true;
-        const res = await communicationService.getSchedules(
-          "/api/Messaging/getEmailSchedules"
-          
-        );
+        const res = await communicationService.getSchedules("/api/Messaging/getEmailSchedules");
         loading.value = false;
         schedules.value = res;
         console.log(schedules.value, "SchedulesEmail");
@@ -220,7 +217,7 @@ export default {
     // function to search
     const searchScheduled = ref("");
     const scheduledMails = computed(() => {
-      console.log(scheduledMails, 'kingsley')
+      // console.log(scheduledMails, 'kingsley')
       if (searchScheduled.value === "" && schedules.value.length > 0)
         return schedules.value;
       return schedules.value.filter((i) => {

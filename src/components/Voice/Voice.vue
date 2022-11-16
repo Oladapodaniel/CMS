@@ -26,7 +26,7 @@
                   <router-link
                     to="/tenant/voice"
                     class="btn compose-btn border-0 font-weight-bold default-btn border-none"
-                    >Record Voice</router-link
+                    >Upload Voice</router-link
                   >
                 </div>
               </div>
