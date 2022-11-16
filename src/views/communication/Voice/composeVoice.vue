@@ -39,7 +39,7 @@
         <div class="col-md-10 d-flex flex-column flex-md-row">
 
           <div class="col-3 pr-md-0  align-self-start">
-            <span class="small-text">Send to : </span>
+            <span class="text-bold">Send to : </span>
           </div>
           <div class="col-9 pl-md-0 col-lg-10 form-group mb-0">
             <div class="dropdown">
@@ -54,13 +54,15 @@
             </div>
           </div>
         </div>
-      </div>
 
-      <div class="row mb-1">
-        <div class="col-md-12 pr-0">
+
+
+        <div class="col-md-12 pr-0 mt-3">
           <hr class="hr my-1" />
         </div>
+
       </div>
+
 
       <div class="row" v-if="sendToAll">
         <div class="col-md-2"></div>
@@ -248,7 +250,7 @@
       </div>
 
       <!-- Enter phone numbers -->
-      <div class="col-md-12 my-1 px-0" v-if="phoneNumberSelectionTab">
+      <div class="col-md-9 my-1 px-0" v-if="phoneNumberSelectionTab">
         <div class="row">
           <div class="col-md-2"></div>
           <div class="col-md-10 py-2 px-0">
@@ -293,59 +295,24 @@
           <hr class="hr my-1" />
         </div>
       </div>
-
-      <!-- <div class="row">
-        <div class="col-md-2">
-          <span class="font-weight-600 small-text">Sender: </span>
-        </div>
-        <div class="col-md-10 px-0">
-          <input
-            type="text"
-            class="input p-0 mx-0 grey-rounded-border pl-2"
-            style="border-radius: 4px"
-            v-model="subject"
-          />
-        </div>
-      </div> -->
-
-      <div class="row drag-area-body">
-        <div class="col-md-12 px-0  ">
-          <div class="row icon">
-          <div class="col-12  mt-4">
-            <header class="col-12 d-flex justify-content-start font-weight-600">Upload File</header>
-
-            <div class="col-md-10 d-flex flex-column flex-md-row">
-              <button class="btn btn-outline-dark my-3  upload-btn" @click="uploadVoice">Browse
-                File</button>
+      <div class="row">
+        <div class="col-md-10 d-flex flex-column flex-md-row mt-3">
+          <div class="col-3 pr-md-0  align-self-start">
+            <span class="text-bold">Upload File : </span>
+          </div>
+          <div class="col-9  col-lg-10 pl-md-0 d-flex  mb-0">
+            <!-- <div class="col-md-9"> -->
+            <input type="text " class="form-control" v-model="voice.name" />
+            <!-- </div> -->
+            <label class="col-md-5 d-flex justify-content-center p-2 w-100 border mt-0 pt-0  lab"
+              @click="uploadVoice">Upload Voice
               <input type="file" hidden ref="uploadButton" @change="audioSelected">
-              <span class=" ml-md-3 d-flex align-items-center text-dark">{{ voice.name }}</span>
-            </div>
-            <div class="col-md-10">Upload MP3 maximum of 3MB</div>
+            </label>
           </div>
         </div>
-
-
-          <!-- <div class="col-md-12 px-0 small-text">
-                    <p
-                    class="bg-success mb-0 p-1"
-                    v-if="editorData.length > 0"
-                    :class="{ amber: charactersCount > 160 }"
-                    >
-                    <span>Characters count {{ charactersCount }}</span>
-                    <span class="float-right">Page {{ pageCount }}</span>
-                    </p>
-                </div> -->
-        </div>
-        <div class="row-audio" v-if="false">
-          <div class="text-white py-2">{{ voice.Name }}</div>
-          <audio controls>
-            <source :src="url">
-            <source :src="url" type="audio/mpeg">
-            Your browser does not support the audio element.
-          </audio>
-        </div>
-
       </div>
+
+
       <!-- start voice -->
       <div class="p-2 controlAudio" v-show="displayAudio">
         <select name="" id="micSelect"></select>
@@ -577,7 +544,7 @@ import stopProgressBar from "../../../services/progressbar/progress";
 import communicationService from "../../../services/communication/communicationservice";
 import dateFormatter from "../../../services/dates/dateformatter";
 import moment from 'moment'
-import audio from "../helper/audio"
+// import audio from "../helper/audio"
 import { blobMethod } from "../helper/audio"
 
 // console.log(audio , 'audio');
@@ -635,11 +602,11 @@ export default {
     }
 
     // onload function for the audio voice recorder
-    onMounted(() => {
-      setTimeout(() => {
-        audio(canvas.value)
-      }, 3000)
-    });
+    // onMounted(() => {
+    //   setTimeout(() => {
+    //     audio(canvas.value)
+    //   }, 3000)
+    // });
 
     // function that selects the file
     const audioSelected = (e) => {
@@ -1356,6 +1323,12 @@ export default {
 </script>
 
 <style scoped>
+.lab {
+  font-size: 14px;
+  font-weight: 800;
+  background-color: rgb(236, 230, 230);
+}
+
 .input {
   display: block;
   width: 100%;
@@ -1488,7 +1461,8 @@ input:focus {
   font-weight: 500;
   background: #fff;
   color: #000;
-  border-radius: 30px;
+  border: 3px;
+  /* border-radius: 30px; */
   cursor: pointer;
 }
 
