@@ -3,7 +3,7 @@
     <div class="container" @click="closeDropdownIfOpen">
       <!-- <div class="container" @click="closeDropdownIfOpen"> -->
       <div class="row">
-        <div class="col-md-12 mb-3 mt-3 offset-3 offset-md-0">
+        <div class=" col-12 col-md-12 mb-3 mt-3 ">
           <h4 class="font-weight-bold">Compose Voice Message</h4>
           <Toast />
 
@@ -36,12 +36,11 @@
       </div>
 
       <div class="row">
-        <div class="col-md-10 d-flex flex-column flex-md-row">
-
-          <div class="col-3 pr-md-0  align-self-start">
+       
+          <div class="col-12 col-sm-3 mb-sm-2">
             <span class="text-bold">Send to : </span>
           </div>
-          <div class="col-9 pl-md-0 col-lg-10 form-group mb-0">
+          <div class="col-12  col-sm-9 form-group mb-1">
             <div class="dropdown">
               <button class="btn btn-default dropdown-toggle small-text " type="button" id="dropdownMenuButton"
                 data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" @click="closeDropdownIfOpen">
@@ -53,7 +52,7 @@
               </div>
             </div>
           </div>
-        </div>
+        
 
 
 
@@ -296,20 +295,23 @@
         </div>
       </div>
       <div class="row">
-        <div class="col-md-10 d-flex flex-column flex-md-row mt-3">
-          <div class="col-3 pr-md-0  align-self-start">
+          <div class="col-12 col-sm-3 mb-sm-2">
             <span class="text-bold">Upload File : </span>
           </div>
-          <div class="col-9  col-lg-10 pl-md-0 d-flex  mb-0">
-            <!-- <div class="col-md-9"> -->
+          <div class="col-12  col-sm-9  d-flex  mb-0">
             <input type="text " class="form-control" v-model="voice.name" />
-            <!-- </div> -->
-            <label class="col-md-5 d-flex justify-content-center p-2 w-100 border mt-0 pt-0  lab"
+            <label class="col-md-5 d-none d-sm-flex  justify-content-center p-2 w-100 border mt-0 pt-0  lab"
+              @click="uploadVoice">Upload Voice
+              <input type="file" hidden ref="uploadButton" @change="audioSelected">
+            </label>
+            
+          </div>
+          <div class="col-12  col-sm-9 pl-md-0 d-flex  mb-0">
+          <label class="col-md-5 d-flex d-sm-none justify-content-center p-2 w-100 border mt-0 pt-0  lab"
               @click="uploadVoice">Upload Voice
               <input type="file" hidden ref="uploadButton" @change="audioSelected">
             </label>
           </div>
-        </div>
       </div>
 
 
@@ -1327,6 +1329,10 @@ export default {
   font-size: 14px;
   font-weight: 800;
   background-color: rgb(236, 230, 230);
+
+  /* height: 37px; */
+
+  
 }
 
 .input {
