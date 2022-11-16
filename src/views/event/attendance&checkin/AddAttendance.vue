@@ -386,36 +386,56 @@
               >
                 <label for="" class="font-weight-600">Event Banner</label>
               </div>
-              <div
-                class="col-sm-5 col-md-5 col-lg-5"
+              <div v-if="imageUrl" 
+                class="col-sm-5 col-md-4 col-lg-4"
                 :class="{ 'img-border ': imageUrl === '' }"
               >
-                <img :src="imageUrl" class="w-100" />
-              </div>
-              <div
-                
+                <img :src="imageUrl" class="w-100"/>
+                <div 
                 class="
-                  col-5 col-sm-12
-                  align-self-center
-                  justify-content-center
+                  col-12 col-sm-12 col-md-12 px-0 mx-0
                   d-flex
                   text-center
                   cursor-pointer
                 "
-              ><div class="my-2 my-sm-0 col-md-3 
-                  upload-button
-                  align-self-center
-                  text-center
-                  cursor-pointer" @click="altClick">
-                Upload
-                <input type="file" @change="chooseFile" ref="binImage" hidden />
+              >
+                <div class="d-flex col-md-12 px-0 mx-0">
+                    <input type="text" class="form-control border-right-0" v-model="image.name">
+                    <div class="
+                      upload-button
+                        align-self-center
+                        text-center
+                        cursor-pointer" @click="altClick">
+                      Upload
+                      <input type="file" @change="chooseFile" ref="binImage" hidden />
+                    </div>
+                </div>
               </div>
-
+              </div>
+              <div v-if="!imageUrl"
                 
+                class="
+                  col-12 col-sm-6 col-md-6 px-0 mx-0
+                  d-flex
+                  text-center
+                  cursor-pointer
+                "
+              >
+                <div class="d-flex col-md-10">
+                    <input type="text" class="form-control" v-model="image.name">
+                    <div class=" 
+                      upload-button
+                        text-center
+                        cursor-pointer" @click="altClick">
+                      Upload
+                      <input type="file" @change="chooseFile" ref="binImage" hidden />
+                    </div>
+                </div>
               </div>
+              
               <!-- <div class="col-sm-3 col-md-4"></div> -->
-              <div class="col-sm-7 col-md-12 col-lg-12 d-flex justify-content-center mt-2 px-0">
-                <div class="col-md-5">
+              <div class="col-sm-12 col-md-12 col-lg-12 d-flex justify-content-center mt-2 ">
+                <div class="col-sm-7 col-md-4">
                   Browse or Drop your banner here.Maximum 5MB in size JPG, PNG, or
                   GIF formats.
                 </div>
@@ -1692,7 +1712,7 @@ export default {
 .upload-button {
   background: rgba(206, 206, 206, 0.274);
   color: black;
-  border-radius: 25px;
+  /* border-radius: 25px; */
   font-weight: 600;
   padding: 8px 10px;
 }
@@ -1747,8 +1767,8 @@ export default {
 }
 
 .img-border {
-  border: 1px dotted rgb(206, 212, 218);
-  height: 150px;
+  /* border: 1px dotted rgb(206, 212, 218); */
+  /* height: 150px; */
 }
 
 .show-paid {
