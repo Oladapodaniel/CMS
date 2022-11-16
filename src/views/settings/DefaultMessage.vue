@@ -23,10 +23,10 @@
           <span class="py-2 font-weight-bold">Subject</span>
         </div>
         <div class="col-md-3">
-          <span class="py-2 font-weight-bold">Type</span>
+          <span class="py-2 font-weight-bold">Category</span>
         </div>
         <div class="col-md-1">
-          <span class="py-2 font-weight-bold">Category</span>
+          <span class="py-2 font-weight-bold">Type</span>
         </div>
         <div class="col-md-1">
           <span class="py-2 font-weight-bold"></span> 
@@ -53,8 +53,16 @@
               <span class="py-2 text-xs-left" v-if="allMessages.subject.length < 18"> <router-link class="route" :to="{path:'/tenant/settings/adddefaultmessage',query:{messageId:allMessages.id}}">{{allMessages.subject}}</router-link></span>
               <span v-else v-tooltip.top="`${allMessages.subject}`">{{allMessages.subject.substring(0,)+ "..."}}</span>
             </div>
-            <div
+             <div
               class="col-md-3 d-flex justify-content-between align-items-center"
+            >
+              <span class="py-4 hidden-header">CATEGORY</span>
+              <span class="py-2"><router-link class="route" :to="{path:'/tenant/settings/adddefaultmessage',query:{messageId:allMessages.id}}">{{categoryName(allMessages.category)}}</router-link></span>
+              
+              
+            </div>
+            <div
+              class="col-md-1 d-flex justify-content-between align-items-center"
             >
               <span class="py-4 hidden-header">TYPE</span>
               <span class="py-2" v-if="messageName(allMessages.messageType).length < 18"> <router-link class="route" :to="{path:'/tenant/settings/adddefaultmessage',query:{messageId:allMessages.id}}">{{messageName(allMessages.messageType)}}</router-link></span>
@@ -63,14 +71,7 @@
               
              
             </div>
-            <div
-              class="col-md-1 d-flex justify-content-between align-items-center"
-            >
-              <span class="py-4 hidden-header">CATEGORY</span>
-              <span class="py-2"><router-link class="route" :to="{path:'/tenant/settings/adddefaultmessage',query:{messageId:allMessages.id}}">{{categoryName(allMessages.category)}}</router-link></span>
-              
-              
-            </div>
+           
             <div
               class="col-sm-12 d-flex col-12 justify-content-sm-end col-md-1 col-lg-1 col-xl-1 d-flex justify-content-end align-items-center"
             >
@@ -180,11 +181,11 @@ export default {
     },
     
     messageName(value){
-      return messageOptions.Membership[value].name
+      return messageOptions.Sms[value] ? messageOptions.Sms[value].name : ""
     },
      categoryName(value){
-       console.log(messageOptions.Sms[value]);
-      return messageOptions.Sms[value] ? messageOptions.Sms[value].name : ""
+      return messageOptions.Membership[value].name
+       
     },
 
     
