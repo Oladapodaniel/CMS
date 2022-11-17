@@ -238,10 +238,13 @@
                         </div>
                         <div
                           v-if="filterEventCategory.length >= 1"
-                          @click="openModal"
                           class="create cat ofering"
                         >
+                        <a href="" data-toggle="modal"
+                              data-target="#exampleModalEvent">
                           Add New Event
+                        </a>
+                          <!-- Add New Event -->
                         </div>
                         <div
                           v-else
@@ -253,47 +256,9 @@
                       </div>
 
                       <!-- <Button label="Show" icon="pi pi-external-link" @click="openModal" /> -->
-                      <Dialog
-                        header="Add New Event"
-                        :visible="displayModal"
-                        :style="{ width: '50vw' }"
-                        :modal="true"
-                      >
-                        <div class="row mt-2">
-                          <div class="col-sm-3 align-self-center">
-                            Event Name
-                          </div>
-                          <div class="col-sm-9">
-                            <input
-                              type="text"
-                              class="form-control"
-                              v-model="newEventCategoryName"
-                            />
-                          </div>
-                        </div>
-                        <template #footer>
-                          <!-- <Button label="No" icon="pi pi-times" @click="closeModal" class="p-button-text"/>
-                                        <Button label="Yes" icon="pi pi-check" @click="closeModal" autofocus /> -->
-                          <div
-                            class="col-md-12 d-md-flex justify-content-end p-0"
-                          >
-                            <button
-                              type="button"
-                              class="btn secondary-btn px-4"
-                              @click="closeModal"
-                            >
-                              Close
-                            </button>
-                            <button
-                              type="button"
-                              class="btn primary-btn px-4 mr-0 text-white"
-                              @click="createNewCat(2)"
-                            >
-                              Save
-                            </button>
-                          </div>
-                        </template>
-                      </Dialog>
+
+                      <!---- Event Modal---->
+
                     </div>
                   </div>
                   <div class="row mt-4 mb-4">
@@ -311,6 +276,9 @@
                     </div>
                   </div>
                 </div>
+
+                
+
                 <div class="modal-footer">
                   <div class="container">
                     <div class="row">
@@ -350,6 +318,106 @@
               </div>
             </div>
           </div>
+
+          <!-- <Dialog
+                        header="Add New Event"
+                        v-model:visible="displayModal"
+                        :style="{ width: '70vw', maxWidth: '600px' }"
+                        :modal="true"
+                      >
+                      <div class="row">
+                        <div class="col-md-12">
+                          <input
+                              type="text"
+                              class="form-control"
+                               v-model="newEventCategoryName"
+                              
+                            />
+                        </div>
+                      </div>
+                        <div class="row mt-2">
+                          <div class="col-md-3 align-self-center">
+                            Event Name
+                          </div>
+                          <div class="col-md-9">
+                            <input
+                              type="text"
+                              class="form-control"
+                               v-model="newEventCategoryName"
+                              
+                            />
+                          </div>
+                        </div>
+                        <template #footer>
+                          <div
+                            class="col-md-12 d-md-flex justify-content-end p-0"
+                          >
+                            <button
+                              type="button"
+                              class="btn secondary-btn px-4"
+                              @click="closeModal"
+                            >
+                              Close
+                            </button>
+                            <button
+                              type="button"
+                              class="btn primary-btn px-4 mr-0 text-white"
+                              @click="createNewCat(2)"
+                            >
+                              Save
+                            </button>
+                          </div>
+                        </template>
+                      </Dialog> -->
+
+          <div
+              class="modal fade"
+              id="exampleModalEvent"
+              tabindex="-1"
+              role="dialog"
+              aria-labelledby="exampleModalLabel2"
+              aria-hidden="true"
+            >
+              <div class="modal-dialog    " role="document">
+                <div class="modal-content border-bottom-0 shadow">
+                  <div class="modal-header border-bottom-0">
+                    <div class="modal-title font-weight-bold" id="exampleModalLabel2">Add Event</div>
+                    <button
+                      type="button"
+                      class="close"
+                      data-dismiss="modal"
+                      aria-label="Close"
+                    >
+                      <span aria-hidden="true">&times;</span>
+                    </button>
+                  </div>
+                  <div class="modal-body">
+                    <div class="row">
+                      <div class="offset-sm-1 col-sm-3 text-sm-right align-self-center">
+                        Event Name           
+                      </div>
+                      <div class="col-sm-7">
+                        <input type="text" v-model="newEventCategoryName" class="form-control" />
+                      </div>
+                    </div>
+                  </div>
+                  <div class="modal-footer border-top-0">
+                    <button type="button" class="btn btn-second" data-dismiss="modal">
+                      Cancel
+                    </button>
+                    <button
+                      type="button"
+                      class="apply-btn"
+                      id="closeEvent"
+                      data-dismiss="modal"
+                      @click="createNewCat(2)"
+                    >
+                      Save
+                    </button>
+                  </div>
+                </div>
+              </div>
+            </div>
 
           <div class="col-12 offset-sm-1 add">Offering</div>
           <div class="attendance-header d-none d-lg-block">
@@ -639,7 +707,20 @@
                         <label>Income Account</label>
                       </div>
                       <div class="col-lg-5 col-sm-12 mt-3">
-                        <Dropdown
+                        <button class="  btn d-flex justify-content-between  col-12 border  " type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                          <span class="ofering">
+                              &nbsp;&nbsp;&nbsp; {{ selectedIncomeAccount.text ?  selectedIncomeAccount.text : 'Select' }}
+                          </span>
+                          <span>
+                              <i class="pi pi-angle-down offset-sm-2 ofering"></i>
+                          </span>
+                        </button>
+                        <div class="dropdown-menu scroll w-100 " aria-labelledby="dropdownMenuButton">
+                            <a class="dropdown-item" v-for="(itm, indx) in incomeAccount" :key="indx">
+                                <div class="cursor-pointer" @click="selectIncomeAccount(itm)"> {{itm.text}}</div> 
+                            </a>
+                        </div>
+                        <!-- <Dropdown
                           v-model="selectedIncomeAccount"
                           class="w-100"
                           :options="incomeAccount"
@@ -648,13 +729,26 @@
                           placeholder="Select"
                           :showClear="false"
                         >
-                        </Dropdown>
+                        </Dropdown> -->
                       </div>
                       <div class="col-sm-4 mt-3 text-right pr-0">
                         <label>Cash Account</label>
                       </div>
                       <div class="col-lg-5 col-sm-12 mt-3">
-                        <Dropdown
+                        <button class="  btn d-flex justify-content-between  col-12 border  " type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                          <span class="ofering">
+                              &nbsp;&nbsp;&nbsp; {{ selectedCashAccount.text ?  selectedCashAccount.text : 'Select' }}
+                          </span>
+                          <span>
+                              <i class="pi pi-angle-down offset-sm-2 ofering"></i>
+                          </span>
+                        </button>
+                        <div class="dropdown-menu scroll w-100 " aria-labelledby="dropdownMenuButton">
+                            <a class="dropdown-item" v-for="(itm, indx) in cashBankAccount" :key="indx">
+                                <div class="cursor-pointer" @click="selectCashBankAccount(itm)"> {{itm.text}}</div> 
+                            </a>
+                        </div>
+                        <!-- <Dropdown
                           v-model="selectedCashAccount"
                           :options="cashBankAccount"
                           optionLabel="text"
@@ -663,7 +757,7 @@
                           class="w-100 p-0"
                           :showClear="false"
                         >
-                        </Dropdown>
+                        </Dropdown> -->
                       </div>
                       <div class="col-sm-12 d-flex" @click="toggleRem">
                         <i class="check-it mr-2">
@@ -694,7 +788,20 @@
                           <label>Income Account</label>
                         </div>
                         <div class="col-lg-5 col-sm-12 mt-5">
-                          <Dropdown
+                          <button class="  btn d-flex justify-content-between  col-12 border  " type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                            <span class="ofering">
+                                &nbsp;&nbsp;&nbsp; {{ item && item.account ?  item.account.text : 'Select Account' }}
+                            </span>
+                            <span>
+                                <i class="pi pi-angle-down offset-sm-2 ofering"></i>
+                            </span>
+                          </button>
+                          <div class="dropdown-menu scroll w-100 " aria-labelledby="dropdownMenuButton">
+                              <a class="dropdown-item" v-for="(itm, indx) in incomeAccount" :key="indx">
+                                  <div class="cursor-pointer" @click="selectIncomeAccount2(itm, index)"> {{itm.text}}</div> 
+                              </a>
+                          </div>
+                          <!-- <Dropdown
                             v-model="item.account"
                             class="w-100"
                             :options="incomeAccount"
@@ -703,7 +810,7 @@
                             placeholder="Select"
                             :showClear="false"
                           >
-                          </Dropdown>
+                          </Dropdown> -->
                         </div>
 
                         <div class="col-sm-4 text-right align-self-center mt-3">
@@ -762,7 +869,18 @@
               </div>
             </div>
           </div>
+          <!-- Event Modal Button -->
 
+            <!-- <button
+              hidden
+              type="button"
+              id="modalTogglerEvent"
+              class="btn btn-primary"
+              data-toggle="modal"
+              data-target="#exampleModalEvent"
+            >
+              Launch demo modal
+            </button> -->
           <!-- Modal -->
           <div
             class="modal fade"
@@ -1003,6 +1121,7 @@
 <script>
 import { ref, onMounted, computed } from "vue";
 import axios from "@/gateway/backendapi";
+import InputText from "primevue/inputtext";
 // import SelectElem from "@/components/select/SelectElement.vue";
 import { useToast } from "primevue/usetoast";
 import Dialog from "primevue/dialog";
@@ -1018,6 +1137,7 @@ import finish from "../../../services/progressbar/progress";
 export default {
   components: {
     Dialog,
+    InputText,
     Dropdown,
     NewDonor,
     CurrencyConverter,
@@ -1089,6 +1209,17 @@ export default {
       }
     };
 
+    const selectIncomeAccount = (income) => {
+      selectedIncomeAccount.value = income;
+    }
+
+    const selectCashBankAccount = (cashacount) =>{
+      selectedCashAccount.value = cashacount
+    }
+    const selectIncomeAccount2 = (item, index) =>{
+      remitance.value[index].account = item;
+    }
+
     const selectEventAttended = () => {
       showEventList.value = !showEventList.value;
     };
@@ -1150,9 +1281,9 @@ export default {
       return arr;
     });
 
-    const openModal = () => {
-      displayModal.value = true;
-    };
+    // const openModal = () => {
+    //   displayModal.value = true;
+    // };
 
     const closeModal = () => {
       displayModal.value = false;
@@ -1825,6 +1956,7 @@ export default {
       showEventList,
       eventsAttended,
       filteredEvents,
+      selectIncomeAccount,
       closeManualModalIfOpen,
       eventAttendedSelected,
       newEvents,
@@ -1840,7 +1972,7 @@ export default {
       createNewCat,
       newEventCategoryName,
       displayModal,
-      openModal,
+      // openModal,
       closeModal,
       toast,
       createNewEvent,
@@ -1863,11 +1995,13 @@ export default {
       deleteItem,
       incomeAccount,
       selectedIncomeAccount,
+      selectCashBankAccount,
       applyRem,
       toggleRem,
       post,
       name,
       selectedCashAccount,
+      selectIncomeAccount2,
       cashBankAccount,
       createNewCon,
       addCurrency,
@@ -1907,6 +2041,12 @@ export default {
 <style scoped>
 .page-header {
   font: normal normal 800 29px Nunito sans;
+}
+
+.scroll {
+  max-height: 200px;
+  overflow-y: scroll;
+  overflow-x: hidden;
 }
 
 .form {

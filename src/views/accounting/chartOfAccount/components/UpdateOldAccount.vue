@@ -12,7 +12,7 @@
                     Account Type <span class="text-danger">*</span>
                   </div>
                   <div class="col-md-7">
-                    <button class="  btn d-flex justify-content-between  col-12 border  " type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                      <button class="  btn d-flex justify-content-between  col-12 border  " type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                           <span class="ofering">
                               &nbsp;&nbsp;&nbsp; {{ selectedAccountType.name ?  selectedAccountType.name : 'Select account type' }}
                               <!-- {{ item.account ? item.account : 'Select' }} -->
