@@ -928,6 +928,7 @@ import stopProgressBar from "../../services/progressbar/progress";
 import communicationService from "../../services/communication/communicationservice";
 import dateFormatter from "../../services/dates/dateformatter";
 import moment from "moment";
+import swal from 'sweetalert';
 
 export default {
   setup() {
@@ -1105,12 +1106,22 @@ export default {
           disableBtn.value = false;
           // console.log(res.data.message, "God is good");
           if (res.data.status) {
-            toast.add({
-              severity: "success",
-              summary: "SMS Sent",
-              detail: `SMS Sent successfully`,
-              life: 7000,
-            });
+            // toast.add({
+            //   severity: "success",
+            //   summary: "SMS Sent",
+            //   detail: `SMS Sent successfully`,
+            //   life: 7000,
+            // });
+            
+            swal({
+              title: "Success!",
+              text: "Your email has been sent successfully!",
+              icon: "success",
+              buttons: ["Send another", "Good"],
+              confirmButtonColor: '#8CD4F5',
+              dangerMode: true,
+            })
+            
           }else if(res.data.message.includes("You do not have sufficient")){
             toast.add({
               severity: "warn",
