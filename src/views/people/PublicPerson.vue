@@ -11,11 +11,11 @@
           <p class="form-section-header">Bio:</p>
           <div class="bio-info">
             <div class="inputs">
-               <div class="input-field">
+              <div class="input-field">
                 <label for="" class="label">Membership</label>
                 <div class="cstm-select">
                   <div style="width: 330px">
-                     <Dropdown
+                    <Dropdown
                       v-model="selectedMembership"
                       :options="memberships"
                       optionLabel="name"
@@ -26,7 +26,7 @@
                 </div>
               </div>
               <div class="input-field">
-                <label for="" class=" label"
+                <label for="" class="label"
                   >Firstname<span style="color: red"> *</span></label
                 >
                 <input
@@ -84,61 +84,75 @@
                   />
               </div> -->
               <!-- <div  > -->
-              <div  v-for="item in dynamicCustomFields" :key="item.id" style="margin: 0 10px 10px 10px;" class=" d-md-flex flex-wrap  justify-content-md-end ">
-                  <label for="" class="label">{{ item.label }}</label>
-                   <input 
-                      v-if="item.controlType == 4"
-                      class=" input form-control "
-                      type="email"
-                      aria-required=""
+              <div
+                v-for="item in dynamicCustomFields"
+                :key="item.id"
+                style="margin: 0 10px 10px 10px"
+                class="d-md-flex flex-wrap justify-content-md-end"
+              >
+                <label for="" class="label">{{ item.label }}</label>
+                <input
+                  v-if="item.controlType == 4"
+                  class="input form-control"
+                  type="email"
+                  aria-required=""
+                  v-model="item.data"
+                />
+                <input
+                  v-if="item.controlType == 6"
+                  class="input"
+                  type="file"
+                  aria-required=""
+                />
+                <input
+                  v-if="item.controlType == 7"
+                  class="input"
+                  type="number"
+                  aria-required=""
+                  v-model="item.data"
+                />
+                <input
+                  v-if="item.controlType == 0"
+                  class="input form-control"
+                  type="text"
+                  aria-required=""
+                  v-model="item.data"
+                />
+                <div class="cstm-select" v-else-if="item.controlType == 1">
+                  <div style="width: 330px">
+                    <Dropdown
                       v-model="item.data"
+                      :options="item.parameterValues.split(',')"
+                      :placeholder="item.label"
+                      style="width: 100%"
                     />
-                    <input 
-                        v-if="item.controlType == 6"
-                        class="input"
-                        type="file"
-                        aria-required=""
-                        
-                      />
-                    <input
-                      v-if="item.controlType == 7"
-                      class="input"
-                      type="number"
-                      aria-required=""
+                  </div>
+                </div>
+                <div class="cstm-select" v-else-if="item.controlType == 2">
+                  <div style="width: 330px">
+                    <Checkbox
                       v-model="item.data"
+                      :binary="true"
+                      style="width: 100%"
                     />
-                  <input 
-                          v-if="item.controlType == 0"
-                          class=" input form-control "
-                          type="text"
-                          aria-required=""
-                          v-model="item.data"
-                          
+                  </div>
+                </div>
+
+                <div class="cstm-select">
+                  <div style="width: 330px">
+                    <Calendar
+                      v-if="item.controlType == 3"
+                      id="time24"
+                      v-model="item.data"
+                      :showTime="true"
+                      :showSeconds="true"
+                      style="width: 100%"
                     />
-                  <div class="cstm-select" v-else-if="item.controlType == 1">
-                    <div style="width: 330px">
-                      <Dropdown
-                        v-model="item.data"
-                        :options="item.parameterValues.split(',')"
-                        :placeholder="item.label"
-                        style="width: 100%"
-                      />
-                    </div>
                   </div>
-                  <div class="cstm-select"  v-else-if="item.controlType == 2">
-                    <div style="width: 330px">
-                      <Checkbox  v-model="item.data" :binary="true"  style="width: 100%" />
-                    </div>
-                  </div>
-                   
-                    <div class="cstm-select">
-                      <div style="width: 330px">
-                        <Calendar v-if="item.controlType == 3" id="time24" v-model="item.data" :showTime="true" :showSeconds="true" style="width: 100%" />
-                      </div>
-                    </div>
+                </div>
               </div>
               <!-- </div> -->
-              
+
               <div class="input-field">
                 <label for=""></label>
                 <div class="status-n-gender">
@@ -182,7 +196,12 @@
                       v-else
                       :src="memberToEdit.pictureUrl"
                       alt="Uploaded Image"
-                      style="width: 110px; height: 110px; border-radius: 50%; object-fit: cover"
+                      style="
+                        width: 110px;
+                        height: 110px;
+                        border-radius: 50%;
+                        object-fit: cover;
+                      "
                     />
                   </div>
                 </div>
@@ -197,7 +216,12 @@
                       v-else
                       :src="url"
                       alt="Uploaded Image"
-                      style="width: 110px; height: 110px; border-radius: 50%; object-fit: cover"
+                      style="
+                        width: 110px;
+                        height: 110px;
+                        border-radius: 50%;
+                        object-fit: cover;
+                      "
                     />
                   </div>
                 </div>
@@ -232,7 +256,9 @@
         <div class="bio-div">
           <span class="celeb-tab row" @click="showCelebTab">
             <span class="tab-header padd col-3">Celebrations:</span>
-            <span class="h-rule col-7"><hr class="hr" /></span>
+            <span class="h-rule col-7">
+              <hr class="hr" />
+            </span>
             <span class="col-2">
               <span class="tb-icon-span"
                 ><i
@@ -250,90 +276,88 @@
               <div class="input-field">
                 <label for="" class="label">Birthday</label>
                 <div class="status-n-gender">
-                
-                    <div class="cstm-select">
-                      <div class="cs-select day">
-                        <Dropdown
-                          v-model="person.dayOfBirth"
-                          :options="birthDaysArr"
-                          placeholder="Day"
-                          style="width: 100%"
-                        />
-                        <!-- <SelectElem :typ="'membership'" name="birthday" :options="['Day', ...birthDaysArr ]" value="Day" @input="itemSelected"/> -->
-                      </div>
+                  <div class="cstm-select">
+                    <div class="cs-select day">
+                      <Dropdown
+                        v-model="person.dayOfBirth"
+                        :options="birthDaysArr"
+                        placeholder="Day"
+                        style="width: 100%"
+                      />
+                      <!-- <SelectElem :typ="'membership'" name="birthday" :options="['Day', ...birthDaysArr ]" value="Day" @input="itemSelected"/> -->
                     </div>
+                  </div>
 
-                    <div class="cstm-select">
-                      <div class="cs-select month">
-                        <Dropdown
-                          v-model="person.monthOfBirth"
-                          :options="months"
-                          placeholder="Month"
-                          @change="
-                            editBirthDateValue('month', person.monthOfBirth)
-                          "
-                          style="width: 100%"
-                        />
-                        <!-- <SelectElem :typ="'membership'" name="birthmonth" :options="['Month', ...months]" value="Month" @input="itemSelected"/> -->
-                      </div>
+                  <div class="cstm-select">
+                    <div class="cs-select month">
+                      <Dropdown
+                        v-model="person.monthOfBirth"
+                        :options="months"
+                        placeholder="Month"
+                        @change="
+                          editBirthDateValue('month', person.monthOfBirth)
+                        "
+                        style="width: 100%"
+                      />
+                      <!-- <SelectElem :typ="'membership'" name="birthmonth" :options="['Month', ...months]" value="Month" @input="itemSelected"/> -->
                     </div>
+                  </div>
 
-                    <div class="cstm-select">
-                      <div class="cs-select year">
-                        <Dropdown
-                          v-model="person.yearOfBirth"
-                          :options="birthYearsArr"
-                          placeholder="Year"
-                          style="width: 100%"
-                        />
+                  <div class="cstm-select">
+                    <div class="cs-select year">
+                      <Dropdown
+                        v-model="person.yearOfBirth"
+                        :options="birthYearsArr"
+                        placeholder="Year"
+                        style="width: 100%"
+                      />
 
-                        <!-- <SelectElem :typ="'membership'" name="birthyear" :options="['Year', ...birthYearsArr]" value="Year" @input="itemSelected"/> -->
-                      </div>
+                      <!-- <SelectElem :typ="'membership'" name="birthyear" :options="['Year', ...birthYearsArr]" value="Year" @input="itemSelected"/> -->
                     </div>
-            
+                  </div>
                 </div>
               </div>
               <div class="input-field">
                 <label for="" class="label">Wedding Anniversary</label>
                 <div class="status-n-gender">
-                    <div class="cstm-select">
-                      <div class="cs-select day">
-                        <Dropdown
-                          placeholder="Day"
-                          v-model="person.dayOfWedding"
-                          :options="annDaysArr"
-                          style="width: 100%"
-                        />
-                        <!-- <SelectElem :typ="'membership'" name="annday" :options="['Day', ...annDaysArr]" value="Day" @input="itemSelected"/> -->
-                      </div>
+                  <div class="cstm-select">
+                    <div class="cs-select day">
+                      <Dropdown
+                        placeholder="Day"
+                        v-model="person.dayOfWedding"
+                        :options="annDaysArr"
+                        style="width: 100%"
+                      />
+                      <!-- <SelectElem :typ="'membership'" name="annday" :options="['Day', ...annDaysArr]" value="Day" @input="itemSelected"/> -->
                     </div>
+                  </div>
 
-                    <div class="cstm-select">
-                      <div class="cs-select month">
-                        <Dropdown
-                          v-model="person.monthOfWedding"
-                          :options="months"
-                          placeholder="Month"
-                          @change="
-                            editAnnDateValue('month', person.monthOfWedding)
-                          "
-                          style="width: 100%"
-                        />
-                        <!-- <SelectElem :typ="'membership'" name="annmonth" :options="['Month', ...months]" value="Month" @input="itemSelected"/> -->
-                      </div>
+                  <div class="cstm-select">
+                    <div class="cs-select month">
+                      <Dropdown
+                        v-model="person.monthOfWedding"
+                        :options="months"
+                        placeholder="Month"
+                        @change="
+                          editAnnDateValue('month', person.monthOfWedding)
+                        "
+                        style="width: 100%"
+                      />
+                      <!-- <SelectElem :typ="'membership'" name="annmonth" :options="['Month', ...months]" value="Month" @input="itemSelected"/> -->
                     </div>
+                  </div>
 
-                    <div class="cstm-select">
-                      <div class="cs-select year">
-                        <Dropdown
-                          v-model="person.yearOfWedding"
-                          :options="birthYearsArr"
-                          placeholder="Year"
-                          style="width: 100%"
-                        />
-                        <!-- <SelectElem :typ="'membership'" name="annyear" :options="['Year', ...birthYearsArr]" value="Year" @input="itemSelected"/> -->
-                      </div>
+                  <div class="cstm-select">
+                    <div class="cs-select year">
+                      <Dropdown
+                        v-model="person.yearOfWedding"
+                        :options="birthYearsArr"
+                        placeholder="Year"
+                        style="width: 100%"
+                      />
+                      <!-- <SelectElem :typ="'membership'" name="annyear" :options="['Year', ...birthYearsArr]" value="Year" @input="itemSelected"/> -->
                     </div>
+                  </div>
                 </div>
               </div>
             </div>
@@ -346,7 +370,9 @@
         <div class="bio-div">
           <span class="celeb-tab row">
             <span class="tab-header col-3">Additional information:</span>
-            <span class="h-rule col-7"><hr class="hr" /></span>
+            <span class="h-rule col-7">
+              <hr class="hr" />
+            </span>
             <span class="col-2">
               <!-- <span class="tb-icon-span"
                 ><i
@@ -356,10 +382,7 @@
               ></span> -->
             </span>
           </span>
-          <div
-            class="bio-info"
-            
-          >
+          <div class="bio-info">
             <div class="inputs">
               <div class="input-field">
                 <label for="" class="label">Occupation</label>
@@ -402,10 +425,7 @@
             'show-addinfo-tab': !hideAddInfoTab,
           }"
         > -->
-        <div
-          v-if="true"
-          class="add-info--con"
-        >
+        <div v-if="true" class="add-info--con">
           <div class="label-text-box">
             <p>Related information</p>
             <small
@@ -439,17 +459,30 @@
               </div>
             </div>
             <div class="info-box-body py-3">
-            <div class="font-weight-700 " v-if="peopleInGroupIDs.length > 0 && areaInView === 'groups'">Groups added</div>
+              <div
+                class="font-weight-700"
+                v-if="peopleInGroupIDs.length > 0 && areaInView === 'groups'"
+              >
+                Groups added
+              </div>
               <div v-if="areaInView === 'groups'">
-                <span v-for="item in peopleInGroupIDs" :key="item.id" >| &nbsp;
-                <span class="text-grey">{{ item.name }}  &nbsp; <i v-if="!routeParams" class="pi pi-times-circle text-danger c-pointer"  @click="removeFromGroup(index)"></i></span>&nbsp; | &nbsp;
-              </span>
+                <span v-for="item in peopleInGroupIDs" :key="item.id"
+                  >| &nbsp;
+                  <span class="text-grey"
+                    >{{ item.name }} &nbsp;
+                    <i
+                      v-if="!routeParams"
+                      class="pi pi-times-circle text-danger c-pointer"
+                      @click="removeFromGroup(index)"
+                    ></i></span
+                  >&nbsp; | &nbsp;
+                </span>
               </div>
-               <div v-if="areaInView === 'notes'">
-                <div v-for="(item, index) in personNotes" :key="index" >
-                  <div class="font-weight-700">{{ item.title }}</div>  
-                  <div class="mb-2">{{ item.description }}</div>  
-              </div>
+              <div v-if="areaInView === 'notes'">
+                <div v-for="(item, index) in personNotes" :key="index">
+                  <div class="font-weight-700">{{ item.title }}</div>
+                  <div class="mb-2">{{ item.description }}</div>
+                </div>
               </div>
               <button
                 @click.prevent="uploadImage"
@@ -485,13 +518,21 @@
         </div> -->
         <div class="submit-div">
           <button
-            class="primary-bg px-md-4 outline-none default-btn text-white border-0   " 
-            :disabled="loading || !person.firstName "
+            class="
+              primary-bg
+              px-md-4
+              outline-none
+              default-btn
+              text-white
+              border-0
+            "
+            :disabled="loading || !person.firstName"
           >
             <i class="fas fa-circle-notch fa-spin mr-2" v-if="loading"></i>
             <span>Save</span>
             <span></span>
           </button>
+          
           <!-- <button
             class="primary-bg px-md-4 outline-none default-btn text-white border-0"
             :class="{ 'btn-loading': loading }"
@@ -503,6 +544,40 @@
           </button> -->
         </div>
       </form>
+      <div class="row">
+               <div class="col-12 d-flex justify-content-center">
+                    <div
+                      class="
+                        col-md-6
+                        text-center
+                        align-item-center
+                        px-md-4
+                        mb-3
+                        mt-5
+                      "
+                    >
+                      <a href="">
+                        <div class="">Powered by</div>
+                        <div
+                          class="
+                            img-fluid
+                            col-6
+                            offset-3
+                            col-md-4
+                            offset-md-4
+                            px-0
+                          "
+                        >
+                          <img
+                            src="../../assets/logoblue.png"
+                            alt="churchplus Logo"
+                            class="w-50 mx-2"
+                          />
+                        </div>
+                      </a>
+                    </div>
+                  </div>    
+          </div>
     </div>
 
     <!-- Modal
@@ -622,14 +697,50 @@
               </div>
               <div class="col-md-7">
                 <div class="dropdown show">
-                  <button class="btn border w-100 d-flex justify-content-between align-items-center" type="button" id="dropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" @click="focusInput">
-                    <div>{{ Object.keys(groupToAddTo).length > 0 ? groupToAddTo.name : 'Select a group' }}</div>
+                  <button
+                    class="
+                      btn
+                      border
+                      w-100
+                      d-flex
+                      justify-content-between
+                      align-items-center
+                    "
+                    type="button"
+                    id="dropdownMenuLink"
+                    data-toggle="dropdown"
+                    aria-haspopup="true"
+                    aria-expanded="false"
+                    @click="focusInput"
+                  >
+                    <div>
+                      {{
+                        Object.keys(groupToAddTo).length > 0
+                          ? groupToAddTo.name
+                          : "Select a group"
+                      }}
+                    </div>
                     <i class="pi pi-chevron-down"></i>
                   </button>
-                  <div class="dropdown-menu w-100 scroll-card" aria-labelledby="dropdownMenuLink">
-                    <input type="text" v-model="searchGroupText" class="form-control input-width-adjust" placeholder="Search groups" ref="searchRef"/>
-                    <a class="dropdown-item" v-for="item in searchAllGroups" :key="item.id">
-                      <div class="c-pointer" @click="selectGroup(item)">{{ item.name }}</div>
+                  <div
+                    class="dropdown-menu w-100 scroll-card"
+                    aria-labelledby="dropdownMenuLink"
+                  >
+                    <input
+                      type="text"
+                      v-model="searchGroupText"
+                      class="form-control input-width-adjust"
+                      placeholder="Search groups"
+                      ref="searchRef"
+                    />
+                    <a
+                      class="dropdown-item"
+                      v-for="item in searchAllGroups"
+                      :key="item.id"
+                    >
+                      <div class="c-pointer" @click="selectGroup(item)">
+                        {{ item.name }}
+                      </div>
                     </a>
                   </div>
                 </div>
@@ -663,7 +774,9 @@
                 </div>
                 <div class="row mt-2">
                   <div class="col-md-6 d-md-flex justify-content-end">
-                    <button class="default-btn" data-dismiss="modal">Cancel</button>
+                    <button class="default-btn" data-dismiss="modal">
+                      Cancel
+                    </button>
                   </div>
                   <div class="col-md-6">
                     <button
@@ -681,7 +794,7 @@
         </div>
       </div>
     </div>
-    
+
     <!-- Note Modal -->
     <div
       class="modal fade"
@@ -712,7 +825,12 @@
                 <label for="" class="font-weight-600">Title</label>
               </div>
               <div class="col-md-7">
-                <input type="text" class="form-control" v-model="noteDetails.noteTitle" placeholder="Enter title"/>
+                <input
+                  type="text"
+                  class="form-control"
+                  v-model="noteDetails.noteTitle"
+                  placeholder="Enter title"
+                />
               </div>
             </div>
 
@@ -721,7 +839,12 @@
                 <label for="" class="font-weight-600">Description</label>
               </div>
               <div class="col-md-7">
-                <textarea rows="5" class="form-control" v-model="noteDetails.noteDesc" placeholder="Enter note description"></textarea>
+                <textarea
+                  rows="5"
+                  class="form-control"
+                  v-model="noteDetails.noteDesc"
+                  placeholder="Enter note description"
+                ></textarea>
               </div>
             </div>
 
@@ -733,7 +856,9 @@
               <div class="col-md-7 mt-3">
                 <div class="row mt-2">
                   <div class="col-md-6 d-md-flex justify-content-end">
-                    <button class="default-btn" data-dismiss="modal">Cancel</button>
+                    <button class="default-btn" data-dismiss="modal">
+                      Cancel
+                    </button>
                   </div>
                   <div class="col-md-6">
                     <button
@@ -772,7 +897,7 @@ import swal from "sweetalert";
 // import lookupService from "../../services/lookup/lookupservice";
 
 export default {
-  components: { Dropdown,Calendar,InputText },
+  components: { Dropdown, Calendar, InputText },
   setup() {
     // const $toast = getCurrentInstance().ctx.$toast;
     const toast = useToast();
@@ -782,13 +907,13 @@ export default {
     const showCelebTab = () => (hideCelebTab.value = !hideCelebTab.value);
     const showAddInfoTab = () => (hideAddInfoTab.value = !hideAddInfoTab.value);
     const routeParams = ref("");
-    const peopleInGroupIDs = ref([])
+    const peopleInGroupIDs = ref([]);
     const route = useRoute();
-    const searchGroupText = ref("")
-    const searchRef = ref(null)
-    const personNotes = ref([])
-    const dynamicCustomFields = ref([])
-    const noteDetails = ref({})
+    const searchGroupText = ref("");
+    const searchRef = ref(null);
+    const personNotes = ref([]);
+    const dynamicCustomFields = ref([]);
+    const noteDetails = ref({});
 
     const loading = ref(false);
     const months = [
@@ -816,16 +941,17 @@ export default {
 
     const daysInBirthMonth = ref(birthDate.daysInMonth());
 
-    const getCustomFields = async() => {
+    const getCustomFields = async () => {
       try {
-        let { data } = await axios.get(`/GetAllCustomFields?entityType=0&&tenantID=${route.params.id}`);
-        dynamicCustomFields.value = data
+        let { data } = await axios.get(
+          `/GetAllCustomFields?entityType=0&&tenantID=${route.params.id}`
+        );
+        dynamicCustomFields.value = data;
+      } catch (err) {
+        console.log(err);
       }
-      catch (err) {
-        console.log(err)
-      }
-    }
-    getCustomFields()
+    };
+    getCustomFields();
 
     const birthDaysArr = computed(() => {
       console.log(birthDate.month(), "month");
@@ -910,9 +1036,7 @@ export default {
     const showError = ref(false);
     const disableClick = ref(false);
 
-
-
-    const addPerson = async() => {
+    const addPerson = async () => {
       disableClick.value = true;
       const personObj = { ...person };
       errMessage.value = "";
@@ -959,12 +1083,19 @@ export default {
       );
       formData.append(
         "personGroups",
-        peopleInGroupIDs.value.length > 0 ? JSON.stringify(peopleInGroupIDs.value.map(i => {
-          delete i.name
-          return i
-        }) ) : []
+        peopleInGroupIDs.value.length > 0
+          ? JSON.stringify(
+              peopleInGroupIDs.value.map((i) => {
+                delete i.name;
+                return i;
+              })
+            )
+          : []
       );
-      formData.append("homeAddress", personObj.address ? personObj.address : "");
+      formData.append(
+        "homeAddress",
+        personObj.address ? personObj.address : ""
+      );
       formData.append(
         "maritalStatusID",
         selectedMaritalStatus.value ? selectedMaritalStatus.value.id : ""
@@ -989,68 +1120,68 @@ export default {
       //   entityID: route.params.personId
       // }))
       // );
-        formData.append(
+      formData.append(
         "customAttributeData",
-          JSON.stringify(dynamicCustomFields.value.map(i => ({
-          customAttributeID: i.id,
-          data: i.data,
-          entityID: route.params.personId
-        }))
+        JSON.stringify(
+          dynamicCustomFields.value.map((i) => ({
+            customAttributeID: i.id,
+            data: i.data,
+            entityID: route.params.personId,
+          }))
         )
       );
-      console.log(dynamicCustomFields.value, '😊😍🤣🤣😂')
+      console.log(dynamicCustomFields.value, "😊😍🤣🤣😂");
       console.log(formData);
       /*eslint no-undef: "warn"*/
       NProgress.start();
-        try {
-          loading.value = true;
-          let response = await axios.post(
-            `/PublicMemberRegister?tenantID=${route.params.id}`, formData );
-          console.log(response)
-          disableClick.value = false;
+      try {
+        loading.value = true;
+        let response = await axios.post(
+          `/PublicMemberRegister?tenantID=${route.params.id}`,
+          formData
+        );
+        console.log(response);
+        disableClick.value = false;
 
-
-          if (response.status === 200 || response.status === 201) {
-            loading.value = false;
-              swal(
+        if (response.status === 200 || response.status === 201) {
+          loading.value = false;
+          swal(
             "Registration Successful!",
             "Your membership details has been added successfully!",
             "success"
           );
-          } 
-          selectedGender.value = '';
-          selectedAgeGroup.value = '';
-          selectedMaritalStatus.value = '';
-          person.firstName = '';
-          person.lastName = '';
-          person.mobilePhone = '';
-          person.email = '';
-          person.address = '';
-          person.dayOfBirth = '';
-          person.monthOfBirth = '';
-          person.yearOfBirth = '';
-          person.dayOfWedding = '';
-          person.monthOfWedding = '';
-          person.yearOfWedding = '';
-          person.occupation = '';
-
-        } catch (err) {
-          console.log(err)
+        }
+        selectedGender.value = "";
+        selectedAgeGroup.value = "";
+        selectedMaritalStatus.value = "";
+        person.firstName = "";
+        person.lastName = "";
+        person.mobilePhone = "";
+        person.email = "";
+        person.address = "";
+        person.dayOfBirth = "";
+        person.monthOfBirth = "";
+        person.yearOfBirth = "";
+        person.dayOfWedding = "";
+        person.monthOfWedding = "";
+        person.yearOfWedding = "";
+        person.occupation = "";
+      } catch (err) {
+        console.log(err);
+        loading.value = false;
+        NProgress.done();
+        if (err.toString().toLowerCase().includes("network error")) {
+          toast.add({
+            severity: "warn",
+            summary: "You 're Offline",
+            detail: "Please ensure you have internet access",
+            life: 6000,
+          });
+        } else {
+          showError.value = true;
           loading.value = false;
-          NProgress.done();
-          if (err.toString().toLowerCase().includes("network error")) {
-            toast.add({
-              severity: "warn",
-              summary: "You 're Offline",
-              detail: "Please ensure you have internet access",
-              life: 6000,
-            });
-          } 
-          else {
-            showError.value = true;
-            loading.value = false;
-            if (err.response && err.response.status === 400) {
-              errMessage.value = err.response.data.message;          
+          if (err.response && err.response.status === 400) {
+            errMessage.value = err.response.data.message;
             toast.add({
               severity: "warn",
               summary: "Attention!",
@@ -1059,10 +1190,9 @@ export default {
                 : "Save operation failed",
               life: 6000,
             });
-            }
           }
         }
-      
+      }
     };
 
     let ageGroups = ref([]);
@@ -1118,7 +1248,7 @@ export default {
     if (!genders.value || genders.value.length === 0) getLookUps();
     if (!ageGroups.value || ageGroups.value.length === 0) getAgeGroups();
     // if (!memberships.value || memberships.value.length === 0)
-    // 
+    //
 
     const gendersArr = computed(() => {
       return genders.value.map((i) => i.value);
@@ -1127,7 +1257,6 @@ export default {
       return maritalStatus.value.map((i) => i.value);
     });
 
-    
     // const memberToEdit = ref({});
 
     // const getPersonGenderId = () => {
@@ -1225,9 +1354,11 @@ export default {
 
     const getGroups = async () => {
       try {
-        let groups = await axios.get(`/public/groups?tenantId=${route.params.id}`)
-        console.log(groups)
-        allGroups.value = groups.data
+        let groups = await axios.get(
+          `/public/groups?tenantId=${route.params.id}`
+        );
+        console.log(groups);
+        allGroups.value = groups.data;
       } catch (error) {
         console.log(error);
       }
@@ -1238,8 +1369,11 @@ export default {
     const dismissAddToGroupModal = ref("");
 
     const addMemberToGroup = async () => {
-      console.log('personId:'+ route.params.personId, "groupId:"+ groupToAddTo.value.id,
-          groupToAddTo.value.id)
+      console.log(
+        "personId:" + route.params.personId,
+        "groupId:" + groupToAddTo.value.id,
+        groupToAddTo.value.id
+      );
       addToGroupError.value = false;
       if (!groupToAddTo.value || !groupToAddTo.value.id) {
         addToGroupError.value = true;
@@ -1247,83 +1381,87 @@ export default {
       }
       dismissAddToGroupModal.value = "modal";
       if (route.params.personId) {
-      let personInfo = {
-      people: [
-          {
-            groupId: groupToAddTo.value.id ,
-            position: position.value,
-            personId: route.params.personId
-          }
-        ]
-      }
+        let personInfo = {
+          people: [
+            {
+              groupId: groupToAddTo.value.id,
+              position: position.value,
+              personId: route.params.personId,
+            },
+          ],
+        };
 
         try {
-        const response = await membershipService.addMemberToGroup(
-          personInfo, groupToAddTo.value.id
-        );
-        console.log("RESPONSE", response);
-        toast.add({
-          severity: "success",
-          summary: "Added Successfully",
-          detail: `Member add to ${groupToAddTo.value.name}`,
-          life: 3000,
-        });
+          const response = await membershipService.addMemberToGroup(
+            personInfo,
+            groupToAddTo.value.id
+          );
+          console.log("RESPONSE", response);
+          toast.add({
+            severity: "success",
+            summary: "Added Successfully",
+            detail: `Member add to ${groupToAddTo.value.name}`,
+            life: 3000,
+          });
 
-        peopleInGroupIDs.value.push({
-          name: groupToAddTo.value.name,
-          groupId: groupToAddTo.value.id,
-          position: position.value
-        })
+          peopleInGroupIDs.value.push({
+            name: groupToAddTo.value.name,
+            groupId: groupToAddTo.value.id,
+            position: position.value,
+          });
 
-        groupToAddTo.value = {}
-        position.value = ""
+          groupToAddTo.value = {};
+          position.value = "";
         } catch (error) {
           console.log(error);
         }
       } else {
-        console.log(groupToAddTo.value)
+        console.log(groupToAddTo.value);
         peopleInGroupIDs.value.push({
           name: groupToAddTo.value.name,
           groupId: groupToAddTo.value.id,
-          position: position.value
-        })
-        groupToAddTo.value = {}
-        position.value = ""
+          position: position.value,
+        });
+        groupToAddTo.value = {};
+        position.value = "";
       }
     };
 
     const searchAllGroups = computed(() => {
       if (!searchGroupText.value && allGroups.value.length > 0) {
-        return allGroups.value
+        return allGroups.value;
       } else {
-        return allGroups.value.filter(i => {
-          if (i.name) return i.name.toLowerCase().includes(searchGroupText.value.toLowerCase())
-        })
+        return allGroups.value.filter((i) => {
+          if (i.name)
+            return i.name
+              .toLowerCase()
+              .includes(searchGroupText.value.toLowerCase());
+        });
       }
-    })
+    });
 
     const focusInput = () => {
-        setTimeout(() => {
-            searchRef.value.focus()
-        }, 1000)
-    }
+      setTimeout(() => {
+        searchRef.value.focus();
+      }, 1000);
+    };
 
     const selectGroup = (item) => {
-      groupToAddTo.value = item
-    }
+      groupToAddTo.value = item;
+    };
 
     const removeFromGroup = (index) => {
-      peopleInGroupIDs.value.splice(index, 1)
-    }
+      peopleInGroupIDs.value.splice(index, 1);
+    };
 
     const savePersonNote = () => {
       personNotes.value.push({
         title: noteDetails.value.noteTitle,
-        description: noteDetails.value.noteDesc
-      })
-      noteDetails.value = {}
+        description: noteDetails.value.noteDesc,
+      });
+      noteDetails.value = {};
       dismissAddToGroupModal.value = "modal";
-    }
+    };
 
     return {
       disableClick,
@@ -1386,7 +1524,7 @@ export default {
       personNotes,
       noteDetails,
       savePersonNote,
-      dynamicCustomFields
+      dynamicCustomFields,
     };
   },
 };
@@ -1401,11 +1539,13 @@ export default {
 .cs-select.month {
   width: 111px;
 }
+
 @media screen and (max-width: 241px) {
-  .padd{
+  .padd {
     padding: 1rem;
   }
 }
+
 .contn-btn:disabled {
   opacity: 0.3;
 }
@@ -1443,6 +1583,7 @@ export default {
     height: 113px;
   }
 }
+
 /* @media (max-width: 676px) and (max-width: 768px) {
   .submit-div {
     float: right;
@@ -1481,23 +1622,24 @@ export default {
 
 @media (max-width: 620px) {
   .cs-select {
-    width: 100%
+    width: 100%;
   }
-  
+
   .cs-select.age-group {
-    width: 100%
+    width: 100%;
   }
+
   .cstm-select {
     width: 100%;
     margin-right: 0;
   }
 
   .input {
-    margin: 0
+    margin: 0;
   }
 
   .label-text-box {
-    padding: 0
+    padding: 0;
   }
 }
 
@@ -1508,7 +1650,7 @@ export default {
 }
 
 .text-grey {
-  color: rgb(90, 90, 90)
+  color: rgb(90, 90, 90);
 }
 
 .nav-bar {
@@ -1522,12 +1664,12 @@ export default {
 }
 
 .scroll-card {
-    max-height: 400px;
-    overflow: scroll;
+  max-height: 400px;
+  overflow: scroll;
 }
 
 .input-width-adjust {
-    width: 90%;
-    margin: auto;
+  width: 90%;
+  margin: auto;
 }
 </style>
