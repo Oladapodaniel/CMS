@@ -769,6 +769,7 @@ export default {
         finish();
         contributionDetail.value = res.data;
         associationLogo.value = res.data.tenantLogo
+        // churchlogo.value = res.data.
         console.log(contributionDetail.value, "contribution payment");
         // amountPaid.value = res.data.donorPaymentSpecificAmount;
         checking.value = true;
