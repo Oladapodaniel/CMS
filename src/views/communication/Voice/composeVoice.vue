@@ -3,27 +3,45 @@
     <div class="container" @click="closeDropdownIfOpen">
       <!-- <div class="container" @click="closeDropdownIfOpen"> -->
       <div class="row">
-        <div class=" col-12 col-md-12 mb-3 mt-3 ">
+        <div class="col-12 col-md-12 mb-3 mt-3">
           <h4 class="font-weight-bold">Compose Voice Message</h4>
           <Toast />
 
-          <Dialog header="Select Date and Time" v-model:visible="display" :style="{ width: '50vw', maxWidth: '600px' }"
-            :modal="true">
+          <Dialog
+            header="Select Date and Time"
+            v-model:visible="display"
+            :style="{ width: '50vw', maxWidth: '600px' }"
+            :modal="true"
+          >
             <div class="row">
               <div class="col-md-12">
-                <input type="datetime-local" id="birthdaytime" class="form-control" name="birthdaytime"
-                  v-model="executionDate" />
+                <input
+                  type="datetime-local"
+                  id="birthdaytime"
+                  class="form-control"
+                  name="birthdaytime"
+                  v-model="executionDate"
+                />
               </div>
             </div>
             <template #footer>
-              <Button label="Cancel" icon="pi pi-times" @click="() => (display = false)"
-                class="p-button-raised p-button-text p-button-plain mr-3" style="
+              <Button
+                label="Cancel"
+                icon="pi pi-times"
+                @click="() => (display = false)"
+                class="p-button-raised p-button-text p-button-plain mr-3"
+                style="
                   color: #136acd;
                   background: #fff !important;
                   border-radius: 22px;
-                " />
-              <Button label="Schedule" class="p-button-rounded" style="background: #136acd"
-                @click="contructScheduleMessageBody(2, '')" />
+                "
+              />
+              <Button
+                label="Schedule"
+                class="p-button-rounded"
+                style="background: #136acd"
+                @click="contructScheduleMessageBody(2, '')"
+              />
             </template>
           </Dialog>
         </div>
@@ -36,41 +54,58 @@
       </div>
 
       <div class="row">
-       
-          <div class="col-12 col-sm-3 mb-sm-2">
-            <span class="text-bold">Send to : </span>
-          </div>
-          <div class="col-12  col-sm-9 form-group mb-1">
-            <div class="dropdown">
-              <button class="btn btn-default dropdown-toggle small-text " type="button" id="dropdownMenuButton"
-                data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" @click="closeDropdownIfOpen">
-                Select Destination
-              </button>
-              <div class="dropdown-menu w-100" aria-labelledby="dropdownMenuButton">
-                <a class="dropdown-item c-pointer small-text" v-for="(destination, index) in possibleSMSDestinations"
-                  :key="index" @click="showSection(index)">{{ destination }}</a>
-              </div>
+        <div class="col-12 col-sm-3 mb-sm-2">
+          <span class="text-bold">Send to : </span>
+        </div>
+        <div class="col-12 col-sm-9 form-group mb-1">
+          <div class="dropdown">
+            <button
+              class="btn btn-default dropdown-toggle small-text"
+              type="button"
+              id="dropdownMenuButton"
+              data-toggle="dropdown"
+              aria-haspopup="true"
+              aria-expanded="false"
+              @click="closeDropdownIfOpen"
+            >
+              Select Destination
+            </button>
+            <div
+              class="dropdown-menu w-100"
+              aria-labelledby="dropdownMenuButton"
+            >
+              <a
+                class="dropdown-item c-pointer small-text"
+                v-for="(destination, index) in possibleSMSDestinations"
+                :key="index"
+                @click="showSection(index)"
+                >{{ destination }}</a
+              >
             </div>
           </div>
-        
-
-
+        </div>
 
         <div class="col-md-12 pr-0 mt-3">
           <hr class="hr my-1" />
         </div>
-
       </div>
-
 
       <div class="row" v-if="sendToAll">
         <div class="col-md-2"></div>
         <div class="col-md-10 px-0">
           <span>
-            <input class="form-control dropdown-toggle my-1 px-1 small-text" type="text" id="dropdownMenu"
-              value="All Contacts" disabled />
-            <span class="close-allcontacts c-pointer" @click="() => sendToAll = false"><i
-                class="pi pi-times"></i></span>
+            <input
+              class="form-control dropdown-toggle my-1 px-1 small-text"
+              type="text"
+              id="dropdownMenu"
+              value="All Contacts"
+              disabled
+            />
+            <span
+              class="close-allcontacts c-pointer"
+              @click="() => (sendToAll = false)"
+              ><i class="pi pi-times"></i
+            ></span>
           </span>
         </div>
       </div>
@@ -79,39 +114,67 @@
       <div class="row mb-2" v-if="groupSelectionTab">
         <div class="col-md-2"></div>
         <div class="col-md-10 px-0 grey-rounded-border">
-          <ul class="d-flex flex-wrap pl-1 mb-0 dd-item small-text" @click="() => groupSelectInput.focus()">
-            <li style="list-style: none; min-width: 100px" v-for="(group, index) in selectedGroups" :key="index"
-              class="email-destination d-flex justify-content-between m-1">
+          <ul
+            class="d-flex flex-wrap pl-1 mb-0 dd-item small-text"
+            @click="() => groupSelectInput.focus()"
+          >
+            <li
+              style="list-style: none; min-width: 100px"
+              v-for="(group, index) in selectedGroups"
+              :key="index"
+              class="email-destination d-flex justify-content-between m-1"
+            >
               <!-- <span
               class="email-destination m-1"
               
             > -->
               <span>{{ group.name }}</span>
-              <span class="ml-2 remove-email" @click="removeGroup(index)">x</span>
+              <span class="ml-2 remove-email" @click="removeGroup(index)"
+                >x</span
+              >
               <!-- </span> -->
             </li>
             <li style="list-style: none" class="">
-              <input type="text" class="border-0 dd-item" ref="groupSelectInput" :class="{
-                'w-100': selectedGroups.length === 0,
-                'minimized-input-width': selectedGroups.length > 0,
-              }" @focus="showGroupList" @click="showGroupList" style="padding: 0.5rem" :placeholder="`${selectedGroups.length > 0 ? '' : 'Select groups'
-}`" />
+              <input
+                type="text"
+                class="border-0 dd-item"
+                ref="groupSelectInput"
+                :class="{
+                  'w-100': selectedGroups.length === 0,
+                  'minimized-input-width': selectedGroups.length > 0,
+                }"
+                @focus="showGroupList"
+                @click="showGroupList"
+                style="padding: 0.5rem"
+                :placeholder="`${
+                  selectedGroups.length > 0 ? '' : 'Select groups'
+                }`"
+              />
             </li>
           </ul>
-          <div class="col-md-12 px-2 select-groups-dropdown dd-item pt-2" v-if="groupListShown">
+          <div
+            class="col-md-12 px-2 select-groups-dropdown dd-item pt-2"
+            v-if="groupListShown"
+          >
             <div class="row dd-item" v-if="categories.length === 0">
               <div class="col-md-12 dd-item">
                 <p class="small-text">No groups yet</p>
               </div>
             </div>
-            <div class="row dd-item" v-for="(category, index) in categories" :key="index">
+            <div
+              class="row dd-item"
+              v-for="(category, index) in categories"
+              :key="index"
+            >
               <div class="col-md-12 dd-item" v-if="allGroups[index].length > 0">
                 <div class="row dd-item">
                   <div class="col-md-12 dd-item">
                     <h6 class="text-uppercase dd-item font-weight-bold">
                       {{ category }}
                     </h6>
-                    <a class="dropdown-item px-1 c-pointer dd-item small-text" v-for="(group, indx) in allGroups[index]"
+                    <a
+                      class="dropdown-item px-1 c-pointer dd-item small-text"
+                      v-for="(group, indx) in allGroups[index]"
                       @click="
                         selectGroup(
                           group.category,
@@ -120,7 +183,9 @@
                           index,
                           indx
                         )
-                      " :key="indx">
+                      "
+                      :key="indx"
+                    >
                       {{ group.name }}
                     </a>
                   </div>
@@ -136,46 +201,83 @@
       <div class="row" v-if="membershipSelectionTab">
         <div class="col-md-2"></div>
         <div class="col-md-10 pl-0 grey-rounded-border">
-          <ul class="d-flex flex-wrap px-1 mb-0 m-dd-item" @click="() => memberSelectInput.focus()">
-            <li style="list-style: none; min-width: 100px" v-for="(member, indx) in selectedMembers" :key="indx"
-              class="email-destination d-flex justify-content-between m-1">
+          <ul
+            class="d-flex flex-wrap px-1 mb-0 m-dd-item"
+            @click="() => memberSelectInput.focus()"
+          >
+            <li
+              style="list-style: none; min-width: 100px"
+              v-for="(member, indx) in selectedMembers"
+              :key="indx"
+              class="email-destination d-flex justify-content-between m-1"
+            >
               <!-- <span
               class="email-destination m-1"
               
             > -->
               <span>{{ member.name }}</span>
-              <span class="ml-2 remove-email" @click="removeMember(indx)">x</span>
+              <span class="ml-2 remove-email" @click="removeMember(indx)"
+                >x</span
+              >
               <!-- </span> -->
             </li>
             <li style="list-style: none" class="m-dd-item">
-              <input type="text" class="border-0 m-dd-item text" ref="memberSelectInput" @input="searchForPerson"
+              <input
+                type="text"
+                class="border-0 m-dd-item text"
+                ref="memberSelectInput"
+                @input="searchForPerson"
                 :class="{
                   'w-100': selectedMembers.length === 0,
                   'minimized-input-width': selectedMembers.length > 0,
-                }" @focus="showMemberList" @click="showMemberList" v-model="searchText" style="padding: 0.5rem"
-                :placeholder="`${selectedMembers.length > 0 ? '' : 'Select from members'
-                }`" />
+                }"
+                @focus="showMemberList"
+                @click="showMemberList"
+                v-model="searchText"
+                style="padding: 0.5rem"
+                :placeholder="`${
+                  selectedMembers.length > 0 ? '' : 'Select from members'
+                }`"
+              />
             </li>
           </ul>
-          <div class="col-md-12 px-0 select-groups-dropdown m-dd-item" v-if="memberListShown">
+          <div
+            class="col-md-12 px-0 select-groups-dropdown m-dd-item"
+            v-if="memberListShown"
+          >
             <div class="dropdownmenu pt-0 w-100 m-dd-item">
-              <a class="dropdown-item px-1 c-pointer m-dd-item" v-for="(member, index) in memberSearchResults"
-                :key="index" @click="selectMember(member, index)">{{ member.name }}</a>
-              <p class="bg-secondary p-1 mb-0 disable m-dd-item" v-if="
-                searchText.length < 3 &&
-                loading == false &&
-                memberSearchResults.length === 0
-              ">
+              <a
+                class="dropdown-item px-1 c-pointer m-dd-item"
+                v-for="(member, index) in memberSearchResults"
+                :key="index"
+                @click="selectMember(member, index)"
+                >{{ member.name }}</a
+              >
+              <p
+                class="bg-secondary p-1 mb-0 disable m-dd-item"
+                v-if="
+                  searchText.length < 3 &&
+                  loading == false &&
+                  memberSearchResults.length === 0
+                "
+              >
                 Enter 3 or more characters
               </p>
-              <p aria-disabled="true" class="btn btn-default p-1 mb-0 disable m-dd-item" v-if="
-                memberSearchResults.length === 0 &&
-                searchText.length >= 3 &&
-                !loading
-              ">
+              <p
+                aria-disabled="true"
+                class="btn btn-default p-1 mb-0 disable m-dd-item"
+                v-if="
+                  memberSearchResults.length === 0 &&
+                  searchText.length >= 3 &&
+                  !loading
+                "
+              >
                 No match found
               </p>
-              <p class="btn btn-default p-1 mb-0 disable m-dd-item" v-if="loading && searchText.length >= 3">
+              <p
+                class="btn btn-default p-1 mb-0 disable m-dd-item"
+                v-if="loading && searchText.length >= 3"
+              >
                 <i class="fas fa-circle-notch fa-spin m-dd-item"></i>
               </p>
             </div>
@@ -189,9 +291,15 @@
         <div class="row">
           <div class="col-md-2"></div>
           <div class="col-md-10 py-2 px-0 grey-rounded-border">
-            <span class="email-destination m-1" v-for="(member, indx) in selectedMembers" :key="indx">
+            <span
+              class="email-destination m-1"
+              v-for="(member, indx) in selectedMembers"
+              :key="indx"
+            >
               <span class="small-text">{{ member.name }}</span>
-              <span class="ml-2 remove-email" @click="removeMember(indx)">x</span>
+              <span class="ml-2 remove-email" @click="removeMember(indx)"
+                >x</span
+              >
             </span>
 
             <div class="dropdown">
@@ -207,37 +315,66 @@
                 aria-expanded="false"
               /> -->
 
-              <div class="dropdown-menu pt-0 w-100" aria-labelledby="dropdownMenu">
-                <a class="dropdown-item px-1 c-pointer" v-for="(member, index) in memberSearchResults" :key="index"
-                  @click="selectMember(member, index)">{{ member.name }}</a>
-                <p class="bg-secondary p-1 mb-0 disable small-text" v-if="
-                  searchText.length < 3 &&
-                  loading == false &&
-                  memberSearchResults.length === 0
-                ">
+              <div
+                class="dropdown-menu pt-0 w-100"
+                aria-labelledby="dropdownMenu"
+              >
+                <a
+                  class="dropdown-item px-1 c-pointer"
+                  v-for="(member, index) in memberSearchResults"
+                  :key="index"
+                  @click="selectMember(member, index)"
+                  >{{ member.name }}</a
+                >
+                <p
+                  class="bg-secondary p-1 mb-0 disable small-text"
+                  v-if="
+                    searchText.length < 3 &&
+                    loading == false &&
+                    memberSearchResults.length === 0
+                  "
+                >
                   Enter 3 or more characters
                 </p>
-                <p aria-disabled="true" class="btn btn-default p-1 mb-0 disable small-text" v-if="
-                  memberSearchResults.length === 0 &&
-                  searchText.length >= 3 &&
-                  !loading
-                ">
+                <p
+                  aria-disabled="true"
+                  class="btn btn-default p-1 mb-0 disable small-text"
+                  v-if="
+                    memberSearchResults.length === 0 &&
+                    searchText.length >= 3 &&
+                    !loading
+                  "
+                >
                   No match found
                 </p>
-                <p class="btn btn-default p-1 mb-0 disable" v-if="loading && searchText.length >= 3">
+                <p
+                  class="btn btn-default p-1 mb-0 disable"
+                  v-if="loading && searchText.length >= 3"
+                >
                   <i class="fas fa-circle-notch fa-spin"></i>
                 </p>
               </div>
             </div>
           </div>
-          <div class="col-md-12 grey-rounded-border groups" :class="{ hide: !groupsAreVissible }">
-            <div class="row" v-for="(category, index) in categories" :key="index">
+          <div
+            class="col-md-12 grey-rounded-border groups"
+            :class="{ hide: !groupsAreVissible }"
+          >
+            <div
+              class="row"
+              v-for="(category, index) in categories"
+              :key="index"
+            >
               <div class="col-md-12">
                 <div class="row">
                   <div class="col-md-12">
                     <h4 class="px-14">{{ category }}</h4>
-                    <p v-for="(group, indx) in allGroups[index]"
-                      @click="selectGroup(group.category, group.id, group.name)" :key="indx" class="small-text">
+                    <p
+                      v-for="(group, indx) in allGroups[index]"
+                      @click="selectGroup(group.category, group.id, group.name)"
+                      :key="indx"
+                      class="small-text"
+                    >
                       {{ group.name }}
                     </p>
                   </div>
@@ -253,17 +390,31 @@
         <div class="row">
           <div class="col-md-2"></div>
           <div class="col-md-10 py-2 px-0">
-            <textarea class="form-control w-100 px-1 grey-rounded-border" placeholder="Enter phone number(s)"
-              v-model="phoneNumber"></textarea>
+            <textarea
+              class="form-control w-100 px-1 grey-rounded-border"
+              placeholder="Enter phone number(s)"
+              v-model="phoneNumber"
+            ></textarea>
           </div>
-          <div class="col-md-12 grey-rounded-border groups" :class="{ hide: !groupsAreVissible }">
-            <div class="row" v-for="(category, index) in categories" :key="index">
+          <div
+            class="col-md-12 grey-rounded-border groups"
+            :class="{ hide: !groupsAreVissible }"
+          >
+            <div
+              class="row"
+              v-for="(category, index) in categories"
+              :key="index"
+            >
               <div class="col-md-12">
                 <div class="row">
                   <div class="col-md-12">
                     <h4 class="px-14">{{ category }}</h4>
-                    <p v-for="(group, indx) in allGroups[index]"
-                      @click="selectGroup(group.category, group.id, group.name)" :key="indx" class="small-text">
+                    <p
+                      v-for="(group, indx) in allGroups[index]"
+                      @click="selectGroup(group.category, group.id, group.name)"
+                      :key="indx"
+                      class="small-text"
+                    >
                       {{ group.name }}
                     </p>
                   </div>
@@ -279,45 +430,91 @@
         <div class="col-sm-2"></div>
         <div class="col-sm-10 px-0 grey-rounded-border p-2">
           <div class="d-flex justify-content-between">
-            <input type="file" class="form-control-file" @change="uploadFile">
-            <div><i class="pi pi-times mr-2 c-pointer" @click="() => contactUpload = false"></i></div>
+            <input type="file" class="form-control-file" @change="uploadFile" />
+            <div>
+              <i
+                class="pi pi-times mr-2 c-pointer"
+                @click="() => (contactUpload = false)"
+              ></i>
+            </div>
           </div>
-          <div class="mt-1"><a href="/files/Upload_Contact Template.csv"
-              class="template-text text-decoration-none font-weight-bold" download>Download template</a></div>
+          <div class="mt-1">
+            <a
+              href="/files/Upload_Contact Template.csv"
+              class="template-text text-decoration-none font-weight-bold"
+              download
+              >Download template</a
+            >
+          </div>
         </div>
       </div>
 
-      <div class="row mt-1" v-if="
-        phoneNumberSelectionTab || membershipSelectionTab || groupSelectionTab
-      ">
+      <div
+        class="row mt-1"
+        v-if="
+          phoneNumberSelectionTab || membershipSelectionTab || groupSelectionTab
+        "
+      >
         <div class="col-md-12 pr-0">
           <hr class="hr my-1" />
         </div>
       </div>
       <div class="row">
-          <div class="col-12 col-sm-3 mb-sm-2">
-            <span class="text-bold">Upload File : </span>
-          </div>
-          <div class="col-12  col-sm-9  d-flex  mb-0">
-            <input type="text " class="form-control" v-model="voice.name" />
-            <label class="col-md-5 d-none d-sm-flex  justify-content-center p-2 w-100 border mt-0 pt-0  lab"
-              @click="uploadVoice">Upload Voice
-              <input type="file" hidden ref="uploadButton" @change="audioSelected">
-            </label>
-            
-          </div>
-          <div class="col-12  col-sm-9 pl-md-0 d-flex  mb-0">
-          <label class="col-md-5 d-flex d-sm-none justify-content-center p-2 w-100 border mt-0 pt-0  lab"
-              @click="uploadVoice">Upload Voice
-              <input type="file" hidden ref="uploadButton" @change="audioSelected">
-            </label>
-          </div>
-          <div class="col-12 text-danger">
-          <div class="col-8">Upload voice  of MP3,must be 4mb size  </div>
+        <div class="col-12 col-sm-3 mb-sm-2">
+          <span class="text-bold">Upload File : </span>
+        </div>
+        <div class="col-12 col-sm-9 d-flex mb-0">
+          <input type="text " class="form-control" v-model="voice.name" />
+          <label
+            class="
+              col-md-5
+              d-none d-sm-flex
+              justify-content-center
+              p-2
+              w-100
+              border
+              mt-0
+              pt-0
+              lab
+            "
+            @click="uploadVoice"
+            >Upload Voice
+            <input
+              type="file"
+              hidden
+              ref="uploadButton"
+              @change="audioSelected"
+            />
+          </label>
+        </div>
+        <div class="col-12 col-sm-9 pl-md-0 d-flex mb-0">
+          <label
+            class="
+              col-md-5
+              d-flex d-sm-none
+              justify-content-center
+              p-2
+              w-100
+              border
+              mt-0
+              pt-0
+              lab
+            "
+            @click="uploadVoice"
+            >Upload Voice
+            <input
+              type="file"
+              hidden
+              ref="uploadButton"
+              @change="audioSelected"
+            />
+          </label>
+        </div>
+        <div class="col-12 text-danger">
+          <div class="col-8">Upload voice of MP3,must be 4mb size</div>
           <div class="col-4">must not exceed 30sec</div>
-          </div>
+        </div>
       </div>
-
 
       <!-- start voice -->
       <div class="p-2 controlAudio" v-show="displayAudio">
@@ -370,27 +567,56 @@
 
       <div class="row mt-4 mb-5">
         <div class="col-md-12">
-          <p class="mb-1 text-danger text-right font-weight-700" v-if="invalidDestination">
+          <p
+            class="mb-1 text-danger text-right font-weight-700"
+            v-if="invalidDestination"
+          >
             Please select destination
           </p>
-          <p class="mb-1 text-danger text-right font-weight-700" v-if="invalidMessage">
+          <p
+            class="mb-1 text-danger text-right font-weight-700"
+            v-if="invalidMessage"
+          >
             Enter your message
           </p>
         </div>
         <div class="col-md-10 d-flex justify-content-end ml-4">
           <span :class="{ 'cursor-close': disableBtn }">
-            <SplitButton label="Send" :model="sendOptions" :disabled="disableBtn" @click="checkFileType"></SplitButton>
+            <SplitButton
+              label="Send"
+              :model="sendOptions"
+              :disabled="disableBtn"
+              @click="checkFileType"
+            ></SplitButton>
           </span>
           <router-link
-            :to="route.fullPath === '/tenant/sms/compose' ? '/tenant/sms/sent' : '/errorpage/expiredSubscription'"
-            class="default-btn d-flex justify-content-center short-btn align-items-center ml-3 text-decoration-none text-dark">
+            :to="
+              route.fullPath === '/tenant/sms/compose'
+                ? '/tenant/sms/sent'
+                : '/errorpage/expiredSubscription'
+            "
+            class="
+              default-btn
+              d-flex
+              justify-content-center
+              short-btn
+              align-items-center
+              ml-3
+              text-decoration-none text-dark
+            "
+          >
             Discard
           </router-link>
         </div>
         <div class="row">
           <div class="col-md-12">
-            <div class="modal fade" id="sendsmsbtn" tabindex="-1" aria-labelledby="exampleModalLabel"
-              aria-hidden="true">
+            <div
+              class="modal fade"
+              id="sendsmsbtn"
+              tabindex="-1"
+              aria-labelledby="exampleModalLabel"
+              aria-hidden="true"
+            >
               <div class="modal-dialog modal-dialog-centered modal-lg">
                 <div class="modal-content">
                   <div class="modal-header grey-background">
@@ -398,7 +624,12 @@
                       <i class="pi pi-user mr-2"></i>
                       {{ sendModalHeader }}
                     </h5>
-                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <button
+                      type="button"
+                      class="close"
+                      data-dismiss="modal"
+                      aria-label="Close"
+                    >
                       <span aria-hidden="true">&times;</span>
                     </button>
                   </div>
@@ -406,8 +637,20 @@
                     <div class="row" v-if="!nigerian">
                       <div class="col-md-12 text-center">
                         <button
-                          class="primary-btn default-btn border-0 px-4 my-2 primary-bg text-white outline-none extra-btn"
-                          data-dismiss="modal" @click="contructScheduleMessageBody(1, '')">
+                          class="
+                            primary-btn
+                            default-btn
+                            border-0
+                            px-4
+                            my-2
+                            primary-bg
+                            text-white
+                            outline-none
+                            extra-btn
+                          "
+                          data-dismiss="modal"
+                          @click="contructScheduleMessageBody(1, '')"
+                        >
                           Send SMS Now
                         </button>
                         <!-- <button
@@ -549,9 +792,9 @@ import axios from "@/gateway/backendapi";
 import stopProgressBar from "../../../services/progressbar/progress";
 import communicationService from "../../../services/communication/communicationservice";
 import dateFormatter from "../../../services/dates/dateformatter";
-import moment from 'moment'
+import moment from "moment";
 // import audio from "../helper/audio"
-import { blobMethod } from "../helper/audio"
+import { blobMethod } from "../helper/audio";
 
 // console.log(audio , 'audio');
 export default {
@@ -561,9 +804,9 @@ export default {
   },
   setup() {
     const toast = useToast();
-    const router = useRouter()
+    const router = useRouter();
     const editorData = ref("");
-    const disableBtn = ref(false)
+    const disableBtn = ref(false);
     const editorConfig = {
       // The configuration of the editor.
       height: "800",
@@ -577,35 +820,35 @@ export default {
     const selectedGroups = ref([]);
     const sendToAll = ref(false);
     const executionDate = ref("");
-    const contactUpload = ref(false)
-    const multipleContact = ref({})
+    const contactUpload = ref(false);
+    const multipleContact = ref({});
     const uploadButton = ref(null);
     const voice = ref("");
     const url = ref("");
     const voiceToEdit = ref("");
     const voiceName = ref("");
-    const recMode = ref("")
-    const canvas = ref(null)
-    const displayAudio = ref(false)
+    const recMode = ref("");
+    const canvas = ref(null);
+    const displayAudio = ref(false);
 
     // uploadButton.value = setAttribute("uploadButton", "");
     // this function displays the file
     const uploadVoice = () => {
       console.log(uploadButton.value);
-      uploadButton.value.click()
-    }
+      uploadButton.value.click();
+    };
 
     const handleAudio = () => {
       displayAudio.value = true;
-    }
+    };
     const onStream = (data) => {
-      console.log('The blob data:', data);
-    }
+      console.log("The blob data:", data);
+    };
 
     const onResult = (data) => {
-      console.log('The blob data:', data);
-      console.log('Downloadable audio', window.URL.createObjectURL(data));
-    }
+      console.log("The blob data:", data);
+      console.log("Downloadable audio", window.URL.createObjectURL(data));
+    };
 
     // onload function for the audio voice recorder
     // onMounted(() => {
@@ -627,13 +870,13 @@ export default {
 
     const formatPhoneNumber = (phoneNumber) => {
       const numbers = [];
-      phoneNumber.split(',').forEach(i => {
-        i.split('\n').forEach(j => {
+      phoneNumber.split(",").forEach((i) => {
+        i.split("\n").forEach((j) => {
           if (j) numbers.push(j);
-        })
-      })
-      return numbers
-    }
+        });
+      });
+      return numbers;
+    };
 
     // audio start
     //       const recordAudio = () =>
@@ -686,47 +929,49 @@ export default {
         toast.add({
           severity: "false",
           summary: "false",
-          detail: 'please record to upload',
-          life: 4000
+          detail: "please record to upload",
+          life: 4000,
         });
-        return false
+        return false;
       }
-      if (voice.value) detailsForVoice(voice.value)
-      else detailsForVoice(blobMethod())
-    }
+      if (voice.value) detailsForVoice(voice.value);
+      else detailsForVoice(blobMethod());
+    };
 
     const detailsForVoice = async (file) => {
       // const testing = blobMethod()
       // console.log(testing, 'blobMethod');
-      let formData = new FormData()
-      formData.append("VoiceMessageFile", file)
-      formData.append('Contacts', [])
-      formData.append('GateWayToUse', 'dotgovoice')
+      let formData = new FormData();
+      formData.append("VoiceMessageFile", file);
+      formData.append("Contacts", []);
+      formData.append("GateWayToUse", "dotgovoice");
       //   formData.append('GroupedContacts', selectedGroups.value.map((i) => i.data) )
       //   formData.append('ToContacts', )
-      formData.append('ToOthers', formatPhoneNumber(phoneNumber.value))
+      formData.append("ToOthers", formatPhoneNumber(phoneNumber.value));
 
       try {
         // alert('checking the error')
-        let { data } = await axios.post('/api/Messaging/SendVoiceMessage', formData)
+        let { data } = await axios.post(
+          "/api/Messaging/SendVoiceMessage",
+          formData
+        );
         // console.log(data, 'voice test')
         toast.add({
           severity: "success",
           summary: "Success",
           detail: "You have successfully sent a voice note",
-          life: 5000
+          life: 5000,
         });
-      }
-      catch (err) {
+      } catch (err) {
         console.log(err);
         toast.add({
           severity: "error",
           summary: "Not sent",
           detail: "Sending failed, please try again",
-          life: 5000
+          life: 5000,
         });
       }
-    }
+    };
     const toggleGroupsVissibility = () => {
       groupsAreVissible.value = !groupsAreVissible.value;
     };
@@ -738,7 +983,10 @@ export default {
       if (index === 4) contactUpload.value = true;
       if (index === 0) {
         sendToAll.value = true;
-        selectedGroups.value.push({ data: "membership_00000000-0000-0000-0000-000000000000", name: "All Contacts" })
+        selectedGroups.value.push({
+          data: "membership_00000000-0000-0000-0000-000000000000",
+          name: "All Contacts",
+        });
       }
       // console.log(index)
     };
@@ -849,7 +1097,8 @@ export default {
         selectedGroups.value.length === 0 &&
         !phoneNumber.value &&
         selectedMembers.value.length === 0 &&
-        !sendToAll.value && !multipleContact.value instanceof File
+        !sendToAll.value &&
+        !multipleContact.value instanceof File
       ) {
         invalidDestination.value = true;
         return false;
@@ -866,14 +1115,14 @@ export default {
         detail: "SMS is being sent....",
         life: 2500,
       });
-      console.log(data)
+      console.log(data);
 
       // if (selectedMembers.value.length > 0) data.contacts = selectedMembers.value;
-      disableBtn.value = true
+      disableBtn.value = true;
       composeService
         .sendMessage("/api/Messaging/sendSms", data)
         .then((res) => {
-          disableBtn.value = false
+          disableBtn.value = false;
           // if (res.status === 200) {
           if (res.data.message.includes("You do not have")) {
             toast.add({
@@ -882,8 +1131,6 @@ export default {
               detail: `${res.data.message}`,
               life: 6000,
             });
-
-
           } else {
             toast.add({
               severity: "success",
@@ -899,17 +1146,27 @@ export default {
             // Save the res to store in other to get it in the view sent sms page
             let sentObj = {
               message: res.data.message,
-              id: res.data.returnObjects ? res.data.returnObjects[0].communicationReportID : '',
+              id: res.data.returnObjects
+                ? res.data.returnObjects[0].communicationReportID
+                : "",
               smsUnitsUsed: res.data.unitsUsed,
-              dateSent: res.data.returnObjects ? `Today | ${moment.parseZone(new Date(res.data.returnObjects[0].communicationReport.date).toLocaleDateString(), 'YYYY MM DD HH ZZ')._i}` : "",
-              deliveryReport: [{ report: res.data.messageStatus }]
-            }
-            console.log(sentObj)
-            store.dispatch("communication/addSmsToSentList", sentObj)
+              dateSent: res.data.returnObjects
+                ? `Today | ${
+                    moment.parseZone(
+                      new Date(
+                        res.data.returnObjects[0].communicationReport.date
+                      ).toLocaleDateString(),
+                      "YYYY MM DD HH ZZ"
+                    )._i
+                  }`
+                : "",
+              deliveryReport: [{ report: res.data.messageStatus }],
+            };
+            console.log(sentObj);
+            store.dispatch("communication/addSmsToSentList", sentObj);
             setTimeout(() => {
-              router.push({ name: "SentMessages" })
-            }, 3500)
-
+              router.push({ name: "SentMessages" });
+            }, 3500);
           }
 
           // } else if (typeof res === "object") {
@@ -920,16 +1177,13 @@ export default {
           //     life: 2500,
           //   });
 
-
-
           // }
-
         })
         .catch((err) => {
           stopProgressBar();
-          disableBtn.value = false
+          disableBtn.value = false;
           toast.removeAllGroups();
-          console.log(err)
+          console.log(err);
           if (err.toString().toLowerCase().includes("network error")) {
             toast.add({
               severity: "warn",
@@ -937,11 +1191,12 @@ export default {
               detail: "Please ensure you have internet access",
               life: 4000,
             });
-          } else if (err.toString().toLowerCase().includes('timeout')) {
+          } else if (err.toString().toLowerCase().includes("timeout")) {
             toast.add({
               severity: "warn",
               summary: "Request Delayed",
-              detail: "SMS took too long, please check your network and try again",
+              detail:
+                "SMS took too long, please check your network and try again",
               life: 4000,
             });
           } else {
@@ -999,16 +1254,21 @@ export default {
       };
 
       const numbers = [];
-      phoneNumber.value.split(',').forEach(i => {
-        i.split('\n').forEach(j => {
+      phoneNumber.value.split(",").forEach((i) => {
+        i.split("\n").forEach((j) => {
           if (j) numbers.push(j);
-        })
-      })
+        });
+      });
 
       data.toOthers = numbers.join();
 
       if (selectedMembers.value.length > 0) {
-        data.ToContacts = data && data.ToContacts ? data.ToContacts.length > 0 ? "," : "" : "";
+        data.ToContacts =
+          data && data.ToContacts
+            ? data.ToContacts.length > 0
+              ? ","
+              : ""
+            : "";
         data.ToContacts += selectedMembers.value
           .map((i) => {
             console.log(i, "person");
@@ -1018,12 +1278,12 @@ export default {
       }
 
       if (multipleContact.value instanceof File) {
-        sendSMSToUploadedContacts(gateway)
+        sendSMSToUploadedContacts(gateway);
       } else if (sendOrSchedule == 2) {
-        const dateToBeExecuted = executionDate.value
+        const dateToBeExecuted = executionDate.value;
         data.executionDate = dateToBeExecuted.split("T")[0];
-        data.date = dateToBeExecuted
-        data.time = dateToBeExecuted.split("T")[1]
+        data.date = dateToBeExecuted;
+        data.time = dateToBeExecuted.split("T")[1];
         scheduleMessage(data);
       } else {
         sendSMS(data);
@@ -1038,9 +1298,9 @@ export default {
       display.value = false;
       const formattedDate = dateFormatter.monthDayTime(data.executionDate);
       console.log(formattedDate, "Formatted Date");
-      console.log(data.executionDate)
+      console.log(data.executionDate);
 
-      console.log(data)
+      console.log(data);
       try {
         const response = await composerObj.sendMessage(
           "/api/Messaging/saveSmsSchedule",
@@ -1063,33 +1323,32 @@ export default {
     };
 
     const sendSMSToUploadedContacts = async (gateway) => {
-      let formData = new FormData()
-      formData.append("file", multipleContact.value)
-      formData.append("message", editorData.value)
-      formData.append('category', '')
-      formData.append('gatewayToUse', gateway)
-      formData.append('isoCode', isoCode.value)
+      let formData = new FormData();
+      formData.append("file", multipleContact.value);
+      formData.append("message", editorData.value);
+      formData.append("category", "");
+      formData.append("gatewayToUse", gateway);
+      formData.append("isoCode", isoCode.value);
 
       try {
-        let { data } = await axios.post('/api/messaging/upload', formData)
-        console.log(data)
+        let { data } = await axios.post("/api/messaging/upload", formData);
+        console.log(data);
         toast.add({
           severity: "success",
           summary: "Success",
           detail: data.response,
-          life: 5000
+          life: 5000,
         });
-      }
-      catch (err) {
+      } catch (err) {
         console.log(err);
         toast.add({
           severity: "error",
           summary: "Not sent",
           detail: "Sending failed, please try again",
-          life: 5000
+          life: 5000,
         });
       }
-    }
+    };
 
     const userCountry = ref("");
 
@@ -1205,7 +1464,9 @@ export default {
         contacts: [],
         isPersonalized: isPersonalized.value,
         groupedContacts: selectedGroups.value.map((i) => i.data),
-        toContacts: sendToAll.value ? "allcontacts_00000000-0000-0000-0000-000000000000" : "",
+        toContacts: sendToAll.value
+          ? "allcontacts_00000000-0000-0000-0000-000000000000"
+          : "",
         isoCode: isoCode.value,
         category: "",
         emailAddress: "",
@@ -1213,42 +1474,46 @@ export default {
         // gateWayToUse: gateway,
       };
 
-      console.log(data)
-    }
+      console.log(data);
+    };
 
-    const getDefaultMessage = async messageId => {
+    const getDefaultMessage = async (messageId) => {
       try {
-        const { returnObject: { message } } = await communicationService.getDefaultMessage(messageId);
+        const {
+          returnObject: { message },
+        } = await communicationService.getDefaultMessage(messageId);
         editorData.value = message;
       } catch (error) {
         console.log(error);
       }
-    }
+    };
 
     if (route.query.defaultId) getDefaultMessage(route.query.defaultId);
 
-    const getMessage = async messageId => {
+    const getMessage = async (messageId) => {
       try {
-        const { message, subject: subj } = await composeService.getSMSById(messageId);
+        const { message, subject: subj } = await composeService.getSMSById(
+          messageId
+        );
         editorData.value = message;
         subject.value = subj;
       } catch (error) {
-        console.log(error)
+        console.log(error);
         toast.add({
           severity: "error",
           summary: "Error",
           detail: "Could not load message!",
         });
       }
-    }
+    };
 
     if (route.query.messageId) {
       getMessage(route.query.messageId);
     }
 
     const uploadFile = (e) => {
-      multipleContact.value = e.target.files[0]
-    }
+      multipleContact.value = e.target.files[0];
+    };
 
     return {
       editorData,
@@ -1322,7 +1587,7 @@ export default {
       canvas,
       checkFileType,
       displayAudio,
-      handleAudio
+      handleAudio,
     };
   },
 };
@@ -1335,8 +1600,6 @@ export default {
   background-color: rgb(236, 230, 230);
 
   /* height: 37px; */
-
-  
 }
 
 .input {
@@ -1719,6 +1982,6 @@ a {
 }
 
 .template-text {
-  color: rgb(15, 71, 134)
+  color: rgb(15, 71, 134);
 }
 </style>
