@@ -312,7 +312,7 @@
         </div>
         <div class="row justify-content-center">
           <div class="col-md-6 text-center align-item-center px-md-4 mb-4 mt-5">
-            <a href="">
+            <a href="/" class="text-decoration-none">
               <div class="">Powered by</div>
               <div class="img-fluid col-6 offset-3 col-md-4 offset-md-4 px-0">
                 <img
