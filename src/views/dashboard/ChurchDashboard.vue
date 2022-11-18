@@ -107,6 +107,9 @@
                   >
                     <h4 class="box-btn-text" :class="[buttonTextCheck.color]"> {{buttonTextCheck.text}} </h4>
                   </button>
+                  <div v-if="expirationNotice" class="small-text h5 w-100 font-weight-bold">
+                  Subscription will expire soon 
+                </div>
                 </router-link>
               </div>
             </div>
@@ -618,6 +621,8 @@ export default {
     const tenantInfoInvitationSource = ref([]);
     const tenantInfoInterestedInJoining = ref([]);
     const tenantInfoExtra = ref({});
+    const warningAgainstExpire = ref("")
+    const notification = ref(false)
 
     // const monthlyFirstTimerObj = ref({})
 
@@ -848,7 +853,20 @@ export default {
       planUserIs.value = res.description;
       getRenewalDate.value = res.subscriptionExpiration;
       useSubscriptionResponse.value = res;
+      console.log(res, "iiiopiop");
+      let d = new Date(res.subscriptionExpiration);
+      d.setDate(d.getDate() - 4)
+          warningAgainstExpire.value = d
+          console.log(warningAgainstExpire.value, "warning")
     });
+    // 
+
+    const expirationNotice = computed(() =>{
+      let myDate = new Date()
+      if( myDate === warningAgainstExpire.value && warningAgainstExpire.value < getRenewalDate.value   ){
+           return true
+          }
+    })
 
     const calculatedPercentage = computed(() => {
       if (!useSubscriptionResponse.value || !useSubscriptionResponse.value.id)
@@ -894,6 +912,10 @@ export default {
 
     return {
       celebrations,
+      getRenewalDate,
+      expirationNotice,
+      notification,
+      warningAgainstExpire,
       tenantInfo,
       tenantInfoBasic,
       tenantInfoCeleb,

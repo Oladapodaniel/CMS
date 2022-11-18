@@ -556,7 +556,7 @@
                         mt-5
                       "
                     >
-                      <a href="">
+                      <a href="/" class="text-decoration-none">
                         <div class="">Powered by</div>
                         <div
                           class="

@@ -84,9 +84,10 @@
         </div>
         <div id="element-to-print">
 
-        
-          <div  class="container-fluid  ">
-              <div class="row" :class="{ 'show-report': showReport, 'hide-report' : !showReport}">
+          <!-- <div>gender{{mappedGender }}</div>
+          <div>marital status{{mappedMaritalStatus }}</div> -->
+          <div  class="container-fluid ">
+              <div  class="row" :class="{ 'show-report': showReport, 'hide-report' : !showReport}">
                   <!-- <div class="col-12 ">
                       <div class="mt-5 pb-2 text-center Display-1 heading-text">
                           Congregation Members Report
@@ -94,7 +95,7 @@
                   </div> -->
                   <div class="col-12 mt-4 round-border d-flex flex-wrap">
                       <div class="col-12 col-sm-12 col-md-6 col-lg-6">
-                      <div class="col-12 mt-sm-3 mt-md-0 mt-lg-2  text-center">
+                      <div class="col-12 mt-sm-3 mt-md-0 mt-lg-2  text-center" >
                           <div class="col-12 font-weight-bold">Membership By Gender</div>
                           <!-- <div class="col-12" >No Data Available</div> -->
                           <div class="col-12">
@@ -108,7 +109,7 @@
                       </div>
                   </div>
                   <div class="col-12 col-sm-12  col-md-6 col-lg-6">
-                      <div class="col-12  mt-3 mt-sm-3 mt-md-0 mt-lg-2 text-center">
+                      <div class="col-12  mt-3 mt-sm-3 mt-md-0 mt-lg-2 text-center" >
                           <div class="col-12  font-weight-bold">Membership By Marital Status</div>
                           <!-- <div class="col-12" :class="{ 'show-report': !showReport, 'hide-report' : showReport}">No Data Available</div> -->
                           <div class="col-12 " >
@@ -159,7 +160,7 @@
               <!-- <div class="row "> -->
                   <section>
                       <!-- table header -->
-                      <div  class=" mt-4 container-fluid table-main px-0 remove-styles2 remove-border responsiveness  "
+                      <div v-if="membersInChurch[0]" class=" mt-4 container-fluid table-main px-0 remove-styles2 remove-border responsiveness  "
                       :class="{ 'show-report': showReport, 'hide-report' : !showReport}" >
                           <table class="table remove-styles mt-0 table-hover table-header-area " id="table" >
                           <thead class="table-header-area-main" >
@@ -273,7 +274,7 @@ export default {
           value: result[prop].length
         })
       }
-      console.log(genderChartResult.value)
+      console.log(genderChartResult.value, "genderChartR")
     };
 
     const mappedGender = computed(() => {
@@ -313,9 +314,7 @@ export default {
        maritalStatusChartResult.value = []
       let result = array.reduce((result, currentValue) => {
         // If an array already present for key, push it to the array. Else create an array and push the object
-        (result[currentValue[key]] = result[currentValue[key]] || []).push(
-          currentValue
-        );
+        (result[currentValue[key]] = result[currentValue[key]] || []).push(currentValue);
         return result;
       }, []); // empty object is the initial value for result object
       // genderChartResult.value
@@ -327,7 +326,7 @@ export default {
           value: result[prop].length
         })
       }
-      console.log(maritalStatusChartResult.value)
+      console.log(maritalStatusChartResult.value, "marital result")
     };
 
     const mappedMaritalStatus = computed(() => {
@@ -381,8 +380,8 @@ export default {
             membersInChurch.value = res.data;
             console.log(membersInChurch.value, 'allbyGideon')
             genderChart(res.data,'gender')
-            memberChart(res.data,'membership')
             maritalStatusChart(res.data,'maritalStatus')
+            memberChart(res.data,'membership')
             ageGroupChart(res.data,'ageGroup')
             setTimeout(() => {
                         fileHeaderToExport.value = exportService.tableHeaderToJson(document.getElementsByTagName("th"))
