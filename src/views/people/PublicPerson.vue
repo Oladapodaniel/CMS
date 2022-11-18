@@ -534,7 +534,40 @@
           </button>
         </div>
       </form>
-      
+      <div class="row">
+               <div class="col-12 d-flex justify-content-center">
+                    <div
+                      class="
+                        col-md-6
+                        text-center
+                        align-item-center
+                        px-md-4
+                        mb-3
+                        mt-5
+                      "
+                    >
+                      <a href="/" class="text-decoration-none">
+                        <div class="">Powered by</div>
+                        <div
+                          class="
+                            img-fluid
+                            col-6
+                            offset-3
+                            col-md-4
+                            offset-md-4
+                            px-0
+                          "
+                        >
+                          <img
+                            src="../../assets/logoblue.png"
+                            alt="churchplus Logo"
+                            class="w-50 mx-2"
+                          />
+                        </div>
+                      </a>
+                    </div>
+                  </div>    
+          </div>
     </div>
 
     <!-- Modal
