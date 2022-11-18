@@ -83,9 +83,6 @@
             </div>
         </div>
         <div id="element-to-print">
-
-          <!-- <div>gender{{mappedGender }}</div>
-          <div>marital status{{mappedMaritalStatus }}</div> -->
           <div  class="container-fluid ">
               <div  class="row" :class="{ 'show-report': showReport, 'hide-report' : !showReport}">
                   <!-- <div class="col-12 ">
