@@ -312,6 +312,10 @@
               <input type="file" hidden ref="uploadButton" @change="audioSelected">
             </label>
           </div>
+          <div class="col-12 text-danger">
+          <div class="col-8">Upload voice  of MP3,must be 4mb size  </div>
+          <div class="col-4">must not exceed 30sec</div>
+          </div>
       </div>
 
 
