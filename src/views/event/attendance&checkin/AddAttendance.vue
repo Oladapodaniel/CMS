@@ -1766,10 +1766,10 @@ export default {
   height: 70%;
 }
 
-.img-border {
-  /* border: 1px dotted rgb(206, 212, 218); */
-  /* height: 150px; */
-}
+/* .img-border {
+  border: 1px dotted rgb(206, 212, 218); 
+  height: 150px;
+} */
 
 .show-paid {
   height: 327px;
