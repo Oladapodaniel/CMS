@@ -73,17 +73,6 @@
                   v-model="person.address"
                 />
               </div>
-              <!-- <div class="input-field"  v-for="item in dynamicCustomFields" :key="item.id">
-                <label for="" class="label">{{ item.label }}</label>
-                <input 
-                      v-if="item.controlType == 0"
-                      class=" input form-control "
-                      type="text"
-                      aria-required=""
-                      v-model="item.data"
-                  />
-              </div> -->
-              <!-- <div  > -->
               <div
                 v-for="item in dynamicCustomFields"
                 :key="item.id"
