@@ -861,27 +861,32 @@
 <script>
 import moment from "moment";
 import { ref, reactive, computed } from "vue";
-import router from "@/router/index";
+// import router from "@/router/index";
 // import store from "../../store/store"
 import axios from "@/gateway/backendapi";
 import { useRoute } from "vue-router";
 // import { getCurrentInstance } from "vue";
-import InputText from "primevue/inputtext";
+// import InputText from "primevue/inputtext";
 import Calendar from "primevue/calendar";
 import Dropdown from "primevue/dropdown";
 import { useToast } from "primevue/usetoast";
 import { useStore } from "vuex";
+// import { useConfirm } from "primevue/useconfirm";
 import membershipService from "../../services/membership/membershipservice";
 import swal from "sweetalert";
 // import lookupService from "../../services/lookup/lookupservice";
 
 export default {
-  components: { Dropdown, Calendar, InputText },
+  components: { Dropdown, Calendar, 
+  
+  // InputText
+   },
   setup() {
     // const $toast = getCurrentInstance().ctx.$toast;
     const toast = useToast();
     const store = useStore();
     const hideCelebTab = ref(false);
+    // const confirm = useConfirm();
     const hideAddInfoTab = ref(true);
     const showCelebTab = () => (hideCelebTab.value = !hideCelebTab.value);
     const showAddInfoTab = () => (hideAddInfoTab.value = !hideAddInfoTab.value);
@@ -1112,7 +1117,7 @@ export default {
       console.log(dynamicCustomFields.value, "😊😍🤣🤣😂");
       console.log(formData);
       /*eslint no-undef: "warn"*/
-      NProgress.start();
+      // NProgress.start();
       try {
         loading.value = true;
         let response = await axios.post(
@@ -1148,7 +1153,7 @@ export default {
       } catch (err) {
         console.log(err);
         loading.value = false;
-        NProgress.done();
+        // NProgress.done();
         if (err.toString().toLowerCase().includes("network error")) {
           toast.add({
             severity: "warn",
@@ -1236,7 +1241,7 @@ export default {
       return maritalStatus.value.map((i) => i.value);
     });
 
-    // const memberToEdit = ref({});
+    const memberToEdit = ref({});
 
     // const getPersonGenderId = () => {
     //   if (memberToEdit.value && memberToEdit.value.personId) {
@@ -1462,7 +1467,7 @@ export default {
       addPerson,
       peopleClassifications,
       url,
-      // memberToEdit,
+      memberToEdit,
       imageSelected,
       uploadImage,
       loading,
