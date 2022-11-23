@@ -44,18 +44,15 @@ export default {
     async getCurrentUser() {
       try {
         const res = await axios.get("/api/Membership/GetCurrentSignedInUser");
-        console.log(res)
         store.dispatch("setCurrentUser", res.data);
         if (res.data.subStatus.toLowerCase() === 'expired'){
             return router.push('/errorpage/expiredSubscription')
         }
       } catch (err) {
-         console.log(err,'something')
         /*eslint no-undef: "warn"*/
         NProgress.done();
         if (err.response && err.response.status === 401) {
           localStorage.setItem("token", "");
-          // store.dispatch('logout')
           router.push("/");
         }
       }

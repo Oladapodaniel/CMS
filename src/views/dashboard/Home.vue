@@ -1,49 +1,25 @@
 <template>
-<div>
-  <div class="whole-page">
-    <div class="links-menu" :class="{ 'show' : menuShouldShow }">
-      <MenuLinks @linkclicked="hideNav" />
+  <div>
+    <div class="whole-page">
+      <div class="links-menu" :class="{ 'show': menuShouldShow }">
+        <MenuLinks @linkclicked="hideNav" />
+      </div>
+      <div
+        :class="{ 'main-con dim': !route.fullPath.includes('/mobileonboarding') && !route.fullPath.includes('/onboardingsuccessful'), 'top-router': route.query.fw }"
+        @click="hideMenu">
+        <router-view class="view" />
+      </div>
     </div>
-    <div :class="{ 'main-con dim' :  !route.fullPath.includes('/mobileonboarding') && !route.fullPath.includes('/onboardingsuccessful'), 'top-router': route.query.fw }" @click="hideMenu">
-      <!-- <transition name="fade" mode="out-in"> -->
-      <!-- <div
-        aria-live="polite"
-        aria-atomic="true"
-        style="position: relative; min-height: 200px"
-      >
-        <div class="toast" style="position: absolute; top: 0; right: 0">
-          <div class="toast-header">
-            <img src="" class="rounded mr-2" alt="..." />
-            <strong class="mr-auto">Bootstrap</strong>
-            <small>11 mins ago</small>
-            <button
-              type="button"
-              class="ml-2 mb-1 close"
-              data-dismiss="toast"
-              aria-label="Close"
-            >
-              <span aria-hidden="true">&times;</span>
-            </button>
-          </div>
-          <div class="toast-body">Hello, world! This is a toast message.</div>
-        </div>
-      </div> -->
-
-      <router-view class="view" />
-      <!-- </transition> -->
-      <!-- <router-view></router-view> -->
+    <div class="toggle" @click="toggleMenu">
+      <i class="pi pi-bars"></i>
     </div>
   </div>
-      <div class="toggle" @click="toggleMenu">
-        <i class="pi pi-bars"></i>
-      </div>
-</div>
 </template>
 
 <script>
-import { ref} from "vue";
+import { ref } from "vue";
 import MenuLinks from "../../components/nav/MenuLinks.vue";
-import { useRoute }  from "vue-router"
+import { useRoute } from "vue-router"
 
 export default {
   components: { MenuLinks },
@@ -51,7 +27,6 @@ export default {
   setup() {
     const menuShouldShow = ref(false);
     const fullPath = ref("")
-    // const followUpUser = ref(true)
 
     const toggleMenu = () => (menuShouldShow.value = !menuShouldShow.value);
 
@@ -65,30 +40,11 @@ export default {
       }
     }
 
-    // const isGroupLeader  = computed(() => {
-    //   const retrievedUser = JSON.parse(localStorage.getItem('roles'));
-    //   console.log('retrievedUser: ', retrievedUser);
-    //    if (retrievedUser && retrievedUser.length === 1  && retrievedUser[0] === 'GroupLeader') return true;
-    //    return false;
-    // })
-
     const route = useRoute()
     const getRoute = () => {
-      console.log(route.fullPath)
       fullPath.value = route.fullPath
     }
     getRoute()
-
-    // const getRole =  () => {
-    //   const getRoles = JSON.parse(localStorage.getItem('roles'));
-    //   if (getRoles && getRoles.length === 1 && getRoles[0] === "FollowUp") {
-    //     followUpUser.value = false
-    //   } else {
-    //     followUpUser.value = true
-    //   }
-    //   console.log(getRoles)
-    // }
-    // getRole()
 
     return {
       menuShouldShow,
@@ -97,8 +53,6 @@ export default {
       hideNav,
       fullPath,
       route,
-      // isGroupLeader,
-      // followUpUser
     };
   },
 };
@@ -126,17 +80,17 @@ export default {
 }
 
 .hide-menu {
-    display: none;
-    /* position: fixed; */
-    width: 0 !important;
-    left: -266px;
-    z-index: 9;
-    /* transition: all 0.5s cubic-bezier(0.645, 0.045, 0.355, 1); */
-  }
+  display: none;
+  /* position: fixed; */
+  width: 0 !important;
+  left: -266px;
+  z-index: 9;
+  /* transition: all 0.5s cubic-bezier(0.645, 0.045, 0.355, 1); */
+}
 
-  .show-menu {
-    display: block;
-  }
+.show-menu {
+  display: block;
+}
 
 
 /* Hide scrollbar for Chrome, Safari and Opera */
@@ -146,8 +100,10 @@ export default {
 
 /* Hide scrollbar for IE, Edge and Firefox */
 .links-menu {
-  -ms-overflow-style: none;  /* IE and Edge */
-  scrollbar-width: none;  /* Firefox */
+  -ms-overflow-style: none;
+  /* IE and Edge */
+  scrollbar-width: none;
+  /* Firefox */
 }
 
 .main-con {
@@ -163,8 +119,10 @@ export default {
 
 /* Hide scrollbar for IE, Edge and Firefox */
 .main-con {
-  -ms-overflow-style: none; /* IE and Edge */
-  scrollbar-width: none; /* Firefox */
+  -ms-overflow-style: none;
+  /* IE and Edge */
+  scrollbar-width: none;
+  /* Firefox */
 }
 
 .toggle {
