@@ -734,22 +734,18 @@ export default {
       return [];
     });
     const LineGraphXAxis = computed(() => {
-      if (selectedPeriod.value.name === "This Week")
+      if (
+        selectedPeriod.value.name === "This Week" ||
+        selectedPeriod.value.name === "One Week" ||
+        selectedPeriod.value.name === "Last Week" ||
+        selectedPeriod.value.name === "This Month" ||
+        selectedPeriod.value.name === "Last Month" ||
+        selectedPeriod.value.name === "Last 30days" ||
+        selectedPeriod.value.name === "Last 90days" ||
+        selectedPeriod.value.name === "One Year"
+      )
         return [1, 2, 3, 4, 5, 6, 7];
-      if (selectedPeriod.value.name === "One Week")
-        return [1, 2, 3, 4, 5, 6, 7];
-      if (selectedPeriod.value.name === "Last Week")
-        return [1, 2, 3, 4, 5, 6, 7];
-      if (selectedPeriod.value.name === "This Month")
-        return [1, 2, 3, 4, 5, 6, 7];
-      if (selectedPeriod.value.name === "Last Month")
-        return [1, 2, 3, 4, 5, 6, 7];
-      if (selectedPeriod.value.name === "Last 30days")
-        return [1, 2, 3, 4, 5, 6, 7];
-      if (selectedPeriod.value.name === "Last 90days")
-        return [1, 2, 3, 4, 5, 6, 7];
-      if (selectedPeriod.value.name === "One Year")
-        return [1, 2, 3, 4, 5, 6, 7];
+        return [];
     });
 
     const amountWithCommas = (amount) =>
