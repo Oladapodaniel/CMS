@@ -464,7 +464,7 @@
           <span class="text-bold">Upload File : </span>
         </div>
         <div class="col-12 col-sm-9 d-flex mb-0">
-          <input type="text " class="form-control" v-model="voice.name" />
+          <input type="file " class="form-control" v-model="voice.name" disabled= "true">
           <label
             class="
               col-md-5
@@ -500,7 +500,7 @@
               pt-0
               lab
             "
-            @click="uploadVoice"
+            
             >Upload Voice
             <input
               type="file"
@@ -510,8 +510,8 @@
             />
           </label>
         </div>
-        <div class="col-12 text-danger">
-          <div class="col-8">Upload voice of MP3,must be 4mb size</div>
+        <div class="col-12 text-danger ">
+          <div class="col-8 d-flex justify-content-center">Upload voice of MP3,must be 4mb size</div>
           <div class="col-4">must not exceed 30sec</div>
         </div>
       </div>
