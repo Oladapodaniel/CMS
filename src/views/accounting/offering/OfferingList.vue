@@ -555,6 +555,7 @@ import ContributionAreaChart from "../../../components/charts/AreaChart.vue";
 import numbers_formatter from "../../../services/numbers/numbers_formatter";
 import store from "../../../store/store";
 import loadingComponent from "@/components/loading/LoadingComponent";
+import stopProgressBar from "../../../services/progressbar/progress";
 export default {
   props: ["contributionTransactions", "totalItem"],
   emits: ["marked"],
@@ -628,21 +629,21 @@ export default {
           let incomingRes = res.data;
           console.log(incomingRes, "🙌❤🙌❤🙌");
           // if (incomingRes.response.toString().toLowerCase().includes("Successful")) {
-            toast.add({
-              severity: "success",
-              summary: "Confirmed",
-              detail: "Offering(s) deleted successfully.",
-              life: 4000,
-            });
-            // attendanceList.value = attendanceList.value.filter((item) => {
-            //       const y = checkedAttendance.value.findIndex(
-            //         (i) => i.id === item.id
-            //       );
-            //        console.log(y , "old are u now");
-            //       if (y >= 0) return false;
-            //       return true;
-            //     });
-            emit("marked", marked.value);
+          toast.add({
+            severity: "success",
+            summary: "Confirmed",
+            detail: "Offering(s) deleted successfully.",
+            life: 4000,
+          });
+          // attendanceList.value = attendanceList.value.filter((item) => {
+          //       const y = checkedAttendance.value.findIndex(
+          //         (i) => i.id === item.id
+          //       );
+          //        console.log(y , "old are u now");
+          //       if (y >= 0) return false;
+          //       return true;
+          //     });
+          emit("marked", marked.value);
           // }
           // checkedAttendance.value = [];
         })
@@ -1058,22 +1059,18 @@ export default {
       return [];
     });
     const LineGraphXAxis = computed(() => {
-      if (selectedPeriod.value.name === "This Week")
+      if (
+        selectedPeriod.value.name === "This Week" ||
+        selectedPeriod.value.name === "One Week" ||
+        selectedPeriod.value.name === "Last Week" ||
+        selectedPeriod.value.name === "This Month" ||
+        selectedPeriod.value.name === "Last Month" ||
+        selectedPeriod.value.name === "Last 30days" ||
+        selectedPeriod.value.name === "Last 90days" ||
+        selectedPeriod.value.name === "One Year"
+      )
         return [1, 2, 3, 4, 5, 6, 7];
-      if (selectedPeriod.value.name === "One Week")
-        return [1, 2, 3, 4, 5, 6, 7];
-      if (selectedPeriod.value.name === "Last Week")
-        return [1, 2, 3, 4, 5, 6, 7];
-      if (selectedPeriod.value.name === "This Month")
-        return [1, 2, 3, 4, 5, 6, 7];
-      if (selectedPeriod.value.name === "Last Month")
-        return [1, 2, 3, 4, 5, 6, 7];
-      if (selectedPeriod.value.name === "Last 30days")
-        return [1, 2, 3, 4, 5, 6, 7];
-      if (selectedPeriod.value.name === "Last 90days")
-        return [1, 2, 3, 4, 5, 6, 7];
-      if (selectedPeriod.value.name === "One Year")
-        return [1, 2, 3, 4, 5, 6, 7];
+        return [];
     });
 
     const amountWithCommas = (amount) =>
