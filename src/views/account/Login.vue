@@ -138,6 +138,10 @@
         </template>
       </Dialog>
     </div>
+    here
+    <el-button type="success">Success</el-button>
+    <el-button size="large" :icon="Search" round>Search</el-button>
+    <el-button type="primary" plain round :loading="false">Loading</el-button>
   </div>
 </template>
 
