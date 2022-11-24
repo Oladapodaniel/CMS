@@ -465,27 +465,29 @@
         </div>
         <div class="col-12 col-sm-9 d-flex mb-0">
           <input type="file " class="form-control" v-model="voice.name" disabled= "true">
-          <label
+          <div
             class="
+              border-0
               col-md-5
               d-none d-sm-flex
               justify-content-center
               p-2
               w-100
-              border
               mt-0
               pt-0
+              outline-none
               lab
             "
             @click="uploadVoice"
             >Upload Voice
+          </div>
             <input
               type="file"
               hidden
               ref="uploadButton"
               @change="audioSelected"
+              accept=".mp3, .wav"
             />
-          </label>
         </div>
         <div class="col-12 col-sm-9 pl-md-0 d-flex mb-0">
           <label
@@ -495,7 +497,7 @@
               justify-content-center
               p-2
               w-100
-              border
+              border-0
               mt-0
               pt-0
               lab
@@ -507,13 +509,14 @@
               hidden
               ref="uploadButton"
               @change="audioSelected"
+              accept=".mp3, .wav"
             />
           </label>
         </div>
-        <div class="col-12 text-danger ">
+        <!-- <div class="col-12 text-danger ">
           <div class="col-8 d-flex justify-content-center">Upload voice of MP3,must be 4mb size</div>
           <div class="col-4">must not exceed 30sec</div>
-        </div>
+        </div> -->
       </div>
 
       <!-- start voice -->
@@ -1598,8 +1601,9 @@ export default {
   font-size: 14px;
   font-weight: 800;
   background-color: rgb(236, 230, 230);
-
-  /* height: 37px; */
+}
+.btn:hover{
+  border: none !important;
 }
 
 .input {
