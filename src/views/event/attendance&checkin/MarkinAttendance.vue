@@ -487,6 +487,8 @@ export default {
   components: {
     Dropdown,
     MultiSelect,
+    InputText
+
   },
   setup() {
     const connectName = ref("");
