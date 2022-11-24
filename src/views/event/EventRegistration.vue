@@ -478,7 +478,8 @@ export default {
     Dropdown,
     PaymentOptionModal,
     FamilyWards,
-    Calendar
+    Calendar,
+    InputText
   },
   setup() {
     const connectName = ref("");
