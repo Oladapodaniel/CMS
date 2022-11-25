@@ -1,0 +1,9 @@
+/* Element plus component restyle */
+
+.el-input__wrapper {
+ padding: 6px 11px !important;
+}
+
+.primary--text {
+    color: #136acd;
+}

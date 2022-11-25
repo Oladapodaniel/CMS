@@ -112,6 +112,7 @@ export default {
 
 <style>
 @import "./styles/style.css";
+@import "./styles/styles2.css";
 
 #app {
   -webkit-font-smoothing: antialiased;

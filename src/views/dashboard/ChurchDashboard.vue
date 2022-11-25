@@ -582,29 +582,7 @@ export default {
     const toggleMoreLinkVissibility = () => {
       moreLinksVissible.value != moreLinksVissible.value;
     };
-    const fxRates = async () =>{
-      try{
-        let { data } = await axio.get('https://churcchplusbackgroundprocessor.azurewebsites.net/fxRates')
-        console.log(data, 'thehreh');
-      }
-      catch(error){
-        console.log(error);
-      }
-    }
-    fxRates()
-
-    // onMounted(() =>{
-    //   axio.get('https://churcchplusbackgroundprocessor.azurewebsites.net/fxRates')
-    //   .then((res)=>{
-    //     console.log(res, "thfxRates")
-    //   }).catch(((error)=>{
-    //     console.log(error);
-    //   }))
-    // })
-    // const mixinsCurrentUser = () => {
-    //   console.log(store.getters.currentUser)
-    // };
-
+   
     const celebrations = [];
     // const route = useRoute();
 
@@ -853,11 +831,6 @@ export default {
       planUserIs.value = res.description;
       getRenewalDate.value = res.subscriptionExpiration;
       useSubscriptionResponse.value = res;
-      console.log(res, "iiiopiop");
-      // let d = new Date(res.subscriptionExpiration);
-      // d.setDate(d.getDate() - 4)
-      //     warningAgainstExpire.value = d
-      //     console.log(warningAgainstExpire.value, "warning")
     });
     // 
 
