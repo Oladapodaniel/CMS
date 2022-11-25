@@ -356,7 +356,6 @@ export default {
         const dueDate = ref([])
         const dueDateRef = ref("")
         const selectedDueDate = ref({})
-        const reminder = ref(getReminder)
         const reminderRef = ref("")
         const selectedReminder = ref({})
         // const allContacts = ref([])
@@ -725,6 +724,8 @@ export default {
                 return result
            }
         })
+
+        const reminder = ref(getReminder)
 
         const setPriority = (payload) => {
             priorityRef.value.hide();
