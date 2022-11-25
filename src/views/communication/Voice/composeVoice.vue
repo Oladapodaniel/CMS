@@ -91,8 +91,8 @@
       </div>
 
       <div class="row" v-if="sendToAll">
-        <div class="col-md-2"></div>
-        <div class="col-md-10 px-0">
+        <div class="col-12 col-sm-3"></div>
+        <div class="col-12 col-sm-9 ">
           <span>
             <input
               class="form-control dropdown-toggle my-1 px-1 small-text"
@@ -104,7 +104,7 @@
             <span
               class="close-allcontacts c-pointer"
               @click="() => (sendToAll = false)"
-              ><i class="pi pi-times"></i
+              ><i class="pi pi-times mx-2"></i
             ></span>
           </span>
         </div>
@@ -198,9 +198,11 @@
       <!-- End TEst -->
 
       <!-- Start member TEst -->
+      <div class="col-12 my-1 px-0">
+
       <div class="row" v-if="membershipSelectionTab">
-        <div class="col-md-2"></div>
-        <div class="col-md-10 pl-0 grey-rounded-border">
+        <div class="col-12 col-sm-3"></div>
+        <div class="col-12 col-sm-9 grey-rounded-border">
           <ul
             class="d-flex flex-wrap px-1 mb-0 m-dd-item"
             @click="() => memberSelectInput.focus()"
@@ -284,13 +286,14 @@
           </div>
         </div>
       </div>
+      </div>
       <!-- End member TEst -->
 
       <!-- Select Person from DB -->
-      <div class="col-md-12 my-1 px-0" v-if="false">
+      <div class="col-12 my-1 px-0" v-if="false">
         <div class="row">
-          <div class="col-md-2"></div>
-          <div class="col-md-10 py-2 px-0 grey-rounded-border">
+          <div class="col-12 col-sm-3"></div>
+          <div class="col-12 col-sm-9 grey-rounded-border">
             <span
               class="email-destination m-1"
               v-for="(member, indx) in selectedMembers"
@@ -386,10 +389,10 @@
       </div>
 
       <!-- Enter phone numbers -->
-      <div class="col-md-9 my-1 px-0" v-if="phoneNumberSelectionTab">
+      <div class="col-12 my-1 px-0" v-if="phoneNumberSelectionTab">
         <div class="row">
-          <div class="col-md-2"></div>
-          <div class="col-md-10 py-2 px-0">
+          <div class="col-12 col-sm-3"></div>
+          <div class="col-12 col-sm-9">
             <textarea
               class="form-control w-100 px-1 grey-rounded-border"
               placeholder="Enter phone number(s)"
@@ -427,8 +430,8 @@
 
       <!-- Start upload contact -->
       <div v-if="contactUpload" class="row my-1">
-        <div class="col-sm-2"></div>
-        <div class="col-sm-10 px-0 grey-rounded-border p-2">
+        <div class="col-12 col-sm-3"></div>
+        <div class="col-12 col-sm-9 grey-rounded-border p-2">
           <div class="d-flex justify-content-between">
             <input type="file" class="form-control-file" @change="uploadFile" />
             <div>
