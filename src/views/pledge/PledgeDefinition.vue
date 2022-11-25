@@ -899,65 +899,6 @@
                       </div>
                     </div>
                   </div>
-              <!-- <div class="col-md-1">
-                    <div
-                      class="d-flex small justify-content-between "
-                    >
-                      <span
-                        class="
-                          text-dark
-                          font-weight-bold
-                          d-flex d-md-none
-                          fontIncrease
-                        "
-                        style="font-size: 15px"
-                        >Pledges</span
-                      >
-                      <div class="small-text text-right text-md-center">
-                        pledgelist.pledgeCount
-                      </div>
-                    </div>
-                  </div> -->
-
-              <!-- <div class="col-md-1">
-                    <div>
-                      <div class="dropdown">
-                        <span class="d-flex justify-content-between">
-                          <span class="d-md-none d-sm-flex"></span>
-                          <span class="d-sm-flex small">
-                            <i
-                              class="
-                                fas
-                                fa-ellipsis-v
-                                cursor-pointer
-                                ml-2
-                                fontIncrease
-                              "
-                              id="dropdownMenuButton"
-                              data-toggle="dropdown"
-                              aria-haspopup="true"
-                              aria-expanded="false"
-                            ></i>
-
-                            <div
-                              class="dropdown-menu"
-                              aria-labelledby="dropdownMenuButton"
-                            >
-                          
-                                class="dropdown-item"
-                             
-                                ><a class="text-decoration-none">Delete </a></a
-                              >
-
-                              
-                                <a class="text-decoration-none">Edit </a>
-                            
-                            </div>
-                          </span>
-                        </span>
-                      </div>
-                    </div>
-                  </div> -->
             </div>
           </div>
         </div>
