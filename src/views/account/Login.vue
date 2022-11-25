@@ -56,10 +56,10 @@
         <div class="container">
           <div class="row mt-2">
             <div class="col-12"></div>
-            <div class="col-sm-1 align-self-center">
+            <div class="col-sm-2 align-self-center">
               Email <span class="text-danger">*</span>
             </div>
-            <div class="col-sm-11">
+            <div class="col-sm-10">
               <el-input type="text" label="Email" v-model="invalidEmailObj.email" />
             </div>
           </div>
@@ -106,7 +106,7 @@ export default {
       notAUser: false,
     });
     const loading = ref(false);
-    const displayModal = ref(false);
+    const displayModal = ref(true);
     const invalidEmailObj = ref({});
     const emailLoading = ref(false)
 
@@ -223,7 +223,6 @@ export default {
             .post("/Login/Facebook", token)
             .then((res) => {
               finish();
-              console.log(res, "login");
               if (res.data.success === "Email Required") {
                 displayModal.value = true;
                 invalidEmailObj.value = res.data;
@@ -234,7 +233,7 @@ export default {
               } else {
                 localStorage.setItem("email", res.data.username);
                 localStorage.setItem("pretoken", res.data.token);
-                if (res.data.username) router.push("/onboarding");
+                router.push("/onboarding");
               }
             })
             .catch((err) => {
@@ -255,7 +254,11 @@ export default {
         );
         displayModal.value = false;
         emailLoading.value = false
-        console.log(res);
+        ElNotification({
+          title: 'Success',
+          message: 'Email saved successfully',
+          type: 'success',
+        })
         if (res.data.isOnboarded) {
           localStorage.setItem("email", res.data.username);
           localStorage.setItem("token", res.data.token);
