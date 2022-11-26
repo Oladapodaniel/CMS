@@ -281,7 +281,6 @@ export default {
       state,
       login,
       loading,
-      facebookLogin,
       displayModal,
       invalidEmailObj,
       saveEmail,
