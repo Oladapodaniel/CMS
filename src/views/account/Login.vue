@@ -106,7 +106,7 @@ export default {
       notAUser: false,
     });
     const loading = ref(false);
-    const displayModal = ref(true);
+    const displayModal = ref(false);
     const invalidEmailObj = ref({});
     const emailLoading = ref(false)
 
@@ -419,6 +419,7 @@ export default {
 
 .facebook-btn {
   background: #3b5998;
+  cursor: pointer;
 }
 
 .fb-icon {
