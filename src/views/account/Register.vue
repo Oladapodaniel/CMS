@@ -203,7 +203,7 @@ export default {
       show: false,
       loading: false,
       showResetLink: true,
-      displayModal: true,
+      displayModal: false,
       invalidEmailObj: {},
       emailLoading: false
     };
