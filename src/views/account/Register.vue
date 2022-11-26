@@ -171,7 +171,7 @@ import axios from "@/gateway/backendapi";
 import router from '../../router/index';
 import FBlogin from "@/mixins/facebookLogin"
 import store from "../../store/store";
-import { reactive } from "vue";
+import { reactive, ref } from "vue";
 
 export default {
   mixins: [FBlogin],
@@ -181,30 +181,30 @@ export default {
       firstName: "First name",
       lastName: "Last name",
     })
-    const showError = false
-    const errorMessage = ""
-    const show = false
-    const loading = false
-    const showResetLink = true
-    const displayModal = false
-    const invalidEmailObj = {}
-    const emailLoading = false
+    const showError = ref(false)
+    const errorMessage = ref("")
+    const show = ref(false)
+    const loading = ref(false)
+    const showResetLink = ref(true)
+    const displayModal = ref(false)
+    const invalidEmailObj = ref({})
+    const emailLoading = ref(false)
 
 
 
 
     const register = () => {
       const routeQuery = router.currentRoute.value.query
-      routeQuery.ref ? credentials.value.referrer = routeQuery.ref : ""
+      routeQuery.ref ? credentials.referrer = routeQuery.ref : ""
       loading.value = true;
       showError.value = false;
       axios
-        .post("/initialsignup", credentials.value)
+        .post("/initialsignup", credentials)
         .then((res) => {
           loading.value = false;
           console.log(res, "register response");
-          store.dispatch("setUserEmail", credentials.value.email);
-          localStorage.setItem("email", credentials.value.email);
+          store.dispatch("setUserEmail", credentials.email);
+          localStorage.setItem("email", credentials.email);
           router.push("/onboarding");
         })
         .catch((err) => {
@@ -212,7 +212,7 @@ export default {
           NProgress.done();
           loading.value = false;
           console.log(err.response);
-          localStorage.setItem("email", credentials.value.email)
+          localStorage.setItem("email", credentials.email)
           if (err.response && err.response.status === 400) {
             if (err.response.data === false) {
               router.push("/onboarding")
@@ -235,11 +235,11 @@ export default {
     const resetPassword = async() => {
       try {
         const { data } = await axios.post(
-          `/forgotpassword/${credentials.value.email}`
+          `/forgotpassword/${credentials.email}`
         );
         router.push({
           name: "EmailSent",
-          params: { email: credentials.value.email }
+          params: { email: credentials.email }
         });
       } catch (error) {
         NProgress.done();
