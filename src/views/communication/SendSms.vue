@@ -1115,7 +1115,7 @@ export default {
             
             swal({
               title: "Success!",
-              text: "Your email has been sent successfully!",
+              text: "Your sms has been sent successfully!",
               icon: "success",
               buttons: ["Send another", "Good"],
               confirmButtonColor: '#8CD4F5',
