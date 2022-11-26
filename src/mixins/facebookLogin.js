@@ -1,5 +1,6 @@
 import axios from "@/gateway/backendapi";
 import finish from "../services/progressbar/progress";
+import router from "../router/index";
 
 const FBLogin = {
     methods: {
@@ -30,8 +31,7 @@ const FBLogin = {
                     finish();
                     console.log(err);
                   });
-              },
-              // { scope: "user_birthday" }
+              }
             );
           }
     }
