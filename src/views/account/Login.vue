@@ -88,7 +88,7 @@ import { useGtag } from "vue-gtag-next";
 import FBlogin from "@/mixins/facebookLogin"
 
 export default {
-  mixins: [FBlogin],
+  // mixins: [FBlogin],
   setup() {
     const { event } = useGtag()
     const track = () => {
@@ -108,9 +108,7 @@ export default {
       notAUser: false,
     });
     const loading = ref(false);
-    const displayModal = ref(false);
-    const invalidEmailObj = ref({});
-    const emailLoading = ref(false)
+    const {facebookLogin, displayModal, saveEmail, emailLoading, invalidEmailObj} = FBlogin()
 
 
 
@@ -256,7 +254,9 @@ export default {
       loading,
       displayModal,
       invalidEmailObj,
-      emailLoading
+      emailLoading,
+      facebookLogin,
+      saveEmail
     };
   },
 };

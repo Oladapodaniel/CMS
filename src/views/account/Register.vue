@@ -169,7 +169,7 @@
 <script>
 import axios from "@/gateway/backendapi";
 import router from '../../router/index';
-// import FBlogin from "@/mixins/facebookLogin"
+import FBlogin from "@/mixins/facebookLogin"
 import store from "../../store/store";
 import { reactive, ref } from "vue";
 
@@ -186,50 +186,48 @@ export default {
     const show = ref(false)
     const loading = ref(false)
     const showResetLink = ref(true)
-    const displayModal = ref(false)
-    const invalidEmailObj = ref({})
-    const emailLoading = ref(false)
+    const {facebookLogin, displayModal, saveEmail, emailLoading, invalidEmailObj} = FBlogin()
 
 
 
 
     const register = () => {
-      // const routeQuery = router.currentRoute.value.query
-      // routeQuery.ref ? credentials.referrer = routeQuery.ref : ""
-      // loading.value = true;
-      // showError.value = false;
-      // axios
-      //   .post("/initialsignup", credentials)
-      //   .then((res) => {
-      //     loading.value = false;
-      //     console.log(res, "register response");
-      //     store.dispatch("setUserEmail", credentials.email);
-      //     localStorage.setItem("email", credentials.email);
-      //     router.push("/onboarding");
-      //   })
-      //   .catch((err) => {
-      //     /*eslint no-undef: "warn"*/
-      //     NProgress.done();
-      //     loading.value = false;
-      //     console.log(err.response);
-      //     localStorage.setItem("email", credentials.email)
-      //     if (err.response && err.response.status === 400) {
-      //       if (err.response.data === false) {
-      //         router.push("/onboarding")
-      //         return false;
-      //       }
-      //       const { message } = err.response.data;
-      //       if (message.includes("Sequence contains more than one element")) {
-      //         errorMessage.value = "There seems to be a problem with this account, please";
-      //         showResetLink.value = false;
-      //       } else {
-      //         errorMessage.value = message ? message : "An error occurred";
-      //       }
-      //       showError.value = true;
-      //     } else {
-      //       errorMessage.value = "An error occurred, ensure you are connected to the internet";
-      //     }
-      //   });
+      const routeQuery = router.currentRoute.value.query
+      routeQuery.ref ? credentials.referrer = routeQuery.ref : ""
+      loading.value = true;
+      showError.value = false;
+      axios
+        .post("/initialsignup", credentials)
+        .then((res) => {
+          loading.value = false;
+          console.log(res, "register response");
+          store.dispatch("setUserEmail", credentials.email);
+          localStorage.setItem("email", credentials.email);
+          router.push("/onboarding");
+        })
+        .catch((err) => {
+          /*eslint no-undef: "warn"*/
+          NProgress.done();
+          loading.value = false;
+          console.log(err.response);
+          localStorage.setItem("email", credentials.email)
+          if (err.response && err.response.status === 400) {
+            if (err.response.data === false) {
+              router.push("/onboarding")
+              return false;
+            }
+            const { message } = err.response.data;
+            if (message.includes("Sequence contains more than one element")) {
+              errorMessage.value = "There seems to be a problem with this account, please";
+              showResetLink.value = false;
+            } else {
+              errorMessage.value = message ? message : "An error occurred";
+            }
+            showError.value = true;
+          } else {
+            errorMessage.value = "An error occurred, ensure you are connected to the internet";
+          }
+        });
     }
 
     const resetPassword = async() => {
@@ -258,31 +256,13 @@ export default {
       invalidEmailObj,
       emailLoading,
       register,
-      resetPassword
+      resetPassword,
+      facebookLogin,
+      saveEmail
     }
   }
   // data() {
-  //   return {
-  //     // passwordIsVissible: false,
-  //     // passwordType: "password",
-  //     // showBtnText: "Show",
 
-  //   };
-  // },
-
-  // methods: {
-  //   // showPassword(e) {
-  //   //   e.preventDefault();
-  //   //   if (!this.credentials.password) return false;
-  //   //   this.passwordType = this.passwordIsVissible ? "password" : "text";
-  //   //   this.passwordIsVissible = !this.passwordIsVissible;
-  //   //   this.showBtnText = this.passwordIsVissible ? "Hide" : "Show";
-  //   // },
-
-    
-
-    
-  // },
 };
 </script>
 
