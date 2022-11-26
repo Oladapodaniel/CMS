@@ -2,9 +2,7 @@
   <div>
     <div class="main-section">
       <div class="logo-con">
-        <a class="logo-link"
-          ><img src="../../assets/churchplus-logo.png" alt="Churchplus Logo"
-        /></a>
+        <a class="logo-link"><img src="../../assets/churchplus-logo.png" alt="Churchplus Logo" /></a>
       </div>
       <div class="header">
         <div class="top-con">
@@ -23,17 +21,10 @@
         <div class="error-div" v-if="showError">
           <p class="error-message">
             {{ errorMessage }}
-            <span
-              v-if="showResetLink"
-              >OR
+            <span v-if="showResetLink">OR
               <span>
-                <a
-                  class="font-weight-bold text-decoration-none c-pointer"
-                  @click="resetPassword"
-                  >click here to reset your password</a
-                ></span
-              ></span
-            >
+                <a class="font-weight-bold text-decoration-none c-pointer" @click="resetPassword">click here to reset
+                  your password</a></span></span>
             <span v-else>
               <a href="mailto:support@churchplus.co" class="font-weight-700 primary-text">Contact Support</a>
             </span>
@@ -88,9 +79,7 @@
             <el-input type="password" placeholder="Password" v-model="credentials.password" show-password />
           </el-form-item>
           <div class="f-password-div">
-            <span class="password-tip password-help"
-              >At least 6 characters, but longer is better.</span
-            >
+            <span class="password-tip password-help">At least 6 characters, but longer is better.</span>
           </div>
           <el-form-item>
             <el-button size="large" color="#17c5cf" @click="register" class="w-100" :loading="loading" round>
@@ -136,13 +125,9 @@
           <p>
             By signing up, you are indicating that you have read and agree to
             the
-            <router-link to="/termsofuse" class="terms-link"
-              >Terms of Use</router-link
-            >
+            <router-link to="/termsofuse" class="terms-link">Terms of Use</router-link>
             and
-            <router-link to="/termsofuse" class="terms-link"
-              >Privacy Policy.</router-link
-            >
+            <router-link to="/termsofuse" class="terms-link">Privacy Policy.</router-link>
           </p>
         </div>
 
@@ -156,26 +141,26 @@
           </div>
         </div>
         <el-dialog v-model="displayModal" title="Please enter your email" width="80%" align-center>
-        <div class="container">
-          <div class="row mt-2">
-            <div class="col-12"></div>
-            <div class="col-sm-2 align-self-center">
-              Email <span class="text-danger">*</span>
-            </div>
-            <div class="col-sm-10">
-              <el-input type="text" label="Email" v-model="invalidEmailObj.email" />
+          <div class="container">
+            <div class="row mt-2">
+              <div class="col-12"></div>
+              <div class="col-sm-2 align-self-center">
+                Email <span class="text-danger">*</span>
+              </div>
+              <div class="col-sm-10">
+                <el-input type="text" label="Email" v-model="invalidEmailObj.email" />
+              </div>
             </div>
           </div>
-        </div>
-        <template #footer>
-          <span class="dialog-footer">
-            <el-button @click="displayModal = false" color="#136acd" plain round>Cancel</el-button>
-            <el-button type="primary" @click="saveEmail" :loading="emailLoading" color="#136acd" round>
-              Confirm
-            </el-button>
-          </span>
-        </template>
-      </el-dialog>
+          <template #footer>
+            <span class="dialog-footer">
+              <el-button @click="displayModal = false" color="#136acd" plain round>Cancel</el-button>
+              <el-button type="primary" @click="saveEmail" :loading="emailLoading" color="#136acd" round>
+                Confirm
+              </el-button>
+            </span>
+          </template>
+        </el-dialog>
       </div>
     </div>
   </div>
@@ -185,118 +170,119 @@
 import axios from "@/gateway/backendapi";
 import router from '../../router/index';
 import FBlogin from "@/mixins/facebookLogin"
+import store from "../../store/store";
+import { reactive } from "vue";
 
 export default {
   mixins: [FBlogin],
-  data() {
-    return {
-      // passwordIsVissible: false,
-      // passwordType: "password",
-      // showBtnText: "Show",
-      credentials: {
-        ChurchName: "Default Church",
-        firstName: "First name",
-        lastName: "Last name",
-      },
-      showError: false,
-      errorMessage: "",
-      show: false,
-      loading: false,
-      showResetLink: true,
-      displayModal: false,
-      invalidEmailObj: {},
-      emailLoading: false
-    };
-  },
+  setup() {
+    const credentials = reactive({
+      ChurchName: "Default Church",
+      firstName: "First name",
+      lastName: "Last name",
+    })
+    const showError = false
+    const errorMessage = ""
+    const show = false
+    const loading = false
+    const showResetLink = true
+    const displayModal = false
+    const invalidEmailObj = {}
+    const emailLoading = false
 
-  methods: {
-    // showPassword(e) {
-    //   e.preventDefault();
-    //   if (!this.credentials.password) return false;
-    //   this.passwordType = this.passwordIsVissible ? "password" : "text";
-    //   this.passwordIsVissible = !this.passwordIsVissible;
-    //   this.showBtnText = this.passwordIsVissible ? "Hide" : "Show";
-    // },
 
-    register() {
-      const routeQuery = this.$router.currentRoute.value.query
-      routeQuery.ref ? this.credentials.referrer = routeQuery.ref : ""
-      this.loading = true;
-      this.showError = false;
+
+
+    const register = () => {
+      const routeQuery = router.currentRoute.value.query
+      routeQuery.ref ? credentials.value.referrer = routeQuery.ref : ""
+      loading.value = true;
+      showError.value = false;
       axios
-        .post("/initialsignup", this.credentials)
+        .post("/initialsignup", credentials.value)
         .then((res) => {
-          this.loading = false;
+          loading.value = false;
           console.log(res, "register response");
-          this.$store.dispatch("setUserEmail", this.credentials.email);
-          localStorage.setItem("email", this.credentials.email);
-          this.$router.push("/onboarding");
+          store.dispatch("setUserEmail", credentials.value.email);
+          localStorage.setItem("email", credentials.value.email);
+          router.push("/onboarding");
         })
         .catch((err) => {
           /*eslint no-undef: "warn"*/
           NProgress.done();
-          this.loading = false;
+          loading.value = false;
           console.log(err.response);
-          localStorage.setItem("email", this.credentials.email)
+          localStorage.setItem("email", credentials.value.email)
           if (err.response && err.response.status === 400) {
             if (err.response.data === false) {
-              this.$router.push("/onboarding")
+              router.push("/onboarding")
               return false;
             }
-
-            
             const { message } = err.response.data;
             if (message.includes("Sequence contains more than one element")) {
-              this.errorMessage = "There seems to be a problem with this account, please";
-              this.showResetLink = false;
+              errorMessage.value = "There seems to be a problem with this account, please";
+              showResetLink.value = false;
             } else {
-              this.errorMessage = message ? message : "An error occurred";
+              errorMessage.value = message ? message : "An error occurred";
             }
-            this.showError = true;
+            showError.value = true;
           } else {
-            this.errorMessage = "An error occurred, ensure you are connected to the internet";
+            errorMessage.value = "An error occurred, ensure you are connected to the internet";
           }
         });
-    },
+    }
 
-    facebookRegister() {
-        FB.login(function(response) {
-          let token = {
-          accessToken: response.authResponse.accessToken
-        }
-        console.log(response, "facebook");
-        axios.post('https://churchplusv3coreapi.azurewebsites.net/Login/Facebook', token)
-          .then(res => {
-            if (res.data.isOnboarded) {
-              localStorage.setItem("email", res.data.username)
-              localStorage.setItem("token", res.data.token);
-              router.push("/tenant");
-            } else {
-              localStorage.setItem("email", 'gstargerrald@ovi.com')
-              // localStorage.setItem("token", res.data.token);
-              router.push("/onboarding");
-            }
-          })
-          .catch(err => console.log(err))
-        }, {scope: 'user_birthday'});
-      },
-
-    async resetPassword() {
+    const resetPassword = async() => {
       try {
         const { data } = await axios.post(
-          `/forgotpassword/${this.credentials.email}`
+          `/forgotpassword/${credentials.value.email}`
         );
-        console.log(data.id, "reset data");
-        this.$router.push({
+        router.push({
           name: "EmailSent",
-          params: { email: this.credentials.email }
+          params: { email: credentials.value.email }
         });
       } catch (error) {
         NProgress.done();
         console.log(error);
       }
-    },
-  },
+    }
+
+    return {
+      credentials,
+      showError,
+      errorMessage,
+      show,
+      loading,
+      showResetLink,
+      displayModal,
+      invalidEmailObj,
+      emailLoading,
+      register,
+      resetPassword
+    }
+  }
+  // data() {
+  //   return {
+  //     // passwordIsVissible: false,
+  //     // passwordType: "password",
+  //     // showBtnText: "Show",
+
+  //   };
+  // },
+
+  // methods: {
+  //   // showPassword(e) {
+  //   //   e.preventDefault();
+  //   //   if (!this.credentials.password) return false;
+  //   //   this.passwordType = this.passwordIsVissible ? "password" : "text";
+  //   //   this.passwordIsVissible = !this.passwordIsVissible;
+  //   //   this.showBtnText = this.passwordIsVissible ? "Hide" : "Show";
+  //   // },
+
+    
+
+    
+  // },
 };
 </script>
 
@@ -334,7 +320,8 @@ export default {
 }
 
 .form-container {
-  max-width: 400px; /* sign up*/
+  max-width: 400px;
+  /* sign up*/
   margin: auto;
 }
 
@@ -353,6 +340,7 @@ export default {
   border: 1px solid #b2c2cd;
   margin: 4px 0;
 }
+
 .input::placeholder {
   font-style: italic;
   color: #b2c2cd;
@@ -423,6 +411,7 @@ export default {
   flex-direction: row;
   color: #8b9ba5;
 }
+
 .or:before,
 .or:after {
   content: "";
@@ -434,6 +423,7 @@ export default {
 .or:before {
   margin-right: 10px;
 }
+
 .or:after {
   margin-left: 10px;
 }
