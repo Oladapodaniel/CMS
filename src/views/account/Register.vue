@@ -99,7 +99,7 @@
             <el-divider>
               or
             </el-divider>
-            <div class="facebook-btn btn-logo sign-in-btn">
+            <div class="facebook-btn btn-logo sign-in-btn" @click="facebookLogin">
               <img src="../../assets/facebook-small.png" class="fb-icon" alt="Facebook Icon" />
               <span>Sign in with Facebook</span>
               <span></span>
@@ -154,21 +154,28 @@
               <!-- <router-link to="/" class="sign-up"><strong> Sign in now</strong></router-link> -->
             </p>
           </div>
-          <a
-            class="fb-login-button"
-            id="fb"
-            data-width="380px"
-            data-size="large"
-            scope="public_profile,email"
-            onlogin="checkLoginState();"
-            data-button-type="continue_with"
-            data-layout="rounded"
-            data-auto-logout-link="false"
-            data-use-continue-as="false"
-            ref="loginFacebook"
-            style="margin-top: 10px"
-          ></a>
         </div>
+        <el-dialog v-model="displayModal" title="Please enter your email" width="80%" align-center>
+        <div class="container">
+          <div class="row mt-2">
+            <div class="col-12"></div>
+            <div class="col-sm-2 align-self-center">
+              Email <span class="text-danger">*</span>
+            </div>
+            <div class="col-sm-10">
+              <el-input type="text" label="Email" v-model="invalidEmailObj.email" />
+            </div>
+          </div>
+        </div>
+        <template #footer>
+          <span class="dialog-footer">
+            <el-button @click="displayModal = false" color="#136acd" plain round>Cancel</el-button>
+            <el-button type="primary" @click="saveEmail" :loading="emailLoading" color="#136acd" round>
+              Confirm
+            </el-button>
+          </span>
+        </template>
+      </el-dialog>
       </div>
     </div>
   </div>
@@ -177,8 +184,10 @@
 <script>
 import axios from "@/gateway/backendapi";
 import router from '../../router/index';
+import FBlogin from "@/mixins/facebookLogin"
 
 export default {
+  mixins: [FBlogin],
   data() {
     return {
       // passwordIsVissible: false,
@@ -194,6 +203,9 @@ export default {
       show: false,
       loading: false,
       showResetLink: true,
+      displayModal: true,
+      invalidEmailObj: {},
+      emailLoading: false
     };
   },
 

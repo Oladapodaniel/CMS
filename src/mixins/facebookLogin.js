@@ -1,6 +1,7 @@
 import axios from "@/gateway/backendapi";
 import finish from "../services/progressbar/progress";
 import router from "../router/index";
+import { ElNotification } from 'element-plus'
 
 const FBLogin = {
     methods: {
@@ -32,8 +33,36 @@ const FBLogin = {
                     console.log(err);
                   });
               }
-            );
-          }
+            )
+          },
+          async saveEmail () {
+            emailLoading.value = true
+            try {
+              const res = await axios.post(
+                "/Register/Facebook",
+                invalidEmailObj.value
+              )
+              displayModal.value = false;
+              emailLoading.value = false
+              ElNotification({
+                title: 'Success',
+                message: 'Email saved successfully',
+                type: 'success',
+              })
+              if (res.data.isOnboarded) {
+                localStorage.setItem("email", res.data.username);
+                localStorage.setItem("token", res.data.token);
+                router.push("/tenant");
+              } else {
+                localStorage.setItem("email", res.data.username);
+                localStorage.setItem("pretoken", res.data.token);
+                if (res.data.username) router.push("/onboarding");
+              }
+            } catch (err) {
+              console.log(err);
+              emailLoading.value = false
+            }
+          }       
     }
 }
 
