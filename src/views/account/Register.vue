@@ -40,7 +40,7 @@
           </p>
         </div>
 
-        <form @submit.prevent="register">
+        <!-- <form @submit.prevent="register">
           <div>
             <input
               type="email"
@@ -78,10 +78,36 @@
             <i class="fas fa-circle-notch fa-spin" v-if="loading"></i>
             <span>Get Started</span>
             <span></span>
-          </button>
-        </form>
+          </button> 
+        </form>-->
+        <el-form :model="state" class="mt-3" @keyup.enter.native="register">
+          <el-form-item>
+            <el-input type="email" placeholder="Email" v-model="credentials.email" />
+          </el-form-item>
+          <el-form-item>
+            <el-input type="password" placeholder="Password" v-model="credentials.password" show-password />
+          </el-form-item>
+          <div class="f-password-div">
+            <span class="password-tip password-help"
+              >At least 6 characters, but longer is better.</span
+            >
+          </div>
+          <el-form-item>
+            <el-button size="large" color="#17c5cf" @click="register" class="w-100" :loading="loading" round>
+              Get Started
+            </el-button>
+            <el-divider>
+              or
+            </el-divider>
+            <div class="facebook-btn btn-logo sign-in-btn">
+              <img src="../../assets/facebook-small.png" class="fb-icon" alt="Facebook Icon" />
+              <span>Sign in with Facebook</span>
+              <span></span>
+            </div>
+          </el-form-item>
+        </el-form>
 
-        <div style="margin: 24px 0">
+        <!-- <div style="margin: 24px 0">
           <span class="or">or</span>
         </div>
 
@@ -95,7 +121,7 @@
 
         <div>
           <button class="facebook-btn btn-logo sign-in-btn">
-          <!-- <button class="facebook-btn btn-logo sign-in-btn" @click="facebookRegister"> -->
+          <button class="facebook-btn btn-logo sign-in-btn" @click="facebookRegister">
             <img
               src="../../assets/facebook-small.png"
               class="fb-icon"
@@ -104,7 +130,7 @@
             <span>Sign up with Facebook</span>
             <span></span>
           </button>
-        </div>
+        </div> -->
 
         <div class="terms">
           <p>
@@ -155,9 +181,9 @@ import router from '../../router/index';
 export default {
   data() {
     return {
-      passwordIsVissible: false,
-      passwordType: "password",
-      showBtnText: "Show",
+      // passwordIsVissible: false,
+      // passwordType: "password",
+      // showBtnText: "Show",
       credentials: {
         ChurchName: "Default Church",
         firstName: "First name",
@@ -172,13 +198,13 @@ export default {
   },
 
   methods: {
-    showPassword(e) {
-      e.preventDefault();
-      if (!this.credentials.password) return false;
-      this.passwordType = this.passwordIsVissible ? "password" : "text";
-      this.passwordIsVissible = !this.passwordIsVissible;
-      this.showBtnText = this.passwordIsVissible ? "Hide" : "Show";
-    },
+    // showPassword(e) {
+    //   e.preventDefault();
+    //   if (!this.credentials.password) return false;
+    //   this.passwordType = this.passwordIsVissible ? "password" : "text";
+    //   this.passwordIsVissible = !this.passwordIsVissible;
+    //   this.showBtnText = this.passwordIsVissible ? "Hide" : "Show";
+    // },
 
     register() {
       const routeQuery = this.$router.currentRoute.value.query
