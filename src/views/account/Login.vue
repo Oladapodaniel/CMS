@@ -256,7 +256,6 @@ export default {
       loading,
       displayModal,
       invalidEmailObj,
-      saveEmail,
       emailLoading
     };
   },

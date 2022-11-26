@@ -80,7 +80,7 @@
             <span></span>
           </button> 
         </form>-->
-        <el-form :model="state" class="mt-3" @keyup.enter.native="register">
+        <el-form :model="credentials" class="mt-3" @keyup.enter.native="register">
           <el-form-item>
             <el-input type="email" placeholder="Email" v-model="credentials.email" />
           </el-form-item>
