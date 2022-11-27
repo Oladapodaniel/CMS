@@ -96,31 +96,6 @@
           </el-form-item>
         </el-form>
 
-        <!-- <div style="margin: 24px 0">
-          <span class="or">or</span>
-        </div>
-
-        <div v-if="false">
-          <button class="facebook-btn btn-logo sign-in-btn google-sign-up">
-            <img src="../../assets/google.png" alt="Google Icon" />
-            <span>Sign in with Google</span>
-            <span></span>
-          </button>
-        </div>
-
-        <div>
-          <button class="facebook-btn btn-logo sign-in-btn">
-          <button class="facebook-btn btn-logo sign-in-btn" @click="facebookRegister">
-            <img
-              src="../../assets/facebook-small.png"
-              class="fb-icon"
-              alt="Google Icon"
-            />
-            <span>Sign up with Facebook</span>
-            <span></span>
-          </button>
-        </div> -->
-
         <div class="terms">
           <p>
             By signing up, you are indicating that you have read and agree to
@@ -135,8 +110,7 @@
           <div>
             <p class="sign-up-prompt">
               Already have an account?
-              <a href="/" class="sign-up"><strong> Sign in now</strong></a>
-              <!-- <router-link to="/" class="sign-up"><strong> Sign in now</strong></router-link> -->
+              <router-link to="/" class="sign-up"><span class="primary--text"> Sign in now</span></router-link>
             </p>
           </div>
         </div>
@@ -174,7 +148,6 @@ import store from "../../store/store";
 import { reactive, ref } from "vue";
 
 export default {
-  // mixins: [FBlogin],
   setup() {
     const credentials = reactive({
       ChurchName: "Default Church",

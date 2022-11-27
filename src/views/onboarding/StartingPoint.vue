@@ -5,7 +5,7 @@
         <div class="welcome-onboard">
           <div class="welcome-intro">
             <div v-if="!processing">
-              <h1>Hey {{ name }}</h1>
+              <h1>Hey {{ userDetails.firstName ? userDetails.firstName : "" }}</h1>
               <h2>What would you like to do in Churchplus?</h2>
             </div>
           </div>
@@ -14,67 +14,61 @@
 
       <div class="options-div" :class="{ box2: processing }">
         <div class="options-container" v-if="screenWidth > 990 || !processing">
-          <div class="step-count">
+          <div class="step-count mt-4">
             <h3>STEP 2 OF 2</h3>
           </div>
 
-          <div class="start-text">
+          <div class="start-text hidden-sm-and-down">
             <h2>Choose a starting point</h2>
           </div>
 
-          <div class="more-later">
+          <div class="more-later hidden-sm-and-down">
             <span>You can do more later</span>
           </div>
 
+          <div class="start-text hidden-md-and-up">
+            <h2>Hey {{ userDetails.firstName ? userDetails.firstName : "" }}</h2>
+          </div>
+
+          <div class="more-later hidden-md-and-up">
+            <span>What would you like to do in churchplus</span>
+          </div>
+
+
           <div class="all-options">
-            <!-- <router-link :to="{ name: 'ProcessRequest', params: { option: '/tenant/sms/compose' }}" class="start-option">
-              <div class="icon">
-                <img
-                  class="link-icon"
-                  src="../../assets/sms-email.svg"
-                  alt="Sms Icon"
-                />
-              </div>
-              <div class="link-n-icon">
-                <a class="claim-offer">Claim your 500 unit now</a>
-                <p class="my-auto"><i class="fas fa-angle-right"></i></p>
-              </div>
-            </router-link> -->
             <div class=" w-100 ml-2 ">
-              <button type="button" class="btn start-option" @click="toggleSmsOffer" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+              <button type="button" class="btn start-option" @click="toggleSmsOffer" data-toggle="dropdown"
+                aria-haspopup="true" aria-expanded="false">
                 <span class="icon  ">
-                  <img
-                  class="link-icon "
-                  src="../../assets/claim-sms-offer.png"
-                  alt="Sms Icon"
-                />
+                  <img class="link-icon " src="../../assets/claim-sms-offer.png" alt="Sms Icon" />
                 </span>
                 <span class=" ml-2 pl-1 font-weight-bold text-warning">
-                    Claim your 500 unit now
+                  
+                  <a class="start-link text-success">Claim your 500 unit now</a>
                 </span>
                 <span class="d-flex justify-content-end  font-weight-bold" style="font-size: 25px; width: 16%;">
-                    <!-- <i class="fas fa-angle-down "></i> -->
-                    <i class="fas fa-angle-right " :class="{ 'tbb-icon-rotate': smsOfferDropped }" ></i>
+                  <!-- <i class="fas fa-angle-down "></i> -->
+                  <i class="fas fa-angle-right " :class="{ 'tbb-icon-rotate': smsOfferDropped }"></i>
                 </span>
               </button>
-              <div class="dropdown-menu " >
+              <div class="dropdown-menu ">
                 <a class="dropdown-item " href="">
                   <p class="font-weight-bold">Terms and Conditions</p>
-                  <p class="small font-weight-bold">1. Buy 1000units or above and get 500units free <br>2. Offer is open to both new and existing customers <br>3. This is a one time offer for the duration of this campaign</p>
+                  <p class="small font-weight-bold">1. Buy 1000units or above and get 500units free <br>2. Offer is open
+                    to both new and existing customers <br>3. This is a one time offer for the duration of this campaign
+                  </p>
                 </a>
                 <div class="dropdown-divider"></div>
-                <router-link :to="{name: 'BuyUnits', params: {option: '/tenant/units' }}" class="dropdown-item d-flex justify-content-between bg-primary text-white font-weight-bold">
+                <router-link :to="{ name: 'BuyUnits', params: { option: '/tenant/units' } }"
+                  class="dropdown-item d-flex justify-content-between bg-primary text-white font-weight-bold">
                   <span> Buy SMS</span> <i class="fas fa-angle-right"></i>
                 </router-link>
               </div>
             </div>
-            <router-link :to="{ name: 'ProcessRequest', params: { option: '/tenant/sms/compose' }}" class="start-option">
+            <router-link :to="{ name: 'ProcessRequest', params: { option: '/tenant/sms/compose' } }"
+              class="start-option">
               <div class="icon">
-                <img
-                  class="link-icon"
-                  src="../../assets/sms-email.svg"
-                  alt="Sms Icon"
-                />
+                <img class="link-icon" src="../../assets/sms-email.svg" alt="Sms Icon" />
               </div>
               <div class="link-n-icon">
                 <a class="start-link">Send Email/SMS</a>
@@ -82,16 +76,10 @@
               </div>
             </router-link>
 
-            <router-link
-              class="start-option"
-              :to="{ name: 'ProcessRequest', params: { option: '/tenant/people/add' }}"
-            >
+            <router-link class="start-option" :to="{ name: 'ProcessRequest', params: { option: '/tenant/people/add' } }">
               <div class="icon">
-                <img
-                  class="link-icon link-icon-no-bg"
-                  src="../../assets/people/add-church-members.svg"
-                  alt="Add member Icon"
-                />
+                <img class="link-icon link-icon-no-bg" src="../../assets/people/add-church-members.svg"
+                  alt="Add member Icon" />
               </div>
               <div class="link-n-icon">
                 <a class="start-link">Add church members</a>
@@ -99,16 +87,10 @@
               </div>
             </router-link>
 
-            <router-link
-              class="start-option"
-              :to="{ name: 'ProcessRequest', params: { option: '/tenant/people/addfirsttimer' }}"
-            >
+            <router-link class="start-option"
+              :to="{ name: 'ProcessRequest', params: { option: '/tenant/people/addfirsttimer' } }">
               <div class="icon">
-                <img
-                  class="link-icon"
-                  src="../../assets/first-timers.svg"
-                  alt="First Timers Icon"
-                />
+                <img class="link-icon" src="../../assets/first-timers.svg" alt="First Timers Icon" />
               </div>
               <div class="link-n-icon">
                 <a class="start-link">Add first timers</a>
@@ -116,13 +98,9 @@
               </div>
             </router-link>
 
-            <router-link class="start-option" :to="{ name: 'ProcessRequest', params: { option: '/next' }}">
+            <router-link class="start-option" :to="{ name: 'ProcessRequest', params: { option: '/next' } }">
               <div class="icon">
-                <img
-                  class="link-icon"
-                  src="../../assets/not-sure.svg"
-                  alt="Question Icon"
-                />
+                <img class="link-icon" src="../../assets/not-sure.svg" alt="Question Icon" />
               </div>
               <div class="link-n-icon">
                 <a class="start-link">Not sure yet</a>
@@ -151,14 +129,14 @@ export default {
     return {
       smsOfferDropped: false,
       processing: false,
-      name: "",
       screenWidth: window.innerWidth,
       userId: "",
+      userDetails: {}
     };
   },
 
   methods: {
-    toggleSmsOffer(){
+    toggleSmsOffer() {
       this.smsOfferDropped = !this.smsOfferDropped
     },
     onboardUser(url) {
@@ -181,19 +159,9 @@ export default {
     },
   },
 
-  // async created() {
-  //   const currentUser = this.$store.getters.currentUser;
-  //   if (currentUser.tenantId) {
-  //     this.userId = currentUser.tenantId;
-  //   } else {
-  //     try {
-  //       const res = await axios.get("/api/Membership/GetCurrentSignedInUser");
-  //       this.userId = res.data.tenantId
-  //   } catch (err) {
-  //       console.log(err, "in store");
-  //     }
-  //   }
-  // },
+  async created() {
+    this.userDetails = this.$store.getters.onboardingData
+  },
 
   mounted() {
     this.$store.dispatch("setUserUp", true);
@@ -205,7 +173,6 @@ export default {
 </script>
 
 <style scoped>
-
 .tbb-icon-rotate {
   transition: all 0.5s ease-in-out;
   transform: rotate(90deg);
@@ -362,6 +329,7 @@ a {
   text-transform: capitalize;
   color: #215fc4;
 }
+
 .claim-offer {
   font-weight: 900;
   padding: 0 1rem;

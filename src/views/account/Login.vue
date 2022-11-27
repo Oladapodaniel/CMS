@@ -83,12 +83,10 @@ import { ElNotification } from 'element-plus'
 import { reactive, ref } from "vue";
 import router from "../../router/index";
 import setupService from "../../services/setup/setupservice";
-// import finish from "../../services/progressbar/progress";
 import { useGtag } from "vue-gtag-next";
 import FBlogin from "@/mixins/facebookLogin"
 
 export default {
-  // mixins: [FBlogin],
   setup() {
     const { event } = useGtag()
     const track = () => {
@@ -109,8 +107,6 @@ export default {
     });
     const loading = ref(false);
     const {facebookLogin, displayModal, saveEmail, emailLoading, invalidEmailObj} = FBlogin()
-
-
 
     const login = async () => {
       signInLoading.value = true
@@ -212,39 +208,6 @@ export default {
         }
       }
     };
-
-    // const facebookLogin = () => {
-    //   FB.login(
-    //     function (response) {
-    //       let token = {
-    //         accessToken: response.authResponse.accessToken,
-    //       };
-    //       axios
-    //         .post("/Login/Facebook", token)
-    //         .then((res) => {
-    //           finish();
-    //           if (res.data.success === "Email Required") {
-    //             displayModal.value = true;
-    //             invalidEmailObj.value = res.data;
-    //           } else if (res.data.isOnboarded) {
-    //             localStorage.setItem("email", res.data.username);
-    //             localStorage.setItem("token", res.data.token);
-    //             router.push("/tenant");
-    //           } else {
-    //             localStorage.setItem("email", res.data.username);
-    //             localStorage.setItem("pretoken", res.data.token);
-    //             router.push("/onboarding");
-    //           }
-    //         })
-    //         .catch((err) => {
-    //           finish();
-    //           console.log(err);
-    //         });
-    //     },
-    //     // { scope: "user_birthday" }
-    //   );
-    // };
-
     
 
     return {
