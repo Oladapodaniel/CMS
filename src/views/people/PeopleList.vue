@@ -67,14 +67,31 @@
 
           <!-- Modal body -->
           <div class="modal-body">
-            <Dropdown
+            <div class="container-fluid">
+              <div class="row">
+                <button class="  btn d-flex justify-content-between  col-12 border  " type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                    <span class="ofering">
+                        &nbsp;&nbsp;&nbsp; {{ chooseGrouptoMoveto.name ?  chooseGrouptoMoveto.name : 'Select a Group' }}
+                    </span>
+                    <span>
+                        <i class="pi pi-angle-down offset-sm-2 ofering"></i>
+                    </span>
+                </button>
+                <div class="dropdown-menu scroll w-100 " aria-labelledby="dropdownMenuButton">
+                    <a class="dropdown-item" v-for="(itm, indx) in getAllGroups" :key="indx">
+                        <div class="cursor-pointer" @click="chooseGroupto(itm)"> {{itm.name}}</div> 
+                    </a>
+                </div>
+              </div>
+            </div>
+            <!-- <Dropdown
               v-model="chooseGrouptoMoveto"
               optionLabel="name"
               :options="getAllGroups"
               placeholder="Select a Group"
               style="width: 100%"
             >
-            </Dropdown>
+            </Dropdown> -->
           </div>
 
           <!-- Modal footer -->
@@ -109,14 +126,31 @@
 
           <!-- Modal body -->
           <div class="modal-body">
-            <Dropdown
+            <div class="container-fluid">
+              <div class="row">
+                <button class="  btn d-flex justify-content-between  col-12 border  " type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                    <span class="ofering">
+                        &nbsp;&nbsp;&nbsp; {{ chooseGrouptoMoveAllMembers.name ?  chooseGrouptoMoveAllMembers.name : 'Select a Group' }}
+                    </span>
+                    <span>
+                        <i class="pi pi-angle-down offset-sm-2 ofering"></i>
+                    </span>
+                </button>
+                <div class="dropdown-menu scroll w-100 " aria-labelledby="dropdownMenuButton">
+                    <a class="dropdown-item" v-for="(itmx, indx) in getAllGroups" :key="indx">
+                        <div class="cursor-pointer" @click="chooseGroupforAllmembers(itmx)"> {{itmx.name}}</div> 
+                    </a>
+                </div>
+              </div>
+            </div>
+            <!-- <Dropdown
               v-model="chooseGrouptoMoveAllMembers"
               optionLabel="name"
               :options="getAllGroups"
               placeholder="Select a Group"
               style="width: 100%"
             >
-            </Dropdown>
+            </Dropdown> -->
           </div>
 
           <!-- Modal footer -->
@@ -581,11 +615,20 @@ export default {
     const positionArchive = ref('center');
     const displayPositionArchive = ref(false);
     const filtered = ref(false);
+    const chooseGrouptoMoveto = ref({});
 
     const toggleFilterFormVissibility = () =>
       (filterFormIsVissible.value = !filterFormIsVissible.value);
 
     const membershipSummary = ref([]);
+
+    const chooseGroupto = (items) =>{
+      chooseGrouptoMoveto.value = items
+    }
+
+    const chooseGroupforAllmembers = (item) =>{
+      chooseGrouptoMoveAllMembers.value = item
+    }
 
     const deleteMember = (id) => {
       axios
@@ -963,7 +1006,6 @@ export default {
     };
     getGroups();
 
-    const chooseGrouptoMoveto = ref({});
     const moveMemberToGroup = () => {
       let peopleMoved = marked.value.map((i) => {
         return {
@@ -1090,6 +1132,8 @@ export default {
 
     return {
       churchMembers,
+      chooseGroupto,
+      chooseGroupforAllmembers,
       getAllMembersAndAddToGroup,
       getCurrentlySignedInUser,
       getPeopleByPage,
@@ -1159,6 +1203,11 @@ export default {
 
 .itemroute-color {
   color: #136acd;
+}
+.scroll {
+  max-height: 200px;
+  overflow-y: scroll;
+  overflow-x: hidden;
 }
 
 a {

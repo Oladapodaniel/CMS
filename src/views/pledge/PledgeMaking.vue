@@ -1143,27 +1143,6 @@ export default {
     const active = (payload) => {
       isActive.value = payload;
     };
-    // const getAllPledgeDefinition = async () => {
-    //   try {
-    //     checking.value = false;
-    //     const res = await axios.get("/api/Pledge/GetAllPledgeDefinitions");
-    //     finish();
-    //     allPledgeList.value = res.data.returnObject;
-
-    //     getDetails();
-    //     isActive.value = res.data.returnObject.map((i) => {
-    //       return {
-    //         isActive: i.isActive,
-    //       };
-    //     });
-    //     console.log(allPledgeList.value, "getPledgeList");
-    //     checking.value = true;
-    //   } catch (error) {
-    //     console.log(error);
-    //   }
-    // };
-    // getAllPledgeDefinition();
-
     // const getDetails = () => {
     //   selectedPledge.value = allPledgeList.value.find(
     //     (i) => i.id === route.query.id

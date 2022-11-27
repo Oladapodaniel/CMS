@@ -4182,6 +4182,7 @@ tr.event-list td {
   border-radius: 8px;
   font-size: 1.2em;
   font-weight: 600;
+  background-color:#ECF0F3;
 }
 
 .select-elem-con:hover {

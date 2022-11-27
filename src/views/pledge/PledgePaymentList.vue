@@ -9,21 +9,6 @@
               
             </div>
             <div class="col-md-6 d-flex head-button mt-2 my-1 link">
-              <!-- <router-link to="/tenant/pledge/pledge">
-                <button class="default-btn mr-3">Pledge Category </button> 
-              </router-link> -->
-              <!-- <router-link
-                to="/tenant/pledge/pledgepayment"
-                class="
-                  grey-border
-                  primary-btn
-                  default-btn
-                  primary-bg
-                  border-0
-                  small-screen
-                "
-                >Add Pledge Payment form</router-link
-              > -->
             </div>
             <div class="col-md-12 px-0">
               <hr class="hr my-3" />
