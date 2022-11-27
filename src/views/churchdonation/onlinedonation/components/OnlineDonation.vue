@@ -3,7 +3,6 @@
     <div class="row table">
       <div class="col-12 mt-4 w-100">
         <div class="row">
-          <!-- {{donationSummary}} -->
           <div class="col-12 col-md-4">
             <div class="col-12 mb-5">
               <Dropdown
