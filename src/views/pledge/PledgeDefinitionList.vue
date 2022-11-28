@@ -364,8 +364,7 @@
 
 <script>
 import { ref, computed } from "vue";
-import finish from "../../services/progressbar/progress";
-// import MembersSearch from "../../components/membership/MembersSearch.vue";
+import finish from "../../services/progressbar/progress"
 import axios from "@/gateway/backendapi";
 import Dropdown from "primevue/dropdown";
 import { useToast } from "primevue/usetoast";
@@ -401,7 +400,7 @@ export default {
 
       // console.log(payload, 'my allll')
     };
-
+    console.log(Secrets.VUE_APP_FLUTTERWAVE_PUBLIC_KEY_LIVE, "uyuiyoiuyoiuoiupioupoip");
     const getAllPledgeDefinition = async () => {
       loading.value = true;
       try {
