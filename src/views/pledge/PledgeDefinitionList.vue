@@ -400,7 +400,7 @@ export default {
 
       // console.log(payload, 'my allll')
     };
-    console.log(Secrets.VUE_APP_FLUTTERWAVE_PUBLIC_KEY_LIVE, "uyuiyoiuyoiuoiupioupoip");
+
     const getAllPledgeDefinition = async () => {
       loading.value = true;
       try {
