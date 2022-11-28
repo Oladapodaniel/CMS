@@ -37,33 +37,50 @@
 
           <div class="all-options">
             <div class=" w-100 ml-2 ">
-              <button type="button" class="btn start-option" @click="toggleSmsOffer" data-toggle="dropdown"
-                aria-haspopup="true" aria-expanded="false">
-                <span class="icon  ">
-                  <img class="link-icon " src="../../assets/claim-sms-offer.png" alt="Sms Icon" />
-                </span>
-                <span class=" ml-2 pl-1 font-weight-bold text-warning">
-                  
-                  <a class="start-link text-success">Claim your 500 unit now</a>
-                </span>
-                <span class="d-flex justify-content-end  font-weight-bold" style="font-size: 25px; width: 16%;">
-                  <!-- <i class="fas fa-angle-down "></i> -->
-                  <i class="fas fa-angle-right " :class="{ 'tbb-icon-rotate': smsOfferDropped }"></i>
-                </span>
-              </button>
-              <div class="dropdown-menu ">
-                <a class="dropdown-item " href="">
-                  <p class="font-weight-bold">Terms and Conditions</p>
-                  <p class="small font-weight-bold">1. Buy 1000units or above and get 500units free <br>2. Offer is open
-                    to both new and existing customers <br>3. This is a one time offer for the duration of this campaign
-                  </p>
-                </a>
-                <div class="dropdown-divider"></div>
-                <router-link :to="{ name: 'BuyUnits', params: { option: '/tenant/units' } }"
-                  class="dropdown-item d-flex justify-content-between bg-primary text-white font-weight-bold">
-                  <span> Buy SMS</span> <i class="fas fa-angle-right"></i>
-                </router-link>
-              </div>
+              <el-dropdown class="w-100" trigger="click">
+                <el-button type="primary" class="start-option">
+                  <span class="icon  ">
+                    <img class="link-icon " src="../../assets/claim-sms-offer.png" alt="Sms Icon" />
+                  </span>
+                  <span class="font-weight-bold text-warning">
+
+                    <a class="start-link text-success">Claim your 500 unit now</a>
+                  </span>
+                  <span class="d-flex justify-content-end  font-weight-bold adjust-width">
+                    <!-- <i class="fas fa-angle-down "></i> -->
+                    <i class="fas fa-angle-right " :class="{ 'tbb-icon-rotate': smsOfferDropped }"></i>
+                  </span>
+                  <!-- Dropdown List<el-icon class="el-icon--right"><arrow-down /></el-icon> -->
+                </el-button>
+                <template #dropdown>
+                  <el-dropdown-menu>
+                    <p class="font-weight-bold px-3 pt-3" style="font-size: 1.2em">Terms and Conditions</p>
+                    <p style="font-size: 1.2em" class="px-3">
+                      <el-icon color="green">
+                        <CircleCheck />
+                      </el-icon> Buy 1000 units or above and get 500units free <br> <br>
+                      <el-icon color="green">
+                        <CircleCheck />
+                      </el-icon> Offer is
+                      open
+                      to both new and existing customers <br> <br>
+                      <el-icon color="green">
+                        <CircleCheck />
+                      </el-icon> This is a one time offer for the duration of this
+                      campaign
+                    </p>
+                    <el-dropdown-item>
+                      <router-link :to="{ name: 'BuyUnits', params: { option: '/tenant/units' } }"
+                        class="d-flex justify-content-between text-primary font-weight-bold w-100 align-items-center">
+                        <span>Buy SMS now</span>
+                        <el-icon class="el-icon--right">
+                          <arrow-right />
+                        </el-icon>
+                      </router-link>
+                    </el-dropdown-item>
+                  </el-dropdown-menu>
+                </template>
+              </el-dropdown>
             </div>
             <router-link :to="{ name: 'ProcessRequest', params: { option: '/tenant/sms/compose' } }"
               class="start-option">
@@ -76,7 +93,8 @@
               </div>
             </router-link>
 
-            <router-link class="start-option" :to="{ name: 'ProcessRequest', params: { option: '/tenant/people/add' } }">
+            <router-link class="start-option"
+              :to="{ name: 'ProcessRequest', params: { option: '/tenant/people/add' } }">
               <div class="icon">
                 <img class="link-icon link-icon-no-bg" src="../../assets/people/add-church-members.svg"
                   alt="Add member Icon" />
@@ -284,6 +302,7 @@ a {
 .start-option {
   display: flex;
   align-items: center;
+  justify-content: start;
   justify-self: center;
   width: 97%;
   text-align: center;
@@ -396,6 +415,11 @@ a {
   .main {
     margin-top: 0;
   }
+
+  .adjust-width {
+    font-size: 25px;
+    width: 25%;
+  }
 }
 
 @media screen and (min-width: 991px) {
@@ -409,6 +433,11 @@ a {
 
   .all-options {
     max-width: 330px;
+  }
+
+  .adjust-width {
+    font-size: 25px;
+    width: 13%;
   }
 }
 </style>

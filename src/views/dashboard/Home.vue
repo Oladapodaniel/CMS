@@ -10,9 +10,14 @@
         <router-view class="view" />
       </div>
     </div>
+  <div class="">
     <div class="toggle" @click="toggleMenu">
-      <i class="pi pi-bars"></i>
+      <i class="pi pi-bars"></i> Menu
     </div>
+    <div>
+      Gospel International Parish
+    </div>
+  </div>
   </div>
 </template>
 
@@ -127,12 +132,12 @@ export default {
 
 .toggle {
   display: none;
-  width: 30px;
-  text-align: center;
+  /* width: 30px; */
+  /* text-align: center; */
   position: absolute;
-  top: 4px;
-  left: 40px;
-  font-size: 30px;
+  top: 0px;
+  left: 0px;
+  /* font-size: 30px; */
 }
 
 .toggle:hover {

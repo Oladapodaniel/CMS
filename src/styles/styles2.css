@@ -1,7 +1,11 @@
 /* Element plus component restyle */
 
 .el-input__wrapper {
- padding: 6px 11px !important;
+    padding: 6px 11px !important;
+}
+
+button.el-button.el-button--primary.start-option > span {
+    width: 100% !important
 }
 
 .primary--text {
