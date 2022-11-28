@@ -602,7 +602,8 @@ export default {
                 let { data } = await axio.post(`https://api.ravepay.co/flwv3-pug/getpaidx/api/resolve_account`, {
                     recipientaccount: accountNumber.value,
                     destbankcode: selectedBank.value.code,
-                    PBFPubKey: process.env.VUE_APP_FLUTTERWAVE_PUBLIC_KEY_LIVE
+                    PBFPubKey: "FLWPUBK-5445dc010a540955d37897b4265dc6b2-X"
+                    // PBFPubKey: process.env.VUE_APP_FLUTTERWAVE_PUBLIC_KEY_LIVE
                 })
                 console.log(data)
                 accountName.value = data.data.data.accountname
