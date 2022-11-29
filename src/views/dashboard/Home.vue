@@ -1,6 +1,51 @@
 <template>
+  <div class="common-layout">
+    <el-container>
+      <el-aside width="266px" class="links-menu" :class="{ 'show': menuShouldShow }" >
+        <div >
+          <MenuLinks @linkclicked="hideNav" />
+        </div>
+      </el-aside>
+      <el-container>
+        <el-header class="nav-header p-0 hidden-md-and-up">
+          <div class="toggle d-flex" @click="toggleMenu">
+            <div class="pa-3 menu-icon">
+              <i class="pi pi-bars"></i> 
+            </div>
+            <div class="pa-3 font-weight-600">Gospel International Parish</div>
+          </div>
+        </el-header>
+        <el-main>
+          <div @click="hideMenu">
+            <router-view class="view" />
+          </div>
+        </el-main>
+      </el-container>
+    </el-container>
+  </div>
+
+
+  <!-- :class="{ 'main-con dim': !route.fullPath.includes('/mobileonboarding') && !route.fullPath.includes('/onboardingsuccessful'), 'top-router': route.query.fw }" -->
+
+
+  <!-- <el-container>
+    <el-row>
+      <el-col>
+      </el-col>
+      <el-col>
+        <div class="links-menu" :class="{ 'show': menuShouldShow }">
+        <MenuLinks @linkclicked="hideNav" />
+      </div>
+      <div
+        :class="{ 'main-con dim': !route.fullPath.includes('/mobileonboarding') && !route.fullPath.includes('/onboardingsuccessful'), 'top-router': route.query.fw }"
+        @click="hideMenu">
+        <router-view class="view" />
+      </div>
+      </el-col>
+    </el-row>
+  </el-container> -->
   <div>
-    <div class="whole-page">
+    <!-- <div class="whole-page">
       <div class="links-menu" :class="{ 'show': menuShouldShow }">
         <MenuLinks @linkclicked="hideNav" />
       </div>
@@ -9,15 +54,15 @@
         @click="hideMenu">
         <router-view class="view" />
       </div>
-    </div>
-  <div class="">
-    <div class="toggle" @click="toggleMenu">
+    </div> -->
+    <!-- <div class=""> -->
+    <!-- <div class="toggle" @click="toggleMenu">
       <i class="pi pi-bars"></i> Menu
     </div>
     <div>
-      Gospel International Parish
+      Gospel Internantional Parish
     </div>
-  </div>
+  </div> -->
   </div>
 </template>
 
@@ -78,7 +123,7 @@ export default {
 
 .links-menu {
   width: 266px;
-  min-height: 100%;
+  min-height: 100vh !important;
   background: #ebeff4;
   height: inherit;
   overflow: auto;
@@ -130,21 +175,32 @@ export default {
   /* Firefox */
 }
 
+.nav-header {
+  border-bottom: 2px solid #BCCCDD;
+
+}
+
 .toggle {
-  display: none;
-  /* width: 30px; */
-  /* text-align: center; */
-  position: absolute;
-  top: 0px;
-  left: 0px;
-  /* font-size: 30px; */
+  height: 100%;
+  display: flex;
+  align-items: center;
+}
+
+.menu-icon {
+  border-right: 2px solid #BCCCDD;
+  background: #F1F5F8;
+}
+
+.pa-3 {
+  padding: 1.1rem;
+
 }
 
 .toggle:hover {
   cursor: pointer;
 }
 
-@media screen and (max-width: 1184px) {
+@media screen and (max-width: 991px) {
   .toggle {
     display: block;
   }
