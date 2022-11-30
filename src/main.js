@@ -5,8 +5,8 @@ import store from './store/store'
 import Highcharts from 'highcharts';
 import VueHighcharts from 'vue-highcharts';
 import loadFunnel from 'highcharts/modules/funnel';
-import ElementPlus from 'element-plus'
-import 'element-plus/dist/index.css'
+// import ElementPlus from 'element-plus'
+// import 'element-plus/dist/index.css'
 // import axios from "axios";
 import axios from "./gateway/backendapi";
 // import NProgress from "nprogress";
@@ -150,4 +150,4 @@ app.component("Checkbox", Checkbox);
 app.component("Tag", Tag);
 app.component("Editor", Editor);
 
-app.use(store).use(router).use(VueHighcharts, { Highcharts }).use( CKEditor).use(Toaster).use(PrimeVue).use(ToastService).use(ConfirmationService).use(ElementPlus).use(VueTelInput, VueTelInputOptions).mount('#app')
+app.use(store).use(router).use(VueHighcharts, { Highcharts }).use( CKEditor).use(Toaster).use(PrimeVue).use(ToastService).use(ConfirmationService).use(VueTelInput, VueTelInputOptions).mount('#app')

@@ -322,7 +322,6 @@ export default {
 
     if (
       !sentSMS.value ||
-      !route.params.messageId ||
       sentSMS.value == undefined ||
       sentSMS.value.length === 0 ||
       !sentSMS.value[0]

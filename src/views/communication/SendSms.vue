@@ -1151,11 +1151,12 @@ export default {
           }
 
           store.dispatch("removeSMSUnitCharge", res.data.unitsUsed);
+          console.log(res.data,"res.data:");
 
           // Save the res to store in other to get it in the view sent sms page
           let sentObj = {
             message: res.data.sentMessageDTO ? res.data.sentMessageDTO.message : "",
-            id: res.data.channel,
+            id: res.data && res.data.sentMessageDTO && res.data.sentMessageDTO.id ? res.data.sentMessageDTO.id : "",
             smsUnitsUsed: res.data.sentMessageDTO ? res.data.sentMessageDTO.smsUnitsUsed : "",
             dateSent: "",
             deliveryReport: [{ report: "-" }],

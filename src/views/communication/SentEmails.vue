@@ -245,6 +245,7 @@ export default {
           loading.value = false;
         if (data && data.length > 0) {
           emails.value = data;
+          console.log(emails.value, "emails.value✔");
         }
       }
       catch(error){
@@ -253,12 +254,13 @@ export default {
         console.log(error);
       }
     };
+    getSentEmails();
 
-    if (!emails.value || emails.value.length === 0 || emails.value == undefined || !emails.value[0] ) {
-      getSentEmails();
-    } else {
-      loading.value = false;
-    }
+    // if (!emails.value || emails.value.length === 0 || emails.value == undefined || !emails.value[0] ) {
+      
+    // } else {
+    //   loading.value = false;
+    // }
 
     const formatMessage = (message) => {
       const formatted =

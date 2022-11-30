@@ -933,8 +933,9 @@ export default {
       composeService
         .sendMessage("/api/Messaging/sendEmail", data)
         .then((res) => {
+
           if (res.status === 200) {
-            store.dispatch('communication/addToSentEmail', res.data.mail)
+            // store.dispatch('communication/addToSentEmail', res.data.mail)
             swal({
               title: "Success!",
               text: "Your email has been sent successfully!",
