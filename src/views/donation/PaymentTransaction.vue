@@ -141,7 +141,7 @@
                     <div>Enter account number</div>
                 </div>
                 <div class="col-12 col-sm-10 offset-sm-1 offset-md-0 col-md-6 col-lg-5 pl-md-0 mt-3" style="height: 43px;">
-                    <input class="form-control h-100" type="number" v-model="accountNumber" @blur="resolveCustomerDetail">
+                    <input class="form-control h-100" type="text" v-model="accountNumber" @blur="resolveCustomerDetail">
                 </div>
                 <div class="col-2 d-none d-sm-block"></div>
 
