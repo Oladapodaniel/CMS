@@ -3,7 +3,7 @@
     <el-container>
       <el-aside width="266px" class="links-menu" :class="{ 'show': menuShouldShow }" >
         <div >
-          <MenuLinks @linkclicked="hideNav" />
+          <MenuLinks @linkclicked="hideNav" @tenantname="setChurchName"/>
         </div>
       </el-aside>
       <el-container>
@@ -12,7 +12,7 @@
             <div class="pa-3 menu-icon">
               <i class="pi pi-bars"></i> 
             </div>
-            <div class="pa-3 font-weight-600">Gospel International Parish</div>
+            <div class="pa-3 font-weight-600">{{ tenantName.churchName }}</div>
           </div>
         </el-header>
         <el-main style="background: rgb(241 245 248 / 42%)">
@@ -77,6 +77,7 @@ export default {
   setup() {
     const menuShouldShow = ref(false);
     const fullPath = ref("")
+    const tenantName = ref({})
 
     const toggleMenu = () => (menuShouldShow.value = !menuShouldShow.value);
 
@@ -96,6 +97,10 @@ export default {
     }
     getRoute()
 
+    const setChurchName = (payload) => {
+      tenantName.value = payload;
+    }
+
     return {
       menuShouldShow,
       toggleMenu,
@@ -103,6 +108,8 @@ export default {
       hideNav,
       fullPath,
       route,
+      setChurchName,
+      tenantName
     };
   },
 };

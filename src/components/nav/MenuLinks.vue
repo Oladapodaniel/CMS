@@ -70,6 +70,7 @@ import setupService from '../../services/setup/setupservice';
 export default {
   components: {
   },
+  emits: ['tenantname'],
   setup(props, { emit }) {
     const route = useRoute();
     const router = useRouter()
@@ -108,13 +109,15 @@ export default {
           .then((res) => {
             tenantInfo.value = res.data;
             getChurchProfile()
+            emit('tenantname', tenantInfo.value)
           })
-          .catch((err) => console.log(err.respone));
-      } else {
-        tenantInfo.value.churchName = store.getters.currentUser.churchName;
-        tenantInfo.value.tenantId = store.getters.currentUser.tenantId;
-        getChurchProfile()
-      }
+          .catch((err) => console.log(err.response));
+        } else {
+          tenantInfo.value.churchName = store.getters.currentUser.churchName;
+          tenantInfo.value.tenantId = store.getters.currentUser.tenantId;
+          getChurchProfile()
+          emit('tenantname', tenantInfo.value)
+        }
     }
     currentUser()
 
@@ -431,7 +434,8 @@ export default {
       canAccessFirstTimers,
       menuLink,
       routeToPage,
-      linkClicked
+      linkClicked,
+      tenantInfo
     };
   },
 };

@@ -46,7 +46,7 @@
           </div> -->
       <div class="d-flex justify-content-between flex-column flex-md-row  px-0">
         <div class="help-text2">
-          <img src="../../assets/can-do.svg" alt="" />
+          <img src="../../assets/thingstodo.svg" alt="" />
           <div class="can-do">
             <h4>Things You Can Do</h4>
             <div class="can-do-links can-do">
@@ -201,7 +201,7 @@
               !tenantInfoExtra.hasMobileApp ||
               !tenantInfoExtra.hasOnlineGiving ||
               !tenantInfoExtra.hasWebsite,
-            'col-md-12':
+            'col-md-12 px-0':
               tenantInfoExtra.hasMobileApp &&
               tenantInfoExtra.hasOnlineGiving &&
               tenantInfoExtra.hasWebsite,
@@ -374,7 +374,11 @@
           </div>
         </div>
       </div>
-      <div>
+      <div v-if="
+          tenantInfoCeleb.length === 0 &&
+          (tenantInfoFirstTimerWeekly[0] && tenantInfoFirstTimerWeekly[0].data.every(i => i === 0)) &&
+          (tenantInfoAttendanceWeekly[0] && tenantInfoAttendanceWeekly[0].data.every(i => i === 0))
+        ">
         <div class="container-fluid mt-5">
           <div class="row">
             <div class="col-12 more-things">
@@ -1240,9 +1244,9 @@ export default {
 }
 
 .help-text2 img {
-  width: 100px;
-  margin-top: -20px;
-  margin-left: -35px;
+  width: 76px;
+    margin-top: -9px;
+    margin-left: -14px
 }
 
 .pies {
@@ -1472,10 +1476,10 @@ tbody tr:nth-child(even) {
 } */
 
 @media screen and (max-width: 940px) {
-  .help-text2 {
+  /* .help-text2 {
     display: flex;
     align-items: flex-start;
-  }
+  } */
 
   .second-col .number-boxes {
     max-width: 100%;
