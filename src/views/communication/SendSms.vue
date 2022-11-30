@@ -1104,7 +1104,7 @@ export default {
         .sendMessage("/api/Messaging/sendSms", data)
         .then((res) => {
           disableBtn.value = false;
-          // console.log(res.data.message, "God is good");
+          console.log(res.data, "God is good");
           if (res.data.status) {
             // toast.add({
             //   severity: "success",
@@ -1154,12 +1154,12 @@ export default {
 
           // Save the res to store in other to get it in the view sent sms page
           let sentObj = {
-            message: res.data.sentMessageDTO.message,
+            message: res.data.sentMessageDTO ? res.data.sentMessageDTO.message : "",
             id: res.data.channel,
-            smsUnitsUsed: res.data.sentMessageDTO.smsUnitsUsed,
+            smsUnitsUsed: res.data.sentMessageDTO ? res.data.sentMessageDTO.smsUnitsUsed : "",
             dateSent: "",
             deliveryReport: [{ report: "-" }],
-            report: res.data.sentMessageDTO.report,
+            report: res.data.sentMessageDTO ? res.data.sentMessageDTO.report : "",
           };
           store.dispatch("communication/addSmsToSentList", sentObj);
           setTimeout(() => {

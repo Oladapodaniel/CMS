@@ -114,7 +114,7 @@
                           <router-link
                             :to="{
                               name: 'SendMessage',
-                              query: { messageId: sms.id },
+                              query: { messageId: sms.id  },
                             }"
                             style="color: #000"
                             class="text-decoration-none"
@@ -261,6 +261,7 @@ import { computed, ref } from "vue";
 // import router from "@/router/index";
 import communicationService from "../../services/communication/communicationservice";
 import { useStore } from "vuex";
+import { useRoute } from "vue-router";
 import UnitsArea from "../../components/units/UnitsArea";
 import PaginationButtons from "../../components/pagination/PaginationButtons";
 import Tooltip from "primevue/tooltip";
@@ -281,6 +282,7 @@ export default {
   setup() {
     const loading = ref(false);
     const store = useStore();
+    const route = useRoute();
     const sentSMS = ref(store.getters["communication/allSentSMS"]);
     console.log(sentSMS.value, "TESTING");
     console.log(sentSMS.value.length, "TESTING type");
@@ -293,6 +295,7 @@ export default {
         /*eslint no-undef: "warn"*/
         NProgress.start();
         const data = await communicationService.getAllSentSMS(0);
+        console.log(data, "datatatata");
         loading.value = false;
         if (data) {
           sentSMS.value = data.sentSMS;
@@ -319,6 +322,7 @@ export default {
 
     if (
       !sentSMS.value ||
+      !route.params.messageId ||
       sentSMS.value == undefined ||
       sentSMS.value.length === 0 ||
       !sentSMS.value[0]
