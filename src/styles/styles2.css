@@ -11,3 +11,7 @@ button.el-button.el-button--primary.start-option > span {
 .primary--text {
     color: #136acd;
 }
+
+.no-decoration{
+    text-decoration: none !important;
+}

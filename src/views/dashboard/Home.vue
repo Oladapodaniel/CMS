@@ -15,7 +15,7 @@
             <div class="pa-3 font-weight-600">Gospel International Parish</div>
           </div>
         </el-header>
-        <el-main>
+        <el-main style="background: rgb(241 245 248 / 42%)">
           <div @click="hideMenu">
             <router-view class="view" />
           </div>
@@ -176,7 +176,7 @@ export default {
 }
 
 .nav-header {
-  border-bottom: 2px solid #BCCCDD;
+  border-bottom: 1px solid #BCCCDD;
 
 }
 
@@ -187,7 +187,7 @@ export default {
 }
 
 .menu-icon {
-  border-right: 2px solid #BCCCDD;
+  border-right: 1px solid #BCCCDD;
   background: #F1F5F8;
 }
 

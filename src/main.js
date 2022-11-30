@@ -14,6 +14,8 @@ import axios from "./gateway/backendapi";
 // import NProgress from "nprogress";
 import CKEditor from '@ckeditor/ckeditor5-vue';
 import Toaster from '@meforma/vue-toaster';
+import Vue3EasyDataTable from 'vue3-easy-data-table';
+import 'vue3-easy-data-table/dist/style.css';
 
 // const globalOptions = {
 //   mode: 'auto',
@@ -152,5 +154,6 @@ app.component("Editor", Editor);
 for (const [key, component] of Object.entries(ElementPlusIconsVue)) {
   app.component(key, component)
 }
+app.component('EasyDataTable', Vue3EasyDataTable)
 
 app.use(store).use(router).use(VueHighcharts, { Highcharts }).use( CKEditor).use(Toaster).use(PrimeVue).use(ToastService).use(ConfirmationService).use(ElementPlus).use(VueTelInput, VueTelInputOptions).mount('#app')
