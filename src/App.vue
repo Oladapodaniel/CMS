@@ -10,7 +10,7 @@
         </div> -->
       </div>
     </div>
-  <router-view class="view" />
+  <router-view />
   <!-- <Toast /> -->
   <!-- </transition> -->
 </template>

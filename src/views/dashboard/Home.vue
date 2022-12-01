@@ -17,7 +17,7 @@
         </el-header>
         <el-main style="background: rgb(241 245 248 / 42%)">
           <div @click="hideMenu">
-            <router-view class="view" />
+            <router-view />
           </div>
         </el-main>
       </el-container>

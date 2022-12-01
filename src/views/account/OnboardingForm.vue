@@ -175,7 +175,6 @@ export default {
       axios
         .post("/api/onboarding", this.userDetails)
         .then((res) => {
-          console.log(res, "onboarding response");
           if (res.data.isOnboarded) {
             ElNotification({
               title: 'Well done',

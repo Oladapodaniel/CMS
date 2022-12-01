@@ -11,7 +11,8 @@
         </div>
         <div class="boxes-con">
           <router-link class="box" to="/tenant/people/add" style="text-decoration: none">
-            <div class="inner-box">
+            <el-card shadow="hover">
+              <div class="inner-box">
               <div class="img-box">
                 <img src="../../assets/add-member-big.svg" alt="Add Member Icon" />
               </div>
@@ -24,9 +25,11 @@
                 </div>
               </div>
             </div>
+            </el-card>
           </router-link>
 
           <router-link class="box can-do" to="/tenant/sms/compose" style="text-decoration: none">
+            <el-card shadow="hover">
             <div class="inner-box">
               <div class="img-box">
                 <img src="../../assets/sms-email-big.svg" alt="Add Member Icon" />
@@ -40,9 +43,11 @@
                 </div>
               </div>
             </div>
+            </el-card>
           </router-link>
 
           <router-link class="box" to="/tenant/people/addfirsttimer" style="text-decoration: none">
+            <el-card shadow="hover">
             <div class="inner-box">
               <div class="img-box">
                 <img src="../../assets/add-first-timer.svg" alt="Add Member Icon" />
@@ -57,6 +62,7 @@
 
               </div>
             </div>
+            </el-card>
           </router-link>
         </div>
       </div>
@@ -83,7 +89,6 @@ export default {
     const churchData = () => {
       axios.get("/api/Membership/GetCurrentSignedInUser")
         .then(res => {
-          console.log(res.data);
           data.value = res.data
         })
         .catch(err => console.log(err))
@@ -147,16 +152,9 @@ export default {
   min-width: 210px;
   max-width: 279px;
   max-height: 366px;
-  border: 1px solid #55828794;
   border-radius: 10px;
   margin: 10px;
-  padding: 30px 0;
   transition: all 0.4s ease-in-out;
-}
-
-.box:hover {
-  cursor: pointer;
-  box-shadow: 0px 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
 }
 
 .img-box {
@@ -214,7 +212,6 @@ export default {
 
 @media screen and (min-width: 870px) {
   .inner-box {
-    width: 70%;
     margin: auto;
   }
 }

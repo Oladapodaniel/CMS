@@ -103,7 +103,7 @@
     </div>
   </div>
 
-          <router-view class="view" />
+          <router-view />
         <!-- </transition> -->
 
         <Toast />

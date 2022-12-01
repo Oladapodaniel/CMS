@@ -84,7 +84,7 @@
               <router-link :to="{ name: 'Subscription' }" class="mt-1">
                 <el-button color="#136acd" class="mt-2" style="height: 25px"
                   :class="[buttonTextCheck.color, { 'bg-warning': calculatedPercentage >= 90 }]" round>
-                  <p class="mb-0" :class="[buttonTextCheck.color]">{{ buttonTextCheck.text }}</p>
+                  <p class="mb-0 small" :class="[buttonTextCheck.color]">{{ buttonTextCheck.text }}</p>
                 </el-button>
                 <!-- <button class="upgrade-btn"
                   :class="[buttonTextCheck.color, { 'bg-warning': calculatedPercentage >= 90 }]">
@@ -112,8 +112,8 @@
                 {{ planUserIs }}
               </div> -->
               <router-link :to="{ name: 'BuyUnits', path: '/tenant/buyunits' }" class="no-decoration">
-                <el-button color="#eebe77" class="push-down" style="height: 25px" plain round>
-                  <p class="mb-0">BUY UNITS</p>
+                <el-button type="info" class="push-down small" style="height: 25px" round>
+                  <p class="mb-0 small">BUY UNITS</p>
                 </el-button>
                 <!-- <button class="upgrade-btn"
                   :class="[buttonTextCheck.color, { 'bg-warning': calculatedPercentage >= 90 }]">
@@ -444,9 +444,9 @@
           </div>
         </div>
       </div>
-      <div class="text-center" v-if="attendanceLoading">
+      <!-- <div class="text-center" v-if="attendanceLoading">
         <i class="pi pi-spin pi-spinner text-primary" style="fontsize: 3rem"></i>
-      </div>
+      </div> -->
 
       <!-- <div class="table-footer" v-if="tenantInfo.celebrations && tenantInfo.celebrations.length > 0">
           <button class="tbl-footer-btn">
@@ -515,6 +515,7 @@ import formatDate from "../../services/dates/dateformatter";
 import useSubscription from "../../services/subscription/useSubscription";
 import Tooltip from "primevue/tooltip";
 import breakpoint from "../../services/user/deviceWidth.js"
+import { ElLoading } from 'element-plus'
 
 export default {
   mixins: [mixin],
@@ -559,7 +560,7 @@ export default {
     const firstTimerSeries = ref("weekly");
     const tenantInfoAttendanceWeekly = ref([]);
     const tenantInfoAttendanceMonthly = ref([]);
-    const attendanceLoading = ref(false);
+    // const attendanceLoading = ref(false);
     const tenantInfoFirstTimerWeekly = ref([]);
     const tenantInfoFirstTimerMonthly = ref([]);
     const tenantInfoInvitationSource = ref([]);
@@ -610,10 +611,21 @@ export default {
       return monthXaxis.value;
     });
 
+    onMounted(() => {
+      getBasicDashboard()
+    })
+
     const getBasicDashboard = () => {
+      const loading = ElLoading.service({
+        lock: true,
+        text: 'Setting it up...',
+        background: 'rgba(0, 0, 0, 0.7)',
+        })
       axios
         .get("/dashboard/basic")
         .then((res) => {
+          
+  loading.close()
           tenantInfoBasic.value = res.data.returnObject;
           tenantInfoExtra.value.hasMobileApp = res.data.returnObject.hasMobileApp;
           tenantInfoExtra.value.hasOnlineGiving = res.data.returnObject.hasOnlineGiving;
@@ -646,7 +658,7 @@ export default {
           }
         });
     };
-    getBasicDashboard();
+    
 
     let getCelebDashboard = () => {
       axios.get("/dashboard/celebrations").then((res) => {
@@ -668,11 +680,11 @@ export default {
     })
 
     onMounted(() => {
-      attendanceLoading.value = true;
+      // attendanceLoading.value = true;
       axios
         .get("/dashboard/attendance")
         .then((res) => {
-          attendanceLoading.value = false;
+          // attendanceLoading.value = false;
           tenantInfoAttendanceWeekly.value =
             res.data.returnObject.eventAttendanceChartDataWeekly;
           tenantInfoAttendanceMonthly.value =
@@ -910,7 +922,7 @@ export default {
       dateFormat,
       tenantInfoAttendanceWeekly,
       tenantInfoAttendanceMonthly,
-      attendanceLoading,
+      // attendanceLoading,
       tenantInfoFirstTimerWeekly,
       tenantInfoFirstTimerMonthly,
       tenantInfoInvitationSource,
@@ -1572,7 +1584,7 @@ tbody tr:nth-child(even) {
 
 }
 
-@media screen and (max-width: 430px) {
+@media screen and (max-width: 360px) {
   /* .box {
     width: 100%;
   } */

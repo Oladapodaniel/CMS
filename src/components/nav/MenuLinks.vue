@@ -70,7 +70,7 @@ import setupService from '../../services/setup/setupservice';
 export default {
   components: {
   },
-  emits: ['tenantname'],
+  emits: ['tenantname', 'linkclicked'],
   setup(props, { emit }) {
     const route = useRoute();
     const router = useRouter()
