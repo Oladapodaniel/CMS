@@ -12,7 +12,6 @@ function FBLogin() {
 
 
     const facebookLogin = () => {
-        console.log(displayModal.value, 'ffffff')
         FB.login(
             function (response) {
                 let token = {

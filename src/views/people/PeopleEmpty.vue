@@ -1,19 +1,8 @@
 <template>
-  <div
-    class="container-wide"
-    v-if="!loading && (people.length > 0 || errorGettingPeople)"
-  >
-    <PeopleList :list="people" :peopleCount="people.length" :membershipSummary="membershipSummary" />
-  </div>
 
-  <div
-    class="no-person mt-5"
-    v-else-if="!loading && people.length === 0 && !errorGettingPeople"
-  >
-    <!-- <div class="empty-img">
-      <p><img src="../../assets/people/people-empty.svg" alt="" /></p>
-      <p class="tip">You haven't added any member yet</p>
-    </div> -->
+  <PeopleList :list="people" :peopleCount="people.length" v-if="!loading && (people.length > 0 || errorGettingPeople)" />
+
+  <div class="no-person mt-5" v-else-if="!loading && people.length === 0 && !errorGettingPeople">
     <div class="container">
       <div class="row">
         <div class="col-md-12">
@@ -23,7 +12,7 @@
     </div>
   </div>
 
-  <div class="row container-wide" v-if="loading && people.length === 0">
+  <!-- <div class="row container-wide" v-if="loading && people.length === 0">
     <div class="col-md-12">
       <div class="row my-2 d-md-flex justify-content-between">
         <div class="col-md-4">
@@ -37,11 +26,7 @@
         </div>
       </div>
 
-      <div
-        class="row my-2 d-md-flex justify-content-center"
-        v-for="i in 10"
-        :key="i"
-      >
+      <div class="row my-2 d-md-flex justify-content-center" v-for="i in 10" :key="i">
         <div class="col-md-2 my-2">
           <Skeleton width="100%" height="2rem" borderRadius="16px" />
         </div>
@@ -62,7 +47,7 @@
         </div>
       </div>
     </div>
-  </div>
+  </div> -->
 
 </template>
 
@@ -86,11 +71,10 @@ export default {
     const getMembers = async () => {
       try {
         loading.value = true;
-         /*eslint no-undef: "warn"*/
-         NProgress.start()
+        /*eslint no-undef: "warn"*/
+        NProgress.start()
         const { data } = await axios.get("/api/People/GetPeopleBasicInfo");
         people.value = data;
-        console.log(people.value, "getpeopleInfo");
         loading.value = false;
       } catch (err) {
         NProgress.done()
@@ -100,26 +84,22 @@ export default {
       }
     }
 
-    const peopleInStore =  ref(dataStore.getters['membership/members'])
+    const peopleInStore = ref(dataStore.getters['membership/members'])
 
     onMounted(() => {
       if (peopleInStore.value.length > 0) {
-      // if (store.getters.members && store.getters.members.length > 0) {
-        console.log(peopleInStore.value, 'pisyytytu');
         people.value = peopleInStore.value;
-        // people.value = store.getters.members;
       } else {
         getMembers()
       }
 
     });
 
-    const  getMemberData = () => {
+    const getMemberData = () => {
       // people.value = payload
       axios
         .get(`/api/People/GetMembershipSummary`)
         .then((res) => {
-          console.log(res, "new chart");
           membershipSummary.value = res.data;
         })
         .catch((err) => {

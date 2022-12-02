@@ -728,6 +728,7 @@ import DecoupledEditor from '@/components/RichEditor';
 
 export default {
 props: ['selectedGroupMembers', 'groupData'],
+emits: ['closesidemodal'],
   components: { 
     // Editor
     // ckeditor: CKEditor.component,

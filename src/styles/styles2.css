@@ -15,3 +15,7 @@ button.el-button.el-button--primary.start-option > span {
 .no-decoration{
     text-decoration: none !important;
 }
+
+.el-card.person-image .el-card__body {
+    padding: 0
+}

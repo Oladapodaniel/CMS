@@ -5,45 +5,7 @@
         <div>
           <h2 class="head-text">Dashboard</h2>
         </div>
-
-        <!-- <div>
-          <button class="create-btn" @click="moreLinksVissible = !moreLinksVissible">
-            Create new
-            <i class="pi pi-angle-down create-dd"></i>
-          </button>
-          <div class="more-items ml-1" v-if="moreLinksVissible">
-            <div class="container">
-              <div class="row">
-                <div class="
-                    col-md-12
-                    d-flex
-                    flex-column
-                    border
-                    rounded
-                    more-links
-                    px-4
-                  ">
-                  <router-link to="/tenant/people/add" class="font-weight-bold mt-3 text-dec-none">Member</router-link>
-                  <router-link to="/tenant/people/addfirsttimer" class="font-weight-bold text-dec-none firstTimerClass">
-                    First timer</router-link>
-                </div>
-              </div>
-            </div>
-          </div>
-        </div> -->
       </div>
-      <!-- <div class="help-text1">
-            <img src="../../assets/can-do.svg" alt="">
-            <div class="can-do">
-              <h4>Things You Can Do</h4>
-              <div class="can-do-links">
-                <a href="">Add member</a>
-                <a href="">Send SMS</a>
-                <a href="">Add First Timer</a>
-                <a href="">Add Follow-up</a>
-              </div>
-            </div>
-          </div> -->
       <div class="d-flex justify-content-between flex-column flex-md-row  px-0">
         <div class="help-text2">
           <img src="../../assets/thingstodo.svg" alt="" />
@@ -86,22 +48,12 @@
                   :class="[buttonTextCheck.color, { 'bg-warning': calculatedPercentage >= 90 }]" round>
                   <p class="mb-0 small" :class="[buttonTextCheck.color]">{{ buttonTextCheck.text }}</p>
                 </el-button>
-                <!-- <button class="upgrade-btn"
-                  :class="[buttonTextCheck.color, { 'bg-warning': calculatedPercentage >= 90 }]">
-                  <h4 class="box-btn-text" :class="[buttonTextCheck.color]">  </h4>
-                </button> -->
               </router-link>
             </div>
           </div>
           <div class="box">
             <div class="top p-3">
-              <!-- <div class="box-top"> -->
               <img src="../../assets/inboxgroup.svg" alt="" style="position: relative; left: -8px;">
-              <!-- <div class="">
-                  <p class="mb-0 s-8">FIRST TIMERS</p>
-                  <h4 class="primary--text font-weight-700 mt-1 s-16">{{ tenantInfoBasic.firstTimerCount }}</h4>
-                </div> -->
-              <!-- </div> -->
               <div>
                 <h1 class="font-weight-700 s-30">{{ tenantInfoBasic.smsUnit }}</h1>
                 <span class="size-text">SMS Units</span>
@@ -514,8 +466,9 @@ import setupService from "../../services/setup/setupservice";
 import formatDate from "../../services/dates/dateformatter";
 import useSubscription from "../../services/subscription/useSubscription";
 import Tooltip from "primevue/tooltip";
-import breakpoint from "../../services/user/deviceWidth.js"
+// import breakpoint from "../../services/user/deviceWidth.js"
 import { ElLoading } from 'element-plus'
+import deviceBreakpoint from "../../mixins/deviceBreakpoint";
 
 export default {
   mixins: [mixin],
@@ -589,8 +542,7 @@ export default {
       "Dec",
     ]);
 
-    const lgAndUp = ref(breakpoint.up() == 'lgAndUp')
-    const xlAndUp = ref(breakpoint.up() == 'xlAndUp')
+    const { lgAndUp, xlAndUp } = deviceBreakpoint()
 
 
     const celebHeaders = ref([
@@ -670,13 +622,6 @@ export default {
     let tenantInfoCeleb = computed(() => {
       if (celeb.value.length === 0) return []
       return celeb.value.sort((b, a) => new Date(b.date) - new Date(a.date))
-    })
-
-    onMounted(() => {
-      window.addEventListener("resize", () => {
-        lgAndUp.value = breakpoint.up() == 'lgAndUp'
-        xlAndUp.value = breakpoint.up() == 'xlAndUp'
-      });
     })
 
     onMounted(() => {
@@ -1107,13 +1052,6 @@ export default {
   border-radius: 15px;
 }
 
-.top {
-  /* border-radius: 28px 28px 0 0;
-  padding: 20px;
-  border: 1px solid #e6e5f2;
-  box-shadow: 0px 1px 4px #02172e45;
-  border-bottom: transparent; */
-}
 
 .box-bottom {
   background: #F1F5F8;
@@ -1226,11 +1164,7 @@ export default {
     display: none;
   }
 
-  .chart-div-mobile {
-    /* margin-left: -3rem !important;
-    border: none !important;
-    box-shadow: none !important */
-  }
+
 
   .container-fluid-mobile {
     border: 1px solid !important;

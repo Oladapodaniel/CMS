@@ -1,5 +1,3 @@
-import { defaultFormatUtc } from "moment"
-
 const deviceWidth = {
     only() {
         let screenWidth = window.screen.width

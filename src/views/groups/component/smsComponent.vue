@@ -865,6 +865,7 @@ import moment from "moment";
 
 export default {
   props: ["phoneNumbers", "groupData"],
+  emits: ['closesidemodal'],
   setup(props, { emit }) {
     const toast = useToast();
     const router = useRouter();
