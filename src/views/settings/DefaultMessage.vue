@@ -143,20 +143,21 @@ export default {
   },
   methods: {
        deletePop(id) {
-            this.$confirm.require({
-                message: 'Are you sure you want to Delete?',
-                header: 'Delete Confirmation',
-                icon: 'pi pi-exclamation-circle',
-                acceptClass: 'confirm-delete',
-                rejectClass: 'cancel-delete',
-                accept: () => {
-                  this.deleteDefaultmessage(id)
-                    //callback to execute when user confirms the action
-                },
-                reject: () => {
-                    'No internet'
-                }
-            });
+        this.deleteDefaultmessage(id)
+            // this.$confirm.require({
+            //     message: 'Are you sure you want to Delete?',
+            //     header: 'Delete Confirmation',
+            //     icon: 'pi pi-exclamation-circle',
+            //     acceptClass: 'confirm-delete',
+            //     rejectClass: 'cancel-delete',
+            //     accept: () => {
+            //       this.deleteDefaultmessage(id)
+            //         //callback to execute when user confirms the action
+            //     },
+            //     reject: () => {
+            //         'No internet'
+            //     }
+            // });
         },
     async deleteDefaultmessage(id){
       try {

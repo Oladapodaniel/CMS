@@ -386,58 +386,92 @@
               >
                 <label for="" class="font-weight-600">Event Banner</label>
               </div>
-              <div v-if="imageUrl" 
+              <div
+                v-if="imageUrl"
                 class="col-sm-5 col-md-4 col-lg-4"
                 :class="{ 'img-border ': imageUrl === '' }"
               >
-                <img :src="imageUrl" class="w-100"/>
-                <div 
-                class="
-                  col-12 col-sm-12 col-md-12 px-0 mx-0
-                  d-flex
-                  text-center
-                  cursor-pointer
-                "
-              >
-                <div class="d-flex col-md-12 px-0 mx-0">
-                    <input type="text" class="form-control border-right-0" v-model="image.name">
-                    <div class="
-                      upload-button
+                <img :src="imageUrl" class="w-100" />
+                <div
+                  class="
+                    col-12 col-sm-12 col-md-12
+                    px-0
+                    mx-0
+                    d-flex
+                    text-center
+                    cursor-pointer
+                  "
+                >
+                  <div class="d-flex col-md-12 px-0 mx-0">
+                    <input
+                      type="text"
+                      class="form-control border-right-0"
+                      v-model="image.name"
+                    />
+                    <div
+                      class="
+                        upload-button
                         align-self-center
                         text-center
-                        cursor-pointer" @click="altClick">
+                        cursor-pointer
+                      "
+                      @click="altClick"
+                    >
                       Upload
-                      <input type="file" @change="chooseFile" ref="binImage" hidden />
+                      <input
+                        type="file"
+                        @change="chooseFile"
+                        ref="binImage"
+                        hidden
+                      />
                     </div>
+                  </div>
                 </div>
               </div>
-              </div>
-              <div v-if="!imageUrl"
-                
+              <div
+                v-if="!imageUrl"
                 class="
-                  col-12 col-sm-6 col-md-6 px-0 mx-0
+                  col-12 col-sm-6 col-md-6
+                  px-0
+                  mx-0
                   d-flex
                   text-center
                   cursor-pointer
                 "
               >
                 <div class="d-flex col-md-10">
-                    <input type="text" class="form-control" v-model="image.name">
-                    <div class=" 
-                      upload-button
-                        text-center
-                        cursor-pointer" @click="altClick">
-                      Upload
-                      <input type="file" @change="chooseFile" ref="binImage" hidden />
-                    </div>
+                  <input
+                    type="text"
+                    class="form-control"
+                    v-model="image.name"
+                  />
+                  <div
+                    class="upload-button text-center cursor-pointer"
+                    @click="altClick"
+                  >
+                    Upload
+                    <input
+                      type="file"
+                      @change="chooseFile"
+                      ref="binImage"
+                      hidden
+                    />
+                  </div>
                 </div>
               </div>
-              
+
               <!-- <div class="col-sm-3 col-md-4"></div> -->
-              <div class="col-sm-12 col-md-12 col-lg-12 d-flex justify-content-center mt-2 ">
+              <div
+                class="
+                  col-sm-12 col-md-12 col-lg-12
+                  d-flex
+                  justify-content-center
+                  mt-2
+                "
+              >
                 <div class="col-sm-7 col-md-4">
-                  Browse or Drop your banner here.Maximum 5MB in size JPG, PNG, or
-                  GIF formats.
+                  Browse or Drop your banner here.Maximum 5MB in size JPG, PNG,
+                  or GIF formats.
                 </div>
               </div>
             </div>
@@ -1303,6 +1337,7 @@ export default {
         ? formData.append("checkInCutOffTime", checkinCutOffTime.value)
         : "";
       if (
+        !attendanceCheID.value &&
         !amount.value &&
         !selectedBank.value &&
         !accountNumber.value &&
@@ -1310,11 +1345,14 @@ export default {
         !selectedIncomeAccount.value &&
         !image.value
       ) {
+        console.log(attendanceCheID.value);
+        console.log(route.query.id);
+        console.log(route.params.id);
         console.log("free and no image");
         selectedGroups.value
           ? formData.append("groupIDs", selectedGroups.value)
           : "";
-          loadingsave.value = true;
+        loadingsave.value = true;
         try {
           // const response = await attendanceservice.saveCheckAttendanceItem(checkinEvent);
           const response = await axios.post(
@@ -1343,8 +1381,29 @@ export default {
           console.log(error);
           loadingsave.value = false;
         }
-        console.log("Only Top");
-
+        console.log("Only Topppp");
+      } else if (
+        attendanceCheID.value
+      ) {
+        selectedGroups.value
+          ? formData.append("groupIDs", selectedGroups.value)
+          : "";
+        loadingsave.value = true;
+        try {
+          const res = await axios.put(
+            "/api/CheckInAttendance/UpdateCheckInAttendance",
+            checkinEvent
+          );
+          console.log(res);
+          toast.add({
+            severity: "success",
+            summary: "Successful",
+            detail: "Attendance updated successfully",
+            life: 3000,
+          });
+        } catch (error) {
+          console.log(error);
+        }
       } else if (
         !amount.value &&
         !selectedBank.value &&
@@ -1353,13 +1412,12 @@ export default {
         !selectedIncomeAccount.value &&
         image.value
       ) {
-        
         console.log("Free and image");
         selectedGroups.value
           ? formData.append("groupIDs", JSON.stringify(selectedGroups.value))
           : "";
 
-          loadingsave.value = true;
+        loadingsave.value = true;
         try {
           let { data } = await axios.post(
             "/api/CheckInAttendance/create/multiple",
@@ -1405,7 +1463,7 @@ export default {
         selectedGroups.value
           ? formData.append("groupIDs", JSON.stringify(selectedGroups.value))
           : "";
-          loadingsave.value = true;
+        loadingsave.value = true;
         try {
           let { data } = await axios.post(
             "/api/CheckInAttendance/create/multiple",
@@ -1438,32 +1496,6 @@ export default {
         } catch (err) {
           console.log(err);
           loading.value = false;
-        }
-      } else if (route.params.id) {
-        loadingsave.value = true;
-        try {
-          let { data } = await axios.put(
-            "/api/CheckInAttendance/UpdateCheckInAttendance",
-            formData
-          );
-
-          
-
-          toast.add({
-            severity: "success",
-            summary: "Successful",
-            detail: "Attendance updated successfully",
-            life: 3000,
-          });
-
-          loadingsave.value = false;
-
-          console.log(data, "thedata");
-
-          router.push("/tenant/attendancecheckin");
-        } catch (error) {
-          console.log(error);
-          loadingsave.value = false;
         }
       } else {
         toast.add({
