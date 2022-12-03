@@ -570,7 +570,7 @@ export default {
     const getBasicDashboard = () => {
       const loading = ElLoading.service({
         lock: true,
-        text: 'Setting it up...',
+        text: 'Loading...',
         background: 'rgba(0, 0, 0, 0.7)',
         })
       axios

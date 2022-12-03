@@ -2,8 +2,8 @@
   <div class="my-con">
     <div class="summary px-3">
       <p class="summary-header">Summary</p>
-      <ConfirmDialog />
-      <Toast />
+      <!-- <ConfirmDialog />
+      <Toast /> -->
 
 
       <div class="boards">
@@ -40,10 +40,10 @@
 
     <!-- group box area -->
     <!-- The Modal -->
-    <div class="modal" id="myModal">
+    <!-- <div class="modal" id="myModal">
       <div class="modal-dialog">
         <div class="modal-content">
-          <!-- Modal Header -->
+          
           <div class="modal-header">
             <h5 class="modal-title">Add Members To Group</h5>
             <button type="button" class="close" data-dismiss="modal">
@@ -51,14 +51,14 @@
             </button>
           </div>
 
-          <!-- Modal body -->
+          
           <div class="modal-body">
             <Dropdown v-model="chooseGrouptoMoveto" optionLabel="name" :options="getAllGroups"
               placeholder="Select a Group" style="width: 100%">
             </Dropdown>
           </div>
 
-          <!-- Modal footer -->
+          
           <div class="modal-footer">
             <button type="button" class="btn groupicon-color default-btn" data-dismiss="modal"
               @click="moveMemberToGroup" style="border: none">
@@ -67,7 +67,7 @@
           </div>
         </div>
       </div>
-    </div>
+    </div> -->
     <!-- group box area -->
 
     <!-- group box area to add all members -->
@@ -157,31 +157,31 @@
           <!-- <i class="mr-2 color-groupicon pi pi-plus-circle c-pointer" v-tooltip.top="'Add all member to Group'"
             style="font-size: 22px">
           </i> -->
-          <el-tooltip class="box-item" effect="dark" content="Add all members to group" placement="top-start">
+         <el-tooltip class="box-item" effect="dark" content="Add all members to group" placement="top-start">
             <el-icon :size="20" class="c-pointer" @click="addToGroupDialog = true">
               <CirclePlus />
             </el-icon>
           </el-tooltip>
-          <el-tooltip class="box-item" effect="dark" content="Add to group" placement="top-start">
-            <el-icon class="ml-2 c-pointer" :size="20" v-if="marked.length > 0" @click="(addToGroupSingle = true)">
+          <el-tooltip class="box-item" effect="dark" v-if="marked.length > 0" content="Add to group" placement="top-start">
+            <el-icon class="ml-2 c-pointer" :size="20"  @click="(addToGroupSingle = true)">
               <User />
             </el-icon>
           </el-tooltip>
-          <el-tooltip class="box-item" effect="dark" content="Archive member(s)" placement="top-start">
+          <el-tooltip class="box-item" effect="dark" v-if="marked.length > 0" content="Archive member(s)" placement="top-start">
             <el-icon class="ml-2 c-pointer" :size="20" @click="(displayPositionArchive = true)"
               v-if="marked.length > 0">
               <DocumentRemove />
             </el-icon>
           </el-tooltip>
-          <el-tooltip class="box-item" effect="dark" content="Delete member(s)" placement="top-start">
+          <el-tooltip class="box-item" effect="dark" v-if="marked.length > 0" content="Delete member(s)" placement="top-start">
             <el-icon :size="20" class="ml-2 c-pointer" v-if="marked.length > 0" @click="showConfirmModal1">
               <Delete />
             </el-icon>
           </el-tooltip>
-          <el-tooltip class="box-item" effect="dark" content="Send SMS" placement="top-start">
+          <el-tooltip class="box-item" effect="dark" v-if="marked.length > 0" content="Send SMS" placement="top-start">
             <el-icon :size="20" class="ml-2 c-pointer" v-if="marked.length > 0" @click="sendMarkedMemberSms"><Message /></el-icon>
           </el-tooltip>
-          <el-tooltip class="box-item" effect="dark" content="Send Email" placement="top-start">
+          <el-tooltip class="box-item" effect="dark" v-if="marked.length > 0" content="Send Email" placement="top-start">
             <el-icon :size="20" class="ml-2 c-pointer" v-if="marked.length > 0" @click="sendMarkedMemberEmail"><MessageBox /></el-icon>
           </el-tooltip>
           <!-- </a> -->
@@ -305,19 +305,36 @@
 
     <EasyDataTable v-model:items-selected="marked" v-model:server-options="serverOptions" :rowsPerPage="100"
       :loading="paginatedTableLoading" :server-items-length="serverItemsLength" :headers="memberHeaders"
-      :items="searchMember" @click-row="showMemberRow" buttons-pagination alternating>
+      :items="searchMember" buttons-pagination alternating>
       <template #item-pictureurl="{ pictureUrl }">
         <div>
           <el-card shadow="hover" class="c-pointer person-image" v-if="pictureUrl"
             style="border-radius: 50%; height: 26px; width: 26px;">
             <el-tooltip class="box-item" effect="dark" content="Click to view" placement="top-start">
-              <img :src="pictureUrl" alt="" style="border-radius: 50%; height: 26px; width: 26px; object-fit: cover"
-                @click="(selectedImageUrl = pictureUrl), (imageDialog = true)" />
+              <img :src="pictureUrl" alt="" @click="(selectedImageUrl = pictureUrl), (imageDialog = true)" style="border-radius: 50%; height: 26px; width: 26px; object-fit: cover"
+                />
+                 
+                <!-- @click-row="showMemberRow" -->
             </el-tooltip>
           </el-card>
           <el-avatar :size="25" v-else><el-icon color="#000000">
               <UserFilled />
             </el-icon></el-avatar>
+        </div>
+      </template>
+      <template #item-firstname="item">
+        <div class="c-pointer" @click="showMemberRow(item)">
+          {{ item.firstName }}
+        </div>
+      </template>
+      <template #item-lastname="item">
+        <div class="c-pointer" @click="showMemberRow(item)">
+          {{ item.lastName }}
+        </div>
+      </template>
+      <template #item-mobilephone="item">
+        <div class="c-pointer" @click="showMemberRow(item)">
+          {{ item.mobilePhone }}
         </div>
       </template>
       <template #item-action="item">
@@ -555,16 +572,16 @@
 import { ref, computed, watch, watchEffect } from "vue";
 import ByGenderChart from "@/components/charts/PieChart.vue";
 import ByMaritalStatusChart from "@/components/charts/PieChart.vue";
-import PaginationButtons from "../../components/pagination/PaginationButtons.vue";
+// import PaginationButtons from "../../components/pagination/PaginationButtons.vue";
 import axios from "@/gateway/backendapi";
-import { useConfirm } from "primevue/useconfirm";
-import { useToast } from "primevue/usetoast";
+// import { useConfirm } from "primevue/useconfirm";
+// import { useToast } from "primevue/usetoast";
 import { useRoute } from "vue-router";
 import store from "../../store/store";
 import stopProgressBar from "../../services/progressbar/progress";
 import membershipservice from "../../services/membership/membershipservice";
-import Tooltip from "primevue/tooltip";
-import Dropdown from "primevue/dropdown";
+// import Tooltip from "primevue/tooltip";
+// import Dropdown from "primevue/dropdown";
 // import loadingComponent from "@/components/loading/LoadingComponent";
 import smsComponent from "../groups/component/smsComponent.vue";
 import emailComponent from "../groups/component/emailComponent.vue";
@@ -578,17 +595,17 @@ export default {
   components: {
     ByGenderChart,
     ByMaritalStatusChart,
-    PaginationButtons,
-    Dropdown,
+    // PaginationButtons,
+    // Dropdown,
     // loadingComponent,
     smsComponent,
     emailComponent,
     SideBar
   },
 
-  directives: {
-    tooltip: Tooltip,
-  },
+  // directives: {
+  //   tooltip: Tooltip,
+  // },
 
   setup(props) {
     const addClass = ref(false)
@@ -674,19 +691,27 @@ export default {
           );
           if (res.data.response.includes("@")) {
             let disRes = res.data.response.split("@")
-            toast.add({
-              severity: "info",
-              summary: "Info",
-              detail: disRes[0],
-              life: 10000,
-            });
+            // toast.add({
+            //   severity: "info",
+            //   summary: "Info",
+            //   detail: disRes[0],
+            //   life: 10000,
+            // });
+            ElMessage({
+            type: 'info',
+            message: disRes[0],
+          })
           } else {
-            toast.add({
-              severity: "success",
-              summary: "Confirmed",
-              detail: "Member Deleted",
-              life: 5000,
-            });
+            // toast.add({
+            //   severity: "success",
+            //   summary: "Confirmed",
+            //   detail: "Member Deleted",
+            //   life: 5000,
+            // });
+            ElMessage({
+            type: 'success',
+            message: 'Member deleted successfully',
+          })
           }
           store.dispatch("membership/removeMember", id);
           axios
@@ -712,12 +737,17 @@ export default {
         })
         .catch((err) => {
           stopProgressBar();
-          toast.add({
-            severity: "error",
-            summary: "Delete Error",
-            detail: "Deleting member failed",
-            life: 3000,
-          });
+          // toast.add({
+          //   severity: "error",
+          //   summary: "Delete Error",
+          //   detail: "Deleting member failed",
+          //   life: 3000,
+          // });
+          // ElMessage({
+          //   type: 'error',
+          //   message: 'Delete failed, please try again',
+          // })
+          ElMessage.error('Delete failed, please try again')
           console.log(err);
         });
     };
@@ -735,27 +765,46 @@ export default {
       searchIsVisible.value = !searchIsVisible.value;
     };
 
-    const confirm = useConfirm();
-    let toast = useToast();
+    // const confirm = useConfirm();
+    // let toast = useToast();
     const showConfirmModal = (id, index) => {
-      confirm.require({
-        message: "Are you sure you want to proceed?",
-        header: "Confirmation",
-        icon: "pi pi-exclamation-triangle",
-        acceptClass: "confirm-delete",
-        rejectClass: "cancel-delete",
-        accept: () => {
+      ElMessageBox.confirm(
+        'Are you sure you want to proceed?',
+        'Warning',
+        {
+          confirmButtonText: 'OK',
+          cancelButtonText: 'Cancel',
+          type: 'warning',
+        }
+      )
+        .then(() => {
           deleteMember(id, index);
-        },
-        reject: () => {
-          toast.add({
-            severity: "info",
-            summary: "Rejected",
-            detail: "Delete discarded",
-            life: 3000,
-          });
-        },
-      });
+        })
+        .catch(() => {
+          ElMessage({
+            type: 'info',
+            message: 'Delete canceled',
+          })
+        })
+
+      // confirm.require({
+      //   message: "Are you sure you want to proceed?",
+      //   header: "Confirmation",
+      //   icon: "pi pi-exclamation-triangle",
+      //   acceptClass: "confirm-delete",
+      //   rejectClass: "cancel-delete",
+      //   accept: () => {
+      //     deleteMember(id, index);
+      //   },
+      //   reject: () => {
+      //     toast.add({
+      //       severity: "info",
+      //       summary: "Rejected",
+      //       detail: "Delete discarded",
+      //       life: 3000,
+      //     });
+      //   },
+      // });
     };
 
     const getPeopleByPage = async () => {
@@ -776,12 +825,16 @@ export default {
     // }
 
     // onBeforeUnmount(() => {
-    axios
-      .get(`/api/People/GetMembershipSummary`)
-      .then((res) => {
-        membershipSummary.value = res.data;
-      })
-      .catch((err) => console.log(err));
+      const getMemberSummary = () => {
+        axios
+          .get(`/api/People/GetMembershipSummary`)
+          .then((res) => {
+            membershipSummary.value = res.data;
+          })
+          .catch((err) => console.log(err));
+
+      }
+      getMemberSummary()
     // })
 
     const marked = ref([]);
@@ -859,24 +912,29 @@ export default {
         }
         marked.value = [];
         store.dispatch("membership/removeMember");
-        axios
-          .get(`/api/People/GetMembershipSummary`)
-          .then((res) => {
-            membershipSummary.value = res.data;
-          })
-          .catch((err) => {
-            console.log(err);
-          });
+        getMemberSummary();
+        // axios
+        //   .get(`/api/People/GetMembershipSummary`)
+        //   .then((res) => {
+        //     membershipSummary.value = res.data;
+        //   })
+        //   .catch((err) => {
+        //     console.log(err);
+        //   });
       } catch (error) {
         console.log(error);
-        if (error.response) {
-          toast.add({
-            severity: "warn",
-            summary: "Delete Failed",
-            detail: "Member Deleted",
-            life: 4000,
-          });
-        }
+        // if (error.response) {
+          // toast.add({
+          //   severity: "warn",
+          //   summary: "Delete Failed",
+          //   detail: "Member Deleted",
+          //   life: 4000,
+          // });
+          ElMessage({
+            type: 'warning',
+            message: 'Delete failed, please try again',
+          })
+        // }
       }
     };
 
@@ -1217,7 +1275,7 @@ export default {
       deleteMarked,
       clearInput,
       showConfirmModal1,
-      Dropdown,
+      // Dropdown,
       getGroups,
       getAllGroups,
       chooseGrouptoMoveto,

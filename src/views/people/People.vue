@@ -7,7 +7,7 @@
         </div>
         <div class="d-flex mt-3 mt-sm-0">
           <el-button color="#136acd" @click="importMembers" plain round>Import</el-button>
-          <router-link :to="`/tenant/people/add`" class="">
+          <router-link :to="`/tenant/people/add`" class="no-decoration">
             <el-button color="#136acd" class="ml-2" round>Add Member</el-button>
           </router-link>
         </div>
@@ -30,7 +30,6 @@
     </div>
     <router-view />
   </main>
-  {{ lgAndUp }}lll
 </template>
 
 <script>

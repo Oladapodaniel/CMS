@@ -12,6 +12,26 @@
     </div>
   </div>
 
+  <el-skeleton class="w-100" animated v-if="loading && people.length === 0">
+    <template #template>
+      <!-- <el-skeleton-item variant="text" class="w-100" style="height: 25px" /> -->
+      <div
+          style="
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin-top: 20px
+          "
+        >
+          <el-skeleton-item variant="text" style="width: 240px; height: 240px" />
+          <el-skeleton-item variant="text" style="width: 240px; height: 240px" />
+        </div>
+        <!-- <el-skeleton-item variant="text" class="w-100" style="height: 25px" :rows="10"/> -->
+        <el-skeleton class="w-100 mt-5" style="height: 25px"  :rows="20" animated />
+    </template>
+  </el-skeleton>
+
+
   <!-- <div class="row container-wide" v-if="loading && people.length === 0">
     <div class="col-md-12">
       <div class="row my-2 d-md-flex justify-content-between">
