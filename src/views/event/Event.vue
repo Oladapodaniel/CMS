@@ -26,6 +26,18 @@
             </div>
           </div>
         </div>
+                    <!-- <el-dropdown>
+                      <el-button type="primary">
+                        Dropdown List<i class="el-icon-arrow-down el-icon--right"></i>
+                      </el-button>
+                      <el-dropdown-menu slot="dropdown">
+                        <el-dropdown-item>Action 1</el-dropdown-item>
+                        <el-dropdown-item>Action 2</el-dropdown-item>
+                        <el-dropdown-item>Action 3</el-dropdown-item>
+                        <el-dropdown-item>Action 4</el-dropdown-item>
+                        <el-dropdown-item>Action 5</el-dropdown-item>
+                      </el-dropdown-menu>
+                    </el-dropdown> -->
 
         <div class="row mt-1">
           <div class="col-md-12">
@@ -1098,7 +1110,7 @@
                   <div class="col-sm-2 mb-4">
                     <button class="  btn d-flex justify-content-between pl-0  col-12 border  " type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                         <span class="ofering">
-                            &nbsp;&nbsp;&nbsp; {{ firstTimersObj && firstTimersObj.birthday ?  firstTimersObj.birthday : 'Month' }}
+                            &nbsp;&nbsp;&nbsp; {{ firstTimersObj && firstTimersObj.birthday ?  firstTimersObj.birthday : 'Day' }}
                         </span>
                         <span>
                             <i class="pi pi-angle-down offset-sm-2 ofering"></i>
@@ -1133,6 +1145,7 @@
                             <div class="cursor-pointer" @click="selectedmonths(item)"> {{item}}</div> 
                         </a>
                     </div>
+
                     <!-- <Dropdown
                       :options="[...months]"
                       :filter="false"
@@ -1243,8 +1256,21 @@
                 >
                   <div class="col-sm-6 offset-sm-3 mb-4">
                     <div>How did you hear about us</div>
+                    <button class="  btn d-flex justify-content-between pl-0 col-12 border  " type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                        <span class="ofering">
+                            &nbsp;&nbsp;&nbsp; {{ valueHeard ?  valueHeard : 'Select' }}
+                        </span>
+                        <span>
+                            <i class="pi pi-angle-down offset-sm-2 ofering"></i>
+                        </span>
+                    </button>
+                    <div class="dropdown-menu scroll w-100 " aria-labelledby="dropdownMenuButton">
+                        <a class="dropdown-item" v-for="(itm, indx) in howYouHeard" :key="indx">
+                            <div class="cursor-pointer" @click="selectedhowYouHeard(itm)"> {{itm}}</div> 
+                        </a>
+                    </div>
 
-                    <Dropdown
+                    <!-- <Dropdown
                       :options="[...howYouHeard]"
                       :filter="false"
                       v-model="valueHeard"
@@ -1253,12 +1279,24 @@
                       class="w-100"
                       :showClear="false"
                     >
-                    </Dropdown>
+                    </Dropdown> -->
                   </div>
                   <div class="col-sm-6 offset-sm-3 mb-4">
                     <div>Preferred means of communication</div>
-
-                    <Dropdown
+                    <button class="  btn d-flex justify-content-between pl-0 col-12 border  " type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                        <span class="ofering">
+                            &nbsp;&nbsp;&nbsp; {{ valueComm ?  valueComm : 'Select' }}
+                        </span>
+                        <span>
+                            <i class="pi pi-angle-down offset-sm-2 ofering"></i>
+                        </span>
+                    </button>
+                    <div class="dropdown-menu scroll w-100 " aria-labelledby="dropdownMenuButton">
+                        <a class="dropdown-item" v-for="(item, indx) in comMeansArr" :key="indx">
+                            <div class="cursor-pointer" @click="selectedcomMeansArr(item)"> {{item}}</div> 
+                        </a>
+                    </div>
+                    <!-- <Dropdown
                       :options="[...comMeansArr]"
                       :filter="false"
                       v-model="valueComm"
@@ -1267,12 +1305,25 @@
                       class="w-100"
                       :showClear="false"
                     >
-                    </Dropdown>
+                    </Dropdown> -->
                   </div>
                   <div class="col-sm-6 offset-sm-3 mb-4">
                     <div>Interested in joining us</div>
+                    <button class="  btn d-flex justify-content-between pl-0 col-12 border  " type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                        <span class="ofering">
+                            &nbsp;&nbsp;&nbsp; {{ valueInterest ?  valueInterest : 'Select' }}
+                        </span>
+                        <span>
+                            <i class="pi pi-angle-down offset-sm-2 ofering"></i>
+                        </span>
+                    </button>
+                    <div class="dropdown-menu scroll w-100 " aria-labelledby="dropdownMenuButton">
+                        <a class="dropdown-item" v-for="(item, indx) in joinInterest" :key="indx">
+                            <div class="cursor-pointer" @click="selectedJoinInterest(item)"> {{item}}</div> 
+                        </a>
+                    </div>
 
-                    <Dropdown
+                    <!-- <Dropdown
                       :options="[...joinInterest]"
                       :filter="false"
                       v-model="valueInterest"
@@ -1281,12 +1332,25 @@
                       class="w-100"
                       :showClear="false"
                     >
-                    </Dropdown>
+                    </Dropdown> -->
                   </div>
                   <div class="col-sm-6 offset-sm-3 mb-4">
                     <div>Want to be visited?</div>
+                    <button class="  btn d-flex justify-content-between pl-0 col-12 border  " type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                        <span class="ofering">
+                            &nbsp;&nbsp;&nbsp; {{ valueVisit ?  valueVisit : 'Select' }}
+                        </span>
+                        <span>
+                            <i class="pi pi-angle-down offset-sm-2 ofering"></i>
+                        </span>
+                    </button>
+                    <div class="dropdown-menu scroll w-100 " aria-labelledby="dropdownMenuButton">
+                        <a class="dropdown-item" v-for="(item, indx) in wantVisitArr" :key="indx">
+                            <div class="cursor-pointer" @click="selectedwantVisitArr(item)"> {{item}}</div> 
+                        </a>
+                    </div>
 
-                    <Dropdown
+                    <!-- <Dropdown
                       :options="[...wantVisitArr]"
                       :filter="false"
                       v-model="valueVisit"
@@ -1295,7 +1359,7 @@
                       class="w-100"
                       :showClear="false"
                     >
-                    </Dropdown>
+                    </Dropdown> -->
                   </div>
                 </div>
                 <span
@@ -1494,7 +1558,20 @@
                     >Birthday</label
                   >
                   <div class="col-sm-2 mb-4">
-                    <Dropdown
+                    <button class="  btn d-flex justify-content-between pl-0  col-12 border  " type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                        <span class="ofering">
+                            &nbsp;&nbsp;&nbsp; {{ newConvertsObj && newConvertsObj.birthday ?  newConvertsObj.birthday : 'Day' }}
+                        </span>
+                        <span>
+                            <i class="pi pi-angle-down offset-sm-2 ofering"></i>
+                        </span>
+                    </button>
+                    <div class="dropdown-menu scroll w-100 " aria-labelledby="dropdownMenuButton">
+                        <a class="dropdown-item" v-for="(item, indx) in day" :key="indx">
+                            <div class="cursor-pointer" @click="selectedday2(item)"> {{item}}</div> 
+                        </a>
+                    </div>
+                    <!-- <Dropdown
                       :options="[...day]"
                       :filter="false"
                       v-model="newConvertsObj.birthday"
@@ -1502,11 +1579,24 @@
                       class="w-100"
                       :showClear="false"
                     >
-                    </Dropdown>
+                    </Dropdown> -->
                   </div>
 
                   <div class="col-sm-2 mb-4 px-sm-0">
-                    <Dropdown
+                    <button class="  btn d-flex justify-content-between pl-0  col-12 border  " type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                        <span class="ofering">
+                            &nbsp;&nbsp;&nbsp; {{ valueMonth ?  valueMonth : 'Month' }}
+                        </span>
+                        <span>
+                            <i class="pi pi-angle-down offset-sm-2 ofering"></i>
+                        </span>
+                    </button>
+                    <div class="dropdown-menu scroll w-100 " aria-labelledby="dropdownMenuButton">
+                        <a class="dropdown-item" v-for="(item, indx) in months" :key="indx">
+                            <div class="cursor-pointer" @click="selectedmonths(item)"> {{item}}</div> 
+                        </a>
+                    </div>
+                    <!-- <Dropdown
                       :options="[...months]"
                       :filter="false"
                       v-model="valueMonth"
@@ -1515,11 +1605,24 @@
                       class="w-100"
                       :showClear="false"
                     >
-                    </Dropdown>
+                    </Dropdown> -->
                   </div>
 
                   <div class="col-sm-2 mb-4">
-                    <Dropdown
+                    <button class="  btn d-flex justify-content-between pl-0  col-12 border  " type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                        <span class="ofering">
+                            &nbsp;&nbsp;&nbsp; {{ firstTimersObj && firstTimersObj.birthYear ?  firstTimersObj.birthYear : 'Year' }}
+                        </span>
+                        <span>
+                            <i class="pi pi-angle-down offset-sm-2 ofering"></i>
+                        </span>
+                    </button>
+                    <div class="dropdown-menu scroll w-100 " aria-labelledby="dropdownMenuButton">
+                        <a class="dropdown-item" v-for="(itmx, indx) in birthYearsArr" :key="indx">
+                            <div class="cursor-pointer" @click="selectedbirthYearsArr(itmx)"> {{itmx}}</div> 
+                        </a>
+                    </div>
+                    <!-- <Dropdown
                       :options="[...birthYearsArr]"
                       :filter="false"
                       v-model="firstTimersObj.birthYear"
@@ -1527,11 +1630,24 @@
                       class="w-100"
                       :showClear="false"
                     >
-                    </Dropdown>
+                    </Dropdown> -->
                   </div>
 
                   <div class="col-sm-3 mb-4 offset-sm-3 pr-sm-0">
-                    <Dropdown
+                     <button class="  btn d-flex justify-content-between pl-0 col-12 border  " type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                        <span class="ofering">
+                            &nbsp;&nbsp;&nbsp; {{ firstTimersObj && firstTimersObj.valueMarital  ?  firstTimersObj.valueMarital.value : 'Marital Status' }}
+                        </span>
+                        <span>
+                            <i class="pi pi-angle-down offset-sm-2 ofering"></i>
+                        </span>
+                    </button>
+                    <div class="dropdown-menu scroll w-100 " aria-labelledby="dropdownMenuButton">
+                        <a class="dropdown-item" v-for="(itmx, indx) in maritalStatusArr" :key="indx">
+                            <div class="cursor-pointer" @click="selectedMarital2(itmx)"> {{itmx.value}}</div> 
+                        </a>
+                    </div>
+                    <!-- <Dropdown
                       :options="[...maritalStatusArr]"
                       optionLabel="value"
                       :filter="false"
@@ -1541,11 +1657,24 @@
                       class="w-100"
                       :showClear="false"
                     >
-                    </Dropdown>
+                    </Dropdown> -->
                   </div>
 
                   <div class="col-sm-3 mb-4">
-                    <Dropdown
+                    <button class="  btn d-flex justify-content-between pl-0 col-12 border  " type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                        <span class="ofering">
+                            &nbsp;&nbsp;&nbsp; {{ valueGender ?  valueGender : 'Gender' }}
+                        </span>
+                        <span>
+                            <i class="pi pi-angle-down offset-sm-2 ofering"></i>
+                        </span>
+                    </button>
+                    <div class="dropdown-menu scroll w-100 " aria-labelledby="dropdownMenuButton">
+                        <a class="dropdown-item" v-for="(itmx, indx) in genders" :key="indx">
+                            <div class="cursor-pointer" @click="selectedGender(itmx)"> {{itmx}}</div> 
+                        </a>
+                    </div>
+                    <!-- <Dropdown
                       :options="[...genders]"
                       :filter="false"
                       v-model="valueGender"
@@ -1554,7 +1683,7 @@
                       class="w-100"
                       :showClear="false"
                     >
-                    </Dropdown>
+                    </Dropdown> -->
                   </div>
                 </div>
 
@@ -1579,7 +1708,20 @@
                 >
                   <div class="col-sm-6 offset-sm-3 mb-4">
                     <div>How did you hear about us</div>
-                    <Dropdown
+                    <button class="  btn d-flex justify-content-between pl-0 col-12 border  " type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                        <span class="ofering">
+                            &nbsp;&nbsp;&nbsp; {{ valueHeard ?  valueHeard : 'Select' }}
+                        </span>
+                        <span>
+                            <i class="pi pi-angle-down offset-sm-2 ofering"></i>
+                        </span>
+                    </button>
+                    <div class="dropdown-menu scroll w-100 " aria-labelledby="dropdownMenuButton">
+                        <a class="dropdown-item" v-for="(itm, indx) in howYouHeard" :key="indx">
+                            <div class="cursor-pointer" @click="selectedhowYouHeard(itm)"> {{itm}}</div> 
+                        </a>
+                    </div>
+                    <!-- <Dropdown
                       :options="[...howYouHeard]"
                       :filter="false"
                       v-model="valueHeard"
@@ -1588,12 +1730,25 @@
                       class="w-100"
                       :showClear="false"
                     >
-                    </Dropdown>
+                    </Dropdown> -->
                   </div>
 
                   <div class="col-sm-6 offset-sm-3 mb-4">
                     <div>Preferred means of communication</div>
-                    <Dropdown
+                    <button class="  btn d-flex justify-content-between pl-0 col-12 border  " type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                        <span class="ofering">
+                            &nbsp;&nbsp;&nbsp; {{ valueComm ?  valueComm : 'Select' }}
+                        </span>
+                        <span>
+                            <i class="pi pi-angle-down offset-sm-2 ofering"></i>
+                        </span>
+                    </button>
+                    <div class="dropdown-menu scroll w-100 " aria-labelledby="dropdownMenuButton">
+                        <a class="dropdown-item" v-for="(item, indx) in comMeansArr" :key="indx">
+                            <div class="cursor-pointer" @click="selectedcomMeansArr(item)"> {{item}}</div> 
+                        </a>
+                    </div>
+                    <!-- <Dropdown
                       :options="[...comMeansArr]"
                       :filter="false"
                       v-model="valueComm"
@@ -1602,12 +1757,25 @@
                       class="w-100"
                       :showClear="false"
                     >
-                    </Dropdown>
+                    </Dropdown> -->
                   </div>
 
                   <div class="col-sm-6 offset-sm-3 mb-4">
                     <div>Interested in joining us</div>
-                    <Dropdown
+                    <button class="  btn d-flex justify-content-between pl-0 col-12 border  " type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                        <span class="ofering">
+                            &nbsp;&nbsp;&nbsp; {{ valueInterest ?  valueInterest : 'Select' }}
+                        </span>
+                        <span>
+                            <i class="pi pi-angle-down offset-sm-2 ofering"></i>
+                        </span>
+                    </button>
+                    <div class="dropdown-menu scroll w-100 " aria-labelledby="dropdownMenuButton">
+                        <a class="dropdown-item" v-for="(item, indx) in joinInterest" :key="indx">
+                            <div class="cursor-pointer" @click="selectedJoinInterest(item)"> {{item}}</div> 
+                        </a>
+                    </div>
+                    <!-- <Dropdown
                       :options="[...joinInterest]"
                       :filter="false"
                       v-model="valueInterest"
@@ -1616,12 +1784,25 @@
                       class="w-100"
                       :showClear="false"
                     >
-                    </Dropdown>
+                    </Dropdown> -->
                   </div>
 
                   <div class="col-sm-6 offset-sm-3 mb-4">
                     <div>Want to be visited?</div>
-                    <Dropdown
+                    <button class="  btn d-flex justify-content-between pl-0 col-12 border  " type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                        <span class="ofering">
+                            &nbsp;&nbsp;&nbsp; {{ valueVisit ?  valueVisit : 'Select' }}
+                        </span>
+                        <span>
+                            <i class="pi pi-angle-down offset-sm-2 ofering"></i>
+                        </span>
+                    </button>
+                    <div class="dropdown-menu scroll w-100 " aria-labelledby="dropdownMenuButton">
+                        <a class="dropdown-item" v-for="(item, indx) in wantVisitArr" :key="indx">
+                            <div class="cursor-pointer" @click="selectedwantVisitArr(item)"> {{item}}</div> 
+                        </a>
+                    </div>
+                    <!-- <Dropdown
                       :options="[...wantVisitArr]"
                       :filter="false"
                       v-model="valueVisit"
@@ -1630,7 +1811,7 @@
                       class="w-100"
                       :showClear="false"
                     >
-                    </Dropdown>
+                    </Dropdown> -->
                   </div>
                 </div>
                 <span
@@ -2180,6 +2361,9 @@ export default {
     selectedMarital(itm){
       this.valueMarital = itm
     },
+    selectedMarital2(itm){
+      this.firstTimersObj.valueMarital = itm
+    },
     selectedGender(itm){
       this.valueGender = itm
     },
@@ -2189,8 +2373,23 @@ export default {
     selectedday(item){
       this.firstTimersObj.birthday = item
     },
+    selectedday2(item){
+      this.newConvertsObj.birthday = item
+    },
     selectedbirthYearsArr(itm){
       this.firstTimersObj.birthYear = itm
+    },
+    selectedhowYouHeard(itm){
+      this.valueHeard = itm
+    },
+    selectedcomMeansArr(itm){
+      this.valueComm = itm
+    },
+    selectedJoinInterest(itm){
+      this.valueInterest = itm
+    },
+    selectedwantVisitArr(itm){
+      this.valueVisit = itm
     },
     currentDate() {
       this.currDate = this.eventDate;
@@ -3781,6 +3980,17 @@ export default {
 </script>
 
 <style scoped>
+
+.el-dropdown {
+    vertical-align: top;
+  }
+  .el-dropdown + .el-dropdown {
+    margin-left: 15px;
+  }
+  .el-icon-arrow-down {
+    font-size: 12px;
+  }
+
 .event {
   font-family: "Nunito sans";
   /* margin-top: 20px; */
