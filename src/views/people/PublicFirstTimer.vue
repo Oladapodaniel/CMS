@@ -1,5 +1,29 @@
 <template>
-  <div class="container container-top">
+  <div class="container container-top"><div class="row justify-content-center mx-0  ">
+      <div class="col-md-12   d-flex justify-content-center my-3  ">
+        <div class="col-md-3 mt-4  d-flex align-items-center">
+            <div class="pl-2">
+              <img
+                      :src="churchLogo"
+                      v-if="churchLogo"
+                      class="link-image"
+                      alt=""
+                    />
+                    <img
+                      src="../../assets/dashboardlinks/churchcloud.png"
+                      v-else
+                      class="link-image "
+                      alt=""
+                    />
+              
+            </div>
+            <span><h4 class="font-weight-bold mt-3">{{currentUser? currentUser.churchName :  "Churchplus" }}</h4></span>
+        </div>
+      </div>
+      
+    </div>
+
+
     <div class="row">
       <h3 class="col-12 header-text font-weight-bold">Add First timers</h3>
       <div class="mt-3 col-12">Bio:</div>
