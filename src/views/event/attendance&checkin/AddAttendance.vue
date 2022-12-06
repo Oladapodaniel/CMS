@@ -1254,6 +1254,12 @@ export default {
 
     const onContinue = async () => {
       loadingsave.value = true;
+      let checkinEvent2 = {
+        id: attendanceCheID.value,
+        eventId: selectedEvent.value.id,
+        groupIDs: selectedGroups.value,
+        eventDate: selectedEvent.value.date.split("T")[0],
+      };
       let checkinEvent = {
         eventId: selectedEvent.value.id,
         groupIDs: selectedGroups.value,
@@ -1392,7 +1398,7 @@ export default {
         try {
           const res = await axios.put(
             "/api/CheckInAttendance/UpdateCheckInAttendance",
-            checkinEvent
+            checkinEvent2
           );
           console.log(res);
           toast.add({
