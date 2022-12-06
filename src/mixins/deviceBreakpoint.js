@@ -5,7 +5,7 @@ const deviceBreakpoint = () => {
     const xsOnly = ref(breakpoint.only() == 'xsOnly')
     const lgAndUp = ref(breakpoint.up() == 'lgAndUp')
     const xlAndUp = ref(breakpoint.up() == 'xlAndUp')
-    const mdAndUp = ref(breakpoint.up() == 'mdndUp')
+    const mdAndUp = ref(breakpoint.up() == 'mdAndUp')
 
     onMounted(() => {
         window.addEventListener("resize", () => {

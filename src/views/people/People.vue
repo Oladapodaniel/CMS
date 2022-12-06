@@ -1,9 +1,9 @@
 <template>
-  <main :class="{ 'container-slim': lgAndUp || xlAndUp }" id="main">
-    <div class="second-col container-top">
+  <main :class="{ 'container-slim': lgAndUp || xlAndUp }">
+    <div class="container-top">
       <div class="d-flex flex-column flex-sm-row justify-content-sm-between" v-if="!isFormPage">
-        <div class="header">
-          <div class="events">{{ header }}</div>
+        <div class="head-text">
+          <div>{{ header }}</div>
         </div>
         <div class="d-flex mt-3 mt-sm-0">
           <el-button color="#136acd" @click="importMembers" plain round>Import</el-button>

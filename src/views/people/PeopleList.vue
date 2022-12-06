@@ -2,9 +2,6 @@
   <div class="my-con">
     <div class="summary px-3">
       <p class="summary-header">Summary</p>
-      <!-- <ConfirmDialog />
-      <Toast /> -->
-
 
       <div class="boards">
         <div class="board">
@@ -14,9 +11,9 @@
           </div>
           <h4 class="total">{{ membershipSummary.totalMember }}</h4>
           <p>
-            <span class="percent">+{{ membershipSummary.percentageGrowth }}%
+            <span class="primary--text">+{{ membershipSummary.percentageGrowth }}%
             </span>
-            <span class="percent-text"> Since last month</span>
+            <span> Since last month</span>
           </p>
         </div>
         <div class="chart-con">
@@ -31,75 +28,6 @@
         </div>
       </div>
     </div>
-
-    <div class="row mt-5">
-      <!-- <div class="col-md-10 pl-5">
-        <i class="pi pi-trash c-pointer" style="font-size: 24px" v-if="marked.length > 0" @click="deleteMarked"></i>
-      </div> -->
-    </div>
-
-    <!-- group box area -->
-    <!-- The Modal -->
-    <!-- <div class="modal" id="myModal">
-      <div class="modal-dialog">
-        <div class="modal-content">
-          
-          <div class="modal-header">
-            <h5 class="modal-title">Add Members To Group</h5>
-            <button type="button" class="close" data-dismiss="modal">
-              &times;
-            </button>
-          </div>
-
-          
-          <div class="modal-body">
-            <Dropdown v-model="chooseGrouptoMoveto" optionLabel="name" :options="getAllGroups"
-              placeholder="Select a Group" style="width: 100%">
-            </Dropdown>
-          </div>
-
-          
-          <div class="modal-footer">
-            <button type="button" class="btn groupicon-color default-btn" data-dismiss="modal"
-              @click="moveMemberToGroup" style="border: none">
-              Add to Group
-            </button>
-          </div>
-        </div>
-      </div>
-    </div> -->
-    <!-- group box area -->
-
-    <!-- group box area to add all members -->
-    <!-- The Modal -->
-    <!-- <div class="modal" id="myGroupModal">
-      <div class="modal-dialog">
-        <div class="modal-content">
-
-          <div class="modal-header">
-            <h5 class="modal-title">Add all Members To Group</h5>
-            <button type="button" class="close" data-dismiss="modal">
-              &times;
-            </button>
-          </div>
-
-          
-          <div class="modal-body">
-            <Dropdown v-model="chooseGrouptoMoveAllMembers" optionLabel="name" :options="getAllGroups"
-              placeholder="Select a Group" style="width: 100%">
-            </Dropdown>
-          </div>
-
-          
-          <div class="modal-footer">
-            <button type="button" class="btn groupicon-color default-btn" data-dismiss="modal"
-              @click="getAllMembersAndAddToGroup" style="border: none">
-              Add to Group
-            </button>
-          </div>
-        </div>
-      </div>
-    </div> -->
 
 
     <el-dialog v-model="addToGroupDialog" title="Add all Members To Group"
@@ -145,99 +73,66 @@
         </span>
       </template>
     </el-dialog>
-    <!-- group box area to add all members -->
 
     <div class="table-top p-3">
       <div class="d-flex flex-column flex-sm-row justify-content-sm-between">
         <div>
-          <!-- <input type="checkbox" name="all" id="all" @change="markAll" -->
-          <!-- :checked="marked.length === churchMembers.length" /> -->
-          <!-- <label>SELECT ALL</label> -->
-          <!-- <a data-toggle="modal" data-target="#myGroupModal"> -->
-          <!-- <i class="mr-2 color-groupicon pi pi-plus-circle c-pointer" v-tooltip.top="'Add all member to Group'"
-            style="font-size: 22px">
-          </i> -->
-         <el-tooltip class="box-item" effect="dark" content="Add all members to group" placement="top-start">
+          <el-tooltip class="box-item" effect="dark" content="Add all members to group" placement="top-start">
             <el-icon :size="20" class="c-pointer" @click="addToGroupDialog = true">
               <CirclePlus />
             </el-icon>
           </el-tooltip>
-          <el-tooltip class="box-item" effect="dark" v-if="marked.length > 0" content="Add to group" placement="top-start">
-            <el-icon class="ml-2 c-pointer" :size="20"  @click="(addToGroupSingle = true)">
+          <el-tooltip class="box-item" effect="dark" v-if="marked.length > 0" content="Add to group"
+            placement="top-start">
+            <el-icon class="ml-2 c-pointer" :size="20" @click="(addToGroupSingle = true)">
               <User />
             </el-icon>
           </el-tooltip>
-          <el-tooltip class="box-item" effect="dark" v-if="marked.length > 0" content="Archive member(s)" placement="top-start">
+          <el-tooltip class="box-item" effect="dark" v-if="marked.length > 0" content="Archive member(s)"
+            placement="top-start">
             <el-icon class="ml-2 c-pointer" :size="20" @click="(displayPositionArchive = true)"
               v-if="marked.length > 0">
               <DocumentRemove />
             </el-icon>
           </el-tooltip>
-          <el-tooltip class="box-item" effect="dark" v-if="marked.length > 0" content="Delete member(s)" placement="top-start">
+          <el-tooltip class="box-item" effect="dark" v-if="marked.length > 0" content="Delete member(s)"
+            placement="top-start">
             <el-icon :size="20" class="ml-2 c-pointer" v-if="marked.length > 0" @click="showConfirmModal1">
               <Delete />
             </el-icon>
           </el-tooltip>
           <el-tooltip class="box-item" effect="dark" v-if="marked.length > 0" content="Send SMS" placement="top-start">
-            <el-icon :size="20" class="ml-2 c-pointer" v-if="marked.length > 0" @click="sendMarkedMemberSms"><Message /></el-icon>
+            <el-icon :size="20" class="ml-2 c-pointer" v-if="marked.length > 0" @click="sendMarkedMemberSms">
+              <Message />
+            </el-icon>
           </el-tooltip>
-          <el-tooltip class="box-item" effect="dark" v-if="marked.length > 0" content="Send Email" placement="top-start">
-            <el-icon :size="20" class="ml-2 c-pointer" v-if="marked.length > 0" @click="sendMarkedMemberEmail"><MessageBox /></el-icon>
+          <el-tooltip class="box-item" effect="dark" v-if="marked.length > 0" content="Send Email"
+            placement="top-start">
+            <el-icon :size="20" class="ml-2 c-pointer" v-if="marked.length > 0" @click="sendMarkedMemberEmail">
+              <MessageBox />
+            </el-icon>
           </el-tooltip>
-          <!-- </a> -->
-          <!-- <a href="#" data-toggle="modal" data-target="#myModal">
-            <i class="ml-3 mr-2 color-groupicon pi pi-users c-pointer" v-tooltip.top="'Add to Group'"
-              style="font-size: 22px" v-if="marked.length > 0">
-            </i>
-          </a> -->
-          <!-- <i class="fa fa-file-archive-o color-groupicon c-pointer ml-2 mr-2" v-if="marked.length > 0"
-            v-tooltip.top="'Archive member(s)'" @click="openPositionArchive('center')" aria-hidden="true"
-            style="font-size: 20px"></i> -->
-          <!-- <i class="pi pi-trash color-deleteicon c-pointer pt-2 px-2" v-tooltip.top="'Delete Member(s)'"
-            style="font-size: 20px" v-if="marked.length > 0" @click="showConfirmModal1"></i>&nbsp; &nbsp; -->
-          <!-- <span class="c-pointer ml-2" v-if="marked.length > 0" @click="sendMarkedMemberSms">SEND SMS</span>
-          <span class="c-pointer ml-2" v-if="marked.length > 0" @click="sendMarkedMemberEmail">SEND EMAIL</span> -->
         </div>
         <div class="d-flex flex-column flex-sm-row justify-content-sm-between">
-        <div>
-          <p @click="toggleFilterFormVissibility" class="mb-0 mr-3 d-flex my-3 my-sm-0 c-pointer">
-            <el-icon :size="13"><Filter /></el-icon>
-            <span class="ml-1"> FILTER</span>
-          </p>
-
-          <!-- filter -->
-          <!-- <p @click="toggleSearch" class="search-text mb-0">
-            <el-icon :size="13"><Search /></el-icon> SEARCH
-          </p> -->
-        </div>
-        <!-- <el-input v-model="searchText" placeholder="Search..." class="input-with-select" @input="searchPeopleInDB">
-            <template #append>
-              <el-button>
-                <el-icon :size="13"><Search /></el-icon>
-              </el-button>
-            </template>
-          </el-input> -->
-        
-        <!-- <label class="label-search d-flex" :class="{
-          'show-search': searchIsVisible,
-          'hide-search': !searchIsVisible,
-        }"> -->
-        <!-- <el-form :model="searchText" class="mt-3" @keyup.enter.prevent="searchPeopleInDB($event)"> -->
-        <el-input size="small" v-model="searchText" placeholder="Search..." @keyup.enter.prevent="searchPeopleInDB($event)" class="input-with-select">
+          <div>
+            <p @click="toggleFilterFormVissibility" class="mb-0 mr-3 d-flex my-3 my-sm-0 c-pointer">
+              <el-icon :size="13">
+                <Filter />
+              </el-icon>
+              <span class="ml-1"> FILTER</span>
+            </p>
+          </div>
+          <el-input size="small" v-model="searchText" placeholder="Search..."
+            @keyup.enter.prevent="searchPeopleInDB($event)" class="input-with-select">
             <template #append>
               <el-button @click.prevent="searchPeopleInDB($event)">
-                <el-icon :size="13"><Search /></el-icon>
+                <el-icon :size="13">
+                  <Search />
+                </el-icon>
               </el-button>
             </template>
           </el-input>
-        <!-- </el-form> -->
-          <!-- <input type="text" placeholder="Search..." v-model="searchText" @input="searchPeopleInDB" /> -->
-          <!-- <span class="empty-btn" @click="clearInput"><i class="pi pi-times"></i></span> -->
-          <!-- <span class="search-btn">
-            <i class="pi pi-search"></i>
-          </span> -->
-        <!-- </label> -->
-      </div>
+        </div>
       </div>
     </div>
     <div class="filter-options" :class="{ 'filter-options-shown': filterFormIsVissible }">
@@ -252,50 +147,20 @@
                     inp
                     w-100
                   ">
-                <!-- <div class="input-field"> -->
-
-                <!-- <input type="text" class="input w-100" placeholder="First Name" v-model="filter.name" -->
-                  <!-- @input="setFilteredValue" /> -->
-                  <el-input placeholder="First name" class="w-100" v-model="filter.name" @input="setFilteredValue"/>
-                <!-- </div> -->
+                <el-input placeholder="First name" class="w-100" v-model="filter.name" @input="setFilteredValue" />
               </div>
-
-              <!-- <div class="col-12 col-sm-6 form-group d-none d-md-block">
-                  <input
-                    type="date"
-                    class="form-control input inp w-100"
-                    v-model="filter.filterDate"
-                  />
-                </div> -->
               <div class="col-12 col-sm-6 form-group d-none d-md-block">
-                <el-input placeholder="Phone number" class="w-100" v-model="filter.phoneNumber"/>
-                <!-- <input type="text" class="input w-100" placeholder="Phone Number" v-model="filter.phoneNumber" /> -->
+                <el-input placeholder="Phone number" class="w-100" v-model="filter.phoneNumber" />
               </div>
-            </div>
-
-            <div class="row">
-              <!-- <div class="col-12 col-sm-6 form-group d-none d-md-block">
-                  <input
-                    type="text"
-                    class="input w-100"
-                    placeholder="Last Name"
-                    v-model="filter.filterLastName"
-                  />
-                </div> -->
             </div>
           </div>
 
           <div class="col-md-3 d-flex flex-column align-items-center">
-            <el-button color="#136acd" @click="applyFilter" :loading="applyLoading" :disabled="disableBtn" round>Apply</el-button>
-            <!-- <button class="apply-btn text-white" @click="applyFilter" :disabled="disableBtn">
-              Apply
-            </button> -->
+            <el-button color="#136acd" @click="applyFilter" :loading="applyLoading" :disabled="disableBtn"
+              round>Apply</el-button>
             <span class="mt-2">
               <el-button @click="clearAll" class="mr-2" text>Clear all</el-button>
-              <!-- <a class="clear-link mr-2" @click="clearAll">Clear all</a> -->
               <el-button @click="hide" class="mx-2" text>Hide</el-button>
-              <!-- <span class="mx-2"><i class="fas fa-circle" style="font-size: 4px"></i></span><a class="hide-link ml-2" -->
-                <!-- @click="hide">Hide</a> -->
             </span>
           </div>
         </div>
@@ -311,10 +176,10 @@
           <el-card shadow="hover" class="c-pointer person-image" v-if="pictureUrl"
             style="border-radius: 50%; height: 26px; width: 26px;">
             <el-tooltip class="box-item" effect="dark" content="Click to view" placement="top-start">
-              <img :src="pictureUrl" alt="" @click="(selectedImageUrl = pictureUrl), (imageDialog = true)" style="border-radius: 50%; height: 26px; width: 26px; object-fit: cover"
-                />
-                 
-                <!-- @click-row="showMemberRow" -->
+              <img :src="pictureUrl" alt="" @click="(selectedImageUrl = pictureUrl), (imageDialog = true)"
+                style="border-radius: 50%; height: 26px; width: 26px; object-fit: cover" />
+
+              <!-- @click-row="showMemberRow" -->
             </el-tooltip>
           </el-card>
           <el-avatar :size="25" v-else><el-icon color="#000000">
@@ -391,169 +256,7 @@
         </span>
       </template>
     </el-dialog>
-
-
-    <!-- <div class="table mx-0" :class="{ 'mt-0': marked.length > 0 }"> -->
-
-
-    <!-- <div class="table-header font-weight-700">
-        <div class="check"></div>
-        <div class="picture text-dark small-text text-capitalize font-weight-bold" style="font-size: 16px">
-          <p>picture</p>
-        </div>
-        <div class="
-            firstname
-            small-text
-            text-dark text-capitalize
-            font-weight-bold
-          " style="font-size: 16px">
-          <p>firstname</p>
-        </div>
-        <div class="lastname small-text text-dark text-capitalize font-weight-bold" style="font-size: 16px">
-          <p>lastname</p>
-        </div>
-        <div class="phone small-text text-dark text-capitalize font-weight-bold" style="font-size: 16px">
-          <p>phone</p>
-        </div>
-        <div class="action small-text text-dark text-capitalize font-weight-bold" style="font-size: 16px">
-          <p>action</p>
-        </div>
-      </div> -->
-
-    <!-- <loadingComponent :loading="loading" /> -->
-    <!-- <div v-if="!loading">
-        <div class="table-body" v-for="(person, index) in searchMember" :key="person.id">
-          <div class="data-row">
-            <div class="check data">
-              <input type="checkbox" name="" id="" @change="markOne(person)"
-                :checked="marked.findIndex((i) => i.id === person.id) >= 0" />
-            </div>
-            <div class="picture data">
-              <div class="data-con">
-                <div class="data-text">
-                  <p>Picture</p>
-                </div>
-                <div class="data-value">
-                  <div class="image-con">
-                    <img :src="person.pictureUrl" alt=""
-                      style="border-radius: 50%; height: 26px; width: 26px; object-fit: cover"
-                      v-if="person.pictureUrl" />
-                    <img src="../../assets/people/avatar-male.png" alt=""
-                      style="border-radius: 50%; height: 26px; width: 26px; object-fit: cover" v-else />
-                  </div>
-                </div>
-              </div>
-            </div>
-            <div class="firstname data">
-              <div class="data-con">
-                <div class="data-text">
-                  <p>Firstname</p>
-                </div>
-                <router-link :to="`/tenant/people/add/${person.id}`"
-                  class="data-value small-text text-secondary itemroute-color">{{ person.firstName }}</router-link>
-              </div>
-            </div>
-            <div class="lastname data">
-              <div class="data-con">
-                <div class="data-text">
-                  <p>Lastname</p>
-                </div>
-                <router-link :to="`/tenant/people/add/${person.id}`"
-                  class="data-value small-text text-secondary itemroute-color">{{ person.lastName }}</router-link>
-              </div>
-            </div>
-            <div class="phone data">
-              <div class="data-con mr-4">
-                <div class="data-text">
-                  <p>Phone</p>
-                </div>
-                <router-link :to="`/tenant/people/add/${person.id}`" class="
-                    data-value
-                    small-text
-                    text-left text-secondary
-                    itemroute-color
-                  ">{{ person.mobilePhone }}</router-link>
-              </div>
-            </div>
-            <div class="action data action-icon">
-              <div class="data-text">
-                <p>Action</p>
-              </div>
-              <div class="dropdown text-left">
-                <i class="fas fa-ellipsis-v cursor-pointer alignLeft" id="dropdownMenuButton" data-toggle="dropdown"
-                  aria-haspopup="true" aria-expanded="false"></i>
-                <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
-                  <a class="dropdown-item elipsis-items">
-                    <router-link :to="
-                      person.mobilePhone
-                        ? `/tenant/sms/compose?phone=${person.mobilePhone}`
-                        : ''
-                    " :class="{
-  'fade-text': !person.mobilePhone,
-  'text-color': person.mobilePhone,
-}">Send SMS</router-link>
-                  </a>
-                  <a class="dropdown-item elipsis-items">
-                    <router-link :to="
-                      person.email
-                        ? `/tenant/email/compose?phone=${person.email}`
-                        : ''
-                    " :class="{
-  'fade-text': !person.email,
-  'text-color': person.email,
-}">Send Email</router-link>
-                  </a>
-                  <a class="dropdown-item elipsis-items cursor-pointer text-color"
-                    @click="archive(person.id, 'single')">
-                    Archive
-                  </a>
-                  <a class="dropdown-item elipsis-items cursor-pointer">
-                    <router-link :to="`/tenant/firsttimermanagement/${person.id}?memberType=1`"
-                      class="itemroute-color text-color">
-                      Follow Up
-                    </router-link>
-                  </a>
-                  <a class="dropdown-item elipsis-items">
-                    <router-link :to="`/tenant/people/add/${person.id}`" class="text-color">Edit</router-link>
-                  </a>
-                  <a class="
-                      dropdown-item
-                      elipsis-items
-                      text-color
-                      cursor-pointer
-                    " @click.prevent="showConfirmModal(person.id, index)">Delete</a>
-                </div>
-              </div>
-            </div>
-          </div>
-          <hr class="row-divider" />
-        </div>
-      </div> -->
-    <!-- tosin -->
-    <!-- <div class="col-md-12 col py-3" v-if="
-        (listOfPeople.length === 0 && churchMembers.length !== 0) || searchMember.length === 0 && !loading
-      ">
-        <p class="text-danger d-flex justify-content-center">
-          Record not available
-        </p>
-      </div>
-      
-      <div class="table-footer">
-        
-      </div>
-    </div> -->
   </div>
-  <!-- <Dialog header="Archive members" v-model:visible="displayPositionArchive" :style="{ width: '50vw' }"
-    :position="positionArchive" :modal="true">
-    <p class="p-m-0">You are about to archive your member(s). Do you want to continue ?</p>
-    <template #footer>
-      <div class="d-flex justify-content-end">
-        <div class="default-btn bg-white text-center mr-2 c-pointer" @click="closeArchiveModal">No</div>
-        <div class="default-btn border-0 primary-bg text-center text-white c-pointer" @click="archive('', 'multiple')">
-          Yes</div>
-      </div>
-    </template>
-  </Dialog> -->
 
   <SideBar :show="showSMS" :title="'Compose SMS'" @closesidemodal="() => showSMS = false">
     <div class="m-wrapper" :class="{ 'm-wrapper': showSMS, 'no-show': !showSMS }">
@@ -572,17 +275,11 @@
 import { ref, computed, watch, watchEffect } from "vue";
 import ByGenderChart from "@/components/charts/PieChart.vue";
 import ByMaritalStatusChart from "@/components/charts/PieChart.vue";
-// import PaginationButtons from "../../components/pagination/PaginationButtons.vue";
 import axios from "@/gateway/backendapi";
-// import { useConfirm } from "primevue/useconfirm";
-// import { useToast } from "primevue/usetoast";
 import { useRoute } from "vue-router";
 import store from "../../store/store";
 import stopProgressBar from "../../services/progressbar/progress";
 import membershipservice from "../../services/membership/membershipservice";
-// import Tooltip from "primevue/tooltip";
-// import Dropdown from "primevue/dropdown";
-// import loadingComponent from "@/components/loading/LoadingComponent";
 import smsComponent from "../groups/component/smsComponent.vue";
 import emailComponent from "../groups/component/emailComponent.vue";
 import SideBar from "../groups/sidemodal/SideModal.vue";
@@ -595,17 +292,10 @@ export default {
   components: {
     ByGenderChart,
     ByMaritalStatusChart,
-    // PaginationButtons,
-    // Dropdown,
-    // loadingComponent,
     smsComponent,
     emailComponent,
     SideBar
   },
-
-  // directives: {
-  //   tooltip: Tooltip,
-  // },
 
   setup(props) {
     const addClass = ref(false)
@@ -616,7 +306,6 @@ export default {
     const filterResult = ref([]);
     const selectAll = ref(false);
     const noRecords = ref(false);
-    // const loading = ref(false);
     const searchText = ref("");
     const showSMS = ref(false)
     const showEmail = ref(false)
@@ -625,8 +314,6 @@ export default {
     const chooseGrouptoMoveAllMembers = ref("")
     const currentUser = ref({})
     const route = useRoute();
-    // const store = useStore();
-    // const positionArchive = ref('center');
     const displayPositionArchive = ref(false);
     const filtered = ref(false);
     const memberHeaders = ref([
@@ -640,8 +327,6 @@ export default {
     const serverOptions = ref({
       page: 1,
       rowsPerPage: 100,
-      // sortBy: 'age',
-      // sortType: 'desc',
     });
     const paginatedTableLoading = ref(false)
     const selectedImageUrl = ref("")
@@ -654,26 +339,13 @@ export default {
     const archiveLoading = ref(false)
     const applyLoading = ref(false)
 
-
-    // const loadFromServer = async () => {
-    //   loading.value = true;
-    //   const {
-    //     serverCurrentPageItems,
-    //     serverTotalItemsLength,
-    //   } = await mockServerItems(serverOptions.value);
-    //   items.value = serverCurrentPageItems;
-    //   serverItemsLength.value = serverTotalItemsLength;
-    //   loading.value = false;
-    // };
-
     watch(serverOptions, () => {
       getPeopleByPage();
-    }
-      // { deep: true }
+    },
+      { deep: true }
     );
 
     const showMemberRow = (item) => {
-      console.log(item)
       router.push(`/tenant/people/add/${item.id}`)
     }
 
@@ -691,27 +363,16 @@ export default {
           );
           if (res.data.response.includes("@")) {
             let disRes = res.data.response.split("@")
-            // toast.add({
-            //   severity: "info",
-            //   summary: "Info",
-            //   detail: disRes[0],
-            //   life: 10000,
-            // });
+
             ElMessage({
-            type: 'info',
-            message: disRes[0],
-          })
+              type: 'info',
+              message: disRes[0],
+            })
           } else {
-            // toast.add({
-            //   severity: "success",
-            //   summary: "Confirmed",
-            //   detail: "Member Deleted",
-            //   life: 5000,
-            // });
             ElMessage({
-            type: 'success',
-            message: 'Member deleted successfully',
-          })
+              type: 'success',
+              message: 'Member deleted successfully',
+            })
           }
           store.dispatch("membership/removeMember", id);
           axios
@@ -737,16 +398,6 @@ export default {
         })
         .catch((err) => {
           stopProgressBar();
-          // toast.add({
-          //   severity: "error",
-          //   summary: "Delete Error",
-          //   detail: "Deleting member failed",
-          //   life: 3000,
-          // });
-          // ElMessage({
-          //   type: 'error',
-          //   message: 'Delete failed, please try again',
-          // })
           ElMessage.error('Delete failed, please try again')
           console.log(err);
         });
@@ -765,8 +416,6 @@ export default {
       searchIsVisible.value = !searchIsVisible.value;
     };
 
-    // const confirm = useConfirm();
-    // let toast = useToast();
     const showConfirmModal = (id, index) => {
       ElMessageBox.confirm(
         'Are you sure you want to proceed?',
@@ -786,25 +435,6 @@ export default {
             message: 'Delete canceled',
           })
         })
-
-      // confirm.require({
-      //   message: "Are you sure you want to proceed?",
-      //   header: "Confirmation",
-      //   icon: "pi pi-exclamation-triangle",
-      //   acceptClass: "confirm-delete",
-      //   rejectClass: "cancel-delete",
-      //   accept: () => {
-      //     deleteMember(id, index);
-      //   },
-      //   reject: () => {
-      //     toast.add({
-      //       severity: "info",
-      //       summary: "Rejected",
-      //       detail: "Delete discarded",
-      //       life: 3000,
-      //     });
-      //   },
-      // });
     };
 
     const getPeopleByPage = async () => {
@@ -820,22 +450,17 @@ export default {
         console.log(error);
       }
     };
-    // const getMemberSummary = () => {
 
-    // }
+    const getMemberSummary = () => {
+      axios
+        .get(`/api/People/GetMembershipSummary`)
+        .then((res) => {
+          membershipSummary.value = res.data;
+        })
+        .catch((err) => console.log(err));
 
-    // onBeforeUnmount(() => {
-      const getMemberSummary = () => {
-        axios
-          .get(`/api/People/GetMembershipSummary`)
-          .then((res) => {
-            membershipSummary.value = res.data;
-          })
-          .catch((err) => console.log(err));
-
-      }
-      getMemberSummary()
-    // })
+    }
+    getMemberSummary()
 
     const marked = ref([]);
     const mark = (member) => {
@@ -878,7 +503,7 @@ export default {
         const response = await membershipservice.deletePeople(IDs);
 
         if (response && response.response && response.response.toString().toLowerCase().includes("all")) {
-            ElMessage({
+          ElMessage({
             type: 'success',
             message: 'Delete successfully',
           })
@@ -913,27 +538,12 @@ export default {
         marked.value = [];
         store.dispatch("membership/removeMember");
         getMemberSummary();
-        // axios
-        //   .get(`/api/People/GetMembershipSummary`)
-        //   .then((res) => {
-        //     membershipSummary.value = res.data;
-        //   })
-        //   .catch((err) => {
-        //     console.log(err);
-        //   });
       } catch (error) {
         console.log(error);
-        // if (error.response) {
-          // toast.add({
-          //   severity: "warn",
-          //   summary: "Delete Failed",
-          //   detail: "Member Deleted",
-          //   life: 4000,
-          // });
-          ElMessage({
-            type: 'warning',
-            message: 'Delete failed, please try again',
-          })
+        ElMessage({
+          type: 'warning',
+          message: 'Delete failed, please try again',
+        })
         // }
       }
     };
@@ -957,39 +567,12 @@ export default {
             message: 'Delete canceled',
           })
         })
-      // confirm.require({
-      //   message: "Are you sure you want to proceed?",
-      //   header: "Confirmation",
-      //   icon: "pi pi-exclamation-triangle",
-      //   acceptClass: "confirm-delete",
-      //   rejectClass: "cancel-delete",
-      //   accept: () => {
-      //     deleteMarked();
-      //   },
-      //   reject: () => {
-      //     toast.add({
-      //       severity: "info",
-      //       summary: "Rejected",
-      //       detail: "Delete discarded",
-      //       life: 3000,
-      //     });
-      //   },
-      // });
     };
 
-    // const getPeopleList = () => {
-    //   // console.log(props.list, "props");
-    //   churchMembers.value = props.list;
-
-    //   console.log(churchMembers.value, "churcmember")
-    // };
-    // getPeopleList();
 
     watchEffect(() => {
-      // if (props.list.length > 0) {
       churchMembers.value = props.list
       serverItemsLength.value = membershipSummary.value.totalMember
-      // }
     })
 
     const toggleSelect = () => {
@@ -1043,7 +626,6 @@ export default {
       e.preventDefault();
       paginatedTableLoading.value = true;
       let url =
-        //  "/api/People/FilterFirstTimers?firstname=" +
         `/api/Membership/GetSearchedUSers?searchText=${searchText.value}`;
       axios
         .get(url)
@@ -1073,7 +655,6 @@ export default {
 
     const searchMember = computed(() => {
       if (searchText.value !== "" && searchPeopleNamesInDB.value.length > 0) {
-        // return searchPeopleInDB()
         return searchPeopleNamesInDB.value;
       } else if (searchText.value !== "" && searchPeopleNamesInDB.value.length == 0 && paginatedTableLoading.value) {
         return []
@@ -1205,10 +786,6 @@ export default {
       displayPositionArchive.value = true;
     };
 
-    // const closeArchiveModal = () => {
-    //   displayPositionArchive.value = false
-    // }
-
     const archive = async (id, type) => {
       archiveLoading.value = true
       let archiveBody = type == 'single' ? [id] : marked.value.map(i => i.id)
@@ -1261,7 +838,6 @@ export default {
       toggleSearch,
       searchIsVisible,
       showConfirmModal,
-      // filterChurchMembers,
       filterResult,
       selectAll,
       toggleSelect,
@@ -1275,14 +851,12 @@ export default {
       deleteMarked,
       clearInput,
       showConfirmModal1,
-      // Dropdown,
       getGroups,
       getAllGroups,
       chooseGrouptoMoveto,
       moveMemberToGroup,
       searchPeopleInDB,
       listOfPeople,
-      // loading,
       searchMember,
       sendMarkedMemberSms,
       showSMS,
@@ -1297,7 +871,6 @@ export default {
       archive,
       openPositionArchive,
       displayPositionArchive,
-      // closeArchiveModal,
       filtered,
       setFilteredValue,
       memberHeaders,
@@ -1325,15 +898,6 @@ export default {
 <style scoped>
 * {
   box-sizing: border-box;
-  /* color: #02172e; */
-}
-
-.itemroute-color {
-  color: #136acd;
-}
-
-a {
-  text-decoration: none;
 }
 
 .m-wrapper {
@@ -1363,28 +927,12 @@ a {
   /* transition: all  8s cubic-bezier(0.645, 0.045, 0.355, 1); */
 }
 
-.picture,
-.firstname,
-.lastname,
-.phone,
-.action {
-  width: 100%;
-  /* font-size: 20px; */
-}
-
 .summary {
   /* border-radius: 30px; */
   padding: 24px 10px;
   background: #fff;
   box-shadow: 0px 2px 7.5px rgb(0 0 0 / 6%);
   /* border: 1px solid #00204424; */
-}
-
-.table {
-  box-shadow: 0px 3px 6px #2c28281c;
-  /* border: 1px solid #00204424; */
-  border-radius: 30px;
-  width: 100% !important;
 }
 
 .summary-header {
@@ -1402,11 +950,7 @@ a {
 .board {
   width: 28%;
   border-radius: 10px;
-  /* border: 0.4000000059604645px solid #dde2e6; */
   padding: 0 8px;
-  /* box-shadow: 0px 1px 4px #02172e45;
-  box-shadow: 0px 1px 4px #02172e45;
-  border: 1px solid #dde2e6; */
 }
 
 .chart-con {
@@ -1434,35 +978,6 @@ a {
   font-weight: 700;
 }
 
-.percent {
-  color: #136acd;
-}
-
-.tbl-footer-btn {
-  background: transparent;
-  padding: 4px;
-  margin: 4px 8px;
-  border-radius: 50%;
-  width: 29px;
-  border: none;
-  border: 1px solid #8898aa80;
-  outline: transparent;
-}
-
-.action-icon {
-  text-align: center;
-}
-
-.chart1,
-.chart2 {
-  border-radius: 10px;
-}
-
-.picture .data-value {
-  /* margin-left: 22px; */
-  width: 50%;
-}
-
 .table-top {
   font-weight: 800;
   font-size: 12px;
@@ -1470,11 +985,6 @@ a {
   border: 1px solid #E0E0E0;
   border-bottom: none;
 }
-
-/* .table-top label:hover,
-.table-top p:hover {
-  cursor: pointer;
-} */
 
 .filter-options {
   height: 0;
@@ -1485,37 +995,15 @@ a {
   border-left: 1px solid #E0E0E0;
 }
 
-/* .select-all input {
-  margin: 0 8px 0 -5px !important;
-} */
-
 .filter-options-shown {
   height: 80px;
   overflow: hidden;
   transition: all 0.5s ease-in-out;
 }
 
-.elipsis-items a {
-  display: flex;
-  justify-content: stretch;
-}
 
 .text-color:hover {
   color: #007bff;
-}
-
-.groupicon-color {
-  background-color: #136acd;
-  color: #fff;
-}
-
-.no-record {
-  color: rgba(184, 5, 5, 0.726);
-  font-size: 1.1em;
-}
-
-.color-groupicon {
-  color: #136acd;
 }
 
 .color-deleteicon {
@@ -1540,48 +1028,13 @@ a {
     width: 100% !important;
   }
 
-  .picture,
-  .firstname,
-  .lastname,
-  .phone,
-  .action {
-    width: 100%;
-    /* font-size: 20px; */
-  }
-
-  .table {
-    padding: 0 10px;
-  }
-
-  .table-body .check {
-    width: 100%;
-    display: flex;
-    justify-content: flex-end;
-    margin: 10px 0;
-  }
 
   .data-text {
     display: inline-block;
   }
 
-  .data-row {
-    flex-direction: column;
-  }
 
-  .data-con {
-    display: flex;
-    justify-content: space-between;
-  }
-
-  .action-icon {
-    width: 100%;
-    text-align: right;
-  }
-
-  .table-header {
-    display: none;
-    padding: 0 0 0 2rem;
-  }
+  
 }
 
 @media screen and (min-width: 500px) {
@@ -1638,16 +1091,6 @@ a {
   .my-con {
     flex-direction: column;
   }
-
-  .table {
-    width: 100%;
-    margin: 24px auto;
-  }
-
-  /* .summary {
-    width: 98%;
-    margin: auto;
-  } */
 }
 
 .row-divider {
@@ -1674,12 +1117,6 @@ a {
 
 @media screen and (max-width: 767px) {
 
-  /* .baseline {
-        width: 40%;
-    }
-    .hide-base {
-        width: 40%;
-    } */
   .m-wrapper,
   .m-wrapper2 {
     width: 400px;
@@ -1689,12 +1126,6 @@ a {
 
 @media screen and (max-width: 575px) {
 
-  /* .baseline {
-        width: 20%;
-    }
-    .hide-base {
-        width: 20%;
-    } */
   .m-wrapper,
   .m-wrapper2 {
     width: 350px;
