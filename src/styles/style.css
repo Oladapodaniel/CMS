@@ -57,6 +57,10 @@
     border-radius: 30px;
   } */
 
+  .light-shadow {
+    box-shadow: 0px 2px 7.5px rgb(0 0 0 / 6%);
+  }
+
   .light-grey-bg {
     background: rgb(235, 239, 244, .3)
   }

@@ -761,9 +761,11 @@ export default {
           selectedGender.value = genders.value.find(
             (i) => i.id === memberToEdit.value.genderID
           );
-          genderId.value = genders.value.find(
-            (i) => i.id === memberToEdit.value.genderID
-          ).id;
+          if (memberToEdit.value.genderID) {
+            genderId.value = genders.value.find(
+              (i) => i.id === memberToEdit.value.genderID
+            ).id;
+          }
         } else {
           getLookUps();
         }
@@ -775,9 +777,14 @@ export default {
         selectedMaritalStatus.value = maritalStatus.value.find(
           (i) => i.id === memberToEdit.value.maritalStatusID
         );
-        maritalStatusId.value = maritalStatus.value.find(
+        console.log(maritalStatus.value.find(
           (i) => i.id === memberToEdit.value.maritalStatusID
-        ).id;
+        ))
+        if (memberToEdit.value.maritalStatusID) {
+          maritalStatusId.value = maritalStatus.value.find(
+            (i) => i.id === memberToEdit.value.maritalStatusID
+          ).id;
+        }
       }
     };
 
@@ -787,9 +794,11 @@ export default {
           selectedMembership.value = memberships.value.find(
             (i) => i.id === memberToEdit.value.peopleClassificationID
           );
-          memberClassificationId.value = memberships.value.find(
-            (i) => i.id === memberToEdit.value.peopleClassificationID
-          ).id;
+          if (memberToEdit.value.peopleClassificationID) {
+            memberClassificationId.value = memberships.value.find(
+              (i) => i.id === memberToEdit.value.peopleClassificationID
+            ).id;
+          }
         } else {
           getPeopleClassifications();
         }
@@ -802,9 +811,11 @@ export default {
           selectedAgeGroup.value = ageGroups.value.find(
             (i) => i.id === memberToEdit.value.ageGroupID
           );
-          ageGroupId.value = ageGroups.value.find(
-            (i) => i.id === memberToEdit.value.ageGroupID
-          ).id;
+          if (memberToEdit.value.ageGroupID) {
+            ageGroupId.value = ageGroups.value.find(
+              (i) => i.id === memberToEdit.value.ageGroupID
+            ).id;
+          }
         } else {
           getAgeGroups();
         }
