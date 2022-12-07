@@ -26,19 +26,6 @@
             </div>
           </div>
         </div>
-                    <!-- <el-dropdown>
-                      <el-button type="primary">
-                        Dropdown List<i class="el-icon-arrow-down el-icon--right"></i>
-                      </el-button>
-                      <el-dropdown-menu slot="dropdown">
-                        <el-dropdown-item>Action 1</el-dropdown-item>
-                        <el-dropdown-item>Action 2</el-dropdown-item>
-                        <el-dropdown-item>Action 3</el-dropdown-item>
-                        <el-dropdown-item>Action 4</el-dropdown-item>
-                        <el-dropdown-item>Action 5</el-dropdown-item>
-                      </el-dropdown-menu>
-                    </el-dropdown> -->
-
         <div class="row mt-1">
           <div class="col-md-12">
             <span class="float-right text-danger font-weight-bold">{{
@@ -1108,129 +1095,51 @@
                     >Birthday</label
                   >
                   <div class="col-sm-2 mb-4">
-                    <button class="  btn d-flex justify-content-between pl-0  col-12 border  " type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                        <span class="ofering">
-                            &nbsp;&nbsp;&nbsp; {{ firstTimersObj && firstTimersObj.birthday ?  firstTimersObj.birthday : 'Day' }}
-                        </span>
-                        <span>
-                            <i class="pi pi-angle-down offset-sm-2 ofering"></i>
-                        </span>
-                    </button>
-                    <div class="dropdown-menu scroll w-100 " aria-labelledby="dropdownMenuButton">
-                        <a class="dropdown-item" v-for="(item, indx) in day" :key="indx">
-                            <div class="cursor-pointer" @click="selectedday(item)"> {{item}}</div> 
-                        </a>
-                    </div>
-                    <!-- <Dropdown
-                      :options="[...day]"
-                      :filter="false"
-                      v-model="firstTimersObj.birthday"
-                      placeholder="Day"
-                      class="w-100"
-                      :showClear="false"
-                    >
-                    </Dropdown> -->
+                    <el-select-v2
+                        v-model="firstTimersObj.birthday"
+                        :options="day.map((i) =>({label: i, value: i }))"
+                        placeholder="Day"
+                        class="w-100"
+                        size="large"
+                      />
                   </div>
                   <div class="col-sm-2 mb-4 px-sm-0">
-                    <button class="  btn d-flex justify-content-between pl-0  col-12 border  " type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                        <span class="ofering">
-                            &nbsp;&nbsp;&nbsp; {{ valueMonth ?  valueMonth : 'Month' }}
-                        </span>
-                        <span>
-                            <i class="pi pi-angle-down offset-sm-2 ofering"></i>
-                        </span>
-                    </button>
-                    <div class="dropdown-menu scroll w-100 " aria-labelledby="dropdownMenuButton">
-                        <a class="dropdown-item" v-for="(item, indx) in months" :key="indx">
-                            <div class="cursor-pointer" @click="selectedmonths(item)"> {{item}}</div> 
-                        </a>
-                    </div>
-
-                    <!-- <Dropdown
-                      :options="[...months]"
-                      :filter="false"
-                      v-model="valueMonth"
-                      @change="dropDownMonth"
-                      placeholder="Month"
-                      class="w-100"
-                      :showClear="false"
-                    >
-                    </Dropdown> -->
+                    <el-select-v2
+                        @change="dropDownMonth" v-model="valueMonth"
+                        :options="months.map((i) =>({label: i , value: i}))"
+                        placeholder="Month"
+                        class="w-100"
+                        size="large"
+                      />
                   </div>
                   <div class="col-sm-2 mb-4">
-                    <button class="  btn d-flex justify-content-between pl-0  col-12 border  " type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                        <span class="ofering">
-                            &nbsp;&nbsp;&nbsp; {{ firstTimersObj && firstTimersObj.birthYear ?  firstTimersObj.birthYear : 'Year' }}
-                        </span>
-                        <span>
-                            <i class="pi pi-angle-down offset-sm-2 ofering"></i>
-                        </span>
-                    </button>
-                    <div class="dropdown-menu scroll w-100 " aria-labelledby="dropdownMenuButton">
-                        <a class="dropdown-item" v-for="(itmx, indx) in birthYearsArr" :key="indx">
-                            <div class="cursor-pointer" @click="selectedbirthYearsArr(itmx)"> {{itmx}}</div> 
-                        </a>
-                    </div>
-                    <!-- <Dropdown
-                      :options="[...birthYearsArr]"
-                      :filter="false"
-                      v-model="firstTimersObj.birthYear"
-                      placeholder="Year"
-                      class="w-100"
-                      :showClear="false"
-                    >
-                    </Dropdown> -->
+                    <el-select-v2
+                        v-model="firstTimersObj.birthYear"
+                        :options="birthYearsArr.map((i) =>({label: i, value: i }))"
+                        placeholder="Year"
+                        class="w-100"
+                        size="large"
+                      />
                   </div>
                   <div class="col-sm-3 mb-4 offset-sm-3 pr-sm-0">
-                    <button class="  btn d-flex justify-content-between pl-0 col-12 border  " type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                        <span class="ofering">
-                            &nbsp;&nbsp;&nbsp; {{ valueMarital.value ?  valueMarital.value : 'Marital Status' }}
-                        </span>
-                        <span>
-                            <i class="pi pi-angle-down offset-sm-2 ofering"></i>
-                        </span>
-                    </button>
-                    <div class="dropdown-menu scroll w-100 " aria-labelledby="dropdownMenuButton">
-                        <a class="dropdown-item" v-for="(itmx, indx) in maritalStatusArr" :key="indx">
-                            <div class="cursor-pointer" @click="selectedMarital(itmx)"> {{itmx.value}}</div> 
-                        </a>
-                    </div>
-                    <!-- <Dropdown
-                      :options="maritalStatusArr"
-                      optionLabel="value"
-                      :filter="false"
-                      v-model="valueMarital"
-                      @change="dropDownMarital"
-                      placeholder="Marital Status"
-                      class="w-100"
-                      :showClear="false"
-                    >
-                    </Dropdown> -->
+                    <el-select-v2
+                        v-model="valueMarital"
+                        @change="dropDownMarital"
+                        :options="maritalStatusArr.map((i) =>({label: i.value , value: i.id }))"
+                        placeholder="Marital Status"
+                        class="w-100"
+                        size="large"
+                      />
                   </div>
                   <div class="col-sm-3 mb-4">
-                    <button class="  btn d-flex justify-content-between pl-0 col-12 border  " type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                        <span class="ofering">
-                            &nbsp;&nbsp;&nbsp; {{ valueGender ?  valueGender : 'Gender' }}
-                        </span>
-                        <span>
-                            <i class="pi pi-angle-down offset-sm-2 ofering"></i>
-                        </span>
-                    </button>
-                    <div class="dropdown-menu scroll w-100 " aria-labelledby="dropdownMenuButton">
-                        <a class="dropdown-item" v-for="(itmx, indx) in genders" :key="indx">
-                            <div class="cursor-pointer" @click="selectedGender(itmx)"> {{itmx}}</div> 
-                        </a>
-                    </div>
-                    <!-- <Dropdown
-                      :options="[...genders]"
-                      :filter="false"
-                      v-model="valueGender"
-                      @change="dropDownGender"
-                      placeholder="Gender"
-                      class="w-100"
-                      :showClear="false"
-                    >
-                    </Dropdown> -->
+                    <el-select-v2
+                        v-model="valueGender"
+                        @change="dropDownGender"
+                        :options="gender.map((i) =>({label: i.value , value: i.id }))"
+                        placeholder="Gender"
+                        class="w-100"
+                        size="large"
+                      />
                   </div>
                 </div>
 
@@ -1256,110 +1165,47 @@
                 >
                   <div class="col-sm-6 offset-sm-3 mb-4">
                     <div>How did you hear about us</div>
-                    <button class="  btn d-flex justify-content-between pl-0 col-12 border  " type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                        <span class="ofering">
-                            &nbsp;&nbsp;&nbsp; {{ valueHeard ?  valueHeard : 'Select' }}
-                        </span>
-                        <span>
-                            <i class="pi pi-angle-down offset-sm-2 ofering"></i>
-                        </span>
-                    </button>
-                    <div class="dropdown-menu scroll w-100 " aria-labelledby="dropdownMenuButton">
-                        <a class="dropdown-item" v-for="(itm, indx) in howYouHeard" :key="indx">
-                            <div class="cursor-pointer" @click="selectedhowYouHeard(itm)"> {{itm}}</div> 
-                        </a>
-                    </div>
-
-                    <!-- <Dropdown
-                      :options="[...howYouHeard]"
-                      :filter="false"
-                      v-model="valueHeard"
-                      @change="dropDownHeard"
-                      placeholder="Select"
-                      class="w-100"
-                      :showClear="false"
-                    >
-                    </Dropdown> -->
+                      <el-select-v2
+                        v-model="valueHeard"
+                        @change="dropDownHeard"
+                        :options="howYouHeard.map((i) =>({label: i , value: i }))"
+                        placeholder="Select"
+                        class="w-100"
+                        size="large"
+                      />
                   </div>
                   <div class="col-sm-6 offset-sm-3 mb-4">
                     <div>Preferred means of communication</div>
-                    <button class="  btn d-flex justify-content-between pl-0 col-12 border  " type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                        <span class="ofering">
-                            &nbsp;&nbsp;&nbsp; {{ valueComm ?  valueComm : 'Select' }}
-                        </span>
-                        <span>
-                            <i class="pi pi-angle-down offset-sm-2 ofering"></i>
-                        </span>
-                    </button>
-                    <div class="dropdown-menu scroll w-100 " aria-labelledby="dropdownMenuButton">
-                        <a class="dropdown-item" v-for="(item, indx) in comMeansArr" :key="indx">
-                            <div class="cursor-pointer" @click="selectedcomMeansArr(item)"> {{item}}</div> 
-                        </a>
-                    </div>
-                    <!-- <Dropdown
-                      :options="[...comMeansArr]"
-                      :filter="false"
+                     <el-select-v2
                       v-model="valueComm"
-                      @change="dropDownComm"
+                       @change="dropDownComm"
+                      :options="comMeansArr.map((i) =>({label: i , value: i }))"
                       placeholder="Select"
                       class="w-100"
-                      :showClear="false"
-                    >
-                    </Dropdown> -->
+                      size="large"
+                    />
                   </div>
                   <div class="col-sm-6 offset-sm-3 mb-4">
                     <div>Interested in joining us</div>
-                    <button class="  btn d-flex justify-content-between pl-0 col-12 border  " type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                        <span class="ofering">
-                            &nbsp;&nbsp;&nbsp; {{ valueInterest ?  valueInterest : 'Select' }}
-                        </span>
-                        <span>
-                            <i class="pi pi-angle-down offset-sm-2 ofering"></i>
-                        </span>
-                    </button>
-                    <div class="dropdown-menu scroll w-100 " aria-labelledby="dropdownMenuButton">
-                        <a class="dropdown-item" v-for="(item, indx) in joinInterest" :key="indx">
-                            <div class="cursor-pointer" @click="selectedJoinInterest(item)"> {{item}}</div> 
-                        </a>
-                    </div>
-
-                    <!-- <Dropdown
-                      :options="[...joinInterest]"
-                      :filter="false"
+                    <el-select-v2
                       v-model="valueInterest"
-                      @change="dropDownInterest"
-                      placeholder="Select"
+                      @change="dropDownInterest" 
+                      :options="joinInterest.map((i) =>({label: i , value: i }))"
                       class="w-100"
-                      :showClear="false"
-                    >
-                    </Dropdown> -->
+                      placeholder="Select"
+                      size="large"
+                    />
                   </div>
                   <div class="col-sm-6 offset-sm-3 mb-4">
                     <div>Want to be visited?</div>
-                    <button class="  btn d-flex justify-content-between pl-0 col-12 border  " type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                        <span class="ofering">
-                            &nbsp;&nbsp;&nbsp; {{ valueVisit ?  valueVisit : 'Select' }}
-                        </span>
-                        <span>
-                            <i class="pi pi-angle-down offset-sm-2 ofering"></i>
-                        </span>
-                    </button>
-                    <div class="dropdown-menu scroll w-100 " aria-labelledby="dropdownMenuButton">
-                        <a class="dropdown-item" v-for="(item, indx) in wantVisitArr" :key="indx">
-                            <div class="cursor-pointer" @click="selectedwantVisitArr(item)"> {{item}}</div> 
-                        </a>
-                    </div>
-
-                    <!-- <Dropdown
-                      :options="[...wantVisitArr]"
-                      :filter="false"
+                     <el-select-v2
                       v-model="valueVisit"
                       @change="dropDownVisit"
+                      :options="wantVisitArr.map((i) =>({label: i , value: i }))"
                       placeholder="Select"
                       class="w-100"
-                      :showClear="false"
-                    >
-                    </Dropdown> -->
+                      size="large"
+                    />
                   </div>
                 </div>
                 <span
@@ -1558,132 +1404,56 @@
                     >Birthday</label
                   >
                   <div class="col-sm-2 mb-4">
-                    <button class="  btn d-flex justify-content-between pl-0  col-12 border  " type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                        <span class="ofering">
-                            &nbsp;&nbsp;&nbsp; {{ newConvertsObj && newConvertsObj.birthday ?  newConvertsObj.birthday : 'Day' }}
-                        </span>
-                        <span>
-                            <i class="pi pi-angle-down offset-sm-2 ofering"></i>
-                        </span>
-                    </button>
-                    <div class="dropdown-menu scroll w-100 " aria-labelledby="dropdownMenuButton">
-                        <a class="dropdown-item" v-for="(item, indx) in day" :key="indx">
-                            <div class="cursor-pointer" @click="selectedday2(item)"> {{item}}</div> 
-                        </a>
-                    </div>
-                    <!-- <Dropdown
-                      :options="[...day]"
-                      :filter="false"
+                    <el-select-v2
                       v-model="newConvertsObj.birthday"
+                      :options="day.map((i) =>({label: i , value: i }))"
                       placeholder="Day"
                       class="w-100"
-                      :showClear="false"
-                    >
-                    </Dropdown> -->
+                      size="large"
+                    />
                   </div>
 
                   <div class="col-sm-2 mb-4 px-sm-0">
-                    <button class="  btn d-flex justify-content-between pl-0  col-12 border  " type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                        <span class="ofering">
-                            &nbsp;&nbsp;&nbsp; {{ valueMonth ?  valueMonth : 'Month' }}
-                        </span>
-                        <span>
-                            <i class="pi pi-angle-down offset-sm-2 ofering"></i>
-                        </span>
-                    </button>
-                    <div class="dropdown-menu scroll w-100 " aria-labelledby="dropdownMenuButton">
-                        <a class="dropdown-item" v-for="(item, indx) in months" :key="indx">
-                            <div class="cursor-pointer" @click="selectedmonths(item)"> {{item}}</div> 
-                        </a>
-                    </div>
-                    <!-- <Dropdown
-                      :options="[...months]"
-                      :filter="false"
+                    <el-select-v2
                       v-model="valueMonth"
                       @change="dropDownMonthNewConvert"
+                      :options="months.map((i) =>({label: i , value: i }))"
                       placeholder="Month"
                       class="w-100"
-                      :showClear="false"
-                    >
-                    </Dropdown> -->
+                      size="large"
+                    />
                   </div>
 
                   <div class="col-sm-2 mb-4">
-                    <button class="  btn d-flex justify-content-between pl-0  col-12 border  " type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                        <span class="ofering">
-                            &nbsp;&nbsp;&nbsp; {{ firstTimersObj && firstTimersObj.birthYear ?  firstTimersObj.birthYear : 'Year' }}
-                        </span>
-                        <span>
-                            <i class="pi pi-angle-down offset-sm-2 ofering"></i>
-                        </span>
-                    </button>
-                    <div class="dropdown-menu scroll w-100 " aria-labelledby="dropdownMenuButton">
-                        <a class="dropdown-item" v-for="(itmx, indx) in birthYearsArr" :key="indx">
-                            <div class="cursor-pointer" @click="selectedbirthYearsArr(itmx)"> {{itmx}}</div> 
-                        </a>
-                    </div>
-                    <!-- <Dropdown
-                      :options="[...birthYearsArr]"
-                      :filter="false"
+                    <el-select-v2
                       v-model="firstTimersObj.birthYear"
+                      :options="birthYearsArr.map((i) =>({label: i , value: i }))"
                       placeholder="Year"
                       class="w-100"
-                      :showClear="false"
-                    >
-                    </Dropdown> -->
+                      size="large"
+                    />
                   </div>
 
                   <div class="col-sm-3 mb-4 offset-sm-3 pr-sm-0">
-                     <button class="  btn d-flex justify-content-between pl-0 col-12 border  " type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                        <span class="ofering">
-                            &nbsp;&nbsp;&nbsp; {{ firstTimersObj && firstTimersObj.valueMarital  ?  firstTimersObj.valueMarital.value : 'Marital Status' }}
-                        </span>
-                        <span>
-                            <i class="pi pi-angle-down offset-sm-2 ofering"></i>
-                        </span>
-                    </button>
-                    <div class="dropdown-menu scroll w-100 " aria-labelledby="dropdownMenuButton">
-                        <a class="dropdown-item" v-for="(itmx, indx) in maritalStatusArr" :key="indx">
-                            <div class="cursor-pointer" @click="selectedMarital2(itmx)"> {{itmx.value}}</div> 
-                        </a>
-                    </div>
-                    <!-- <Dropdown
-                      :options="[...maritalStatusArr]"
-                      optionLabel="value"
-                      :filter="false"
+                    <el-select-v2
                       v-model="firstTimersObj.valueMarital"
                       @change="dropDownMaritalNewConvert"
+                      :options="maritalStatusArr.map((i) =>({label: i.value , value: i.id }))"
                       placeholder="Marital Status"
                       class="w-100"
-                      :showClear="false"
-                    >
-                    </Dropdown> -->
+                      size="large"
+                    />
                   </div>
 
                   <div class="col-sm-3 mb-4">
-                    <button class="  btn d-flex justify-content-between pl-0 col-12 border  " type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                        <span class="ofering">
-                            &nbsp;&nbsp;&nbsp; {{ valueGender ?  valueGender : 'Gender' }}
-                        </span>
-                        <span>
-                            <i class="pi pi-angle-down offset-sm-2 ofering"></i>
-                        </span>
-                    </button>
-                    <div class="dropdown-menu scroll w-100 " aria-labelledby="dropdownMenuButton">
-                        <a class="dropdown-item" v-for="(itmx, indx) in genders" :key="indx">
-                            <div class="cursor-pointer" @click="selectedGender(itmx)"> {{itmx}}</div> 
-                        </a>
-                    </div>
-                    <!-- <Dropdown
-                      :options="[...genders]"
-                      :filter="false"
+                    <el-select-v2
                       v-model="valueGender"
                       @change="dropDownGenderNewConvert"
+                      :options="gender.map((i) =>({label: i.value , value: i.id }))"
                       placeholder="Gender"
                       class="w-100"
-                      :showClear="false"
-                    >
-                    </Dropdown> -->
+                      size="large"
+                    />
                   </div>
                 </div>
 
@@ -1708,7 +1478,7 @@
                 >
                   <div class="col-sm-6 offset-sm-3 mb-4">
                     <div>How did you hear about us</div>
-                    <button class="  btn d-flex justify-content-between pl-0 col-12 border  " type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                    <!-- <button class="  btn d-flex justify-content-between pl-0 col-12 border  " type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                         <span class="ofering">
                             &nbsp;&nbsp;&nbsp; {{ valueHeard ?  valueHeard : 'Select' }}
                         </span>
@@ -1720,7 +1490,23 @@
                         <a class="dropdown-item" v-for="(itm, indx) in howYouHeard" :key="indx">
                             <div class="cursor-pointer" @click="selectedhowYouHeard(itm)"> {{itm}}</div> 
                         </a>
-                    </div>
+                    </div> -->
+                     <el-select-v2
+                      v-model="valueHeard"
+                      @change="dropDownHeardNewConvert" 
+                      :options="howYouHeard.map((i) =>({label: i , value: i }))"
+                      placeholder="Select"
+                      class="w-100"
+                      size="large"
+                    />
+                    <!-- <el-select  size="large" class="w-100" @change="dropDownHeardNewConvert(valueHeard)" v-model="valueHeard" placeholder="Select">
+                      <el-option
+                        v-for="item in howYouHeard"
+                        :key="item"
+                        :label="item"
+                        :value="item">
+                      </el-option>
+                    </el-select> -->
                     <!-- <Dropdown
                       :options="[...howYouHeard]"
                       :filter="false"
@@ -1735,7 +1521,7 @@
 
                   <div class="col-sm-6 offset-sm-3 mb-4">
                     <div>Preferred means of communication</div>
-                    <button class="  btn d-flex justify-content-between pl-0 col-12 border  " type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                    <!-- <button class="  btn d-flex justify-content-between pl-0 col-12 border  " type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                         <span class="ofering">
                             &nbsp;&nbsp;&nbsp; {{ valueComm ?  valueComm : 'Select' }}
                         </span>
@@ -1747,7 +1533,23 @@
                         <a class="dropdown-item" v-for="(item, indx) in comMeansArr" :key="indx">
                             <div class="cursor-pointer" @click="selectedcomMeansArr(item)"> {{item}}</div> 
                         </a>
-                    </div>
+                    </div> -->
+                     <el-select-v2
+                      v-model="valueComm"
+                      @change="dropDownCommNewConvert"
+                      :options="comMeansArr.map((i) =>({label: i , value: i }))"
+                      placeholder="Select"
+                      class="w-100"
+                      size="large"
+                    />
+                     <!-- <el-select size="large" class="w-100" @change="dropDownCommNewConvert(valueComm)" v-model="valueComm" placeholder="Select">
+                      <el-option
+                        v-for="item in comMeansArr"
+                        :key="item"
+                        :label="item"
+                        :value="item">
+                      </el-option>
+                    </el-select> -->
                     <!-- <Dropdown
                       :options="[...comMeansArr]"
                       :filter="false"
@@ -1762,7 +1564,7 @@
 
                   <div class="col-sm-6 offset-sm-3 mb-4">
                     <div>Interested in joining us</div>
-                    <button class="  btn d-flex justify-content-between pl-0 col-12 border  " type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                    <!-- <button class="  btn d-flex justify-content-between pl-0 col-12 border  " type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                         <span class="ofering">
                             &nbsp;&nbsp;&nbsp; {{ valueInterest ?  valueInterest : 'Select' }}
                         </span>
@@ -1774,7 +1576,23 @@
                         <a class="dropdown-item" v-for="(item, indx) in joinInterest" :key="indx">
                             <div class="cursor-pointer" @click="selectedJoinInterest(item)"> {{item}}</div> 
                         </a>
-                    </div>
+                    </div> -->
+                    <el-select-v2
+                      v-model="valueInterest"
+                       @change="dropDownInterestNewConvert" 
+                      :options="joinInterest.map((i) =>({label: i , value: i }))"
+                      placeholder="Select"
+                      class="w-100"
+                      size="large"
+                    />
+                    <!-- <el-select size="large" class="w-100" @change="dropDownInterestNewConvert(valueInterest)" v-model="valueInterest" placeholder="Select">
+                      <el-option
+                        v-for="item in joinInterest"
+                        :key="item"
+                        :label="item"
+                        :value="item">
+                      </el-option>
+                    </el-select> -->
                     <!-- <Dropdown
                       :options="[...joinInterest]"
                       :filter="false"
@@ -1789,7 +1607,7 @@
 
                   <div class="col-sm-6 offset-sm-3 mb-4">
                     <div>Want to be visited?</div>
-                    <button class="  btn d-flex justify-content-between pl-0 col-12 border  " type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                    <!-- <button class="  btn d-flex justify-content-between pl-0 col-12 border  " type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                         <span class="ofering">
                             &nbsp;&nbsp;&nbsp; {{ valueVisit ?  valueVisit : 'Select' }}
                         </span>
@@ -1801,7 +1619,23 @@
                         <a class="dropdown-item" v-for="(item, indx) in wantVisitArr" :key="indx">
                             <div class="cursor-pointer" @click="selectedwantVisitArr(item)"> {{item}}</div> 
                         </a>
-                    </div>
+                    </div> -->
+                    <el-select-v2
+                      v-model="valueVisit"
+                      @change="dropDownVisitNewConvert"
+                      :options="wantVisitArr.map((i) =>({label: i , value: i }))"
+                      placeholder="Select"
+                      class="w-100"
+                      size="large"
+                    />
+                     <!-- <el-select size="large" class="w-100" @change="dropDownVisitNewConvert(valueVisit)" v-model="valueVisit" placeholder="Select">
+                      <el-option
+                        v-for="item in wantVisitArr"
+                        :key="item"
+                        :label="item"
+                        :value="item">
+                      </el-option>
+                    </el-select> -->
                     <!-- <Dropdown
                       :options="[...wantVisitArr]"
                       :filter="false"
@@ -2052,7 +1886,22 @@
                   <label>Income Account</label>
                 </div>
                 <div class="col-lg-5 col-sm-12 mt-3">
-                  <Dropdown
+                   <el-select-v2
+                      v-model="selectedIncomeAccount"
+                      :options="incomeAccount.map((i) =>({label: i.text , value: i.id }))"
+                      placeholder="Select"
+                      size="large"
+                      class="w-100"
+                    />
+                  <!-- <el-select size="large" class="w-100" v-model="selectedIncomeAccount" placeholder="Select">
+                    <el-option
+                      v-for="item in incomeAccount"
+                      :key="item.text"
+                      :label="item.text"
+                      :value="item.text">
+                    </el-option>
+                  </el-select> -->
+                  <!-- <Dropdown
                     v-model="selectedIncomeAccount"
                     class="w-100"
                     :options="incomeAccount"
@@ -2061,22 +1910,19 @@
                     placeholder="Select"
                     :showClear="false"
                   >
-                  </Dropdown>
+                  </Dropdown> -->
                 </div>
                 <div class="col-sm-4 mt-3 text-right pr-0">
                   <label>Cash Account</label>
                 </div>
                 <div class="col-lg-5 col-sm-12 mt-3">
-                  <Dropdown
-                    v-model="selectedCashAccount"
-                    :options="cashBankAccount"
-                    optionLabel="text"
-                    :filter="false"
-                    placeholder="Select"
-                    class="w-100 p-0"
-                    :showClear="false"
-                  >
-                  </Dropdown>
+                  <el-select-v2
+                      v-model="selectedCashAccount"
+                      :options="cashBankAccount.map((i) =>({label: i.text , value: i.id }))"
+                      placeholder="Select"
+                      size="large"
+                      class="w-100"
+                    />
                 </div>
                 <div class="col-sm-12 d-flex" @click="toggleRem">
                   <i class="check-it mr-2">
@@ -2099,7 +1945,22 @@
                     <label>Income Account</label>
                   </div>
                   <div class="col-lg-5 col-sm-12 mt-5">
-                    <Dropdown
+                    <el-select-v2
+                      v-model="item.account"
+                      :options="incomeAccount.map((i) =>({label: i.text , value: i.id }))"
+                      placeholder="Select"
+                      size="large"
+                      class="w-100"
+                    />
+                    <!-- <el-select v-model="item.account" placeholder="Select">
+                    <el-option
+                      v-for="item in incomeAccount"
+                      :key="item.text"
+                      :label="item.text"
+                      :value="item.text">
+                    </el-option>
+                  </el-select> -->
+                    <!-- <Dropdown
                       v-model="item.account"
                       class="w-100"
                       :options="incomeAccount"
@@ -2108,7 +1969,7 @@
                       placeholder="Select"
                       :showClear="false"
                     >
-                    </Dropdown>
+                    </Dropdown> -->
                   </div>
 
                   <div class="col-sm-4 text-right align-self-center mt-3">
@@ -2277,13 +2138,13 @@ export default {
         "November",
         "December",
       ],
-      valueMonth: "",
-      valueMarital: "",
-      valueGender: "",
-      valueHeard: "",
-      valueComm: "",
-      valueInterest: "",
-      valueVisit: "",
+      valueMonth: null,
+      valueMarital: null,
+      valueGender: null,
+      valueHeard: null,
+      valueComm: null,
+      valueInterest: null,
+      valueVisit: null,
       showForm1: false,
       showForm: false,
       showForm2: false,
@@ -2341,9 +2202,9 @@ export default {
       applyRem: false,
       remitance: [{}],
       incomeAccount: [],
-      selectedIncomeAccount: "",
+      selectedIncomeAccount: null,
       contributionItemName: "",
-      selectedCashAccount: "",
+      selectedCashAccount: null,
       cashBankAccount: [],
       isPhoneValid: true,
       isEmailValid: true,
@@ -2358,39 +2219,6 @@ export default {
   },
 
   methods: {
-    selectedMarital(itm){
-      this.valueMarital = itm
-    },
-    selectedMarital2(itm){
-      this.firstTimersObj.valueMarital = itm
-    },
-    selectedGender(itm){
-      this.valueGender = itm
-    },
-    selectedmonths(item){
-      this.valueMonth = item
-    },
-    selectedday(item){
-      this.firstTimersObj.birthday = item
-    },
-    selectedday2(item){
-      this.newConvertsObj.birthday = item
-    },
-    selectedbirthYearsArr(itm){
-      this.firstTimersObj.birthYear = itm
-    },
-    selectedhowYouHeard(itm){
-      this.valueHeard = itm
-    },
-    selectedcomMeansArr(itm){
-      this.valueComm = itm
-    },
-    selectedJoinInterest(itm){
-      this.valueInterest = itm
-    },
-    selectedwantVisitArr(itm){
-      this.valueVisit = itm
-    },
     currentDate() {
       this.currDate = this.eventDate;
       console.log(this.currDate);
@@ -3121,9 +2949,8 @@ export default {
     //     this.selectedEventCategoryId = this.selectedEventCategory.id;
     //   }
     // },
-    dropDownMonth(e) {
-      console.log(e);
-      switch (e.value) {
+    dropDownMonth() {
+      switch (this.valueMonth) {
         case "January":
           this.firstTimersObj.birthMonth = "1";
           break;
@@ -3166,41 +2993,40 @@ export default {
           break;
       }
     },
-    dropDownMarital(e) {
+    dropDownMarital() {
       this.firstTimersObj.maritalStatusId = this.maritalStatusArr.find((i) => {
-        return i.value === e.value.value;
+        return i.id === this.valueMarital;
       }).id;
     },
-    dropDownGender(e) {
+    dropDownGender() {
       this.firstTimersObj.genderId = this.gender.find(
-        (i) => i.value === e.value
+        (i) => i.id === this.valueGender
       ).id;
     },
-    dropDownHeard(e) {
+    dropDownHeard() {
       this.firstTimersObj.howDidYouAboutUsId = this.howDidYouAboutUsId.find(
-        (i) => i.name === e.value
+        (i) => i.name === this.valueHeard
       ).id;
     },
-    dropDownComm(e) {
+    dropDownComm() {
       this.firstTimersObj.communicationMeans = this.comMeansArr.indexOf(
-        e.value
+        this.valueComm
       );
     },
-    dropDownInterest(e) {
+    dropDownInterest() {
       this.firstTimersObj.interestedInJoining = this.joinInterest.indexOf(
-        e.value
+        this.valueInterest
       );
     },
-    dropDownVisit(e) {
-      this.firstTimersObj.wantToBeVisited = this.wantVisitArr.indexOf(e.value);
+    dropDownVisit() {
+      this.firstTimersObj.wantToBeVisited = this.wantVisitArr.indexOf(this.valueVisit);
     },
     deleteFirstTimer(index) {
       this.firstTimers.splice(index, 1);
     },
 
-    dropDownMonthNewConvert(e) {
-      console.log(e);
-      switch (e.value) {
+    dropDownMonthNewConvert() {
+      switch (this.valueMonth) {
         case "January":
           this.firstTimersObj.birthMonth = "1";
           break;
@@ -3243,33 +3069,33 @@ export default {
           break;
       }
     },
-    dropDownMaritalNewConvert(e) {
+    dropDownMaritalNewConvert() {
       this.newConvertsObj.maritalStatusId = this.maritalStatusArr.find(
-        (i) => i.value === e.value.value
+        (i) => i.id === this.firstTimersObj.valueMarital
       ).id;
     },
-    dropDownGenderNewConvert(e) {
+    dropDownGenderNewConvert() {
       this.newConvertsObj.genderId = this.gender.find(
-        (i) => i.value === e.value
+        (i) => i.id === this.valueGender
       ).id;
     },
-    dropDownHeardNewConvert(e) {
+    dropDownHeardNewConvert() {
       this.newConvertsObj.howDidYouAboutUsId = this.howDidYouAboutUsId.find(
-        (i) => i.name === e.value
+        (i) => i.name === this.valueHeard
       ).id;
     },
-    dropDownCommNewConvert(e) {
+    dropDownCommNewConvert() {
       this.newConvertsObj.communicationMeans = this.comMeansArr.indexOf(
-        e.value
+        this.valueComm
       );
     },
-    dropDownInterestNewConvert(e) {
+    dropDownInterestNewConvert() {
       this.newConvertsObj.interestedInJoining = this.joinInterest.indexOf(
-        e.value
+        this.valueInterest
       );
     },
-    dropDownVisitNewConvert(e) {
-      this.newConvertsObj.wantToBeVisited = this.wantVisitArr.indexOf(e.value);
+    dropDownVisitNewConvert() {
+      this.newConvertsObj.wantToBeVisited = this.wantVisitArr.indexOf(this.valueVisit);
     },
     deleteNewConvert(index) {
       this.newConverts.splice(index, 1);
@@ -3641,9 +3467,17 @@ export default {
     createNewCon(e) {
       let contributionCategory = {
         name: this.contributionItemName,
-        incomeAccountId: this.selectedIncomeAccount.id,
+        incomeAccountId: this.selectedIncomeAccount,  
+        
+      //   this.incomeAccount.find(
+      //   (i) => i.id === this.selectedIncomeAccount
+      // ).id,
 
-        cashAccountId: this.selectedCashAccount.id,
+        cashAccountId: this.selectedCashAccount
+        
+      //   this.cashBankAccount.find(
+      //   (i) => i.id ===  this.selectedCashAccount
+      // ).id,
       };
       if (this.remitance[0].account || this.remitance[0].percentage) {
         contributionCategory.incomeRemittance = this.remitance.map((i) => {
@@ -3980,16 +3814,6 @@ export default {
 </script>
 
 <style scoped>
-
-.el-dropdown {
-    vertical-align: top;
-  }
-  .el-dropdown + .el-dropdown {
-    margin-left: 15px;
-  }
-  .el-icon-arrow-down {
-    font-size: 12px;
-  }
 
 .event {
   font-family: "Nunito sans";

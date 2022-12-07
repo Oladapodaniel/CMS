@@ -1254,6 +1254,12 @@ export default {
 
     const onContinue = async () => {
       loadingsave.value = true;
+      let checkinEvent2 = {
+        id: attendanceCheID.value,
+        eventId: selectedEvent.value.id,
+        groupIDs: selectedGroups.value,
+        eventDate: selectedEvent.value.date.split("T")[0],
+      };
       let checkinEvent = {
         eventId: selectedEvent.value.id,
         groupIDs: selectedGroups.value,
@@ -1345,9 +1351,6 @@ export default {
         !selectedIncomeAccount.value &&
         !image.value
       ) {
-        console.log(attendanceCheID.value);
-        console.log(route.query.id);
-        console.log(route.params.id);
         console.log("free and no image");
         selectedGroups.value
           ? formData.append("groupIDs", selectedGroups.value)
@@ -1392,14 +1395,26 @@ export default {
         try {
           const res = await axios.put(
             "/api/CheckInAttendance/UpdateCheckInAttendance",
-            checkinEvent
+            checkinEvent2
           );
           console.log(res);
+          store.dispatch("attendance/setItemData", res);
           toast.add({
             severity: "success",
             summary: "Successful",
             detail: "Attendance updated successfully",
             life: 3000,
+          });
+          router.push({
+            name: "CheckinType",
+            query: {
+              activityID: selectedEvent.value.id,
+              activityName: selectedEvent.value.name,
+              groupId: selectedGroups.value[0].id,
+              groupName: selectedGroups.value[0].name,
+              id: res.data.id,
+              code: res.data.attendanceCode,
+            },
           });
         } catch (error) {
           console.log(error);
