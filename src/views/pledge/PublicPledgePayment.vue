@@ -5,10 +5,11 @@
         <div class="col-md-3 mt-4  d-flex align-items-center">
             <div class="pl-2">
               <img
-                      :src="churchLogo"
-                      v-if="churchLogo"
+                      :src="churchLogo2"
+                      v-if="churchLogo2"
                       class="link-image"
                       alt=""
+                      style="width:60px"
                     />
                     <img
                       src="../../assets/dashboardlinks/churchcloud.png"
@@ -16,12 +17,9 @@
                       class="link-image "
                       alt=""
                     />
-              <!-- <img :src="associationLogo"
-                  v-if="associationLogo" style="width: 70px" />
-              <img v-else src="../../assets/memberly-logo.svg" style="width: 70px" /> -->
             </div>
             <!-- <span><h4 class="font-weight-bold mt-3">{{contributionDetail.tenantName ? contributionDetail.tenantName :  "Churchplus" }}</h4></span> -->
-            <span><h4 class="font-weight-bold mt-3">{{currentUser? currentUser.churchName :  "Churchplus" }}</h4></span>
+            <span><h4 class="font-weight-bold mt-3">{{churchName ? churchName:  "Churchplus" }}</h4></span>
         </div>
       </div>
       <!-- <div class="d-flex justify-content-center col-md-12  text-dark mt-3 mb-2">
@@ -586,6 +584,7 @@ export default {
     const appltoggle = ref(false);
     const personToggle = ref(false);
     const associationLogo = ref("")
+    const churchLogo2 = ref("")
     const contactDetailName = ref("")
     const contactDetailEmail = ref("")
     const store = useStore();
@@ -768,8 +767,8 @@ export default {
         );
         finish();
         contributionDetail.value = res.data;
-        associationLogo.value = res.data.tenantLogo
-        // churchlogo.value = res.data.
+        churchLogo2.value = res.data.logo
+        churchName.value = res.data.tenantName
         console.log(contributionDetail.value, "contribution payment");
         // amountPaid.value = res.data.donorPaymentSpecificAmount;
         checking.value = true;
@@ -993,6 +992,7 @@ export default {
       channel,
       maxEmail,
       associationLogo,
+      churchLogo2,
       personToggle,
       contactDetailEmail,
       contactDetailName,

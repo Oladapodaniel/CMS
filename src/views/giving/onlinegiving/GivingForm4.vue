@@ -478,6 +478,7 @@ export default {
   components: {
     PaymentOptionModal,
     Checkbox,
+    Dropdown,
     SignUp,
   },
   setup() {
@@ -889,7 +890,6 @@ console.log(donationObj.value, signedIn.value, localStorage.getItem('giverToken'
       toggleTabOne,
       funds,
       toggleTabTwo,
-      Dropdown,
       selectedContributionType,
       date,
       givingOften,
