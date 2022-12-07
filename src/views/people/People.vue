@@ -33,7 +33,7 @@
 </template>
 
 <script>
-import { computed, ref } from "vue";
+import { computed, ref, watchEffect } from "vue";
 import axios from "@/gateway/backendapi";
 // import store from "@/store/index";
 import router from "@/router/index";
@@ -43,6 +43,7 @@ import InputText from 'primevue/inputtext';
 import Button from 'primevue/button';
 import { ElMessage } from 'element-plus'
 import deviceBreakpoint from "../../mixins/deviceBreakpoint";
+import { useStore } from 'vuex'
 
 
 export default {
@@ -52,6 +53,7 @@ export default {
   },
 
   setup() {
+    const store = useStore();
     const selectedLink = ref(null)
     const tenantID = ref('')
     const route = useRoute();
@@ -61,16 +63,27 @@ export default {
       if (route.path.includes("add")) return true;
       return false;
     });
-    const getCurrentlySignedInUser = async () => {
-      try {
-        const res = await axios.get("/api/Membership/GetCurrentSignedInUser");
-        tenantID.value = res.data.tenantId
-      } catch (err) {
-        console.log(err);
-      }
-    };
+    // const getCurrentlySignedInUser = async () => {
+    //   try {
+    //     const res = await axios.get("/api/Membership/GetCurrentSignedInUser");
+    //     tenantID.value = res.data.tenantId
+    //   } catch (err) {
+    //     console.log(err);
+    //   }
+    // };
 
-    getCurrentlySignedInUser();
+    // getCurrentlySignedInUser();
+
+    // const getUser = computed(() => {
+    //   if (!store.getters.currentUser || (store.getters.currentUser && Object.keys(store.getters.currentUser).length == 0)) return ''
+    //   return store.getters.currentUser
+    // })
+
+    // watchEffect(() => {
+    //   if (getUser.value) {
+    //     tenantID.value = getUser.value.tenantId
+    //   }
+    // })
 
     const memberlink = computed(() => {
       if (!tenantID.value) return ""
@@ -108,7 +121,7 @@ export default {
       router.push({ name: 'ImportInstruction', query: { query: 'importpeople' } })
     }
 
-    return { addPersonClicked, tenantID, route, header, isFormPage, importMembers, memberlink, copylink, selectedLink, lgAndUp, xlAndUp };
+    return { addPersonClicked, tenantID, route, header, isFormPage, importMembers, memberlink, copylink, selectedLink, lgAndUp, xlAndUp,  };
   },
 };
 // transition method

@@ -453,20 +453,16 @@
 import ByMaritalStatusChart from "@/components/charts/PieChart";
 import ByGenderChart from "@/components/charts/PieChart";
 import ColumnChart from "@/components/charts/ColumnChart.vue";
-// import PieChart from "@/components/charts/PieChart"
 import { computed, onMounted, ref } from "vue";
-// import { useRoute } from 'vue-router';
-import mixin from "@/mixins/expiredSub.mixin.js"
+import mixin from "@/mixins/currentUser.mixin.js"
 import router from "@/router/index";
 import axios from "@/gateway/backendapi";
-import axio from 'axios'
 import moment from "moment";
 import stopProgressBar from "../../services/progressbar/progress";
 import setupService from "../../services/setup/setupservice";
 import formatDate from "../../services/dates/dateformatter";
 import useSubscription from "../../services/subscription/useSubscription";
 import Tooltip from "primevue/tooltip";
-// import breakpoint from "../../services/user/deviceWidth.js"
 import { ElLoading } from 'element-plus'
 import deviceBreakpoint from "../../mixins/deviceBreakpoint";
 
@@ -483,9 +479,17 @@ export default {
   directives: {
     tooltip: Tooltip,
   },
+  data () {
+    return {}
+    
+  },
+  created () {
+    if (!this.$store.getters.currentUser || (this.$store.getters.currentUser && Object.keys(this.$store.getters.currentUser).length == 0) ) {
+      this.getCurrentUser()
+    }
+  },
 
   setup() {
-    // const store = useStore();
     const moreLinksVissible = ref(false);
     const offering = ref([23, 45, 65, 78, 89]);
     const attendanceBoolean = ref(true);
@@ -495,9 +499,8 @@ export default {
     const firstTimerPieExist = ref(false);
     const summed = ref(0);
     const planUserIs = ref("");
-    // const currentUser = ref(store.getters.currentUser);
 
-    // const attendance
+  
 
     const toggleMoreLinkVissibility = () => {
       moreLinksVissible.value != moreLinksVissible.value;
@@ -886,7 +889,7 @@ export default {
       lgAndUp,
       xlAndUp,
       handleDelete,
-      celebHeaders,
+      celebHeaders
     };
   },
 };

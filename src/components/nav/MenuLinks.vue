@@ -61,7 +61,7 @@
 </template>
 
 <script>
-import { computed, ref } from "vue";
+import { computed, ref, watchEffect } from "vue";
 import { useRoute } from "vue-router";
 import store from "@/store/store";
 import axios from "@/gateway/backendapi";
@@ -102,24 +102,18 @@ export default {
       }
     }
 
-    const currentUser = () => {
-      if (!store.getters.currentUser || !store.getters.currentUser.churchName) {
-        axios
-          .get("/api/Membership/GetCurrentSignedInUser")
-          .then((res) => {
-            tenantInfo.value = res.data;
-            getChurchProfile()
-            emit('tenantname', tenantInfo.value)
-          })
-          .catch((err) => console.log(err.response));
-        } else {
-          tenantInfo.value.churchName = store.getters.currentUser.churchName;
-          tenantInfo.value.tenantId = store.getters.currentUser.tenantId;
-          getChurchProfile()
-          emit('tenantname', tenantInfo.value)
-        }
-    }
-    currentUser()
+    const getUser = computed(() => {
+      if (!store.getters.currentUser || (store.getters.currentUser && Object.keys(store.getters.currentUser).length == 0)) return ''
+      return store.getters.currentUser
+    })
+
+    watchEffect(() => {
+      if (getUser.value) {
+        tenantInfo.value = getUser.value;
+        getChurchProfile()
+        emit('tenantname', tenantInfo.value)
+      }
+    })
 
     const tenantDisplayName = computed(() => {
       if (!tenantInfo.value.churchName) return "";
@@ -435,7 +429,8 @@ export default {
       menuLink,
       routeToPage,
       linkClicked,
-      tenantInfo
+      tenantInfo,
+      getUser,
     };
   },
 };

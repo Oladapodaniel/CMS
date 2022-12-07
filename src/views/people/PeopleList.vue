@@ -74,7 +74,7 @@
       </template>
     </el-dialog>
 
-    <div class="table-top p-3">
+    <div class="table-top p-3 mt-5">
       <div class="d-flex flex-column flex-sm-row justify-content-sm-between">
         <div>
           <el-tooltip class="box-item" effect="dark" content="Add all members to group" placement="top-start">
@@ -769,18 +769,32 @@ export default {
           console.log(err);
         });
     }
-    const getCurrentlySignedInUser = async () => {
-      try {
-        const res = await axios.get("/api/Membership/GetCurrentSignedInUser");
-        currentUser.value = res.data
+    // const getCurrentlySignedInUser = async () => {
+    //   if (!store.getters.currentUser) {
+    //     axios
+    //       .get("/api/Membership/GetCurrentSignedInUser")
+    //       .then((res) => {
+    //         currentUser.value = res.data
+    //         console.log('from backend')
+    //       })
+    //       .catch((err) => console.log(err.response));
+    //     } else {
+    //       console.log('From store')
+    //       currentUser.value = store.getters.currentUser
+    //     }
+    // }
+    // getCurrentlySignedInUser()
 
-      } catch (err) {
-        /eslint no-undef: "warn"/
-        NProgress.done();
-        console.log(err);
-      }
-    }
-    getCurrentlySignedInUser()
+    // const getUser = computed(() => {
+    //   if (!store.getters.currentUser || (store.getters.currentUser && Object.keys(store.getters.currentUser).length == 0)) return ''
+    //   return store.getters.currentUser
+    // })
+
+    // watchEffect(() => {
+    //   if (getUser.value) {
+    //     currentUser.value = getUser.value
+    //   }
+    // })
 
     const openPositionArchive = () => {
       displayPositionArchive.value = true;
@@ -823,9 +837,7 @@ export default {
     return {
       churchMembers,
       getAllMembersAndAddToGroup,
-      getCurrentlySignedInUser,
       getPeopleByPage,
-
       filterFormIsVissible,
       toggleFilterFormVissibility,
       membershipSummary,

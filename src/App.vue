@@ -24,7 +24,7 @@ import router from "@/router/index";
 // import Multiselect from '@vueform/multiselect'
 import ConnectionBar from "@/components/connectivity/ConnectionStatus.vue";
 import setupService from "./services/setup/setupservice"
-import mixin from "@/mixins/memberLimit.mixin.js"
+import mixin from "@/mixins/currentUser.mixin.js"
 // import celebAnim from "./services/celebration-animation/party"
 // import speed from "./services/network/networkSpeed"
 
@@ -41,34 +41,34 @@ export default {
   },
 
   methods: {
-    async getCurrentUser() {
-      try {
-        const res = await axios.get("/api/Membership/GetCurrentSignedInUser");
-        store.dispatch("setCurrentUser", res.data);
-        if (res.data.subStatus.toLowerCase() === 'expired'){
-            return router.push('/errorpage/expiredSubscription')
-        }
-      } catch (err) {
-        /*eslint no-undef: "warn"*/
-        NProgress.done();
-        if (err.response && err.response.status === 401) {
-          localStorage.setItem("token", "");
-          router.push("/");
-        }
-      }
-    },
+    // async getCurrentUser() {
+    //   try {
+    //     const res = await axios.get("/api/Membership/GetCurrentSignedInUser");
+    //     store.dispatch("setCurrentUser", res.data);
+    //     if (res.data.subStatus.toLowerCase() === 'expired'){
+    //         return router.push('/errorpage/expiredSubscription')
+    //     }
+    //   } catch (err) {
+    //     /*eslint no-undef: "warn"*/
+    //     NProgress.done();
+    //     if (err.response && err.response.status === 401) {
+    //       localStorage.setItem("token", "");
+    //       router.push("/");
+    //     }
+    //   }
+    // },
   },
 
   created() {
     if (localStorage.getItem("token")) {
-
+      
       const expiryDate = localStorage.getItem("expiryDate");
       if (expiryDate && new Date(expiryDate) < Date.now()) {
         localStorage.removeItem("token")
         localStorage.removeItem("expiryDate")
         setupService.clearStore();
       }
-
+      
       this.getCurrentUser();
 
       setupService.setup();
