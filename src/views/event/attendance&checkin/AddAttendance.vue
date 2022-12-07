@@ -1351,9 +1351,6 @@ export default {
         !selectedIncomeAccount.value &&
         !image.value
       ) {
-        console.log(attendanceCheID.value);
-        console.log(route.query.id);
-        console.log(route.params.id);
         console.log("free and no image");
         selectedGroups.value
           ? formData.append("groupIDs", selectedGroups.value)
@@ -1401,11 +1398,23 @@ export default {
             checkinEvent2
           );
           console.log(res);
+          store.dispatch("attendance/setItemData", res);
           toast.add({
             severity: "success",
             summary: "Successful",
             detail: "Attendance updated successfully",
             life: 3000,
+          });
+          router.push({
+            name: "CheckinType",
+            query: {
+              activityID: selectedEvent.value.id,
+              activityName: selectedEvent.value.name,
+              groupId: selectedGroups.value[0].id,
+              groupName: selectedGroups.value[0].name,
+              id: res.data.id,
+              code: res.data.attendanceCode,
+            },
           });
         } catch (error) {
           console.log(error);
