@@ -26,13 +26,6 @@
             </div>
           </div>
         </div>
-          <el-select-v2
-                        v-model="valueMonth"
-                        :options="months.map((i) =>({label: i,  }))"
-                        placeholder="Month"
-                        class="w-100"
-                        size="large"
-                      />
         <div class="row mt-1">
           <div class="col-md-12">
             <span class="float-right text-danger font-weight-bold">{{
