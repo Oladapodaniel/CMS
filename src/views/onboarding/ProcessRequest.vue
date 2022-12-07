@@ -16,14 +16,31 @@
 
       <div class="desc" :class="{ box2: processing }">
         <div class="desc-details">
-          <div class="image-box">
-            <img src="../../assets/laptop.png" alt="" />
-          </div>
-          <div class="desc-text">
+          <div class="desc-text mobile">
             <h4>All-in-one Church management software</h4>
             <p>
               Get your church administrative activities and processes automated without hassle.
             </p>
+          </div>
+          <div class="image-box">
+            <img src="../../assets/laptop.png" alt="" />
+          </div>
+          <div class="desc-text desktop">
+            <h4>All-in-one Church management software</h4>
+            <p>
+              Get your church administrative activities and processes automated without hassle.
+            </p>
+          </div>
+          <div>
+            <div class="spin-div mobile">
+              <div v-if="processing">
+                <i class="loading-icon fas fa-circle-notch fa-spin"></i>
+              </div>
+              <div class="mt-2">
+                <h3 @click="test">Hang tight!</h3>
+                <h3>We 're setting things up for you.</h3>
+              </div>
+            </div>
           </div>
         </div>
       </div>
@@ -75,31 +92,6 @@ export default {
 
     return { processing };
   },
-
-  // data() {
-  //     return {
-  //         processing: false,
-  //     }
-  // },
-
-  // methods: {
-  //     test() {
-  //         this.processing = !this.processing
-  //     }
-  // },
-
-  // mounted() {
-  //     // console.log(this.$store.getters.userStartPoint, "user p");
-  //     const url = this.$store.getters.userStartPoint;
-  //     console.log(url, "start");
-  //     setTimeout(() => {
-  //         this.test()
-  //     }, 200);
-  //     setTimeout(() => {
-  //         if (url) this.$router.push(url)
-  //         else this.$router.push("/next")
-  //     }, 3000);
-  // }
 };
 </script>
 
@@ -123,6 +115,10 @@ export default {
 .spin-div h3 {
   font-size: 32px;
   color: #252a2f;
+}
+
+.spin-div.mobile {
+  display: none;
 }
 
 .loading-icon {
@@ -156,6 +152,10 @@ export default {
   font-size: 20px;
 }
 
+.desc-text.mobile {
+  display: none;
+}
+
 @media screen and (min-width: 601px) {
   .box1 {
     transform: translateX(80%);
@@ -168,6 +168,10 @@ export default {
 
 @media screen and (max-width: 600px) {
   .desc {
+    width: 100%
+  }
+
+  .loading-div.box1 {
     display: none;
   }
 
@@ -178,6 +182,28 @@ export default {
   .spin-div {
     margin: 40px auto;
   }
+
+  .spin-div.mobile {
+    display: block;
+  }
+
+  .loading-icon {
+    color: #B2F3F6;
+  }
+
+  .spin-div h3 {
+    font-size: 32px;
+    color: #ffffff;
+  }
+
+  .desc-text.mobile {
+    display: block;
+  }
+
+  .desc-text.desktop {
+    display: none;
+  }
+
 }
 
 @media screen and (max-width: 460px) {

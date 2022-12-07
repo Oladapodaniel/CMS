@@ -1,120 +1,80 @@
 <template>
-  <main class="container-slim" id="main">
+  <main :class="{ 'container-slim': lgAndUp || xlAndUp }" id="main">
     <div class="second-col container-top">
       <div class="create-btn-div">
         <div>
-          <h2 class="title">Dashboard</h2>
-        </div>
-
-        <div>
-          <button
-            class="create-btn"
-            @click="moreLinksVissible = !moreLinksVissible"
-          >
-            Create new
-            <i class="pi pi-angle-down create-dd"></i>
-          </button>
-          <div class="more-items ml-1" v-if="moreLinksVissible">
-            <div class="container">
-              <div class="row">
-                <div
-                  class="
-                    col-md-12
-                    d-flex
-                    flex-column
-                    border
-                    rounded
-                    more-links
-                    px-4
-                  "
-                >
-                  <router-link
-                    to="/tenant/people/add"
-                    class="font-weight-bold mt-3 text-dec-none"
-                    >Member</router-link
-                  >
-                  <router-link
-                    to="/tenant/people/addfirsttimer"
-                    class="font-weight-bold text-dec-none firstTimerClass"
-                    >First timer</router-link
-                  >
-                </div>
-              </div>
-            </div>
-          </div>
+          <h2 class="head-text">Dashboard</h2>
         </div>
       </div>
-      <!-- <div class="help-text1">
-            <img src="../../assets/can-do.svg" alt="">
-            <div class="can-do">
-              <h4>Things You Can Do</h4>
-              <div class="can-do-links">
-                <a href="">Add member</a>
-                <a href="">Send SMS</a>
-                <a href="">Add First Timer</a>
-                <a href="">Add Follow-up</a>
-              </div>
-            </div>
-          </div> -->
-      <div class="top-row px-0">
+      <div class="d-flex justify-content-between flex-column flex-md-row  px-0">
         <div class="help-text2">
-          <img src="../../assets/can-do.svg" alt="" />
+          <img src="../../assets/thingstodo.svg" alt="" />
           <div class="can-do">
             <h4>Things You Can Do</h4>
             <div class="can-do-links can-do">
               <router-link to="/tenant/people/add">Add Member</router-link>
               <router-link to="/tenant/sms/compose">Send SMS</router-link>
-              <router-link to="/tenant/people/addfirsttimer"
-                >Add First Timer</router-link
-              >
+              <router-link to="/tenant/people/addfirsttimer">Add First Timer</router-link>
               <router-link to="" v-if="false">Add Follow-up</router-link>
             </div>
           </div>
         </div>
 
-        <div v-if="tenantInfoBasic.memberCount === 0">
-          <img src="../../assets/welcome_user.svg" class="welcome-user" />
+        <div v-if="tenantInfoBasic.memberCount === 0"
+          class="d-flex justify-content-center mt-4 justify-content-md-end mt-md-0">
+          <img src="../../assets/welcome_user.svg" style="width: 250px" />
         </div>
         <div class="number-boxes" v-else>
-          <div class="box one">
-            <div class="top">
-              <div class="box-top">
-                <div class="top-icon-div">
-                  <i class="pi pi-users"></i>
-                </div>
-                <div class="box-top-text">
-                  <p>FIRST TIMERS</p>
-                  <h4>{{ tenantInfoBasic.firstTimerCount }}</h4>
+          <div class="box mr-4">
+            <div class="top p-3">
+              <div class="d-flex justify-content-between">
+                <img src="../../assets/usergroup.svg" alt="" style="position: relative; top: -5px; left: -8px;">
+                <div class="">
+                  <p class="mb-0 s-8">FIRST TIMERS</p>
+                  <h4 class="primary--text font-weight-700 mt-1 s-16">{{ tenantInfoBasic.firstTimerCount }}</h4>
                 </div>
               </div>
-              <div class="box-middle">
-                <h1>{{ tenantInfoBasic.memberCount }}</h1>
+              <div>
+                <h1 class="font-weight-700 s-30 mt-2">{{ tenantInfoBasic.memberCount }}</h1>
                 <span class="size-text">Church Size</span>
               </div>
             </div>
-            <div class="bottom">
-              <div class="box-bottom">
-                <div style="font-size: 0.8em; padding-top:0.3rem; font-weight: 700"  v-tooltip.top="planUserIs">
-                  {{ planUserIs }}
-                  <!-- {{ planUserIs.length > 11 ? `${planUserIs.slice(0, 9)}...` : planUserIs }} -->
-                </div>
-                <router-link :to="{ name: 'Subscription' }" class="mt-1">
-                  <!-- <span class="plan-text">YOU'RE ON A FREE PLAN</span> -->
-                  <button
-
-                  class="upgrade-btn"
-                  :class="[buttonTextCheck.color, { 'bg-warning': calculatedPercentage >= 90}]"
-                  >
-                    <h4 class="box-btn-text" :class="[buttonTextCheck.color]"> {{buttonTextCheck.text}} </h4>
-                  </button>
-                  <!-- <div v-if="expirationNotice" class="small-text h5 w-100 font-weight-bold">
-                  Subscription will expire soon 
-                </div> -->
-                </router-link>
+            <div class="box-bottom px-3 py-2">
+              <div class="s-12 font-weight-bold" v-tooltip.top="planUserIs">
+                {{ planUserIs }}
               </div>
+              <router-link :to="{ name: 'Subscription' }" class="mt-1">
+                <el-button color="#136acd" class="mt-2" style="height: 25px"
+                  :class="[buttonTextCheck.color, { 'bg-warning': calculatedPercentage >= 90 }]" round>
+                  <p class="mb-0 small" :class="[buttonTextCheck.color]">{{ buttonTextCheck.text }}</p>
+                </el-button>
+              </router-link>
             </div>
           </div>
-          <div class="box box2">
+          <div class="box">
+            <div class="top p-3">
+              <img src="../../assets/inboxgroup.svg" alt="" style="position: relative; left: -8px;">
+              <div>
+                <h1 class="font-weight-700 s-30">{{ tenantInfoBasic.smsUnit }}</h1>
+                <span class="size-text">SMS Units</span>
+              </div>
+            </div>
+            <div class="box-bottom px-3 py-2">
+              <!-- <div class="s-12 font-weight-bold" v-tooltip.top="planUserIs">
+                {{ planUserIs }}
+              </div> -->
+              <router-link :to="{ name: 'BuyUnits', path: '/tenant/buyunits' }" class="no-decoration">
+                <el-button type="info" class="push-down small" style="height: 25px" round>
+                  <p class="mb-0 small">BUY UNITS</p>
+                </el-button>
+                <!-- <button class="upgrade-btn"
+                  :class="[buttonTextCheck.color, { 'bg-warning': calculatedPercentage >= 90 }]">
+                  <h4 class="box-btn-text" :class="[buttonTextCheck.color]">  </h4>
+                </button> -->
+              </router-link>
+            </div>
+          </div>
+          <!-- <div class="box box2">
             <div class="top">
               <div class="box-top">
                 <div class="top-icon-div">
@@ -137,215 +97,185 @@
                 </router-link>
               </div>
             </div>
-          </div>
+          </div> -->
         </div>
       </div>
       <div class="container-fluid">
         <div class="row">
-          <div
-            class="col-8 offset-2 offset-md-0 col-md-3 p-0"
-            v-if="
-              tenantInfoCeleb.length > 0 ||
-              (tenantInfoFirstTimerWeekly[0] && tenantInfoFirstTimerWeekly[0].data.some(i => i > 0)) ||
-              (tenantInfoAttendanceWeekly[0] && tenantInfoAttendanceWeekly[0].data.some(i => i > 0))
-            "
-          >
-            <div
-              class="more-things side p-3"
-              v-if="!tenantInfoExtra.hasWebsite"
-            >
+          <div class="col-8 offset-2 offset-md-0 col-md-3 p-0" v-if="
+            tenantInfoCeleb.length > 0 ||
+            (tenantInfoFirstTimerWeekly[0] && tenantInfoFirstTimerWeekly[0].data.some(i => i > 0)) ||
+            (tenantInfoAttendanceWeekly[0] && tenantInfoAttendanceWeekly[0].data.some(i => i > 0))
+          ">
+            <div class="more-things side p-3" v-if="!tenantInfoExtra.hasWebsite">
               <!-- <i class="pi pi-times"></i> -->
-              <img src="../../assets/website.svg" class="w-100" />
+              <img src="../../assets/website2.svg" class="w-100" />
               <div class="mt-4">Website</div>
               <div class="more-body mt-2">
                 Get a user engaging website for your church.
               </div>
-              <a href="https://churchplus.co/awoofwebsite/" target="_blank"
-                ><div class="learn-more mt-3 col-12 cursor-pointer">
-                  Get One Now
-                </div></a
-              >
+              <a href="https://churchplus.co/awoofwebsite/" target="_blank">
+                <el-button color="#136ACD" class="mt-1" round plain>Get one now</el-button>
+              </a>
             </div>
 
-            <div
-              class="more-things side p-3 mt-4"
-              v-if="!tenantInfoExtra.hasOnlineGiving"
-            >
-              <img src="../../assets/online_giving.png" class="w-100" />
+            <div class="more-things side p-3 mt-4" v-if="!tenantInfoExtra.hasOnlineGiving">
+              <img src="../../assets/onlinegiving2.svg" class="w-100" />
               <div class="mt-4">Online Giving</div>
               <div class="more-body mt-2">
                 Make online donations to your church.
               </div>
-              <router-link to="/tenant/payments"
-                ><div class="learn-more mt-3 col-12 cursor-pointer">
+              <router-link to="/tenant/payments">
+                <el-button color="#136ACD" class="mt-1" round plain>Set up now</el-button>
+                <!-- <div class="learn-more mt-3 col-12 cursor-pointer">
                   Set Up Now
-                </div></router-link
-              >
+                </div> -->
+              </router-link>
             </div>
 
-            <div
-              class="more-things side p-3 mt-4"
-              v-if="!tenantInfoExtra.hasMobileApp"
-            >
-              <img src="../../assets/mobile_app.svg" class="w-100" />
+            <div class="more-things side p-3 mt-4" v-if="!tenantInfoExtra.hasMobileApp">
+              <img src="../../assets/mobileapp2.svg" class="w-100" />
               <div class="mt-4">Mobile App</div>
               <div class="more-body mt-2">
                 Get a customized mobile app for your church.
               </div>
-              <router-link :to="{ name: 'MobileOnboarding' }"
-                ><div class="learn-more mt-3 col-12 cursor-pointer">
+              <router-link :to="{ name: 'MobileOnboarding' }">
+                <!-- <div class="learn-more mt-3 col-12 cursor-pointer">
                   Set Up Now
-                </div></router-link
-              >
+                </div> -->
+                <el-button color="#136ACD" class="mt-1" round plain>Set up now</el-button>
+              </router-link>
             </div>
           </div>
 
-          <div
-            class="pl-5 pr-0"
-            :class="{
-              'col-12 col-md-9':
-                !tenantInfoExtra.hasMobileApp ||
-                !tenantInfoExtra.hasOnlineGiving ||
-                !tenantInfoExtra.hasWebsite,
-              'col-md-12':
-                tenantInfoExtra.hasMobileApp &&
-                tenantInfoExtra.hasOnlineGiving &&
-                tenantInfoExtra.hasWebsite,
-            }"
-          >
+          <div :class="{
+            'col-12 col-md-9':
+              !tenantInfoExtra.hasMobileApp ||
+              !tenantInfoExtra.hasOnlineGiving ||
+              !tenantInfoExtra.hasWebsite,
+            'col-md-12 px-0':
+              tenantInfoExtra.hasMobileApp &&
+              tenantInfoExtra.hasOnlineGiving &&
+              tenantInfoExtra.hasWebsite,
+          }">
             <!-- Celebrations -->
             <div v-if="tenantInfoCeleb && tenantInfoCeleb.length > 0">
               <div class="celeb-header">
                 <div class="celeb-icon">
-                  <img
-                    src="../../assets/celeb-icon.svg"
-                    alt="Celebration Icon"
-                  />
+                  <img src="../../assets/celeb-icon.svg" alt="Celebration Icon" />
                 </div>
                 <div class="celeb-header-text">
                   <p>Celebrations</p>
                 </div>
               </div>
-              <div class="table table-responsive">
+              <!-- <div class="table table-responsive">
                 <div class="table-top">
-                  <router-link to="" class="view-all" v-if="false"
-                    >View all</router-link
-                  >
-                </div>
-                <!-- <div class="d-flex justify-content-start ml-3 my-3">
+                  <router-link to="" class="view-all" v-if="false">View all</router-link>
+                </div> -->
+              <!-- <div class="d-flex justify-content-start ml-3 my-3">
                   <div class="celeb-badge align-self-center"></div>
                   <div class="ml-2">represents celebrations for today</div> 
                 </div> -->
 
-                <table class="w-100">
-                  <thead>
-                    <tr>
-                      <th>NAME</th>
-                      <th>DATE</th>
-                      <th>DAY</th>
-                      <th>TYPE</th>
-                      <th>PHONE</th>
-                      <th></th>
-                    </tr>
-                  </thead>
-                  <tbody>
-                    <tr
-                      v-for="celebration in tenantInfoCeleb"
-                      :key="celebration.id"
-                    >
-                      <td>
-                        <img
-                          src="../../assets/people/avatar-male.png"
-                          alt=""
-                        /><span class="project-name">{{
+              <!-- <el-table :data="tenantInfoCeleb" style="width: 100%" class="mt-4">
+                  <el-table-column prop="name" label="Name" />
+                  <el-table-column prop="date" label="Date">
+                    <template #default="scope">
+                      {{ dateFormat(scope.row.date) }}
+                    </template>
+                  </el-table-column>
+                  <el-table-column prop="dayOfCelebration" label="Day" />
+                  <el-table-column prop="type" label="Type" />
+                  <el-table-column prop="phone" label="Phone" />
+                </el-table> -->
+
+              <EasyDataTable :headers="celebHeaders" :items="tenantInfoCeleb" class="mt-4">
+                <template #item-name="{ name, dayOfCelebration }">
+                  <div class="player-wrapper">
+                    <img src="../../assets/people/avatar-male.png" alt="" class="celeb-img" />
+                    <span class="ml-3">{{ name }}</span>
+                    <div class="celeb-badge-desc celeb-badge"
+                      v-if="dayOfCelebration.toString().toLowerCase().includes('today')"></div>
+                  </div>
+                </template>
+                <template #item-date="{ date }">
+                  {{ dateFormat(date) }}
+                </template>
+              </EasyDataTable>
+
+              <!-- <table class="w-100">
+                <thead>
+                  <tr>
+                    <th>NAME</th>
+                    <th>DATE</th>
+                    <th>DAY</th>
+                    <th>TYPE</th>
+                    <th>PHONE</th>
+                    <th></th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr v-for="celebration in tenantInfoCeleb" :key="celebration.id">
+                    <td>
+                      <img src="../../assets/people/avatar-male.png" alt="" /><span class="project-name">{{
                           celebration.name
-                        }}</span>
-                        <div class="celeb-badge-desc celeb-badge" v-if="celebration.dayOfCelebration.toString().toLowerCase().includes('today')"></div>
-                      </td>
-                      <td>
-                        {{ dateFormat(celebration.date) }}
-                      </td>
-                      <td>{{ celebration.dayOfCelebration }}</td>
-                      <td>{{ celebration.celebration }}</td>
-                      <td>{{ celebration.phone }}</td>
-                      <td>
-                        <i
-                          class="fas fa-ellipsis-v cursor-pointer"
-                          id="dropdownMenuButton"
-                          data-toggle="dropdown"
-                          aria-haspopup="true"
-                          aria-expanded="false"
-                        ></i>
-                        <div
-                          class="dropdown-menu"
-                          aria-labelledby="dropdownMenuButton"
-                        >
-                          <!-- v-if="person.mobilePhone" -->
-                          <a class="dropdown-item elipsis-items" >
-                            <router-link
-                              :to="celebration.phone ? `/tenant/sms/compose?phone=${celebration.phone}` : ''" :class="{ 'fade-text': !celebration.phone, 'text-color': celebration.phone }"
-                              >Send SMS</router-link
-                            >
-                          </a>
-                        </div>
-                      </td>
-                    </tr>
-                  </tbody>
-                </table>
-              </div>
+                      }}</span>
+                      <div class="celeb-badge-desc celeb-badge"
+                        v-if="celebration.dayOfCelebration.toString().toLowerCase().includes('today')"></div>
+                    </td>
+                    <td>
+                      {{ dateFormat(celebration.date) }}
+                    </td>
+                    <td>{{ celebration.dayOfCelebration }}</td>
+                    <td>{{ celebration.celebration }}</td>
+                    <td>{{ celebration.phone }}</td>
+                    <td>
+                      <i class="fas fa-ellipsis-v cursor-pointer" id="dropdownMenuButton" data-toggle="dropdown"
+                        aria-haspopup="true" aria-expanded="false"></i>
+                      <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+
+                        <a class="dropdown-item elipsis-items">
+                          <router-link :to="celebration.phone ? `/tenant/sms/compose?phone=${celebration.phone}` : ''"
+                            :class="{ 'fade-text': !celebration.phone, 'text-color': celebration.phone }">Send SMS
+                          </router-link>
+                        </a>
+                      </div>
+                    </td>
+                  </tr>
+                </tbody>
+              </table> -->
+              <!-- </div> -->
             </div>
-            <div
-              v-show="
-                tenantInfoCeleb.length > 0 ||
-                (tenantInfoFirstTimerWeekly[0] &&
-                  tenantInfoFirstTimerWeekly[0].data.length > 0) ||
-                (tenantInfoFirstTimerWeekly[0] &&
-                  tenantInfoFirstTimerWeekly[0].data[0] > 0) ||
-                (tenantInfoAttendanceWeekly[0] &&
-                  tenantInfoAttendanceWeekly[0].data.length > 0) ||
-                (tenantInfoAttendanceWeekly[0] &&
-                  tenantInfoAttendanceWeekly[0].data[0] > 0)
-              "
-            >
+            <div v-show="
+              tenantInfoCeleb.length > 0 ||
+              (tenantInfoFirstTimerWeekly[0] &&
+                tenantInfoFirstTimerWeekly[0].data.length > 0) ||
+              (tenantInfoFirstTimerWeekly[0] &&
+                tenantInfoFirstTimerWeekly[0].data[0] > 0) ||
+              (tenantInfoAttendanceWeekly[0] &&
+                tenantInfoAttendanceWeekly[0].data.length > 0) ||
+              (tenantInfoAttendanceWeekly[0] &&
+                tenantInfoAttendanceWeekly[0].data[0] > 0)
+            ">
               <!-- <div class="charts" id="plot"> -->
               <div v-if="tenantInfoAttendanceWeekly && attendanceDataExist">
-                <div
-                  class="adjust-view col-10 col-sm-3 offset-sm-9 mt-5 mt-md-0"
-                >
+                <div class="adjust-view col-10 col-sm-3 offset-sm-9 mt-5 mt-md-0">
                   <div class="view-report">View Reports</div>
                   <div class="weekly">
-                    <span
-                      @click="weeklyAttendance"
-                      :class="{ active: attendanceBoolean }"
-                      >Weekly</span
-                    >&nbsp;&nbsp;&nbsp;<span
-                      @click="monthlyAttendance"
-                      :class="{ active: !attendanceBoolean }"
-                      >Monthly</span
-                    >
+                    <span @click="weeklyAttendance"
+                      :class="{ active: attendanceBoolean }">Weekly</span>&nbsp;&nbsp;&nbsp;<span
+                      @click="monthlyAttendance" :class="{ active: !attendanceBoolean }">Monthly</span>
                   </div>
                 </div>
-                <div v-if="attendanceBoolean">
-                  <ColumnChart
-                    domId="chart1"
-                    title="Event Attendance"
-                    subtitle="Weekly Attendance of Events"
-                    header="Members Attendance"
-                    :data="chartData"
-                    :series="series"
-                    :attendanceSeries="attendanceSeries"
-                  />
+                <div v-if="attendanceBoolean" class="mt-4">
+                  <ColumnChart domId="chart1" title="Event Attendance" subtitle="Weekly Attendance of Events"
+                    header="Members Attendance" :data="chartData" :series="series"
+                    :attendanceSeries="attendanceSeries" />
                 </div>
-                <div v-else>
-                  <ColumnChart
-                    domId="chart1"
-                    title="Event Attendance"
-                    subtitle="Monthly Attendance of Events"
-                    header="Members Attendance"
-                    :data="monthlyAttendanceObj"
-                    :series="series"
-                    :attendanceSeries="attendanceSeries"
-                  />
+                <div v-else class="mt-4">
+                  <ColumnChart domId="chart1" title="Event Attendance" subtitle="Monthly Attendance of Events"
+                    header="Members Attendance" :data="monthlyAttendanceObj" :series="series"
+                    :attendanceSeries="attendanceSeries" />
                 </div>
               </div>
 
@@ -353,70 +283,41 @@
                 <div class="adjust-view col-10 col-sm-3 offset-sm-9">
                   <div class="view-report">View Reports</div>
                   <div class="weekly">
-                    <span
-                      @click="weeklyFirstTimer"
-                      :class="{ active: firstTimerBoolean }"
-                      >Weekly</span
-                    >&nbsp;&nbsp;&nbsp;<span
-                      @click="monthlyFirstTimer"
-                      :class="{ active: !firstTimerBoolean }"
-                      >Monthly</span
-                    >
+                    <span @click="weeklyFirstTimer"
+                      :class="{ active: firstTimerBoolean }">Weekly</span>&nbsp;&nbsp;&nbsp;<span
+                      @click="monthlyFirstTimer" :class="{ active: !firstTimerBoolean }">Monthly</span>
                   </div>
                 </div>
 
                 <div v-if="firstTimerBoolean">
-                  <ColumnChart
-                    domId="chart3"
-                    title="First Timer Inflow"
-                    subtitle="How First Timers Come to Church"
-                    header="First Timers Attendance"
-                    :data="chartData2"
-                    :series="series2"
-                    :attendanceSeries="attendanceSeries"
-                  />
+                  <ColumnChart domId="chart3" title="First Timer Inflow" subtitle="How First Timers Come to Church"
+                    header="First Timers Attendance" :data="chartData2" :series="series2"
+                    :attendanceSeries="attendanceSeries" />
                 </div>
                 <div v-else class="ColumnChartDiv">
-                  <ColumnChart
-                    domId="chart4"
-                    title="First Timer Inflow"
-                    subtitle="How First Timer Come to Church"
-                    header="First Timers Attendance"
-                    :data="monthlyFirstTimerObj"
-                    :series="series2"
-                    :attendanceSeries="attendanceSeries"
-                  />
+                  <ColumnChart domId="chart4" title="First Timer Inflow" subtitle="How First Timer Come to Church"
+                    header="First Timers Attendance" :data="monthlyFirstTimerObj" :series="series2"
+                    :attendanceSeries="attendanceSeries" />
                 </div>
               </div>
               <!-- </div> -->
 
-              <div class="chart-div chart-div-mobile" v-show="firstTimerPieExist">
-                <div class="container-fluid container-fluid-mobile">
+              <div class="chart-div mt-4" v-show="firstTimerPieExist">
+                <div class="">
                   <div class="row">
                     <div class="col-12 col-md-6 d-flex justify-content-center">
-                      <ByGenderChart
-                        domId="source"
-                        title="Invitation Source"
-                        distance="5"
-                        :titleMargin="10"
-                        :summary="
-                          tenantInfoInvitationSource
-                            ? tenantInfoInvitationSource
-                            : []
-                        "
-                      />
+                      <ByGenderChart domId="source" title="Invitation Source" distance="5" :titleMargin="10" :summary="
+                        tenantInfoInvitationSource
+                          ? tenantInfoInvitationSource
+                          : []
+                      " />
                     </div>
-                    <div class="col-12 col-md-6 d-flex justify-content-center">
-                      <ByMaritalStatusChart
-                        domId="join"
-                        title="Interested In Joining"
-                        :titleMargin="10"
-                        :summary="
-                          tenantInfoInterestedInJoining
-                            ? tenantInfoInterestedInJoining
-                            : []
-                        "
-                      />
+                    <div class="col-12 col-md-6 mt-3 mt-md-0 d-flex justify-content-center">
+                      <ByMaritalStatusChart domId="join" title="Interested In Joining" :titleMargin="10" :summary="
+                        tenantInfoInterestedInJoining
+                          ? tenantInfoInterestedInJoining
+                          : []
+                      " />
                     </div>
                   </div>
                 </div>
@@ -425,63 +326,79 @@
           </div>
         </div>
       </div>
-      <div
-        v-if="
+      <div v-if="
           tenantInfoCeleb.length === 0 &&
           (tenantInfoFirstTimerWeekly[0] && tenantInfoFirstTimerWeekly[0].data.every(i => i === 0)) &&
           (tenantInfoAttendanceWeekly[0] && tenantInfoAttendanceWeekly[0].data.every(i => i === 0))
-        "
-      >
-        <div class="container-fluid">
+        ">
+        <div class="container-fluid mt-5">
           <div class="row">
-            <div class="col-12 more-things">More Benefits You Can Get</div>
+            <div class="col-12 more-things">
+              <div class="can-do">
+                <h4>More Benefits You Can Get</h4>
+              </div>
+            </div>
           </div>
           <div class="row mt-4">
             <div class="col-12 col-sm-6 col-md-4 more-things">
-              <img src="../../assets/website.svg" />
-              <div class="mt-4">Website</div>
+              <img src="../../assets/website2.svg" />
+              <div class="mt-4">
+                <div class="can-do">
+                  <h4>Website</h4>
+                </div>
+              </div>
               <div class="more-body mt-2">
                 Get a user engaging website for your church.
               </div>
-              <a href="https://churchplus.co/awoofwebsite/" target="_blank"
-                ><div class="learn-more mt-3 col-6 offset-3 cursor-pointer">
+              <!-- <a href="https://churchplus.co/awoofwebsite/" target="_blank">
+                <div class="learn-more mt-3 col-6 offset-3 cursor-pointer">
                   Get One Now
-                </div></a
-              >
+                </div>
+              </a> -->
+              <a href="https://churchplus.co/awoofwebsite/" target="_blank">
+                <el-button color="#136ACD" class="mt-1" round plain>Get one now</el-button>
+              </a>
             </div>
-            <div class="col-12 col-sm-6 col-md-4 more-things second">
-              <img src="../../assets/online_giving.png" />
-              <div class="mt-4">Online Giving</div>
+            <div class="col-12 col-sm-6 col-md-4 mt-5 mt-sm-0 more-things second">
+              <img src="../../assets/onlinegiving2.svg" />
+              <div class="mt-4">
+                <div class="can-do">
+                  <h4>Online giving</h4>
+                </div>
+              </div>
               <div class="more-body mt-2">
                 Allow members to make online donations to your church.
               </div>
-              <router-link to="/tenant/payments"
-                ><div class="learn-more second col-6 offset-3 cursor-pointer">
+              <router-link to="/tenant/payments">
+                <el-button color="#136ACD" class="mt-1" round plain>Set up now</el-button>
+                <!-- <div class="learn-more second col-6 offset-3 cursor-pointer">
                   Set Up Now
-                </div></router-link
-              >
+                </div> -->
+              </router-link>
             </div>
-            <div class="col-12 col-sm-6 col-md-4 more-things">
-              <img src="../../assets/mobile_app.svg" />
-              <div class="mt-4">Mobile App</div>
+            <div class="col-12 col-sm-6 col-md-4 mt-5 mt-md-0 more-things">
+              <img src="../../assets/mobileapp2.svg" />
+              <div class="mt-4">
+                <div class="can-do">
+                  <h4>Mobile app</h4>
+                </div>
+              </div>
               <div class="more-body mt-2">
                 Get a customized mobile app for your church.
               </div>
-              <router-link :to="{ name: 'MobileOnboarding' }"
-                ><div class="learn-more mt-3 col-6 offset-3 cursor-pointer">
+              <router-link :to="{ name: 'MobileOnboarding' }">
+                <el-button color="#136ACD" class="mt-1" round plain>Set up now</el-button>
+                <!-- <div class="learn-more mt-3 col-6 offset-3 cursor-pointer">
                   Set Up Now
-                </div></router-link
-              >
+                </div> -->
+              </router-link>
             </div>
           </div>
         </div>
       </div>
-      <div class="text-center" v-if="attendanceLoading">
-        <i
-          class="pi pi-spin pi-spinner text-primary"
-          style="fontsize: 3rem"
-        ></i>
-      </div>
+      <!-- <div class="text-center" v-if="attendanceLoading">
+        <i class="pi pi-spin pi-spinner text-primary" style="fontsize: 3rem"></i>
+      </div> -->
 
       <!-- <div class="table-footer" v-if="tenantInfo.celebrations && tenantInfo.celebrations.length > 0">
           <button class="tbl-footer-btn">
@@ -527,7 +444,7 @@
       <!-- </div> -->
 
       <!-- </div> -->
-      
+
     </div>
   </main>
 </template>
@@ -536,36 +453,43 @@
 import ByMaritalStatusChart from "@/components/charts/PieChart";
 import ByGenderChart from "@/components/charts/PieChart";
 import ColumnChart from "@/components/charts/ColumnChart.vue";
-// import PieChart from "@/components/charts/PieChart"
 import { computed, onMounted, ref } from "vue";
-// import { useRoute } from 'vue-router';
-import mixin from "@/mixins/expiredSub.mixin.js"
+import mixin from "@/mixins/currentUser.mixin.js"
 import router from "@/router/index";
 import axios from "@/gateway/backendapi";
-import axio from  'axios'
 import moment from "moment";
 import stopProgressBar from "../../services/progressbar/progress";
 import setupService from "../../services/setup/setupservice";
 import formatDate from "../../services/dates/dateformatter";
 import useSubscription from "../../services/subscription/useSubscription";
 import Tooltip from "primevue/tooltip";
+import { ElLoading } from 'element-plus'
+import deviceBreakpoint from "../../mixins/deviceBreakpoint";
 
 export default {
-   mixins: [mixin],
+  mixins: [mixin],
   components: {
     ColumnChart,
     ByMaritalStatusChart,
     ByGenderChart,
-    
+
   },
- 
+
 
   directives: {
     tooltip: Tooltip,
   },
+  data () {
+    return {}
+    
+  },
+  created () {
+    if (!this.$store.getters.currentUser || (this.$store.getters.currentUser && Object.keys(this.$store.getters.currentUser).length == 0) ) {
+      this.getCurrentUser()
+    }
+  },
 
   setup() {
-    // const store = useStore();
     const moreLinksVissible = ref(false);
     const offering = ref([23, 45, 65, 78, 89]);
     const attendanceBoolean = ref(true);
@@ -575,35 +499,12 @@ export default {
     const firstTimerPieExist = ref(false);
     const summed = ref(0);
     const planUserIs = ref("");
-    // const currentUser = ref(store.getters.currentUser);
 
-    // const attendance
+  
 
     const toggleMoreLinkVissibility = () => {
       moreLinksVissible.value != moreLinksVissible.value;
     };
-    const fxRates = async () =>{
-      try{
-        let { data } = await axio.get('https://churcchplusbackgroundprocessor.azurewebsites.net/fxRates')
-        console.log(data, 'thehreh');
-      }
-      catch(error){
-        console.log(error);
-      }
-    }
-    fxRates()
-
-    // onMounted(() =>{
-    //   axio.get('https://churcchplusbackgroundprocessor.azurewebsites.net/fxRates')
-    //   .then((res)=>{
-    //     console.log(res, "thfxRates")
-    //   }).catch(((error)=>{
-    //     console.log(error);
-    //   }))
-    // })
-    // const mixinsCurrentUser = () => {
-    //   console.log(store.getters.currentUser)
-    // };
 
     const celebrations = [];
     // const route = useRoute();
@@ -615,14 +516,14 @@ export default {
     const firstTimerSeries = ref("weekly");
     const tenantInfoAttendanceWeekly = ref([]);
     const tenantInfoAttendanceMonthly = ref([]);
-    const attendanceLoading = ref(false);
+    // const attendanceLoading = ref(false);
     const tenantInfoFirstTimerWeekly = ref([]);
     const tenantInfoFirstTimerMonthly = ref([]);
     const tenantInfoInvitationSource = ref([]);
     const tenantInfoInterestedInJoining = ref([]);
     const tenantInfoExtra = ref({});
     // const warningAgainstExpire = ref("")
-  
+
 
     // const monthlyFirstTimerObj = ref({})
 
@@ -644,6 +545,17 @@ export default {
       "Dec",
     ]);
 
+    const { lgAndUp, xlAndUp } = deviceBreakpoint()
+
+
+    const celebHeaders = ref([
+      { text: "NAME", value: "name" },
+      { text: "DATE", value: "date" },
+      { text: "DAY", value: "phone" },
+      { text: "TYPE", value: "celebration" },
+      { text: "PHONE", value: "phone" },
+    ]);
+
     const series = computed(() => {
       if (attendanceSeries.value === "weekly") return xAxis.value;
       return monthXaxis.value;
@@ -654,10 +566,21 @@ export default {
       return monthXaxis.value;
     });
 
+    onMounted(() => {
+      getBasicDashboard()
+    })
+
     const getBasicDashboard = () => {
+      const loading = ElLoading.service({
+        lock: true,
+        text: 'Loading...',
+        background: 'rgba(0, 0, 0, 0.7)',
+        })
       axios
         .get("/dashboard/basic")
         .then((res) => {
+          
+  loading.close()
           tenantInfoBasic.value = res.data.returnObject;
           tenantInfoExtra.value.hasMobileApp = res.data.returnObject.hasMobileApp;
           tenantInfoExtra.value.hasOnlineGiving = res.data.returnObject.hasOnlineGiving;
@@ -690,7 +613,7 @@ export default {
           }
         });
     };
-    getBasicDashboard();
+    
 
     let getCelebDashboard = () => {
       axios.get("/dashboard/celebrations").then((res) => {
@@ -699,17 +622,17 @@ export default {
     };
     getCelebDashboard();
 
-    let tenantInfoCeleb = computed (() => {
+    let tenantInfoCeleb = computed(() => {
       if (celeb.value.length === 0) return []
       return celeb.value.sort((b, a) => new Date(b.date) - new Date(a.date))
     })
 
     onMounted(() => {
-      attendanceLoading.value = true;
+      // attendanceLoading.value = true;
       axios
         .get("/dashboard/attendance")
         .then((res) => {
-          attendanceLoading.value = false;
+          // attendanceLoading.value = false;
           tenantInfoAttendanceWeekly.value =
             res.data.returnObject.eventAttendanceChartDataWeekly;
           tenantInfoAttendanceMonthly.value =
@@ -802,20 +725,20 @@ export default {
 
     const chartData = computed(() => {
       if (!tenantInfoAttendanceWeekly.value) return [];
-          let chartWeekly = []
-          let chartObj = tenantInfoAttendanceWeekly.value.find(i => i.name === "Attendance")
-          chartObj['color'] = '#002044'
-          chartWeekly.push(chartObj)
-          return chartWeekly
+      let chartWeekly = []
+      let chartObj = tenantInfoAttendanceWeekly.value.find(i => i.name === "Attendance")
+      chartObj['color'] = '#002044'
+      chartWeekly.push(chartObj)
+      return chartWeekly
     });
     const monthlyAttendanceObj = computed(() => {
       if (!tenantInfoAttendanceMonthly.value) return [];
       // return [tenantInfoAttendanceMonthly.value.find(i => i.name === "Attendance")];
-        let chartMonthly = []
-        let chartObj = tenantInfoAttendanceMonthly.value.find(i => i.name === "Attendance")
-        chartObj['color'] = '#002044'
-        chartMonthly.push(chartObj)
-        return chartMonthly
+      let chartMonthly = []
+      let chartObj = tenantInfoAttendanceMonthly.value.find(i => i.name === "Attendance")
+      chartObj['color'] = '#002044'
+      chartMonthly.push(chartObj)
+      return chartMonthly
     });
 
     const chartData2 = computed(() => {
@@ -844,7 +767,7 @@ export default {
       return formatDate.monthDayYear(payload);
     };
 
-    const retrieveSubscriptionInfo = () => {};
+    const retrieveSubscriptionInfo = () => { };
 
     const useSubscriptionResponse = ref([]);
     const getRenewalDate = ref("");
@@ -853,11 +776,6 @@ export default {
       planUserIs.value = res.description;
       getRenewalDate.value = res.subscriptionExpiration;
       useSubscriptionResponse.value = res;
-      console.log(res, "iiiopiop");
-      // let d = new Date(res.subscriptionExpiration);
-      // d.setDate(d.getDate() - 4)
-      //     warningAgainstExpire.value = d
-      //     console.log(warningAgainstExpire.value, "warning")
     });
     // 
 
@@ -880,22 +798,23 @@ export default {
     });
 
     const buttonTextCheck = computed(() => {
-      if (checkRenewalDate.value && planUserIs.value === "TRIAL") return {text: "SUBSCRIBE",
-       color: "btn-danger-upgrade"
-       };
+      if (checkRenewalDate.value && planUserIs.value === "TRIAL") return {
+        text: "SUBSCRIBE",
+        color: "btn-danger-upgrade"
+      };
 
       if (checkRenewalDate.value && planUserIs.value !== "FREE PLAN") return {
         text: "RENEW",
         color: "renew-btn-color",
-       };
+      };
 
       if (checkRenewalDate.value && planUserIs.value === "FREE PLAN") return {
         text: "SUBSCRIBE",
         color: "btn-danger-upgrade",
-       };
+      };
 
-      if ( planUserIs.value === "UNLIMITED" ) return {text: "PRODUCT"};
-      return {text: "UPGRADE"} ;
+      if (planUserIs.value === "UNLIMITED") return { text: "PRODUCT" };
+      return { text: "UPGRADE" };
 
     });
 
@@ -908,6 +827,10 @@ export default {
       );
       return (totalMembers / currentPlan.membershipSize) * 100;
     };
+
+    const handleDelete = (qq, ww) => {
+      console.log(qq, ww)
+    }
 
 
     return {
@@ -947,7 +870,7 @@ export default {
       dateFormat,
       tenantInfoAttendanceWeekly,
       tenantInfoAttendanceMonthly,
-      attendanceLoading,
+      // attendanceLoading,
       tenantInfoFirstTimerWeekly,
       tenantInfoFirstTimerMonthly,
       tenantInfoInvitationSource,
@@ -962,7 +885,11 @@ export default {
       checkRenewalDate,
       buttonTextCheck,
       celeb,
-      attendanceSeries
+      attendanceSeries,
+      lgAndUp,
+      xlAndUp,
+      handleDelete,
+      celebHeaders
     };
   },
 };
@@ -970,17 +897,17 @@ export default {
 
 <style scoped>
 .renew-btn-color {
- background-color: #ffbf00 !important;
+  background-color: #ffbf00 !important;
 }
 
-.btn-danger-upgrade{
+.btn-danger-upgrade {
   color: #fff !important;
   background-color: #E60023 !important;
 }
 
-* {
+/* * {
   color: #02172e;
-}
+} */
 
 #main {
   display: flex;
@@ -1014,12 +941,14 @@ export default {
   justify-content: space-between;
   padding: 10px;
 }
+
 .create-btn-div {
   display: flex;
   padding: 0 10px 10px 0;
   justify-content: space-between;
   margin-bottom: 24px;
 }
+
 .top-row {
   display: flex;
   padding: 10px;
@@ -1058,14 +987,14 @@ export default {
   /* filter: invert(29%) sepia(74%) saturate(1909%) hue-rotate(197deg) brightness(91%) contrast(89%); */
 }
 
-.box-top-text p {
+/* .box-top-text p {
   font-weight: 600;
 }
 
 .box-top-text h4 {
   color: #136acd;
   font-size: larger;
-}
+} */
 
 .create-dd {
   padding: 0 9px;
@@ -1078,7 +1007,7 @@ export default {
 
 .can-do h4 {
   margin: 0;
-  font-weight: 600;
+  font-weight: 700;
   font-size: 20px;
 }
 
@@ -1118,103 +1047,59 @@ export default {
 }
 
 .box {
-  width: 200px;
-  margin-left: 20px;
+  width: 170px;
+  /* margin-left: 20px; */
 
-  /* background: #F1F5F8; */
+  background: #FFFFFF;
+  box-shadow: 0px 2px 7.5px rgba(0, 0, 0, 0.0588235);
+  border-radius: 15px;
 }
 
-.top {
-  border-radius: 28px 28px 0 0;
-  padding: 20px;
-  border: 1px solid #e6e5f2;
-  box-shadow: 0px 1px 4px #02172e45;
-  border-bottom: transparent;
-}
 
 .box-bottom {
-  display: flex;
-  flex-direction: column;
-  border-radius: 0px 0px 28px 28px;
-  background: #f1f5f8;
-  padding: 10px 20px;
-  border: 1px solid #e6e5f2;
-  box-shadow: 0px 1px 4px #02172e45;
-  border-top: transparent;
+  background: #F1F5F8;
+  box-shadow: 0px 11px 17px rgba(206, 205, 205, 0.360784);
+  border-radius: 0px 0px 15px 15px;
 }
 
+/* 
 .box2 .bottom {
-  /* border: 1px solid #e6e5f2; */
+  
   border-radius: 0px 0px 28px 28px;
-}
-
-.box2 .upgrade-btn {
-  /* background: #136acd; */
-  color: #fff;
-  justify-self: flex-end;
-  margin-left: auto;
-  outline: none;
-}
-
-.upgrade-btn {
-  align-self: center;
-  padding: 7px;
-  background: #136acd4b;
-  /* background: orange; */
-  border-radius: 20px;
-  border: none;
-  font-weight: 800;
-  outline: none;
-  width: 80px;
-}
-.upgrade-btn2 {
-  align-self: center;
-  padding: 7px;
-  /* background: #136acd4b; */
-  background: rgba(255, 166, 0, 0.241);
-  border-radius: 20px;
-  border: none;
-  font-weight: 800;
-  outline: none;
-  width: 80px;
-}
+} */
 
 
-.upgrade-btn:hover{
-  background: #136acd91;
-}
-.upgrade-btn2:hover,
-.buy-btn:hover {
-  /* background: #136acd91; */
-  background: rgba(255, 166, 0, 0.179);
-  /* font-weight: 600; */
-}
 
+
+
+
+
+/* .upgrade-btn2:hove
 .buy-btn {
   width: 109.5px;
-}
+} */
 
-.plan-text {
+/* .plan-text {
   font-size: 9px;
   align-self: center;
   text-transform: uppercase;
   font-weight: 800;
   width: 80px;
   margin-left: 10px;
-}
+} */
 
-.box-top {
+/* .box-top {
   display: flex;
   justify-content: space-between;
   align-items: start;
-}
+} */
 
 /* .box-middle {
   padding: 24px 0;
 } */
 
-.box-top-text h4,
-.box-top-text p {
+/* .box-top-text h4, */
+/* .box-top-text p {
   margin: 0;
   font-size: 12px;
 }
@@ -1222,13 +1107,13 @@ export default {
 .box-top-text h4 {
   font-size: 20px;
   font-weight: 800;
-}
+} */
 
-.box-middle h1 {
+/* .box-middle h1 {
   margin: 0;
-  font-size: 39px;
+  font-size: 30px;
   font-weight: 400;
-}
+} */
 
 .celebrations {
   padding: 10px;
@@ -1261,23 +1146,29 @@ export default {
 .celeb-header {
   display: flex;
   align-items: center;
-  font-size: 25px;
-  font-weight: 600;
-  margin-top: -18px;
+  font-weight: 700;
+  font-size: 20px;
+  margin-top: 20px;
 }
 
 @media (max-width: 767px) {
-  .celeb-header {
-    margin-top: 0;
+
+  .top-row {
+    display: flex;
+    flex-direction: column;
   }
+
+  .box {
+    margin-top: 30px;
+  }
+
+
   .adjust-view {
     display: none;
   }
-  .chart-div-mobile {
-    margin-left: -3rem!important;
-    border: none !important;
-    box-shadow: none !important
-  }
+
+
+
   .container-fluid-mobile {
     border: 1px solid !important;
     width: 85% !important;
@@ -1302,9 +1193,9 @@ export default {
 }
 
 .help-text2 img {
-  width: 100px;
-  margin-top: -20px;
-  margin-left: -35px;
+  width: 76px;
+    margin-top: -9px;
+    margin-left: -14px
 }
 
 .pies {
@@ -1323,25 +1214,21 @@ tbody tr:nth-child(even) {
   margin-left: -20px;
 }
 
-.title {
-  margin: 0 0 15px 0;
-}
-
-.box-btn-text {
+/* .box-btn-text {
   margin: 0px;
   font-size: 12px;
   font-weight: 700;
-  /* color: #ffe50f; */
+  
   color: #136acd;
-}
-.box-btn-text2 {
+} */
+
+/* .box-btn-text2 {
   margin: 0px;
   font-size: 12px;
   font-weight: 800;
-  /* color: rgb(147, 95, 0) */
-  /* color: #ffe50f; */
+
   color: #136acd;
-}
+} */
 
 .size-text {
   color: #136acd;
@@ -1388,7 +1275,7 @@ tbody tr:nth-child(even) {
 
 .adjust-view {
   position: relative;
-  top: 120px;
+  top: 80px;
   right: 10px;
   z-index: 1;
 }
@@ -1409,7 +1296,7 @@ tbody tr:nth-child(even) {
   opacity: 0.8;
 }
 
-.learn-more {
+/* .learn-more {
   border: 1px solid #707070;
   border-radius: 25px;
   padding: 10px;
@@ -1422,7 +1309,7 @@ tbody tr:nth-child(even) {
 
 .learn-more.second {
   margin-top: 21px;
-}
+} */
 
 .more-things.side {
   background: #ecf0f3 0% 0% no-repeat padding-box;
@@ -1430,16 +1317,17 @@ tbody tr:nth-child(even) {
   opacity: 1;
 }
 
-.welcome-user {
+/* .welcome-user {
   width: 64%;
   float: right;
-}
+} */
 
 @media (max-width: 575px) {
   .adjust-view {
     left: 65px;
     top: 150px;
   }
+
   .view-report {
     display: none;
   }
@@ -1449,8 +1337,8 @@ tbody tr:nth-child(even) {
   .can-do-links {
     display: flex;
     flex-direction: column;
-    text-align: center;
-    margin-left: -3rem;
+    /* text-align: center;
+    margin-left: -3rem; */
   }
 }
 
@@ -1472,6 +1360,7 @@ tbody tr:nth-child(even) {
     top: 60.7em;
 } */
 }
+
 @media (min-width: 516px) and (max-width: 576px) {
   /* .adjust-view {
     position: absolute;
@@ -1515,12 +1404,12 @@ tbody tr:nth-child(even) {
 }
 
 .chart-div {
-  border: 1px solid #dde2e6;
-  border-radius: 30px;
+  border: 1px solid #DDE2E6;
+  /* border-radius: 30px;
   margin: 0 0 24px 0;
   box-shadow: 0px 1px 4px #02172e45;
-  border: 1px solid #dde2e6;
-  padding: 25px 0;
+  border: 1px solid #dde2e6;*/
+  /* padding: 10px 0;  */
 }
 
 /* WIP */
@@ -1536,15 +1425,10 @@ tbody tr:nth-child(even) {
 } */
 
 @media screen and (max-width: 940px) {
-  .top-row {
-    display: flex;
-    flex-direction: column;
-  }
-
-  .help-text2 {
+  /* .help-text2 {
     display: flex;
     align-items: flex-start;
-  }
+  } */
 
   .second-col .number-boxes {
     max-width: 100%;
@@ -1552,8 +1436,7 @@ tbody tr:nth-child(even) {
   }
 
   .box {
-    margin-top: 20px;
-    width: 40%;
+    /* width: 40%; */
     margin-left: 0;
   }
 
@@ -1599,21 +1482,12 @@ tbody tr:nth-child(even) {
 }
 
 @media (max-width: 508px) {
-  .box {
-    width: 100%;
-  }
 
-  .number-boxes {
-    flex-direction: column;
-    width: 70%;
-    align-self: center;
-    margin-top: 10px;
-  }
 
-  .create-btn-div {
+  /* .create-btn-div {
     flex-direction: column;
     align-items: center;
-  }
+  } */
 
   .second-col .create-btn-div .create-btn {
     margin-top: 10px;
@@ -1624,9 +1498,9 @@ tbody tr:nth-child(even) {
   }
 
 }
-  
+
 .push-down {
-  margin-top: 26px;
+  margin-top: 32px;
 }
 
 .fade-text {
@@ -1640,23 +1514,45 @@ tbody tr:nth-child(even) {
 
 
 @media screen and (max-width: 480px) {
- .firstTimerClass {
-  padding-top:9px;
-  /* background-color: lightgreen; */
-}
-}
-  .celeb-badge {
-    border-radius: 50%;
-    border: 1px solid red;
-    width: 10px;
-    height: 10px;
-    background: red;
+  .firstTimerClass {
+    padding-top: 9px;
+    /* background-color: lightgreen; */
   }
+
+}
+
+@media screen and (max-width: 360px) {
+  /* .box {
+    width: 100%;
+  } */
+
+  .number-boxes {
+    flex-direction: column;
+    /* width: 70%; */
+    align-self: center;
+    margin-top: 10px;
+  }
+
+}
+
+.celeb-badge {
+  border-radius: 50%;
+  border: 1px solid red;
+  width: 10px;
+  height: 10px;
+  background: red;
+}
 
 .celeb-badge-desc {
   position: relative;
-  left: 34px;
-  top: -41px;
+  left: 24px;
+  top: -26px;
 }
 
+.celeb-img {
+  width: 30px;
+  height: 30px;
+  object-fit: cover;
+  border-radius: 50%;
+}
 </style>

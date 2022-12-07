@@ -7,13 +7,15 @@ import VueHighcharts from 'vue-highcharts';
 import loadFunnel from 'highcharts/modules/funnel';
 import ElementPlus from 'element-plus'
 import 'element-plus/dist/index.css'
+import * as ElementPlusIconsVue from '@element-plus/icons-vue'
+import 'element-plus/theme-chalk/display.css'
 // import axios from "axios";
 import axios from "./gateway/backendapi";
 // import NProgress from "nprogress";
 import CKEditor from '@ckeditor/ckeditor5-vue';
 import Toaster from '@meforma/vue-toaster';
-// import VueTelInput from 'vue-tel-input';
-// import 'vue-tel-input/dist/vue-tel-input.css';
+import Vue3EasyDataTable from 'vue3-easy-data-table';
+import 'vue3-easy-data-table/dist/style.css';
 
 // const globalOptions = {
 //   mode: 'auto',
@@ -31,7 +33,6 @@ import VueTelInput from 'vue3-tel-input'
     }
     // onlyCountries: ['NG', 'GH', "GB", "US", "CA"]
   }
-
 
 // Vue.prototype.$http = axios
 
@@ -149,5 +150,10 @@ app.component("SplitButton", SplitButton);
 app.component("Checkbox", Checkbox);
 app.component("Tag", Tag);
 app.component("Editor", Editor);
+
+for (const [key, component] of Object.entries(ElementPlusIconsVue)) {
+  app.component(key, component)
+}
+app.component('EasyDataTable', Vue3EasyDataTable)
 
 app.use(store).use(router).use(VueHighcharts, { Highcharts }).use( CKEditor).use(Toaster).use(PrimeVue).use(ToastService).use(ConfirmationService).use(ElementPlus).use(VueTelInput, VueTelInputOptions).mount('#app')

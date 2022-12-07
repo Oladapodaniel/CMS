@@ -49,7 +49,6 @@ export default {
     // },
 
     async getMembers({ commit }) {
-        console.log("getting");
       try {
         const { data } = await axios.get("/api/People/GetPeopleBasicInfo");
         commit("setMembers", data)
@@ -59,17 +58,6 @@ export default {
         console.log(err, "in store");
       }
     },
-
-    // async getFirstTimers({ commit }) {
-    //   try {
-    //     const { data } = await axios.get("/api/People/FirstTimer");
-    //     commit("setFirstTimers", data)
-    //   } catch (err) {
-    //     /*eslint no-undef: "warn"*/
-    //     NProgress.done();
-    //     console.log(err, "in store");
-    //   }
-    // },
 
     setup({ commit }) {
         

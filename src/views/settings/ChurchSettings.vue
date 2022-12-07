@@ -36,7 +36,7 @@
              <transition-group tag="span" name="fade"> 
         <div class="show-modal" :class="{ 'dd-hide-list': !settingLinkDropped }">
          
-          <div class="row mb-3">
+          <div class="row mb-3" v-if="!basicUser">
             <div class="col-md-12 my-2">
               <span class="small-text dd-list-item">User Management
                
@@ -189,12 +189,13 @@ export default {
     const dropDownText = computed(() => {
       return settingLinkDropped.value ? "Hide menu" : "Show menu";
     });
-    // const roleOfCurrentUser = computed(() => {
-    //   if (!localStorage.getItem('roles')) return []
-    //   return JSON.parse(localStorage.getItem('roles'))
-    // })
-    // const admin = ref(roleOfCurrentUser.value.some(i => i.toLowerCase() === 'admin'))
-    // const basicUser = ref(!admin.value && roleOfCurrentUser.value.some(i => i.toLowerCase() === 'basicuser'))
+
+    const roleOfCurrentUser = computed(() => {
+      if (!localStorage.getItem('roles')) return []
+      return JSON.parse(localStorage.getItem('roles'))
+    })
+    const admin = ref(roleOfCurrentUser.value.some(i => i.toLowerCase() === 'admin'))
+    const basicUser = ref(!admin.value && roleOfCurrentUser.value.some(i => i.toLowerCase() === 'basicuser'))
 
         return {
             route,
@@ -205,9 +206,9 @@ export default {
             moreShown,
             showp,
             settingsIcon,
-            // roleOfCurrentUser,
-            // basicUser,
-            // admin
+            admin,
+            basicUser,
+            roleOfCurrentUser,
         }
     }
 

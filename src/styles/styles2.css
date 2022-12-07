@@ -1,0 +1,21 @@
+/* Element plus component restyle */
+
+.el-input__wrapper {
+    padding: 6px 11px !important;
+}
+
+button.el-button.el-button--primary.start-option > span {
+    width: 100% !important
+}
+
+.primary--text {
+    color: #136acd;
+}
+
+.no-decoration{
+    text-decoration: none !important;
+}
+
+.el-card.person-image .el-card__body {
+    padding: 0
+}
