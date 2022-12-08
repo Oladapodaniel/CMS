@@ -187,6 +187,7 @@
 
 <script>
 import store from '@/store/store';
+import { ElMessage, ElMessageBox } from 'element-plus';
 import Tooltip from 'primevue/tooltip';
 import Toast from 'primevue/toast';
 import ConfirmDialog from 'primevue/confirmdialog'
@@ -291,20 +292,37 @@ export default {
       }
     },
      deletePop(email) {
-            this.$confirm.require({
-                message: 'Are you sure you want to Delete?',
-                header: 'Delete Confirmation',
-                icon: 'pi pi-exclamation-circle',
-                acceptClass: 'confirm-delete',
-                rejectClass: 'cancel-delete',
-                accept: () => {
-                  this.deleteChurchUser(email)
-                    //callback to execute when user confirms the action
-                },
-                reject: () => {
-                    'No internet'
-                }
-            });
+      ElMessageBox.confirm(
+        'Are you sure you want to proceed?',
+        'Warning',
+        {
+          confirmButtonText: 'OK',
+          cancelButtonText: 'Cancel',
+          type: 'warning',
+        }
+      )
+      .then(() => {
+          this.deleteChurchUser(email)
+        })
+        .catch(() => {
+          ElMessage({
+            type: 'info',
+            message: 'Delete canceled',
+          })
+        })
+            // this.$confirm.require({
+            //     message: 'Are you sure you want to Delete?',
+            //     header: 'Delete Confirmation',
+            //     icon: 'pi pi-exclamation-circle',
+            //     acceptClass: 'confirm-delete',
+            //     rejectClass: 'cancel-delete',
+            //     accept: () => {
+            //       this.deleteChurchUser(email)
+            //     },
+            //     reject: () => {
+            //         'No internet'
+            //     }
+            // });
         },
         async currentUser () {
           if(!store.getters.currentUser){

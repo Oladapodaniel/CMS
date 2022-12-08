@@ -1478,19 +1478,6 @@
                 >
                   <div class="col-sm-6 offset-sm-3 mb-4">
                     <div>How did you hear about us</div>
-                    <!-- <button class="  btn d-flex justify-content-between pl-0 col-12 border  " type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                        <span class="ofering">
-                            &nbsp;&nbsp;&nbsp; {{ valueHeard ?  valueHeard : 'Select' }}
-                        </span>
-                        <span>
-                            <i class="pi pi-angle-down offset-sm-2 ofering"></i>
-                        </span>
-                    </button>
-                    <div class="dropdown-menu scroll w-100 " aria-labelledby="dropdownMenuButton">
-                        <a class="dropdown-item" v-for="(itm, indx) in howYouHeard" :key="indx">
-                            <div class="cursor-pointer" @click="selectedhowYouHeard(itm)"> {{itm}}</div> 
-                        </a>
-                    </div> -->
                      <el-select-v2
                       v-model="valueHeard"
                       @change="dropDownHeardNewConvert" 
@@ -1499,41 +1486,10 @@
                       class="w-100"
                       size="large"
                     />
-                    <!-- <el-select  size="large" class="w-100" @change="dropDownHeardNewConvert(valueHeard)" v-model="valueHeard" placeholder="Select">
-                      <el-option
-                        v-for="item in howYouHeard"
-                        :key="item"
-                        :label="item"
-                        :value="item">
-                      </el-option>
-                    </el-select> -->
-                    <!-- <Dropdown
-                      :options="[...howYouHeard]"
-                      :filter="false"
-                      v-model="valueHeard"
-                      @change="dropDownHeardNewConvert"
-                      placeholder="Select"
-                      class="w-100"
-                      :showClear="false"
-                    >
-                    </Dropdown> -->
                   </div>
 
                   <div class="col-sm-6 offset-sm-3 mb-4">
                     <div>Preferred means of communication</div>
-                    <!-- <button class="  btn d-flex justify-content-between pl-0 col-12 border  " type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                        <span class="ofering">
-                            &nbsp;&nbsp;&nbsp; {{ valueComm ?  valueComm : 'Select' }}
-                        </span>
-                        <span>
-                            <i class="pi pi-angle-down offset-sm-2 ofering"></i>
-                        </span>
-                    </button>
-                    <div class="dropdown-menu scroll w-100 " aria-labelledby="dropdownMenuButton">
-                        <a class="dropdown-item" v-for="(item, indx) in comMeansArr" :key="indx">
-                            <div class="cursor-pointer" @click="selectedcomMeansArr(item)"> {{item}}</div> 
-                        </a>
-                    </div> -->
                      <el-select-v2
                       v-model="valueComm"
                       @change="dropDownCommNewConvert"
@@ -1542,41 +1498,10 @@
                       class="w-100"
                       size="large"
                     />
-                     <!-- <el-select size="large" class="w-100" @change="dropDownCommNewConvert(valueComm)" v-model="valueComm" placeholder="Select">
-                      <el-option
-                        v-for="item in comMeansArr"
-                        :key="item"
-                        :label="item"
-                        :value="item">
-                      </el-option>
-                    </el-select> -->
-                    <!-- <Dropdown
-                      :options="[...comMeansArr]"
-                      :filter="false"
-                      v-model="valueComm"
-                      @change="dropDownCommNewConvert"
-                      placeholder="Select"
-                      class="w-100"
-                      :showClear="false"
-                    >
-                    </Dropdown> -->
                   </div>
 
                   <div class="col-sm-6 offset-sm-3 mb-4">
                     <div>Interested in joining us</div>
-                    <!-- <button class="  btn d-flex justify-content-between pl-0 col-12 border  " type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                        <span class="ofering">
-                            &nbsp;&nbsp;&nbsp; {{ valueInterest ?  valueInterest : 'Select' }}
-                        </span>
-                        <span>
-                            <i class="pi pi-angle-down offset-sm-2 ofering"></i>
-                        </span>
-                    </button>
-                    <div class="dropdown-menu scroll w-100 " aria-labelledby="dropdownMenuButton">
-                        <a class="dropdown-item" v-for="(item, indx) in joinInterest" :key="indx">
-                            <div class="cursor-pointer" @click="selectedJoinInterest(item)"> {{item}}</div> 
-                        </a>
-                    </div> -->
                     <el-select-v2
                       v-model="valueInterest"
                        @change="dropDownInterestNewConvert" 
@@ -1585,41 +1510,10 @@
                       class="w-100"
                       size="large"
                     />
-                    <!-- <el-select size="large" class="w-100" @change="dropDownInterestNewConvert(valueInterest)" v-model="valueInterest" placeholder="Select">
-                      <el-option
-                        v-for="item in joinInterest"
-                        :key="item"
-                        :label="item"
-                        :value="item">
-                      </el-option>
-                    </el-select> -->
-                    <!-- <Dropdown
-                      :options="[...joinInterest]"
-                      :filter="false"
-                      v-model="valueInterest"
-                      @change="dropDownInterestNewConvert"
-                      placeholder="Select"
-                      class="w-100"
-                      :showClear="false"
-                    >
-                    </Dropdown> -->
                   </div>
 
                   <div class="col-sm-6 offset-sm-3 mb-4">
                     <div>Want to be visited?</div>
-                    <!-- <button class="  btn d-flex justify-content-between pl-0 col-12 border  " type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                        <span class="ofering">
-                            &nbsp;&nbsp;&nbsp; {{ valueVisit ?  valueVisit : 'Select' }}
-                        </span>
-                        <span>
-                            <i class="pi pi-angle-down offset-sm-2 ofering"></i>
-                        </span>
-                    </button>
-                    <div class="dropdown-menu scroll w-100 " aria-labelledby="dropdownMenuButton">
-                        <a class="dropdown-item" v-for="(item, indx) in wantVisitArr" :key="indx">
-                            <div class="cursor-pointer" @click="selectedwantVisitArr(item)"> {{item}}</div> 
-                        </a>
-                    </div> -->
                     <el-select-v2
                       v-model="valueVisit"
                       @change="dropDownVisitNewConvert"
@@ -1628,24 +1522,6 @@
                       class="w-100"
                       size="large"
                     />
-                     <!-- <el-select size="large" class="w-100" @change="dropDownVisitNewConvert(valueVisit)" v-model="valueVisit" placeholder="Select">
-                      <el-option
-                        v-for="item in wantVisitArr"
-                        :key="item"
-                        :label="item"
-                        :value="item">
-                      </el-option>
-                    </el-select> -->
-                    <!-- <Dropdown
-                      :options="[...wantVisitArr]"
-                      :filter="false"
-                      v-model="valueVisit"
-                      @change="dropDownVisitNewConvert"
-                      placeholder="Select"
-                      class="w-100"
-                      :showClear="false"
-                    >
-                    </Dropdown> -->
                   </div>
                 </div>
                 <span
@@ -1893,24 +1769,6 @@
                       size="large"
                       class="w-100"
                     />
-                  <!-- <el-select size="large" class="w-100" v-model="selectedIncomeAccount" placeholder="Select">
-                    <el-option
-                      v-for="item in incomeAccount"
-                      :key="item.text"
-                      :label="item.text"
-                      :value="item.text">
-                    </el-option>
-                  </el-select> -->
-                  <!-- <Dropdown
-                    v-model="selectedIncomeAccount"
-                    class="w-100"
-                    :options="incomeAccount"
-                    optionLabel="text"
-                    :filter="true"
-                    placeholder="Select"
-                    :showClear="false"
-                  >
-                  </Dropdown> -->
                 </div>
                 <div class="col-sm-4 mt-3 text-right pr-0">
                   <label>Cash Account</label>
@@ -1946,30 +1804,13 @@
                   </div>
                   <div class="col-lg-5 col-sm-12 mt-5">
                     <el-select-v2
-                      v-model="item.account"
+                      v-model="itemAccountID"
+                      @change="setIncomeAccount(index)"
                       :options="incomeAccount.map((i) =>({label: i.text , value: i.id }))"
                       placeholder="Select"
                       size="large"
                       class="w-100"
                     />
-                    <!-- <el-select v-model="item.account" placeholder="Select">
-                    <el-option
-                      v-for="item in incomeAccount"
-                      :key="item.text"
-                      :label="item.text"
-                      :value="item.text">
-                    </el-option>
-                  </el-select> -->
-                    <!-- <Dropdown
-                      v-model="item.account"
-                      class="w-100"
-                      :options="incomeAccount"
-                      optionLabel="text"
-                      :filter="true"
-                      placeholder="Select"
-                      :showClear="false"
-                    >
-                    </Dropdown> -->
                   </div>
 
                   <div class="col-sm-4 text-right align-self-center mt-3">
@@ -2066,6 +1907,7 @@
 
 <script>
 import axios from "@/gateway/backendapi";
+import { ElMessage, ElMessageBox } from 'element-plus';
 import store from "@/store/store.js";
 import Toast from "primevue/usetoast";
 import membershipService from "../../services/membership/membershipservice";
@@ -2139,6 +1981,7 @@ export default {
         "December",
       ],
       valueMonth: null,
+      itemAccountID: null,
       valueMarital: null,
       valueGender: null,
       valueHeard: null,
@@ -2539,26 +2382,24 @@ export default {
       // this.convertedAmount2.splice(index, 1)
     },
     deleteAttendance(id, index) {
-      this.$confirm.require({
-        message: "Are you sure you want to proceed?",
-        header: "Confirmation",
-        icon: "pi pi-exclamation-triangle",
-        acceptClass: "confirm-delete",
-        rejectClass: "cancel-delete",
-        accept: () => {
+       ElMessageBox.confirm(
+        'Are you sure you want to proceed?',
+        'Warning',
+        {
+          confirmButtonText: 'OK',
+          cancelButtonText: 'Cancel',
+          type: 'warning',
+        }
+      )
+      .then(() => {
           this.delAttendance(id, index);
-          // toast.add({severity:'info', summary:'Confirmed', detail:'Member Deleted', life: 3000});
-        },
-        reject: () => {
-          //  this.$toast.add({severity:'info', summary:'Confirmed', detail:'Record deleted', life: 3000});
-          this.$toast.add({
-            severity: "info",
-            summary: "Rejected",
-            detail: "You have rejected",
-            life: 3000,
-          });
-        },
-      });
+        })
+        .catch(() => {
+          ElMessage({
+            type: 'info',
+            message: 'Delete canceled',
+          })
+        })
     },
 
     delEventCategory(id, index) {
@@ -2568,41 +2409,58 @@ export default {
           .then((res) => {
             console.log(res, "delete response from back");
             if (res.data === true) {
-              this.$toast.add({
-                severity: "success",
-                summary: "Confirmed",
-                detail: `Event Category Successfully Deleted`,
-                life: 3000,
-              });
+              ElMessage({
+              type: 'success',
+              message: 'Event Category Successfully Deleted',
+            })
+              // this.$toast.add({
+              //   severity: "success",
+              //   summary: "Confirmed",
+              //   detail: `Event Category Successfully Deleted`,
+              //   life: 3000,
+              // });
               this.attendanceItem = this.attendanceItem.filter(
                 (i) => id !== i.attendanceId
               );
             } else if (res.data === false) {
-              this.$toast.add({
-                severity: "warn",
-                summary: "Delete Failed",
-                detail: `This event category has been used to create event or Attendance report, delete any of the report then proceed by deleting the event category`,
-                life: 3000,
-              });
+              ElMessage({
+              type: 'warning',
+              message: 'This event category has been used to create event or Attendance report, delete any of the report then proceed by deleting the event category',
+            })
+              // this.$toast.add({
+              //   severity: "warn",
+              //   summary: "Delete Failed",
+              //   detail: `This event category has been used to create event or Attendance report, delete any of the report then proceed by deleting the event category`,
+              //   life: 3000,
+              // });
             } else {
-              toast.add({
-                severity: "warn",
-                summary: "Delete Failed",
-                detail: `Please Try Again`,
-                life: 3000,
-              });
+               ElMessage({
+              type: 'warning',
+              message: 'Delete Failed, Try Again',
+            })
+              // toast.add({
+              //   severity: "warn",
+              //   summary: "Delete Failed",
+              //   detail: `Please Try Again`,
+              //   life: 3000,
+              // });
             }
           })
           .catch((err) => {
             finish();
             if (err.response) {
               console.log(err.response);
-              this.$toast.add({
-                severity: "error",
-                summary: "Unable to delete",
-                detail: `${err.response}`,
-                life: 3000,
-              });
+              ElMessage({
+                  showClose: true,
+                  message: `Unable to delete ${err.response}`,
+                  type: 'error',
+                })
+              // this.$toast.add({
+              //   severity: "error",
+              //   summary: "Unable to delete",
+              //   detail: `${err.response}`,
+              //   life: 3000,
+              // });
             }
           });
       } else {
@@ -2612,26 +2470,44 @@ export default {
     },
 
     deleteSelectedEventCategory(id, index) {
-      this.$confirm.require({
-        message: "Are you sure you want to proceed?",
-        header: "Confirmation",
-        icon: "pi pi-exclamation-triangle",
-        acceptClass: "confirm-delete",
-        rejectClass: "cancel-delete",
-        accept: () => {
+         ElMessageBox.confirm(
+        'Are you sure you want to proceed?',
+        'Warning',
+        {
+          confirmButtonText: 'OK',
+          cancelButtonText: 'Cancel',
+          type: 'warning',
+        }
+      )
+        .then(() => {
           this.delEventCategory(id, index);
-          // toast.add({severity:'info', summary:'Confirmed', detail:'Member Deleted', life: 3000});
-        },
-        reject: () => {
-          //  this.$toast.add({severity:'info', summary:'Confirmed', detail:'Record deleted', life: 3000});
-          this.$toast.add({
-            severity: "info",
-            summary: "Rejected",
-            detail: "You have rejected",
-            life: 3000,
-          });
-        },
-      });
+        })
+        .catch(() => {
+          ElMessage({
+            type: 'info',
+            message: 'Delete canceled',
+          })
+        })
+        
+      // this.$confirm.require({
+      //   message: "Are you sure you want to proceed?",
+      //   header: "Confirmation",
+      //   icon: "pi pi-exclamation-triangle",
+      //   acceptClass: "confirm-delete",
+      //   rejectClass: "cancel-delete",
+      //   accept: () => {
+      //     this.delEventCategory(id, index);
+      //   },
+      //   reject: () => {
+  
+      //     this.$toast.add({
+      //       severity: "info",
+      //       summary: "Rejected",
+      //       detail: "You have rejected",
+      //       life: 3000,
+      //     });
+      //   },
+      // });
     },
 
     deleteOffering(id, index) {
@@ -2641,20 +2517,29 @@ export default {
           .then((res) => {
             console.log(res, "delete response from back");
             if (res.data.status) {
-              this.$toast.add({
-                severity: "success",
-                summary: "Confirmed",
-                detail: `Offering Successfully Deleted`,
-                life: 3000,
-              });
+              ElMessage({
+                type: 'success',
+                message: 'Offering Successfully Deleted',
+              })
+              // this.$toast.add({
+              //   severity: "success",
+              //   summary: "Confirmed",
+              //   detail: `Offering Successfully Deleted`,
+              //   life: 3000,
+              // });
               this.offeringItem = this.offeringItem.filter((i) => id !== i.id);
             } else {
-              toast.add({
-                severity: "warn",
-                summary: "Delete Failed",
-                detail: `Please Try Again`,
-                life: 3000,
-              });
+              
+               ElMessage({
+                type: 'info',
+                message: 'Delete Failed, Please Try Again',
+              })
+              // toast.add({
+              //   severity: "warn",
+              //   summary: "Delete Failed",
+              //   detail: `Please Try Again`,
+              //   life: 3000,
+              // });
             }
           })
           .catch((err) => {
@@ -2675,26 +2560,45 @@ export default {
     },
 
     delOffering(id, index) {
-      this.$confirm.require({
-        message: "Are you sure you want to proceed?",
-        header: "Confirmation",
-        icon: "pi pi-exclamation-triangle",
-        acceptClass: "confirm-delete",
-        rejectClass: "cancel-delete",
-        accept: () => {
+      ElMessageBox.confirm(
+        'Are you sure you want to proceed?',
+        'Warning',
+        {
+          confirmButtonText: 'OK',
+          cancelButtonText: 'Cancel',
+          type: 'warning',
+        }
+      )
+        .then(() => {
           this.deleteOffering(id, index);
-          // toast.add({severity:'info', summary:'Confirmed', detail:'Member Deleted', life: 3000});
-        },
-        reject: () => {
-          //  this.$toast.add({severity:'info', summary:'Confirmed', detail:'Record deleted', life: 3000});
-          this.$toast.add({
-            severity: "info",
-            summary: "Rejected",
-            detail: "You have rejected",
-            life: 3000,
-          });
-        },
-      });
+        })
+        .catch(() => {
+          ElMessage({
+            type: 'info',
+            message: 'Delete canceled',
+          })
+        })
+
+      // this.$confirm.require({
+      //   message: "Are you sure you want to proceed?",
+      //   header: "Confirmation",
+      //   icon: "pi pi-exclamation-triangle",
+      //   acceptClass: "confirm-delete",
+      //   rejectClass: "cancel-delete",
+      //   accept: () => {
+      //     this.deleteOffering(id, index);
+      //     // toast.add({severity:'info', summary:'Confirmed', detail:'Member Deleted', life: 3000});
+      //   },
+      //   reject: () => {
+      //     //  this.$toast.add({severity:'info', summary:'Confirmed', detail:'Record deleted', life: 3000});
+      //     this.$toast.add({
+      //       severity: "info",
+      //       summary: "Rejected",
+      //       detail: "You have rejected",
+      //       life: 3000,
+      //     });
+      //   },
+      // });
     },
 
     toggleForm1() {
@@ -2949,6 +2853,14 @@ export default {
     //     this.selectedEventCategoryId = this.selectedEventCategory.id;
     //   }
     // },
+
+    setIncomeAccount(index) {
+      this.remitance[index].account =  this.incomeAccount.find((i) =>{
+        return i.id === this.itemAccountID 
+      })
+        console.log(this.remitance[index].account, "jhgjh");
+    },
+
     dropDownMonth() {
       switch (this.valueMonth) {
         case "January":
