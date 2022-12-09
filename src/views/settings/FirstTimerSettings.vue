@@ -152,6 +152,7 @@
 import axios from "@/gateway/backendapi";
 import Toast from 'primevue/toast';
 import ConfirmDialog from 'primevue/confirmdialog';
+import { ElMessage, ElMessageBox } from 'element-plus';
 import Checkbox from 'primevue/checkbox';
 import membershipService from '../../services/membership/membershipservice';
 import finish from '../../services/progressbar/progress';
@@ -214,7 +215,11 @@ export default {
      const response = await axios.put('/firsttimercycle/orderstages', ordered);
       console.log(response)
        this.loading = false
-      this.$toast.add({severity:'success', summary: '', detail:' New Guest Life Cycle Order Updated Successfully', life: 3000});  
+       ElMessage({
+              type: 'success',
+              message: 'New Guest Life Cycle Order Updated Successfully',
+            })
+      // this.$toast.add({severity:'success', summary: '', detail:' New Guest Life Cycle Order Updated Successfully', life: 3000});  
       console.log(ordered, "ORDERED");
       
       }, 1000)
@@ -236,7 +241,11 @@ export default {
         this.getFirstTimerCyles()
         this.firstTimerTypes = ""
         this.isDefault = false
-         this.$toast.add({severity:'success', summary: '', detail:'New Guest Life Cycle Save Successfully', life: 3000});
+        ElMessage({
+              type: 'success',
+              message: 'New Guest Life Cycle Save Successfully',
+            })
+        //  this.$toast.add({severity:'success', summary: '', detail:'New Guest Life Cycle Save Successfully', life: 3000});
       }catch(error){
         finish()
         console.log(error)
@@ -249,7 +258,11 @@ export default {
         await axios.put(`/firsttimercycle/${item.id}/edit`, {...item, name : item.name, isDefault: item.isDefault});
         // this.firstTimerData[index].name = item.name
         this.discard()
-        this.$toast.add({severity:'success', summary: '', detail:'New Guest Life Cycle Updated Successfully', life: 3000});
+         ElMessage({
+              type: 'success',
+              message: 'New Guest Life Cycle Updated Successfully',
+            })
+        // this.$toast.add({severity:'success', summary: '', detail:'New Guest Life Cycle Updated Successfully', life: 3000});
       }catch (error){
         finish()
         console.log(error)
@@ -262,7 +275,11 @@ export default {
         let data = await axios.delete(`/firsttimercycle/${id}/delete`);
         console.log(data)
         this.firstTimerData = this.firstTimerData.filter(i => i.id !== id);
-         this.$toast.add({severity:'success', summary: '', detail:'Delete Successfully', life: 3000});
+        ElMessage({
+              type: 'success',
+              message: 'Delete Successfully',
+            })
+        //  this.$toast.add({severity:'success', summary: '', detail:'Delete Successfully', life: 3000});
       } catch (error){
         finish()
         console.log(error);
@@ -270,20 +287,38 @@ export default {
     },
     //pop Alert
       deletePop(id) {
-            this.$confirm.require({
-                message: 'Are you sure you want to Delete?',
-                header: 'Delete Confirmation',
-                icon: 'pi pi-exclamation-circle',
-                acceptClass: 'confirm-delete',
-                rejectClass: 'cancel-delete',
-                accept: () => {
-                  this.deleteFirstTimer(id)
-                    //callback to execute when user confirms the action
-                },
-                reject: () => {
-                    'No internet'
-                }
-            });
+         ElMessageBox.confirm(
+        'Are you sure you want to Delete?',
+        'Warning',
+        {
+          confirmButtonText: 'OK',
+          cancelButtonText: 'Cancel',
+          type: 'warning',
+        }
+      )
+      .then(() => {
+          this.deleteFirstTimer(id)
+        })
+        .catch(() => {
+          ElMessage({
+            type: 'info',
+            message: 'Delete canceled',
+          })
+        })
+            // this.$confirm.require({
+            //     message: 'Are you sure you want to Delete?',
+            //     header: 'Delete Confirmation',
+            //     icon: 'pi pi-exclamation-circle',
+            //     acceptClass: 'confirm-delete',
+            //     rejectClass: 'cancel-delete',
+            //     accept: () => {
+            //       this.deleteFirstTimer(id)
+            //         //callback to execute when user confirms the action
+            //     },
+            //     reject: () => {
+            //         'No internet'
+            //     }
+            // });
         },
 
 

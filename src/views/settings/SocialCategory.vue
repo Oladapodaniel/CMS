@@ -182,30 +182,56 @@ export default {
       }
     },
     deletePop(id) {
-            this.$confirm.require({
-                message: 'Are you sure you want to Delete?',
-                header: 'Delete Confirmation',
-                icon: 'pi pi-exclamation-circle',
-                acceptClass: 'confirm-delete',
-                rejectClass: 'cancel-delete',
-                accept: () => {
-                  this.deletePost(id)
-                    //callback to execute when user confirms the action
-                },
-                reject: () => {
-                    'No internet'
-                }
-            });
+      ElMessageBox.confirm(
+        'Are you sure you want to Delete?',
+        'Warning',
+        {
+          confirmButtonText: 'OK',
+          cancelButtonText: 'Cancel',
+          type: 'warning',
+        }
+      )
+      .then(() => {
+          this.deletePost(id)
+        })
+        .catch(() => {
+          ElMessage({
+            type: 'info',
+            message: 'Delete canceled',
+          })
+        })
+            // this.$confirm.require({
+            //     message: 'Are you sure you want to Delete?',
+            //     header: 'Delete Confirmation',
+            //     icon: 'pi pi-exclamation-circle',
+            //     acceptClass: 'confirm-delete',
+            //     rejectClass: 'cancel-delete',
+            //     accept: () => {
+            //       this.deletePost(id)
+            //         //callback to execute when user confirms the action
+            //     },
+            //     reject: () => {
+            //         'No internet'
+            //     }
+            // });
         },
     
     async deletePost(id){
       try {
         let {data} = await axios.delete(`/mobile/v1/Feeds/DeletePostCategory?PostCategoryId=${id}`);
         if(data.status === false){
-          this.$toast.add({severity:'error', summary: '', detail: 'This people classification you are trying to delete has been used to save Image. You can not delete it. You can rename instead.', life: 9000})
+          ElMessage({
+              type: 'error',
+              message: 'This people classification you are trying to delete has been used to save Image. You can not delete it. You can rename instead.',
+            })
+          // this.$toast.add({severity:'error', summary: '', detail: 'This people classification you are trying to delete has been used to save Image. You can not delete it. You can rename instead.', life: 9000})
         }else{
           this.types = this.types.filter(i => i.postCategoryId !== id);
-         this.$toast.add({severity:'success', summary: '', detail:'Post Category Deleted Successfully', life: 3000});
+          ElMessage({
+              type: 'success',
+              message: 'Post Category Deleted Successfully',
+            })
+        //  this.$toast.add({severity:'success', summary: '', detail:'Post Category Deleted Successfully', life: 3000});
         }
         
       } catch (error){
@@ -218,7 +244,11 @@ export default {
         await axios.put('/mobile/v1/Feeds/UpdatePostCategory', { name: this.typeName, postCategoryId:id});
         this.types[index].name = this.typeName;
         this.discard()
-        this.$toast.add({severity:'success', summary: '', detail:'Post Category Updated Successfully', life: 3000});
+         ElMessage({
+              type: 'success',
+              message: 'Post Category Updated Successfully',
+            })
+        // this.$toast.add({severity:'success', summary: '', detail:'Post Category Updated Successfully', life: 3000});
       }catch (error){
         finish()
         console.log(error)
@@ -226,7 +256,11 @@ export default {
     },
     async savePost(){
       if(this.postName === "" || this.currentUser.tenantId === "" || this.image === ""){
-        this.$toast.add({severity:'error', summary: '', detail:' Enter Your Details', life: 3000});
+        ElMessage({
+              type: 'error',
+              message: 'Enter Your Details',
+            })
+        // this.$toast.add({severity:'error', summary: '', detail:' Enter Your Details', life: 3000});
         return false
 
       }
@@ -239,7 +273,11 @@ export default {
          await axios.post(`/mobile/v1/Feeds/CreatePostCategory `, formData);
         this.getTypes(this.currentUser.tenantId)
         this.postName = ""
-        this.$toast.add({severity:'success', summary: '', detail:' Post Save Successfully', life: 3000});
+        ElMessage({
+              type: 'success',
+              message: 'Post Save Successfully',
+            })
+        // this.$toast.add({severity:'success', summary: '', detail:' Post Save Successfully', life: 3000});
       }catch (error) {
         finish()
         console.log(error)

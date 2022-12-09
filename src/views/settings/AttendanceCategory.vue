@@ -112,6 +112,7 @@
 
 <script>
 import axios from "@/gateway/backendapi";
+import { ElMessage, ElMessageBox } from 'element-plus';
 import Toast from 'primevue/toast';
 import ConfirmDialog from 'primevue/confirmdialog';
 import finish from '../../services/progressbar/progress'
@@ -145,27 +146,49 @@ export default {
       }
     },
     deletePop(id) {
-            this.$confirm.require({
-                message: 'Are you sure you want to Delete?',
-                header: 'Delete Confirmation',
-                icon: 'pi pi-exclamation-circle',
-                acceptClass: 'confirm-delete',
-                rejectClass: 'cancel-delete',
-                accept: () => {
-                  this.deleteAttendant(id)
-                    //callback to execute when user confirms the action
-                },
-                reject: () => {
-                    'No internet'
-                }
-            });
+       ElMessageBox.confirm(
+        'Are you sure you want to Delete?',
+        'Warning',
+        {
+          confirmButtonText: 'OK',
+          cancelButtonText: 'Cancel',
+          type: 'warning',
+        }
+      )
+      .then(() => {
+          this.deleteAttendant(id)
+        })
+        .catch(() => {
+          ElMessage({
+            type: 'info',
+            message: 'Delete canceled',
+          })
+        })
+            // this.$confirm.require({
+            //     message: 'Are you sure you want to Delete?',
+            //     header: 'Delete Confirmation',
+            //     icon: 'pi pi-exclamation-circle',
+            //     acceptClass: 'confirm-delete',
+            //     rejectClass: 'cancel-delete',
+            //     accept: () => {
+            //       this.deleteAttendant(id)
+            //         //callback to execute when user confirms the action
+            //     },
+            //     reject: () => {
+            //         'No internet'
+            //     }
+            // });
         },
     
     async deleteAttendant(id){
       try {
         await axios.delete('/api/Settings/DeleteAttendanceType/'+id);
         this.types = this.types.filter(i => i.id !== id);
-         this.$toast.add({severity:'success', summary: '', detail:'Attendance Deleted Successfully', life: 3000});
+        ElMessage({
+              type: 'success',
+              message: 'Attendance Deleted Successfully',
+            })
+        //  this.$toast.add({severity:'success', summary: '', detail:'Attendance Deleted Successfully', life: 3000});
       } catch (error){
         finish()
         console.log(error);
@@ -176,7 +199,11 @@ export default {
         await axios.put('/api/Settings/UpdateAttendanceType', { attendanceTypeName: this.typeName, attendanceTypeId:id});
         this.types[index].name = this.typeName;
         this.discard()
-        this.$toast.add({severity:'success', summary: '', detail:'Attendance Updated Successfully', life: 3000});
+          ElMessage({
+              type: 'success',
+              message: 'Attendance Updated Successfully',
+            })
+        // this.$toast.add({severity:'success', summary: '', detail:'Attendance Updated Successfully', life: 3000});
       }catch (error){
         finish()
         console.log(error)
@@ -189,7 +216,11 @@ export default {
          await axios.post('/api/Settings/NewAttendanceType/'+ this.attendanceName);
         this.getTypes()
         this.attendanceName = ""
-        this.$toast.add({severity:'success', summary: '', detail:' Attendance Save Successfully', life: 3000});
+          ElMessage({
+              type: 'success',
+              message: 'Attendance Save Successfully',
+            })
+        // this.$toast.add({severity:'success', summary: '', detail:' Attendance Save Successfully', life: 3000});
       }catch (error) {
         finish()
         console.log(error)

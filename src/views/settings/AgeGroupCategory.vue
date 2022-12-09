@@ -111,6 +111,7 @@
 
 <script>
 import axios from "@/gateway/backendapi";
+import { ElMessage, ElMessageBox } from 'element-plus';
 import Toast from 'primevue/toast';
 import ConfirmDialog from 'primevue/confirmdialog';
 import membershipService from '../../services/membership/membershipservice';
@@ -150,7 +151,12 @@ export default {
          await axios.post('/api/Settings/CreateTenantAgeGroup/'+ this.ageGroup);
         this.getGroup()
         this.ageGroup = ""
-        this.$toast.add({severity:'success', summary: '', detail:' Age Group Save Successfully', life: 3000});
+         ElMessage({
+              type: 'success',
+              message: 'Age Group Save Successfully',
+            })
+
+        // this.$toast.add({severity:'success', summary: '', detail:' Age Group Save Successfully', life: 3000});
       }catch (error) {
         finish()
         console.log(error)
@@ -160,34 +166,59 @@ export default {
       try {
         await axios.delete('/api/Settings/DeleteTenantAgeGroup/'+id);
         this.types = this.types.filter(i => i.id !== id);
-         this.$toast.add({severity:'success', summary: '', detail:'Age Group Deleted Successfully', life: 3000});
+        ElMessage({
+              type: 'success',
+              message: 'Age Group Deleted Successfully',
+            })
+
+        //  this.$toast.add({severity:'success', summary: '', detail:'Age Group Deleted Successfully', life: 3000});
       } catch (error){
         finish()
         console.log(error);
       }
     },
      deletePop(id) {
-            this.$confirm.require({
-                message: 'Are you sure you want to Delete?',
-                header: 'Delete Confirmation',
-                icon: 'pi pi-exclamation-circle',
-                acceptClass: 'confirm-delete',
-                rejectClass: 'cancel-delete',
-                accept: () => {
-                  this.deleteAge(id)
-                    //callback to execute when user confirms the action
-                },
-                reject: () => {
-                    //callback to execute when user rejects the action
-                }
-            });
+      ElMessageBox.confirm(
+        'Are you sure you want to Delete?',
+        'Warning',
+        {
+          confirmButtonText: 'OK',
+          cancelButtonText: 'Cancel',
+          type: 'warning',
+        }
+      )
+      .then(() => {
+          this.deleteAge(id)
+        })
+        .catch(() => {
+          ElMessage({
+            type: 'info',
+            message: 'Delete canceled',
+          })
+        })
+            // this.$confirm.require({
+            //     message: 'Are you sure you want to Delete?',
+            //     header: 'Delete Confirmation',
+            //     icon: 'pi pi-exclamation-circle',
+            //     acceptClass: 'confirm-delete',
+            //     rejectClass: 'cancel-delete',
+            //     accept: () => {
+            //       this.deleteAge(id)
+            //     },
+            //     reject: () => {
+            //     }
+            // });
         },
         async updateAge(id, index){
       try{
         await axios.put('/api/Settings/UpdateTenantAgeGroup', { name:this.typeName, id:id });
         this.types[index].name = this.typeName;
         this.discard()
-        this.$toast.add({severity:'success', summary: '', detail:'Age Group Updated Successfully', life: 3000});
+         ElMessage({
+              type: 'success',
+              message: 'Age Group Updated Successfully',
+            })
+        // this.$toast.add({severity:'success', summary: '', detail:'Age Group Updated Successfully', life: 3000});
       }catch (error){
         finish()
         console.log(error)

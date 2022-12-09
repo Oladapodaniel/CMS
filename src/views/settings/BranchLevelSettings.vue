@@ -156,6 +156,7 @@
 import axios from "@/gateway/backendapi";
 import Toast from 'primevue/toast';
 import ConfirmDialog from 'primevue/confirmdialog';
+import { ElMessage, ElMessageBox } from 'element-plus';
 import Checkbox from 'primevue/checkbox';
 import membershipService from '../../services/membership/membershipservice';
 import finish from '../../services/progressbar/progress';
@@ -218,7 +219,11 @@ export default {
      const response = await axios.put('/branching/reorderlevels', ordered);
       console.log(response)
        this.loading = false
-      this.$toast.add({severity:'success', summary: '', detail:' Branch Level Order Updated Successfully', life: 3000});  
+       ElMessage({
+              type: 'success',
+              message: 'Branch Level Order Updated Successfully',
+            })
+      // this.$toast.add({severity:'success', summary: '', detail:' Branch Level Order Updated Successfully', life: 3000});  
       console.log(ordered, "ORDERED");
       
       }, 1000)
@@ -242,7 +247,11 @@ export default {
         console.log(branching.data , 'brsnchinlevel') 
         this.getBranchCycles()
         this.branchTypes = ""
-         this.$toast.add({severity:'success', summary: '', detail:'Branch Save Successfully', life: 3000});
+        ElMessage({
+              type: 'success',
+              message: 'Branch Save Successfully',
+            })
+        //  this.$toast.add({severity:'success', summary: '', detail:'Branch Save Successfully', life: 3000});
       }catch(error){
         finish()
         console.log(error)
@@ -262,7 +271,11 @@ export default {
         console.log(response)
         // this.branchList[index].name = item.name
         this.discard()
-        this.$toast.add({severity:'success', summary: '', detail:'New Branch Updated Successfully', life: 3000});
+         ElMessage({
+              type: 'success',
+              message: 'New Branch Updated Successfully',
+            })
+        // this.$toast.add({severity:'success', summary: '', detail:'New Branch Updated Successfully', life: 3000});
       }catch (error){
         finish()
         console.log(error)
@@ -275,7 +288,11 @@ export default {
         let data = await axios.delete(`/branching/${id}/delete`);
         console.log(data)
         this.branchList = this.branchList.filter(i => i.id !== id);
-         this.$toast.add({severity:'success', summary: '', detail:'Delete Successfully', life: 3000});
+         ElMessage({
+              type: 'success',
+              message: 'Delete Successfully',
+            })
+        //  this.$toast.add({severity:'success', summary: '', detail:'Delete Successfully', life: 3000});
       } catch (error){
         finish()
         console.log(error);
@@ -283,20 +300,38 @@ export default {
     },
     //pop Alert
       deletePop(id) {
-            this.$confirm.require({
-                message: 'Are you sure you want to Delete?',
-                header: 'Delete Confirmation',
-                icon: 'pi pi-exclamation-circle',
-                acceptClass: 'confirm-delete',
-                rejectClass: 'cancel-delete',
-                accept: () => {
-                  this.deleteBranch(id)
-                    //callback to execute when user confirms the action
-                },
-                reject: () => {
-                    'No internet'
-                }
-            });
+         ElMessageBox.confirm(
+        'Are you sure you want to Delete?',
+        'Warning',
+        {
+          confirmButtonText: 'OK',
+          cancelButtonText: 'Cancel',
+          type: 'warning',
+        }
+      )
+      .then(() => {
+          this.deleteBranch(id)
+        })
+        .catch(() => {
+          ElMessage({
+            type: 'info',
+            message: 'Delete canceled',
+          })
+        })
+            // this.$confirm.require({
+            //     message: 'Are you sure you want to Delete?',
+            //     header: 'Delete Confirmation',
+            //     icon: 'pi pi-exclamation-circle',
+            //     acceptClass: 'confirm-delete',
+            //     rejectClass: 'cancel-delete',
+            //     accept: () => {
+            //       this.deleteBranch(id)
+            //         //callback to execute when user confirms the action
+            //     },
+            //     reject: () => {
+            //         'No internet'
+            //     }
+            // });
         },
 
 

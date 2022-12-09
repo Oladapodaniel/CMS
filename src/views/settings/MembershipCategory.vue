@@ -114,6 +114,7 @@
 
 <script>
 import axios from "@/gateway/backendapi";
+import { ElMessage, ElMessageBox } from 'element-plus';
 import Toast from 'primevue/toast';
 import ConfirmDialog from 'primevue/confirmdialog';
 import finish from "../../services/progressbar/progress"
@@ -173,10 +174,19 @@ export default {
         let {data} = await axios.delete('/api/Settings/DeleteTenantPeopleClassification/'+id);
         console.log(data.status);
         if(data.status === false){
-          this.$toast.add({severity:'error', summary: '', detail: 'This people classification you are trying to delete has been used to save contacts. You can not delete it. You can rename instead.', life: 9000})
+            ElMessage({
+            showClose: true,
+            message: 'This people classification you are trying to delete has been used to save contacts. You can not delete it. You can rename instead.',
+            type: 'error',
+          })
+          // this.$toast.add({severity:'error', summary: '', detail: 'This people classification you are trying to delete has been used to save contacts. You can not delete it. You can rename instead.', life: 9000})
         }else{
           this.classifications = this.classifications.filter(i => i.id !== id);
-         this.$toast.add({severity:'success', summary: '', detail:'Membership Deleted Successfully', life: 3000});
+          ElMessage({
+              type: 'success',
+              message: 'Membership Deleted Successfully',
+            })
+        //  this.$toast.add({severity:'success', summary: '', detail:'Membership Deleted Successfully', life: 3000});
 
         }
         
@@ -186,20 +196,37 @@ export default {
       }
     },
      deletePop(id) {
-            this.$confirm.require({
-                message: 'Are you sure you want to Delete?',
-                header: 'Delete Confirmation',
-                icon: 'pi pi-exclamation-circle',
-                acceptClass: 'confirm-delete',
-                rejectClass: 'cancel-delete',
-                accept: () => {
-                  this.deleteMembership(id)
-                    //callback to execute when user confirms the action
-                },
-                reject: () => {
-                    'No internet'
-                }
-            });
+       ElMessageBox.confirm(
+        'Are you sure you want to proceed?',
+        'Warning',
+        {
+          confirmButtonText: 'OK',
+          cancelButtonText: 'Cancel',
+          type: 'warning',
+        }
+      )
+      .then(() => {
+          this.deleteMembership(id)
+        })
+        .catch(() => {
+          ElMessage({
+            type: 'info',
+            message: 'Delete canceled',
+          })
+        })
+            // this.$confirm.require({
+            //     message: 'Are you sure you want to Delete?',
+            //     header: 'Delete Confirmation',
+            //     icon: 'pi pi-exclamation-circle',
+            //     acceptClass: 'confirm-delete',
+            //     rejectClass: 'cancel-delete',
+            //     accept: () => {
+            //       this.deleteMembership(id)
+            //     },
+            //     reject: () => {
+            //         'No internet'
+            //     }
+            // });
         },
 
     openClassification(index) {

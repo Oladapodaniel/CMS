@@ -285,7 +285,11 @@ export default {
       try {
         await axios.post(`/api/Settings/DeleteChurchUser?churchUserEmail=${email}`);
         this.churchUsers.users = this.churchUsers.users.filter(i => i.email !== email);
-         this.$toast.add({severity:'success', summary: '', detail:'Church User Deleted Successfully', life: 3000});
+        ElMessage({
+              type: 'success',
+              message: 'Church User Deleted Successfully',
+            })
+        //  this.$toast.add({severity:'success', summary: '', detail:'Church User Deleted Successfully', life: 3000});
       } catch (error){
         finish()
         console.log(error);
@@ -310,19 +314,6 @@ export default {
             message: 'Delete canceled',
           })
         })
-            // this.$confirm.require({
-            //     message: 'Are you sure you want to Delete?',
-            //     header: 'Delete Confirmation',
-            //     icon: 'pi pi-exclamation-circle',
-            //     acceptClass: 'confirm-delete',
-            //     rejectClass: 'cancel-delete',
-            //     accept: () => {
-            //       this.deleteChurchUser(email)
-            //     },
-            //     reject: () => {
-            //         'No internet'
-            //     }
-            // });
         },
         async currentUser () {
           if(!store.getters.currentUser){
