@@ -141,6 +141,7 @@
 
 <script>
 import axios from "@/gateway/backendapi";
+import { ElMessage, ElMessageBox } from 'element-plus';
 import Toast from 'primevue/toast';
 import ConfirmDialog from 'primevue/confirmdialog';
 import finish from '../../services/progressbar/progress';
