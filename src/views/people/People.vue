@@ -34,11 +34,8 @@
 
 <script>
 import { computed, ref, watchEffect } from "vue";
-import axios from "@/gateway/backendapi";
-// import store from "@/store/index";
 import router from "@/router/index";
 import { useRoute } from "vue-router";
-// import {  computed } from 'vue';
 import InputText from 'primevue/inputtext';
 import Button from 'primevue/button';
 import { ElMessage } from 'element-plus'
@@ -63,27 +60,17 @@ export default {
       if (route.path.includes("add")) return true;
       return false;
     });
-    // const getCurrentlySignedInUser = async () => {
-    //   try {
-    //     const res = await axios.get("/api/Membership/GetCurrentSignedInUser");
-    //     tenantID.value = res.data.tenantId
-    //   } catch (err) {
-    //     console.log(err);
-    //   }
-    // };
 
-    // getCurrentlySignedInUser();
+    const getUser = computed(() => {
+      if (!store.getters.currentUser || (store.getters.currentUser && Object.keys(store.getters.currentUser).length == 0)) return ''
+      return store.getters.currentUser
+    })
 
-    // const getUser = computed(() => {
-    //   if (!store.getters.currentUser || (store.getters.currentUser && Object.keys(store.getters.currentUser).length == 0)) return ''
-    //   return store.getters.currentUser
-    // })
-
-    // watchEffect(() => {
-    //   if (getUser.value) {
-    //     tenantID.value = getUser.value.tenantId
-    //   }
-    // })
+    watchEffect(() => {
+      if (getUser.value) {
+        tenantID.value = getUser.value.tenantId
+      }
+    })
 
     const memberlink = computed(() => {
       if (!tenantID.value) return ""

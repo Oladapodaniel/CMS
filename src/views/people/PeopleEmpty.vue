@@ -1,7 +1,5 @@
 <template>
-
   <PeopleList :list="people" :peopleCount="people.length" v-if="!loading && (people.length > 0 || errorGettingPeople)" />
-
   <div class="no-person mt-5" v-else-if="!loading && people.length === 0 && !errorGettingPeople">
     <div class="container">
       <div class="row">
@@ -14,7 +12,6 @@
 
   <el-skeleton class="w-100" animated v-if="loading && people.length === 0">
     <template #template>
-      <!-- <el-skeleton-item variant="text" class="w-100" style="height: 25px" /> -->
       <div
           style="
             display: flex;
@@ -30,45 +27,6 @@
         <el-skeleton class="w-100 mt-5" style="height: 25px"  :rows="20" animated />
     </template>
   </el-skeleton>
-
-
-  <!-- <div class="row container-wide" v-if="loading && people.length === 0">
-    <div class="col-md-12">
-      <div class="row my-2 d-md-flex justify-content-between">
-        <div class="col-md-4">
-          <Skeleton width="100%" height="200px" shape="circle" />
-        </div>
-        <div class="col-md-4">
-          <Skeleton width="100%" height="200px" shape="circle" />
-        </div>
-        <div class="col-md-4">
-          <Skeleton width="100%" height="200px" shape="circle" />
-        </div>
-      </div>
-
-      <div class="row my-2 d-md-flex justify-content-center" v-for="i in 10" :key="i">
-        <div class="col-md-2 my-2">
-          <Skeleton width="100%" height="2rem" borderRadius="16px" />
-        </div>
-        <div class="col-md-2 my-2">
-          <Skeleton width="100%" height="2rem" borderRadius="16px" />
-        </div>
-        <div class="col-md-2 my-2">
-          <Skeleton width="100%" height="2rem" borderRadius="16px" />
-        </div>
-        <div class="col-md-2 my-2">
-          <Skeleton width="100%" height="2rem" borderRadius="16px" />
-        </div>
-        <div class="col-md-2 my-2">
-          <Skeleton width="100%" height="2rem" borderRadius="16px" />
-        </div>
-        <div class="col-md-2 my-2">
-          <Skeleton width="100%" height="2rem" borderRadius="16px" />
-        </div>
-      </div>
-    </div>
-  </div> -->
-
 </template>
 
 <script>

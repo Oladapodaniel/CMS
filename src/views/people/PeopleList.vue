@@ -777,32 +777,17 @@ export default {
           console.log(err);
         });
     }
-    // const getCurrentlySignedInUser = async () => {
-    //   if (!store.getters.currentUser) {
-    //     axios
-    //       .get("/api/Membership/GetCurrentSignedInUser")
-    //       .then((res) => {
-    //         currentUser.value = res.data
-    //         console.log('from backend')
-    //       })
-    //       .catch((err) => console.log(err.response));
-    //     } else {
-    //       console.log('From store')
-    //       currentUser.value = store.getters.currentUser
-    //     }
-    // }
-    // getCurrentlySignedInUser()
 
-    // const getUser = computed(() => {
-    //   if (!store.getters.currentUser || (store.getters.currentUser && Object.keys(store.getters.currentUser).length == 0)) return ''
-    //   return store.getters.currentUser
-    // })
+    const getUser = computed(() => {
+      if (!store.getters.currentUser || (store.getters.currentUser && Object.keys(store.getters.currentUser).length == 0)) return ''
+      return store.getters.currentUser
+    })
 
-    // watchEffect(() => {
-    //   if (getUser.value) {
-    //     currentUser.value = getUser.value
-    //   }
-    // })
+    watchEffect(() => {
+      if (getUser.value) {
+        currentUser.value = getUser.value
+      }
+    })
 
     const openPositionArchive = () => {
       displayPositionArchive.value = true;

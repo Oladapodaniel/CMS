@@ -507,8 +507,6 @@ export default {
     };
 
     const celebrations = [];
-    // const route = useRoute();
-
     const tenantInfo = ref({});
     const tenantInfoBasic = ref({});
     const celeb = ref([]);
@@ -516,16 +514,11 @@ export default {
     const firstTimerSeries = ref("weekly");
     const tenantInfoAttendanceWeekly = ref([]);
     const tenantInfoAttendanceMonthly = ref([]);
-    // const attendanceLoading = ref(false);
     const tenantInfoFirstTimerWeekly = ref([]);
     const tenantInfoFirstTimerMonthly = ref([]);
     const tenantInfoInvitationSource = ref([]);
     const tenantInfoInterestedInJoining = ref([]);
     const tenantInfoExtra = ref({});
-    // const warningAgainstExpire = ref("")
-
-
-    // const monthlyFirstTimerObj = ref({})
 
     const subscriptionPlan = ref([]);
 
@@ -585,16 +578,6 @@ export default {
           tenantInfoExtra.value.hasMobileApp = res.data.returnObject.hasMobileApp;
           tenantInfoExtra.value.hasOnlineGiving = res.data.returnObject.hasOnlineGiving;
           tenantInfoExtra.value.hasWebsite = res.data.returnObject.hasWebsite;
-          // tenantInfo.value.eventAttendanceChartDataWeekly[0].data.forEach(element => {
-          //   if (element > 0) {
-          //     attendanceDataExist.value = true
-          //   }
-          // });
-          // tenantInfo.value.firstTimerSummary.firstTimerWeekly[0].data.forEach(element => {
-          //   if (element > 0) {
-          //     firstTimerDataExist.value = true
-          //   }
-          // });
           let sum = 0;
           tenantInfo.value.firstTimerSummary.invitationSource.forEach((i) => {
             sum += +i.value;
@@ -628,11 +611,9 @@ export default {
     })
 
     onMounted(() => {
-      // attendanceLoading.value = true;
       axios
         .get("/dashboard/attendance")
         .then((res) => {
-          // attendanceLoading.value = false;
           tenantInfoAttendanceWeekly.value =
             res.data.returnObject.eventAttendanceChartDataWeekly;
           tenantInfoAttendanceMonthly.value =
@@ -686,13 +667,6 @@ export default {
       }
     });
 
-    // const subPlan = () => {
-    //   axios.get("/api/GetAllSubscriptionPlans").then((res) => {
-    //     console.log(res.data);
-    //   });
-    // };
-    // subPlan();
-
     const weeklyAttendance = () => {
       attendanceSeries.value = "weekly";
       attendanceBoolean.value = true;
@@ -702,11 +676,6 @@ export default {
       attendanceBoolean.value = false;
       attendanceSeries.value = "monthly";
 
-      // axios.get('/Dashboard/period?period=Months')
-      //   .then(res => {
-      //     monthlyAttendanceObj.value = res.data.eventAttendanceChartData[0]
-
-      //  })
     };
 
     const weeklyFirstTimer = () => {
@@ -828,16 +797,10 @@ export default {
       return (totalMembers / currentPlan.membershipSize) * 100;
     };
 
-    const handleDelete = (qq, ww) => {
-      console.log(qq, ww)
-    }
-
 
     return {
       celebrations,
       getRenewalDate,
-      // expirationNotice,
-      // warningAgainstExpire,
       tenantInfo,
       tenantInfoBasic,
       tenantInfoCeleb,
@@ -870,7 +833,6 @@ export default {
       dateFormat,
       tenantInfoAttendanceWeekly,
       tenantInfoAttendanceMonthly,
-      // attendanceLoading,
       tenantInfoFirstTimerWeekly,
       tenantInfoFirstTimerMonthly,
       tenantInfoInvitationSource,
@@ -888,7 +850,6 @@ export default {
       attendanceSeries,
       lgAndUp,
       xlAndUp,
-      handleDelete,
       celebHeaders
     };
   },

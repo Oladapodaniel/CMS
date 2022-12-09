@@ -8,6 +8,10 @@ button.el-button.el-button--primary.start-option > span {
     width: 100% !important
 }
 
+button.el-button.is-plain, button.el-button.is-round {
+    min-width: 130px;
+}
+
 .primary--text {
     color: #136acd;
 }
@@ -18,4 +22,19 @@ button.el-button.el-button--primary.start-option > span {
 
 .el-card.person-image .el-card__body {
     padding: 0
+}
+
+.el-form-item.validate-email .el-form-item__error, .el-form-item.validate-phone .el-form-item__error {
+    position: absolute;
+    top: 107% !important;
+    right: 0 !important;
+    left: unset !important;
+}
+
+.el-sub-menu__title, li.el-menu-item.w-100, .el-menu.el-menu--inline > li.el-menu-item  {
+    height: 40px !important;
+}
+
+.el-menu-item-group li.el-menu-item{
+    height: 25px;
 }
