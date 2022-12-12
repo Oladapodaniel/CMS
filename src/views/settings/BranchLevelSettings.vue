@@ -62,66 +62,51 @@
             <div class="col-md-7">
               <span class="py-2 font-weight-bold">NAME</span>
             </div>
-            <div class="col-md-5 text-center">
-              <span class="py-2 font-weight-bold mr-md-5 mr-0">ACTION</span>
+            <div class="col-md-5 text-center ">
+              <span class="py-2 font-weight-bold mr-md-5 mr-0 ">ACTION</span>
             </div>
-           
           </div>
-<!--          
-          <div class="row table-header-row py-2 mt-5">
+          <div class="row ">
             <div class=" col-12 text-center p-5" v-if="loading">
-             <i class="pi pi-spin pi-spinner text-center text-primary" style="fontSize: 3rem"></i>
-         </div>
+                <i class="pi pi-spin pi-spinner text-center text-primary" style="fontSize: 3rem"></i>
+            </div>
+          </div>  
             
-          </div> -->
-          <!-- test -->
-          <draggable
-        :list="branchList"
-        :disabled="!enabled"
-        tag="transition"
-        item-key="name"
-        class="list-group"
-        ghost-class="ghost"
-        :move="checkMove"
-        @start="dragging = true"
-        @end="dragging = false"
-      >
-        <template #item="{ element }">
-          <div class="list-group-item" :class="{ 'not-draggable': !enabled }" @drop="handleDrop"> 
-            <div class="col-md-12">
-              <div class="row">   
+          <div class="list-group-item list-group row"  v-for="(branch, indx) in branchList" :key="indx"  @drop="handleDrop"> 
+            <div class="col-md-12 " >
+              <div class="row pl-3">   
                 <div
                    class="col-md-7 px-0 d-flex justify-content-between align-items-center mb-md-0 mb-3"
                 >
                   <span class="py-2 hidden-header">NAME</span>
                    
-                  <span  class="py-2 text-xs-left mr-md-0 mr-4">{{ element.name }}</span>
+                  <span  class="py-2 text-xs-left mr-md-0 mr-4">{{ branch.name }}</span>
                   
                 </div>
                   
                 
                 <div
-                  class="col-md-5 mb-md-0 mb-2 col-12 d-flex justify-content-end align-items-end"
+                  class="col-md-5 px-0 mb-md-0 mb-2 col-12 d-flex justify-content-end align-items-end"
                 >
                   <span class="py-md-4 hidden-header hidden-header1">ACTION</span>
                   <div class="row">
                     <div class="col-md-6 col-6 d-flex justify-content-center">
-                      <button class="btn secondary-btn py-1 px-4" @click="openClassification(element.index)">View</button>
+                      <button class="btn secondary-btn py-1 px-4" @click="openClassification(branch.index)">View</button>
                     </div>
                     <div class="col-md-6 col-6 d-flex justify-content-start">
-                      <button class="btn btn-danger py-1 primary-btn delete-btn" @click="deletePop(element.id)" >Delete</button>
+                      <button class="btn btn-danger py-1 primary-btn delete-btn" @click="deletePop(branch.id)" >Delete</button>
                     </div>
                   </div>
                 </div>
               </div>
 
-              <div class="row grey-background py-2 mt-2" v-if="vissibleTab === `tab_${element.index}`">
+              <div class="row grey-background py-2 mt-2" v-if="vissibleTab === `tab_${branch.index}`">
                 <div
                   class="col-md-7 d-flex justify-content-between align-items-center mb-md-0 mb-2"
                 >
                   <label for="" class="d-flex mt-4">
                     <span class="mr-2">Name</span>
-                    <input type="text" class="form-control" v-model="element.name">
+                    <input type="text" class="form-control" v-model="branch.name">
                   </label>
                   <label for="" class="d-flex mt-4">
                     <!-- <span class="mr-2">Mark As Default</span> -->
@@ -133,7 +118,7 @@
                 >
                   <div class="row">
                     <div class="col-md-6 col-6 d-flex justify-content-start">
-                      <button class="btn primary-btn save-btn py-1 px-4 ml-md-0 ml-5" @click="updateBranch(element)">Save</button>
+                      <button class="btn primary-btn save-btn py-1 px-4 ml-md-0 ml-5" @click="updateBranch(branch)">Save</button>
                     </div>
                     <div class="col-md-6 col-6 d-flex justify-content-end">
                       <button class="btn secondary-btn py-1 px-3" @click="discard">Discard</button>
@@ -143,9 +128,9 @@
               </div>
             </div>
           </div>
-        </template>
+        <!-- </template> -->
         
-      </draggable>
+      <!-- </draggable> -->
         </div>
       </div>
     </div>
@@ -160,7 +145,7 @@ import { ElMessage, ElMessageBox } from 'element-plus';
 import Checkbox from 'primevue/checkbox';
 import membershipService from '../../services/membership/membershipservice';
 import finish from '../../services/progressbar/progress';
-import draggable from 'vuedraggable';
+// import draggable from 'vuedraggable';
 import Tooltip from 'primevue/tooltip';
 
 export default {
@@ -169,7 +154,7 @@ export default {
   components:{
     Toast,
     ConfirmDialog,
-    draggable,
+    // draggable,
     Checkbox
   },
   directives: {
@@ -177,7 +162,7 @@ export default {
 },
   data() {
     return {
-      branchList: [ ],
+      branchList: [],
       vissibleTab: "",
       branchName: "",
       firstTimerOrder: "",
@@ -195,12 +180,13 @@ export default {
     async getBranchCycles() {
       try {
         this.loading = true
-        const {  data } = await axios.get("/branching/hierarchies");
+        const { data } = await axios.get("/branching/hierarchies");
         this.branchList = data.returnObject.map((item, index)=>{
           item.index = index
           return item
           }).sort((a, b) => a.level - b.level);
         console.log(data, 'all branches');
+        console.log(this.branchList, 'all branches');
         this.loading = false
       } catch (error) {
         console.log(error);
@@ -377,7 +363,7 @@ export default {
   min-height: 20px;
 }
 .list-group-item {
-  cursor: move;
+  /* cursor: move; */
   padding: .75rem 0;
 }
 .list-group-item i {

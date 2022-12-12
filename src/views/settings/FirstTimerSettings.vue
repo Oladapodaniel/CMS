@@ -64,14 +64,13 @@
            
           </div>
          
-          <div class="row table-header-row py-2 mt-5">
+          <div class="row ">
             <div class=" col-12 text-center p-5" v-if="loading">
-             <i class="pi pi-spin pi-spinner text-center text-primary" style="fontSize: 3rem"></i>
-         </div>
-            
+                <i class="pi pi-spin pi-spinner text-center text-primary" style="fontSize: 3rem"></i>
+            </div>
           </div>
           <!-- test -->
-          <draggable
+          <!-- <draggable
         :list="firstTimerData"
         :disabled="!enabled"
         tag="transition"
@@ -81,47 +80,47 @@
         :move="checkMove"
         @start="dragging = true"
         @end="dragging = false"
-      >
-        <template #item="{ element }">
-          <div class="list-group-item" :class="{ 'not-draggable': !enabled }" @drop="handleDrop"> 
+      > -->
+        <!-- <template> -->
+          <div class="list-group-item list-group row" v-for="(firstTimer, indx) in firstTimerData" :key="indx" @drop="handleDrop"> 
             <div class="col-md-12">
               <div class="row">   
                 <div
-                   class="col-md-7 px-md-0 px-5 d-flex justify-content-between align-items-center mb-md-0 mb-5"
+                   class="col-md-7 px-0  d-flex justify-content-between align-items-center mb-md-0 mb-5"
                 >
                   <span class="py-2 hidden-header">NAME</span>
                    
-                  <span  class="py-2 text-xs-left mr-md-0 ml-md-3 mr-4">{{ element.name }}</span>
+                  <span  class="py-2 text-xs-left mr-md-0 ml-md-3 mr-4">{{ firstTimer.name }}</span>
                   
                 </div>
                   
                 
                 <div
-                  class="col-md-5 mb-md-0 mb-2 col-12 d-flex justify-md-content-end justify-content-start align-items-end"
+                  class="col-md-5 px-0 mb-md-0 mb-2 col-12 d-flex justify-content-end align-items-end"
                 >
                   <span class="py-md-4 hidden-header hidden-header1">ACTION</span>
                   <div class="row">
                     <div class="col-md-6 col-6 d-flex justify-content-center">
-                      <button class="btn secondary-btn py-1 px-4" @click="openClassification(element.index)">View</button>
+                      <button class="btn secondary-btn py-1 px-4" @click="openClassification(firstTimer.index)">View</button>
                     </div>
                     <div class="col-md-6 col-6 d-flex justify-content-start">
-                      <button class="btn btn-danger py-1 primary-btn delete-btn" @click="deletePop(element.id)" >Delete</button>
+                      <button class="btn btn-danger py-1 primary-btn delete-btn" @click="deletePop(firstTimer.id)" >Delete</button>
                     </div>
                   </div>
                 </div>
               </div>
 
-              <div class="row grey-background py-2 mt-2" v-if="vissibleTab === `tab_${element.index}`">
+              <div class="row grey-background py-2 mt-2" v-if="vissibleTab === `tab_${firstTimer.index}`">
                 <div
                   class="col-md-7 d-flex justify-content-between align-items-center mb-md-0 mb-2"
                 >
                   <label for="" class="d-flex mt-4">
                     <span class="mr-2">Name</span>
-                    <input type="text" class="form-control" v-model="element.name">
+                    <input type="text" class="form-control" v-model="firstTimer.name">
                   </label>
                   <label for="" class="d-flex mt-4">
                     <span class="mr-2">Mark As Default</span>
-                    <Checkbox v-model="element.isDefault" :binary="true" />
+                    <Checkbox v-model="firstTimer.isDefault" :binary="true" />
                   </label>
                 </div>
                 <div
@@ -129,7 +128,7 @@
                 >
                   <div class="row">
                     <div class="col-md-6 col-6 d-flex justify-content-start">
-                      <button class="btn primary-btn save-btn py-1 px-4 ml-md-0 ml-5" @click="updateFirstTimer(element, element.index)">Save</button>
+                      <button class="btn primary-btn save-btn py-1 px-4 ml-md-0 ml-5" @click="updateFirstTimer(firstTimer, firstTimer.index)">Save</button>
                     </div>
                     <div class="col-md-6 col-6 d-flex justify-content-end">
                       <button class="btn secondary-btn py-1 px-3" @click="discard">Discard</button>
@@ -139,9 +138,9 @@
               </div>
             </div>
           </div>
-        </template>
+        <!-- </template> -->
         
-      </draggable>
+      <!-- </draggable> -->
         </div>
       </div>
     </div>
@@ -156,7 +155,7 @@ import { ElMessage, ElMessageBox } from 'element-plus';
 import Checkbox from 'primevue/checkbox';
 import membershipService from '../../services/membership/membershipservice';
 import finish from '../../services/progressbar/progress';
-import draggable from 'vuedraggable';
+// import draggable from 'vuedraggable';
 import Tooltip from 'primevue/tooltip';
 
 export default {
@@ -165,7 +164,7 @@ export default {
   components:{
     Toast,
     ConfirmDialog,
-    draggable,
+    // draggable,
     Checkbox
 
   },
@@ -363,9 +362,9 @@ export default {
 .list-group {
   min-height: 20px;
 }
-.list-group-item {
+/* .list-group-item {
   cursor: move;
-}
+} */
 .list-group-item i {
   cursor: pointer;
 }
