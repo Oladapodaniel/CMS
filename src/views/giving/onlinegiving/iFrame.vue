@@ -459,6 +459,7 @@ export default {
   components: {
     PaymentOptionModal,
     Checkbox,
+    Dropdown,
     SignUp
   },
   setup() {
@@ -866,7 +867,6 @@ export default {
       toggleTabOne,
       funds,
       toggleTabTwo,
-      Dropdown,
       selectedContributionType,
       date,
       givingOften,
