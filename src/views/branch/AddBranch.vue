@@ -240,6 +240,7 @@ import { useToast } from "primevue/usetoast";
 import router from '../../router';
 import store from "../../store/store";
 import CascadeSelect from 'primevue/cascadeselect';
+import { ElMessage, ElMessageBox } from 'element-plus'
 export default {
     components: {
         Dropdown,
@@ -328,7 +329,7 @@ export default {
                 let getHierarchyId = branches.value.find(i => {
                     return i.children.some(j => j.id == value.value.id)
                 })
-                console.log(getHierarchyId)
+                console.log(getHierarchyId , "add branch")
                 const formData = new FormData();
                 formData.append( "churchName", churchName.value ? churchName.value : "");  
                 formData.append( "address", Address.value ? Address.value : "");
@@ -347,6 +348,7 @@ export default {
             loading.value = true;
             let { data } = await axios.post('/api/Branching', formData);
             loading.value = false
+            
             // SEND SMS
             let SMSBody = {
                 category: "",
@@ -377,7 +379,12 @@ export default {
                 }, 3000);
             }
             } catch (err) {
-                console.log(err)
+                console.log(err.response.data.Message, '👍💕😘😘👌')
+                let resData = err.response.data.Message 
+                ElMessage({
+                        type: 'error',
+                        message: resData,
+                    })
                 loading.value = false
                 }
             }   else {
