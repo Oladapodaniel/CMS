@@ -18,7 +18,7 @@ const collector = ({ children, ...data }) => {
       }
     } else {
       return {
-          label: data.name + 1111,
+          label: data.name,
           value: data.id,
         }
     }
