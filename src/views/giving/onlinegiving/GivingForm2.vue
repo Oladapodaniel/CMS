@@ -394,6 +394,9 @@
   import axios from "@/gateway/backendapi";
 
   export default {
+    components: {
+      Dropdown
+    },
     setup() {
       const date = ref(new Date().toISOString().substr(0, 10));
       const selectedPeriodOptions = ref("");
@@ -437,7 +440,6 @@
       return {
         periods,
         funds,
-        Dropdown,
         selectedPeriodOptions,
         selectedContributionType,
         date,

@@ -1,4 +1,13 @@
 <template>
+<!-- To whoever will update this page -->
+<!-- This page is the main online giving platform for churchplus -->
+
+<!-- It similar to the Iframe version in churchplus, with few differences in styles. -->
+
+<!-- The logic is quite the same, so any changes made to this page should be made in the iFrame Page which is iFrame.vue, except the changes that is to be made is specific for the main online giving platform -->
+
+<!-- Bless you :)-->
+
   <div>
     <!-- navigation section -->
     <div class="row trowc mx-0 py-2 sticky-top">
@@ -327,6 +336,9 @@
   import axios from "@/gateway/backendapi";
 
   export default {
+    components: {
+      Dropdown
+    },
     setup() {
       const date = ref(new Date().toISOString().substr(0, 10));
       const selectedPeriodOptions = ref("");
@@ -374,7 +386,6 @@
       return {
         periods,
         funds,
-        Dropdown,
         selectedPeriodOptions,
         selectedContributionType,
         date,

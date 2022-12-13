@@ -375,6 +375,9 @@ import { ref } from "vue";
 import Dropdown from "primevue/dropdown";
 import axios from "@/gateway/backendapi";
 export default {
+  components: {
+    Dropdown
+  },
   setup() {
     const hideTabOne = ref(true);
 
@@ -459,7 +462,6 @@ export default {
       toggleTabOne,
       funds,
       toggleTabTwo,
-      Dropdown,
       selectedContributionType,
       date,
       givingOften,
