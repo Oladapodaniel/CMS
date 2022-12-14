@@ -9,8 +9,8 @@
         <a class="user-link">{{ tenantDisplayName }}
           <span class="user-link-icon c-pointer"><i class="pi pi-angle-right"></i></span></a>
       </div>
-      <el-menu default-active="1" active-text-color="#136acd" background-color="#ebeff4" class="el-menu-vertical-demo mt-3"
-        text-color="#02172e" :unique-opened="true">
+      <el-menu default-active="1" active-text-color="#136acd" background-color="#ebeff4"
+        class="el-menu-vertical-demo mt-3" text-color="#02172e" :unique-opened="true">
         <div v-for="(item, index) in menuLink" :key="index">
           <el-sub-menu :index="`${index + 1}`" v-if="item.submenu.length > 0">
             <template #title>
@@ -239,10 +239,28 @@ export default {
         ]
       },
       {
+        name: 'Reports',
+        logo: require('../../assets/dashboardlinks/reports-icon.svg'),
+        route: '/tenant/reports',
+        submenu: []
+      },
+      {
         name: 'More',
         logo: '',
         route: '/',
         submenu: [
+          {
+            name: 'Social & Mobile App',
+            logo: '/',
+            route: '/tenant/social',
+            submenu: []
+          },
+          {
+            name: 'Workflow',
+            logo: '/',
+            route: '/tenant/workflow/list',
+            submenu: []
+          },
           {
             name: 'Branches',
             logo: '',
@@ -274,24 +292,6 @@ export default {
                 route: '/tenant/branch/branch_report',
               },
             ]
-          },
-          {
-            name: 'Workflow',
-            logo: '/',
-            route: '/tenant/workflow/list',
-            submenu: []
-          },
-          {
-            name: 'Reports',
-            logo: '/',
-            route: '/tenant/reports',
-            submenu: []
-          },
-          {
-            name: 'Social & Mobile App',
-            logo: '/',
-            route: '/tenant/social',
-            submenu: []
           },
           {
             name: 'Media Library',
@@ -406,7 +406,11 @@ export default {
     }
 
     const linkClicked = (e) => {
-      if (e.target.classList.contains("routelink")) {
+      if (e.target.classList.contains('el-menu-item') && e.target.classList.contains('is-active')) {
+        emit('linkclicked', true);
+      }
+
+      if (e.target.parentElement.classList.contains('el-menu-item') && e.target.parentElement.classList.contains('is-active')) {
         emit('linkclicked', true);
       }
     }

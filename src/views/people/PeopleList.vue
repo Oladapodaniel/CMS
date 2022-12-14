@@ -102,14 +102,15 @@
             </el-icon>
           </el-tooltip>
           <el-tooltip class="box-item" effect="dark" v-if="marked.length > 0" content="Send SMS" placement="top-start">
-            <el-icon :size="20" class="ml-2 c-pointer" v-if="marked.length > 0" @click="sendMarkedMemberSms">
-              <Message />
-            </el-icon>
+            <img src="../../assets/sms.png" style="width: 20px; margin-top: -13px" class="ml-2 c-pointer" @click="sendMarkedMemberSms" alt="Send SMS" />
+            <!-- <el-icon :size="20" class="ml-2 c-pointer" v-if="marked.length > 0" @click="sendMarkedMemberSms">
+              
+            </el-icon> -->
           </el-tooltip>
           <el-tooltip class="box-item" effect="dark" v-if="marked.length > 0" content="Send Email"
             placement="top-start">
             <el-icon :size="20" class="ml-2 c-pointer" v-if="marked.length > 0" @click="sendMarkedMemberEmail">
-              <MessageBox />
+              <Message />
             </el-icon>
           </el-tooltip>
         </div>
@@ -171,15 +172,13 @@
     <EasyDataTable v-model:items-selected="marked" v-model:server-options="serverOptions" :rowsPerPage="100"
       :loading="paginatedTableLoading" :server-items-length="serverItemsLength" :headers="memberHeaders"
       :items="searchMember" buttons-pagination alternating>
-      <template #item-pictureurl="{ pictureUrl }">
+      <template #item-pictureurl="item">
         <div>
-          <el-card shadow="hover" class="c-pointer person-image" v-if="pictureUrl"
+          <el-card shadow="hover" class="c-pointer person-image" v-if="item.pictureUrl"
             style="border-radius: 50%; height: 26px; width: 26px;">
             <el-tooltip class="box-item" effect="dark" content="Click to view" placement="top-start">
-              <img :src="pictureUrl" alt="" @click="(selectedImageUrl = pictureUrl), (imageDialog = true)"
+              <img :src="item.pictureUrl" alt="" @click="(selectedImage = item), (imageDialog = true)"
                 style="border-radius: 50%; height: 26px; width: 26px; object-fit: cover" />
-
-              <!-- @click-row="showMemberRow" -->
             </el-tooltip>
           </el-card>
           <el-avatar :size="25" v-else><el-icon color="#000000">
@@ -246,28 +245,70 @@
     </EasyDataTable>
 
     <el-dialog v-model="imageDialog" :width="mdAndUp || lgAndUp || xlAndUp ? `50%` : xsOnly ? `90%` : `70%`"
-      align-center>
-      <el-image class="w-100" :src="selectedImageUrl" fit="contain" />
+      align-center class="person-image-dialog">
+      <el-image class="w-100" :src="selectedImage.pictureUrl" fit="contain" />
       <template #footer>
-        <span class="dialog-footer">
-          <el-button color="#136acd" @click="imageDialog = false" round>
-            Done
-          </el-button>
+        <span class="dialog-footer person-image-dialog-footer">
+          <div class="font-weight-700">{{ selectedImage.firstName }} {{ selectedImage.lastName }}</div>
+          <div class="text-secondary small">{{ selectedImage.mobilePhone }}</div>
+          <div class="text-secondary small">{{ selectedImage.email }}</div>
+          <div class="mt-2">
+            <router-link :to="
+              selectedImage.mobilePhone
+                ? `/tenant/sms/compose?phone=${selectedImage.mobilePhone}`
+                : ''
+            " v-if="selectedImage.mobilePhone">
+              <el-button @click="imageDialog = false" round>
+                Send SMS
+              </el-button>
+            </router-link>
+            <router-link :to="
+              selectedImage.email
+                ? `/tenant/email/compose?phone=${selectedImage.email}`
+                : ''
+            " v-if="selectedImage.email">
+              <el-button @click="imageDialog = false" class="ml-2" round>
+                Send Email
+              </el-button>
+            </router-link>
+          </div>
         </span>
       </template>
     </el-dialog>
+
+    <el-drawer v-model="showSMS" :size="mdAndUp || lgAndUp || xlAndUp ? '70%' : '100%'" direction="rtl">
+    <template #header>
+      <h4>Send SMS</h4>
+    </template>
+    <template #default>
+      <div>
+        <smsComponent :phoneNumbers="contacts" @closesidemodal="() => showSMS = false" />
+      </div>
+    </template>
+  </el-drawer>
+
+    <el-drawer v-model="showEmail" :size="mdAndUp || lgAndUp || xlAndUp ? '70%' : '100%'" direction="rtl">
+    <template #header>
+      <h4>Send Email</h4>
+    </template>
+    <template #default>
+      <div>
+        <emailComponent :selectedGroupMembers="markedMembers" @closesidemodal="() => showEmail = false" />
+      </div>
+    </template>
+  </el-drawer>
   </div>
 
-  <SideBar :show="showSMS" :title="'Compose SMS'" @closesidemodal="() => showSMS = false">
+  <!-- <SideBar :show="showSMS" :title="'Compose SMS'" @closesidemodal="() => showSMS = false">
     <div class="m-wrapper" :class="{ 'm-wrapper': showSMS, 'no-show': !showSMS }">
       <smsComponent :phoneNumbers="contacts" @closesidemodal="() => showSMS = false" />
     </div>
-  </SideBar>
-  <SideBar :show="showEmail" :title="'Compose Email'" @closesidemodal="() => showEmail = false">
+  </SideBar> -->
+  <!-- <SideBar :show="showEmail" :title="'Compose Email'" @closesidemodal="() => showEmail = false">
     <div class="m-wrapper2">
       <emailComponent :selectedGroupMembers="markedMembers" @closesidemodal="() => showEmail = false" />
     </div>
-  </SideBar>
+  </SideBar> -->
 
 </template>
 
@@ -329,7 +370,7 @@ export default {
       rowsPerPage: 100,
     });
     const paginatedTableLoading = ref(false)
-    const selectedImageUrl = ref("")
+    const selectedImage = ref({})
     const imageDialog = ref(false)
     const { mdAndUp, lgAndUp, xlAndUp, xsOnly } = deviceBreakpoint()
     const addToGroupDialog = ref(false)
@@ -354,11 +395,11 @@ export default {
 
     const membershipSummary = ref([]);
 
-    const chooseGroupto = (items) =>{
+    const chooseGroupto = (items) => {
       chooseGrouptoMoveto.value = items
     }
 
-    const chooseGroupforAllmembers = (item) =>{
+    const chooseGroupforAllmembers = (item) => {
       chooseGrouptoMoveAllMembers.value = item
     }
 
@@ -884,7 +925,7 @@ export default {
       serverItemsLength,
       serverOptions,
       paginatedTableLoading,
-      selectedImageUrl,
+      selectedImage,
       imageDialog,
       mdAndUp,
       lgAndUp,
@@ -931,15 +972,6 @@ export default {
 .no-show {
   width: -875px;
   transition: all 3s ease-out;
-  /* transition: all  8s cubic-bezier(0.645, 0.045, 0.355, 1); */
-}
-
-.summary {
-  /* border-radius: 30px; */
-  padding: 24px 10px;
-  background: #fff;
-  box-shadow: 0px 2px 7.5px rgb(0 0 0 / 6%);
-  /* border: 1px solid #00204424; */
 }
 
 .summary-header {
@@ -1041,7 +1073,7 @@ export default {
   }
 
 
-  
+
 }
 
 @media screen and (min-width: 500px) {

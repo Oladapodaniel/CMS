@@ -25,7 +25,7 @@
           <img src="../../assets/welcome_user.svg" style="width: 250px" />
         </div>
         <div class="number-boxes" v-else>
-          <div class="box mr-4">
+          <div class="box mr-4" v-loading="dashboardLoading">
             <div class="top p-3">
               <div class="d-flex justify-content-between">
                 <img src="../../assets/usergroup.svg" alt="" style="position: relative; top: -5px; left: -8px;">
@@ -40,9 +40,11 @@
               </div>
             </div>
             <div class="box-bottom px-3 py-2">
-              <div class="s-12 font-weight-bold" v-tooltip.top="planUserIs">
-                {{ planUserIs }}
-              </div>
+              <el-tooltip class="box-item" effect="dark" :content="planUserIs" placement="top-start">
+                <div class="s-12 font-weight-bold">
+                  {{ planUserIs }}
+                </div>
+              </el-tooltip>
               <router-link :to="{ name: 'Subscription' }" class="mt-1">
                 <el-button color="#136acd" class="mt-2" style="height: 25px"
                   :class="[buttonTextCheck.color, { 'bg-warning': calculatedPercentage >= 90 }]" round>
@@ -51,7 +53,7 @@
               </router-link>
             </div>
           </div>
-          <div class="box">
+          <div class="box" v-loading="dashboardLoading">
             <div class="top p-3">
               <img src="../../assets/inboxgroup.svg" alt="" style="position: relative; left: -8px;">
               <div>
@@ -60,46 +62,18 @@
               </div>
             </div>
             <div class="box-bottom px-3 py-2">
-              <!-- <div class="s-12 font-weight-bold" v-tooltip.top="planUserIs">
-                {{ planUserIs }}
-              </div> -->
               <router-link :to="{ name: 'BuyUnits', path: '/tenant/buyunits' }" class="no-decoration">
                 <el-button type="info" class="push-down small" style="height: 25px" round>
                   <p class="mb-0 small">BUY UNITS</p>
                 </el-button>
-                <!-- <button class="upgrade-btn"
-                  :class="[buttonTextCheck.color, { 'bg-warning': calculatedPercentage >= 90 }]">
-                  <h4 class="box-btn-text" :class="[buttonTextCheck.color]">  </h4>
-                </button> -->
               </router-link>
             </div>
           </div>
-          <!-- <div class="box box2">
-            <div class="top">
-              <div class="box-top">
-                <div class="top-icon-div">
-                  <i class="pi pi-envelope"></i>
-                </div>
-                <div class="box-top-text"></div>
-              </div>
-              <div class="box-middle">
-                <h1>{{ tenantInfoBasic.smsUnit }}</h1>
-                <span class="size-text">SMS Units</span>
-              </div>
-            </div>
-            <div class="bottom">
-              <div class="box-bottom">
-                <span class="plan-text"></span>
-                <router-link :to="{ name: 'BuyUnits', path: '/tenant/buyunits' }" class="push-down">
-                  <button class="upgrade-btn2 buy-btn">
-                    <h4 class="box-btn-text2">BUY UNITS</h4>
-                  </button>
-                </router-link>
-              </div>
-            </div>
-          </div> -->
         </div>
       </div>
+
+      <div class="mt-5" v-loading="dashboardLoading"></div>
+
       <div class="container-fluid">
         <div class="row">
           <div class="col-8 offset-2 offset-md-0 col-md-3 p-0" v-if="
@@ -127,9 +101,6 @@
               </div>
               <router-link to="/tenant/payments">
                 <el-button color="#136ACD" class="mt-1" round plain>Set up now</el-button>
-                <!-- <div class="learn-more mt-3 col-12 cursor-pointer">
-                  Set Up Now
-                </div> -->
               </router-link>
             </div>
 
@@ -140,9 +111,6 @@
                 Get a customized mobile app for your church.
               </div>
               <router-link :to="{ name: 'MobileOnboarding' }">
-                <!-- <div class="learn-more mt-3 col-12 cursor-pointer">
-                  Set Up Now
-                </div> -->
                 <el-button color="#136ACD" class="mt-1" round plain>Set up now</el-button>
               </router-link>
             </div>
@@ -168,27 +136,6 @@
                   <p>Celebrations</p>
                 </div>
               </div>
-              <!-- <div class="table table-responsive">
-                <div class="table-top">
-                  <router-link to="" class="view-all" v-if="false">View all</router-link>
-                </div> -->
-              <!-- <div class="d-flex justify-content-start ml-3 my-3">
-                  <div class="celeb-badge align-self-center"></div>
-                  <div class="ml-2">represents celebrations for today</div> 
-                </div> -->
-
-              <!-- <el-table :data="tenantInfoCeleb" style="width: 100%" class="mt-4">
-                  <el-table-column prop="name" label="Name" />
-                  <el-table-column prop="date" label="Date">
-                    <template #default="scope">
-                      {{ dateFormat(scope.row.date) }}
-                    </template>
-                  </el-table-column>
-                  <el-table-column prop="dayOfCelebration" label="Day" />
-                  <el-table-column prop="type" label="Type" />
-                  <el-table-column prop="phone" label="Phone" />
-                </el-table> -->
-
               <EasyDataTable :headers="celebHeaders" :items="tenantInfoCeleb" class="mt-4">
                 <template #item-name="{ name, dayOfCelebration }">
                   <div class="player-wrapper">
@@ -202,49 +149,6 @@
                   {{ dateFormat(date) }}
                 </template>
               </EasyDataTable>
-
-              <!-- <table class="w-100">
-                <thead>
-                  <tr>
-                    <th>NAME</th>
-                    <th>DATE</th>
-                    <th>DAY</th>
-                    <th>TYPE</th>
-                    <th>PHONE</th>
-                    <th></th>
-                  </tr>
-                </thead>
-                <tbody>
-                  <tr v-for="celebration in tenantInfoCeleb" :key="celebration.id">
-                    <td>
-                      <img src="../../assets/people/avatar-male.png" alt="" /><span class="project-name">{{
-                          celebration.name
-                      }}</span>
-                      <div class="celeb-badge-desc celeb-badge"
-                        v-if="celebration.dayOfCelebration.toString().toLowerCase().includes('today')"></div>
-                    </td>
-                    <td>
-                      {{ dateFormat(celebration.date) }}
-                    </td>
-                    <td>{{ celebration.dayOfCelebration }}</td>
-                    <td>{{ celebration.celebration }}</td>
-                    <td>{{ celebration.phone }}</td>
-                    <td>
-                      <i class="fas fa-ellipsis-v cursor-pointer" id="dropdownMenuButton" data-toggle="dropdown"
-                        aria-haspopup="true" aria-expanded="false"></i>
-                      <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
-
-                        <a class="dropdown-item elipsis-items">
-                          <router-link :to="celebration.phone ? `/tenant/sms/compose?phone=${celebration.phone}` : ''"
-                            :class="{ 'fade-text': !celebration.phone, 'text-color': celebration.phone }">Send SMS
-                          </router-link>
-                        </a>
-                      </div>
-                    </td>
-                  </tr>
-                </tbody>
-              </table> -->
-              <!-- </div> -->
             </div>
             <div v-show="
               tenantInfoCeleb.length > 0 ||
@@ -257,7 +161,6 @@
               (tenantInfoAttendanceWeekly[0] &&
                 tenantInfoAttendanceWeekly[0].data[0] > 0)
             ">
-              <!-- <div class="charts" id="plot"> -->
               <div v-if="tenantInfoAttendanceWeekly && attendanceDataExist">
                 <div class="adjust-view col-10 col-sm-3 offset-sm-9 mt-5 mt-md-0">
                   <div class="view-report">View Reports</div>
@@ -302,7 +205,7 @@
               </div>
               <!-- </div> -->
 
-              <div class="chart-div mt-4" v-show="firstTimerPieExist">
+              <div class="mt-4" v-show="firstTimerPieExist">
                 <div class="">
                   <div class="row">
                     <div class="col-12 col-md-6 d-flex justify-content-center">
@@ -327,10 +230,10 @@
         </div>
       </div>
       <div v-if="
-          tenantInfoCeleb.length === 0 &&
-          (tenantInfoFirstTimerWeekly[0] && tenantInfoFirstTimerWeekly[0].data.every(i => i === 0)) &&
-          (tenantInfoAttendanceWeekly[0] && tenantInfoAttendanceWeekly[0].data.every(i => i === 0))
-        ">
+        tenantInfoCeleb.length === 0 &&
+        (tenantInfoFirstTimerWeekly[0] && tenantInfoFirstTimerWeekly[0].data.every(i => i === 0)) &&
+        (tenantInfoAttendanceWeekly[0] && tenantInfoAttendanceWeekly[0].data.every(i => i === 0))
+      ">
         <div class="container-fluid mt-5">
           <div class="row">
             <div class="col-12 more-things">
@@ -350,11 +253,6 @@
               <div class="more-body mt-2">
                 Get a user engaging website for your church.
               </div>
-              <!-- <a href="https://churchplus.co/awoofwebsite/" target="_blank">
-                <div class="learn-more mt-3 col-6 offset-3 cursor-pointer">
-                  Get One Now
-                </div>
-              </a> -->
               <a href="https://churchplus.co/awoofwebsite/" target="_blank">
                 <el-button color="#136ACD" class="mt-1" round plain>Get one now</el-button>
               </a>
@@ -371,9 +269,6 @@
               </div>
               <router-link to="/tenant/payments">
                 <el-button color="#136ACD" class="mt-1" round plain>Set up now</el-button>
-                <!-- <div class="learn-more second col-6 offset-3 cursor-pointer">
-                  Set Up Now
-                </div> -->
               </router-link>
             </div>
             <div class="col-12 col-sm-6 col-md-4 mt-5 mt-md-0 more-things">
@@ -388,63 +283,11 @@
               </div>
               <router-link :to="{ name: 'MobileOnboarding' }">
                 <el-button color="#136ACD" class="mt-1" round plain>Set up now</el-button>
-                <!-- <div class="learn-more mt-3 col-6 offset-3 cursor-pointer">
-                  Set Up Now
-                </div> -->
               </router-link>
             </div>
           </div>
         </div>
       </div>
-      <!-- <div class="text-center" v-if="attendanceLoading">
-        <i class="pi pi-spin pi-spinner text-primary" style="fontsize: 3rem"></i>
-      </div> -->
-
-      <!-- <div class="table-footer" v-if="tenantInfo.celebrations && tenantInfo.celebrations.length > 0">
-          <button class="tbl-footer-btn">
-            <i class="pi pi-angle-left"></i>
-          </button>
-          <button class="tbl-footer-btn">1</button>
-          <button class="tbl-footer-btn">2</button>
-          <button class="tbl-footer-btn">
-            <i class="pi pi-angle-right"></i>
-          </button>
-        </div> -->
-      <!-- </div> -->
-      <!-- <div>{{ tenantInfo.eventAttendanceChartData }}</div> -->
-
-      <!-- <div>{{ tenantInfo.eventAttendanceChartData }}</div> -->
-      <!-- <div>{{ chartData2 }}</div> -->
-
-      <!-- <div class="pies">
-          <div class="pie-con">
-            <PieChart
-              domId="pichart"
-              title="Offering Breakdown"
-              subtitle="Overview"
-              distance="5"
-              :titleMarginLeft="70"
-              height="400"
-              :summary="tenantInfoInterestedInJoining ? tenantInfoInterestedInJoining : []"
-            />
-          </div>
-
-          <div class="pie-con">
-            <PieChart
-              domId="pchart"
-              title="Offering Breakdown"
-              subtitle="Overview"
-              distance="1"
-              :titleMarginLeft="70"
-              height="400"
-              :summary="tenantInfoInterestedInJoining ? tenantInfoInterestedInJoining : []"
-            />
-          </div>
-        </div> -->
-      <!-- </div> -->
-
-      <!-- </div> -->
-
     </div>
   </main>
 </template>
@@ -463,7 +306,6 @@ import setupService from "../../services/setup/setupservice";
 import formatDate from "../../services/dates/dateformatter";
 import useSubscription from "../../services/subscription/useSubscription";
 import Tooltip from "primevue/tooltip";
-import { ElLoading } from 'element-plus'
 import deviceBreakpoint from "../../mixins/deviceBreakpoint";
 
 export default {
@@ -479,12 +321,12 @@ export default {
   directives: {
     tooltip: Tooltip,
   },
-  data () {
+  data() {
     return {}
-    
+
   },
-  created () {
-    if (!this.$store.getters.currentUser || (this.$store.getters.currentUser && Object.keys(this.$store.getters.currentUser).length == 0) ) {
+  created() {
+    if (!this.$store.getters.currentUser || (this.$store.getters.currentUser && Object.keys(this.$store.getters.currentUser).length == 0)) {
       this.getCurrentUser()
     }
   },
@@ -500,7 +342,7 @@ export default {
     const summed = ref(0);
     const planUserIs = ref("");
 
-  
+
 
     const toggleMoreLinkVissibility = () => {
       moreLinksVissible.value != moreLinksVissible.value;
@@ -521,6 +363,7 @@ export default {
     const tenantInfoExtra = ref({});
 
     const subscriptionPlan = ref([]);
+    const dashboardLoading = ref(false)
 
     const xAxis = ref([]);
     const monthXaxis = ref([
@@ -564,16 +407,11 @@ export default {
     })
 
     const getBasicDashboard = () => {
-      const loading = ElLoading.service({
-        lock: true,
-        text: 'Loading...',
-        background: 'rgba(0, 0, 0, 0.7)',
-        })
+      dashboardLoading.value = true
       axios
         .get("/dashboard/basic")
         .then((res) => {
-          
-  loading.close()
+          dashboardLoading.value = false
           tenantInfoBasic.value = res.data.returnObject;
           tenantInfoExtra.value.hasMobileApp = res.data.returnObject.hasMobileApp;
           tenantInfoExtra.value.hasOnlineGiving = res.data.returnObject.hasOnlineGiving;
@@ -583,20 +421,18 @@ export default {
             sum += +i.value;
           });
           summed.value = sum;
-          // if (sum > 0) {
-          //   firstTimerPieExist.value = true
-          // }
         })
         .catch((err) => {
           stopProgressBar();
           if (err.response && err.response.status === 401) {
+            dashboardLoading.value = false
             localStorage.removeItem("token");
             setupService.clearStore();
             router.push("/");
           }
         });
     };
-    
+
 
     let getCelebDashboard = () => {
       axios.get("/dashboard/celebrations").then((res) => {
@@ -686,10 +522,6 @@ export default {
     const monthlyFirstTimer = () => {
       firstTimerBoolean.value = false;
       firstTimerSeries.value = "monthly";
-      // axios.get('/Dashboard/period?period=Months')
-      //   .then(res => {
-      //     monthlyFirstTimerObj.value = res.data.eventAttendanceChartData[1]
-      //  })
     };
 
     const chartData = computed(() => {
@@ -702,7 +534,6 @@ export default {
     });
     const monthlyAttendanceObj = computed(() => {
       if (!tenantInfoAttendanceMonthly.value) return [];
-      // return [tenantInfoAttendanceMonthly.value.find(i => i.name === "Attendance")];
       let chartMonthly = []
       let chartObj = tenantInfoAttendanceMonthly.value.find(i => i.name === "Attendance")
       chartObj['color'] = '#002044'
@@ -746,14 +577,6 @@ export default {
       getRenewalDate.value = res.subscriptionExpiration;
       useSubscriptionResponse.value = res;
     });
-    // 
-
-    // const expirationNotice = computed(() =>{
-    //   let myDate = new Date()
-    //   if( myDate === warningAgainstExpire.value && warningAgainstExpire.value < getRenewalDate.value   ){
-    //        return true
-    //       }
-    // })
 
     const calculatedPercentage = computed(() => {
       if (!useSubscriptionResponse.value || !useSubscriptionResponse.value.id)
@@ -850,7 +673,8 @@ export default {
       attendanceSeries,
       lgAndUp,
       xlAndUp,
-      celebHeaders
+      celebHeaders,
+      dashboardLoading
     };
   },
 };
@@ -1155,8 +979,8 @@ export default {
 
 .help-text2 img {
   width: 76px;
-    margin-top: -9px;
-    margin-left: -14px
+  margin-top: -9px;
+  margin-left: -14px
 }
 
 .pies {
@@ -1362,15 +1186,6 @@ tbody tr:nth-child(even) {
 
 .table td {
   vertical-align: baseline;
-}
-
-.chart-div {
-  border: 1px solid #DDE2E6;
-  /* border-radius: 30px;
-  margin: 0 0 24px 0;
-  box-shadow: 0px 1px 4px #02172e45;
-  border: 1px solid #dde2e6;*/
-  /* padding: 10px 0;  */
 }
 
 /* WIP */

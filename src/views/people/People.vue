@@ -17,7 +17,7 @@
       <div class="font-weight-bold">Share the link to your members to enable them to add their details to your
         church .</div>
       <div class="p-inputgroup form-group mt-2">
-        <el-input v-model="memberlink" placeholder="Please input" ref="selectedLink" class="input-with-select" >
+        <el-input v-model="memberlink" placeholder="Click the copy button when the link appears" ref="selectedLink" class="input-with-select" >
           <template #append>
             <el-button @click="copylink">
               <el-icon>

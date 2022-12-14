@@ -42,3 +42,32 @@ button.el-button.is-round {
 .el-menu-item-group li.el-menu-item{
     height: 25px;
 }
+
+.el-sub-menu.is-active > div.el-sub-menu__title {
+    font-weight: 800 !important;
+}
+
+.el-dialog.is-align-center.person-image-dialog div.el-dialog__body {
+    padding: 10px 0 !important;
+}
+
+.dialog-footer.person-image-dialog-footer {
+    text-align: left;
+}
+
+.el-dropdown-menu {
+    max-height: 400px;
+    overflow: scroll;
+}
+
+.el-dropdown.split-button .el-button.el-button--large:not(.el-dropdown__caret-button) {
+    border-radius: 25px 0 0 25px;
+    background: #136acd;
+    color: #ffffff
+}
+
+.el-dropdown.split-button .el-dropdown__caret-button {
+    border-radius: 0 25px 25px 0;
+    background: #136acd;
+    color: #ffffff
+}

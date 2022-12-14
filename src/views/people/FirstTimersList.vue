@@ -6,7 +6,7 @@
           details to your
           church .</div>
         <div class="p-inputgroup form-group mt-1">
-          <el-input v-model="firstTimerLink" placeholder="Please input" ref="selectedLink" class="input-with-select">
+          <el-input v-model="firstTimerLink" placeholder="Click the copy button when the link appears" ref="selectedLink" class="input-with-select">
             <template #append>
               <el-button @click="copylink">
                 <el-icon>
@@ -25,7 +25,7 @@
       <div class="table-top p-3 mt-5">
         <div class="d-flex flex-column flex-sm-row justify-content-sm-between">
           <div>
-            <el-tooltip class="box-item" effect="dark" v-if="checkedFirstTimer.length > 0" content="Delete member(s)"
+            <el-tooltip class="box-item" effect="dark" v-if="false" content="Delete member(s)"
               placement="top-start">
               <el-icon :size="20" class="c-pointer" v-if="checkedFirstTimer.length > 0" @click="showConfirmModal1">
                 <Delete />
@@ -33,16 +33,13 @@
             </el-tooltip>
             <el-tooltip class="box-item" effect="dark" v-if="checkedFirstTimer.length > 0" content="Send SMS"
               placement="top-start">
-              <el-icon :size="20" class="ml-2 c-pointer" v-if="checkedFirstTimer.length > 0"
-                @click="sendMarkedMemberSms">
-                <Message />
-              </el-icon>
+              <img src="../../assets/sms.png" style="width: 20px; margin-top: -10px" class="ml-2 c-pointer" @click="sendMarkedMemberSms" alt="Send SMS" />
             </el-tooltip>
             <el-tooltip class="box-item" effect="dark" v-if="checkedFirstTimer.length > 0" content="Send Email"
               placement="top-start">
               <el-icon :size="20" class="ml-2 c-pointer" v-if="checkedFirstTimer.length > 0"
                 @click="sendMarkedMemberEmail">
-                <MessageBox />
+                <Message />
               </el-icon>
             </el-tooltip>
           </div>
@@ -235,7 +232,30 @@
     </el-dialog>
   </div>
 
-  <SideBar :show="showSMS" :title="'Compose SMS'" @closesidemodal="() => showSMS = false">
+  <el-drawer v-model="showSMS" :size="mdAndUp || lgAndUp || xlAndUp ? '70%' : '100%'" direction="rtl">
+    <template #header>
+      <h4>Send SMS</h4>
+    </template>
+    <template #default>
+      <div>
+        <smsComponent :phoneNumbers="contacts" @closesidemodal="() => showSMS = false" />
+      </div>
+    </template>
+  </el-drawer>
+
+  <el-drawer v-model="showEmail" :size="mdAndUp || lgAndUp || xlAndUp ? '70%' : '100%'" direction="rtl">
+    <template #header>
+      <h4>Send Email</h4>
+    </template>
+    <template #default>
+      <div>
+        <emailComponent :selectedGroupMembers="markedFirsttimers" @closesidemodal="() => showEmail = false" />
+      </div>
+    </template>
+  </el-drawer>
+
+
+  <!-- <SideBar :show="showSMS" :title="'Compose SMS'" @closesidemodal="() => showSMS = false">
     <div class="m-wrapper" :class="{ 'm-wrapper': showSMS, 'no-show': !showSMS }">
       <smsComponent :phoneNumbers="contacts" @closesidemodal="() => showSMS = false" />
     </div>
@@ -244,7 +264,7 @@
     <div class="m-wrapper2">
       <emailComponent :selectedGroupMembers="markedFirsttimers" @closesidemodal="() => showEmail = false" />
     </div>
-  </SideBar>
+  </SideBar> -->
 </template>
 
 <script>

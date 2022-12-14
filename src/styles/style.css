@@ -48,6 +48,10 @@
   font-size: 36px
 }
 
+rect.highcharts-background[fill] {
+  fill: none
+}
+
 /* .table {
     margin: 20px auto;
     width: 100%;

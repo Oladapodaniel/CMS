@@ -59,12 +59,12 @@
   </div>
   <div class="row mt-4">
     <div class="col-md-6 col-12 mb-5">
-      <div class="chart-border bg-white p-3">
+      <div class="p-3">
         <FunnelChart domId="funnel" :funneldata="analyticsData.lifeCycleSummary" />
       </div>
     </div>
     <div class="col-md-6 col-12">
-      <div class="chart-border bg-white p-3">
+      <div class="p-3">
         <ColumnChart domId="column" :columndata="analyticsData.retentionSummary" :yAxis="`Number of Guest`"
           :desc="`Inflow Summary`" />
       </div>
@@ -73,12 +73,12 @@
 
   <div class="row my-3 mother-row">
     <div class="col-md-6">
-      <div class="chart-border bg-white p-3">
+      <div class="p-3">
         <PieChart domId="piechart" :piedata1="analyticsData.interestedSummary" :data='name1' />
       </div>
     </div>
     <div class="col-md-6 col-12">
-      <div class="chart-border bg-white p-3">
+      <div class="p-3">
         <PieChart domId="piechart2" :piedata1="analyticsData.sourceSummary" :data="name2" />
       </div>
     </div>
@@ -236,7 +236,7 @@ opacity: 1;
 
 .item-Area {
   padding: 0px 10px;
-  background: #fff;
+  /* background: #fff; */
   box-shadow: 0px 2px 7.5px rgb(0 0 0 / 6%);
 }
 
@@ -262,9 +262,9 @@ opacity: 1;
   border-radius: 50%;
 }
 
-.chart-border {
+/* .chart-border {
   box-shadow: 0px 2px 7.5px rgb(0 0 0 / 6%)
-}
+} */
 
 /* .pi{
 font-size: 1.5rem;
