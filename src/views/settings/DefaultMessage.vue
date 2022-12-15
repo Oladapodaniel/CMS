@@ -153,7 +153,7 @@ export default {
         })
         .catch(() => {
           ElMessage({
-            type: 'info',
+            type: 'error',
             message: 'Delete canceled',
           })
         })

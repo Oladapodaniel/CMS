@@ -69,19 +69,6 @@
                 <i class="pi pi-spin pi-spinner text-center text-primary" style="fontSize: 3rem"></i>
             </div>
           </div>
-          <!-- test -->
-          <!-- <draggable
-        :list="firstTimerData"
-        :disabled="!enabled"
-        tag="transition"
-        item-key="name"
-        class="list-group"
-        ghost-class="ghost"
-        :move="checkMove"
-        @start="dragging = true"
-        @end="dragging = false"
-      > -->
-        <!-- <template> -->
           <div class="list-group-item list-group row" v-for="(firstTimer, indx) in firstTimerData" :key="indx" @drop="handleDrop"> 
             <div class="col-md-12">
               <div class="row">   
@@ -138,9 +125,6 @@
               </div>
             </div>
           </div>
-        <!-- </template> -->
-        
-      <!-- </draggable> -->
         </div>
       </div>
     </div>
@@ -149,22 +133,16 @@
 
 <script>
 import axios from "@/gateway/backendapi";
-import Toast from 'primevue/toast';
-import ConfirmDialog from 'primevue/confirmdialog';
 import { ElMessage, ElMessageBox } from 'element-plus';
 import Checkbox from 'primevue/checkbox';
 import membershipService from '../../services/membership/membershipservice';
 import finish from '../../services/progressbar/progress';
-// import draggable from 'vuedraggable';
 import Tooltip from 'primevue/tooltip';
 
 export default {
    name: "simple",
   display: "Simple",
   components:{
-    Toast,
-    ConfirmDialog,
-    // draggable,
     Checkbox
 
   },
@@ -218,7 +196,6 @@ export default {
               type: 'success',
               message: 'New Guest Life Cycle Order Updated Successfully',
             })
-      // this.$toast.add({severity:'success', summary: '', detail:' New Guest Life Cycle Order Updated Successfully', life: 3000});  
       console.log(ordered, "ORDERED");
       
       }, 1000)
@@ -244,7 +221,6 @@ export default {
               type: 'success',
               message: 'New Guest Life Cycle Save Successfully',
             })
-        //  this.$toast.add({severity:'success', summary: '', detail:'New Guest Life Cycle Save Successfully', life: 3000});
       }catch(error){
         finish()
         console.log(error)
@@ -255,13 +231,12 @@ export default {
       try{
         console.log(item, "item")
         await axios.put(`/firsttimercycle/${item.id}/edit`, {...item, name : item.name, isDefault: item.isDefault});
-        // this.firstTimerData[index].name = item.name
         this.discard()
          ElMessage({
               type: 'success',
               message: 'New Guest Life Cycle Updated Successfully',
             })
-        // this.$toast.add({severity:'success', summary: '', detail:'New Guest Life Cycle Updated Successfully', life: 3000});
+
       }catch (error){
         finish()
         console.log(error)
@@ -278,7 +253,6 @@ export default {
               type: 'success',
               message: 'Delete Successfully',
             })
-        //  this.$toast.add({severity:'success', summary: '', detail:'Delete Successfully', life: 3000});
       } catch (error){
         finish()
         console.log(error);
@@ -304,20 +278,6 @@ export default {
             message: 'Delete canceled',
           })
         })
-            // this.$confirm.require({
-            //     message: 'Are you sure you want to Delete?',
-            //     header: 'Delete Confirmation',
-            //     icon: 'pi pi-exclamation-circle',
-            //     acceptClass: 'confirm-delete',
-            //     rejectClass: 'cancel-delete',
-            //     accept: () => {
-            //       this.deleteFirstTimer(id)
-            //         //callback to execute when user confirms the action
-            //     },
-            //     reject: () => {
-            //         'No internet'
-            //     }
-            // });
         },
 
 
