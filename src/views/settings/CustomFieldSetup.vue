@@ -326,6 +326,7 @@
 import { ref } from "vue";
 import axios from "@/gateway/backendapi";
 import { useToast } from "primevue/usetoast";
+import { ElMessage, ElMessageBox } from "element-plus";
 import Dropdown from "primevue/dropdown";
 import finish from "../../services/progressbar/progress";
 import Chips from "primevue/chips";
@@ -391,11 +392,9 @@ export default {
         .delete(`/api/CustomFields/EditCustomFields?customAttributeID=${id}`)
         .then((res) => {
           console.log(res);
-          toast.add({
-            severity: "success",
-            summary: "Confirmed",
-            detail: "Custom field deleted",
-            life: 3000,
+           ElMessage({
+            type: "success",
+            message: "Custom field deleted",
           });
 
           allCustomFieldList.value = allCustomFieldList.value.filter(

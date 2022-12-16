@@ -6,19 +6,6 @@
             <p class="pl-3" style="font-size:16px" >You can invite a new user to access your ChurchPlus account. Only give access to people you trust, since users can see your transactions and other business information.</p>
             <div class="invite-container" style="font-size:14px">
                 <h4 class="font-weight-bold ml-0 ml-md-3 ml-sm-0">{{ $route.query.email ? 'Edit New User' : inviteNew}}</h4>
-                <!-- <h4 class="font-weight-bold ml-0 ml-md-3 ml-sm-0">{{editContent}}</h4> -->
-                <!-- <h4>Bitcoin Price Index</h4>
-                <div v-for="currency in info" :key="currency">
-                    {{currency.description}}
-                    <span class="lighten">
-                       <span v-html="currency.symbol"></span>{{ currency.rate_float | currencydecimal }}
-                    </span>
-                    <h1 class="bg-danger text-light"> {{currency.code}}</h1>
-
-
-                </div>
-
-                <h4>{{info}}</h4> -->
                 <Toast />
                <div class="row">
                    <div class="col-lg-7 col-sm-12 pr-3 mt-3 mt-lg-3 pr-lg-5 pr-sm-3" style="">
@@ -27,22 +14,14 @@
                             </div>
                             <div class="col-lg-8 col-sm-12"> <InputText type="text" required v-model="mail" class="form-control" /></div>
                         </div>
-                        <!-- <div class="row mb-3 mt-5">
-
-                            <div class="col-lg-4 col-sm-12 text-lg-right text-sm-left"> <span class="">Email</span>
-                            </div>
-                            <div class="col-lg-8 col-sm-12 "> <InputText type="text" :disabled="disabled" required v-model="mail" class="form-control"/></div>
-                        </div> -->
                         <div class="row mb-3 mt-5">
                           <div class="col-lg-4 col-sm-12 text-lg-right text-sm-left"> <span class="">Phone Number</span>
                             </div>
                             <div class="col-lg-8 col-sm-12 "> <InputText type="number"    class="form-control" required v-model="phoneNumber"  /></div>
-                            <!-- <div class="col-lg-8 col-sm-12 "> <input type="number"    class="form-control" required v-model="phoneNumber"  /></div> -->
                         </div>
                          <div class="row mb-3 mt-5" v-if="!disabled">
                           <div class="col-lg-4 col-sm-12 text-lg-right text-sm-left"> <span class="">Password</span>
                             </div>
-                            <!-- <div class="col-lg-8 col-sm-12 "> <Password class="form-control" :disabled="disabled" required v-model="password1"  /></div> -->
                             <div class="col-lg-8 col-sm-12 "> <input type="password"  autocomplete="new-password"  :disabled="disabled"  class="form-control" required v-model="password1"  /></div>
                         </div>
                         <div class="row mt-5" v-if="!disabled">
@@ -71,19 +50,6 @@
                     <i class="pi pi-spin pi-spinner text-center text-primary" style="fontSize: 3rem"></i>
                     </div>
                 </div>
-
-                        <!-- <div class="row mb-3">
-
-                            <div class="col-lg-4 col-sm-12 text-lg-right text-sm-left"> <span class="">Secret Questions</span>
-                            </div>
-                            <div class="col-lg-8 col-sm-12 "> <InputText type="text" class="form-control"/></div>
-                        </div> -->
-                        <!-- <div class="row mb-3">
-
-                            <div class="col-lg-4 col-sm-12 text-lg-right text-sm-left"> <span class="">Secret Answers</span>
-                            </div>
-                            <div class="col-lg-8 col-sm-12"> <InputText type="text" class="form-control" /></div>
-                        </div> -->
                    </div>
 
                    <div class="col-lg-5 col-sm-12 mt-lg-0 mt-sm-5 mt-md-5 mt-lg-0 mt-5 pl-lg-5 pr-lg-5 pl-sm-3 pr-3 pr-sm-2">
@@ -133,15 +99,11 @@
 
 <script>
 import InputText from 'primevue/inputtext';
-// import ProgressSpinner from 'primvue/progressspinner';
 import Toast from 'primevue/toast'
-// import Password from 'primevue/password';
 import Checkbox from 'primevue/checkbox';
 import axios from "@/gateway/backendapi";
 import store from "@/store/store";
 import userRoles from "../../services/user/userRoles"
-// import { error } from 'highcharts';
-// import ref from 'Vue'
     export default {
         components:{InputText, Checkbox,Toast},
         data() {

@@ -16,10 +16,6 @@
                   <h4 class="mt-2 mb-2 ml-5 memCat1">Membership Categories</h4>
                 </div>
               </div>
-              <!--prime Vue -->
-              <Toast />
-              <ConfirmDialog></ConfirmDialog>
-
               <div class="row">
                 <div class="col-md-12 py-5 grey-background">
                   <div class="row d-md-flex justify-content-around">
@@ -115,15 +111,9 @@
 <script>
 import axios from "@/gateway/backendapi";
 import { ElMessage, ElMessageBox } from 'element-plus';
-import Toast from 'primevue/toast';
-import ConfirmDialog from 'primevue/confirmdialog';
 import finish from "../../services/progressbar/progress"
 
 export default {
-  components:{
-     Toast,
-    ConfirmDialog,
-  },
   data() {
     return {
       classifications: [ ],
@@ -163,7 +153,10 @@ export default {
         await axios.put('/api/Settings/UpdateTenantPeopleClassification', { name: this.classificationName, id:id});
         this.classifications[index].name = this.classificationName;
         this.discard()
-        this.$toast.add({severity:'success', summary: '', detail:'Membership Updated Successfully', life: 3000});
+        ElMessage({
+          type: "success",
+          message: "Membership Updated Successfully",
+        });
       }catch (error){
         finish()
         console.log(error)
@@ -179,15 +172,12 @@ export default {
             message: 'This people classification you are trying to delete has been used to save contacts. You can not delete it. You can rename instead.',
             type: 'error',
           })
-          // this.$toast.add({severity:'error', summary: '', detail: 'This people classification you are trying to delete has been used to save contacts. You can not delete it. You can rename instead.', life: 9000})
         }else{
           this.classifications = this.classifications.filter(i => i.id !== id);
           ElMessage({
               type: 'success',
               message: 'Membership Deleted Successfully',
             })
-        //  this.$toast.add({severity:'success', summary: '', detail:'Membership Deleted Successfully', life: 3000});
-
         }
         
       } catch (error){
@@ -214,19 +204,6 @@ export default {
             message: 'Delete canceled',
           })
         })
-            // this.$confirm.require({
-            //     message: 'Are you sure you want to Delete?',
-            //     header: 'Delete Confirmation',
-            //     icon: 'pi pi-exclamation-circle',
-            //     acceptClass: 'confirm-delete',
-            //     rejectClass: 'cancel-delete',
-            //     accept: () => {
-            //       this.deleteMembership(id)
-            //     },
-            //     reject: () => {
-            //         'No internet'
-            //     }
-            // });
         },
 
     openClassification(index) {

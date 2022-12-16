@@ -142,17 +142,10 @@
 <script>
 import axios from "@/gateway/backendapi";
 import { ElMessage, ElMessageBox } from 'element-plus';
-import Toast from 'primevue/toast';
-import ConfirmDialog from 'primevue/confirmdialog';
 import finish from '../../services/progressbar/progress';
 import store from '@/store/store'
 
 export default {
-  components:{
-    Toast,
-    ConfirmDialog,
-
-  },
   data() {
     return {
       types: [ ],
@@ -201,20 +194,6 @@ export default {
             message: 'Delete canceled',
           })
         })
-            // this.$confirm.require({
-            //     message: 'Are you sure you want to Delete?',
-            //     header: 'Delete Confirmation',
-            //     icon: 'pi pi-exclamation-circle',
-            //     acceptClass: 'confirm-delete',
-            //     rejectClass: 'cancel-delete',
-            //     accept: () => {
-            //       this.deletePost(id)
-            //         //callback to execute when user confirms the action
-            //     },
-            //     reject: () => {
-            //         'No internet'
-            //     }
-            // });
         },
     
     async deletePost(id){
@@ -225,14 +204,12 @@ export default {
               type: 'error',
               message: 'This people classification you are trying to delete has been used to save Image. You can not delete it. You can rename instead.',
             })
-          // this.$toast.add({severity:'error', summary: '', detail: 'This people classification you are trying to delete has been used to save Image. You can not delete it. You can rename instead.', life: 9000})
         }else{
           this.types = this.types.filter(i => i.postCategoryId !== id);
           ElMessage({
               type: 'success',
               message: 'Post Category Deleted Successfully',
             })
-        //  this.$toast.add({severity:'success', summary: '', detail:'Post Category Deleted Successfully', life: 3000});
         }
         
       } catch (error){
@@ -249,7 +226,6 @@ export default {
               type: 'success',
               message: 'Post Category Updated Successfully',
             })
-        // this.$toast.add({severity:'success', summary: '', detail:'Post Category Updated Successfully', life: 3000});
       }catch (error){
         finish()
         console.log(error)
@@ -261,7 +237,6 @@ export default {
               type: 'error',
               message: 'Enter Your Details',
             })
-        // this.$toast.add({severity:'error', summary: '', detail:' Enter Your Details', life: 3000});
         return false
 
       }
@@ -278,7 +253,6 @@ export default {
               type: 'success',
               message: 'Post Save Successfully',
             })
-        // this.$toast.add({severity:'success', summary: '', detail:' Post Save Successfully', life: 3000});
       }catch (error) {
         finish()
         console.log(error)
@@ -305,12 +279,11 @@ export default {
       console.log(updateBody)
       try {
         let { data } = await axios.put('/mobile/v1/Feeds/UpdatePostCategory', updateBody)
-        this.$toast.add({
-          severity:'success', 
-          summary: data.response, 
-          detail: this.types[index].isPublic ? 'Post category is now made public for mobile users' : 'Post category is not public anymore', 
-          life: 5000
-        });
+        ElMessage({
+              type: 'success',
+              message: data.response,
+            })
+            // this.types[index].isPublic ? 'Post category is now made public for mobile users' : 'Post category is not public anymore', 
       }
       catch (err) {
         console.log(err)

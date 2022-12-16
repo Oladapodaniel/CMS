@@ -189,16 +189,9 @@
 import store from '@/store/store';
 import { ElMessage, ElMessageBox } from 'element-plus';
 import Tooltip from 'primevue/tooltip';
-import Toast from 'primevue/toast';
-import ConfirmDialog from 'primevue/confirmdialog'
 import axios from "@/gateway/backendapi";
 import finish from "../../services/progressbar/progress";
 export default {
-  components:{
-    Toast,
-    ConfirmDialog
-
-  },
     directives: {
     'tooltip': Tooltip
 },
@@ -225,11 +218,6 @@ export default {
        }) : []
       return this.churchUsers && this.churchUsers.users ? this.churchUsers.users.filter(i => i.email.toLowerCase().includes(this.searchText.toLowerCase())) : []
     }
-    // churchProfile(){
-    //   if(!this.getCurrentUser || !this.getCurrentUser.churchName) return "";
-    //   return this.getCurrentUser.churchName;
-    // }
-
   },
   methods:{
 
@@ -271,7 +259,10 @@ export default {
          let response = await axios.post(`/api/Settings/DeactivateChurchUser?churchUserEmail=${email}`);
          console.log(response);
         this.churchUsers.users[index].status = "Inactive";
-        this.$toast.add({severity:'success', summary: '', detail:'Status Make Inactive', life: 3000});
+        ElMessage({
+              type: 'success',
+              message: 'Status Make Inactive',
+            })
 
       }catch(error){
         finish()
@@ -289,7 +280,7 @@ export default {
               type: 'success',
               message: 'Church User Deleted Successfully',
             })
-        //  this.$toast.add({severity:'success', summary: '', detail:'Church User Deleted Successfully', life: 3000});
+
       } catch (error){
         finish()
         console.log(error);
