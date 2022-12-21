@@ -533,7 +533,7 @@ export default {
       formData.append("mediaUrl", mediaUrl.value ? mediaUrl.value : "");
       formData.append("title", "Anouncement");
       formData.append("tenantId", tenantId.value);
-      formData.append("showOnMainThread", showOnMainThread.value);
+      formData.append("showOnMainThread", showOnMainThread.value ? showOnMainThread.value : false );
       formData.append(
         "postCategoryId",
         postCategory.value ? postCategory.value.postCategoryId : ""
