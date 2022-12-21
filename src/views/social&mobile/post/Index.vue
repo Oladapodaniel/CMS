@@ -93,6 +93,22 @@
 
     <div class="row my-4">
       <div class="col-md-12">
+        <a
+          class="
+            primary-text
+            text-decoration-none
+            font-weight-700
+            mb-3
+            d-flex
+            align-items-center
+          "
+        >
+          <!-- <input type="checkbox" class="c-pointer" name="" id="" /> -->
+          <Checkbox id="binary" v-model="showOnMainThread" :binary="true"/>
+          <span class="mx-1">Show on main thread</span>
+        </a>
+      </div>
+      <div class="col-md-12">
         <div class="row input-border">
           <div class="col-md-12 mt-2">
             <label for="" class="small-text mb-0 label-color font-weight-700"
@@ -358,6 +374,7 @@ export default {
     const toFacebook = ref(true);
     const socialData = ref({});
     const fBPhotoVideoId = ref([]);
+    const showOnMainThread = ref(false);
     const fbVideoToPost = ref(null);
     const displayScheduleModal = ref(false);
 
@@ -516,6 +533,7 @@ export default {
       formData.append("mediaUrl", mediaUrl.value ? mediaUrl.value : "");
       formData.append("title", "Anouncement");
       formData.append("tenantId", tenantId.value);
+      formData.append("showOnMainThread", showOnMainThread.value);
       formData.append(
         "postCategoryId",
         postCategory.value ? postCategory.value.postCategoryId : ""
@@ -532,6 +550,7 @@ export default {
         "toFacebook",
         toFacebook.value ? toFacebook.value : false
       );
+       console.log(formData, "gjhhjjjhhg");
       display.value = true;
       axios
         .post("/mobile/v1/Feeds/CreatePost", formData, {
@@ -669,6 +688,7 @@ export default {
 
     return {
       toFacebook,
+      showOnMainThread,
       postDestination,
       getSocialDetails,
       postCategory,
