@@ -167,7 +167,6 @@ export default {
       try {
         this.loading = true
         const { data } = await axios.get(`/mobile/v1/Feeds/GetPostCategory?tenantId=${id}&source=web`);
-        // email=${this.$route.query.email}
         this.types = data;
         console.log(data);
         this.loading = false
@@ -283,7 +282,6 @@ export default {
               type: 'success',
               message: data.response,
             })
-            // this.types[index].isPublic ? 'Post category is now made public for mobile users' : 'Post category is not public anymore', 
       }
       catch (err) {
         console.log(err)

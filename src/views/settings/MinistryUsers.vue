@@ -247,7 +247,10 @@ export default {
         let response = await axios.post(`/api/Settings/ActivateChurchUser?churchUserEmail=${email}`);
         console.log(response);
          this.churchUsers.users[index].status = "Active";
-        this.$toast.add({severity:'success', summary: '', detail:'Status Make Active', life: 3000});
+         ElMessage({
+              type: 'success',
+              message: 'Status Make Active',
+            })
       }catch(error){
         finish()
         console.log(error);
