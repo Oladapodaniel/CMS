@@ -140,7 +140,6 @@
             <div class="col-12 col-md-3 text-md-right pr-0">
               <label class="small-text lb font-weight-600">Country</label>
             </div>
-             <!-- {{countries}} -->
             <div class="col-12 col-md-5 form-group">
                
                 <el-select-v2
@@ -166,6 +165,15 @@
               <label class="small-text lb font-weight-600">Time zone</label>
             </div>
             <div class="col-12 col-md-5 form-group">
+              <!-- {{selectTime}} -->
+              <!-- <el-select-v2
+                  v-model="selectTime"
+                  :options="timeZone.map((i) =>({label: i.name , value: i.id }))"
+                  placeholder="Select time zone"
+                  class="w-100"
+                  size="large"
+                  style="width: 100%"
+                /> -->
               <Dropdown
                 :options="timeZone"
                 optionLabel="name"
@@ -268,7 +276,7 @@ export default {
     let url = ref("");
     let a = ref("");
     let b = ref("b");
-    let selectCountry = ref("");
+    let selectCountry = ref(null);
     let selectTime = ref({});
     let image;
     const imageSelected = (e) => {
