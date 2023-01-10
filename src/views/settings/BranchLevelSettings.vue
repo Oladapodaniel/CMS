@@ -60,8 +60,8 @@
           </div>
           <div class="row">
             <div class="col-12 mt-3">
-              You can re-arrange your branch level by dragging to the position
-              you desired
+              <!-- You can re-arrange your branch level by dragging to the position
+              you desired -->
             </div>
           </div>
 
@@ -207,15 +207,12 @@ import axios from "@/gateway/backendapi";
 import { ElMessage, ElMessageBox } from "element-plus";
 import membershipService from "../../services/membership/membershipservice";
 import finish from "../../services/progressbar/progress";
-import Tooltip from "primevue/tooltip";
 
 export default {
   name: "simple",
   display: "Simple",
   components: {},
-  directives: {
-    tooltip: Tooltip,
-  },
+  directives: {},
   data() {
     return {
       branchList: [],

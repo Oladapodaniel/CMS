@@ -51,7 +51,7 @@
               </div>
             </div>
           </div>
-          <span>You can re-arrange your New Guest Life Cycle by dragging to the position you desired </span>
+          <!-- <span>You can re-arrange your New Guest Life Cycle by dragging to the position you desired </span> -->
 
 
           <div class="row table-header-row py-2 mt-5">

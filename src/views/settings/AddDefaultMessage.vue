@@ -13,15 +13,14 @@
               >
             </div>
             <div class="col-auto w-75">
-              <Dropdown
-                v-model="selectCategory"
-                :options="Membership"
-                optionLabel="name"
-                placeholder="Select category"
-                :filter="false"
-                filterPlaceholder="Membership Information Update Message"
-                style="width: 100%; text-align: left"
-              />
+              <el-select-v2
+                  v-model="selectCategory"
+                  :options="Membership.map((i) =>({label: i.name , value: i.value }))"
+                  placeholder="Select category"
+                  class="w-100"
+                  size="large"
+                  style="width: 100%; text-align: left"
+                />
             </div>
           </div>
           <div class="row g-3 align-items-center">
@@ -29,19 +28,16 @@
               <label for="inputPassword6" class="col-form-label">Type:</label>
             </div>
             <div class="col-auto w-75">
-              <Dropdown
-                v-model="selectType"
-                :options="Sms"
-                optionLabel="name"
-                placeholder="Select type"
-                :filter="false"
-                filterPlaceholder="Sms"
-                style="width: 100%; text-align: left"
-              />
+              <el-select-v2
+                  v-model="selectType"
+                  :options="Sms.map((i) =>({label: i.name , value: i.value }))"
+                  placeholder="Select type"
+                  class="w-100"
+                  size="large"
+                  style="width: 100%; text-align: left"
+                />
             </div>
           </div>
-          <Toast />
-          <ConfirmDialog />
           <div class="row g-3 align-items-center">
             <div class="col-auto w-25">
               <label for="inputPassword6" class="col-form-label"
@@ -117,14 +113,11 @@
 </template>
 
 <script>
-import Dropdown from "primevue/dropdown";
 import messageOptions from "../../services/defaultmessage/default_message_service";
 import { ElMessage, ElMessageBox } from "element-plus";
 import axios from "@/gateway/backendapi";
 
 export default {
-  components: { Dropdown },
-
   data() {
     return {
       message: "",
@@ -148,19 +141,22 @@ export default {
       if (
         this.subject === "" ||
         this.message === "" ||
-        this.selectType.value === "" ||
-        this.selectCategory.value === ""
-      ) {
+        this.selectType === "" ||
+        this.selectCategory === ""
+      ) 
+      
+      {
         ElMessage({
           type: "error",
           message: "Input Your Complete Messages",
         });
       }
+      
       let newCreate = {
         subject: this.subject,
         message: this.message,
-        messageType: this.selectType.value,
-        category: this.selectCategory.value,
+        messageType: this.selectType,
+        category: this.selectCategory,
       };
       axios
         .post(`/api/Settings/CreateDefaultMessage`, newCreate)
@@ -186,8 +182,8 @@ export default {
         id: this.defaultMessage.returnObject.id,
         subject: this.subject,
         message: this.message,
-        messageType: this.selectType.value,
-        category: this.selectCategory.value,
+        messageType: this.selectType.value ? this.selectType.value : this.selectType,
+        category: this.selectCategory.value ? this.selectCategory.value : this.selectCategory,
       };
       axios
         .put(`/api/Settings/UpdateDefaultMessage`, newUpdate)
@@ -311,9 +307,6 @@ export default {
 
   @media screen and (max-width: 375px) {
     .mobileResp {
-      /* width: 94% !important; */
-      /* margin: auto;
-        margin-bottom: 20px; */
       float: left;
     }
   }

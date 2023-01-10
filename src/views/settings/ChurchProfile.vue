@@ -140,14 +140,24 @@
             <div class="col-12 col-md-3 text-md-right pr-0">
               <label class="small-text lb font-weight-600">Country</label>
             </div>
+             <!-- {{countries}} -->
             <div class="col-12 col-md-5 form-group">
-              <Dropdown
+               
+                <el-select-v2
+                  v-model="selectCountry"
+                  :options="countries.map((i) =>({label: i.name , value: i.id }))"
+                  placeholder="Select Country"
+                  class="w-100"
+                  size="large"
+                  style="width: 100%"
+                />
+              <!-- <Dropdown
                 :options="countries"
                 optionLabel="name"
                 placeholder="Select Country"
                 style="width: 100%"
                 v-model="selectCountry"
-              />
+              /> -->
             </div>
             <div class="col-md-4"></div>
           </div>
