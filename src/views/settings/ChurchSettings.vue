@@ -26,12 +26,13 @@
               ></i>
             </div>
 
-            <transition-group tag="span" name="fade">
+            <transition-group name="fade" tag="div" >
               <div
+                key="show-modal"
                 class="show-modal"
                 :class="{ 'dd-hide-list': !settingLinkDropped }"
               >
-                <div class="row mb-3">
+                <div class="row mb-3" >
                   <div class="col-md-12 my-2">
                     <span class="small-text dd-list-item"
                       >User Management

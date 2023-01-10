@@ -129,7 +129,7 @@
                 type="text"
                 placeholder="Email"
                 class="form-control ml-0 input"
-                :disabled="validate ? disabled : ''"
+                disabled
                 v-model="currentUser.userEmail"
               />
             </div>
@@ -141,22 +141,15 @@
               <label class="small-text lb font-weight-600">Country</label>
             </div>
             <div class="col-12 col-md-5 form-group">
-               
                 <el-select-v2
-                  v-model="selectCountry"
+                  v-model="selectCountryID"
+                  @change="setSelectedCountry"
                   :options="countries.map((i) =>({label: i.name , value: i.id }))"
                   placeholder="Select Country"
                   class="w-100"
                   size="large"
                   style="width: 100%"
                 />
-              <!-- <Dropdown
-                :options="countries"
-                optionLabel="name"
-                placeholder="Select Country"
-                style="width: 100%"
-                v-model="selectCountry"
-              /> -->
             </div>
             <div class="col-md-4"></div>
           </div>
@@ -165,22 +158,15 @@
               <label class="small-text lb font-weight-600">Time zone</label>
             </div>
             <div class="col-12 col-md-5 form-group">
-              <!-- {{selectTime}} -->
-              <!-- <el-select-v2
-                  v-model="selectTime"
-                  :options="timeZone.map((i) =>({label: i.name , value: i.id }))"
+              <el-select-v2
+                  v-model="selectTimeID"
+                  @change="setSelectTimeZone"
+                  :options="timeZone.map((i) =>({label: i.name , value: i.value }))"
                   placeholder="Select time zone"
                   class="w-100"
                   size="large"
                   style="width: 100%"
-                /> -->
-              <Dropdown
-                :options="timeZone"
-                optionLabel="name"
-                placeholder="Select time zone"
-                style="width: 100%"
-                v-model="selectTime"
-              />
+                />
             </div>
             <div class="col-md-4"></div>
           </div>
@@ -261,24 +247,36 @@
 
 <script>
 import axios from "@/gateway/backendapi";
-import { ElMessage, ElMessageBox } from "element-plus";
+import { ElMessage } from "element-plus";
 import store from "@/store/store";
-import Dropdown from "primevue/dropdown";
 import { ref } from "vue";
 import router from "../../router";
 import TimeZone from "@/services/user/timeZone";
 export default {
-  components: { Dropdown },
+  components: { },
   setup() {
     const churchData = ref({});
     let filterFields = ref([]);
     const timeZone = ref(TimeZone.timeZones);
+    const selectCountryID = ref(null)
+    const selectTimeID = ref(null)
     let url = ref("");
     let a = ref("");
     let b = ref("b");
-    let selectCountry = ref(null);
+    let selectCountry = ref({});
     let selectTime = ref({});
     let image;
+
+    const setSelectedCountry = () => {
+      selectCountry.value = countries.value.find((i) => {
+        return i.id === selectCountryID.value
+      })
+    }
+    const setSelectTimeZone = () => {
+      selectTime.value = timeZone.value.find((i) => {
+        return i.value === selectTimeID.value
+      })
+    }
     const imageSelected = (e) => {
       image = e.target.files[0];
       url.value = URL.createObjectURL(image);
@@ -295,7 +293,7 @@ export default {
         console.log(data);
         countries.value = data;
         getChurchProfile();
-      } catch (error) {
+      } catch (error) {getChurchProfile
         console.log(error);
       }
     };
@@ -305,15 +303,17 @@ export default {
       try {
         const { data } = await axios.get("/mobile/v1/Profile/GetChurchProfile");
         churchData.value = data.returnObject;
-        if (countries.value.length > 0) {
+        
           selectCountry.value = countries.value.find((i) => {
             return i.id === churchData.value.countryID;
           });
-        }
+          selectCountryID.value = selectCountry.value.id
 
         selectTime.value = TimeZone.timeZones.find(
           (i) => i.value == churchData.value.timeZone
         );
+         selectTimeID.value = selectTime.value.value
+
         console.log(churchData);
       } catch (error) {
         console.log(error);
@@ -366,6 +366,10 @@ export default {
 
     return {
       churchData,
+      selectCountryID,
+      selectTimeID,
+      setSelectTimeZone,
+      setSelectedCountry,
       url,
       imageSelected,
       timeZone,
