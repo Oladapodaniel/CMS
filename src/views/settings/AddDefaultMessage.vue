@@ -66,10 +66,25 @@
           </div>
           <div class="row g-3 align-items-center">
             <div class="col-auto w-25"></div>
-            <div class="col-auto w-100 button-add">
-              <button
+            <div class="col-auto w-100">
+               <el-button type="primary" class="btn-primary"  style="
+                  float: right;
+                  margin-left: 20px;
+                  border-radius: 22px;
+                  font-size: 16px;
+                  font-weight: 600;
+                " round>Save</el-button>
+
+              <!-- <el-button @click="callButton" class="saveButton btn-primary" :loading="loading" color="136acd" style="
+                  float: right;
+                  margin-left: 20px;
+                  border-radius: 22px;
+                  font-size: 16px;
+                  font-weight: 600;
+                " round>Save</el-button> -->
+              <!-- <button
                 type="button"
-                class="btn btn-primary h-25 saveButton"
+                class="btn btn-primary h-25 saveButton" 
                 style="
                   float: right;
                   margin-left: 20px;
@@ -77,12 +92,21 @@
                   font-size: 16px;
                   font-weight: 600;
                 "
-                @click="callButton"
+                
               >
                 Save
-              </button>
+              </button> -->
               <router-link to="/tenant/settings/defaultmessage"
-                ><button
+                >
+                <el-button style="
+                    float: right;
+                    border-radius: 22px;
+                    font-size: 16px;
+                    font-weight: 600;
+                    outline: none;
+                    hover: none;
+                  " round>Discard</el-button>
+                <!-- <button
                   type="button"
                   class="btn h-25 btn-outline-secondary discard mobileResp"
                   style="
@@ -95,7 +119,8 @@
                   "
                 >
                   Discard
-                </button></router-link
+                </button> -->
+                </router-link
               >
             </div>
           </div>
