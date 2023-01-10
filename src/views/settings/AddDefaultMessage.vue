@@ -7,12 +7,12 @@
         <hr />
         <div class="container-form">
           <div class="row g-3 align-items-center">
-            <div class="col-auto w-25">
+            <div class="text-left text-sm-right col-12 col-sm-3">
               <label for="inputPassword6" class="col-form-label"
                 >Category:</label
               >
             </div>
-            <div class="col-auto w-75">
+            <div class=" col-12  col-sm-9">
               <el-select-v2
                   v-model="selectCategory"
                   :options="Membership.map((i) =>({label: i.name , value: i.value }))"
@@ -24,10 +24,10 @@
             </div>
           </div>
           <div class="row g-3 align-items-center">
-            <div class="col-auto w-25">
+            <div class="text-left text-sm-right col-12 col-sm-3">
               <label for="inputPassword6" class="col-form-label">Type:</label>
             </div>
-            <div class="col-auto w-75">
+            <div class=" col-12  col-sm-9">
               <el-select-v2
                   v-model="selectType"
                   :options="Sms.map((i) =>({label: i.name , value: i.value }))"
@@ -39,29 +39,22 @@
             </div>
           </div>
           <div class="row g-3 align-items-center">
-            <div class="col-auto w-25">
+            <div class="  text-left text-sm-right col-12 col-sm-3">
               <label for="inputPassword6" class="col-form-label"
                 >Subject:</label
               >
             </div>
-            <div class="col-auto w-75">
-              <input
-                type="text"
-                v-model="subject"
-                id="inputPassword6"
-                class="form-control"
-                style="height: 40px"
-                aria-describedby="passwordHelpInline"
-              />
+            <div class=" col-12  col-sm-9">
+              <el-input v-model="subject" type="text" class="" id="inputPassword6" />
             </div>
           </div>
           <div class="row g-3 align-items-center">
-            <div class="col-auto w-25">
+            <div class="text-left text-sm-right col-12 col-sm-3">
               <label for="inputPassword6" class="col-form-label"
                 >Message:</label
               >
             </div>
-            <div class="col-auto w-75">
+            <div class="col-12  col-sm-9">
               <el-input
                 v-model="message"
                 :rows="2"
@@ -123,6 +116,7 @@ export default {
       message: "",
       subject: "",
       selectCategory: null,
+      loading: false,
       Membership: messageOptions.Membership,
       selectType: null,
       Sms: messageOptions.Sms,
@@ -131,10 +125,13 @@ export default {
   },
   methods: {
     callButton() {
+      this.loading = true
       if (!this.$route.query.messageId) {
         this.createDefaultMessage();
+        this.loading = false
       } else {
         this.updateDefaultMessage();
+        this.loading = false
       }
     },
     createDefaultMessage() {
