@@ -450,6 +450,7 @@ export default {
           mediaUrl: postToEdit.value.mediaUrl,
           title: postCategory.value.name,
           postId: route.query.postId,
+          showOnMainThread: showOnMainThread.value ? showOnMainThread.value : false
         };
         updatePost(body);
       } else {

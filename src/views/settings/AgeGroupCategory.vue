@@ -19,28 +19,17 @@
                 <div class="col-md-12 py-5 grey-background">
                   <div class="row d-md-flex justify-content-around">
                     <div class="col-md-7">
-                      <input
-                        type="text"
-                        class="form-control"
-                        placeholder="Age Group category"
+                      <el-input
                         v-model="ageGroup"
+                        :rows="2"
+                        type="text"
+                        placeholder="Age Group category"
+                        style="border-radius: 5px; width: 100%"
+                        size="large"
                       />
                     </div>
                     <div class="col-md-3 d-flex justify-content-end">
-                      <button
-                        class="
-                          btn
-                          primary-btn
-                          text-white
-                          bold
-                          px-md-5 px-4
-                          py-1
-                          mt-sm-3 mt-lg-0 mt-xl-0 mt-md-0 mt-3
-                        "
-                        @click="saveAge"
-                      >
-                        Save
-                      </button>
+                       <el-button @click="saveAge" size="large" :loading="loading" class="font-weight-bold px-md-4 px-3 py-1 mt-sm-3 mt-lg-0 mt-xl-0 mt-md-0 mt-3  " color="#136acd"  round> Save </el-button>
                     </div>
                   </div>
                 </div>
@@ -91,20 +80,23 @@
                   >
                   <div class="row">
                     <div class="col-md-6 col-6 d-flex justify-content-start">
-                      <button
-                        class="btn secondary-btn py-1 px-4"
+                      <el-button
+                        class=" secondary-btn  py-1 px-4"
+                        color="#EBEFF4"
                         @click="openType(index)"
+                        round
                       >
                         View
-                      </button>
+                      </el-button>
                     </div>
                     <div class="col-md-6 col-6 d-flex justify-content-end">
-                      <button
-                        class="delbtn py-1 px-3 primary-btn"
+                      <el-button
+                        class="delbtn   py-1 px-3 primary-btn"
                         @click="deletePop(type.id)"
+                        round
                       >
                         Delete
-                      </button>
+                      </el-button>
                     </div>
                   </div>
                 </div>
@@ -124,9 +116,9 @@
                 >
                   <label for="" class="d-flex mt-4">
                     <span class="mr-2">Name</span>
-                    <input
+                    <el-input
                       type="text"
-                      class="form-control"
+                      class="w-100  "
                       v-model="typeName"
                     />
                   </label>
@@ -141,21 +133,25 @@
                   "
                 >
                   <div class="row">
-                    <div class="col-md-6 col-6 d-flex justify-content-start">
-                      <button
-                        class="btn primary-btn save-btn py-1 px-4 ml-md-0 ml-5"
+                    <div class="col-md-6 col-6">
+                      <el-button
+                        class="save-btn text-white font-weight-bold py-1 px-4 ml-md-0 ml-5"
                         @click="updateAge(type.id, index)"
+                        round
+                        :loading="loading"
                       >
                         Save
-                      </button>
+                      </el-button>
                     </div>
-                    <div class="col-md-6 col-6 d-flex justify-content-end">
-                      <button
-                        class="btn secondary-btn py-1 px-3"
+                    <div class="col-md-6 col-6">
+                      <el-button
+                        class=" secondary-btn py-1 px-3"
                         @click="discard"
+                        color="#EBEFF4"
+                        round
                       >
                         Discard
-                      </button>
+                      </el-button>
                     </div>
                   </div>
                 </div>
@@ -192,6 +188,7 @@ export default {
     return {
       types: [],
       vissibleTab: "",
+      loading: false,
       typeName: "",
       ageGroup: "",
       tenantId: "",
@@ -201,8 +198,8 @@ export default {
 
   methods: {
     async getGroup() {
+      this.loading = true;
       try {
-        this.loading = true;
         const { data } = await axios.get("/api/Settings/GetTenantAgeGroups");
         this.types = data;
         this.loading = false;
@@ -211,6 +208,7 @@ export default {
       }
     },
     async saveAge() {
+      this.loading = true
       try {
         await axios.post("/api/Settings/CreateTenantAgeGroup/" + this.ageGroup);
         this.getGroup();
@@ -219,9 +217,13 @@ export default {
           type: "success",
           message: "Age Group Save Successfully",
         });
+
+        this.loading = false
+
       } catch (error) {
         finish();
         console.log(error);
+        this.loading = false
       }
     },
     async deleteAge(id) {
@@ -254,6 +256,7 @@ export default {
         });
     },
     async updateAge(id, index) {
+      this.loading = true
       try {
         await axios.put("/api/Settings/UpdateTenantAgeGroup", {
           name: this.typeName,
@@ -265,9 +268,11 @@ export default {
           type: "success",
           message: "Age Group Updated Successfully",
         });
+        this.loading = false
       } catch (error) {
         finish();
         console.log(error);
+        this.loading = false
       }
     },
     openType(index) {

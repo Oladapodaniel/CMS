@@ -45,7 +45,7 @@
               >
             </div>
             <div class=" col-12  col-sm-9">
-              <el-input v-model="subject" type="text" class="" id="inputPassword6" />
+              <el-input v-model="subject" size="large" type="text" class="" id="inputPassword6" />
             </div>
           </div>
           <div class="row g-3 align-items-center">
@@ -64,38 +64,8 @@
               />
             </div>
           </div>
-          <div class="row g-3 align-items-center">
-            <div class="col-auto w-25"></div>
-            <div class="col-auto w-100">
-               <el-button type="primary" class="btn-primary"  style="
-                  float: right;
-                  margin-left: 20px;
-                  border-radius: 22px;
-                  font-size: 16px;
-                  font-weight: 600;
-                " round>Save</el-button>
-
-              <!-- <el-button @click="callButton" class="saveButton btn-primary" :loading="loading" color="136acd" style="
-                  float: right;
-                  margin-left: 20px;
-                  border-radius: 22px;
-                  font-size: 16px;
-                  font-weight: 600;
-                " round>Save</el-button> -->
-              <!-- <button
-                type="button"
-                class="btn btn-primary h-25 saveButton" 
-                style="
-                  float: right;
-                  margin-left: 20px;
-                  border-radius: 22px;
-                  font-size: 16px;
-                  font-weight: 600;
-                "
-                
-              >
-                Save
-              </button> -->
+          <div class="row  g-3 align-items-center justify-content-center">
+            <div class="col-md-5 d-flex  w-100">
               <router-link to="/tenant/settings/defaultmessage"
                 >
                 <el-button style="
@@ -105,23 +75,16 @@
                     font-weight: 600;
                     outline: none;
                     hover: none;
-                  " round>Discard</el-button>
-                <!-- <button
-                  type="button"
-                  class="btn h-25 btn-outline-secondary discard mobileResp"
-                  style="
-                    float: right;
-                    border-radius: 22px;
-                    font-size: 16px;
-                    font-weight: 600;
-                    outline: none;
-                    hover: none;
-                  "
-                >
-                  Discard
-                </button> -->
+                  " round size="large" >Discard</el-button>
                 </router-link
               >
+              <el-button color="#136acd" :loading="loading" size="large" @click="callButton" class=" saveButton "  style="
+                  float: right;
+                  margin-left: 20px;
+                  border-radius: 22px;
+                  font-size: 16px;
+                  font-weight: 600;
+                "  round>Save</el-button>
             </div>
           </div>
         </div>
@@ -132,7 +95,7 @@
 
 <script>
 import messageOptions from "../../services/defaultmessage/default_message_service";
-import { ElMessage, ElMessageBox } from "element-plus";
+import { ElMessage } from "element-plus";
 import axios from "@/gateway/backendapi";
 
 export default {
@@ -160,6 +123,7 @@ export default {
       }
     },
     createDefaultMessage() {
+      this.loading = true
       if (
         this.subject === "" ||
         this.message === "" ||
@@ -188,7 +152,7 @@ export default {
             type: "success",
             message: "Default Message Created succesfully",
           });
-
+          this.loading = false
           this.$router.push("/tenant/settings/defaultmessage");
         })
         .catch((error) => {
@@ -197,9 +161,11 @@ export default {
             message: "Failed",
           });
           console.log(error);
+          this.loading = false
         });
     },
     async updateDefaultMessage() {
+      this.loading = true
       let newUpdate = {
         id: this.defaultMessage.returnObject.id,
         subject: this.subject,
@@ -212,9 +178,11 @@ export default {
         .then((res) => {
           console.log(res);
           this.$router.push("/tenant/settings/defaultmessage");
+          this.loading = false
         })
         .catch((error) => {
           console.log(error);
+          this.loading = false
         });
     },
     async getDefaultMessage() {

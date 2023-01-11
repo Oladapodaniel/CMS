@@ -19,28 +19,33 @@
                 <div class="col-md-12 py-5 grey-background">
                   <div class="row d-md-flex justify-content-around">
                     <div class="col-md-7">
-                      <input
+                      <el-input
                         type="text"
-                        class="form-control"
+                        class="w-100 "
                         placeholder="Attendance category name"
                         v-model="attendanceName"
+                        size="large"
                       />
                     </div>
                     <div class="col-md-3 d-flex justify-content-end">
-                      <button
+                      <el-button
                         class="
-                          btn
                           primary-btn
                           text-white
-                          px-md-5 px-4
+                          font-weight-bold
+                          px-md-4 px-3
                           py-1
                           bold
                           mt-sm-3 mt-lg-0 mt-xl-0 mt-md-0 mt-3
                         "
+                        size="large"
+                        color="#136acd"
+                        round
                         @click="saveAttendant"
+                        :loading="loading"
                       >
                         Save
-                      </button>
+                      </el-button>
                     </div>
                   </div>
                 </div>
@@ -90,20 +95,23 @@
                   >
                   <div class="row">
                     <div class="col-md-6 col-6 d-flex justify-content-center">
-                      <button
-                        class="btn secondary-btn py-1 px-4"
+                      <el-button
+                        class=" secondary-btn py-1 px-4"
                         @click="openType(index)"
+                        color="#EBEFF4"
+                        round
                       >
                         View
-                      </button>
+                      </el-button>
                     </div>
                     <div class="col-md-6 col-6 d-flex justify-content-start">
-                      <button
+                      <el-button
                         class="py-1 primary-btn px-3 delbtn"
                         @click="deletePop(type.id)"
+                        round
                       >
                         Delete
-                      </button>
+                      </el-button>
                     </div>
                   </div>
                 </div>
@@ -124,9 +132,9 @@
                 >
                   <label for="" class="d-flex mt-4">
                     <span class="mr-2">Name</span>
-                    <input
+                    <el-input
                       type="text"
-                      class="form-control"
+                      class="w-100 "
                       v-model="typeName"
                     />
                   </label>
@@ -141,21 +149,25 @@
                   "
                 >
                   <div class="row">
-                    <div class="col-md-6 col-6 d-flex justify-content-start">
-                      <button
-                        class="btn primary-btn save-btn py-1 px-4 ml-md-0 ml-5"
+                    <div class="col-md-6 col-6 ">
+                      <el-button
+                        class="text-white primary-btn save-btn px-4 ml-md-0 ml-5"
                         @click="updateAttendant(type.id, index)"
+                        round
+                        :loading="loading"
                       >
                         Save
-                      </button>
+                      </el-button>
                     </div>
-                    <div class="col-md-6 col-6 d-flex justify-content-end">
-                      <button
-                        class="btn secondary-btn py-1 px-3"
+                    <div class="col-md-6 col-6 ">
+                      <el-button
+                        class=" secondary-btn  px-3"
                         @click="discard"
+                        color="#EBEFF4"
+                        round
                       >
                         Discard
-                      </button>
+                      </el-button>
                     </div>
                   </div>
                 </div>

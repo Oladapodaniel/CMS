@@ -32,11 +32,12 @@
               >
             </div>
             <div class="col-12 col-md-5 form-group">
-              <input
+              <el-input
                 type="text"
                 placeholder="name()"
-                class="form-control ml-0 input"
+                class="w-100 ml-0 "
                 id="firstname"
+                size="large"
                 v-model="churchData.churchName"
                 required
               />
@@ -78,11 +79,12 @@
               >
             </div>
             <div class="col-12 col-md-5 form-group">
-              <input
+              <el-input
                 type="text"
                 placeholder="Aka/Parish"
                 v-model="churchData.aka"
-                class="form-control ml-0 input"
+                class=" w-100 ml-0"
+                size="large"
               />
             </div>
             <div class="col-md-4"></div>
@@ -93,11 +95,12 @@
               <label class="small-text lb font-weight-600">Address</label>
             </div>
             <div class="col-12 col-md-5 form-group">
-              <input
+              <el-input
                 type="text"
                 placeholder="Address"
                 v-model="churchData.address"
-                class="form-control ml-0 input"
+                class=" w-100 ml-0"
+                size="large"
               />
             </div>
             <div class="col-md-4"></div>
@@ -110,11 +113,12 @@
               >
             </div>
             <div class="col-12 col-md-5 form-group">
-              <input
+              <el-input
                 type="text"
                 placeholder="Phone Number"
                 v-model="churchData.phoneNumber"
-                class="form-control ml-0 input"
+                class="w-100 ml-0 "
+                size="large"
               />
             </div>
             <div class="col-md-4"></div>
@@ -125,12 +129,13 @@
               <label class="small-text lb font-weight-600" for="">Email</label>
             </div>
             <div class="col-12 col-md-5 form-group">
-              <input
+              <el-input
                 type="text"
                 placeholder="Email"
-                class="form-control ml-0 input"
+                class="w-100 ml-0 "
                 disabled
-                v-model="currentUser.userEmail"
+                v-model="churchData.email"
+                size="large"
               />
             </div>
             <div class="col-md-4"></div>
@@ -178,11 +183,12 @@
               >
             </div>
             <div class="col-12 col-md-5 form-group">
-              <input
+              <el-input
                 type="text"
                 placeholder="Website URL"
-                class="form-control ml-0 input"
+                class=" ml-0 "
                 v-model="churchData.websiteUrl"
+                size="large"
               />
             </div>
             <div class="col-md-4"></div>
@@ -205,11 +211,12 @@
               <label class="small-text lb font-weight-600" for="">Name</label>
             </div>
             <div class="col-12 col-md-5 form-group">
-              <input
+              <el-input
                 type="text"
                 placeholder="Name"
                 v-model="churchData.headPastorName"
-                class="form-control ml-0 input"
+                class="w-100  ml-0"
+                size="large"
               />
             </div>
             <div class="col-md-4"></div>
@@ -220,11 +227,12 @@
               <label class="small-text lb font-weight-600" for="">Email</label>
             </div>
             <div class="col-12 col-md-5 form-group">
-              <input
+              <el-input
                 type="text"
                 placeholder="Email"
-                class="form-control ml-0 input"
+                class="w-100 ml-0 "
                 v-model="churchData.headPastorEmail"
+                size="large"
               />
             </div>
             <div class="col-md-4"></div>
@@ -234,8 +242,8 @@
             <div class="col-12 col-md-3 text-md-right pr-0">
               <label class="small-text" for=""></label>
             </div>
-            <div class="col-12 col-md-5 form-group">
-              <button class="primary-btn text-white px-4">Save</button>
+            <div class="col-12 col-md-5 ">
+              <el-button class="primary-btn font-weight-bold text-white px-4" color="#136acd" size="large" :loading="loading" round>Save</el-button>
             </div>
             <div class="col-md-4"></div>
           </div>
@@ -257,6 +265,7 @@ export default {
   setup() {
     const churchData = ref({});
     let filterFields = ref([]);
+    const loading = ref(false)
     const timeZone = ref(TimeZone.timeZones);
     const selectCountryID = ref(null)
     const selectTimeID = ref(null)
@@ -314,7 +323,7 @@ export default {
         );
          selectTimeID.value = selectTime.value.value
 
-        console.log(churchData);
+        console.log(churchData.value);
       } catch (error) {
         console.log(error);
       }
@@ -323,6 +332,7 @@ export default {
     const uploadData = ref({});
     const display = ref(false);
     const churchProfile = () => {
+      loading.value = true
       let formData = new FormData();
       formData.append("ChurchName", churchData.value.churchName);
       formData.append("AKA", churchData.value.aka);
@@ -343,9 +353,11 @@ export default {
             message: res.data.response,
           });
           router.push("/tenant/settings/defaultmessage");
+          loading.value = false
         })
         .catch((error) => {
           console.log(error);
+          loading.value = false
         });
     };
 
@@ -366,6 +378,7 @@ export default {
 
     return {
       churchData,
+      loading,
       selectCountryID,
       selectTimeID,
       setSelectTimeZone,

@@ -28,9 +28,9 @@
                 <div class="col-md-12 py-5 grey-background">
                   <div class="row d-md-flex">
                     <div class="col-md-8 col-lg-9">
-                      <input
+                      <el-input
                         type="text"
-                        class="form-control"
+                        class="w-100"
                         placeholder="Add branch Level"
                         v-model="branchTypes"
                       />
@@ -43,12 +43,14 @@
                         mt-3 mt-md-0
                       "
                     >
-                      <button
-                        class="btn primary-bg default-btn text-white border-0"
+                      <el-button
+                        class="btn primary-bg font-weight-bold default-btn text-white border-0"
                         @click="saveBranch"
+                        color="#136acd"
+                        round
                       >
                         Save
-                      </button>
+                      </el-button>
                     </div>
                   </div>
                   <div class="row mt-2 d-flex justify-content-around">
@@ -123,20 +125,23 @@
                   >
                   <div class="row">
                     <div class="col-md-6 col-6 d-flex justify-content-center">
-                      <button
-                        class="btn secondary-btn py-1 px-4"
+                      <el-button
+                        class=" secondary-btn py-1 px-4"
                         @click="openClassification(branch.index)"
+                        round
+                        color="#EBEFF4"
                       >
                         View
-                      </button>
+                      </el-button>
                     </div>
                     <div class="col-md-6 col-6 d-flex justify-content-start">
-                      <button
-                        class="btn btn-danger py-1 primary-btn delete-btn"
+                      <el-button
+                        class=" py-1 primary-btn delete-btn"
                         @click="deletePop(branch.id)"
+                        round
                       >
                         Delete
-                      </button>
+                      </el-button>
                     </div>
                   </div>
                 </div>
@@ -157,9 +162,9 @@
                 >
                   <label for="" class="d-flex mt-4">
                     <span class="mr-2">Name</span>
-                    <input
+                    <el-input
                       type="text"
-                      class="form-control"
+                      class="w-100"
                       v-model="branch.name"
                     />
                   </label>
@@ -176,20 +181,23 @@
                 >
                   <div class="row">
                     <div class="col-md-6 col-6 d-flex justify-content-start">
-                      <button
-                        class="btn primary-btn save-btn py-1 px-4 ml-md-0 ml-5"
+                      <el-button
+                        class="primary-btn text-white save-btn py-1 px-4 ml-md-0 ml-5"
                         @click="updateBranch(branch)"
+                        round
                       >
                         Save
-                      </button>
+                      </el-button>
                     </div>
                     <div class="col-md-6 col-6 d-flex justify-content-end">
-                      <button
-                        class="btn secondary-btn py-1 px-3"
+                      <el-button
+                        class=" secondary-btn py-1 px-3"
                         @click="discard"
+                        color="#EBEFF4"
+                        round
                       >
                         Discard
-                      </button>
+                      </el-button>
                     </div>
                   </div>
                 </div>
