@@ -12,6 +12,7 @@ const deviceBreakpoint = () => {
             lgAndUp.value = breakpoint.up() == 'lgAndUp'
             xlAndUp.value = breakpoint.up() == 'xlAndUp'
             mdAndUp.value = breakpoint.up() == 'mdAndUp'
+            xsOnly.value = breakpoint.only() == 'xsOnly'
           });
     })
 

@@ -153,8 +153,8 @@
                 </div>
                 <template #footer>
                     <span class="dialog-footer d-flex justify-content-end text-center">
-                        <el-button @click="displayModal = false">Cancel</el-button>
-                        <el-button color="#136acd" :loading="loading" @click="addToMembers">
+                        <el-button @click="displayModal = false" round>Cancel</el-button>
+                        <el-button color="#136acd" :loading="loading" @click="addToMembers" round>
                         Save
                         </el-button>
                     </span>
@@ -293,10 +293,10 @@ export default {
                     store.dispatch('membership/showImportedPeople', memberData.value)
                     displayModal.value = false
                     loading.value = false
-                    window.location.href = 'https://my.churchplus.co/tenant/people';
+                    window.location.href = window.location.origin + '/tenant/people';
                     ElMessage({
-                        type: 'warning',
-                        message: `There are ${data.returnObject.returnList} ${data.returnObject.returnList === 1 ? "member" : "members"} that have been added already`,
+                        type: 'success',
+                        message: `${data.returnObject.returnList} ${data.returnObject.returnList === 1 ? "member" : "members"} added successfully`,
                         duration: 8000
                     })
                 }

@@ -43,6 +43,14 @@
                     style="height: 40px" @blur="invalidResponse"></vue-tel-input>
                 </div>
               </div>
+              
+              <div class="input-div">
+                <label class="mb-0">Select your country</label>
+                <div class="w-100">
+                  <el-select-v2 v-model="selectedCountryId" :options="countries.map(i => ({label: i.name, value: i.id}))" @change="setSelectedCountry" filterable
+                    placeholder="Select country" size="large" class="w-100" />
+                </div>
+              </div>
 
               <div class="input-div cstm-select w-100">
                 <label class="mb-0">What's the membership size of your ministry?</label>
@@ -127,23 +135,22 @@ export default {
         subscriptionPlanID: 1,
         countryId: 89,
         password: "password",
-        phoneNumber: "+234",
+        phoneNumber: "",
       },
 
       selectedCountry: {},
-      countries: [
-        { country: "Zambia", phoneCode: "234" },
-        { country: "Nigeria", phoneCode: "234" },
-        { country: "Congo", phoneCode: "235" },
-      ],
+      countries: [],
       loading: false,
       codeUrl: {},
       disableNext: false,
       membershipSizeList: ['1 - 100', '101 - 200', '201 - 500', '501 - 2000', '2001 - 10,000'].map(i => ({ value: i, label: i })),
+      usersPhoneCode: '',
+      selectedCountryId: null
     };
   },
   methods: {
     onInput(phone, phoneObject, input) {
+      this.usersPhoneCode = phoneObject ? phoneObject.country.dialCode : ''
       if (phoneObject?.formatted) {
         this.userDetails.phoneNumber = phoneObject.formatted;
         this.selectedCountry = this.countries.find(
@@ -208,6 +215,9 @@ export default {
         this.disableNext = true;
       }
     },
+    setSelectedCountry () {
+      this.selectedCountry = this.countries.find(i => i.id === this.selectedCountryId)
+    }
   },
 
   computed: {
@@ -229,13 +239,16 @@ export default {
 
   created() {
     this.userDetails.email = localStorage.getItem("email");
-    axios.get("/api/GetAllCountries").then((res) => {
+    setTimeout(() => {
+      axios.get("/api/GetAllCountries").then((res) => {
       this.countries = res.data;
-      this.selectedCountry = res.data.find(
-        (i) => i.phoneCode && i.phoneCode.includes("234")
+      this.selectedCountry = this.countries.find(
+        (i) => i.phoneCode && i.phoneCode.toString() === this.usersPhoneCode.toString()
       );
+      this.selectedCountryId = this.selectedCountry.id
     });
-  },
+    }, 2000);
+  }
 };
 </script>
 

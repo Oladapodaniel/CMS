@@ -99,9 +99,11 @@
               <div class="font-weight-700">Celebrations </div>
               <el-divider>
               </el-divider>
-              <el-icon class="angle-icon" @click="(showCelebration = !showCelebration)">
-                <ArrowDownBold />
-              </el-icon>
+              <div>
+                <el-icon class="angle-icon" @click="(showCelebration = !showCelebration)">
+                  <ArrowDownBold />
+                </el-icon>
+              </div>
             </div>
             <el-collapse-transition>
               <div v-show="showCelebration">
@@ -145,9 +147,11 @@
               <div class="font-weight-700">Additional~Information: </div>
               <el-divider>
               </el-divider>
-              <el-icon class="angle-icon" @click="(showAddInfo = !showAddInfo)">
-                <ArrowDownBold />
-              </el-icon>
+              <div>
+                <el-icon class="angle-icon" @click="(showAddInfo = !showAddInfo)">
+                  <ArrowDownBold />
+                </el-icon>
+              </div>
             </div>
             <el-collapse-transition>
               <div v-show="showAddInfo">

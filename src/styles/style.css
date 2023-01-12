@@ -1153,3 +1153,13 @@ rect.highcharts-background[fill] {
     width: auto !important;
     max-width: 50rem !important;
   }
+
+  .header-btn {
+    min-width: 150px !important
+  }
+
+  @media (max-width: 350px) {
+    .header-btn {
+      min-width: 120px !important
+    }
+  }

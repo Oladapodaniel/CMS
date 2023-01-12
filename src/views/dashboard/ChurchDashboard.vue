@@ -46,7 +46,7 @@
                 </div>
               </el-tooltip>
               <router-link :to="{ name: 'Subscription' }" class="mt-1">
-                <el-button color="#136acd" class="mt-2" style="height: 25px"
+                <el-button :color="!buttonTextCheck.color ? '#136acd' : ''" class="mt-2" style="height: 25px"
                   :class="[buttonTextCheck.color, { 'bg-warning': calculatedPercentage >= 90 }]" round>
                   <p class="mb-0 small" :class="[buttonTextCheck.color]">{{ buttonTextCheck.text }}</p>
                 </el-button>
@@ -305,7 +305,6 @@ import stopProgressBar from "../../services/progressbar/progress";
 import setupService from "../../services/setup/setupservice";
 import formatDate from "../../services/dates/dateformatter";
 import useSubscription from "../../services/subscription/useSubscription";
-import Tooltip from "primevue/tooltip";
 import deviceBreakpoint from "../../mixins/deviceBreakpoint";
 
 export default {
@@ -315,11 +314,6 @@ export default {
     ByMaritalStatusChart,
     ByGenderChart,
 
-  },
-
-
-  directives: {
-    tooltip: Tooltip,
   },
   data() {
     return {}

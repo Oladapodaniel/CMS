@@ -1,6 +1,6 @@
 <template>
     <div>
-        <div class="container p-0 m-0 over-con">
+        <div class="over-con">
             <div class="row main m-0">
                 <div class="col-md-12 primary-bg py-5 main-top">
                     <i class="pi pi-times close-icon"  @click="closeModal"></i>
@@ -15,8 +15,8 @@
                         </div>
                     </div>
                     <div class="row action-message py-4">
-                        <div class="col-md-12">
-                            <p class="text-center">{{ currency }} {{ amount }} worth of SMS units have been succefully added to your SMS unit balance</p>
+                        <div class="col-md-12 font-weight-600">
+                            <p class="text-center">{{ currency }} {{ amount }} worth of SMS units have been successfully added to your SMS unit balance</p>
                         </div>
                         <div class="col-md-12 text-center">
                             <p>Current Units Balance: <span class="font-weight-700" style="font-size: 20px">{{ balance }}</span></p>

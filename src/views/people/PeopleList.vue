@@ -66,8 +66,8 @@
       <p class="p-m-0">You are about to archive your member(s). Do you want to continue ?</p>
       <template #footer>
         <span class="dialog-footer">
-          <el-button @click="displayPositionArchive = false" color="#136acd" round plain>No</el-button>
-          <el-button type="primary" color="#136acd" :loading="archiveLoading" @click="archive('', 'multiple')" round>
+          <el-button @click="displayPositionArchive = false" color="#136acd" round>No</el-button>
+          <el-button color="#136acd" :loading="archiveLoading" @click="archive('', 'multiple')" round>
             Yes
           </el-button>
         </span>

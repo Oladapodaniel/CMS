@@ -6,19 +6,14 @@
           <h2 class="font-weight-bold intro-text">
             Choose a plan that's right for your church
           </h2>
-          <Toast />
-          <Dialog
-            :modal="true"
-            v-model:visible="purchaseIsSuccessful"
-            :style="{ maxWidth: '900px', }"
-            :ariaCloseLabel="X"
-            closeOnEscape="true"
+          <el-dialog
+            v-model="purchaseIsSuccessful"
+            class="smsUnitSuccess"
+            :width="mdAndUp || lgAndUp || xlAndUp ? '60%' : '100%' "
+            align-center
           >
-            <template #header style="d-none">
-              <h3>Header</h3>
-            </template>
-            <PaymentSuccessModal @close-modal="closeModal" :amount="amount" />
-          </Dialog>
+          <PaymentSuccessModal @close-modal="closeModal" :amount="amount" />
+          </el-dialog>
         </div>
       </div>
 
@@ -48,29 +43,38 @@
           <div class="row my-3">
             <div class="col-md-12">
               <div class="row">
-                <div
-                  class="col-md-3 d-flex align-items-center justify-content-md-end"
-                >
-                  <label for="">Amount:</label>
+                <div class="col-md-3 d-flex align-items-center justify-content-md-end">
+                  <label for="">Amount: <el-icon class="is-loading" v-show="checkingCoutryData">
+                      <Loading />
+                    </el-icon></label>
                 </div>
                 <div class="col-md-6">
                   <div class="row">
-                    <div class="col-5 col-sm-4 pr-0 d-flex align-items-center">
-                      <select
+                    <div class="col-12">
+                      <!-- <select
                         name=""
                         id=""
                         class="form-control flat-right-border px-sm-0"
                       >
                         <option value="">{{ userCurrencyName ? userCurrencyName : ''}}</option>
-                      </select>
+                      </select> -->
+                      <el-input v-model="amount" placeholder="Enter amount" class="input-with-select"
+                        :disabled="checkingCoutryData">
+                        <template #prepend>
+                          <el-select v-model="selectedCurrency" placeholder="Select" style="width: 115px"
+                            @change="resetCountryPricing" filterable>
+                            <el-option v-for="item in FLWupportedCurrencies" :label="item.value" :value="item.value" />
+                          </el-select>
+                        </template>
+                      </el-input>
                     </div>
-                    <div class="col-7 col-sm-8 pl-0 d-flex align-items-center">
+                    <!-- <div class="col-7 col-sm-8 pl-0 d-flex align-items-center">
                       <input
                         type="text"
                         v-model="amount"
                         class="form-control flat-left-border"
                       />
-                    </div>
+                    </div> -->
                   </div>
                 </div>
                 <div class="col-md-3"></div>
@@ -81,18 +85,11 @@
           <div class="row my-3">
             <div class="col-md-12">
               <div class="row">
-                <div
-                  class="col-md-3 d-flex align-items-center justify-content-md-end"
-                >
+                <div class="col-md-3 d-flex align-items-center justify-content-md-end">
                   <label for="">SMS Units:</label>
                 </div>
                 <div class="col-md-6">
-                  <input
-                    type="text"
-                    v-model="totalSMSUnits"
-                    disabled
-                    class="form-control flat-left-border"
-                  />
+                  <el-input type="text" v-model="totalSMSUnits" disabled class="flat-left-border" />
                 </div>
                 <div class="col-md-3"></div>
               </div>
@@ -102,19 +99,12 @@
           <div class="row my-3">
             <div class="col-md-12">
               <div class="row">
-                <div
-                  class="col-md-3 d-flex align-items-center justify-content-md-end"
-                >
+                <div class="col-md-3 d-flex align-items-center justify-content-md-end">
                   <label for="">Total:</label>
                 </div>
                 <div class="col-md-6">
-                  <input
-                    type="text"
-                    v-model="totalAmount"
-                    disabled
-                    class="form-control flat-left-border"
-                    @input="userCurrencyConversion()"
-                  />
+                  <el-input type="text" v-model="totalAmount" disabled class="flat-left-border"
+                    @input="userCurrencyConversion()" />
                 </div>
                 <div class="col-md-3"></div>
               </div>
@@ -122,45 +112,34 @@
           </div>
 
           <div class="row">
-            <div
-              class="col-md-12 py-3 d-flex flex-column align-items-center"
-            >
+            <div class="col-md-12 py-3 d-flex flex-column align-items-center">
               <p class="text-danger font-weight-700 mb-1" v-if="invalidAmount">
                 Please enter amount
               </p>
-              <button
+              <el-button color="#136acd" class="px-4" style="height: 43px; font-size: 1.06em" data-toggle="modal"
+                data-target="#PaymentOptionModal" round>Buy SMS Unit</el-button>
+              <!-- <button
                 class="primary-btn px-4 outline-none"
                   data-toggle="modal"
                   data-target="#PaymentOptionModal"  
               >
                 Buy SMS Unit
-              </button>
+              </button> -->
             </div>
           </div>
         </div>
       </div>
 
       <!-- payment modal for paystack and flutterwave  -->
-      <div
-        class="modal fade"
-        id="PaymentOptionModal"
-        tabindex="-1"
-        role="dialog"
-        aria-labelledby="exampleModalCenterTitle"
-        aria-hidden="true"
-      >
+      <div class="modal fade" id="PaymentOptionModal" tabindex="-1" role="dialog"
+        aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
         <div class="modal-dialog modal-dialog-centered" role="document">
           <div class="modal-content">
             <div class="modal-header bg-modal">
               <h5 class="modal-title" id="exampleModalLongTitle">
                 Payment methods
               </h5>
-              <button
-                type="button"
-                class="close"
-                data-dismiss="modal"
-                aria-label="Close"
-              >
+              <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                 <span aria-hidden="true" ref="close">&times;</span>
               </button>
             </div>
@@ -170,23 +149,15 @@
                   Continue payment with
                 </div>
               </div>
-              <div class="row row-button c-pointer" @click="payWithPaystack">
+              <div class="row row-button c-pointer" @click="payWithPaystack" v-if="selectedCurrency == 'NGN'">
                 <div class="col-12 col-md-4 col-sm-7 offset-1">
-                  <img
-                    style="width: 150px"
-                    src="../../assets/4PaystackLogo.png"
-                    alt="paystack"
-                  />
+                  <img style="width: 150px" src="../../assets/4PaystackLogo.png" alt="paystack" />
                 </div>
                 <!-- <PaymentOptionModal :orderId="formResponse.orderId" :donation="donationObj" :close="close" :name="name" :amount="amount" :converted="convertedAmount" :email="email" @payment-successful="successfulPayment" :gateways="formResponse.paymentGateWays" :currency="dfaultCurrency.shortCode" @selected-gateway="gatewaySelected"/> -->
               </div>
               <div class="row row-button c-pointer" @click="payWithFlutterwave">
                 <div class="col-12 col-md-4 col-sm-7 offset-1">
-                  <img
-                    style="width: 150px"
-                    src="../../assets/flutterwave_logo_color@2x.png"
-                    alt="flutterwave"
-                  />
+                  <img style="width: 150px" src="../../assets/flutterwave_logo_color@2x.png" alt="flutterwave" />
                 </div>
               </div>
               <!-- <div class="row row-button c-pointer" @click="makePayment">
@@ -215,11 +186,7 @@
           <h4 class="font-weight-700">Bank Payment</h4>
         </div>
         <div class="col-12 col-lg-8 offset-lg-2 pb-3">
-           <img
-              src="../../assets/payment-type.jpeg"
-              class="px-1 w-100"
-              alt="Image"
-            />
+          <img src="../../assets/payment-type.jpeg" class="px-1 w-100" alt="Image" />
         </div>
       </div>
 
@@ -237,15 +204,15 @@
                     />
                   </div>
                 </div> -->
-                <!-- <div class="col-md-8 px-md-1">
+      <!-- <div class="col-md-8 px-md-1">
                   <p class="font-weight-600 pt-2">Guarantee Trust Bank</p>
                   <p class="mb-0">Account Name:</p>
                   <p class="mb-0">Account Number:</p>
                 </div> -->
-              <!-- </div>
+      <!-- </div>
             </div> -->
 
-            <!-- <div class="col-md-4 my-2">
+      <!-- <div class="col-md-4 my-2">
               <div class="row">
                 <div class="col-md-12">
                   <img
@@ -263,7 +230,7 @@
                 </div>
               </div>
             </div> -->
-          <!-- </div>
+      <!-- </div>
         </div>
       </div> -->
     </div>
@@ -276,12 +243,14 @@ import axios from "@/gateway/backendapi";
 import PaymentSuccessModal from "@/components/payment/PaymentSuccessful.vue"
 import store from '../../store/store'
 import userService from '../../services/user/userservice'
-import { useToast } from "primevue/usetoast";
 import stopProgressBar from "../../services/progressbar/progress"
 import membershipService from "../../services/membership/membershipservice";
 import { v4 as uuidv4 } from 'uuid';
 import currencyConverter from "../../services/currency-converter/currencyConverter"
-
+import supportedCurrencies from "../../services/user/flutterwaveSupportedCurrency"
+import productPricing from "../../services/user/productPricing";
+import { ElMessage } from 'element-plus'
+import deviceBreakpoint from "../../mixins/deviceBreakpoint";
 
 export default {
   components: { PaymentSuccessModal },
@@ -290,19 +259,19 @@ export default {
     const smsUnits = ref(0);
     const invalidAmount = ref(false);
     const purchaseIsSuccessful = ref(false);
-    const toast = useToast();
     const isProduction = ref(false);
     const uuid = ref(uuidv4());
     const totalSMSUnits = computed(() => {
       if (amount.value <= 0) return "";
-      return Math.ceil(amount.value / currentUser.value.pricePerUnitSMS);
+      return Math.round(amount.value / +UserSMSPricing.value.price);
+      // return Math.ceil(amount.value / currentUser.value.pricePerUnitSMS);
     });
 
     const totalAmount = computed(() => {
       if (amount.value <= 0) return "";
       return Math.ceil(amount.value);
     });
-    
+
     const userEmail = ref(store.getters.userEmail);
     // console.log(userEmail, "the Lord is Good")
     const currentUser = ref(store.getters.currentUser);
@@ -313,6 +282,37 @@ export default {
     const close = ref(null);
     const isSuccessful = ref(false);
     const pricePerUnitSMS = ref(0);
+    const FLWupportedCurrencies = ref(supportedCurrencies);
+    const selectedCurrency = ref(null)
+    const UserSMSPricing = ref({})
+    const UserProductPricing = ref({})
+    const countries = ref([])
+    const checkingCoutryData = ref(false)
+    const { mdAndUp, lgAndUp, xlAndUp } = deviceBreakpoint()
+
+
+    const getAllCountries = () => {
+      axios.get("/api/GetAllCountries").then((res) => {
+        countries.value = res.data;
+        const userCountryID = countries.value.find(i => i.currency == selectedCurrency.value)
+        getProductPricing(userCountryID.id)
+      })
+        .catch(err => console.error(err))
+    }
+
+    const getProductPricing = async (id) => {
+      let { data } = await productPricing.getProductPricing(id)
+      UserProductPricing.value = data
+      UserSMSPricing.value = data.find(i => i.product.name.toLowerCase() === 'sms')
+      checkingCoutryData.value = false
+    }
+
+
+    const resetCountryPricing = () => {
+      checkingCoutryData.value = true
+      const countryIDObj = countries.value.find(i => i.currency == selectedCurrency.value)
+      getProductPricing(countryIDObj.id)
+    }
 
     const getUserEmail = async () => {
       userService.getCurrentUser()
@@ -325,41 +325,46 @@ export default {
           pricePerUnitSMS.value = res.pricePerUnitSMS
           currentUser.value = res
 
+          const userCurrencySupported = FLWupportedCurrencies.value.find(i => i.value === currentUser.value.currency)
+          selectedCurrency.value = userCurrencySupported ? userCurrencySupported.value : 'USD'
+          getAllCountries();
+
         })
         .catch(err => {
           console.log(err);
         })
     }
-    console.log(currentUser, 'current user ...');
+
+    if (!userEmail.value || !tenantId.value || !pricePerUnitSMS.value) getUserEmail();
+
+    // const getEmail = async () => {
+    //   if (!currentUser.value || !currentUser.value.userEmail) {
+    //     membershipService.getSignedInUser()
+    //       .then(res => {
+    //         console.log(res)
+    //         // userEmail.value = res.userEmail;
+    //         // churchName.value = res.churchName;
+    //       })
+    //       .catch(err => {
+    //         console.log(err)
+    //       })
+    //   }
+    // }
+    // getEmail()
 
     // const userEmail = ref("");
-      if (!userEmail.value || !tenantId.value|| !pricePerUnitSMS.value ) getUserEmail();
-
-    const getEmail = async () => {
-       if (!currentUser.value || !currentUser.value.userEmail){
-          membershipService.getSignedInUser()
-          .then(res => {
-            console.log(res)
-              // userEmail.value = res.userEmail;
-              // churchName.value = res.churchName;
-          })
-          .catch(err =>{
-            console.log(err)
-          })
-       }
-    }
-     getEmail()
-
-    // const userEmail = ref("");
-     const userCurrencyName = computed(() => {
-        // if (!currentUser.value) return "ngn";
-        // console.log(currentUser, 'compute current user');
-        if (currentUser.value && currentUser.value.flutterwaveEnabled) return currentUser.value.currency;
-        return 'USD';
-      });
+    //  const userCurrencyName = computed(() => {
+    //     // if (!currentUser.value) return "ngn";
+    //     // console.log(currentUser, 'compute current user');
+    //     if (currentUser.value && currentUser.value.flutterwaveEnabled) {
+    //     return currentUser.value.currency;
+    //     } else {
+    //     return 'USD';
+    //     }
+    //   });
 
     const payWithPaystack = (e) => {
-      initializePayment(0)    
+      initializePayment(0)
       const currencyConvertedAmount = currencyConverter.convertCurrencyTo(+amount.value, 'ngn', 'usd').then((res) => {
         console.log(res, 'res success');
       })
@@ -370,24 +375,24 @@ export default {
         invalidAmount.value = true;
         return false;
       }
-         const getUserEmail = async () => {
-         userService.getCurrentUser()
-        .then(res => {
-          userEmail.value = res.userEmail;
-          churchName.value = res.churchName;
-          tenantId.value = res.tenantId;
-          userCurrency.value = res.currency;
-          currentUser.value = res
+      const getUserEmail = async () => {
+        userService.getCurrentUser()
+          .then(res => {
+            userEmail.value = res.userEmail;
+            churchName.value = res.churchName;
+            tenantId.value = res.tenantId;
+            userCurrency.value = res.currency;
+            currentUser.value = res
 
-        })
-        .catch(err => {
-          console.log(err);
-        })
-    }
-  
+          })
+          .catch(err => {
+            console.log(err);
+          })
+      }
 
-    // const userEmail = ref("");
-      if (!userEmail.value || !tenantId.value) getUserEmail();(0);
+
+      // const userEmail = ref("");
+      if (!userEmail.value || !tenantId.value) getUserEmail(); (0);
       console.log(userEmail.value, "UE");
       /*eslint no-undef: "warn"*/
       let handler = PaystackPop.setup({
@@ -398,17 +403,20 @@ export default {
         firstname: churchName.value,
         lastname: "",
         ref: uuid.value,
-        currency: userCurrencyName.value,
+        currency: selectedCurrency.value,
         onClose: function () {
           // swal("Transaction Canceled!", { icon: "error" });
           if (!isSuccessful.value) {
-                axios
-                  .put('/cancelpayment', {paymentTransactionId: initializedOrder.value.id})
-                  .then((res) => {
-                    console.log('payment cancelled');
-                  toast.add({ severity: 'info', summary: 'Transaction cancelled', detail: "You have cancelled the transaction", life: 2500})
-
-                  })
+            axios
+              .put('/cancelpayment', { paymentTransactionId: initializedOrder.value.id })
+              .then(() => {
+                ElMessage({
+                  showClose: true,
+                  message: 'Transaction cancelled',
+                  type: 'info',
+                  duration: 3000
+                })
+              })
           }
         },
         callback: function (response) {
@@ -417,11 +425,11 @@ export default {
           var returnres = {
             smsUnit: totalSMSUnits.value,
             transaction_Reference: response.trxref,
-            amount: amount.value * 100 ,
+            amount: amount.value * 100,
             orderId: response.trxref,
             tenantId: currentUser.value.tenantId,
           };
-          
+
           // const paymentAmount = ref(0)
           // const userCurrencyConversion = async () => {
           //   if (!currentUser.value.flutterwaveEnabled) return 
@@ -435,62 +443,68 @@ export default {
           axios
             .post(`/api/Payment/purchasesmsunits?paymentType=0`, returnres)
             .then((res) => {
-             if (res.data) {
+              if (res.data) {
                 console.log(res, "success data");
                 close.value.click();
                 purchaseIsSuccessful.value = true;
                 store.dispatch("addPurchasedUnits", totalSMSUnits.value);
-             } else {
-                toast.add({ severity: 'error', summary: 'Confirmation failed', detail: "Confirming your purchase failed, please contact support at info@churchplus.co"})
+              } else {
+                ElMessage({
+                  type: 'error',
+                  showClose: true,
+                  message: 'Confirming your purchase failed, please contact support at info@churchplus.co',
+                  duration: 5000
+                })
 
-             }
+              }
             })
             .catch((err) => {
               stopProgressBar();
-              toast.add({ severity: 'error', summary: 'Confirmation failed', detail: "Confirming your purchase failed, please contact support at info@churchplus.co"})
-              console.log(err, "error confirming payment");
+              ElMessage({
+                  type: 'error',
+                  showClose: true,
+                  message: 'Confirming your purchase failed, please contact support at info@churchplus.co',
+                  duration: 5000
+                })
             });
         },
       });
       handler.openIframe();
     };
 
-    onMounted(() => {
-      console.log();
-    })
 
     const closeModal = () => purchaseIsSuccessful.value = false;
     const initializedOrder = ref({})
-    
+
     const initializePayment = (paymentType) => {
-       const payload = {
+      const payload = {
         smsUnit: totalSMSUnits.value,
         amount: totalAmount.value,
         tenantId: tenantId.value,
         orderId: uuidv4()
       }
-     axios
-     .post(`/api/Payment/initializesmspayment?paymentType=${paymentType}`,payload)
-     .then((res) => {
-       close.value.click();
-      //  purchaseIsSuccessful.value = true;
-        // store.dispatch("addPurchasedUnits", totalSMSUnits.value);
-       initializedOrder.value = res.data;
-       console.log(res, 'initializepayment');
-     })
+      axios
+        .post(`/api/Payment/initializesmspayment?paymentType=${paymentType}`, payload)
+        .then((res) => {
+          close.value.click();
+          //  purchaseIsSuccessful.value = true;
+          // store.dispatch("addPurchasedUnits", totalSMSUnits.value);
+          initializedOrder.value = res.data;
+          console.log(res, 'initializepayment');
+        })
     }
 
     // flutterwave setup function
-     const getFlutterwaveModules = () => {
-       const script = document.createElement("script");
-            script.src = !isProduction
-              ? "https://ravemodal-dev.herokuapp.com/v3.js"
-              : "https://checkout.flutterwave.com/v3.js";
-            document.getElementsByTagName("head")[0].appendChild(script);
-             console.log(process.env.VUE_APP_FLUTTERWAVE_TEST_KEY, 'test key')
+    const getFlutterwaveModules = () => {
+      const script = document.createElement("script");
+      script.src = !isProduction
+        ? "https://ravemodal-dev.herokuapp.com/v3.js"
+        : "https://checkout.flutterwave.com/v3.js";
+      document.getElementsByTagName("head")[0].appendChild(script);
+      console.log(process.env.VUE_APP_FLUTTERWAVE_TEST_KEY, 'test key')
     }
     getFlutterwaveModules()
-    
+
     const payWithFlutterwave = (e) => {
       initializePayment(1);
       // console.log(e.srcElement.alt)
@@ -500,82 +514,85 @@ export default {
 
       // Close payment modal
       // props.close.click()
-       console.log(totalAmount.value)
-                    // console.log(selectedCurrency.value)
-                    // console.log(email)
-    // alert('test')
+      console.log(totalAmount.value)
+      // console.log(selectedCurrency.value)
+      // console.log(email)
+      // alert('test')
       window.FlutterwaveCheckout({
-                public_key: process.env.VUE_APP_FLUTTERWAVE_PUBLIC_KEY_LIVE,
-                tx_ref: uuidv4().substring(0,8),
-                amount: totalAmount.value,
-                currency: userCurrencyName.value,
-                payment_options: 'card,ussd',
-                customer: {
-                  // name: props.name,
-                  // email: currentUser.value.userEmail,
-                  email: userEmail.value,
-                },
-                callback: (response) => {
-                  console.log("Payment callback", response)
-                    // props.donation.usedPaymentGateway = selectedGateway.value
-                    const payload = {
-                        smsUnit: totalSMSUnits.value,
-                        transaction_Reference:response.transaction_id,
-                        amount: totalAmount.value,
-                        tenantId: tenantId.value,
-                        orderId: initializedOrder.value.id
-                    }
-                    axios
-                          .post(`/api/Payment/purchasesmsunits?paymentType=1`, payload)
-                          .then((res) => {
-                            if (res.data) {
-                              purchaseIsSuccessful.value = true;
-                              store.dispatch("addPurchasedUnits", totalSMSUnits.value);
-                              // finish()
-                              console.log(res, "success data");
-                              isSuccessful.value = true;
-                            } else {
-                              toast.add({
-                                severity: 'error',
-                                summary: 'Confirmation failed',
-                                detail: "Confirming your purchase failed, please contact support at info@churchplus.co",
-                                life: 4000
-                              })
-                            }
-                            
-                          })
-                          .catch((err) => {
-                            // finish()
-                            toast.add({
-                              severity: 'error',
-                              summary: 'Confirmation failed',
-                              detail: "Confirming your purchase failed, please contact support at info@churchplus.co",
-                              life: 4000
-                              })
-                            console.log(err, "error confirming payment");
-                          });
-                        // emit('payment-successful', true)
-                  },
-                onclose: () => {
-                  if (!isSuccessful.value) {
-                      axios
-                      .put('/cancelpayment', {paymentTransactionId: initializedOrder.value.id})
-                      .then((res) => {
-                        console.log('payment cancelled');
-                      toast.add({ severity: 'info', summary: 'Transaction cancelled', detail: "You have cancelled the transaction", life: 2500})
+        public_key: process.env.VUE_APP_FLUTTERWAVE_PUBLIC_KEY_LIVE,
+        tx_ref: uuidv4().substring(0, 8),
+        amount: totalAmount.value,
+        currency: selectedCurrency.value,
+        payment_options: 'card,ussd',
+        customer: {
+          // name: props.name,
+          // email: currentUser.value.userEmail,
+          email: userEmail.value,
+        },
+        callback: (response) => {
+          console.log("Payment callback", response)
+          // props.donation.usedPaymentGateway = selectedGateway.value
+          const payload = {
+            smsUnit: totalSMSUnits.value,
+            transaction_Reference: response.transaction_id,
+            amount: totalAmount.value,
+            tenantId: tenantId.value,
+            orderId: initializedOrder.value.id
+          }
+          axios
+            .post(`/api/Payment/purchasesmsunits?paymentType=1`, payload)
+            .then((res) => {
+              if (res.data) {
+                purchaseIsSuccessful.value = true;
+                store.dispatch("addPurchasedUnits", totalSMSUnits.value);
+                // finish()
+                console.log(res, "success data");
+                isSuccessful.value = true;
+              } else {
+                ElMessage({
+                  type: 'error',
+                  showClose: true,
+                  message: 'Confirming your purchase failed, please contact support at info@churchplus.co',
+                  duration: 5000
+                })
+              }
 
-                      })
-                  } 
+            })
+            .catch((err) => {
+              ElMessage({
+                  type: 'error',
+                  showClose: true,
+                  message: 'Confirming your purchase failed, please contact support at info@churchplus.co',
+                  duration: 5000
+                })
+              console.log(err, "error confirming payment");
+            });
+        },
+        onclose: () => {
+          if (!isSuccessful.value) {
+            axios
+              .put('/cancelpayment', { paymentTransactionId: initializedOrder.value.id })
+              .then(() => {
+                console.log('payment cancelled');
+                ElMessage({
+                  type: 'info',
+                  showClose: true,
+                  message: 'Transaction cancelled',
+                  duration: 3000
+                })
 
-                },
-                customizations: {
-                  title: 'Subscription',
-                  description: "Payment for Subcription ",
-                  logo: "https://churchplusstorage.blob.core.windows.net/mediacontainer/coreldrawskill_e9749fad-85e8-4130-b553-37acc8acde61_08062021.png",
-                },
-              });
+              })
+          }
+
+        },
+        customizations: {
+          title: 'Subscription',
+          description: "Payment for Subcription ",
+          logo: "https://churchplusstorage.blob.core.windows.net/mediacontainer/coreldrawskill_e9749fad-85e8-4130-b553-37acc8acde61_08062021.png",
+        },
+      });
     }
-  
+
 
     return {
       amount,
@@ -595,9 +612,19 @@ export default {
       churchLogo,
       close,
       userCurrency,
-      userCurrencyName,
+      // userCurrencyName,
       uuid,
-      pricePerUnitSMS
+      pricePerUnitSMS,
+      FLWupportedCurrencies,
+      selectedCurrency,
+      UserSMSPricing,
+      UserProductPricing,
+      resetCountryPricing,
+      countries,
+      checkingCoutryData,
+      mdAndUp,
+      lgAndUp,
+      xlAndUp
       // userCurrencyConversion,
     };
   },
@@ -680,7 +707,7 @@ export default {
 }
 
 .ui-dialog .ui-dialog-titlebar {
-   display: none !important;
+  display: none !important;
 }
 
 .container .p-dialog-header {

@@ -6,9 +6,9 @@
           <div>{{ header }}</div>
         </div>
         <div class="d-flex mt-3 mt-sm-0">
-          <el-button color="#136acd" @click="importMembers" plain round>Import</el-button>
+          <el-button @click="importMembers" class="header-btn" round>Import</el-button>
           <router-link :to="`/tenant/people/add`" class="no-decoration">
-            <el-button color="#136acd" class="ml-2" round>Add Member</el-button>
+            <el-button color="#136acd" class="ml-2 header-btn" round>Add Member</el-button>
           </router-link>
         </div>
       </div>
@@ -36,19 +36,12 @@
 import { computed, ref, watchEffect } from "vue";
 import router from "@/router/index";
 import { useRoute } from "vue-router";
-import InputText from 'primevue/inputtext';
-import Button from 'primevue/button';
 import { ElMessage } from 'element-plus'
 import deviceBreakpoint from "../../mixins/deviceBreakpoint";
 import { useStore } from 'vuex'
 
 
 export default {
-  components: {
-    InputText,
-    Button
-  },
-
   setup() {
     const store = useStore();
     const selectedLink = ref(null)

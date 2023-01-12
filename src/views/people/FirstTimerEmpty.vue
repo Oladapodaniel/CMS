@@ -1,14 +1,14 @@
 <template>
   <div :class="{ 'container-slim': lgAndUp || xlAndUp }" class="container-top">
-    <div class="d-flex flex-column flex-sm-row justify-content-sm-between">
+    <div class="d-flex flex-column flex-md-row justify-content-md-between">
       <div class="head-text">
         <div>First Timers Analytics
         </div>
       </div>
-      <div class="actions mt-3 mt-sm-0">
-        <el-button color="#136acd" @click="importFirstTimer" plain round>Import</el-button>
+      <div class="actions mt-3 mt-md-0">
+        <el-button class="header-btn" @click="importFirstTimer" round>Import</el-button>
         <router-link :to="{ name: 'AddFirstTimer' }" class="no-decoration">
-          <el-button color="#136acd" class="ml-2" round>Add First Timers</el-button>
+          <el-button color="#136acd" class="ml-2 header-btn" round>Add First Timers</el-button>
         </router-link>
       </div>
     </div>
