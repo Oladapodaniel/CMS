@@ -1,5 +1,30 @@
 <template>
-  <div class="container container-top container-wide">
+  <div class="container container-top ">
+       <div class="col-md-12 d-flex justify-content-center my-3">
+      <div class="col-md-3 mt-4 d-flex align-items-center">
+        <div class="pl-2">
+          <img
+            :src="churchLogo"
+            v-if="churchLogo"
+            class="link-image"
+            alt=""
+            style="width: 60px"
+          />
+          <img
+            src="../../assets/dashboardlinks/churchcloud.png"
+            v-else
+            class="link-image"
+            alt=""
+          />
+        
+        </div>
+        <span
+          ><h4 class="font-weight-bold mt-3">
+            {{ churchName ? churchName : "Churchplus" }}
+          </h4></span
+        >
+      </div>
+    </div>
     <div class="header mt-2">
       <h3 class="header-text font-weight-bold">Add Contact</h3>
       <Toast />
@@ -537,7 +562,6 @@
                     >
                       <a href="/" class="text-decoration-none">
                         <div class="">Powered by</div>
-                        <!-- <div class="">Powered by</div> -->
                         <div
                           class="
                             img-fluid
@@ -899,6 +923,8 @@ export default {
     const personNotes = ref([]);
     const dynamicCustomFields = ref([]);
     const noteDetails = ref({});
+    const churchLogo = ref("");
+    const churchName = ref("");
 
     const loading = ref(false);
     const months = [
@@ -1337,6 +1363,25 @@ export default {
     const groupToAddTo = ref({});
     const allGroups = ref([]);
 
+
+    const getPublicMember = async () => {
+      try {
+        const res = await axios.get(`/TenantInfo?tenantID=${route.params.id}`);
+        console.log(res.data, "public member😎😎🤦‍♀️");
+        churchLogo.value = res.data.logo;
+        churchName.value = res.data.name;
+        console.log(churchLogo.value, 
+        "😎")
+
+      } 
+      catch (error) {
+        console.log(error);
+        
+      }
+      
+    };
+    getPublicMember();
+
     const getGroups = async () => {
       try {
         let groups = await axios.get(
@@ -1349,6 +1394,7 @@ export default {
       }
     };
     getGroups();
+
 
     const addToGroupError = ref(false);
     const dismissAddToGroupModal = ref("");
@@ -1510,6 +1556,8 @@ export default {
       noteDetails,
       savePersonNote,
       dynamicCustomFields,
+      churchLogo,
+      churchName,
     };
   },
 };
