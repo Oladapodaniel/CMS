@@ -778,6 +778,8 @@ export default {
     };
     getContribution();
 
+      
+
     const getDetails = () => {
       selectedPledge.value = allPledgeList.value.find(
         (i) => i.id === route.query.id
