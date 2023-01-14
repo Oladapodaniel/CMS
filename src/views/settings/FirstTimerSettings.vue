@@ -24,20 +24,21 @@
                 <div class="col-md-12 py-5 grey-background">
                   <div class="row d-md-flex justify-content-around">
                     <div class="col-md-7">
-                      <input
+                      <el-input
                         type="text"
-                        class="form-control"
+                        class="w-100"
                         placeholder="Add Your New Guest Life Cycle"
                         v-model="firstTimerTypes"
+                        size="large"
                       />
                     </div>
                     <div class="col-md-3 justify-content-end">
-                      <button class="btn primary-btn text-white px-md-5 px-4 py-1 bold  mt-sm-3 mt-lg-0 mt-xl-0 mt-md-0 mt-3" @click="saveFirstTimer">Save</button>
+                      <el-button round size="large" color="#136acd" class=" font-weight-bold primary-btn text-white px-md-4 px-3 py-1 bold  mt-sm-3 mt-lg-0 mt-xl-0 mt-md-0 mt-3" @click="saveFirstTimer">Save</el-button>
                     </div>
                   </div>
                   <div class="row mt-2 d-flex justify-content-around">
                     <div class="col-md-7">
-                    <Checkbox v-model="isDefault" :binary="true" />
+                    <el-checkbox v-model="isDefault" :binary="true" />
                     <span class="ml-4 mt-2">Mark As Default</span>
                       
                     </div>
@@ -88,10 +89,10 @@
                   <span class="py-md-4 hidden-header hidden-header1">ACTION</span>
                   <div class="row">
                     <div class="col-md-6 col-6 d-flex justify-content-center">
-                      <button class="btn secondary-btn py-1 px-4" @click="openClassification(firstTimer.index)">View</button>
+                      <el-button round  color="#EBEFF4" class="secondary-btn py-1 px-4" @click="openClassification(firstTimer.index)">View</el-button>
                     </div>
                     <div class="col-md-6 col-6 d-flex justify-content-start">
-                      <button class="btn btn-danger py-1 primary-btn delete-btn" @click="deletePop(firstTimer.id)" >Delete</button>
+                      <el-button round class=" btn-danger py-1 primary-btn delete-btn" @click="deletePop(firstTimer.id)" >Delete</el-button>
                     </div>
                   </div>
                 </div>
@@ -103,11 +104,11 @@
                 >
                   <label for="" class="d-flex mt-4">
                     <span class="mr-2">Name</span>
-                    <input type="text" class="form-control" v-model="firstTimer.name">
+                    <el-input  type="text" class="w-100" v-model="firstTimer.name" />
                   </label>
                   <label for="" class="d-flex mt-4">
                     <span class="mr-2">Mark As Default</span>
-                    <Checkbox v-model="firstTimer.isDefault" :binary="true" />
+                    <el-checkbox v-model="firstTimer.isDefault" :binary="true" />
                   </label>
                 </div>
                 <div
@@ -115,10 +116,10 @@
                 >
                   <div class="row">
                     <div class="col-md-6 col-6 d-flex justify-content-start">
-                      <button class="btn primary-btn save-btn py-1 px-4 ml-md-0 ml-5" @click="updateFirstTimer(firstTimer, firstTimer.index)">Save</button>
+                      <el-button round class=" primary-btn text-white save-btn py-1 px-4 ml-md-0 ml-5" @click="updateFirstTimer(firstTimer, firstTimer.index)">Save</el-button>
                     </div>
                     <div class="col-md-6 col-6 d-flex justify-content-end">
-                      <button class="btn secondary-btn py-1 px-3" @click="discard">Discard</button>
+                      <el-button round  color="#EBEFF4" class=" secondary-btn py-1 px-3" @click="discard">Discard</el-button>
                     </div>
                   </div>
                 </div>

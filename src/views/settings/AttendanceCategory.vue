@@ -93,7 +93,7 @@
                   <span class="py-md-4 hidden-header hidden-header1"
                     >ACTION</span
                   >
-                  <div class="row">
+                  <div class="row py-2">
                     <div class="col-md-6 col-6 d-flex justify-content-center">
                       <el-button
                         class=" secondary-btn py-1 px-4"

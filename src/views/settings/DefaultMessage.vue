@@ -42,16 +42,18 @@
             >
               <span class="py-2 hidden-header">MESSAGE</span>
               <span class="py-2" v-if="allMessages.message.length < 18"><router-link class="route" :to="{path:'/tenant/settings/adddefaultmessage',query:{messageId:allMessages.id}}">{{allMessages.message}}</router-link></span>
-              <span v-else v-tooltip.top="`${allMessages.message}`"><router-link class="route" :to="{path:'/tenant/settings/adddefaultmessage',query:{messageId:allMessages.id}}">{{allMessages.message.substring(0,18)+"..."}}</router-link></span>
-               <!-- <span class="py-2 text-xs-left"  v-if="churchMem.email.length<10">{{ churchMem.email}}</span>
-              <span v-else v-tooltip.top="`${churchMem.email}`">{{churchMem.email.substring(0,10)+ "..."}}</span> -->
+              <el-tooltip v-else :content="`${allMessages.message}`" placement="top" >
+                <router-link class="route" :to="{path:'/tenant/settings/adddefaultmessage',query:{messageId:allMessages.id}}">{{allMessages.message.substring(0,18)+"..."}}</router-link>
+              </el-tooltip>
             </div>
             <div
               class="col-md-3 d-flex justify-content-between align-items-center"
             >
               <span class="py-2 hidden-header">SUBJECT</span>
               <span class="py-2 text-xs-left" v-if="allMessages.subject.length < 18"> <router-link class="route" :to="{path:'/tenant/settings/adddefaultmessage',query:{messageId:allMessages.id}}">{{allMessages.subject}}</router-link></span>
-              <span v-else v-tooltip.top="`${allMessages.subject}`">{{allMessages.subject.substring(0,)+ "..."}}</span>
+              <el-tooltip v-else :content="`${allMessages.subject}`" placement="top" >
+                {{allMessages.subject.substring(0,)+ "..."}}
+              </el-tooltip>
             </div>
              <div
               class="col-md-3 d-flex justify-content-between align-items-center"
@@ -66,8 +68,9 @@
             >
               <span class="py-4 hidden-header">TYPE</span>
               <span class="py-2" v-if="messageName(allMessages.messageType).length < 18"> <router-link class="route" :to="{path:'/tenant/settings/adddefaultmessage',query:{messageId:allMessages.id}}">{{messageName(allMessages.messageType)}}</router-link></span>
-              <span v-else v-tooltip.top="`${messageName(allMessages.messageType)}`"> <router-link class="route" :to="{path:'/tenant/settings/adddefaultmessage',query:{messageId:allMessages.id}}">{{messageName(allMessages.messageType).substring(0,18) + "..."}}</router-link></span>
-              
+              <el-tooltip v-else :content="`${messageName(allMessages.messageType)}`" placement="top" >
+              <span> <router-link class="route" :to="{path:'/tenant/settings/adddefaultmessage',query:{messageId:allMessages.id}}">{{messageName(allMessages.messageType).substring(0,18) + "..."}}</router-link></span>
+              </el-tooltip>
               
              
             </div>
@@ -96,14 +99,6 @@
               </div>
             </div>
           </div>
-          <Toast/>
-          <ConfirmDialog/>
-
-          <!-- <div class="row">
-            <div class="col-md-12 px-0">
-              <hr class="hr my-0" />
-            </div>
-          </div> -->
         </div>
         <div class=" col-12 text-center p-5" v-if="loading">
              <i class="pi pi-spin pi-spinner text-center text-primary" style="fontSize: 3rem"></i>
@@ -118,15 +113,11 @@
 <script>
 import axios from "@/gateway/backendapi";
 import messageOptions from '../../services/defaultmessage/default_message_service';
-import Tooltip from 'primevue/tooltip';
 import finish from '../../services/progressbar/progress'
 import { ElMessage, ElMessageBox } from 'element-plus'
 export default {
   components:{
   },
-    directives: {
-    'tooltip': Tooltip
-},
   data(){
     return{
     selectCategory: null,

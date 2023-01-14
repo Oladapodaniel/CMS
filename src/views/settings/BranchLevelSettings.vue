@@ -33,6 +33,7 @@
                         class="w-100"
                         placeholder="Add branch Level"
                         v-model="branchTypes"
+                        size="large"
                       />
                     </div>
                     <div
@@ -44,9 +45,11 @@
                       "
                     >
                       <el-button
-                        class="btn primary-bg font-weight-bold default-btn text-white border-0"
+                        class="  font-weight-bold px-md-4 text-white border-0"
                         @click="saveBranch"
+                        :loading="loading"
                         color="#136acd"
+                        size="large"
                         round
                       >
                         Save
@@ -183,7 +186,7 @@
                     <div class="col-md-6 col-6 d-flex justify-content-start">
                       <el-button
                         class="primary-btn text-white save-btn py-1 px-4 ml-md-0 ml-5"
-                        @click="updateBranch(branch)"
+                        @click="updateBranch(branch, branch.index)"
                         round
                       >
                         Save
@@ -301,10 +304,9 @@ export default {
     },
     //Update FirstTimer
     async updateBranch(item) {
-      console.log(item);
-      let body = {
+      let body = { ...item,
         id: item.id,
-        name: this.branchList[item.index].name,
+        name:   item.name,
         level: item.level,
       };
 
@@ -357,6 +359,7 @@ export default {
     openClassification(index) {
       this.vissibleTab = `tab_${index}`;
       this.branchName = this.branchList[index].name;
+      // this.singleBranch = this.branchList[index].name 
     },
 
     discard() {
@@ -446,10 +449,6 @@ input::placeholder {
   letter-spacing: 0px;
   color: #02172e;
   opacity: 1;
-}
-
-.list-group-item {
-  border: none;
 }
 
 @media screen and (max-width: 767px) {

@@ -14,7 +14,8 @@
             </div>
             <div class=" col-12  col-sm-9">
               <el-select-v2
-                  v-model="selectCategory"
+                  v-model="selectCategoryID"
+                  @change="setSelectCategory"
                   :options="Membership.map((i) =>({label: i.name , value: i.value }))"
                   placeholder="Select category"
                   class="w-100"
@@ -29,7 +30,8 @@
             </div>
             <div class=" col-12  col-sm-9">
               <el-select-v2
-                  v-model="selectType"
+                  v-model="selectTypeID"
+                  @change="setSelectType"
                   :options="Sms.map((i) =>({label: i.name , value: i.value }))"
                   placeholder="Select type"
                   class="w-100"
@@ -103,15 +105,27 @@ export default {
     return {
       message: "",
       subject: "",
-      selectCategory: null,
+      selectCategory: {},
+      selectCategoryID: null,
       loading: false,
       Membership: messageOptions.Membership,
-      selectType: null,
+      selectType: {},
+      selectTypeID: null,
       Sms: messageOptions.Sms,
       defaultMessage: {},
     };
   },
   methods: {
+    setSelectType(){
+      this.selectType = this.Sms.find((i) =>{
+        return i.value === this.selectTypeID
+      })
+    },
+    setSelectCategory(){
+      this.selectCategory = this.Membership.find((i) =>{
+        return i.value === this.selectCategoryID
+      })
+    },
     callButton() {
       this.loading = true
       if (!this.$route.query.messageId) {
@@ -141,8 +155,8 @@ export default {
       let newCreate = {
         subject: this.subject,
         message: this.message,
-        messageType: this.selectType,
-        category: this.selectCategory,
+        messageType: this.selectType.value,
+        category: this.selectCategory.value,
       };
       axios
         .post(`/api/Settings/CreateDefaultMessage`, newCreate)
@@ -170,8 +184,8 @@ export default {
         id: this.defaultMessage.returnObject.id,
         subject: this.subject,
         message: this.message,
-        messageType: this.selectType.value ? this.selectType.value : this.selectType,
-        category: this.selectCategory.value ? this.selectCategory.value : this.selectCategory,
+        messageType: this.selectType.value,
+        category: this.selectCategory.value,
       };
       axios
         .put(`/api/Settings/UpdateDefaultMessage`, newUpdate)
@@ -197,9 +211,11 @@ export default {
           this.selectCategory = this.Membership.find(
             (i) => i.value === data.returnObject.category
           );
+         this.selectCategoryID = this.selectCategory.value
           this.selectType = this.Sms.find(
             (i) => i.value === data.returnObject.messageType
           );
+          this.selectTypeID = this.selectType.value
           console.log(this.defaultMessage);
         } catch (error) {
           console.log(error);

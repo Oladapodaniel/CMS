@@ -3,7 +3,7 @@
     <div class="container">
       <div class="row">
         <!-- Sidebar -->
-        <div class="col-md-3 pt-3 sidebar">
+        <div class="col-md-3 col-12 pt-3 sidebar">
           <div class="row">
             <div class="col-md-12">
               <h2 class="mb-5 mt-5 font-weight-700">Settings</h2>
@@ -184,7 +184,7 @@
         </div>
 
         <!-- main content -->
-        <div class="col-md-9">
+        <div class="col-md-9  col-12">
           <router-view> </router-view>
         </div>
       </div>

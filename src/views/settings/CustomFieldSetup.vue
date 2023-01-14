@@ -1,6 +1,6 @@
 <template>
   <div>
-    <div class="container mb-4">
+    <div class="container-fluid mb-4">
       <div class="row d-md-flex justify-content-between mt-3 mb-5">
         <div class="col-md-12">
           <h2 class="memCat">Custom Field Setup</h2>
@@ -22,23 +22,31 @@
                     <div class="col-md-7">
                       <div class="col-md-12 col-sm-12">
                         <label for=""> Specify Your Label here..</label>
-                        <input
+                        <el-input
                           type="text"
-                          class="form-control"
+                          class="w-100"
                           placeholder="Specify Your Label here.."
                           v-model="customFieldLabel"
+                          size="large"
                         />
                       </div>
                       <div class="col-md-12 col-sm-12 mt-3">
                         <label for=""
                           >Select the type of control you want to use</label
                         >
-                        <Dropdown
-                          v-model="selectedControl"
-                          class="w-100 font-weight-normal"
-                          optionLabel="name"
-                          :options="controlType"
+                        <el-select-v2
+                          v-model="selectedControlID"
+                          @change="setselectedControl"
+                          :options="
+                            controlType.map((i) => ({
+                              label: i.name,
+                              value: i.id,
+                            }))
+                          "
                           placeholder="Select type"
+                          class="w-100"
+                          size="large"
+                          style="width: 100%; text-align: left"
                         />
                       </div>
                       <div
@@ -59,12 +67,19 @@
                         <label for=""
                           >Select the Entity Type you want to Extend
                         </label>
-                        <Dropdown
-                          v-model="selectedEntityType"
-                          class="w-100 font-weight-normal"
-                          optionLabel="name"
-                          :options="entityType"
+                        <el-select-v2
+                          v-model="selectedEntityTypeID"
+                          @change="setselectedEntityType"
+                          :options="
+                            entityType.map((i) => ({
+                              label: i.name,
+                              value: i.id,
+                            }))
+                          "
                           placeholder="Select type"
+                          class="w-100"
+                          size="large"
+                          style="width: 100%; text-align: left"
                         />
                       </div>
                     </div>
@@ -79,19 +94,22 @@
                       "
                       @click="saveCustomFields"
                     >
-                      <button
+                      <el-button
                         class="
-                          btn
-                          primary-btn
+                          font-weight-bold
                           text-white
                           bold
                           mt-sm-3 mt-lg-0 mt-xl-0 mt-md-0 mt-3
-                          px-md-5 px-4
+                          px-md-4 px-3
                           py-2
                         "
+                        color="#136acd"
+                        round
+                        size="large"
+                        :loading="loading"
                       >
                         Save
-                      </button>
+                      </el-button>
                     </div>
                   </div>
                 </div>
@@ -100,16 +118,16 @@
           </div>
 
           <div class="row table-header-row py-2 mt-5">
-            <div class="col-md-3">
+            <div class="col-md-2 ">
               <span class="py-2 font-weight-bold">LABEL</span>
             </div>
-            <div class="col-md-3">
+            <div class="col-md-3 text-center  ">
               <span class="py-2 font-weight-bold">CONTROL TYPE</span>
             </div>
-            <div class="col-md-3">
+            <div class="col-md-3 text-center ">
               <span class="py-2 font-weight-bold">ENTITY TYPE</span>
             </div>
-            <div class="col-md-3 text-center">
+            <div class="col-md-4 text-center ">
               <span class="py-2 font-weight-bold mr-md-3 mr-0">ACTION</span>
             </div>
           </div>
@@ -152,13 +170,14 @@
                   <span class="py-2 hidden-header small">CONTROL TYPE:</span>
                   <span class="py-2 text-sm-end font-text">{{
                     getControlName(customFieldList.controlType)
-                  }}</span>
+                  }}
+                  </span>
                 </div>
                 <div
                   class="
                     col-md-3
                     d-flex
-                    px-md-0 px-4
+                    px-md-0 
                     justify-content-between
                     align-items-center
                     mb-md-0 mb-5
@@ -176,7 +195,7 @@
                     mb-md-0 mb-2
                     col-12
                     d-flex
-                    justify-md-content-end justify-content-start
+                    justify-content-md-center
                     align-items-end
                   "
                 >
@@ -186,116 +205,133 @@
                   <div
                     class="
                       d-flex
-                      flex-wrap
-                      justify-content-lg-end justify-content-sm-start
+                      justify-content-md-center justify-content-sm-start
                     "
                   >
-                    <div class="">
-                      <button
-                        class="btn secondary-btn py-1 px-3 mb-md-3"
-                        @click="openClassification(index)"
-                      >
-                        View
-                      </button>
-                    </div>
-                    <div class="">
-                      <button
-                        class="delbtn py-1 primary-btn px-3 mb-md-3"
-                        @click="deleteCustomField(customFieldList.id, index)"
-                      >
-                        Delete
-                      </button>
-                    </div>
+                    <el-button
+                      class="py-1 px-4 mb-md-3"
+                      color="#EBEFF4"
+                      round
+                      @click="openClassification(index)"
+                    >
+                      View
+                    </el-button>
+                    <el-button
+                      class="delbtn py-1 primary-btn px-3 mb-md-3"
+                      @click="deleteCustomField(customFieldList.id, index)"
+                      round
+                    >
+                      Delete
+                    </el-button>
                   </div>
                 </div>
               </div>
               <div
-                class="row grey-background"
+                class="row grey-background  "
                 v-if="vissibleTab === `tab_${index}`"
               >
-                <div
+                <div class="col-md-12"
                   :class="{
                     'show-view-dropdown': toggleCustomList,
                     'hide-view-dropdown': !toggleCustomList,
                   }"
                 >
-                  <div class="col-md-10 d-flex flex-wrap my-3">
+                  <div class="col-md-9 d-flex flex-wrap mt-3">
                     <div class="col-md-4 text-md-right text-left">
                       <label for="">Label</label>
                     </div>
                     <div class="col-md-8">
-                      <input
+                      <el-input
                         type="text"
-                        class="form-control"
+                        class="w-100"
                         v-model="customLabel"
+                        size="large"
                       />
                     </div>
                   </div>
-                  <div class="col-md-10 d-flex flex-wrap">
+                  <div class="col-md-9 d-flex flex-wrap mt-3">
                     <div class="col-md-4 text-md-right text-left">
                       <label for="">Control type</label>
                     </div>
                     <div class="col-md-8">
-                      <Dropdown
-                        v-model="customControlType"
-                        class="w-100 font-weight-normal"
-                        :options="controlType"
-                        optionLabel="name"
-                        placeholder="Select type"
-                      />
+                      <el-select-v2
+                          v-model="customControlTypeID"
+                          @change="setcustomControlType"
+                          :options="
+                            controlType.map((i) => ({
+                              label: i.name,
+                              value: i.id,
+                            }))
+                          "
+                          placeholder="Select type"
+                          class="w-100"
+                          size="large"
+                          style="width: 100%; text-align: left"
+                        />
                     </div>
                   </div>
 
                   <div
-                    class="col-md-10 d-flex flex-wrap my-3"
+                    class="col-md-9 d-flex flex-wrap my-3"
                     v-if="customControlType.name == 'DropdownList'"
                   >
                     <div class="col-md-4 text-md-right text-left">
                       <label for="">Label</label>
                     </div>
                     <div class="col-md-8">
-                      <input
+                      <el-input
                         type="text"
-                        class="form-control"
+                        class="w-100"
+                        size="large"
                         v-model="customDropdownList"
                       />
                     </div>
                   </div>
 
-                  <div class="col-md-10 d-flex flex-wrap my-3">
+                  <div class="col-md-9 d-flex flex-wrap my-3">
                     <div class="col-md-4 text-md-right text-left">
                       <label for="">Entity type</label>
                     </div>
                     <div class="col-md-8">
-                      <Dropdown
-                        v-model="customEntityType"
-                        class="w-100 font-weight-normal"
-                        :options="entityType"
-                        optionLabel="name"
-                        placeholder="Select type"
-                      />
+                      <el-select-v2
+                          v-model="customEntityTypeID"
+                          @change="setcustomEntityType"
+                          :options="
+                            entityType.map((i) => ({
+                              label: i.name,
+                              value: i.id,
+                            }))
+                          "
+                          placeholder="Select type"
+                          class="w-100"
+                          size="large"
+                          style="width: 100%; text-align: left"
+                        />
                     </div>
                   </div>
                   <div class="col-md-12">
                     <div class="row mt-0 d-flex justify-content-center">
                       <div class="save-discard-btn">
                         <div class="">
-                          <button
-                            class="btn primary-btn save-btn py-1 px-4"
+                          <el-button
+                            class=" save-btn text-white py-1 px-4"
+                            round
                             @click="
                               updateCustomField(customFieldList.id, index)
                             "
                           >
                             Save
-                          </button>
+                          </el-button>
                         </div>
                         <div class="">
-                          <button
-                            class="btn secondary-btn py-1 px-3 m bor"
+                          <el-button
+                            class=" secondary-btn py-1 px-3 m bor"
+                            round
+                            color="#EBEFF4"
                             @click="discard"
                           >
                             Discard
-                          </button>
+                          </el-button>
                         </div>
                       </div>
                     </div>
@@ -327,21 +363,23 @@ import { ref } from "vue";
 import axios from "@/gateway/backendapi";
 import { useToast } from "primevue/usetoast";
 import { ElMessage, ElMessageBox } from "element-plus";
-import Dropdown from "primevue/dropdown";
 import finish from "../../services/progressbar/progress";
 import Chips from "primevue/chips";
 
 export default {
   components: {
-    Dropdown,
     Chips,
   },
   setup() {
-    const selectedControl = ref([]);
+    const selectedControl = ref({});
+    const selectedControlID = ref(null);
+    const customControlTypeID = ref(null);
+    const customEntityTypeID = ref(null);
+    const selectedEntityTypeID = ref(null);
     const dropdownList = ref([]);
     const customDropdownList = ref("");
     const vissibleTab = ref(false);
-    const selectedEntityType = ref([]);
+    const selectedEntityType = ref({});
     const loading = ref(false);
     const customEntityType = ref({});
     const customControlType = ref({});
@@ -372,6 +410,27 @@ export default {
       { name: "CheckInAttendance", id: "5" },
     ]);
 
+    const setcustomEntityType = () => { setcustomControlType
+      customEntityType.value = entityType.value.find((i) => {
+        return i.id === customEntityTypeID.value;
+      });
+    };
+    const setcustomControlType = () => {
+      customControlType = controlType.value.find((i) => {
+        return i.id === customControlTypeID.value;
+      });
+    };
+    const setselectedEntityType = () => {
+      selectedEntityType.value = entityType.value.find((i) => {
+        return i.id === selectedEntityTypeID.value;
+      });
+    };
+    const setselectedControl = () => {
+      selectedControl.value = controlType.value.find((i) => {
+        return i.id === selectedControlID.value;
+      });
+    };
+
     const discard = () => [
       (vissibleTab.value = ""),
       (toggleCustomList.value = !toggleCustomList.value),
@@ -392,7 +451,7 @@ export default {
         .delete(`/api/CustomFields/EditCustomFields?customAttributeID=${id}`)
         .then((res) => {
           console.log(res);
-           ElMessage({
+          ElMessage({
             type: "success",
             message: "Custom field deleted",
           });
@@ -462,12 +521,18 @@ export default {
       customDropdownList.value =
         allCustomFieldList.value[index].parameterValues;
       customEntityType.value = entityType.value.find(
-        (i) => i.id == allCustomFieldList.value[index].entityType
+        (i) => i.id == allCustomFieldList.value[index].entityType,
       );
+
+
       customControlType.value = controlType.value.find(
         (i) => i.id == allCustomFieldList.value[index].controlType
       );
+       customControlTypeID.value =  customControlType.value.id
+       customEntityTypeID.value = customEntityType.value.id
       toggleCustomList.value = !toggleCustomList.value;
+     
+      
     };
 
     const updateCustomField = async () => {
@@ -567,6 +632,14 @@ export default {
 
     return {
       controlType,
+      setselectedControl,
+      setcustomControlType,
+      setcustomEntityType,
+      setselectedEntityType,
+      selectedControlID,
+      customEntityTypeID,
+      customControlTypeID,
+      selectedEntityTypeID,
       getControlName,
       vissibleTab,
       saveCustomFields,
@@ -612,7 +685,7 @@ export default {
 }
 
 .show-view-dropdown {
-  height: 450px;
+  height: 300px;
   overflow: hidden;
   transition: all 0.5s ease-in-out;
 }

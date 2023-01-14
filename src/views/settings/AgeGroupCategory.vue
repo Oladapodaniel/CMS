@@ -78,7 +78,7 @@
                   <span class="py-md-4 hidden-header hidden-header1"
                     >ACTION</span
                   >
-                  <div class="row">
+                  <div class="row py-2">
                     <div class="col-md-6 col-6 d-flex justify-content-start">
                       <el-button
                         class=" secondary-btn  py-1 px-4"
@@ -135,7 +135,7 @@
                   <div class="row">
                     <div class="col-md-6 col-6">
                       <el-button
-                        class="save-btn text-white font-weight-bold py-1 px-4 ml-md-0 ml-5"
+                        class="save-btn text-white  py-1 px-4 ml-md-0 ml-5"
                         @click="updateAge(type.id, index)"
                         round
                         :loading="loading"

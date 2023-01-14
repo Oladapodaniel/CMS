@@ -1,5 +1,4 @@
 <template>
-<!-- {{churchUsers && churchUsers.users ? churchUsers.users : ''}}{{searchText}} -->
   <div> 
     <div class="container">
       <div class="row d-md-flex justify-content-between mt-3 mb-4">
@@ -42,12 +41,12 @@
                 'hide-search': !searchIsVisible,
               }"
             >
-              <input
+              <el-input
                 type="text"
+                class="w-100"
                 placeholder="Search..."
                 v-model="searchText"
               />
-              <!-- <span class="empty-btn">x</span> -->
               <span class="empty-btn"
                     @click="clearInput">
                     <i class="pi pi-times"></i
@@ -64,15 +63,9 @@
    <div class="col-md-12">
      <div class="border-0 bg-danger">
       <div class="row table-header-row py-2  small-text">
-        <!-- <div class="col-md-3">
-          <span class="py-2 font-weight-bold">Name</span>
-        </div> -->
           <div class="col-md-4">
           <span class="py-3 font-weight-bold">Email</span>
         </div>
-        <!-- <div class="col-md-3">
-          <span class="py-2 font-weight-bold">Phone</span>
-        </div> -->
         <div class="col-md-4">
           <span class="py-2 font-weight-bold">Status</span>
         </div>
@@ -87,28 +80,15 @@
    </div>
    <div class="col-md-12">
       <div class="row small-text tr-border-bottom py-1 header2" v-for="(churchMem, index) in searchChurchUser" :key="index">
-            <!-- <div
-              class="col-md-3 d-flex justify-content-between"
-            >
-              <span class="py-2 hidden-header">NAME</span>
-               <span class="py-2" v-if="churchMem.name && churchMem.name.length<20"> <router-link class="route" :to="{path:'/tenant/settings/invitenewuser', query:{ email:churchMem.email } }" >{{ churchMem.name}}</router-link></span>
-              <span v-else v-tooltip.top="`${churchMem.name}`" class="route"> <router-link  class="route" :to="{path:'/tenant/settings/invitenewuser', query:{ email:churchMem.email } }" >{{ churchMem.name && churchMem.name.substring(0,10)+ "..."}}</router-link></span>
-            </div> -->
              <div
               class="col-md-4 d-flex justify-content-between align-items-center"
             >
               <span class="py-2 hidden-header">EMAIL</span>
               <span class="py-2 text-xs-left"  v-if=" churchMem.email && churchMem.email.length<10"> <router-link class="route" :to="{path:'/tenant/settings/invitenewuser', query:{ email:churchMem.email } }">{{ churchMem.email}}</router-link></span>
-              <span v-else v-tooltip.top="`${churchMem.email}`"> <router-link class="route" :to="{path:'/tenant/settings/invitenewuser', query:{ email:churchMem.email } }" >{{ churchMem.email && churchMem.email}} </router-link></span>
+              <el-tooltip v-else :content="`${churchMem.email}`" placement="top">
+                <router-link class="route" :to="{path:'/tenant/settings/invitenewuser', query:{ email:churchMem.email } }" >{{ churchMem.email && churchMem.email}} </router-link>
+              </el-tooltip>
             </div>
-             <!-- <div
-              class="col-md-4 d-flex justify-content-between align-items-center"
-            >
-              <span class="py-2 hidden-header">PHONE</span>
-              <span class="py-2" v-if=" churchMem.phone && churchMem.phone.length < 11"> <router-link class="route" :to="{path:'/tenant/settings/invitenewuser', query:{ email:churchMem.email } }">{{ churchMem.phone}}</router-link></span>
-              <span v-else v-tooltip.top="`${churchMem.phone}`"> <router-link class="route" :to="{path:'/tenant/settings/invitenewuser', query:{ email:churchMem.email } }" >{{ churchMem.phone && churchMem.phone.substring(0,11)+ "..."}}</router-link></span>
-            </div> -->
-           
             <div
               class="col-md-4 d-flex justify-content-between align-items-center"
             >
@@ -119,12 +99,10 @@
               class="col-md-3 d-flex justify-content-between align-items-center"
             >
               <span class="py-2 hidden-header">ROLES</span>
-              <span class="py-2" v-tooltip.top="`${churchMem.roles.join(', ')}`"
-              > <router-link class="route" :to="{path:'/tenant/settings/invitenewuser', query:{ email:churchMem.email } }" >{{ `${churchMem && churchMem.roles[0] ? churchMem.roles[0].length > 10 ? churchMem.roles[0].substring(0,10)+ ".." : churchMem.roles[0] : ""}` }}</router-link></span>
-              <!-- <span v-else>{{ churchMem ? churchMem.roles ? churchMem.roles[0].substring(0,14)+ ".." : '' : '' }}</span> -->
-              <!-- "churchMem ? churchMem.roles ? churchMem.roles[0].length<14 : '' : '' " -->
+              <el-tooltip  class="py-2" :content="`${churchMem.roles.join(', ')}`" placement="top" >
+                <router-link class="route" :to="{path:'/tenant/settings/invitenewuser', query:{ email:churchMem.email } }" >{{ `${churchMem && churchMem.roles[0] ? churchMem.roles[0].length > 10 ? churchMem.roles[0].substring(0,10)+ ".." : churchMem.roles[0] : ""}` }}</router-link>
+              </el-tooltip>
             </div>
-            <!-- {{churchMem && churchMem.roles[0] ? churchMem.roles[0]? churchMem.roles[0] : '' : '' }} -->
             <div
               class="col-sm-12 d-flex col-12 justify-content-sm-end col-md-1 col-lg-1 col-xl-1 d-flex justify-content-end align-items-center"
             >
@@ -162,25 +140,6 @@
     </div>
 
  </div>
-      <!-- <div
-        class="row py-2"
-        
-      > -->
-      <Toast/>
-      <ConfirmDialog/>
-        <!-- <div class="col-md-12"> -->
-         
-
-          <!-- <div class="row">
-            <div class="col-md-12 px-0">
-              <hr class="hr my-0" />
-            </div>
-          </div> -->
-        <!-- </div> -->
-
-
-       <!-- </div> -->
-      <!-- </div> -->
     </div>
   </div>
 </template>
@@ -188,13 +147,9 @@
 <script>
 import store from '@/store/store';
 import { ElMessage, ElMessageBox } from 'element-plus';
-import Tooltip from 'primevue/tooltip';
 import axios from "@/gateway/backendapi";
 import finish from "../../services/progressbar/progress";
 export default {
-    directives: {
-    'tooltip': Tooltip
-},
   data(){
     return{
       getCurrentUser: store.getters.currentUser,
