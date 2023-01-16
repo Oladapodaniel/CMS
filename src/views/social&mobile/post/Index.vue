@@ -105,7 +105,7 @@
         >
           <!-- <input type="checkbox" class="c-pointer" name="" id="" /> -->
           <Checkbox id="binary" v-model="showOnMainThread" :binary="true"/>
-          <span class="mx-1">Show on main field</span>
+          <span class="mx-1">Show on main feed</span>
         </a>
       </div>
       <div class="col-md-12">
