@@ -26,31 +26,38 @@
         <div class="row bg-white pb-4 sub">
           <div class="col-md-6 col-lg-6  col-12">
             <div class="py-2 small-header">Select Subscription Plan <span class="text-danger">*</span></div>
-            <Dropdown
+            <!-- <Dropdown
               class=" plandropdown w-100"
               v-model="selectedPlan"
               :options="subscriptionPlans"
               optionLabel="description"
               placeholder=""
-            />
-             <div class="mt-3 normal-text text-right text-md-left italic pl-md-0">
-            Membership: {{ selectedPlan ? selectedPlan.membershipSize : ""}}
-          </div>
+            /> -->
+            <!-- {{ selectedPlan }} -->
+            <!-- {{ UserSubscriptionPlans }} -->
+            <el-select-v2 :options="UserSubscriptionPlans.map(i => ({ label: i.description, value: i.id }))"
+              v-model="selectedPlanId" placeholder="Select plan" @change="setSelectedPlan" size="large" class="w-100" />
+            <div class="mt-3 normal-text text-right text-md-left italic pl-md-0">
+              Membership: {{ selectedPlan && selectedPlan.membershipSize ? selectedPlan.membershipSize.toLocaleString() : ""}}
+            </div>
           </div>
           <div class="col-md-6 col-lg-6 col-12">
             <div class="py-2 small-header">
               Select Duration (month)
             </div>
-            <Dropdown
+            <!-- <Dropdown
               class="w-100"
               v-model="selectMonth"
               :options="selectMonths"
               optionLabel="name"
               placeholder="Select duration"
-            />
-                <div class=" ml-1 mt-3 normal-text pl-md-0">
-            {{ subselectedDuratn >  1 && currentUser ? currentUser.currencySymbol : "" }} {{ subselectedDuratn >  1 ? subselectedDuratn : ""}}
-          </div>
+            /> -->
+            <el-select-v2 :options="selectMonths.map(i => ({ label: i.name, value: i.name }))" v-model="selectMonthId"
+              placeholder="Select duration" @change="setSelectedDuration" size="large" class="w-100" />
+            <div class=" ml-1 mt-3 normal-text pl-md-0">
+              {{ subselectedDuratn > 1 && currentUser ? currentUser.currencySymbol : "" }} {{ subselectedDuratn > 1 ?
+              subselectedDuratn.toLocaleString() : ""}}
+            </div>
           </div>
 
         </div>
@@ -73,18 +80,13 @@
       <!-- Add ons -->
       <div class="col-md-12 col-lg-12 pt-3 mt-3">ADD-ONS</div>
 
-            <div v-if="false"  class="col-md-6 col-lg-6 p-4 sub mt-3 bg-white">
+      <div v-if="false" class="col-md-6 col-lg-6 p-4 sub mt-3 bg-white">
         <div class="">
           <div class="small-header">Communication</div>
           <div class="row mt-3 normal-text">
             <div class="col-md-2 col-lg-2 col-4">SMS</div>
             <div class="col-md-6 offset-md-1 col-4 mb-2">
-              <input
-                type="number"
-                v-model.number="smsValue"
-                class="form-control w-50"
-                placeholder="SMS Unit"
-              />
+              <input type="number" v-model.number="smsValue" class="form-control w-50" placeholder="SMS Unit" />
             </div>
             <div class="col-md-2 col-4">
               {{ smsAmount }}
@@ -93,40 +95,26 @@
           <div class="row mt-2 normal-text">
             <div class="col-md-2 col-lg-2 col-4">Email</div>
             <div class="col-md-6 offset-md-1 col-4 ">
-              <Dropdown
-                class="emailWidth"
-                v-model="selectEmail"
-                :options="selectEmailUnit"
-                optionLabel="name"
-                placeholder="Email Unit "
-              />
+              <Dropdown class="emailWidth" v-model="selectEmail" :options="selectEmailUnit" optionLabel="name"
+                placeholder="Email Unit " />
             </div>
             <div class="col-md-2 col-4">
               {{ selectEmail.constValue ? emailAmount : 0 }}
             </div>
           </div>
-          <div class="my-3 small-header">Accounting <br><small>Product price is multiplied by subscrption duration</small></div>
-          <div
-            class="row normal-text"
-            v-for="(item) in productsList"
-            :key="item.id"
-          >
-            <div
-              class="col-12"
-              v-if="
-                item.type === 0
-
-              "
-            >
+          <div class="my-3 small-header">Accounting <br><small>Product price is multiplied by subscrption
+              duration</small></div>
+          <div class="row normal-text" v-for="(item) in productsList" :key="item.id">
+            <div class="col-12" v-if="
+              item.type === 0
+            
+            ">
               <div class="row">
                 <div class="col-md-6 col-4">{{ item.name }}</div>
                 <div class="col-md-2 col-4">
-                  <input
-                    type="checkbox"
-                    @change="selectCheckbox(item)"
-                  />
+                  <input type="checkbox" @change="selectCheckbox(item)" />
                 </div>
-                <div class="col-md-4 text-center col-4">{{ item.price  }}</div>
+                <div class="col-md-4 text-center col-4">{{ item.price }}</div>
               </div>
             </div>
           </div>
@@ -134,10 +122,10 @@
       </div>
 
       <!-- payment summary -->
-      <div  class="col-md-6 bg-white col-12 sub mt-3">
+      <div class="col-md-6 bg-white col-12 sub mt-3">
         <div class="h-100  rounded">
           <div class="text-center small-header">
-            Payment Summary({{ currentUser && currentUser ? currentUser.currencySymbol : ""  }})
+            Payment Summary({{ currentUser? currentUser.currencySymbol : "" }})
           </div>
           <!-- <div class="row mt-3 normal-text" v-if="+selectMonth.name > 0">
             <div class="col-md-6 col-6">Subscription</div>
@@ -158,21 +146,18 @@
             </div>
           </div> -->
           <!-- Selected Products -->
-          <div
-            class="row mt-3 normal-text"
-            v-for="item in checkedBoxArr"
-            :key="item.id"
-          >
+          <div class="row mt-3 normal-text" v-for="item in checkedBoxArr" :key="item.id">
             <div class="col-md-6 col-6">{{ item.name }}</div>
             <div class="col-md-6 col-6 text-right font-weight-bold">
-              {{ daysToEndOfSubscription > 0 ? ((item.price * subscriptionDuration) + ((item.price / 30) * daysToEndOfSubscription)).toFixed(2) : (item.price * subscriptionDuration).toFixed(2) }}
+              {{ daysToEndOfSubscription > 0 ? ((item.price * subscriptionDuration) + ((item.price / 30) *
+              daysToEndOfSubscription)).toFixed(2) : (item.price * subscriptionDuration).toFixed(2) }}
             </div>
           </div>
           <hr />
           <div class="row mt-3 normal-text">
             <div class="col-md-6 col-6">Total</div>
             <div class="col-md-6 col-6 text-right font-weight-bold">
-              {{ TotalAmount.toFixed(2) }}
+              {{ TotalAmount.toLocaleString() }}
             </div>
           </div>
           <!-- <div class="row mt-4">
@@ -193,27 +178,20 @@
             </div>
           </div> -->
           <div class="row mt-5">
-            <div
-              class="col-12"
-              data-toggle="modal"
-              data-target="#PaymentOptionModal"
-            >
-              <button
-                class="btn pay-now text-white w-100 normal-text"
-              >
+            <div class="col-12" data-toggle="modal" data-target="#PaymentOptionModal">
+              <el-button color="#136acd" class="w-100" round :disabled="!selectedPlanId">
                 Pay Now
-              </button>
+              </el-button>
+              <!-- <button class="btn pay-now text-white w-100 normal-text">
+                Pay Now
+              </button> -->
             </div>
           </div>
         </div>
       </div>
 
-      <Dialog
-        header="Payment Status"
-        v-model:visible="display"
-        :style="{ width: '70vw', maxWidth: '600px' }"
-        :modal="true"
-      >
+      <Dialog header="Payment Status" v-model:visible="display" :style="{ width: '70vw', maxWidth: '600px' }"
+        :modal="true">
         <div class="row">
           <div class="col-md-12" v-if="!paymentFailed">
             <h4 class="text-success">
@@ -234,26 +212,15 @@
       </Dialog>
       <!-- payment summary end -->
       <!-- Modal -->
-      <div
-        class="modal fade"
-        id="PaymentOptionModal"
-        tabindex="-1"
-        role="dialog"
-        aria-labelledby="exampleModalCenterTitle"
-        aria-hidden="true"
-      >
+      <div class="modal fade" id="PaymentOptionModal" tabindex="-1" role="dialog"
+        aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
         <div class="modal-dialog modal-dialog-centered" role="document">
           <div class="modal-content">
             <div class="modal-header bg-modal">
               <h5 class="modal-title" id="exampleModalLongTitle">
                 Payment methods
               </h5>
-              <button
-                type="button"
-                class="close"
-                data-dismiss="modal"
-                aria-label="Close"
-              >
+              <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                 <span aria-hidden="true" ref="close">&times;</span>
               </button>
             </div>
@@ -263,22 +230,14 @@
                   Continue payment with
                 </div>
               </div>
-              <div class="row row-button c-pointer" @click="payWithPaystack">
-                <div class="col-12 col-md-4 col-sm-7 offset-1">
-                  <img
-                    style="width: 150px"
-                    src="../../assets/4PaystackLogo.png"
-                    alt="paystack"
-                  />
+              <div class="row row-button c-pointer d-flex justify-content-center" @click="payWithPaystack" v-if="currentUser.currency == 'NGN'">
+                <div>
+                  <img style="width: 150px" src="../../assets/4PaystackLogo.png" alt="paystack" />
                 </div>
               </div>
-              <div class="row row-button c-pointer" @click="payWithFlutterwave">
-                <div class="col-12 col-md-4 col-sm-7 offset-1">
-                  <img
-                    style="width: 150px"
-                    src="../../assets/flutterwave_logo_color@2x.png"
-                    alt="flutterwave"
-                  />
+              <div class="row row-button c-pointer d-flex justify-content-center" @click="payWithFlutterwave">
+                <div>
+                  <img style="width: 150px" src="../../assets/flutterwave_logo_color@2x.png" alt="flutterwave" />
                 </div>
               </div>
               <!-- <div class="row row-button c-pointer" @click="makePayment">
@@ -315,7 +274,9 @@ import { computed, ref } from "vue";
 import { useToast } from "primevue/usetoast";
 import userService from "../../services/user/userservice";
 import { v4 as uuidv4 } from "uuid";
-import converter from "../../services/currency-converter/currencyConverter";
+// import converter from "../../services/currency-converter/currencyConverter";
+import productPricing from "../../services/user/productPricing";
+import { ElMessage, ElMessageBox } from 'element-plus'
 
 // import PaymentOptionModal from "./PaymentOptionModal";
 
@@ -353,14 +314,15 @@ export default {
           churchName.value = res.churchName;
           tenantId.value = res.tenantId;
           userCurrency.value = res.currency;
+          getChurchProfile();
         })
         .catch(err => {
           console.log(err);
         })
     }
-  
+
     // const userEmail = ref("");
-      if (!tenantId.value) getUserEmail();
+    if (!tenantId.value) getUserEmail();
     // const userEmail = ref(store.getters.email);
     const acctReceived = ref("");
     const paymentSummary = ref([]);
@@ -381,7 +343,7 @@ export default {
     const subSelectedAmount = ref("");
     const isProduction = true
     const initializedOrder = ref("");
-    const logoUrl = `https://flutterwave.com/images/logo-colored.svg`
+    const churchLogo = ref('')
 
     const expiryDate = ref("");
     const selectMonths = ref([
@@ -405,11 +367,43 @@ export default {
       { name: "3000-4000", constValue: 6 },
       { name: "4000-5000", constValue: 8 },
     ]);
-
     selectCurrencyArr.value = ["NGN", "USD", "GHS", "ZAR"];
-
     const existingPlan = ref({});
     const daysToEndOfSubscription = ref(0);
+    const countries = ref([]);
+    const UserSubscriptionPricing = ref([])
+    const UserSubscriptionPlans = ref([])
+    const selectedPlanId = ref(null)
+    const selectMonthId = ref(null)
+
+    const getAllCountries = () => {
+      axios.get("/api/GetAllCountries").then((res) => {
+        countries.value = res.data;
+        const userCountryID = countries.value.find(i => i.currency == currentUser.value.currency)
+        console.log()
+        console.log(userCountryID)
+        getProductPricing(userCountryID.id)
+      })
+        .catch(err => console.error(err))
+    }
+    getAllCountries();
+
+    const getProductPricing = async (id) => {
+      let { data } = await productPricing.getProductPricing(id)
+      data.forEach(i => {
+        if (i.product.name.toLowerCase() === 'subscription') {
+          UserSubscriptionPricing.value.push(i)
+        }
+      })
+      console.log(UserSubscriptionPricing.value.sort((a, b) => a.order - b.order))
+      selectSubscription();
+      UserSubscriptionPlans.value = UserSubscriptionPricing.value.sort((a, b) => a.order - b.order).map(i => {
+        i.subscriptionPlan.amount = i.price
+        return i.subscriptionPlan
+      })
+    }
+
+
     const selectSubscription = () => {
       axios.get("/api/Subscription/subscriptions").then((res) => {
         console.log(res, "RES");
@@ -418,13 +412,15 @@ export default {
         existingPlan.value.amount = Plans.value.amount;
         existingPlan.value.description = Plans.value.description;
         existingPlan.value.amountInDollar = Plans.value.amountInDollar;
-        existingPlan.value.membershipSize = Plans.value.membershipSize;   
+        existingPlan.value.membershipSize = Plans.value.membershipSize;
 
         // Remove preceeding plans from list
 
         // const joined = subscriptionPlans.value.map(i => i.id).join("")
         // const splitted = joined.split(selectedPlan.value.id)
         // subscriptionPlans.value = subscriptionPlans.value.splice(splitted[0].length)
+
+
 
         res.data.subscriptionPlans.forEach(i => {
           if (i.membershipSize >= Plans.value.membershipSize) {
@@ -438,6 +434,38 @@ export default {
           (i) => i.id == Plans.value.id
         );
 
+        selectedPlanId.value = UserSubscriptionPlans.value.find(i => {
+          return i.id == Plans.value.id
+        }) ? UserSubscriptionPlans.value.find(i => {
+          return i.id == Plans.value.id
+        }).id : null;
+
+        if (selectedPlanId.value == null) {
+          ElMessageBox.confirm(
+          'Subscription pricing is currently not available in your country, we will make it available as soon as possible, you can reach out to us by sending an email to info@churchplus.co for us to address your specific needs. Thank you for choosing Churchplus',
+          'Notice',
+          {
+            confirmButtonText: 'Alright',
+            cancelButtonText: 'Cancel',
+            type: 'warning',
+          }
+        )
+          .then(() => {
+            ElMessage({
+              type: 'warning',
+              message: 'We await your feedback. Thank you',
+            })
+          })
+          .catch(() => {
+            ElMessage({
+              type: 'warning',
+              message: 'We await your feedback. Thank you',
+            })
+          })
+        }
+
+        console.log(selectedPlan.value);
+
         currentAmount.value = res.data.amountInNaira;
         currentPlan.value = existingPlan.value.description;
         productsList.value = res.data.productsList;
@@ -448,13 +476,34 @@ export default {
           (i) => i.name === "Email"
         ).price : [];
         smsPrice.value = productsList.value && productsList.value.length > 0 ? productsList.value.find((i) => i.name === "SMS").price : [];
-       
-    
+
+
         daysToEndOfSubscription.value = calculateRemomainingMonthsOfSubscription(res.data.subscriptionExpiration)
       });
     };
 
-    selectSubscription();
+    const setSelectedDuration = () => {
+      selectMonth.value = selectMonths.value.find(i => i.name == selectMonthId.value)
+    }
+
+    const setSelectedPlan = () => {
+      console.log(UserSubscriptionPricing.value)
+      console.log(selectedPlanId.value)
+      selectedPlan.value = UserSubscriptionPlans.value.find(i => i.id == selectedPlanId.value)
+      console.log(selectedPlan.value)
+    }
+
+    const getChurchProfile = async () => {
+      try {
+        let res = await axios.get(`/GetChurchProfileById?tenantId=${currentUser.value.tenantId}`)
+        churchLogo.value = res.data.returnObject.logo
+      }
+      catch (err) {
+        console.log(err)
+      }
+    }
+
+
     const paymentFailed = ref(false);
 
     const subscriptionPayment = (response, gateway) => {
@@ -463,50 +512,50 @@ export default {
       paymentFailed.value = false;
 
       const products = checkedBoxArr.value.map((i) => {
-          return {
-            productName: i.name,
-            productID: i.id,
-            productPrice: i.price,
-          };
-        });
-        if (selectEmail.value.name) {
-          const emailObj = productsList.value.find((i) => i.name === "Email");
-          if (emailObj.name) {
-            products.push({
-              productName: emailObj.name,
-              productID: emailObj.id,
-              productPrice: emailAmount.value,
-            });
-          }
-        }
-        if (smsValue.value) {
-          const smsObj = productsList.value.find((i) => i.name === "SMS");
-          if (smsObj.name) {
-            products.push({
-              productName: smsObj.name,
-              productID: smsObj.id,
-              productPrice: smsAmount.value,
-            });
-          }
-        }
-        const body = {
-          durationInMonths: selectMonth.value.name
-            ? +selectMonth.value.name
-            : 0,
-          smsUnits: smsValue.value ? smsValue.value : 0,
-          emailUnits: selectEmail.value.name
-            ? +selectEmail.value.name.split("-")[1]
-            : 0,
-          totalAmount: TotalAmount.value,
-          paymentGateway: gateway == 0 ? 'paystack' : 'flutterwave',
-          txnRefID: gateway == 0 ? response.trxref : response.transaction_id,
-          productItems: products,
-          currency: selectedCurrency.value,
+        return {
+          productName: i.name,
+          productID: i.id,
+          productPrice: i.price,
         };
-
-        if (selectMonth.value) {
-          body.subscriptionPlanID = selectedPlan.value.id;
+      });
+      if (selectEmail.value.name) {
+        const emailObj = productsList.value.find((i) => i.name === "Email");
+        if (emailObj.name) {
+          products.push({
+            productName: emailObj.name,
+            productID: emailObj.id,
+            productPrice: emailAmount.value,
+          });
         }
+      }
+      if (smsValue.value) {
+        const smsObj = productsList.value.find((i) => i.name === "SMS");
+        if (smsObj.name) {
+          products.push({
+            productName: smsObj.name,
+            productID: smsObj.id,
+            productPrice: smsAmount.value,
+          });
+        }
+      }
+      const body = {
+        durationInMonths: selectMonth.value.name
+          ? +selectMonth.value.name
+          : 0,
+        smsUnits: smsValue.value ? smsValue.value : 0,
+        emailUnits: selectEmail.value.name
+          ? +selectEmail.value.name.split("-")[1]
+          : 0,
+        totalAmount: TotalAmount.value,
+        paymentGateway: gateway == 0 ? 'paystack' : 'flutterwave',
+        txnRefID: gateway == 0 ? response.trxref : response.transaction_id,
+        productItems: products,
+        currency: selectedCurrency.value,
+      };
+
+      if (selectMonth.value) {
+        body.subscriptionPlanID = selectedPlan.value.id;
+      }
 
       if (gateway == 0) {
         try {
@@ -548,15 +597,15 @@ export default {
         } catch (error) {
           console.log(error);
         }
-      }  
+      }
     };
-    const conversionrates = ref({});
-    const getRates = () => {
-      converter.getConversionData().then((res) => {
-        conversionrates.value = res;
-      });
-    };
-    getRates();
+    // const conversionrates = ref({});
+    // const getRates = () => {
+    //   converter.getConversionData().then((res) => {
+    //     conversionrates.value = res;
+    //   });
+    // };
+    // getRates();
     // const convertAmountToTenantCurrency = computed(() => {
     //   if (!selectedCurrency.value) return TotalAmount.value;
     //   let amountInDollar = 0;
@@ -614,9 +663,9 @@ export default {
     };
 
     const setSelectedPaymentCurrency = () => {
-      if ( currentUser.value) {
-          selectedCurrency.value = currentUser.value.currency;
-        } 
+      if (currentUser.value) {
+        selectedCurrency.value = currentUser.value.currency;
+      }
     }
 
     const getCurrencySymbol = async () => {
@@ -631,7 +680,7 @@ export default {
         });
     };
 
- 
+
 
     if (!currentUser.value || !currentUser.value.currency) {
       getCurrencySymbol();
@@ -653,21 +702,21 @@ export default {
  ${appendLeadingZeroes(currentDate.getSeconds())}${appendLeadingZeroes(
       currentDate.getMilliseconds()
     )}`;
-  
+
 
     const initializePayment = (paymentGateway) => {
       const payload = {
-      gateway: paymentGateway === 0 ? 'paystack' : 'flutterwave',
-      totalAmount: TotalAmount.value,
-      tenantId: currentUser.value.tenantId,
-      orderId: uuidv4()
-    }
-     axios
-     .post('/api/payment/initializesubscription',payload)
-     .then((res) => {
-       close.value.click();
-       initializedOrder.value = res.data;
-     })
+        gateway: paymentGateway === 0 ? 'paystack' : 'flutterwave',
+        totalAmount: TotalAmount.value,
+        tenantId: currentUser.value.tenantId,
+        orderId: uuidv4()
+      }
+      axios
+        .post('/api/payment/initializesubscription', payload)
+        .then((res) => {
+          close.value.click();
+          initializedOrder.value = res.data;
+        })
     }
     const payWithPaystack = () => {
       initializePayment(0);
@@ -680,7 +729,7 @@ export default {
         amount: TotalAmount.value * 100,
         ref: `${formattedDate.substring(0, 4)}${uuidv4().substring(0, 4)}sub`,
         currency: Plans.value.paymentCurrency,
-        onClose: function() {
+        onClose: function () {
           // swal("Transaction Canceled!", { icon: "error" });
           toast.add({
             severity: "info",
@@ -689,7 +738,7 @@ export default {
             life: 3000,
           });
         },
-        callback: function(response) {
+        callback: function (response) {
           subscriptionPayment(response, 0);
           //Route to where you confirm payment status
         },
@@ -697,13 +746,13 @@ export default {
       handler.openIframe();
     };
 
-      const getFlutterwaveModules = () => {
-       const script = document.createElement("script");
-            script.src = !isProduction
-              ? "https://ravemodal-dev.herokuapp.com/v3.js"
-              : "https://checkout.flutterwave.com/v3.js";
-            document.getElementsByTagName("head")[0].appendChild(script);
-            // console.log(process.env.VUE_APP_FLUTTERWAVE_TEST_KEY)
+    const getFlutterwaveModules = () => {
+      const script = document.createElement("script");
+      script.src = !isProduction
+        ? "https://ravemodal-dev.herokuapp.com/v3.js"
+        : "https://checkout.flutterwave.com/v3.js";
+      document.getElementsByTagName("head")[0].appendChild(script);
+      // console.log(process.env.VUE_APP_FLUTTERWAVE_TEST_KEY)
     }
     getFlutterwaveModules()
 
@@ -714,47 +763,47 @@ export default {
       let country = "";
 
       switch (selectedCurrency.value) {
-            case 'KES':
-             country = 'KE';
-              break;
-            case 'GHS':
-              country = 'GH';
-              break;
-            case 'ZAR':
-              country = 'ZA';
-              break;
-            case 'TZS':
-              country = 'TZ';
-              break;
-            
-            default:
-              country = 'NG';
-              break;
-        }
-  
+        case 'KES':
+          country = 'KE';
+          break;
+        case 'GHS':
+          country = 'GH';
+          break;
+        case 'ZAR':
+          country = 'ZA';
+          break;
+        case 'TZS':
+          country = 'TZ';
+          break;
+
+        default:
+          country = 'NG';
+          break;
+      }
+
       window.FlutterwaveCheckout({
-                // public_key: process.env.VUE_APP_FLUTTERWAVE_TEST_KEY,
-                public_key: process.env.VUE_APP_FLUTTERWAVE_PUBLIC_KEY_LIVE,
-                tx_ref: uuidv4().substring(0,8),
-                amount: TotalAmount.value,
-                currency: selectedCurrency.value,
-                country: country,
-                payment_options: 'card,ussd',
-                customer: {
-                  // name: props.name,
-                  email: currentUser.value.userEmail
-                },
-                callback: (response) => {
-                  console.log("Payment callback", response)
-                    subscriptionPayment(response, 1)
-                  },
-                onclose: () => console.log('Payment closed'),
-                customizations: {
-                  title: 'Subscription',
-                  description: "Payment for Subcription ",
-                  logo: logoUrl,
-                },
-              });
+        public_key: process.env.VUE_APP_FLUTTERWAVE_TEST_KEY,
+        // public_key: process.env.VUE_APP_FLUTTERWAVE_PUBLIC_KEY_LIVE,
+        tx_ref: uuidv4().substring(0, 8),
+        amount: TotalAmount.value,
+        currency: selectedCurrency.value,
+        country: country,
+        payment_options: 'card,ussd',
+        customer: {
+          // name: props.name,
+          email: currentUser.value.userEmail
+        },
+        callback: (response) => {
+          console.log("Payment callback", response)
+          subscriptionPayment(response, 1)
+        },
+        onclose: () => console.log('Payment closed'),
+        customizations: {
+          title: 'Subscription',
+          description: "Payment for Subcription ",
+          logo: churchLogo.value,
+        },
+      });
     }
     const calculateRemomainingMonthsOfSubscription = expiryDate => {
       const endDate = new Date(expiryDate);
@@ -828,9 +877,17 @@ export default {
       subscriptionDuration,
       initializePayment,
       tenantId,
-      initializedOrder ,
+      initializedOrder,
       userEmail,
-      userCurrency
+      userCurrency,
+      countries,
+      UserSubscriptionPricing,
+      UserSubscriptionPlans,
+      selectedPlanId,
+      selectMonthId,
+      setSelectedDuration,
+      setSelectedPlan,
+      churchLogo
     };
   },
 };

@@ -149,14 +149,14 @@
                   Continue payment with
                 </div>
               </div>
-              <div class="row row-button c-pointer" @click="payWithPaystack" v-if="selectedCurrency == 'NGN'">
-                <div class="col-12 col-md-4 col-sm-7 offset-1">
+              <div class="row row-button c-pointer d-flex justify-content-center" @click="payWithPaystack" v-if="selectedCurrency == 'NGN'">
+                <div>
                   <img style="width: 150px" src="../../assets/4PaystackLogo.png" alt="paystack" />
                 </div>
                 <!-- <PaymentOptionModal :orderId="formResponse.orderId" :donation="donationObj" :close="close" :name="name" :amount="amount" :converted="convertedAmount" :email="email" @payment-successful="successfulPayment" :gateways="formResponse.paymentGateWays" :currency="dfaultCurrency.shortCode" @selected-gateway="gatewaySelected"/> -->
               </div>
-              <div class="row row-button c-pointer" @click="payWithFlutterwave">
-                <div class="col-12 col-md-4 col-sm-7 offset-1">
+              <div class="row row-button c-pointer d-flex justify-content-center" @click="payWithFlutterwave">
+                <div>
                   <img style="width: 150px" src="../../assets/flutterwave_logo_color@2x.png" alt="flutterwave" />
                 </div>
               </div>
@@ -278,7 +278,7 @@ export default {
     const tenantId = ref(currentUser.tenantId);
     const userCurrency = ref(currentUser.currency);
     const churchName = ref("");
-    const churchLogo = ref('https://images.app.goo.gl/cdhuWQU7a11CRJnRA');
+    const churchLogo = ref('');
     const close = ref(null);
     const isSuccessful = ref(false);
     const pricePerUnitSMS = ref(0);
@@ -328,6 +328,7 @@ export default {
           const userCurrencySupported = FLWupportedCurrencies.value.find(i => i.value === currentUser.value.currency)
           selectedCurrency.value = userCurrencySupported ? userCurrencySupported.value : 'USD'
           getAllCountries();
+          getChurchProfile();
 
         })
         .catch(err => {
@@ -336,6 +337,17 @@ export default {
     }
 
     if (!userEmail.value || !tenantId.value || !pricePerUnitSMS.value) getUserEmail();
+
+    const getChurchProfile = async () => {
+      console.log(tenantId.value)
+      try {
+        let res = await axios.get(`/GetChurchProfileById?tenantId=${tenantId.value}`)
+        churchLogo.value = res.data.returnObject.logo
+      }
+      catch (err) {
+        console.log(err)
+      }
+    }
 
     // const getEmail = async () => {
     //   if (!currentUser.value || !currentUser.value.userEmail) {
@@ -519,7 +531,8 @@ export default {
       // console.log(email)
       // alert('test')
       window.FlutterwaveCheckout({
-        public_key: process.env.VUE_APP_FLUTTERWAVE_PUBLIC_KEY_LIVE,
+        // public_key: process.env.VUE_APP_FLUTTERWAVE_PUBLIC_KEY_LIVE,
+        public_key: process.env.VUE_APP_FLUTTERWAVE_TEST_KEY,
         tx_ref: uuidv4().substring(0, 8),
         amount: totalAmount.value,
         currency: selectedCurrency.value,
@@ -586,9 +599,9 @@ export default {
 
         },
         customizations: {
-          title: 'Subscription',
-          description: "Payment for Subcription ",
-          logo: "https://churchplusstorage.blob.core.windows.net/mediacontainer/coreldrawskill_e9749fad-85e8-4130-b553-37acc8acde61_08062021.png",
+          title: 'SMS Unit',
+          description: "Payment for SMS Unit ",
+          logo: churchLogo.value
         },
       });
     }

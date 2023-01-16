@@ -10,6 +10,7 @@ import 'element-plus/dist/index.css'
 import * as ElementPlusIconsVue from '@element-plus/icons-vue'
 import 'element-plus/theme-chalk/display.css'
 import axios from "./gateway/backendapi";
+import NProgress from "nprogress";
 import CKEditor from '@ckeditor/ckeditor5-vue';
 import Toaster from '@meforma/vue-toaster';
 import Vue3EasyDataTable from 'vue3-easy-data-table';
