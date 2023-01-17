@@ -6,8 +6,8 @@
                 <div class="col-12 card-bg p-4">
                 <div class="row d-flex justify-content-between">
                     <div>
-                        <div class="col align-self-center"><span class="font-weight-700 c-pointer"><i class="pi pi-angle-up uniform-primary-color" :class="{'roll-note-icon' : item.taskIcon, 'unroll-note-icon' : !item.taskIcon}" @click="toggleTaskIcon(index)"></i>&nbsp;&nbsp;{{ item.selectedActivity && Object.keys(item.selectedActivity).length > 0 ? item.selectedActivity.value : item.loggedTask && item.loggedTask.type ? activityType.find(i => i.id === item.loggedTask.type).value : item.typeText }} {{ item.person ? 'task' : 'logged' }}</span> {{ item.loggedTask.person ? `assigned to ` : '' }} <span class="font-weight-700">{{ item.loggedTask.person ? item.loggedTask.person : "" }}</span></div>
-                        
+                        <div class="col align-self-center"><span class="font-weight-700 c-pointer">
+                            <el-icon class="uniform-primary-color" :class="{'roll-note-icon' : item.taskIcon, 'unroll-note-icon' : !item.taskIcon}" @click="toggleTaskIcon(index)"><ArrowUp /></el-icon>&nbsp;&nbsp;{{ item.selectedActivity && Object.keys(item.selectedActivity).length > 0 ? item.selectedActivity.value : item.loggedTask && item.loggedTask.type ? activityType.find(i => i.id === item.loggedTask.type).value : item.typeText }} {{ item.person ? 'task' : 'logged' }}</span> {{ item.loggedTask.person ? `assigned to ` : '' }} <span class="font-weight-700">{{ item.loggedTask.person ? item.loggedTask.person : "" }}</span></div>         
                     </div>
                     <div>
                         <div class="col text-right"><span class="ml-2 small-text">{{ formatDate(item.date) }} {{ item.time }}</span></div>
@@ -15,107 +15,229 @@
                 </div>
                 <div class="row">
                     <div class="col-12 mt-4 enlargen-font" v-if="!item.taskIcon">
-                        {{ item.loggedTask ? item.loggedTask.instructions : "Create your task" }}
+                        <div class="row">
+                            <div class="col-1 align-self-center">
+                                <div class="checked-first" v-if="item.loggedTask.status == 2">
+                                    <el-icon style="font-size: 10px; color: #ffffff"><Check /></el-icon>
+                                </div>
+                                <div class="checked-inprogress" v-if="item.loggedTask.status == 1"></div>
+                                <div class="checked-pending" v-if="item.loggedTask.status == 0"></div>
+                                <div class="checked-cancel" v-if="item.loggedTask.status == 3"></div>
+                                </div>
+                                <div class="col-11">
+                                    <div>{{ item.loggedTask ? item.loggedTask.instructions : "Create your task" }} </div>
+                                </div>
+                                </div>
                     </div>
-                    <!-- <div v-if="!taskIcon && item.description" class="col mt-4 enlargen-font">{{ theTask }}hereee</div> -->
                     <div class="col-12">
                         <transition name="fade">
                             <div class="row mt-4" v-if="item.taskIcon">
-                                <div class="col-1 align-self-center">
-                                    <div class="checked"><i class="pi pi-check text-white"></i></div>
+                                <div class="col-1 align-self-center" v-if="item.loggedTask.status == 2">
+                                    <div class="checked">
+                                        <el-icon style="font-size: 15px; color: #ffffff"><Check /></el-icon></div>
                                 </div>
-                            <div class="col-11 p-2 d-flex task-border justify-content-between" :class="{ 'hover-border' : item.hoverTask }" @mouseover="onHoverBorderTask(index)" @mouseleave="outHoverBorderTask(index)" v-if="!item.editTask" @click="toggleEditTask(index)">
+                            <div class="col-11 p-2 d-flex task-border justify-content-between" :class="{ 'hover-border' : item.hoverTask, 'mx-2' : item.loggedTask.status !== 2 }" @mouseover="onHoverBorderTask(index, indx)" @mouseleave="outHoverBorderTask(index, indx)" v-if="!item.editTask" @click="toggleEditTask(index, indx)">
                                 <div v-if="!item.loggedTask.instructions">Create a task here</div>
                                 <div v-else>{{ item.loggedTask.instructions }}</div>
-                                <div><i class="pi pi-pencil" :class="{ 'uniform-primary-color' : item.hoverTask, 'text-white' : !item.hoverTask }"></i></div>
+                                <div>
+                                    <el-icon :class="{ 'uniform-primary-color' : item.hoverTask, 'text-white' : !item.hoverTask }" class="c-pointer">
+                                        <Edit />
+                                    </el-icon>
                             </div>
-                            <input type="text" class="form-control col-10" v-model="item.loggedTask.instructions" @blur="saveTask(index)" v-if="item.editTask"/>
-                            <!-- <div class="offset-1 p-2 col-2 mt-3 save-btn btn-btn pointer-cursor" @click="" v-if="item.editTask">Save</div>
-                            <div class="cancel-btn btn-btn col-2 ml-3 p-2 mt-3" v-if="item.editTask" @click="cancelTaskEdit(index, indx)">Cancel</div> -->
+                            </div>
                             <div class="col-12">
+                                <el-input type="textarea" rows="3" v-model="item.loggedTask.instructions" v-if="item.editTask" @blur="saveTask(index, indx)"/>
                                 <hr />
                             </div>
-                            <div class="col-6 label-text mt-3">Due date</div>
-                            <div class="col-6 label-text mt-3"></div>
-                            <div class="col-6 mt-2">
-                                <div @click="toggleDueDate" aria:haspopup="true" aria-controls="overlay_panel" class="uniform-primary-color font-weight-700 c-pointer">
-                                    {{ item.selectedDueDate && Object.keys(item.selectedDueDate).length > 0 ? item.selectedDueDate.name : getDueDate(item.loggedTask.dueDate) }}&nbsp; <i class="pi pi-sort-down"></i>
-                                </div>
-                                <OverlayPanel ref="dueDateOp" appendTo="body" :showCloseIcon="false" id="overlay_panel" :breakpoints="{'960px': '75vw'}">
-                                    <div class="container-fluid p-0">
-                                        <div class="row hover-log" v-for="(date, dueDateIndex) in dueDate" :key="dueDateIndex">
-                                            <div class="py-2 px-3" @click="setDueDate(date, index)">{{ date.name }}</div>
-                                        </div>
-                                    </div>
-                                </OverlayPanel>
-                            </div>
-                            <!-- <div class="col-6 mt-2">
-                                <div @click="toggleReminder" aria:haspopup="true" aria-controls="overlay_panel" class="uniform-primary-color font-weight-700 c-pointer">
-                                    {{ item.selectedReminder && Object.keys(item.selectedReminder).length > 0 ? getReminder(item.selectedReminder, item.loggedTask.reminder) : getReminder(item.loggedTask.dueDate, item.loggedTask.reminder) ? getReminder(item.loggedTask.dueDate, item.loggedTask.reminder).name : "Choose reminder" }} 
-                                    {{ item.loggedTask.reminder }}
-                                    &nbsp; <i class="pi pi-sort-down"></i>
-                                </div>
-                                <OverlayPanel ref="reminderOp" appendTo="body" :showCloseIcon="false" id="overlay_panel" :breakpoints="{'960px': '75vw'}">
-                                    <div class="container-fluid p-0">
-                                        <div class="row hover-log" v-for="(remind, reminderIndex) in getReminder" :key="reminderIndex">
-                                            <div class="py-2 px-3" @click="setReminder(remind, reminderIndex)">{{ remind.name }}</div>
-                                        </div>
-                                    </div>
-                                </OverlayPanel>
-                            </div> -->
-                            <div class="col-12 mt-3">
-                                <hr />
-                            </div>
-                            <div class="col-4 label-text">Type</div>
-                            <div class="col-4 label-text">Priority</div>
-                            <div class="col-4 label-text">Assigned to</div>
-                            <div class="col-4 mt-2">
-                                <div @click="toggleTodo" aria:haspopup="true" aria-controls="overlay_panel" class="uniform-primary-color font-weight-700 c-pointer">
-                                    {{ item.selectedActivity && Object.keys(item.selectedActivity).length > 0 ? item.selectedActivity.value : item.loggedTask && item.loggedTask.type ? activityType.find(i => i.id === item.loggedTask.type).value : "" }}&nbsp; <i class="pi pi-sort-down"></i>
-                                </div>
-                                <OverlayPanel ref="todoOp" appendTo="body" :showCloseIcon="false" id="overlay_panel" :breakpoints="{'960px': '75vw'}">
-                                    <div class="container-fluid p-0">
-                                        <div class="row hover-log" v-for="(item, todoIndex) in activityType" :key="todoIndex">
-                                            <div class="py-2 px-3" @click="resetActivityType(index, todoIndex)">{{ item.value }}</div>
-                                        </div>
-                                    </div>
-                                </OverlayPanel>
-                            </div>
-                            <div class="col-4 mt-2">
-                                <div @click="togglePriority" aria:haspopup="true" aria-controls="overlay_panel" class="uniform-primary-color font-weight-700 c-pointer">
-                                    {{ item.selectedPriority && Object.keys(item.selectedPriority).length > 0 ? item.selectedPriority.name : taskPriority.find(i => i.id === item.loggedTask.priority).name }} &nbsp; <i class="pi pi-sort-down"></i>
-                                </div>
-                                <OverlayPanel ref="priorityOp" appendTo="body" :showCloseIcon="false" id="overlay_panel" :breakpoints="{'960px': '75vw'}">
-                                    <div class="container-fluid p-0">
-                                        <div class="row hover-log" v-for="(item, priorityIndex) in taskPriority" :key="priorityIndex">
-                                            <div class="py-2 px-3" @click="resetPriority(priorityIndex, index)">{{ item.name }}</div>
-                                        </div>
-                                    </div>
-                                </OverlayPanel>
-                            </div>
-                            <div class="col-4 mt-2">
-                                 <div @click="toggleContact" aria:haspopup="true" aria-controls="overlay_panel" class="uniform-primary-color font-weight-700 c-pointer">
-                                    {{ item.selectedContact && Object.keys(item.selectedContact).length > 0 ? `${item.selectedContact.name}` : item.loggedTask.personName }}&nbsp; <i class="pi pi-sort-down"></i>
-                                </div>
-                                <OverlayPanel ref="contactOp" appendTo="body" :showCloseIcon="false" id="overlay_panel" :breakpoints="{'960px': '75vw'}" class="p-0">
-                                    <div class="container-fluid p-0">
-                                        <div class="py-2 px-3">Search whom you want to assign this task</div>
-                                        <div class="py-2 px-3">
-                                            <SearchMember @memberdetail="chooseContact($event, index)"/>
-                                        </div>
-                                    </div>
-                                </OverlayPanel>
+                            <div class="col-4 col-md-8 label-text mt-3">Due date</div>
+
+                            <div class="col-4 col-md-4 label-text mt-3 d-none d-md-block">Set status</div>
+
+                            <div class="col-8 col-md-12 d-block d-md-none mt-3 text-right">
+                                <el-dropdown trigger="click">
+                                    <span class="el-dropdown-link primary--text">
+                                            <div>
+                                                {{ item.selectedDueDate && Object.keys(item.selectedDueDate).length > 0 ? item.selectedDueDate.name : getDueDate(item.loggedTask.dueDate) }}&nbsp;<el-icon>
+                                                    <arrow-down />
+                                                </el-icon>
+                                            </div>
+                                    </span>
+                                    <template #dropdown>
+                                        <el-dropdown-menu>
+                                            <el-dropdown-item  v-for="(date, dueDateIndex) in dueDate" :key="dueDateIndex"
+                                            @click="setDueDate(date, index)">{{ date.name }}</el-dropdown-item>
+                                        </el-dropdown-menu>
+                                    </template>
+                                </el-dropdown>
                             </div>
 
+                            <div class="col-md-8 mt-2 d-none d-md-block mb-4">
+                                <el-dropdown trigger="click">
+                                    <span class="el-dropdown-link primary--text">
+                                            <div>
+                                                {{ item.selectedDueDate && Object.keys(item.selectedDueDate).length > 0 ? item.selectedDueDate.name : getDueDate(item.loggedTask.dueDate) }}&nbsp;<el-icon>
+                                                    <arrow-down />
+                                                </el-icon>
+                                            </div>
+                                    </span>
+                                    <template #dropdown>
+                                        <el-dropdown-menu>
+                                            <el-dropdown-item  v-for="(date, dueDateIndex) in dueDate" :key="dueDateIndex"
+                                            @click="setDueDate(date, index)">{{ date.name }}</el-dropdown-item>
+                                        </el-dropdown-menu>
+                                    </template>
+                                </el-dropdown>
+                            </div>
+
+                            
+
+                            <div class="col-md-4 mt-2 d-none d-md-block mb-4">
+                                <el-dropdown trigger="click">
+                                    <span class="el-dropdown-link primary--text">
+                                            <div>
+                                                {{ selectedTask && selectedTask.name ? selectedTask.name : statuses.find(j => j.value == item.loggedTask.status).name }}&nbsp;<el-icon>
+                                                    <arrow-down />
+                                                </el-icon>
+                                            </div>
+                                    </span>
+                                    <template #dropdown>
+                                        <el-dropdown-menu>
+                                            <el-dropdown-item  v-for="(taskItem, taskStatusIndex) in statuses" :key="taskStatusIndex"
+                                            @click="setTaskStatus(taskItem, item.loggedTask)">{{ taskItem.name }}</el-dropdown-item>
+                                        </el-dropdown-menu>
+                                    </template>
+                                </el-dropdown>
+                            </div>
+                   
+                            <div class="col-4 label-text mt-3 mt-md-0">Type</div>
+
+                            <div class="col-8 d-block d-md-none mt-3 mt-md-0 text-right">
+                                <el-dropdown trigger="click">
+                                    <span class="el-dropdown-link primary--text">
+                                            <div>
+                                                {{ item.selectedActivity && Object.keys(item.selectedActivity).length > 0 ? item.selectedActivity.value : item.loggedTask && item.loggedTask.type ? activityType.find(i => i.id === item.loggedTask.type).value : "" }}&nbsp;
+                                                <el-icon>
+                                                    <arrow-down />
+                                                </el-icon>
+                                            </div>
+                                    </span>
+                                    <template #dropdown>
+                                        <el-dropdown-menu>
+                                            <el-dropdown-item  v-for="(item, todoIndex) in activityType" :key="todoIndex"
+                                            @click="resetActivityType(index, todoIndex)">{{ item.value }}</el-dropdown-item>
+                                        </el-dropdown-menu>
+                                    </template>
+                                </el-dropdown>
+                            </div>
+
+                            <div class="col-4 label-text mt-3 mt-md-0">Priority</div>
+
+                            <div class="col-8 d-block d-md-none mt-3 mt-md-0 text-right">
+                                <el-dropdown trigger="click">
+                                    <span class="el-dropdown-link primary--text">
+                                            <div>
+                                                {{ item.selectedPriority ? item.selectedPriority.name : taskPriority.find(i => i.id === item.loggedTask.priority).name }}&nbsp;
+                                                <el-icon>
+                                                    <arrow-down />
+                                                </el-icon>
+                                            </div>
+                                    </span>
+                                    <template #dropdown>
+                                        <el-dropdown-menu>
+                                            <el-dropdown-item v-for="(item, priorityIndex) in taskPriority" :key="priorityIndex"
+                                            @click="resetPriority(priorityIndex, index)">{{ item.name }}</el-dropdown-item>
+                                        </el-dropdown-menu>
+                                    </template>
+                                </el-dropdown>
+                            </div>
+
+                            <div class="col-4 label-text mt-3 mt-md-0">Assigned to</div>
+
+                            <div class="col-8 d-block d-md-none mt-3 mt-md-0 text-right">
+                                <span class="el-dropdown c-pointer" @click="toggleContact" style="color: #136acd">
+                                        {{ item.selectedContact ? `${item.selectedContact.name}` : item.person }}<el-icon class="el-icon--right"><arrow-down /></el-icon>
+                                    </span>
+                            </div>
+                            
+                            <div class="col-4 label-text mt-3 mt-md-0 d-block d-md-none">Set status</div>
+
+                            <div class="col-8 d-block d-md-none mt-3 mt-md-0 text-right">
+                                <el-dropdown trigger="click">
+                                    <span class="el-dropdown-link primary--text">
+                                            <div>
+                                                {{ selectedTask && selectedTask.name ? selectedTask.name : statuses.find(j => j.value == item.loggedTask.status).name }}&nbsp;<el-icon>
+                                                    <arrow-down />
+                                                </el-icon></div>
+                                    </span>
+                                    <template #dropdown>
+                                        <el-dropdown-menu>
+                                            <el-dropdown-item  v-for="(taskItem, taskStatusIndex) in statuses" :key="taskStatusIndex"
+                                            @click="setTaskStatus(taskItem, item.loggedTask)">{{ taskItem.name }}</el-dropdown-item>
+                                        </el-dropdown-menu>
+                                    </template>
+                                </el-dropdown>
+                            </div>
+                            
+                            <div class="col-4 mt-2 d-none d-md-block">
+                                <el-dropdown trigger="click">
+                                    <span class="el-dropdown-link primary--text">
+                                            <div>
+                                                {{ item.selectedActivity && Object.keys(item.selectedActivity).length > 0 ? item.selectedActivity.value : item.loggedTask && item.loggedTask.type ? activityType.find(i => i.id === item.loggedTask.type).value : "" }}&nbsp;
+                                                <el-icon>
+                                                    <arrow-down />
+                                                </el-icon>
+                                            </div>
+                                    </span>
+                                    <template #dropdown>
+                                        <el-dropdown-menu>
+                                            <el-dropdown-item  v-for="(item, todoIndex) in activityType" :key="todoIndex"
+                                            @click="resetActivityType(index, todoIndex)">{{ item.value }}</el-dropdown-item>
+                                        </el-dropdown-menu>
+                                    </template>
+                                </el-dropdown>
+                            </div>
+                            <div class="col-4 mt-2 d-none d-md-block">
+                                <el-dropdown trigger="click">
+                                    <span class="el-dropdown-link primary--text">
+                                            <div>
+                                                {{ item.selectedPriority ? item.selectedPriority.name : taskPriority.find(i => i.id === item.loggedTask.priority).name }}&nbsp;
+                                                <el-icon>
+                                                    <arrow-down />
+                                                </el-icon>
+                                            </div>
+                                    </span>
+                                    <template #dropdown>
+                                        <el-dropdown-menu>
+                                            <el-dropdown-item v-for="(item, priorityIndex) in taskPriority" :key="priorityIndex"
+                                            @click="resetPriority(priorityIndex, index)">{{ item.name }}</el-dropdown-item>
+                                        </el-dropdown-menu>
+                                    </template>
+                                </el-dropdown>
+                            </div>
+                            <div class="col-4 mt-2 d-none d-md-block">
+                                    <span class="el-dropdown c-pointer" @click="toggleContact" style="color: #136acd">
+                                        {{ item.selectedContact ? `${item.selectedContact.name}` : item.person }}<el-icon class="el-icon--right"><arrow-down /></el-icon>
+                                    </span>
+                            </div>
+                            <el-drawer v-model="searchmemberr" direction="btt">
+                                <template #header>
+                                    <h4>Search member</h4>
+                                </template>
+                                <template #default>
+                                    <div>Enter the name of the person you want to assign this task to</div>
+                                    <SearchMember @memberdetail="chooseContact($event, index)"/>
+                                </template>
+                                <template #footer>
+                                <div class="d-flex justify-content-start">
+                                    <el-button @click="searchmemberr = false" color="#136acd" round>Done</el-button>
+                                </div>
+                                </template>
+                            </el-drawer>
                             <div class="col-12">
-                                    <!-- <div class="col-12 p-2 d-flex task-border justify-content-between mt-4" :class="{ 'hover-border' : item.hoverTask2 }" @mouseover="onHoverBorderTask2(index)" @mouseleave="outHoverBorderTask2(index)" v-if="!item.editTask2" @click="toggleEditTask2(index)">
-                              
-                                <div><i class="pi pi-pencil" :class="{ 'uniform-primary-color' : hoverTask2, 'text-white' : !hoverTask2 }"></i></div>
-                            </div> -->
-                            <textarea class="form-control col-12 mt-3" rows="4" v-model="item.loggedTask.note"></textarea>
+                            <el-input class="mt-3" type="textarea" rows="4" v-model="item.loggedTask.note" />
                             <div class="d-flex justify-content-start">
-                                <div class="p-2 col-2 mt-3 save-btn btn-btn c-pointer" @click="editTask(index)" >Save</div>
-                            <div class="cancel-btn btn-btn col-2 ml-3 p-2 mt-3 c-pointer" @click="cancelTaskEdit2">Cancel</div>
+                                <div class="p-2 col-4 col-sm-2 mt-3 save-btn btn-btn c-pointer" @click="editTask(index, indx)" >Save</div>
+                            <div class="cancel-btn btn-btn col-4 col-sm-2 ml-3 p-2 mt-3 c-pointer" @click="cancelTaskEdit2">Cancel</div>
                             </div>
                             </div>
                         </div>
@@ -124,11 +246,10 @@
                 </div>
             <transition name="fade">
                 <div class="container" v-if="item.taskIcon">
-                    <div class="row mt-4" v-show="!displayComment">
-                        <div class="col font-weight-700 c-pointer" @click="toggleDisplayComment">Add Comment</div>
-                        <!-- <div class="col text-right font-weight-700 c-pointer">1 Association</div> -->
+                    <div class="row mt-4" v-if="item.loggedTask.comments && item.loggedTask.comments.length == 0">
+                        <el-button class="font-weight-700" @click="toggleDisplayComment" text>Add Comment</el-button>
                     </div>
-                    <div class="row" v-if="displayComment">
+                    <div class="row" v-if="displayComment || item.loggedTask.comments.length > 0">
                         <div class="col-12 mt-4">
                             <div class="row comment-bg border py-3 mt-2" v-for="(comment, indexx) in item.loggedTask.comments" :key="indexx">
                                 <div class="col-2">
@@ -164,17 +285,13 @@
                             </div>
                         </div>
                         <div class="col-12 px-0 mt-3">
-                            <textarea class="form-control comment-bg" rows="7" placeholder="Write a comment..." v-model="taskComment" ref="taskCommentRef"></textarea>
+                            <el-input type="textarea" class="comment-bg" rows="7" placeholder="Write a comment..." v-model="taskComment" />
                         </div>
-                        <div class="p-2 col-2 mt-3 save-btn btn-btn c-pointer" @click="postComment(item, index, indx)">Post</div>
-                        <div class="cancel-btn btn-btn col-2 ml-3 p-2 mt-3 c-pointer" @click="() => displayComment = false">Cancel</div>
+                        <div class="p-2 col-4 col-sm-2  mt-3 save-btn btn-btn c-pointer" @click="postComment(item, index, indx)">Post</div>
+                        <div class="cancel-btn btn-btn col-4 col-sm-2  ml-3 p-2 mt-3 c-pointer" @click="() => displayComment = false">Cancel</div>
                     </div>
                 </div>
             </transition>
-            <!-- </div> -->
-            <!-- </div>
-            </div> -->
-        
         </div>
         </div>
          <div class="row" v-if="addTask.length === 0">
@@ -191,30 +308,25 @@ import dateFormatter from '../../../../services/dates/dateformatter'
 import frmservice from "@/services/FRM/firsttimermanagement"
 import SearchMember from "../../../../components/membership/MembersSearch.vue"
 import { useRoute } from "vue-router"
-import { useToast } from "primevue/usetoast";
+import { ElMessage } from 'element-plus'
 export default {
     inheritAttrs: false,
     props: ['addTask', 'activityType', 'dueDate', 'taskPriority', 'getReminder'],
-    emits: ['individualtoggletask', 'opentaskeditor', 'hovertask', 'outhovertask', 'edittask', 'hidetaskfield', 'removecommetfromview'],
+    emits: ['individualtoggletask', 'opentaskeditor', 'hovertask', 'outhovertask', 'edittask', 'hidetaskfield', 'removecommetfromview', 'setcontact', 'editcommentinview', 'setactivitytypereset', 'setresetpriority', 'setduedate', 'newcommentindex'],
     components: {
         SearchMember
     },
     setup(props, { emit }) {
         const route = useRoute()
-        const toast = useToast()
-        const op = ref()
-        const dueDateOp = ref()
-        const todoOp = ref()
-        const priorityOp = ref()
-        const reminderOp = ref()
-        const contactOp = ref()
         const reminder = ref([])
         const displayComment = ref(false)
         const taskComment = ref("")
-        const taskCommentRef = ref()
         const editCommentVar = ref(false)
         const commentId = ref("")
         const commentIndexToEdit = ref({})
+        const selectedTask = ref({})
+        const statuses = ref([ { name: 'Pending', value: 0 }, { name: 'InProgress', value: 1 }, { name: 'Completed', value: 2 }, { name: 'Cancelled', value: 3 }, { name: 'Rescheduled', value: 4 }, { name: 'Stalled', value: 5 } ])
+        const searchmemberr = ref(false)
 
         const toggleTaskIcon = (index) => {
             emit("individualtoggletask", index)
@@ -249,10 +361,8 @@ export default {
         }
 
         const resetActivityType = (index, todoIndex) => {
-            console.log(index)
-            // props.activities[index].value[indx].selectedActivity = props.activityType[todoIndex]
-            props.addTask[index].selectedActivity = props.activityType[todoIndex]
-            todoOp.value.hide();
+            let payload = { index, todoIndex }
+            emit('setactivitytypereset', payload)
         }
 
         const onHoverBorderTask = (index) => {
@@ -263,41 +373,25 @@ export default {
             emit('outhovertask', index)
         }
 
-         
-        const toggleDueDate = (event) => {
-            dueDateOp.value.toggle(event);
-        };
-
-        const toggleTodo = (event) => {
-            todoOp.value.toggle(event);
-        };
-
-        const togglePriority = (event) => {
-            priorityOp.value.toggle(event);
-        };
-
-        const toggleReminder = (event) => {
-            reminderOp.value.toggle(event);
-        };
 
         const resetPriority = (priorityIndex, index) => {
-            props.addTask[index].selectedPriority = props.taskPriority[priorityIndex]
-            priorityOp.value.hide();
+            let payload = { index, priorityIndex }
+            emit('setresetpriority', payload)
         } 
 
-        const toggleContact = (event) => {
-            contactOp.value.toggle(event);
+        const toggleContact = () => {
+            searchmemberr.value = true;
         };
 
         const chooseContact = (payload, index) => {
-            console.log(payload)
-            props.addTask[index].selectedContact = payload
-            contactOp.value.hide()
+            let data  = { index, payload }
+            emit("setcontact", data)
         }
 
         const setDueDate = (item, index) => {
-            dueDateOp.value.hide();
-            props.addTask[index].selectedDueDate = item
+            let payload = { index, item }
+            emit('setduedate', payload)
+
         }
 
 
@@ -306,8 +400,6 @@ export default {
         };
 
         const editTask = async(index) => {
-            // console.log(props.addTask[index])
-
             let body = {
                 id: props.addTask[index].loggedTask.id,
                 instructions: props.addTask[index].loggedTask.instructions,
@@ -322,48 +414,17 @@ export default {
                 console.log(body)
 
                 try {
-                    const res = await frmservice.editTask(props.addTask[index].loggedTask.id, body)
-                    console.log(res)
-                    toast.add({
-                        severity: "success",
-                        summary: "Success",
-                        detail: "Task updated successfully",
-                        life: 5000,
-                    });
+                    await frmservice.editTask(props.addTask[index].loggedTask.id, body)
+                        ElMessage({
+                        type: 'success',
+                        showClose: true,
+                        message: "Task updated successfully",
+                        duration: 5000
+                    })
                 }
                 catch (err) {
                     console.log(err)
                 }
-        }
-
-        // const getReminder = (dueDate, reminderHour) => {
-        // //    if (Object.keys(reminderHour).length > 0) {
-        //     // try {
-        //         console.log(dueDate)
-        //         let result = frmservice.reminder(dueDate)
-        //         console.log(result);
-        //         reminder.value = result
-        //         let reminderResult = result.find(i => {
-        //             return new Date(i.value).toLocaleTimeString() == new Date(reminderHour).toLocaleTimeString()
-        //         })
-        //         return reminderResult
-        //         // return result
-        //         // reminder.value = result
-        //     // } catch (err) {
-        //     //     console.log(err)
-        //     // }
-        // //    } else {
-        // //        let result = frmservice.reminder()
-        // //         console.log(result);
-        // //         // reminder.value = result
-        // //         return result
-        // //    }
-        // }
-
-        const setReminder = (item, index) => {
-            reminderOp.value.hide();
-            console.log(item, 'heree')
-            props.addTask[index].selectedReminder = item
         }
 
         const toggleDisplayComment = () => {
@@ -371,7 +432,6 @@ export default {
         }
 
         const postComment = async(task, index) => {  
-            console.log(editCommentVar.value)
             if (editCommentVar.value) {
                 editComment()
                 editCommentVar.value = false
@@ -382,10 +442,14 @@ export default {
                 }
                 try {
                     let res = await frmservice.comment(task.loggedTask.id, body)
-                    console.log(res)
-                    props.addTask[index].loggedTask.comments.push(res.returnObject)
-                    // emit("commentindex", indexes)
+                    emit('newcommentindex', { index, data: res.returnObject } )
                     taskComment.value = ""
+                    ElMessage({
+                        type: 'success',
+                        showClose: true,
+                        message: "Comment posted successfully",
+                        duration: 5000
+                    })
                 }
                 catch (err) {
                     console.log(err)
@@ -394,7 +458,6 @@ export default {
         }
 
         const setToEditComment = (comment, index, indexx) => {
-           console.log(comment)
            editCommentVar.value = true
            commentId.value = comment.id
            taskComment.value = comment.message
@@ -403,21 +466,23 @@ export default {
                 index: indexx
             }
             commentIndexToEdit.value = body
-            taskCommentRef.value.focus()
         }
 
         const editComment = async() => {
-            console.log(commentId.value)
             let payload = {
                comment: taskComment.value
            }
             try {
                 let res = await frmservice.editComment(commentId.value, payload)
                 commentIndexToEdit.value.body = res.returnObject
-                console.log(commentIndexToEdit.value)
                 emit("editcommentinview", commentIndexToEdit.value)
                 taskComment.value = ""
-                console.log(res)
+                ElMessage({
+                    type: 'success',
+                    showClose: true,
+                    message: "Comment updated successfully",
+                    duration: 5000
+                })
             }
             catch (err) {
                 console.log(err)
@@ -426,13 +491,49 @@ export default {
 
         const deleteComment = async(id, index, indexx) => {
             try {
-                let res = await frmservice.deleteComment(id)
+                await frmservice.deleteComment(id)
                 let body = {
                     parentIndex: index,
                     index: indexx
                 }
                 emit("removecommetfromview", body)
-                console.log(res)
+                ElMessage({
+                    type: 'success',
+                    showClose: true,
+                    message: "Comment deleted successfully",
+                    duration: 5000
+                })
+            }
+            catch (err) {
+                console.log(err)
+            }
+        }
+
+        const setTaskStatus = async(item, task) => {
+            selectedTask.value = item
+            const body = {
+                id: task.id,
+                instructions: task.instructions,
+                dateCreated: task.dateCreated,
+                dateUpdated: task.dateCreated,
+                reminder: task.reminder,
+                dueDate: task.dueDate,
+                note: task.note,
+                type: task.type,
+                priority: task.priority,
+                personID: task.personID,
+                contacts: task.contacts,
+                status: item.value
+                }
+
+            try {
+                await frmservice.editTask(task.id, body)
+                ElMessage({
+                    type: 'success',
+                    showClose: true,
+                    message: "Task status updated successfully",
+                    duration: 5000
+                })
             }
             catch (err) {
                 console.log(err)
@@ -445,42 +546,33 @@ export default {
             onHoverBorder,
             outHoverBorder,
             toggle,
-            op,
             openTaskEditor,
             formatDate,
             resetActivityType,
             getDueDate,
             onHoverBorderTask,
             outHoverBorderTask,
-            toggleDueDate,
-            dueDateOp,
-            toggleTodo,
-            todoOp,
-            togglePriority,
-            priorityOp,
-            toggleReminder,
-            reminderOp,
             resetPriority,
             toggleContact,
-            contactOp,
             chooseContact,
             setDueDate,
             saveTask,
             editTask,
-            // getReminder,
             reminder,
-            setReminder,
             displayComment,
             toggleDisplayComment,
             taskComment,
-            taskCommentRef,
             postComment,
             editCommentVar,
             setToEditComment,
             commentId,
             editComment,
             commentIndexToEdit,
-            deleteComment
+            deleteComment,
+            selectedTask,
+            setTaskStatus,
+            statuses,
+            searchmemberr
         }
     }
 }
@@ -529,7 +621,7 @@ export default {
 }
 
 .btn-btn {
-    font-size: 15px;
+    font-size: 13px;
     line-height: 14px;
     padding: 9px 15px;
     border-radius: 3px;
@@ -582,8 +674,46 @@ export default {
     background-color: rgb(0, 189, 165);
     border: 2px solid rgb(0, 189, 165);
     border-radius: 50%;
-    text-align: center
+    display: flex;
+    justify-content: center;
+    align-items: center;
 }
+
+.checked-first {
+    width: 15px;
+    height: 15px;
+    background-color: rgb(0, 189, 165);
+    border-radius: 50%;
+    margin-right: 20px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.checked-inprogress {
+    width: 15px;
+    height: 15px;
+    background-color: rgb(213, 206, 3);
+    border-radius: 50%;
+    margin-right: 20px;
+}
+
+.checked-pending {
+    width: 15px;
+    height: 15px;
+    background-color: rgb(211, 145, 3);
+    border-radius: 50%;
+    margin-right: 20px;
+}
+
+.checked-cancel {
+    width: 15px;
+    height: 15px;
+    background-color: rgb(189, 19, 0);
+    border-radius: 50%;
+    margin-right: 20px;
+}
+
 .comment-bg {
     background: #fef8f0;
 }

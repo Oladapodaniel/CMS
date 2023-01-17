@@ -58,7 +58,6 @@ const lookupService = {
             axios
                 .get("/api/LookUp/GetAllLookUps")
                 .then((res) => {
-                    console.log(res)
                     const genders = res.data.find(
                         (i) => i.type.toLowerCase() === "gender"
                     ).lookUps;

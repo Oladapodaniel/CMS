@@ -23,10 +23,7 @@ export default {
             state.paymentData = payload
         },
         newlyAddedContribution(state, payload) {
-            // state.contributionList.unshift(payload)
             payload.forEach(i => state.contributionList.unshift(i))
-            console.log(state.contributionList)
-            console.log(payload)
         },
 
         clearState(state) {
@@ -40,7 +37,6 @@ export default {
                 try {
                     const { data } = await axios.get("/api/Financials/Contributions/Transactions");
                     commit("saveList", data);
-                    console.log(data)
                 } catch (error) {
                     console.log(error);
                 }

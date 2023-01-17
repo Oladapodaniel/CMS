@@ -142,6 +142,8 @@ import { ref, watchEffect } from '@vue/runtime-core';
 
         /* Center the "page". */
         margin: 0 auto;
+
+        min-height: 300px
     }
 
     /* Set the default font for the "page" of the content. */

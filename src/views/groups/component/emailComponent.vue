@@ -8,7 +8,7 @@
           <h4 class="font-weight-bold">Compose Email</h4>
           <Toast />
 
-          <Dialog
+          <!-- <Dialog
             header="Select Date and Time"
             v-model:visible="display"
             :style="{ width: '50vw', maxWidth: '600px' }"
@@ -44,7 +44,29 @@
                 @click="contructScheduleMessageBody(2)"
               />
             </template>
-          </Dialog>
+          </Dialog> -->
+          <el-dialog title="Select Date and Time" v-model="display"
+            :width="mdAndUp || lgAndUp || xlAndUp ? `50%` : xsOnly ? `90%` : `70%`" align-center>
+            <div class="row">
+              <div class="col-md-12">
+                <el-date-picker v-model="executionDate" type="datetime" class="w-100"
+                  placeholder="Select date and time" />
+              </div>
+            </div>
+            <template #footer>
+              <span class="dialog-footer">
+                <div class="mt-2">
+                  <el-button @click="(display = false)" round>
+                    Cancel
+                  </el-button>
+                  <el-button color="#136acd" :loading="scheduleLoading" @click="contructScheduleMessageBody(2)"
+                    round>
+                    Schedule
+                  </el-button>
+                </div>
+              </span>
+            </template>
+          </el-dialog>
         </div>
       </div>
         <!-- {{ selectedGroupMembers  }} 'yytyytytyty' -->
@@ -533,172 +555,30 @@
           </p>
         </div>
         <div class="col-md-12 d-flex justify-content-end">
-          <span>
+          <!-- <span>
             <SplitButton
               label="Send"
               :model="sendOptions"
               @click="contructScheduleMessageBody(1)"
             ></SplitButton>
-            <!-- <SplitButton
-              label="Send"
-              :model="sendOptions"
-              data-toggle="modal"
-              data-target="#sendsmsbtn"
-            ></SplitButton> -->
+            
           </span>
-          <!-- <router-link
-          to="/tenant/peoplegroups:actionType"
-            class="default-btn d-flex justify-content-center short-btn align-items-center ml-3 text-decoration-none text-dark"
-          > -->
-            <span class="btn default-btn ml-3" @click="closeModal" >Discard</span>
-          <!-- </router-link> -->
+          
+            <span class="btn default-btn ml-3" @click="closeModal" >Discard</span> -->
+          
+          <el-dropdown split-button color="#136acd" class="split-button" size="large" trigger="click"
+              @click="contructScheduleMessageBody(1)">
+              Send
+              <template #dropdown>
+                <el-dropdown-menu>
+                  <el-dropdown-item @click="showScheduleModal">Schedule</el-dropdown-item>
+                  <el-dropdown-item @click="draftMessage">Save as draft</el-dropdown-item>
+                </el-dropdown-menu>
+              </template>
+            </el-dropdown>
+          <el-button class="ml-3" size="large" @click="closeModal" round>Discard</el-button>
         </div>
 
-        <div class="row">
-          <div class="col-md-12">
-            <div
-              class="modal fade"
-              id="sendsmsbtn"
-              tabindex="-1"
-              aria-labelledby="exampleModalLabel"
-              aria-hidden="true"
-            >
-              <div class="modal-dialog modal-dialog-centered modal-lg">
-                <div class="modal-content">
-                  <div class="modal-header grey-background">
-                    <h5 class="modal-title" id="exampleModalLabel">
-                      <i class="pi pi-user mr-2"></i>
-                      {{ sendModalHeader }}
-                    </h5>
-                    <button
-                      type="button"
-                      class="close"
-                      data-dismiss="modal"
-                      aria-label="Close"
-                    >
-                      <span aria-hidden="true">&times;</span>
-                    </button>
-                  </div>
-                  <div class="modal-body">
-                    <div class="row" v-if="!nigerian">
-                      <div class="col-md-12 text-center">
-                        <button
-                          class="primary-btn default-btn border-0 px-4 my-2 primary-bg text-white outline-none extra-btn"
-                          data-dismiss="modal"
-                          @click="sendSMS('')"
-                        >
-                          Send SMS Now {{ `${nigerian}` }}
-                        </button>
-                      </div>
-                    </div>
-
-                    <div class="row" v-else>
-                      <div class="col-md-12">
-                        <div class="row">
-                          <div class="col-md-12 px-1">
-                            <p>
-                              We are providing more options to reach and
-                              communicate with your members
-                            </p>
-                          </div>
-                        </div>
-
-                        <div class="row">
-                          <div class="col-md-12 px-1">
-                            <hr class="hr" />
-                          </div>
-                        </div>
-
-                        <div class="row d-flex justify-content-between">
-                          <div class="col-md-6 px-1">
-                            <div class="container">
-                              <div class="row">
-                                <div class="col-md-12">
-                                  <label
-                                    for=""
-                                    class="small-text font-weight-600 py-2"
-                                    >NEW** BULK SMS - 100% SMS DELIVERY</label
-                                  >
-                                </div>
-                                <div
-                                  class="col-md-12 send-now-div py-2 my-2 d-flex justify-content-center"
-                                >
-                                  <button
-                                    class="primary-btn default-btn primary-bg border-0 px-4 my-2 font-weight-600 outline-none"
-                                    data-dismiss="modal"
-                                    @click="sendSMS('hostedsms')"
-                                  >
-                                    Send SMS Now
-                                  </button>
-                                </div>
-                                <div class="col-md-12 px-0">
-                                  <hr class="hr my-2" />
-                                </div>
-                                <div class="col-md-12 px-0 d-flex flex-column">
-                                  <span>Please note:</span>
-                                  <span
-                                    >100% delivery to all valid phone
-                                    numbers.</span
-                                  >
-                                  <span>Not Affected by DND.</span>
-                                  <span
-                                    >Dedicated phone number: No sender
-                                    customization.</span
-                                  >
-                                </div>
-                              </div>
-                            </div>
-                          </div>
-
-                          <div class="col-md-6 px-1">
-                            <div class="container">
-                              <div class="row">
-                                <div class="col-md-12">
-                                  <label
-                                    for=""
-                                    class="small-text font-weight-600 py-2"
-                                    >REGULAR BULK SMS- PROVIDER</label
-                                  >
-                                </div>
-                                <div
-                                  class="col-md-12 my-2 send-now-div py-2 d-flex justify-content-center"
-                                >
-                                  <!-- hostedsms_instant -->
-                                  <button
-                                    class="primary-btn default-btn border-0 px-4 my-2 grey-background text-grey outline-none"
-                                    data-dismiss="modal"
-                                    @click="sendSMS('')"
-                                  >
-                                    Send SMS Now
-                                  </button>
-                                </div>
-                                <div class="col-md-12 px-0">
-                                  <hr class="hr my-2" />
-                                </div>
-                                <div class="col-md-12 px-0 d-flex flex-column">
-                                  <span>Please note:</span>
-                                  <span>Uses the regular bulk sms engine</span>
-                                  <span
-                                    >Delivery rate varies and is affected by DND
-                                    number.</span
-                                  >
-                                  <span>Sender Name can be customized.</span>
-                                </div>
-                              </div>
-                            </div>
-                          </div>
-                        </div>
-                      </div>
-                    </div>
-                  </div>
-                  <!-- <div class="modal-footer">
-                    
-                  </div> -->
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
       </div>
     </div>
   </div>
@@ -725,9 +605,11 @@ import MyUploadAdapter from "../../../services/editor/editor_uploader"
 // import ImageResize from '@ckeditor/ckeditor5-image/src/imageresize';
 
 import DecoupledEditor from '@/components/RichEditor';
+import deviceBreakpoint from "../../../mixins/deviceBreakpoint";
 
 export default {
 props: ['selectedGroupMembers', 'groupData'],
+emits: ['closesidemodal'],
   components: { 
     // Editor
     // ckeditor: CKEditor.component,
@@ -755,6 +637,8 @@ props: ['selectedGroupMembers', 'groupData'],
     const sendToAll = ref(false);
     const executionDate = ref('');
     const email = ref("");
+    const { mdAndUp, lgAndUp, xlAndUp, xsOnly } = deviceBreakpoint()
+    const scheduleLoading = ref(false)
 
     const toggleGroupsVissibility = () => {
       groupsAreVissible.value = !groupsAreVissible.value;
@@ -981,7 +865,7 @@ props: ['selectedGroupMembers', 'groupData'],
 
 
       if (sendOrSchedule == 2) {
-        data.executionDate = executionDate.value;
+        data.executionDate = executionDate.value.toISOString();
         scheduleMessage(data);
       } else {
         sendEmail(data);
@@ -993,20 +877,24 @@ props: ['selectedGroupMembers', 'groupData'],
     };
 
     const scheduleMessage = async (data) => {
-      display.value = false;
+      scheduleLoading.value = true
       const formattedDate = dateFormatter.monthDayTime(data.executionDate);
       try {
         await composerObj.sendMessage(
           "/api/Messaging/saveEmailSchedule",
           data
-        );
-        toast.add({
-          severity: "success",
-          summary: "message Scheduled",
-          detail: `Message scheduled for ${formattedDate}`,
-        });
-      } catch (error) {
-        console.log(error);
+          );
+          display.value = false;
+          scheduleLoading.value = false
+          toast.add({
+            severity: "success",
+            summary: "message Scheduled",
+            detail: `Message scheduled for ${formattedDate}`,
+          });
+        } catch (error) {
+          console.log(error);
+          display.value = false;
+          scheduleLoading.value = false
         toast.add({
           severity: "error",
           summary: "Schedule Failed",
@@ -1017,11 +905,11 @@ props: ['selectedGroupMembers', 'groupData'],
 
     const draftMessage = async () => {
       try {
-        await composerObj.saveDraft("/api/Messaging/saveEmaillDraft", {
+        await composerObj.saveDraft({
           subject: subject.value,
           body: editorData.value,
           isDefaultBirthDayMessage: false,
-        });
+        }, "/api/Messaging/saveEmaillDraft");
         store.dispatch("communication/getEmailDrafts");
         toast.add({
           severity: "success",
@@ -1096,27 +984,27 @@ props: ['selectedGroupMembers', 'groupData'],
       return false;
     });
 
-    const sendOptions = [
-      {
-        label: "Schedule",
-        icon: "pi pi-clock",
-        command: () => {
-          showScheduleModal();
-        },
-      },
-      {
-        label: "Save as Draft",
-        icon: "pi pi-save",
-        command: () => {
-          draftMessage();
-        },
-      },
+    // const sendOptions = [
+    //   {
+    //     label: "Schedule",
+    //     icon: "pi pi-clock",
+    //     command: () => {
+    //       showScheduleModal();
+    //     },
+    //   },
+    //   {
+    //     label: "Save as Draft",
+    //     icon: "pi pi-save",
+    //     command: () => {
+    //       draftMessage();
+    //     },
+    //   },
       // {
       //   label: "Upload",
       //   icon: "pi pi-upload",
       //   to: "/fileupload",
       // },
-    ];
+    // ];
 
     const allGroups = ref([]);
     const categories = ref([]);
@@ -1207,7 +1095,7 @@ props: ['selectedGroupMembers', 'groupData'],
       display,
       showDateTimeSelectionModal,
       scheduleMessage,
-      sendOptions,
+      // sendOptions,
       draftMessage,
       groupListShown,
       showGroupList,
@@ -1226,7 +1114,13 @@ props: ['selectedGroupMembers', 'groupData'],
       isPersonalized,
       email,
       onReady,
-      closeModal
+      closeModal,
+      showScheduleModal,
+      mdAndUp,
+      lgAndUp,
+      xlAndUp,
+      xsOnly,
+      scheduleLoading
     };
   },
 };
