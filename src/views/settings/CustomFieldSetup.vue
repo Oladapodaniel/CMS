@@ -124,6 +124,11 @@
                                 />
                               </li>
                       </ul> -->
+                        <!-- <Chips
+                          v-model="dropdownList"
+                          style="background: white, width: 100%;"
+                          separator=","
+                        /> -->
                         <Chips
                           v-model="dropdownList"
                           style="background: white, width: 100%;"
