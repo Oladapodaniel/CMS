@@ -57,6 +57,74 @@
                           Enter your Dropdown list here seperated by
                           comma..</label
                         >
+                        <!-- <input type="text" class="form-control" > -->
+                        <!-- <ul
+                              class="
+                                d-flex
+                                flex-wrap
+                                px-1
+                                mb-0
+                                m-dd-item
+                              "
+                              @click="() => selectInput.focus()"
+                            >
+                            
+                              <li
+                              v-for="(
+                                  dropdownn, indx
+                                ) in selectedDropdowns"
+                                :key="indx" 
+                                style="
+                                  list-style: none;
+                                  min-width: 100px;
+                                "
+                                
+                                class="
+                                  email-destination
+                                  d-flex
+                                  justify-content-between
+                                  m-1
+                                "
+                              >
+                              {{selectedDropdowns}}
+                                <span>{{dropdownn}}</span>
+                                <span
+                                  class="ml-2 remove-email"
+                                  @click="removeItem(indx)"
+                                  >x</span
+                                >
+                              </li>
+                              <li
+                               :class="{
+                                    'w-100':
+                                      selectedDropdowns.length === 0,
+                                    'minimized-input-width':
+                                      selectedDropdowns.length > 0,
+                                  }" 
+                                style="list-style: none"
+                                class="m-dd-item"
+                              >
+                               
+                                <input
+                                  type="text"
+                                  class="
+                                    border-0
+                                    m-dd-item
+                                    text
+                                    outline-none
+                                  "
+                                  ref="selectInput"
+                                  @input="dropdownItem"
+                                  autocomplete="off"
+                                 
+                                  @focus="showDropdownList"
+                                  v-model="selectItem"
+                                  style="padding: 0.5rem"
+                                  placeholder= ''
+                                  @blur="() => (inputBlurred = true)"
+                                />
+                              </li>
+                      </ul> -->
                         <Chips
                           v-model="dropdownList"
                           style="background: white, width: 100%;"
@@ -372,6 +440,9 @@ export default {
   },
   setup() {
     const selectedControl = ref({});
+    const selectedDropdowns = ref([]);
+    const selectInput = ref(null);
+    const selectItem = ref("");
     const selectedControlID = ref(null);
     const customControlTypeID = ref(null);
     const customEntityTypeID = ref(null);
@@ -387,6 +458,8 @@ export default {
     const customFieldLabel = ref("");
     const tenantId = ref("");
     const getAllcontrolType = ref([]);
+    const dropdownListShown = ref(false);
+    const inputBlurred = ref(false);
     const getAllEntityType = ref([]);
     const allCustomFieldList = ref([]);
     const toast = useToast();
@@ -409,6 +482,10 @@ export default {
       { name: "EventRegistrationForm", id: "4" },
       { name: "CheckInAttendance", id: "5" },
     ]);
+    const showDropdownList = () => {
+      dropdownListShown.value = true;
+      inputBlurred.value = false;
+    };
 
     const setcustomEntityType = () => { setcustomControlType
       customEntityType.value = entityType.value.find((i) => {
@@ -632,6 +709,10 @@ export default {
 
     return {
       controlType,
+      selectItem,
+      selectInput,
+      dropdownListShown,
+      inputBlurred,
       setselectedControl,
       setcustomControlType,
       setcustomEntityType,
@@ -650,6 +731,7 @@ export default {
       customControlType,
       getAllcontrolType,
       customLabel,
+      selectedDropdowns,
       loading,
       getAllEntityType,
       selectedControl,
@@ -660,6 +742,7 @@ export default {
       dropdownList,
       openClassification,
       discard,
+      showDropdownList,
       getEntityName,
       customFieldLabel,
       customDropdownList,
@@ -701,6 +784,21 @@ export default {
 
 .grey-background {
   background: #dde2e6;
+}
+.email-destination {
+  padding: 0.1rem 0.4rem;
+  border: 1px solid #02172e0d;
+  border-radius: 8px;
+  background: #02172e14;
+}
+
+.remove-email {
+  color: #000;
+  font-weight: bold;
+}
+
+.remove-email:hover {
+  cursor: pointer;
 }
 
 .save-btn {
