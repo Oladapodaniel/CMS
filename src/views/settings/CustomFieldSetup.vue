@@ -57,7 +57,6 @@
                           Enter your Dropdown list here seperated by
                           comma..</label
                         >
-                        <!-- <input type="text" class="form-control" > -->
                         <!-- <ul
                               class="
                                 d-flex
