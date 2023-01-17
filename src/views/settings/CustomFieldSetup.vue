@@ -57,7 +57,6 @@
                           Enter your Dropdown list here seperated by
                           comma..</label
                         >
-                        <!-- <input type="text" class="form-control" > -->
                         <!-- <ul
                               class="
                                 d-flex
@@ -125,6 +124,11 @@
                                 />
                               </li>
                       </ul> -->
+                        <!-- <Chips
+                          v-model="dropdownList"
+                          style="background: white, width: 100%;"
+                          separator=","
+                        /> -->
                         <Chips
                           v-model="dropdownList"
                           style="background: white, width: 100%;"
