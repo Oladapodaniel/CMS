@@ -401,12 +401,13 @@ export default {
     const getPostById = async () => {
       try {
         const postData = await social_service.getPostById(route.query.postId);
-        console.log(postData);
+        console.log(postData,"kjhjshjsdkds");
         postToEdit.value.content = postData.content;
         postToEdit.value.mediaUrl = postData.mediaUrl;
         postToEdit.value.postId = postData.postId;
         message.value = postData.content;
         fileUrl.value = postData.mediaUrl;
+        showOnMainThread.value = postData.showOnMainThread;
         isUrl.value = true;
         getPostCategoryById(postData.postCategoryId);
       } catch (error) {
