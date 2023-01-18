@@ -401,7 +401,7 @@ export default {
     const getPostById = async () => {
       try {
         const postData = await social_service.getPostById(route.query.postId);
-        console.log(postData,"kjhjshjsdkds");
+        console.log(postData);
         postToEdit.value.content = postData.content;
         postToEdit.value.mediaUrl = postData.mediaUrl;
         postToEdit.value.postId = postData.postId;
