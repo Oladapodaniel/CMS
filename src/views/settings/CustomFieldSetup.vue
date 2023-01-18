@@ -27,7 +27,6 @@
                           class="w-100"
                           placeholder="Specify Your Label here.."
                           v-model="customFieldLabel"
-                          size="large"
                         />
                       </div>
                       <div class="col-md-12 col-sm-12 mt-3">
@@ -46,7 +45,7 @@
                           placeholder="Select type"
                           class="w-100"
                           size="large"
-                          style="width: 100%; text-align: left"
+                          
                         />
                       </div>
                       <div
@@ -54,86 +53,19 @@
                         v-if="selectedControl.name == 'DropdownList'"
                       >
                         <label for="">
-                          Enter your Dropdown list here seperated by
-                          comma..</label
+                          Enter your Dropdown list here </label
                         >
-                        <!-- <ul
-                              class="
-                                d-flex
-                                flex-wrap
-                                px-1
-                                mb-0
-                                m-dd-item
-                              "
-                              @click="() => selectInput.focus()"
-                            >
-                            
-                              <li
-                              v-for="(
-                                  dropdownn, indx
-                                ) in selectedDropdowns"
-                                :key="indx" 
-                                style="
-                                  list-style: none;
-                                  min-width: 100px;
-                                "
-                                
-                                class="
-                                  email-destination
-                                  d-flex
-                                  justify-content-between
-                                  m-1
-                                "
-                              >
-                              {{selectedDropdowns}}
-                                <span>{{dropdownn}}</span>
-                                <span
-                                  class="ml-2 remove-email"
-                                  @click="removeItem(indx)"
-                                  >x</span
-                                >
-                              </li>
-                              <li
-                               :class="{
-                                    'w-100':
-                                      selectedDropdowns.length === 0,
-                                    'minimized-input-width':
-                                      selectedDropdowns.length > 0,
-                                  }" 
-                                style="list-style: none"
-                                class="m-dd-item"
-                              >
-                               
-                                <input
-                                  type="text"
-                                  class="
-                                    border-0
-                                    m-dd-item
-                                    text
-                                    outline-none
-                                  "
-                                  ref="selectInput"
-                                  @input="dropdownItem"
-                                  autocomplete="off"
-                                 
-                                  @focus="showDropdownList"
-                                  v-model="selectItem"
-                                  style="padding: 0.5rem"
-                                  placeholder= ''
-                                  @blur="() => (inputBlurred = true)"
-                                />
-                              </li>
-                      </ul> -->
-                        <!-- <Chips
-                          v-model="dropdownList"
-                          style="background: white, width: 100%;"
-                          separator=","
-                        /> -->
-                        <Chips
-                          v-model="dropdownList"
-                          style="background: white, width: 100%;"
-                          separator=","
-                        />
+                       <div class="row  justify-content-center">
+                         <div class="col-md-12">
+                          <div class="chip-container col-md-12 p-0 m-0 ">
+                          <div class="chip px-2  d-flex justify-content-between my-2 mx-1" v-for="(chip, i) of dropdownList" :key="chip.label">
+                            <span>{{chip}}</span>
+                            <i class=" pt-1 text-dark align-items-center" @click="deleteChip(i)"><el-icon><CircleClose /></el-icon></i>
+                          </div>
+                          <input class="inputt  py-2 "  v-model="currentInput" @keypress.enter="saveChip" @keydown.delete="backspaceDelete" >
+                        </div>
+                         </div>
+                       </div>
                       </div>
                       <div class="col-md-12 col-sm-12 mt-3">
                         <label for=""
@@ -277,7 +209,7 @@
                   <div
                     class="
                       d-flex
-                      justify-content-md-center justify-content-sm-start
+                      justify-content-md-center fllexxwrap justify-content-sm-start
                     "
                   >
                     <el-button
@@ -348,7 +280,7 @@
                     v-if="customControlType.name == 'DropdownList'"
                   >
                     <div class="col-md-4 text-md-right text-left">
-                      <label for="">Label</label>
+                      <!-- <label for="">Label</label> -->
                     </div>
                     <div class="col-md-8">
                       <el-input
@@ -433,20 +365,14 @@
 <script>
 import { ref } from "vue";
 import axios from "@/gateway/backendapi";
-import { useToast } from "primevue/usetoast";
 import { ElMessage, ElMessageBox } from "element-plus";
 import finish from "../../services/progressbar/progress";
-import Chips from "primevue/chips";
 
 export default {
-  components: {
-    Chips,
-  },
+  components: {},
   setup() {
     const selectedControl = ref({});
-    const selectedDropdowns = ref([]);
-    const selectInput = ref(null);
-    const selectItem = ref("");
+    const currentInput = ref("")
     const selectedControlID = ref(null);
     const customControlTypeID = ref(null);
     const customEntityTypeID = ref(null);
@@ -462,11 +388,8 @@ export default {
     const customFieldLabel = ref("");
     const tenantId = ref("");
     const getAllcontrolType = ref([]);
-    const dropdownListShown = ref(false);
-    const inputBlurred = ref(false);
     const getAllEntityType = ref([]);
     const allCustomFieldList = ref([]);
-    const toast = useToast();
     const getCustomizableField = ref([]);
     const toggleCustomList = ref(false);
     const controlType = ref([
@@ -486,11 +409,16 @@ export default {
       { name: "EventRegistrationForm", id: "4" },
       { name: "CheckInAttendance", id: "5" },
     ]);
-    const showDropdownList = () => {
-      dropdownListShown.value = true;
-      inputBlurred.value = false;
-    };
-
+    const saveChip = () =>{
+      ((dropdownList.value.indexOf(currentInput.value) === -1) ) && dropdownList.value.push(currentInput.value);
+      currentInput.value = '';
+    }
+    const deleteChip = (index) =>{
+      dropdownList.value.splice(index, 1);
+    }
+    const backspaceDelete = ({which}) =>{
+       which == 8 && currentInput.value === '' && dropdownList.value.splice(dropdownList.value.length - 1);
+    }
     const setcustomEntityType = () => { setcustomControlType
       customEntityType.value = entityType.value.find((i) => {
         return i.id === customEntityTypeID.value;
@@ -667,7 +595,7 @@ export default {
         });
         selectedEntityType.value = "";
         customFieldLabel.value = "";
-        dropdownList.value = "";
+        dropdownList.value = [];
         selectedControl.value = "";
       } catch (error) {
         console.log(error);
@@ -713,10 +641,10 @@ export default {
 
     return {
       controlType,
-      selectItem,
-      selectInput,
-      dropdownListShown,
-      inputBlurred,
+      deleteChip,
+      backspaceDelete,
+      currentInput,
+      saveChip,
       setselectedControl,
       setcustomControlType,
       setcustomEntityType,
@@ -735,7 +663,6 @@ export default {
       customControlType,
       getAllcontrolType,
       customLabel,
-      selectedDropdowns,
       loading,
       getAllEntityType,
       selectedControl,
@@ -746,7 +673,6 @@ export default {
       dropdownList,
       openClassification,
       discard,
-      showDropdownList,
       getEntityName,
       customFieldLabel,
       customDropdownList,
@@ -757,6 +683,43 @@ export default {
 </script>
 
 <style scoped>
+
+.chip-container {
+  /* width: 425px; */
+  border: 1px solid #ccc;
+  background: #ffffff;
+  min-height: 34px;
+  display:flex;
+  flex-wrap: wrap;
+  align-content: space-between;
+}
+.chip {
+  padding: 0.3rem 0.3rem;
+  border: 1px solid #02172e0d;
+  border-radius: 25px;
+  background: #02172e14;
+    /* margin:4px;
+    background: #e0e0e0;
+    padding:0px 4px;
+    border: 1px solid #ccc;
+    border-radius: 3px;
+    display:flex;
+    align-items: center; */
+}
+i {
+      cursor: pointer;
+      opacity: .56;
+      margin-left:8px;
+    }
+
+    .inputt {
+    /* flex: 1 1 auto;
+    width: 30px; */
+    border: none;
+    outline: none;
+    padding: 4px;
+  }
+
 .table-header-row {
   background: #ebeff4;
   border-top: 1px solid #dde2e6;
@@ -768,11 +731,11 @@ export default {
   align-items: center;
   justify-content: center;
   padding: 0 !important;
-  gap: 2rem;
+  /* gap: rem; */
 }
 
 .show-view-dropdown {
-  height: 300px;
+  height: 340px;
   overflow: hidden;
   transition: all 0.5s ease-in-out;
 }
@@ -862,6 +825,27 @@ export default {
   }
   .bor {
     border: #02172e !important;
+  }
+}
+
+@media screen and (max-width: 746px) {
+  .show-view-dropdown {
+  height: 400px;
+  overflow: hidden;
+  transition: all 0.5s ease-in-out;
+}
+}
+@media screen and (max-width: 348px) {
+  .show-view-dropdown {
+  height: 450px;
+  overflow: hidden;
+  transition: all 0.5s ease-in-out;
+}
+}
+@media screen and (max-width: 300px) {
+  .fllexxwrap{
+    flex-wrap: wrap;
+    justify-content: center;
   }
 }
 @media screen and (max-width: 390px) {
