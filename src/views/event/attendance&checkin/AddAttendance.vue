@@ -1353,14 +1353,15 @@ export default {
       ) {
         console.log("free and no image");
         selectedGroups.value
-          ? formData.append("groupIDs", selectedGroups.value)
+          ? formData.append("groupIDs", JSON.stringify(selectedGroups.value))
           : "";
         loadingsave.value = true;
         try {
-          // const response = await attendanceservice.saveCheckAttendanceItem(checkinEvent);
           const response = await axios.post(
-            "/api/CheckinAttendance/MultipleCheckinAttendanceItem",
-            checkinEvent
+            // "/api/CheckinAttendance/MultipleCheckinAttendanceItem",
+             "api/CheckInAttendance/CreateAttendanceCheckIn",
+             formData
+            // checkinEvent
           );
           console.log(response);
           for (let i = 0; i < response.data.length; i++) {
@@ -1435,10 +1436,10 @@ export default {
         loadingsave.value = true;
         try {
           let { data } = await axios.post(
-            "/api/CheckInAttendance/create/multiple",
+            // "/api/CheckInAttendance/create/multiple",
+             "api/CheckInAttendance/CreateAttendanceCheckIn",
             formData
           );
-          // let { data } = await axios.post('/api/CheckInAttendance/EventRegister', formData)
           let firstGroup = data.returnObject.checkInAttendanceResult.find(
             (i) => i.groupID == selectedGroups.value[0].id
           );
@@ -1481,7 +1482,8 @@ export default {
         loadingsave.value = true;
         try {
           let { data } = await axios.post(
-            "/api/CheckInAttendance/create/multiple",
+            // "/api/CheckInAttendance/create/multiple",
+             "api/CheckInAttendance/CreateAttendanceCheckIn",
             formData
           );
           let firstGroup = data.returnObject.checkInAttendanceResult.find(
