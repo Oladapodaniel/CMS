@@ -23,10 +23,8 @@
                   </div>
                 </div>
               </div>
-              <Toast />
-              <ConfirmDialog />
 
-              <div class="row">
+              <!-- <div class="row">
                 <div class="col-md-12">
                   <i
                     class="pi pi-trash color-deleteicon c-pointer pt-2 px-2"
@@ -36,8 +34,53 @@
                     @click="showConfirmModal(false)"
                   ></i>
                 </div>
-              </div>
+              </div> -->
 
+              <div class="table-top p-3 mt-5">
+                <el-tooltip class="box-item" effect="dark" v-if="markedMail.length > 0" content="delete marked"
+                  placement="top-start">
+                  <el-icon :size="20" class="ml-2 c-pointer" v-if="markedMail.length > 0" @click="showConfirmModal(false)">
+                    <Delete />
+                  </el-icon>
+                </el-tooltip>
+              </div>
+              <EasyDataTable
+               v-model:items-selected="markedMail" :headers="sentEmailHeaders" :rowsPerPage="100" v-model:server-options="serverOptions"
+               :items="searchEmails" :server-items-length="serverItemsLength" buttons-pagination alternating
+              >
+              <template #item-message="item">
+                <div class="c-pointer py-2" @click="showEmailRow(item)">
+                  <div class="" >{{ item.subject ? item.subject : "" }} </div> 
+                  <div  class="text-primary">{{ formatMessage(item.message) }}</div>
+                  
+                </div>
+              </template>
+              <!-- <template #item-subject="item">
+                <div class="c-pointer" @click="showEmailRow(item)">
+                  {{ item.subject ? item.subject.toLowerCase() : "" }}
+                </div>
+              </template> -->
+              <template #item-sentby="item">
+                <div class="c-pointer" @click="showEmailRow(item)">
+                  {{ item.sentByUser }}
+                </div>
+              </template>
+              <template #item-datetime="item" class="row">
+                <div class="c-pointer " @click="showEmailRow(item)">
+                  {{ item.dateSent }}
+                </div>
+              </template>
+              <template #item-delete="item" class="row">
+                <div class="c-pointer " >
+                  <el-icon :size="20" class="ml-2 c-pointer"   @click="showConfirmModal(item.id)" >
+                    <Delete />
+                  </el-icon>
+                </div>
+              </template>
+
+
+              </EasyDataTable>
+<!-- 
               <div class="row">
                 <div class="col-md-12">
                   <div class="row header-row light-grey-bg py-2">
@@ -119,11 +162,6 @@
                                   }}</span>
                                 </router-link>
                               </span>
-                              <!-- <span class="brief-message">
-                              <router-link :to="{ name: 'EmailDetails', params: { messageId: email.id } }" class="text-decoration-none small-text"><article :ref="`messageBody_${email.id}`">
-                                {{ createElementFromHTML(email.message) }}
-                              </article></router-link>
-                          </span> -->
                               <span class="brief-message">
                                 <router-link
                                   :to="{
@@ -196,7 +234,7 @@
                     </div>
                   </div>
                 </div>
-              </div>
+              </div> -->
             </div>
           </div>
         </div>
@@ -206,26 +244,29 @@
 </template>
 
 <script>
-import { computed, ref } from "vue";
+import { computed, ref, watch } from "vue";
 import communicationService from "../../services/communication/communicationservice";
 import PaginationButtons from "../../components/pagination/PaginationButtons";
 import axios from "@/gateway/backendapi";
 import Loading from "../../components/loading/LoadingComponent";
-import Tooltip from "primevue/tooltip";
-import { useConfirm } from "primevue/useconfirm";
-import { useToast } from "primevue/usetoast";
 import stopProgressBar from "../../services/progressbar/progress";
 import store from '../../store/store';
 import { Search } from '@element-plus/icons-vue'
+import { ElMessage, ElMessageBox } from 'element-plus'
+import router from "../../router/index"
 
 export default {
   components: { PaginationButtons, Loading },
-  directives: {
-    tooltip: Tooltip,
-  },
+  directives: {},
   setup() {
-    const confirm = useConfirm();
-    const toast = useToast();
+    const sentEmailHeaders = ref([
+      { text: 'Message', value: 'message' },
+      // { text: 'Subject', value: 'subject' },
+      { text: 'Sent by', value: 'sentby' },
+      { text: 'Date & Time', value: 'datetime' },
+      { text: '', value: 'delete' },
+    ])
+    const serverItemsLength = ref(0);
 
     const emails = ref([]);
     const emailsInStore = ref(store.getters["communication/sentEmails"]);
@@ -237,6 +278,21 @@ export default {
     const currentPage = ref(0);
     const loading = ref(true);
     const searchMail = ref("");
+
+    const serverOptions = ref({
+      page: 1,
+      rowsPerPage: 100,
+    });
+
+    watch(serverOptions, () => {
+      getEmailsByPage();
+    },
+      { deep: true }
+    );
+
+    const showEmailRow = (item) =>{
+      router.push(`/tenant/email/compose?messageId=${item.id}`)
+    }
 
     const getSentEmails = async () => {
       
@@ -277,9 +333,9 @@ export default {
       return `${formatted}`;
     };
 
-    const getEmailsByPage = async (page) => {
+    const getEmailsByPage = async () => {
       try {
-        const data = await communicationService.getSentEmails(page);
+        const data = await communicationService.getSentEmails(serverOptions.value.page);
         if (data) {
           emails.value = data;
           currentPage.value = page;
@@ -350,12 +406,16 @@ export default {
           `/api/Messaging/DeleteSentEmails?SentEmailIdList=${stringOfEmailIds}`
         );
         if (data.deleted) {
-          toast.add({
-            severity: "success",
-            summary: "Delete successfull",
-            detail: `${markedMail.value.length > 1 ? 'Selected Emails have' : 'Email has' } been deleted successfully`,
-            life: 3000,
-          });
+          ElMessage({
+              type: 'success',
+              message: 'Deleted successfully',
+            })
+          // toast.add({
+          //   severity: "success",
+          //   summary: "Delete successfull",
+          //   detail: `${markedMail.value.length > 1 ? 'Selected Emails have' : 'Email has' } been deleted successfully`,
+          //   life: 3000,
+          // });
           emails.value = !id ? removeDeletedEmailsFromEmailList(markedMail.value) : emails.value.filter(i => i.id !== id);
           if (id) {
           store.dispatch('communication/removeSentEmails', id)
@@ -364,21 +424,29 @@ export default {
           }
           markedMail.value = [ ];
         } else {
-          toast.add({
-            severity: "error",
-            summary: "Delete Failed",
-            detail: `${data.message}`,
-            life: 3000,
-          });
+          ElMessage({
+              type: 'error',
+              message: data.message,
+            })
+          // toast.add({
+          //   severity: "error",
+          //   summary: "Delete Failed",
+          //   detail: `${data.message}`,
+          //   life: 3000,
+          // });
         }
       } catch (error) {
         console.log(error);
-        toast.add({
-          severity: "error",
-          summary: "Delete Failed",
-          detail: `${markedMail.value.length > 1 ? 'Selected Emails' : 'Email'} could not be deleted, Please try reloading`,
-          life: 3000,
-        });
+        ElMessage({
+              type: 'error',
+              message: markedMail.value.length > 1 ? 'Selected Emails could not be deleted, Please try reloading' : 'Email could not be deleted, Please try reloading'  ,
+            })
+        // toast.add({
+        //   severity: "error",
+        //   summary: "Delete Failed",
+        //   detail: `${markedMail.value.length > 1 ? 'Selected Emails' : 'Email'} could not be deleted, Please try reloading`,
+        //   life: 3000,
+        // });
         stopProgressBar();
       }
     };
@@ -399,28 +467,51 @@ export default {
     }
 
     const showConfirmModal = (id) => {
-      confirm.require({
-        message: "Are you sure you want to proceed? This operation can't be reversed.",
-        header: "Confirmation",
-        icon: "pi pi-exclamation-triangle",
-        acceptClass: "confirm-delete",
-        rejectClass: "cancel-delete",
-        accept: () => {
-          deleteEmails(id);
-        },
-        reject: () => {
-          toast.add({
-            severity: "info",
-            summary: "Rejected",
-            detail: "Delete discarded",
-            life: 3000,
-          });
-        },
-      });
+      ElMessageBox.confirm(
+        "Are you sure you want to proceed? This operation can't be reversed " ,
+        'Warning',
+        {
+          confirmButtonText: 'OK',
+          cancelButtonText: 'Cancel',
+          type: 'warning',
+        }
+      )
+        .then(() => {
+           deleteEmails(id);
+        })
+        .catch(() => {
+          ElMessage({
+            type: 'info',
+            message: 'Delete canceled',
+          })
+        })
+        
+      // confirm.require({
+      //   message: "Are you sure you want to proceed? This operation can't be reversed.",
+      //   header: "Confirmation",
+      //   icon: "pi pi-exclamation-triangle",
+      //   acceptClass: "confirm-delete",
+      //   rejectClass: "cancel-delete",
+      //   accept: () => {
+      //     deleteEmails(id);
+      //   },
+      //   reject: () => {
+      //     toast.add({
+      //       severity: "info",
+      //       summary: "Rejected",
+      //       detail: "Delete discarded",
+      //       life: 3000,
+      //     });
+      //   },
+      // });
     };
 
     return {
       emails,
+      showEmailRow,
+      serverItemsLength,
+      serverOptions,
+      sentEmailHeaders,
       Search,
       formatMessage,
       getEmailsByPage,
@@ -457,6 +548,13 @@ export default {
   background: none;
   border: none;
   outline: transparent;
+}
+.table-top {
+  font-weight: 800;
+  font-size: 12px;
+  background: #fff;
+  border: 1px solid #E0E0E0;
+  border-bottom: none;
 }
 
 .brief-message {

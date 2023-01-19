@@ -23,7 +23,7 @@
                   <div class="toggle ml-3 mt-2">
                     <i class="pi pi-bars" @click="toggleMenu"></i>
                   </div>
-                  <router-link to="/tenant/email/compose" class=" col-11 col-sm-0  mt-2 compose-btn font-weight-700">Compose E-mail</router-link>
+                  <router-link to="/tenant/email/compose" class=" col-11 col-sm-0  mt-3 compose-btn font-weight-700">Compose E-mail</router-link>
                 </div>
               </div>
               <div class="row mb-3 " :class="{ 'show': menuShouldShow, 'links-menu' : !menuShouldShow }">
@@ -248,6 +248,9 @@ export default {
 @media screen and (max-width: 765px){
   .toggle {
     display: block;
+  }
+  #side-menu{
+    border: none;
   }
   .show {
     overflow: hidden;
