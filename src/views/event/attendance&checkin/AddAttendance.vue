@@ -1352,17 +1352,21 @@ export default {
         !image.value
       ) {
         console.log("free and no image");
+        // selectedGroups.value
+        //   ? formData.append("groupIDs", selectedGroups.value)
+        //   : "";
         selectedGroups.value
-          ? formData.append("groupIDs", selectedGroups.value)
+          ? formData.append("groupIDs", JSON.stringify(selectedGroups.value))
           : "";
         loadingsave.value = true;
         try {
           // const response = await attendanceservice.saveCheckAttendanceItem(checkinEvent);
-          const response = await axios.post(
-            "/api/CheckinAttendance/MultipleCheckinAttendanceItem",
-            checkinEvent
+          const response = await axios.post( 
+            "api/CheckInAttendance/CreateAttendanceCheckIn", formData
+            // "/api/CheckinAttendance/MultipleCheckinAttendanceItem",
+            // checkinEvent
           );
-          console.log(response);
+          console.log(response,"😂😁😁");
           for (let i = 0; i < response.data.length; i++) {
             const element = response.data[i];
             store.dispatch("attendance/setItemData", element);
@@ -1435,7 +1439,8 @@ export default {
         loadingsave.value = true;
         try {
           let { data } = await axios.post(
-            "/api/CheckInAttendance/create/multiple",
+            // "/api/CheckInAttendance/create/multiple",
+            "api/CheckInAttendance/CreateAttendanceCheckIn",
             formData
           );
           // let { data } = await axios.post('/api/CheckInAttendance/EventRegister', formData)
@@ -1481,7 +1486,8 @@ export default {
         loadingsave.value = true;
         try {
           let { data } = await axios.post(
-            "/api/CheckInAttendance/create/multiple",
+            "api/CheckInAttendance/CreateAttendanceCheckIn",
+            // "/api/CheckInAttendance/create/multiple",
             formData
           );
           let firstGroup = data.returnObject.checkInAttendanceResult.find(

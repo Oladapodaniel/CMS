@@ -9,11 +9,13 @@
               <div class="row d-md-flex align-items-center mt-3 mb-4">
                 <div class="col-md-12 col-sm-12">
                   <div class="search-div">
-                    <span><i class="pi pi-search mr-1"></i></span>
-                    <input
+                    <!-- <span><i class="pi pi-search mr-1"></i></span> -->
+                    <el-input
                       type="text"
                       placeholder="Search here..."
                       v-model="searchMail"
+                      :prefix-icon="Search"
+                      class="w-50 m-2"
                     />
                     <span class="mx-2"> | </span>
                     <span class="mx-2">Sort By</span>
@@ -214,6 +216,7 @@ import { useConfirm } from "primevue/useconfirm";
 import { useToast } from "primevue/usetoast";
 import stopProgressBar from "../../services/progressbar/progress";
 import store from '../../store/store';
+import { Search } from '@element-plus/icons-vue'
 
 export default {
   components: { PaginationButtons, Loading },
@@ -418,6 +421,7 @@ export default {
 
     return {
       emails,
+      Search,
       formatMessage,
       getEmailsByPage,
       itemsCount,
