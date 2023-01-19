@@ -1431,7 +1431,6 @@ export default {
         selectedGroups.value
           ? formData.append("groupIDs", JSON.stringify(selectedGroups.value))
           : "";
-
         loadingsave.value = true;
         try {
           let { data } = await axios.post(
