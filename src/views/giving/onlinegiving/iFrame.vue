@@ -370,6 +370,7 @@ import SignUp from "./SignUp"
 import convertCurrency from "../../../services/currency-converter/currencyConverter"
 import { useStore } from "vuex"
 import supportedCurrencies from "../../../services/user/flutterwaveSupportedCurrency"
+import { ElMessage } from 'element-plus'
 export default {
   components: {
     PaymentOptionModal,
@@ -622,7 +623,7 @@ export default {
     const checkForToken = () => {
       if (localStorage.getItem('giverToken') == "" || localStorage.getItem('giverToken') == null || !localStorage.getItem('giverToken')) {
         router.push({ name: 'SignInPayment', params: { userId: route.params.userId } })
-      } else {
+    } else {
         router.push({ name: 'TransactionPage', params: { userId: route.params.userId } })
       }
     }
