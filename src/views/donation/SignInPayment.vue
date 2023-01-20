@@ -76,14 +76,8 @@
         </div>
       </div>
       <div class="col-lg-4 offset-lg-2 px-0 d-none d-lg-block bg-wall">
-        <!-- <img
-          src="../../assets/Group257.png"
-          class="w-100"
-          style="height: 100vh"
-        /> -->
       </div>
     </div>
-    <Toast />
   </div>
 </template>
 
@@ -91,11 +85,10 @@
 import { ref } from "vue";
 import axios from "@/gateway/backendapi";
 import { useRouter, useRoute } from "vue-router";
-import { useToast } from "primevue/usetoast";
 import finish from "../../services/progressbar/progress"
+import { ElMessage } from 'element-plus'
 export default {
   setup() {
-    let toast = useToast();
     const route = useRoute()
     const email = ref("");
     const password = ref("");
@@ -116,12 +109,11 @@ export default {
           userdetails
         );
         if (!data.returnObject) {
-            toast.add({
-              severity: "warn",
-              summary: "Incorrect details",
-              detail: `${data.response}`,
-              life: 4000,
-            });
+            ElMessage({
+              type: 'warning',
+              message: "Incorrect details, " + data.response,
+              duration: 5000
+            })
         } else if (data && data.returnObject.token && data.status) {
             let giverDetails = {
                 giverToken: data.returnObject.token,
@@ -129,15 +121,13 @@ export default {
                 tenantId: data.returnObject.tenantID
             }
           localStorage.setItem("giverToken", JSON.stringify(giverDetails));
-          
           localStorage.setItem("token", JSON.stringify(data.returnObject.token));
           
-          toast.add({
-            severity: "success",
-            summary: "Successful",
-            detail: `${data.response}`,
-            life: 4000,
-          });
+          ElMessage({
+              type: 'success',
+              message: data.response,
+              duration: 5000
+            })
 
           router.push({
             name: "OnlineGiving4",
@@ -154,26 +144,23 @@ export default {
         console.log(error);
         console.log(error.response && error.response.data.message);
         if (error.response && error.response.data.message ) {
-          toast.add({
-            severity: "info",
-            summary: "Error Signing In",
-            detail: `${error.response.data.message}`,
-            life: 3000,
-          });
+          ElMessage({
+              type: 'warning',
+              message: error.response.data.message,
+              duration: 5000
+            })
         } else if (error.response && error.response.toString().includes('network error')){
-          toast.add({
-            severity: "error",
-            summary: "Network Error",
-            detail: `Please ensure you  have a strong internet connection`,
-            life: 3000,
-          });
+          ElMessage({
+              type: 'error',
+              message: "Please ensure you  have a strong internet connection",
+              duration: 5000
+            })
         } else {
-          toast.add({
-            severity: "error",
-            summary: "Not Successful",
-            detail: `Please try again`,
-            life: 3000,
-          });
+          ElMessage({
+              type: 'error',
+              message: "Not successful, please try again",
+              duration: 5000
+            })
         }
       }
 
