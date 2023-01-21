@@ -50,7 +50,7 @@
             <el-icon class="mt-1">
               <TopLeft />
             </el-icon>
-            <div class="link" @click="logout">Logout</div>
+            <div class="ml-3 c-pointer" @click="logout">Logout</div>
           </div>
         </div>
         <a class="link routelink" v-if="false"> Integration </a>
@@ -443,6 +443,7 @@ export default {
 <style scoped>
 * {
   box-sizing: border-box;
+  font-size: 16px
 }
 
 .user {

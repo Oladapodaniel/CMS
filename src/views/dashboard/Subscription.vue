@@ -26,32 +26,17 @@
         <div class="row bg-white pb-4 sub">
           <div class="col-md-6 col-lg-6  col-12">
             <div class="py-2 small-header">Select Subscription Plan <span class="text-danger">*</span></div>
-            <!-- <Dropdown
-              class=" plandropdown w-100"
-              v-model="selectedPlan"
-              :options="subscriptionPlans"
-              optionLabel="description"
-              placeholder=""
-            /> -->
-            <!-- {{ selectedPlan }} -->
-            <!-- {{ UserSubscriptionPlans }} -->
             <el-select-v2 :options="UserSubscriptionPlans.map(i => ({ label: i.description, value: i.id }))"
               v-model="selectedPlanId" placeholder="Select plan" @change="setSelectedPlan" size="large" class="w-100" />
             <div class="mt-3 normal-text text-right text-md-left italic pl-md-0">
-              Membership: {{ selectedPlan && selectedPlan.membershipSize ? selectedPlan.membershipSize.toLocaleString() : ""}}
+              Membership: {{ selectedPlan && selectedPlan.membershipSize ? selectedPlan.membershipSize.toLocaleString()
+              : ""}}
             </div>
           </div>
           <div class="col-md-6 col-lg-6 col-12">
             <div class="py-2 small-header">
               Select Duration (month)
             </div>
-            <!-- <Dropdown
-              class="w-100"
-              v-model="selectMonth"
-              :options="selectMonths"
-              optionLabel="name"
-              placeholder="Select duration"
-            /> -->
             <el-select-v2 :options="selectMonths.map(i => ({ label: i.name, value: i.name }))" v-model="selectMonthId"
               placeholder="Select duration" @change="setSelectedDuration" size="large" class="w-100" />
             <div class=" ml-1 mt-3 normal-text pl-md-0">
@@ -95,8 +80,8 @@
           <div class="row mt-2 normal-text">
             <div class="col-md-2 col-lg-2 col-4">Email</div>
             <div class="col-md-6 offset-md-1 col-4 ">
-              <Dropdown class="emailWidth" v-model="selectEmail" :options="selectEmailUnit" optionLabel="name"
-                placeholder="Email Unit " />
+              <el-select-v2 :options="selectEmailUnit.map(i => ({ label: i.name, value: i.name }))"
+                v-model="selectEmail" placeholder="Email unit" size="large" class="w-100" />
             </div>
             <div class="col-md-2 col-4">
               {{ selectEmail.constValue ? emailAmount : 0 }}
@@ -127,24 +112,6 @@
           <div class="text-center small-header">
             Payment Summary({{ currentUser? currentUser.currencySymbol : "" }})
           </div>
-          <!-- <div class="row mt-3 normal-text" v-if="+selectMonth.name > 0">
-            <div class="col-md-6 col-6">Subscription</div>
-            <div class="col-md-6  col-6 text-right font-weight-bold">
-              {{ subselectedDuratn.toFixed(2) }}
-            </div>
-          </div> -->
-          <!-- <div class="row mt-2 normal-text">
-            <div class="col-md-6 col-6">SMS</div>
-            <div class="col-md-6 col-6 text-right font-weight-bold">
-              {{ smsAmount == "" ? "0.00" : smsAmount.toFixed(2) }}
-            </div>
-          </div>
-          <div class="row mt-3 normal-text">
-            <div class="col-md-6 col-6">Email</div>
-            <div class="col-md-6 col-6 text-right font-weight-bold">
-              {{ selectEmail.constValue ? emailAmount.toFixed(2) : '0.00' }}
-            </div>
-          </div> -->
           <!-- Selected Products -->
           <div class="row mt-3 normal-text" v-for="item in checkedBoxArr" :key="item.id">
             <div class="col-md-6 col-6">{{ item.name }}</div>
@@ -160,23 +127,6 @@
               {{ TotalAmount.toLocaleString() }}
             </div>
           </div>
-          <!-- <div class="row mt-4">
-            <div class="col-12 d-flex justify-content-between" v-if="selectedCurrency && currentUser !== currentUser.currency">
-              <span>Converted amount</span>
-              <span>
-                <span v-if="selectedCurrency && currentUser !== currentUser.currency" style="font-size:14px">{{ selectedCurrency }}</span>
-                <span class="font-weight-bold ml-1">{{ convertAmountToTenantCurrency ? convertAmountToTenantCurrency.toFixed(2) : 0.00 }}</span>
-              </span>
-            </div>
-            <div class="col-12">
-              <Dropdown
-                class="w-100"
-                v-model="selectedCurrency"
-                :options="selectCurrencyArr"
-                placeholder="Select Currency Type"
-              />
-            </div>
-          </div> -->
           <div class="row mt-5">
             <div class="col-12" data-toggle="modal" data-target="#PaymentOptionModal">
               <el-button color="#136acd" class="w-100" round :disabled="!selectedPlanId">
@@ -190,8 +140,8 @@
         </div>
       </div>
 
-      <Dialog header="Payment Status" v-model:visible="display" :style="{ width: '70vw', maxWidth: '600px' }"
-        :modal="true">
+      <el-dialog title="Payment status" v-model="display"
+        :width="mdAndUp || lgAndUp || xlAndUp ? `50%` : xsOnly ? `90%` : `70%`" align-center :modal="true">
         <div class="row">
           <div class="col-md-12" v-if="!paymentFailed">
             <h4 class="text-success">
@@ -209,7 +159,7 @@
             </p>
           </div>
         </div>
-      </Dialog>
+      </el-dialog>
       <!-- payment summary end -->
       <!-- Modal -->
       <div class="modal fade" id="PaymentOptionModal" tabindex="-1" role="dialog"
@@ -230,7 +180,8 @@
                   Continue payment with
                 </div>
               </div>
-              <div class="row row-button c-pointer d-flex justify-content-center" @click="payWithPaystack" v-if="currentUser.currency == 'NGN'">
+              <div class="row row-button c-pointer d-flex justify-content-center" @click="payWithPaystack"
+                v-if="currentUser.currency == 'NGN'">
                 <div>
                   <img style="width: 150px" src="../../assets/4PaystackLogo.png" alt="paystack" />
                 </div>
@@ -240,23 +191,6 @@
                   <img style="width: 150px" src="../../assets/flutterwave_logo_color@2x.png" alt="flutterwave" />
                 </div>
               </div>
-              <!-- <div class="row row-button c-pointer" @click="makePayment">
-                <div class="col-4 col-sm-7 offset-2">
-                  <img
-                    class="w-100"
-                    src="../../assets/flutterwave_logo_color@2x.png"
-                    alt="flutterwave"
-                  />
-                </div>
-
-                <div class="col-7 col-sm-4 option-text">Flutterwave</div>
-                <div class="row">
-                  <div class="col-1 mt-n1 d-none d-sm-block">
-                    <i class="fas fa-circle circle"></i>
-                  </div>
-                  <div class="col-8 pl-0 d-none d-sm-block">Nigeria</div>
-                </div>
-              </div> -->
             </div>
           </div>
         </div>
@@ -268,23 +202,17 @@
 <script>
 import axios from "@/gateway/backendapi";
 import { useStore } from "vuex";
-import Dropdown from "primevue/dropdown";
 import formatDate from "../../services/dates/dateformatter";
 import { computed, ref } from "vue";
-import { useToast } from "primevue/usetoast";
 import userService from "../../services/user/userservice";
 import { v4 as uuidv4 } from "uuid";
-// import converter from "../../services/currency-converter/currencyConverter";
 import productPricing from "../../services/user/productPricing";
 import { ElMessage, ElMessageBox } from 'element-plus'
-
-// import PaymentOptionModal from "./PaymentOptionModal";
+import deviceBreakpoint from "../../mixins/deviceBreakpoint";
 
 export default {
-  components: { Dropdown },
   setup() {
     const store = useStore();
-    const toast = useToast();
     const subscriptionPlans = ref([]);
     const productsList = ref([]);
     const selectMonth = ref({});
@@ -305,6 +233,7 @@ export default {
     const userEmail = ref("")
     const churchName = ref("")
     const userCurrency = ref("")
+    const { mdAndUp, lgAndUp, xlAndUp, xsOnly } = deviceBreakpoint()
 
     const getUserEmail = async () => {
       userService.getCurrentUser()
@@ -321,9 +250,7 @@ export default {
         })
     }
 
-    // const userEmail = ref("");
     if (!tenantId.value) getUserEmail();
-    // const userEmail = ref(store.getters.email);
     const acctReceived = ref("");
     const paymentSummary = ref([]);
     const paymentSummObj = ref({});
@@ -335,10 +262,6 @@ export default {
 
     const display = ref(false);
     const currencies = ref({});
-    // const email = ref("");
-    // const firstname =
-    // const amount = ref("")
-
     const emailSelectedValue = ref("");
     const subSelectedAmount = ref("");
     const isProduction = true
@@ -380,8 +303,6 @@ export default {
       axios.get("/api/GetAllCountries").then((res) => {
         countries.value = res.data;
         const userCountryID = countries.value.find(i => i.currency == currentUser.value.currency)
-        console.log()
-        console.log(userCountryID)
         getProductPricing(userCountryID.id)
       })
         .catch(err => console.error(err))
@@ -395,18 +316,18 @@ export default {
           UserSubscriptionPricing.value.push(i)
         }
       })
-      console.log(UserSubscriptionPricing.value.sort((a, b) => a.order - b.order))
       selectSubscription();
       UserSubscriptionPlans.value = UserSubscriptionPricing.value.sort((a, b) => a.order - b.order).map(i => {
         i.subscriptionPlan.amount = i.price
         return i.subscriptionPlan
       })
+
+      
     }
 
 
     const selectSubscription = () => {
       axios.get("/api/Subscription/subscriptions").then((res) => {
-        console.log(res, "RES");
         Plans.value = res.data;
         existingPlan.value.id = Plans.value.id;
         existingPlan.value.amount = Plans.value.amount;
@@ -414,11 +335,9 @@ export default {
         existingPlan.value.amountInDollar = Plans.value.amountInDollar;
         existingPlan.value.membershipSize = Plans.value.membershipSize;
 
-        // Remove preceeding plans from list
+        
 
-        // const joined = subscriptionPlans.value.map(i => i.id).join("")
-        // const splitted = joined.split(selectedPlan.value.id)
-        // subscriptionPlans.value = subscriptionPlans.value.splice(splitted[0].length)
+
 
 
 
@@ -440,31 +359,37 @@ export default {
           return i.id == Plans.value.id
         }).id : null;
 
+        // Remove preceeding plans from list
+
+      const joined = UserSubscriptionPlans.value.map(i => i.id).join("")
+      const splitted = joined.split(selectedPlan.value.id)
+      UserSubscriptionPlans.value = UserSubscriptionPlans.value.splice(splitted[0].length)
+
+
+
         if (selectedPlanId.value == null) {
           ElMessageBox.confirm(
-          'Subscription pricing is currently not available in your country, we will make it available as soon as possible, you can reach out to us by sending an email to info@churchplus.co for us to address your specific needs. Thank you for choosing Churchplus',
-          'Notice',
-          {
-            confirmButtonText: 'Alright',
-            cancelButtonText: 'Cancel',
-            type: 'warning',
-          }
-        )
-          .then(() => {
-            ElMessage({
+            'Subscription pricing is currently not available in your country, we will make it available as soon as possible, you can reach out to us by sending an email to info@churchplus.co for us to address your specific needs. Thank you for choosing Churchplus',
+            'Notice',
+            {
+              confirmButtonText: 'Alright',
+              cancelButtonText: 'Cancel',
               type: 'warning',
-              message: 'We await your feedback. Thank you',
+            }
+          )
+            .then(() => {
+              ElMessage({
+                type: 'warning',
+                message: 'We await your feedback. Thank you',
+              })
             })
-          })
-          .catch(() => {
-            ElMessage({
-              type: 'warning',
-              message: 'We await your feedback. Thank you',
+            .catch(() => {
+              ElMessage({
+                type: 'warning',
+                message: 'We await your feedback. Thank you',
+              })
             })
-          })
         }
-
-        console.log(selectedPlan.value);
 
         currentAmount.value = res.data.amountInNaira;
         currentPlan.value = existingPlan.value.description;
@@ -487,10 +412,7 @@ export default {
     }
 
     const setSelectedPlan = () => {
-      console.log(UserSubscriptionPricing.value)
-      console.log(selectedPlanId.value)
       selectedPlan.value = UserSubscriptionPlans.value.find(i => i.id == selectedPlanId.value)
-      console.log(selectedPlan.value)
     }
 
     const getChurchProfile = async () => {
@@ -507,7 +429,6 @@ export default {
     const paymentFailed = ref(false);
 
     const subscriptionPayment = (response, gateway) => {
-      console.log(response, gateway)
       close.value.click();
       paymentFailed.value = false;
 
@@ -562,7 +483,6 @@ export default {
           axios
             .post("/api/Subscription/SubscriptionPayment", body)
             .then((res) => {
-              console.log(res);
               display.value = true;
               selectSubscription();
               if (!res.data.returnObject.status) {
@@ -582,7 +502,6 @@ export default {
           axios
             .post("/api/Subscription/subscribe?paymentType=1", body)
             .then((res) => {
-              console.log(res);
               display.value = true;
               selectSubscription();
               if (!res.data.status) {
@@ -599,26 +518,7 @@ export default {
         }
       }
     };
-    // const conversionrates = ref({});
-    // const getRates = () => {
-    //   converter.getConversionData().then((res) => {
-    //     conversionrates.value = res;
-    //   });
-    // };
-    // getRates();
-    // const convertAmountToTenantCurrency = computed(() => {
-    //   if (!selectedCurrency.value) return TotalAmount.value;
-    //   let amountInDollar = 0;
-    //   if (TotalAmount.value) {
-    //     amountInDollar = TotalAmount.value / conversionrates.value[`usdngn`];
-    //   } else {
-    //     return 0;
-    //   }
-    //   return (
-    //     conversionrates.value[`usd${selectedCurrency.value.toLowerCase()}`] *
-    //     amountInDollar
-    //   );
-    // });
+
 
     const emailAmount = computed(() => {
       if (!selectEmail.value.name) return 0;
@@ -632,7 +532,6 @@ export default {
 
     const subselectedDuratn = computed(() => {
       let multiValue = 1;
-      // if (daysToEndOfSubscription.value > 0) multiValue += existingPlan.value.amount * daysToEndOfSubscription.value;
       if (selectedPlan.value && selectedPlan.value.amount)
         multiValue *= selectedPlan.value.amount;
       if (selectMonth.value.name) multiValue *= +selectMonth.value.name;
@@ -648,9 +547,7 @@ export default {
     });
     const sumCheckboxItem = computed(() => {
       if (checkedBoxArr.value.length === 0) return 0;
-      // return checkedBoxArr.value.map((i) => i.price).reduce((a, b) => a + b);
       return checkedBoxArr.value.map((i) => calculatedProductPrice(i.price)).reduce((a, b) => a + b);
-      // return checkedBoxArr.value.map((i) => i.price * subscriptionDuration.value).reduce((a, b) => a + b);
     });
 
     const selectCheckbox = (item) => {
@@ -730,13 +627,11 @@ export default {
         ref: `${formattedDate.substring(0, 4)}${uuidv4().substring(0, 4)}sub`,
         currency: Plans.value.paymentCurrency,
         onClose: function () {
-          // swal("Transaction Canceled!", { icon: "error" });
-          toast.add({
-            severity: "info",
-            summary: "Transaction cancelled",
-            detail: "You have cancelled the transaction",
-            life: 3000,
-          });
+          ElMessage({
+                type: 'warning',
+                message: 'Transaction cancelled',
+                duration: 5000
+              })
         },
         callback: function (response) {
           subscriptionPayment(response, 0);
@@ -752,12 +647,10 @@ export default {
         ? "https://ravemodal-dev.herokuapp.com/v3.js"
         : "https://checkout.flutterwave.com/v3.js";
       document.getElementsByTagName("head")[0].appendChild(script);
-      // console.log(process.env.VUE_APP_FLUTTERWAVE_TEST_KEY)
     }
     getFlutterwaveModules()
 
     const payWithFlutterwave = () => {
-      console.log(TotalAmount.value, 'total amount calculated')
       initializePayment(1)
 
       let country = "";
@@ -794,7 +687,6 @@ export default {
           email: currentUser.value.userEmail
         },
         callback: (response) => {
-          console.log("Payment callback", response)
           subscriptionPayment(response, 1)
         },
         onclose: () => console.log('Payment closed'),
@@ -871,7 +763,6 @@ export default {
       display,
       close,
       paymentFailed,
-      // convertAmountToTenantCurrency,
       payWithFlutterwave,
       daysToEndOfSubscription,
       subscriptionDuration,
@@ -887,7 +778,11 @@ export default {
       selectMonthId,
       setSelectedDuration,
       setSelectedPlan,
-      churchLogo
+      churchLogo,
+      mdAndUp, 
+      lgAndUp, 
+      xlAndUp, 
+      xsOnly
     };
   },
 };

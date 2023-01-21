@@ -211,8 +211,8 @@
                             <div class="row">
                               <div class="col-md-12 mx-auto my-2 px-0 px-2">
                                 <label class="hfont">Name</label>
-                                <el-input class="text-left  imp1" type="text" placeholder="Enter your name" style="height: 39px"
-                                  v-model="name" />
+                                <el-input class="text-left  imp1" type="text" placeholder="Enter your name"
+                                  style="height: 39px" v-model="name" />
                               </div>
                             </div>
                           </div>
@@ -392,7 +392,6 @@
       </div>
       <!--end of body area -->
     </div>
-    <Toast />
   </div>
 </template>
 
@@ -402,10 +401,7 @@ import axios from "@/gateway/backendapi";
 import PaymentOptionModal from "./PaymentOptionModal";
 import { useRoute, useRouter } from "vue-router";
 import finish from "../../../services/progressbar/progress"
-import { useToast } from "primevue/usetoast";
 import SignUp from "./SignUp"
-import convertCurrency from "../../../services/currency-converter/currencyConverter"
-import { useStore } from "vuex"
 import supportedCurrencies from "../../../services/user/flutterwaveSupportedCurrency"
 export default {
   components: {
@@ -415,8 +411,6 @@ export default {
   setup() {
     const route = useRoute()
     const router = useRouter()
-    let toast = useToast();
-    const store = useStore()
     const hideTabOne = ref(true);
 
     const toggleTabOne = () => {
@@ -454,8 +448,6 @@ export default {
     const signInPassword = ref("")
     const routeParams = ref(`${route.params.userId}`)
     const showSignInForm = ref(true)
-    const tenantCurrency = ref("")
-    const convertedAmount = ref(0)
     const dfaultCurrencyId = ref(null)
     const selectedContributionTypeId = ref(null)
     const purposeList = ref([])
@@ -464,14 +456,10 @@ export default {
 
 
     const computeAmount = computed(() => {
-      if (convertedAmount.value) return convertedAmount.value
       return amount.value
     })
 
     const givingOften = (e) => {
-      console.log(e.target.innerText);
-      // e.target.classList.add("default-color");
-      // console.log(e.target.siblingElement);
       if (e.target.innerText == "Every Week") {
         oftenGive1.value = true;
         oftenGive2.value = false;
@@ -499,11 +487,9 @@ export default {
     const addfunds = () => {
       axios
         .get(
-          // "/api/PaymentForm/GetOne?paymentFormID=4a276e37-a1e7-4077-a851-60b82180f4a0"
           `/give?paymentFormID=${route.params.userId}`
         )
         .then((res) => {
-          console.log(res.data);
           formResponse.value = res.data;
           selectedContributionType.value = formResponse.value.currencyId;
           purposeList.value = formResponse.value.contributionItems
@@ -545,18 +531,6 @@ export default {
       selectedContributionType.value = formResponse.value.contributionItems.find(i => i.financialContribution.id === selectedContributionTypeId.value);
     }
 
-
-    const getRates = async () => {
-      try {
-        let { data } = await axios.get('/fxRates')
-        console.log(data)
-        store.dispatch("getRates", data)
-      } catch (error) {
-        console.log(error);
-      }
-    }
-    getRates()
-
     const donationObj = computed(() => {
       if (selectedContributionType.value && selectedContributionType.value.financialContribution) return {
         paymentFormId: formResponse.value.id,
@@ -567,7 +541,7 @@ export default {
         orderID: formResponse.value.orderId,
         currencyID: dfaultCurrency.value.id,
         paymentGateway: formResponse.value.paymentGateWays,
-        amount: convertedAmount.value,
+        amount: computeAmount.value,
         contributionItems: [
           {
             contributionItemId: selectedContributionType.value.financialContribution.id,
@@ -581,29 +555,6 @@ export default {
       }
       return {}
     })
-
-    const convertAmount = async () => {
-      try {
-        let { data } = await axios.get(`/api/Lookup/TenantCurrency?tenantID=${formResponse.value ? formResponse.value.tenantID : ""}`)
-        tenantCurrency.value = data.currency
-      }
-
-      catch (err) {
-        console.log(err)
-      }
-      // Heres where im converting the currenccy
-      try {
-        let fromCurrencyRate = `usd${dfaultCurrency.value.shortCode.toLowerCase()}`
-        let toDestinationCurrencyRate = `usd${tenantCurrency.value.toLowerCase()}`
-        const result = await convertCurrency.currencyConverter(amount.value, fromCurrencyRate, toDestinationCurrencyRate)
-        console.log(amount.value, fromCurrencyRate, toDestinationCurrencyRate)
-        console.log(result)
-        convertedAmount.value = Math.round(result)
-      }
-      catch (err) {
-        console.log(err)
-      }
-    }
 
     const donation = async () => {
 
@@ -629,20 +580,14 @@ export default {
           donationObj.value.isAnonymous = false
         }
       }
-
-
-      console.log(donationObj.value, signedIn.value, localStorage.getItem('giverToken'))
       try {
-        let res = await axios.post('/initailizedonationpayment', donationObj.value)
-        console.log(res)
-
+        await axios.post('/initailizedonationpayment', donationObj.value)
         finish()
       }
       catch (error) {
         finish()
         console.log(error)
       }
-      console.log(formResponse.value)
     }
 
     const successfulPayment = (payload) => {
@@ -650,12 +595,10 @@ export default {
     }
 
     const getUserDetails = async () => {
-      console.log(localStorage.getItem('giverToken'))
       if (localStorage.getItem('giverToken') === null) {
         console.log('Not signed in yet')
       } else {
         let storedDetails = JSON.parse(localStorage.getItem('giverToken'))
-        console.log(storedDetails)
         userData.value = {
           email: storedDetails.email,
           name: storedDetails.name,
@@ -665,19 +608,6 @@ export default {
         name.value = storedDetails.name
         phone.value = storedDetails.phone
         signedIn.value = storedDetails.setSignInStatus
-        // try {
-        //     let   { data } = await axios.get(`/mobile/v1/Profile/GetMobileUserProfile?userId=${storedDetails.giverId}`)
-        //     console.log(data)
-        //     userData.value = data
-        //     email.value = data.email
-        //     name.value = userData.value.name
-        //     phone.value = userData.value.phone
-        //     finish()
-        //   }
-        //   catch (error) {
-        //     console.log(error)
-        //     finish()
-        //   }
       }
     }
     getUserDetails()
@@ -692,12 +622,11 @@ export default {
 
     const signOut = () => {
       localStorage.removeItem('giverToken')
-      toast.add({
-        severity: "success",
-        summary: "Signed Out",
-        detail: `Signed Out Successfully`,
-        life: 3000,
-      });
+      ElMessage({
+        type: 'success',
+        message: "Signed out successfully",
+        duration: 5000
+      })
       userData.value = {}
       signedIn.value = false
       signInEmail.value = ""
@@ -726,12 +655,11 @@ export default {
           userdetails
         );
         if (!data.returnObject) {
-          toast.add({
-            severity: "warn",
-            summary: "Incorrect details",
-            detail: `${data.response}`,
-            life: 4000,
-          });
+          ElMessage({
+            type: 'warning',
+            message: "Incorrect details, " + data.response,
+            duration: 5000
+          })
         } else if (data && data.returnObject.token && data.status) {
           let giverDetails = {
             giverToken: data.returnObject.token,
@@ -741,13 +669,11 @@ export default {
           localStorage.setItem("giverToken", JSON.stringify(giverDetails));
 
           localStorage.setItem("token", JSON.stringify(data.returnObject.token));
-          toast.add({
-            severity: "success",
-            summary: "Successful",
-            detail: `${data.response}`,
-            life: 4000,
-          });
-          console.log(data)
+          ElMessage({
+            type: 'success',
+            message: data.response,
+            duration: 5000
+          })
 
           let userProfile = {
             name: data.returnObject.fullname,
@@ -758,37 +684,28 @@ export default {
           }
           userData.value = userProfile
           signedIn.value = true
-          console.log(data)
-          // userData.value = data
-        } else {
-          console.log(data.response)
         }
         finish()
       } catch (error) {
         finish()
-        console.log(error);
-        console.log(error.response && error.response.data.message);
         if (error.response && error.response.data.message) {
-          toast.add({
-            severity: "info",
-            summary: "Error Signing In",
-            detail: `${error.response.data.message}`,
-            life: 3000,
-          });
+          ElMessage({
+            type: 'warning',
+            message: error.response.data.message,
+            duration: 5000
+          })
         } else if (error.response && error.response.toString().includes('network error')) {
-          toast.add({
-            severity: "error",
-            summary: "Network Error",
-            detail: `Please ensure you  have a strong internet connection`,
-            life: 3000,
-          });
+          ElMessage({
+            type: 'error',
+            message: "Please ensure you  have a strong internet connection",
+            duration: 5000
+          })
         } else {
-          toast.add({
-            severity: "error",
-            summary: "Not Successful",
-            detail: `Please try again`,
-            life: 3000,
-          });
+          ElMessage({
+            type: 'error',
+            message: "Not successful, please try again",
+            duration: 5000
+          })
         }
       }
     };
@@ -812,7 +729,6 @@ export default {
 
     const gatewaySelected = (payload) => {
       donationObj.value.gateway = payload
-      console.log(payload)
       donation()
     }
 
@@ -822,7 +738,7 @@ export default {
 
     const setPaystackAmount = () => {
       delete donationObj.value[amount]
-      donationObj.value.amount = convertedAmount.value * 100
+      donationObj.value.amount = computeAmount.value * 100
     }
 
 
@@ -868,9 +784,6 @@ export default {
       signedUp,
       displaySignInForm,
       gatewaySelected,
-      tenantCurrency,
-      convertedAmount,
-      convertAmount,
       setTransactionReference,
       setPaystackAmount,
       computeAmount,
