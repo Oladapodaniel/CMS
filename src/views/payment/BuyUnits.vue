@@ -24,9 +24,6 @@
             may purchase at any time. With our pricing system you get more SMS
             units the more you buy.
           </p>
-          <!-- <p class="font-weight-600">
-            Note that we charge 1 unit per SMS to all GSM networks in Nigeria.
-          </p> -->
         </div>
       </div>
 
@@ -51,13 +48,6 @@
                 <div class="col-md-6">
                   <div class="row">
                     <div class="col-12">
-                      <!-- <select
-                        name=""
-                        id=""
-                        class="form-control flat-right-border px-sm-0"
-                      >
-                        <option value="">{{ userCurrencyName ? userCurrencyName : ''}}</option>
-                      </select> -->
                       <el-input v-model="amount" placeholder="Enter amount" class="input-with-select"
                         :disabled="checkingCoutryData">
                         <template #prepend>
@@ -68,13 +58,6 @@
                         </template>
                       </el-input>
                     </div>
-                    <!-- <div class="col-7 col-sm-8 pl-0 d-flex align-items-center">
-                      <input
-                        type="text"
-                        v-model="amount"
-                        class="form-control flat-left-border"
-                      />
-                    </div> -->
                   </div>
                 </div>
                 <div class="col-md-3"></div>
@@ -118,13 +101,6 @@
               </p>
               <el-button color="#136acd" class="px-4" style="height: 43px; font-size: 1.06em" data-toggle="modal"
                 data-target="#PaymentOptionModal" round>Buy SMS Unit</el-button>
-              <!-- <button
-                class="primary-btn px-4 outline-none"
-                  data-toggle="modal"
-                  data-target="#PaymentOptionModal"  
-              >
-                Buy SMS Unit
-              </button> -->
             </div>
           </div>
         </div>
@@ -153,30 +129,12 @@
                 <div>
                   <img style="width: 150px" src="../../assets/4PaystackLogo.png" alt="paystack" />
                 </div>
-                <!-- <PaymentOptionModal :orderId="formResponse.orderId" :donation="donationObj" :close="close" :name="name" :amount="amount" :converted="convertedAmount" :email="email" @payment-successful="successfulPayment" :gateways="formResponse.paymentGateWays" :currency="dfaultCurrency.shortCode" @selected-gateway="gatewaySelected"/> -->
               </div>
               <div class="row row-button c-pointer d-flex justify-content-center" @click="payWithFlutterwave">
                 <div>
                   <img style="width: 150px" src="../../assets/flutterwave_logo_color@2x.png" alt="flutterwave" />
                 </div>
               </div>
-              <!-- <div class="row row-button c-pointer" @click="makePayment">
-                <div class="col-4 col-sm-7 offset-2">
-                  <img
-                    class="w-100"
-                    src="../../assets/flutterwave_logo_color@2x.png"
-                    alt="flutterwave"
-                  />
-                </div>
-
-                <div class="col-7 col-sm-4 option-text">Flutterwave</div>
-                <div class="row">
-                  <div class="col-1 mt-n1 d-none d-sm-block">
-                    <i class="fas fa-circle circle"></i>
-                  </div>
-                  <div class="col-8 pl-0 d-none d-sm-block">Nigeria</div>
-                </div>
-              </div> -->
             </div>
           </div>
         </div>
@@ -189,50 +147,6 @@
           <img src="../../assets/payment-type.jpeg" class="px-1 w-100" alt="Image" />
         </div>
       </div>
-
-      <!-- <div class="row d-md-flex mb-5">
-        <div class="col-lg-8 offset-lg-2">
-          <div class="row">
-            <div class="col-md-6 my-2 bank-details">
-              <div class="row">
-                <div class="col-md-12 d-flex align-items-center">
-                  <div class="image-box" style="height: 80px">
-                    <img
-                      src="../../assets/payment-type.jpeg"
-                      class="px-1 w-100"
-                      alt="Image"
-                    />
-                  </div>
-                </div> -->
-      <!-- <div class="col-md-8 px-md-1">
-                  <p class="font-weight-600 pt-2">Guarantee Trust Bank</p>
-                  <p class="mb-0">Account Name:</p>
-                  <p class="mb-0">Account Number:</p>
-                </div> -->
-      <!-- </div>
-            </div> -->
-
-      <!-- <div class="col-md-4 my-2">
-              <div class="row">
-                <div class="col-md-12">
-                  <img
-                    src="../../assets/payment-type.jpeg"
-                    class="master-card"
-                    alt="Image"
-                  />
-                </div>
-                <div class="col-md-12">
-                  <img
-                    src="../../assets/visacard.png"
-                    class="px-1 visa-card"
-                    alt="Image"
-                  />
-                </div>
-              </div>
-            </div> -->
-      <!-- </div>
-        </div>
-      </div> -->
     </div>
   </div>
 </template>
@@ -244,9 +158,7 @@ import PaymentSuccessModal from "@/components/payment/PaymentSuccessful.vue"
 import store from '../../store/store'
 import userService from '../../services/user/userservice'
 import stopProgressBar from "../../services/progressbar/progress"
-import membershipService from "../../services/membership/membershipservice";
 import { v4 as uuidv4 } from 'uuid';
-import currencyConverter from "../../services/currency-converter/currencyConverter"
 import supportedCurrencies from "../../services/user/flutterwaveSupportedCurrency"
 import productPricing from "../../services/user/productPricing";
 import { ElMessage } from 'element-plus'
@@ -264,7 +176,6 @@ export default {
     const totalSMSUnits = computed(() => {
       if (amount.value <= 0) return "";
       return Math.round(amount.value / +UserSMSPricing.value.price);
-      // return Math.ceil(amount.value / currentUser.value.pricePerUnitSMS);
     });
 
     const totalAmount = computed(() => {
@@ -273,7 +184,6 @@ export default {
     });
 
     const userEmail = ref(store.getters.userEmail);
-    // console.log(userEmail, "the Lord is Good")
     const currentUser = ref(store.getters.currentUser);
     const tenantId = ref(currentUser.tenantId);
     const userCurrency = ref(currentUser.currency);
@@ -317,7 +227,6 @@ export default {
     const getUserEmail = async () => {
       userService.getCurrentUser()
         .then(res => {
-          console.log(res, 'hereee')
           userEmail.value = res.userEmail;
           churchName.value = res.churchName;
           tenantId.value = res.tenantId;
@@ -339,7 +248,6 @@ export default {
     if (!userEmail.value || !tenantId.value || !pricePerUnitSMS.value) getUserEmail();
 
     const getChurchProfile = async () => {
-      console.log(tenantId.value)
       try {
         let res = await axios.get(`/GetChurchProfileById?tenantId=${tenantId.value}`)
         churchLogo.value = res.data.returnObject.logo
@@ -349,38 +257,8 @@ export default {
       }
     }
 
-    // const getEmail = async () => {
-    //   if (!currentUser.value || !currentUser.value.userEmail) {
-    //     membershipService.getSignedInUser()
-    //       .then(res => {
-    //         console.log(res)
-    //         // userEmail.value = res.userEmail;
-    //         // churchName.value = res.churchName;
-    //       })
-    //       .catch(err => {
-    //         console.log(err)
-    //       })
-    //   }
-    // }
-    // getEmail()
-
-    // const userEmail = ref("");
-    //  const userCurrencyName = computed(() => {
-    //     // if (!currentUser.value) return "ngn";
-    //     // console.log(currentUser, 'compute current user');
-    //     if (currentUser.value && currentUser.value.flutterwaveEnabled) {
-    //     return currentUser.value.currency;
-    //     } else {
-    //     return 'USD';
-    //     }
-    //   });
-
     const payWithPaystack = (e) => {
       initializePayment(0)
-      const currencyConvertedAmount = currencyConverter.convertCurrencyTo(+amount.value, 'ngn', 'usd').then((res) => {
-        console.log(res, 'res success');
-      })
-      console.log(currencyConvertedAmount, 'currencyConvertedAmount successful');
       e.preventDefault();
       invalidAmount.value = false;
       if (amount.value <= 0) {
@@ -403,9 +281,7 @@ export default {
       }
 
 
-      // const userEmail = ref("");
       if (!userEmail.value || !tenantId.value) getUserEmail(); (0);
-      console.log(userEmail.value, "UE");
       /*eslint no-undef: "warn"*/
       let handler = PaystackPop.setup({
         key: process.env.VUE_APP_PAYSTACK_PUBLIC_KEY_LIVE,
@@ -433,7 +309,6 @@ export default {
         },
         callback: function (response) {
           //Route to where you confirm payment status
-          console.log(response, "response");
           var returnres = {
             smsUnit: totalSMSUnits.value,
             transaction_Reference: response.trxref,
@@ -442,21 +317,12 @@ export default {
             tenantId: currentUser.value.tenantId,
           };
 
-          // const paymentAmount = ref(0)
-          // const userCurrencyConversion = async () => {
-          //   if (!currentUser.value.flutterwaveEnabled) return 
-          //     const currencyConvertedAmount = await currencyConverter.convertCurrencyTo(+amount.value, 'ngn', 'usd')
-          //     paymentAmount.value = currencyConvertedAmount
-
-          // }
-
           //Route to where you confirm payment status
 
           axios
             .post(`/api/Payment/purchasesmsunits?paymentType=0`, returnres)
             .then((res) => {
               if (res.data) {
-                console.log(res, "success data");
                 close.value.click();
                 purchaseIsSuccessful.value = true;
                 store.dispatch("addPurchasedUnits", totalSMSUnits.value);
@@ -499,10 +365,7 @@ export default {
         .post(`/api/Payment/initializesmspayment?paymentType=${paymentType}`, payload)
         .then((res) => {
           close.value.click();
-          //  purchaseIsSuccessful.value = true;
-          // store.dispatch("addPurchasedUnits", totalSMSUnits.value);
           initializedOrder.value = res.data;
-          console.log(res, 'initializepayment');
         })
     }
 
@@ -513,23 +376,11 @@ export default {
         ? "https://ravemodal-dev.herokuapp.com/v3.js"
         : "https://checkout.flutterwave.com/v3.js";
       document.getElementsByTagName("head")[0].appendChild(script);
-      console.log(process.env.VUE_APP_FLUTTERWAVE_TEST_KEY, 'test key')
     }
     getFlutterwaveModules()
 
-    const payWithFlutterwave = (e) => {
+    const payWithFlutterwave = () => {
       initializePayment(1);
-      // console.log(e.srcElement.alt)
-      // Get and send clicked payment gateway to parent
-      // selectedGateway.value = e.srcElement.alt
-      // emit('selected-gateway', selectedGateway.value)
-
-      // Close payment modal
-      // props.close.click()
-      console.log(totalAmount.value)
-      // console.log(selectedCurrency.value)
-      // console.log(email)
-      // alert('test')
       window.FlutterwaveCheckout({
         // public_key: process.env.VUE_APP_FLUTTERWAVE_PUBLIC_KEY_LIVE,
         public_key: process.env.VUE_APP_FLUTTERWAVE_TEST_KEY,
@@ -543,8 +394,6 @@ export default {
           email: userEmail.value,
         },
         callback: (response) => {
-          console.log("Payment callback", response)
-          // props.donation.usedPaymentGateway = selectedGateway.value
           const payload = {
             smsUnit: totalSMSUnits.value,
             transaction_Reference: response.transaction_id,
@@ -558,8 +407,6 @@ export default {
               if (res.data) {
                 purchaseIsSuccessful.value = true;
                 store.dispatch("addPurchasedUnits", totalSMSUnits.value);
-                // finish()
-                console.log(res, "success data");
                 isSuccessful.value = true;
               } else {
                 ElMessage({
@@ -571,14 +418,13 @@ export default {
               }
 
             })
-            .catch((err) => {
+            .catch(() => {
               ElMessage({
                   type: 'error',
                   showClose: true,
                   message: 'Confirming your purchase failed, please contact support at info@churchplus.co',
                   duration: 5000
                 })
-              console.log(err, "error confirming payment");
             });
         },
         onclose: () => {
@@ -586,7 +432,6 @@ export default {
             axios
               .put('/cancelpayment', { paymentTransactionId: initializedOrder.value.id })
               .then(() => {
-                console.log('payment cancelled');
                 ElMessage({
                   type: 'info',
                   showClose: true,
@@ -625,7 +470,6 @@ export default {
       churchLogo,
       close,
       userCurrency,
-      // userCurrencyName,
       uuid,
       pricePerUnitSMS,
       FLWupportedCurrencies,
@@ -638,7 +482,6 @@ export default {
       mdAndUp,
       lgAndUp,
       xlAndUp
-      // userCurrencyConversion,
     };
   },
 };

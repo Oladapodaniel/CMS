@@ -937,7 +937,7 @@ export default {
         }
 
         try {
-          const response = await membershipService.addMemberToGroup(
+          await membershipService.addMemberToGroup(
             personInfo, groupToAddTo.value.id
           );
           ElMessage({

@@ -43,10 +43,6 @@
           <div class="row d-flex justify-content-center">
             <div class="col-6">
               <p class="text-center pt-2 main-font">Giving</p>
-              <!-- <p class="text-center mt-n3 sub-main-font">
-                Give, and it will be given to you. A good measure, pressed down, shaken together and running over, will be poured into your lap. For with the measure you use, it will be measured to you.”
-              </p>
-              <p class="text-center">- Luke 6:38 NIV</p> -->
             </div>
           </div>
 
@@ -61,8 +57,6 @@
                     <div class="col-12 my-3">
                       <label class="hfont">Currency</label>
 
-                      <!-- <Dropdown v-model="dfaultCurrency" :options="currencyInput" optionLabel="shortCode"
-                        :placeholder="dfaultCurrency.shortCode" class="w-100 px-0" /> -->
                       <el-select-v2 v-model="dfaultCurrencyId"
                         :options="FLWupportedCurrencies.map((i) => ({ label: i.value, value: i.value }))"
                         placeholder="Select currency" @change="setSelectedCurrency" class="w-100" size="large"
@@ -71,8 +65,6 @@
                     <div class="col-12 my-3">
                       <label class="hfont">Purpose</label>
 
-                      <!-- <Dropdown v-model="selectedContributionType" :options="formResponse.contributionItems"
-                        optionLabel="financialContribution.name" placeholder="Select" class="w-100 px-0" /> -->
                       <el-select-v2 v-model="selectedContributionTypeId"
                         :options="purposeList.map((i) => ({ label: i.financialContribution.name, value: i.financialContribution.id }))"
                         placeholder="Select purpose" @change="setSelectedContributionType" class="w-100" size="large" />
@@ -157,9 +149,6 @@
                   <!-- end of date area -->
                   <div class="col-12" v-if="false">
                     <div class="row mt-4 stroke" v-if="!signedIn">
-                      <!-- <div class="col-1">
-                     
-                    </div> -->
                       <div class="col-6 align-self-center pointer" :class="{ 'active-tab': activeTab1 }"
                         @click="toggleActive1">
                         <div class="p-2 fone">Give Now</div>
@@ -302,9 +291,6 @@
                   </div>
                 </div>
               </transition>
-
-
-
             </div>
 
             <!-- payment Methods area -->
@@ -367,8 +353,6 @@ import PaymentOptionModal from "./PaymentOptionModal";
 import { useRoute, useRouter } from "vue-router";
 import finish from "../../../services/progressbar/progress"
 import SignUp from "./SignUp"
-import convertCurrency from "../../../services/currency-converter/currencyConverter"
-import { useStore } from "vuex"
 import supportedCurrencies from "../../../services/user/flutterwaveSupportedCurrency"
 import { ElMessage } from 'element-plus'
 export default {
@@ -379,7 +363,6 @@ export default {
   setup() {
     const route = useRoute()
     const router = useRouter()
-    const store = useStore()
     const hideTabOne = ref(true);
 
     const toggleTabOne = () => {
@@ -417,8 +400,6 @@ export default {
     const signInPassword = ref("")
     const routeParams = ref(`${route.params.userId}`)
     const showSignInForm = ref(true)
-    const tenantCurrency = ref("")
-    const convertedAmount = ref(0)
     const FLWupportedCurrencies = ref(supportedCurrencies);
     const dfaultCurrencyId = ref(null)
     const selectedContributionTypeId = ref(null)
@@ -426,7 +407,6 @@ export default {
 
 
     const computeAmount = computed(() => {
-      if (convertedAmount.value) return convertedAmount.value
       return amount.value
     })
 
@@ -503,17 +483,6 @@ export default {
     }
 
 
-    const getRates = async () => {
-      try {
-        let { data } = await axios.get('/fxRates')
-        console.log(data)
-        store.dispatch("getRates", data)
-      } catch (error) {
-        console.log(error);
-      }
-    }
-    getRates()
-
     const donationObj = computed(() => {
       if (selectedContributionType.value && selectedContributionType.value.financialContribution) return {
         paymentFormId: formResponse.value.id,
@@ -538,28 +507,6 @@ export default {
       return {}
     })
 
-    const convertAmount = async () => {
-      try {
-        let { data } = await axios.get(`/api/Lookup/TenantCurrency?tenantID=${formResponse.value ? formResponse.value.tenantID : ""}`)
-        tenantCurrency.value = data.currency
-      }
-
-      catch (err) {
-        console.log(err)
-      }
-      // Heres where im converting the currenccy
-      try {
-        let fromCurrencyRate = `usd${dfaultCurrency.value.shortCode.toLowerCase()}`
-        let toDestinationCurrencyRate = `usd${tenantCurrency.value.toLowerCase()}`
-        const result = await convertCurrency.currencyConverter(amount.value, fromCurrencyRate, toDestinationCurrencyRate)
-        console.log(amount.value, fromCurrencyRate, toDestinationCurrencyRate)
-        console.log(result)
-        convertedAmount.value = Math.round(result)
-      }
-      catch (err) {
-        console.log(err)
-      }
-    }
 
     const donation = async () => {
 
@@ -623,7 +570,7 @@ export default {
     const checkForToken = () => {
       if (localStorage.getItem('giverToken') == "" || localStorage.getItem('giverToken') == null || !localStorage.getItem('giverToken')) {
         router.push({ name: 'SignInPayment', params: { userId: route.params.userId } })
-    } else {
+      } else {
         router.push({ name: 'TransactionPage', params: { userId: route.params.userId } })
       }
     }
@@ -748,7 +695,7 @@ export default {
 
     const setPaystackAmount = () => {
       delete donationObj.value[amount]
-      donationObj.value.amount = convertedAmount.value * 100
+      donationObj.value.amount = computeAmount.value * 100
     }
 
     return {
@@ -792,9 +739,6 @@ export default {
       signedUp,
       displaySignInForm,
       gatewaySelected,
-      tenantCurrency,
-      convertedAmount,
-      convertAmount,
       setTransactionReference,
       setPaystackAmount,
       computeAmount,
