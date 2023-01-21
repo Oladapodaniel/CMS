@@ -9,7 +9,6 @@
               <div class="row d-md-flex align-items-center mt-3 mb-4">
                 <div class="col-md-12 col-sm-12">
                   <div class="search-div">
-                    <!-- <span><i class="pi pi-search mr-1"></i></span> -->
                     <el-input
                       type="text"
                       placeholder="Search here..."
@@ -24,63 +23,16 @@
                 </div>
               </div>
 
-              <!-- <div class="row">
+              <div class="row">
                 <div class="col-md-12">
-                  <i
-                    class="pi pi-trash color-deleteicon c-pointer pt-2 px-2"
-                    v-tooltip.top="'delete marked'"
-                    style="font-size: 15px"
-                    v-if="markedMail.length > 0"
-                    @click="showConfirmModal(false)"
-                  ></i>
-                </div>
-              </div> -->
-
-              <div class="table-top p-3 mt-5">
-                <el-tooltip class="box-item" effect="dark" v-if="markedMail.length > 0" content="delete marked"
+                  <el-tooltip class="box-item" effect="dark" v-if="markedMail.length > 0" content="delete marked"
                   placement="top-start">
-                  <el-icon :size="20" class="ml-2 c-pointer" v-if="markedMail.length > 0" @click="showConfirmModal(false)">
+                  <el-icon :size="20" class="ml-2 color-deleteicon text-danger c-pointer" style="font-size: 15px" v-if="markedMail.length > 0" @click="showConfirmModal(false)">
                     <Delete />
                   </el-icon>
-                </el-tooltip>
+                  </el-tooltip>
+                </div>
               </div>
-              <EasyDataTable
-               v-model:items-selected="markedMail" :headers="sentEmailHeaders" :rowsPerPage="100" v-model:server-options="serverOptions"
-               :items="searchEmails" :server-items-length="serverItemsLength" buttons-pagination alternating
-              >
-              <template #item-message="item">
-                <div class="c-pointer py-2" @click="showEmailRow(item)">
-                  <div class="" >{{ item.subject ? item.subject : "" }} </div> 
-                  <div  class="text-primary">{{ formatMessage(item.message) }}</div>
-                  
-                </div>
-              </template>
-              <!-- <template #item-subject="item">
-                <div class="c-pointer" @click="showEmailRow(item)">
-                  {{ item.subject ? item.subject.toLowerCase() : "" }}
-                </div>
-              </template> -->
-              <template #item-sentby="item">
-                <div class="c-pointer" @click="showEmailRow(item)">
-                  {{ item.sentByUser }}
-                </div>
-              </template>
-              <template #item-datetime="item" class="row">
-                <div class="c-pointer " @click="showEmailRow(item)">
-                  {{ item.dateSent }}
-                </div>
-              </template>
-              <template #item-delete="item" class="row">
-                <div class="c-pointer " >
-                  <el-icon :size="20" class="ml-2 c-pointer"   @click="showConfirmModal(item.id)" >
-                    <Delete />
-                  </el-icon>
-                </div>
-              </template>
-
-
-              </EasyDataTable>
-<!-- 
               <div class="row">
                 <div class="col-md-12">
                   <div class="row header-row light-grey-bg py-2">
@@ -90,8 +42,7 @@
                           class="col-md-1 text-md-right text-lg-center px-0"
                           v-if="emails.length > 0"
                         >
-                          <input
-                            type="checkbox"
+                          <el-checkbox
                             name="all"
                             id="all"
                             @change="markAllMails"
@@ -128,8 +79,7 @@
                         <div class="col-md-12">
                           <div class="row">
                             <div class="col-md-1 mt-2">
-                              <input
-                                type="checkbox"
+                              <el-checkbox
                                 name=""
                                 id=""
                                 @change="mark1Email(email)"
@@ -192,11 +142,10 @@
                                 >
                               </span>
                               <span class="small-text">
-                                <i
-                                  class="pi pi-trash color-deleteicon c-pointer pt-2 px-2"
-                                  style="font-size: 20px"
-                                  @click="showConfirmModal(email.id)"
-                                ></i>
+                                <el-icon :size="20" class="ml-2 color-deleteicon  pt-2  c-pointer" style="font-size:20px" 
+                                     @click="showConfirmModal(email.id)">
+                                  <Delete />
+                                </el-icon>
                               </span>
                             </div>
                           </div>
@@ -234,7 +183,7 @@
                     </div>
                   </div>
                 </div>
-              </div> -->
+              </div>
             </div>
           </div>
         </div>
@@ -244,7 +193,7 @@
 </template>
 
 <script>
-import { computed, ref, watch } from "vue";
+import { computed, ref } from "vue";
 import communicationService from "../../services/communication/communicationservice";
 import PaginationButtons from "../../components/pagination/PaginationButtons";
 import axios from "@/gateway/backendapi";
@@ -259,40 +208,15 @@ export default {
   components: { PaginationButtons, Loading },
   directives: {},
   setup() {
-    const sentEmailHeaders = ref([
-      { text: 'Message', value: 'message' },
-      // { text: 'Subject', value: 'subject' },
-      { text: 'Sent by', value: 'sentby' },
-      { text: 'Date & Time', value: 'datetime' },
-      { text: '', value: 'delete' },
-    ])
-    const serverItemsLength = ref(0);
-
     const emails = ref([]);
     const emailsInStore = ref(store.getters["communication/sentEmails"]);
     emails.value =
       emailsInStore.value && emailsInStore.value.length > 0
         ? emailsInStore.value
         : [];
-    // console.log(emails.value[0], "from store");
     const currentPage = ref(0);
     const loading = ref(true);
     const searchMail = ref("");
-
-    const serverOptions = ref({
-      page: 1,
-      rowsPerPage: 100,
-    });
-
-    watch(serverOptions, () => {
-      getEmailsByPage();
-    },
-      { deep: true }
-    );
-
-    const showEmailRow = (item) =>{
-      router.push(`/tenant/email/compose?messageId=${item.id}`)
-    }
 
     const getSentEmails = async () => {
       
@@ -315,12 +239,6 @@ export default {
     };
     getSentEmails();
 
-    // if (!emails.value || emails.value.length === 0 || emails.value == undefined || !emails.value[0] ) {
-      
-    // } else {
-    //   loading.value = false;
-    // }
-
     const formatMessage = (message) => {
       const formatted =
         message && message.length > 25
@@ -333,9 +251,9 @@ export default {
       return `${formatted}`;
     };
 
-    const getEmailsByPage = async () => {
+    const getEmailsByPage = async (page) => {
       try {
-        const data = await communicationService.getSentEmails(serverOptions.value.page);
+        const data = await communicationService.getSentEmails(page);
         if (data) {
           emails.value = data;
           currentPage.value = page;
@@ -408,12 +326,12 @@ export default {
         if (data.deleted) {
           ElMessage({
               type: 'success',
-              message: 'Deleted successfully',
+              message: markedMail.value.length > 1 ? 'Selected Emails have been deleted successfully ' : ' Email has been deleted successfully  ',
             })
           // toast.add({
           //   severity: "success",
           //   summary: "Delete successfull",
-          //   detail: `${markedMail.value.length > 1 ? 'Selected Emails have' : 'Email has' } been deleted successfully`,
+          //   detail: `${markedMail.value.length > 1 ? '' : 'Email has' } been deleted successfully`,
           //   life: 3000,
           // });
           emails.value = !id ? removeDeletedEmailsFromEmailList(markedMail.value) : emails.value.filter(i => i.id !== id);
@@ -482,36 +400,13 @@ export default {
         .catch(() => {
           ElMessage({
             type: 'info',
-            message: 'Delete canceled',
+            message: 'Delete discarded',
           })
         })
-        
-      // confirm.require({
-      //   message: "Are you sure you want to proceed? This operation can't be reversed.",
-      //   header: "Confirmation",
-      //   icon: "pi pi-exclamation-triangle",
-      //   acceptClass: "confirm-delete",
-      //   rejectClass: "cancel-delete",
-      //   accept: () => {
-      //     deleteEmails(id);
-      //   },
-      //   reject: () => {
-      //     toast.add({
-      //       severity: "info",
-      //       summary: "Rejected",
-      //       detail: "Delete discarded",
-      //       life: 3000,
-      //     });
-      //   },
-      // });
     };
 
     return {
       emails,
-      showEmailRow,
-      serverItemsLength,
-      serverOptions,
-      sentEmailHeaders,
       Search,
       formatMessage,
       getEmailsByPage,

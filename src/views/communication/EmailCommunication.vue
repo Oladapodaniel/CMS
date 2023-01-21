@@ -33,7 +33,7 @@
                       <a class="btn btn-default font-weight-bold">
                         <span class="menu-item">
                             <router-link class="r-link text-decoration-none" to="/tenant/email/sent">
-                              <i class="pi pi-arrow-circle-up mr-3 menu-icon"></i>
+                              <i class="pi pi-arrow-circle-up "></i>
                               <span class="active">Sent</span>
                             </router-link>
                         </span>
@@ -46,7 +46,7 @@
                       <a class="btn btn-default font-weight-bold">
                         <span class="menu-item">
                             <router-link class="r-link text-decoration-none" to="/tenant/email/draft">
-                              <i class="pi pi-envelope mr-3 menu-icon"></i>
+                              <el-icon class="mr-3 menu-icon"><Message /></el-icon>
                               <span class="active">Draft</span>
                             </router-link>
                         </span>
@@ -109,7 +109,7 @@ export default {
 
 
 #main {
-  /* border: 1px solid #02172e30; */
+  border: 1px solid #02172e30;
   border-radius: 30px;
 }
 
