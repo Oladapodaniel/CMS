@@ -1363,9 +1363,8 @@ export default {
              formData
             // checkinEvent
           );
-          console.log(response);
-          for (let i = 0; i < response.data.length; i++) {
-            const element = response.data[i];
+           for (let i = 0; i < response.data.returnObject.checkInAttendanceResult.length; i++) {
+            const element = response.data.returnObject.checkInAttendanceResult[i];
             store.dispatch("attendance/setItemData", element);
           }
           store.dispatch("groups/setCheckedTreeGroup", []);
@@ -1377,8 +1376,8 @@ export default {
               activityName: selectedEvent.value.name,
               groupId: selectedGroups.value[0].id,
               groupName: selectedGroups.value[0].name,
-              id: response.data[0].id,
-              code: response.data[0].attendanceCode,
+              id: response.data.returnObject.checkInAttendanceResult[0].id,
+              code: response.data.returnObject.checkInAttendanceResult[0].attendanceCode,
             },
           });
         } catch (error) {
