@@ -186,8 +186,6 @@
           class="col-12 offset-sm-1 offset-md-0 col-md-6 pl-md-0 mt-3"
           style="height: 43px"
         >
-          <!-- <Dropdown v-model="selectedBank" class="w-100" :options="nigerianBanks" optionLabel="name" :filter="false" :placeholder="selectedBank ? selectedBank.name : 'Select'" :showClear="false">
-                        </Dropdown> -->
           <div class="dropdown">
             <button
               class="
@@ -195,10 +193,12 @@
                 border
                 w-100
                 phone-input
+                default-btn
                 d-flex
                 justify-content-between
                 align-items-center
               "
+              style="border-radius: 4px;"
               type="button"
               id="dropdownBankList"
               data-toggle="dropdown"
@@ -243,9 +243,9 @@
           class="col-12 col-sm-10 offset-sm-1 offset-md-0 col-md-6 pl-md-0 mt-3"
           style="height: 43px"
         >
-          <input
-            class="form-control h-100"
-            type="number"
+          <el-input
+            class="w-100"
+            size="large"
             v-model="accountNumber"
             @blur="resolveCustomerDetail"
           />

@@ -89,9 +89,9 @@
         "
         style="height: 43px"
       >
-        <input
-          class="form-control h-100"
-          type="number"
+        <el-input
+          class="w-100"
+          size="large"
           v-model="form.accountNumber"
           @blur="resolveCustomerDetail"
         />
