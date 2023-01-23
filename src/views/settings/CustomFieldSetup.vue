@@ -486,11 +486,12 @@ export default {
     };
 
     const showConfirmModal = (id, index) => {
-      ElMessageBox.confirm("Are you sure you want to Delete?", "Warning", {
-        confirmButtonText: "OK",
-        cancelButtonText: "Cancel",
-        type: "warning",
-      })
+      ElMessageBox.confirm("Are you sure you want to Delete?", "Confirm delete", 
+     {
+          confirmButtonText: 'OK',
+          cancelButtonText: 'Cancel',
+          type: 'error',
+        })
         .then(() => {
           deleteCustomField(id, index);
         })

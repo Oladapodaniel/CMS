@@ -247,11 +247,11 @@ export default {
      deletePop(email) {
       ElMessageBox.confirm(
         'Are you sure you want to proceed?',
-        'Warning',
+        'Confirm delete',
         {
           confirmButtonText: 'OK',
           cancelButtonText: 'Cancel',
-          type: 'warning',
+          type: 'error',
         }
       )
       .then(() => {

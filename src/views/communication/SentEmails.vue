@@ -390,7 +390,7 @@ export default {
         {
           confirmButtonText: 'OK',
           cancelButtonText: 'Cancel',
-          type: 'warning',
+          type: 'error',
         }
       )
         .then(() => {
