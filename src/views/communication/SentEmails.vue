@@ -202,7 +202,6 @@ import stopProgressBar from "../../services/progressbar/progress";
 import store from '../../store/store';
 import { Search } from '@element-plus/icons-vue'
 import { ElMessage, ElMessageBox } from 'element-plus'
-import router from "../../router/index"
 
 export default {
   components: { PaginationButtons, Loading },

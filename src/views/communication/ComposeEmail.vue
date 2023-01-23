@@ -96,8 +96,8 @@
         <div class="col-md-2"></div>
         <div class="col-md-10 px-0">
           <span>
-            <input
-              class="form-control dropdown-toggle my-1 px-1 small-text"
+            <el-input
+              class="w-100  my-1 px-1 small-text"
               type="text"
               id="dropdownMenu"
               value="All Contacts"
@@ -122,15 +122,10 @@
               :key="index"
               class="email-destination d-flex justify-content-between m-1 small-text"
             >
-              <!-- <span
-              class="email-destination m-1"
-              
-            > -->
               <span class="small-text">{{ group.name }}</span>
               <span class="ml-2 remove-email" @click="removeGroup(index)"
                 >x</span
               >
-              <!-- </span> -->
             </li>
             <li style="list-style: none" class="">
               <input
@@ -301,18 +296,6 @@
             </span>
 
             <div class="dropdown">
-              <!-- <input
-                placeholder="Select persons"
-                class="border-none dropdown-toggle my-1 px-1"
-                type="text"
-                id="dropdownMenu"
-                @input="searchForPerson"
-                v-model="searchText"
-                data-toggle="dropdown"
-                aria-haspopup="true"
-                aria-expanded="false"
-              /> -->
-
               <div
                 class="dropdown-menu pt-0 w-100"
                 aria-labelledby="dropdownMenu"
@@ -426,11 +409,13 @@
         <div class="row">
           <div class="col-md-2"></div>
           <div class="col-md-10 py-2 px-0">
-            <textarea
-              class="form-control w-100 px-1 grey-rounded-border"
+            <el-input
+              class=" w-100 "
+              :rows="2"
+              type="textarea"
               placeholder="Enter email(s)"
               v-model="email"
-            ></textarea>
+            ></el-input>
           </div>
           <div
             class="col-md-12 grey-rounded-border groups"
@@ -476,9 +461,9 @@
           <span class="font-weight-600 small-text">Subject: </span>
         </div>
         <div class="col-md-10 px-0">
-          <input
+          <el-input
             type="text"
-            class="input p-0 mx-0 grey-rounded-border pl-2 px-14"
+            class="w-100 p-0 mx-0 mb-2 px-14"
             style="border-radius: 4px"
             v-model="subject"
           />
@@ -490,44 +475,13 @@
           <span class="font-weight-600 small-text">Message: </span>
         </div>
         <div class="col-md-10 px-0">
-          <!-- <textarea
-            rows="10"
-            class="text-area my-2"
-            v-model="editorData"
-          ></textarea> -->
-
           <div class="row">
             <div class="col-md-12">
               <div id="app">
-                <!-- <ckeditor
-                  :editor="editor"
-                  v-model="editorData"
-                  :config="editorConfig"
-                ></ckeditor> -->
-                <!-- <Editor v-model="editorData" @input="changed" editorStyle="height: 320px" /> -->
-
-                <!-- <ckeditor id="ckeditor"
-                  :editor="editor"
-                  @ready="onReady"
-                  v-model="editorData"
-                  :config="editorConfig">
-                </ckeditor> -->
-                
               </div>
               <DecoupledEditor v-model="editorData" :loadedMessage="loadedMessage" :label="'you find me'" />
             </div>
           </div>
-
-          <!-- <div class="col-md-12 px-0">
-            <p
-              class="bg-success mb-0 p-1 text-white font-weight-700 small-text"
-              v-if="editorData.length > 0"
-              :class="{ amber: charactersCount > 160 }"
-            >
-              <span>Characters count {{ charactersCount }}</span>
-              <span class="float-right">Page {{ pageCount }}</span>
-            </p>
-          </div> -->
         </div>
       </div>
 
@@ -536,7 +490,7 @@
           <div class="row">
             <div class="col-md-2"></div>
             <div class="col-md-10 pl-0">
-              <input type="checkbox" v-model="isPersonalized" class="mr-3" />
+              <el-checkbox  v-model="isPersonalized" class="mr-3" />
               <span class="font-weight-700 px-14">Personal Message</span>
             </div>
           </div>
@@ -577,12 +531,6 @@
               :model="sendOptions"
               @click="contructScheduleMessageBody(1)"
             ></SplitButton>
-            <!-- <SplitButton
-              label="Send"
-              :model="sendOptions"
-              data-toggle="modal"
-              data-target="#sendsmsbtn"
-            ></SplitButton> -->
           </span>
           <router-link
           to="/tenant/email/sent"
@@ -761,6 +709,7 @@ import swal from "sweetalert";
 // import CKEditor from "@ckeditor/ckeditor5-vue";
 import MyUploadAdapter from "../../services/editor/editor_uploader"
 // import ImageResize from '@ckeditor/ckeditor5-image/src/imageresize';
+import { ElMessage } from 'element-plus'
 
 import DecoupledEditor from '@/components/RichEditor';
 
@@ -923,12 +872,17 @@ export default {
         return false;
       }
 
-      toast.add({
-        severity: "info",
-        summary: "Sending Email",
-        detail: "Email is being sent....",
-        life: 2500,
-      });
+      ElMessage({
+              type: 'success',
+              message: 'Email is being sent...."',
+            })
+
+      // toast.add({
+      //   severity: "info",
+      //   summary: "Sending Email",
+      //   detail: "Email is being sent....",
+      //   life: 2500,
+      // });
       
       composeService
         .sendMessage("/api/Messaging/sendEmail", data)
@@ -957,19 +911,27 @@ export default {
           stopProgressBar();
           toast.removeAllGroups();
           if (err.toString().toLowerCase().includes('network error')) {
-            toast.add({
-              severity: "warn",
-              summary: "You 're Offline",
-              detail: "Please ensure you have internet access",
-              life: 2500,
-            });
+             ElMessage({
+              type: 'warning',
+              message: "You 're Offline,Please ensure you have internet access",
+            })
+            // toast.add({
+            //   severity: "warn",
+            //   summary: "",
+            //   detail: "",
+            //   life: 2500,
+            // });
           } else {
-            toast.add({
-              severity: "error",
-              summary: "Not Sent",
-              detail: "Email sending failed",
-              life: 2500,
-            });
+            ElMessage({
+              type: 'error',
+              message: "Not Sent, Email sending failed",
+            })
+            // toast.add({
+            //   severity: "error",
+            //   summary: "Not Sent",
+            //   detail: "Email sending failed",
+            //   life: 2500,
+            // });
             console.log(err)
           }
         });
@@ -1059,18 +1021,26 @@ export default {
           "/api/Messaging/saveEmailSchedule",
           data
         );
-        toast.add({
-          severity: "success",
-          summary: "message Scheduled",
-          detail: `Message scheduled for ${formattedDate}`,
-        });
+        ElMessage({
+              type: 'warning',
+              message: `message Scheduled for${formattedDate}`,
+            })
+        // toast.add({
+        //   severity: "success",
+        //   summary: "message Scheduled",
+        //   detail: `Message scheduled for ${formattedDate}`,
+        // });
       } catch (error) {
         console.log(error);
-        toast.add({
-          severity: "error",
-          summary: "Schedule Failed",
-          detail: "Could not schedule message",
-        });
+        ElMessage({
+              type: 'error',
+              message: "Schedule Failed. Could not Schedule message",
+            })
+        // toast.add({
+        //   severity: "error",
+        //   summary: "Schedule Failed",
+        //   detail: "Could not schedule message",
+        // });
       }
     };
 
@@ -1082,20 +1052,28 @@ export default {
           isDefaultBirthDayMessage: false,
         });
         store.dispatch("communication/getEmailDrafts");
-        toast.add({
-          severity: "success",
-          summary: "Draft Saved",
-          detail: "Message saved as draft",
-          life: 2500,
-        });
+        ElMessage({
+              type: 'success',
+              message: "Message saved as draft",
+            })
+        // toast.add({
+        //   severity: "success",
+        //   summary: "Draft Saved",
+        //   detail: "Message saved as draft",
+        //   life: 2500,
+        // });
       } catch (error) {
         console.log(error, "drafting error");
-        toast.add({
-          severity: "warn",
-          summary: "Error",
-          detail: "Message not saved as draft",
-          life: 2500,
-        });
+        ElMessage({
+              type: 'warning',
+              message: "Message not saved as draft",
+            })
+        // toast.add({
+        //   severity: "warn",
+        //   summary: "Error",
+        //   detail: "Message not saved as draft",
+        //   life: 2500,
+        // });
       }
     };
 
@@ -1223,11 +1201,15 @@ export default {
           //  console.log( subject.value, 'SUBJECTSS');
       } catch (error) {
           console.log(error)
-          toast.add({
-          severity: "error",
-          summary: "Error",
-          detail: "Could not load email!",
-          });
+          ElMessage({
+              type: 'error',
+              message: "Could not load email",
+            })
+          // toast.add({
+          // severity: "error",
+          // summary: "Error",
+          // detail: "Could not load email!",
+          // });
       }
     }
 
