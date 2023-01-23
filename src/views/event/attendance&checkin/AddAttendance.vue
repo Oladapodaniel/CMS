@@ -1362,9 +1362,6 @@ export default {
             // "/api/CheckinAttendance/MultipleCheckinAttendanceItem",
             // checkinEvent
           );
-          console.log(response,"😂😁😁");
-          console.log(selectedEvent.value,"😂😁😁");
-          console.log(selectedGroups.value,"😂😁😁");
           for (let i = 0; i < response.data.returnObject.checkInAttendanceResult.length; i++) {
             const element = response.data.returnObject.checkInAttendanceResult[i];
             store.dispatch("attendance/setItemData", element);
