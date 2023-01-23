@@ -320,9 +320,7 @@ export default {
 
   },
   created() {
-    if (!this.$store.getters.currentUser || (this.$store.getters.currentUser && Object.keys(this.$store.getters.currentUser).length == 0)) {
       this.getCurrentUser()
-    }
   },
 
   setup() {
