@@ -77,7 +77,7 @@
                         :key="index"
                       >
                         <div class="col-md-12">
-                          <div class="row">
+                          <div class="row pt-2 pb-1">
                             <div class="col-md-1 mt-2">
                               <el-checkbox
                                 name=""
@@ -386,7 +386,7 @@ export default {
     const showConfirmModal = (id) => {
       ElMessageBox.confirm(
         "Are you sure you want to proceed? This operation can't be reversed " ,
-        'Warning',
+        'Confirm delete',
         {
           confirmButtonText: 'OK',
           cancelButtonText: 'Cancel',
