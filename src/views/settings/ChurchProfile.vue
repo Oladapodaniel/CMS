@@ -1,5 +1,5 @@
 <template>
-  <form @submit.prevent="churchProfile">
+  <el-form>
     <div class="container my-content">
       <div class="row page-header">
         <div class="col-12">
@@ -243,14 +243,14 @@
               <label class="small-text" for=""></label>
             </div>
             <div class="col-12 col-md-5 ">
-              <el-button class="primary-btn font-weight-bold text-white px-4" color="#136acd" size="large" :loading="loading" round>Save</el-button>
+              <el-button class="primary-btn font-weight-bold text-white px-4" @click.prevent="churchProfile"  color="#136acd" size="large" :loading="loading" round>Save</el-button>
             </div>
             <div class="col-md-4"></div>
           </div>
         </div>
       </div>
     </div>
-  </form>
+  </el-form>
 </template>
 
 <script>
