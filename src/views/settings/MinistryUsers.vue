@@ -205,6 +205,7 @@ export default {
          ElMessage({
               type: 'success',
               message: 'Status Make Active',
+              duration: 5000
             })
       }catch(error){
         finish()
@@ -220,6 +221,7 @@ export default {
         ElMessage({
               type: 'success',
               message: 'Status Make Inactive',
+              duration: 5000
             })
 
       }catch(error){
@@ -237,6 +239,7 @@ export default {
         ElMessage({
               type: 'success',
               message: 'Church User Deleted Successfully',
+              duration: 5000
             })
 
       } catch (error){
@@ -261,6 +264,7 @@ export default {
           ElMessage({
             type: 'info',
             message: 'Delete canceled',
+            duration: 5000
           })
         })
         },

@@ -268,6 +268,7 @@ export default {
         ElMessage({
           type: "error",
           message: "Input Your Complete Details",
+          duration: 5000
         });
         return false;
       }
@@ -275,6 +276,7 @@ export default {
         ElMessage({
           type: "error",
           message: "Ensured Your Password is More than 6 character",
+          duration: 5000
         });
         return false;
       }
@@ -300,11 +302,13 @@ export default {
             ElMessage({
               type: "warning",
               message: error.response.data,
+              duration: 5000
             });
           } else {
             ElMessage({
               type: "warning",
               message: "Please check your network and try again",
+              duration: 5000
             });
           }
         });
@@ -323,6 +327,7 @@ export default {
           ElMessage({
             type: "success",
             message: "New User Saved Successfully",
+            duration: 5000
           });
           console.log(res);
           this.$router.push("/tenant/settings");

@@ -146,6 +146,7 @@ export default {
           ElMessage({
             type: 'error',
             message: 'Delete canceled',
+            duration: 5000
           })
         })
         },
@@ -156,6 +157,7 @@ export default {
         ElMessage({
               type: 'success',
               message: 'Message Deleted Successfully',
+              duration: 5000
             })
       } catch (error){
         finish()

@@ -1,49 +1,37 @@
 <template>
   <div>
     <div class="container" @click="closeDropdownIfOpen">
-      <!-- <div class="container" @click="closeDropdownIfOpen"> -->
       <div class="row">
         <div class="col-md-12 mb-3 mt-3 offset-3 offset-md-0">
           <h4 class="font-weight-bold">Compose Email</h4>
-          <Toast />
-
-          <Dialog
-            header="Select Date and Time"
-            v-model:visible="display"
-            :style="{ width: '50vw', maxWidth: '600px' }"
-            :modal="true"
+          <el-dialog
+            title="Select Date and Time"
+            v-model="display"
+           :width="
+              mdAndUp || lgAndUp || xlAndUp ? `50%` : xsOnly ? `90%` : `70%`
+            "
+            align-center
           >
             <div class="row">
               <div class="col-md-12">
-                <input
-                  type="datetime-local"
+                <el-date-picker
+                  type="datetime"
                   id="birthdaytime"
-                  class="form-control"
-                  name="birthdaytime"
+                  placeholder="Select date and time"
+                  class="w-100"
                   v-model="executionDate"
                 />
               </div>
             </div>
             <template #footer>
-              <Button
-                label="Cancel"
-                icon="pi pi-times"
-                @click="() => (display = false)"
-                class="p-button-raised p-button-text p-button-plain mr-3"
-                style="
-                  color: #136acd;
-                  background: #fff !important;
-                  border-radius: 22px;
-                "
-              />
-              <Button
-                label="Schedule"
-                class="p-button-rounded"
-                style="background: #136acd"
-                @click="contructScheduleMessageBody(2)"
-              />
+              <span class="dialog-footer">
+                <el-button round @click="() => (display = false)"><el-icon><Close /></el-icon>Cancel</el-button>
+                <el-button round color='#136acd' :loading="loading" @click="contructScheduleMessageBody(2)">
+                  Schedule
+                </el-button>
+              </span>
             </template>
-          </Dialog>
+          </el-dialog>
         </div>
       </div>
 
@@ -98,7 +86,6 @@
           <span>
             <el-input
               class="w-100  my-1 px-1 small-text"
-              type="text"
               id="dropdownMenu"
               value="All Contacts"
               disabled
@@ -204,15 +191,10 @@
               :key="indx"
               class="email-destination d-flex justify-content-between m-1"
             >
-              <!-- <span
-              class="email-destination m-1"
-              
-            > -->
               <span>{{ member.name }}</span>
               <span class="ml-2 remove-email" @click="removeMember(indx)"
                 >x</span
               >
-              <!-- </span> -->
             </li>
             <li style="list-style: none" class="m-dd-item">
               <input
@@ -415,7 +397,7 @@
               type="textarea"
               placeholder="Enter email(s)"
               v-model="email"
-            ></el-input>
+            />
           </div>
           <div
             class="col-md-12 grey-rounded-border groups"
@@ -462,7 +444,6 @@
         </div>
         <div class="col-md-10 px-0">
           <el-input
-            type="text"
             class="w-100 p-0 mx-0 mb-2 px-14"
             style="border-radius: 4px"
             v-model="subject"
@@ -526,11 +507,15 @@
         </div>
         <div class="col-md-12 d-flex justify-content-end">
           <span>
-            <SplitButton
-              label="Send"
-              :model="sendOptions"
-              @click="contructScheduleMessageBody(1)"
-            ></SplitButton>
+            <el-dropdown size="large"  trigger="click" class="split-button"  @click="contructScheduleMessageBody(1)" split-button >
+                Send
+                <template #dropdown>
+                  <el-dropdown-menu>
+                    <el-dropdown-item @click="showScheduleModal"><el-icon><Clock /></el-icon>Schedule</el-dropdown-item>
+                    <el-dropdown-item @click="draftMessage"><el-icon><MessageBox /></el-icon>Safe as Draft</el-dropdown-item>
+                  </el-dropdown-menu>
+                </template>
+              </el-dropdown>
           </span>
           <router-link
           to="/tenant/email/sent"
@@ -677,9 +662,6 @@
                       </div>
                     </div>
                   </div>
-                  <!-- <div class="modal-footer">
-                    
-                  </div> -->
                 </div>
               </div>
             </div>
@@ -691,7 +673,6 @@
 </template>
 
 <script>
-// import ClassicEditor from "@ckeditor/ckeditor5-build-classic";
 import { computed, onMounted, ref } from "vue";
 import composeService from "../../services/communication/composer";
 import composerObj from "../../services/communication/composer";
@@ -703,26 +684,22 @@ import axios from "@/gateway/backendapi";
 import stopProgressBar from "../../services/progressbar/progress";
 import communicationService from '../../services/communication/communicationservice';
 import dateFormatter from "../../services/dates/dateformatter";
-// import Editor from 'primevue/editor';
-
+import deviceBreakpoint from "../../mixins/deviceBreakpoint";
 import swal from "sweetalert";
-// import CKEditor from "@ckeditor/ckeditor5-vue";
 import MyUploadAdapter from "../../services/editor/editor_uploader"
-// import ImageResize from '@ckeditor/ckeditor5-image/src/imageresize';
 import { ElMessage } from 'element-plus'
 
 import DecoupledEditor from '@/components/RichEditor';
 
 export default {
   components: { 
-    // Editor
-    // ckeditor: CKEditor.component,
     DecoupledEditor,
   },
   setup() {
     const router = useRouter()
     const toast = useToast();
     const editorData = ref("");
+    const { mdAndUp, lgAndUp, xlAndUp, xsOnly } = deviceBreakpoint();
 
     const onReady = (editor) => {
       // Customize upload picture plugin
@@ -803,7 +780,6 @@ export default {
       memberListShown.value = false;
       searchText.value = "";
       memberSearchResults.value = [];
-      console.log(selectedMembers, "selected members");
     };
     const removeMember = (index) => {
       selectedMembers.value.splice(index, 1);
@@ -873,16 +849,10 @@ export default {
       }
 
       ElMessage({
-              type: 'success',
-              message: 'Email is being sent...."',
+              type: 'info',
+              message: 'Email is being sent....',
+              duration: 5000
             })
-
-      // toast.add({
-      //   severity: "info",
-      //   summary: "Sending Email",
-      //   detail: "Email is being sent....",
-      //   life: 2500,
-      // });
       
       composeService
         .sendMessage("/api/Messaging/sendEmail", data)
@@ -898,7 +868,6 @@ export default {
               confirmButtonColor: '#8CD4F5',
               dangerMode: true,
             })
-            // router.push('/tenant/email/sent')
             .then((willDelete) => {
               if (willDelete) {
                 router.push({ name: 'SentEmails' })
@@ -913,25 +882,15 @@ export default {
           if (err.toString().toLowerCase().includes('network error')) {
              ElMessage({
               type: 'warning',
-              message: "You 're Offline,Please ensure you have internet access",
+              message: "Please ensure you have internet access",
+              duration: 5000,
             })
-            // toast.add({
-            //   severity: "warn",
-            //   summary: "",
-            //   detail: "",
-            //   life: 2500,
-            // });
           } else {
             ElMessage({
               type: 'error',
-              message: "Not Sent, Email sending failed",
+              message: "Email sending failed",
+              duration: 5000,
             })
-            // toast.add({
-            //   severity: "error",
-            //   summary: "Not Sent",
-            //   detail: "Email sending failed",
-            //   life: 2500,
-            // });
             console.log(err)
           }
         });
@@ -953,32 +912,9 @@ export default {
               <div id="email-body">${editorData.value} </div>
             </body>
           </html>`,
-          // #email-body img {
-          //         width: 100% !important;
-          //         max-width: 1000px !important;
-          //         margin-left: auto;
-          //         margin-right: auto;
-          //         max-height: 300px;
-          //         object-fit: contain;
-          //         display: flex;
-          //         justify-content: center;
-          //       }
-                
-          //       #email-body img {
-          //         display: flex;
-          //         justify-content: center;
-          //       }
-                
-          //       #email-body figure {
-          //         margin: auto;
-          //       }
-        // contacts: [],
-        // contacts: selectedMembers.value.map(i => {
-        //   return { email: i.email }
-        // }),
         isPersonalized: isPersonalized.value,
         groupedContacts: selectedGroups.value.map((i) => i.data),
-        // toContacts: sendToAll.value ? 'allcontacts_00000000-0000-0000-0000-000000000000' : '',
+
       };
 
       const emails = [];
@@ -987,7 +923,6 @@ export default {
           if (j) emails.push(j);
         });
       });
-      console.log(emails, "many email");
 
       data.toOthers = emails.join();
 
@@ -1022,25 +957,17 @@ export default {
           data
         );
         ElMessage({
-              type: 'warning',
-              message: `message Scheduled for${formattedDate}`,
+              type: 'success',
+              message: `message Scheduled for  ${formattedDate}` ,
+              duration: 5000
             })
-        // toast.add({
-        //   severity: "success",
-        //   summary: "message Scheduled",
-        //   detail: `Message scheduled for ${formattedDate}`,
-        // });
       } catch (error) {
         console.log(error);
         ElMessage({
               type: 'error',
-              message: "Schedule Failed. Could not Schedule message",
+              message: "Could not Schedule message",
+              duration: 5000
             })
-        // toast.add({
-        //   severity: "error",
-        //   summary: "Schedule Failed",
-        //   detail: "Could not schedule message",
-        // });
       }
     };
 
@@ -1055,25 +982,15 @@ export default {
         ElMessage({
               type: 'success',
               message: "Message saved as draft",
+              duration: 5000
             })
-        // toast.add({
-        //   severity: "success",
-        //   summary: "Draft Saved",
-        //   detail: "Message saved as draft",
-        //   life: 2500,
-        // });
       } catch (error) {
         console.log(error, "drafting error");
         ElMessage({
               type: 'warning',
               message: "Message not saved as draft",
+              duration: 5000,
             })
-        // toast.add({
-        //   severity: "warn",
-        //   summary: "Error",
-        //   detail: "Message not saved as draft",
-        //   life: 2500,
-        // });
       }
     };
 
@@ -1137,29 +1054,6 @@ export default {
       if (userCountry.value === "Nigeria") return true;
       return false;
     });
-
-    const sendOptions = [
-      {
-        label: "Schedule",
-        icon: "pi pi-clock",
-        command: () => {
-          showScheduleModal();
-        },
-      },
-      {
-        label: "Save as Draft",
-        icon: "pi pi-save",
-        command: () => {
-          draftMessage();
-        },
-      },
-      // {
-      //   label: "Upload",
-      //   icon: "pi pi-upload",
-      //   to: "/fileupload",
-      // },
-    ];
-
     const allGroups = ref([]);
     const categories = ref([]);
     onMounted(() => {
@@ -1196,20 +1090,14 @@ export default {
       try {
           const { message, subject: subj } = await composeService.getSMSById(messageId);
           loadedMessage.value = message;
-          // console.log( loadedMessage.value, 'MESSAGESSS');
           subject.value = subj;
-          //  console.log( subject.value, 'SUBJECTSS');
       } catch (error) {
           console.log(error)
           ElMessage({
               type: 'error',
               message: "Could not load email",
+              duration: 5000,
             })
-          // toast.add({
-          // severity: "error",
-          // summary: "Error",
-          // detail: "Could not load email!",
-          // });
       }
     }
 
@@ -1219,6 +1107,7 @@ export default {
 
     return {
       loadedMessage,
+      showScheduleModal,
       editorData,
       possibleEmailDestinations,
       groupsAreVissible,
@@ -1251,7 +1140,6 @@ export default {
       display,
       showDateTimeSelectionModal,
       scheduleMessage,
-      sendOptions,
       draftMessage,
       groupListShown,
       showGroupList,
@@ -1268,7 +1156,10 @@ export default {
       contructScheduleMessageBody,
       executionDate,
       isPersonalized,
-
+      mdAndUp,
+      lgAndUp,
+      xlAndUp,
+      xsOnly,
       onReady,
     };
   },
@@ -1287,8 +1178,6 @@ export default {
   color: #495057;
   background-color: #fff;
   background-clip: padding-box;
-  /* border: none; */
-  /* transition: border-color .15s ease-in-out,box-shadow .15s ease-in-out; */
 }
 
 input:focus {

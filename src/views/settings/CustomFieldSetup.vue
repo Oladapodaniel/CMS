@@ -463,6 +463,7 @@ export default {
           ElMessage({
             type: "success",
             message: "Custom field deleted",
+            duration: 5000
           });
 
           allCustomFieldList.value = allCustomFieldList.value.filter(
@@ -475,11 +476,13 @@ export default {
             ElMessage({
               type: "error",
               message: "Ensure this is not in any group",
+              duration: 5000
             });
           } else {
             ElMessage({
               type: "error",
               message: "An error occurred, please try again",
+              duration: 5000
             });
           }
         });
@@ -499,6 +502,7 @@ export default {
           ElMessage({
             type: "info",
             message: "Delete canceled",
+            duration: 5000
           });
         });
     };
@@ -563,6 +567,7 @@ export default {
         ElMessage({
           type: "success",
           message: "Custom Field Updated successfully",
+          duration: 5000
         });
       } catch (err) {
         /*eslint no-undef: "warn"*/
@@ -593,6 +598,7 @@ export default {
         ElMessage({
           type: "success",
           message: "Custom Field created successfully",
+          duration: 5000
         });
         selectedEntityType.value = "";
         customFieldLabel.value = "";

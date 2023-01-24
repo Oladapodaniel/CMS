@@ -216,6 +216,7 @@ export default {
         ElMessage({
           type: "success",
           message: "Age Group Save Successfully",
+          duration: 5000
         });
 
         this.loading = false
@@ -233,6 +234,7 @@ export default {
         ElMessage({
           type: "success",
           message: "Age Group Deleted Successfully",
+          duration: 5000
         });
       } catch (error) {
         finish();
@@ -254,6 +256,7 @@ export default {
           ElMessage({
             type: "info",
             message: "Delete canceled",
+            duration: 5000
           });
         });
     },
@@ -269,6 +272,7 @@ export default {
         ElMessage({
           type: "success",
           message: "Age Group Updated Successfully",
+          duration: 5000
         });
         this.loading = false
       } catch (error) {

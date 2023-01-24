@@ -351,6 +351,7 @@ export default {
           ElMessage({
             type: "success",
             message: res.data.response,
+            duration: 5000
           });
           router.push("/tenant/settings/defaultmessage");
           loading.value = false

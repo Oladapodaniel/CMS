@@ -9,12 +9,11 @@
               <div class="row d-md-flex align-items-center mt-3 mb-4">
                 <div class="col-md-12 col-sm-12">
                   <div class="search-div">
-                    <el-input
+                    <span><el-icon><Search /></el-icon></span>
+                    <input
                       type="text"
                       placeholder="Search here..."
                       v-model="searchMail"
-                      :prefix-icon="Search"
-                      class="w-50 m-2"
                     />
                     <span class="mx-2"> | </span>
                     <span class="mx-2">Sort By</span>

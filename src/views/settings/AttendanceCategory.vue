@@ -238,6 +238,7 @@ export default {
           ElMessage({
             type: "info",
             message: "Delete canceled",
+            duration: 5000
           });
         });
     },
@@ -249,6 +250,7 @@ export default {
         ElMessage({
           type: "success",
           message: "Attendance Deleted Successfully",
+          duration: 5000
         });
       } catch (error) {
         finish();
@@ -266,6 +268,7 @@ export default {
         ElMessage({
           type: "success",
           message: "Attendance Updated Successfully",
+          duration: 5000
         });
       } catch (error) {
         finish();
@@ -282,6 +285,7 @@ export default {
         ElMessage({
           type: "success",
           message: "Attendance Save Successfully",
+          duration: 5000
         });
       } catch (error) {
         finish();
