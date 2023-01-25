@@ -1,9 +1,10 @@
 <template>
-  <div>
-    <div class="container">
-      <div class="row mt-4">
-        <div class="col-md-12 d-flex justify-content-center">
-          <h1 class="font-weight-bold ">VOICE</h1>
+  <main :class="{ 'container-slim': lgAndUp || xlAndUp }" id="main-tool">
+  
+    <div class="main-tool container-slim">
+      <div class="create-btn-div">
+        <div >
+          <h2 class="head-text ">VOICE</h2>
         </div>
       </div>
       <div class="row">
@@ -39,22 +40,7 @@
                   >
                  </el-button>
 
-                  <!-- <el-button round class=" d-sm-none  ">
-                    <router-link
-                    to="/tenant/voice"
-                    class="btn compose-btn border-0 font-weight-bold default-btn border-none"
-                    >Upload Voice</router-link
-                  >
-                  </el-button >
-                    
-                  <el-button round class=" d-none "
-                  >
-                  <router-link
-                    to="/tenant/voice"
-                    class="btn compose-btn border-0 font-weight-bold default-btn border-none w-100"
-                    >Upload Voice</router-link
-                  >
-                  </el-button> -->
+                 
                 </div>
               </div>
               <div class="row mb-3" :class="{ 'show': menuShouldShow, 'links-menu' : !menuShouldShow }"  >
@@ -66,14 +52,15 @@
                         route.path.includes('/tenant/sms/sent'),
                     }"
                   >
-                    <div class="col-md-12 menu-item-div m-auto">
+                    <div class="col-md-12  pl-4">
                       <a class="btn btn-default font-weight-bold">
                         <span class="menu-item">
                           <router-link
                             class="r-link text-decoration-none"
                             to="/tenant/sms/sent"
                           >
-                            <i class="pi pi-arrow-circle-up mr-3 menu-icon"></i>
+                            <!-- <i class="pi pi-arrow-circle-up mr-3 menu-icon"></i> -->
+                           <el-icon size="20" style=" margin-right: 3px" class="menu-icon"><Top /></el-icon>
                             <span class="active">Sent</span>
                           </router-link>
                         </span>
@@ -92,14 +79,7 @@
                       <a class="btn btn-default font-weight-bold">
                         <span class="menu-item"
                           >
-                          <!-- <router-link
-                            class="r-link text-decoration-none"
-                            to="/tenant/sms"
-                          >
-                            <i class="fas fa-inbox mr-3 menu-icon"></i>
-                            <span class="active">Replies</span>
-                          </router-link> -->
-                          <!-- <span class="inbox-count ml-md-2">3</span> -->
+                          
                         </span>
                       </a>
                     </div>
@@ -115,13 +95,7 @@
                     <div class="col-md-12 menu-item-div m-auto">
                       <a class="btn btn-default font-weight-bold">
                         <span class="menu-item">
-                          <!-- <router-link
-                            class="r-link text-decoration-none"
-                            to="/tenant/sms/draft"
-                          >
-                            <i class="pi pi-envelope mr-3 menu-icon"></i>
-                            <span class="active">Draft</span>
-                          </router-link> -->
+                         
                         </span>
                       </a>
                     </div>
@@ -137,13 +111,7 @@
                     <div class="col-md-12 menu-item-div m-auto">
                       <a class="btn btn-default font-weight-bold">
                         <span class="menu-item">
-                          <!-- <router-link
-                            class="r-link text-decoration-none"
-                            to="/tenant/sms/contacts"
-                          >
-                            <i class="pi pi-list mr-3 menu-icon"></i>
-                            <span class="active">Contact List</span>
-                          </router-link> -->
+                         
                         </span>
                       </a>
                     </div>
@@ -159,17 +127,7 @@
                     <div class="col-md-12 menu-item-div m-auto">
                       <a class="btn btn-default font-weight-bold">
                         <span class="menu-item">
-                          <!-- <router-link
-                            class="r-link text-decoration-none"
-                            to="/tenant/sms/scheduled"
-                          >
-                            <i class="pi pi-list mr-3 menu-icon"></i>
-                            <i
-                              class="pi pi-clock mr-3 menu-icon"
-                              aria-hidden="true"
-                            ></i>
-                            <span class="active">Scheduled</span>
-                          </router-link> -->
+                          
                         </span>
                       </a>
                     </div>
@@ -186,16 +144,19 @@
         </div>
       </main>
     </div>
-  </div>
+  
+  </main>
 </template>
 
 <script>
 import { ref } from "vue";
 import { useRoute } from "vue-router";
+import deviceBreakpoint from "../../mixins/deviceBreakpoint";
 export default {
   setup() {
     const route = useRoute();
     const menuShouldShow = ref(false);
+    const { lgAndUp, xlAndUp } = deviceBreakpoint()
     const toggleMenu = ()=>{
            menuShouldShow.value = !menuShouldShow.value
          };
@@ -203,7 +164,10 @@ export default {
     return {
       route,
       toggleMenu,
-      menuShouldShow
+      menuShouldShow,
+      lgAndUp,
+      xlAndUp,
+
     };
   },
 };
@@ -230,6 +194,10 @@ export default {
   border-radius: 30px;
 }
 
+#main-tool{
+  display: flex;
+  justify-content: space-between;
+}
 #side-menu {
   border-right: 1px solid #02172e30;
 }
