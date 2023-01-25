@@ -1,7 +1,5 @@
 <template>
-  <main :class="{ 'container-slim': lgAndUp || xlAndUp }" id="main-tool">
-  
-    <div class="main-tool container-slim">
+    <div class="container-top" :class="{ 'container-slim': lgAndUp || xlAndUp }">
       <div class="create-btn-div">
         <div >
           <h2 class="head-text ">VOICE</h2>
@@ -52,15 +50,15 @@
                         route.path.includes('/tenant/sms/sent'),
                     }"
                   >
-                    <div class="col-md-12  pl-4">
+                    <div class="col-md-12 m-auto menu-item-div pl-4">
                       <a class="btn btn-default font-weight-bold">
                         <span class="menu-item">
                           <router-link
-                            class="r-link text-decoration-none"
+                            class="r-link text-decoration-none d-flex align-items-center "
                             to="/tenant/sms/sent"
                           >
                             <!-- <i class="pi pi-arrow-circle-up mr-3 menu-icon"></i> -->
-                           <el-icon size="20" style=" margin-right: 3px" class="menu-icon"><Top /></el-icon>
+                           <el-icon size="20"  class="menu-icon mr-3"><Top /></el-icon>
                             <span class="active">Sent</span>
                           </router-link>
                         </span>
@@ -144,8 +142,6 @@
         </div>
       </main>
     </div>
-  
-  </main>
 </template>
 
 <script>

@@ -2,7 +2,7 @@
     <div class="" :class="{ 'container-slim': lgAndUp || xlAndUp }">
       <div class="row mt-4">
         <div class="col-md-12 d-flex justify-content-start">
-          <h1 class="head-text">Email</h1>
+          <h2 class="head-text">Email</h2>
         </div>
       </div>
       <div class="row">
