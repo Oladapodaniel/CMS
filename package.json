@@ -52,11 +52,7 @@
     "vue-lazyload-next": "^0.0.2",
     "vue-paystack": "^2.0.4",
     "vue-router": "^4.0.0-0",
-<<<<<<< HEAD
-    "vue3-easy-data-table": "^1.5.26",
-=======
     "vue3-easy-data-table": "^1.5.27",
->>>>>>> 75827fab70a3273ef5e1e284b85bb6dadc196b6a
     "vue3-tel-input": "^1.0.4",
     "vuedraggable": "^4.1.0",
     "vuex": "^4.0.0-0",
