@@ -1,10 +1,17 @@
 <template>
   <div>
-    <div class="container" @click="closeDropdownIfOpen">
-      <!-- <div class="container" @click="closeDropdownIfOpen"> -->
+    <div class="" @click="closeDropdownIfOpen">
       <div class="row">
         <div class="col-12 col-md-12 mb-3 mt-3">
-          <h4 class="font-weight-bold">Compose Voice Message</h4>
+          <h4 class="font-weight-bold d-none d-sm-flex">
+            Compose Voice Message
+          </h4>
+          <div class="col-12 col-md-12 mb-3 mt-3">
+            <h4 class="font-weight-bold text-center d-sm-none" color="#1D262D">
+              Compose Voice Message
+            </h4>
+          </div>
+
           <Toast />
 
           <Dialog
@@ -74,6 +81,13 @@
               class="dropdown-menu w-100"
               aria-labelledby="dropdownMenuButton"
             >
+              <!-- <el-select-v2
+                class="dropdown-item c-pointer small-text"
+                v-for="(destination, index) in possibleSMSDestinations"
+                :key="index"
+                @click="showSection(index)"
+                {{ destination }} /> -->
+
               <a
                 class="dropdown-item c-pointer small-text"
                 v-for="(destination, index) in possibleSMSDestinations"
@@ -92,7 +106,7 @@
 
       <div class="row" v-if="sendToAll">
         <div class="col-12 col-sm-3"></div>
-        <div class="col-12 col-sm-9 ">
+        <div class="col-12 col-sm-9">
           <span>
             <input
               class="form-control dropdown-toggle my-1 px-1 small-text"
@@ -199,93 +213,92 @@
 
       <!-- Start member TEst -->
       <div class="col-12 my-1 px-0">
-
-      <div class="row" v-if="membershipSelectionTab">
-        <div class="col-12 col-sm-3"></div>
-        <div class="col-12 col-sm-9 grey-rounded-border">
-          <ul
-            class="d-flex flex-wrap px-1 mb-0 m-dd-item"
-            @click="() => memberSelectInput.focus()"
-          >
-            <li
-              style="list-style: none; min-width: 100px"
-              v-for="(member, indx) in selectedMembers"
-              :key="indx"
-              class="email-destination d-flex justify-content-between m-1"
+        <div class="row" v-if="membershipSelectionTab">
+          <div class="col-12 col-sm-3"></div>
+          <div class="col-12 col-sm-9 grey-rounded-border">
+            <ul
+              class="d-flex flex-wrap px-1 mb-0 m-dd-item"
+              @click="() => memberSelectInput.focus()"
             >
-              <!-- <span
+              <li
+                style="list-style: none; min-width: 100px"
+                v-for="(member, indx) in selectedMembers"
+                :key="indx"
+                class="email-destination d-flex justify-content-between m-1"
+              >
+                <!-- <span
               class="email-destination m-1"
               
             > -->
-              <span>{{ member.name }}</span>
-              <span class="ml-2 remove-email" @click="removeMember(indx)"
-                >x</span
-              >
-              <!-- </span> -->
-            </li>
-            <li style="list-style: none" class="m-dd-item">
-              <input
-                type="text"
-                class="border-0 m-dd-item text"
-                ref="memberSelectInput"
-                @input="searchForPerson"
-                :class="{
-                  'w-100': selectedMembers.length === 0,
-                  'minimized-input-width': selectedMembers.length > 0,
-                }"
-                @focus="showMemberList"
-                @click="showMemberList"
-                v-model="searchText"
-                style="padding: 0.5rem"
-                :placeholder="`${
-                  selectedMembers.length > 0 ? '' : 'Select from members'
-                }`"
-              />
-            </li>
-          </ul>
-          <div
-            class="col-md-12 px-0 select-groups-dropdown m-dd-item"
-            v-if="memberListShown"
-          >
-            <div class="dropdownmenu pt-0 w-100 m-dd-item">
-              <a
-                class="dropdown-item px-1 c-pointer m-dd-item"
-                v-for="(member, index) in memberSearchResults"
-                :key="index"
-                @click="selectMember(member, index)"
-                >{{ member.name }}</a
-              >
-              <p
-                class="bg-secondary p-1 mb-0 disable m-dd-item"
-                v-if="
-                  searchText.length < 3 &&
-                  loading == false &&
-                  memberSearchResults.length === 0
-                "
-              >
-                Enter 3 or more characters
-              </p>
-              <p
-                aria-disabled="true"
-                class="btn btn-default p-1 mb-0 disable m-dd-item"
-                v-if="
-                  memberSearchResults.length === 0 &&
-                  searchText.length >= 3 &&
-                  !loading
-                "
-              >
-                No match found
-              </p>
-              <p
-                class="btn btn-default p-1 mb-0 disable m-dd-item"
-                v-if="loading && searchText.length >= 3"
-              >
-                <i class="fas fa-circle-notch fa-spin m-dd-item"></i>
-              </p>
+                <span>{{ member.name }}</span>
+                <span class="ml-2 remove-email" @click="removeMember(indx)"
+                  >x</span
+                >
+                <!-- </span> -->
+              </li>
+              <li style="list-style: none" class="m-dd-item">
+                <input
+                  type="text"
+                  class="border-0 m-dd-item text"
+                  ref="memberSelectInput"
+                  @input="searchForPerson"
+                  :class="{
+                    'w-100': selectedMembers.length === 0,
+                    'minimized-input-width': selectedMembers.length > 0,
+                  }"
+                  @focus="showMemberList"
+                  @click="showMemberList"
+                  v-model="searchText"
+                  style="padding: 0.5rem"
+                  :placeholder="`${
+                    selectedMembers.length > 0 ? '' : 'Select from members'
+                  }`"
+                />
+              </li>
+            </ul>
+            <div
+              class="col-md-12 px-0 select-groups-dropdown m-dd-item"
+              v-if="memberListShown"
+            >
+              <div class="dropdownmenu pt-0 w-100 m-dd-item">
+                <a
+                  class="dropdown-item px-1 c-pointer m-dd-item"
+                  v-for="(member, index) in memberSearchResults"
+                  :key="index"
+                  @click="selectMember(member, index)"
+                  >{{ member.name }}</a
+                >
+                <p
+                  class="bg-secondary p-1 mb-0 disable m-dd-item"
+                  v-if="
+                    searchText.length < 3 &&
+                    loading == false &&
+                    memberSearchResults.length === 0
+                  "
+                >
+                  Enter 3 or more characters
+                </p>
+                <p
+                  aria-disabled="true"
+                  class="btn btn-default p-1 mb-0 disable m-dd-item"
+                  v-if="
+                    memberSearchResults.length === 0 &&
+                    searchText.length >= 3 &&
+                    !loading
+                  "
+                >
+                  No match found
+                </p>
+                <p
+                  class="btn btn-default p-1 mb-0 disable m-dd-item"
+                  v-if="loading && searchText.length >= 3"
+                >
+                  <i class="fas fa-circle-notch fa-spin m-dd-item"></i>
+                </p>
+              </div>
             </div>
           </div>
         </div>
-      </div>
       </div>
       <!-- End member TEst -->
 
@@ -463,63 +476,43 @@
         </div>
       </div>
       <div class="row">
-        <div class="col-12 col-sm-3 mb-sm-2">
+        <div class="col-md-3 mb-sm-2">
           <span class="text-bold">Upload File : </span>
         </div>
-        <div class="col-12 col-sm-9 d-flex mb-0">
-          <input type="file " class="form-control" v-model="voice.name" disabled= "true">
-          <div
-            class="
-              border-0
-              col-md-5
-              d-none d-sm-flex
-              justify-content-center
-              p-2
-              w-100
-              mt-0
-              pt-0
-              outline-none
-              lab
-            "
-            @click="uploadVoice"
-            >Upload Voice
+
+        <div class="col-md-9 mb-0" style="background: #ffffff">
+          <div class="col-md-12 border rounded mt-1 d-flex flex-column flex-md-row">
+            <div class="col-md-5 px-0 mx-0">
+              <button
+                class="border-none rounded outline-none my-2"
+                style="background: #ebeff4"
+                @click="uploadVoice"
+              >
+                Upload File
+                <input
+                  type="file"
+                  class="border-none outline-line mt-2 mb-2"
+                  hidden
+                  ref="uploadButton"
+                  @change="audioSelected"
+                  accept=".mp3, .wav"
+                />
+              </button>
+            </div>
+            <div class="col-md-8 px-0 mx-0">
+              <input
+                type="file "
+                class="form-control mt-2 bg-white border-none px-0"
+                v-model="voice.name"
+                disabled="true"
+              />
+            </div>
           </div>
-            <input
-              type="file"
-              hidden
-              ref="uploadButton"
-              @change="audioSelected"
-              accept=".mp3, .wav"
-            />
+              <div>Maximum 5mb file size</div>
+
         </div>
-        <div class="col-12 col-sm-9 pl-md-0 d-flex mb-0">
-          <label
-            class="
-              col-md-5
-              d-flex d-sm-none
-              justify-content-center
-              p-2
-              w-100
-              border-0
-              mt-0
-              pt-0
-              lab
-            "
-            
-            >Upload Voice
-            <input
-              type="file"
-              hidden
-              ref="uploadButton"
-              @change="audioSelected"
-              accept=".mp3, .wav"
-            />
-          </label>
-        </div>
-        <!-- <div class="col-12 text-danger ">
-          <div class="col-8 d-flex justify-content-center">Upload voice of MP3,must be 4mb size</div>
-          <div class="col-4">must not exceed 30sec</div>
-        </div> -->
+
+        
       </div>
 
       <!-- start voice -->
@@ -589,7 +582,7 @@
         <div class="col-md-10 d-flex justify-content-end ml-4">
           <span :class="{ 'cursor-close': disableBtn }">
             <SplitButton
-              label="Send"
+              label="Send "
               :model="sendOptions"
               :disabled="disableBtn"
               @click="checkFileType"
@@ -1605,7 +1598,7 @@ export default {
   font-weight: 800;
   background-color: rgb(236, 230, 230);
 }
-.btn:hover{
+.btn:hover {
   border: none !important;
 }
 

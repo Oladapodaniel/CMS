@@ -335,7 +335,9 @@ export default {
     const firstTimerPieExist = ref(false);
     const summed = ref(0);
     const planUserIs = ref("");
-
+    const today = new Date();
+    
+    
 
 
     const toggleMoreLinkVissibility = () => {
@@ -427,12 +429,27 @@ export default {
         });
     };
 
+    
 
-    let getCelebDashboard = () => {
+    function expiryDate(date_string) {
+  var expiration = moment(date_string).format("YYYY-MM-DD");
+  // console.log(expiration, "bim")
+  var current_date = moment().format("YYYY-MM-DD");
+  console.log(current_date,"wetin be this")
+  var days = moment(expiration).diff(current_date, 'days');
+  return days;
+}
+
+alert("Days remaining = " + expiryDate(""));
+console.log("Days remaining = " + expiryDate(""));
+
+  expiryDate();
+  
+    function getCelebDashboard() {
       axios.get("/dashboard/celebrations").then((res) => {
-        celeb.value = res.data.returnObject.celebrations;
+        celeb.value=res.data.returnObject.celebrations;
       });
-    };
+    }
     getCelebDashboard();
 
     let tenantInfoCeleb = computed(() => {

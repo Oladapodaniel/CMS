@@ -23,11 +23,38 @@
                   <div class=" ml-3 mt-2 toggle"  >
                     <i class="pi pi-bars" @click="toggleMenu"></i>
                   </div>
-                  <router-link
+                  <el-button round class="font-weight-bold d-none d-sm-flex" size="large" color="#136ACD" >
+                     <router-link
+                    style="color:#FFFFFF;"
+                    to="/tenant/voice"
+                    >Upload Voice</router-link
+                  >
+                  </el-button>
+
+                 <el-button round class="mt-4 d-sm-none w-100" size="large" color="#136ACD" >
+                     <router-link
+                    style="color:#FFFFFF;" 
+                    to="/tenant/voice"
+                    >Upload Voice</router-link
+                  >
+                 </el-button>
+
+                  <!-- <el-button round class=" d-sm-none  ">
+                    <router-link
                     to="/tenant/voice"
                     class="btn compose-btn border-0 font-weight-bold default-btn border-none"
                     >Upload Voice</router-link
                   >
+                  </el-button >
+                    
+                  <el-button round class=" d-none "
+                  >
+                  <router-link
+                    to="/tenant/voice"
+                    class="btn compose-btn border-0 font-weight-bold default-btn border-none w-100"
+                    >Upload Voice</router-link
+                  >
+                  </el-button> -->
                 </div>
               </div>
               <div class="row mb-3" :class="{ 'show': menuShouldShow, 'links-menu' : !menuShouldShow }"  >
