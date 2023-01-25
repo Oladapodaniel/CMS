@@ -5,8 +5,8 @@
                 <div class="row">
                     <div class="col-md-12 mx-auto my-2 px-0 px-2">
                     <label class="hfont">Full Name</label>
-                    <input
-                        class="form-control col-md-12 text-left border imp1"
+                    <el-input
+                        class="text-left imp1"
                         type="text"
                         v-model="chosenName"              
                     />
@@ -18,8 +18,8 @@
                 <div class="row">
                     <div class="col-md-12 mx-auto my-2 px-0 px-2">
                     <label class="hfont">Phone Number</label>
-                    <input
-                        class="form-control col-md-12 text-left border imp1"
+                    <el-input
+                        class="text-left imp1"
                         type="number"
                         v-model="chosenNumber"              
                     />
@@ -31,8 +31,8 @@
                 <div class="row">
                     <div class="col-md-12 mx-auto my-2 px-0 px-2">
                     <label class="hfont">Email Address</label>
-                    <input
-                        class="form-control col-md-12 text-left border imp1"
+                    <el-input
+                        class="text-left imp1"
                         type="email"
                         v-model="chosenEmail"               
                     />
@@ -44,8 +44,8 @@
                 <div class="row">
                     <div class="col-md-12 mx-auto my-2 px-0 px-2">
                     <label class="hfont">Password</label>
-                    <input
-                        class="form-control col-md-12 text-left border imp1"
+                    <el-input
+                        class="text-left imp1"
                         type="password"
                         v-model="chosenPassword"               
                     />
@@ -54,7 +54,9 @@
             </div>
             <div class="col-12 mt-3">
                 <div class="d-flex justify-content-center">
-                    <div class="button signin-color text-center w-25" @click="signUp">Sign Up</div>
+                    <el-button color="#cecece" @click="signUp" round>
+                        Sign Up
+                    </el-button>
                 </div>
                 <div class="label mt-3 text-center hfont">
                     Already registered?
