@@ -13,8 +13,35 @@
           </div>
 
           <Toast />
-
-          <Dialog
+          <el-dialog
+            title="Select Date and Time"
+            v-model="display"
+           :width="
+              mdAndUp || lgAndUp || xlAndUp ? `50%` : xsOnly ? `90%` : `70%`
+            "
+            align-center
+          >
+            <div class="row">
+              <div class="col-md-12">
+                <el-date-picker
+                  type="datetime"
+                  id="birthdaytime"
+                  placeholder="Select date and time"
+                  class="w-100"
+                  v-model="executionDate"
+                />
+              </div>
+            </div>
+            <template #footer>
+              <span class="dialog-footer">
+                <el-button round @click="() => (display = false)"><el-icon><Close /></el-icon> Cancel</el-button>
+                <el-button round color='#136acd' :loading="loading" @click="contructScheduleMessageBody(2, '')">
+                  Schedule
+                </el-button>
+              </span>
+            </template>
+          </el-dialog>
+          <!-- <Dialog
             header="Select Date and Time"
             v-model:visible="display"
             :style="{ width: '50vw', maxWidth: '600px' }"
@@ -50,7 +77,7 @@
                 @click="contructScheduleMessageBody(2, '')"
               />
             </template>
-          </Dialog>
+          </Dialog> -->
         </div>
       </div>
 
@@ -81,13 +108,6 @@
               class="dropdown-menu w-100"
               aria-labelledby="dropdownMenuButton"
             >
-              <!-- <el-select-v2
-                class="dropdown-item c-pointer small-text"
-                v-for="(destination, index) in possibleSMSDestinations"
-                :key="index"
-                @click="showSection(index)"
-                {{ destination }} /> -->
-
               <a
                 class="dropdown-item c-pointer small-text"
                 v-for="(destination, index) in possibleSMSDestinations"
@@ -108,8 +128,8 @@
         <div class="col-12 col-sm-3"></div>
         <div class="col-12 col-sm-9">
           <span>
-            <input
-              class="form-control dropdown-toggle my-1 px-1 small-text"
+            <el-input
+              class="w-100 my-1 px-1 small-text"
               type="text"
               id="dropdownMenu"
               value="All Contacts"
@@ -791,6 +811,7 @@ import axios from "@/gateway/backendapi";
 import stopProgressBar from "../../../services/progressbar/progress";
 import communicationService from "../../../services/communication/communicationservice";
 import dateFormatter from "../../../services/dates/dateformatter";
+import deviceBreakpoint from "../../../mixins/deviceBreakpoint";
 import moment from "moment";
 // import audio from "../helper/audio"
 import { blobMethod } from "../helper/audio";
@@ -829,6 +850,7 @@ export default {
     const recMode = ref("");
     const canvas = ref(null);
     const displayAudio = ref(false);
+    const { mdAndUp, lgAndUp, xlAndUp, xsOnly } = deviceBreakpoint();
 
     // uploadButton.value = setAttribute("uploadButton", "");
     // this function displays the file
@@ -1516,6 +1538,10 @@ export default {
 
     return {
       editorData,
+      mdAndUp, 
+      lgAndUp, 
+      xlAndUp, 
+      xsOnly,
       editorConfig,
       possibleSMSDestinations,
       groupsAreVissible,
