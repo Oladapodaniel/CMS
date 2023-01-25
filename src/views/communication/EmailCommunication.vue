@@ -31,8 +31,8 @@
                     <div class="col-md-12 menu-item-div m-auto">
                       <a class="btn btn-default font-weight-bold">
                         <span class="menu-item">
-                            <router-link class="r-link text-decoration-none" to="/tenant/email/sent">
-                             <el-icon class="mr-3 menu-icon"><Top /></el-icon>
+                            <router-link class="r-link text-decoration-none d-flex align-items-center " to="/tenant/email/sent">
+                             <el-icon class="mr-3  menu-icon "><Top /></el-icon>
                               <span class="active">Sent</span>
                             </router-link>
                         </span>
@@ -44,8 +44,8 @@
                     <div class="col-md-12 menu-item-div m-auto">
                       <a class="btn btn-default font-weight-bold">
                         <span class="menu-item">
-                            <router-link class="r-link text-decoration-none" to="/tenant/email/draft">
-                              <el-icon class="mr-3 menu-icon"><Message /></el-icon>
+                            <router-link class="r-link d-flex align-items-center text-decoration-none" to="/tenant/email/draft">
+                              <el-icon class="mr-3  menu-icon"><Message /></el-icon>
                               <span class="active">Draft</span>
                             </router-link>
                         </span>
@@ -57,7 +57,7 @@
                     <div class="col-md-12 menu-item-div m-auto">
                       <a class="btn btn-default font-weight-bold">
                         <span class="menu-item"
-                          ><router-link class="r-link text-decoration-none" to="/tenant/email/schedules">
+                          ><router-link class="r-link d-flex align-items-center text-decoration-none" to="/tenant/email/schedules">
                             <el-icon class=" mr-3 menu-icon"><Clock /></el-icon>
                             <span class="active">Scheduled</span>
                           </router-link>

@@ -22,7 +22,7 @@
                 </div>
               </div>
 
-              <div class="row">
+              <div class="row table-box">
                 <div class="col-md-12">
                   <el-tooltip class="box-item" effect="dark" v-if="markedMail.length > 0" content="delete marked"
                   placement="top-start">
@@ -429,7 +429,9 @@ export default {
   box-sizing: border-box;
   /* color: #02172e; */
 }
-
+/* .table-box {
+  border: 1px solid #4762f01f;
+} */
 .search-div {
   width: fit-content;
   padding: 10px;

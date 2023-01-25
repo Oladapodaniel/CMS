@@ -42,13 +42,13 @@
       </div>
 
       <div class="row">
-        <div class="col-3 col-lg-2 align-self-center">
+        <div class="col-md-2 pr-md-0 col-lg-2 align-self-center">
           <span class="small-text">Send to : </span>
         </div>
-        <div class="col-9 col-lg-10 form-group mb-0">
+        <div class="p-0 col-md-10 col-lg-10 form-group mb-0">
           <div class="dropdown">
             <button
-              class="btn btn-default dropdown-toggle small-text"
+              class="btn btn-default border dropdown-toggle small-text"
               type="button"
               id="dropdownMenuButton"
               data-toggle="dropdown"

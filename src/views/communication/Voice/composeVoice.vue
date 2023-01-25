@@ -88,13 +88,13 @@
       </div>
 
       <div class="row">
-        <div class="col-12 col-sm-3 mb-sm-2">
+        <div class="col-md-2 pr-md-0 col-lg-2 align-self-center">
           <span class="text-bold">Send to : </span>
         </div>
-        <div class="col-12 col-sm-9 form-group mb-1">
+        <div class="p-0 col-md-10 col-lg-10 form-group mb-0">
           <div class="dropdown">
             <button
-              class="btn btn-default dropdown-toggle small-text"
+              class="btn btn-default border dropdown-toggle small-text"
               type="button"
               id="dropdownMenuButton"
               data-toggle="dropdown"
@@ -130,7 +130,6 @@
           <span>
             <el-input
               class="w-100 my-1 px-1 small-text"
-              type="text"
               id="dropdownMenu"
               value="All Contacts"
               disabled
@@ -138,8 +137,10 @@
             <span
               class="close-allcontacts c-pointer"
               @click="() => (sendToAll = false)"
-              ><i class="pi pi-times mx-2"></i
-            ></span>
+              ><el-icon class="mx-2"><Close /></el-icon>
+              <!-- <i class="pi pi-times "></i
+            > -->
+            </span>
           </span>
         </div>
       </div>
@@ -234,8 +235,8 @@
       <!-- Start member TEst -->
       <div class="col-12 my-1 px-0">
         <div class="row" v-if="membershipSelectionTab">
-          <div class="col-12 col-sm-3"></div>
-          <div class="col-12 col-sm-9 grey-rounded-border">
+          <div class="col-12 col-md-2"></div>
+          <div class="col-12 col-md-10 grey-rounded-border">
             <ul
               class="d-flex flex-wrap px-1 mb-0 m-dd-item"
               @click="() => memberSelectInput.focus()"
@@ -325,8 +326,8 @@
       <!-- Select Person from DB -->
       <div class="col-12 my-1 px-0" v-if="false">
         <div class="row">
-          <div class="col-12 col-sm-3"></div>
-          <div class="col-12 col-sm-9 grey-rounded-border">
+          <div class="col-12 col-md-2"></div>
+          <div class="col-12 col-md-10 grey-rounded-border">
             <span
               class="email-destination m-1"
               v-for="(member, indx) in selectedMembers"
@@ -424,8 +425,8 @@
       <!-- Enter phone numbers -->
       <div class="col-12 my-1 px-0" v-if="phoneNumberSelectionTab">
         <div class="row">
-          <div class="col-12 col-sm-3"></div>
-          <div class="col-12 col-sm-9">
+          <div class="col-12 col-md-2"></div>
+          <div class="col-12 col-md-10">
             <textarea
               class="form-control w-100 px-1 grey-rounded-border"
               placeholder="Enter phone number(s)"
@@ -463,8 +464,8 @@
 
       <!-- Start upload contact -->
       <div v-if="contactUpload" class="row my-1">
-        <div class="col-12 col-sm-3"></div>
-        <div class="col-12 col-sm-9 grey-rounded-border p-2">
+        <div class="col-12 col-md-2"></div>
+        <div class="col-12 col-md-10 grey-rounded-border p-2">
           <div class="d-flex justify-content-between">
             <input type="file" class="form-control-file" @change="uploadFile" />
             <div>
@@ -496,13 +497,13 @@
         </div>
       </div>
       <div class="row">
-        <div class="col-md-3 mb-sm-2">
+        <div class="col-md-2 mb-sm-2">
           <span class="text-bold">Upload File : </span>
         </div>
 
-        <div class="col-md-9 mb-0" style="background: #ffffff">
+        <div class="col-md-10 mb-0 px-0" style="background: #ffffff">
           <div class="col-md-12 border rounded mt-1 d-flex flex-column flex-md-row">
-            <div class="col-md-5 px-0 mx-0">
+            <div class="col-md-4 px-0 mx-0">
               <button
                 class="border-none rounded outline-none my-2"
                 style="background: #ebeff4"
@@ -528,9 +529,9 @@
               />
             </div>
           </div>
-              <div>Maximum 5mb file size</div>
-
         </div>
+        <div class="col-md-2"></div>
+        <div class="col-md-10"><div>Maximum 5mb file size</div></div>
 
         
       </div>
@@ -559,31 +560,6 @@
       </div>
       <!-- end voice -->
 
-      <!-- 
-      <div class="row my-3">
-        <div class="col-md-12 form-group">
-          <div class="row">
-            <div class="col-md-2"></div>
-            <div class="col-md-10 pl-0">
-              <input type="checkbox" v-model="isPersonalized" class="mr-3" />
-              <span class="font-weight-700 px-14">Personal Message</span>
-            </div>
-          </div>
-        </div>
-        <div class="col-md-12">
-          <div class="row">
-            <div class="col-md-2"></div>
-            <div class="col-md-10 pl-0">
-              <span class="hint"
-                >Insert #name# any where you want the contact name to appear in
-                the message, it will be replaced by the actual name of the
-                member when sending the message.</span
-              >
-            </div>
-          </div>
-        </div>
-      </div> -->
-
       <div class="row mt-4 mb-5">
         <div class="col-md-12">
           <p
@@ -601,12 +577,21 @@
         </div>
         <div class="col-md-10 d-flex justify-content-end ml-4">
           <span :class="{ 'cursor-close': disableBtn }">
-            <SplitButton
+            <el-dropdown size="large"  trigger="click" class="split-button" @click="checkFileType"   split-button >
+                Send
+                <template #dropdown>
+                  <el-dropdown-menu>
+                    <el-dropdown-item @click="showScheduleModal"><el-icon><Clock /></el-icon>Schedule</el-dropdown-item>
+                    <el-dropdown-item @click="draftMessage"><el-icon><MessageBox /></el-icon>Safe as Draft</el-dropdown-item>
+                  </el-dropdown-menu>
+                </template>
+              </el-dropdown>
+            <!-- <SplitButton
               label="Send "
               :model="sendOptions"
               :disabled="disableBtn"
               @click="checkFileType"
-            ></SplitButton>
+            ></SplitButton> -->
           </span>
           <router-link
             :to="
@@ -692,103 +677,9 @@
                             </p>
                           </div>
                         </div>
-
-                        <!-- <div class="row">
-                          <div class="col-md-12 px-1">
-                            <hr class="hr" />
-                          </div>
-                        </div> -->
-
-                        <!-- <div class="row d-flex justify-content-between">
-                          <div class="col-md-6 px-1">
-                            <div class="container">
-                              <div class="row">
-                                <div class="col-md-12">
-                                  <label
-                                    for=""
-                                    class="small-text font-weight-600 py-2"
-                                    >NEW** BULK SMS - 100% SMS DELIVERY</label
-                                  >
-                                </div>
-                                <div
-                                  class="col-md-12 send-now-div py-2 my-2 d-flex justify-content-center"
-                                >
-                                  <button
-                                    class="primary-btn default-btn primary-bg border-0 px-4 my-2 font-weight-600 outline-none"
-                                    data-dismiss="modal"
-                                    @click="
-                                      contructScheduleMessageBody(
-                                        1,
-                                        'hostedsms'
-                                      )
-                                    "
-                                  >
-                                    Send SMS Now
-                                  </button>
-                                </div>
-                                <div class="col-md-12 px-0">
-                                  <hr class="hr my-2" />
-                                </div>
-                                <div class="col-md-12 px-0 d-flex flex-column">
-                                  <span>Please note:</span>
-                                  <span
-                                    >100% delivery to all valid phone
-                                    numbers.</span
-                                  >
-                                  <span>Not Affected by DND.</span>
-                                  <span
-                                    >Dedicated phone number: No sender
-                                    customization.</span
-                                  >
-                                </div>
-                              </div>
-                            </div>
-                          </div>
-
-                          <div class="col-md-6 px-1">
-                            <div class="container">
-                              <div class="row">
-                                <div class="col-md-12">
-                                  <label
-                                    for=""
-                                    class="small-text font-weight-600 py-2"
-                                    >REGULAR BULK SMS- PROVIDER</label
-                                  >
-                                </div>
-                                <div
-                                  class="col-md-12 my-2 send-now-div py-2 d-flex justify-content-center"
-                                >
-                            
-                                  <button
-                                    class="primary-btn default-btn border-0 px-4 my-2 grey-background text-grey outline-none"
-                                    data-dismiss="modal"
-                                    @click="contructScheduleMessageBody(1, '')"
-                                  >
-                                    Send SMS Now
-                                  </button>
-                                </div>
-                                <div class="col-md-12 px-0">
-                                  <hr class="hr my-2" />
-                                </div>
-                                <div class="col-md-12 px-0 d-flex flex-column">
-                                  <span>Please note:</span>
-                                  <span>Uses the regular bulk sms engine</span>
-                                  <span
-                                    >Delivery rate varies and is affected by DND
-                                    number.</span
-                                  >
-                                  <span>Sender Name can be customized.</span>
-                                </div>
-                              </div>
-                            </div>
-                          </div>
-                        </div> -->
                       </div>
                     </div>
                   </div>
-                  <!-- <div class="modal-footer">
-                    
-                  </div> -->
                 </div>
               </div>
             </div>
@@ -812,16 +703,14 @@ import stopProgressBar from "../../../services/progressbar/progress";
 import communicationService from "../../../services/communication/communicationservice";
 import dateFormatter from "../../../services/dates/dateformatter";
 import deviceBreakpoint from "../../../mixins/deviceBreakpoint";
+import { ElMessage } from 'element-plus'
 import moment from "moment";
 // import audio from "../helper/audio"
 // import { blobMethod } from "../helper/audio";
 
 // console.log(audio , 'audio');
 export default {
-  components: {
-    // VueRecord: toVue3(VueRecord)
-    // AudioRecorder
-  },
+  components: {},
   setup() {
     const toast = useToast();
     const router = useRouter();
@@ -851,9 +740,6 @@ export default {
     const canvas = ref(null);
     const displayAudio = ref(false);
     const { mdAndUp, lgAndUp, xlAndUp, xsOnly } = deviceBreakpoint();
-
-    // uploadButton.value = setAttribute("uploadButton", "");
-    // this function displays the file
     const uploadVoice = () => {
       console.log(uploadButton.value);
       uploadButton.value.click();
@@ -871,22 +757,11 @@ export default {
       console.log("Downloadable audio", window.URL.createObjectURL(data));
     };
 
-    // onload function for the audio voice recorder
-    // onMounted(() => {
-    //   setTimeout(() => {
-    //     audio(canvas.value)
-    //   }, 3000)
-    // });
-
     // function that selects the file
     const audioSelected = (e) => {
       console.log(e);
       voice.value = e.target.files[0];
-      // console.log(voice.value, "www");
       voiceName.value = e.target.files[0].name;
-      // url.value = URL.createObjectURL(voice.value);
-      // console.log(voice.value, 'url display');
-      // voiceToEdit.value = URL.createObjectURL(voice.value);
     };
 
     const formatPhoneNumber = (phoneNumber) => {
@@ -946,13 +821,12 @@ export default {
     // start();
     // audio end
     const checkFileType = () => {
-      if (!voice.value && !blobMethod()) {
-        toast.add({
-          severity: "false",
-          summary: "false",
-          detail: "please record to upload",
-          life: 4000,
-        });
+      if (!voice.value) {
+        ElMessage({
+              type: 'warn',
+              message: "please record to upload",
+              duration: 5000
+            })
         return false;
       }
       if (voice.value) detailsForVoice(voice.value);
@@ -976,21 +850,18 @@ export default {
           "/api/Messaging/SendVoiceMessage",
           formData
         );
-        // console.log(data, 'voice test')
-        toast.add({
-          severity: "success",
-          summary: "Success",
-          detail: "You have successfully sent a voice note",
-          life: 5000,
-        });
+        ElMessage({
+              type: 'success',
+              message: 'You have successfully sent a voice note',
+              duration: 5000
+            })
       } catch (err) {
         console.log(err);
-        toast.add({
-          severity: "error",
-          summary: "Not sent",
-          detail: "Sending failed, please try again",
-          life: 5000,
-        });
+        ElMessage({
+              type: 'error',
+              message: 'Sending failed, please try again',
+              duration: 5000
+            })
       }
     };
     const toggleGroupsVissibility = () => {
@@ -1009,7 +880,6 @@ export default {
           name: "All Contacts",
         });
       }
-      // console.log(index)
     };
 
     const sendOptionsIsShown = ref(false);
@@ -1129,36 +999,29 @@ export default {
         invalidMessage.value = true;
         return false;
       }
-
-      toast.add({
-        severity: "info",
-        summary: "Sending SMS",
-        detail: "SMS is being sent....",
-        life: 2500,
-      });
+      ElMessage({
+              type: 'info',
+              message: 'SMS is being sent....',
+              duration: 5000
+            })
       console.log(data);
-
-      // if (selectedMembers.value.length > 0) data.contacts = selectedMembers.value;
       disableBtn.value = true;
       composeService
         .sendMessage("/api/Messaging/sendSms", data)
         .then((res) => {
           disableBtn.value = false;
-          // if (res.status === 200) {
           if (res.data.message.includes("You do not have")) {
-            toast.add({
-              severity: "warn",
-              summary: "Insufficient Unit",
-              detail: `${res.data.message}`,
-              life: 6000,
-            });
+            ElMessage({
+              type: 'warning',
+              message: res.data.message,
+              duration: 5000
+            })
           } else {
-            toast.add({
-              severity: "success",
-              summary: "SMS Sent",
-              detail: `SMS Sent successfully`,
-              life: 6000,
-            });
+            ElMessage({
+              type: 'success',
+              message: 'SMS Sent successfully',
+              duration: 5000
+            })
 
             store.dispatch("removeSMSUnitCharge", pageCount.value * 1.5);
             console.log(pageCount, "Page count ");
@@ -1189,16 +1052,6 @@ export default {
               router.push({ name: "SentMessages" });
             }, 3500);
           }
-
-          // } else if (typeof res === "object") {
-          //   toast.add({
-          //     severity: "error",
-          //     summary: "Failed operation",
-          //     detail: typeof res === "object" ? "SMS sending failed" : res,
-          //     life: 2500,
-          //   });
-
-          // }
         })
         .catch((err) => {
           stopProgressBar();
@@ -1206,27 +1059,23 @@ export default {
           toast.removeAllGroups();
           console.log(err);
           if (err.toString().toLowerCase().includes("network error")) {
-            toast.add({
-              severity: "warn",
-              summary: "You 're Offline",
-              detail: "Please ensure you have internet access",
-              life: 4000,
-            });
+            ElMessage({
+              type: 'warning',
+              message: "Please ensure you have internet access",
+              duration: 5000
+            })
           } else if (err.toString().toLowerCase().includes("timeout")) {
-            toast.add({
-              severity: "warn",
-              summary: "Request Delayed",
-              detail:
-                "SMS took too long, please check your network and try again",
-              life: 4000,
-            });
+            ElMessage({
+              type: 'warning',
+              message: "SMS took too long, please check your network and try again",
+              duration: 5000
+            })
           } else {
-            toast.add({
-              severity: "warn",
-              summary: "Failed operation",
-              detail: "SMS sending failed, Please try again",
-              life: 400,
-            });
+            ElMessage({
+              type: 'warning',
+              message: "SMS sending failed, Please try again",
+              duration: 5000
+            })
           }
         });
     };
@@ -1242,20 +1091,18 @@ export default {
         );
         store.dispatch("communication/getSMSDrafts");
         console.log(response, "draft response");
-        toast.add({
-          severity: "success",
-          summary: "Draft Saved",
-          detail: "Message saved as draft",
-          life: 2500,
-        });
+        ElMessage({
+              type: 'success',
+              message: "Message saved as draft",
+              duration: 5000
+            })
       } catch (error) {
         console.log(error, "drafting error");
-        toast.add({
-          severity: "warn",
-          summary: "Failed",
-          detail: "Message not saved as draft",
-          life: 2500,
-        });
+        ElMessage({
+              type: 'warning',
+              message: "Message not saved as draft",
+              duration: 5000
+            })
       }
     };
 
@@ -1327,19 +1174,19 @@ export default {
           "/api/Messaging/saveSmsSchedule",
           data
         );
-        toast.add({
-          severity: "success",
-          summary: "message Scheduled",
-          detail: `Message scheduled for ${data.time}`,
-        });
+        ElMessage({
+              type: 'success',
+              message: `Message scheduled for ${data.time}`,
+              duration: 5000
+            })
         console.log(response, "Schedule response");
       } catch (error) {
         console.log(error);
-        toast.add({
-          severity: "error",
-          summary: "Schedule Failed",
-          detail: "Could not schedule message",
-        });
+        ElMessage({
+              type: 'error',
+              message: 'Could not schedule message',
+              duration: 5000
+            })
       }
     };
 
@@ -1354,20 +1201,18 @@ export default {
       try {
         let { data } = await axios.post("/api/messaging/upload", formData);
         console.log(data);
-        toast.add({
-          severity: "success",
-          summary: "Success",
-          detail: data.response,
-          life: 5000,
-        });
+        ElMessage({
+              type: 'success',
+              message: data.response,
+              duration: 5000
+            })
       } catch (err) {
         console.log(err);
-        toast.add({
-          severity: "error",
-          summary: "Not sent",
-          detail: "Sending failed, please try again",
-          life: 5000,
-        });
+        ElMessage({
+              type: 'error',
+              message: 'Sending failed, please try again',
+              duration: 5000
+            })
       }
     };
 
@@ -1421,29 +1266,6 @@ export default {
       if (userCountry.value === "Nigeria") return true;
       return false;
     });
-
-    const sendOptions = [
-      {
-        label: "Schedule",
-        icon: "pi pi-clock",
-        command: () => {
-          console.log("Hello");
-          showScheduleModal();
-        },
-      },
-      {
-        label: "Save as Draft",
-        icon: "pi pi-save",
-        command: () => {
-          draftMessage();
-        },
-      },
-      // {
-      //   label: "Upload",
-      //   icon: "pi pi-upload",
-      //   to: "/fileupload",
-      // },
-    ];
 
     const allGroups = ref([]);
     const categories = ref([]);
@@ -1520,11 +1342,11 @@ export default {
         subject.value = subj;
       } catch (error) {
         console.log(error);
-        toast.add({
-          severity: "error",
-          summary: "Error",
-          detail: "Could not load message!",
-        });
+        ElMessage({
+              type: 'error',
+              message: 'Could not load message!',
+              duration: 5000
+            })
       }
     };
 
@@ -1538,6 +1360,7 @@ export default {
 
     return {
       editorData,
+      showScheduleModal,
       mdAndUp, 
       lgAndUp, 
       xlAndUp, 
@@ -1574,7 +1397,6 @@ export default {
       display,
       showDateTimeSelectionModal,
       scheduleMessage,
-      sendOptions,
       draftMessage,
       groupListShown,
       showGroupList,
@@ -1939,12 +1761,12 @@ input:focus {
   font-family: Verdana;
 }
 
-button {
+/* button {
   padding: 5px 10px;
   border: 1px solid grey;
   font-size: 18px;
   background: white;
-}
+} */
 
 .audio-controls {
   display: flex;
