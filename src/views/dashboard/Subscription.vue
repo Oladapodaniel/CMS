@@ -181,7 +181,7 @@
                 </div>
               </div>
               <div class="row row-button c-pointer d-flex justify-content-center" @click="payWithPaystack"
-                v-if="currentUser.currency == 'NGN'">
+                v-if="currentUser.currency == 'NGN' || currentUser.currency == 'GHS'">
                 <div>
                   <img style="width: 150px" src="../../assets/4PaystackLogo.png" alt="paystack" />
                 </div>
@@ -626,6 +626,7 @@ export default {
         amount: TotalAmount.value * 100,
         ref: `${formattedDate.substring(0, 4)}${uuidv4().substring(0, 4)}sub`,
         currency: Plans.value.paymentCurrency,
+        channels: ['card', 'bank', 'ussd', 'qr', 'mobile_money', 'bank_transfer'],
         onClose: function () {
           ElMessage({
                 type: 'warning',

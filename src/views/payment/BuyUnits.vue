@@ -292,6 +292,7 @@ export default {
         lastname: "",
         ref: uuid.value,
         currency: selectedCurrency.value,
+        channels: ['card', 'bank', 'ussd', 'qr', 'mobile_money', 'bank_transfer'],
         onClose: function () {
           // swal("Transaction Canceled!", { icon: "error" });
           if (!isSuccessful.value) {
