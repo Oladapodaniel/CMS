@@ -429,19 +429,19 @@ export default {
 
     
 
-    function expiryDate(date_string) {
-  var expiration = moment(date_string).format("YYYY-MM-DD");
-  // console.log(expiration, "bim")
-  var current_date = moment().format("YYYY-MM-DD");
-  console.log(current_date,"wetin be this")
-  var days = moment(expiration).diff(current_date, 'days');
-  return days;
-}
+//     function expiryDate(date_string) {
+//   var expiration = moment(date_string).format("YYYY-MM-DD");
+//   // console.log(expiration, "bim")
+//   var current_date = moment().format("YYYY-MM-DD");
+//   console.log(current_date,"wetin be this")
+//   var days = moment(expiration).diff(current_date, 'days');
+//   return days;
+// }
 
-alert("Days remaining = " + expiryDate(""));
-console.log("Days remaining = " + expiryDate(""));
+// alert("Days remaining = " + expiryDate(""));
+// console.log("Days remaining = " + expiryDate(""));
 
-  expiryDate();
+//   expiryDate();
   
     function getCelebDashboard() {
       axios.get("/dashboard/celebrations").then((res) => {
