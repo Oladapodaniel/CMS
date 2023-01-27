@@ -22,11 +22,11 @@
                 </div>
               </div>
 
-              <div class="row table-box">
+              <div class="row table-box" v-loading="loading">
                 <div class="col-md-12">
                   <el-tooltip class="box-item" effect="dark" v-if="markedMail.length > 0" content="delete marked"
                   placement="top-start">
-                  <el-icon :size="20" class="ml-2 color-deleteicon text-danger c-pointer" style="font-size: 15px" v-if="markedMail.length > 0" @click="showConfirmModal(false)">
+                  <el-icon :size="20" class="color-deleteicon text-danger c-pointer" style="font-size: 15px" v-if="markedMail.length > 0" @click="showConfirmModal(false)">
                     <Delete />
                   </el-icon>
                   </el-tooltip>
@@ -34,14 +34,15 @@
               </div>
               <div class="row">
                 <div class="col-md-12">
-                  <div class="row header-row light-grey-bg py-2">
+                  <div class="row header-row  light-grey-bg py-2" >
                     <div class="col-md-12">
                       <div class="row">
                         <div
-                          class="col-md-1 text-md-right text-lg-center px-0"
+                          class="col-md-1 "
                           v-if="emails.length > 0"
                         >
-                          <el-checkbox
+                          <input
+                            type="checkbox"
                             name="all"
                             id="all"
                             @change="markAllMails"
@@ -68,8 +69,8 @@
                     </div>
                   </div>
 
-                  <div class="row" v-if="emails.length > 0">
-                    <div class="col-md-12">
+                  <div class="row"  v-if="emails.length > 0">
+                    <div class="col-md-12" >
                       <div
                         class="row"
                         v-for="(email, index) in searchEmails"
@@ -78,7 +79,8 @@
                         <div class="col-md-12">
                           <div class="row pt-2 pb-1">
                             <div class="col-md-1 mt-2">
-                              <el-checkbox
+                              <input
+                              type="checkbox"
                                 name=""
                                 id=""
                                 @change="mark1Email(email)"
@@ -164,11 +166,11 @@
                     </div>
                   </div>
 
-                  <div class="row" v-if="emails.length === 0 && loading">
+                  <!-- <div class="row" v-if="emails.length === 0 && loading">
                     <div class="col-md-12 py-2 d-flex justify-content-center">
                       <Loading :loading="loading" />
                     </div>
-                  </div>
+                  </div> -->
 
                   <div class="conatiner">
                     <div class="row">

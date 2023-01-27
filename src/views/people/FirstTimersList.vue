@@ -462,6 +462,7 @@ export default {
 
     const searchNamesInDB = ref([]);
     const searchMemberInDB = (event) => {
+      console.log(event, "the man");
       paginatedTableLoading.value = true
       let url =
         "/api/People/FilterFirstTimers?firstname=" +
