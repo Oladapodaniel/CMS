@@ -53,9 +53,9 @@
               </p>
             </div>
             <el-input size="small" v-model="searchText" placeholder="Search..."
-              @keyup.enter.prevent="searchMemberInDB($event)" class="input-with-select">
+              @keyup.enter.prevent="searchMemberInDB" class="input-with-select">
               <template #append>
-                <el-button @click.prevent="searchMemberInDB($event)">
+                <el-button @click.prevent="searchMemberInDB">
                   <el-icon :size="13">
                     <Search />
                   </el-icon>
@@ -461,18 +461,24 @@ export default {
     };
 
     const searchNamesInDB = ref([]);
-    const searchMemberInDB = (event) => {
-      console.log(event, "the man");
+    const searchMemberInDB = () => {
       paginatedTableLoading.value = true
       let url =
         "/api/People/FilterFirstTimers?firstname=" +
-        event.target.value;
+        searchText.value;
 
       axios
         .get(url)
         .then((res) => {
           paginatedTableLoading.value = false
           searchNamesInDB.value = res.data;
+          if(res.data.length === 0 ){
+            ElMessage({
+              type: 'warning',
+              message: 'Not Found',
+              duration: 5000
+            })
+          }
         })
         .catch((err) => {
           console.log(err);
