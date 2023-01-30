@@ -581,6 +581,41 @@ export default {
     const useSubscriptionResponse = ref([]);
     const getRenewalDate = ref("");
 
+    const countDownDate = () =>{
+                    // Set the date we're counting down to
+          let countDownDates = new Date("Feb 3, 2023 15:37:25").getTime();
+          console.log(countDownDates, "jklkj");
+
+          // Update the count down every 1 second
+          // let x = setInterval(() => {
+
+            // Get today's date and time
+            let now = new Date().getTime();
+              
+            // Find the distance between now and the count down date
+            let distance = countDownDates - now;
+            console.log(distance,  "dsksdshkj");
+              
+            // Time calculations for days, hours, minutes and seconds
+            let days = Math.floor(distance / (1000 * 60 * 60 * 24));
+            console.log(days + ' ' + 'days left', "kjhkj")
+            // let hours = Math.floor((distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+            // let minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
+            // let seconds = Math.floor((distance % (1000 * 60)) / 1000);
+              
+            // Output the result in an element with id="demo"
+            // document.getElementById("demo").innerHTML = days + "d " + hours + "h "
+            // + minutes + "m " + seconds + "s ";
+              
+            // If the count down is over, write some text 
+            // if (distance < 0) {
+            //   clearInterval(x);
+            //   document.getElementById("demo").innerHTML = "EXPIRED";
+            // }
+          // }, 1000);
+    }
+    countDownDate()
+
     useSubscription.getPlan().then((res) => {
       planUserIs.value = res.description;
       getRenewalDate.value = res.subscriptionExpiration;
