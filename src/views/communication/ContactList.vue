@@ -1,4 +1,4 @@
-!<template>
+<template>
   <div>
     <div class="container">
       <!-- Content Box -->
@@ -8,48 +8,30 @@
             <div class="col-md-12 px-0">
               <div class="row d-md-flex align-items-center mt-2 mb-4">
                 <div class="col-md-12">
-                  <router-link
-                    to="/tenant/sms/addgroup"
-                    class="create-btn font-weigth-bold border-0"
-                  >
-                    <span class="mr-2 font-weight-700" style="font-size: 22px"
-                      >+</span
-                    >
+                  <router-link to="/tenant/sms/addgroup" class="create-btn font-weigth-bold border-0">
+                    <span class="mr-2 font-weight-700" style="font-size: 22px">+</span>
                     Create new group
                   </router-link>
                 </div>
               </div>
               <div>
-              <i
-                class="pi pi-trash text-danger ml-n4 mb-2 c-pointer d-flex align-items-center px-4"
-                style="font-size: 15px"
-                v-if="markedContact.length > 0"
-                @click="showConfirmModal1"
-              >
-              </i>
               </div>
-              <div class="row">
+              <div class="row table-box" v-loading="loading">
                 <div class="col-md-12">
                   <div class="row header-row">
                     <div class="col-md-12">
-                      <div
-                        class="row light-grey-bg py-2 font-weight-600 small-text"
-                      >
-                        <div class="col-md-1"
-                        v-if="groups.length > 0"
-                        >
-                          <input
-                            type="checkbox"
-                            name="all"
-                            id="all"
-                            @change="markAllContact"
-                            :checked="markedContact.length === groups.length"
-                          />
-                        </div>
-                        <div class="col-md-3">
-                          <span class="th small-text">Name</span>
+                      <el-icon class="text-danger" v-if="markedContact.length > 0" @click="showConfirmModal1">
+                        <Delete />
+                      </el-icon>
+                      <div class="row light-grey-bg py-2 font-weight-600 small-text">
+                        <div class="col-md-1" v-if="groups.length > 0">
+                          <input type="checkbox" name="all" id="all" @change="markAllContact"
+                            :checked="markedContact.length === groups.length" />
                         </div>
                         <div class="col-md-4">
+                          <span class="th small-text">Name</span>
+                        </div>
+                        <div class="col-md-3">
                           <span class="th small-text">Total Numbers</span>
                         </div>
                         <div class="col-md-3">
@@ -63,92 +45,58 @@
                   </div>
                   <div class="row">
                     <div class="col-md-12 gName px-0">
-                      <!-- <h3 class="ml-md-n3 mb-n2">Group Name</h3> -->
                       <hr class="hr" />
                     </div>
                   </div>
-                  <div
-                    class="row"
-                    v-for="(group, index) in groups"
-                    :key="index"
-                  >
-                    <div class="col-md-12">
+                  <div class="row" v-for="(group, index) in groups" :key="index">
+                    <div class="col-md-12 border-bottom">
                       <div class="row">
                         <div class="col-md-1 py-2">
-                          <input
-                            type="checkbox"
-                            name=""
-                            id=""
-                            @change="markAcontact(group)"
-                            :checked="
-                              markedContact.findIndex(
-                                (i) => i.id === group.id
-                              ) >= 0
-                            "
-                          />
+                          <input type="checkbox" name="" id="" @change="markAcontact(group)" :checked="
+                            markedContact.findIndex(
+                              (i) => i.id === group.id
+                            ) >= 0
+                          " />
                         </div>
 
-                        <div
-                          class="col-md-3 d-flex justify-content-between align-items-center"
-                        >
+                        <div class="col-md-4 d-flex justify-content-between align-items-center">
                           <span class="hidden-header">NAME: </span>
                           <span>
-                            <router-link
-                              class="link small-text"
-                              :to="{
-                                name: 'EditContactList',
-                                params: { groupId: group.id },
-                              }"
-                              >{{ group.name }}</router-link
-                            >
+                            <router-link class="small-text brief-message" :to="{
+                              name: 'EditContactList',
+                              params: { groupId: group.id },
+                            }">{{ group.name }}</router-link>
                           </span>
                         </div>
 
-                        <div
-                          class="col-md-4 col-ms-12 d-flex justify-content-between align-items-center"
-                        >
-                          <span class="hidden-header font-weight-bold"
-                            >Total Numbers:
+                        <div class="col-md-3 col-ms-12 d-flex justify-content-between align-items-center">
+                          <span class="hidden-header font-weight-bold">Total Numbers:
                           </span>
                           <span class="small-text">{{ group.numbers }}</span>
                         </div>
 
-                        <div
-                          class="col-md-3 col-ms-12 d-flex justify-content-between align-items-center"
-                        >
-                          <span class="hidden-header font-weight-bold"
-                            >Date Created
+                        <div class="col-md-3 col-ms-12 d-flex justify-content-between align-items-center">
+                          <span class="hidden-header font-weight-bold">Date Created
                           </span>
                           <span class="small-text">{{
                             formatDate(group.dateEntered)
                           }}</span>
                         </div>
 
-                        <div class="col-md-1 col-ms-12 d-flex justify-content-center align-items-center">
-                          <span @click="showConfirmModal(group.id, index)"><i class="pi pi-trash delete-icon"></i></span>
-                        </div>
-                      </div>
-                      <div class="row">
-                        <div class="col-md-12">
-                          <hr class="hr" />
+                        <div class="col-md-1 col-ms-12 d-flex align-items-center">
+                          <span @click="showConfirmModal(group.id, index)">
+                            <el-icon class="text-danger">
+                              <Delete />
+                            </el-icon>
+                          </span>
                         </div>
                       </div>
                     </div>
                   </div>
 
                   <div class="row" v-if="groups.length === 0 && !loading">
-                    <div
-                      class="col-md-12 d-flex justify-content-center align-items-center"
-                    >
+                    <div class="col-md-12 d-flex justify-content-center align-items-center">
                       <span class="my-4 font-weight-bold">No groups</span>
-                    </div>
-                  </div>
-
-                  <div class="row" v-if="groups.length === 0 && loading">
-                    <div
-                      class="col-md-12 py-2 d-flex justify-content-center align-items-center"
-                    >
-                      <i class="fas fa-circle-notch fa-spin my-2"></i>
                     </div>
                   </div>
                 </div>
@@ -156,8 +104,6 @@
             </div>
           </div>
         </div>
-        <ConfirmDialog />
-        <Toast />
       </main>
     </div>
   </div>
@@ -166,10 +112,9 @@
 <script>
 import { onMounted, ref } from "vue";
 import axios from "@/gateway/backendapi";
-import { useConfirm } from "primevue/useconfirm"
-import { useToast } from 'primevue/usetoast';
 import dateFormatter from "../../services/dates/dateformatter"
 import finish from "../../services/progressbar/progress"
+import { ElMessage, ElMessageBox } from 'element-plus'
 
 export default {
   setup() {
@@ -182,111 +127,99 @@ export default {
         const res = await axios.get("/api/Messaging/getPhoneGroups");
         finish()
         loading.value = false;
-        console.log(res, "Tosin");
         groups.value = res.data;
-        console.log(res.data, "Ajose");
       } catch (error) {
         finish()
         console.log(error);
       }
     };
 
-    const deletePhoneGroup = async(id, index) => {
+    const deletePhoneGroup = async (id, index) => {
       try {
-        const res = await axios.delete(`/api/Messaging/DeletePhoneGroup?phoneGroupIdList=${id}`);
+        await axios.delete(`/api/Messaging/DeletePhoneGroup?phoneGroupIdList=${id}`);
         groups.value.splice(index, 1)
-        console.log(res)
-        toast.add({
-          severity:'success', 
-          summary:'Successful', 
-          detail:'Phone Group Deleted', 
-          life: 4000
-        });
+        ElMessage({
+          type: 'success',
+          message: 'Phone group deleted',
+          duration: 5000
+        })
       }
       catch (err) {
         finish()
         console.log(err)
         if (err.toString().toLowerCase().includes('network error')) {
-          toast.add({
-          severity:'error', 
-          summary:'Network error', 
-          detail:'Please ensure you have a strong internet', 
-          life: 4000
-        });
+          ElMessage({
+            type: 'error',
+            message: 'Network error, please ensure you have a strong internet',
+            duration: 5000
+          })
         } else if (err.toString().toLowerCase().includes('timeout')) {
-          toast.add({
-          severity:'warn', 
-          summary:'Response took too long to respond', 
-          detail:'Please ensure you have an active internet connection', 
-          life: 4000
-        });
+          ElMessage({
+            type: 'warning',
+            message: 'Response took too long to respond',
+            duration: 5000
+          })
         }
       }
     }
 
-    const confirm = useConfirm();
-      let toast = useToast();
-      const showConfirmModal = (id, index) => {
-           confirm.require({
-               message: 'Are you sure you want to proceed?',
-                header: 'Confirmation',
-                icon: 'pi pi-exclamation-triangle',
-                acceptClass: 'confirm-delete',
-                rejectClass: 'cancel-delete',
-                accept: () => {
-                    deletePhoneGroup(id, index)
-                    // toast.add({severity:'info', summary:'Confirmed', detail:'Member Deleted', life: 3000});
-                },
-                reject: () => {
-                    toast.add({severity:'info', summary:'Rejected', detail:'You have rejected', life: 3000});
-                }
-
-        });
+    const showConfirmModal = (id, index) => {
+      ElMessageBox.confirm(
+        'This delete action cannot be reversed. do you want to continue?',
+        'Confirm delete',
+        {
+          confirmButtonText: 'OK',
+          cancelButtonText: 'Cancel',
+          type: 'error',
         }
+      )
+        .then(() => {
+          deletePhoneGroup(id, index);
+        })
+        .catch(() => {
+          ElMessage({
+            type: 'info',
+            message: 'Delete canceled',
+          })
+        })
+    }
 
-        const formatDate = (date) => {
-          return dateFormatter.monthDayYear(date)
-        }
+    const formatDate = (date) => {
+      return dateFormatter.monthDayYear(date)
+    }
 
     onMounted(() => {
       getGroups();
     });
 
-       // Function to delete contact groups
+    // Function to delete contact groups
     const remy = (v) => {
-      console.log(v, "this for contact");
       return v.map((i) => i.id).join(",");
     };
     const deleteContactList = () => {
       let rem = remy(markedContact.value);
-      console.log(rem, "God is Awesome");
       axios
         .delete(`/api/Messaging/DeletePhoneGroup?PhoneGroupIdList=${rem}`)
-        .then((res) => {
-          console.log(res);
+        .then(() => {
           groups.value = groups.value.filter((item) => {
             const w = markedContact.value.findIndex((i) => i.id === item.id);
             if (w >= 0) return false;
             return true;
           });
           markedContact.value = []
-          toast.add({
-            severity: "success",
-            summary: "Confirmed",
-            detail: "Group Deleted",
-            life: 3000,
-          });
-
+          ElMessage({
+            type: 'success',
+            message: 'Phone group deleted',
+            duration: 5000
+          })
 
         })
         .catch((err) => {
-          
-          toast.add({
-            severity: "error",
-            summary: "Delete Error",
-            detail: "Deleting SMS failed",
-            life: 3000,
-          });
+          ElMessage({
+            type: 'error',
+            message: 'Phone group delete failed, please try again',
+            duration: 5000
+          })
           console.log(err);
         });
     };
@@ -303,7 +236,6 @@ export default {
       } else {
         markedContact.value.splice(contactIndex, 1);
       }
-      console.log(markedContact.value, "God is Good");
     };
 
     // code to mark all contacts in group
@@ -320,25 +252,28 @@ export default {
       } else {
         markedContact.value = [];
       }
-      console.log(markedContact.value, "I am awesome");
     };
 
 
     const showConfirmModal1 = () => {
-      confirm.require({
-        message: "Are you sure you want to proceed?",
-        header: "Confirmation",
-        icon: "pi pi-exclamation-triangle",
-        acceptClass: "confirm-delete",
-        rejectClass: "cancel-delete",
-        accept: () => {
+      ElMessageBox.confirm(
+        'This delete action cannot be reversed. do you want to continue?',
+        'Confirm delete',
+        {
+          confirmButtonText: 'OK',
+          cancelButtonText: 'Cancel',
+          type: 'error',
+        }
+      )
+        .then(() => {
           deleteContactList();
-        },
-        reject: () => {
-          //  toast.add({severity:'info', summary:'Rejected',
-          //  detail:'You have rejected', life: 3000});
-        },
-      });
+        })
+        .catch(() => {
+          ElMessage({
+            type: 'info',
+            message: 'Delete canceled',
+          })
+        })
     };
 
     return {
@@ -358,8 +293,12 @@ export default {
 </script>
 
 <style scoped>
-* {
-  color: #02172e;
+.table-box {
+  border: 1px solid #4762f01f;
+}
+
+.brief-message {
+  color: #4762f0;
 }
 
 .search-div {
@@ -533,5 +472,6 @@ h4 {
     margin: auto;
   } */
 }
+
 /* } */
 </style>

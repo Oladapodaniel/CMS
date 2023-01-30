@@ -24,18 +24,13 @@
                   <UnitsArea />
                 </div>
               </div>
-
-              <i
-                class="pi pi-trash text-danger ml-n4 mb-2 c-pointer d-flex align-items-center px-4"
-                style="font-size: 15px"
-                v-if="markedDraft ? markedDraft.length > 0 : ''"
-                @click="showConfirmModal(null)"
-              >
-              </i>
-              <div class="row">
+              <div class="row table-box">
                 <div class="col-md-12">
                   <div class="row header-row">
                     <div class="col-md-12">
+                      <el-icon class="text-danger" v-if="markedDraft ? markedDraft.length > 0 : ''" @click="showConfirmModal(null)">
+                        <Delete />
+                      </el-icon>
                       <div class="row light-grey-bg py-2 tr-border-bottom">
                         <div class="col-md-1" v-if="drafts.length > 0">
                           <input
@@ -85,7 +80,7 @@
                           </span>
                           <span
                             ><router-link
-                              class="small-text text-decoration-none font-weight-700"
+                              class="brief-message font-weight-600"
                               :to="{
                                 name: 'SendMessage',
                                 query: { draftId: draft.id },
@@ -108,12 +103,10 @@
                           class="col-md-1 col-ms-12 d-flex justify-content-between"
                         >
                           <span class="small-text">
-                            <i
-                              class="c-pointer pi pi-trash delete-icon"
-                              @click="showConfirmModal(draft)"
-                            >
-                            </i
-                          ></span>
+                          <el-icon class="text-danger" @click="showConfirmModal(draft)">
+                          <Delete />
+                        </el-icon>
+                        </span>
                         </div>
                       </div>
                     </div>
@@ -135,8 +128,6 @@
             </div>
           </div>
         </div>
-        <ConfirmDialog />
-        <Toast />
       </main>
     </div>
   </div>
@@ -146,13 +137,12 @@
 import { ref, computed } from "vue";
 import router from "@/router/index";
 import UnitsArea from "../../components/units/UnitsArea";
-import { useConfirm } from "primevue/useconfirm";
 import axios from "@/gateway/backendapi";
 import communicationService from "../../services/communication/communicationservice";
 import store from "../../store/store";
-import { useToast } from "primevue/usetoast";
 import stopProgressBar from "../../services/progressbar/progress";
 import Loading from "../../components/loading/LoadingComponent"
+import { ElMessage, ElMessageBox } from 'element-plus'
 
 export default {
   components: { UnitsArea, Loading },
@@ -161,10 +151,6 @@ export default {
     const loading = ref(true);
     const searchDrafts = ref("");
     const drafts = ref([]);
-    const payWithPaystack = () => {
-      router.push("/tenant/units");
-    };
-
     const getDrafts = async () => {
       try {
         const data = await communicationService.getDrafts();
@@ -206,8 +192,7 @@ export default {
       if (draft && draft.id) url = `/api/Messaging/DeleteSmsDraft?SMSDraftIdList=${draft.id}`;
       axios
         .delete(url)
-        .then((res) => {
-          console.log(res);
+        .then(() => {
           if (!draft || !draft.id) {
             drafts.value = drafts.value.filter((item) => {
               const t = markedDraft.value.findIndex((i) => i.id === item.id);
@@ -222,51 +207,49 @@ export default {
             store.dispatch("communication/removeSmsDrafts", draft.id);
           }
 
-          toast.add({
-            severity: "success",
-            summary: "Confirmed",
-            detail: "Draft Deleted",
-            life: 3000,
-          });
+          ElMessage({
+            type: 'success',
+            message: 'Draft deleted successfully',
+            duration: 5000
+          })
           
           markedDraft.value = [];
 
         })
         .catch((err) => {
           stopProgressBar();
-          toast.add({
-            severity: "error",
-            summary: "Delete Error",
-            detail: "Deleting Draft failed",
-            life: 3000,
-          });
+          ElMessage({
+            type: 'error',
+            message: 'Draft delete failed',
+            duration: 5000
+          })
           console.log(err);
         });
     };
 
-
-
-    const confirm = useConfirm();
-    let toast = useToast();
     const showConfirmModal = (id) => {
-      confirm.require({
-        message: "Are you sure you want to proceed?",
-        header: "Confirmation",
-        icon: "pi pi-exclamation-triangle",
-        acceptClass: "confirm-delete",
-        rejectClass: "cancel-delete",
-        accept: () => {
+      ElMessageBox.confirm(
+        'This delete action cannot be reversed. do you want to continue?',
+        'Confirm delete',
+        {
+          confirmButtonText: 'OK',
+          cancelButtonText: 'Cancel',
+          type: 'error',
+        }
+      )
+        .then(() => {
           if (!id) {
             deleteDraft()
           } else {
             deleteDraft(id)
           }
-        },
-        reject: () => {
-          //  toast.add({severity:'info', summary:'Rejected',
-          //  detail:'You have rejected', life: 3000});
-        },
-      });
+        })
+        .catch(() => {
+          ElMessage({
+            type: 'info',
+            message: 'Delete canceled',
+          })
+        })
     };
 
     // code to mark single item in draft
@@ -280,7 +263,6 @@ export default {
       } else {
         markedDraft.value.splice(draftIndex, 1);
       }
-      console.log(markedDraft.value, "You are awesome");
     };
 
     // code to mark multiple item in draft
@@ -297,12 +279,10 @@ export default {
       } else {
         markedDraft.value = [];
       }
-      console.log(markedDraft.value, "You are Super awesome");
     };
 
     return {
       drafts,
-      payWithPaystack,
       getDrafts,
       searchDraftMessage,
       searchDrafts,
@@ -334,6 +314,7 @@ export default {
 
 .brief-message {
   color: #4762f0;
+  font-size: 14px;
 }
 
 .compose-btn {
