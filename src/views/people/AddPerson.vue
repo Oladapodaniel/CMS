@@ -1105,7 +1105,7 @@ export default {
     });
 
     const route = useRoute();
-    const memberToEdit = ref("");
+    const memberToEdit = ref({});
 
     const getPersonGenderId = () => {
       if (memberToEdit.value && memberToEdit.value.personId) {
