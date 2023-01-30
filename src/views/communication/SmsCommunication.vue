@@ -106,10 +106,7 @@
                     </a>
                   </div>
                 </div>
-                <div class="row menu-item-con py-2" :class="{
-                  'active-link':
-                    route.path === '/tenant/sms/scheduled',
-                }">
+                <div class="row menu-item-con py-2">
                   <div class="col-md-12 menu-item-div m-auto">
                     <a class="btn btn-default font-weight-bold">
                       <span class="menu-item">

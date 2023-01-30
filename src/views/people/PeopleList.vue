@@ -36,7 +36,7 @@
         placeholder="Select a group" size="large" class="w-100" />
       <template #footer>
         <span class="dialog-footer">
-          <el-button @click="addToGroupDialog = false" color="#136acd" round plain>Cancel</el-button>
+          <el-button @click="addToGroupDialog = false" round>Cancel</el-button>
           <el-button type="primary" color="#136acd" :loading="allGroupLoading" @click="getAllMembersAndAddToGroup"
             round>
             Add to group
@@ -52,7 +52,7 @@
         placeholder="Select a group" size="large" class="w-100" />
       <template #footer>
         <span class="dialog-footer">
-          <el-button @click="addToGroupSingle = false" color="#136acd" round plain>Cancel</el-button>
+          <el-button @click="addToGroupSingle = false" color="#136acd" round>Cancel</el-button>
           <el-button type="primary" color="#136acd" :loading="singleGroupLoading" @click="moveMemberToGroup" round>
             Add to group
           </el-button>
@@ -66,7 +66,7 @@
       <p class="p-m-0">You are about to archive your member(s). Do you want to continue ?</p>
       <template #footer>
         <span class="dialog-footer">
-          <el-button @click="displayPositionArchive = false" color="#136acd" round>No</el-button>
+          <el-button @click="displayPositionArchive = false" round>No</el-button>
           <el-button color="#136acd" :loading="archiveLoading" @click="archive('', 'multiple')" round>
             Yes
           </el-button>
@@ -102,7 +102,8 @@
             </el-icon>
           </el-tooltip>
           <el-tooltip class="box-item" effect="dark" v-if="marked.length > 0" content="Send SMS" placement="top-start">
-            <img src="../../assets/sms.png" style="width: 20px; margin-top: -13px" class="ml-2 c-pointer" @click="sendMarkedMemberSms" alt="Send SMS" />
+            <img src="../../assets/sms.png" style="width: 20px; margin-top: -13px" class="ml-2 c-pointer"
+              @click="sendMarkedMemberSms" alt="Send SMS" />
             <!-- <el-icon :size="20" class="ml-2 c-pointer" v-if="marked.length > 0" @click="sendMarkedMemberSms">
               
             </el-icon> -->
@@ -168,81 +169,89 @@
       </div>
     </div>
 
-
-    <EasyDataTable v-model:items-selected="marked" v-model:server-options="serverOptions" :rowsPerPage="100"
-      :loading="paginatedTableLoading" :server-items-length="serverItemsLength" :headers="memberHeaders"
-      :items="searchMember" buttons-pagination alternating>
-      <template #item-pictureurl="item">
-        <div>
-          <el-card shadow="hover" class="c-pointer person-image" v-if="item.pictureUrl"
+    <el-table v-loading="paginatedTableLoading" ref="multipleTableRef" :data="searchMember" style="width: 100%"
+      @selection-change="handleSelectionChange">
+      <el-table-column type="selection" />
+      <el-table-column label="PICTURE">
+        <template #default="scope">
+          <el-card shadow="hover" class="c-pointer person-image" v-if="scope.row.pictureUrl"
             style="border-radius: 50%; height: 26px; width: 26px;">
             <el-tooltip class="box-item" effect="dark" content="Click to view" placement="top-start">
-              <img :src="item.pictureUrl" alt="" @click="(selectedImage = item), (imageDialog = true)"
+              <img :src="scope.row.pictureUrl" alt="" @click="(selectedImage = scope.row), (imageDialog = true)"
                 style="border-radius: 50%; height: 26px; width: 26px; object-fit: cover" />
             </el-tooltip>
           </el-card>
           <el-avatar :size="25" v-else><el-icon color="#000000">
               <UserFilled />
             </el-icon></el-avatar>
-        </div>
-      </template>
-      <template #item-firstname="item">
-        <div class="c-pointer" @click="showMemberRow(item)">
-          {{ item.firstName }}
-        </div>
-      </template>
-      <template #item-lastname="item">
-        <div class="c-pointer" @click="showMemberRow(item)">
-          {{ item.lastName }}
-        </div>
-      </template>
-      <template #item-mobilephone="item">
-        <div class="c-pointer" @click="showMemberRow(item)">
-          {{ item.mobilePhone }}
-        </div>
-      </template>
-      <template #item-action="item">
-        <div>
-          <el-dropdown trigger="click">
-            <el-icon>
-              <MoreFilled />
-            </el-icon>
-            <template #dropdown>
-              <el-dropdown-menu>
-                <el-dropdown-item>
-                  <router-link :to="
-                    item.mobilePhone
-                      ? `/tenant/sms/compose?phone=${item.mobilePhone}`
-                      : ''
-                  " :class="{ 'fade-text': !item.mobilePhone, 'text-color': item.mobilePhone }">Send
-                    SMS</router-link>
-                </el-dropdown-item>
-                <el-dropdown-item>
-                  <router-link :to="
-                    item.email
-                      ? `/tenant/email/compose?phone=${item.email}`
-                      : ''
-                  " :class="{ 'fade-text': !item.email, 'text-color': item.email }">Send Email</router-link>
-                </el-dropdown-item>
-                <el-dropdown-item @click="archive(item.id, 'single')">
-                  <div class="text-color">Archive</div>
-                </el-dropdown-item>
-                <el-dropdown-item>
-                  <router-link :to="`/tenant/firsttimermanagement/${item.id}?memberType=1`" class="text-color">
-                    Follow Up
-                  </router-link>
-                </el-dropdown-item>
-                <el-dropdown-item><router-link :to="`/tenant/people/add/${item.id}`"
-                    class="text-color">Edit</router-link></el-dropdown-item>
-                <el-dropdown-item>
-                  <div @click.prevent="showConfirmModal(item.id, index)" class="text-color">Delete</div>
-                </el-dropdown-item>
-              </el-dropdown-menu>
-            </template>
-          </el-dropdown>
-        </div>
-      </template>
-    </EasyDataTable>
+        </template>
+      </el-table-column>
+      <el-table-column label="FIRSTNAME">
+        <template #default="scope">
+          <div @click="showMemberRow(scope.row)" class="c-pointer">{{ scope.row.firstName }}</div>
+        </template>
+      </el-table-column>
+      <el-table-column label="LASTNAME">
+        <template #default="scope">
+          <div @click="showMemberRow(scope.row)" class="c-pointer">{{ scope.row.lastName }}</div>
+        </template>
+      </el-table-column>
+      <el-table-column label="PHONE">
+        <template #default="scope">
+          <div @click="showMemberRow(scope.row)" class="c-pointer">{{ scope.row.mobilePhone }}</div>
+        </template>
+      </el-table-column>
+      <el-table-column label="ACTION">
+        <template #default="scope">
+          <div>
+            <el-dropdown trigger="click">
+              <el-icon>
+                <MoreFilled />
+              </el-icon>
+              <template #dropdown>
+                <el-dropdown-menu>
+                  <el-dropdown-item>
+                    <router-link :to="
+                      scope.row.mobilePhone
+                        ? `/tenant/sms/compose?phone=${scope.row.mobilePhone}`
+                        : ''
+                    " :class="{ 'fade-text': !scope.row.mobilePhone, 'text-color': scope.row.mobilePhone }">Send
+                      SMS</router-link>
+                  </el-dropdown-item>
+                  <el-dropdown-item>
+                    <router-link :to="
+                      scope.row.email
+                        ? `/tenant/email/compose?phone=${scope.row.email}`
+                        : ''
+                    " :class="{ 'fade-text': !scope.row.email, 'text-color': scope.row.email }">Send
+                      Email</router-link>
+                  </el-dropdown-item>
+                  <el-dropdown-item @click="archive(scope.row.id, 'single')">
+                    <div class="text-color">Archive</div>
+                  </el-dropdown-item>
+                  <el-dropdown-item>
+                    <router-link :to="`/tenant/firsttimermanagement/${scope.row.id}?memberType=1`" class="text-color">
+                      Follow Up
+                    </router-link>
+                  </el-dropdown-item>
+                  <el-dropdown-item><router-link :to="`/tenant/people/add/${scope.row.id}`"
+                      class="text-color">Edit</router-link></el-dropdown-item>
+                  <el-dropdown-item>
+                    <div @click.prevent="showConfirmModal(scope.row.id, index)" class="text-color">Delete</div>
+                  </el-dropdown-item>
+                </el-dropdown-menu>
+              </template>
+            </el-dropdown>
+          </div>
+        </template>
+      </el-table-column>
+    </el-table>
+    <div class="d-flex justify-content-end my-3">
+      <el-pagination v-model:current-page="serverOptions.page" v-model:page-size="serverOptions.rowsPerPage" background
+        layout="total, sizes, prev, pager, next, jumper" :total="serverItemsLength" @size-change="handleSizeChange"
+        @current-change="handleCurrentChange" />
+
+    </div>
 
     <el-dialog v-model="imageDialog" :width="mdAndUp || lgAndUp || xlAndUp ? `50%` : xsOnly ? `90%` : `70%`"
       align-center class="person-image-dialog">
@@ -277,26 +286,26 @@
     </el-dialog>
 
     <el-drawer v-model="showSMS" :size="mdAndUp || lgAndUp || xlAndUp ? '70%' : '100%'" direction="rtl">
-    <template #header>
-      <h4>Send SMS</h4>
-    </template>
-    <template #default>
-      <div>
-        <smsComponent :phoneNumbers="contacts" @closesidemodal="() => showSMS = false" />
-      </div>
-    </template>
-  </el-drawer>
+      <template #header>
+        <h4>Send SMS</h4>
+      </template>
+      <template #default>
+        <div>
+          <smsComponent :phoneNumbers="contacts" @closesidemodal="() => showSMS = false" />
+        </div>
+      </template>
+    </el-drawer>
 
     <el-drawer v-model="showEmail" :size="mdAndUp || lgAndUp || xlAndUp ? '70%' : '100%'" direction="rtl">
-    <template #header>
-      <h4>Send Email</h4>
-    </template>
-    <template #default>
-      <div>
-        <emailComponent :selectedGroupMembers="markedMembers" @closesidemodal="() => showEmail = false" />
-      </div>
-    </template>
-  </el-drawer>
+      <template #header>
+        <h4>Send Email</h4>
+      </template>
+      <template #default>
+        <div>
+          <emailComponent :selectedGroupMembers="markedMembers" @closesidemodal="() => showEmail = false" />
+        </div>
+      </template>
+    </el-drawer>
   </div>
 
   <!-- <SideBar :show="showSMS" :title="'Compose SMS'" @closesidemodal="() => showSMS = false">
@@ -868,6 +877,17 @@ export default {
       }
     }
 
+    const handleSelectionChange = (val) => {
+      marked.value = val
+    }
+
+    const handleSizeChange = (val) => {
+      console.log(`${val} items per page`)
+    }
+    const handleCurrentChange = (val) => {
+      console.log(`current page: ${val}`)
+    }
+
     return {
       churchMembers,
       chooseGroupto,
@@ -937,7 +957,10 @@ export default {
       addToGroupSingle,
       singleGroupLoading,
       archiveLoading,
-      applyLoading
+      applyLoading,
+      handleSelectionChange,
+      handleSizeChange,
+      handleCurrentChange
     };
   },
 };
@@ -1021,7 +1044,6 @@ export default {
   font-weight: 800;
   font-size: 12px;
   background: #fff;
-  border: 1px solid #E0E0E0;
   border-bottom: none;
 }
 
@@ -1030,8 +1052,6 @@ export default {
   overflow: hidden;
   transition: all 0.5s ease-in-out;
   background: #ffffff;
-  border-right: 1px solid #E0E0E0;
-  border-left: 1px solid #E0E0E0;
 }
 
 .filter-options-shown {
