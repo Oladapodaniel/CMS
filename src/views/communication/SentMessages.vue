@@ -1,4 +1,4 @@
-!<template>
+<template>
   <div>
     <div class="container">
       <!-- Content Box -->
@@ -6,17 +6,11 @@
         <div class="container-fluid px-0">
           <div class="row px-0">
             <div class="col-md-12 px-0">
-              <div
-                class="row d-md-flex align-items-center justify-content-between mt-3 mb-4"
-              >
+              <div class="row d-md-flex align-items-center justify-content-between mt-3 mb-4">
                 <div class="col-md-8 col-sm-12 pl-0">
                   <div class="search-div">
                     <span><i class="pi pi-search mr-1"></i></span>
-                    <input
-                      type="text"
-                      placeholder="Search here..."
-                      v-model="searchText"
-                    />
+                    <input type="text" placeholder="Search here..." v-model="searchText" />
                     <span class="mx-2"> | </span>
                     <span class="mx-2">Sort By</span>
                     <span class="font-weight-bold"> Newest</span>
@@ -24,58 +18,30 @@
                 </div>
                 <div class="col-sm-5 col-md-3 mt-sm-2 units-container">
                   <UnitsArea />
-                  <!-- <div class="row d-sm-flex align-items-center units-div">
-                    <div class="col-sm-12">
-                      <h4 class="font-weight-bold mb-0 center-flexed">302</h4>
-                      <p class="font-weight-bold mb-0 center-flexed">
-                        SMS Units
-                      </p>
-                    </div>
-                    <div class="col-sm-12 d-sm-flex justify-content-center">
-                      <button
-                        class="btn buy-btn center-flexed"
-                        @click="payWithPaystack"
-                      >
-                        <span class="btn-text"> BUY UNITS </span>
-                      </button>
-                    </div>
-                  </div> -->
                 </div>
               </div>
-              <i
-                class="pi pi-trash deleteicon-color ml-n4 mb-2 c-pointer d-flex align-items-center px-4"
-                style="font-size: 15px"
-                v-if="marked.length > 0"
-                @click="showConfirmModal"
-              >
-              </i>
-              <div class="row table-box mb-4">
+              <div class="row table-box mb-4" v-loading="loading">
                 <div class="col-md-12">
                   <div class="row header-row light-grey-bg py-2">
                     <div class="col-md-12">
+                      <el-icon class="text-danger" v-if="marked.length > 0" @click="showConfirmModal">
+                        <Delete />
+                      </el-icon>
                       <div class="row light-grey-bg">
-                        <div class="col-md-1"
-                        v-if="sentSMS.length > 0">
-                          <input
-                            type="checkbox"
-                            name="all"
-                            id="all"
-                            @change="markAllItem"
-                            :checked="marked.length === sentSMS.length"
-                          />
+                        <div class="col-md-1" v-if="sentSMS.length > 0">
+                          <input type="checkbox" name="all" id="all" @change="markAllItem"
+                            :checked="marked.length === sentSMS.length" />
                         </div>
                         <div class="col-md-6 d-flex align-items-center">
                           <span class="th">Message</span>
                         </div>
                         <div class="col-md-2">
-                          <span class="th c-pointer"
-                            @click="sortByStatus"
-                            >Status
-                            <i
-                              class="pi pi-question-circle c-pointer"
-                              v-tooltip.top="'Sent | Processed | Failed'"
-                            ></i
-                          ></span>
+                          <span class="th c-pointer" @click="sortByStatus">Status
+                            <el-tooltip class="box-item" effect="dark" content="Sent | Processed | Failed"
+                              placement="top-start">
+                              <i class="pi pi-question-circle c-pointer"></i>
+                            </el-tooltip>
+                          </span>
                         </div>
                         <div class="col-md-1">
                           <span class="th">Units</span>
@@ -91,87 +57,51 @@
                       <hr class="hr mt-0" />
                     </div>
                   </div>
-                  <div
-                    class="row"
-                    v-for="(sms, index) in searchedMessages"
-                    :key="index"
-                  >
-                    <!-- <div class="row" v-for="(sms, index) in sentSMS" :key="index"> -->
+                  <div class="row" v-for="(sms, index) in searchedMessages" :key="index">
                     <div class="col-md-12">
                       <div class="row">
                         <div class="col-md-1 mt-2">
-                          <input
-                            type="checkbox"
-                            name=""
-                            id=""
-                            @change="mark1Item(sms)"
-                            :checked="
-                              marked.findIndex((i) => i.id === sms.id) >= 0
-                            "
-                          />
+                          <input type="checkbox" name="" id="" @change="mark1Item(sms)" :checked="
+                            marked.findIndex((i) => i.id === sms.id) >= 0
+                          " />
                         </div>
                         <div class="col-md-6 d-md-flex flex-column">
-                          <router-link
-                            :to="{
-                              name: 'SendMessage',
-                              query: { messageId: sms.id  },
-                            }"
-                            style="color: #000"
-                            class="text-decoration-none"
-                          >
-                            <span
-                              class="d-flex justify-content-between msg-n-time"
-                            >
-                              <!-- <span class="font-weight-bold">{{
-                              !sms.subject ? "(no subject)" : sms.subject
-                            }}</span> -->
-                              <!-- <span class="timestamp">{{ sms.dateSent }}</span> -->
+                          <router-link :to="{
+                            name: 'SendMessage',
+                            query: { messageId: sms.id },
+                          }" style="color: #000" class="text-decoration-none">
+                            <span class="d-flex justify-content-between msg-n-time">
                             </span>
                           </router-link>
-                          <router-link
-                            :to="{
-                              name: 'SendMessage',
-                              query: { messageId: sms.id },
-                            }"
-                            class="text-decoration-none"
-                          >
-                            <span class="brief-message font-weight-600"
-                              v-tooltip.top="sms.message"
-                            >{{
-                              sms.message && sms.message.length > 25
-                                ? `${sms.message
+                          <router-link :to="{
+                            name: 'SendMessage',
+                            query: { messageId: sms.id },
+                          }" class="text-decoration-none">
+                            <el-tooltip class="box-item" effect="dark" :content="sms.message" placement="top-start">
+                              <span class="brief-message font-weight-600">{{
+                                sms.message && sms.message.length > 25
+                                  ? `${sms.message
                                     .split("")
                                     .slice(0, 25)
                                     .join("")}...`
-                                : sms.message
-                                ? sms.message
-                                : ""
-                            }}</span>
+                                  : sms.message
+                                    ? sms.message
+                                    : ""
+                              }}</span>
+                            </el-tooltip>
                             <span class="timestamp ml-1">{{
                               sms.dateSent
                             }}</span>
                           </router-link>
                         </div>
-                        <!-- <div
-                          class="col-md-2 col-ms-12 d-flex justify-content-between"
-                        >
-                          <span class="hidden-header font-weight-bold"
-                            >SENT BY:
+                        <div class="col-md-2 col-ms-12 d-flex justify-content-between">
+                          <span class="hidden-header font-weight-bold">Status:
                           </span>
-                          <span>{{ sms.sentByUser && sms.sentByUser.length > 10 ? `${sms.sentByUser.slice(0, 10)}...` : sms.sentBy }}</span>
-                        </div> -->
-                        <div
-                          class="col-md-2 col-ms-12 d-flex justify-content-between"
-                        >
-                          <span class="hidden-header font-weight-bold"
-                            >Status:
-                          </span>
-                          <span class="small-text"
-                            >{{
-                              sms.report.filter((i) =>
-                                i.status.includes("sent")
-                              ).length
-                            }}
+                          <span class="small-text">{{
+                            sms.report.filter((i) =>
+                              i.status.includes("sent")
+                            ).length
+                          }}
                             |
                             {{
                               sms.report.filter((i) =>
@@ -183,32 +113,21 @@
                               sms.report.filter((i) =>
                                 i.status.includes("failed")
                               ).length
-                            }}</span
-                          >
+                            }}</span>
                         </div>
-                        <div
-                          class="col-md-1 col-ms-12 d-flex justify-content-between"
-                        >
-                          <span class="hidden-header font-weight-bold"
-                            >UNITS:
+                        <div class="col-md-1 col-ms-12 d-flex justify-content-between">
+                          <span class="hidden-header font-weight-bold">UNITS:
                           </span>
                           <span class="small-text">{{ sms.smsUnitsUsed }}</span>
                         </div>
-                        <div
-                          class="col-md-2 col-ms-12 my-2 d-flex justify-content-between cursor-pointer"
-                        >
-                          <span class="hidden-header font-weight-bold"
-                            >DELIVER REPORT:
+                        <div class="col-md-2 col-ms-12 my-2 d-flex justify-content-between cursor-pointer">
+                          <span class="hidden-header font-weight-bold">DELIVER REPORT:
                           </span>
-                          <router-link
-                            :to="{
-                              name: 'DeliveryReport',
-                              params: { messageId: sms.id },
-                              query: { units: sms.smsUnitsUsed },
-                            }"
-                            class="small-text text-decoration-none"
-                            >View report</router-link
-                          >
+                          <router-link :to="{
+                            name: 'DeliveryReport',
+                            params: { messageId: sms.id },
+                            query: { units: sms.smsUnitsUsed },
+                          }" class="small-text text-decoration-none">View report</router-link>
                         </div>
                       </div>
                       <div class="row" v-if="index !== sentSMS.length - 1">
@@ -218,17 +137,9 @@
                       </div>
                     </div>
                   </div>
-                  <ConfirmDialog/>
-                  <Toast />
                   <div class="row" v-if="sentSMS.length === 0 && !loading">
                     <div class="col-md-12 d-flex justify-content-center">
                       <span class="my-4 font-weight-bold">No sent mesages</span>
-                    </div>
-                  </div>
-
-                  <div class="row" v-if="loading">
-                    <div class="col-md-12 py-2 d-flex justify-content-center">
-                      <Loading :loading="loading" />
                     </div>
                   </div>
                 </div>
@@ -240,12 +151,8 @@
         <div class="conatiner">
           <div class="row">
             <div class="col-md-12 mb-3 pagination-container">
-              <PaginationButtons
-                @getcontent="getSMSByPage"
-                :itemsCount="itemsCount"
-                :currentPage="currentPage"
-                :totalItems="sentSMS.totalItems"
-              />
+              <PaginationButtons @getcontent="getSMSByPage" :itemsCount="itemsCount" :currentPage="currentPage"
+                :totalItems="sentSMS.totalItems" />
             </div>
           </div>
         </div>
@@ -256,36 +163,23 @@
 
 <script>
 import axios from "@/gateway/backendapi";
-import { useConfirm } from "primevue/useconfirm";
 import { computed, ref } from "vue";
-// import router from "@/router/index";
 import communicationService from "../../services/communication/communicationservice";
 import { useStore } from "vuex";
-import { useRoute } from "vue-router";
 import UnitsArea from "../../components/units/UnitsArea";
 import PaginationButtons from "../../components/pagination/PaginationButtons";
-import Tooltip from "primevue/tooltip";
-import { useToast } from "primevue/usetoast";
 import stopProgressBar from "../../services/progressbar/progress";
-import Loading from "../../components/loading/LoadingComponent"
+import { ElMessage, ElMessageBox } from 'element-plus'
 
 export default {
-  components: { 
-    UnitsArea, 
-    PaginationButtons, 
-    Loading 
-    },
-  directives: {
-    tooltip: Tooltip,
+  components: {
+    UnitsArea,
+    PaginationButtons,
   },
-
   setup() {
     const loading = ref(false);
     const store = useStore();
-    const route = useRoute();
     const sentSMS = ref(store.getters["communication/allSentSMS"]);
-    console.log(sentSMS.value, "TESTING");
-    console.log(sentSMS.value.length, "TESTING type");
 
     const currentPage = ref(0);
     const searchText = ref("");
@@ -295,7 +189,6 @@ export default {
         /*eslint no-undef: "warn"*/
         NProgress.start();
         const data = await communicationService.getAllSentSMS(0);
-        console.log(data, "datatatata");
         loading.value = false;
         if (data) {
           sentSMS.value = data.sentSMS;
@@ -350,37 +243,25 @@ export default {
       );
     });
 
-    //  const addSmsToSentList = () => {
-    //  const storedData = store.getters['communication/addSmsToSentList']
-    //  console.log(storedData)
-    //  if (storedData) {
-    //    sentSMS.value.push(storedData)
-    //  }
-    //  console.log(store.getters['communication/addSmsToSentList'])
-    //  }
-    //  addSmsToSentList()
-
-    // const checkedAll = () => {
-    //   bulkDelete.value = !bulkDelete.value
-    // }
-
-    const confirm = useConfirm();
-    let toast = useToast();
     const showConfirmModal = () => {
-      confirm.require({
-        message: "Are you sure you want to proceed?",
-        header: "Confirmation",
-        icon: "pi pi-exclamation-triangle",
-        acceptClass: "confirm-delete",
-        rejectClass: "cancel-delete",
-        accept: () => {
+      ElMessageBox.confirm(
+        'This delete action cannot be reversed. do you want to continue?',
+        'Confirm delete',
+        {
+          confirmButtonText: 'OK',
+          cancelButtonText: 'Cancel',
+          type: 'error',
+        }
+      )
+        .then(() => {
           deleteSingleItem();
-        },
-        reject: () => {
-          //  toast.add({severity:'info', summary:'Rejected',
-          //  detail:'You have rejected', life: 3000});
-        },
-      });
+        })
+        .catch(() => {
+          ElMessage({
+            type: 'info',
+            message: 'Delete canceled',
+          })
+        })
     };
 
     // code to mark single item in draft
@@ -392,7 +273,6 @@ export default {
       } else {
         marked.value.splice(msgIndex, 1);
       }
-      console.log(marked.value, "tosin");
     };
 
     // code to mark multiple item item in draft
@@ -409,30 +289,25 @@ export default {
       }
     };
 
-// Function to delete sent sms
+    // Function to delete sent sms
     const convert = (x) => {
-      console.log(x, "tosin");
       return x.map((i) => i.id).join(",");
     };
     const deleteSingleItem = () => {
       let bail = convert(marked.value);
-      console.log(bail, "tosin");
       axios
         .delete(`/api/Messaging/DeleteSentSMS?SentSMSIdList=${bail}`)
-        .then((res) => {
-          console.log(res);
+        .then(() => {
           sentSMS.value = sentSMS.value.filter((item) => {
             const y = marked.value.findIndex((i) => i.id === item.id);
             if (y >= 0) return false;
             return true;
           });
-
-          toast.add({
-            severity: "success",
-            summary: "Confirmed",
-            detail: "SMS Deleted",
-            life: 3000,
-          });
+          ElMessage({
+            type: 'success',
+            message: 'SMS deleted successfully',
+            duration: 5000
+          })
           marked.value.forEach((i) => {
             store.dispatch("communication/removeSentSMS", i.id);
           });
@@ -440,12 +315,11 @@ export default {
         })
         .catch((err) => {
           stopProgressBar();
-          toast.add({
-            severity: "error",
-            summary: "Delete Error",
-            detail: "Deleting SMS failed",
-            life: 3000,
-          });
+          ElMessage({
+            type: 'error',
+            message: 'SMS delete failed, please try again',
+            duration: 5000
+          })
           console.log(err);
         });
     };
@@ -454,12 +328,9 @@ export default {
     const sortByStatus = () => {
       if (isSortedByStatus.value) {
         sentSMS.value.sort(x => x.deliveryReport.findIndex(i => i.report === "failed") >= 0 ? -1 : 1);
-        // isSortedByStatus.value = false;
       } else {
         sentSMS.value.sort(x => x.deliveryReport.findIndex(i => i.report === "failed") >= 0 ? 1 : -1);
-        // isSortedByStatus.value = true;
       }
-      // if (!isSortedByStatus.value) sentSMS.value.sort(x => x.deliveryReport.findIndex(i => i.report === "sent") > 0 ? -1 : 1);
       isSortedByStatus.value = !isSortedByStatus.value;
     }
 
@@ -531,7 +402,7 @@ export default {
 }
 
 .deleteicon-color {
- color: rgba(184, 5, 5, 0.726);
+  color: rgba(184, 5, 5, 0.726);
 }
 
 .th {

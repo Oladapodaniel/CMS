@@ -475,7 +475,7 @@ export default {
           if(res.data.length === 0 ){
             ElMessage({
               type: 'warning',
-              message: 'Not Found',
+              message: `${searchText.value} not found, please try add a new firsttimer and search again`,
               duration: 5000
             })
           }

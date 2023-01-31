@@ -136,19 +136,79 @@
                   <p>Celebrations</p>
                 </div>
               </div>
-              <EasyDataTable :headers="celebHeaders" :items="tenantInfoCeleb" class="mt-4">
-                <template #item-name="{ name, dayOfCelebration }">
-                  <div class="player-wrapper">
+              
+              <el-table :data="tenantInfoCeleb"
+                style="width: 100%">
+                <el-table-column label="NAME">
+                <template #default="scope">
+                  <div>
                     <img src="../../assets/people/avatar-male.png" alt="" class="celeb-img" />
-                    <span class="ml-3">{{ name }}</span>
+                    <span class="ml-3">{{ scope.row.name }}</span>
                     <div class="celeb-badge-desc celeb-badge"
-                      v-if="dayOfCelebration.toString().toLowerCase().includes('today')"></div>
+                      v-if="scope.row.dayOfCelebration.toString().toLowerCase().includes('today')"></div>
                   </div>
                 </template>
-                <template #item-date="{ date }">
-                  {{ dateFormat(date) }}
+              </el-table-column>
+                <el-table-column label="DATE">
+                <template #default="scope">
+                  <div>
+                    {{ dateFormat(scope.row.date) }}
+                  </div>
                 </template>
-              </EasyDataTable>
+              </el-table-column>
+                <el-table-column label="DAY">
+                <template #default="scope">
+                  <div>
+                    {{ scope.row.dayOfCelebration }}
+                  </div>
+                </template>
+              </el-table-column>
+                <el-table-column label="TYPE">
+                <template #default="scope">
+                  <div>
+                    {{ scope.row.celebration }}
+                  </div>
+                </template>
+              </el-table-column>
+                <el-table-column label="PHONE">
+                <template #default="scope">
+                  <div>
+                    {{ scope.row.phone }}
+                  </div>
+                </template>
+              </el-table-column>
+              <el-table-column label="ACTION">
+        <template #default="scope">
+          <div>
+            <el-dropdown trigger="click">
+              <el-icon>
+                <MoreFilled />
+              </el-icon>
+              <template #dropdown>
+                <el-dropdown-menu>
+                  <el-dropdown-item>
+                    <router-link :to="
+                      scope.row.phone
+                        ? `/tenant/sms/compose?phone=${scope.row.phone}`
+                        : ''
+                    " :class="{ 'fade-text': !scope.row.phone, 'text-color': scope.row.phone }">Send
+                      SMS</router-link>
+                  </el-dropdown-item>
+                  <el-dropdown-item>
+                    <router-link :to="
+                      scope.row.email
+                        ? `/tenant/email/compose?phone=${scope.row.email}`
+                        : ''
+                    " :class="{ 'fade-text': !scope.row.email, 'text-color': scope.row.email }">Send
+                      Email</router-link>
+                  </el-dropdown-item>
+                </el-dropdown-menu>
+              </template>
+            </el-dropdown>
+          </div>
+        </template>
+      </el-table-column>
+              </el-table>
             </div>
             <div v-show="
               tenantInfoCeleb.length > 0 ||
@@ -328,7 +388,7 @@ export default {
 
   },
   created() {
-      this.getCurrentUser()
+    this.getCurrentUser()
   },
 
   setup() {
@@ -339,11 +399,11 @@ export default {
     const attendanceDataExist = ref(false);
     const firstTimerDataExist = ref(false);
     const firstTimerPieExist = ref(false);
+    const notifiedDays = ref()
     const summed = ref(0);
     const planUserIs = ref("");
-    const today = new Date();
-    
-    
+
+
 
 
     const toggleMoreLinkVissibility = () => {
@@ -435,25 +495,9 @@ export default {
         });
     };
 
-    
-
-//     function expiryDate(date_string) {
-//   var expiration = moment(date_string).format("YYYY-MM-DD");
-//   // console.log(expiration, "bim")
-//   var current_date = moment().format("YYYY-MM-DD");
-//   console.log(current_date,"wetin be this")
-//   var days = moment(expiration).diff(current_date, 'days');
-//   return days;
-// }
-
-// alert("Days remaining = " + expiryDate(""));
-// console.log("Days remaining = " + expiryDate(""));
-
-//   expiryDate();
-  
     function getCelebDashboard() {
       axios.get("/dashboard/celebrations").then((res) => {
-        celeb.value=res.data.returnObject.celebrations;
+        celeb.value = res.data.returnObject.celebrations;
       });
     }
     getCelebDashboard();
@@ -589,6 +633,41 @@ export default {
     const useSubscriptionResponse = ref([]);
     const getRenewalDate = ref("");
 
+    const countDownDate = () =>{
+                    // Set the date we're counting down to
+          let countDownDates = new Date("Feb 3, 2023 15:37:25").getTime();
+          console.log(countDownDates, "jklkj");
+
+          // Update the count down every 1 second
+          // let x = setInterval(() => {
+
+            // Get today's date and time
+            let now = new Date().getTime();
+              
+            // Find the distance between now and the count down date
+            let distance = countDownDates - now;
+            console.log(distance,  "dsksdshkj");
+              
+            // Time calculations for days, hours, minutes and seconds
+           notifiedDays.value = Math.floor(distance / (1000 * 60 * 60 * 24));
+            console.log(notifiedDays.value + ' ' + 'days left', "kk;lk;l;lj")
+            // let hours = Math.floor((distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+            // let minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
+            // let seconds = Math.floor((distance % (1000 * 60)) / 1000);
+              
+            // Output the result in an element with id="demo"
+            // document.getElementById("demo").innerHTML = days + "d " + hours + "h "
+            // + minutes + "m " + seconds + "s ";
+              
+            // If the count down is over, write some text 
+            // if (distance < 0) {
+            //   clearInterval(x);
+            //   document.getElementById("demo").innerHTML = "EXPIRED";
+            // }
+          // }, 1000);
+    }
+    countDownDate()
+
     useSubscription.getPlan().then((res) => {
       planUserIs.value = res.description;
       getRenewalDate.value = res.subscriptionExpiration;
@@ -640,6 +719,7 @@ export default {
 
     return {
       celebrations,
+      notifiedDays,
       getRenewalDate,
       tenantInfo,
       tenantInfoBasic,

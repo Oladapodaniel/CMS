@@ -3,7 +3,7 @@
     <div class="container">
       <div class="row mainHeada">
         <div class="col-md-6 col-sm-10 mt-3 mt-lg-5">
-          <h1>Add Group</h1>
+          <h1>Add phone group</h1>
         </div>
       </div>
       <div class="row">
@@ -27,21 +27,10 @@
                   </div>
 
                   <!-- Context Area -->
-                  <div
-                    class="row amazing d-flex flex-row justify-content-between mt-lg-1"
-                  >
+                  <div class="row amazing d-flex flex-row justify-content-between mt-lg-1">
                     <div class="col-md-12 mt-3 form-group px-0">
-                      <input
-                        type="text"
-                        class="form-control"
-                        id="groupName"
-                        v-model="groupNameValue"
-                        required
-                      />
+                      <el-input type="text" id="groupName" v-model="groupNameValue" required />
                     </div>
-
-                    <!-- <div class="col-md-3 col-sm-4 mr-lg-n5 amazingE">
-                    </div> -->
                   </div>
 
                   <div class="row mt-lg-3 mb-lg-1">
@@ -49,69 +38,15 @@
                   </div>
                   <div class="row d-flex flex-row justify-content-between mdiv">
                     <div class="col-md-12 form-group px-0">
-                      <textarea
-                        name=""
-                        id=""
-                        class="w-100 grey-rounded-border form-control"
-                        rows="5"
-                        v-model="enteredValue"
-                        required
-                      ></textarea>
+                      <el-input type="textarea" class="w-100" rows="5" v-model="enteredValue" required />
                     </div>
-                    <!-- <div class="col-md-3 mr-lg-n5 addIconarea">
-                    </div> -->
                   </div>
-
-                  <!-- <div
-                    v-for="(phoneNumber, index) in phoneNumbers"
-                    :key="index"
-                    class="row"
-                  >
-                    <div class="col-md-6 col-sm-4 addContent spanArea1 mt-1">
-                      <div class="row d-md-flex align-items-center">
-                        <div class="col-md-7 spanArea col-sm-4">
-                          <span>
-                            {{ phoneNumber }}
-                          </span>
-                        </div>
-                        <div
-                          class="col-md-5 d-md-flex justify-content-end spanArea2"
-                        >
-                          <button
-                            v-on:click="removePhoneNumber(index)"
-                            class="btn btn-default text-danger"
-                          >
-                            Remove
-                          </button>
-                        </div>
-                      </div>
-                    </div>
-                  </div> -->
 
                   <!-- Button Area -->
                   <div class="row mt-3 mb-4">
                     <div class="col-md-12 d-flex justify-content-end p-0">
-                      <div>
-                          <button
-                            v-on:click="resetInputFields"
-                            class="btn default-btn"
-                          >
-                            Cancel
-                          </button>
-                        </div>
-                        <div>
-                          <button
-                            v-on:click="saveGroupDetails"
-                            class="btn default-btn border-0 primary-bg ml-md-4"
-                          >
-                            <i
-                              class="fas fa-circle-notch fa-spin"
-                              v-if="loading"
-                            ></i>
-                            <span class="text-white">Save</span>
-                            <span></span>
-                          </button>
-                        </div>
+                      <el-button v-on:click="resetInputFields" round>Cancel</el-button>
+                      <el-button color="#136acd" v-on:click="saveGroupDetails" :loading="loading" round>Save</el-button>
                     </div>
                   </div>
                 </div>
@@ -120,7 +55,6 @@
           </div>
         </div>
       </main>
-      <Toast />
     </div>
   </div>
 </template>
@@ -128,7 +62,8 @@
 <script>
 import axios from "@/gateway/backendapi";
 import router from "../../router/index";
-import finish from  "../../services/progressbar/progress"
+import finish from "../../services/progressbar/progress"
+import { ElMessage } from 'element-plus'
 
 
 export default {
@@ -149,70 +84,65 @@ export default {
     },
 
     saveGroupDetails() {
-      console.log(this.enteredValue)
       if (
         this.enteredValue !== "" &&
         this.phoneNumbers.indexOf(this.enteredValue) < 0
       ) {
-        
+
         if (this.enteredValue.includes(',')) {
           this.enteredValue.split(',').forEach(i => {
-            
+
             let match = /\r|\n/.exec(i);
             if (match) {
               i.split('\n').forEach(j => {
                 this.phoneNumbers.push(j)
               })
-          } 
-          else {
-            this.phoneNumbers.push(i)
-          }
-            })
-          } else {
-            let match = /\r|\n/.exec(this.enteredValue);
-            if (match) {
-              this.enteredValue.split('\n').forEach(i => {
-                this.phoneNumbers.push(i)
+            }
+            else {
+              this.phoneNumbers.push(i)
+            }
+          })
+        } else {
+          let match = /\r|\n/.exec(this.enteredValue);
+          if (match) {
+            this.enteredValue.split('\n').forEach(i => {
+              this.phoneNumbers.push(i)
             })
           } else {
             this.phoneNumbers.push(this.enteredValue)
           }
-            
-          }
 
-          let details = {
-            id: "",
-            groupName: this.groupNameValue,
-            phoneNumbers: this.phoneNumbers.join(","),
-          };
-          console.log(details);
-          console.log(this.phoneNumbers, this.enteredValue);
-          this.loading = true;
-            
-          axios
-            .post("/api/Messaging/createPhoneGroups", details)
-            .then((res) => {
-              finish()
-              this.loading = false;
-              console.log(res);
-              router.push("/tenant/sms/contacts");
-            })
-            .catch((err) => {
-              finish()
-              this.loading = false;
-              console.log(err);
-            });
-          } else {
-            this.$toast.add({
-              severity:'info', 
-              summary: 'No Phone Number Added', 
-              detail:'Please add phone number(s) to create this phone group', 
-              life: 4000
-            });
-          }
-      
+        }
 
-      
+        let details = {
+          id: "",
+          groupName: this.groupNameValue,
+          phoneNumbers: this.phoneNumbers.join(","),
+        };
+        this.loading = true;
+
+        axios
+          .post("/api/Messaging/createPhoneGroups", details)
+          .then(() => {
+            finish()
+            this.loading = false;
+            router.push("/tenant/sms/contacts");
+          })
+          .catch((err) => {
+            finish()
+            this.loading = false;
+            console.log(err);
+          });
+      } else {
+        ElMessage({
+          type: 'info',
+          message: 'Please add phone number(s) to create this phone group',
+          duration: 5000
+        })
+      }
+
+
+
     },
 
     resetInputFields() {
@@ -230,10 +160,6 @@ export default {
   --font-color: #02172e;
   --hrule-color: #708eb15c;
   --primary-color: #000000;
-}
-
-* {
-  color: #02172e;
 }
 
 .container {
