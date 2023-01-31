@@ -636,8 +636,9 @@ export default {
               })
         },
         callback: function (response) {
-          subscriptionPayment(response, 0);
+          // subscriptionPayment(response, 0);
           //Route to where you confirm payment status
+          display.value = true
         },
       });
       handler.openIframe();
@@ -689,7 +690,8 @@ export default {
           email: currentUser.value.userEmail
         },
         callback: (response) => {
-          subscriptionPayment(response, 1)
+          // subscriptionPayment(response, 1)
+          display.value = true
         },
         onclose: () => console.log('Payment closed'),
         customizations: {

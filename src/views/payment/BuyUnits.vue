@@ -309,43 +309,44 @@ export default {
           }
         },
         callback: function (response) {
+          purchaseIsSuccessful.value = true
           //Route to where you confirm payment status
-          var returnres = {
-            smsUnit: totalSMSUnits.value,
-            transaction_Reference: response.trxref,
-            amount: amount.value * 100,
-            orderId: response.trxref,
-            tenantId: currentUser.value.tenantId,
-          };
+          // var returnres = {
+          //   smsUnit: totalSMSUnits.value,
+          //   transaction_Reference: response.trxref,
+          //   amount: amount.value * 100,
+          //   orderId: response.trxref,
+          //   tenantId: currentUser.value.tenantId,
+          // };
 
           //Route to where you confirm payment status
 
-          axios
-            .post(`/api/Payment/purchasesmsunits?paymentType=0`, returnres)
-            .then((res) => {
-              if (res.data) {
-                close.value.click();
-                purchaseIsSuccessful.value = true;
-                store.dispatch("addPurchasedUnits", totalSMSUnits.value);
-              } else {
-                ElMessage({
-                  type: 'error',
-                  showClose: true,
-                  message: 'Confirming your purchase failed, please contact support at info@churchplus.co',
-                  duration: 5000
-                })
+          // axios
+          //   .post(`/api/Payment/purchasesmsunits?paymentType=0`, returnres)
+          //   .then((res) => {
+          //     if (res.data) {
+          //       close.value.click();
+          //       purchaseIsSuccessful.value = true;
+          //       store.dispatch("addPurchasedUnits", totalSMSUnits.value);
+          //     } else {
+          //       ElMessage({
+          //         type: 'error',
+          //         showClose: true,
+          //         message: 'Confirming your purchase failed, please contact support at info@churchplus.co',
+          //         duration: 5000
+          //       })
 
-              }
-            })
-            .catch((err) => {
-              stopProgressBar();
-              ElMessage({
-                  type: 'error',
-                  showClose: true,
-                  message: 'Confirming your purchase failed, please contact support at info@churchplus.co',
-                  duration: 5000
-                })
-            });
+          //     }
+          //   })
+          //   .catch((err) => {
+          //     stopProgressBar();
+          //     ElMessage({
+          //         type: 'error',
+          //         showClose: true,
+          //         message: 'Confirming your purchase failed, please contact support at info@churchplus.co',
+          //         duration: 5000
+          //       })
+          //   });
         },
       });
       handler.openIframe();
@@ -395,38 +396,39 @@ export default {
           email: userEmail.value,
         },
         callback: (response) => {
-          const payload = {
-            smsUnit: totalSMSUnits.value,
-            transaction_Reference: response.transaction_id,
-            amount: totalAmount.value,
-            tenantId: tenantId.value,
-            orderId: initializedOrder.value.id
-          }
-          axios
-            .post(`/api/Payment/purchasesmsunits?paymentType=1`, payload)
-            .then((res) => {
-              if (res.data) {
-                purchaseIsSuccessful.value = true;
-                store.dispatch("addPurchasedUnits", totalSMSUnits.value);
-                isSuccessful.value = true;
-              } else {
-                ElMessage({
-                  type: 'error',
-                  showClose: true,
-                  message: 'Confirming your purchase failed, please contact support at info@churchplus.co',
-                  duration: 5000
-                })
-              }
+          purchaseIsSuccessful.value = true
+          // const payload = {
+          //   smsUnit: totalSMSUnits.value,
+          //   transaction_Reference: response.transaction_id,
+          //   amount: totalAmount.value,
+          //   tenantId: tenantId.value,
+          //   orderId: initializedOrder.value.id
+          // }
+          // axios
+          //   .post(`/api/Payment/purchasesmsunits?paymentType=1`, payload)
+          //   .then((res) => {
+          //     if (res.data) {
+          //       purchaseIsSuccessful.value = true;
+          //       store.dispatch("addPurchasedUnits", totalSMSUnits.value);
+          //       isSuccessful.value = true;
+          //     } else {
+          //       ElMessage({
+          //         type: 'error',
+          //         showClose: true,
+          //         message: 'Confirming your purchase failed, please contact support at info@churchplus.co',
+          //         duration: 5000
+          //       })
+          //     }
 
-            })
-            .catch(() => {
-              ElMessage({
-                  type: 'error',
-                  showClose: true,
-                  message: 'Confirming your purchase failed, please contact support at info@churchplus.co',
-                  duration: 5000
-                })
-            });
+          //   })
+          //   .catch(() => {
+          //     ElMessage({
+          //         type: 'error',
+          //         showClose: true,
+          //         message: 'Confirming your purchase failed, please contact support at info@churchplus.co',
+          //         duration: 5000
+          //       })
+          //   });
         },
         onclose: () => {
           if (!isSuccessful.value) {
