@@ -8,14 +8,20 @@
       </div>
       <div class="row  mb-4">
         <div class="col-12">
-          <div class="col-md-12 text-dark pb-2 pt-2  mb-2 day3" v-if="notifiedDays === 3">
-            <div class="">3days left for your subscription to expire.Please kindly subscribe before the expiration date</div>
+          <div class="col-md-12 text-dark pb-2 pt-2  mb-2 day3" v-if="notifiedDays === 3 "> 
+            <div class=""> 3 days remaining before your subscription expires, kindly subscribe before 
+                  {{ moment.parseZone(new Date(getRenewalDate).toDateString(), "YYYY MM DD HH ZZ")._i.substr(4, 11) }}
+            </div>
           </div>
-           <div class="col-md-12 text-dark pb-2 pt-2 mb-1 day2" v-if="notifiedDays === 2">
-            <div class="">2days left for your subscription to expire.Please kindly subscribe before the expiration date</div>
+          <div class="col-md-12 text-dark pb-2 pt-2 mb-1 day2" v-if="notifiedDays === 2 ">
+            <div class=""> 2 days remaining before your subscription expires, kindly subscribe before 
+                {{ moment.parseZone(new Date(getRenewalDate).toDateString(), "YYYY MM DD HH ZZ")._i.substr(4, 11) }}
+            </div>
           </div>
-          <div class="col-md-12 pb-2 pt-2 m-0  day1" v-if="notifiedDays === 1">
-            <div class="mt-0">1days left for your subscription to expire.Please kindly subscribe before the expiration date</div>
+          <div class="col-md-12 pb-2 pt-2 m-0  day1" v-if="notifiedDays === 1 ">
+            <div class=""> 1 days remaining before your subscription expires, kindly subscribe before 
+                {{ moment.parseZone(new Date(getRenewalDate).toDateString(), "YYYY MM DD HH ZZ")._i.substr(4, 11) }}
+            </div>
           </div>
         
         </div>
