@@ -6,18 +6,16 @@
           <h2 class="head-text">Dashboard</h2>
         </div>
       </div>
-      <div class="row  m-0 mb-4">
+      <div class="row  mb-4">
         <div class="col-12">
-          <div class="col-md-12 text-dark pb-2 pt-2 m-0 day3">
-            
-            <!-- <h5 class="3days">3 days left</h5> -->
-            <p class="">3days left for your subscription to expire.Please subscribe before the expiration date</p>
+          <div class="col-md-12 text-dark pb-2 pt-2  mb-2 day3">
+            <div class="">3days left for your subscription to expire.Please subscribe before the expiration date</div>
           </div>
-           <div class="col-md-12 text-dark pb-2 pt-2 m-0  day2">
-            <p class="">3days left for your subscription to expire.Please subscribe before the expiration date</p>
+           <div class="col-md-12 text-dark pb-2 pt-2 mb-1 day2">
+            <div class="">3days left for your subscription to expire.Please subscribe before the expiration date</div>
           </div>
           <div class="col-md-12 pb-2 pt-2 m-0  day1">
-            <p class="">3days left for your subscription to expire.Please subscribe before the expiration date</p>
+            <div class="mt-0">3days left for your subscription to expire.Please subscribe before the expiration date</div>
           </div>
         
         </div>
