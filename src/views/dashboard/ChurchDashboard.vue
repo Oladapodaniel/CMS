@@ -289,6 +289,14 @@
         </div>
       </div>
     </div>
+     <div class="row">
+    <div class="col-md-8 px-0 text" v-if="displayCountDown">
+      <p class="mb-0 font-weight-bold" v-if="isExpiring">Subscription expiring Soon</p>
+      <div v-else>
+      <p class="mb-0 font-weight-700 text-white" v-if="timer">expiring soon</p>
+      </div>
+      </div>
+  </div>
   </main>
 </template>
 
