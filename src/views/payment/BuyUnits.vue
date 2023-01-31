@@ -125,7 +125,7 @@
                   Continue payment with
                 </div>
               </div>
-              <div class="row row-button c-pointer d-flex justify-content-center" @click="payWithPaystack" v-if="selectedCurrency == 'NGN'">
+              <div class="row row-button c-pointer d-flex justify-content-center" @click="payWithPaystack" v-if="selectedCurrency == 'NGN' || selectedCurrency == 'GHS'">
                 <div>
                   <img style="width: 150px" src="../../assets/4PaystackLogo.png" alt="paystack" />
                 </div>
