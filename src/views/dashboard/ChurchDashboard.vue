@@ -5,7 +5,7 @@
         <div>
           <h2 class="title">Dashboard</h2>
         </div>
-
+       
         <div>
           <button
             class="create-btn"
@@ -44,6 +44,19 @@
           </div>
         </div>
       </div>
+       <div class="row  mb-4">
+          <div class="col-12">
+            <div class="col-md-12 text-dark py-3 mb-2 day3" v-if="notifiedDays === 3 ">
+              <div class="">3days left for your subscription to expire. Please kindly subscribe before the expiration date</div>
+            </div>
+            <div class="col-md-12   py-3 mb-1 day2" v-if="notifiedDays === 2 ">
+              <div class="">2days left for your subscription to expire. Please kindly subscribe before the expiration date</div>
+            </div>
+            <div class="col-md-12 py-3 m-0  day1" v-if="notifiedDays === 1 ">
+              <div class="mt-0">1days left for your subscription to expire. Please kindly subscribe before the expiration date</div>
+            </div>
+          </div>
+        </div>
       <!-- <div class="help-text1">
             <img src="../../assets/can-do.svg" alt="">
             <div class="can-do">
@@ -107,9 +120,6 @@
                   >
                     <h4 class="box-btn-text" :class="[buttonTextCheck.color]"> {{buttonTextCheck.text}} </h4>
                   </button>
-                  <!-- <div v-if="expirationNotice" class="small-text h5 w-100 font-weight-bold">
-                  Subscription will expire soon 
-                </div> -->
                 </router-link>
               </div>
             </div>
@@ -621,6 +631,8 @@ export default {
     const tenantInfoInvitationSource = ref([]);
     const tenantInfoInterestedInJoining = ref([]);
     const tenantInfoExtra = ref({});
+     const notifiedDays = ref()
+
     // const warningAgainstExpire = ref("")
   
 
@@ -848,25 +860,24 @@ export default {
 
     const useSubscriptionResponse = ref([]);
     const getRenewalDate = ref("");
+    const countDownDate = () =>{
+                    // Set the date we're counting down to
+          let countDownDates = new Date(getRenewalDate.value).getTime();
+            // Get today's date and time
+            let now = new Date().getTime();
+            // Find the distance between now and the count down date
+            let distance = countDownDates - now;
+           notifiedDays.value = Math.floor(distance / (1000 * 60 * 60 * 24));
+           console.log(notifiedDays.value, "jkjsjkj")
+    }
 
     useSubscription.getPlan().then((res) => {
       planUserIs.value = res.description;
       getRenewalDate.value = res.subscriptionExpiration;
       useSubscriptionResponse.value = res;
-      console.log(res, "iiiopiop");
-      // let d = new Date(res.subscriptionExpiration);
-      // d.setDate(d.getDate() - 4)
-      //     warningAgainstExpire.value = d
-      //     console.log(warningAgainstExpire.value, "warning")
+      countDownDate()
     });
-    // 
 
-    // const expirationNotice = computed(() =>{
-    //   let myDate = new Date()
-    //   if( myDate === warningAgainstExpire.value && warningAgainstExpire.value < getRenewalDate.value   ){
-    //        return true
-    //       }
-    // })
 
     const calculatedPercentage = computed(() => {
       if (!useSubscriptionResponse.value || !useSubscriptionResponse.value.id)
@@ -912,9 +923,8 @@ export default {
 
     return {
       celebrations,
+      notifiedDays,
       getRenewalDate,
-      // expirationNotice,
-      // warningAgainstExpire,
       tenantInfo,
       tenantInfoBasic,
       tenantInfoCeleb,
@@ -969,6 +979,27 @@ export default {
 </script>
 
 <style scoped>
+
+.day3{
+  background-color: #ECF4FF;
+  border-left:solid #136acd 5px;
+   border-top-left-radius: 5px 5px;
+   border-bottom-left-radius: 5px 5px;
+}
+.day2{
+  background-color: rgb(246, 246, 195);
+  border-left: solid yellow 5px;
+   border-top-left-radius: 5px 5px;
+   border-bottom-left-radius: 5px 5px;
+}
+.day1{
+  background-color: #FEF8F8;
+  color: #e09579;
+  border-left:solid #B3282D 5px;
+  border-top-left-radius: 5px 5px;
+  border-bottom-left-radius: 5px 5px;
+}
+
 .renew-btn-color {
  background-color: #ffbf00 !important;
 }
