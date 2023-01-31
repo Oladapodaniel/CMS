@@ -8,14 +8,14 @@
       </div>
       <div class="row  mb-4">
         <div class="col-12">
-          <div class="col-md-12 text-dark pb-2 pt-2  mb-2 day3">
-            <div class="">3days left for your subscription to expire.Please subscribe before the expiration date</div>
+          <div class="col-md-12 text-dark pb-2 pt-2  mb-2 day3" v-if="notifiedDays === 3">
+            <div class="">3days left for your subscription to expire.Please kindly subscribe before the expiration date</div>
           </div>
-           <div class="col-md-12 text-dark pb-2 pt-2 mb-1 day2">
-            <div class="">3days left for your subscription to expire.Please subscribe before the expiration date</div>
+           <div class="col-md-12 text-dark pb-2 pt-2 mb-1 day2" v-if="notifiedDays === 2">
+            <div class="">2days left for your subscription to expire.Please kindly subscribe before the expiration date</div>
           </div>
-          <div class="col-md-12 pb-2 pt-2 m-0  day1">
-            <div class="mt-0">3days left for your subscription to expire.Please subscribe before the expiration date</div>
+          <div class="col-md-12 pb-2 pt-2 m-0  day1" v-if="notifiedDays === 1">
+            <div class="mt-0">1days left for your subscription to expire.Please kindly subscribe before the expiration date</div>
           </div>
         
         </div>
@@ -363,14 +363,6 @@
         </div>
       </div>
     </div>
-     <div class="row">
-    <div class="col-md-8 px-0 text" v-if="displayCountDown">
-      <p class="mb-0 font-weight-bold" v-if="isExpiring">Subscription expiring Soon</p>
-      <div v-else>
-      <p class="mb-0 font-weight-700 text-white" v-if="timer">expiring soon</p>
-      </div>
-      </div>
-  </div>
   </main>
 </template>
 
@@ -415,7 +407,7 @@ export default {
     const firstTimerPieExist = ref(false);
     const notifiedDays = ref()
     const summed = ref(0);
-    const planUserIs = ref("");
+    const planUserIs = ref("")
 
 
 
@@ -649,43 +641,19 @@ export default {
 
     const countDownDate = () =>{
                     // Set the date we're counting down to
-          let countDownDates = new Date("Feb 3, 2023 15:37:25").getTime();
-          console.log(countDownDates, "jklkj");
-
-          // Update the count down every 1 second
-          // let x = setInterval(() => {
-
+          let countDownDates = new Date(getRenewalDate.value).getTime();
             // Get today's date and time
             let now = new Date().getTime();
-              
             // Find the distance between now and the count down date
             let distance = countDownDates - now;
-            console.log(distance,  "dsksdshkj");
-              
-            // Time calculations for days, hours, minutes and seconds
            notifiedDays.value = Math.floor(distance / (1000 * 60 * 60 * 24));
-            console.log(notifiedDays.value + ' ' + 'days left', "kk;lk;l;lj")
-            // let hours = Math.floor((distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
-            // let minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
-            // let seconds = Math.floor((distance % (1000 * 60)) / 1000);
-              
-            // Output the result in an element with id="demo"
-            // document.getElementById("demo").innerHTML = days + "d " + hours + "h "
-            // + minutes + "m " + seconds + "s ";
-              
-            // If the count down is over, write some text 
-            // if (distance < 0) {
-            //   clearInterval(x);
-            //   document.getElementById("demo").innerHTML = "EXPIRED";
-            // }
-          // }, 1000);
     }
-    countDownDate()
 
     useSubscription.getPlan().then((res) => {
       planUserIs.value = res.description;
       getRenewalDate.value = res.subscriptionExpiration;
       useSubscriptionResponse.value = res;
+      countDownDate()
     });
 
     const calculatedPercentage = computed(() => {
