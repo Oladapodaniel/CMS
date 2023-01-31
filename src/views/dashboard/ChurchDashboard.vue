@@ -391,9 +391,9 @@ export default {
     const attendanceDataExist = ref(false);
     const firstTimerDataExist = ref(false);
     const firstTimerPieExist = ref(false);
+    const notifiedDays = ref()
     const summed = ref(0);
     const planUserIs = ref("");
-    const today = new Date();
 
 
 
@@ -486,22 +486,6 @@ export default {
           }
         });
     };
-
-
-
-    //     function expiryDate(date_string) {
-    //   var expiration = moment(date_string).format("YYYY-MM-DD");
-    //   // console.log(expiration, "bim")
-    //   var current_date = moment().format("YYYY-MM-DD");
-    //   console.log(current_date,"wetin be this")
-    //   var days = moment(expiration).diff(current_date, 'days');
-    //   return days;
-    // }
-
-    // alert("Days remaining = " + expiryDate(""));
-    // console.log("Days remaining = " + expiryDate(""));
-
-    //   expiryDate();
 
     function getCelebDashboard() {
       axios.get("/dashboard/celebrations").then((res) => {
@@ -657,8 +641,8 @@ export default {
             console.log(distance,  "dsksdshkj");
               
             // Time calculations for days, hours, minutes and seconds
-            let days = Math.floor(distance / (1000 * 60 * 60 * 24));
-            console.log(days + ' ' + 'days left', "kjhkj")
+           notifiedDays.value = Math.floor(distance / (1000 * 60 * 60 * 24));
+            console.log(notifiedDays.value + ' ' + 'days left', "kk;lk;l;lj")
             // let hours = Math.floor((distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
             // let minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
             // let seconds = Math.floor((distance % (1000 * 60)) / 1000);
@@ -727,6 +711,7 @@ export default {
 
     return {
       celebrations,
+      notifiedDays,
       getRenewalDate,
       tenantInfo,
       tenantInfoBasic,
