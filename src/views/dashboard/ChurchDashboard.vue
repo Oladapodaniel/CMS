@@ -6,6 +6,22 @@
           <h2 class="head-text">Dashboard</h2>
         </div>
       </div>
+      <div class="row  m-0 mb-4">
+        <div class="col-12">
+          <div class="col-md-12 text-dark pb-2 pt-2 m-0 day3">
+            
+            <!-- <h5 class="3days">3 days left</h5> -->
+            <p class="">3days left for your subscription to expire.Please subscribe before the expiration date</p>
+          </div>
+           <div class="col-md-12 text-dark pb-2 pt-2 m-0  day2">
+            <p class="">3days left for your subscription to expire.Please subscribe before the expiration date</p>
+          </div>
+          <div class="col-md-12 pb-2 pt-2 m-0  day1">
+            <p class="">3days left for your subscription to expire.Please subscribe before the expiration date</p>
+          </div>
+        
+        </div>
+      </div>
       <div class="d-flex justify-content-between flex-column flex-md-row  px-0">
         <div class="help-text2">
           <img src="../../assets/thingstodo.svg" alt="" />
@@ -787,9 +803,6 @@ export default {
   background-color: #E60023 !important;
 }
 
-/* * {
-  color: #02172e;
-} */
 
 #main {
   display: flex;
@@ -806,7 +819,6 @@ export default {
   justify-content: space-around;
   width: 90%;
   margin: 0 auto;
-  /* background: #F1F5F8; */
   padding: 10px;
 }
 
@@ -866,17 +878,9 @@ export default {
   color: #136acd;
   font-size: 24px;
   padding: 4px;
-  /* filter: invert(29%) sepia(74%) saturate(1909%) hue-rotate(197deg) brightness(91%) contrast(89%); */
 }
 
-/* .box-top-text p {
-  font-weight: 600;
-}
 
-.box-top-text h4 {
-  color: #136acd;
-  font-size: larger;
-} */
 
 .create-dd {
   padding: 0 9px;
@@ -922,7 +926,6 @@ export default {
 }
 
 .second-col .number-boxes {
-  /* width: 100%; */
   max-width: 450px;
   display: flex;
   justify-content: flex-end;
@@ -930,8 +933,6 @@ export default {
 
 .box {
   width: 170px;
-  /* margin-left: 20px; */
-
   background: #FFFFFF;
   box-shadow: 0px 2px 7.5px rgba(0, 0, 0, 0.0588235);
   border-radius: 15px;
@@ -944,58 +945,7 @@ export default {
   border-radius: 0px 0px 15px 15px;
 }
 
-/* 
-.box2 .bottom {
-  
-  border-radius: 0px 0px 28px 28px;
-} */
 
-
-
-
-
-
-
-/* .upgrade-btn2:hove
-.buy-btn {
-  width: 109.5px;
-} */
-
-/* .plan-text {
-  font-size: 9px;
-  align-self: center;
-  text-transform: uppercase;
-  font-weight: 800;
-  width: 80px;
-  margin-left: 10px;
-} */
-
-/* .box-top {
-  display: flex;
-  justify-content: space-between;
-  align-items: start;
-} */
-
-/* .box-middle {
-  padding: 24px 0;
-} */
-
-/* .box-top-text h4, */
-/* .box-top-text p {
-  margin: 0;
-  font-size: 12px;
-}
-
-.box-top-text h4 {
-  font-size: 20px;
-  font-weight: 800;
-} */
-
-/* .box-middle h1 {
-  margin: 0;
-  font-size: 30px;
-  font-weight: 400;
-} */
 
 .celebrations {
   padding: 10px;
@@ -1004,7 +954,25 @@ export default {
   border-radius: 28px;
   margin-top: 80px;
 }
-
+.day3{
+  background-color: #ECF4FF;
+  border-left:solid #136acd 5px;
+   border-top-left-radius: 5px 5px;
+   border-bottom-left-radius: 5px 5px;
+}
+.day2{
+  background-color: rgb(243, 243, 217);
+  border-left:solid rgb(228, 228, 42) 5px;
+   border-top-left-radius: 5px 5px;
+   border-bottom-left-radius: 5px 5px;
+}
+.day1{
+  background-color: #FEF8F8;
+  color: #e09579;
+  border-left:solid #B3282D 5px;
+  border-top-left-radius: 5px 5px;
+  border-bottom-left-radius: 5px 5px;
+}
 .pie-con {
   margin: 24px 0;
 }
@@ -1096,22 +1064,6 @@ tbody tr:nth-child(even) {
   margin-left: -20px;
 }
 
-/* .box-btn-text {
-  margin: 0px;
-  font-size: 12px;
-  font-weight: 700;
-  
-  color: #136acd;
-} */
-
-/* .box-btn-text2 {
-  margin: 0px;
-  font-size: 12px;
-  font-weight: 800;
-
-  color: #136acd;
-} */
-
 .size-text {
   color: #136acd;
   font-weight: 700;
@@ -1178,20 +1130,6 @@ tbody tr:nth-child(even) {
   opacity: 0.8;
 }
 
-/* .learn-more {
-  border: 1px solid #707070;
-  border-radius: 25px;
-  padding: 10px;
-  opacity: 1;
-  font: normal normal bold 14px/19px Nunito Sans;
-  letter-spacing: 0px;
-  color: #020e1c;
-  background: #ffffff 0% 0% no-repeat padding-box;
-}
-
-.learn-more.second {
-  margin-top: 21px;
-} */
 
 .more-things.side {
   background: #ecf0f3 0% 0% no-repeat padding-box;
@@ -1199,10 +1137,6 @@ tbody tr:nth-child(even) {
   opacity: 1;
 }
 
-/* .welcome-user {
-  width: 64%;
-  float: right;
-} */
 
 @media (max-width: 575px) {
   .adjust-view {
@@ -1219,50 +1153,31 @@ tbody tr:nth-child(even) {
   .can-do-links {
     display: flex;
     flex-direction: column;
-    /* text-align: center;
-    margin-left: -3rem; */
+    
   }
 }
 
 @media (max-width: 305px) {
-  /* .ColumnChartDiv {
-    font-size: 25px;
-    font-weight: 600;
-    margin: 0 0 -24px 0;
-  } */
-  /* .adjust-view {
-    top: 85.5em;
-  } */
+  
 }
 
 @media (min-width: 509px) and (max-width: 515px) {
-  /* .adjust-view {
-    position: absolute;
-    left: 20em;
-    top: 60.7em;
-} */
+  
 }
 
 @media (min-width: 516px) and (max-width: 576px) {
-  /* .adjust-view {
-    position: absolute;
-    left: 20em;
-    top: 58.7em;
-} */
+  
 }
 
 .view-report {
   font: normal normal 800 16px/22px Nunito Sans;
   letter-spacing: 0px;
   color: #2b6ecd;
-  /* text-align: right;
-  margin-right: 40px; */
   cursor: pointer;
 }
 
 .weekly {
-  /* text-align: right;
-  margin-right: 40px; */
+
   cursor: pointer;
 }
 
@@ -1285,23 +1200,8 @@ tbody tr:nth-child(even) {
   vertical-align: baseline;
 }
 
-/* WIP */
-
-/* @media screen and (max-width: 376px) {
-  .top-row {
-    flex-direction: column;
-  }
-
-  .can-do, .can-do-links {
-    width: 90%;
-  }
-} */
 
 @media screen and (max-width: 940px) {
-  /* .help-text2 {
-    display: flex;
-    align-items: flex-start;
-  } */
 
   .second-col .number-boxes {
     max-width: 100%;
@@ -1324,23 +1224,11 @@ tbody tr:nth-child(even) {
 }
 
 @media (min-width: 1101px) and (max-width: 1231px) {
-  /* .top-row {
-      flex-direction: column;
-  }
-
-  .number-boxes {
-     margin: 0;
-  }
-
-  .box {
-    margin-top: 20px;
-  } */
+  
 }
 
 @media screen and (min-width: 1300px) {
-  /* .box-middle {
-     padding: 43px 0;
-  } */
+ 
 }
 
 @media (max-width: 556px) {
@@ -1356,11 +1244,6 @@ tbody tr:nth-child(even) {
 
 @media (max-width: 508px) {
 
-
-  /* .create-btn-div {
-    flex-direction: column;
-    align-items: center;
-  } */
 
   .second-col .create-btn-div .create-btn {
     margin-top: 10px;
