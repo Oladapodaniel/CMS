@@ -94,7 +94,7 @@
                             >Group name</label
                           >
                         </div>
-                        <div class="col-md-8">
+                        <!-- <div class="col-md-8">
                           <input
                             type="text"
                             v-model="groupData.name"
@@ -102,6 +102,14 @@
                             id="formGroup"
                             @input="validateGroupName"
                           />
+                        </div> -->
+                        <div class="col-md-8">
+                            <el-input  type="text"
+                            v-model="groupData.name"
+                            size="large"
+                            class="w-100  ml-0"
+                            id="formGroup"
+                            @input="validateGroupName" />
                         </div>
                       </div>
                     </div>
@@ -119,7 +127,7 @@
                             >Description</label
                           >
                         </div>
-                        <div class="col-md-8">
+                        <!-- <div class="col-md-8">
                           <textarea
                             v-model="groupData.description"
                             name="description"
@@ -127,6 +135,17 @@
                             rows="1"
                             class="form-control w-100"
                           ></textarea>
+                        </div> -->
+
+                        <div class="col-md-8">
+                            <el-input
+                            v-model="groupData.description"
+                            name="description"
+                            id="description"
+                            :rows="3"
+                            type="textarea"
+
+                          />
                         </div>
                       </div>
                     </div>
@@ -150,17 +169,20 @@
                         </div>
 
                         <div class="col-12 d-flex mt-2">
-                          <!-- <div class="mt-n3"> -->
-                          <Checkbox
+                         
+                          <!-- <Checkbox
                             v-model="groupData.isMobileGroup"
                             :binary="true"
                             :disabled="groupData.isMobileGroup"
-                          />
-
+                          /> -->
+                          
+                         <div class="mt-0 py-0">
+                          <el-checkbox v-model="groupData.isMobileGroup" size="large" />
+                        </div> 
                           <label for="description" class="font-weight-600 ml-3">
                             Enable on Mobile App
                           </label>
-                          <!-- </div> -->
+                          
                         </div>
                       </div>
                     </div>
