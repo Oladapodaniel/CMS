@@ -1,22 +1,9 @@
 <template>
-  <div>
-
-    <div class="chart-header" v-if="header" >
-      <div class="icon-div">
-        <img src="../../assets/people/members-icon.svg" alt="" />
-      </div>
-      <div class="header-text">
-        <p>{{ header }}</p>
-      </div>
-    </div>
-  </div>
-  <div class="wrapper">
     <div
       :id="domId"
       style="height: 100%"
       ref="chart"
     ></div>
-  </div>
 </template>
 
 <script>
@@ -91,11 +78,6 @@ export default {
       };
       chart.value = new Highcharts.chart(funnelchartsOptions);
 
-    });
-
-    onUpdated(() => {
-      console.log(props.series, "passed series");
-      console.log(props.data, "passed data");
     });
 
     return {

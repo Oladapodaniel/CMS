@@ -52,8 +52,10 @@
           <template #footer>
               <div class="container">
                 <div class="row d-flex justify-content-end text-center">
-                  <div class="default-btn mr-3 cursor-pointer" @click="closeModal">Discard</div>
-                  <div class="primary-bg default-btn border-0 text-white text-center cursor-pointer" @click="addToMembers"><i class="pi pi-spin pi-spinner text-white" v-if="loading"></i> Save</div>
+                  <el-button @click="closeModal" round>Cancel</el-button>
+                  <el-button color="#136acd" :loading="loading" @click="addToMembers" round>
+                  Save
+                  </el-button>
                 </div>
               </div>
           </template>
@@ -92,7 +94,6 @@ export default {
         image.value = e.target.files[0];
         const formData = new FormData();
         formData.append("file", image.value ? image.value : "")
-        console.log(formData)
         try {
           let { data } = await axios.post("/api/People/UploadFirstTimerFile", formData)
           console.log(data)
@@ -105,15 +106,7 @@ export default {
               });
               memberData.value = data.returnObject
               displayModal.value = true;
-              emit('people-list', data.returnObject)
-            // } else {
-            //   toast.add({
-            //   severity: "success",
-            //   summary: "No Member found",
-            //   detail: "Download our template and add members before you upload",
-            //   life: 4000,
-            // });
-          // }          
+              emit('people-list', data.returnObject)      
         }
         catch  (err) {
           finish()

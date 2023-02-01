@@ -4,9 +4,7 @@
       <div class="col-10 offset-1 col-lg-5 d-flex align-items-center">
         <div class="container-top">
           <div class="row">
-            <div
-              class="col-xl-10 offset-xl-1 signup-header text-center text-lg-left"
-            >
+            <div class="col-xl-10 offset-xl-1 signup-header text-center text-lg-left">
               Sign in to Churchplus payment
             </div>
           </div>
@@ -14,12 +12,7 @@
             <div class="col-xl-10 offset-xl-1">
               <div class="label">Email address</div>
               <div class="mt-2">
-                <input
-                  type="email"
-                  placeholder="Enter your email"
-                  v-model="email"
-                  class="form-control input-control"
-                />
+                <input type="email" placeholder="Enter your email" v-model="email" class="form-control input-control" />
               </div>
             </div>
           </div>
@@ -27,11 +20,7 @@
             <div class="col-xl-10 offset-xl-1">
               <div class="label">Password</div>
               <div class="mt-2">
-                <input
-                  type="password"
-                  v-model="password"
-                  class="form-control input-control"
-                />
+                <input type="password" v-model="password" class="form-control input-control" />
               </div>
             </div>
           </div>
@@ -46,14 +35,13 @@
               <div class="button w-100" @click="signin">Sign in</div>
               <div class="label mt-4 text-center">
                 Not registered yet?
-                <router-link :to="{ name: 'SignUpPayment', params: { userId: routeParams } }"
-                  >Create a new account</router-link
-                >
+                <router-link :to="{ name: 'SignUpPayment', params: { userId: routeParams } }">Create a new
+                  account</router-link>
               </div>
               <div class="label mt-3 text-center hfont cursor-pointer">
-                    Go back to
-                    <span class="text-primary" @click="goBack">Give</span>
-                </div>
+                Go back to
+                <span class="text-primary" @click="goBack">Give</span>
+              </div>
             </div>
           </div>
 
@@ -63,7 +51,9 @@
               <hr />
             </div>
             <div class="col-md-4 signup-option">or sign in with</div>
-            <div class="col-md-4"><hr /></div>
+            <div class="col-md-4">
+              <hr />
+            </div>
           </div>
           <div class="row d-flex justify-content-center">
             <div class="col-6 col-sm-3">
@@ -76,14 +66,8 @@
         </div>
       </div>
       <div class="col-lg-4 offset-lg-2 px-0 d-none d-lg-block bg-wall">
-        <!-- <img
-          src="../../assets/Group257.png"
-          class="w-100"
-          style="height: 100vh"
-        /> -->
       </div>
     </div>
-    <Toast />
   </div>
 </template>
 
@@ -91,19 +75,18 @@
 import { ref } from "vue";
 import axios from "@/gateway/backendapi";
 import { useRouter, useRoute } from "vue-router";
-import { useToast } from "primevue/usetoast";
 import finish from "../../services/progressbar/progress"
+import { ElMessage } from 'element-plus'
 export default {
   setup() {
-    let toast = useToast();
     const route = useRoute()
     const email = ref("");
     const password = ref("");
     const token = ref("");
     const router = useRouter();
-    const routeParams =ref(`${route.params.userId}`)
+    const routeParams = ref(`${route.params.userId}`)
 
-    
+
     const signin = async () => {
       let userdetails = {
         email: email.value,
@@ -116,64 +99,53 @@ export default {
           userdetails
         );
         if (!data.returnObject) {
-            toast.add({
-              severity: "warn",
-              summary: "Incorrect details",
-              detail: `${data.response}`,
-              life: 4000,
-            });
+          ElMessage({
+            type: 'warning',
+            message: "Incorrect details, " + data.response,
+            duration: 5000
+          })
         } else if (data && data.returnObject.token && data.status) {
-            let giverDetails = {
-                giverToken: data.returnObject.token,
-                giverId: data.returnObject.userId,
-                tenantId: data.returnObject.tenantID
-            }
+          let giverDetails = {
+            giverToken: data.returnObject.token,
+            giverId: data.returnObject.userId,
+            tenantId: data.returnObject.tenantID
+          }
           localStorage.setItem("giverToken", JSON.stringify(giverDetails));
-          
           localStorage.setItem("token", JSON.stringify(data.returnObject.token));
-          
-          toast.add({
-            severity: "success",
-            summary: "Successful",
-            detail: `${data.response}`,
-            life: 4000,
-          });
+
+          ElMessage({
+            type: 'success',
+            message: data.response,
+            duration: 5000
+          })
 
           router.push({
             name: "OnlineGiving4",
             params: { userId: route.params.userId },
           });
-          console.log(data)
-        }   else {
-           console.log(data.response)
         }
-        console.log(data.response)
         finish()
-    } catch (error) {
-          finish()
+      } catch (error) {
+        finish()
         console.log(error);
-        console.log(error.response && error.response.data.message);
-        if (error.response && error.response.data.message ) {
-          toast.add({
-            severity: "info",
-            summary: "Error Signing In",
-            detail: `${error.response.data.message}`,
-            life: 3000,
-          });
-        } else if (error.response && error.response.toString().includes('network error')){
-          toast.add({
-            severity: "error",
-            summary: "Network Error",
-            detail: `Please ensure you  have a strong internet connection`,
-            life: 3000,
-          });
+        if (error.response && error.response.data.message) {
+          ElMessage({
+            type: 'warning',
+            message: error.response.data.message,
+            duration: 5000
+          })
+        } else if (error.response && error.response.toString().includes('network error')) {
+          ElMessage({
+            type: 'error',
+            message: "Please ensure you  have a strong internet connection",
+            duration: 5000
+          })
         } else {
-          toast.add({
-            severity: "error",
-            summary: "Not Successful",
-            detail: `Please try again`,
-            life: 3000,
-          });
+          ElMessage({
+            type: 'error',
+            message: "Not successful, please try again",
+            duration: 5000
+          })
         }
       }
 
@@ -288,7 +260,7 @@ export default {
 }
 
 .bg-wall {
-    background-image: url('../../assets/Group257.png');
-    height: 100vh;
+  background-image: url('../../assets/Group257.png');
+  height: 100vh;
 }
 </style>

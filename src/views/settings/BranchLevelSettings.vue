@@ -269,6 +269,7 @@ export default {
           ElMessage({
             type: "success",
             message: "Branch Level Order Updated Successfully",
+            duration: 5000
           });
         }, 1000);
       } catch (error) {
@@ -296,6 +297,7 @@ export default {
         ElMessage({
           type: "success",
           message: "Branch Save Successfully",
+          duration: 5000
         });
       } catch (error) {
         finish();
@@ -317,6 +319,7 @@ export default {
         ElMessage({
           type: "success",
           message: "New Branch Updated Successfully",
+          duration: 5000
         });
       } catch (error) {
         finish();
@@ -332,6 +335,7 @@ export default {
         ElMessage({
           type: "success",
           message: "Delete Successfully",
+          duration: 5000
         });
       } catch (error) {
         finish();
@@ -340,11 +344,13 @@ export default {
     },
     //pop Alert
     deletePop(id) {
-      ElMessageBox.confirm("Are you sure you want to Delete?", "Warning", {
-        confirmButtonText: "OK",
-        cancelButtonText: "Cancel",
-        type: "warning",
-      })
+      ElMessageBox.confirm("Are you sure you want to Delete?", "Confirm delete", 
+      {
+          confirmButtonText: 'OK',
+          cancelButtonText: 'Cancel',
+          type: 'error',
+        }
+      )
         .then(() => {
           this.deleteBranch(id);
         })
@@ -352,6 +358,7 @@ export default {
           ElMessage({
             type: "info",
             message: "Delete canceled",
+            duration: 5000
           });
         });
     },

@@ -12,6 +12,7 @@
     "@ckeditor/ckeditor5-build-decoupled-document": "^29.0.0",
     "@ckeditor/ckeditor5-editor-decoupled": "^29.0.0",
     "@ckeditor/ckeditor5-vue": "^2.0.1",
+    "@element-plus/icons-vue": "^2.0.10",
     "@firebase/webchannel-wrapper": "^0.5.0",
     "@meforma/vue-toaster": "^1.1.1",
     "axios": "^0.26.1",
@@ -54,6 +55,7 @@
     "vue3-tel-input": "^1.0.4",
     "vuedraggable": "^4.1.0",
     "vuex": "^4.0.0-0",
+    "webpack": "^4.39.3",
     "xlsx": "^0.17.1"
   },
   "devDependencies": {

@@ -175,11 +175,11 @@ export default {
     deletePop(id) {
       ElMessageBox.confirm(
         'Are you sure you want to Delete?',
-        'Warning',
-        {
+        'Confirm delete',
+       {
           confirmButtonText: 'OK',
           cancelButtonText: 'Cancel',
-          type: 'warning',
+          type: 'error',
         }
       )
       .then(() => {
@@ -189,6 +189,7 @@ export default {
           ElMessage({
             type: 'info',
             message: 'Delete canceled',
+            duration: 5000
           })
         })
         },
@@ -206,6 +207,7 @@ export default {
           ElMessage({
               type: 'success',
               message: 'Post Category Deleted Successfully',
+              duration: 5000
             })
         }
         
@@ -222,6 +224,7 @@ export default {
          ElMessage({
               type: 'success',
               message: 'Post Category Updated Successfully',
+              duration: 5000
             })
       }catch (error){
         finish()
@@ -233,6 +236,7 @@ export default {
         ElMessage({
               type: 'error',
               message: 'Enter Your Details',
+              duration: 5000
             })
         return false
 
@@ -249,6 +253,7 @@ export default {
         ElMessage({
               type: 'success',
               message: 'Post Save Successfully',
+              duration: 5000
             })
       }catch (error) {
         finish()
@@ -279,6 +284,7 @@ export default {
         ElMessage({
               type: 'success',
               message: data.response,
+              duration: 5000
             })
       }
       catch (err) {

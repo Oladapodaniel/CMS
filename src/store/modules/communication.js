@@ -111,7 +111,6 @@ export default {
         },
         addToSentEmail({ commit }, payload) {
             commit("addToSentEmail", payload)
-            // console.log(payload)
         },
 
         async getAllSentSMS({ commit }) {
@@ -144,7 +143,6 @@ export default {
         async getSentEmails({ commit }) {
             try {
                 const data = await communicationService.getSentEmails(0);
-                console.log(data, "emails instore");
                 if (data) commit("setSentEmails", data);
             } catch (error) {
                 console.log(error);

@@ -1,111 +1,44 @@
 <template>
-<div class="d-flex justify-content-end mx-3">
-        <!-- <div class="col-2 mt-3 mr-4 log-btn btn-btn c-pointer" @click="openCallLogPane">Log call</div> -->
+    <div class="d-flex justify-content-end mx-3">
         <div class="col-12 col-sm-6 col-md-3 mt-3 save-btn btn-btn c-pointer" @click="toggleSMSPane">Send an SMS</div>
-   </div>
+    </div>
     <div class="col-12 mt-4" v-for="(item, index) in logList" :key="index">
-            <!-- <div class="col-12 card-bg p-4">
-                <div class="row d-flex justify-content-between">
-                    <div>
-                        <div class="col align-self-center"><span class="font-weight-700"><i class="pi pi-angle-up uniform-primary-color" :class="{'roll-note-icon' : item.logIcon, 'unroll-note-icon' : !item.logIcon}" @click="toggleLogIcon(index)"></i>&nbsp;&nbsp;Logged {{ item.type }}</span> by Oladapo Daniel <span class="font-weight-700 uniform-primary-color">Actions&nbsp;<i class="pi pi-sort-down"></i></span></div>
-                    </div>
-                    <div>
-                        <div class="col text-right"><span class="ml-2 small-text">July 29 2021 at 12:50pm GMT +1</span></div>
-                    </div>
+        <div class="col-12 card-bg p-4" v-if="!item.loggedTask">
+            <div class="row d-flex justify-content-between">
+                <div>
+                    <div class="col align-self-center"><span class="font-weight-700 c-pointer">
+                        <el-icon class="uniform-primary-color" :class="{ 'roll-note-icon': item.logIcon, 'unroll-note-icon': !item.logIcon }" @click="toggleLogIcon(index, indx)"><ArrowUp /></el-icon>&nbsp;&nbsp;{{ item.person ? `${item.typeText}
+                            task assigned to` : `${item.typeText} logged` }}</span> {{ item.person }} </div>
                 </div>
-                <div class="row">
-                    <div class="col-12 mt-4 enlargen-font"  :class="{ 'hover-border' : item.hoverLog, 'log-border' : !item.hoverLog }" @mouseover="onHoverBorderLog(index)" @mouseleave="outHoverBorderLog(index)" v-if="!editLog" @click="toggleEditLog">
-                        <div>{{ item.desc }}</div>
-                    </div>
+                <div>
+                    <div class="col text-right"><span class="ml-2 small-text">{{ formatDate(item.date) }} {{ item.time }}</span></div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-12 mt-4 enlargen-font"
+                    :class="{ 'hover-border': item.hoverLog, 'log-border': !item.hoverLog }" v-if="!item.editLog">
+                    <div>{{ item.description }}</div>
+                </div>
 
-                    <textarea v-model="item.desc" class="form-control col-12 mt-4" v-if="editLog" rows="5"></textarea>
-                    <div class="p-2 col-2 mt-3 save-btn btn-btn pointer-cursor" @click="saveLogDesc" v-if="editLog">Save</div>
-                    <div class="cancel-btn btn-btn col-2 ml-3 p-2 mt-3" v-if="editLog" @click="cancelTaskEdit">Cancel</div>
+            </div>
+            <transition name="fade">
+                <div class="row" v-if="item.logIcon">
+                    <div class="col-12">
+                        <hr />
+                    </div>
+                    <div class="col-6">
+                        <div class="label-text">Contacted</div>
+                        <div class="uniform-primary-color font-weight-700 mt-1 c-pointer">{{ `${personDetails.firstName}
+                            ${personDetails.lastName}` }}</div>
+                    </div>
+                    <div class="col-6">
+                        <div class="label-text">{{ item.typeText }} Outcome</div>
+                        <div class="mt-1 uniform-primary-color font-weight-700 c-pointer">{{ item.outcomeText }}</div>
+                    </div>
                 </div>
-                <transition name="fade">
-                    <div class="row" v-if="item.logIcon">
-                        <div class="col-12">
-                            <hr />
-                        </div>
-                            <div class="col-3">
-                                <div class="label-text">Contacted</div>
-                                <div @click="toggleContact" aria:haspopup="true" aria-controls="overlay_panel" class="uniform-primary-color font-weight-700 mt-1 c-pointer">Oladapo &nbsp; <i class="pi pi-sort-down"></i></div>
-                                <OverlayPanel ref="contactRef" appendTo="body" :showCloseIcon="false" id="overlay_panel" :breakpoints="{'960px': '75vw'}">
-                                        <div class="container p-0">
-                                            <div class="row">
-                                                <div class="col-12 py-2 px-3 hover-cursor-cancel">{{ `${personDetails.firstName} ${personDetails.lastName}(${logVariable === 'email' ? personDetails.email : personDetails.mobilePhone})`}}</div>
-                                            </div>
-                                        </div>
-                                    </OverlayPanel>
-                            </div>
-                            <div class="col-3">
-                                <div class="label-text">Call Outcome</div>
-                                <div class="mt-1 uniform-primary-color font-weight-700 c-pointer" @click="toggleOutcome" aria:haspopup="true" aria-controls="overlay_panel">Select &nbsp; <i class="pi pi-sort-down"></i></div>
-                                <OverlayPanel ref="outcomeRef" appendTo="body" :showCloseIcon="false" id="overlay_panel" :breakpoints="{'960px': '75vw'}">
-                                        <div class="container-fluid p-0">
-                                            <div class="row" v-for="(item, index) in outcomeList" :key="index">
-                                                <div class="col-12 py-2 px-3 hover-log">{{ item }}</div>
-                                            </div>
-                                        </div>
-                                    </OverlayPanel>
-                            </div>
-                        
-                            <div class="col-3">
-                                <div class="label-text">Date</div>
-                                <div class="mt-1 uniform-primary-color font-weight-700">
-                                    <input type="date" class="form-control" />
-                                </div>
-                            </div>
-                            <div class="col-3">
-                                <div class="label-text">Time</div>
-                                <div class="mt-1 uniform-primary-color font-weight-700 c-pointer" @click="toggleTime" aria:haspopup="true" aria-controls="overlay_panel">2:12PM &nbsp; <i class="pi pi-sort-down"></i></div>
-                                <OverlayPanel ref="timeRef" appendTo="body" :showCloseIcon="false" id="overlay_panel" :breakpoints="{'960px': '75vw'}">
-                                        <div class="container">
-                                            <div class="row">
-                                                here here time
-                                            </div>
-                                        </div>
-                                    </OverlayPanel>
-                            </div>
-                            <div class="col-12 mt-3">
-                                <textarea name="" placeholder="Describe the call..." class="w-100 form-control" rows="6"></textarea>
-                            </div>
-      
-                    </div>
-                </transition>
-            </div> -->
-            <div class="col-12 card-bg p-4" v-if="!item.loggedTask">
-                    <div class="row d-flex justify-content-between">
-                        <div>
-                            <div class="col align-self-center"><span class="font-weight-700 c-pointer"><i class="pi pi-angle-up uniform-primary-color" :class="{'roll-note-icon' : item.logIcon, 'unroll-note-icon' : !item.logIcon}" @click="toggleLogIcon(index, indx)"></i>&nbsp;&nbsp;{{ item.person ? `${item.typeText} task assigned to` : `${item.typeText} logged` }}</span> {{ item.person }} </div>
-                        </div>
-                        <div>
-                            <div class="col text-right"><span class="ml-2 small-text">{{ formatDate(item.date) }} {{ item.time }}</span></div>
-                        </div>
-                    </div>
-                    <div class="row">
-                        <div class="col-12 mt-4 enlargen-font"  :class="{ 'hover-border' : item.hoverLog, 'log-border' : !item.hoverLog }" v-if="!item.editLog">
-                            <div>{{ item.description }}</div>
-                        </div>
-
-                    </div>
-                    <transition name="fade">
-                        <div class="row" v-if="item.logIcon">
-                            <div class="col-12">
-                                <hr />
-                            </div>
-                                <div class="col-6">
-                                    <div class="label-text">Contacted</div>
-                                    <div class="uniform-primary-color font-weight-700 mt-1 c-pointer">{{ `${personDetails.firstName} ${personDetails.lastName}` }}</div>
-                                </div>
-                                <div class="col-6">
-                                    <div class="label-text">{{ item.typeText }} Outcome</div>
-                                    <div class="mt-1 uniform-primary-color font-weight-700 c-pointer">{{ item.outcomeText }}</div>
-                                </div>
-                        </div>
-                    </transition>
-                </div>
+            </transition>
         </div>
+    </div>
 </template>
 
 
@@ -113,7 +46,7 @@
 import { ref } from "vue";
 import dateFormatter from '../../../../services/dates/dateformatter';
 export default {
-    emits: ['individualcallicon', 'opensmslogpane', 'hoverlog', 'outHoverLog'],
+    emits: ['individualcallicon', 'opensmslogpane'],
     props: ['personDetails', 'logList'],
     setup(props, { emit }) {
         const hoverLog = ref(false)
@@ -124,16 +57,6 @@ export default {
         const date = ref("")
         const timeRef = ref(false)
         const logIcon = ref(false)
-
-        const onHoverBorderLog = (index) => {
-            // hoverLog.value = true
-            emit('hoverlog', index)
-        }
-        
-        const outHoverBorderLog = (index) => {
-            // hoverLog.value = false
-            emit('outHoverLog', index)
-        }
 
         const toggleEditLog = () => {
             editLog.value = true
@@ -147,11 +70,11 @@ export default {
         const toggleContact = (event) => {
             contactRef.value.toggle(event);
         }
-        
+
         const toggleOutcome = (event) => {
             outcomeRef.value.toggle(event);
         }
-        
+
         const toggleTime = (event) => {
             timeRef.value.toggle(event);
         }
@@ -169,9 +92,6 @@ export default {
         }
 
         return {
-            hoverLog,
-            onHoverBorderLog,
-            outHoverBorderLog,
             editLog,
             toggleEditLog,
             saveLogDesc,
@@ -203,6 +123,7 @@ export default {
     transition: all 0.5s ease-in-out;
     transform: rotateZ(180deg);
 }
+
 .unroll-note-icon {
     transition: all 0.5s ease-in-out;
     transform: rotateZ(90deg);
@@ -212,28 +133,32 @@ export default {
     transition: all 0.5s ease-in-out;
     opacity: 0;
 }
+
 .fade-enter-active {
-  animation: fade-in .3s;
+    animation: fade-in .3s;
 }
+
 .fade-leave-active {
-  animation: fade-in .3s reverse;
+    animation: fade-in .3s reverse;
 }
+
 @keyframes fade-in {
-  0% {
-    transform: translateY(-30px);
-    opacity: 0;
-  }
-  100% {
-    transform: translateY(0);
-    opacity: 1;
-  }
+    0% {
+        transform: translateY(-30px);
+        opacity: 0;
+    }
+
+    100% {
+        transform: translateY(0);
+        opacity: 1;
+    }
 
 }
 
 .btn-btn {
-    font-size: 17px;
+    font-size: 13px;
     line-height: 14px;
-    padding: 11px 16px;
+    padding: 9px 15px;
     border-radius: 3px;
     -webkit-font-smoothing: auto;
     -moz-osx-font-smoothing: auto;
@@ -244,13 +169,13 @@ export default {
 .save-btn {
     background-color: #425b76;
     border: 1px solid #425b76;
-    color: #fff;    
+    color: #fff;
 }
 
 .cancel-btn {
     background-color: #eaf0f6;
     border-color: #cbd6e2;
-    color: #506e91; 
+    color: #506e91;
 }
 
 .uniform-primary-color {

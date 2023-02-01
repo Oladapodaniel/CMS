@@ -157,6 +157,7 @@ export default {
         ElMessage({
           type: "success",
           message: "Membership Updated Successfully",
+          duration: 5000
         });
       }catch (error){
         finish()
@@ -172,12 +173,14 @@ export default {
             showClose: true,
             message: 'This people classification you are trying to delete has been used to save contacts. You can not delete it. You can rename instead.',
             type: 'error',
+            duration: 5000
           })
         }else{
           this.classifications = this.classifications.filter(i => i.id !== id);
           ElMessage({
               type: 'success',
               message: 'Membership Deleted Successfully',
+              duration: 5000
             })
         }
         
@@ -189,11 +192,11 @@ export default {
      deletePop(id) {
        ElMessageBox.confirm(
         'Are you sure you want to proceed?',
-        'Warning',
-        {
+        'Confirm delete',
+       {
           confirmButtonText: 'OK',
           cancelButtonText: 'Cancel',
-          type: 'warning',
+          type: 'error',
         }
       )
       .then(() => {
@@ -203,6 +206,7 @@ export default {
           ElMessage({
             type: 'info',
             message: 'Delete canceled',
+            duration: 5000
           })
         })
         },

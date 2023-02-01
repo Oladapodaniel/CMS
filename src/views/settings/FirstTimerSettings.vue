@@ -196,6 +196,7 @@ export default {
        ElMessage({
               type: 'success',
               message: 'New Guest Life Cycle Order Updated Successfully',
+              duration: 5000
             })
       console.log(ordered, "ORDERED");
       
@@ -221,6 +222,7 @@ export default {
         ElMessage({
               type: 'success',
               message: 'New Guest Life Cycle Save Successfully',
+              duration: 5000
             })
       }catch(error){
         finish()
@@ -236,6 +238,7 @@ export default {
          ElMessage({
               type: 'success',
               message: 'New Guest Life Cycle Updated Successfully',
+              duration: 5000
             })
 
       }catch (error){
@@ -253,6 +256,7 @@ export default {
         ElMessage({
               type: 'success',
               message: 'Delete Successfully',
+              duration: 5000
             })
       } catch (error){
         finish()
@@ -263,11 +267,11 @@ export default {
       deletePop(id) {
          ElMessageBox.confirm(
         'Are you sure you want to Delete?',
-        'Warning',
+        'Confirm delete',
         {
           confirmButtonText: 'OK',
           cancelButtonText: 'Cancel',
-          type: 'warning',
+          type: 'error',
         }
       )
       .then(() => {
@@ -277,6 +281,7 @@ export default {
           ElMessage({
             type: 'info',
             message: 'Delete canceled',
+            duration: 5000
           })
         })
         },
