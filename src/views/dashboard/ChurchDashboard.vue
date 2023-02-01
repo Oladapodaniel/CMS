@@ -654,16 +654,6 @@ export default {
            console.log(notifiedDays.value, "jkjsjkj")
     }
 
-    const countDownDate = () =>{
-                    // Set the date we're counting down to
-          let countDownDates = new Date(getRenewalDate.value).getTime();
-            // Get today's date and time
-            let now = new Date().getTime();
-            // Find the distance between now and the count down date
-            let distance = countDownDates - now;
-           notifiedDays.value = Math.floor(distance / (1000 * 60 * 60 * 24));
-    }
-
     useSubscription.getPlan().then((res) => {
       planUserIs.value = res.description;
       getRenewalDate.value = res.subscriptionExpiration;
