@@ -858,11 +858,11 @@ export default {
         .sendMessage("/api/Messaging/sendEmail", data)
         .then((res) => {
 
-          if (res.status === 200) {
+          if (res.data.status ) {
             // store.dispatch('communication/addToSentEmail', res.data.mail)
             swal({
               title: "Success!",
-              text: "Your email has been sent successfully!",
+              text: res.data.response,
               icon: "success",
               buttons: ["Send another", "Good"],
               confirmButtonColor: '#8CD4F5',
