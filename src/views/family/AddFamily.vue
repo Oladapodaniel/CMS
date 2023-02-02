@@ -778,7 +778,6 @@ export default {
                 // }
                 try {
                     let res = await axios.post("/api/family/createFamily", family)
-                    console.log(res,"sdasds")
                     if(res.status === 200){
                         ElMessage({
                         type: "success",
