@@ -372,7 +372,7 @@ export default {
         .get(`/api/Membership/GetCurrentSignedInUser`)
         .then((response) => {
           this.currentUser = response.data;
-          console.log(this.getTypes());
+          // console.log(this.getTypes());
         })
         .catch((error) => console.log(error));
     } else {

@@ -127,7 +127,7 @@
                     >
                   </a>
                   <a class="dropdown-item"><router-link :to="{path:'/tenant/settings/invitenewuser', query:{ email:churchMem.email } }"> Edit</router-link></a>
-                  <a class="dropdown-item" @click="deletePop(churchMem.email)"> <router-link to="" v-if="churchMem.email !== getCurrentUser.userEmail"> Delete </router-link></a>
+                  <a class="dropdown-item" @click="deletePop(churchMem.email)"> <router-link to="" v-if="churchMem.email !== getCurrentUser.userEmail" > Delete  </router-link></a>
                   <a class="dropdown-item" @click="deactivateChurchUser(churchMem.email, index)"> <router-link to=""> Inactive </router-link></a>
                   <a class="dropdown-item" @click="activateChurchUser(churchMem.email, index)"> <router-link to=""> Active </router-link></a>
                 </div>
@@ -152,7 +152,7 @@ import finish from "../../services/progressbar/progress";
 export default {
   data(){
     return{
-      getCurrentUser: store.getters.currentUser,
+      getCurrentUser: {},
       churchProfile: '',
       searchText: '',
       churchUsers: [],
@@ -205,6 +205,7 @@ export default {
          ElMessage({
               type: 'success',
               message: 'Status Make Active',
+              duration: 5000
             })
       }catch(error){
         finish()
@@ -220,6 +221,7 @@ export default {
         ElMessage({
               type: 'success',
               message: 'Status Make Inactive',
+              duration: 5000
             })
 
       }catch(error){
@@ -237,6 +239,7 @@ export default {
         ElMessage({
               type: 'success',
               message: 'Church User Deleted Successfully',
+              duration: 5000
             })
 
       } catch (error){
@@ -247,11 +250,11 @@ export default {
      deletePop(email) {
       ElMessageBox.confirm(
         'Are you sure you want to proceed?',
-        'Warning',
+        'Confirm delete',
         {
           confirmButtonText: 'OK',
           cancelButtonText: 'Cancel',
-          type: 'warning',
+          type: 'error',
         }
       )
       .then(() => {
@@ -261,15 +264,15 @@ export default {
           ElMessage({
             type: 'info',
             message: 'Delete canceled',
+            duration: 5000
           })
         })
         },
         async currentUser () {
-          if(!store.getters.currentUser){
+          if(!store.getters.currentUser || !this.getCurrentUser ){
              try{
                 const { data } = await axios.get('/api/Membership/GetCurrentSignedInUser')
-                this.getCurrentUser = data;
-                console.log(this.getCurrentUser)
+                this.getCurrentUser = data ;
               }catch(error){
                 console.log(error)
               }    
