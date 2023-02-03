@@ -28,7 +28,13 @@
               </div>
               <div class="col-10 pl-md-0">
                 <p
-                  class="mb-0 font-weight-700 mb-n2 d-flex justify-content-between"
+                  class="
+                    mb-0
+                    font-weight-700
+                    mb-n2
+                    d-flex
+                    justify-content-between
+                  "
                 >
                   <span>{{ post.posterDetails.posterName }}</span>
                   <span>
@@ -44,18 +50,26 @@
                         class="dropdown-menu"
                         aria-labelledby="dropdownMenuButton"
                       >
-                        <a class="dropdown-item elipsis-items cursor-pointer"
-                        @click="addToStore(post)"
+                        <router-link
+                          :to="{
+                            name: 'SocialPost',
+                            query: { postId: post.postId },
+                          }"
+                          @click="addToStore(post)"
+                          class="text-decoration-none text-dark"
                         >
-                        <router-link :to="{ name: 'SocialPost', query: { postId: post.postId } }" class="text-decoration-none text-dark">Edit</router-link>
-                        </a>
+                          <a class="dropdown-item elipsis-items cursor-pointer">
+                            Edit
+                          </a>
+                        </router-link>
                         <a
                           class="dropdown-item elipsis-items cursor-pointer"
                           @click="showDeleteModal(post)"
                         >
                           Delete
                         </a>
-                        <a class="dropdown-item elipsis-items cursor-pointer"
+                        <a
+                          class="dropdown-item elipsis-items cursor-pointer"
                           @click="showDisapproveModal(post.postId)"
                         >
                           Disapprove
@@ -97,11 +111,17 @@
             <!-- Post media -->
             <div class="row">
               <div class="col-md-12 text-center">
-                <span><img
-                  v-if="post.type === 'Picture'"
-                  :src="post.mediaUrl"
-                  alt=""
-                  style="width: auto;max-width:100%;max-height:300px;border-radius: 15px;"
+                <span
+                  ><img
+                    v-if="post.type === 'Picture'"
+                    :src="post.mediaUrl"
+                    alt=""
+                    style="
+                      width: auto;
+                      max-width: 100%;
+                      max-height: 300px;
+                      border-radius: 15px;
+                    "
                 /></span>
                 <video
                   v-if="post.type === 'Video'"
@@ -137,14 +157,24 @@
             <div class="row my-3">
               <div class="col-md-12">
                 <a
-                  class="text-decoration-none c-pointer post-action-link px-3 px-md-4"
+                  class="
+                    text-decoration-none
+                    c-pointer
+                    post-action-link
+                    px-3 px-md-4
+                  "
                 >
                   <span><i class="pi pi-thumbs-up mr-2"></i></span>
                   <span>Like</span>
                   <span class="ml-2">{{ post.likeCount }}</span>
                 </a>
                 <a
-                  class="text-decoration-none c-pointer post-action-link px-3 px-md-4"
+                  class="
+                    text-decoration-none
+                    c-pointer
+                    post-action-link
+                    px-3 px-md-4
+                  "
                 >
                   <span><i class="pi pi-comment mr-2"></i></span>
                   <span>Comment</span>
@@ -153,7 +183,12 @@
                   }}</span>
                 </a>
                 <a
-                  class="text-decoration-none c-pointer post-action-link px-3 px-md-4"
+                  class="
+                    text-decoration-none
+                    c-pointer
+                    post-action-link
+                    px-3 px-md-4
+                  "
                 >
                   <span><i class="pi pi-share-alt mr-2"></i></span>
                   <span>Share</span>
@@ -355,7 +390,7 @@ export default {
     const previewLenth = 300;
     const toast = useToast();
     const confirm = useConfirm();
-    const store = useStore()
+    const store = useStore();
 
     membershipService
       .getSignedInUser()
@@ -425,7 +460,8 @@ export default {
 
     const showDisapproveModal = (postId) => {
       confirm.require({
-        message: "Are you sure you want to proceed? This post will no longer be public.",
+        message:
+          "Are you sure you want to proceed? This post will no longer be public.",
         header: "Confirmation",
         icon: "pi pi-exclamation-triangle",
         acceptClass: "confirm-delete",
@@ -442,7 +478,7 @@ export default {
     const deletePost = async (post) => {
       try {
         await social_service.deletePost(post.postId);
-        feed.value = feed.value.filter(i => i.postId !== post.postId);
+        feed.value = feed.value.filter((i) => i.postId !== post.postId);
         toast.add({
           severity: "success",
           summary: "Post Deleted",
@@ -462,7 +498,7 @@ export default {
     const disapprovePost = async (postId) => {
       try {
         await social_service.disapprovePost(postId);
-        feed.value = feed.value.filter(i => i.postId !== postId);
+        feed.value = feed.value.filter((i) => i.postId !== postId);
         toast.add({
           severity: "success",
           summary: "Post Disapproved",
@@ -480,8 +516,8 @@ export default {
     };
 
     const addToStore = (post) => {
-      store.dispatch('setPost', post);
-    }
+      store.dispatch("setPost", post);
+    };
 
     return {
       feed,
