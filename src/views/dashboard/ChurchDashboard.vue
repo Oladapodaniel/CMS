@@ -52,7 +52,53 @@
                 {{ moment.parseZone(new Date(getRenewalDate).toDateString(), "YYYY MM DD HH ZZ")._i.substr(4, 11) }}
               </div>
             </div>
-            <div class="col-md-12   py-3 mb-1 day2" v-if="notifiedDays === 2 ">
+            <div class="col-md-12 text-dark py-3 mb-2 day3" v-if="notifiedDays === 3 ">
+              <div class="">
+                3 days remaining before your subscription expires, kindly subscribe before 
+                {{ moment.parseZone(new Date(getRenewalDate).toDateString(), "YYYY MM DD HH ZZ")._i.substr(4, 11) }}
+              </div>
+            </div>
+            <div class="col-md-12 text-dark py-3 mb-2 day3" v-if="notifiedDays === 10 ">
+              <div class="">
+                10 days remaining before your subscription expires, kindly subscribe before 
+                {{ moment.parseZone(new Date(getRenewalDate).toDateString(), "YYYY MM DD HH ZZ")._i.substr(4, 11) }}
+              </div>
+            </div>
+            <div class="col-md-12 text-dark py-3 mb-2 day3" v-if="notifiedDays === 9 ">
+              <div class="">
+                9 days remaining before your subscription expires, kindly subscribe before 
+                {{ moment.parseZone(new Date(getRenewalDate).toDateString(), "YYYY MM DD HH ZZ")._i.substr(4, 11) }}
+              </div>
+            </div>
+            <div class="col-md-12 text-dark py-3 mb-2 day3" v-if="notifiedDays === 8 ">
+              <div class="">
+                8 days remaining before your subscription expires, kindly subscribe before 
+                {{ moment.parseZone(new Date(getRenewalDate).toDateString(), "YYYY MM DD HH ZZ")._i.substr(4, 11) }}
+              </div>
+            </div>
+            <div class="col-md-12 text-dark py-3 mb-2 day3" v-if="notifiedDays === 7 ">
+              <div class="">
+                7 days remaining before your subscription expires, kindly subscribe before 
+                {{ moment.parseZone(new Date(getRenewalDate).toDateString(), "YYYY MM DD HH ZZ")._i.substr(4, 11) }}
+              </div>
+            </div>
+            <div class="col-md-12   py-3 mb-1 day2" v-if="notifiedDays === 6 ">
+              <div class=""> 6 days remaining before your subscription expires, kindly subscribe before 
+                {{ moment.parseZone(new Date(getRenewalDate).toDateString(), "YYYY MM DD HH ZZ")._i.substr(4, 11) }}</div>
+            </div>
+            <div class="col-md-12   py-3 mb-1 day2" v-if="notifiedDays === 5 ">
+              <div class=""> 5 days remaining before your subscription expires, kindly subscribe before 
+                {{ moment.parseZone(new Date(getRenewalDate).toDateString(), "YYYY MM DD HH ZZ")._i.substr(4, 11) }}</div>
+            </div>
+            <div class="col-md-12   py-3 mb-1 day1" v-if="notifiedDays === 4 ">
+              <div class=""> 4 days remaining before your subscription expires, kindly subscribe before 
+                {{ moment.parseZone(new Date(getRenewalDate).toDateString(), "YYYY MM DD HH ZZ")._i.substr(4, 11) }}</div>
+            </div>
+            <div class="col-md-12   py-3 mb-1 day1" v-if="notifiedDays === 3 ">
+              <div class=""> 3 days remaining before your subscription expires, kindly subscribe before 
+                {{ moment.parseZone(new Date(getRenewalDate).toDateString(), "YYYY MM DD HH ZZ")._i.substr(4, 11) }}</div>
+            </div>
+            <div class="col-md-12   py-3 mb-1 day1" v-if="notifiedDays === 2 ">
               <div class=""> 2 days remaining before your subscription expires, kindly subscribe before 
                 {{ moment.parseZone(new Date(getRenewalDate).toDateString(), "YYYY MM DD HH ZZ")._i.substr(4, 11) }}</div>
             </div>
@@ -111,14 +157,13 @@
               </div>
             </div>
             <div class="bottom">
-              <div class="box-bottom">
+              <div class="box-bottom border " :class="{ 'border-danger' : notifiedDays <= 4 }">
                 <div style="font-size: 0.8em; padding-top:0.3rem; font-weight: 700"  v-tooltip.top="planUserIs">
                   {{ planUserIs }}
-                  <!-- {{ planUserIs.length > 11 ? `${planUserIs.slice(0, 9)}...` : planUserIs }} -->
                 </div>
                 <router-link :to="{ name: 'Subscription' }" class="mt-1">
                   <!-- <span class="plan-text">YOU'RE ON A FREE PLAN</span> -->
-                  <button
+                  <button 
 
                   class="upgrade-btn"
                   :class="[buttonTextCheck.color, { 'bg-warning': calculatedPercentage >= 90}]"
