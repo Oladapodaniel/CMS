@@ -1,12 +1,12 @@
 <template>
   <div>
     <!-- <Treee :items="groups"/> -->
-    <div class="container-slim">
+    <div :class="{ 'container-slim': lgAndUp || xlAndUp }">
       <div class="container-fluid">
         <div class="row d-md-flex yu mt-5">
           <!-- <smsComponent :groupData ="groupListDetails"/> -->
           <div class="col-md-6 col-4">
-            <div class="events">Groups</div>
+            <div class="head-text">Groups</div>
             <Toast />
             <ConfirmDialog />
             
@@ -276,6 +276,7 @@ import emailComponent from "./component/emailComponent.vue";
 import SideBar from "./sidemodal/SideModal.vue";
 import GroupTree from "./component/GroupTree.vue";
 import Sidebar from "primevue/sidebar";
+import deviceBreakpoint from "../../mixins/deviceBreakpoint";
 
 export default {
   // name: 'Tree',
@@ -293,6 +294,7 @@ export default {
     const store = useStore();
     const loading = ref(false);
     const displayConfirmModal = ref(false);
+    const { lgAndUp, xlAndUp } = deviceBreakpoint()
     const groups = ref(store.getters["groups/groups"]);
     const groupListDetails = ref([]);
     const toast = useToast();
@@ -478,6 +480,8 @@ export default {
       // showSide,
       // sendSms,
       groupClick,
+      lgAndUp,
+      xlAndUp,
       clearInput,
       showSMS,
       showEmail,
