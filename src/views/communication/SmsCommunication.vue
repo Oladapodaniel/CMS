@@ -12,21 +12,21 @@
     </div>
 
     <!-- Content Box -->
-    <main id="main" class="mt-3">
+    <main class="mt-md-3" :class="{ 'main' : mdAndUp || lgAndUp || xlAndUp }">
       <div class="container-fluid">
         <div class="row">
           <!-- Side mennu -->
-          <div class="col-md-3" id="side-menu">
+          <div class="col-md-3" :class="{ 'side-menu' : mdAndUp || lgAndUp || xlAndUp }">
             <div class="row">
-              <div class="col-md-12 d-flex justify-content-center mt-4 mb-5">
-                <div class=" ml-3 mt-2 toggle">
-                  <i class="pi pi-bars" @click="toggleMenu"></i>
+              <div class="col-md-12 px-0 px-md-3 d-flex flex-column mt-4">
+                <div class="mt-2" v-show="xsOnly || smAndUp">
+                  <i class="pi pi-bars mb-3" @click="toggleMenu"></i>
                 </div>
                 <router-link to="/tenant/sms/compose"
-                  class="btn compose-btn border-0 font-weight-bold default-btn border-none">Compose SMS</router-link>
+                  class="w-100 mb-4 btn compose-btn border-0 font-weight-bold default-btn border-none">Compose SMS</router-link>
               </div>
             </div>
-            <div class="row mb-3" :class="{ 'show': menuShouldShow, 'links-menu': !menuShouldShow }">
+            <div class="row" :class="{ 'show mb-3': menuShouldShow, 'links-menu': !menuShouldShow }">
               <div class="col-md-12 ">
                 <div class="row menu-item-con py-2" :class="{
                   'active-link':
@@ -124,7 +124,7 @@
           </div>
 
           <!-- Bigger row -->
-          <div class="col-md-9 col-xl-8" style="margin: auto">
+          <div class="col-md-9 col-xl-8 px-0 px-md-3" style="margin: auto">
             <router-view> </router-view>
           </div>
         </div>
@@ -141,7 +141,7 @@ export default {
   setup() {
     const route = useRoute();
     const menuShouldShow = ref(false);
-    const { lgAndUp, xlAndUp } = deviceBreakpoint();
+    const { xsOnly, smAndUp, mdAndUp, lgAndUp, xlAndUp } = deviceBreakpoint();
 
 
     const toggleMenu = () => {
@@ -153,33 +153,23 @@ export default {
       toggleMenu,
       menuShouldShow,
       xlAndUp,
-      lgAndUp
+      lgAndUp,
+      mdAndUp,
+      xsOnly,
+      smAndUp
     };
   },
 };
 </script>
 
 <style scoped>
-.toggle {
-  display: none;
-  width: 20px;
-  text-align: center;
-  position: absolute;
-  top: -40px;
-  left: 4px;
-  font-size: 30px;
-}
 
-.toggle:hover {
-  cursor: pointer;
-}
-
-#main {
+.main {
   border: 1px solid #02172e30;
   border-radius: 30px;
 }
 
-#side-menu {
+.side-menu {
   border-right: 1px solid #02172e30;
 }
 
@@ -291,9 +281,6 @@ export default {
 }
 
 @media screen and (max-width: 765px) {
-  .toggle {
-    display: block;
-  }
 
   .show {
     overflow: hidden;

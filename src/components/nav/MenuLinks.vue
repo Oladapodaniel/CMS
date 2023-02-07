@@ -118,9 +118,9 @@ export default {
     const tenantDisplayName = computed(() => {
       if (!tenantInfo.value.churchName) return "";
       const name =
-        tenantInfo.value.churchName.length < 18
+        tenantInfo.value.churchName.length < 15
           ? tenantInfo.value.churchName
-          : `${tenantInfo.value.churchName.slice(0, 18)}...`;
+          : `${tenantInfo.value.churchName.slice(0, 15)}...`;
       return name;
     });
 

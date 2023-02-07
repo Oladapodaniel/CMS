@@ -65,7 +65,7 @@
                   {{ planUserIs }}
                 </div>
               </el-tooltip>
-              <router-link :to="{ name: 'Subscription' }" class="mt-1">
+              <router-link :to="{ name: 'Subscription' }" class="mt-1 no-decoration">
                 <el-button :color="!buttonTextCheck.color ? '#136acd' : ''" class="mt-2" style="height: 25px"
                   :class="[buttonTextCheck.color, { 'bg-warning': calculatedPercentage >= 90 }]" round>
                   <p class="mb-0 small" :class="[buttonTextCheck.color]">{{ buttonTextCheck.text }}</p>
@@ -108,8 +108,8 @@
               <div class="more-body mt-2">
                 Get a user engaging website for your church.
               </div>
-              <a href="https://churchplus.co/awoofwebsite/" target="_blank">
-                <el-button color="#136ACD" class="mt-1" round plain>Get one now</el-button>
+              <a href="https://churchplus.co/awoofwebsite/" target="_blank" class="no-decoration">
+                <el-button class="mt-1" round>Get one now</el-button>
               </a>
             </div>
 
@@ -119,8 +119,8 @@
               <div class="more-body mt-2">
                 Make online donations to your church.
               </div>
-              <router-link to="/tenant/payments">
-                <el-button color="#136ACD" class="mt-1" round plain>Set up now</el-button>
+              <router-link to="/tenant/payments" class="no-decoration">
+                <el-button class="mt-1" round>Set up now</el-button>
               </router-link>
             </div>
 
@@ -130,8 +130,8 @@
               <div class="more-body mt-2">
                 Get a customized mobile app for your church.
               </div>
-              <router-link :to="{ name: 'MobileOnboarding' }">
-                <el-button color="#136ACD" class="mt-1" round plain>Set up now</el-button>
+              <router-link :to="{ name: 'MobileOnboarding' }" class="no-decoration">
+                <el-button class="mt-1" round>Set up now</el-button>
               </router-link>
             </div>
           </div>
@@ -333,8 +333,8 @@
               <div class="more-body mt-2">
                 Get a user engaging website for your church.
               </div>
-              <a href="https://churchplus.co/awoofwebsite/" target="_blank">
-                <el-button color="#136ACD" class="mt-1" round plain>Get one now</el-button>
+              <a href="https://churchplus.co/awoofwebsite/" class="no-decoration" target="_blank">
+                <el-button class="mt-1" round>Get one now</el-button>
               </a>
             </div>
             <div class="col-12 col-sm-6 col-md-4 mt-5 mt-sm-0 more-things second">
@@ -347,8 +347,8 @@
               <div class="more-body mt-2">
                 Allow members to make online donations to your church.
               </div>
-              <router-link to="/tenant/payments">
-                <el-button color="#136ACD" class="mt-1" round plain>Set up now</el-button>
+              <router-link to="/tenant/payments" class="no-decoration">
+                <el-button class="mt-1" round>Set up now</el-button>
               </router-link>
             </div>
             <div class="col-12 col-sm-6 col-md-4 mt-5 mt-md-0 more-things">
@@ -361,8 +361,8 @@
               <div class="more-body mt-2">
                 Get a customized mobile app for your church.
               </div>
-              <router-link :to="{ name: 'MobileOnboarding' }">
-                <el-button color="#136ACD" class="mt-1" round plain>Set up now</el-button>
+              <router-link :to="{ name: 'MobileOnboarding' }" class="no-decoration">
+                <el-button class="mt-1" round>Set up now</el-button>
               </router-link>
             </div>
           </div>
