@@ -2,7 +2,7 @@
     <div class="container-top" :class="{ 'container-slim': lgAndUp || xlAndUp }">
       <div class="create-btn-div">
         <div >
-          <h2 class="head-text ">VOICE</h2>
+          <h2 class="head-text ">Voice</h2>
         </div>
       </div>
       <div class="row">
@@ -15,121 +15,13 @@
       <main id="main" class="mt-3">
         <div class="container-fluid">
           <div class="row">
-            <!-- Side mennu -->
+            <!-- Side menu -->
             <div class="col-md-3" id="side-menu">  
               <div class="row">
-                <div class="col-md-12 d-flex justify-content-center mt-4 mb-5">
-                  <div class=" ml-3 mt-2 toggle"  >
-                    <i class="pi pi-bars" @click="toggleMenu"></i>
-                  </div>
-                  <el-button round class="font-weight-bold d-none d-sm-flex" size="large" color="#136ACD" >
-                     <router-link
-                    style="color:#FFFFFF;"
-                    to="/tenant/voice"
-                    >Upload Voice</router-link
-                  >
+                <div class="col-md-12 mt-4">
+                  <el-button round class="font-weight-bold w-100" size="large">
+                    Upload voice
                   </el-button>
-
-                 <el-button round class="mt-4 d-sm-none w-100" size="large" color="#136ACD" >
-                     <router-link
-                    style="color:#FFFFFF;" 
-                    to="/tenant/voice"
-                    >Upload Voice</router-link
-                  >
-                 </el-button>
-
-                 
-                </div>
-              </div>
-              <div class="row mb-3" :class="{ 'show': menuShouldShow, 'links-menu' : !menuShouldShow }"  >
-                <div class="col-md-12 " >
-                  <div
-                    class="row menu-item-con py-2"
-                    :class="{
-                      'active-link':
-                        route.path.includes('/tenant/sms/sent'),
-                    }"
-                  >
-                    <div class="col-md-12 m-auto menu-item-div pl-4">
-                      <a class="btn btn-default font-weight-bold">
-                        <span class="menu-item">
-                          <router-link
-                            class="r-link text-decoration-none d-flex align-items-center "
-                            to="/tenant/sms/sent"
-                          >
-                            <!-- <i class="pi pi-arrow-circle-up mr-3 menu-icon"></i> -->
-                           <el-icon size="20"  class="menu-icon mr-3"><Top /></el-icon>
-                            <span class="active">Sent</span>
-                          </router-link>
-                        </span>
-                      </a>
-                    </div>
-                  </div>
-
-                  <div
-                    class="row menu-item-con py-2"
-                    :class="{
-                      'active-link':
-                        route.path === '/tenant/sms',
-                    }"
-                  >
-                    <div class="col-md-12 menu-item-div m-auto">
-                      <a class="btn btn-default font-weight-bold">
-                        <span class="menu-item"
-                          >
-                          
-                        </span>
-                      </a>
-                    </div>
-                  </div>
-
-                  <div
-                    class="row menu-item-con py-2"
-                    :class="{
-                      'active-link':
-                        route.path === '/tenant/sms/draft',
-                    }"
-                  >
-                    <div class="col-md-12 menu-item-div m-auto">
-                      <a class="btn btn-default font-weight-bold">
-                        <span class="menu-item">
-                         
-                        </span>
-                      </a>
-                    </div>
-                  </div>
-
-                  <div
-                    class="row menu-item-con py-2"
-                    :class="{
-                      'active-link':
-                        route.path === '/tenant/sms/contacts',
-                    }"
-                  >
-                    <div class="col-md-12 menu-item-div m-auto">
-                      <a class="btn btn-default font-weight-bold">
-                        <span class="menu-item">
-                         
-                        </span>
-                      </a>
-                    </div>
-                  </div>
-
-                  <div
-                    class="row menu-item-con py-2"
-                    :class="{
-                      'active-link':
-                        route.path === '/tenant/sms/scheduled',
-                    }"
-                  >
-                    <div class="col-md-12 menu-item-div m-auto">
-                      <a class="btn btn-default font-weight-bold">
-                        <span class="menu-item">
-                          
-                        </span>
-                      </a>
-                    </div>
-                  </div>
                 </div>
               </div>
             </div>

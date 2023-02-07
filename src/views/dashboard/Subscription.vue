@@ -619,8 +619,9 @@ export default {
       initializePayment(0);
       /*eslint no-undef: "warn"*/
       let handler = PaystackPop.setup({
-        key: process.env.VUE_APP_PAYSTACK_PUBLIC_KEY_LIVE,
-        // key: process.env.VUE_APP_PAYSTACK_API_KEY,
+        // key: process.env.VUE_APP_PAYSTACK_PUBLIC_KEY_LIVE,
+        // process
+        key: process.env.VUE_APP_PAYSTACK_API_KEY,
 
         email: "info@churchplus.co",
         amount: TotalAmount.value * 100,
@@ -635,8 +636,9 @@ export default {
               })
         },
         callback: function (response) {
-          subscriptionPayment(response, 0);
+          // subscriptionPayment(response, 0);
           //Route to where you confirm payment status
+          display.value = true
         },
       });
       handler.openIframe();
@@ -688,7 +690,8 @@ export default {
           email: currentUser.value.userEmail
         },
         callback: (response) => {
-          subscriptionPayment(response, 1)
+          // subscriptionPayment(response, 1)
+          display.value = true
         },
         onclose: () => console.log('Payment closed'),
         customizations: {

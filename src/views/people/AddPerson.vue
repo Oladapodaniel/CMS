@@ -39,7 +39,7 @@
           <el-form :model="person" style="width: 100%">
             <el-form-item>
               <div class="d-flex flex-column flex-lg-row justify-content-end w-100">
-                <label for="firstName" class="mr-3">Membership</label>
+                <label for="firstName" class="mr-3 font-weight-600">Membership</label>
                 <el-select-v2 v-model="memberClassificationId" @change="setSelectedMem"
                   :options="memberships.map(i => ({ label: i.name, value: i.id }))" placeholder="--Select membership--"
                   size="large" class="input-width" />
@@ -47,37 +47,37 @@
             </el-form-item>
             <el-form-item>
               <div class="d-flex flex-column flex-lg-row justify-content-end w-100">
-                <label for="firstName" class="mr-3">Firstname<span style="color: red"> *</span></label>
+                <label for="firstName" class="mr-3 font-weight-600">Firstname<span style="color: red"> *</span></label>
                 <el-input type="text" class="input-width" v-model="person.firstName" placeholder="First name" />
               </div>
             </el-form-item>
             <el-form-item>
               <div class="d-flex flex-column flex-lg-row justify-content-end w-100">
-                <label for="firstName" class="mr-3">Surname</label>
+                <label for="firstName" class="mr-3 font-weight-600">Surname</label>
                 <el-input type="text" class="input-width" v-model="person.lastName" placeholder="Last name" />
               </div>
             </el-form-item>
             <el-form-item>
               <div class="d-flex flex-column flex-lg-row justify-content-end w-100">
-                <label for="firstName" class="mr-3">Phone number</label>
+                <label for="firstName" class="mr-3 font-weight-600">Phone number</label>
                 <el-input type="text" class="input-width" v-model="person.mobilePhone" placeholder="Phone number" />
               </div>
             </el-form-item>
             <el-form-item>
               <div class="d-flex flex-column flex-lg-row justify-content-end w-100">
-                <label for="firstName" class="mr-3">Email</label>
+                <label for="firstName" class="mr-3 font-weight-600">Email</label>
                 <el-input type="text" class="input-width" v-model="person.email" placeholder="Email" />
               </div>
             </el-form-item>
             <el-form-item>
               <div class="d-flex flex-column flex-lg-row justify-content-end w-100">
-                <label for="firstName" class="mr-3">Address</label>
+                <label for="firstName" class="mr-3 font-weight-600">Address</label>
                 <el-input type="text" class="input-width" v-model="person.address" placeholder="Address" />
               </div>
             </el-form-item>
             <el-form-item>
               <div class="d-flex flex-column flex-lg-row justify-content-end w-100">
-                <label for="firstName" class="mr-3">Person to follow-up</label>
+                <label for="firstName" class="mr-3 font-weight-600">Person to follow-up</label>
                 <div class="input-width">
                   <SearchMembers @memberdetail="setContact" :currentMember="currentContact" />
                 </div>
@@ -109,7 +109,7 @@
               <div v-show="showCelebration">
                 <el-form-item>
                   <div class="d-flex flex-column flex-lg-row justify-content-end w-100">
-                    <div class="mr-3">Birthday</div>
+                    <div class="mr-3 font-weight-600">Birthday</div>
                     <div class="input-width d-flex">
                       <el-select-v2 v-model="person.dayOfBirth"
                         :options="birthDaysArr.map(i => ({ label: i, value: i }))" placeholder="Day" size="large"
@@ -124,7 +124,7 @@
                 </el-form-item>
                 <el-form-item>
                   <div class="d-flex flex-column flex-lg-row justify-content-end w-100">
-                    <div class="mr-3">Wedding Anniversary</div>
+                    <div class="mr-3 font-weight-600">Wedding Anniversary</div>
                     <div class="input-width d-flex">
                       <el-select-v2 v-model="person.dayOfWedding"
                         :options="annDaysArr.map(i => ({ label: i, value: i }))" placeholder="Day" size="large"
@@ -157,13 +157,13 @@
               <div v-show="showAddInfo">
                 <el-form-item>
                   <div class="d-flex flex-column flex-lg-row justify-content-end w-100">
-                    <label for="occupation" class="mr-3">Occupation</label>
+                    <label for="occupation" class="mr-3 font-weight-600">Occupation</label>
                     <el-input type="text" class="input-width" v-model="person.occupation" placeholder="Occupation" />
                   </div>
                 </el-form-item>
                 <el-form-item>
                   <div class="d-flex flex-column flex-lg-row justify-content-end w-100">
-                    <div class="mr-3">Age group</div>
+                    <div class="mr-3 font-weight-600">Age group</div>
                     <div class="input-width d-flex">
                       <el-select-v2 v-model="ageGroupId" @change="setSelectedAgeGroup"
                         :options="ageGroups.map(i => ({ label: i.name, value: i.id }))" placeholder="Age group"
@@ -173,7 +173,7 @@
                 </el-form-item>
                 <el-form-item v-for="(item, index) in dynamicCustomFields" :key="index">
                   <div class="d-flex flex-column flex-lg-row justify-content-end w-100">
-                    <label for="occupation" class="mr-3">{{ item.label }}</label>
+                    <label for="occupation" class="mr-3 font-weight-600">{{ item.label }}</label>
                     <div class="input-width d-flex" v-if="(item.controlType == 1)">
                       <el-select-v2 v-model="item.data"
                         :options="item.parameterValues.split(',').map(i => ({ label: i, value: i }))"
@@ -201,7 +201,7 @@
                 </el-form-item>
                 <el-form-item>
                   <div class="d-flex flex-column flex-lg-row justify-content-end w-100">
-                    <label for="" class="mr-3 related-info">Related information Including <br /><span
+                    <label for="" class="mr-3 font-weight-600 related-info">Related information Including <br /><span
                         class="small primary--text">small groups and cell/house
                         fellowship
                         membership</span></label>
@@ -237,8 +237,8 @@
             <div class="d-flex flex-column flex-lg-row justify-content-end w-100">
               <div></div>
               <div class="input-width d-flex justify-content-center my-4">
-                <el-button :loading="loading" :disabled="(loading || !person.firstName || !person.mobilePhone)"
-                  color="#136acd" @click="addPerson" round>Save</el-button>
+                <el-button :loading="loading" :disabled="(loading || !person.firstName)"
+                  color="#136acd" class="w-100" @click="addPerson" round>Save</el-button>
               </div>
             </div>
           </el-form>
@@ -320,16 +320,10 @@
                 </div>
                 <div class="col-12 p-0">
                   <div class="d-flex justify-content-end">
-                    <el-button color="#136acd" data-dismiss="modal" plain round>Cancel</el-button>
+                    <el-button color="#136acd" data-dismiss="modal" round>Cancel</el-button>
                     <el-button color="#136acd" :loading="addToGroupLoading" :data-dismiss="dismissAddToGroupModal"
                       @click="addMemberToGroup" round>Save</el-button>
                   </div>
-                  <!-- <div class="col-md-6"> -->
-                  <!-- <button class="default-btn primary-bg border-0 text-white" :data-dismiss="dismissAddToGroupModal"
-                      @click="addMemberToGroup">
-                      Save
-                    </button> -->
-                  <!-- </div> -->
                 </div>
               </div>
             </div>

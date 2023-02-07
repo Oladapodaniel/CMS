@@ -4,6 +4,10 @@
     padding: 6px 11px !important;
 }
 
+button.el-button {
+  font-weight: 800
+}
+
 button.el-button.el-button--primary.start-option > span {
     width: 100% !important
 }
