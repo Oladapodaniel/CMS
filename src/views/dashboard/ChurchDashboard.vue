@@ -6,339 +6,137 @@
           <h2 class="head-text">Dashboard</h2>
         </div>
       </div>
-      <div class="row mb-4">
+      <div class="row  mb-4">
         <div class="col-12">
-          <div
-            class="col-md-12 text-dark py-3 mb-2 day3"
-            v-if="notifiedDays === 10"
-          >
-            <div class="">
-              10 days remaining before your subscription expires, kindly
-              subscribe before
-              {{
-                moment
-                  .parseZone(
-                    new Date(getRenewalDate).toDateString(),
-                    "YYYY MM DD HH ZZ"
-                  )
-                  ._i.substr(4, 11)
-              }}
+          <div class="col-md-12 text-dark pb-2 pt-2  mb-2 day3" v-if="notifiedDays === 3 "> 
+            <div class=""> 3 days remaining before your subscription expires, kindly subscribe before 
+                  {{ moment.parseZone(new Date(getRenewalDate).toDateString(), "YYYY MM DD HH ZZ")._i.substr(4, 11) }}
             </div>
           </div>
-          <div
-            class="col-md-12 text-dark py-3 mb-2 day3"
-            v-if="notifiedDays === 9"
-          >
-            <div class="">
-              9 days remaining before your subscription expires, kindly
-              subscribe before
-              {{
-                moment
-                  .parseZone(
-                    new Date(getRenewalDate).toDateString(),
-                    "YYYY MM DD HH ZZ"
-                  )
-                  ._i.substr(4, 11)
-              }}
+          <div class="col-md-12 text-dark pb-2 pt-2 mb-1 day2" v-if="notifiedDays === 2 ">
+            <div class=""> 2 days remaining before your subscription expires, kindly subscribe before 
+                {{ moment.parseZone(new Date(getRenewalDate).toDateString(), "YYYY MM DD HH ZZ")._i.substr(4, 11) }}
             </div>
           </div>
-          <div
-            class="col-md-12 text-dark py-3 mb-2 day3"
-            v-if="notifiedDays === 8"
-          >
-            <div class="">
-              8 days remaining before your subscription expires, kindly
-              subscribe before
-              {{
-                moment
-                  .parseZone(
-                    new Date(getRenewalDate).toDateString(),
-                    "YYYY MM DD HH ZZ"
-                  )
-                  ._i.substr(4, 11)
-              }}
+          <div class="col-md-12 pb-2 pt-2 m-0  day1" v-if="notifiedDays === 1 ">
+            <div class=""> 1 days remaining before your subscription expires, kindly subscribe before 
+                {{ moment.parseZone(new Date(getRenewalDate).toDateString(), "YYYY MM DD HH ZZ")._i.substr(4, 11) }}
             </div>
           </div>
-          <div
-            class="col-md-12 text-dark py-3 mb-2 day3"
-            v-if="notifiedDays === 7"
-          >
-            <div class="">
-              7 days remaining before your subscription expires, kindly
-              subscribe before
-              {{
-                moment
-                  .parseZone(
-                    new Date(getRenewalDate).toDateString(),
-                    "YYYY MM DD HH ZZ"
-                  )
-                  ._i.substr(4, 11)
-              }}
-            </div>
-          </div>
-          <div class="col-md-12 py-3 mb-1 day2" v-if="notifiedDays === 6">
-            <div class="">
-              6 days remaining before your subscription expires, kindly
-              subscribe before
-              {{
-                moment
-                  .parseZone(
-                    new Date(getRenewalDate).toDateString(),
-                    "YYYY MM DD HH ZZ"
-                  )
-                  ._i.substr(4, 11)
-              }}
-            </div>
-          </div>
-          <div class="col-md-12 py-3 mb-1 day2" v-if="notifiedDays === 5">
-            <div class="">
-              5 days remaining before your subscription expires, kindly
-              subscribe before
-              {{
-                moment
-                  .parseZone(
-                    new Date(getRenewalDate).toDateString(),
-                    "YYYY MM DD HH ZZ"
-                  )
-                  ._i.substr(4, 11)
-              }}
-            </div>
-          </div>
-          <div class="col-md-12 py-3 mb-1 day1" v-if="notifiedDays === 4">
-            <div class="">
-              4 days remaining before your subscription expires, kindly
-              subscribe before
-              {{
-                moment
-                  .parseZone(
-                    new Date(getRenewalDate).toDateString(),
-                    "YYYY MM DD HH ZZ"
-                  )
-                  ._i.substr(4, 11)
-              }}
-            </div>
-          </div>
-          <div class="col-md-12 py-3 mb-1 day1" v-if="notifiedDays === 3">
-            <div class="">
-              3 days remaining before your subscription expires, kindly
-              subscribe before
-              {{
-                moment
-                  .parseZone(
-                    new Date(getRenewalDate).toDateString(),
-                    "YYYY MM DD HH ZZ"
-                  )
-                  ._i.substr(4, 11)
-              }}
-            </div>
-          </div>
-          <div class="col-md-12 py-3 mb-1 day1" v-if="notifiedDays === 2">
-            <div class="">
-              2 days remaining before your subscription expires, kindly
-              subscribe before
-              {{
-                moment
-                  .parseZone(
-                    new Date(getRenewalDate).toDateString(),
-                    "YYYY MM DD HH ZZ"
-                  )
-                  ._i.substr(4, 11)
-              }}
-            </div>
-          </div>
-          <div class="col-md-12 py-3 m-0 day1" v-if="notifiedDays === 1">
-            <div class="mt-0">
-              1 days remaining before your subscription expires, kindly
-              subscribe before
-              {{
-                moment
-                  .parseZone(
-                    new Date(getRenewalDate).toDateString(),
-                    "YYYY MM DD HH ZZ"
-                  )
-                  ._i.substr(4, 11)
-              }}
+        
+        </div>
+      </div>
+      <div class="d-flex justify-content-between flex-column flex-md-row  px-0">
+        <div class="help-text2">
+          <img src="../../assets/thingstodo.svg" alt="" />
+          <div class="can-do">
+            <h4>Things You Can Do</h4>
+            <div class="can-do-links can-do">
+              <router-link to="/tenant/people/add">Add Member</router-link>
+              <router-link to="/tenant/sms/compose">Send SMS</router-link>
+              <router-link to="/tenant/people/addfirsttimer">Add First Timer</router-link>
+              <router-link to="" v-if="false">Add Follow-up</router-link>
             </div>
           </div>
         </div>
-      </div>
-    </div>
-    <div class="d-flex justify-content-between flex-column flex-md-row px-0">
-      <div class="help-text2">
-        <img src="../../assets/thingstodo.svg" alt="" />
-        <div class="can-do">
-          <h4>Things You Can Do</h4>
-          <div class="can-do-links can-do">
-            <router-link to="/tenant/people/add">Add Member</router-link>
-            <router-link to="/tenant/sms/compose">Send SMS</router-link>
-            <router-link to="/tenant/people/addfirsttimer"
-              >Add First Timer</router-link
-            >
-            <router-link to="" v-if="false">Add Follow-up</router-link>
-          </div>
-        </div>
-      </div>
 
-      <div
-        v-if="tenantInfoBasic.memberCount === 0"
-        class="
-          d-flex
-          justify-content-center
-          mt-4
-          justify-content-md-end
-          mt-md-0
-        "
-      >
-        <img src="../../assets/welcome_user.svg" style="width: 250px" />
-      </div>
-      <div class="number-boxes" v-else>
-        <div class="box mr-4" v-loading="dashboardLoading">
-          <div class="top p-3">
-            <div class="d-flex justify-content-between">
-              <img
-                src="../../assets/usergroup.svg"
-                alt=""
-                style="position: relative; top: -5px; left: -8px"
-              />
-              <div class="">
-                <p class="mb-0 s-8">FIRST TIMERS</p>
-                <h4 class="primary--text font-weight-700 mt-1 s-16">
-                  {{ tenantInfoBasic.firstTimerCount }}
-                </h4>
+        <div v-if="tenantInfoBasic.memberCount === 0"
+          class="d-flex justify-content-center mt-4 justify-content-md-end mt-md-0">
+          <img src="../../assets/welcome_user.svg" style="width: 250px" />
+        </div>
+        <div class="number-boxes" v-else>
+          <div class="box mr-4" v-loading="dashboardLoading">
+            <div class="top p-3">
+              <div class="d-flex justify-content-between">
+                <img src="../../assets/usergroup.svg" alt="" style="position: relative; top: -5px; left: -8px;">
+                <div class="">
+                  <p class="mb-0 s-8">FIRST TIMERS</p>
+                  <h4 class="primary--text font-weight-700 mt-1 s-16">{{ tenantInfoBasic.firstTimerCount }}</h4>
+                </div>
+              </div>
+              <div>
+                <h1 class="font-weight-700 s-30 mt-2">{{ tenantInfoBasic.memberCount }}</h1>
+                <span class="size-text">Church Size</span>
               </div>
             </div>
-            <div>
-              <h1 class="font-weight-700 s-30 mt-2">
-                {{ tenantInfoBasic.memberCount }}
-              </h1>
-              <span class="size-text">Church Size</span>
+            <div class="box-bottom px-3 py-2">
+              <el-tooltip class="box-item" effect="dark" :content="planUserIs" placement="top-start">
+                <div class="s-12 font-weight-bold">
+                  {{ planUserIs }}
+                </div>
+              </el-tooltip>
+              <router-link :to="{ name: 'Subscription' }" class="mt-1 no-decoration">
+                <el-button :color="!buttonTextCheck.color ? '#136acd' : ''" class="mt-2" style="height: 25px"
+                  :class="[buttonTextCheck.color, { 'bg-warning': calculatedPercentage >= 90 }]" round>
+                  <p class="mb-0 small" :class="[buttonTextCheck.color]">{{ buttonTextCheck.text }}</p>
+                </el-button>
+              </router-link>
             </div>
           </div>
-          <div class="bottom">
-            <div
-              class="box-bottom border"
-              :class="{ 'border-danger': notifiedDays <= 4 }"
-            >
-              <div
-                style="font-size: 0.8em; padding-top: 0.3rem; font-weight: 700"
-                v-tooltip.top="planUserIs"
-              >
-                {{ planUserIs }}
+          <div class="box" v-loading="dashboardLoading">
+            <div class="top p-3">
+              <img src="../../assets/inboxgroup.svg" alt="" style="position: relative; left: -8px;">
+              <div>
+                <h1 class="font-weight-700 s-30">{{ tenantInfoBasic.smsUnit }}</h1>
+                <span class="size-text">SMS Units</span>
               </div>
-              <router-link :to="{ name: 'Subscription' }" class="mt-1">
-                <!-- <span class="plan-text">YOU'RE ON A FREE PLAN</span> -->
-                <button
-                  class="upgrade-btn"
-                  :class="[
-                    buttonTextCheck.color,
-                    { 'bg-warning': calculatedPercentage >= 90 },
-                  ]"
-                >
-                  <h4 class="box-btn-text" :class="[buttonTextCheck.color]">
-                    {{ buttonTextCheck.text }}
-                  </h4>
-                </button>
+            </div>
+            <div class="box-bottom px-3 py-2">
+              <router-link :to="{ name: 'BuyUnits', path: '/tenant/buyunits' }" class="no-decoration">
+                <el-button type="info" class="push-down small" style="height: 25px" round>
+                  <p class="mb-0 small">BUY UNITS</p>
+                </el-button>
               </router-link>
             </div>
           </div>
         </div>
-        <div class="box" v-loading="dashboardLoading">
-          <div class="top p-3">
-            <img
-              src="../../assets/inboxgroup.svg"
-              alt=""
-              style="position: relative; left: -8px"
-            />
-            <div>
-              <h1 class="font-weight-700 s-30">
-                {{ tenantInfoBasic.smsUnit }}
-              </h1>
-              <span class="size-text">SMS Units</span>
-            </div>
-          </div>
-          <div class="box-bottom px-3 py-2">
-            <router-link
-              :to="{ name: 'BuyUnits', path: '/tenant/buyunits' }"
-              class="no-decoration"
-            >
-              <el-button
-                type="info"
-                class="push-down small"
-                style="height: 25px"
-                round
-              >
-                <p class="mb-0 small">BUY UNITS</p>
-              </el-button>
-            </router-link>
-          </div>
-        </div>
       </div>
-    </div>
 
-    <div class="mt-5" v-loading="dashboardLoading"></div>
+      <div class="mt-5" v-loading="dashboardLoading"></div>
 
-    <div class="container-fluid">
-      <div class="row">
-        <div
-          class="col-8 offset-2 offset-md-0 col-md-3 p-0"
-          v-if="
+      <div class="container-fluid">
+        <div class="row">
+          <div class="col-8 offset-2 offset-md-0 col-md-3 p-0" v-if="
             tenantInfoCeleb.length > 0 ||
-            (tenantInfoFirstTimerWeekly[0] &&
-              tenantInfoFirstTimerWeekly[0].data.some((i) => i > 0)) ||
-            (tenantInfoAttendanceWeekly[0] &&
-              tenantInfoAttendanceWeekly[0].data.some((i) => i > 0))
-          "
-        >
-          <div class="more-things side p-3" v-if="!tenantInfoExtra.hasWebsite">
-            <!-- <i class="pi pi-times"></i> -->
-            <img src="../../assets/website2.svg" class="w-100" />
-            <div class="mt-4">Website</div>
-            <div class="more-body mt-2">
-              Get a user engaging website for your church.
+            (tenantInfoFirstTimerWeekly[0] && tenantInfoFirstTimerWeekly[0].data.some(i => i > 0)) ||
+            (tenantInfoAttendanceWeekly[0] && tenantInfoAttendanceWeekly[0].data.some(i => i > 0))
+          ">
+            <div class="more-things side p-3" v-if="!tenantInfoExtra.hasWebsite">
+              <!-- <i class="pi pi-times"></i> -->
+              <img src="../../assets/website2.svg" class="w-100" />
+              <div class="mt-4">Website</div>
+              <div class="more-body mt-2">
+                Get a user engaging website for your church.
+              </div>
+              <a href="https://churchplus.co/awoofwebsite/" target="_blank" class="no-decoration">
+                <el-button class="mt-1" round>Get one now</el-button>
+              </a>
             </div>
-            <a
-              href="https://churchplus.co/awoofwebsite/"
-              target="_blank"
-              class="no-decoration"
-            >
-              <el-button class="mt-1" round>Get one now</el-button>
-            </a>
+
+            <div class="more-things side p-3 mt-4" v-if="!tenantInfoExtra.hasOnlineGiving">
+              <img src="../../assets/onlinegiving2.svg" class="w-100" />
+              <div class="mt-4">Online Giving</div>
+              <div class="more-body mt-2">
+                Make online donations to your church.
+              </div>
+              <router-link to="/tenant/payments" class="no-decoration">
+                <el-button class="mt-1" round>Set up now</el-button>
+              </router-link>
+            </div>
+
+            <div class="more-things side p-3 mt-4" v-if="!tenantInfoExtra.hasMobileApp">
+              <img src="../../assets/mobileapp2.svg" class="w-100" />
+              <div class="mt-4">Mobile App</div>
+              <div class="more-body mt-2">
+                Get a customized mobile app for your church.
+              </div>
+              <router-link :to="{ name: 'MobileOnboarding' }" class="no-decoration">
+                <el-button class="mt-1" round>Set up now</el-button>
+              </router-link>
+            </div>
           </div>
 
-          <div
-            class="more-things side p-3 mt-4"
-            v-if="!tenantInfoExtra.hasOnlineGiving"
-          >
-            <img src="../../assets/onlinegiving2.svg" class="w-100" />
-            <div class="mt-4">Online Giving</div>
-            <div class="more-body mt-2">
-              Make online donations to your church.
-            </div>
-            <router-link to="/tenant/payments" class="no-decoration">
-              <el-button class="mt-1" round>Set up now</el-button>
-            </router-link>
-          </div>
-
-          <div
-            class="more-things side p-3 mt-4"
-            v-if="!tenantInfoExtra.hasMobileApp"
-          >
-            <img src="../../assets/mobileapp2.svg" class="w-100" />
-            <div class="mt-4">Mobile App</div>
-            <div class="more-body mt-2">
-              Get a customized mobile app for your church.
-            </div>
-            <router-link
-              :to="{ name: 'MobileOnboarding' }"
-              class="no-decoration"
-            >
-              <el-button class="mt-1" round>Set up now</el-button>
-            </router-link>
-          </div>
-        </div>
-
-        <div
-          :class="{
+          <div :class="{
             'col-12 col-md-9':
               !tenantInfoExtra.hasMobileApp ||
               !tenantInfoExtra.hasOnlineGiving ||
@@ -347,63 +145,52 @@
               tenantInfoExtra.hasMobileApp &&
               tenantInfoExtra.hasOnlineGiving &&
               tenantInfoExtra.hasWebsite,
-          }"
-        >
-          <!-- Celebrations -->
-          <div v-if="tenantInfoCeleb && tenantInfoCeleb.length > 0">
-            <div class="celeb-header">
-              <div class="celeb-icon">
-                <img src="../../assets/celeb-icon.svg" alt="Celebration Icon" />
+          }">
+            <!-- Celebrations -->
+            <div v-if="tenantInfoCeleb && tenantInfoCeleb.length > 0">
+              <div class="celeb-header">
+                <div class="celeb-icon">
+                  <img src="../../assets/celeb-icon.svg" alt="Celebration Icon" />
+                </div>
+                <div class="celeb-header-text">
+                  <p>Celebrations</p>
+                </div>
               </div>
-              <div class="celeb-header-text">
-                <p>Celebrations</p>
-              </div>
-            </div>
-
-            <el-table :data="tenantInfoCeleb" style="width: 100%">
-              <el-table-column label="NAME">
+              
+              <el-table :data="tenantInfoCeleb"
+                style="width: 100%">
+                <el-table-column label="NAME">
                 <template #default="scope">
                   <div>
-                    <img
-                      src="../../assets/people/avatar-male.png"
-                      alt=""
-                      class="celeb-img"
-                    />
+                    <img src="../../assets/people/avatar-male.png" alt="" class="celeb-img" />
                     <span class="ml-3">{{ scope.row.name }}</span>
-                    <div
-                      class="celeb-badge-desc celeb-badge"
-                      v-if="
-                        scope.row.dayOfCelebration
-                          .toString()
-                          .toLowerCase()
-                          .includes('today')
-                      "
-                    ></div>
+                    <div class="celeb-badge-desc celeb-badge"
+                      v-if="scope.row.dayOfCelebration.toString().toLowerCase().includes('today')"></div>
                   </div>
                 </template>
               </el-table-column>
-              <el-table-column label="DATE">
+                <el-table-column label="DATE">
                 <template #default="scope">
                   <div>
                     {{ dateFormat(scope.row.date) }}
                   </div>
                 </template>
               </el-table-column>
-              <el-table-column label="DAY">
+                <el-table-column label="DAY">
                 <template #default="scope">
                   <div>
                     {{ scope.row.dayOfCelebration }}
                   </div>
                 </template>
               </el-table-column>
-              <el-table-column label="TYPE">
+                <el-table-column label="TYPE">
                 <template #default="scope">
                   <div>
                     {{ scope.row.celebration }}
                   </div>
                 </template>
               </el-table-column>
-              <el-table-column label="PHONE">
+                <el-table-column label="PHONE">
                 <template #default="scope">
                   <div>
                     {{ scope.row.phone }}
@@ -411,52 +198,39 @@
                 </template>
               </el-table-column>
               <el-table-column label="ACTION">
-                <template #default="scope">
-                  <div>
-                    <el-dropdown trigger="click">
-                      <el-icon>
-                        <MoreFilled />
-                      </el-icon>
-                      <template #dropdown>
-                        <el-dropdown-menu>
-                          <el-dropdown-item>
-                            <router-link
-                              :to="
-                                scope.row.phone
-                                  ? `/tenant/sms/compose?phone=${scope.row.phone}`
-                                  : ''
-                              "
-                              :class="{
-                                'fade-text': !scope.row.phone,
-                                'text-color': scope.row.phone,
-                              }"
-                              >Send SMS</router-link
-                            >
-                          </el-dropdown-item>
-                          <el-dropdown-item>
-                            <router-link
-                              :to="
-                                scope.row.email
-                                  ? `/tenant/email/compose?phone=${scope.row.email}`
-                                  : ''
-                              "
-                              :class="{
-                                'fade-text': !scope.row.email,
-                                'text-color': scope.row.email,
-                              }"
-                              >Send Email</router-link
-                            >
-                          </el-dropdown-item>
-                        </el-dropdown-menu>
-                      </template>
-                    </el-dropdown>
-                  </div>
-                </template>
-              </el-table-column>
-            </el-table>
+        <template #default="scope">
+          <div>
+            <el-dropdown trigger="click">
+              <el-icon>
+                <MoreFilled />
+              </el-icon>
+              <template #dropdown>
+                <el-dropdown-menu>
+                  <el-dropdown-item>
+                    <router-link :to="
+                      scope.row.phone
+                        ? `/tenant/sms/compose?phone=${scope.row.phone}`
+                        : ''
+                    " :class="{ 'fade-text': !scope.row.phone, 'text-color': scope.row.phone }">Send
+                      SMS</router-link>
+                  </el-dropdown-item>
+                  <el-dropdown-item>
+                    <router-link :to="
+                      scope.row.email
+                        ? `/tenant/email/compose?phone=${scope.row.email}`
+                        : ''
+                    " :class="{ 'fade-text': !scope.row.email, 'text-color': scope.row.email }">Send
+                      Email</router-link>
+                  </el-dropdown-item>
+                </el-dropdown-menu>
+              </template>
+            </el-dropdown>
           </div>
-          <div
-            v-show="
+        </template>
+      </el-table-column>
+              </el-table>
+            </div>
+            <div v-show="
               tenantInfoCeleb.length > 0 ||
               (tenantInfoFirstTimerWeekly[0] &&
                 tenantInfoFirstTimerWeekly[0].data.length > 0) ||
@@ -466,122 +240,68 @@
                 tenantInfoAttendanceWeekly[0].data.length > 0) ||
               (tenantInfoAttendanceWeekly[0] &&
                 tenantInfoAttendanceWeekly[0].data[0] > 0)
-            "
-          >
-            <div v-if="tenantInfoAttendanceWeekly && attendanceDataExist">
-              <div class="adjust-view col-10 col-sm-3 offset-sm-9 mt-5 mt-md-0">
-                <div class="view-report">View Reports</div>
-                <div class="weekly">
-                  <span
-                    @click="weeklyAttendance"
-                    :class="{ active: attendanceBoolean }"
-                    >Weekly</span
-                  >&nbsp;&nbsp;&nbsp;<span
-                    @click="monthlyAttendance"
-                    :class="{ active: !attendanceBoolean }"
-                    >Monthly</span
-                  >
+            ">
+              <div v-if="tenantInfoAttendanceWeekly && attendanceDataExist">
+                <div class="adjust-view col-10 col-sm-3 offset-sm-9 mt-5 mt-md-0">
+                  <div class="view-report">View Reports</div>
+                  <div class="weekly">
+                    <span @click="weeklyAttendance"
+                      :class="{ active: attendanceBoolean }">Weekly</span>&nbsp;&nbsp;&nbsp;<span
+                      @click="monthlyAttendance" :class="{ active: !attendanceBoolean }">Monthly</span>
+                  </div>
                 </div>
-              </div>
-              <div v-if="attendanceBoolean" class="mt-4">
-                <ColumnChart
-                  domId="chart1"
-                  title="Event Attendance"
-                  subtitle="Weekly Attendance of Events"
-                  header="Members Attendance"
-                  :data="chartData"
-                  :series="series"
-                  :attendanceSeries="attendanceSeries"
-                />
-              </div>
-              <div v-else class="mt-4">
-                <ColumnChart
-                  domId="chart1"
-                  title="Event Attendance"
-                  subtitle="Monthly Attendance of Events"
-                  header="Members Attendance"
-                  :data="monthlyAttendanceObj"
-                  :series="series"
-                  :attendanceSeries="attendanceSeries"
-                />
-              </div>
-            </div>
-
-            <div v-if="tenantInfoFirstTimerWeekly && firstTimerDataExist">
-              <div class="adjust-view col-10 col-sm-3 offset-sm-9">
-                <div class="view-report">View Reports</div>
-                <div class="weekly">
-                  <span
-                    @click="weeklyFirstTimer"
-                    :class="{ active: firstTimerBoolean }"
-                    >Weekly</span
-                  >&nbsp;&nbsp;&nbsp;<span
-                    @click="monthlyFirstTimer"
-                    :class="{ active: !firstTimerBoolean }"
-                    >Monthly</span
-                  >
+                <div v-if="attendanceBoolean" class="mt-4">
+                  <ColumnChart domId="chart1" title="Event Attendance" subtitle="Weekly Attendance of Events"
+                    header="Members Attendance" :data="chartData" :series="series"
+                    :attendanceSeries="attendanceSeries" />
+                </div>
+                <div v-else class="mt-4">
+                  <ColumnChart domId="chart1" title="Event Attendance" subtitle="Monthly Attendance of Events"
+                    header="Members Attendance" :data="monthlyAttendanceObj" :series="series"
+                    :attendanceSeries="attendanceSeries" />
                 </div>
               </div>
 
-              <div v-if="firstTimerBoolean">
-                <ColumnChart
-                  domId="chart3"
-                  title="First Timer Inflow"
-                  subtitle="How First Timers Come to Church"
-                  header="First Timers Attendance"
-                  :data="chartData2"
-                  :series="series2"
-                  :attendanceSeries="attendanceSeries"
-                />
-              </div>
-              <div v-else class="ColumnChartDiv">
-                <ColumnChart
-                  domId="chart4"
-                  title="First Timer Inflow"
-                  subtitle="How First Timer Come to Church"
-                  header="First Timers Attendance"
-                  :data="monthlyFirstTimerObj"
-                  :series="series2"
-                  :attendanceSeries="attendanceSeries"
-                />
-              </div>
-            </div>
-            <!-- </div> -->
+              <div v-if="tenantInfoFirstTimerWeekly && firstTimerDataExist">
+                <div class="adjust-view col-10 col-sm-3 offset-sm-9">
+                  <div class="view-report">View Reports</div>
+                  <div class="weekly">
+                    <span @click="weeklyFirstTimer"
+                      :class="{ active: firstTimerBoolean }">Weekly</span>&nbsp;&nbsp;&nbsp;<span
+                      @click="monthlyFirstTimer" :class="{ active: !firstTimerBoolean }">Monthly</span>
+                  </div>
+                </div>
 
-            <div class="mt-4" v-show="firstTimerPieExist">
-              <div class="">
-                <div class="row">
-                  <div class="col-12 col-md-6 d-flex justify-content-center">
-                    <ByGenderChart
-                      domId="source"
-                      title="Invitation Source"
-                      distance="5"
-                      :titleMargin="10"
-                      :summary="
+                <div v-if="firstTimerBoolean">
+                  <ColumnChart domId="chart3" title="First Timer Inflow" subtitle="How First Timers Come to Church"
+                    header="First Timers Attendance" :data="chartData2" :series="series2"
+                    :attendanceSeries="attendanceSeries" />
+                </div>
+                <div v-else class="ColumnChartDiv">
+                  <ColumnChart domId="chart4" title="First Timer Inflow" subtitle="How First Timer Come to Church"
+                    header="First Timers Attendance" :data="monthlyFirstTimerObj" :series="series2"
+                    :attendanceSeries="attendanceSeries" />
+                </div>
+              </div>
+              <!-- </div> -->
+
+              <div class="mt-4" v-show="firstTimerPieExist">
+                <div class="">
+                  <div class="row">
+                    <div class="col-12 col-md-6 d-flex justify-content-center">
+                      <ByGenderChart domId="source" title="Invitation Source" distance="5" :titleMargin="10" :summary="
                         tenantInfoInvitationSource
                           ? tenantInfoInvitationSource
                           : []
-                      "
-                    />
-                  </div>
-                  <div
-                    class="
-                      col-12 col-md-6
-                      mt-3 mt-md-0
-                      d-flex
-                      justify-content-center
-                    "
-                  >
-                    <ByMaritalStatusChart
-                      domId="join"
-                      title="Interested In Joining"
-                      :titleMargin="10"
-                      :summary="
+                      " />
+                    </div>
+                    <div class="col-12 col-md-6 mt-3 mt-md-0 d-flex justify-content-center">
+                      <ByMaritalStatusChart domId="join" title="Interested In Joining" :titleMargin="10" :summary="
                         tenantInfoInterestedInJoining
                           ? tenantInfoInterestedInJoining
                           : []
-                      "
-                    />
+                      " />
+                    </div>
                   </div>
                 </div>
               </div>
@@ -589,73 +309,62 @@
           </div>
         </div>
       </div>
-    </div>
-    <div
-      v-if="
+      <div v-if="
         tenantInfoCeleb.length === 0 &&
-        tenantInfoFirstTimerWeekly[0] &&
-        tenantInfoFirstTimerWeekly[0].data.every((i) => i === 0) &&
-        tenantInfoAttendanceWeekly[0] &&
-        tenantInfoAttendanceWeekly[0].data.every((i) => i === 0)
-      "
-    >
-      <div class="container-fluid mt-5">
-        <div class="row">
-          <div class="col-12 more-things">
-            <div class="can-do">
-              <h4>More Benefits You Can Get</h4>
-            </div>
-          </div>
-        </div>
-        <div class="row mt-4">
-          <div class="col-12 col-sm-6 col-md-4 more-things">
-            <img src="../../assets/website2.svg" />
-            <div class="mt-4">
+        (tenantInfoFirstTimerWeekly[0] && tenantInfoFirstTimerWeekly[0].data.every(i => i === 0)) &&
+        (tenantInfoAttendanceWeekly[0] && tenantInfoAttendanceWeekly[0].data.every(i => i === 0))
+      ">
+        <div class="container-fluid mt-5">
+          <div class="row">
+            <div class="col-12 more-things">
               <div class="can-do">
-                <h4>Website</h4>
+                <h4>More Benefits You Can Get</h4>
               </div>
             </div>
-            <div class="more-body mt-2">
-              Get a user engaging website for your church.
-            </div>
-            <a
-              href="https://churchplus.co/awoofwebsite/"
-              class="no-decoration"
-              target="_blank"
-            >
-              <el-button class="mt-1" round>Get one now</el-button>
-            </a>
           </div>
-          <div class="col-12 col-sm-6 col-md-4 mt-5 mt-sm-0 more-things second">
-            <img src="../../assets/onlinegiving2.svg" />
-            <div class="mt-4">
-              <div class="can-do">
-                <h4>Online giving</h4>
+          <div class="row mt-4">
+            <div class="col-12 col-sm-6 col-md-4 more-things">
+              <img src="../../assets/website2.svg" />
+              <div class="mt-4">
+                <div class="can-do">
+                  <h4>Website</h4>
+                </div>
               </div>
-            </div>
-            <div class="more-body mt-2">
-              Allow members to make online donations to your church.
-            </div>
-            <router-link to="/tenant/payments" class="no-decoration">
-              <el-button class="mt-1" round>Set up now</el-button>
-            </router-link>
-          </div>
-          <div class="col-12 col-sm-6 col-md-4 mt-5 mt-md-0 more-things">
-            <img src="../../assets/mobileapp2.svg" />
-            <div class="mt-4">
-              <div class="can-do">
-                <h4>Mobile app</h4>
+              <div class="more-body mt-2">
+                Get a user engaging website for your church.
               </div>
+              <a href="https://churchplus.co/awoofwebsite/" class="no-decoration" target="_blank">
+                <el-button class="mt-1" round>Get one now</el-button>
+              </a>
             </div>
-            <div class="more-body mt-2">
-              Get a customized mobile app for your church.
+            <div class="col-12 col-sm-6 col-md-4 mt-5 mt-sm-0 more-things second">
+              <img src="../../assets/onlinegiving2.svg" />
+              <div class="mt-4">
+                <div class="can-do">
+                  <h4>Online giving</h4>
+                </div>
+              </div>
+              <div class="more-body mt-2">
+                Allow members to make online donations to your church.
+              </div>
+              <router-link to="/tenant/payments" class="no-decoration">
+                <el-button class="mt-1" round>Set up now</el-button>
+              </router-link>
             </div>
-            <router-link
-              :to="{ name: 'MobileOnboarding' }"
-              class="no-decoration"
-            >
-              <el-button class="mt-1" round>Set up now</el-button>
-            </router-link>
+            <div class="col-12 col-sm-6 col-md-4 mt-5 mt-md-0 more-things">
+              <img src="../../assets/mobileapp2.svg" />
+              <div class="mt-4">
+                <div class="can-do">
+                  <h4>Mobile app</h4>
+                </div>
+              </div>
+              <div class="more-body mt-2">
+                Get a customized mobile app for your church.
+              </div>
+              <router-link :to="{ name: 'MobileOnboarding' }" class="no-decoration">
+                <el-button class="mt-1" round>Set up now</el-button>
+              </router-link>
+            </div>
           </div>
         </div>
       </div>
@@ -668,7 +377,7 @@ import ByMaritalStatusChart from "@/components/charts/PieChart";
 import ByGenderChart from "@/components/charts/PieChart";
 import ColumnChart from "@/components/charts/ColumnChart.vue";
 import { computed, onMounted, ref } from "vue";
-import mixin from "@/mixins/currentUser.mixin.js";
+import mixin from "@/mixins/currentUser.mixin.js"
 import router from "@/router/index";
 import axios from "@/gateway/backendapi";
 import moment from "moment";
@@ -684,12 +393,14 @@ export default {
     ColumnChart,
     ByMaritalStatusChart,
     ByGenderChart,
+
   },
   data() {
-    return {};
+    return {}
+
   },
   created() {
-    this.getCurrentUser();
+    this.getCurrentUser()
   },
 
   setup() {
@@ -700,9 +411,12 @@ export default {
     const attendanceDataExist = ref(false);
     const firstTimerDataExist = ref(false);
     const firstTimerPieExist = ref(false);
-    const notifiedDays = ref();
+    const notifiedDays = ref()
     const summed = ref(0);
-    const planUserIs = ref("");
+    const planUserIs = ref("")
+
+
+
 
     const toggleMoreLinkVissibility = () => {
       moreLinksVissible.value != moreLinksVissible.value;
@@ -722,7 +436,7 @@ export default {
     const tenantInfoInterestedInJoining = ref([]);
     const tenantInfoExtra = ref({});
     const subscriptionPlan = ref([]);
-    const dashboardLoading = ref(false);
+    const dashboardLoading = ref(false)
 
     const xAxis = ref([]);
     const monthXaxis = ref([
@@ -740,7 +454,8 @@ export default {
       "Dec",
     ]);
 
-    const { lgAndUp, xlAndUp } = deviceBreakpoint();
+    const { lgAndUp, xlAndUp } = deviceBreakpoint()
+
 
     const celebHeaders = ref([
       { text: "NAME", value: "name" },
@@ -761,20 +476,18 @@ export default {
     });
 
     onMounted(() => {
-      getBasicDashboard();
-    });
+      getBasicDashboard()
+    })
 
     const getBasicDashboard = () => {
-      dashboardLoading.value = true;
+      dashboardLoading.value = true
       axios
         .get("/dashboard/basic")
         .then((res) => {
-          dashboardLoading.value = false;
+          dashboardLoading.value = false
           tenantInfoBasic.value = res.data.returnObject;
-          tenantInfoExtra.value.hasMobileApp =
-            res.data.returnObject.hasMobileApp;
-          tenantInfoExtra.value.hasOnlineGiving =
-            res.data.returnObject.hasOnlineGiving;
+          tenantInfoExtra.value.hasMobileApp = res.data.returnObject.hasMobileApp;
+          tenantInfoExtra.value.hasOnlineGiving = res.data.returnObject.hasOnlineGiving;
           tenantInfoExtra.value.hasWebsite = res.data.returnObject.hasWebsite;
           let sum = 0;
           tenantInfo.value.firstTimerSummary.invitationSource.forEach((i) => {
@@ -785,7 +498,7 @@ export default {
         .catch((err) => {
           stopProgressBar();
           if (err.response && err.response.status === 401) {
-            dashboardLoading.value = false;
+            dashboardLoading.value = false
             localStorage.removeItem("token");
             setupService.clearStore();
             router.push("/");
@@ -801,9 +514,9 @@ export default {
     getCelebDashboard();
 
     let tenantInfoCeleb = computed(() => {
-      if (celeb.value.length === 0) return [];
-      return celeb.value.sort((b, a) => new Date(b.date) - new Date(a.date));
-    });
+      if (celeb.value.length === 0) return []
+      return celeb.value.sort((b, a) => new Date(b.date) - new Date(a.date))
+    })
 
     onMounted(() => {
       axios
@@ -870,6 +583,7 @@ export default {
     const monthlyAttendance = () => {
       attendanceBoolean.value = false;
       attendanceSeries.value = "monthly";
+
     };
 
     const weeklyFirstTimer = () => {
@@ -884,35 +598,31 @@ export default {
 
     const chartData = computed(() => {
       if (!tenantInfoAttendanceWeekly.value) return [];
-      let chartWeekly = [];
-      let chartObj = tenantInfoAttendanceWeekly.value.find(
-        (i) => i.name === "Attendance"
-      );
-      chartObj["color"] = "#002044";
-      chartWeekly.push(chartObj);
-      return chartWeekly;
+      let chartWeekly = []
+      let chartObj = tenantInfoAttendanceWeekly.value.find(i => i.name === "Attendance")
+      chartObj['color'] = '#002044'
+      chartWeekly.push(chartObj)
+      return chartWeekly
     });
     const monthlyAttendanceObj = computed(() => {
       if (!tenantInfoAttendanceMonthly.value) return [];
-      let chartMonthly = [];
-      let chartObj = tenantInfoAttendanceMonthly.value.find(
-        (i) => i.name === "Attendance"
-      );
-      chartObj["color"] = "#002044";
-      chartMonthly.push(chartObj);
-      return chartMonthly;
+      let chartMonthly = []
+      let chartObj = tenantInfoAttendanceMonthly.value.find(i => i.name === "Attendance")
+      chartObj['color'] = '#002044'
+      chartMonthly.push(chartObj)
+      return chartMonthly
     });
 
     const chartData2 = computed(() => {
       if (!tenantInfoFirstTimerWeekly.value) return [];
-      tenantInfoFirstTimerWeekly.value[0].color = "#002044";
-      return tenantInfoFirstTimerWeekly.value;
+      tenantInfoFirstTimerWeekly.value[0].color = '#002044';
+      return tenantInfoFirstTimerWeekly.value
     });
 
     const monthlyFirstTimerObj = computed(() => {
       if (!tenantInfoFirstTimerMonthly.value) return [];
-      tenantInfoFirstTimerMonthly.value[0].color = "#002044";
-      return tenantInfoFirstTimerMonthly.value;
+      tenantInfoFirstTimerMonthly.value[0].color = '#002044';
+      return tenantInfoFirstTimerMonthly.value
     });
 
     const chartDataNewConvert = computed(() => {
@@ -929,26 +639,26 @@ export default {
       return formatDate.monthDayYear(payload);
     };
 
-    const retrieveSubscriptionInfo = () => {};
+    const retrieveSubscriptionInfo = () => { };
 
     const useSubscriptionResponse = ref([]);
     const getRenewalDate = ref("");
-    const countDownDate = () => {
-      // Set the date we're counting down to
-      let countDownDates = new Date(getRenewalDate.value).getTime();
-      // Get today's date and time
-      let now = new Date().getTime();
-      // Find the distance between now and the count down date
-      let distance = countDownDates - now;
-      notifiedDays.value = Math.floor(distance / (1000 * 60 * 60 * 24));
-      console.log(notifiedDays.value, "jkjsjkj");
-    };
+    const countDownDate = () =>{
+                    // Set the date we're counting down to
+          let countDownDates = new Date(getRenewalDate.value).getTime();
+            // Get today's date and time
+            let now = new Date().getTime();
+            // Find the distance between now and the count down date
+            let distance = countDownDates - now;
+           notifiedDays.value = Math.floor(distance / (1000 * 60 * 60 * 24));
+           console.log(notifiedDays.value, "jkjsjkj")
+    }
 
     useSubscription.getPlan().then((res) => {
       planUserIs.value = res.description;
       getRenewalDate.value = res.subscriptionExpiration;
       useSubscriptionResponse.value = res;
-      countDownDate();
+      countDownDate()
     });
 
     const calculatedPercentage = computed(() => {
@@ -963,26 +673,24 @@ export default {
     });
 
     const buttonTextCheck = computed(() => {
-      if (checkRenewalDate.value && planUserIs.value === "TRIAL")
-        return {
-          text: "SUBSCRIBE",
-          color: "btn-danger-upgrade",
-        };
+      if (checkRenewalDate.value && planUserIs.value === "TRIAL") return {
+        text: "SUBSCRIBE",
+        color: "btn-danger-upgrade"
+      };
 
-      if (checkRenewalDate.value && planUserIs.value !== "FREE PLAN")
-        return {
-          text: "RENEW",
-          color: "renew-btn-color",
-        };
+      if (checkRenewalDate.value && planUserIs.value !== "FREE PLAN") return {
+        text: "RENEW",
+        color: "renew-btn-color",
+      };
 
-      if (checkRenewalDate.value && planUserIs.value === "FREE PLAN")
-        return {
-          text: "SUBSCRIBE",
-          color: "btn-danger-upgrade",
-        };
+      if (checkRenewalDate.value && planUserIs.value === "FREE PLAN") return {
+        text: "SUBSCRIBE",
+        color: "btn-danger-upgrade",
+      };
 
       if (planUserIs.value === "UNLIMITED") return { text: "PRODUCT" };
       return { text: "UPGRADE" };
+
     });
 
     let currentPlan;
@@ -994,6 +702,7 @@ export default {
       );
       return (totalMembers / currentPlan.membershipSize) * 100;
     };
+
 
     return {
       celebrations,
@@ -1049,29 +758,30 @@ export default {
       lgAndUp,
       xlAndUp,
       celebHeaders,
-      dashboardLoading,
+      dashboardLoading
     };
   },
 };
 </script>
 
 <style scoped>
-.day3 {
-  background-color: #ecf4ff;
-  border-left: solid #136acd 5px;
-  border-top-left-radius: 5px 5px;
-  border-bottom-left-radius: 5px 5px;
+
+.day3{
+  background-color: #ECF4FF;
+  border-left:solid #136acd 5px;
+   border-top-left-radius: 5px 5px;
+   border-bottom-left-radius: 5px 5px;
 }
-.day2 {
+.day2{
   background-color: rgb(246, 246, 195);
   border-left: solid yellow 5px;
-  border-top-left-radius: 5px 5px;
-  border-bottom-left-radius: 5px 5px;
+   border-top-left-radius: 5px 5px;
+   border-bottom-left-radius: 5px 5px;
 }
-.day1 {
-  background-color: #fef8f8;
+.day1{
+  background-color: #FEF8F8;
   color: #e09579;
-  border-left: solid #b3282d 5px;
+  border-left:solid #B3282D 5px;
   border-top-left-radius: 5px 5px;
   border-bottom-left-radius: 5px 5px;
 }
@@ -1082,8 +792,9 @@ export default {
 
 .btn-danger-upgrade {
   color: #fff !important;
-  background-color: #e60023 !important;
+  background-color: #E60023 !important;
 }
+
 
 #main {
   display: flex;
@@ -1161,6 +872,8 @@ export default {
   padding: 4px;
 }
 
+
+
 .create-dd {
   padding: 0 9px;
   color: #fff;
@@ -1212,16 +925,19 @@ export default {
 
 .box {
   width: 170px;
-  background: #ffffff;
+  background: #FFFFFF;
   box-shadow: 0px 2px 7.5px rgba(0, 0, 0, 0.0588235);
   border-radius: 15px;
 }
 
+
 .box-bottom {
-  background: #f1f5f8;
+  background: #F1F5F8;
   box-shadow: 0px 11px 17px rgba(206, 205, 205, 0.360784);
   border-radius: 0px 0px 15px 15px;
 }
+
+
 
 .celebrations {
   padding: 10px;
@@ -1230,22 +946,22 @@ export default {
   border-radius: 28px;
   margin-top: 80px;
 }
-.day3 {
-  background-color: #ecf4ff;
-  border-left: solid #136acd 5px;
-  border-top-left-radius: 5px 5px;
-  border-bottom-left-radius: 5px 5px;
+.day3{
+  background-color: #ECF4FF;
+  border-left:solid #136acd 5px;
+   border-top-left-radius: 5px 5px;
+   border-bottom-left-radius: 5px 5px;
 }
-.day2 {
+.day2{
   background-color: rgb(243, 243, 217);
-  border-left: solid rgb(228, 228, 42) 5px;
-  border-top-left-radius: 5px 5px;
-  border-bottom-left-radius: 5px 5px;
+  border-left:solid rgb(228, 228, 42) 5px;
+   border-top-left-radius: 5px 5px;
+   border-bottom-left-radius: 5px 5px;
 }
-.day1 {
-  background-color: #fef8f8;
+.day1{
+  background-color: #FEF8F8;
   color: #e09579;
-  border-left: solid #b3282d 5px;
+  border-left:solid #B3282D 5px;
   border-top-left-radius: 5px 5px;
   border-bottom-left-radius: 5px 5px;
 }
@@ -1278,6 +994,7 @@ export default {
 }
 
 @media (max-width: 767px) {
+
   .top-row {
     display: flex;
     flex-direction: column;
@@ -1287,16 +1004,19 @@ export default {
     margin-top: 30px;
   }
 
+
   .adjust-view {
     display: none;
   }
+
+
 
   .container-fluid-mobile {
     border: 1px solid !important;
     width: 85% !important;
     box-shadow: 0px 1px 4px #b1bfce45 !important;
     border-radius: 30px;
-    border: 1px solid #dde2e6 !important;
+    border: 1px solid #DDE2E6 !important;
   }
 }
 
@@ -1317,7 +1037,7 @@ export default {
 .help-text2 img {
   width: 76px;
   margin-top: -9px;
-  margin-left: -14px;
+  margin-left: -14px
 }
 
 .pies {
@@ -1402,11 +1122,13 @@ tbody tr:nth-child(even) {
   opacity: 0.8;
 }
 
+
 .more-things.side {
   background: #ecf0f3 0% 0% no-repeat padding-box;
   border-radius: 15px;
   opacity: 1;
 }
+
 
 @media (max-width: 575px) {
   .adjust-view {
@@ -1423,16 +1145,20 @@ tbody tr:nth-child(even) {
   .can-do-links {
     display: flex;
     flex-direction: column;
+    
   }
 }
 
 @media (max-width: 305px) {
+  
 }
 
 @media (min-width: 509px) and (max-width: 515px) {
+  
 }
 
 @media (min-width: 516px) and (max-width: 576px) {
+  
 }
 
 .view-report {
@@ -1443,6 +1169,7 @@ tbody tr:nth-child(even) {
 }
 
 .weekly {
+
   cursor: pointer;
 }
 
@@ -1465,7 +1192,9 @@ tbody tr:nth-child(even) {
   vertical-align: baseline;
 }
 
+
 @media screen and (max-width: 940px) {
+
   .second-col .number-boxes {
     max-width: 100%;
     justify-content: space-between;
@@ -1487,9 +1216,11 @@ tbody tr:nth-child(even) {
 }
 
 @media (min-width: 1101px) and (max-width: 1231px) {
+  
 }
 
 @media screen and (min-width: 1300px) {
+ 
 }
 
 @media (max-width: 556px) {
@@ -1504,6 +1235,8 @@ tbody tr:nth-child(even) {
 }
 
 @media (max-width: 508px) {
+
+
   .second-col .create-btn-div .create-btn {
     margin-top: 10px;
   }
@@ -1511,6 +1244,7 @@ tbody tr:nth-child(even) {
   .top-row {
     margin-top: 40px;
   }
+
 }
 
 .push-down {
@@ -1526,11 +1260,13 @@ tbody tr:nth-child(even) {
   color: #212529;
 }
 
+
 @media screen and (max-width: 480px) {
   .firstTimerClass {
     padding-top: 9px;
     /* background-color: lightgreen; */
   }
+
 }
 
 @media screen and (max-width: 360px) {
@@ -1544,6 +1280,7 @@ tbody tr:nth-child(even) {
     align-self: center;
     margin-top: 10px;
   }
+
 }
 
 .celeb-badge {
