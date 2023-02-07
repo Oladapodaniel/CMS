@@ -6,7 +6,7 @@
           <h4 class="font-weight-bold text-center text-md-left">
             Upload voice file
           </h4>
-          <Toast />
+          <!-- <Toast /> -->
           <el-dialog
             title="Select Date and Time"
             v-model="display"
