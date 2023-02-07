@@ -696,7 +696,6 @@ import composeService from "../../../services/communication/composer";
 import composerObj from "../../../services/communication/composer";
 import { useRoute } from "vue-router";
 import { useRouter } from "vue-router";
-import { useToast } from "primevue/usetoast";
 import store from "../../../store/store";
 import axios from "@/gateway/backendapi";
 import stopProgressBar from "../../../services/progressbar/progress";
@@ -712,7 +711,6 @@ import moment from "moment";
 export default {
   components: {},
   setup() {
-    const toast = useToast();
     const router = useRouter();
     const editorData = ref("");
     const disableBtn = ref(false);
@@ -1056,7 +1054,7 @@ export default {
         .catch((err) => {
           stopProgressBar();
           disableBtn.value = false;
-          toast.removeAllGroups();
+          // toast.removeAllGroups();
           console.log(err);
           if (err.toString().toLowerCase().includes("network error")) {
             ElMessage({
