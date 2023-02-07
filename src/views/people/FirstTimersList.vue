@@ -96,9 +96,130 @@
           </div>
         </div>
       </div>
+       <el-table v-loading="paginatedTableLoading" ref="multipleTableRef" :data="searchMember" style="width: 100%"
+        @selection-change="handleSelectionChange">
+        <el-table-column type="selection" />
+        <el-table-column label="PICTURE">
+        <template #default="scope">
+          <el-card shadow="hover" class="c-pointer person-image" v-if="scope.row.imageURL"
+            style="border-radius: 50%; height: 26px; width: 26px;">
+            <el-tooltip class="box-item" effect="dark" content="Click to view" placement="top-start">
+              <img :src="scope.row.imageURL" alt="" @click="(selectedImage = scope.row), (imageDialog = true)"
+                style="border-radius: 50%; height: 26px; width: 26px; object-fit: cover" />
+            </el-tooltip>
+          </el-card>
+          <el-avatar :size="25" v-else><el-icon color="#000000">
+              <UserFilled />
+            </el-icon></el-avatar>
+        </template>
+      </el-table-column>
+      <el-table-column label="NAME">
+        <template #default="scope">
+          <div @click="showMemberRow(scope.row)" class="c-pointer">{{ scope.row.firstName }} {{ scope.row.lastName }}</div>
+        </template>
+      </el-table-column>
+      <!-- <el-table-column label="LASTNAME">
+        <template #default="scope">
+          <div @click="showMemberRow(scope.row)" class="c-pointer">{{ scope.row.lastName }}</div>
+        </template>
+      </el-table-column> -->
+      <el-table-column label="PHONE">
+        <template #default="scope">
+          <div @click="showMemberRow(scope.row)" class="c-pointer">{{ scope.row.phoneNumber }}</div>
+        </template>
+      </el-table-column>
+      <el-table-column label="SOURCE">
+        <template #default="scope">
+          <div @click="showMemberRow(scope.row)" class="c-pointer">{{ scope.row.interestedInJoining}}</div>
+        </template>
+      </el-table-column>
+      <el-table-column label="INTERESTED">
+        <template #default="scope">
+          <div @click="showMemberRow(scope.row)" class="c-pointer">{{ scope.row.howDidYouAboutUsName.replaceAll(" ", "_") }}</div>
+        </template>
+      </el-table-column>
+      <el-table-column label="DATE">
+        <template #default="scope">
+          <div @click="showMemberRow(scope.row)" class="c-pointer">{{ moment
+                .parseZone(
+                  new Date(scope.row.date).toDateString(),
+                  "YYYY MM DD HH ZZ"
+                )
+                ._i.substr(4, 11).replaceAll(" ", "_") }}</div>
+        </template>
+      </el-table-column>
+      <el-table-column label="MOVEMENT">
+        <template #default="scope">
+          <div @click="showMemberRow(scope.row)" class="c-pointer">{{ scope.row.movement }}</div>
+        </template>
+      </el-table-column>
+      <el-table-column label="INTERACTION">
+        <template #default="scope">
+          <div @click="showMemberRow(scope.row)" class="c-pointer">{{ scope.row.interactions }}</div>
+        </template>
+      </el-table-column>
+      <el-table-column label="ACTION">
+        <template #default="scope">
+            <div>
+            <el-dropdown trigger="click">
+              <el-icon>
+                <MoreFilled />
+              </el-icon>
+              <template #dropdown>
+                <el-dropdown-menu>
+                  <el-dropdown-item>
+                    <router-link :to="
+                      scope.row.phoneNumber
+                        ? `/tenant/sms/compose?phone=${scope.row.phoneNumber}`
+                        : ''
+                    " :class="{ 'fade-text': !scope.row.phoneNumber, 'text-color': scope.row.phoneNumber }">Send
+                      SMS</router-link>
+                  </el-dropdown-item>
+                  <el-dropdown-item>
+                    <router-link :to="
+                    scope.row.email
+                        ? `/tenant/email/compose?phone=${scope.row.email}`
+                        : ''
+                    " :class="{ 'fade-text': !scope.row.email, 'text-color': scope.row.email }">Send Email</router-link>
+                  </el-dropdown-item>
+                  <el-dropdown-item>
+                    <router-link :to="`/tenant/firsttimermanagement/${scope.row.id}?memberType=0`" class="text-color">
+                      Follow Up
+                    </router-link>
+                  </el-dropdown-item>
+                  <el-dropdown-item>
+                    <div @click.prevent="showConfirmModal(scope.row.id, index)" class="text-color">Delete</div>
+                  </el-dropdown-item>
+                  <el-dropdown class="px-3 pb-2 pt-1 text-color" placement="left">
+                    <span class="el-dropdown-link">
+                      Convert to member<el-icon class="el-icon--right"><arrow-down /></el-icon>
+                    </span>
+                    <template #dropdown>
+                      <el-dropdown-menu>
+                        <el-icon v-if="(membershipCategory.length == 0)" class="is-loading" :size="20">
+                          <Loading />
+                        </el-icon>
+                        <el-dropdown-item v-for="i in membershipCategory" :key="i.id">
+                          <div @click="chooseCategory(scope.row.id, i.id)">{{ i.name }}</div>
+                        </el-dropdown-item>
+                      </el-dropdown-menu>
+                    </template>
+                  </el-dropdown>
+                </el-dropdown-menu>
+              </template>
+            </el-dropdown>
+          </div>
+        </template>
+      </el-table-column>
+      </el-table>
+      <div class="d-flex justify-content-end my-3">
+      <el-pagination v-model:current-page="serverOptions.page" v-model:page-size="serverOptions.rowsPerPage" background
+        layout="total, sizes, prev, pager, next, jumper" :total="totalFirsttimersCount" @size-change="handleSizeChange"
+        @current-change="handleCurrentChange" />
 
+    </div>
 
-      <EasyDataTable v-model:items-selected="checkedFirstTimer" v-model:server-options="serverOptions"
+      <!-- <EasyDataTable v-model:items-selected="checkedFirstTimer" v-model:server-options="serverOptions"
         :rowsPerPage="100" :loading="paginatedTableLoading" :server-items-length="totalFirsttimersCount"
         :headers="firstTimerHeaders" :items="searchMember" buttons-pagination alternating>
         <template #item-imageurl="{ imageURL }">
@@ -106,7 +227,7 @@
             <el-card shadow="hover" class="c-pointer person-image" v-if="imageURL"
               style="border-radius: 50%; height: 26px; width: 26px;">
               <el-tooltip class="box-item" effect="dark" content="Click to view" placement="top-start">
-                <img :src="imageURL" alt="" @click="(selectedImageUrl = imageURL), (imageDialog = true)"
+                <img :src="imageURL" alt="" @click="(selectedImageUrl = scope.row), (imageDialog = true)"
                   style="border-radius: 50%; height: 26px; width: 26px; object-fit: cover" />
               </el-tooltip>
             </el-card>
@@ -216,7 +337,7 @@
             </el-dropdown>
           </div>
         </template>
-      </EasyDataTable>
+      </EasyDataTable> -->
     </div>
 
     <el-dialog v-model="imageDialog" :width="mdAndUp || lgAndUp || xlAndUp ? `50%` : xsOnly ? `90%` : `70%`"
@@ -359,6 +480,17 @@ export default {
         console.log(error);
       }
     };
+    const handleSelectionChange = (val) => {
+      checkedFirstTimer.value = val
+    }
+
+    const handleSizeChange = (val) => {
+      console.log(`${val} items per page`)
+    }
+    const handleCurrentChange = (val) => {
+      console.log(`current page: ${val}`)
+    }
+
 
     const showMemberRow = (item) => {
       router.push(`/tenant/firsttimermanagement/${item.id}?memberType=0`)
@@ -475,7 +607,7 @@ export default {
           if(res.data.length === 0 ){
             ElMessage({
               type: 'warning',
-              message: 'Not Found',
+              message: `${searchText.value} not found, please try add a new firsttimer and search again`,
               duration: 5000
             })
           }
@@ -783,6 +915,9 @@ export default {
 
     return {
       churchMembers,
+      handleSelectionChange,
+      handleCurrentChange,
+      handleSizeChange,
       filterFormIsVissible,
       toggleFilterFormVissibility,
       moment,
@@ -986,11 +1121,6 @@ a {
     border-radius: 2px;
     position: relative;
     display: flex;
-  }
-
-  .c-pointer {
-    cursor: pointer;
-    flex: 1;
   }
 
   .more {
