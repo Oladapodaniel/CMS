@@ -702,7 +702,7 @@ export default {
         paymentFormIdResponse.value = response.paymentFormId;
         tenantId.value = response.tenantID;
         console.log(response.paymentFormId);
-        console.log(response);
+        console.log(response, 'goooop');
       } catch (error) {
         console.log(error);
       }
@@ -714,7 +714,7 @@ export default {
         0,
         checkinLink.value.value.length
       ); /* For mobile devices */
-
+      
       /* Copy the text inside the text field */
       document.execCommand("copy");
       toast.add({
