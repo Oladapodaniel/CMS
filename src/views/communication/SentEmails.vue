@@ -9,7 +9,7 @@
               <div class="row d-md-flex align-items-center mt-3 mb-4">
                 <div class="col-md-12 col-sm-12">
                   <div class="search-div">
-                    <span><i class="pi pi-search mr-1"></i></span>
+                    <span><el-icon><Search /></el-icon></span>
                     <input
                       type="text"
                       placeholder="Search here..."
@@ -21,28 +21,24 @@
                   </div>
                 </div>
               </div>
-              <Toast />
-              <ConfirmDialog />
 
-              <div class="row">
+              <div class="row table-box" v-loading="loading">
                 <div class="col-md-12">
-                  <i
-                    class="pi pi-trash color-deleteicon c-pointer pt-2 px-2"
-                    v-tooltip.top="'delete marked'"
-                    style="font-size: 15px"
-                    v-if="markedMail.length > 0"
-                    @click="showConfirmModal(false)"
-                  ></i>
+                  <el-tooltip class="box-item" effect="dark" v-if="markedMail.length > 0" content="delete marked"
+                  placement="top-start">
+                  <el-icon :size="20" class="color-deleteicon text-danger c-pointer" style="font-size: 15px" v-if="markedMail.length > 0" @click="showConfirmModal(false)">
+                    <Delete />
+                  </el-icon>
+                  </el-tooltip>
                 </div>
               </div>
-
               <div class="row">
                 <div class="col-md-12">
-                  <div class="row header-row light-grey-bg py-2">
+                  <div class="row header-row  light-grey-bg py-2" >
                     <div class="col-md-12">
                       <div class="row">
                         <div
-                          class="col-md-1 text-md-right text-lg-center px-0"
+                          class="col-md-1 "
                           v-if="emails.length > 0"
                         >
                           <input
@@ -73,18 +69,18 @@
                     </div>
                   </div>
 
-                  <div class="row" v-if="emails.length > 0">
-                    <div class="col-md-12">
+                  <div class="row"  v-if="emails.length > 0">
+                    <div class="col-md-12" >
                       <div
                         class="row"
                         v-for="(email, index) in searchEmails"
                         :key="index"
                       >
                         <div class="col-md-12">
-                          <div class="row">
+                          <div class="row pt-2 pb-1">
                             <div class="col-md-1 mt-2">
                               <input
-                                type="checkbox"
+                              type="checkbox"
                                 name=""
                                 id=""
                                 @change="mark1Email(email)"
@@ -117,11 +113,6 @@
                                   }}</span>
                                 </router-link>
                               </span>
-                              <!-- <span class="brief-message">
-                              <router-link :to="{ name: 'EmailDetails', params: { messageId: email.id } }" class="text-decoration-none small-text"><article :ref="`messageBody_${email.id}`">
-                                {{ createElementFromHTML(email.message) }}
-                              </article></router-link>
-                          </span> -->
                               <span class="brief-message">
                                 <router-link
                                   :to="{
@@ -152,11 +143,10 @@
                                 >
                               </span>
                               <span class="small-text">
-                                <i
-                                  class="pi pi-trash color-deleteicon c-pointer pt-2 px-2"
-                                  style="font-size: 20px"
-                                  @click="showConfirmModal(email.id)"
-                                ></i>
+                                <el-icon :size="20" class="ml-2 color-deleteicon  pt-2  c-pointer" style="font-size:20px" 
+                                     @click="showConfirmModal(email.id)">
+                                  <Delete />
+                                </el-icon>
                               </span>
                             </div>
                           </div>
@@ -176,11 +166,11 @@
                     </div>
                   </div>
 
-                  <div class="row" v-if="emails.length === 0 && loading">
+                  <!-- <div class="row" v-if="emails.length === 0 && loading">
                     <div class="col-md-12 py-2 d-flex justify-content-center">
                       <Loading :loading="loading" />
                     </div>
-                  </div>
+                  </div> -->
 
                   <div class="conatiner">
                     <div class="row">
@@ -209,28 +199,21 @@ import communicationService from "../../services/communication/communicationserv
 import PaginationButtons from "../../components/pagination/PaginationButtons";
 import axios from "@/gateway/backendapi";
 import Loading from "../../components/loading/LoadingComponent";
-import Tooltip from "primevue/tooltip";
-import { useConfirm } from "primevue/useconfirm";
-import { useToast } from "primevue/usetoast";
 import stopProgressBar from "../../services/progressbar/progress";
 import store from '../../store/store';
+import { Search } from '@element-plus/icons-vue'
+import { ElMessage, ElMessageBox } from 'element-plus'
 
 export default {
   components: { PaginationButtons, Loading },
-  directives: {
-    tooltip: Tooltip,
-  },
+  directives: {},
   setup() {
-    const confirm = useConfirm();
-    const toast = useToast();
-
     const emails = ref([]);
     const emailsInStore = ref(store.getters["communication/sentEmails"]);
     emails.value =
       emailsInStore.value && emailsInStore.value.length > 0
         ? emailsInStore.value
         : [];
-    // console.log(emails.value[0], "from store");
     const currentPage = ref(0);
     const loading = ref(true);
     const searchMail = ref("");
@@ -255,12 +238,6 @@ export default {
       }
     };
     getSentEmails();
-
-    // if (!emails.value || emails.value.length === 0 || emails.value == undefined || !emails.value[0] ) {
-      
-    // } else {
-    //   loading.value = false;
-    // }
 
     const formatMessage = (message) => {
       const formatted =
@@ -347,12 +324,16 @@ export default {
           `/api/Messaging/DeleteSentEmails?SentEmailIdList=${stringOfEmailIds}`
         );
         if (data.deleted) {
-          toast.add({
-            severity: "success",
-            summary: "Delete successfull",
-            detail: `${markedMail.value.length > 1 ? 'Selected Emails have' : 'Email has' } been deleted successfully`,
-            life: 3000,
-          });
+          ElMessage({
+              type: 'success',
+              message: markedMail.value.length > 1 ? 'Selected Emails have been deleted successfully ' : ' Email has been deleted successfully  ',
+            })
+          // toast.add({
+          //   severity: "success",
+          //   summary: "Delete successfull",
+          //   detail: `${markedMail.value.length > 1 ? '' : 'Email has' } been deleted successfully`,
+          //   life: 3000,
+          // });
           emails.value = !id ? removeDeletedEmailsFromEmailList(markedMail.value) : emails.value.filter(i => i.id !== id);
           if (id) {
           store.dispatch('communication/removeSentEmails', id)
@@ -361,21 +342,29 @@ export default {
           }
           markedMail.value = [ ];
         } else {
-          toast.add({
-            severity: "error",
-            summary: "Delete Failed",
-            detail: `${data.message}`,
-            life: 3000,
-          });
+          ElMessage({
+              type: 'error',
+              message: data.message,
+            })
+          // toast.add({
+          //   severity: "error",
+          //   summary: "Delete Failed",
+          //   detail: `${data.message}`,
+          //   life: 3000,
+          // });
         }
       } catch (error) {
         console.log(error);
-        toast.add({
-          severity: "error",
-          summary: "Delete Failed",
-          detail: `${markedMail.value.length > 1 ? 'Selected Emails' : 'Email'} could not be deleted, Please try reloading`,
-          life: 3000,
-        });
+        ElMessage({
+              type: 'error',
+              message: markedMail.value.length > 1 ? 'Selected Emails could not be deleted, Please try reloading' : 'Email could not be deleted, Please try reloading'  ,
+            })
+        // toast.add({
+        //   severity: "error",
+        //   summary: "Delete Failed",
+        //   detail: `${markedMail.value.length > 1 ? 'Selected Emails' : 'Email'} could not be deleted, Please try reloading`,
+        //   life: 3000,
+        // });
         stopProgressBar();
       }
     };
@@ -396,28 +385,29 @@ export default {
     }
 
     const showConfirmModal = (id) => {
-      confirm.require({
-        message: "Are you sure you want to proceed? This operation can't be reversed.",
-        header: "Confirmation",
-        icon: "pi pi-exclamation-triangle",
-        acceptClass: "confirm-delete",
-        rejectClass: "cancel-delete",
-        accept: () => {
-          deleteEmails(id);
-        },
-        reject: () => {
-          toast.add({
-            severity: "info",
-            summary: "Rejected",
-            detail: "Delete discarded",
-            life: 3000,
-          });
-        },
-      });
+      ElMessageBox.confirm(
+        "Are you sure you want to proceed? This operation can't be reversed " ,
+        'Confirm delete',
+        {
+          confirmButtonText: 'OK',
+          cancelButtonText: 'Cancel',
+          type: 'error',
+        }
+      )
+        .then(() => {
+           deleteEmails(id);
+        })
+        .catch(() => {
+          ElMessage({
+            type: 'info',
+            message: 'Delete discarded',
+          })
+        })
     };
 
     return {
       emails,
+      Search,
       formatMessage,
       getEmailsByPage,
       itemsCount,
@@ -441,7 +431,9 @@ export default {
   box-sizing: border-box;
   /* color: #02172e; */
 }
-
+/* .table-box {
+  border: 1px solid #4762f01f;
+} */
 .search-div {
   width: fit-content;
   padding: 10px;
@@ -453,6 +445,13 @@ export default {
   background: none;
   border: none;
   outline: transparent;
+}
+.table-top {
+  font-weight: 800;
+  font-size: 12px;
+  background: #fff;
+  border: 1px solid #E0E0E0;
+  border-bottom: none;
 }
 
 .brief-message {

@@ -1,285 +1,276 @@
 <template>
     <div class="container-top container adjust-font">
-    <canvas ref="confeti" width="300" height="300" class="active canvas-style" v-show="displayAnim"></canvas>
+        <canvas ref="confeti" width="300" height="300" class="active canvas-style" v-show="displayAnim"></canvas>
         <div class="row">
             <div class="col-12 col-md-4 p-0 side-bar">
-                <SideActions @opennoteeditor="openNoteEditor" @openemailmodal="openEmailModal" @opentaskeditor="openTaskEditor" 
-                :personDetails="personDetails" @calllogdesc="setCallLogDesc" 
-                :smsLog="smsLog" @resetlog="resetLog" :activityType="activityType" 
-                @updatelogtoview="updateLogToView" @displayanim="setDisplayAnim" />
+                <SideActions @opennoteeditor="openNoteEditor" @openemailmodal="openEmailModal"
+                    @opentaskeditor="openTaskEditor" :personDetails="personDetails" @calllogdesc="setCallLogDesc"
+                    :smsLog="smsLog" @resetlog="resetLog" :activityType="activityType"
+                    @updatelogtoview="updateLogToView" @displayanim="setDisplayAnim" />
             </div>
             <div class="col-12 col-md-8 main-view">
                 <div class="row">
                     <div class="col-6 mt-3">
-                        <span class="p-input-icon-right">
-                            <InputText type="text" placeholder="Search activities" v-model="searchActivitiesText"/>
-                            <i class="pi pi-search uniform-primary-color" />
-                        </span>
+                        <div>
+                            <el-input
+                            type="text" 
+                            placeholder="Search activities" 
+                            v-model="searchActivitiesText"
+                            >
+                            <template #append>
+                                <el-icon><Search /></el-icon>
+                            </template>
+                            </el-input>
+                        </div>
+            
                     </div>
-                    <!-- <div class="col-6 mt-3 border">
-                        <SelectButton v-model="value1" :options="options" />
-                    </div> -->
                 </div>
                 <div class="row">
                     <div class="col-6 col-md-2 pr-0 c-pointer" @click="toggleActivity">
                         <div class="p-3">Activity</div>
-                        <div :class="{ 'baseline' : showActivity, 'hide-base' : !showActivity }"></div>
+                        <div :class="{ 'baseline': showActivity, 'hide-base': !showActivity }"></div>
                     </div>
                     <div class="col-6 col-md-2 pr-0 c-pointer" @click="toggleNotes">
                         <div class="p-3">Notes</div>
-                        <div :class="{ 'baseline' : showNotes, 'hide-base' : !showNotes }"></div>
+                        <div :class="{ 'baseline': showNotes, 'hide-base': !showNotes }"></div>
                     </div>
                     <div class="col-6 col-md-2 pr-0 c-pointer" @click="toggleEmails">
                         <div class="p-3">Emails</div>
-                        <div :class="{ 'baseline' : showEmails, 'hide-base' : !showEmails }"></div>
+                        <div :class="{ 'baseline': showEmails, 'hide-base': !showEmails }"></div>
                     </div>
                     <div class="col-6 col-md-2 pr-0 c-pointer" @click="toggleCalls">
                         <div class="p-3">SMS</div>
-                        <div :class="{ 'baseline' : showCalls, 'hide-base' : !showCalls }"></div>
+                        <div :class="{ 'baseline': showCalls, 'hide-base': !showCalls }"></div>
                     </div>
                     <div class="col-6 col-md-2 pr-0 c-pointer" @click="toggleTasks">
                         <div class="p-3">Tasks</div>
-                        <div :class="{ 'baseline' : showTasks, 'hide-base' : !showTasks }"></div>
+                        <div :class="{ 'baseline': showTasks, 'hide-base': !showTasks }"></div>
                     </div>
                 </div>
                 <div class="row">
                     <div class="border-top col-12 push-border-up"></div>
                 </div>
-                <!-- <div class="row mt-3">
-                    <div class="col-2">Filter by:</div>
-                    <div class="col-7 font-weight-700 uniform-primary-color">Filter activity (19/21)</div>
-                    <div class="col-3 font-weight-700 uniform-primary-color">All Users <span><i class="pi pi-sort-down"></i></span></div>
-                </div> -->
-              
                 <div class="row mt-4">
                     <div class="col-12" v-if="showActivity" transition="bounce">
-                        <Activity :activities="searchActivities" :addNotes="noteList" @individualtoggle="setIconProp" :addTask="taskList" @individualtoggletask="setIconPropTask" @individualcallicon="setIconPropLog" @edittask="setEditTaskProp" @edittask2="setEditTaskProp2" @savetask="saveTaskItem" @hovertask="setHoverTaskProp" @outhovertask="setOutHoverTaskProp"  :loader="loader" :dueDate="dueDate" :getReminder="getReminder" :activityType="activityType" :taskPriority="taskPriority" :personDetails="personDetails" @commentindex="pushToComment" @removecommetfromview="removeCommentFromView" @editcommentinview="editCommentInView" @setduedate="setDueDateTask" @removelog="removeLogFromView" @setstatus="setTaskStatus"/>
+                        <Activity :activities="searchActivities" :addNotes="noteList" @individualtoggle="setIconProp"
+                            :addTask="taskList" @individualtoggletask="setIconPropTask"
+                            @individualcallicon="setIconPropLog" @edittask="setEditTaskProp"
+                            @edittask2="setEditTaskProp2" @savetask="saveTaskItem" @hovertask="setHoverTaskProp"
+                            @outhovertask="setOutHoverTaskProp" :loader="loader" :dueDate="dueDate"
+                            :getReminder="getReminder" :activityType="activityType" :taskPriority="taskPriority"
+                            :personDetails="personDetails" @commentindex="pushToComment"
+                            @removecommetfromview="removeCommentFromView" @editcommentinview="editCommentInView"
+                            @setduedate="setDueDateTask" @removelog="removeLogFromView" @setstatus="setTaskStatus"
+                            @setcontact="setTaskContact" />
                     </div>
                     <div class="col-12 px-0" v-if="showNotes" transition="bounce">
-                        <Notes :addNotes="noteList" @individualtoggle="setIconProp" @opennoteeditor="openNoteEditor"/>
+                        <Notes :addNotes="noteList" @individualtoggle="setIconProp" @opennoteeditor="openNoteEditor" />
                     </div>
                     <div class="col-12 px-0" v-if="showEmails" transition="bounce">
-                        <Emails @openemailmodal="openEmailModal" :emailList="emailList" @emaillicon="toggleEmailIcon" :personDetails="personDetails"/>
+                        <Emails @openemailmodal="openEmailModal" :emailList="emailList" @emaillicon="toggleEmailIcon"
+                            :personDetails="personDetails" />
                     </div>
                     <div class="col-12 px-0" v-if="showCalls" transition="bounce">
-                        <SMS :personDetails="personDetails" :logList="logList" @individualcallicon="setCallLogIcon" @opensmslogpane="opensmslogpane" @hoverLog="setHoverLogProp" @outhoverLog="setOutHoverLogProp"/>
+                        <SMS :personDetails="personDetails" :logList="logList" @individualcallicon="setCallLogIcon"
+                            @opensmslogpane="opensmslogpane" @hoverLog="setHoverLogProp"
+                            @outhoverLog="setOutHoverLogProp" />
                     </div>
                     <div class="col-12 px-0" v-if="showTasks" transition="bounce">
-                        <Tasks :addTask="taskList" @individualtoggletask="setIconMainTask" @opentaskeditor="openTaskEditor" :dueDate="dueDate" :getReminder="getReminder" :activityType="activityType" :taskPriority="taskPriority" @hovertask="setHoverPropForTask" @outhovertask="setOutHoverPropForTask" @edittask="displayEditTaskField" @hidetaskfield="hideTaskField" @removecommetfromview="removeCommentFromViewTask" @editcommentinview="editCommentInViewTask"/>
+                        <Tasks :addTask="taskList" @individualtoggletask="setIconMainTask"
+                            @opentaskeditor="openTaskEditor" :dueDate="dueDate" :getReminder="getReminder"
+                            :activityType="activityType" :taskPriority="taskPriority" @hovertask="setHoverPropForTask"
+                            @outhovertask="setOutHoverPropForTask" @edittask="displayEditTaskField"
+                            @hidetaskfield="hideTaskField" @removecommetfromview="removeCommentFromViewTask"
+                            @editcommentinview="editCommentInViewTask" @setcontact="setTaskContactOnly"
+                            @setactivitytypereset="setActivityTypeReset" @setresetpriority="setResetPriority"
+                            @setduedate="setDueDateOnly" @newcommentindex="pushNewComment" />
                     </div>
                 </div>
             </div>
         </div>
     </div>
     <!-- Modal for Note -->
-    <Dialog header="Create note" v-model:visible="displayPosition" :breakpoints="{'960px': '75vw'}" :style="{width: window.innerWidth > 767 ? '50vw' : '100vw'}" :position="position" :modal="true">
-        <!-- <Editor v-model="note" editorStyle="height: 320px"/> -->
-        <textarea v-model="note" rows="12" class="form-control mt-4" placeholder="Type your note..."></textarea>
-         <div class="d-flex justify-content-start mt-2">
-            <div class="primary-bg default-btn border-0 text-white text-center c-pointer" @click="saveNote">Save</div>
-         </div>
-    </Dialog>
-   
-   <!-- Modal for email -->
-    <Dialog header="Compose
-     email" v-model:visible="emailDisplayPosition" :breakpoints="{'960px': '75vw'}" :style="{width: window.innerWidth > 767 ? '50vw' : '100vw'}"  :position="position" :modal="true">
-        <div class="container" style="height: 480px">
-            <div class="row" v-if="!displayEmailPane">
+    <el-drawer v-model="displayPosition" :size="xsOnly ? '100%' : '50%'" direction="rtl">
+        <template #header>
+            <h4>Create a note</h4>
+        </template>
+        <template #default>
+            <el-input type="textarea" v-model="note" rows="12" class=" mt-4" placeholder="Type your note..." />
+            <div class="d-flex justify-content-end mt-4">
+                <el-button @click="displayPosition = false" round>Close</el-button>
+                <el-button color="#136acd" :loading="noteLoading" @click="saveNote" round>Save</el-button>
+            </div>
+        </template>
+    </el-drawer>
+
+    <!-- Modal for email -->
+    <el-drawer v-model="emailDisplayPosition" :size="xsOnly ? '100%' : '50%'" direction="rtl">
+        <template #header>
+            <h4>Compose email</h4>
+        </template>
+        <template #default>
+            <div class="row p-2" v-if="!displayEmailPane">
                 <div class="col-12 mt-3 font-weight-700 text-center">
                     Keep track of your email activity in your FRM
                 </div>
                 <div class="col-12 mt-3 text-center">
-                    <!-- Connect your email account to Churchplus to begin sending emails from your CRM. All your email conversations will appear in the timeline below.Learn more -->
-                    Send an email from your FRM to {{ personDetails.firstName }} {{ personDetails.lastName }}. All email and conversations will appear in the activity and email tab.
+                    Send an email from your FRM to {{ personDetails.firstName }} {{ personDetails.lastName }}. All email
+                    and conversations will appear in the activity and email tab.
                 </div>
-                <!-- <div class="col-4 mt-5">
-                    <div class="mail-connect">
-                        <div>
-                            <img src="../../../assets/gmail.svg"/>
-                        </div>
-                        <div class="mt-3">Connect Gmail</div>
-                    </div>
-                </div>
-                 <div class="col-4 mt-5">
-                    <div class="mail-connect">
-                        <div>
-                            <img src="../../../assets/outlook-365.png" style="width: 43px"/>
-                        </div>
-                        <div class="mt-3">Connect Office 365</div>
-                    </div>
-                </div> -->
                 <div class="offset-3 col-6 mt-5" @click="toggleDisplayEmailPane">
                     <div class="mail-connect">
                         <div>
-                            <img src="../../../assets/unknown-email.svg"/>
+                            <img src="../../../assets/unknown-email.svg" />
                         </div>
                         <div class="mt-3">Compose Email</div>
                     </div>
                 </div>
             </div>
-            <div class="row" v-else>
+            <div class="row p-2" v-else>
                 <div class="col-12 mt-3">
-                    <!-- <input type="text" class="form-control" value="oladapoadniel@gmail.com" disabled/> -->
                     <span class="p-float-label">
-                        <InputText id="inputtext" class="w-100" style="border-radius: 0.25rem !important; border: 1px solid #ced4da !important;" type="text" disabled/>
-                        <label for="inputtext">{{ personDetails.email }}</label>
+                        <el-input v-model="personDetails.email"
+                            style="border-radius: 0.25rem !important; border: 1px solid #ced4da !important;"
+                            class="w-100" />
                     </span>
                 </div>
                 <div class="col-12 mt-4">
-                    <input type="text" class="form-control" v-model="emailSubject" placeholder="subject"/>
-                    <!-- <span class="p-float-label">
-                        <InputText id="inputtext" class="w-100" style="border-radius: 0.25rem !important; border: 1px solid #ced4da !important;" type="text" />
-                        <label for="inputtext">Enter your subject</label>
-                    </span> -->
+                    <el-input v-model="emailSubject" placeholder="Enter subject" class="w-100" />
                 </div>
                 <div class="col-12 mt-3">
-                    <Editor v-model="emailBody" editorStyle="height: 260px"/>
+                    <DecoupledEditor v-model="emailBody" />
                 </div>
-                <div class="col-12 mt-2 d-flex justify-content-start">
-                    <!-- <Button label="Send" icon="pi pi-check"  autofocus /> -->
-                    <div class="primary-bg default-btn border-0 text-white text-center c-pointer" @click="sendEmail">Send</div>
+                <div class="d-flex justify-content-end mt-4 w-100">
+                    <el-button @click="emailDisplayPosition = false" round>Close</el-button>
+                    <el-button color="#136acd" :loading="emailLoading" @click="sendEmail" round>Save</el-button>
                 </div>
             </div>
-        </div>
-        
-        <!-- <template #footer>
-            <Button label="No" icon="pi pi-times" class="p-button-text" />
-            <Button label="Yes" icon="pi pi-check" @click="saveNote" autofocus />
-        </template> -->
-    </Dialog>
+
+        </template>
+    </el-drawer>
 
 
     <!-- Modal for task -->
-     <Dialog header="Create task" v-model:visible="taskDisplayPosition" :breakpoints="{'960px': '75vw'}" :style="{width: window.innerWidth > 767 ? '50vw' : '100vw'}" :position="position" :modal="true">
-        <div class="container" style="height: 480px">
-            <div class="row mt-3">
-               <div class="row">
-                        <div class="col-12">
-                            <textarea class="form-control col-12" placeholder="Enter your task" v-model="theTask"></textarea>
-                        </div>
-                        <div class="col-6 label-text mt-3">Due date</div>
-                        <div class="col-6 label-text mt-3">Reminder</div>
-                        <div class="col-6 mt-2">
-                            <div @click="toggleDueDate" aria:haspopup="true" aria-controls="overlay_panel" class="uniform-primary-color font-weight-700 c-pointer">
-                                {{ Object.keys(selectedDueDate).length > 0 ? selectedDueDate.name : 'Select due date' }} &nbsp; <i class="pi pi-sort-down"></i>
-                            </div>
-                            <OverlayPanel ref="dueDateRef" appendTo="body" :showCloseIcon="false" id="overlay_panel" :breakpoints="{'960px': '75vw'}">
-                                <div class="container-fluid p-0">
-                                    <div class="row hover-log" v-for="(item, index) in dueDate" :key="index">
-                                        <div class="py-2 px-3 " @click="setDueDate(item)">{{ item.name }}</div>
-                                    </div>
+    <el-drawer v-model="taskDisplayPosition" :size="xsOnly ? '100%' : '50%'" direction="rtl">
+        <template #header>
+            <h4>Create task</h4>
+        </template>
+        <template #default>
+            <div class="row mt-3 p-2">
+                <div class="row">
+                    <div class="col-12">
+                        <el-input v-model="theTask" type="textarea" placeholder="Enter your task" rows="6" />
+                    </div>
+                    <div class="col-6 label-text mt-3">Due date</div>
+                    <div class="col-6 label-text mt-3">Reminder</div>
+                    <div class="col-6 mt-2">
+                        <el-dropdown trigger="click">
+                            <span class="el-dropdown-link primary--text">
+                                {{ Object.keys(selectedDueDate).length > 0 ? selectedDueDate.name : 'Select due date'
+}}<el-icon class="el-icon--right"><arrow-down /></el-icon>
+                            </span>
+                            <template #dropdown>
+                                <el-dropdown-menu>
+                                    <el-dropdown-item v-for="(item, index) in dueDate" :key="index"
+                                        @click="setDueDate(item)">{{ item.name }}</el-dropdown-item>
+                                </el-dropdown-menu>
+                            </template>
+                        </el-dropdown>
+                    </div>
+                    <div class="col-6 mt-2">
+                        <el-dropdown trigger="click">
+                            <span class="el-dropdown-link primary--text">
+                                {{ Object.keys(selectedReminder).length > 0 ? selectedReminder.name : 'Select reminder'
+}}<el-icon class="el-icon--right"><arrow-down /></el-icon>
+                            </span>
+                            <template #dropdown>
+                                <el-dropdown-menu>
+                                    <el-dropdown-item v-for="(item, index) in getReminder" :key="index"
+                                        @click="setReminder(item)">{{ item.name }}</el-dropdown-item>
+                                </el-dropdown-menu>
+                            </template>
+                        </el-dropdown>
+                    </div>
+                    <div class="col-12 mt-3">
+                        <hr />
+                    </div>
+                    <div class="col-4 label-text">Type</div>
+                    <div class="col-4 label-text">Priority</div>
+                    <div class="col-4 label-text">Assigned to</div>
+                    <div class="col-4 mt-2">
+                        <el-dropdown trigger="click">
+                            <span class="el-dropdown-link primary--text">
+                                {{ Object.keys(selectedTodo).length > 0 ? selectedTodo.value : 'Todo&nbsp;' }}<el-icon
+                                    class="el-icon--right"><arrow-down /></el-icon>
+                            </span>
+                            <template #dropdown>
+                                <el-dropdown-menu>
+                                    <el-dropdown-item v-for="(item, index) in activityType" :key="index"
+                                        @click="setActivityType(item)">{{ item.value }}</el-dropdown-item>
+                                </el-dropdown-menu>
+                            </template>
+                        </el-dropdown>
+                    </div>
+                    <div class="col-4 mt-2">
+                        <el-dropdown trigger="click">
+                            <span class="el-dropdown-link primary--text">
+                                {{ Object.keys(selectedPriority).length > 0 ? selectedPriority.name : 'Select priority'
+}}<el-icon class="el-icon--right"><arrow-down /></el-icon>
+                            </span>
+                            <template #dropdown>
+                                <el-dropdown-menu>
+                                    <el-dropdown-item v-for="(item, index) in taskPriority" :key="index"
+                                        @click="setPriority(item)">{{ item.name }}</el-dropdown-item>
+                                </el-dropdown-menu>
+                            </template>
+                        </el-dropdown>
+                    </div>
+                    <div class="col-4 mt-2">
+                        <span class="el-dropdown c-pointer" @click="toggleContact" style="color: #136acd">
+                            {{ selectedContact && Object.keys(selectedContact).length > 0 ? selectedContact.name ?
+        selectedContact.name : selectedContact.firstName ? `${selectedContact.firstName}
+                            ${selectedContact.lastName}` : "Select contact" : "Select contact"
+}}<el-icon
+                                class="el-icon--right"><arrow-down /></el-icon>
+                        </span>
+                        <el-drawer v-model="searchmemberr" direction="btt">
+                            <template #header>
+                                <h4>Search member</h4>
+                            </template>
+                            <template #default>
+                                <div>Enter the name of the person you want to assign this task to</div>
+                                <SearchMember v-bind:currentMember="selectedContact" @memberdetail="chooseContact" />
+                            </template>
+                            <template #footer>
+                                <div class="d-flex justify-content-start">
+                                    <el-button @click="searchmemberr = false" color="#136acd" round>Done</el-button>
                                 </div>
-                            </OverlayPanel>
-                        </div>
-                        <div class="col-6 mt-2">
-                            <div @click="toggleReminder" aria:haspopup="true" aria-controls="overlay_panel" class="uniform-primary-color font-weight-700 c-pointer">
-                                {{ Object.keys(selectedReminder).length > 0 ? selectedReminder.name : 'Select reminder' }}&nbsp; <i class="pi pi-sort-down"></i>
-                            </div>
-                            <OverlayPanel ref="reminderRef" appendTo="body" :showCloseIcon="false" id="overlay_panel" :breakpoints="{'960px': '75vw'}">
-                                <div class="container-fluid p-0">
-                                    <div class="row hover-log" v-for="(item, index) in getReminder" :key="index">
-                                        <div class="py-2 px-3 " @click="setReminder(item)">{{ item.name }}</div>
-                                    </div>
-                                </div>
-                            </OverlayPanel>
-                        </div>
-                        <div class="col-12 mt-3">
-                            <hr />
-                        </div>
-                        <div class="col-4 label-text">Type</div>
-                        <div class="col-4 label-text">Priority</div>
-                        <!-- <div class="col-2 label-text">Queue</div> -->
-                        <div class="col-4 label-text">Assigned to</div>
-                        <!-- <div class="col-5 label-text"></div> -->
-                        <!-- <div class="col-4"></div> -->
-                        <div class="col-4 mt-2">
-                            <div @click="toggleTodo" aria:haspopup="true" aria-controls="overlay_panel" class="uniform-primary-color font-weight-700 c-pointer">
-                                {{ Object.keys(selectedTodo).length > 0 ? selectedTodo.value : 'Todo&nbsp;' }} <i class="pi pi-sort-down"></i>
-                            </div>
-                            <OverlayPanel ref="todoTask" appendTo="body" :showCloseIcon="false" id="overlay_panel" :breakpoints="{'960px': '75vw'}">
-                                <div class="container-fluid p-0">
-                                    <div class="row hover-log" v-for="(item, index) in activityType" :key="index">
-                                        <div class="py-2 px-3" @click="setActivityType(item)">{{ item.value }}</div>
-                                    </div>
-                                </div>
-                            </OverlayPanel>
-                        </div>
-                        <div class="col-4 mt-2">
-                            <div @click="togglePriority" aria:haspopup="true" aria-controls="overlay_panel" class="uniform-primary-color font-weight-700 c-pointer">
-                                {{ Object.keys(selectedPriority).length > 0 ? selectedPriority.name : 'Select priority' }}&nbsp; <i class="pi pi-sort-down"></i>
-                            </div>
-                            <OverlayPanel ref="priorityRef" appendTo="body" :showCloseIcon="false" id="overlay_panel" :breakpoints="{'960px': '75vw'}">
-                                <div class="container-fluid p-0">
-                                    <div class="row hover-log" v-for="(item, index) in taskPriority" :key="index">
-                                        <div class="py-2 px-3" @click="setPriority(item)">{{ item.name }}</div>
-                                    </div>
-                                </div>
-                            </OverlayPanel>
-                        </div>
-                        <div class="col-4 mt-2">
-                            <div @click="toggleContact" aria:haspopup="true" aria-controls="overlay_panel" class="uniform-primary-color font-weight-700 c-pointer">
-                                {{ selectedContact && Object.keys(selectedContact).length > 0 ? selectedContact.name ? selectedContact.name : selectedContact.firstName ? `${selectedContact.firstName} ${selectedContact.lastName}` : "Select contact" : "Select contact" }}&nbsp; <i class="pi pi-sort-down"></i>
-                            </div>
-                            <Dialog header="Assign task" v-model:visible="searchmemberr" :position="positiondialog" :style="{height: window.innerHeight > 767 ? '50vw' : '100vw'}">
-                                <p class="py-2 px-3">Search whom you want to assign this task</p>
-                                <SearchMember v-bind:currentMember="selectedContact" @memberdetail="chooseContact"/>
-                                <!-- <div>======================================</div> -->
-                                    <br />
-                                    <br />
-                                    <br />
-                                    <br />
-                                    <br />
-                                    <br />
-                                    <br />
-                                    <br />
-                                    <br />
-                                    <br />
-                                    <br />
-                                    <br />
-                                    <br />
-                                    <br />
-                                    <br />
-                                <!-- <div>======================================</div> -->
-                            </Dialog>
-                            <!-- <OverlayPanel ref="contactRef" appendTo="body" :showCloseIcon="false" id="overlay_panel" :breakpoints="{'960px': '75vw'}" class="p-0">
-                                <div class="container-fluid p-0">
-                                    <div class="py-2 px-3">Search whom you want to assign this task</div>
-                                    <div class="py-2 px-3">
-                                        <SearchMember v-bind:currentMember="selectedContact" @memberdetail="chooseContact"/>
-                                        <p class="font-weight-600 text-primary" @click="toggleNewMember">Add new member</p>
-                                    </div>
-                                </div>
-                            </OverlayPanel> -->
-                        </div>
+                            </template>
+                        </el-drawer>
 
-                        <div class="col-12">
-                        <textarea class="form-control col-12 mt-3" rows="4" v-model="taskNote" placeholder="Notes..."></textarea>
-                        <div class="d-flex justify-content-start">
-                            <div class="col-2 mt-3 pointer-cursor primary-bg default-btn border-0 text-white text-center c-pointer" @click="saveTask">Save</div>
-                        </div>
-                        </div>
-            
+                    </div>
+
+                    <div class="col-12">
+                        <el-input v-model="taskNote" type="textarea" class="mt-3" placeholder="Leave a note..."
+                            rows="4" />
+                    </div>
                 </div>
             </div>
-        </div>
-    </Dialog>
+            <div class="d-flex justify-content-end mt-3 w-100">
+                <el-button @click="taskDisplayPosition = false" round>Close</el-button>
+                <el-button color="#136acd" :loading="taskLoading" @click="saveTask" round>Save</el-button>
+            </div>
+        </template>
+    </el-drawer>
 
-    <Dialog
-    header="Create New Member"
-    v-model:visible="displayNewMemberModal"
-    :style="{ width: '70vw', maxWidth: '600px' }"
-    :modal="true"
-    position="top"
-  >
-    <div class="row">
-      <div class="col-md-12">
-        <NewPerson
-          @cancel="() => (displayNewMemberModal = false)"
-          @person-id="getPersonId($event)"
-        />
-      </div>
-    </div>
-  </Dialog>
+    <!-- <Dialog header="Create New Member" v-model:visible="displayNewMemberModal"
+        :style="{ width: '70vw', maxWidth: '600px' }" :modal="true" position="top">
+        <div class="row">
+            <div class="col-md-12">
+                <NewPerson @cancel="() => (displayNewMemberModal = false)" @person-id="getPersonId($event)" />
+            </div>
+        </div>
+    </Dialog> -->
 </template>
 
 <script>
@@ -290,9 +281,9 @@ import Notes from "./components/Notes"
 import Emails from "./components/Emails"
 import SMS from "./components/SMS"
 import Tasks from "./components/Tasks"
-import InputText from 'primevue/inputtext'
-import Dialog from 'primevue/dialog';
-import Editor from 'primevue/editor';
+// import InputText from 'primevue/inputtext'
+// import Dialog from 'primevue/dialog';
+// import Editor from 'primevue/editor';
 import { useToast } from "primevue/usetoast";
 import { useRoute } from "vue-router"
 import axios from "@/gateway/backendapi";
@@ -305,6 +296,9 @@ import SearchMember from "../../../components/membership/MembersSearch.vue"
 import celebAnim from "../../../services/celebration-animation/party"
 import router from '../../../router'
 import NewPerson from '../../../components/membership/NewDonor.vue'
+import deviceBreakpoint from "../../../mixins/deviceBreakpoint";
+import { ElMessage } from 'element-plus'
+import DecoupledEditor from '@/components/RichEditor';
 export default {
     inheritAttrs: false,
     components: {
@@ -314,14 +308,15 @@ export default {
         Emails,
         SMS,
         Tasks,
-        InputText,
-        Dialog,
-        Editor,
+        // InputText,
+        // Dialog,
+        // Editor,
         // SelectButton,
         SearchMember,
-        NewPerson
+        NewPerson,
+        DecoupledEditor
     },
-    setup () {
+    setup() {
         const toast = useToast()
         const route = useRoute()
         const showActivity = ref(true)
@@ -340,7 +335,7 @@ export default {
         const displayEmailPane = ref(false)
         const taskDisplayPosition = ref(false)
         const op = ref("")
-        const todoTask = ref("")
+        // const todoTask = ref("")
         const theTask = ref("")
         const taskNote = ref("")
         const personDetails = ref({})
@@ -351,12 +346,12 @@ export default {
         const activityType = ref([])
         const selectedTodo = ref({})
         const taskPriority = ref(frmservice.priority())
-        const priorityRef = ref("")
+        // const priorityRef = ref("")
         const selectedPriority = ref({})
         const dueDate = ref([])
-        const dueDateRef = ref("")
+        // const dueDateRef = ref("")
         const selectedDueDate = ref({})
-        const reminderRef = ref("")
+        // const reminderRef = ref("")
         const selectedReminder = ref({})
         // const allContacts = ref([])
         const selectedContact = ref({})
@@ -367,12 +362,16 @@ export default {
         // const inputFocus = ref(false)
         const confeti = ref()
         const displayAnim = ref(false)
-        const displayNewMemberModal = ref(false)
+        // const displayNewMemberModal = ref(false)
         const searchmemberr = ref(false)
         const positiondialog = ref('bottomright')
-        
+        const { xsOnly } = deviceBreakpoint()
+        const noteLoading = ref(false)
+        const emailLoading = ref(false)
+        const taskLoading = ref(false)
 
-        
+
+
 
         const toggleActivity = () => {
             showActivity.value = true
@@ -389,10 +388,10 @@ export default {
             showCalls.value = false
             showTasks.value = false
         }
-        
+
         const toggleEmails = () => {
-            showActivity.value = 
-            showNotes.value = false
+            showActivity.value =
+                showNotes.value = false
             showEmails.value = true
             showCalls.value = false
             showTasks.value = false
@@ -417,26 +416,35 @@ export default {
         const openPosition = () => {
             displayPosition.value = true;
         };
-        const saveNote = async() => {
-            displayPosition.value = false;
-            
+        const saveNote = async () => {
+            noteLoading.value = true
+
             let body = {
-            // title: "string",
-            note: note.value,
-            firsttimerID: route.params.personId,
-            type: 96
+                // title: "string",
+                note: note.value,
+                firsttimerID: route.params.personId,
+                type: 96
             }
             try {
                 await frmservice.saveNote(route.params.personId, body)
+                noteLoading.value = false
+                displayPosition.value = false;
+                ElMessage({
+                    type: 'success',
+                    showClose: true,
+                    message: "Note created successfully",
+                    duration: 5000
+                })
                 getLogs()
             }
             catch (err) {
+                noteLoading.value = false
                 console.log(err)
             }
 
             note.value = ""
         };
-        
+
 
         const openNoteEditor = (payload) => {
             displayPosition.value = payload
@@ -450,12 +458,12 @@ export default {
             // noteList.value[payload].noteIcon = !noteList.value[payload].noteIcon
             activities.value[payload].noteIcon = !activities.value[payload].noteIcon
         }
-        
+
         const setIconPropTask = (payload) => {
             // taskList.value[payload].taskIcon = !taskList.value[payload].taskIcon
             searchActivities.value[payload.parentIndex].value[payload.mainIndex].taskIcon = !searchActivities.value[payload.parentIndex].value[payload.mainIndex].taskIcon
         }
-        
+
         const setIconMainTask = (payload) => {
             taskList.value[payload].taskIcon = !taskList.value[payload].taskIcon
             // searchActivities.value[payload.parentIndex].value[payload.mainIndex].taskIcon = !searchActivities.value[payload.parentIndex].value[payload.mainIndex].taskIcon
@@ -497,19 +505,23 @@ export default {
                 subject: emailSubject.value
             }
 
+            emailLoading.value = true
+
             try {
                 await frmservice.sendEmail(route.params.personId, data)
-                    toast.add({
-                        severity: "success",
-                        summary: "Sent",
-                        detail: "Email sent successfully",
-                        life: 5000,
-                    });
-                    emailDisplayPosition.value = false
-                    getLogs()
+                ElMessage({
+                    type: 'success',
+                    showClose: true,
+                    message: "Email sent successfully",
+                    duration: 5000
+                })
+                emailLoading.value = false
+                emailDisplayPosition.value = false
+                getLogs()
 
             }
             catch (err) {
+                emailLoading.value = false
                 console.log(err)
             }
         }
@@ -525,23 +537,23 @@ export default {
         const toggle = (event) => {
             op.value.toggle(event);
         };
-        
+
         const toggleTodo = (event) => {
-            todoTask.value.toggle(event);
+            // todoTask.value.toggle(event);
         };
-        
+
         const togglePriority = (event) => {
-            priorityRef.value.toggle(event);
+            // priorityRef.value.toggle(event);
         };
-        
+
         const toggleDueDate = (event) => {
-            dueDateRef.value.toggle(event);
+            // dueDateRef.value.toggle(event);
         };
-        
+
         const toggleReminder = (event) => {
-            reminderRef.value.toggle(event);
+            // reminderRef.value.toggle(event);
         };
-        
+
         const toggleContact = () => {
             // contactRef.value.toggle(event);
             // inputFocus.value = true
@@ -549,17 +561,16 @@ export default {
         };
 
         const setDueDate = (item) => {
-            dueDateRef.value.hide();
             selectedDueDate.value = item
         }
-        
+
         const setReminder = (item) => {
-            reminderRef.value.hide();
+            // reminderRef.value.hide();
             selectedReminder.value = item
         }
 
-        const saveTask = async() => {
-            taskDisplayPosition.value = false;
+        const saveTask = async () => {
+            taskLoading.value = true
 
             let payload = {
                 instructions: theTask.value,
@@ -574,10 +585,19 @@ export default {
 
             try {
                 await frmservice.saveTask(payload)
+                taskLoading.value = false
+                taskDisplayPosition.value = false;
+                ElMessage({
+                    type: 'success',
+                    showClose: true,
+                    message: "Task created successfully",
+                    duration: 5000
+                })
                 getLogs()
             }
             catch (err) {
                 console.log(err)
+                taskLoading.value = false
             }
             theTask.value = ""
 
@@ -585,40 +605,40 @@ export default {
 
         const getPersonDetails = () => {
             axios
-            .get(`/api/People/firstTimer/${route.params.personId}`)
-            .then((res) => {
-                personDetails.value = res.data
-            })
-            .catch(err => {
-                console.log(err)
-            })
+                .get(`/api/People/firstTimer/${route.params.personId}`)
+                .then((res) => {
+                    personDetails.value = res.data
+                })
+                .catch(err => {
+                    console.log(err)
+                })
         }
         if (route.query.memberType == 0) getPersonDetails()
-        
+
         const getMemberPersonDetails = () => {
             axios
-            .get(`/api/People/GetPersonInfoWithAssignments/${route.params.personId}`)
-            .then((res) => {
-                personDetails.value = {
-                    pictureUrl: res.data.pictureUrl,
-                    firstName: res.data.firstName,
-                    lastName: res.data.lastName,
-                    email: res.data.email,
-                    phoneNumber: res.data.mobilePhone,
-                    address: res.data.homeAddress,
-                    genderId: res.data.genderID,
-                    maritalStatusId: res.data.maritalStatusID,
-                    birthday: res.data.dayOfBirth,
-                    birthMonth: res.data.monthOfBirth,
-                    birthYear: res.data.yearOfBirth,
-                    followupPersonID: res.data.followupPersonID,
-                    followupPersonName: res.data.followupPersonName
+                .get(`/api/People/GetPersonInfoWithAssignments/${route.params.personId}`)
+                .then((res) => {
+                    personDetails.value = {
+                        pictureUrl: res.data.pictureUrl,
+                        firstName: res.data.firstName,
+                        lastName: res.data.lastName,
+                        email: res.data.email,
+                        phoneNumber: res.data.mobilePhone,
+                        address: res.data.homeAddress,
+                        genderId: res.data.genderID,
+                        maritalStatusId: res.data.maritalStatusID,
+                        birthday: res.data.dayOfBirth,
+                        birthMonth: res.data.monthOfBirth,
+                        birthYear: res.data.yearOfBirth,
+                        followupPersonID: res.data.followupPersonID,
+                        followupPersonName: res.data.followupPersonName
 
-                }
-            })
-            .catch(err => {
-                console.log(err)
-            })
+                    }
+                })
+                .catch(err => {
+                    console.log(err)
+                })
         }
         if (route.query.memberType == 1) getMemberPersonDetails()
 
@@ -626,7 +646,7 @@ export default {
             logList.value.unshift(payload)
             activities.value.unshift(payload)
         }
-        
+
         const setCallLogIcon = (payload) => {
             logList.value[payload].logIcon = !logList.value[payload].logIcon
         }
@@ -642,7 +662,7 @@ export default {
         const setIconPropLog = (payload) => {
             // activities.value[payload].logIcon = !activities.value[payload].logIcon
             searchActivities.value[payload.parentIndex].value[payload.mainIndex].logIcon = !searchActivities.value[payload.parentIndex].value[payload.mainIndex].logIcon
-            
+
         }
 
         const setEditTaskProp = (payload) => {
@@ -670,7 +690,7 @@ export default {
 
         const setOutHoverTaskProp = (payload) => {
             // activities.value[payload].hoverTask = false
-            searchActivities.value[payload.parentIndex].value[payload.mainIndex].hoverTask =false
+            searchActivities.value[payload.parentIndex].value[payload.mainIndex].hoverTask = false
         }
 
         // const setHoverTaskProp2 = (payload) => {
@@ -702,7 +722,7 @@ export default {
 
         const setActivityType = (activity) => {
             selectedTodo.value = activity
-            todoTask.value.hide()
+            // todoTask.value.hide()
         }
 
         const getDueDate = () => {
@@ -714,21 +734,21 @@ export default {
             }
         }
         getDueDate()
-       
-       const getReminder = computed(() => {
-           if (Object.keys(selectedDueDate.value).length > 0) {
+
+        const getReminder = computed(() => {
+            if (Object.keys(selectedDueDate.value).length > 0) {
                 let result = frmservice.reminder(selectedDueDate.value.value)
                 return result
-           } else {
-               let result = frmservice.reminder()
+            } else {
+                let result = frmservice.reminder()
                 return result
-           }
+            }
         })
 
         const reminder = ref(getReminder)
 
         const setPriority = (payload) => {
-            priorityRef.value.hide();
+            // priorityRef.value.hide();
             selectedPriority.value = payload
         }
 
@@ -745,7 +765,7 @@ export default {
             }
         })
 
-        const getLogs = async() => {
+        const getLogs = async () => {
             loader.value = true
             try {
                 let logs = await frmservice.getAllLogs(route.params.personId)
@@ -771,10 +791,10 @@ export default {
             taskList.value = activities.value.filter(i => i.person)
             emailList.value = type[90]
             logList.value = type[92]
-            
+
             let colors = ['rgba(148, 249, 192, 0.4)', 'rgba(148, 211, 249, 0.4)', 'rgba(232, 249, 148, 0.4)', 'rgba(249, 219, 148, 0.4)', 'rgba(249, 148, 239, 0.4)']
             let index = 0
-            
+
             const mappedActivities = activities.value.map(i => {
                 i.date = formatDate(i.date)
                 i.color = colors[index]
@@ -784,22 +804,22 @@ export default {
                 const element = mappedActivities[i];
                 if (element.type == 94) {
                     element.color = colors[index]
-                    if (index == colors.length - 1){
+                    if (index == colors.length - 1) {
                         index = 0;
                     } else {
                         index++;
                     }
                 }
-                
-                
+
+
             }
             const date = groupResponse.groupData(mappedActivities, 'date')
-             groupedActivities.value = []
-            
+            groupedActivities.value = []
+
             for (const prop in date) {
                 groupedActivities.value.push({
-                name: prop,
-                value: date[prop]
+                    name: prop,
+                    value: date[prop]
                 })
             }
         }
@@ -809,10 +829,10 @@ export default {
         }
 
         const searchActivities = computed(() => {
-            if (searchActivitiesText.value == "" ) return groupedActivities.value
+            if (searchActivitiesText.value == "") return groupedActivities.value
             let groupedArrResult = []
             groupedActivities.value.forEach(i => {
-                 let searchedResult =  i.value.filter(j => {
+                let searchedResult = i.value.filter(j => {
                     if (j.description) return j.description.toLowerCase().includes(searchActivitiesText.value.toLowerCase())
                 })
                 groupedArrResult.push({
@@ -859,19 +879,19 @@ export default {
         const displayEditTaskField = (payload) => {
             taskList.value[payload].editTask = true
         }
-        
+
         const hideTaskField = (payload) => {
             taskList.value[payload].editTask = false
         }
 
         const setDueDateTask = ({ parentIndex, mainIndex, body }) => {
-            searchActivities.value[parentIndex].value[mainIndex].selectedDueDate =  body
+            searchActivities.value[parentIndex].value[mainIndex].selectedDueDate = body
         }
 
         onMounted(() => {
             celebAnim.party1(confeti.value)
         })
-        
+
         const setDisplayAnim = () => {
             displayAnim.value = true
             setTimeout(() => {
@@ -879,7 +899,7 @@ export default {
                 router.push('/tenant/firsttimerslist')
             }, 8000);
         }
-    
+
         const innerWidth = computed(() => {
             return window.innerWidth;
         })
@@ -892,8 +912,32 @@ export default {
             searchActivities.value[parentIndex].value[mainIndex].loggedTask.status = value
         }
 
-        const toggleNewMember = () => {
-            displayNewMemberModal.value = true
+        const setTaskContact = ({ parentIndex, mainIndex, value }) => {
+            searchActivities.value[parentIndex].value[mainIndex].selectedContact = value
+        }
+
+        // const toggleNewMember = () => {
+        //     displayNewMemberModal.value = true
+        // }
+
+        const setTaskContactOnly = ({ index, payload }) => {
+            taskList.value[index].selectedContact = payload
+        }
+
+        const setActivityTypeReset = ({ index, todoIndex }) => {
+            taskList.value[index].selectedActivity = activityType.value[todoIndex]
+        }
+
+        const setResetPriority = ({ index, priorityIndex }) => {
+            taskList.value[index].selectedPriority = taskPriority.value[priorityIndex]
+        }
+
+        const setDueDateOnly = ({ index, item }) => {
+            taskList.value[index].selectedDueDate = item
+        }
+        
+        const pushNewComment = ({ index, data }) => {
+            taskList.value[index].loggedTask.comments.push(data)
         }
 
         return {
@@ -948,21 +992,21 @@ export default {
             setOutHoverTaskProp,
             setHoverLogProp,
             setOutHoverLogProp,
-            todoTask,
+            // todoTask,
             toggleTodo,
             activityType,
             selectedTodo,
             setActivityType,
             taskPriority,
-            priorityRef,
+            // priorityRef,
             togglePriority,
             dueDate,
-            dueDateRef,
+            // dueDateRef,
             toggleDueDate,
             setDueDate,
             selectedDueDate,
             reminder,
-            reminderRef,
+            // reminderRef,
             toggleReminder,
             selectedReminder,
             setReminder,
@@ -1001,10 +1045,20 @@ export default {
             innerWidth,
             removeLogFromView,
             setTaskStatus,
-            displayNewMemberModal,
-            toggleNewMember,
+            // displayNewMemberModal,
+            // toggleNewMember,
             searchmemberr,
-            positiondialog
+            positiondialog,
+            xsOnly,
+            noteLoading,
+            emailLoading,
+            taskLoading,
+            setTaskContact,
+            setTaskContactOnly,
+            setActivityTypeReset,
+            setResetPriority,
+            setDueDateOnly,
+            pushNewComment
         }
     }
 }
@@ -1034,7 +1088,8 @@ export default {
 }
 
 .adjust-font {
-    font-size: 17px
+    font-size: 14px;
+    color: rgb(96, 98, 102)
 }
 
 .push-border-up {
@@ -1042,35 +1097,44 @@ export default {
 }
 
 .bounce-transition {
-  display: inline-block; /* otherwise scale animation won't work */
+    display: inline-block;
+    /* otherwise scale animation won't work */
 }
+
 .bounce-enter {
-  animation: bounce-in .5s;
+    animation: bounce-in .5s;
 }
+
 .bounce-leave {
-  animation: bounce-out .5s;
+    animation: bounce-out .5s;
 }
+
 @keyframes bounce-in {
-  0% {
-    transform: scale(0);
-  }
-  50% {
-    transform: scale(1.5);
-  }
-  100% {
-    transform: scale(1);
-  }
+    0% {
+        transform: scale(0);
+    }
+
+    50% {
+        transform: scale(1.5);
+    }
+
+    100% {
+        transform: scale(1);
+    }
 }
+
 @keyframes bounce-out {
-  0% {
-    transform: scale(1);
-  }
-  50% {
-    transform: scale(1.5);
-  }
-  100% {
-    transform: scale(0);
-  }
+    0% {
+        transform: scale(1);
+    }
+
+    50% {
+        transform: scale(1.5);
+    }
+
+    100% {
+        transform: scale(0);
+    }
 }
 
 .side-bar {
@@ -1111,7 +1175,7 @@ export default {
 }
 
 .btn-btn {
-    font-size: 12px;
+    font-size: 13px;
     line-height: 14px;
     padding: 5px 12px;
     border-radius: 3px;
@@ -1124,7 +1188,7 @@ export default {
 .save-btn {
     background-color: #425b76;
     border: 1px solid #425b76;
-    color: #fff;    
+    color: #fff;
 }
 
 .hover-log:hover {
@@ -1133,8 +1197,8 @@ export default {
 }
 
 .canvas-style {
-      position: absolute;
-      z-index: 1;
+    position: absolute;
+    z-index: 1;
 }
 
 /* canvas {

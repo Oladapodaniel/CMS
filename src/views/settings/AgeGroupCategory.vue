@@ -216,6 +216,7 @@ export default {
         ElMessage({
           type: "success",
           message: "Age Group Save Successfully",
+          duration: 5000
         });
 
         this.loading = false
@@ -233,6 +234,7 @@ export default {
         ElMessage({
           type: "success",
           message: "Age Group Deleted Successfully",
+          duration: 5000
         });
       } catch (error) {
         finish();
@@ -240,11 +242,13 @@ export default {
       }
     },
     deletePop(id) {
-      ElMessageBox.confirm("Are you sure you want to Delete?", "Warning", {
-        confirmButtonText: "OK",
-        cancelButtonText: "Cancel",
-        type: "warning",
-      })
+      ElMessageBox.confirm("Are you sure you want to Delete?", "Confirm delete", 
+     {
+          confirmButtonText: 'OK',
+          cancelButtonText: 'Cancel',
+          type: 'error',
+        }
+        )
         .then(() => {
           this.deleteAge(id);
         })
@@ -252,6 +256,7 @@ export default {
           ElMessage({
             type: "info",
             message: "Delete canceled",
+            duration: 5000
           });
         });
     },
@@ -267,6 +272,7 @@ export default {
         ElMessage({
           type: "success",
           message: "Age Group Updated Successfully",
+          duration: 5000
         });
         this.loading = false
       } catch (error) {

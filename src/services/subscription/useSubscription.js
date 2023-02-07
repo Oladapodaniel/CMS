@@ -4,7 +4,6 @@ let userPlan = {}
 const getPlan = async () => {
     try {
         const response = await axios.get(`/api/Subscription/GetSubscription`)
-        console.log(response, "🎇🎇");
        userPlan = response.data.returnObject.subscriptionPlans.find((i) => {
 
            return i.id === response.data.returnObject.id

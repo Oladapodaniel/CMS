@@ -224,11 +224,13 @@ export default {
       }
     },
     deletePop(id) {
-      ElMessageBox.confirm("Are you sure you want to Delete?", "Warning", {
-        confirmButtonText: "OK",
-        cancelButtonText: "Cancel",
-        type: "warning",
-      })
+      ElMessageBox.confirm("Are you sure you want to Delete?", "Confirm delete", 
+      {
+          confirmButtonText: 'OK',
+          cancelButtonText: 'Cancel',
+          type: 'error',
+        }
+      )
         .then(() => {
           this.deleteAttendant(id);
         })
@@ -236,6 +238,7 @@ export default {
           ElMessage({
             type: "info",
             message: "Delete canceled",
+            duration: 5000
           });
         });
     },
@@ -247,6 +250,7 @@ export default {
         ElMessage({
           type: "success",
           message: "Attendance Deleted Successfully",
+          duration: 5000
         });
       } catch (error) {
         finish();
@@ -264,6 +268,7 @@ export default {
         ElMessage({
           type: "success",
           message: "Attendance Updated Successfully",
+          duration: 5000
         });
       } catch (error) {
         finish();
@@ -280,6 +285,7 @@ export default {
         ElMessage({
           type: "success",
           message: "Attendance Save Successfully",
+          duration: 5000
         });
       } catch (error) {
         finish();

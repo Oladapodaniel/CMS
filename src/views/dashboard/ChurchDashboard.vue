@@ -1,63 +1,13 @@
 <template>
-  <main class="container-slim" id="main">
+  <main :class="{ 'container-slim': lgAndUp || xlAndUp }" id="main">
     <div class="second-col container-top">
       <div class="create-btn-div">
         <div>
-          <h2 class="title">Dashboard</h2>
-        </div>
-       
-        <div>
-          <button
-            class="create-btn"
-            @click="moreLinksVissible = !moreLinksVissible"
-          >
-            Create new
-            <i class="pi pi-angle-down create-dd"></i>
-          </button>
-          <div class="more-items ml-1" v-if="moreLinksVissible">
-            <div class="container">
-              <div class="row">
-                <div
-                  class="
-                    col-md-12
-                    d-flex
-                    flex-column
-                    border
-                    rounded
-                    more-links
-                    px-4
-                  "
-                >
-                  <router-link
-                    to="/tenant/people/add"
-                    class="font-weight-bold mt-3 text-dec-none"
-                    >Member</router-link
-                  >
-                  <router-link
-                    to="/tenant/people/addfirsttimer"
-                    class="font-weight-bold text-dec-none firstTimerClass"
-                    >First timer</router-link
-                  >
-                </div>
-              </div>
-            </div>
-          </div>
+          <h2 class="head-text">Dashboard</h2>
         </div>
       </div>
        <div class="row  mb-4">
           <div class="col-12">
-            <div class="col-md-12 text-dark py-3 mb-2 day3" v-if="notifiedDays === 3 ">
-              <div class="">
-                3 days remaining before your subscription expires, kindly subscribe before 
-                {{ moment.parseZone(new Date(getRenewalDate).toDateString(), "YYYY MM DD HH ZZ")._i.substr(4, 11) }}
-              </div>
-            </div>
-            <div class="col-md-12 text-dark py-3 mb-2 day3" v-if="notifiedDays === 3 ">
-              <div class="">
-                3 days remaining before your subscription expires, kindly subscribe before 
-                {{ moment.parseZone(new Date(getRenewalDate).toDateString(), "YYYY MM DD HH ZZ")._i.substr(4, 11) }}
-              </div>
-            </div>
             <div class="col-md-12 text-dark py-3 mb-2 day3" v-if="notifiedDays === 10 ">
               <div class="">
                 10 days remaining before your subscription expires, kindly subscribe before 
@@ -108,51 +58,37 @@
             </div>
           </div>
         </div>
-      <!-- <div class="help-text1">
-            <img src="../../assets/can-do.svg" alt="">
-            <div class="can-do">
-              <h4>Things You Can Do</h4>
-              <div class="can-do-links">
-                <a href="">Add member</a>
-                <a href="">Send SMS</a>
-                <a href="">Add First Timer</a>
-                <a href="">Add Follow-up</a>
-              </div>
-            </div>
-          </div> -->
-      <div class="top-row px-0">
+      </div>
+      <div class="d-flex justify-content-between flex-column flex-md-row  px-0">
         <div class="help-text2">
-          <img src="../../assets/can-do.svg" alt="" />
+          <img src="../../assets/thingstodo.svg" alt="" />
           <div class="can-do">
             <h4>Things You Can Do</h4>
             <div class="can-do-links can-do">
               <router-link to="/tenant/people/add">Add Member</router-link>
               <router-link to="/tenant/sms/compose">Send SMS</router-link>
-              <router-link to="/tenant/people/addfirsttimer"
-                >Add First Timer</router-link
-              >
+              <router-link to="/tenant/people/addfirsttimer">Add First Timer</router-link>
               <router-link to="" v-if="false">Add Follow-up</router-link>
             </div>
           </div>
         </div>
 
-        <div v-if="tenantInfoBasic.memberCount === 0">
-          <img src="../../assets/welcome_user.svg" class="welcome-user" />
+        <div v-if="tenantInfoBasic.memberCount === 0"
+          class="d-flex justify-content-center mt-4 justify-content-md-end mt-md-0">
+          <img src="../../assets/welcome_user.svg" style="width: 250px" />
         </div>
         <div class="number-boxes" v-else>
-          <div class="box one">
-            <div class="top">
-              <div class="box-top">
-                <div class="top-icon-div">
-                  <i class="pi pi-users"></i>
-                </div>
-                <div class="box-top-text">
-                  <p>FIRST TIMERS</p>
-                  <h4>{{ tenantInfoBasic.firstTimerCount }}</h4>
+          <div class="box mr-4" v-loading="dashboardLoading">
+            <div class="top p-3">
+              <div class="d-flex justify-content-between">
+                <img src="../../assets/usergroup.svg" alt="" style="position: relative; top: -5px; left: -8px;">
+                <div class="">
+                  <p class="mb-0 s-8">FIRST TIMERS</p>
+                  <h4 class="primary--text font-weight-700 mt-1 s-16">{{ tenantInfoBasic.firstTimerCount }}</h4>
                 </div>
               </div>
-              <div class="box-middle">
-                <h1>{{ tenantInfoBasic.memberCount }}</h1>
+              <div>
+                <h1 class="font-weight-700 s-30 mt-2">{{ tenantInfoBasic.memberCount }}</h1>
                 <span class="size-text">Church Size</span>
               </div>
             </div>
@@ -174,239 +110,192 @@
               </div>
             </div>
           </div>
-          <div class="box box2">
-            <div class="top">
-              <div class="box-top">
-                <div class="top-icon-div">
-                  <i class="pi pi-envelope"></i>
-                </div>
-                <div class="box-top-text"></div>
-              </div>
-              <div class="box-middle">
-                <h1>{{ tenantInfoBasic.smsUnit }}</h1>
-                <!-- <h1>0.0</h1> -->
+          <div class="box" v-loading="dashboardLoading">
+            <div class="top p-3">
+              <img src="../../assets/inboxgroup.svg" alt="" style="position: relative; left: -8px;">
+              <div>
+                <h1 class="font-weight-700 s-30">{{ tenantInfoBasic.smsUnit }}</h1>
                 <span class="size-text">SMS Units</span>
               </div>
             </div>
-            <div class="bottom">
-              <div class="box-bottom">
-                <span class="plan-text"></span>
-                <router-link :to="{ name: 'BuyUnits', path: '/tenant/buyunits' }" class="push-down">
-                  <button class="upgrade-btn2 buy-btn">
-                    <h4 class="box-btn-text2">BUY UNITS</h4>
-                  </button>
-                </router-link>
-              </div>
+            <div class="box-bottom px-3 py-2">
+              <router-link :to="{ name: 'BuyUnits', path: '/tenant/buyunits' }" class="no-decoration">
+                <el-button type="info" class="push-down small" style="height: 25px" round>
+                  <p class="mb-0 small">BUY UNITS</p>
+                </el-button>
+              </router-link>
             </div>
           </div>
         </div>
       </div>
+
+      <div class="mt-5" v-loading="dashboardLoading"></div>
+
       <div class="container-fluid">
         <div class="row">
-          <div
-            class="col-8 offset-2 offset-md-0 col-md-3 p-0"
-            v-if="
-              tenantInfoCeleb.length > 0 ||
-              (tenantInfoFirstTimerWeekly[0] && tenantInfoFirstTimerWeekly[0].data.some(i => i > 0)) ||
-              (tenantInfoAttendanceWeekly[0] && tenantInfoAttendanceWeekly[0].data.some(i => i > 0))
-            "
-          >
-            <div
-              class="more-things side p-3"
-              v-if="!tenantInfoExtra.hasWebsite"
-            >
+          <div class="col-8 offset-2 offset-md-0 col-md-3 p-0" v-if="
+            tenantInfoCeleb.length > 0 ||
+            (tenantInfoFirstTimerWeekly[0] && tenantInfoFirstTimerWeekly[0].data.some(i => i > 0)) ||
+            (tenantInfoAttendanceWeekly[0] && tenantInfoAttendanceWeekly[0].data.some(i => i > 0))
+          ">
+            <div class="more-things side p-3" v-if="!tenantInfoExtra.hasWebsite">
               <!-- <i class="pi pi-times"></i> -->
-              <img src="../../assets/website.svg" class="w-100" />
+              <img src="../../assets/website2.svg" class="w-100" />
               <div class="mt-4">Website</div>
               <div class="more-body mt-2">
                 Get a user engaging website for your church.
               </div>
-              <a href="https://churchplus.co/awoofwebsite/" target="_blank"
-                ><div class="learn-more mt-3 col-12 cursor-pointer">
-                  Get One Now
-                </div></a
-              >
+              <a href="https://churchplus.co/awoofwebsite/" target="_blank" class="no-decoration">
+                <el-button class="mt-1" round>Get one now</el-button>
+              </a>
             </div>
 
-            <div
-              class="more-things side p-3 mt-4"
-              v-if="!tenantInfoExtra.hasOnlineGiving"
-            >
-              <img src="../../assets/online_giving.png" class="w-100" />
+            <div class="more-things side p-3 mt-4" v-if="!tenantInfoExtra.hasOnlineGiving">
+              <img src="../../assets/onlinegiving2.svg" class="w-100" />
               <div class="mt-4">Online Giving</div>
               <div class="more-body mt-2">
                 Make online donations to your church.
               </div>
-              <router-link to="/tenant/payments"
-                ><div class="learn-more mt-3 col-12 cursor-pointer">
-                  Set Up Now
-                </div></router-link
-              >
+              <router-link to="/tenant/payments" class="no-decoration">
+                <el-button class="mt-1" round>Set up now</el-button>
+              </router-link>
             </div>
 
-            <div
-              class="more-things side p-3 mt-4"
-              v-if="!tenantInfoExtra.hasMobileApp"
-            >
-              <img src="../../assets/mobile_app.svg" class="w-100" />
+            <div class="more-things side p-3 mt-4" v-if="!tenantInfoExtra.hasMobileApp">
+              <img src="../../assets/mobileapp2.svg" class="w-100" />
               <div class="mt-4">Mobile App</div>
               <div class="more-body mt-2">
                 Get a customized mobile app for your church.
               </div>
-              <router-link :to="{ name: 'MobileOnboarding' }"
-                ><div class="learn-more mt-3 col-12 cursor-pointer">
-                  Set Up Now
-                </div></router-link
-              >
+              <router-link :to="{ name: 'MobileOnboarding' }" class="no-decoration">
+                <el-button class="mt-1" round>Set up now</el-button>
+              </router-link>
             </div>
           </div>
 
-          <div
-            class="pl-5 pr-0"
-            :class="{
-              'col-12 col-md-9':
-                !tenantInfoExtra.hasMobileApp ||
-                !tenantInfoExtra.hasOnlineGiving ||
-                !tenantInfoExtra.hasWebsite,
-              'col-md-12':
-                tenantInfoExtra.hasMobileApp &&
-                tenantInfoExtra.hasOnlineGiving &&
-                tenantInfoExtra.hasWebsite,
-            }"
-          >
+          <div :class="{
+            'col-12 col-md-9':
+              !tenantInfoExtra.hasMobileApp ||
+              !tenantInfoExtra.hasOnlineGiving ||
+              !tenantInfoExtra.hasWebsite,
+            'col-md-12 px-0':
+              tenantInfoExtra.hasMobileApp &&
+              tenantInfoExtra.hasOnlineGiving &&
+              tenantInfoExtra.hasWebsite,
+          }">
             <!-- Celebrations -->
             <div v-if="tenantInfoCeleb && tenantInfoCeleb.length > 0">
               <div class="celeb-header">
                 <div class="celeb-icon">
-                  <img
-                    src="../../assets/celeb-icon.svg"
-                    alt="Celebration Icon"
-                  />
+                  <img src="../../assets/celeb-icon.svg" alt="Celebration Icon" />
                 </div>
                 <div class="celeb-header-text">
                   <p>Celebrations</p>
                 </div>
               </div>
-              <div class="table table-responsive">
-                <div class="table-top">
-                  <router-link to="" class="view-all" v-if="false"
-                    >View all</router-link
-                  >
-                </div>
-                <!-- <div class="d-flex justify-content-start ml-3 my-3">
-                  <div class="celeb-badge align-self-center"></div>
-                  <div class="ml-2">represents celebrations for today</div> 
-                </div> -->
-
-                <table class="w-100">
-                  <thead>
-                    <tr>
-                      <th>NAME</th>
-                      <th>DATE</th>
-                      <th>DAY</th>
-                      <th>TYPE</th>
-                      <th>PHONE</th>
-                      <th></th>
-                    </tr>
-                  </thead>
-                  <tbody>
-                    <tr
-                      v-for="celebration in tenantInfoCeleb"
-                      :key="celebration.id"
-                    >
-                      <td>
-                        <img
-                          src="../../assets/people/avatar-male.png"
-                          alt=""
-                        /><span class="project-name">{{
-                          celebration.name
-                        }}</span>
-                        <div class="celeb-badge-desc celeb-badge" v-if="celebration.dayOfCelebration.toString().toLowerCase().includes('today')"></div>
-                      </td>
-                      <td>
-                        {{ dateFormat(celebration.date) }}
-                      </td>
-                      <td>{{ celebration.dayOfCelebration }}</td>
-                      <td>{{ celebration.celebration }}</td>
-                      <td>{{ celebration.phone }}</td>
-                      <td>
-                        <i
-                          class="fas fa-ellipsis-v cursor-pointer"
-                          id="dropdownMenuButton"
-                          data-toggle="dropdown"
-                          aria-haspopup="true"
-                          aria-expanded="false"
-                        ></i>
-                        <div
-                          class="dropdown-menu"
-                          aria-labelledby="dropdownMenuButton"
-                        >
-                          <!-- v-if="person.mobilePhone" -->
-                          <a class="dropdown-item elipsis-items" >
-                            <router-link
-                              :to="celebration.phone ? `/tenant/sms/compose?phone=${celebration.phone}` : ''" :class="{ 'fade-text': !celebration.phone, 'text-color': celebration.phone }"
-                              >Send SMS</router-link
-                            >
-                          </a>
-                        </div>
-                      </td>
-                    </tr>
-                  </tbody>
-                </table>
-              </div>
+              
+              <el-table :data="tenantInfoCeleb"
+                style="width: 100%">
+                <el-table-column label="NAME">
+                <template #default="scope">
+                  <div>
+                    <img src="../../assets/people/avatar-male.png" alt="" class="celeb-img" />
+                    <span class="ml-3">{{ scope.row.name }}</span>
+                    <div class="celeb-badge-desc celeb-badge"
+                      v-if="scope.row.dayOfCelebration.toString().toLowerCase().includes('today')"></div>
+                  </div>
+                </template>
+              </el-table-column>
+                <el-table-column label="DATE">
+                <template #default="scope">
+                  <div>
+                    {{ dateFormat(scope.row.date) }}
+                  </div>
+                </template>
+              </el-table-column>
+                <el-table-column label="DAY">
+                <template #default="scope">
+                  <div>
+                    {{ scope.row.dayOfCelebration }}
+                  </div>
+                </template>
+              </el-table-column>
+                <el-table-column label="TYPE">
+                <template #default="scope">
+                  <div>
+                    {{ scope.row.celebration }}
+                  </div>
+                </template>
+              </el-table-column>
+                <el-table-column label="PHONE">
+                <template #default="scope">
+                  <div>
+                    {{ scope.row.phone }}
+                  </div>
+                </template>
+              </el-table-column>
+              <el-table-column label="ACTION">
+        <template #default="scope">
+          <div>
+            <el-dropdown trigger="click">
+              <el-icon>
+                <MoreFilled />
+              </el-icon>
+              <template #dropdown>
+                <el-dropdown-menu>
+                  <el-dropdown-item>
+                    <router-link :to="
+                      scope.row.phone
+                        ? `/tenant/sms/compose?phone=${scope.row.phone}`
+                        : ''
+                    " :class="{ 'fade-text': !scope.row.phone, 'text-color': scope.row.phone }">Send
+                      SMS</router-link>
+                  </el-dropdown-item>
+                  <el-dropdown-item>
+                    <router-link :to="
+                      scope.row.email
+                        ? `/tenant/email/compose?phone=${scope.row.email}`
+                        : ''
+                    " :class="{ 'fade-text': !scope.row.email, 'text-color': scope.row.email }">Send
+                      Email</router-link>
+                  </el-dropdown-item>
+                </el-dropdown-menu>
+              </template>
+            </el-dropdown>
+          </div>
+        </template>
+      </el-table-column>
+              </el-table>
             </div>
-            <div
-              v-show="
-                tenantInfoCeleb.length > 0 ||
-                (tenantInfoFirstTimerWeekly[0] &&
-                  tenantInfoFirstTimerWeekly[0].data.length > 0) ||
-                (tenantInfoFirstTimerWeekly[0] &&
-                  tenantInfoFirstTimerWeekly[0].data[0] > 0) ||
-                (tenantInfoAttendanceWeekly[0] &&
-                  tenantInfoAttendanceWeekly[0].data.length > 0) ||
-                (tenantInfoAttendanceWeekly[0] &&
-                  tenantInfoAttendanceWeekly[0].data[0] > 0)
-              "
-            >
-              <!-- <div class="charts" id="plot"> -->
+            <div v-show="
+              tenantInfoCeleb.length > 0 ||
+              (tenantInfoFirstTimerWeekly[0] &&
+                tenantInfoFirstTimerWeekly[0].data.length > 0) ||
+              (tenantInfoFirstTimerWeekly[0] &&
+                tenantInfoFirstTimerWeekly[0].data[0] > 0) ||
+              (tenantInfoAttendanceWeekly[0] &&
+                tenantInfoAttendanceWeekly[0].data.length > 0) ||
+              (tenantInfoAttendanceWeekly[0] &&
+                tenantInfoAttendanceWeekly[0].data[0] > 0)
+            ">
               <div v-if="tenantInfoAttendanceWeekly && attendanceDataExist">
-                <div
-                  class="adjust-view col-10 col-sm-3 offset-sm-9 mt-5 mt-md-0"
-                >
+                <div class="adjust-view col-10 col-sm-3 offset-sm-9 mt-5 mt-md-0">
                   <div class="view-report">View Reports</div>
                   <div class="weekly">
-                    <span
-                      @click="weeklyAttendance"
-                      :class="{ active: attendanceBoolean }"
-                      >Weekly</span
-                    >&nbsp;&nbsp;&nbsp;<span
-                      @click="monthlyAttendance"
-                      :class="{ active: !attendanceBoolean }"
-                      >Monthly</span
-                    >
+                    <span @click="weeklyAttendance"
+                      :class="{ active: attendanceBoolean }">Weekly</span>&nbsp;&nbsp;&nbsp;<span
+                      @click="monthlyAttendance" :class="{ active: !attendanceBoolean }">Monthly</span>
                   </div>
                 </div>
-                <div v-if="attendanceBoolean">
-                  <ColumnChart
-                    domId="chart1"
-                    title="Event Attendance"
-                    subtitle="Weekly Attendance of Events"
-                    header="Members Attendance"
-                    :data="chartData"
-                    :series="series"
-                    :attendanceSeries="attendanceSeries"
-                  />
+                <div v-if="attendanceBoolean" class="mt-4">
+                  <ColumnChart domId="chart1" title="Event Attendance" subtitle="Weekly Attendance of Events"
+                    header="Members Attendance" :data="chartData" :series="series"
+                    :attendanceSeries="attendanceSeries" />
                 </div>
-                <div v-else>
-                  <ColumnChart
-                    domId="chart1"
-                    title="Event Attendance"
-                    subtitle="Monthly Attendance of Events"
-                    header="Members Attendance"
-                    :data="monthlyAttendanceObj"
-                    :series="series"
-                    :attendanceSeries="attendanceSeries"
-                  />
+                <div v-else class="mt-4">
+                  <ColumnChart domId="chart1" title="Event Attendance" subtitle="Monthly Attendance of Events"
+                    header="Members Attendance" :data="monthlyAttendanceObj" :series="series"
+                    :attendanceSeries="attendanceSeries" />
                 </div>
               </div>
 
@@ -414,70 +303,41 @@
                 <div class="adjust-view col-10 col-sm-3 offset-sm-9">
                   <div class="view-report">View Reports</div>
                   <div class="weekly">
-                    <span
-                      @click="weeklyFirstTimer"
-                      :class="{ active: firstTimerBoolean }"
-                      >Weekly</span
-                    >&nbsp;&nbsp;&nbsp;<span
-                      @click="monthlyFirstTimer"
-                      :class="{ active: !firstTimerBoolean }"
-                      >Monthly</span
-                    >
+                    <span @click="weeklyFirstTimer"
+                      :class="{ active: firstTimerBoolean }">Weekly</span>&nbsp;&nbsp;&nbsp;<span
+                      @click="monthlyFirstTimer" :class="{ active: !firstTimerBoolean }">Monthly</span>
                   </div>
                 </div>
 
                 <div v-if="firstTimerBoolean">
-                  <ColumnChart
-                    domId="chart3"
-                    title="First Timer Inflow"
-                    subtitle="How First Timers Come to Church"
-                    header="First Timers Attendance"
-                    :data="chartData2"
-                    :series="series2"
-                    :attendanceSeries="attendanceSeries"
-                  />
+                  <ColumnChart domId="chart3" title="First Timer Inflow" subtitle="How First Timers Come to Church"
+                    header="First Timers Attendance" :data="chartData2" :series="series2"
+                    :attendanceSeries="attendanceSeries" />
                 </div>
                 <div v-else class="ColumnChartDiv">
-                  <ColumnChart
-                    domId="chart4"
-                    title="First Timer Inflow"
-                    subtitle="How First Timer Come to Church"
-                    header="First Timers Attendance"
-                    :data="monthlyFirstTimerObj"
-                    :series="series2"
-                    :attendanceSeries="attendanceSeries"
-                  />
+                  <ColumnChart domId="chart4" title="First Timer Inflow" subtitle="How First Timer Come to Church"
+                    header="First Timers Attendance" :data="monthlyFirstTimerObj" :series="series2"
+                    :attendanceSeries="attendanceSeries" />
                 </div>
               </div>
               <!-- </div> -->
 
-              <div class="chart-div chart-div-mobile" v-show="firstTimerPieExist">
-                <div class="container-fluid container-fluid-mobile">
+              <div class="mt-4" v-show="firstTimerPieExist">
+                <div class="">
                   <div class="row">
                     <div class="col-12 col-md-6 d-flex justify-content-center">
-                      <ByGenderChart
-                        domId="source"
-                        title="Invitation Source"
-                        distance="5"
-                        :titleMargin="10"
-                        :summary="
-                          tenantInfoInvitationSource
-                            ? tenantInfoInvitationSource
-                            : []
-                        "
-                      />
+                      <ByGenderChart domId="source" title="Invitation Source" distance="5" :titleMargin="10" :summary="
+                        tenantInfoInvitationSource
+                          ? tenantInfoInvitationSource
+                          : []
+                      " />
                     </div>
-                    <div class="col-12 col-md-6 d-flex justify-content-center">
-                      <ByMaritalStatusChart
-                        domId="join"
-                        title="Interested In Joining"
-                        :titleMargin="10"
-                        :summary="
-                          tenantInfoInterestedInJoining
-                            ? tenantInfoInterestedInJoining
-                            : []
-                        "
-                      />
+                    <div class="col-12 col-md-6 mt-3 mt-md-0 d-flex justify-content-center">
+                      <ByMaritalStatusChart domId="join" title="Interested In Joining" :titleMargin="10" :summary="
+                        tenantInfoInterestedInJoining
+                          ? tenantInfoInterestedInJoining
+                          : []
+                      " />
                     </div>
                   </div>
                 </div>
@@ -486,110 +346,65 @@
           </div>
         </div>
       </div>
-      <div
-        v-if="
-          tenantInfoCeleb.length === 0 &&
-          (tenantInfoFirstTimerWeekly[0] && tenantInfoFirstTimerWeekly[0].data.every(i => i === 0)) &&
-          (tenantInfoAttendanceWeekly[0] && tenantInfoAttendanceWeekly[0].data.every(i => i === 0))
-        "
-      >
-        <div class="container-fluid">
+      <div v-if="
+        tenantInfoCeleb.length === 0 &&
+        (tenantInfoFirstTimerWeekly[0] && tenantInfoFirstTimerWeekly[0].data.every(i => i === 0)) &&
+        (tenantInfoAttendanceWeekly[0] && tenantInfoAttendanceWeekly[0].data.every(i => i === 0))
+      ">
+        <div class="container-fluid mt-5">
           <div class="row">
-            <div class="col-12 more-things">More Benefits You Can Get</div>
+            <div class="col-12 more-things">
+              <div class="can-do">
+                <h4>More Benefits You Can Get</h4>
+              </div>
+            </div>
           </div>
           <div class="row mt-4">
             <div class="col-12 col-sm-6 col-md-4 more-things">
-              <img src="../../assets/website.svg" />
-              <div class="mt-4">Website</div>
+              <img src="../../assets/website2.svg" />
+              <div class="mt-4">
+                <div class="can-do">
+                  <h4>Website</h4>
+                </div>
+              </div>
               <div class="more-body mt-2">
                 Get a user engaging website for your church.
               </div>
-              <a href="https://churchplus.co/awoofwebsite/" target="_blank"
-                ><div class="learn-more mt-3 col-6 offset-3 cursor-pointer">
-                  Get One Now
-                </div></a
-              >
+              <a href="https://churchplus.co/awoofwebsite/" class="no-decoration" target="_blank">
+                <el-button class="mt-1" round>Get one now</el-button>
+              </a>
             </div>
-            <div class="col-12 col-sm-6 col-md-4 more-things second">
-              <img src="../../assets/online_giving.png" />
-              <div class="mt-4">Online Giving</div>
+            <div class="col-12 col-sm-6 col-md-4 mt-5 mt-sm-0 more-things second">
+              <img src="../../assets/onlinegiving2.svg" />
+              <div class="mt-4">
+                <div class="can-do">
+                  <h4>Online giving</h4>
+                </div>
+              </div>
               <div class="more-body mt-2">
                 Allow members to make online donations to your church.
               </div>
-              <router-link to="/tenant/payments"
-                ><div class="learn-more second col-6 offset-3 cursor-pointer">
-                  Set Up Now
-                </div></router-link
-              >
+              <router-link to="/tenant/payments" class="no-decoration">
+                <el-button class="mt-1" round>Set up now</el-button>
+              </router-link>
             </div>
-            <div class="col-12 col-sm-6 col-md-4 more-things">
-              <img src="../../assets/mobile_app.svg" />
-              <div class="mt-4">Mobile App</div>
+            <div class="col-12 col-sm-6 col-md-4 mt-5 mt-md-0 more-things">
+              <img src="../../assets/mobileapp2.svg" />
+              <div class="mt-4">
+                <div class="can-do">
+                  <h4>Mobile app</h4>
+                </div>
+              </div>
               <div class="more-body mt-2">
                 Get a customized mobile app for your church.
               </div>
-              <router-link :to="{ name: 'MobileOnboarding' }"
-                ><div class="learn-more mt-3 col-6 offset-3 cursor-pointer">
-                  Set Up Now
-                </div></router-link
-              >
+              <router-link :to="{ name: 'MobileOnboarding' }" class="no-decoration">
+                <el-button class="mt-1" round>Set up now</el-button>
+              </router-link>
             </div>
           </div>
         </div>
       </div>
-      <div class="text-center" v-if="attendanceLoading">
-        <i
-          class="pi pi-spin pi-spinner text-primary"
-          style="fontsize: 3rem"
-        ></i>
-      </div>
-
-      <!-- <div class="table-footer" v-if="tenantInfo.celebrations && tenantInfo.celebrations.length > 0">
-          <button class="tbl-footer-btn">
-            <i class="pi pi-angle-left"></i>
-          </button>
-          <button class="tbl-footer-btn">1</button>
-          <button class="tbl-footer-btn">2</button>
-          <button class="tbl-footer-btn">
-            <i class="pi pi-angle-right"></i>
-          </button>
-        </div> -->
-      <!-- </div> -->
-      <!-- <div>{{ tenantInfo.eventAttendanceChartData }}</div> -->
-
-      <!-- <div>{{ tenantInfo.eventAttendanceChartData }}</div> -->
-      <!-- <div>{{ chartData2 }}</div> -->
-
-      <!-- <div class="pies">
-          <div class="pie-con">
-            <PieChart
-              domId="pichart"
-              title="Offering Breakdown"
-              subtitle="Overview"
-              distance="5"
-              :titleMarginLeft="70"
-              height="400"
-              :summary="tenantInfoInterestedInJoining ? tenantInfoInterestedInJoining : []"
-            />
-          </div>
-
-          <div class="pie-con">
-            <PieChart
-              domId="pchart"
-              title="Offering Breakdown"
-              subtitle="Overview"
-              distance="1"
-              :titleMarginLeft="70"
-              height="400"
-              :summary="tenantInfoInterestedInJoining ? tenantInfoInterestedInJoining : []"
-            />
-          </div>
-        </div> -->
-      <!-- </div> -->
-
-      <!-- </div> -->
-      
-    </div>
   </main>
 </template>
 
@@ -597,36 +412,34 @@
 import ByMaritalStatusChart from "@/components/charts/PieChart";
 import ByGenderChart from "@/components/charts/PieChart";
 import ColumnChart from "@/components/charts/ColumnChart.vue";
-// import PieChart from "@/components/charts/PieChart"
 import { computed, onMounted, ref } from "vue";
-// import { useRoute } from 'vue-router';
-import mixin from "@/mixins/expiredSub.mixin.js"
+import mixin from "@/mixins/currentUser.mixin.js"
 import router from "@/router/index";
 import axios from "@/gateway/backendapi";
-import axio from  'axios'
 import moment from "moment";
 import stopProgressBar from "../../services/progressbar/progress";
 import setupService from "../../services/setup/setupservice";
 import formatDate from "../../services/dates/dateformatter";
 import useSubscription from "../../services/subscription/useSubscription";
-import Tooltip from "primevue/tooltip";
+import deviceBreakpoint from "../../mixins/deviceBreakpoint";
 
 export default {
-   mixins: [mixin],
+  mixins: [mixin],
   components: {
     ColumnChart,
     ByMaritalStatusChart,
     ByGenderChart,
-    
-  },
- 
 
-  directives: {
-    tooltip: Tooltip,
+  },
+  data() {
+    return {}
+
+  },
+  created() {
+    this.getCurrentUser()
   },
 
   setup() {
-    // const store = useStore();
     const moreLinksVissible = ref(false);
     const offering = ref([23, 45, 65, 78, 89]);
     const attendanceBoolean = ref(true);
@@ -634,41 +447,18 @@ export default {
     const attendanceDataExist = ref(false);
     const firstTimerDataExist = ref(false);
     const firstTimerPieExist = ref(false);
+    const notifiedDays = ref()
     const summed = ref(0);
-    const planUserIs = ref("");
-    // const currentUser = ref(store.getters.currentUser);
+    const planUserIs = ref("")
 
-    // const attendance
+
+
 
     const toggleMoreLinkVissibility = () => {
       moreLinksVissible.value != moreLinksVissible.value;
     };
-    const fxRates = async () =>{
-      try{
-        let { data } = await axio.get('https://churcchplusbackgroundprocessor.azurewebsites.net/fxRates')
-        console.log(data, 'thehreh');
-      }
-      catch(error){
-        console.log(error);
-      }
-    }
-    fxRates()
-
-    // onMounted(() =>{
-    //   axio.get('https://churcchplusbackgroundprocessor.azurewebsites.net/fxRates')
-    //   .then((res)=>{
-    //     console.log(res, "thfxRates")
-    //   }).catch(((error)=>{
-    //     console.log(error);
-    //   }))
-    // })
-    // const mixinsCurrentUser = () => {
-    //   console.log(store.getters.currentUser)
-    // };
 
     const celebrations = [];
-    // const route = useRoute();
-
     const tenantInfo = ref({});
     const tenantInfoBasic = ref({});
     const celeb = ref([]);
@@ -676,20 +466,13 @@ export default {
     const firstTimerSeries = ref("weekly");
     const tenantInfoAttendanceWeekly = ref([]);
     const tenantInfoAttendanceMonthly = ref([]);
-    const attendanceLoading = ref(false);
     const tenantInfoFirstTimerWeekly = ref([]);
     const tenantInfoFirstTimerMonthly = ref([]);
     const tenantInfoInvitationSource = ref([]);
     const tenantInfoInterestedInJoining = ref([]);
     const tenantInfoExtra = ref({});
-     const notifiedDays = ref()
-
-    // const warningAgainstExpire = ref("")
-  
-
-    // const monthlyFirstTimerObj = ref({})
-
     const subscriptionPlan = ref([]);
+    const dashboardLoading = ref(false)
 
     const xAxis = ref([]);
     const monthXaxis = ref([
@@ -707,6 +490,17 @@ export default {
       "Dec",
     ]);
 
+    const { lgAndUp, xlAndUp } = deviceBreakpoint()
+
+
+    const celebHeaders = ref([
+      { text: "NAME", value: "name" },
+      { text: "DATE", value: "date" },
+      { text: "DAY", value: "phone" },
+      { text: "TYPE", value: "celebration" },
+      { text: "PHONE", value: "phone" },
+    ]);
+
     const series = computed(() => {
       if (attendanceSeries.value === "weekly") return xAxis.value;
       return monthXaxis.value;
@@ -717,62 +511,53 @@ export default {
       return monthXaxis.value;
     });
 
+    onMounted(() => {
+      getBasicDashboard()
+    })
+
     const getBasicDashboard = () => {
+      dashboardLoading.value = true
       axios
         .get("/dashboard/basic")
         .then((res) => {
+          dashboardLoading.value = false
           tenantInfoBasic.value = res.data.returnObject;
           tenantInfoExtra.value.hasMobileApp = res.data.returnObject.hasMobileApp;
           tenantInfoExtra.value.hasOnlineGiving = res.data.returnObject.hasOnlineGiving;
           tenantInfoExtra.value.hasWebsite = res.data.returnObject.hasWebsite;
-          // tenantInfo.value.eventAttendanceChartDataWeekly[0].data.forEach(element => {
-          //   if (element > 0) {
-          //     attendanceDataExist.value = true
-          //   }
-          // });
-          // tenantInfo.value.firstTimerSummary.firstTimerWeekly[0].data.forEach(element => {
-          //   if (element > 0) {
-          //     firstTimerDataExist.value = true
-          //   }
-          // });
           let sum = 0;
           tenantInfo.value.firstTimerSummary.invitationSource.forEach((i) => {
             sum += +i.value;
           });
           summed.value = sum;
-          // if (sum > 0) {
-          //   firstTimerPieExist.value = true
-          // }
         })
         .catch((err) => {
           stopProgressBar();
           if (err.response && err.response.status === 401) {
+            dashboardLoading.value = false
             localStorage.removeItem("token");
             setupService.clearStore();
             router.push("/");
           }
         });
     };
-    getBasicDashboard();
 
-    let getCelebDashboard = () => {
+    function getCelebDashboard() {
       axios.get("/dashboard/celebrations").then((res) => {
         celeb.value = res.data.returnObject.celebrations;
       });
-    };
+    }
     getCelebDashboard();
 
-    let tenantInfoCeleb = computed (() => {
+    let tenantInfoCeleb = computed(() => {
       if (celeb.value.length === 0) return []
       return celeb.value.sort((b, a) => new Date(b.date) - new Date(a.date))
     })
 
     onMounted(() => {
-      attendanceLoading.value = true;
       axios
         .get("/dashboard/attendance")
         .then((res) => {
-          attendanceLoading.value = false;
           tenantInfoAttendanceWeekly.value =
             res.data.returnObject.eventAttendanceChartDataWeekly;
           tenantInfoAttendanceMonthly.value =
@@ -826,13 +611,6 @@ export default {
       }
     });
 
-    // const subPlan = () => {
-    //   axios.get("/api/GetAllSubscriptionPlans").then((res) => {
-    //     console.log(res.data);
-    //   });
-    // };
-    // subPlan();
-
     const weeklyAttendance = () => {
       attendanceSeries.value = "weekly";
       attendanceBoolean.value = true;
@@ -842,11 +620,6 @@ export default {
       attendanceBoolean.value = false;
       attendanceSeries.value = "monthly";
 
-      // axios.get('/Dashboard/period?period=Months')
-      //   .then(res => {
-      //     monthlyAttendanceObj.value = res.data.eventAttendanceChartData[0]
-
-      //  })
     };
 
     const weeklyFirstTimer = () => {
@@ -857,28 +630,23 @@ export default {
     const monthlyFirstTimer = () => {
       firstTimerBoolean.value = false;
       firstTimerSeries.value = "monthly";
-      // axios.get('/Dashboard/period?period=Months')
-      //   .then(res => {
-      //     monthlyFirstTimerObj.value = res.data.eventAttendanceChartData[1]
-      //  })
     };
 
     const chartData = computed(() => {
       if (!tenantInfoAttendanceWeekly.value) return [];
-          let chartWeekly = []
-          let chartObj = tenantInfoAttendanceWeekly.value.find(i => i.name === "Attendance")
-          chartObj['color'] = '#002044'
-          chartWeekly.push(chartObj)
-          return chartWeekly
+      let chartWeekly = []
+      let chartObj = tenantInfoAttendanceWeekly.value.find(i => i.name === "Attendance")
+      chartObj['color'] = '#002044'
+      chartWeekly.push(chartObj)
+      return chartWeekly
     });
     const monthlyAttendanceObj = computed(() => {
       if (!tenantInfoAttendanceMonthly.value) return [];
-      // return [tenantInfoAttendanceMonthly.value.find(i => i.name === "Attendance")];
-        let chartMonthly = []
-        let chartObj = tenantInfoAttendanceMonthly.value.find(i => i.name === "Attendance")
-        chartObj['color'] = '#002044'
-        chartMonthly.push(chartObj)
-        return chartMonthly
+      let chartMonthly = []
+      let chartObj = tenantInfoAttendanceMonthly.value.find(i => i.name === "Attendance")
+      chartObj['color'] = '#002044'
+      chartMonthly.push(chartObj)
+      return chartMonthly
     });
 
     const chartData2 = computed(() => {
@@ -907,7 +675,7 @@ export default {
       return formatDate.monthDayYear(payload);
     };
 
-    const retrieveSubscriptionInfo = () => {};
+    const retrieveSubscriptionInfo = () => { };
 
     const useSubscriptionResponse = ref([]);
     const getRenewalDate = ref("");
@@ -929,7 +697,6 @@ export default {
       countDownDate()
     });
 
-
     const calculatedPercentage = computed(() => {
       if (!useSubscriptionResponse.value || !useSubscriptionResponse.value.id)
         return 0;
@@ -942,22 +709,23 @@ export default {
     });
 
     const buttonTextCheck = computed(() => {
-      if (checkRenewalDate.value && planUserIs.value === "TRIAL") return {text: "SUBSCRIBE",
-       color: "btn-danger-upgrade"
-       };
+      if (checkRenewalDate.value && planUserIs.value === "TRIAL") return {
+        text: "SUBSCRIBE",
+        color: "btn-danger-upgrade"
+      };
 
       if (checkRenewalDate.value && planUserIs.value !== "FREE PLAN") return {
         text: "RENEW",
         color: "renew-btn-color",
-       };
+      };
 
       if (checkRenewalDate.value && planUserIs.value === "FREE PLAN") return {
         text: "SUBSCRIBE",
         color: "btn-danger-upgrade",
-       };
+      };
 
-      if ( planUserIs.value === "UNLIMITED" ) return {text: "PRODUCT"};
-      return {text: "UPGRADE"} ;
+      if (planUserIs.value === "UNLIMITED") return { text: "PRODUCT" };
+      return { text: "UPGRADE" };
 
     });
 
@@ -1008,7 +776,6 @@ export default {
       dateFormat,
       tenantInfoAttendanceWeekly,
       tenantInfoAttendanceMonthly,
-      attendanceLoading,
       tenantInfoFirstTimerWeekly,
       tenantInfoFirstTimerMonthly,
       tenantInfoInvitationSource,
@@ -1023,7 +790,11 @@ export default {
       checkRenewalDate,
       buttonTextCheck,
       celeb,
-      attendanceSeries
+      attendanceSeries,
+      lgAndUp,
+      xlAndUp,
+      celebHeaders,
+      dashboardLoading
     };
   },
 };
@@ -1052,17 +823,14 @@ export default {
 }
 
 .renew-btn-color {
- background-color: #ffbf00 !important;
+  background-color: #ffbf00 !important;
 }
 
-.btn-danger-upgrade{
+.btn-danger-upgrade {
   color: #fff !important;
   background-color: #E60023 !important;
 }
 
-* {
-  color: #02172e;
-}
 
 #main {
   display: flex;
@@ -1079,7 +847,6 @@ export default {
   justify-content: space-around;
   width: 90%;
   margin: 0 auto;
-  /* background: #F1F5F8; */
   padding: 10px;
 }
 
@@ -1096,12 +863,14 @@ export default {
   justify-content: space-between;
   padding: 10px;
 }
+
 .create-btn-div {
   display: flex;
   padding: 0 10px 10px 0;
   justify-content: space-between;
   margin-bottom: 24px;
 }
+
 .top-row {
   display: flex;
   padding: 10px;
@@ -1137,17 +906,9 @@ export default {
   color: #136acd;
   font-size: 24px;
   padding: 4px;
-  /* filter: invert(29%) sepia(74%) saturate(1909%) hue-rotate(197deg) brightness(91%) contrast(89%); */
 }
 
-.box-top-text p {
-  font-weight: 600;
-}
 
-.box-top-text h4 {
-  color: #136acd;
-  font-size: larger;
-}
 
 .create-dd {
   padding: 0 9px;
@@ -1160,7 +921,7 @@ export default {
 
 .can-do h4 {
   margin: 0;
-  font-weight: 600;
+  font-weight: 700;
   font-size: 20px;
 }
 
@@ -1193,124 +954,26 @@ export default {
 }
 
 .second-col .number-boxes {
-  /* width: 100%; */
   max-width: 450px;
   display: flex;
   justify-content: flex-end;
 }
 
 .box {
-  width: 200px;
-  margin-left: 20px;
-
-  /* background: #F1F5F8; */
+  width: 170px;
+  background: #FFFFFF;
+  box-shadow: 0px 2px 7.5px rgba(0, 0, 0, 0.0588235);
+  border-radius: 15px;
 }
 
-.top {
-  border-radius: 28px 28px 0 0;
-  padding: 20px;
-  border: 1px solid #e6e5f2;
-  box-shadow: 0px 1px 4px #02172e45;
-  border-bottom: transparent;
-}
 
 .box-bottom {
-  display: flex;
-  flex-direction: column;
-  border-radius: 0px 0px 28px 28px;
-  background: #f1f5f8;
-  padding: 10px 20px;
-  border: 1px solid #e6e5f2;
-  box-shadow: 0px 1px 4px #02172e45;
-  border-top: transparent;
-}
-
-.box2 .bottom {
-  /* border: 1px solid #e6e5f2; */
-  border-radius: 0px 0px 28px 28px;
-}
-
-.box2 .upgrade-btn {
-  /* background: #136acd; */
-  color: #fff;
-  justify-self: flex-end;
-  margin-left: auto;
-  outline: none;
-}
-
-.upgrade-btn {
-  align-self: center;
-  padding: 7px;
-  background: #136acd4b;
-  /* background: orange; */
-  border-radius: 20px;
-  border: none;
-  font-weight: 800;
-  outline: none;
-  width: 80px;
-}
-.upgrade-btn2 {
-  align-self: center;
-  padding: 7px;
-  /* background: #136acd4b; */
-  background: rgba(255, 166, 0, 0.241);
-  border-radius: 20px;
-  border: none;
-  font-weight: 800;
-  outline: none;
-  width: 80px;
+  background: #F1F5F8;
+  box-shadow: 0px 11px 17px rgba(206, 205, 205, 0.360784);
+  border-radius: 0px 0px 15px 15px;
 }
 
 
-.upgrade-btn:hover{
-  background: #136acd91;
-}
-.upgrade-btn2:hover,
-.buy-btn:hover {
-  /* background: #136acd91; */
-  background: rgba(255, 166, 0, 0.179);
-  /* font-weight: 600; */
-}
-
-.buy-btn {
-  width: 109.5px;
-}
-
-.plan-text {
-  font-size: 9px;
-  align-self: center;
-  text-transform: uppercase;
-  font-weight: 800;
-  width: 80px;
-  margin-left: 10px;
-}
-
-.box-top {
-  display: flex;
-  justify-content: space-between;
-  align-items: start;
-}
-
-/* .box-middle {
-  padding: 24px 0;
-} */
-
-.box-top-text h4,
-.box-top-text p {
-  margin: 0;
-  font-size: 12px;
-}
-
-.box-top-text h4 {
-  font-size: 20px;
-  font-weight: 800;
-}
-
-.box-middle h1 {
-  margin: 0;
-  font-size: 39px;
-  font-weight: 400;
-}
 
 .celebrations {
   padding: 10px;
@@ -1319,7 +982,25 @@ export default {
   border-radius: 28px;
   margin-top: 80px;
 }
-
+.day3{
+  background-color: #ECF4FF;
+  border-left:solid #136acd 5px;
+   border-top-left-radius: 5px 5px;
+   border-bottom-left-radius: 5px 5px;
+}
+.day2{
+  background-color: rgb(243, 243, 217);
+  border-left:solid rgb(228, 228, 42) 5px;
+   border-top-left-radius: 5px 5px;
+   border-bottom-left-radius: 5px 5px;
+}
+.day1{
+  background-color: #FEF8F8;
+  color: #e09579;
+  border-left:solid #B3282D 5px;
+  border-top-left-radius: 5px 5px;
+  border-bottom-left-radius: 5px 5px;
+}
 .pie-con {
   margin: 24px 0;
 }
@@ -1343,23 +1024,29 @@ export default {
 .celeb-header {
   display: flex;
   align-items: center;
-  font-size: 25px;
-  font-weight: 600;
-  margin-top: -18px;
+  font-weight: 700;
+  font-size: 20px;
+  margin-top: 20px;
 }
 
 @media (max-width: 767px) {
-  .celeb-header {
-    margin-top: 0;
+
+  .top-row {
+    display: flex;
+    flex-direction: column;
   }
+
+  .box {
+    margin-top: 30px;
+  }
+
+
   .adjust-view {
     display: none;
   }
-  .chart-div-mobile {
-    margin-left: -3rem!important;
-    border: none !important;
-    box-shadow: none !important
-  }
+
+
+
   .container-fluid-mobile {
     border: 1px solid !important;
     width: 85% !important;
@@ -1384,9 +1071,9 @@ export default {
 }
 
 .help-text2 img {
-  width: 100px;
-  margin-top: -20px;
-  margin-left: -35px;
+  width: 76px;
+  margin-top: -9px;
+  margin-left: -14px
 }
 
 .pies {
@@ -1403,26 +1090,6 @@ tbody tr:nth-child(even) {
 
 .phone.one {
   margin-left: -20px;
-}
-
-.title {
-  margin: 0 0 15px 0;
-}
-
-.box-btn-text {
-  margin: 0px;
-  font-size: 12px;
-  font-weight: 700;
-  /* color: #ffe50f; */
-  color: #136acd;
-}
-.box-btn-text2 {
-  margin: 0px;
-  font-size: 12px;
-  font-weight: 800;
-  /* color: rgb(147, 95, 0) */
-  /* color: #ffe50f; */
-  color: #136acd;
 }
 
 .size-text {
@@ -1470,7 +1137,7 @@ tbody tr:nth-child(even) {
 
 .adjust-view {
   position: relative;
-  top: 120px;
+  top: 80px;
   right: 10px;
   z-index: 1;
 }
@@ -1491,20 +1158,6 @@ tbody tr:nth-child(even) {
   opacity: 0.8;
 }
 
-.learn-more {
-  border: 1px solid #707070;
-  border-radius: 25px;
-  padding: 10px;
-  opacity: 1;
-  font: normal normal bold 14px/19px Nunito Sans;
-  letter-spacing: 0px;
-  color: #020e1c;
-  background: #ffffff 0% 0% no-repeat padding-box;
-}
-
-.learn-more.second {
-  margin-top: 21px;
-}
 
 .more-things.side {
   background: #ecf0f3 0% 0% no-repeat padding-box;
@@ -1512,16 +1165,13 @@ tbody tr:nth-child(even) {
   opacity: 1;
 }
 
-.welcome-user {
-  width: 64%;
-  float: right;
-}
 
 @media (max-width: 575px) {
   .adjust-view {
     left: 65px;
     top: 150px;
   }
+
   .view-report {
     display: none;
   }
@@ -1531,49 +1181,31 @@ tbody tr:nth-child(even) {
   .can-do-links {
     display: flex;
     flex-direction: column;
-    text-align: center;
-    margin-left: -3rem;
+    
   }
 }
 
 @media (max-width: 305px) {
-  /* .ColumnChartDiv {
-    font-size: 25px;
-    font-weight: 600;
-    margin: 0 0 -24px 0;
-  } */
-  /* .adjust-view {
-    top: 85.5em;
-  } */
+  
 }
 
 @media (min-width: 509px) and (max-width: 515px) {
-  /* .adjust-view {
-    position: absolute;
-    left: 20em;
-    top: 60.7em;
-} */
+  
 }
+
 @media (min-width: 516px) and (max-width: 576px) {
-  /* .adjust-view {
-    position: absolute;
-    left: 20em;
-    top: 58.7em;
-} */
+  
 }
 
 .view-report {
   font: normal normal 800 16px/22px Nunito Sans;
   letter-spacing: 0px;
   color: #2b6ecd;
-  /* text-align: right;
-  margin-right: 40px; */
   cursor: pointer;
 }
 
 .weekly {
-  /* text-align: right;
-  margin-right: 40px; */
+
   cursor: pointer;
 }
 
@@ -1596,37 +1228,8 @@ tbody tr:nth-child(even) {
   vertical-align: baseline;
 }
 
-.chart-div {
-  border: 1px solid #dde2e6;
-  border-radius: 30px;
-  margin: 0 0 24px 0;
-  box-shadow: 0px 1px 4px #02172e45;
-  border: 1px solid #dde2e6;
-  padding: 25px 0;
-}
-
-/* WIP */
-
-/* @media screen and (max-width: 376px) {
-  .top-row {
-    flex-direction: column;
-  }
-
-  .can-do, .can-do-links {
-    width: 90%;
-  }
-} */
 
 @media screen and (max-width: 940px) {
-  .top-row {
-    display: flex;
-    flex-direction: column;
-  }
-
-  .help-text2 {
-    display: flex;
-    align-items: flex-start;
-  }
 
   .second-col .number-boxes {
     max-width: 100%;
@@ -1634,8 +1237,7 @@ tbody tr:nth-child(even) {
   }
 
   .box {
-    margin-top: 20px;
-    width: 40%;
+    /* width: 40%; */
     margin-left: 0;
   }
 
@@ -1650,23 +1252,11 @@ tbody tr:nth-child(even) {
 }
 
 @media (min-width: 1101px) and (max-width: 1231px) {
-  /* .top-row {
-      flex-direction: column;
-  }
-
-  .number-boxes {
-     margin: 0;
-  }
-
-  .box {
-    margin-top: 20px;
-  } */
+  
 }
 
 @media screen and (min-width: 1300px) {
-  /* .box-middle {
-     padding: 43px 0;
-  } */
+ 
 }
 
 @media (max-width: 556px) {
@@ -1681,21 +1271,7 @@ tbody tr:nth-child(even) {
 }
 
 @media (max-width: 508px) {
-  .box {
-    width: 100%;
-  }
 
-  .number-boxes {
-    flex-direction: column;
-    width: 70%;
-    align-self: center;
-    margin-top: 10px;
-  }
-
-  .create-btn-div {
-    flex-direction: column;
-    align-items: center;
-  }
 
   .second-col .create-btn-div .create-btn {
     margin-top: 10px;
@@ -1706,9 +1282,9 @@ tbody tr:nth-child(even) {
   }
 
 }
-  
+
 .push-down {
-  margin-top: 26px;
+  margin-top: 32px;
 }
 
 .fade-text {
@@ -1722,23 +1298,45 @@ tbody tr:nth-child(even) {
 
 
 @media screen and (max-width: 480px) {
- .firstTimerClass {
-  padding-top:9px;
-  /* background-color: lightgreen; */
-}
-}
-  .celeb-badge {
-    border-radius: 50%;
-    border: 1px solid red;
-    width: 10px;
-    height: 10px;
-    background: red;
+  .firstTimerClass {
+    padding-top: 9px;
+    /* background-color: lightgreen; */
   }
+
+}
+
+@media screen and (max-width: 360px) {
+  /* .box {
+    width: 100%;
+  } */
+
+  .number-boxes {
+    flex-direction: column;
+    /* width: 70%; */
+    align-self: center;
+    margin-top: 10px;
+  }
+
+}
+
+.celeb-badge {
+  border-radius: 50%;
+  border: 1px solid red;
+  width: 10px;
+  height: 10px;
+  background: red;
+}
 
 .celeb-badge-desc {
   position: relative;
-  left: 34px;
-  top: -41px;
+  left: 24px;
+  top: -26px;
 }
 
+.celeb-img {
+  width: 30px;
+  height: 30px;
+  object-fit: cover;
+  border-radius: 50%;
+}
 </style>

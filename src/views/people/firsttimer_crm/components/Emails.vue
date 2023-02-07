@@ -6,10 +6,11 @@
             <div class="col-12 card-bg p-4">
                 <div class="row d-flex justify-content-between">
                     <div>
-                        <!-- <div class="col align-self-center"><span class="font-weight-700"><i class="pi pi-angle-up uniform-primary-color" @click="toggleNoteIcon(index)"></i>&nbsp;&nbsp;{{ item.person ? `${item.typeText} task assigned to` : `${item.typeText} logged` }}</span>  {{ item.person }}</div> -->
-                        <div class="col align-self-center"><span class="font-weight-700 c-pointer"><i class="pi pi-angle-up uniform-primary-color" :class="{'roll-note-icon' : item.logIcon, 'unroll-note-icon' : !item.logIcon}" @click="toggleLogIcon(index)"></i>&nbsp;&nbsp;{{ item.person ? `${item.typeText} task assigned to` : `${item.typeText} logged` }}</span> {{ item.person }} </div>
-                        
-                            <div class="col mt-4 enlargen-font">{{ condenseEmailText(item.description) }}</div>
+                        <div class="col align-self-center"><span class="font-weight-700 c-pointer">
+                            <el-icon class="uniform-primary-color" :class="{'roll-note-icon' : item.logIcon, 'unroll-note-icon' : !item.logIcon}" @click="toggleLogIcon(index)">
+                                <arrow-up />
+                            </el-icon>&nbsp;&nbsp;{{ item.person ? `${item.typeText} task assigned to` : `${item.typeText} logged` }}</span> {{ item.person }} </div>
+                        <div class="col mt-4 enlargen-font">{{ condenseEmailText(item.description) }}</div>
                         
                     </div>
                     <div>
@@ -31,12 +32,6 @@
                             </div>
                     </div>
                 </transition>
-                <!-- <transition name="fade">
-                    <div class="row mt-4">
-                        <div class="col font-weight-700 uniform-primary-color">Add Comment</div>
-                        <div class="col text-right font-weight-700 uniform-primary-color">1 Association</div>
-                    </div>
-                </transition> -->
             </div>
         </div>
 </template>
@@ -119,7 +114,7 @@ export default {
 }
 
 .btn-btn {
-    font-size: 15px;
+    font-size: 13px;
     line-height: 14px;
     padding: 9px 15px;
     border-radius: 3px;

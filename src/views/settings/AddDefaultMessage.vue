@@ -149,6 +149,7 @@ export default {
         ElMessage({
           type: "error",
           message: "Input Your Complete Messages",
+          duration: 5000
         });
       }
       
@@ -165,6 +166,7 @@ export default {
           ElMessage({
             type: "success",
             message: "Default Message Created succesfully",
+            duration: 5000
           });
           this.loading = false
           this.$router.push("/tenant/settings/defaultmessage");
@@ -173,6 +175,7 @@ export default {
           ElMessage({
             type: "error",
             message: "Failed",
+            duration: 5000
           });
           console.log(error);
           this.loading = false

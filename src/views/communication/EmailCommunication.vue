@@ -1,9 +1,8 @@
 <template>
-  <div>
-    <div class="container">
+    <div class="" :class="{ 'container-slim': lgAndUp || xlAndUp }">
       <div class="row mt-4">
-        <div class="col-md-12 d-flex justify-content-center">
-          <h1 class="font-weight-bold">Email</h1>
+        <div class="col-md-12 d-flex justify-content-start">
+          <h2 class="head-text">Email</h2>
         </div>
       </div>
       <div class="row">
@@ -13,27 +12,27 @@
       </div>
 
       <!-- Content Box -->
-      <main id="main" class="mt-3">
+      <main class="mt-md-3" :class="{ 'main' : mdAndUp || lgAndUp || xlAndUp }">
         <div class="container-fluid">
           <div class="row">
             <!-- Side mennu -->
-            <div class="col-md-3" id="side-menu" >
+            <div class="col-md-3" :class="{ 'side-menu' : mdAndUp || lgAndUp || xlAndUp }" >
               <div class="row">
-                <div class="col-md-12 d-flex justify-content-center mt-4 mb-5">
-                  <div class="toggle ml-3 mt-2">
+                <div class="col-md-12 px-0 px-md-3 d-flex flex-column mt-4">
+                  <div class="mt-2" v-show="xsOnly || smAndUp">
                     <i class="pi pi-bars" @click="toggleMenu"></i>
                   </div>
-                  <router-link to="/tenant/email/compose" class="btn compose-btn font-weight-700">Compose Email</router-link>
+                  <router-link to="/tenant/email/compose" class="w-100 mt-3 compose-btn text-decoration-none font-weight-700">Compose Email</router-link>
                 </div>
               </div>
-              <div class="row mb-3 " :class="{ 'show': menuShouldShow, 'links-menu' : !menuShouldShow }">
+              <div class="row" :class="{ 'show mb-3': menuShouldShow, 'links-menu' : !menuShouldShow }">
                 <div class="col-md-12">
                   <div class="row menu-item-con py-2" :class="{ 'active-link': route.path === '/tenant/email/sent'}">
                     <div class="col-md-12 menu-item-div m-auto">
                       <a class="btn btn-default font-weight-bold">
                         <span class="menu-item">
-                            <router-link class="r-link text-decoration-none" to="/tenant/email/sent">
-                              <i class="pi pi-arrow-circle-up mr-3 menu-icon"></i>
+                            <router-link class="r-link text-decoration-none d-flex align-items-center " to="/tenant/email/sent">
+                             <el-icon class="mr-3  menu-icon "><Top /></el-icon>
                               <span class="active">Sent</span>
                             </router-link>
                         </span>
@@ -45,8 +44,8 @@
                     <div class="col-md-12 menu-item-div m-auto">
                       <a class="btn btn-default font-weight-bold">
                         <span class="menu-item">
-                            <router-link class="r-link text-decoration-none" to="/tenant/email/draft">
-                              <i class="pi pi-envelope mr-3 menu-icon"></i>
+                            <router-link class="r-link d-flex align-items-center text-decoration-none" to="/tenant/email/draft">
+                              <el-icon class="mr-3  menu-icon"><Message /></el-icon>
                               <span class="active">Draft</span>
                             </router-link>
                         </span>
@@ -58,9 +57,9 @@
                     <div class="col-md-12 menu-item-div m-auto">
                       <a class="btn btn-default font-weight-bold">
                         <span class="menu-item"
-                          ><router-link class="r-link text-decoration-none" to="/tenant/email/schedules">
-                            <i class="fas fa-inbox mr-3 menu-icon"></i>
-                            <span class="active">Schedules</span>
+                          ><router-link class="r-link d-flex align-items-center text-decoration-none" to="/tenant/email/schedules">
+                            <el-icon class=" mr-3 menu-icon"><Clock /></el-icon>
+                            <span class="active">Scheduled</span>
                           </router-link>
                           </span
                         >
@@ -82,16 +81,17 @@
         </div>
       </main>
     </div>
-  </div>
 </template>
 
 <script>
 import { ref } from "vue";
 import { useRoute } from 'vue-router';
+import deviceBreakpoint from "../../mixins/deviceBreakpoint";
 export default {
   setup() {
     const route = useRoute();
     const menuShouldShow = ref(false);
+    const { xsOnly, smAndUp, mdAndUp, lgAndUp, xlAndUp } = deviceBreakpoint()
     const toggleMenu = ()=>{
            menuShouldShow.value = !menuShouldShow.value
          };
@@ -99,7 +99,12 @@ export default {
     return {
       menuShouldShow,
       route,
-      toggleMenu
+      toggleMenu,
+      lgAndUp,
+      xlAndUp,
+      mdAndUp,
+      xsOnly,
+      smAndUp
     }
   }
 };
@@ -108,12 +113,12 @@ export default {
 <style scoped>
 
 
-#main {
+.main {
   border: 1px solid #02172e30;
   border-radius: 30px;
 }
 
-#side-menu {
+.side-menu {
   border-right: 1px solid #02172e30;
 }
 
@@ -248,6 +253,9 @@ export default {
 @media screen and (max-width: 765px){
   .toggle {
     display: block;
+  }
+  #side-menu{
+    border: none;
   }
   .show {
     overflow: hidden;
