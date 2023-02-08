@@ -104,7 +104,7 @@
               }}
             </div>
           </div>
-          <div class="col-md-12 py-3 mb-1 day1" v-if="notifiedDays === 4">
+          <div class="col-md-12 py-3 mb-1 day1" v-if="notifiedDays === 4 ">
             <div class="">
               4 days remaining before your subscription expires, kindly
               subscribe before
@@ -195,15 +195,15 @@
                 <span class="size-text">Church Size</span>
               </div>
             </div>
-            <div class="box-bottom px-3 py-2" :class="{ 'border border-danger': notifiedDays <= 4  }" >
+            <div class="box-bottom px-3 py-2"  >
               <el-tooltip class="box-item" effect="dark" :content="planUserIs" placement="top-start">
                 <div class="s-12 font-weight-bold">
                   {{ planUserIs }}
                 </div>
               </el-tooltip>
               <router-link :to="{ name: 'Subscription' }" class="mt-1 no-decoration">
-                <el-button :color="!buttonTextCheck.color ? '#136acd' : ''" class="mt-2" style="height: 25px"
-                  :class="[buttonTextCheck.color, { 'bg-warning': calculatedPercentage >= 90 }]" round>
+                <el-button  :color="!buttonTextCheck.color ? '#136acd' : ''" class="mt-2" style="height: 25px"
+                  :class="[buttonTextCheck.color, { 'bg-warning': calculatedPercentage >= 90 , 'border-0  bg-danger': notifiedDays <= 4   }]" round>
                   <p class="mb-0 small" :class="[buttonTextCheck.color]">{{ buttonTextCheck.text }}</p>
                 </el-button>
               </router-link>
@@ -787,7 +787,6 @@ export default {
             // Find the distance between now and the count down date
             let distance = countDownDates - now;
            notifiedDays.value = Math.floor(distance / (1000 * 60 * 60 * 24));
-           console.log(notifiedDays.value, "jkjsjkj")
     }
 
     useSubscription.getPlan().then((res) => {
@@ -907,12 +906,14 @@ export default {
   border-left:solid #136acd 5px;
    border-top-left-radius: 5px 5px;
    border-bottom-left-radius: 5px 5px;
+   font-weight: 700;
 }
 .day2{
   background-color: rgb(246, 246, 195);
   border-left: solid yellow 5px;
    border-top-left-radius: 5px 5px;
    border-bottom-left-radius: 5px 5px;
+   font-weight: 700;
 }
 .day1{
   background-color: #FEF8F8;
@@ -920,6 +921,7 @@ export default {
   border-left:solid #B3282D 5px;
   border-top-left-radius: 5px 5px;
   border-bottom-left-radius: 5px 5px;
+  font-weight: 700;
 }
 
 .renew-btn-color {
