@@ -1,5 +1,4 @@
 <template>
-  <div>
     <!-- <Treee :items="groups"/> -->
     <div :class="{ 'container-slim': lgAndUp || xlAndUp }">
       <div class="container-fluid">
@@ -7,9 +6,6 @@
           <!-- <smsComponent :groupData ="groupListDetails"/> -->
           <div class="col-md-6 col-4">
             <div class="head-text">Groups</div>
-            <Toast />
-            <ConfirmDialog />
-            
           </div>
           <div class="col-md-6 col-8 d-flex justify-content-end mt-2 my-1 link" v-if="!groupLeader">
             <router-link
@@ -251,17 +247,31 @@
           </div>
         </div>
       </div>
+
+      <el-drawer v-model="showSMS" :size="mdAndUp || lgAndUp || xlAndUp ? '70%' : '100%'" direction="rtl">
+      <template #default>
+        <div>
+          <smsComponent :groupData ="groupListDetails" @closesidemodal="() => showSMS = false" />
+        </div>
+      </template>
+    </el-drawer>
+
+    <el-drawer v-model="showEmail" :size="mdAndUp || lgAndUp || xlAndUp ? '70%' : '100%'" direction="rtl">
+      <template #default>
+        <div>
+          <emailComponent :groupData ="groupListDetails"  @closesidemodal="() => showEmail = false" />
+        </div>
+      </template>
+    </el-drawer>
       
-       <Sidebar v-model:visible="showSMS" :baseZIndex="10000" position="right">
+       <!-- <Sidebar v-model:visible="showSMS" :baseZIndex="10000" position="right">
             <smsComponent :groupData ="groupListDetails" @closesidemodal="() => showSMS = false" />
         </Sidebar>
        
        <Sidebar v-model:visible="showEmail" :baseZIndex="10000" position="right">
             <emailComponent :groupData ="groupListDetails"  @closesidemodal="() => showEmail = false" />
-        </Sidebar>
-      
+        </Sidebar> -->
     </div>
-  </div>
 </template>
 
 <script>
@@ -269,36 +279,34 @@ import { ref, computed, watchEffect } from "vue";
 import { useRoute, useRouter } from "vue-router";
 import groupsService from "../../services/groups/groupsservice";
 import { useStore } from "vuex";
-import { useConfirm } from "primevue/useconfirm";
-import { useToast } from "primevue/usetoast";
+// import { useConfirm } from "primevue/useconfirm";
+// import { useToast } from "primevue/usetoast";
 import smsComponent from "./component/smsComponent.vue";
 import emailComponent from "./component/emailComponent.vue";
-import SideBar from "./sidemodal/SideModal.vue";
+// import SideBar from "./sidemodal/SideModal.vue";
 import GroupTree from "./component/GroupTree.vue";
-import Sidebar from "primevue/sidebar";
+// import Sidebar from "primevue/sidebar";
 import deviceBreakpoint from "../../mixins/deviceBreakpoint";
+import { ElMessage, ElMessageBox } from 'element-plus';
 
 export default {
-  // name: 'Tree',
   components: {
-    SideBar,
+    // SideBar,
     smsComponent,
     emailComponent,
     GroupTree,
-    Sidebar,
-    // Treee
+    // Sidebar,s
   },
 
   setup() {
-    //   const $confirm = getCurrentInstance().ctx.$confirm;
     const store = useStore();
     const loading = ref(false);
     const displayConfirmModal = ref(false);
-    const { lgAndUp, xlAndUp } = deviceBreakpoint()
+    const { mdAndUp, lgAndUp, xlAndUp } = deviceBreakpoint()
     const groups = ref(store.getters["groups/groups"]);
     const groupListDetails = ref([]);
-    const toast = useToast();
-    const confirm = useConfirm();
+    // const toast = useToast();
+    // const confirm = useConfirm();
     const showSMS = ref(false);
     const showEmail = ref(false);
     const router = useRouter();
@@ -307,36 +315,36 @@ export default {
    
    
     const confirmDelete = (id, index) => {
-      confirm.require({
-        message: "Do you want to delete this group?",
-        header: "Delete Confirmation",
-        icon: "pi pi-info-circle",
-        acceptClass: "confirm-delete",
-        rejectClass: "cancel-delete",
-        accept: () => {
-          try {
+       ElMessageBox.confirm(
+        "Are you sure you want to proceed? This operation can't be reversed " ,
+        'Confirm delete',
+        {
+          confirmButtonText: 'OK',
+          cancelButtonText: 'Cancel',
+          type: 'error',
+        }
+      )
+        try {
             groupsService.deleteGroup(id).then((res) => {
               console.log(res, "Delete Response");
               if (res !== false) {
                 groups.value.splice(index, 1);
                 store.dispatch("groups/getGroups");
-                toast.add({
-                  severity: "success",
-                  summary: "Deleted",
-                  detail: "Group was deleted",
-                  life: 3000,
-                });
+                ElMessage({
+                        type: 'success',
+                        message: 'Group was deleted',
+                        duration: 5000
+                      })
                 groupsService.removeGroupFromStore(id);
               }
             });
           } catch (error) {
+              ElMessage({
+              type: 'info',
+              message: 'Delete discarded',
+            })
             console.log(error);
           }
-        },
-        reject: () => {
-         
-        },
-      });
     };
     const getgroups = async () => {
       try {
@@ -389,7 +397,6 @@ export default {
 
     const sendGroupSms = (group) => {
       showSMS.value = true;
-      // visibleRight.value = true
       if (group.id) {
         groupListDetails.value = [{ data: `group_${group.id}` }];
       }
@@ -451,7 +458,6 @@ export default {
     };
 
     const groupClickk = (i, e) => {
-      //  console.log(i)
       console.log(i, e, "fevfvweklmwfjn");
       router.push(
         `/tenant/createpeoplegroup/${
@@ -472,14 +478,12 @@ export default {
       if (store.getters["groups/selectedTreeGroupList"]) {
         const selectedGroup = store.getters["groups/selectedTreeGroupList"];
         lastGroupChild.value = selectedGroup;
-        //  router.push(`/tenant/createpeoplegroup/${selectedGroup.id}`)
       }
     });
 
     return {
-      // showSide,
-      // sendSms,
       groupClick,
+      mdAndUp,
       lgAndUp,
       xlAndUp,
       clearInput,
