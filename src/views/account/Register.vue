@@ -30,47 +30,6 @@
             </span>
           </p>
         </div>
-
-        <!-- <form @submit.prevent="register">
-          <div>
-            <input
-              type="email"
-              class="input"
-              v-model="credentials.email"
-              placeholder="Email"
-              required
-            />
-          </div>
-          <div>
-            <input
-              :type="passwordType"
-              v-model="credentials.password"
-              class="input"
-              placeholder="Password"
-              pattern=".{6,}"
-              required
-            />
-          </div>
-          <div class="password-help">
-            <span class="password-tip"
-              >At least 6 characters, but longer is better.</span
-            >
-            <span class="show-password"
-              ><a href="" class="show-password-link" @click="showPassword">{{
-                showBtnText
-              }}</a></span
-            >
-          </div>
-
-          <button
-            class="submit-btn sign-in-btn get-started"
-            :class="{ 'btn-loading': loading }"
-          >
-            <i class="fas fa-circle-notch fa-spin" v-if="loading"></i>
-            <span>Get Started</span>
-            <span></span>
-          </button> 
-        </form>-->
         <el-form :model="credentials" class="mt-3" @keyup.enter.native="register">
           <el-form-item>
             <el-input type="email" placeholder="Email" v-model="credentials.email" />

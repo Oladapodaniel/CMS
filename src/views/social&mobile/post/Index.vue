@@ -407,6 +407,7 @@ export default {
         postToEdit.value.postId = postData.postId;
         message.value = postData.content;
         fileUrl.value = postData.mediaUrl;
+        showOnMainThread.value = postData.showOnMainThread;
         isUrl.value = true;
         getPostCategoryById(postData.postCategoryId);
       } catch (error) {

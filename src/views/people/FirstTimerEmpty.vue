@@ -1,5 +1,5 @@
 <template>
-  <div :class="{ 'container-slim': lgAndUp || xlAndUp }" class="container-top">
+  <div :class="{ 'container-slim': lgAndUp || xlAndUp }" class="container-top h-100">
     <div class="d-flex flex-column flex-md-row justify-content-md-between">
       <div class="head-text">
         <div>First Timers Analytics

@@ -127,7 +127,7 @@
                     >
                   </a>
                   <a class="dropdown-item"><router-link :to="{path:'/tenant/settings/invitenewuser', query:{ email:churchMem.email } }"> Edit</router-link></a>
-                  <a class="dropdown-item" @click="deletePop(churchMem.email)"> <router-link to="" v-if="churchMem.email !== getCurrentUser.userEmail"> Delete </router-link></a>
+                  <a class="dropdown-item" @click="deletePop(churchMem.email)"> <router-link to="" v-if="churchMem.email !== getCurrentUser.userEmail" > Delete  </router-link></a>
                   <a class="dropdown-item" @click="deactivateChurchUser(churchMem.email, index)"> <router-link to=""> Inactive </router-link></a>
                   <a class="dropdown-item" @click="activateChurchUser(churchMem.email, index)"> <router-link to=""> Active </router-link></a>
                 </div>
@@ -152,7 +152,7 @@ import finish from "../../services/progressbar/progress";
 export default {
   data(){
     return{
-      getCurrentUser: store.getters.currentUser,
+      getCurrentUser: {},
       churchProfile: '',
       searchText: '',
       churchUsers: [],
@@ -269,11 +269,10 @@ export default {
         })
         },
         async currentUser () {
-          if(!store.getters.currentUser){
+          if(!store.getters.currentUser || !this.getCurrentUser ){
              try{
                 const { data } = await axios.get('/api/Membership/GetCurrentSignedInUser')
-                this.getCurrentUser = data;
-                console.log(this.getCurrentUser)
+                this.getCurrentUser = data ;
               }catch(error){
                 console.log(error)
               }    

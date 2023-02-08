@@ -15,8 +15,8 @@
             <div class="pa-3 font-weight-600">{{ tenantName.churchName }}</div>
           </div>
         </el-header>
-        <el-main style="background: rgb(241 245 248 / 42%)">
-          <div @click="hideMenu">
+        <el-main>
+          <div class="h-100" @click="hideMenu">
             <router-view />
           </div>
         </el-main>
