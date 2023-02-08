@@ -118,7 +118,7 @@
               }}
             </div>
           </div>
-          <div class="col-md-12 py-3 mb-1 day1" v-if="notifiedDays === 3">
+          <div class="col-md-12 py-3 mb-1 day1" v-if="notifiedDays === 3 ">
             <div class="">
               3 days remaining before your subscription expires, kindly
               subscribe before
@@ -195,7 +195,7 @@
                 <span class="size-text">Church Size</span>
               </div>
             </div>
-            <div class="box-bottom px-3 py-2" :class="{ 'border-danger': notifiedDays <= 4 }" >
+            <div class="box-bottom px-3 py-2" :class="{ 'border border-danger': notifiedDays <= 4  }" >
               <el-tooltip class="box-item" effect="dark" :content="planUserIs" placement="top-start">
                 <div class="s-12 font-weight-bold">
                   {{ planUserIs }}
