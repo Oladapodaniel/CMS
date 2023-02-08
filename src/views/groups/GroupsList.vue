@@ -68,16 +68,9 @@
               </div>
             </div>
 
-            <!-- search groups -->
             <div>
-              <div class="container-fluid d-none d-md-block">
+              <!-- <div class="container-fluid d-none d-md-block">
                 <div class="row t-header">
-                  <!-- <div class="col-md-1"></div>
-                  <div
-                    class="small-text text-capitalize col-md-2 font-weight-bold"
-                  >
-                    <input class="my-2" type="checkbox" />
-                  </div> -->
                   <div
                     class="small-text text-capitalize col-md-6 font-weight-bold"
                   >
@@ -88,19 +81,13 @@
                   >
                     Membership Size
                   </div>
-                  <!-- <div
-                    class="small-text text-capitalize col-md-2 font-weight-bold"
-                  >
-                    <span></span>
-                  </div> -->
                   <div
                     class="small-text text-capitalize col-md-1 font-weight-bold"
                   >
                     Action
                   </div>
-                  <!-- </div> -->
                 </div>
-              </div>
+              </div> -->
 
               <div class="row" style="margin: 0">
 
@@ -158,12 +145,11 @@
                   <!-- loadding -->
 
               
-                <div
+                <!-- <div
                     class=" row w-100  text-dark "
                     style="margin: 0"
                     
                   >
-                    <!-- class="d-block -->
 
                     <div class="col-md-12 desc">
                       <p class="">
@@ -240,10 +226,30 @@
                       </ul>   
                     </p>
                   </div>
-                </div>
+                </div> -->
                 </div>
               </div>
             </div>
+             <el-table
+              :data="searchGroup"
+              v-loading="loading"
+              style="width: 100%; margin-bottom: 20px"
+               border
+                lazy
+                :load="load"
+                :tree-props="{ children: searchGroup.children, hasChildren: 'hasChildren' }"
+              >
+              <el-table-column  label="Group" >
+                 <template #default="scope">
+                  <div  class="c-pointer">{{ scope.row.name}} </div>
+                </template>
+              </el-table-column>
+              <el-table-column  label="Membership Size">
+              </el-table-column>
+              <el-table-column  label="Action" >
+              </el-table-column>
+
+            </el-table>
           </div>
         </div>
       </div>
