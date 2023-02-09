@@ -6,13 +6,9 @@
           <h2 class="font-weight-bold intro-text">
             Choose a plan that's right for your church
           </h2>
-          <el-dialog
-            v-model="purchaseIsSuccessful"
-            class="smsUnitSuccess"
-            :width="mdAndUp || lgAndUp || xlAndUp ? '60%' : '100%' "
-            align-center
-          >
-          <PaymentSuccessModal @close-modal="closeModal" :amount="amount" />
+          <el-dialog v-model="purchaseIsSuccessful" class="smsUnitSuccess"
+            :width="mdAndUp || lgAndUp || xlAndUp ? '60%' : '100%'" align-center>
+            <PaymentSuccessModal @close-modal="closeModal" :amount="amount" />
           </el-dialog>
         </div>
       </div>
@@ -125,7 +121,8 @@
                   Continue payment with
                 </div>
               </div>
-              <div class="row row-button c-pointer d-flex justify-content-center" @click="payWithPaystack" v-if="selectedCurrency == 'NGN'">
+              <div class="row row-button c-pointer d-flex justify-content-center" @click="payWithPaystack"
+                v-if="selectedCurrency == 'NGN' || selectedCurrency == 'GHS'">
                 <div>
                   <img style="width: 150px" src="../../assets/4PaystackLogo.png" alt="paystack" />
                 </div>
@@ -161,7 +158,7 @@ import stopProgressBar from "../../services/progressbar/progress"
 import { v4 as uuidv4 } from 'uuid';
 import supportedCurrencies from "../../services/user/flutterwaveSupportedCurrency"
 import productPricing from "../../services/user/productPricing";
-import { ElMessage } from 'element-plus'
+import { ElMessage, ElMessageBox } from 'element-plus'
 import deviceBreakpoint from "../../mixins/deviceBreakpoint";
 
 export default {
@@ -173,16 +170,6 @@ export default {
     const purchaseIsSuccessful = ref(false);
     const isProduction = ref(false);
     const uuid = ref(uuidv4());
-    const totalSMSUnits = computed(() => {
-      if (amount.value <= 0) return "";
-      return Math.round(amount.value / +UserSMSPricing.value.price);
-    });
-
-    const totalAmount = computed(() => {
-      if (amount.value <= 0) return "";
-      return Math.ceil(amount.value);
-    });
-
     const userEmail = ref(store.getters.userEmail);
     const currentUser = ref(store.getters.currentUser);
     const tenantId = ref(currentUser.tenantId);
@@ -201,11 +188,22 @@ export default {
     const { mdAndUp, lgAndUp, xlAndUp } = deviceBreakpoint()
 
 
+    const totalSMSUnits = computed(() => {
+      if (amount.value <= 0) return "";
+      if (UserSMSPricing.value) return Math.round(amount.value / +UserSMSPricing.value.price);
+      return ""
+    });
+
+    const totalAmount = computed(() => {
+      if (amount.value <= 0) return "";
+      return Math.ceil(amount.value);
+    });
+
+
+
     const getAllCountries = () => {
       axios.get("/api/GetAllCountries").then((res) => {
         countries.value = res.data;
-        const userCountryID = countries.value.find(i => i.currency == selectedCurrency.value)
-        getProductPricing(userCountryID.id)
       })
         .catch(err => console.error(err))
     }
@@ -214,6 +212,29 @@ export default {
       let { data } = await productPricing.getProductPricing(id)
       UserProductPricing.value = data
       UserSMSPricing.value = data.find(i => i.product.name.toLowerCase() === 'sms')
+      if (!UserSMSPricing.value) {
+        ElMessageBox.confirm(
+          'SMS Unit pricing is currently not available for this currency selected, we will make it available as soon as possible, you can reach out to us by sending an email to info@churchplus.co for us to address your specific needs. Thank you for choosing Churchplus',
+          'Notice',
+          {
+            confirmButtonText: 'OK',
+            cancelButtonText: 'Cancel',
+            type: 'warning',
+          }
+        )
+          .then(() => {
+            ElMessage({
+              type: 'warning',
+              message: 'We await your feedback. Thank you',
+            })
+          })
+          .catch(() => {
+            ElMessage({
+              type: 'warning',
+              message: 'We await your feedback. Thank you',
+            })
+          })
+      }
       checkingCoutryData.value = false
     }
 
@@ -245,12 +266,13 @@ export default {
         })
     }
 
-    if (!userEmail.value || !tenantId.value || !pricePerUnitSMS.value) getUserEmail();
+    getUserEmail();
 
     const getChurchProfile = async () => {
       try {
         let res = await axios.get(`/GetChurchProfileById?tenantId=${tenantId.value}`)
         churchLogo.value = res.data.returnObject.logo
+        getProductPricing(res.data.returnObject.countryID)
       }
       catch (err) {
         console.log(err)
@@ -318,7 +340,7 @@ export default {
             tenantId: currentUser.value.tenantId,
           };
 
-          //Route to where you confirm payment status
+          // Route to where you confirm payment status
 
           axios
             .post(`/api/Payment/purchasesmsunits?paymentType=0`, returnres)
@@ -340,11 +362,11 @@ export default {
             .catch((err) => {
               stopProgressBar();
               ElMessage({
-                  type: 'error',
-                  showClose: true,
-                  message: 'Confirming your purchase failed, please contact support at info@churchplus.co',
-                  duration: 5000
-                })
+                type: 'error',
+                showClose: true,
+                message: 'Confirming your purchase failed, please contact support at info@churchplus.co',
+                duration: 5000
+              })
             });
         },
       });
@@ -383,8 +405,8 @@ export default {
     const payWithFlutterwave = () => {
       initializePayment(1);
       window.FlutterwaveCheckout({
-        // public_key: process.env.VUE_APP_FLUTTERWAVE_PUBLIC_KEY_LIVE,
-        public_key: process.env.VUE_APP_FLUTTERWAVE_TEST_KEY,
+        public_key: process.env.VUE_APP_FLUTTERWAVE_PUBLIC_KEY_LIVE,
+        // public_key: process.env.VUE_APP_FLUTTERWAVE_TEST_KEY,
         tx_ref: uuidv4().substring(0, 8),
         amount: totalAmount.value,
         currency: selectedCurrency.value,
@@ -421,11 +443,11 @@ export default {
             })
             .catch(() => {
               ElMessage({
-                  type: 'error',
-                  showClose: true,
-                  message: 'Confirming your purchase failed, please contact support at info@churchplus.co',
-                  duration: 5000
-                })
+                type: 'error',
+                showClose: true,
+                message: 'Confirming your purchase failed, please contact support at info@churchplus.co',
+                duration: 5000
+              })
             });
         },
         onclose: () => {

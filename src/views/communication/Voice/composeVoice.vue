@@ -3,16 +3,10 @@
     <div class="" @click="closeDropdownIfOpen">
       <div class="row">
         <div class="col-12 col-md-12 mb-3 mt-3">
-          <h4 class="font-weight-bold d-none d-sm-flex">
-            Compose Voice Message
+          <h4 class="font-weight-bold text-center text-md-left">
+            Upload voice file
           </h4>
-          <div class="col-12 col-md-12 mb-3 mt-3">
-            <h4 class="font-weight-bold text-center d-sm-none" color="#1D262D">
-              Compose Voice Message
-            </h4>
-          </div>
-
-          <Toast />
+          <!-- <Toast /> -->
           <el-dialog
             title="Select Date and Time"
             v-model="display"
@@ -696,7 +690,6 @@ import composeService from "../../../services/communication/composer";
 import composerObj from "../../../services/communication/composer";
 import { useRoute } from "vue-router";
 import { useRouter } from "vue-router";
-import { useToast } from "primevue/usetoast";
 import store from "../../../store/store";
 import axios from "@/gateway/backendapi";
 import stopProgressBar from "../../../services/progressbar/progress";
@@ -712,7 +705,6 @@ import moment from "moment";
 export default {
   components: {},
   setup() {
-    const toast = useToast();
     const router = useRouter();
     const editorData = ref("");
     const disableBtn = ref(false);
@@ -1056,7 +1048,7 @@ export default {
         .catch((err) => {
           stopProgressBar();
           disableBtn.value = false;
-          toast.removeAllGroups();
+          // toast.removeAllGroups();
           console.log(err);
           if (err.toString().toLowerCase().includes("network error")) {
             ElMessage({

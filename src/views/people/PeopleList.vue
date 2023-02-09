@@ -52,7 +52,7 @@
         placeholder="Select a group" size="large" class="w-100" />
       <template #footer>
         <span class="dialog-footer">
-          <el-button @click="addToGroupSingle = false" color="#136acd" round>Cancel</el-button>
+          <el-button @click="addToGroupSingle = false" round>Cancel</el-button>
           <el-button type="primary" color="#136acd" :loading="singleGroupLoading" @click="moveMemberToGroup" round>
             Add to group
           </el-button>
@@ -609,11 +609,11 @@ export default {
     const showConfirmModal1 = () => {
       ElMessageBox.confirm(
         'This action will permanently delete the member(s). Continue?',
-        'Warning',
+        'Confirm delete',
         {
           confirmButtonText: 'OK',
           cancelButtonText: 'Cancel',
-          type: 'warning',
+          type: 'error',
         }
       )
         .then(() => {

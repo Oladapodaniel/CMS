@@ -250,7 +250,7 @@ export default {
         })
     }
 
-    if (!tenantId.value) getUserEmail();
+    getUserEmail();
     const acctReceived = ref("");
     const paymentSummary = ref([]);
     const paymentSummObj = ref({});
@@ -293,21 +293,10 @@ export default {
     selectCurrencyArr.value = ["NGN", "USD", "GHS", "ZAR"];
     const existingPlan = ref({});
     const daysToEndOfSubscription = ref(0);
-    const countries = ref([]);
     const UserSubscriptionPricing = ref([])
     const UserSubscriptionPlans = ref([])
     const selectedPlanId = ref(null)
     const selectMonthId = ref(null)
-
-    const getAllCountries = () => {
-      axios.get("/api/GetAllCountries").then((res) => {
-        countries.value = res.data;
-        const userCountryID = countries.value.find(i => i.currency == currentUser.value.currency)
-        getProductPricing(userCountryID.id)
-      })
-        .catch(err => console.error(err))
-    }
-    getAllCountries();
 
     const getProductPricing = async (id) => {
       let { data } = await productPricing.getProductPricing(id)
@@ -322,7 +311,7 @@ export default {
         return i.subscriptionPlan
       })
 
-      
+
     }
 
 
@@ -335,7 +324,7 @@ export default {
         existingPlan.value.amountInDollar = Plans.value.amountInDollar;
         existingPlan.value.membershipSize = Plans.value.membershipSize;
 
-        
+
 
 
 
@@ -361,18 +350,16 @@ export default {
 
         // Remove preceeding plans from list
 
-      const joined = UserSubscriptionPlans.value.map(i => i.id).join("")
-      const splitted = joined.split(selectedPlan.value.id)
-      UserSubscriptionPlans.value = UserSubscriptionPlans.value.splice(splitted[0].length)
-
-
+        const joined = UserSubscriptionPlans.value.map(i => i.id).join("")
+        const splitted = joined.split(selectedPlan.value.id)
+        UserSubscriptionPlans.value = UserSubscriptionPlans.value.splice(splitted[0].length)
 
         if (selectedPlanId.value == null) {
           ElMessageBox.confirm(
             'Subscription pricing is currently not available in your country, we will make it available as soon as possible, you can reach out to us by sending an email to info@churchplus.co for us to address your specific needs. Thank you for choosing Churchplus',
             'Notice',
             {
-              confirmButtonText: 'Alright',
+              confirmButtonText: 'OK',
               cancelButtonText: 'Cancel',
               type: 'warning',
             }
@@ -419,6 +406,7 @@ export default {
       try {
         let res = await axios.get(`/GetChurchProfileById?tenantId=${currentUser.value.tenantId}`)
         churchLogo.value = res.data.returnObject.logo
+        getProductPricing(res.data.returnObject.countryID)
       }
       catch (err) {
         console.log(err)
@@ -629,14 +617,15 @@ export default {
         channels: ['card', 'bank', 'ussd', 'qr', 'mobile_money', 'bank_transfer'],
         onClose: function () {
           ElMessage({
-                type: 'warning',
-                message: 'Transaction cancelled',
-                duration: 5000
-              })
+            type: 'warning',
+            message: 'Transaction cancelled',
+            duration: 5000
+          })
         },
         callback: function (response) {
-          subscriptionPayment(response, 0);
+          // subscriptionPayment(response, 0);
           //Route to where you confirm payment status
+          display.value = true
         },
       });
       handler.openIframe();
@@ -676,8 +665,8 @@ export default {
       }
 
       window.FlutterwaveCheckout({
-        public_key: process.env.VUE_APP_FLUTTERWAVE_TEST_KEY,
-        // public_key: process.env.VUE_APP_FLUTTERWAVE_PUBLIC_KEY_LIVE,
+        // public_key: process.env.VUE_APP_FLUTTERWAVE_TEST_KEY,
+        public_key: process.env.VUE_APP_FLUTTERWAVE_PUBLIC_KEY_LIVE,
         tx_ref: uuidv4().substring(0, 8),
         amount: TotalAmount.value,
         currency: selectedCurrency.value,
@@ -772,7 +761,6 @@ export default {
       initializedOrder,
       userEmail,
       userCurrency,
-      countries,
       UserSubscriptionPricing,
       UserSubscriptionPlans,
       selectedPlanId,
@@ -780,9 +768,9 @@ export default {
       setSelectedDuration,
       setSelectedPlan,
       churchLogo,
-      mdAndUp, 
-      lgAndUp, 
-      xlAndUp, 
+      mdAndUp,
+      lgAndUp,
+      xlAndUp,
       xsOnly
     };
   },

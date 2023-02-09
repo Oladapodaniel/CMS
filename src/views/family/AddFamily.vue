@@ -404,6 +404,7 @@ import axios from "@/gateway/backendapi";
 import router from "@/router/index";
 import { useRoute } from "vue-router"
 import Dropdown from 'primevue/dropdown';
+import { ElMessage } from "element-plus";
 import { useToast } from "primevue/usetoast";
 
 export default {
@@ -754,39 +755,58 @@ export default {
 
             
             if (!route.params.familyId) {
-                if (!father.value.id) {
-                    toast.add({
-                        severity: "info",
-                        summary: "The father has to be selected from the church",
-                        detail: "Kindly choose the father from the church membership list or create him as a member first",
-                        life: 10000,
-                    });
-                    userSearchString.value = ""
-                    return false
-                }
-                if (!mother.value.id) {
-                    console.log("Select mother")
-                    toast.add({
-                        severity: "info",
-                        summary: "The mother has to be selected from the church",
-                        detail: "Kindly choose the mother from the church membership list or create her as a member first",
-                        life: 10000,
-                    });
-                    motherSearchString.value = ""
-                    return false
-                }
+                // if (!father.value.id) {
+                //     toast.add({
+                //         severity: "info",
+                //         summary: "The father has to be selected from the church",
+                //         detail: "Kindly choose the father from the church membership list or create him as a member first",
+                //         life: 10000,
+                //     });
+                //     userSearchString.value = ""
+                //     return false
+                // }
+                // if (!mother.value.id) {
+                //     console.log("Select mother")
+                //     toast.add({
+                //         severity: "info",
+                //         summary: "The mother has to be selected from the church",
+                //         detail: "Kindly choose the mother from the church membership list or create her as a member first",
+                //         life: 10000,
+                //     });
+                //     motherSearchString.value = ""
+                //     return false
+                // }
                 try {
                     let res = await axios.post("/api/family/createFamily", family)
-                    console.log(res)
+                    if(res.status === 200){
+                        ElMessage({
+                        type: "success",
+                        message: "Family created successfully",
+                        });
+
+                    }else{
+                        ElMessage({
+                        type: "error",
+                        message: "Failed, try again",
+                        });
+                    }
                     router.push('/tenant/family')
                 }
                 catch (err) {
-                    console.log(err)
+                     ElMessage({
+                        type: "error",
+                        message: err.response.data.errors.FamilyName[0],
+                        duration: 5000
+                        });
                 }
             }   else {
                 try {
                     let res = await axios.put("/api/family/editProfile", updateProfile)
                     console.log(res)
+                     ElMessage({
+                        type: "success",
+                        message: "Family updated successfully",
+                        });
                     router.push('/tenant/family')
                 }
                 catch (err) {

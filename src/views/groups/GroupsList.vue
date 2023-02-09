@@ -1,15 +1,11 @@
 <template>
-  <div>
     <!-- <Treee :items="groups"/> -->
     <div :class="{ 'container-slim': lgAndUp || xlAndUp }">
-      <div class="container-fluid">
-        <div class="row d-md-flex yu mt-5">
+      <div class="container-fluid container-top">
+        <div class="row d-md-flex ">
           <!-- <smsComponent :groupData ="groupListDetails"/> -->
           <div class="col-md-6 col-4">
             <div class="head-text">Groups</div>
-            <Toast />
-            <ConfirmDialog />
-            
           </div>
           <div class="col-md-6 col-8 d-flex justify-content-end mt-2 my-1 link" v-if="!groupLeader">
             <router-link
@@ -72,16 +68,9 @@
               </div>
             </div>
 
-            <!-- search groups -->
             <div>
-              <div class="container-fluid d-none d-md-block">
+              <!-- <div class="container-fluid d-none d-md-block">
                 <div class="row t-header">
-                  <!-- <div class="col-md-1"></div>
-                  <div
-                    class="small-text text-capitalize col-md-2 font-weight-bold"
-                  >
-                    <input class="my-2" type="checkbox" />
-                  </div> -->
                   <div
                     class="small-text text-capitalize col-md-6 font-weight-bold"
                   >
@@ -92,19 +81,13 @@
                   >
                     Membership Size
                   </div>
-                  <!-- <div
-                    class="small-text text-capitalize col-md-2 font-weight-bold"
-                  >
-                    <span></span>
-                  </div> -->
                   <div
                     class="small-text text-capitalize col-md-1 font-weight-bold"
                   >
                     Action
                   </div>
-                  <!-- </div> -->
                 </div>
-              </div>
+              </div> -->
 
               <div class="row" style="margin: 0">
 
@@ -162,12 +145,11 @@
                   <!-- loadding -->
 
               
-                <div
+                <!-- <div
                     class=" row w-100  text-dark "
                     style="margin: 0"
                     
                   >
-                    <!-- class="d-block -->
 
                     <div class="col-md-12 desc">
                       <p class="">
@@ -244,24 +226,103 @@
                       </ul>   
                     </p>
                   </div>
-                </div>
+                </div> -->
                 </div>
               </div>
             </div>
+             <el-table
+              :data="searchGroup"
+              v-loading="loading"
+              style="width: 100%; "
+              row-key="id"
+              lazy
+              border
+                :tree-props="{ children: 'children', hasChildren: 'hasChildren' }"
+              >
+              <el-table-column width="371"  label="Group" >
+                 <template #default="scope">
+                  <div @click="groupClick(scope.row.id)"  class="c-pointer">{{ scope.row.name}} </div>
+                </template>
+              </el-table-column>
+              <el-table-column width="371" label="Membership Size">
+                <template #default="scope">
+                  <div @click="groupClick(scope.row.id)"  class="c-pointer">{{ scope.row.peopleInGroupsCount}} </div>
+                </template>
+              </el-table-column>
+              <el-table-column width="100"  label="Action" >
+                <template #default="scope">
+                  <div  class="c-pointer">
+                    <el-dropdown trigger="click">
+                      <el-icon>
+                        <MoreFilled />
+                      </el-icon>
+                      <template #dropdown>
+                        <el-dropdown-menu>
+                          <el-dropdown-item>
+                           <a
+                            @click="sendGroupSms(scope.row)"
+                            >Send SMS</a>
+                          </el-dropdown-item>
+                          <el-dropdown-item>
+                             <a class="" @click="sendGroupEmail(scope.row)">
+                                Send Email
+                             </a>
+                          </el-dropdown-item>
+                          <el-dropdown-item>
+                            <a
+                              class=""
+                              @click="confirmDelete(scope.row.id, index)"
+                              >Delete</a>
+                          </el-dropdown-item>
+                        </el-dropdown-menu>
+                      </template>
+                    </el-dropdown>
+                  </div>
+                </template>
+              </el-table-column>
+
+                <!-- <el-table-column>
+                  <template #default="scope">
+                  <div class="d-none">
+                            <GroupTree
+                                :items="scope.row.children"
+                                v-if="scope.row.children"
+                              class="d-none"
+                              @click="groupClickk(scope.row, $event)"
+                              @group="setSelectedGroup"
+                                /> 
+                            </div> 
+                </template>
+                </el-table-column> -->
+            </el-table>
           </div>
         </div>
       </div>
+
+      <el-drawer v-model="showSMS" :size="mdAndUp || lgAndUp || xlAndUp ? '70%' : '100%'" direction="rtl">
+      <template #default>
+        <div>
+          <smsComponent :groupData ="groupListDetails" @closesidemodal="() => showSMS = false" />
+        </div>
+      </template>
+    </el-drawer>
+
+    <el-drawer v-model="showEmail" :size="mdAndUp || lgAndUp || xlAndUp ? '70%' : '100%'" direction="rtl">
+      <template #default>
+        <div>
+          <emailComponent :groupData ="groupListDetails"  @closesidemodal="() => showEmail = false" />
+        </div>
+      </template>
+    </el-drawer>
       
-       <Sidebar v-model:visible="showSMS" :baseZIndex="10000" position="right">
+       <!-- <Sidebar v-model:visible="showSMS" :baseZIndex="10000" position="right">
             <smsComponent :groupData ="groupListDetails" @closesidemodal="() => showSMS = false" />
         </Sidebar>
        
        <Sidebar v-model:visible="showEmail" :baseZIndex="10000" position="right">
             <emailComponent :groupData ="groupListDetails"  @closesidemodal="() => showEmail = false" />
-        </Sidebar>
-      
+        </Sidebar> -->
     </div>
-  </div>
 </template>
 
 <script>
@@ -269,36 +330,34 @@ import { ref, computed, watchEffect } from "vue";
 import { useRoute, useRouter } from "vue-router";
 import groupsService from "../../services/groups/groupsservice";
 import { useStore } from "vuex";
-import { useConfirm } from "primevue/useconfirm";
-import { useToast } from "primevue/usetoast";
+// import { useConfirm } from "primevue/useconfirm";
+// import { useToast } from "primevue/usetoast";
 import smsComponent from "./component/smsComponent.vue";
 import emailComponent from "./component/emailComponent.vue";
-import SideBar from "./sidemodal/SideModal.vue";
+// import SideBar from "./sidemodal/SideModal.vue";
 import GroupTree from "./component/GroupTree.vue";
-import Sidebar from "primevue/sidebar";
+// import Sidebar from "primevue/sidebar";
 import deviceBreakpoint from "../../mixins/deviceBreakpoint";
+import { ElMessage, ElMessageBox } from 'element-plus';
 
 export default {
-  // name: 'Tree',
   components: {
-    SideBar,
+    // SideBar,
     smsComponent,
     emailComponent,
     GroupTree,
-    Sidebar,
-    // Treee
+    // Sidebar,s
   },
 
   setup() {
-    //   const $confirm = getCurrentInstance().ctx.$confirm;
     const store = useStore();
     const loading = ref(false);
     const displayConfirmModal = ref(false);
-    const { lgAndUp, xlAndUp } = deviceBreakpoint()
+    const { mdAndUp, lgAndUp, xlAndUp } = deviceBreakpoint()
     const groups = ref(store.getters["groups/groups"]);
     const groupListDetails = ref([]);
-    const toast = useToast();
-    const confirm = useConfirm();
+    // const toast = useToast();
+    // const confirm = useConfirm();
     const showSMS = ref(false);
     const showEmail = ref(false);
     const router = useRouter();
@@ -307,36 +366,36 @@ export default {
    
    
     const confirmDelete = (id, index) => {
-      confirm.require({
-        message: "Do you want to delete this group?",
-        header: "Delete Confirmation",
-        icon: "pi pi-info-circle",
-        acceptClass: "confirm-delete",
-        rejectClass: "cancel-delete",
-        accept: () => {
-          try {
+       ElMessageBox.confirm(
+        "Are you sure you want to proceed? This operation can't be reversed " ,
+        'Confirm delete',
+        {
+          confirmButtonText: 'OK',
+          cancelButtonText: 'Cancel',
+          type: 'error',
+        }
+      )
+        try {
             groupsService.deleteGroup(id).then((res) => {
               console.log(res, "Delete Response");
               if (res !== false) {
                 groups.value.splice(index, 1);
                 store.dispatch("groups/getGroups");
-                toast.add({
-                  severity: "success",
-                  summary: "Deleted",
-                  detail: "Group was deleted",
-                  life: 3000,
-                });
+                ElMessage({
+                        type: 'success',
+                        message: 'Group was deleted',
+                        duration: 5000
+                      })
                 groupsService.removeGroupFromStore(id);
               }
             });
           } catch (error) {
+              ElMessage({
+              type: 'info',
+              message: 'Delete discarded',
+            })
             console.log(error);
           }
-        },
-        reject: () => {
-         
-        },
-      });
     };
     const getgroups = async () => {
       try {
@@ -389,7 +448,6 @@ export default {
 
     const sendGroupSms = (group) => {
       showSMS.value = true;
-      // visibleRight.value = true
       if (group.id) {
         groupListDetails.value = [{ data: `group_${group.id}` }];
       }
@@ -451,7 +509,6 @@ export default {
     };
 
     const groupClickk = (i, e) => {
-      //  console.log(i)
       console.log(i, e, "fevfvweklmwfjn");
       router.push(
         `/tenant/createpeoplegroup/${
@@ -472,14 +529,12 @@ export default {
       if (store.getters["groups/selectedTreeGroupList"]) {
         const selectedGroup = store.getters["groups/selectedTreeGroupList"];
         lastGroupChild.value = selectedGroup;
-        //  router.push(`/tenant/createpeoplegroup/${selectedGroup.id}`)
       }
     });
 
     return {
-      // showSide,
-      // sendSms,
       groupClick,
+      mdAndUp,
       lgAndUp,
       xlAndUp,
       clearInput,

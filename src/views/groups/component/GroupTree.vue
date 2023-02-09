@@ -116,30 +116,46 @@
           </div>
       </template>
   </Dialog>
-  <Toast />
+   <el-drawer v-model="showSMS" :size="mdAndUp || lgAndUp || xlAndUp ? '70%' : '100%'" direction="rtl">
+      <template #default>
+        <div>
+          <smsComponent :groupData ="groupListDetails" @closesidemodal="() => showSMS = false" />
+        </div>
+      </template>
+    </el-drawer>
 
-  <Sidebar v-model:visible="showSMS" :baseZIndex="10000" position="right">
+    <el-drawer v-model="showEmail" :size="mdAndUp || lgAndUp || xlAndUp ? '70%' : '100%'" direction="rtl">
+      <template #default>
+        <div>
+          <emailComponent :groupData ="groupListDetails"  @closesidemodal="() => showEmail = false" />
+        </div>
+      </template>
+    </el-drawer>
+
+  <!-- <Sidebar v-model:visible="showSMS" :baseZIndex="10000" position="right">
         <smsComponent :groupData ="groupListDetails" @closesidemodal="() => showSMS = false" />
     </Sidebar>
 
   <Sidebar v-model:visible="showEmail" :baseZIndex="10000" position="right">
         <emailComponent :groupData ="groupListDetails"  @closesidemodal="() => showEmail = false" />
-    </Sidebar>
+    </Sidebar> -->
 </template>
 
 <script>
 import Dialog from "primevue/dialog";
 import { ref } from "@vue/reactivity";
-import { useToast } from "primevue/usetoast";
+// import { useToast } from "primevue/usetoast";
 import axios from "@/gateway/backendapi";
 import { watchEffect } from "@vue/runtime-core";
 import { useStore } from "vuex";
-import { useConfirm } from "primevue/useconfirm";
+// import { useConfirm } from "primevue/useconfirm";
 import { onBeforeRouteLeave } from "vue-router";
-import Sidebar from "primevue/sidebar";
+// import Sidebar from "primevue/sidebar";
 import smsComponent from "../component/smsComponent.vue";
 import emailComponent from "../component/emailComponent.vue";
 import groupsService from "../../../services/groups/groupsservice";
+import deviceBreakpoint from "../../../mixins/deviceBreakpoint";
+import { ElMessage, ElMessageBox } from 'element-plus';
 export default {
   name: "GroupTree",
   props: ["items", "addGroupValue", "showCheckBox"],
@@ -147,16 +163,17 @@ export default {
   inheritAttrs: false,
   components: {
     Dialog,
-    Sidebar,
+    // Sidebar,
     smsComponent,
     emailComponent,
   },
   setup(props, { emit }) {
     const store = useStore();
-    const confirm = useConfirm()
+    const { mdAndUp, lgAndUp, xlAndUp } = deviceBreakpoint()
+    // const confirm = useConfirm()
     const displayCreateGroup = ref(false);
     const newGroup = ref({});
-    const toast = useToast();
+    // const toast = useToast();
     const onDropDown = ref(false);
     const createGroupLoading = ref(false);
     const showSMS = ref(false);
@@ -211,12 +228,11 @@ export default {
       try {
         let { data } = await axios.post("/api/CreateGroup", newGroup.value);
         createGroupLoading.value = false;
-        toast.add({
-          severity: "success",
-          summary: "Success",
-          detail: "Group created successfully",
-          life: 4000,
-        });
+         ElMessage({
+                        type: 'success',
+                        message: 'Group created successfully',
+                        duration: 5000
+                      })
         displayCreateGroup.value = false;
         console.log(data);
       } catch (err) {
@@ -244,38 +260,43 @@ export default {
     };
 
     const confirmDelete = (id, index) => {
-      confirm.require({
-        message: "Do you want to delete this group?",
-        header: "Delete Confirmation",
-        icon: "pi pi-info-circle",
-        acceptClass: "confirm-delete",
-        rejectClass: "cancel-delete",
-        accept: () => {
-          try {
+             ElMessageBox.confirm(
+        "Are you sure you want to proceed? This operation can't be reversed " ,
+        'Confirm delete',
+        {
+          confirmButtonText: 'OK',
+          cancelButtonText: 'Cancel',
+          type: 'error',
+        }
+      )
+        try {
             groupsService.deleteGroup(id).then((res) => {
               console.log(res, "Delete Response");
               if (res !== false) {
                 groups.value.splice(index, 1);
                 store.dispatch("groups/getGroups");
-                toast.add({
-                  severity: "success",
-                  summary: "Deleted",
-                  detail: "Group was deleted",
-                  life: 3000,
-                });
+                ElMessage({
+                        type: 'success',
+                        message: 'Group was deleted',
+                        duration: 5000
+                      })
                 groupsService.removeGroupFromStore(id);
               }
             });
           } catch (error) {
+              ElMessage({
+              type: 'info',
+              message: 'Delete discarded',
+            })
             console.log(error);
           }
-        },
-        reject: () => {},
-      });
     };
 
     return {
       toggleItems,
+      mdAndUp, 
+      lgAndUp, 
+      xlAndUp,
       groupClick,
       checkForGroup,
       openCreateGroupModal,

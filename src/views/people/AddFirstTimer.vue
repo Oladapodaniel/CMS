@@ -14,26 +14,26 @@
           <el-form :model="firstTimersObj" ref="ruleForm" :rules="validateRules" style="width: 100%">
             <el-form-item>
               <div class="d-flex flex-column flex-lg-row justify-content-end w-100">
-                <label for="firstName" class="mr-3">Firstname<span style="color: red"> *</span></label>
+                <label for="firstName" class="mr-3 font-weight-600">Firstname<span style="color: red"> *</span></label>
                 <el-input type="text" class="input-width" v-model="firstTimersObj.firstName" placeholder="First name" />
               </div>
             </el-form-item>
             <el-form-item>
               <div class="d-flex flex-column flex-lg-row justify-content-end w-100">
-                <label for="firstName" class="mr-3">Surname</label>
+                <label for="firstName" class="mr-3 font-weight-600">Surname</label>
                 <el-input type="text" class="input-width" v-model="firstTimersObj.lastName" placeholder="Last name" />
               </div>
             </el-form-item>
             <el-form-item prop="phoneNumber" class="validate-phone">
               <div class="d-flex flex-column flex-lg-row justify-content-end w-100">
-                <label for="firstName" class="mr-3">Phone number</label>
+                <label for="firstName" class="mr-3 font-weight-600">Phone number</label>
                 <el-input type="text" ref="validatePhone" @blur="checkForDuplicatePhone" class="input-width"
                   v-model="firstTimersObj.phoneNumber" placeholder="Phone number" />
               </div>
             </el-form-item>
             <el-form-item prop="email" class="validate-email">
               <div class="d-flex flex-column flex-lg-row justify-content-end w-100">
-                <label for="firstName" class="mr-3">Email</label>
+                <label for="firstName" class="mr-3 font-weight-600">Email</label>
                 <el-input type="text" class="input-width" v-model="firstTimersObj.email" placeholder="Email" />
               </div>
             </el-form-item>
@@ -51,7 +51,7 @@
             </el-form-item>
             <el-form-item>
               <div class="d-flex flex-column flex-lg-row justify-content-end w-100">
-                <label for="firstName" class="mr-3">Event or service attended</label>
+                <label for="firstName" class="mr-3 font-weight-600">Event or service attended</label>
                 <div class="input-width">
                   <el-dropdown class="w-100" trigger="click">
                     <el-input class="w-100" placeholder="Search for events" v-model="selectedEventAttended.name" />
@@ -71,13 +71,13 @@
             </el-form-item>
             <el-form-item>
               <div class="d-flex flex-column flex-lg-row justify-content-end w-100">
-                <label for="firstName" class="mr-3">Address</label>
+                <label for="firstName" class="mr-3 font-weight-600">Address</label>
                 <el-input type="text" class="input-width" v-model="firstTimersObj.address" placeholder="Address" />
               </div>
             </el-form-item>
             <el-form-item>
               <div class="d-flex flex-column flex-lg-row justify-content-end w-100">
-                <div class="mr-3">Birthday</div>
+                <div class="mr-3 font-weight-600">Birthday</div>
                 <div class="input-width d-flex">
                   <el-select-v2 v-model="firstTimersObj.birthday" :options="day.map(i => ({ label: i, value: i }))"
                     placeholder="Day" size="large" class="w-100 mr-1" />
@@ -90,7 +90,7 @@
             </el-form-item>
             <el-form-item>
               <div class="d-flex flex-column flex-lg-row justify-content-end w-100">
-                <label for="firstName" class="mr-3">Person to follow-up</label>
+                <label for="firstName" class="mr-3 font-weight-600">Person to follow-up</label>
                 <div class="input-width">
                   <SearchMembers @memberdetail="setContact" :currentMember="firstTimersObj" />
                 </div>
@@ -98,7 +98,7 @@
             </el-form-item>
             <el-form-item>
               <div class="d-flex flex-column flex-lg-row justify-content-end w-100">
-                <label for="firstName" class="mr-3">Add to group</label>
+                <label for="firstName" class="mr-3 font-weight-600">Add to group</label>
                 <div class="input-width">
                   <div class="p-2 border add-group bg-white">
                     <div v-for="(item, index) in firstTimerInGroup" :key="index">
@@ -123,7 +123,7 @@
             </el-form-item>
             <el-form-item v-for="(item, index) in dynamicCustomFields" :key="index">
               <div class="d-flex flex-column flex-lg-row justify-content-end w-100">
-                <label for="occupation" class="mr-3">{{ item.label }}</label>
+                <label for="occupation" class="mr-3 font-weight-600">{{ item.label }}</label>
                 <div class="input-width d-flex" v-if="(item.controlType == 1)">
                   <el-select-v2 v-model="item.data"
                     :options="item.parameterValues.split(',').map(i => ({ label: i, value: i }))"
@@ -202,9 +202,9 @@
             <el-form-item>
               <div class="d-flex flex-column flex-lg-row justify-content-end w-100">
                 <div class="input-width">
-                  <div class="d-flex flex-column flex-sm-row justify-content-center">
-                    <el-button @click.prevent="onCancel" plain round>Cancel</el-button>
-                    <el-button @click.prevent="onSubmit" :loading="loading" class="my-3 my-sm-0 mx-0 mx-sm-2" plain
+                  <div class="d-flex flex-column">
+                    <el-button @click.prevent="onCancel" round>Cancel</el-button>
+                    <el-button @click.prevent="onSubmit" :loading="loading" class="my-3 mx-0"
                       round>Save and add another</el-button>
                     <el-button class="mx-0 mx-sm-2" color="#136acd" :loading="loadingtwo" @click.prevent="saveAndRoute"
                       round>Save</el-button>
