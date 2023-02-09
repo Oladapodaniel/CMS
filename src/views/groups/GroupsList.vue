@@ -1,8 +1,8 @@
 <template>
     <!-- <Treee :items="groups"/> -->
     <div :class="{ 'container-slim': lgAndUp || xlAndUp }">
-      <div class="container-fluid">
-        <div class="row d-md-flex yu mt-5">
+      <div class="container-fluid container-top">
+        <div class="row d-md-flex ">
           <!-- <smsComponent :groupData ="groupListDetails"/> -->
           <div class="col-md-6 col-4">
             <div class="head-text">Groups</div>
@@ -233,22 +233,67 @@
              <el-table
               :data="searchGroup"
               v-loading="loading"
-              style="width: 100%; margin-bottom: 20px"
-               border
-                lazy
-                :load="load"
-                :tree-props="{ children: searchGroup.children, hasChildren: 'hasChildren' }"
+              style="width: 100%; "
+              row-key="id"
+              lazy
+              border
+                :tree-props="{ children: 'children', hasChildren: 'hasChildren' }"
               >
-              <el-table-column  label="Group" >
+              <el-table-column width="371"  label="Group" >
                  <template #default="scope">
-                  <div  class="c-pointer">{{ scope.row.name}} </div>
+                  <div @click="groupClick(scope.row.id)"  class="c-pointer">{{ scope.row.name}} </div>
                 </template>
               </el-table-column>
-              <el-table-column  label="Membership Size">
+              <el-table-column width="371" label="Membership Size">
+                <template #default="scope">
+                  <div @click="groupClick(scope.row.id)"  class="c-pointer">{{ scope.row.peopleInGroupsCount}} </div>
+                </template>
               </el-table-column>
-              <el-table-column  label="Action" >
+              <el-table-column width="100"  label="Action" >
+                <template #default="scope">
+                  <div  class="c-pointer">
+                    <el-dropdown trigger="click">
+                      <el-icon>
+                        <MoreFilled />
+                      </el-icon>
+                      <template #dropdown>
+                        <el-dropdown-menu>
+                          <el-dropdown-item>
+                           <a
+                            @click="sendGroupSms(scope.row)"
+                            >Send SMS</a>
+                          </el-dropdown-item>
+                          <el-dropdown-item>
+                             <a class="" @click="sendGroupEmail(scope.row)">
+                                Send Email
+                             </a>
+                          </el-dropdown-item>
+                          <el-dropdown-item>
+                            <a
+                              class=""
+                              @click="confirmDelete(scope.row.id, index)"
+                              >Delete</a>
+                          </el-dropdown-item>
+                        </el-dropdown-menu>
+                      </template>
+                    </el-dropdown>
+                  </div>
+                </template>
               </el-table-column>
 
+                <!-- <el-table-column>
+                  <template #default="scope">
+                  <div class="d-none">
+                            <GroupTree
+                                :items="scope.row.children"
+                                v-if="scope.row.children"
+                              class="d-none"
+                              @click="groupClickk(scope.row, $event)"
+                              @group="setSelectedGroup"
+                                /> 
+                            </div> 
+                </template>
+                </el-table-column> -->
             </el-table>
           </div>
         </div>
