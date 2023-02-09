@@ -32,8 +32,11 @@
                           <input type="checkbox" name="all" id="all" @change="markAllItem"
                             :checked="marked.length === sentSMS.length" />
                         </div>
-                        <div class="col-md-6 d-flex align-items-center">
+                        <div class="col-md-4 d-flex align-items-center">
                           <span class="th">Message</span>
+                        </div>
+                        <div class="col-md-2 d-flex align-items-center">
+                          <span class="th">Date</span>
                         </div>
                         <div class="col-md-2">
                           <span class="th c-pointer" @click="sortByStatus">Status
@@ -65,7 +68,9 @@
                             marked.findIndex((i) => i.id === sms.id) >= 0
                           " />
                         </div>
-                        <div class="col-md-6 d-md-flex flex-column">
+                        <div class="col-md-4 d-flex justify-content-between">
+                          <span class="hidden-header font-weight-bold">MESSAGE:
+                          </span>
                           <router-link :to="{
                             name: 'SendMessage',
                             query: { messageId: sms.id },
@@ -89,13 +94,23 @@
                                     : ""
                               }}</span>
                             </el-tooltip>
+                          </router-link>
+                        </div>
+                        <div class="col-md-2 d-flex justify-content-between">
+                          <span class="hidden-header font-weight-bold">DATE:
+                          </span>
+                          <router-link :to="{
+                            name: 'SendMessage',
+                            query: { messageId: sms.id },
+                          }" class="text-decoration-none">
+                            
                             <span class="timestamp ml-1">{{
                               sms.dateSent
                             }}</span>
                           </router-link>
                         </div>
                         <div class="col-md-2 col-ms-12 d-flex justify-content-between">
-                          <span class="hidden-header font-weight-bold">Status:
+                          <span class="hidden-header font-weight-bold">STATUS:
                           </span>
                           <span class="small-text">{{
                             sms.report.filter((i) =>
