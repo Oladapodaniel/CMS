@@ -98,8 +98,8 @@
       </div>
        <el-table v-loading="paginatedTableLoading" ref="multipleTableRef" :data="searchMember" style="width: 100%"
         @selection-change="handleSelectionChange">
-        <el-table-column type="selection" />
-        <el-table-column label="PICTURE">
+        <el-table-column width="100" type="selection" />
+        <el-table-column width="100" label="PICTURE">
         <template #default="scope">
           <el-card shadow="hover" class="c-pointer person-image" v-if="scope.row.imageURL"
             style="border-radius: 50%; height: 26px; width: 26px;">
@@ -113,7 +113,7 @@
             </el-icon></el-avatar>
         </template>
       </el-table-column>
-      <el-table-column label="NAME">
+      <el-table-column width="200" label="NAME">
         <template #default="scope">
           <div @click="showMemberRow(scope.row)" class="c-pointer">{{ scope.row.firstName }} {{ scope.row.lastName }}</div>
         </template>
@@ -123,22 +123,22 @@
           <div @click="showMemberRow(scope.row)" class="c-pointer">{{ scope.row.lastName }}</div>
         </template>
       </el-table-column> -->
-      <el-table-column label="PHONE">
+      <el-table-column width="200" label="PHONE">
         <template #default="scope">
           <div @click="showMemberRow(scope.row)" class="c-pointer">{{ scope.row.phoneNumber }}</div>
         </template>
       </el-table-column>
-      <el-table-column label="SOURCE">
+      <el-table-column width="200" label="SOURCE">
         <template #default="scope">
           <div @click="showMemberRow(scope.row)" class="c-pointer">{{ scope.row.interestedInJoining}}</div>
         </template>
       </el-table-column>
-      <el-table-column label="INTERESTED">
+      <el-table-column width="200" label="INTERESTED">
         <template #default="scope">
           <div @click="showMemberRow(scope.row)" class="c-pointer">{{ scope.row.howDidYouAboutUsName.replaceAll(" ", "_") }}</div>
         </template>
       </el-table-column>
-      <el-table-column label="DATE">
+      <el-table-column width="200" label="DATE">
         <template #default="scope">
           <div @click="showMemberRow(scope.row)" class="c-pointer">{{ moment
                 .parseZone(
@@ -148,17 +148,17 @@
                 ._i.substr(4, 11).replaceAll(" ", "_") }}</div>
         </template>
       </el-table-column>
-      <el-table-column label="MOVEMENT">
+      <el-table-column width="200" label="MOVEMENT">
         <template #default="scope">
           <div @click="showMemberRow(scope.row)" class="c-pointer">{{ scope.row.movement }}</div>
         </template>
       </el-table-column>
-      <el-table-column label="INTERACTION">
+      <el-table-column width="200" label="INTERACTION">
         <template #default="scope">
           <div @click="showMemberRow(scope.row)" class="c-pointer">{{ scope.row.interactions }}</div>
         </template>
       </el-table-column>
-      <el-table-column label="ACTION">
+      <el-table-column width="100" label="ACTION">
         <template #default="scope">
             <div>
             <el-dropdown trigger="click">
