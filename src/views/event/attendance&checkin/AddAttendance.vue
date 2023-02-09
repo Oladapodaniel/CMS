@@ -1035,6 +1035,7 @@ import finish from "../../../services/progressbar/progress";
 import axio from "axios";
 import moment from "moment";
 import GroupTree from "../../groups/component/GroupTreeCheckboxParent.vue";
+import { ElMessage } from "element-plus";
 
 export default {
   components: { Dropdown, MultiSelect, CreateEventModal, GroupTree },
@@ -1388,22 +1389,34 @@ export default {
         attendanceCheID.value
       ) {
         selectedGroups.value
-          ? formData.append("groupIDs", selectedGroups.value)
+          ? formData.append("groupIDs", JSON.stringify(selectedGroups.value))
+          : "";
+        // selectedGroups.value
+        //   ? formData.append("groupIDs", selectedGroups.value)
+        //   : "";
+        attendanceCheID.value
+          ? formData.append("Id", attendanceCheID.value)
           : "";
         loadingsave.value = true;
         try {
           const res = await axios.put(
-            "/api/CheckInAttendance/UpdateCheckInAttendance",
-            checkinEvent2
+            "/api/CheckInAttendance/EditAttendanceCheckIn",
+            // "/api/CheckInAttendance/UpdateCheckInAttendance",
+            formData
           );
           console.log(res);
           store.dispatch("attendance/setItemData", res);
-          toast.add({
-            severity: "success",
-            summary: "Successful",
-            detail: "Attendance updated successfully",
-            life: 3000,
-          });
+          ElMessage({
+                        type: "success",
+                        message: res.data.response,
+                        duration: 5000
+                        });
+          // toast.add({
+          //   severity: "success",
+          //   summary: "Successful",
+          //   detail: "Attendance updated successfully",
+          //   life: 3000,
+          // });
           router.push({
             name: "CheckinType",
             query: {

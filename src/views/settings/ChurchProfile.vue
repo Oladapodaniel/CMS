@@ -316,12 +316,12 @@ export default {
           selectCountry.value = countries.value.find((i) => {
             return i.id === churchData.value.countryID;
           });
-          selectCountryID.value = selectCountry.value.id
+          selectCountryID.value = selectCountry.value ? selectCountry.value.id : selectCountry.value
 
         selectTime.value = TimeZone.timeZones.find(
           (i) => i.value == churchData.value.timeZone
         );
-         selectTimeID.value = selectTime.value.value
+         selectTimeID.value = selectTime.value ? selectTime.value.value : selectTime.value
 
         console.log(churchData.value);
       } catch (error) {
@@ -338,8 +338,8 @@ export default {
       formData.append("AKA", churchData.value.aka);
       formData.append("Address", churchData.value.address);
       formData.append("PhoneNumber", churchData.value.phoneNumber);
-      formData.append("CountryID", selectCountry.value.id);
-      formData.append("TimeZone", selectTime.value.value);
+      formData.append("CountryID", selectCountry.value ? selectCountry.value.id : "" );
+      formData.append("TimeZone", selectTime.value ? selectTime.value.value : "" );
       formData.append("WebsiteUrl", churchData.value.websiteUrl);
       formData.append("HeadPastorName", churchData.value.headPastorName);
       formData.append("HeadPastorEmail", churchData.value.headPastorEmail);

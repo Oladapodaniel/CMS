@@ -778,7 +778,6 @@ export default {
                 // }
                 try {
                     let res = await axios.post("/api/family/createFamily", family)
-                    console.log(res,"sdasds")
                     if(res.status === 200){
                         ElMessage({
                         type: "success",
@@ -794,12 +793,20 @@ export default {
                     router.push('/tenant/family')
                 }
                 catch (err) {
-                    console.log(err)
+                     ElMessage({
+                        type: "error",
+                        message: err.response.data.errors.FamilyName[0],
+                        duration: 5000
+                        });
                 }
             }   else {
                 try {
                     let res = await axios.put("/api/family/editProfile", updateProfile)
                     console.log(res)
+                     ElMessage({
+                        type: "success",
+                        message: "Family updated successfully",
+                        });
                     router.push('/tenant/family')
                 }
                 catch (err) {

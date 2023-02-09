@@ -5,25 +5,160 @@
         <div>
           <h2 class="head-text">Dashboard</h2>
         </div>
+        <el-dropdown trigger="click">
+          <el-button color="#136acd" class="header-btn w-100" round>
+            Create new <el-icon class="el-icon--right"><arrow-down /></el-icon>
+          </el-button>
+          <template #dropdown>
+            <el-dropdown-menu>
+              <el-dropdown-item v-for="(item, index) in createNew" :key="index" @click="router.push(item.to)">{{ item.name }}</el-dropdown-item>
+            </el-dropdown-menu>
+          </template>
+        </el-dropdown>
       </div>
-      <div class="row  mb-4">
+
+      <div class="row mb-4">
         <div class="col-12">
-          <div class="col-md-12 text-dark pb-2 pt-2  mb-2 day3" v-if="notifiedDays === 3 "> 
-            <div class=""> 3 days remaining before your subscription expires, kindly subscribe before 
-                  {{ moment.parseZone(new Date(getRenewalDate).toDateString(), "YYYY MM DD HH ZZ")._i.substr(4, 11) }}
+          <div class="col-md-12 text-dark py-3 mb-2 day3" v-if="notifiedDays === 10">
+            <div class="">
+              10 days remaining before your subscription expires, kindly
+              subscribe before
+              {{
+                moment
+                            .parseZone(
+                  new Date(getRenewalDate).toDateString(),
+                  "YYYY MM DD HH ZZ"
+                )
+                  ._i.substr(4, 11)
+              }}
             </div>
           </div>
-          <div class="col-md-12 text-dark pb-2 pt-2 mb-1 day2" v-if="notifiedDays === 2 ">
-            <div class=""> 2 days remaining before your subscription expires, kindly subscribe before 
-                {{ moment.parseZone(new Date(getRenewalDate).toDateString(), "YYYY MM DD HH ZZ")._i.substr(4, 11) }}
+          <div class="col-md-12 text-dark py-3 mb-2 day3" v-if="notifiedDays === 9">
+            <div class="">
+              9 days remaining before your subscription expires, kindly
+              subscribe before
+              {{
+                moment
+                            .parseZone(
+                  new Date(getRenewalDate).toDateString(),
+                  "YYYY MM DD HH ZZ"
+                )
+                  ._i.substr(4, 11)
+              }}
             </div>
           </div>
-          <div class="col-md-12 pb-2 pt-2 m-0  day1" v-if="notifiedDays === 1 ">
-            <div class=""> 1 days remaining before your subscription expires, kindly subscribe before 
-                {{ moment.parseZone(new Date(getRenewalDate).toDateString(), "YYYY MM DD HH ZZ")._i.substr(4, 11) }}
+          <div class="col-md-12 text-dark py-3 mb-2 day3" v-if="notifiedDays === 8">
+            <div class="">
+              8 days remaining before your subscription expires, kindly
+              subscribe before
+              {{
+                moment
+                            .parseZone(
+                  new Date(getRenewalDate).toDateString(),
+                  "YYYY MM DD HH ZZ"
+                )
+                  ._i.substr(4, 11)
+              }}
             </div>
           </div>
-        
+          <div class="col-md-12 text-dark py-3 mb-2 day3" v-if="notifiedDays === 7">
+            <div class="">
+              7 days remaining before your subscription expires, kindly
+              subscribe before
+              {{
+                moment
+                            .parseZone(
+                  new Date(getRenewalDate).toDateString(),
+                  "YYYY MM DD HH ZZ"
+                )
+                  ._i.substr(4, 11)
+              }}
+            </div>
+          </div>
+          <div class="col-md-12 py-3 mb-1 day2" v-if="notifiedDays === 6">
+            <div class="">
+              6 days remaining before your subscription expires, kindly
+              subscribe before
+              {{
+                moment
+                            .parseZone(
+                  new Date(getRenewalDate).toDateString(),
+                  "YYYY MM DD HH ZZ"
+                )
+                  ._i.substr(4, 11)
+              }}
+            </div>
+          </div>
+          <div class="col-md-12 py-3 mb-1 day2" v-if="notifiedDays === 5">
+            <div class="">
+              5 days remaining before your subscription expires, kindly
+              subscribe before
+              {{
+                moment
+                            .parseZone(
+                  new Date(getRenewalDate).toDateString(),
+                  "YYYY MM DD HH ZZ"
+                )
+                  ._i.substr(4, 11)
+              }}
+            </div>
+          </div>
+          <div class="col-md-12 py-3 mb-1 day1" v-if="notifiedDays === 4">
+            <div class="">
+              4 days remaining before your subscription expires, kindly
+              subscribe before
+              {{
+                moment
+                            .parseZone(
+                  new Date(getRenewalDate).toDateString(),
+                  "YYYY MM DD HH ZZ"
+                )
+                  ._i.substr(4, 11)
+              }}
+            </div>
+          </div>
+          <div class="col-md-12 py-3 mb-1 day1" v-if="notifiedDays === 3">
+            <div class="">
+              3 days remaining before your subscription expires, kindly
+              subscribe before
+              {{
+                moment
+                            .parseZone(
+                  new Date(getRenewalDate).toDateString(),
+                  "YYYY MM DD HH ZZ"
+                )
+                  ._i.substr(4, 11)
+              }}
+            </div>
+          </div>
+          <div class="col-md-12 py-3 mb-1 day1" v-if="notifiedDays === 2">
+            <div class="">
+              2 days remaining before your subscription expires, kindly
+              subscribe before
+              {{
+                moment
+                            .parseZone(
+                  new Date(getRenewalDate).toDateString(),
+                  "YYYY MM DD HH ZZ"
+                )
+                  ._i.substr(4, 11)
+              }}
+            </div>
+          </div>
+          <div class="col-md-12 py-3 m-0 day1" v-if="notifiedDays === 1">
+            <div class="mt-0">
+              1 days remaining before your subscription expires, kindly
+              subscribe before
+              {{
+                moment
+                            .parseZone(
+                  new Date(getRenewalDate).toDateString(),
+                  "YYYY MM DD HH ZZ"
+                )
+                  ._i.substr(4, 11)
+              }}
+            </div>
+          </div>
         </div>
       </div>
       <div class="d-flex justify-content-between flex-column flex-md-row  px-0">
@@ -35,7 +170,8 @@
               <router-link to="/tenant/people/add">Add Member</router-link>
               <router-link to="/tenant/sms/compose">Send SMS</router-link>
               <router-link to="/tenant/people/addfirsttimer">Add First Timer</router-link>
-              <router-link to="" v-if="false">Add Follow-up</router-link>
+              <router-link to="/tenant/addoffering">Record Offering</router-link>
+              <router-link to="/tenant/transactionlist">Record Expense</router-link>
             </div>
           </div>
         </div>
@@ -67,7 +203,8 @@
               </el-tooltip>
               <router-link :to="{ name: 'Subscription' }" class="mt-1 no-decoration">
                 <el-button :color="!buttonTextCheck.color ? '#136acd' : ''" class="mt-2" style="height: 25px"
-                  :class="[buttonTextCheck.color, { 'bg-warning': calculatedPercentage >= 90 }]" round>
+                  :class="[buttonTextCheck.color, { 'bg-warning': calculatedPercentage >= 90, 'border-0  bg-danger': notifiedDays <= 4 }]"
+                  round>
                   <p class="mb-0 small" :class="[buttonTextCheck.color]">{{ buttonTextCheck.text }}</p>
                 </el-button>
               </router-link>
@@ -156,78 +293,77 @@
                   <p>Celebrations</p>
                 </div>
               </div>
-              
-              <el-table :data="tenantInfoCeleb"
-                style="width: 100%">
+
+              <el-table :data="tenantInfoCeleb" style="width: 100%">
                 <el-table-column label="NAME">
-                <template #default="scope">
-                  <div>
-                    <img src="../../assets/people/avatar-male.png" alt="" class="celeb-img" />
-                    <span class="ml-3">{{ scope.row.name }}</span>
-                    <div class="celeb-badge-desc celeb-badge"
-                      v-if="scope.row.dayOfCelebration.toString().toLowerCase().includes('today')"></div>
-                  </div>
-                </template>
-              </el-table-column>
+                  <template #default="scope">
+                    <div>
+                      <img src="../../assets/people/avatar-male.png" alt="" class="celeb-img" />
+                      <span class="ml-3">{{ scope.row.name }}</span>
+                      <div class="celeb-badge-desc celeb-badge"
+                        v-if="scope.row.dayOfCelebration.toString().toLowerCase().includes('today')"></div>
+                    </div>
+                  </template>
+                </el-table-column>
                 <el-table-column label="DATE">
-                <template #default="scope">
-                  <div>
-                    {{ dateFormat(scope.row.date) }}
-                  </div>
-                </template>
-              </el-table-column>
+                  <template #default="scope">
+                    <div>
+                      {{ dateFormat(scope.row.date) }}
+                    </div>
+                  </template>
+                </el-table-column>
                 <el-table-column label="DAY">
-                <template #default="scope">
-                  <div>
-                    {{ scope.row.dayOfCelebration }}
-                  </div>
-                </template>
-              </el-table-column>
+                  <template #default="scope">
+                    <div>
+                      {{ scope.row.dayOfCelebration }}
+                    </div>
+                  </template>
+                </el-table-column>
                 <el-table-column label="TYPE">
-                <template #default="scope">
-                  <div>
-                    {{ scope.row.celebration }}
-                  </div>
-                </template>
-              </el-table-column>
+                  <template #default="scope">
+                    <div>
+                      {{ scope.row.celebration }}
+                    </div>
+                  </template>
+                </el-table-column>
                 <el-table-column label="PHONE">
-                <template #default="scope">
-                  <div>
-                    {{ scope.row.phone }}
-                  </div>
-                </template>
-              </el-table-column>
-              <el-table-column label="ACTION">
-        <template #default="scope">
-          <div>
-            <el-dropdown trigger="click">
-              <el-icon>
-                <MoreFilled />
-              </el-icon>
-              <template #dropdown>
-                <el-dropdown-menu>
-                  <el-dropdown-item>
-                    <router-link :to="
-                      scope.row.phone
-                        ? `/tenant/sms/compose?phone=${scope.row.phone}`
-                        : ''
-                    " :class="{ 'fade-text': !scope.row.phone, 'text-color': scope.row.phone }">Send
-                      SMS</router-link>
-                  </el-dropdown-item>
-                  <el-dropdown-item>
-                    <router-link :to="
-                      scope.row.email
-                        ? `/tenant/email/compose?phone=${scope.row.email}`
-                        : ''
-                    " :class="{ 'fade-text': !scope.row.email, 'text-color': scope.row.email }">Send
-                      Email</router-link>
-                  </el-dropdown-item>
-                </el-dropdown-menu>
-              </template>
-            </el-dropdown>
-          </div>
-        </template>
-      </el-table-column>
+                  <template #default="scope">
+                    <div>
+                      {{ scope.row.phone }}
+                    </div>
+                  </template>
+                </el-table-column>
+                <el-table-column label="ACTION">
+                  <template #default="scope">
+                    <div>
+                      <el-dropdown trigger="click">
+                        <el-icon>
+                          <MoreFilled />
+                        </el-icon>
+                        <template #dropdown>
+                          <el-dropdown-menu>
+                            <el-dropdown-item>
+                              <router-link :to="
+                                scope.row.phone
+                                  ? `/tenant/sms/compose?phone=${scope.row.phone}`
+                                  : ''
+                              " :class="{ 'fade-text': !scope.row.phone, 'text-color': scope.row.phone }">Send
+                                SMS</router-link>
+                            </el-dropdown-item>
+                            <el-dropdown-item>
+                              <router-link :to="
+                                scope.row.email
+                                  ? `/tenant/email/compose?phone=${scope.row.email}`
+                                  : ''
+                              " :class="{ 'fade-text': !scope.row.email, 'text-color': scope.row.email }">Send
+                                Email</router-link>
+                            </el-dropdown-item>
+                          </el-dropdown-menu>
+                        </template>
+                      </el-dropdown>
+                    </div>
+                  </template>
+                </el-table-column>
               </el-table>
             </div>
             <div v-show="
@@ -465,6 +601,15 @@ export default {
       { text: "PHONE", value: "phone" },
     ]);
 
+    const createNew = ref([
+      { name: 'Member', to: '/tenant/people/add' },
+      { name: 'First timer', to: '/tenant/people/addfirsttimer' },
+      { name: 'Event', to: '/tenant/event' },
+      { name: 'Attendance and registration', to: '/tenant/attendancecheckin/add' },
+      { name: 'Social media post', to: '/tenant/social/post' },
+      { name: 'Mobile app post', to: '/tenant/social/post' },
+    ])
+
     const series = computed(() => {
       if (attendanceSeries.value === "weekly") return xAxis.value;
       return monthXaxis.value;
@@ -643,15 +788,14 @@ export default {
 
     const useSubscriptionResponse = ref([]);
     const getRenewalDate = ref("");
-    const countDownDate = () =>{
-                    // Set the date we're counting down to
-          let countDownDates = new Date(getRenewalDate.value).getTime();
-            // Get today's date and time
-            let now = new Date().getTime();
-            // Find the distance between now and the count down date
-            let distance = countDownDates - now;
-           notifiedDays.value = Math.floor(distance / (1000 * 60 * 60 * 24));
-           console.log(notifiedDays.value, "jkjsjkj")
+    const countDownDate = () => {
+      // Set the date we're counting down to
+      let countDownDates = new Date(getRenewalDate.value).getTime();
+      // Get today's date and time
+      let now = new Date().getTime();
+      // Find the distance between now and the count down date
+      let distance = countDownDates - now;
+      notifiedDays.value = Math.floor(distance / (1000 * 60 * 60 * 24));
     }
 
     useSubscription.getPlan().then((res) => {
@@ -758,32 +902,38 @@ export default {
       lgAndUp,
       xlAndUp,
       celebHeaders,
-      dashboardLoading
+      dashboardLoading,
+      createNew,
+      router
     };
   },
 };
 </script>
 
 <style scoped>
-
-.day3{
+.day3 {
   background-color: #ECF4FF;
-  border-left:solid #136acd 5px;
-   border-top-left-radius: 5px 5px;
-   border-bottom-left-radius: 5px 5px;
-}
-.day2{
-  background-color: rgb(246, 246, 195);
-  border-left: solid yellow 5px;
-   border-top-left-radius: 5px 5px;
-   border-bottom-left-radius: 5px 5px;
-}
-.day1{
-  background-color: #FEF8F8;
-  color: #e09579;
-  border-left:solid #B3282D 5px;
+  border-left: solid #136acd 5px;
   border-top-left-radius: 5px 5px;
   border-bottom-left-radius: 5px 5px;
+  font-weight: 700;
+}
+
+.day2 {
+  background-color: rgb(246, 246, 195);
+  border-left: solid yellow 5px;
+  border-top-left-radius: 5px 5px;
+  border-bottom-left-radius: 5px 5px;
+  font-weight: 700;
+}
+
+.day1 {
+  background-color: #FEF8F8;
+  color: #e09579;
+  border-left: solid #B3282D 5px;
+  border-top-left-radius: 5px 5px;
+  border-bottom-left-radius: 5px 5px;
+  font-weight: 700;
 }
 
 .renew-btn-color {
@@ -895,7 +1045,7 @@ export default {
 }
 
 .can-do-links a {
-  margin-top: 20px;
+  margin-top: 10px;
   text-decoration: none;
   color: #2b6ecd;
   font-weight: 700;
@@ -946,25 +1096,29 @@ export default {
   border-radius: 28px;
   margin-top: 80px;
 }
-.day3{
+
+.day3 {
   background-color: #ECF4FF;
-  border-left:solid #136acd 5px;
-   border-top-left-radius: 5px 5px;
-   border-bottom-left-radius: 5px 5px;
-}
-.day2{
-  background-color: rgb(243, 243, 217);
-  border-left:solid rgb(228, 228, 42) 5px;
-   border-top-left-radius: 5px 5px;
-   border-bottom-left-radius: 5px 5px;
-}
-.day1{
-  background-color: #FEF8F8;
-  color: #e09579;
-  border-left:solid #B3282D 5px;
+  border-left: solid #136acd 5px;
   border-top-left-radius: 5px 5px;
   border-bottom-left-radius: 5px 5px;
 }
+
+.day2 {
+  background-color: rgb(243, 243, 217);
+  border-left: solid rgb(228, 228, 42) 5px;
+  border-top-left-radius: 5px 5px;
+  border-bottom-left-radius: 5px 5px;
+}
+
+.day1 {
+  background-color: #FEF8F8;
+  color: #e09579;
+  border-left: solid #B3282D 5px;
+  border-top-left-radius: 5px 5px;
+  border-bottom-left-radius: 5px 5px;
+}
+
 .pie-con {
   margin: 24px 0;
 }
@@ -1145,21 +1299,15 @@ tbody tr:nth-child(even) {
   .can-do-links {
     display: flex;
     flex-direction: column;
-    
+
   }
 }
 
-@media (max-width: 305px) {
-  
-}
+@media (max-width: 305px) {}
 
-@media (min-width: 509px) and (max-width: 515px) {
-  
-}
+@media (min-width: 509px) and (max-width: 515px) {}
 
-@media (min-width: 516px) and (max-width: 576px) {
-  
-}
+@media (min-width: 516px) and (max-width: 576px) {}
 
 .view-report {
   font: normal normal 800 16px/22px Nunito Sans;
@@ -1215,13 +1363,9 @@ tbody tr:nth-child(even) {
   }
 }
 
-@media (min-width: 1101px) and (max-width: 1231px) {
-  
-}
+@media (min-width: 1101px) and (max-width: 1231px) {}
 
-@media screen and (min-width: 1300px) {
- 
-}
+@media screen and (min-width: 1300px) {}
 
 @media (max-width: 556px) {
   .can-do-links {
@@ -1270,15 +1414,15 @@ tbody tr:nth-child(even) {
 }
 
 @media screen and (max-width: 360px) {
-  /* .box {
-    width: 100%;
-  } */
-
   .number-boxes {
     flex-direction: column;
     /* width: 70%; */
     align-self: center;
     margin-top: 10px;
+  }
+
+  .create-btn-div {
+    flex-direction: column;
   }
 
 }

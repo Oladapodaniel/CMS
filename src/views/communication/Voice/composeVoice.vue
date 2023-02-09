@@ -6,7 +6,7 @@
           <h4 class="font-weight-bold text-center text-md-left">
             Upload voice file
           </h4>
-          <Toast />
+          <!-- <Toast /> -->
           <el-dialog
             title="Select Date and Time"
             v-model="display"
@@ -690,7 +690,6 @@ import composeService from "../../../services/communication/composer";
 import composerObj from "../../../services/communication/composer";
 import { useRoute } from "vue-router";
 import { useRouter } from "vue-router";
-import { useToast } from "primevue/usetoast";
 import store from "../../../store/store";
 import axios from "@/gateway/backendapi";
 import stopProgressBar from "../../../services/progressbar/progress";
@@ -706,7 +705,6 @@ import moment from "moment";
 export default {
   components: {},
   setup() {
-    const toast = useToast();
     const router = useRouter();
     const editorData = ref("");
     const disableBtn = ref(false);
@@ -1050,7 +1048,7 @@ export default {
         .catch((err) => {
           stopProgressBar();
           disableBtn.value = false;
-          toast.removeAllGroups();
+          // toast.removeAllGroups();
           console.log(err);
           if (err.toString().toLowerCase().includes("network error")) {
             ElMessage({

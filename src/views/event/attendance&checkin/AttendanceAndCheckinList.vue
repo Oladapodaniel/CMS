@@ -357,7 +357,7 @@
                               >Checkin</router-link
                             >
                           </a>
-                          <a class="dropdown-item">
+                          <!-- <a class="dropdown-item">
                             <router-link
                               class="text-decoration-none text-dark"
                               :to="{
@@ -368,7 +368,7 @@
                               }"
                               >Edit</router-link
                             >
-                          </a>
+                          </a> -->
                           <a
                             class="dropdown-item elipsis-items"
                             href="#"
