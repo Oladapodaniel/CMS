@@ -31,17 +31,33 @@
         <div class="font-weight-700" v-if="route.query.actionType == 'sendemail'">Choose the group you want to send email to.</div>
 
         <!-- tosin working on tables -->
-        <div class="row table">
+       
+        <div class="row table ">
           <div class="col-12 px-0" id="table">
             <div class="top-con" id="ignore2">
-              <div class="table-top">
-                <div class="col-4">
+              <div class="">
+                 <div class="table-top p-3 mt-5">
+          <div class="col-md-5">
+            <el-input size="small" v-model="searchText" placeholder="Search..."
+                  @keyup.enter.prevent="searchGroupInDB" class="input-with-select">
+                  <template #append>
+                    <el-button @click.prevent="searchGroupInDB">
+                      <el-icon :size="13">
+                        <Search />
+                      </el-icon>
+                    </el-button>
+                  </template>
+                </el-input>
+          </div>
+          
+        </div>
+                <!-- <div class="col-4">
                   <p @click="toggleSearch" class="search-text w-100 mt-2 d-flex justify-content-center">
                     <i class="pi pi-search"></i>SEARCH
                   </p>
-                </div>
+                </div> -->
 
-                <div class="search d-flex ml-2 mr-3"
+                <!-- <div class="search d-flex ml-2 mr-3"
                 >
                   <label
                     class="label-search d-flex"
@@ -64,7 +80,7 @@
                       <i class="pi pi-search"></i>
                     </span>
                   </label>
-                </div>
+                </div> -->
               </div>
             </div>
 
@@ -439,6 +455,18 @@ export default {
         return groups.value;
       }
     });
+    const searchGroupInDB = () => {
+      if (searchText.value !== "" && groups.value.length > 0) {
+        return groups.value.filter((i) => {
+          if (i.name)
+            return i.name
+              .toLowerCase()
+              .includes(searchText.value.toLowerCase());
+        });
+      } else {
+        return groups.value;
+      }
+    }
     const removeSearchText = () => {
       searchText.value = "";
     };
@@ -534,6 +562,7 @@ export default {
 
     return {
       groupClick,
+      searchGroupInDB,
       mdAndUp,
       lgAndUp,
       xlAndUp,
@@ -709,6 +738,9 @@ export default {
 .table-top {
   font-weight: 800;
   font-size: 12px;
+  background: #fff;
+  /* border: 1px solid #E0E0E0; */
+  /* border-bottom: none; */
   display: flex;
   justify-content: flex-end;
 }
