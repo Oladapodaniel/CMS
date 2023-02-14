@@ -169,86 +169,76 @@
       </div>
     </div>
 
-    <el-table v-loading="paginatedTableLoading" ref="multipleTableRef" :data="searchMember" style="width: 100%"
-      @selection-change="handleSelectionChange">
-      <el-table-column type="selection" />
-      <el-table-column label="PICTURE">
-        <template #default="scope">
-          <el-card shadow="hover" class="c-pointer person-image" v-if="scope.row.pictureUrl"
-            style="border-radius: 50%; height: 26px; width: 26px;">
-            <el-tooltip class="box-item" effect="dark" content="Click to view" placement="top-start">
-              <img :src="scope.row.pictureUrl" alt="" @click="(selectedImage = scope.row), (imageDialog = true)"
-                style="border-radius: 50%; height: 26px; width: 26px; object-fit: cover" />
-            </el-tooltip>
-          </el-card>
-          <el-avatar :size="25" v-else><el-icon color="#000000">
-              <UserFilled />
-            </el-icon></el-avatar>
-        </template>
-      </el-table-column>
-      <el-table-column label="FIRSTNAME">
-        <template #default="scope">
-          <div @click="showMemberRow(scope.row)" class="c-pointer">{{ scope.row.firstName }}</div>
-        </template>
-      </el-table-column>
-      <el-table-column label="LASTNAME">
-        <template #default="scope">
-          <div @click="showMemberRow(scope.row)" class="c-pointer">{{ scope.row.lastName }}</div>
-        </template>
-      </el-table-column>
-      <el-table-column label="PHONE">
-        <template #default="scope">
-          <div @click="showMemberRow(scope.row)" class="c-pointer">{{ scope.row.mobilePhone }}</div>
-        </template>
-      </el-table-column>
-      <el-table-column label="ACTION">
-        <template #default="scope">
-          <div>
-            <el-dropdown trigger="click">
-              <el-icon>
-                <MoreFilled />
-              </el-icon>
-              <template #dropdown>
-                <el-dropdown-menu>
-                  <el-dropdown-item>
-                    <router-link :to="
-                      scope.row.mobilePhone
-                        ? `/tenant/sms/compose?phone=${scope.row.mobilePhone}`
-                        : ''
-                    " :class="{ 'fade-text': !scope.row.mobilePhone, 'text-color': scope.row.mobilePhone }">Send
-                      SMS</router-link>
-                  </el-dropdown-item>
-                  <el-dropdown-item>
-                    <router-link :to="
-                      scope.row.email
-                        ? `/tenant/email/compose?phone=${scope.row.email}`
-                        : ''
-                    " :class="{ 'fade-text': !scope.row.email, 'text-color': scope.row.email }">Send
-                      Email</router-link>
-                  </el-dropdown-item>
-                  <el-dropdown-item @click="archive(scope.row.id, 'single')">
-                    <div class="text-color">Archive</div>
-                  </el-dropdown-item>
-                  <el-dropdown-item>
-                    <router-link :to="`/tenant/firsttimermanagement/${scope.row.id}?memberType=1`" class="text-color">
-                      Follow Up
-                    </router-link>
-                  </el-dropdown-item>
-                  <el-dropdown-item><router-link :to="`/tenant/people/add/${scope.row.id}`"
-                      class="text-color">Edit</router-link></el-dropdown-item>
-                  <el-dropdown-item>
-                    <div @click.prevent="showConfirmModal(scope.row.id, index)" class="text-color">Delete</div>
-                  </el-dropdown-item>
-                </el-dropdown-menu>
-              </template>
-            </el-dropdown>
-          </div>
-        </template>
-      </el-table-column>
-    </el-table>
+    <Table :data="searchMember" :headers="memberHeaders" :checkMultipleItem="true" @checkedrow="handleSelectionChange"
+      v-loading="paginatedTableLoading">
+      <template #pictureUrl="{ item }">
+        <el-card shadow="hover" class="c-pointer person-image" v-if="item.pictureUrl"
+          style="border-radius: 50%; height: 26px; width: 26px;">
+          <el-tooltip class="box-item" effect="dark" content="Click to view" placement="top-start">
+            <img :src="item.pictureUrl" alt="" @click="(selectedImage = item), (imageDialog = true)"
+              style="border-radius: 50%; height: 26px; width: 26px; object-fit: cover" />
+          </el-tooltip>
+        </el-card>
+        <el-avatar :size="25" v-else><el-icon color="#000000">
+            <UserFilled />
+          </el-icon>
+        </el-avatar>
+      </template>
+      <template v-slot:firstName="{ item }">
+        <div>{{ item.firstName }}</div>
+      </template>
+      <template v-slot:lastName="{ item }">
+        <div>{{ item.lastName }}</div>
+      </template>
+      <template v-slot:mobilePhone="{ item }">
+        <div>{{ item.mobilePhone }}</div>
+      </template>
+      <template v-slot:action="{ item }">
+        <div>
+          <el-dropdown trigger="click">
+            <el-icon>
+              <MoreFilled />
+            </el-icon>
+            <template #dropdown>
+              <el-dropdown-menu>
+                <el-dropdown-item>
+                  <router-link :to="
+                    item.mobilePhone
+                      ? `/tenant/sms/compose?phone=${item.mobilePhone}`
+                      : ''
+                  " :class="{ 'fade-text': !item.mobilePhone, 'text-color': item.mobilePhone }">Send
+                    SMS</router-link>
+                </el-dropdown-item>
+                <el-dropdown-item>
+                  <router-link :to="
+                    item.email
+                      ? `/tenant/email/compose?phone=${item.email}`
+                      : ''
+                  " :class="{ 'fade-text': !item.email, 'text-color': item.email }">Send
+                    Email</router-link>
+                </el-dropdown-item>
+                <el-dropdown-item @click="archive(item.id, 'single')">
+                  <div class="text-color">Archive</div>
+                </el-dropdown-item>
+                <el-dropdown-item>
+                  <router-link :to="`/tenant/firsttimermanagement/${item.id}?memberType=1`" class="text-color">
+                    Follow Up
+                  </router-link>
+                </el-dropdown-item>
+                <el-dropdown-item><router-link :to="`/tenant/people/add/${item.id}`"
+                    class="text-color">Edit</router-link></el-dropdown-item>
+                <el-dropdown-item>
+                  <div @click.prevent="showConfirmModal(item.id, index)" class="text-color">Delete</div>
+                </el-dropdown-item>
+              </el-dropdown-menu>
+            </template>
+          </el-dropdown>
+        </div>
+      </template>
+    </Table>
     <div class="d-flex justify-content-end my-3">
       <el-pagination v-model:current-page="serverOptions.page" v-model:page-size="serverOptions.rowsPerPage" background
-        layout="total, sizes, prev, pager, next, jumper" :total="serverItemsLength" @size-change="handleSizeChange"
+        layout="total, prev, pager, next, jumper" :total="serverItemsLength" @size-change="handleSizeChange"
         @current-change="handleCurrentChange" />
 
     </div>
@@ -336,6 +326,7 @@ import SideBar from "../groups/sidemodal/SideModal.vue";
 import deviceBreakpoint from "../../mixins/deviceBreakpoint";
 import { ElMessage, ElMessageBox } from 'element-plus'
 import router from "../../router/index"
+import Table from "@/components/table/Table"
 
 export default {
   props: ["list", "peopleCount"],
@@ -344,7 +335,8 @@ export default {
     ByMaritalStatusChart,
     smsComponent,
     emailComponent,
-    SideBar
+    SideBar,
+    Table
   },
 
   setup(props) {
@@ -367,11 +359,11 @@ export default {
     const displayPositionArchive = ref(false);
     const filtered = ref(false);
     const memberHeaders = ref([
-      { text: 'PICTURE', value: 'pictureUrl' },
-      { text: 'FIRSTNAME', value: 'firstName' },
-      { text: 'LASTNAME', value: 'lastName' },
-      { text: 'PHONE', value: 'mobilePhone' },
-      { text: 'Action', value: 'action' },
+      { name: 'PICTURE', value: 'pictureUrl' },
+      { name: 'FIRSTNAME', value: 'firstName' },
+      { name: 'LASTNAME', value: 'lastName' },
+      { name: 'PHONE', value: 'mobilePhone' },
+      { name: 'ACTION', value: 'action' },
     ])
     const serverItemsLength = ref(0);
     const serverOptions = ref({
@@ -1044,6 +1036,7 @@ export default {
   font-weight: 800;
   font-size: 12px;
   background: #fff;
+  border: 1px solid #d4dde3;
   border-bottom: none;
 }
 
@@ -1052,6 +1045,8 @@ export default {
   overflow: hidden;
   transition: all 0.5s ease-in-out;
   background: #ffffff;
+  border-left: 1px solid #d4dde3;
+  border-right: 1px solid #d4dde3;
 }
 
 .filter-options-shown {
