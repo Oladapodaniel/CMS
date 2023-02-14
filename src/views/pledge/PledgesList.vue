@@ -42,9 +42,6 @@
             <h3 class="font-weight-700 mt-3">
               {{ Math.abs(pledgesSummary.totalPledges).toLocaleString() }}.00 <span class="text-secondary small">NGN</span>
             </h3>
-            <!-- <div class="small text-secondary">
-              Last updated on July 9, 2022 at 1:07PM GMT+1
-            </div> -->
           </div>
           <div class="col-md-3 mt-3 mt-md-0">
             <div class="font-weight-bold small text-secondary">
