@@ -2,28 +2,28 @@
   <!-- <Treee :items="groups"/> -->
   <div :class="{ 'container-slim': lgAndUp || xlAndUp }">
     <div class="container-fluid container-top">
-      <div class="row d-md-flex">
-        <!-- <smsComponent :groupData ="groupListDetails"/> -->
-        <div class="col-md-6 col-4">
-          <div class="head-text">Groups</div>
-        </div>
-        <div
-          class="col-md-6 col-8 d-flex justify-content-end mt-2 my-1 link"
-          v-if="!groupLeader"
-        >
+      <div
+        class="row d-flex flex-column flex-sm-row justify-content-sm-between"
+      >
+        <div class="head-text">Groups</div>
+
+        <div class="mt-2 my-1 link" v-if="!groupLeader">
           <router-link
             to="/tenant/createpeoplegroup"
             class="
               grey-border
-              primary-btn
+              header-btn
               default-btn
               primary-bg
+              text-white
               border-0
               small-screen
             "
             >Add New Group</router-link
           >
         </div>
+      </div>
+      <div class="row">
         <div class="col-md-12 px-0">
           <hr class="hr my-3" />
         </div>
@@ -45,29 +45,30 @@
       <!-- tosin working on tables -->
 
       <div class="row">
-        <div class="col-12  px-0" id="table">
+        <div class="col-12 px-0" id="table">
           <div class="top-con" id="ignore2">
-              <div class="table-top p-3  mt-5">
-                <div class="col-md-5">
-                  <el-input
-                    size="small"
-                    v-model="searchText"
-                    placeholder="Search..."
-                    @keyup.enter.prevent="searchGroupInDB"
-                    class="input-with-select"
-                  >
-                    <template #append>
-                      <el-button @click.prevent="searchGroupInDB">
-                        <el-icon :size="13">
-                          <Search />
-                        </el-icon>
-                      </el-button>
-                    </template>
-                  </el-input>
-                </div>
+            <div class="table-top p-3 mt-5">
+              <div class="col-md-5">
+                <el-input
+                  size="small"
+                  v-model="searchText"
+                  placeholder="Search..."
+                  @keyup.enter.prevent="searchGroupInDB"
+                  class="input-with-select"
+                >
+                  <template #append>
+                    <el-button @click.prevent="searchGroupInDB">
+                      <el-icon :size="13">
+                        <Search />
+                      </el-icon>
+                    </el-button>
+                  </template>
+                </el-input>
               </div>
+            </div>
           </div>
-          <el-table
+          <div class="screensize">
+            <el-table
             :data="searchGroup"
             v-loading="loading"
             class="groupTree"
@@ -76,7 +77,6 @@
             lazy
             :tree-props="{ children: 'children', hasChildren: 'hasChildren' }"
           >
-          
             <el-table-column width="40%" label="Group">
               <template #default="scope">
                 <div @click="groupClick(scope.row.id)" class="c-pointer">
@@ -136,6 +136,7 @@
                 </template>
                 </el-table-column> -->
           </el-table>
+          </div>
         </div>
       </div>
     </div>
@@ -462,6 +463,12 @@ export default {
 
 .link a:hover {
   color: #fff;
+}
+@media screen and (max-width: 600px) {
+  .screensize{
+    width: 500px;
+    overflow-x: scroll;
+  }
 }
 @media screen and (min-width: 580px) {
   .hidden-header {
