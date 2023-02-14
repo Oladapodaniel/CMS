@@ -516,7 +516,7 @@ const routes = [
                         title: 'Church - Branch Members',
                     },
                     component: () =>
-                        import( /* webpackChunkName: "peopleempty" */ '../views/branch/subpages/People.vue')
+                        import( /* webpackChunkName: "branchmembers" */ '../views/branch/subpages/People.vue')
 
                 },
                 {
@@ -526,7 +526,7 @@ const routes = [
                         title: 'Church - Branch Transactions',
                     },
                     component: () =>
-                        import( /* webpackChunkName: "peopleempty" */ '../views/branch/subpages/BranchTransactions.vue')
+                        import( /* webpackChunkName: "branchtransactions" */ '../views/branch/subpages/BranchTransactions.vue')
 
                 },
                 {
@@ -536,7 +536,7 @@ const routes = [
                         title: 'Church - Branch Attendance',
                     },
                     component: () =>
-                        import( /* webpackChunkName: "peopleempty" */ '../views/branch/subpages/BranchAttendance.vue')
+                        import( /* webpackChunkName: "branchattendance" */ '../views/branch/subpages/BranchAttendance.vue')
 
                 },
                 {
@@ -546,7 +546,7 @@ const routes = [
                         title: 'Church - Members',
                     },
                     component: () =>
-                        import( /* webpackChunkName: "peopleempty" */ '../views/branch/report/BranchReport.vue')
+                        import( /* webpackChunkName: "branchreport" */ '../views/branch/report/BranchReport.vue')
 
                 },
                 // {
@@ -1570,7 +1570,7 @@ const routes = [
                         title: 'Churchplus - Pledge',
                     },
                     component: () =>
-                        import( /* webpackChunkName: "peopleempty" */ '../views/pledge/PledgeDefinition.vue')
+                        import( /* webpackChunkName: "pledgedefinition" */ '../views/pledge/PledgeDefinition.vue')
                 },
                 {
                     path: 'pledgeslist',
@@ -1578,7 +1578,7 @@ const routes = [
                         title: 'Churchplus - Pledge',
                     },
                     component: () =>
-                        import( /* webpackChunkName: "peopleempty" */ '../views/pledge/PledgesList.vue')
+                        import( /* webpackChunkName: "pledgeslist" */ '../views/pledge/PledgesList.vue')
                 },
                 {
                     path: 'pledgedefinitionlist',
@@ -1587,7 +1587,7 @@ const routes = [
                         title: 'Churchplus - Pledge',
                     },
                     component: () =>
-                        import( /* webpackChunkName: "peopleempty" */ '../views/pledge/PledgeDefinitionList.vue')
+                        import( /* webpackChunkName: "pledgedefinitionlist" */ '../views/pledge/PledgeDefinitionList.vue')
                 },
                 {
                     path: 'makepledge',
@@ -1596,7 +1596,7 @@ const routes = [
                         title: 'Churchplus - Pledge',
                     },
                     component: () =>
-                        import( /* webpackChunkName: "peopleempty" */ '../views/pledge/MakePledge.vue')
+                        import( /* webpackChunkName: "makepledge" */ '../views/pledge/MakePledge.vue')
                 },
                 {
                     path: 'pledgemaking',
@@ -1605,7 +1605,7 @@ const routes = [
                         title: 'Churchplus - Pledge',
                     },
                     component: () =>
-                        import( /* webpackChunkName: "peopleempty" */ '../views/pledge/PledgeMaking.vue')
+                        import( /* webpackChunkName: "pledgemaking" */ '../views/pledge/PledgeMaking.vue')
                 },
 
                 {
@@ -1615,7 +1615,7 @@ const routes = [
                         title: 'Churchplus - Pledge',
                     },
                     component: () =>
-                        import( /* webpackChunkName: "peopleempty" */ '../views/pledge/PledgePaymentList.vue')
+                        import( /* webpackChunkName: "pledgepaymentlist" */ '../views/pledge/PledgePaymentList.vue')
                 },
             ]
         }
@@ -1629,7 +1629,7 @@ const routes = [
             title: 'Churchplus - Church Pledge',
         },
         component: () =>
-            import( /* webpackChunkName: "peopleempty" */ '../views/pledge/PublicPledgePayment.vue')
+            import( /* webpackChunkName: "partnershippayment" */ '../views/pledge/PublicPledgePayment.vue')
     },
     // {
     //     path: '/PublicPledgeMaking/:id',

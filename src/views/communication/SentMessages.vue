@@ -7,158 +7,122 @@
           <div class="row px-0">
             <div class="col-md-12 px-0">
               <div class="row d-md-flex align-items-center justify-content-between mt-3 mb-4">
-                <div class="col-md-8 col-sm-12 pl-0">
+                <div class="col-md-8 col-sm-12">
                   <div class="search-div">
-                    <span><i class="pi pi-search mr-1"></i></span>
-                    <input type="text" placeholder="Search here..." v-model="searchText" />
-                    <span class="mx-2"> | </span>
-                    <span class="mx-2">Sort By</span>
-                    <span class="font-weight-bold"> Newest</span>
+                    <span><i class="pi pi-search search-sms mr-1"></i></span>
+                    <input type="text" placeholder="Search here..." v-model="searchText" class="w-100 pl-4" />
                   </div>
                 </div>
-                <div class="col-sm-5 col-md-3 mt-sm-2 units-container">
+                <div class="col-sm-5 col-md-4 mt-sm-2 units-container">
                   <UnitsArea />
                 </div>
               </div>
-              <div class="row table-box mb-4" v-loading="loading">
-                <div class="col-md-12">
-                  <div class="row header-row light-grey-bg py-2">
-                    <div class="col-md-12">
-                      <el-icon class="text-danger" v-if="marked.length > 0" @click="showConfirmModal">
-                        <Delete />
-                      </el-icon>
-                      <div class="row light-grey-bg">
-                        <div class="col-md-1" v-if="sentSMS.length > 0">
-                          <input type="checkbox" name="all" id="all" @change="markAllItem"
-                            :checked="marked.length === sentSMS.length" />
-                        </div>
-                        <div class="col-md-4 d-flex align-items-center">
-                          <span class="th">Message</span>
-                        </div>
-                        <div class="col-md-2 d-flex align-items-center">
-                          <span class="th">Date</span>
-                        </div>
-                        <div class="col-md-2">
-                          <span class="th c-pointer" @click="sortByStatus">Status
-                            <el-tooltip class="box-item" effect="dark" content="Sent | Processed | Failed"
-                              placement="top-start">
-                              <i class="pi pi-question-circle c-pointer"></i>
-                            </el-tooltip>
-                          </span>
-                        </div>
-                        <div class="col-md-1">
-                          <span class="th">Units</span>
-                        </div>
-                        <div class="col-md-2">
-                          <span class="th">Report</span>
-                        </div>
-                      </div>
-                    </div>
-                  </div>
-                  <div class="row">
-                    <div class="col-md-12">
-                      <hr class="hr mt-0" />
-                    </div>
-                  </div>
-                  <div class="row" v-for="(sms, index) in searchedMessages" :key="index">
-                    <div class="col-md-12">
-                      <div class="row">
-                        <div class="col-md-1 mt-2">
-                          <input type="checkbox" name="" id="" @change="mark1Item(sms)" :checked="
-                            marked.findIndex((i) => i.id === sms.id) >= 0
-                          " />
-                        </div>
-                        <div class="col-md-4 d-flex justify-content-between">
-                          <span class="hidden-header font-weight-bold">MESSAGE:
-                          </span>
-                          <router-link :to="{
-                            name: 'SendMessage',
-                            query: { messageId: sms.id },
-                          }" style="color: #000" class="text-decoration-none">
-                            <span class="d-flex justify-content-between msg-n-time">
-                            </span>
-                          </router-link>
-                          <router-link :to="{
-                            name: 'SendMessage',
-                            query: { messageId: sms.id },
-                          }" class="text-decoration-none">
-                            <el-tooltip class="box-item" effect="dark" :content="sms.message" placement="top-start">
-                              <span class="brief-message font-weight-600">{{
-                                sms.message && sms.message.length > 25
-                                  ? `${sms.message
-                                    .split("")
-                                    .slice(0, 25)
-                                    .join("")}...`
-                                  : sms.message
-                                    ? sms.message
-                                    : ""
-                              }}</span>
-                            </el-tooltip>
-                          </router-link>
-                        </div>
-                        <div class="col-md-2 d-flex justify-content-between">
-                          <span class="hidden-header font-weight-bold">DATE:
-                          </span>
-                          <router-link :to="{
-                            name: 'SendMessage',
-                            query: { messageId: sms.id },
-                          }" class="text-decoration-none">
-                            
-                            <span class="timestamp ml-1">{{
-                              sms.dateSent
-                            }}</span>
-                          </router-link>
-                        </div>
-                        <div class="col-md-2 col-ms-12 d-flex justify-content-between">
-                          <span class="hidden-header font-weight-bold">STATUS:
-                          </span>
-                          <span class="small-text">{{
-                            sms.report.filter((i) =>
-                              i.status.includes("sent")
-                            ).length
-                          }}
-                            |
-                            {{
-                              sms.report.filter((i) =>
-                                i.status.includes("processed")
-                              ).length
-                            }}
-                            |
-                            {{
-                              sms.report.filter((i) =>
-                                i.status.includes("failed")
-                              ).length
-                            }}</span>
-                        </div>
-                        <div class="col-md-1 col-ms-12 d-flex justify-content-between">
-                          <span class="hidden-header font-weight-bold">UNITS:
-                          </span>
-                          <span class="small-text">{{ sms.smsUnitsUsed }}</span>
-                        </div>
-                        <div class="col-md-2 col-ms-12 my-2 d-flex justify-content-between cursor-pointer">
-                          <span class="hidden-header font-weight-bold">DELIVER REPORT:
-                          </span>
-                          <router-link :to="{
-                            name: 'DeliveryReport',
-                            params: { messageId: sms.id },
-                            query: { units: sms.smsUnitsUsed },
-                          }" class="small-text text-decoration-none">View report</router-link>
-                        </div>
-                      </div>
-                      <div class="row" v-if="index !== sentSMS.length - 1">
-                        <div class="col-md-12 px-0">
-                          <hr class="hr" />
-                        </div>
-                      </div>
-                    </div>
-                  </div>
-                  <div class="row" v-if="sentSMS.length === 0 && !loading">
-                    <div class="col-md-12 d-flex justify-content-center">
-                      <span class="my-4 font-weight-bold">No sent mesages</span>
-                    </div>
-                  </div>
-                </div>
+              <div class="table-options" v-if="marked.length > 0">
+                <el-icon class="text-danger c-pointer" @click="showConfirmModal">
+                  <Delete />
+                </el-icon>
               </div>
+              <Table :data="searchedMessages" :headers="SMSHeaders" :checkMultipleItem="true"
+                @checkedrow="handleSelectionChange" v-loading="loading">
+                <template #message="{ item }">
+                  <div>
+                    <router-link :to="{
+                      name: 'SendMessage',
+                      query: { messageId: item.id },
+                    }" class="text-decoration-none">
+                      <el-tooltip class="box-item" effect="dark" :content="item.message" placement="top-start">
+                        <span class="font-weight-600">{{
+                          item.message && item.message.length > 25
+                            ? `${item.message
+                              .split("")
+                              .slice(0, 25)
+                              .join("")}...`
+                            : item.message
+                              ? item.message
+                              : ""
+                        }}</span>
+                      </el-tooltip>
+                    </router-link>
+                  </div>
+                </template>
+                <template #dateSent="{ item }">
+                  <div>
+                    <router-link :to="{
+                      name: 'SendMessage',
+                      query: { messageId: item.id },
+                    }" class="text-decoration-none">
+
+                      <span class="timestamp ml-1">{{
+                        item.dateSent
+                      }}</span>
+                    </router-link>
+                  </div>
+                </template>
+                <template v-slot:status="{ item }">
+                  <div>
+                    <span class="small-text">{{
+                      item.report.filter((i) =>
+                        i.status.includes("sent")
+                      ).length
+                    }}
+                      |
+                      {{
+                        item.report.filter((i) =>
+                          i.status.includes("processed")
+                        ).length
+                      }}
+                      |
+                      {{
+                        item.report.filter((i) =>
+                          i.status.includes("failed")
+                        ).length
+                      }}</span>
+                  </div>
+                </template>
+                <template v-slot:smsUnitsUsed="{ item }">
+                  <div>
+                    <span class="small-text">{{ item.smsUnitsUsed }}</span>
+                  </div>
+                </template>
+                <template v-slot:report="{ item }">
+                  <div>
+                    <router-link :to="{
+                      name: 'DeliveryReport',
+                      params: { messageId: item.id },
+                      query: { units: item.smsUnitsUsed },
+                    }" class="small-text text-decoration-none">View report</router-link>
+                  </div>
+                </template>
+                <template v-slot:action="{ item }">
+                  <div>
+                    <el-dropdown trigger="click">
+                      <el-icon>
+                        <MoreFilled />
+                      </el-icon>
+                      <template #dropdown>
+                        <el-dropdown-menu>
+                          <el-dropdown-item>
+                            <router-link :to="
+                              item.phone
+                                ? `/tenant/sms/compose?phone=${item.phone}`
+                                : ''
+                            " :class="{ 'fade-text': !item.phone, 'text-color': item.phone }">Send
+                              SMS</router-link>
+                          </el-dropdown-item>
+                          <el-dropdown-item>
+                            <router-link :to="
+                              item.email
+                                ? `/tenant/email/compose?phone=${item.email}`
+                                : ''
+                            " :class="{ 'fade-text': !item.email, 'text-color': item.email }">Send
+                              Email</router-link>
+                          </el-dropdown-item>
+                        </el-dropdown-menu>
+                      </template>
+                    </el-dropdown>
+                  </div>
+                </template>
+              </Table>
             </div>
           </div>
         </div>
@@ -185,19 +149,30 @@ import UnitsArea from "../../components/units/UnitsArea";
 import PaginationButtons from "../../components/pagination/PaginationButtons";
 import stopProgressBar from "../../services/progressbar/progress";
 import { ElMessage, ElMessageBox } from 'element-plus'
+import Table from "@/components/table/Table"
 
 export default {
   components: {
     UnitsArea,
     PaginationButtons,
+    Table
   },
   setup() {
     const loading = ref(false);
     const store = useStore();
     const sentSMS = ref(store.getters["communication/allSentSMS"]);
-
     const currentPage = ref(0);
     const searchText = ref("");
+    const SMSHeaders = ref([
+      { name: ' MESSAGE', value: 'message' },
+      { name: ' DATE', value: 'dateSent' },
+      { name: ' STATUS', value: 'status' },
+      { name: ' UNIT', value: 'smsUnitsUsed' },
+      { name: ' REPORT', value: 'report' },
+    ])
+
+
+
     const getSentSMS = async () => {
       try {
         loading.value = true;
@@ -281,14 +256,14 @@ export default {
 
     // code to mark single item in draft
     const marked = ref([]);
-    const mark1Item = (messageid) => {
-      const msgIndex = marked.value.findIndex((i) => i.id === messageid.id);
-      if (msgIndex < 0) {
-        marked.value.push(messageid);
-      } else {
-        marked.value.splice(msgIndex, 1);
-      }
-    };
+    // const mark1Item = (messageid) => {
+    //   const msgIndex = marked.value.findIndex((i) => i.id === messageid.id);
+    //   if (msgIndex < 0) {
+    //     marked.value.push(messageid);
+    //   } else {
+    //     marked.value.splice(msgIndex, 1);
+    //   }
+    // };
 
     // code to mark multiple item item in draft
     const markAllItem = () => {
@@ -349,6 +324,10 @@ export default {
       isSortedByStatus.value = !isSortedByStatus.value;
     }
 
+    const handleSelectionChange = (val) => {
+      marked.value = val
+    }
+
     return {
       sentSMS,
       loading,
@@ -359,13 +338,15 @@ export default {
       searchText,
       searchedMessages,
       marked,
-      mark1Item,
+      // mark1Item,
       markAllItem,
       deleteSingleItem,
       convert,
       showConfirmModal,
       sortByStatus,
       isSortedByStatus,
+      SMSHeaders,
+      handleSelectionChange
     };
   },
 };
@@ -373,10 +354,15 @@ export default {
 
 <style scoped>
 .search-div {
-  width: fit-content;
+  /* width: fit-content; */
   padding: 10px;
   background: #f5f8f9;
   border-radius: 200px;
+}
+
+.search-sms {
+  position: absolute;
+  top: 14px;
 }
 
 .search-div input {
@@ -486,6 +472,12 @@ export default {
 
 .hr {
   border: 1px solid #4762f01f;
+}
+
+.table-options {
+  border: 1px solid rgb(212, 221, 227);
+  border-bottom: none;
+  padding: 7px 7px 0 7px
 }
 
 @media screen and (max-width: 767px) {

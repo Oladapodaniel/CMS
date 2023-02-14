@@ -11,7 +11,9 @@
           </el-button>
           <template #dropdown>
             <el-dropdown-menu>
-              <el-dropdown-item v-for="(item, index) in createNew" :key="index" @click="router.push(item.to)">{{ item.name }}</el-dropdown-item>
+              <el-dropdown-item v-for="(item, index) in createNew" :key="index" @click="router.push(item.to)">{{
+                item.name
+              }}</el-dropdown-item>
             </el-dropdown-menu>
           </template>
         </el-dropdown>
@@ -293,78 +295,73 @@
                   <p>Celebrations</p>
                 </div>
               </div>
-
-              <el-table :data="tenantInfoCeleb" style="width: 100%">
-                <el-table-column label="NAME">
-                  <template #default="scope">
-                    <div>
-                      <img src="../../assets/people/avatar-male.png" alt="" class="celeb-img" />
-                      <span class="ml-3">{{ scope.row.name }}</span>
-                      <div class="celeb-badge-desc celeb-badge"
-                        v-if="scope.row.dayOfCelebration.toString().toLowerCase().includes('today')"></div>
-                    </div>
-                  </template>
-                </el-table-column>
-                <el-table-column label="DATE">
-                  <template #default="scope">
-                    <div>
-                      {{ dateFormat(scope.row.date) }}
-                    </div>
-                  </template>
-                </el-table-column>
-                <el-table-column label="DAY">
-                  <template #default="scope">
-                    <div>
-                      {{ scope.row.dayOfCelebration }}
-                    </div>
-                  </template>
-                </el-table-column>
-                <el-table-column label="TYPE">
-                  <template #default="scope">
-                    <div>
-                      {{ scope.row.celebration }}
-                    </div>
-                  </template>
-                </el-table-column>
-                <el-table-column label="PHONE">
-                  <template #default="scope">
-                    <div>
-                      {{ scope.row.phone }}
-                    </div>
-                  </template>
-                </el-table-column>
-                <el-table-column label="ACTION">
-                  <template #default="scope">
-                    <div>
-                      <el-dropdown trigger="click">
-                        <el-icon>
-                          <MoreFilled />
-                        </el-icon>
-                        <template #dropdown>
-                          <el-dropdown-menu>
-                            <el-dropdown-item>
-                              <router-link :to="
-                                scope.row.phone
-                                  ? `/tenant/sms/compose?phone=${scope.row.phone}`
-                                  : ''
-                              " :class="{ 'fade-text': !scope.row.phone, 'text-color': scope.row.phone }">Send
-                                SMS</router-link>
-                            </el-dropdown-item>
-                            <el-dropdown-item>
-                              <router-link :to="
-                                scope.row.email
-                                  ? `/tenant/email/compose?phone=${scope.row.email}`
-                                  : ''
-                              " :class="{ 'fade-text': !scope.row.email, 'text-color': scope.row.email }">Send
-                                Email</router-link>
-                            </el-dropdown-item>
-                          </el-dropdown-menu>
-                        </template>
-                      </el-dropdown>
-                    </div>
-                  </template>
-                </el-table-column>
-              </el-table>
+              <Table :data="tenantInfoCeleb" :headers="celebHeaders" class="mt-3" :checkMultipleItem="false">
+                <template #name="{ item }">
+                  <div>
+                    <el-card shadow="hover" class="c-pointer person-image" v-if="item.pictureUrl"
+                      style="border-radius: 50%; height: 26px; width: 26px;">
+                      <img :src="item.pictureUrl" alt=""
+                        style="border-radius: 50%; height: 26px; width: 26px; object-fit: cover" />
+                    </el-card>
+                    <el-avatar :size="25" class="mt-1" v-else><el-icon color="#000000">
+                        <UserFilled />
+                      </el-icon>
+                    </el-avatar>
+                    <span class="ml-3">{{ item.name }}</span>
+                    <div class="celeb-badge-desc celeb-badge"
+                      v-if="item.dayOfCelebration.toString().toLowerCase().includes('today')"></div>
+                  </div>
+                </template>
+                <template #date="{ item }">
+                  <div>
+                    {{ dateFormat(item.date) }}
+                  </div>
+                </template>
+                <template v-slot:dayOfCelebration="{ item }">
+                  <div>
+                    {{ item.dayOfCelebration }}
+                  </div>
+                </template>
+                <template v-slot:celebration="{ item }">
+                  <div>
+                    {{ item.celebration }}
+                  </div>
+                </template>
+                <template v-slot:phone="{ item }">
+                  <div>
+                    {{ item.phone }}
+                  </div>
+                </template>
+                <template v-slot:action="{ item }">
+                  <div>
+                    <el-dropdown trigger="click">
+                      <el-icon>
+                        <MoreFilled />
+                      </el-icon>
+                      <template #dropdown>
+                        <el-dropdown-menu>
+                          <el-dropdown-item>
+                            <router-link :to="
+                              item.phone
+                                ? `/tenant/sms/compose?phone=${item.phone}`
+                                : ''
+                            " :class="{ 'fade-text': !item.phone, 'text-color': item.phone }">Send
+                              SMS</router-link>
+                          </el-dropdown-item>
+                          <el-dropdown-item>
+                            <router-link :to="
+                              item.email
+                                ? `/tenant/email/compose?phone=${item.email}`
+                                : ''
+                            " :class="{ 'fade-text': !item.email, 'text-color': item.email }">Send
+                              Email</router-link>
+                          </el-dropdown-item>
+                        </el-dropdown-menu>
+                      </template>
+                    </el-dropdown>
+                  </div>
+                </template>
+              </Table>
             </div>
             <div v-show="
               tenantInfoCeleb.length > 0 ||
@@ -522,6 +519,7 @@ import setupService from "../../services/setup/setupservice";
 import formatDate from "../../services/dates/dateformatter";
 import useSubscription from "../../services/subscription/useSubscription";
 import deviceBreakpoint from "../../mixins/deviceBreakpoint";
+import Table from "@/components/table/Table"
 
 export default {
   mixins: [mixin],
@@ -529,7 +527,7 @@ export default {
     ColumnChart,
     ByMaritalStatusChart,
     ByGenderChart,
-
+    Table
   },
   data() {
     return {}
@@ -594,11 +592,11 @@ export default {
 
 
     const celebHeaders = ref([
-      { text: "NAME", value: "name" },
-      { text: "DATE", value: "date" },
-      { text: "DAY", value: "phone" },
-      { text: "TYPE", value: "celebration" },
-      { text: "PHONE", value: "phone" },
+      { name: "NAME", value: "name" },
+      { name: "DATE", value: "date" },
+      { name: "DAY", value: "phone" },
+      { name: "TYPE", value: "celebration" },
+      { name: "PHONE", value: "phone" },
     ]);
 
     const createNew = ref([
