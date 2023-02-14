@@ -295,90 +295,6 @@
                   <p>Celebrations</p>
                 </div>
               </div>
-
-              <!-- <el-table :data="tenantInfoCeleb" style="width: 100%">
-                <el-card shadow="hover" class="c-pointer person-image" v-if="item.pictureUrl"
-                  style="border-radius: 50%; height: 26px; width: 26px;">
-                  <el-tooltip class="box-item" effect="dark" content="Click to view" placement="top-start">
-                    <img :src="item.pictureUrl" alt="" @click="(selectedImage = item), (imageDialog = true)"
-                      style="border-radius: 50%; height: 26px; width: 26px; object-fit: cover" />
-                  </el-tooltip>
-                </el-card>
-                <el-avatar :size="25" v-else><el-icon color="#000000">
-                    <UserFilled />
-                  </el-icon>
-                </el-avatar>
-
-                <el-table-column label="NAME">
-                  <template #default="scope">
-                    <div>
-                      <img src="../../assets/people/avatar-male.png" alt="" class="celeb-img" />
-                      <span class="ml-3">{{ scope.row.name }}</span>
-                      <div class="celeb-badge-desc celeb-badge"
-                        v-if="scope.row.dayOfCelebration.toString().toLowerCase().includes('today')"></div>
-                    </div>
-                  </template>
-                </el-table-column>
-                <el-table-column label="DATE">
-                  <template #default="scope">
-                    <div>
-                      {{ dateFormat(scope.row.date) }}
-                    </div>
-                  </template>
-                </el-table-column>
-                <el-table-column label="DAY">
-                  <template #default="scope">
-                    <div>
-                      {{ scope.row.dayOfCelebration }}
-                    </div>
-                  </template>
-                </el-table-column>
-                <el-table-column label="TYPE">
-                  <template #default="scope">
-                    <div>
-                      {{ scope.row.celebration }}
-                    </div>
-                  </template>
-                </el-table-column>
-                <el-table-column label="PHONE">
-                  <template #default="scope">
-                    <div>
-                      {{ scope.row.phone }}
-                    </div>
-                  </template>
-                </el-table-column>
-                <el-table-column label="ACTION">
-                  <template #default="scope">
-                    <div>
-                      <el-dropdown trigger="click">
-                        <el-icon>
-                          <MoreFilled />
-                        </el-icon>
-                        <template #dropdown>
-                          <el-dropdown-menu>
-                            <el-dropdown-item>
-                              <router-link :to="
-                                scope.row.phone
-                                  ? `/tenant/sms/compose?phone=${scope.row.phone}`
-                                  : ''
-                              " :class="{ 'fade-text': !scope.row.phone, 'text-color': scope.row.phone }">Send
-                                SMS</router-link>
-                            </el-dropdown-item>
-                            <el-dropdown-item>
-                              <router-link :to="
-                                scope.row.email
-                                  ? `/tenant/email/compose?phone=${scope.row.email}`
-                                  : ''
-                              " :class="{ 'fade-text': !scope.row.email, 'text-color': scope.row.email }">Send
-                                Email</router-link>
-                            </el-dropdown-item>
-                          </el-dropdown-menu>
-                        </template>
-                      </el-dropdown>
-                    </div>
-                  </template>
-                </el-table-column>
-              </el-table> -->
               <Table :data="tenantInfoCeleb" :headers="celebHeaders" class="mt-3" :checkMultipleItem="false">
                 <template #name="{ item }">
                   <div>
@@ -391,7 +307,6 @@
                         <UserFilled />
                       </el-icon>
                     </el-avatar>
-                    <!-- <imSg src="../../assets/people/avatar-male.png" alt="" class="celeb-img" /> -->
                     <span class="ml-3">{{ item.name }}</span>
                     <div class="celeb-badge-desc celeb-badge"
                       v-if="item.dayOfCelebration.toString().toLowerCase().includes('today')"></div>
