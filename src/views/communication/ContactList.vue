@@ -154,7 +154,6 @@ export default {
     };
     const deleteContactList = () => {
       let rem = remy(markedContact.value);
-      console.log(rem)
       axios
         .delete(`/api/Messaging/DeletePhoneGroup?PhoneGroupIdList=${rem}`)
         .then(() => {
