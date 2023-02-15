@@ -219,7 +219,6 @@ export default {
     const router = useRouter();
     const route = useRoute();
     const lastGroupChild = ref({});
-
     const confirmDelete = (id, index) => {
       ElMessageBox.confirm(
         "Are you sure you want to proceed? This operation can't be reversed ",
@@ -466,7 +465,7 @@ export default {
 }
 @media screen and (max-width: 600px) {
   .screensize{
-    width: 500px;
+    min-width: 500px;
     overflow-x: scroll;
   }
 }

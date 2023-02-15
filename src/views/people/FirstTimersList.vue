@@ -27,7 +27,7 @@
           <div>
             <el-tooltip class="box-item" effect="dark" v-if="false" content="Delete member(s)"
               placement="top-start">
-              <el-icon :size="20" class="c-pointer" v-if="checkedFirstTimer.length > 0" @click="showConfirmModal1">
+              <el-icon :size="20" class=" c-pointer" v-if="checkedFirstTimer.length > 0" @click="showConfirmModal1">
                 <Delete />
               </el-icon>
             </el-tooltip>
@@ -96,198 +96,49 @@
           </div>
         </div>
       </div>
-       <el-table v-loading="paginatedTableLoading" ref="multipleTableRef" :data="searchMember" style="width: 100%"
-        @selection-change="handleSelectionChange">
-        <el-table-column type="selection" />
-        <el-table-column label="PICTURE">
-        <template #default="scope">
-          <el-card shadow="hover" class="c-pointer person-image" v-if="scope.row.imageURL"
+      <Table :data="searchMember" :headers="firstTimerHeaders" :checkMultipleItem="true" @checkedrow="handleSelectionChange"
+        v-loading="paginatedTableLoading">
+        <template #imageURL="{ item }">
+          <el-card shadow="hover" class="c-pointer person-image" v-if="item.imageURL"
             style="border-radius: 50%; height: 26px; width: 26px;">
             <el-tooltip class="box-item" effect="dark" content="Click to view" placement="top-start">
-              <img :src="scope.row.imageURL" alt="" @click="(selectedImage = scope.row), (imageDialog = true)"
+              <img :src="item.imageURL" alt="" @click="(selectedImage = item), (imageDialog = true)"
                 style="border-radius: 50%; height: 26px; width: 26px; object-fit: cover" />
             </el-tooltip>
           </el-card>
           <el-avatar :size="25" v-else><el-icon color="#000000">
               <UserFilled />
-            </el-icon></el-avatar>
+            </el-icon>
+          </el-avatar>
         </template>
-      </el-table-column>
-      <el-table-column label="NAME">
-        <template #default="scope">
-          <div @click="showMemberRow(scope.row)" class="c-pointer">{{ scope.row.firstName }} {{ scope.row.lastName }}</div>
+        <template v-slot:fullName="{ item }">
+          <div @click="showMemberRow(item)" class="c-pointer">{{item.firstName }} {{ item.lastName }}</div>
         </template>
-      </el-table-column>
-      <!-- <el-table-column label="LASTNAME">
-        <template #default="scope">
-          <div @click="showMemberRow(scope.row)" class="c-pointer">{{ scope.row.lastName }}</div>
+        <template v-slot:phoneNumber="{ item }">
+          <div @click="showMemberRow(item)" class="c-pointer">{{item.phoneNumber }}</div>
         </template>
-      </el-table-column> -->
-      <el-table-column label="PHONE">
-        <template #default="scope">
-          <div @click="showMemberRow(scope.row)" class="c-pointer">{{ scope.row.phoneNumber }}</div>
+        <template v-slot:howDidYouAboutUsName="{ item }">
+          <div @click="showMemberRow(item)" class="c-pointer">{{ item.howDidYouAboutUsName.replaceAll(" ", "_") }}</div>
         </template>
-      </el-table-column>
-      <el-table-column label="SOURCE">
-        <template #default="scope">
-          <div @click="showMemberRow(scope.row)" class="c-pointer">{{ scope.row.interestedInJoining}}</div>
+        <template v-slot:interestedInJoining="{ item }">
+          <div @click="showMemberRow(item)" class="c-pointer">{{item.interestedInJoining }}</div>
         </template>
-      </el-table-column>
-      <el-table-column label="INTERESTED">
-        <template #default="scope">
-          <div @click="showMemberRow(scope.row)" class="c-pointer">{{ scope.row.howDidYouAboutUsName.replaceAll(" ", "_") }}</div>
-        </template>
-      </el-table-column>
-      <el-table-column label="DATE">
-        <template #default="scope">
-          <div @click="showMemberRow(scope.row)" class="c-pointer">{{ moment
-                .parseZone(
-                  new Date(scope.row.date).toDateString(),
-                  "YYYY MM DD HH ZZ"
-                )
-                ._i.substr(4, 11).replaceAll(" ", "_") }}</div>
-        </template>
-      </el-table-column>
-      <el-table-column label="MOVEMENT">
-        <template #default="scope">
-          <div @click="showMemberRow(scope.row)" class="c-pointer">{{ scope.row.movement }}</div>
-        </template>
-      </el-table-column>
-      <el-table-column label="INTERACTION">
-        <template #default="scope">
-          <div @click="showMemberRow(scope.row)" class="c-pointer">{{ scope.row.interactions }}</div>
-        </template>
-      </el-table-column>
-      <el-table-column label="ACTION">
-        <template #default="scope">
-            <div>
-            <el-dropdown trigger="click">
-              <el-icon>
-                <MoreFilled />
-              </el-icon>
-              <template #dropdown>
-                <el-dropdown-menu>
-                  <el-dropdown-item>
-                    <router-link :to="
-                      scope.row.phoneNumber
-                        ? `/tenant/sms/compose?phone=${scope.row.phoneNumber}`
-                        : ''
-                    " :class="{ 'fade-text': !scope.row.phoneNumber, 'text-color': scope.row.phoneNumber }">Send
-                      SMS</router-link>
-                  </el-dropdown-item>
-                  <el-dropdown-item>
-                    <router-link :to="
-                    scope.row.email
-                        ? `/tenant/email/compose?phone=${scope.row.email}`
-                        : ''
-                    " :class="{ 'fade-text': !scope.row.email, 'text-color': scope.row.email }">Send Email</router-link>
-                  </el-dropdown-item>
-                  <el-dropdown-item>
-                    <router-link :to="`/tenant/firsttimermanagement/${scope.row.id}?memberType=0`" class="text-color">
-                      Follow Up
-                    </router-link>
-                  </el-dropdown-item>
-                  <el-dropdown-item>
-                    <div @click.prevent="showConfirmModal(scope.row.id, index)" class="text-color">Delete</div>
-                  </el-dropdown-item>
-                  <el-dropdown class="px-3 pb-2 pt-1 text-color" placement="left">
-                    <span class="el-dropdown-link">
-                      Convert to member<el-icon class="el-icon--right"><arrow-down /></el-icon>
-                    </span>
-                    <template #dropdown>
-                      <el-dropdown-menu>
-                        <el-icon v-if="(membershipCategory.length == 0)" class="is-loading" :size="20">
-                          <Loading />
-                        </el-icon>
-                        <el-dropdown-item v-for="i in membershipCategory" :key="i.id">
-                          <div @click="chooseCategory(scope.row.id, i.id)">{{ i.name }}</div>
-                        </el-dropdown-item>
-                      </el-dropdown-menu>
-                    </template>
-                  </el-dropdown>
-                </el-dropdown-menu>
-              </template>
-            </el-dropdown>
-          </div>
-        </template>
-      </el-table-column>
-      </el-table>
-      <div class="d-flex justify-content-end my-3">
-      <el-pagination v-model:current-page="serverOptions.page" v-model:page-size="serverOptions.rowsPerPage" background
-        layout="total, sizes, prev, pager, next, jumper" :total="totalFirsttimersCount" @size-change="handleSizeChange"
-        @current-change="handleCurrentChange" />
-
-    </div>
-
-      <!-- <EasyDataTable v-model:items-selected="checkedFirstTimer" v-model:server-options="serverOptions"
-        :rowsPerPage="100" :loading="paginatedTableLoading" :server-items-length="totalFirsttimersCount"
-        :headers="firstTimerHeaders" :items="searchMember" buttons-pagination alternating>
-        <template #item-imageurl="{ imageURL }">
-          <div>
-            <el-card shadow="hover" class="c-pointer person-image" v-if="imageURL"
-              style="border-radius: 50%; height: 26px; width: 26px;">
-              <el-tooltip class="box-item" effect="dark" content="Click to view" placement="top-start">
-                <img :src="imageURL" alt="" @click="(selectedImageUrl = scope.row), (imageDialog = true)"
-                  style="border-radius: 50%; height: 26px; width: 26px; object-fit: cover" />
-              </el-tooltip>
-            </el-card>
-            <el-avatar :size="25" v-else><el-icon color="#000000">
-                <UserFilled />
-              </el-icon></el-avatar>
-          </div>
-        </template>
-        <template #item-firstname="item">
-          <div class="c-pointer" @click="showMemberRow(item)">
-            {{ item.firstName }}
-          </div>
-        </template>
-        <template #item-lastname="item">
-          <div class="c-pointer" @click="showMemberRow(item)">
-            {{ item.lastName }}
-          </div>
-        </template>
-        <template #item-phonenumber="item">
-          <div class="c-pointer" @click="showMemberRow(item)">
-            {{ item.phoneNumber }}
-          </div>
-        </template>
-        <template #item-howDidYouAboutUsName="item">
-          <div class="c-pointer" @click="showMemberRow(item)">
-            {{ item.howDidYouAboutUsName.replaceAll(" ", "_")
-            }}
-          </div>
-        </template>
-        <template #item-interestedInJoining="item">
-          <div class="c-pointer" @click="showMemberRow(item)">
-            {{ item.interestedInJoining
-            }}
-          </div>
-        </template>
-        <template #item-date="item">
-          <div class="c-pointer" @click="showMemberRow(item)">
-            {{ moment
+        <template v-slot:date="{ item }">
+          <div @click="showMemberRow(item)" class="c-pointer">{{ moment
                 .parseZone(
                   new Date(item.date).toDateString(),
                   "YYYY MM DD HH ZZ"
                 )
-                ._i.substr(4, 11).replaceAll(" ", "_")
-            }}
-          </div>
+                ._i.substr(4, 11).replaceAll(" ", "_") }}</div>
         </template>
-        <template #item-movement="item">
-          <div class="c-pointer" @click="showMemberRow(item)">
-            {{ item.movement
-            }}
-          </div>
+        <template v-slot:movement="{ item }">
+          <div @click="showMemberRow(item)" class="c-pointer">{{item.movement }}</div>
         </template>
-        <template #item-interactions="item">
-          <div class="c-pointer" @click="showMemberRow(item)">
-            {{ item.interactions
-            }}
-          </div>
+        <template v-slot:interactions="{ item }">
+          <div @click="showMemberRow(item)" class="c-pointer">{{item.interactions }}</div>
         </template>
-        <template #item-action="item">
-          <div>
+         <template v-slot:action="{ item }">
+            <div>
             <el-dropdown trigger="click">
               <el-icon>
                 <MoreFilled />
@@ -304,7 +155,7 @@
                   </el-dropdown-item>
                   <el-dropdown-item>
                     <router-link :to="
-                      item.email
+                    item.email
                         ? `/tenant/email/compose?phone=${item.email}`
                         : ''
                     " :class="{ 'fade-text': !item.email, 'text-color': item.email }">Send Email</router-link>
@@ -337,7 +188,12 @@
             </el-dropdown>
           </div>
         </template>
-      </EasyDataTable> -->
+      </Table>
+      <div class="d-flex justify-content-end my-3">
+        <el-pagination v-model:current-page="serverOptions.page" v-model:page-size="serverOptions.rowsPerPage" background
+        layout="total, sizes, prev, pager, next, jumper" :total="totalFirsttimersCount" @size-change="handleSizeChange"
+        @current-change="handleCurrentChange" />
+      </div>
     </div>
 
     <el-dialog v-model="imageDialog" :width="mdAndUp || lgAndUp || xlAndUp ? `50%` : xsOnly ? `90%` : `70%`"
@@ -402,6 +258,7 @@ import { useStore } from 'vuex'
 import { ElMessage, ElMessageBox } from 'element-plus'
 import router from "../../router";
 import deviceBreakpoint from "../../mixins/deviceBreakpoint";
+import Table from "@/components/table/Table"
 
 export default {
   props: ['firstTimersList'],
@@ -409,7 +266,8 @@ export default {
     FirstTimersChartArea,
     smsComponent,
     emailComponent,
-    SideBar
+    SideBar,
+    Table
   },
 
   setup(props, { emit }) {
@@ -443,16 +301,15 @@ export default {
     };
 
     const firstTimerHeaders = ref([
-      { text: 'PICTURE', value: 'imageURL' },
-      { text: 'FIRSTNAME', value: 'firstName' },
-      { text: 'LASTNAME', value: 'lastName' },
-      { text: 'PHONE', value: 'phoneNumber' },
-      { text: 'SOURCE', value: 'howDidYouAboutUsName' },
-      { text: 'INTERESTED', value: 'interestedInJoining' },
-      { text: 'DATE', value: 'date' },
-      { text: 'MOVEMENT', value: 'movement' },
-      { text: 'INTERACTION', value: 'interactions' },
-      { text: 'ACTION', value: 'action' },
+      { name: 'PICTURE', value: 'imageURL' },
+      { name: 'FULLNAME', value: 'fullName' },
+      { name: 'PHONE', value: 'phoneNumber' },
+      { name: 'SOURCE', value: 'howDidYouAboutUsName' },
+      { name: 'INTERESTED', value: 'interestedInJoining' },
+      { name: 'DATE', value: 'date' },
+      { name: 'MOVEMENT', value: 'movement' },
+      { name: 'INTERACTION', value: 'interactions' },
+      { name: 'ACTION', value: 'action' },
     ])
 
     const serverOptions = ref({

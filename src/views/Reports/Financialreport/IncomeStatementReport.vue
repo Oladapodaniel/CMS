@@ -2,26 +2,23 @@
   <div class="container-fluid px-5">
     <!-- header area -->
     <div class="container">
-      <div
-        class="
+      <div class="
           row
           d-flex
           flex-row
           justify-content-between
           mt-5
           align-items-center
-        "
-      >
+        ">
         <div class="centered-items">
           <h3 class="heading-text ml-n1">Income Statement Report</h3>
         </div>
-        <div class="default-btn border-secondary font-weight-normal c-pointer"
-            @click="() => (showExport = !showExport)"
-            style="width: fixed; position:relative">
-                    Export &nbsp; &nbsp; <i class="pi pi-angle-down" ></i>
-                    <div class=" c-pointer" style="width: 6rem; z-index:1000; position:absolute" v-if="showExport">
-                          <Listbox @click="downloadFile" v-model="selectedFileType" :options="bookTypeList" optionLabel="name"/>
-                    </div>
+        <div class="default-btn border-secondary font-weight-normal c-pointer" @click="() => (showExport = !showExport)"
+          style="width: fixed; position:relative">
+          Export &nbsp; &nbsp; <i class="pi pi-angle-down"></i>
+          <div class=" c-pointer" style="width: 6rem; z-index:1000; position:absolute" v-if="showExport">
+            <Listbox @click="downloadFile" v-model="selectedFileType" :options="bookTypeList" optionLabel="name" />
+          </div>
         </div>
 
         <!-- <div class="centered-items pr-3">
@@ -106,13 +103,7 @@
             <div>
               <label for="icon" class="mb-0 font-weight-bold">Start Date</label>
             </div>
-            <Calendar
-              class="w-100"
-              id="icon"
-              v-model="startDate"
-              :showIcon="true"
-              dateFormat="dd/mm/yy"
-            />
+            <Calendar class="w-100" id="icon" v-model="startDate" :showIcon="true" dateFormat="dd/mm/yy" />
           </div>
         </div>
         <div class="col-md-4 col-sm-12 pr-md-0">
@@ -120,27 +111,18 @@
             <div>
               <label for="icon" class="mb-0 font-weight-bold">End Date</label>
             </div>
-            <Calendar
-              class="w-100"
-              id="icon"
-              v-model="endDate"
-              :showIcon="true"
-              dateFormat="dd/mm/yy"
-            />
+            <Calendar class="w-100" id="icon" v-model="endDate" :showIcon="true" dateFormat="dd/mm/yy" />
           </div>
         </div>
         <div class="col-md-4 col-sm-12 pr-md-0">
           <div class="p-field p-col-12 pt-md-2">
-            <button
-              class="
+            <button class="
                 default-btn
                 generate-report
                 c-pointer
                 font-weight-normal
                 mt-4
-              "
-              @click="generateReport"
-            >
+              " @click="generateReport">
               Generate Report
             </button>
           </div>
@@ -148,60 +130,40 @@
       </div>
     </div>
     <!--end of date area -->
-    <div id="element-to-print" >
+    <div id="element-to-print">
       <section>
-      <!-- chart area -->
-      <div id=""
-        class="chart row d-flex"
-        :class="
+        <!-- chart area -->
+        <div id="" class="chart row d-flex" :class="
           incomeStatement && incomeStatement.length > 0 ? 'graph-area' : ''
-        "
-      >
-        <div class="col-12 col-md-6">
-          <IncomeStatementChart
-            domId="chart"
-            title=""
-            distance="5"
-            :titleMargin="10"
-            :summary="groupofIcomeAndExpense"
-          />
-        </div>
+        ">
+          <div class="col-12 col-md-6">
+            <IncomeStatementChart domId="chart" title="" distance="5" :titleMargin="10"
+              :summary="groupofIcomeAndExpense" />
+          </div>
 
-        <div class=" col-12 col-md-6">
-          <IncomeStatmentColumnChart
-            domId="chart1"
-            title=""
-            distance="5"
-            :titleMargin="10"
-            :data="columnChart"
-            subtitle=""
-            :series="['Income', 'Expense']"
-            yAxisText="Amount"
-          />
+          <div class=" col-12 col-md-6">
+            <IncomeStatmentColumnChart domId="chart1" title="" distance="5" :titleMargin="10" :data="columnChart"
+              subtitle="" :series="['Income', 'Expense']" yAxisText="Amount" />
+          </div>
         </div>
-      </div>
-      <!--end of chart area-->
+        <!--end of chart area-->
       </section>
 
       <section>
         <!-- table header -->
         <div v-if="groupedIncomeItemToDisplay.length > 0">
-          <div id=""
-            class="
+          <div id="" class="
               mt-2
               container-fluid
               table-main
               px-0
               remove-styles2 remove-border
               responsiveness
-            "
-          >
+            ">
             <table id="table" class="table remove-styles mt-0 table-header-area">
               <thead class="table-header-area-main">
-                <tr
-                  class="small-text text-capitalize text-nowrap font-weight-bold"
-                  style="border-bottom: 0; font-size: medium"
-                >
+                <tr class="small-text text-capitalize text-nowrap font-weight-bold"
+                  style="border-bottom: 0; font-size: medium">
                   <!-- <th scope="col">Fund</th> -->
                   <th scope="col">Account Category</th>
                   <th scope="col">Account Name</th>
@@ -211,12 +173,8 @@
                 </tr>
               </thead>
 
-              <tbody
-                class="font-weight-bold text-nowrap"
-                style="font-size: small"
-                v-for="(row, index) in tableRows"
-                :key="index"
-              >
+              <tbody class="font-weight-bold text-nowrap" style="font-size: small" v-for="(row, index) in tableRows"
+                :key="index">
                 <tr>
                   <td class="fundType-color" style="font-size: medium">
                     {{ row }}
@@ -227,17 +185,16 @@
                   <td></td>
                   <td></td>
                 </tr>
-                <tr
-                  v-for="(account, indx) in tableData[row].expenses"
-                  :key="indx"
-                >
+                <tr v-for="(account, indx) in tableData[row].expenses" :key="indx">
                   <!-- <td></td> -->
                   <td class="accounType-color">
                     {{ indx === 0 ? account.accountCategory : "" }}
                   </td>
                   <td>{{ account.accountName }}</td>
                   <td>{{ account.description }}</td>
-                  <td>({{ Math.abs(account.amount).toLocaleString() }}.00)</td>
+                  <td>{{ account.currency && account.currency.shortCode ? account.currency.shortCode : "" }} {{
+                    Math.abs(account.amount).toLocaleString()
+                  }}.00</td>
                   <td>{{ formatDate(account.date) }}</td>
                 </tr>
                 <tr class="answer-row" v-if="tableData[row].incomes.length > 0">
@@ -246,7 +203,7 @@
                   <td></td>
                   <td></td>
                   <td class="subtotal">
-                    NGN{{ sum(tableData[row].expenses).toLocaleString() }}.00
+                    {{ currentUser.currency }} {{ sum(tableData[row].expenses).toLocaleString() }}.00
                   </td>
                   <td></td>
                 </tr>
@@ -257,7 +214,9 @@
                   </td>
                   <td>{{ account.accountName }}</td>
                   <td>{{ account.description }}</td>
-                  <td>{{ Math.abs(account.amount).toLocaleString() }}.00</td>
+                  <td>{{ account.currency && account.currency.shortCode ? account.currency.shortCode : "" }} {{
+                    Math.abs(account.amount).toLocaleString()
+                  }}.00</td>
                   <td>{{ formatDate(account.date) }}</td>
                 </tr>
                 <tr class="answer-row" v-if="tableData[row].incomes.length > 0">
@@ -266,7 +225,7 @@
                   <td></td>
                   <td></td>
                   <td class="subtotal">
-                    NGN{{ sum(tableData[row].incomes).toLocaleString() }}.00
+                    {{ currentUser.currency }} {{ sum(tableData[row].incomes).toLocaleString() }}.00
                   </td>
                   <td></td>
                 </tr>
@@ -276,7 +235,7 @@
                   <td></td>
                   <td></td>
                   <td class="total-answer">
-                    NGN{{
+                    {{ currentUser.currency }} {{
                       sumOfDiffAcctInFunds(tableData[row]).toLocaleString()
                     }}.00
                   </td>
@@ -290,19 +249,16 @@
                   <td>&nbsp;</td>
                 </tr>
               </tbody>
-              <tbody
-                class="font-weight-bolder text-nowrap"
-                style="font-size: small"
-              >
+              <tbody class="font-weight-bolder text-nowrap" style="font-size: small">
                 <tr class="answer-row2">
                   <td class="gross-total">Gross Total</td>
                   <!-- <td></td> -->
                   <td></td>
                   <td></td>
                   <td class="gross-total responsive-horizontalrule">
-                    NGN{{
+                    <span>{{ currentUser.currency }} {{
                       Math.abs(diffBtwIncomeAndExpenses).toLocaleString()
-                    }}.00
+                    }}.00</span>
                     <hr class="horizontal-rule" />
                   </td>
                   <td></td>
@@ -318,7 +274,7 @@
         <!--end table header -->
       </section>
     </div>
-    
+
   </div>
 </template>
 
@@ -335,6 +291,7 @@ import groupResponse from "../../../services/groupArray/groupResponse.js";
 // import PaginationButtons from "../../../components/pagination/PaginationButtons";
 import incomeExpenseHelper from "./Helper/Incomeexpenses-helper.js";
 import Listbox from 'primevue/listbox';
+import { useStore } from 'vuex'
 
 export default {
   components: {
@@ -348,6 +305,7 @@ export default {
     // PaginationButtons,
   },
   setup() {
+    const store = useStore()
     const startDate = ref("");
     const endDate = ref("");
     const incomeStatement = ref([]);
@@ -372,6 +330,12 @@ export default {
     const fileToExport = ref([]);
     const fundType = ref([]);
     const funds = ref([]);
+
+
+    const currentUser = computed(() => {
+      if (store && Object.keys(store.getters.currentUser).length > 0) return store.getters.currentUser
+      return ''
+    })
 
     const tableData = ref({});
     const tableRows = computed(() => {
@@ -412,8 +376,8 @@ export default {
       let expenseres =
         item.expenses.length > 0
           ? item.expenses.reduce((a, b) => {
-              return { amount: +a.amount + +b.amount };
-            })
+            return { amount: +a.amount + +b.amount };
+          })
           : 0;
       console.log(expenseres.amount);
 
@@ -433,7 +397,7 @@ export default {
           ).toLocaleDateString("en-US")}`
         )
         .then((res) => {
-          console.log(res, "🎄🎄🎄");
+          console.log(res, "🎄🎄🎄hereee");
           tableData.value = incomeExpenseHelper.formatAccounts(res.data);
           incomeStatement.value = res.data.filter((i) => i !== null);
           console.log(incomeStatement.value);
@@ -525,18 +489,18 @@ export default {
     };
 
     const columnChart = computed(() => {
-      if (groupofIcomeAndExpense.value.length === 0)   return [];
-        allIncomeAndExpenses.value.push({
-          name: "Income",
-          //  color: '#002044',
-          data: [groupofIcomeAndExpense.value[0].value],
-        });
+      if (groupofIcomeAndExpense.value.length === 0) return [];
+      allIncomeAndExpenses.value.push({
+        name: "Income",
+        //  color: '#002044',
+        data: [groupofIcomeAndExpense.value[0].value],
+      });
 
-        allIncomeAndExpenses.value.push({
-          name: "Expense",
-          //  color: '#002044',
-          data: [groupofIcomeAndExpense.value[1].value],
-        });
+      allIncomeAndExpenses.value.push({
+        name: "Expense",
+        //  color: '#002044',
+        data: [groupofIcomeAndExpense.value[1].value],
+      });
 
       console.log(allIncomeAndExpenses.value);
       return allIncomeAndExpenses.value;
@@ -636,6 +600,7 @@ export default {
       sum,
       diffBtwIncomeAndExpenses,
       columnChart,
+      currentUser
       // incomeAndExpenseChart,
       // groupedExpenseAndIncomeStatements
     };
@@ -767,6 +732,7 @@ export default {
   color: #136acd;
   font-size: larger;
 }
+
 .accounType-color {
   font-size: medium;
 }

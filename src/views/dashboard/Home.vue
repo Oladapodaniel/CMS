@@ -134,6 +134,7 @@ export default {
   background: #ebeff4;
   height: inherit;
   overflow: auto;
+  z-index: 2100;
 }
 
 .hide-menu {
@@ -141,7 +142,6 @@ export default {
   /* position: fixed; */
   width: 0 !important;
   left: -266px;
-  z-index: 9;
   /* transition: all 0.5s cubic-bezier(0.645, 0.045, 0.355, 1); */
 }
 
@@ -215,7 +215,6 @@ export default {
   .links-menu {
     position: fixed;
     left: -266px;
-    z-index: 9;
     transition: all 0.5s cubic-bezier(0.645, 0.045, 0.355, 1);
   }
 

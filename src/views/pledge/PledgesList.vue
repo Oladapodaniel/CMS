@@ -506,7 +506,7 @@
 
 <script>
 import { ref, computed } from "vue";
-import finish from "../../services/progressbar/progress";
+// import finish from "../../services/progressbar/progress";
 import MembersSearch from "../../components/membership/MembersSearch.vue";
 import axios from "@/gateway/backendapi";
 import Calendar from "primevue/calendar";
@@ -674,7 +674,7 @@ export default {
       loading.value = true;
       try {
         const res = await axios.get("/api/Pledge/GetAllPledges");
-        finish();
+        // finish();
         allPledgeList.value = res.data.returnObject;
         // allPledgeStatus.value = res.data.returnObject.map((i)  => ({
         //   status: i.status
@@ -691,7 +691,7 @@ export default {
         console.log(allPerson.value , "allPledgeStatus");
         loading.value = false;
       } catch (error) {
-        finish();
+        // finish();
         console.log(error);
         loading.value = false;
         networkError.value = true;
@@ -727,7 +727,7 @@ export default {
           );
         })
         .catch((err) => {
-          finish();
+          // finish();
           if (err.response.status === 400) {
             toast.add({
               severity: "error",
