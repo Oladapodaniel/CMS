@@ -1,6 +1,6 @@
 <template>
   <div>
-    <div class="container">
+    <div>
       <div class="row mainHeada">
         <div class="col-md-6 col-sm-10 mt-3 mt-lg-5">
           <h1>Add phone group</h1>
@@ -8,7 +8,7 @@
       </div>
       <div class="row">
         <div class="col-md-12">
-          <hr class="hr mb-md-5" />
+          <hr class="hr mb-4 mb-md-3" />
         </div>
       </div>
 
@@ -21,13 +21,13 @@
               <div class="row d-md-flex align-items-center mt-2">
                 <div class="col-md-12">
                   <div class="row">
-                    <div class="col-md-12 gName">
+                    <div class="col-md-12">
                       <h3 class="ml-n3 mb-n2">Group Name</h3>
                     </div>
                   </div>
 
                   <!-- Context Area -->
-                  <div class="row amazing d-flex flex-row justify-content-between mt-lg-1">
+                  <div class="row d-flex flex-row justify-content-between mt-lg-1">
                     <div class="col-md-12 mt-3 form-group px-0">
                       <el-input type="text" id="groupName" v-model="groupNameValue" required />
                     </div>
@@ -257,19 +257,9 @@ h4 {
     margin-top: 1rem;
   }
 
-  .gName {
-    margin: 0 0 1rem -1rem;
-  }
-
   h3 {
     font-size: 17px;
     font-weight: bold;
-  }
-
-  .amazing {
-    margin: 0 0 2rem -2rem;
-    display: flex;
-    flex-direction: row;
   }
 
   .amazingG {

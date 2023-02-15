@@ -9,7 +9,9 @@
               <div class="row d-md-flex align-items-center justify-content-between mt-3 mb-4">
                 <div class="col-md-8 col-sm-12">
                   <div class="search-div">
-                    <span><i class="pi pi-search search-sms mr-1"></i></span>
+                    <el-icon style="vertical-align: middle" class="search-sms mr-1">
+                      <Search />
+                    </el-icon>
                     <input type="text" placeholder="Search here..." v-model="searchText" class="w-100 pl-4" />
                   </div>
                 </div>

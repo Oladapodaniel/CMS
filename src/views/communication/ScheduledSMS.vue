@@ -7,119 +7,59 @@
           <div class="row px-0">
             <div class="col-md-12 px-0">
               <div class="row d-md-flex align-items-center justify-content-between mt-3 mb-4">
-                <div class="col-md-8 col-sm-12 pl-0">
+                <div class="col-md-8 col-sm-12">
                   <div class="search-div">
-                    <span><i class="pi pi-search mr-1"></i></span>
-                    <input type="text" placeholder="Search here..." v-model="scheduledMssg" />
-                    <span class="mx-2"> | </span>
-                    <span class="mx-2">Sort By</span>
-                    <span class="font-weight-bold"> Newest</span>
+                    <el-icon style="vertical-align: middle" class="search-sms mr-1">
+                      <Search />
+                    </el-icon>
+                    <input type="text" placeholder="Search here..." v-model="scheduledMssg" class="pl-4 w-100" />
                   </div>
                 </div>
-                <div class="col-sm-5 col-md-3 mt-sm-2 units-container">
+                <div class="col-sm-5 col-md-4 mt-sm-2 units-container">
                   <UnitsArea />
                 </div>
               </div>
-              <div class="row table-box mb-4" v-loading="loading">
-                <div class="col-md-12">
-                  <div class="row header-row light-grey-bg border-bottom">
-                    <div class="col-md-12">
-                      <el-icon class="c-pointer text-danger" v-if="markedSchedules ? markedSchedules.length > 0 : ''"
-                        @click="showConfirmModal(false)">
-                        <Delete />
-                      </el-icon>
-                      <div class="row light-grey-bg py-1">
-                        <div class="col-md-1" v-if="schedules.length > 0">
-                          <input type="checkbox" name="all" id="all" @change="markAllSchedules" :checked="
-                            markedSchedules.length === schedules.length
-                          " class="mark-box" />
-                        </div>
-                        <div class="col-md-2">
-                          <span class="th">Subject</span>
-                        </div>
-                        <div class="col-md-4">
-                          <span class="th">Message</span>
-                        </div>
-                        <div class="col-md-2">
-                          <span class="th">Is Executed</span>
-                        </div>
-                        <div class="col-md-2">
-                          <span class="th">Execution Date</span>
-                        </div>
-                        <div class="col-md-1 ">
-                        </div>
-                      </div>
-                    </div>
-                  </div>
-                  <div class="row" v-for="(sms, index) in searchScheduleMssg" :key="index">
-                    <div class="col-md-12 border-bottom">
-                      <div class="row py-1">
-                        <div class="col-md-1">
-                          <input type="checkbox" name="" id="" @change="mark1Schedule(sms)" :checked="
-                            markedSchedules.findIndex(
-                              (i) => i.id === sms.id
-                            ) >= 0
-                          " class="mark-box" />
-                        </div>
-                        <div class="col-md-2  small-text ">
-                          <router-link to="" class="text-decoration-none">
-                            <span class="d-flex justify-content-between">
-                              <span class="d-block d-md-none font-weight-bold text-dark">Subject
-                              </span>
-                              <span class="font-weight-bold mr-1 text-dark">{{
-                              !sms.subject ? "(no subject)" : sms.subject
-                              }}</span>
-                            </span></router-link>
-                        </div>
-                        <div class="col-md-4">
-                          <router-link to="" class="text-decoration-none d-flex justify-content-between">
-                            <span class="d-block d-md-none font-weight-bold text-dark small">Message
-                            </span>
-                            <span class="brief-message font-weight-600 ">{{
-                            `${sms.message
-                                .split("")
-                                .slice(0, 30)
-                                .join("")}...`
-                            }}</span>
-                          </router-link>
-                        </div>
-                        <div class="col-md-2  small-text">
-                          <span class="d-flex justify-content-between">
-                            <span class="d-block d-md-none font-weight-bold text-dark">Is executed
-                            </span>
-                            <span class="small-text ml-1">{{
-                              sms.isExecuted === false ? "No" : "Yes"
-                            }}</span>
-                          </span>
-                        </div>
 
-                        <div class="col-md-2  small-text">
-                          <span class="d-flex justify-content-between">
-                            <span class="d-block d-md-none font-weight-bold text-dark">Execution date
-                            </span>
-                            <span class="timestamp ml-1 small-text">{{
-                              formattedDate(sms.executionDate)
-                            }}</span>
-                          </span>
-                        </div>
-                        <div class="col-md-1 d-md-flex  justify-content-end small-text">
-                          <span class="small-text">
-                            <el-icon class="c-pointer text-danger" @click="showConfirmModal(sms.id)">
-                              <Delete />
-                            </el-icon>
-                          </span>
-                        </div>
-                      </div>
-                    </div>
-                  </div>
-
-                  <div class="row" v-if="schedules.length === 0 && !loading">
-                    <div class="col-md-12 d-flex justify-content-center">
-                      <span class="my-4 font-weight-bold">No scheduled messages</span>
-                    </div>
-                  </div>
-                </div>
+              <div class="table-options" v-if="markedSchedules.length > 0">
+                <el-icon class="text-danger c-pointer" @click="showConfirmModal">
+                  <Delete />
+                </el-icon>
               </div>
+              <Table :data="searchScheduleMssg" :headers="scheduledSMSHeader" :checkMultipleItem="true"
+                @checkedrow="handleSelectionChange" v-loading="loading">
+                <template #subject="{ item }">
+                  <span>
+                    <span class="font-weight-600">{{
+                    !item.subject ? "(no subject)" : item.subject
+                    }}</span>
+                  </span>
+                </template>
+                <template #message="{ item }">
+                  <span class="font-weight-600 ">{{
+                  `${item.message
+                      .split("")
+                      .slice(0, 30)
+                      .join("")}...`
+                  }}</span>
+                </template>
+                <template #isExecuted="{ item }">
+                  <span class="small-text">{{
+                    item.isExecuted === false ? "No" : "Yes"
+                  }}</span>
+                </template>
+                <template #executionDate="{ item }">
+                  <span class="timestamp small-text">{{
+                    formattedDate(item.executionDate)
+                  }}</span>
+                </template>
+                <template v-slot:action="{ item }">
+                  <span @click="showConfirmModal(item.id)">
+                    <el-icon class="text-danger c-pointer">
+                      <Delete />
+                    </el-icon>
+                  </span>
+                </template>
+              </Table>
             </div>
           </div>
         </div>
@@ -136,13 +76,22 @@ import dateFormatter from "../../services/dates/dateformatter";
 import axios from "@/gateway/backendapi";
 import stopProgressBar from "../../services/progressbar/progress";
 import { ElMessage, ElMessageBox } from 'element-plus'
+import Table from "@/components/table/Table"
 
 export default {
-  components: { UnitsArea },
+  components: { UnitsArea, Table },
   setup() {
     const schedules = ref([]);
     const loading = ref(false);
     const scheduledMssg = ref("");
+    const scheduledSMSHeader = ref([
+      { name: 'SUBJECT', value: 'subject' },
+      { name: 'MESSAGE', value: 'message' },
+      { name: 'IS EXECUTED', value: 'isExecuted' },
+      { name: 'EXECUTION DATE', value: 'executionDate' },
+      { name: 'ACTION', value: 'action' },
+    ])
+
     const getScheduledSMS = async () => {
       try {
         loading.value = true;
@@ -175,42 +124,13 @@ export default {
 
     // code to mark single item in schedules
     const markedSchedules = ref([]);
-    const mark1Schedule = (msch) => {
-      const scheduleIndex = markedSchedules.value.findIndex(
-        (i) => i.id === msch.id
-      );
-      if (scheduleIndex < 0) {
-        markedSchedules.value.push(msch);
-      } else {
-        markedSchedules.value.splice(msch, 1);
-      }
-    };
 
-    // code to mark multiple item in schedules
-    const markAllSchedules = () => {
-      if (markedSchedules.value.length < schedules.value.length) {
-        schedules.value.forEach((i) => {
-          const schedulesInMarked = markedSchedules.value.findIndex(
-            (s) => s.id === i.id
-          );
-          if (schedulesInMarked < 0) {
-            markedSchedules.value.push(i);
-          }
-        });
-      } else {
-        markedSchedules.value = [];
-      }
-    };
 
     // function to delete schedules
     const mainone = (k) => {
       return k.map((i) => i.id).join(",");
     };
-    const deleteSingleSms = (id) => {
-      schedules.value = schedules.value.filter((del) => {
-        return del.id != id
-      })
-    };
+
     const deleteSchedules = (id) => {
       let sub = mainone(markedSchedules.value);
       axios
@@ -218,13 +138,18 @@ export default {
           `/api/Messaging/DeleteSMSScheduledMessages?ScheduledMessageIdList=${sub ? sub : id}`
         )
         .then(() => {
-          schedules.value = schedules.value.filter((item) => {
+          if (sub) {
+            schedules.value = schedules.value.filter((item) => {
             const p = markedSchedules.value.findIndex((i) => i.id === item.id);
             if (p >= 0) return false;
             return true;
           });
-
           markedSchedules.value = [];
+          } else {
+            schedules.value = schedules.value.filter((del) => {
+              return del.id != id
+            })
+          }
           ElMessage({
             type: 'success',
             message: 'Draft deleted successfully',
@@ -253,8 +178,7 @@ export default {
         }
       )
         .then(() => {
-          deleteSchedules(id);
-          deleteSingleSms(id)
+          deleteSchedules(id)
         })
         .catch(() => {
           ElMessage({
@@ -264,6 +188,10 @@ export default {
         })
     };
 
+    const handleSelectionChange = (val) => {
+      markedSchedules.value = val
+    }
+
     return {
       schedules,
       loading,
@@ -271,11 +199,10 @@ export default {
       scheduledMssg,
       searchScheduleMssg,
       markedSchedules,
-      mark1Schedule,
-      markAllSchedules,
       deleteSchedules,
-      deleteSingleSms,
       showConfirmModal,
+      scheduledSMSHeader,
+      handleSelectionChange
     };
   },
 };
@@ -283,7 +210,6 @@ export default {
 
 <style scoped>
 .search-div {
-  width: fit-content;
   padding: 10px;
   background: #f5f8f9;
   border-radius: 200px;
@@ -295,8 +221,15 @@ export default {
   outline: transparent;
 }
 
-.brief-message {
-  color: #4762f0;
+.search-sms {
+  position: absolute;
+  top: 14px;
+}
+
+.table-options {
+  border: 1px solid rgb(212, 221, 227);
+  border-bottom: none;
+  padding: 7px 7px 0 7px
 }
 
 .compose-btn {
