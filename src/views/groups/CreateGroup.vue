@@ -299,7 +299,7 @@
                   <div class="card card-body">
                     <div class="row">
                       <div class="col-12 col-md-12">
-                        <el-button
+                        <div
                           class="
                             mb-3
                             border
@@ -320,7 +320,7 @@
                           aria-controls="collapseExample"
                         >
                           Add sub-group
-                        </el-button>
+                        </div>
 
                         <div class="collapse" id="addsubgroup">
                           <div class="card card-body">
@@ -329,96 +329,60 @@
                               child of this group.
                             </div>
 
-                            <!-- <div class="d-flex flex-column flex-lg-row justify-content-center w-100">
-                              <div class="input-width">
-                              <div class="col-6 col-sm-6">
-                                <div class="mb-1 font-weight-600 w-100">
-                                  Parent Group
+                            <div class="row w-100">
+                              <div class="col-12 col-md-4">
+                                <div class="">
+                                  <div class="mb-1 font-weight-600 w-100">
+                                    Parent Group
+                                  </div>
+
+                                  <el-input
+                                    type="text"
+                                    v-model="groupData.name"
+                                    disabled
+                                  />
                                 </div>
-                                
-                                <el-input
-                                  type="text"
-                                  v-model="groupData.name"
-                                  disabled
-                                />
                               </div>
-                              <div class="col-6 ">
+                              <div class="col-12 col-md-5">
                                 <div class="mb-1 font-weight-600 w-100">
                                   Child group
                                 </div>
                                 <div>
-                                  <el-button
-                                    class="
-                                      d-flex
-                                      justify-content-between
-                                      align-items-center
-                                    "
-                                    @click="setGroupProp"
-                                  >
-                                    <span class="exempt-hide">{{
-                                      selectedIntendedSubGroup &&
-                                      Object.keys(selectedIntendedSubGroup)
-                                        .length > 0
-                                        ? selectedIntendedSubGroup.name
-                                        : "Select group"
-                                    }}</span>
-                                   
-                                    <el-icon class="exempt-hide">
-                                      <ArrowDownBold  />
-                                    </el-icon>
-                                  </el-button>
+                                  <el-tree-select
+                                    v-model="selectedTree"
+                                    class="w-100"
+                                    placeholder="Select group"
+                                    :data="groupMappedTree"
+                                    :render-after-expand="false"
+                                    :filter-node-method="filterNodeMethod"
+                                    @change="setGroupValue"
+                                    filterable
+                                    check-strictly
+                                  />
                                 </div>
                               </div>
 
+                              <div class="col-12 col-md-3">
+                                <div class="mb-1 mt-4">
+                                  <el-button
+                                    class="
+                                      default-btn
+                                      primary-bg
+                                      border-0
+                                      text-white
+                                      align-self-center
+                                      mt-2
+                                    "
+                                    size="large"
+                                    @click="addSubGroup"
+                                    round
+                                  >
+                                    Add sub group
+                                  </el-button>
+                                </div>
                               </div>
-                            </div> -->
-                          <div class="row">
-                          <div class="row my-4">
-                            <div class="col-md-5 text-md-right">
-                              <label for="">Parent group</label>
                             </div>
-                            <div class="col-md-7">
-                                <el-input
-                                  type="text"
-                                  v-model="groupData.name"
-                                  disabled
-                                />
-                            </div>
-                          </div>
 
-                          <div class="row my-4">
-                            <div class="col-md-5 text-md-right">
-                              <label for="">Child group</label>
-                            </div>
-                            <div class="col-md-7">
-                                <el-input
-                                  type="text"
-                                  v-model="groupData.name"
-                                  disabled
-                                />
-                            </div>
-                          </div>
-                          </div>
-                 
-
-
-
-
-
-                              <el-button
-                                class="
-                                  default-btn
-                                  primary-bg
-                                  border-0
-                                  text-white
-                                  align-self-center
-                                  mt-2
-                                "
-                                @click="addSubGroup"
-                                round
-                              >
-                                Add sub group
-                              </el-button>
                             <div
                               class="div-card p-2 exempt-hide"
                               :class="{
@@ -426,10 +390,11 @@
                                 'd-block': !hideDiv,
                               }"
                             >
-                              
-                              <el-icon class="text-center
-                                  exempt-hide"  v-if="grouploading && getAllGroup.length === 0">
-                               <Loading />
+                              <el-icon
+                                class="text-center exempt-hide"
+                                v-if="grouploading && getAllGroup.length === 0"
+                              >
+                                <Loading />
                               </el-icon>
                               <input
                                 type="text"
@@ -473,7 +438,7 @@
                     >Members in group</span
                   >
                 </div>
-               
+
                 <el-input
                   size="small"
                   v-model="searchGroupMemberText"
@@ -590,23 +555,6 @@
                                         }`"
                                         @blur="() => (inputBlurred = true)"
                                       />
-
-                                      <!-- <el-input
-                                          v-model="input1"
-                                          class="w-100 px-1"
-                                          size="large"
-                                          placeholder="Please Input"
-                                          ref="memberSelectInput"
-                                          @input="searchForMembers"
-                                          autocomplete="off"
-                                          :class="{
-                                          'w-100':
-                                          selectedMembers.length === 0,
-                                          'minimized-input-width':
-                                           selectedMembers.length > 0,
-                                            }"
-                                             @blur="() => (inputBlurred = true)"
-                                        />      -->
                                     </li>
                                   </ul>
                                   <div
@@ -730,13 +678,6 @@
                                   >
                                 </div>
                                 <div class="col-md-7 col-sm-12 px-1">
-                                  <!-- <input
-                                    type="text"
-                                    class="form-control"
-                                    placeholder="e.g Member"
-                                    v-model="position"
-                                  /> -->
-
                                   <el-input
                                     type="text px-1"
                                     placeholder="e.g Member"
@@ -785,7 +726,6 @@
                         </div>
                         <div class="modal-footer mb-2">
                           <el-button
-                            type="button"
                             class="default-btn cancel bg-white text-dark"
                             data-dismiss="modal"
                             round
@@ -993,13 +933,7 @@
                       <div class="modal-body">
                         <div class="col-md-12"></div>
                         <div class="col-md-12 form-group w-100">
-                          <!-- <Dropdown
-                            :options="getAllGroup"
-                            optionLabel="name"
-                            placeholder="Select Groups"
-                            style="width: 100%"
-                            v-model="copyGroupTo"
-                          /> -->
+                         
                           <button
                             @click="setCopyGroupProp"
                             class="
@@ -1633,8 +1567,11 @@ import Attendancecheckin from "../event/attendance&checkin/AttendanceAndCheckinL
 import attendanceservice from "../../services/attendance/attendanceservice";
 import ImportToGroup from "../people/ImportInstruction";
 import GroupTree from "./component/GroupTree.vue";
+import collector from "../../services/groupArray/mapTree";
 import { ElMessage } from "element-plus";
 import { useStore } from "vuex";
+import grousService from "../../services/groups/groupsservice";
+import flatten from "../../services/groupArray/flatTree";
 
 export default {
   directives: {
@@ -1656,6 +1593,8 @@ export default {
     const display = ref(false);
     //  const showWardModal = ref(false)
     const memberDia = ref(true);
+    const selectedTree = ref();
+    const groupMappedTree = ref([]);
     const modalBtn = ref(null);
     const groupData = ref({});
     // const wardSearchString = ref("");
@@ -1697,20 +1636,61 @@ export default {
     const lastGroupChild = ref({});
     const moveHideDiv = ref(true);
     const copyHideDiv = ref(true);
+    const flattenedTree = ref([]);
 
     const getGroups = async () => {
       grouploading.value = true;
       try {
-        const { data } = await axios.get("/api/GetAllGroupBasicInformation");
-        console.log(getAllGroup.value);
+        // const { data } = await axios.get("/api/GetAllGroupBasicInformation");
+        let data = await grousService.getGroups();
         getAllGroup.value = data;
+        console.log(getAllGroup.value);
         grouploading.value = false;
+
+        let treevalue = { children: getAllGroup.value };
+        const { children } = collector(treevalue);
+        groupMappedTree.value = children;
+        if (groupMappedTree.value && groupMappedTree.value.length > 0) {
+          flattenedTree.value = groupMappedTree.value.flatMap(flatten());
+          console.log(flattenedTree, "🤦‍♀️🤦‍♀️🤦‍♀️");
+        }
       } catch (error) {
         console.log(error);
         grouploading.value = false;
       }
     };
     getGroups();
+
+    // const getGroups = async () => {
+    //   try {
+    //     let groups = store.getters["groups/groups"];
+
+    //     if (groups && groups.length > 0) {
+    //       allGroups.value = groups;
+    //       let data = { children: allGroups.value };
+    //       const { children } = collector(data);
+    //       groupMappedTree.value = children;
+    //       if (groupMappedTree.value && groupMappedTree.value.length > 0) {
+    //         flattenedTree.value = groupMappedTree.value.flatMap(flatten());
+    //       }
+    //       return true;
+    //     } else {
+    //       let group = await grousService.getGroups();
+    //       if (group) {
+    //         allGroups.value = group;
+    //         let data = { children: allGroups.value };
+    //         const { children } = collector(data);
+    //         groupMappedTree.value = children;
+    //         if (groupMappedTree.value && groupMappedTree.value.length > 0) {
+    //           flattenedTree.value = groupMappedTree.value.flatMap(flatten());
+    //         }
+    //       }
+    //     }
+    //   } catch (error) {
+    //     console.log(error);
+    //   }
+    // };
+    // getGroups();
 
     const test = (member) => {
       if (member.phone) {
@@ -2423,14 +2403,24 @@ export default {
       );
     });
 
-    watchEffect(() => {
-      if (store.getters["groups/selectedTreeGroup"]) {
-        // console.log(store.getters['groups/selectedTreeGroup'])
-        const selectedGroup = store.getters["groups/selectedTreeGroup"];
-        hideDiv.value = true;
-        selectedIntendedSubGroup.value = selectedGroup;
-      }
-    });
+    // watchEffect(() => {
+    //   if (store.getters["groups/selectedTreeGroup"]) {
+    //     // console.log(store.getters['groups/selectedTreeGroup'])
+    //     const selectedGroup = store.getters["groups/selectedTreeGroup"];
+    //     hideDiv.value = true;
+    //     selectedIntendedSubGroup.value = selectedGroup;
+    //   }
+    // });
+
+    const setGroupValue = () => {
+      const response = flattenedTree.value.find(
+        (i) => i.value == selectedTree.value
+      );
+      selectedIntendedSubGroup.value = {
+        name: response.label,
+        id: response.value,
+      };
+    };
 
     const addSubGroup = async () => {
       try {
@@ -2501,13 +2491,13 @@ export default {
       console.log(payload);
     };
 
-    watchEffect(() => {
-      if (store.getters["groups/selectedTreeGroupList"]) {
-        const selectedGroup = store.getters["groups/selectedTreeGroupList"];
-        lastGroupChild.value = selectedGroup;
-        console.log(selectedGroup);
-      }
-    });
+    // watchEffect(() => {
+    //   if (store.getters["groups/selectedTreeGroupList"]) {
+    //     const selectedGroup = store.getters["groups/selectedTreeGroupList"];
+    //     lastGroupChild.value = selectedGroup;
+    //     console.log(selectedGroup);
+    //   }
+    // });
 
     const setSelectedGroupToMove = (payload) => {
       if (payload.iconElement.classList.contains("p-3")) {
@@ -2517,6 +2507,9 @@ export default {
         moveHideDiv.value = true;
       }
     };
+
+    const filterNodeMethod = (value, data) =>
+      data.label.toLowerCase().includes(value.toLowerCase());
 
     const setSelectedGroupToCopy = (payload) => {
       if (payload.iconElement.classList.contains("p-3")) {
@@ -2577,6 +2570,8 @@ export default {
       groupDetail,
       showGroup,
       showAttendanceCheckin,
+      groupMappedTree,
+      filterNodeMethod,
       // wardSearchString,
       getWardId,
       totalItems,
@@ -2624,7 +2619,9 @@ export default {
       lastGroupChild,
       setSelectedGroupToCopy,
       setCopyGroupProp,
-      // setGroupData
+      selectedTree,
+      setGroupValue,
+      flattenedTree,
     };
   },
 };
@@ -2666,12 +2663,6 @@ export default {
 .events {
   font: normal normal 800 29px Nunito sans;
 }
-/* hr{
-      color: gainsboro;
-      background-color: hotpink;
-      height: 5px;
-      width : 100%;
-    } */
 
 .baseline {
   transition: all 150ms ease-in-out;
@@ -2746,6 +2737,9 @@ export default {
   justify-content: center;
   align-items: center;
   gap: 1rem;
+}
+.label-sub {
+  width: 100px;
 }
 
 .dropdown {
