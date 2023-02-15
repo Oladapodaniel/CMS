@@ -128,3 +128,13 @@ button.el-button.is-round {
   .el-dialog.is-align-center.smsUnitSuccess .el-dialog__header {
     display: none;  
     }
+    div.groupTree table  {
+      width: 100% !important;
+    }
+    div.groupTree div.cell  {
+      display: flex !important;
+      align-items: center !important;
+    }
+    div.groupTree{
+      border: 1px solid #E0E0E0;
+    }

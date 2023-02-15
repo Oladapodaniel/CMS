@@ -5,171 +5,126 @@
       <main id="main" class="mt-3">
         <div class="container-fluid px-0">
           <div class="row px-0">
-            <div class="col-md-12 px-0">
+            <div class="col-md-12 px-0 mb-3">
               <div
                 class="row d-md-flex align-items-center justify-content-between mt-3 mb-4"
               >
-                <div class="col-md-12 col-sm-12 pl-0">
-                  <div class="search-div">
-                    <span><i class="pi pi-search mr-1"></i></span>
+                <div class="col-md-6 col-sm-12">
+                  <div class="search-div d-flex  align-items-center">
+                    <span class="mr-2"
+                      ><el-icon><Search /></el-icon
+                    ></span>
                     <input
                       type="text"
+                      class="w-100"
                       placeholder="Search here..."
                       v-model="searchScheduled"
                     />
-
-                    <span class="mx-2"> | </span>
-                    <span class="mx-2">Sort By</span>
-                    <span class="font-weight-bold"> Newest</span>
                   </div>
                 </div>
-                <!-- <div class="col-sm-5 col-md-3 mt-sm-2 units-container">
-                  <UnitsArea />
-                </div> -->
               </div>
 
               <!-- delete icon area -->
-              <i
-                class="pi pi-trash color-deleteicon ml-n4 mb-2 c-pointer d-flex align-items-center px-4"
-                style="font-size: 20px"
-                v-if="markedMails.length > 0"
-                @click="showConfirmModal(false)"
-              >
-              </i>
-              <!--end delete icon area -->
-              <div class="row table-box mb-4">
-                <div class="col-md-12">
-                  <div class="row header-row light-grey-bg">
-                    <div class="col-md-12">
-                      <div class="row light-grey-bg py-1">
-                        <div class="col-md-1 " v-if="schedules.length > 0">
-                          <input
-                            type="checkbox"
-                            class="mark-box"
-                            name="all"
-                            id="all"
-                            @change="markAllScheduleMails"
-                            :checked="markedMails.length === schedules.length"
-                          />
-                        </div>
-                        <div class="col-md-2">
-                          <span class="th">Subject</span>
-                        </div>
-                        <div class="col-md-3">
-                          <span class="th">Message</span>
-                        </div>
-                        <div class="col-md-2">
-                          <span class="th">Is Executed</span>
-                        </div>
-                        <div class="col-md-3  ">
-                          <span class="th">Execution Date</span>
-                        </div>
-                        <div class="col-md-1 ">
-                          <!-- <span class="th">Execution Date</span> -->
-                        </div>
-                      </div>
-                    </div>
-                  </div>
-                  <div class="row">
-                    <div class="col-md-12 px-0">
-                      <hr class="hr mt-0" />
-                    </div>
-                  </div>
-                  <div
-                    class="row"
-                    v-for="(email, index) in scheduledMails"
-                    :key="index"
+              <div class="table-options" v-loading="loading" v-if="markedMails.length > 0">
+                <el-tooltip
+                  class="box-item"
+                  effect="dark"
+                  v-if="markedMails.length > 0"
+                  content="delete marked"
+                  placement="top-start"
+                >
+                  <el-icon
+                    :size="20"
+                    class="color-deleteicon text-danger c-pointer"
+                    style="font-size: 15px"
+                    v-if="markedMails.length > 0"
+                    @click="showConfirmModal(false)"
                   >
-                    <div class="col-md-12">
-                      <div class="row py-1">
-                        <div class="col-md-1">
-                          <input
-                            type="checkbox"
-                            class="mark-box"
-                            @change="mark1mailItem(email)"
-                            :checked="
-                              markedMails.findIndex((i) => i.id === email.id) >=
-                              0
-                            "
-                          />
-                        </div>
-                        <div class="col-md-2  small-text">
-                          <router-link to="" class="text-decoration-none"
-                            ><span class="msg-n-time">
-                              <span class="font-weight-bold mr-1 text-dark">{{
-                                !email.subject ? "(no subject)" : email.subject
-                              }}</span>
-                            </span></router-link
-                          >
-                        </div>
-                        <div class="col-md-3  small-text">
-                          <router-link to="" class="text-decoration-none">
-                             <span
-                                class="brief-message font-weight-600 "
-                                >{{
-                                  `${email.message
-                                    .split("")
-                                    .slice(0, 30)
-                                    .join("")}...`
-                                }}</span
-                              >
-                          </router-link
-                          >
-                        </div>
-
-                        <div class="col-md-2  small-text">
-                          
-                            <span class="msg-n-time">
-                              <span class="text-primary small-text ml-1">{{
-                                email.isExecuted === false ? "No" : "Yes"
-                              }}</span>
-                            </span>
-                        </div>
-                        <div class="col-md-3  small-text">
-                          
-                            <span class="msg-n-time">
-                              <span class="timestamp ml-1 small-text">{{
-                                formattedDate(email.executionDate)
-                              }}</span>
-                            </span>
-                        </div>
-                        <div class="col-md-1 d-md-flex  justify-content-end small-text">
-                          
-                            <span class="small-text mr-n4">
-                              <i
-                                class="c-pointer pr-3 pi pi-trash delete-icon"
-                                @click="showConfirmModal(email.id)"
-                                style="font-size: 18px"
-                              >
-                              </i
-                            ></span>
-                          
-                        </div>
-                      </div>
-                      <div class="row" v-if="index !== schedules.length - 1">
-                        <div class="col-md-12 px-0">
-                          <hr class="hr" />
-                        </div>
-                      </div>
-                    </div>
-                  </div>
-                  <ConfirmDialog />
-                  <Toast />
-                  <div class="row" v-if="schedules.length === 0 && !loading">
-                    <div class="col-md-12 d-flex justify-content-center">
-                      <span class="my-4 font-weight-bold"
-                        >No scheduled mesages</span
-                      >
-                    </div>
-                  </div>
-
-                  <div class="row" v-if="schedules.length === 0 && loading">
-                    <div class="col-md-12 py-2 d-flex justify-content-center">
-                      <i class="fas fa-circle-notch fa-spin"></i>
-                    </div>
-                  </div>
+                    <Delete />
+                  </el-icon>
+                </el-tooltip>
+              </div>
+              <Table
+                :data="scheduledMails"
+                :headers="ScheduledHeaders"
+                :checkMultipleItem="true"
+                @checkedrow="handleSelectionChange"
+                v-loading="loading"
+              >
+              <template #subject="{ item }">
+                <div>
+                  <router-link
+                    to=""
+                    class="text-decoration-none"
+                  >
+                    <span class="timestamp text-dark ml-1">{{!item.subject ? "(no subject)" : item.subject}}</span>
+                  </router-link>
+                </div>
+              </template>
+              <template #message="{ item }">
+                <div>
+                  <router-link
+                    to=""
+                    class="text-decoration-none"
+                  >
+                   <span class=" font-weight-600 ">
+                        {{
+                          `${item.message
+                            .split("")
+                            .slice(0, 30)
+                            .join("")}...`
+                        }}
+                    </span>
+                  </router-link>
+                </div>
+              </template>
+              <template #isExecuted="{ item }">
+                <div>
+                  <router-link
+                    to=""
+                    class="text-decoration-none"
+                  >
+                    <span class="text-primary small-text ml-1">{{ item.isExecuted === false ? "No" : "Yes" }}</span>
+                  </router-link>
+                </div>
+              </template>
+              <template #executionDate="{ item }">
+                <div>
+                  <router-link
+                    to=""
+                    class="text-decoration-none"
+                  >
+                    <span class="timestamp ml-1 text-dark small-text">{{ formattedDate(item.executionDate)}}</span>
+                  </router-link>
+                </div>
+              </template>
+              <template #delete="{ item }">
+                <span class="small-text">
+                    <el-icon
+                      :size="20"
+                      class="ml-2 color-deleteicon pt-2 c-pointer"
+                      style="font-size: 20px"
+                      @click="showConfirmModal(item.id)"
+                    >
+                      <Delete />
+                    </el-icon>
+                  </span>
+              </template>
+              </Table>
+              <div class="row" v-if="schedules.length === 0 && !loading">
+                <div class="col-md-12 d-flex justify-content-center">
+                  <span class="my-4 font-weight-bold"
+                    >No scheduled mesages</span
+                  >
                 </div>
               </div>
+
+              <div class="row" v-if="schedules.length === 0 && loading">
+                <div class="col-md-12 py-2 d-flex justify-content-center">
+                  <i class="fas fa-circle-notch fa-spin"></i>
+                </div>
+              </div>
+              <!--end delete icon area -->
             </div>
           </div>
         </div>
@@ -180,19 +135,27 @@
 
 <script>
 import { computed, onMounted, ref } from "vue";
-// import UnitsArea from "../../components/units/UnitsArea"
 import communicationService from "../../services/communication/communicationservice";
 import dateFormatter from "../../services/dates/dateformatter";
 import axios from "@/gateway/backendapi";
-import { useConfirm } from "primevue/useconfirm";
-import { useToast } from "primevue/usetoast";
 import stopProgressBar from "../../services/progressbar/progress";
+import { ElMessage, ElMessageBox } from "element-plus";
+import Table from "@/components/table/Table";
 
 export default {
-  //   components: { UnitsArea },
+    components: { 
+      Table 
+    },
   setup() {
     const schedules = ref([]);
     const loading = ref(false);
+    const ScheduledHeaders = ref([
+      { name: " SUBJECT", value: "subject" },
+      { name: " MESSAGE", value: "message" },
+      { name: 'IS EXECUTED', value: 'isExecuted' },
+      { name: 'EXECUTION DATE', value: 'executionDate' },
+      { name: '', value: 'delete' },
+    ]);
 
     const getScheduledSMS = async () => {
       try {
@@ -200,7 +163,6 @@ export default {
         const res = await communicationService.getSchedules("/api/Messaging/getEmailSchedules");
         loading.value = false;
         schedules.value = res;
-        console.log(schedules.value, "SchedulesEmail");
       } catch (error) {
         console.log(error);
       }
@@ -209,6 +171,9 @@ export default {
     const formattedDate = (date) => {
       return dateFormatter.monthDayTime(date);
     };
+    const handleSelectionChange = (val) =>{
+      markedMails.value = val
+    }
 
     onMounted(() => {
       getScheduledSMS();
@@ -217,7 +182,6 @@ export default {
     // function to search
     const searchScheduled = ref("");
     const scheduledMails = computed(() => {
-      // console.log(scheduledMails, 'kingsley')
       if (searchScheduled.value === "" && schedules.value.length > 0)
         return schedules.value;
       return schedules.value.filter((i) => {
@@ -269,39 +233,34 @@ export default {
         )
         .then((res) => {
           if (res) {
-            toast.add({
-              severity: "success",
-              summary: "Delete Successful",
-              detail: `${
-                markedMails.value.length > 1
-                  ? "Selected Schedules have"
-                  : "Schedule has"
-              } been deleted successfully `,
-              life: 3000,
-            });
+             ElMessage({
+                type: "success",
+                message: `${
+                      markedMails.value.length > 1
+                        ? "Selected Schedules have"
+                        : "Schedule has"
+                    } been deleted successfully `,
+                duration: 5000
+              });
             schedules.value = !id
               ? removeDeletedScheduleFromSchedulesEmailsList(markedMails.value)
               : schedules.value.filter((i) => i.id !== id);
 
             markedMails.value = [];
           } else {
-            toast.add({
-              severity: "success",
-              summary: "Confirmed",
-              detail: `${res}`,
-              life: 3000,
-            });
+             ElMessage({
+                type: "success",
+                message: res,
+                duration: 5000
+              });
           }
         })
         .catch((err) => {
           stopProgressBar();
-          toast.add({
-            severity: "error",
-            summary: "Delete Error",
-            detail: `${
-              markedMails.value > 1 ? "Selected Schedules" : "Schedule"
-            } could not be deleted,`,
-            life: 3000,
+           ElMessage({
+            type: "error",
+            message: `${ markedMails.value > 1 ? "Selected Schedules" : "Schedule" } could not be deleted,`,
+            duration: 5000
           });
           console.log(err);
         });
@@ -318,28 +277,32 @@ export default {
         return false;
       });
     };
-
-    const confirm = useConfirm();
-    let toast = useToast();
     const showConfirmModal = (id) => {
-      confirm.require({
-        message: "Are you sure you want to proceed?",
-        header: "Confirmation",
-        icon: "pi pi-exclamation-triangle",
-        acceptClass: "confirm-delete",
-        rejectClass: "cancel-delete",
-        accept: () => {
+       ElMessageBox.confirm(
+        "Are you sure you want to proceed? This operation can't be reversed ",
+        "Confirm delete",
+        {
+          confirmButtonText: "OK",
+          cancelButtonText: "Cancel",
+          type: "error",
+        }
+      )
+        .then(() => {
           deleteSchedules(id);
-        },
-        reject: () => {
-          //  toast.add({severity:'info', summary:'Rejected',
-          //  detail:'You have rejected', life: 3000});
-        },
-      });
+        })
+        .catch(() => {
+          ElMessage({
+            type: "info",
+            message: "Delete discarded",
+            duration: 5000
+          });
+        });
     };
 
     return {
       schedules,
+      ScheduledHeaders,
+      handleSelectionChange,
       loading,
       formattedDate,
       scheduledMails,
@@ -356,10 +319,15 @@ export default {
 
 <style scoped>
 .search-div {
-  width: fit-content;
+  /* width: fit-content; */
   padding: 10px;
   background: #f5f8f9;
   border-radius: 200px;
+}
+.table-options {
+  border: 1px solid rgb(212, 221, 227);
+  border-bottom: none;
+  padding: 7px 7px 0 7px
 }
 
 .search-div input {
@@ -437,8 +405,7 @@ export default {
 
 .timestamp {
   font-size: 14px;
-  color: #333333;
-  opacity: 0.5;
+  
 }
 
 .view-btn {

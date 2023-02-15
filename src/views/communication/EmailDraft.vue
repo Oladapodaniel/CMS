@@ -7,139 +7,114 @@
           <div class="row px-0">
             <div class="col-md-12 px-0">
               <div class="row d-md-flex align-items-center mt-3 mb-4">
-                <div class="col-md-12 col-sm-12">
-                  <div class="search-div">
-                    <span><i class="pi pi-search mr-1"></i></span>
+                <div class="col-md-6 col-sm-12">
+                  <div class="search-div d-flex  align-items-center">
+                    <span class="mr-2"
+                      ><el-icon><Search /></el-icon
+                    ></span>
                     <input
                       type="text"
+                      class="w-100"
                       placeholder="Search here..."
                       v-model="searchMails"
                     />
-                    <span class="mx-2"> | </span>
-                    <span class="mx-2">Sort By</span>
-                    <span class="font-weight-bold"> Newest</span>
                   </div>
                 </div>
               </div>
-
-              <i
-                class="pi pi-trash deleteicon-color ml-n4 mb-2 c-pointer d-flex align-items-center px-4"
-                style="font-size: 20px"
-                v-if="markEmailDraft.length > 0"
-                @click="showConfirmModal(false)"
+              <div class="table-options" v-if="markEmailDraft.length > 0">
+                <el-icon class="text-danger c-pointer" @click="showConfirmModal(false)">
+                  <Delete />
+                </el-icon>
+              </div>
+                <Table
+                :data="searchEmailDraft"
+                :headers="DraftHeaders"
+                :checkMultipleItem="true"
+                @checkedrow="handleSelectionChange"
+                v-loading="loading"
               >
-              </i>
+              <template #message="{ item }">
+                  <div>
+                    <router-link
+                      :to="{
+                              name: 'ComposeEmail',
+                              query: { emaildraft: item.id },
+                            }"
+                      class="text-decoration-none"
+                    >
+                      <el-tooltip
+                        class="box-item"
+                        effect="dark"
+                        :content="item.subject"
+                        placement="top-start"
+                      >
+                        <div class="font-weight-600 text-dark">{{
+                          item.subject && item.subject.length > 25
+                            ? `${item.subject
+                                .split("")
+                                .slice(0, 25)
+                                .join("")}...`
+                            : item.subject
+                            ? item.subject
+                            : ""
+                        }}</div>
+                      </el-tooltip>
+                      <el-tooltip
+                        class="box-item"
+                        effect="dark"
+                        :content="item.body"
+                        placement="top-start"
+                      >
+                        <div class="font-weight-600">
+                          {{
+                            item.body && item.body.length > 25
+                              ? `${item.body
+                                  .split("")
+                                  .slice(0, 25)
+                                  .join("")}...`
+                              : item.body
+                              ? item.body
+                              : ""
+                          }}</div
+                        >
+                      </el-tooltip>
+                    </router-link>
+                  </div>
+                </template>
+                <template #dateSent="{ item }">
+                  <div>
+                    <router-link
+                     :to="{
+                              name: 'ComposeEmail',
+                              query: { emaildraft: item.id },
+                            }"
+                      class="text-decoration-none"
+                    >
+                      <span class="timestamp ml-1">{{ new Date(item.dateModified).toLocaleString() }}</span>
+                    </router-link>
+                  </div>
+                </template>
+                <template #delete="{ item }">
+                  <span class="small-text">
+                      <el-icon
+                        :size="20"
+                        class="ml-2 color-deleteicon pt-2 c-pointer"
+                        style="font-size: 20px"
+                        @click="showConfirmModal(item.id)"
+                      >
+                        <Delete />
+                      </el-icon>
+                    </span>
+                </template>
+               </Table>
 
               <div class="row">
                 <div class="col-md-12">
-                  <div class="row header-row light-grey-bg py-2">
-                    <div class="col-md-12 px-0">
-                      <div class="row">
-                        <div
-                          class="col-md-1 text-md-right text-lg-center px-0"
-                          v-if="drafts.length > 0"
-                        >
-                          <input
-                            type="checkbox"
-                            class="ml-3"
-                            name="all"
-                            id="all"
-                            @change="markAllMailDrafts"
-                            :checked="markEmailDraft.length === drafts.length"
-                          />
-                        </div>
-                        <div class="col-md-7">
-                          <span class="th">Message</span>
-                        </div>
-                        <div class="col-md-4">
-                          <span class="th"></span>
-                        </div>
-                      </div>
-                    </div>
-                  </div>
                   <div class="row">
                     <div class="col-md-12">
                       <hr class="hr mt-0" />
                     </div>
                   </div>
-                  <div
-                    class="row"
-                    v-for="(draft, index) in searchEmailDraft"
-                    :key="index"
-                  >
-                    <div class="col-md-12">
-                      <div class="row py-1">
-                        <div class="col-md-1">
-                          <input
-                            type="checkbox"
-                            name=""
-                            id=""
-                            @change="mark1Draft(draft)"
-                            :checked="
-                              markEmailDraft.findIndex(
-                                (i) => i.id === draft.id
-                              ) >= 0
-                            "
-                          />
-                        </div>
-                        <div
-                          class="col-md-7 d-md-flex flex-column pl-0 small-text"
-                        >
-                          <router-link
-                            :to="{
-                              name: 'ComposeEmail',
-                              query: { emaildraft: draft.id },
-                            }"
-                            class="text-decoration-none text-dark font-weight-700"
-                          >
-                            <span
-                              class="d-flex justify-content-between msg-n-time"
-                            >
-                              <span
-                                class="font-weight-600 small-text text-capitalize"
-                                >{{ draft.subject.toLowerCase() }}</span
-                              >
-                              <span class="timestamp">{{
-                                new Date(draft.dateModified).toLocaleString()
-                              }}</span>
-                            </span>
-                          </router-link>
-                          <span class="brief-message text-capitalize small-text"
-                            ><router-link
-                              :to="{
-                                name: 'ComposeEmail',
-                                query: { emaildraft: draft.id },
-                              }"
-                              class="text-decoration-none"
-                            >
-                              {{ formatMessage(draft.body) }}
-                            </router-link></span
-                          >
-                        </div>
-                        <div
-                          class="col-md-3 col-ms-12 d-flex justify-content-between"
-                        >
-                          <span class="hidden-header font-weight-bold"> </span>
-                          <span></span>
-                          <span class="small-text">
-                            <i
-                              class="c-pointer pr-3 pi pi-trash delete-icon"
-                              @click="showConfirmModal(draft.id)"
-                              style="font-size: 18px"
-                            >
-                            </i
-                          ></span>
-                        </div>
-                      </div>
-                      <div class="row">
-                        <div class="col-md-12">
-                          <hr class="hr" />
-                        </div>
-                      </div>
-                    </div>
-                  </div>
-                  <ConfirmDialog />
-                  <Toast />
                   <div class="row" v-if="drafts.length === 0 && !loading">
                     <div class="col-md-12 d-flex justify-content-center">
                       <span class="my-4 font-weight-bold"
@@ -166,21 +141,27 @@
 <script>
 import { computed, ref } from "vue";
 import communicationService from "../../services/communication/communicationservice";
-import { useConfirm } from "primevue/useconfirm";
-// import { useStore } from "vuex";
 import store from '../../store/store';
-import { useToast } from "primevue/usetoast";
 import stopProgressBar from "../../services/progressbar/progress";
 import axios from "@/gateway/backendapi";
 import Loading from "../../components/loading/LoadingComponent";
+import Table from "@/components/table/Table";
+import { ElMessage, ElMessageBox } from "element-plus";
 
 export default {
-  components: { Loading },
+  components: { Loading, Table },
   setup() {
-    // const store = useStoredraftId
     const drafts = ref(store.getters["communication/emailDrafts"]);
     const loading = ref(false);
+    const DraftHeaders = ref([
+      { name: " MESSAGE", value: "message" },
+      { name: " DATE", value: "dateSent" },
+      { name: '', value: 'delete' },
+    ]);
 
+    const handleSelectionChange = (val) => {
+      markEmailDraft.value = val
+    }
     const getEmailDrafts = async () => {
       loading.value = true;
       const data = await communicationService.getEmailDrafts();
@@ -267,12 +248,11 @@ export default {
         )
         .then((res) => {
           if (res) {
-            toast.add({
-              severity: "success",
-              summary: "Delete Successful",
-              detail: `${ markEmailDraft.value.length > 1 ? 'Selected Drafts have' : 'Draft has'} been deleted successfully ` ,
-              life: 3000,
-            });
+            ElMessage({
+            type: "success",
+            message: `${ markEmailDraft.value.length > 1 ? 'Selected Drafts have' : 'Draft has'} been deleted successfully `,
+            duration: 5000
+          });
             drafts.value = !id
               ? removeDeletedDraftedEmailsFromDraftsEmailsList(
                   markEmailDraft.value
@@ -285,23 +265,19 @@ export default {
             }
             markEmailDraft.value = [];
           } else {
-            toast.add({
-              severity: "success",
-              summary: "Confirmed",
-              detail: `${res}`,
-              life: 3000,
-            });
+            ElMessage({
+            type: "success",
+            message: res,
+            duration: 5000
+          });
           }
         })
         .catch((err) => {
           stopProgressBar();
-          toast.add({
-            severity: "error",
-            summary: "Delete Error",
-            detail: `${
-              markEmailDraft.value > 1 ? "Selected Drafts" : "Draft"
-            } could not be deleted,`,
-            life: 3000,
+          ElMessage({
+            type: "error",
+            message: `${markEmailDraft.value > 1 ? "Selected Drafts" : "Draft" } could not be deleted,`,
+            duration: 5000
           });
           console.log(err);
         });
@@ -325,27 +301,32 @@ export default {
       }
     };
 
-    const confirm = useConfirm();
-    let toast = useToast();
     const showConfirmModal = (id) => {
-      confirm.require({
-        message: "Are you sure you want to proceed?",
-        header: "Confirmation",
-        icon: "pi pi-exclamation-triangle",
-        acceptClass: "confirm-delete",
-        rejectClass: "cancel-delete",
-        accept: () => {
+       ElMessageBox.confirm(
+        "Are you sure you want to proceed? This operation can't be reversed ",
+        "Confirm delete",
+        {
+          confirmButtonText: "OK",
+          cancelButtonText: "Cancel",
+          type: "error",
+        }
+      )
+        .then(() => {
           deleteMailDrafts(id);
-        },
-        reject: () => {
-          //  toast.add({severity:'info', summary:'Rejected',
-          //  detail:'You have rejected', life: 3000});
-        },
-      });
+        })
+        .catch(() => {
+          ElMessage({
+            type: "info",
+            message: "Delete discarded",
+            duration: 5000
+          });
+        });
     };
 
     return {
       drafts,
+      handleSelectionChange,
+      DraftHeaders,
       loading,
       createElementFromHTML,
       formatMessage,
@@ -362,8 +343,13 @@ export default {
 </script>
 
 <style scoped>
+.table-options {
+  border: 1px solid rgb(212, 221, 227);
+  border-bottom: none;
+  padding: 7px 7px 0 7px
+}
 .search-div {
-  width: fit-content;
+  /* width: fit-content; */
   padding: 10px;
   background: #f5f8f9;
   border-radius: 200px;

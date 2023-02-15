@@ -42,9 +42,6 @@
             <h3 class="font-weight-700 mt-3">
               {{ Math.abs(pledgesSummary.totalPledges).toLocaleString() }}.00 <span class="text-secondary small">NGN</span>
             </h3>
-            <!-- <div class="small text-secondary">
-              Last updated on July 9, 2022 at 1:07PM GMT+1
-            </div> -->
           </div>
           <div class="col-md-3 mt-3 mt-md-0">
             <div class="font-weight-bold small text-secondary">
@@ -509,7 +506,7 @@
 
 <script>
 import { ref, computed } from "vue";
-import finish from "../../services/progressbar/progress";
+// import finish from "../../services/progressbar/progress";
 import MembersSearch from "../../components/membership/MembersSearch.vue";
 import axios from "@/gateway/backendapi";
 import Calendar from "primevue/calendar";
@@ -677,7 +674,7 @@ export default {
       loading.value = true;
       try {
         const res = await axios.get("/api/Pledge/GetAllPledges");
-        finish();
+        // finish();
         allPledgeList.value = res.data.returnObject;
         // allPledgeStatus.value = res.data.returnObject.map((i)  => ({
         //   status: i.status
@@ -694,7 +691,7 @@ export default {
         console.log(allPerson.value , "allPledgeStatus");
         loading.value = false;
       } catch (error) {
-        finish();
+        // finish();
         console.log(error);
         loading.value = false;
         networkError.value = true;
@@ -730,7 +727,7 @@ export default {
           );
         })
         .catch((err) => {
-          finish();
+          // finish();
           if (err.response.status === 400) {
             toast.add({
               severity: "error",
