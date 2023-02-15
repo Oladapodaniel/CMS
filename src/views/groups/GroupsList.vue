@@ -302,8 +302,6 @@ export default {
     const router = useRouter();
     const route = useRoute();
     const lastGroupChild = ref({});
-   
-   
     const confirmDelete = (id, index) => {
       confirm.require({
         message: "Do you want to delete this group?",

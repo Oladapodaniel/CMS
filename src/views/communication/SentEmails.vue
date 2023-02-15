@@ -9,182 +9,147 @@
               <div class="row d-md-flex align-items-center mt-3 mb-4">
                 <div class="col-md-12 col-sm-12">
                   <div class="search-div">
-                    <span><el-icon><Search /></el-icon></span>
+                    <span
+                      ><el-icon><Search /></el-icon
+                    ></span>
                     <input
                       type="text"
                       placeholder="Search here..."
                       v-model="searchMail"
                     />
-                    <span class="mx-2"> | </span>
-                    <span class="mx-2">Sort By</span>
-                    <span class="font-weight-bold"> Newest</span>
                   </div>
                 </div>
               </div>
-
-              <div class="row table-box" v-loading="loading">
-                <div class="col-md-12">
-                  <el-tooltip class="box-item" effect="dark" v-if="markedMail.length > 0" content="delete marked"
-                  placement="top-start">
-                  <el-icon :size="20" class="color-deleteicon text-danger c-pointer" style="font-size: 15px" v-if="markedMail.length > 0" @click="showConfirmModal(false)">
+              <div class="table-options" v-loading="loading" v-if="markedMail.length > 0">
+                <el-tooltip
+                  class="box-item"
+                  effect="dark"
+                  v-if="markedMail.length > 0"
+                  content="delete marked"
+                  placement="top-start"
+                >
+                  <el-icon
+                    :size="20"
+                    class="color-deleteicon text-danger c-pointer"
+                    style="font-size: 15px"
+                    v-if="markedMail.length > 0"
+                    @click="showConfirmModal(false)"
+                  >
                     <Delete />
                   </el-icon>
-                  </el-tooltip>
-                </div>
+                </el-tooltip>
               </div>
-              <div class="row">
-                <div class="col-md-12">
-                  <div class="row header-row  light-grey-bg py-2" >
-                    <div class="col-md-12">
-                      <div class="row">
-                        <div
-                          class="col-md-1 "
-                          v-if="emails.length > 0"
-                        >
-                          <input
-                            type="checkbox"
-                            name="all"
-                            id="all"
-                            @change="markAllMails"
-                            :checked="
-                              markedMail.length > 0 &&
-                              markedMail.length === emails.length
-                            "
-                          />
-                        </div>
-                          <div class="col-md-6">
-                            <span class="th">Message</span>
-                          </div>
-                        <div class="col-md-4">
-                          <span class="th">Sent By</span>
-                        </div>
-                        <div class="col-md-1">
-                        </div>
-                      </div>
-                    </div>
-                  </div>
-                  <div class="row">
-                    <div class="col-md-12">
-                      <hr class="hr mt-0" />
-                    </div>
-                  </div>
-
-                  <div class="row"  v-if="emails.length > 0">
-                    <div class="col-md-12" >
-                      <div
-                        class="row"
-                        v-for="(email, index) in searchEmails"
-                        :key="index"
+              <Table
+                :data="searchEmails"
+                :headers="EmailHeaders"
+                :checkMultipleItem="true"
+                @checkedrow="handleSelectionChange"
+                v-loading="loading"
+              >
+                <template #message="{ item }">
+                  <div>
+                    <router-link
+                      :to="{
+                        name: 'ComposeEmail',
+                        query: { messageId: item.id },
+                      }"
+                      class="text-decoration-none"
+                    >
+                      <el-tooltip
+                        class="box-item"
+                        effect="dark"
+                        :content="item.subject"
+                        placement="top-start"
                       >
-                        <div class="col-md-12">
-                          <div class="row pt-2 pb-1">
-                            <div class="col-md-1 mt-2">
-                              <input
-                              type="checkbox"
-                                name=""
-                                id=""
-                                @change="mark1Email(email)"
-                                :checked="
-                                  markedMail.findIndex(
-                                    (i) => i.id === email.id
-                                  ) >= 0
-                                "
-                              />
-                            </div>
-                            <div class="col-md-6 d-md-flex flex-column">
-                              <span class="msg-n-time">
-                                <router-link
-                                  :to="{
-                                    name: 'ComposeEmail',
-                                    query: { messageId: email.id },
-                                  }"
-                                  class="text-decoration-none d-flex justify-content-between small-text"
-                                >
-                                  <span
-                                    class="font-weight-bold text-dark text-capitalize"
-                                    >{{
-                                      email.subject
-                                        ? email.subject.toLowerCase()
-                                        : ""
-                                    }}</span
-                                  >
-                                  <span class="timestamp small-text">{{
-                                    email.dateSent
-                                  }}</span>
-                                </router-link>
-                              </span>
-                              <span class="brief-message">
-                                <router-link
-                                  :to="{
-                                    name: 'ComposeEmail',
-                                    query: { messageId: email.id },
-                                  }"
-                                  class="text-decoration-none small-text"
-                                  ><article>
-                                    {{ formatMessage(email.message) }}
-                                  </article></router-link
-                                >
-                              </span>
-                            </div>
-                            <div
-                              class="col-md-4 col-ms-12 d-flex justify-content-between"
-                            >
-                              <span class="hidden-header font-weight-bold"
-                                >Sent By:
-                              </span>
-                              <span class="small-text">{{
-                                email.sentByUser
-                              }}</span>
-                            </div>
-                            <div
-                              class="col-md-1 col-ms-12 d-flex justify-content-between"
-                            >
-                              <span class="hidden-header font-weight-bold"
-                                >
-                              </span>
-                              <span class="small-text">
-                                <el-icon :size="20" class="ml-2 color-deleteicon  pt-2  c-pointer" style="font-size:20px" 
-                                     @click="showConfirmModal(email.id)">
-                                  <Delete />
-                                </el-icon>
-                              </span>
-                            </div>
-                          </div>
-                          <div class="row">
-                            <div class="col-md-12">
-                              <hr class="hr" />
-                            </div>
-                          </div>
-                        </div>
-                      </div>
-                    </div>
+                        <div class="font-weight-600 text-dark">{{
+                          item.subject && item.subject.length > 25
+                            ? `${item.subject
+                                .split("")
+                                .slice(0, 25)
+                                .join("")}...`
+                            : item.subject
+                            ? item.subject
+                            : ""
+                        }}</div>
+                      </el-tooltip>
+                      <el-tooltip
+                        class="box-item"
+                        effect="dark"
+                        :content="item.message"
+                        placement="top-start"
+                      >
+                        <div class="font-weight-600">
+                          {{
+                            item.message && item.message.length > 25
+                              ? `${item.message
+                                  .split("")
+                                  .slice(0, 25)
+                                  .join("")}...`
+                              : item.message
+                              ? item.message
+                              : ""
+                          }}</div
+                        >
+                      </el-tooltip>
+                    </router-link>
                   </div>
-
-                  <div class="row" v-if="emails.length === 0 && !loading">
-                    <div class="col-md-12 d-flex justify-content-center">
-                      <span class="my-4 font-weight-bold">No sent mesages</span>
-                    </div>
+                </template>
+                <template #dateSent="{ item }">
+                  <div>
+                    <router-link
+                      :to="{
+                        name: 'ComposeEmail',
+                        query: { messageId: item.id },
+                      }"
+                      class="text-decoration-none"
+                    >
+                      <span class="timestamp ml-1">{{ item.dateSent }}</span>
+                    </router-link>
                   </div>
-
-                  <!-- <div class="row" v-if="emails.length === 0 && loading">
-                    <div class="col-md-12 py-2 d-flex justify-content-center">
-                      <Loading :loading="loading" />
-                    </div>
-                  </div> -->
-
-                  <div class="conatiner">
-                    <div class="row">
-                      <div class="col-md-12 mb-3 pagination-container">
-                        <PaginationButtons
-                          @getcontent="getEmailsByPage"
-                          :itemsCount="itemsCount"
-                          :currentPage="currentPage"
-                        />
-                      </div>
-                    </div>
+                </template>
+                <template #sentBy="{ item }">
+                  <div>
+                    <router-link
+                      :to="{
+                        name: 'ComposeEmail',
+                        query: { messageId: item.id },
+                      }"
+                      class="text-decoration-none"
+                    >
+                      <span class="small-text">{{ item.sentByUser }}</span>
+                    </router-link>
                   </div>
+                </template>
+                <template #delete="{ item }">
+                  <span class="small-text">
+                      <el-icon
+                        :size="20"
+                        class="ml-2 color-deleteicon pt-2 c-pointer"
+                        style="font-size: 20px"
+                        @click="showConfirmModal(item.id)"
+                      >
+                        <Delete />
+                      </el-icon>
+                    </span>
+                </template>
+              </Table>
+              <div class="row" v-if="emails.length === 0 && !loading">
+                <div class="col-md-12 d-flex justify-content-center">
+                  <span class="my-4 font-weight-bold">No sent mesages</span>
                 </div>
               </div>
+            </div>
+          </div>
+        </div>
+        <div class="conatiner">
+          <div class="row">
+            <div class="col-md-12 mb-3 pagination-container">
+              <PaginationButtons
+                @getcontent="getEmailsByPage"
+                :itemsCount="itemsCount"
+                :currentPage="currentPage"
+                
+              />
             </div>
           </div>
         </div>
@@ -200,12 +165,13 @@ import PaginationButtons from "../../components/pagination/PaginationButtons";
 import axios from "@/gateway/backendapi";
 import Loading from "../../components/loading/LoadingComponent";
 import stopProgressBar from "../../services/progressbar/progress";
-import store from '../../store/store';
-import { Search } from '@element-plus/icons-vue'
-import { ElMessage, ElMessageBox } from 'element-plus'
+import store from "../../store/store";
+import { Search } from "@element-plus/icons-vue";
+import { ElMessage, ElMessageBox } from "element-plus";
+import Table from "@/components/table/Table";
 
 export default {
-  components: { PaginationButtons, Loading },
+  components: { PaginationButtons, Loading, Table },
   directives: {},
   setup() {
     const emails = ref([]);
@@ -217,27 +183,34 @@ export default {
     const currentPage = ref(0);
     const loading = ref(true);
     const searchMail = ref("");
+    const EmailHeaders = ref([
+      { name: " MESSAGE", value: "message" },
+      { name: " DATE", value: "dateSent" },
+      { name: " SENTBY", value: "sentBy" },
+      { name: '', value: 'delete' },
+    ]);
 
     const getSentEmails = async () => {
-      
-      try{
+      try {
         loading.value = true;
-         /*eslint no-undef: "warn"*/
+        /*eslint no-undef: "warn"*/
         NProgress.start();
-          const data = await communicationService.getSentEmails(0);
-          loading.value = false;
+        const data = await communicationService.getSentEmails(0);
+        loading.value = false;
         if (data && data.length > 0) {
           emails.value = data;
-          console.log(emails.value, "emails.value✔");
         }
-      }
-      catch(error){
-         loading.value = false;
+      } catch (error) {
+        loading.value = false;
         NProgress.done();
         console.log(error);
       }
     };
     getSentEmails();
+
+    const handleSelectionChange = (val) => {
+      markedMail.value = val;
+    };
 
     const formatMessage = (message) => {
       const formatted =
@@ -318,95 +291,86 @@ export default {
 
     const deleteEmails = async (id) => {
       try {
-        let stringOfEmailIds = id ? id : getIdsOfEmailsToDelete(markedMail.value);
+        let stringOfEmailIds = id
+          ? id
+          : getIdsOfEmailsToDelete(markedMail.value);
 
         const { data } = await axios.delete(
           `/api/Messaging/DeleteSentEmails?SentEmailIdList=${stringOfEmailIds}`
         );
         if (data.deleted) {
           ElMessage({
-              type: 'success',
-              message: markedMail.value.length > 1 ? 'Selected Emails have been deleted successfully ' : ' Email has been deleted successfully  ',
-            })
-          // toast.add({
-          //   severity: "success",
-          //   summary: "Delete successfull",
-          //   detail: `${markedMail.value.length > 1 ? '' : 'Email has' } been deleted successfully`,
-          //   life: 3000,
-          // });
-          emails.value = !id ? removeDeletedEmailsFromEmailList(markedMail.value) : emails.value.filter(i => i.id !== id);
+            type: "success",
+            message: `${markedMail.value.length > 1 ? '' : 'Email has' } been deleted successfully`,
+            duration: 5000
+          });
+          emails.value = !id
+            ? removeDeletedEmailsFromEmailList(markedMail.value)
+            : emails.value.filter((i) => i.id !== id);
           if (id) {
-          store.dispatch('communication/removeSentEmails', id)
+            store.dispatch("communication/removeSentEmails", id);
           } else {
             removeDeletedEmailsFromStore(markedMail.value);
           }
-          markedMail.value = [ ];
+          markedMail.value = [];
         } else {
           ElMessage({
-              type: 'error',
-              message: data.message,
-            })
-          // toast.add({
-          //   severity: "error",
-          //   summary: "Delete Failed",
-          //   detail: `${data.message}`,
-          //   life: 3000,
-          // });
+            type: "error",
+            message: data.message,
+          });
         }
       } catch (error) {
         console.log(error);
         ElMessage({
-              type: 'error',
-              message: markedMail.value.length > 1 ? 'Selected Emails could not be deleted, Please try reloading' : 'Email could not be deleted, Please try reloading'  ,
-            })
-        // toast.add({
-        //   severity: "error",
-        //   summary: "Delete Failed",
-        //   detail: `${markedMail.value.length > 1 ? 'Selected Emails' : 'Email'} could not be deleted, Please try reloading`,
-        //   life: 3000,
-        // });
+          type: "error",
+          message: `${markedMail.value.length > 1 ? 'Selected Emails' : 'Email'} could not be deleted, Please try reloading`,
+          duration: 5000
+        });
         stopProgressBar();
       }
     };
 
-
-    const removeDeletedEmailsFromEmailList = deletedEmailsArr => {
-      return emails.value.filter(i => {
-        const emailIndexInMarked = deletedEmailsArr.findIndex(j => j.id === i.id);
+    const removeDeletedEmailsFromEmailList = (deletedEmailsArr) => {
+      return emails.value.filter((i) => {
+        const emailIndexInMarked = deletedEmailsArr.findIndex(
+          (j) => j.id === i.id
+        );
         if (emailIndexInMarked < 0) return true;
         return false;
-      })
-    }
+      });
+    };
 
-    const removeDeletedEmailsFromStore = deletedEmails => {
+    const removeDeletedEmailsFromStore = (deletedEmails) => {
       for (let email of deletedEmails) {
-        store.dispatch('communication/removeSentEmails', email.id)
+        store.dispatch("communication/removeSentEmails", email.id);
       }
-    }
+    };
 
     const showConfirmModal = (id) => {
       ElMessageBox.confirm(
-        "Are you sure you want to proceed? This operation can't be reversed " ,
-        'Confirm delete',
+        "Are you sure you want to proceed? This operation can't be reversed ",
+        "Confirm delete",
         {
-          confirmButtonText: 'OK',
-          cancelButtonText: 'Cancel',
-          type: 'error',
+          confirmButtonText: "OK",
+          cancelButtonText: "Cancel",
+          type: "error",
         }
       )
         .then(() => {
-           deleteEmails(id);
+          deleteEmails(id);
         })
         .catch(() => {
           ElMessage({
-            type: 'info',
-            message: 'Delete discarded',
-          })
-        })
+            type: "info",
+            message: "Delete discarded",
+          });
+        });
     };
 
     return {
       emails,
+      EmailHeaders,
+      handleSelectionChange,
       Search,
       formatMessage,
       getEmailsByPage,
@@ -429,11 +393,12 @@ export default {
 <style scoped>
 * {
   box-sizing: border-box;
-  /* color: #02172e; */
 }
-/* .table-box {
-  border: 1px solid #4762f01f;
-} */
+.table-options {
+  border: 1px solid rgb(212, 221, 227);
+  border-bottom: none;
+  padding: 7px 7px 0 7px
+}
 .search-div {
   width: fit-content;
   padding: 10px;
@@ -450,7 +415,7 @@ export default {
   font-weight: 800;
   font-size: 12px;
   background: #fff;
-  border: 1px solid #E0E0E0;
+  border: 1px solid #e0e0e0;
   border-bottom: none;
 }
 
