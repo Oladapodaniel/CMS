@@ -8,99 +8,45 @@
             <div class="col-md-12 px-0">
               <div class="row d-md-flex align-items-center mt-2 mb-4">
                 <div class="col-md-12">
-                  <router-link to="/tenant/sms/addgroup" class="create-btn font-weigth-bold border-0">
-                    <span class="mr-2 font-weight-700" style="font-size: 22px">+</span>
-                    Create new group
+                  <router-link to="/tenant/sms/addgroup" class="create-btn">
+                  <el-button color="#EBEFF4" round class="head-btn">Create new group</el-button>
                   </router-link>
                 </div>
               </div>
               <div>
               </div>
-              <div class="row table-box" v-loading="loading">
-                <div class="col-md-12">
-                  <div class="row header-row">
-                    <div class="col-md-12">
-                      <el-icon class="text-danger" v-if="markedContact.length > 0" @click="showConfirmModal1">
-                        <Delete />
-                      </el-icon>
-                      <div class="row light-grey-bg py-2 font-weight-600 small-text">
-                        <div class="col-md-1" v-if="groups.length > 0">
-                          <input type="checkbox" name="all" id="all" @change="markAllContact"
-                            :checked="markedContact.length === groups.length" />
-                        </div>
-                        <div class="col-md-4">
-                          <span class="th small-text">Name</span>
-                        </div>
-                        <div class="col-md-3">
-                          <span class="th small-text">Total Numbers</span>
-                        </div>
-                        <div class="col-md-3">
-                          <span class="th small-text">Date Created</span>
-                        </div>
-                        <div class="col-md-1">
-                          <span class="th small-text"></span>
-                        </div>
-                      </div>
-                    </div>
-                  </div>
-                  <div class="row">
-                    <div class="col-md-12 gName px-0">
-                      <hr class="hr" />
-                    </div>
-                  </div>
-                  <div class="row" v-for="(group, index) in groups" :key="index">
-                    <div class="col-md-12 border-bottom">
-                      <div class="row">
-                        <div class="col-md-1 py-2">
-                          <input type="checkbox" name="" id="" @change="markAcontact(group)" :checked="
-                            markedContact.findIndex(
-                              (i) => i.id === group.id
-                            ) >= 0
-                          " />
-                        </div>
 
-                        <div class="col-md-4 d-flex justify-content-between align-items-center">
-                          <span class="hidden-header">NAME: </span>
-                          <span>
-                            <router-link class="small-text brief-message" :to="{
-                              name: 'EditContactList',
-                              params: { groupId: group.id },
-                            }">{{ group.name }}</router-link>
-                          </span>
-                        </div>
-
-                        <div class="col-md-3 col-ms-12 d-flex justify-content-between align-items-center">
-                          <span class="hidden-header font-weight-bold">Total Numbers:
-                          </span>
-                          <span class="small-text">{{ group.numbers }}</span>
-                        </div>
-
-                        <div class="col-md-3 col-ms-12 d-flex justify-content-between align-items-center">
-                          <span class="hidden-header font-weight-bold">Date Created
-                          </span>
-                          <span class="small-text">{{
-                            formatDate(group.dateEntered)
-                          }}</span>
-                        </div>
-
-                        <div class="col-md-1 col-ms-12 d-flex align-items-center">
-                          <span @click="showConfirmModal(group.id, index)">
-                            <el-icon class="text-danger">
-                              <Delete />
-                            </el-icon>
-                          </span>
-                        </div>
-                      </div>
-                    </div>
-                  </div>
-
-                  <div class="row" v-if="groups.length === 0 && !loading">
-                    <div class="col-md-12 d-flex justify-content-center align-items-center">
-                      <span class="my-4 font-weight-bold">No groups</span>
-                    </div>
-                  </div>
-                </div>
+              <div class="table-options" v-if="markedContact.length > 0">
+                <el-icon class="text-danger c-pointer" @click="showConfirmModal1">
+                  <Delete />
+                </el-icon>
               </div>
+              <Table :data="groups" :headers="contactListHeaders" :checkMultipleItem="true"
+                @checkedrow="handleSelectionChange" v-loading="loading">
+                <template #name="{ item }">
+                  <span>
+                    <router-link class="font-weight-600" :to="{
+                      name: 'EditContactList',
+                      params: { groupId: item.id },
+                    }">{{ item.name }}</router-link>
+                  </span>
+                </template>
+                <template #numbers="{ item }">
+                  <span class="small-text">{{ item.numbers }}</span>
+                </template>
+                <template #dateEntered="{ item }">
+                  <span class="small-text">{{
+                    formatDate(item.dateEntered)
+                  }}</span>
+                </template>
+                <template v-slot:action="{ item }">
+                  <span @click="showConfirmModal(item.id)">
+                    <el-icon class="text-danger c-pointer">
+                      <Delete />
+                    </el-icon>
+                  </span>
+                </template>
+              </Table>
             </div>
           </div>
         </div>
@@ -115,11 +61,21 @@ import axios from "@/gateway/backendapi";
 import dateFormatter from "../../services/dates/dateformatter"
 import finish from "../../services/progressbar/progress"
 import { ElMessage, ElMessageBox } from 'element-plus'
+import Table from "@/components/table/Table"
 
 export default {
+  components: {
+    Table
+  },
   setup() {
     const groups = ref([]);
     const loading = ref(false);
+    const contactListHeaders = ref([
+      { name: 'NAME', value: 'name' },
+      { name: 'TOTAL NUMBERS', value: 'numbers' },
+      { name: 'DATE CREATED', value: 'dateEntered' },
+      { name: 'ACTION', value: 'action' },
+    ])
 
     const getGroups = async () => {
       try {
@@ -134,10 +90,10 @@ export default {
       }
     };
 
-    const deletePhoneGroup = async (id, index) => {
+    const deletePhoneGroup = async (id) => {
       try {
         await axios.delete(`/api/Messaging/DeletePhoneGroup?phoneGroupIdList=${id}`);
-        groups.value.splice(index, 1)
+        groups.value = groups.value.filter(i => i.id !== id)
         ElMessage({
           type: 'success',
           message: 'Phone group deleted',
@@ -163,7 +119,7 @@ export default {
       }
     }
 
-    const showConfirmModal = (id, index) => {
+    const showConfirmModal = (id) => {
       ElMessageBox.confirm(
         'This delete action cannot be reversed. do you want to continue?',
         'Confirm delete',
@@ -174,7 +130,7 @@ export default {
         }
       )
         .then(() => {
-          deletePhoneGroup(id, index);
+          deletePhoneGroup(id);
         })
         .catch(() => {
           ElMessage({
@@ -227,33 +183,6 @@ export default {
 
     // code to mark single contact in group
     const markedContact = ref([]);
-    const markAcontact = (contactid) => {
-      const contactIndex = markedContact.value.findIndex(
-        (i) => i.id === contactid.id
-      );
-      if (contactIndex < 0) {
-        markedContact.value.push(contactid);
-      } else {
-        markedContact.value.splice(contactIndex, 1);
-      }
-    };
-
-    // code to mark all contacts in group
-    const markAllContact = () => {
-      if (markedContact.value.length < groups.value.length) {
-        groups.value.forEach((i) => {
-          const contactInMarked = markedContact.value.findIndex(
-            (c) => c.id === i.id
-          );
-          if (contactInMarked < 0) {
-            markedContact.value.push(i);
-          }
-        });
-      } else {
-        markedContact.value = [];
-      }
-    };
-
 
     const showConfirmModal1 = () => {
       ElMessageBox.confirm(
@@ -276,6 +205,10 @@ export default {
         })
     };
 
+    const handleSelectionChange = (val) => {
+      markedContact.value = val
+    }
+
     return {
       groups,
       loading,
@@ -283,10 +216,10 @@ export default {
       showConfirmModal,
       formatDate,
       markedContact,
-      markAcontact,
-      markAllContact,
       deleteContactList,
       showConfirmModal1,
+      contactListHeaders,
+      handleSelectionChange
     };
   },
 };
@@ -297,8 +230,10 @@ export default {
   border: 1px solid #4762f01f;
 }
 
-.brief-message {
-  color: #4762f0;
+.table-options {
+  border: 1px solid rgb(212, 221, 227);
+  border-bottom: none;
+  padding: 7px 7px 0 7px
 }
 
 .search-div {
