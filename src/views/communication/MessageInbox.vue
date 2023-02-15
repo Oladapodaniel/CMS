@@ -7,134 +7,81 @@
           <div class="row px-0">
             <div class="col-md-12 px-0">
               <div class="row d-md-flex justify-content-between align-items-center mt-3 mb-4">
-                <div class="col-md-8 col-sm-12 pl-0">
+                <div class="col-md-8 col-sm-12">
                   <div class="search-div">
-                    <span><i class="pi pi-search mr-1"></i></span>
-                    <input type="text" placeholder="Search here..." v-model="searchSms" />
-                    <span class="float-right">
-                      <span class="mx-2"> | </span>
-                      <span class="mx-2">Sort By</span>
-                      <span class="font-weight-bold"> Newest</span>
-                    </span>
+                    <el-icon style="vertical-align: middle" class="search-sms mr-1">
+                      <Search />
+                    </el-icon>
+                    <input type="text" placeholder="Search here..." v-model="searchSms" class="w-100 pl-4" />
                   </div>
                 </div>
-                <div class="col-sm-5 col-md-3 ml-2 mt-sm-2 units-container">
+                <div class="col-sm-5 col-md-4 mt-sm-2 units-container">
                   <UnitsArea />
                 </div>
               </div>
-              <div class="row table-box mb-4" v-loading="loading">
-                <div class="col-md-12">
-                  <div class="row header-row light-grey-bg py-2">
-                    <div class="col-md-12">
-                      <el-icon class="text-danger" v-if="markedInboxMssg.length > 0" @click="showConfirmModal">
-                        <Delete />
-                      </el-icon>
-                      <div class="row">
-                        <div class="col-md-1 align-self-center" v-if="replies.length > 0">
-                          <input type="checkbox" name="" id="" @change="markAllInboxMssg"
-                            :checked="markedInboxMssg.length === replies.length" />
-                        </div>
-                        <div class="col-md-5 d-flex align-items-center">
-                          <span class="th">Message</span>
-                        </div>
-                        <div class="col-md-2">
-                          <span class="th">Sent By</span>
-                        </div>
-                        <div class="col-md-2">
-                          <span class="th">Units</span>
-                        </div>
-                        <div class="col-md-2">
-                          <span class="th">reports</span>
-                        </div>
-                      </div>
-                    </div>
+              <div class="table-options" v-if="markedInboxMssg.length > 0">
+                <el-icon class="text-danger c-pointer" @click="showConfirmModal">
+                  <Delete />
+                </el-icon>
+              </div>
+              <Table :data="searchSMS" :headers="repliesHeader" :checkMultipleItem="true"
+                @checkedrow="handleSelectionChange" v-loading="loading">
+                <template #message="{ item }">
+                  <div class="d-md-flex flex-column">
+                    <span class="d-flex justify-content-end justify-content-md-between">
+                      <span class="font-weight-bold">
+                        <router-link class="text-decoration-none text-dark" :to="{
+                          name: 'MessageDetails',
+                          params: { messageId: item.id },
+                        }">
+                          {{ item.subject }}
+                        </router-link></span>
+                    </span>
+                    <span class="small-text">
+                      <router-link class="text-decoration-none" :to="{
+                        name: 'MessageDetails',
+                        params: { messageId: item.id },
+                      }">
+                        {{
+                          item.message && item.message.length > 25
+                            ? `${item.message
+                              .split("")
+                              .slice(0, 25)
+                              .join("")}...`
+                            : item.message
+                        }}
+                      </router-link>
+                    </span>
                   </div>
-                  <div class="row">
-                    <div class="col-md-12 px-0">
-                      <hr class="hr mt-0" />
-                    </div>
-                  </div>
-
-                  <div class="row" v-for="(reply, index) in searchSMS" :key="index">
-                    <div class="col-md-12 py-2 border-bottom">
-                      <div class="row">
-                        <div class="col-md-1">
-                          <input type="checkbox" name="" id="" @change="mark1InboxItem(reply)" :checked="
-                            markedInboxMssg.findIndex(
-                              (i) => i.id === reply.id
-                            ) >= 0
-                          " />
-                        </div>
-                        <div class="col-md-5 d-md-flex flex-column">
-                          <span class="d-flex justify-content-between msg-n-time">
-                            <span class="font-weight-bold">
-                              <router-link class="text-decoration-none text-dark" :to="{
-                                name: 'MessageDetails',
-                                params: { messageId: reply.id },
-                              }">
-                                {{ reply.subject }}
-                              </router-link></span>
-                            <span class="timestamp" style="font-size:13px">{{ reply.dateSent }}</span>
-                          </span>
-                          <span class="brief-message small-text">
-                            <router-link class="text-decoration-none" :to="{
-                              name: 'MessageDetails',
-                              params: { messageId: reply.id },
-                            }">
-                              {{
-                                reply.message && reply.message.length > 25
-                                  ? `${reply.message
-                                    .split("")
-                                    .slice(0, 25)
-                                    .join("")}...`
-                                  : reply.message
-                              }}
-                            </router-link>
-                          </span>
-                        </div>
-                        <div class="col-md-2 col-sm-12 d-flex justify-content-between">
-                          <span class="hidden-header font-weight-bold">Sent By:
-                          </span>
-                          <span class="small-text">{{ reply.sentByUser }}</span>
-                        </div>
-                        <div class="col-md-2 col-sm-12 d-flex justify-content-between">
-                          <span class="hidden-header font-weight-bold">Units:
-                          </span>
-                          <span class="small-text">{{
-                            reply.smsUnitsUsed
-                          }}</span>
-                        </div>
-                        <div class="col-md-2 my-2 col-sm-12 d-flex justify-content-between">
-                          <span class="hidden-header font-weight-bold">Report:
-                          </span>
-                          <span class="c-pointer small-text primary-text">
-                            <router-link :to="{
-                              name: 'MessageDetails',
-                              params: { messageId: reply.id },
-                            }"> View
-                            </router-link>
-                          </span>
-                        </div>
-                      </div>
-                    </div>
-                  </div>
-
-                  <div class="row">
-                    <div class="col-md-12">
-                      <div class="row" v-if="replies.length === 0 && !loading">
-                        <div class="col-md-12 d-flex justify-content-center">
-                          <span class="my-4 font-weight-bold small-text">No received messages</span>
-                        </div>
-                      </div>
-                    </div>
-                  </div>
-                  <div class="conatiner">
-                    <div class="row">
-                      <div class="col-md-12 mb-3 pagination-container">
-                        <PaginationButtons @getcontent="getRepliesByPage" :itemsCount="itemsCount"
-                          :currentPage="currentPage" />
-                      </div>
-                    </div>
+                </template>
+                <template v-slot:dateSent="{ item }">
+                  <span class="timestamp" style="font-size:13px">{{ item.dateSent }}</span>
+                </template>
+                <template v-slot:sentByUser="{ item }">
+                  <span class="small-text">
+                    <span class="small-text">{{ item.sentByUser }}</span>
+                  </span>
+                </template>
+                <template v-slot:smsUnitsUsed="{ item }">
+                  <span class="small-text">{{
+                    item.smsUnitsUsed
+                  }}</span>
+                </template>
+                <template v-slot:report="{ item }">
+                  <span class="c-pointer small-text primary-text">
+                    <router-link :to="{
+                      name: 'MessageDetails',
+                      params: { messageId: item.id },
+                    }"> View
+                    </router-link>
+                  </span>
+                </template>
+              </Table>
+              <div class="conatiner">
+                <div class="row">
+                  <div class="col-md-12 mb-3 pagination-container">
+                    <PaginationButtons @getcontent="getRepliesByPage" :itemsCount="itemsCount"
+                      :currentPage="currentPage" />
                   </div>
                 </div>
               </div>
@@ -156,9 +103,10 @@ import Tooltip from "primevue/tooltip";
 import axios from "@/gateway/backendapi";
 import stopProgressBar from "../../services/progressbar/progress";
 import { ElMessage, ElMessageBox } from 'element-plus'
+import Table from "@/components/table/Table"
 
 export default {
-  components: { UnitsArea, PaginationButtons },
+  components: { UnitsArea, PaginationButtons, Table },
   directives: {
     tooltip: Tooltip,
   },
@@ -168,6 +116,13 @@ export default {
     const currentPage = ref(0);
     const loading = ref(false);
     const searchSms = ref("");
+    const repliesHeader = ref([
+      { name: "MESSAGE", value: "message" },
+      { name: "DATE", value: "dateSent" },
+      { name: "SENT BY", value: "sentByUser" },
+      { name: "UNIT", value: "smsUnitsUsed" },
+      { name: "REPORT", value: "report" },
+    ])
 
     const getSMSReplies = async () => {
       try {
@@ -239,33 +194,10 @@ export default {
 
     // code to mark single item
     const markedInboxMssg = ref([]);
-    const mark1InboxItem = (mssgInbox) => {
-      const mssgIndex = markedInboxMssg.value.findIndex(
-        (i) => i.id === mssgInbox.id);
-      {
-        if (mssgIndex < 0) {
-          markedInboxMssg.value.push(mssgInbox);
-        } else {
-          markedInboxMssg.value.splice(mssgIndex, 1);
-        }
-      }
-    };
 
-    // code to mark multiple item item in replies
-    const markAllInboxMssg = () => {
-      if (markedInboxMssg.value.length < replies.value.length) {
-        replies.value.forEach((i) => {
-          const mssgInReplies = markedInboxMssg.value.findIndex(
-            (t) => t.id === i.id
-          );
-          if (mssgInReplies < 0) {
-            markedInboxMssg.value.push(i);
-          }
-        });
-      } else {
-        markedInboxMssg.value = [];
-      }
-    };
+    const handleSelectionChange = (val) => {
+      markedInboxMssg.value = val
+    }
 
     // Function to delete replies sms
     const retain = (m) => {
@@ -284,7 +216,7 @@ export default {
 
           ElMessage({
             type: 'success',
-            message: 'Replies deleted',
+            message: 'Reply deleted',
             duration: 5000
           })
           markedInboxMssg.value.forEach((i) => {
@@ -313,11 +245,11 @@ export default {
       searchSms,
       searchSMS,
       markedInboxMssg,
-      mark1InboxItem,
-      markAllInboxMssg,
+      handleSelectionChange,
       retain,
       deleteRepliesMsg,
       showConfirmModal,
+      repliesHeader
     };
   },
 };
@@ -325,10 +257,15 @@ export default {
 
 <style scoped>
 .search-div {
-  width: fit-content;
+  /* width: fit-content; */
   padding: 10px;
   background: #f5f8f9;
   border-radius: 200px;
+}
+
+.search-sms {
+  position: absolute;
+  top: 14px;
 }
 
 .search-div input {
@@ -339,6 +276,12 @@ export default {
 
 .brief-message {
   color: #4762f0;
+}
+
+.table-options {
+  border: 1px solid rgb(212, 221, 227);
+  border-bottom: none;
+  padding: 7px 7px 0 7px
 }
 
 .compose-btn {

@@ -9,11 +9,10 @@
               <div class="row d-md-flex align-items-center mt-3 mb-4">
                 <div class="col-md-8 col-sm-12">
                   <div class="search-div">
-                    <span><i class="pi pi-search search-sms mr-1"></i></span>
+                    <el-icon style="vertical-align: middle" class="search-sms mr-1">
+                      <Search />
+                    </el-icon>
                     <input type="text" placeholder="Search here..." v-model="searchDrafts" class="w-100 pl-4" />
-                    <!-- <span class="mx-2"> | </span>
-                    <span class="mx-2">Sort By</span>
-                    <span class="font-weight-bold"> Newest</span> -->
                   </div>
                 </div>
                 <div class="col-sm-5 col-md-4 mt-sm-2 units-container">
@@ -21,6 +20,11 @@
                 </div>
               </div>
 
+              <div class="table-options" v-if="markedDraft.length > 0">
+                <el-icon class="text-danger c-pointer" @click="showConfirmModal">
+                  <Delete />
+                </el-icon>
+              </div>
               <Table :data="searchDraftMessage" :headers="DraftHeaders" :checkMultipleItem="true"
                 @checkedrow="handleSelectionChange" v-loading="loading">
                 <template #body="{ item }">
@@ -39,7 +43,7 @@
                 <template v-slot:action="{ item }">
                   <div>
                     <span class="small-text">
-                      <el-icon class="text-danger" @click="showConfirmModal(item)">
+                      <el-icon class="text-danger c-pointer" @click="showConfirmModal(item)">
                         <Delete />
                       </el-icon>
                     </span>
@@ -226,6 +230,12 @@ export default {
   background: none;
   border: none;
   outline: transparent;
+}
+
+.table-options {
+  border: 1px solid rgb(212, 221, 227);
+  border-bottom: none;
+  padding: 7px 7px 0 7px
 }
 
 .brief-message {
