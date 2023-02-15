@@ -7,11 +7,14 @@
           <div class="row px-0">
             <div class="col-md-12 px-0">
               <div class="row d-md-flex align-items-center mt-3 mb-4">
-                <div class="col-md-12 col-sm-12">
-                  <div class="search-div">
-                    <span><i class="pi pi-search mr-1"></i></span>
+                <div class="col-md-6 col-sm-12">
+                  <div class="search-div d-flex  align-items-center">
+                    <span class="mr-2"
+                      ><el-icon><Search /></el-icon
+                    ></span>
                     <input
                       type="text"
+                      class="w-100"
                       placeholder="Search here..."
                       v-model="searchMails"
                     />
@@ -346,7 +349,7 @@ export default {
   padding: 7px 7px 0 7px
 }
 .search-div {
-  width: fit-content;
+  /* width: fit-content; */
   padding: 10px;
   background: #f5f8f9;
   border-radius: 200px;
