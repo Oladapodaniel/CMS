@@ -45,7 +45,7 @@
       <!-- tosin working on tables -->
 
       <div class="row">
-        <div class="col-12 px-0" id="table">
+        <div class="col-12 px-0 " id="table">
           <div class="top-con" id="ignore2">
             <div class="table-top p-3 mt-5">
               <div class="col-md-5">
@@ -71,10 +71,10 @@
             <el-table
             :data="searchGroup"
             v-loading="loading"
-            class="groupTree"
+            stripe 
+            class="groupTree "
             style="width: 100%"
             row-key="id"
-            lazy
             :tree-props="{ children: 'children', hasChildren: 'hasChildren' }"
           >
             <el-table-column width="40%" label="Group">
@@ -466,7 +466,8 @@ export default {
 @media screen and (max-width: 600px) {
   .screensize{
     min-width: 500px;
-    overflow-x: scroll;
+    overflow: hidden;
+    overflow-x: auto !important;
   }
 }
 @media screen and (min-width: 580px) {
