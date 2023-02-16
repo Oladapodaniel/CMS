@@ -1063,7 +1063,7 @@
                 </div>
               </div>
 
-              <div class="row table-header-row py-2">
+              <!-- <div class="row table-header-row py-2">
                 <div class="col-md-1" v-if="groupMembers.length > 0"></div>
                 <div class="col-md-3">
                   <span class="py-2 font-weight-bold">NAME</span>
@@ -1079,7 +1079,12 @@
                   <span class="py-2 font-weight-bold">PHONE</span>
                 </div>
                 <div class="col-md-1"></div>
-              </div>
+              </div> -->
+              <Table :data="searchMember" :header="createGroupHeaders" :checkMultipleItem="true" @checkedrow="handleSelectionChange" >
+                <template #name>
+                  <div class="col-md-1" v-if="groupMembers.length > 0"></div>
+                </template>
+              </Table>
               <div class="row" v-if="loadingMembers">
                 <div class="col-md-12">
                   <div class="row">
@@ -1572,6 +1577,7 @@ import { ElMessage } from "element-plus";
 import { useStore } from "vuex";
 import grousService from "../../services/groups/groupsservice";
 import flatten from "../../services/groupArray/flatTree";
+import Table from "@/components/table/Table"
 
 export default {
   directives: {
@@ -1587,6 +1593,7 @@ export default {
     emailComponent,
     ImportToGroup,
     GroupTree,
+    Table
   },
   setup() {
     const store = useStore();
