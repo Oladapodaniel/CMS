@@ -134,7 +134,7 @@ export default {
   background: #ebeff4;
   height: inherit;
   overflow: auto;
-  z-index: 2100;
+  z-index: 1;
 }
 
 .hide-menu {
