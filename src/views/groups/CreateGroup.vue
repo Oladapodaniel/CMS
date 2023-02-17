@@ -1,100 +1,73 @@
 <template>
-  <div class="container-wide container-top" @click="closeDropdownIfOpen">
-    <div class="container-fluid">
-      <div class="row mt-3 botom">
-        <!-- <div class="col-12"> -->
-        <div class="col-12 col-sm-6 c-pointer" @click="groupDetail">
-          <div class="font-weight-bold h5 col-12">Group Detail</div>
-          <div
-            class=""
-            :class="{ baseline: showGroup, 'hide-base': !showGroup }"
-          ></div>
-        </div>
-        <div class="col-12 col-sm-6 c-pointer" @click="displayView">
-          <div class="font-weight-bold h5 col-12">Attendance & Checkin</div>
-          <div
-            class=""
-            :class="{
-              baselinetwo: showAttendanceCheckin,
-              'hide-basetwo': !showAttendanceCheckin,
-            }"
-          ></div>
-        </div>
-        <!-- <div class="hr"><hr /></div> -->
-        <!-- </div> -->
+  <div class="container-top" :class="{ 'container-slim': lgAndUp || xlAndUp }" @click="closeDropdownIfOpen">
+    <div class="row mt-3 botom">
+      <!-- <div class="col-12"> -->
+      <div class="col-12 col-sm-6 c-pointer" @click="groupDetail">
+        <div class="font-weight-bold h5 col-12">Group Detail</div>
+        <div class="" :class="{ baseline: showGroup, 'hide-base': !showGroup }"></div>
       </div>
-      <div class="row mt-3">
-        <div class="col-12" v-if="showAttendanceCheckin">
-          <!-- <div><Attendance/></div>  -->
-          <!-- <div class="col-sm-12"> -->
-          <!-- </div> -->
+      <div class="col-12 col-sm-6 c-pointer" @click="displayView">
+        <div class="font-weight-bold h5 col-12">Attendance & Checkin</div>
+        <div class="" :class="{
+          baselinetwo: showAttendanceCheckin,
+          'hide-basetwo': !showAttendanceCheckin,
+        }"></div>
+      </div>
+    </div>
+    <div class="row mt-3">
+      <div class="col-12" v-if="showAttendanceCheckin">
+        <div>
           <div>
-            <div>
-              <div class="main-body">
-                <div class="row">
-                  <div
-                    class="top my-3 col-sm-12 col-md-12 d-flex flex-wrap pl-0"
-                  >
-                    <div class="events col-md-6">
-                      <div>Attendance & Check-in</div>
-                    </div>
-                    <div class="actions col-md-6 d-flex justify-content-md-end">
-                      <router-link
-                        :to="{ name: 'AddCheckin' }"
-                        v-if="showAttendanceCheckin"
-                      >
-                        <button class="buttonn add-person-btn">
-                          Add New Attendance
-                        </button>
-                      </router-link>
-                    </div>
+            <div class="main-body">
+              <div class="row">
+                <div class="top my-3 col-sm-12 col-md-12 d-flex flex-wrap pl-0">
+                  <div class="events col-md-6 d-none d-sm-flex">
+                    <div>Attendance & Check-in</div>
+                  </div>
+                  <div class="events col-md-12 col-sm-12 d-sm-none w-100">
+                    <div>Attendance & Check-in</div>
+                  </div>
+                  <div class="actions col-md-6 d-flex justify-content-md-end">
+                    <router-link :to="{ name: 'AddCheckin' }" v-if="showAttendanceCheckin">
+                      <button class="buttonn add-person-btn">
+                        Add New Attendance
+                      </button>
+                    </router-link>
                   </div>
                 </div>
-                <hr class="hr" />
-
-                <!-- <div class="row">
-                          <div class="col-md-12">
-                              <router-view></router-view>
-                          </div>
-                      </div> -->
               </div>
-              <Attendancecheckin
-                :list="attendanceData"
-                :totalItems="totalItems"
-              />
-              <!-- <Attendancecheckin :attendanceID="selectedAttendanceId"  /> -->
+              <hr class="hr" />
             </div>
+            <Attendancecheckin :list="attendanceData" :totalItems="totalItems" />
           </div>
         </div>
       </div>
+    </div>
 
-      <div class="row mt-3" v-if="showGroup">
-        <div class="col-md-12">
-          <h2 v-if="!route.params.groupId">Add Group</h2>
-          <h2 v-else>Update Group</h2>
-          <Toast />
-          <ConfirmDialog />
-        </div>
-        <div class="col-md-12 my-3 px-0">
-          <hr class="hr" />
-        </div>
+    <div class="row mt-3" v-if="showGroup">
+      <div class="col-md-12 head-text">
+        <h2 v-if="!route.params.groupId">Add Group</h2>
+        <h2 v-else>Update Group</h2>
+        <!-- <Toast /> -->
+        <ConfirmDialog />
       </div>
+      <div class="col-md-12 my-3 px-0">
+        <hr class="hr" />
+      </div>
+    </div>
 
-      <div class="row py-3" v-if="showGroup">
-        <div class="col-md-12">
-          <div class="row group-form pt-3 my-4">
-            <div class="col-md-12">
-              <div class="row">
-                <div class="col-md-12">
-                  <div class="row">
-                    <div class="col-md-8 col-lg-7">
-                      <div class="row">
-                        <div class="col-md-4 text-lg-right">
-                          <label for="groupName" class="font-weight-600"
-                            >Group name</label
-                          >
-                        </div>
-                        <div class="col-md-8">
+    <div class="row py-3" v-if="showGroup">
+      <div class="col-md-12">
+        <div class="row pt-3 my-4">
+          <div class="col-md-12">
+            <div class="row">
+              <div class="col-md-12">
+
+                <div class="row">
+                  <div class="col-md-2 text-lg-right">
+                    <label for="groupName" class="font-weight-600">Group name</label>
+                  </div>
+                  <!-- <div class="col-md-8">
                           <input
                             type="text"
                             v-model="groupData.name"
@@ -102,24 +75,23 @@
                             id="formGroup"
                             @input="validateGroupName"
                           />
-                        </div>
-                      </div>
-                    </div>
+                        </div> -->
+                  <div class="col-md-8">
+                    <el-input type="text" v-model="groupData.name" class="w-100 ml-0" id="formGroup"
+                      @input="validateGroupName" />
                   </div>
                 </div>
-              </div>
 
-              <div class="row mb-5 mt-4">
-                <div class="col-md-12">
-                  <div class="row">
-                    <div class="col-md-8 col-lg-7">
-                      <div class="row">
-                        <div class="col-md-4 text-lg-right">
-                          <label for="description" class="font-weight-600"
-                            >Description</label
-                          >
-                        </div>
-                        <div class="col-md-8">
+              </div>
+            </div>
+
+            <div class="row mb-2 mt-4">
+              <div class="col-md-12">
+                <div class="row">
+                  <div class="col-md-2 text-lg-right">
+                    <label for="description" class="font-weight-600">Description</label>
+                  </div>
+                  <!-- <div class="col-md-8">
                           <textarea
                             v-model="groupData.description"
                             name="description"
@@ -127,51 +99,36 @@
                             rows="1"
                             class="form-control w-100"
                           ></textarea>
-                        </div>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-              </div>
+                        </div> -->
 
-              <div class="row pb-2">
-                <div class="col-md-8 col-lg-7">
-                  <div class="row">
-                    <div class="col-md-4 text-lg-right"></div>
-                    <div class="col-md-8">
-                      <div class="row">
-                        <div class="col-12 d-flex" v-if="false">
-                          <!-- <div class="mt-n3"> -->
-                          <Checkbox :binary="true" />
-                          <label for="description" class="font-weight-600 ml-3">
-                            Make Public
-                          </label>
-                          <!-- </div> -->
-                        </div>
+                  <div class="col-md-8">
+                    <el-input v-model="groupData.description" name="description" id="description" :rows="3"
+                      type="textarea" />
 
-                        <div class="col-12 d-flex mt-2">
-                          <!-- <div class="mt-n3"> -->
-                          <Checkbox
+                      <div class="d-flex mt-3">
+                        <!-- <Checkbox
                             v-model="groupData.isMobileGroup"
                             :binary="true"
                             :disabled="groupData.isMobileGroup"
-                          />
+                          /> -->
 
-                          <label for="description" class="font-weight-600 ml-3">
-                            Enable on Mobile App
-                          </label>
-                          <!-- </div> -->
+                        <div class="input-width">
+                          <el-checkbox v-model="groupData.isMobileGroup" size="large" class="align-checkbox-totop"
+                            :disabled="groupData.isMobileGroup" />
                         </div>
+                        <label for="description" class="font-weight-600 ml-3">
+                          Enable on Mobile App
+                        </label>
                       </div>
-                    </div>
                   </div>
                 </div>
               </div>
             </div>
           </div>
-          <div class="row">
-            <div class="col-md-12 col-12 btnn mb-4">
-              <button
+        </div>
+        <div class="row">
+          <div class="col-md-12 col-12 btnn">
+            <!-- <button
                 class="
                   default-btn
                   border
@@ -186,8 +143,19 @@
                 aria-controls="collapseExample"
               >
                 Sub-group
-              </button>
-              <button
+              </button> -->
+            <el-button class="
+                  default-btn
+                  border
+                  outline-none
+                  font-weight-bold
+                  c-pointer
+                  text-center text-dark
+                " data-toggle="collapse" data-dismiss="modal" data-target="#collapseExample" aria-expanded="false"
+              aria-controls="collapseExample" round>
+              Sub-group
+            </el-button>
+            <!-- <button
                 class="
                   default-btn
                   border
@@ -202,8 +170,21 @@
                 @click="importMember"
               >
                 Import
-              </button>
-              <button
+              </button> -->
+
+            <el-button class="
+                  default-btn
+                  border
+                  outline-none
+                  font-weight-bold
+                  c-pointer
+                  text-center 
+                  text-dark
+                " :data-toggle="route.params.groupId ? 'modal' : ''" data-target="#importgroup" ref="modalBtn"
+              @click="importMember" round>
+              Import
+            </el-button>
+            <!-- <button
                 class="
                   default-btn
                   outline-none
@@ -217,743 +198,546 @@
                 ref="modalBtn"
               >
                 Addmember
-              </button>
-            </div>
-          </div>
+              </button> -->
 
-          <div class="row mb-4">
-            <div class="col-12">
-              <div>
-                <div class="collapse" id="collapseExample">
-                  <div class="card card-body">
-                    <div class="row">
-                      <div class="col-12">
-                        <div
-                          class="
+            <el-button class="
+                  default-btn
+                  outline-none
+                  font-weight-bold
+                  border
+                  c-pointer
+                  header-btn
+                  text-dark
+                  add-member
+                " data-toggle="modal" data-target="#exampleModal" ref="modalBtn" size="large" round>
+              Add member
+            </el-button>
+          </div>
+        </div>
+
+        <div class="row">
+          <div class="col-12">
+            <div>
+              <div class="collapse" id="collapseExample">
+                  <div class="row">
+                    <div class="col-12 col-md-12 mt-2">
+                      <div class="
                             mb-3
                             border
                             outline-none
                             font-weight-bold
                             mr-3
-                            c-pointer
                             text-center
-                          "
-                          style="
+                          " style="
                             border-radius: 3rem;
                             padding: 0.5rem 1.25rem;
                             width: 167px;
-                          "
-                          type="button"
-                          data-toggle="collapse"
-                          data-target="#addsubgroup"
-                          aria-expanded="false"
-                          aria-controls="collapseExample"
-                        >
-                          Add sub-group
-                        </div>
+                          " type="button" data-toggle="collapse" data-target="#addsubgroup" aria-expanded="false"
+                        aria-controls="collapseExample">
+                        Add sub-group
+                      </div>
 
-                        <div class="collapse" id="addsubgroup">
-                          <div class="card card-body">
-                            <div class="font-weight-700 mb-3">
-                              Select the group or sub-group you want to be a
-                              child of this group.
-                            </div>
+                      <div class="collapse" id="addsubgroup">
+                        <div class="card card-body">
+                          <div class="font-weight-700 mb-3">
+                            Select the group or sub-group you want to be a
+                            child of this group.
+                          </div>
 
-                            <div class="row">
-                              <div class="col-4">
-                                <div class="mb-1 font-weight-600">
+                          <div class="row w-100">
+                            <div class="col-12 col-sm-6 col-md-4">
+                              <div class="">
+                                <div class="mb-1 font-weight-600 w-100">
                                   Parent Group
                                 </div>
-                                <input
-                                  type="text"
-                                  v-model="groupData.name"
-                                  class="form-control"
-                                  disabled
-                                />
+
+                                <el-input type="text" v-model="groupData.name" disabled />
                               </div>
-                              <div class="col-5">
-                                <div class="mb-1 font-weight-600">
-                                  Child group
-                                </div>
-                                <button
-                                  class="
-                                    form-control
-                                    d-flex
-                                    justify-content-between
+                            </div>
+                            <div class="col-12 col-sm-6 col-md-5 mt-3 mt-sm-0">
+                              <div class="mb-1 font-weight-600 w-100">
+                                Child group
+                              </div>
+                              <div>
+                                <el-tree-select v-model="selectedTree" class="w-100" placeholder="Select group"
+                                  :data="groupMappedTree" :render-after-expand="false"
+                                  :filter-node-method="filterNodeMethod" @change="setGroupValue" filterable
+                                  check-strictly />
+                              </div>
+                            </div>
+
+                            <div class="col-12 col-md-3">
+                              <div class="mb-1 mt-3 mt-md-4">
+                                <el-button class="
+                                      default-btn
+                                      primary-bg
+                                      border-0
+                                      text-white
+                                      align-self-center
+                                      mt-2
+                                    " size="large" @click="addSubGroup" round>
+                                  Add sub group
+                                </el-button>
+                              </div>
+                            </div>
+                          </div>
+<!-- 
+                          <div class="div-card p-2 exempt-hide" :class="{
+                            'd-none': hideDiv,
+                            'd-block': !hideDiv,
+                          }">
+                            <el-icon class="text-center exempt-hide" v-if="grouploading && getAllGroup.length === 0">
+                              <Loading />
+                            </el-icon>
+                            <input type="text" class="form-control exempt-hide" v-model="searchGroupText"
+                              ref="searchGroupRef" placeholder="Search for group" />
+                            <GroupTree :items="searchForGroups" :addGroupValue="true" :showCheckBox="true" />
+                          </div> -->
+                        </div>
+                      </div>
+                    </div>
+                    <div class="col-12">
+                      <!-- <GroupTree :items="groupData.children" /> -->
+                      <div class="font-weight-700 my-3" v-show="groupData.children && groupData.children.length > 0">Group children</div>
+                      <ul>
+                        <li v-for="(item, index) in groupData.children" :key="index">{{ item.name }}</li>
+                      </ul>
+                    </div>
+                  </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="row pb-4">
+          <div class="col-md-12">
+            <div class="
+                  d-flex
+                  flex-column flex-sm-row
+                  justify-content-sm-between
+                  py-3
+                ">
+              <!-- <div class="w-100">
+                <span class="mid-header-text py-1 px-1">Members in group</span>
+              </div> -->
+
+              <el-input v-model="searchGroupMemberText" placeholder="Search for group member by name"
+                class="input-with-select" type="text">
+                <template #append>
+                  <el-button>
+                    <el-icon :size="13">
+                      <Search />
+                    </el-icon>
+                  </el-button>
+                </template>
+              </el-input>
+            </div>
+
+            <div class="row">
+              <div class="col-md-12">
+                <!-- Add Member To Group Modal -->
+                <div class="modal fade" id="exampleModal" tabindex="-1" role="dialog"
+                  aria-labelledby="exampleModalLabel" aria-hidden="true">
+                  <div class="modal-dialog" role="document" ref="modal">
+                    <div class="modal-content pr-2">
+                      <div class="modal-header py-3">
+                        <h5 class="modal-title font-weight-700" id="exampleModalLabel">
+                          Group membership
+                        </h5>
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                          <span aria-hidden="true">&times;</span>
+                        </button>
+                      </div>
+                      <div class="modal-body">
+                        <div class="row">
+                          <div class="col-md-12">
+                            <div class="row my-3">
+                              <div class="
+                                    col-md-4
                                     align-items-center
-                                    exempt-hide
-                                  "
-                                  @click="setGroupProp"
-                                >
-                                  <span class="exempt-hide">{{
-                                    selectedIntendedSubGroup &&
-                                    Object.keys(selectedIntendedSubGroup)
-                                      .length > 0
-                                      ? selectedIntendedSubGroup.name
-                                      : "Select group"
-                                  }}</span>
-                                  <i class="pi pi-chevron-down exempt-hide"></i>
-                                </button>
+                                    justify-content-md-end
+                                  ">
+                                <label class="font-weight-600">Select Members</label>
                               </div>
-                              <button
-                                class="
-                                  default-btn
-                                  primary-bg
-                                  border-0
-                                  text-white
-                                  align-self-end
-                                "
-                                @click="addSubGroup"
-                              >
-                                Add sub group
-                              </button>
+
+                              <div class="col-md-7 col-sm-12 px-1">
+                                <ul class="px-1 mb-0 m-dd-item" @click="() => memberSelectInput.focus()">
+                                  <li style="list-style: none; min-width: 100px"
+                                    v-for="(member, indx) in selectedMembers" :key="indx" class="
+                                        email-destination
+                                        d-flex
+                                        justify-content-between
+                                        m-1
+                                      ">
+                                    <span>{{ member.name }}</span>
+                                    <span class="ml-2 remove-email" @click="removeMember(indx)">x</span>
+                                  </li>
+                                  <li style="list-style: none" class="m-dd-item">
+                                    <input type="text" class="
+                                          border-0
+                                          m-dd-item
+                                          text
+                                          outline-none
+                                        " ref="memberSelectInput" @input="searchForMembers" autocomplete="off" :class="{
+                                          'w-100': selectedMembers.length === 0,
+                                          'minimized-input-width':
+                                            selectedMembers.length > 0,
+                                        }" @focus="showMemberList" @click="showMemberList" v-model="searchText"
+                                      style="padding: 0.5rem" :placeholder="`${selectedMembers.length > 0
+                                      ? ''
+                                      : 'Select from members'
+                                      }`" @blur="() => (inputBlurred = true)" />
+                                  </li>
+                                </ul>
+                                <div class="
+                                      col-md-12
+                                      px-0
+                                      select-groups-dropdown
+                                      m-dd-item
+                                    " v-if="memberListShown">
+                                  <div class="dropdownmenu pt-0 w-100 m-dd-item">
+                                    <a class="
+                                          dropdown-item
+                                          px-1
+                                          c-pointer
+                                          m-dd-item
+                                        " v-for="(
+                                          member, index
+                                        ) in memberSearchResults" :key="index" @click="selectMember(member, index)">{{
+                                          member.nameResult
+                                        }}</a>
+
+                                    <p class="bg-secondary p-1 mb-0">
+                                      Enter 3 or more characters
+                                    </p>
+                                    <!-- v-if="
+                                                  wardSearchString.length < 3 &&
+                                                  wardSearchedMembers.length === 0
+                                                " -->
+
+                                    <p aria-disabled="true" class="
+                                          btn btn-default
+                                          p-1
+                                          mb-0
+                                          disable
+                                          m-dd-item
+                                        " v-if="
+                                          memberSearchResults.length === 0 &&
+                                          searchText.length >= 3 &&
+                                          !loading
+                                        ">
+                                      No match found
+                                    </p>
+                                    <p class="
+                                          btn btn-default
+                                          p-1
+                                          mb-0
+                                          disable
+                                          m-dd-item
+                                        " v-if="loading && searchText.length >= 3">
+                                      <i class="
+                                            fas
+                                            fa-circle-notch fa-spin
+                                            m-dd-item
+                                          "></i>
+                                    </p>
+                                    <a class="
+                                          font-weight-bold
+                                          small-text
+                                          d-flex
+                                          justify-content-center
+                                          py-2
+                                          text-decoration-none
+                                          primary-text
+                                          c-pointer
+                                        " style="
+                                          border-top: 1px solid #002044;
+                                          color: #136acd;
+                                        " @click="showAddMemberForm" data-dismiss="modal">
+                                      <i class="
+                                            pi pi-plus-circle
+                                            mr-2
+                                            primary-text
+                                            d-flex
+                                            align-items-center
+                                          " style="color: #136acd"></i>
+                                      Add new member
+                                    </a>
+                                  </div>
+                                </div>
+                              </div>
                             </div>
-                            <div
-                              class="div-card p-2 exempt-hide"
-                              :class="{
-                                'd-none': hideDiv,
-                                'd-block': !hideDiv,
-                              }"
-                            >
-                            <i class="pi pi-spin pi-spinner text-center exempt-hide" v-if="grouploading && getAllGroup.length === 0"></i>
-                            <input type="text" class="form-control exempt-hide" v-model="searchGroupText" ref="searchGroupRef" placeholder="Search for group"/>
-                              <GroupTree
-                                :items="searchForGroups"
-                                :addGroupValue="true"
-                                :showCheckBox="true"
-                              />
+                            <!-- End -->
+
+                            <div class="row mb-3 px-1">
+                              <div class="
+                                    col-md-4
+                                    text-right
+                                    d-flex
+                                    align-items-center
+                                    justify-content-md-end
+                                  ">
+                                <label class="font-weight-600">Position in group</label>
+                              </div>
+                              <div class="col-md-7 col-sm-12 px-1">
+                                <el-input type="text px-1" placeholder="e.g Member" v-model="position" size="large" />
+                              </div>
                             </div>
+                            <!-- check box start -->
+                            <div class="row ml-4">
+                              <div class="col-4 d-flex mt-2" v-if="true">
+                                <!-- <div class="mt-n3"> -->
+                                <label for="description" class="font-weight-600">
+                                  Is Group Leader
+                                </label>
+                                <el-checkbox v-model="isGroupLeader" :binary="true" class="ml-3" />
+                                <!-- </div> -->
+                              </div>
+
+                              <div class="col-4 d-flex mt-2">
+                                <!-- <div class="mt-n3"> -->
+                                <label for="description" class="font-weight-600">
+                                  Enable Login
+                                </label>
+                                <el-checkbox v-model="enableLogin" :binary="true" class="ml-3" />
+                                <!-- </div> -->
+                              </div>
+                            </div>
+                            <!-- check box end -->
                           </div>
                         </div>
                       </div>
-                      <div class="col-12">
-                        <!-- @group="setGroupData" -->
-                        <GroupTree
-                          :items="groupData.children"
-                          
-                        />
+                      <div class="modal-footer mb-2">
+                        <el-button class="default-btn cancel bg-white text-dark" data-dismiss="modal" round>
+                          Cancel
+                        </el-button>
+
+                        <el-button class="
+                              primary-btn
+                              default-btn
+                              primary-bg
+                              border-0
+                              outline-none
+                              text-white
+                            " @click="addSelectedMembersToGroup" :data-dismiss="modalStatus" round>
+                          Add member
+                        </el-button>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+
+                <!-- Import Member To Group Modal -->
+                <div class="modal fade" id="importgroup" tabindex="-1" role="dialog"
+                  aria-labelledby="importgroupModalLabel" aria-hidden="true">
+                  <div class="modal-dialog modal-lg modal-dialog-centered" role="document" ref="modal">
+                    <div class="modal-content pr-2">
+                      <div class="modal-header py-3">
+                        <h5 class="modal-title font-weight-700" id="importgroupModalLabel">
+                          Import to group
+                        </h5>
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close"
+                          ref="closeGroupModal">
+                          <span aria-hidden="true">&times;</span>
+                        </button>
+                      </div>
+                      <div class="modal-body">
+                        <div class="row">
+                          <div class="col-md-12">
+                            <ImportToGroup @uploadtogroup="uploadToGroup" />
+                          </div>
+                        </div>
                       </div>
                     </div>
                   </div>
                 </div>
               </div>
             </div>
-          </div>
-
-          <div class="row pb-4 bottom-box group-form">
-            <div class="col-md-12">
-              <div class="row mid-header-row py-3">
-                <div class="col-md-6 text-lg-center">
-                  <span class="mid-header-text py-1 px-1"
-                    >Members in group</span
-                  >
-                </div>
-                <div class="col-md-6">
-                  <div class="input-group">
-                    <input
-                      type="text"
-                      class="form-control w-25"
-                      placeholder="Search for group member by name"
-                      v-model="searchGroupMemberText"
-                    />
-                    <div class="input-group-append">
-                      <span class="input-group-text"
-                        ><i class="pi pi-search"></i
-                      ></span>
-                    </div>
-                  </div>
-                </div>
-              </div>
-
-              <div class="row py-2">
-                <div class="col-md-12">
-                  <!-- Add Member To Group Modal -->
-                  <div
-                    class="modal fade"
-                    id="exampleModal"
-                    tabindex="-1"
-                    role="dialog"
-                    aria-labelledby="exampleModalLabel"
-                    aria-hidden="true"
-                  >
-                    <div class="modal-dialog" role="document" ref="modal">
-                      <div class="modal-content pr-2">
-                        <div class="modal-header py-3">
-                          <h5
-                            class="modal-title font-weight-700"
-                            id="exampleModalLabel"
-                          >
-                            Group membership
-                          </h5>
-                          <button
-                            type="button"
-                            class="close"
-                            data-dismiss="modal"
-                            aria-label="Close"
-                          >
-                            <span aria-hidden="true">&times;</span>
-                          </button>
-                        </div>
-                        <div class="modal-body">
-                          <div class="row">
-                            <div class="col-md-12">
-                              <div class="row my-3">
-                                <div
-                                  class="
-                                    col-md-4
-                                    text-right
-                                    d-flex
-                                    align-items-center
-                                    justify-content-md-end
-                                  "
-                                >
-                                  <label class="font-weight-600"
-                                    >Select Members</label
-                                  >
-                                </div>
-                                <div class="col-md-7">
-                                  <div class="row">
-                                    <div
-                                      class="col-md-12 pl-0 grey-rounded-border"
-                                    >
-                                      <ul
-                                        class="
-                                          d-flex
-                                          flex-wrap
-                                          px-1
-                                          mb-0
-                                          m-dd-item
-                                        "
-                                        @click="() => memberSelectInput.focus()"
-                                      >
-                                        <li
-                                          style="
-                                            list-style: none;
-                                            min-width: 100px;
-                                          "
-                                          v-for="(
-                                            member, indx
-                                          ) in selectedMembers"
-                                          :key="indx"
-                                          class="
-                                            email-destination
-                                            d-flex
-                                            justify-content-between
-                                            m-1
-                                          "
-                                        >
-                                          <span>{{ member.name }}</span>
-                                          <span
-                                            class="ml-2 remove-email"
-                                            @click="removeMember(indx)"
-                                            >x</span
-                                          >
-                                        </li>
-                                        <li
-                                          style="list-style: none"
-                                          class="m-dd-item"
-                                        >
-                                          <input
-                                            type="text"
-                                            class="
-                                              border-0
-                                              m-dd-item
-                                              text
-                                              outline-none
-                                            "
-                                            ref="memberSelectInput"
-                                            @input="searchForMembers"
-                                            autocomplete="off"
-                                            :class="{
-                                              'w-100':
-                                                selectedMembers.length === 0,
-                                              'minimized-input-width':
-                                                selectedMembers.length > 0,
-                                            }"
-                                            @focus="showMemberList"
-                                            @click="showMemberList"
-                                            v-model="searchText"
-                                            style="padding: 0.5rem"
-                                            :placeholder="`${
-                                              selectedMembers.length > 0
-                                                ? ''
-                                                : 'Select from members'
-                                            }`"
-                                            @blur="() => (inputBlurred = true)"
-                                          />
-                                        </li>
-                                      </ul>
-                                      <div
-                                        class="
-                                          col-md-12
-                                          px-0
-                                          select-groups-dropdown
-                                          m-dd-item
-                                        "
-                                        v-if="memberListShown"
-                                      >
-                                        <div
-                                          class="
-                                            dropdownmenu
-                                            pt-0
-                                            w-100
-                                            m-dd-item
-                                          "
-                                        >
-                                          <a
-                                            class="
-                                              dropdown-item
-                                              px-1
-                                              c-pointer
-                                              m-dd-item
-                                            "
-                                            v-for="(
-                                              member, index
-                                            ) in memberSearchResults"
-                                            :key="index"
-                                            @click="selectMember(member, index)"
-                                            >{{ member.nameResult }}</a
-                                          >
-
-                                          <!-- <p
-                                            class="bg-secondary p-1 mb-0 m-dd-item "
-                                           v-if="
-                                              invalidSearchText && !inputBlurred
-                                            "
-                                          >
-                                            Enter 3 or more characters
-
-
-                                          </p>  -->
-                                          <p class="bg-secondary p-1 mb-0">
-                                            Enter 3 or more characters
-                                          </p>
-                                          <!-- v-if="
-                                                  wardSearchString.length < 3 &&
-                                                  wardSearchedMembers.length === 0
-                                                " -->
-
-                                          <p
-                                            aria-disabled="true"
-                                            class="
-                                              btn btn-default
-                                              p-1
-                                              mb-0
-                                              disable
-                                              m-dd-item
-                                            "
-                                            v-if="
-                                              memberSearchResults.length ===
-                                                0 &&
-                                              searchText.length >= 3 &&
-                                              !loading
-                                            "
-                                          >
-                                            No match found
-                                          </p>
-                                          <p
-                                            class="
-                                              btn btn-default
-                                              p-1
-                                              mb-0
-                                              disable
-                                              m-dd-item
-                                            "
-                                            v-if="
-                                              loading && searchText.length >= 3
-                                            "
-                                          >
-                                            <i
-                                              class="
-                                                fas
-                                                fa-circle-notch fa-spin
-                                                m-dd-item
-                                              "
-                                            ></i>
-                                          </p>
-                                          <a
-                                            class="
-                                              font-weight-bold
-                                              small-text
-                                              d-flex
-                                              justify-content-center
-                                              py-2
-                                              text-decoration-none
-                                              primary-text
-                                              c-pointer
-                                            "
-                                            style="
-                                              border-top: 1px solid #002044;
-                                              color: #136acd;
-                                            "
-                                            @click="showAddMemberForm"
-                                            data-dismiss="modal"
-                                          >
-                                            <i
-                                              class="
-                                                pi pi-plus-circle
-                                                mr-2
-                                                primary-text
-                                                d-flex
-                                                align-items-center
-                                              "
-                                              style="color: #136acd"
-                                            ></i>
-                                            Add new member
-                                          </a>
-                                        </div>
-                                      </div>
-                                    </div>
-                                  </div>
-                                </div>
-                              </div>
-                              <!-- End -->
-
-                              <div class="row mb-3">
-                                <div
-                                  class="
-                                    col-md-4
-                                    text-right
-                                    d-flex
-                                    align-items-center
-                                    justify-content-md-end
-                                  "
-                                >
-                                  <label class="font-weight-600"
-                                    >Position in group</label
-                                  >
-                                </div>
-                                <div class="col-md-7 px-0">
-                                  <input
-                                    type="text"
-                                    class="form-control"
-                                    placeholder="e.g Member"
-                                    v-model="position"
-                                  />
-                                </div>
-                              </div>
-                              <!-- check box start -->
-                              <div class="row ml-4">
-                                <div class="col-4 d-flex mt-2" v-if="true">
-                                  <!-- <div class="mt-n3"> -->
-                                  <label
-                                    for="description"
-                                    class="font-weight-600"
-                                  >
-                                    Is Group Leader
-                                  </label>
-                                  <Checkbox
-                                    v-model="isGroupLeader"
-                                    :binary="true"
-                                    class="ml-3"
-                                  />
-                                  <!-- </div> -->
-                                </div>
-
-                                <div class="col-4 d-flex mt-2">
-                                  <!-- <div class="mt-n3"> -->
-                                  <label
-                                    for="description"
-                                    class="font-weight-600"
-                                  >
-                                    Enable Login
-                                  </label>
-                                  <Checkbox
-                                    v-model="enableLogin"
-                                    :binary="true"
-                                    class="ml-3"
-                                  />
-                                  <!-- </div> -->
-                                </div>
-                              </div>
-                              <!-- check box end -->
-                            </div>
-                          </div>
-                        </div>
-                        <div class="modal-footer mb-2">
-                          <button
-                            type="button"
-                            class="default-btn cancel bg-white text-dark"
-                            data-dismiss="modal"
-                          >
-                            Cancel
-                          </button>
-
-                          <button
-                            class="
-                              primary-btn
-                              default-btn
-                              primary-bg
-                              border-0
-                              outline-none
-                            "
-                            @click="addSelectedMembersToGroup"
-                            :data-dismiss="modalStatus"
-                          >
-                            Add member
-                          </button>
-                        </div>
-                      </div>
-                    </div>
-                  </div>
-
-                  <!-- Import Member To Group Modal -->
-                  <div
-                    class="modal fade"
-                    id="importgroup"
-                    tabindex="-1"
-                    role="dialog"
-                    aria-labelledby="importgroupModalLabel"
-                    aria-hidden="true"
-                  >
-                    <div
-                      class="modal-dialog modal-lg modal-dialog-centered"
-                      role="document"
-                      ref="modal"
-                    >
-                      <div class="modal-content pr-2">
-                        <div class="modal-header py-3">
-                          <h5
-                            class="modal-title font-weight-700"
-                            id="importgroupModalLabel"
-                          >
-                            Import to group
-                          </h5>
-                          <button
-                            type="button"
-                            class="close"
-                            data-dismiss="modal"
-                            aria-label="Close"
-                            ref="closeGroupModal"
-                          >
-                            <span aria-hidden="true">&times;</span>
-                          </button>
-                        </div>
-                        <div class="modal-body">
-                          <div class="row">
-                            <div class="col-md-12">
-                              <ImportToGroup @uploadtogroup="uploadToGroup" />
-                            </div>
-                          </div>
-                        </div>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-              </div>
-              <!-- Modal -->
-              <div class="container">
-                <!-- Button to Open the Modal -->
-                <!-- <button type="button" class="btn btn-primary" >
+            <!-- Modal -->
+            <div class="container">
+              <!-- Button to Open the Modal -->
+              <!-- <button type="button" class="btn btn-primary" >
                         Open modal
                       </button> -->
 
-                <!-- The Modal -->
-                <div class="modal fade" id="myModal">
-                  <div class="modal-dialog">
-                    <div class="modal-content">
-                      <!-- Modal Header -->
-                      <div class="modal-header">
-                        <h4 class="modal-title">
-                          <label class="font-weight-900 w-100"
-                            >Move Members To Groups</label
-                          >
-                        </h4>
-                        <button
-                          type="button"
-                          class="close"
-                          data-dismiss="modal"
-                        >
-                          &times;
-                        </button>
-                      </div>
+              <!-- The Modal -->
+              <div class="modal fade" id="myModal">
+                <div class="modal-dialog">
+                  <div class="modal-content">
+                    <!-- Modal Header -->
+                    <div class="modal-header">
+                      <h4 class="modal-title">
+                        <label class="font-weight-900 w-100">Move Members To Groups</label>
+                      </h4>
+                      <button type="button" class="close" data-dismiss="modal">
+                        &times;
+                      </button>
+                    </div>
 
-                      <!-- Modal body -->
-                      <div class="modal-body">
-                        <div class="col-md-12"></div>
-                        <div class="col-md-12 form-group w-100">
-                          <!-- <Dropdown
+                    <!-- Modal body -->
+                    <div class="modal-body">
+                      <div class="col-md-12"></div>
+                      <div class="col-md-12 form-group w-100">
+                        <!-- <Dropdown
                             :options="getAllGroup"
                             optionLabel="name"
                             placeholder="Select Groups"
                             style="width: 100%"
                             v-model="selectGroupTo"
                           /> -->
-                          <button @click="setMoveGroupProp" class="btn border d-flex justify-content-between align-items-center w-100">
-                            <div>{{ selectGroupTo && Object.keys(selectGroupTo).length > 0 ? selectGroupTo.name : 'Select group' }}</div>
-                            <i class="pi pi-chevron-down"></i>
-                          </button>
-                          <div
-                              class="move-card p-2 exempt-hide"
-                              :class="{
-                                'd-none': moveHideDiv,
-                                'd-block': !moveHideDiv,
-                              }"
-                            >
-                            <i class="pi pi-spin pi-spinner text-center exempt-hide" v-if="grouploading && getAllGroup.length === 0"></i>
-                            <input type="text" class="form-control exempt-hide" v-model="searchGroupText" ref="searchGroupRef" placeholder="Search for group"/>
-                              <GroupTree
-                                :items="searchForGroups"
-                                :addGroupValue="true"
-                                @group="setSelectedGroupToMove"
-                              />
-                            </div> 
-                        </div>
-                      </div>
-
-                      <!-- Modal footer -->
-                      <div class="modal-footer">
-                        <button
-                          type="button"
-                          class="btn primary-bg default-btn border-0 text-white"
-                          data-dismiss="modal"
-                          @click="moveMembers"
-                        >
-                          Move
+                        <!-- <button @click="setMoveGroupProp" class="
+                              btn
+                              border
+                              d-flex
+                              justify-content-between
+                              align-items-center
+                              w-100
+                            ">
+                          <div>
+                            {{
+  selectGroupTo &&
+  Object.keys(selectGroupTo).length > 0
+  ? selectGroupTo.name
+  : "Select group"
+                            }}
+                          </div>
+                          <i class="pi pi-chevron-down"></i>
                         </button>
+                        <div class="move-card p-2 exempt-hide" :class="{
+                          'd-none': moveHideDiv,
+                          'd-block': !moveHideDiv,
+                        }">
+                          <i class="
+                                pi pi-spin pi-spinner
+                                text-center
+                                exempt-hide
+                              " v-if="grouploading && getAllGroup.length === 0"></i>
+                          <input type="text" class="form-control exempt-hide" v-model="searchGroupText"
+                            ref="searchGroupRef" placeholder="Search for group" />
+                          <GroupTree :items="searchForGroups" :addGroupValue="true" @group="setSelectedGroupToMove" />
+                        </div> -->
+                        <el-tree-select v-model="moveSelectedTree" class="w-100" placeholder="Select group"
+                          :data="groupMappedTree" :render-after-expand="false"
+                          :filter-node-method="filterNodeMethod" @change="setSelectedGroupToMove" filterable
+                          check-strictly />
                       </div>
+                    </div>
+
+                    <!-- Modal footer -->
+                    <div class="modal-footer">
+                      <button type="button" class="btn primary-bg default-btn border-0 text-white" data-dismiss="modal"
+                        @click="moveMembers">
+                        Move
+                      </button>
                     </div>
                   </div>
                 </div>
               </div>
-              <!-- Modal -->
-              <div class="container">
-                <!-- Button to Open the Modal -->
-                <!-- <button type="button" class="btn btn-primary" >
+            </div>
+            <!-- Modal -->
+            <div class="container">
+              <!-- Button to Open the Modal -->
+              <!-- <button type="button" class="btn btn-primary" >
                         Open modal
                       </button> -->
 
-                <!-- The Modal2 -->
-                <div class="modal fade" id="myModal1">
-                  <div class="modal-dialog">
-                    <div class="modal-content">
-                      <!-- Modal Header -->
-                      <div class="modal-header">
-                        <h4 class="modal-title">
-                          <label class="font-weight-900 w-100"
-                            >Copy Members To Groups</label
-                          >
-                        </h4>
-                        <button
-                          type="button"
-                          class="close"
-                          data-dismiss="modal"
-                        >
-                          &times;
-                        </button>
-                      </div>
+              <!-- The Modal2 -->
+              <div class="modal fade" id="myModal1">
+                <div class="modal-dialog">
+                  <div class="modal-content">
+                    <!-- Modal Header -->
+                    <div class="modal-header">
+                      <h4 class="modal-title">
+                        <label class="font-weight-900 w-100">Copy Members To Groups</label>
+                      </h4>
+                      <button type="button" class="close" data-dismiss="modal">
+                        &times;
+                      </button>
+                    </div>
 
-                      <!-- Modal body2 -->
-                      <div class="modal-body">
-                        <div class="col-md-12"></div>
-                        <div class="col-md-12 form-group w-100">
-                          <!-- <Dropdown
-                            :options="getAllGroup"
-                            optionLabel="name"
-                            placeholder="Select Groups"
-                            style="width: 100%"
-                            v-model="copyGroupTo"
-                          /> -->
-                          <button @click="setCopyGroupProp" class="btn border d-flex justify-content-between align-items-center w-100">
-                            <div>{{ copyGroupTo && Object.keys(copyGroupTo).length > 0 ? copyGroupTo.name : 'Select group' }}</div>
-                            <i class="pi pi-chevron-down"></i>
-                          </button>
-                          <div
-                              class="move-card p-2 exempt-hide"
-                              :class="{
-                                'd-none': copyHideDiv,
-                                'd-block': !copyHideDiv,
-                              }"
-                            >
-                            <i class="pi pi-spin pi-spinner text-center exempt-hide" v-if="grouploading && getAllGroup.length === 0"></i>
-                            <input type="text" class="form-control exempt-hide" v-model="searchGroupText" ref="searchGroupRef" placeholder="Search for group"/>
-                              <GroupTree
-                                :items="searchForGroups"
-                                :addGroupValue="true"
-                                @group="setSelectedGroupToCopy"
-                              />
-                            </div> 
+                    <!-- Modal body2 -->
+                    <div class="modal-body">
+                      <div class="col-md-12"></div>
+                      <div class="col-md-12 form-group w-100">
+
+                        <button @click="setCopyGroupProp" class="
+                              btn
+                              border
+                              d-flex
+                              justify-content-between
+                              align-items-center
+                              w-100
+                            ">
+                          <div>
+                            {{
+  copyGroupTo &&
+  Object.keys(copyGroupTo).length > 0
+  ? copyGroupTo.name
+  : "Select group"
+                            }}
+                          </div>
+                          <i class="pi pi-chevron-down"></i>
+                        </button>
+                        <div class="move-card p-2 exempt-hide" :class="{
+                          'd-none': copyHideDiv,
+                          'd-block': !copyHideDiv,
+                        }">
+                          <i class="
+                                pi pi-spin pi-spinner
+                                text-center
+                                exempt-hide
+                              " v-if="grouploading && getAllGroup.length === 0"></i>
+                          <input type="text" class="form-control exempt-hide" v-model="searchGroupText"
+                            ref="searchGroupRef" placeholder="Search for group" />
+                          <GroupTree :items="searchForGroups" :addGroupValue="true" @group="setSelectedGroupToCopy" />
                         </div>
                       </div>
+                    </div>
 
-                      <!-- Modal footer2 -->
-                      <div class="modal-footer">
-                        <button
-                          type="button"
-                          class="btn primary-bg default-btn border-0 text-white"
-                          data-dismiss="modal"
-                          @click="copyMemberToGroup"
-                        >
-                          Copy
-                        </button>
-                      </div>
+                    <!-- Modal footer2 -->
+                    <div class="modal-footer">
+                      <button type="button" class="btn primary-bg default-btn border-0 text-white" data-dismiss="modal"
+                        @click="copyMemberToGroup">
+                        Copy
+                      </button>
                     </div>
                   </div>
                 </div>
               </div>
-              <div
-                class="row"
-                v-if="marked.length > 0 && groupMembers.length > 0"
-              >
-                <div class="col-md-12 d-flex align-content-between pb-2">
-                  <a
-                    href="#"
-                    class="tool"
-                    data-toggle="modal"
-                    data-target="#myModal"
-                  >
-                    <i
-                      class="
+            </div>
+            <div class="row" v-if="marked.length > 0 && groupMembers.length > 0">
+              <div class="col-md-12 d-flex align-content-between pb-2">
+                <a href="#" class="tool" data-toggle="modal" data-target="#myModal">
+                  <i class="
                         pi pi-reply
                         text-primary
                         c-pointer
                         d-flex
                         align-items-center
                         mr-4
-                      "
-                      style="font-size: 20px; font-weight: bold"
-                      v-tooltip.top="'move to group'"
-                    >
-                    </i>
-                  </a>
+                      " style="font-size: 20px; font-weight: bold" v-tooltip.top="'move to group'">
+                  </i>
+                </a>
 
-                  <a
-                    href="#"
-                    class="tool"
-                    data-toggle="modal"
-                    data-target="#myModal1"
-                  >
-                    <i
-                      class="
+                <a href="#" class="tool" data-toggle="modal" data-target="#myModal1">
+                  <i class="
                         pi pi-copy
                         text-primary
                         c-pointer
                         d-flex
                         align-items-center
                         mr-4
-                      "
-                      style="font-size: 20px; font-weight: bold"
-                      v-tooltip.right="'copy to group'"
-                    >
-                    </i>
-                  </a>
-                  <i
-                    class="fa fa-file-archive-o text-primary c-pointer mr-4"
-                    v-tooltip.top="'Archive member(s)'"
-                    @click="openPositionArchive('center')"
-                    aria-hidden="true"
-                    style="font-size: 20px"
-                  ></i>
-                  <a href="#" @click="sendMarkedMemberSms"
-                    ><i class="pi pi-comment"></i
-                  ></a>
-                  <a href="#" @click="sendMarkedMemberEmail" class="pl-4"
-                    ><i class="pi pi-envelope"></i
-                  ></a>
-                </div>
+                      " style="font-size: 20px; font-weight: bold" v-tooltip.right="'copy to group'">
+                  </i>
+                </a>
+                <i class="fa fa-file-archive-o text-primary c-pointer mr-4" v-tooltip.top="'Archive member(s)'"
+                  @click="openPositionArchive('center')" aria-hidden="true" style="font-size: 20px"></i>
+                <a href="#" @click="sendMarkedMemberSms"><i class="pi pi-comment"></i></a>
+                <a href="#" @click="sendMarkedMemberEmail" class="pl-4"><i class="pi pi-envelope"></i></a>
               </div>
+            </div>
 
-              <div class="row table-header-row py-2">
+            <!-- <div class="row table-header-row py-2">
                 <div class="col-md-1" v-if="groupMembers.length > 0"></div>
                 <div class="col-md-3">
                   <span class="py-2 font-weight-bold">NAME</span>
@@ -961,481 +745,423 @@
                 <div class="col-md-2">
                   <span class="py-2 font-weight-bold">POSITION</span>
                 </div>
-                <!-- <div class="col-md-2">
-                  <span class="py-2 font-weight-bold">ADDRESS</span>
-                </div> -->
+
                 <div class="col-md-2">
                   <span class="py-2 font-weight-bold">EMAIL</span>
                 </div>
                 <div class="col-md-2">
                   <span class="py-2 font-weight-bold">PHONE</span>
                 </div>
-                <div class="col-md-1">
-                  <!-- <i class="pi pi-elipsis-v"></i> -->
-                </div>
+                <div class="col-md-1"></div>
+              </div> -->
+
+            <div class="row" v-if="groupMembers.length > 0">
+              <div class="col text-center p-3 text-success font-weight-700">
+                Approved
               </div>
-              <div class="row" v-if="loadingMembers">
-                <div class="col-md-12">
-                  <div class="row">
-                    <div
-                      class="
+            </div>
+            <Table :data="searchGroupMembers" :headers="createGroupHeaders" :checkMultipleItem="true"
+              @checkedrow="handleSelectionChange">
+              <template #name="{ item }">
+                <span>{{ item.name }}</span>
+              </template>
+              <template v-slot:position="{ item }">
+                <span>{{ item.position }}</span>
+              </template>
+              <template v-slot:email="{ item }">
+                <span>{{ item.email }}</span>
+              </template>
+              <template v-slot:phone="{ item }">
+                <span>{{ item.phone }}</span>
+              </template>
+              <template v-slot:action="{ item }">
+                <el-dropdown>
+                  <el-icon id="dropdownMenuButton" data-toggle="dropdown"><MoreFilled /></el-icon>
+                  <template #dropdown>
+                    <el-dropdown-menu>
+                      <el-dropdown-item>
+                        <a @click="test(item)"> Send SMS</a>
+                      </el-dropdown-item>
+                      <el-dropdown-item>
+                        <a @click="testEmail(item)">Send Email</a>
+                      </el-dropdown-item>
+                      <el-dropdown-item>
+                        <a @click="archive(item.personID, 'single')">
+                      Archive
+                    </a>
+                      </el-dropdown-item>
+                      <el-dropdown-item>
+                        <a @click="confirmDelete(item.id, index)">Remove</a>
+                      </el-dropdown-item>
+                    </el-dropdown-menu>
+                  </template>
+                </el-dropdown>
+                <!-- <div class="dropdown">
+                    <el-icon id="dropdownMenuButton" data-toggle="dropdown"><MoreFilled /></el-icon>
+                  <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+                    <a class="dropdown-item c-pointer" v-if="item.phone">
+                      <a @click="test(item)"> Send SMS</a>
+                    </a>
+                    <a class="dropdown-item c-pointer" v-if="item.email">
+                      <a @click="testEmail(item)">Send Email</a>
+                    </a>
+                    <a class="dropdown-item cursor-pointer" @click="archive(item.personID, 'single')">
+                      Archive
+                    </a>
+                    <a class="dropdown-item c-pointer" @click="confirmDelete(item.id, index)">Remove</a>
+                  </div>
+                </div> -->
+              </template>
+            </Table>
+
+
+            <div class="row" v-if="awaitingApprovals.length > 0">
+              <div class="col text-center p-3 text-warning font-weight-700">
+                Waiting Approval
+              </div>
+            </div>
+            <Table :data="awaitingApprovals" :headers="createGroupHeaders" :checkMultipleItem="true"
+              @checkedrow="handleSelectionChange" v-if="awaitingApprovals.length > 0">
+              <template #name="{ item }">
+                <span>{{ item.name }}</span>
+              </template>
+              <template v-slot:position="{ item }">
+                <span>{{ item.position }}</span>
+              </template>
+              <template v-slot:email="{ item }">
+                <span>{{ item.email }}</span>
+              </template>
+              <template v-slot:phone="{ item }">
+                <span>{{ item.phone }}</span>
+              </template>
+              <template v-slot:action="{ item }">
+                <el-dropdown>
+                  <el-icon id="dropdownMenuButton" data-toggle="dropdown"><MoreFilled /></el-icon>
+                  <template #dropdown>
+                    <el-dropdown-menu>
+                      <el-dropdown-item>
+                        <a @click="test(item)"> Send SMS</a>
+                      </el-dropdown-item>
+                      <el-dropdown-item>
+                        <a @click="testEmail(item)">Send Email</a>
+                      </el-dropdown-item>
+                      <el-dropdown-item>
+                        <a @click="archive(item.personID, 'single')">
+                      Archive
+                    </a>
+                      </el-dropdown-item>
+                      <el-dropdown-item>
+                        <a @click="confirmDelete(item.id, index)">Remove</a>
+                      </el-dropdown-item>
+                    </el-dropdown-menu>
+                  </template>
+                </el-dropdown>
+                <!-- <div class="dropdown">
+                    <el-icon id="dropdownMenuButton" data-toggle="dropdown"><MoreFilled /></el-icon>
+                  <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+                    <a class="dropdown-item c-pointer" v-if="item.phone">
+                      <a @click="test(item)"> Send SMS</a>
+                    </a>
+                    <a class="dropdown-item c-pointer" v-if="item.email">
+                      <a @click="testEmail(item)">Send Email</a>
+                    </a>
+                    <a class="dropdown-item cursor-pointer" @click="archive(item.personID, 'single')">
+                      Archive
+                    </a>
+                    <a class="dropdown-item c-pointer" @click="confirmDelete(item.id, index)">Remove</a>
+                  </div>
+                </div> -->
+              </template>
+            </Table>
+            <div class="row" v-if="loadingMembers">
+              <div class="col-md-12">
+                <div class="row">
+                  <div class="
                         col-md-12
                         d-flex
                         align-items-center
                         justify-content-center
-                      "
-                    >
-                      <i class="fas fa-circle-notch fa-spin py-2"></i>
-                    </div>
-                  </div>
-                  <div class="row">
-                    <div class="col-md-12 px-0">
-                      <hr class="hr my-0" />
-                    </div>
+                      ">
+                    <i class="fas fa-circle-notch fa-spin py-2"></i>
                   </div>
                 </div>
-              </div>
-
-              <div
-                class="row"
-                v-if="loadingMembers == false && groupMembers.length === 0"
-              >
-                <div class="col-md-12">
-                  <div class="row">
-                    <div
-                      class="
-                        col-md-12
-                        d-flex
-                        align-items-center
-                        justify-content-center
-                      "
-                    >
-                      <p class="text-center font-weight-bold py-2">
-                        No members yet
-                      </p>
-                    </div>
-                  </div>
-                  <div class="row">
-                    <div class="col-md-12 px-0">
-                      <hr class="hr my-0" />
-                    </div>
-                  </div>
-                </div>
-              </div>
-
-              <div
-                class="row"
-                style="border-bottom: 1px solid #00204412"
-                v-if="groupMembers.length > 0"
-              >
-                <input
-                  type="checkbox"
-                  @change="markAllItem"
-                  :checked="marked.length === groupMembers.length"
-                  id="all"
-                  name="all"
-                  class="py-2 ml-3"
-                />
-                <div class="col text-center p-3 text-success font-weight-700">
-                  Approved
-                </div>
-              </div>
-
-              <div
-                style="border-bottom: 1px solid #00204412"
-                class="row py-2"
-                v-for="(member, index) in searchGroupMembers"
-                :key="index"
-              >
-                <div class="col-md-12">
-                  <div class="row">
-                    <div
-                      class="
-                        col-md-1
-                        d-flex
-                        justify-content-between
-                        align-items-center
-                      "
-                    >
-                      <input
-                        type="checkbox"
-                        class="py-2"
-                        name=""
-                        id=""
-                        @change="mark1Item(member)"
-                        :checked="
-                          marked.findIndex(
-                            (i) => i.personID === member.personID
-                          ) >= 0
-                        "
-                      />
-                    </div>
-                    <div
-                      class="
-                        col-md-3
-                        d-flex
-                        justify-content-between
-                        align-items-center
-                      "
-                    >
-                      <span class="py-2 hidden-header">NAME</span>
-                      <span class="py-2">{{ member.name }}</span>
-                    </div>
-                    <div
-                      class="
-                        col-md-2
-                        d-flex
-                        justify-content-between
-                        align-items-center
-                      "
-                    >
-                      <span class="py-2 hidden-header">POSITION</span>
-                      <span class="py-2 text-xs-left">{{
-                        member.position
-                      }}</span>
-                    </div>
-                    <!-- <div
-                      class="col-md-2 d-flex justify-content-between align-items-center"
-                    >
-                      <span class="py-2 hidden-header">ADDRESS</span>
-                      <span class="py-2">{{ member.addres }}</span>
-                    </div> -->
-                    <div
-                      class="
-                        col-md-2
-                        d-flex
-                        justify-content-between
-                        align-items-center
-                      "
-                    >
-                      <span class="py-2 hidden-header">EMAIL</span>
-                      <span class="py-2">{{
-                        member.email && member.email.length > 10
-                          ? `${member.email.split("").slice(0, 14).join("")}...`
-                          : member.email
-                          ? member.email
-                          : ""
-                      }}</span>
-                    </div>
-                    <div
-                      class="
-                        col-md-3
-                        d-flex
-                        justify-content-between
-                        align-items-center
-                      "
-                    >
-                      <span class="py-2 hidden-header">PHONE</span>
-                      <span class="py-2">{{ member.phone }}</span>
-                    </div>
-                    <div
-                      class="
-                        col-md-1
-                        d-flex
-                        justify-content-between
-                        align-items-center
-                      "
-                    >
-                      <div class="dropdown">
-                        <i
-                          class="fas fa-ellipsis-v cursor-pointer"
-                          id="dropdownMenuButton"
-                          data-toggle="dropdown"
-                          aria-haspopup="true"
-                          aria-expanded="false"
-                        ></i>
-                        <div
-                          class="dropdown-menu"
-                          aria-labelledby="dropdownMenuButton"
-                        >
-                          <!-- <a class="dropdown-item c-pointer" > -->
-                          <a
-                            class="dropdown-item c-pointer"
-                            v-if="member.phone"
-                          >
-                            <a @click="test(member)"> Send SMS</a>
-                          </a>
-                          <a
-                            class="dropdown-item c-pointer"
-                            v-if="member.email"
-                          >
-                            <!-- <a class="dropdown-item c-pointer"> -->
-                            <a @click="testEmail(member)">Send Email</a>
-                          </a>
-                          <a
-                            class="dropdown-item cursor-pointer"
-                            @click="archive(member.personID, 'single')"
-                          >
-                            Archive
-                          </a>
-                          <a
-                            class="dropdown-item c-pointer"
-                            @click="confirmDelete(member.id, index)"
-                            >Remove</a
-                          >
-                        </div>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-              </div>
-
-              <div
-                class="row"
-                style="border-bottom: 1px solid #00204412"
-                v-if="awaitingApprovals.length > 0"
-              >
-                <div class="col text-center p-3 text-warning font-weight-700">
-                  Waiting Approval
-                </div>
-              </div>
-
-              <div
-                style="border-bottom: 1px solid #00204412"
-                class="row py-2"
-                v-for="(member, index) in awaitingApprovals"
-                :key="index"
-              >
-                <div class="col-md-12">
-                  <div class="row">
-                    <div
-                      class="
-                        col-md-1
-                        d-flex
-                        justify-content-between
-                        align-items-center
-                      "
-                    >
-                      <input
-                        type="checkbox"
-                        class="py-2"
-                        name=""
-                        id=""
-                        @change="mark1Item(member)"
-                        :checked="
-                          marked.findIndex(
-                            (i) => i.personID === member.personID
-                          ) >= 0
-                        "
-                      />
-                    </div>
-                    <div
-                      class="
-                        col-md-3
-                        d-flex
-                        justify-content-between
-                        align-items-center
-                      "
-                    >
-                      <span class="py-2 hidden-header">NAME</span>
-                      <span class="py-2">{{ member.name }}</span>
-                    </div>
-                    <div
-                      class="
-                        col-md-2
-                        d-flex
-                        justify-content-between
-                        align-items-center
-                      "
-                    >
-                      <span class="py-2 hidden-header">POSITION</span>
-                      <span class="py-2 text-xs-left">{{
-                        member.position
-                      }}</span>
-                    </div>
-                    <!-- <div
-                      class="col-md-2 d-flex justify-content-between align-items-center"
-                    >
-                      <span class="py-2 hidden-header">ADDRESS</span>
-                      <span class="py-2">{{ member.addres }}</span>
-                    </div> -->
-                    <div
-                      class="
-                        col-md-2
-                        d-flex
-                        justify-content-between
-                        align-items-center
-                      "
-                    >
-                      <span class="py-2 hidden-header">EMAIL</span>
-                      <span class="py-2">{{
-                        member.email && member.email.length > 10
-                          ? `${member.email.split("").slice(0, 14).join("")}...`
-                          : member.email
-                          ? member.email
-                          : ""
-                      }}</span>
-                    </div>
-                    <div
-                      class="
-                        col-md-3
-                        d-flex
-                        justify-content-between
-                        align-items-center
-                      "
-                    >
-                      <span class="py-2 hidden-header">PHONE</span>
-                      <span class="py-2">{{ member.phone }}</span>
-                    </div>
-                    <div
-                      class="
-                        col-md-1
-                        d-flex
-                        justify-content-between
-                        align-items-center
-                      "
-                    >
-                      <div class="dropdown">
-                        <i
-                          class="fas fa-ellipsis-v cursor-pointer"
-                          id="dropdownMenuButton"
-                          data-toggle="dropdown"
-                          aria-haspopup="true"
-                          aria-expanded="false"
-                        ></i>
-                        <div
-                          class="dropdown-menu"
-                          aria-labelledby="dropdownMenuButton"
-                        >
-                          <a
-                            class="dropdown-item c-pointer"
-                            v-if="member.phone"
-                          >
-                            <a @click="test(member)">Send SMS</a>
-                          </a>
-                          <a
-                            class="dropdown-item c-pointer"
-                            v-if="member.email"
-                          >
-                            <a @click="testEmail(member)">Send Email</a>
-                          </a>
-                          <a
-                            class="dropdown-item cursor-pointer"
-                            @click="requestApproval(member)"
-                          >
-                            Request Approval
-                          </a>
-                          <a
-                            class="dropdown-item cursor-pointer"
-                            @click="archive(member.personID, 'single')"
-                          >
-                            Archive
-                          </a>
-                          <a
-                            class="dropdown-item c-pointer"
-                            @click="confirmDelete(member.id, index)"
-                            >Remove</a
-                          >
-                        </div>
-                      </div>
-                    </div>
+                <div class="row">
+                  <div class="col-md-12 px-0">
+                    <hr class="hr my-0" />
                   </div>
                 </div>
               </div>
             </div>
+
+            <div class="row" v-if="loadingMembers == false && groupMembers.length === 0">
+              <div class="col-md-12">
+                <div class="row">
+                  <div class="
+                        col-md-12
+                        d-flex
+                        align-items-center
+                        justify-content-center
+                      ">
+                    <p class="text-center font-weight-bold py-2">
+                      No members yet
+                    </p>
+                  </div>
+                </div>
+                <div class="row">
+                  <div class="col-md-12 px-0">
+                    <hr class="hr my-0" />
+                  </div>
+                </div>
+              </div>
+            </div>
+
+
+
+            <!-- <div style="border-bottom: 1px solid #00204412" class="row py-2"
+              v-for="(member, index) in searchGroupMembers" :key="index">
+              <div class="col-md-12">
+                <div class="row">
+                  <div class="
+                        col-md-1
+                        d-flex
+                        justify-content-between
+                        align-items-center
+                      ">
+                    <input type="checkbox" class="py-2" name="" id="" @change="mark1Item(member)" :checked="
+                      marked.findIndex(
+                        (i) => i.personID === member.personID
+                      ) >= 0
+                    " />
+                  </div>
+                  <div class="
+                        col-md-3
+                        d-flex
+                        justify-content-between
+                        align-items-center
+                      ">
+                    <span class="py-2 hidden-header">NAME</span>
+                    <span class="py-2">{{ member.name }}</span>
+                  </div>
+                  <div class="
+                        col-md-2
+                        d-flex
+                        justify-content-between
+                        align-items-center
+                      ">
+                    <span class="py-2 hidden-header">POSITION</span>
+                    <span class="py-2 text-xs-left">{{
+                      member.position
+                    }}</span>
+                  </div>
+
+                  <div class="
+                        col-md-2
+                        d-flex
+                        justify-content-between
+                        align-items-center
+                      ">
+                    <span class="py-2 hidden-header">EMAIL</span>
+                    <span class="py-2">{{
+                      member.email && member.email.length > 10
+                        ? `${member.email.split("").slice(0, 14).join("")}...`
+                        : member.email
+                          ? member.email
+                          : ""
+                    }}</span>
+                  </div>
+                  <div class="
+                        col-md-3
+                        d-flex
+                        justify-content-between
+                        align-items-center
+                      ">
+                    <span class="py-2 hidden-header">PHONE</span>
+                    <span class="py-2">{{ member.phone }}</span>
+                  </div>
+                  <div class="
+                        col-md-1
+                        d-flex
+                        justify-content-between
+                        align-items-center
+                      ">
+                    <div class="dropdown">
+                      <i class="fas fa-ellipsis-v cursor-pointer" id="dropdownMenuButton" data-toggle="dropdown"
+                        aria-haspopup="true" aria-expanded="false"></i>
+                      <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+                        <a class="dropdown-item c-pointer" v-if="member.phone">
+                          <a @click="test(member)"> Send SMS</a>
+                        </a>
+                        <a class="dropdown-item c-pointer" v-if="member.email">
+                          <a @click="testEmail(member)">Send Email</a>
+                        </a>
+                        <a class="dropdown-item cursor-pointer" @click="archive(member.personID, 'single')">
+                          Archive
+                        </a>
+                        <a class="dropdown-item c-pointer" @click="confirmDelete(member.id, index)">Remove</a>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div> -->
+
+            <!-- <div class="row" style="border-bottom: 1px solid #00204412" v-if="awaitingApprovals.length > 0">
+              <div class="col text-center p-3 text-warning font-weight-700">
+                Waiting Approval
+              </div>
+            </div>
+
+            <div style="border-bottom: 1px solid #00204412" class="row py-2"
+              v-for="(member, index) in awaitingApprovals" :key="index">
+              <div class="col-md-12">
+                <div class="row">
+                  <div class="
+                        col-md-1
+                        d-flex
+                        justify-content-between
+                        align-items-center
+                      ">
+                    <input type="checkbox" class="py-2" name="" id="" @change="mark1Item(member)" :checked="
+                      marked.findIndex(
+                        (i) => i.personID === member.personID
+                      ) >= 0
+                    " />
+                  </div>
+                  <div class="
+                        col-md-3
+                        d-flex
+                        justify-content-between
+                        align-items-center
+                      ">
+                    <span class="py-2 hidden-header">NAME</span>
+                    <span class="py-2">{{ member.name }}</span>
+                  </div>
+                  <div class="
+                        col-md-2
+                        d-flex
+                        justify-content-between
+                        align-items-center
+                      ">
+                    <span class="py-2 hidden-header">POSITION</span>
+                    <span class="py-2 text-xs-left">{{
+                      member.position
+                    }}</span>
+                  </div>
+                  <div class="
+                        col-md-2
+                        d-flex
+                        justify-content-between
+                        align-items-center
+                      ">
+                    <span class="py-2 hidden-header">EMAIL</span>
+                    <span class="py-2">{{
+                      member.email && member.email.length > 10
+                        ? `${member.email.split("").slice(0, 14).join("")}...`
+                        : member.email
+                          ? member.email
+                          : ""
+                    }}</span>
+                  </div>
+                  <div class="
+                        col-md-3
+                        d-flex
+                        justify-content-between
+                        align-items-center
+                      ">
+                    <span class="py-2 hidden-header">PHONE</span>
+                    <span class="py-2">{{ member.phone }}</span>
+                  </div>
+                  <div class="
+                        col-md-1
+                        d-flex
+                        justify-content-between
+                        align-items-center
+                      ">
+                    <div class="dropdown">
+                      <i class="fas fa-ellipsis-v cursor-pointer" id="dropdownMenuButton" data-toggle="dropdown"
+                        aria-haspopup="true" aria-expanded="false"></i>
+                      <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+                        <a class="dropdown-item c-pointer" v-if="member.phone">
+                          <a @click="test(member)">Send SMS</a>
+                        </a>
+                        <a class="dropdown-item c-pointer" v-if="member.email">
+                          <a @click="testEmail(member)">Send Email</a>
+                        </a>
+                        <a class="dropdown-item cursor-pointer" @click="requestApproval(member)">
+                          Request Approval
+                        </a>
+                        <a class="dropdown-item cursor-pointer" @click="archive(member.personID, 'single')">
+                          Archive
+                        </a>
+                        <a class="dropdown-item c-pointer" @click="confirmDelete(member.id, index)">Remove</a>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div> -->
           </div>
         </div>
       </div>
+    </div>
 
-      <div class="row py-3 my-3" v-if="showGroup">
-        <div class="col-md-12">
-          <p
-            class="text-right text-danger font-weight-bold pr-2"
-            v-if="groupNameIsInvalid"
-          >
-            Please enter group name
-          </p>
-        </div>
-        <div class="col-md-12 d-flex justify-content-end action-btns">
-          <router-link
-            to="/tenant/peoplegroups"
-            class="secondary-btn bg-white text-dark"
-            >Discard</router-link
-          >
-          <button
-            class="primary-btn default-btn primary-bg border-0 outline-none"
-            @click="saveGroupData"
-            :disabled="savingGroup"
-          >
-            <i class="fas fa-circle-notch fa-spin" v-if="savingGroup"></i>
-            {{ buttonText }}
-          </button>
-        </div>
+    <div class="row py-3 my-3" v-if="showGroup">
+      <div class="col-md-12">
+        <p class="text-right text-danger font-weight-bold pr-2" v-if="groupNameIsInvalid">
+          Please enter group name
+        </p>
+      </div>
+      <div class="col-md-12 d-flex justify-content-end action-btns">
+        <router-link to="/tenant/peoplegroups" class="no-decoration">
+          <el-button round>Discard</el-button>
+        </router-link>
+        <!-- <button class="primary-btn default-btn primary-bg border-0 outline-none" @click="saveGroupData"
+          :disabled="savingGroup">
+          <i class="fas fa-circle-notch fa-spin" v-if="savingGroup"></i>
+          {{ buttonText }}
+        </button> -->
+        <el-button color="#136acd" :loading="savingGroup" @click="saveGroupData" :disabled="savingGroup" round>{{ buttonText }}</el-button>
       </div>
     </div>
-    <Dialog
-      header="Create New Member"
-      v-model:visible="display"
-      :style="{ width: '70vw', maxWidth: '600px' }"
-      :modal="true"
-      position="top"
-    >
+    <Dialog header="Create New Member" v-model:visible="display" :style="{ width: '70vw', maxWidth: '600px' }"
+      :modal="true" position="top">
       <div class="row">
         <div class="col-md-12">
-          <NewPerson
-            @cancel="() => (display = false)"
-            @person-id="getWardId($event)"
-            @show-group-modal="setGroupModal"
-          />
+          <NewPerson @cancel="() => (display = false)" @person-id="getWardId($event)"
+            @show-group-modal="setGroupModal" />
         </div>
       </div>
     </Dialog>
-    <Dialog
-      header="Archive members"
-      v-model:visible="displayPositionArchive"
-      :breakpoints="{ '960px': '75vw' }"
-      :style="{ width: window.innerWidth > 767 ? '50vw' : '100vw' }"
-      :position="positionArchive"
-      :modal="true"
-    >
+    <Dialog header="Archive members" v-model:visible="displayPositionArchive" :breakpoints="{ '960px': '75vw' }"
+      :style="{ width: window.innerWidth > 767 ? '50vw' : '100vw' }" :position="positionArchive" :modal="true">
       <p class="p-m-0">
         You are about to archive your member(s). Do you want to continue ?
       </p>
       <template #footer>
         <div class="d-flex justify-content-end">
-          <div
-            class="default-btn bg-white text-center mr-2 c-pointer"
-            @click="closeArchiveModal"
-          >
+          <div class="default-btn bg-white text-center mr-2 c-pointer" @click="closeArchiveModal">
             No
           </div>
-          <div
-            class="
+          <div class="
               default-btn
               border-0
               primary-bg
               text-center text-white
               c-pointer
-            "
-            @click="archive('', 'multiple')"
-          >
+            " @click="archive('', 'multiple')">
             Yes
           </div>
         </div>
       </template>
     </Dialog>
-    <SideBar
-      :show="showSMS"
-      :title="'Compose SMS'"
-      @closesidemodal="() => (showSMS = false)"
-    >
+    <SideBar :show="showSMS" :title="'Compose SMS'" @closesidemodal="() => (showSMS = false)">
       <div class="m-wrapper">
-        <smsComponent
-          :phoneNumbers="contacts"
-          @closesidemodal="() => (showSMS = false)"
-        />
+        <smsComponent :phoneNumbers="contacts" @closesidemodal="() => (showSMS = false)" />
       </div>
     </SideBar>
-    <SideBar
-      :show="showEmail"
-      :title="'Compose Email'"
-      @closesidemodal="() => (showEmail = false)"
-    >
+    <SideBar :show="showEmail" :title="'Compose Email'" @closesidemodal="() => (showEmail = false)">
       <div class="m-wrapper2">
-        <emailComponent
-          :selectedGroupMembers="selectedGroupMembers"
-          @closesidemodal="() => (showEmail = false)"
-        />
+        <emailComponent :selectedGroupMembers="selectedGroupMembers" @closesidemodal="() => (showEmail = false)" />
       </div>
     </SideBar>
   </div>
@@ -1466,7 +1192,13 @@ import Attendancecheckin from "../event/attendance&checkin/AttendanceAndCheckinL
 import attendanceservice from "../../services/attendance/attendanceservice";
 import ImportToGroup from "../people/ImportInstruction";
 import GroupTree from "./component/GroupTree.vue";
-import { useStore } from "vuex"
+import collector from "../../services/groupArray/mapTree";
+import { ElMessage } from "element-plus";
+import { useStore } from "vuex";
+import grousService from "../../services/groups/groupsservice";
+import flatten from "../../services/groupArray/flatTree";
+import Table from "@/components/table/Table"
+import deviceBreakpoint from "../../mixins/deviceBreakpoint";
 
 export default {
   directives: {
@@ -1482,12 +1214,16 @@ export default {
     emailComponent,
     ImportToGroup,
     GroupTree,
+    Table
   },
   setup() {
     const store = useStore();
     const display = ref(false);
     //  const showWardModal = ref(false)
     const memberDia = ref(true);
+    const selectedTree = ref();
+    const moveSelectedTree = ref();
+    const groupMappedTree = ref([]);
     const modalBtn = ref(null);
     const groupData = ref({});
     // const wardSearchString = ref("");
@@ -1527,22 +1263,74 @@ export default {
     const searchGroupRef = ref();
     const closeGroupModal = ref();
     const lastGroupChild = ref({});
-    const moveHideDiv = ref(true)
-    const copyHideDiv = ref(true)
+    const moveHideDiv = ref(true);
+    const copyHideDiv = ref(true);
+    const flattenedTree = ref([]);
+    const { lgAndUp, xlAndUp } = deviceBreakpoint()
+    const createGroupHeaders = ref([
+      { name: 'NAME', value: 'name' },
+      { name: 'POSITION', value: 'position' },
+      { name: 'EMAIL', value: 'email' },
+      { name: 'PHONE', value: 'phone' },
+      { name: 'ACTION', value: 'action' },
+    ])
 
     const getGroups = async () => {
-      grouploading.value = true
+      grouploading.value = true;
       try {
-        const { data } = await axios.get("/api/GetAllGroupBasicInformation");
-        console.log(getAllGroup.value);
+        // const { data } = await axios.get("/api/GetAllGroupBasicInformation");
+        let data = await grousService.getGroups();
         getAllGroup.value = data;
-        grouploading.value = false
+        console.log(getAllGroup.value);
+        grouploading.value = false;
+        flattenedTree.value = flattenTree(getAllGroup.value)
+        
       } catch (error) {
         console.log(error);
-        grouploading.value = false
+        grouploading.value = false;
       }
     };
     getGroups();
+
+    const flattenTree = (tree) => {
+      let treevalue = { children: tree };
+        const { children } = collector(treevalue);
+        groupMappedTree.value = children;
+        if (groupMappedTree.value && groupMappedTree.value.length > 0) {
+          return groupMappedTree.value.flatMap(flatten());
+        }
+    }
+
+    // const getGroups = async () => {
+    //   try {
+    //     let groups = store.getters["groups/groups"];
+
+    //     if (groups && groups.length > 0) {
+    //       allGroups.value = groups;
+    //       let data = { children: allGroups.value };
+    //       const { children } = collector(data);
+    //       groupMappedTree.value = children;
+    //       if (groupMappedTree.value && groupMappedTree.value.length > 0) {
+    //         flattenedTree.value = groupMappedTree.value.flatMap(flatten());
+    //       }
+    //       return true;
+    //     } else {
+    //       let group = await grousService.getGroups();
+    //       if (group) {
+    //         allGroups.value = group;
+    //         let data = { children: allGroups.value };
+    //         const { children } = collector(data);
+    //         groupMappedTree.value = children;
+    //         if (groupMappedTree.value && groupMappedTree.value.length > 0) {
+    //           flattenedTree.value = groupMappedTree.value.flatMap(flatten());
+    //         }
+    //       }
+    //     }
+    //   } catch (error) {
+    //     console.log(error);
+    //   }
+    // };
+    // getGroups();
 
     const test = (member) => {
       if (member.phone) {
@@ -1598,11 +1386,16 @@ export default {
       axios
         .post(`/api/Group/MoveMembers`, memberMove)
         .then((res) => {
-          toast.add({
-            severity: "success",
-            summary: "Confirmed",
-            detail: "Member(s) Moved Successfully",
-            life: 4000,
+          // toast.add({
+          //   severity: "success",
+          //   summary: "Confirmed",
+          //   detail: "Member(s) Moved Successfully",
+          //   life: 4000,
+          // });
+          ElMessage({
+            message: "Member(s) Moved Successfully",
+            type: "success",
+            duration: 4000,
           });
           console.log(res);
           store.dispatch("groups/updateGroupPeopleCount", {
@@ -1628,18 +1421,29 @@ export default {
         .catch((err) => {
           finish();
           if (err.toString().toLowerCase().includes("network error")) {
-            toast.add({
-              severity: "warn",
-              summary: "Network error",
-              detail: "Please ensure you have a strong internet",
-              life: 4000,
+            // toast.add({
+            //   severity: "warn",
+            //   summary: "Network error",
+            //   detail: "Please ensure you have a strong internet",
+            //   life: 4000,
+            // });
+            ElMessage({
+              message: "Please ensure you have a strong internet",
+              type: "Warn",
+              life: "4000",
             });
           } else if (err.toString().toLowerCase().includes("timeout")) {
-            toast.add({
-              severity: "warn",
-              summary: "Request took too long",
-              detail: "Please refresh the page",
-              life: 4000,
+            // toast.add({
+            //   severity: "warn",
+            //   summary: "Request took too long",
+            //   detail: "Please refresh the page",
+            //   life: 4000,
+            // });
+            ElMessage({
+              message: "",
+              type: "",
+              life: "4000",
+              showClose: true,
             });
           }
         });
@@ -1653,11 +1457,17 @@ export default {
       axios
         .post(`/api/Group/CopyMembers`, copyMember)
         .then((res) => {
-          toast.add({
-            severity: "success",
-            summary: "Confirmed",
-            detail: "Member(s) Copy Successfully",
-            life: 2500,
+          // toast.add({
+          //   severity: "success",
+          //   summary: "Confirmed",
+          //   detail: "Member(s) Copy Successfully",
+          //   life: 2500,
+          // });
+          ElMessage({
+            message: "Confirmed",
+            type: "success",
+            life: "4000",
+            showClose: true,
           });
           console.log(res);
           store.dispatch("groups/updateGroupPeopleCopy", {
@@ -1668,47 +1478,62 @@ export default {
         .catch((err) => {
           finish();
           if (err.toString().toLowerCase().includes("network error")) {
-            toast.add({
-              severity: "warn",
-              summary: "Network error",
-              detail: "Please ensure you have a strong internet",
-              life: 4000,
+            // toast.add({
+            //   severity: "warn",
+            //   summary: "Network error",
+            //   detail: "Please ensure you have a strong internet",
+            //   life: 4000,
+            // });
+            ElMessage({
+              message: "Please ensure you have a strong internet",
+              type: "Warn",
+              life: "4000",
+              showClose: true,
             });
           } else if (err.toString().toLowerCase().includes("timeout")) {
-            toast.add({
-              severity: "warn",
-              summary: "Request took too long",
-              detail: "Please refresh the page",
-              life: 4000,
+            // toast.add({
+            //   severity: "warn",
+            //   summary: "Request took too long",
+            //   detail: "Please refresh the page",
+            //   life: 4000,
+            // });
+            ElMessage({
+              message: "Please refresh the page",
+              type: "warn",
+              life: "4000",
             });
           }
         });
     };
-    const mark1Item = (member) => {
-      console.log(member);
-      const memberIndex = marked.value.findIndex(
-        (i) => i.personID === member.personID
-      );
-      if (memberIndex < 0) {
-        marked.value.push(member);
-      } else {
-        marked.value.splice(memberIndex, 1);
-      }
-    };
-    const markAllItem = () => {
-      if (marked.value.length < groupMembers.value.length) {
-        groupMembers.value.forEach((i) => {
-          const groupInMarked = marked.value.findIndex(
-            (q) => q.personID === i.personID
-          );
-          if (groupInMarked < 0) {
-            marked.value.push(i);
-          }
-        });
-      } else {
-        marked.value.splice(0, marked.value.length);
-      }
-    };
+    // const mark1Item = (member) => {
+    //   console.log(member);
+    //   const memberIndex = marked.value.findIndex(
+    //     (i) => i.personID === member.personID
+    //   );
+    //   if (memberIndex < 0) {
+    //     marked.value.push(member);
+    //   } else {
+    //     marked.value.splice(memberIndex, 1);
+    //   }
+    // };
+    // const markAllItem = () => {
+    //   if (marked.value.length < groupMembers.value.length) {
+    //     groupMembers.value.forEach((i) => {
+    //       const groupInMarked = marked.value.findIndex(
+    //         (q) => q.personID === i.personID
+    //       );
+    //       if (groupInMarked < 0) {
+    //         marked.value.push(i);
+    //       }
+    //     });
+    //   } else {
+    //     marked.value.splice(0, marked.value.length);
+    //   }
+    // };
+
+    const handleSelectionChange = (val) => {
+      marked.value = val
+    }
 
     const confirmDelete = (id, index) => {
       confirm.require({
@@ -1726,11 +1551,16 @@ export default {
             .then((res) => {
               if (res !== false) {
                 groupMembers.value.splice(index, 1);
-                toast.add({
-                  severity: "success",
-                  summary: "Confirmed",
-                  detail: "The member was removed",
-                  life: 2500,
+                // toast.add({
+                //   severity: "success",
+                //   summary: "Confirmed",
+                //   detail: "The member was removed",
+                //   life: 2500,
+                // });
+                ElMessage({
+                  message: "The member was removed",
+                  type: "success",
+                  duration: "2500",
                 });
                 groupsService.editGroupInStore(
                   { name: groupData.value.name, id: route.params.groupId },
@@ -1853,9 +1683,7 @@ export default {
     const toast = useToast();
 
     const setGroupModal = () => {
-      //  modalStatus.value = "modal";
       modalBtn.value.click();
-      // showWardModal.value = payload
     };
 
     const saveGroupData = () => {
@@ -1895,11 +1723,16 @@ export default {
           if (redirect) {
             router.push("/tenant/peoplegroups");
           } else {
-            toast.add({
-              severity: "success",
-              summary: "Group Updated",
-              detail: "Group members update successfully",
-              life: 2500,
+            // toast.add({
+            //   severity: "success",
+            //   summary: "Group Updated",
+            //   detail: "Group members update successfully",
+            //   life: 2500,
+            // });
+            ElMessage({
+              message: "Group members updated successfully",
+              type: "success",
+              duration: "2500",
             });
           }
         })
@@ -1907,11 +1740,16 @@ export default {
           finish();
           savingGroup.value = false;
           console.log(err);
-          toast.add({
-            severity: "error",
-            summary: "Update Error",
-            detail: "Failed updating group",
-            life: 2500,
+          // toast.add({
+          //   severity: "error",
+          //   summary: "Update Error",
+          //   detail: "Failed updating group",
+          //   life: 2500,
+          // });
+          ElMessage({
+            message: "Failed updating group",
+            type: "error",
+            duration: "2500",
           });
         });
     };
@@ -1930,11 +1768,10 @@ export default {
           finish();
           savingGroup.value = false;
           console.log(err.response);
-          toast.add({
-            severity: "error",
-            summary: "Save Error",
-            detail: "Failed saving group",
-            life: 2500,
+          ElMessage({
+            message: "Failed saving group",
+            type: "error",
+            duration: "2500",
           });
         });
     };
@@ -1967,9 +1804,8 @@ export default {
             personID: i.person.id,
             address: i.person.address,
             email: i.person.email,
-            name: `${i.person.firstName ? i.person.firstName : ""} ${
-              i.person.lastName ? i.person.lastName : ""
-            }`,
+            name: `${i.person.firstName ? i.person.firstName : ""} ${i.person.lastName ? i.person.lastName : ""
+              }`,
             phone: i.person.phoneNumber,
             position: i.position,
           };
@@ -1981,9 +1817,8 @@ export default {
             personID: i.person.id,
             address: i.person.address,
             email: i.person.email,
-            name: `${i.person.firstName ? i.person.firstName : ""} ${
-              i.person.lastName ? i.person.lastName : ""
-            }`,
+            name: `${i.person.firstName ? i.person.firstName : ""} ${i.person.lastName ? i.person.lastName : ""
+              }`,
             phone: i.person.phoneNumber,
             position: i.position,
             groupID: i.groupID,
@@ -1996,18 +1831,28 @@ export default {
         loadingMembers.value = false;
         console.log(error.response);
         if (error.toString().toLowerCase().includes("network error")) {
-          toast.add({
-            severity: "warn",
-            summary: "Network error",
-            detail: "Please ensure you have a strong internet",
-            life: 4000,
+          // toast.add({
+          //   severity: "warn",
+          //   summary: "Network error",
+          //   detail: "Please ensure you have a strong internet",
+          //   life: 4000,
+          // });
+          ElMessage({
+            message: "Please ensure you have a strong internet",
+            type: "warn",
+            duration: "4000",
           });
         } else if (error.toString().toLowerCase().includes("timeout")) {
-          toast.add({
-            severity: "warn",
-            summary: "Request took too long",
-            detail: "Please refresh the page",
-            life: 4000,
+          // toast.add({
+          //   severity: "warn",
+          //   summary: "Request took too long",
+          //   detail: "Please refresh the page",
+          //   life: 4000,
+          // });
+          ElMessage({
+            message: "Please refresh the page",
+            type: "warn",
+            duration: "4000",
           });
         }
       }
@@ -2028,18 +1873,28 @@ export default {
         memberSearchResults.value = [];
       }
 
-      if (!e.target.classList.contains("exempt-hide") && !e.target.classList.contains("p-hidden-accessible") && !e.target.classList.contains("p-checkbox-box") && !e.target.classList.contains("p-checkbox-icon")) {
-        hideDiv.value = true
+      if (
+        !e.target.classList.contains("exempt-hide") &&
+        !e.target.classList.contains("p-hidden-accessible") &&
+        !e.target.classList.contains("p-checkbox-box") &&
+        !e.target.classList.contains("p-checkbox-icon")
+      ) {
+        hideDiv.value = true;
       }
     };
 
     const importMember = () => {
       if (!route.params.groupId) {
-        toast.add({
-          severity: "warn",
-          summary: "Create a group",
-          detail: "Please ensure you create the group first before you import",
-          life: 5000,
+        // toast.add({
+        //   severity: "warn",
+        //   summary: "Create a group",
+        //   detail: "Please ensure you create the group first before you import",
+        //   life: 5000,
+        // });
+        ElMessage({
+          message: "Please ensure you create the group first before you import",
+          type: "warn",
+          duration: "5000",
         });
       }
     };
@@ -2059,11 +1914,16 @@ export default {
           memberToApprove
         );
         console.log(res);
-        toast.add({
-          severity: "success",
-          summary: "Approved",
-          detail: "Member approved successfully",
-          life: 4000,
+        // toast.add({
+        //   severity: "success",
+        //   summary: "Approved",
+        //   detail: "Member approved successfully",
+        //   life: 4000,
+        // });
+        ElMessage({
+          message: "Member approved successfully",
+          type: "Success",
+          duration: "4000",
         });
         awaitingApprovals.value = awaitingApprovals.value.filter((i) => {
           return i.personID !== member.personID;
@@ -2073,18 +1933,28 @@ export default {
       } catch (error) {
         finish();
         if (error.toString().toLowerCase().includes("network error")) {
-          toast.add({
-            severity: "warn",
-            summary: "Network error",
-            detail: "Please ensure you have a strong internet",
-            life: 4000,
+          // toast.add({
+          //   severity: "warn",
+          //   summary: "Network error",
+          //   detail: "Please ensure you have a strong internet",
+          //   life: 4000,
+          // });
+          ElMessage({
+            message: "Please ensure you have a strong internet",
+            type: "warn",
+            duration: "4000",
           });
         } else if (error.toString().toLowerCase().includes("timeout")) {
-          toast.add({
-            severity: "warn",
-            summary: "Request took too long",
-            detail: "Please refresh the page",
-            life: 4000,
+          // toast.add({
+          //   severity: "warn",
+          //   summary: "Request took too long",
+          //   detail: "Please refresh the page",
+          //   life: 4000,
+          // });
+          ElMessage({
+            message: "Please refresh the page",
+            type: "warn",
+            duration: "4000",
           });
         }
         console.log(error);
@@ -2097,9 +1967,8 @@ export default {
           personID: i.person.id,
           address: i.person.address,
           email: i.person.email,
-          name: `${i.person.firstName ? i.person.firstName : ""} ${
-            i.person.lastName ? i.person.lastName : ""
-          }`,
+          name: `${i.person.firstName ? i.person.firstName : ""} ${i.person.lastName ? i.person.lastName : ""
+            }`,
           phone: i.person.mobilePhone,
           position: i.position,
         });
@@ -2127,11 +1996,16 @@ export default {
           groupMembers.value = groupMembers.value.filter((item) => {
             return item.personID !== id;
           });
-          toast.add({
-            severity: "success",
-            summary: "Archived",
-            detail: "Member archived succesfully",
-            life: 5000,
+          // toast.add({
+          //   severity: "success",
+          //   summary: "Archived",
+          //   detail: "Member archived succesfully",
+          //   life: 5000,
+          // });
+          ElMessage({
+            message: "Member archived successfully",
+            type: "success",
+            duration: "5000",
           });
         }
         if (data && type == "multiple") {
@@ -2140,11 +2014,16 @@ export default {
             if (y >= 0) return false;
             return true;
           });
-          toast.add({
-            severity: "success",
-            summary: "Archived",
-            detail: "Member(s) archived succesfully",
-            life: 5000,
+          // toast.add({
+          //   severity: "success",
+          //   summary: "Archived",
+          //   detail: "Member(s) archived succesfully",
+          //   life: 5000,
+          // });
+          ElMessage({
+            message: "Member(s) archived successfully",
+            type: "success",
+            duration: "5000",
           });
           displayPositionArchive.value = false;
         }
@@ -2165,86 +2044,56 @@ export default {
       );
     });
 
-    // const visit = (o) => {
-    //   console.log(o, 'hereeeeeee')
-    //   let num  = 0
-    //     for (var i = 0; i<o.length; i++) {
-    //       /* do something useful */
-    //       console.log(o[i].name);
-    //       o[i].label = o[i].name
-
-    //       o[i].key = `${i}-${num++}`
-
-    //       if (Array.isArray(o[i].children)) {
-    //         o[i].key = `${i}`
-    //         visit(o[i].children);
-    //       }
-    //     }
+    // watchEffect(() => {
+    //   if (store.getters["groups/selectedTreeGroup"]) {
+    //     // console.log(store.getters['groups/selectedTreeGroup'])
+    //     const selectedGroup = store.getters["groups/selectedTreeGroup"];
+    //     hideDiv.value = true;
+    //     selectedIntendedSubGroup.value = selectedGroup;
     //   }
+    // });
 
-    //  const getgroups = async () => {
-    //   try {
-    //     const data = await groupsService.getGroups();
-
-    //       groups.value = data.map((i) => {
-    //         return {
-
-    //           dateCreated: i.dateCreated,
-    //           description: i.description,
-    //           name: i.name,
-    //           label: i.name,
-    //           id: i.id,
-    //           tenantID: i.tenantID,
-    //           peopleInGroupsCount: i.peopleInGroupsCount,
-    //           children: i.children
-    //         };
-    //       });
-    //       //  visit(groups.value)
-    //     console.log(groups.value);
-    //   } catch (error) {
-    //     (loading.value = false), console.log(error.response);
-    //   }
-    // };
-    // getgroups();
-
-    // const setSelectedGroup = (payload) => {
-    //   console.log(payload)
-    //   // if (payload && payload.iconElement && payload.iconElement.classList.contains("pi-chevron-down")) return false
-
-    //   // hideDiv.value = true
-    //   // selectedIntendedSubGroup.value = payload.selectedGroup;
-    // };
-
-    watchEffect (() => {
-      if (store.getters['groups/selectedTreeGroup']) {
-        // console.log(store.getters['groups/selectedTreeGroup'])
-        const selectedGroup = store.getters['groups/selectedTreeGroup']
-        hideDiv.value = true
-        selectedIntendedSubGroup.value = selectedGroup;
-      }
-    })
+    const setGroupValue = () => {
+      const response = flattenedTree.value.find(
+        (i) => i.value == selectedTree.value
+      );
+      selectedIntendedSubGroup.value = {
+        name: response.label,
+        id: response.value,
+      };
+    };
 
     const addSubGroup = async () => {
       try {
         const { data } = await axios.post(
           `/api/Group/AddSubGroupToGroup?SuperGroupID=${route.params.groupId}&&SubGroupID=${selectedIntendedSubGroup.value.id}`
         );
-        toast.add({
-          severity: "success",
-          summary: "Successful",
-          detail: `${data.response}`,
-          life: 4000,
+        // toast.add({
+        //   severity: "success",
+        //   summary: "Successful",
+        //   detail: `${data.response}`,
+        //   life: 4000,
+        // });
+        ElMessage({
+          message: `${data.response}`,
+          type: "success",
+          duration: "4000",
         });
         groupData.value.children.push(data.returnObject);
         console.log(data);
       } catch (error) {
         console.log(error.response);
         if (error.response) {
-          toast.add({
-            severity: "error",
-            summary: "Unsuccessful",
-            detail: `${error.response}`,
-            life: 4000,
+          // toast.add({
+          //   severity: "error",
+          //   summary: "Unsuccessful",
+          //   detail: `${error.response}`,
+          //   life: 4000,
+          // });
+          ElMessage({
+            message: `${error.response}`,
+            type: "error",
+            duration: "4000",
           });
         }
       }
@@ -2253,55 +2102,71 @@ export default {
     const setCopyGroupProp = () => {
       copyHideDiv.value = !copyHideDiv.value;
       nextTick(() => {
-        searchGroupRef.value.focus()
-      })
+        searchGroupRef.value.focus();
+      });
     };
 
-    const setMoveGroupProp = () => {
-      moveHideDiv.value = !moveHideDiv.value;
-      nextTick(() => {
-        searchGroupRef.value.focus()
-      })
-    };
-    
+    // const setMoveGroupProp = () => {
+    //   moveHideDiv.value = !moveHideDiv.value;
+    //   nextTick(() => {
+    //     searchGroupRef.value.focus();
+    //   });
+    // };
+
     const setGroupProp = () => {
       hideDiv.value = !hideDiv.value;
       nextTick(() => {
-        searchGroupRef.value.focus()
-      })
+        searchGroupRef.value.focus();
+      });
     };
 
     const searchForGroups = computed(() => {
-      if (!searchGroupText.value && getAllGroup.value.length > 0) return getAllGroup.value
-      return getAllGroup.value.filter(i => i.name.toLowerCase().includes(searchGroupText.value.toLowerCase()))
-    })
+      if (!searchGroupText.value && getAllGroup.value.length > 0)
+        return getAllGroup.value;
+      return getAllGroup.value.filter((i) =>
+        i.name.toLowerCase().includes(searchGroupText.value.toLowerCase())
+      );
+    });
 
     const setChildGroup = (payload) => {
-      console.log(payload)
-    }
+      console.log(payload);
+    };
 
-    watchEffect(() => {
-       if (store.getters["groups/selectedTreeGroupList"]) {
-         const selectedGroup = store.getters["groups/selectedTreeGroupList"]
-         lastGroupChild.value = selectedGroup
-        console.log(selectedGroup)
-        
-       }
-     })
+    // watchEffect(() => {
+    //   if (store.getters["groups/selectedTreeGroupList"]) {
+    //     const selectedGroup = store.getters["groups/selectedTreeGroupList"];
+    //     lastGroupChild.value = selectedGroup;
+    //     console.log(selectedGroup);
+    //   }
+    // });
 
-    const setSelectedGroupToMove = (payload) => {
-      if (payload.iconElement.classList.contains("p-3")) {
-        selectGroupTo.value = payload.selectedGroup ? payload.selectedGroup : lastGroupChild.value
-        moveHideDiv.value = true
+    const setSelectedGroupToMove = () => {
+      // console.log(payload)
+      // if (payload.iconElement.classList.contains("p-3")) {
+      //   selectGroupTo.value = payload.selectedGroup
+      //     ? payload.selectedGroup
+      //     : lastGroupChild.value;
+      //   moveHideDiv.value = true;
+      // }
+      let flattenGroupTree = flattenTree(getAllGroup.value)
+      const selectedLabelTree = flattenGroupTree.find(i => i.value === moveSelectedTree.value)
+      selectGroupTo.value = {
+        name: selectedLabelTree.label,
+        id: selectedLabelTree.id
       }
-    }
-    
+    };
+
+    const filterNodeMethod = (value, data) =>
+      data.label.toLowerCase().includes(value.toLowerCase());
+
     const setSelectedGroupToCopy = (payload) => {
       if (payload.iconElement.classList.contains("p-3")) {
-        copyGroupTo.value = payload.selectedGroup ? payload.selectedGroup : lastGroupChild.value
-        copyHideDiv.value = true
+        copyGroupTo.value = payload.selectedGroup
+          ? payload.selectedGroup
+          : lastGroupChild.value;
+        copyHideDiv.value = true;
       }
-    }
+    };
 
     return {
       groupData,
@@ -2333,8 +2198,9 @@ export default {
       closeDropdownIfOpen,
       confirmDelete,
       marked,
-      markAllItem,
-      mark1Item,
+      // markAllItem,
+      // mark1Item,
+      handleSelectionChange,
       selectMembers,
       memberDia,
       display,
@@ -2353,6 +2219,8 @@ export default {
       groupDetail,
       showGroup,
       showAttendanceCheckin,
+      groupMappedTree,
+      filterNodeMethod,
       // wardSearchString,
       getWardId,
       totalItems,
@@ -2385,7 +2253,7 @@ export default {
       groups,
       // setSelectedGroup,
       setGroupProp,
-      setMoveGroupProp,
+      // setMoveGroupProp,
       hideDiv,
       moveHideDiv,
       copyHideDiv,
@@ -2399,9 +2267,16 @@ export default {
       setSelectedGroupToMove,
       lastGroupChild,
       setSelectedGroupToCopy,
-      setCopyGroupProp
-      // setGroupData
-    };
+      setCopyGroupProp,
+      selectedTree,
+      setGroupValue,
+      flattenedTree,
+      lgAndUp,
+      xlAndUp,
+      createGroupHeaders,
+      moveSelectedTree,
+      flattenTree
+    }
   },
 };
 </script>
@@ -2410,6 +2285,7 @@ export default {
 * {
   box-sizing: border-box;
 }
+
 .botom {
   border-bottom: 7px solid rgb(252, 248, 248);
   border-radius: 2px;
@@ -2419,10 +2295,12 @@ export default {
 
   /* height: 4px; */
 }
+
 .add-person-btn {
   background: #136acd;
   color: #fff;
 }
+
 .buttonn {
   padding: 8px 20px;
   border: none;
@@ -2442,12 +2320,6 @@ export default {
 .events {
   font: normal normal 800 29px Nunito sans;
 }
-/* hr{
-      color: gainsboro;
-      background-color: hotpink;
-      height: 5px;
-      width : 100%;
-    } */
 
 .baseline {
   transition: all 150ms ease-in-out;
@@ -2472,6 +2344,7 @@ export default {
   left: 0px;
   opacity: 0;
 }
+
 .baselinetwo {
   transition: all 150ms ease-in-out;
   background-color: #136acd;
@@ -2482,6 +2355,7 @@ export default {
   left: 0px;
   opacity: 1;
 }
+
 .m-wrapper {
   background-color: white !important;
   width: 875px;
@@ -2491,6 +2365,7 @@ export default {
   height: 100%;
   padding: 70px;
 }
+
 .m-wrapper2 {
   background-color: white !important;
   width: 875px;
@@ -2518,19 +2393,27 @@ export default {
 }
 
 .btnn {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    gap: 1rem;
-  }
+  display: flex;
+  justify-content: end;
+  align-items: center;
+}
 
-  .dropdown {
-    display: flex;
-    align-items: flex-end;
-    justify-content: flex-end;
-    width: 100%;
-  }
+.label-sub {
+  width: 100px;
+}
+
+/* .dropdown {
+  display: flex;
+  align-items: flex-end;
+  justify-content: flex-end;
+  width: 100%;
+} */
+
+/* .check-box{
+     vertical-align:middle;
+  } */
 @media screen and (max-width: 947px) {
+
   .m-wrapper,
   .m-wrapper2 {
     width: 700px;
@@ -2539,6 +2422,7 @@ export default {
 }
 
 @media screen and (max-width: 767px) {
+
   /* .baseline {
             width: 40%;
         }
@@ -2551,7 +2435,9 @@ export default {
     padding: 40px;
   }
 }
+
 @media screen and (max-width: 575px) {
+
   /* .baseline {
             width: 20%;
         }
@@ -2564,14 +2450,17 @@ export default {
     font-size: x-large;
     /* padding-top: -10px; */
   }
+
   .botom {
     display: flex;
     gap: 1.5rem;
   }
+
   .c-pointer {
     cursor: pointer;
     flex: 1;
   }
+
   .m-wrapper,
   .m-wrapper2 {
     width: 350px;
@@ -2586,6 +2475,7 @@ export default {
     align-items: center;
   }
 }
+
 .remove-btn {
   background: red !important;
   padding: 10px 20px;
@@ -2610,10 +2500,10 @@ export default {
   background: #ebeff4;
 }
 
-.bottom-box {
+/* .bottom-box {
   border: 1px solid #dde2e6;
   border-radius: 10px;
-}
+} */
 
 .action-btns a {
   text-decoration: none;
@@ -2668,11 +2558,11 @@ export default {
   border: 1px solid #dde2e6;
 }
 
-.group-form {
-  box-shadow: 0px 5px 15px #00000017;
+/* .group-form { */
+  /* box-shadow: 0px 5px 15px #00000017;
   border: 1px solid #dde2e6;
-  border-radius: 10px;
-}
+  border-radius: 10px; */
+/* } */
 
 .grey-background {
   background: #ebeff4;
@@ -2694,6 +2584,7 @@ export default {
   font-size: 14px;
   text-decoration: none;
 }
+
 .tool {
   text-decoration: none;
 }
@@ -2730,6 +2621,7 @@ export default {
 .remove-email:hover {
   cursor: pointer;
 }
+
 .btn-primary {
   background: #136acd !important;
 }
@@ -2773,8 +2665,8 @@ export default {
 
 @media (max-width: 600px) {
   .btnn {
-
     flex-wrap: wrap;
+    gap: .6rem
   }
 }
 </style>

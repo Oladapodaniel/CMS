@@ -1071,6 +1071,10 @@ export default {
   justify-content: flex-end;
 }
 
+.number-boxes {
+  z-index: -1
+}
+
 .box {
   width: 170px;
   background: #FFFFFF;

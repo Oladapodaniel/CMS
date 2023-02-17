@@ -5,17 +5,17 @@
                 <tr>
                     <th v-if="checkMultipleItem">
                         <el-checkbox v-model="checked" @change="checkAllRows" :indeterminate="isIndeterminate"
-                            :checked="data.length === checkedRow.length" size="large" />
+                            :checked="data.length > 0 && (data.length === checkedRow.length)" size="large" />
                     </th>
                 </tr>
             </thead>
-            <thead class="table-head destop">
+            <thead class="table-head desktop">
                 <tr>
                     <th v-if="checkMultipleItem">
                         <el-checkbox v-model="checked" @change="checkAllRows" :indeterminate="isIndeterminate"
-                            :checked="data.length === checkedRow.length" size="large" />
+                            :checked="data.length > 0 && (data.length === checkedRow.length)" size="large" />
                     </th>
-                    <th v-for="(head, index) in headers" :key="index" :class="{ 'py-3' : !checkMultipleItem }">
+                    <th v-for="(head, index) in headers" :key="index" :class="{ 'py-3': !checkMultipleItem }">
                         <h2>{{ head.name }}</h2>
                     </th>
                 </tr>
@@ -25,7 +25,7 @@
                     <td v-if="checkMultipleItem">
                         <el-checkbox v-model="item.check" @change="checkSingleRow(index)" size="large" />
                     </td>
-                    <td v-for="(head, index) in headers" :key="index" :class="{ 'py-2' : !checkMultipleItem }">
+                    <td v-for="(head, index) in headers" :key="index" :class="{ 'py-2': !checkMultipleItem }">
                         <span>
                             <h2>{{ head.name }}</h2>
                         </span>
@@ -38,7 +38,7 @@
 </template>
 
 <script>
-import { ref, watchEffect } from 'vue';
+import { ref } from 'vue';
 
 export default {
     emits: ['checkedrow'],
@@ -96,10 +96,6 @@ export default {
             }
             emit('checkedrow', checkedRow.value)
         }
-
-        watchEffect(() => {
-            console.log(props.data, 'value')
-        })
         return {
             table,
             checked,
@@ -148,7 +144,8 @@ table th {
     padding: 0px 10px;
 }
 
-table tbody tr, table thead tr {
+table tbody tr,
+table thead tr {
     /* height: 60px; */
     border-bottom: 1px solid #d4dde3;
 }
@@ -174,7 +171,7 @@ thead.mobile {
 }
 
 @media (max-width: 996px) {
-    thead.destop {
+    thead.desktop {
         display: none;
     }
 
@@ -198,9 +195,10 @@ thead.mobile {
     }
 
     table tbody tr {
-        padding-bottom: 5px; 
-        padding-top: 5px; 
+        padding-bottom: 5px;
+        padding-top: 5px;
     }
+
     table td {
         padding: 7px 10px
     }
