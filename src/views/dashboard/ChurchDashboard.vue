@@ -123,7 +123,7 @@
               <el-button round>Subscribe now</el-button>
             </div>
           </div>
-          <div class="col-md-12 py-3 mb-1 day1" v-if="notifiedDays === 1158">
+          <div class="col-md-12 py-3 mb-1 day1" v-if="notifiedDays === 4">
             <div class="">
               4 days remaining before your subscription expires, kindly
               subscribe before
