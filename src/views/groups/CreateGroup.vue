@@ -1,7 +1,6 @@
 <template>
-  <div class="container-top" :class="{ 'container-slim': lgAndUp || xlAndUp }" @click="closeDropdownIfOpen">
+  <div class="container-top" :class="{ 'container-slim': lgAndUp || xlAndUp }">
     <div class="row mt-3 botom">
-      <!-- <div class="col-12"> -->
       <div class="col-12 col-sm-6 c-pointer" @click="groupDetail">
         <div class="font-weight-bold h5 col-12">Group Detail</div>
         <div class="" :class="{ baseline: showGroup, 'hide-base': !showGroup }"></div>
@@ -29,27 +28,108 @@
                   </div>
                   <div class="actions col-md-6 d-flex justify-content-md-end">
                     <router-link :to="{ name: 'AddCheckin' }" v-if="showAttendanceCheckin">
-                      <button class="buttonn add-person-btn">
-                        Add New Attendance
-                      </button>
+                      <el-button color="#136acd" class="ml-2 header-btn" round>Add New Attendance</el-button>
                     </router-link>
                   </div>
                 </div>
               </div>
               <hr class="hr" />
             </div>
-            <Attendancecheckin :list="attendanceData" :totalItems="totalItems" />
+            <!-- <Attendancecheckin :list="attendanceData" :totalItems="totalItems" /> -->
+            <Table :data="attendanceByGroup" :headers="attendanceItemsHeaders" :checkMultipleItem="false" class="mt-4">
+              <template #fullEventName="{ item }" v-loading="attendanceItemsLoading">
+                <router-link class="no-decoration text-dark" :to="{
+                  name: 'CheckinType',
+                  query: {
+                    activityID: item.eventID,
+                    activityName: item.fullEventName,
+                    groupId: item.groupID,
+                    groupName: item.fullGroupName,
+                    id: item.id,
+                    code: item.attendanceCode,
+                  },
+                }">
+                  <span>{{ item.fullEventName }}</span>
+                </router-link>
+              </template>
+              <template v-slot:eventDate="{ item }">
+                <router-link class="no-decoration text-dark" :to="{
+                  name: 'CheckinType',
+                  query: {
+                    activityID: item.eventID,
+                    activityName: item.fullEventName,
+                    groupId: item.groupID,
+                    groupName: item.fullGroupName,
+                    id: item.id,
+                    code: item.attendanceCode,
+                  },
+                }">
+                  <span>{{ formatDate(item.eventDate) }}</span>
+                </router-link>
+              </template>
+              <template v-slot:fullGroupName="{ item }">
+                <router-link class="no-decoration text-dark" :to="{
+                  name: 'CheckinType',
+                  query: {
+                    activityID: item.eventID,
+                    activityName: item.fullEventName,
+                    groupId: item.groupID,
+                    groupName: item.fullGroupName,
+                    id: item.id,
+                    code: item.attendanceCode,
+                  },
+                }">
+                  <span>{{ item.fullGroupName }}</span>
+                </router-link>
+              </template>
+              <template v-slot:action="{ item }">
+                <div class="dropdown">
+                  <span class="d-flex justify-content-between">
+                    <span>
+                      <el-icon id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true"
+                        aria-expanded="false">
+                        <MoreFilled />
+                      </el-icon>
+                      <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+                        <a class="dropdown-item">
+                          <router-link class="text-decoration-none text-dark" :to="{
+                            name: 'AttendanceReport',
+                            params: { id: item.id },
+                          }">View Details</router-link>
+                        </a>
+                        <a class="dropdown-item">
+                          <router-link class="text-decoration-none text-dark" :to="{
+                            name: 'CheckinType',
+                            query: {
+                              activityID: item.eventID,
+                              activityName: item.fullEventName,
+                              groupId: item.groupID,
+                              groupName: item.fullGroupName,
+                              id: item.id,
+                              code: item.attendanceCode,
+                            },
+                          }">Checkin</router-link>
+                        </a>
+                        <a class="dropdown-item elipsis-items" href="#"
+                          @click.prevent="showConfirmModal(item.id, index)">Delete
+                        </a>
+                      </div>
+                    </span>
+                  </span>
+                </div>
+              </template>
+            </Table>
           </div>
         </div>
       </div>
     </div>
 
     <div class="row mt-3" v-if="showGroup">
-      <div class="col-md-12 head-text">
-        <h2 v-if="!route.params.groupId">Add Group</h2>
-        <h2 v-else>Update Group</h2>
+      <div class="col-md-12">
+        <h2 v-if="!route.params.groupId" class="head-text">Add Group</h2>
+        <h2 v-else class="head-text">Update Group</h2>
         <!-- <Toast /> -->
-        <ConfirmDialog />
+        
       </div>
       <div class="col-md-12 my-3 px-0">
         <hr class="hr" />
@@ -67,15 +147,6 @@
                   <div class="col-md-2 text-lg-right">
                     <label for="groupName" class="font-weight-600">Group name</label>
                   </div>
-                  <!-- <div class="col-md-8">
-                          <input
-                            type="text"
-                            v-model="groupData.name"
-                            class="form-control"
-                            id="formGroup"
-                            @input="validateGroupName"
-                          />
-                        </div> -->
                   <div class="col-md-8">
                     <el-input type="text" v-model="groupData.name" class="w-100 ml-0" id="formGroup"
                       @input="validateGroupName" />
@@ -91,35 +162,19 @@
                   <div class="col-md-2 text-lg-right">
                     <label for="description" class="font-weight-600">Description</label>
                   </div>
-                  <!-- <div class="col-md-8">
-                          <textarea
-                            v-model="groupData.description"
-                            name="description"
-                            id="description"
-                            rows="1"
-                            class="form-control w-100"
-                          ></textarea>
-                        </div> -->
-
                   <div class="col-md-8">
                     <el-input v-model="groupData.description" name="description" id="description" :rows="3"
                       type="textarea" />
 
-                      <div class="d-flex mt-3">
-                        <!-- <Checkbox
-                            v-model="groupData.isMobileGroup"
-                            :binary="true"
-                            :disabled="groupData.isMobileGroup"
-                          /> -->
-
-                        <div class="input-width">
-                          <el-checkbox v-model="groupData.isMobileGroup" size="large" class="align-checkbox-totop"
-                            :disabled="groupData.isMobileGroup" />
-                        </div>
-                        <label for="description" class="font-weight-600 ml-3">
-                          Enable on Mobile App
-                        </label>
+                    <div class="d-flex mt-3">
+                      <div class="input-width">
+                        <el-checkbox v-model="groupData.isMobileGroup" size="large" class="align-checkbox-totop"
+                          :disabled="groupData.isMobileGroup" />
                       </div>
+                      <label for="description" class="font-weight-600 ml-3">
+                        Enable on Mobile App
+                      </label>
+                    </div>
                   </div>
                 </div>
               </div>
@@ -128,22 +183,6 @@
         </div>
         <div class="row">
           <div class="col-md-12 col-12 btnn">
-            <!-- <button
-                class="
-                  default-btn
-                  border
-                  outline-none
-                  font-weight-bold
-                  c-pointer
-                  text-center
-                "
-                data-toggle="collapse"
-                data-target="#collapseExample"
-                aria-expanded="false"
-                aria-controls="collapseExample"
-              >
-                Sub-group
-              </button> -->
             <el-button class="
                   default-btn
                   border
@@ -155,23 +194,6 @@
               aria-controls="collapseExample" round>
               Sub-group
             </el-button>
-            <!-- <button
-                class="
-                  default-btn
-                  border
-                  outline-none
-                  font-weight-bold
-                  c-pointer
-                  text-center
-                "
-                :data-toggle="route.params.groupId ? 'modal' : ''"
-                data-target="#importgroup"
-                ref="modalBtn"
-                @click="importMember"
-              >
-                Import
-              </button> -->
-
             <el-button class="
                   default-btn
                   border
@@ -184,22 +206,6 @@
               @click="importMember" round>
               Import
             </el-button>
-            <!-- <button
-                class="
-                  default-btn
-                  outline-none
-                  primary-text
-                  font-weight-bold
-                  border-0
-                  c-pointer
-                "
-                data-toggle="modal"
-                data-target="#exampleModal"
-                ref="modalBtn"
-              >
-                Addmember
-              </button> -->
-
             <el-button class="
                   default-btn
                   outline-none
@@ -219,56 +225,57 @@
           <div class="col-12">
             <div>
               <div class="collapse" id="collapseExample">
-                  <div class="row">
-                    <div class="col-12 col-md-12 mt-2">
-                      <div class="
+                <div class="row">
+                  <div class="col-12 col-md-12 mt-2">
+                    <div class="
                             mb-3
                             border
                             outline-none
                             font-weight-bold
                             mr-3
                             text-center
-                          " style="
+                          " 
+                          style="
                             border-radius: 3rem;
                             padding: 0.5rem 1.25rem;
                             width: 167px;
                           " type="button" data-toggle="collapse" data-target="#addsubgroup" aria-expanded="false"
-                        aria-controls="collapseExample">
-                        Add sub-group
-                      </div>
+                      aria-controls="collapseExample">
+                      Add sub-group
+                    </div>
 
-                      <div class="collapse" id="addsubgroup">
-                        <div class="card card-body">
-                          <div class="font-weight-700 mb-3">
-                            Select the group or sub-group you want to be a
-                            child of this group.
+                    <div class="collapse" id="addsubgroup">
+                      <div class="card card-body">
+                        <div class="font-weight-700 mb-3">
+                          Select the group or sub-group you want to be a
+                          child of this group.
+                        </div>
+
+                        <div class="row w-100">
+                          <div class="col-12 col-sm-6 col-md-4">
+                            <div class="">
+                              <div class="mb-1 font-weight-600 w-100">
+                                Parent Group
+                              </div>
+
+                              <el-input type="text" v-model="groupData.name" disabled />
+                            </div>
+                          </div>
+                          <div class="col-12 col-sm-6 col-md-5 mt-3 mt-sm-0">
+                            <div class="mb-1 font-weight-600 w-100">
+                              Child group
+                            </div>
+                            <div>
+                              <el-tree-select v-model="selectedTree" class="w-100" placeholder="Select group"
+                                :data="groupMappedTree" :render-after-expand="false"
+                                :filter-node-method="filterNodeMethod" @change="setGroupValue" filterable
+                                check-strictly />
+                            </div>
                           </div>
 
-                          <div class="row w-100">
-                            <div class="col-12 col-sm-6 col-md-4">
-                              <div class="">
-                                <div class="mb-1 font-weight-600 w-100">
-                                  Parent Group
-                                </div>
-
-                                <el-input type="text" v-model="groupData.name" disabled />
-                              </div>
-                            </div>
-                            <div class="col-12 col-sm-6 col-md-5 mt-3 mt-sm-0">
-                              <div class="mb-1 font-weight-600 w-100">
-                                Child group
-                              </div>
-                              <div>
-                                <el-tree-select v-model="selectedTree" class="w-100" placeholder="Select group"
-                                  :data="groupMappedTree" :render-after-expand="false"
-                                  :filter-node-method="filterNodeMethod" @change="setGroupValue" filterable
-                                  check-strictly />
-                              </div>
-                            </div>
-
-                            <div class="col-12 col-md-3">
-                              <div class="mb-1 mt-3 mt-md-4">
-                                <el-button class="
+                          <div class="col-12 col-md-3">
+                            <div class="mb-1 mt-3 mt-md-4">
+                              <el-button class="
                                       default-btn
                                       primary-bg
                                       border-0
@@ -276,34 +283,23 @@
                                       align-self-center
                                       mt-2
                                     " size="large" @click="addSubGroup" round>
-                                  Add sub group
-                                </el-button>
-                              </div>
+                                Add sub group
+                              </el-button>
                             </div>
                           </div>
-<!-- 
-                          <div class="div-card p-2 exempt-hide" :class="{
-                            'd-none': hideDiv,
-                            'd-block': !hideDiv,
-                          }">
-                            <el-icon class="text-center exempt-hide" v-if="grouploading && getAllGroup.length === 0">
-                              <Loading />
-                            </el-icon>
-                            <input type="text" class="form-control exempt-hide" v-model="searchGroupText"
-                              ref="searchGroupRef" placeholder="Search for group" />
-                            <GroupTree :items="searchForGroups" :addGroupValue="true" :showCheckBox="true" />
-                          </div> -->
                         </div>
                       </div>
                     </div>
-                    <div class="col-12">
-                      <!-- <GroupTree :items="groupData.children" /> -->
-                      <div class="font-weight-700 my-3" v-show="groupData.children && groupData.children.length > 0">Group children</div>
-                      <ul>
-                        <li v-for="(item, index) in groupData.children" :key="index">{{ item.name }}</li>
-                      </ul>
-                    </div>
                   </div>
+                  <div class="col-12">
+                    <!-- <GroupTree :items="groupData.children" /> -->
+                    <div class="font-weight-700 my-3" v-show="groupData.children && groupData.children.length > 0">Group
+                      children</div>
+                    <ul>
+                      <li v-for="(item, index) in groupData.children" :key="index">{{ item.name }}</li>
+                    </ul>
+                  </div>
+                </div>
               </div>
             </div>
           </div>
@@ -317,9 +313,6 @@
                   justify-content-sm-between
                   py-3
                 ">
-              <!-- <div class="w-100">
-                <span class="mid-header-text py-1 px-1">Members in group</span>
-              </div> -->
 
               <el-input v-model="searchGroupMemberText" placeholder="Search for group member by name"
                 class="input-with-select" type="text">
@@ -556,10 +549,7 @@
             <!-- Modal -->
             <div class="container">
               <!-- Button to Open the Modal -->
-              <!-- <button type="button" class="btn btn-primary" >
-                        Open modal
-                      </button> -->
-
+    
               <!-- The Modal -->
               <div class="modal fade" id="myModal">
                 <div class="modal-dialog">
@@ -578,57 +568,16 @@
                     <div class="modal-body">
                       <div class="col-md-12"></div>
                       <div class="col-md-12 form-group w-100">
-                        <!-- <Dropdown
-                            :options="getAllGroup"
-                            optionLabel="name"
-                            placeholder="Select Groups"
-                            style="width: 100%"
-                            v-model="selectGroupTo"
-                          /> -->
-                        <!-- <button @click="setMoveGroupProp" class="
-                              btn
-                              border
-                              d-flex
-                              justify-content-between
-                              align-items-center
-                              w-100
-                            ">
-                          <div>
-                            {{
-  selectGroupTo &&
-  Object.keys(selectGroupTo).length > 0
-  ? selectGroupTo.name
-  : "Select group"
-                            }}
-                          </div>
-                          <i class="pi pi-chevron-down"></i>
-                        </button>
-                        <div class="move-card p-2 exempt-hide" :class="{
-                          'd-none': moveHideDiv,
-                          'd-block': !moveHideDiv,
-                        }">
-                          <i class="
-                                pi pi-spin pi-spinner
-                                text-center
-                                exempt-hide
-                              " v-if="grouploading && getAllGroup.length === 0"></i>
-                          <input type="text" class="form-control exempt-hide" v-model="searchGroupText"
-                            ref="searchGroupRef" placeholder="Search for group" />
-                          <GroupTree :items="searchForGroups" :addGroupValue="true" @group="setSelectedGroupToMove" />
-                        </div> -->
                         <el-tree-select v-model="moveSelectedTree" class="w-100" placeholder="Select group"
-                          :data="groupMappedTree" :render-after-expand="false"
-                          :filter-node-method="filterNodeMethod" @change="setSelectedGroupToMove" filterable
-                          check-strictly />
+                          :data="groupMappedTree" :render-after-expand="false" :filter-node-method="filterNodeMethod"
+                          @change="setSelectedGroupToMove" filterable check-strictly />
                       </div>
                     </div>
 
                     <!-- Modal footer -->
                     <div class="modal-footer">
-                      <button type="button" class="btn primary-bg default-btn border-0 text-white" data-dismiss="modal"
-                        @click="moveMembers">
-                        Move
-                      </button>
+                      <el-button data-dismiss="modal" round>Close</el-button>
+                      <el-button color="#136acd" @click="moveMembers" :loading="moveLoading" round>Move</el-button>
                     </div>
                   </div>
                 </div>
@@ -637,10 +586,6 @@
             <!-- Modal -->
             <div class="container">
               <!-- Button to Open the Modal -->
-              <!-- <button type="button" class="btn btn-primary" >
-                        Open modal
-                      </button> -->
-
               <!-- The Modal2 -->
               <div class="modal fade" id="myModal1">
                 <div class="modal-dialog">
@@ -737,31 +682,13 @@
               </div>
             </div>
 
-            <!-- <div class="row table-header-row py-2">
-                <div class="col-md-1" v-if="groupMembers.length > 0"></div>
-                <div class="col-md-3">
-                  <span class="py-2 font-weight-bold">NAME</span>
-                </div>
-                <div class="col-md-2">
-                  <span class="py-2 font-weight-bold">POSITION</span>
-                </div>
-
-                <div class="col-md-2">
-                  <span class="py-2 font-weight-bold">EMAIL</span>
-                </div>
-                <div class="col-md-2">
-                  <span class="py-2 font-weight-bold">PHONE</span>
-                </div>
-                <div class="col-md-1"></div>
-              </div> -->
-
             <div class="row" v-if="groupMembers.length > 0">
               <div class="col text-center p-3 text-success font-weight-700">
                 Approved
               </div>
             </div>
             <Table :data="searchGroupMembers" :headers="createGroupHeaders" :checkMultipleItem="true"
-              @checkedrow="handleSelectionChange">
+              @checkedrow="handleSelectionChange" v-loading="loadingMembers">
               <template #name="{ item }">
                 <span>{{ item.name }}</span>
               </template>
@@ -776,7 +703,9 @@
               </template>
               <template v-slot:action="{ item }">
                 <el-dropdown>
-                  <el-icon id="dropdownMenuButton" data-toggle="dropdown"><MoreFilled /></el-icon>
+                  <el-icon id="dropdownMenuButton" data-toggle="dropdown">
+                    <MoreFilled />
+                  </el-icon>
                   <template #dropdown>
                     <el-dropdown-menu>
                       <el-dropdown-item>
@@ -787,8 +716,8 @@
                       </el-dropdown-item>
                       <el-dropdown-item>
                         <a @click="archive(item.personID, 'single')">
-                      Archive
-                    </a>
+                          Archive
+                        </a>
                       </el-dropdown-item>
                       <el-dropdown-item>
                         <a @click="confirmDelete(item.id, index)">Remove</a>
@@ -796,21 +725,6 @@
                     </el-dropdown-menu>
                   </template>
                 </el-dropdown>
-                <!-- <div class="dropdown">
-                    <el-icon id="dropdownMenuButton" data-toggle="dropdown"><MoreFilled /></el-icon>
-                  <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
-                    <a class="dropdown-item c-pointer" v-if="item.phone">
-                      <a @click="test(item)"> Send SMS</a>
-                    </a>
-                    <a class="dropdown-item c-pointer" v-if="item.email">
-                      <a @click="testEmail(item)">Send Email</a>
-                    </a>
-                    <a class="dropdown-item cursor-pointer" @click="archive(item.personID, 'single')">
-                      Archive
-                    </a>
-                    <a class="dropdown-item c-pointer" @click="confirmDelete(item.id, index)">Remove</a>
-                  </div>
-                </div> -->
               </template>
             </Table>
 
@@ -836,7 +750,9 @@
               </template>
               <template v-slot:action="{ item }">
                 <el-dropdown>
-                  <el-icon id="dropdownMenuButton" data-toggle="dropdown"><MoreFilled /></el-icon>
+                  <el-icon id="dropdownMenuButton" data-toggle="dropdown">
+                    <MoreFilled />
+                  </el-icon>
                   <template #dropdown>
                     <el-dropdown-menu>
                       <el-dropdown-item>
@@ -847,8 +763,8 @@
                       </el-dropdown-item>
                       <el-dropdown-item>
                         <a @click="archive(item.personID, 'single')">
-                      Archive
-                    </a>
+                          Archive
+                        </a>
                       </el-dropdown-item>
                       <el-dropdown-item>
                         <a @click="confirmDelete(item.id, index)">Remove</a>
@@ -856,42 +772,8 @@
                     </el-dropdown-menu>
                   </template>
                 </el-dropdown>
-                <!-- <div class="dropdown">
-                    <el-icon id="dropdownMenuButton" data-toggle="dropdown"><MoreFilled /></el-icon>
-                  <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
-                    <a class="dropdown-item c-pointer" v-if="item.phone">
-                      <a @click="test(item)"> Send SMS</a>
-                    </a>
-                    <a class="dropdown-item c-pointer" v-if="item.email">
-                      <a @click="testEmail(item)">Send Email</a>
-                    </a>
-                    <a class="dropdown-item cursor-pointer" @click="archive(item.personID, 'single')">
-                      Archive
-                    </a>
-                    <a class="dropdown-item c-pointer" @click="confirmDelete(item.id, index)">Remove</a>
-                  </div>
-                </div> -->
               </template>
             </Table>
-            <div class="row" v-if="loadingMembers">
-              <div class="col-md-12">
-                <div class="row">
-                  <div class="
-                        col-md-12
-                        d-flex
-                        align-items-center
-                        justify-content-center
-                      ">
-                    <i class="fas fa-circle-notch fa-spin py-2"></i>
-                  </div>
-                </div>
-                <div class="row">
-                  <div class="col-md-12 px-0">
-                    <hr class="hr my-0" />
-                  </div>
-                </div>
-              </div>
-            </div>
 
             <div class="row" v-if="loadingMembers == false && groupMembers.length === 0">
               <div class="col-md-12">
@@ -914,192 +796,6 @@
                 </div>
               </div>
             </div>
-
-
-
-            <!-- <div style="border-bottom: 1px solid #00204412" class="row py-2"
-              v-for="(member, index) in searchGroupMembers" :key="index">
-              <div class="col-md-12">
-                <div class="row">
-                  <div class="
-                        col-md-1
-                        d-flex
-                        justify-content-between
-                        align-items-center
-                      ">
-                    <input type="checkbox" class="py-2" name="" id="" @change="mark1Item(member)" :checked="
-                      marked.findIndex(
-                        (i) => i.personID === member.personID
-                      ) >= 0
-                    " />
-                  </div>
-                  <div class="
-                        col-md-3
-                        d-flex
-                        justify-content-between
-                        align-items-center
-                      ">
-                    <span class="py-2 hidden-header">NAME</span>
-                    <span class="py-2">{{ member.name }}</span>
-                  </div>
-                  <div class="
-                        col-md-2
-                        d-flex
-                        justify-content-between
-                        align-items-center
-                      ">
-                    <span class="py-2 hidden-header">POSITION</span>
-                    <span class="py-2 text-xs-left">{{
-                      member.position
-                    }}</span>
-                  </div>
-
-                  <div class="
-                        col-md-2
-                        d-flex
-                        justify-content-between
-                        align-items-center
-                      ">
-                    <span class="py-2 hidden-header">EMAIL</span>
-                    <span class="py-2">{{
-                      member.email && member.email.length > 10
-                        ? `${member.email.split("").slice(0, 14).join("")}...`
-                        : member.email
-                          ? member.email
-                          : ""
-                    }}</span>
-                  </div>
-                  <div class="
-                        col-md-3
-                        d-flex
-                        justify-content-between
-                        align-items-center
-                      ">
-                    <span class="py-2 hidden-header">PHONE</span>
-                    <span class="py-2">{{ member.phone }}</span>
-                  </div>
-                  <div class="
-                        col-md-1
-                        d-flex
-                        justify-content-between
-                        align-items-center
-                      ">
-                    <div class="dropdown">
-                      <i class="fas fa-ellipsis-v cursor-pointer" id="dropdownMenuButton" data-toggle="dropdown"
-                        aria-haspopup="true" aria-expanded="false"></i>
-                      <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
-                        <a class="dropdown-item c-pointer" v-if="member.phone">
-                          <a @click="test(member)"> Send SMS</a>
-                        </a>
-                        <a class="dropdown-item c-pointer" v-if="member.email">
-                          <a @click="testEmail(member)">Send Email</a>
-                        </a>
-                        <a class="dropdown-item cursor-pointer" @click="archive(member.personID, 'single')">
-                          Archive
-                        </a>
-                        <a class="dropdown-item c-pointer" @click="confirmDelete(member.id, index)">Remove</a>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-              </div>
-            </div> -->
-
-            <!-- <div class="row" style="border-bottom: 1px solid #00204412" v-if="awaitingApprovals.length > 0">
-              <div class="col text-center p-3 text-warning font-weight-700">
-                Waiting Approval
-              </div>
-            </div>
-
-            <div style="border-bottom: 1px solid #00204412" class="row py-2"
-              v-for="(member, index) in awaitingApprovals" :key="index">
-              <div class="col-md-12">
-                <div class="row">
-                  <div class="
-                        col-md-1
-                        d-flex
-                        justify-content-between
-                        align-items-center
-                      ">
-                    <input type="checkbox" class="py-2" name="" id="" @change="mark1Item(member)" :checked="
-                      marked.findIndex(
-                        (i) => i.personID === member.personID
-                      ) >= 0
-                    " />
-                  </div>
-                  <div class="
-                        col-md-3
-                        d-flex
-                        justify-content-between
-                        align-items-center
-                      ">
-                    <span class="py-2 hidden-header">NAME</span>
-                    <span class="py-2">{{ member.name }}</span>
-                  </div>
-                  <div class="
-                        col-md-2
-                        d-flex
-                        justify-content-between
-                        align-items-center
-                      ">
-                    <span class="py-2 hidden-header">POSITION</span>
-                    <span class="py-2 text-xs-left">{{
-                      member.position
-                    }}</span>
-                  </div>
-                  <div class="
-                        col-md-2
-                        d-flex
-                        justify-content-between
-                        align-items-center
-                      ">
-                    <span class="py-2 hidden-header">EMAIL</span>
-                    <span class="py-2">{{
-                      member.email && member.email.length > 10
-                        ? `${member.email.split("").slice(0, 14).join("")}...`
-                        : member.email
-                          ? member.email
-                          : ""
-                    }}</span>
-                  </div>
-                  <div class="
-                        col-md-3
-                        d-flex
-                        justify-content-between
-                        align-items-center
-                      ">
-                    <span class="py-2 hidden-header">PHONE</span>
-                    <span class="py-2">{{ member.phone }}</span>
-                  </div>
-                  <div class="
-                        col-md-1
-                        d-flex
-                        justify-content-between
-                        align-items-center
-                      ">
-                    <div class="dropdown">
-                      <i class="fas fa-ellipsis-v cursor-pointer" id="dropdownMenuButton" data-toggle="dropdown"
-                        aria-haspopup="true" aria-expanded="false"></i>
-                      <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
-                        <a class="dropdown-item c-pointer" v-if="member.phone">
-                          <a @click="test(member)">Send SMS</a>
-                        </a>
-                        <a class="dropdown-item c-pointer" v-if="member.email">
-                          <a @click="testEmail(member)">Send Email</a>
-                        </a>
-                        <a class="dropdown-item cursor-pointer" @click="requestApproval(member)">
-                          Request Approval
-                        </a>
-                        <a class="dropdown-item cursor-pointer" @click="archive(member.personID, 'single')">
-                          Archive
-                        </a>
-                        <a class="dropdown-item c-pointer" @click="confirmDelete(member.id, index)">Remove</a>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-              </div>
-            </div> -->
           </div>
         </div>
       </div>
@@ -1115,12 +811,9 @@
         <router-link to="/tenant/peoplegroups" class="no-decoration">
           <el-button round>Discard</el-button>
         </router-link>
-        <!-- <button class="primary-btn default-btn primary-bg border-0 outline-none" @click="saveGroupData"
-          :disabled="savingGroup">
-          <i class="fas fa-circle-notch fa-spin" v-if="savingGroup"></i>
-          {{ buttonText }}
-        </button> -->
-        <el-button color="#136acd" :loading="savingGroup" @click="saveGroupData" :disabled="savingGroup" round>{{ buttonText }}</el-button>
+        <el-button color="#136acd" :loading="savingGroup" @click="saveGroupData" :disabled="savingGroup" round>{{
+          buttonText
+        }}</el-button>
       </div>
     </div>
     <Dialog header="Create New Member" v-model:visible="display" :style="{ width: '70vw', maxWidth: '600px' }"
@@ -1168,7 +861,7 @@
 </template>
 
 <script>
-import { computed, nextTick, ref, watchEffect } from "vue";
+import { computed, nextTick, ref } from "vue";
 import composeService from "../../services/communication/composer";
 import axios from "@/gateway/backendapi";
 import router from "@/router/index";
@@ -1185,20 +878,18 @@ import finish from "../../services/progressbar/progress.js";
 import smsComponent from "./component/smsComponent.vue";
 import emailComponent from "./component/emailComponent.vue";
 import SideBar from "./sidemodal/SideModal.vue";
-// import Attendancecheckin from "../event/attendance&checkin/MarkAttendance.vue"
 import Attendancecheckin from "../event/attendance&checkin/AttendanceAndCheckinList.vue";
-// import Attendancevue from "../event/attendance&checkin/Attendance.vue"
-// import Attendancecheckin from "../event/attendance&checkin/MarkAttendance.vue"
 import attendanceservice from "../../services/attendance/attendanceservice";
 import ImportToGroup from "../people/ImportInstruction";
 import GroupTree from "./component/GroupTree.vue";
 import collector from "../../services/groupArray/mapTree";
-import { ElMessage } from "element-plus";
+import { ElMessage, ElMessageBox } from "element-plus";
 import { useStore } from "vuex";
 import grousService from "../../services/groups/groupsservice";
 import flatten from "../../services/groupArray/flatTree";
 import Table from "@/components/table/Table"
 import deviceBreakpoint from "../../mixins/deviceBreakpoint";
+import dateFormatter from '../../services/dates/dateformatter'
 
 export default {
   directives: {
@@ -1218,6 +909,7 @@ export default {
   },
   setup() {
     const store = useStore();
+    const route = useRoute();
     const display = ref(false);
     //  const showWardModal = ref(false)
     const memberDia = ref(true);
@@ -1256,16 +948,17 @@ export default {
     const searchGroupMemberText = ref("");
     const field = ref();
     const groups = ref([]);
-    const hideDiv = ref(true);
     const selectedIntendedSubGroup = ref({});
     const searchGroupText = ref("");
     const grouploading = ref(false);
+    const moveLoading = ref(false);
+    const attendanceItemsLoading = ref(false);
     const searchGroupRef = ref();
     const closeGroupModal = ref();
     const lastGroupChild = ref({});
-    const moveHideDiv = ref(true);
     const copyHideDiv = ref(true);
     const flattenedTree = ref([]);
+    const attendanceByGroup = ref([]);
     const { lgAndUp, xlAndUp } = deviceBreakpoint()
     const createGroupHeaders = ref([
       { name: 'NAME', value: 'name' },
@@ -1274,17 +967,22 @@ export default {
       { name: 'PHONE', value: 'phone' },
       { name: 'ACTION', value: 'action' },
     ])
+    const attendanceItemsHeaders = ref([
+      { name: 'EVENT NAME', value: 'fullEventName' },
+      { name: 'DATE', value: 'eventDate' },
+      { name: 'GROUP NAME', value: 'fullGroupName' },
+      { name: 'ACTION', value: 'action' },
+    ])
 
     const getGroups = async () => {
       grouploading.value = true;
       try {
-        // const { data } = await axios.get("/api/GetAllGroupBasicInformation");
         let data = await grousService.getGroups();
         getAllGroup.value = data;
         console.log(getAllGroup.value);
         grouploading.value = false;
         flattenedTree.value = flattenTree(getAllGroup.value)
-        
+
       } catch (error) {
         console.log(error);
         grouploading.value = false;
@@ -1294,43 +992,12 @@ export default {
 
     const flattenTree = (tree) => {
       let treevalue = { children: tree };
-        const { children } = collector(treevalue);
-        groupMappedTree.value = children;
-        if (groupMappedTree.value && groupMappedTree.value.length > 0) {
-          return groupMappedTree.value.flatMap(flatten());
-        }
+      const { children } = collector(treevalue);
+      groupMappedTree.value = children;
+      if (groupMappedTree.value && groupMappedTree.value.length > 0) {
+        return groupMappedTree.value.flatMap(flatten());
+      }
     }
-
-    // const getGroups = async () => {
-    //   try {
-    //     let groups = store.getters["groups/groups"];
-
-    //     if (groups && groups.length > 0) {
-    //       allGroups.value = groups;
-    //       let data = { children: allGroups.value };
-    //       const { children } = collector(data);
-    //       groupMappedTree.value = children;
-    //       if (groupMappedTree.value && groupMappedTree.value.length > 0) {
-    //         flattenedTree.value = groupMappedTree.value.flatMap(flatten());
-    //       }
-    //       return true;
-    //     } else {
-    //       let group = await grousService.getGroups();
-    //       if (group) {
-    //         allGroups.value = group;
-    //         let data = { children: allGroups.value };
-    //         const { children } = collector(data);
-    //         groupMappedTree.value = children;
-    //         if (groupMappedTree.value && groupMappedTree.value.length > 0) {
-    //           flattenedTree.value = groupMappedTree.value.flatMap(flatten());
-    //         }
-    //       }
-    //     }
-    //   } catch (error) {
-    //     console.log(error);
-    //   }
-    // };
-    // getGroups();
 
     const test = (member) => {
       if (member.phone) {
@@ -1359,89 +1026,68 @@ export default {
     };
 
     const attendanceCheckin = async () => {
-      const response = await attendanceservice.getItems();
-      attendanceData.value = response.items.filter(
-        (i) => i.groupID === route.params.groupId
-      );
-      totalItems.value = response.totalItems;
-      const attendanceItem = response.items.find(
-        (i) => i.groupID === route.params.groupId
-      );
-      if (attendanceItem && attendanceItem.id)
-        selectedAttendanceId.value = attendanceItem.id;
-      return attendanceItem;
+      attendanceItemsLoading.value = true
+      const response = await attendanceservice.getAttendanceItemsByGroupID(route.params.groupId);
+      attendanceItemsLoading.value = false
+      attendanceByGroup.value = response.items
     };
     attendanceCheckin();
+    
     const groupDetail = async () => {
       showGroup.value = true;
       showAttendanceCheckin.value = false;
     };
 
     const moveMembers = () => {
+      moveLoading.value = true
       let memberMove = {
         memberIDList: marked.value.map((i) => i.personID),
         groupTo: selectGroupTo.value.id,
         groupFrom: route.params.groupId,
       };
       axios
-        .post(`/api/Group/MoveMembers`, memberMove)
-        .then((res) => {
-          // toast.add({
-          //   severity: "success",
-          //   summary: "Confirmed",
-          //   detail: "Member(s) Moved Successfully",
-          //   life: 4000,
-          // });
-          ElMessage({
-            message: "Member(s) Moved Successfully",
-            type: "success",
-            duration: 4000,
-          });
-          console.log(res);
-          store.dispatch("groups/updateGroupPeopleCount", {
-            groupId: selectGroupTo.value.id,
-            count: marked.value.length,
-            operation: "add",
-          });
-          store.dispatch("groups/updateGroupPeopleCount", {
-            groupId: route.params.groupId,
-            count: marked.value.length,
-            operation: "remove",
-          });
-
-          // Remove from view
-          groupMembers.value = groupMembers.value.filter((i) => {
-            let match = marked.value.findIndex(
+      .post(`/api/Group/MoveMembers`, memberMove)
+      .then((res) => {
+        moveLoading.value = false
+        ElMessage({
+          message: "Member(s) Moved Successfully",
+          type: "success",
+          duration: 4000,
+        });
+        console.log(res);
+        store.dispatch("groups/updateGroupPeopleCount", {
+          groupId: selectGroupTo.value.id,
+          count: marked.value.length,
+          operation: "add",
+        });
+        store.dispatch("groups/updateGroupPeopleCount", {
+          groupId: route.params.groupId,
+          count: marked.value.length,
+          operation: "remove",
+        });
+        
+        // Remove from view
+        groupMembers.value = groupMembers.value.filter((i) => {
+          let match = marked.value.findIndex(
               (j) => j.personID === i.personID
-            );
+              );
             if (match >= 0) return false;
             return true;
           });
         })
         .catch((err) => {
+          moveLoading.value = false
           finish();
           if (err.toString().toLowerCase().includes("network error")) {
-            // toast.add({
-            //   severity: "warn",
-            //   summary: "Network error",
-            //   detail: "Please ensure you have a strong internet",
-            //   life: 4000,
-            // });
             ElMessage({
               message: "Please ensure you have a strong internet",
-              type: "Warn",
+              type: "warning",
               life: "4000",
             });
           } else if (err.toString().toLowerCase().includes("timeout")) {
-            // toast.add({
-            //   severity: "warn",
-            //   summary: "Request took too long",
-            //   detail: "Please refresh the page",
-            //   life: 4000,
-            // });
             ElMessage({
-              message: "",
-              type: "",
+              message: "Request timeout, Please refresh the page and try again",
+              type: "warning",
               life: "4000",
               showClose: true,
             });
@@ -1457,14 +1103,8 @@ export default {
       axios
         .post(`/api/Group/CopyMembers`, copyMember)
         .then((res) => {
-          // toast.add({
-          //   severity: "success",
-          //   summary: "Confirmed",
-          //   detail: "Member(s) Copy Successfully",
-          //   life: 2500,
-          // });
           ElMessage({
-            message: "Confirmed",
+            message: "Member(s) Copy Successfully",
             type: "success",
             life: "4000",
             showClose: true,
@@ -1478,12 +1118,6 @@ export default {
         .catch((err) => {
           finish();
           if (err.toString().toLowerCase().includes("network error")) {
-            // toast.add({
-            //   severity: "warn",
-            //   summary: "Network error",
-            //   detail: "Please ensure you have a strong internet",
-            //   life: 4000,
-            // });
             ElMessage({
               message: "Please ensure you have a strong internet",
               type: "Warn",
@@ -1491,12 +1125,6 @@ export default {
               showClose: true,
             });
           } else if (err.toString().toLowerCase().includes("timeout")) {
-            // toast.add({
-            //   severity: "warn",
-            //   summary: "Request took too long",
-            //   detail: "Please refresh the page",
-            //   life: 4000,
-            // });
             ElMessage({
               message: "Please refresh the page",
               type: "warn",
@@ -1505,44 +1133,23 @@ export default {
           }
         });
     };
-    // const mark1Item = (member) => {
-    //   console.log(member);
-    //   const memberIndex = marked.value.findIndex(
-    //     (i) => i.personID === member.personID
-    //   );
-    //   if (memberIndex < 0) {
-    //     marked.value.push(member);
-    //   } else {
-    //     marked.value.splice(memberIndex, 1);
-    //   }
-    // };
-    // const markAllItem = () => {
-    //   if (marked.value.length < groupMembers.value.length) {
-    //     groupMembers.value.forEach((i) => {
-    //       const groupInMarked = marked.value.findIndex(
-    //         (q) => q.personID === i.personID
-    //       );
-    //       if (groupInMarked < 0) {
-    //         marked.value.push(i);
-    //       }
-    //     });
-    //   } else {
-    //     marked.value.splice(0, marked.value.length);
-    //   }
-    // };
+
 
     const handleSelectionChange = (val) => {
       marked.value = val
     }
 
     const confirmDelete = (id, index) => {
-      confirm.require({
-        message: "Do you want to remove this member?",
-        header: "Remove Confirmation",
-        icon: "pi pi-info-circle",
-        acceptClass: "confirm-delete",
-        rejectClass: "cancel-delete",
-        accept: () => {
+      ElMessageBox.confirm(
+        'This action will permanently delete this item. Continue?',
+        'Confirm delete',
+        {
+          confirmButtonText: 'OK',
+          cancelButtonText: 'Cancel',
+          type: 'error',
+        }
+      )
+        .then(() => {
           groupsService
             .removeFromGroup(route.params.groupId, {
               groupId: route.params.groupId,
@@ -1551,12 +1158,6 @@ export default {
             .then((res) => {
               if (res !== false) {
                 groupMembers.value.splice(index, 1);
-                // toast.add({
-                //   severity: "success",
-                //   summary: "Confirmed",
-                //   detail: "The member was removed",
-                //   life: 2500,
-                // });
                 ElMessage({
                   message: "The member was removed",
                   type: "success",
@@ -1567,12 +1168,15 @@ export default {
                   groupMembers.value.length
                 );
               }
-            });
-        },
-        reject: () => {
-          // toast.add({severity:'info', summary:'Rejected', detail:'You have rejected', life: 3000});
-        },
-      });
+            })
+            .catch(() => {
+              ElMessage({
+                type: 'info',
+                message: "Discarded",
+                duration: 3000
+              })
+            })
+        })
     };
 
     const sendMarkedMemberSms = () => {
@@ -1719,16 +1323,9 @@ export default {
             return i;
           });
 
-          // store.dispatch("groups/getGroups")
           if (redirect) {
             router.push("/tenant/peoplegroups");
           } else {
-            // toast.add({
-            //   severity: "success",
-            //   summary: "Group Updated",
-            //   detail: "Group members update successfully",
-            //   life: 2500,
-            // });
             ElMessage({
               message: "Group members updated successfully",
               type: "success",
@@ -1740,12 +1337,6 @@ export default {
           finish();
           savingGroup.value = false;
           console.log(err);
-          // toast.add({
-          //   severity: "error",
-          //   summary: "Update Error",
-          //   detail: "Failed updating group",
-          //   life: 2500,
-          // });
           ElMessage({
             message: "Failed updating group",
             type: "error",
@@ -1760,7 +1351,6 @@ export default {
         .then((res) => {
           console.log(res, "create res");
           groupsService.addGroupToStore(res.data, groupMembers.value.length);
-          // store.dispatch("groups/getGroups")
           savingGroup.value = false;
           router.push("/tenant/peoplegroups");
         })
@@ -1781,8 +1371,6 @@ export default {
         groupNameIsInvalid.value = false;
       }
     };
-
-    const route = useRoute();
 
     const getGroupById = async () => {
       try {
@@ -1831,24 +1419,12 @@ export default {
         loadingMembers.value = false;
         console.log(error.response);
         if (error.toString().toLowerCase().includes("network error")) {
-          // toast.add({
-          //   severity: "warn",
-          //   summary: "Network error",
-          //   detail: "Please ensure you have a strong internet",
-          //   life: 4000,
-          // });
           ElMessage({
             message: "Please ensure you have a strong internet",
             type: "warn",
             duration: "4000",
           });
         } else if (error.toString().toLowerCase().includes("timeout")) {
-          // toast.add({
-          //   severity: "warn",
-          //   summary: "Request took too long",
-          //   detail: "Please refresh the page",
-          //   life: 4000,
-          // });
           ElMessage({
             message: "Please refresh the page",
             type: "warn",
@@ -1865,32 +1441,8 @@ export default {
 
     if (route.params.groupId) getGroupById();
 
-    const closeDropdownIfOpen = (e) => {
-      if (!e.target.classList.contains("m-dd-item")) {
-        memberListShown.value = false;
-        searchText.value = "";
-        memberListShown.value = false;
-        memberSearchResults.value = [];
-      }
-
-      if (
-        !e.target.classList.contains("exempt-hide") &&
-        !e.target.classList.contains("p-hidden-accessible") &&
-        !e.target.classList.contains("p-checkbox-box") &&
-        !e.target.classList.contains("p-checkbox-icon")
-      ) {
-        hideDiv.value = true;
-      }
-    };
-
     const importMember = () => {
       if (!route.params.groupId) {
-        // toast.add({
-        //   severity: "warn",
-        //   summary: "Create a group",
-        //   detail: "Please ensure you create the group first before you import",
-        //   life: 5000,
-        // });
         ElMessage({
           message: "Please ensure you create the group first before you import",
           type: "warn",
@@ -1914,12 +1466,6 @@ export default {
           memberToApprove
         );
         console.log(res);
-        // toast.add({
-        //   severity: "success",
-        //   summary: "Approved",
-        //   detail: "Member approved successfully",
-        //   life: 4000,
-        // });
         ElMessage({
           message: "Member approved successfully",
           type: "Success",
@@ -1933,24 +1479,12 @@ export default {
       } catch (error) {
         finish();
         if (error.toString().toLowerCase().includes("network error")) {
-          // toast.add({
-          //   severity: "warn",
-          //   summary: "Network error",
-          //   detail: "Please ensure you have a strong internet",
-          //   life: 4000,
-          // });
           ElMessage({
             message: "Please ensure you have a strong internet",
             type: "warn",
             duration: "4000",
           });
         } else if (error.toString().toLowerCase().includes("timeout")) {
-          // toast.add({
-          //   severity: "warn",
-          //   summary: "Request took too long",
-          //   detail: "Please refresh the page",
-          //   life: 4000,
-          // });
           ElMessage({
             message: "Please refresh the page",
             type: "warn",
@@ -1996,12 +1530,6 @@ export default {
           groupMembers.value = groupMembers.value.filter((item) => {
             return item.personID !== id;
           });
-          // toast.add({
-          //   severity: "success",
-          //   summary: "Archived",
-          //   detail: "Member archived succesfully",
-          //   life: 5000,
-          // });
           ElMessage({
             message: "Member archived successfully",
             type: "success",
@@ -2014,12 +1542,6 @@ export default {
             if (y >= 0) return false;
             return true;
           });
-          // toast.add({
-          //   severity: "success",
-          //   summary: "Archived",
-          //   detail: "Member(s) archived succesfully",
-          //   life: 5000,
-          // });
           ElMessage({
             message: "Member(s) archived successfully",
             type: "success",
@@ -2044,15 +1566,6 @@ export default {
       );
     });
 
-    // watchEffect(() => {
-    //   if (store.getters["groups/selectedTreeGroup"]) {
-    //     // console.log(store.getters['groups/selectedTreeGroup'])
-    //     const selectedGroup = store.getters["groups/selectedTreeGroup"];
-    //     hideDiv.value = true;
-    //     selectedIntendedSubGroup.value = selectedGroup;
-    //   }
-    // });
-
     const setGroupValue = () => {
       const response = flattenedTree.value.find(
         (i) => i.value == selectedTree.value
@@ -2068,12 +1581,6 @@ export default {
         const { data } = await axios.post(
           `/api/Group/AddSubGroupToGroup?SuperGroupID=${route.params.groupId}&&SubGroupID=${selectedIntendedSubGroup.value.id}`
         );
-        // toast.add({
-        //   severity: "success",
-        //   summary: "Successful",
-        //   detail: `${data.response}`,
-        //   life: 4000,
-        // });
         ElMessage({
           message: `${data.response}`,
           type: "success",
@@ -2084,12 +1591,6 @@ export default {
       } catch (error) {
         console.log(error.response);
         if (error.response) {
-          // toast.add({
-          //   severity: "error",
-          //   summary: "Unsuccessful",
-          //   detail: `${error.response}`,
-          //   life: 4000,
-          // });
           ElMessage({
             message: `${error.response}`,
             type: "error",
@@ -2106,19 +1607,6 @@ export default {
       });
     };
 
-    // const setMoveGroupProp = () => {
-    //   moveHideDiv.value = !moveHideDiv.value;
-    //   nextTick(() => {
-    //     searchGroupRef.value.focus();
-    //   });
-    // };
-
-    const setGroupProp = () => {
-      hideDiv.value = !hideDiv.value;
-      nextTick(() => {
-        searchGroupRef.value.focus();
-      });
-    };
 
     const searchForGroups = computed(() => {
       if (!searchGroupText.value && getAllGroup.value.length > 0)
@@ -2132,22 +1620,7 @@ export default {
       console.log(payload);
     };
 
-    // watchEffect(() => {
-    //   if (store.getters["groups/selectedTreeGroupList"]) {
-    //     const selectedGroup = store.getters["groups/selectedTreeGroupList"];
-    //     lastGroupChild.value = selectedGroup;
-    //     console.log(selectedGroup);
-    //   }
-    // });
-
     const setSelectedGroupToMove = () => {
-      // console.log(payload)
-      // if (payload.iconElement.classList.contains("p-3")) {
-      //   selectGroupTo.value = payload.selectedGroup
-      //     ? payload.selectedGroup
-      //     : lastGroupChild.value;
-      //   moveHideDiv.value = true;
-      // }
       let flattenGroupTree = flattenTree(getAllGroup.value)
       const selectedLabelTree = flattenGroupTree.find(i => i.value === moveSelectedTree.value)
       selectGroupTo.value = {
@@ -2167,6 +1640,70 @@ export default {
         copyHideDiv.value = true;
       }
     };
+
+    const showConfirmModal = (id) => {
+      ElMessageBox.confirm(
+        'This action will permanently delete this item. Continue?',
+        'Confirm delete',
+        {
+          confirmButtonText: 'OK',
+          cancelButtonText: 'Cancel',
+          type: 'error',
+        }
+      )
+        .then(() => {
+          deleteAttendance(id);
+        })
+        .catch(() => {
+          ElMessage({
+            type: 'info',
+            message: "Delete discarded",
+            duration: 3000
+          })
+        })
+    };
+
+    const deleteAttendance = (id) => {
+      axios
+        .delete(`/api/CheckInAttendance/checkout?attendanceId=${id}`)
+        .then((res) => {
+          console.log(res.status);
+          if (res.status === 200) {
+            ElMessage({
+              type: 'success',
+              message: "Delete successful",
+              duration: 5000
+            })
+          } else {
+            ElMessage({
+              type: 'error',
+              message: "Delete failed, please try again",
+              duration: 3000
+            })
+          }
+        })
+        .catch((err) => {
+          if (err.response) {
+            console.log(err.response);
+            ElMessage({
+              type: 'info',
+              message: "Unable to delete, please try again",
+              duration: 3000
+            })
+          } else if (
+            err.response.toString().toLowerCase().includes("network error")
+          ) {
+            ElMessage({
+              type: 'warning',
+              message: "Please ensure you have a strong internet and try again",
+              duration: 3000
+            })
+          }
+        });
+    };
+    const formatDate = (date) => {
+      return dateFormatter.monthDayYear(date)
+    }
 
     return {
       groupData,
@@ -2195,11 +1732,8 @@ export default {
       showMemberList,
       memberListShown,
       inputBlurred,
-      closeDropdownIfOpen,
       confirmDelete,
       marked,
-      // markAllItem,
-      // mark1Item,
       handleSelectionChange,
       selectMembers,
       memberDia,
@@ -2221,7 +1755,6 @@ export default {
       showAttendanceCheckin,
       groupMappedTree,
       filterNodeMethod,
-      // wardSearchString,
       getWardId,
       totalItems,
       attendanceData,
@@ -2233,8 +1766,6 @@ export default {
       enableLogin,
       sendMarkedMemberSms,
       sendMarkedMemberEmail,
-      // showWardModal
-      //  getWardId,
       uploadToGroup,
       closeGroupModal,
       displayView,
@@ -2244,18 +1775,12 @@ export default {
       displayPositionArchive,
       closeArchiveModal,
       importMember,
-      route,
       window,
       innerWidth,
       searchGroupMemberText,
       searchGroupMembers,
       field,
       groups,
-      // setSelectedGroup,
-      setGroupProp,
-      // setMoveGroupProp,
-      hideDiv,
-      moveHideDiv,
       copyHideDiv,
       selectedIntendedSubGroup,
       addSubGroup,
@@ -2275,7 +1800,14 @@ export default {
       xlAndUp,
       createGroupHeaders,
       moveSelectedTree,
-      flattenTree
+      flattenTree,
+      attendanceByGroup,
+      attendanceItemsHeaders,
+      showConfirmModal,
+      deleteAttendance,
+      formatDate,
+      moveLoading,
+      attendanceItemsLoading
     }
   },
 };
@@ -2559,7 +2091,7 @@ export default {
 }
 
 /* .group-form { */
-  /* box-shadow: 0px 5px 15px #00000017;
+/* box-shadow: 0px 5px 15px #00000017;
   border: 1px solid #dde2e6;
   border-radius: 10px; */
 /* } */
