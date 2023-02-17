@@ -35,20 +35,20 @@
           class="row border py-3 px-2 mt-3 rounded"
           v-if="allPledgeList.length > 0 && !loading && !networkError"
         >
-          <div class="col-md-5">
+          <div class="col-md-4">
             <div class="text-secondary font-weight-bold small">
               Total pledge
             </div>
             <h3 class="font-weight-700 mt-3">
-              {{ Math.abs(pledgesSummary.totalPledges).toLocaleString() }}.00 <span class="text-secondary small">NGN</span>
+              {{ Math.abs(pledgesSummary.totalPledges).toLocaleString() }}.00 <span class="text-secondary small">{{pledgesSummary.symbol}}</span>
             </h3>
           </div>
-          <div class="col-md-3 mt-3 mt-md-0">
+          <div class="col-md-4 mt-3 mt-md-0">
             <div class="font-weight-bold small text-secondary">
               Total Payments
             </div>
             <h3 class="font-weight-700 mt-3">
-                {{ Math.abs(pledgesSummary.totalPayments).toLocaleString() }}.00<span class="text-secondary small">NGN</span>
+                {{ Math.abs(pledgesSummary.totalPayments).toLocaleString() }}.00<span class="text-secondary small">{{pledgesSummary.symbol}}</span>
             </h3>
           </div>
           <div class="col-md-4 mt-3 mt-md-0">
@@ -56,7 +56,7 @@
               Payment within the last 30 days
             </div>
             <h3 class="font-weight-700 mt-3">
-             {{ Math.abs(pledgesSummary.paymentsInLast30Days).toLocaleString() }}.00 <span class="text-secondary small">NGN</span>
+             {{ Math.abs(pledgesSummary.paymentsInLast30Days).toLocaleString() }}.00 <span class="text-secondary small">{{pledgesSummary.symbol}}</span>
             </h3>
           </div>
           <!-- <div class="col-md-3 mt-3 mt-md-0">

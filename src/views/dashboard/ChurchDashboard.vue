@@ -21,7 +21,7 @@
 
       <div class="row mb-4">
         <div class="col-12">
-          <div class="col-md-12 text-dark py-3 mb-2 day3" v-if="notifiedDays === 10">
+          <div class="col-md-12 text-dark py-3 mb-2 day3" v-if="notifiedDays === 10 ">
             <div class="">
               10 days remaining before your subscription expires, kindly
               subscribe before
@@ -33,6 +33,9 @@
                 )
                   ._i.substr(4, 11)
               }}
+            </div>
+            <div class="cursor-pointer " @click="subscribeNow">
+              <el-button round>Subscribe now</el-button>
             </div>
           </div>
           <div class="col-md-12 text-dark py-3 mb-2 day3" v-if="notifiedDays === 9">
@@ -48,6 +51,9 @@
                   ._i.substr(4, 11)
               }}
             </div>
+            <div class="cursor-pointer " @click="subscribeNow">
+              <el-button round>Subscribe now</el-button>
+            </div>
           </div>
           <div class="col-md-12 text-dark py-3 mb-2 day3" v-if="notifiedDays === 8">
             <div class="">
@@ -61,6 +67,9 @@
                 )
                   ._i.substr(4, 11)
               }}
+            </div>
+            <div class="cursor-pointer " @click="subscribeNow">
+              <el-button round>Subscribe now</el-button>
             </div>
           </div>
           <div class="col-md-12 text-dark py-3 mb-2 day3" v-if="notifiedDays === 7">
@@ -76,6 +85,9 @@
                   ._i.substr(4, 11)
               }}
             </div>
+            <div class="cursor-pointer " @click="subscribeNow">
+              <el-button round>Subscribe now</el-button>
+            </div>
           </div>
           <div class="col-md-12 py-3 mb-1 day2" v-if="notifiedDays === 6">
             <div class="">
@@ -89,6 +101,9 @@
                 )
                   ._i.substr(4, 11)
               }}
+            </div>
+            <div class="cursor-pointer " @click="subscribeNow">
+              <el-button round>Subscribe now</el-button>
             </div>
           </div>
           <div class="col-md-12 py-3 mb-1 day2" v-if="notifiedDays === 5">
@@ -104,6 +119,9 @@
                   ._i.substr(4, 11)
               }}
             </div>
+            <div class="cursor-pointer " @click="subscribeNow">
+              <el-button round>Subscribe now</el-button>
+            </div>
           </div>
           <div class="col-md-12 py-3 mb-1 day1" v-if="notifiedDays === 4">
             <div class="">
@@ -117,6 +135,9 @@
                 )
                   ._i.substr(4, 11)
               }}
+            </div>
+            <div class="cursor-pointer " @click="subscribeNow">
+              <el-button  round>Subscribe now</el-button>
             </div>
           </div>
           <div class="col-md-12 py-3 mb-1 day1" v-if="notifiedDays === 3">
@@ -132,6 +153,9 @@
                   ._i.substr(4, 11)
               }}
             </div>
+            <div class="cursor-pointer " @click="subscribeNow">
+              <el-button round>Subscribe now</el-button>
+            </div>
           </div>
           <div class="col-md-12 py-3 mb-1 day1" v-if="notifiedDays === 2">
             <div class="">
@@ -146,6 +170,9 @@
                   ._i.substr(4, 11)
               }}
             </div>
+            <div class="cursor-pointer " @click="subscribeNow">
+              <el-button round>Subscribe now</el-button>
+            </div>
           </div>
           <div class="col-md-12 py-3 m-0 day1" v-if="notifiedDays === 1">
             <div class="mt-0">
@@ -159,6 +186,9 @@
                 )
                   ._i.substr(4, 11)
               }}
+            </div>
+            <div class="cursor-pointer " @click="subscribeNow">
+              <el-button round>Subscribe now</el-button>
             </div>
           </div>
         </div>
@@ -556,6 +586,9 @@ export default {
       moreLinksVissible.value != moreLinksVissible.value;
     };
 
+    const subscribeNow = () =>{
+        router.push('/tenant/subscription')
+    }
     const celebrations = [];
     const tenantInfo = ref({});
     const tenantInfoBasic = ref({});
@@ -794,6 +827,7 @@ export default {
       // Find the distance between now and the count down date
       let distance = countDownDates - now;
       notifiedDays.value = Math.floor(distance / (1000 * 60 * 60 * 24));
+      console.log(notifiedDays.value, "hjjj");
     }
 
     useSubscription.getPlan().then((res) => {
@@ -849,6 +883,7 @@ export default {
     return {
       celebrations,
       notifiedDays,
+      subscribeNow,
       getRenewalDate,
       tenantInfo,
       tenantInfoBasic,
@@ -915,6 +950,8 @@ export default {
   border-top-left-radius: 5px 5px;
   border-bottom-left-radius: 5px 5px;
   font-weight: 700;
+  display: flex;
+  justify-content: space-between;
 }
 
 .day2 {
@@ -923,6 +960,8 @@ export default {
   border-top-left-radius: 5px 5px;
   border-bottom-left-radius: 5px 5px;
   font-weight: 700;
+  display: flex;
+  justify-content: space-between;
 }
 
 .day1 {
@@ -932,6 +971,8 @@ export default {
   border-top-left-radius: 5px 5px;
   border-bottom-left-radius: 5px 5px;
   font-weight: 700;
+  display: flex;
+  justify-content: space-between;
 }
 
 .renew-btn-color {
@@ -1071,6 +1112,10 @@ export default {
   justify-content: flex-end;
 }
 
+.number-boxes {
+  z-index: -1
+}
+
 .box {
   width: 170px;
   background: #FFFFFF;
@@ -1093,28 +1138,6 @@ export default {
   border: 1px solid #e6e5f2;
   border-radius: 28px;
   margin-top: 80px;
-}
-
-.day3 {
-  background-color: #ECF4FF;
-  border-left: solid #136acd 5px;
-  border-top-left-radius: 5px 5px;
-  border-bottom-left-radius: 5px 5px;
-}
-
-.day2 {
-  background-color: rgb(243, 243, 217);
-  border-left: solid rgb(228, 228, 42) 5px;
-  border-top-left-radius: 5px 5px;
-  border-bottom-left-radius: 5px 5px;
-}
-
-.day1 {
-  background-color: #FEF8F8;
-  color: #e09579;
-  border-left: solid #B3282D 5px;
-  border-top-left-radius: 5px 5px;
-  border-bottom-left-radius: 5px 5px;
 }
 
 .pie-con {

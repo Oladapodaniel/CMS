@@ -108,7 +108,23 @@ const checkin = async (body) => {
 const checkout = async (body) => {
     return new Promise((resolve, reject) => {
         axios.post(`/api/CheckInAttendance/CheckOut`, body)
-        // axios.post(`/api/CheckInAttendance/MarkAttendance?CheckInAttendanceID=${id}`, body)
+            .then(res => {
+                resolve(res.data);
+            })
+            .catch(error => {
+                stopProgressBar();
+                if (error.response) {
+                    reject(error.response);
+                } else {
+                    reject(error);
+                }
+            })
+    })
+}
+
+const getAttendanceItemsByGroupID = async (id) => {
+    return new Promise((resolve, reject) => {
+        axios.get(`/api/CheckInAttendance/GetAttendanceItemsByGroupID?groupID=${id}`)
             .then(res => {
                 resolve(res.data);
             })
@@ -166,4 +182,4 @@ const generateEventReportDefaultMessage = (eventAnalysisData) => {
 }
 
 
-export default { saveCheckAttendanceItem, startCheckinProces, getItems, getItemByCode, getReport, checkin, checkout, generateEventReportDefaultMessage };
+export default { saveCheckAttendanceItem, startCheckinProces, getItems, getItemByCode, getReport, checkin, checkout, generateEventReportDefaultMessage, getAttendanceItemsByGroupID };

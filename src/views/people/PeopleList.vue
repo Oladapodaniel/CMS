@@ -175,8 +175,7 @@
         <el-card shadow="hover" class="c-pointer person-image" v-if="item.pictureUrl"
           style="border-radius: 50%; height: 26px; width: 26px;">
           <el-tooltip class="box-item" effect="dark" content="Click to view" placement="top-start">
-            <img :src="item.pictureUrl" alt="" @click="(selectedImage = item), (imageDialog = true)"
-              style="border-radius: 50%; height: 26px; width: 26px; object-fit: cover" />
+              <el-image style="border-radius: 50%; height: 26px; width: 26px;" :src="item.pictureUrl" fit="cover" @click="(selectedImage = item), (imageDialog = true)" :lazy="true"/>
           </el-tooltip>
         </el-card>
         <el-avatar :size="25" v-else><el-icon color="#000000">
@@ -185,13 +184,13 @@
         </el-avatar>
       </template>
       <template v-slot:firstName="{ item }">
-        <div>{{ item.firstName }}</div>
+        <div class="c-pointer" @click="showMemberRow(item)">{{ item.firstName }}</div>
       </template>
       <template v-slot:lastName="{ item }">
-        <div>{{ item.lastName }}</div>
+        <div class="c-pointer" @click="showMemberRow(item)">{{ item.lastName }}</div>
       </template>
       <template v-slot:mobilePhone="{ item }">
-        <div>{{ item.mobilePhone }}</div>
+        <div class="c-pointer" @click="showMemberRow(item)">{{ item.mobilePhone }}</div>
       </template>
       <template v-slot:action="{ item }">
         <div>
@@ -555,7 +554,7 @@ export default {
         if (response && response.response && response.response.toString().toLowerCase().includes("all")) {
           ElMessage({
             type: 'success',
-            message: 'Delete successfully',
+            message: 'Delete successful',
           })
 
           churchMembers.value = churchMembers.value.filter((item) => {

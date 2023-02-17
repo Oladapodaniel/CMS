@@ -1,20 +1,20 @@
 /* Element plus component restyle */
 
 .el-input__wrapper {
-    padding: 6px 11px !important;
+  padding: 6px 11px !important;
 }
 
 button.el-button {
   font-weight: 800
 }
 
-button.el-button.el-button--primary.start-option > span {
-    width: 100% !important
+button.el-button.el-button--primary.start-option>span {
+  width: 100% !important
 }
 
 button.el-button.is-round {
-    padding: 17px;
-    min-width: 100px;
+  padding: 17px;
+  min-width: 100px;
 }
 
 /* button.el-button.is-plain, button.el-button.is-round {
@@ -22,108 +22,128 @@ button.el-button.is-round {
 } */
 
 .primary--text {
-    color: #136acd;
+  color: #136acd;
 }
 
-.no-decoration{
-    text-decoration: none !important;
+.no-decoration {
+  text-decoration: none !important;
 }
 
 .el-card.person-image .el-card__body {
-    padding: 0
+  padding: 0
 }
 
-.el-form-item.validate-email .el-form-item__error, .el-form-item.validate-phone .el-form-item__error {
-    position: absolute;
-    top: 107% !important;
-    right: 0 !important;
-    left: unset !important;
+.el-form-item.validate-email .el-form-item__error,
+.el-form-item.validate-phone .el-form-item__error {
+  position: absolute;
+  top: 107% !important;
+  right: 0 !important;
+  left: unset !important;
 }
 
-.el-sub-menu__title, li.el-menu-item.w-100, .el-menu.el-menu--inline > li.el-menu-item  {
-    height: 40px !important;
+.el-sub-menu__title,
+li.el-menu-item.w-100,
+.el-menu.el-menu--inline>li.el-menu-item {
+  height: 40px !important;
 }
 
-.el-menu-item-group li.el-menu-item{
-    height: 25px;
+.el-menu-item-group li.el-menu-item {
+  height: 25px;
 }
 
-.el-sub-menu.is-active > div.el-sub-menu__title {
-    font-weight: 800 !important;
+.el-sub-menu.is-active>div.el-sub-menu__title {
+  font-weight: 800 !important;
 }
 
 .el-dialog.is-align-center.person-image-dialog div.el-dialog__body {
-    padding: 10px 0 !important;
+  padding: 10px 0 !important;
 }
 
 .dialog-footer.person-image-dialog-footer {
-    text-align: left;
+  text-align: left;
 }
 
 .el-dropdown-menu {
-    max-height: 400px;
-    overflow: scroll;
+  max-height: 400px;
+  overflow: scroll;
 }
 
 .el-dropdown.split-button .el-button.el-button--large:not(.el-dropdown__caret-button) {
-    border-radius: 25px 0 0 25px;
-    background: #136acd;
-    color: #ffffff
+  border-radius: 25px 0 0 25px;
+  background: #136acd;
+  color: #ffffff
 }
 
 .el-dropdown.split-button .el-dropdown__caret-button {
-    border-radius: 0 25px 25px 0;
-    background: #136acd;
-    color: #ffffff
+  border-radius: 0 25px 25px 0;
+  background: #136acd;
+  color: #ffffff
 }
 
-.phone-input > div.el-input__wrapper {
-    background: transparent;
-    border: 0;
-    box-shadow: none;
-    border-bottom: 1px solid #cbd6e2;
-    border-radius: 0;
-  }
-.phone-input  div.el-select-v2__wrapper {
-    background: transparent;
-    border: 0;
-    box-shadow: none;
-    /* border-bottom: 1px solid #cbd6e2; */
-    border-radius: 0;
-  }
+.phone-input>div.el-input__wrapper {
+  background: transparent;
+  border: 0;
+  box-shadow: none;
+  border-bottom: 1px solid #cbd6e2;
+  border-radius: 0;
+}
 
-  .comment-bg .el-textarea__inner {
-    background: #fef8f0 !important;
-  }
+.phone-input div.el-select-v2__wrapper {
+  background: transparent;
+  border: 0;
+  box-shadow: none;
+  /* border-bottom: 1px solid #cbd6e2; */
+  border-radius: 0;
+}
 
-  /* Error Confirm modal */
+.comment-bg .el-textarea__inner {
+  background: #fef8f0 !important;
+}
 
-  .el-overlay-message-box[aria-label="Confirm delete"] .el-message-box {
-    border: none !important;
-    border-radius: 10px 10px 0 0;
-  }
+/* Error Confirm modal */
 
-  .el-overlay-message-box[aria-label="Confirm delete"] .el-message-box__header {
-    background: #f56c6c;
-    margin-bottom: 20px;
-  }
+.el-overlay-message-box[aria-label="Confirm delete"] .el-message-box {
+  border: none !important;
+  border-radius: 10px 10px 0 0;
+}
 
-  .el-overlay-message-box[aria-label="Confirm delete"] .el-message-box__title, .el-overlay-message-box[aria-label="Confirm delete"] .el-icon.el-message-box__close {
-    color: #ffffff !important
-  }
+.el-overlay-message-box[aria-label="Confirm delete"] .el-message-box__header {
+  background: #f56c6c;
+  margin-bottom: 20px;
+}
 
-  .el-overlay-message-box[aria-label="Confirm delete"] .el-button {
-    border-radius: 25px;
-  }
-  .el-overlay-message-box[aria-label="Confirm delete"] .el-button.el-button--primary {
-    background: #f56c6c;
-    border: none;
-    outline: none;
-  }
+.el-overlay-message-box[aria-label="Confirm delete"] .el-message-box__title,
+.el-overlay-message-box[aria-label="Confirm delete"] .el-icon.el-message-box__close {
+  color: #ffffff !important
+}
 
-  .el-dialog.is-align-center.smsUnitSuccess .el-dialog__body {
-    padding: 0;
+.el-overlay-message-box[aria-label="Confirm delete"] .el-button {
+  border-radius: 25px;
+}
+
+.el-overlay-message-box[aria-label="Confirm delete"] .el-button.el-button--primary {
+  background: #f56c6c;
+  border: none;
+  outline: none;
+}
+
+.el-dialog.is-align-center.smsUnitSuccess .el-dialog__body {
+  padding: 0;
+}
+
+.el-dialog.is-align-center.smsUnitSuccess .el-dialog__header {
+  display: none;
+}
+
+.el-checkbox.align-checkbox-totop {
+  align-items: start !important;
+}
+
+@media (max-width: 421px) {
+  .el-button+.el-button.add-member {
+    margin-left: 0;
   }
+}
   
   .el-dialog.is-align-center.smsUnitSuccess .el-dialog__header {
     display: none;  

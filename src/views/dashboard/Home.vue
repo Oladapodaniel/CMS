@@ -15,7 +15,7 @@
             <div class="pa-3 font-weight-600">{{ tenantName.churchName }}</div>
           </div>
         </el-header>
-        <el-main>
+        <el-main class="overflow-hidden">
           <div class="h-100" @click="hideMenu">
             <router-view />
           </div>
@@ -134,7 +134,7 @@ export default {
   background: #ebeff4;
   height: inherit;
   overflow: auto;
-  z-index: 2100;
+  z-index: 1;
 }
 
 .hide-menu {
