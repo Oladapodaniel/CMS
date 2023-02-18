@@ -284,8 +284,8 @@
                   v-if="selectedGroups.length > 0 && selectedGroups.length <= 2"
                 >
                   <span v-for="item in selectedGroups" :key="item.id"
-                    ><span class="eachGroup">{{ item.name }}</span></span
-                  >
+                    ><span class="eachGroup">{{ item && item.name }}</span></span>
+                    <!-- ><span class="eachGroup">{{ item && item.name ? item.name : item }}</span></span> -->
                 </span>
                 <span
                   v-if="selectedGroups.length > 0 && selectedGroups.length > 2"
@@ -293,8 +293,9 @@
                   <span
                     v-for="item in selectedGroups.slice(0, 2)"
                     :key="item.id"
-                    ><span class="eachGroup">{{ item.name }}</span></span
-                  >
+                    >
+                    <span class="eachGroup">{{  item.name  }}</span></span>
+                    <!-- <span class="eachGroup">{{ item && item.name ? item.name : item }}</span></span> -->
                   ...
                 </span>
                 <span v-if="selectedGroups.length === 0">Select group</span>
@@ -1090,25 +1091,47 @@ export default {
     const eventNameDate = ref("");
     // /api/CheckInAttendance/UpdateCheckInAttendance
 
-    const singleCheckinAttendance = async () => {
+    // const singleCheckinAttendance = async () => {
+    //   try {
+    //     const res = await axios.get(
+    //       `/api/CheckInAttendance/GetCheckInItem?checkinId=${attendanceCheID.value}`
+    //     );
+    //     eventNameDate.value = `${res.data.fullEventName} (${new Date(
+    //       res.data.eventDate
+    //     ).toDateString()})`;
+    //     selectedEvent.value.name = `${res.data.fullEventName} (${new Date(
+    //       res.data.eventDate
+    //     ).toDateString()})`;
+    //     console.log(eventNameDate.value, "eventName");
+    //     console.log(res, "updateATTENDANCE");
+    //   } catch (error) {
+    //     console.log(error);
+    //   }
+    // };
+    // singleCheckinAttendance();
+
+    const getSingleCheckinAttendance = async () => {
       try {
         const res = await axios.get(
-          `/api/CheckInAttendance/GetCheckInItem?checkinId=${attendanceCheID.value}`
+          `/api/CheckInAttendance/GetSingleAttendanceCheckIn?checkInAttendanceId=${attendanceCheID.value}`
         );
-        eventNameDate.value = `${res.data.fullEventName} (${new Date(
-          res.data.eventDate
+        // let groupArray = []
+        // groupArray.push(res.data.returnObject.attendanceItem.fullGroupName)
+        eventNameDate.value = `${res.data.returnObject.attendanceItem.fullEventName} (${new Date(
+          res.data.returnObject.attendanceItem.eventDate
         ).toDateString()})`;
-        selectedEvent.value.name = `${res.data.fullEventName} (${new Date(
-          res.data.eventDate
+        selectedEvent.value.name = `${res.data.returnObject.attendanceItem.fullEventName} (${new Date(
+          res.data.returnObject.attendanceItem.eventDate
         ).toDateString()})`;
-        console.log(eventNameDate.value, "eventName");
-        // eventSearchText.value = eventNameDate.value
-        console.log(res, "updateATTENDANCE");
+        // selectedGroups.value = groupArray
+        // searchGroupText.value = res.data.returnObject.attendanceItem.fullGroupName
+        console.log(selectedGroups.value, "jghgh");
+        console.log(res, "singleATTENDANCE");
       } catch (error) {
         console.log(error);
       }
     };
-    singleCheckinAttendance();
+    getSingleCheckinAttendance();
 
     const getGroups = async () => {
       grouploading.value = true;
@@ -1255,12 +1278,12 @@ export default {
 
     const onContinue = async () => {
       loadingsave.value = true;
-      let checkinEvent2 = {
-        id: attendanceCheID.value,
-        eventId: selectedEvent.value.id,
-        groupIDs: selectedGroups.value,
-        eventDate: selectedEvent.value.date.split("T")[0],
-      };
+      // let checkinEvent2 = {
+      //   id: attendanceCheID.value,
+      //   eventId: selectedEvent.value.id,
+      //   groupIDs: selectedGroups.value,
+      //   eventDate: selectedEvent.value.date.split("T")[0],
+      // };
       let checkinEvent = {
         eventId: selectedEvent.value.id,
         groupIDs: selectedGroups.value,
