@@ -465,6 +465,8 @@ export default {
 }
 @media screen and (max-width: 600px) {
   .screensize{
+    position: relative;
+    z-index: 0;
     min-width: 500px;
     overflow: hidden;
     overflow-x: auto !important;
