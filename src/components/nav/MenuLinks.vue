@@ -242,7 +242,7 @@ export default {
       const members = {
         name: 'Members',
         logo: '/',
-        route: '/tenant/people',
+        route: '/tenant/people/memberstest',
       }
 
       const firsttimers = {
