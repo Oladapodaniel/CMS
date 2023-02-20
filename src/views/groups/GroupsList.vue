@@ -257,7 +257,7 @@ export default {
         loading.value = true;
         const data = await groupsService.getGroups();
         (loading.value = false),
-          (groups.value = data.map((i) => {
+          (groups.value = data.response.groupResonseDTO.map((i) => {
             return {
               dateCreated: i.dateCreated,
               description: i.description,
