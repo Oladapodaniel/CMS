@@ -210,7 +210,8 @@ export default {
     const loading = ref(false);
     const displayConfirmModal = ref(false);
     const { mdAndUp, lgAndUp, xlAndUp } = deviceBreakpoint();
-    const groups = ref(store.getters["groups/groups"]);
+    // const groups = ref(store.getters["groups/groups"]);
+    const groups = ref([]);
     const groupListDetails = ref([]);
     // const toast = useToast();
     // const confirm = useConfirm();
