@@ -129,7 +129,6 @@ export default {
       router.push('/')
       store.dispatch('clearCurrentUser', {})
       store.dispatch('groups/clearGroup')
-      store.dispatch('membership/clearMember')
       setupService.clearStore();
     }
 
@@ -242,7 +241,7 @@ export default {
       const members = {
         name: 'Members',
         logo: '/',
-        route: '/tenant/people/memberstest',
+        route: '/tenant/people',
       }
 
       const firsttimers = {
