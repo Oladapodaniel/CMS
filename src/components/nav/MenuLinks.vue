@@ -128,7 +128,7 @@ export default {
       localStorage.clear()
       router.push('/')
       store.dispatch('clearCurrentUser', {})
-      store.dispatch('groups/clearGroup')
+      store.dispatch('groups/clearGroup');
       setupService.clearStore();
     }
 
