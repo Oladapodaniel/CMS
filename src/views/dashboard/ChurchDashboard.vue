@@ -21,7 +21,7 @@
 
       <div class="row mb-4">
         <div class="col-12">
-          <div class="col-md-12 text-dark py-3 mb-2 day3" v-if="notifiedDays === 10">
+          <div class="col-md-12 text-dark py-3 mb-2 day3" v-if="notifiedDays === 10 ">
             <div class="">
               10 days remaining before your subscription expires, kindly
               subscribe before
@@ -33,6 +33,9 @@
                 )
                   ._i.substr(4, 11)
               }}
+            </div>
+            <div class="cursor-pointer " @click="subscribeNow">
+              <el-button round>Subscribe now</el-button>
             </div>
           </div>
           <div class="col-md-12 text-dark py-3 mb-2 day3" v-if="notifiedDays === 9">
@@ -48,6 +51,9 @@
                   ._i.substr(4, 11)
               }}
             </div>
+            <div class="cursor-pointer " @click="subscribeNow">
+              <el-button round>Subscribe now</el-button>
+            </div>
           </div>
           <div class="col-md-12 text-dark py-3 mb-2 day3" v-if="notifiedDays === 8">
             <div class="">
@@ -61,6 +67,9 @@
                 )
                   ._i.substr(4, 11)
               }}
+            </div>
+            <div class="cursor-pointer " @click="subscribeNow">
+              <el-button round>Subscribe now</el-button>
             </div>
           </div>
           <div class="col-md-12 text-dark py-3 mb-2 day3" v-if="notifiedDays === 7">
@@ -76,6 +85,9 @@
                   ._i.substr(4, 11)
               }}
             </div>
+            <div class="cursor-pointer " @click="subscribeNow">
+              <el-button round>Subscribe now</el-button>
+            </div>
           </div>
           <div class="col-md-12 py-3 mb-1 day2" v-if="notifiedDays === 6">
             <div class="">
@@ -89,6 +101,9 @@
                 )
                   ._i.substr(4, 11)
               }}
+            </div>
+            <div class="cursor-pointer " @click="subscribeNow">
+              <el-button round>Subscribe now</el-button>
             </div>
           </div>
           <div class="col-md-12 py-3 mb-1 day2" v-if="notifiedDays === 5">
@@ -104,6 +119,9 @@
                   ._i.substr(4, 11)
               }}
             </div>
+            <div class="cursor-pointer " @click="subscribeNow">
+              <el-button round>Subscribe now</el-button>
+            </div>
           </div>
           <div class="col-md-12 py-3 mb-1 day1" v-if="notifiedDays === 4">
             <div class="">
@@ -117,6 +135,9 @@
                 )
                   ._i.substr(4, 11)
               }}
+            </div>
+            <div class="cursor-pointer " @click="subscribeNow">
+              <el-button  round>Subscribe now</el-button>
             </div>
           </div>
           <div class="col-md-12 py-3 mb-1 day1" v-if="notifiedDays === 3">
@@ -132,6 +153,9 @@
                   ._i.substr(4, 11)
               }}
             </div>
+            <div class="cursor-pointer " @click="subscribeNow">
+              <el-button round>Subscribe now</el-button>
+            </div>
           </div>
           <div class="col-md-12 py-3 mb-1 day1" v-if="notifiedDays === 2">
             <div class="">
@@ -146,6 +170,9 @@
                   ._i.substr(4, 11)
               }}
             </div>
+            <div class="cursor-pointer " @click="subscribeNow">
+              <el-button round>Subscribe now</el-button>
+            </div>
           </div>
           <div class="col-md-12 py-3 m-0 day1" v-if="notifiedDays === 1">
             <div class="mt-0">
@@ -159,6 +186,9 @@
                 )
                   ._i.substr(4, 11)
               }}
+            </div>
+            <div class="cursor-pointer " @click="subscribeNow">
+              <el-button round>Subscribe now</el-button>
             </div>
           </div>
         </div>
@@ -178,7 +208,7 @@
           </div>
         </div>
 
-        <div v-if="tenantInfoBasic.memberCount === 0"
+        <div v-if="tenantInfoBasic && tenantInfoBasic.memberCount && tenantInfoBasic.memberCount === 0"
           class="d-flex justify-content-center mt-4 justify-content-md-end mt-md-0">
           <img src="../../assets/welcome_user.svg" style="width: 250px" />
         </div>
@@ -189,7 +219,7 @@
                 <img src="../../assets/usergroup.svg" alt="" style="position: relative; top: -5px; left: -8px;">
                 <div class="">
                   <p class="mb-0 s-8">FIRST TIMERS</p>
-                  <h4 class="primary--text font-weight-700 mt-1 s-16">{{ tenantInfoBasic.firstTimerCount }}</h4>
+                  <h4 class="primary--text font-weight-700 mt-1 s-16">{{ tenantInfoBasic && tenantInfoBasic.firstTimerCount ? tenantInfoBasic.firstTimerCount : 0 }}</h4>
                 </div>
               </div>
               <div>
@@ -241,7 +271,7 @@
             (tenantInfoAttendanceWeekly[0] && tenantInfoAttendanceWeekly[0].data.some(i => i > 0))
           ">
             <div class="more-things side p-3" v-if="!tenantInfoExtra.hasWebsite">
-              <!-- <i class="pi pi-times"></i> -->
+
               <img src="../../assets/website2.svg" class="w-100" />
               <div class="mt-4">Website</div>
               <div class="more-body mt-2">
@@ -285,7 +315,7 @@
               tenantInfoExtra.hasOnlineGiving &&
               tenantInfoExtra.hasWebsite,
           }">
-            <!-- Celebrations -->
+            
             <div v-if="tenantInfoCeleb && tenantInfoCeleb.length > 0">
               <div class="celeb-header">
                 <div class="celeb-icon">
@@ -416,7 +446,7 @@
                     :attendanceSeries="attendanceSeries" />
                 </div>
               </div>
-              <!-- </div> -->
+              
 
               <div class="mt-4" v-show="firstTimerPieExist">
                 <div class="">
@@ -520,6 +550,8 @@ import formatDate from "../../services/dates/dateformatter";
 import useSubscription from "../../services/subscription/useSubscription";
 import deviceBreakpoint from "../../mixins/deviceBreakpoint";
 import Table from "@/components/table/Table"
+import store from "../../store/store"
+// import { useStore } from 'vuex';
 
 export default {
   mixins: [mixin],
@@ -546,8 +578,8 @@ export default {
     const firstTimerDataExist = ref(false);
     const firstTimerPieExist = ref(false);
     const notifiedDays = ref()
-    const summed = ref(0);
     const planUserIs = ref("")
+
 
 
 
@@ -556,10 +588,13 @@ export default {
       moreLinksVissible.value != moreLinksVissible.value;
     };
 
+    const subscribeNow = () =>{
+        router.push('/tenant/subscription')
+    }
     const celebrations = [];
     const tenantInfo = ref({});
-    const tenantInfoBasic = ref({});
-    const celeb = ref([]);
+    const tenantInfoBasic = ref(store.getters['dashboard/getdashboard']);
+    const celeb = ref(store.getters['dashboard/getcelebration']);
     const attendanceSeries = ref("weekly");
     const firstTimerSeries = ref("weekly");
     const tenantInfoAttendanceWeekly = ref([]);
@@ -568,7 +603,11 @@ export default {
     const tenantInfoFirstTimerMonthly = ref([]);
     const tenantInfoInvitationSource = ref([]);
     const tenantInfoInterestedInJoining = ref([]);
-    const tenantInfoExtra = ref({});
+    const tenantInfoExtra = ref({
+      hasMobileApp: store.getters['dashboard/hasMobileApp'],
+      hasOnlineGiving: store.getters['dashboard/hasOnlineGiving'],
+      hasWebsite: store.getters['dashboard/hasWebsite']
+    });
     const subscriptionPlan = ref([]);
     const dashboardLoading = ref(false)
 
@@ -618,47 +657,66 @@ export default {
       return monthXaxis.value;
     });
 
-    onMounted(() => {
-      getBasicDashboard()
-    })
+    // onMounted(() => {
+    //   getBasicDashboard()
+    // })
 
-    const getBasicDashboard = () => {
-      dashboardLoading.value = true
-      axios
-        .get("/dashboard/basic")
-        .then((res) => {
-          dashboardLoading.value = false
-          tenantInfoBasic.value = res.data.returnObject;
-          tenantInfoExtra.value.hasMobileApp = res.data.returnObject.hasMobileApp;
-          tenantInfoExtra.value.hasOnlineGiving = res.data.returnObject.hasOnlineGiving;
-          tenantInfoExtra.value.hasWebsite = res.data.returnObject.hasWebsite;
-          let sum = 0;
-          tenantInfo.value.firstTimerSummary.invitationSource.forEach((i) => {
-            sum += +i.value;
-          });
-          summed.value = sum;
-        })
-        .catch((err) => {
-          stopProgressBar();
-          if (err.response && err.response.status === 401) {
-            dashboardLoading.value = false
-            localStorage.removeItem("token");
-            setupService.clearStore();
-            router.push("/");
-          }
-        });
-    };
+    // const getBasicDashboard = () => {
+    //   dashboardLoading.value = true
+    //   axios
+    //     .get("/dashboard/basic")
+    //     .then((res) => {
+    //       dashboardLoading.value = false
+    //       tenantInfoBasic.value = res.data.returnObject;
+    //       tenantInfoExtra.value.hasMobileApp = res.data.returnObject.hasMobileApp;
+    //       tenantInfoExtra.value.hasOnlineGiving = res.data.returnObject.hasOnlineGiving;
+    //       tenantInfoExtra.value.hasWebsite = res.data.returnObject.hasWebsite;
+    //       let sum = 0;
+    //       tenantInfo.value.firstTimerSummary.invitationSource.forEach((i) => {
+    //         sum += +i.value;
+    //       });
+    //       summed.value = sum;
+    //     })
+    //     .catch((err) => {
+    //       stopProgressBar();
+    //       if (err.response && err.response.status === 401) {
+    //         dashboardLoading.value = false
+    //         localStorage.removeItem("token");
+    //         setupService.clearStore();
+    //         router.push("/");
+    //       }
+    //     });
+    // };
 
     function getCelebDashboard() {
-      axios.get("/dashboard/celebrations").then((res) => {
-        celeb.value = res.data.returnObject.celebrations;
-      });
+      // axios.get("/dashboard/celebrations").then((res) => {
+        // });
+        store.dispatch('dashboard/getCelebration').then((response) => {
+          console.log(response)
+          celeb.value = response;
+      })
     }
-    getCelebDashboard();
+    
 
     let tenantInfoCeleb = computed(() => {
       if (celeb.value.length === 0) return []
       return celeb.value.sort((b, a) => new Date(b.date) - new Date(a.date))
+    })
+
+    const getDashboard = async () => {
+      dashboardLoading.value = true
+      await store.dispatch('dashboard/getDashboard').then(response => {
+        tenantInfoBasic.value = response
+          dashboardLoading.value = false
+          tenantInfoExtra.value.hasMobileApp = response.hasMobileApp;
+          tenantInfoExtra.value.hasOnlineGiving = response.hasOnlineGiving;
+          tenantInfoExtra.value.hasWebsite = response.hasWebsite;
+      })
+    }
+    
+    onMounted(() => {
+      if (tenantInfoBasic.value && Object.keys(tenantInfoBasic.value).length == 0) getDashboard();
+      if (celeb.value && celeb.value.length == 0)  getCelebDashboard();
     })
 
     onMounted(() => {
@@ -773,10 +831,6 @@ export default {
       return tenantInfo.value.eventAttendanceChartData[2];
     });
 
-    const sumIt = computed(() => {
-      if (!summed.value) return false;
-      return true;
-    });
 
     const dateFormat = (payload) => {
       return formatDate.monthDayYear(payload);
@@ -794,6 +848,7 @@ export default {
       // Find the distance between now and the count down date
       let distance = countDownDates - now;
       notifiedDays.value = Math.floor(distance / (1000 * 60 * 60 * 24));
+      console.log(notifiedDays.value, "hjjj");
     }
 
     useSubscription.getPlan().then((res) => {
@@ -849,6 +904,7 @@ export default {
     return {
       celebrations,
       notifiedDays,
+      subscribeNow,
       getRenewalDate,
       tenantInfo,
       tenantInfoBasic,
@@ -877,8 +933,6 @@ export default {
       attendanceDataExist,
       firstTimerDataExist,
       firstTimerPieExist,
-      summed,
-      sumIt,
       dateFormat,
       tenantInfoAttendanceWeekly,
       tenantInfoAttendanceMonthly,
@@ -915,6 +969,8 @@ export default {
   border-top-left-radius: 5px 5px;
   border-bottom-left-radius: 5px 5px;
   font-weight: 700;
+  display: flex;
+  justify-content: space-between;
 }
 
 .day2 {
@@ -923,6 +979,8 @@ export default {
   border-top-left-radius: 5px 5px;
   border-bottom-left-radius: 5px 5px;
   font-weight: 700;
+  display: flex;
+  justify-content: space-between;
 }
 
 .day1 {
@@ -932,6 +990,8 @@ export default {
   border-top-left-radius: 5px 5px;
   border-bottom-left-radius: 5px 5px;
   font-weight: 700;
+  display: flex;
+  justify-content: space-between;
 }
 
 .renew-btn-color {
@@ -1071,6 +1131,10 @@ export default {
   justify-content: flex-end;
 }
 
+.number-boxes {
+  z-index: -1
+}
+
 .box {
   width: 170px;
   background: #FFFFFF;
@@ -1093,28 +1157,6 @@ export default {
   border: 1px solid #e6e5f2;
   border-radius: 28px;
   margin-top: 80px;
-}
-
-.day3 {
-  background-color: #ECF4FF;
-  border-left: solid #136acd 5px;
-  border-top-left-radius: 5px 5px;
-  border-bottom-left-radius: 5px 5px;
-}
-
-.day2 {
-  background-color: rgb(243, 243, 217);
-  border-left: solid rgb(228, 228, 42) 5px;
-  border-top-left-radius: 5px 5px;
-  border-bottom-left-radius: 5px 5px;
-}
-
-.day1 {
-  background-color: #FEF8F8;
-  color: #e09579;
-  border-left: solid #B3282D 5px;
-  border-top-left-radius: 5px 5px;
-  border-bottom-left-radius: 5px 5px;
 }
 
 .pie-con {

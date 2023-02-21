@@ -1,20 +1,18 @@
 <template>
-  <PeopleList :list="people" :peopleCount="people.length" v-if="!loading && (people.length > 0 || errorGettingPeople)" />
-  <div class="no-person mt-5" v-else-if="!loading && people.length === 0 && !errorGettingPeople">
+  <PeopleList :list="peopleInStore" :peopleCount="peopleInStore.length" v-if="!loading && (peopleInStore.length > 0 || errorGettingPeople)" />
+  <div class="no-person mt-5" v-else-if="!loading && peopleInStore.length === 0 && !errorGettingPeople">
     <div class="container">
       <div class="row">
         <div class="col-md-12">
-          <ImportPeople @people-list="getMemberData" />
+          <ImportPeople />
         </div>
       </div>
     </div>
   </div>
 
-  <el-skeleton class="w-100" animated v-if="loading && people.length === 0">
+  <el-skeleton class="w-100" animated v-if="loading && peopleInStore.length === 0">
     <template #template>
-      <div
-          style="
-            display: flex;
+      <div style="display: flex;
             align-items: center;
             justify-content: space-between;
             margin-top: 20px
@@ -31,10 +29,10 @@
 
 <script>
 import { ref, onMounted } from "vue";
-import axios from "@/gateway/backendapi";
 import PeopleList from "@/views/people/PeopleList.vue";
 import ImportPeople from "@/views/people/ImportPeople.vue";
 import { useStore } from 'vuex';
+import store from '../../store/store'
 
 export default {
   components: { PeopleList, ImportPeople },
@@ -44,54 +42,28 @@ export default {
     const loading = ref(false);
     const errorGettingPeople = ref(false);
     const dataStore = useStore();
-    const membershipSummary = ref({})
-
-    const getMembers = async () => {
-      try {
-        loading.value = true;
-        /*eslint no-undef: "warn"*/
-        NProgress.start()
-        const { data } = await axios.get("/api/People/GetPeopleBasicInfo");
-        people.value = data;
-        loading.value = false;
-      } catch (err) {
-        NProgress.done()
-        loading.value = false;
-        errorGettingPeople.value = true;
-        console.log(err);
-      }
-    }
-
     const peopleInStore = ref(dataStore.getters['membership/members'])
 
+    const getMembers = async () => {
+      loading.value = true
+      store.dispatch('membership/setMembers').then(res => {
+        peopleInStore.value = res
+        loading.value = false
+      })
+    }
+
     onMounted(() => {
-      if (peopleInStore.value.length > 0) {
-        people.value = peopleInStore.value;
-      } else {
+      if (peopleInStore.value.length == 0) {
         getMembers()
       }
-
     });
 
-    const getMemberData = () => {
-      // people.value = payload
-      axios
-        .get(`/api/People/GetMembershipSummary`)
-        .then((res) => {
-          membershipSummary.value = res.data;
-        })
-        .catch((err) => {
-          console.log(err)
-        })
-    }
 
     return {
       people,
       peopleInStore,
       loading,
       errorGettingPeople,
-      getMemberData,
-      membershipSummary
     };
   },
 };

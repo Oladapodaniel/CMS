@@ -1,340 +1,288 @@
 <template>
-  <div>
-    <!-- <Treee :items="groups"/> -->
-    <div class="container-slim">
-      <div class="container-fluid">
-        <div class="row d-md-flex yu mt-5">
-          <!-- <smsComponent :groupData ="groupListDetails"/> -->
-          <div class="col-md-6 col-4">
-            <div class="events">Groups</div>
-            <Toast />
-            <ConfirmDialog />
-            
-          </div>
-          <div class="col-md-6 col-8 d-flex justify-content-end mt-2 my-1 link" v-if="!groupLeader">
-            <router-link
-              to="/tenant/createpeoplegroup"
-              class="
-                grey-border
-                primary-btn
-                default-btn
-                primary-bg
-                border-0
-                small-screen
-              "
-              >Add New Group</router-link
-            >
-          </div>
-          <div class="col-md-12 px-0">
-            <hr class="hr my-3" />
-          </div>
-        </div>
+  <!-- <Treee :items="groups"/> -->
+  <div :class="{ 'container-slim': lgAndUp || xlAndUp }">
+    <div class="container-fluid container-top">
+      <div
+        class="row d-flex flex-column flex-sm-row justify-content-sm-between"
+      >
+        <div class="head-text">Groups</div>
 
-        <div class="font-weight-700" v-if="route.query.actionType == 'attendance'">Choose the group you want to the mark attendance of your members.</div>
-        <div class="font-weight-700" v-if="route.query.actionType == 'sendsms'">Choose the group you want to send SMS to.</div>
-        <div class="font-weight-700" v-if="route.query.actionType == 'sendemail'">Choose the group you want to send email to.</div>
-
-        <!-- tosin working on tables -->
-        <div class="row table">
-          <div class="col-12 px-0" id="table">
-            <div class="top-con" id="ignore2">
-              <div class="table-top">
-                <div class="col-4">
-                  <p @click="toggleSearch" class="search-text w-100 mt-2 d-flex justify-content-center">
-                    <i class="pi pi-search"></i>SEARCH
-                  </p>
-                </div>
-
-                <div class="search d-flex ml-2 mr-3"
-                >
-                  <label
-                    class="label-search d-flex"
-                    :class="{
-                      'show-search': searchIsVisible,
-                      'hide-search': !searchIsVisible,
-                    }"
-                  >
-                    <input
-                      type="text"
-                      placeholder="Search..."
-                      v-model="searchText"
-                    />
-                    <span class="empty-btn"
-                          @click="clearInput">
-                          <i class="pi pi-times"></i
-                  ></span>
-                    <span class="search-btn"
-                    @click="removeSearchText">
-                      <i class="pi pi-search"></i>
-                    </span>
-                  </label>
-                </div>
-              </div>
-            </div>
-
-            <!-- search groups -->
-            <div>
-              <div class="container-fluid d-none d-md-block">
-                <div class="row t-header">
-                  <!-- <div class="col-md-1"></div>
-                  <div
-                    class="small-text text-capitalize col-md-2 font-weight-bold"
-                  >
-                    <input class="my-2" type="checkbox" />
-                  </div> -->
-                  <div
-                    class="small-text text-capitalize col-md-6 font-weight-bold"
-                  >
-                    Group Name
-                  </div>
-                  <div
-                    class="small-text text-capitalize col-md-5 font-weight-bold"
-                  >
-                    Membership Size
-                  </div>
-                  <!-- <div
-                    class="small-text text-capitalize col-md-2 font-weight-bold"
-                  >
-                    <span></span>
-                  </div> -->
-                  <div
-                    class="small-text text-capitalize col-md-1 font-weight-bold"
-                  >
-                    Action
-                  </div>
-                  <!-- </div> -->
-                </div>
-              </div>
-
-              <div class="row" style="margin: 0">
-
-                <div
-                  class=" col-12 parent-desc pb-2 px-0">
-                  <!-- removed v-for above -->     <!-- loading group -->
-                  <div class="row" v-if="!loading && groups.length === 0">
-                    <div class="col-md-12">
-                      <div class="row">
-                        <div
-                          class="
-                            col-md-12
-                            d-flex
-                            align-items-center
-                            justify-content-center
-                          "
-                        >
-                          <p class="py-2">No groups yet</p>
-                        </div>
-                      </div>
-                      <div class="row">
-                        <div class="col-md-12 px-0">
-                          <hr class="hr my-0" />
-                        </div>
-                      </div>
-                    </div>
-                  </div>
-                  <!-- loading group -->
-
-                  <!-- loadding -->
-                  <div class="row" v-if="loading">
-                    <div class="col-md-12">
-                      <div class="row">
-                        <div
-                          class="
-                            col-md-12
-                            d-flex
-                            align-items-center
-                            justify-content-center
-                          "
-                        >
-                          <i
-                            class="pi pi-spin pi-spinner py-4"
-                            v-if="loading"
-                          ></i>
-                        </div>
-                      </div>
-                      <div class="row">
-                        <div class="col-md-12 px-0">
-                          <hr class="hr my-0" />
-                        </div>
-                      </div>
-                    </div>
-                  </div>
-                  <!-- loadding -->
-
-              
-                <div
-                    class=" row w-100  text-dark "
-                    style="margin: 0"
-                    
-                  >
-                    <!-- class="d-block -->
-
-                    <div class="col-md-12 desc">
-                      <p class="">
-                        <span
-                          class="text-dark font-weight-bold d-flex d-md-none fontIncrease"
-                          style="font-size: 15px"
-                          >Group Name</span
-                          
-                        >
-                        <ul class="w-100">
-                        <li v-for="(group, index) in searchGroup" :key="index" class="pt-2  c-pointer parent-li border-top">
-                          <div class="row">
-                    
-                            <div class="col-6 text-primary">
-                              <span><i class="pi pi-chevron-down roll-icon" v-if="group.children && group.children.length > 0"  @click="toggleItems(group, $event)"></i></span>
-                              <span class="p-3" @click="groupClick(group.id)">{{ group.name }}</span>
-                            </div>
-                            <div class="col-4 text-primary" @click="groupClick(group.id)">
-                              <div @click="groupClick(group.id)">
-                                <div class="d-flex small justify-content-between text-primary">
-                                  <span class="text-dark font-weight-bold d-flex d-md-none fontIncrease" style="font-size:15px">Membership Size</span>
-                                    <div class="small-text text-right text-md-center">
-                                      {{ group.peopleInGroupsCount }}
-                                    </div>
-                                </div>
-                              </div>
-                            </div>
-                            <div class="col-2">
-                                <div>
-                                  <div class="dropdown">
-                                    <span class="d-flex justify-content-between">
-                                        <i class=" fas fa-ellipsis-v cursor-pointer ml-2 fontIncrease"
-                                          id="dropdownMenuButton"
-                                          data-toggle="dropdown"
-                                          aria-haspopup="true"
-                                          aria-expanded="false"
-                                        ></i>
-
-                                        <div
-                                          class="dropdown-menu"
-                                          aria-labelledby="dropdownMenuButton"
-                                        >
-                                          <a class="dropdown-item">
-                                            <a
-                                              @click="sendGroupSms(group)"
-                                              >Send SMS</a>
-                                          </a>
-                                          <a class="dropdown-item" @click="sendGroupEmail(group)">
-                                              Send Email
-                                          </a>
-                                          <a
-                                            class="dropdown-item"
-                                            @click="confirmDelete(group.id, index)"
-                                            >Delete</a
-                                          >
-                                        </div>
-                                    </span>
-                                  </div>
-                                </div>
-
-                            </div>
-                          </div>
-                            
-                            <div class="d-none">
-                            <GroupTree
-                                :items="group.children"
-                                v-if="group.children"
-                              class="d-none"
-                              @click="groupClickk(group, $event)"
-                              @group="setSelectedGroup"
-                                /> 
-                            </div>        
-                        </li>
-                      </ul>   
-                    </p>
-                  </div>
-                </div>
-                </div>
-              </div>
-            </div>
-          </div>
+        <div class="mt-2 my-1 link" v-if="!groupLeader">
+          <router-link
+            to="/tenant/createpeoplegroup"
+            class="
+              grey-border
+              header-btn
+              default-btn
+              primary-bg
+              text-white
+              border-0
+              small-screen
+            "
+            >Add New Group</router-link
+          >
         </div>
       </div>
-      
-       <Sidebar v-model:visible="showSMS" :baseZIndex="10000" position="right">
+      <div class="row">
+        <div class="col-md-12 px-0">
+          <hr class="hr my-3" />
+        </div>
+      </div>
+
+      <div
+        class="font-weight-700"
+        v-if="route.query.actionType == 'attendance'"
+      >
+        Choose the group you want to the mark attendance of your members.
+      </div>
+      <div class="font-weight-700" v-if="route.query.actionType == 'sendsms'">
+        Choose the group you want to send SMS to.
+      </div>
+      <div class="font-weight-700" v-if="route.query.actionType == 'sendemail'">
+        Choose the group you want to send email to.
+      </div>
+
+      <!-- tosin working on tables -->
+
+      <div class="row">
+        <div class="col-12 px-0 " id="table">
+          <div class="top-con" id="ignore2">
+            <div class="table-top p-3 mt-5">
+              <div class="col-md-5">
+                <el-input
+                  size="small"
+                  v-model="searchText"
+                  placeholder="Search..."
+                  @keyup.enter.prevent="searchGroupInDB"
+                  class="input-with-select"
+                >
+                  <template #append>
+                    <el-button @click.prevent="searchGroupInDB">
+                      <el-icon :size="13">
+                        <Search />
+                      </el-icon>
+                    </el-button>
+                  </template>
+                </el-input>
+              </div>
+            </div>
+          </div>
+          <div class="screensize">
+            <el-table
+            :data="searchGroup"
+            v-loading="loading"
+            stripe 
+            class="groupTree "
+            style="width: 100%"
+            row-key="id"
+            :tree-props="{ children: 'children', hasChildren: 'hasChildren' }"
+          >
+            <el-table-column width="40%" label="Group">
+              <template #default="scope">
+                <div @click="groupClick(scope.row.id)" class="c-pointer">
+                  {{ scope.row.name }}
+                </div>
+              </template>
+            </el-table-column>
+            <el-table-column width="40%" label="Membership Size">
+              <template #default="scope">
+                <div @click="groupClick(scope.row.id)" class="c-pointer">
+                  {{ scope.row.peopleInGroupsCount }}
+                </div>
+              </template>
+            </el-table-column>
+            <el-table-column width="20%" label="Action">
+              <template #default="scope">
+                <div class="c-pointer">
+                  <el-dropdown trigger="click">
+                    <el-icon>
+                      <MoreFilled />
+                    </el-icon>
+                    <template #dropdown>
+                      <el-dropdown-menu>
+                        <el-dropdown-item>
+                          <a @click="sendGroupSms(scope.row)">Send SMS</a>
+                        </el-dropdown-item>
+                        <el-dropdown-item>
+                          <a class="" @click="sendGroupEmail(scope.row)">
+                            Send Email
+                          </a>
+                        </el-dropdown-item>
+                        <el-dropdown-item>
+                          <a
+                            class=""
+                            @click="confirmDelete(scope.row.id, index)"
+                            >Delete</a
+                          >
+                        </el-dropdown-item>
+                      </el-dropdown-menu>
+                    </template>
+                  </el-dropdown>
+                </div>
+              </template>
+            </el-table-column>
+
+            <!-- <el-table-column>
+                  <template #default="scope">
+                  <div class="d-none">
+                            <GroupTree
+                                :items="scope.row.children"
+                                v-if="scope.row.children"
+                              class="d-none"
+                              @click="groupClickk(scope.row, $event)"
+                              @group="setSelectedGroup"
+                                /> 
+                            </div> 
+                </template>
+                </el-table-column> -->
+          </el-table>
+          
+          </div>
+          <!-- <div class="d-flex justify-content-end my-3">
+            <el-pagination v-model:current-page="serverOptions.page" v-model:page-size="serverOptions.rowsPerPage" background
+              layout="total, prev, pager, next, jumper" :total="serverItemsLength" @size-change="handleSizeChange"
+              @current-change="handleCurrentChange" />
+          </div> -->
+        </div>
+      </div>
+    </div>
+
+    <el-drawer
+      v-model="showSMS"
+      :size="mdAndUp || lgAndUp || xlAndUp ? '70%' : '100%'"
+      direction="rtl"
+    >
+      <template #default>
+        <div>
+          <smsComponent
+            :groupData="groupListDetails"
+            @closesidemodal="() => (showSMS = false)"
+          />
+        </div>
+      </template>
+    </el-drawer>
+
+    <el-drawer
+      v-model="showEmail"
+      :size="mdAndUp || lgAndUp || xlAndUp ? '70%' : '100%'"
+      direction="rtl"
+    >
+      <template #default>
+        <div>
+          <emailComponent
+            :groupData="groupListDetails"
+            @closesidemodal="() => (showEmail = false)"
+          />
+        </div>
+      </template>
+    </el-drawer>
+
+    <!-- <Sidebar v-model:visible="showSMS" :baseZIndex="10000" position="right">
             <smsComponent :groupData ="groupListDetails" @closesidemodal="() => showSMS = false" />
         </Sidebar>
        
        <Sidebar v-model:visible="showEmail" :baseZIndex="10000" position="right">
             <emailComponent :groupData ="groupListDetails"  @closesidemodal="() => showEmail = false" />
-        </Sidebar>
-      
-    </div>
+        </Sidebar> -->
   </div>
 </template>
 
 <script>
-import { ref, computed, watchEffect } from "vue";
+import { ref, computed, watch, watchEffect } from "vue";
 import { useRoute, useRouter } from "vue-router";
 import groupsService from "../../services/groups/groupsservice";
 import { useStore } from "vuex";
-import { useConfirm } from "primevue/useconfirm";
-import { useToast } from "primevue/usetoast";
+// import { useConfirm } from "primevue/useconfirm";
+// import { useToast } from "primevue/usetoast";
 import smsComponent from "./component/smsComponent.vue";
 import emailComponent from "./component/emailComponent.vue";
-import SideBar from "./sidemodal/SideModal.vue";
+// import SideBar from "./sidemodal/SideModal.vue";
 import GroupTree from "./component/GroupTree.vue";
-import Sidebar from "primevue/sidebar";
+// import Sidebar from "primevue/sidebar";
+import deviceBreakpoint from "../../mixins/deviceBreakpoint";
+import { ElMessage, ElMessageBox } from "element-plus";
 
 export default {
-  // name: 'Tree',
   components: {
-    SideBar,
+    // SideBar,
     smsComponent,
     emailComponent,
     GroupTree,
-    Sidebar,
-    // Treee
+    // Sidebar,s
   },
 
   setup() {
-    //   const $confirm = getCurrentInstance().ctx.$confirm;
     const store = useStore();
     const loading = ref(false);
     const displayConfirmModal = ref(false);
-    const groups = ref(store.getters["groups/groups"]);
+    const paginatedTableLoading = ref(false);
+    const { mdAndUp, lgAndUp, xlAndUp } = deviceBreakpoint();
+    // const groups = ref(store.getters["groups/groups"]);
+    const groups = ref([]);
     const groupListDetails = ref([]);
-    const toast = useToast();
-    const confirm = useConfirm();
+    // const toast = useToast();
+    // const confirm = useConfirm();
     const showSMS = ref(false);
     const showEmail = ref(false);
     const router = useRouter();
     const route = useRoute();
     const lastGroupChild = ref({});
-   
-   
+
+     const handleSizeChange = (val) => {
+      console.log(`${val} items per page`)
+    }
+    const handleCurrentChange = (val) => {
+      console.log(`current page: ${val}`)
+    }
+    const serverOptions = ref({
+      page: 1,
+      rowsPerPage: 100,
+    });
+    const getGroupByPage = async () => {
+      paginatedTableLoading.value = true
+      try {
+        const { data } = await axios.get(
+          `/api/GetAllGroupBasicInformation?page=${serverOptions.value.page}`
+        );
+        groups.value = data;
+        paginatedTableLoading.value = false
+      } catch (error) {
+        paginatedTableLoading.value = false
+        console.log(error);
+      }
+    };
+
     const confirmDelete = (id, index) => {
-      confirm.require({
-        message: "Do you want to delete this group?",
-        header: "Delete Confirmation",
-        icon: "pi pi-info-circle",
-        acceptClass: "confirm-delete",
-        rejectClass: "cancel-delete",
-        accept: () => {
-          try {
-            groupsService.deleteGroup(id).then((res) => {
-              console.log(res, "Delete Response");
-              if (res !== false) {
-                groups.value.splice(index, 1);
-                store.dispatch("groups/getGroups");
-                toast.add({
-                  severity: "success",
-                  summary: "Deleted",
-                  detail: "Group was deleted",
-                  life: 3000,
-                });
-                groupsService.removeGroupFromStore(id);
-              }
+      ElMessageBox.confirm(
+        "Are you sure you want to proceed? This operation can't be reversed ",
+        "Confirm delete",
+        {
+          confirmButtonText: "OK",
+          cancelButtonText: "Cancel",
+          type: "error",
+        }
+      );
+      try {
+        groupsService.deleteGroup(id).then((res) => {
+          console.log(res, "Delete Response");
+          if (res !== false) {
+            groups.value.splice(index, 1);
+            store.dispatch("groups/getGroups");
+            ElMessage({
+              type: "success",
+              message: "Group was deleted",
+              duration: 5000,
             });
-          } catch (error) {
-            console.log(error);
+            groupsService.removeGroupFromStore(id);
           }
-        },
-        reject: () => {
-         
-        },
-      });
+        });
+      } catch (error) {
+        ElMessage({
+          type: "info",
+          message: "Delete discarded",
+        });
+        console.log(error);
+      }
     };
     const getgroups = async () => {
       try {
@@ -342,7 +290,7 @@ export default {
         loading.value = true;
         const data = await groupsService.getGroups();
         (loading.value = false),
-          (groups.value = data.map((i) => {
+          (groups.value = data.response.groupResonseDTO.map((i) => {
             return {
               dateCreated: i.dateCreated,
               description: i.description,
@@ -378,6 +326,18 @@ export default {
         return groups.value;
       }
     });
+    const searchGroupInDB = () => {
+      if (searchText.value !== "" && groups.value.length > 0) {
+        return groups.value.filter((i) => {
+          if (i.name)
+            return i.name
+              .toLowerCase()
+              .includes(searchText.value.toLowerCase());
+        });
+      } else {
+        return groups.value;
+      }
+    };
     const removeSearchText = () => {
       searchText.value = "";
     };
@@ -387,7 +347,6 @@ export default {
 
     const sendGroupSms = (group) => {
       showSMS.value = true;
-      // visibleRight.value = true
       if (group.id) {
         groupListDetails.value = [{ data: `group_${group.id}` }];
       }
@@ -449,7 +408,6 @@ export default {
     };
 
     const groupClickk = (i, e) => {
-      //  console.log(i)
       console.log(i, e, "fevfvweklmwfjn");
       router.push(
         `/tenant/createpeoplegroup/${
@@ -470,14 +428,26 @@ export default {
       if (store.getters["groups/selectedTreeGroupList"]) {
         const selectedGroup = store.getters["groups/selectedTreeGroupList"];
         lastGroupChild.value = selectedGroup;
-        //  router.push(`/tenant/createpeoplegroup/${selectedGroup.id}`)
       }
     });
 
+    watch(serverOptions, () => {
+      getGroupByPage();
+    },
+      { deep: true }
+    );
+
     return {
-      // showSide,
-      // sendSms,
       groupClick,
+      getGroupByPage,
+      paginatedTableLoading,
+      handleCurrentChange,
+      handleSizeChange,
+      searchGroupInDB,
+      serverOptions,
+      mdAndUp,
+      lgAndUp,
+      xlAndUp,
       clearInput,
       showSMS,
       showEmail,
@@ -537,6 +507,15 @@ export default {
 .link a:hover {
   color: #fff;
 }
+@media screen and (max-width: 600px) {
+  .screensize{
+    position: relative;
+    z-index: 0;
+    min-width: 500px;
+    overflow: hidden;
+    overflow-x: auto !important;
+  }
+}
 @media screen and (min-width: 580px) {
   .hidden-header {
     display: none;
@@ -577,9 +556,9 @@ export default {
 }
 .table {
   width: 100% !important;
-  box-shadow: 0px 1px 4px #02172e45;
+  /* box-shadow: 0px 1px 4px #02172e45;
   border: 1px solid #dde2e6;
-  border-radius: 30px;
+  border-radius: 30px; */
   text-align: left;
   margin-bottom: auto !important;
 }
@@ -650,6 +629,9 @@ export default {
 .table-top {
   font-weight: 800;
   font-size: 12px;
+  background: #fff;
+  border: 1px solid #e0e0e0;
+  border-bottom: none;
   display: flex;
   justify-content: flex-end;
 }

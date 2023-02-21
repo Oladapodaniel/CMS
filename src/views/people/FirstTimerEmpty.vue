@@ -97,7 +97,7 @@ export default {
       loading.value = true
       try {
         let data = await membershipService.getFirstTimers()
-        firstTimersList.value = data;
+        firstTimersList.value = data.response.firstTimers;
         loading.value = false
       }
       catch (err) {

@@ -129,45 +129,40 @@ export default {
       router.push('/')
       store.dispatch('clearCurrentUser', {})
       store.dispatch('groups/clearGroup')
-      store.dispatch('membership/clearMember')
       setupService.clearStore();
     }
 
-    const menuLink = ref([
-      {
+    const menuLink = ref([])
+
+    const displayRoleMenu = () => {
+      const adminIndex = roleOfCurrentUser.value.findIndex(i => i.toLowerCase() == 'admin')
+      if (adminIndex >= 0) {
+        roleOfCurrentUser.value.unshift(roleOfCurrentUser.value.splice(adminIndex, 1)[0])
+      }
+
+      const basicIndex = roleOfCurrentUser.value.findIndex(i => i.toLowerCase() == 'basicuser')
+      if (basicIndex >= 0) {
+        roleOfCurrentUser.value.unshift(roleOfCurrentUser.value.splice(basicIndex, 1)[0])
+      }
+
+      const dashboard = {
         name: 'Dashboard',
         logo: require('../../assets/dashboardlinks/dashboard-icon.svg'),
         route: '/tenant',
-        submenu: []
-      },
-      {
+        submenu: [],
+        id: 1
+      }
+
+      const people = {
+        id: 2,
         name: 'People',
         logo: require('../../assets/dashboardlinks/people.svg'),
         route: '/',
-        submenu: [
-          {
-            name: 'Members',
-            logo: '/',
-            route: '/tenant/people',
-          },
-          {
-            name: 'First Timers',
-            logo: '/',
-            route: '/tenant/firsttimerslist',
-          },
-          {
-            name: 'Groups / Departments',
-            logo: '/',
-            route: '/tenant/peoplegroups',
-          },
-          {
-            name: 'Families',
-            logo: '/',
-            route: '/tenant/family',
-          },
-        ]
-      },
-      {
+        submenu: []
+      }
+
+      const communication = {
+        id: 3,
         name: 'Communication',
         logo: require('../../assets/dashboardlinks/com-icon.svg'),
         route: '/',
@@ -188,8 +183,10 @@ export default {
             route: '/tenant/Voice',
           },
         ]
-      },
-      {
+      }
+
+      const event = {
+        id: 4,
         name: 'Events',
         logo: require('../../assets/dashboardlinks/events-icon.svg'),
         route: '/',
@@ -205,8 +202,10 @@ export default {
             route: '/tenant/attendancecheckin',
           }
         ]
-      },
-      {
+      }
+
+      const financial = {
+        id: 5,
         name: 'Financials',
         logo: require('../../assets/dashboardlinks/acc-icon.svg'),
         route: '/',
@@ -237,167 +236,210 @@ export default {
             route: '/tenant/chartofaccount',
           },
         ]
-      },
-      {
+      }
+
+      const members = {
+        name: 'Members',
+        logo: '/',
+        route: '/tenant/people',
+      }
+
+      const firsttimers = {
+        name: 'First Timers',
+        logo: '/',
+        route: '/tenant/firsttimerslist',
+      }
+
+      const groups = {
+        name: 'Groups / Departments',
+        logo: '/',
+        route: '/tenant/peoplegroups',
+      }
+
+      const families = {
+        name: 'Families',
+        logo: '/',
+        route: '/tenant/family',
+      }
+
+      const report = {
+        id: 6,
         name: 'Reports',
         logo: require('../../assets/dashboardlinks/reports-icon.svg'),
         route: '/tenant/reports',
         submenu: []
-      },
-      {
-        name: 'More',
+      }
+
+      const social = {
+        name: 'Social & Mobile App',
+        logo: '/',
+        route: '/tenant/social',
+        submenu: []
+      }
+
+      const media = {
+        name: 'Media Library',
+        logo: '/',
+        route: '/tenant/media',
+        submenu: []
+      }
+
+      const branch = {
+        name: 'Branches',
         logo: '',
         route: '/',
         submenu: [
           {
-            name: 'Social & Mobile App',
+            name: 'Dashboard',
             logo: '/',
-            route: '/tenant/social',
-            submenu: []
+            route: '/tenant/branch/branchsummary',
           },
           {
-            name: 'Workflow',
+            name: 'People',
             logo: '/',
-            route: '/tenant/workflow/list',
-            submenu: []
+            route: '/tenant/branch/branch_members',
           },
           {
-            name: 'Branches',
-            logo: '',
-            route: '/',
-            submenu: [
-              {
-                name: 'Dashboard',
-                logo: '/',
-                route: '/tenant/branch/branchsummary',
-              },
-              {
-                name: 'People',
-                logo: '/',
-                route: '/tenant/branch/branch_members',
-              },
-              {
-                name: 'Attendance',
-                logo: '/',
-                route: '/tenant/branch/branch_attendance',
-              },
-              {
-                name: 'Financials',
-                logo: '/',
-                route: '/tenant/branch/branch_transactions',
-              },
-              {
-                name: 'Reports',
-                logo: '/',
-                route: '/tenant/branch/branch_report',
-              },
-            ]
+            name: 'Attendance',
+            logo: '/',
+            route: '/tenant/branch/branch_attendance',
           },
           {
-            name: 'Media Library',
+            name: 'Financials',
             logo: '/',
-            route: '/tenant/media',
-            submenu: []
+            route: '/tenant/branch/branch_transactions',
           },
           {
-            name: 'Archived People',
+            name: 'Reports',
             logo: '/',
-            route: '/tenant/archivedpeople',
-            submenu: []
-          },
-          {
-            name: 'Settings',
-            logo: '/',
-            route: '/tenant/settings',
-            submenu: []
-          },
-
-        ]
-      },
-    ])
-
-    const displayRoleMenu = () => {
-      if (basicUser.value) {
-        menuLink.value = menuLink.value.filter(i => {
-          return i.name.toLowerCase() !== 'financials'
-        })
-      }
-
-      if (financialAccount.value && !admin.value) {
-        menuLink.value = menuLink.value.filter(i => {
-          return i.name.toLowerCase() == 'financials'
-        })
-      }
-
-      if (report.value && !admin.value) {
-        menuLink.value = menuLink.value.filter(i => {
-          return i.name.toLowerCase() == 'more'
-        })
-        menuLink.value[0].submenu = [menuLink.value[0].submenu[2]]
-      }
-
-      if (canAccessFirstTimers.value && !admin.value) {
-        menuLink.value = menuLink.value.filter(i => {
-          return i.name.toLowerCase() == 'people'
-        })
-        menuLink.value[0].submenu = [menuLink.value[0].submenu[1]]
-      }
-
-      if (groupLeader.value && !admin.value) {
-        menuLink.value = menuLink.value.filter(i => {
-          return i.name.toLowerCase() == 'people'
-        })
-        menuLink.value[0].submenu = menuLink.value[0].submenu.filter(i => {
-          return i.name.toLowerCase().includes('department')
-        })
-        menuLink.value[0].submenu.splice(0, 0, {
-          name: 'Dashboard',
-          logo: '/',
-          route: '/tenant/groupleader'
-        })
-      } else if (followup.value && !admin.value) {
-        menuLink.value = menuLink.value.filter(i => {
-          return i.name.toLowerCase() == 'people'
-        })
-        menuLink.value[0].submenu = []
-        menuLink.value[0].submenu.push({
-          name: 'Follow up',
-          logo: '/',
-          route: '/tenant/followup'
-        })
-      }
-
-      if (groupLeader.value && followup.value && !admin.value) {
-        menuLink.value = menuLink.value.filter(i => {
-          return i.name.toLowerCase() == 'people'
-        })
-        menuLink.value[0].submenu.push({
-          name: 'Follow up',
-          logo: '/',
-          route: '/tenant/followup'
-        })
-      }
-
-      if (mobileAdmin.value && !admin.value) {
-        menuLink.value = menuLink.value.filter(i => {
-          return i.name.toLowerCase() == 'more'
-        })
-        menuLink.value[0].submenu = [
-          {
-            name: 'Social & Mobile App',
-            logo: '/',
-            route: '/tenant/social',
-            submenu: []
-          },
-          {
-            name: 'Media Library',
-            logo: '/',
-            route: '/tenant/media',
-            submenu: []
+            route: '/tenant/branch/branch_report',
           },
         ]
       }
+      const workflow = {
+        name: 'Workflow',
+        logo: '/',
+        route: '/tenant/workflow/list',
+        submenu: []
+      }
 
+      const settings = {
+        name: 'Settings',
+        logo: '/',
+        route: '/tenant/settings',
+        submenu: []
+      }
+
+      const archivedpeople = {
+        name: 'Archived People',
+        logo: '/',
+        route: '/tenant/archivedpeople',
+        submenu: []
+      }
+
+      const groupleader = {
+        name: 'Leader Dashboard',
+        logo: '/',
+        route: '/tenant/groupleader'
+      }
+
+      const followup = {
+        name: 'Follow up',
+        logo: '/',
+        route: '/tenant/followup'
+      }
+
+
+      const more = {
+        id: 7,
+        name: 'More',
+        logo: '',
+        route: '/',
+        submenu: []
+      }
+
+
+      roleOfCurrentUser.value.forEach(i => {
+        // If people object is not already in the list, push it and its submenu, else just push its sub menu
+        if (i.toLowerCase() == 'canaccessfirsttimers') {
+          if (menuLink.value.findIndex(i => i.id == people.id) < 0) {
+            menuLink.value.push(people)
+            menuLink.value.find(i => i.name.toLowerCase() == 'people').submenu.push(firsttimers)
+          } else {
+            menuLink.value.find(i => i.name.toLowerCase() == 'people').submenu.push(firsttimers)
+          }
+        }
+
+
+        if (i.toLowerCase() == 'followup') {
+          if (menuLink.value.findIndex(i => i.id == people.id) < 0) {
+            menuLink.value.push(people)
+            menuLink.value.find(i => i.name.toLowerCase() == 'people').submenu.push(followup)
+          } else {
+            menuLink.value.find(i => i.name.toLowerCase() == 'people').submenu.push(followup)
+          }
+        }
+
+        if (i.toLowerCase() == 'financialaccount') {
+          if (menuLink.value.findIndex(i => i.id == financial.id) < 0) {
+            menuLink.value.push(financial)
+          }
+        }
+        if (i.toLowerCase() == 'reports') {
+          if (menuLink.value.findIndex(i => i.id == report.id) < 0) {
+            menuLink.value.push(report)
+          }
+        }
+        if (i.toLowerCase() == 'mobileadmin') {
+          if (menuLink.value.findIndex(i => i.id == more.id) < 0) {
+            menuLink.value.push(more)
+            menuLink.value.find(i => i.name.toLowerCase() == 'more').submenu.push(social, media)
+          }
+        }
+
+        if (i.toLowerCase() == 'groupleader') {
+          if (menuLink.value.findIndex(i => i.id == people.id) < 0) {
+            menuLink.value.push(people)
+            menuLink.value.find(i => i.name.toLowerCase() == 'people').submenu.push(groupleader)
+          } else {
+            menuLink.value.find(i => i.name.toLowerCase() == 'people').submenu.push(groupleader)
+          }
+        }
+
+        if (i.toLowerCase() == 'basicuser') {
+          if (menuLink.value.findIndex(i => i.id == dashboard.id) < 0) {
+            menuLink.value.push(dashboard)
+          }
+          if (menuLink.value.findIndex(i => i.id == people.id) < 0) {
+            menuLink.value.push(people)
+            menuLink.value.find(i => i.name.toLowerCase() == 'people').submenu.push(members, firsttimers, groups, families)
+          } else {
+            menuLink.value.find(i => i.name.toLowerCase() == 'people').submenu.push(members, firsttimers, groups, families)
+          }
+
+          if (menuLink.value.findIndex(i => i.id == communication.id) < 0) {
+            menuLink.value.push(communication)
+          }
+          if (menuLink.value.findIndex(i => i.id == event.id) < 0) {
+            menuLink.value.push(event)
+          }
+          if (menuLink.value.findIndex(i => i.id == report.id) < 0) {
+            menuLink.value.push(report)
+          }
+          if (menuLink.value.findIndex(i => i.id == more.id) < 0) {
+            menuLink.value.push(more)
+            menuLink.value.find(i => i.name.toLowerCase() == 'more').submenu.push(social, media, branch, workflow, archivedpeople, settings)
+          } else {
+            menuLink.value.find(i => i.name.toLowerCase() == 'more').submenu.push(social, media, branch, workflow, archivedpeople, settings)
+          }
+        }
+
+        if (i.toLowerCase() == 'admin') {
+          menuLink.value.push(dashboard, people, communication, event, financial, report, more)
+          menuLink.value.find(i => i.name.toLowerCase() == 'people').submenu.push(members, firsttimers, groups, families)
+          menuLink.value.find(i => i.name.toLowerCase() == 'more').submenu.push(social, media, branch, workflow, archivedpeople, settings)
+        }
+      })
     }
     displayRoleMenu()
 
