@@ -136,7 +136,13 @@
                 </template>
                 </el-table-column> -->
           </el-table>
+          
           </div>
+          <!-- <div class="d-flex justify-content-end my-3">
+            <el-pagination v-model:current-page="serverOptions.page" v-model:page-size="serverOptions.rowsPerPage" background
+              layout="total, prev, pager, next, jumper" :total="serverItemsLength" @size-change="handleSizeChange"
+              @current-change="handleCurrentChange" />
+          </div> -->
         </div>
       </div>
     </div>
@@ -182,7 +188,7 @@
 </template>
 
 <script>
-import { ref, computed, watchEffect } from "vue";
+import { ref, computed, watch, watchEffect } from "vue";
 import { useRoute, useRouter } from "vue-router";
 import groupsService from "../../services/groups/groupsservice";
 import { useStore } from "vuex";
@@ -209,6 +215,7 @@ export default {
     const store = useStore();
     const loading = ref(false);
     const displayConfirmModal = ref(false);
+    const paginatedTableLoading = ref(false);
     const { mdAndUp, lgAndUp, xlAndUp } = deviceBreakpoint();
     // const groups = ref(store.getters["groups/groups"]);
     const groups = ref([]);
@@ -220,6 +227,31 @@ export default {
     const router = useRouter();
     const route = useRoute();
     const lastGroupChild = ref({});
+
+     const handleSizeChange = (val) => {
+      console.log(`${val} items per page`)
+    }
+    const handleCurrentChange = (val) => {
+      console.log(`current page: ${val}`)
+    }
+    const serverOptions = ref({
+      page: 1,
+      rowsPerPage: 100,
+    });
+    const getGroupByPage = async () => {
+      paginatedTableLoading.value = true
+      try {
+        const { data } = await axios.get(
+          `/api/GetAllGroupBasicInformation?page=${serverOptions.value.page}`
+        );
+        groups.value = data;
+        paginatedTableLoading.value = false
+      } catch (error) {
+        paginatedTableLoading.value = false
+        console.log(error);
+      }
+    };
+
     const confirmDelete = (id, index) => {
       ElMessageBox.confirm(
         "Are you sure you want to proceed? This operation can't be reversed ",
@@ -399,9 +431,20 @@ export default {
       }
     });
 
+    watch(serverOptions, () => {
+      getGroupByPage();
+    },
+      { deep: true }
+    );
+
     return {
       groupClick,
+      getGroupByPage,
+      paginatedTableLoading,
+      handleCurrentChange,
+      handleSizeChange,
       searchGroupInDB,
+      serverOptions,
       mdAndUp,
       lgAndUp,
       xlAndUp,
