@@ -978,7 +978,9 @@ export default {
       grouploading.value = true;
       try {
         let data = await grousService.getGroups();
-        getAllGroup.value = data;
+        getAllGroup.value = data.response.groupResonseDTO;
+
+        console.log(data , "Rodiat")
         console.log(getAllGroup.value);
         grouploading.value = false;
         flattenedTree.value = flattenTree(getAllGroup.value)
