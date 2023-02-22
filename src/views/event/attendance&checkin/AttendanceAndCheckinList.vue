@@ -71,7 +71,7 @@
             <div class="small-text text-capitalize col-md-3 font-weight-bold">
               Event Name
             </div>
-            <!-- <div class="col-md-2"></div> -->
+            
             <div
               class="
                 small-text
@@ -118,30 +118,6 @@
 
         <div class="row" style="margin: 0">
           <div class="col-12 parent-desc px-0">
-            <!-- removed v-for above -->
-            <!-- loading group -->
-            <!-- <div class="row" v-if="!loading && groups.length === 0">
-                  <div class="col-md-12">
-                    <div class="row">
-                      <div
-                        class="
-                          col-md-12
-                          d-flex
-                          align-items-center
-                          justify-content-center
-                        "
-                      >
-                        <p class="py-2">No groups yet</p>
-                      </div>
-                    </div>
-                    <div class="row">
-                      <div class="col-md-12 px-0">
-                        <hr class="hr my-0" />
-                      </div>
-                    </div>
-                  </div>
-                </div> -->
-            <!-- loading group -->
 
             <!-- loadding -->
             <div class="row" v-if="loading">
@@ -357,18 +333,7 @@
                               >Checkin</router-link
                             >
                           </a>
-                          <!-- <a class="dropdown-item">
-                            <router-link
-                              class="text-decoration-none text-dark"
-                              :to="{
-                                name: 'AddAttendance',
-                                params: {
-                                  id: item.id,
-                                },
-                              }"
-                              >Edit</router-link
-                            >
-                          </a> -->
+
                           <a
                             class="dropdown-item elipsis-items"
                             href="#"
@@ -385,15 +350,17 @@
           </div>
         </div>
       </div>
-      <div class="col-12">
-        <div class="table-footer">
-          <Pagination
-            @getcontent="getPeopleByPage"
-            :itemsCount="50"
-            :currentPage="currentPage"
-            :totalItems="totalItems"
-          />
-        </div>
+
+      <div class="d-flex justify-content-end my-3">
+        <el-pagination
+          v-model:current-page="serverOptions.page"
+          v-model:page-size="serverOptions.rowsPerPage"
+          background
+          layout="total, prev, pager, next, jumper"
+          :total="serverItemsLength"
+          @size-change="handleSizeChange"
+          @current-change="handleCurrentChange"
+        />
       </div>
     </div>
     <!-- {{totalItems}} -->
@@ -411,7 +378,7 @@
 </template>
 
 <script>
-import { ref, computed } from "vue";
+import { ref, computed, watch, watchEffect } from "vue";
 import dateFormatter from "../../../services/dates/dateformatter";
 import { useConfirm } from "primevue/useconfirm";
 import { useToast } from "primevue/usetoast";
@@ -431,17 +398,18 @@ export default {
     const loading = ref(false);
     const attendanceList = ref([]);
     const checkedAttendance = ref([]);
-    // const marked = ref([]);
-    // const AttendanceCheList = ref(props.list)
+    const serverOptions = ref({
+      page: 1,
+      rowsPerPage: 100,
+    });
 
+    const serverItemsLength = ref(0);
     const toggleEllips = () => {
       toggleEllips.value = !toggleEllips.value;
     };
 
     const getPeopleList = () => {
-      // console.log(props.list, "props");
       attendanceList.value = props.list;
-      // store.dispatch('churchMembers', props.list)
     };
     getPeopleList();
 
@@ -453,17 +421,48 @@ export default {
       return x.map((i) => i.id);
     };
 
-   
+    const getAttendancePage = async () => {
+      paginatedTableLoading.value = true;
+      try {
+        const { data } = await axios.get(
+          `api/CheckInAttendance/AllCheckInAttendances?page=${serverOptions.value.page}`
+        );
+        attendanceMember.value = data;
+        paginatedTableLoading.value = false;
+      } catch (error) {
+        paginatedTableLoading.value = false;
+        console.log(error);
+      }
+    };
+    watch(
+      serverOptions,
+      () => {
+        getAttendancePage();
+      },
+      { deep: true }
+    );
+
+    watchEffect(() => {
+      serverItemsLength.value = props.totalItems;
+    });
+    const handleSizeChange = (val) => {
+      console.log(`${val} items per page`);
+    };
+
+    const handleCurrentChange = (val) => {
+      console.log(`current page: ${val}`);
+    };
+    const paginatedTableLoading = ref(false);
 
     const checkOutAttendance = () => {
-      // let newarray = []
+      
       let dft = convert(checkedAttendance.value);
-      console.log(dft, "👌😂😂");
+     
       axios
         .post(`/api/CheckInAttendance/Delete/Multiple`, dft)
         .then((res) => {
           let incomingRes = res.data;
-          console.log(incomingRes, "🙌❤🙌❤🙌");
+        
           if (incomingRes.toString().toLowerCase().includes("attendance")) {
             toast.add({
               severity: "success",
@@ -471,17 +470,10 @@ export default {
               detail: "Attendance(s) deleted successfully.",
               life: 4000,
             });
-            // attendanceList.value = attendanceList.value.filter((item) => {
-            //       const y = checkedAttendance.value.findIndex(
-            //         (i) => i.id === item.id
-            //       );
-            //        console.log(y , "old are u now");
-            //       if (y >= 0) return false;
-            //       return true;
-            //     });
+
             emit("checkedattendance", checkedAttendance.value);
           }
-          // checkedAttendance.value = [];
+         
         })
         .catch((err) => {
           stopProgressBar();
@@ -534,7 +526,7 @@ export default {
           }
         })
         .catch((err) => {
-          //     finish()
+          
           if (err.response) {
             console.log(err.response);
             toast.add({
@@ -559,7 +551,6 @@ export default {
     const confirm = useConfirm();
 
     const check1item = (ft) => {
-      // console.log(ft, "chechbyOne");
       const attendanceIdx = checkedAttendance.value.findIndex(
         (i) => i.id === ft.id
       );
@@ -615,7 +606,7 @@ export default {
         rejectClass: "cancel-delete",
         accept: () => {
           deleteAttendance(id, index);
-          // toast.add({severity:'info', summary:'Confirmed', detail:'Member Deleted', life: 3000});
+         
         },
         reject: () => {
           toast.add({
@@ -660,7 +651,7 @@ export default {
         if (data.items.length > 0) {
           emit("pagedattendance", data);
         }
-        // branchTransactions.value = data.returnObject.contribution;
+        
         currentPage.value = page;
       } catch (error) {
         console.log(error);
@@ -687,6 +678,12 @@ export default {
       removeSearchText,
       currentPage,
       getPeopleByPage,
+      serverOptions,
+      getAttendancePage,
+      serverItemsLength,
+      handleSizeChange,
+      handleCurrentChange,
+      paginatedTableLoading,
     };
   },
 };
@@ -868,8 +865,7 @@ export default {
 
   .head-button {
     display: flex;
-    /* flex-direction: row; */
-    /* align-items: center; */
+   
     justify-content: center;
   }
 }
