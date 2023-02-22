@@ -333,6 +333,18 @@
                               >Checkin</router-link
                             >
                           </a>
+                          <!-- <a class="dropdown-item">
+                            <router-link
+                              class="text-decoration-none text-dark"
+                              :to="{
+                                name: 'AddAttendance',
+                                params: {
+                                  id: item.id,
+                                },
+                              }"
+                              >Edit</router-link
+                            >
+                          </a> -->
 
                           <a
                             class="dropdown-item elipsis-items"
