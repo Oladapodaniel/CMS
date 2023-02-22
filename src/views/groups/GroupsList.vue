@@ -136,13 +136,13 @@
                 </template>
                 </el-table-column> -->
           </el-table>
-          
-          </div>
-          <!-- <div class="d-flex justify-content-end my-3">
+          <div class="d-flex justify-content-end my-3">
             <el-pagination v-model:current-page="serverOptions.page" v-model:page-size="serverOptions.rowsPerPage" background
-              layout="total, prev, pager, next, jumper" :total="serverItemsLength" @size-change="handleSizeChange"
+              layout="total, prev, pager, next, jumper" :total="serverItemsLength"  @size-change="handleSizeChange"
               @current-change="handleCurrentChange" />
-          </div> -->
+          </div>
+          </div>
+          
         </div>
       </div>
     </div>
@@ -227,6 +227,8 @@ export default {
     const router = useRouter();
     const route = useRoute();
     const lastGroupChild = ref({});
+    const serverItemsLength = ref(0);
+    const getGroupSummary = ref('')
 
      const handleSizeChange = (val) => {
       console.log(`${val} items per page`)
@@ -244,7 +246,7 @@ export default {
         const { data } = await axios.get(
           `/api/GetAllGroupBasicInformation?page=${serverOptions.value.page}`
         );
-        groups.value = data;
+        groups.value = data
         paginatedTableLoading.value = false
       } catch (error) {
         paginatedTableLoading.value = false
@@ -290,6 +292,8 @@ export default {
         loading.value = true;
         const data = await groupsService.getGroups();
         (loading.value = false),
+          getGroupSummary.value = data.response.totalItems
+          console.log(getGroupSummary.value, "kjhkjh");
           (groups.value = data.response.groupResonseDTO.map((i) => {
             return {
               dateCreated: i.dateCreated,
@@ -425,10 +429,12 @@ export default {
     };
 
     watchEffect(() => {
+      serverItemsLength.value = getGroupSummary.value
       if (store.getters["groups/selectedTreeGroupList"]) {
         const selectedGroup = store.getters["groups/selectedTreeGroupList"];
         lastGroupChild.value = selectedGroup;
       }
+      
     });
 
     watch(serverOptions, () => {
@@ -439,7 +445,9 @@ export default {
 
     return {
       groupClick,
+      getGroupSummary,
       getGroupByPage,
+      serverItemsLength,
       paginatedTableLoading,
       handleCurrentChange,
       handleSizeChange,

@@ -731,7 +731,7 @@ export default {
       axios
         .get(`/api/GetAllGroupBasicInformation`)
         .then((res) => {
-          getAllGroups.value = res.data.map((i) => {
+          getAllGroups.value = res.data.response.groupResonseDTO.map((i) => {
             return {
               label: i.name,
               value: i.id

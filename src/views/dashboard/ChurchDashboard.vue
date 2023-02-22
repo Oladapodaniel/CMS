@@ -327,7 +327,7 @@
               </div>
               <Table :data="tenantInfoCeleb" :headers="celebHeaders" class="mt-3" :checkMultipleItem="false">
                 <template #name="{ item }">
-                  <div>
+                  <div class="c-pointer" @click="showCelebrationDetail(item)">
                     <el-card shadow="hover" class="c-pointer person-image" v-if="item.pictureUrl"
                       style="border-radius: 50%; height: 26px; width: 26px;">
                       <img :src="item.pictureUrl" alt=""
@@ -343,26 +343,26 @@
                   </div>
                 </template>
                 <template #date="{ item }">
-                  <div>
+                  <div class="c-pointer" @click="showCelebrationDetail(item)">
                     {{ dateFormat(item.date) }}
                   </div>
                 </template>
                 <template v-slot:dayOfCelebration="{ item }">
-                  <div>
+                  <div class="c-pointer" @click="showCelebrationDetail(item)" >
                     {{ item.dayOfCelebration }}
                   </div>
                 </template>
                 <template v-slot:celebration="{ item }">
-                  <div>
+                  <div class="c-pointer" @click="showCelebrationDetail(item)">
                     {{ item.celebration }}
                   </div>
                 </template>
                 <template v-slot:phone="{ item }">
-                  <div>
+                  <div class="c-pointer" @click="showCelebrationDetail(item)">
                     {{ item.phone }}
                   </div>
                 </template>
-                <template v-slot:action="{ item }">
+                <template class="c-pointer" v-slot:action="{ item }">
                   <div>
                     <el-dropdown trigger="click">
                       <el-icon>
@@ -585,6 +585,10 @@ export default {
     const toggleMoreLinkVissibility = () => {
       moreLinksVissible.value != moreLinksVissible.value;
     };
+    const showCelebrationDetail = (item) =>{
+      router.push(`/tenant/people/add/${item.id}`)
+
+    }
 
     const subscribeNow = () =>{
         router.push('/tenant/subscription')
@@ -827,7 +831,6 @@ export default {
       // Find the distance between now and the count down date
       let distance = countDownDates - now;
       notifiedDays.value = Math.floor(distance / (1000 * 60 * 60 * 24));
-      console.log(notifiedDays.value, "hjjj");
     }
 
     useSubscription.getPlan().then((res) => {
@@ -882,6 +885,7 @@ export default {
 
     return {
       celebrations,
+      showCelebrationDetail,
       notifiedDays,
       subscribeNow,
       getRenewalDate,
