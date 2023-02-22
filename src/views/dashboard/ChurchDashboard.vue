@@ -207,7 +207,6 @@
             </div>
           </div>
         </div>
-
         <div v-if="tenantInfoBasic.memberCount === 0"
           class="d-flex justify-content-center mt-4 justify-content-md-end mt-md-0">
           <img src="../../assets/welcome_user.svg" style="width: 250px" />
@@ -1117,7 +1116,7 @@ export default {
 }
 
 .number-boxes {
-  z-index: -1
+  /* z-index: -1 */
 }
 
 .box {
