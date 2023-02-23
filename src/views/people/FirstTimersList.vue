@@ -139,39 +139,64 @@
         </template>
          <template v-slot:action="{ item }">
             <div>
-            <el-dropdown trigger="click">
+              <div class="dropdown">
+            <el-icon data-toggle="dropdown" aria-expanded="false">
+              <MoreFilled />
+            </el-icon>
+            <ul class="dropdown-menu">
+              <li class="dropdown-item"><a>
+                <router-link :to="
+                      item.phoneNumber
+                        ? `/tenant/sms/compose?phone=${item.phoneNumber}`
+                        : ''
+                    " :class="{ 'fade-text': !item.phoneNumber, 'text-color': item.phoneNumber }">Send
+                      SMS</router-link>
+                </a></li>
+              <li><a class="dropdown-item" href="#">
+                <router-link :to="
+                    item.email
+                        ? `/tenant/email/compose?phone=${item.email}`
+                        : ''
+                    " :class="{ 'fade-text': !item.email, 'text-color': item.email }">Send Email</router-link>
+                </a></li>
+              <li><a class="dropdown-item" href="#">
+                <router-link :to="`/tenant/firsttimermanagement/${item.id}?memberType=0`" class="text-color">
+                      Follow Up
+                    </router-link>
+                </a></li>
+              <li><a class="dropdown-item" href="#">
+                <span class="el-dropdown-link">
+                      Convert to member<el-icon class="el-icon--right"><arrow-down /></el-icon>
+                    </span>
+                </a></li>
+              <li><a class="dropdown-item" href="#">
+                <div @click.prevent="showConfirmModal(item.id, index)" class="text-color">Delete</div>
+                </a></li>
+              <!-- <li><a class="dropdown-item" href="#">
+                <div @click.prevent="showConfirmModal(item.id, index)" class="text-color">Delete</div>
+                </a></li> -->
+            </ul>
+          </div>
+            <!-- <el-dropdown trigger="click">
               <el-icon>
                 <MoreFilled />
               </el-icon>
               <template #dropdown>
                 <el-dropdown-menu>
                   <el-dropdown-item>
-                    <router-link :to="
-                      item.phoneNumber
-                        ? `/tenant/sms/compose?phone=${item.phoneNumber}`
-                        : ''
-                    " :class="{ 'fade-text': !item.phoneNumber, 'text-color': item.phoneNumber }">Send
-                      SMS</router-link>
+                    
                   </el-dropdown-item>
                   <el-dropdown-item>
-                    <router-link :to="
-                    item.email
-                        ? `/tenant/email/compose?phone=${item.email}`
-                        : ''
-                    " :class="{ 'fade-text': !item.email, 'text-color': item.email }">Send Email</router-link>
+                    
                   </el-dropdown-item>
                   <el-dropdown-item>
-                    <router-link :to="`/tenant/firsttimermanagement/${item.id}?memberType=0`" class="text-color">
-                      Follow Up
-                    </router-link>
+                    
                   </el-dropdown-item>
                   <el-dropdown-item>
-                    <div @click.prevent="showConfirmModal(item.id, index)" class="text-color">Delete</div>
+                    
                   </el-dropdown-item>
                   <el-dropdown class="px-3 pb-2 pt-1 text-color" placement="left">
-                    <span class="el-dropdown-link">
-                      Convert to member<el-icon class="el-icon--right"><arrow-down /></el-icon>
-                    </span>
+                    
                     <template #dropdown>
                       <el-dropdown-menu>
                         <el-icon v-if="(membershipCategory.length == 0)" class="is-loading" :size="20">
@@ -185,7 +210,7 @@
                   </el-dropdown>
                 </el-dropdown-menu>
               </template>
-            </el-dropdown>
+            </el-dropdown> -->
           </div>
         </template>
       </Table>
@@ -374,6 +399,8 @@ export default {
           churchMembers.value = churchMembers.value.filter(
             (item) => item.id !== id
           );
+          store.dispatch('membership/removeFirstTimerFromStore', id)
+          store.dispatch('dashboard/getDashboard');
         })
         .catch((err) => {
           /eslint no-undef: "warn"/
@@ -399,11 +426,11 @@ export default {
     const showConfirmModal = (id, index) => {
       ElMessageBox.confirm(
         'Are you sure you want to proceed?',
-        'Warning',
+        'Confirm delete',
         {
           confirmButtonText: 'OK',
           cancelButtonText: 'Cancel',
-          type: 'warning',
+          type: 'error',
         }
       )
         .then(() => {

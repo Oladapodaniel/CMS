@@ -410,10 +410,7 @@ export default {
             })
           }
           store.dispatch("membership/removeMember", id);
-
-          store.dispatch('membership/setMembershipSummary').then(response => {
-            membershipSummary.value = response
-          })
+          getMemberSummary();
 
           if (filterResult.value.length > 0 && filtered.value && filter.value.name) {
             filterResult.value = filterResult.value.filter(
@@ -450,11 +447,11 @@ export default {
     const showConfirmModal = (id, index) => {
       ElMessageBox.confirm(
         'Are you sure you want to proceed?',
-        'Warning',
+        'Confirm delete',
         {
           confirmButtonText: 'OK',
           cancelButtonText: 'Cancel',
-          type: 'warning',
+          type: 'error',
         }
       )
         .then(() => {

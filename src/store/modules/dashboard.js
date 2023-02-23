@@ -1,4 +1,6 @@
-import dashboard from "../../services/dashboard/dashboard"
+import { _ } from "core-js";
+import dashboard from "../../services/dashboard/dashboard";
+import useSubscription from "../../services/subscription/useSubscription";
 
 const defaultState = (() => ({
     dashboard: {},
@@ -6,6 +8,7 @@ const defaultState = (() => ({
     hasOnlineGiving: false,
     hasWebsite: false,
     celebrations: [],
+    subPlan: {}
 }))
 
 export default {
@@ -17,13 +20,14 @@ export default {
             state.hasMobileApp = payload.hasMobileApp
             state.hasOnlineGiving = payload.hasOnlineGiving
             state.hasWebsite = payload.hasWebsite
-            console.log(state.dashboard)
         },
         SET_CELEBRATION (state, payload) {
             state.celebrations = payload
         },
+        SET_SUBPLAN (state, payload) {
+            state.subPlan = payload
+        },
         clearState(state) {
-            console.log('dashboard sotre cleared')
             Object.assign(state, defaultState())
           }
     },
@@ -37,8 +41,13 @@ export default {
         getCelebration ({ commit }) {
             return dashboard.getCelebrations().then(response => {  
                 commit('SET_CELEBRATION', response.returnObject.celebrations)
-                console.log(response)
                 return response.returnObject.celebrations
+            })
+        },
+        getUserSubscriptionPlan ({ commit }) {
+            return useSubscription.getPlan().then(response => {  
+                commit('SET_SUBPLAN', response)
+                return response
             })
         },
         clearState ({ commit }) {
@@ -60,6 +69,9 @@ export default {
         },
         hasWebsite: (state) => {
             return state.hasWebsite
+        },
+        getSubPlan: (state) => {
+            return state.subPlan
         },
     }
 }

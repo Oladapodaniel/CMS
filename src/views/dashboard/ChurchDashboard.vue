@@ -21,16 +21,16 @@
 
       <div class="row mb-4">
         <div class="col-12">
-          <div class="col-md-12 text-dark py-3 mb-2 day3" v-if="notifiedDays === 10 ">
+          <div class="col-md-12 text-dark py-3 mb-2 day3" v-if="notifiedDays === 10">
             <div class="">
               10 days remaining before your subscription expires, kindly
               subscribe before
               {{
                 moment
-                            .parseZone(
-                  new Date(getRenewalDate).toDateString(),
-                  "YYYY MM DD HH ZZ"
-                )
+                  .parseZone(
+                    new Date(getRenewalDate).toDateString(),
+                    "YYYY MM DD HH ZZ"
+                  )
                   ._i.substr(4, 11)
               }}
             </div>
@@ -44,10 +44,10 @@
               subscribe before
               {{
                 moment
-                            .parseZone(
-                  new Date(getRenewalDate).toDateString(),
-                  "YYYY MM DD HH ZZ"
-                )
+                  .parseZone(
+                    new Date(getRenewalDate).toDateString(),
+                    "YYYY MM DD HH ZZ"
+                  )
                   ._i.substr(4, 11)
               }}
             </div>
@@ -61,10 +61,10 @@
               subscribe before
               {{
                 moment
-                            .parseZone(
-                  new Date(getRenewalDate).toDateString(),
-                  "YYYY MM DD HH ZZ"
-                )
+                  .parseZone(
+                    new Date(getRenewalDate).toDateString(),
+                    "YYYY MM DD HH ZZ"
+                  )
                   ._i.substr(4, 11)
               }}
             </div>
@@ -78,10 +78,10 @@
               subscribe before
               {{
                 moment
-                            .parseZone(
-                  new Date(getRenewalDate).toDateString(),
-                  "YYYY MM DD HH ZZ"
-                )
+                  .parseZone(
+                    new Date(getRenewalDate).toDateString(),
+                    "YYYY MM DD HH ZZ"
+                  )
                   ._i.substr(4, 11)
               }}
             </div>
@@ -95,10 +95,10 @@
               subscribe before
               {{
                 moment
-                            .parseZone(
-                  new Date(getRenewalDate).toDateString(),
-                  "YYYY MM DD HH ZZ"
-                )
+                  .parseZone(
+                    new Date(getRenewalDate).toDateString(),
+                    "YYYY MM DD HH ZZ"
+                  )
                   ._i.substr(4, 11)
               }}
             </div>
@@ -112,10 +112,10 @@
               subscribe before
               {{
                 moment
-                            .parseZone(
-                  new Date(getRenewalDate).toDateString(),
-                  "YYYY MM DD HH ZZ"
-                )
+                  .parseZone(
+                    new Date(getRenewalDate).toDateString(),
+                    "YYYY MM DD HH ZZ"
+                  )
                   ._i.substr(4, 11)
               }}
             </div>
@@ -129,15 +129,15 @@
               subscribe before
               {{
                 moment
-                            .parseZone(
-                  new Date(getRenewalDate).toDateString(),
-                  "YYYY MM DD HH ZZ"
-                )
+                  .parseZone(
+                    new Date(getRenewalDate).toDateString(),
+                    "YYYY MM DD HH ZZ"
+                  )
                   ._i.substr(4, 11)
               }}
             </div>
             <div class="cursor-pointer " @click="subscribeNow">
-              <el-button  round>Subscribe now</el-button>
+              <el-button round>Subscribe now</el-button>
             </div>
           </div>
           <div class="col-md-12 py-3 mb-1 day1" v-if="notifiedDays === 3">
@@ -146,10 +146,10 @@
               subscribe before
               {{
                 moment
-                            .parseZone(
-                  new Date(getRenewalDate).toDateString(),
-                  "YYYY MM DD HH ZZ"
-                )
+                  .parseZone(
+                    new Date(getRenewalDate).toDateString(),
+                    "YYYY MM DD HH ZZ"
+                  )
                   ._i.substr(4, 11)
               }}
             </div>
@@ -163,10 +163,10 @@
               subscribe before
               {{
                 moment
-                            .parseZone(
-                  new Date(getRenewalDate).toDateString(),
-                  "YYYY MM DD HH ZZ"
-                )
+                  .parseZone(
+                    new Date(getRenewalDate).toDateString(),
+                    "YYYY MM DD HH ZZ"
+                  )
                   ._i.substr(4, 11)
               }}
             </div>
@@ -180,10 +180,10 @@
               subscribe before
               {{
                 moment
-                            .parseZone(
-                  new Date(getRenewalDate).toDateString(),
-                  "YYYY MM DD HH ZZ"
-                )
+                  .parseZone(
+                    new Date(getRenewalDate).toDateString(),
+                    "YYYY MM DD HH ZZ"
+                  )
                   ._i.substr(4, 11)
               }}
             </div>
@@ -219,7 +219,8 @@
                 <img src="../../assets/usergroup.svg" alt="" style="position: relative; top: -5px; left: -8px;">
                 <div class="">
                   <p class="mb-0 s-8">FIRST TIMERS</p>
-                  <h4 class="primary--text font-weight-700 mt-1 s-16">{{ tenantInfoBasic && tenantInfoBasic.firstTimerCount ? tenantInfoBasic.firstTimerCount : 0 }}</h4>
+                  <h4 class="primary--text font-weight-700 mt-1 s-16">{{ tenantInfoBasic &&
+                    tenantInfoBasic.firstTimerCount ? tenantInfoBasic.firstTimerCount : 0 }}</h4>
                 </div>
               </div>
               <div>
@@ -315,7 +316,7 @@
               tenantInfoExtra.hasOnlineGiving &&
               tenantInfoExtra.hasWebsite,
           }">
-            
+
             <div v-if="tenantInfoCeleb && tenantInfoCeleb.length > 0">
               <div class="celeb-header">
                 <div class="celeb-icon">
@@ -415,8 +416,7 @@
                 </div>
                 <div v-if="attendanceBoolean" class="mt-4">
                   <ColumnChart domId="chart1" title="Event Attendance" subtitle="Weekly Attendance of Events"
-                    header="Members Attendance" :data="chartData" :series="series"
-                    :attendanceSeries="attendanceSeries" />
+                    header="Members Attendance" :data="chartData" :series="series" :attendanceSeries="attendanceSeries" />
                 </div>
                 <div v-else class="mt-4">
                   <ColumnChart domId="chart1" title="Event Attendance" subtitle="Monthly Attendance of Events"
@@ -446,7 +446,7 @@
                     :attendanceSeries="attendanceSeries" />
                 </div>
               </div>
-              
+
 
               <div class="mt-4" v-show="firstTimerPieExist">
                 <div class="">
@@ -547,7 +547,6 @@ import moment from "moment";
 import stopProgressBar from "../../services/progressbar/progress";
 import setupService from "../../services/setup/setupservice";
 import formatDate from "../../services/dates/dateformatter";
-import useSubscription from "../../services/subscription/useSubscription";
 import deviceBreakpoint from "../../mixins/deviceBreakpoint";
 import Table from "@/components/table/Table"
 import store from "../../store/store"
@@ -578,7 +577,7 @@ export default {
     const firstTimerDataExist = ref(false);
     const firstTimerPieExist = ref(false);
     const notifiedDays = ref()
-    const planUserIs = ref("")
+    const planUserIs = ref(store.getters['dashboard/getSubPlan'] ? store.getters['dashboard/getSubPlan'].description : 'loading plan') 
 
 
 
@@ -592,8 +591,8 @@ export default {
 
     }
 
-    const subscribeNow = () =>{
-        router.push('/tenant/subscription')
+    const subscribeNow = () => {
+      router.push('/tenant/subscription')
     }
     const celebrations = [];
     const tenantInfo = ref({});
@@ -693,14 +692,11 @@ export default {
     // };
 
     function getCelebDashboard() {
-      // axios.get("/dashboard/celebrations").then((res) => {
-        // });
-        store.dispatch('dashboard/getCelebration').then((response) => {
-          console.log(response)
-          celeb.value = response;
+      store.dispatch('dashboard/getCelebration').then((response) => {
+        celeb.value = response;
       })
     }
-    
+
 
     let tenantInfoCeleb = computed(() => {
       if (celeb.value.length === 0) return []
@@ -708,19 +704,31 @@ export default {
     })
 
     const getDashboard = async () => {
-      dashboardLoading.value = true
-      await store.dispatch('dashboard/getDashboard').then(response => {
-        tenantInfoBasic.value = response
+      try {
+        dashboardLoading.value = true
+        await store.dispatch('dashboard/getDashboard').then(response => {
+          tenantInfoBasic.value = response
           dashboardLoading.value = false
           tenantInfoExtra.value.hasMobileApp = response.hasMobileApp;
           tenantInfoExtra.value.hasOnlineGiving = response.hasOnlineGiving;
           tenantInfoExtra.value.hasWebsite = response.hasWebsite;
-      })
+        })
+      }
+      catch (error) {
+        stopProgressBar();
+        if (error.response && error.response.status === 401) {
+          dashboardLoading.value = false
+          localStorage.removeItem("token");
+          setupService.clearStore();
+          router.push("/");
+        }
+      }
     }
-    
+
     onMounted(() => {
       if (tenantInfoBasic.value && Object.keys(tenantInfoBasic.value).length == 0) getDashboard();
-      if (celeb.value && celeb.value.length == 0)  getCelebDashboard();
+      if (celeb.value && celeb.value.length == 0) getCelebDashboard();
+      getSubscriptionData();
     })
 
     onMounted(() => {
@@ -842,8 +850,8 @@ export default {
 
     const retrieveSubscriptionInfo = () => { };
 
-    const useSubscriptionResponse = ref([]);
-    const getRenewalDate = ref("");
+    const useSubscriptionResponse = ref(store.getters['dashboard/getSubPlan']);
+    const getRenewalDate = ref(store.getters['dashboard/getSubPlan'] ? store.getters['dashboard/getSubPlan'].subscriptionExpiration : '');
     const countDownDate = () => {
       // Set the date we're counting down to
       let countDownDates = new Date(getRenewalDate.value).getTime();
@@ -854,12 +862,14 @@ export default {
       notifiedDays.value = Math.floor(distance / (1000 * 60 * 60 * 24));
     }
 
-    useSubscription.getPlan().then((res) => {
-      planUserIs.value = res.description;
-      getRenewalDate.value = res.subscriptionExpiration;
-      useSubscriptionResponse.value = res;
-      countDownDate()
-    });
+    const getSubscriptionData = () => {
+      store.dispatch("dashboard/getUserSubscriptionPlan").then(response => {
+          planUserIs.value = response.description;
+          getRenewalDate.value = response.subscriptionExpiration;
+          useSubscriptionResponse.value = response
+          countDownDate()
+      })
+    }
 
     const calculatedPercentage = computed(() => {
       if (!useSubscriptionResponse.value || !useSubscriptionResponse.value.id)

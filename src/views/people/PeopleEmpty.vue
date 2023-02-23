@@ -9,6 +9,7 @@
       </div>
     </div>
   </div>
+  {{ peopleInStore.length }}ffff
 
   <el-skeleton class="w-100" animated v-if="loading && peopleInStore.length === 0">
     <template #template>

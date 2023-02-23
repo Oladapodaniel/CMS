@@ -383,7 +383,6 @@ import axios from "@/gateway/backendapi";
 import router from "@/router/index";
 import Dropdown from "primevue/dropdown";
 import { useRoute } from "vue-router";
-// import { useToast } from "primevue/usetoast";
 import Dialog from "primevue/dialog";
 import finish from "../../services/progressbar/progress";
 import setupService from "../../services/setup/setupservice";
@@ -408,8 +407,6 @@ export default {
   },
 
   setup() {
-    // const $toast = getCurrentInstance().ctx.$toast;
-    // const toast = useToast();
     const store = useStore();
     const showEventList = ref(false);
     const selectEventAttended = () => {
@@ -688,6 +685,8 @@ export default {
               message: "First timer created successfully",
               duration: 5000
             })
+            store.dispatch('membership/setFirstTimerData');
+            store.dispatch('dashboard/getDashboard');
 
             if (!routeToFRM.value) {
               firstTimersObj.value = {};

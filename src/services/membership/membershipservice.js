@@ -62,7 +62,6 @@ const membershipService = {
             axios.get("/api/People/getAllFirstTimers")
                 .then(res => {
                     resolve(res.data);
-                    // store.dispatch("setFirstTimers", res.data);
                 })
                 .catch(error => {
                     /*eslint no-undef: "warn"*/
@@ -87,7 +86,6 @@ const membershipService = {
             axios.post(`/api/People/DeletePeople`, data)
                 .then(res => {
                     resolve(res.data);
-                    console.log(res.data)
                 })
                 .catch(error => {
                     /*eslint no-undef: "warn"*/
@@ -105,7 +103,6 @@ const membershipService = {
         return new Promise((resolve, reject) => {
             axios.put(`/api/AssignPeopleToGroup/${groupId}`, data)
                 .then(res => {
-                    console.log(res)
                     resolve(res.data);
                 })
                 .catch(error => {
