@@ -630,7 +630,7 @@ export default {
     const celebHeaders = ref([
       { name: "NAME", value: "name" },
       { name: "DATE", value: "date" },
-      { name: "DAY", value: "phone" },
+      { name: "DAY", value: "dayOfCelebration" },
       { name: "TYPE", value: "celebration" },
       { name: "PHONE", value: "phone" },
     ]);
