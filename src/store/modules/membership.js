@@ -18,7 +18,6 @@ export default {
     },
     setFirstTimers(state, payload) {
       state.firstTimers = payload;
-      console.log(state.firstTimers)
     },
     updateMember(state, payload) {
       const targetMembersIndex = state.members.findIndex(i => i.id === payload.id);
@@ -31,9 +30,6 @@ export default {
 
     removeMember(state, payload) {
       state.members = state.members.filter(i => i.id !== payload);
-    },
-    showImportedPeople(state, payload) {
-      payload.forEach(i => state.members.push(i))
     },
     setMembershipSummary(state, payload) {
       state.membershipSummary = payload
@@ -94,9 +90,6 @@ export default {
 
     removeMember({ commit }, payload) {
       commit("removeMember", payload);
-    },
-    showImportedPeople({ commit }, payload) {
-      commit("showImportedPeople", payload)
     },
     clearMember({ commit }) {
       commit("clearMember")

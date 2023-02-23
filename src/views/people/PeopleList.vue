@@ -410,7 +410,7 @@ export default {
             })
           }
           store.dispatch("membership/removeMember", id);
-          getMemberSummary();
+          store.dispatch("dashboard/getDashboard")
 
           if (filterResult.value.length > 0 && filtered.value && filter.value.name) {
             filterResult.value = filterResult.value.filter(
@@ -530,6 +530,7 @@ export default {
           ElMessage({
             type: 'success',
             message: 'Delete successful',
+            duration: 7000
           })
 
           churchMembers.value = churchMembers.value.filter((item) => {
@@ -542,9 +543,10 @@ export default {
           ElMessage({
             type: 'info',
             message: `${displayRes[0]}`,
+            duration: 7000
           })
 
-          if (displayRes[1] !== "") {
+          if (displayRes && displayRes[1] && displayRes[1] !== "") {
             if (!displayRes[1].includes(",")) {
               churchMembers.value = churchMembers.value.filter((item) => {
                 return !item.id.includes(displayRes[1]);
@@ -560,13 +562,14 @@ export default {
           }
         }
         marked.value = [];
-        store.dispatch("membership/removeMember");
-        getMemberSummary();
+        store.dispatch("membership/setMembers");
+        store.dispatch("dashboard/getDashboard")
       } catch (error) {
         console.log(error);
         ElMessage({
           type: 'warning',
           message: 'Delete failed, please try again',
+          duration: 4000
         })
         // }
       }
