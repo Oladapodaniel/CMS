@@ -198,7 +198,7 @@ import exportService from "../../../services/exportFile/exportservice";
 import { useToast } from "primevue/usetoast";
 import html2pdf from "html2pdf.js";
 import GroupTree from "../../groups/component/GroupTreeCheckboxParent.vue";
-import grousService from "../../../services/groups/groupsservice";
+import grouspService from "../../../services/groups/groupsservice";
 import dateFormatter from "../../../services/dates/dateformatter";
 import allCustomFields from "../../../services/customfield/customField"
 export default {
@@ -259,7 +259,7 @@ export default {
     const getGroups = async () => {
       grouploading.value = true;
       try {
-        let data = await grousService.getGroups();
+        let data = await grouspService.getGroups();
         groups.value = data.response.groupResonseDTO;
         console.log(data);
         grouploading.value = false;

@@ -1,24 +1,24 @@
 <template>
-  <div class="container-fluid">
-    <div class="container-fluid">
-      <div class="row yu mt-5">
+  <div>
+    <div class="">
+      <div class="row ">
         <div class="col-md-6">
-          <div class="events">Partnership and Pledges</div>
+          <div class="head-text">Partnership and Pledges</div>
           <Toast />
           <ConfirmDialog />
         </div>
         <div class="col-md-6 d-flex flex-column flex-sm-row mt-2 my-1 link">
           <router-link to="/tenant/pledge/pledgedefinitionlist">
-            <button class="default-btn more-btn border-0 mr-3">
+            <el-button class="header-btn mr-3"  round>
               Partnership/Pledge items
-            </button>
+            </el-button>
           </router-link>
           <router-link
             to="/tenant/pledge/makepledge"
            >
-            <button  class=" grey-border primary-btn default-btn primary-bg border-0 mt-3 mt-sm-0">
+            <el-button color="#136acd"   class="  header-btnmt-3 mt-sm-0" round>
               New Partnership/Pledge
-            </button></router-link
+            </el-button></router-link
           >
         </div>
         <div class="col-md-12 px-0">
@@ -53,7 +53,8 @@
           </div>
           <div class="col-md-4 mt-3 mt-md-0">
             <div class="text-secondary font-weight-bold small">
-              Payment within the last 30 days
+              <!-- Payment within the last 30 days -->
+              Total Balance
             </div>
             <h3 class="font-weight-700 mt-3">
              {{ Math.abs(pledgesSummary.paymentsInLast30Days).toLocaleString() }}.00 <span class="text-secondary small">{{pledgesSummary.symbol}}</span>

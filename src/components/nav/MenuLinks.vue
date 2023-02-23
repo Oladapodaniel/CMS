@@ -438,7 +438,7 @@ export default {
         if (i.toLowerCase() == 'admin') {
           menuLink.value.push(dashboard, people, communication, event, financial, report, more)
           menuLink.value.find(i => i.name.toLowerCase() == 'people').submenu.push(members, firsttimers, groups, families)
-          menuLink.value.find(i => i.name.toLowerCase() == 'more').submenu.push(social, media, branch, workflow, archivedpeople, settings)
+          menuLink.value.find(i => i.name.toLowerCase() == 'more').submenu.push( workflow, social, media, branch,  archivedpeople, settings)
         }
       })
     }

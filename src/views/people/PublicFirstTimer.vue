@@ -945,7 +945,7 @@ export default {
         } else {
           let group = await grousService.getGroups();
           if (group) {
-            allGroups.value = group;
+            allGroups.value = group.response.groupResonseDTO;
           }
         }
       } catch (error) {
