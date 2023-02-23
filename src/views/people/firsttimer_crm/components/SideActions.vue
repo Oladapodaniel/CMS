@@ -1149,6 +1149,8 @@ export default {
                         message: "Updated successfully",
                         duration: 5000
                     })
+                    store.dispatch('membership/setFirstTimerData');
+                    store.dispatch('dashboard/getDashboard')
                 }
                 catch (err) {
                     console.log(err)

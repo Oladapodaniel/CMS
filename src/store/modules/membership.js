@@ -4,7 +4,8 @@ import lookupService from '../../services/membership/membershipservice'
 
 const defaultState = (() => ({
   members: [],
-  membershipSummary: {}
+  membershipSummary: {},
+  firstTimers: []
 }))
 
 export default {
@@ -15,11 +16,10 @@ export default {
     setMembers(state, payload) {
       state.members = payload;
     },
-
-    // setFirstTimers(state, payload) {
-    //   state.firstTimers = payload;
-    // },
-
+    setFirstTimers(state, payload) {
+      state.firstTimers = payload;
+      console.log(state.firstTimers)
+    },
     updateMember(state, payload) {
       const targetMembersIndex = state.members.findIndex(i => i.id === payload.id);
       state.members[targetMembersIndex] = payload;
@@ -35,12 +35,17 @@ export default {
     showImportedPeople(state, payload) {
       payload.forEach(i => state.members.push(i))
     },
+    setMembershipSummary(state, payload) {
+      state.membershipSummary = payload
+    },
+    removeFirstTimer(state, payload) {
+      state.firstTimers = state.firstTimers.filter(
+        (item) => item.id !== payload
+      );
+    },
     clearMember(state) {
       Object.assign(state, defaultState())
     },
-    setMembershipSummary(state, payload) {
-      state.membershipSummary = payload
-    }
   },
 
   actions: {
@@ -58,7 +63,15 @@ export default {
 
       })
     },
-
+    setFirstTimerData({ commit }) {
+      return membershipService.getFirstTimers().then((response) => {
+        commit("setFirstTimers", response.response.firstTimers)
+        return response.response.firstTimers
+      })
+    },
+    removeFirstTimerFromStore({ commit }, payload) {
+        commit("removeFirstTimer", payload)
+    },
     setup({ commit }) {
       lookupService.getLookUps()
         .then(res => {
@@ -93,7 +106,7 @@ export default {
 
   getters: {
     members: state => state.members,
-
+    allFirstTimers: state => state.firstTimers,
     getMemberById: (state) => (id) => {
       return state.members.find(i => i.id === id)
     },

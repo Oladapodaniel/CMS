@@ -595,8 +595,6 @@ export default {
         }))
         )
       );
-      /*eslint no-undef: "warn"*/
-      NProgress.start();
       if (route.params.personId) {
         try {
           loading.value = true;
@@ -605,17 +603,15 @@ export default {
             formData
           );
           if (response.status === 200 || response.status === 201) {
-            membershipService.updatePersonInStore(
-              response.data.person,
-              route.params.personId
-            );
             loading.value = false;
-            router.push("/tenant/people");
+            store.dispatch("dashboard/getDashboard")
+            store.dispatch("membership/setMembers").then(() => {
+              router.push("/tenant/people");
+            })
           }
         } catch (err) {
           console.log(err);
           loading.value = false;
-          NProgress.done();
           if (err.toString().toLowerCase().includes("network error")) {
             ElMessage({
               type: 'warning',
@@ -654,14 +650,18 @@ export default {
           );
 
           if (response.status === 200 || response.status === 201) {
-            membershipService.addPersonToStore(response.data.person);
+            // membershipService.addPersonToStore(response.data.person);
+            
             loading.value = false;
-            router.push("/tenant/people");
+            store.dispatch("dashboard/getDashboard")
+            store.dispatch("membership/setMembers").then(() => {
+                router.push("/tenant/people");
+              })
           }
         } catch (err) {
           console.log(err)
           loading.value = false;
-          NProgress.done();
+          // NProgress.done();
           if (err.toString().toLowerCase().includes("network error")) {
             ElMessage({
               type: 'warning',
