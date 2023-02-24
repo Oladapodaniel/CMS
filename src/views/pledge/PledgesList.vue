@@ -1,77 +1,67 @@
 <template>
   <div>
-    <div class="">
-      <div class="row ">
+      <div class="row  ">
         <div class="col-md-6">
           <div class="head-text">Partnership and Pledges</div>
-          <Toast />
-          <ConfirmDialog />
         </div>
         <div class="col-md-6 d-flex flex-column flex-sm-row mt-2 my-1 link">
-          <router-link to="/tenant/pledge/pledgedefinitionlist">
+          <router-link class="" to="/tenant/pledge/pledgedefinitionlist">
             <el-button class="header-btn mr-3"  round>
               Partnership/Pledge items
             </el-button>
           </router-link>
-          <router-link
+          <router-link class=""
             to="/tenant/pledge/makepledge"
            >
-            <el-button color="#136acd"   class="  header-btnmt-3 mt-sm-0" round>
+            <el-button color="#136acd"   class="  header-btn mt-3  mt-sm-0" round>
               New Partnership/Pledge
             </el-button></router-link
           >
         </div>
-        <div class="col-md-12 px-0">
-          <hr class="hr my-3" />
-        </div>
       </div>
-    </div>
+      <div class="conttainer ">
+        <div class="row">
+          <div class="col-md-12">
+          <hr class="hr my-3 w-100" />
 
-    <!-- <PledgeTransaction /> -->
-
-    <div class="container-fluid">
-      <div class="container-fluid">
-        <div
-          class="row border py-3 px-2 mt-3 rounded"
-          v-if="allPledgeList.length > 0 && !loading && !networkError"
-        >
-          <div class="col-md-4">
-            <div class="text-secondary font-weight-bold small">
-              Total pledge
-            </div>
-            <h3 class="font-weight-700 mt-3">
-              {{ Math.abs(pledgesSummary.totalPledges).toLocaleString() }}.00 <span class="text-secondary small">{{pledgesSummary.symbol}}</span>
-            </h3>
           </div>
-          <div class="col-md-4 mt-3 mt-md-0">
-            <div class="font-weight-bold small text-secondary">
-              Total Payments
-            </div>
-            <h3 class="font-weight-700 mt-3">
-                {{ Math.abs(pledgesSummary.totalPayments).toLocaleString() }}.00<span class="text-secondary small">{{pledgesSummary.symbol}}</span>
-            </h3>
-          </div>
-          <div class="col-md-4 mt-3 mt-md-0">
-            <div class="text-secondary font-weight-bold small">
-              <!-- Payment within the last 30 days -->
-              Total Balance
-            </div>
-            <h3 class="font-weight-700 mt-3">
-             {{ Math.abs(pledgesSummary.paymentsInLast30Days).toLocaleString() }}.00 <span class="text-secondary small">{{pledgesSummary.symbol}}</span>
-            </h3>
-          </div>
-          <!-- <div class="col-md-3 mt-3 mt-md-0">
-            <div class="font-weight-bold small text-secondary">
-              Average time to redemption
-            </div>
-            <h3 class="font-weight-700 mt-3">
-              21<span class="text-secondary small">days</span>
-            </h3>
-          </div> -->
         </div>
       </div>
       <div
-        class="row mt-4"
+        class="container "
+        v-if="allPledgeList.length > 0 && !loading && !networkError"
+      >
+      <div class="row  border py-3  mt-3 rounded">
+        <div class="col-md-4">
+          <div class="text-secondary font-weight-bold small">
+            Total pledge
+          </div>
+          <h3 class="font-weight-700 mt-3">
+            {{ Math.abs(pledgesSummary.totalPledges).toLocaleString() }}.00 <span class="text-secondary small">{{pledgesSummary.symbol}}</span>
+          </h3>
+        </div>
+        <div class="col-md-4 mt-3 mt-md-0">
+          <div class="font-weight-bold small text-secondary">
+            Total Payments
+          </div>
+          <h3 class="font-weight-700 mt-3">
+              {{ Math.abs(pledgesSummary.totalPayments).toLocaleString() }}.00 <span class="text-secondary small">{{pledgesSummary.symbol}}</span>
+          </h3>
+        </div>
+        <div class="col-md-4 mt-3 mt-md-0">
+          <div class="text-secondary font-weight-bold small">
+            <!-- Payment within the last 30 days -->
+            Total Balance
+          </div>
+          <h3 class="font-weight-700 mt-3">
+            {{pledgeBalance.toLocaleString()}}00 <span class="text-secondary small"> {{pledgesSummary.symbol}} </span>
+          </h3>
+        </div>
+      </div>
+        
+      </div>
+      <div
+        class="row  mt-4"
         v-if="allPledgeList.length > 0 && !loading && !networkError"
       >
         <div class="col-md-12 mt-3 d-flex">
@@ -92,7 +82,7 @@
         </div>
       </div>
       <div
-        class="row mt-4"
+        class="row  mt-4 mb-4"
         v-if="allPledgeList.length > 0 && !loading && !networkError"
       >
         <div class="col-md-2">
@@ -107,7 +97,7 @@
             optionLabel="name"
             placeholder="Select contact"
           /> -->
-           <!-- <input
+          <!-- <input
                 type="text"
                 v-model="selectedContact2"
                 class="form-control"
@@ -172,310 +162,64 @@
             </button>
         </div>
       </div>
-      <div
-        class="container-fluid d-none mt-5 d-md-block"
-        v-if="allPledgeList.length > 0 && !loading && !networkError"
-      >
-        <div class="row t-header mt-4 border-bottom pb-2">
-          <div class="small-text text-capitalize col-md-1 font-weight-bold">
-            Status
-          </div>
-          <div class="small-text text-capitalize col-md-1 font-weight-bold">
-            Due
-          </div>
-          <div class="small-text text-capitalize col-md-1 font-weight-bold">
-            Number
-          </div>
-          <div class="small-text text-capitalize col-md-2 font-weight-bold">
-            Contact
-          </div>
-          <div class="small-text text-capitalize col-md-2 font-weight-bold">
-            Category
-          </div>
-          <div
-            class="
-              small-text
-              text-capitalize
-              
-              col-md-2
-              font-weight-bold
-            "
-          >
-            Amount
-          </div>
-          <div
-            class="
-              small-text
-              text-capitalize
-              
-              col-md-1
-              font-weight-bold
-            "
-          >
-            Redemeed
-          </div>
-          <div class="small-text text-capitalize col-md-1 font-weight-bold">
-            Date
-          </div>
-          <div
-            class="
-              small-text
-              text-capitalize
-              col-md-1
-            
-              font-weight-bold
-            "
-          >
-            Action
-          </div>
-        </div>
-      </div>
-      <div
-        class="row"
-        style="margin: 0"
-        v-if="allPledgeList.length > 0 && !loading && !networkError"
-      >
-        <div class="col-12 pb-2 px-0">
-          <div
-            class="
-              row
-              w-100
-              c-pointer
-              text-dark
-              border-top
-              py-2
-              hover
-              d-flex
-              align-items-center
-            "
-            style="margin: 0"
-            v-for="(pledgelist, index) in searchPledges"
-            :key="index"
-          >
-            <div class="col-md-1 py-2" @click="pledgeListClick(pledgelist.id)">
-              <p
-                class="
-                  mb-0
-                  d-flex
-                  text-danger
-                  font-weight-bold
-                  justify-content-between
-                "
-              >
-                <span
-                  class="
-                    text-dark
-                    font-weight-bold
-                    d-flex d-md-none
-                    fontIncrease
-                  "
-                  style="font-size: 15px"
-                  >Status</span
-                >
-                <span class="rounded small font-weight-bold statusbg py-1"
-                  >{{pledgelist.status}}</span
-                >
-              </p>
-            </div>
-
-            <div class="col-md-1 py-2" @click="pledgeListClick(pledgelist.id)">
-              <div class="mb-0 d-flex text-danger justify-content-between">
-                <span
-                  class="
-                    text-dark
-                    font-weight-bold
-                    d-flex d-md-none
-                    fontIncrease
-                  "
-                  style="font-size: 15px"
-                  >Due</span
-                >
-                <div class="small">{{pledgelist.overDueDays }}</div>
-              </div>
-            </div>
-            <div class="col-md-1 py-2" @click="pledgeListClick(pledgelist.id)">
-              <div class="d-flex small justify-content-between">
-                <span
-                  class="
-                    text-dark
-                    font-weight-bold
-                    d-flex d-md-none
-                    fontIncrease
-                  "
-                  style="font-size: 15px"
-                  >Number</span
-                >
-                <div class="small-text">{{pledgelist.pledgeNumber}}</div>
-              </div>
-            </div>
-            <div class="col-md-2 py-2" @click="pledgeListClick(pledgelist.id)">
-              <div class="d-flex small justify-content-between">
-                <span
-                  class="
-                    text-dark
-                    font-weight-bold
-                    d-flex d-md-none
-                    fontIncrease
-                  "
-                  style="font-size: 15px"
-                  >Contact</span
-                >
-                <div class="small-text">
-                  {{ pledgelist.contact }}
-                </div>
-              </div>
-            </div>
-            <div class="col-md-2 py-2" @click="pledgeListClick(pledgelist.id)">
-              <div class="d-flex small justify-content-between">
-                <span
-                  class="
-                    text-dark
-                    font-weight-bold
-                    d-flex d-md-none
-                    fontIncrease
-                  "
-                  style="font-size: 15px"
-                  >Category</span
-                >
-                <div class="small-text">
-                  {{ pledgelist.pledgeItemName }}
-                </div>
-              </div>
-            </div>
-            <div class="col-md-2 py-2" @click="pledgeListClick(pledgelist.id)">
-              <div class="d-flex small justify-content-between">
-                <span
-                  class="
-                    text-dark
-                    font-weight-bold
-                    d-flex d-md-none
-                    fontIncrease
-                  "
-                  style="font-size: 15px"
-                  >Amount</span
-                >
-                <div class="small-text">
-                  {{
-                    pledgelist  &&
-                    pledgelist.currency
-                      ? pledgelist.currency.symbol
+      <Table  :data="searchPledges" :headers="pledgeHeaders" :checkMultipleItem="false" 
+            v-loading="loading">
+            <template v-slot:status="{ item }">
+              <div class="c-pointer" @click="pledgeListClick(item.id)">{{ item.status }}</div>
+            </template>
+            <template v-slot:pledgeNumber="{ item }">
+              <div class="c-pointer"  @click="pledgeListClick(item.id)">{{ item.pledgeNumber }}</div>
+            </template>
+            <template v-slot:contact="{ item }">
+              <div class="c-pointer"  @click="pledgeListClick(item.id)">{{ item.contact }}</div>
+            </template>
+            <template v-slot:amount="{ item }">
+              <div class="c-pointer" @click="pledgeListClick(item.id)">{{
+                    item  &&
+                    item.currency
+                      ? item.currency.symbol
                       : ""
                   }}
-                  {{ Math.abs(pledgelist.amount).toLocaleString() }}.00
-                </div>
-              </div>
-            </div>
-            <div class="col-md-1 py-2" @click="pledgeListClick(pledgelist.id)"> 
-              <div class="d-flex small justify-content-between">
-                <span
-                  class="
-                    text-dark
-                    font-weight-bold
-                    d-flex d-md-none
-                    fontIncrease
-                  "
-                  style="font-size: 15px"
-                  >Redemeed</span
-                >
-                <div class="small-text">{{pledgelist.totalPaymentSum}}</div>
-              </div>
-            </div>
-             <div class="col-md-1 py-2" @click="pledgeListClick(pledgelist.id)">
-              <p class="mb-0 d-flex justify-content-between">
-                <span
-                  class="
-                    text-dark
-                    font-weight-bold
-                    d-flex d-md-none
-                    fontIncrease
-                  "
-                  style="font-size: 15px"
-                  >Date
-                </span>
-                {{ date(pledgelist.date) }}
-              </p>
-            </div>
-
-            <div class="col-md-1 py-2">
-              <div>
-                <div class="dropdown">
-                  <span class="d-flex justify-content-between">
-                    <span
-                      class="
-                        d-md-none d-sm-flex
-                        text-dark
-                        font-weight-bold
-                        d-flex d-md-none
-                        fontIncrease
-                      "
-                      style="font-size: 15px"
-                      >Action</span
-                    >
-                    <span class="d-sm-flex small">
-                      <i
-                        class="
-                          fas
-                          fa-ellipsis-v
-                          cursor-pointer
-                          ml-2
-                          fontIncrease
-                        "
-                        id="dropdownMenuButton"
-                        data-toggle="dropdown"
-                        aria-haspopup="true"
-                        aria-expanded="false"
-                      ></i>
-
-                      <div
-                        class="dropdown-menu"
-                        aria-labelledby="dropdownMenuButton"
-                      >
-                        <a class="dropdown-item"
-                          ><router-link
+                  {{ Math.abs(item.amount).toLocaleString() }}.00</div>
+            </template>
+            <template v-slot:redeemed="{ item }">
+              <div class="c-pointer" @click="pledgeListClick(item.id)">{{item.currencySymbol}}{{ Math.abs(item.totalPaymentSum).toLocaleString() }}..00</div>
+            </template>
+            <template v-slot:date="{ item }">
+              <div class="c-pointer"  @click="pledgeListClick(item.id)">{{ date(item.date) }}</div>
+            </template>
+            <template v-slot:action="{ item }">
+              <el-dropdown trigger="click">
+                <el-icon>
+                  <MoreFilled />
+                </el-icon>
+                <template #dropdown>
+                  <el-dropdown-menu>
+                    <el-dropdown-item>
+                      <router-link
                             :to="`/tenant/pledge/pledgemaking?pledgeTypeID=${
-                              pledgelist.id
+                              item.id
                             }`"
                             class="text-color"
-                            >Make Payment</router-link
-                          ></a
-                        >
-                        <a class="dropdown-item"
-                          ><router-link
-                            :to="`/tenant/pledge/makepledge?id=${pledgelist.id}`"
+                            >Make Payment</router-link>
+                    </el-dropdown-item>
+                    <el-dropdown-item>
+                      <router-link
+                            :to="`/tenant/pledge/makepledge?id=${item.id}`"
                             class="text-color"
-                            >Edit</router-link
-                          ></a
-                        >
-                        <a
-                          class="dropdown-item"
-                          @click="showConfirmModal(pledgelist.id, index)"
-                          >Delete</a
-                        >
-                      </div>
-                    </span>
-                  </span>
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
-
-      <div class="row" v-if="loading">
-        <div class="col-md-12">
-          <div class="row">
-            <div
-              class="col-md-12 d-flex align-items-center justify-content-center"
-            >
-              <i class="pi pi-spin pi-spinner py-4" style="font-size: 3rem"></i>
-            </div>
-          </div>
-        </div>
-      </div>
-
+                            >Edit</router-link>
+                    </el-dropdown-item>
+                    <el-dropdown-item>
+                      <div @click.prevent="showConfirmModal(item.id, index)" class="text-color">Delete</div>
+                    </el-dropdown-item>
+                  </el-dropdown-menu>
+                </template>
+              </el-dropdown>
+            </template>
+      </Table>
       <div
         class="no-person"
-        v-else-if="allPledgeList.length === 0 && !loading && !networkError"
+        v-if="allPledgeList.length === 0 && !loading && !networkError"
       >
         <div class="empty-img">
           <p><img src="../../assets/people/people-empty.svg" alt="" /></p>
@@ -501,7 +245,6 @@
         <img src="../../assets/network-disconnected.png" />
         <div>Opps, Your internet connection was disrupted</div>
       </div>
-    </div>
   </div>
 </template>
 
@@ -512,11 +255,10 @@ import MembersSearch from "../../components/membership/MembersSearch.vue";
 import axios from "@/gateway/backendapi";
 import Calendar from "primevue/calendar";
 import Dropdown from "primevue/dropdown";
-import { useToast } from "primevue/usetoast";
 import InputText from "primevue/inputtext";
-import { useConfirm } from "primevue/useconfirm";
 import monthDayYear from "../../services/dates/dateformatter";
-// import PledgeTransaction from "./PledgeTransaction.vue";
+import { ElMessage, ElMessageBox } from 'element-plus'
+import Table from "@/components/table/Table"
 import router from "../../router";
 
 export default {
@@ -525,6 +267,7 @@ export default {
     Calendar,
     MembersSearch,
     InputText,
+    Table
   },
   setup() {
     const networkError = ref(false);
@@ -539,7 +282,6 @@ export default {
     const selectedCategory = ref({});
     const filterResult = ref([]);
     const selectedStatus = ref("")
-    const toast = useToast();
     const loading = ref(false);
     const searchText = ref("");
     const selectedPledge = ref("");
@@ -555,8 +297,15 @@ export default {
     const showInvoice = ref(false);
     const selectedContact = ref({});
     const selectedContact2 = ref("");
-
-    const confirm = useConfirm();
+    const pledgeHeaders = ref([
+      { name: 'STATUS', value: 'status' },
+      { name: 'PLEDGE NO.', value: 'pledgeNumber' },
+      { name: 'CONTACT', value: 'contact' },
+      { name: 'AMOUNT', value: 'amount' },
+      { name: 'REDEEMED', value: 'redeemed' },
+      { name: 'DATE', value: 'date' },
+      { name: 'ACTION', value: 'action' },
+    ])
 
     const upload = () => {
       showUpload.value = true;
@@ -583,6 +332,9 @@ export default {
     const pledgeListClick = (id) =>{
         router.push(`/tenant/pledge/pledgemaking?pledgeTypeID=${id}`);
     }
+    const pledgeBalance = computed(() =>{
+      return pledgesSummary.value.totalPledges - pledgesSummary.value.totalPayments
+    })
 
     const getAllPledgeDefinition = async () => {
       try{
@@ -713,16 +465,13 @@ export default {
     const deletePledge = (id) => {
       axios
         .delete(`/api/Pledge/DeletePledge?ID=${id}`)
-        // .delete(`/api/Pledge/DeletePledgeDefinition?ID=${id}`)
         .then((res) => {
           console.log(res);
-          toast.add({
-            severity: "success",
-            summary: "Confirmed",
-            detail: "Pledge form deleted",
-            life: 3000,
-          });
-
+          ElMessage({
+            type: 'success',
+            message: 'Pledge form deleted',
+            duration: 5000
+          })
           allPledgeList.value = allPledgeList.value.filter(
             (pledgelist) => pledgelist.id !== id
           );
@@ -730,19 +479,17 @@ export default {
         .catch((err) => {
           // finish();
           if (err.response.status === 400) {
-            toast.add({
-              severity: "error",
-              summary: "Unable to delete",
-              detail: "Ensure this member is not in any group",
-              life: 3000,
-            });
+            ElMessage({
+            type: 'error',
+            message: 'Unable to delete, Ensure this member is not in any group',
+            duration: 5000
+          })
           } else {
-            toast.add({
-              severity: "error",
-              summary: "Unable to delete",
-              detail: "An error occurred, please try again",
-              life: 3000,
-            });
+            ElMessage({
+            type: 'error',
+            message: 'Unable to delete',
+            duration: 5000
+          })
           }
         });
     };
@@ -754,31 +501,33 @@ export default {
     };
 
     const showConfirmModal = (id, index) => {
-      confirm.require({
-        message: "Are you sure you want to proceed?",
-        header: "Confirmation",
-        icon: "pi pi-exclamation-triangle",
-        acceptClass: "confirm-delete",
-        rejectClass: "cancel-delete",
-        accept: () => {
-          deletePledge(id, index);
-          // toast.add({severity:'info', summary:'Confirmed', detail:'Member Deleted', life: 3000});
-        },
-        reject: () => {
-          toast.add({
-            severity: "info",
-            summary: "Rejected",
-            detail: "You have rejected",
-            life: 3000,
-          });
-        },
-      });
+        ElMessageBox.confirm(
+        "Are you sure you want to proceed?",
+        'Confirm delete',
+        {
+          confirmButtonText: 'OK',
+          cancelButtonText: 'Cancel',
+          type: 'error',
+        }
+      )
+        .then(() => {
+           deletePledge(id, index);
+        })
+        .catch(() => {
+          ElMessage({
+            type: 'info',
+            message: 'Delete canceled',
+            duration: 5000
+          })
+        })
     };
 
     return {
       upload,
+      pledgeHeaders,
       allPledgeDefinitionList,
       filterResult,
+      pledgeBalance,
       allPerson,
       filterPledge,
       pledgeListClick,

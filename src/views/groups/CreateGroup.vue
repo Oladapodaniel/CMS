@@ -394,8 +394,8 @@
                     </div>
                   </div>
                   <div class="col-12">
-                    <!-- <GroupTree :items="groupData.children" /> -->
-                    <div
+                    <GroupTree :items="groupData.children" />
+                    <!-- <div
                       class="font-weight-700 my-3"
                       v-show="
                         groupData.children && groupData.children.length > 0
@@ -410,7 +410,7 @@
                       >
                         {{ item.name }}
                       </li>
-                    </ul>
+                    </ul> -->
                   </div>
                 </div>
               </div>
