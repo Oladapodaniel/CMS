@@ -90,13 +90,6 @@
                 @memberdetail="chooseContact"
                 :currentMember="selectedContact"
               />
-          <!-- <Dropdown
-            v-model="selectedContact2"
-            class="w-100 font-weight-normal"
-            :options="allPerson"
-            optionLabel="name"
-            placeholder="Select contact"
-          /> -->
           <!-- <input
                 type="text"
                 v-model="selectedContact2"
