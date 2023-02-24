@@ -27,6 +27,7 @@ const setupService = {
         store.dispatch("dashboard/clearState");
         store.dispatch('membership/clearMember')
         store.dispatch("clearPeopleInStore");
+        store.dispatch('groups/clearGroup')
     }
 }
 

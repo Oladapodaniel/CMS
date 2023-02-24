@@ -1,15 +1,16 @@
 import grousService from "../../services/groups/groupsservice";
 
+const defaultState = () => ({
+    groups: [],
+    selectedTreeGroup: {},
+    selectedTreeGroupList: {},
+    checkedTreeGroup: [],
+    checkedGroupChildren: []
+})
 export default {
     namespaced: true,
     
-    state: {
-        groups: [],
-        selectedTreeGroup: {},
-        selectedTreeGroupList: {},
-        checkedTreeGroup: [],
-        checkedGroupChildren: []
-    },
+    state: defaultState(),
     getters: {
         groups: state => state.groups,
         selectedTreeGroup: state => state.selectedTreeGroup,
@@ -51,7 +52,7 @@ export default {
             state.groups.slice(payload, 1);
         },
         clearGroup (state) {
-            state.groups = []
+            Object.assign(state, defaultState())
         },
         setSelectedTreeGroup (state, payload) {
             state.selectedTreeGroup = payload
