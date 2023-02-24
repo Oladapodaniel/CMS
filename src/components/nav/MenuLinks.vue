@@ -20,7 +20,7 @@
               </el-icon>
               <span>{{ item.name }}</span>
             </template>
-            <div v-for="(x, index) in item.submenu" :key="index">
+            <div v-for="(x, indexe) in item.submenu" :key="indexe">
               <el-sub-menu :index="`${index + 1}-${indexe + 1}`" v-if="x.submenu && x.submenu.length > 0">
                 <template #title>{{ x.name }}</template>
                 <el-menu-item :index="`${index + 1}-${indexe + 1}-${indexee + 1}`" v-for="(y, indexee) in x.submenu"
