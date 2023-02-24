@@ -172,6 +172,7 @@ import { useRoute } from "vue-router"
 import { useStore } from "vuex"
 import deviceBreakpoint from "../../mixins/deviceBreakpoint";
 import { ElMessage } from 'element-plus'
+import router from '../../router/index'
 
 export default {
     emits: ["uploadtogroup"],
@@ -285,18 +286,17 @@ export default {
         const addToMembers = async () => {
             loading.value = true
             if (route.query.query === "importpeople") {
-                console.log(route.query.query)
                 try {
                     let { data } = await axios.post("/api/People/CreatePeople", memberData.value)
-                    console.log(data)
-                    console.log(memberData.value)
-                    store.dispatch('membership/showImportedPeople', memberData.value)
                     displayModal.value = false
                     loading.value = false
-                    window.location.href = window.location.origin + '/tenant/people';
+                    store.dispatch('dashboard/getDashboard');
+                    store.dispatch('membership/setMembers').then(() => {
+                        router.push("/tenant/people")
+                    })
                     ElMessage({
                         type: 'success',
-                        message: `${data.returnObject.returnList} ${data.returnObject.returnList === 1 ? "member" : "members"} added successfully`,
+                        message: `${data.returnObject.createdRecord}`,
                         duration: 8000
                     })
                 }
@@ -324,19 +324,15 @@ export default {
                     console.log(data)
                     displayModal.value = false
                     loading.value = false
-                    if (data.returnObject.returnList.length > 0) {
-                        ElMessage({
-                            type: 'warning',
-                            message: `There are ${data.returnObject.returnList} members that have been added already`,
-                            duration: 8000
-                        })
-                    } else {
-                        ElMessage({
-                            type: 'warning',
-                            message: data.createdRecord,
-                            duration: 4000
-                        })
-                    }
+                    store.dispatch('dashboard/getDashboard');
+                    store.dispatch('membership/setFirstTimerData').then(() => {
+                        router.push("/tenant/firsttimerslist")
+                    })
+                    ElMessage({
+                        type: 'success',
+                        message: `${data.returnObject.createdRecord}`,
+                        duration: 8000
+                    })
                 }
                 catch (err) {
                     finish()

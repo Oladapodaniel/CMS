@@ -37,8 +37,7 @@
       <template #footer>
         <span class="dialog-footer">
           <el-button @click="addToGroupDialog = false" round>Cancel</el-button>
-          <el-button type="primary" color="#136acd" :loading="allGroupLoading" @click="getAllMembersAndAddToGroup"
-            round>
+          <el-button type="primary" color="#136acd" :loading="allGroupLoading" @click="getAllMembersAndAddToGroup" round>
             Add to group
           </el-button>
         </span>
@@ -90,8 +89,7 @@
           </el-tooltip>
           <el-tooltip class="box-item" effect="dark" v-if="marked.length > 0" content="Archive member(s)"
             placement="top-start">
-            <el-icon class="ml-2 c-pointer" :size="20" @click="(displayPositionArchive = true)"
-              v-if="marked.length > 0">
+            <el-icon class="ml-2 c-pointer" :size="20" @click="(displayPositionArchive = true)" v-if="marked.length > 0">
               <DocumentRemove />
             </el-icon>
           </el-tooltip>
@@ -105,11 +103,10 @@
             <img src="../../assets/sms.png" style="width: 20px; margin-top: -13px" class="ml-2 c-pointer"
               @click="sendMarkedMemberSms" alt="Send SMS" />
             <!-- <el-icon :size="20" class="ml-2 c-pointer" v-if="marked.length > 0" @click="sendMarkedMemberSms">
-              
-            </el-icon> -->
+                    
+                  </el-icon> -->
           </el-tooltip>
-          <el-tooltip class="box-item" effect="dark" v-if="marked.length > 0" content="Send Email"
-            placement="top-start">
+          <el-tooltip class="box-item" effect="dark" v-if="marked.length > 0" content="Send Email" placement="top-start">
             <el-icon :size="20" class="ml-2 c-pointer" v-if="marked.length > 0" @click="sendMarkedMemberEmail">
               <Message />
             </el-icon>
@@ -143,12 +140,12 @@
           <div class="col-md-9">
             <div class="row">
               <div class="
-                    col-12 col-sm-6
-                    offset-sm-3 offset-md-0
-                    form-group
-                    inp
-                    w-100
-                  ">
+                          col-12 col-sm-6
+                          offset-sm-3 offset-md-0
+                          form-group
+                          inp
+                          w-100
+                        ">
                 <el-input placeholder="First name" class="w-100" v-model="filter.name" @input="setFilteredValue" />
               </div>
               <div class="col-12 col-sm-6 form-group d-none d-md-block">
@@ -175,7 +172,8 @@
         <el-card shadow="hover" class="c-pointer person-image" v-if="item.pictureUrl"
           style="border-radius: 50%; height: 26px; width: 26px;">
           <el-tooltip class="box-item" effect="dark" content="Click to view" placement="top-start">
-              <el-image style="border-radius: 50%; height: 26px; width: 26px;" :src="item.pictureUrl" fit="cover" @click="(selectedImage = item), (imageDialog = true)" :lazy="true"/>
+            <el-image style="border-radius: 50%; height: 26px; width: 26px;" :src="item.pictureUrl" fit="cover"
+              @click="(selectedImage = item), (imageDialog = true)" :lazy="true" />
           </el-tooltip>
         </el-card>
         <el-avatar :size="25" v-else><el-icon color="#000000">
@@ -194,44 +192,43 @@
       </template>
       <template v-slot:action="{ item }">
         <div>
-          <el-dropdown trigger="click">
-            <el-icon>
+          <div class="dropdown">
+            <el-icon data-toggle="dropdown" aria-expanded="false">
               <MoreFilled />
             </el-icon>
-            <template #dropdown>
-              <el-dropdown-menu>
-                <el-dropdown-item>
+            <ul class="dropdown-menu">
+              <li class="dropdown-item"><a>
                   <router-link :to="
                     item.mobilePhone
                       ? `/tenant/sms/compose?phone=${item.mobilePhone}`
                       : ''
                   " :class="{ 'fade-text': !item.mobilePhone, 'text-color': item.mobilePhone }">Send
                     SMS</router-link>
-                </el-dropdown-item>
-                <el-dropdown-item>
+                </a></li>
+              <li><a class="dropdown-item" href="#">
                   <router-link :to="
                     item.email
                       ? `/tenant/email/compose?phone=${item.email}`
                       : ''
                   " :class="{ 'fade-text': !item.email, 'text-color': item.email }">Send
                     Email</router-link>
-                </el-dropdown-item>
-                <el-dropdown-item @click="archive(item.id, 'single')">
+                </a></li>
+              <li @click="archive(item.id, 'single')"><a class="dropdown-item" href="#">
                   <div class="text-color">Archive</div>
-                </el-dropdown-item>
-                <el-dropdown-item>
+                </a></li>
+              <li><a class="dropdown-item" href="#">
                   <router-link :to="`/tenant/firsttimermanagement/${item.id}?memberType=1`" class="text-color">
                     Follow Up
                   </router-link>
-                </el-dropdown-item>
-                <el-dropdown-item><router-link :to="`/tenant/people/add/${item.id}`"
-                    class="text-color">Edit</router-link></el-dropdown-item>
-                <el-dropdown-item>
-                  <div @click.prevent="showConfirmModal(item.id, index)" class="text-color">Delete</div>
-                </el-dropdown-item>
-              </el-dropdown-menu>
-            </template>
-          </el-dropdown>
+                </a></li>
+              <li><a class="dropdown-item" href="#">
+                  <router-link :to="`/tenant/people/add/${item.id}`" class="text-color">Edit</router-link>
+                </a></li>
+              <li><a class="dropdown-item" href="#">
+                <div @click.prevent="showConfirmModal(item.id, index)" class="text-color">Delete</div>
+                </a></li>
+            </ul>
+          </div>
         </div>
       </template>
     </Table>
@@ -242,8 +239,8 @@
 
     </div>
 
-    <el-dialog v-model="imageDialog" :width="mdAndUp || lgAndUp || xlAndUp ? `50%` : xsOnly ? `90%` : `70%`"
-      align-center class="person-image-dialog">
+    <el-dialog v-model="imageDialog" :width="mdAndUp || lgAndUp || xlAndUp ? `50%` : xsOnly ? `90%` : `70%`" align-center
+      class="person-image-dialog">
       <el-image class="w-100" :src="selectedImage.pictureUrl" fit="contain" />
       <template #footer>
         <span class="dialog-footer person-image-dialog-footer">
@@ -296,18 +293,6 @@
       </template>
     </el-drawer>
   </div>
-
-  <!-- <SideBar :show="showSMS" :title="'Compose SMS'" @closesidemodal="() => showSMS = false">
-    <div class="m-wrapper" :class="{ 'm-wrapper': showSMS, 'no-show': !showSMS }">
-      <smsComponent :phoneNumbers="contacts" @closesidemodal="() => showSMS = false" />
-    </div>
-  </SideBar> -->
-  <!-- <SideBar :show="showEmail" :title="'Compose Email'" @closesidemodal="() => showEmail = false">
-    <div class="m-wrapper2">
-      <emailComponent :selectedGroupMembers="markedMembers" @closesidemodal="() => showEmail = false" />
-    </div>
-  </SideBar> -->
-
 </template>
 
 <script>
@@ -326,6 +311,7 @@ import deviceBreakpoint from "../../mixins/deviceBreakpoint";
 import { ElMessage, ElMessageBox } from 'element-plus'
 import router from "../../router/index"
 import Table from "@/components/table/Table"
+import groupsService from "../../services/groups/groupsservice";
 
 export default {
   props: ["list", "peopleCount"],
@@ -352,7 +338,7 @@ export default {
     const showEmail = ref(false)
     const contacts = ref([])
     const markedMembers = ref([])
-    const chooseGrouptoMoveAllMembers = ref("")
+    const chooseGrouptoMoveAllMembers = ref()
     const currentUser = ref({})
     const route = useRoute();
     const displayPositionArchive = ref(false);
@@ -393,7 +379,7 @@ export default {
     const toggleFilterFormVissibility = () =>
       (filterFormIsVissible.value = !filterFormIsVissible.value);
 
-    const membershipSummary = ref([]);
+    const membershipSummary = ref(store.getters['membership/membershipSummary']);
 
     const chooseGroupto = (items) => {
       chooseGrouptoMoveto.value = items
@@ -424,14 +410,7 @@ export default {
             })
           }
           store.dispatch("membership/removeMember", id);
-          axios
-            .get(`/api/People/GetMembershipSummary`)
-            .then((res) => {
-              membershipSummary.value = res.data;
-            })
-            .catch((err) => {
-              console.log(err);
-            });
+          store.dispatch("dashboard/getDashboard")
 
           if (filterResult.value.length > 0 && filtered.value && filter.value.name) {
             filterResult.value = filterResult.value.filter(
@@ -468,11 +447,11 @@ export default {
     const showConfirmModal = (id, index) => {
       ElMessageBox.confirm(
         'Are you sure you want to proceed?',
-        'Warning',
+        'Confirm delete',
         {
           confirmButtonText: 'OK',
           cancelButtonText: 'Cancel',
-          type: 'warning',
+          type: 'error',
         }
       )
         .then(() => {
@@ -501,13 +480,9 @@ export default {
     };
 
     const getMemberSummary = () => {
-      axios
-        .get(`/api/People/GetMembershipSummary`)
-        .then((res) => {
-          membershipSummary.value = res.data;
-        })
-        .catch((err) => console.log(err));
-
+      store.dispatch('membership/setMembershipSummary').then(response => {
+        membershipSummary.value = response
+      })
     }
     getMemberSummary()
 
@@ -555,6 +530,7 @@ export default {
           ElMessage({
             type: 'success',
             message: 'Delete successful',
+            duration: 7000
           })
 
           churchMembers.value = churchMembers.value.filter((item) => {
@@ -567,9 +543,10 @@ export default {
           ElMessage({
             type: 'info',
             message: `${displayRes[0]}`,
+            duration: 7000
           })
 
-          if (displayRes[1] !== "") {
+          if (displayRes && displayRes[1] && displayRes[1] !== "") {
             if (!displayRes[1].includes(",")) {
               churchMembers.value = churchMembers.value.filter((item) => {
                 return !item.id.includes(displayRes[1]);
@@ -585,13 +562,14 @@ export default {
           }
         }
         marked.value = [];
-        store.dispatch("membership/removeMember");
-        getMemberSummary();
+        store.dispatch("membership/setMembers");
+        store.dispatch("dashboard/getDashboard")
       } catch (error) {
         console.log(error);
         ElMessage({
           type: 'warning',
           message: 'Delete failed, please try again',
+          duration: 4000
         })
         // }
       }
@@ -727,24 +705,22 @@ export default {
     };
 
     const getAllGroups = ref([]);
-    const getGroups = () => {
-      axios
-        .get(`/api/GetAllGroupBasicInformation`)
-        .then((res) => {
-          getAllGroups.value = res.data.response.groupResonseDTO.map((i) => {
-            return {
-              label: i.name,
-              value: i.id
-            }
-          });
-        })
-        .catch((err) => {
-          console.log(err);
+    const getGroups = async () => {
+      try {
+        const data = await groupsService.getGroups();
+        getAllGroups.value = data.response.groupResonseDTO.map((i) => {
+          return {
+            label: i.name,
+            value: i.id
+          }
         });
+      } catch (error) {
+        console.error(error)
+      }
     };
     getGroups();
 
-    const chooseGrouptoMoveto = ref("");
+    const chooseGrouptoMoveto = ref();
     const moveMemberToGroup = () => {
       singleGroupLoading.value = true
       let peopleMoved = marked.value.map((i) => {

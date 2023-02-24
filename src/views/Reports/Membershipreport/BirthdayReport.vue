@@ -245,6 +245,7 @@ import axios from "@/gateway/backendapi";
 // import InputText from "primevue/inputtext";
 import printJS from "print-js";
 import exportService from "../../../services/exportFile/exportservice";
+import store from '../../../store/store'
 
 export default {
   components: {
@@ -271,11 +272,8 @@ export default {
     const fileHeaderToExport = ref([]);
     const fileToExport = ref([]);
     const allMembersInChurch = () => {
-      axios
-        .get(`/api/People/GetMembershipSummary`)
-        .then((res) => {
-          console.log(res);
-          membersInChurch.value = res.data;
+      store.dispatch('membership/setMembershipSummary').then(response => {
+          membersInChurch.value = response;
           console.log(membersInChurch.value, "✌️✌️");
           /* function to call service and populate table */
           setTimeout(() => {
@@ -287,10 +285,7 @@ export default {
             );
           }, 1000);
           /* End function to call service and populate table */
-        })
-        .catch((err) => {
-          console.log(err);
-        });
+          })
     };
 
     /* Code For Exporting File */

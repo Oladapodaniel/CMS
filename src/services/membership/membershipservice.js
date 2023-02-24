@@ -7,7 +7,7 @@ const membershipService = {
             axios.get("/api/People/GetPeopleBasicInfo")
                 .then(res => {
                     resolve(res.data);
-                    store.dispatch("setMembers", res.data);
+                    // store.dispatch("setMembers", res.data);
                 })
                 .catch(error => {
                     /*eslint no-undef: "warn"*/
@@ -62,7 +62,6 @@ const membershipService = {
             axios.get("/api/People/getAllFirstTimers")
                 .then(res => {
                     resolve(res.data);
-                    // store.dispatch("setFirstTimers", res.data);
                 })
                 .catch(error => {
                     /*eslint no-undef: "warn"*/
@@ -87,7 +86,6 @@ const membershipService = {
             axios.post(`/api/People/DeletePeople`, data)
                 .then(res => {
                     resolve(res.data);
-                    console.log(res.data)
                 })
                 .catch(error => {
                     /*eslint no-undef: "warn"*/
@@ -105,7 +103,6 @@ const membershipService = {
         return new Promise((resolve, reject) => {
             axios.put(`/api/AssignPeopleToGroup/${groupId}`, data)
                 .then(res => {
-                    console.log(res)
                     resolve(res.data);
                 })
                 .catch(error => {
@@ -173,7 +170,24 @@ const membershipService = {
 
             store.dispatch("membership/updateMember", person);
         }
-    }
+    },
+    getMembershipSummary() {
+        return new Promise((resolve, reject) => {
+            axios.get("/api/People/GetMembershipSummary")
+                .then(res => {
+                    resolve(res.data);
+                })
+                .catch(error => {
+                    /*eslint no-undef: "warn"*/
+                    NProgress.done();
+                    if (error.response) {
+                        reject(error.response);
+                    } else {
+                        reject(error);
+                    }
+                })
+        })
+    },
 
 }
 

@@ -4,9 +4,10 @@
       <div class="col-12">
         <div class="font-weight-bold py-md-2 mt-4">Share the link to your first timers to enable them to add their
           details to your
-          church .</div>
+          church.</div>
         <div class="p-inputgroup form-group mt-1">
-          <el-input v-model="firstTimerLink" placeholder="Click the copy button when the link appears" ref="selectedLink" class="input-with-select">
+          <el-input v-model="firstTimerLink" placeholder="Click the copy button when the link appears" ref="selectedLink"
+            class="input-with-select">
             <template #append>
               <el-button @click="copylink">
                 <el-icon>
@@ -25,15 +26,15 @@
       <div class="table-top p-3 mt-5">
         <div class="d-flex flex-column flex-sm-row justify-content-sm-between">
           <div>
-            <el-tooltip class="box-item" effect="dark" v-if="false" content="Delete member(s)"
-              placement="top-start">
+            <el-tooltip class="box-item" effect="dark" v-if="false" content="Delete member(s)" placement="top-start">
               <el-icon :size="20" class=" c-pointer" v-if="checkedFirstTimer.length > 0" @click="showConfirmModal1">
                 <Delete />
               </el-icon>
             </el-tooltip>
             <el-tooltip class="box-item" effect="dark" v-if="checkedFirstTimer.length > 0" content="Send SMS"
               placement="top-start">
-              <img src="../../assets/sms.png" style="width: 20px; margin-top: -10px" class="ml-2 c-pointer" @click="sendMarkedMemberSms" alt="Send SMS" />
+              <img src="../../assets/sms.png" style="width: 20px; margin-top: -10px" class="ml-2 c-pointer"
+                @click="sendMarkedMemberSms" alt="Send SMS" />
             </el-tooltip>
             <el-tooltip class="box-item" effect="dark" v-if="checkedFirstTimer.length > 0" content="Send Email"
               placement="top-start">
@@ -52,8 +53,8 @@
                 <span class="ml-1"> FILTER</span>
               </p>
             </div>
-            <el-input size="small" v-model="searchText" placeholder="Search..."
-              @keyup.enter.prevent="searchMemberInDB" class="input-with-select">
+            <el-input size="small" v-model="searchText" placeholder="Search..." @keyup.enter.prevent="searchMemberInDB"
+              class="input-with-select">
               <template #append>
                 <el-button @click.prevent="searchMemberInDB">
                   <el-icon :size="13">
@@ -71,12 +72,12 @@
             <div class="col-md-9">
               <div class="row">
                 <div class="
-                    col-12 col-sm-6
-                    offset-sm-3 offset-md-0
-                    form-group
-                    inp
-                    w-100
-                  ">
+                      col-12 col-sm-6
+                      offset-sm-3 offset-md-0
+                      form-group
+                      inp
+                      w-100
+                    ">
                   <el-input placeholder="First name" class="w-100" v-model="filter.name" />
                 </div>
                 <div class="col-12 col-sm-6 form-group d-none d-md-block">
@@ -96,8 +97,8 @@
           </div>
         </div>
       </div>
-      <Table :data="searchMember" :headers="firstTimerHeaders" :checkMultipleItem="true" @checkedrow="handleSelectionChange"
-        v-loading="paginatedTableLoading">
+      <Table :data="searchMember" :headers="firstTimerHeaders" :checkMultipleItem="true"
+        @checkedrow="handleSelectionChange" v-loading="paginatedTableLoading">
         <template #imageURL="{ item }">
           <el-card shadow="hover" class="c-pointer person-image" v-if="item.imageURL"
             style="border-radius: 50%; height: 26px; width: 26px;">
@@ -112,92 +113,90 @@
           </el-avatar>
         </template>
         <template v-slot:fullName="{ item }">
-          <div @click="showMemberRow(item)" class="c-pointer">{{item.firstName }} {{ item.lastName }}</div>
+          <div @click="showMemberRow(item)" class="c-pointer">{{ item.firstName }} {{ item.lastName }}</div>
         </template>
         <template v-slot:phoneNumber="{ item }">
-          <div @click="showMemberRow(item)" class="c-pointer">{{item.phoneNumber }}</div>
+          <div @click="showMemberRow(item)" class="c-pointer">{{ item.phoneNumber }}</div>
         </template>
         <template v-slot:howDidYouAboutUsName="{ item }">
           <div @click="showMemberRow(item)" class="c-pointer">{{ item.howDidYouAboutUsName.replaceAll(" ", "_") }}</div>
         </template>
         <template v-slot:interestedInJoining="{ item }">
-          <div @click="showMemberRow(item)" class="c-pointer">{{item.interestedInJoining }}</div>
+          <div @click="showMemberRow(item)" class="c-pointer">{{ item.interestedInJoining }}</div>
         </template>
         <template v-slot:date="{ item }">
           <div @click="showMemberRow(item)" class="c-pointer">{{ moment
-                .parseZone(
-                  new Date(item.date).toDateString(),
-                  "YYYY MM DD HH ZZ"
-                )
-                ._i.substr(4, 11).replaceAll(" ", "_") }}</div>
+            .parseZone(
+              new Date(item.date).toDateString(),
+              "YYYY MM DD HH ZZ"
+            )
+            ._i.substr(4, 11).replaceAll(" ", "_") }}</div>
         </template>
         <template v-slot:movement="{ item }">
-          <div @click="showMemberRow(item)" class="c-pointer">{{item.movement }}</div>
+          <div @click="showMemberRow(item)" class="c-pointer">{{ item.movement }}</div>
         </template>
         <template v-slot:interactions="{ item }">
-          <div @click="showMemberRow(item)" class="c-pointer">{{item.interactions }}</div>
+          <div @click="showMemberRow(item)" class="c-pointer">{{ item.interactions }}</div>
         </template>
-         <template v-slot:action="{ item }">
-            <div>
-            <el-dropdown trigger="click">
-              <el-icon>
+        <template v-slot:action="{ item }">
+          <div>
+            <div class="dropdown">
+              <el-icon data-toggle="dropdown" aria-expanded="false">
                 <MoreFilled />
               </el-icon>
-              <template #dropdown>
-                <el-dropdown-menu>
-                  <el-dropdown-item>
+              <ul class="dropdown-menu">
+                <li class="dropdown-item"><a>
                     <router-link :to="
                       item.phoneNumber
                         ? `/tenant/sms/compose?phone=${item.phoneNumber}`
                         : ''
                     " :class="{ 'fade-text': !item.phoneNumber, 'text-color': item.phoneNumber }">Send
                       SMS</router-link>
-                  </el-dropdown-item>
-                  <el-dropdown-item>
+                  </a></li>
+                <li><a class="dropdown-item" href="#">
                     <router-link :to="
-                    item.email
+                      item.email
                         ? `/tenant/email/compose?phone=${item.email}`
                         : ''
                     " :class="{ 'fade-text': !item.email, 'text-color': item.email }">Send Email</router-link>
-                  </el-dropdown-item>
-                  <el-dropdown-item>
+                  </a></li>
+                <li><a class="dropdown-item" href="#">
                     <router-link :to="`/tenant/firsttimermanagement/${item.id}?memberType=0`" class="text-color">
                       Follow Up
                     </router-link>
-                  </el-dropdown-item>
-                  <el-dropdown-item>
+                  </a></li>
+                <li><a class="dropdown-item">
+                    <el-popover placement="top-start" :width="200" trigger="hover">
+                      <template #reference>
+                        <span class="el-dropdown-link">
+                          Convert to member<el-icon class="el-icon--right"><arrow-down /></el-icon>
+                        </span>
+                      </template>
+                      <el-icon v-if="(membershipCategory.length == 0)" class="is-loading" :size="20">
+                        <Loading />
+                      </el-icon>
+                      <div v-for="i in membershipCategory" :key="i.id">
+                        <div class="dropdown-item px-0 c-pointer" @click="chooseCategory(item.id, i.id)">{{ i.name }}
+                        </div>
+                      </div>
+                    </el-popover>
+                  </a></li>
+                <li><a class="dropdown-item" href="#">
                     <div @click.prevent="showConfirmModal(item.id, index)" class="text-color">Delete</div>
-                  </el-dropdown-item>
-                  <el-dropdown class="px-3 pb-2 pt-1 text-color" placement="left">
-                    <span class="el-dropdown-link">
-                      Convert to member<el-icon class="el-icon--right"><arrow-down /></el-icon>
-                    </span>
-                    <template #dropdown>
-                      <el-dropdown-menu>
-                        <el-icon v-if="(membershipCategory.length == 0)" class="is-loading" :size="20">
-                          <Loading />
-                        </el-icon>
-                        <el-dropdown-item v-for="i in membershipCategory" :key="i.id">
-                          <div @click="chooseCategory(item.id, i.id)">{{ i.name }}</div>
-                        </el-dropdown-item>
-                      </el-dropdown-menu>
-                    </template>
-                  </el-dropdown>
-                </el-dropdown-menu>
-              </template>
-            </el-dropdown>
+                  </a></li>
+              </ul>
+            </div>
           </div>
         </template>
       </Table>
       <div class="d-flex justify-content-end my-3">
         <el-pagination v-model:current-page="serverOptions.page" v-model:page-size="serverOptions.rowsPerPage" background
-        layout="total, sizes, prev, pager, next, jumper" :total="totalFirsttimersCount" @size-change="handleSizeChange"
-        @current-change="handleCurrentChange" />
+          layout="total, sizes, prev, pager, next, jumper" :total="totalFirsttimersCount" @size-change="handleSizeChange"
+          @current-change="handleCurrentChange" />
       </div>
     </div>
 
-    <el-dialog v-model="imageDialog" :width="mdAndUp || lgAndUp || xlAndUp ? `50%` : xsOnly ? `90%` : `70%`"
-      align-center>
+    <el-dialog v-model="imageDialog" :width="mdAndUp || lgAndUp || xlAndUp ? `50%` : xsOnly ? `90%` : `70%`" align-center>
       <el-image class="w-100" :src="selectedImageUrl" fit="contain" />
       <template #footer>
         <span class="dialog-footer">
@@ -374,6 +373,8 @@ export default {
           churchMembers.value = churchMembers.value.filter(
             (item) => item.id !== id
           );
+          store.dispatch('membership/removeFirstTimerFromStore', id)
+          store.dispatch('dashboard/getDashboard');
         })
         .catch((err) => {
           /eslint no-undef: "warn"/
@@ -399,11 +400,11 @@ export default {
     const showConfirmModal = (id, index) => {
       ElMessageBox.confirm(
         'Are you sure you want to proceed?',
-        'Warning',
+        'Confirm delete',
         {
           confirmButtonText: 'OK',
           cancelButtonText: 'Cancel',
-          type: 'warning',
+          type: 'error',
         }
       )
         .then(() => {
@@ -461,7 +462,7 @@ export default {
         .then((res) => {
           paginatedTableLoading.value = false
           searchNamesInDB.value = res.data;
-          if(res.data.length === 0 ){
+          if (res.data.length === 0) {
             ElMessage({
               type: 'warning',
               message: `${searchText.value} not found, please try add a new firsttimer and search again`,

@@ -55,12 +55,11 @@
 
     <el-skeleton class="w-100" animated v-if="loading">
       <template #template>
-        <div style="
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-            margin-top: 20px
-          ">
+        <div style="display: flex;
+                align-items: center;
+                justify-content: space-between;
+                margin-top: 20px
+              ">
           <el-skeleton-item variant="text" style="width: 240px; height: 240px" />
           <el-skeleton-item variant="text" style="width: 240px; height: 240px" />
         </div>
@@ -77,14 +76,14 @@ import FirstTimersList from './FirstTimersList'
 import { ref } from 'vue';
 import finish from '../../services/progressbar/progress'
 import router from "@/router/index";
-import membershipService from '../../services/membership/membershipservice';
 import deviceBreakpoint from "../../mixins/deviceBreakpoint";
+import store from '../../store/store';
 
 
 export default {
   components: { FirstTimersList },
   setup() {
-    const firstTimersList = ref([])
+    const firstTimersList = ref(store.getters['membership/allFirstTimers'])
     const loading = ref(false)
     const importFile = ref("")
     const image = ref("");
@@ -94,13 +93,13 @@ export default {
     const { mdAndUp, lgAndUp, xlAndUp } = deviceBreakpoint()
 
     const getFirstTmersList = async () => {
-      loading.value = true
       try {
-        let data = await membershipService.getFirstTimers()
-        firstTimersList.value = data.response.firstTimers;
-        loading.value = false
-      }
-      catch (err) {
+        loading.value = true
+        store.dispatch('membership/setFirstTimerData').then(response => {
+          firstTimersList.value = response
+          loading.value = false
+        })
+      } catch (error) {
         finish()
         console.log(err)
         if (err.toString().toLowerCase().includes("network error")) {
@@ -111,7 +110,7 @@ export default {
         loading.value = false
       }
     }
-    getFirstTmersList()
+    if (firstTimersList.value.length == 0) getFirstTmersList()
 
     const fileUpload = () => {
       importFile.value.click()

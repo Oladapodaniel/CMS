@@ -21,16 +21,16 @@
 
       <div class="row mb-4">
         <div class="col-12">
-          <div class="col-md-12 text-dark py-3 mb-2 day3" v-if="notifiedDays === 10 ">
+          <div class="col-md-12 text-dark py-3 mb-2 day3" v-if="notifiedDays === 10">
             <div class="">
               10 days remaining before your subscription expires, kindly
               subscribe before
               {{
                 moment
-                            .parseZone(
-                  new Date(getRenewalDate).toDateString(),
-                  "YYYY MM DD HH ZZ"
-                )
+                  .parseZone(
+                    new Date(getRenewalDate).toDateString(),
+                    "YYYY MM DD HH ZZ"
+                  )
                   ._i.substr(4, 11)
               }}
             </div>
@@ -44,10 +44,10 @@
               subscribe before
               {{
                 moment
-                            .parseZone(
-                  new Date(getRenewalDate).toDateString(),
-                  "YYYY MM DD HH ZZ"
-                )
+                  .parseZone(
+                    new Date(getRenewalDate).toDateString(),
+                    "YYYY MM DD HH ZZ"
+                  )
                   ._i.substr(4, 11)
               }}
             </div>
@@ -61,10 +61,10 @@
               subscribe before
               {{
                 moment
-                            .parseZone(
-                  new Date(getRenewalDate).toDateString(),
-                  "YYYY MM DD HH ZZ"
-                )
+                  .parseZone(
+                    new Date(getRenewalDate).toDateString(),
+                    "YYYY MM DD HH ZZ"
+                  )
                   ._i.substr(4, 11)
               }}
             </div>
@@ -78,10 +78,10 @@
               subscribe before
               {{
                 moment
-                            .parseZone(
-                  new Date(getRenewalDate).toDateString(),
-                  "YYYY MM DD HH ZZ"
-                )
+                  .parseZone(
+                    new Date(getRenewalDate).toDateString(),
+                    "YYYY MM DD HH ZZ"
+                  )
                   ._i.substr(4, 11)
               }}
             </div>
@@ -95,10 +95,10 @@
               subscribe before
               {{
                 moment
-                            .parseZone(
-                  new Date(getRenewalDate).toDateString(),
-                  "YYYY MM DD HH ZZ"
-                )
+                  .parseZone(
+                    new Date(getRenewalDate).toDateString(),
+                    "YYYY MM DD HH ZZ"
+                  )
                   ._i.substr(4, 11)
               }}
             </div>
@@ -112,10 +112,10 @@
               subscribe before
               {{
                 moment
-                            .parseZone(
-                  new Date(getRenewalDate).toDateString(),
-                  "YYYY MM DD HH ZZ"
-                )
+                  .parseZone(
+                    new Date(getRenewalDate).toDateString(),
+                    "YYYY MM DD HH ZZ"
+                  )
                   ._i.substr(4, 11)
               }}
             </div>
@@ -129,15 +129,15 @@
               subscribe before
               {{
                 moment
-                            .parseZone(
-                  new Date(getRenewalDate).toDateString(),
-                  "YYYY MM DD HH ZZ"
-                )
+                  .parseZone(
+                    new Date(getRenewalDate).toDateString(),
+                    "YYYY MM DD HH ZZ"
+                  )
                   ._i.substr(4, 11)
               }}
             </div>
             <div class="cursor-pointer " @click="subscribeNow">
-              <el-button  round>Subscribe now</el-button>
+              <el-button round>Subscribe now</el-button>
             </div>
           </div>
           <div class="col-md-12 py-3 mb-1 day1" v-if="notifiedDays === 3">
@@ -146,10 +146,10 @@
               subscribe before
               {{
                 moment
-                            .parseZone(
-                  new Date(getRenewalDate).toDateString(),
-                  "YYYY MM DD HH ZZ"
-                )
+                  .parseZone(
+                    new Date(getRenewalDate).toDateString(),
+                    "YYYY MM DD HH ZZ"
+                  )
                   ._i.substr(4, 11)
               }}
             </div>
@@ -163,10 +163,10 @@
               subscribe before
               {{
                 moment
-                            .parseZone(
-                  new Date(getRenewalDate).toDateString(),
-                  "YYYY MM DD HH ZZ"
-                )
+                  .parseZone(
+                    new Date(getRenewalDate).toDateString(),
+                    "YYYY MM DD HH ZZ"
+                  )
                   ._i.substr(4, 11)
               }}
             </div>
@@ -180,10 +180,10 @@
               subscribe before
               {{
                 moment
-                            .parseZone(
-                  new Date(getRenewalDate).toDateString(),
-                  "YYYY MM DD HH ZZ"
-                )
+                  .parseZone(
+                    new Date(getRenewalDate).toDateString(),
+                    "YYYY MM DD HH ZZ"
+                  )
                   ._i.substr(4, 11)
               }}
             </div>
@@ -207,7 +207,8 @@
             </div>
           </div>
         </div>
-        <div v-if="tenantInfoBasic.memberCount === 0"
+
+        <div v-if="tenantInfoBasic && tenantInfoBasic.memberCount && tenantInfoBasic.memberCount === 0"
           class="d-flex justify-content-center mt-4 justify-content-md-end mt-md-0">
           <img src="../../assets/welcome_user.svg" style="width: 250px" />
         </div>
@@ -218,7 +219,8 @@
                 <img src="../../assets/usergroup.svg" alt="" style="position: relative; top: -5px; left: -8px;">
                 <div class="">
                   <p class="mb-0 s-8">FIRST TIMERS</p>
-                  <h4 class="primary--text font-weight-700 mt-1 s-16">{{ tenantInfoBasic.firstTimerCount }}</h4>
+                  <h4 class="primary--text font-weight-700 mt-1 s-16">{{ tenantInfoBasic &&
+                    tenantInfoBasic.firstTimerCount ? tenantInfoBasic.firstTimerCount : 0 }}</h4>
                 </div>
               </div>
               <div>
@@ -270,7 +272,7 @@
             (tenantInfoAttendanceWeekly[0] && tenantInfoAttendanceWeekly[0].data.some(i => i > 0))
           ">
             <div class="more-things side p-3" v-if="!tenantInfoExtra.hasWebsite">
-              <!-- <i class="pi pi-times"></i> -->
+
               <img src="../../assets/website2.svg" class="w-100" />
               <div class="mt-4">Website</div>
               <div class="more-body mt-2">
@@ -314,7 +316,7 @@
               tenantInfoExtra.hasOnlineGiving &&
               tenantInfoExtra.hasWebsite,
           }">
-            <!-- Celebrations -->
+
             <div v-if="tenantInfoCeleb && tenantInfoCeleb.length > 0">
               <div class="celeb-header">
                 <div class="celeb-icon">
@@ -414,8 +416,7 @@
                 </div>
                 <div v-if="attendanceBoolean" class="mt-4">
                   <ColumnChart domId="chart1" title="Event Attendance" subtitle="Weekly Attendance of Events"
-                    header="Members Attendance" :data="chartData" :series="series"
-                    :attendanceSeries="attendanceSeries" />
+                    header="Members Attendance" :data="chartData" :series="series" :attendanceSeries="attendanceSeries" />
                 </div>
                 <div v-else class="mt-4">
                   <ColumnChart domId="chart1" title="Event Attendance" subtitle="Monthly Attendance of Events"
@@ -445,7 +446,7 @@
                     :attendanceSeries="attendanceSeries" />
                 </div>
               </div>
-              <!-- </div> -->
+
 
               <div class="mt-4" v-show="firstTimerPieExist">
                 <div class="">
@@ -546,9 +547,10 @@ import moment from "moment";
 import stopProgressBar from "../../services/progressbar/progress";
 import setupService from "../../services/setup/setupservice";
 import formatDate from "../../services/dates/dateformatter";
-import useSubscription from "../../services/subscription/useSubscription";
 import deviceBreakpoint from "../../mixins/deviceBreakpoint";
 import Table from "@/components/table/Table"
+import store from "../../store/store"
+// import { useStore } from 'vuex';
 
 export default {
   mixins: [mixin],
@@ -575,8 +577,8 @@ export default {
     const firstTimerDataExist = ref(false);
     const firstTimerPieExist = ref(false);
     const notifiedDays = ref()
-    const summed = ref(0);
-    const planUserIs = ref("")
+    const planUserIs = ref(store.getters['dashboard/getSubPlan'] ? store.getters['dashboard/getSubPlan'].description : 'loading plan') 
+
 
 
 
@@ -589,13 +591,13 @@ export default {
 
     }
 
-    const subscribeNow = () =>{
-        router.push('/tenant/subscription')
+    const subscribeNow = () => {
+      router.push('/tenant/subscription')
     }
     const celebrations = [];
     const tenantInfo = ref({});
-    const tenantInfoBasic = ref({});
-    const celeb = ref([]);
+    const tenantInfoBasic = ref(store.getters['dashboard/getdashboard']);
+    const celeb = ref(store.getters['dashboard/getcelebration']);
     const attendanceSeries = ref("weekly");
     const firstTimerSeries = ref("weekly");
     const tenantInfoAttendanceWeekly = ref([]);
@@ -604,7 +606,11 @@ export default {
     const tenantInfoFirstTimerMonthly = ref([]);
     const tenantInfoInvitationSource = ref([]);
     const tenantInfoInterestedInJoining = ref([]);
-    const tenantInfoExtra = ref({});
+    const tenantInfoExtra = ref({
+      hasMobileApp: store.getters['dashboard/hasMobileApp'],
+      hasOnlineGiving: store.getters['dashboard/hasOnlineGiving'],
+      hasWebsite: store.getters['dashboard/hasWebsite']
+    });
     const subscriptionPlan = ref([]);
     const dashboardLoading = ref(false)
 
@@ -654,47 +660,75 @@ export default {
       return monthXaxis.value;
     });
 
-    onMounted(() => {
-      getBasicDashboard()
-    })
+    // onMounted(() => {
+    //   getBasicDashboard()
+    // })
 
-    const getBasicDashboard = () => {
-      dashboardLoading.value = true
-      axios
-        .get("/dashboard/basic")
-        .then((res) => {
-          dashboardLoading.value = false
-          tenantInfoBasic.value = res.data.returnObject;
-          tenantInfoExtra.value.hasMobileApp = res.data.returnObject.hasMobileApp;
-          tenantInfoExtra.value.hasOnlineGiving = res.data.returnObject.hasOnlineGiving;
-          tenantInfoExtra.value.hasWebsite = res.data.returnObject.hasWebsite;
-          let sum = 0;
-          tenantInfo.value.firstTimerSummary.invitationSource.forEach((i) => {
-            sum += +i.value;
-          });
-          summed.value = sum;
-        })
-        .catch((err) => {
-          stopProgressBar();
-          if (err.response && err.response.status === 401) {
-            dashboardLoading.value = false
-            localStorage.removeItem("token");
-            setupService.clearStore();
-            router.push("/");
-          }
-        });
-    };
+    // const getBasicDashboard = () => {
+    //   dashboardLoading.value = true
+    //   axios
+    //     .get("/dashboard/basic")
+    //     .then((res) => {
+    //       dashboardLoading.value = false
+    //       tenantInfoBasic.value = res.data.returnObject;
+    //       tenantInfoExtra.value.hasMobileApp = res.data.returnObject.hasMobileApp;
+    //       tenantInfoExtra.value.hasOnlineGiving = res.data.returnObject.hasOnlineGiving;
+    //       tenantInfoExtra.value.hasWebsite = res.data.returnObject.hasWebsite;
+    //       let sum = 0;
+    //       tenantInfo.value.firstTimerSummary.invitationSource.forEach((i) => {
+    //         sum += +i.value;
+    //       });
+    //       summed.value = sum;
+    //     })
+    //     .catch((err) => {
+    //       stopProgressBar();
+    //       if (err.response && err.response.status === 401) {
+    //         dashboardLoading.value = false
+    //         localStorage.removeItem("token");
+    //         setupService.clearStore();
+    //         router.push("/");
+    //       }
+    //     });
+    // };
 
     function getCelebDashboard() {
-      axios.get("/dashboard/celebrations").then((res) => {
-        celeb.value = res.data.returnObject.celebrations;
-      });
+      store.dispatch('dashboard/getCelebration').then((response) => {
+        celeb.value = response;
+      })
     }
-    getCelebDashboard();
+
 
     let tenantInfoCeleb = computed(() => {
       if (celeb.value.length === 0) return []
       return celeb.value.sort((b, a) => new Date(b.date) - new Date(a.date))
+    })
+
+    const getDashboard = async () => {
+      try {
+        dashboardLoading.value = true
+        await store.dispatch('dashboard/getDashboard').then(response => {
+          tenantInfoBasic.value = response
+          dashboardLoading.value = false
+          tenantInfoExtra.value.hasMobileApp = response.hasMobileApp;
+          tenantInfoExtra.value.hasOnlineGiving = response.hasOnlineGiving;
+          tenantInfoExtra.value.hasWebsite = response.hasWebsite;
+        })
+      }
+      catch (error) {
+        stopProgressBar();
+        if (error.response && error.response.status === 401) {
+          dashboardLoading.value = false
+          localStorage.removeItem("token");
+          setupService.clearStore();
+          router.push("/");
+        }
+      }
+    }
+
+    onMounted(() => {
+      if (tenantInfoBasic.value && Object.keys(tenantInfoBasic.value).length == 0) getDashboard();
+      if (celeb.value && celeb.value.length == 0) getCelebDashboard();
+      getSubscriptionData();
     })
 
     onMounted(() => {
@@ -809,10 +843,6 @@ export default {
       return tenantInfo.value.eventAttendanceChartData[2];
     });
 
-    const sumIt = computed(() => {
-      if (!summed.value) return false;
-      return true;
-    });
 
     const dateFormat = (payload) => {
       return formatDate.monthDayYear(payload);
@@ -820,8 +850,8 @@ export default {
 
     const retrieveSubscriptionInfo = () => { };
 
-    const useSubscriptionResponse = ref([]);
-    const getRenewalDate = ref("");
+    const useSubscriptionResponse = ref(store.getters['dashboard/getSubPlan']);
+    const getRenewalDate = ref(store.getters['dashboard/getSubPlan'] ? store.getters['dashboard/getSubPlan'].subscriptionExpiration : '');
     const countDownDate = () => {
       // Set the date we're counting down to
       let countDownDates = new Date(getRenewalDate.value).getTime();
@@ -832,12 +862,14 @@ export default {
       notifiedDays.value = Math.floor(distance / (1000 * 60 * 60 * 24));
     }
 
-    useSubscription.getPlan().then((res) => {
-      planUserIs.value = res.description;
-      getRenewalDate.value = res.subscriptionExpiration;
-      useSubscriptionResponse.value = res;
-      countDownDate()
-    });
+    const getSubscriptionData = () => {
+      store.dispatch("dashboard/getUserSubscriptionPlan").then(response => {
+          planUserIs.value = response.description;
+          getRenewalDate.value = response.subscriptionExpiration;
+          useSubscriptionResponse.value = response
+          countDownDate()
+      })
+    }
 
     const calculatedPercentage = computed(() => {
       if (!useSubscriptionResponse.value || !useSubscriptionResponse.value.id)
@@ -915,8 +947,6 @@ export default {
       attendanceDataExist,
       firstTimerDataExist,
       firstTimerPieExist,
-      summed,
-      sumIt,
       dateFormat,
       tenantInfoAttendanceWeekly,
       tenantInfoAttendanceMonthly,
@@ -1113,10 +1143,6 @@ export default {
   max-width: 450px;
   display: flex;
   justify-content: flex-end;
-}
-
-.number-boxes {
-  /* z-index: -1 */
 }
 
 .box {

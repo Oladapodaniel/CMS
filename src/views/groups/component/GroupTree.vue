@@ -273,7 +273,6 @@ export default {
           console.log(res, "Delete Response");
           if (res !== false) {
             groups.value.splice(index, 1);
-            store.dispatch("groups/getGroups");
             ElMessage({
               type: "success",
               message: "Group was deleted",

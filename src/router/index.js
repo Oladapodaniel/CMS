@@ -225,7 +225,7 @@ const routes = [
                     },
                     component: () =>
                         import( /* webpackChunkName: "addfirsttimer" */ '../views/people/AddFirstTimer.vue')
-                },
+                }
 
             ]
 
