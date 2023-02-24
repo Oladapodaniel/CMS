@@ -44,7 +44,7 @@ export default {
         },
 
         addGroup(state, payload) {
-            state.groups.unshift(payload);
+            state.groups.push(payload);
         },
 
         removeGroup(state, payload) {
@@ -69,6 +69,7 @@ export default {
 
     actions: {
         removeGroup({ commit }, payload) {
+            console.log(payload, 'resching here')
             commit("removeGroup", payload)
         },
 

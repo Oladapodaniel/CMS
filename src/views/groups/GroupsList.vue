@@ -5,15 +5,18 @@
         <div class="head-text">Groups</div>
 
         <div class="mt-2 my-1 link" v-if="!groupLeader">
-          <router-link to="/tenant/createpeoplegroup" class="
-                  grey-border
-                  header-btn
-                  default-btn
-                  primary-bg
-                  text-white
-                  border-0
-                  small-screen
-                ">Add New Group</router-link>
+          <el-button class="header-btn" @click="router.push('/tenant/createpeoplegroup')" color="#136acd" round>
+            Add New Group
+          </el-button>
+          <!-- <router-link to="/tenant/createpeoplegroup" class="
+                    grey-border
+                    header-btn
+                    default-btn
+                    primary-bg
+                    text-white
+                    border-0
+                    small-screen
+                  ">Add New Group</router-link> -->
         </div>
       </div>
       <div class="row">
@@ -35,7 +38,7 @@
       <!-- tosin working on tables -->
 
       <div class="row">
-        <div class="col-12 px-0 " id="table">
+        <div class="col-12 px-0 table-container" id="table">
           <div class="top-con" id="ignore2">
             <div class="table-top p-3 mt-5">
               <div class="col-md-5">
@@ -72,55 +75,37 @@
               <el-table-column width="20%" label="Action">
                 <template #default="scope">
                   <div class="c-pointer">
-                  <el-dropdown trigger="click">
-                    <el-icon>
-                      <MoreFilled />
-                    </el-icon>
-                    <template #dropdown>
-                      <el-dropdown-menu>
-                        <el-dropdown-item>
-                          <a class="no-decoration text-dark" @click="sendGroupSms(scope.row)">Send SMS</a>
-                        </el-dropdown-item>
-                        <el-dropdown-item>
-                          <a class="no-decoration text-dark" @click="sendGroupEmail(scope.row)">
-                            Send Email
-                          </a>
-                        </el-dropdown-item>
-                        <el-dropdown-item>
-                          <a
-                            class="no-decoration text-dark"
-                            @click="confirmDelete(scope.row.id, index)"
-                            >Delete</a
-                          >
-                        </el-dropdown-item>
-                      </el-dropdown-menu>
-                    </template>
-                  </el-dropdown>
-                </div>
+                    <el-dropdown trigger="click">
+                      <el-icon>
+                        <MoreFilled />
+                      </el-icon>
+                      <template #dropdown>
+                        <el-dropdown-menu>
+                          <el-dropdown-item>
+                            <a class="no-decoration text-dark" @click="sendGroupSms(scope.row)">Send SMS</a>
+                          </el-dropdown-item>
+                          <el-dropdown-item>
+                            <a class="no-decoration text-dark" @click="sendGroupEmail(scope.row)">
+                              Send Email
+                            </a>
+                          </el-dropdown-item>
+                          <el-dropdown-item>
+                            <a class="no-decoration text-dark" @click="confirmDelete(scope.row.id)">Delete</a>
+                          </el-dropdown-item>
+                        </el-dropdown-menu>
+                      </template>
+                    </el-dropdown>
+                  </div>
                 </template>
               </el-table-column>
+            </el-table>
+            <div class="d-flex justify-content-end my-3">
+              <el-pagination v-model:current-page="serverOptions.page" v-model:page-size="serverOptions.rowsPerPage"
+                background layout="total, prev, pager, next, jumper" :total="serverItemsLength"
+                @size-change="handleSizeChange" @current-change="handleCurrentChange" />
+            </div>
+          </div>
 
-              <!-- <el-table-column>
-                  <template #default="scope">
-                  <div class="d-none">
-                            <GroupTree
-                                :items="scope.row.children"
-                                v-if="scope.row.children"
-                              class="d-none"
-                              @click="groupClickk(scope.row, $event)"
-                              @group="setSelectedGroup"
-                                /> 
-                            </div> 
-                </template>
-                </el-table-column> -->
-          </el-table>
-          <div class="d-flex justify-content-end my-3">
-            <el-pagination v-model:current-page="serverOptions.page" v-model:page-size="serverOptions.rowsPerPage" background
-              layout="total, prev, pager, next, jumper" :total="serverItemsLength"  @size-change="handleSizeChange"
-              @current-change="handleCurrentChange" />
-          </div>
-          </div>
-          
         </div>
       </div>
     </div>
@@ -140,14 +125,6 @@
         </div>
       </template>
     </el-drawer>
-
-    <!-- <Sidebar v-model:visible="showSMS" :baseZIndex="10000" position="right">
-            <smsComponent :groupData ="groupListDetails" @closesidemodal="() => showSMS = false" />
-        </Sidebar>
-       
-       <Sidebar v-model:visible="showEmail" :baseZIndex="10000" position="right">
-            <emailComponent :groupData ="groupListDetails"  @closesidemodal="() => showEmail = false" />
-        </Sidebar> -->
   </div>
 </template>
 
@@ -156,23 +133,15 @@ import { ref, computed, watch, watchEffect } from "vue";
 import { useRoute, useRouter } from "vue-router";
 import groupsService from "../../services/groups/groupsservice";
 import { useStore } from "vuex";
-// import { useConfirm } from "primevue/useconfirm";
-// import { useToast } from "primevue/usetoast";
 import smsComponent from "./component/smsComponent.vue";
 import emailComponent from "./component/emailComponent.vue";
-// import SideBar from "./sidemodal/SideModal.vue";
-import GroupTree from "./component/GroupTree.vue";
-// import Sidebar from "primevue/sidebar";
 import deviceBreakpoint from "../../mixins/deviceBreakpoint";
 import { ElMessage, ElMessageBox } from "element-plus";
 
 export default {
   components: {
-    // SideBar,
     smsComponent,
     emailComponent,
-    GroupTree,
-    // Sidebar,s
   },
 
   setup() {
@@ -187,9 +156,8 @@ export default {
     const showEmail = ref(false);
     const router = useRouter();
     const route = useRoute();
-    const lastGroupChild = ref({});
     const serverItemsLength = ref(0);
-    const getGroupSummary = ref('')
+    const getGroupSummary = ref(0)
 
     const handleSizeChange = (val) => {
       console.log(`${val} items per page`)
@@ -202,20 +170,20 @@ export default {
       rowsPerPage: 100,
     });
     const getGroupByPage = async () => {
-      paginatedTableLoading.value = true
+      loading.value = true
       try {
         const { data } = await axios.get(
           `/api/GetAllGroupBasicInformation?page=${serverOptions.value.page}`
         );
         groups.value = data
-        paginatedTableLoading.value = false
+        loading.value = false
       } catch (error) {
-        paginatedTableLoading.value = false
+        loading.value = false
         console.log(error);
       }
     };
 
-    const confirmDelete = (id, index) => {
+    const confirmDelete = (id) => {
       ElMessageBox.confirm(
         "Are you sure you want to proceed? This operation can't be reversed ",
         "Confirm delete",
@@ -226,18 +194,15 @@ export default {
         }
       );
       try {
-        groupsService.deleteGroup(id).then((res) => {
-          console.log(res, "Delete Response");
-          if (res !== false) {
-            groups.value.splice(index, 1);
-            store.dispatch("groups/getGroups");
-            ElMessage({
-              type: "success",
-              message: "Group was deleted",
-              duration: 5000,
-            });
-            groupsService.removeGroupFromStore(id);
-          }
+        groupsService.deleteGroup(id).then(() => {
+          const index = groups.value.findIndex(i => i.id == id)
+          groups.value.splice(index, 1);
+          groupsService.removeGroupFromStore(index);
+          ElMessage({
+            type: "success",
+            message: "Group deleted successfully",
+            duration: 7000,
+          });
         });
       } catch (error) {
         ElMessage({
@@ -252,7 +217,7 @@ export default {
         loading.value = true;
         store.dispatch('groups/setGroups').then(response => {
           loading.value = false
-          getGroupSummary.value = data.response.totalItems
+          getGroupSummary.value = response.response.totalItems
           groups.value = response.response.groupResonseDTO.map((i) => {
             return {
               dateCreated: i.dateCreated,
@@ -346,53 +311,9 @@ export default {
       );
     });
 
-    const toggleItems = (i, e) => {
-      console.log(i);
-      console.log(e);
-      console.log(
-        e.target.parentElement.parentElement.parentElement.nextElementSibling
-      );
-      e.target.classList.toggle("roll-icon");
-      if (
-        e.target.parentElement.parentElement.parentElement.nextElementSibling.classList.contains(
-          "d-none"
-        )
-      ) {
-        e.target.parentElement.parentElement.parentElement.nextElementSibling.classList.replace(
-          "d-none",
-          "d-block"
-        );
-      } else {
-        e.target.parentElement.parentElement.parentElement.nextElementSibling.classList.replace(
-          "d-block",
-          "d-none"
-        );
-      }
-    };
-
-    const groupClickk = (i, e) => {
-      console.log(i, e, "fevfvweklmwfjn");
-      router.push(
-        `/tenant/createpeoplegroup/${i.children.find((i) => i.name == e.target.textContent).id
-        }`
-      );
-    };
-
-    const setSelectedGroup = (payload) => {
-      if (payload.iconElement.classList.contains("p-3")) {
-        payload.selectedGroup
-          ? router.push(`/tenant/createpeoplegroup/${payload.selectedGroup.id}`)
-          : router.push(`/tenant/createpeoplegroup/${lastGroupChild.value.id}`);
-      }
-    };
-
     watchEffect(() => {
       serverItemsLength.value = getGroupSummary.value
-      if (store.getters["groups/selectedTreeGroupList"]) {
-        const selectedGroup = store.getters["groups/selectedTreeGroupList"];
-        lastGroupChild.value = selectedGroup;
-      }
-      
+
     });
 
     watch(serverOptions, () => {
@@ -431,11 +352,7 @@ export default {
       removeSearchText,
       groupLeader,
       route,
-      toggleItems,
-      groupClickk,
-      setSelectedGroup,
-      lastGroupChild,
-      // visibleRight
+      router
     };
   },
 };
@@ -480,12 +397,13 @@ export default {
 }
 
 @media screen and (max-width: 600px) {
-  .screensize {
-    position: relative;
-    z-index: 0;
+  .table-container {
+    overflow: auto;
+  }
+
+  .screensize,
+  .table-top {
     min-width: 500px;
-    overflow: hidden;
-    overflow-x: auto !important;
   }
 }
 

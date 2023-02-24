@@ -65,9 +65,9 @@ const grousService = {
         }
     },
 
-    async removeGroupFromStore(id) {
+    async removeGroupFromStore(index) {
         try {
-            store.dispatch("groups/removeGroup", id);
+            store.dispatch("groups/removeGroup", index);
         } catch (error) {
             console.log(error);
         }

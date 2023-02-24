@@ -14,7 +14,6 @@ const setupService = {
         store.dispatch("lookups/getUserSources");
         store.dispatch("membership/setMembers");
         // store.dispatch("membership/getFirstTimers");
-        store.dispatch("groups/getGroups");
         store.dispatch('contributions/contributionList')
         store.dispatch("communication/addSmsToSentList");
         // store.dispatch("communication/addToSentEmail");
