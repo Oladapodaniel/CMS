@@ -283,6 +283,7 @@
                 <span
                   v-if="selectedGroups.length > 0 && selectedGroups.length <= 2"
                 >
+                
                   <span v-for="item in selectedGroups" :key="item.id"
                     ><span class="eachGroup">{{ item && item.name }}</span></span>
                     <!-- ><span class="eachGroup">{{ item && item.name ? item.name : item }}</span></span> -->
@@ -1138,8 +1139,8 @@ export default {
       try {
         const response = await groupService.getGroups();
         grouploading.value = false;
-        if (response && response.length > 0) {
-          groups.value = response;
+        if (response.response && response.response.groupResonseDTO.length > 0) {
+          groups.value = response.response.groupResonseDTO;
         }
       } catch (error) {
         console.log(error);
@@ -1697,7 +1698,6 @@ export default {
     };
 
     const setFilterGroups = (payload) => {
-      console.log(payload);
       selectedGroups.value = payload;
     };
 

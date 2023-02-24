@@ -260,7 +260,7 @@ export default {
       grouploading.value = true;
       try {
         let data = await grousService.getGroups();
-        groups.value = data;
+        groups.value = data.response.groupResonseDTO;
         console.log(data);
         grouploading.value = false;
       } catch (err) {

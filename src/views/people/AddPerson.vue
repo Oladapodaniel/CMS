@@ -888,8 +888,9 @@ export default {
           allGroups.value = groups;
         } else {
           let group = await grousService.getGroups();
-          if (group) {
-            allGroups.value = group;
+          if (group.response && group.response.groupResonseDTO) {
+            allGroups.value = group.response.groupResonseDTO;
+;
           }
         }
         let data = { children: allGroups.value }

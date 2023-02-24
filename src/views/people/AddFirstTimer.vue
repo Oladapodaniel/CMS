@@ -1054,7 +1054,6 @@ export default {
     const getGroups = async () => {
       try {
         let groups = store.getters["groups/groups"];
-
         if (groups && groups.length > 0) {
           allGroups.value = groups;
           let data = { children: allGroups.value }
@@ -1067,8 +1066,8 @@ export default {
         }
         else {
           let group = await grousService.getGroups();
-          if (group) {
-            allGroups.value = group;
+          if (group.response.groupResonseDTO) {
+            allGroups.value = group.response.groupResonseDTO;
             let data = { children: allGroups.value }
             const { children } = collector(data);
             groupMappedTree.value = children
