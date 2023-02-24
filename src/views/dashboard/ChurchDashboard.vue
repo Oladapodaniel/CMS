@@ -363,8 +363,8 @@
                     {{ item.phone }}
                   </div>
                 </template>
-                <template class="c-pointer" v-slot:action="{ item }">
-                  <div>
+                <template v-slot:action="{ item }">
+                  <div class="c-pointer" >
                     <el-dropdown trigger="click">
                       <el-icon>
                         <MoreFilled />
