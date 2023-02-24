@@ -326,6 +326,7 @@ import deviceBreakpoint from "../../mixins/deviceBreakpoint";
 import { ElMessage, ElMessageBox } from 'element-plus'
 import router from "../../router/index"
 import Table from "@/components/table/Table"
+import groupsService from "../../services/groups/groupsservice";
 
 export default {
   props: ["list", "peopleCount"],
@@ -352,7 +353,7 @@ export default {
     const showEmail = ref(false)
     const contacts = ref([])
     const markedMembers = ref([])
-    const chooseGrouptoMoveAllMembers = ref("")
+    const chooseGrouptoMoveAllMembers = ref()
     const currentUser = ref({})
     const route = useRoute();
     const displayPositionArchive = ref(false);
@@ -727,24 +728,22 @@ export default {
     };
 
     const getAllGroups = ref([]);
-    const getGroups = () => {
-      axios
-        .get(`/api/GetAllGroupBasicInformation`)
-        .then((res) => {
-          getAllGroups.value = res.data.response.groupResonseDTO.map((i) => {
+    const getGroups = async () => {
+      try {
+        const data = await groupsService.getGroups();
+          getAllGroups.value = data.response.groupResonseDTO.map((i) => {
             return {
               label: i.name,
               value: i.id
             }
           });
-        })
-        .catch((err) => {
-          console.log(err);
-        });
+      } catch (error) {
+        console.error(error)
+      }
     };
     getGroups();
 
-    const chooseGrouptoMoveto = ref("");
+    const chooseGrouptoMoveto = ref();
     const moveMemberToGroup = () => {
       singleGroupLoading.value = true
       let peopleMoved = marked.value.map((i) => {

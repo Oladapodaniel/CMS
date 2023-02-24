@@ -7,7 +7,7 @@ const membershipService = {
             axios.get("/api/People/GetPeopleBasicInfo")
                 .then(res => {
                     resolve(res.data);
-                    store.dispatch("setMembers", res.data);
+                    // store.dispatch("setMembers", res.data);
                 })
                 .catch(error => {
                     /*eslint no-undef: "warn"*/
