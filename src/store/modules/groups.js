@@ -1,5 +1,4 @@
-import axios from "@/gateway/backendapi";
-import stopProgressBar from "../../services/progressbar/progress"
+import grousService from "../../services/groups/groupsservice";
 
 export default {
     namespaced: true,
@@ -83,8 +82,11 @@ export default {
             commit("updateGroupPeopleCopy", payload)
         },
 
-        setGroups({ commit }, payload) {
-            commit("setGroups", payload)
+        setGroups({ commit }) {
+            return grousService.getGroups().then(response => {
+                commit("setGroups", response.response.groupResonseDTO)
+                return response
+            })
         },
 
         updateGroup({ commit }, payload) {
@@ -93,17 +95,6 @@ export default {
         clearGroup ({ commit }) {
             commit('clearGroup')
         },
-
-        async getGroups({ commit }) {
-            try {
-                const { data } = await axios.get("/api/GetAllGroupBasicInformation");
-                commit("setGroups", data);
-            } catch (error) {
-                stopProgressBar();
-                console.log(error);
-            }
-        },
-
         setSelectedTreeGroup ({ commit }, payload) {
             commit("setSelectedTreeGroup", payload)
         },

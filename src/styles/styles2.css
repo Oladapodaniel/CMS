@@ -161,3 +161,7 @@ main.el-main {
     div.groupTree{
       border: 1px solid #E0E0E0;
     }
+    div.groupTree table tbody tr {
+      position: relative;
+    z-index: 0;
+    }
