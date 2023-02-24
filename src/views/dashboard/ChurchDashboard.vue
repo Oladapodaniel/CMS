@@ -364,7 +364,7 @@
                   </div>
                 </template>
                 <template v-slot:action="{ item }">
-                  <div class="c-pointer" >
+                  <div class="cursor-pointer" >
                     <el-dropdown trigger="click">
                       <el-icon>
                         <MoreFilled />
