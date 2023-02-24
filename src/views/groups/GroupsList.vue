@@ -72,25 +72,31 @@
               <el-table-column width="20%" label="Action">
                 <template #default="scope">
                   <div class="c-pointer">
-                    <div class="dropdown">
-                      <el-icon data-toggle="dropdown" aria-expanded="false">
-                        <MoreFilled />
-                      </el-icon>
-                      <ul class="dropdown-menu">
-                        <li class="dropdown-item">
-                          <a @click="sendGroupSms(scope.row)">Send SMS</a>
-                        </li>
-                        <li class="dropdown-item">
-                          <a class="" @click="sendGroupEmail(scope.row)">
+                  <el-dropdown trigger="click">
+                    <el-icon>
+                      <MoreFilled />
+                    </el-icon>
+                    <template #dropdown>
+                      <el-dropdown-menu>
+                        <el-dropdown-item>
+                          <a class="no-decoration text-dark" @click="sendGroupSms(scope.row)">Send SMS</a>
+                        </el-dropdown-item>
+                        <el-dropdown-item>
+                          <a class="no-decoration text-dark" @click="sendGroupEmail(scope.row)">
                             Send Email
                           </a>
-                        </li>
-                        <li class="dropdown-item">
-                          <a class="" @click="confirmDelete(scope.row.id, index)">Delete</a>
-                        </li>
-                      </ul>
-                    </div>
-                  </div>
+                        </el-dropdown-item>
+                        <el-dropdown-item>
+                          <a
+                            class="no-decoration text-dark"
+                            @click="confirmDelete(scope.row.id, index)"
+                            >Delete</a
+                          >
+                        </el-dropdown-item>
+                      </el-dropdown-menu>
+                    </template>
+                  </el-dropdown>
+                </div>
                 </template>
               </el-table-column>
 

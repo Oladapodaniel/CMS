@@ -157,11 +157,10 @@ main.el-main {
     div.groupTree div.cell  {
       display: flex !important;
       align-items: center !important;
+      color: #47545c;
+      font-size: 16px
     }
     div.groupTree{
       border: 1px solid #E0E0E0;
     }
-    div.groupTree table tbody tr {
-      position: relative;
-    z-index: 0;
-    }
+    
