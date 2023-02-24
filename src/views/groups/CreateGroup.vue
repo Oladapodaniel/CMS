@@ -52,10 +52,10 @@
               :headers="attendanceItemsHeaders"
               :checkMultipleItem="false"
               class="mt-4"
+              v-loading="attendanceItemsLoading"
             >
               <template
                 #fullEventName="{ item }"
-                v-loading="attendanceItemsLoading"
               >
                 <router-link
                   class="no-decoration text-dark"
