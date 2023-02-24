@@ -225,15 +225,7 @@ const routes = [
                     },
                     component: () =>
                         import( /* webpackChunkName: "addfirsttimer" */ '../views/people/AddFirstTimer.vue')
-                },
-                {
-                    path: 'memberstest',
-                    meta: {
-                        title: 'Churchplus -  Members test',
-                    },
-                    component: () =>
-                        import( /* webpackChunkName: "memberstest" */ '../views/people/peoplelisttest.vue')
-                },
+                }
 
             ]
 

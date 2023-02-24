@@ -175,6 +175,7 @@ import  { ref } from "vue";
 import axios from "@/gateway/backendapi";
 import { useToast } from "primevue/usetoast";
 import { useConfirm } from "primevue/useconfirm";
+import store from '../../store/store'
 // import { useRoute } from "vue-router";
 export default {
 
@@ -267,15 +268,9 @@ export default {
             });
           }
           store.dispatch("membership/removeMember", id);
-          axios
-            .get(`/api/People/GetMembershipSummary`)
-            .then((res) => {
-              console.log(res, "new chart");
-              membershipSummary.value = res.data;
-            })
-            .catch((err) => {
-              console.log(err);
-            });
+          store.dispatch('membership/setMembershipSummary').then(response => {
+            membershipSummary.value = response
+          })
         })
         .catch((err) => {
           stopProgressBar();
@@ -311,17 +306,6 @@ export default {
               detail: "Member Unarchive",
               life: 5000,
             });
-          // }
-          // store.dispatch("membership/removeMember", id);
-          // axios
-          //   .get(`/api/People/GetMembershipSummary`)
-          //   .then((res) => {
-          //     console.log(res, "new chart");
-          //     membershipSummary.value = res.data;
-          //   })
-          //   .catch((err) => {
-          //     console.log(err);
-          //   });
         })
         // .catch((err) => {
         //   stopProgressBar();

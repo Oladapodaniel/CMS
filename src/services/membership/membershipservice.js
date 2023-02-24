@@ -173,7 +173,24 @@ const membershipService = {
 
             store.dispatch("membership/updateMember", person);
         }
-    }
+    },
+    getMembershipSummary() {
+        return new Promise((resolve, reject) => {
+            axios.get("/api/People/GetMembershipSummary")
+                .then(res => {
+                    resolve(res.data);
+                })
+                .catch(error => {
+                    /*eslint no-undef: "warn"*/
+                    NProgress.done();
+                    if (error.response) {
+                        reject(error.response);
+                    } else {
+                        reject(error);
+                    }
+                })
+        })
+    },
 
 }
 
