@@ -453,10 +453,7 @@ export default {
     const searchNamesInDB = ref([]);
     const searchMemberInDB = () => {
       paginatedTableLoading.value = true
-      let url =
-        "/api/People/FilterFirstTimers?firstname=" +
-        searchText.value;
-
+      let url = `/api/People/FilterFirstTimers?firstname=${searchText.value}&&phone_number=${searchText.value}`
       axios
         .get(url)
         .then((res) => {
