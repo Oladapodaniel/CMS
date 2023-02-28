@@ -6,8 +6,22 @@
     <el-container>
       <el-row :gutter="15" class="w-100 m-0">
         <el-col class="d-block d-md-none">
-          <div class="grey-bg">
-            <ImageForm @pictureurl="setImageToUrl" />
+            <div class="grey-bg">
+            <div>
+              <div class="person-img">
+                <img v-if="!url" src="../../assets/people/phone-import.svg" alt="Uploaded Image" />
+                <img v-else :src="url" alt="Uploaded Image"
+                  style="width: 110px; height: 110px; border-radius: 50%; object-fit: cover" />
+              </div>
+            </div>
+            <div>
+              <div class="cs-input">
+                <label for="imgUpload" class="choose-file">
+                  Choose file
+                  <input type="file" class="input file-input" placeholder="" id="imgUpload" @change="imageSelected" />
+                </label>
+              </div>
+            </div>
           </div>
         </el-col>
         <el-col :sm="16" :md="16" :lg="16" :xl="16" class="p-0">
@@ -218,7 +232,23 @@
         </el-col>
         <el-col :xs="24" :sm="8" :md="8" :lg="8" :xl="8">
           <div class="grey-bg d-none d-md-block">
-            <ImageForm @pictureurl="setImageToUrl" />
+            <div class="grey-bg">
+            <div>
+              <div class="person-img">
+                <img v-if="!url" src="../../assets/people/phone-import.svg" alt="Uploaded Image" />
+                <img v-else :src="url" alt="Uploaded Image"
+                  style="width: 110px; height: 110px; border-radius: 50%; object-fit: cover" />
+              </div>
+            </div>
+            <div>
+              <div class="cs-input">
+                <label for="imgUpload" class="choose-file">
+                  Choose file
+                  <input type="file" class="input file-input" placeholder="" id="imgUpload" @change="imageSelected" />
+                </label>
+              </div>
+            </div>
+          </div>
           </div>
         </el-col>
       </el-row>
@@ -1036,9 +1066,11 @@ export default {
       ],
     })
 
-    const setImageToUrl = (payload) => {
-      firstTimersObj.value.imageUrl = payload;
-    };
+    const imageSelected = async(e) => {
+      url.value = URL.createObjectURL(e.target.files[0]);
+      await uploadImage(e)
+      console.log(url.value)
+    }
 
     const setContact = (payload) => {
       if (!payload.email) {
@@ -1161,20 +1193,26 @@ export default {
       })
     }
 
-    const uploadImage = (e, index) => {
+    const url = ref("")
+
+    const uploadImage = async (e, index) => {
       customFileLoading.value = true
       let formData = new FormData()
       formData.append("mediaFileImage", e.target.files[0])
 
-      axios.post("/api/Media/UploadProfilePicture", formData)
-        .then(res => {
-          customFileLoading.value = false
-          dynamicCustomFields.value[index].data = res.data.pictureUrl
+      try {
+        await axios.post("/api/Media/UploadProfilePicture", formData).then(res => {
+          if (index) {
+              customFileLoading.value = false
+              dynamicCustomFields.value[index].data = res.data.pictureUrl
+            }
+            firstTimersObj.value.imageUrl = res.data.pictureUrl;
         })
-        .catch(err => {
-          customFileLoading.value = false
-          console.log(err)
-        })
+      }
+      catch (err) {
+        console.error(err)
+        customFileLoading.value = false
+      }
     }
 
     return {
@@ -1238,7 +1276,6 @@ export default {
       firstTimerEmail,
       routeToFRM,
       saveAndRoute,
-      setImageToUrl,
       setContact,
       firstTimerInGroup,
       allGroups,
@@ -1274,7 +1311,9 @@ export default {
       xlAndUp,
       mdAndUp,
       lgAndUp,
-      createCatLoading
+      createCatLoading,
+      imageSelected,
+      url
     };
   },
 };
