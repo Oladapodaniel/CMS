@@ -57,7 +57,7 @@
             Total Balance
           </div>
           <h3 class="font-weight-700 mt-3 text-danger">
-            {{ pledgeBalance.toLocaleString() }}00
+            {{ pledgeBalance.toLocaleString() }}.00
             <span class=" small">
               {{ pledgesSummary.symbol }}
             </span>
@@ -348,7 +348,6 @@ export default {
       try {
         const res = await axios.get("/api/Pledge/GetAllPledgeDefinitions");
         allPledgeDefinitionList.value = res.data.returnObject;
-        console.log(allPledgeDefinitionList.value, "hjhh");
       } catch (error) {
         console.log(error);
       }
@@ -380,7 +379,6 @@ export default {
           )}&endDate${new Date(endDate.value).toLocaleDateString("en-US")}`
         );
         filterResult.value = res.data.returnObject;
-        console.log(filterResult.value, "filterPledge");
         filterLoading.value = false
       } catch (error) {
         filterLoading.value = false
@@ -429,8 +427,6 @@ export default {
     const chooseContact = (payload) => {
       // contactRef.value.hide();
       selectedContact.value = payload;
-
-      console.log(selectedContact.value, "my allll");
     };
 
     const searchIsVisible = ref(false);
@@ -444,7 +440,6 @@ export default {
         const res = await axios.get("/api/Pledge/GetAllPledgesSummary");
 
         pledgesSummary.value = res.data.returnObject;
-        console.log(pledgesSummary.value, "pledgesSummary");
       } catch (error) {}
     };
     getAllPledgesSummary();
@@ -455,19 +450,10 @@ export default {
         const res = await axios.get("/api/Pledge/GetAllPledges");
         // finish();
         allPledgeList.value = res.data.returnObject;
-        // allPledgeStatus.value = res.data.returnObject.map((i)  => ({
-        //   status: i.status
-        // }))
         allPerson.value = res.data.returnObject.map((i) => ({
           name: i.contact,
           personId: i.personID,
         }));
-        // allPledgeType.value = res.data.returnObject.map((i) => ({
-        //   status: i.status,
-        //   id: i.pledgeType.id,
-        // }));
-        console.log(allPledgeList.value, "getPledgeList");
-        console.log(allPerson.value, "allPledgeStatus");
         loading.value = false;
       } catch (error) {
         // finish();
