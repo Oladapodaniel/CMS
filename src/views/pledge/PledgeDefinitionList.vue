@@ -1,8 +1,7 @@
 <template>
-  <div class="container-fluid">
-    <div class="container-wide">
-      <div class="row d-md-flex justify-content-md-between mt-5">
-        <div class="events">Partnership and Pledge Item</div>
+    <div class="container-fluid">
+      <div class="row d-flex flex-column flex-sm-row justify-content-sm-between ">
+        <div class="head-text">Partnership and Pledge Item</div>
         <router-link
           to="/tenant/pledge/pledgedefinition"
           class="
@@ -26,380 +25,135 @@
         <div class="col-12 px-0" id="table">
           <div class="top-con" id="ignore2">
             <div class="table-top">
-              <div class="col-4">
-                <p
-                  @click="toggleSearch"
-                  class="search-text w-100 mt-2 d-flex justify-content-center"
-                >
-                  <i class="pi pi-search mr-2"></i>SEARCH
-                </p>
+              <div class="col-4 my-3">
+                <el-input size="small" v-model="searchText" placeholder="Search..."
+                  @keyup.enter.prevent="searchPledgeInDB" class="input-with-select">
+                  <template #append>
+                    <el-button @click.prevent="searchPledgeInDB">
+                      <el-icon :size="13">
+                        <Search />
+                      </el-icon>
+                    </el-button>
+                  </template>
+                </el-input>
               </div>
-
-              <div class="search d-flex ml-2 mr-3">
-                <label
-                  class="label-search d-flex"
-                  :class="{
-                    'show-search': searchIsVisible,
-                    'hide-search': !searchIsVisible,
-                  }"
-                >
-                  <input
-                    type="text"
-                    placeholder="Search..."
-                    v-model="searchText"
-                  />
-                  <span class="empty-btn" @click="clearInput">
-                    <i class="pi pi-times"></i
-                  ></span>
-                  <span class="search-btn" @click="removeSearchText">
-                    <i class="pi pi-search"></i>
-                  </span>
-                </label>
-              </div>
-            </div>
+            </div>{{balance}}
           </div>
-          <div>
-            <div class="container-fluid d-none d-md-block">
-              <div class="row t-header mt-4 border-bottom pb-2">
-                <div
-                  class="small-text text-capitalize col-md-2 font-weight-bold"
-                >
-                  Name
-                </div>
-                <!-- <div
-                  class="small-text text-capitalize col-md-2 font-weight-bold"
-                >
-                  Fund
-                </div> -->
-                <div
-                  class="small-text text-capitalize col-md-2 font-weight-bold"
-                >
-                  Pledge made
-                </div>
-                <div
-                  class="small-text text-capitalize col-md-2 font-weight-bold"
-                >
-                  Redemeed
-                </div>
-                <div
-                  class="small-text text-capitalize col-md-2 font-weight-bold"
-                >
-                  Date
-                </div>
-
-                <div
-                  class="small-text text-capitalize col-md-2 font-weight-bold"
-                >
-                  Pledges
-                </div>
-                <div
-                  class="small-text text-capitalize col-md-1 font-weight-bold"
-                >
-                  Link
-                </div>
-                <div
-                  class="small-text text-capitalize col-md-1 font-weight-bold"
-                >
-                  Action
-                </div>
-              </div>
-            </div>
-
-            <div class="row" style="margin: 0">
-              <div class="col-12 parent-desc pb-2 px-0">
-                <div class="row" v-if="loading">
-                  <div class="col-md-12">
-                    <div class="row">
-                      <div
-                        class="
-                          col-md-12
-                          d-flex
-                          align-items-center
-                          justify-content-center
-                        "
-                      >
-                        <i
-                          class="pi pi-spin pi-spinner py-4"
-                          style="font-size: 3rem"
-                        ></i>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-
-                <div
-                  class="
-                    row
-                    w-100
-                    c-pointer
-                    text-dark
-                    border-top
-                    py-2
-                    hover
-                    d-flex
-                    align-items-center
-                  "
-                  style="margin: 0"
-                  v-for="(pledgelist, index) in searchGroup"
-                  :key="index"
-                >
-                  <div
-                    class="col-md-2 desc"
-                    @click="pledgeClick(pledgelist.id)"
-                  >
-                    <div class="mb-0 d-flex small justify-content-between">
-                      <span
-                        class="
-                          text-dark
-                          font-weight-bold
-                          d-flex d-md-none
-                          fontIncrease
-                        "
-                        style="font-size: 15px"
-                        >Name</span
-                      >
-                      <div class="small-text">{{ pledgelist.name }}</div>
-                    </div>
-                  </div>
-                  <!-- <div
-                    class="col-md-2 desc"
-                    @click="pledgeClick(pledgelist.id)"
-                  >
-                    <div class="mb-0 small d-flex justify-content-between">
-                      <span
-                        class="
-                          text-dark
-                          font-weight-bold
-                          d-flex d-md-none
-                          fontIncrease
-                        "
-                        style="font-size: 15px"
-                        >Fund</span
-                      >
-                      <div class="small-text">{{ pledgelist.fund }}</div>
-                    </div>
-                  </div> -->
-                  <div
-                    class="col-md-2 desc"
-                    @click="pledgeClick(pledgelist.id)"
-                  >
-                    <div class="mb-0 small d-flex justify-content-between">
-                      <span
-                        class="
-                          text-dark
-                          font-weight-bold
-                          d-flex d-md-none
-                          fontIncrease
-                        "
-                        style="font-size: 15px"
-                        >Pledge made
-                      </span>
-                      <div class="small-text">
-                        <!-- {{ pledgelist.totalPledgeAmount }} -->
-                        {{
-                          pledgelist && pledgelist.currency
-                            ? pledgelist.currency.symbol
+          <Table  :data="searchPledge" :headers="pledgeHeaders" :checkMultipleItem="false" 
+            v-loading="loading">
+            <template v-slot:name="{ item }">
+              <div class="c-pointer" @click="pledgeClick(item.id)">{{ item.name }}</div>
+            </template>
+            <template v-slot:pledgeAmount="{ item }">
+              <div class="c-pointer" @click="pledgeClick(item.id)">{{
+                          item && item.currency
+                            ? item.currency.symbol
                             : ""
                         }}
                         {{
                           Math.abs(
-                            pledgelist.donorPaymentSpecificAmount ? pledgelist.donorPaymentSpecificAmount : pledgelist.totalPledgeAmount
+                            item.donorPaymentSpecificAmount ? item.donorPaymentSpecificAmount : item.totalPledgeAmount
                           ).toLocaleString()
-                        }}.00
-                      </div>
-                    </div>
-                  </div>
-                  <div class="col-md-2" @click="groupClick(group.id)">
-                    <div class="d-flex small justify-content-between">
-                      <span
-                        class="
-                          text-dark
-                          font-weight-bold
-                          d-flex d-md-none
-                          fontIncrease
-                        "
-                        style="font-size: 15px"
-                        >Redeemed</span
-                      >
-                      <div class="small-text text-right text-md-center">
-                        {{
-                          pledgelist && pledgelist.currency
-                            ? pledgelist.currency.symbol
-                            : ""
-                        }}
-                        {{
-                          Math.abs(
-                            pledgelist.totalPaymentsAmount
-                          ).toLocaleString()
-                        }}.00
-                      </div>
-                    </div>
-                  </div>
-                  <div class="col-md-2" @click="groupClick(group.id)">
-                    <div class="d-flex small justify-content-between">
-                      <span
-                        class="
-                          text-dark
-                          font-weight-bold
-                          d-flex d-md-none
-                          fontIncrease
-                        "
-                        style="font-size: 15px"
-                        >Date</span
-                      >
-                      <div class="small-text text-right text-md-center">
-                        {{ date(pledgelist.date) }}
-                      </div>
-                    </div>
-                  </div>
-                  <div class="col-md-2" @click="groupClick(group.id)">
-                    <div class="d-flex small justify-content-between">
-                      <span
-                        class="
-                          text-dark
-                          font-weight-bold
-                          d-flex d-md-none
-                          fontIncrease
-                        "
-                        style="font-size: 15px"
-                        >Pledges</span
-                      >
-                      <div class="small-text text-right text-md-center">
-                        {{ pledgelist.pledgeCount }}
-                      </div>
-                    </div>
-                  </div>
-                  <div class="col-md-1" @click="groupClick(group.id)">
-                    <div class="d-flex small justify-content-between">
-                      <span
-                        class="
-                          text-dark
-                          font-weight-bold
-                          d-flex d-md-none
-                          fontIncrease
-                        "
-                        style="font-size: 15px"
-                        >Link</span
-                      >
-                      <div class="small-text text-right text-md-center">
-                        <router-link
+                        }}.00</div>
+            </template>
+            <template v-slot:redeemed="{ item }">
+              <div class="c-pointer" @click="pledgeClick(item.id)">{{item.currencySymbol}}{{ Math.abs(item.totalPaymentsAmount).toLocaleString() }}..00</div>
+            </template>
+            <template v-slot:balance="{ item }">
+              <div class="c-pointer text-danger" @click="pledgeClick(item.id)">{{item.currencySymbol}}{{ item.totalPaymentsAmount - item.totalPledgeAmount }}..00</div>
+            </template>
+            <template v-slot:date="{ item }">
+              <div class="c-pointer"  @click="pledgeClick(item.id)">{{ date(item.date) }}</div>
+            </template>
+            <template v-slot:pledgeCount="{ item }">
+              <div class="c-pointer"  @click="pledgeClick(item.id)">{{ item.pledgeCount }}</div>
+            </template>
+            <!-- <template v-slot:paymentLink="{ item }">
+                <router-link
+                    target="_blank"
+                    :to="`/partnership/pay/${item.id}`"
+                    class="text-color text-primary text-decoration-none"
+                  >
+                  PaymentLink
+                </router-link>
+            </template> -->
+            <template v-slot:action="{ item }">
+              <el-dropdown trigger="click">
+                <el-icon>
+                  <MoreFilled />
+                </el-icon>
+                <template #dropdown>
+                  <el-dropdown-menu>
+                    <el-dropdown-item>
+                      <router-link
                           target="_blank"
-                          :to="`/partnership/pay/${pledgelist.id}`"
-                          class="text-color text-primary text-decoration-none"
+                          :to="`/partnership/pay/${item.id}`"
+                          class="text-color"
                         >
-                        PaymentLink
-                        </router-link>
-                      </div>
-                    </div>
-                  </div>
-
-                  <div class="col-md-1">
-                    <div>
-                      <div class="dropdown">
-                        <span class="d-flex justify-content-between">
-                          <span class="d-md-none d-sm-flex"></span>
-                          <span class="d-sm-flex small">
-                            <i
-                              class="
-                                fas
-                                fa-ellipsis-v
-                                cursor-pointer
-                                ml-2
-                                fontIncrease
-                              "
-                              id="dropdownMenuButton"
-                              data-toggle="dropdown"
-                              aria-haspopup="true"
-                              aria-expanded="false"
-                            ></i>
-
-                            <div
-                              class="dropdown-menu"
-                              aria-labelledby="dropdownMenuButton"
-                            >
-                              <!-- <a class="dropdown-item">
-                                    <a
-                                      @click="sendGroupSms(group)"
-                                      >Send SMS</a>
-                                  </a>
-                                  <a class="dropdown-item" @click="sendGroupEmail(group)">
-                                      Send Email
-                                  </a> -->
-                              <a
-                                class="dropdown-item"
-                                @click="showConfirmModal(pledgelist.id, index)"
-                                ><a class="text-decoration-none">Delete </a></a
-                              >
-
-                              <router-link
-                                :to="`/tenant/pledge/pledgedefinition?id=${pledgelist.id}`"
-                                class="text-color dropdown-item"
-                              >
-                                <a class="text-decoration-none">Edit </a>
-                              </router-link>
-                              <router-link
-                                target="_blank"
-                                :to="`/partnership/pay/${pledgelist.id}`"
-                                class="text-color dropdown-item"
-                              >
-                                <a class="text-decoration-none">Payment link </a>
-                              </router-link>
-                            </div>
-                          </span>
-                        </span>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-              </div>
-            </div>
-          </div>
+                          Payment link 
+                      </router-link>
+                    </el-dropdown-item>
+                    <el-dropdown-item>
+                      <router-link
+                          :to="`/tenant/pledge/pledgedefinition?id=${item.id}`"
+                          class="text-color"
+                        >
+                          Edit 
+                      </router-link>
+                    </el-dropdown-item>
+                    <el-dropdown-item>
+                      <div @click.prevent="showConfirmModal(item.id, index)" class="text-color">Delete</div>
+                    </el-dropdown-item>
+                  </el-dropdown-menu>
+                </template>
+              </el-dropdown>
+            </template>
+          </Table>
         </div>
       </div>
     </div>
-    <Toast />
-    <ConfirmDialog />
-  </div>
 </template>
 
 <script>
 import { ref, computed } from "vue";
 import finish from "../../services/progressbar/progress"
 import axios from "@/gateway/backendapi";
-import Dropdown from "primevue/dropdown";
-import { useToast } from "primevue/usetoast";
 import InputText from "primevue/inputtext";
-import { useConfirm } from "primevue/useconfirm";
 import monthDayYear from "../../services/dates/dateformatter";
 import router from "../../router";
+import Table from "@/components/table/Table";
+import { ElMessage, ElMessageBox } from 'element-plus'
 
 export default {
   components: {
-    Dropdown,
-    // MembersSearch,
+    Table,
     InputText,
   },
   setup() {
-    const toast = useToast();
-    // const paymentUrl = ref(`${window.location.origin}/partnership/pay/${allPledgeList.value.id}`)
     const loading = ref(false);
     const searchText = ref("");
     const selectedPledge = ref("");
     const allPledgeType = ref([]);
     const selectedPerson = ref("");
     const allPledgeList = ref([]);
-    // const singlePledge = ref([]);
-    const confirm = useConfirm();
+    const pledgeHeaders = ref([
+      { name: 'NAME', value: 'name' },
+      { name: 'PLEDGE AMOUNT', value: 'pledgeAmount' },
+      { name: 'REDEEMED', value: 'redeemed' },
+      { name: 'BALANCE', value: 'balance' },
+      { name: 'DATE', value: 'date' },
+      { name: 'NO. OF PLEDGES', value: 'pledgeCount' },
+      // { name: 'LINK', value: 'paymentLink' },
+      { name: 'ACTION', value: 'action' },
+    ])
 
     const date = (offDate) => {
       return monthDayYear.monthDayYear(offDate);
     };
     const chooseContact = (payload) => {
-      // contactRef.value.hide();
       selectedContact.value = payload;
-
-      // console.log(payload, 'my allll')
     };
+
 
     const getAllPledgeDefinition = async () => {
       loading.value = true;
@@ -407,10 +161,6 @@ export default {
         const res = await axios.get("/api/Pledge/GetAllPledgeDefinitions");
         finish();
         allPledgeList.value = res.data.returnObject;
-        // allPledgeType.value = res.data.returnObject.map(i => ({
-        //   name : i.pledgeType.name,
-        //   id : i.pledgeType.id,
-        // }))
         loading.value = false;
         console.log(allPledgeList.value, "getPledgeDefinition");
       } catch (error) {
@@ -420,12 +170,13 @@ export default {
     };
     getAllPledgeDefinition();
 
-    const searchIsVisible = ref(false);
+    const balance = computed(() =>{
+      // return allPledgeList.value.totalPaymentsAmount - allPledgeList.value.totalPledgeAmount
+      console.log(allPledgeList.value.totalPaymentsAmount - allPledgeList.value.totalPledgeAmount);
+    })
 
-    const toggleSearch = () => {
-      searchIsVisible.value = !searchIsVisible.value;
-    };
-    const searchGroup = computed(() => {
+    
+    const searchPledge = computed(() => {
       if (searchText.value !== "" && allPledgeList.value.length > 0) {
         return allPledgeList.value.filter((i) => {
           if (i.name)
@@ -437,27 +188,29 @@ export default {
         return allPledgeList.value;
       }
     });
-
-    const removeSearchText = () => {
-      searchText.value = "";
-    };
-    const clearInput = () => {
-      searchIsVisible.value = !searchIsVisible.value;
+    const searchPledgeInDB = () => {
+      if (searchText.value !== "" && allPledgeList.value.length > 0) {
+        return allPledgeList.value.filter((i) => {
+          if (i.name)
+            return i.name
+              .toLowerCase()
+              .includes(searchText.value.toLowerCase());
+        });
+      } else {
+       return allPledgeList.value;
+      }
     };
 
     const deletePledge = (id) => {
       axios
-        // .delete(`/api/Pledge/DeletePledge?ID=${id}`)
         .delete(`/api/Pledge/DeletePledgeDefinition?ID=${id}`)
         .then((res) => {
           console.log(res);
-          toast.add({
-            severity: "success",
-            summary: "Confirmed",
-            detail: "Pledge form deleted",
-            life: 3000,
-          });
-
+          ElMessage({
+            type: 'success',
+            message: 'Pledge form deleted',
+            duration: 5000
+          })
           allPledgeList.value = allPledgeList.value.filter(
             (pledgelist) => pledgelist.id !== id
           );
@@ -465,43 +218,41 @@ export default {
         .catch((err) => {
           finish();
           if (err.response.status === 400) {
-            toast.add({
-              severity: "error",
-              summary: "Unable to delete",
-              detail: "Ensure this member is not in any group",
-              life: 3000,
-            });
+            ElMessage({
+            type: 'error',
+            message: 'Unable to delete',
+            duration: 5000
+          })
           } else {
-            toast.add({
-              severity: "error",
-              summary: "Unable to delete",
-              detail: "An error occurred, please try again",
-              life: 3000,
-            });
+            ElMessage({
+            type: 'error',
+            message: 'Unable to delete, An error occurred, please try again',
+            duration: 5000
+          })
           }
         });
     };
 
     const showConfirmModal = (id, index) => {
-      confirm.require({
-        message: "Are you sure you want to proceed?",
-        header: "Confirmation",
-        icon: "pi pi-exclamation-triangle",
-        acceptClass: "confirm-delete",
-        rejectClass: "cancel-delete",
-        accept: () => {
-          deletePledge(id, index);
-          // toast.add({severity:'info', summary:'Confirmed', detail:'Member Deleted', life: 3000});
-        },
-        reject: () => {
-          toast.add({
-            severity: "info",
-            summary: "Rejected",
-            detail: "You have rejected",
-            life: 3000,
-          });
-        },
-      });
+        ElMessageBox.confirm(
+        "Are you sure you want to proceed?",
+        'Confirm delete',
+        {
+          confirmButtonText: 'OK',
+          cancelButtonText: 'Cancel',
+          type: 'error',
+        }
+      )
+        .then(() => {
+           deletePledge(id, index);
+        })
+        .catch(() => {
+          ElMessage({
+            type: 'info',
+            message: 'Delete canceled',
+            duration: 5000
+          })
+        })
     };
 
     const pledgeClick = (id) => {
@@ -510,22 +261,20 @@ export default {
 
     return {
       allPledgeList,
-      // paymentUrl,
-      searchGroup,
-      clearInput,
-      toggleSearch,
+      balance,
+      searchPledgeInDB,
+      searchPledge,
       chooseContact,
       showConfirmModal,
       deletePledge,
       loading,
       searchText,
-      searchIsVisible,
       selectedPledge,
       selectedPerson,
-      removeSearchText,
       allPledgeType,
       date,
       pledgeClick,
+      pledgeHeaders
     };
   },
 };
@@ -545,6 +294,13 @@ export default {
 .link a:hover {
   color: #fff;
 }
+.text-color {
+  color: #212529;
+  text-decoration: none;
+}
+.text-color:hover {
+  color: #007bff;
+}
 
 .table {
   width: 100% !important;
@@ -557,6 +313,9 @@ export default {
 .table-top {
   font-weight: 800;
   font-size: 12px;
+  background: #fff;
+  border: 1px solid #e0e0e0;
+  border-bottom: none;
   display: flex;
   justify-content: flex-end;
 }

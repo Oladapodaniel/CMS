@@ -1,51 +1,54 @@
 <template>
   <div>
-      <div class="row  ">
-        <div class="col-md-6">
-          <div class="head-text">Partnership and Pledges</div>
-        </div>
-        <div class="col-md-6 d-flex flex-column flex-sm-row mt-2 my-1 link">
-          <router-link class="" to="/tenant/pledge/pledgedefinitionlist">
-            <el-button class="header-btn mr-3"  round>
-              Partnership/Pledge items
-            </el-button>
-          </router-link>
-          <router-link class=""
-            to="/tenant/pledge/makepledge"
-           >
-            <el-button color="#136acd"   class="  header-btn mt-3  mt-sm-0" round>
-              New Partnership/Pledge
-            </el-button></router-link
-          >
-        </div>
+    <div
+      class="d-flex flex-wrap flex-column flex-sm-row justify-content-between"
+    >
+      <div class="">
+        <div class="head-text">Partnership and Pledges</div>
       </div>
-      <div class="conttainer ">
-        <div class="row">
-          <div class="col-md-12">
-          <hr class="hr my-3 w-100" />
-
-          </div>
-        </div>
+      <div class="d-flex flex-column flex-sm-row mt-2 my-1 link">
+        <router-link class="" to="/tenant/pledge/pledgedefinitionlist">
+          <el-button class="header-btn mr-3" round>
+            Partnership/Pledge items
+          </el-button>
+        </router-link>
+        <router-link class="" to="/tenant/pledge/makepledge">
+          <el-button color="#136acd" class="header-btn mt-3 mt-sm-0" round>
+            New Partnership/Pledge
+          </el-button></router-link
+        >
       </div>
-      <div
-        class="container "
-        v-if="allPledgeList.length > 0 && !loading && !networkError"
-      >
-      <div class="row  border py-3  mt-3 rounded">
+    </div>
+    <!-- <div class="container "> -->
+    <div class="d-flex flex-wrap flex-column flex-sm-row">
+      <div class="w-100">
+        <hr class="hr my-3" />
+      </div>
+    </div>
+    <!-- </div> -->
+    <div
+      class="container"
+      v-if="allPledgeList.length > 0 && !loading && !networkError"
+    >
+      <div class="row border py-3 mt-3 rounded">
         <div class="col-md-4">
-          <div class="text-secondary font-weight-bold small">
-            Total pledge
-          </div>
+          <div class="text-secondary font-weight-bold small">Total pledge</div>
           <h3 class="font-weight-700 mt-3">
-            {{ Math.abs(pledgesSummary.totalPledges).toLocaleString() }}.00 <span class="text-secondary small">{{pledgesSummary.symbol}}</span>
+            {{ Math.abs(pledgesSummary.totalPledges).toLocaleString() }}.00
+            <span class="text-secondary small">{{
+              pledgesSummary.symbol
+            }}</span>
           </h3>
         </div>
-        <div class="col-md-4 mt-3 mt-md-0">
+        <div class="col-md-4 mt-3 mt-md-0 ">
           <div class="font-weight-bold small text-secondary">
             Total Payments
           </div>
-          <h3 class="font-weight-700 mt-3">
-              {{ Math.abs(pledgesSummary.totalPayments).toLocaleString() }}.00 <span class="text-secondary small">{{pledgesSummary.symbol}}</span>
+          <h3 class="font-weight-700 mt-3 text-success">
+            {{ Math.abs(pledgesSummary.totalPayments).toLocaleString() }}.00
+            <span class=" small ">{{
+              pledgesSummary.symbol
+            }}</span>
           </h3>
         </div>
         <div class="col-md-4 mt-3 mt-md-0">
@@ -53,191 +56,190 @@
             <!-- Payment within the last 30 days -->
             Total Balance
           </div>
-          <h3 class="font-weight-700 mt-3">
-            {{pledgeBalance.toLocaleString()}}00 <span class="text-secondary small"> {{pledgesSummary.symbol}} </span>
+          <h3 class="font-weight-700 mt-3 text-danger">
+            {{ pledgeBalance.toLocaleString() }}00
+            <span class=" small">
+              {{ pledgesSummary.symbol }}
+            </span>
           </h3>
         </div>
       </div>
-        
-      </div>
-      <div
-        class="row  mt-4"
-        v-if="allPledgeList.length > 0 && !loading && !networkError"
-      >
-        <div class="col-md-12 mt-3 d-flex">
-          <div>
-            <span
-              class="
-                font-weight-bold
-                bg-secondary
-                rounded-circle
-                py-1
-                px-2
-                border
-              "
-              >0</span
-            >
-          </div>
-          <div class="col-md-5">active filters</div>
-        </div>
-      </div>
-      <div
-        class="row  mt-4 mb-4"
-        v-if="allPledgeList.length > 0 && !loading && !networkError"
-      >
-        <div class="col-md-2">
-              <MembersSearch
-                @memberdetail="chooseContact"
-                :currentMember="selectedContact"
-              />
-          <!-- <input
-                type="text"
-                v-model="selectedContact2"
-                class="form-control"
-                placeholder="Contact"
-              /> -->
-        </div>
-        <div class="col-md-2">
-          <Dropdown
-            v-model="selectedCategory"
-            class="w-100 font-weight-normal"
-            :options="allPledgeDefinitionList"
-            optionLabel="name"
-            placeholder="Select category"
-          />
-          <!-- <input
-                type="text"
-                v-model="selectedCategory"
-                class="form-control"
-                placeholder="Category"
-              /> -->
-        </div>
-        <div class="col-md-2 mt-3 mt-md-0">
-          <Dropdown
-            v-model="selectedStatus"
-            class="w-100 font-weight-normal"
-            :options="allPledgeStatus"
-            optionLabel="status"
-            placeholder="All statuses"
-          />
-        </div>
-        <div class="col-md-2 mt-3 mt-md-0">
-          <Calendar
-            dateFormat="dd/mm/yy"
-            placeholder="From"
-            class="w-100"
-            id="icon"
-            v-model="startDate"
-            :showIcon="true"
-          />
-        </div>
-        <div class="col-md-2 mt-3 mt-md-0">
-          <Calendar
-            dateFormat="dd/mm/yy"
-            placeholder="To"
-            class="w-100"
-            id="icon"
-            v-model="endDate"
-            :showIcon="true"
-          />
-        </div>
-        <div class="col-md-2 mt-3  mt-md-0">
-            <button
-              class="default-btn more-btn primary-bg border-0 "
-                @click="filterPledge"
-              >
-                <i
-                  class="fas fa-circle-notch fa-spin mr-2 text-white"
-                  v-if="loading"
-                ></i>
-                <span class="text-white">Apply</span>
-                <span></span>
-            </button>
-        </div>
-      </div>
-      <Table  :data="searchPledges" :headers="pledgeHeaders" :checkMultipleItem="false" 
-            v-loading="loading">
-            <template v-slot:status="{ item }">
-              <div class="c-pointer" @click="pledgeListClick(item.id)">{{ item.status }}</div>
-            </template>
-            <template v-slot:pledgeNumber="{ item }">
-              <div class="c-pointer"  @click="pledgeListClick(item.id)">{{ item.pledgeNumber }}</div>
-            </template>
-            <template v-slot:contact="{ item }">
-              <div class="c-pointer"  @click="pledgeListClick(item.id)">{{ item.contact }}</div>
-            </template>
-            <template v-slot:amount="{ item }">
-              <div class="c-pointer" @click="pledgeListClick(item.id)">{{
-                    item  &&
-                    item.currency
-                      ? item.currency.symbol
-                      : ""
-                  }}
-                  {{ Math.abs(item.amount).toLocaleString() }}.00</div>
-            </template>
-            <template v-slot:redeemed="{ item }">
-              <div class="c-pointer" @click="pledgeListClick(item.id)">{{item.currencySymbol}}{{ Math.abs(item.totalPaymentSum).toLocaleString() }}..00</div>
-            </template>
-            <template v-slot:date="{ item }">
-              <div class="c-pointer"  @click="pledgeListClick(item.id)">{{ date(item.date) }}</div>
-            </template>
-            <template v-slot:action="{ item }">
-              <el-dropdown trigger="click">
-                <el-icon>
-                  <MoreFilled />
-                </el-icon>
-                <template #dropdown>
-                  <el-dropdown-menu>
-                    <el-dropdown-item>
-                      <router-link
-                            :to="`/tenant/pledge/pledgemaking?pledgeTypeID=${
-                              item.id
-                            }`"
-                            class="text-color"
-                            >Make Payment</router-link>
-                    </el-dropdown-item>
-                    <el-dropdown-item>
-                      <router-link
-                            :to="`/tenant/pledge/makepledge?id=${item.id}`"
-                            class="text-color"
-                            >Edit</router-link>
-                    </el-dropdown-item>
-                    <el-dropdown-item>
-                      <div @click.prevent="showConfirmModal(item.id, index)" class="text-color">Delete</div>
-                    </el-dropdown-item>
-                  </el-dropdown-menu>
-                </template>
-              </el-dropdown>
-            </template>
-      </Table>
-      <div
-        class="no-person"
-        v-if="allPledgeList.length === 0 && !loading && !networkError"
-      >
-        <div class="empty-img">
-          <p><img src="../../assets/people/people-empty.svg" alt="" /></p>
-          <p class="tip">You haven't added any pledge yet</p>
-          <div
-            class="
-              c-pointer
-              primary-bg
-              col-sm-6 col-md-4
-              offset-sm-3 offset-md-4
-              default-btn
-              border-0
-              text-white
-            "
-            @click="navigateToMakePledge"
+    </div>
+    <div
+      class="row mt-4"
+      v-if="allPledgeList.length > 0 && !loading && !networkError"
+    >
+      <div class="col-md-12 mt-3 d-flex">
+        <div>
+          <span
+            class="font-weight-bold bg-secondary rounded-circle py-1 px-2 border"
+            >0</span
           >
-            Add Pledge
-          </div>
+        </div>
+        <div class="col-md-5">active filters</div>
+      </div>
+    </div>
+    <div
+      class="row mt-4 mb-4"
+      v-if="allPledgeList.length > 0 && !loading && !networkError"
+    >
+      <div class="col-12 col-md-6 col-lg-2 pr-lg-1">
+        <MembersSearch
+          @memberdetail="chooseContact"
+          :currentMember="selectedContact"
+        />
+      </div>
+      <div class="col-12 col-md-6 col-lg-2 mt-3 mt-md-0 mt-lg-0 px-lg-1">
+        <el-select-v2
+          v-model="selectedCategoryID"
+          @change="setSelectedCategory"
+          :options="
+            allPledgeDefinitionList.map((i) => ({ label: i.name, value: i.id }))
+          "
+          placeholder="Select category"
+          size="large"
+          class="w-100"
+        />
+      </div>
+      <div class="col-12 col-md-6 col-lg-2 mt-3 mt-lg-0 px-lg-1">
+        <el-select-v2
+          v-model="selectedStatusID"
+          @change="setSelectedStatus"
+          :options="
+            allPledgeStatus.map((i) => ({ label: i.status, value: i.status }))
+          "
+          placeholder=" Select Status"
+          size="large"
+          class="w-100"
+        />
+      </div>
+      <div class="col-12 col-md-6 col-lg-2 mt-3 mt-lg-0 px-lg-1">
+        <el-date-picker
+          v-model="startDate"
+          type="date"
+          placeholder="From"
+          format="DD/MM/YYYY"
+          size="large"
+          class="w-100"
+        />
+      </div>
+      <div class="col-12 col-md-6 col-lg-2 mt-3 mt-lg-0 px-lg-1">
+        <el-date-picker
+          v-model="endDate"
+          type="date"
+          placeholder="To"
+          format="DD/MM/YYYY"
+          size="large"
+          class="w-100"
+        />
+      </div>
+      <div
+        class="col-12 col-md-6 col-lg-2 mt-3 text-lg-right text-md-center text-sm-center mt-lg-0 "
+      >
+        <el-button
+        :loading="filterLoading"
+          class=""
+          @click="filterPledge"
+          round
+          color="#136acd"
+          size="large"
+        >
+          Apply
+        </el-button>
+      </div>
+    </div>
+    <Table
+      :data="searchPledges"
+      :headers="pledgeHeaders"
+      :checkMultipleItem="false"
+      v-loading="loading"
+    >
+      <template v-slot:status="{ item }">
+        <div class="c-pointer" @click="pledgeListClick(item.id)">
+          {{ item.status }}
+        </div>
+      </template>
+      <template v-slot:pledgeNumber="{ item }">
+        <div class="c-pointer" @click="pledgeListClick(item.id)">
+          {{ item.pledgeNumber }}
+        </div>
+      </template>
+      <template v-slot:contact="{ item }">
+        <div class="c-pointer" @click="pledgeListClick(item.id)">
+          {{ item.contact }}
+        </div>
+      </template>
+      <template v-slot:amount="{ item }">
+        <div class="c-pointer" @click="pledgeListClick(item.id)">
+          {{ item && item.currency ? item.currency.symbol : "" }}
+          {{ Math.abs(item.amount).toLocaleString() }}.00
+        </div>
+      </template>
+      <template v-slot:redeemed="{ item }">
+        <div class="c-pointer" @click="pledgeListClick(item.id)">
+          {{ item.currencySymbol
+          }}{{ Math.abs(item.totalPaymentSum).toLocaleString() }}..00
+        </div>
+      </template>
+      <template v-slot:date="{ item }">
+        <div class="c-pointer" @click="pledgeListClick(item.id)">
+          {{ date(item.date) }}
+        </div>
+      </template>
+      <template v-slot:action="{ item }">
+        <el-dropdown trigger="click">
+          <el-icon>
+            <MoreFilled />
+          </el-icon>
+          <template #dropdown>
+            <el-dropdown-menu>
+              <el-dropdown-item>
+                <router-link
+                  :to="`/tenant/pledge/pledgemaking?pledgeTypeID=${item.id}`"
+                  class="text-color"
+                  >Make Payment</router-link
+                >
+              </el-dropdown-item>
+              <el-dropdown-item>
+                <router-link
+                  :to="`/tenant/pledge/makepledge?id=${item.id}`"
+                  class="text-color"
+                  >Edit</router-link
+                >
+              </el-dropdown-item>
+              <el-dropdown-item>
+                <div
+                  @click.prevent="showConfirmModal(item.id, index)"
+                  class="text-color"
+                >
+                  Delete
+                </div>
+              </el-dropdown-item>
+            </el-dropdown-menu>
+          </template>
+        </el-dropdown>
+      </template>
+    </Table>
+    <div
+      class="no-person"
+      v-if="allPledgeList.length === 0 && !loading && !networkError"
+    >
+      <div class="empty-img">
+        <p><img src="../../assets/people/people-empty.svg" alt="" /></p>
+        <p class="tip">You haven't added any pledge yet</p>
+        <div
+          class="c-pointer primary-bg col-sm-6 col-md-4 offset-sm-3 offset-md-4 default-btn border-0 text-white"
+          @click="navigateToMakePledge"
+        >
+          Add Pledge
         </div>
       </div>
+    </div>
 
-      <div class="adjust-network" v-else-if="networkError">
-        <img src="../../assets/network-disconnected.png" />
-        <div>Opps, Your internet connection was disrupted</div>
-      </div>
+    <div class="adjust-network" v-else-if="networkError">
+      <img src="../../assets/network-disconnected.png" />
+      <div>Opps, Your internet connection was disrupted</div>
+    </div>
   </div>
 </template>
 
@@ -246,35 +248,34 @@ import { ref, computed } from "vue";
 // import finish from "../../services/progressbar/progress";
 import MembersSearch from "../../components/membership/MembersSearch.vue";
 import axios from "@/gateway/backendapi";
-import Calendar from "primevue/calendar";
 import Dropdown from "primevue/dropdown";
-import InputText from "primevue/inputtext";
 import monthDayYear from "../../services/dates/dateformatter";
-import { ElMessage, ElMessageBox } from 'element-plus'
-import Table from "@/components/table/Table"
+import { ElMessage, ElMessageBox } from "element-plus";
+import Table from "@/components/table/Table";
 import router from "../../router";
 
 export default {
   components: {
     Dropdown,
-    Calendar,
     MembersSearch,
-    InputText,
-    Table
+    Table,
   },
   setup() {
     const networkError = ref(false);
     const allPerson = ref([]);
+    const selectedStatusID = ref(null);
+    const selectedCategoryID = ref(null);
+    const filterLoading = ref(false)
     const allPledgeStatus = ref([
-      {status: 'Paid'},
-      {status: 'Over Due'},
-      {status: 'No Payment'},
-      {status: '---'}
+      { status: "Paid" },
+      { status: "Over Due" },
+      { status: "No Payment" },
+      { status: "---" },
     ]);
     const allPledgeDefinitionList = ref([]);
     const selectedCategory = ref({});
     const filterResult = ref([]);
-    const selectedStatus = ref("")
+    const selectedStatus = ref("");
     const loading = ref(false);
     const searchText = ref("");
     const selectedPledge = ref("");
@@ -291,14 +292,14 @@ export default {
     const selectedContact = ref({});
     const selectedContact2 = ref("");
     const pledgeHeaders = ref([
-      { name: 'STATUS', value: 'status' },
-      { name: 'PLEDGE NO.', value: 'pledgeNumber' },
-      { name: 'CONTACT', value: 'contact' },
-      { name: 'AMOUNT', value: 'amount' },
-      { name: 'REDEEMED', value: 'redeemed' },
-      { name: 'DATE', value: 'date' },
-      { name: 'ACTION', value: 'action' },
-    ])
+      { name: "STATUS", value: "status" },
+      { name: "PLEDGE NO.", value: "pledgeNumber" },
+      { name: "CONTACT", value: "contact" },
+      { name: "AMOUNT", value: "amount" },
+      { name: "REDEEMED", value: "redeemed" },
+      { name: "DATE", value: "date" },
+      { name: "ACTION", value: "action" },
+    ]);
 
     const upload = () => {
       showUpload.value = true;
@@ -318,43 +319,74 @@ export default {
       showUpload.value = false;
     };
 
+    const setSelectedCategory = () => {
+      selectedCategory.value = allPledgeDefinitionList.value.find((i) => {
+        return i.id == selectedCategoryID.value;
+      });
+    };
+
+    const setSelectedStatus = () => {
+      selectedStatus.value = allPledgeStatus.value.find((i) => {
+        return i.status == selectedStatusID.value;
+      });
+    };
+
     const navigateToMakePledge = () => {
       router.push("/tenant/pledge/makepledge");
     };
-    
-    const pledgeListClick = (id) =>{
-        router.push(`/tenant/pledge/pledgemaking?pledgeTypeID=${id}`);
-    }
-    const pledgeBalance = computed(() =>{
-      return pledgesSummary.value.totalPledges - pledgesSummary.value.totalPayments
-    })
+
+    const pledgeListClick = (id) => {
+      router.push(`/tenant/pledge/pledgemaking?pledgeTypeID=${id}`);
+    };
+    const pledgeBalance = computed(() => {
+      return (
+        pledgesSummary.value.totalPledges - pledgesSummary.value.totalPayments
+      );
+    });
 
     const getAllPledgeDefinition = async () => {
-      try{
-        const res  = await axios.get('/api/Pledge/GetAllPledgeDefinitions')
-          allPledgeDefinitionList.value = res.data.returnObject;
-
-      }
-      catch(error){
+      try {
+        const res = await axios.get("/api/Pledge/GetAllPledgeDefinitions");
+        allPledgeDefinitionList.value = res.data.returnObject;
+        console.log(allPledgeDefinitionList.value, "hjhh");
+      } catch (error) {
         console.log(error);
-        
       }
-    }
-    getAllPledgeDefinition()
+    };
+    getAllPledgeDefinition();
 
-    const filterPledge = async () =>{
-      selectedContact.value.name = selectedContact.value.name == undefined ? "" : selectedContact.value.name;
-      selectedCategory.value.name = selectedCategory.value.name == undefined ? "" : selectedCategory.value.name;
-      selectedStatus.value.status = selectedStatus.value.status == undefined ? "" : selectedStatus.value.status;
-      try{
-        const res = await axios.get(`/api/Pledge/GetAllPledgesSearch?personId=${selectedContact.value.id}&status${selectedStatus.value.status}&pledgeItemName${selectedCategory.value.name}&startDate${new Date(startDate.value).toLocaleDateString("en-US")}&endDate${new Date(endDate.value).toLocaleDateString("en-US")}`)
+    const filterPledge = async () => {
+      filterLoading.value = true
+      selectedContact.value.name =
+        selectedContact.value.name == undefined
+          ? ""
+          : selectedContact.value.name;
+      selectedCategory.value.name =
+        selectedCategory.value.name == undefined
+          ? ""
+          : selectedCategory.value.name;
+      selectedStatus.value.status =
+        selectedStatus.value.status == undefined
+          ? ""
+          : selectedStatus.value.status;
+      try {
+        const res = await axios.get(
+          `/api/Pledge/GetAllPledgesSearch?personId=${
+            selectedContact.value.id
+          }&status${selectedStatus.value.status}&pledgeItemName${
+            selectedCategory.value.name
+          }&startDate${new Date(startDate.value).toLocaleDateString(
+            "en-US"
+          )}&endDate${new Date(endDate.value).toLocaleDateString("en-US")}`
+        );
         filterResult.value = res.data.returnObject;
         console.log(filterResult.value, "filterPledge");
+        filterLoading.value = false
+      } catch (error) {
+        filterLoading.value = false
+        console.log(error);
       }
-      catch(error){
-        console.log(error)
-      }
-    }
+    };
     const getCurrentlySignedInUser = async () => {
       try {
         const res = await axios.get("/api/Membership/GetCurrentSignedInUser");
@@ -379,11 +411,15 @@ export default {
               .toLowerCase()
               .includes(searchText.value.toLowerCase());
         });
-      } else if(filterResult.value.length > 0 && (selectedContact.value.name || selectedStatus.value.status || selectedCategory.value.name  ))
-      {
-        return filterResult.value
-      }else{
-         return allPledgeList.value;
+      } else if (
+        filterResult.value.length > 0 &&
+        (selectedContact.value.name ||
+          selectedStatus.value.status ||
+          selectedCategory.value.name)
+      ) {
+        return filterResult.value;
+      } else {
+        return allPledgeList.value;
       }
     });
 
@@ -394,7 +430,7 @@ export default {
       // contactRef.value.hide();
       selectedContact.value = payload;
 
-      console.log(selectedContact.value, 'my allll')
+      console.log(selectedContact.value, "my allll");
     };
 
     const searchIsVisible = ref(false);
@@ -403,18 +439,15 @@ export default {
       searchIsVisible.value = !searchIsVisible.value;
     };
 
-    const getAllPledgesSummary =  async () =>{
-      try{
+    const getAllPledgesSummary = async () => {
+      try {
         const res = await axios.get("/api/Pledge/GetAllPledgesSummary");
-        
-        pledgesSummary.value =  res.data.returnObject
-        console.log(pledgesSummary.value, "pledgesSummary");
-      }
-      catch(error){
 
-      }
-    }
-    getAllPledgesSummary()
+        pledgesSummary.value = res.data.returnObject;
+        console.log(pledgesSummary.value, "pledgesSummary");
+      } catch (error) {}
+    };
+    getAllPledgesSummary();
 
     const getAllPledges = async () => {
       loading.value = true;
@@ -425,16 +458,16 @@ export default {
         // allPledgeStatus.value = res.data.returnObject.map((i)  => ({
         //   status: i.status
         // }))
-        allPerson.value = res.data.returnObject.map((i)  => ({
+        allPerson.value = res.data.returnObject.map((i) => ({
           name: i.contact,
-          personId: i.personID
-        }))
+          personId: i.personID,
+        }));
         // allPledgeType.value = res.data.returnObject.map((i) => ({
         //   status: i.status,
         //   id: i.pledgeType.id,
         // }));
         console.log(allPledgeList.value, "getPledgeList");
-        console.log(allPerson.value , "allPledgeStatus");
+        console.log(allPerson.value, "allPledgeStatus");
         loading.value = false;
       } catch (error) {
         // finish();
@@ -461,10 +494,10 @@ export default {
         .then((res) => {
           console.log(res);
           ElMessage({
-            type: 'success',
-            message: 'Pledge form deleted',
-            duration: 5000
-          })
+            type: "success",
+            message: "Pledge form deleted",
+            duration: 5000,
+          });
           allPledgeList.value = allPledgeList.value.filter(
             (pledgelist) => pledgelist.id !== id
           );
@@ -473,16 +506,16 @@ export default {
           // finish();
           if (err.response.status === 400) {
             ElMessage({
-            type: 'error',
-            message: 'Unable to delete, Ensure this member is not in any group',
-            duration: 5000
-          })
+              type: "error",
+              message: "Unable to delete",
+              duration: 5000,
+            });
           } else {
             ElMessage({
-            type: 'error',
-            message: 'Unable to delete',
-            duration: 5000
-          })
+              type: "error",
+              message: "Unable to delete",
+              duration: 5000,
+            });
           }
         });
     };
@@ -494,30 +527,35 @@ export default {
     };
 
     const showConfirmModal = (id, index) => {
-        ElMessageBox.confirm(
+      ElMessageBox.confirm(
         "Are you sure you want to proceed?",
-        'Confirm delete',
+        "Confirm delete",
         {
-          confirmButtonText: 'OK',
-          cancelButtonText: 'Cancel',
-          type: 'error',
+          confirmButtonText: "OK",
+          cancelButtonText: "Cancel",
+          type: "error",
         }
       )
         .then(() => {
-           deletePledge(id, index);
+          deletePledge(id, index);
         })
         .catch(() => {
           ElMessage({
-            type: 'info',
-            message: 'Delete canceled',
-            duration: 5000
-          })
-        })
+            type: "info",
+            message: "Delete canceled",
+            duration: 5000,
+          });
+        });
     };
 
     return {
       upload,
+      setSelectedStatus,
+      filterLoading,
+      setSelectedCategory,
+      selectedCategoryID,
       pledgeHeaders,
+      selectedStatusID,
       allPledgeDefinitionList,
       filterResult,
       pledgeBalance,
@@ -573,6 +611,13 @@ export default {
 }
 .more-btn {
   background: #dde2e6;
+}
+.text-color {
+  color: #212529;
+  text-decoration: none;
+}
+.text-color:hover {
+  color: #007bff;
 }
 
 .empty-img {
@@ -641,6 +686,15 @@ export default {
   .summary {
     width: 98%;
     margin: auto;
+  }
+}
+.input-width {
+  width: 100%;
+}
+
+@media (min-width: 992px) {
+  .input-width {
+    width: 350px;
   }
 }
 
