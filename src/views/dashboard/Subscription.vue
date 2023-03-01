@@ -40,8 +40,7 @@
             <el-select-v2 :options="selectMonths.map(i => ({ label: i.name, value: i.name }))" v-model="selectMonthId"
               placeholder="Select duration" @change="setSelectedDuration" size="large" class="w-100" />
             <div class=" ml-1 mt-3 normal-text pl-md-0">
-              {{ subselectedDuratn > 1 && currentUser ? currentUser.currencySymbol : "" }} {{ subselectedDuratn > 1 ?
-              subselectedDuratn.toLocaleString() : ""}}
+              {{ selectedPlan && Object.keys(selectedPlan).length > 0 && selectedPlan.currency ? selectedPlan.currency.symbol : "" }} {{ subselectedDuratn.toLocaleString() }}
             </div>
           </div>
 
@@ -110,7 +109,7 @@
       <div class="col-md-6 bg-white col-12 sub mt-3">
         <div class="h-100  rounded">
           <div class="text-center small-header">
-            Payment Summary({{ currentUser? currentUser.currencySymbol : "" }})
+            Payment Summary({{ selectedCurrency.shortCode }})
           </div>
           <!-- Selected Products -->
           <div class="row mt-3 normal-text" v-for="item in checkedBoxArr" :key="item.id">
@@ -227,7 +226,6 @@ export default {
     const smsPrice = ref("");
     const expenseApp = ref("");
     const fixedAsset = ref("");
-    const selectedCurrency = ref("");
     const currentUser = ref(store.getters.currentUser);
     const tenantId = ref(currentUser.tenantId);
     const userEmail = ref("")
@@ -249,8 +247,8 @@ export default {
           console.log(err);
         })
     }
-
     getUserEmail();
+
     const acctReceived = ref("");
     const paymentSummary = ref([]);
     const paymentSummObj = ref({});
@@ -307,11 +305,12 @@ export default {
       })
       selectSubscription();
       UserSubscriptionPlans.value = UserSubscriptionPricing.value.sort((a, b) => a.order - b.order).map(i => {
-        i.subscriptionPlan.amount = i.price
+        i.subscriptionPlan.amount = i.price;
+        i.subscriptionPlan.currency = i.currency;
         return i.subscriptionPlan
       })
-
-
+      selectMonthId.value = 1;
+      selectMonth.value = selectMonths.value.find(i => i.name == selectMonthId.value);
     }
 
 
@@ -324,12 +323,6 @@ export default {
         existingPlan.value.amountInDollar = Plans.value.amountInDollar;
         existingPlan.value.membershipSize = Plans.value.membershipSize;
 
-
-
-
-
-
-
         res.data.subscriptionPlans.forEach(i => {
           if (i.membershipSize >= Plans.value.membershipSize) {
             subscriptionPlans.value.push(i)
@@ -338,7 +331,7 @@ export default {
 
         // Get current plan
 
-        selectedPlan.value = subscriptionPlans.value.find(
+        selectedPlan.value = UserSubscriptionPlans.value.find(
           (i) => i.id == Plans.value.id
         );
 
@@ -459,7 +452,7 @@ export default {
         paymentGateway: gateway == 0 ? 'paystack' : 'flutterwave',
         txnRefID: gateway == 0 ? response.trxref : response.transaction_id,
         productItems: products,
-        currency: selectedCurrency.value,
+        currency: selectedCurrency.value.shortCode,
       };
 
       if (selectMonth.value) {
@@ -547,31 +540,12 @@ export default {
       }
     };
 
-    const setSelectedPaymentCurrency = () => {
-      if (currentUser.value) {
-        selectedCurrency.value = currentUser.value.currency;
-      }
-    }
 
-    const getCurrencySymbol = async () => {
-      userService
-        .getCurrentUser()
-        .then((res) => {
-          currentUser.value = res;
-          setSelectedPaymentCurrency()
-        })
-        .catch((err) => {
-          console.log(err);
-        });
-    };
+    const selectedCurrency = computed(() => {
+      if (selectedPlan.value && Object.keys(selectedPlan.value).length > 0 && selectedPlan.value.currency) return selectedPlan.value.currency;
+      return ''
+    })
 
-
-
-    if (!currentUser.value || !currentUser.value.currency) {
-      getCurrencySymbol();
-    } else {
-      setSelectedPaymentCurrency()
-    }
     const appendLeadingZeroes = (n) => {
       if (n <= 9) {
         return "0" + n;
@@ -645,7 +619,7 @@ export default {
 
       let country = "";
 
-      switch (selectedCurrency.value) {
+      switch (selectedCurrency.value.shortCode) {
         case 'KES':
           country = 'KE';
           break;
@@ -669,7 +643,7 @@ export default {
         public_key: process.env.VUE_APP_FLUTTERWAVE_PUBLIC_KEY_LIVE,
         tx_ref: uuidv4().substring(0, 8),
         amount: TotalAmount.value,
-        currency: selectedCurrency.value,
+        currency: selectedCurrency.value.shortCode,
         country: country,
         payment_options: 'card,ussd',
         customer: {
@@ -743,7 +717,6 @@ export default {
       sumCheckboxItem,
       smsPrice,
       smsAmount,
-      getCurrencySymbol,
       currentUser,
       existingPlan,
       Plans,
