@@ -1,7 +1,12 @@
 <template>
-  <div class="container-wide container-top">
-    <div class="row d-flex justify-content-between px-3">
-      <div class="heading-text">Make a Pledge</div>
+  <div class="container-fluid">
+    <div class="row ">
+      <div class="head-text">Make a Pledge</div>
+      <div class="col-12 px-0">
+        <div class="text-primary c-pointer " @click="previousPage"> 
+          <el-icon><DArrowLeft /></el-icon>
+        </div>
+      </div>
     </div>
     <div class="container">
       <div class="row mt-5">
@@ -495,9 +500,13 @@ export default {
       pledgeDate.value = new Date().toISOString().substr(0, 10);
     };
     currentDate();
+    const previousPage =() =>{
+      router.push("/tenant/pledge/pledgeslist")
+    }
 
     return {
       allPledgeList,
+      previousPage,
       PledgesType,
       checking,
       makePledge,

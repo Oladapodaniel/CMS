@@ -1334,7 +1334,7 @@ export default {
       groupLoading.value = true;
       try {
         const response = await grousService.getGroups();
-        groups.value = response.map((i) => {
+        groups.value = response.response.groupResonseDTO.map((i) => {
           return { id: i.id, name: i.name };
         });
         groups.value.unshift({

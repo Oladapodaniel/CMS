@@ -1114,6 +1114,7 @@ export default {
   height: 56rem;
   object-fit: cover;
   background-repeat: no-repeat;
+  background-size: cover;
 }
 /* .user image {
   width: 30px;

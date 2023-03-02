@@ -148,7 +148,6 @@
                                 />
                                 <div>
                                   <i
-                                    v-tooltip.top="'Copy link'"
                                     class="pi pi-copy ml-2 c-pointer"
                                     @click="copyLink"
                                     style="font-size: 22px"
@@ -206,7 +205,6 @@
                               </div>
                               <div class="mt-4">
                                 <i
-                                  v-tooltip.top="'Copy link'"
                                   class="pi pi-copy ml-2 c-pointer"
                                   @click="copyLink"
                                   style="font-size: 22px"

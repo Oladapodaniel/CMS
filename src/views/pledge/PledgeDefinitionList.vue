@@ -1,72 +1,89 @@
 <template>
-    <div class="container-fluid">
-      <div class="row d-flex flex-column flex-sm-row justify-content-sm-between ">
-        <div class="head-text">Partnership and Pledge Item</div>
-        <router-link
-          to="/tenant/pledge/pledgedefinition"
-          class="
-            grey-border
-            primary-btn
-            default-btn
-            text-white
-            text-decoration-none
-            primary-bg
-            border-0
-            mt-3
-            mt-md-0
-          "
-          >Create New
-        </router-link>
-        <div class="col-md-12 px-0">
-          <hr class="hr my-3" />
+  <div class="container-fluid">
+    <div class="row d-flex flex-column flex-sm-row justify-content-sm-between">
+      <div class="head-text">Partnership and Pledge Item</div>
+      <router-link
+        to="/tenant/pledge/pledgedefinition"
+        class="grey-border primary-btn default-btn text-white text-center text-decoration-none primary-bg border-0 mt-3 mt-md-0"
+        >Create New
+      </router-link>
+      <div class="col-md-12 px-0">
+        <div class="text-primary c-pointer " @click="previousPage"> 
+          <el-icon><DArrowLeft /></el-icon>
         </div>
       </div>
-      <div class="row">
-        <div class="col-12 px-0" id="table">
-          <div class="top-con" id="ignore2">
-            <div class="table-top">
-              <div class="col-4 my-3">
-                <el-input size="small" v-model="searchText" placeholder="Search..."
-                  @keyup.enter.prevent="searchPledgeInDB" class="input-with-select">
-                  <template #append>
-                    <el-button @click.prevent="searchPledgeInDB">
-                      <el-icon :size="13">
-                        <Search />
-                      </el-icon>
-                    </el-button>
-                  </template>
-                </el-input>
-              </div>
-            </div>{{balance}}
+      <div class="col-md-12 px-0">
+        <hr class="hr my-3" />
+      </div>
+    </div>
+    <div class="row">
+      <div class="col-12 px-0" id="table">
+        <div class="top-con" id="ignore2">
+          <div class="table-top" v-if="searchPledge && searchPledge.length > 0">
+            <div class="col-4 my-3">
+              <el-input
+                size="small"
+                v-model="searchText"
+                placeholder="Search..."
+                @keyup.enter.prevent="searchPledgeInDB"
+                class="input-with-select"
+              >
+                <template #append>
+                  <el-button @click.prevent="searchPledgeInDB">
+                    <el-icon :size="13">
+                      <Search />
+                    </el-icon>
+                  </el-button>
+                </template>
+              </el-input>
+            </div>
           </div>
-          <Table  :data="searchPledge" :headers="pledgeHeaders" :checkMultipleItem="false" 
-            v-loading="loading">
+        </div>
+        <div v-if="searchPledge && searchPledge.length > 0">
+          <Table
+            :data="searchPledge"
+            :headers="pledgeHeaders"
+            :checkMultipleItem="false"
+            v-loading="loading"
+          >
             <template v-slot:name="{ item }">
-              <div class="c-pointer" @click="pledgeClick(item.id)">{{ item.name }}</div>
+              <div class="c-pointer" @click="pledgeClick(item.id)">
+                {{ item.name }}
+              </div>
             </template>
             <template v-slot:pledgeAmount="{ item }">
-              <div class="c-pointer" @click="pledgeClick(item.id)">{{
-                          item && item.currency
-                            ? item.currency.symbol
-                            : ""
-                        }}
-                        {{
-                          Math.abs(
-                            item.donorPaymentSpecificAmount ? item.donorPaymentSpecificAmount : item.totalPledgeAmount
-                          ).toLocaleString()
-                        }}.00</div>
+              <div class="c-pointer" @click="pledgeClick(item.id)">
+                {{ item && item.currency ? item.currency.symbol : "" }}
+                {{
+                  Math.abs(
+                    item.donorPaymentSpecificAmount
+                      ? item.donorPaymentSpecificAmount
+                      : item.totalPledgeAmount
+                  ).toLocaleString()
+                }}.00
+              </div>
             </template>
             <template v-slot:redeemed="{ item }">
-              <div class="c-pointer" @click="pledgeClick(item.id)">{{item.currencySymbol}}{{ Math.abs(item.totalPaymentsAmount).toLocaleString() }}..00</div>
+              <div class="c-pointer" @click="pledgeClick(item.id)">
+                {{ item.currencySymbol
+                }}{{ Math.abs(item.totalPaymentsAmount).toLocaleString() }}..00
+              </div>
             </template>
             <template v-slot:balance="{ item }">
-              <div class="c-pointer text-danger" @click="pledgeClick(item.id)">{{item.currencySymbol}}{{ item.totalPaymentsAmount - item.totalPledgeAmount }}..00</div>
+              <div class="c-pointer text-danger" @click="pledgeClick(item.id)">
+                {{ item.currencySymbol
+                }}{{ item.totalPaymentsAmount - item.totalPledgeAmount }}..00
+              </div>
             </template>
             <template v-slot:date="{ item }">
-              <div class="c-pointer"  @click="pledgeClick(item.id)">{{ date(item.date) }}</div>
+              <div class="c-pointer" @click="pledgeClick(item.id)">
+                {{ date(item.date) }}
+              </div>
             </template>
             <template v-slot:pledgeCount="{ item }">
-              <div class="c-pointer"  @click="pledgeClick(item.id)">{{ item.pledgeCount }}</div>
+              <div class="c-pointer" @click="pledgeClick(item.id)">
+                {{ item.pledgeCount }}
+              </div>
             </template>
             <!-- <template v-slot:paymentLink="{ item }">
                 <router-link
@@ -86,23 +103,28 @@
                   <el-dropdown-menu>
                     <el-dropdown-item>
                       <router-link
-                          target="_blank"
-                          :to="`/partnership/pay/${item.id}`"
-                          class="text-color"
-                        >
-                          Payment link 
+                        target="_blank"
+                        :to="`/partnership/pay/${item.id}`"
+                        class="text-color"
+                      >
+                        Payment link
                       </router-link>
                     </el-dropdown-item>
                     <el-dropdown-item>
                       <router-link
-                          :to="`/tenant/pledge/pledgedefinition?id=${item.id}`"
-                          class="text-color"
-                        >
-                          Edit 
+                        :to="`/tenant/pledge/pledgedefinition?id=${item.id}`"
+                        class="text-color"
+                      >
+                        Edit
                       </router-link>
                     </el-dropdown-item>
                     <el-dropdown-item>
-                      <div @click.prevent="showConfirmModal(item.id, index)" class="text-color">Delete</div>
+                      <div
+                        @click.prevent="showConfirmModal(item.id, index)"
+                        class="text-color"
+                      >
+                        Delete
+                      </div>
                     </el-dropdown-item>
                   </el-dropdown-menu>
                 </template>
@@ -110,19 +132,36 @@
             </template>
           </Table>
         </div>
+         <div
+            class="no-person"
+              v-if="searchPledge && searchPledge.length < 0 && !loading "
+          >
+            <div class="empty-img">
+              <p><img src="../../assets/people/people-empty.svg" alt="" /></p>
+              <p class="tip">You haven't Create any pledge item yet</p>
+              <div
+                class="c-pointer primary-bg col-sm-6 col-md-4 offset-sm-3 offset-md-4 default-btn border-0 text-white"
+                @click="navigateToCreatePledgeItem"
+              >
+                Add new Pledge item 
+              </div>
+            </div>
+          </div>
       </div>
     </div>
+  </div>
 </template>
 
 <script>
-import { ref, computed } from "vue";
-import finish from "../../services/progressbar/progress"
+import { ref, computed, onMounted } from "vue";
+import finish from "../../services/progressbar/progress";
 import axios from "@/gateway/backendapi";
 import InputText from "primevue/inputtext";
 import monthDayYear from "../../services/dates/dateformatter";
 import router from "../../router";
 import Table from "@/components/table/Table";
-import { ElMessage, ElMessageBox } from 'element-plus'
+import { ElMessage, ElMessageBox } from "element-plus";
+import store from "../../store/store";
 
 export default {
   components: {
@@ -135,17 +174,18 @@ export default {
     const selectedPledge = ref("");
     const allPledgeType = ref([]);
     const selectedPerson = ref("");
-    const allPledgeList = ref([]);
+    const allPledgeDefinitionList = ref(
+      store.getters["pledge/getpledgedefinition"]
+    );
     const pledgeHeaders = ref([
-      { name: 'NAME', value: 'name' },
-      { name: 'PLEDGE AMOUNT', value: 'pledgeAmount' },
-      { name: 'REDEEMED', value: 'redeemed' },
-      { name: 'BALANCE', value: 'balance' },
-      { name: 'DATE', value: 'date' },
-      { name: 'NO. OF PLEDGES', value: 'pledgeCount' },
-      // { name: 'LINK', value: 'paymentLink' },
-      { name: 'ACTION', value: 'action' },
-    ])
+      { name: "NAME", value: "name" },
+      { name: "PLEDGE AMOUNT", value: "pledgeAmount" },
+      { name: "REDEEMED", value: "redeemed" },
+      { name: "BALANCE", value: "balance" },
+      { name: "DATE", value: "date" },
+      { name: "NO. OF PLEDGES", value: "pledgeCount" },
+      { name: "ACTION", value: "action" },
+    ]);
 
     const date = (offDate) => {
       return monthDayYear.monthDayYear(offDate);
@@ -153,51 +193,49 @@ export default {
     const chooseContact = (payload) => {
       selectedContact.value = payload;
     };
-
+    const navigateToCreatePledgeItem =() =>{
+      router.push("/tenant/pledge/pledgedefinition")
+    }
+    const previousPage =() =>{
+      router.push("/tenant/pledge/pledgeslist")
+    }
 
     const getAllPledgeDefinition = async () => {
       loading.value = true;
       try {
-        const res = await axios.get("/api/Pledge/GetAllPledgeDefinitions");
-        finish();
-        allPledgeList.value = res.data.returnObject;
-        loading.value = false;
-        console.log(allPledgeList.value, "getPledgeDefinition");
+        await store.dispatch("pledge/getPledgeDefinition").then((res) => {
+          finish();
+          allPledgeDefinitionList.value = res;
+          loading.value = false;
+        });
       } catch (error) {
         console.log(error);
         loading.value = false;
       }
     };
-    getAllPledgeDefinition();
 
-    const balance = computed(() =>{
-      // return allPledgeList.value.totalPaymentsAmount - allPledgeList.value.totalPledgeAmount
-      console.log(allPledgeList.value.totalPaymentsAmount - allPledgeList.value.totalPledgeAmount);
-    })
-
-    
     const searchPledge = computed(() => {
-      if (searchText.value !== "" && allPledgeList.value.length > 0) {
-        return allPledgeList.value.filter((i) => {
+      if (searchText.value !== "" && allPledgeDefinitionList.value.length > 0) {
+        return allPledgeDefinitionList.value.filter((i) => {
           if (i.name)
             return i.name
               .toLowerCase()
               .includes(searchText.value.toLowerCase());
         });
       } else {
-        return allPledgeList.value;
+        return allPledgeDefinitionList.value;
       }
     });
     const searchPledgeInDB = () => {
-      if (searchText.value !== "" && allPledgeList.value.length > 0) {
-        return allPledgeList.value.filter((i) => {
+      if (searchText.value !== "" && allPledgeDefinitionList.value.length > 0) {
+        return allPledgeDefinitionList.value.filter((i) => {
           if (i.name)
             return i.name
               .toLowerCase()
               .includes(searchText.value.toLowerCase());
         });
       } else {
-       return allPledgeList.value;
+        return allPledgeDefinitionList.value;
       }
     };
 
@@ -207,11 +245,11 @@ export default {
         .then((res) => {
           console.log(res);
           ElMessage({
-            type: 'success',
-            message: 'Pledge form deleted',
-            duration: 5000
-          })
-          allPledgeList.value = allPledgeList.value.filter(
+            type: "success",
+            message: "Pledge form deleted",
+            duration: 5000,
+          });
+          allPledgeDefinitionList.value = allPledgeDefinitionList.value.filter(
             (pledgelist) => pledgelist.id !== id
           );
         })
@@ -219,40 +257,47 @@ export default {
           finish();
           if (err.response.status === 400) {
             ElMessage({
-            type: 'error',
-            message: 'Unable to delete',
-            duration: 5000
-          })
+              type: "error",
+              message: "Unable to delete",
+              duration: 5000,
+            });
           } else {
             ElMessage({
-            type: 'error',
-            message: 'Unable to delete, An error occurred, please try again',
-            duration: 5000
-          })
+              type: "error",
+              message: "Unable to delete, An error occurred, please try again",
+              duration: 5000,
+            });
           }
         });
     };
+    onMounted(() => {
+      if (
+        allPledgeDefinitionList.value &&
+        allPledgeDefinitionList.value.length == 0
+      )
+        getAllPledgeDefinition();
+    });
 
     const showConfirmModal = (id, index) => {
-        ElMessageBox.confirm(
+      ElMessageBox.confirm(
         "Are you sure you want to proceed?",
-        'Confirm delete',
+        "Confirm delete",
         {
-          confirmButtonText: 'OK',
-          cancelButtonText: 'Cancel',
-          type: 'error',
+          confirmButtonText: "OK",
+          cancelButtonText: "Cancel",
+          type: "error",
         }
       )
         .then(() => {
-           deletePledge(id, index);
+          deletePledge(id, index);
         })
         .catch(() => {
           ElMessage({
-            type: 'info',
-            message: 'Delete canceled',
-            duration: 5000
-          })
-        })
+            type: "info",
+            message: "Delete canceled",
+            duration: 5000,
+          });
+        });
     };
 
     const pledgeClick = (id) => {
@@ -260,8 +305,9 @@ export default {
     };
 
     return {
-      allPledgeList,
-      balance,
+      allPledgeDefinitionList,
+      previousPage,
+      navigateToCreatePledgeItem,
       searchPledgeInDB,
       searchPledge,
       chooseContact,
@@ -274,7 +320,7 @@ export default {
       allPledgeType,
       date,
       pledgeClick,
-      pledgeHeaders
+      pledgeHeaders,
     };
   },
 };
@@ -283,6 +329,21 @@ export default {
 <style scoped>
 .events {
   font: normal normal 800 29px Nunito sans;
+}
+.no-person {
+  height: 80vh;
+  display: flex;
+  text-align: center;
+}
+.empty-img {
+  width: 85%;
+  /* min-width: 397px; */
+  margin: auto;
+}
+
+.empty-img img {
+  width: 100%;
+  max-width: 200px;
 }
 .dropdown-menu a {
   color: #02172e;
