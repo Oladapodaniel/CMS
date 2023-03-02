@@ -1,5 +1,5 @@
 <template>
-  <div class="container-top" :class="{ 'container-slim': lgAndUp || xlAndUp }">
+  <div>
     <div class="container-fluid">
       <div class="row d-flex justify-content-between px-3">
         <div class="heading-text">Create Pledge Item</div>
@@ -8,7 +8,7 @@
         <i class="pi pi-spin pi-spinner py-4" style="font-size: 3rem"></i>
       </div>
       <div class="row">
-        <div class="col-md-8">
+        <div class="col-md-10 col-lg-8">
           <!-- Contribution item -->
           <div class="row mt-5">
             <div class="col-md-10 offset-md-2">
@@ -24,8 +24,8 @@
                 <div class="col-12 col-sm-12 col-lg-8">
                   <el-dropdown trigger="click" class="w-100">
                     <span class="el-dropdown-link w-100">
-                      <el-button
-                        class="d-flex justify-content-between text-dark w-100"
+                      <div
+                        class="d-flex justify-content-between border-contribution text-dark w-100"
                         size="large"
                       >
                         <span>{{
@@ -39,7 +39,7 @@
                             <arrow-down />
                           </el-icon>
                         </div>
-                      </el-button>
+                      </div>
                     </span>
                     <template #dropdown>
                       <el-dropdown-menu>
@@ -182,7 +182,6 @@
                     :class="{ 'is-invalid': !isNameValid }"
                     @blur="checkNameValue"
                     placeholder="Enter pledge name"
-                    size="large"
                   />
                   <div class="invalid-feedback">
                     Please enter your pledge name.
@@ -201,36 +200,19 @@
                 </div>
 
                 <div class="col-12 col-sm-12 col-lg-8">
-                  <el-select
-                    v-model="selectedCurrency"
+                  <el-select-v2
+                    v-model="selectedCurrencyId"
                     class="w-100 font-weight-normal"
-                    :options="
-                      currencyList.map((i) => ({ label: i.name, value: i.id }))
-                    "
+                    :options="currencyList.map((i) => ({ label: i.name, value: i.id }))"
                     placeholder="Select Currency"
+                    size="large"
+                    @change="setSelectedCurrency"
                   >
-                    <template #value="slotProps">
-                      <div
-                        class="country-item country-item-value"
-                        v-if="slotProps.value"
-                      >
-                        <div>{{ slotProps.value.name }}</div>
-                      </div>
-                      <span v-else>
-                        {{ slotProps.placeholder }}
-                      </span>
-                    </template>
-                    <template #option="slotProps">
-                      <div class="country-item">
-                        <div>
-                          {{ slotProps.option.name }} -
-                          {{ slotProps.option.country }}
-                        </div>
-                      </div>
-                    </template>
-                  </el-select>
-                  {{ selectedCurrency }}
-                  <Dropdown
+                  <template #default="{ item }">
+                    <span style="margin-right: 8px">{{ item.label }} - {{ countryCurrency(item) }}</span>
+                  </template>
+                  </el-select-v2>
+                  <!-- <Dropdown
                     v-model="selectedCurrency"
                     class="w-100 font-weight-normal"
                     :options="currencyList"
@@ -256,7 +238,7 @@
                         </div>
                       </div>
                     </template>
-                  </Dropdown>
+                  </Dropdown> -->
                 </div>
               </div>
             </div>
@@ -337,11 +319,10 @@
                       <label for="" class=""> Amount </label>
                     </div>
                     <div class="col-12 col-sm-12 col-lg-8">
-                      <input
+                      <el-input
                         type="text"
                         v-model="specificAmount"
                         placeholder="Enter specific amount"
-                        size="large"
                       />
                     </div>
                   </div>
@@ -353,7 +334,7 @@
                     >
                       <label for="" class="d-none d-lg-block"> Amount </label>
                     </div>
-                    <div class="col-12 col-sm-12 col-lg-4">
+                    <div class="col-12 col-lg-4">
                       <label for="" class="d-block d-lg-none">
                         Amount From
                       </label>
@@ -370,7 +351,7 @@
                         placeholder="From"
                       /> -->
                     </div>
-                    <div class="col-12 col-sm-12 mt-3 mt-md-0 mt-lg-0 col-lg-4">
+                    <div class="col-12 mt-3 mt-md-0 mt-lg-0 col-lg-4 pl-lg-0">
                       <label for="" class="d-block d-lg-none">
                         Amount To
                       </label>
@@ -429,15 +410,27 @@
                       <label for="" class=""> Start Date </label>
                     </div>
                     <div class="col-12 col-sm-12 col-lg-8">
-                      <Calendar
+                      <el-date-picker
+                        v-model="dateRangeValue"
+                        type="daterange"
+                        unlink-panels
+                        range-separator="To"
+                        start-placeholder="Start date"
+                        end-placeholder="End date"
+                        :shortcuts="shortcuts"
+                        size="large"
+                        class="w-100"
+                        @change="setDatePicker"
+                      />
+                      <!-- <Calendar
                         dateFormat="dd/mm/yy"
                         class="w-100"
                         id="icon"
                         v-model="startDate"
                         :showIcon="true"
-                      />
+                      /> -->
                     </div>
-                    <div
+                    <!-- <div
                       class="col-12 col-sm-12 col-lg-4 text-sm-left text-lg-right mt-2 align-self-center"
                     >
                       <label for="" class=""> End Date </label>
@@ -450,7 +443,7 @@
                         v-model="endDate"
                         :showIcon="true"
                       />
-                    </div>
+                    </div> -->
                   </div>
                 </div>
                 <div
@@ -482,14 +475,25 @@
                       <label for="" class=""> Choose group(s) </label>
                     </div>
                     <div class="col-12 col-sm-12 col-lg-8">
-                      <MultiSelect
+                      <!-- :multiple="groupMappedTree && groupMappedTree.length > 0" -->
+                      <el-tree-select
+                        v-model="selectedGroupTree"
+                        :data="groupMappedTree"
+                        
+                        :render-after-expand="false"
+                        show-checkbox
+                        check-strictly
+                        check-on-click-node
+                        class="w-100"
+                      />
+                      <!-- <MultiSelect
                         v-model="selectedGroups"
                         optionLabel="name"
                         :options="groups"
                         placeholder="Select groups"
                         class="w-100"
                         display="chip"
-                      />
+                      /> -->
                     </div>
                   </div>
                 </div>
@@ -522,8 +526,7 @@
                     <button
                       class="default-btn w-100 text-left pr-1"
                       type="button"
-                      style="
-                        border-radius: 4px;
+                      style="border-radius: 4px;
                         border: 1px solid #ced4da;
                         color: #6c757d;
                       "
@@ -903,8 +906,9 @@ import grousService from "../../services/groups/groupsservice";
 import MultiSelect from "primevue/multiselect";
 import InputSwitch from "primevue/inputswitch";
 import store from "../../store/store";
-import deviceBreakpoint from "../../mixins/deviceBreakpoint";
 import workflow_util from "../workflow/utlity/workflow_util.js";
+import datePickerShortcut from "@/mixins/el-datepicker-shortcut.vue"
+import collector from "../../services/groupArray/mapTree";
 export default {
   components: {
     Dropdown,
@@ -932,6 +936,7 @@ export default {
     // const showPledgeType = ref(false)
     const selectedRange = ref({});
     const selectedContribution = ref({});
+    const selectedCurrencyId = ref(null)
     const selectedCurrency = ref({ name: "Select currency" });
     const isNameValid = ref(true);
     const pledgeName = ref("");
@@ -941,8 +946,6 @@ export default {
     const pledgeType = ref(0);
     const currencyList = ref([]);
     const contributionItems = ref([]);
-    const { lgAndUp, xlAndUp } = deviceBreakpoint();
-    const selectedTree = ref();
     const singlePledge = ref({});
     const targetAmount = ref("");
     const reOccuringRange = ref([
@@ -971,6 +974,10 @@ export default {
     const pledgeLoader = ref(false);
     const groupLoading = ref(false);
     const paymentFormId = ref("");
+    const dateRangeValue = ref(null)
+    const { shortcuts } = ref(datePickerShortcut())
+    const groupMappedTree = ref([])
+    const selectedGroupTree = ref()
 
     const date = (offDate) => {
       return monthDayYear.normalDate(offDate);
@@ -1307,14 +1314,21 @@ export default {
     const getGroups = async () => {
       groupLoading.value = true;
       try {
-        const response = await grousService.getGroups();
-        groups.value = response.map((i) => {
-          return { id: i.id, name: i.name };
+        const { response } = await grousService.getGroups();
+        groups.value = response.groupResonseDTO.map((i) => {
+          return { id: i.id, name: i.name, children: i.children };
         });
         groups.value.unshift({
           id: "0000-000-0000-0000-0000-0000",
           name: "Entire ministry",
         });
+        let data = { children: groups.value }
+        const { children } = collector(data);
+        groupMappedTree.value = children
+        console.log(groupMappedTree.value)
+        // if (groupMappedTree.value && groupMappedTree.value.length > 0) {
+        //   flattenedTree.value = groupMappedTree.value.flatMap(flatten());
+        // }
         if (route.query.id) getSinglePledgeDefinition();
         groupLoading.value = false;
       } catch (error) {
@@ -1351,6 +1365,21 @@ export default {
       }
     });
 
+    const countryCurrency = (item) => {
+      if (currencyList.value.length > 0) return currencyList.value.find(i => i.id == item.value) ? currencyList.value.find(i => i.id == item.value).country : '';
+    }
+
+    const setSelectedCurrency = () => {
+      selectedCurrency.value = currencyList.value.find(i => i.id == selectedCurrencyId.value);
+    }
+
+    const setDatePicker = () => {
+      startDate.value = dateRangeValue.value[0];
+      endDate.value = dateRangeValue.value[1]
+    }
+
+    const filterNodeMethod = (value, data) => data.label.toLowerCase().includes(value.toLowerCase())
+
     return {
       newConItems,
       pledgeItemID,
@@ -1365,6 +1394,7 @@ export default {
       amountTo,
       specificAmount,
       checkNameValue,
+      selectedCurrencyId,
       selectedCurrency,
       selectedContribution,
       startDate,
@@ -1408,9 +1438,14 @@ export default {
       // disabled,
       paymentFormId,
       groupLoading,
-      lgAndUp,
-      xlAndUp,
-      selectedTree,
+      countryCurrency,
+      setSelectedCurrency,
+      shortcuts,
+      dateRangeValue,
+      setDatePicker,
+      groupMappedTree,
+      selectedGroupTree,
+      filterNodeMethod
     };
   },
 };
@@ -1470,5 +1505,11 @@ export default {
 
 .fa-ellipsis-v {
   padding: 10px;
+}
+
+.border-contribution {
+  border: 1.6px solid rgb(229,232,237);
+  border-radius: 4px;
+  padding: 11px 7px;
 }
 </style>

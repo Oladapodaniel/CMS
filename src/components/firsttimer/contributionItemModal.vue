@@ -14,10 +14,9 @@
       <div class="col-lg-5 dropdown col-sm-12 mt-3">
         <!-- <div class="dropdown  ofering col-12  "  > -->
 
-        <el-drop-down trigger="click" class="w-100">
+        <el-dropdown trigger="click" class="w-100">
           <button
             class="btn d-flex justify-content-between col-12 border"
-            type="button"
             id="dropdownMenuButton"
             data-toggle="dropdown"
             aria-haspopup="true"
@@ -36,7 +35,7 @@
               <el-icon class="el-icon--right"><arrow-down /></el-icon>
             </span>
           </button>
-        </el-drop-down>
+        </el-dropdown>
 
         <div
           class="dropdown-menu scroll w-100"
@@ -59,7 +58,7 @@
       </div>
       <div class="col-lg-5 dropdown col-sm-12 mt-3">
         <!-- <div class="dropdown  ofering col-12  "  > -->
-        <el-drop-down trigger="click" class="w-100">
+        <el-dropdown trigger="click" class="w-100">
           <el-button
             class="btn d-flex justify-content-between col-12 border"
             id="dropdownMenuButton"
@@ -91,7 +90,7 @@
               </a>
             </div>
           </el-button>
-        </el-drop-down>
+        </el-dropdown>
         <!-- </div> -->
         <!-- <Dropdown v-model="selectedCashAccount" :options="cashBankAccount" optionLabel="text" :filter="false" placeholder="Select" class="w-100 p-0" :showClear="false">
         </Dropdown> -->
