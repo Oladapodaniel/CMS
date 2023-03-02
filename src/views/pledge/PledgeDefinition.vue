@@ -1,5 +1,5 @@
 <template>
-  <div class="container-top container-wide">
+  <div class="container-top" :class="{ 'container-slim': lgAndUp || xlAndUp }">
     <div class="container-fluid">
       <div class="row d-flex justify-content-between px-3">
         <div class="heading-text">Create Pledge Item</div>
@@ -14,11 +14,7 @@
             <div class="col-md-10 offset-md-2">
               <div class="row">
                 <div
-                  class="
-                    col-12 col-sm-12 col-lg-4
-                    text-sm-left text-lg-right
-                    align-self-center
-                  "
+                  class="col-12 col-sm-12 col-lg-4 text-sm-left text-lg-right align-self-center"
                 >
                   <label for="" class=""
                     >Contribution <sup class="text-danger">*</sup>
@@ -26,7 +22,49 @@
                 </div>
 
                 <div class="col-12 col-sm-12 col-lg-8">
-                  <div class="mt-2">
+                  <el-dropdown trigger="click" class="w-100">
+                    <span class="el-dropdown-link w-100">
+                      <el-button
+                        class="d-flex justify-content-between text-dark w-100"
+                        size="large"
+                      >
+                        <span>{{
+                          selectedContribution &&
+                          Object.keys(selectedContribution).length > 0
+                            ? selectedContribution.name
+                            : "Select contribution"
+                        }}</span>
+                        <div>
+                          <el-icon class="el-icon--right">
+                            <arrow-down />
+                          </el-icon>
+                        </div>
+                      </el-button>
+                    </span>
+                    <template #dropdown>
+                      <el-dropdown-menu>
+                        <el-dropdown-item
+                          v-for="(itm, indx) in contributionItems"
+                          :key="indx"
+                          @click="selectContribution(itm)"
+                          >{{ itm.name }}
+                        </el-dropdown-item>
+                        <el-dropdown-item divided
+                          ><a
+                            data-toggle="modal"
+                            data-target="#exampleModalCenter"
+                            class="font-weight-bold small-text d-flex justify-content-center py-2 text-decoration-none primary-text"
+                            style="color: #136acd"
+                          >
+                            <el-icon size="large"> <CirclePlus /></el-icon>
+                            create new contribution item
+                          </a></el-dropdown-item
+                        >
+                      </el-dropdown-menu>
+                    </template>
+                  </el-dropdown>
+
+                  <!-- <div class="mt-2">
                     <button
                       class="btn w-100 text-left"
                       type="button"
@@ -47,12 +85,7 @@
                           : "Select contribution"
                       }}
                       <i
-                        class="
-                          pi pi-chevron-down
-                          manual-dd-icon
-                          float-right
-                          pt-1
-                        "
+                        class="pi pi-chevron-down manual-dd-icon float-right pt-1"
                       ></i>
                     </button>
                     <div
@@ -60,28 +93,15 @@
                       aria-labelledby="dropdownMenuButton"
                     >
                       <a
-                        class="
-                          dropdown-item
-                          font-weight-700
-                          small-text
-                          py-2
-                          c-pointer
-                        "
+                        class="dropdown-item font-weight-700 small-text py-2 c-pointer"
                         v-for="(itm, indx) in contributionItems"
                         :key="indx"
                         @click="selectContribution(itm)"
                         >{{ itm.name }}</a
                       >
+
                       <a
-                        class="
-                          font-weight-bold
-                          small-text
-                          d-flex
-                          justify-content-center
-                          py-2
-                          text-decoration-none
-                          primary-text
-                        "
+                        class="font-weight-bold small-text d-flex justify-content-center py-2 text-decoration-none primary-text"
                         style="border-top: 1px solid #002044; color: #136acd"
                         href="#"
                         type="button"
@@ -89,18 +109,13 @@
                         data-target="#exampleModalCenter"
                       >
                         <i
-                          class="
-                            pi pi-plus-circle
-                            mr-2
-                            d-flex
-                            align-items-center
-                          "
+                          class="pi pi-plus-circle mr-2 d-flex align-items-center"
                           style="color: #136acd"
                         ></i>
                         Create new Contribution Item
                       </a>
                     </div>
-                  </div>
+                  </div> -->
                 </div>
               </div>
             </div>
@@ -144,11 +159,7 @@
             <div class="col-md-10 offset-md-2">
               <div class="row">
                 <div
-                  class="
-                    col-12 col-sm-12 col-lg-4
-                    text-sm-left text-lg-right
-                    align-self-center
-                  "
+                  class="col-12 col-sm-12 col-lg-4 text-sm-left text-lg-right align-self-center"
                 >
                   <label for="" class=""
                     >Name <sup class="text-danger">*</sup>
@@ -156,13 +167,22 @@
                 </div>
 
                 <div class="col-12 col-sm-12 col-lg-8">
-                  <input
+                  <!-- <input
                     type="text"
                     v-model="pledgeName"
                     class="form-control"
                     :class="{ 'is-invalid': !isNameValid }"
                     @blur="checkNameValue"
                     placeholder="Enter pledge name"
+                  /> -->
+
+                  <el-input
+                    type="text"
+                    v-model="pledgeName"
+                    :class="{ 'is-invalid': !isNameValid }"
+                    @blur="checkNameValue"
+                    placeholder="Enter pledge name"
+                    size="large"
                   />
                   <div class="invalid-feedback">
                     Please enter your pledge name.
@@ -173,11 +193,7 @@
             <div class="col-md-10 offset-md-2 mt-3">
               <div class="row">
                 <div
-                  class="
-                    col-12 col-sm-12 col-lg-4
-                    text-sm-left text-lg-right
-                    align-self-center
-                  "
+                  class="col-12 col-sm-12 col-lg-4 text-sm-left text-lg-right align-self-center"
                 >
                   <label for="" class=""
                     >Currency <sup class="text-danger">*</sup>
@@ -185,6 +201,35 @@
                 </div>
 
                 <div class="col-12 col-sm-12 col-lg-8">
+                  <el-select
+                    v-model="selectedCurrency"
+                    class="w-100 font-weight-normal"
+                    :options="
+                      currencyList.map((i) => ({ label: i.name, value: i.id }))
+                    "
+                    placeholder="Select Currency"
+                  >
+                    <template #value="slotProps">
+                      <div
+                        class="country-item country-item-value"
+                        v-if="slotProps.value"
+                      >
+                        <div>{{ slotProps.value.name }}</div>
+                      </div>
+                      <span v-else>
+                        {{ slotProps.placeholder }}
+                      </span>
+                    </template>
+                    <template #option="slotProps">
+                      <div class="country-item">
+                        <div>
+                          {{ slotProps.option.name }} -
+                          {{ slotProps.option.country }}
+                        </div>
+                      </div>
+                    </template>
+                  </el-select>
+                  {{ selectedCurrency }}
                   <Dropdown
                     v-model="selectedCurrency"
                     class="w-100 font-weight-normal"
@@ -198,7 +243,6 @@
                         v-if="slotProps.value"
                       >
                         <div>{{ slotProps.value.name }}</div>
-                        <!-- <div>{{slotProps.placeholder}}</div> -->
                       </div>
                       <span v-else>
                         {{ slotProps.placeholder }}
@@ -256,21 +300,12 @@
             <div class="col-md-10 mt-1 offset-md-2">
               <div class="row">
                 <div
-                  class="
-                    col-12 col-sm-12 col-lg-4
-                    text-sm-left text-lg-right
-                    align-self-center
-                  "
+                  class="col-12 col-sm-12 col-lg-4 text-sm-left text-lg-right align-self-center"
                 >
                   <label for="" class="">Pledge type </label>
                 </div>
                 <div
-                  class="
-                    col-12 col-sm-12 col-lg-8
-                    d-flex
-                    justify-content-between
-                    flex-wrap
-                  "
+                  class="col-12 col-sm-12 col-lg-8 d-flex justify-content-between flex-wrap"
                 >
                   <div
                     class="col-md-4 border py-2 c-pointer free-will"
@@ -297,11 +332,7 @@
                 <div class="col-md-12 mt-3" v-if="pledgeCategory == 'specific'">
                   <div class="row">
                     <div
-                      class="
-                        col-12 col-sm-12 col-lg-4
-                        text-sm-left text-lg-right
-                        align-self-center
-                      "
+                      class="col-12 col-sm-12 col-lg-4 text-sm-left text-lg-right align-self-center"
                     >
                       <label for="" class=""> Amount </label>
                     </div>
@@ -309,8 +340,8 @@
                       <input
                         type="text"
                         v-model="specificAmount"
-                        class="form-control"
                         placeholder="Enter specific amount"
+                        size="large"
                       />
                     </div>
                   </div>
@@ -318,11 +349,7 @@
                 <div class="col-md-12 mt-3" v-if="pledgeCategory == 'range'">
                   <div class="row">
                     <div
-                      class="
-                        col-12 col-sm-12 col-lg-4
-                        text-sm-left text-lg-right
-                        align-self-center
-                      "
+                      class="col-12 col-sm-12 col-lg-4 text-sm-left text-lg-right align-self-center"
                     >
                       <label for="" class="d-none d-lg-block"> Amount </label>
                     </div>
@@ -330,23 +357,35 @@
                       <label for="" class="d-block d-lg-none">
                         Amount From
                       </label>
-                      <input
+
+                      <el-input
+                        type="text"
+                        v-model="amountFrom"
+                        placeholder="From"
+                      />
+                      <!-- <input
                         type="text"
                         v-model="amountFrom"
                         class="form-control"
                         placeholder="From"
-                      />
+                      /> -->
                     </div>
                     <div class="col-12 col-sm-12 mt-3 mt-md-0 mt-lg-0 col-lg-4">
                       <label for="" class="d-block d-lg-none">
                         Amount To
                       </label>
-                      <input
+
+                      <el-input
+                        type="text"
+                        v-model="amountTo"
+                        placeholder="To"
+                      />
+                      <!-- <input
                         type="text"
                         v-model="amountTo"
                         class="form-control"
                         placeholder="To"
-                      />
+                      /> -->
                     </div>
                   </div>
                 </div>
@@ -359,11 +398,7 @@
             <div class="col-md-10 offset-md-2">
               <div class="row">
                 <div
-                  class="
-                    col-12 col-sm-12 col-lg-4
-                    text-sm-left text-lg-right
-                    align-self-center
-                  "
+                  class="col-12 col-sm-12 col-lg-4 text-sm-left text-lg-right align-self-center"
                 >
                   <label for="" class=""> Frequency </label>
                 </div>
@@ -377,14 +412,7 @@
                     One time
                   </div>
                   <div
-                    class="
-                      col-12
-                      mt-4 mt-lg-0
-                      col-sm-12 col-lg-6
-                      border
-                      py-2
-                      c-pointer
-                    "
+                    class="col-12 mt-4 mt-lg-0 col-sm-12 col-lg-6 border py-2 c-pointer"
                     :class="{
                       'show-reoccuring': pledgeFrequency == 'reoccuring',
                     }"
@@ -396,11 +424,7 @@
                 <div class="col-md-12 mt-3" v-if="pledgeFrequency == 'onetime'">
                   <div class="row">
                     <div
-                      class="
-                        col-12 col-sm-12 col-lg-4
-                        text-sm-left text-lg-right
-                        align-self-center
-                      "
+                      class="col-12 col-sm-12 col-lg-4 text-sm-left text-lg-right align-self-center"
                     >
                       <label for="" class=""> Start Date </label>
                     </div>
@@ -414,12 +438,7 @@
                       />
                     </div>
                     <div
-                      class="
-                        col-12 col-sm-12 col-lg-4
-                        text-sm-left text-lg-right
-                        mt-2
-                        align-self-center
-                      "
+                      class="col-12 col-sm-12 col-lg-4 text-sm-left text-lg-right mt-2 align-self-center"
                     >
                       <label for="" class=""> End Date </label>
                     </div>
@@ -440,11 +459,7 @@
                 >
                   <div class="row">
                     <div
-                      class="
-                        col-12 col-sm-12 col-lg-4
-                        text-sm-left text-lg-right
-                        align-self-center
-                      "
+                      class="col-12 col-sm-12 col-lg-4 text-sm-left text-lg-right align-self-center"
                     >
                       <label for="" class=""> Range </label>
                     </div>
@@ -462,11 +477,7 @@
                 <div class="col-md-12 mt-3">
                   <div class="row">
                     <div
-                      class="
-                        col-12 col-sm-12 col-lg-4
-                        text-sm-left text-lg-right
-                        align-self-center
-                      "
+                      class="col-12 col-sm-12 col-lg-4 text-sm-left text-lg-right align-self-center"
                     >
                       <label for="" class=""> Choose group(s) </label>
                     </div>
@@ -501,11 +512,7 @@
             <div class="col-md-10 offset-md-2">
               <div class="row">
                 <div
-                  class="
-                    col-12 col-sm-12 col-lg-4
-                    text-sm-left text-lg-right
-                    align-self-center
-                  "
+                  class="col-12 col-sm-12 col-lg-4 text-sm-left text-lg-right align-self-center"
                 >
                   <label for="" class="">Bank </label>
                 </div>
@@ -526,11 +533,7 @@
                       aria-expanded="false"
                     >
                       <div
-                        class="
-                          d-flex
-                          justify-content-between
-                          align-items-center
-                        "
+                        class="d-flex justify-content-between align-items-center"
                       >
                         <span>{{
                           !selectedBank
@@ -580,9 +583,16 @@
                 </div>
 
                 <div class="col-12 col-sm-12 col-lg-8">
-                  <input
+                  <!-- <input
                     type="text"
                     class="form-control"
+                    placeholder="Enter account number"
+                    v-model="accountNumber"
+                    @blur="resolveCustomerDetail"
+                  /> -->
+
+                  <el-input
+                    type="text"
                     placeholder="Enter account number"
                     v-model="accountNumber"
                     @blur="resolveCustomerDetail"
@@ -742,17 +752,7 @@
         <div class="row w-100" style="margin: 0">
           <div class="col-12 parent-desc pb-2 px-0">
             <div
-              class="
-                row
-                w-100
-                c-pointer
-                text-dark
-                border-top
-                py-3
-                hover
-                d-flex
-                align-items-center
-              "
+              class="row w-100 c-pointer text-dark border-top py-3 hover d-flex align-items-center"
               style="margin: 0"
               v-for="(item, index) in pledgesBoundToItem"
               :key="index"
@@ -760,12 +760,7 @@
               <div class="col-md-2">
                 <div class="mb-0 d-flex small justify-content-between">
                   <span
-                    class="
-                      text-dark
-                      font-weight-bold
-                      d-flex d-md-none
-                      fontIncrease
-                    "
+                    class="text-dark font-weight-bold d-flex d-md-none fontIncrease"
                     style="font-size: 15px"
                     >Name</span
                   >
@@ -798,29 +793,20 @@
               <div class="col-md-2">
                 <div class="mb-0 small d-flex justify-content-between">
                   <span
-                    class="
-                      text-dark
-                      font-weight-bold
-                      d-flex d-md-none
-                      fontIncrease
-                    "
+                    class="text-dark font-weight-bold d-flex d-md-none fontIncrease"
                     style="font-size: 15px"
                     >Contact
                   </span>
                   <div class="small-text">
-                    {{ item.person ? item.person.firstName : '' }} {{ item.person ? item.person.lastName : '' }}
+                    {{ item.person ? item.person.firstName : "" }}
+                    {{ item.person ? item.person.lastName : "" }}
                   </div>
                 </div>
               </div>
               <div class="col-md-2">
                 <div class="d-flex small justify-content-between">
                   <span
-                    class="
-                      text-dark
-                      font-weight-bold
-                      d-flex d-md-none
-                      fontIncrease
-                    "
+                    class="text-dark font-weight-bold d-flex d-md-none fontIncrease"
                     style="font-size: 15px"
                     >Pledge Amount</span
                   >
@@ -836,12 +822,7 @@
               <div class="col-md-2">
                 <div class="d-flex small justify-content-between">
                   <span
-                    class="
-                      text-dark
-                      font-weight-bold
-                      d-flex d-md-none
-                      fontIncrease
-                    "
+                    class="text-dark font-weight-bold d-flex d-md-none fontIncrease"
                     style="font-size: 15px"
                     >Redeemed</span
                   >
@@ -857,12 +838,7 @@
               <div class="col-md-2">
                 <div class="d-flex small justify-content-between">
                   <span
-                    class="
-                      text-dark
-                      font-weight-bold
-                      d-flex d-md-none
-                      fontIncrease
-                    "
+                    class="text-dark font-weight-bold d-flex d-md-none fontIncrease"
                     style="font-size: 15px"
                     >Date</span
                   >
@@ -872,33 +848,28 @@
                 </div>
               </div>
               <div class="col-md-2">
-                    <div class="d-flex small justify-content-between">
-                      <span
-                        class="
-                          text-dark
-                          font-weight-bold
-                          d-flex d-md-none
-                          fontIncrease
-                        "
-                        style="font-size: 15px"
-                        >Link</span
-                      >
-                      <div class="small-text text-right text-md-center">
-                        <router-link
-                          :to="`/partnership/pay/${pledgeItemID}`"
-                          class="text-color text-primary text-decoration-none"
-                        >
-                        PaymentLink
-                        </router-link>
-                        <!-- <router-link
+                <div class="d-flex small justify-content-between">
+                  <span
+                    class="text-dark font-weight-bold d-flex d-md-none fontIncrease"
+                    style="font-size: 15px"
+                    >Link</span
+                  >
+                  <div class="small-text text-right text-md-center">
+                    <router-link
+                      :to="`/partnership/pay/${pledgeItemID}`"
+                      class="text-color text-primary text-decoration-none"
+                    >
+                      PaymentLink
+                    </router-link>
+                    <!-- <router-link
                           :to="`/partnership/pay/${item.id}`"
                           class="text-color text-primary text-decoration-none"
                         >
                         PaymentLink
                         </router-link> -->
-                      </div>
-                    </div>
                   </div>
+                </div>
+              </div>
             </div>
           </div>
         </div>
@@ -932,6 +903,7 @@ import grousService from "../../services/groups/groupsservice";
 import MultiSelect from "primevue/multiselect";
 import InputSwitch from "primevue/inputswitch";
 import store from "../../store/store";
+import deviceBreakpoint from "../../mixins/deviceBreakpoint";
 import workflow_util from "../workflow/utlity/workflow_util.js";
 export default {
   components: {
@@ -948,7 +920,7 @@ export default {
     const toast = useToast();
     const route = useRoute();
     const startDate = ref("");
-    const pledgeItemID = ref(route.query.id)
+    const pledgeItemID = ref(route.query.id);
     const endDate = ref("");
     const Address = ref("");
     const loading = ref(false);
@@ -969,6 +941,8 @@ export default {
     const pledgeType = ref(0);
     const currencyList = ref([]);
     const contributionItems = ref([]);
+    const { lgAndUp, xlAndUp } = deviceBreakpoint();
+    const selectedTree = ref();
     const singlePledge = ref({});
     const targetAmount = ref("");
     const reOccuringRange = ref([
@@ -1434,6 +1408,9 @@ export default {
       // disabled,
       paymentFormId,
       groupLoading,
+      lgAndUp,
+      xlAndUp,
+      selectedTree,
     };
   },
 };
