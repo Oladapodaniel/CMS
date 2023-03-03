@@ -97,7 +97,7 @@
           </div>
         </div>
       </div>
-      <Table :data="searchMember" :headers="firstTimerHeaders" :checkMultipleItem="true"
+      <Table :data="searchMember.slice(0, 50)" :headers="firstTimerHeaders" :checkMultipleItem="true"
         @checkedrow="handleSelectionChange" v-loading="paginatedTableLoading">
         <template #imageURL="{ item }">
           <el-card shadow="hover" class="c-pointer person-image" v-if="item.imageURL"
