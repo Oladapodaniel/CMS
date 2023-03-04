@@ -246,7 +246,7 @@ export default {
       this.selectedCountry = this.countries.find(
         (i) => i.phoneCode && i.phoneCode.toString() === this.usersPhoneCode.toString()
       );
-      this.selectedCountryId = this.selectedCountry ? this.selectedCountry.id : ""
+      this.selectedCountryId = this.selectedCountry ? this.selectedCountry.id : this.selectedCountry
     });
     }, 2000);
   }
