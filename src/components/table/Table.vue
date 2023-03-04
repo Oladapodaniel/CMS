@@ -22,7 +22,7 @@
                     </tr>
                 </thead>
                 <tbody>
-                    <tr v-for="(item, index) in dataInView" :key="index">
+                    <tr v-for="(item, index) in data" :key="index">
                         <td v-if="checkMultipleItem">
                             <el-checkbox v-model="item.check" @change="checkSingleRow(index)" size="large" />
                         </td>
@@ -45,7 +45,7 @@
 </template>
 
 <script>
-import { ref, onMounted, onUpdated } from 'vue';
+import { ref, onMounted, watchEffect } from 'vue';
 import getData from '@/services/loading/loading'
 
 export default {
@@ -136,6 +136,12 @@ export default {
                 }
             }, 1000);
         }
+
+        watchEffect(() => {
+            if (props.data && (dataInView.value.length == props.data.length)) {
+                dataInView.value = props.data
+            }
+        })
 
         return {
             table,
