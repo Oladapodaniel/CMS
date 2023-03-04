@@ -39,8 +39,9 @@
               <div class="input-div">
                 <label class="mb-0">What's your phone number?</label>
                 <div class="w-100">
-                  <vue-tel-input :value="userDetails.phoneNumber" @input="onInput" mode="international"
-                    style="height: 40px" @blur="invalidResponse"></vue-tel-input>
+                  <!-- <vue-tel-input :value="userDetails.phoneNumber" @input="onInput" mode="international"
+                    style="height: 40px" @blur="invalidResponse"></vue-tel-input> -->
+                    <vue-tel-input style="height: 40px" @blur="invalidResponse" v-model="userDetails.phoneNumber" @input="onInput" mode="international"></vue-tel-input>
                 </div>
               </div>
               
@@ -86,14 +87,14 @@
 <script>
 import axios from "@/gateway/backendapi";
 import router from "../../router/index";
-import { VueTelInput } from "vue3-tel-input";
-import "vue3-tel-input/dist/vue3-tel-input.css";
+// import { VueTelInput } from "vue3-tel-input";
+// import "vue3-tel-input/dist/vue3-tel-input.css";
 import { ref, reactive } from "vue";
 import finish from "../../services/progressbar/progress";
 import { ElNotification } from 'element-plus'
 export default {
   components: {
-    VueTelInput,
+    // VueTelInput,
   },
   beforeRouteLeave() {
     const userEmail = localStorage.getItem("email");
@@ -245,7 +246,7 @@ export default {
       this.selectedCountry = this.countries.find(
         (i) => i.phoneCode && i.phoneCode.toString() === this.usersPhoneCode.toString()
       );
-      this.selectedCountryId = this.selectedCountry.id
+      this.selectedCountryId = this.selectedCountry ? this.selectedCountry.id : ""
     });
     }, 2000);
   }

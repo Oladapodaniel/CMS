@@ -13,8 +13,10 @@ import axios from "./gateway/backendapi";
 import NProgress from "nprogress";
 import CKEditor from '@ckeditor/ckeditor5-vue';
 import Toaster from '@meforma/vue-toaster';
-import VueTelInput from 'vue3-tel-input'
-import 'vue3-tel-input/dist/vue3-tel-input.css'
+// import VueTelInput from 'vue3-tel-input'
+// import 'vue3-tel-input/dist/vue3-tel-input.css'
+import VueTelInput from 'vue-tel-input';
+import 'vue-tel-input/dist/vue-tel-input.css';
 
 const VueTelInputOptions = {
   mode: "international",
