@@ -107,7 +107,7 @@
               <div class="col-12 d-flex  justify-content-between flex-wrap" >
 
                   <div class="col-sm-6 mx-0 px-0 col-12 small d-flex justify-content-center  justify-content-sm-start  small">
-                    <div v-if="contactDetail.name"> {{contactDetail.name}}</div>
+                    <div v-if="contactDetail.name"> {{contactDetail ? contactDetail.name : "" }}</div>
                   </div>
                   <div class="col-sm-6 mx-0 px-0 col-12 d-flex justify-content-center small justify-content-sm-end " >
                     <div v-if="contactDetail.email "> {{maxEmail ? maxEmail :  ""}}</div>
@@ -283,7 +283,7 @@
             <div
               class="col-md-11 mt-3"
               v-if="
-                 contactDetail.pledges && contactDetail.pledges.length ===  0  &&
+                 contactDetail && contactDetail.pledges && contactDetail.pledges.length ===  0  &&
                 appltoggle &&
                 !showLoading
               "
@@ -301,7 +301,7 @@
               </div>
             </div>
             <div v-if="
-                contactDetail.pledges && contactDetail.pledges.length ===  0  &&
+                contactDetail && contactDetail.pledges && contactDetail.pledges.length ===  0  &&
                 appltoggle &&
                 !showLoading
               "
@@ -309,7 +309,7 @@
             <div
               class="col-md-11 mt-3"
               v-if="
-                contactDetail.pledges && contactDetail.pledges.length ===  0  &&
+                contactDetail && contactDetail.pledges && contactDetail.pledges.length ===  0  &&
                 appltoggle &&
                 !showLoading
               "
@@ -346,9 +346,7 @@
              <div
               class="col-md-11 mt-3"
               v-if="
-                 !contactDetail.pledges  &&
-                appltoggle &&
-                !showLoading
+                 personToggle
               "
             >
               <div class="col-md-12 ">
@@ -372,9 +370,7 @@
             <div
               class="col-md-11 mt-3"
               v-if="
-                !contactDetail.pledges &&
-                appltoggle &&
-                !showLoading
+              personToggle
               "
             >
               
@@ -640,7 +636,7 @@ export default {
 
     const populateInputfields = (obj) => {
       contactDetail.value = obj;
-      console.log(contactDetail.value);
+      console.log(contactDetail.value, "sdsdasdassafwf");
     };
 
     
@@ -1114,6 +1110,7 @@ export default {
   height: 56rem;
   object-fit: cover;
   background-repeat: no-repeat;
+  background-size: cover;
 }
 /* .user image {
   width: 30px;
