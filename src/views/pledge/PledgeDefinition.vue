@@ -1,5 +1,5 @@
 <template>
-  <div class="container-top container-wide">
+  <div>
     <div class="container-fluid">
       <div class="row d-flex justify-content-between px-3">
         <div class="heading-text">Create Pledge Item</div>
@@ -8,17 +8,13 @@
         <i class="pi pi-spin pi-spinner py-4" style="font-size: 3rem"></i>
       </div>
       <div class="row">
-        <div class="col-md-8">
+        <div class="col-md-10 col-lg-8">
           <!-- Contribution item -->
           <div class="row mt-5">
             <div class="col-md-10 offset-md-2">
               <div class="row">
                 <div
-                  class="
-                    col-12 col-sm-12 col-lg-4
-                    text-sm-left text-lg-right
-                    align-self-center
-                  "
+                  class="col-12 col-sm-12 col-lg-4 text-sm-left text-lg-right align-self-center"
                 >
                   <label for="" class=""
                     >Contribution <sup class="text-danger">*</sup>
@@ -26,7 +22,49 @@
                 </div>
 
                 <div class="col-12 col-sm-12 col-lg-8">
-                  <div class="mt-2">
+                  <el-dropdown trigger="click" class="w-100">
+                    <span class="el-dropdown-link w-100">
+                      <div
+                        class="d-flex justify-content-between border-contribution text-dark w-100"
+                        size="large"
+                      >
+                        <span>{{
+                          selectedContribution &&
+                          Object.keys(selectedContribution).length > 0
+                            ? selectedContribution.name
+                            : "Select contribution"
+                        }}</span>
+                        <div>
+                          <el-icon class="el-icon--right">
+                            <arrow-down />
+                          </el-icon>
+                        </div>
+                      </div>
+                    </span>
+                    <template #dropdown>
+                      <el-dropdown-menu>
+                        <el-dropdown-item
+                          v-for="(itm, indx) in contributionItems"
+                          :key="indx"
+                          @click="selectContribution(itm)"
+                          >{{ itm.name }}
+                        </el-dropdown-item>
+                        <el-dropdown-item divided
+                          ><a
+                            data-toggle="modal"
+                            data-target="#exampleModalCenter"
+                            class="font-weight-bold small-text d-flex justify-content-center py-2 text-decoration-none primary-text"
+                            style="color: #136acd"
+                          >
+                            <el-icon size="large"> <CirclePlus /></el-icon>
+                            create new contribution item
+                          </a></el-dropdown-item
+                        >
+                      </el-dropdown-menu>
+                    </template>
+                  </el-dropdown>
+
+                  <!-- <div class="mt-2">
                     <button
                       class="btn w-100 text-left"
                       type="button"
@@ -47,12 +85,7 @@
                           : "Select contribution"
                       }}
                       <i
-                        class="
-                          pi pi-chevron-down
-                          manual-dd-icon
-                          float-right
-                          pt-1
-                        "
+                        class="pi pi-chevron-down manual-dd-icon float-right pt-1"
                       ></i>
                     </button>
                     <div
@@ -60,28 +93,15 @@
                       aria-labelledby="dropdownMenuButton"
                     >
                       <a
-                        class="
-                          dropdown-item
-                          font-weight-700
-                          small-text
-                          py-2
-                          c-pointer
-                        "
+                        class="dropdown-item font-weight-700 small-text py-2 c-pointer"
                         v-for="(itm, indx) in contributionItems"
                         :key="indx"
                         @click="selectContribution(itm)"
                         >{{ itm.name }}</a
                       >
+
                       <a
-                        class="
-                          font-weight-bold
-                          small-text
-                          d-flex
-                          justify-content-center
-                          py-2
-                          text-decoration-none
-                          primary-text
-                        "
+                        class="font-weight-bold small-text d-flex justify-content-center py-2 text-decoration-none primary-text"
                         style="border-top: 1px solid #002044; color: #136acd"
                         href="#"
                         type="button"
@@ -89,18 +109,13 @@
                         data-target="#exampleModalCenter"
                       >
                         <i
-                          class="
-                            pi pi-plus-circle
-                            mr-2
-                            d-flex
-                            align-items-center
-                          "
+                          class="pi pi-plus-circle mr-2 d-flex align-items-center"
                           style="color: #136acd"
                         ></i>
                         Create new Contribution Item
                       </a>
                     </div>
-                  </div>
+                  </div> -->
                 </div>
               </div>
             </div>
@@ -144,11 +159,7 @@
             <div class="col-md-10 offset-md-2">
               <div class="row">
                 <div
-                  class="
-                    col-12 col-sm-12 col-lg-4
-                    text-sm-left text-lg-right
-                    align-self-center
-                  "
+                  class="col-12 col-sm-12 col-lg-4 text-sm-left text-lg-right align-self-center"
                 >
                   <label for="" class=""
                     >Name <sup class="text-danger">*</sup>
@@ -156,10 +167,18 @@
                 </div>
 
                 <div class="col-12 col-sm-12 col-lg-8">
-                  <input
+                  <!-- <input
                     type="text"
                     v-model="pledgeName"
                     class="form-control"
+                    :class="{ 'is-invalid': !isNameValid }"
+                    @blur="checkNameValue"
+                    placeholder="Enter pledge name"
+                  /> -->
+
+                  <el-input
+                    type="text"
+                    v-model="pledgeName"
                     :class="{ 'is-invalid': !isNameValid }"
                     @blur="checkNameValue"
                     placeholder="Enter pledge name"
@@ -173,11 +192,7 @@
             <div class="col-md-10 offset-md-2 mt-3">
               <div class="row">
                 <div
-                  class="
-                    col-12 col-sm-12 col-lg-4
-                    text-sm-left text-lg-right
-                    align-self-center
-                  "
+                  class="col-12 col-sm-12 col-lg-4 text-sm-left text-lg-right align-self-center"
                 >
                   <label for="" class=""
                     >Currency <sup class="text-danger">*</sup>
@@ -185,7 +200,19 @@
                 </div>
 
                 <div class="col-12 col-sm-12 col-lg-8">
-                  <Dropdown
+                  <el-select-v2
+                    v-model="selectedCurrencyId"
+                    class="w-100 font-weight-normal"
+                    :options="currencyList.map((i) => ({ label: i.name, value: i.id }))"
+                    placeholder="Select Currency"
+                    size="large"
+                    @change="setSelectedCurrency"
+                  >
+                  <template #default="{ item }">
+                    <span style="margin-right: 8px">{{ item.label }} - {{ countryCurrency(item) }}</span>
+                  </template>
+                  </el-select-v2>
+                  <!-- <Dropdown
                     v-model="selectedCurrency"
                     class="w-100 font-weight-normal"
                     :options="currencyList"
@@ -198,7 +225,6 @@
                         v-if="slotProps.value"
                       >
                         <div>{{ slotProps.value.name }}</div>
-                        <!-- <div>{{slotProps.placeholder}}</div> -->
                       </div>
                       <span v-else>
                         {{ slotProps.placeholder }}
@@ -212,7 +238,7 @@
                         </div>
                       </div>
                     </template>
-                  </Dropdown>
+                  </Dropdown> -->
                 </div>
               </div>
             </div>
@@ -256,21 +282,12 @@
             <div class="col-md-10 mt-1 offset-md-2">
               <div class="row">
                 <div
-                  class="
-                    col-12 col-sm-12 col-lg-4
-                    text-sm-left text-lg-right
-                    align-self-center
-                  "
+                  class="col-12 col-sm-12 col-lg-4 text-sm-left text-lg-right align-self-center"
                 >
                   <label for="" class="">Pledge type </label>
                 </div>
                 <div
-                  class="
-                    col-12 col-sm-12 col-lg-8
-                    d-flex
-                    justify-content-between
-                    flex-wrap
-                  "
+                  class="col-12 col-sm-12 col-lg-8 d-flex justify-content-between flex-wrap"
                 >
                   <div
                     class="col-md-4 border py-2 c-pointer free-will"
@@ -297,19 +314,14 @@
                 <div class="col-md-12 mt-3" v-if="pledgeCategory == 'specific'">
                   <div class="row">
                     <div
-                      class="
-                        col-12 col-sm-12 col-lg-4
-                        text-sm-left text-lg-right
-                        align-self-center
-                      "
+                      class="col-12 col-sm-12 col-lg-4 text-sm-left text-lg-right align-self-center"
                     >
                       <label for="" class=""> Amount </label>
                     </div>
                     <div class="col-12 col-sm-12 col-lg-8">
-                      <input
+                      <el-input
                         type="text"
                         v-model="specificAmount"
-                        class="form-control"
                         placeholder="Enter specific amount"
                       />
                     </div>
@@ -318,35 +330,43 @@
                 <div class="col-md-12 mt-3" v-if="pledgeCategory == 'range'">
                   <div class="row">
                     <div
-                      class="
-                        col-12 col-sm-12 col-lg-4
-                        text-sm-left text-lg-right
-                        align-self-center
-                      "
+                      class="col-12 col-sm-12 col-lg-4 text-sm-left text-lg-right align-self-center"
                     >
                       <label for="" class="d-none d-lg-block"> Amount </label>
                     </div>
-                    <div class="col-12 col-sm-12 col-lg-4">
+                    <div class="col-12 col-lg-4">
                       <label for="" class="d-block d-lg-none">
                         Amount From
                       </label>
-                      <input
+
+                      <el-input
+                        type="text"
+                        v-model="amountFrom"
+                        placeholder="From"
+                      />
+                      <!-- <input
                         type="text"
                         v-model="amountFrom"
                         class="form-control"
                         placeholder="From"
-                      />
+                      /> -->
                     </div>
-                    <div class="col-12 col-sm-12 mt-3 mt-md-0 mt-lg-0 col-lg-4">
+                    <div class="col-12 mt-3 mt-md-0 mt-lg-0 col-lg-4 pl-lg-0">
                       <label for="" class="d-block d-lg-none">
                         Amount To
                       </label>
-                      <input
+
+                      <el-input
+                        type="text"
+                        v-model="amountTo"
+                        placeholder="To"
+                      />
+                      <!-- <input
                         type="text"
                         v-model="amountTo"
                         class="form-control"
                         placeholder="To"
-                      />
+                      /> -->
                     </div>
                   </div>
                 </div>
@@ -359,11 +379,7 @@
             <div class="col-md-10 offset-md-2">
               <div class="row">
                 <div
-                  class="
-                    col-12 col-sm-12 col-lg-4
-                    text-sm-left text-lg-right
-                    align-self-center
-                  "
+                  class="col-12 col-sm-12 col-lg-4 text-sm-left text-lg-right align-self-center"
                 >
                   <label for="" class=""> Frequency </label>
                 </div>
@@ -377,14 +393,7 @@
                     One time
                   </div>
                   <div
-                    class="
-                      col-12
-                      mt-4 mt-lg-0
-                      col-sm-12 col-lg-6
-                      border
-                      py-2
-                      c-pointer
-                    "
+                    class="col-12 mt-4 mt-lg-0 col-sm-12 col-lg-6 border py-2 c-pointer"
                     :class="{
                       'show-reoccuring': pledgeFrequency == 'reoccuring',
                     }"
@@ -396,30 +405,33 @@
                 <div class="col-md-12 mt-3" v-if="pledgeFrequency == 'onetime'">
                   <div class="row">
                     <div
-                      class="
-                        col-12 col-sm-12 col-lg-4
-                        text-sm-left text-lg-right
-                        align-self-center
-                      "
+                      class="col-12 col-sm-12 col-lg-4 text-sm-left text-lg-right align-self-center"
                     >
                       <label for="" class=""> Start Date </label>
                     </div>
                     <div class="col-12 col-sm-12 col-lg-8">
-                      <Calendar
+                      <el-date-picker
+                        v-model="dateRangeValue"
+                        type="daterange"
+                        unlink-panels
+                        range-separator="To"
+                        start-placeholder="Start date"
+                        end-placeholder="End date"
+                        :shortcuts="shortcuts"
+                        size="large"
+                        class="w-100"
+                        @change="setDatePicker"
+                      />
+                      <!-- <Calendar
                         dateFormat="dd/mm/yy"
                         class="w-100"
                         id="icon"
                         v-model="startDate"
                         :showIcon="true"
-                      />
+                      /> -->
                     </div>
-                    <div
-                      class="
-                        col-12 col-sm-12 col-lg-4
-                        text-sm-left text-lg-right
-                        mt-2
-                        align-self-center
-                      "
+                    <!-- <div
+                      class="col-12 col-sm-12 col-lg-4 text-sm-left text-lg-right mt-2 align-self-center"
                     >
                       <label for="" class=""> End Date </label>
                     </div>
@@ -431,7 +443,7 @@
                         v-model="endDate"
                         :showIcon="true"
                       />
-                    </div>
+                    </div> -->
                   </div>
                 </div>
                 <div
@@ -440,11 +452,7 @@
                 >
                   <div class="row">
                     <div
-                      class="
-                        col-12 col-sm-12 col-lg-4
-                        text-sm-left text-lg-right
-                        align-self-center
-                      "
+                      class="col-12 col-sm-12 col-lg-4 text-sm-left text-lg-right align-self-center"
                     >
                       <label for="" class=""> Range </label>
                     </div>
@@ -462,23 +470,30 @@
                 <div class="col-md-12 mt-3">
                   <div class="row">
                     <div
-                      class="
-                        col-12 col-sm-12 col-lg-4
-                        text-sm-left text-lg-right
-                        align-self-center
-                      "
+                      class="col-12 col-sm-12 col-lg-4 text-sm-left text-lg-right align-self-center"
                     >
                       <label for="" class=""> Choose group(s) </label>
                     </div>
                     <div class="col-12 col-sm-12 col-lg-8">
-                      <MultiSelect
+                      <!-- :multiple="groupMappedTree && groupMappedTree.length > 0" -->
+                      <el-tree-select
+                        v-model="selectedGroupTree"
+                        :data="groupMappedTree"
+                        
+                        :render-after-expand="false"
+                        show-checkbox
+                        check-strictly
+                        check-on-click-node
+                        class="w-100"
+                      />
+                      <!-- <MultiSelect
                         v-model="selectedGroups"
                         optionLabel="name"
                         :options="groups"
                         placeholder="Select groups"
                         class="w-100"
                         display="chip"
-                      />
+                      /> -->
                     </div>
                   </div>
                 </div>
@@ -501,11 +516,7 @@
             <div class="col-md-10 offset-md-2">
               <div class="row">
                 <div
-                  class="
-                    col-12 col-sm-12 col-lg-4
-                    text-sm-left text-lg-right
-                    align-self-center
-                  "
+                  class="col-12 col-sm-12 col-lg-4 text-sm-left text-lg-right align-self-center"
                 >
                   <label for="" class="">Bank </label>
                 </div>
@@ -515,8 +526,7 @@
                     <button
                       class="default-btn w-100 text-left pr-1"
                       type="button"
-                      style="
-                        border-radius: 4px;
+                      style="border-radius: 4px;
                         border: 1px solid #ced4da;
                         color: #6c757d;
                       "
@@ -526,11 +536,7 @@
                       aria-expanded="false"
                     >
                       <div
-                        class="
-                          d-flex
-                          justify-content-between
-                          align-items-center
-                        "
+                        class="d-flex justify-content-between align-items-center"
                       >
                         <span>{{
                           !selectedBank
@@ -580,9 +586,16 @@
                 </div>
 
                 <div class="col-12 col-sm-12 col-lg-8">
-                  <input
+                  <!-- <input
                     type="text"
                     class="form-control"
+                    placeholder="Enter account number"
+                    v-model="accountNumber"
+                    @blur="resolveCustomerDetail"
+                  /> -->
+
+                  <el-input
+                    type="text"
                     placeholder="Enter account number"
                     v-model="accountNumber"
                     @blur="resolveCustomerDetail"
@@ -742,17 +755,7 @@
         <div class="row w-100" style="margin: 0">
           <div class="col-12 parent-desc pb-2 px-0">
             <div
-              class="
-                row
-                w-100
-                c-pointer
-                text-dark
-                border-top
-                py-3
-                hover
-                d-flex
-                align-items-center
-              "
+              class="row w-100 c-pointer text-dark border-top py-3 hover d-flex align-items-center"
               style="margin: 0"
               v-for="(item, index) in pledgesBoundToItem"
               :key="index"
@@ -760,12 +763,7 @@
               <div class="col-md-2">
                 <div class="mb-0 d-flex small justify-content-between">
                   <span
-                    class="
-                      text-dark
-                      font-weight-bold
-                      d-flex d-md-none
-                      fontIncrease
-                    "
+                    class="text-dark font-weight-bold d-flex d-md-none fontIncrease"
                     style="font-size: 15px"
                     >Name</span
                   >
@@ -798,29 +796,20 @@
               <div class="col-md-2">
                 <div class="mb-0 small d-flex justify-content-between">
                   <span
-                    class="
-                      text-dark
-                      font-weight-bold
-                      d-flex d-md-none
-                      fontIncrease
-                    "
+                    class="text-dark font-weight-bold d-flex d-md-none fontIncrease"
                     style="font-size: 15px"
                     >Contact
                   </span>
                   <div class="small-text">
-                    {{ item.person ? item.person.firstName : '' }} {{ item.person ? item.person.lastName : '' }}
+                    {{ item.person ? item.person.firstName : "" }}
+                    {{ item.person ? item.person.lastName : "" }}
                   </div>
                 </div>
               </div>
               <div class="col-md-2">
                 <div class="d-flex small justify-content-between">
                   <span
-                    class="
-                      text-dark
-                      font-weight-bold
-                      d-flex d-md-none
-                      fontIncrease
-                    "
+                    class="text-dark font-weight-bold d-flex d-md-none fontIncrease"
                     style="font-size: 15px"
                     >Pledge Amount</span
                   >
@@ -836,12 +825,7 @@
               <div class="col-md-2">
                 <div class="d-flex small justify-content-between">
                   <span
-                    class="
-                      text-dark
-                      font-weight-bold
-                      d-flex d-md-none
-                      fontIncrease
-                    "
+                    class="text-dark font-weight-bold d-flex d-md-none fontIncrease"
                     style="font-size: 15px"
                     >Redeemed</span
                   >
@@ -857,12 +841,7 @@
               <div class="col-md-2">
                 <div class="d-flex small justify-content-between">
                   <span
-                    class="
-                      text-dark
-                      font-weight-bold
-                      d-flex d-md-none
-                      fontIncrease
-                    "
+                    class="text-dark font-weight-bold d-flex d-md-none fontIncrease"
                     style="font-size: 15px"
                     >Date</span
                   >
@@ -872,33 +851,28 @@
                 </div>
               </div>
               <div class="col-md-2">
-                    <div class="d-flex small justify-content-between">
-                      <span
-                        class="
-                          text-dark
-                          font-weight-bold
-                          d-flex d-md-none
-                          fontIncrease
-                        "
-                        style="font-size: 15px"
-                        >Link</span
-                      >
-                      <div class="small-text text-right text-md-center">
-                        <router-link
-                          :to="`/partnership/pay/${pledgeItemID}`"
-                          class="text-color text-primary text-decoration-none"
-                        >
-                        PaymentLink
-                        </router-link>
-                        <!-- <router-link
+                <div class="d-flex small justify-content-between">
+                  <span
+                    class="text-dark font-weight-bold d-flex d-md-none fontIncrease"
+                    style="font-size: 15px"
+                    >Link</span
+                  >
+                  <div class="small-text text-right text-md-center">
+                    <router-link
+                      :to="`/partnership/pay/${pledgeItemID}`"
+                      class="text-color text-primary text-decoration-none"
+                    >
+                      PaymentLink
+                    </router-link>
+                    <!-- <router-link
                           :to="`/partnership/pay/${item.id}`"
                           class="text-color text-primary text-decoration-none"
                         >
                         PaymentLink
                         </router-link> -->
-                      </div>
-                    </div>
                   </div>
+                </div>
+              </div>
             </div>
           </div>
         </div>
@@ -933,6 +907,8 @@ import MultiSelect from "primevue/multiselect";
 import InputSwitch from "primevue/inputswitch";
 import store from "../../store/store";
 import workflow_util from "../workflow/utlity/workflow_util.js";
+import datePickerShortcut from "@/mixins/el-datepicker-shortcut.vue"
+import collector from "../../services/groupArray/mapTree";
 export default {
   components: {
     Dropdown,
@@ -948,7 +924,7 @@ export default {
     const toast = useToast();
     const route = useRoute();
     const startDate = ref("");
-    const pledgeItemID = ref(route.query.id)
+    const pledgeItemID = ref(route.query.id);
     const endDate = ref("");
     const Address = ref("");
     const loading = ref(false);
@@ -960,6 +936,7 @@ export default {
     // const showPledgeType = ref(false)
     const selectedRange = ref({});
     const selectedContribution = ref({});
+    const selectedCurrencyId = ref(null)
     const selectedCurrency = ref({ name: "Select currency" });
     const isNameValid = ref(true);
     const pledgeName = ref("");
@@ -997,6 +974,10 @@ export default {
     const pledgeLoader = ref(false);
     const groupLoading = ref(false);
     const paymentFormId = ref("");
+    const dateRangeValue = ref(null)
+    const { shortcuts } = ref(datePickerShortcut())
+    const groupMappedTree = ref([])
+    const selectedGroupTree = ref()
 
     const date = (offDate) => {
       return monthDayYear.normalDate(offDate);
@@ -1333,14 +1314,21 @@ export default {
     const getGroups = async () => {
       groupLoading.value = true;
       try {
-        const response = await grousService.getGroups();
-        groups.value = response.response.groupResonseDTO.map((i) => {
-          return { id: i.id, name: i.name };
+        const { response } = await grousService.getGroups();
+        groups.value = response.groupResonseDTO.map((i) => {
+          return { id: i.id, name: i.name, children: i.children };
         });
         groups.value.unshift({
           id: "0000-000-0000-0000-0000-0000",
           name: "Entire ministry",
         });
+        let data = { children: groups.value }
+        const { children } = collector(data);
+        groupMappedTree.value = children
+        console.log(groupMappedTree.value)
+        // if (groupMappedTree.value && groupMappedTree.value.length > 0) {
+        //   flattenedTree.value = groupMappedTree.value.flatMap(flatten());
+        // }
         if (route.query.id) getSinglePledgeDefinition();
         groupLoading.value = false;
       } catch (error) {
@@ -1377,6 +1365,21 @@ export default {
       }
     });
 
+    const countryCurrency = (item) => {
+      if (currencyList.value.length > 0) return currencyList.value.find(i => i.id == item.value) ? currencyList.value.find(i => i.id == item.value).country : '';
+    }
+
+    const setSelectedCurrency = () => {
+      selectedCurrency.value = currencyList.value.find(i => i.id == selectedCurrencyId.value);
+    }
+
+    const setDatePicker = () => {
+      startDate.value = dateRangeValue.value[0];
+      endDate.value = dateRangeValue.value[1]
+    }
+
+    const filterNodeMethod = (value, data) => data.label.toLowerCase().includes(value.toLowerCase())
+
     return {
       newConItems,
       pledgeItemID,
@@ -1391,6 +1394,7 @@ export default {
       amountTo,
       specificAmount,
       checkNameValue,
+      selectedCurrencyId,
       selectedCurrency,
       selectedContribution,
       startDate,
@@ -1434,6 +1438,14 @@ export default {
       // disabled,
       paymentFormId,
       groupLoading,
+      countryCurrency,
+      setSelectedCurrency,
+      shortcuts,
+      dateRangeValue,
+      setDatePicker,
+      groupMappedTree,
+      selectedGroupTree,
+      filterNodeMethod
     };
   },
 };
@@ -1493,5 +1505,11 @@ export default {
 
 .fa-ellipsis-v {
   padding: 10px;
+}
+
+.border-contribution {
+  border: 1.6px solid rgb(229,232,237);
+  border-radius: 4px;
+  padding: 11px 7px;
 }
 </style>

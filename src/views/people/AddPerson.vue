@@ -893,9 +893,11 @@ export default {
 ;
           }
         }
+        console.log(allGroups.value)
         let data = { children: allGroups.value }
         const { children } = collector(data);
         groupMappedTree.value = children
+        console.log(groupMappedTree.value, 'hereee')
         if (groupMappedTree.value && groupMappedTree.value.length > 0) {
           flattenedTree.value = groupMappedTree.value.flatMap(flatten());
         }
