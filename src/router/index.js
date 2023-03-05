@@ -1932,7 +1932,8 @@ router.beforeEach((to, from, next) => {
     if ((role && role.length === 1 && role[0] === "FollowUp" && token) && (to.path !== "/tenant/followup" && to.name !== "FirsttimerManagement")) {
         localStorage.removeItem('token')
         next("/")
-    } else {
+    } 
+    else {
         next(true)
     }
     next(true)
@@ -1975,10 +1976,10 @@ router.beforeEach((to, from, next) => {
 })
 
 router.onError((error) => {
+    console.log(error, 'router error')
     const pattern = /Loading chunk (\d)+ failed/g;
     const isChunkLoadFailed = error.message.match(pattern);
     const targetPath = router.history.pending.fullPath;
-    console.log(error, 'router error')
     if (isChunkLoadFailed) {
         router.replace(targetPath);
     }

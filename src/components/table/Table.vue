@@ -45,7 +45,7 @@
 </template>
 
 <script>
-import { ref, onMounted, onUpdated } from 'vue';
+import { ref, onMounted, watchEffect } from 'vue';
 import getData from '@/services/loading/loading'
 
 export default {
@@ -73,9 +73,10 @@ export default {
         const checkedRow = ref([])
         const isIndeterminate = ref(false)
         const scrollRef = ref(null)
-        const dataInView = ref(getData(props.data, 10))
+        const foo_data = ref([])
+        const dataInView = ref(getData(foo_data.value, 10))
         const initialNumber = ref(10)
-        const tableInfiniteLoading = ref(true)
+        const tableInfiniteLoading = ref(false)
 
         const checkSingleRow = (index) => {
             const currentRow = props.data[index]
@@ -116,10 +117,12 @@ export default {
         const loadMoreData = () => {
             tableInfiniteLoading.value = true
             initialNumber.value += 10
-            if (initialNumber.value <= props.data.length) {
-                let getMoreData = getData(props.data, initialNumber.value);
-                dataInView.value = getMoreData
-            }   else {
+            let getMoreData = getData(props.data, initialNumber.value);
+            if (getMoreData.length <= props.data.length) {
+                dataInView.value = getMoreData;
+            }   
+            
+            if (getMoreData.length === props.data.length) {
                 tableInfiniteLoading.value = false
             }
         }
@@ -137,6 +140,13 @@ export default {
             }, 1000);
         }
 
+        watchEffect(() => {
+            if (props.data && props.data.length > 0) {
+                foo_data.value = props.data
+                dataInView.value = getData(foo_data.value, 10).filter(i => i !== null)
+            }
+        })
+
         return {
             table,
             checked,
@@ -147,7 +157,8 @@ export default {
             scrollRef,
             dataInView,
             initialNumber,
-            tableInfiniteLoading
+            tableInfiniteLoading,
+            foo_data
         }
     }
 }
