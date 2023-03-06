@@ -97,13 +97,6 @@
             <el-icon><CirclePlus /></el-icon>&nbsp;
             Add
           </el-button>
-          <!-- <button
-            v-on:click.prevent="addRemittance"
-            class="btn btnIcons btn-secondary"
-          >
-            <i class="pi pi-plus-circle icons" aria-hidden="true"></i>
-            Add
-          </button> -->
           <div @click="deleteItem(index)" class="ml-3">
             <el-icon><Delete /></el-icon>
         </div>
