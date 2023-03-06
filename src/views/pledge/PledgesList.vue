@@ -63,7 +63,7 @@
         </div>
       </div>
     </div>
-    <div
+    <!-- <div
       class="row mt-4"
       v-if="allPledgeList.length > 0 && !loading && !networkError"
     >
@@ -76,7 +76,7 @@
         </div>
         <div class="col-md-5">active filters</div>
       </div>
-    </div>
+    </div> -->
     <div
       class="row mt-4 mb-4"
       v-if="allPledgeList.length > 0 && !loading && !networkError"
@@ -161,6 +161,11 @@
         <template v-slot:pledgeNumber="{ item }">
           <div class="c-pointer" @click="pledgeListClick(item.id)">
             {{ item.pledgeNumber }}
+          </div>
+        </template>
+        <template v-slot:pledgeName="{ item }">
+          <div class="c-pointer" @click="pledgeListClick(item.id)">
+            {{ item.pledgeItemName }}
           </div>
         </template>
         <template v-slot:contact="{ item }">
@@ -297,6 +302,7 @@ export default {
     const pledgeHeaders = ref([
       { name: "STATUS", value: "status" },
       { name: "PLEDGE NO.", value: "pledgeNumber" },
+      { name: "PLEDGE NAME", value: "pledgeName" },
       { name: "CONTACT", value: "contact" },
       { name: "AMOUNT", value: "amount" },
       { name: "REDEEMED", value: "redeemed" },
