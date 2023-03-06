@@ -1,17 +1,17 @@
 <template>
   <div class="container">
     <div class="row">
-      <div class="col-sm-4 pr-0 text-md-right align-self-center">
+      <div class="col-sm-4 pr-0 text-lg-right align-self-center">
         <label>Name</label>
       </div>
       <div class="col-lg-5 col-sm-12 my-auto">
         <el-input class="textbox-height w-100" v-model="name" required />
       </div>
 
-      <div class="col-sm-4 mt-3 text-md-right pr-0 align-self-center">
+      <div class="col-sm-4 mt-3 text-lg-right pr-0 align-self-center">
         <label>Income Account</label>
       </div>
-      <div class="col-lg-5 dropdown col-sm-12 mt-3">
+      <div class="col-lg-5 dropdown col-sm-12 mt-lg-3">
         <el-select-v2
           v-model="setSelectedAccount"
           class="w-100 font-weight-normal"
@@ -27,10 +27,10 @@
         />
       </div>
 
-      <div class="col-sm-4 mt-3 text-md-right pr-0">
+      <div class="col-sm-4 mt-3 text-lg-right pr-0">
         <label>Cash Account</label>
       </div>
-      <div class="col-lg-5 dropdown col-sm-12 mt-3">
+      <div class="col-lg-5 dropdown col-sm-12 mt-lg-3">
         <el-select-v2
           v-model="setSelectedCashAccount"
           class="w-100 font-weight-normal"
@@ -60,10 +60,10 @@
 
     <div v-if="applyRem">
       <div class="row" v-for="(item, index) in remitance" :key="index">
-        <div class="col-sm-4 mt-3 text-md-right pr-0 align-self-center">
+        <div class="col-sm-4 mt-3 text-lg-right pr-0 align-self-center">
           <label>Income Account</label>
         </div>
-        <div class="col-lg-5 col-sm-12 mt-3">
+        <div class="col-lg-5 col-sm-12 mt-lg-3">
           <el-select-v2
             v-model="setSelectedAccount"
             class="w-100 font-weight-normal"
@@ -79,10 +79,10 @@
           />
         </div>
 
-        <div class="col-sm-4 text-md-right align-self-center mt-3">
+        <div class="col-sm-4 text-lg-right align-self-center mt-3">
           <label>Percentage %</label>
         </div>
-        <div class="col-lg-5 col-sm-12 mt-3">
+        <div class="col-lg-5 col-sm-12 mt-lg-3">
           <input
             type="text"
             class="form-control textbox-height w-100"
@@ -92,17 +92,21 @@
           />
         </div>
 
-        <div class="col-sm-2 col-12 adjust-down mt-3">
-          <button
+        <div class="col-sm-3 col-12 adjust-down mt-3 d-flex align-items-center">
+          <el-button v-on:click.prevent="addRemittance" text round>
+            <el-icon><CirclePlus /></el-icon>&nbsp;
+            Add
+          </el-button>
+          <!-- <button
             v-on:click.prevent="addRemittance"
             class="btn btnIcons btn-secondary"
           >
             <i class="pi pi-plus-circle icons" aria-hidden="true"></i>
             Add
-          </button>
+          </button> -->
+          <div @click="deleteItem(index)" class="ml-3">
+            <el-icon><Delete /></el-icon>
         </div>
-        <div class="col-sm-1 adjust-down" @click="deleteItem(index)">
-          <i class="pi pi-trash"></i>
         </div>
       </div>
     </div>

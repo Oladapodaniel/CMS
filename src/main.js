@@ -23,7 +23,7 @@ const VueTelInputOptions = {
   dropdownOptions: {
     showSearchBox: true,
     showDialCodeInSelection: true,
-    disabled: true
+    disabled: false
     // showFlags: false
   }
   // onlyCountries: ['NG', 'GH', "GB", "US", "CA"]
