@@ -309,7 +309,7 @@
                     </div>
                   </div>
                   <el-input type="checkbox" />
-                </div>
+                </div> -->
               </div>
             </div>
           </div>
