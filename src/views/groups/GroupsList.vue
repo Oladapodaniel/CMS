@@ -56,7 +56,7 @@
             </div>
           </div>
           <div class="screensize">
-            <el-table :data="searchGroup" v-loading="loading" stripe class="groupTree " style="width: 100%" row-key="id"
+            <el-table :data="searchGroup" v-loading="loading" stripe class="groupTree" lazy style="width: 100%" row-key="id"
               :tree-props="{ children: 'children', hasChildren: 'hasChildren' }">
               <el-table-column width="40%" label="Group">
                 <template #default="scope">

@@ -1,44 +1,52 @@
 <template>
-    <div class="table-parent">
-        <table class="table-border w-100">
-            <thead class="table-head mobile">
-                <tr>
-                    <th v-if="checkMultipleItem">
-                        <el-checkbox v-model="checked" @change="checkAllRows" :indeterminate="isIndeterminate"
-                            :checked="data.length > 0 && (data.length === checkedRow.length)" size="large" />
-                    </th>
-                </tr>
-            </thead>
-            <thead class="table-head desktop">
-                <tr>
-                    <th v-if="checkMultipleItem">
-                        <el-checkbox v-model="checked" @change="checkAllRows" :indeterminate="isIndeterminate"
-                            :checked="data.length > 0 && (data.length === checkedRow.length)" size="large" />
-                    </th>
-                    <th v-for="(head, index) in headers" :key="index" :class="{ 'py-3': !checkMultipleItem }">
-                        <h2>{{ head.name }}</h2>
-                    </th>
-                </tr>
-            </thead>
-            <tbody>
-                <tr v-for="(item, index) in data" :key="index">
-                    <td v-if="checkMultipleItem">
-                        <el-checkbox v-model="item.check" @change="checkSingleRow(index)" size="large" />
-                    </td>
-                    <td v-for="(head, index) in headers" :key="index" :class="{ 'py-2': !checkMultipleItem }">
-                        <span>
+    <div ref="scrollRef">
+        <div class="table-parent">
+            <table class="table-border w-100">
+                <thead class="table-head mobile">
+                    <tr>
+                        <th v-if="checkMultipleItem">
+                            <el-checkbox v-model="checked" @change="checkAllRows" :indeterminate="isIndeterminate"
+                                :checked="data.length > 0 && (data.length === checkedRow.length)" size="large" />
+                        </th>
+                    </tr>
+                </thead>
+                <thead class="table-head desktop">
+                    <tr>
+                        <th v-if="checkMultipleItem">
+                            <el-checkbox v-model="checked" @change="checkAllRows" :indeterminate="isIndeterminate"
+                                :checked="data.length > 0 && (data.length === checkedRow.length)" size="large" />
+                        </th>
+                        <th v-for="(head, index) in headers" :key="index" :class="{ 'py-3': !checkMultipleItem }">
                             <h2>{{ head.name }}</h2>
-                        </span>
-                        <slot :name="head.value" v-bind:item="item">-</slot>
-                    </td>
-                </tr>
-            </tbody>
-        </table>
+                        </th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr v-for="(item, index) in dataInView" :key="index">
+                        <td v-if="checkMultipleItem">
+                            <el-checkbox v-model="item.check" @change="checkSingleRow(index)" size="large" />
+                        </td>
+                        <td v-for="(head, index) in headers" :key="index" :class="{ 'py-2': !checkMultipleItem }">
+                            <span>
+                                <h2>{{ head.name }}</h2>
+                            </span>
+                            <slot :name="head.value" v-bind:item="item">-</slot>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+        <div class="infinite-loader" v-if="tableInfiniteLoading">
+            <el-icon class="is-loading">
+                <Loading />
+            </el-icon>
+        </div>
     </div>
 </template>
 
 <script>
-import { ref } from 'vue';
+import { ref, onMounted, watchEffect } from 'vue';
+import getData from '@/services/loading/loading'
 
 export default {
     emits: ['checkedrow'],
@@ -64,6 +72,11 @@ export default {
         const checked = ref(false)
         const checkedRow = ref([])
         const isIndeterminate = ref(false)
+        const scrollRef = ref(null)
+        const foo_data = ref([])
+        const dataInView = ref(getData(foo_data.value, 10))
+        const initialNumber = ref(10)
+        const tableInfiniteLoading = ref(false)
 
         const checkSingleRow = (index) => {
             const currentRow = props.data[index]
@@ -96,13 +109,56 @@ export default {
             }
             emit('checkedrow', checkedRow.value)
         }
+
+        onMounted(() => {
+            window.addEventListener("scroll", handleScroll)
+        })
+
+        const loadMoreData = () => {
+            tableInfiniteLoading.value = true
+            initialNumber.value += 10
+            let getMoreData = getData(props.data, initialNumber.value);
+            if (getMoreData.length <= props.data.length) {
+                dataInView.value = getMoreData;
+            }   
+            
+            if (getMoreData.length === props.data.length) {
+                tableInfiniteLoading.value = false
+            }
+        }
+
+        const handleScroll = (e) => {
+            const element = scrollRef.value;
+            setTimeout(() => {
+                if (element !== null) {
+                    if (element.getBoundingClientRect().bottom < window.innerHeight) {
+                        tableInfiniteLoading.value = true
+                        // Load more post
+                        loadMoreData();
+                    }
+                }
+            }, 1000);
+        }
+
+        watchEffect(() => {
+            if (props.data && props.data.length > 0) {
+                foo_data.value = props.data
+                dataInView.value = getData(foo_data.value, 10).filter(i => i !== null)
+            }
+        })
+
         return {
             table,
             checked,
             checkedRow,
             checkSingleRow,
             checkAllRows,
-            isIndeterminate
+            isIndeterminate,
+            scrollRef,
+            dataInView,
+            initialNumber,
+            tableInfiniteLoading,
+            foo_data
         }
     }
 }
@@ -168,6 +224,13 @@ tbody td span {
 
 thead.mobile {
     display: none;
+}
+
+.infinite-loader {
+    display: flex;
+    justify-content: center;
+    font-size: 30px;
+    margin: 10px 0
 }
 
 @media (max-width: 996px) {
