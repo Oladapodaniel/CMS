@@ -40,7 +40,7 @@
                         <el-dropdown-item v-for="(itm, indx) in contributionItems" :key="indx"
                           @click="selectContribution(itm)">{{ itm.name }}
                         </el-dropdown-item>
-                        <el-dropdown-item divided><a data-toggle="modal" data-target="#exampleModalCenter"
+                        <el-dropdown-item data-toggle="modal" data-target="#exampleModalCenter" class="text-center" divided><a 
                             class="font-weight-bold small-text d-flex justify-content-center py-2 text-decoration-none primary-text"
                             style="color: #136acd">
                             <el-icon size="large">
@@ -261,7 +261,7 @@
                 <div class="col-md-12 mt-3">
                   <div class="row">
                     <div class="col-12 col-sm-12 col-lg-4 text-sm-left text-lg-right align-self-center">
-                      <label for="" class="">Notify church</label>
+                      <label for="" class="">Notify members</label>
                     </div>
                     <div class="col-12 col-sm-12 col-lg-8">
                       <el-checkbox v-model="notify" size="large" />

@@ -13,7 +13,7 @@
       </div>
       <div class="col-lg-5 dropdown col-sm-12 mt-lg-3">
         <el-select-v2
-          v-model="setSelectedAccount"
+          v-model="selectedAccountId"
           class="w-100 font-weight-normal"
           :options="
             incomeAccount.map((i) => ({
@@ -22,7 +22,7 @@
             }))
           "
           placeholder="Select"
-          @change="incomeSelectedAccount"
+          @change="setIncomeSelectedAccount"
           size="large"
         />
       </div>
@@ -32,7 +32,7 @@
       </div>
       <div class="col-lg-5 dropdown col-sm-12 mt-lg-3">
         <el-select-v2
-          v-model="setSelectedCashAccount"
+          v-model="selectedCashAccountId"
           class="w-100 font-weight-normal"
           :options="
             cashBankAccount.map((i) => ({
@@ -41,7 +41,7 @@
             }))
           "
           placeholder="Select Account"
-          @change="setCahAccountType"
+          @change="setCashAccountType"
           size="large"
         />
       </div>
@@ -65,7 +65,7 @@
         </div>
         <div class="col-lg-5 col-sm-12 mt-lg-3">
           <el-select-v2
-            v-model="setSelectedAccount"
+            v-model="item.accountId"
             class="w-100 font-weight-normal"
             :options="
               incomeAccount.map((i) => ({
@@ -74,7 +74,7 @@
               }))
             "
             placeholder="Select"
-            @change="incomeSelectedAccount"
+            @change="setRemittanceIncomeSelectedAccount(index)"
             size="large"
           />
         </div>
@@ -83,10 +83,10 @@
           <label>Percentage %</label>
         </div>
         <div class="col-lg-5 col-sm-12 mt-lg-3">
-          <input
+          <el-input
             type="text"
-            class="form-control textbox-height w-100"
-            placeholder=""
+            class="w-100"
+            placeholder="Enter percentage"
             v-model="item.percentage"
             required
           />
@@ -122,15 +122,11 @@
 
 <script>
 import { ref } from "vue";
-import Dropdown from "primevue/dropdown";
 import axios from "@/gateway/backendapi";
 import { useToast } from "primevue/usetoast";
 import finish from "../../services/progressbar/progress";
 
 export default {
-  components: {
-    Dropdown,
-  },
   setup(props, { emit }) {
     const toast = useToast();
     const name = ref("");
@@ -140,8 +136,8 @@ export default {
     const cashBankAccount = ref([]);
     const applyRem = ref(false);
     const remitance = ref([{}]);
-    const setSelectedAccount = ref();
-    const setSelectedCashAccount = ref();
+    const selectedAccountId = ref();
+    const selectedCashAccountId = ref();
 
     const cashAccountType = (item) => {
       selectedCashAccount.value = item;
@@ -197,15 +193,15 @@ export default {
       remitance.value.push({});
     };
 
-    const incomeSelectedAccount = () => {
-      selectedRange.value = incomeAccount.value.find(
-        (i) => i.id == setSelectedAccount.value
+    const setIncomeSelectedAccount = () => {
+      selectedIncomeAccount.value = incomeAccount.value.find(
+        (i) => i.id == selectedAccountId.value
       );
     };
 
-    const setCahAccountType = () => {
-      setSelectedAccount.value = cashBankAccount.value.find(
-        () => i.id == setSelectedCashAccount.value
+    const setCashAccountType = () => {
+      selectedCashAccount.value = cashBankAccount.value.find(
+        () => i.id == selectedCashAccountId.value
       );
     };
 
@@ -253,6 +249,10 @@ export default {
       e.target.setAttribute("data-dismiss", "modal");
     };
 
+    const setRemittanceIncomeSelectedAccount = (index) => {
+      remitance.value[index].account = incomeAccount.value.find(i => i.id == remitance.value[index].accountId)
+    }
+
     return {
       cashAccountType,
       inComeAccount,
@@ -268,10 +268,11 @@ export default {
       remitance,
       addRemittance,
       createNewCon,
-      incomeSelectedAccount,
-      setCahAccountType,
-      setSelectedAccount,
-      setSelectedCashAccount,
+      setIncomeSelectedAccount,
+      setCashAccountType,
+      selectedAccountId,
+      selectedCashAccountId,
+      setRemittanceIncomeSelectedAccount
     };
   },
 };
