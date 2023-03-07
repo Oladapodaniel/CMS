@@ -63,8 +63,6 @@
               <div class="col-md-12">
                 <label for="">Pledge Name<sup class="text-danger">*</sup></label>
               </div>
-              {{selectedPledgeItem}}
-              {{selectPledgeItemID}}
               <div class="col-md-12">
                 <el-select-v2 v-model="selectPledgeItemID" @change="setSelectPledgeItem" 
                   :options="contributionDetail.pledgeItemDTOs.map(i => ({ label: i.name, value: i.id }))" placeholder="Select Pledge"
