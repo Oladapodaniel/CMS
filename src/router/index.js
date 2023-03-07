@@ -1623,7 +1623,7 @@ const routes = [
         ],
     },
     {
-        path: '/partnership/pay/:id',
+        path: '/partnership/pay/',
         name: 'PublicPledgePayment',
         meta: {
             title: 'Churchplus - Church Pledge',

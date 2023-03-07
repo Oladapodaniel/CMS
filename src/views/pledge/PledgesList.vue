@@ -19,13 +19,35 @@
         >
       </div>
     </div>
-    <!-- <div class="container "> -->
     <div class="d-flex flex-wrap flex-column flex-sm-row">
-      <div class="w-100">
-        <hr class="hr my-3" />
+      <div
+        class="p-col-12 py-md-4 mt-3"
+      >
+        <div class="font-weight-bold">
+          Share the link to your members to enable them to add their details to
+          your church .
+        </div>
+        <div class="p-inputgroup form-group mt-2">
+          <el-input
+            v-model="memberlink"
+            placeholder="Click the copy button when the link appears"
+            ref="selectedLink"
+            class="input-with-select"
+          >
+            <template #append>
+              <el-button @click="copylink">
+                <el-icon>
+                  <CopyDocument />
+                </el-icon>
+              </el-button>
+            </template>
+          </el-input>
+        </div>
       </div>
+      <!-- <div class="w-100">
+        <hr class="hr my-3" />
+      </div> -->
     </div>
-    <!-- </div> -->
     <div
       class="container-fluid"
       v-if="allPledgeList.length > 0 && !loading && !networkError"
@@ -146,7 +168,11 @@
         </el-button>
       </div>
     </div>
-    <div v-if="searchPledges && searchPledges.length > 0 && !loading && !networkError">
+    <div
+      v-if="
+        searchPledges && searchPledges.length > 0 && !loading && !networkError
+      "
+    >
       <Table
         :data="searchPledges"
         :headers="pledgeHeaders"
@@ -225,10 +251,10 @@
         </template>
       </Table>
     </div>
-    
+
     <div
       class="no-person"
-      v-if="searchPledges.length == 0 && !loading && !networkError "
+      v-if="searchPledges.length == 0 && !loading && !networkError"
     >
       <div class="empty-img">
         <p><img src="../../assets/people/people-empty.svg" alt="" /></p>
@@ -259,7 +285,7 @@ import monthDayYear from "../../services/dates/dateformatter";
 import { ElMessage, ElMessageBox } from "element-plus";
 import Table from "@/components/table/Table";
 import router from "../../router";
-import store from "../../store/store"
+import store from "../../store/store";
 
 export default {
   components: {
@@ -289,14 +315,15 @@ export default {
     const tenantID = ref("");
     const allPledgeType = ref([]);
     const selectedPerson = ref("");
-    const allPledgeList = ref(store.getters['pledge/getpledges']);
-    const pledgesSummary = ref(store.getters['pledge/getpledgesummary']);
+    const allPledgeList = ref(store.getters["pledge/getpledges"]);
+    const pledgesSummary = ref(store.getters["pledge/getpledgesummary"]);
     // const pledgesSummary = ref({});
     const startDate = ref("");
     const endDate = ref("");
     const showUpload = ref(true);
     const showDraft = ref(false);
     const showInvoice = ref(false);
+    const selectedLink = ref(null);
     const selectedContact = ref({});
     const selectedContact2 = ref("");
     const pledgeHeaders = ref([
@@ -332,6 +359,18 @@ export default {
       selectedCategory.value = allPledgeDefinitionList.value.find((i) => {
         return i.id == selectedCategoryID.value;
       });
+    };
+    const copylink = () => {
+      selectedLink.value.input.setSelectionRange(0, selectedLink.value.input.value.length); /* For mobile devices */
+      selectedLink.value.input.select();
+
+      /* Copy the text inside the text field */
+      document.execCommand("copy");
+      ElMessage({
+        showClose: true,
+        message: 'Copied to clipboard',
+        type: 'success',
+      })
     };
 
     const setSelectedStatus = () => {
@@ -407,7 +446,7 @@ export default {
 
     const memberlink = computed(() => {
       if (!tenantID.value) return "";
-      return `${window.location.origin}/pledge/publicmakepledge/${tenantID.value}`;
+      return `${window.location.origin}/partnership/pay?tenantID=${tenantID.value}`;
     });
 
     const searchPledges = computed(() => {
@@ -447,9 +486,9 @@ export default {
     const getAllPledgesSummary = async () => {
       try {
         // const res = await axios.get("/api/Pledge/GetAllPledgesSummary");
-        await store.dispatch("pledge/getPledgeSummary").then((res) =>{
+        await store.dispatch("pledge/getPledgeSummary").then((res) => {
           pledgesSummary.value = res;
-        })
+        });
       } catch (error) {}
     };
 
@@ -544,13 +583,17 @@ export default {
         });
     };
 
-    onMounted(() =>{
-      if (allPledgeList.value && allPledgeList.value.length == 0) getAllPledges() ;
-      if (pledgesSummary.value && Object.keys(pledgesSummary.value).length == 0) getAllPledgesSummary() ;
-    })
+    onMounted(() => {
+      if (allPledgeList.value && allPledgeList.value.length == 0)
+        getAllPledges();
+      if (pledgesSummary.value && Object.keys(pledgesSummary.value).length == 0)
+        getAllPledgesSummary();
+    });
 
     return {
       upload,
+      selectedLink,
+      copylink,
       setSelectedStatus,
       filterLoading,
       setSelectedCategory,

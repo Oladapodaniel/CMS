@@ -61,6 +61,18 @@
             </div>
             <div class="col-md-11 mt-3">
               <div class="col-md-12">
+                <label for="">Pledge Name<sup class="text-danger">*</sup></label>
+              </div>
+              {{selectedPledgeItem}}
+              {{selectPledgeItemID}}
+              <div class="col-md-12">
+                <el-select-v2 v-model="selectPledgeItemID" @change="setSelectPledgeItem" 
+                  :options="contributionDetail.pledgeItemDTOs.map(i => ({ label: i.name, value: i.id }))" placeholder="Select Pledge"
+                  size="large" class="input-width" />
+              </div>
+            </div>
+            <div class="col-md-11 mt-3">
+              <div class="col-md-12">
                 <label for="">Phone Number<sup class="text-danger">*</sup></label>
               </div>
               <div class="col-md-12">
@@ -577,6 +589,9 @@ export default {
   },
   setup() {
     const toast = useToast();
+    const searchID = ref('')
+    const selectPledgeItemID = ref(null)
+    const selectedPledgeItem = ref({})
     const appltoggle = ref(false);
     const personToggle = ref(false);
     const associationLogo = ref("")
@@ -649,32 +664,38 @@ export default {
     const showLoading = computed(() => {
       return autosearch.value;
     });
+    const setSelectPledgeItem = () => {
+      selectedPledgeItem.value = contributionDetail.value.pledgeItemDTOs.find(i => {
+        return i.id == selectPledgeItemID.value
+      })
+    }
 
     const checkContact = async () => {
      if (!userSearchString.value) {
             showNoPhoneError.value = true;
             return false;
         }
+        if(route.query.tenantID){
+          searchID.value = route.query.tenantID
+        } else if(route.query.pledgeDefinitionID){
+          searchID.value = route.query.pledgeDefinitionID
+        }else if(route.query.pledgeID){
+          searchID.value = route.query.pledgeID
+        }
       loading.value = true;
       autosearch.value = true;
       // personToggle.value = true
       try {
         const { data } = await axios.get(
-          `/SearchContributionByPhoneOrMemberID?searchText=${userSearchString.value}&Id=${route.params.id}`
+          `/SearchContributionByPhoneOrMemberID?searchText=${userSearchString.value}&Id=${searchID.value}`
         );
         personToggle.value = true
         contactDetail.value = data[0] ? data[0] : {};
+        pledgeDefinitionDetail.value = 
         console.log(contactDetail.value, "the contactDetail");
         amountPaid.value = donorDetail.value.donorPaymentSpecificAmount
         donorDetail.value = data[0] && data[0].pledges[0] ? data[0].pledges[0].pledgeType : {};
         maxEmail.value = contactDetail.value.email.replace(/(\w{3})[\w.-]+@([\w.]+\w)/, "$1***@$2")
-        // donorDetails.value = data[0].pledges.map((i)=>{
-        //   return{
-        //     pledgeType : i.pledgeType
-        //   }
-        // })
-
-        // donorDetail.value = donorDetails.value[0] ? donorDetails.value[0] : {};
         console.log(donorDetail.value, "donor")
 
 
@@ -756,10 +777,11 @@ export default {
     getAllPledgeDefinition();
 
     const getContribution = async () => {
-      try {
+      if (route.query.tenantID) {
+        try {
         checking.value = false;
         const res = await axios.get(
-          `/Contribution/Pay?PledgeDefinitionID=${route.params.id}`
+          `/Contribution/Pay?TenantID=${route.query.tenantID}`
         );
         finish();
         contributionDetail.value = res.data;
@@ -770,6 +792,41 @@ export default {
         checking.value = true;
       } catch (error) {
         console.log(error);
+      }
+      } else if(route.query.pledgeID) {
+         try {
+        checking.value = false;
+        const res = await axios.get(
+          `/Contribution/Pay?PledgeID=${route.query.pledgeID}`
+        );
+        finish();
+        contributionDetail.value = res.data;
+        churchLogo2.value = res.data.logo
+        churchName.value = res.data.tenantName
+        console.log(contributionDetail.value, "contribution payment");
+        // amountPaid.value = res.data.donorPaymentSpecificAmount;
+        checking.value = true;
+      } catch (error) {
+        console.log(error);
+      }
+      } else if(route.query.pledgeDefinitionID) {
+         try {
+        checking.value = false;
+        const res = await axios.get(
+          `/Contribution/Pay?PledgeDefinitionID=${route.query.pledgeDefinitionID}`
+        );
+        finish();
+        contributionDetail.value = res.data;
+        churchLogo2.value = res.data.logo
+        churchName.value = res.data.tenantName
+        console.log(contributionDetail.value, "contribution payment");
+        // amountPaid.value = res.data.donorPaymentSpecificAmount;
+        checking.value = true;
+      } catch (error) {
+        console.log(error);
+      }
+      }else{
+        return ""
       }
     };
     getContribution();
@@ -988,6 +1045,9 @@ export default {
 
     return {
       channel,
+      selectPledgeItemID,
+      setSelectPledgeItem,
+      searchID,
       maxEmail,
       associationLogo,
       churchLogo2,
@@ -1054,6 +1114,7 @@ export default {
   font: normal normal 800 1.5rem Nunito sans;
 }
 
+
 .input-border{
   border: 1px solid  #3c7e58 !important;
 }
@@ -1111,6 +1172,15 @@ export default {
   object-fit: cover;
   background-repeat: no-repeat;
   background-size: cover;
+}
+.input-width {
+  width: 100%
+}
+
+@media (min-width: 992px) {
+  .input-width {
+    width: 350px
+  }
 }
 /* .user image {
   width: 30px;
