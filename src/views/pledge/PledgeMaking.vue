@@ -701,11 +701,10 @@ export default {
 
     const pledgePaymentLink = computed(() => {
       if (!route.query.pledgeTypeID) return "";
-      return `${window.location.origin}/partnership/pay/${pledgePaymentID.value}/${route.query.pledgeTypeID}`;
+      return `${window.location.origin}/partnership/pay?pledgeID=${route.query.pledgeTypeID}`;
     });
 
     const copyLink = () => {
-      console.log(selectedLink.value.value, "jkjjhkj");
       selectedLink.value.setSelectionRange(
         0,
         selectedLink.value.value.length

@@ -104,7 +104,7 @@
                     <el-dropdown-item>
                       <router-link
                         target="_blank"
-                        :to="`/partnership/pay/${item.id}`"
+                        :to="`/partnership/pay?pledgeDefinitionID=${item.id}`"
                         class="text-color"
                       >
                         Payment link
