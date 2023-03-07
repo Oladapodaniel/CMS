@@ -441,17 +441,7 @@
             <div class="small-text text-capitalize col-md-2 font-weight-bold">
               Link
             </div>
-            <!-- 
-                <div
-                  class="small-text text-capitalize col-md-1 font-weight-bold"
-                >
-                  Pledges
-                </div> -->
-            <!-- <div
-                  class="small-text text-capitalize col-md-1 font-weight-bold"
-                >
-                  Action
-                </div> -->
+           
           </div>
         </div>
 
@@ -468,27 +458,7 @@
                   </div>
                 </div>
               </div>
-              <!-- <div class="col-md-3">
-                <div class="mb-0 small d-flex justify-content-between">
-                  <span
-                    class="
-                      text-dark
-                      font-weight-bold
-                      d-flex d-md-none
-                      fontIncrease
-                    "
-                    style="font-size: 15px"
-                    >Contribution</span
-                  >
-                  <div class="small-text">
-                    {{
-                      item && item.pledgeType && item.pledgeType.contribution
-                        ? item.pledgeType.contribution.name
-                        : ""
-                    }}
-                  </div>
-                </div>
-              </div> -->
+              
               <div class="col-md-2">
                 <div class="mb-0 small d-flex justify-content-between">
                   <span class="text-dark font-weight-bold d-flex d-md-none fontIncrease" style="font-size: 15px">Contact
@@ -543,12 +513,7 @@
                       class="text-color text-primary text-decoration-none">
                       PaymentLink
                     </router-link>
-                    <!-- <router-link
-                          :to="`/partnership/pay/${item.id}`"
-                          class="text-color text-primary text-decoration-none"
-                        >
-                        PaymentLink
-                        </router-link> -->
+                   
                   </div>
                 </div>
               </div>
