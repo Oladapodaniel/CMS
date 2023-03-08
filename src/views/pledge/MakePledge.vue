@@ -2,7 +2,7 @@
   <div class="container-fluid">
     <div class="row ">
       <div class="head-text">Make a Pledge</div>
-      <div class="col-12 px-0">
+      <div class="col-12 mt-3 px-0">
         <div class="text-primary c-pointer " @click="previousPage"> 
           <el-icon><DArrowLeft /></el-icon>
         </div>

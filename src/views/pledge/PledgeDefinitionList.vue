@@ -8,12 +8,12 @@
         >Create New
       </router-link>
       <div class="col-md-12 px-0">
+        <hr class="hr my-3" />
+      </div>
+      <div class="col-md-12 px-0">
         <div class="text-primary c-pointer " @click="previousPage"> 
           <el-icon><DArrowLeft /></el-icon>
         </div>
-      </div>
-      <div class="col-md-12 px-0">
-        <hr class="hr my-3" />
       </div>
     </div>
     <div class="row">

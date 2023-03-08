@@ -24,7 +24,7 @@
         class="col-12 py-md-4 mt-3"
       >
         <!-- <div class="font-weight-bold">
-          Share the link to your members to enable them to add their details to
+          Copy and Share the link 
           your church .
         </div> -->
         <div class="p-inputgroup form-group mt-2">
@@ -406,22 +406,13 @@ export default {
 
     const filterPledge = async () => {
       filterLoading.value = true;
-      selectedContact.value.name =
-        selectedContact.value.name == undefined
-          ? ""
-          : selectedContact.value.name;
-      selectedCategory.value.name =
-        selectedCategory.value.name == undefined
-          ? ""
-          : selectedCategory.value.name;
-      selectedStatus.value.status =
-        selectedStatus.value.status == undefined
-          ? ""
-          : selectedStatus.value.status;
+      selectedContact.value.name = selectedContact.value && selectedContact.value.name ? selectedContact.value.name : "";
+      selectedCategory.value.name = selectedCategory.value && selectedCategory.value.name  ? selectedCategory.value.name : "" ;
+      selectedStatus.value.status = selectedStatus.value && selectedStatus.value.status ? selectedStatus.value.status : "" ;
       try {
         const res = await axios.get(
           `/api/Pledge/GetAllPledgesSearch?personId=${
-            selectedContact.value.id
+            selectedContact.value.id ? selectedContact.value.id : ""
           }&status${selectedStatus.value.status}&pledgeItemName${
             selectedCategory.value.name
           }&startDate${new Date(startDate.value).toLocaleDateString(
