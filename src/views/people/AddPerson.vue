@@ -135,6 +135,7 @@
                         class="w-100 ml-1" />
                       <el-select-v2 v-model="person.yearOfWedding"
                         :options="birthYearsArr.map(i => ({ label: i, value: i }))" placeholder="Year" size="large"
+                       
                         class="w-100 ml-1" />
                     </div>
                   </div>
@@ -828,16 +829,16 @@ export default {
       person.mobilePhone = data.mobilePhone;
       person.address = data.homeAddress;
       person.occupation = data.occupation;
-      person.dayOfBirth = data.dayOfBirth;
-      person.monthOfBirth = data.monthOfBirth
+      person.dayOfBirth = data.dayOfBirth == 0 ? null :data.dayOfBirth;
+      person.monthOfBirth = data.monthOfBirth 
         ? months[data.monthOfBirth - 1]
         : null;
-      person.dayOfWedding = data.dayOfWedding;
-      person.yearOfBirth = data.yearOfBirth;
+      person.dayOfWedding = data.dayOfWedding == 0 ? null : data.dayOfWedding;
+      person.yearOfBirth = data.yearOfBirth == 0 ? null :data.yearOfBirth;
       person.monthOfWedding = data.monthOfWedding
         ? months[data.monthOfWedding - 1]
         : null;
-      person.yearOfWedding = data.yearOfWedding;
+      person.yearOfWedding = data.yearOfWedding == 0 ? null : data.yearOfWedding;
       peopleInGroupIDs.value = data.personSpecificGroups.map(i => {
         return {
           groupId: i.id,
@@ -849,6 +850,7 @@ export default {
         name: `${data.followupPersonName}`,
         id: data.followupPersonID
       }
+    console.log(data,"train🎡🎠")
     };
 
     const getMemberToEdit = () => {
