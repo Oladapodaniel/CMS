@@ -768,8 +768,11 @@ export default {
           });
 
           console.log(response, "response");
+          store.dispatch("pledge/getPledgeDefinition").then(() =>{
+            router.push("/tenant/pledge/pledgedefinitionlist");
+          })
 
-          router.push("/tenant/pledge/pledgedefinitionlist");
+          
 
           loading.value = false;
         } catch (error) {
@@ -792,7 +795,9 @@ export default {
             life: 2000,
           });
 
-          router.push("/tenant/pledge/pledgedefinitionlist");
+         store.dispatch("pledge/getPledgeDefinition").then(() =>{
+            router.push("/tenant/pledge/pledgedefinitionlist");
+          })
 
           targetAmount.value = "";
           amountTo.value = "";

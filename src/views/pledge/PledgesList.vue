@@ -19,14 +19,14 @@
         >
       </div>
     </div>
-    <div class="d-flex flex-wrap flex-column flex-sm-row">
+    <div class="d-flex flex-wrap flex-column flex-sm-row row" v-if="route.fullPath == '/tenant/pledge/pledgeslist'">
       <div
-        class="p-col-12 py-md-4 mt-3"
+        class="col-12 py-md-4 mt-3"
       >
-        <div class="font-weight-bold">
+        <!-- <div class="font-weight-bold">
           Share the link to your members to enable them to add their details to
           your church .
-        </div>
+        </div> -->
         <div class="p-inputgroup form-group mt-2">
           <el-input
             v-model="memberlink"
@@ -281,6 +281,7 @@ import { ref, computed, onMounted } from "vue";
 import MembersSearch from "../../components/membership/MembersSearch.vue";
 import axios from "@/gateway/backendapi";
 import Dropdown from "primevue/dropdown";
+import { useRoute } from "vue-router";
 import monthDayYear from "../../services/dates/dateformatter";
 import { ElMessage, ElMessageBox } from "element-plus";
 import Table from "@/components/table/Table";
@@ -295,6 +296,7 @@ export default {
   },
   setup() {
     const networkError = ref(false);
+    const route = useRoute();
     // const allPerson = ref([]);
     const selectedStatusID = ref(null);
     const selectedCategoryID = ref(null);
@@ -592,6 +594,7 @@ export default {
 
     return {
       upload,
+      route,
       selectedLink,
       copylink,
       setSelectedStatus,

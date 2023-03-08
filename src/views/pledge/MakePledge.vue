@@ -393,17 +393,14 @@ export default {
 
           console.log(response, "response");
           makePledgeData.value = response.data.returnObject;
-          router.push({
-            name: "PledgeMaking",
-            query: {
-              // id: makePledgeData.value.pledgeTypeID,
-              pledgeTypeID: makePledgeData.value.id,
-              // pledgeType: selectedPledge.value.name,
-              // name: selectedContact.value.name,
-              // date: pledgeDate.value,
-              // amount: donorAmountBase
-            },
-          });
+         store.dispatch("pledge/getPledges").then(() => {
+                router.push({
+                    name: "PledgeMaking",
+                    query: {
+                      pledgeTypeID: makePledgeData.value.id,
+                    },
+                });
+              })
 
           loading.value = false;
         } catch (error) {
@@ -420,7 +417,6 @@ export default {
           console.log(res.data, "PledgeSave");
           makePledgeData.value = res.data.returnObject;
           loading.value = false;
-
           toast.add({
             severity: "success",
             summary: "Successful",
@@ -428,17 +424,14 @@ export default {
             life: 2000,
           });
 
-          router.push({
-            name: "PledgeMaking",
-            query: {
-              // id: makePledgeData.value.pledgeTypeID,
-              pledgeTypeID: makePledgeData.value.id,
-              // pledgeType: selectedPledge.value.name,
-              // name: selectedContact.value.name,
-              // date: pledgeDate.value,
-              // amount: donorAmountBase
-            },
-          });
+          store.dispatch("pledge/getPledges").then(() => {
+                router.push({
+                    name: "PledgeMaking",
+                    query: {
+                      pledgeTypeID: makePledgeData.value.id,
+                    },
+                });
+              })
         } catch (error) {
           loading.value = false;
           if (error.response) {
