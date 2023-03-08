@@ -983,10 +983,11 @@ export default {
             message: "Pledge definition updated successfully",
             duration: 3000,
           });
+          store.dispatch("pledge/getPledgeDefinition").then(() =>{
+            router.push("/tenant/pledge/pledgedefinitionlist");
+          })
 
-          // console.log(response, "response");
-
-          router.push("/tenant/pledge/pledgedefinitionlist");
+          
 
           loading.value = false;
         } catch (error) {
@@ -1014,7 +1015,9 @@ export default {
             duration: 2000,
           });
 
-          router.push("/tenant/pledge/pledgedefinitionlist");
+         store.dispatch("pledge/getPledgeDefinition").then(() =>{
+            router.push("/tenant/pledge/pledgedefinitionlist");
+          })
 
           targetAmount.value = "";
           amountTo.value = "";

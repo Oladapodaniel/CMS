@@ -19,14 +19,14 @@
         >
       </div>
     </div>
-    <div class="d-flex flex-wrap flex-column flex-sm-row">
+    <div class="d-flex flex-wrap flex-column flex-sm-row row" v-if="route.fullPath == '/tenant/pledge/pledgeslist'">
       <div
-        class="p-col-12 py-md-4 mt-3"
+        class="col-12 py-md-4 mt-3"
       >
-        <div class="font-weight-bold">
-          Share the link to your members to enable them to add their details to
+        <!-- <div class="font-weight-bold">
+          Copy and Share the link 
           your church .
-        </div>
+        </div> -->
         <div class="p-inputgroup form-group mt-2">
           <el-input
             v-model="memberlink"
@@ -281,6 +281,7 @@ import { ref, computed, onMounted } from "vue";
 import MembersSearch from "../../components/membership/MembersSearch.vue";
 import axios from "@/gateway/backendapi";
 import Dropdown from "primevue/dropdown";
+import { useRoute } from "vue-router";
 import monthDayYear from "../../services/dates/dateformatter";
 import { ElMessage, ElMessageBox } from "element-plus";
 import Table from "@/components/table/Table";
@@ -295,6 +296,7 @@ export default {
   },
   setup() {
     const networkError = ref(false);
+    const route = useRoute();
     // const allPerson = ref([]);
     const selectedStatusID = ref(null);
     const selectedCategoryID = ref(null);
@@ -404,22 +406,13 @@ export default {
 
     const filterPledge = async () => {
       filterLoading.value = true;
-      selectedContact.value.name =
-        selectedContact.value.name == undefined
-          ? ""
-          : selectedContact.value.name;
-      selectedCategory.value.name =
-        selectedCategory.value.name == undefined
-          ? ""
-          : selectedCategory.value.name;
-      selectedStatus.value.status =
-        selectedStatus.value.status == undefined
-          ? ""
-          : selectedStatus.value.status;
+      selectedContact.value.name = selectedContact.value && selectedContact.value.name ? selectedContact.value.name : "";
+      selectedCategory.value.name = selectedCategory.value && selectedCategory.value.name  ? selectedCategory.value.name : "" ;
+      selectedStatus.value.status = selectedStatus.value && selectedStatus.value.status ? selectedStatus.value.status : "" ;
       try {
         const res = await axios.get(
           `/api/Pledge/GetAllPledgesSearch?personId=${
-            selectedContact.value.id
+            selectedContact.value.id ? selectedContact.value.id : ""
           }&status${selectedStatus.value.status}&pledgeItemName${
             selectedCategory.value.name
           }&startDate${new Date(startDate.value).toLocaleDateString(
@@ -592,6 +585,7 @@ export default {
 
     return {
       upload,
+      route,
       selectedLink,
       copylink,
       setSelectedStatus,
