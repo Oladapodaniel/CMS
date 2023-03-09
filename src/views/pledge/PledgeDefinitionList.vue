@@ -10,7 +10,7 @@
       <div class="col-md-12 px-0">
         <hr class="hr my-3" />
       </div>
-      <div class="col-md-12 px-0">
+      <div class="col-md-12 mb-3 px-0">
         <div class="text-primary c-pointer " @click="previousPage"> 
           <el-icon><DArrowLeft /></el-icon>
         </div>
