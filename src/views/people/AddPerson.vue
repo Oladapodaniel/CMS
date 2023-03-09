@@ -112,12 +112,12 @@
                     <div class="mr-3 font-weight-600">Birthday</div>
                     <div class="input-width d-flex">
                       <el-select-v2 v-model="person.dayOfBirth"
-                        :options="birthDaysArr.map(i => ({ label: i, value: i }))" placeholder="Day" size="large"
+                        :options="[{ label: 'Day', value: 0 }, ...birthDaysArr.map(i => ({ label: i, value: i }))]" placeholder="Day" size="large"
                         class="w-100 mr-1" />
-                      <el-select-v2 v-model="person.monthOfBirth" :options="months.map(i => ({ label: i, value: i }))"
+                      <el-select-v2 v-model="person.monthOfBirth" :options="[{ label: 'Month', value: 0 }, ...months.map(i => ({ label: i, value: i }))]"
                         placeholder="Month" size="large" class="w-100 ml-1" />
                       <el-select-v2 v-model="person.yearOfBirth"
-                        :options="birthYearsArr.map(i => ({ label: i, value: i }))" placeholder="Year" size="large"
+                        :options="[{label: 'Year',value: 0}, ...birthYearsArr.map(i => ({ label: i, value: i }))]" placeholder="Year" size="large"
                         class="w-100 ml-1" />
                     </div>
                   </div>
@@ -127,14 +127,14 @@
                     <div class="mr-3 font-weight-600">Wedding Anniversary</div>
                     <div class="input-width d-flex">
                       <el-select-v2 v-model="person.dayOfWedding"
-                        :options="annDaysArr.map(i => ({ label: i, value: i }))" placeholder="Day" size="large"
+                        :options="[{label: 'Day', value: 0}, ...annDaysArr.map(i => ({ label: i, value: i }))]" placeholder="Day" size="large"
                         class="w-100 mr-1" />
                       <el-select-v2 v-model="person.monthOfWedding"
                         @change="editAnnDateValue('month', person.monthOfWedding)"
-                        :options="months.map(i => ({ label: i, value: i }))" placeholder="Month" size="large"
+                        :options="[{label:'Month', value:0}, ...months.map(i => ({ label: i, value: i }))]" placeholder="Month" size="large"
                         class="w-100 ml-1" />
                       <el-select-v2 v-model="person.yearOfWedding"
-                        :options="birthYearsArr.map(i => ({ label: i, value: i }))" placeholder="Year" size="large"
+                        :options="[{label: 'Year',value: 0}, ...birthYearsArr.map(i => ({ label: i, value: i }))]" placeholder="Year" size="large"
                        
                         class="w-100 ml-1" />
                     </div>
