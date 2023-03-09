@@ -4,13 +4,15 @@
       <div class="row">
         <div class="head-text">Create Pledge Item</div>
         <div class="col-12 mt-3 px-0">
-          <div class="text-primary c-pointer " @click="previousPage"> 
-            <el-icon><DArrowLeft /></el-icon>
+          <div class="text-primary c-pointer col-md-2" @click="previousPage"> 
+            <el-icon><DArrowLeft /></el-icon> Back
           </div>
         </div>
       </div>
       <div class="mt-4 d-block d-md-none text-center" v-if="groupLoading">
-        <i class="pi pi-spin pi-spinner py-4" style="font-size: 3rem"></i>
+        <el-icon class="s-20">
+            <Loading />
+          </el-icon>
       </div>
       <div class="row">
         <div class="col-md-10 col-lg-8">
@@ -147,11 +149,50 @@
                 </div>
 
                 <div class="col-12 col-sm-12 col-lg-8">
-                  <el-select-v2
+                  <el-dropdown trigger="click" class="w-100">
+                    <span class="el-dropdown-link w-100">
+                      <div
+                        class="d-flex justify-content-between border-contribution  w-100"
+                        size="large"
+                      >
+                        <span class="text-secondary">{{
+                          selectedCurrency &&
+                          Object.keys(selectedCurrency).length > 0
+                            ? selectedCurrency.name
+                            : "Select Currency"
+                        }}</span>
+                        <div>
+                          <el-icon class="el-icon--right">
+                            <arrow-down />
+                          </el-icon>
+                        </div>
+                      </div>
+                    </span>
+                    <template #dropdown>
+                      <el-dropdown-menu>
+                        <el-dropdown-item
+                          v-for="(itm, indx) in currencyList"
+                          :key="indx"
+                          @click="setSelectedCurrency(itm)"
+                          >{{ itm.name }}  -  {{itm.country}}
+                        </el-dropdown-item>
+                        <el-dropdown-item
+                          class="text-center"
+                          divided
+                          ></el-dropdown-item
+                        >
+                      
+                      </el-dropdown-menu>
+                    </template>
+                  </el-dropdown>
+                  <!-- <el-select-v2
                     v-model="selectedCurrencyId"
                     class="w-100 font-weight-normal"
                     :options="
-                      currencyList.map((i) => ({ label: i.name, value: i.id }))
+                      currencyList.map((i) => ({
+                            label: i.name,
+                            value: i.id,
+                          }))
                     "
                     placeholder="Select Currency"
                     size="large"
@@ -162,7 +203,7 @@
                         >{{ item.label }} - {{ countryCurrency(item) }}</span
                       >
                     </template>
-                  </el-select-v2>
+                  </el-select-v2> -->
                 </div>
               </div>
             </div>
@@ -344,6 +385,8 @@
                         :data="groupMappedTree"
                         :render-after-expand="false"
                         check-strictly
+                        multiple
+                        show-checkbox
                         check-on-click-node
                         class="w-100"
                       />
@@ -524,7 +567,6 @@
         </div>
         <div class="col-md-4">
           <div class="mt-4 d-none d-md-block" v-loading="groupLoading" >
-            <!-- <i class="pi pi-spin pi-spinner py-4" style="font-size: 3rem"></i> -->
           </div>
         </div>
       </div>
@@ -578,7 +620,10 @@
         </Table>
       </div>
 
-      <div class="row d-flex justify-content-center my-4" v-loading="pledgeLoader">
+      <div class="row d-flex justify-content-center my-4" v-if="pledgeLoader">
+        <el-icon class="s-20">
+            <Loading />
+          </el-icon>
       </div>
     </div>
   </div>
@@ -860,6 +905,7 @@ export default {
               country: i.country,
             };
           });
+          console.log(currencyList.value, 'kjhjh')
           if (id) {
             selectedCurrency.value = currencyList.value.find((i) => i.id == id);
           }
@@ -1060,10 +1106,8 @@ export default {
       );
     };
 
-    const setSelectedCurrency = () => {
-      selectedCurrency.value = currencyList.value.find(
-        (i) => i.id == selectedCurrencyId.value
-      );
+    const setSelectedCurrency = (item) => {
+      selectedCurrency.value = item;
     };
 
     const setDatePicker = () => {

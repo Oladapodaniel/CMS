@@ -23,10 +23,9 @@
       <div
         class="col-12 py-md-4 mt-3"
       >
-        <!-- <div class="font-weight-bold">
+        <div class="font-weight-bold">
           Copy and Share the link 
-          your church .
-        </div> -->
+        </div>
         <div class="p-inputgroup form-group mt-2">
           <el-input
             v-model="memberlink"
@@ -44,9 +43,6 @@
           </el-input>
         </div>
       </div>
-      <!-- <div class="w-100">
-        <hr class="hr my-3" />
-      </div> -->
     </div>
     <div
       class="container-fluid"
@@ -73,7 +69,6 @@
         </div>
         <div class="col-md-4 col-lg-4 mt-3 mt-md-0">
           <div class="text-secondary font-weight-bold small">
-            <!-- Payment within the last 30 days -->
             Total Balance
           </div>
           <h3 class="font-weight-700 mt-3 text-danger">
@@ -85,20 +80,6 @@
         </div>
       </div>
     </div>
-    <!-- <div
-      class="row mt-4"
-      v-if="allPledgeList.length > 0 && !loading && !networkError"
-    >
-      <div class="col-md-12 mt-3 d-flex">
-        <div>
-          <span
-            class="font-weight-bold bg-secondary rounded-circle py-1 px-2 border"
-            >0</span
-          >
-        </div>
-        <div class="col-md-5">active filters</div>
-      </div>
-    </div> -->
     <div
       class="row mt-4 mb-4"
       v-if="allPledgeList.length > 0 && !loading && !networkError"
@@ -154,8 +135,8 @@
         />
       </div>
       <div
-        class="col-12 col-md-6 col-lg-2 mt-3 text-lg-right text-md-center text-sm-center mt-lg-0"
-      >
+        class="col-12 col-md-6 d-flex col-lg-2 mt-3 text-lg-right text-md-center text-sm-center mt-lg-0"
+      ><div @click="reSet" class="mt-2 pr-2 text-primary">Reset</div>
         <el-button
           :loading="filterLoading"
           class=""
@@ -251,7 +232,19 @@
         </template>
       </Table>
     </div>
-
+    <el-skeleton class="w-100" animated v-if="loading">
+      <template #template>
+        <div style="display: flex;
+                align-items: center;
+                justify-content: space-between;
+                margin-top: 20px
+              ">
+          <el-skeleton-item variant="text" style="width: 240px; height: 240px" />
+          <el-skeleton-item variant="text" style="width: 240px; height: 240px" />
+        </div>
+        <el-skeleton class="w-100 mt-5" style="height: 25px" :rows="20" animated />
+      </template>
+    </el-skeleton>
     <div
       class="no-person"
       v-if="searchPledges.length == 0 && !loading && !networkError"
@@ -277,10 +270,9 @@
 
 <script>
 import { ref, computed, onMounted } from "vue";
-// import finish from "../../services/progressbar/progress";
 import MembersSearch from "../../components/membership/MembersSearch.vue";
 import axios from "@/gateway/backendapi";
-import Dropdown from "primevue/dropdown";
+import pledge from "../../services/pledgemodule/pledgemodule";
 import { useRoute } from "vue-router";
 import monthDayYear from "../../services/dates/dateformatter";
 import { ElMessage, ElMessageBox } from "element-plus";
@@ -290,14 +282,12 @@ import store from "../../store/store";
 
 export default {
   components: {
-    Dropdown,
     MembersSearch,
     Table,
   },
   setup() {
     const networkError = ref(false);
     const route = useRoute();
-    // const allPerson = ref([]);
     const selectedStatusID = ref(null);
     const selectedCategoryID = ref(null);
     const filterLoading = ref(false);
@@ -319,7 +309,6 @@ export default {
     const selectedPerson = ref("");
     const allPledgeList = ref(store.getters["pledge/getpledges"]);
     const pledgesSummary = ref(store.getters["pledge/getpledgesummary"]);
-    // const pledgesSummary = ref({});
     const startDate = ref("");
     const endDate = ref("");
     const showUpload = ref(true);
@@ -396,8 +385,8 @@ export default {
 
     const getAllPledgeDefinition = async () => {
       try {
-        const res = await axios.get("/api/Pledge/GetAllPledgeDefinitions");
-        allPledgeDefinitionList.value = res.data.returnObject;
+        const res = await pledge.getPledgeDefinition();;
+        allPledgeDefinitionList.value = res.returnObject;
       } catch (error) {
         console.log(error);
       }
@@ -426,6 +415,17 @@ export default {
         console.log(error);
       }
     };
+    const reSet = () =>{
+      if(startDate.value || endDate.value || selectedStatus.value || selectedCategory.value || selectedContact.value){
+        startDate.value = ""
+      endDate.value = ""
+      selectedStatusID.value = ""
+      selectedCategoryID.value = ""
+      selectedContact.value.name = ""
+      }
+      
+      
+    }
     const getCurrentlySignedInUser = async () => {
       try {
         const res = await axios.get("/api/Membership/GetCurrentSignedInUser");
@@ -466,7 +466,6 @@ export default {
       return monthDayYear.monthDayYear(offDate);
     };
     const chooseContact = (payload) => {
-      // contactRef.value.hide();
       selectedContact.value = payload;
     };
 
@@ -478,7 +477,6 @@ export default {
 
     const getAllPledgesSummary = async () => {
       try {
-        // const res = await axios.get("/api/Pledge/GetAllPledgesSummary");
         await store.dispatch("pledge/getPledgeSummary").then((res) => {
           pledgesSummary.value = res;
         });
@@ -488,18 +486,11 @@ export default {
     const getAllPledges = async () => {
       loading.value = true;
       try {
-        // const res = await axios.get("/api/Pledge/GetAllPledges");
         await store.dispatch("pledge/getPledges").then((res) => {
           allPledgeList.value = res;
-          // allPerson.value = res.data.returnObject.map((i) => ({
-          //   name: i.contact,
-          //   personId: i.personID,
-          // }));
           loading.value = false;
         });
-        // finish();
       } catch (error) {
-        // finish();
         console.log(error);
         loading.value = false;
         networkError.value = true;
@@ -532,7 +523,6 @@ export default {
           store.dispatch('pledge/removePledgeFromStore', id)
         })
         .catch((err) => {
-          // finish();
           if (err.response.status === 400) {
             ElMessage({
               type: "error",
@@ -586,6 +576,7 @@ export default {
 
     return {
       upload,
+      reSet,
       route,
       selectedLink,
       copylink,
@@ -598,7 +589,6 @@ export default {
       allPledgeDefinitionList,
       filterResult,
       pledgeBalance,
-      // allPerson,
       filterPledge,
       pledgeListClick,
       selectedContact2,

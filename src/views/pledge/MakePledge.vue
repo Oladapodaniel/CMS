@@ -3,8 +3,8 @@
     <div class="row">
       <div class="head-text">Make a Pledge</div>
       <div class="col-12 mt-3 px-0">
-        <div class="text-primary c-pointer" @click="previousPage">
-          <el-icon><DArrowLeft /></el-icon>
+        <div class="text-primary c-pointer col-md-2" @click="previousPage">
+          <el-icon><DArrowLeft /></el-icon> Back
         </div>
       </div>
     </div>
