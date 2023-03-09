@@ -243,9 +243,11 @@ import { useToast } from "primevue/usetoast";
 import MembersSearch from "../../components/membership/MembersSearch.vue";
 import router from "../../router";
 import { useRoute } from "vue-router";
+import pledge from "../../services/pledgemodule/pledgemodule";
 import finish from "../../services/progressbar/progress";
 // import monthDayYear from "../../services/dates/dateformatter";
-// import store from "../../store/store";
+import store from "../../store/store";
+import { ElMessage } from "element-plus";
 import CascadeSelect from "primevue/cascadeselect";
 import ToggleButton from "../donation/toggleButton.vue";
 export default {
@@ -332,7 +334,7 @@ export default {
     const getAllPledgeDefinition = async () => {
       try {
         checking.value = false;
-        const res = await axios.get("/api/Pledge/GetAllPledgeDefinitions");
+        const res = await pledge.getPledgeDefinition();
         finish();
         allPledgeList.value = res.data.returnObject;
         isActive.value = res.data.returnObject.map((i) => {
@@ -340,7 +342,6 @@ export default {
             isActive: i.isActive,
           };
         });
-        console.log(allPledgeList.value, "getPledgeList");
         checking.value = true;
       } catch (error) {
         console.log(error);
@@ -511,7 +512,6 @@ export default {
       amountTo,
       amountFrom,
       freewillAmount,
-      // savePledge,
       checkEmailValue,
       churchName,
       selectedContact,
@@ -530,7 +530,6 @@ export default {
       validateRangeAmount,
       withinRange,
       pledgeDate
-      // selectedDetail
     };
   },
 };
@@ -566,17 +565,6 @@ export default {
 .attendance-body div {
   padding: 5px;
 }
-
-/* .form {
-  margin-top: 50px;
-  background: #ffffff 0% 0% no-repeat padding-box;
-  box-shadow: 0px 3px 15px #797e8159;
-  border: 1px solid #dde2e6;
-  border-radius: 7px;
-}
-.form .second-form.row.first-row {
-  padding: 30px;
-} */
 
 .attendance-header {
   background-color: #ecf0f3;
