@@ -30,10 +30,10 @@
                   <el-dropdown trigger="click" class="w-100">
                     <span class="el-dropdown-link w-100">
                       <div
-                        class="d-flex justify-content-between border-contribution text-dark w-100"
+                        class="d-flex justify-content-between border-contribution  w-100"
                         size="large"
                       >
-                        <span>{{
+                        <span class="text-secondary">{{
                           selectedContribution &&
                           Object.keys(selectedContribution).length > 0
                             ? selectedContribution.name
@@ -260,7 +260,6 @@
                 <div
                   class="col-12 col-sm-12 col-lg-4 text-sm-left text-lg-right align-self-center"
                 >
-                  <!-- <label for="" class=""> Frequency </label> -->
                 </div>
 
                 <div class="col-12 col-sm-12 col-lg-8 d-flex flex-wrap">
@@ -344,7 +343,6 @@
                         v-model="selectedGroupTree"
                         :data="groupMappedTree"
                         :render-after-expand="false"
-                        show-checkbox
                         check-strictly
                         check-on-click-node
                         class="w-100"
@@ -525,8 +523,8 @@
           </div>
         </div>
         <div class="col-md-4">
-          <div class="mt-4 d-none d-md-block" v-if="groupLoading">
-            <i class="pi pi-spin pi-spinner py-4" style="font-size: 3rem"></i>
+          <div class="mt-4 d-none d-md-block" v-loading="groupLoading" >
+            <!-- <i class="pi pi-spin pi-spinner py-4" style="font-size: 3rem"></i> -->
           </div>
         </div>
       </div>

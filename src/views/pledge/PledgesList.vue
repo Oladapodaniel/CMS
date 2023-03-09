@@ -529,6 +529,7 @@ export default {
           allPledgeList.value = allPledgeList.value.filter(
             (pledgelist) => pledgelist.id !== id
           );
+          store.dispatch('pledge/removePledgeFromStore', id)
         })
         .catch((err) => {
           // finish();
