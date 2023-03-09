@@ -334,7 +334,7 @@ export default {
     const getAllPledgeDefinition = async () => {
       try {
         checking.value = false;
-        const res = await axios.get("/api/Pledge/GetAllPledgeDefinitions");
+        const res = await pledge.getPledgeDefinition();
         finish();
         allPledgeList.value = res.data.returnObject;
         isActive.value = res.data.returnObject.map((i) => {
