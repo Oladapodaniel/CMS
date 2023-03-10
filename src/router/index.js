@@ -1923,7 +1923,8 @@ router.beforeEach((to, from, next) => {
         to.name === "PublicResetPassword" ||
         to.name === "PublicPerson" ||
         to.name === "PublicFirstTimer" ||
-        to.name === "EventRegistration") && !tokenIsValid) return next(true)
+        to.name === "EventRegistration" ||
+        to.name === "PublicPledgePayment") && !tokenIsValid) return next(true)
 
 
     if ((to.name !== "Login" && to.name !== "Register") && to.name !== "Onboarding" && to.name !== "StartingPoint" && to.name !== "ForgotPassword" && to.name !== "ResetPassword" && to.name !== "TermsOfUse" && (!token || token.length < 30)) return next("/")
