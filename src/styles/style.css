@@ -35,6 +35,9 @@
 .s-16 {
   font-size: 16px
 }
+.s-18 {
+  font-size: 18px
+}
 .s-20 {
   font-size: 20px
 }
@@ -1162,4 +1165,18 @@ rect.highcharts-background[fill] {
     .header-btn {
       min-width: 120px !important
     }
+  }
+
+  .slide-fade-enter-active {
+    transition: all 0.3s ease-out;
+  }
+  
+  .slide-fade-leave-active {
+    transition: all 0.3s ease-out;
+  }
+  
+  .slide-fade-enter-from,
+  .slide-fade-leave-to {
+    transform: translateX(20px);
+    opacity: 0;
   }
