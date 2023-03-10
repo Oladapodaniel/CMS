@@ -1623,7 +1623,7 @@ const routes = [
         ],
     },
     {
-        path: '/partnership/pay/:id',
+        path: '/partnership/pay/',
         name: 'PublicPledgePayment',
         meta: {
             title: 'Churchplus - Church Pledge',
@@ -1923,7 +1923,8 @@ router.beforeEach((to, from, next) => {
         to.name === "PublicResetPassword" ||
         to.name === "PublicPerson" ||
         to.name === "PublicFirstTimer" ||
-        to.name === "EventRegistration") && !tokenIsValid) return next(true)
+        to.name === "EventRegistration" ||
+        to.name === "PublicPledgePayment") && !tokenIsValid) return next(true)
 
 
     if ((to.name !== "Login" && to.name !== "Register") && to.name !== "Onboarding" && to.name !== "StartingPoint" && to.name !== "ForgotPassword" && to.name !== "ResetPassword" && to.name !== "TermsOfUse" && (!token || token.length < 30)) return next("/")
@@ -1932,7 +1933,8 @@ router.beforeEach((to, from, next) => {
     if ((role && role.length === 1 && role[0] === "FollowUp" && token) && (to.path !== "/tenant/followup" && to.name !== "FirsttimerManagement")) {
         localStorage.removeItem('token')
         next("/")
-    } else {
+    } 
+    else {
         next(true)
     }
     next(true)
@@ -1975,10 +1977,10 @@ router.beforeEach((to, from, next) => {
 })
 
 router.onError((error) => {
+    console.log(error, 'router error')
     const pattern = /Loading chunk (\d)+ failed/g;
     const isChunkLoadFailed = error.message.match(pattern);
     const targetPath = router.history.pending.fullPath;
-    console.log(error, 'router error')
     if (isChunkLoadFailed) {
         router.replace(targetPath);
     }

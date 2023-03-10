@@ -28,6 +28,7 @@ const setupService = {
         store.dispatch('membership/clearMember')
         store.dispatch("clearPeopleInStore");
         store.dispatch('groups/clearGroup')
+        store.dispatch('pledge/clearState')
     }
 }
 

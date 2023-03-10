@@ -3,20 +3,14 @@
     <div class="row mt-3 botom">
       <div class="col-12 col-sm-6 c-pointer" @click="groupDetail">
         <div class="font-weight-bold h5 col-12">Group Detail</div>
-        <div
-          class=""
-          :class="{ baseline: showGroup, 'hide-base': !showGroup }"
-        ></div>
+        <div class="" :class="{ baseline: showGroup, 'hide-base': !showGroup }"></div>
       </div>
       <div class="col-12 col-sm-6 c-pointer" @click="displayView">
         <div class="font-weight-bold h5 col-12">Attendance & Checkin</div>
-        <div
-          class=""
-          :class="{
-            baselinetwo: showAttendanceCheckin,
-            'hide-basetwo': !showAttendanceCheckin,
-          }"
-        ></div>
+        <div class="" :class="{
+          baselinetwo: showAttendanceCheckin,
+          'hide-basetwo': !showAttendanceCheckin,
+        }"></div>
       </div>
     </div>
     <div class="row mt-3">
@@ -33,80 +27,58 @@
                     <div>Attendance & Check-in</div>
                   </div>
                   <div class="actions col-md-6 d-flex justify-content-md-end">
-                    <router-link
-                      :to="{ name: 'AddCheckin' }"
-                      v-if="showAttendanceCheckin"
-                    >
-                      <el-button color="#136acd" class="ml-2 header-btn" round
-                        >Add New Attendance</el-button
-                      >
+                    <router-link :to="{ name: 'AddCheckin' }" v-if="showAttendanceCheckin">
+                      <el-button color="#136acd" class="ml-2 header-btn" round>Add New Attendance</el-button>
                     </router-link>
                   </div>
                 </div>
               </div>
               <hr class="hr" />
             </div>
-            <!-- <Attendancecheckin :list="attendanceData" :totalItems="totalItems" /> -->
-            <Table
-              :data="attendanceByGroup"
-              :headers="attendanceItemsHeaders"
-              :checkMultipleItem="false"
-              class="mt-4"
-              v-loading="attendanceItemsLoading"
-            >
-              <template
-                #fullEventName="{ item }"
-              >
-                <router-link
-                  class="no-decoration text-dark"
-                  :to="{
-                    name: 'CheckinType',
-                    query: {
-                      activityID: item.eventID,
-                      activityName: item.fullEventName,
-                      groupId: item.groupID,
-                      groupName: item.fullGroupName,
-                      id: item.id,
-                      code: item.attendanceCode,
-                    },
-                  }"
-                >
+            <Table :data="attendanceByGroup" :headers="attendanceItemsHeaders" :checkMultipleItem="false" class="mt-4"
+              v-loading="attendanceItemsLoading">
+              <template #fullEventName="{ item }">
+                <router-link class="no-decoration text-dark" :to="{
+                  name: 'CheckinType',
+                  query: {
+                    activityID: item.eventID,
+                    activityName: item.fullEventName,
+                    groupId: item.groupID,
+                    groupName: item.fullGroupName,
+                    id: item.id,
+                    code: item.attendanceCode,
+                  },
+                }">
                   <span>{{ item.fullEventName }}</span>
                 </router-link>
               </template>
               <template v-slot:eventDate="{ item }">
-                <router-link
-                  class="no-decoration text-dark"
-                  :to="{
-                    name: 'CheckinType',
-                    query: {
-                      activityID: item.eventID,
-                      activityName: item.fullEventName,
-                      groupId: item.groupID,
-                      groupName: item.fullGroupName,
-                      id: item.id,
-                      code: item.attendanceCode,
-                    },
-                  }"
-                >
+                <router-link class="no-decoration text-dark" :to="{
+                  name: 'CheckinType',
+                  query: {
+                    activityID: item.eventID,
+                    activityName: item.fullEventName,
+                    groupId: item.groupID,
+                    groupName: item.fullGroupName,
+                    id: item.id,
+                    code: item.attendanceCode,
+                  },
+                }">
                   <span>{{ formatDate(item.eventDate) }}</span>
                 </router-link>
               </template>
               <template v-slot:fullGroupName="{ item }">
-                <router-link
-                  class="no-decoration text-dark"
-                  :to="{
-                    name: 'CheckinType',
-                    query: {
-                      activityID: item.eventID,
-                      activityName: item.fullEventName,
-                      groupId: item.groupID,
-                      groupName: item.fullGroupName,
-                      id: item.id,
-                      code: item.attendanceCode,
-                    },
-                  }"
-                >
+                <router-link class="no-decoration text-dark" :to="{
+                  name: 'CheckinType',
+                  query: {
+                    activityID: item.eventID,
+                    activityName: item.fullEventName,
+                    groupId: item.groupID,
+                    groupName: item.fullGroupName,
+                    id: item.id,
+                    code: item.attendanceCode,
+                  },
+                }">
                   <span>{{ item.fullGroupName }}</span>
                 </router-link>
               </template>
@@ -114,50 +86,31 @@
                 <div class="dropdown">
                   <span class="d-flex justify-content-between">
                     <span>
-                      <el-icon
-                        id="dropdownMenuButton"
-                        data-toggle="dropdown"
-                        aria-haspopup="true"
-                        aria-expanded="false"
-                      >
+                      <el-icon id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                         <MoreFilled />
                       </el-icon>
-                      <div
-                        class="dropdown-menu"
-                        aria-labelledby="dropdownMenuButton"
-                      >
+                      <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
                         <a class="dropdown-item">
-                          <router-link
-                            class="text-decoration-none text-dark"
-                            :to="{
-                              name: 'AttendanceReport',
-                              params: { id: item.id },
-                            }"
-                            >View Details</router-link
-                          >
+                          <router-link class="text-decoration-none text-dark" :to="{
+                            name: 'AttendanceReport',
+                            params: { id: item.id },
+                          }">View Details</router-link>
                         </a>
                         <a class="dropdown-item">
-                          <router-link
-                            class="text-decoration-none text-dark"
-                            :to="{
-                              name: 'CheckinType',
-                              query: {
-                                activityID: item.eventID,
-                                activityName: item.fullEventName,
-                                groupId: item.groupID,
-                                groupName: item.fullGroupName,
-                                id: item.id,
-                                code: item.attendanceCode,
-                              },
-                            }"
-                            >Checkin</router-link
-                          >
+                          <router-link class="text-decoration-none text-dark" :to="{
+                            name: 'CheckinType',
+                            query: {
+                              activityID: item.eventID,
+                              activityName: item.fullEventName,
+                              groupId: item.groupID,
+                              groupName: item.fullGroupName,
+                              id: item.id,
+                              code: item.attendanceCode,
+                            },
+                          }">Checkin</router-link>
                         </a>
-                        <a
-                          class="dropdown-item elipsis-items"
-                          href="#"
-                          @click.prevent="showConfirmModal(item.id, index)"
-                          >Delete
+                        <a class="dropdown-item elipsis-items" href="#"
+                          @click.prevent="showConfirmModal(item.id, index)">Delete
                         </a>
                       </div>
                     </span>
@@ -174,7 +127,6 @@
       <div class="col-md-12">
         <h2 v-if="!route.params.groupId" class="head-text">Add Group</h2>
         <h2 v-else class="head-text">Update Group</h2>
-        <!-- <Toast /> -->
       </div>
       <div class="col-md-12 my-3 px-0">
         <hr class="hr" />
@@ -189,18 +141,11 @@
               <div class="col-md-12">
                 <div class="row">
                   <div class="col-md-2 text-lg-right">
-                    <label for="groupName" class="font-weight-600"
-                      >Group name</label
-                    >
+                    <label for="groupName" class="font-weight-600">Group name</label>
                   </div>
                   <div class="col-md-8">
-                    <el-input
-                      type="text"
-                      v-model="groupData.name"
-                      class="w-100 ml-0"
-                      id="formGroup"
-                      @input="validateGroupName"
-                    />
+                    <el-input type="text" v-model="groupData.name" class="w-100 ml-0" id="formGroup"
+                      @input="validateGroupName" />
                   </div>
                 </div>
               </div>
@@ -210,27 +155,16 @@
               <div class="col-md-12">
                 <div class="row">
                   <div class="col-md-2 text-lg-right">
-                    <label for="description" class="font-weight-600"
-                      >Description</label
-                    >
+                    <label for="description" class="font-weight-600">Description</label>
                   </div>
                   <div class="col-md-8">
-                    <el-input
-                      v-model="groupData.description"
-                      name="description"
-                      id="description"
-                      :rows="3"
-                      type="textarea"
-                    />
+                    <el-input v-model="groupData.description" name="description" id="description" :rows="3"
+                      type="textarea" />
 
                     <div class="d-flex mt-3">
                       <div class="input-width">
-                        <el-checkbox
-                          v-model="groupData.isMobileGroup"
-                          size="large"
-                          class="align-checkbox-totop"
-                          :disabled="groupData.isMobileGroup"
-                        />
+                        <el-checkbox v-model="groupData.isMobileGroup" size="large" class="align-checkbox-totop"
+                          :disabled="groupData.isMobileGroup" />
                       </div>
                       <label for="description" class="font-weight-600 ml-3">
                         Enable on Mobile App
@@ -244,58 +178,38 @@
         </div>
         <div class="row">
           <div class="col-md-12 col-12 btnn">
-            <el-button
-              class="
-                default-btn
-                border
-                outline-none
-                font-weight-bold
-                c-pointer
-                text-center text-dark
-              "
-              data-toggle="collapse"
-              data-dismiss="modal"
-              data-target="#collapseExample"
-              aria-expanded="false"
-              aria-controls="collapseExample"
-              round
-            >
+            <el-button class="
+                    default-btn
+                    border
+                    outline-none
+                    font-weight-bold
+                    c-pointer
+                    text-center text-dark
+                  " data-toggle="collapse" data-dismiss="modal" data-target="#collapseExample" aria-expanded="false"
+              aria-controls="collapseExample" round>
               Sub-group
             </el-button>
-            <el-button
-              class="
-                default-btn
-                border
-                outline-none
-                font-weight-bold
-                c-pointer
-                text-center text-dark
-              "
-              :data-toggle="route.params.groupId ? 'modal' : ''"
-              data-target="#importgroup"
-              ref="modalBtn"
-              @click="importMember"
-              round
-            >
+            <el-button class="
+                    default-btn
+                    border
+                    outline-none
+                    font-weight-bold
+                    c-pointer
+                    text-center text-dark
+                  " :data-toggle="route.params.groupId ? 'modal' : ''" data-target="#importgroup"
+              @click="importMember" round>
               Import
             </el-button>
-            <el-button
-              class="
-                default-btn
-                outline-none
-                font-weight-bold
-                border
-                c-pointer
-                header-btn
-                text-dark
-                add-member
-              "
-              data-toggle="modal"
-              data-target="#exampleModal"
-              ref="modalBtn"
-              size="large"
-              round
-            >
+            <el-button class="
+                    default-btn
+                    outline-none
+                    font-weight-bold
+                    border
+                    c-pointer
+                    header-btn
+                    text-dark
+                    add-member
+                  " data-toggle="modal" data-target="#exampleModal" ref="modalBtn" size="large" round>
               Add member
             </el-button>
           </div>
@@ -307,26 +221,19 @@
               <div class="collapse" id="collapseExample">
                 <div class="row">
                   <div class="col-12 col-md-12 mt-2">
-                    <div
-                      class="
-                        mb-3
-                        border
-                        outline-none
-                        font-weight-bold
-                        mr-3
-                        text-center
-                      "
-                      style="
-                        border-radius: 3rem;
-                        padding: 0.5rem 1.25rem;
-                        width: 167px;
-                      "
-                      type="button"
-                      data-toggle="collapse"
-                      data-target="#addsubgroup"
-                      aria-expanded="false"
-                      aria-controls="collapseExample"
-                    >
+                    <div class="
+                            mb-3
+                            border
+                            outline-none
+                            font-weight-bold
+                            mr-3
+                            text-center
+                          " style="
+                            border-radius: 3rem;
+                            padding: 0.5rem 1.25rem;
+                            width: 167px;
+                          " type="button" data-toggle="collapse" data-target="#addsubgroup" aria-expanded="false"
+                      aria-controls="collapseExample">
                       Add sub-group
                     </div>
 
@@ -344,11 +251,7 @@
                                 Parent Group
                               </div>
 
-                              <el-input
-                                type="text"
-                                v-model="groupData.name"
-                                disabled
-                              />
+                              <el-input type="text" v-model="groupData.name" disabled />
                             </div>
                           </div>
                           <div class="col-12 col-sm-6 col-md-5 mt-3 mt-sm-0">
@@ -356,35 +259,23 @@
                               Child group
                             </div>
                             <div>
-                              <el-tree-select
-                                v-model="selectedTree"
-                                class="w-100"
-                                placeholder="Select group"
-                                :data="groupMappedTree"
-                                :render-after-expand="false"
-                                :filter-node-method="filterNodeMethod"
-                                @change="setGroupValue"
-                                filterable
-                                check-strictly
-                              />
+                              <el-tree-select v-model="selectedTree" class="w-100" placeholder="Select group"
+                                :data="groupMappedTree" :render-after-expand="false"
+                                :filter-node-method="filterNodeMethod" @change="setGroupValue" filterable
+                                check-strictly />
                             </div>
                           </div>
 
                           <div class="col-12 col-md-3">
                             <div class="mb-1 mt-3 mt-md-4">
-                              <el-button
-                                class="
-                                  default-btn
-                                  primary-bg
-                                  border-0
-                                  text-white
-                                  align-self-center
-                                  mt-2
-                                "
-                                size="large"
-                                @click="addSubGroup"
-                                round
-                              >
+                              <el-button class="
+                                      default-btn
+                                      primary-bg
+                                      border-0
+                                      text-white
+                                      align-self-center
+                                      mt-2
+                                    " size="large" @click="addSubGroup" round>
                                 Add sub group
                               </el-button>
                             </div>
@@ -420,20 +311,14 @@
 
         <div class="row pb-4">
           <div class="col-md-12">
-            <div
-              class="
-                d-flex
-                flex-column flex-sm-row
-                justify-content-sm-between
-                py-3
-              "
-            >
-              <el-input
-                v-model="searchGroupMemberText"
-                placeholder="Search for group member by name"
-                class="input-with-select"
-                type="text"
-              >
+            <div class="
+                    d-flex
+                    flex-column flex-sm-row
+                    justify-content-sm-between
+                    py-3
+                  ">
+              <el-input v-model="searchGroupMemberText" placeholder="Search for group member by name"
+                class="input-with-select" type="text">
                 <template #append>
                   <el-button>
                     <el-icon :size="13">
@@ -447,29 +332,15 @@
             <div class="row">
               <div class="col-md-12">
                 <!-- Add Member To Group Modal -->
-                <div
-                  class="modal fade"
-                  id="exampleModal"
-                  tabindex="-1"
-                  role="dialog"
-                  aria-labelledby="exampleModalLabel"
-                  aria-hidden="true"
-                >
+                <div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
+                  aria-hidden="true">
                   <div class="modal-dialog" role="document" ref="modal">
                     <div class="modal-content pr-2">
                       <div class="modal-header py-3">
-                        <h5
-                          class="modal-title font-weight-700"
-                          id="exampleModalLabel"
-                        >
+                        <h5 class="modal-title font-weight-700" id="exampleModalLabel">
                           Group membership
                         </h5>
-                        <button
-                          type="button"
-                          class="close"
-                          data-dismiss="modal"
-                          aria-label="Close"
-                        >
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                           <span aria-hidden="true">&times;</span>
                         </button>
                       </div>
@@ -477,100 +348,59 @@
                         <div class="row">
                           <div class="col-md-12">
                             <div class="row my-3">
-                              <div
-                                class="
-                                  col-md-4
-                                  align-items-center
-                                  justify-content-md-end
-                                "
-                              >
-                                <label class="font-weight-600"
-                                  >Select Members</label
-                                >
+                              <div class="
+                                      col-md-4
+                                      align-items-center
+                                      justify-content-md-end
+                                    ">
+                                <label class="font-weight-600">Select Members</label>
                               </div>
 
                               <div class="col-md-7 col-sm-12 px-1">
-                                <ul
-                                  class="px-1 mb-0 m-dd-item"
-                                  @click="() => memberSelectInput.focus()"
-                                >
-                                  <li
-                                    style="list-style: none; min-width: 100px"
-                                    v-for="(member, indx) in selectedMembers"
-                                    :key="indx"
-                                    class="
-                                      email-destination
-                                      d-flex
-                                      justify-content-between
-                                      m-1
-                                    "
-                                  >
+                                <ul class="px-1 mb-0 m-dd-item d-flex border rounded-lg flex-wrap" @click="() => memberSelectInput.focus()">
+                                  <li style="list-style: none; min-width: 100px" v-for="(member, indx) in selectedMembers"
+                                    :key="indx" class="
+                                          email-destination
+                                          d-flex
+                                          justify-content-between
+                                          m-1
+                                        ">
                                     <span>{{ member.name }}</span>
-                                    <span
-                                      class="ml-2 remove-email"
-                                      @click="removeMember(indx)"
-                                      >x</span
-                                    >
+                                    <span class="ml-2 remove-email" @click="removeMember(indx)">x</span>
                                   </li>
-                                  <li
-                                    style="list-style: none"
-                                    class="m-dd-item"
-                                  >
-                                    <input
-                                      type="text"
-                                      class="
-                                        border-0
-                                        m-dd-item
-                                        text
-                                        outline-none
-                                      "
-                                      ref="memberSelectInput"
-                                      @input="searchForMembers"
-                                      autocomplete="off"
-                                      :class="{
-                                        'w-100': selectedMembers.length === 0,
-                                        'minimized-input-width':
-                                          selectedMembers.length > 0,
-                                      }"
-                                      @focus="showMemberList"
-                                      @click="showMemberList"
-                                      v-model="searchText"
-                                      style="padding: 0.5rem"
-                                      :placeholder="`${
-                                        selectedMembers.length > 0
-                                          ? ''
-                                          : 'Select from members'
-                                      }`"
-                                      @blur="() => (inputBlurred = true)"
-                                    />
+                                  <li style="list-style: none" class="m-dd-item">
+                                    <input type="text" class="
+                                            border-0
+                                            m-dd-item
+                                            text
+                                            outline-none
+                                          " ref="memberSelectInput" @input="searchForMembers" autocomplete="off" :class="{
+                                            'w-100': selectedMembers.length === 0,
+                                            'minimized-input-width':
+                                              selectedMembers.length > 0,
+                                          }" @focus="showMemberList" @click="showMemberList" v-model="searchText"
+                                      style="padding: 0.5rem" :placeholder="`${selectedMembers.length > 0
+                                        ? ''
+                                        : 'Select from members'
+                                        }`" @blur="() => (inputBlurred = true)" />
                                   </li>
                                 </ul>
-                                <div
-                                  class="
-                                    col-md-12
-                                    px-0
-                                    select-groups-dropdown
-                                    m-dd-item
-                                  "
-                                  v-if="memberListShown"
-                                >
-                                  <div
-                                    class="dropdownmenu pt-0 w-100 m-dd-item"
-                                  >
-                                    <a
-                                      class="
-                                        dropdown-item
-                                        px-1
-                                        c-pointer
+                                <div class="
+                                        col-md-12
+                                        px-0
+                                        select-groups-dropdown
                                         m-dd-item
-                                      "
-                                      v-for="(
-                                        member, index
-                                      ) in memberSearchResults"
-                                      :key="index"
-                                      @click="selectMember(member, index)"
-                                      >{{ member.nameResult }}</a
-                                    >
+                                      " v-if="memberListShown">
+                                  <div class="dropdownmenu pt-0 w-100 m-dd-item">
+                                    <a class="
+                                            dropdown-item
+                                            px-1
+                                            c-pointer
+                                            m-dd-item
+                                          " v-for="(
+                                            member, index
+                                          ) in memberSearchResults" :key="index" @click="selectMember(member, index)">{{
+                                            member.nameResult }}</a>
 
                                     <p class="bg-secondary p-1 mb-0">
                                       Enter 3 or more characters
@@ -580,160 +410,93 @@
                                                   wardSearchedMembers.length === 0
                                                 " -->
 
-                                    <p
-                                      aria-disabled="true"
-                                      class="
-                                        btn btn-default
-                                        p-1
-                                        mb-0
-                                        disable
-                                        m-dd-item
-                                      "
-                                      v-if="
-                                        memberSearchResults.length === 0 &&
-                                        searchText.length >= 3 &&
-                                        !loading
-                                      "
-                                    >
+                                    <p aria-disabled="true" class="
+                                            btn btn-default
+                                            p-1
+                                            mb-0
+                                            disable
+                                            m-dd-item
+                                          " v-if="
+                                            memberSearchResults.length === 0 &&
+                                            searchText.length >= 3 &&
+                                            !loading
+                                          ">
                                       No match found
                                     </p>
-                                    <p
-                                      class="
-                                        btn btn-default
-                                        p-1
-                                        mb-0
-                                        disable
-                                        m-dd-item
-                                      "
-                                      v-if="loading && searchText.length >= 3"
-                                    >
-                                      <i
-                                        class="
-                                          fas
-                                          fa-circle-notch fa-spin
-                                          m-dd-item
-                                        "
-                                      ></i>
+                                    <p class="
+                                            btn btn-default
+                                            p-1
+                                            mb-0
+                                            disable
+                                            m-dd-item
+                                          " v-if="loading && searchText.length >= 3">
+                                      <i class="
+                                              fas
+                                              fa-circle-notch fa-spin
+                                              m-dd-item
+                                            "></i>
                                     </p>
-                                    <a
-                                      class="
-                                        font-weight-bold
-                                        small-text
-                                        d-flex
-                                        justify-content-center
-                                        py-2
-                                        text-decoration-none
-                                        primary-text
-                                        c-pointer
-                                      "
-                                      style="
-                                        border-top: 1px solid #002044;
-                                        color: #136acd;
-                                      "
-                                      @click="showAddMemberForm"
-                                      data-dismiss="modal"
-                                    >
-                                      <i
-                                        class="
-                                          pi pi-plus-circle
-                                          mr-2
-                                          primary-text
-                                          d-flex
-                                          align-items-center
-                                        "
-                                        style="color: #136acd"
-                                      ></i>
+                                    <a class="
+                                            font-weight-bold
+                                            small-text
+                                            d-flex
+                                            justify-content-center
+                                            py-2
+                                            text-decoration-none
+                                            primary-text
+                                            c-pointer" style="border-top: 1px solid #002044; color: #136acd;" @click="showAddMemberForm" data-dismiss="modal">
+                                      <i class=" pi pi-plus-circle mr-2 primary-text d-flex align-items-center" style="color: #136acd"></i>
                                       Add new member
                                     </a>
                                   </div>
                                 </div>
                               </div>
                             </div>
-                            <!-- End -->
-
                             <div class="row mb-3 px-1">
-                              <div
-                                class="
-                                  col-md-4
-                                  text-right
-                                  d-flex
-                                  align-items-center
-                                  justify-content-md-end
-                                "
-                              >
-                                <label class="font-weight-600"
-                                  >Position in group</label
-                                >
+                              <div class="
+                                      col-md-4
+                                      text-right
+                                      d-flex
+                                      align-items-center
+                                      justify-content-md-end
+                                    ">
+                                <label class="font-weight-600">Position in group</label>
                               </div>
                               <div class="col-md-7 col-sm-12 px-1">
-                                <el-input
-                                  type="text px-1"
-                                  placeholder="e.g Member"
-                                  v-model="position"
-                                  size="large"
-                                />
+                                <el-input type="text px-1" placeholder="e.g Member" v-model="position" />
                               </div>
                             </div>
-                            <!-- check box start -->
                             <div class="row ml-4">
-                              <div class="col-4 d-flex mt-2" v-if="true">
-                                <!-- <div class="mt-n3"> -->
-                                <label
-                                  for="description"
-                                  class="font-weight-600"
-                                >
+                              <div class="col-sm-6 d-flex mt-2">
+                                <label for="description" class="font-weight-600">
                                   Is Group Leader
                                 </label>
-                                <el-checkbox
-                                  v-model="isGroupLeader"
-                                  :binary="true"
-                                  class="ml-3"
-                                />
-                                <!-- </div> -->
+                                <el-checkbox v-model="isGroupLeader" :binary="true" class="ml-3" />
                               </div>
 
-                              <div class="col-4 d-flex mt-2">
-                                <!-- <div class="mt-n3"> -->
-                                <label
-                                  for="description"
-                                  class="font-weight-600"
-                                >
+                              <div class="col-sm-6 d-flex mt-2">
+                                <label for="description" class="font-weight-600">
                                   Enable Login
                                 </label>
-                                <el-checkbox
-                                  v-model="enableLogin"
-                                  :binary="true"
-                                  class="ml-3"
-                                />
-                                <!-- </div> -->
+                                <el-checkbox v-model="enableLogin" :binary="true" class="ml-3" />
                               </div>
                             </div>
-                            <!-- check box end -->
                           </div>
                         </div>
                       </div>
                       <div class="modal-footer mb-2">
-                        <el-button
-                          class="default-btn cancel bg-white text-dark"
-                          data-dismiss="modal"
-                          round
-                        >
+                        <el-button class="default-btn cancel bg-white text-dark" data-dismiss="modal" round>
                           Cancel
                         </el-button>
 
-                        <el-button
-                          class="
-                            primary-btn
-                            default-btn
-                            primary-bg
-                            border-0
-                            outline-none
-                            text-white
-                          "
-                          @click="addSelectedMembersToGroup"
-                          :data-dismiss="modalStatus"
-                          round
-                        >
+                        <el-button class="
+                                primary-btn
+                                default-btn
+                                primary-bg
+                                border-0
+                                outline-none
+                                text-white
+                              " @click="addSelectedMembersToGroup" :data-dismiss="modalStatus" round>
                           Add member
                         </el-button>
                       </div>
@@ -742,34 +505,15 @@
                 </div>
 
                 <!-- Import Member To Group Modal -->
-                <div
-                  class="modal fade"
-                  id="importgroup"
-                  tabindex="-1"
-                  role="dialog"
-                  aria-labelledby="importgroupModalLabel"
-                  aria-hidden="true"
-                >
-                  <div
-                    class="modal-dialog modal-lg modal-dialog-centered"
-                    role="document"
-                    ref="modal"
-                  >
+                <div class="modal fade" id="importgroup" tabindex="-1" role="dialog"
+                  aria-labelledby="importgroupModalLabel" aria-hidden="true">
+                  <div class="modal-dialog modal-lg modal-dialog-centered" role="document" ref="modal">
                     <div class="modal-content pr-2">
                       <div class="modal-header py-3">
-                        <h5
-                          class="modal-title font-weight-700"
-                          id="importgroupModalLabel"
-                        >
+                        <h5 class="modal-title font-weight-700" id="importgroupModalLabel">
                           Import to group
                         </h5>
-                        <button
-                          type="button"
-                          class="close"
-                          data-dismiss="modal"
-                          aria-label="Close"
-                          ref="closeGroupModal"
-                        >
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close" ref="closeGroupModal">
                           <span aria-hidden="true">&times;</span>
                         </button>
                       </div>
@@ -796,9 +540,7 @@
                     <!-- Modal Header -->
                     <div class="modal-header">
                       <h4 class="modal-title">
-                        <label class="font-weight-900 w-100"
-                          >Move Members To Groups</label
-                        >
+                        <label class="font-weight-900 w-100">Move Members To Groups</label>
                       </h4>
                       <button type="button" class="close" data-dismiss="modal">
                         &times;
@@ -809,30 +551,16 @@
                     <div class="modal-body">
                       <div class="col-md-12"></div>
                       <div class="col-md-12 form-group w-100">
-                        <el-tree-select
-                          v-model="moveSelectedTree"
-                          class="w-100"
-                          placeholder="Select group"
-                          :data="groupMappedTree"
-                          :render-after-expand="false"
-                          :filter-node-method="filterNodeMethod"
-                          @change="setSelectedGroupToMove"
-                          filterable
-                          check-strictly
-                        />
+                        <el-tree-select v-model="moveSelectedTree" class="w-100" placeholder="Select group"
+                          :data="groupMappedTree" :render-after-expand="false" :filter-node-method="filterNodeMethod"
+                          @change="setSelectedGroupToMove" filterable check-strictly />
                       </div>
                     </div>
 
                     <!-- Modal footer -->
                     <div class="modal-footer">
                       <el-button data-dismiss="modal" round>Close</el-button>
-                      <el-button
-                        color="#136acd"
-                        @click="moveMembers"
-                        :loading="moveLoading"
-                        round
-                        >Move</el-button
-                      >
+                      <el-button color="#136acd" @click="moveMembers" :loading="moveLoading" round>Move</el-button>
                     </div>
                   </div>
                 </div>
@@ -848,9 +576,7 @@
                     <!-- Modal Header -->
                     <div class="modal-header">
                       <h4 class="modal-title">
-                        <label class="font-weight-900 w-100"
-                          >Copy Members To Groups</label
-                        >
+                        <label class="font-weight-900 w-100">Copy Members To Groups</label>
                       </h4>
                       <button type="button" class="close" data-dismiss="modal">
                         &times;
@@ -861,65 +587,43 @@
                     <div class="modal-body">
                       <div class="col-md-12"></div>
                       <div class="col-md-12 form-group w-100">
-                        <button
-                          @click="setCopyGroupProp"
-                          class="
-                            btn
-                            border
-                            d-flex
-                            justify-content-between
-                            align-items-center
-                            w-100
-                          "
-                        >
+                        <button @click="setCopyGroupProp" class="
+                                btn
+                                border
+                                d-flex
+                                justify-content-between
+                                align-items-center
+                                w-100
+                              ">
                           <div>
                             {{
                               copyGroupTo && Object.keys(copyGroupTo).length > 0
-                                ? copyGroupTo.name
-                                : "Select group"
+                              ? copyGroupTo.name
+                              : "Select group"
                             }}
                           </div>
                           <i class="pi pi-chevron-down"></i>
                         </button>
-                        <div
-                          class="move-card p-2 exempt-hide"
-                          :class="{
-                            'd-none': copyHideDiv,
-                            'd-block': !copyHideDiv,
-                          }"
-                        >
-                          <i
-                            class="
-                              pi pi-spin pi-spinner
-                              text-center
-                              exempt-hide
-                            "
-                            v-if="grouploading && getAllGroup.length === 0"
-                          ></i>
-                          <input
-                            type="text"
-                            class="form-control exempt-hide"
-                            v-model="searchGroupText"
-                            ref="searchGroupRef"
-                            placeholder="Search for group"
-                          />
-                          <GroupTree
-                            :items="searchForGroups"
-                            :addGroupValue="true"
-                            @group="setSelectedGroupToCopy"
-                          />
+                        <div class="move-card p-2 exempt-hide" :class="{
+                          'd-none': copyHideDiv,
+                          'd-block': !copyHideDiv,
+                        }">
+                          <i class="
+                                  pi pi-spin pi-spinner
+                                  text-center
+                                  exempt-hide
+                                " v-if="grouploading && getAllGroup.length === 0"></i>
+                          <input type="text" class="form-control exempt-hide" v-model="searchGroupText"
+                            ref="searchGroupRef" placeholder="Search for group" />
+                          <GroupTree :items="searchForGroups" :addGroupValue="true" @group="setSelectedGroupToCopy" />
                         </div>
                       </div>
                     </div>
 
                     <!-- Modal footer2 -->
                     <div class="modal-footer">
-                      <button
-                        type="button"
-                        class="btn primary-bg default-btn border-0 text-white"
-                        data-dismiss="modal"
-                        @click="copyMemberToGroup"
-                      >
+                      <button type="button" class="btn primary-bg default-btn border-0 text-white" data-dismiss="modal"
+                        @click="copyMemberToGroup">
                         Copy
                       </button>
                     </div>
@@ -927,65 +631,35 @@
                 </div>
               </div>
             </div>
-            <div
-              class="row"
-              v-if="marked.length > 0 && groupMembers.length > 0"
-            >
+            <div class="row" v-if="marked.length > 0 && groupMembers.length > 0">
               <div class="col-md-12 d-flex align-content-between pb-2">
-                <a
-                  href="#"
-                  class="tool"
-                  data-toggle="modal"
-                  data-target="#myModal"
-                >
-                  <i
-                    class="
-                      pi pi-reply
-                      text-primary
-                      c-pointer
-                      d-flex
-                      align-items-center
-                      mr-4
-                    "
-                    style="font-size: 20px; font-weight: bold"
-                    v-tooltip.top="'move to group'"
-                  >
+                <a href="#" class="tool" data-toggle="modal" data-target="#myModal">
+                  <i class="
+                          pi pi-reply
+                          text-primary
+                          c-pointer
+                          d-flex
+                          align-items-center
+                          mr-4
+                        " style="font-size: 20px; font-weight: bold" v-tooltip.top="'move to group'">
                   </i>
                 </a>
 
-                <a
-                  href="#"
-                  class="tool"
-                  data-toggle="modal"
-                  data-target="#myModal1"
-                >
-                  <i
-                    class="
-                      pi pi-copy
-                      text-primary
-                      c-pointer
-                      d-flex
-                      align-items-center
-                      mr-4
-                    "
-                    style="font-size: 20px; font-weight: bold"
-                    v-tooltip.right="'copy to group'"
-                  >
+                <a href="#" class="tool" data-toggle="modal" data-target="#myModal1">
+                  <i class="
+                          pi pi-copy
+                          text-primary
+                          c-pointer
+                          d-flex
+                          align-items-center
+                          mr-4
+                        " style="font-size: 20px; font-weight: bold" v-tooltip.right="'copy to group'">
                   </i>
                 </a>
-                <i
-                  class="fa fa-file-archive-o text-primary c-pointer mr-4"
-                  v-tooltip.top="'Archive member(s)'"
-                  @click="openPositionArchive('center')"
-                  aria-hidden="true"
-                  style="font-size: 20px"
-                ></i>
-                <a href="#" @click="sendMarkedMemberSms"
-                  ><i class="pi pi-comment"></i
-                ></a>
-                <a href="#" @click="sendMarkedMemberEmail" class="pl-4"
-                  ><i class="pi pi-envelope"></i
-                ></a>
+                <i class="fa fa-file-archive-o text-primary c-pointer mr-4" v-tooltip.top="'Archive member(s)'"
+                  @click="openPositionArchive('center')" aria-hidden="true" style="font-size: 20px"></i>
+                <a href="#" @click="sendMarkedMemberSms"><i class="pi pi-comment"></i></a>
+                <a href="#" @click="sendMarkedMemberEmail" class="pl-4"><i class="pi pi-envelope"></i></a>
               </div>
             </div>
 
@@ -994,13 +668,8 @@
                 Approved
               </div>
             </div>
-            <Table
-              :data="searchGroupMembers"
-              :headers="createGroupHeaders"
-              :checkMultipleItem="true"
-              @checkedrow="handleSelectionChange"
-              v-loading="loadingMembers"
-            >
+            <Table :data="searchGroupMembers" :headers="createGroupHeaders" :checkMultipleItem="true"
+              @checkedrow="handleSelectionChange" v-loading="loadingMembers">
               <template #name="{ item }">
                 <span>{{ item.name }}</span>
               </template>
@@ -1021,10 +690,10 @@
                   <template #dropdown>
                     <el-dropdown-menu>
                       <el-dropdown-item>
-                        <a @click="test(item)"> Send SMS</a>
+                        <a @click="displaySMSDialog(item)"> Send SMS</a>
                       </el-dropdown-item>
                       <el-dropdown-item>
-                        <a @click="testEmail(item)">Send Email</a>
+                        <a @click="displayEmailDialog(item)">Send Email</a>
                       </el-dropdown-item>
                       <el-dropdown-item>
                         <a @click="archive(item.personID, 'single')">
@@ -1045,13 +714,8 @@
                 Waiting Approval
               </div>
             </div>
-            <Table
-              :data="awaitingApprovals"
-              :headers="createGroupHeaders"
-              :checkMultipleItem="true"
-              @checkedrow="handleSelectionChange"
-              v-if="awaitingApprovals.length > 0"
-            >
+            <Table :data="awaitingApprovals" :headers="createGroupHeaders" :checkMultipleItem="true"
+              @checkedrow="handleSelectionChange" v-if="awaitingApprovals.length > 0">
               <template #name="{ item }">
                 <span>{{ item.name }}</span>
               </template>
@@ -1072,10 +736,10 @@
                   <template #dropdown>
                     <el-dropdown-menu>
                       <el-dropdown-item>
-                        <a @click="test(item)"> Send SMS</a>
+                        <a @click="displaySMSDialog(item)"> Send SMS</a>
                       </el-dropdown-item>
                       <el-dropdown-item>
-                        <a @click="testEmail(item)">Send Email</a>
+                        <a @click="displayEmailDialog(item)">Send Email</a>
                       </el-dropdown-item>
                       <el-dropdown-item>
                         <a @click="archive(item.personID, 'single')">
@@ -1091,20 +755,15 @@
               </template>
             </Table>
 
-            <div
-              class="row"
-              v-if="loadingMembers == false && groupMembers.length === 0"
-            >
+            <div class="row" v-if="loadingMembers == false && groupMembers.length === 0">
               <div class="col-md-12">
                 <div class="row">
-                  <div
-                    class="
-                      col-md-12
-                      d-flex
-                      align-items-center
-                      justify-content-center
-                    "
-                  >
+                  <div class="
+                          col-md-12
+                          d-flex
+                          align-items-center
+                          justify-content-center
+                        ">
                     <p class="text-center font-weight-bold py-2">
                       No members yet
                     </p>
@@ -1124,10 +783,7 @@
 
     <div class="row py-3 my-3" v-if="showGroup">
       <div class="col-md-12">
-        <p
-          class="text-right text-danger font-weight-bold pr-2"
-          v-if="groupNameIsInvalid"
-        >
+        <p class="text-right text-danger font-weight-bold pr-2" v-if="groupNameIsInvalid">
           Please enter group name
         </p>
       </div>
@@ -1135,91 +791,58 @@
         <router-link to="/tenant/peoplegroups" class="no-decoration">
           <el-button round>Discard</el-button>
         </router-link>
-        <el-button
-          color="#136acd"
-          :loading="savingGroup"
-          @click="saveGroupData"
-          :disabled="savingGroup"
-          round
-          >{{ buttonText }}</el-button
-        >
+        <el-button color="#136acd" :loading="savingGroup" @click="saveGroupData" :disabled="savingGroup" round>{{
+          buttonText }}</el-button>
       </div>
     </div>
-    <Dialog
-      header="Create New Member"
-      v-model:visible="display"
-      :style="{ width: '70vw', maxWidth: '600px' }"
-      :modal="true"
-      position="top"
-    >
-      <div class="row">
-        <div class="col-md-12">
-          <NewPerson
-            @cancel="() => (display = false)"
-            @person-id="getWardId($event)"
-            @show-group-modal="setGroupModal"
-          />
-        </div>
-      </div>
-    </Dialog>
-    <Dialog
-      header="Archive members"
-      v-model:visible="displayPositionArchive"
-      :breakpoints="{ '960px': '75vw' }"
-      :style="{ width: window.innerWidth > 767 ? '50vw' : '100vw' }"
-      :position="positionArchive"
-      :modal="true"
-    >
+
+    <el-dialog v-model="display" title="Create new member" :width="lgAndUp || xlAndUp ? `50%` : `90%`">
+      <NewPerson @cancel="() => (display = false)" @person-id="newPersonData($event)" @show-group-modal="setGroupModal" />
+    </el-dialog>
+    <el-dialog v-model="displayPositionArchive" title="Archive member(s)"
+      :width="mdAndUp || lgAndUp || xlAndUp ? `50%` : `90%`">
       <p class="p-m-0">
         You are about to archive your member(s). Do you want to continue ?
       </p>
       <template #footer>
         <div class="d-flex justify-content-end">
-          <div
-            class="default-btn bg-white text-center mr-2 c-pointer"
-            @click="closeArchiveModal"
-          >
+          <div class="default-btn bg-white text-center mr-2 c-pointer" @click="closeArchiveModal">
             No
           </div>
-          <div
-            class="
-              default-btn
-              border-0
-              primary-bg
-              text-center text-white
-              c-pointer
-            "
-            @click="archive('', 'multiple')"
-          >
+          <div class="
+                  default-btn
+                  border-0
+                  primary-bg
+                  text-center text-white
+                  c-pointer
+                " @click="archive('', 'multiple')">
             Yes
           </div>
         </div>
       </template>
-    </Dialog>
-    <SideBar
-      :show="showSMS"
-      :title="'Compose SMS'"
-      @closesidemodal="() => (showSMS = false)"
-    >
-      <div class="m-wrapper">
-        <smsComponent
-          :phoneNumbers="contacts"
-          @closesidemodal="() => (showSMS = false)"
-        />
-      </div>
-    </SideBar>
-    <SideBar
-      :show="showEmail"
-      :title="'Compose Email'"
-      @closesidemodal="() => (showEmail = false)"
-    >
-      <div class="m-wrapper2">
-        <emailComponent
-          :selectedGroupMembers="selectedGroupMembers"
-          @closesidemodal="() => (showEmail = false)"
-        />
-      </div>
-    </SideBar>
+    </el-dialog>
+
+    <el-drawer v-model="showSMS" :size="mdAndUp || lgAndUp || xlAndUp ? '70%' : '100%'" direction="rtl">
+      <template #header>
+        <h4>Send SMS</h4>
+      </template>
+      <template #default>
+        <div>
+          <smsComponent :phoneNumbers="contacts" @closesidemodal="() => showSMS = false" />
+        </div>
+      </template>
+    </el-drawer>
+
+    <el-drawer v-model="showEmail" :size="mdAndUp || lgAndUp || xlAndUp ? '70%' : '100%'" direction="rtl">
+      <template #header>
+        <h4>Send Email</h4>
+      </template>
+      <template #default>
+        <div>
+          <emailComponent :selectedGroupMembers="selectedGroupMembers" @closesidemodal="() => showEmail = false" />
+        </div>
+      </template>
+    </el-drawer>
   </div>
 </template>
 
@@ -1229,18 +852,13 @@ import composeService from "../../services/communication/composer";
 import axios from "@/gateway/backendapi";
 import router from "@/router/index";
 import { useRoute } from "vue-router";
-import { useToast } from "primevue/usetoast";
 import { useConfirm } from "primevue/useconfirm";
 import groupsService from "../../services/groups/groupsservice";
 import Tooltip from "primevue/tooltip";
-import Dropdown from "primevue/dropdown";
-import store from "../../store/store";
 import NewPerson from "../../components/membership/NewDonor.vue";
-import Dialog from "primevue/dialog";
 import finish from "../../services/progressbar/progress.js";
 import smsComponent from "./component/smsComponent.vue";
 import emailComponent from "./component/emailComponent.vue";
-import SideBar from "./sidemodal/SideModal.vue";
 import Attendancecheckin from "../event/attendance&checkin/AttendanceAndCheckinList.vue";
 import attendanceservice from "../../services/attendance/attendanceservice";
 import ImportToGroup from "../people/ImportInstruction";
@@ -1254,17 +872,15 @@ import Table from "@/components/table/Table";
 import deviceBreakpoint from "../../mixins/deviceBreakpoint";
 import dateFormatter from "../../services/dates/dateformatter";
 
+
 export default {
   directives: {
     tooltip: Tooltip,
   },
   components: {
-    Dropdown,
-    Dialog,
     NewPerson,
     Attendancecheckin,
     smsComponent,
-    SideBar,
     emailComponent,
     ImportToGroup,
     GroupTree,
@@ -1274,19 +890,16 @@ export default {
     const store = useStore();
     const route = useRoute();
     const display = ref(false);
-    //  const showWardModal = ref(false)
     const memberDia = ref(true);
     const selectedTree = ref();
     const moveSelectedTree = ref();
     const groupMappedTree = ref([]);
     const modalBtn = ref(null);
     const groupData = ref({});
-    // const wardSearchString = ref("");
     const searchText = ref("");
     const loading = ref(false);
     const loadingMembers = ref(false);
     const memberSearchResults = ref([]);
-    // const wardSearchedMembers = ref([]);
     const position = ref("");
     const memberSelectInput = ref(null);
     const marked = ref([]);
@@ -1322,7 +935,7 @@ export default {
     const copyHideDiv = ref(true);
     const flattenedTree = ref([]);
     const attendanceByGroup = ref([]);
-    const { lgAndUp, xlAndUp } = deviceBreakpoint();
+    const { mdAndUp, lgAndUp, xlAndUp } = deviceBreakpoint()
     const createGroupHeaders = ref([
       { name: "NAME", value: "name" },
       { name: "POSITION", value: "position" },
@@ -1360,7 +973,7 @@ export default {
       }
     };
 
-    const test = (member) => {
+    const displaySMSDialog = (member) => {
       if (member.phone) {
         showSMS.value = true;
         showEmail.value = false;
@@ -1369,7 +982,7 @@ export default {
         alert("No phone number");
       }
     };
-    const testEmail = (member) => {
+    const displayEmailDialog = (member) => {
       if (member.email) {
         showEmail.value = true;
         showSMS.value = false;
@@ -1417,7 +1030,6 @@ export default {
             type: "success",
             duration: 4000,
           });
-          console.log(res);
           store.dispatch("groups/updateGroupPeopleCount", {
             groupId: selectGroupTo.value.id,
             count: marked.value.length,
@@ -1472,7 +1084,6 @@ export default {
             life: "4000",
             showClose: true,
           });
-          console.log(res);
           store.dispatch("groups/updateGroupPeopleCopy", {
             groupId: copyGroupTo.value.id,
             count: marked.value.length,
@@ -1603,12 +1214,12 @@ export default {
     const modalStatus = ref("");
     const groupMembers = ref([]);
 
-    const getWardId = (payload) => {
+    const newPersonData = (payload) => {
       let body = {
-        name: payload.personFirstName,
-        personId: payload.personId,
+        name: payload.personFirstName + ' ' + payload.personLastName,
+        id: payload.personId,
         email: payload.personEmail,
-        phoneNumber: payload.personNumber,
+        phone: payload.personNumber,
       };
       selectedMembers.value.push(body);
     };
@@ -1645,10 +1256,9 @@ export default {
 
     const groupNameIsInvalid = ref(false);
     const savingGroup = ref(false);
-    const toast = useToast();
 
     const setGroupModal = () => {
-      modalBtn.value.click();
+      modalBtn.value.ref.click();
     };
 
     const saveGroupData = () => {
@@ -1710,7 +1320,6 @@ export default {
       axios
         .post("/api/CreateGroup", data)
         .then((res) => {
-          console.log(res, "create res");
           groupsService.addGroupToStore(res.data, groupMembers.value.length);
           savingGroup.value = false;
           router.push("/tenant/peoplegroups");
@@ -1753,34 +1362,31 @@ export default {
             personID: i.person.id,
             address: i.person.address,
             email: i.person.email,
-            name: `${i.person.firstName ? i.person.firstName : ""} ${
-              i.person.lastName ? i.person.lastName : ""
-            }`,
+            name: `${i.person.firstName ? i.person.firstName : ""} ${i.person.lastName ? i.person.lastName : ""
+              }`,
             phone: i.person.phoneNumber,
             position: i.position,
           };
           groupMembers.value.push(person);
         });
 
-        awaitingApprovals.value = data.awaitingApprovals.map((i) => {
+        awaitingApprovals.value = data.awaitingApprovals ? data.awaitingApprovals.map((i) => {
           return {
             personID: i.person.id,
             address: i.person.address,
             email: i.person.email,
-            name: `${i.person.firstName ? i.person.firstName : ""} ${
-              i.person.lastName ? i.person.lastName : ""
-            }`,
+            name: `${i.person.firstName ? i.person.firstName : ""} ${i.person.lastName ? i.person.lastName : ""
+              }`,
             phone: i.person.phoneNumber,
             position: i.position,
             groupID: i.groupID,
           };
-        });
+        }) : [];
 
-        console.log(selectedMembers.value, "SM");
       } catch (error) {
         finish();
         loadingMembers.value = false;
-        console.log(error.response);
+        console.log(error);
         if (error.toString().toLowerCase().includes("network error")) {
           ElMessage({
             message: "Please ensure you have a strong internet",
@@ -1822,13 +1428,11 @@ export default {
         position: member.position,
         phone: member.phone,
       };
-      console.log(memberToApprove);
       try {
         const res = await axios.post(
           "/api/ApproveMemberFromApp",
           memberToApprove
         );
-        console.log(res);
         ElMessage({
           message: "Member approved successfully",
           type: "Success",
@@ -1864,9 +1468,8 @@ export default {
           personID: i.person.id,
           address: i.person.address,
           email: i.person.email,
-          name: `${i.person.firstName ? i.person.firstName : ""} ${
-            i.person.lastName ? i.person.lastName : ""
-          }`,
+          name: `${i.person.firstName ? i.person.firstName : ""} ${i.person.lastName ? i.person.lastName : ""
+            }`,
           phone: i.person.mobilePhone,
           position: i.position,
         });
@@ -1884,10 +1487,8 @@ export default {
     };
 
     const archive = async (id, type) => {
-      console.log(marked.value);
       let archiveBody =
         type == "single" ? [id] : marked.value.map((i) => i.personID);
-      console.log(archiveBody);
       try {
         const { data } = await axios.post("/api/People/archive", archiveBody);
         if (data && type == "single") {
@@ -1951,7 +1552,6 @@ export default {
           duration: "4000",
         });
         groupData.value.children.push(data.returnObject);
-        console.log(data);
       } catch (error) {
         console.log(error.response);
         if (error.response) {
@@ -1978,10 +1578,6 @@ export default {
         i.name.toLowerCase().includes(searchGroupText.value.toLowerCase())
       );
     });
-
-    const setChildGroup = (payload) => {
-      console.log(payload);
-    };
 
     const setSelectedGroupToMove = () => {
       let flattenGroupTree = flattenTree(getAllGroup.value);
@@ -2032,7 +1628,6 @@ export default {
       axios
         .delete(`/api/CheckInAttendance/checkout?attendanceId=${id}`)
         .then((res) => {
-          console.log(res.status);
           if (res.status === 200) {
             ElMessage({
               type: "success",
@@ -2113,17 +1708,17 @@ export default {
       setGroupModal,
       modalBtn,
       contacts,
-      test,
+      displaySMSDialog,
       attendanceCheckin,
       groupDetail,
       showGroup,
       showAttendanceCheckin,
       groupMappedTree,
       filterNodeMethod,
-      getWardId,
+      newPersonData,
       totalItems,
       attendanceData,
-      testEmail,
+      displayEmailDialog,
       selectedGroupMembers,
       showSMS,
       showEmail,
@@ -2152,7 +1747,6 @@ export default {
       searchGroupText,
       searchForGroups,
       searchGroupRef,
-      setChildGroup,
       grouploading,
       setSelectedGroupToMove,
       lastGroupChild,
@@ -2161,6 +1755,7 @@ export default {
       selectedTree,
       setGroupValue,
       flattenedTree,
+      mdAndUp,
       lgAndUp,
       xlAndUp,
       createGroupHeaders,
@@ -2310,6 +1905,7 @@ export default {
      vertical-align:middle;
   } */
 @media screen and (max-width: 947px) {
+
   .m-wrapper,
   .m-wrapper2 {
     width: 700px;
@@ -2318,6 +1914,7 @@ export default {
 }
 
 @media screen and (max-width: 767px) {
+
   /* .baseline {
             width: 40%;
         }
@@ -2332,6 +1929,7 @@ export default {
 }
 
 @media screen and (max-width: 575px) {
+
   /* .baseline {
             width: 20%;
         }

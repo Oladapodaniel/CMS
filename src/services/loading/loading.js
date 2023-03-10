@@ -1,7 +1,9 @@
 const getData = (list, number) => {
     let data = [];
     for (let i = 0; i < number; i++) {
-        data.push(list[i])
+        if (list.length > 0 && list[i]) {
+            data.push(list[i])
+        }
     }
     return data
 }

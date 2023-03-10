@@ -1,104 +1,56 @@
 <template>
   <div class="container">
     <div class="row">
-      <div class="col-sm-4 text-right pr-0 align-self-center">
+      <div class="col-sm-4 pr-0 text-lg-right align-self-center">
         <label>Name</label>
       </div>
       <div class="col-lg-5 col-sm-12 my-auto">
-        <!-- <input type="text" class="form-control textbox-height w-100"  placeholder="" v-model="name" required />  -->
         <el-input class="textbox-height w-100" v-model="name" required />
       </div>
-      <div class="col-sm-4 mt-3 text-right pr-0 align-self-center">
+
+      <div class="col-sm-4 mt-3 text-lg-right pr-0 align-self-center">
         <label>Income Account</label>
       </div>
-      <div class="col-lg-5 dropdown col-sm-12 mt-3">
-        <!-- <div class="dropdown  ofering col-12  "  > -->
-
-        <el-dropdown trigger="click" class="w-100">
-          <button
-            class="btn d-flex justify-content-between col-12 border"
-            id="dropdownMenuButton"
-            data-toggle="dropdown"
-            aria-haspopup="true"
-            aria-expanded="false"
-          >
-            <span class="ofering">
-              &nbsp;&nbsp;&nbsp;
-              {{
-                selectedIncomeAccount.text
-                  ? selectedIncomeAccount.text
-                  : "Select"
-              }}
-            </span>
-            <span>
-              <!-- <i class="pi pi-angle-down offset-sm-2 ofering"></i> -->
-              <el-icon class="el-icon--right"><arrow-down /></el-icon>
-            </span>
-          </button>
-        </el-dropdown>
-
-        <div
-          class="dropdown-menu scroll w-100"
-          aria-labelledby="dropdownMenuButton"
-        >
-          <a
-            class="dropdown-item"
-            v-for="(item, index) in incomeAccount"
-            :key="index"
-          >
-            <div @click="inComeAccount(item)">{{ item.text }}</div>
-          </a>
-        </div>
-        <!-- </div> -->
-        <!-- <Dropdown v-model="selectedIncomeAccount" class="w-100 " :options="incomeAccount" optionLabel="text" :filter="false" placeholder="Select" :showClear="false">
-            </Dropdown> -->
+      <div class="col-lg-5 dropdown col-sm-12 mt-lg-3">
+        <el-select-v2
+          v-model="selectedAccountId"
+          class="w-100 font-weight-normal"
+          :options="
+            incomeAccount.map((i) => ({
+              label: i.text,
+              value: i.id,
+            }))
+          "
+          placeholder="Select"
+          @change="setIncomeSelectedAccount"
+          size="large"
+        />
       </div>
-      <div class="col-sm-4 mt-3 text-right pr-0">
+
+      <div class="col-sm-4 mt-3 text-lg-right pr-0">
         <label>Cash Account</label>
       </div>
-      <div class="col-lg-5 dropdown col-sm-12 mt-3">
-        <!-- <div class="dropdown  ofering col-12  "  > -->
-        <el-dropdown trigger="click" class="w-100">
-          <el-button
-            class="btn d-flex justify-content-between col-12 border"
-            id="dropdownMenuButton"
-            size="large"
-            aria-haspopup="true"
-            aria-expanded="false"
-          >
-            <span class="ofering">
-              &nbsp;&nbsp;&nbsp;
-              {{
-                selectedCashAccount.text
-                  ? selectedCashAccount.text
-                  : "Select Account"
-              }}
-            </span>
-            <span>
-              <i class="pi pi-angle-down offset-sm-2 ofering"></i>
-            </span>
-            <div
-              class="dropdown-menu scroll w-100"
-              aria-labelledby="dropdownMenuButton"
-            >
-              <a
-                class="dropdown-item"
-                v-for="(item, index) in cashBankAccount"
-                :key="index"
-              >
-                <div @click="cashAccountType(item)">{{ item.text }}</div>
-              </a>
-            </div>
-          </el-button>
-        </el-dropdown>
-        <!-- </div> -->
-        <!-- <Dropdown v-model="selectedCashAccount" :options="cashBankAccount" optionLabel="text" :filter="false" placeholder="Select" class="w-100 p-0" :showClear="false">
-        </Dropdown> -->
+      <div class="col-lg-5 dropdown col-sm-12 mt-lg-3">
+        <el-select-v2
+          v-model="selectedCashAccountId"
+          class="w-100 font-weight-normal"
+          :options="
+            cashBankAccount.map((i) => ({
+              label: i.text,
+              value: i.id,
+            }))
+          "
+          placeholder="Select Account"
+          @change="setCashAccountType"
+          size="large"
+        />
       </div>
-      <div class="col-sm-12 d-flex" @click="toggleRem">
+
+      <div class="col-sm-12 d-flex mt-3" @click="toggleRem">
         <i class="check-it mr-2">
           <span class="child" v-if="applyRem"></span>
         </i>
+
         <h6>Apply Remitance</h6>
       </div>
       <div class="col-sm-12 mt-3" v-if="applyRem">
@@ -108,72 +60,46 @@
 
     <div v-if="applyRem">
       <div class="row" v-for="(item, index) in remitance" :key="index">
-        <div class="col-sm-4 mt-5 text-right pr-0 align-self-center">
+        <div class="col-sm-4 mt-3 text-lg-right pr-0 align-self-center">
           <label>Income Account</label>
         </div>
-        <div class="col-lg-5 col-sm-12 mt-5">
-          <button
-            class="btn d-flex justify-content-between col-12 border"
-            type="button"
-            id="dropdownMenuButton"
-            data-toggle="dropdown"
-            aria-haspopup="true"
-            aria-expanded="false"
-          >
-            <span class="ofering">
-              &nbsp;&nbsp;&nbsp;
-              {{ item && item.account ? item.account.text : "Select Account" }}
-              <!-- {{ item.account ? item.account : 'Select' }} -->
-            </span>
-            <span>
-              <i class="pi pi-angle-down offset-sm-2 ofering"></i>
-            </span>
-          </button>
-          <div
-            class="dropdown-menu scroll w-100"
-            aria-labelledby="dropdownMenuButton"
-          >
-            <a
-              class="dropdown-item"
-              v-for="(itm, indx) in incomeAccount"
-              :key="indx"
-            >
-              <div
-                class="cursor-pointer"
-                @click="selectInComeAccount(itm, index)"
-              >
-                {{ itm.text }}
-              </div>
-            </a>
-          </div>
-          <!-- <Dropdown v-model="item.account" class="w-100 " :options="incomeAccount" optionLabel="text" :filter="true" placeholder="Select" :showClear="false">
-            </Dropdown> -->
+        <div class="col-lg-5 col-sm-12 mt-lg-3">
+          <el-select-v2
+            v-model="item.accountId"
+            class="w-100 font-weight-normal"
+            :options="
+              incomeAccount.map((i) => ({
+                label: i.text,
+                value: i.id,
+              }))
+            "
+            placeholder="Select"
+            @change="setRemittanceIncomeSelectedAccount(index)"
+            size="large"
+          />
         </div>
 
-        <div class="col-sm-4 text-right align-self-center mt-3">
+        <div class="col-sm-4 text-lg-right align-self-center mt-3">
           <label>Percentage %</label>
         </div>
-        <div class="col-lg-5 col-sm-12 mt-3">
-          <input
+        <div class="col-lg-5 col-sm-12 mt-lg-3">
+          <el-input
             type="text"
-            class="form-control textbox-height w-100"
-            placeholder=""
+            class="w-100"
+            placeholder="Enter percentage"
             v-model="item.percentage"
             required
           />
         </div>
 
-        <div class="col-sm-2 col-12 adjust-down">
-          <button
-            v-on:click.prevent="addRemittance"
-            class="btn btnIcons btn-secondary"
-          >
-            <i class="pi pi-plus-circle icons" aria-hidden="true"></i>
+        <div class="col-sm-3 col-12 adjust-down mt-3 d-flex align-items-center">
+          <el-button v-on:click.prevent="addRemittance" text round>
+            <el-icon><CirclePlus /></el-icon>&nbsp;
             Add
-          </button>
+          </el-button>
+          <div @click="deleteItem(index)" class="ml-3">
+            <el-icon><Delete /></el-icon>
         </div>
-        <div class="col-sm-1 adjust-down" @click="deleteItem(index)">
-          <i class="pi pi-trash"></i>
         </div>
       </div>
     </div>
@@ -196,15 +122,11 @@
 
 <script>
 import { ref } from "vue";
-import Dropdown from "primevue/dropdown";
 import axios from "@/gateway/backendapi";
 import { useToast } from "primevue/usetoast";
 import finish from "../../services/progressbar/progress";
 
 export default {
-  components: {
-    Dropdown,
-  },
   setup(props, { emit }) {
     const toast = useToast();
     const name = ref("");
@@ -214,7 +136,8 @@ export default {
     const cashBankAccount = ref([]);
     const applyRem = ref(false);
     const remitance = ref([{}]);
-    // const selectInComeAccount = ref({})
+    const selectedAccountId = ref();
+    const selectedCashAccountId = ref();
 
     const cashAccountType = (item) => {
       selectedCashAccount.value = item;
@@ -270,6 +193,18 @@ export default {
       remitance.value.push({});
     };
 
+    const setIncomeSelectedAccount = () => {
+      selectedIncomeAccount.value = incomeAccount.value.find(
+        (i) => i.id == selectedAccountId.value
+      );
+    };
+
+    const setCashAccountType = () => {
+      selectedCashAccount.value = cashBankAccount.value.find(
+        () => i.id == selectedCashAccountId.value
+      );
+    };
+
     const createNewCon = (e) => {
       let contributionCategory = {
         name: name.value,
@@ -314,6 +249,10 @@ export default {
       e.target.setAttribute("data-dismiss", "modal");
     };
 
+    const setRemittanceIncomeSelectedAccount = (index) => {
+      remitance.value[index].account = incomeAccount.value.find(i => i.id == remitance.value[index].accountId)
+    }
+
     return {
       cashAccountType,
       inComeAccount,
@@ -329,6 +268,11 @@ export default {
       remitance,
       addRemittance,
       createNewCon,
+      setIncomeSelectedAccount,
+      setCashAccountType,
+      selectedAccountId,
+      selectedCashAccountId,
+      setRemittanceIncomeSelectedAccount
     };
   },
 };
