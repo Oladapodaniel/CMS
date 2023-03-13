@@ -1,22 +1,23 @@
 <template>
-  <div class="container-fluid container-top">
+  <div class="container-fluid">
     <div class="row">
       <div class="col-md-12 px-0">
         <div class="container">
           <div class="row mt-4">
             <div class="col-md-6">
-              <h2 class="font-weight-bold page-hder">Pledge Overview</h2>
+              <h2 class="head-text">Pledge Overview</h2>
             </div>
             <div class="col-md-6 d-flex justify-content-md-end">
-              <div
-                class="cursor-pointer grey-border primary-btn default-btn primary-bg border-0 text-white"
+              <el-button
+                color="#136acd"
+                class="header-btn text-white"
                 data-toggle="modal"
                 data-target="#exampleModalLong"
+                round
               >
                 Record Payment
-              </div>
+              </el-button>
             </div>
-            <Toast />
           </div>
           <hr class="mb-4" />
         </div>
@@ -169,19 +170,21 @@
             </div>
             <div class="container-fluid">
               <div
-                class="row d-flex justify-content-between align-items-center mt-5"
-              >
+                class="row d-flex justify-content-between align-items-center mt-5 px-0"
+>
                 <div>
-                  <div class="evt-name text-dark">Payments</div>
+                  <div class="head-text">Payments</div>
                 </div>
                 <div>
-                  <div
-                    class="cursor-pointer grey-border primary-btn default-btn primary-bg border-0 text-white"
+                  <el-button
+                    color="#136acd"
+                    class="header-btn text-white"
                     data-toggle="modal"
                     data-target="#exampleModalLong"
+                    round
                   >
                     Record Payment
-                  </div>
+                  </el-button>
                 </div>
                 <div class="col-md-12 px-0">
                   <hr class="my-3" />
@@ -480,7 +483,7 @@ export default {
         const res = await axios.get(
           `/api/Pledge/GetOnePledge?ID=${route.query.pledgeTypeID}`
         );
-        console.log(res);
+
         pledgeName.value = res.data.returnObject.pledgeItemName;
         personName.value = res.data.returnObject.contact;
         pledgePaymentSum.value = res.data.returnObject.totalPaymentSum;
@@ -492,8 +495,7 @@ export default {
         pledgeCurrencyID.value = res.data.returnObject.currency.id;
         selectedPledge.value = res.data.returnObject;
         allPledgePaymentList.value = res.data.returnObject.pledgePayments;
-        console.log(selectedPledge.value, "selected");
-        console.log(allPledgePaymentList.value, "allPledgePaymentList");
+
         checking.value = true;
       } catch (error) {
         NProgress.done();
@@ -726,7 +728,7 @@ export default {
         .sendMessage(url, body)
         .then((res) => {
           btnState.value = "";
-          console.log(res, "report response");
+
           if (res.status === false) {
             ElMessage({
               type: "error",
