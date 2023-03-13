@@ -5,9 +5,6 @@
       <div class="row">
         <div class="col-md-12 mb-3 mt-3 text-center">
           <h4 class="font-weight-bold">Compose SMS</h4>
-          <Toast />
-
-
         </div>
       </div>
 
@@ -68,7 +65,7 @@
                 'w-100': selectedGroups.length === 0,
                 'minimized-input-width': selectedGroups.length > 0,
               }" @focus="showGroupList" @click="showGroupList" style="padding: 0.5rem" :placeholder="`${selectedGroups.length > 0 ? '' : 'Select groups'
-}`" />
+  }`" />
             </li>
           </ul>
           <div class="col-md-12 px-2 select-groups-dropdown dd-item pt-2" v-if="groupListShown">
@@ -121,13 +118,12 @@
               <!-- </span> -->
             </li>
             <li style="list-style: none" class="m-dd-item">
-              <input type="text" class="border-0 m-dd-item text" ref="memberSelectInput" @input="searchForPerson"
-                :class="{
-                  'w-100': selectedMembers.length === 0,
-                  'minimized-input-width': selectedMembers.length > 0,
-                }" @focus="showMemberList" @click="showMemberList" v-model="searchText" style="padding: 0.5rem"
+              <input type="text" class="border-0 m-dd-item text" ref="memberSelectInput" @input="searchForPerson" :class="{
+                'w-100': selectedMembers.length === 0,
+                'minimized-input-width': selectedMembers.length > 0,
+              }" @focus="showMemberList" @click="showMemberList" v-model="searchText" style="padding: 0.5rem"
                 :placeholder="`${selectedMembers.length > 0 ? '' : 'Select from members'
-                }`" />
+                  }`" />
             </li>
           </ul>
           <div class="col-md-12 px-0 select-groups-dropdown m-dd-item" v-if="memberListShown">
@@ -226,8 +222,7 @@
         <div class="row">
           <div class="col-md-2"></div>
           <div class="col-md-10 py-2 px-0">
-            <el-input type="textarea" class="w-100" rows="4" placeholder="Enter phone number(s)"
-              v-model="phoneNumber" />
+            <el-input type="textarea" class="w-100" rows="4" placeholder="Enter phone number(s)" v-model="phoneNumber" />
           </div>
           <div class="col-md-12 grey-rounded-border groups" :class="{ hide: !groupsAreVissible }">
             <div class="row" v-for="(category, index) in categories" :key="index">
@@ -283,8 +278,8 @@
               <!-- @click="closeDropdownIfOpen" -->
               {{
                 Object.keys(selectedSender).length > 0
-                  ? selectedSender.mask
-                  : "Select Sender Id"
+                ? selectedSender.mask
+                : "Select Sender Id"
               }}
             </button>
             <div class="dropdown-menu w-100 pb-0" aria-labelledby="dropdownMenuButton">
@@ -295,14 +290,14 @@
                 }}
               </a>
               <a class="
-                  dropdown-item
-                  c-pointer
-                  font-weight-700
-                  text-center
-                  create-new-bg
-                  border-top
-                  py-2
-                " data-toggle="modal" data-target="#senderIdModal"><i class="pi pi-plus-circle"></i>&nbsp;Request new
+                      dropdown-item
+                      c-pointer
+                      font-weight-700
+                      text-center
+                      create-new-bg
+                      border-top
+                      py-2
+                    " data-toggle="modal" data-target="#senderIdModal"><i class="pi pi-plus-circle"></i>&nbsp;Request new
                 sender id
               </a>
             </div>
@@ -374,8 +369,8 @@
           </el-dropdown>
 
           <router-link class="no-decoration" :to="route.fullPath.includes('/tenant/sms/compose')
-              ? '/tenant/sms/sent'
-              : '/errorpage/expiredSubscription'
+            ? '/tenant/sms/sent'
+            : '/errorpage/expiredSubscription'
           ">
             <el-button class="ml-3" round>Discard</el-button>
           </router-link>
@@ -445,8 +440,7 @@
                         (SENDER ID AND DEDICATED)</label>
                     </div>
                     <div class=" col-md-12 send-now-div py-2 my-2 d-flex justify-content-center">
-                      <button
-                        class=" primary-btn default-btn border-0 primary-bg px-4 my-2 font-weight-600 outline-none"
+                      <button class=" primary-btn default-btn border-0 primary-bg px-4 my-2 font-weight-600 outline-none"
                         data-dismiss="modal" @click="contructScheduleMessageBody(1, 'hybridKonnect')">
                         Send SMS Now
                       </button>
@@ -513,7 +507,8 @@
 
       <!-- Schedudle SMS modal -->
 
-      <el-dialog v-model="display" :title="sendModalHeader" :width="mdAndUp || lgAndUp || xlAndUp ? `50%` : xsOnly ? `90%` : `70%`" align-center class="p-4">
+      <el-dialog v-model="display" :title="sendModalHeader"
+        :width="mdAndUp || lgAndUp || xlAndUp ? `50%` : xsOnly ? `90%` : `70%`" align-center class="p-4">
         <div class="row">
           <el-date-picker v-model="executionDate" type="datetime" class="w-100" placeholder="Select date and time" />
         </div>
@@ -583,7 +578,6 @@ import composeService from "../../services/communication/composer";
 import composerObj from "../../services/communication/composer";
 import { useRoute } from "vue-router";
 import { useRouter } from "vue-router";
-import { useToast } from "primevue/usetoast";
 import store from "../../store/store";
 import axios from "@/gateway/backendapi";
 import stopProgressBar from "../../services/progressbar/progress";
@@ -592,10 +586,10 @@ import dateFormatter from "../../services/dates/dateformatter";
 import moment from "moment";
 import swal from 'sweetalert';
 import deviceBreakpoint from "../../mixins/deviceBreakpoint";
+import { ElMessage } from "element-plus";
 
 export default {
   setup() {
-    const toast = useToast();
     const router = useRouter();
     const editorData = ref("");
     const disableBtn = ref(false);
@@ -754,12 +748,10 @@ export default {
         invalidMessage.value = true;
         return false;
       }
-
-      toast.add({
-        severity: "info",
-        summary: "Sending SMS",
-        detail: "SMS is being sent....",
-        life: 2500,
+      ElMessage({
+        type: "info",
+        message: "SMS is being sent...",
+        duration: 3000,
       });
 
       // if (selectedMembers.value.length > 0) data.contacts = selectedMembers.value;
@@ -770,12 +762,6 @@ export default {
           disableBtn.value = false;
           console.log(res.data, "God is good");
           if (res.data.status) {
-            // toast.add({
-            //   severity: "success",
-            //   summary: "SMS Sent",
-            //   detail: `SMS Sent successfully`,
-            //   life: 7000,
-            // });
 
             swal({
               title: "Success!",
@@ -786,31 +772,21 @@ export default {
               dangerMode: true,
             })
 
-          } else if (res.data.message.includes("You do not have sufficient")) {
-            toast.add({
-              severity: "warn",
-              summary: "Insufficient Unit",
-              detail: `${res.data.message}`,
-              life: 6000,
-            });
-
           } else if (
             res.data &&
             res.data.message &&
-            res.data.message.includes("You do not have")
+            res.data.message.toLowercase().includes("you do not have")
           ) {
-            toast.add({
-              severity: "warn",
-              summary: "Insufficient Unit",
-              detail: `${res.data.message}`,
-              life: 6000,
+            ElMessage({
+              message: "Insufficient unit" + ", " + res.data.message,
+              type: "warning",
+              duration: 6000,
             });
           } else {
-            toast.add({
-              severity: "warn",
-              summary: "Not sent",
-              detail: `Message not sent, please try again`,
-              life: 6000,
+            ElMessage({
+              type: "warning",
+              message: "Message not sent, please try again",
+              duration: 6000,
             });
           }
 
@@ -837,26 +813,22 @@ export default {
           toast.removeAllGroups();
           console.log(err);
           if (err.toString().toLowerCase().includes("network error")) {
-            toast.add({
-              severity: "warn",
-              summary: "You 're Offline",
-              detail: "Please ensure you have internet access",
-              life: 4000,
+            ElMessage({
+              type: "warning",
+              message: "Please ensure you have internet access",
+              duration: 6000,
             });
           } else if (err.toString().toLowerCase().includes("timeout")) {
-            toast.add({
-              severity: "warn",
-              summary: "Request Delayed",
-              detail:
-                "SMS took too long, please check your network and try again",
-              life: 4000,
+            ElMessage({
+              type: "warning",
+              message: "SMS took too long, please check your network and try again",
+              duration: 6000,
             });
           } else {
-            toast.add({
-              severity: "warn",
-              summary: "Failed operation",
-              detail: "SMS sending failed, Please try again",
-              life: 400,
+            ElMessage({
+              type: "warning",
+              message: "SMS sending failed, Please try again",
+              duration: 6000,
             });
           }
         });
@@ -872,19 +844,16 @@ export default {
           "/api/Messaging/PostSmsDraft"
         );
         store.dispatch("communication/getSMSDrafts");
-        toast.add({
-          severity: "success",
-          summary: "Draft Saved",
-          detail: "Message saved as draft",
-          life: 2500,
+        ElMessage({
+          type: "success",
+          message: "Message saved as draft",
+          duration: 6000,
         });
       } catch (error) {
-        console.log(error);
-        toast.add({
-          severity: "warn",
-          summary: "Failed",
-          detail: "Message not saved as draft",
-          life: 2500,
+        ElMessage({
+          type: "warning",
+          message: "Message not saved as draft",
+          duration: 6000,
         });
       }
     };
@@ -896,7 +865,6 @@ export default {
         contacts: [],
         isPersonalized: isPersonalized.value,
         groupedContacts: selectedGroups.value.map((i) => i.data),
-        // toContacts: sendToAll./value ? "allcontacts_00000000-0000-0000-0000-000000000000" : "",
         isoCode: isoCode.value,
         category: "",
         emailAddress: "",
@@ -940,10 +908,10 @@ export default {
           sendSMS(data);
         }
       } else {
-        toast.add({
-          severity: "warn",
-          summary: "No sender id selected",
-          detail: `Kindly select a sender id and try again`,
+        ElMessage({
+          type: "warning",
+          message: "No sender id selected, Kindly select a sender id and try again",
+          duration: 7000,
         });
       }
     };
@@ -954,25 +922,20 @@ export default {
 
     const scheduleMessage = async (data) => {
       display.value = false;
-      const formattedDate = dateFormatter.monthDayTime(data.executionDate);
-      // const formattedDate = dateFormatter.monthDayTime(data.executionDate);
-      // console.log(formattedDate, "Formatted Date");
-      // console.log(data.executionDate);
-
-      // console.log(data);
+      const formattedDate = dateFormatter.monthDayTime(data.date)
       try {
         await composerObj.sendMessage("/api/Messaging/saveSmsSchedule", data);
-        toast.add({
-          severity: "success",
-          summary: "message Scheduled",
-          detail: `Message scheduled for ${formattedDate}`,
+        ElMessage({
+          type: "success",
+          message: `Message scheduled for ${formattedDate}`,
+          duration: 6000,
         });
       } catch (error) {
         console.log(error);
-        toast.add({
-          severity: "error",
-          summary: "Schedule Failed",
-          detail: "Could not schedule message",
+        ElMessage({
+          type: "error",
+          message: "Schedule failed, please try again",
+          duration: 6000,
         });
       }
     };
@@ -987,20 +950,17 @@ export default {
 
       try {
         let { data } = await axios.post("/api/messaging/upload", formData);
-        // console.log(data);
-        toast.add({
-          severity: "success",
-          summary: "Success",
-          detail: data.response,
-          life: 5000,
+        ElMessage({
+          type: "success",
+          message: data.response,
+          duration: 6000,
         });
       } catch (err) {
         console.log(err);
-        toast.add({
-          severity: "error",
-          summary: "Not sent",
-          detail: "Sending failed, please try again",
-          life: 5000,
+        ElMessage({
+          type: "error",
+          message: "Sending failed, please try again",
+          duration: 6000,
         });
       }
     };
@@ -1151,10 +1111,10 @@ export default {
         subject.value = subj;
       } catch (error) {
         console.log(error);
-        toast.add({
-          severity: "error",
-          summary: "Error",
-          detail: "Could not load message!",
+        ElMessage({
+          type: "error",
+          message: "Could not load message",
+          duration: 6000,
         });
       }
     };
@@ -1190,35 +1150,29 @@ export default {
           payload
         );
         if (data.status === 0) {
-          toast.add({
-            severity: "warn",
-            summary: "Pending",
-            detail:
-              "Sender id is pending for approval, when it is approved, you will see it among the sender id list",
-            life: 5000,
-          });
+          ElMessage({
+          type: "warning",
+          message: "PENDING, Sender id is pending for approval, when it is approved, you will see it among the sender id list",
+          duration: 6000,
+        });
         } else if (data.status === 1) {
-          toast.add({
-            severity: "warn",
-            summary: "Processing",
-            detail:
-              "Sender id is processing for approval, when it is approved, you will see it among the sender id list",
-            life: 5000,
-          });
+          ElMessage({
+          type: "warning",
+          message: "PROCESSING, Sender id is processing for approval, when it is approved, you will see it among the sender id list",
+          duration: 6000,
+        });
         } else if (data.status === 2) {
-          toast.add({
-            severity: "success",
-            summary: "Approved",
-            detail: "Sender id is approved!",
-            life: 6000,
-          });
+          ElMessage({
+          type: "success",
+          message: "APPROVED, Sender id is approved!",
+          duration: 6000,
+        });
         } else {
-          toast.add({
-            severity: "warn",
-            summary: "Not Approved",
-            detail: "Sender id is not approved, create another one.",
-            life: 4000,
-          });
+          ElMessage({
+          type: "error",
+          message: "NOT APPROVED, Sender id is not approved, create another one.",
+          duration: 6000,
+        });
         }
         senderIdText.value = "";
         senderIdRef.value.classList.remove("is-invalid");
@@ -1331,9 +1285,9 @@ export default {
       requestbtn,
       sendSMSDialog,
       showScheduleModal,
-      mdAndUp, 
-      lgAndUp, 
-      xlAndUp, 
+      mdAndUp,
+      lgAndUp,
+      xlAndUp,
       xsOnly
     };
   },

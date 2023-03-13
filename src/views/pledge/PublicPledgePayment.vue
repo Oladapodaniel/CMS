@@ -278,7 +278,7 @@
             <div class="col-md-11 mt-4 px-0 mb-4 d-flex justify-content-center">
               <div class="col-md-12">
                 <el-button class="w-100" color="#136acd" :loading="loading" :disabled="!personToggle"
-                  @click="(paymentDialog = true)" round>{{ pledgeActionType == '1' ? 'Pay' : 'Pledge'
+                  @click="(pledgeActionType == 1 ? paymentDialog = true : initiatePayment(3))" round>{{ pledgeActionType == '1' ? 'Pay' : 'Pledge'
                   }}</el-button>
               </div>
 
@@ -398,8 +398,6 @@ import { ref, computed, reactive } from "vue";
 import Dropdown from "primevue/dropdown";
 import InputText from "primevue/inputtext";
 import { useToast } from "primevue/usetoast";
-// import userService from "../../services/user/userservice";
-import SearchContribution from "../../components/Contribution/SearchContribution.vue";
 import { useRoute } from "vue-router";
 import { useStore } from "vuex";
 import CascadeSelect from "primevue/cascadeselect";
@@ -412,7 +410,6 @@ import deviceBreakpoint from "../../mixins/deviceBreakpoint";
 import { ElLoading } from 'element-plus'
 export default {
   components: {
-    SearchContribution,
     Dropdown,
     InputText,
     CascadeSelect,
@@ -532,12 +529,11 @@ export default {
 
         personToggle.value = true
         contactDetail.value = data.person ? data.person : {};
-        // pledgeDefinitionDetail.value =
-        //   console.log(contactDetail.value, "the contactDetail");
         donorDetail.value = data.pledgeItemDTO ? data.pledgeItemDTO : {};
         amountToPledge.value = donorDetail.value.donorPaymentSpecificAmount
         maxEmail.value = contactDetail.value.email ? mask.maskEmail2(contactDetail.value.email) : ""
         maxName.value = `${contactDetail.value.firstName ? mask.maskText(contactDetail.value.firstName) : ""} ${contactDetail.value.lastName ? mask.maskText(contactDetail.value.lastName) : ""}`
+        pledgeActionType.value = "1"
         console.log(maxName, 'dddd')
 
 
@@ -669,8 +665,12 @@ export default {
           selectedCurrencyCode.value = contributionDetail.value.currency.shortCode
         } else if (route.query.pledgeID) {
           // For pledge
+          let arr = [{ ...res.data.pledgeItemDTO }]
+          console.log(arr)
+          console.log(res.data)
           contributionDetail.value = res.data.pledgeItemDTO;
-          contributionDetail.value.pledgeItemDTOs = [res.data.pledgeItemDTO]
+          // contributionDetail.value.pledgeItemDTOs = [res.data.pledgeItemDTO]
+          contributionDetail.value.pledgeItemDTOs = arr
           selectPledgeItemID.value = contributionDetail.value.id
           churchLogo2.value = res.data.pledgeItemDTO.logo
           churchName.value = res.data.pledgeItemDTO.tenantName
@@ -892,18 +892,19 @@ export default {
       paymentDialog.value = false
       const loading = ElLoading.service({
         lock: true,
-        text: 'Setting up your payment gateway',
+        text: 'Please wait...',
         background: 'rgba(255, 255, 255, 0.9)',
       })
+      let gatewayService = gatewayType === 1 ? 'Paystack' : gatewayType == 2 ? 'Flutterwave' : null
 
-      newContact = { ...newContact, phoneNumber: userSearchString.value }
+      newContact = { ...newContact, mobilePhone: userSearchString.value }
       let payload = {
         person: contactDetail.value && Object.keys(contactDetail.value).length > 0 && contactDetail.value.id ? { id: contactDetail.value.id } : newContact,
         pledgeItemDTO: donorDetail.value,
         pledgeResponseDTO: pledgedData.value && Object.keys(pledgedData.value).length > 0 ? pledgedData.value : { currency: selectedCurrency.value, amount: amountToPledge.value },
-        pledgePaymentDTO: !memberAlreadyPledgedToPledgeItem.value && pledgeActionType.value == 1 ? { currency: selectedCurrency.value, amount: amountToPayNow.value } : null,
-        gateway: gatewayType === 1 ? 'Paystack' : 'Flutterwave'
+        pledgePaymentDTO: pledgeActionType.value == 1 ? { currency: selectedCurrency.value, amount: amountToPayNow.value } : null,
       }
+      if (gatewayService) payload.gateway = gatewayService
       console.log(payload)
 
       try {
@@ -911,7 +912,14 @@ export default {
         console.log(data);
         loading.close();
         if (data.status) {
-          gatewayType == 1 ? payWithPaystack(data) : payWithFlutterwave(data);
+          gatewayType == 1 ? payWithPaystack(data) : gatewayType == 2 ? 
+          payWithFlutterwave(data) : 
+          ElMessage({
+            type: 'success',
+            showClose: true,
+            message: 'Congrats, Your pledge is saved successfully',
+            duration: 10000
+          });
         } else {
           ElMessage({
             type: 'warning',
