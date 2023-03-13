@@ -6,14 +6,14 @@
       <div class="">
         <div class="head-text">Partnership and Pledges</div>
       </div>
-      <div class="d-flex flex-column flex-sm-row mt-2 my-1 link">
-        <router-link class="" to="/tenant/pledge/pledgedefinitionlist">
-          <el-button class="header-btn mr-3" round>
+      <div class="d-flex flex-column flex-sm-row mt-2  my-1 link">
+        <router-link class="mr-1" to="/tenant/pledge/pledgedefinitionlist">
+          <el-button class="header-btn mr-3 w-100" round>
             Partnership/Pledge items
           </el-button>
         </router-link>
         <router-link class="" to="/tenant/pledge/makepledge">
-          <el-button color="#136acd" class="header-btn mt-3 mt-sm-0" round>
+          <el-button color="#136acd" class="header-btn w-100 mt-3 mt-sm-0" round>
             New Partnership/Pledge
           </el-button></router-link
         >
@@ -49,7 +49,7 @@
       v-if="allPledgeList.length > 0 && !loading && !networkError"
     >
       <div class="row border py-3 mt-3 rounded">
-        <div class="col-md-4 col-lg-4">
+        <div class="col-sm-6 col-lg-4">
           <div class="text-secondary font-weight-bold small">Total pledge</div>
           <h3 class="font-weight-700 mt-3">
             {{ Math.abs(pledgesSummary.totalPledges).toLocaleString() }}.00
@@ -58,7 +58,7 @@
             }}</span>
           </h3>
         </div>
-        <div class="col-md-4 col-lg-4 mt-3 mt-md-0">
+        <div class="col-sm-6 col-lg-4 mt-3 mt-sm-0">
           <div class="font-weight-bold small text-secondary">
             Total Payments
           </div>
@@ -67,7 +67,7 @@
             <span class="small">{{ pledgesSummary.symbol }}</span>
           </h3>
         </div>
-        <div class="col-md-4 col-lg-4 mt-3 mt-md-0">
+        <div class="col-md-12 col-lg-4 mt-3 mt-md-0">
           <div class="text-secondary font-weight-bold small">
             Total Balance
           </div>
@@ -135,8 +135,8 @@
         />
       </div>
       <div
-        class="col-12 col-md-6 d-flex col-lg-2 mt-3 text-lg-right text-md-center text-sm-center mt-lg-0"
-      ><div @click="reSet" class="mt-2 pr-2 text-primary">Reset</div>
+        class="col-12 col-md-6 d-flex col-lg-2 mt-3 pl-lg-0 text-sm-center mt-lg-0"
+      ><div @click="reSet" class="mt-2 pr-2 text-primary ">Reset</div>
         <el-button
           :loading="filterLoading"
           class=""
