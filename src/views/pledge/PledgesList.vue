@@ -394,14 +394,15 @@ export default {
     getAllPledgeDefinition();
 
     const filterPledge = async () => {
-      filterLoading.value = true;
-      selectedContact.value.name = selectedContact.value && selectedContact.value.name ? selectedContact.value.name : "";
-      selectedCategory.value.name = selectedCategory.value && selectedCategory.value.name  ? selectedCategory.value.name : "" ;
-      selectedStatus.value.status = selectedStatus.value && selectedStatus.value.status ? selectedStatus.value.status : "" ;
+      // filterLoading.value = true;
+      // selectedContact.value.name = selectedContact.value && selectedContact.value.name ? selectedContact.value.name : "";
+      // selectedCategory.value.name = selectedCategory.value && selectedCategory.value.name  ? selectedCategory.value.name : "" ;
+      // selectedStatus.value.status = selectedStatus.value && selectedStatus.value.status ? selectedStatus.value.status : "" ;
       try {
+        // filterLoading.value = true;
         const res = await axios.get(
           `/api/Pledge/GetAllPledgesSearch?personId=${
-            selectedContact.value.id ? selectedContact.value.id : ""
+            selectedContact.value.id 
           }&status${selectedStatus.value.status}&pledgeItemName${
             selectedCategory.value.name
           }&startDate${new Date(startDate.value).toLocaleDateString(

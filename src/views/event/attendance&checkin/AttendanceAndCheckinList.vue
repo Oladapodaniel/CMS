@@ -383,29 +383,21 @@
     </div>
   </div>
   <!-- tosin working on tables -->
-
-  <ConfirmDialog />
-  <Toast />
   <!-- end of table area -->
 </template>
 
 <script>
 import { ref, computed, watch, watchEffect } from "vue";
 import dateFormatter from "../../../services/dates/dateformatter";
-import { useConfirm } from "primevue/useconfirm";
-import { useToast } from "primevue/usetoast";
-import ConfirmDialog from "primevue/confirmdialog";
 import stopProgressBar from "../../../services/progressbar/progress";
 import axios from "@/gateway/backendapi";
-import Toast from "primevue/toast";
-import Pagination from "../../../components/pagination/PaginationButtons.vue";
+import { ElMessage, ElMessageBox } from "element-plus";
 
 export default {
   props: ["list", "errorOccurred", "totalItems"],
-  components: { ConfirmDialog, Toast, Pagination },
+  components: { },
   emits: ["pagedattendance", "checkedattendance"],
   setup(props, { emit }) {
-    let toast = useToast();
     const expose = ref(false);
     const loading = ref(false);
     const attendanceList = ref([]);
@@ -476,13 +468,11 @@ export default {
           let incomingRes = res.data;
         
           if (incomingRes.toString().toLowerCase().includes("attendance")) {
-            toast.add({
-              severity: "success",
-              summary: "Confirmed",
-              detail: "Attendance(s) deleted successfully.",
-              life: 4000,
-            });
-
+            ElMessage({
+            type: "success",
+            message: "Attendance(s) deleted successfully.",
+            duration: 5000,
+          });
             emit("checkedattendance", checkedAttendance.value);
           }
          
@@ -490,26 +480,23 @@ export default {
         .catch((err) => {
           stopProgressBar();
           if (err.toString().toLowerCase().includes("network error")) {
-            toast.add({
-              severity: "warn",
-              summary: "Network Error",
-              detail: "Please ensure you have a strong internet connection",
-              life: 4000,
-            });
+            ElMessage({
+            type: "warning",
+            message: "Please ensure you have a strong internet connection",
+            duration: 5000,
+          });
           } else if (err.toString().toLowerCase().includes("timeout")) {
-            toast.add({
-              severity: "warn",
-              summary: "Request Delayed",
-              detail: "Request took too long to respond",
-              life: 4000,
-            });
+             ElMessage({
+            type: "warning",
+            message: "Request took too long to respond",
+            duration: 5000,
+          });
           } else {
-            toast.add({
-              severity: "warn",
-              summary: "Delete Failed",
-              detail: "Unable to delete attendance",
-              life: 4000,
-            });
+            ElMessage({
+            type: "warning",
+            message: "Unable to delete attendance",
+            duration: 5000,
+          });
           }
           console.log(err);
         });
@@ -521,46 +508,40 @@ export default {
         .then((res) => {
           console.log(res.status);
           if (res.status === 200) {
-            toast.add({
-              severity: "success",
-              summary: "Delete Successful",
-              detail: `${res.data}`,
-              life: 3000,
-            });
+            ElMessage({
+            type: "success",
+            message: res.data,
+            duration: 5000,
+          });
             emit("attendance-checkin", index);
           } else {
-            toast.add({
-              severity: "warn",
-              summary: "Delete Failed",
-              detail: `Please Try Again`,
-              life: 3000,
-            });
+            ElMessage({
+            type: "warning",
+            message: 'Delete Failed, Please Try Again',
+            duration: 5000,
+          });
           }
         })
         .catch((err) => {
           
           if (err.response) {
             console.log(err.response);
-            toast.add({
-              severity: "error",
-              summary: "Unable to delete",
-              detail: `${err.response}`,
-              life: 3000,
-            });
+             ElMessage({
+            type: "error",
+            message: err.response,
+            duration: 5000,
+          });
           } else if (
             err.response.toString().toLowerCase().includes("network error")
           ) {
-            toast.add({
-              severity: "warn",
-              summary: "Unable to delete",
-              detail: `Please ensure you have a strong internet connection`,
-              life: 3000,
-            });
+             ElMessage({
+            type: "warning",
+            message: 'Please ensure you have a strong internet connection',
+            duration: 5000,
+          });
           }
         });
     };
-
-    const confirm = useConfirm();
 
     const check1item = (ft) => {
       const attendanceIdx = checkedAttendance.value.findIndex(
@@ -574,24 +555,25 @@ export default {
       }
     };
     const modal = () => {
-      confirm.require({
-        message: "Are you sure you want to proceed?",
-        header: "Confirmation",
-        icon: "pi pi-exclamation-triangle",
-        acceptClass: "confirm-delete",
-        rejectClass: "cancel-delete",
-        accept: () => {
+      ElMessageBox.confirm(
+        "Are you sure you want to proceed?",
+        "Confirm delete",
+        {
+          confirmButtonText: "OK",
+          cancelButtonText: "Cancel",
+          type: "error",
+        }
+      )
+        .then(() => {
           checkOutAttendance();
-        },
-        reject: () => {
-          toast.add({
-            severity: "info",
-            summary: "Rejected",
-            detail: "You have rejected",
-            life: 3000,
+        })
+        .catch(() => {
+          ElMessage({
+            type: "info",
+            message: "You have rejected",
+            duration: 5000,
           });
-        },
-      });
+        });
     };
 
     const markAllAttendance = () => {
@@ -610,25 +592,25 @@ export default {
     };
 
     const showConfirmModal = (id, index) => {
-      confirm.require({
-        message: "Are you sure you want to proceed?",
-        header: "Confirmation",
-        icon: "pi pi-exclamation-triangle",
-        acceptClass: "confirm-delete",
-        rejectClass: "cancel-delete",
-        accept: () => {
+      ElMessageBox.confirm(
+        "Are you sure you want to proceed?",
+        "Confirm delete",
+        {
+          confirmButtonText: "OK",
+          cancelButtonText: "Cancel",
+          type: "error",
+        }
+      )
+        .then(() => {
           deleteAttendance(id, index);
-         
-        },
-        reject: () => {
-          toast.add({
-            severity: "info",
-            summary: "Rejected",
-            detail: "You have rejected",
-            life: 3000,
+        })
+        .catch(() => {
+          ElMessage({
+            type: "info",
+            message: "You have rejected",
+            duration: 5000,
           });
-        },
-      });
+        });
     };
 
     const searchIsVisible = ref(false);
