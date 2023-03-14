@@ -402,6 +402,12 @@ export default {
     const loading = ref(false);
     const attendanceList = ref([]);
     const checkedAttendance = ref([]);
+    const attendanceHeaders = ref([
+      { name: "EVENT NAME", value: "eventName" },
+      { name: "DATE", value: "date" },
+      { name: "GROUP NAME", value: "groupName" },
+      { name: "ACTION", value: "action" },
+    ]);
     const serverOptions = ref({
       page: 1,
       rowsPerPage: 100,
@@ -654,6 +660,7 @@ export default {
 
     return {
       modal,
+      attendanceHeaders,
       attendanceList,
       checkOutAttendance,
       loading,
