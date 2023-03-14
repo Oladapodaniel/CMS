@@ -21,8 +21,8 @@
     </div>
 
     <div class="row d-flex justify-content-center">
-      <div class="col-11 col-sm-8 col-md-7 col-lg-5 card pb-2">
-        <div class="container ">
+      <div class="col-11 col-sm-8 col-md-7 col-lg-5 card pb-2" v-loading="cardLoading">
+        <div class="container">
           <div class="row mt-4 justify-content-center">
             <div class="col-md-12 text-center  heading-text">
               {{ contributionDetail.name }} {{ !route.query.tenantID && contributionDetail.name ? 'Payment' : "" }}
@@ -159,7 +159,7 @@
               <hr class="w-100">
             </div>
             <div class="col-md-11 mt-3 px-0" v-if="
-              donorDetail.donorPaymentType == 1
+              donorDetail.donorPaymentType == 1 && personToggle
             ">
               <div class="col-md-12 text-center">
                 <label for="">Pledge amount</label>
@@ -170,7 +170,7 @@
               </div>
             </div>
             <div class="col-md-11 mt-3 px-0" v-if="
-              donorDetail.donorPaymentType == 2
+              donorDetail.donorPaymentType == 2 && personToggle
             ">
               <div class="col-md-12 text-center">
                 <div class="mb-1">Pledge amount range is within</div>
@@ -278,7 +278,8 @@
             <div class="col-md-11 mt-4 px-0 mb-4 d-flex justify-content-center">
               <div class="col-md-12">
                 <el-button class="w-100" color="#136acd" :loading="loading" :disabled="!personToggle"
-                  @click="(pledgeActionType == 1 ? paymentDialog = true : initiatePayment(3))" round>{{ pledgeActionType == '1' ? 'Pay' : 'Pledge'
+                  @click="triggerPayment" round>{{ pledgeActionType
+                    == '1' ? 'Pay' : 'Pledge'
                   }}</el-button>
               </div>
 
@@ -295,10 +296,10 @@
             </div>
 
             <div class=" row mt-3 d-flex justify-content-center
-                                ">
+                                            ">
               <div class="
-                                    col-10 col-sm-8 col-md-7   pl-0 
-                                  ">
+                                                col-10 col-sm-8 col-md-7   pl-0 
+                                              ">
                 <div class="row">
                   <div class="col-3">
                     <img src="../../assets/VisaDebit.png" class="w-100">
@@ -345,12 +346,13 @@
             <img src="../../assets/successful_payment.png" style="width: 250px; margin: auto" />
           </div>
           <h3 class="text-center mt-5 font-weight-bold success">Thank you</h3>
-          <div class="text-center mt-2 font-weight-600 s-18">Payment completed
-            successfully</div>
-          <div class="text-center mt-1 s-16">You will be redirected to
-            the home page or <br />click here to go to the home page</div>
+          <div class="text-center mt-2 font-weight-600 s-18">{{ pledgeActionType == '1' ? 'Payment completed successfully'
+            : 'Your pledge has been recorded successfully' }}</div>
+          <!-- <div class="text-center mt-1 s-16">You will be redirected to
+            the home page or <br />click here to go to the home page</div> -->
           <div class="d-flex justify-content-center mb-5">
-            <el-button color="#70c043" class="text-white mt-2" @click="paymentSuccessfulDialog = false" round>Go back</el-button>
+            <el-button color="#70c043" class="text-white mt-2" @click="paymentSuccessfulDialog = false" round>Go
+              back</el-button>
           </div>
         </div>
       </div>
@@ -408,6 +410,7 @@ import mask from "../../services/dates/maskText";
 import supportedCurrencies from "../../services/user/flutterwaveSupportedCurrency"
 import deviceBreakpoint from "../../mixins/deviceBreakpoint";
 import { ElLoading } from 'element-plus'
+import swal from "sweetalert";
 export default {
   components: {
     Dropdown,
@@ -470,9 +473,10 @@ export default {
     const pledgedData = ref({})
     const currencyList = ref([])
     const FLWupportedCurrencies = ref(supportedCurrencies);
-    const paymentDialog = ref(false)
+    const paymentDialog = ref(true)
     const paymentSuccessfulDialog = ref(false)
     const { mdAndUp, lgAndUp, xlAndUp, xsOnly } = deviceBreakpoint();
+    const cardLoading = ref(false);
 
 
 
@@ -596,7 +600,7 @@ export default {
       selectedContact.value = payload;
     };
     const validateRangeAmount = () => {
-      console.log(donorDetail.value.donorPaymentRangeFromAmount, 'rrr')
+      console.log(donorDetail.value.donorPaymentRangeFromAmount)
       if (
         amountToPledge.value <
         donorDetail.value.donorPaymentRangeFromAmount ||
@@ -647,12 +651,14 @@ export default {
     // getAllPledgeDefinition();
 
     const getContribution = async () => {
+      cardLoading.value = true
       try {
         checking.value = false;
         let pledgeURL = route.query.tenantID ? `TenantID=${route.query.tenantID}` : route.query.pledgeID ? `PledgeID=${route.query.pledgeID}` : route.query.pledgeDefinitionID ? `pledgeDefinitionID=${route.query.pledgeDefinitionID}` : ""
         const res = await axios.get(
           `/Contribution/Pay?${pledgeURL}`
         );
+        cardLoading.value = false
         finish();
         if (route.query.pledgeDefinitionID) {
           // For pledge definition
@@ -697,6 +703,7 @@ export default {
         checking.value = true;
       } catch (error) {
         console.log(error);
+        cardLoading.value = false;
       }
     };
     getContribution();
@@ -826,8 +833,26 @@ export default {
         const res = await axios.post(
           `/ConfirmInitializeContributionAndPledgePayment?txnref=${txnRef.value}`
         );
-        console.log(res, "ththhktjh");
-        paymentSuccessfulDialog.value = true;
+        console.log(res);
+        if (res.data.status) {
+          paymentSuccessfulDialog.value = true;
+          personToggle.value = false;
+          userSearchString.value = "";
+          if (route.query.tenantID) {
+            selectPledgeItemID.value = null;
+          }
+          contactDetail.value = new Object();
+          newContact = new Object();
+          maxName.value = "";
+          maxEmail.value = ""
+        } else {
+          swal({
+              title: "Oops",
+              text: res.data.statusMessage,
+              icon: "error",
+              dangerMode: true,
+            })
+        }
       } catch (error) {
         console.log(error);
       }
@@ -864,8 +889,8 @@ export default {
       }
 
       window.FlutterwaveCheckout({
-        public_key: process.env.VUE_APP_FLUTTERWAVE_PUBLIC_KEY_LIVE,
-        // public_key: process.env.VUE_APP_FLUTTERWAVE_TEST_KEY_TEST,
+        // public_key: process.env.VUE_APP_FLUTTERWAVE_PUBLIC_KEY_LIVE,
+        public_key: process.env.VUE_APP_FLUTTERWAVE_TEST_KEY_TEST,
         tx_ref: responseObject.transactionReference,
         amount: amountToPayNow.value,
         currency: selectedCurrencyCode.value,
@@ -887,6 +912,24 @@ export default {
         },
       });
     };
+
+    const triggerPayment = () => {
+      if (pledgeActionType.value == '1') {
+        if (!amountToPayNow.value) {
+          ElMessage({
+            type: 'warning',
+            showClose: true,
+            message: "Please enter amount to pay",
+            duration: 5000
+          })
+        } else {
+          paymentDialog.value = true
+        }
+      } else {
+        initiatePayment(3)
+      }
+
+    }
 
     const initiatePayment = async (gatewayType) => {
       paymentDialog.value = false
@@ -912,14 +955,29 @@ export default {
         console.log(data);
         loading.close();
         if (data.status) {
-          gatewayType == 1 ? payWithPaystack(data) : gatewayType == 2 ? 
-          payWithFlutterwave(data) : 
-          ElMessage({
-            type: 'success',
-            showClose: true,
-            message: 'Congrats, Your pledge is saved successfully',
-            duration: 10000
-          });
+          if (gatewayType == 1) {
+            payWithPaystack(data)
+          } else if (gatewayType == 2) {
+            payWithFlutterwave(data)
+          } else {
+            // Block for users that pledges only
+            ElMessage({
+              type: 'success',
+              showClose: true,
+              message: 'Congrats, Your pledge is saved successfully',
+              duration: 10000
+            })
+            paymentSuccessfulDialog.value = true;
+            personToggle.value = false;
+            userSearchString.value = "";
+            if (route.query.tenantID) {
+              selectPledgeItemID.value = null;
+            }
+            contactDetail.value = new Object();
+            newContact = new Object();
+            maxName.value = "";
+            maxEmail.value = ""
+          }
         } else {
           ElMessage({
             type: 'warning',
@@ -1012,7 +1070,9 @@ export default {
       mdAndUp,
       lgAndUp,
       xlAndUp,
-      paymentSuccessfulDialog
+      paymentSuccessfulDialog,
+      cardLoading,
+      triggerPayment
     };
   },
 };
