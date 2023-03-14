@@ -19,6 +19,23 @@ export default {
         SET_PLEDGEDEFINITION (state, payload) {
             state.pledgeDefinition = payload
         },
+
+        addPledge(state, payload) {
+            state.pledge.push(payload);
+          },
+        addPledgeItem(state, payload) {
+            state.pledgeDefinition.push(payload);
+          },
+        removePledge(state, payload) {
+        state.pledge = state.pledge.filter(
+            (item) => item.id !== payload
+        );
+        },
+        removePledgeItem(state, payload) {
+        state.pledgeDefinition = state.pledgeDefinition.filter(
+            (item) => item.id !== payload
+        );
+        },
         clearState(state) {
             Object.assign(state, defaultState())
           }
@@ -42,6 +59,19 @@ export default {
                 return response.returnObject
             })
         },
+        addPledge({ commit }, payload) {
+            commit("addPledge", payload);
+          },
+        addPledgeItem({ commit }, payload) {
+        commit("addPledgeItem", payload);
+        },
+        removePledgeFromStore ({ commit }, payload) {
+            commit("removePledge", payload)
+        },
+        removePledgeItemFromStore ({ commit }, payload) {
+            commit("removePledgeItem", payload)
+        },
+
         clearState ({ commit }) {
             commit('clearState')
         }

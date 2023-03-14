@@ -8,12 +8,12 @@
         >Create New
       </router-link>
       <div class="col-md-12 px-0">
-        <div class="text-primary c-pointer " @click="previousPage"> 
-          <el-icon><DArrowLeft /></el-icon>
-        </div>
-      </div>
-      <div class="col-md-12 px-0">
         <hr class="hr my-3" />
+      </div>
+      <div class="col-md-12 mb-3 px-0">
+        <div class="text-primary c-pointer  col-md-2" @click="previousPage">
+          <el-icon><DArrowLeft /></el-icon> Back
+        </div>
       </div>
     </div>
     <div class="row">
@@ -132,21 +132,48 @@
             </template>
           </Table>
         </div>
-         <div
-            class="no-person"
-              v-if="searchPledge && searchPledge.length < 0 && !loading "
-          >
-            <div class="empty-img">
-              <p><img src="../../assets/people/people-empty.svg" alt="" /></p>
-              <p class="tip">You haven't Create any pledge item yet</p>
-              <div
-                class="c-pointer primary-bg col-sm-6 col-md-4 offset-sm-3 offset-md-4 default-btn border-0 text-white"
-                @click="navigateToCreatePledgeItem"
-              >
-                Add new Pledge item 
-              </div>
+        <el-skeleton class="w-100" animated v-if="loading">
+          <template #template>
+            <div
+              style="
+                display: flex;
+                align-items: center;
+                justify-content: space-between;
+                margin-top: 20px;
+              "
+            >
+              <el-skeleton-item
+                variant="text"
+                style="width: 240px; height: 240px"
+              />
+              <el-skeleton-item
+                variant="text"
+                style="width: 240px; height: 240px"
+              />
+            </div>
+            <el-skeleton
+              class="w-100 mt-5"
+              style="height: 25px"
+              :rows="20"
+              animated
+            />
+          </template>
+        </el-skeleton>
+        <div
+          class="no-person"
+          v-if="searchPledge && searchPledge.length < 0 && !loading"
+        >
+          <div class="empty-img">
+            <p><img src="../../assets/people/people-empty.svg" alt="" /></p>
+            <p class="tip">You haven't Create any pledge item yet</p>
+            <div
+              class="c-pointer primary-bg col-sm-6 col-md-4 offset-sm-3 offset-md-4 default-btn border-0 text-white"
+              @click="navigateToCreatePledgeItem"
+            >
+              Add new Pledge item
             </div>
           </div>
+        </div>
       </div>
     </div>
   </div>
@@ -193,12 +220,12 @@ export default {
     const chooseContact = (payload) => {
       selectedContact.value = payload;
     };
-    const navigateToCreatePledgeItem =() =>{
-      router.push("/tenant/pledge/pledgedefinition")
-    }
-    const previousPage =() =>{
-      router.push("/tenant/pledge/pledgeslist")
-    }
+    const navigateToCreatePledgeItem = () => {
+      router.push("/tenant/pledge/pledgedefinition");
+    };
+    const previousPage = () => {
+      router.push("/tenant/pledge/pledgeslist");
+    };
 
     const getAllPledgeDefinition = async () => {
       loading.value = true;
@@ -252,6 +279,7 @@ export default {
           allPledgeDefinitionList.value = allPledgeDefinitionList.value.filter(
             (pledgelist) => pledgelist.id !== id
           );
+          store.dispatch('pledge/removePledgeItemFromStore', id)
         })
         .catch((err) => {
           finish();
