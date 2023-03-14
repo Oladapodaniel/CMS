@@ -58,11 +58,6 @@
                     </el-button>
                   </template>
                 </el-input>
-                <!-- <span class="p-input-icon-left w-100">
-                  <i class="pi pi-phone icon" />
-                  <InputText @blur="checkContact" @input="CheckAfterEleven" class="w-100" type="text"
-                    v-model="userSearchString" aria-required="" placeholder="Enter your phone number" />
-                </span> -->
                 <div class="col-12">
                   <p class="text-danger" v-if="showNoPhoneError" :class="{ 'my-1': showLoading }">
                     Please enter your phone number
@@ -296,10 +291,10 @@
             </div>
 
             <div class=" row mt-3 d-flex justify-content-center
-                                            ">
-              <div class="
-                                                col-10 col-sm-8 col-md-7   pl-0 
                                               ">
+              <div class="
+                                                  col-10 col-sm-8 col-md-7   pl-0 
+                                                ">
                 <div class="row">
                   <div class="col-3">
                     <img src="../../assets/VisaDebit.png" class="w-100">
@@ -348,8 +343,6 @@
           <h3 class="text-center mt-5 font-weight-bold success">Thank you</h3>
           <div class="text-center mt-2 font-weight-600 s-18">{{ pledgeActionType == '1' ? 'Payment completed successfully'
             : 'Your pledge has been recorded successfully' }}</div>
-          <!-- <div class="text-center mt-1 s-16">You will be redirected to
-            the home page or <br />click here to go to the home page</div> -->
           <div class="d-flex justify-content-center mb-5">
             <el-button color="#70c043" class="text-white mt-2" @click="paymentSuccessfulDialog = false" round>Go
               back</el-button>
@@ -358,53 +351,16 @@
       </div>
 
     </el-dialog>
-    <!-- <div class="modal fade" id="PaymentOptionModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle"
-      aria-hidden="true">
-      <div class="modal-dialog modal-dialog-centered" role="document">
-        <div class="modal-content">
-          <div class="modal-header bg-modal">
-            <h5 class="modal-title" id="exampleModalLongTitle">
-              Payment methods
-            </h5>
-            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-              <span aria-hidden="true" ref="close">&times;</span>
-            </button>
-          </div>
-          <div class="modal-body p-0 bg-modal pb-5">
-            <div class="row">
-              <div class="col-sm-12 p-4 text-center continue-text">
-                Continue payment with
-              </div>
-            </div>
-            <div class="row row-button c-pointer" @click="payWithPaystack">
-              <div class="d-flex justify-content-center">
-                <img style="width: 150px" src="../../assets/4PaystackLogo.png" alt="paystack" />
-              </div>
-            </div>
-            <div class="row row-button c-pointer" @click="payWithFlutterwave">
-              <div class="d-flex justify-content-center">
-                <img style="width: 150px" src="../../assets/flutterwave_logo_color@2x.png" alt="flutterwave" />
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
-    </div> -->
-    <Toast />
   </div>
 </template>
 
 <script>
 import axios from "@/gateway/backendapi";
 import { ref, computed, reactive } from "vue";
-import Dropdown from "primevue/dropdown";
-import InputText from "primevue/inputtext";
 import { useToast } from "primevue/usetoast";
 import { useRoute } from "vue-router";
 import { useStore } from "vuex";
-import CascadeSelect from "primevue/cascadeselect";
 import finish from "../../services/progressbar/progress";
-import ToggleButton from "../donation/toggleButton.vue";
 import { ElMessage } from 'element-plus';
 import mask from "../../services/dates/maskText";
 import supportedCurrencies from "../../services/user/flutterwaveSupportedCurrency"
@@ -412,12 +368,6 @@ import deviceBreakpoint from "../../mixins/deviceBreakpoint";
 import { ElLoading } from 'element-plus'
 import swal from "sweetalert";
 export default {
-  components: {
-    Dropdown,
-    InputText,
-    CascadeSelect,
-    ToggleButton,
-  },
   setup() {
     const toast = useToast();
     const searchID = ref('')
@@ -473,7 +423,7 @@ export default {
     const pledgedData = ref({})
     const currencyList = ref([])
     const FLWupportedCurrencies = ref(supportedCurrencies);
-    const paymentDialog = ref(true)
+    const paymentDialog = ref(false)
     const paymentSuccessfulDialog = ref(false)
     const { mdAndUp, lgAndUp, xlAndUp, xsOnly } = deviceBreakpoint();
     const cardLoading = ref(false);
@@ -498,7 +448,6 @@ export default {
 
       selectedCurrency.value = selectedPledgeItem.value.currency;
       selectedCurrencyCode.value = selectedCurrency.value.shortCode
-      console.log(selectedCurrency.value)
 
       if (userSearchString.value) {
         checkContact();
@@ -538,7 +487,6 @@ export default {
         maxEmail.value = contactDetail.value.email ? mask.maskEmail2(contactDetail.value.email) : ""
         maxName.value = `${contactDetail.value.firstName ? mask.maskText(contactDetail.value.firstName) : ""} ${contactDetail.value.lastName ? mask.maskText(contactDetail.value.lastName) : ""}`
         pledgeActionType.value = "1"
-        console.log(maxName, 'dddd')
 
 
         if (data.pledgeResponseDTO && Object.keys(data.pledgeResponseDTO).length > 0) {
@@ -550,8 +498,6 @@ export default {
           memberAlreadyPledgedToPledgeItem.value = false
           pledgedData.value = new Object();
         }
-        console.log(data.pledgeResponseDTO, 'frryy')
-        console.log(donorDetail.value, "donor")
 
         if (!data.person) {
           ElMessage({
@@ -568,18 +514,10 @@ export default {
             duration: 10000
           })
         }
-
-
-        console.log(contactDetail.value, "contribution number");
         loading.value = false;
         autosearch.value = false;
 
         if (contactDetail.value) appltoggle.value = true;
-        // if (!contactDetail.value.email || !contactDetail.value.name) {
-        //   personToggle.value = true
-        // } else {
-        //   return personToggle.value = false
-        // }
       } catch (error) {
         console.log(error);
         loading.value = false;
@@ -587,20 +525,11 @@ export default {
       }
     };
 
-
-
-    // const CheckAfterEleven = (e) => {
-    //   if (e.target.value.length >= 11) {
-    //     checkContact();
-    //   }
-    // };
     const pledgeDefineID = ref(route.params.id);
     const setContact = (payload) => {
-      console.log(payload, "payloadd");
       selectedContact.value = payload;
     };
     const validateRangeAmount = () => {
-      console.log(donorDetail.value.donorPaymentRangeFromAmount)
       if (
         amountToPledge.value <
         donorDetail.value.donorPaymentRangeFromAmount ||
@@ -633,22 +562,6 @@ export default {
         withinRange.value = true;
       }
     };
-    // const getAllPledgeDefinition = async () => {
-    //   try {
-    //     checking.value = false;
-    //     const res = await axios.get("/api/Pledge/GetAllPledgeDefinitions");
-    //     finish();
-    //     allPledgeList.value = res.data.returnObject;
-
-    //     getDetails();
-
-    //     console.log(allPledgeList.value, "getPledgeList");
-    //     checking.value = true;
-    //   } catch (error) {
-    //     console.log(error);
-    //   }
-    // };
-    // getAllPledgeDefinition();
 
     const getContribution = async () => {
       cardLoading.value = true
@@ -671,12 +584,9 @@ export default {
           selectedCurrencyCode.value = contributionDetail.value.currency.shortCode
         } else if (route.query.pledgeID) {
           // For pledge
-          let arr = [{ ...res.data.pledgeItemDTO }]
-          console.log(arr)
-          console.log(res.data)
+          let decomposedPledgeList = [{ ...res.data.pledgeItemDTO }]
           contributionDetail.value = res.data.pledgeItemDTO;
-          // contributionDetail.value.pledgeItemDTOs = [res.data.pledgeItemDTO]
-          contributionDetail.value.pledgeItemDTOs = arr
+          contributionDetail.value.pledgeItemDTOs = decomposedPledgeList
           selectPledgeItemID.value = contributionDetail.value.id
           churchLogo2.value = res.data.pledgeItemDTO.logo
           churchName.value = res.data.pledgeItemDTO.tenantName
@@ -698,8 +608,6 @@ export default {
           churchName.value = res.data.pledgeItemDTOs[0].tenantName
           contributionDetail.value.name = `${churchName.value} Pledge Portal`;
         }
-        console.log(selectedCurrency.value, 'curr')
-        console.log(contributionDetail.value, "contribution payment");
         checking.value = true;
       } catch (error) {
         console.log(error);
@@ -707,15 +615,6 @@ export default {
       }
     };
     getContribution();
-
-
-
-    // const getDetails = () => {
-    //   selectedPledge.value = allPledgeList.value.find(
-    //     (i) => i.id === route.query.id
-    //   );
-    //   memberName.value = route.query.name;
-    // };
 
     const getAllCurrencies = (id) => {
       axios
@@ -729,24 +628,6 @@ export default {
         .catch((err) => console.log(err));
     };
     getAllCurrencies();
-
-    // const appendLeadingZeroes = (n) => {
-    //   if (n <= 9) {
-    //     return "0" + n;
-    //   }
-    //   return n;
-    // };
-
-    // let currentDate = new Date();
-    // let formattedDate = `${currentDate.getFullYear()}${appendLeadingZeroes(
-    //   currentDate.getMonth() + 1
-    // )}${appendLeadingZeroes(currentDate.getDate())}${appendLeadingZeroes(
-    //   currentDate.getHours()
-    // )}${appendLeadingZeroes(currentDate.getMinutes())}
-    //         ${appendLeadingZeroes(
-    //   currentDate.getSeconds()
-    // )}${appendLeadingZeroes(currentDate.getMilliseconds())}`;
-    // console.log(formattedDate, "add new date");
 
 
     const payWithPaystack = (responseObject) => {
@@ -768,38 +649,12 @@ export default {
           })
         },
         callback: function (response) {
-          console.log("payment callback", response);
           txnRef.value = response.tx_ref;
           confirmPayment();
         },
       });
       handler.openIframe();
     };
-
-    // const initializePayment = (paymentGateway) => {
-    //   const payload = {
-    //     gateway: paymentGateway === 0 ? "paystack" : "flutterwave",
-    //     tenantID: currentUser.value.tenantId,
-    //     orderID: uuidv4(),
-    //     pledgeItemId: contributionDetail.value.id,
-    //     pledgeId: contactDetail.value.pledges[0] ? contactDetail.value.pledges[0].id : "",
-    //     pledgeAmount: parseInt(pledgeAmount.value),
-    //     amountPaid: parseInt(amountToPledge.value),
-    //     currencyId: contributionDetail.value.currency.id,
-    //     personID: contactDetail.value.personId,
-    //     personName: contactDetail.value.name,
-    //     personEmail: contactDetail.value.email,
-    //     personPhone: userSearchString.value,
-    //     // userID: "string",
-    //   };
-    //   console.log(payload);
-
-    //   axios
-    //     .post("/InitializeContributionAndPledgePayment", payload)
-    //     .then((res) => {
-    //       console.log(res, "initialpayment");
-    //     });
-    // };
 
     const getFlutterwaveModules = () => {
       const script = document.createElement("script");
@@ -811,29 +666,12 @@ export default {
     };
     getFlutterwaveModules();
 
-    // const getCurrencySymbol = async () => {
-    //   userService
-    //     .getCurrentUser()
-    //     .then((res) => {
-    //       currentUser.value = res;
-    //       setSelectedPaymentCurrency();
-    //     })
-    //     .catch((err) => {
-    //       console.log(err);
-    //     });
-    // };
-
-    // if (!currentUser.value || !currentUser.value.currency) {
-    //   getCurrencySymbol();
-    // }
-
     const confirmPayment = async () => {
 
       try {
         const res = await axios.post(
           `/ConfirmInitializeContributionAndPledgePayment?txnref=${txnRef.value}`
         );
-        console.log(res);
         if (res.data.status) {
           paymentSuccessfulDialog.value = true;
           personToggle.value = false;
@@ -847,11 +685,11 @@ export default {
           maxEmail.value = ""
         } else {
           swal({
-              title: "Oops",
-              text: res.data.statusMessage,
-              icon: "error",
-              dangerMode: true,
-            })
+            title: "Oops",
+            text: res.data.statusMessage,
+            icon: "error",
+            dangerMode: true,
+          })
         }
       } catch (error) {
         console.log(error);
@@ -859,9 +697,6 @@ export default {
     };
 
     const payWithFlutterwave = (responseObject) => {
-      //   console.log(TotalAmount.value, 'total amount calculated')
-      // initializePayment(1);
-
       let country = "";
 
       switch (selectedCurrencyCode.value) {
@@ -889,8 +724,8 @@ export default {
       }
 
       window.FlutterwaveCheckout({
-        // public_key: process.env.VUE_APP_FLUTTERWAVE_PUBLIC_KEY_LIVE,
-        public_key: process.env.VUE_APP_FLUTTERWAVE_TEST_KEY_TEST,
+        public_key: process.env.VUE_APP_FLUTTERWAVE_PUBLIC_KEY_LIVE,
+        // public_key: process.env.VUE_APP_FLUTTERWAVE_TEST_KEY_TEST,
         tx_ref: responseObject.transactionReference,
         amount: amountToPayNow.value,
         currency: selectedCurrencyCode.value,
@@ -900,7 +735,6 @@ export default {
           email: contactDetail.value.email ? contactDetail.value.email : newContact.email,
         },
         callback: (response) => {
-          console.log("Payment callback", response);
           txnRef.value = response.tx_ref;
           confirmPayment();
         },
@@ -948,11 +782,9 @@ export default {
         pledgePaymentDTO: pledgeActionType.value == 1 ? { currency: selectedCurrency.value, amount: amountToPayNow.value } : null,
       }
       if (gatewayService) payload.gateway = gatewayService
-      console.log(payload)
 
       try {
         let { data } = await axios.post('/InitializeContributionAndPledgePayment', payload);
-        console.log(data);
         loading.close();
         if (data.status) {
           if (gatewayType == 1) {
