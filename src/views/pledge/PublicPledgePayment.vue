@@ -13,11 +13,6 @@
           </span>
         </div>
       </div>
-      <!-- <div class="d-flex justify-content-center col-md-12  text-dark mt-3 mb-2">
-        <div class="col-md-6 text-center">
-          Your contribution is much appreciated
-        </div>
-      </div> -->
     </div>
 
     <div class="row d-flex justify-content-center">
@@ -191,13 +186,13 @@
               personToggle && !showLoading
             ">
               <div class="col-md-12 ">
-                <label for="">How much do you want to pledge?</label>
+                <label for="">{{ memberAlreadyPledgedToPledgeItem ? 'Amount pledged' : 'How much do you want to pledge?' }}</label>
               </div>
               <!-- For range -->
               <div class="col-md-12" v-if="donorDetail.donorPaymentType == 2">
                 <el-input v-model="amountToPledge" :class="{ 'is-invalid': !withinRange }" placeholder="Enter amount"
                   @blur="validateRangeAmount" class="input-with-select"
-                  :disabled="route.query.pledgeID && route.query.pledgeID.length > 0">
+                  :disabled="memberAlreadyPledgedToPledgeItem">
                   <template #prepend>
                     <el-select v-model="selectedCurrencyCode" placeholder="Select" style="width: 115px"
                       @change="setSelectedCurrency" filterable>
@@ -226,7 +221,7 @@
               <!-- For free will -->
               <div class="col-md-12" v-if="donorDetail.donorPaymentType == 0">
                 <el-input v-model="amountToPledge" placeholder="Enter amount" class="input-with-select"
-                  :disabled="route.query.pledgeID && route.query.pledgeID.length > 0">
+                  :disabled="memberAlreadyPledgedToPledgeItem">
                   <template #prepend>
                     <el-select v-model="selectedCurrencyCode" placeholder="Select" style="width: 115px"
                       @change="setSelectedCurrency" filterable>
@@ -290,11 +285,8 @@
 
             </div>
 
-            <div class=" row mt-3 d-flex justify-content-center
-                                              ">
-              <div class="
-                                                  col-10 col-sm-8 col-md-7   pl-0 
-                                                ">
+            <div class=" row mt-3 d-flex justify-content-center">
+              <div class="col-10 col-sm-8 col-md-7   pl-0">
                 <div class="row">
                   <div class="col-3">
                     <img src="../../assets/VisaDebit.png" class="w-100">
@@ -377,7 +369,7 @@ export default {
     const personToggle = ref(false);
     const associationLogo = ref("")
     const churchLogo2 = ref("")
-    let newContact = reactive({})
+    let newContact = ref({})
     const store = useStore();
     const withinRange = ref(true);
     const searchRef = ref("");
@@ -492,11 +484,13 @@ export default {
         if (data.pledgeResponseDTO && Object.keys(data.pledgeResponseDTO).length > 0) {
           memberAlreadyPledgedToPledgeItem.value = true
           amountToPledge.value = data.pledgeResponseDTO.amount
+          amountToPayNow.value = data.pledgeResponseDTO.balance
           pledgedData.value = data.pledgeResponseDTO
-
+          
         } else {
           memberAlreadyPledgedToPledgeItem.value = false
           pledgedData.value = new Object();
+          amountToPayNow.value = ""
         }
 
         if (!data.person) {
@@ -633,9 +627,9 @@ export default {
     const payWithPaystack = (responseObject) => {
       /*eslint no-undef: "warn"*/
       let handler = PaystackPop.setup({
-        key: process.env.VUE_APP_PAYSTACK_PUBLIC_KEY_LIVE,
-        // key: process.env.VUE_APP_PAYSTACK_API_KEY,
-        email: contactDetail.value.email ? contactDetail.value.email : newContact.email,
+        // key: process.env.VUE_APP_PAYSTACK_PUBLIC_KEY_LIVE,
+        key: process.env.VUE_APP_PAYSTACK_API_KEY,
+        email: contactDetail.value.email ? contactDetail.value.email : newContact.value.email,
         amount: amountToPayNow.value * 100,
         currency: selectedCurrencyCode.value,
         channels: ['card', 'bank', 'ussd', 'qr', 'mobile_money', 'bank_transfer'],
@@ -649,6 +643,7 @@ export default {
           })
         },
         callback: function (response) {
+          console.log(response)
           txnRef.value = response.tx_ref;
           confirmPayment();
         },
@@ -680,7 +675,7 @@ export default {
             selectPledgeItemID.value = null;
           }
           contactDetail.value = new Object();
-          newContact = new Object();
+          newContact.value = new Object();
           maxName.value = "";
           maxEmail.value = ""
         } else {
@@ -724,17 +719,18 @@ export default {
       }
 
       window.FlutterwaveCheckout({
-        public_key: process.env.VUE_APP_FLUTTERWAVE_PUBLIC_KEY_LIVE,
-        // public_key: process.env.VUE_APP_FLUTTERWAVE_TEST_KEY_TEST,
+        // public_key: process.env.VUE_APP_FLUTTERWAVE_PUBLIC_KEY_LIVE,
+        public_key: process.env.VUE_APP_FLUTTERWAVE_TEST_KEY_TEST,
         tx_ref: responseObject.transactionReference,
         amount: amountToPayNow.value,
         currency: selectedCurrencyCode.value,
         country: country,
         payment_options: "card,ussd",
         customer: {
-          email: contactDetail.value.email ? contactDetail.value.email : newContact.email,
+          email: contactDetail.value.email ? contactDetail.value.email : newContact.value.email,
         },
         callback: (response) => {
+          console.log(response)
           txnRef.value = response.tx_ref;
           confirmPayment();
         },
@@ -773,10 +769,10 @@ export default {
         background: 'rgba(255, 255, 255, 0.9)',
       })
       let gatewayService = gatewayType === 1 ? 'Paystack' : gatewayType == 2 ? 'Flutterwave' : null
-
-      newContact = { ...newContact, mobilePhone: userSearchString.value }
+      
+      newContact.value = { ...newContact.value, mobilePhone: userSearchString.value }
       let payload = {
-        person: contactDetail.value && Object.keys(contactDetail.value).length > 0 && contactDetail.value.id ? { id: contactDetail.value.id } : newContact,
+        person: contactDetail.value && Object.keys(contactDetail.value).length > 0 && contactDetail.value.id ? { id: contactDetail.value.id } : newContact.value,
         pledgeItemDTO: donorDetail.value,
         pledgeResponseDTO: pledgedData.value && Object.keys(pledgedData.value).length > 0 ? pledgedData.value : { currency: selectedCurrency.value, amount: amountToPledge.value },
         pledgePaymentDTO: pledgeActionType.value == 1 ? { currency: selectedCurrency.value, amount: amountToPayNow.value } : null,
@@ -806,7 +802,7 @@ export default {
               selectPledgeItemID.value = null;
             }
             contactDetail.value = new Object();
-            newContact = new Object();
+            newContact.value = new Object();
             maxName.value = "";
             maxEmail.value = ""
           }
