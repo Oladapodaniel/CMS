@@ -626,7 +626,9 @@ export default {
         callback: function (response) {
           console.log(response)
           txnRef.value = response.tx_ref;
-          confirmPayment();
+          let trans_id = response.trxref
+           let tx_ref = response.trans
+          confirmPayment(tx_ref, trans_id);
         },
       });
       handler.openIframe();
@@ -642,11 +644,11 @@ export default {
     };
     getFlutterwaveModules();
 
-    const confirmPayment = async () => {
+    const confirmPayment = async (tx_ref, trans_id) => {
 
       try {
         const res = await axios.post(
-          `/ConfirmInitializeContributionAndPledgePayment?txnref=${txnRef.value}`
+          `/ConfirmInitializeContributionAndPledgePayment?txnref=${tx_ref}&id=${trans_id}`
         );
         if (res.data.status) {
           paymentSuccessfulDialog.value = true;
