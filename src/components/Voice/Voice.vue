@@ -19,7 +19,7 @@
             <div class="col-md-3" id="side-menu">  
               <div class="row">
                 <div class="col-md-12 mt-4">
-                  <el-button round class="font-weight-bold w-100" size="large">
+                  <el-button round class="font-weight-bold w-100" size="large" color="#136acd" >
                     Upload voice
                   </el-button>
                 </div>

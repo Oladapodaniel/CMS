@@ -2,163 +2,161 @@
   <div class="container-fluid">
     <div class="row">
       <div class="col-md-12 px-0">
-        <div class="container">
-          <div class="row mt-4">
-            <div class="col-md-6">
-              <h2 class="head-text">Pledge Overview</h2>
-            </div>
-            <div class="col-md-6 d-flex justify-content-md-end">
-              <el-button
-                color="#136acd"
-                class="header-btn text-white"
-                data-toggle="modal"
-                data-target="#exampleModalLong"
-                round
-              >
-                Record Payment
-              </el-button>
-            </div>
+        <div class="row mt-4">
+          <div class="col-md-6">
+            <h2 class="head-text">Pledge Overview</h2>
           </div>
-          <hr class="mb-4" />
+          <div class="col-md-6 d-flex justify-content-md-end">
+            <el-button
+              color="#136acd"
+              class="header-btn text-white"
+              data-toggle="modal"
+              data-target="#exampleModalLong"
+              round
+            >
+              Record Payment
+            </el-button>
+          </div>
         </div>
-        <div class="container">
-          <div class="row mb-4 mt-3">
-            <div class="col-md-4">
-              <span class="theader"> Pledge Name </span>
-              <div class="my-3">
-                <span class="evt-name">
-                  {{ pledgeName }}
-                </span>
-              </div>
-            </div>
-            <div class="col-md-4">
-              <span class="theader"> Donor </span>
-              <div class="my-3">
-                <span class="evt-name">
-                  {{ personName }}
-                </span>
-              </div>
-            </div>
-            <div class="col-md-4">
-              <span class="theader">Date</span>
-              <div class="my-3">
-                <span class="evt-name"> {{ date(pledgeDate) }}</span>
-              </div>
-            </div>
-            <div class="col-md-4">
-              <span class="theader"> Pledge Amount</span>
-              <div class="my-3">
-                <span class="evt-name">
-                  {{ Math.abs(pledgeAmount).toLocaleString() }}.00
-                </span>
-              </div>
-            </div>
-            <div class="col-md-4">
-              <span class="theader">Total payment</span>
-              <div class="my-3">
-                <span class="evt-name">
-                  {{ Math.abs(pledgePaymentSum).toLocaleString() }}.00
-                </span>
-              </div>
-            </div>
+        <hr class="mb-4" />
 
-            <div class="col-md-4">
-              <span class="theader">Balance</span>
-              <div class="my-3">
-                <span class="evt-name">
-                  {{ Math.abs(pledgeBalance).toLocaleString() }}.00</span
-                >
-              </div>
+        <div class="row mb-4 mt-3">
+          <div class="col-md-4">
+            <span class="theader"> Pledge Name </span>
+            <div class="my-3">
+              <span class="evt-name">
+                {{ pledgeName }}
+              </span>
             </div>
           </div>
-          <div class="row mb-5">
-            <div class="col-md-12">
-              <hr class="mb-0" />
-              <div class="pg-content">
-                <div class="row mb-3">
-                  <div class="col-md-12">
-                    <span class="attendance-header">Payment link</span>
-                  </div>
+          <div class="col-md-4">
+            <span class="theader"> Donor </span>
+            <div class="my-3">
+              <span class="evt-name">
+                {{ personName }}
+              </span>
+            </div>
+          </div>
+          <div class="col-md-4">
+            <span class="theader">Date</span>
+            <div class="my-3">
+              <span class="evt-name"> {{ date(pledgeDate) }}</span>
+            </div>
+          </div>
+          <div class="col-md-4">
+            <span class="theader"> Pledge Amount</span>
+            <div class="my-3">
+              <span class="evt-name">
+                {{ Math.abs(pledgeAmount).toLocaleString() }}.00
+              </span>
+            </div>
+          </div>
+          <div class="col-md-4">
+            <span class="theader">Total payment</span>
+            <div class="my-3">
+              <span class="evt-name">
+                {{ Math.abs(pledgePaymentSum).toLocaleString() }}.00
+              </span>
+            </div>
+          </div>
+
+          <div class="col-md-4">
+            <span class="theader">Balance</span>
+            <div class="my-3">
+              <span class="evt-name">
+                {{ Math.abs(pledgeBalance).toLocaleString() }}.00</span
+              >
+            </div>
+          </div>
+        </div>
+
+        <div class="row">
+          <div class="col-md-12">
+            <hr class="mb-0" />
+            <div class="pg-content">
+              <div class="row mb-3">
+                <div class="col-md-12">
+                  <span class="attendance-header">Payment link</span>
                 </div>
-                <div class="row">
-                  <div class="col-12">
-                    <div class="row">
-                      <div class="col-12 mb-5 mx-3 pt-1 border shadow rounded">
-                        <div class="row">
-                          <div
-                            class="col-md-2 col-sm-2 d-flex justify-content-center image mt-2"
-                          >
-                            <img
-                              src="../../assets/link.svg"
-                              class="w-100"
-                              alt="marked Attendance image"
-                              style="width: 60px; height: 60px"
-                            />
-                          </div>
-                          <div class="col-md-10 col-sm-10 mt-3">
-                            <a class="text-decoration-none"
-                              ><h4
-                                class="header4 link-color c-pointer"
-                                @click="copyRegLink"
-                              >
-                                Online Payment Link
-                              </h4></a
-                            >
-                            <p class="mb-4">
-                              <span
-                                class="d-flex align-items-center justify-content-between"
-                                ><input
-                                  type="text"
-                                  ref="selectedLink"
-                                  v-model="pledgePaymentLink"
-                                  class="border-0"
-                                  placeholder="Link"
-                                  style="width: 80%"
-                                />
-                                <div>
-                                  <i
-                                    class="pi pi-copy ml-2 c-pointer"
-                                    @click="copyLink"
-                                    style="font-size: 22px"
-                                  ></i>
-                                </div>
-                              </span>
-                            </p>
-                          </div>
+              </div>
+              <div class="row">
+                <div class="col-12">
+                  <div class="row">
+                    <div class="col-12 mb-3 border shadow rounded">
+                      <div class="row">
+                        <div
+                          class="col-md-2 col-sm-2 d-flex justify-content-center image mt-2"
+                        >
+                          <img
+                            src="../../assets/link.svg"
+                            class="w-100"
+                            alt="marked Attendance image"
+                            style="width: 60px; height: 60px"
+                          />
                         </div>
-                        <div class="row">
-                          <div
-                            class="col-md-2 col-sm-2 d-flex mt-2 justify-content-center image"
+                        <div class="col-md-10 col-sm-10 mt-3">
+                          <a class="text-decoration-none"
+                            ><h4
+                              class="header4 link-color c-pointer"
+                              @click="copyRegLink"
+                            >
+                              Online Payment Link
+                            </h4></a
                           >
-                            <img
-                              src="../../assets/link.svg"
-                              class="w-100"
-                              alt="marked Attendance image"
-                              style="width: 60px; height: 60px"
-                            />
-                          </div>
-                          <div class="col-md-10 col-sm-10 mt-3">
-                            <a class="text-decoration-none"
-                              ><h4
-                                class="header4 link-color c-pointer"
-                                @click="copyRegLink"
-                              >
-                                Virtual Account
-                              </h4></a
-                            >
-                            <div
-                              class="align-item-center justify-content-between d-flex"
-                            >
-                              <div class="mb-2">
-                                <div class="p-2"></div>
-                              </div>
-                              <div class="mt-4">
+                          <p class="mb-4">
+                            <span
+                              class="d-flex align-items-center justify-content-between"
+                              ><input
+                                type="text"
+                                ref="selectedLink"
+                                v-model="pledgePaymentLink"
+                                class="border-0"
+                                placeholder="Link"
+                                style="width: 80%"
+                              />
+                              <div>
                                 <i
                                   class="pi pi-copy ml-2 c-pointer"
                                   @click="copyLink"
                                   style="font-size: 22px"
                                 ></i>
                               </div>
+                            </span>
+                          </p>
+                        </div>
+                      </div>
+                      <div class="row">
+                        <div
+                          class="col-md-2 col-sm-2 d-flex mt-2 justify-content-center image"
+                        >
+                          <img
+                            src="../../assets/link.svg"
+                            class="w-100"
+                            alt="marked Attendance image"
+                            style="width: 60px; height: 60px"
+                          />
+                        </div>
+                        <div class="col-md-10 col-sm-10 mt-3">
+                          <a class="text-decoration-none"
+                            ><h4
+                              class="header4 link-color c-pointer"
+                              @click="copyRegLink"
+                            >
+                              Virtual Account
+                            </h4></a
+                          >
+                          <div
+                            class="align-item-center justify-content-between d-flex"
+                          >
+                            <div class="mb-2">
+                              <div class="p-2"></div>
+                            </div>
+                            <div class="mt-4">
+                              <i
+                                class="pi pi-copy ml-2 c-pointer"
+                                @click="copyLink"
+                                style="font-size: 22px"
+                              ></i>
                             </div>
                           </div>
                         </div>
@@ -168,68 +166,66 @@
                 </div>
               </div>
             </div>
-            <div class="container-fluid">
-              <div
-                class="row d-flex justify-content-between align-items-center mt-5 px-0"
->
-                <div>
-                  <div class="head-text">Payments</div>
-                </div>
-                <div>
-                  <el-button
-                    color="#136acd"
-                    class="header-btn text-white"
-                    data-toggle="modal"
-                    data-target="#exampleModalLong"
-                    round
-                  >
-                    Record Payment
-                  </el-button>
-                </div>
-                <div class="col-md-12 px-0">
-                  <hr class="my-3" />
-                </div>
-              </div>
-              <Table
-                :data="searchPledgePayment"
-                :headers="pledgeHeaders"
-                :checkMultipleItem="false"
-                v-loading="loading"
-              >
-                <template v-slot:date="{ item }">
-                  <div class="c-pointer">{{ date(item.date) }}</div>
-                </template>
-                <template v-slot:channel="{ item }">
-                  <div class="c-pointer">{{ item.channel }}</div>
-                </template>
-                <template v-slot:amountPaid="{ item }">
-                  <div class="c-pointer">
-                    {{ Math.abs(item.amount).toLocaleString() }}.00
-                  </div>
-                </template>
-                <template v-slot:action="{ item }">
-                  <el-dropdown trigger="click">
-                    <el-icon>
-                      <MoreFilled />
-                    </el-icon>
-                    <template #dropdown>
-                      <el-dropdown-menu>
-                        <el-dropdown-item> </el-dropdown-item>
-                        <el-dropdown-item>
-                          <div
-                            @click.prevent="showConfirmModal(item.id, index)"
-                            class="text-color"
-                          >
-                            Delete
-                          </div>
-                        </el-dropdown-item>
-                      </el-dropdown-menu>
-                    </template>
-                  </el-dropdown>
-                </template>
-              </Table>
+          </div>
+        </div>
+        <div class="row mt-3">
+          <div class="col-md-6">
+            <h2 class="head-text">Payments</h2>
+          </div>
+          <div class="col-md-6 d-flex justify-content-md-end">
+            <el-button
+              color="#136acd"
+              class="header-btn text-white"
+              data-toggle="modal"
+              data-target="#exampleModalLong"
+              round
+            >
+              Record Payment
+            </el-button>
+          </div>
+          <div class="col-12">
+            <div class="col-md-12 px-0">
+              <hr class="my-3" />
             </div>
-            <!-- <PledgeTransaction /> -->
+            <Table
+              :data="searchPledgePayment"
+              :headers="pledgeHeaders"
+              :checkMultipleItem="false"
+              v-loading="loading"
+              v-if="allPledgePaymentList.length > 0"
+            >
+              <template v-slot:date="{ item }">
+                <div class="c-pointer">{{ date(item.date) }}</div>
+              </template>
+              <template v-slot:channel="{ item }">
+                <div class="c-pointer">{{ item.channel }}</div>
+              </template>
+              <template v-slot:amountPaid="{ item }">
+                <div class="c-pointer">
+                  {{ Math.abs(item.amount).toLocaleString() }}.00
+                </div>
+              </template>
+              <template v-slot:action="{ item }">
+                <el-dropdown trigger="click">
+                  <el-icon>
+                    <MoreFilled />
+                  </el-icon>
+                  <template #dropdown>
+                    <el-dropdown-menu>
+                      <el-dropdown-item> </el-dropdown-item>
+                      <el-dropdown-item>
+                        <div
+                          @click.prevent="showConfirmModal(item.id, index)"
+                          class="text-color"
+                        >
+                          Delete
+                        </div>
+                      </el-dropdown-item>
+                    </el-dropdown-menu>
+                  </template>
+                </el-dropdown>
+              </template>
+            </Table>
           </div>
         </div>
       </div>
