@@ -1,187 +1,181 @@
 <template>
-    <div class="whole-con">
-    <div class="main-con">
-      <div class="main-body container-wide">
-        <div class="col-sm-12">
-        <div class="top mt-3 pl-0">
-          <div class="events">
-            <div class="attendanceResponsive">Attendance & Check-in
+  <div class="container-top" :class="{ 'container-slim': lgAndUp || xlAndUp }">
+          <div class="d-flex flex-column flex-sm-row justify-content-sm-between mb-3">
+            <div class="head-text">
+              <div class="attendanceResponsive">Attendance & Check-in</div>
             </div>
-          </div>
-          <div class="actions">
-            
-              <router-link :to="{ name: 'AddCheckin' }" v-if="route.path === '/tenant/attendancecheckin'">
-                <button class="buttonn add-person-btn">
+            <div class="actions">
+              <router-link
+                :to="{ name: 'AddCheckin' }"
+                v-if="route.path === '/tenant/attendancecheckin'"
+              >
+                <el-button class="header-btn text-white" color="#136acd" round>
                   Add New Attendance
-                </button>
+                </el-button>
               </router-link>
-          </div>
-        </div>
-      </div>
-      <hr class="hr" />
-
-        <div class="row">
-            <div class="col-md-12">
-                <router-view></router-view>
             </div>
+          </div>
+        <hr class="hr" />
+
+        <div class="container-fluid">
+            <router-view></router-view>
         </div>
-    </div>
   </div>
-</div>
 </template>
 
 <script>
 import { useRoute } from "vue-router";
+import deviceBreakpoint from "../../../mixins/deviceBreakpoint";
 export default {
-    setup () {
-        const route = useRoute();
+  setup() {
+    const route = useRoute();
+    const { lgAndUp, xlAndUp } = deviceBreakpoint();
 
-        return {
-            route,
-        }
-    }
-}
+    return {
+      route,
+      lgAndUp,
+      xlAndUp,
+    };
+  },
+};
 </script>
 
 <style scoped>
 * {
-    color: #02172E;
-    /* font: normal normal 600 ¿16px/22px Nunito Sans; */
-    font-family: Nunito Sans !important;
- }
+  color: #02172e;
+  /* font: normal normal 600 ¿16px/22px Nunito Sans; */
+  font-family: Nunito Sans !important;
+}
 
-    .events {
-        font: normal normal 800 29px Nunito sans;
-    }
+.events {
+  font: normal normal 800 29px Nunito sans;
+}
 
-    .whole-con {
-        display: flex;
-        height: 100vh;
-        }
+.whole-con {
+  display: flex;
+  height: 100vh;
+}
 
-    .main-con {
-        width: 100%;
-        height: 70%;
-        }
+.main-con {
+  width: 100%;
+  height: 70%;
+}
 
-        .main-body {
-        height: 100%;
-        }
+.main-body {
+  height: 100%;
+}
 
-        .top {
-        display: flex;
-        justify-content: space-between;
-        align-items: center;
-        padding: 10px;
-        }
-
-        .buttonn {
-        padding: 8px 20px;
-        border: none;
-        border-radius: 22px;
-        font-size: 16px;
-        font-weight: 600;
-        margin: 0 8px;
-        outline: none;
-        text-decoration: none;
-        box-sizing: border-box;
-        }
-        
-
-        .buttonn:hover {
-        cursor: pointer;
-        }
-
-        .no-person {
-        height: 100%;
-        display: flex;
-        text-align: center;
-        }
-
-        .add-person-btn {
-        background: #136acd;
-        color: #fff;
-        }
-
-        .more-btn {
-        background: #dde2e6;
-        }
-
-
-        .btn-icon {
-        padding: 0 8px;
-        }
-
-        .empty-img {
-        width: 30%;
-        min-width: 397px;
-        margin: auto;
-        }
-
-        .empty-img img {
-        width: 100%;
-        max-width: 200px;
-        }
-
-        @media screen and (min-width: 990px) {
-        .main-body {
-            width: 95%;
-            /* max-width: 1021px; */
-            margin: 0 auto;
-        }
-        }
-
-        @media screen and (min-width: 1400px) {
-        .main-con {
-            width: 90%;
-            margin: 0 auto;
-        }
-
-        .top {
-            height: 90px;
-        }
-
-        .no-person {
-        height: calc(100% - 90px);
-    }
-        }
-
-        
-@media (max-width: 640px) {
-    .top {
-  display: flex;;
+.top {
+  display: flex;
+  justify-content: space-between;
   align-items: center;
-  flex-direction: column;
-    }
-    .actions {
-        margin-top: 15px;
-    }
+  padding: 10px;
+}
+
+.buttonn {
+  padding: 8px 20px;
+  border: none;
+  border-radius: 22px;
+  font-size: 16px;
+  font-weight: 600;
+  margin: 0 8px;
+  outline: none;
+  text-decoration: none;
+  box-sizing: border-box;
+}
+
+.buttonn:hover {
+  cursor: pointer;
+}
+
+.no-person {
+  height: 100%;
+  display: flex;
+  text-align: center;
+}
+
+.add-person-btn {
+  background: #136acd;
+  color: #fff;
+}
+
+.more-btn {
+  background: #dde2e6;
+}
+
+.btn-icon {
+  padding: 0 8px;
+}
+
+.empty-img {
+  width: 30%;
+  min-width: 397px;
+  margin: auto;
+}
+
+.empty-img img {
+  width: 100%;
+  max-width: 200px;
+}
+
+@media screen and (min-width: 990px) {
+  .main-body {
+    width: 95%;
+    /* max-width: 1021px; */
+    margin: 0 auto;
+  }
+}
+
+@media screen and (min-width: 1400px) {
+  .main-con {
+    width: 90%;
+    margin: 0 auto;
+  }
+
+  .top {
+    height: 90px;
+  }
+
+  .no-person {
+    height: calc(100% - 90px);
+  }
+}
+
+@media (max-width: 640px) {
+  .top {
+    display: flex;
+    align-items: center;
+    flex-direction: column;
+  }
+  .actions {
+    margin-top: 15px;
+  }
 }
 
 @media (max-width: 566px) {
-    /* .button {
+  /* .button {
         width: 160px;
     } */
 }
 
 @media (max-width: 399px) {
-    .actions {
-        display: flex;
-        flex-direction: column;
-        align-items: center;
-    }
+  .actions {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+  }
 
-    .button {
-        margin-top: 10px;
-    }
+  .button {
+    margin-top: 10px;
+  }
 }
 
 @media (max-width: 399px) {
-   .attendanceResponsive{
-        color: #02172E;
-        font-family: Nunito Sans !important;
-        font-size: 26px;
-        padding-top: 20px;
-   }
+  .attendanceResponsive {
+    color: #02172e;
+    font-family: Nunito Sans !important;
+    font-size: 26px;
+    padding-top: 20px;
+  }
 }
 </style>
