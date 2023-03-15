@@ -1,43 +1,46 @@
 
 <template>
   <!-- tosin working on tables -->
-  <div class="row table">
-    <div class="col-12 px-0" id="table">
+  <div class="row mt-4 ">
+    <div class="col-md-12 px-0" id="table">
       <div class="top-con" id="ignore2">
-        <div class="table-top">
-          <div class="select-All mr-3">
-            <input
-              class="d-block d-md-none"
-              type="checkbox"
-              name="all"
-              id="all"
-              @change="markAllAttendance"
-              :checked="checkedAttendance.length === searchAttendance.length"
-            />
-            <label class="d-block d-md-none">SELECT ALL</label>
-            <i
-              class="
-                pi pi-trash
-                text-danger
-                mr-3
-                c-pointer
-                d-flex-inline
-                align-items-center
-              "
-              style="font-size: 20px; margin-bottom: 12px"
-              v-if="checkedAttendance.length > 0"
-              @click="modal"
-            >
-            </i
-            >&nbsp; &nbsp;
-          </div>
-          <div class="col-4">
+        <div class="table-top p-3 ">
+          <div class="d-flex flex-column flex-sm-row justify-content-end ">
+              <div>
+                <el-input
+                size="small"
+                v-model="searchText"
+                placeholder="Search..."
+                @keyup.enter.prevent="searchAttendanceInDB"
+                class="input-with-select"
+              >
+                <template #append>
+                  <el-button @click.prevent="searchAttendanceInDB">
+                    <el-icon :size="13">
+                      <Search />
+                    </el-icon>
+                  </el-button>
+                </template>
+              </el-input>
+              </div>
+            </div>
+            <div class="d-flex flex-column flex-sm-row justify-content-start" v-if="checkedAttendance.length > 0">
+              <div class="">
+                <el-tooltip class="box-item" effect="dark" content="Delete attendance(s)" placement="top-start">
+              <el-icon :size="20" class=" c-pointer" v-if="checkedAttendance.length > 0" @click="modal">
+                <Delete />
+              </el-icon>
+            </el-tooltip>
+              </div>
+            </div>
+            
+          <!-- <div class="col-4">
             <p @click="toggleSearch" class="search-text w-100 mt-2">
               <i class="pi pi-search"></i> SEARCH
             </p>
-          </div>
+          </div> -->
 
-          <div class="search d-flex ml-2">
+          <!-- <div class="search d-flex ml-2">
             <label
               class="label-search d-flex"
               :class="{
@@ -51,12 +54,145 @@
                 <i class="pi pi-search"></i>
               </span>
             </label>
-          </div>
+          </div> -->
         </div>
+        <Table
+          :data="searchAttendance"
+          :headers="attendanceHeaders"
+          :checkMultipleItem="true"
+          v-loading="loading"
+          @checkedrow="handleSelectionChange"
+        >
+        <template v-slot:eventName="{ item }">
+          <div class="c-pointer">
+            <router-link
+              class="text-decoration-none font-weight-500 itemroute-color"
+              :to="{
+                name: 'CheckinType',
+                query: {
+                  activityID: item.eventID,
+                  activityName: item.fullEventName,
+                  groupId: item.groupID,
+                  groupName: item.fullGroupName,
+                  id: item.id,
+                  code: item.attendanceCode,
+                },
+              }"
+            >
+              {{ item.fullEventName }}
+            </router-link>
+          </div>
+        </template>
+        <template v-slot:date="{ item }">
+          <div class="c-pointer">
+            <router-link
+              class="
+                text-decoration-none
+                font-weight-500
+                itemroute-color
+              "
+              :to="{
+                name: 'CheckinType',
+                query: {
+                  activityID: item.eventID,
+                  activityName: item.fullEventName,
+                  groupId: item.groupID,
+                  groupName: item.fullGroupName,
+                  id: item.id,
+                  code: item.attendanceCode,
+                },
+              }"
+            >
+              {{ formatDate(item.eventDate) }}
+            </router-link>
+          </div>
+        </template>
+        <template v-slot:groupName="{ item }">
+          <div class="c-pointer" >
+            <router-link
+              class="
+                text-decoration-none
+                font-weight-500
+                itemroute-color
+              "
+              :to="{
+                name: 'CheckinType',
+                query: {
+                  activityID: item.eventID,
+                  activityName: item.fullEventName,
+                  groupId: item.groupID,
+                  groupName: item.fullGroupName,
+                  id: item.id,
+                  code: item.attendanceCode,
+                },
+              }"
+            >
+              {{ item.fullGroupName }}
+            </router-link>
+          </div>
+        </template>
+        <template v-slot:action="{ item }">
+          <el-dropdown trigger="click">
+            <el-icon>
+              <MoreFilled />
+            </el-icon>
+            <template #dropdown>
+              <el-dropdown-menu>
+                <el-dropdown-item>
+                  <router-link
+                    class="text-decoration-none text-dark"
+                    :to="{
+                      name: 'AttendanceReport',
+                      params: { id: item.id },
+                    }"
+                    >View Details</router-link
+                  >
+                </el-dropdown-item>
+                <el-dropdown-item>
+                  <router-link
+                    class="text-decoration-none text-dark"
+                    :to="{
+                      name: 'CheckinType',
+                      query: {
+                        activityID: item.eventID,
+                        activityName: item.fullEventName,
+                        groupId: item.groupID,
+                        groupName: item.fullGroupName,
+                        id: item.id,
+                        code: item.attendanceCode,
+                      },
+                    }"
+                    >Checkin</router-link
+                  >
+                </el-dropdown-item>
+                <!-- <el-dropdown-item>
+                 <router-link
+                    class="text-decoration-none text-dark"
+                    :to="{
+                      name: 'AddAttendance',
+                      params: {
+                        id: item.id,
+                      },
+                    }"
+                    >Edit</router-link
+                  >
+                </el-dropdown-item> -->
+                <el-dropdown-item>
+                  <div
+                    @click.prevent="showConfirmModal(item.id, index)"
+                    class="text-color"
+                  >
+                    Delete
+                  </div>
+                </el-dropdown-item>
+              </el-dropdown-menu>
+            </template>
+          </el-dropdown>
+        </template>
+        </Table>
       </div>
 
-      <!-- search groups -->
-      <div>
+      <!-- <div>
         <div class="container-fluid d-none d-md-block">
           <div class="row t-header">
             <div class="col-md-1">
@@ -112,14 +248,12 @@
             >
               Action
             </div>
-            <!-- </div> -->
           </div>
         </div>
 
         <div class="row" style="margin: 0">
           <div class="col-12 parent-desc px-0">
 
-            <!-- loadding -->
             <div class="row" v-if="loading">
               <div class="col-md-12">
                 <div class="row">
@@ -144,7 +278,6 @@
                 </div>
               </div>
             </div>
-            <!-- loadding -->
 
             <div
               class="
@@ -333,18 +466,7 @@
                               >Checkin</router-link
                             >
                           </a>
-                          <!-- <a class="dropdown-item">
-                            <router-link
-                              class="text-decoration-none text-dark"
-                              :to="{
-                                name: 'AddAttendance',
-                                params: {
-                                  id: item.id,
-                                },
-                              }"
-                              >Edit</router-link
-                            >
-                          </a> -->
+
 
                           <a
                             class="dropdown-item elipsis-items"
@@ -361,7 +483,7 @@
             </div>
           </div>
         </div>
-      </div>
+      </div> -->
 
       <div class="d-flex justify-content-end my-3">
         <el-pagination
@@ -383,33 +505,32 @@
     </div>
   </div>
   <!-- tosin working on tables -->
-
-  <ConfirmDialog />
-  <Toast />
   <!-- end of table area -->
 </template>
 
 <script>
 import { ref, computed, watch, watchEffect } from "vue";
 import dateFormatter from "../../../services/dates/dateformatter";
-import { useConfirm } from "primevue/useconfirm";
-import { useToast } from "primevue/usetoast";
-import ConfirmDialog from "primevue/confirmdialog";
 import stopProgressBar from "../../../services/progressbar/progress";
 import axios from "@/gateway/backendapi";
-import Toast from "primevue/toast";
-import Pagination from "../../../components/pagination/PaginationButtons.vue";
+import Table from "@/components/table/Table";
+import { ElMessage, ElMessageBox } from "element-plus";
 
 export default {
   props: ["list", "errorOccurred", "totalItems"],
-  components: { ConfirmDialog, Toast, Pagination },
+  components: { Table },
   emits: ["pagedattendance", "checkedattendance"],
   setup(props, { emit }) {
-    let toast = useToast();
     const expose = ref(false);
     const loading = ref(false);
     const attendanceList = ref([]);
     const checkedAttendance = ref([]);
+    const attendanceHeaders = ref([
+      { name: "Event Name", value: "eventName" },
+      { name: "Date", value: "date" },
+      { name: "Group Name", value: "groupName" },
+      { name: "Action", value: "action" },
+    ]);
     const serverOptions = ref({
       page: 1,
       rowsPerPage: 100,
@@ -428,6 +549,9 @@ export default {
     const formatDate = (date) => {
       return dateFormatter.monthDayYear(date);
     };
+    const handleSelectionChange = (val) => {
+      checkedAttendance.value = val
+    }
 
     const convert = (x) => {
       return x.map((i) => i.id);
@@ -476,13 +600,11 @@ export default {
           let incomingRes = res.data;
         
           if (incomingRes.toString().toLowerCase().includes("attendance")) {
-            toast.add({
-              severity: "success",
-              summary: "Confirmed",
-              detail: "Attendance(s) deleted successfully.",
-              life: 4000,
-            });
-
+            ElMessage({
+            type: "success",
+            message: "Attendance(s) deleted successfully.",
+            duration: 5000,
+          });
             emit("checkedattendance", checkedAttendance.value);
           }
          
@@ -490,26 +612,23 @@ export default {
         .catch((err) => {
           stopProgressBar();
           if (err.toString().toLowerCase().includes("network error")) {
-            toast.add({
-              severity: "warn",
-              summary: "Network Error",
-              detail: "Please ensure you have a strong internet connection",
-              life: 4000,
-            });
+            ElMessage({
+            type: "warning",
+            message: "Please ensure you have a strong internet connection",
+            duration: 5000,
+          });
           } else if (err.toString().toLowerCase().includes("timeout")) {
-            toast.add({
-              severity: "warn",
-              summary: "Request Delayed",
-              detail: "Request took too long to respond",
-              life: 4000,
-            });
+             ElMessage({
+            type: "warning",
+            message: "Request took too long to respond",
+            duration: 5000,
+          });
           } else {
-            toast.add({
-              severity: "warn",
-              summary: "Delete Failed",
-              detail: "Unable to delete attendance",
-              life: 4000,
-            });
+            ElMessage({
+            type: "warning",
+            message: "Unable to delete attendance",
+            duration: 5000,
+          });
           }
           console.log(err);
         });
@@ -521,46 +640,40 @@ export default {
         .then((res) => {
           console.log(res.status);
           if (res.status === 200) {
-            toast.add({
-              severity: "success",
-              summary: "Delete Successful",
-              detail: `${res.data}`,
-              life: 3000,
-            });
+            ElMessage({
+            type: "success",
+            message: res.data,
+            duration: 5000,
+          });
             emit("attendance-checkin", index);
           } else {
-            toast.add({
-              severity: "warn",
-              summary: "Delete Failed",
-              detail: `Please Try Again`,
-              life: 3000,
-            });
+            ElMessage({
+            type: "warning",
+            message: 'Delete Failed, Please Try Again',
+            duration: 5000,
+          });
           }
         })
         .catch((err) => {
           
           if (err.response) {
             console.log(err.response);
-            toast.add({
-              severity: "error",
-              summary: "Unable to delete",
-              detail: `${err.response}`,
-              life: 3000,
-            });
+             ElMessage({
+            type: "error",
+            message: err.response,
+            duration: 5000,
+          });
           } else if (
             err.response.toString().toLowerCase().includes("network error")
           ) {
-            toast.add({
-              severity: "warn",
-              summary: "Unable to delete",
-              detail: `Please ensure you have a strong internet connection`,
-              life: 3000,
-            });
+             ElMessage({
+            type: "warning",
+            message: 'Please ensure you have a strong internet connection',
+            duration: 5000,
+          });
           }
         });
     };
-
-    const confirm = useConfirm();
 
     const check1item = (ft) => {
       const attendanceIdx = checkedAttendance.value.findIndex(
@@ -574,24 +687,25 @@ export default {
       }
     };
     const modal = () => {
-      confirm.require({
-        message: "Are you sure you want to proceed?",
-        header: "Confirmation",
-        icon: "pi pi-exclamation-triangle",
-        acceptClass: "confirm-delete",
-        rejectClass: "cancel-delete",
-        accept: () => {
+      ElMessageBox.confirm(
+        "Are you sure you want to proceed?",
+        "Confirm delete",
+        {
+          confirmButtonText: "OK",
+          cancelButtonText: "Cancel",
+          type: "error",
+        }
+      )
+        .then(() => {
           checkOutAttendance();
-        },
-        reject: () => {
-          toast.add({
-            severity: "info",
-            summary: "Rejected",
-            detail: "You have rejected",
-            life: 3000,
+        })
+        .catch(() => {
+          ElMessage({
+            type: "info",
+            message: "You have rejected",
+            duration: 5000,
           });
-        },
-      });
+        });
     };
 
     const markAllAttendance = () => {
@@ -610,25 +724,25 @@ export default {
     };
 
     const showConfirmModal = (id, index) => {
-      confirm.require({
-        message: "Are you sure you want to proceed?",
-        header: "Confirmation",
-        icon: "pi pi-exclamation-triangle",
-        acceptClass: "confirm-delete",
-        rejectClass: "cancel-delete",
-        accept: () => {
+      ElMessageBox.confirm(
+        "Are you sure you want to proceed?",
+        "Confirm delete",
+        {
+          confirmButtonText: "OK",
+          cancelButtonText: "Cancel",
+          type: "error",
+        }
+      )
+        .then(() => {
           deleteAttendance(id, index);
-         
-        },
-        reject: () => {
-          toast.add({
-            severity: "info",
-            summary: "Rejected",
-            detail: "You have rejected",
-            life: 3000,
+        })
+        .catch(() => {
+          ElMessage({
+            type: "info",
+            message: "You have rejected",
+            duration: 5000,
           });
-        },
-      });
+        });
     };
 
     const searchIsVisible = ref(false);
@@ -636,6 +750,18 @@ export default {
       searchIsVisible.value = !searchIsVisible.value;
     };
     let searchText = ref("");
+    const searchAttendanceInDB = () => {
+      if (searchText.value !== "" && props.list.length > 0) {
+        return props.list.filter((i) => {
+          if (i.fullEventName)
+            return i.fullEventName
+              .toLowerCase()
+              .includes(searchText.value.toLowerCase());
+        });
+      } else {
+        return props.list;
+      }
+    };
     const searchAttendance = computed(() => {
       if (searchText.value !== "" && props.list.length > 0) {
         return props.list.filter((i) => {
@@ -672,6 +798,9 @@ export default {
 
     return {
       modal,
+      attendanceHeaders,
+      searchAttendanceInDB,
+      handleSelectionChange,
       attendanceList,
       checkOutAttendance,
       loading,
@@ -978,9 +1107,13 @@ export default {
 .table-top {
   font-weight: 800;
   font-size: 12px;
-  display: flex;
-  justify-content: flex-end;
+  background: #fff;
+  border: 1px solid #e0e0e0;
+  border-bottom: none;
+  /* display: flex;
+  justify-content: flex-end; */
 }
+
 .table-top label:hover,
 .table-top p:hover {
   cursor: pointer;
@@ -1152,7 +1285,7 @@ export default {
   justify-content: flex-end;
   background: #fff;
   padding: 10px 0;
-  border-radius: 0px 0px 22px 22px;
+  /* border-radius: 0px 0px 22px 22px; */
 }
 .board.members-count {
   max-height: 216px;
