@@ -1,7 +1,7 @@
 <template>
   <div class="container-fluid px-5 mt-5">
      <div class="row d-flex justify-content-between px-3">
-            <h3 class="heading-text ml-1">Basic Income And Revenue Report</h3>
+            <h3 class="heading-text ml-1">Basic Income And Revenue Reportee</h3>
             <!-- {{currencySymbol}} -->
             <div class="default-btn  font-weight-normal c-pointer"
                 @click="() => (showExport = !showExport)"
@@ -247,7 +247,8 @@ export default {
 
      const incomeEndPoint = () => {
          axios
-        .get(`/api/Reports/financials/getIncomeStatementReport?startDate=${new Date(startDate.value).toLocaleDateString("en-US")}&endDate=${new Date(endDate.value).toLocaleDateString("en-US")}`)
+        .get(`/api/Reports/financials/getAccountTypeReport?startDate=${new Date(startDate.value).toLocaleDateString("en-US")}&endDate=${new Date(endDate.value).toLocaleDateString("en-US")}&accountType=2`)
+        // .get(`/api/Reports/financials/getIncomeStatementReport?startDate=${new Date(startDate.value).toLocaleDateString("en-US")}&endDate=${new Date(endDate.value).toLocaleDateString("en-US")}`)
         .then((res) => {
           incomeReportData.value = res.data
            console.log(incomeReportData.value, 'incomereportData');

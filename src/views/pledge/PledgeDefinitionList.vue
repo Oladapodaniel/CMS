@@ -4,7 +4,7 @@
       <div class="head-text">Partnership and Pledge Item</div>
       <router-link
         to="/tenant/pledge/pledgedefinition"
-        class="grey-border primary-btn default-btn text-white text-center text-decoration-none primary-bg border-0 mt-3 mt-md-0"
+        class="grey-border primary-btn default-btn text-white text-center text-decoration-none primary-bg border-0 mt-3  mt-sm-0"
         >Create New
       </router-link>
       <div class="col-md-12 px-0">
@@ -20,7 +20,7 @@
       <div class="col-12 px-0" id="table">
         <div class="top-con" id="ignore2">
           <div class="table-top" v-if="searchPledge && searchPledge.length > 0">
-            <div class="col-4 my-3">
+            <div class="col-12 col-sm-4 my-3">
               <el-input
                 size="small"
                 v-model="searchText"

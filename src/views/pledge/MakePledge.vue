@@ -135,7 +135,7 @@
           </div>
         </div>
         <div
-          class="col-md-3 pledge-shadow mb-3 mb-md-0 order-first order-md-last"
+          class="col-md-3 mt-3 mt-md-0 pledge-shadow mb-3 mb-md-0 order-first order-md-last"
           v-if="selectedPledge.donorPaymentType == 2"
         >
           <h4 class="text-center font-weight-bold">RANGE</h4>
@@ -165,7 +165,7 @@
           </h5>
         </div>
         <div
-          class="col-md-3 pledge-shadow"
+          class="col-md-3 mt-3 mt-md-0 pledge-shadow"
           v-if="selectedPledge.donorPaymentType == 1"
         >
           <h4 class="text-center font-weight-bold">SPECIFIC</h4>
@@ -186,7 +186,7 @@
           </h5>
         </div>
         <div
-          class="col-md-3 pledge-shadow"
+          class="col-md-3 mt-3 mt-md-0 pledge-shadow"
           v-if="selectedPledge.donorPaymentType == 0"
         >
           <h4 class="text-center font-weight-bold">FREE WILL</h4>
@@ -199,7 +199,7 @@
           </h5>
         </div>
         <div
-          class="col-md-3 pledge-shadow"
+          class="col-md-3 mt-3 mt-md-0 pledge-shadow"
           v-if="Object.keys(selectedPledge).length == 0"
         >
           <h4 class="text-center font-weight-bold">Givers Never Lack</h4>
