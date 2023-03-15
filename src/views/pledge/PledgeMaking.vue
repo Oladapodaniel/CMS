@@ -20,7 +20,7 @@
         </div>
         <hr class="mb-4" />
 
-        <div class="row mb-4 mt-3">
+        <div class="row mb-4 mt-3" v-loading="loadingSummary">
           <div class="col-sm-6 col-md-4">
             <span class="theader"> Pledge Name </span>
             <div class="my-3">
@@ -210,8 +210,8 @@
               <h5 class="modal-title font-weight-bold">
                 Record a payment for this pledge
               </h5>
-              <div class="btn-close" data-dismiss="modal" aria-label="Close">
-                <i class="pi pi-times"></i>
+              <div class="btn-close" data-dismiss="modal" aria-label="Close" ref="closeRecordModal">
+                <el-icon><Close /></el-icon>
               </div>
             </div>
             <div class="modal-body">
@@ -291,7 +291,7 @@
                             <div class="col-12 col-md-8 col-lg-12 m-0 p-0">
                               <el-input
                                 type="number"
-                                v-model="pledgeAmount"
+                                v-model="pledgeBalance"
                                 :disabled="false"
                                 class="w-100"
                               />
@@ -334,11 +334,11 @@
             <div class="modal-footer">
               <el-button class="" data-dismiss="modal" round>Cancel</el-button>
               <el-button
-                data-dismiss="modal"
                 color="#136acd"
                 class="header-btn text-white"
                 round
                 @click="recordPayment"
+              :loading="savingRecord"
               >
                 Save</el-button
               >
@@ -400,6 +400,9 @@ export default {
     const allPledgePaymentList = ref([]);
     const currencyList = ref([]);
     const searchText = ref("");
+    const closeRecordModal = ref(null)
+    const savingRecord = ref(false)
+    const loadingSummary = ref(false)
 
     const pledgeHeaders = ref([
       { name: "DATE", value: "date" },
@@ -438,6 +441,7 @@ export default {
 
     const getSinglePledge = async () => {
       checking.value = false;
+      loadingSummary.value = true
       try {
         const res = await axios.get(
           `/api/Pledge/GetOnePledge?ID=${route.query.pledgeTypeID}`
@@ -456,9 +460,11 @@ export default {
         allPledgePaymentList.value = res.data.returnObject.pledgePayments;
 
         checking.value = true;
+        loadingSummary.value = false
       } catch (error) {
         NProgress.done();
         console.log(error);
+        loadingSummary.value = false
       }
     };
     if (route.query.pledgeTypeID) getSinglePledge();
@@ -480,10 +486,10 @@ export default {
       axios
         .delete(`/api/Pledge/DeletePledgePaymentPayment?ID=${id}`)
         .then((res) => {
-          console.log(res);
+          getSinglePledge();
           ElMessage({
             type: "success",
-            message: "Pledge form deleted",
+            message: "Pledge payment record deleted",
             duration: 5000,
           });
 
@@ -535,10 +541,11 @@ export default {
     };
 
     const recordPayment = async () => {
+      savingRecord.value = true
       let paymentData = {
         id: route.query.pledgeTypeID,
         pledgeID: route.query.pledgeTypeID,
-        amount: pledgeAmount.value,
+        amount: pledgeBalance.value,
         channel: selectedChannel.value.name,
         currencyID: pledgeCurrencyID.value,
       };
@@ -547,20 +554,22 @@ export default {
           "/api/Pledge/SavePledgePayment",
           paymentData
         );
-        console.log(res, "paypledge");
-
+        savingRecord.value = false
+        closeRecordModal.value.click()
+        
         ElMessage({
           type: "success",
-          message: "Pledge Payment successful",
+          message: "Pledge Payment recorded successfully",
           duration: 5000,
         });
         getSinglePledge();
         router.push(
           `/tenant/pledge/pledgemaking?pledgeTypeID=${route.query.pledgeTypeID}`
-        );
-      } catch (error) {
-        NProgress.done();
-        console.log(error);
+          );
+        } catch (error) {
+          NProgress.done();
+          console.log(error);
+          savingRecord.value = false
       }
     };
     const channel = ref([
@@ -576,7 +585,7 @@ export default {
     const willCopyLink = ref(false);
 
     const selectChannel = () => {
-      selectedRange.value = channel.value.find(
+      selectedChannel.value = channel.value.find(
         (i) => i.id == SelectedChannelId.value
       );
     };
@@ -790,6 +799,9 @@ export default {
       copyLink,
       pledgeAmount,
       SelectedChannelId,
+      closeRecordModal,
+      savingRecord,
+      loadingSummary
     };
   },
 };

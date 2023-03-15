@@ -7,7 +7,6 @@
             <img :src="churchLogo2" v-if="churchLogo2" class="link-image" alt="" style="width:60px" />
             <img src="../../assets/dashboardlinks/churchcloud.png" v-else class="link-image " alt="" />
           </div>
-          <!-- <span><h4 class="font-weight-bold mt-3">{{contributionDetail.tenantName ? contributionDetail.tenantName :  "Churchplus" }}</h4></span> -->
           <span>
             <h4 class="font-weight-bold mt-3">{{ churchName ? churchName : "Churchplus" }}</h4>
           </span>
@@ -131,13 +130,6 @@
                 </div>
               </div>
             </div>
-            <!-- <div class="col-md-11 px-0" v-if="personToggle && Object.keys(contactDetail).length == 0 && !showLoading">
-
-            </div> -->
-            <!-- <div class="col-md-11 mt-2 px-0"
-              v-if="personToggle && Object.keys(contactDetail).length == 0 && !showLoading">
-              
-            </div> -->
             <div class="col-md-11 mt-2" v-if="personToggle && !route.query.pledgeID && !memberAlreadyPledgedToPledgeItem">
               <el-radio-group v-model="pledgeActionType">
                 <el-radio label="1" size="large">Pledge and pay now</el-radio>
@@ -156,7 +148,6 @@
               </div>
               <div class="col-md-12">
                 <h2 class="font-weight-700 text-center">{{ pledgeAmountWithComma }}</h2>
-                <!-- <input type="text" v-model="amountToPledge" :disabled="checking" class="form-control" /> -->
               </div>
             </div>
             <div class="col-md-11 mt-3 px-0" v-if="
@@ -178,9 +169,6 @@
                   }}</h2>
                 </label>
               </div>
-              <!-- <div class="col-md-12">
-               
-              </div> -->
             </div>
             <div class="col-md-11 mt-3 px-0" v-if="
               personToggle && !showLoading
@@ -200,9 +188,6 @@
                     </el-select>
                   </template>
                 </el-input>
-                <!-- <el-input type="text" v-model="amountToPledge" 
-                   class="" placeholder="Enter amount"
-                   /> -->
                 <div class="invalid-feedback">
                   Please make sure the amount is within the range of
                   {{
@@ -229,8 +214,6 @@
                     </el-select>
                   </template>
                 </el-input>
-                <!-- <el-input type="text" v-model="amountToPledge" placeholder="Enter amount"
-                  :disabled="route.query.pledgeID && route.query.pledgeID.length > 0" /> -->
               </div>
               <div class="col-md-12" v-if="donorDetail.donorPaymentType == 1">
                 <el-input v-model="amountToPledge" placeholder="Enter amount" class="input-with-select" disabled>
@@ -241,8 +224,6 @@
                     </el-select>
                   </template>
                 </el-input>
-                <!-- <el-input type="text" v-model="amountToPledge" placeholder="Enter amount" disabled
-                  :disabled="route.query.pledgeID && route.query.pledgeID.length > 0" /> -->
               </div>
             </div>
             <div v-if="
@@ -719,8 +700,8 @@ export default {
       }
 
       window.FlutterwaveCheckout({
-        // public_key: process.env.VUE_APP_FLUTTERWAVE_PUBLIC_KEY_LIVE,
-        public_key: process.env.VUE_APP_FLUTTERWAVE_TEST_KEY_TEST,
+        public_key: process.env.VUE_APP_FLUTTERWAVE_PUBLIC_KEY_LIVE,
+        // public_key: process.env.VUE_APP_FLUTTERWAVE_TEST_KEY_TEST,
         tx_ref: responseObject.transactionReference,
         amount: amountToPayNow.value,
         currency: selectedCurrencyCode.value,
