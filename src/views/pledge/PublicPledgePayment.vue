@@ -374,7 +374,6 @@ export default {
     const contributionDetail = ref({});
     const amountFrom = ref("");
     const amountTo = ref("");
-    const logoUrl = `https://flutterwave.com/images/logo-colored.svg`;
     const isProduction = true;
     const searchedContact = ref({});
     const selectedContact = ref({});
@@ -386,7 +385,6 @@ export default {
     const pledgeActionType = ref("1");
     const maxName = ref("")
     const maxEmail = ref("")
-    const txnRef = ref("");
     const pledgeCategory = ref([
       { name: "Free will" },
       { name: "Specific" },
@@ -625,9 +623,8 @@ export default {
         },
         callback: function (response) {
           console.log(response)
-          txnRef.value = response.tx_ref;
           let trans_id = response.trxref
-           let tx_ref = response.trans
+           let tx_ref = response.trxref
           confirmPayment(tx_ref, trans_id);
         },
       });
@@ -716,7 +713,6 @@ export default {
         },
         callback: (response) => {
           console.log(response)
-          txnRef.value = response.tx_ref;
           let trans_id = response.transaction_id
            let tx_ref = response.tx_ref
           confirmPayment(trans_id, tx_ref);
@@ -835,7 +831,6 @@ export default {
       //   enteredValue,
       showLoading,
       // CheckAfterEleven,
-      txnRef,
       validateRangeAmount,
       validatePaidAmount,
       withinRange,
