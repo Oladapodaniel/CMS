@@ -120,13 +120,6 @@
                                 </el-button>
                               </template>
                             </el-input>
-                              <!-- <div>
-                                <i
-                                  class="pi pi-copy ml-2 c-pointer"
-                                  @click="copyLink"
-                                  style="font-size: 22px"
-                                ></i>
-                              </div> -->
                             </span>
                           </p>
                         </div>
