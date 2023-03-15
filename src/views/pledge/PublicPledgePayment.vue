@@ -608,8 +608,8 @@ export default {
     const payWithPaystack = (responseObject) => {
       /*eslint no-undef: "warn"*/
       let handler = PaystackPop.setup({
-        // key: process.env.VUE_APP_PAYSTACK_PUBLIC_KEY_LIVE,
-        key: process.env.VUE_APP_PAYSTACK_API_KEY,
+        key: process.env.VUE_APP_PAYSTACK_PUBLIC_KEY_LIVE,
+        // key: process.env.VUE_APP_PAYSTACK_API_KEY,
         email: contactDetail.value.email ? contactDetail.value.email : newContact.value.email,
         amount: amountToPayNow.value * 100,
         currency: selectedCurrencyCode.value,
@@ -648,7 +648,7 @@ export default {
 
       try {
         const res = await axios.post(
-          `/ConfirmInitializeContributionAndPledgePayment?txnref=${tx_ref}&id=${trans_id}`
+          `/ConfirmInitializeContributionAndPledgePayment?id=${trans_id}&txnref=${tx_ref}`
         );
         if (res.data.status) {
           paymentSuccessfulDialog.value = true;
@@ -710,18 +710,22 @@ export default {
         country: country,
         payment_options: "card,ussd",
         customer: {
+          name: contactDetail.value && Object.keys(contactDetail.value).length > 0 ? `${contactDetail.value.firstName} ${contactDetail.value.lastName}` : `${newContact.value.firstName} ${newContact.value.lastName}`,
+          phone_number: userSearchString.value,
           email: contactDetail.value.email ? contactDetail.value.email : newContact.value.email,
         },
         callback: (response) => {
           console.log(response)
           txnRef.value = response.tx_ref;
-          confirmPayment();
+          let trans_id = response.transaction_id
+           let tx_ref = response.tx_ref
+          confirmPayment(trans_id, tx_ref);
         },
         onclose: () => console.log("Payment closed"),
         customizations: {
           title: "Contribution",
           description: "Payment for Contribution ",
-          logo: logoUrl,
+          logo: churchLogo2.value,
         },
       });
     };
