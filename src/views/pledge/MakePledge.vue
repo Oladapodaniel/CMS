@@ -387,7 +387,7 @@ export default {
           loading.value = false;
           ElMessage({
             type: "success",
-            message: "You are successfully make a Pledge",
+            message: "You have made a pledge successfully",
             duration: 5000,
           });
           store.dispatch("pledge/getPledges").then(() => {

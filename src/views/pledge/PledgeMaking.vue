@@ -20,8 +20,8 @@
         </div>
         <hr class="mb-4" />
 
-        <div class="row mb-4 mt-3">
-          <div class="col-md-4">
+        <div class="row mb-4 mt-3" v-loading="loadingSummary">
+          <div class="col-sm-6 col-md-4">
             <span class="theader"> Pledge Name </span>
             <div class="my-3">
               <span class="evt-name">
@@ -29,7 +29,7 @@
               </span>
             </div>
           </div>
-          <div class="col-md-4">
+          <div class="col-sm-6 col-md-4">
             <span class="theader"> Donor </span>
             <div class="my-3">
               <span class="evt-name">
@@ -37,13 +37,13 @@
               </span>
             </div>
           </div>
-          <div class="col-md-4">
+          <div class="col-sm-6 col-md-4">
             <span class="theader">Date</span>
             <div class="my-3">
               <span class="evt-name"> {{ date(pledgeDate) }}</span>
             </div>
           </div>
-          <div class="col-md-4">
+          <div class="col-sm-6 col-md-4">
             <span class="theader"> Pledge Amount</span>
             <div class="my-3">
               <span class="evt-name">
@@ -51,7 +51,7 @@
               </span>
             </div>
           </div>
-          <div class="col-md-4">
+          <div class="col-sm-6 col-md-4">
             <span class="theader">Total payment</span>
             <div class="my-3">
               <span class="evt-name">
@@ -60,7 +60,7 @@
             </div>
           </div>
 
-          <div class="col-md-4">
+          <div class="col-sm-6 col-md-4">
             <span class="theader">Balance</span>
             <div class="my-3">
               <span class="evt-name">
@@ -81,16 +81,14 @@
               </div>
               <div class="row">
                 <div class="col-12">
-                  <div class="row">
-                    <div class="col-12 mb-3 border shadow rounded">
-                      <div class="row">
+                      <div class="border p-3">
+                        <div class="row">
                         <div
                           class="col-md-2 col-sm-2 d-flex justify-content-center image mt-2"
                         >
                           <img
                             src="../../assets/link.svg"
                             class="w-100"
-                            alt="marked Attendance image"
                             style="width: 60px; height: 60px"
                           />
                         </div>
@@ -106,63 +104,28 @@
                           <p class="mb-4">
                             <span
                               class="d-flex align-items-center justify-content-between"
-                              ><input
+                              ><el-input
                                 type="text"
                                 ref="selectedLink"
                                 v-model="pledgePaymentLink"
                                 class="border-0"
                                 placeholder="Link"
-                                style="width: 80%"
-                              />
-                              <div>
-                                <i
-                                  class="pi pi-copy ml-2 c-pointer"
-                                  @click="copyLink"
-                                  style="font-size: 22px"
-                                ></i>
-                              </div>
+                                
+                              >
+                              <template #append>
+                                <el-button @click="copyLink">
+                                  <el-icon>
+                                    <CopyDocument />
+                                  </el-icon>
+                                </el-button>
+                              </template>
+                            </el-input>
                             </span>
                           </p>
                         </div>
                       </div>
-                      <div class="row">
-                        <div
-                          class="col-md-2 col-sm-2 d-flex mt-2 justify-content-center image"
-                        >
-                          <img
-                            src="../../assets/link.svg"
-                            class="w-100"
-                            alt="marked Attendance image"
-                            style="width: 60px; height: 60px"
-                          />
-                        </div>
-                        <div class="col-md-10 col-sm-10 mt-3">
-                          <a class="text-decoration-none"
-                            ><h4
-                              class="header4 link-color c-pointer"
-                              @click="copyRegLink"
-                            >
-                              Virtual Account
-                            </h4></a
-                          >
-                          <div
-                            class="align-item-center justify-content-between d-flex"
-                          >
-                            <div class="mb-2">
-                              <div class="p-2"></div>
-                            </div>
-                            <div class="mt-4">
-                              <i
-                                class="pi pi-copy ml-2 c-pointer"
-                                @click="copyLink"
-                                style="font-size: 22px"
-                              ></i>
-                            </div>
-                          </div>
-                        </div>
+                
                       </div>
-                    </div>
-                  </div>
                 </div>
               </div>
             </div>
@@ -247,8 +210,8 @@
               <h5 class="modal-title font-weight-bold">
                 Record a payment for this pledge
               </h5>
-              <div class="btn-close" data-dismiss="modal" aria-label="Close">
-                <i class="pi pi-times"></i>
+              <div class="btn-close" data-dismiss="modal" aria-label="Close" ref="closeRecordModal">
+                <el-icon><Close /></el-icon>
               </div>
             </div>
             <div class="modal-body">
@@ -328,7 +291,7 @@
                             <div class="col-12 col-md-8 col-lg-12 m-0 p-0">
                               <el-input
                                 type="number"
-                                v-model="pledgeAmount"
+                                v-model="pledgeBalance"
                                 :disabled="false"
                                 class="w-100"
                               />
@@ -371,11 +334,11 @@
             <div class="modal-footer">
               <el-button class="" data-dismiss="modal" round>Cancel</el-button>
               <el-button
-                data-dismiss="modal"
                 color="#136acd"
                 class="header-btn text-white"
                 round
                 @click="recordPayment"
+              :loading="savingRecord"
               >
                 Save</el-button
               >
@@ -437,6 +400,9 @@ export default {
     const allPledgePaymentList = ref([]);
     const currencyList = ref([]);
     const searchText = ref("");
+    const closeRecordModal = ref(null)
+    const savingRecord = ref(false)
+    const loadingSummary = ref(false)
 
     const pledgeHeaders = ref([
       { name: "DATE", value: "date" },
@@ -475,6 +441,7 @@ export default {
 
     const getSinglePledge = async () => {
       checking.value = false;
+      loadingSummary.value = true
       try {
         const res = await axios.get(
           `/api/Pledge/GetOnePledge?ID=${route.query.pledgeTypeID}`
@@ -493,9 +460,11 @@ export default {
         allPledgePaymentList.value = res.data.returnObject.pledgePayments;
 
         checking.value = true;
+        loadingSummary.value = false
       } catch (error) {
         NProgress.done();
         console.log(error);
+        loadingSummary.value = false
       }
     };
     if (route.query.pledgeTypeID) getSinglePledge();
@@ -517,10 +486,10 @@ export default {
       axios
         .delete(`/api/Pledge/DeletePledgePaymentPayment?ID=${id}`)
         .then((res) => {
-          console.log(res);
+          getSinglePledge();
           ElMessage({
             type: "success",
-            message: "Pledge form deleted",
+            message: "Pledge payment record deleted",
             duration: 5000,
           });
 
@@ -572,10 +541,11 @@ export default {
     };
 
     const recordPayment = async () => {
+      savingRecord.value = true
       let paymentData = {
         id: route.query.pledgeTypeID,
         pledgeID: route.query.pledgeTypeID,
-        amount: pledgeAmount.value,
+        amount: pledgeBalance.value,
         channel: selectedChannel.value.name,
         currencyID: pledgeCurrencyID.value,
       };
@@ -584,20 +554,22 @@ export default {
           "/api/Pledge/SavePledgePayment",
           paymentData
         );
-        console.log(res, "paypledge");
-
+        savingRecord.value = false
+        closeRecordModal.value.click()
+        
         ElMessage({
           type: "success",
-          message: "Pledge Payment successful",
+          message: "Pledge Payment recorded successfully",
           duration: 5000,
         });
         getSinglePledge();
         router.push(
           `/tenant/pledge/pledgemaking?pledgeTypeID=${route.query.pledgeTypeID}`
-        );
-      } catch (error) {
-        NProgress.done();
-        console.log(error);
+          );
+        } catch (error) {
+          NProgress.done();
+          console.log(error);
+          savingRecord.value = false
       }
     };
     const channel = ref([
@@ -613,7 +585,7 @@ export default {
     const willCopyLink = ref(false);
 
     const selectChannel = () => {
-      selectedRange.value = channel.value.find(
+      selectedChannel.value = channel.value.find(
         (i) => i.id == SelectedChannelId.value
       );
     };
@@ -649,17 +621,14 @@ export default {
     });
 
     const copyLink = () => {
-      selectedLink.value.setSelectionRange(
-        0,
-        selectedLink.value.value.length
-      ); /* For mobile devices */
-      selectedLink.value.select();
+      selectedLink.value.input.setSelectionRange(0, selectedLink.value.input.value.length); /* For mobile devices */
+      selectedLink.value.input.select();
 
       /* Copy the text inside the text field */
       document.execCommand("copy");
       ElMessage({
-        type: "info",
-        message: 'copied to your clipboard"',
+        type: "success",
+        message: 'Copied to clipboard"',
         duration: 5000,
       });
     };
@@ -830,6 +799,9 @@ export default {
       copyLink,
       pledgeAmount,
       SelectedChannelId,
+      closeRecordModal,
+      savingRecord,
+      loadingSummary
     };
   },
 };

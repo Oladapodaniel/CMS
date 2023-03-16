@@ -331,7 +331,7 @@
                   <div class="c-pointer" @click="showCelebrationDetail(item)">
                     <el-card shadow="hover" class="c-pointer person-image" v-if="item.pictureUrl"
                       style="border-radius: 50%; height: 26px; width: 26px;">
-                      <img :src="item.pictureUrl" alt=""
+                      <img :src="item ? item.pictureUrl : ''" alt=""
                         style="border-radius: 50%; height: 26px; width: 26px; object-fit: cover" />
                     </el-card>
                     <el-avatar :size="25" class="mt-1" v-else><el-icon color="#000000">
