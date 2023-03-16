@@ -1,16 +1,11 @@
 <template>
-  <div class="container-fluid mt-5" @click="closeDropdownIfOpen">
+  <div class="container-fluid px-0 mt-5" @click="closeDropdownIfOpen">
     <div class="row mb-4">
       <div class="col-md-12">
         <h4>Add Attendance</h4>
       </div>
-      <Dialog
-        header="Create Event Category"
-        v-model:visible="display"
-        :style="{ width: '70vw', maxWidth: '600px' }"
-        :modal="true"
-        position="top"
-      >
+      <el-dialog v-model="display" title="Create Event Category"
+        :width="mdAndUp || lgAndUp || xlAndUp ? `50%` : `90%`">
         <div class="row">
           <div class="col-md-12">
             <CreateEventModal
@@ -19,7 +14,7 @@
             />
           </div>
         </div>
-      </Dialog>
+      </el-dialog>
     </div>
 
     <div class="row">
@@ -65,14 +60,11 @@
                         aria-expanded="false"
                       >
                         {{ selectedCategoryName }}
-                        <i
-                          class="
-                            pi pi-chevron-down
-                            manual-dd-icon
-                            float-right
-                            pr-1
-                          "
-                        ></i>
+                        <el-icon class="el-icon--right float-right
+                            pr-1 ">
+                            <arrow-down />
+                          </el-icon>
+                        
                       </button>
                       <div
                         class="dropdown-menu w-100"
@@ -81,9 +73,9 @@
                       >
                         <div class="row w-100 mx-auto">
                           <div class="col-md-12">
-                            <input
+                            <el-input
                               type="text"
-                              class="form-control"
+                              class="w-100"
                               placeholder="Find event"
                               v-model="categorySearchText"
                             />
@@ -120,7 +112,7 @@
                           data-dismiss="modal"
                           @click="() => (display = true)"
                         >
-                          <i
+                          <!-- <i
                             class="
                               pi pi-plus-circle
                               mr-2
@@ -129,7 +121,8 @@
                               c-pointer
                             "
                             style="color: #136acd"
-                          ></i>
+                          ></i> -->
+                          <el-icon class="mr-2"><CirclePlus /></el-icon>
                           Create new event
                         </a>
                       </div>
@@ -142,11 +135,18 @@
                     <label for="">Event date</label>
                   </div>
                   <div class="col-md-7">
-                    <input
+                    <el-date-picker
+                      v-model="newAcctivityDate"
+                      type="date"
+                      format="MM/DD/YYYY"
+                      size="large"
+                      class="w-100"
+                    />
+                    <!-- <input
                       type="date"
                       class="form-control"
                       v-model="newAcctivityDate"
-                    />
+                    /> -->
                   </div>
                 </div>
 
@@ -155,18 +155,20 @@
                     <label for=""></label>
                   </div>
                   <div class="col-md-7 d-flex justify-content-center">
-                    <button class="default-btn mr-2" data-dismiss="modal">
+                    <el-button class="default-btn mr-2" data-dismiss="modal" round>
                       Cancel
-                    </button>
-                    <button
-                      class="default-btn primary-bg border-0 ml-2 text-white"
+                    </el-button>
+                    <el-button
+                      class=" border-0 ml-2 text-white"
+                      color="#136acd"
+                      round
                       @click="createNewActivity"
                       data-dismiss="modal"
                       :data-toggle="showBtModal"
                       ref="popModal"
                     >
                       Save
-                    </button>
+                    </el-button>
                   </div>
                 </div>
               </div>
@@ -204,9 +206,10 @@
                     ? `${selectedEvent.name.slice(0, 27)}...`
                     : selectedEvent.name
                 }}
-                <i
-                  class="pi pi-chevron-down manual-dd-icon float-right pr-1"
-                ></i>
+               <el-icon class="el-icon--right float-right
+                  pr-1 ">
+                  <arrow-down />
+                </el-icon>
               </button>
               <div
                 class="dropdown-menu w-100"
@@ -215,9 +218,9 @@
               >
                 <div class="row w-100 mx-auto" v-if="events.length > 5">
                   <div class="col-md-12">
-                    <input
+                    <el-input
                       type="text"
-                      class="form-control"
+                      class="w-100"
                       placeholder="Find event"
                       v-model="eventSearchText"
                     />
@@ -254,10 +257,11 @@
                   data-target="#newActModal"
                   ref="openModalBtn"
                 >
-                  <i
+                  <!-- <i
                     class="pi pi-plus-circle mr-2 d-flex align-items-center"
                     style="color: #136acd"
-                  ></i>
+                  ></i> -->
+                  <el-icon class="mr-2"><CirclePlus /></el-icon>
                   Create new event
                 </a>
               </div>
@@ -301,7 +305,11 @@
                 </span>
                 <span v-if="selectedGroups.length === 0">Select group</span>
               </span>
-              <i class="pi pi-chevron-down exempt-hide"></i>
+              <!-- <i class="pi pi-chevron-down exempt-hide"></i> -->
+              <el-icon class="el-icon--right exempt-hide
+                  pr-1 ">
+                  <arrow-down />
+                </el-icon>
             </button>
             <div
               class="div-card p-2 exempt-hide"
@@ -310,13 +318,16 @@
                 'd-block': !hideDiv,
               }"
             >
-              <i
+              <!-- <i
                 class="pi pi-spin pi-spinner text-center exempt-hide"
-                v-if="grouploading && groups.length === 0"
-              ></i>
-              <input
+                
+              ></i> -->
+              <el-icon class="is-loading exempt-hide" v-if="grouploading && groups.length === 0">
+              <Loading />
+            </el-icon>
+              <el-input
                 type="text"
-                class="form-control exempt-hide"
+                class="w-100 exempt-hide"
                 v-model="searchGroupText"
                 ref="searchGroupRef"
                 placeholder="Search for group"
@@ -328,28 +339,6 @@
                 @newgroup="setNewGroup"
               />
             </div>
-            <!-- <MultiSelect v-model="selectedGroups" :options="groups" optionLabel="name" placeholder="Select group" display="chip" class="w-100" /> -->
-
-            <!-- <Dropdown
-              v-model="selectedGroup"
-              :options="groups"
-              optionLabel="name"
-              placeholder="Select group"
-              :filter="false"
-              filterPlaceholder="Search grouped contacts"
-              style="width: 100%"
-            /> -->
-            <div class="row mt-5">
-              <!-- <div class="col-md-12 d-flex justify-content-center">
-                <button
-                  class="default-btn primary-bg text-white border-0 contn-btn"
-                  @click="onContinue"
-                  :disabled="!selectedEvent.id || !selectedGroup.id"
-                >
-                  Save and Continue
-                </button>
-              </div> -->
-            </div>
           </div>
         </div>
         <div class="row">
@@ -357,14 +346,19 @@
             <div class="d-flex justify-content-between">
               <h5 class="mt-2">More</h5>
               <hr style="width: 80%" />
-              <i
+              <span class="mt-2" :class="{
+                  rollIcon: templateDisplay,
+                  closeIcon: !templateDisplay,
+                }"
+                @click="toggleTemplate"><el-icon><ArrowUp /></el-icon></span>
+              <!-- <i
                 class="pi pi-angle-up angle-icon mt-2"
                 :class="{
                   rollIcon: templateDisplay,
                   closeIcon: !templateDisplay,
                 }"
                 @click="toggleTemplate"
-              ></i>
+              ></i> -->
             </div>
           </div>
         </div>
@@ -489,14 +483,19 @@
                 <label for="" class="font-weight-600">Event Details</label>
               </div>
               <div class="col-sm-7 col-md-6 col-lg-5">
-                <textarea
+                <el-input
+                  v-model="eventDetails"
+                  :rows="2"
+                  type="textarea"
+                />
+                <!-- <textarea
                   name=""
                   id=""
                   cols="30"
                   rows="4"
                   class="form-control"
                   v-model="eventDetails"
-                ></textarea>
+                ></textarea> -->
               </div>
             </div>
 
@@ -511,9 +510,9 @@
                 <label for="" class="font-weight-600">Slot</label>
               </div>
               <div class="col-sm-7 col-md-6 col-lg-5">
-                <input
+                <el-input
                   type="number"
-                  class="form-control"
+                  class="w-100"
                   v-model="slot"
                   placeholder="slot available"
                 />
@@ -544,9 +543,9 @@
                       'hide-amount': !addPaidClass,
                     }"
                   >
-                    <input
+                    <el-input
                       type="text"
-                      class="form-control"
+                      class="w-100"
                       placeholder="Enter amount"
                       v-model="amount"
                     />
@@ -609,9 +608,9 @@
                         aria-labelledby="dropdownMenuButton"
                         style="max-height: 350px; overflow-y: auto"
                       >
-                        <input
+                        <el-input
                           type="text"
-                          class="form-control"
+                          class="w-100"
                           placeholder="Search bank"
                           v-model="bankSearchText"
                         />
@@ -639,9 +638,9 @@
                     Account Number
                   </div>
                   <div class="col-sm-7 col-md-6 col-lg-5">
-                    <input
+                    <el-input
                       type="text"
-                      class="form-control mt-4 input-height"
+                      class="w-100 mt-4 input-height"
                       placeholder="Enter account number"
                       v-model="accountNumber"
                       @blur="resolveCustomerDetail"
@@ -660,9 +659,9 @@
                     Account Name
                   </div>
                   <div class="col-sm-7 col-md-6 col-lg-5">
-                    <input
+                    <el-input
                       type="text"
-                      class="form-control mt-4 input-height"
+                      class="w-100 mt-4 input-height"
                       placeholder="account name"
                       v-model="accountName"
                       ref="accNameRef"
@@ -693,16 +692,19 @@
                     Income Account
                   </div>
                   <div class="col-sm-7 col-md-6 col-lg-5">
-                    <Dropdown
-                      v-model="selectedIncomeAccount"
-                      class="w-100 p-0 mt-4"
-                      :options="incomeAccount"
-                      optionLabel="text"
-                      :filter="false"
-                      placeholder="Select"
-                      :showClear="false"
-                    >
-                    </Dropdown>
+                    <el-select-v2
+                        v-model="selectedIncomeAccountID"
+                        class="w-100 mt-4 font-weight-normal"
+                        :options="
+                          incomeAccount.map((i) => ({
+                            label: i.text,
+                            value: i.id,
+                          }))
+                        "
+                        placeholder="Select"
+                        @change="setIncomeAccount"
+                        size="large"
+                      />
                   </div>
                   <div class="col-sm-2 col-lg-3"></div>
 
@@ -717,16 +719,19 @@
                     Cash Account
                   </div>
                   <div class="col-sm-7 col-md-6 col-lg-5">
-                    <Dropdown
-                      v-model="selectedCashAccount"
-                      :options="cashBankAccount"
-                      optionLabel="text"
-                      :filter="false"
-                      placeholder="Select"
-                      class="w-100 p-0 mt-4"
-                      :showClear="false"
-                    >
-                    </Dropdown>
+                    <el-select-v2
+                        v-model="selectedCashAccountID"
+                        class="w-100 mt-4 font-weight-normal"
+                        :options="
+                          cashBankAccount.map((i) => ({
+                            label: i.text,
+                            value: i.id,
+                          }))
+                        "
+                        placeholder="Select"
+                        @change="setcashBankAccount"
+                        size="large"
+                      />
                   </div>
                   <div class="col-sm-2 col-lg-3"></div>
                 </div>
@@ -777,14 +782,20 @@
                     role="tabpanel"
                     aria-labelledby="home-tab"
                   >
-                    <textarea
+                  <el-input
+                    v-model="checkinSMS"
+                    :rows="2"
+                    type="textarea"
+                    class="mt-2"
+                  />
+                    <!-- <textarea
                       name=""
                       id=""
                       cols="30"
                       rows="3"
                       class="form-control mt-2"
                       v-model="checkinSMS"
-                    ></textarea>
+                    ></textarea> -->
                   </div>
                   <div
                     class="tab-pane fade"
@@ -792,14 +803,20 @@
                     role="tabpanel"
                     aria-labelledby="profile-tab"
                   >
-                    <textarea
+                  <el-input
+                    v-model="registrationSMS"
+                    :rows="2"
+                    type="textarea"
+                    class="mt-2"
+                  />
+                    <!-- <textarea
                       name=""
                       id=""
                       cols="30"
                       rows="3"
                       class="form-control mt-2"
                       v-model="registrationSMS"
-                    ></textarea>
+                    ></textarea> -->
                   </div>
                 </div>
               </div>
@@ -850,14 +867,20 @@
                     role="tabpanel"
                     aria-labelledby="home-tab"
                   >
-                    <textarea
+                  <el-input
+                    v-model="checkinEmail"
+                    :rows="2"
+                    type="textarea"
+                    class="mt-2"
+                  />
+                    <!-- <textarea
                       name=""
                       id=""
                       cols="30"
                       rows="3"
                       class="form-control mt-2"
                       v-model="checkinEmail"
-                    ></textarea>
+                    ></textarea> -->
                   </div>
                   <div
                     class="tab-pane fade"
@@ -865,14 +888,21 @@
                     role="tabpanel"
                     aria-labelledby="profile-tab"
                   >
-                    <textarea
+                   <el-input
+                    v-model="registrationEmail"
+                    :rows="2"
+                    type="textarea"
+                    class="mt-2"
+                  />
+                    
+                    <!-- <textarea
                       name=""
                       id=""
                       cols="30"
                       rows="3"
                       class="form-control mt-2"
                       v-model="registrationEmail"
-                    ></textarea>
+                    ></textarea> -->
                   </div>
                 </div>
               </div>
@@ -923,6 +953,14 @@
                     role="tabpanel"
                     aria-labelledby="home-tab"
                   >
+                  <!-- <el-date-picker
+                    v-model="checkinCutOffTime"
+                    type="datetime"
+                    format="MM/DD/YYYY hh:mm:ss "
+                    size="large"
+                    class="w-100 my-3"
+                    value-format="YYYY-MM-DD hh:mm:ss a"
+                  /> -->
                     <input
                       type="datetime-local"
                       class="form-control my-3"
@@ -935,6 +973,13 @@
                     role="tabpanel"
                     aria-labelledby="profile-tab"
                   >
+                   <!-- <el-date-picker
+                    v-model="checkinCutOffTime"
+                    type="datetime"
+                    format="MM/DD/YYYY"
+                    size="large"
+                    class="w-100 my-3"
+                  /> -->
                     <input
                       type="datetime-local"
                       class="form-control my-3"
@@ -945,53 +990,21 @@
               </div>
 
               <div class="col-sm-2 col-lg-3"></div>
-
-              <!-- <div class="col-sm-3 col-md-4 col-lg-4 text-sm-right mt-3">
-              <label for="" class="font-weight-600">Registration SMS</label>
-            </div>
-            <div class="col-sm-7 col-md-6 col-lg-5 mt-3">
-                <textarea name="" id="" cols="30" rows="4" class="form-control"></textarea>     
-            </div>
-
-            <div class="col-sm-2 col-lg-3"></div>
-
-            <div class="col-sm-3 col-md-4 col-lg-4 text-sm-right mt-3">
-              <label for="" class="font-weight-600">Check-in Email</label>
-            </div>
-            <div class="col-sm-7 col-md-6 col-lg-5 mt-3">
-                <textarea name="" id="" cols="30" rows="4" class="form-control"></textarea>     
-            </div>
-            
-            <div class="col-sm-2 col-lg-3"></div>
-
-            <div class="col-sm-3 col-md-4 col-lg-4 text-sm-right mt-3">
-              <label for="" class="font-weight-600">Check-in SMS</label>
-            </div>
-            <div class="col-sm-7 col-md-6 col-lg-5 mt-3">
-                <textarea name="" id="" cols="30" rows="4" class="form-control"></textarea>     
-            </div> -->
             </div>
           </div>
         </div>
 
         <div class="row my-3">
           <div class="col-sm-3 col-md-4 col-lg-4 text-sm-right">
-            <!-- <label for="" class="font-weight-600">Group</label> -->
           </div>
           <div class="col-sm-7 col-md-6 col-lg-5">
-            <!-- <Dropdown
-              v-model="selectedGroup"
-              :options="groups"
-              optionLabel="name"
-              placeholder="Select group"
-              :filter="false"
-              filterPlaceholder="Search grouped contacts"
-              style="width: 100%"
-            /> -->
             <div class="row">
               <div class="col-md-12 d-flex justify-content-center">
-                <button
-                  class="default-btn primary-bg text-white border-0 contn-btn"
+                <el-button
+                color="#136acd"
+                  class=" text-white border-0 contn-btn"
+                  round
+                  size="large"
                   @click="onContinue"
                   :disabled="
                     !selectedEvent.id ||
@@ -1005,13 +1018,12 @@
                   ></i>
                   <span class="text-white">Save and Continue</span>
                   <span></span>
-                </button>
+                </el-button>
               </div>
             </div>
           </div>
         </div>
         <div class="row">
-          <Toast />
         </div>
       </div>
 
@@ -1021,8 +1033,6 @@
 </template>
 
 <script>
-import Dropdown from "primevue/dropdown";
-import MultiSelect from "primevue/multiselect";
 import { computed, nextTick, ref } from "vue";
 import { useRoute } from "vue-router";
 import router from "@/router/index";
@@ -1031,16 +1041,16 @@ import eventsService from "../../../services/events/eventsservice";
 import CreateEventModal from "../../../components/attendance/AttendanceEventModal";
 // import attendanceservice from "../../../services/attendance/attendanceservice";
 import { useStore } from "vuex";
-import { useToast } from "primevue/usetoast";
 import axios from "@/gateway/backendapi";
 import finish from "../../../services/progressbar/progress";
 import axio from "axios";
 import moment from "moment";
 import GroupTree from "../../groups/component/GroupTreeCheckboxParent.vue";
+import deviceBreakpoint from "../../../mixins/deviceBreakpoint";
 import { ElMessage } from "element-plus";
 
 export default {
-  components: { Dropdown, MultiSelect, CreateEventModal, GroupTree },
+  components: { CreateEventModal, GroupTree },
 
   setup() {
     const store = useStore();
@@ -1050,7 +1060,6 @@ export default {
     const newActModal = ref(false);
     const showBtModal = ref("");
     const popModal = ref(null);
-    const toast = useToast();
     const openModalBtn = ref(null);
     const addPaidClass = ref(false);
     const addFreeClass = ref(true);
@@ -1082,14 +1091,28 @@ export default {
     const grouploading = ref(false);
     const checkinCutOffTime = ref("");
     const regCutOffTimer = ref("");
+    const { mdAndUp, lgAndUp, xlAndUp, xsOnly } = deviceBreakpoint()
 
     // const selectedGroup = ref({});
     const selectedGroups = ref([]);
+    const selectedIncomeAccountID = ref(null)
+    const selectedCashAccountID = ref(null)
 
     const attendanceCheID = ref(route.params.id);
 
     console.log(attendanceCheID.value);
     const eventNameDate = ref("");
+
+    const setIncomeAccount = () =>{
+      selectedIncomeAccount.value = incomeAccount.value.find((i) =>{
+       return i.id == selectedIncomeAccountID.value
+      })
+    }
+    const setcashBankAccount = () =>{
+      selectedCashAccount.value = cashBankAccount.value.find(
+        (i) => i.id == selectedCashAccountID.value 
+        )
+    }
     // /api/CheckInAttendance/UpdateCheckInAttendance
 
     // const singleCheckinAttendance = async () => {
@@ -1217,19 +1240,17 @@ export default {
         };
         selectedEvent.value = newActivity;
         events.value.push(newActivity);
-        toast.add({
-          severity: "success",
-          summary: "Operation Successful",
-          detail: "Event created successfully",
-          life: 3000,
-        });
+        ElMessage({
+            type: "success",
+            message: "Event created successfully",
+            duration: 2000,
+          });
       } catch (error) {
-        toast.add({
-          severity: "error",
-          summary: "Operation Failed",
-          detail: "Could not create event",
-          life: 3000,
-        });
+        ElMessage({
+            type: "error",
+            message: "Could not create event",
+            duration: 2000,
+          });
         console.log(error);
       }
     };
@@ -1431,16 +1452,10 @@ export default {
           console.log(res);
           store.dispatch("attendance/setItemData", res);
           ElMessage({
-                        type: "success",
-                        message: res.data.response,
-                        duration: 5000
-                        });
-          // toast.add({
-          //   severity: "success",
-          //   summary: "Successful",
-          //   detail: "Attendance updated successfully",
-          //   life: 3000,
-          // });
+                    type: "success",
+                    message: res.data.response,
+                    duration: 5000
+                    });
           router.push({
             name: "CheckinType",
             query: {
@@ -1549,13 +1564,11 @@ export default {
           loading.value = false;
         }
       } else {
-        toast.add({
-          severity: "warn",
-          summary: "Some field not filled",
-          detail:
-            "Cannot create this event attendance, kindly fill all fields before saving.",
-          life: 6000,
-        });
+        ElMessage({
+                  type: "warning",
+                  message: 'Cannot create this event attendance, kindly fill all fields before saving.',
+                  duration: 5000
+                });
         loadingsave.value = false;
       }
     };
@@ -1608,24 +1621,22 @@ export default {
 
         loading.value = false;
 
-        toast.add({
-          severity: "success",
-          summary: "Account Check Successful",
-          detail: "The account check was successful",
-          life: 3000,
-        });
+        ElMessage({
+                  type: "success",
+                  message: 'Account Check Successful',
+                  duration: 5000
+                });
       } catch (error) {
         finish();
         console.log(error);
 
         loading.value = false;
 
-        toast.add({
-          severity: "error",
-          summary: "Account Check Error",
-          detail: "Please check your banks details again",
-          life: 3000,
-        });
+        ElMessage({
+                  type: "error",
+                  message: 'Account Check Error, Please check your banks details again ',
+                  duration: 5000
+                });
       }
       console.log(selectedBank.value.code, accountNumber.value);
     };
@@ -1707,6 +1718,14 @@ export default {
 
     return {
       selectedEvent,
+      setIncomeAccount,
+      setcashBankAccount,
+      selectedIncomeAccountID,
+      selectedCashAccountID,
+      mdAndUp,
+      xlAndUp,
+      xsOnly,
+      lgAndUp,
       eventNameDate,
       attendanceCheID,
       onContinue,

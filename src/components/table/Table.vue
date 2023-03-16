@@ -2,7 +2,7 @@
     <div ref="scrollRef">
         <div class="table-parent">
             <table class="table-border w-100">
-                <thead class="table-head mobile">
+                <thead class="table-head  mobile">
                     <tr>
                         <th v-if="checkMultipleItem">
                             <el-checkbox v-model="checked" @change="checkAllRows" :indeterminate="isIndeterminate"
@@ -10,7 +10,7 @@
                         </th>
                     </tr>
                 </thead>
-                <thead class="table-head desktop">
+                <thead class="table-head  desktop">
                     <tr>
                         <th v-if="checkMultipleItem">
                             <el-checkbox v-model="checked" @change="checkAllRows" :indeterminate="isIndeterminate"
@@ -182,17 +182,31 @@ export default {
 } */
 
 .table-head h2 {
-    font-weight: 800;
-    font-size: 16px;
+    font-weight: 600;
+    font-size: 14px;
+    font-style: normal;
+    text-transform: lowercase;
+    margin: 0;
+    color: #646464;
+    /* color: #172B4D; */
+}
+.table-head h2:first-letter, .table-head h2:first-line {
+    text-transform: capitalize;
+}
+
+tbody tr td {
+    font-size: 13px;
+}
+tbody h2 {
+    font-weight: 600;
+    font-size: 14px;
+    font-style: normal;
+    text-transform: lowercase;
     margin: 0;
     color: #646464;
 }
-
-tbody h2 {
-    font-weight: 800;
-    font-size: 16px;
-    margin: 0;
-    color: #646464;
+tbody h2:first-letter, tbody h2:first-line {
+    text-transform: capitalize;
 }
 
 table td,
@@ -264,6 +278,9 @@ thead.mobile {
 
     table td {
         padding: 7px 10px
+    }
+    table tbody tr td:nth-child(even) {
+    background: #F1F5F8;
     }
 }
 </style>

@@ -2,7 +2,7 @@
 <template>
   <!-- tosin working on tables -->
   <div class="row mt-4 ">
-    <div class="col-md-12 px-0" id="table">
+    <div class="col-md-12 px-0" id="table"> 
       <div class="top-con" id="ignore2">
         <div class="table-top p-3 ">
           <div class="d-flex flex-column flex-sm-row justify-content-end ">
@@ -526,10 +526,10 @@ export default {
     const attendanceList = ref([]);
     const checkedAttendance = ref([]);
     const attendanceHeaders = ref([
-      { name: "Event Name", value: "eventName" },
-      { name: "Date", value: "date" },
-      { name: "Group Name", value: "groupName" },
-      { name: "Action", value: "action" },
+      { name: "EVENT NAME", value: "eventName" },
+      { name: "DATE", value: "date" },
+      { name: "GROUP NAME", value: "groupName" },
+      { name: "ACTION", value: "action" },
     ]);
     const serverOptions = ref({
       page: 1,
