@@ -399,13 +399,13 @@ export default {
     const filterPledge = async () => {
       filterLoading.value = true;
       let selectedContactValue = selectedContact.value && selectedContact.value.id ? selectedContact.value.id : "";
-      let selectedCategoryValue = selectedCategory.value && selectedCategory.value.name  ? selectedCategory.value.name : "" ;
+      let selectedCategoryValue = selectedCategory.value && selectedCategory.value.id  ? selectedCategory.value.id : "" ;
       let selectedStatusValue = selectedStatus.value && selectedStatus.value.status ? selectedStatus.value.status : "" ;
       let startDateValue = startDate.value ?  new Date(startDate.value ).toLocaleDateString("en-US") : ''
       let endDateValue = endDate.value ? new Date(endDate.value).toLocaleDateString("en-US") : ''
       try {
         const res = await axios.get(
-          `/api/Pledge/GetAllPledgesSearch?personId=${selectedContactValue}&status=${selectedStatusValue}&pledgeItemName=${selectedCategoryValue}&startDate=${startDateValue}&endDate=${endDateValue}`
+          `/api/Pledge/GetAllPledgesSearch?personId=${selectedContactValue}&status=${selectedStatusValue}&pledgeItemID=${selectedCategoryValue}&startDate=${startDateValue}&endDate=${endDateValue}`
         );
         filterResult.value = res.data.returnObject;
         getAllPledgeAmount.value = res.data.returnObject.map((i) => i.amount).reduce((b, a) => b + a, 0);
