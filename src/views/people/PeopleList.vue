@@ -121,7 +121,7 @@
               <span class="ml-1"> FILTER</span>
             </p>
           </div>
-          <el-input size="small" v-model="searchText" placeholder="Search..."
+          <el-input size="small" v-model="searchText" placeholder="Search..." @input="searchingMember = true"
             @keyup.enter.prevent="searchPeopleInDB($event)" class="input-with-select">
             <template #suffix>
               <el-button style="padding: 5px; height: 22px;" @click.prevent="searchText = ''">
@@ -380,6 +380,7 @@ export default {
     const singleGroupLoading = ref(false)
     const archiveLoading = ref(false)
     const applyLoading = ref(false)
+    const searchingMember = ref(true)
 
     watch(serverOptions, () => {
       getPeopleByPage();
@@ -667,13 +668,15 @@ export default {
     const searchPeopleInDB = (e) => {
       e.preventDefault();
       paginatedTableLoading.value = true;
+      searchingMember.value = true;
       let url =
-        `/api/Membership/GetSearchedUSers?searchText=${searchText.value}`;
+      `/api/Membership/GetSearchedUSers?searchText=${searchText.value}`;
       axios
-        .get(url)
-        .then((res) => {
-          paginatedTableLoading.value = false;
-          searchPeopleNamesInDB.value = res.data.map((i) => {
+      .get(url)
+      .then((res) => {
+        paginatedTableLoading.value = false;
+        searchingMember.value = false;
+        searchPeopleNamesInDB.value = res.data.map((i) => {
             return {
               firstName: i.name.split(" ")[0],
               lastName: i.name.split(" ")[1],
@@ -691,6 +694,7 @@ export default {
           }
         })
         .catch((err) => {
+          searchingMember.value = false;
           paginatedTableLoading.value = false;
           console.log(err);
         });
@@ -705,7 +709,7 @@ export default {
     const searchMember = computed(() => {
       if (searchText.value !== "" && searchPeopleNamesInDB.value.length > 0) {
         return searchPeopleNamesInDB.value;
-      } else if (searchText.value !== "" && searchPeopleNamesInDB.value.length == 0 && !paginatedTableLoading.value) {
+      } else if (searchText.value !== "" && searchPeopleNamesInDB.value.length == 0 && !paginatedTableLoading.value && !searchingMember.value) {
         return []
       } else if (filterResult.value.length > 0 && filtered.value && filter.value.name) {
         return filterResult.value;
@@ -949,7 +953,8 @@ export default {
       applyLoading,
       handleSelectionChange,
       handleSizeChange,
-      handleCurrentChange
+      handleCurrentChange,
+      searchingMember
     };
   },
 };
