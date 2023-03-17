@@ -579,37 +579,11 @@ export default {
   cursor: pointer;
 }
 
-.dropdown-container select {
-  /* for Firefox */
-  -moz-appearance: none;
-  /* for Safari, Chrome, Opera */
-  -webkit-appearance: none;
-}
-/* for IE10 */
-.dropdown-container select::-ms-expand {
-  display: none;
-}
-
-.select-elem-con {
-  padding: 47px 0;
-  height: 150px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  border: 1px solid #ebeff4;
-  border-radius: 8px;
-  font-size: 1.2em;
-  font-weight: 600;
-}
 .event-buttons a:hover,
 .pointer {
   cursor: pointer;
 }
 
-.select-elem-con:hover {
-  background: rgba(166, 200, 232, 0.302);
-  transition: all 0.4s ease-in-out;
-}
 
 .pledge-shadow {
   box-shadow: rgba(17, 17, 26, 0.1) 0px 0px 16px;
