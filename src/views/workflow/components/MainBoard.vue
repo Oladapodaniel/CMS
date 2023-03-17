@@ -215,6 +215,8 @@
                     />
                     <PledgeCreation
                       :groups="groups"
+                      :groupMappedTree="groupMappedTree"
+                      :allPledgeDefinitionList="allPledgeDefinitionList"
                       v-else-if="selectedTrigger.triggerType === 3"
                       @updatetrigger="updateTrigger"
                       @removetrigger="removeTrigger"
@@ -287,6 +289,8 @@
                     <PledgeRedemption
                       v-else-if="selectedTrigger.triggerType === 5"
                       :groups="groups"
+                      :groupMappedTree="groupMappedTree"
+                      :allPledgeDefinitionList="allPledgeDefinitionList"
                       @updatetrigger="updateTrigger"
                       @removetrigger="removeTrigger"
                       :selectedTriggerIndex="selectedTriggerIndex"
@@ -295,6 +299,8 @@
                     <PledgeCancellation
                       v-else-if="selectedTrigger.triggerType === 4"
                       :groups="groups"
+                      :groupMappedTree="groupMappedTree"
+                      :allPledgeDefinitionList="allPledgeDefinitionList"
                       @updatetrigger="updateTrigger"
                       @removetrigger="removeTrigger"
                       :selectedTriggerIndex="selectedTriggerIndex"
@@ -643,6 +649,8 @@ import workflow_service from "../utlity/workflow_service";
 import { useToast } from "primevue/usetoast";
 import { useRoute } from "vue-router";
 import { useRouter } from "vue-router";
+import collector from "../../../services/groupArray/mapTree";
+import { useStore } from "vuex"
 
 import descriptionHelper from "../helper/description";
 import TriggerDescription from "./TriggerDescription.vue";
@@ -684,6 +692,7 @@ export default {
     const route = useRoute();
     const router = useRouter();
     const loading = ref(false);
+    const store = useStore();
 
     const showTriggers = ref(false);
     const showActions = ref(false);
@@ -841,6 +850,7 @@ export default {
 
     const selectedTriggers = ref([]);
     const selectedActions = ref([]);
+    const groupMappedTree = ref([]);
 
     const toggleTriggers = () => {
       showTriggers.value = !showTriggers.value;
@@ -938,7 +948,19 @@ export default {
     };
 
     const updateTrigger = (data, selectedTriggerIndex) => {
-      workflow.value.triggers[selectedTriggerIndex].jsonCondition = data;
+      let parsed = JSON.parse(data)
+      let foo;
+      console.log(parsed)
+      if (parsed.pledges && parsed.pledges.length > 0) parsed.pledges = parsed.pledges.join(",")
+      if (typeof parsed.groups !== 'string') {
+        parsed.groups = parsed.groups.join(",")
+        foo = JSON.stringify(parsed)
+      } else {
+        foo = data
+      }
+      console.log(foo)
+      console.log(workflow.value.triggers)
+      workflow.value.triggers[selectedTriggerIndex].jsonCondition = foo;
     };
 
     const allSelectedActions = ref([]);
@@ -976,13 +998,16 @@ export default {
     const getGroups = async () => {
       try {
         const response = await grousService.getGroups();
-        groups.value = response.response.groupResonseDTO.map((i) => {
-          return { id: i.id, name: i.name };
-        });
+        groups.value = response.response.groupResonseDTO
         groups.value.unshift({
           id: "0000-000-0000-0000-0000-0000",
           name: "Entire ministry",
         });
+
+        let data = { children: groups.value };
+        const { children } = collector(data);
+        groupMappedTree.value = children;
+
       } catch (error) {
         console.log(error);
       }
@@ -1002,6 +1027,22 @@ export default {
     };
     getFinancialCOntributions();
 
+    const allPledgeDefinitionList = ref([])
+    const getAllPledgeDefinition = async () => {
+      try {
+          await store.dispatch("pledge/getPledgeDefinition").then((res) => {
+
+          let data = { children: res };
+        const { children } = collector(data);
+        allPledgeDefinitionList.value = children;
+
+          });
+      } catch (error) {
+          console.log(error);
+      }
+      };
+      getAllPledgeDefinition();
+
     const name = ref("");
     const isActive = ref(false);
     const saveWorkflow = async () => {
@@ -1010,12 +1051,12 @@ export default {
           // JSONCondition: i.JSONCondition,
           // triggerType: i.triggerType,
           ...i,
-          triggerActions: i.triggerActions.map((item, index) => {
+          triggerActions: i.triggerActions && i.triggerActions.length > 0 ? i.triggerActions.map((item, index) => {
             return {
               order: index,
               action: item.Action,
             };
-          }),
+          }) : [],
         };
       });
 
@@ -1265,7 +1306,9 @@ export default {
       onDone,
       triggerDescriptions,
       allSelectedActions,
-      loading
+      loading,
+      groupMappedTree,
+      allPledgeDefinitionList
     };
   },
 };

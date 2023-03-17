@@ -55,6 +55,13 @@
             </div>
             <el-input size="small" v-model="searchText" placeholder="Search..." @keyup.enter.prevent="searchMemberInDB"
               class="input-with-select">
+              <template #suffix>
+              <el-button style="padding: 5px; height: 22px;" @click.prevent="searchText = ''">
+                <el-icon :size="13">
+                  <Close />
+                </el-icon>
+              </el-button>
+            </template>
               <template #append>
                 <el-button @click.prevent="searchMemberInDB">
                   <el-icon :size="13">
@@ -97,8 +104,8 @@
           </div>
         </div>
       </div>
-      <Table :data="searchMember.slice(0, 50)" :headers="firstTimerHeaders" :checkMultipleItem="true"
-        @checkedrow="handleSelectionChange" v-loading="paginatedTableLoading">
+      <Table :data="searchMember" :headers="firstTimerHeaders" :checkMultipleItem="true"
+        @checkedrow="handleSelectionChange" v-loading="paginatedTableLoading" v-if="searchMember.length > 0">
         <template #imageURL="{ item }">
           <el-card shadow="hover" class="c-pointer person-image" v-if="item.imageURL"
             style="border-radius: 50%; height: 26px; width: 26px;">
@@ -189,6 +196,15 @@
           </div>
         </template>
       </Table>
+      <div v-if="searchMember.length == 0">
+      <el-alert
+        title="First Timer not found"
+        type="warning"
+        description="Try searching with another keyword"
+        show-icon
+        center
+      />
+    </div>
       <div class="d-flex justify-content-end my-3">
         <el-pagination v-model:current-page="serverOptions.page" v-model:page-size="serverOptions.rowsPerPage" background
           layout="total, sizes, prev, pager, next, jumper" :total="totalFirsttimersCount" @size-change="handleSizeChange"
@@ -462,7 +478,7 @@ export default {
           if (res.data.length === 0) {
             ElMessage({
               type: 'warning',
-              message: `${searchText.value} not found, please try add a new firsttimer and search again`,
+              message: `${searchText.value} not found, please to try add a new firsttimer and search again`,
               duration: 5000
             })
           }
@@ -482,11 +498,9 @@ export default {
     const searchMember = computed(() => {
       if (searchText.value !== "" && searchNamesInDB.value.length > 0) {
         return searchNamesInDB.value;
-      } else if (
-        filterResult.value.length > 0 &&
-        (filter.value.name || filter.value.phoneNumber)
-        // filterResult.value.length > 0
-      ) {
+      } else if (searchText.value !== "" && searchNamesInDB.value.length == 0 && !paginatedTableLoading.value) {
+        return []
+      } else if (filterResult.value.length > 0 && (filter.value.name || filter.value.phoneNumber)) {
         return filterResult.value;
       } else {
         return churchMembers.value;
