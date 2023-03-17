@@ -68,7 +68,10 @@ export default {
         watchEffect(() => {
             if (props.condition.jsonCondition) {
                 parsedData.value = JSON.parse(props.condition.jsonCondition);
-                selectedGroups.value = props.groups.length > 0 ? workflow_util .getGroups(parsedData.value.groups, props.groups) : [ ];
+                data.groups = parsedData.value.groups ? parsedData.value.groups.split(",") : [];
+                data.pledges = parsedData.value.pledges ? parsedData.value.pledges.split(",") : [];
+                
+                // selectedGroups.value = props.groups.length > 0 ? workflow_util .getGroups(parsedData.value.groups, props.groups) : [ ];
                 // data.groups = parsedData.value.groups;
             }
         })

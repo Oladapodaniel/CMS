@@ -126,13 +126,19 @@ export default {
             if (props.condition.jsonCondition) {
                 parsedData.value = JSON.parse(props.condition.jsonCondition);
                 logicalOperator.value = parsedData.value.logicalOperator;
-                data.logicalOperator = parsedData.value.logicalOperator;
+                selectedLogicalOperator.value = logicalOperator.value ? logicalOperatorList.value.find(i => i.name == logicalOperator.value) : {}
+                data.logicalOperator = selectedLogicalOperator.value.name;
 
                 amount.value = parsedData.value.amount;
                 data.amount = parsedData.value.amount;
 
-                selectedGroups.value = props.groups.length > 0 ? workflow_util .getGroups(parsedData.value.groups, props.groups) : [ ];
+                data.groups = parsedData.value.groups ? parsedData.value.groups.split(",") : [];
+                data.pledges = parsedData.value.pledges ? parsedData.value.pledges.split(",") : [];
+
+                // selectedGroups.value = props.groups.length > 0 ? workflow_util .getGroups(parsedData.value.groups, props.groups) : [ ];
                 // data.groups = parsedData.value.groups;
+
+                // console.log(parsedData.value)
             }
         }) 
 
