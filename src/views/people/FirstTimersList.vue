@@ -509,9 +509,6 @@ export default {
         return []
       } else if (filterResult.value.length > 0 && (filter.value.name || filter.value.phoneNumber)) {
         console.log(4)
-      } else if (searchText.value !== "" && searchNamesInDB.value.length == 0 && !paginatedTableLoading.value) {
-        return []
-      } else if (filterResult.value.length > 0 && (filter.value.name || filter.value.phoneNumber)) {
         return filterResult.value;
       } else {
         console.log(5)
