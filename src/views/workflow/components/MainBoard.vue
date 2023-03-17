@@ -950,7 +950,6 @@ export default {
     const updateTrigger = (data, selectedTriggerIndex) => {
       let parsed = JSON.parse(data)
       let foo;
-      console.log(parsed)
       if (parsed.pledges && parsed.pledges.length > 0) parsed.pledges = parsed.pledges.join(",")
       if (typeof parsed.groups !== 'string') {
         parsed.groups = parsed.groups.join(",")
@@ -958,8 +957,6 @@ export default {
       } else {
         foo = data
       }
-      console.log(foo)
-      console.log(workflow.value.triggers)
       workflow.value.triggers[selectedTriggerIndex].jsonCondition = foo;
     };
 

@@ -131,10 +131,6 @@ export default {
 
         const parsedData = ref({})
         watchEffect(() => {
-            console.log(props.allPledgeDefinitionList)
-
-
-
             if (props.condition.jsonCondition) {
                 parsedData.value = JSON.parse(props.condition.jsonCondition);
                 logicalOperator.value = parsedData.value.logicalOperator;
@@ -149,7 +145,6 @@ export default {
                 data.pledges = parsedData.value.pledges ? parsedData.value.pledges.split(",") : [];
                 // currentNumOfMonths.value = parsedData.value.givenForTheLastMonth;
                 // console.log(parsedData.value)
-                console.log(parsedData.value)
             }
         })
 
