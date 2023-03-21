@@ -121,13 +121,13 @@
                   Continue payment with
                 </div>
               </div>
-              <div class="row row-button c-pointer d-flex justify-content-center" @click="payWithPaystack"
+              <div class="row row-button c-pointer d-flex justify-content-center" @click="initializePayment(0)"
                 v-if="selectedCurrency == 'NGN' || selectedCurrency == 'GHS'">
                 <div>
                   <img style="width: 150px" src="../../assets/4PaystackLogo.png" alt="paystack" />
                 </div>
               </div>
-              <div class="row row-button c-pointer d-flex justify-content-center" @click="payWithFlutterwave">
+              <div class="row row-button c-pointer d-flex justify-content-center" @click="initializePayment(1)">
                 <div>
                   <img style="width: 150px" src="../../assets/flutterwave_logo_color@2x.png" alt="flutterwave" />
                 </div>
@@ -149,17 +149,16 @@
 </template>
 
 <script>
-import { computed, onMounted, ref } from "vue";
+import { computed, ref } from "vue";
 import axios from "@/gateway/backendapi";
 import PaymentSuccessModal from "@/components/payment/PaymentSuccessful.vue"
 import store from '../../store/store'
-import userService from '../../services/user/userservice'
 import stopProgressBar from "../../services/progressbar/progress"
-import { v4 as uuidv4 } from 'uuid';
 import supportedCurrencies from "../../services/user/flutterwaveSupportedCurrency"
 import productPricing from "../../services/user/productPricing";
 import { ElMessage, ElMessageBox } from 'element-plus'
 import deviceBreakpoint from "../../mixins/deviceBreakpoint";
+import { ElLoading } from 'element-plus';
 
 export default {
   components: { PaymentSuccessModal },
@@ -168,16 +167,9 @@ export default {
     const smsUnits = ref(0);
     const invalidAmount = ref(false);
     const purchaseIsSuccessful = ref(false);
-    const isProduction = ref(false);
-    const uuid = ref(uuidv4());
-    const userEmail = ref(store.getters.userEmail);
-    const currentUser = ref(store.getters.currentUser);
-    const tenantId = ref(currentUser.tenantId);
-    const userCurrency = ref(currentUser.currency);
-    const churchName = ref("");
+    const isProduction = true
     const churchLogo = ref('');
     const close = ref(null);
-    const isSuccessful = ref(false);
     const pricePerUnitSMS = ref(0);
     const FLWupportedCurrencies = ref(supportedCurrencies);
     const selectedCurrency = ref(null)
@@ -198,8 +190,6 @@ export default {
       if (amount.value <= 0) return "";
       return Math.ceil(amount.value);
     });
-
-
 
     const getAllCountries = () => {
       axios.get("/api/GetAllCountries").then((res) => {
@@ -245,32 +235,14 @@ export default {
       getProductPricing(countryIDObj.id)
     }
 
-    const getUserEmail = async () => {
-      userService.getCurrentUser()
-        .then(res => {
-          userEmail.value = res.userEmail;
-          churchName.value = res.churchName;
-          tenantId.value = res.tenantId;
-          userCurrency.value = res.currency;
-          pricePerUnitSMS.value = res.pricePerUnitSMS
-          currentUser.value = res
-
-          const userCurrencySupported = FLWupportedCurrencies.value.find(i => i.value === currentUser.value.currency)
-          selectedCurrency.value = userCurrencySupported ? userCurrencySupported.value : 'USD'
-          getAllCountries();
-          getChurchProfile();
-
-        })
-        .catch(err => {
-          console.log(err);
-        })
-    }
-
-    getUserEmail();
+    const currentUser = computed(() => {
+      if (!store.getters.currentUser || (store.getters.currentUser && Object.keys(store.getters.currentUser).length == 0)) return ''
+      return store.getters.currentUser
+    })
 
     const getChurchProfile = async () => {
       try {
-        let res = await axios.get(`/GetChurchProfileById?tenantId=${tenantId.value}`)
+        let res = await axios.get(`/GetChurchProfileById?tenantId=${currentUser.value.tenantId}`)
         churchLogo.value = res.data.returnObject.logo
         getProductPricing(res.data.returnObject.countryID)
       }
@@ -279,118 +251,41 @@ export default {
       }
     }
 
-    const payWithPaystack = (e) => {
-      initializePayment(0)
-      e.preventDefault();
-      invalidAmount.value = false;
-      if (amount.value <= 0) {
-        invalidAmount.value = true;
-        return false;
-      }
-      const getUserEmail = async () => {
-        userService.getCurrentUser()
-          .then(res => {
-            userEmail.value = res.userEmail;
-            churchName.value = res.churchName;
-            tenantId.value = res.tenantId;
-            userCurrency.value = res.currency;
-            currentUser.value = res
-
-          })
-          .catch(err => {
-            console.log(err);
-          })
-      }
+    const setUserCurrency = () => {
+      const userCurrencySupported = FLWupportedCurrencies.value.find(i => i.value === currentUser.value.currency)
+      selectedCurrency.value = userCurrencySupported ? userCurrencySupported.value : 'USD'
+      getAllCountries();
+      getChurchProfile();
+    }
+    if (currentUser.value && Object.keys(currentUser.value).length > 0) setUserCurrency()
 
 
-      if (!userEmail.value || !tenantId.value) getUserEmail(); (0);
-      /*eslint no-undef: "warn"*/
+    const payWithPaystack = (responseObject) => {
       let handler = PaystackPop.setup({
         key: process.env.VUE_APP_PAYSTACK_PUBLIC_KEY_LIVE,
         // key: process.env.VUE_APP_PAYSTACK_API_KEY,
-        email: userEmail.value,
-        amount: amount.value * 100,
-        firstname: churchName.value,
-        lastname: "",
-        ref: uuid.value,
+        email: currentUser.value.userEmail,
+        amount: totalAmount.value * 100,
         currency: selectedCurrency.value,
         channels: ['card', 'bank', 'ussd', 'qr', 'mobile_money', 'bank_transfer'],
+        ref: responseObject.transactionReference.replaceAll(' ', '-'),
         onClose: function () {
-          // swal("Transaction Canceled!", { icon: "error" });
-          if (!isSuccessful.value) {
-            axios
-              .put('/cancelpayment', { paymentTransactionId: initializedOrder.value.id })
-              .then(() => {
-                ElMessage({
-                  showClose: true,
-                  message: 'Transaction cancelled',
-                  type: 'info',
-                  duration: 3000
-                })
-              })
-          }
+          ElMessage({
+            type: 'info',
+            showClose: true,
+            message: "You have cancelled the transaction",
+            duration: 5000
+          })
         },
         callback: function (response) {
-          //Route to where you confirm payment status
-          var returnres = {
-            smsUnit: totalSMSUnits.value,
-            transaction_Reference: response.trxref,
-            amount: amount.value * 100,
-            orderId: response.trxref,
-            tenantId: currentUser.value.tenantId,
-          };
-
-          // Route to where you confirm payment status
-
-          axios
-            .post(`/api/Payment/purchasesmsunits?paymentType=0`, returnres)
-            .then((res) => {
-              if (res.data) {
-                close.value.click();
-                purchaseIsSuccessful.value = true;
-                store.dispatch("addPurchasedUnits", totalSMSUnits.value);
-              } else {
-                ElMessage({
-                  type: 'error',
-                  showClose: true,
-                  message: 'Confirming your purchase failed, please contact support at info@churchplus.co',
-                  duration: 5000
-                })
-
-              }
-            })
-            .catch((err) => {
-              stopProgressBar();
-              ElMessage({
-                type: 'error',
-                showClose: true,
-                message: 'Confirming your purchase failed, please contact support at info@churchplus.co',
-                duration: 5000
-              })
-            });
+          let trans_id = response.trxref
+          let tx_ref = response.trxref
+          confirmSMSUnitPayment(tx_ref, trans_id);
+          console.log(response);
         },
       });
       handler.openIframe();
     };
-
-
-    const closeModal = () => purchaseIsSuccessful.value = false;
-    const initializedOrder = ref({})
-
-    const initializePayment = (paymentType) => {
-      const payload = {
-        smsUnit: totalSMSUnits.value,
-        amount: totalAmount.value,
-        tenantId: tenantId.value,
-        orderId: uuidv4()
-      }
-      axios
-        .post(`/api/Payment/initializesmspayment?paymentType=${paymentType}`, payload)
-        .then((res) => {
-          close.value.click();
-          initializedOrder.value = res.data;
-        })
-    }
 
     // flutterwave setup function
     const getFlutterwaveModules = () => {
@@ -402,76 +297,106 @@ export default {
     }
     getFlutterwaveModules()
 
-    const payWithFlutterwave = () => {
-      initializePayment(1);
+    const payWithFlutterwave = (returnObject) => {
       window.FlutterwaveCheckout({
         public_key: process.env.VUE_APP_FLUTTERWAVE_PUBLIC_KEY_LIVE,
         // public_key: process.env.VUE_APP_FLUTTERWAVE_TEST_KEY,
-        tx_ref: uuidv4().substring(0, 8),
+        tx_ref: returnObject.transactionReference.replaceAll(' ', '-'),
         amount: totalAmount.value,
         currency: selectedCurrency.value,
         payment_options: 'card,ussd',
         customer: {
-          // name: props.name,
-          // email: currentUser.value.userEmail,
-          email: userEmail.value,
+          name: currentUser.value.churchName,
+          email: currentUser.value.userEmail,
         },
         callback: (response) => {
-          const payload = {
-            smsUnit: totalSMSUnits.value,
-            transaction_Reference: response.transaction_id,
-            amount: totalAmount.value,
-            tenantId: tenantId.value,
-            orderId: initializedOrder.value.id
-          }
-          axios
-            .post(`/api/Payment/purchasesmsunits?paymentType=1`, payload)
-            .then((res) => {
-              if (res.data) {
-                purchaseIsSuccessful.value = true;
-                store.dispatch("addPurchasedUnits", totalSMSUnits.value);
-                isSuccessful.value = true;
-              } else {
-                ElMessage({
-                  type: 'error',
-                  showClose: true,
-                  message: 'Confirming your purchase failed, please contact support at info@churchplus.co',
-                  duration: 5000
-                })
-              }
-
-            })
-            .catch(() => {
-              ElMessage({
-                type: 'error',
-                showClose: true,
-                message: 'Confirming your purchase failed, please contact support at info@churchplus.co',
-                duration: 5000
-              })
-            });
+          let trans_id = response.transaction_id
+          let tx_ref = response.tx_ref
+          confirmSMSUnitPayment(trans_id, tx_ref);
         },
         onclose: () => {
-          if (!isSuccessful.value) {
-            axios
-              .put('/cancelpayment', { paymentTransactionId: initializedOrder.value.id })
-              .then(() => {
-                ElMessage({
-                  type: 'info',
-                  showClose: true,
-                  message: 'Transaction cancelled',
-                  duration: 3000
-                })
-
-              })
-          }
-
+          ElMessage({
+            type: 'info',
+            showClose: true,
+            message: "Payment window closed",
+            duration: 5000
+          })
         },
         customizations: {
-          title: 'SMS Unit',
+          title: currentUser.value.churchName,
           description: "Payment for SMS Unit ",
           logo: churchLogo.value
         },
       });
+    }
+
+    const closeModal = () => purchaseIsSuccessful.value = false;
+
+    const initializePayment = (paymentType) => {
+      invalidAmount.value = false;
+      if (amount.value <= 0) {
+        invalidAmount.value = true;
+        return false;
+      }
+      const loading = ElLoading.service({
+        lock: true,
+        text: 'Please wait...',
+        background: 'rgba(255, 255, 255, 0.9)',
+      })
+
+      const payload = {
+        smsUnit: totalSMSUnits.value,
+        amount: totalAmount.value,
+        paymentGateway: paymentType == 0 ? "Paystack" : "Flutterwave",
+      }
+      axios
+        .post(`/api/Payment/InitializeSMSPayment`, payload)
+        .then(({ data }) => {
+          close.value.click();
+          loading.close()
+          console.log(data)
+          if (data.status) {
+            if (paymentType == 0) {
+              payWithPaystack(data)
+            } else {
+              payWithFlutterwave(data)
+            }
+          }
+        })
+        .catch((err) => {
+          console.error(err);
+          loading.close();
+        })
+    }
+
+    const confirmSMSUnitPayment = async (tx_ref, trans_id) => {
+      console.log('reching')
+      await axios
+        .post(`/api/Payment/ConfirmSMSPayment?id=${trans_id}&txnref=${tx_ref}`)
+        .then((res) => {
+          if (res.data) {
+            close.value.click();
+            purchaseIsSuccessful.value = true;
+            store.dispatch("addPurchasedUnits", totalSMSUnits.value);
+          } else {
+            ElMessage({
+              type: 'error',
+              showClose: true,
+              message: 'Confirming your SMS unit purchase failed, please contact support at info@churchplus.co',
+              duration: 20000
+            })
+
+          }
+        })
+        .catch((err) => {
+          stopProgressBar();
+          ElMessage({
+            type: 'error',
+            showClose: true,
+            message: 'Confirming your purchase failed, please contact support at info@churchplus.co',
+            duration: 5000
+          })
+        });
     }
 
 
@@ -480,20 +405,14 @@ export default {
       smsUnits,
       totalAmount,
       totalSMSUnits,
-      payWithPaystack,
       invalidAmount,
       purchaseIsSuccessful,
       closeModal,
       currentUser,
-      isProduction,
       payWithFlutterwave,
-      tenantId,
       initializePayment,
-      initializedOrder,
       churchLogo,
       close,
-      userCurrency,
-      uuid,
       pricePerUnitSMS,
       FLWupportedCurrencies,
       selectedCurrency,

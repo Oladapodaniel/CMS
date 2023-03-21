@@ -30,7 +30,7 @@
               v-model="selectedPlanId" placeholder="Select plan" @change="setSelectedPlan" size="large" class="w-100" />
             <div class="mt-3 normal-text text-right text-md-left italic pl-md-0">
               Membership: {{ selectedPlan && selectedPlan.membershipSize ? selectedPlan.membershipSize.toLocaleString()
-              : ""}}
+                : "" }}
             </div>
           </div>
           <div class="col-md-6 col-lg-6 col-12">
@@ -40,7 +40,8 @@
             <el-select-v2 :options="selectMonths.map(i => ({ label: i.name, value: i.name }))" v-model="selectMonthId"
               placeholder="Select duration" @change="setSelectedDuration" size="large" class="w-100" />
             <div class=" ml-1 mt-3 normal-text pl-md-0">
-              {{ selectedPlan && Object.keys(selectedPlan).length > 0 && selectedPlan.currency ? selectedPlan.currency.symbol : "" }} {{ subselectedDuratn.toLocaleString() }}
+              {{ selectedPlan && Object.keys(selectedPlan).length > 0 && selectedPlan.currency ?
+                selectedPlan.currency.symbol : "" }} {{ subselectedDuratn.toLocaleString() }}
             </div>
           </div>
 
@@ -79,8 +80,8 @@
           <div class="row mt-2 normal-text">
             <div class="col-md-2 col-lg-2 col-4">Email</div>
             <div class="col-md-6 offset-md-1 col-4 ">
-              <el-select-v2 :options="selectEmailUnit.map(i => ({ label: i.name, value: i.name }))"
-                v-model="selectEmail" placeholder="Email unit" size="large" class="w-100" />
+              <el-select-v2 :options="selectEmailUnit.map(i => ({ label: i.name, value: i.name }))" v-model="selectEmail"
+                placeholder="Email unit" size="large" class="w-100" />
             </div>
             <div class="col-md-2 col-4">
               {{ selectEmail.constValue ? emailAmount : 0 }}
@@ -91,7 +92,7 @@
           <div class="row normal-text" v-for="(item) in productsList" :key="item.id">
             <div class="col-12" v-if="
               item.type === 0
-            
+
             ">
               <div class="row">
                 <div class="col-md-6 col-4">{{ item.name }}</div>
@@ -116,7 +117,7 @@
             <div class="col-md-6 col-6">{{ item.name }}</div>
             <div class="col-md-6 col-6 text-right font-weight-bold">
               {{ daysToEndOfSubscription > 0 ? ((item.price * subscriptionDuration) + ((item.price / 30) *
-              daysToEndOfSubscription)).toFixed(2) : (item.price * subscriptionDuration).toFixed(2) }}
+                daysToEndOfSubscription)).toFixed(2) : (item.price * subscriptionDuration).toFixed(2) }}
             </div>
           </div>
           <hr />
@@ -153,7 +154,7 @@
               Oops,
             </h4>
             <p>
-              Your payment was not successful, contact support at
+              Sorry, your subscription upgrade was not successful, please contact support at
               <span class="font-weight-bold">info@churchplus.co</span>
             </p>
           </div>
@@ -179,13 +180,13 @@
                   Continue payment with
                 </div>
               </div>
-              <div class="row row-button c-pointer d-flex justify-content-center" @click="payWithPaystack"
+              <div class="row row-button c-pointer d-flex justify-content-center" @click="initializePayment(0)"
                 v-if="currentUser.currency == 'NGN' || currentUser.currency == 'GHS'">
                 <div>
                   <img style="width: 150px" src="../../assets/4PaystackLogo.png" alt="paystack" />
                 </div>
               </div>
-              <div class="row row-button c-pointer d-flex justify-content-center" @click="payWithFlutterwave">
+              <div class="row row-button c-pointer d-flex justify-content-center" @click="initializePayment(1)">
                 <div>
                   <img style="width: 150px" src="../../assets/flutterwave_logo_color@2x.png" alt="flutterwave" />
                 </div>
@@ -204,9 +205,9 @@ import { useStore } from "vuex";
 import formatDate from "../../services/dates/dateformatter";
 import { computed, ref } from "vue";
 import userService from "../../services/user/userservice";
-import { v4 as uuidv4 } from "uuid";
 import productPricing from "../../services/user/productPricing";
-import { ElMessage, ElMessageBox } from 'element-plus'
+import { ElMessage, ElMessageBox } from 'element-plus';
+import { ElLoading } from 'element-plus';
 import deviceBreakpoint from "../../mixins/deviceBreakpoint";
 
 export default {
@@ -303,7 +304,7 @@ export default {
           UserSubscriptionPricing.value.push(i)
         }
       })
-      selectSubscription();
+      getTenantSubscription();
       UserSubscriptionPlans.value = UserSubscriptionPricing.value.sort((a, b) => a.order - b.order).map(i => {
         i.subscriptionPlan.amount = i.price;
         i.subscriptionPlan.currency = i.currency;
@@ -314,7 +315,7 @@ export default {
     }
 
 
-    const selectSubscription = () => {
+    const getTenantSubscription = () => {
       axios.get("/api/Subscription/subscriptions").then((res) => {
         Plans.value = res.data;
         existingPlan.value.id = Plans.value.id;
@@ -409,97 +410,6 @@ export default {
 
     const paymentFailed = ref(false);
 
-    const subscriptionPayment = (response, gateway) => {
-      close.value.click();
-      paymentFailed.value = false;
-
-      const products = checkedBoxArr.value.map((i) => {
-        return {
-          productName: i.name,
-          productID: i.id,
-          productPrice: i.price,
-        };
-      });
-      if (selectEmail.value.name) {
-        const emailObj = productsList.value.find((i) => i.name === "Email");
-        if (emailObj.name) {
-          products.push({
-            productName: emailObj.name,
-            productID: emailObj.id,
-            productPrice: emailAmount.value,
-          });
-        }
-      }
-      if (smsValue.value) {
-        const smsObj = productsList.value.find((i) => i.name === "SMS");
-        if (smsObj.name) {
-          products.push({
-            productName: smsObj.name,
-            productID: smsObj.id,
-            productPrice: smsAmount.value,
-          });
-        }
-      }
-      const body = {
-        durationInMonths: selectMonth.value.name
-          ? +selectMonth.value.name
-          : 0,
-        smsUnits: smsValue.value ? smsValue.value : 0,
-        emailUnits: selectEmail.value.name
-          ? +selectEmail.value.name.split("-")[1]
-          : 0,
-        totalAmount: TotalAmount.value,
-        paymentGateway: gateway == 0 ? 'paystack' : 'flutterwave',
-        txnRefID: gateway == 0 ? response.trxref : response.transaction_id,
-        productItems: products,
-        currency: selectedCurrency.value.shortCode,
-      };
-
-      if (selectMonth.value) {
-        body.subscriptionPlanID = selectedPlan.value.id;
-      }
-
-      if (gateway == 0) {
-        try {
-          axios
-            .post("/api/Subscription/SubscriptionPayment", body)
-            .then((res) => {
-              display.value = true;
-              selectSubscription();
-              if (!res.data.returnObject.status) {
-                paymentFailed.value = true;
-              }
-            })
-            .catch((err) => {
-              console.log(err);
-              display.value = true;
-              paymentFailed.value = true;
-            });
-        } catch (error) {
-          console.log(error);
-        }
-      } else {
-        try {
-          axios
-            .post("/api/Subscription/subscribe?paymentType=1", body)
-            .then((res) => {
-              display.value = true;
-              selectSubscription();
-              if (!res.data.status) {
-                paymentFailed.value = true;
-              }
-            })
-            .catch((err) => {
-              console.log(err);
-              display.value = true;
-              paymentFailed.value = true;
-            });
-        } catch (error) {
-          console.log(error);
-        }
-      }
-    };
-
 
     const emailAmount = computed(() => {
       if (!selectEmail.value.name) return 0;
@@ -546,60 +456,82 @@ export default {
       return ''
     })
 
-    const appendLeadingZeroes = (n) => {
-      if (n <= 9) {
-        return "0" + n;
-      }
-      return n;
-    };
-    let currentDate = new Date();
-    let formattedDate = `${currentDate.getFullYear()}${appendLeadingZeroes(
-      currentDate.getMonth() + 1
-    )}${appendLeadingZeroes(currentDate.getDate())}${appendLeadingZeroes(
-      currentDate.getHours()
-    )}${appendLeadingZeroes(currentDate.getMinutes())}
- ${appendLeadingZeroes(currentDate.getSeconds())}${appendLeadingZeroes(
-      currentDate.getMilliseconds()
-    )}`;
-
-
     const initializePayment = (paymentGateway) => {
+      const loading = ElLoading.service({
+        lock: true,
+        text: 'Please wait...',
+        background: 'rgba(255, 255, 255, 0.9)',
+      })
+
       const payload = {
-        gateway: paymentGateway === 0 ? 'paystack' : 'flutterwave',
+        subscriptionPlanID: selectedPlan.value.id,
+        paymentGateway: paymentGateway === 0 ? 'Paystack' : 'Flutterwave',
         totalAmount: TotalAmount.value,
-        tenantId: currentUser.value.tenantId,
-        orderId: uuidv4()
+        durationInMonths: selectMonthId.value,
+        currencyId: selectedCurrency.value.id
       }
-      axios
-        .post('/api/payment/initializesubscription', payload)
-        .then((res) => {
+      axios.post('/api/Payment/InitializeSubscription', payload)
+        .then(({ data }) => {
+          console.log(data)
           close.value.click();
-          initializedOrder.value = res.data;
+          // initializedOrder.value = res.data;
+          loading.close();
+          if (data.status) {
+            if (paymentGateway == 0) {
+              payWithPaystack(data)
+            } else {
+              payWithFlutterwave(data)
+            }
+          }
         })
     }
-    const payWithPaystack = () => {
-      initializePayment(0);
-      /*eslint no-undef: "warn"*/
+
+    const subscriptionPayment = async (tx_ref, trans_id) => {
+      try {
+        await axios
+          .post(`/api/Payment/ConfirmSubscriptionPayment?id=${trans_id}&txnref=${tx_ref}`)
+          .then((res) => {
+            console.log(res)
+            display.value = true;
+            if (res.data) {
+              getTenantSubscription();
+              paymentFailed.value = false
+            } else {
+              paymentFailed.value = true;
+            }
+          })
+          .catch((err) => {
+            console.log(err);
+            display.value = true;
+            paymentFailed.value = true;
+          });
+      } catch (error) {
+        console.log(error);
+      }
+    };
+
+
+    const payWithPaystack = (responseObject) => {
       let handler = PaystackPop.setup({
         key: process.env.VUE_APP_PAYSTACK_PUBLIC_KEY_LIVE,
         // key: process.env.VUE_APP_PAYSTACK_API_KEY,
-
-        email: "info@churchplus.co",
+        email: 'info@churchplus.co',
         amount: TotalAmount.value * 100,
-        ref: `${formattedDate.substring(0, 4)}${uuidv4().substring(0, 4)}sub`,
-        currency: Plans.value.paymentCurrency,
+        currency: selectedCurrency.value.shortCode,
         channels: ['card', 'bank', 'ussd', 'qr', 'mobile_money', 'bank_transfer'],
+        ref: responseObject.transactionReference.replaceAll(' ', '-'),
         onClose: function () {
           ElMessage({
-            type: 'warning',
-            message: 'Transaction cancelled',
+            type: 'info',
+            showClose: true,
+            message: "You have cancelled the transaction",
             duration: 5000
           })
         },
         callback: function (response) {
-          // subscriptionPayment(response, 0);
-          //Route to where you confirm payment status
-          display.value = true
+          let trans_id = response.trxref
+          let tx_ref = response.trxref
+          subscriptionPayment(tx_ref, trans_id);
         },
       });
       handler.openIframe();
@@ -614,8 +546,8 @@ export default {
     }
     getFlutterwaveModules()
 
-    const payWithFlutterwave = () => {
-      initializePayment(1)
+    const payWithFlutterwave = (responseObject) => {
+      console.log(responseObject, 'flutterwave')
 
       let country = "";
 
@@ -641,17 +573,19 @@ export default {
       window.FlutterwaveCheckout({
         // public_key: process.env.VUE_APP_FLUTTERWAVE_TEST_KEY,
         public_key: process.env.VUE_APP_FLUTTERWAVE_PUBLIC_KEY_LIVE,
-        tx_ref: uuidv4().substring(0, 8),
+        tx_ref: responseObject.transactionReference.replaceAll(' ', '-'),
         amount: TotalAmount.value,
         currency: selectedCurrency.value.shortCode,
         country: country,
         payment_options: 'card,ussd',
         customer: {
-          // name: props.name,
+          name: currentUser.value.churchName,
           email: currentUser.value.userEmail
         },
         callback: (response) => {
-          subscriptionPayment(response, 1)
+          let trans_id = response.transaction_id
+          let tx_ref = response.tx_ref
+          subscriptionPayment(trans_id, tx_ref);
         },
         onclose: () => console.log('Payment closed'),
         customizations: {
@@ -686,7 +620,7 @@ export default {
 
     return {
       selectedPlan,
-      selectSubscription,
+      getTenantSubscription,
       subscriptionPlans,
       currentAmount,
       currentPlan,
@@ -708,7 +642,6 @@ export default {
       expenseApp,
       fixedAsset,
       acctReceived,
-      payWithPaystack,
       paymentSummary,
       paymentSummObj,
       isChecked,
@@ -726,7 +659,6 @@ export default {
       display,
       close,
       paymentFailed,
-      payWithFlutterwave,
       daysToEndOfSubscription,
       subscriptionDuration,
       initializePayment,
