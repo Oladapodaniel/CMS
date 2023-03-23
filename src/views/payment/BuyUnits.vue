@@ -268,7 +268,7 @@ export default {
         amount: totalAmount.value * 100,
         currency: selectedCurrency.value,
         channels: ['card', 'bank', 'ussd', 'qr', 'mobile_money', 'bank_transfer'],
-        ref: responseObject.transactionReference.replaceAll(' ', '-'),
+        ref: responseObject.transactionReference,
         onClose: function () {
           ElMessage({
             type: 'info',
@@ -301,7 +301,7 @@ export default {
       window.FlutterwaveCheckout({
         public_key: process.env.VUE_APP_FLUTTERWAVE_PUBLIC_KEY_LIVE,
         // public_key: process.env.VUE_APP_FLUTTERWAVE_TEST_KEY,
-        tx_ref: returnObject.transactionReference.replaceAll(' ', '-'),
+        tx_ref: returnObject.transactionReference,
         amount: totalAmount.value,
         currency: selectedCurrency.value,
         payment_options: 'card,ussd',
