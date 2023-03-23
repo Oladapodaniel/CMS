@@ -33,7 +33,7 @@
                             </div>
                         </div>
                         <div class="col-md-10 col-sm-11 offset-1  col-lg-9 d-flex align-items-center justify-content-center" :class="{ 'show' : displayLink, 'hide' : !displayLink }">
-                            <p class="para"><span class="d-flex align-items-center"><input type="text" ref="paymentLink"  @click="copyLink" :value="`my.churchplus.co/${route.params.paymentId}`" class="form-control w-100"> <i class="pi pi-copy ml-2 c-pointer" @click="copyLink" style="font-size: 22px"></i></span></p>
+                            <p class="para"><span class="d-flex align-items-center"><input type="text" ref="paymentLink"  @click="copyLink" :value="`my.churchplus.co/give/${route.params.paymentId}`" class="form-control w-100"> <i class="pi pi-copy ml-2 c-pointer" @click="copyLink" style="font-size: 22px"></i></span></p>
                         </div>
                         <!-- <div class="col-md-10 col-sm-11 offset-1  col-lg-9 d-flex align-items-center justify-content-center" :class="{ 'show' : displayLink, 'hide' : !displayLink }">
                             <p class="para"><span class="d-flex align-items-center"><input type="text" ref="paymentLink"  @click="copyLink" :value="`https://give.churchplus.co/${route.params.paymentId}`" class="form-control w-100"> <i class="pi pi-copy ml-2 c-pointer" @click="copyLink" style="font-size: 22px"></i></span></p>

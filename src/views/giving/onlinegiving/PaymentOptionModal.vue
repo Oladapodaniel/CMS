@@ -3,12 +3,12 @@
     <div class="row">
       <div class="col-sm-12 p-4 text-center continue-text">Continue payment with</div>
     </div>
-    <div class="row row-button d-flex justify-content-center" @click="payWithPaystack" v-if="paystackGate">
+    <div class="row row-button d-flex justify-content-center" @click="initializePayment(0)" v-if="paystackGate">
       <img class="img-pay" src="../../../assets/4PaystackLogo.png" alt="paystack" />
     </div>
 
 
-    <div class="row row-button d-flex justify-content-center" v-if="flutterwaveGate" @click="makePayment">
+    <div class="row row-button d-flex justify-content-center" v-if="flutterwaveGate" @click="initializePayment(1)">
       <div>
         <img class="img-pay" src="../../../assets/flutterwave_logo_color@2x.png" alt="flutterwave" />
       </div>
@@ -30,95 +30,97 @@
 </template>
 
 <script>
-// import PaystackPay from "../../../components/payment/PaystackPay"
-
-import { ref, computed } from 'vue'
+import { ref, computed, watchEffect } from 'vue'
 import axios from "@/gateway/backendapi";
-import finish from "../../../services/progressbar/progress"
-import { useToast } from "primevue/usetoast";
-import router from '../../../router';
+import { ElMessage } from 'element-plus';
 export default {
-  components: {
-    // PaystackPay
-    // paystack
-  },
-  props: ['orderId', 'donation', 'close', 'amount', 'converted', 'name', 'email', 'gateways', 'currency', 'churchLogo', 'churchName'],
+  props: ['formData', 'donation', 'close', 'amount', 'converted', 'name', 'email', 'currency', 'callPayment', 'initializePaymentResponse'],
+  emits: ['selected-gateway', 'transaction-reference', 'paystack-amount', 'payment-successful', 'resetcallpaymentprops'],
   setup(props, { emit }) {
-
-    const toast = useToast()
-
     const isProduction = true
     const selectedGateway = ref("")
 
 
     const paystackGate = computed(() => {
-      console.log(props)
-      if (!props.gateways || props.currency !== 'NGN') return false
-      return props.gateways.find(i => i.paymentGateway.name === "Paystack")
+      if (!props.formData.paymentGateWays || props.currency !== 'NGN') return false
+      return props.formData.paymentGateWays.find(i => i.paymentGateway.name === "Paystack")
     })
 
     const flutterwaveGate = computed(() => {
-      if (!props.gateways) return false
-      return props.gateways.find(i => i.paymentGateway.name === "FlutterWave")
+      if (!props.formData.paymentGateWays) return false
+      return props.formData.paymentGateWays.find(i => i.paymentGateway.name === "FlutterWave")
     })
 
     const paypalGate = computed(() => {
-      if (!props.gateways) return false
-      return props.gateways.find(i => i.paymentGateway.name === "PayPal")
+      if (!props.formData.paymentGateWays) return false
+      return props.formData.paymentGateWays.find(i => i.paymentGateway.name === "PayPal")
     })
 
     const stripe = computed(() => {
-      if (!props.gateways) return false
-      return props.gateways.find(i => i.paymentGateway.name === "Stripe")
+      if (!props.formData.paymentGateWays) return false
+      return props.formData.paymentGateWays.find(i => i.paymentGateway.name === "Stripe")
     })
 
-    const payWithPaystack = () => {
-      selectedGateway.value = 'paystack'
+    const initializePayment = (paymentType) => {
+      selectedGateway.value = paymentType == 0 ? 'Paystack' : 'Flutterwave';
       emit('selected-gateway', selectedGateway.value)
+    }
 
+    const confirmDonationPayment = async (trans_id, tx_ref) => {
+      try {
+        let { data } = await axios.post(`/ConfirmDonationPayment?id=${trans_id}&txnref=${tx_ref}`);
+        if (data.status) {
+          emit('payment-successful', true)
+        } else {
+          ElMessage({
+            type: 'error',
+            showClose: true,
+            message: "Confirmation failed, Confirming your purchase failed, please contact support at info@churchplus.co",
+            duration: 8000
+          })
+        }
+      }
+      catch (error) {
+        console.error(error)
+        ElMessage({
+          type: 'error',
+          showClose: true,
+          message: "Confirmation failed, Confirming your purchase failed, please contact support at info@churchplus.co",
+          duration: 8000
+        })
+      }
+    }
+
+    const payWithPaystack = (initializePaymentResponse) => {
       props.close.click()
       /*eslint no-undef: "warn"*/
       let handler = PaystackPop.setup({
-        key: process.env.VUE_APP_PAYSTACK_PUBLIC_KEY_LIVE,
-        // key: process.env.VUE_APP_PAYSTACK_API_KEY,
+        // key: process.env.VUE_APP_PAYSTACK_PUBLIC_KEY_LIVE,
+        key: process.env.VUE_APP_PAYSTACK_API_KEY,
         email: props.email,
         amount: props.converted * 100 ? props.converted * 100 : props.amount * 100,
         firstname: props.name,
-        ref: props.orderId,
-        subaccount: props.donation.paymentGateway.find(i => {
+        ref: initializePaymentResponse.transactionReference,
+        channels: ['card', 'bank', 'ussd', 'qr', 'mobile_money', 'bank_transfer'],
+        subaccount: props.formData.paymentGateWays.find(i => {
           return i.paymentGateway.name.toLowerCase() === selectedGateway.value.toLowerCase()
         }).subAccountID,
-        // gatewayObject.value.subAccountID,
         bearer: 'subaccount',
         onClose: function () {
-          toast.add({ severity: 'info', summary: 'Transaction cancelled', detail: "You have cancelled the transaction", life: 2500 })
+          ElMessage({
+            type: 'info',
+            showClose: true,
+            message: "You have cancelled the transaction",
+            duration: 5000
+          })
         },
         callback: function (response) {
           //Route to where you confirm payment status
-          console.log(response, "Payment Received");
           emit('transaction-reference', response.trxref)
           emit('paystack-amount')
-          console.log(props.donation)
-          // `/confirmDonation?txnref=${response.trxref}`
-          axios
-            .post(`/donated?paymentType=0`, props.donation)
-            .then((res) => {
-              finish()
-              console.log(res, "success data");
-
-            })
-            .catch((err) => {
-              finish()
-              toast.add({
-                severity: 'error',
-                summary: 'Confirmation failed',
-                detail: "Confirming your purchase failed, please contact support at info@churchplus.co",
-                life: 4000
-              })
-              console.log(err, "error confirming payment");
-            });
-
-          emit('payment-successful', true)
+          let trans_id = response.trxref
+          let tx_ref = response.trxref
+          confirmDonationPayment(tx_ref, trans_id);
         },
       });
       handler.openIframe();
@@ -130,23 +132,17 @@ export default {
         ? "https://ravemodal-dev.herokuapp.com/v3.js"
         : "https://checkout.flutterwave.com/v3.js";
       document.getElementsByTagName("head")[0].appendChild(script);
-      // console.log(process.env.VUE_APP_FLUTTERWAVE_TEST_KEY)
     }
     getFlutterwaveModules()
 
-    const makePayment = () => {
-      // Get and send clicked payment gateway to parent
-      selectedGateway.value = 'flutterwave'
-      emit('selected-gateway', selectedGateway.value)
-
+    const payWithFlutterwave = (initializePaymentResponse) => {
       // Close payment modal
       props.close.click()
-      // localStorage.setItem('donation', JSON.stringify(props.donation))
-      // router.push({ name: 'Pay', query: { email: props.email, gateway: 'flutterwave', currency: props.currency, 'b2bc6285-f61a-4a9b-807f-0117d573c892': 400, churchName: 'Overflow Parish', tenantId: 'e9749fad-85e8-4130-b553-37acc8acde61', currencyId: 'dfce0a14-2741-46c5-b0c7-b327d55923af', subAccountId: 'RS_668182BB786E8204B9F82C173056C6ED', churchLogo: 'https://churchplusstorage.blob.core.windows.net/mediacontainer/logo_b2d434ab-970d-477f-a2aa-4090d499f2e7_01072021.png' } })
+
       window.FlutterwaveCheckout({
         public_key: process.env.VUE_APP_FLUTTERWAVE_PUBLIC_KEY_LIVE,
         // public_key: process.env.VUE_APP_FLUTTERWAVE_TEST_KEY_TEST,
-        tx_ref: props.orderId,
+        tx_ref: initializePaymentResponse.transactionReference,
         amount: props.amount,
         currency: props.currency,
         payment_options: 'card,ussd',
@@ -156,47 +152,39 @@ export default {
         },
         subaccounts: [
           {
-            id: props.donation.paymentGateway.find(i => {
+            id: props.formData.paymentGateWays.find(i => {
               return i.paymentGateway.name.toLowerCase() === selectedGateway.value.toLowerCase()
             }).subAccountID
           }
         ],
         callback: (response) => {
-          console.log("Payment callback", response)
-          console.log(props.donation)
-          emit('transaction-reference', response.transaction_id)
-
-          axios
-            .post(`/donated?paymentType=1`, props.donation)
-            .then((res) => {
-              finish()
-              console.log(res, "success data");
-
-            })
-            .catch((err) => {
-              finish()
-              toast.add({
-                severity: 'error',
-                summary: 'Confirmation failed',
-                detail: "Confirming your purchase failed, please contact support at info@churchplus.co",
-                life: 4000
-              })
-              console.log(err, "error confirming payment");
-            });
-
-          emit('payment-successful', true)
+          emit('transaction-reference', response.transaction_id);
+          let trans_id = response.transaction_id
+          let tx_ref = response.tx_ref
+          confirmDonationPayment(trans_id, tx_ref);
         },
         onclose: () => console.log('Payment closed'),
         customizations: {
-          title: props.churchName,
+          title: props.formData.churchName,
           description: "Payment for contribution items",
-          logo: props.churchLogo,
+          logo: props.formData.churchLogo,
         },
       });
     }
 
+    watchEffect(() => {
+      if (props.callPayment && Object.keys(props.initializePaymentResponse).length > 0) {
+        if (selectedGateway.value == 'Paystack') {
+          payWithPaystack(props.initializePaymentResponse);
+        } else {
+          payWithFlutterwave(props.initializePaymentResponse);
+        }
+        emit('resetcallpaymentprops', false)
+      }
+    })
+
     return {
-      payWithPaystack, paystackGate, flutterwaveGate, paypalGate, stripe, makePayment, selectedGateway
+      paystackGate, flutterwaveGate, paypalGate, stripe, selectedGateway, initializePayment
     }
   }
 

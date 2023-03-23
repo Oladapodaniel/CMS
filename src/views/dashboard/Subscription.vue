@@ -486,7 +486,7 @@ export default {
         })
     }
 
-    const subscriptionPayment = async (tx_ref, trans_id) => {
+    const subscriptionPayment = async (trans_id, tx_ref) => {
       try {
         await axios
           .post(`/api/Payment/ConfirmSubscriptionPayment?id=${trans_id}&txnref=${tx_ref}`)
