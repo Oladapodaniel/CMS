@@ -369,7 +369,7 @@ export default {
         })
     }
 
-    const confirmSMSUnitPayment = async (tx_ref, trans_id) => {
+    const confirmSMSUnitPayment = async (trans_id, tx_ref) => {
       console.log('reching')
       await axios
         .post(`/api/Payment/ConfirmSMSPayment?id=${trans_id}&txnref=${tx_ref}`)

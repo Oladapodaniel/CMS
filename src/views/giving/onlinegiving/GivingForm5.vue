@@ -1,5 +1,7 @@
 
 <template>
+  <!-- This component is not currently in use in production environment, it will be removed in the future eventually -->
+  
   <div>
     <!-- nav section area -->
     <div class="container-fluid nav-color sticky-top">
