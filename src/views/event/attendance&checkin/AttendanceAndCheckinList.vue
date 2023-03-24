@@ -33,28 +33,6 @@
             </el-tooltip>
               </div>
             </div>
-            
-          <!-- <div class="col-4">
-            <p @click="toggleSearch" class="search-text w-100 mt-2">
-              <i class="pi pi-search"></i> SEARCH
-            </p>
-          </div> -->
-
-          <!-- <div class="search d-flex ml-2">
-            <label
-              class="label-search d-flex"
-              :class="{
-                'show-search': searchIsVisible,
-                'hide-search': !searchIsVisible,
-              }"
-            >
-              <input type="text" placeholder="Search..." v-model="searchText" />
-              <span class="empty-btn" @click="removeSearchText">x</span>
-              <span class="search-btn">
-                <i class="pi pi-search"></i>
-              </span>
-            </label>
-          </div> -->
         </div>
         <Table
           :data="searchAttendance"
@@ -352,6 +330,7 @@ export default {
             duration: 5000,
           });
             emit("attendance-checkin", index);
+            store.dispatch('attendance/removeAttendanceFromStore', id)
           } else {
             ElMessage({
             type: "warning",
@@ -450,11 +429,6 @@ export default {
           });
         });
     };
-
-    const searchIsVisible = ref(false);
-    const toggleSearch = () => {
-      searchIsVisible.value = !searchIsVisible.value;
-    };
     let searchText = ref("");
     const searchAttendanceInDB = () => {
       if (searchText.value !== "" && props.list.length > 0) {
@@ -479,10 +453,6 @@ export default {
         return props.list;
       }
     });
-
-    const removeSearchText = () => {
-      searchText = "";
-    };
 
     const currentPage = ref(0);
     const getPeopleByPage = async (page) => {
@@ -520,9 +490,6 @@ export default {
       deleteAttendance,
       searchText,
       searchAttendance,
-      toggleSearch,
-      searchIsVisible,
-      removeSearchText,
       currentPage,
       getPeopleByPage,
       serverOptions,

@@ -6,12 +6,41 @@
           <template #default>
             <CheckinList />
           </template>
+          
           <template #fallback>
             <div class="row">
-              <div class="col-md-12 px-4">Loading...</div>
+                     <el-skeleton class="w-100" animated v-if="loading">
+            <template #template>
+              <div
+                style="
+                  display: flex;
+                  align-items: center;
+                  justify-content: space-between;
+                  margin-top: 20px;
+                "
+              >
+                <el-skeleton-item
+                  variant="text"
+                  style="width: 240px; height: 240px"
+                />
+                <el-skeleton-item
+                  variant="text"
+                  style="width: 240px; height: 240px"
+                />
+              </div>
+              <!-- <el-skeleton-item variant="text" class="w-100" style="height: 25px" :rows="10"/> -->
+              <el-skeleton
+                class="w-100 mt-5"
+                style="height: 25px"
+                :rows="20"
+                animated
+              />
+            </template>
+          </el-skeleton>
             </div>
           </template>
         </Suspense>
+
       </div>
     </div>
   </div>

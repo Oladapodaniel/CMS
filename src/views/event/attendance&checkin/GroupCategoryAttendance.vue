@@ -1,7 +1,5 @@
 <template>
-  <div>
-    <div class="container">
-      <div class="row mt-4 border mx-sm-0 rounded sub-con">
+      <div class="row mt-4 border  rounded ">
         <div class="col-md-12 col-sm-12 col-lg-12 mt-3 mb-5 border-bottom">
           <h5 class="header5">Attendance and Check-in Details</h5>
         </div>
@@ -30,6 +28,16 @@
                 <h5 class="event mt-4">Group</h5>
               </div>
               <div class="col-md-10 mt-3 col-sm-12">
+                  <div class="col-md-12">
+                  <div class="chip-container col-md-12 p-0 m-0 ">
+                  <div class="chip px-2  d-flex justify-content-between my-2 mx-1" v-for="(chip, i) of groups" :key="chip.label">
+                    <span>{{chip}}</span>
+                    <i class=" pt-1 text-dark align-items-center" @click="deleteChip(i)"><el-icon><CircleClose /></el-icon></i>
+                  </div>
+                  <input class="inputt  py-2 "  v-model="selectedGroups" @keypress.enter="saveChip" @keydown.delete="backspaceDelete" >
+                </div>
+                  </div>
+                      
                   <!-- {{selectedGroups}} -->
                   <!-- <el-tree-select
                     v-model="selectedGroupsID"
@@ -68,7 +76,6 @@
               >
                 <img
                   src="../../../assets/link.svg"
-                  class="w-100"
                   alt="marked Attendance image"
                   style="width: 60px; height: 60px"
                 />
@@ -94,7 +101,6 @@
                       @click="copyRegLink"
                       :value="eventRegLink"
                       class="w-100"
-                      style="width: 95%"
                     >
                       <template #append>
                         <el-button @click="copyRegLink">
@@ -141,7 +147,6 @@
                       @click="copyLink"
                       :value="link"
                       class="w-100"
-                      style="width: 95%"
                     >
                       <template #append>
                         <el-button @click="copyLink">
@@ -399,8 +404,6 @@
         </div>
         <div class="col-md-12 mb-3"></div>
       </div>
-    </div>
-  </div>
 </template>
 
 <script>
@@ -467,6 +470,16 @@ export default {
     const showAdditionalField = () => {
       showMoreField.value = !showMoreField.value;
     };
+    const saveChip = () =>{
+      ((groups.value.indexOf(selectedGroups.value) === -1) ) && groups.value.push(selectedGroups.value);
+      selectedGroups.value = '';
+    }
+    const deleteChip = (index) =>{
+      groups.value.splice(index, 1);
+    }
+    const backspaceDelete = ({which}) =>{
+       which == 8 && selectedGroups.value === '' && groups.value.splice(groups.value.length - 1);
+    }
 
     const customFieldValue = (item) => {
       if (customFieldList.value.length <= 0) {
@@ -671,6 +684,10 @@ export default {
 
     return {
       groups,
+      currentInput,
+      saveChip,
+      backspaceDelete,
+      deleteChip,
       selectedGroupsID,
       setselectedEvent,
       selectedEventID,

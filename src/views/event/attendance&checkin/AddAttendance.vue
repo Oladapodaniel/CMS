@@ -1412,6 +1412,7 @@ export default {
             const element = response.data.returnObject.checkInAttendanceResult[i];
             store.dispatch("attendance/setItemData", element);
           }
+          store.dispatch('attendance/setAttendanceItemData');
           store.dispatch("groups/setCheckedTreeGroup", []);
           loadingsave.value = false;
           router.push({
@@ -1456,6 +1457,7 @@ export default {
                     message: res.data.response,
                     duration: 5000
                     });
+                    store.dispatch('attendance/setAttendanceItemData');
           router.push({
             name: "CheckinType",
             query: {
@@ -1501,6 +1503,7 @@ export default {
             const element = data.returnObject.checkInAttendanceResult[i];
             store.dispatch("attendance/setEventReg", element);
           }
+          store.dispatch('attendance/setAttendanceItemData');
           loadingsave.value = false;
           router.push({
             name: "CheckinType",
@@ -1538,6 +1541,7 @@ export default {
           let firstGroup = data.returnObject.checkInAttendanceResult.find(
             (i) => i.groupID == selectedGroups.value[0].id
           );
+          store.dispatch('attendance/setAttendanceItemData');
 
           for (
             let i = 0;
