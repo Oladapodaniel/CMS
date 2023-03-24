@@ -563,7 +563,15 @@ export default {
         finish()
         loading.close()
         initializePaymentResponse.value = data.result;
-        callPayment.value = true
+        if (data.result.status) {
+          callPayment.value = true
+        } else {
+          ElMessage({
+            type: 'error',
+            message: "Could not initialise payment, please try again",
+            duration: 5000
+          })
+        }
       }
       catch (error) {
         finish()
