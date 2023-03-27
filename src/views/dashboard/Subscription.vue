@@ -144,10 +144,18 @@
         :width="mdAndUp || lgAndUp || xlAndUp ? `50%` : xsOnly ? `90%` : `70%`" align-center :modal="true">
         <div class="row">
           <div class="col-md-12" v-if="!paymentFailed">
-            <h4 class="text-success">
-              Congrats,
-            </h4>
-            <p>Your payment was successful</p>
+            <div class="col-12">
+          <div class="d-flex justify-content-center">
+            <img src="../../assets/successful_payment.png" style="width: 250px; margin: auto" />
+          </div>
+          <h3 class="text-center mt-5 font-weight-bold success">Congrats</h3>
+          <div class="text-center mt-2 font-weight-600 s-18">Your subscription payment is successful <br />Your account has been upgraded successfully <br />Click the button below to go to the dashboard</div>
+          <div class="d-flex justify-content-center mb-5">
+            <a :href="dashboardURL">
+            <el-button color="#70c043" class="text-white mt-3" round>Go to dashboard</el-button>
+              </a>
+          </div>
+        </div>
           </div>
           <div class="col-md-12" v-else>
             <h4 class="text-danger">
@@ -204,7 +212,7 @@ import axios from "@/gateway/backendapi";
 import { useStore } from "vuex";
 import formatDate from "../../services/dates/dateformatter";
 import { computed, ref } from "vue";
-import userService from "../../services/user/userservice";
+import membershipService from "../../services/membership/membershipservice";
 import productPricing from "../../services/user/productPricing";
 import { ElMessage, ElMessageBox } from 'element-plus';
 import { ElLoading } from 'element-plus';
@@ -227,28 +235,23 @@ export default {
     const smsPrice = ref("");
     const expenseApp = ref("");
     const fixedAsset = ref("");
-    const currentUser = ref(store.getters.currentUser);
-    const tenantId = ref(currentUser.tenantId);
-    const userEmail = ref("")
-    const churchName = ref("")
-    const userCurrency = ref("")
     const { mdAndUp, lgAndUp, xlAndUp, xsOnly } = deviceBreakpoint()
+    const dashboardURL = ref(`${window.location.origin}/tenant`)
 
-    const getUserEmail = async () => {
-      userService.getCurrentUser()
+
+    const currentUser = computed(() => {
+      if (!store.getters.currentUser || (store.getters.currentUser && Object.keys(store.getters.currentUser).length == 0)) return ''
+      return store.getters.currentUser
+    })
+
+    const setCurrentUser = async () => {
+      membershipService.getSignedInUser()
         .then(res => {
-          currentUser.value = res
-          userEmail.value = res.userEmail;
-          churchName.value = res.churchName;
-          tenantId.value = res.tenantId;
-          userCurrency.value = res.currency;
+          store.dispatch("setCurrentUser", res);
           getChurchProfile();
         })
-        .catch(err => {
-          console.log(err);
-        })
     }
-    getUserEmail();
+    if (!currentUser.value || (currentUser.value && Object.keys(currentUser.value).length == 0)) setCurrentUser();
 
     const acctReceived = ref("");
     const paymentSummary = ref([]);
@@ -406,6 +409,7 @@ export default {
         console.log(err)
       }
     }
+    if (currentUser.value && Object.keys(currentUser.value).length > 0) getChurchProfile();
 
 
     const paymentFailed = ref(false);
@@ -662,10 +666,7 @@ export default {
       daysToEndOfSubscription,
       subscriptionDuration,
       initializePayment,
-      tenantId,
       initializedOrder,
-      userEmail,
-      userCurrency,
       UserSubscriptionPricing,
       UserSubscriptionPlans,
       selectedPlanId,
@@ -676,7 +677,8 @@ export default {
       mdAndUp,
       lgAndUp,
       xlAndUp,
-      xsOnly
+      xsOnly,
+      dashboardURL
     };
   },
 };

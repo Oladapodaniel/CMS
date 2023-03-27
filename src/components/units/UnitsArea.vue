@@ -8,7 +8,7 @@
         </p>
       </div>
       <div class="col-sm-12 d-flex justify-content-center mt-2">
-        <el-button class="btn buy-btn center-flexed" @click="payWithPaystack">
+        <el-button class="btn buy-btn center-flexed" @click="goToBuyUnit">
           <span class="btn-text box-btn-text2"> BUY UNITS </span>
         </el-button>
       </div>
@@ -41,13 +41,13 @@ export default {
       return currentUser.value;
     })
 
-    const payWithPaystack = () => {
+    const goToBuyUnit = () => {
       router.push("/tenant/units")
     };
 
     return {
       balance,
-      payWithPaystack,
+      goToBuyUnit,
       currentUser
     }
   }
