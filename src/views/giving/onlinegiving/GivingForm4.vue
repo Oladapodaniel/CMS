@@ -562,8 +562,8 @@ export default {
         const { data } = await axios.post('/initailizedonationpayment', donationObj.value)
         finish()
         loading.close()
-        initializePaymentResponse.value = data.result;
-        if (data.result.status) {
+        initializePaymentResponse.value = data;
+        if (data.status) {
           callPayment.value = true
         } else {
           ElMessage({

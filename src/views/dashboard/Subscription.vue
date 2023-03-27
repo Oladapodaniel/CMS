@@ -498,7 +498,6 @@ export default {
             console.log(res)
             display.value = true;
             if (res.data) {
-              getTenantSubscription();
               paymentFailed.value = false
             } else {
               paymentFailed.value = true;
