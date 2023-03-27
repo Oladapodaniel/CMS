@@ -159,6 +159,7 @@ import productPricing from "../../services/user/productPricing";
 import { ElMessage, ElMessageBox } from 'element-plus'
 import deviceBreakpoint from "../../mixins/deviceBreakpoint";
 import { ElLoading } from 'element-plus';
+import membershipService from "../../services/membership/membershipservice";
 
 export default {
   components: { PaymentSuccessModal },
@@ -178,6 +179,21 @@ export default {
     const countries = ref([])
     const checkingCoutryData = ref(false)
     const { mdAndUp, lgAndUp, xlAndUp } = deviceBreakpoint()
+
+
+    const currentUser = computed(() => {
+      if (!store.getters.currentUser || (store.getters.currentUser && Object.keys(store.getters.currentUser).length == 0)) return ''
+      return store.getters.currentUser
+    })
+
+    const setCurrentUser = async () => {
+      membershipService.getSignedInUser()
+        .then(res => {
+          store.dispatch("setCurrentUser", res);
+          setUserCurrency()
+        })
+    }
+    if (!currentUser.value || (currentUser.value && Object.keys(currentUser.value).length == 0)) setCurrentUser();
 
 
     const totalSMSUnits = computed(() => {
@@ -234,11 +250,6 @@ export default {
       const countryIDObj = countries.value.find(i => i.currency == selectedCurrency.value)
       getProductPricing(countryIDObj.id)
     }
-
-    const currentUser = computed(() => {
-      if (!store.getters.currentUser || (store.getters.currentUser && Object.keys(store.getters.currentUser).length == 0)) return ''
-      return store.getters.currentUser
-    })
 
     const getChurchProfile = async () => {
       try {
@@ -370,7 +381,6 @@ export default {
     }
 
     const confirmSMSUnitPayment = async (trans_id, tx_ref) => {
-      console.log('reching')
       await axios
         .post(`/api/Payment/ConfirmSMSPayment?id=${trans_id}&txnref=${tx_ref}`)
         .then((res) => {
@@ -378,6 +388,12 @@ export default {
             close.value.click();
             purchaseIsSuccessful.value = true;
             store.dispatch("addPurchasedUnits", totalSMSUnits.value);
+            // Reset SMS unit on dashboard
+            store.dispatch('dashboard/getDashboard');
+
+            // Reset SMS unit from current user in store
+            store.dispatch("getUserData");
+            
           } else {
             ElMessage({
               type: 'error',
