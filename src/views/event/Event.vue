@@ -6,22 +6,24 @@
           <Toast />
         </div>
         <div class="row">
-          <div class="text-center text-sm-left col-sm-5 events">Events</div>
+          <div class="text-center text-sm-left col-sm-5 head-text">Events</div>
           <div class="text-center text-sm-right col-sm-7">
             <div class="row">
               <div class="col-md-12 d-lg-flex justify-content-end">
-                <button class="default-btn" v-if="false">Preview</button>
-                <button
-                  class="default-btn primary-bg border-0 ml-3"
+                <el-button class="default-btn" v-if="false">Preview</el-button>
+                <el-button
+                  class="text-white  border-0 ml-3"
                   @click="post"
+                  round
+                  color="#136acd"
+                  :loading="loading"
                 >
-                  <i
+                  <!-- <i
                     class="fas fa-circle-notch fa-spin mr-2 text-white"
-                    v-if="loading"
-                  ></i>
+                  ></i> -->
                   <span class="text-white">Save and Continue</span>
                   <span></span>
-                </button>
+                </el-button>
               </div>
             </div>
           </div>
@@ -52,16 +54,18 @@
               @click="showCategory = !showCategory"
               v-if="!selectedEventCategoryId && !showEditEventCategory"
             >
-              <span class="ofering"
-                ><i class="pi pi-calendar ofering"></i>&nbsp;&nbsp;&nbsp;Select
-                Category</span
-              ><span>
-                <i
+              <span class="ofering">
+                <el-icon ><Calendar /></el-icon>
+                &nbsp;&nbsp;&nbsp;Select
+                Category</span><span class="mt-1" >
+                  <el-icon class="" :class="{ roll3: showForm3 }" aria-hidden="true" ><ArrowDownBold /></el-icon>
+                <!-- <i
                   class="pi pi-angle-down offset-sm-2 ofering"
                   :class="{ roll3: showForm3 }"
                   aria-hidden="true"
                 ></i
-              ></span>
+              > -->
+              </span>
             </div>
             <div
               class="ofering"
@@ -99,7 +103,7 @@
               </div>
             </div>
             <div class="selected-category" v-if="selectedEventCategoryId">
-              <p><i class="pi pi-calendar mr-2"></i> Events</p>
+              <p><el-icon  class="mr-2"><Calendar /></el-icon> Events</p>
               <h4>{{ selectedEventCategoryName }}</h4>
               <div class="event-buttons">
                 <a @click="changeSelectedEventCategory('edit')">Edit</a>
@@ -115,15 +119,15 @@
             <div class="edit-category" v-if="showEditEventCategory">
               <div class="edit-form">
                 <div class="edit-input">
-                  <input
+                  <el-input
                     type="text"
-                    class="form-control"
+                    class="w-100"
                     v-model="categoryNametoEdit"
                     autofocus
                   />
                 </div>
                 <div class="edit-input" @click="updateEventCategory">
-                  <button>Save</button>
+                  <el-button round :loading="loading">Save</el-button>
                 </div>
               </div>
             </div>
@@ -135,26 +139,34 @@
                 <label for="date">Date</label>
               </div>
               <div class="col-12 col-sm-7">
-                <input
+                <el-date-picker
+                  v-model="eventDate"
+                  type="date"
+                  format="MM/DD/YYYY"
+                  size="large"
+                  class="w-100 mt-2"
+                  required
+                />
+                <!-- <el-input
                   placeholder=""
                   v-model="eventDate"
                   type="date"
                   class="form-control"
                   required
-                />
+                /> -->
               </div>
               <div class="col-12 col-sm-5">
                 <label for="topic">Topic</label>
               </div>
               <div class="col-12 col-sm-7">
-                <input type="text" v-model="topic" class="form-control" />
+                <el-input type="text" v-model="topic" class="w-100 mt-2" />
               </div>
 
               <div class="col-12 col-sm-5">
                 <label for="preacher">Preacher</label>
               </div>
               <div class="col-12 col-sm-7">
-                <input type="text" v-model="preacher" class="form-control" />
+                <el-input type="text" v-model="preacher" class="w-100 mt-2" />
               </div>
             </div>
           </div>
@@ -715,15 +727,11 @@
               text-center text-sm-right
             "
           >
-            <button class="default-btn" v-if="false">Preview</button>
-            <button class="default-btn primary-bg border-0 ml-3" @click="post">
-              <i
-                class="fas fa-circle-notch fa-spin mr-2 text-white"
-                v-if="loading"
-              ></i>
+            <el-button class="default-btn" v-if="false">Preview</el-button>
+            <el-button  :loading="loading" round color="#136acd" class=" border-0 ml-3" @click="post">
               <span class="text-white">Save and Continue</span>
               <span></span>
-            </button>
+            </el-button>
           </div>
         </div>
       </div>
@@ -4438,6 +4446,15 @@ input.codeInput {
 @media (max-width: 600px) {
   .events {
     margin-top: 2rem;
+  }
+}
+@media (max-width: 576px) {
+  .select-elem-con {
+  /* padding: 47px 0; */
+  height: 60px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
   }
 }
 </style>

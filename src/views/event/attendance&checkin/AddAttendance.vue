@@ -112,16 +112,6 @@
                           data-dismiss="modal"
                           @click="() => (display = true)"
                         >
-                          <!-- <i
-                            class="
-                              pi pi-plus-circle
-                              mr-2
-                              d-flex
-                              align-items-center
-                              c-pointer
-                            "
-                            style="color: #136acd"
-                          ></i> -->
                           <el-icon class="mr-2"><CirclePlus /></el-icon>
                           Create new event
                         </a>
@@ -257,10 +247,6 @@
                   data-target="#newActModal"
                   ref="openModalBtn"
                 >
-                  <!-- <i
-                    class="pi pi-plus-circle mr-2 d-flex align-items-center"
-                    style="color: #136acd"
-                  ></i> -->
                   <el-icon class="mr-2"><CirclePlus /></el-icon>
                   Create new event
                 </a>
@@ -305,8 +291,7 @@
                 </span>
                 <span v-if="selectedGroups.length === 0">Select group</span>
               </span>
-              <!-- <i class="pi pi-chevron-down exempt-hide"></i> -->
-              <el-icon class="el-icon--right exempt-hide
+              <el-icon class="el-icon--right
                   pr-1 ">
                   <arrow-down />
                 </el-icon>
@@ -318,11 +303,7 @@
                 'd-block': !hideDiv,
               }"
             >
-              <!-- <i
-                class="pi pi-spin pi-spinner text-center exempt-hide"
-                
-              ></i> -->
-              <el-icon class="is-loading exempt-hide" v-if="grouploading && groups.length === 0">
+              <el-icon class="is-loading " v-if="grouploading && groups.length === 0">
               <Loading />
             </el-icon>
               <el-input
@@ -351,14 +332,6 @@
                   closeIcon: !templateDisplay,
                 }"
                 @click="toggleTemplate"><el-icon><ArrowUp /></el-icon></span>
-              <!-- <i
-                class="pi pi-angle-up angle-icon mt-2"
-                :class="{
-                  rollIcon: templateDisplay,
-                  closeIcon: !templateDisplay,
-                }"
-                @click="toggleTemplate"
-              ></i> -->
             </div>
           </div>
         </div>
@@ -594,14 +567,9 @@
                             ? `${selectedBank.name.slice(0, 27)}...`
                             : selectedBank.name
                         }}
-                        <i
-                          class="
-                            pi pi-chevron-down
-                            manual-dd-icon
+                        <el-icon class="manual-dd-icon
                             float-right
-                            pr-1
-                          "
-                        ></i>
+                            pr-1"><ArrowDown /></el-icon>
                       </button>
                       <div
                         class="dropdown-menu p-2"

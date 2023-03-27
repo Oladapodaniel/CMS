@@ -10,13 +10,16 @@
             <p class="my-2">No records found</p>
           </div>
           <div class="col-md-12 d-flex justify-content-center mt-4">
-            <button
-              class="default-btn primary-bg border-0 text-white"
+            <el-button
+              class=" border-0 text-white"
+              color="#136acd"
               data-toggle="modal"
               data-target="#exampleModal"
+              size="large"
+              round
             >
               Add member
-            </button>
+            </el-button>
           </div>
         </div>
     </div>

@@ -1,6 +1,14 @@
 <template>
   <div class="container-fluid">
-    <Dialog
+      <el-dialog v-model="display" title="Create New Member"
+        :width="mdAndUp || lgAndUp || xlAndUp ? `50%` : `90%`">
+        <div class="row">
+          <div class="col-md-8">
+            <NewMember @cancel="() => display = false" @refresh="refresh"/>
+          </div>
+        </div>
+      </el-dialog>
+    <!-- <Dialog
       header="Create New Member"
       v-model:visible="display"
       :style="{ width: '70vw', maxWidth: '600px' }"
@@ -12,7 +20,7 @@
           <NewMember @cancel="() => display = false" @refresh="refresh"/>
         </div>
       </div>
-    </Dialog>
+    </Dialog> -->
     <div class="row my-5" :class="{ 'd-none': isKioskMode }">
       <div class="col-md-12">
         <h4 class="font-weight-bold">Manual Check-in and Checkout</h4>
@@ -21,17 +29,17 @@
         </p>
       </div>
     </div>
-
-    <div class="row">
-      <div class="col-md-">
-        <Toast />
-      </div>
-    </div>
     <div class="row over-con">
       <div class="col-md-12 py-4">
         <div class="row">
           <div class="col-md-8">
-            <p class="search-span px-2">
+            <el-input
+              v-model="searchText"
+              class="w-100 m-2"
+              placeholder="Search"
+              :prefix-icon="Search"
+            />
+            <!-- <p class="search-span px-2">
               <i class="pi pi-search p-2" style="height: 30px; width: 30px"></i>
               <input
                 type="text"
@@ -39,15 +47,17 @@
                 placeholder="Search"
                 v-model="searchText"
               />
-            </p>
+            </p> -->
           </div>
           <div class="col-md-4 d-md-flex justify-content-end d-none">
-            <button
-              class="default-btn kiosk-mode font-weight-700"
+            <el-button
+            round
+            size="large"
+              class=" kiosk-mode mt-2 "
               @click="enterKioskMode"
             >
               {{ kioskButtonText }} kiosk mode
-            </button>
+            </el-button>
           </div>
         </div>
 
@@ -88,7 +98,10 @@
                 </template>
                 <template #fallback>
                     <div class="row">
-                      <div class="col-md-12 pl-4">Loading...</div>
+                      <!-- <div class="col-md-12 pl-4">Loading...</div> -->
+                      <el-icon class="is-loading " >
+                        <Loading />
+                      </el-icon>
                     </div>
                 </template>
             </Suspense>
@@ -140,9 +153,9 @@
                       >
                         <div class="row w-100 mx-auto" v-if="false">
                           <div class="col-md-12">
-                            <input
+                            <el-input
                               type="text"
-                              class="form-control"
+                              class="w-100"
                               placeholder="Find event"
                             />
                           </div>
@@ -162,8 +175,11 @@
                           v-if="
                             searchingForMembers && searchedMembers.length === 0
                           "
-                          ><i class="pi pi-spin pi-spinner"></i
-                        ></a>
+                          >
+                          <el-icon class="is-loading " >
+                            <Loading />
+                          </el-icon>
+                        </a>
                         <p
                           class="modal-promt pl-1 bg-secondary m-0"
                           v-if="
@@ -179,10 +195,11 @@
                           @click="showAddMemberForm"
                           data-dismiss="modal"
                         >
-                          <i
+                        <el-icon size="large" class="mr-2 primary-text d-flex align-items-center"><CirclePlus /></el-icon>
+                          <!-- <i
                             class="pi pi-plus-circle mr-2 primary-text d-flex align-items-center"
                             style="color: #136acd"
-                          ></i>
+                          ></i> -->
                           Add new member
                         </a>
                       </div>
@@ -190,16 +207,19 @@
 
                     <div class="row mt-4">
                       <div class="col-md-6 d-md-flex justify-content-end">
-                        <button class="default-btn" data-dismiss="modal">Cancel</button>
+                        <el-button round  data-dismiss="modal">Cancel</el-button>
                       </div>
                       <div class="col-md-6">
-                        <button
-                          class="default-btn primary-bg border-0 text-white"
+                        <el-button
+                          round
+                          :loading="loading"
+                          class=" border-0 text-white"
+                          color="#136acd"
                           data-dismiss="modal"
                           @click="sendExistingUser"
                         >
                           Save
-                        </button>
+                        </el-button>
                       </div>
                     </div>
                   </div>
@@ -216,13 +236,15 @@
 <script>
 import { computed, ref } from "vue";
 import { useRoute } from "vue-router";
+import { Search } from '@element-plus/icons-vue'
 import NewMember from "../../../views/event/attendance&checkin/NewMember";
 import TableData from "../../../components/attendance/EventAttendanceList";
 import membershipService from "../../../services/membership/membershipservice";
 import attendanceservice from '../../../services/attendance/attendanceservice';
-import { useToast } from 'primevue/usetoast';
 import AttendanceCheckinUpdate from "../../../components/attendance/updateAttendanceChekin.vue"
+import deviceBreakpoint from "../../../mixins/deviceBreakpoint";
 import axios from "@/gateway/backendapi";
+import { ElMessage } from "element-plus";
 
 export default {
     props: [ "attendanceID" ],
@@ -232,7 +254,7 @@ export default {
     AttendanceCheckinUpdate
   },
   setup() {
-    const toast = useToast();
+    const { mdAndUp, lgAndUp, xlAndUp, xsOnly } = deviceBreakpoint()
     const isKioskMode = ref(false);
     const route = useRoute();
     const display = ref(false);
@@ -295,10 +317,18 @@ export default {
       const response = await attendanceservice.checkin(personData.value);
       if (response) {
         searchText.value = "";
-        toast.add({severity:'success', summary:'Checked-in', detail:'Checkin was successful', life: 3000});
+        ElMessage({
+            type: "success",
+            message: "Checkin was successful",
+            duration: 5000,
+          });
         refresh();
       } else {
-        toast.add({severity:'error', summary:'Checkin Error', detail:'Checkin was not successful', life: 3000});
+        ElMessage({
+            type: "error",
+            message: "Checkin was not successful",
+            duration: 5000,
+          });
       }
     }
 
@@ -355,6 +385,10 @@ export default {
   }
   getGroupDetails()
     return {
+      mdAndUp, 
+      lgAndUp, 
+      xlAndUp, 
+      xsOnly,
       isKioskMode,
       enterKioskMode,
       kioskButtonText,
@@ -372,6 +406,7 @@ export default {
       refreshed,
       contributionItems,
       attendanceType,
+      Search,
       groupDetail
     };
   },
