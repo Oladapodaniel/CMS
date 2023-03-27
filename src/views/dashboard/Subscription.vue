@@ -151,7 +151,7 @@
           <h3 class="text-center mt-5 font-weight-bold success">Congrats</h3>
           <div class="text-center mt-2 font-weight-600 s-18">Your subscription payment is successful <br />Your account has been upgraded successfully <br />Click the button below to go to the dashboard</div>
           <div class="d-flex justify-content-center mb-5">
-            <a :href="dashboardURL">
+            <a :href="dashboardURL" class="no-decoration">
             <el-button color="#70c043" class="text-white mt-3" round>Go to dashboard</el-button>
               </a>
           </div>
