@@ -954,8 +954,7 @@ export default {
         
 
 
-      } 
-      if (fullEventData.value.paymentFormId) {
+      } else {
         makePaymentRef.value.click()
         confirmCheck()
       }

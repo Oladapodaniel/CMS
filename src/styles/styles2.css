@@ -164,3 +164,11 @@ main.el-main {
       border: 1px solid #E0E0E0;
     }
     
+div.firsttimersearchmember.el-drawer .el-drawer__header {
+  margin-bottom: 0 ;
+}
+
+div.firsttimersearchmember.el-drawer .el-drawer__body {
+  padding-top: 0;
+  padding-bottom: 0;
+}

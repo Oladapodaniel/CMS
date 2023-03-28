@@ -233,7 +233,7 @@
 }}<el-icon
                                 class="el-icon--right"><arrow-down /></el-icon>
                         </span>
-                        <el-drawer v-model="searchmemberr" direction="btt">
+                        <el-drawer v-model="searchmemberr" direction="btt" class="firsttimersearchmember">
                             <template #header>
                                 <h4>Search member</h4>
                             </template>
