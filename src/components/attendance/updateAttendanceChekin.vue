@@ -10,7 +10,7 @@
         Contributions
       </div>
       <div class="col-6 text-right align-self-center">
-        <i class="pi pi-chevron-down"></i>
+        <el-icon><ArrowDownBold /></el-icon>
       </div>
     </div>
     <div class="row mt-4">
@@ -27,9 +27,9 @@
                   {{ item.name }}
                 </div>
                 <div class="col-md-4 mt-3 mt-md-0">
-                  <input
+                  <el-input
                     type="text"
-                    class="form-control"
+                    class="w-100"
                     placeholder="Amount"
                     v-model="item.amount"
                   />
@@ -50,7 +50,7 @@
         Summary attendance
       </div>
       <div class="col-2 text-right align-self-center">
-        <i class="pi pi-chevron-down"></i>
+        <el-icon><ArrowDownBold /></el-icon>
       </div>
     </div>
     <div class="row mt-4">
@@ -67,9 +67,9 @@
                   {{ item.name }}
                 </div>
                 <div class="col-md-4 mt-3 mt-md-0">
-                  <input
+                  <el-input
                     type="text"
-                    class="form-control"
+                    class="w-100"
                     placeholder="Enter Count"
                     v-model="item.number"
                   />
@@ -90,7 +90,7 @@
         Other Information
       </div>
       <div class="col-2 text-right align-self-center">
-        <i class="pi pi-chevron-down"></i>
+        <el-icon><ArrowDownBold /></el-icon>
       </div>
     </div>
     <div class="row mt-4">
@@ -107,9 +107,9 @@
                   {{ item.label }}
                 </div>
                 <div class="col-md-4 mt-3 mt-md-0">
-                  <input
+                  <el-input
                     type="text"
-                    class="form-control"
+                    class="w-100"
                     :placeholder="item.label"
                     v-model="item.number"
                   />
@@ -121,20 +121,25 @@
       </div>
     </div>
     <div class="row mt-2">
-      <textarea
-        class="form-control"
-        rows="5"
-        placeholder="Enter your note here"
+      <el-input
         v-model="note"
-      ></textarea>
+        :rows="5"
+        type="textarea"
+        class="w-100"
+        placeholder="Enter your note here"
+      />
     </div>
     <div class="row d-flex justify-content-center my-4 c-pointer">
-      <div
+      <el-button color="#136acd" :loading="loading" round size="large" class=" border-0 text-white text-center"
+        @click="updateAttendanceCheckin">
+        Save
+      </el-button>
+      <!-- <div
         class="default-btn primary-bg border-0 text-white text-center"
         @click="updateAttendanceCheckin"
       >
         Save
-      </div>
+      </div> -->
     </div>
   </div>
 </template>
@@ -142,16 +147,16 @@
 <script>
 import { computed, ref, watchEffect } from "@vue/runtime-core";
 import axios from "@/gateway/backendapi";
-import { useToast } from "primevue/usetoast";
 import { useRoute } from "vue-router";
 import router from "../../router";
 import allCustomFields from "../../services/customfield/customField";
+import { ElMessage } from "element-plus";
 export default {
   props: ["contributionItems", "attendanceType", "groupDetail"],
   setup(props) {
     const note = ref("");
-    const toast = useToast();
     const route = useRoute();
+    const loading = ref(false)
     const dynamicCustomFields = ref([]);
     const churchContributionItems = computed(() => {
       if (
@@ -221,27 +226,21 @@ export default {
           );
           if (y >= 0) {
             i.number = props.groupDetail.customAttributeData[y].data;
-            // i.attendanceTypeAttendanceID = props.groupDetail.attendances[y].id;
           }
           return i;
         });
     });
 
-    // const computedNote = computed(() => {
-    //   if (!props.groupDetail && Object.keys(props.groupDetail).length == 0) return 
-    //   return props.groupDetail.note
-    // })
-
     watchEffect(() => {
       if (props.groupDetail && Object.keys(props.groupDetail).length > 0) {
         note.value = props.groupDetail.note;
-        console.log(props.groupDetail, 'hereee')
       }else {
         console.log('ddddd')
       }
     });
 
     const updateAttendanceCheckin = async () => {
+      loading.value = true
       let body = {
         eventName: props.groupDetail.eventName,
         eventDate: props.groupDetail.eventDate,
@@ -280,12 +279,12 @@ export default {
           body
         );
         console.log(data);
-        toast.add({
-          severity: "success",
-          summary: "Success",
-          detail: "Updated successfully",
-          life: 3000,
-        });
+        ElMessage({
+            type: "success",
+            message: "Updated successfully",
+            duration: 5000,
+          });
+          loading.value = false
 
         if (route.fullPath.includes("/tenant/takeattendance")) {
           setTimeout(() => {
@@ -294,6 +293,7 @@ export default {
         }
       } catch (err) {
         console.log(err);
+        loading.value = false
       }
     };
 
@@ -313,6 +313,7 @@ export default {
       churchAttendanceCategory,
       updateAttendanceCheckin,
       note,
+      loading,
       dynamicCustomFields,
       attendanceCustomField
     };

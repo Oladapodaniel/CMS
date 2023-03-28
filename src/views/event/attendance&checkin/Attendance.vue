@@ -2,14 +2,14 @@
   <div class="container-top" :class="{ 'container-slim': lgAndUp || xlAndUp }">
           <div class="d-flex flex-column flex-sm-row justify-content-sm-between mb-3">
             <div class="head-text">
-              <div class="attendanceResponsive">Attendance & Check-in</div>
+              <div>Attendance & Check-in</div>
             </div>
             <div class="actions">
               <router-link
                 :to="{ name: 'AddCheckin' }"
                 v-if="route.path === '/tenant/attendancecheckin'"
               >
-                <el-button class="header-btn text-white" color="#136acd" round>
+                <el-button class="header-btn w-100 text-white" color="#136acd" round>
                   Add New Attendance
                 </el-button>
               </router-link>
@@ -159,12 +159,6 @@ export default {
 }
 
 @media (max-width: 399px) {
-  .actions {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-  }
-
   .button {
     margin-top: 10px;
   }
