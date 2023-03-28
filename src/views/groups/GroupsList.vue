@@ -406,12 +406,6 @@ export default {
     min-width: 500px;
   }
 }
-@media screen and (max-width: 991px) {
-  .table-container {
-    z-index: -1;
-  }
-}
-
 @media screen and (min-width: 580px) {
   .hidden-header {
     display: none;
