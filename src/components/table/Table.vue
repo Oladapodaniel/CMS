@@ -195,11 +195,11 @@ export default {
 }
 
 tbody tr td {
-    font-size: 13px;
+    font-size: 15px;
 }
 tbody h2 {
     font-weight: 600;
-    font-size: 14px;
+    font-size: 15px;
     font-style: normal;
     text-transform: lowercase;
     margin: 0;
