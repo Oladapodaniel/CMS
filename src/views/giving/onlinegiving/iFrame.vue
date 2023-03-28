@@ -3,7 +3,7 @@
   <!-- To whoever will update this page -->
   <!-- This page is the online giving platform for the IFrame version -->
 
-  <!-- It similar to the Online Giving in churchplus, with few differences in styles. -->
+  <!-- It similar to the Online Giving in churchplus, with few differences in styles and content. -->
 
   <!-- The logic is quite the same, so any changes made to this page should be made in the main Online Giving Page which is GivingForm4.vue, except the changes that is to be made is specific for the Iframe version -->
 
@@ -41,8 +41,8 @@
       <div class="row mx-0">
         <div class="col-12 px-0">
           <div class="row d-flex justify-content-center">
-            <div class="col-6">
-              <p class="text-center pt-2 main-font">Giving</p>
+            <div class="col-12 col-sm-6">
+              <p class="text-center pt-2 s-42">Giving</p>
             </div>
           </div>
 
@@ -235,17 +235,12 @@
                         @show-signin="displaySignInForm" />
                     </div>
                   </div>
-
-
                   <div class="col-md-12">
                     <section class="col-10 offset-1 mt-3 px-0" v-if="!hideTabOne || hideTabOne">
                       <!-- button section -->
                       <div class="row my-3">
                         <div class="col-md-12 text-center mt-4">
-                          <button @click="convertAmount" data-toggle="modal" data-target="#PaymentOptionModal"
-                            class="btn btn-default btngive default-color hfontb btt">
-                            Give Now
-                          </button>
+                          <el-button class="px-4" data-toggle="modal" data-target="#PaymentOptionModal" color="#136acd" round>Give now</el-button>
                         </div>
                       </div>
                       <!--end of button section -->
@@ -263,12 +258,12 @@
                             </button>
                           </div>
                           <div class="modal-body p-0 bg-modal pb-5">
-                            <PaymentOptionModal :orderId="formResponse.orderId" :donation="donationObj" :close="close"
-                              :name="name" :amount="amount" :converted="computeAmount" :email="email"
-                              @payment-successful="successfulPayment" :gateways="formResponse.paymentGateWays"
-                              :currency="dfaultCurrency.shortCode" @selected-gateway="gatewaySelected"
-                              @transaction-reference="setTransactionReference" @paystack-amount="setPaystackAmount"
-                              :churchLogo="formResponse.churchLogo" :churchName="formResponse.churchName" />
+                            <PaymentOptionModal :formData="formResponse" :donation="donationObj" :close="close"
+                                :name="name" :amount="amount" :converted="computeAmount" :email="email"
+                                @payment-successful="successfulPayment" :currency="dfaultCurrency.shortCode"
+                                @selected-gateway="gatewaySelected" @transaction-reference="setTransactionReference"
+                                @paystack-amount="setPaystackAmount" :callPayment="callPayment"
+                                @resetcallpaymentprops="resetCallPayment" :initializePaymentResponse="initializePaymentResponse" />
                           </div>
                         </div>
                       </div>
@@ -286,7 +281,7 @@
 
                       Thank You
                     </div>
-                    <div class="col-12 font-weight-700 text-center p-5 mt-4 primary-bg text-white success-card">Your
+                    <div class="col-12 font-weight-700 text-center p-sm-5 mt-4 primary-bg text-white success-card">Your
                       transaction has been successful. God Bless You!</div>
                   </div>
                 </div>
@@ -323,12 +318,12 @@
               <div class="row">
                 <div class="col-md-6 offset-md-3">
                   <div class="row hfont">
-                    <p class="text-nowrap col-12 text-center">
+                    <p class="text-wrap col-12 text-center">
                       Churchplus <span>Terms & Conditions </span> and
                       <span>Privacy Policy </span>
                     </p>
                     <p class="mt-n2 col-12 text-center text-wrap">
-                      Organization Legal Name: {{ formResponse.churchName }}
+                      Church Name: {{ formResponse.churchName }}
                     </p>
 
                     <div class="col-md-4 offset-5 px-0">
@@ -404,6 +399,8 @@ export default {
     const dfaultCurrencyId = ref(null)
     const selectedContributionTypeId = ref(null)
     const purposeList = ref([])
+    const callPayment = ref(false)
+    const initializePaymentResponse = ref({})
 
 
     const computeAmount = computed(() => {
@@ -492,7 +489,6 @@ export default {
         merchantID: formResponse.value.merchantId,
         orderID: formResponse.value.orderId,
         currencyID: dfaultCurrency.value.id,
-        paymentGateway: formResponse.value.paymentGateWays,
         contributionItems: [
           {
             contributionItemId: selectedContributionType.value.financialContribution.id,
@@ -509,7 +505,11 @@ export default {
 
 
     const donation = async () => {
-
+      const loading = ElLoading.service({
+        lock: true,
+        text: 'Please wait...',
+        background: 'rgba(255, 255, 255, 0.9)',
+      })
 
       if (localStorage.getItem('giverToken') !== "" || localStorage.getItem('giverToken') !== null || localStorage.getItem('giverToken')) {
         donationObj.value.name = userData.value.name
@@ -536,11 +536,16 @@ export default {
 
 
       try {
-        await axios.post('/donation', donationObj.value)
+        let { data } = await axios.post('/initailizedonationpayment', donationObj.value)
         finish()
+        initializePaymentResponse.value = data.result;
+        callPayment.value = true
+        loading.close();
       }
       catch (error) {
         finish()
+        callPayment.value = false
+        loading.close();
         console.log(error)
       }
     }
@@ -698,6 +703,10 @@ export default {
       donationObj.value.amount = computeAmount.value * 100
     }
 
+    const resetCallPayment = (payload) => {
+      callPayment.value = payload
+    }
+
     return {
       hideTabOne,
       toggleTabOne,
@@ -747,7 +756,10 @@ export default {
       setSelectedCurrency,
       setSelectedContributionType,
       selectedContributionTypeId,
-      purposeList
+      purposeList,
+      callPayment,
+      initializePaymentResponse,
+      resetCallPayment
     };
   },
 };

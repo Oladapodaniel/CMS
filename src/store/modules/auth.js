@@ -1,5 +1,5 @@
 import axios from "@/gateway/backendapi";
-import router from "@/router/index"
+// import router from "@/router/index"
 
 
 export default {
@@ -75,11 +75,10 @@ export default {
     clearCurrentUser ({ commit }, payload) {
       commit("clearCurrentUser", payload)
     },
-    async getUser({ commit }) {
+    async getUserData({ commit }) {
       try {
         const res = await axios.get("/api/Membership/GetCurrentSignedInUser");
         commit("setCurrentUser", res.data)
-        router.push(`/tenant/${res.data.tenantId}`)
       } catch (err) {
         /*eslint no-undef: "warn"*/
         NProgress.done();

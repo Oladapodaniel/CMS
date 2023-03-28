@@ -3,7 +3,7 @@
   <!-- To whoever will update this page -->
   <!-- This page is the main online giving platform for churchplus -->
 
-  <!-- It similar to the Iframe version in churchplus, with few differences in styles. -->
+  <!-- It similar to the Iframe version in churchplus, with few differences in styles and content. -->
 
   <!-- The logic is quite the same, so any changes made to this page should be made in the iFrame Page which is iFrame.vue, except the changes that is to be made is specific for the main online giving platform -->
 
@@ -18,9 +18,8 @@
           <a class="navbar-brand" href="#">
             <img :src="formResponse.churchLogo" v-if="formResponse.churchLogo" style="width: 50px" alt="" />
           </a>
-          <button class="navbar-toggler border" type="button" data-toggle="collapse"
-            data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false"
-            aria-label="Toggle navigation">
+          <button class="navbar-toggler border" type="button" data-toggle="collapse" data-target="#navbarSupportedContent"
+            aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
             <i class="pi pi-align-justify text-light"></i>
           </button>
 
@@ -34,7 +33,7 @@
               <li class="nav-item lstyle" @click="checkForToken">
                 <div class="text-white" href="#" style="cursor: pointer">{{
                   Object.keys(userData).length > 0 ?
-                    userData.email ? userData.email : userData.name : "Sign In"
+                  userData.email ? userData.email : userData.name : "Sign In"
                 }} <i class="fas fa-user text-white" v-if="signedIn"></i></div>
               </li>
               <li class="nav-item lstyle ml-4" @click="signOut" v-if="signedIn">
@@ -54,35 +53,26 @@
       <div class="row mx-0">
         <div class="col-12 px-0">
           <div class="img">
-            <div class="row d-flex justify-content-center">
-              <div class="col-6">
-                <p class="text-center text-white pt-5 main-font">Giving</p>
+              <div class="col-12">
+                <p class="text-center text-white pt-5 s-42">Giving</p>
                 <p class="text-center mt-n3 sub-main-font d-none d-md-block">
-                  Give, and it will be given to you. A good measure, pressed down, shaken together and running over,
+                  Give, and it will be given to you. A good measure, pressed down, shaken together and running over,<br />
                   will be poured into your lap. For with the measure you use, it will be measured to you.”
                 </p>
                 <p class="text-white text-center d-none d-md-block">- Luke 6:38 NIV</p>
               </div>
-            </div>
 
             <!-- form area -->
             <div class="container">
               <div class="row px-4">
                 <div class="col-md-3 d-sm-none"></div>
                 <transition name="move" mode="out-in">
-                  <div class="col-sm-10 col-md-8 mx-auto form-area shadow p-5 mb-5 bg-white rounded MIDDLE"
+                  <div class="col-sm-10 col-md-8 mx-auto form-area shadow p-md-5 mb-5 bg-white rounded MIDDLE"
                     v-if="!paymentSuccessful" key="form">
                     <div class="row">
                       <div class="col-sm-4 col-md-3 my-3 pr-md-0">
 
                         <label class="hfont">Currency</label>
-                        <!-- <Dropdown
-                            v-model="dfaultCurrency"
-                            :options="currencyInput"
-                            optionLabel="shortCode"
-                            :placeholder="dfaultCurrency.shortCode"
-                            class="w-100 px-0"
-                          /> -->
                         <el-select-v2 v-model="dfaultCurrencyId"
                           :options="FLWupportedCurrencies.map((i) => ({ label: i.value, value: i.value }))"
                           placeholder="Select currency" @change="setSelectedCurrency" class="w-100" size="large"
@@ -90,18 +80,9 @@
                       </div>
                       <div class="col-sm-4 col-md-5 my-3">
                         <label class="hfont">Purpose</label>
-
-                        <!-- <Dropdown
-                        v-model="selectedContributionType"
-                        :options="formResponse.contributionItems"
-                        optionLabel="financialContribution.name"
-                        placeholder="Select"
-                        class="w-100 px-0"
-                      /> -->
                         <el-select-v2 v-model="selectedContributionTypeId"
                           :options="purposeList.map((i) => ({ label: i.financialContribution.name, value: i.financialContribution.id }))"
-                          placeholder="Select purpose" @change="setSelectedContributionType" class="w-100"
-                          size="large" />
+                          placeholder="Select purpose" @change="setSelectedContributionType" class="w-100" size="large" />
                       </div>
                       <div class="col-sm-4 col-md-4 my-3 pl-md-0">
                         <label class="hfont">Amount</label>
@@ -278,17 +259,12 @@
                         <!-- button section -->
                         <div class="row my-3">
                           <div class="col-md-12 text-center mt-4">
-                            <button @click="convertAmount" data-toggle="modal" data-target="#PaymentOptionModal"
-                              class="btn btn-default btngive default-color hfontb btt">
-                              Give Now
-                            </button>
+                            <el-button class="px-4" data-toggle="modal" data-target="#PaymentOptionModal" color="#136acd" round>Give now</el-button>
                           </div>
                         </div>
                         <!--end of button section -->
                       </section>
-                      <!-- <button type="button" class="btn btn-primary" >
-            Launch demo modal
-          </button> -->
+                
                       <!-- Modal -->
                       <div class="modal fade" id="PaymentOptionModal" tabindex="-1" role="dialog"
                         aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
@@ -301,17 +277,13 @@
                               </button>
                             </div>
                             <div class="modal-body p-0 bg-modal pb-5">
-                              <PaymentOptionModal :orderId="formResponse.orderId" :donation="donationObj" :close="close"
+                              <PaymentOptionModal :formData="formResponse" :donation="donationObj" :close="close"
                                 :name="name" :amount="amount" :converted="computeAmount" :email="email"
-                                @payment-successful="successfulPayment" :gateways="formResponse.paymentGateWays"
-                                :currency="dfaultCurrency.shortCode" @selected-gateway="gatewaySelected"
-                                @transaction-reference="setTransactionReference" @paystack-amount="setPaystackAmount"
-                                :churchLogo="formResponse.churchLogo" :churchName="formResponse.churchName" />
+                                @payment-successful="successfulPayment" :currency="dfaultCurrency.shortCode"
+                                @selected-gateway="gatewaySelected" @transaction-reference="setTransactionReference"
+                                @paystack-amount="setPaystackAmount" :callPayment="callPayment"
+                                @resetcallpaymentprops="resetCallPayment" :initializePaymentResponse="initializePaymentResponse" />
                             </div>
-                            <!-- <div class="modal-footer bg-modal">
-                            <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-                            <button type="button" class="btn btn-primary">Save changes</button>
-                          </div> -->
                           </div>
                         </div>
                       </div>
@@ -320,7 +292,6 @@
 
                     <!-- end of dynamic Area 3 -->
                   </div>
-
                   <div class="col-sm-10 col-md-8 mx-auto form-area shadow pt-5 mb-5 bg-white rounded MIDDLE" v-else
                     key="success">
                     <div class="row">
@@ -333,7 +304,6 @@
                         transaction has been successful. God Bless You!</div>
                     </div>
                   </div>
-
                 </transition>
 
 
@@ -367,12 +337,12 @@
                 <div class="row">
                   <div class="col-md-6 offset-md-3">
                     <div class="row">
-                      <p class="text-nowrap col-12 text-center">
+                      <p class="text-wrap col-12 text-center">
                         Churchplus <span>Terms & Conditions </span> and
                         <span>Privacy Policy </span>
                       </p>
                       <p class="mt-n2 col-12 text-center text-wrap">
-                        Organization Legal Name: {{ formResponse.churchName }} <br>
+                        Church Name: {{ formResponse.churchName }} <br>
                         Address: {{ formResponse.address }}
                       </p>
 
@@ -403,6 +373,7 @@ import { useRoute, useRouter } from "vue-router";
 import finish from "../../../services/progressbar/progress"
 import SignUp from "./SignUp"
 import supportedCurrencies from "../../../services/user/flutterwaveSupportedCurrency"
+import { ElLoading } from 'element-plus';
 export default {
   components: {
     PaymentOptionModal,
@@ -452,6 +423,8 @@ export default {
     const selectedContributionTypeId = ref(null)
     const purposeList = ref([])
     const FLWupportedCurrencies = ref(supportedCurrencies);
+    const callPayment = ref(false)
+    const initializePaymentResponse = ref({})
 
 
 
@@ -540,7 +513,7 @@ export default {
         merchantID: formResponse.value.merchantId,
         orderID: formResponse.value.orderId,
         currencyID: dfaultCurrency.value.id,
-        paymentGateway: formResponse.value.paymentGateWays,
+        // paymentGateway: formResponse.value.paymentGateWays,
         amount: computeAmount.value,
         contributionItems: [
           {
@@ -557,6 +530,11 @@ export default {
     })
 
     const donation = async () => {
+      const loading = ElLoading.service({
+        lock: true,
+        text: 'Please wait...',
+        background: 'rgba(255, 255, 255, 0.9)',
+      })
 
 
       if (localStorage.getItem('giverToken') === null || !signedIn.value) {
@@ -581,11 +559,24 @@ export default {
         }
       }
       try {
-        await axios.post('/initailizedonationpayment', donationObj.value)
+        const { data } = await axios.post('/initailizedonationpayment', donationObj.value)
         finish()
+        loading.close()
+        initializePaymentResponse.value = data;
+        if (data.status) {
+          callPayment.value = true
+        } else {
+          ElMessage({
+            type: 'error',
+            message: "Could not initialise payment, please try again",
+            duration: 5000
+          })
+        }
       }
       catch (error) {
         finish()
+        loading.close()
+        callPayment.value = false
         console.log(error)
       }
     }
@@ -728,7 +719,7 @@ export default {
     }
 
     const gatewaySelected = (payload) => {
-      donationObj.value.gateway = payload
+      donationObj.value.paymentGateway = payload
       donation()
     }
 
@@ -739,6 +730,10 @@ export default {
     const setPaystackAmount = () => {
       delete donationObj.value[amount]
       donationObj.value.amount = computeAmount.value * 100
+    }
+
+    const resetCallPayment = (payload) => {
+      callPayment.value = payload
     }
 
 
@@ -792,7 +787,10 @@ export default {
       selectedContributionTypeId,
       setSelectedContributionType,
       purposeList,
-      FLWupportedCurrencies
+      FLWupportedCurrencies,
+      callPayment,
+      resetCallPayment,
+      initializePaymentResponse
     };
   },
 };

@@ -9,7 +9,7 @@ const defaultState = () => ({
 })
 export default {
     namespaced: true,
-    
+
     state: defaultState(),
     getters: {
         groups: state => state.groups,
@@ -24,14 +24,15 @@ export default {
             state.groups = payload;
         },
         updateGroupPeopleCount(state, payload) {
-            if (payload.operation === "add") {
-                const group = state.groups.findIndex(i => i.id === payload.groupId)
-                state.groups[group].peopleInGroupsCount += payload.count
-            } else {
-                const group = state.groups.findIndex(i => i.id === payload.groupId)
-                state.groups[group].peopleInGroupsCount -= payload.count
+            if (state && state.length > 0) {
+                if (payload.operation === "add") {
+                    const group = state.groups.findIndex(i => i.id === payload.groupId)
+                    state.groups[group].peopleInGroupsCount += payload.count
+                } else {
+                    const group = state.groups.findIndex(i => i.id === payload.groupId)
+                    state.groups[group].peopleInGroupsCount -= payload.count
+                }
             }
-
         },
         updateGroupPeopleCopy(state, payload) {
             const group = state.groups.findIndex(i => i.id === payload.groupId)
@@ -51,26 +52,25 @@ export default {
         removeGroup(state, payload) {
             state.groups.slice(payload, 1);
         },
-        clearGroup (state) {
+        clearGroup(state) {
             Object.assign(state, defaultState())
         },
-        setSelectedTreeGroup (state, payload) {
+        setSelectedTreeGroup(state, payload) {
             state.selectedTreeGroup = payload
         },
-        setSelectedTreeGroupList (state, payload) {
+        setSelectedTreeGroupList(state, payload) {
             state.selectedTreeGroupList = payload
         },
-        setCheckedTreeGroup (state, payload) {
+        setCheckedTreeGroup(state, payload) {
             state.checkedTreeGroup = payload
         },
-        setCheckedGroupChildren (state, payload) {
+        setCheckedGroupChildren(state, payload) {
             state.checkedGroupChildren = payload
         }
     },
 
     actions: {
         removeGroup({ commit }, payload) {
-            console.log(payload, 'resching here')
             commit("removeGroup", payload)
         },
 
@@ -94,19 +94,19 @@ export default {
         updateGroup({ commit }, payload) {
             commit("updateGroup", payload)
         },
-        clearGroup ({ commit }) {
+        clearGroup({ commit }) {
             commit('clearGroup')
         },
-        setSelectedTreeGroup ({ commit }, payload) {
+        setSelectedTreeGroup({ commit }, payload) {
             commit("setSelectedTreeGroup", payload)
         },
-        setSelectedTreeGroupList ({ commit }, payload) {
+        setSelectedTreeGroupList({ commit }, payload) {
             commit("setSelectedTreeGroupList", payload)
         },
-        setCheckedTreeGroup ({ commit }, payload) {
+        setCheckedTreeGroup({ commit }, payload) {
             commit("setCheckedTreeGroup", payload)
         },
-        setCheckedGroupChildren ({ commit }, payload) {
+        setCheckedGroupChildren({ commit }, payload) {
             commit("setCheckedGroupChildren", payload)
         }
     }

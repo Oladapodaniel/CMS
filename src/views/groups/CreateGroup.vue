@@ -179,37 +179,37 @@
         <div class="row">
           <div class="col-md-12 col-12 btnn">
             <el-button class="
-                    default-btn
-                    border
-                    outline-none
-                    font-weight-bold
-                    c-pointer
-                    text-center text-dark
-                  " data-toggle="collapse" data-dismiss="modal" data-target="#collapseExample" aria-expanded="false"
-              aria-controls="collapseExample" round>
+                          default-btn
+                          border
+                          outline-none
+                          font-weight-bold
+                          c-pointer
+                          text-center text-dark
+                        " data-toggle="collapse" data-dismiss="modal" data-target="#collapseExample"
+              aria-expanded="false" aria-controls="collapseExample" round>
               Sub-group
             </el-button>
             <el-button class="
-                    default-btn
-                    border
-                    outline-none
-                    font-weight-bold
-                    c-pointer
-                    text-center text-dark
-                  " :data-toggle="route.params.groupId ? 'modal' : ''" data-target="#importgroup"
+                          default-btn
+                          border
+                          outline-none
+                          font-weight-bold
+                          c-pointer
+                          text-center text-dark
+                        " :data-toggle="route.params.groupId ? 'modal' : ''" data-target="#importgroup"
               @click="importMember" round>
               Import
             </el-button>
             <el-button class="
-                    default-btn
-                    outline-none
-                    font-weight-bold
-                    border
-                    c-pointer
-                    header-btn
-                    text-dark
-                    add-member
-                  " data-toggle="modal" data-target="#exampleModal" ref="modalBtn" size="large" round>
+                          default-btn
+                          outline-none
+                          font-weight-bold
+                          border
+                          c-pointer
+                          header-btn
+                          text-dark
+                          add-member
+                        " data-toggle="modal" data-target="#exampleModal" ref="modalBtn" size="large" round>
               Add member
             </el-button>
           </div>
@@ -222,18 +222,15 @@
                 <div class="row">
                   <div class="col-12 col-md-12 mt-2">
                     <div class="
-                            mb-3
-                            border
-                            outline-none
-                            font-weight-bold
-                            mr-3
-                            text-center
-                          " style="
-                            border-radius: 3rem;
-                            padding: 0.5rem 1.25rem;
-                            width: 167px;
-                          " type="button" data-toggle="collapse" data-target="#addsubgroup" aria-expanded="false"
-                      aria-controls="collapseExample">
+                                  mb-3
+                                  border
+                                  outline-none
+                                  font-weight-bold
+                                  mr-3
+                                  text-center" style="border-radius: 3rem;
+                                  padding: 0.5rem 1.25rem;
+                                  width: 167px;" type="button" data-toggle="collapse" data-target="#addsubgroup"
+                      aria-expanded="false" aria-controls="collapseExample">
                       Add sub-group
                     </div>
 
@@ -269,13 +266,13 @@
                           <div class="col-12 col-md-3">
                             <div class="mb-1 mt-3 mt-md-4">
                               <el-button class="
-                                      default-btn
-                                      primary-bg
-                                      border-0
-                                      text-white
-                                      align-self-center
-                                      mt-2
-                                    " size="large" @click="addSubGroup" round>
+                                            default-btn
+                                            primary-bg
+                                            border-0
+                                            text-white
+                                            align-self-center
+                                            mt-2
+                                          " size="large" @click="addSubGroup" round>
                                 Add sub group
                               </el-button>
                             </div>
@@ -312,11 +309,11 @@
         <div class="row pb-4">
           <div class="col-md-12">
             <div class="
-                    d-flex
-                    flex-column flex-sm-row
-                    justify-content-sm-between
-                    py-3
-                  ">
+                          d-flex
+                          flex-column flex-sm-row
+                          justify-content-sm-between
+                          py-3
+                        ">
               <el-input v-model="searchGroupMemberText" placeholder="Search for group member by name"
                 class="input-with-select" type="text">
                 <template #append>
@@ -349,36 +346,38 @@
                           <div class="col-md-12">
                             <div class="row my-3">
                               <div class="
-                                      col-md-4
-                                      align-items-center
-                                      justify-content-md-end
-                                    ">
+                                            col-md-4
+                                            align-items-center
+                                            justify-content-md-end
+                                          ">
                                 <label class="font-weight-600">Select Members</label>
                               </div>
 
                               <div class="col-md-7 col-sm-12 px-1">
-                                <ul class="px-1 mb-0 m-dd-item d-flex border rounded-lg flex-wrap" @click="() => memberSelectInput.focus()">
+                                <ul class="px-1 mb-0 m-dd-item d-flex border rounded-lg flex-wrap"
+                                  @click="() => memberSelectInput.focus()">
                                   <li style="list-style: none; min-width: 100px" v-for="(member, indx) in selectedMembers"
                                     :key="indx" class="
-                                          email-destination
-                                          d-flex
-                                          justify-content-between
-                                          m-1
-                                        ">
+                                                email-destination
+                                                d-flex
+                                                justify-content-between
+                                                m-1
+                                              ">
                                     <span>{{ member.name }}</span>
                                     <span class="ml-2 remove-email" @click="removeMember(indx)">x</span>
                                   </li>
                                   <li style="list-style: none" class="m-dd-item">
                                     <input type="text" class="
-                                            border-0
-                                            m-dd-item
-                                            text
-                                            outline-none
-                                          " ref="memberSelectInput" @input="searchForMembers" autocomplete="off" :class="{
-                                            'w-100': selectedMembers.length === 0,
-                                            'minimized-input-width':
-                                              selectedMembers.length > 0,
-                                          }" @focus="showMemberList" @click="showMemberList" v-model="searchText"
+                                                  border-0
+                                                  m-dd-item
+                                                  text
+                                                  outline-none
+                                                " ref="memberSelectInput" @input="searchForMembers" autocomplete="off"
+                                      :class="{
+                                        'w-100': selectedMembers.length === 0,
+                                        'minimized-input-width':
+                                          selectedMembers.length > 0,
+                                      }" @focus="showMemberList" @click="showMemberList" v-model="searchText"
                                       style="padding: 0.5rem" :placeholder="`${selectedMembers.length > 0
                                         ? ''
                                         : 'Select from members'
@@ -386,21 +385,22 @@
                                   </li>
                                 </ul>
                                 <div class="
-                                        col-md-12
-                                        px-0
-                                        select-groups-dropdown
-                                        m-dd-item
-                                      " v-if="memberListShown">
+                                              col-md-12
+                                              px-0
+                                              select-groups-dropdown
+                                              m-dd-item
+                                            " v-if="memberListShown">
                                   <div class="dropdownmenu pt-0 w-100 m-dd-item">
                                     <a class="
-                                            dropdown-item
-                                            px-1
-                                            c-pointer
-                                            m-dd-item
-                                          " v-for="(
-                                            member, index
-                                          ) in memberSearchResults" :key="index" @click="selectMember(member, index)">{{
-                                            member.nameResult }}</a>
+                                                  dropdown-item
+                                                  px-1
+                                                  c-pointer
+                                                  m-dd-item
+                                                " v-for="(
+                                                  member, index
+                                                ) in memberSearchResults" :key="index"
+                                      @click="selectMember(member, index)">{{
+                                        member.nameResult }}</a>
 
                                     <p class="bg-secondary p-1 mb-0">
                                       Enter 3 or more characters
@@ -411,41 +411,44 @@
                                                 " -->
 
                                     <p aria-disabled="true" class="
-                                            btn btn-default
-                                            p-1
-                                            mb-0
-                                            disable
-                                            m-dd-item
-                                          " v-if="
-                                            memberSearchResults.length === 0 &&
-                                            searchText.length >= 3 &&
-                                            !loading
-                                          ">
+                                                  btn btn-default
+                                                  p-1
+                                                  mb-0
+                                                  disable
+                                                  m-dd-item
+                                                " v-if="
+                                                  memberSearchResults.length === 0 &&
+                                                  searchText.length >= 3 &&
+                                                  !loading
+                                                ">
                                       No match found
                                     </p>
                                     <p class="
-                                            btn btn-default
-                                            p-1
-                                            mb-0
-                                            disable
-                                            m-dd-item
-                                          " v-if="loading && searchText.length >= 3">
+                                                  btn btn-default
+                                                  p-1
+                                                  mb-0
+                                                  disable
+                                                  m-dd-item
+                                                " v-if="loading && searchText.length >= 3">
                                       <i class="
-                                              fas
-                                              fa-circle-notch fa-spin
-                                              m-dd-item
-                                            "></i>
+                                                    fas
+                                                    fa-circle-notch fa-spin
+                                                    m-dd-item
+                                                  "></i>
                                     </p>
                                     <a class="
-                                            font-weight-bold
-                                            small-text
-                                            d-flex
-                                            justify-content-center
-                                            py-2
-                                            text-decoration-none
-                                            primary-text
-                                            c-pointer" style="border-top: 1px solid #002044; color: #136acd;" @click="showAddMemberForm" data-dismiss="modal">
-                                      <i class=" pi pi-plus-circle mr-2 primary-text d-flex align-items-center" style="color: #136acd"></i>
+                                                  font-weight-bold
+                                                  small-text
+                                                  d-flex
+                                                  justify-content-center
+                                                  py-2
+                                                  text-decoration-none
+                                                  primary-text
+                                                  c-pointer" style="border-top: 1px solid #002044; color: #136acd;"
+                                      @click="showAddMemberForm" data-dismiss="modal">
+                                      <el-icon class="primary--text d-flex align-self-center mr-2">
+                                        <CirclePlusFilled />
+                                      </el-icon>
                                       Add new member
                                     </a>
                                   </div>
@@ -454,12 +457,12 @@
                             </div>
                             <div class="row mb-3 px-1">
                               <div class="
-                                      col-md-4
-                                      text-right
-                                      d-flex
-                                      align-items-center
-                                      justify-content-md-end
-                                    ">
+                                            col-md-4
+                                            text-right
+                                            d-flex
+                                            align-items-center
+                                            justify-content-md-end
+                                          ">
                                 <label class="font-weight-600">Position in group</label>
                               </div>
                               <div class="col-md-7 col-sm-12 px-1">
@@ -490,13 +493,13 @@
                         </el-button>
 
                         <el-button class="
-                                primary-btn
-                                default-btn
-                                primary-bg
-                                border-0
-                                outline-none
-                                text-white
-                              " @click="addSelectedMembersToGroup" :data-dismiss="modalStatus" round>
+                                      primary-btn
+                                      default-btn
+                                      primary-bg
+                                      border-0
+                                      outline-none
+                                      text-white
+                                    " @click="addSelectedMembersToGroup" :data-dismiss="modalStatus" round>
                           Add member
                         </el-button>
                       </div>
@@ -559,7 +562,7 @@
 
                     <!-- Modal footer -->
                     <div class="modal-footer">
-                      <el-button data-dismiss="modal" round>Close</el-button>
+                      <el-button data-dismiss="modal" ref="dismissMoveModal" round>Close</el-button>
                       <el-button color="#136acd" @click="moveMembers" :loading="moveLoading" round>Move</el-button>
                     </div>
                   </div>
@@ -588,13 +591,13 @@
                       <div class="col-md-12"></div>
                       <div class="col-md-12 form-group w-100">
                         <button @click="setCopyGroupProp" class="
-                                btn
-                                border
-                                d-flex
-                                justify-content-between
-                                align-items-center
-                                w-100
-                              ">
+                                      btn
+                                      border
+                                      d-flex
+                                      justify-content-between
+                                      align-items-center
+                                      w-100
+                                    ">
                           <div>
                             {{
                               copyGroupTo && Object.keys(copyGroupTo).length > 0
@@ -609,10 +612,10 @@
                           'd-block': !copyHideDiv,
                         }">
                           <i class="
-                                  pi pi-spin pi-spinner
-                                  text-center
-                                  exempt-hide
-                                " v-if="grouploading && getAllGroup.length === 0"></i>
+                                        pi pi-spin pi-spinner
+                                        text-center
+                                        exempt-hide
+                                      " v-if="grouploading && getAllGroup.length === 0"></i>
                           <input type="text" class="form-control exempt-hide" v-model="searchGroupText"
                             ref="searchGroupRef" placeholder="Search for group" />
                           <GroupTree :items="searchForGroups" :addGroupValue="true" @group="setSelectedGroupToCopy" />
@@ -633,38 +636,58 @@
             </div>
             <div class="row" v-if="marked.length > 0 && groupMembers.length > 0">
               <div class="col-md-12 d-flex align-content-between pb-2">
-                <a href="#" class="tool" data-toggle="modal" data-target="#myModal">
-                  <i class="
-                          pi pi-reply
-                          text-primary
-                          c-pointer
-                          d-flex
-                          align-items-center
-                          mr-4
-                        " style="font-size: 20px; font-weight: bold" v-tooltip.top="'move to group'">
-                  </i>
-                </a>
 
-                <a href="#" class="tool" data-toggle="modal" data-target="#myModal1">
-                  <i class="
-                          pi pi-copy
-                          text-primary
-                          c-pointer
-                          d-flex
-                          align-items-center
-                          mr-4
-                        " style="font-size: 20px; font-weight: bold" v-tooltip.right="'copy to group'">
-                  </i>
-                </a>
-                <i class="fa fa-file-archive-o text-primary c-pointer mr-4" v-tooltip.top="'Archive member(s)'"
-                  @click="openPositionArchive('center')" aria-hidden="true" style="font-size: 20px"></i>
-                <a href="#" @click="sendMarkedMemberSms"><i class="pi pi-comment"></i></a>
-                <a href="#" @click="sendMarkedMemberEmail" class="pl-4"><i class="pi pi-envelope"></i></a>
+                <div class="c-pointer" @click="confirmMultipleDelete">
+                  <el-tooltip class="box-item" effect="dark" content="Remove member(s) from group" placement="top-start">
+                    <el-icon :size="20">
+                      <Delete />
+                    </el-icon>
+                  </el-tooltip>
+                </div>
+
+                <div data-toggle="modal" data-target="#myModal" class="ml-2 c-pointer">
+                  <el-tooltip class="box-item" effect="dark" content="Move to group" placement="top-start">
+                    <el-icon :size="20">
+                      <Rank />
+                    </el-icon>
+                  </el-tooltip>
+                </div>
+          
+                <div class="ml-2 c-pointer" data-toggle="modal" data-target="#myModal1">
+                  <el-tooltip class="box-item" effect="dark" content="Copy to group" placement="top-start">
+                    <el-icon :size="20">
+                      <CopyDocument />
+                    </el-icon>
+                  </el-tooltip>
+                </div>
+
+                <div class="ml-2 c-pointer" @click="openPositionArchive('center')">
+                  <el-tooltip class="box-item" effect="dark" content="Archive member(s)" placement="top-start">
+                    <el-icon :size="20">
+                      <DocumentRemove />
+                    </el-icon>
+                  </el-tooltip>
+                </div>
+
+                <div class="ml-2 c-pointer" @click="sendMarkedMemberSms">
+                  <el-tooltip class="box-item" effect="dark" content="Send SMS" placement="top-start">
+                    <img src="../../assets/sms.png" style="width: 18px; margin-top: -5px" class="ml-2 c-pointer"
+                      alt="Send SMS" />
+                  </el-tooltip>
+                </div>
+
+                <div class="ml-2 c-pointer" @click="sendMarkedMemberEmail">
+                  <el-tooltip class="box-item" effect="dark" content="Send Email" placement="top-start">
+                    <el-icon :size="20" class="ml-2 c-pointer">
+                      <Message />
+                    </el-icon>
+                  </el-tooltip>
+                </div>
               </div>
             </div>
 
             <div class="row" v-if="groupMembers.length > 0">
-              <div class="col text-center p-3 text-success font-weight-700">
+              <div class="col text-center px-3 pb-2 text-success font-weight-700">
                 Approved
               </div>
             </div>
@@ -759,11 +782,11 @@
               <div class="col-md-12">
                 <div class="row">
                   <div class="
-                          col-md-12
-                          d-flex
-                          align-items-center
-                          justify-content-center
-                        ">
+                                col-md-12
+                                d-flex
+                                align-items-center
+                                justify-content-center
+                              ">
                     <p class="text-center font-weight-bold py-2">
                       No members yet
                     </p>
@@ -806,18 +829,8 @@
       </p>
       <template #footer>
         <div class="d-flex justify-content-end">
-          <div class="default-btn bg-white text-center mr-2 c-pointer" @click="closeArchiveModal">
-            No
-          </div>
-          <div class="
-                  default-btn
-                  border-0
-                  primary-bg
-                  text-center text-white
-                  c-pointer
-                " @click="archive('', 'multiple')">
-            Yes
-          </div>
+          <el-button @click="closeArchiveModal" round>No</el-button>
+          <el-button color="#136acd" @click="archive('', 'multiple')" round>Yes</el-button>
         </div>
       </template>
     </el-dialog>
@@ -936,6 +949,7 @@ export default {
     const flattenedTree = ref([]);
     const attendanceByGroup = ref([]);
     const { mdAndUp, lgAndUp, xlAndUp } = deviceBreakpoint()
+    const dismissMoveModal = ref(null)
     const createGroupHeaders = ref([
       { name: "NAME", value: "name" },
       { name: "POSITION", value: "position" },
@@ -1044,11 +1058,14 @@ export default {
           // Remove from view
           groupMembers.value = groupMembers.value.filter((i) => {
             let match = marked.value.findIndex(
-              (j) => j.personID === i.personID
+              (j) => j.personID == i.personID
             );
             if (match >= 0) return false;
             return true;
           });
+
+          // Close modal
+          dismissMoveModal.value.ref.click();
         })
         .catch((err) => {
           moveLoading.value = false;
@@ -1150,6 +1167,68 @@ export default {
           });
       });
     };
+
+    const removeMultipleMembers = async() => {
+      try {
+        const res = await groupsService.removeMultipleMemberFromGroup(route.params.groupId, marked.value.map(i => i.id));
+        if (res.status == 200) {
+              ElMessage({
+                type: "success",
+                message: res.message,
+                duration: "5000"
+              });
+
+              store.dispatch("groups/updateGroupPeopleCount", {
+                groupId: route.params.groupId,
+                count: marked.value.length,
+                operation: "remove",
+              });
+
+              // Remove from view
+              groupMembers.value = groupMembers.value.filter((i) => {
+                let match = marked.value.findIndex(
+                  (j) => j.personID == i.personID
+                );
+                if (match >= 0) return false;
+                return true;
+              });
+            }
+      }
+      catch (err) {
+        console.error(err)
+      }
+    }
+
+    const confirmMultipleDelete = () => {
+      ElMessageBox.confirm(
+        "This action will permanently remove marked member(s). Continue?",
+        "Confirm delete",
+        {
+          confirmButtonText: "OK",
+          cancelButtonText: "Cancel",
+          type: "error",
+        }
+      ).then(() => {
+        removeMultipleMembers();
+
+            // if (res !== false) {
+            //   groupMembers.value.splice(index, 1);
+
+            //   groupsService.editGroupInStore(
+            //     { name: groupData.value.name, id: route.params.groupId },
+            //     groupMembers.value.length
+            //   );
+            // }
+          })
+          .catch(() => {
+            ElMessage({
+              type: "error",
+              message: "Please try again",
+              duration: 3000,
+            });
+          });
+      }
+
 
     const sendMarkedMemberSms = () => {
       contacts.value = marked.value
@@ -1586,7 +1665,7 @@ export default {
       );
       selectGroupTo.value = {
         name: selectedLabelTree.label,
-        id: selectedLabelTree.id,
+        id: selectedLabelTree.value,
       };
     };
 
@@ -1768,6 +1847,8 @@ export default {
       formatDate,
       moveLoading,
       attendanceItemsLoading,
+      dismissMoveModal,
+      confirmMultipleDelete
     };
   },
 };
@@ -2074,10 +2155,6 @@ export default {
 .send-dropdown a {
   color: #190138;
   font-size: 14px;
-  text-decoration: none;
-}
-
-.tool {
   text-decoration: none;
 }
 

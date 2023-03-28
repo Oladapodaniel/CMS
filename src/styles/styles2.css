@@ -138,6 +138,7 @@ li.el-menu-item.w-100,
 .el-checkbox.align-checkbox-totop {
   align-items: start !important;
 }
+
 main.el-main {
   overflow: inherit;
 }
@@ -147,20 +148,30 @@ main.el-main {
     margin-left: 0;
   }
 }
-  
-  .el-dialog.is-align-center.smsUnitSuccess .el-dialog__header {
-    display: none;  
-    }
-    div.groupTree table  {
-      width: 100% !important;
-    }
-    div.groupTree div.cell  {
-      display: flex !important;
-      align-items: center !important;
-      color: #47545c;
-      font-size: 16px
-    }
-    div.groupTree{
-      border: 1px solid #E0E0E0;
-    }
-    
+
+.el-dialog.is-align-center.smsUnitSuccess .el-dialog__header {
+  display: none;
+}
+
+div.groupTree table {
+  width: 100% !important;
+}
+
+div.groupTree div.cell {
+  display: flex !important;
+  align-items: center !important;
+  color: #47545c;
+  font-size: 16px
+}
+
+div.groupTree {
+  border: 1px solid #E0E0E0;
+}
+
+div.firsttimersearchmember.el-drawer {
+  height: 40% !important;
+}
+
+div.firsttimersearchmember.el-drawer .el-drawer__header {
+  margin-bottom: 0;
+}

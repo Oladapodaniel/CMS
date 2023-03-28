@@ -1689,7 +1689,7 @@ const routes = [
             import( /* webpackChunkName: "giving" */ '@/views/giving/onlinegiving/GivingForm3')
     },
     {
-        path: '/:userId?',
+        path: '/give/:userId?',
         name: 'OnlineGiving4',
         meta: {
             title: 'Churchplus - Online Giving',

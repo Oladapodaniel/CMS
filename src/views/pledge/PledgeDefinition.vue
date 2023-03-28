@@ -608,7 +608,7 @@
             <span>{{ dateFormat(item.date) }}</span>
           </template>
           <template v-slot:pledgeItemID>
-            <div class="small-text text-right text-md-center">
+            <div class="small-text">
               <router-link
                 :to="`/partnership/pay?pledgeDefinitionID=${pledgeItemID}`"
                 class="text-color text-primary text-decoration-none"
@@ -642,7 +642,6 @@ import { ElMessage } from "element-plus";
 import store from "../../store/store";
 import ToggleButton from "../donation/toggleButton.vue";
 import grousService from "../../services/groups/groupsservice";
-import workflow_util from "../workflow/utlity/workflow_util.js";
 import datePickerShortcut from "@/mixins/el-datepicker-shortcut.vue";
 import collector from "../../services/groupArray/mapTree";
 import Table from "@/components/table/Table";
@@ -732,27 +731,22 @@ export default {
           `/api/Pledge/GetSinglePledgeDefinitions?ID=${route.query.id}`
         );
         finish();
+        console.log(dateRangeValue.value, 'jfghjfgjgk')
         groupLoading.value = false;
         pledgeLoader.value = false;
         getAllCurrencies(res.data.returnObject.currency.id);
         getContributionCategory(res.data.returnObject.financialContributionID);
-        selectedGroups.value = workflow_util.getGroups(
-          res.data.returnObject.compulsoryCondition,
-          groups.value
-        );
+        selectedGroupTree.value = res.data.returnObject.compulsoryCondition ? res.data.returnObject.compulsoryCondition.split(",") : [];
         targetAmount.value = res.data.returnObject.totalTargetAmount;
         pledgeName.value = res.data.returnObject.name;
         specificAmount.value = res.data.returnObject.donorPaymentSpecificAmount;
         amountFrom.value = res.data.returnObject.donorPaymentRangeFromAmount;
         amountTo.value = res.data.returnObject.donorPaymentRangeToAmount;
-        endDate.value = res.data.returnObject.pledgeTypeFrequencyOneTimeEndDate;
-        startDate.value =
-          res.data.returnObject.pledgeTypeFrequencyOneTimeStartDate;
-        selectedRange.value =
-          reOccuringRange.value[
-            res.data.returnObject.pledgeTypeFrequencyReOccuring
-          ];
-        if (startDate.value && endDate.value) {
+        dateRangeValue.value = [ res.data.returnObject.pledgeTypeFrequencyOneTimeStartDate, res.data.returnObject.pledgeTypeFrequencyOneTimeEndDate ];
+        setDatePicker();
+        setSelectedRange.value = res.data.returnObject.pledgeTypeFrequencyReOccuring
+        selectedRange.value = reOccuringRange.value.find(i => i.id == setSelectedRange.value);
+        if (dateRangeValue.value && dateRangeValue.value.length > 0) {
           pledgeFrequency.value = "onetime";
         }
 
@@ -781,6 +775,7 @@ export default {
         groupLoading.value = false;
       }
     };
+    if (route.query.id) getSinglePledgeDefinition();
 
     const newConItems = (payload) => {
       contributionItems.value.push(payload);
@@ -815,6 +810,7 @@ export default {
     getContributionCategory();
 
     const savePledge = async () => {
+      console.log(selectedGroupTree.value)
       let pledgeDetails = {
         contributionID: selectedContribution.value.id,
         totalTargetAmount: targetAmount.value,
@@ -825,11 +821,9 @@ export default {
         donorPaymentRangeToAmount: amountTo.value,
         pledgeTypeFrequencyOneTimeStartDate: startDate.value,
         pledgeTypeFrequencyOneTimeEndDate: endDate.value,
-        pledgeTypeFrequencyReOccuring: selectedRange.value
-          ? selectedRange.value.name
-          : "",
+        pledgeTypeFrequencyReOccuring: selectedRange.value ? selectedRange.value.name : "",
         currencyID: selectedCurrency.value.id,
-        compulsoryCondition: selectedGroups.value.map((i) => i.id).join(","),
+        compulsoryCondition: selectedGroupTree.value.join(","),
         bankName: selectedBank.value.name,
         bankCode: selectedBank.value.code,
         accountName: accountName.value,
@@ -905,7 +899,6 @@ export default {
               country: i.country,
             };
           });
-          console.log(currencyList.value, 'kjhjh')
           if (id) {
             selectedCurrency.value = currencyList.value.find((i) => i.id == id);
           }
@@ -1057,7 +1050,7 @@ export default {
         let data = { children: groups.value };
         const { children } = collector(data);
         groupMappedTree.value = children;
-        if (route.query.id) getSinglePledgeDefinition();
+        
         groupLoading.value = false;
       } catch (error) {
         console.log(error);
