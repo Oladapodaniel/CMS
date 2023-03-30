@@ -22,16 +22,7 @@
         <div>Yearly</div>
       </div>
       <div
-        class="
-          col-6
-          offset-3 offset-sm-0
-          col-sm-1
-          ml-sm-2
-          mt-3 mt-sm-0
-          text-center
-          default-btn
-          cursor-pointer
-        "
+        class="col-6 offset-3 offset-sm-0 col-sm-1 ml-sm-2 mt-3 mt-sm-0 text-center default-btn cursor-pointer"
         :class="{ 'active-btn': allTimeActiveBtn }"
         @click="toggleAllTimeClass"
       >
@@ -50,14 +41,30 @@
       </div>
       <div
         class="col-6 col-md-3"
-        v-tooltip.left="`${eventSummary && eventSummary.offeringAverage && eventSummary.offeringAverage.monthly ? eventSummary.offeringAverage.monthly : '-- --'}`"
+        v-tooltip.left="
+          `${
+            eventSummary &&
+            eventSummary.offeringAverage &&
+            eventSummary.offeringAverage.monthly
+              ? eventSummary.offeringAverage.monthly
+              : '-- --'
+          }`
+        "
       >
         <div>
           Offering<span style="font-size: 15px" class="font-weight-700"
             >({{ userCurrency }})</span
           >
         </div>
-        <div>{{ eventSummary && eventSummary.offeringAverage && eventSummary.offeringAverage.monthly ? convert(eventSummary.offeringAverage.monthly) : "-- --" }}</div>
+        <div>
+          {{
+            eventSummary &&
+            eventSummary.offeringAverage &&
+            eventSummary.offeringAverage.monthly
+              ? convert(eventSummary.offeringAverage.monthly)
+              : "-- --"
+          }}
+        </div>
       </div>
       <div
         class="col-6 col-md-3"
@@ -73,9 +80,6 @@
         <div>New Converts</div>
         <div>{{ convert(eventSummary.newConvertAverage.monthly) }}</div>
       </div>
-      <!-- <div class="col-12">
-        <div>Last Updated 2 hours ago</div>
-      </div> -->
     </div>
 
     <!-- yearly -->
@@ -89,14 +93,30 @@
       </div>
       <div
         class="col-6 col-md-3"
-        v-tooltip.left="`${eventSummary && eventSummary.offeringAverage && eventSummary.offeringAverage.yearly ? eventSummary.offeringAverage.yearly : '-- --'}`"
+        v-tooltip.left="
+          `${
+            eventSummary &&
+            eventSummary.offeringAverage &&
+            eventSummary.offeringAverage.yearly
+              ? eventSummary.offeringAverage.yearly
+              : '-- --'
+          }`
+        "
       >
         <div>
           Offering<span style="font-size: 15px" class="font-weight-700"
             >({{ userCurrency }})</span
           >
         </div>
-        <div>{{ eventSummary && eventSummary.offeringAverage && eventSummary.offeringAverage.yearly ? convert(eventSummary.offeringAverage.yearly) : "-- --" }}</div>
+        <div>
+          {{
+            eventSummary &&
+            eventSummary.offeringAverage &&
+            eventSummary.offeringAverage.yearly
+              ? convert(eventSummary.offeringAverage.yearly)
+              : "-- --"
+          }}
+        </div>
       </div>
       <div
         class="col-6 col-md-3"
@@ -112,9 +132,7 @@
         <div>New Converts</div>
         <div>{{ convert(eventSummary.newConvertAverage.yearly) }}</div>
       </div>
-      <!-- <div class="col-12">
-        <div>Last Updated 2 hours ago</div>
-      </div> -->
+     
     </div>
 
     <!-- All time -->
@@ -124,19 +142,35 @@
         v-tooltip.left="`${eventSummary.attendanceAverage.allTime}`"
       >
         <div>Attendance</div>
-        <!-- <div>{{ eventSummary.attendance ? eventSummary.attendance.toString().length > 6 ? `${eventSummary.attendance.toString().slice(0, 6)}...` : eventSummary.attendance : 0}}</div> -->
+       
         <div>{{ convert(eventSummary.attendanceAverage.allTime) }}</div>
       </div>
       <div
         class="col-6 col-md-3"
-        v-tooltip.left="`${eventSummary && eventSummary.offeringAverage && eventSummary.offeringAverage.allTime ? eventSummary.offeringAverage.allTime : '-- --'}`"
+        v-tooltip.left="
+          `${
+            eventSummary &&
+            eventSummary.offeringAverage &&
+            eventSummary.offeringAverage.allTime
+              ? eventSummary.offeringAverage.allTime
+              : '-- --'
+          }`
+        "
       >
         <div>
           Offering<span style="font-size: 15px" class="font-weight-700"
             >({{ userCurrency }})</span
           >
         </div>
-        <div>{{ eventSummary && eventSummary.offeringAverage && eventSummary.offeringAverage.allTime ? convert(eventSummary.offeringAverage.allTime) : "-- --" }}</div>
+        <div>
+          {{
+            eventSummary &&
+            eventSummary.offeringAverage &&
+            eventSummary.offeringAverage.allTime
+              ? convert(eventSummary.offeringAverage.allTime)
+              : "-- --"
+          }}
+        </div>
       </div>
       <div
         class="col-6 col-md-3"
@@ -152,9 +186,7 @@
         <div>New Converts</div>
         <div>{{ convert(eventSummary.newConvertAverage.allTime) }}</div>
       </div>
-      <!-- <div class="col-12">
-        <div>Last Updated 2 hours ago</div>
-      </div> -->
+     
     </div>
     <!-- </div> -->
     <hr class="hr" />
@@ -191,9 +223,13 @@
                     placeholder="Search..."
                     v-model="searchText"
                   />
+                  
                   <span class="empty-btn">x</span>
                   <span class="search-btn">
-                    <i class="pi pi-search"></i>
+                   <el-icon >
+                     <Search />
+                     </el-icon>
+                    
                   </span>
                 </label>
               </div>
@@ -207,13 +243,7 @@
                   <div class="col-md-9">
                     <div class="row">
                       <div
-                        class="
-                          col-12 col-sm-6
-                          offset-sm-3 offset-md-0
-                          form-group
-                          inp
-                          w-100
-                        "
+                        class="col-12 col-sm-6 offset-sm-3 offset-md-0 form-group inp w-100"
                       >
                         <!-- <div class="input-field"> -->
 
@@ -272,6 +302,8 @@
               </div>
             </div>
           </div>
+
+        {{filterEvents}}
           <div class="row table-header">
             <div class="col-1 d-none d-md-block">STATUS</div>
             <div class="col-2 d-none d-md-block">EVENT NAME</div>
@@ -287,56 +319,37 @@
             v-for="(event, index) in filterEvents"
             :key="index"
           >
-            <!-- <div class="col-6 d-block d-md-none">
-                <div class="row">
-                  <div class="col-1">
-                      STATUS
-                  </div>
-                      <div class="col-2">
-                      EVENT NAME
-                  </div>
-                      <div class="col-2">
-                      TITLE
-                  </div>
-                      <div class="col-2">
-                      DATE
-                  </div>
-                      <div class="col-1" >
-                      ATTENDANCE
-                  </div>
-                      <div class="col-2" >
-                      FIRST TIMERS
-                  </div>
-                      <div class="col-2" >
-                      NEW  CONVERTS
-                  </div> 
-                </div>
-                
-            </div> -->
             <div class="col-md-12">
               <div class="row">
                 <div class="col-md-1 col-sm-12 p-2 align-self-center">
                   <div class="row px-2">
                     <div class="col-8 col-md-0 d-md-none">
-                      <span class="d-md-none d-sm-flex small-text font-weight-700 text-dark px-1">Status</span>
+                      <span
+                        class="d-md-none d-sm-flex small-text font-weight-700 text-dark px-1"
+                        >Status</span
+                      >
                     </div>
-                    <div class="col-4 col-md-12 ">
-                      
+                    <div class="col-4 col-md-12">
                       <span class="d-flex justify-content-end">
-                          <span class=" d-sm-flex small">
-                            <div class="td-first px-1">
-                              {{ event.isSent ? "Sent" : "Unsent" }}
-                            </div>
-                          </span>
+                        <span class="d-sm-flex small">
+                          <div class="td-first px-1">
+                            {{ event.isSent ? "Sent" : "Unsent" }}
+                          </div>
                         </span>
+                      </span>
                     </div>
                   </div>
                 </div>
-                <div class="col-md-2 col-sm-12 itemroute-color align-self-center">
+                <div
+                  class="col-md-2 col-sm-12 itemroute-color align-self-center"
+                >
                   <div>
                     <span class="d-flex justify-content-between">
-                      <span class="d-md-none d-sm-flex small-text font-weight-700 text-dark px-1">Event Name</span>
-                      <span class=" d-sm-flex small">
+                      <span
+                        class="d-md-none d-sm-flex small-text font-weight-700 text-dark px-1"
+                        >Event Name</span
+                      >
+                      <span class="d-sm-flex small">
                         <router-link
                           :to="`/tenant/event/${event.activityId}`"
                           class="itemroute-color px-1"
@@ -346,104 +359,211 @@
                     </span>
                   </div>
                 </div>
-                <div class="col-md-2 col-sm-12 itemroute-color align-self-center">
-                   <div>
+                <div
+                  class="col-md-2 col-sm-12 itemroute-color align-self-center"
+                >
+                  <div>
                     <span class="d-flex justify-content-between">
-                      <span class="d-md-none d-sm-flex small-text font-weight-700 text-dark px-1">Title</span>
-                      <span class=" d-sm-flex small">
+                      <span
+                        class="d-md-none d-sm-flex small-text font-weight-700 text-dark px-1"
+                        >Title</span
+                      >
+                      <span class="d-sm-flex small">
                         <div class="px-1">{{ event.title }}</div>
                       </span>
                     </span>
                   </div>
-                  
                 </div>
-                <div class="col-md-2 col-sm-12 itemroute-color align-self-center">
-                   <div>
-                    <span class="d-flex justify-content-between">
-                      <span class="d-md-none d-sm-flex small-text font-weight-700 text-dark px-1">Date</span>
-                      <span class=" d-sm-flex small">
-                       <div class="px-1">{{ date(event.activityDate) }}</div>
-                      </span>
-                    </span>
-                  </div>
-                  
-                </div>
-                <div class="col-md-1 col-sm-12 itemroute-color align-self-center">
+                <div
+                  class="col-md-2 col-sm-12 itemroute-color align-self-center"
+                >
                   <div>
                     <span class="d-flex justify-content-between">
-                      <span class="d-md-none d-sm-flex small-text font-weight-700 text-dark px-1">Attendance</span>
-                      <span class=" d-sm-flex small">
-                      <div class="px-1">{{ event.attendances }}</div>
+                      <span
+                        class="d-md-none d-sm-flex small-text font-weight-700 text-dark px-1"
+                        >Date</span
+                      >
+                      <span class="d-sm-flex small">
+                        <div class="px-1">{{ date(event.activityDate) }}</div>
                       </span>
                     </span>
                   </div>
                 </div>
-                <div class="col-md-2 col-sm-12 itemroute-color align-self-center">
+                <div
+                  class="col-md-1 col-sm-12 itemroute-color align-self-center"
+                >
                   <div>
                     <span class="d-flex justify-content-between">
-                      <span class="d-md-none d-sm-flex small-text font-weight-700 text-dark px-1">FirstTimers</span>
-                      <span class=" d-sm-flex small">
-                      <div class="px-1">{{ event.firstTimers }}</div>
+                      <span
+                        class="d-md-none d-sm-flex small-text font-weight-700 text-dark px-1"
+                        >Attendance</span
+                      >
+                      <span class="d-sm-flex small">
+                        <div class="px-1">{{ event.attendances }}</div>
                       </span>
                     </span>
                   </div>
                 </div>
-                <div class="col-md-1 col-sm-12 itemroute-color align-self-center">
+                <div
+                  class="col-md-2 col-sm-12 itemroute-color align-self-center"
+                >
                   <div>
                     <span class="d-flex justify-content-between">
-                      <span class="d-md-none d-sm-flex small-text font-weight-700 text-dark px-1">NewConverts</span>
-                      <span class=" d-sm-flex small">
-                      <div class="px-1">{{ event.newConverts }}</div>
+                      <span
+                        class="d-md-none d-sm-flex small-text font-weight-700 text-dark px-1"
+                        >FirstTimers</span
+                      >
+                      <span class="d-sm-flex small">
+                        <div class="px-1">{{ event.firstTimers }}</div>
                       </span>
                     </span>
                   </div>
                 </div>
-                <div class="col-md-1 col-sm-12 align-self-center  ">
+                <div
+                  class="col-md-1 col-sm-12 itemroute-color align-self-center"
+                >
+                  <div>
+                    <span class="d-flex justify-content-between">
+                      <span
+                        class="d-md-none d-sm-flex small-text font-weight-700 text-dark px-1"
+                        >NewConverts</span
+                      >
+                      <span class="d-sm-flex small">
+                        <div class="px-1">{{ event.newConverts }}</div>
+                      </span>
+                    </span>
+                  </div>
+                </div>
+                <div class="col-md-1 col-sm-12 align-self-center">
                   <div class="dropdown">
                     <span class="d-flex justify-content-between">
                       <span class="d-md-none d-sm-flex"></span>
-                      <span class=" d-sm-flex small px-1">
-                       <i
-                      class="fas fa-ellipsis-v cursor-pointer"
-                      id="dropdownMenuButton"
-                      data-toggle="dropdown"
-                      aria-haspopup="true"
-                      aria-expanded="false"
-                    ></i>
-                    <div
-                      class="dropdown-menu"
-                      aria-labelledby="dropdownMenuButton"
-                    >
-                      <router-link
-                        :to="`/tenant/report/${event.activityId}`"
-                        class="text-decoration-none"
-                      >
-                        <a class="dropdown-item elipsis-items"> View Report </a>
-                      </router-link>
+                      <span class="d-sm-flex small px-1">
+                        <i
+                          class="fas fa-ellipsis-v cursor-pointer"
+                          id="dropdownMenuButton"
+                          data-toggle="dropdown"
+                          aria-haspopup="true"
+                          aria-expanded="false"
+                        ></i>
+                        <div
+                          class="dropdown-menu"
+                          aria-labelledby="dropdownMenuButton"
+                        >
+                          <router-link
+                            :to="`/tenant/report/${event.activityId}`"
+                            class="text-decoration-none"
+                          >
+                            <a class="dropdown-item elipsis-items">
+                              View Report
+                            </a>
+                          </router-link>
 
-                      <router-link
-                        :to="`/tenant/event/${event.activityId}`"
-                        class="text-decoration-none"
-                      >
-                        <a class="dropdown-item elipsis-items"> Edit </a>
-                      </router-link>
-                      <!-- <router-link :to="`/tenant/event/${event.activityId}`"> -->
-                      <a
-                        class="dropdown-item elipsis-items cursor-pointer"
-                        @click="showConfirmModal(event.activityId, index)"
-                      >
-                        Delete
-                      </a>
-                      <!-- </router-link> -->
-                    </div>
+                          <router-link
+                            :to="`/tenant/event/${event.activityId}`"
+                            class="text-decoration-none"
+                          >
+                            <a class="dropdown-item elipsis-items"> Edit </a>
+                          </router-link>
+                          <!-- <router-link :to="`/tenant/event/${event.activityId}`"> -->
+                          <a
+                            class="dropdown-item elipsis-items cursor-pointer"
+                            @click="showConfirmModal(event.activityId, index)"
+                          >
+                            Delete
+                          </a>
+                          <!-- </router-link> -->
+                        </div>
                       </span>
                     </span>
-                   
                   </div>
                 </div>
               </div>
             </div>
           </div>
+          <Table
+            :headers="eventHeaders"
+            :checkMultipleItem="false"
+            :data ="filterEvents"
+            v-if="filterEvents.length > 0"
+          
+          >
+            <template v-slot:isSent="{ event }">
+              <div class="c-pointer">
+                {{ event.isSent ? "Sent" : "Unsent" }}
+              </div>
+            </template>
+            <template v-slot:eventName="{ event }">
+              <div class="c-pointer">{{ event.eventName }}</div>
+            </template>
+            <template v-slot:title="{ event }">
+              <div class="c-pointer">
+                {{ event.title }}
+              </div>
+            </template>
+            <template v-slot:date="{ event }">
+              <div class="c-pointer">
+                <span>{{ dateFormat(event.date) }}</span>
+              </div>
+            </template>
+
+            <template v-slot:attendance="{ event }">
+              <div class="c-pointer">
+                {{ event.attendance }}
+              </div>
+            </template>
+            <template v-slot:firstTimers="{ event }">
+              <div class="c-pointer">
+                {{ event.firstTimers }}
+              </div>
+            </template>
+
+            <template v-slot:newConverts="{ event }">
+              <div class="c-pointer">
+                {{ event.newConverts }}
+              </div>
+            </template>
+
+            <template v-slot:action="{ event }">
+              <el-dropdown trigger="click">
+                <el-icon>
+                  <MoreFilled />
+                </el-icon>
+                <template #dropdown>
+                  <el-dropdown-menu>
+                       <el-dropdown-item>
+                         <router-link
+                            :to="`/tenant/report/${event.activityId}`"
+                            class="text-decoration-none"
+                          >
+                            <a class="dropdown-item elipsis-items">
+                              View Report
+                            </a>
+                          </router-link>
+                       </el-dropdown-item>
+                    <el-dropdown-item>
+                       <router-link
+                            :to="`/tenant/event/${event.activityId}`"
+                            class="text-decoration-none"
+                          >
+                            <a class="dropdown-item elipsis-items"> Edit </a>
+                          </router-link>
+                       </el-dropdown-item>
+                    <el-dropdown-item>
+                      <div
+                        @click.prevent="showConfirmModal(event.id, index)"
+                        class="text-color"
+                      >
+                        Delete
+                      </div>
+                    </el-dropdown-item>
+                  </el-dropdown-menu>
+                </template>
+              </el-dropdown>
+            </template>
+          </Table>
+
+    
           <ConfirmDialog />
           <Toast />
           <!-- {{membersCount}} {{currentPage}} -->
@@ -474,12 +594,14 @@ import monthDayYear from "../../services/dates/dateformatter";
 import convertNumber from "../../services/numbershortener/numberfomatter";
 import PaginationButtons from "../../components/pagination/PaginationButtons.vue";
 import finish from "../../services/progressbar/progress";
+import Table from "@/components/table/Table";
 export default {
   directives: {
     tooltip: Tooltip,
   },
   components: {
     PaginationButtons,
+    Table
   },
   props: ["eventList", "eventSummary"],
   setup(props, { emit }) {
@@ -492,53 +614,51 @@ export default {
     const yearlyActiveBtn = ref(false);
     const allTimeActiveBtn = ref(false);
 
-    // const getEventSummary = async () => {
-    //   try {
-    //     const { data } = await axios.get("/api/Events/Eventsummary");
-    //     console.log(data);
-    //     eventSummary.value = data;
-    //     kBoolean.value = true
-    //   } catch (err) {
-    //     console.log(err.response);
-    //   }
-    // };
-    // getEventSummary();
     const deleteEvent = (id, index) => {
       axios
         .delete(`/api/Events/DeleteActivity?activityId=${id}`)
         .then((res) => {
           console.log(res);
-            toast.add({
-              severity: "success",
-              summary: "Delete Successful",
-              detail: `Event Deleted`,
-              life: 4000,
-            });
-            emit("delete-event", index)
-          // } else {
-          //   toast.add({
-          //     severity: "warn",
-          //     summary: "Delete Failed",
-          //     detail: `Please Try Again`,
-          //     life: 3000,
-          //   });
-          // }
+          // toast.add({
+          //   severity: "success",
+          //   summary: "Delete Successful",
+          //   detail: `Event Deleted`,
+          //   life: 4000,
+          // });
+          ElMessage({
+            type: "success",
+            message: "Delete Successful",
+            duration: 4000,
+          });
+          emit("delete-event", index);
         })
         .catch((err) => {
           finish();
-          if (err.response.toString().toLowerCase().includes('network error')) {
-            toast.add({
-              severity: "info",
-              summary: "Network Error",
-              detail: `Please ensure you have a strong internet connection`,
-              life: 4000,
-            });
+          if (err.response.toString().toLowerCase().includes("network error")) {
+            // toast.add({
+            //   severity: "info",
+            //   summary: "Network Error",
+            //   detail: `Please ensure you have a strong internet connection`,
+            //   life: 4000,
+            // });
+            ElMessage({
+            type: "info",
+            message: "Please ensure you have a strong internet connection",
+            duration: 4000,
+          });
+
           } else {
-            toast.add({
-              severity:"Delete Failed",
-              detail: `Unable to delete, please try again`,
-              life: 4000,
-            });
+            // toast.add({
+            //   severity: "Delete Failed",
+            //   detail: `Unable to delete, please try again`,
+            //   life: 4000,
+            // });
+
+            ElMessage({
+            type: "error",
+            message: "Delete Failed",
+            duration: 4000,
+          });
           }
         });
     };
@@ -554,11 +674,16 @@ export default {
           // toast.add({severity:'info', summary:'Confirmed', detail:'Member Deleted', life: 3000});
         },
         reject: () => {
-          toast.add({
-            severity: "info",
-            summary: "Rejected",
-            detail: "You have rejected",
-            life: 3000,
+          // toast.add({
+          //   severity: "info",
+          //   summary: "Rejected",
+          //   detail: "You have rejected",
+          //   life: 3000,
+          // });
+          ElMessage({
+            type: "info",
+            message: "Rejected",
+            duration: 3000,
           });
         },
       });
@@ -592,30 +717,30 @@ export default {
       }
     });
 
+
+    
+
     const deleteMember = (id) => {
       //  delete firtimer
       axios.delete(`/api/People/DeleteOnePerson/${id}`).then((res) => {
         console.log(res);
-        toast.add({
-          severity: "success",
-          summary: "Confirmed",
-          detail: "Member Deleted",
-          life: 3000,
-        });
+        // toast.add({
+        //   severity: "success",
+        //   summary: "Confirmed",
+        //   detail: "Member Deleted",
+        //   life: 3000,
+        // });
+    ElMessage({
+            type: "success",
+            message: "Confirmed",
+            duration: 3000,
+          });
+
         churchMembers.value = churchMembers.value.filter(
           (item) => item.id !== id
         );
 
-        // update first timer summary while deleting
-        //   axios.get("/api/People/GetFirsttimerSummary")
-        //     .then(res => {
-        //       getFirstTimerSummary.value = res.data;
-        //       console.log(res.data)
-        //     })
-        //     .catch(err => console.log(err))
-        // })
-        // .catch((err) => {
-        /*eslint no-undef: "warn"*/
+        
         NProgress.done();
         if (err.response.status === 400) {
           toast.add({
@@ -625,36 +750,35 @@ export default {
             life: 3000,
           });
         } else {
-          toast.add({
-            severity: "error",
-            summary: "Unable to delete",
-            detail: "An error occurred, please try again",
-            life: 3000,
+          // toast.add({
+          //   severity: "error",
+          //   summary: "Unable to delete",
+          //   detail: "An error occurred, please try again",
+          //   life: 3000,
+          // });
+
+          ElMessage({
+            type: "error",
+            message: "Unable to delete",
+            duration: 3000,
           });
         }
       });
     };
 
+const eventHeaders = ref([
+          { name: "STATUS", value: "isSent" },
+          { name: "EVENT NAME", value: "eventName" },
+          { name: "TITLE", value: "title" },
+          { name: "DATE", value: "date" },
+          { name: "ATTENDANCES", value: "attendances" },
+          { name: "FIRST TIMERS", value: "firstTimers" },
+          { name: "NEW CONVERTS", value: "newConverts" },
+          { name: "ACTION", value: "action" },
+        ]);
+
     const confirm = useConfirm();
     let toast = useToast();
-    // const showConfirmModal = (id) => {
-
-    //    confirm.require({
-    //        message: 'Are you sure you want to proceed?',
-    //         header: 'Confirmation',
-    //         icon: 'pi pi-exclamation-triangle',
-    //         acceptClass: 'confirm-delete',
-    //         rejectClass: 'cancel-delete',
-    //         accept: () => {
-    //             deleteMember(id)
-
-    //         },
-    //         reject: () => {
-    //             // toast.add({severity:'info', summary:'Rejected', detail:'You have rejected', life: 3000});
-    //         }
-
-    // });
-    // }
 
     const toggleMonthlyClass = () => {
       monthlyActiveBtn.value = !monthlyActiveBtn.value;
@@ -688,7 +812,7 @@ export default {
       try {
         const { data } = await axios.get(
           `/api/eventreports/eventReports?page=${page}`
-          );
+        );
         if (data.activities.length > 0) {
           filterEvents.value = [];
           emit("activity-per-page", data.activities);
@@ -700,16 +824,16 @@ export default {
     };
 
     const membersCount = computed(() => {
-      console.log(props.eventSummary.activities.length, 'checking for pagination')
+      console.log(
+        props.eventSummary.activities.length,
+        "checking for pagination"
+      );
       if (props.eventSummary.activities.length > 50)
         return Math.ceil(props.eventSummary.activities.length / 20);
       return 1;
     });
 
-    // const sentEvent = computed(() => {
-    //   axios.get(`/api/Events/markAsSent?activityId=${event.activity.id}`)
-    // })
-
+   
     return {
       // sentEvent,
       filterFormIsVissible,
@@ -734,6 +858,7 @@ export default {
       currentPage,
       membersCount,
       deleteEvent,
+      eventHeaders,
     };
   },
 };
@@ -1182,12 +1307,12 @@ export default {
     margin: auto !important;
   }
   .monthRessponsive {
-      margin: auto !important;
-      transition-timing-function: ease;
+    margin: auto !important;
+    transition-timing-function: ease;
   }
   .yearResponsive {
-      margin: auto !important;
-      margin-top: 15px !important;
+    margin: auto !important;
+    margin-top: 15px !important;
   }
 }
 
