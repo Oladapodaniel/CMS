@@ -1,7 +1,5 @@
 <template>
-  <div>
-    <div class="container">
-      <div class="row mt-4 border mx-sm-0 rounded sub-con">
+      <div class="row mt-4 border  rounded ">
         <div class="col-md-12 col-sm-12 col-lg-12 mt-3 mb-5 border-bottom">
           <h5 class="header5">Attendance and Check-in Details</h5>
         </div>
@@ -30,6 +28,18 @@
                 <h5 class="event mt-4">Group</h5>
               </div>
               <div class="col-md-10 mt-3 col-sm-12">
+                  <div class="col-md-12 px-0">
+                  <div class="chip-container col-md-12 p-0 m-0 " >
+                  <div class="chip px-2  d-flex justify-content-between my-2 mx-1" v-for="(chip, i) of groups" :key="chip.label">
+                    <span>{{chip.name}}</span>
+                    <i class=" pt-1 text-dark align-items-center" @click="deleteChip(i)">
+                      <el-icon><CircleClose /></el-icon>
+                      </i>
+                  </div>
+                  <input class="inputt   py-2 " disabled  v-model="selectedGroups.name" @keypress.enter="saveChip" @keydown.delete="backspaceDelete" />
+                </div>
+                  </div>
+                      
                   <!-- {{selectedGroups}} -->
                   <!-- <el-tree-select
                     v-model="selectedGroupsID"
@@ -41,7 +51,7 @@
                     check-on-click-node
                     class="w-100"
                   /> -->
-                <MultiSelect
+                <!-- <MultiSelect
                   v-model="selectedGroups"
                   :options="groups"
                   style="width: 100%"
@@ -49,7 +59,7 @@
                   placeholder=""
                   display="chip"
                   disabled
-                />
+                /> -->
               </div>
             </div>
           </div>
@@ -68,7 +78,6 @@
               >
                 <img
                   src="../../../assets/link.svg"
-                  class="w-100"
                   alt="marked Attendance image"
                   style="width: 60px; height: 60px"
                 />
@@ -94,7 +103,6 @@
                       @click="copyRegLink"
                       :value="eventRegLink"
                       class="w-100"
-                      style="width: 95%"
                     >
                       <template #append>
                         <el-button @click="copyRegLink">
@@ -141,7 +149,6 @@
                       @click="copyLink"
                       :value="link"
                       class="w-100"
-                      style="width: 95%"
                     >
                       <template #append>
                         <el-button @click="copyLink">
@@ -346,13 +353,14 @@
                 :key="index"
               >
                 <div class="col-md-3">
+                  <el-checkbox v-model="showfieldList.value" @change="customFieldValue(showfieldList)" :binary="true" size="large" />
                   <!-- <input type="checkbox" name="" > -->
-                  <Checkbox
+                  <!-- <Checkbox
                     id="binary"
                     v-model="showfieldList.value"
                     :binary="true"
                     @change="customFieldValue(showfieldList)"
-                  />
+                  /> -->
                 </div>
                 <div class="col-md-8">
                   <div class="">{{ showfieldList.label }}</div>
@@ -399,8 +407,6 @@
         </div>
         <div class="col-md-12 mb-3"></div>
       </div>
-    </div>
-  </div>
 </template>
 
 <script>
@@ -421,7 +427,7 @@ export default {
     const selectedEvent = ref({});
     const events = ref([]);
     const selectedGroups = ref([]);
-    const selectedGroupsID = ref();
+    const selectedGroupsID = ref(null);
     const store = useStore();
     const checkinLink = ref(null);
     const familyLink = ref(null);
@@ -461,12 +467,22 @@ export default {
         name: route.query.groupName,
         id: route.query.groupId,
       });
-      // selectedGroupsID.value = selectedGroups.value
+      selectedGroupsID.value = selectedGroups.value.name
     }
 
     const showAdditionalField = () => {
       showMoreField.value = !showMoreField.value;
     };
+    const saveChip = () =>{
+      ((groups.value.indexOf(selectedGroups.value) === -1) ) && groups.value.push(selectedGroups.value);
+      selectedGroups.value = '';
+    }
+    // const deleteChip = (index) =>{
+    //   groups.value.splice(index, 1);
+    // }
+    // const backspaceDelete = ({which}) =>{
+    //    which == 8 && selectedGroups.value === '' && groups.value.splice(groups.value.length - 1);
+    // }
 
     const customFieldValue = (item) => {
       if (customFieldList.value.length <= 0) {
@@ -671,6 +687,9 @@ export default {
 
     return {
       groups,
+      saveChip,
+      // backspaceDelete,
+      // deleteChip,
       selectedGroupsID,
       setselectedEvent,
       selectedEventID,
@@ -711,11 +730,50 @@ export default {
 </script>
 
 <style scoped>
+
 .dd-hide-list {
   height: 0;
   overflow: hidden;
   transition: all 0.5s ease-in-out;
 }
+
+.chip-container {
+  /* width: 425px; */
+  border: 1px solid #ccc;
+  background: #ffffff;
+  min-height: 34px;
+  display:flex;
+  flex-wrap: wrap;
+  align-content: space-between;
+}
+
+.chip {
+  padding: 0.2rem 0.2rem;
+  border: 1px solid #02172e0d;
+  border-radius: 25px;
+  background: #02172e14;
+    /* margin:4px;
+    background: #e0e0e0;
+    padding:0px 4px;
+    border: 1px solid #ccc;
+    border-radius: 3px;
+    display:flex;
+    align-items: center; */
+}
+i {
+      cursor: pointer;
+      opacity: .56;
+      margin-left:8px;
+    }
+
+.inputt {
+    /* flex: 1 1 auto;
+    width: 30px; */
+    background: #ffffff;
+    border: none;
+    outline: none;
+    padding: 4px;
+  }
 
 .aten {
   text-align: left;

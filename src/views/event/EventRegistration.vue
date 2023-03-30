@@ -61,21 +61,35 @@
       </div>
       <div class="col-md-7">
         <span class="p-input-icon-left w-100">
-          <i class="pi pi-phone icon" />
-          <InputText
+          
+          <!-- <i class="pi pi-phone icon" /> -->
+          <input
             @blur="checkCharacter"
             @input="CheckXterAfterEleven"
-            class="w-100"
+            class="form-control w-100"
             type="text"
             v-model="enteredValue"
             aria-required=""
             placeholder="Enter your phone number"
           />
+          <!-- <el-input
+            @blur="checkCharacter"
+            @input="CheckXterAfterEleven"
+            class="w-100"
+            type="number"
+            v-model="enteredValue"
+            aria-required=""
+            placeholder="Enter your phone number"
+          >
+          <template #prefix>
+          <el-icon class="el-input__icon "><PhoneFilled /></el-icon>
+        </template>
+          </el-input> -->
         </span>
         <!-- v-if="autosearch && !person.name" -->
       </div>
       <div class="col-3 offset-3 offset-sm-4 offset-md-5 mt-4" v-if="!names">
-        <div class="default-btn primary-bg text-white border-0 text-center c-pointer">Register</div>
+        <el-button size="large" round color="#136acd" class=" w-100 text-white border-0 text-center c-pointer">Register</el-button>
       </div>
     </div>
     
@@ -83,10 +97,11 @@
       <div class="col-md-3"></div>
       <div class="col-md-5 offset-1">
         <div class="loading-div my-5" v-if="showLoading">
-          <i
-            class="pi pi-spin pi-spinner loading-indicator"
-            style="fontsize: 2rem"
-          ></i>
+          <div style="width: 3rem; height: 3rem" role="status">
+          <el-icon class="is-loading">
+            <Loading />
+          </el-icon>
+        </div>
           <p>Fetching your details...</p>
         </div>
         <!-- v-if="autosearch && !person.name" -->
@@ -108,15 +123,16 @@
         >
           Please enter your phone number
         </p>
-        <button
+        <el-button
           class="default-btn add-btn"
           @click="checkCharacter"
           ref="submitBtn"
           v-if="!appltoggle && !showLoading"
+          round
         >
           <!-- <i class="fas fa-circle-notch fa-spin" v-if="loading"></i> -->
           Submit
-        </button>
+        </el-button>
       </div>
     </div>
     <!--end of top area button -->
@@ -132,7 +148,8 @@
             <label for="">Card number</label>
           </div>
           <div class="col-md-7">
-            <InputText
+
+            <el-input
                 class="w-100 border"
                 placeholder="Card Number"
                 type="text"
@@ -150,15 +167,18 @@
           </div>
           <div class="col-md-7">
             <span class="p-input-icon-left w-100">
-              <i class="pi pi-users icon" />
-              <InputText
+              <el-input
                 class="w-100"
-                placeholder="Name"
                 type="text"
-                aria-required=""
                 v-model="person.name"
+                aria-required=""
                 :disabled="disabled"
-              />
+                placeholder="Name"
+              >
+                <template #prefix>
+                <el-icon class="el-input__icon "><User /></el-icon>
+                </template>
+              </el-input>
             </span>
           </div>
         </div>
@@ -170,15 +190,18 @@
           </div>
           <div class="col-md-7">
             <span class="p-input-icon-left w-100 my-md-3">
-              <i class="pi pi-envelope icon" />
-              <InputText
+              <el-input
                 class="w-100"
-                placeholder="Email"
                 type="text"
-                aria-required=""
                 v-model="person.email"
+                aria-required=""
                 :disabled="person.personId && personData.email || personData.email !== '' && personData.email !== null"
-              />
+                placeholder="Email"
+              >
+                <template #prefix>
+                <el-icon class="el-input__icon "><Message /></el-icon>
+                </template>
+              </el-input> 
             </span>
           </div>
         </div>
@@ -191,26 +214,23 @@
           </div>
           <div class="col-md-7">
             <span class="p-input-icon-left w-100">
-              <i class="pi pi-map-marker icon" />
-              <InputText
+              <el-input
                 class="w-100 border"
-                placeholder="Address"
                 type="text"
-                aria-required=""
                 v-model="person.address"
+                aria-required=""
                 :disabled="personHasAddress"
-              />
+                placeholder="Address"
+              >
+                <template #prefix>
+                <el-icon class="el-input__icon "><Location /></el-icon>
+                </template>
+              </el-input> 
             </span>
-            <!-- <p
-              class="font-weight-7 small-text text-danger mb-0"
-              v-if="person.personId && !person.address"
-            >
-              school is required
-            </p> -->
           </div>
         </div>
-
-        <div class="row my-3" v-if="selectedCustomField.find(i => i.toLowerCase() == 'birthday')">
+        
+        <div class="row my-3" v-if="selectedCustomField.find(i => i.toLowerCase() == 'birthday')" >
           <div
             class="col-md-3 d-md-flex align-items-center justify-content-end text-md-right mt-2 font-weight-700"
           >
@@ -219,25 +239,30 @@
           <div class="col-md-7">
             <div class="row">
               <div class="col-6">
-                <Dropdown
+                <el-select-v2
                   v-model="birthDay"
-                  :options="days"
-                  style="width: 100%"
+                  class="w-100 "
                   placeholder="Day"
+                  :options="
+                    [{label: 'Day', value: 0}, ...days.map(i => ({ label: i, value: i }))]
+                  "
+                  size="large"
                 />
               </div>
               <div class="col-6">
-                <Dropdown
+                <el-select-v2
                   v-model="birthMonth"
-                  :options="months"
-                  style="width: 100%"
-                  placeholder="Month"   
+                  class="w-100 "
+                  placeholder="Month"
+                  :options="
+                    [{label: 'Month', value: 0}, ...months.map(i => ({ label: i, value: i }))]
+                  "
+                  size="large"
                 />
               </div>
             </div>
           </div>
         </div>
-
         <div class="row my-3" v-if="selectedCustomField.find(i => i.toLowerCase() == 'wedding')">
           <div
             class="col-md-3 d-md-flex align-items-center justify-content-end text-md-right mt-2 font-weight-700"
@@ -247,57 +272,54 @@
           <div class="col-md-7">
             <div class="row">
               <div class="col-4">
-                <Dropdown
+                 <el-select-v2
                   v-model="dayOfWedding"
-                  :options="days"
-                  style="width: 100%"
+                  class="w-100 "
                   placeholder="Day"
+                  :options="
+                    [{label: 'Day', value: 0}, ...days.map(i => ({ label: i, value: i }))]
+                  "
+                  size="large"
                 />
+              
               </div>
               <div class="col-4">
-                <Dropdown
+                <el-select-v2
                   v-model="monthOfWedding"
-                  :options="months"
-                  style="width: 100%"
-                  placeholder="Month"   
+                  class="w-100 "
+                  placeholder="Month"
+                  :options="
+                    [{label: 'Month', value: 0}, ...months.map(i => ({ label: i, value: i }))]
+                  "
+                  size="large"
                 />
               </div>
               <div class="col-4">
-                <Dropdown
+                <el-select-v2
                   v-model="yearOfWedding"
-                  :options="weddingYearsArr"
-                  style="width: 100%"
-                  placeholder="Year"   
+                  class="w-100 "
+                  placeholder="Year"
+                  :options="
+                    [{label: 'Year', value: 0}, ...weddingYearsArr.map(i => ({ label: i, value: i }))]
+                  "
+                  size="large"
                 />
               </div>
             </div>
           </div>
         </div>
-
-        <div class="row my-3" v-if="selectedCustomField.find(i => i.toLowerCase() == 'marital status')">
+        <div class="row my-3"  v-if="selectedCustomField.find(i => i.toLowerCase() == 'marital status')">
           <div
             class="col-md-3 d-md-flex align-items-center justify-content-end text-md-right mt-2 font-weight-700"
           >
             <label for="">Marital Status</label>
           </div>
           <div class="col-md-7">
-            <Dropdown
-                  v-model="selectedMaritalStatus"
-                  :options="maritalStatus"
-                  optionLabel="value"
-                  style="width: 100%"
-                  placeholder="Marital Status"   
-                />
-            <!-- <InputText
-                class="w-100 border"
-                placeholder="Card Number"
-                type="text"
-                aria-required=""
-                v-model="person.cardCode"
-              /> -->
+            <el-select-v2 v-model="maritalStatusId" @change="setSelectedMaritalStatus"
+                    :options="maritalStatus.map(i => ({ label: i.value, value: i.id }))" placeholder="Marital status"
+                    size="large" class="w-100 " />
           </div>
         </div>
-
         <div class="row my-3" v-if="selectedCustomField.find(i => i.toLowerCase() == 'gender')">
           <div
             class="col-md-3 d-md-flex align-items-center justify-content-end text-md-right mt-2 font-weight-700"
@@ -305,41 +327,38 @@
             <label for="">Gender</label>
           </div>
           <div class="col-md-7">
-            <Dropdown
-                  v-model="selectedGender"
-                  :options="gender"
-                  optionLabel="value"
-                  placeholder="Select gender"
-                  style="width: 100%"  
-                />
+             <el-select-v2 v-model="genderId" @change="setSelectedGender"
+                    :options="gender && gender.length > 0 ? gender.map(i => ({ label: i.value, value: i.id })) : []"
+                    placeholder="Gender" size="large" class="w-100 " />
           </div>
         </div>
-        
-        
-        <div class="row my-3" v-for="item in dynamicCustomFields" :key="item.id">
+        <div class="row my-3" v-for="item in dynamicCustomFields" :key="item.id" >
           <div
             class="col-md-3 d-md-flex align-items-center justify-content-end text-md-right mt-2 font-weight-700"
           >
             <label for="">{{ item.label }}</label>
           </div>
           <div class="col-md-7">
-             <InputText
+             <el-input
                 v-if="item.controlType == 0"
                 class="w-100 border"
                 type="text"
                 aria-required=""
                 v-model="item.data"
               />
-            <Dropdown
-                  v-else-if="item.controlType == 1"
-                  v-model="item.data"
-                  :options="item.parameterValues.split(',')"
-                  placeholder="Select option"
-                  style="width: 100%"  
-                />
-            <Checkbox v-else-if="item.controlType == 2" v-model="item.data" :binary="true"/>
-            <Calendar v-if="item.controlType == 3" id="time24" v-model="item.data" :showTime="true" :showSeconds="true" class="w-100" />
-            <InputText
+              <el-select-v2 v-else-if="item.controlType == 1" v-model="item.data"
+                    :options="item.parameterValues.split(',').map(i => ({ label: i, value: i }))" placeholder="Select option"
+                    size="large" class="w-100 " />
+            <el-checkbox v-else-if="item.controlType == 2" v-model="item.data"  />
+            <el-date-picker
+            v-if="item.controlType == 3"
+              v-model="item.data"
+              type="datetime"
+              format="DD/MM/YYYY hh:mm:ss"
+              size="large"
+              class="w-100"
+            />
+            <el-input
                 v-if="item.controlType == 4"
                 class="w-100 border"
                 type="email"
@@ -353,20 +372,19 @@
                 aria-required=""
                 
               />
-              <!-- <InputNumber  id="integeronly" v-model="item.data" class="w-100"/> -->
-              <input
+              <el-input
                 v-if="item.controlType == 6"
-                class="w-100 border form-control"
+                class="w-100 border"
                 type="number"
                 aria-required=""
                 v-model="item.data"
               />
           </div>
         </div>
-        <!-- <input type="date"> -->
-        
         <div class="row">
-          <div class="col-md-8 offset-md-3 mt-3 align-self-center"><Checkbox v-model="displayFamily" :binary="true" /> <span class="ml-3">Do you want to register your family for this event?</span></div>
+          <div class="col-md-8 offset-md-3 mt-3 align-self-center">
+             <el-checkbox  v-model="displayFamily"  />
+            <span class="ml-3">Do you want to register your family for this event?</span></div>
         </div>
 
         <div class="row mt-4" v-if="displayFamily">
@@ -376,36 +394,30 @@
         <div class="row my-2">
           <div class="col-md-3"></div>
           <div class="col-md-7 py-4 text-center">
-            <button class="default-btn mr-3" @click="notme">Not Me</button>
-            <button
-              class="default-btn add-btn mt-3 mt-sm-0"
+            <el-button class="default-btn mr-3" size="large" round @click="notme">Not Me</el-button>
+            <el-button
+            size="large"
+              class=" mt-3 mt-sm-0 text-white"
+              color="#136acd"
               @click="confirmToRegister"
               :disabled="
                 !person.name || person.name.length < 1 || disableClick
               "
+              round
             >
               {{ fullEventData.paymentFormId ? 'Make payment to register' : 'Confirm to register' }}
-            </button>
+            </el-button>
             <button ref="makePaymentRef" data-toggle="modal" data-target="#PaymentOptionModal" hidden>Toggle modal</button>
           </div>
         </div>
       </div>
     </div>
-
-    <!-- <div class="row">
-      <div class="offset-5">
-        <div ref="authorizebutton" style="display: none" class="default-btn text-center"><img src="../../assets/preview.jpeg" style="width: 30px"/>Add event to google calendar</div>
-        <div ref="signout" style="display: none" class="default-btn">Sign Out</div>
-      </div>
-    </div> -->
-    
     <div class="row" v-if="new Date().toISOString() <= new Date(fullEventData.registrationCutOffTime).toISOString()">
       <div class="col-10 offset-1 col-md-3 offset-md-5">
         <!-- Button code -->
           <div title="Add to Calendar" class="addeventatc w-100">
               Add to Calendar
               <span class="start">{{ fullEventData.eventDate }}</span>
-              <!-- <span class="end">2021-11-04T10:34:29.746Z</span> -->
               <span class="timezone">{{ Intl.DateTimeFormat().resolvedOptions().timeZone }}</span>
               <span class="title">{{ eventData.name }}</span>
               <span class="description">{{ fullEventData.eventDetails }}</span>
@@ -434,23 +446,14 @@
                 </div>
                 <div class="modal-body p-0 bg-modal pb-5">
                   <PaymentOptionModal :close="close" :donation="donationObj" @selected-gateway="setGateway" @donation-confirmed="setConfirmDonation" @set-props="setDonationProperties" :donorEmail="person.email"/>
-                  <!-- :orderId="formResponse.orderId" :donation="donationObj"  :name="name" :amount="amount" :converted="convertedAmount" :email="email" @payment-successful="successfulPayment" :gateways="formResponse.paymentGateWays" :currency="dfaultCurrency.shortCode" @selected-gateway="gatewaySelected" -->
                 </div>
-                <!-- <div class="modal-footer bg-modal">
-                  <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-                  <button type="button" class="btn btn-primary">Save changes</button>
-                </div> -->
                 </div>
               </div>
             </div>
-      <ConfirmDialog />
-      <Toast />
     </div>
   </div>
    
   <pre ref="content" style="white-space: pre-wrap;"></pre>
-
-  <!-- <div @click="callIt">edicaoc</div> -->
 </template>
 
 
@@ -458,28 +461,19 @@
 import { computed, ref } from "vue";
 import axios from "@/gateway/backendapi";
 // import router from "../../router/index";
-import InputText from "primevue/inputtext";
 import { useRoute } from "vue-router";
 import dateFormatter from "@/services/dates/dateformatter";
-import { useToast } from "primevue/usetoast";
 import stopProgressBar from "../../services/progressbar/progress";
 import swal from "sweetalert";
-import Dropdown from "primevue/dropdown";
 import PaymentOptionModal from "../../components/paymentoption/EventRegPayment.vue"
 import finish from '../../services/progressbar/progress';
 import store from '../../store/store';
 import FamilyWards from './component/EventRegFamilyWards.vue'
-import Calendar from "primevue/calendar";
-// import Calendarjs from "../../services/google/calendarAPI"
-// import Dialog from 'primevue/dialog';
-
+import { ElMessage } from "element-plus";
 export default {
   components: {
-    Dropdown,
     PaymentOptionModal,
     FamilyWards,
-    Calendar,
-    InputText
   },
   setup() {
     const connectName = ref("");
@@ -500,7 +494,6 @@ export default {
     const maritalStatus = ref({})
     const checkedIn = ref(false);
     const route = useRoute();
-    const toast = useToast();
     const submitBtn = ref(null);
     const loaded = ref(false);
     const close = ref("")
@@ -519,10 +512,12 @@ export default {
     const makePaymentRef = ref()
     const usedPaymentGateway = ref("")
     const donationNewProps = ref({})
+    const maritalStatusId = ref(null)
 
     const birthMonth = ref("");
 
-    const gender = ref({})
+    const gender = ref({});
+    const genderId = ref(null);
     const months = [
       "January",
       "February",
@@ -571,30 +566,17 @@ export default {
       30,
       31,
     ]);
+    const setSelectedMaritalStatus = () => {
+      selectedMaritalStatus.value = maritalStatus.value.find(i => {
+        return i.id == maritalStatusId.value
+      })
+    }
 
-    // const controlType = ref(
-    //       [
-    //         { name:'Text', id: '0'},
-    //         { name:'DropdownList', id: '1'}, 
-    //         { name:'CheckBox', id: '2'},
-    //         { name:'DateTime', id: '3'},
-    //         { name:'Email', id: '4'},
-    //         { name:'Image', id: '5'},
-    //         { name:'Number', id: '6'}
-            
-    //       ] 
-    //   )
-
-    // const entityType = ref(
-    //       [
-    //         { name:'Member', id: '0'},
-    //         { name:'FirstTimers', id: '1'},
-    //         { name:'NewConverts', id: '2'},
-    //         { name:'Activity', id: '3'},
-    //         { name:'EventRegistrationForm', id: '4'},
-    //       ]
-    //   )
-
+     const setSelectedGender = () => {
+      selectedGender.value = gender.value.find(i => {
+        return i.id == genderId.value
+      })
+    }
     const weddingYearsArr = computed(() => {
       const arrOfYears = [];
       let currentYear = new Date().getFullYear();
@@ -640,7 +622,6 @@ export default {
     const getTenantCurrency = () => {
       axios.get(`/api/Lookup/TenantCurrency?tenantID=${fullEventData.value.tenantID}`)
         .then(res => {
-          console.log(res)
           tenantCurrency.value = res.data.currency
         })
         .catch(err => console.log(err))
@@ -649,11 +630,6 @@ export default {
 
 
     const checkCharacter = () => {
-      // if (e.target.value.length < 11) {
-      //   person.value = {};
-      //   personHasAddress.value = false;
-      //   return false;
-      // }
       loaded.value = false;
       personHasAddress.value = false;
       fetchingFailed.value = false;
@@ -662,9 +638,6 @@ export default {
         showNoPhoneError.value = true;
         return false;
       }
-
-      console.log(route.params.checkinId)
-      // if (e.target.value.length > 0) {
       loading.value = true;
       autosearch.value = true;
       axios
@@ -674,7 +647,6 @@ export default {
 
         .then((res) => {
           const x = { ...res}
-          console.log(x, "RESPONSE");
           loading.value = false;
           autosearch.value = false;
           loaded.value = true;
@@ -691,7 +663,6 @@ export default {
           birthMonth.value = res.data[0] && res.data[0].monthOfBirth ? months[Number(res.data[0].monthOfBirth) - 1] : 0;
 
           getFamilyDetails(personData.value.personId)
-          console.log(personData.value.personId)
           if (
             person.value.personId &&
             person.value.address &&
@@ -715,32 +686,26 @@ export default {
           autosearch.value = false;
 
           if (err.toString().toLowerCase().includes("network error")) {
-            toast.add({
-              severity: "error",
-              summary: "Checkin Error",
-              detail: "Ensure you have internet access and try again",
-              life: 3000,
-            });
+             ElMessage({
+                type: "error",
+                message: "Ensure you have internet access and try again",
+                duration: 5000,
+              });
           } else if (err.message.includes("timeout")) {
-            toast.add({
-              severity: "error",
-              summary: "Checkin Error",
-              detail:
-                "The request was taking too long, please reload and try again",
-              life: 3000,
-            });
+            ElMessage({
+                type: "error",
+                message: "The request was taking too long, please reload and try again",
+                duration: 5000,
+              });
           } else {
-            toast.add({
-              severity: "error",
-              summary: "Checkin Error",
-              detail: "An error occurred, reload and try again",
-              life: 3000,
-            });
+             ElMessage({
+                type: "error",
+                message: "An error occurred, reload and try again",
+                duration: 5000,
+              });
           }
-          // appltoggle.value = true;
           console.log(err);
         });
-      // }
     };
     //end of searching through the attendance details
 
@@ -754,7 +719,6 @@ export default {
     // populate input fields
     const populateInputfields = (obj) => {
       person.value = obj;
-      console.log(person.value);
     };
 
     const disabled = computed(() => {
@@ -765,7 +729,6 @@ export default {
     // function to disable edit
     const disableEdit = (e) => {
       e.preventDefault();
-      console.log("hello there");
     };
 
     // confirm status
@@ -808,10 +771,6 @@ export default {
         data: i.data,
         entityID: person.value.personId ? person.value.personId : idOfNewPerson
       }))
-
-
-      console.log(personData.value, "p data");
-      console.log(newPerson);
       loading.value = true;
       autosearch.value = true;
       noError.value = true;
@@ -821,7 +780,6 @@ export default {
           loading.value = false;
           autosearch.value = false;
           disableClick.value = false;
-          console.log(res, "tosin");
 
           if (newPerson) checkedIn.value = true;
           swal(
@@ -841,19 +799,17 @@ export default {
           noError.value = false;
           
           if (err.toString().toLowerCase().includes('network error')) {
-            toast.add({
-              severity: "error",
-              summary: "Network Error",
-              detail: "Please ensure you have a strong internet connection and try again",
-              life: 4000,
-            });
+            ElMessage({
+                type: "error",
+                message: "Please ensure you have a strong internet connection and try again",
+                duration: 5000,
+              });
           } else if (err.toString().toLowerCase().includes('timeout')) {
-            toast.add({
-              severity:"warn",
-              summary: "Request took too long",
-              detail: "Please reload the page and try again",
-              life: 4000,
-            });
+            ElMessage({
+                type: "warning",
+                message: "Request took too long, Please reload the page and try again",
+                duration: 5000,
+              });
           }
         });
     };
@@ -908,9 +864,7 @@ export default {
         
         // Scenerio when the person exist and we want to create family
         if (personData.value.personId && !familyWards.value.id) {
-          console.log('found in church but no family')
             if (displayFamily.value) {
-              console.log('intends to add family')
               let familyDetails = {
                 fatherId: personData.value.personId,
                 familyName: personData.value.firstName,
@@ -920,7 +874,6 @@ export default {
                 }),
                 tenantId: fullEventData.value.tenantID
               }
-              console.log(familyDetails)
               axios.post('/createFamily', familyDetails)
                 .then(res => console.log(res))
                 .catch(err => console.log(err))
@@ -932,18 +885,11 @@ export default {
                     homeAddress: personData.value.homeAddress ? personData.value.homeAddress : '',
                     email: personData.value.email ? personData.value.email : person.value.email,
                   },
-                  // familyMembers: familyWards.value.familyMembers.filter(i => {
-                  //   return i.checkMember
-                  // }).map(i => {
-                  //   return { personId: i.person.id }
-                  // }),
                   id: route.params.checkinId
                 };
-                console.log(newFamily)
 
                 // Register Family members individually
                   familyWards.value.familyMembers.forEach(i => {
-                    console.log(i)
                       if(i.checkMember) {
                         let regFamMembers = {
                           person: {
@@ -964,13 +910,10 @@ export default {
                 registerMember(newFamily)
 
             } else {
-              console.log('does not intend to add family')
               confirm()
             }
         } else if (personData.value.personId && familyWards.value.id) {
-            console.log('found in church and a family')
             if (displayFamily.value) {
-              console.log(' intends to add family')
                 let newFamily = {
                   person: {
                     personId: personData.value.personId,
@@ -978,18 +921,10 @@ export default {
                     homeAddress: personData.value.homeAddress ? personData.value.homeAddress : '',
                     email: personData.value.email ? personData.value.email : person.value.email,
                   },
-                  // familyMembers: familyWards.value.familyMembers.filter(i => {
-                  //   return i.checkMember
-                  // }).map(i => {
-                  //   return { personId: i.person.id }
-                  // }),
                   activityID: route.params.checkinId
                 };
-                console.log(newFamily)
-
                 // Register Family members individually
                 familyWards.value.familyMembers.forEach(i => {
-                  console.log(i)
                     if(i.checkMember) {
                       let regFamMembers = {
                         person: {
@@ -1010,19 +945,16 @@ export default {
                 registerMember(newFamily)
 
             } else {
-              console.log('does not intent to add family')
               confirm()
             }
           } else {
-            console.log('not found in church and no family')
           createNewPerson()
         }
 
         
 
 
-      } 
-      if (fullEventData.value.paymentFormId) {
+      } else {
         makePaymentRef.value.click()
         confirmCheck()
       }
@@ -1039,7 +971,6 @@ export default {
 
           try {
             let { data } = await axios.post("/createPublicPerson", createNewPerson)
-              console.log(data)
               if (displayFamily.value) {
                 createNewFamily(data.returnObject.id)
               } else {
@@ -1055,28 +986,22 @@ export default {
     const getGender = async () => {
             try {
                 let { data } = await axios.get('/api/LookUp/GetAllLookUps')
-                console.log(data,'jjhujwhuwhe')
                 gender.value = data.find(i => i.type === "Gender").lookUps;
-                console.log(gender.value, "jhjhjjhljjjj");
-    
             }
             catch (err) {
                 console.log(err)
-            } console.log(route.fullPath)
+            }
     }
     getGender()
 
     const getMaritalStatus = async () => {
             try {
                 let { data } = await axios.get('/api/LookUp/GetAllLookUps')
-                console.log(data)
                 maritalStatus.value = data.find(i => i.type === "MaritalStatus").lookUps;
-                console.log(maritalStatus.value, "jhjhjjhljjjj");
-    
             }
             catch (err) {
                 console.log(err)
-            } console.log(route.fullPath)
+            } 
     }
     getMaritalStatus()
 
@@ -1091,7 +1016,6 @@ export default {
             }),
             tenantId: fullEventData.value.tenantID
           }
-          console.log(familyDetails)
           axios.post('/createFamily', familyDetails)
             .then(res => console.log(res))
             .catch(err => console.log(err))
@@ -1103,18 +1027,10 @@ export default {
                     homeAddress: personData.value.homeAddress ? personData.value.homeAddress : '',
                     email: personData.value.email ? personData.value.email : person.value.email,
                   },
-                  // familyMembers: familyWards.value.familyMembers.filter(i => {
-                  //   return i.checkMember
-                  // }).map(i => {
-                  //   return { personId: i.person.id }
-                  // }),
                   id: route.params.checkinId
                 };
-                // console.log(newFamily)
-
                 // Register Family members individually
                 familyWards.value.familyMembers.forEach(i => {
-                  console.log(i)
                   if (i.checkMember) {
                     let regFamMembers = {
                       person: {
@@ -1178,8 +1094,6 @@ export default {
           bannerUrl.value = res.data.bannerUrl
 
           fullEventData.value = res.data
-          console.log(eventData);
-          console.log(res, "response");
            getTenantCurrency();
            getCustomFields();
         })
@@ -1244,13 +1158,9 @@ export default {
 
 
     const getFamilyDetails = async(id) => {
-      console.log(id)
-     
       if (id) {
         try {
-                    // const res = await axios.get(`/api/Family/family?personId=${id}`)
                     const res = await axios.get(`/family?tenantID=${fullEventData.value.tenantID}&&personId=${id}`)
-                    console.log(res)
                     familyWards.value = res.data
                     if (familyWards.value) {
                       familyWards.value.familyMembers.map(i => {
@@ -1258,8 +1168,6 @@ export default {
                         return i
                       })
                     }
-
-                    console.log(familyWards.value.familyMembers)
                 }
                 catch (error) {
                     console.log(error)
@@ -1272,7 +1180,6 @@ export default {
     const getFamilyRoles = async () => {
         try {
             let { data } = await axios.get('/getfamilyroles')
-            console.log(data)
             memberRoles.value = data.result
             getFamilyDetails()
         }
@@ -1288,7 +1195,6 @@ export default {
 
     const setMemberDetails = (payload) => {
       familyMembers.value.push(payload)
-      console.log(payload)
       let pushMemberToView = {
         person: {
           firstName: payload.name,
@@ -1297,13 +1203,11 @@ export default {
         familyRoleID: payload.familyRoleId,
         checkMember: payload.checkMember
       }
-      // familyWards.value.familyMembers = new Array()
       familyWards.value.familyMembers.push(pushMemberToView)
 
     }
 
     const setDonationProperties = (payload) => {
-      console.log(payload)
       donationNewProps.value = payload
       confirmCheck()
     }
@@ -1320,7 +1224,6 @@ export default {
     const getCustomFields = async() => {
       try {
         let { data } = await axios.get(`/GetAllCustomFields?entityType=4&&tenantID=${fullEventData.value.tenantID}`);
-        console.log(data)
         dynamicCustomFields.value = data
       }
       catch (err) {
@@ -1331,11 +1234,14 @@ export default {
 
     return {
       disableClick,
+      setSelectedGender,
+      genderId,
+      setSelectedMaritalStatus,
+      maritalStatusId,
       toggleBase,
       checkCharacter,
       populateInputfields,
       CheckXterAfterEleven,
-      InputText,
       appltoggle,
       names,
       emails,
