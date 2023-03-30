@@ -31,23 +31,8 @@
             <span class="d-flex justify-content-between">
               <span class="hidden-header hide font-weight-700">Check in</span>
               <span>
-                <!-- <Checkbox
-                  id="binary"
-                  :value="person.isPresent"
-                  @change="checkin"
-                  :binary="true"
-                /> -->
                  <el-checkbox class="custom-checkbox"  :checked="person.isPresent" @change="checkin($event, 1)"
                   :disabled="checking"  />
-                <!-- <input
-                  type="checkbox"
-                  name=""
-                  class="custom-checkbox"
-                  :checked="person.isPresent"
-                  id=""
-                  @change="checkin($event, 1)"
-                  :disabled="checking"
-                /> -->
               </span>
             </span>
           </div>
