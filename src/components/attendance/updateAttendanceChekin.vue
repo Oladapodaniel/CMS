@@ -1,11 +1,7 @@
 <template>
-  <div class="container">
-    <div
-      class="row mt-5 border box-boundary py-3 c-pointer"
-      v-if="contributionItems.length > 0"
-      data-toggle="collapse"
-      data-target="#collapseExampleOffering"
-    >
+  <div class="container-fluid">
+    <div class="row mt-5 border box-boundary py-3 c-pointer" v-if="contributionItems.length > 0" data-toggle="collapse"
+      data-target="#collapseExampleOffering">
       <div class="col-6 font-weight-700" style="font-size: 1.5em">
         Contributions
       </div>
@@ -17,22 +13,13 @@
       <div class="col-12">
         <div class="collapse" id="collapseExampleOffering">
           <div class="card-body py-2 px-0">
-            <div
-              class="col-12 py-2 border-top"
-              v-for="item in churchContributionItems"
-              :key="item.id"
-            >
+            <div class="col-12 py-2 border-top" v-for="item in churchContributionItems" :key="item.id">
               <div class="row">
                 <div class="col-md-8 mt-3 align-self-center font-weight-700">
                   {{ item.name }}
                 </div>
                 <div class="col-md-4 mt-3 mt-md-0">
-                  <input
-                    type="text"
-                    class="form-control"
-                    placeholder="Amount"
-                    v-model="item.amount"
-                  />
+                  <input type="text" class="form-control" placeholder="Amount" v-model="item.amount" />
                 </div>
               </div>
             </div>
@@ -40,12 +27,8 @@
         </div>
       </div>
     </div>
-    <div
-      class="row mt-3 border box-boundary py-3 c-pointer"
-      data-toggle="collapse"
-      data-target="#collapseExampleAttendance"
-      v-if="attendanceType.length > 0"
-    >
+    <div class="row mt-3 border box-boundary py-3 c-pointer" data-toggle="collapse"
+      data-target="#collapseExampleAttendance" v-if="attendanceType.length > 0">
       <div class="col-10 font-weight-700" style="font-size: 1.5em">
         Summary attendance
       </div>
@@ -57,22 +40,13 @@
       <div class="col-12">
         <div class="collapse" id="collapseExampleAttendance">
           <div class="card-body py-2 px-0">
-            <div
-              class="col-12 py-2 border-top"
-              v-for="item in churchAttendanceCategory"
-              :key="item.id"
-            >
+            <div class="col-12 py-2 border-top" v-for="item in churchAttendanceCategory" :key="item.id">
               <div class="row">
                 <div class="col-md-8 mt-3 align-self-center font-weight-700">
                   {{ item.name }}
                 </div>
                 <div class="col-md-4 mt-3 mt-md-0">
-                  <input
-                    type="text"
-                    class="form-control"
-                    placeholder="Enter Count"
-                    v-model="item.number"
-                  />
+                  <input type="text" class="form-control" placeholder="Enter Count" v-model="item.number" />
                 </div>
               </div>
             </div>
@@ -80,12 +54,8 @@
         </div>
       </div>
     </div>
-    <div
-      class="row mt-3 border box-boundary py-3 c-pointer"
-      data-toggle="collapse"
-      data-target="#collapseExampleOther"
-      v-if="dynamicCustomFields.length > 0"
-    >
+    <div class="row mt-3 border box-boundary py-3 c-pointer" data-toggle="collapse" data-target="#collapseExampleOther"
+      v-if="dynamicCustomFields.length > 0">
       <div class="col-10 font-weight-700" style="font-size: 1.5em">
         Other Information
       </div>
@@ -97,22 +67,13 @@
       <div class="col-12">
         <div class="collapse" id="collapseExampleOther">
           <div class="card-body py-2 px-0">
-            <div
-              class="col-12 py-2 border-top"
-              v-for="item in attendanceCustomField"
-              :key="item.id"
-            >
+            <div class="col-12 py-2 border-top" v-for="item in attendanceCustomField" :key="item.id">
               <div class="row">
                 <div class="col-md-8 mt-3 align-self-center font-weight-700">
                   {{ item.label }}
                 </div>
                 <div class="col-md-4 mt-3 mt-md-0">
-                  <input
-                    type="text"
-                    class="form-control"
-                    :placeholder="item.label"
-                    v-model="item.number"
-                  />
+                  <input type="text" class="form-control" :placeholder="item.label" v-model="item.number" />
                 </div>
               </div>
             </div>
@@ -121,20 +82,10 @@
       </div>
     </div>
     <div class="row mt-2">
-      <textarea
-        class="form-control"
-        rows="5"
-        placeholder="Enter your note here"
-        v-model="note"
-      ></textarea>
+      <textarea class="form-control" rows="5" placeholder="Enter your note here" v-model="note"></textarea>
     </div>
     <div class="row d-flex justify-content-center my-4 c-pointer">
-      <div
-        class="default-btn primary-bg border-0 text-white text-center"
-        @click="updateAttendanceCheckin"
-      >
-        Save
-      </div>
+      <el-button :loading="loading" @click="updateAttendanceCheckin" color="#136acd" round>Save</el-button>
     </div>
   </div>
 </template>
@@ -142,7 +93,6 @@
 <script>
 import { computed, ref, watchEffect } from "@vue/runtime-core";
 import axios from "@/gateway/backendapi";
-import { useToast } from "primevue/usetoast";
 import { useRoute } from "vue-router";
 import router from "../../router";
 import allCustomFields from "../../services/customfield/customField";
@@ -150,9 +100,9 @@ export default {
   props: ["contributionItems", "attendanceType", "groupDetail"],
   setup(props) {
     const note = ref("");
-    const toast = useToast();
     const route = useRoute();
     const dynamicCustomFields = ref([]);
+    const loading = ref(false)
     const churchContributionItems = computed(() => {
       if (
         props.groupDetail &&
@@ -180,9 +130,9 @@ export default {
 
     const churchAttendanceCategory = computed(() => {
       if (
-          props.groupDetail &&
-          props.groupDetail.attendances &&
-          props.groupDetail.attendances.length == 0
+        props.groupDetail &&
+        props.groupDetail.attendances &&
+        props.groupDetail.attendances.length == 0
       ) return props.attendanceType
       if (
         props.groupDetail &&
@@ -194,7 +144,6 @@ export default {
           const y = props.groupDetail.attendances.findIndex(
             (j) => j.attendanceTypeID == i.id
           );
-          console.log(y, props.groupDetail.attendances[y].number);
           if (y >= 0) {
             i.number = props.groupDetail.attendances[y].number;
             i.attendanceTypeAttendanceID = props.groupDetail.attendances[y].id;
@@ -202,12 +151,12 @@ export default {
           return i;
         });
     });
-    
+
     const attendanceCustomField = computed(() => {
       if (
-          props.groupDetail &&
-          props.groupDetail.customAttributeData &&
-          props.groupDetail.customAttributeData.length == 0
+        props.groupDetail &&
+        props.groupDetail.customAttributeData &&
+        props.groupDetail.customAttributeData.length == 0
       ) return dynamicCustomFields.value
       if (
         props.groupDetail &&
@@ -227,21 +176,14 @@ export default {
         });
     });
 
-    // const computedNote = computed(() => {
-    //   if (!props.groupDetail && Object.keys(props.groupDetail).length == 0) return 
-    //   return props.groupDetail.note
-    // })
-
     watchEffect(() => {
       if (props.groupDetail && Object.keys(props.groupDetail).length > 0) {
         note.value = props.groupDetail.note;
-        console.log(props.groupDetail, 'hereee')
-      }else {
-        console.log('ddddd')
       }
     });
 
     const updateAttendanceCheckin = async () => {
+      loading.value = true
       let body = {
         eventName: props.groupDetail.eventName,
         eventDate: props.groupDetail.eventDate,
@@ -273,20 +215,18 @@ export default {
         }),
         note: note.value,
       };
-      console.log(body);
       try {
-        let data = await axios.put(
+        await axios.put(
           "/api/CheckInAttendance/UpdateCheckInAttendance",
           body
         );
-        console.log(data);
-        toast.add({
-          severity: "success",
-          summary: "Success",
-          detail: "Updated successfully",
-          life: 3000,
+        loading.value = false
+        ElMessage({
+          type: "success",
+          message: "Updated successfully",
+          duration: 5000,
         });
-
+        
         if (route.fullPath.includes("/tenant/takeattendance")) {
           setTimeout(() => {
             router.push("/tenant/groupleader");
@@ -294,13 +234,13 @@ export default {
         }
       } catch (err) {
         console.log(err);
+        loading.value = false
       }
     };
 
     const getAllCustomFields = async () => {
       try {
         let data = await allCustomFields.allCustomFields();
-        console.log(data);
         dynamicCustomFields.value = data.filter((i) => i.entityType === 5);
       } catch (err) {
         console.log(err);
@@ -314,7 +254,8 @@ export default {
       updateAttendanceCheckin,
       note,
       dynamicCustomFields,
-      attendanceCustomField
+      attendanceCustomField,
+      loading
     };
   },
 };

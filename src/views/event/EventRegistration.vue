@@ -1,8 +1,6 @@
 
 <template>
-  <div
-    class="container-slim p-3 mb-5 mt-5"
-  >
+  <div class="container-slim p-3 mb-5 mt-5">
     <div class="row mt-2">
       <div class="col-md-6 offset-md-3 mb-3"></div>
     </div>
@@ -14,21 +12,21 @@
 
     <!-- top Address -->
     <div class="row mt-5">
-      <div
-        class="col-md-3 d-md-flex align-items-center justify-content-end text-md-right mt-1 font-weight-700"
-      ></div>
+      <div class="col-md-3 d-md-flex align-items-center justify-content-end text-md-right mt-1 font-weight-700"></div>
       <div class="col-md-7 mb-3 text-center">
         <span class="font-weight-bold" style="font-size: 1.2em">
           {{ eventData.name }}
         </span>
-        <span v-if="fullEventData.registrationAmount"> - {{ tenantCurrency }} {{ fullEventData.registrationAmount }}</span>
+        <span v-if="fullEventData.registrationAmount"> - {{ tenantCurrency }} {{ fullEventData.registrationAmount
+        }}</span>
         <div class="">Event Registration</div>
         <div class="italicize">{{ eventData.date }}</div>
       </div>
     </div>
 
-    <div class="row d-flex justify-content-center" v-if="fullEventData.registrationCutOffTime && new Date().toISOString() >= new Date(fullEventData.registrationCutOffTime).toISOString()">
-      <img src="../../assets/registration_closed.jpeg" class="event-closed"/>
+    <div class="row d-flex justify-content-center"
+      v-if="fullEventData.registrationCutOffTime && new Date().toISOString() >= new Date(fullEventData.registrationCutOffTime).toISOString()">
+      <img src="../../assets/registration_closed.jpeg" class="event-closed" />
     </div>
 
     <!--end top Address -->
@@ -37,71 +35,53 @@
     <div class="row">
       <div class="col-md-3"></div>
       <div class="col-md-7">
-        <p
-          class="font-weight-600 text-center primary-text"
-          v-if="person.personId && loaded && !showLoading"
-        >
+        <p class="font-weight-600 text-center primary-text" v-if="person.personId && loaded && !showLoading">
           Your details were found, please confirm to register.
         </p>
-        <p
-          class="font-weight-600 text-center primary-text"
-          v-if="!person.personId && !showLoading && loaded && !fetchingFailed"
-        >
+        <p class="font-weight-600 text-center primary-text"
+          v-if="!person.personId && !showLoading && loaded && !fetchingFailed">
           Please fill the form and confirm the registration
         </p>
-        <!-- v-if="autosearch && !person.name" -->
       </div>
     </div>
 
-    <div class="row" v-if="!fullEventData.registrationCutOffTime || new Date().toISOString() <= new Date(fullEventData.registrationCutOffTime).toISOString()">
-      <div
-        class="col-md-3 d-md-flex align-items-center justify-content-end text-md-right mt-1 font-weight-700"
-      >
+    <div class="row"
+      v-if="!fullEventData.registrationCutOffTime || new Date().toISOString() <= new Date(fullEventData.registrationCutOffTime).toISOString()">
+      <div class="col-md-3 d-md-flex align-items-center justify-content-end text-md-right mt-1 font-weight-700">
         <label for="">Phone Number</label>
       </div>
       <div class="col-md-7">
         <span class="p-input-icon-left w-100">
-          
+
           <!-- <i class="pi pi-phone icon" /> -->
-          <input
-            @blur="checkCharacter"
-            @input="CheckXterAfterEleven"
-            class="form-control w-100"
-            type="text"
-            v-model="enteredValue"
-            aria-required=""
-            placeholder="Enter your phone number"
-          />
-          <!-- <el-input
-            @blur="checkCharacter"
-            @input="CheckXterAfterEleven"
-            class="w-100"
-            type="number"
-            v-model="enteredValue"
-            aria-required=""
-            placeholder="Enter your phone number"
-          >
-          <template #prefix>
-          <el-icon class="el-input__icon "><PhoneFilled /></el-icon>
-        </template>
-          </el-input> -->
+        <!-- <input @blur="checkCharacter" @input="CheckXterAfterEleven" class="form-control w-100" type="text"
+                v-model="enteredValue" aria-required="" placeholder="Enter your phone number" /> -->
+          <el-input @blur="checkCharacter" class="w-100" type="number" v-model="enteredValue" aria-required=""
+            placeholder="Enter your phone number">
+            <template #prefix>
+              <el-icon class="el-input__icon ">
+                <PhoneFilled />
+              </el-icon>
+            </template>
+          </el-input>
         </span>
         <!-- v-if="autosearch && !person.name" -->
       </div>
       <div class="col-3 offset-3 offset-sm-4 offset-md-5 mt-4" v-if="!names">
-        <el-button size="large" round color="#136acd" class=" w-100 text-white border-0 text-center c-pointer">Register</el-button>
+        <el-button size="large" round color="#136acd"
+          class=" w-100 text-white border-0 text-center c-pointer">Register</el-button>
       </div>
     </div>
-    
+
     <div class="row mb-4">
       <div class="col-md-3"></div>
       <div class="col-md-5 offset-1">
         <div class="loading-div my-5" v-if="showLoading">
           <div style="width: 3rem; height: 3rem" role="status">
-          <el-icon class="is-loading">
-            <Loading />
-          </el-icon>
-        </div>
+            <el-icon class="is-loading">
+              <Loading />
+            </el-icon>
+          </div>
           <p>Fetching your details...</p>
         </div>
         <!-- v-if="autosearch && !person.name" -->
@@ -112,24 +92,12 @@
     <!--start of top area button -->
     <div class="row" :class="{ 'mb-4': showLoading }" v-if="false">
       <div class="col-md-3 text-md-right"></div>
-      <div
-        class="col-md-5 text-center col-sm-2"
-        :class="{ 'mt-4': showLoading }"
-      >
-        <p
-          class="text-danger"
-          v-if="showNoPhoneError"
-          :class="{ 'my-1': showLoading }"
-        >
+      <div class="col-md-5 text-center col-sm-2" :class="{ 'mt-4': showLoading }">
+        <p class="text-danger" v-if="showNoPhoneError" :class="{ 'my-1': showLoading }">
           Please enter your phone number
         </p>
-        <el-button
-          class="default-btn add-btn"
-          @click="checkCharacter"
-          ref="submitBtn"
-          v-if="!appltoggle && !showLoading"
-          round
-        >
+        <el-button class="default-btn add-btn" @click="checkCharacter" ref="submitBtn" v-if="!appltoggle && !showLoading"
+          round>
           <!-- <i class="fas fa-circle-notch fa-spin" v-if="loading"></i> -->
           Submit
         </el-button>
@@ -140,319 +108,226 @@
     <!-- start of bottom area -->
     <div class="row" v-if="appltoggle && !showLoading">
       <div class="col-md-12">
-        
+
         <div class="row mb-3 " v-if="selectedCustomField.find(i => i.toLowerCase() == 'card/checkin number')">
-          <div
-            class="col-md-3 d-md-flex align-items-center justify-content-end text-md-right mt-2 font-weight-700"
-          >
+          <div class="col-md-3 d-md-flex align-items-center justify-content-end text-md-right mt-2 font-weight-700">
             <label for="">Card number</label>
           </div>
           <div class="col-md-7">
 
-            <el-input
-                class="w-100 border"
-                placeholder="Card Number"
-                type="text"
-                aria-required=""
-                v-model="checkinCode"
-              />
+            <el-input class="w-100 border" placeholder="Card Number" type="text" aria-required="" v-model="checkinCode" />
           </div>
         </div>
 
         <div class="row mt-2  my-2">
-          <div
-            class="col-md-3 d-md-flex align-items-center justify-content-end text-md-right mt-2 font-weight-700"
-          >
+          <div class="col-md-3 d-md-flex align-items-center justify-content-end text-md-right mt-2 font-weight-700">
             <label for="">Name</label>
           </div>
           <div class="col-md-7">
             <span class="p-input-icon-left w-100">
-              <el-input
-                class="w-100"
-                type="text"
-                v-model="person.name"
-                aria-required=""
-                :disabled="disabled"
-                placeholder="Name"
-              >
+              <el-input class="w-100" type="text" v-model="person.name" aria-required="" :disabled="disabled"
+                placeholder="Name">
                 <template #prefix>
-                <el-icon class="el-input__icon "><User /></el-icon>
+                  <el-icon class="el-input__icon ">
+                    <User />
+                  </el-icon>
                 </template>
               </el-input>
             </span>
           </div>
         </div>
         <div class="row">
-          <div
-            class="col-md-3 d-md-flex align-items-center justify-content-end text-md-right mt-2 font-weight-700"
-          >
+          <div class="col-md-3 d-md-flex align-items-center justify-content-end text-md-right mt-2 font-weight-700">
             <label for="">Email</label>
           </div>
           <div class="col-md-7">
             <span class="p-input-icon-left w-100 my-md-3">
-              <el-input
-                class="w-100"
-                type="text"
-                v-model="person.email"
-                aria-required=""
+              <el-input class="w-100" type="text" v-model="person.email" aria-required=""
                 :disabled="person.personId && personData.email || personData.email !== '' && personData.email !== null"
-                placeholder="Email"
-              >
+                placeholder="Email">
                 <template #prefix>
-                <el-icon class="el-input__icon "><Message /></el-icon>
+                  <el-icon class="el-input__icon ">
+                    <Message />
+                  </el-icon>
                 </template>
-              </el-input> 
+              </el-input>
             </span>
           </div>
         </div>
 
-        <div class="row my-2" v-if="selectedCustomField.find(i => i.toLowerCase () == 'address')">
-          <div
-            class="col-md-3 d-md-flex align-items-center justify-content-end text-md-right mt-2 font-weight-700"
-          >
+        <div class="row my-2" v-if="selectedCustomField.find(i => i.toLowerCase() == 'address')">
+          <div class="col-md-3 d-md-flex align-items-center justify-content-end text-md-right mt-2 font-weight-700">
             <label for="">Address</label>
           </div>
           <div class="col-md-7">
             <span class="p-input-icon-left w-100">
-              <el-input
-                class="w-100 border"
-                type="text"
-                v-model="person.address"
-                aria-required=""
-                :disabled="personHasAddress"
-                placeholder="Address"
-              >
+              <el-input class="w-100 border" type="text" v-model="person.address" aria-required=""
+                :disabled="personHasAddress" placeholder="Address">
                 <template #prefix>
-                <el-icon class="el-input__icon "><Location /></el-icon>
+                  <el-icon class="el-input__icon ">
+                    <Location />
+                  </el-icon>
                 </template>
-              </el-input> 
+              </el-input>
             </span>
           </div>
         </div>
-        
-        <div class="row my-3" v-if="selectedCustomField.find(i => i.toLowerCase() == 'birthday')" >
-          <div
-            class="col-md-3 d-md-flex align-items-center justify-content-end text-md-right mt-2 font-weight-700"
-          >
+
+        <div class="row my-3" v-if="selectedCustomField.find(i => i.toLowerCase() == 'birthday')">
+          <div class="col-md-3 d-md-flex align-items-center justify-content-end text-md-right mt-2 font-weight-700">
             <label for="">Birthday</label>
           </div>
           <div class="col-md-7">
             <div class="row">
               <div class="col-6">
-                <el-select-v2
-                  v-model="birthDay"
-                  class="w-100 "
-                  placeholder="Day"
-                  :options="
-                    [{label: 'Day', value: 0}, ...days.map(i => ({ label: i, value: i }))]
-                  "
-                  size="large"
-                />
+                <el-select-v2 v-model="birthDay" class="w-100 " placeholder="Day" :options="
+                  [{ label: 'Day', value: 0 }, ...days.map(i => ({ label: i, value: i }))]" size="large" />
               </div>
               <div class="col-6">
-                <el-select-v2
-                  v-model="birthMonth"
-                  class="w-100 "
-                  placeholder="Month"
-                  :options="
-                    [{label: 'Month', value: 0}, ...months.map(i => ({ label: i, value: i }))]
-                  "
-                  size="large"
-                />
+                <el-select-v2 v-model="birthMonth" class="w-100 " placeholder="Month" :options="
+                  [{ label: 'Month', value: 0 }, ...months.map(i => ({ label: i, value: i }))]
+                " size="large" />
               </div>
             </div>
           </div>
         </div>
         <div class="row my-3" v-if="selectedCustomField.find(i => i.toLowerCase() == 'wedding')">
-          <div
-            class="col-md-3 d-md-flex align-items-center justify-content-end text-md-right mt-2 font-weight-700"
-          >
+          <div class="col-md-3 d-md-flex align-items-center justify-content-end text-md-right mt-2 font-weight-700">
             <label for="">Wedding</label>
           </div>
           <div class="col-md-7">
             <div class="row">
               <div class="col-4">
-                 <el-select-v2
-                  v-model="dayOfWedding"
-                  class="w-100 "
-                  placeholder="Day"
-                  :options="
-                    [{label: 'Day', value: 0}, ...days.map(i => ({ label: i, value: i }))]
-                  "
-                  size="large"
-                />
-              
+                <el-select-v2 v-model="dayOfWedding" class="w-100 " placeholder="Day" :options="
+                  [{ label: 'Day', value: 0 }, ...days.map(i => ({ label: i, value: i }))]
+                " size="large" />
+
               </div>
               <div class="col-4">
-                <el-select-v2
-                  v-model="monthOfWedding"
-                  class="w-100 "
-                  placeholder="Month"
-                  :options="
-                    [{label: 'Month', value: 0}, ...months.map(i => ({ label: i, value: i }))]
-                  "
-                  size="large"
-                />
+                <el-select-v2 v-model="monthOfWedding" class="w-100 " placeholder="Month" :options="
+                  [{ label: 'Month', value: 0 }, ...months.map(i => ({ label: i, value: i }))]
+                " size="large" />
               </div>
               <div class="col-4">
-                <el-select-v2
-                  v-model="yearOfWedding"
-                  class="w-100 "
-                  placeholder="Year"
-                  :options="
-                    [{label: 'Year', value: 0}, ...weddingYearsArr.map(i => ({ label: i, value: i }))]
-                  "
-                  size="large"
-                />
+                <el-select-v2 v-model="yearOfWedding" class="w-100 " placeholder="Year" :options="
+                  [{ label: 'Year', value: 0 }, ...weddingYearsArr.map(i => ({ label: i, value: i }))]
+                " size="large" />
               </div>
             </div>
           </div>
         </div>
-        <div class="row my-3"  v-if="selectedCustomField.find(i => i.toLowerCase() == 'marital status')">
-          <div
-            class="col-md-3 d-md-flex align-items-center justify-content-end text-md-right mt-2 font-weight-700"
-          >
+        <div class="row my-3" v-if="selectedCustomField.find(i => i.toLowerCase() == 'marital status')">
+          <div class="col-md-3 d-md-flex align-items-center justify-content-end text-md-right mt-2 font-weight-700">
             <label for="">Marital Status</label>
           </div>
           <div class="col-md-7">
             <el-select-v2 v-model="maritalStatusId" @change="setSelectedMaritalStatus"
-                    :options="maritalStatus.map(i => ({ label: i.value, value: i.id }))" placeholder="Marital status"
-                    size="large" class="w-100 " />
+              :options="maritalStatus.map(i => ({ label: i.value, value: i.id }))" placeholder="Marital status"
+              size="large" class="w-100 " />
           </div>
         </div>
         <div class="row my-3" v-if="selectedCustomField.find(i => i.toLowerCase() == 'gender')">
-          <div
-            class="col-md-3 d-md-flex align-items-center justify-content-end text-md-right mt-2 font-weight-700"
-          >
+          <div class="col-md-3 d-md-flex align-items-center justify-content-end text-md-right mt-2 font-weight-700">
             <label for="">Gender</label>
           </div>
           <div class="col-md-7">
-             <el-select-v2 v-model="genderId" @change="setSelectedGender"
-                    :options="gender && gender.length > 0 ? gender.map(i => ({ label: i.value, value: i.id })) : []"
-                    placeholder="Gender" size="large" class="w-100 " />
+            <el-select-v2 v-model="genderId" @change="setSelectedGender"
+              :options="gender && gender.length > 0 ? gender.map(i => ({ label: i.value, value: i.id })) : []"
+              placeholder="Gender" size="large" class="w-100 " />
           </div>
         </div>
-        <div class="row my-3" v-for="item in dynamicCustomFields" :key="item.id" >
-          <div
-            class="col-md-3 d-md-flex align-items-center justify-content-end text-md-right mt-2 font-weight-700"
-          >
+        <div class="row my-3" v-for="item in dynamicCustomFields" :key="item.id">
+          <div class="col-md-3 d-md-flex align-items-center justify-content-end text-md-right mt-2 font-weight-700">
             <label for="">{{ item.label }}</label>
           </div>
           <div class="col-md-7">
-             <el-input
-                v-if="item.controlType == 0"
-                class="w-100 border"
-                type="text"
-                aria-required=""
-                v-model="item.data"
-              />
-              <el-select-v2 v-else-if="item.controlType == 1" v-model="item.data"
-                    :options="item.parameterValues.split(',').map(i => ({ label: i, value: i }))" placeholder="Select option"
-                    size="large" class="w-100 " />
-            <el-checkbox v-else-if="item.controlType == 2" v-model="item.data"  />
-            <el-date-picker
-            v-if="item.controlType == 3"
-              v-model="item.data"
-              type="datetime"
-              format="DD/MM/YYYY hh:mm:ss"
-              size="large"
-              class="w-100"
-            />
-            <el-input
-                v-if="item.controlType == 4"
-                class="w-100 border"
-                type="email"
-                aria-required=""
-                v-model="item.data"
-              />
-            <input 
-                v-if="item.controlType == 5"
-                class="w-100 border"
-                type="file"
-                aria-required=""
-                
-              />
-              <el-input
-                v-if="item.controlType == 6"
-                class="w-100 border"
-                type="number"
-                aria-required=""
-                v-model="item.data"
-              />
+            <el-input v-if="item.controlType == 0" class="w-100 border" type="text" aria-required=""
+              v-model="item.data" />
+            <el-select-v2 v-else-if="item.controlType == 1" v-model="item.data"
+              :options="item.parameterValues.split(',').map(i => ({ label: i, value: i }))" placeholder="Select option"
+              size="large" class="w-100 " />
+            <el-checkbox v-else-if="item.controlType == 2" v-model="item.data" />
+            <el-date-picker v-if="item.controlType == 3" v-model="item.data" type="datetime" format="DD/MM/YYYY hh:mm:ss"
+              size="large" class="w-100" />
+            <el-input v-if="item.controlType == 4" class="w-100 border" type="email" aria-required=""
+              v-model="item.data" />
+            <input v-if="item.controlType == 5" class="w-100 border" type="file" aria-required="" />
+            <el-input v-if="item.controlType == 6" class="w-100 border" type="number" aria-required=""
+              v-model="item.data" />
           </div>
         </div>
         <div class="row">
           <div class="col-md-8 offset-md-3 mt-3 align-self-center">
-             <el-checkbox  v-model="displayFamily"  />
-            <span class="ml-3">Do you want to register your family for this event?</span></div>
+            <el-checkbox v-model="displayFamily" />
+            <span class="ml-3">Do you want to register your family for this event?</span>
+          </div>
         </div>
 
         <div class="row mt-4" v-if="displayFamily">
-          <FamilyWards :family="familyWards" :memberRoles="memberRoles" :fullEventData="fullEventData" @newmember="setNewMember" @nofamilynewmember="setMemberDetails"/>
+          <FamilyWards :family="familyWards" :memberRoles="memberRoles" :fullEventData="fullEventData"
+            @newmember="setNewMember" @nofamilynewmember="setMemberDetails" />
         </div>
 
         <div class="row my-2">
           <div class="col-md-3"></div>
           <div class="col-md-7 py-4 text-center">
             <el-button class="default-btn mr-3" size="large" round @click="notme">Not Me</el-button>
-            <el-button
-            size="large"
-              class=" mt-3 mt-sm-0 text-white"
-              color="#136acd"
-              @click="confirmToRegister"
-              :disabled="
-                !person.name || person.name.length < 1 || disableClick
-              "
-              round
-            >
-              {{ fullEventData.paymentFormId ? 'Make payment to register' : 'Confirm to register' }}
+            <el-button data-toggle="modal" data-target="#PaymentOptionModal" color="#136acd" @click="confirmCheck()"
+              v-if="fullEventData.paymentFormId" round>
+              Make payment to register
             </el-button>
-            <button ref="makePaymentRef" data-toggle="modal" data-target="#PaymentOptionModal" hidden>Toggle modal</button>
+            <el-button size="large" class=" mt-3 mt-sm-0 text-white" color="#136acd" @click="confirmToRegister"
+              :disabled="!person.name || person.name.length < 1 || disableClick" round v-else>
+              Confirm to register
+            </el-button>
           </div>
         </div>
       </div>
     </div>
-    <div class="row" v-if="new Date().toISOString() <= new Date(fullEventData.registrationCutOffTime).toISOString()">
+    <div class="row"
+      v-if="fullEventData.registrationCutOffTime && (new Date().toISOString() <= new Date(fullEventData.registrationCutOffTime).toISOString())">
       <div class="col-10 offset-1 col-md-3 offset-md-5">
         <!-- Button code -->
-          <div title="Add to Calendar" class="addeventatc w-100">
-              Add to Calendar
-              <span class="start">{{ fullEventData.eventDate }}</span>
-              <span class="timezone">{{ Intl.DateTimeFormat().resolvedOptions().timeZone }}</span>
-              <span class="title">{{ eventData.name }}</span>
-              <span class="description">{{ fullEventData.eventDetails }}</span>
-          </div>
+        <div title="Add to Calendar" class="addeventatc w-100">
+          Add to Calendar
+          <span class="start">{{ fullEventData.eventDate }}</span>
+          <span class="timezone">{{ Intl.DateTimeFormat().resolvedOptions().timeZone }}</span>
+          <span class="title">{{ eventData.name }}</span>
+          <span class="description">{{ fullEventData.eventDetails }}</span>
+        </div>
       </div>
     </div>
-    
+
     <div class="row mt-3">
-      <div
-        class="col-md-3 d-md-flex align-items-center justify-content-end text-md-right mt-3 font-weight-700"
-      ></div>
+      <div class="col-md-3 d-md-flex align-items-center justify-content-end text-md-right mt-3 font-weight-700"></div>
       <div class="col-md-7 mt-2">
         <p class="text-center fw-normal" style="color: #136acd">
           Powered by CHURCHPLUS
         </p>
       </div>
-       <!-- Modal -->
-          <div class="modal fade" id="PaymentOptionModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
-            <div class="modal-dialog modal-dialog-centered" role="document">
-              <div class="modal-content">
-                <div class="modal-header bg-modal">
-                  <h5 class="modal-title" id="exampleModalLongTitle">Payment methods</h5>
-                  <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                    <span aria-hidden="true" ref="close">&times;</span>
-                  </button>
-                </div>
-                <div class="modal-body p-0 bg-modal pb-5">
-                  <PaymentOptionModal :close="close" :donation="donationObj" @selected-gateway="setGateway" @donation-confirmed="setConfirmDonation" @set-props="setDonationProperties" :donorEmail="person.email"/>
-                </div>
-                </div>
-              </div>
+      <!-- Modal -->
+      <div class="modal fade" id="PaymentOptionModal" tabindex="-1" role="dialog"
+        aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered" role="document">
+          <div class="modal-content">
+            <div class="modal-header bg-modal">
+              <h5 class="modal-title" id="exampleModalLongTitle">Payment methods</h5>
+              <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                <span aria-hidden="true" ref="close">&times;</span>
+              </button>
             </div>
+            <div class="modal-body p-0 bg-modal pb-5">
+              <PaymentOptionModal :formData="eventPaymentForm" :close="close" :donation="donationObj"
+                @selectedgateway="setGateway" @donationconfirmed="setConfirmDonation" :donorEmail="person.email"
+                :initializePaymentResponse="initializePaymentResponse" :callPayment="callPayment"
+                @resetcallpaymentprops="resetCallPayment" />
+            </div>
+          </div>
+        </div>
+      </div>
     </div>
   </div>
-   
+
   <pre ref="content" style="white-space: pre-wrap;"></pre>
 </template>
 
@@ -470,6 +345,7 @@ import finish from '../../services/progressbar/progress';
 import store from '../../store/store';
 import FamilyWards from './component/EventRegFamilyWards.vue'
 import { ElMessage } from "element-plus";
+import { ElLoading } from 'element-plus';
 export default {
   components: {
     PaymentOptionModal,
@@ -492,7 +368,6 @@ export default {
     const noError = ref(true);
     const person = ref({});
     const maritalStatus = ref({})
-    const checkedIn = ref(false);
     const route = useRoute();
     const submitBtn = ref(null);
     const loaded = ref(false);
@@ -509,70 +384,26 @@ export default {
     const signout = ref()
     const content = ref()
     const disableClick = ref(false)
-    const makePaymentRef = ref()
     const usedPaymentGateway = ref("")
     const donationNewProps = ref({})
     const maritalStatusId = ref(null)
-
     const birthMonth = ref("");
-
     const gender = ref({});
     const genderId = ref(null);
-    const months = [
-      "January",
-      "February",
-      "March",
-      "April",
-      "May",
-      "June",
-      "July",
-      "August",
-      "September",
-      "October",
-      "November",
-      "December",
-    ];
-
+    const months = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"];
     const birthDay = ref("");
-    const days = ref([
-      1,
-      2,
-      3,
-      4,
-      5,
-      6,
-      7,
-      8,
-      9,
-      10,
-      11,
-      12,
-      13,
-      14,
-      15,
-      16,
-      17,
-      18,
-      19,
-      20,
-      22,
-      23,
-      24,
-      25,
-      26,
-      27,
-      28,
-      29,
-      30,
-      31,
-    ]);
+    const days = ref([1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 22, 23, 24, 25, 26, 27, 28, 29, 30, 31]);
+    const eventPaymentForm = ref({});
+    const callPayment = ref(false);
+    const initializePaymentResponse = ref({});
+
     const setSelectedMaritalStatus = () => {
       selectedMaritalStatus.value = maritalStatus.value.find(i => {
         return i.id == maritalStatusId.value
       })
     }
 
-     const setSelectedGender = () => {
+    const setSelectedGender = () => {
       selectedGender.value = gender.value.find(i => {
         return i.id == genderId.value
       })
@@ -626,7 +457,7 @@ export default {
         })
         .catch(err => console.log(err))
     }
-   
+
 
 
     const checkCharacter = () => {
@@ -646,7 +477,7 @@ export default {
         )
 
         .then((res) => {
-          const x = { ...res}
+          const x = { ...res }
           loading.value = false;
           autosearch.value = false;
           loaded.value = true;
@@ -669,14 +500,13 @@ export default {
             person.value.address !== null &&
             person.value.address !== "" &&
             person.value.address.length >= 1
-          )
-          {
+          ) {
             personHasAddress.value = true;
           }
           populateInputfields(person.value);
           if (person.value) appltoggle.value = true;
 
-          
+
         })
         .catch((err) => {
           fetchingFailed.value = true;
@@ -686,35 +516,28 @@ export default {
           autosearch.value = false;
 
           if (err.toString().toLowerCase().includes("network error")) {
-             ElMessage({
-                type: "error",
-                message: "Ensure you have internet access and try again",
-                duration: 5000,
-              });
+            ElMessage({
+              type: "error",
+              message: "Ensure you have internet access and try again",
+              duration: 5000,
+            });
           } else if (err.message.includes("timeout")) {
             ElMessage({
-                type: "error",
-                message: "The request was taking too long, please reload and try again",
-                duration: 5000,
-              });
+              type: "error",
+              message: "The request was taking too long, please reload and try again",
+              duration: 5000,
+            });
           } else {
-             ElMessage({
-                type: "error",
-                message: "An error occurred, reload and try again",
-                duration: 5000,
-              });
+            ElMessage({
+              type: "error",
+              message: "An error occurred, reload and try again",
+              duration: 5000,
+            });
           }
           console.log(err);
         });
     };
     //end of searching through the attendance details
-
-    const CheckXterAfterEleven = (e) => {
-      if (e.target.value.length >= 11) {
-        checkCharacter()
-      }
-    }
-
 
     // populate input fields
     const populateInputfields = (obj) => {
@@ -737,7 +560,6 @@ export default {
       let newPerson = {};
       if (person.value.personId) {
         newPerson = {
-
           person: {
             personId: personData.value.personId,
             mobilePhone: enteredValue.value,
@@ -758,9 +580,9 @@ export default {
         };
         newPerson.person.personId = idOfNewPerson ? idOfNewPerson : ""
       }
-      newPerson.person.monthOfBirth =  months.indexOf(birthMonth.value) + 1
+      newPerson.person.monthOfBirth = months.indexOf(birthMonth.value) + 1
       newPerson.person.dayOfBirth = birthDay.value
-      newPerson.checkinCode = checkinCode.value
+      newPerson.checkinCode = fullEventData.value.checkinCode
       newPerson.person.maritalStatusID = selectedMaritalStatus.value.id
       newPerson.person.genderID = selectedGender.value.id
       newPerson.person.yearOfWedding = yearOfWedding.value
@@ -781,14 +603,12 @@ export default {
           autosearch.value = false;
           disableClick.value = false;
 
-          if (newPerson) checkedIn.value = true;
           swal(
             "Registration Successful!",
             "You have registered for this event successfully!",
             "success"
           );
           appltoggle.value = false;
-          checkedIn.value = true;
           loaded.value = false;
         })
         .catch((err) => {
@@ -797,19 +617,19 @@ export default {
           autosearch.value = false;
           console.log(err);
           noError.value = false;
-          
+
           if (err.toString().toLowerCase().includes('network error')) {
             ElMessage({
-                type: "error",
-                message: "Please ensure you have a strong internet connection and try again",
-                duration: 5000,
-              });
+              type: "error",
+              message: "Please ensure you have a strong internet connection and try again",
+              duration: 5000,
+            });
           } else if (err.toString().toLowerCase().includes('timeout')) {
             ElMessage({
-                type: "warning",
-                message: "Request took too long, Please reload the page and try again",
-                duration: 5000,
-              });
+              type: "warning",
+              message: "Request took too long, Please reload the page and try again",
+              duration: 5000,
+            });
           }
         });
     };
@@ -817,199 +637,80 @@ export default {
     // confirm button check
 
     const confirmCheck = () => {
-      
-      donationObj.value = {
-            name: person.value.name,
-            email: person.value.email,
-            phone: enteredValue.value,
-            paymentFormId: fullEventData.value.paymentFormId,
-            tenantID: fullEventData.value.paymentForm.tenantID,
-            orderID: fullEventData.value.paymentFormOrderID,
-            currencyID: fullEventData.value.currencyID,
-            paymentGateway: fullEventData.value.paymentForm.paymentGateWays,
-            usedPaymentGateway: usedPaymentGateway.value,
-            contributionItems: fullEventData.value.paymentForm.contributionItems.map(i => {
-              return {
-                contributionItemId: i.financialContribution.id,
-                contributionCurrencyId: fullEventData.value.currencyID,
-                contributionItemName: i.financialContribution.name,
-                amount: fullEventData.value.registrationAmount
-              }
-            }),
 
-          }
-          if (Object.keys(donationNewProps.value).length > 0) {
-              donationObj.value.transactionReference = donationNewProps.value.transactionReference,
-              donationObj.value.amount = donationNewProps.value.amount,
-              donationObj.value.gateway = donationNewProps.value.gateway
-          }
+      donationObj.value = {
+        attendanceCode: fullEventData.value.attendanceCode,
+        activityId: fullEventData.value.eventID,
+        phone: enteredValue.value,
+        email: person.value.email,
+        checkInCode: fullEventData.value.checkinCode,
+        id: fullEventData.value.id,
+        person: person.value.personId ? person.value : { phoneNumber: enteredValue.value, ...person.value },
+        customAttributeData: dynamicCustomFields.value.map(i => ({
+          customAttributeID: i.id,
+          data: i.data,
+          entityID: person.value.personId ? person.value.personId : '00000000-0000-0000-0000-000000000000'
+        })),
+        donation: {
+          name: person.value.name,
+          email: person.value.email,
+          phone: enteredValue.value,
+          paymentFormId: fullEventData.value.paymentFormId,
+          tenantID: fullEventData.value.paymentForm.tenantID,
+          orderID: fullEventData.value.paymentFormOrderID,
+          currencyID: fullEventData.value.currencyID,
+          paymentGateway: usedPaymentGateway.value,
+          paymentGateWays: fullEventData.value.paymentForm.paymentGateWays,
+          contributionItems: fullEventData.value.paymentForm.contributionItems.map(i => {
+            return {
+              contributionItemId: i.financialContribution.id,
+              contributionCurrencyId: fullEventData.value.currencyID,
+              contributionItemName: i.financialContribution.name,
+              amount: fullEventData.value.registrationAmount
+            }
+          }),
+        },
+      }
     };
 
-    const initializePayment = async() => {
+    const initializePayment = async () => {
+      const loading = ElLoading.service({
+        lock: true,
+        text: 'Please wait...',
+        background: 'rgba(255, 255, 255, 0.9)',
+      })
       try {
-              let  res = await axios.post('/initailizedonationpayment', donationObj.value)
-              console.log(res)
-            
-              finish()
-            }
-            catch (error) {
-              finish()
-              console.log(error)
-            }
+        let { data } = await axios.post('/initializeEventRegistrationPayment', donationObj.value);
+        if (data.status) {
+          initializePaymentResponse.value = data;
+          callPayment.value = true;
+        } else {
+          ElMessage({
+            type: 'error',
+            message: "Could not initialise payment, please try again",
+            duration: 5000
+          })
+        }
+        loading.close();
+        finish()
+      }
+      catch (error) {
+        finish()
+        loading.close();
+        callPayment.value = false;
+        console.log(error)
+      }
     }
 
     const confirmToRegister = () => {
       disableClick.value = true;
-      if (!fullEventData.value.paymentFormId) {
-        
-        // Scenerio when the person exist and we want to create family
-        if (personData.value.personId && !familyWards.value.id) {
-            if (displayFamily.value) {
-              let familyDetails = {
-                fatherId: personData.value.personId,
-                familyName: personData.value.firstName,
-                familyMembers: familyMembers.value.map(i => {
-                  delete i.name
-                  return i
-                }),
-                tenantId: fullEventData.value.tenantID
-              }
-              axios.post('/createFamily', familyDetails)
-                .then(res => console.log(res))
-                .catch(err => console.log(err))
-
-                let newFamily = {
-                  person: {
-                    personId: personData.value.personId,
-                    mobilePhone: enteredValue.value,
-                    homeAddress: personData.value.homeAddress ? personData.value.homeAddress : '',
-                    email: personData.value.email ? personData.value.email : person.value.email,
-                  },
-                  id: route.params.checkinId
-                };
-
-                // Register Family members individually
-                  familyWards.value.familyMembers.forEach(i => {
-                      if(i.checkMember) {
-                        let regFamMembers = {
-                          person: {
-                            personId: i.person.id
-                          },
-                          id: route.params.checkinId
-                        }
-                        axios.post("/EventRegistration", regFamMembers).then(res => {
-                          console.log(res)
-                          disableClick.value = false;
-                        })
-                        .catch(err => {
-                          console.log(err)
-                        })
-                      }
-                    })
-
-                registerMember(newFamily)
-
-            } else {
-              confirm()
-            }
-        } else if (personData.value.personId && familyWards.value.id) {
-            if (displayFamily.value) {
-                let newFamily = {
-                  person: {
-                    personId: personData.value.personId,
-                    mobilePhone: enteredValue.value,
-                    homeAddress: personData.value.homeAddress ? personData.value.homeAddress : '',
-                    email: personData.value.email ? personData.value.email : person.value.email,
-                  },
-                  activityID: route.params.checkinId
-                };
-                // Register Family members individually
-                familyWards.value.familyMembers.forEach(i => {
-                    if(i.checkMember) {
-                      let regFamMembers = {
-                        person: {
-                          personId: i.person.id
-                        },
-                        id: route.params.checkinId
-                      }
-                      axios.post("/EventRegistration", regFamMembers).then(res => {
-                        console.log(res)
-                        disableClick.value = false;
-                      })
-                      .catch(err => {
-                        console.log(err)
-                      })
-                    }
-                  })
-
-                registerMember(newFamily)
-
-            } else {
-              confirm()
-            }
-          } else {
-          createNewPerson()
-        }
-
-        
-
-
-      } else {
-        makePaymentRef.value.click()
-        confirmCheck()
-      }
-    }
-
-    const createNewPerson = async() => {
-      let createNewPerson = {
-              firstName: person.value.name,
-              email: person.value.email,
-              homeAddress: person.value.address,
-              mobilePhone: enteredValue.value,
-              tenantId: fullEventData.value.tenantID
-            }
-
-          try {
-            let { data } = await axios.post("/createPublicPerson", createNewPerson)
-              if (displayFamily.value) {
-                createNewFamily(data.returnObject.id)
-              } else {
-                confirm(data.returnObject.id)
-              }
-              
-          }
-          catch (error ) {
-            console.log(error)
-          }
-    }
-
-    const getGender = async () => {
-            try {
-                let { data } = await axios.get('/api/LookUp/GetAllLookUps')
-                gender.value = data.find(i => i.type === "Gender").lookUps;
-            }
-            catch (err) {
-                console.log(err)
-            }
-    }
-    getGender()
-
-    const getMaritalStatus = async () => {
-            try {
-                let { data } = await axios.get('/api/LookUp/GetAllLookUps')
-                maritalStatus.value = data.find(i => i.type === "MaritalStatus").lookUps;
-            }
-            catch (err) {
-                console.log(err)
-            } 
-    }
-    getMaritalStatus()
-
-    const createNewFamily = (id) => {
-      disableClick.value = true;
-      let familyDetails = {
-            fatherId: id,
-            familyName: person.value.name,
+      // Scenerio when the person exist and we want to create family
+      if (personData.value.personId && !familyWards.value.id) {
+        if (displayFamily.value) {
+          // Create his family
+          let familyDetails = {
+            fatherId: personData.value.personId,
+            familyName: personData.value.firstName,
             familyMembers: familyMembers.value.map(i => {
               delete i.name
               return i
@@ -1019,52 +720,181 @@ export default {
           axios.post('/createFamily', familyDetails)
             .then(res => console.log(res))
             .catch(err => console.log(err))
+            
+            // Register Family members individually
+          familyWards.value.familyMembers.forEach(i => {
+            if (i.checkMember) {
+              let regFamMembers = {
+                person: {
+                  personId: i.person.id
+                },
+                id: route.params.checkinId
+              }
+              axios.post("/EventRegistration", regFamMembers).then(res => {
+                console.log(res)
+              })
+              .catch(err => {
+                console.log(err)
+              })
+            }
+          })
+          let newFamily = {
+            person: {
+              personId: personData.value.personId,
+              mobilePhone: enteredValue.value,
+              homeAddress: personData.value.homeAddress ? personData.value.homeAddress : '',
+              email: personData.value.email ? personData.value.email : person.value.email,
+            },
+            id: route.params.checkinId
+          };
+          registerMember(newFamily)
 
-            let newFamily = {
-                  person: {
-                    personId: id,
-                    mobilePhone: enteredValue.value,
-                    homeAddress: personData.value.homeAddress ? personData.value.homeAddress : '',
-                    email: personData.value.email ? personData.value.email : person.value.email,
-                  },
-                  id: route.params.checkinId
-                };
-                // Register Family members individually
-                familyWards.value.familyMembers.forEach(i => {
-                  if (i.checkMember) {
-                    let regFamMembers = {
-                      person: {
-                        personId: i.person.id
-                      },
-                      id: route.params.checkinId
-                    }
-                    axios.post("/EventRegistration", regFamMembers).then(res => {
-                      console.log(res)
-                      disableClick.value = false;
-                    })
-                    .catch(err => {
-                      console.log(err)
-                    })
-                  }
-                })
+        } else {
+          confirm()
+        }
+      } else if (personData.value.personId && familyWards.value.id) {
+        if (displayFamily.value) {
+          // Register Family members individually
+          familyWards.value.familyMembers.forEach(i => {
+            if (i.checkMember) {
+              let regFamMembers = {
+                person: {
+                  personId: i.person.id
+                },
+                id: route.params.checkinId
+              }
+              axios.post("/EventRegistration", regFamMembers).then(res => {
+                console.log(res)
+              })
+              .catch(err => {
+                console.log(err)
+              })
+            }
+          })
+          
+          let newFamily = {
+            person: {
+              personId: personData.value.personId,
+              mobilePhone: enteredValue.value,
+              homeAddress: personData.value.homeAddress ? personData.value.homeAddress : '',
+              email: personData.value.email ? personData.value.email : person.value.email,
+            },
+            id: route.params.checkinId
+          };
+          registerMember(newFamily)
 
-                registerMember(newFamily)
+        } else {
+          confirm()
+        }
+      } else {
+        // If the person doesnt exist in the church's DB
+        createNewPerson()
+      }
+    }
+
+    const createNewPerson = async () => {
+      let createNewPerson = {
+        firstName: person.value.name,
+        email: person.value.email,
+        homeAddress: person.value.address,
+        mobilePhone: enteredValue.value,
+        tenantId: fullEventData.value.tenantID
+      }
+
+      try {
+        let { data } = await axios.post("/createPublicPerson", createNewPerson)
+        if (displayFamily.value) {
+          createNewFamily(data.returnObject.id)
+        } else {
+          confirm(data.returnObject.id)
+        }
+      }
+      catch (error) {
+        console.log(error)
+      }
+    }
+
+    const getGender = async () => {
+      try {
+        let { data } = await axios.get('/api/LookUp/GetAllLookUps')
+        gender.value = data.find(i => i.type === "Gender").lookUps;
+      }
+      catch (err) {
+        console.log(err)
+      }
+    }
+    getGender()
+
+    const getMaritalStatus = async () => {
+      try {
+        let { data } = await axios.get('/api/LookUp/GetAllLookUps')
+        maritalStatus.value = data.find(i => i.type === "MaritalStatus").lookUps;
+      }
+      catch (err) {
+        console.log(err)
+      }
+    }
+    getMaritalStatus()
+
+    const createNewFamily = (id) => {
+      disableClick.value = true;
+      let familyDetails = {
+        fatherId: id,
+        familyName: person.value.name,
+        familyMembers: familyMembers.value.map(i => {
+          delete i.name
+          return i
+        }),
+        tenantId: fullEventData.value.tenantID
+      }
+      axios.post('/createFamily', familyDetails)
+        .then(res => console.log(res))
+        .catch(err => console.log(err))
+
+        // Register Family members individually
+        familyWards.value.familyMembers.forEach(i => {
+          if (i.checkMember) {
+          let regFamMembers = {
+            person: {
+              personId: i.person.id
+            },
+            id: route.params.checkinId
+          }
+          axios.post("/EventRegistration", regFamMembers).then(res => {
+            console.log(res)
+            disableClick.value = false;
+          })
+          .catch(err => {
+            console.log(err)
+          })
+        }
+      })
+      
+      let newFamily = {
+        person: {
+          personId: id,
+          mobilePhone: enteredValue.value,
+          homeAddress: personData.value.homeAddress ? personData.value.homeAddress : '',
+          email: personData.value.email ? personData.value.email : person.value.email,
+        },
+        id: route.params.checkinId
+      };
+      registerMember(newFamily)
     }
 
 
-    const registerMember = async(registerData) => {
+    const registerMember = async (registerData) => {
       disableClick.value = true;
       try {
         let res = await axios.post("/EventRegistration", registerData)
-          console.log(res)
-          disableClick.value = false;
-          swal(
-            "Registration Successful!",
-            "You have registered for this event successfully!",
-            "success"
-          );
-          displayFamily.value = false
-          familyWards.value.familyMembers = []
+        disableClick.value = false;
+        swal(
+          "Registration Successful!",
+          "You have registered for this event successfully!",
+          "success"
+        );
+        displayFamily.value = false
+        familyWards.value.familyMembers = []
       }
       catch (error) {
         console.log(error)
@@ -1092,10 +922,10 @@ export default {
           eventData.value.name = res.data.fullEventName;
           eventData.value.date = dateFormatter.monthDayYear(res.data.eventDate);
           bannerUrl.value = res.data.bannerUrl
-
           fullEventData.value = res.data
-           getTenantCurrency();
-           getCustomFields();
+          eventPaymentForm.value = fullEventData.value.paymentForm
+          getTenantCurrency();
+          getCustomFields();
         })
         .catch((err) => {
           console.log(err);
@@ -1149,43 +979,43 @@ export default {
       usedPaymentGateway.value = payload // Get the gateway used
       confirmCheck() // Update the donationObj with the used gateway
       initializePayment() // make initialize payment call
-      
     }
 
     const setConfirmDonation = () => {
-      confirm()
+      swal(
+        "Registration Successful!",
+        "You have registered for this event successfully!",
+        "success"
+      );
     }
 
 
-    const getFamilyDetails = async(id) => {
+    const getFamilyDetails = async (id) => {
       if (id) {
         try {
-                    const res = await axios.get(`/family?tenantID=${fullEventData.value.tenantID}&&personId=${id}`)
-                    familyWards.value = res.data
-                    if (familyWards.value) {
-                      familyWards.value.familyMembers.map(i => {
-                        i.checkMember = true
-                        return i
-                      })
-                    }
-                }
-                catch (error) {
-                    console.log(error)
-                }
-      } else {
-        console.log('no id')
+          const res = await axios.get(`/family?tenantID=${fullEventData.value.tenantID}&&personId=${id}`)
+          familyWards.value = res.data
+          if (familyWards.value) {
+            familyWards.value.familyMembers.map(i => {
+              i.checkMember = true
+              return i
+            })
+          }
+        }
+        catch (error) {
+          console.log(error)
+        }
       }
     }
 
     const getFamilyRoles = async () => {
-        try {
-            let { data } = await axios.get('/getfamilyroles')
-            memberRoles.value = data.result
-            getFamilyDetails()
-        }
-        catch (err) {
-            console.log(err)
-        }
+      try {
+        let { data } = await axios.get('/getfamilyroles')
+        memberRoles.value = data.result
+      }
+      catch (err) {
+        console.log(err)
+      }
     }
     getFamilyRoles()
 
@@ -1207,21 +1037,21 @@ export default {
 
     }
 
-    const setDonationProperties = (payload) => {
-      donationNewProps.value = payload
-      confirmCheck()
-    }
+    // const setDonationProperties = (payload) => {
+    //   donationNewProps.value = payload
+    //   confirmCheck()
+    // }
 
     const getAllRouteQueries = () => {
       for (let i in route.query) {
-        if(route.query[i] == 'true') {
+        if (route.query[i] == 'true') {
           selectedCustomField.value.push(i)
         }
       }
     }
-      getAllRouteQueries()
+    getAllRouteQueries()
 
-    const getCustomFields = async() => {
+    const getCustomFields = async () => {
       try {
         let { data } = await axios.get(`/GetAllCustomFields?entityType=4&&tenantID=${fullEventData.value.tenantID}`);
         dynamicCustomFields.value = data
@@ -1230,7 +1060,11 @@ export default {
         console.log(err)
       }
     }
-    
+
+    const resetCallPayment = (payload) => {
+      callPayment.value = payload
+    }
+
 
     return {
       disableClick,
@@ -1241,7 +1075,6 @@ export default {
       toggleBase,
       checkCharacter,
       populateInputfields,
-      CheckXterAfterEleven,
       appltoggle,
       names,
       emails,
@@ -1257,7 +1090,6 @@ export default {
       route,
       eventData,
       dateFormatter,
-      checkedIn,
       confirmCheck,
       disabled,
       connectName,
@@ -1301,10 +1133,9 @@ export default {
       authorizebutton,
       signout,
       content,
-      makePaymentRef,
       usedPaymentGateway,
       initializePayment,
-      setDonationProperties,
+      // setDonationProperties,
       donationNewProps,
       selectedCustomField,
       checkinCode,
@@ -1316,8 +1147,11 @@ export default {
       yearOfWedding,
       // controlType,
       dynamicCustomFields,
-      date7
-      // callIt
+      date7,
+      eventPaymentForm,
+      callPayment,
+      initializePaymentResponse,
+      resetCallPayment
     };
   },
 };
@@ -1354,8 +1188,8 @@ export default {
 }
 
 .event-closed {
-    width: 50%
-  }
+  width: 50%
+}
 
 @media (max-width: 400px) {
   .event-closed {

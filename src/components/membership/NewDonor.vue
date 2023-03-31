@@ -408,4 +408,5 @@ export default {
     border: 1.6px solid rgb(229, 232, 237);
     border-radius: 4px;
     padding: 11px 7px;
-}</style>
+}
+</style>

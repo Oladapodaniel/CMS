@@ -4,14 +4,14 @@
     <div class="row">
       <div class="col-sm-12 p-4 text-center continue-text">Continue payment with</div>
     </div>
-    <div class="row row-button" @click="payWithPaystack">
+    <div class="row row-button" @click="initializePayment">
       <div class="col-4 col-sm-7 offset-2">
-        <img class="img-pay" src="../../assets/4PaystackLogo.png" alt="paystack"/>
+        <img class="img-pay" src="../../assets/4PaystackLogo.png" alt="paystack" />
       </div>
     </div>
 
 
-    <!-- <div class="row row-button" @click="makePayment">
+  <!-- <div class="row row-button" @click="makePayment">
       <div class="col-4 col-sm-7 offset-2">
         <img class="w-100" src="../../../assets/flutterwave_logo_color@2x.png" alt="flutterwave"/>
       </div>
@@ -34,200 +34,113 @@
       </div>
 
   
-    </div> -->
+      </div> -->
 
 
   </div>
 </template>
 
 <script>
-// import PaystackPay from "../../../components/payment/PaystackPay"
-
-import { ref } from 'vue'
+import { ref, watchEffect } from 'vue'
 import axios from "@/gateway/backendapi";
-import finish from "../../services/progressbar/progress"
-import { useToast } from "primevue/usetoast";
+import { ElMessage } from 'element-plus';
 export default {
-  components: {
-    // PaystackPay
-    // paystack
-  },
-  props: ['close', 'donation', 'donorEmail'],
-  emits: ['selected-gateway', 'payment-successful', 'set-props'],
-//   'orderId', 'donation', , 'amount', 'converted', 'name', 'email', 'gateways', 'currency'
-  setup (props, { emit }) {
-
-    const toast = useToast()
+  props: ['close', 'donation', 'donorEmail', 'initializePaymentResponse', 'callPayment'],
+  emits: ['selectedgateway', 'paymentsuccessful', 'donationconfirmed', 'resetcallpaymentprops'],
+  setup(props, { emit }) {
     const email = ref("info@churchplus.com")
-
-    // const isProduction = false
-    // const logoUrl = `https://flutterwave.com/images/logo-colored.svg`
     const selectedGateway = ref("")
-    
 
-    // const paystackGate = computed(() => {
-    //   if(!props.gateways) return false
-    //   return props.gateways.find(i => i.paymentGateway.name === "Paystack")
-    // })
 
-    // const flutterwaveGate = computed(() => {
-    //   if(!props.gateways) return false
-    //   return props.gateways.find(i => i.paymentGateway.name === "FlutterWave")
-    // })
-
-    // const paypalGate = computed(() => {
-    //   if(!props.gateways) return false
-    //   return props.gateways.find(i => i.paymentGateway.name === "PayPal")
-    // })
-
-    // const stripe = computed(() => {
-    //   if(!props.gateways) return false
-    //   return props.gateways.find(i => i.paymentGateway.name === "Stripe")
-    // })
-      
-
-    const payWithPaystack = () => {
-
-      selectedGateway.value = "paystack"
-      emit('selected-gateway', selectedGateway.value)
-   
-     console.log(selectedGateway.value)
-     console.log(props.donation)
-
-    let body = {
-      transactionReference: props.donation.orderID,
-      amount: props.donation.contributionItems[0].amount * 100,
-      gateway: "paystack"
+    const initializePayment = () => {
+      selectedGateway.value = 'Paystack';
+      emit('selectedgateway', selectedGateway.value)
     }
-     emit('set-props', body)
 
+    const confirmDonationPayment = async (trans_id, tx_ref) => {
+      try {
+        let { data } = await axios.post(`/ConfirmEventRegistrationPayment?id=${trans_id}&txnref=${tx_ref}`);
+        if (data.status) {
+          emit("donationconfirmed")
+        } else {
+          ElMessage({
+            type: 'error',
+            showClose: true,
+            message: data.message ? data.message : "Confirmation failed, Confirming your purchase failed, please contact support at info@churchplus.co",
+            duration: 10000
+          })
+        }
+      }
+      catch (error) {
+        console.error(error)
+        ElMessage({
+          type: 'error',
+          showClose: true,
+          message: error.message ? error.message : "Confirmation failed, Confirming your purchase failed, please contact support at info@churchplus.co",
+          duration: 8000
+        })
+      }
+    }
+
+    const payWithPaystack = (initializePaymentResponse) => {
       props.close.click()
       /*eslint no-undef: "warn"*/
       let handler = PaystackPop.setup({
         key: process.env.VUE_APP_PAYSTACK_PUBLIC_KEY_LIVE,
         // key: process.env.VUE_APP_PAYSTACK_API_KEY,
         email: props.donorEmail,
-        amount: props.donation.contributionItems[0].amount * 100,
-        // firstname: props.name,
-        ref: props.donation.orderID,
-        subaccount: props.donation.paymentGateway[0].subAccountID,
+        amount: props.donation.donation.contributionItems[0].amount * 100,
+        firstname: props.donation.person.name,
+        phone_number: props.donation.person.phoneNumber,
+        ref: initializePaymentResponse.transactionReference,
+        subaccount: props.donation.donation.paymentGateway[0].subAccountID,
         bearer: 'subaccount',
         onClose: function () {
-          toast.add({ severity: 'info', summary: 'Transaction cancelled', detail: "You have cancelled the transaction", life: 2500})
+          ElMessage({
+            type: 'error',
+            showClose: true,
+            message: "You have cancelled the transaction",
+            duration: 8000
+          })
           console.log('closed')
         },
         callback: function (response) {
-          //Route to where you confirm payment status
-          console.log(response, "Payment Received");
-          console.log(props.donation);
-
-          
-
-          axios
-            .post(`/donated?paymentType=0`, props.donation)
-            .then((res) => {
-              finish()
-              console.log(res, "success data");
-              emit("donation-confirmed")
-
-            })
-            .catch((err) => {
-              finish()
-              toast.add({ severity: 'error',
-              summary: 'Confirmation failed',
-              detail: "Confirming your purchase failed, please contact support at info@churchplus.co",
-              life: 4000
-              })
-              console.log(err, "error confirming payment");
-            });
-
-          emit('payment-successful', true)
+          let trans_id = response.trxref
+          let tx_ref = response.trxref
+          confirmDonationPayment(tx_ref, trans_id);
+          emit('paymentsuccessful', true)
         },
       });
       handler.openIframe();
     };
 
-    // const getFlutterwaveModules = () => {
-    //    const script = document.createElement("script");
-    //         script.src = !isProduction
-    //           ? "https://ravemodal-dev.herokuapp.com/v3.js"
-    //           : "https://checkout.flutterwave.com/v3.js";
-    //         document.getElementsByTagName("head")[0].appendChild(script);
-    //         console.log(process.env.VUE_APP_FLUTTERWAVE_TEST_KEY)
-    // }
-    // getFlutterwaveModules()
-
-    // const makePayment = (e) => {
-    //   console.log(e.srcElement.alt)
-    //   // Get and send clicked payment gateway to parent
-    //   selectedGateway.value = e.srcElement.alt
-    //   emit('selected-gateway', selectedGateway.value)
-
-    //   // Close payment modal
-    //   props.close.click()
-
-    //   window.FlutterwaveCheckout({
-    //             public_key: process.env.VUE_APP_FLUTTERWAVE_TEST_KEY,
-    //             tx_ref: props.orderId,
-    //             amount: props.amount,
-    //             currency: props.currency,
-    //             payment_options: 'card,ussd',
-    //             customer: {
-    //               name: props.name,
-    //               email: props.email,
-    //             },
-    //             callback: (response) => {
-    //               console.log("Payment callback", response)
-    //                 // props.donation.usedPaymentGateway = selectedGateway.value
-
-    //                 console.log(props.donation)
-
-    //                 axios
-    //                       .post(`/confirmDonation?txnref=${response.tx_ref}`, props.donation)
-    //                       .then((res) => {
-    //                         finish()
-    //                         console.log(res, "success data");
-
-    //                       })
-    //                       .catch((err) => {
-    //                         finish()
-    //                         toast.add({
-    //                           severity: 'error',
-    //                           summary: 'Confirmation failed',
-    //                           detail: "Confirming your purchase failed, please contact support at info@churchplus.co",
-    //                           life: 4000
-    //                           })
-    //                         console.log(err, "error confirming payment");
-    //                       });
-
-    //                     emit('payment-successful', true)
-    //               },
-    //             onclose: () => console.log('Payment closed'),
-    //             customizations: {
-    //               title: 'Church Giving',
-    //               description: "Payment for contribution items",
-    //               logo: logoUrl,
-    //             },
-    //           });
-    // }
+    watchEffect(() => {
+      if (props.callPayment && Object.keys(props.initializePaymentResponse).length > 0) {
+          payWithPaystack(props.initializePaymentResponse);
+        emit('resetcallpaymentprops', false)
+      }
+    })
 
     return {
-      payWithPaystack, selectedGateway, email
+      initializePayment,
+      payWithPaystack, 
+      selectedGateway, 
+      email
     }
-    }
-
   }
+
+}
 
 </script>
 
 <style scoped>
-
 .continue-text {
   font-family: Nunito Sans !important;
   font-size: 24px;
   font-weight: bold;
   text-align: center;
 }
+
 .option-text {
   font-family: Nunito Sans !important;
   font-weight: 800;
@@ -237,6 +150,7 @@ export default {
   color: #136acd;
   font-size: 8px;
 }
+
 /* .circle {
     background:  #136acd;
     border-radius: 50%;
@@ -255,8 +169,8 @@ export default {
   box-shadow: rgba(0, 0, 0, 0.1) 0px 4px 12px;
   background: white;
   margin: 12px 70px 15px 70px;
- transition: all 0.4s ease-in-out;
- max-height: 45px;
+  transition: all 0.4s ease-in-out;
+  max-height: 45px;
 }
 
 .img-height {
