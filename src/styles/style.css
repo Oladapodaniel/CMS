@@ -1189,3 +1189,9 @@ rect.highcharts-background[fill] {
     border-radius: 4px;
     padding: 11px 7px;
   }
+
+  .border-contribution {
+    border: 1.6px solid rgb(229, 232, 237);
+    border-radius: 4px;
+    padding: 11px 7px;
+}
