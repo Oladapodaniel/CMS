@@ -135,6 +135,7 @@ export default {
     const route = useRoute();
     const loading = ref(false)
     const dynamicCustomFields = ref([]);
+    const loading = ref(false)
     const churchContributionItems = computed(() => {
       if (
         props.groupDetail &&
