@@ -66,13 +66,13 @@
             <template v-slot:redeemed="{ item }">
               <div class="c-pointer" @click="pledgeClick(item.id)">
                 {{ item.currencySymbol
-                }}{{ Math.abs(item.totalPaymentsAmount).toLocaleString() }}..00
+                }} {{ Math.abs(item.totalPaymentsAmount).toLocaleString() }}.00
               </div>
             </template>
             <template v-slot:balance="{ item }">
               <div class="c-pointer text-danger" @click="pledgeClick(item.id)">
                 {{ item.currencySymbol
-                }}{{ item.totalPaymentsAmount - item.totalPledgeAmount }}..00
+                }} {{ Math.abs(item.totalPaymentsAmount - item.totalPledgeAmount).toLocaleString() }}.00
               </div>
             </template>
             <template v-slot:date="{ item }">

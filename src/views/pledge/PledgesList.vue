@@ -52,7 +52,7 @@
         <div class="col-sm-6 col-lg-4">
           <div class="text-secondary font-weight-bold small">Total pledge</div>
           <h3 class="font-weight-700 mt-3">
-            {{ Math.abs(pledgesSummary.totalPledges).toLocaleString() }}.00
+            {{ Math.abs(getAllPledgeAmount.length == 0 ?  pledgesSummary.totalPledges : getAllPledgeAmount).toLocaleString()  }}.00
             <span class="text-secondary small">{{
               pledgesSummary.symbol
             }}</span>
@@ -61,9 +61,9 @@
         <div class="col-sm-6 col-lg-4 mt-3 mt-sm-0">
           <div class="font-weight-bold small text-secondary">
             Total Payments
-          </div>
+          </div> 
           <h3 class="font-weight-700 mt-3 text-success">
-            {{ Math.abs(pledgesSummary.totalPayments).toLocaleString() }}.00
+            {{ Math.abs(getAllTotalPayment.length == 0 ? pledgesSummary.totalPayments : getAllTotalPayment ).toLocaleString() }}.00
             <span class="small">{{ pledgesSummary.symbol }}</span>
           </h3>
         </div>
@@ -72,7 +72,7 @@
             Total Balance
           </div>
           <h3 class="font-weight-700 mt-3 text-danger">
-            {{ pledgeBalance.toLocaleString() }}.00
+            {{ Math.abs(getAllTotalBalance.length == 0  ? pledgeBalance : getAllTotalBalance).toLocaleString()}}.00
             <span class="small">
               {{ pledgesSummary.symbol }}
             </span>
@@ -295,6 +295,7 @@ export default {
       { status: "Paid" },
       { status: "Over Due" },
       { status: "No Payment" },
+      { status: "Partial" },
       { status: "---" },
     ]);
     const allPledgeDefinitionList = ref([]);
@@ -392,24 +393,25 @@ export default {
       }
     };
     getAllPledgeDefinition();
-
+    const getAllPledgeAmount = ref([])
+    const getAllTotalPayment = ref([])
+    const getAllTotalBalance = ref([])
     const filterPledge = async () => {
-      // filterLoading.value = true;
-      // selectedContact.value.name = selectedContact.value && selectedContact.value.name ? selectedContact.value.name : "";
-      // selectedCategory.value.name = selectedCategory.value && selectedCategory.value.name  ? selectedCategory.value.name : "" ;
-      // selectedStatus.value.status = selectedStatus.value && selectedStatus.value.status ? selectedStatus.value.status : "" ;
+      filterLoading.value = true;
+      let selectedContactValue = selectedContact.value && selectedContact.value.id ? selectedContact.value.id : "";
+      let selectedCategoryValue = selectedCategory.value && selectedCategory.value.id  ? selectedCategory.value.id : "" ;
+      let selectedStatusValue = selectedStatus.value && selectedStatus.value.status ? selectedStatus.value.status : "" ;
+      let startDateValue = startDate.value ?  new Date(startDate.value ).toLocaleDateString("en-US") : ''
+      let endDateValue = endDate.value ? new Date(endDate.value).toLocaleDateString("en-US") : ''
       try {
-        // filterLoading.value = true;
         const res = await axios.get(
-          `/api/Pledge/GetAllPledgesSearch?personId=${
-            selectedContact.value.id 
-          }&status${selectedStatus.value.status}&pledgeItemName${
-            selectedCategory.value.name
-          }&startDate${new Date(startDate.value).toLocaleDateString(
-            "en-US"
-          )}&endDate${new Date(endDate.value).toLocaleDateString("en-US")}`
+          `/api/Pledge/GetAllPledgesSearch?personId=${selectedContactValue}&status=${selectedStatusValue}&pledgeItemID=${selectedCategoryValue}&startDate=${startDateValue}&endDate=${endDateValue}`
         );
         filterResult.value = res.data.returnObject;
+        getAllPledgeAmount.value = res.data.returnObject.map((i) => i.amount).reduce((b, a) => b + a, 0);
+        getAllTotalPayment.value = res.data.returnObject.map((i) => i.totalPaymentSum).reduce((b, a) => b + a, 0);
+        getAllTotalBalance.value = res.data.returnObject.map((i) => i.balance).reduce((b, a) => b + a, 0);
+        console.log(getAllPledgeAmount.value, "jkkj");
         filterLoading.value = false;
       } catch (error) {
         filterLoading.value = false;
@@ -417,14 +419,18 @@ export default {
       }
     };
     const reSet = () =>{
-      if(startDate.value || endDate.value || selectedStatus.value || selectedCategory.value || selectedContact.value){
+      if(startDate.value || endDate.value || selectedCategory.value || selectedContact.value || selectedStatus.value ){
         startDate.value = ""
-      endDate.value = ""
-      selectedStatusID.value = ""
-      selectedCategoryID.value = ""
-      selectedContact.value.name = ""
-      }
-      
+        endDate.value = ""
+        selectedCategory.value = new Object()
+        selectedContact.value  = new Object()
+        selectedStatus.value = new Object()
+        selectedCategoryID.value = null
+        selectedStatusID.value = null
+        getAllTotalBalance.value = []
+        getAllTotalPayment.value = []
+        getAllPledgeAmount.value = []
+      }      
       
     }
     const getCurrentlySignedInUser = async () => {
@@ -455,7 +461,7 @@ export default {
         filterResult.value.length > 0 &&
         (selectedContact.value.name ||
           selectedStatus.value.status ||
-          selectedCategory.value.name)
+          selectedCategory.value.name || endDate.value || startDate.value )
       ) {
         return filterResult.value;
       } else {
@@ -577,6 +583,9 @@ export default {
 
     return {
       upload,
+      getAllTotalPayment,
+      getAllTotalBalance,
+      getAllPledgeAmount,
       reSet,
       route,
       selectedLink,

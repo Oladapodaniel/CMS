@@ -213,6 +213,7 @@ export default {
   }
 
   .links-menu {
+    z-index: 999;
     position: fixed;
     left: -266px;
     transition: all 0.5s cubic-bezier(0.645, 0.045, 0.355, 1);

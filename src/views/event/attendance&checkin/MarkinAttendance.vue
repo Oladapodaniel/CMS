@@ -112,6 +112,9 @@
       <div class="col-md-3"></div>
       <div class="col-md-5">
         <div class="loading-div my-5" v-if="showLoading">
+          <el-icon class="is-loading " >
+            <Loading />
+          </el-icon>
           <i
             class="pi pi-spin pi-spinner loading-indicator"
             style="fontsize: 2rem"

@@ -2,7 +2,6 @@
   <div class="container-fluid">
     <div class="row">
       <div class="col-md-12">
-
         <!-- <hr class="hr" /> -->
         <div class="no-person" v-if="items.length === 0 && !errorOccurred">
           <div class="empty-img mt-5">
@@ -13,7 +12,14 @@
 
         <div class="row" v-if="items.length > 0 && !loading">
           <div class="col-md-12 px-0">
-            <List :list="items" @checkedattendance="removeMultipleCheckin" :errorOcurred="errorOccurred" @attendance-checkin="removeCheckin" :totalItems="totalItems" @pagedattendance="setPagedAttendance" />
+            <List
+              :list="items"
+              @checkedattendance="removeMultipleCheckin"
+              :errorOcurred="errorOccurred"
+              @attendance-checkin="removeCheckin"
+              :totalItems="totalItems"
+              @pagedattendance="setPagedAttendance"
+            />
           </div>
         </div>
         <div class="row" v-if="cantGetItems">
@@ -22,65 +28,65 @@
           </div>
         </div>
       </div>
-
-      
     </div>
   </div>
 </template>
 
 <script>
 import List from "../../../views/event/attendance&checkin/AttendanceAndCheckinList";
-import attendanceservice from '../../../services/attendance/attendanceservice';
-import { ref } from 'vue';
+import store from "../../../store/store";
+// import attendanceservice from '../../../services/attendance/attendanceservice';
+import { ref } from "vue";
 
 export default {
   components: { List },
   async setup() {
-    const items = ref([ ]);
+    const items = ref(store.getters["attendance/attendanceServiceItem"]);
+    console.log(items.value, "ijkljlkj");
     const loading = ref(false);
     const errorOccurred = ref(false);
     const cantGetItems = ref(true);
     const totalItems = ref(0);
 
     // const getAttendanceItems = async () => {
-      try {
-        cantGetItems.value = false;
-        loading.value = true;
-        const response = await attendanceservice.getItems();
-        console.log(response, "checkins");
-        items.value = items.value ? response.items : [ ];
-        totalItems.value = response.totalItems
+    try {
+      cantGetItems.value = false;
+      loading.value = true;
+      // const response = await attendanceservice.getItems();
+      await store.dispatch("attendance/setAttendanceItemData").then((res) => {
+        console.log(res, "checkins");
+        items.value = items.value ? res.items : [];
+        totalItems.value = res.totalItems;
         loading.value = false;
-      } catch (error) {
-        cantGetItems.value = true;
-        console.log(error);
-        loading.value = false;
-        errorOccurred.value = true;
-      }
-      console.log(errorOccurred.value);
+      });
+    } catch (error) {
+      cantGetItems.value = true;
+      console.log(error);
+      loading.value = false;
+      errorOccurred.value = true;
+    }
+    console.log(errorOccurred.value);
     // }
     // getAttendanceItems();
 
     const removeCheckin = (payload) => {
-        items.value.splice(payload, 1)
-    }
+      items.value.splice(payload, 1);
+    };
 
     const removeMultipleCheckin = (payload) => {
-      console.log(payload, "oiiipoii")
+      console.log(payload, "oiiipoii");
       items.value = items.value.filter((item) => {
-              const y = payload.findIndex(
-                (i) => i.id === item.id
-              );
-               console.log(y , "old are u now");
-              if (y >= 0) return false;
-              return true;
-            });
-            console.log(items.value, "the boy is good ")
-    }
+        const y = payload.findIndex((i) => i.id === item.id);
+        console.log(y, "old are u now");
+        if (y >= 0) return false;
+        return true;
+      });
+      console.log(items.value, "the boy is good ");
+    };
 
     const setPagedAttendance = (payload) => {
-      items.value = payload.items
-    }
+      items.value = payload.items;
+    };
 
     return {
       items,
@@ -90,7 +96,7 @@ export default {
       cantGetItems,
       removeCheckin,
       totalItems,
-      setPagedAttendance
+      setPagedAttendance,
     };
   },
 };

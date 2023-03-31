@@ -37,7 +37,9 @@
                   @change="checkin"
                   :binary="true"
                 /> -->
-                <input
+                 <el-checkbox class="custom-checkbox"  :checked="person.isPresent" @change="checkin($event, 1)"
+                  :disabled="checking"  />
+                <!-- <input
                   type="checkbox"
                   name=""
                   class="custom-checkbox"
@@ -45,7 +47,7 @@
                   id=""
                   @change="checkin($event, 1)"
                   :disabled="checking"
-                />
+                /> -->
               </span>
             </span>
           </div>
@@ -73,15 +75,8 @@
                   id="binary"
                   :value="person.isCheckedOut"
                   :binary="true"/> -->
-                <input
-                  type="checkbox"
-                  name=""
-                  class="custom-checkbox"
-                  id=""
-                  :checked="person.isCheckedOut"
-                  @change="checkin($event, 2)"
-                  :disabled="checking"
-                />
+                  <el-checkbox class="custom-checkbox"  :checked="person.isCheckedOut" @change="checkin($event, 2)"
+                  :disabled="checking"  />
               </span>
             </span>
           </div>
@@ -89,20 +84,14 @@
 
         <div class="row">
           <div class="col-md-12">
-            <Dialog
-              header="Print Tag"
-              v-model:visible="display"
-              :style="{ width: '70vw', maxWidth: '600px' }"
-              :modal="true"
-              position="top"
-            >
+            <el-dialog v-model="display" title="Print Tag"
+              :width="mdAndUp || lgAndUp || xlAndUp ? `50%` : `90%`">
               <div class="row">
-                <div class="col-md-12">
+                <div class="col-md-8">
                   <MemberTag />
                 </div>
               </div>
-            </Dialog>
-            <Toast />
+            </el-dialog>
           </div>
         </div>
       </div>
@@ -114,7 +103,8 @@
 import { ref } from "vue";
 import MemberTag from "../../views/event/attendance&checkin/AttendanceTag";
 import attendanceservice from "../../services/attendance/attendanceservice";
-import { useToast } from "primevue/usetoast";
+import deviceBreakpoint from "../../mixins/deviceBreakpoint";
+import { ElMessage } from "element-plus";
 
 export default {
   props: ["isKioskMode", "person"],
@@ -123,10 +113,11 @@ export default {
     const checkedIn = ref(false);
     const checkedOut = ref(false);
     const display = ref(false);
-    const toast = useToast();
     const checking = ref(false);
+    const { mdAndUp, lgAndUp, xlAndUp, xsOnly } = deviceBreakpoint()
 
     const checkin = async (e, option) => {
+      console.log(option, "hhjjjjj");
       let response = {};
       if (option === 1) {
         try {
@@ -138,20 +129,22 @@ export default {
             value: !props.person.isPresent,
             id: props.person.id,
           });
-          toast.add({
-            severity: `${e.target.checked ? "success" : "info"}`,
-            summary: `${
-              e.target.checked ? "Checked" : "Unchecked"
-            } Successfully`,
-            detail: `Member marked ${e.target.checked ? "present" : "absent"}`,
-            life: 3000,
+
+          ElMessage({
+            type: `${e ? "success" : "info"}`,
+            message: `${ e ? "Checked" : "Unchecked" } Successfully`,
+            duration: 5000,
+          });
+          ElMessage({
+            type: `${e ? "success" : "info"}`,
+            message: `Member marked ${e ? "present" : "absent"}`,
+            duration: 5000,
           });
         } catch (error) {
-          toast.add({
-            severity: "error",
-            summary: "Checkin Error",
-            detail: "Checkin was not successful",
-            life: 3000,
+          ElMessage({
+            type: "error",
+            message: "Checkin was not successful",
+            duration: 5000,
           });
           emit("togglecheckin", {
             value: props.person.isPresent,
@@ -168,12 +161,10 @@ export default {
           checking.value = false;
 
           if (response.trim() === "User Was Not Checked In Earlier") {
-            console.log(response, "RESPE");
-            toast.add({
-              severity: "info",
-              summary: "Checkin Error",
-              detail: response,
-              life: 3000,
+             ElMessage({
+              type: "info",
+              message: response,
+              duration: 5000,
             });
 
             emit("togglecheckout", { value: false, id: props.person.id });
@@ -182,23 +173,19 @@ export default {
               value: !props.person.isCheckedOut,
               id: props.person.id,
             });
-            toast.add({
-              severity: `${e.target.checked ? "success" : "info"}`,
-              summary: "Checkin Successful",
-              detail: `Member has ${
-                e.target.checked ? "checked out" : "not checked out"
-              }`,
-              life: 3000,
+            ElMessage({
+              type: `${e ? "success" : "info"}`,
+              message: `${response} , Member has ${ e ? "checked out" : "not checked out" }`,
+              duration: 5000,
             });
           }
         } catch (error) {
           checking.value = false;
-          toast.add({
-            severity: "error",
-            summary: "Checkin Error",
-            detail: "Checkin was not successful",
-            life: 3000,
-          });
+          ElMessage({
+              type: "error",
+              message: "Checkin was not successful",
+              duration: 5000,
+            });
           emit("togglecheckout", {
             value: props.person.isCheckedOut,
             id: props.person.id,
@@ -214,6 +201,10 @@ export default {
 
     return {
       checkedIn,
+      mdAndUp, 
+      lgAndUp, 
+      xlAndUp, 
+      xsOnly,
       checkin,
       checkedOut,
       checkout,
@@ -290,7 +281,7 @@ export default {
 }
 
 .custom-checkbox {
-  border: 2px solid red !important;
+  /* border: 2px solid red !important; */
   background: #ffffff;
   width: 20px !important;
   height: 20px;

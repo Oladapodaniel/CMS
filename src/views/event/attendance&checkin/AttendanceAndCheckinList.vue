@@ -2,7 +2,7 @@
 <template>
   <!-- tosin working on tables -->
   <div class="row mt-4 ">
-    <div class="col-md-12 px-0" id="table">
+    <div class="col-md-12 px-0" id="table"> 
       <div class="top-con" id="ignore2">
         <div class="table-top p-3 ">
           <div class="d-flex flex-column flex-sm-row justify-content-end ">
@@ -33,28 +33,6 @@
             </el-tooltip>
               </div>
             </div>
-            
-          <!-- <div class="col-4">
-            <p @click="toggleSearch" class="search-text w-100 mt-2">
-              <i class="pi pi-search"></i> SEARCH
-            </p>
-          </div> -->
-
-          <!-- <div class="search d-flex ml-2">
-            <label
-              class="label-search d-flex"
-              :class="{
-                'show-search': searchIsVisible,
-                'hide-search': !searchIsVisible,
-              }"
-            >
-              <input type="text" placeholder="Search..." v-model="searchText" />
-              <span class="empty-btn" @click="removeSearchText">x</span>
-              <span class="search-btn">
-                <i class="pi pi-search"></i>
-              </span>
-            </label>
-          </div> -->
         </div>
         <Table
           :data="searchAttendance"
@@ -191,300 +169,6 @@
         </template>
         </Table>
       </div>
-
-      <!-- <div>
-        <div class="container-fluid d-none d-md-block">
-          <div class="row t-header">
-            <div class="col-md-1">
-              <input
-                type="checkbox"
-                name="all"
-                id="all"
-                @change="markAllAttendance"
-                :checked="checkedAttendance.length === searchAttendance.length"
-              />
-            </div>
-            <div class="small-text text-capitalize col-md-3 font-weight-bold">
-              Event Name
-            </div>
-            
-            <div
-              class="
-                small-text
-                text-capitalize
-                col-md-3
-                font-weight-bold
-                d-flex
-                justify-content-center
-                ml-md-n4
-              "
-            >
-              Date
-            </div>
-            <div
-              class="
-                small-text
-                text-capitalize
-                col-md-3
-                font-weight-bold
-                d-flex
-                justify-content-center
-              "
-            >
-              Group Name
-            </div>
-            <div
-              class="small-text text-capitalize col-md-1 font-weight-bold"
-            ></div>
-            <div
-              class="
-                small-text
-                text-capitalize
-                col-md-1
-                font-weight-bold
-                d-flex
-                justify-content-end
-              "
-            >
-              Action
-            </div>
-          </div>
-        </div>
-
-        <div class="row" style="margin: 0">
-          <div class="col-12 parent-desc px-0">
-
-            <div class="row" v-if="loading">
-              <div class="col-md-12">
-                <div class="row">
-                  <div
-                    class="
-                      col-md-12
-                      d-flex
-                      align-items-center
-                      justify-content-center
-                    "
-                  >
-                    <i
-                      class="fas fa-circle-notch fa-spin py-4"
-                      v-if="loading"
-                    ></i>
-                  </div>
-                </div>
-                <div class="row">
-                  <div class="col-md-12 px-0">
-                    <hr class="hr my-0" />
-                  </div>
-                </div>
-              </div>
-            </div>
-
-            <div
-              class="
-                row
-                w-100
-                c-pointer
-                text-dark
-                tr-border-bottom
-                hover
-                d-flex
-                align-items-center
-                py-2
-              "
-              style="margin: 0"
-              v-for="(item, index) in searchAttendance"
-              :key="index"
-            >
-              <div class="col-md-1 d-flex d-md-block px-3 justify-content-end">
-                <input
-                  type="checkbox"
-                  name=""
-                  id=""
-                  @change="check1item(item)"
-                  :checked="
-                    checkedAttendance.findIndex((i) => i.id === item.id) >= 0
-                  "
-                />
-              </div>
-
-              <div class="col-md-3 desc">
-                <p class="mb-0 d-flex justify-content-between">
-                  <span
-                    class="
-                      text-dark
-                      font-weight-bold
-                      d-flex d-md-none
-                      fontIncrease
-                    "
-                    style="font-size: 15px"
-                    >Event Name</span
-                  >
-                  <router-link
-                    class="text-decoration-none font-weight-500 itemroute-color"
-                    :to="{
-                      name: 'CheckinType',
-                      query: {
-                        activityID: item.eventID,
-                        activityName: item.fullEventName,
-                        groupId: item.groupID,
-                        groupName: item.fullGroupName,
-                        id: item.id,
-                        code: item.attendanceCode,
-                      },
-                    }"
-                  >
-                    {{ item.fullEventName }}
-                  </router-link>
-                </p>
-              </div>
-
-              <div class="col-md-3">
-                <div class="d-flex small justify-content-between">
-                  <span
-                    class="
-                      text-dark
-                      font-weight-bold
-                      d-flex d-md-none
-                      fontIncrease
-                    "
-                    style="font-size: 15px"
-                    >Date</span
-                  >
-                  <div class="desc small-text text-right text-md-center">
-                    <router-link
-                      class="
-                        text-decoration-none
-                        font-weight-500
-                        itemroute-color
-                      "
-                      style="margin-left: 4.5rem"
-                      :to="{
-                        name: 'CheckinType',
-                        query: {
-                          activityID: item.eventID,
-                          activityName: item.fullEventName,
-                          groupId: item.groupID,
-                          groupName: item.fullGroupName,
-                          id: item.id,
-                          code: item.attendanceCode,
-                        },
-                      }"
-                    >
-                      {{ formatDate(item.eventDate) }}
-                    </router-link>
-                  </div>
-                </div>
-              </div>
-
-              <div class="col-md-3">
-                <div class="d-flex small justify-content-between">
-                  <span
-                    class="
-                      text-dark
-                      font-weight-bold
-                      d-flex d-md-none
-                      fontIncrease
-                    "
-                    style="font-size: 15px"
-                    >Group Name</span
-                  >
-                  <div class="desc small-text text-right text-md-left ml-md-5">
-                    <router-link
-                      class="
-                        text-decoration-none
-                        font-weight-500
-                        itemroute-color
-                      "
-                      :to="{
-                        name: 'CheckinType',
-                        query: {
-                          activityID: item.eventID,
-                          activityName: item.fullEventName,
-                          groupId: item.groupID,
-                          groupName: item.fullGroupName,
-                          id: item.id,
-                          code: item.attendanceCode,
-                        },
-                      }"
-                    >
-                      {{ item.fullGroupName }}
-                    </router-link>
-                  </div>
-                </div>
-              </div>
-
-              <div class="col-md-1"></div>
-
-              <div class="col-md-1">
-                <div>
-                  <div class="dropdown ml-md-n3">
-                    <span class="d-flex justify-content-between">
-                      <span class="d-md-none d-sm-flex"></span>
-                      <span class="d-sm-flex small">
-                        <i
-                          class="
-                            fas
-                            fa-ellipsis-v
-                            cursor-pointer
-                            ml-2
-                            fontIncrease
-                          "
-                          id="dropdownMenuButton"
-                          data-toggle="dropdown"
-                          aria-haspopup="true"
-                          aria-expanded="false"
-                        ></i>
-
-                        <div
-                          class="dropdown-menu"
-                          aria-labelledby="dropdownMenuButton"
-                        >
-                          <a class="dropdown-item">
-                            <router-link
-                              class="text-decoration-none text-dark"
-                              :to="{
-                                name: 'AttendanceReport',
-                                params: { id: item.id },
-                              }"
-                              >View Details</router-link
-                            >
-                          </a>
-                          <a class="dropdown-item">
-                            <router-link
-                              class="text-decoration-none text-dark"
-                              :to="{
-                                name: 'CheckinType',
-                                query: {
-                                  activityID: item.eventID,
-                                  activityName: item.fullEventName,
-                                  groupId: item.groupID,
-                                  groupName: item.fullGroupName,
-                                  id: item.id,
-                                  code: item.attendanceCode,
-                                },
-                              }"
-                              >Checkin</router-link
-                            >
-                          </a>
-
-
-                          <a
-                            class="dropdown-item elipsis-items"
-                            href="#"
-                            @click.prevent="showConfirmModal(item.id, index)"
-                            >Delete
-                          </a>
-                        </div>
-                      </span>
-                    </span>
-                  </div>
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
-      </div> -->
-
       <div class="d-flex justify-content-end my-3">
         <el-pagination
           v-model:current-page="serverOptions.page"
@@ -526,10 +210,10 @@ export default {
     const attendanceList = ref([]);
     const checkedAttendance = ref([]);
     const attendanceHeaders = ref([
-      { name: "Event Name", value: "eventName" },
-      { name: "Date", value: "date" },
-      { name: "Group Name", value: "groupName" },
-      { name: "Action", value: "action" },
+      { name: "EVENT NAME", value: "eventName" },
+      { name: "DATE", value: "date" },
+      { name: "GROUP NAME", value: "groupName" },
+      { name: "ACTION", value: "action" },
     ]);
     const serverOptions = ref({
       page: 1,
@@ -646,6 +330,7 @@ export default {
             duration: 5000,
           });
             emit("attendance-checkin", index);
+            store.dispatch('attendance/removeAttendanceFromStore', id)
           } else {
             ElMessage({
             type: "warning",
@@ -744,11 +429,6 @@ export default {
           });
         });
     };
-
-    const searchIsVisible = ref(false);
-    const toggleSearch = () => {
-      searchIsVisible.value = !searchIsVisible.value;
-    };
     let searchText = ref("");
     const searchAttendanceInDB = () => {
       if (searchText.value !== "" && props.list.length > 0) {
@@ -773,10 +453,6 @@ export default {
         return props.list;
       }
     });
-
-    const removeSearchText = () => {
-      searchText = "";
-    };
 
     const currentPage = ref(0);
     const getPeopleByPage = async (page) => {
@@ -814,9 +490,6 @@ export default {
       deleteAttendance,
       searchText,
       searchAttendance,
-      toggleSearch,
-      searchIsVisible,
-      removeSearchText,
       currentPage,
       getPeopleByPage,
       serverOptions,

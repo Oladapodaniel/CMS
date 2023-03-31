@@ -677,7 +677,7 @@ export default {
     const contributionItems = ref([]);
     const singlePledge = ref({});
     const targetAmount = ref("");
-    const setSelectedRange = ref();
+    const setSelectedRange = ref(null);
     const reOccuringRange = ref([
       { name: "Daily", id: 1 },
       { name: "Weekly", id: 2 },
