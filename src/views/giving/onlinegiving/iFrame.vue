@@ -344,7 +344,7 @@
 <script>
 import { ref, computed } from "vue";
 import axios from "@/gateway/backendapi";
-import PaymentOptionModal from "./PaymentOptionModal";
+import PaymentOptionModal from "../../../components/paymentoption/PaymentOptionModal.vue";
 import { useRoute, useRouter } from "vue-router";
 import finish from "../../../services/progressbar/progress"
 import SignUp from "./SignUp"

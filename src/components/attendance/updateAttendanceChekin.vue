@@ -1,11 +1,7 @@
 <template>
-  <div class="container">
-    <div
-      class="row mt-5 border box-boundary py-3 c-pointer"
-      v-if="contributionItems.length > 0"
-      data-toggle="collapse"
-      data-target="#collapseExampleOffering"
-    >
+  <div class="container-fluid">
+    <div class="row mt-5 border box-boundary py-3 c-pointer" v-if="contributionItems.length > 0" data-toggle="collapse"
+      data-target="#collapseExampleOffering">
       <div class="col-6 font-weight-700" style="font-size: 1.5em">
         Contributions
       </div>
@@ -17,11 +13,7 @@
       <div class="col-12">
         <div class="collapse" id="collapseExampleOffering">
           <div class="card-body py-2 px-0">
-            <div
-              class="col-12 py-2 border-top"
-              v-for="item in churchContributionItems"
-              :key="item.id"
-            >
+            <div class="col-12 py-2 border-top" v-for="item in churchContributionItems" :key="item.id">
               <div class="row">
                 <div class="col-md-8 mt-3 align-self-center font-weight-700">
                   {{ item.name }}
@@ -40,12 +32,8 @@
         </div>
       </div>
     </div>
-    <div
-      class="row mt-3 border box-boundary py-3 c-pointer"
-      data-toggle="collapse"
-      data-target="#collapseExampleAttendance"
-      v-if="attendanceType.length > 0"
-    >
+    <div class="row mt-3 border box-boundary py-3 c-pointer" data-toggle="collapse"
+      data-target="#collapseExampleAttendance" v-if="attendanceType.length > 0">
       <div class="col-10 font-weight-700" style="font-size: 1.5em">
         Summary attendance
       </div>
@@ -57,11 +45,7 @@
       <div class="col-12">
         <div class="collapse" id="collapseExampleAttendance">
           <div class="card-body py-2 px-0">
-            <div
-              class="col-12 py-2 border-top"
-              v-for="item in churchAttendanceCategory"
-              :key="item.id"
-            >
+            <div class="col-12 py-2 border-top" v-for="item in churchAttendanceCategory" :key="item.id">
               <div class="row">
                 <div class="col-md-8 mt-3 align-self-center font-weight-700">
                   {{ item.name }}
@@ -80,12 +64,8 @@
         </div>
       </div>
     </div>
-    <div
-      class="row mt-3 border box-boundary py-3 c-pointer"
-      data-toggle="collapse"
-      data-target="#collapseExampleOther"
-      v-if="dynamicCustomFields.length > 0"
-    >
+    <div class="row mt-3 border box-boundary py-3 c-pointer" data-toggle="collapse" data-target="#collapseExampleOther"
+      v-if="dynamicCustomFields.length > 0">
       <div class="col-10 font-weight-700" style="font-size: 1.5em">
         Other Information
       </div>
@@ -97,11 +77,7 @@
       <div class="col-12">
         <div class="collapse" id="collapseExampleOther">
           <div class="card-body py-2 px-0">
-            <div
-              class="col-12 py-2 border-top"
-              v-for="item in attendanceCustomField"
-              :key="item.id"
-            >
+            <div class="col-12 py-2 border-top" v-for="item in attendanceCustomField" :key="item.id">
               <div class="row">
                 <div class="col-md-8 mt-3 align-self-center font-weight-700">
                   {{ item.label }}
@@ -185,9 +161,9 @@ export default {
 
     const churchAttendanceCategory = computed(() => {
       if (
-          props.groupDetail &&
-          props.groupDetail.attendances &&
-          props.groupDetail.attendances.length == 0
+        props.groupDetail &&
+        props.groupDetail.attendances &&
+        props.groupDetail.attendances.length == 0
       ) return props.attendanceType
       if (
         props.groupDetail &&
@@ -199,7 +175,6 @@ export default {
           const y = props.groupDetail.attendances.findIndex(
             (j) => j.attendanceTypeID == i.id
           );
-          console.log(y, props.groupDetail.attendances[y].number);
           if (y >= 0) {
             i.number = props.groupDetail.attendances[y].number;
             i.attendanceTypeAttendanceID = props.groupDetail.attendances[y].id;
@@ -207,12 +182,12 @@ export default {
           return i;
         });
     });
-    
+
     const attendanceCustomField = computed(() => {
       if (
-          props.groupDetail &&
-          props.groupDetail.customAttributeData &&
-          props.groupDetail.customAttributeData.length == 0
+        props.groupDetail &&
+        props.groupDetail.customAttributeData &&
+        props.groupDetail.customAttributeData.length == 0
       ) return dynamicCustomFields.value
       if (
         props.groupDetail &&
@@ -234,8 +209,6 @@ export default {
     watchEffect(() => {
       if (props.groupDetail && Object.keys(props.groupDetail).length > 0) {
         note.value = props.groupDetail.note;
-      }else {
-        console.log('ddddd')
       }
     });
 
@@ -272,9 +245,8 @@ export default {
         }),
         note: note.value,
       };
-      console.log(body);
       try {
-        let data = await axios.put(
+        await axios.put(
           "/api/CheckInAttendance/UpdateCheckInAttendance",
           body
         );
@@ -300,7 +272,6 @@ export default {
     const getAllCustomFields = async () => {
       try {
         let data = await allCustomFields.allCustomFields();
-        console.log(data);
         dynamicCustomFields.value = data.filter((i) => i.entityType === 5);
       } catch (err) {
         console.log(err);
@@ -315,7 +286,8 @@ export default {
       note,
       loading,
       dynamicCustomFields,
-      attendanceCustomField
+      attendanceCustomField,
+      loading
     };
   },
 };

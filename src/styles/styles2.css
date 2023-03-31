@@ -175,3 +175,6 @@ div.firsttimersearchmember.el-drawer {
 div.firsttimersearchmember.el-drawer .el-drawer__header {
   margin-bottom: 0;
 }
+div.uploadvoice div.el-upload.el-upload--text {
+  width: 100%
+}
