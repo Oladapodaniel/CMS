@@ -18,9 +18,6 @@
                   color="#136acd"
                   :loading="loading"
                 >
-                  <!-- <i
-                    class="fas fa-circle-notch fa-spin mr-2 text-white"
-                  ></i> -->
                   <span class="text-white">Save and Continue</span>
                   <span></span>
                 </el-button>
@@ -58,7 +55,7 @@
                 <el-icon ><Calendar /></el-icon>
                 &nbsp;&nbsp;&nbsp;Select
                 Category</span><span class="mt-1" >
-                  <el-icon class="" :class="{ roll3: showForm3 }" aria-hidden="true" ><ArrowDownBold /></el-icon>
+                  <el-icon class="ofering offset-sm-2" :class="{ roll3: showForm3 }"  ><ArrowDown /></el-icon>
                 <!-- <i
                   class="pi pi-angle-down offset-sm-2 ofering"
                   :class="{ roll3: showForm3 }"
@@ -188,9 +185,9 @@
           :key="indx"
         >
           <div class="row">
-            <div class="col-6 col-md-3">
+            <div class="col-6 col-md-3 mt-1">
               <select
-                class="form-control"
+                class="form-control "
                 v-if="item.attendanceTypeID && !routeParams"
               >
                 <option
@@ -205,7 +202,7 @@
                 </option>
               </select>
               <select
-                class="form-control"
+                class="form-control "
                 v-if="item.attendanceTypeID && routeParams"
                 v-model="item.attendanceTypeID"
                 @change="updateAttendanceId"
@@ -230,10 +227,10 @@
               />
             </div>
             <div class="col-5 col-md-3 offset-md-2">
-              <input
+              <el-input
                 type="number"
                 v-model.number="item.number"
-                class="form-control"
+                class="w-100 "
                 placeholder="Enter Count"
               />
             </div>
@@ -247,7 +244,7 @@
               class="col-1"
               @click="deleteAttendance(item.attendanceId, indx)"
             >
-              <i class="pi pi-trash" aria-hidden="true"></i>
+              <el-icon class="mt-3"><Delete /></el-icon>
             </div>
           </div>
         </div>
@@ -257,8 +254,7 @@
           id="addAttendance"
           @click="addAttendance"
         >
-          <i class="pi pi-plus-circle ofering" aria-hidden="true"></i
-          >&nbsp;&nbsp;Add Attendance Item
+          <el-icon class="mr-2"><CirclePlus /></el-icon>Add Attendance Item
         </div>
         <div class="display ofering" id="showAttendance" ref="attendanceDrop">
           <input
@@ -286,16 +282,6 @@
             Create "{{ attendanceText }}" attendance item
           </div>
         </div>
-        <!-- <button
-          hidden
-          type="button"
-          id="modalTogglerAttendance"
-          class="btn btn-primary"
-          data-toggle="modal"
-          data-target="#exampleModalAttendance"
-        >
-          Launch demo modal<div></div>
-        </button> -->
         <div class="col-sm-12 empty">
           <div class="row">
             <div class="offset-sm-7 px-0 col-2 offset-4">TOTAL</div>
@@ -315,10 +301,6 @@
             <div class="col-sm-2">Total</div>
           </div>
         </div>
-        <!-- <div>{{ offeringItem }}</div> -->
-        <!-- <div>{{ newOfferings }}</div> -->
-        <!-- Selected offerings -->
-        <!-- <div>{{ convertedAmount2 }}</div> -->
         <div
           class="attendance-body stretch"
           id="offeringBody"
@@ -326,7 +308,7 @@
           :key="index"
         >
           <div class="row">
-            <div class="col-12 col-sm-8 col-lg-3">
+            <div class="col-12 col-sm-8 col-lg-3 mt-1">
               <select
                 class="form-control"
                 v-if="item.financialContributionID && !routeParams"
@@ -367,8 +349,18 @@
               />
             </div>
             <div class="col-3 col-sm-4 col-lg-2">
-              <select class="w-100 form-control" v-model="item.paymentChannel">
-                <!-- <option :value="select">Select</option> -->
+              <el-select-v2
+                  v-model="item.paymentChannel"
+                  class="w-100 font-weight-normal"
+                  :options="
+                    paymentChannels.map((i) => ({
+                      label: i,
+                      value: i,
+                    }))
+                  "
+                  size="large"
+                />
+              <!-- <select class="w-100 form-control" v-model="item.paymentChannel">
                 <option value="Cheque">Cheque</option>
                 <option value="Cash">Cash</option>
                 <option value="Cheque">Cheque</option>
@@ -377,13 +369,14 @@
                 <option value="Bank Transfer">Bank Transfer</option>
                 <option value="USSD">USSD</option>
                 <option value="Text">Text</option>
-              </select>
+              </select> -->
             </div>
 
             <div class="col-3 col-sm-2 col-lg-1">
               <div
                 class="
                   currency
+                  py-2
                   pointer
                   d-flex
                   justify-content-around
@@ -398,19 +391,21 @@
                     : tenantCurrency.currency
                 }}</span
                 ><span style="margin-top: 4px">
-                  <i class="pi pi-angle-down close-modal" aria-hidden="true"></i
-                ></span>
+                  <el-icon class="close-modal"><ArrowDownBold /></el-icon>
+                  <!-- <i class="pi pi-angle-down close-modal" aria-hidden="true"></i
+                > -->
+                </span>
               </div>
               <div
                 class="ofering close-modal"
                 :class="{ 'style-account': item.showCurrency }"
                 v-if="item.showCurrency"
               >
-                <div class="p-2">
-                  <input
+                <div class="">
+                  <el-input
                     type="text"
                     placeholder="Search"
-                    class="form-control close-modal ofering mb-1"
+                    class=" close-modal  mb-1"
                     v-model="currencyText"
                   />
                 </div>
@@ -439,9 +434,9 @@
               </div>
             </div>
             <div class="col-6 col-lg-3">
-              <input
+              <el-input
                 type="text"
-                class="form-control"
+                class="w-100"
                 v-model="item.amount"
                 placeholder="Enter Amount"
                 @input="sendAmount($event, index)"
@@ -450,8 +445,9 @@
             <div class="col-1 d-none d-lg-block">
               {{ item.amount }}
             </div>
-            <div class="col-1" @click="delOffering(item.id, index)">
-              <i class="pi pi-trash" aria-hidden="true"></i>
+            <div class="col-1 mt-2" @click="delOffering(item.id, index)">
+              <!-- <i class="pi pi-trash" aria-hidden="true"></i> -->
+               <el-icon><Delete /></el-icon>
             </div>
             <div
               v-if="item.donor == ''"
@@ -492,8 +488,7 @@
           id="addOffering"
           @click="addOffering"
         >
-          <i class="pi pi-plus-circle ofering" aria-hidden="true"></i
-          >&nbsp;&nbsp;Add Offering Item
+          <el-icon class="mr-2"><CirclePlus /></el-icon>Add Offering Item
         </div>
         <div class="display ofering" id="showList" ref="offeringDrop">
           <input
@@ -584,13 +579,19 @@
           Launch demo modal
         </button>
         <!-- <div class="col-sm-12 empty"></div> -->
-        <textarea
+         <el-input
+            v-model="note"
+            :rows="5"
+            type="textarea"
+            placeholder="Notes..."
+          />
+        <!-- <textarea
           class="col-sm-12 textarea form-control"
           placeholder="Notes..."
           rows="5"
           v-model="note"
         >
-        </textarea>
+        </textarea> -->
         <!-- </div> -->
       </div>
 
@@ -600,11 +601,11 @@
             <div>First Timers and New Convert</div>
           </div>
           <div class="col-2 text-right">
-            <i
+            <el-icon :class="{ roll3: showForm3 }"><ArrowUp /></el-icon>
+            <!-- <i
               class="pi pi-angle-up"
-              :class="{ roll3: showForm3 }"
               aria-hidden="true"
-            ></i>
+            ></i> -->
           </div>
         </div>
         <div
@@ -664,7 +665,8 @@
                     <div>{{ item.phoneNumber }}</div>
                   </div>
                   <div class="col-sm-1" @click="deleteFirstTimer(index)">
-                    <i class="pi pi-trash"></i>
+                    <!-- <i class="pi pi-trash"></i> -->
+                     <el-icon><Delete /></el-icon>
                   </div>
                 </div>
               </div>
@@ -701,7 +703,8 @@
                     <div>{{ item.phoneNumber }}</div>
                   </div>
                   <div class="col-sm-1" @click="deleteNewConvert(index)">
-                    <i class="pi pi-trash"></i>
+                    <!-- <i class="pi pi-trash"></i> -->
+                     <el-icon><Delete /></el-icon>
                   </div>
                 </div>
               </div>
@@ -982,14 +985,13 @@
             <div class="modal-title" id="exampleModalLabel">
               Add First Timers
             </div>
-            <button
-              type="button"
-              class="close"
+            <el-button
+              class="close mt-0"
               data-dismiss="modal"
               aria-label="Close"
             >
-              <span aria-hidden="true">&times;</span>
-            </button>
+              <el-icon  ><CloseBold /></el-icon>
+            </el-button>
           </div>
           <div class="modal-body">
             <div class="container">
@@ -1001,9 +1003,9 @@
                     >Firstname<sup class="text-danger">*</sup></label
                   >
                   <div class="col-sm-6">
-                    <input
+                    <el-input
                       type="text"
-                      class="form-control input-first"
+                      class="input-first w-100"
                       v-model="firstTimersObj.firstName"
                       id="Firstname"
                       required
@@ -1017,10 +1019,10 @@
                     >Last Name</label
                   >
                   <div class="col-sm-6">
-                    <input
+                    <el-input
                       type="text"
                       v-model="firstTimersObj.lastName"
-                      class="form-control input-first"
+                      class="input-first w-100"
                       id="surname"
                       required
                     />
@@ -1033,10 +1035,10 @@
                     >Phone number</label
                   >
                   <div class="col-sm-6">
-                    <input
+                    <el-input
                       type="number"
                       v-model="firstTimersObj.phoneNumber"
-                      class="form-control input-first"
+                      class=" input-first w-100"
                       :class="{ 'is-invalid': !isPhoneValid }"
                       id="phone number"
                       ref="validatePhone"
@@ -1054,9 +1056,9 @@
                     >Email</label
                   >
                   <div class="col-sm-6">
-                    <input
+                    <el-input
                       type="email"
-                      class="form-control input-first"
+                      class="input-first w-100"
                       :class="{ 'is-invalid': !isEmailValid }"
                       v-model="firstTimersObj.email"
                       id="email"
@@ -1075,10 +1077,10 @@
                     >Address</label
                   >
                   <div class="col-sm-6">
-                    <input
+                    <el-input
                       type="text"
                       v-model="firstTimersObj.address"
-                      class="form-control input-first"
+                      class="w-100 input-first"
                       id="address"
                     />
                   </div>
@@ -1159,11 +1161,7 @@
                   <span>Insights</span
                   ><span style="border: 0px solid red; width: 70%"><hr /></span
                   ><span
-                    ><i
-                      class="pi pi-angle-up"
-                      :class="{ roll1: showForm1 }"
-                      aria-hidden="true"
-                    ></i>
+                    ><el-icon :class="{ roll: showForm1 }"><ArrowUp /></el-icon>
                   </span>
                 </span>
 
@@ -1223,11 +1221,7 @@
                   <span>Follow up and retention</span
                   ><span style="width: 60%"><hr /></span
                   ><span
-                    ><i
-                      class="pi pi-angle-up"
-                      :class="{ roll: showForm }"
-                      aria-hidden="true"
-                    ></i>
+                    ><el-icon :class="{ roll: showForm }"><ArrowUp /></el-icon>
                   </span>
                 </span>
                 <div
@@ -1237,39 +1231,32 @@
                   <div class="col-sm-3 offset-sm-3 mt-4 mb-4">
                     Send Welcome SMS
                   </div>
-                  <div class="mt-4 mb-4">
-                    <input
-                      type="checkbox"
-                      name="sms"
-                      v-model="firstTimersObj.sendWelcomeSms"
-                    />
+                  <div class="mt-3 mb-4">
+                    <el-checkbox v-model="firstTimersObj.sendWelcomeSms"  />
                   </div>
 
                   <div class="col-sm-3 mt-4 mb-4">Send Welcome Email</div>
-                  <div class="mt-4 mb-4">
-                    <input
-                      type="checkbox"
-                      name="sms"
-                      value="email"
-                      v-model="firstTimersObj.sendWelcomeEmail"
-                    />
+                  <div class="mt-3 mb-4">
+                    <el-checkbox v-model="firstTimersObj.sendWelcomeEmail"  />
                   </div>
                 </div>
               </form>
             </div>
           </div>
           <div class="modal-footer">
-            <button type="button" class="btn btn-second" data-dismiss="modal">
+            <el-button round class="" size="large" data-dismiss="modal">
               Cancel
-            </button>
-            <button
-              type="button"
-              class="apply-btn"
+            </el-button>
+            <el-button
+              color="#136acd"
+              class="text-white"
+              round
+              size="large"
               ref="closeFirstTimers"
               @click="save"
             >
               Save
-            </button>
+            </el-button>
           </div>
         </div>
       </div>
@@ -1290,14 +1277,13 @@
             <div class="modal-title" id="exampleModalLabel">
               Add New Convert
             </div>
-            <button
-              type="button"
-              class="close"
+            <el-button
+              class="close mt-0"
               data-dismiss="modal"
               aria-label="Close"
             >
-              <span aria-hidden="true">&times;</span>
-            </button>
+              <el-icon  ><CloseBold /></el-icon>
+            </el-button>
           </div>
           <div class="modal-body">
             <div class="container">
@@ -1309,9 +1295,9 @@
                     >Firstname<sup class="text-danger">*</sup></label
                   >
                   <div class="col-sm-6">
-                    <input
+                    <el-input
                       type="text"
-                      class="form-control input-first"
+                      class="w-100 input-first"
                       v-model="newConvertsObj.firstName"
                       id="Firstname"
                       required
@@ -1325,10 +1311,10 @@
                     >Last Name</label
                   >
                   <div class="col-sm-6">
-                    <input
+                    <el-input
                       type="text"
                       v-model="newConvertsObj.lastName"
-                      class="form-control input-first"
+                      class="w-100 input-first"
                       id="surname"
                       required
                     />
@@ -1341,9 +1327,9 @@
                     >Phone number</label
                   >
                   <div class="col-sm-6">
-                    <input
+                    <el-input
                       v-model="newConvertsObj.phoneNumber"
-                      class="form-control input-first"
+                      class="w-100 input-first"
                       id="phone number"
                       type="number"
                       :class="{ 'is-invalid': !isPhoneValidNewConvert }"
@@ -1362,11 +1348,11 @@
                     >Email</label
                   >
                   <div class="col-sm-6">
-                    <input
+                    <el-input
                       v-model="newConvertsObj.email"
                       id="email"
                       type="email"
-                      class="form-control input-first"
+                      class="w-100 input-first"
                       :class="{ 'is-invalid': !isEmailValidNewConvert }"
                       ref="validateEmailNewConvert"
                       @blur="checkForDuplicateEmailNewConvert"
@@ -1383,10 +1369,10 @@
                     >Address</label
                   >
                   <div class="col-sm-6">
-                    <input
+                    <el-input
                       type="text"
                       v-model="newConvertsObj.address"
-                      class="form-control input-first"
+                      class="w-100 input-first"
                       id="address"
                     />
                   </div>
@@ -1472,11 +1458,7 @@
                   <span>Insights</span
                   ><span style="border: 0px solid red; width: 70%"><hr /></span
                   ><span
-                    ><i
-                      class="pi pi-angle-up"
-                      :class="{ roll1: showForm1 }"
-                      aria-hidden="true"
-                    ></i>
+                    ><el-icon :class="{ roll: showForm1 }"><ArrowUp /></el-icon>
                   </span>
                 </span>
 
@@ -1539,11 +1521,7 @@
                   <span>Follow up and retention</span
                   ><span style="width: 60%"><hr /></span
                   ><span
-                    ><i
-                      class="pi pi-angle-up"
-                      :class="{ roll: showForm }"
-                      aria-hidden="true"
-                    ></i>
+                    ><el-icon :class="{ roll: showForm }"><ArrowUp /></el-icon>
                   </span>
                 </span>
                 <div
@@ -1553,39 +1531,32 @@
                   <div class="col-sm-3 offset-sm-3 mt-4 mb-4">
                     Send Welcome SMS
                   </div>
-                  <div class="mt-4 mb-4">
-                    <input
-                      type="checkbox"
-                      name="sms"
-                      v-model="firstTimersObj.sendWelcomeSms"
-                    />
+                  <div class="mt-3 mb-4">
+                    <el-checkbox v-model="firstTimersObj.sendWelcomeSms"  />
                   </div>
 
                   <div class="col-sm-3 mt-4 mb-4">Send Welcome Email</div>
-                  <div class="mt-4 mb-4">
-                    <input
-                      type="checkbox"
-                      name="sms"
-                      value="email"
-                      v-model="firstTimersObj.sendWelcomeEmail"
-                    />
+                  <div class="mt-3 mb-4">
+                    <el-checkbox v-model="firstTimersObj.sendWelcomeEmail"  />
                   </div>
                 </div>
               </form>
             </div>
           </div>
           <div class="modal-footer">
-            <button type="button" class="btn btn-second" data-dismiss="modal">
+            <el-button round size="large"  data-dismiss="modal">
               Cancel
-            </button>
-            <button
-              type="button"
-              class="apply-btn"
+            </el-button>
+            <el-button
+              round
+              color="#136acd"
+              class=""
+              size="large"
               ref="closeNewConverts"
               @click="saveNewConvert"
             >
               Save
-            </button>
+            </el-button>
           </div>
         </div>
       </div>
@@ -1605,14 +1576,13 @@
             <h5 class="modal-title font-weight-bold" id="exampleModalLabel">
               Add Donor
             </h5>
-            <button
-              type="button"
+            <el-button
               class="close"
               data-dismiss="modal"
               aria-label="Close"
             >
-              <span aria-hidden="true">&times;</span>
-            </button>
+              <span aria-hidden="true" class="mt-3"><el-icon><CloseBold /></el-icon></span>
+            </el-button>
           </div>
           <div class="modal-body">
             <div class="row my-4">
@@ -1634,9 +1604,9 @@
                       autocomplete="off"
                     />
                     <div class="input-group-append">
-                      <span class="input-group-text"
-                        ><i class="pi pi-chevron-down"></i
-                      ></span>
+                      <span class="input-group-text">
+                        <el-icon><ArrowDownBold /></el-icon>
+                        </span>
                     </div>
                   </div>
                   <div
@@ -1645,9 +1615,9 @@
                   >
                     <div class="row w-100 mx-auto" v-if="false">
                       <div class="col-md-12">
-                        <input
+                        <el-input
                           type="text"
-                          class="form-control"
+                          class="w-100"
                           placeholder="Find event"
                         />
                       </div>
@@ -1666,7 +1636,6 @@
                       href="#"
                       v-if="searchingForMembers && searchedMembers.length === 0"
                       >
-                      <!-- <i class="pi pi-spin pi-spinner"></i> -->
                       <el-icon class="is-loading " >
                             <Loading />
                           </el-icon>
@@ -1695,16 +1664,8 @@
                       @click="showAddMemberForm"
                       data-dismiss="modal"
                     >
-                      <i
-                        class="
-                          pi pi-plus-circle
-                          mr-2
-                          primary-text
-                          d-flex
-                          align-items-center
-                        "
-                        style="color: #136acd"
-                      ></i>
+                      <el-icon class="d-flex
+                          align-items-center mr-1"><CirclePlus /></el-icon>
                       Add new donor
                     </a>
                   </div>
@@ -1712,18 +1673,21 @@
 
                 <div class="row mt-4 d-flex justify-content-between">
                   <div class="col-6">
-                    <button class="default-btn" data-dismiss="modal">
+                    <el-button round  data-dismiss="modal" size="large">
                       Cancel
-                    </button>
+                    </el-button>
                   </div>
                   <div class="col-6">
-                    <button
-                      class="default-btn primary-bg border-0 text-white"
+                    <el-button
+                      class="border-0 text-white"
+                      size="large"
                       data-dismiss="modal"
                       @click="addDonor"
+                      color="#136acd"
+                      round
                     >
                       Save
-                    </button>
+                    </el-button>
                   </div>
                 </div>
               </div>
@@ -1746,14 +1710,13 @@
         <div class="modal-content">
           <div class="modal-header" style="border: none">
             <h5 class="modal-title" id="exampleModalLongTitle">Add Offering</h5>
-            <button
-              type="button"
-              class="close"
+            <el-button
+              class="close mt-0"
               data-dismiss="modal"
               aria-label="Close"
             >
-              <span aria-hidden="true">&times;</span>
-            </button>
+              <span aria-hidden="true"><el-icon><CloseBold /></el-icon></span>
+            </el-button>
           </div>
           <div class="modal-body">
             <div class="container">
@@ -1762,9 +1725,9 @@
                   <label>Name</label>
                 </div>
                 <div class="col-lg-5 col-sm-12 my-auto">
-                  <input
+                  <el-input
                     type="text"
-                    class="form-control textbox-height w-100"
+                    class=" textbox-height w-100"
                     placeholder=""
                     v-model="contributionItemName"
                     required
@@ -1829,9 +1792,9 @@
                     <label>Percentage %</label>
                   </div>
                   <div class="col-lg-5 col-sm-12 mt-3">
-                    <input
+                    <el-input
                       type="text"
-                      class="form-control textbox-height w-100"
+                      class="textbox-height w-100"
                       placeholder=""
                       v-model="item.percentage"
                       required
@@ -1839,16 +1802,18 @@
                   </div>
 
                   <div class="col-sm-2 col-12 adjust-down">
-                    <button
+                    <el-button
                       v-on:click="addRemittance"
-                      class="btn btnIcons btn-secondary"
+                      round
+                      size="large"
+                      class="btnIcons text-primary"
                     >
-                      <i class="pi pi-plus-circle icons" aria-hidden="true"></i>
+                      <el-icon class="mr-2"><CirclePlus /></el-icon>
                       Add
-                    </button>
+                    </el-button>
                   </div>
                   <div class="col-sm-1 adjust-down" @click="deleteItem(index)">
-                    <i class="pi pi-trash"></i>
+                     <el-icon><Delete /></el-icon>
                   </div>
                 </div>
               </div>
@@ -1858,26 +1823,31 @@
             class="modal-footer d-flex justify-content-center mt-4 ml-5"
             style="border: none"
           >
-            <button
-              type="button"
-              class="btn secondary-btn px-5"
+            <el-button
+              class=" secondary-btn px-5"
+              color="#dde2e6"
               data-dismiss="modal"
+              round
+              size="large"
             >
               Close
-            </button>
+            </el-button>
             <!-- <button type="button" class="btn btn-primary">Save changes</button> -->
 
-            <button
-              class="add-person-btn button default-btn border-0"
+            <el-button
+              class="border-0"
+              round
+              size="large"
+              color="#136acd"
               @click="createNewCon"
             >
               Save
-            </button>
+            </el-button>
           </div>
         </div>
       </div>
     </div>
-    <Dialog
+    <!-- <Dialog
       v-model:visible="displayResponsive"
       :breakpoints="{ '960px': '75vw', '640px': '100vw' }"
       :style="{ width: '80vw' }"
@@ -1887,7 +1857,6 @@
         Account and click 'Update Account' to update your accounts.
       </p>
       <template #footer>
-        <!-- <Button label="No" icon="pi pi-times" @click="closeResponsive" class="p-button-text"/> -->
         <Button
           label="Go to Chart Of Accounts"
           icon="pi pi-check"
@@ -1895,9 +1864,41 @@
           autofocus
         />
       </template>
-    </Dialog>
+    </Dialog> -->
+    <el-dialog v-model="displayResponsive"
+      :width="mdAndUp || lgAndUp || xlAndUp ? `50%` : `90%`">
+      <p>
+        You have no income account to create a offering item, go to Chart of
+        Account and click 'Update Account' to update your accounts.
+      </p>
+      <div class="row">
+        <div class="col-md-12">
+          <!-- label="Go to Chart Of Accounts"
+          icon="pi pi-check" -->
+        <el-button
+        
+          @click="closeResponsive"
+          autofocus
+        >
+        Go to Chart Of Accounts
+        </el-button>
+      <!-- </template> -->
+      </div>
+    </div>
+    </el-dialog>
 
-    <Dialog
+    <el-dialog v-model="display" title="Create New Member"
+      :width="mdAndUp || lgAndUp || xlAndUp ? `50%` : `90%`">
+      <div class="row">
+        <div class="col-md-12">
+          <NewDonor
+            @cancel="() => (display = false)"
+            @person-id="getPersonId($event)"
+          />
+        </div>
+      </div>
+    </el-dialog>
+    <!-- <Dialog
       header="Create New Member"
       v-model:visible="display"
       :style="{ width: '70vw', maxWidth: '600px' }"
@@ -1912,7 +1913,7 @@
           />
         </div>
       </div>
-    </Dialog>
+    </Dialog> -->
   </div>
   <ConfirmDialog />
 </template>
@@ -1929,6 +1930,7 @@ import CurrencyConverterService from "../../services/currency-converter/currency
 import finish from "../../services/progressbar/progress";
 import SearchMembers from "../../components/membership/MembersSearch.vue";
 import NewDonor from "../../components/membership/NewDonor.vue";
+import deviceBreakpoint from "../../mixins/deviceBreakpoint";
 
 export default {
   components: {
@@ -1945,6 +1947,10 @@ export default {
       //   currency: '',
       amount: null,
       preEventTopic: "",
+      xsOnly : deviceBreakpoint(),
+      mdAndUp: deviceBreakpoint(),
+      lgAndUp: deviceBreakpoint(),
+      xlAndUp: deviceBreakpoint(),
       details: "",
       eventRules: "",
       preActivityId: "",
@@ -1969,6 +1975,7 @@ export default {
       newOfferings: [],
       attendanceCreate: null,
       newAttendances: ["Adult", "Children"],
+      paymentChannels: ['Cheque', 'Cash', 'Cheque', 'POS', 'Online', 'Bank Transfer' , 'USSDText'],
       channel: "",
       eventCreate: null,
       newEvents: [],
@@ -3943,8 +3950,9 @@ export default {
   border-radius: 111px;
 }
 .currency {
+  margin-top: 6px;
   width: 123%;
-  height: 100%;
+  /* height: 100%; */
   font-size: 0.8em;
   background: rgba(207, 207, 207, 0.651);
   border: none;
@@ -4137,11 +4145,6 @@ tr.event-list td {
   letter-spacing: 0px;
   color: #136acd;
   text-align: center;
-}
-.input-first {
-  /* width: 320px; */
-  height: 39px;
-  border: 1px solid #b9c5cf;
 }
 .close-slide1 {
   height: 0;
@@ -4381,11 +4384,8 @@ input.codeInput {
 }
 
 .btnIcons {
-  width: 110px;
-  height: 41px;
-  color: #136acd;
+ 
   background-color: #dde2e6;
-  border-radius: 40px;
   border: none;
 }
 

@@ -175,7 +175,24 @@
             <label for="" class="font-weight-600">Event</label>
           </div>
           <div class="col-sm-7 col-md-6 col-lg-5">
-            <div class="dropdown">
+            <div class="input-width">
+              <!-- Find event -->
+                  <el-dropdown class="w-100" trigger="click">
+                    <el-input v-if="events.length > 5" class="w-100" placeholder="Select from events and activities" v-model="selectedEvent.name" />
+                    <template #dropdown>
+                      <el-dropdown-menu class="menu-height">
+                        <el-dropdown-item v-for="(event, index) in filteredEvents" :key="index"
+                          @click="selectEvent(event)">{{ event.name }}</el-dropdown-item>
+                        <el-dropdown-item class="d-flex justify-content-center text-primary font-weight-700"
+                          data-toggle="modal" data-target="#newActModal"
+                            ref="openModalBtn" divided><el-icon>
+                            <CirclePlus />
+                          </el-icon> Create new event</el-dropdown-item>
+                      </el-dropdown-menu>
+                    </template>
+                  </el-dropdown>
+                </div>
+            <!-- <div class="dropdown">
               <button
                 class="default-btn w-100 text-left pr-1"
                 type="button"
@@ -230,7 +247,6 @@
                   @click="selectEvent(event)"
                   >{{ event.name }}</a
                 >
-                <!-- Hidden -->
                 <a
                   class="
                     font-weight-bold
@@ -251,7 +267,7 @@
                   Create new event
                 </a>
               </div>
-            </div>
+            </div> -->
           </div>
         </div>
         <div class="row my-3">
@@ -1156,6 +1172,8 @@ export default {
     const selectedEvent = ref({});
     const selectEvent = (selected) => {
       selectedEvent.value = selected;
+      eventSearchText.value = ''
+      console.log(selectedEvent.value.name, 'fdfgd' );
     };
 
     const closeModal = () => {
@@ -1257,9 +1275,9 @@ export default {
 
     const eventSearchText = ref("");
     const filteredEvents = computed(() => {
-      if (!eventSearchText.value) return events.value;
+      if (!selectedEvent.value.name) return events.value;
       return events.value.filter((i) =>
-        i.name.toLowerCase().includes(eventSearchText.value.toLowerCase())
+        i.name.toLowerCase().includes(selectedEvent.value.name.toLowerCase())
       );
     });
 
@@ -1781,6 +1799,10 @@ export default {
 .contn-btn:disabled {
   opacity: 0.3;
 }
+.menu-height {
+  max-height: 400px;
+  overflow: scroll;
+}
 
 .upload-button {
   background: rgba(206, 206, 206, 0.274);
@@ -1854,6 +1876,20 @@ export default {
   height: 0;
   overflow: hidden;
   transition: all 0.6s ease-in-out;
+}
+.input-width {
+  width: 100%
+}
+
+.input-width {
+  width: 100%
+}
+
+@media (min-width: 992px) {
+  .input-width {
+    width: 350px
+  }
+
 }
 
 @media (max-width: 576px) {

@@ -5,7 +5,8 @@
         <div class="container">
           <div class="row mt-4">
             <div class="col-md-5">
-              <h2 class="font-weight-bold page-hder">New Event and Report</h2>
+              <h2 class="font-weight-bold head-text ">New Event and Report</h2>
+              <!-- page-hder -->
             </div>
             <div class="col-md-7 d-sm-flex justify-content-md-end">
               <a class="def-btn mr-3 px-md-4 my-sm-1" v-if="false"
