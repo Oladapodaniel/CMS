@@ -732,8 +732,8 @@ export default {
           axios.post('/createFamily', familyDetails)
             .then(res => console.log(res))
             .catch(err => console.log(err))
-            
-            // Register Family members individually
+
+          // Register Family members individually
           familyWards.value.familyMembers.forEach(i => {
             if (i.checkMember) {
               let regFamMembers = {
@@ -745,9 +745,9 @@ export default {
               axios.post("/EventRegistration", regFamMembers).then(res => {
                 console.log(res)
               })
-              .catch(err => {
-                console.log(err)
-              })
+                .catch(err => {
+                  console.log(err)
+                })
             }
           })
           let newFamily = {
