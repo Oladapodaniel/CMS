@@ -141,7 +141,7 @@ export default {
         public_key: process.env.VUE_APP_FLUTTERWAVE_PUBLIC_KEY_LIVE,
         // public_key: process.env.VUE_APP_FLUTTERWAVE_TEST_KEY_TEST,
         tx_ref: initializePaymentResponse.transactionReference,
-        amount: props.donation.amount,
+        amount: props.donation.donation.amount,
         currency: props.currency,
         payment_options: 'card,ussd',
         customer: {
