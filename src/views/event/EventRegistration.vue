@@ -318,7 +318,7 @@
             </div>
             <div class="modal-body p-0 bg-modal pb-5">
               <PaymentOptionModal :formData="eventPaymentForm" :close="close" :donation="donationObj"
-                @selectedgateway="setGateway" @donationconfirmed="setConfirmDonation" :donorEmail="person.email"
+                @selectedgateway="setGateway" :currency="paymentFormCurrency" @donationconfirmed="setConfirmDonation"
                 :initializePaymentResponse="initializePaymentResponse" :callPayment="callPayment"
                 @resetcallpaymentprops="resetCallPayment" />
             </div>
@@ -396,6 +396,7 @@ export default {
     const eventPaymentForm = ref({});
     const callPayment = ref(false);
     const initializePaymentResponse = ref({});
+    const paymentFormCurrency = ref("");
 
     const setSelectedMaritalStatus = () => {
       selectedMaritalStatus.value = maritalStatus.value.find(i => {
@@ -457,6 +458,17 @@ export default {
         })
         .catch(err => console.log(err))
     }
+
+    const GetAllCurrencies = () => {
+      axios
+        .get("/api/LookUp/GetAllCurrencies")
+        .then((res) => {
+          // Get the payment form currency
+          paymentFormCurrency.value = res.data.find(i => i.id == fullEventData.value.currencyID)
+        })
+        .catch((err) => console.log(err.response));
+    };
+    GetAllCurrencies();
 
 
 
@@ -661,6 +673,7 @@ export default {
           currencyID: fullEventData.value.currencyID,
           paymentGateway: usedPaymentGateway.value,
           paymentGateWays: fullEventData.value.paymentForm.paymentGateWays,
+          amount: fullEventData.value.registrationAmount,
           contributionItems: fullEventData.value.paymentForm.contributionItems.map(i => {
             return {
               contributionItemId: i.financialContribution.id,
@@ -1067,6 +1080,7 @@ export default {
 
 
     return {
+      paymentFormCurrency,
       disableClick,
       setSelectedGender,
       genderId,
