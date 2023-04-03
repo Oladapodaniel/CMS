@@ -55,7 +55,7 @@
 
           <!-- <i class="pi pi-phone icon" /> -->
         <!-- <input @blur="checkCharacter" @input="CheckXterAfterEleven" class="form-control w-100" type="text"
-                v-model="enteredValue" aria-required="" placeholder="Enter your phone number" /> -->
+                  v-model="enteredValue" aria-required="" placeholder="Enter your phone number" /> -->
           <el-input @blur="checkCharacter" class="w-100" type="number" v-model="enteredValue" aria-required=""
             placeholder="Enter your phone number">
             <template #prefix>
@@ -273,7 +273,7 @@
           <div class="col-md-7 py-4 text-center">
             <el-button class="default-btn mr-3" size="large" round @click="notme">Not Me</el-button>
             <el-button data-toggle="modal" data-target="#PaymentOptionModal" color="#136acd" @click="confirmCheck()"
-              v-if="fullEventData.paymentFormId" round>
+              v-if="fullEventData.paymentFormId" :disabled="!person.name || person.name.length < 1 || !person.email || disableClick" round>
               Make payment to register
             </el-button>
             <el-button size="large" class=" mt-3 mt-sm-0 text-white" color="#136acd" @click="confirmToRegister"
@@ -396,7 +396,7 @@ export default {
     const eventPaymentForm = ref({});
     const callPayment = ref(false);
     const initializePaymentResponse = ref({});
-    const paymentFormCurrency = ref("");
+    const paymentFormCurrency = ref({});
 
     const setSelectedMaritalStatus = () => {
       selectedMaritalStatus.value = maritalStatus.value.find(i => {
@@ -465,12 +465,11 @@ export default {
         .then((res) => {
           // Get the payment form currency
           paymentFormCurrency.value = res.data.find(i => i.id == fullEventData.value.currencyID)
+
+          console.log(paymentFormCurrency.value)
         })
         .catch((err) => console.log(err.response));
     };
-    GetAllCurrencies();
-
-
 
     const checkCharacter = () => {
       loaded.value = false;
@@ -489,21 +488,21 @@ export default {
         )
 
         .then((res) => {
-          const x = { ...res }
           loading.value = false;
           autosearch.value = false;
           loaded.value = true;
           names.value = res.data;
-          personData.value.firstName = res.data[0] ? res.data[0].name : "";
-          personData.value.email = res.data[0] ? res.data[0].email : "";
-          personData.value.homeAddress = res.data[0] ? res.data[0].address : "";
-          personData.value.personId = res.data[0] ? res.data[0].personId : "";
-          personData.value.dayOfBirth = res.data[0] ? res.data[0].dayOfBirth : "";
-          personData.value.monthOfBirth = res.data[0] ? res.data[0].monthOfBirth : "";
-          personData.value.mobilePhone = enteredValue.value;
-          person.value = res.data[0] ? res.data[0] : {};
-          birthDay.value = res.data[0] && res.data[0].dayOfBirth ? Number(res.data[0].dayOfBirth) : 0;
-          birthMonth.value = res.data[0] && res.data[0].monthOfBirth ? months[Number(res.data[0].monthOfBirth) - 1] : 0;
+          personData.value.firstName = res.data.length > 0 ? res.data[0].name.split(" ")[0] : "";
+          personData.value.lastName = res.data.length > 0 ? res.data[0].name.split(" ")[1] : "";
+          personData.value.email = res.data.length > 0 ? res.data[0].email : "";
+          personData.value.homeAddress = res.data.length > 0 ? res.data[0].address : "";
+          personData.value.personId = res.data.length > 0 ? res.data[0].personId : "";
+          personData.value.dayOfBirth = res.data.length > 0 ? res.data[0].dayOfBirth : "";
+          personData.value.monthOfBirth = res.data.length > 0 ? res.data[0].monthOfBirth : "";
+          personData.value.mobilePhone = res.data.length > 0 ? res.data[0].phoneNumber : "";
+          person.value = res.data.length > 0 ? res.data[0] : {};
+          birthDay.value = res.data.length > 0 && res.data[0].dayOfBirth ? Number(res.data[0].dayOfBirth) : 0;
+          birthMonth.value = res.data.length > 0 && res.data[0].monthOfBirth ? months[Number(res.data[0].monthOfBirth) - 1] : 0;
 
           getFamilyDetails(personData.value.personId)
           if (
@@ -657,7 +656,7 @@ export default {
         email: person.value.email,
         checkInCode: fullEventData.value.checkinCode,
         id: fullEventData.value.id,
-        person: person.value.personId ? person.value : { phoneNumber: enteredValue.value, ...person.value },
+        person: person.value.personId ? personData.value : { mobilePhone: enteredValue.value, firstName: person.value.name.split(" ")[0] ? person.value.name.split(" ")[0] : "", lastName: person.value.name.split(" ")[1] ? person.value.name.split(" ")[1] : "", email: person.value.email ? person.value.email : "" },
         customAttributeData: dynamicCustomFields.value.map(i => ({
           customAttributeID: i.id,
           data: i.data,
@@ -733,8 +732,8 @@ export default {
           axios.post('/createFamily', familyDetails)
             .then(res => console.log(res))
             .catch(err => console.log(err))
-            
-            // Register Family members individually
+
+          // Register Family members individually
           familyWards.value.familyMembers.forEach(i => {
             if (i.checkMember) {
               let regFamMembers = {
@@ -746,9 +745,9 @@ export default {
               axios.post("/EventRegistration", regFamMembers).then(res => {
                 console.log(res)
               })
-              .catch(err => {
-                console.log(err)
-              })
+                .catch(err => {
+                  console.log(err)
+                })
             }
           })
           let newFamily = {
@@ -779,12 +778,12 @@ export default {
               axios.post("/EventRegistration", regFamMembers).then(res => {
                 console.log(res)
               })
-              .catch(err => {
-                console.log(err)
-              })
+                .catch(err => {
+                  console.log(err)
+                })
             }
           })
-          
+
           let newFamily = {
             person: {
               personId: personData.value.personId,
@@ -864,9 +863,9 @@ export default {
         .then(res => console.log(res))
         .catch(err => console.log(err))
 
-        // Register Family members individually
-        familyWards.value.familyMembers.forEach(i => {
-          if (i.checkMember) {
+      // Register Family members individually
+      familyWards.value.familyMembers.forEach(i => {
+        if (i.checkMember) {
           let regFamMembers = {
             person: {
               personId: i.person.id
@@ -877,12 +876,12 @@ export default {
             console.log(res)
             disableClick.value = false;
           })
-          .catch(err => {
-            console.log(err)
-          })
+            .catch(err => {
+              console.log(err)
+            })
         }
       })
-      
+
       let newFamily = {
         person: {
           personId: id,
@@ -939,6 +938,7 @@ export default {
           eventPaymentForm.value = fullEventData.value.paymentForm
           getTenantCurrency();
           getCustomFields();
+          GetAllCurrencies();
         })
         .catch((err) => {
           console.log(err);

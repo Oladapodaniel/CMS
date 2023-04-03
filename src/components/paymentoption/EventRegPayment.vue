@@ -4,16 +4,14 @@
     <div class="row">
       <div class="col-sm-12 p-4 text-center continue-text">Continue payment with</div>
     </div>
-    <div class="row row-button" @click="initializePayment(0)">
-      <div class="col-4 col-sm-7 offset-2">
-        <img class="img-pay" src="../../assets/4PaystackLogo.png" alt="paystack" />
-      </div>
+    <div class="row row-button d-flex justify-content-center" @click="initializePayment(0)" v-if="paystackGate">
+      <img class="img-pay" src="../../assets/4PaystackLogo.png" alt="paystack" />
     </div>
 
 
-    <div class="row row-button" @click="initializePayment(1)">
-      <div class="col-4 col-sm-7 offset-2">
-        <img class="w-100" src="../../assets/flutterwave_logo_color@2x.png" alt="flutterwave" />
+    <div class="row row-button d-flex justify-content-center" v-if="flutterwaveGate" @click="initializePayment(1)">
+      <div>
+        <img class="img-pay" src="../../assets/flutterwave_logo_color@2x.png" alt="flutterwave" />
       </div>
     </div>
 
@@ -50,12 +48,12 @@ export default {
     const selectedGateway = ref("")
 
     const paystackGate = computed(() => {
-      if (!props.donation.donation.paymentGateWays  || props.currency !== 'NGN') return false
+      if ((!props.donation || !props.donation.donation || !props.donation.donation.paymentGateWays)  || (props.currency && props.currency.shortCode !== 'NGN')) return false
       return props.donation.donation.paymentGateWays.find(i => i.paymentGateway.name === "Paystack")
     })
 
     const flutterwaveGate = computed(() => {
-      if (!props.donation.donation.paymentGateWays) return false
+      if (!props.donation || !props.donation.donation || !props.donation.donation.paymentGateWays) return false
       return props.donation.donation.paymentGateWays.find(i => i.paymentGateway.name === "FlutterWave")
     })
 
@@ -101,15 +99,16 @@ export default {
 
     const payWithPaystack = (initializePaymentResponse) => {
       props.close.click()
+
       /*eslint no-undef: "warn"*/
       let handler = PaystackPop.setup({
         key: process.env.VUE_APP_PAYSTACK_PUBLIC_KEY_LIVE,
         // key: process.env.VUE_APP_PAYSTACK_API_KEY,
-        email: props.donation.person.email,
-        currency: props.currency,
+        email: props.donation.person.email.trim(),
+        currency: props.currency.shortCode,
         amount: props.donation.donation.amount * 100,
-        firstname: props.donation.person.name,
-        phone_number: props.donation.person.phoneNumber,
+        firstname: props.donation.person.firstName,
+        phone_number: props.donation.person.mobilePhone,
         ref: initializePaymentResponse.transactionReference,
         subaccount: props.donation.donation.paymentGateWays.find(i => {
           return i.paymentGateway.name.toLowerCase() === selectedGateway.value.toLowerCase()
@@ -136,17 +135,18 @@ export default {
     const payWithFlutterwave = (initializePaymentResponse) => {
       // Close payment modal
       props.close.click()
+      console.log(props, initializePaymentResponse)
 
       window.FlutterwaveCheckout({
         public_key: process.env.VUE_APP_FLUTTERWAVE_PUBLIC_KEY_LIVE,
         // public_key: process.env.VUE_APP_FLUTTERWAVE_TEST_KEY_TEST,
         tx_ref: initializePaymentResponse.transactionReference,
         amount: props.donation.donation.amount,
-        currency: props.currency,
+        currency: props.currency.shortCode,
         payment_options: 'card,ussd',
         customer: {
-          name: props.name,
-          email: props.email,
+          name: props.donation.person.firstName,
+          email: props.donation.person.email.trim(),
         },
         subaccounts: [
           {
@@ -230,7 +230,7 @@ export default {
   border-radius: 25px;
   box-shadow: rgba(0, 0, 0, 0.1) 0px 4px 12px;
   background: white;
-  margin: 12px 70px 15px 70px;
+  margin: 12px 20px 15px 20px;
   transition: all 0.4s ease-in-out;
   max-height: 45px;
 }
