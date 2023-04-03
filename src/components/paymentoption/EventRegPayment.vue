@@ -4,23 +4,21 @@
     <div class="row">
       <div class="col-sm-12 p-4 text-center continue-text">Continue payment with</div>
     </div>
-    <div class="row row-button" @click="initializePayment">
+    <div class="row row-button" @click="initializePayment(0)">
       <div class="col-4 col-sm-7 offset-2">
         <img class="img-pay" src="../../assets/4PaystackLogo.png" alt="paystack" />
       </div>
     </div>
 
 
-  <!-- <div class="row row-button" @click="makePayment">
+    <div class="row row-button" @click="initializePayment(1)">
       <div class="col-4 col-sm-7 offset-2">
-        <img class="w-100" src="../../../assets/flutterwave_logo_color@2x.png" alt="flutterwave"/>
+        <img class="w-100" src="../../assets/flutterwave_logo_color@2x.png" alt="flutterwave" />
       </div>
-
-
     </div>
 
 
-    <div class="row row-button d-flex justify-content-center">
+  <!--  <div class="row row-button d-flex justify-content-center">
       <div class="col-8 col-sm-6">
         <img class="w-100 img-height" src="../../../assets/paypal-logo-2@2x.png" alt="paypal"/>
       </div>
@@ -34,26 +32,35 @@
       </div>
 
   
-      </div> -->
+        </div> -->
 
 
   </div>
 </template>
 
 <script>
-import { ref, watchEffect } from 'vue'
+import { ref, watchEffect, computed } from 'vue'
 import axios from "@/gateway/backendapi";
 import { ElMessage } from 'element-plus';
 export default {
-  props: ['close', 'donation', 'donorEmail', 'initializePaymentResponse', 'callPayment'],
+  props: ['formData', 'close', 'donation', 'donorEmail', 'currency', 'initializePaymentResponse', 'callPayment'],
   emits: ['selectedgateway', 'paymentsuccessful', 'donationconfirmed', 'resetcallpaymentprops'],
   setup(props, { emit }) {
     const email = ref("info@churchplus.com")
     const selectedGateway = ref("")
 
+    const paystackGate = computed(() => {
+      if (!props.donation.donation.paymentGateWays  || props.currency !== 'NGN') return false
+      return props.donation.donation.paymentGateWays.find(i => i.paymentGateway.name === "Paystack")
+    })
 
-    const initializePayment = () => {
-      selectedGateway.value = 'Paystack';
+    const flutterwaveGate = computed(() => {
+      if (!props.donation.donation.paymentGateWays) return false
+      return props.donation.donation.paymentGateWays.find(i => i.paymentGateway.name === "FlutterWave")
+    })
+
+    const initializePayment = (paymentType) => {
+      selectedGateway.value = paymentType == 0 ? 'Paystack' : 'Flutterwave';
       emit('selectedgateway', selectedGateway.value)
     }
 
@@ -82,18 +89,31 @@ export default {
       }
     }
 
+    const getFlutterwaveModules = () => {
+      let isProduction = true
+      const script = document.createElement("script");
+      script.src = !isProduction
+        ? "https://ravemodal-dev.herokuapp.com/v3.js"
+        : "https://checkout.flutterwave.com/v3.js";
+      document.getElementsByTagName("head")[0].appendChild(script);
+    }
+    getFlutterwaveModules()
+
     const payWithPaystack = (initializePaymentResponse) => {
       props.close.click()
       /*eslint no-undef: "warn"*/
       let handler = PaystackPop.setup({
         key: process.env.VUE_APP_PAYSTACK_PUBLIC_KEY_LIVE,
         // key: process.env.VUE_APP_PAYSTACK_API_KEY,
-        email: props.donorEmail,
-        amount: props.donation.donation.contributionItems[0].amount * 100,
+        email: props.donation.person.email,
+        currency: props.currency,
+        amount: props.donation.donation.amount * 100,
         firstname: props.donation.person.name,
         phone_number: props.donation.person.phoneNumber,
         ref: initializePaymentResponse.transactionReference,
-        subaccount: props.donation.donation.paymentGateway[0].subAccountID,
+        subaccount: props.donation.donation.paymentGateWays.find(i => {
+          return i.paymentGateway.name.toLowerCase() === selectedGateway.value.toLowerCase()
+        }).subAccountID,
         bearer: 'subaccount',
         onClose: function () {
           ElMessage({
@@ -108,24 +128,66 @@ export default {
           let trans_id = response.trxref
           let tx_ref = response.trxref
           confirmDonationPayment(tx_ref, trans_id);
-          emit('paymentsuccessful', true)
         },
       });
       handler.openIframe();
     };
 
+    const payWithFlutterwave = (initializePaymentResponse) => {
+      // Close payment modal
+      props.close.click()
+
+      window.FlutterwaveCheckout({
+        public_key: process.env.VUE_APP_FLUTTERWAVE_PUBLIC_KEY_LIVE,
+        // public_key: process.env.VUE_APP_FLUTTERWAVE_TEST_KEY_TEST,
+        tx_ref: initializePaymentResponse.transactionReference,
+        amount: props.donation.amount,
+        currency: props.currency,
+        payment_options: 'card,ussd',
+        customer: {
+          name: props.name,
+          email: props.email,
+        },
+        subaccounts: [
+          {
+            id: props.donation.donation.paymentGateWays.find(i => {
+              return i.paymentGateway.name.toLowerCase() === selectedGateway.value.toLowerCase()
+            }).subAccountID
+          }
+        ],
+        callback: (response) => {
+          emit('transaction-reference', response.transaction_id);
+          let trans_id = response.transaction_id
+          let tx_ref = response.tx_ref
+          confirmDonationPayment(trans_id, tx_ref);
+        },
+        onclose: () => console.log('Payment closed'),
+        customizations: {
+          title: props.formData.churchName,
+          description: "Payment for contribution items",
+          logo: props.formData.churchLogo,
+        },
+      });
+    }
+
     watchEffect(() => {
       if (props.callPayment && Object.keys(props.initializePaymentResponse).length > 0) {
+        if (selectedGateway.value == 'Paystack') {
           payWithPaystack(props.initializePaymentResponse);
+        } else {
+          payWithFlutterwave(props.initializePaymentResponse);
+        }
         emit('resetcallpaymentprops', false)
       }
     })
 
     return {
       initializePayment,
-      payWithPaystack, 
-      selectedGateway, 
-      email
+      payWithPaystack,
+      selectedGateway,
+      email,
+      paystackGate,
+      flutterwaveGate
     }
   }
 
