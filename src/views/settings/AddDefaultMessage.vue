@@ -47,8 +47,8 @@
               >
             </div>
             <div class=" col-12  col-sm-9">
-              <el-input v-model="subject" type="text" class="" id="inputPassword6" v-if="selectType.value == 1" />
-              <el-dropdown trigger="click" class="w-100" v-else-if="selectType.value == 0">
+              
+              <el-dropdown trigger="click" class="w-100" v-if="selectType.value === 0">
                 <el-input v-model="searchSenderText" placeholder="Search sender id" />
                 <el-icon class="el-icon--right"><arrow-down /></el-icon>
             <template #dropdown>
@@ -59,7 +59,7 @@
               </el-dropdown-menu>
             </template>
           </el-dropdown>
-          <div v-else>
+          <div v-else-if="selectType.value == 2">
             <!-- action="https://run.mocky.io/v3/9d059bf9-4660-45f2-925d-ce80ad6c4d15" -->
             <el-upload
               class="uploadvoice w-100"
@@ -80,6 +80,7 @@
             </audio>
 
           </div>
+          <el-input v-model="subject" type="text" class="" id="inputPassword6" v-else />
             </div>
           </div>
           <div class="row g-3 align-items-center" v-if="selectType.value !== 2">
@@ -160,10 +161,14 @@ export default {
     createDefaultMessage() {
       this.loading = true
       if (
-        this.subject === "" ||
-        this.message === "" ||
-        (this.selectType.value !== 2 && Object.keys(this.selectType).length === 0) ||
-        (this.selectType.value !== 2 && Object.keys(this.selectCategory).length === 0)
+        // this.subject === "" ||
+        // this.message === "" ||
+        // (this.selectType.value !== 2 && Object.keys(this.selectType).length === 0) ||
+        // (this.selectType.value !== 2 && Object.keys(this.selectCategory).length === 0)
+        (this.selectType.value !== 2 && this.subject == "") ||
+        (this.selectType.value !== 2 && this.message == "") ||
+        (Object.keys(this.selectCategory).length === 0) ||
+        (Object.keys(this.selectType).length === 0)
       ) 
       {
         ElMessage({
@@ -178,7 +183,8 @@ export default {
       formData.append("category", this.selectCategory.value);
       formData.append("messageType", this.selectType.value);
       formData.append("subject", this.selectType.value !== 2 ? this.subject : "");
-      formData.append("message", this.selectType.value !== 2 ? this.message : this.file);
+      formData.append("message", this.selectType.value !== 2 ? this.message : "");
+      formData.append("voiceFile", this.file);
       axios
         .post(`/api/Settings/CreateDefaultMessage`, formData)
         .then((res) => {
@@ -216,7 +222,8 @@ export default {
       formData.append("category", this.selectCategory.value);
       formData.append("messageType", this.selectType.value);
       formData.append("subject", this.selectType.value !== 2 ? this.subject : "");
-      formData.append("message", this.selectType.value !== 2 ? this.message : this.file);
+      formData.append("message", this.selectType.value !== 2 ? this.message : "");
+      formData.append("voiceFile", this.file);
 
       axios
         .put(`/api/Settings/UpdateDefaultMessage`, formData)
