@@ -7,7 +7,7 @@
       <div class="main-body">
         <div class="top container-wide mt-3 p-0">
           <div class="header">
-            <div class="events">Events</div>
+            <div class="head-text">Events</div>
           </div>
           <div class="actions">
             <button class="more-btn button" v-if="false">
@@ -15,9 +15,9 @@
               <span><i class="pi pi-angle-down btn-icon"></i></span>
             </button>
               <router-link :to="{ name: 'Event' }">
-                <button class="button add-person-btn">
+                <el-button round color="#136acd" class="header-btn">
                   Add Event
-                </button>
+                </el-button>
               </router-link>
           </div>
         </div>

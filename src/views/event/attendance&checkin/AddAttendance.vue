@@ -275,7 +275,21 @@
             <label for="" class="font-weight-600">Group</label>
           </div>
           <div class="col-sm-7 col-md-6 col-lg-5">
-            <button
+            {{selectedGroups}}
+            <!-- <el-tree-select
+                v-model="selectedGroups"
+                :data="groupMappedTree"
+                :render-after-expand="false"
+                :filter-node-method="filterNodeMethod"
+                check-strictly
+                multiple
+                show-checkbox
+                @change="setGroupValue" 
+                filterable
+                check-on-click-node
+                class="w-100"
+              /> -->
+            <!-- <button
               class="
                 form-control
                 d-flex
@@ -292,7 +306,6 @@
                 
                   <span v-for="item in selectedGroups" :key="item.id"
                     ><span class="eachGroup">{{ item && item.name }}</span></span>
-                    <!-- ><span class="eachGroup">{{ item && item.name ? item.name : item }}</span></span> -->
                 </span>
                 <span
                   v-if="selectedGroups.length > 0 && selectedGroups.length > 2"
@@ -302,8 +315,6 @@
                     :key="item.id"
                     >
                     <span class="eachGroup">{{  item.name  }}</span></span>
-                    <!-- <span class="eachGroup">{{ item && item.name ? item.name : item }}</span></span> -->
-                  ...
                 </span>
                 <span v-if="selectedGroups.length === 0">Select group</span>
               </span>
@@ -311,8 +322,8 @@
                   pr-1 ">
                   <arrow-down />
                 </el-icon>
-            </button>
-            <div
+            </button> -->
+            <!-- <div
               class="div-card p-2 exempt-hide"
               :class="{
                 'd-none': hideDiv,
@@ -335,7 +346,7 @@
                 @filteredGroup="setFilterGroups"
                 @newgroup="setNewGroup"
               />
-            </div>
+            </div> -->
           </div>
         </div>
         <div class="row">
@@ -673,10 +684,58 @@
                       font-weight-600
                     "
                   >
-                    Income Account
+                    Income Account 
                   </div>
                   <div class="col-sm-7 col-md-6 col-lg-5">
-                    <el-select-v2
+                    <el-dropdown trigger="click" class="w-100">
+                <span class="el-dropdown-link w-100">
+                  <div
+                    class="d-flex justify-content-between border-contribution text-secondary w-100"
+                    size="large"
+                  >
+                    <span>{{
+                      selectedIncomeAccount &&
+                      Object.keys(selectedIncomeAccount).length > 0
+                        ? selectedIncomeAccount.text
+                        : "Select income"
+                    }}</span>
+                    <div>
+                      <el-icon class="el-icon--right">
+                        <arrow-down />
+                      </el-icon>
+                    </div>
+                  </div>
+                </span>
+                <template #dropdown>
+                  <el-dropdown-menu>
+                    <el-dropdown-item
+                      v-for="(itm, indx) in incomeAccount"
+                      :key="indx"
+                      @click="setIncomeAccount(itm)"
+                      >{{ itm.text }}
+                    </el-dropdown-item>
+                    <!-- <el-dropdown-item
+                      class="text-center w-100"
+                      divided
+                      ><a
+                        class="font-weight-bold small-text d-flex justify-content-center py-2 text-decoration-none primary-text"
+                        style="color: #136acd"
+                      >
+                        <router-link
+                          to="/tenant/pledge/pledgedefinition"
+                          class="border-0 font-weight-bold"
+                          >
+                        <el-icon size="large">
+                          <CirclePlus />
+                        </el-icon>
+                          Create New Pledge Item
+                        </router-link>
+                      </a></el-dropdown-item
+                    > -->
+                  </el-dropdown-menu>
+                </template>
+              </el-dropdown>
+                    <!-- <el-select-v2
                         v-model="selectedIncomeAccountID"
                         class="w-100 mt-4 font-weight-normal"
                         :options="
@@ -688,7 +747,7 @@
                         placeholder="Select"
                         @change="setIncomeAccount"
                         size="large"
-                      />
+                      /> -->
                   </div>
                   <div class="col-sm-2 col-lg-3"></div>
 
@@ -1058,7 +1117,7 @@ export default {
     const eventDetails = ref("");
     const cashBankAccount = ref([]);
     const incomeAccount = ref([]);
-    const selectedIncomeAccount = ref(null);
+    const selectedIncomeAccount = ref({});
     const selectedCashAccount = ref(null);
     const registrationSMS = ref("");
     const registrationEmail = ref("");
@@ -1078,7 +1137,7 @@ export default {
     const { mdAndUp, lgAndUp, xlAndUp, xsOnly } = deviceBreakpoint()
 
     // const selectedGroup = ref({});
-    const selectedGroups = ref([]);
+    const selectedGroups = ref();
     const selectedIncomeAccountID = ref(null)
     const selectedCashAccountID = ref(null)
 
@@ -1087,10 +1146,16 @@ export default {
     console.log(attendanceCheID.value);
     const eventNameDate = ref("");
 
-    const setIncomeAccount = () =>{
-      selectedIncomeAccount.value = incomeAccount.value.find((i) =>{
-       return i.id == selectedIncomeAccountID.value
-      })
+    const setIncomeAccount = (item) =>{
+      selectedIncomeAccount.value = item;
+    }
+    const setGroupValue = () => {
+      const response = flattenedTree.value.find(i => i.value == selectedGroups.value)
+      console.log(response,"jjjjj");
+      // groupToAddTo.value = {
+      //   name: response.label,
+      //   id: response.value
+      // }
     }
     const setcashBankAccount = () =>{
       selectedCashAccount.value = cashBankAccount.value.find(
@@ -1140,7 +1205,8 @@ export default {
       }
     };
     getSingleCheckinAttendance();
-
+    const groupMappedTree = ref([]);
+    const flattenedTree = ref([])
     const getGroups = async () => {
       grouploading.value = true;
       try {
@@ -1149,6 +1215,13 @@ export default {
         if (response.response && response.response.groupResonseDTO.length > 0) {
           groups.value = response.response.groupResonseDTO;
         }
+        let data = { children: groups.value };
+        const { children } = collector(data);
+        groupMappedTree.value = children;
+         if (groupMappedTree.value && groupMappedTree.value.length > 0) {
+          flattenedTree.value = groupMappedTree.value.flatMap(flatten());
+        }
+
       } catch (error) {
         console.log(error);
         grouploading.value = false;
@@ -1168,12 +1241,11 @@ export default {
         console.log(error);
       }
     };
-
+   const filterNodeMethod = (value, data) => data.label.toLowerCase().includes(value.toLowerCase())
     const selectedEvent = ref({});
     const selectEvent = (selected) => {
       selectedEvent.value = selected;
       eventSearchText.value = ''
-      console.log(selectedEvent.value.name, 'fdfgd' );
     };
 
     const closeModal = () => {
@@ -1680,10 +1752,10 @@ export default {
     };
 
     const searchForGroups = computed(() => {
-      if (!searchGroupText.value && groups.value.length > 0)
+      if (!selectedGroups.value.name && groups.value.length > 0)
         return groups.value;
       return groups.value.filter((i) =>
-        i.name.toLowerCase().includes(searchGroupText.value.toLowerCase())
+        i.name.toLowerCase().includes(selectedGroups.value.name.toLowerCase())
       );
     });
 
@@ -1708,6 +1780,10 @@ export default {
 
     return {
       selectedEvent,
+      setGroupValue,
+      flattenedTree,
+      groupMappedTree,
+      filterNodeMethod,
       setIncomeAccount,
       setcashBankAccount,
       selectedIncomeAccountID,
