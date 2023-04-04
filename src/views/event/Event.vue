@@ -2072,6 +2072,12 @@ export default {
   },
 
   methods: {
+    getCorrectDate(date) {
+      let myDate = new Date(date).toLocaleDateString();
+        let arr = myDate.split('/');
+        arr.unshift(arr.splice(2, 1)[0])
+         return arr.join('-')
+    },
     currentDate() {
       this.currDate = this.eventDate;
       console.log(this.currDate);
@@ -2684,7 +2690,7 @@ export default {
         };
       } else {
         this.eventObj.activity = {
-          date: this.eventDate === "" ? "01.01.0001 00:00:00" : this.eventDate,
+          date: this.eventDate === "" ? "01.01.0001 00:00:00" : this.getCorrectDate(this.eventDate),
           topic: this.topic,
           preacher: this.preacher,
           note: this.note,
@@ -2705,7 +2711,7 @@ export default {
 
       let updateEvent = {
         activity: {
-          date: this.eventDate,
+          date: this.getCorrectDate(this.eventDate),
           topic: this.topic,
           preacher: this.preacher,
           eventCategoryId: this.selectedEventCategoryId,

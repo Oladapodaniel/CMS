@@ -133,14 +133,14 @@
                   <div class="col-md-12 my-2">
                     <router-link
                       class="font-weight-bold link dd-list-item"
-                      to="/tenant/workflow/list"
+                      to="/tenant/settings/workflow/list"
                       >Workflow</router-link
                     >
                   </div>
                   <div class="col-md-12 my-2">
                     <router-link
                       class="font-weight-bold link dd-list-item"
-                      to="/tenant/archivedpeople"
+                      to="/tenant/settings/archivedpeople"
                       >Archived People</router-link
                     >
                   </div>

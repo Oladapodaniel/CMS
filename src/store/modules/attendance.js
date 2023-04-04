@@ -1,8 +1,7 @@
 import attendanceservice from '../../services/attendance/attendanceservice';
 
 const defaultState = (() => ({
-    attendanceService: [],
-    totalItems:  "",
+    attendanceService: {},
     attendanceItemData: { },
     eventRegItemData: { }
 }))
@@ -21,10 +20,6 @@ export default {
         },
         SET_ATTENDANCEDATA (state, payload) {
             state.attendanceService = payload
-        },
-        
-        SET_TOTALITEM (state, payload) {
-            state.totalItems = payload
         },
         
         setEventReg(state, payload) {
@@ -57,14 +52,8 @@ export default {
         },
         setAttendanceItemData ({ commit }) {
             return attendanceservice.getItems().then(response => {  
-                commit('SET_ATTENDANCEDATA', response.items)
-                return response.items
-            })
-        },
-        setTotalItems ({ commit }) {
-            return attendanceservice.getItems().then(response => {  
-                commit('SET_TOTALITEM', response.totalItems)
-                return response.totalItems
+                commit('SET_ATTENDANCEDATA', response)
+                return response
             })
         },
         removeAttendanceFromStore({ commit }, payload) {
@@ -82,9 +71,6 @@ export default {
     getters: {
         attendanceserviceitem: (state) => {
             return state.attendanceService
-        },
-        settotalitems: (state) => {
-            return state.totalItems
         },
         attendanceItemData: state => state.attendanceItemData,
         eventRegItemData: state => state.eventRegItemData

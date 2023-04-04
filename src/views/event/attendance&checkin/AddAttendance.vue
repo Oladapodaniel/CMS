@@ -175,7 +175,7 @@
             <label for="" class="font-weight-600">Event</label>
           </div>
           <div class="col-sm-7 col-md-6 col-lg-5">
-            <div class="col-md-12 px-0" v-if="events.length > 5">
+            <div class="col-md-12 px-0">
               <!-- Find event -->
               <el-dropdown class="w-100" trigger="click">
                 <el-input class="w-100" placeholder="Select from events and activities" v-model="selectedEvent.name" />
@@ -277,7 +277,7 @@
             <label for="" class="font-weight-600">Group</label>
           </div>
           <div class="col-sm-7 col-md-6 col-lg-5">
-            <el-tree-select
+            <!-- <el-tree-select
                 v-model="selectedGroups"
                 :data="groupMappedTree"
                 :render-after-expand="false"
@@ -289,8 +289,8 @@
                 filterable
                 check-on-click-node
                 class="w-100"
-              />
-            <!-- <button
+              /> -->
+            <button
               class="
                 form-control
                 d-flex
@@ -323,8 +323,8 @@
                   pr-1 ">
                   <arrow-down />
                 </el-icon>
-            </button> -->
-            <!-- <div
+            </button>
+            <div
               class="div-card p-2 exempt-hide"
               :class="{
                 'd-none': hideDiv,
@@ -347,7 +347,7 @@
                 @filteredGroup="setFilterGroups"
                 @newgroup="setNewGroup"
               />
-            </div> -->
+            </div>
           </div>
         </div>
         <div class="row">
@@ -1144,16 +1144,16 @@ export default {
     const image = ref("");
     const imageUrl = ref("");
     const slot = ref("");
-    // const hideDiv = ref(true);
-    // const searchGroupRef = ref(true);
-    // const searchGroupText = ref("");
+    const hideDiv = ref(true);
+    const searchGroupRef = ref(true);
+    const searchGroupText = ref("");
     const grouploading = ref(false);
     const checkinCutOffTime = ref("");
     const regCutOffTimer = ref("");
     const { mdAndUp, lgAndUp, xlAndUp, xsOnly } = deviceBreakpoint()
 
     // const selectedGroup = ref({});
-    const selectedGroups = ref();
+    const selectedGroups = ref([]);
     const selectedIncomeAccountID = ref(null)
     const selectedCashAccountID = ref(null)
 
@@ -1278,6 +1278,12 @@ export default {
     };
 
     const newAcctivityDate = ref("");
+    const getCorrectDate = (date) =>{
+      let myDate = new Date(date).toLocaleDateString();
+        let arr = myDate.split('/');
+        arr.unshift(arr.splice(2, 1)[0])
+         return arr.join('-')
+    }
     const createNewActivity = async () => {
       if (!newAcctivityDate.value && !selectedCategory.value) return false;
       // if(route.params.id){
@@ -1291,11 +1297,13 @@ export default {
       // }
       try {
         const response = await eventsService.createNewActivity({
+          
           activity: {
-            date: newAcctivityDate.value,
+            date: getCorrectDate(newAcctivityDate.value),
             eventCategoryId: selectedCategory.value.id,
           },
         });
+        console.log(response, "hh");
         const newActivity = {
           id: response.currentEvent.id,
           name: `${response.currentEvent.name} (${new Date(
@@ -1435,8 +1443,7 @@ export default {
         : "";
       selectedEvent.value
         ? formData.append(
-            "activityDate",
-            selectedEvent.value.date.split("T")[0]
+            "activityDate", getCorrectDate(selectedEvent.value.date)
           )
         : "";
       formData.append("isPaidFor", addPaidClass.value);
@@ -1815,18 +1822,18 @@ export default {
       selectedBank.value = item;
     };
 
-    // const setGroupProp = () => {
-    //   hideDiv.value = !hideDiv.value;
-    //   nextTick(() => {
-    //     searchGroupRef.value.focus();
-    //   });
-    // };
+    const setGroupProp = () => {
+      hideDiv.value = !hideDiv.value;
+      nextTick(() => {
+        searchGroupRef.value.focus();
+      });
+    };
 
     const searchForGroups = computed(() => {
-      if (!selectedGroups.value.name && groups.value.length > 0)
+      if (!searchGroupText.value.name && groups.value.length > 0)
         return groups.value;
       return groups.value.filter((i) =>
-        i.name.toLowerCase().includes(selectedGroups.value.name.toLowerCase())
+        i.name.toLowerCase().includes(searchGroupText.value.toLowerCase())
       );
     });
 
@@ -1921,11 +1928,11 @@ export default {
       filteredBanks,
       slot,
       selectedGroups,
-      // setGroupProp,
-      // hideDiv,
-      // searchGroupRef,
+      setGroupProp,
+      hideDiv,
+      searchGroupRef,
       searchForGroups,
-      // searchGroupText,
+      searchGroupText,
       grouploading,
       closeDropdownIfOpen,
       regCutOffTimer,

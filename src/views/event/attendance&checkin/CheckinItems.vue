@@ -2,14 +2,14 @@
   <div class="container-fluid">
     <div class="row">
       <div class="col-md-12">
-        <div class="no-person" v-if="items.length === 0 && !errorOccurred  && !loading">
+        <div class="no-person" v-if="(items && items.length === 0) && !errorOccurred  && !loading">
           <div class="empty-img mt-5">
             <p><img src="../../../assets/people/people-empty.svg" alt="" /></p>
             <p class="tip">You have no attendance yet</p>
           </div>
         </div>
 
-        <div class="row" v-if="items.length > 0 && !loading">
+        <div class="row" v-if="(items && items.length > 0 ) && !loading">
           <div class="col-md-12 px-0">
             <List
               :list="items"
@@ -68,18 +68,21 @@ import { ref, onMounted } from "vue";
 export default {
   components: { List },
   async setup() {
-    const items = ref(store.getters["attendance/attendanceserviceitem"]);
+    const items = ref(store.getters["attendance/attendanceserviceitem"].items );
     const loading = ref(false);
     const errorOccurred = ref(false);
-    const cantGetItems = ref(true);
-    const totalItems = ref(store.getters["attendance/settotalitems"]);
+    const cantGetItems = ref(false);
+    const totalItems = ref(store.getters["attendance/attendanceserviceitem"].totalItems  );
     const getAttendanceItems = async () => {
     try {
-      cantGetItems.value = false;
       loading.value = true;
+      cantGetItems.value = false
       await store.dispatch("attendance/setAttendanceItemData").then((res) => {
-        items.value = res
+        items.value = res.items
+        totalItems.value = res.totalItems
+        console.log(items.value, "jjj")
         loading.value = false;
+        cantGetItems.value = false;
       });
     } catch (error) {
       cantGetItems.value = true;
@@ -88,23 +91,6 @@ export default {
       errorOccurred.value = true;
     }
     }
-    const getTotalItems = async () => {
-    try {
-      cantGetItems.value = false;
-      loading.value = true;
-      await store.dispatch("attendance/setTotalItems").then((res) => {
-        totalItems.value = res;
-        loading.value = false;
-      });
-    } catch (error) {
-      cantGetItems.value = true;
-      console.log(error);
-      loading.value = false;
-      errorOccurred.value = true;
-    }
-    console.log(errorOccurred.value);
-    }
-
     const removeCheckin = (payload) => {
       items.value.splice(payload, 1);
     };
@@ -121,11 +107,10 @@ export default {
       items.value = payload.items;
     };
     onMounted(() => {
-      if (items.value && items.value.length == 0)
+      console.log(items.value, "uuuu")
+      if ((!items.value) || (items.value && items.value.items && items.value.items.length == 0)){
         getAttendanceItems();
-      if ( totalItems.value === '')
-       cantGetItems.value = true;
-        getTotalItems();
+      }
     });
 
     return {
