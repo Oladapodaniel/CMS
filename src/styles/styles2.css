@@ -22,7 +22,7 @@ button.el-button.is-round {
 } */
 
 .primary--text {
-  color: #136acd;
+  color: #136acd !important;
 }
 
 .no-decoration {
