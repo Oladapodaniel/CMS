@@ -1073,13 +1073,13 @@ export default {
             ElMessage({
               message: "Please ensure you have a strong internet",
               type: "warning",
-              life: "4000",
+              duration: 4000,
             });
           } else if (err.toString().toLowerCase().includes("timeout")) {
             ElMessage({
               message: "Request timeout, Please refresh the page and try again",
               type: "warning",
-              life: "4000",
+              duration: 4000,
               showClose: true,
             });
           }
@@ -1097,7 +1097,7 @@ export default {
           ElMessage({
             message: "Member(s) Copy Successfully",
             type: "success",
-            life: "4000",
+            duration: 4000,
             showClose: true,
           });
           store.dispatch("groups/updateGroupPeopleCopy", {
@@ -1174,7 +1174,7 @@ export default {
               ElMessage({
                 type: "success",
                 message: res.message,
-                duration: "5000"
+                duration: 5000
               });
 
               store.dispatch("groups/updateGroupPeopleCount", {
@@ -1509,7 +1509,7 @@ export default {
         ElMessage({
           message: "Member approved successfully",
           type: "Success",
-          duration: "4000",
+          duration: 4000,
         });
         awaitingApprovals.value = awaitingApprovals.value.filter((i) => {
           return i.personID !== member.personID;
@@ -1571,7 +1571,7 @@ export default {
           ElMessage({
             message: "Member archived successfully",
             type: "success",
-            duration: "5000",
+            duration: 5000,
           });
         }
         if (data && type == "multiple") {
@@ -1583,7 +1583,7 @@ export default {
           ElMessage({
             message: "Member(s) archived successfully",
             type: "success",
-            duration: "5000",
+            duration: 5000,
           });
           displayPositionArchive.value = false;
         }
@@ -1622,7 +1622,7 @@ export default {
         ElMessage({
           message: `${data.response}`,
           type: "success",
-          duration: "4000",
+          duration: 4000,
         });
         groupData.value.children.push(data.returnObject);
       } catch (error) {
@@ -1631,7 +1631,7 @@ export default {
           ElMessage({
             message: `${error.response}`,
             type: "error",
-            duration: "4000",
+            duration: 4000,
           });
         }
       }
