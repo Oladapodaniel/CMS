@@ -109,7 +109,7 @@
     <div class="row" v-if="appltoggle && !showLoading">
       <div class="col-md-12">
 
-        <div class="row mb-3 " v-if="selectedCustomField.find(i => i.toLowerCase() == 'card/checkin number')">
+        <div class="row" v-if="selectedCustomField.find(i => i.toLowerCase() == 'card/checkin number')">
           <div class="col-md-3 d-md-flex align-items-center justify-content-end text-md-right mt-2 font-weight-700">
             <label for="">Card number</label>
           </div>
@@ -271,7 +271,7 @@
         <div class="row my-2">
           <div class="col-md-3"></div>
           <div class="col-md-7 py-4 text-center">
-            <el-button class="default-btn mr-3" size="large" round @click="notme">Not Me</el-button>
+            <el-button class="mr-3" round @click="notme">Not Me</el-button>
             <el-button data-toggle="modal" data-target="#PaymentOptionModal" color="#136acd" @click="confirmCheck()"
               v-if="fullEventData.paymentFormId" :disabled="!person.name || person.name.length < 1 || !person.email || disableClick" round>
               Make payment to register
