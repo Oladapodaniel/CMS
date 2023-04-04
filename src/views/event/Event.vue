@@ -3,9 +3,6 @@
     <div class="bg col-md-10 offset-md-1">
       <div class="container first-pane">
         <div class="row">
-          <Toast />
-        </div>
-        <div class="row">
           <div class="text-center text-sm-left col-sm-5 head-text">Events</div>
           <div class="text-center text-sm-right col-sm-7">
             <div class="row">
@@ -56,12 +53,6 @@
                 &nbsp;&nbsp;&nbsp;Select
                 Category</span><span class="mt-1" >
                   <el-icon class="ofering offset-sm-2" :class="{ roll3: showForm3 }"  ><ArrowDown /></el-icon>
-                <!-- <i
-                  class="pi pi-angle-down offset-sm-2 ofering"
-                  :class="{ roll3: showForm3 }"
-                  aria-hidden="true"
-                ></i
-              > -->
               </span>
             </div>
             <div

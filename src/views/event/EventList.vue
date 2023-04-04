@@ -224,42 +224,6 @@
                     </el-input>
                   </div>
                 </div>
-              <!-- <div class="select-all">
-                <input type="checkbox" name="all" id="all" />
-                <label>SELECT ALL</label>
-              </div> -->
-              <!-- <div class="filter">
-                <p @click="toggleFilterFormVissibility" class="mt-2">
-                  <i class="fas fa-filter"></i>
-                  FILTER
-                </p>
-              </div> -->
-              <!-- <p @click="toggleSearch" class="search-text mt-2">
-                <i class="pi pi-search"></i> SEARCH
-              </p> -->
-              <!-- <div class="search d-flex">
-                <label
-                  class="label-search d-flex"
-                  :class="{
-                    'show-search': searchIsVisible,
-                    'hide-search': !searchIsVisible,
-                  }"
-                >
-                  <input
-                    type="text"
-                    placeholder="Search..."
-                    v-model="searchText"
-                  />
-                  
-                  <span class="empty-btn">x</span>
-                  <span class="search-btn">
-                   <el-icon >
-                     <Search />
-                     </el-icon>
-                    
-                  </span>
-                </label>
-              </div> -->
 
             <div
               class="filter-options mt-3"
@@ -272,37 +236,38 @@
                       <div
                         class="col-12 col-sm-6 offset-sm-3 offset-md-0 form-group inp w-100"
                       >
-                        <!-- <div class="input-field"> -->
 
-                        <input
+                        <el-input
                           type="text"
-                          class="input w-100"
+                          class="w-100"
                           placeholder="First Name"
                         />
-                        <!-- </div> -->
                       </div>
 
                       <div class="col-12 col-sm-6 form-group d-none d-md-block">
-                        <input
+                        <el-date-picker
                           type="date"
-                          class="form-control input inp w-100"
+                          class="w-100"
+                          size="large"
+                          placeholder="Pick a Date"
+                          format="MM/DD/YYYY"
                         />
                       </div>
                     </div>
 
                     <div class="row">
                       <div class="col-12 col-sm-6 form-group d-none d-md-block">
-                        <input
+                        <el-input
                           type="text"
-                          class="input w-100"
+                          class=" w-100"
                           placeholder="Last Name"
                         />
                       </div>
 
                       <div class="col-12 col-sm-6 form-group d-none d-md-block">
-                        <input
+                        <el-input
                           type="text"
-                          class="input w-100"
+                          class="w-100"
                           placeholder="Phone Number"
                         />
                       </div>
@@ -310,11 +275,9 @@
                   </div>
 
                   <div class="col-md-3 d-flex flex-column align-items-center">
-                    <button class="apply-btn text-white">
-                      <!-- @click="applyFilter"
-                      :disabled="disableBtn" -->
+                    <el-button round color="#136acd" class="text-white">
                       Apply
-                    </button>
+                    </el-button>
                     <span class="mt-2">
                       <a class="clear-link mr-2" @click="clearAll">Clear all</a>
                       <span class="mx-2"
@@ -329,183 +292,6 @@
               </div>
             </div>
         </div>
-
-        <!-- {{filterEvents}} -->
-          <!-- <div class="row table-header">
-            <div class="col-1 d-none d-md-block">STATUS</div>
-            <div class="col-2 d-none d-md-block">EVENT NAME</div>
-            <div class="col-2 d-none d-md-block">TITLE</div>
-            <div class="col-2 d-none d-md-block">DATE</div>
-            <div class="col-1 d-none d-md-block">ATTENDANCE</div>
-            <div class="col-2 d-none d-md-block">FIRST TIMERS</div>
-            <div class="col-2 d-none d-md-block">NEW CONVERTS</div>
-          </div> -->
-
-          <!-- <div
-            class="table-body row"
-            v-for="(event, index) in filterEvents"
-            :key="index"
-          >
-            <div class="col-md-12">
-              <div class="row">
-                <div class="col-md-1 col-sm-12 p-2 align-self-center">
-                  <div class="row px-2">
-                    <div class="col-8 col-md-0 d-md-none">
-                      <span
-                        class="d-md-none d-sm-flex small-text font-weight-700 text-dark px-1"
-                        >Status</span
-                      >
-                    </div>
-                    <div class="col-4 col-md-12">
-                      <span class="d-flex justify-content-end">
-                        <span class="d-sm-flex small">
-                          <div class="td-first px-1">
-                            {{ event.isSent ? "Sent" : "Unsent" }}
-                          </div>
-                        </span>
-                      </span>
-                    </div>
-                  </div>
-                </div>
-                <div
-                  class="col-md-2 col-sm-12 itemroute-color align-self-center"
-                >
-                  <div>
-                    <span class="d-flex justify-content-between">
-                      <span
-                        class="d-md-none d-sm-flex small-text font-weight-700 text-dark px-1"
-                        >Event Name</span
-                      >
-                      <span class="d-sm-flex small">
-                        <router-link
-                          :to="`/tenant/event/${event.activityId}`"
-                          class="itemroute-color px-1"
-                          >{{ event.eventName }}</router-link
-                        >
-                      </span>
-                    </span>
-                  </div>
-                </div>
-                <div
-                  class="col-md-2 col-sm-12 itemroute-color align-self-center"
-                >
-                  <div>
-                    <span class="d-flex justify-content-between">
-                      <span
-                        class="d-md-none d-sm-flex small-text font-weight-700 text-dark px-1"
-                        >Title</span
-                      >
-                      <span class="d-sm-flex small">
-                        <div class="px-1">{{ event.title }}</div>
-                      </span>
-                    </span>
-                  </div>
-                </div>
-                <div
-                  class="col-md-2 col-sm-12 itemroute-color align-self-center"
-                >
-                  <div>
-                    <span class="d-flex justify-content-between">
-                      <span
-                        class="d-md-none d-sm-flex small-text font-weight-700 text-dark px-1"
-                        >Date</span
-                      >
-                      <span class="d-sm-flex small">
-                        <div class="px-1">{{ date(event.activityDate) }}</div>
-                      </span>
-                    </span>
-                  </div>
-                </div>
-                <div
-                  class="col-md-1 col-sm-12 itemroute-color align-self-center"
-                >
-                  <div>
-                    <span class="d-flex justify-content-between">
-                      <span
-                        class="d-md-none d-sm-flex small-text font-weight-700 text-dark px-1"
-                        >Attendance</span
-                      >
-                      <span class="d-sm-flex small">
-                        <div class="px-1">{{ event.attendances }}</div>
-                      </span>
-                    </span>
-                  </div>
-                </div>
-                <div
-                  class="col-md-2 col-sm-12 itemroute-color align-self-center"
-                >
-                  <div>
-                    <span class="d-flex justify-content-between">
-                      <span
-                        class="d-md-none d-sm-flex small-text font-weight-700 text-dark px-1"
-                        >FirstTimers</span
-                      >
-                      <span class="d-sm-flex small">
-                        <div class="px-1">{{ event.firstTimers }}</div>
-                      </span>
-                    </span>
-                  </div>
-                </div>
-                <div
-                  class="col-md-1 col-sm-12 itemroute-color align-self-center"
-                >
-                  <div>
-                    <span class="d-flex justify-content-between">
-                      <span
-                        class="d-md-none d-sm-flex small-text font-weight-700 text-dark px-1"
-                        >NewConverts</span
-                      >
-                      <span class="d-sm-flex small">
-                        <div class="px-1">{{ event.newConverts }}</div>
-                      </span>
-                    </span>
-                  </div>
-                </div>
-                <div class="col-md-1 col-sm-12 align-self-center">
-                  <div class="dropdown">
-                    <span class="d-flex justify-content-between">
-                      <span class="d-md-none d-sm-flex"></span>
-                      <span class="d-sm-flex small px-1">
-                        <i
-                          class="fas fa-ellipsis-v cursor-pointer"
-                          id="dropdownMenuButton"
-                          data-toggle="dropdown"
-                          aria-haspopup="true"
-                          aria-expanded="false"
-                        ></i>
-                        <div
-                          class="dropdown-menu"
-                          aria-labelledby="dropdownMenuButton"
-                        >
-                          <router-link
-                            :to="`/tenant/report/${event.activityId}`"
-                            class="text-decoration-none"
-                          >
-                            <a class="dropdown-item elipsis-items">
-                              View Report
-                            </a>
-                          </router-link>
-
-                          <router-link
-                            :to="`/tenant/event/${event.activityId}`"
-                            class="text-decoration-none"
-                          >
-                            <a class="dropdown-item elipsis-items"> Edit </a>
-                          </router-link>
-                          <a
-                            class="dropdown-item elipsis-items cursor-pointer"
-                            @click="showConfirmModal(event.activityId, index)"
-                          >
-                            Delete
-                          </a>
-                        </div>
-                      </span>
-                    </span>
-                  </div>
-                </div>
-              </div>
-            </div>
-          </div> -->
           <Table
             :headers="eventHeaders"
             :checkMultipleItem="false"
@@ -587,10 +373,6 @@
               </el-dropdown>
             </template>
           </Table>
-
-    
-          <ConfirmDialog />
-          <Toast />
           <!-- {{membersCount}} {{currentPage}} -->
 
           <div class="table-footer">
@@ -600,6 +382,17 @@
               :currentPage="currentPage"
             />
           </div>
+          <!-- <div class="d-flex justify-content-end my-3">
+            <el-pagination
+              v-model:current-page="serverOptions.page"
+              v-model:page-size="serverOptions.rowsPerPage"
+              background
+              layout="total, prev, pager, next, jumper"
+              :total="serverItemsLength"
+              @size-change="handleSizeChange"
+              @current-change="handleCurrentChange"
+            />
+          </div> -->
       </div>
     </div>
   </div>
@@ -654,12 +447,6 @@ export default {
         .delete(`/api/Events/DeleteActivity?activityId=${id}`)
         .then((res) => {
           console.log(res);
-          // toast.add({
-          //   severity: "success",
-          //   summary: "Delete Successful",
-          //   detail: `Event Deleted`,
-          //   life: 4000,
-          // });
           ElMessage({
             type: "success",
             message: "Delete Successful",
@@ -670,12 +457,6 @@ export default {
         .catch((err) => {
           finish();
           if (err.response.toString().toLowerCase().includes("network error")) {
-            // toast.add({
-            //   severity: "info",
-            //   summary: "Network Error",
-            //   detail: `Please ensure you have a strong internet connection`,
-            //   life: 4000,
-            // });
             ElMessage({
             type: "info",
             message: "Please ensure you have a strong internet connection",
@@ -683,11 +464,6 @@ export default {
           });
 
           } else {
-            // toast.add({
-            //   severity: "Delete Failed",
-            //   detail: `Unable to delete, please try again`,
-            //   life: 4000,
-            // });
 
             ElMessage({
             type: "error",
@@ -698,30 +474,25 @@ export default {
         });
     };
     const showConfirmModal = (id, index) => {
-      confirm.require({
-        message: "Are you sure you want to proceed?",
-        header: "Confirmation",
-        icon: "pi pi-exclamation-triangle",
-        acceptClass: "confirm-delete",
-        rejectClass: "cancel-delete",
-        accept: () => {
+      ElMessageBox.confirm(
+        "Are you sure you want to proceed?",
+        "Confirm delete",
+        {
+          confirmButtonText: "OK",
+          cancelButtonText: "Cancel",
+          type: "error",
+        }
+      )
+        .then(() => {
           deleteEvent(id, index);
-          // toast.add({severity:'info', summary:'Confirmed', detail:'Member Deleted', life: 3000});
-        },
-        reject: () => {
-          // toast.add({
-          //   severity: "info",
-          //   summary: "Rejected",
-          //   detail: "You have rejected",
-          //   life: 3000,
-          // });
+        })
+        .catch(() => {
           ElMessage({
             type: "info",
             message: "Rejected",
-            duration: 3000,
+            duration: 5000,
           });
-        },
-      });
+        });
     };
 
     const toggleFilterFormVissibility = () => {

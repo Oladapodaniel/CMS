@@ -2,7 +2,6 @@
   <div class="container-fluid">
     <div class="row">
       <div class="col-md-12">
-        <!-- <hr class="hr" /> -->
         <div class="no-person" v-if="items.length === 0 && !errorOccurred  && !loading">
           <div class="empty-img mt-5">
             <p><img src="../../../assets/people/people-empty.svg" alt="" /></p>
@@ -42,7 +41,6 @@
                       style="width: 240px; height: 240px"
                     />
                   </div>
-                  <!-- <el-skeleton-item variant="text" class="w-100" style="height: 25px" :rows="10"/> -->
                   <el-skeleton
                     class="w-100 mt-5"
                     style="height: 25px"
@@ -65,20 +63,16 @@
 <script>
 import List from "../../../views/event/attendance&checkin/AttendanceAndCheckinList";
 import store from "../../../store/store";
-// import attendanceservice from '../../../services/attendance/attendanceservice';
 import { ref, onMounted } from "vue";
 
 export default {
   components: { List },
   async setup() {
     const items = ref(store.getters["attendance/attendanceserviceitem"]);
-    console.log(items.value, "sssss");
     const loading = ref(false);
     const errorOccurred = ref(false);
     const cantGetItems = ref(true);
     const totalItems = ref(store.getters["attendance/settotalitems"]);
-    console.log(totalItems.value, 'TTTT');
-
     const getAttendanceItems = async () => {
     try {
       cantGetItems.value = false;
@@ -100,7 +94,6 @@ export default {
       loading.value = true;
       await store.dispatch("attendance/setTotalItems").then((res) => {
         totalItems.value = res;
-        console.log(totalItems.value, "uuuuu");
         loading.value = false;
       });
     } catch (error) {
@@ -117,14 +110,11 @@ export default {
     };
 
     const removeMultipleCheckin = (payload) => {
-      console.log(payload, "oiiipoii");
       items.value = items.value.filter((item) => {
         const y = payload.findIndex((i) => i.id === item.id);
-        console.log(y, "old are u now");
         if (y >= 0) return false;
         return true;
       });
-      console.log(items.value, "the boy is good ");
     };
 
     const setPagedAttendance = (payload) => {

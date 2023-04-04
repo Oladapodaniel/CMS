@@ -175,23 +175,25 @@
             <label for="" class="font-weight-600">Event</label>
           </div>
           <div class="col-sm-7 col-md-6 col-lg-5">
-            <div class="input-width">
+            <div class="col-md-12 px-0" v-if="events.length > 5">
               <!-- Find event -->
-                  <el-dropdown class="w-100" trigger="click">
-                    <el-input v-if="events.length > 5" class="w-100" placeholder="Select from events and activities" v-model="selectedEvent.name" />
-                    <template #dropdown>
-                      <el-dropdown-menu class="menu-height">
-                        <el-dropdown-item v-for="(event, index) in filteredEvents" :key="index"
-                          @click="selectEvent(event)">{{ event.name }}</el-dropdown-item>
-                        <el-dropdown-item class="d-flex justify-content-center text-primary font-weight-700"
-                          data-toggle="modal" data-target="#newActModal"
-                            ref="openModalBtn" divided><el-icon>
-                            <CirclePlus />
-                          </el-icon> Create new event</el-dropdown-item>
-                      </el-dropdown-menu>
-                    </template>
-                  </el-dropdown>
-                </div>
+              <el-dropdown class="w-100" trigger="click">
+                <el-input class="w-100" placeholder="Select from events and activities" v-model="selectedEvent.name" />
+                <template #dropdown>
+                  <el-dropdown-menu class="menu-height">
+                    <el-dropdown-item v-for="(event, index) in filteredEvents" :key="index"
+                      @click="selectEvent(event)">{{ event.name }}</el-dropdown-item>
+                    <el-dropdown-item class="d-flex justify-content-center text-primary font-weight-700"
+                      data-toggle="modal" data-target="#newActModal"
+                        ref="openModalBtn" divided><el-icon>
+                        <CirclePlus />
+                      </el-icon> 
+                      Create new event
+                    </el-dropdown-item>
+                  </el-dropdown-menu>
+                </template>
+              </el-dropdown>
+            </div>
             <!-- <div class="dropdown">
               <button
                 class="default-btn w-100 text-left pr-1"
@@ -275,8 +277,7 @@
             <label for="" class="font-weight-600">Group</label>
           </div>
           <div class="col-sm-7 col-md-6 col-lg-5">
-            {{selectedGroups}}
-            <!-- <el-tree-select
+            <el-tree-select
                 v-model="selectedGroups"
                 :data="groupMappedTree"
                 :render-after-expand="false"
@@ -288,7 +289,7 @@
                 filterable
                 check-on-click-node
                 class="w-100"
-              /> -->
+              />
             <!-- <button
               class="
                 form-control
@@ -687,54 +688,36 @@
                     Income Account 
                   </div>
                   <div class="col-sm-7 col-md-6 col-lg-5">
-                    <el-dropdown trigger="click" class="w-100">
-                <span class="el-dropdown-link w-100">
-                  <div
-                    class="d-flex justify-content-between border-contribution text-secondary w-100"
-                    size="large"
-                  >
-                    <span>{{
-                      selectedIncomeAccount &&
-                      Object.keys(selectedIncomeAccount).length > 0
-                        ? selectedIncomeAccount.text
-                        : "Select income"
-                    }}</span>
-                    <div>
-                      <el-icon class="el-icon--right">
-                        <arrow-down />
-                      </el-icon>
-                    </div>
-                  </div>
-                </span>
-                <template #dropdown>
-                  <el-dropdown-menu>
-                    <el-dropdown-item
-                      v-for="(itm, indx) in incomeAccount"
-                      :key="indx"
-                      @click="setIncomeAccount(itm)"
-                      >{{ itm.text }}
-                    </el-dropdown-item>
-                    <!-- <el-dropdown-item
-                      class="text-center w-100"
-                      divided
-                      ><a
-                        class="font-weight-bold small-text d-flex justify-content-center py-2 text-decoration-none primary-text"
-                        style="color: #136acd"
-                      >
-                        <router-link
-                          to="/tenant/pledge/pledgedefinition"
-                          class="border-0 font-weight-bold"
-                          >
-                        <el-icon size="large">
-                          <CirclePlus />
-                        </el-icon>
-                          Create New Pledge Item
-                        </router-link>
-                      </a></el-dropdown-item
-                    > -->
-                  </el-dropdown-menu>
-                </template>
-              </el-dropdown>
+                    <el-dropdown trigger="click" class="w-100 mt-4">
+                      <span class="el-dropdown-link w-100">
+                        <div
+                          class="d-flex justify-content-between border-contribution text-secondary w-100"
+                          size="large"
+                        >
+                          <span>{{
+                            selectedIncomeAccount &&
+                            Object.keys(selectedIncomeAccount).length > 0
+                              ? selectedIncomeAccount.text
+                              : "Select"
+                          }}</span>
+                          <div>
+                            <el-icon class="el-icon--right">
+                              <arrow-down />
+                            </el-icon>
+                          </div>
+                        </div>
+                      </span>
+                        <template #dropdown>
+                          <el-dropdown-menu>
+                            <el-dropdown-item
+                              v-for="(itm, indx) in incomeAccount"
+                              :key="indx"
+                              @click="setIncomeAccount(itm)"
+                              >{{ itm.text }}
+                            </el-dropdown-item>
+                          </el-dropdown-menu>
+                        </template>
+                    </el-dropdown>
                     <!-- <el-select-v2
                         v-model="selectedIncomeAccountID"
                         class="w-100 mt-4 font-weight-normal"
@@ -762,7 +745,37 @@
                     Cash Account
                   </div>
                   <div class="col-sm-7 col-md-6 col-lg-5">
-                    <el-select-v2
+                    <el-dropdown trigger="click" class="w-100 mt-4">
+                      <span class="el-dropdown-link w-100">
+                        <div
+                          class="d-flex justify-content-between border-contribution text-secondary w-100"
+                          size="large"
+                        >
+                          <span>{{
+                            selectedCashAccount &&
+                            Object.keys(selectedCashAccount).length > 0
+                              ? selectedCashAccount.text
+                              : "Select"
+                          }}</span>
+                          <div>
+                            <el-icon class="el-icon--right">
+                              <arrow-down />
+                            </el-icon>
+                          </div>
+                        </div>
+                      </span>
+                        <template #dropdown>
+                          <el-dropdown-menu>
+                            <el-dropdown-item
+                              v-for="(itm, indx) in cashBankAccount"
+                              :key="indx"
+                              @click="setcashBankAccount(itm)"
+                              >{{ itm.text }}
+                            </el-dropdown-item>
+                          </el-dropdown-menu>
+                        </template>
+                    </el-dropdown>
+                    <!-- <el-select-v2
                         v-model="selectedCashAccountID"
                         class="w-100 mt-4 font-weight-normal"
                         :options="
@@ -774,7 +787,7 @@
                         placeholder="Select"
                         @change="setcashBankAccount"
                         size="large"
-                      />
+                      /> -->
                   </div>
                   <div class="col-sm-2 col-lg-3"></div>
                 </div>
@@ -1045,8 +1058,9 @@
               <div class="col-md-12 d-flex justify-content-center">
                 <el-button
                 color="#136acd"
-                  class=" text-white border-0 contn-btn"
+                  class=" text-white border-0 "
                   round
+                  :loading="loading"
                   size="large"
                   @click="onContinue"
                   :disabled="
@@ -1055,10 +1069,10 @@
                     !selectedEvent.name
                   "
                 >
-                  <i
+                  <!-- <i
                     class="fas fa-circle-notch fa-spin mr-2 text-white"
                     v-if="loading"
-                  ></i>
+                  ></i> -->
                   <span class="text-white">Save and Continue</span>
                   <span></span>
                 </el-button>
@@ -1090,6 +1104,8 @@ import axio from "axios";
 import moment from "moment";
 import GroupTree from "../../groups/component/GroupTreeCheckboxParent.vue";
 import deviceBreakpoint from "../../../mixins/deviceBreakpoint";
+import collector from "../../../services/groupArray/mapTree";
+import flatten from "../../../services/groupArray/flatTree";
 import { ElMessage } from "element-plus";
 
 export default {
@@ -1128,9 +1144,9 @@ export default {
     const image = ref("");
     const imageUrl = ref("");
     const slot = ref("");
-    const hideDiv = ref(true);
-    const searchGroupRef = ref(true);
-    const searchGroupText = ref("");
+    // const hideDiv = ref(true);
+    // const searchGroupRef = ref(true);
+    // const searchGroupText = ref("");
     const grouploading = ref(false);
     const checkinCutOffTime = ref("");
     const regCutOffTimer = ref("");
@@ -1142,25 +1158,16 @@ export default {
     const selectedCashAccountID = ref(null)
 
     const attendanceCheID = ref(route.params.id);
-
-    console.log(attendanceCheID.value);
     const eventNameDate = ref("");
 
     const setIncomeAccount = (item) =>{
       selectedIncomeAccount.value = item;
     }
     const setGroupValue = () => {
-      const response = flattenedTree.value.find(i => i.value == selectedGroups.value)
-      console.log(response,"jjjjj");
-      // groupToAddTo.value = {
-      //   name: response.label,
-      //   id: response.value
-      // }
+      flattenedTree.value.find(i => i.value == selectedGroups.value)
     }
-    const setcashBankAccount = () =>{
-      selectedCashAccount.value = cashBankAccount.value.find(
-        (i) => i.id == selectedCashAccountID.value 
-        )
+    const setcashBankAccount = (item) =>{
+      selectedCashAccount.value = item;
     }
     // /api/CheckInAttendance/UpdateCheckInAttendance
 
@@ -1245,7 +1252,7 @@ export default {
     const selectedEvent = ref({});
     const selectEvent = (selected) => {
       selectedEvent.value = selected;
-      eventSearchText.value = ''
+      // eventSearchText.value = ''
     };
 
     const closeModal = () => {
@@ -1364,28 +1371,28 @@ export default {
       //   groupIDs: selectedGroups.value,
       //   eventDate: selectedEvent.value.date.split("T")[0],
       // };
-      let checkinEvent = {
-        eventId: selectedEvent.value.id,
-        groupIDs: selectedGroups.value,
-        eventDate: selectedEvent.value.date.split("T")[0],
-      };
-      slot.value ? (checkinEvent.registrationSlot = slot.value) : "";
-      checkinSMS.value ? (checkinEvent.checkinSMS = checkinSMS.value) : "";
-      checkinEmail.value
-        ? (checkinEvent.checkinEmail = checkinEmail.value)
-        : "";
-      registrationSMS.value
-        ? (checkinEvent.registrationSMS = registrationSMS.value)
-        : "";
-      registrationEmail.value
-        ? (checkinEvent.registrationEmail = registrationEmail.value)
-        : "";
-      regCutOffTimer.value
-        ? (checkinEvent.registrationCutOffTime = regCutOffTimer.value)
-        : "";
-      checkinCutOffTime.value
-        ? (checkinEvent.checkInCutOffTime = checkinCutOffTime.value)
-        : "";
+      // let checkinEvent = {
+      //   eventId: selectedEvent.value.id,
+      //   groupIDs: selectedGroups.value,
+      //   eventDate: selectedEvent.value.date.split("T")[0],
+      // };
+      // slot.value ? (checkinEvent.registrationSlot = slot.value) : "";
+      // checkinSMS.value ? (checkinEvent.checkinSMS = checkinSMS.value) : "";
+      // checkinEmail.value
+      //   ? (checkinEvent.checkinEmail = checkinEmail.value)
+      //   : "";
+      // registrationSMS.value
+      //   ? (checkinEvent.registrationSMS = registrationSMS.value)
+      //   : "";
+      // registrationEmail.value
+      //   ? (checkinEvent.registrationEmail = registrationEmail.value)
+      //   : "";
+      // regCutOffTimer.value
+      //   ? (checkinEvent.registrationCutOffTime = regCutOffTimer.value)
+      //   : "";
+      // checkinCutOffTime.value
+      //   ? (checkinEvent.checkInCutOffTime = checkinCutOffTime.value)
+      //   : "";
 
       const formData = new FormData();
 
@@ -1410,10 +1417,10 @@ export default {
             selectedCashAccount.value ? selectedCashAccount.value.id : ""
           )
         : "";
-      selectedIncomeAccount.value
+      selectedIncomeAccount.value && selectedIncomeAccount.value.id
         ? formData.append(
             "incomeAccountId",
-            selectedIncomeAccount.value ? selectedIncomeAccount.value.id : ""
+            selectedIncomeAccount.value && selectedIncomeAccount.value.id ? selectedIncomeAccount.value.id : ""
           )
         : "";
       registrationSMS.value
@@ -1446,21 +1453,46 @@ export default {
       checkinCutOffTime.value
         ? formData.append("checkInCutOffTime", checkinCutOffTime.value)
         : "";
-      if (
-        !attendanceCheID.value &&
-        !amount.value &&
-        !selectedBank.value &&
-        !accountNumber.value &&
-        !selectedCashAccount.value &&
-        !selectedIncomeAccount.value &&
-        !image.value
-      ) {
-        console.log("free and no image");
-        selectedGroups.value
-          ? formData.append("groupIDs", JSON.stringify(selectedGroups.value))
+      selectedGroups.value
+        ? formData.append("groupIDs", JSON.stringify(selectedGroups.value))
+        : "";
+
+
+
+        if(attendanceCheID.value){
+        attendanceCheID.value
+          ? formData.append("Id", attendanceCheID.value)
           : "";
         loadingsave.value = true;
         try {
+          const res = await axios.put(
+            "/api/CheckInAttendance/EditAttendanceCheckIn",
+            formData
+          );
+          console.log(res);
+          store.dispatch("attendance/setItemData", res);
+          ElMessage({
+                    type: "success",
+                    message: res.data.response,
+                    duration: 5000
+                    });
+                    store.dispatch('attendance/setAttendanceItemData');
+          router.push({
+            name: "CheckinType",
+            query: {
+              activityID: selectedEvent.value.id,
+              activityName: selectedEvent.value.name,
+              groupId: selectedGroups.value[0].id,
+              groupName: selectedGroups.value[0].name,
+              id: res.data.id,
+              code: res.data.attendanceCode,
+            },
+          });
+        } catch (error) {
+          console.log(error);
+        }
+        }else {
+          try {
           const response = await axios.post( 
             "api/CheckInAttendance/CreateAttendanceCheckIn", formData
             // "/api/CheckinAttendance/MultipleCheckinAttendanceItem",
@@ -1488,151 +1520,190 @@ export default {
           console.log(error);
           loadingsave.value = false;
         }
-        console.log("Only Topppp");
-      } else if (
-        attendanceCheID.value
-      ) {
-        selectedGroups.value
-          ? formData.append("groupIDs", JSON.stringify(selectedGroups.value))
-          : "";
-        // selectedGroups.value
-        //   ? formData.append("groupIDs", selectedGroups.value)
-        //   : "";
-        attendanceCheID.value
-          ? formData.append("Id", attendanceCheID.value)
-          : "";
-        loadingsave.value = true;
-        try {
-          const res = await axios.put(
-            "/api/CheckInAttendance/EditAttendanceCheckIn",
-            // "/api/CheckInAttendance/UpdateCheckInAttendance",
-            formData
-          );
-          console.log(res);
-          store.dispatch("attendance/setItemData", res);
-          ElMessage({
-                    type: "success",
-                    message: res.data.response,
-                    duration: 5000
-                    });
-                    store.dispatch('attendance/setAttendanceItemData');
-          router.push({
-            name: "CheckinType",
-            query: {
-              activityID: selectedEvent.value.id,
-              activityName: selectedEvent.value.name,
-              groupId: selectedGroups.value[0].id,
-              groupName: selectedGroups.value[0].name,
-              id: res.data.id,
-              code: res.data.attendanceCode,
-            },
-          });
-        } catch (error) {
-          console.log(error);
         }
-      } else if (
-        !amount.value &&
-        !selectedBank.value &&
-        !accountNumber.value &&
-        !selectedCashAccount.value &&
-        !selectedIncomeAccount.value &&
-        image.value
-      ) {
-        console.log("Free and image");
-        selectedGroups.value
-          ? formData.append("groupIDs", JSON.stringify(selectedGroups.value))
-          : "";
-        loadingsave.value = true;
-        try {
-          let { data } = await axios.post(
-            // "/api/CheckInAttendance/create/multiple",
-            "api/CheckInAttendance/CreateAttendanceCheckIn",
-            formData
-          );
-          let firstGroup = data.returnObject.checkInAttendanceResult.find(
-            (i) => i.groupID == selectedGroups.value[0].id
-          );
+      //         if (
+      //   !attendanceCheID.value &&
+      //   !amount.value &&
+      //   !selectedBank.value &&
+      //   !accountNumber.value &&
+      //   !selectedCashAccount.value &&
+      //   !selectedIncomeAccount.value &&
+      //   !image.value
+      // ) {
+      //   console.log("free and no image");
+      //   selectedGroups.value
+      //     ? formData.append("groupIDs", JSON.stringify(selectedGroups.value))
+      //     : "";
+      //   loadingsave.value = true;
+      //   try {
+      //     const response = await axios.post( 
+      //       "api/CheckInAttendance/CreateAttendanceCheckIn", formData
+      //       // "/api/CheckinAttendance/MultipleCheckinAttendanceItem",
+      //       // checkinEvent
+      //     );
+      //     for (let i = 0; i < response.data.returnObject.checkInAttendanceResult.length; i++) {
+      //       const element = response.data.returnObject.checkInAttendanceResult[i];
+      //       store.dispatch("attendance/setItemData", element);
+      //     }
+      //     store.dispatch('attendance/setAttendanceItemData');
+      //     store.dispatch("groups/setCheckedTreeGroup", []);
+      //     loadingsave.value = false;
+      //     router.push({
+      //       name: "CheckinType",
+      //       query: {
+      //         activityID: selectedEvent.value.id,
+      //         activityName: selectedEvent.value.name,
+      //         groupId: selectedGroups.value[0].id,
+      //         groupName: selectedGroups.value[0].name,
+      //         id: response.data.returnObject.checkInAttendanceResult[0].id,
+      //         code: response.data.returnObject.checkInAttendanceResult[0].attendanceCode,
+      //       },
+      //     });
+      //   } catch (error) {
+      //     console.log(error);
+      //     loadingsave.value = false;
+      //   }
+      //   console.log("Only Topppp");
+      // } else if (
+      //   attendanceCheID.value
+      // ) {
+      //   selectedGroups.value
+      //     ? formData.append("groupIDs", JSON.stringify(selectedGroups.value))
+      //     : "";
+      //   attendanceCheID.value
+      //     ? formData.append("Id", attendanceCheID.value)
+      //     : "";
+      //   loadingsave.value = true;
+      //   try {
+      //     const res = await axios.put(
+      //       "/api/CheckInAttendance/EditAttendanceCheckIn",
+      //       formData
+      //     );
+      //     console.log(res);
+      //     store.dispatch("attendance/setItemData", res);
+      //     ElMessage({
+      //               type: "success",
+      //               message: res.data.response,
+      //               duration: 5000
+      //               });
+      //               store.dispatch('attendance/setAttendanceItemData');
+      //     router.push({
+      //       name: "CheckinType",
+      //       query: {
+      //         activityID: selectedEvent.value.id,
+      //         activityName: selectedEvent.value.name,
+      //         groupId: selectedGroups.value[0].id,
+      //         groupName: selectedGroups.value[0].name,
+      //         id: res.data.id,
+      //         code: res.data.attendanceCode,
+      //       },
+      //     });
+      //   } catch (error) {
+      //     console.log(error);
+      //   }
+      // } else if (
+      //   !amount.value &&
+      //   !selectedBank.value &&
+      //   !accountNumber.value &&
+      //   !selectedCashAccount.value &&
+      //   !selectedIncomeAccount.value &&
+      //   image.value
+      // ) {
+      //   console.log("Free and image");
+      //   selectedGroups.value
+      //     ? formData.append("groupIDs", JSON.stringify(selectedGroups.value))
+      //     : "";
+      //   loadingsave.value = true;
+      //   try {
+      //     let { data } = await axios.post(
+      //       // "/api/CheckInAttendance/create/multiple",
+      //       "api/CheckInAttendance/CreateAttendanceCheckIn",
+      //       formData
+      //     );
+      //     let firstGroup = data.returnObject.checkInAttendanceResult.find(
+      //       (i) => i.groupID == selectedGroups.value[0].id
+      //     );
 
-          for (
-            let i = 0;
-            i < data.returnObject.checkInAttendanceResult.length;
-            i++
-          ) {
-            const element = data.returnObject.checkInAttendanceResult[i];
-            store.dispatch("attendance/setEventReg", element);
-          }
-          store.dispatch('attendance/setAttendanceItemData');
-          loadingsave.value = false;
-          router.push({
-            name: "CheckinType",
-            query: {
-              activityID: selectedEvent.value.id,
-              activityName: selectedEvent.value.name,
-              groupId: firstGroup.id,
-              groupName: selectedGroups.value[0].name,
-              id: firstGroup.id,
-              code: firstGroup.attendanceCode,
-            },
-          });
-        } catch (err) {
-          console.log(err);
-          loadingsave.value = false;
-        }
-      } else if (
-        amount.value &&
-        selectedBank.value &&
-        accountNumber.value &&
-        selectedCashAccount.value &&
-        selectedIncomeAccount.value
-      ) {
-        console.log("image and paid");
-        selectedGroups.value
-          ? formData.append("groupIDs", JSON.stringify(selectedGroups.value))
-          : "";
-        loadingsave.value = true;
-        try {
-          let { data } = await axios.post(
-            "api/CheckInAttendance/CreateAttendanceCheckIn",
-            // "/api/CheckInAttendance/create/multiple",
-            formData
-          );
-          let firstGroup = data.returnObject.checkInAttendanceResult.find(
-            (i) => i.groupID == selectedGroups.value[0].id
-          );
-          store.dispatch('attendance/setAttendanceItemData');
+      //     for (
+      //       let i = 0;
+      //       i < data.returnObject.checkInAttendanceResult.length;
+      //       i++
+      //     ) {
+      //       const element = data.returnObject.checkInAttendanceResult[i];
+      //       store.dispatch("attendance/setEventReg", element);
+      //     }
+      //     store.dispatch('attendance/setAttendanceItemData');
+      //     loadingsave.value = false;
+      //     router.push({
+      //       name: "CheckinType",
+      //       query: {
+      //         activityID: selectedEvent.value.id,
+      //         activityName: selectedEvent.value.name,
+      //         groupId: firstGroup.id,
+      //         groupName: selectedGroups.value[0].name,
+      //         id: firstGroup.id,
+      //         code: firstGroup.attendanceCode,
+      //       },
+      //     });
+      //   } catch (err) {
+      //     console.log(err);
+      //     loadingsave.value = false;
+      //   }
+      // } else if (
+      //   amount.value &&
+      //   selectedBank.value &&
+      //   accountNumber.value &&
+      //   selectedCashAccount.value &&
+      //   selectedIncomeAccount.value
+      // ) {
+      //   console.log("image and paid");
+      //   selectedGroups.value
+      //     ? formData.append("groupIDs", JSON.stringify(selectedGroups.value))
+      //     : "";
+      //   loadingsave.value = true;
+      //   try {
+      //     let { data } = await axios.post(
+      //       "api/CheckInAttendance/CreateAttendanceCheckIn",
+      //       // "/api/CheckInAttendance/create/multiple",
+      //       formData
+      //     );
+      //     let firstGroup = data.returnObject.checkInAttendanceResult.find(
+      //       (i) => i.groupID == selectedGroups.value[0].id
+      //     );
+      //     store.dispatch('attendance/setAttendanceItemData');
 
-          for (
-            let i = 0;
-            i < data.returnObject.checkInAttendanceResult.length;
-            i++
-          ) {
-            const element = data.returnObject.checkInAttendanceResult[i];
-            store.dispatch("attendance/setEventReg", element);
-          }
-          loadingsave.value = false;
-          router.push({
-            name: "CheckinType",
-            query: {
-              activityID: selectedEvent.value.id,
-              activityName: selectedEvent.value.name,
-              groupId: firstGroup.id,
-              groupName: selectedGroups.value[0].name,
-              id: firstGroup.id,
-              code: firstGroup.attendanceCode,
-            },
-          });
-        } catch (err) {
-          console.log(err);
-          loading.value = false;
-        }
-      } else {
-        ElMessage({
-                  type: "warning",
-                  message: 'Cannot create this event attendance, kindly fill all fields before saving.',
-                  duration: 5000
-                });
-        loadingsave.value = false;
-      }
+      //     for (
+      //       let i = 0;
+      //       i < data.returnObject.checkInAttendanceResult.length;
+      //       i++
+      //     ) {
+      //       const element = data.returnObject.checkInAttendanceResult[i];
+      //       store.dispatch("attendance/setEventReg", element);
+      //     }
+      //     loadingsave.value = false;
+      //     router.push({
+      //       name: "CheckinType",
+      //       query: {
+      //         activityID: selectedEvent.value.id,
+      //         activityName: selectedEvent.value.name,
+      //         groupId: firstGroup.id,
+      //         groupName: selectedGroups.value[0].name,
+      //         id: firstGroup.id,
+      //         code: firstGroup.attendanceCode,
+      //       },
+      //     });
+      //   } catch (err) {
+      //     console.log(err);
+      //     loading.value = false;
+      //   }
+      // } else {
+      //   ElMessage({
+      //             type: "warning",
+      //             message: 'Cannot create this event attendance, kindly fill all fields before saving.',
+      //             duration: 5000
+      //           });
+      //   loadingsave.value = false;
+      // }
     };
 
     const showPaidTab = () => {
@@ -1744,12 +1815,12 @@ export default {
       selectedBank.value = item;
     };
 
-    const setGroupProp = () => {
-      hideDiv.value = !hideDiv.value;
-      nextTick(() => {
-        searchGroupRef.value.focus();
-      });
-    };
+    // const setGroupProp = () => {
+    //   hideDiv.value = !hideDiv.value;
+    //   nextTick(() => {
+    //     searchGroupRef.value.focus();
+    //   });
+    // };
 
     const searchForGroups = computed(() => {
       if (!selectedGroups.value.name && groups.value.length > 0)
@@ -1766,7 +1837,7 @@ export default {
         !e.target.classList.contains("p-checkbox-box") &&
         !e.target.classList.contains("p-checkbox-icon")
       ) {
-        hideDiv.value = true;
+        // hideDiv.value = true;
       }
     };
 
@@ -1850,11 +1921,11 @@ export default {
       filteredBanks,
       slot,
       selectedGroups,
-      setGroupProp,
-      hideDiv,
-      searchGroupRef,
+      // setGroupProp,
+      // hideDiv,
+      // searchGroupRef,
       searchForGroups,
-      searchGroupText,
+      // searchGroupText,
       grouploading,
       closeDropdownIfOpen,
       regCutOffTimer,
@@ -1870,6 +1941,12 @@ export default {
 * {
   color: #02172e;
   /* font-family: Nunito Sans !important; */
+}
+
+.border-contribution {
+  border: 1.6px solid rgb(229, 232, 237);
+  border-radius: 4px;
+  padding: 11px 7px;
 }
 
 .contn-btn:disabled {

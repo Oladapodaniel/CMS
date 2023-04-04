@@ -56,12 +56,12 @@
                       }"
                       class="text-decoration-none"
                     >
-                      <el-tooltip
+                      <!-- <el-tooltip
                         class="box-item"
                         effect="dark"
                         :content="item.subject"
                         placement="top-start"
-                      >
+                      > -->
                         <div class="font-weight-600 text-dark">{{
                           item.subject && item.subject.length > 25
                             ? `${item.subject
@@ -72,13 +72,13 @@
                             ? item.subject
                             : ""
                         }}</div>
-                      </el-tooltip>
-                      <el-tooltip
+                      <!-- </el-tooltip> -->
+                      <!-- <el-tooltip
                         class="box-item"
                         effect="dark"
                         :content="item.message"
                         placement="top-start"
-                      >
+                      > -->
                         <div class="font-weight-600">
                           {{
                             item.message && item.message.length > 25
@@ -91,7 +91,7 @@
                               : ""
                           }}</div
                         >
-                      </el-tooltip>
+                      <!-- </el-tooltip> -->
                     </router-link>
                   </div>
                 </template>
