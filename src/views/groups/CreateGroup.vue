@@ -144,8 +144,7 @@
                     <label for="groupName" class="font-weight-600">Group name</label>
                   </div>
                   <div class="col-md-8">
-                    <el-input type="text" v-model="groupData.name" class="w-100 ml-0" id="formGroup"
-                      @input="validateGroupName" />
+                    <el-input type="text" v-model="groupData.name" class="w-100 ml-0" id="formGroup" />
                   </div>
                 </div>
               </div>
@@ -1111,15 +1110,15 @@ export default {
           if (err.toString().toLowerCase().includes("network error")) {
             ElMessage({
               message: "Please ensure you have a strong internet",
-              type: "Warn",
-              life: "4000",
+              type: "warning",
+              duration: 4000,
               showClose: true,
             });
           } else if (err.toString().toLowerCase().includes("timeout")) {
             ElMessage({
               message: "Please refresh the page",
-              type: "warn",
-              life: "4000",
+              type: "warning",
+              duration: 4000,
             });
           }
         });
@@ -1150,7 +1149,7 @@ export default {
               ElMessage({
                 message: "The member was removed",
                 type: "success",
-                duration: "2500",
+                duration: 5000,
               });
               groupsService.editGroupInStore(
                 { name: groupData.value.name, id: route.params.groupId },
@@ -1379,7 +1378,7 @@ export default {
             ElMessage({
               message: "Group members updated successfully",
               type: "success",
-              duration: "2500",
+              duration: 5000,
             });
           }
         })
@@ -1390,7 +1389,7 @@ export default {
           ElMessage({
             message: "Failed updating group",
             type: "error",
-            duration: "2500",
+            duration: 5000,
           });
         });
     };
@@ -1398,27 +1397,22 @@ export default {
     const createGroup = (data) => {
       axios
         .post("/api/CreateGroup", data)
-        .then((res) => {
-          groupsService.addGroupToStore(res.data, groupMembers.value.length);
+        .then(() => {
           savingGroup.value = false;
-          router.push("/tenant/peoplegroups");
+          store.dispatch("groups/setGroups").then(() => {
+            router.push("/tenant/peoplegroups");
+          })
         })
         .catch((err) => {
           finish();
           savingGroup.value = false;
-          console.log(err.response);
+          console.log(err);
           ElMessage({
             message: "Failed saving group",
             type: "error",
-            duration: "2500",
+            duration: 5000,
           });
         });
-    };
-
-    const validateGroupName = (e) => {
-      if (e.target.value) {
-        groupNameIsInvalid.value = false;
-      }
     };
 
     const getGroupById = async () => {
@@ -1469,14 +1463,14 @@ export default {
         if (error.toString().toLowerCase().includes("network error")) {
           ElMessage({
             message: "Please ensure you have a strong internet",
-            type: "warn",
-            duration: "4000",
+            type: "warning",
+            duration: 4000,
           });
         } else if (error.toString().toLowerCase().includes("timeout")) {
           ElMessage({
             message: "Please refresh the page",
-            type: "warn",
-            duration: "4000",
+            type: "warning",
+            duration: 4000,
           });
         }
       }
@@ -1493,8 +1487,8 @@ export default {
       if (!route.params.groupId) {
         ElMessage({
           message: "Please ensure you create the group first before you import",
-          type: "warn",
-          duration: "5000",
+          type: "warning",
+          duration: 5000,
         });
       }
     };
@@ -1527,14 +1521,14 @@ export default {
         if (error.toString().toLowerCase().includes("network error")) {
           ElMessage({
             message: "Please ensure you have a strong internet",
-            type: "warn",
-            duration: "4000",
+            type: "warning",
+            duration: 4000,
           });
         } else if (error.toString().toLowerCase().includes("timeout")) {
           ElMessage({
             message: "Please refresh the page",
-            type: "warn",
-            duration: "4000",
+            type: "warning",
+            duration: 4000,
           });
         }
         console.log(error);
@@ -1762,7 +1756,6 @@ export default {
       modalStatus,
       groupNameIsInvalid,
       saveGroupData,
-      validateGroupName,
       buttonText,
       loadingMembers,
       route,
