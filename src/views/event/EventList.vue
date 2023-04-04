@@ -424,24 +424,14 @@
         </Table>
         <!-- {{membersCount}} {{currentPage}} -->
 
-        <div class="table-footer">
-          <PaginationButtons
-            @getcontent="getPeopleByPage"
-            :itemsCount="membersCount"
-            :currentPage="currentPage"
-          />
-        </div>
-        <!-- <div class="d-flex justify-content-end my-3">
-            <el-pagination
-              v-model:current-page="serverOptions.page"
-              v-model:page-size="serverOptions.rowsPerPage"
-              background
-              layout="total, prev, pager, next, jumper"
-              :total="serverItemsLength"
-              @size-change="handleSizeChange"
-              @current-change="handleCurrentChange"
+          <div class="table-footer">
+            <PaginationButtons
+              @getcontent="getPeopleByPage"
+              :itemsCount="membersCount"
+              :currentPage="currentPage"
             />
-          </div> -->
+          </div>
+        </div>
       </div>
     </div>
   </div>
@@ -479,17 +469,6 @@ export default {
     const monthlyActiveBtn = ref(true);
     const yearlyActiveBtn = ref(false);
     const allTimeActiveBtn = ref(false);
-    const searchingMember = ref(true);
-    const eventHeaders = ref([
-      { name: "STATUS", value: "isSent" },
-      { name: "EVENT NAME", value: "eventName" },
-      { name: "TITLE", value: "title" },
-      { name: "DATE", value: "date" },
-      { name: "ATTENDANCES", value: "attendances" },
-      { name: "FIRST TIMERS", value: "firstTimers" },
-      { name: "NEW CONVERTS", value: "newConverts" },
-      { name: "ACTION", value: "action" },
-    ]);
 
     const deleteEvent = (id, index) => {
       axios
