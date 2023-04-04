@@ -193,49 +193,40 @@
     <!-- </div> -->
     <!-- <div class="container"> -->
     <div class="row">
-      <div class="col-sm-12 p-0">
-        <div class="table table-responsive">
-          <div class="top-con">
-            <div class="table-top my-3">
-              <div class="select-all">
-                <input type="checkbox" name="all" id="all" />
-                <label>SELECT ALL</label>
-              </div>
-              <div class="filter">
-                <p @click="toggleFilterFormVissibility" class="mt-2">
-                  <i class="fas fa-filter"></i>
-                  FILTER
-                </p>
-              </div>
-              <p @click="toggleSearch" class="search-text mt-2">
-                <i class="pi pi-search"></i> SEARCH
-              </p>
-              <div class="search d-flex">
-                <label
-                  class="label-search d-flex"
-                  :class="{
-                    'show-search': searchIsVisible,
-                    'hide-search': !searchIsVisible,
-                  }"
-                >
-                  <input
-                    type="text"
-                    placeholder="Search..."
-                    v-model="searchText"
-                  />
-                  
-                  <span class="empty-btn">x</span>
-                  <span class="search-btn">
-                   <el-icon >
-                     <Search />
-                     </el-icon>
-                    
-                  </span>
-                </label>
-              </div>
-            </div>
+      <div class="col-sm-12 p-0 mt-5">
+        <div class="table-top p-3 mt-5">
+               <div class="row d-flex flex-column flex-sm-row justify-content-sm-end">
+                  <div class="col-md-2 ">
+                    <p @click="toggleFilterFormVissibility" class="mb-0 mr-3 d-flex my-3 my-sm-0 c-pointer">
+                      <el-icon :size="13">
+                        <Filter />
+                      </el-icon>
+                      <span class="ml-1"> FILTER</span>
+                    </p>
+                  </div>
+                  <div class="col-md-5 ">
+                    <el-input size="small" v-model="searchText" placeholder="Search..." @input="searchingMember = true"
+                      @keyup.enter.prevent="searchPeopleInDB($event)" class="input-with-select">
+                      <template #suffix>
+                        <el-button style="padding: 5px; height: 22px;" @click.prevent="searchText = ''">
+                          <el-icon :size="13">
+                            <Close />
+                          </el-icon>
+                        </el-button>
+                      </template>
+                      <template #append>
+                        <el-button @click.prevent="searchPeopleInDB($event)">
+                          <el-icon :size="13">
+                            <Search />
+                          </el-icon>
+                        </el-button>
+                      </template>
+                    </el-input>
+                  </div>
+                </div>
+
             <div
-              class="filter-options"
+              class="filter-options mt-3"
               :class="{ 'filter-options-shown': filterFormIsVissible }"
             >
               <div class="container-fluid">
@@ -245,37 +236,38 @@
                       <div
                         class="col-12 col-sm-6 offset-sm-3 offset-md-0 form-group inp w-100"
                       >
-                        <!-- <div class="input-field"> -->
 
-                        <input
+                        <el-input
                           type="text"
-                          class="input w-100"
+                          class="w-100"
                           placeholder="First Name"
                         />
-                        <!-- </div> -->
                       </div>
 
                       <div class="col-12 col-sm-6 form-group d-none d-md-block">
-                        <input
+                        <el-date-picker
                           type="date"
-                          class="form-control input inp w-100"
+                          class="w-100"
+                          size="large"
+                          placeholder="Pick a Date"
+                          format="MM/DD/YYYY"
                         />
                       </div>
                     </div>
 
                     <div class="row">
                       <div class="col-12 col-sm-6 form-group d-none d-md-block">
-                        <input
+                        <el-input
                           type="text"
-                          class="input w-100"
+                          class=" w-100"
                           placeholder="Last Name"
                         />
                       </div>
 
                       <div class="col-12 col-sm-6 form-group d-none d-md-block">
-                        <input
+                        <el-input
                           type="text"
-                          class="input w-100"
+                          class="w-100"
                           placeholder="Phone Number"
                         />
                       </div>
@@ -283,11 +275,9 @@
                   </div>
 
                   <div class="col-md-3 d-flex flex-column align-items-center">
-                    <button class="apply-btn text-white">
-                      <!-- @click="applyFilter"
-                      :disabled="disableBtn" -->
+                    <el-button round color="#136acd" class="text-white">
                       Apply
-                    </button>
+                    </el-button>
                     <span class="mt-2">
                       <a class="clear-link mr-2" @click="clearAll">Clear all</a>
                       <span class="mx-2"
@@ -301,186 +291,7 @@
                 </div>
               </div>
             </div>
-          </div>
-
-        {{filterEvents}}
-          <div class="row table-header">
-            <div class="col-1 d-none d-md-block">STATUS</div>
-            <div class="col-2 d-none d-md-block">EVENT NAME</div>
-            <div class="col-2 d-none d-md-block">TITLE</div>
-            <div class="col-2 d-none d-md-block">DATE</div>
-            <div class="col-1 d-none d-md-block">ATTENDANCE</div>
-            <div class="col-2 d-none d-md-block">FIRST TIMERS</div>
-            <div class="col-2 d-none d-md-block">NEW CONVERTS</div>
-          </div>
-
-          <div
-            class="table-body row"
-            v-for="(event, index) in filterEvents"
-            :key="index"
-          >
-            <div class="col-md-12">
-              <div class="row">
-                <div class="col-md-1 col-sm-12 p-2 align-self-center">
-                  <div class="row px-2">
-                    <div class="col-8 col-md-0 d-md-none">
-                      <span
-                        class="d-md-none d-sm-flex small-text font-weight-700 text-dark px-1"
-                        >Status</span
-                      >
-                    </div>
-                    <div class="col-4 col-md-12">
-                      <span class="d-flex justify-content-end">
-                        <span class="d-sm-flex small">
-                          <div class="td-first px-1">
-                            {{ event.isSent ? "Sent" : "Unsent" }}
-                          </div>
-                        </span>
-                      </span>
-                    </div>
-                  </div>
-                </div>
-                <div
-                  class="col-md-2 col-sm-12 itemroute-color align-self-center"
-                >
-                  <div>
-                    <span class="d-flex justify-content-between">
-                      <span
-                        class="d-md-none d-sm-flex small-text font-weight-700 text-dark px-1"
-                        >Event Name</span
-                      >
-                      <span class="d-sm-flex small">
-                        <router-link
-                          :to="`/tenant/event/${event.activityId}`"
-                          class="itemroute-color px-1"
-                          >{{ event.eventName }}</router-link
-                        >
-                      </span>
-                    </span>
-                  </div>
-                </div>
-                <div
-                  class="col-md-2 col-sm-12 itemroute-color align-self-center"
-                >
-                  <div>
-                    <span class="d-flex justify-content-between">
-                      <span
-                        class="d-md-none d-sm-flex small-text font-weight-700 text-dark px-1"
-                        >Title</span
-                      >
-                      <span class="d-sm-flex small">
-                        <div class="px-1">{{ event.title }}</div>
-                      </span>
-                    </span>
-                  </div>
-                </div>
-                <div
-                  class="col-md-2 col-sm-12 itemroute-color align-self-center"
-                >
-                  <div>
-                    <span class="d-flex justify-content-between">
-                      <span
-                        class="d-md-none d-sm-flex small-text font-weight-700 text-dark px-1"
-                        >Date</span
-                      >
-                      <span class="d-sm-flex small">
-                        <div class="px-1">{{ date(event.activityDate) }}</div>
-                      </span>
-                    </span>
-                  </div>
-                </div>
-                <div
-                  class="col-md-1 col-sm-12 itemroute-color align-self-center"
-                >
-                  <div>
-                    <span class="d-flex justify-content-between">
-                      <span
-                        class="d-md-none d-sm-flex small-text font-weight-700 text-dark px-1"
-                        >Attendance</span
-                      >
-                      <span class="d-sm-flex small">
-                        <div class="px-1">{{ event.attendances }}</div>
-                      </span>
-                    </span>
-                  </div>
-                </div>
-                <div
-                  class="col-md-2 col-sm-12 itemroute-color align-self-center"
-                >
-                  <div>
-                    <span class="d-flex justify-content-between">
-                      <span
-                        class="d-md-none d-sm-flex small-text font-weight-700 text-dark px-1"
-                        >FirstTimers</span
-                      >
-                      <span class="d-sm-flex small">
-                        <div class="px-1">{{ event.firstTimers }}</div>
-                      </span>
-                    </span>
-                  </div>
-                </div>
-                <div
-                  class="col-md-1 col-sm-12 itemroute-color align-self-center"
-                >
-                  <div>
-                    <span class="d-flex justify-content-between">
-                      <span
-                        class="d-md-none d-sm-flex small-text font-weight-700 text-dark px-1"
-                        >NewConverts</span
-                      >
-                      <span class="d-sm-flex small">
-                        <div class="px-1">{{ event.newConverts }}</div>
-                      </span>
-                    </span>
-                  </div>
-                </div>
-                <div class="col-md-1 col-sm-12 align-self-center">
-                  <div class="dropdown">
-                    <span class="d-flex justify-content-between">
-                      <span class="d-md-none d-sm-flex"></span>
-                      <span class="d-sm-flex small px-1">
-                        <i
-                          class="fas fa-ellipsis-v cursor-pointer"
-                          id="dropdownMenuButton"
-                          data-toggle="dropdown"
-                          aria-haspopup="true"
-                          aria-expanded="false"
-                        ></i>
-                        <div
-                          class="dropdown-menu"
-                          aria-labelledby="dropdownMenuButton"
-                        >
-                          <router-link
-                            :to="`/tenant/report/${event.activityId}`"
-                            class="text-decoration-none"
-                          >
-                            <a class="dropdown-item elipsis-items">
-                              View Report
-                            </a>
-                          </router-link>
-
-                          <router-link
-                            :to="`/tenant/event/${event.activityId}`"
-                            class="text-decoration-none"
-                          >
-                            <a class="dropdown-item elipsis-items"> Edit </a>
-                          </router-link>
-                          <!-- <router-link :to="`/tenant/event/${event.activityId}`"> -->
-                          <a
-                            class="dropdown-item elipsis-items cursor-pointer"
-                            @click="showConfirmModal(event.activityId, index)"
-                          >
-                            Delete
-                          </a>
-                          <!-- </router-link> -->
-                        </div>
-                      </span>
-                    </span>
-                  </div>
-                </div>
-              </div>
-            </div>
-          </div>
+        </div>
           <Table
             :headers="eventHeaders"
             :checkMultipleItem="false"
@@ -488,43 +299,43 @@
             v-if="filterEvents.length > 0"
           
           >
-            <template v-slot:isSent="{ event }">
+            <template v-slot:isSent="{ item }">
               <div class="c-pointer">
-                {{ event.isSent ? "Sent" : "Unsent" }}
+                {{ item.isSent ? "Sent" : "Unsent" }}
               </div>
             </template>
-            <template v-slot:eventName="{ event }">
-              <div class="c-pointer">{{ event.eventName }}</div>
+            <template v-slot:eventName="{ item }">
+              <div class="c-pointer">{{ item.eventName }}</div>
             </template>
-            <template v-slot:title="{ event }">
+            <template v-slot:title="{ item }">
               <div class="c-pointer">
-                {{ event.title }}
+                {{ item.title }}
               </div>
             </template>
-            <template v-slot:date="{ event }">
+            <template v-slot:date="{ item }">
               <div class="c-pointer">
-                <span>{{ dateFormat(event.date) }}</span>
-              </div>
-            </template>
-
-            <template v-slot:attendance="{ event }">
-              <div class="c-pointer">
-                {{ event.attendance }}
-              </div>
-            </template>
-            <template v-slot:firstTimers="{ event }">
-              <div class="c-pointer">
-                {{ event.firstTimers }}
+                <span>{{ date(item.activityDate) }}</span>
               </div>
             </template>
 
-            <template v-slot:newConverts="{ event }">
+            <template v-slot:attendance="{ item }">
               <div class="c-pointer">
-                {{ event.newConverts }}
+                {{ item.attendance }}
+              </div>
+            </template>
+            <template v-slot:firstTimers="{ item }">
+              <div class="c-pointer">
+                {{ item.firstTimers }}
               </div>
             </template>
 
-            <template v-slot:action="{ event }">
+            <template v-slot:newConverts="{ item }">
+              <div class="c-pointer">
+                {{ item.newConverts }}
+              </div>
+            </template>
+
+            <template v-slot:action="{ item }">
               <el-dropdown trigger="click">
                 <el-icon>
                   <MoreFilled />
@@ -533,7 +344,7 @@
                   <el-dropdown-menu>
                        <el-dropdown-item>
                          <router-link
-                            :to="`/tenant/report/${event.activityId}`"
+                            :to="`/tenant/report/${item.activityId}`"
                             class="text-decoration-none"
                           >
                             <a class="dropdown-item elipsis-items">
@@ -543,7 +354,7 @@
                        </el-dropdown-item>
                     <el-dropdown-item>
                        <router-link
-                            :to="`/tenant/event/${event.activityId}`"
+                            :to="`/tenant/event/${item.activityId}`"
                             class="text-decoration-none"
                           >
                             <a class="dropdown-item elipsis-items"> Edit </a>
@@ -551,7 +362,7 @@
                        </el-dropdown-item>
                     <el-dropdown-item>
                       <div
-                        @click.prevent="showConfirmModal(event.id, index)"
+                        @click.prevent="showConfirmModal(item.id, index)"
                         class="text-color"
                       >
                         Delete
@@ -562,10 +373,6 @@
               </el-dropdown>
             </template>
           </Table>
-
-    
-          <ConfirmDialog />
-          <Toast />
           <!-- {{membersCount}} {{currentPage}} -->
 
           <div class="table-footer">
@@ -575,7 +382,17 @@
               :currentPage="currentPage"
             />
           </div>
-        </div>
+          <!-- <div class="d-flex justify-content-end my-3">
+            <el-pagination
+              v-model:current-page="serverOptions.page"
+              v-model:page-size="serverOptions.rowsPerPage"
+              background
+              layout="total, prev, pager, next, jumper"
+              :total="serverItemsLength"
+              @size-change="handleSizeChange"
+              @current-change="handleCurrentChange"
+            />
+          </div> -->
       </div>
     </div>
   </div>
@@ -613,18 +430,23 @@ export default {
     const monthlyActiveBtn = ref(true);
     const yearlyActiveBtn = ref(false);
     const allTimeActiveBtn = ref(false);
+    const searchingMember = ref(true);
+    const eventHeaders = ref([
+          { name: "STATUS", value: "isSent" },
+          { name: "EVENT NAME", value: "eventName" },
+          { name: "TITLE", value: "title" },
+          { name: "DATE", value: "date" },
+          { name: "ATTENDANCES", value: "attendances" },
+          { name: "FIRST TIMERS", value: "firstTimers" },
+          { name: "NEW CONVERTS", value: "newConverts" },
+          { name: "ACTION", value: "action" },
+        ]);
 
     const deleteEvent = (id, index) => {
       axios
         .delete(`/api/Events/DeleteActivity?activityId=${id}`)
         .then((res) => {
           console.log(res);
-          // toast.add({
-          //   severity: "success",
-          //   summary: "Delete Successful",
-          //   detail: `Event Deleted`,
-          //   life: 4000,
-          // });
           ElMessage({
             type: "success",
             message: "Delete Successful",
@@ -635,12 +457,6 @@ export default {
         .catch((err) => {
           finish();
           if (err.response.toString().toLowerCase().includes("network error")) {
-            // toast.add({
-            //   severity: "info",
-            //   summary: "Network Error",
-            //   detail: `Please ensure you have a strong internet connection`,
-            //   life: 4000,
-            // });
             ElMessage({
             type: "info",
             message: "Please ensure you have a strong internet connection",
@@ -648,11 +464,6 @@ export default {
           });
 
           } else {
-            // toast.add({
-            //   severity: "Delete Failed",
-            //   detail: `Unable to delete, please try again`,
-            //   life: 4000,
-            // });
 
             ElMessage({
             type: "error",
@@ -663,30 +474,25 @@ export default {
         });
     };
     const showConfirmModal = (id, index) => {
-      confirm.require({
-        message: "Are you sure you want to proceed?",
-        header: "Confirmation",
-        icon: "pi pi-exclamation-triangle",
-        acceptClass: "confirm-delete",
-        rejectClass: "cancel-delete",
-        accept: () => {
+      ElMessageBox.confirm(
+        "Are you sure you want to proceed?",
+        "Confirm delete",
+        {
+          confirmButtonText: "OK",
+          cancelButtonText: "Cancel",
+          type: "error",
+        }
+      )
+        .then(() => {
           deleteEvent(id, index);
-          // toast.add({severity:'info', summary:'Confirmed', detail:'Member Deleted', life: 3000});
-        },
-        reject: () => {
-          // toast.add({
-          //   severity: "info",
-          //   summary: "Rejected",
-          //   detail: "You have rejected",
-          //   life: 3000,
-          // });
+        })
+        .catch(() => {
           ElMessage({
             type: "info",
             message: "Rejected",
-            duration: 3000,
+            duration: 5000,
           });
-        },
-      });
+        });
     };
 
     const toggleFilterFormVissibility = () => {
@@ -766,17 +572,6 @@ export default {
       });
     };
 
-const eventHeaders = ref([
-          { name: "STATUS", value: "isSent" },
-          { name: "EVENT NAME", value: "eventName" },
-          { name: "TITLE", value: "title" },
-          { name: "DATE", value: "date" },
-          { name: "ATTENDANCES", value: "attendances" },
-          { name: "FIRST TIMERS", value: "firstTimers" },
-          { name: "NEW CONVERTS", value: "newConverts" },
-          { name: "ACTION", value: "action" },
-        ]);
-
     const confirm = useConfirm();
     let toast = useToast();
 
@@ -832,11 +627,25 @@ const eventHeaders = ref([
         return Math.ceil(props.eventSummary.activities.length / 20);
       return 1;
     });
+    const searchEventInDB = () => {
+      if (searchText.value !== "" && props.eventList.length > 0) {
+        return props.eventList.filter((i) => {
+          if (i.name)
+            return i.name
+              .toLowerCase()
+              .includes(searchText.value.toLowerCase());
+        });
+      } else {
+        return props.eventList;
+      }
+    };
 
    
     return {
       // sentEvent,
+      searchEventInDB,
       filterFormIsVissible,
+      searchingMember,
       toggleFilterFormVissibility,
       searchIsVisible,
       toggleSearch,
@@ -1074,12 +883,12 @@ const eventHeaders = ref([
 .hide-link {
   color: #136acd;
 }
-
 .table-top {
   font-weight: 800;
   font-size: 12px;
-  padding-top: 20px;
-  padding-left: 20px;
+  background: #fff;
+  border: 1px solid #d4dde3;
+  border-bottom: none;
 }
 
 .table-top label:hover,
@@ -1177,10 +986,10 @@ const eventHeaders = ref([
 .avg-table {
   margin-top: 1em;
   border: 1px solid #dde2e6;
-  box-shadow: 0px 3px 6px #2c28281c;
-  border-radius: 10px;
+  /* box-shadow: 0px 3px 6px #2c28281c; */
+  /* border-radius: 10px; */
   padding: 10px;
-  border-radius: 30px;
+  /* border-radius: 30px; */
 }
 .avg-table > div > div:first-child {
   font: normal normal 600 16px/13px Nunito Sans;
@@ -1231,10 +1040,6 @@ const eventHeaders = ref([
 
 .active-btn {
   background: #0e74c721;
-}
-
-.table-responsive {
-  overflow-x: hidden;
 }
 
 @media screen and (max-width: 500px) {
