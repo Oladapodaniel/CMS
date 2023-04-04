@@ -175,7 +175,26 @@
             <label for="" class="font-weight-600">Event</label>
           </div>
           <div class="col-sm-7 col-md-6 col-lg-5">
-            <div class="dropdown">
+            <div class="col-md-12 px-0">
+              <!-- Find event -->
+              <el-dropdown class="w-100" trigger="click">
+                <el-input class="w-100" placeholder="Select from events and activities" v-model="selectedEvent.name" />
+                <template #dropdown>
+                  <el-dropdown-menu class="menu-height">
+                    <el-dropdown-item v-for="(event, index) in filteredEvents" :key="index"
+                      @click="selectEvent(event)">{{ event.name }}</el-dropdown-item>
+                    <el-dropdown-item class="d-flex justify-content-center text-primary font-weight-700"
+                      data-toggle="modal" data-target="#newActModal"
+                        ref="openModalBtn" divided><el-icon>
+                        <CirclePlus />
+                      </el-icon> 
+                      Create new event
+                    </el-dropdown-item>
+                  </el-dropdown-menu>
+                </template>
+              </el-dropdown>
+            </div>
+            <!-- <div class="dropdown">
               <button
                 class="default-btn w-100 text-left pr-1"
                 type="button"
@@ -230,7 +249,6 @@
                   @click="selectEvent(event)"
                   >{{ event.name }}</a
                 >
-                <!-- Hidden -->
                 <a
                   class="
                     font-weight-bold
@@ -251,7 +269,7 @@
                   Create new event
                 </a>
               </div>
-            </div>
+            </div> -->
           </div>
         </div>
         <div class="row my-3">
@@ -259,6 +277,19 @@
             <label for="" class="font-weight-600">Group</label>
           </div>
           <div class="col-sm-7 col-md-6 col-lg-5">
+            <!-- <el-tree-select
+                v-model="selectedGroups"
+                :data="groupMappedTree"
+                :render-after-expand="false"
+                :filter-node-method="filterNodeMethod"
+                check-strictly
+                multiple
+                show-checkbox
+                @change="setGroupValue" 
+                filterable
+                check-on-click-node
+                class="w-100"
+              /> -->
             <button
               class="
                 form-control
@@ -276,7 +307,6 @@
                 
                   <span v-for="item in selectedGroups" :key="item.id"
                     ><span class="eachGroup">{{ item && item.name }}</span></span>
-                    <!-- ><span class="eachGroup">{{ item && item.name ? item.name : item }}</span></span> -->
                 </span>
                 <span
                   v-if="selectedGroups.length > 0 && selectedGroups.length > 2"
@@ -286,8 +316,6 @@
                     :key="item.id"
                     >
                     <span class="eachGroup">{{  item.name  }}</span></span>
-                    <!-- <span class="eachGroup">{{ item && item.name ? item.name : item }}</span></span> -->
-                  ...
                 </span>
                 <span v-if="selectedGroups.length === 0">Select group</span>
               </span>
@@ -657,10 +685,40 @@
                       font-weight-600
                     "
                   >
-                    Income Account
+                    Income Account 
                   </div>
                   <div class="col-sm-7 col-md-6 col-lg-5">
-                    <el-select-v2
+                    <el-dropdown trigger="click" class="w-100 mt-4">
+                      <span class="el-dropdown-link w-100">
+                        <div
+                          class="d-flex justify-content-between border-contribution text-secondary w-100"
+                          size="large"
+                        >
+                          <span>{{
+                            selectedIncomeAccount &&
+                            Object.keys(selectedIncomeAccount).length > 0
+                              ? selectedIncomeAccount.text
+                              : "Select"
+                          }}</span>
+                          <div>
+                            <el-icon class="el-icon--right">
+                              <arrow-down />
+                            </el-icon>
+                          </div>
+                        </div>
+                      </span>
+                        <template #dropdown>
+                          <el-dropdown-menu>
+                            <el-dropdown-item
+                              v-for="(itm, indx) in incomeAccount"
+                              :key="indx"
+                              @click="setIncomeAccount(itm)"
+                              >{{ itm.text }}
+                            </el-dropdown-item>
+                          </el-dropdown-menu>
+                        </template>
+                    </el-dropdown>
+                    <!-- <el-select-v2
                         v-model="selectedIncomeAccountID"
                         class="w-100 mt-4 font-weight-normal"
                         :options="
@@ -672,7 +730,7 @@
                         placeholder="Select"
                         @change="setIncomeAccount"
                         size="large"
-                      />
+                      /> -->
                   </div>
                   <div class="col-sm-2 col-lg-3"></div>
 
@@ -687,7 +745,37 @@
                     Cash Account
                   </div>
                   <div class="col-sm-7 col-md-6 col-lg-5">
-                    <el-select-v2
+                    <el-dropdown trigger="click" class="w-100 mt-4">
+                      <span class="el-dropdown-link w-100">
+                        <div
+                          class="d-flex justify-content-between border-contribution text-secondary w-100"
+                          size="large"
+                        >
+                          <span>{{
+                            selectedCashAccount &&
+                            Object.keys(selectedCashAccount).length > 0
+                              ? selectedCashAccount.text
+                              : "Select"
+                          }}</span>
+                          <div>
+                            <el-icon class="el-icon--right">
+                              <arrow-down />
+                            </el-icon>
+                          </div>
+                        </div>
+                      </span>
+                        <template #dropdown>
+                          <el-dropdown-menu>
+                            <el-dropdown-item
+                              v-for="(itm, indx) in cashBankAccount"
+                              :key="indx"
+                              @click="setcashBankAccount(itm)"
+                              >{{ itm.text }}
+                            </el-dropdown-item>
+                          </el-dropdown-menu>
+                        </template>
+                    </el-dropdown>
+                    <!-- <el-select-v2
                         v-model="selectedCashAccountID"
                         class="w-100 mt-4 font-weight-normal"
                         :options="
@@ -699,7 +787,7 @@
                         placeholder="Select"
                         @change="setcashBankAccount"
                         size="large"
-                      />
+                      /> -->
                   </div>
                   <div class="col-sm-2 col-lg-3"></div>
                 </div>
@@ -970,8 +1058,9 @@
               <div class="col-md-12 d-flex justify-content-center">
                 <el-button
                 color="#136acd"
-                  class=" text-white border-0 contn-btn"
+                  class=" text-white border-0 "
                   round
+                  :loading="loading"
                   size="large"
                   @click="onContinue"
                   :disabled="
@@ -980,10 +1069,10 @@
                     !selectedEvent.name
                   "
                 >
-                  <i
+                  <!-- <i
                     class="fas fa-circle-notch fa-spin mr-2 text-white"
                     v-if="loading"
-                  ></i>
+                  ></i> -->
                   <span class="text-white">Save and Continue</span>
                   <span></span>
                 </el-button>
@@ -1015,6 +1104,8 @@ import axio from "axios";
 import moment from "moment";
 import GroupTree from "../../groups/component/GroupTreeCheckboxParent.vue";
 import deviceBreakpoint from "../../../mixins/deviceBreakpoint";
+import collector from "../../../services/groupArray/mapTree";
+import flatten from "../../../services/groupArray/flatTree";
 import { ElMessage } from "element-plus";
 
 export default {
@@ -1042,7 +1133,7 @@ export default {
     const eventDetails = ref("");
     const cashBankAccount = ref([]);
     const incomeAccount = ref([]);
-    const selectedIncomeAccount = ref(null);
+    const selectedIncomeAccount = ref({});
     const selectedCashAccount = ref(null);
     const registrationSMS = ref("");
     const registrationEmail = ref("");
@@ -1067,19 +1158,16 @@ export default {
     const selectedCashAccountID = ref(null)
 
     const attendanceCheID = ref(route.params.id);
-
-    console.log(attendanceCheID.value);
     const eventNameDate = ref("");
 
-    const setIncomeAccount = () =>{
-      selectedIncomeAccount.value = incomeAccount.value.find((i) =>{
-       return i.id == selectedIncomeAccountID.value
-      })
+    const setIncomeAccount = (item) =>{
+      selectedIncomeAccount.value = item;
     }
-    const setcashBankAccount = () =>{
-      selectedCashAccount.value = cashBankAccount.value.find(
-        (i) => i.id == selectedCashAccountID.value 
-        )
+    const setGroupValue = () => {
+      flattenedTree.value.find(i => i.value == selectedGroups.value)
+    }
+    const setcashBankAccount = (item) =>{
+      selectedCashAccount.value = item;
     }
     // /api/CheckInAttendance/UpdateCheckInAttendance
 
@@ -1124,7 +1212,8 @@ export default {
       }
     };
     getSingleCheckinAttendance();
-
+    const groupMappedTree = ref([]);
+    const flattenedTree = ref([])
     const getGroups = async () => {
       grouploading.value = true;
       try {
@@ -1133,6 +1222,13 @@ export default {
         if (response.response && response.response.groupResonseDTO.length > 0) {
           groups.value = response.response.groupResonseDTO;
         }
+        let data = { children: groups.value };
+        const { children } = collector(data);
+        groupMappedTree.value = children;
+         if (groupMappedTree.value && groupMappedTree.value.length > 0) {
+          flattenedTree.value = groupMappedTree.value.flatMap(flatten());
+        }
+
       } catch (error) {
         console.log(error);
         grouploading.value = false;
@@ -1152,10 +1248,11 @@ export default {
         console.log(error);
       }
     };
-
+   const filterNodeMethod = (value, data) => data.label.toLowerCase().includes(value.toLowerCase())
     const selectedEvent = ref({});
     const selectEvent = (selected) => {
       selectedEvent.value = selected;
+      // eventSearchText.value = ''
     };
 
     const closeModal = () => {
@@ -1181,6 +1278,12 @@ export default {
     };
 
     const newAcctivityDate = ref("");
+    const getCorrectDate = (date) =>{
+      let myDate = new Date(date).toLocaleDateString();
+        let arr = myDate.split('/');
+        arr.unshift(arr.splice(2, 1)[0])
+         return arr.join('-')
+    }
     const createNewActivity = async () => {
       if (!newAcctivityDate.value && !selectedCategory.value) return false;
       // if(route.params.id){
@@ -1194,11 +1297,13 @@ export default {
       // }
       try {
         const response = await eventsService.createNewActivity({
+          
           activity: {
-            date: newAcctivityDate.value,
+            date: getCorrectDate(newAcctivityDate.value),
             eventCategoryId: selectedCategory.value.id,
           },
         });
+        console.log(response, "hh");
         const newActivity = {
           id: response.currentEvent.id,
           name: `${response.currentEvent.name} (${new Date(
@@ -1257,9 +1362,9 @@ export default {
 
     const eventSearchText = ref("");
     const filteredEvents = computed(() => {
-      if (!eventSearchText.value) return events.value;
+      if (!selectedEvent.value.name) return events.value;
       return events.value.filter((i) =>
-        i.name.toLowerCase().includes(eventSearchText.value.toLowerCase())
+        i.name.toLowerCase().includes(selectedEvent.value.name.toLowerCase())
       );
     });
 
@@ -1274,28 +1379,28 @@ export default {
       //   groupIDs: selectedGroups.value,
       //   eventDate: selectedEvent.value.date.split("T")[0],
       // };
-      let checkinEvent = {
-        eventId: selectedEvent.value.id,
-        groupIDs: selectedGroups.value,
-        eventDate: selectedEvent.value.date.split("T")[0],
-      };
-      slot.value ? (checkinEvent.registrationSlot = slot.value) : "";
-      checkinSMS.value ? (checkinEvent.checkinSMS = checkinSMS.value) : "";
-      checkinEmail.value
-        ? (checkinEvent.checkinEmail = checkinEmail.value)
-        : "";
-      registrationSMS.value
-        ? (checkinEvent.registrationSMS = registrationSMS.value)
-        : "";
-      registrationEmail.value
-        ? (checkinEvent.registrationEmail = registrationEmail.value)
-        : "";
-      regCutOffTimer.value
-        ? (checkinEvent.registrationCutOffTime = regCutOffTimer.value)
-        : "";
-      checkinCutOffTime.value
-        ? (checkinEvent.checkInCutOffTime = checkinCutOffTime.value)
-        : "";
+      // let checkinEvent = {
+      //   eventId: selectedEvent.value.id,
+      //   groupIDs: selectedGroups.value,
+      //   eventDate: selectedEvent.value.date.split("T")[0],
+      // };
+      // slot.value ? (checkinEvent.registrationSlot = slot.value) : "";
+      // checkinSMS.value ? (checkinEvent.checkinSMS = checkinSMS.value) : "";
+      // checkinEmail.value
+      //   ? (checkinEvent.checkinEmail = checkinEmail.value)
+      //   : "";
+      // registrationSMS.value
+      //   ? (checkinEvent.registrationSMS = registrationSMS.value)
+      //   : "";
+      // registrationEmail.value
+      //   ? (checkinEvent.registrationEmail = registrationEmail.value)
+      //   : "";
+      // regCutOffTimer.value
+      //   ? (checkinEvent.registrationCutOffTime = regCutOffTimer.value)
+      //   : "";
+      // checkinCutOffTime.value
+      //   ? (checkinEvent.checkInCutOffTime = checkinCutOffTime.value)
+      //   : "";
 
       const formData = new FormData();
 
@@ -1320,10 +1425,10 @@ export default {
             selectedCashAccount.value ? selectedCashAccount.value.id : ""
           )
         : "";
-      selectedIncomeAccount.value
+      selectedIncomeAccount.value && selectedIncomeAccount.value.id
         ? formData.append(
             "incomeAccountId",
-            selectedIncomeAccount.value ? selectedIncomeAccount.value.id : ""
+            selectedIncomeAccount.value && selectedIncomeAccount.value.id ? selectedIncomeAccount.value.id : ""
           )
         : "";
       registrationSMS.value
@@ -1338,8 +1443,7 @@ export default {
         : "";
       selectedEvent.value
         ? formData.append(
-            "activityDate",
-            selectedEvent.value.date.split("T")[0]
+            "activityDate", getCorrectDate(selectedEvent.value.date)
           )
         : "";
       formData.append("isPaidFor", addPaidClass.value);
@@ -1356,21 +1460,46 @@ export default {
       checkinCutOffTime.value
         ? formData.append("checkInCutOffTime", checkinCutOffTime.value)
         : "";
-      if (
-        !attendanceCheID.value &&
-        !amount.value &&
-        !selectedBank.value &&
-        !accountNumber.value &&
-        !selectedCashAccount.value &&
-        !selectedIncomeAccount.value &&
-        !image.value
-      ) {
-        console.log("free and no image");
-        selectedGroups.value
-          ? formData.append("groupIDs", JSON.stringify(selectedGroups.value))
+      selectedGroups.value
+        ? formData.append("groupIDs", JSON.stringify(selectedGroups.value))
+        : "";
+
+
+
+        if(attendanceCheID.value){
+        attendanceCheID.value
+          ? formData.append("Id", attendanceCheID.value)
           : "";
         loadingsave.value = true;
         try {
+          const res = await axios.put(
+            "/api/CheckInAttendance/EditAttendanceCheckIn",
+            formData
+          );
+          console.log(res);
+          store.dispatch("attendance/setItemData", res);
+          ElMessage({
+                    type: "success",
+                    message: res.data.response,
+                    duration: 5000
+                    });
+                    store.dispatch('attendance/setAttendanceItemData');
+          router.push({
+            name: "CheckinType",
+            query: {
+              activityID: selectedEvent.value.id,
+              activityName: selectedEvent.value.name,
+              groupId: selectedGroups.value[0].id,
+              groupName: selectedGroups.value[0].name,
+              id: res.data.id,
+              code: res.data.attendanceCode,
+            },
+          });
+        } catch (error) {
+          console.log(error);
+        }
+        }else {
+          try {
           const response = await axios.post( 
             "api/CheckInAttendance/CreateAttendanceCheckIn", formData
             // "/api/CheckinAttendance/MultipleCheckinAttendanceItem",
@@ -1398,151 +1527,190 @@ export default {
           console.log(error);
           loadingsave.value = false;
         }
-        console.log("Only Topppp");
-      } else if (
-        attendanceCheID.value
-      ) {
-        selectedGroups.value
-          ? formData.append("groupIDs", JSON.stringify(selectedGroups.value))
-          : "";
-        // selectedGroups.value
-        //   ? formData.append("groupIDs", selectedGroups.value)
-        //   : "";
-        attendanceCheID.value
-          ? formData.append("Id", attendanceCheID.value)
-          : "";
-        loadingsave.value = true;
-        try {
-          const res = await axios.put(
-            "/api/CheckInAttendance/EditAttendanceCheckIn",
-            // "/api/CheckInAttendance/UpdateCheckInAttendance",
-            formData
-          );
-          console.log(res);
-          store.dispatch("attendance/setItemData", res);
-          ElMessage({
-                    type: "success",
-                    message: res.data.response,
-                    duration: 5000
-                    });
-                    store.dispatch('attendance/setAttendanceItemData');
-          router.push({
-            name: "CheckinType",
-            query: {
-              activityID: selectedEvent.value.id,
-              activityName: selectedEvent.value.name,
-              groupId: selectedGroups.value[0].id,
-              groupName: selectedGroups.value[0].name,
-              id: res.data.id,
-              code: res.data.attendanceCode,
-            },
-          });
-        } catch (error) {
-          console.log(error);
         }
-      } else if (
-        !amount.value &&
-        !selectedBank.value &&
-        !accountNumber.value &&
-        !selectedCashAccount.value &&
-        !selectedIncomeAccount.value &&
-        image.value
-      ) {
-        console.log("Free and image");
-        selectedGroups.value
-          ? formData.append("groupIDs", JSON.stringify(selectedGroups.value))
-          : "";
-        loadingsave.value = true;
-        try {
-          let { data } = await axios.post(
-            // "/api/CheckInAttendance/create/multiple",
-            "api/CheckInAttendance/CreateAttendanceCheckIn",
-            formData
-          );
-          let firstGroup = data.returnObject.checkInAttendanceResult.find(
-            (i) => i.groupID == selectedGroups.value[0].id
-          );
+      //         if (
+      //   !attendanceCheID.value &&
+      //   !amount.value &&
+      //   !selectedBank.value &&
+      //   !accountNumber.value &&
+      //   !selectedCashAccount.value &&
+      //   !selectedIncomeAccount.value &&
+      //   !image.value
+      // ) {
+      //   console.log("free and no image");
+      //   selectedGroups.value
+      //     ? formData.append("groupIDs", JSON.stringify(selectedGroups.value))
+      //     : "";
+      //   loadingsave.value = true;
+      //   try {
+      //     const response = await axios.post( 
+      //       "api/CheckInAttendance/CreateAttendanceCheckIn", formData
+      //       // "/api/CheckinAttendance/MultipleCheckinAttendanceItem",
+      //       // checkinEvent
+      //     );
+      //     for (let i = 0; i < response.data.returnObject.checkInAttendanceResult.length; i++) {
+      //       const element = response.data.returnObject.checkInAttendanceResult[i];
+      //       store.dispatch("attendance/setItemData", element);
+      //     }
+      //     store.dispatch('attendance/setAttendanceItemData');
+      //     store.dispatch("groups/setCheckedTreeGroup", []);
+      //     loadingsave.value = false;
+      //     router.push({
+      //       name: "CheckinType",
+      //       query: {
+      //         activityID: selectedEvent.value.id,
+      //         activityName: selectedEvent.value.name,
+      //         groupId: selectedGroups.value[0].id,
+      //         groupName: selectedGroups.value[0].name,
+      //         id: response.data.returnObject.checkInAttendanceResult[0].id,
+      //         code: response.data.returnObject.checkInAttendanceResult[0].attendanceCode,
+      //       },
+      //     });
+      //   } catch (error) {
+      //     console.log(error);
+      //     loadingsave.value = false;
+      //   }
+      //   console.log("Only Topppp");
+      // } else if (
+      //   attendanceCheID.value
+      // ) {
+      //   selectedGroups.value
+      //     ? formData.append("groupIDs", JSON.stringify(selectedGroups.value))
+      //     : "";
+      //   attendanceCheID.value
+      //     ? formData.append("Id", attendanceCheID.value)
+      //     : "";
+      //   loadingsave.value = true;
+      //   try {
+      //     const res = await axios.put(
+      //       "/api/CheckInAttendance/EditAttendanceCheckIn",
+      //       formData
+      //     );
+      //     console.log(res);
+      //     store.dispatch("attendance/setItemData", res);
+      //     ElMessage({
+      //               type: "success",
+      //               message: res.data.response,
+      //               duration: 5000
+      //               });
+      //               store.dispatch('attendance/setAttendanceItemData');
+      //     router.push({
+      //       name: "CheckinType",
+      //       query: {
+      //         activityID: selectedEvent.value.id,
+      //         activityName: selectedEvent.value.name,
+      //         groupId: selectedGroups.value[0].id,
+      //         groupName: selectedGroups.value[0].name,
+      //         id: res.data.id,
+      //         code: res.data.attendanceCode,
+      //       },
+      //     });
+      //   } catch (error) {
+      //     console.log(error);
+      //   }
+      // } else if (
+      //   !amount.value &&
+      //   !selectedBank.value &&
+      //   !accountNumber.value &&
+      //   !selectedCashAccount.value &&
+      //   !selectedIncomeAccount.value &&
+      //   image.value
+      // ) {
+      //   console.log("Free and image");
+      //   selectedGroups.value
+      //     ? formData.append("groupIDs", JSON.stringify(selectedGroups.value))
+      //     : "";
+      //   loadingsave.value = true;
+      //   try {
+      //     let { data } = await axios.post(
+      //       // "/api/CheckInAttendance/create/multiple",
+      //       "api/CheckInAttendance/CreateAttendanceCheckIn",
+      //       formData
+      //     );
+      //     let firstGroup = data.returnObject.checkInAttendanceResult.find(
+      //       (i) => i.groupID == selectedGroups.value[0].id
+      //     );
 
-          for (
-            let i = 0;
-            i < data.returnObject.checkInAttendanceResult.length;
-            i++
-          ) {
-            const element = data.returnObject.checkInAttendanceResult[i];
-            store.dispatch("attendance/setEventReg", element);
-          }
-          store.dispatch('attendance/setAttendanceItemData');
-          loadingsave.value = false;
-          router.push({
-            name: "CheckinType",
-            query: {
-              activityID: selectedEvent.value.id,
-              activityName: selectedEvent.value.name,
-              groupId: firstGroup.id,
-              groupName: selectedGroups.value[0].name,
-              id: firstGroup.id,
-              code: firstGroup.attendanceCode,
-            },
-          });
-        } catch (err) {
-          console.log(err);
-          loadingsave.value = false;
-        }
-      } else if (
-        amount.value &&
-        selectedBank.value &&
-        accountNumber.value &&
-        selectedCashAccount.value &&
-        selectedIncomeAccount.value
-      ) {
-        console.log("image and paid");
-        selectedGroups.value
-          ? formData.append("groupIDs", JSON.stringify(selectedGroups.value))
-          : "";
-        loadingsave.value = true;
-        try {
-          let { data } = await axios.post(
-            "api/CheckInAttendance/CreateAttendanceCheckIn",
-            // "/api/CheckInAttendance/create/multiple",
-            formData
-          );
-          let firstGroup = data.returnObject.checkInAttendanceResult.find(
-            (i) => i.groupID == selectedGroups.value[0].id
-          );
-          store.dispatch('attendance/setAttendanceItemData');
+      //     for (
+      //       let i = 0;
+      //       i < data.returnObject.checkInAttendanceResult.length;
+      //       i++
+      //     ) {
+      //       const element = data.returnObject.checkInAttendanceResult[i];
+      //       store.dispatch("attendance/setEventReg", element);
+      //     }
+      //     store.dispatch('attendance/setAttendanceItemData');
+      //     loadingsave.value = false;
+      //     router.push({
+      //       name: "CheckinType",
+      //       query: {
+      //         activityID: selectedEvent.value.id,
+      //         activityName: selectedEvent.value.name,
+      //         groupId: firstGroup.id,
+      //         groupName: selectedGroups.value[0].name,
+      //         id: firstGroup.id,
+      //         code: firstGroup.attendanceCode,
+      //       },
+      //     });
+      //   } catch (err) {
+      //     console.log(err);
+      //     loadingsave.value = false;
+      //   }
+      // } else if (
+      //   amount.value &&
+      //   selectedBank.value &&
+      //   accountNumber.value &&
+      //   selectedCashAccount.value &&
+      //   selectedIncomeAccount.value
+      // ) {
+      //   console.log("image and paid");
+      //   selectedGroups.value
+      //     ? formData.append("groupIDs", JSON.stringify(selectedGroups.value))
+      //     : "";
+      //   loadingsave.value = true;
+      //   try {
+      //     let { data } = await axios.post(
+      //       "api/CheckInAttendance/CreateAttendanceCheckIn",
+      //       // "/api/CheckInAttendance/create/multiple",
+      //       formData
+      //     );
+      //     let firstGroup = data.returnObject.checkInAttendanceResult.find(
+      //       (i) => i.groupID == selectedGroups.value[0].id
+      //     );
+      //     store.dispatch('attendance/setAttendanceItemData');
 
-          for (
-            let i = 0;
-            i < data.returnObject.checkInAttendanceResult.length;
-            i++
-          ) {
-            const element = data.returnObject.checkInAttendanceResult[i];
-            store.dispatch("attendance/setEventReg", element);
-          }
-          loadingsave.value = false;
-          router.push({
-            name: "CheckinType",
-            query: {
-              activityID: selectedEvent.value.id,
-              activityName: selectedEvent.value.name,
-              groupId: firstGroup.id,
-              groupName: selectedGroups.value[0].name,
-              id: firstGroup.id,
-              code: firstGroup.attendanceCode,
-            },
-          });
-        } catch (err) {
-          console.log(err);
-          loading.value = false;
-        }
-      } else {
-        ElMessage({
-                  type: "warning",
-                  message: 'Cannot create this event attendance, kindly fill all fields before saving.',
-                  duration: 5000
-                });
-        loadingsave.value = false;
-      }
+      //     for (
+      //       let i = 0;
+      //       i < data.returnObject.checkInAttendanceResult.length;
+      //       i++
+      //     ) {
+      //       const element = data.returnObject.checkInAttendanceResult[i];
+      //       store.dispatch("attendance/setEventReg", element);
+      //     }
+      //     loadingsave.value = false;
+      //     router.push({
+      //       name: "CheckinType",
+      //       query: {
+      //         activityID: selectedEvent.value.id,
+      //         activityName: selectedEvent.value.name,
+      //         groupId: firstGroup.id,
+      //         groupName: selectedGroups.value[0].name,
+      //         id: firstGroup.id,
+      //         code: firstGroup.attendanceCode,
+      //       },
+      //     });
+      //   } catch (err) {
+      //     console.log(err);
+      //     loading.value = false;
+      //   }
+      // } else {
+      //   ElMessage({
+      //             type: "warning",
+      //             message: 'Cannot create this event attendance, kindly fill all fields before saving.',
+      //             duration: 5000
+      //           });
+      //   loadingsave.value = false;
+      // }
     };
 
     const showPaidTab = () => {
@@ -1662,7 +1830,7 @@ export default {
     };
 
     const searchForGroups = computed(() => {
-      if (!searchGroupText.value && groups.value.length > 0)
+      if (!searchGroupText.value.name && groups.value.length > 0)
         return groups.value;
       return groups.value.filter((i) =>
         i.name.toLowerCase().includes(searchGroupText.value.toLowerCase())
@@ -1676,7 +1844,7 @@ export default {
         !e.target.classList.contains("p-checkbox-box") &&
         !e.target.classList.contains("p-checkbox-icon")
       ) {
-        hideDiv.value = true;
+        // hideDiv.value = true;
       }
     };
 
@@ -1690,6 +1858,10 @@ export default {
 
     return {
       selectedEvent,
+      setGroupValue,
+      flattenedTree,
+      groupMappedTree,
+      filterNodeMethod,
       setIncomeAccount,
       setcashBankAccount,
       selectedIncomeAccountID,
@@ -1778,8 +1950,18 @@ export default {
   /* font-family: Nunito Sans !important; */
 }
 
+.border-contribution {
+  border: 1.6px solid rgb(229, 232, 237);
+  border-radius: 4px;
+  padding: 11px 7px;
+}
+
 .contn-btn:disabled {
   opacity: 0.3;
+}
+.menu-height {
+  max-height: 400px;
+  overflow: scroll;
 }
 
 .upload-button {
@@ -1854,6 +2036,20 @@ export default {
   height: 0;
   overflow: hidden;
   transition: all 0.6s ease-in-out;
+}
+.input-width {
+  width: 100%
+}
+
+.input-width {
+  width: 100%
+}
+
+@media (min-width: 992px) {
+  .input-width {
+    width: 350px
+  }
+
 }
 
 @media (max-width: 576px) {

@@ -140,35 +140,6 @@ const routes = [
         },
 
         {
-            path: 'workflow',
-            name: 'WorkFlow',
-            component: () =>
-                import( /* webpackChunkName: "workflow" */ '../views/workflow/Index.vue'),
-            meta: {
-                title: 'Churchplus - Ministry Workflow',
-            },
-            children: [{
-                path: 'list',
-                name: 'Workflows',
-                component: () =>
-                    import( /* webpackChunkName: "workflows" */ '../views/workflow/pages/Workflows.vue'),
-                meta: {
-                    title: 'Churchplus - Add Workflow',
-                }
-            },
-            {
-                path: 'add',
-                name: 'AddWorkflow',
-                component: () =>
-                    import( /* webpackChunkName: "addworkflow" */ '../views/workflow/components/MainBoard.vue'),
-                meta: {
-                    title: 'Churchplus - Add Workflow',
-                }
-            },
-            ]
-        },
-
-        {
             path: 'subscription',
             name: 'Subscription',
             meta: {
@@ -229,15 +200,6 @@ const routes = [
 
             ]
 
-        },
-        {
-            path: 'archivedpeople',
-            meta: {
-                title: 'Churchplus - Archived People',
-            },
-            component: () =>
-                import( /* webpackChunkName: "importpeople" */ '../views/people/ArchivedPeople.vue'),
-            name: 'ArchivedPeople'
         },
         {
             path: 'firsttimermanagement/:personId?',
@@ -1333,6 +1295,43 @@ const routes = [
                 name: 'FirstTimerSettings',
                 component: () =>
                     import( /* webpackChunkName: "defaultmessage" */ '@/views/settings/FirstTimerSettings')
+            },
+            {
+                path: 'workflow',
+                name: 'WorkFlow',
+                component: () =>
+                    import( /* webpackChunkName: "workflow" */ '../views/workflow/Index.vue'),
+                meta: {
+                    title: 'Churchplus - Ministry Workflow',
+                },
+                children: [{
+                    path: 'list',
+                    name: 'Workflows',
+                    component: () =>
+                        import( /* webpackChunkName: "workflows" */ '../views/workflow/pages/Workflows.vue'),
+                    meta: {
+                        title: 'Churchplus - Add Workflow',
+                    }
+                },
+                {
+                    path: 'add',
+                    name: 'AddWorkflow',
+                    component: () =>
+                        import( /* webpackChunkName: "addworkflow" */ '../views/workflow/components/MainBoard.vue'),
+                    meta: {
+                        title: 'Churchplus - Add Workflow',
+                    }
+                },
+                ]
+            },
+            {
+                path: 'archivedpeople',
+                meta: {
+                    title: 'Churchplus - Archived People',
+                },
+                component: () =>
+                    import( /* webpackChunkName: "importpeople" */ '../views/people/ArchivedPeople.vue'),
+                name: 'ArchivedPeople'
             },
             {
                 path: 'branchlevelsettings',

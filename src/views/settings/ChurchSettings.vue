@@ -130,6 +130,20 @@
                       >New Guest Life Cycle Settings</router-link
                     >
                   </div>
+                  <div class="col-md-12 my-2">
+                    <router-link
+                      class="font-weight-bold link dd-list-item"
+                      to="/tenant/settings/workflow/list"
+                      >Workflow</router-link
+                    >
+                  </div>
+                  <div class="col-md-12 my-2">
+                    <router-link
+                      class="font-weight-bold link dd-list-item"
+                      to="/tenant/settings/archivedpeople"
+                      >Archived People</router-link
+                    >
+                  </div>
 
                   <div class="col-md-12 my-2">
                     <router-link

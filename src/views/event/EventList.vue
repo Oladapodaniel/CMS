@@ -345,19 +345,17 @@
                        <el-dropdown-item>
                          <router-link
                             :to="`/tenant/report/${item.activityId}`"
-                            class="text-decoration-none"
+                            class="text-decoration-none text-color"
                           >
-                            <a class="dropdown-item elipsis-items">
                               View Report
-                            </a>
                           </router-link>
                        </el-dropdown-item>
                     <el-dropdown-item>
                        <router-link
                             :to="`/tenant/event/${item.activityId}`"
-                            class="text-decoration-none"
+                            class="text-decoration-none text-color"
                           >
-                            <a class="dropdown-item elipsis-items"> Edit </a>
+                             Edit 
                           </router-link>
                        </el-dropdown-item>
                     <el-dropdown-item>
@@ -732,6 +730,14 @@ export default {
 
 .btn-icon {
   padding: 0 8px;
+}
+
+.text-color {
+  color: #212529;
+  text-decoration: none;
+}
+.text-color:hover {
+  color: #007bff;
 }
 
 .top {

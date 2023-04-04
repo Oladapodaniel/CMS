@@ -266,11 +266,11 @@ export default {
       serverItemsLength.value = props.totalItems;
     });
     const handleSizeChange = (val) => {
-      console.log(`${val} items per page`);
+      `${val} items per page`
     };
 
     const handleCurrentChange = (val) => {
-      console.log(`current page: ${val}`);
+      `current page: ${val}`;
     };
     const paginatedTableLoading = ref(false);
 
@@ -364,7 +364,6 @@ export default {
       const attendanceIdx = checkedAttendance.value.findIndex(
         (i) => i.id === ft.id
       );
-      console.log(attendanceIdx, "chechdetail");
       if (attendanceIdx < 0) {
         checkedAttendance.value.push(ft);
       } else {

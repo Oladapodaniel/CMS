@@ -1,13 +1,9 @@
 <template>
-
-
-
-  <div class="whole-con">
-    <div class="main-con">
-      <div class="main-body">
-        <div class="top container-wide mt-3 p-0">
+    <div class=" container-top" :class="{ 'container-slim': lgAndUp || xlAndUp }">
+      <div class="main-body main-con">
+        <div class="top  mt-3 p-0">
           <div class="header">
-            <div class="events">Events</div>
+            <div class="head-text">Events</div>
           </div>
           <div class="actions">
             <button class="more-btn button" v-if="false">
@@ -15,20 +11,51 @@
               <span><i class="pi pi-angle-down btn-icon"></i></span>
             </button>
               <router-link :to="{ name: 'Event' }">
-                <button class="button add-person-btn">
+                <el-button round color="#136acd" class="header-btn">
                   Add Event
-                </button>
+                </el-button>
               </router-link>
           </div>
         </div>
+         <div class="container-fluid  ">
+          <div class="row">
+            <div class="col-md-12 px-0">
+              <hr class=" w-100 hr mt-4" />
+            </div>
+          </div>
+            
+          </div>
+
       
-        <hr class="hr container-wide mt-4" />
+      <el-skeleton class="w-100" animated v-if="loading">
+          <template #template>
+            <div
+              style="
+                display: flex;
+                align-items: center;
+                justify-content: space-between;
+                margin-top: 20px;
+              "
+            >
+              <el-skeleton-item
+                variant="text"
+                style="width: 240px; height: 240px"
+              />
+              <el-skeleton-item
+                variant="text"
+                style="width: 240px; height: 240px"
+              />
+            </div>
+            <el-skeleton
+              class="w-100 mt-5"
+              style="height: 25px"
+              :rows="20"
+              animated
+            />
+          </template>
+        </el-skeleton>
 
-        <div v-if="loading">
-          <Loader />
-      </div>
-
-        <div v-if="eventList.length > 0 && !loading && !networkError" class="container-wide">
+        <div v-if="eventList.length > 0 && !loading && !networkError" class="container-fluid">
             <EventList :eventList="eventList" :eventSummary="eventSummary" @activity-per-page="getPageActivity" @delete-event="deleteFromView"/>
         </div>
         <div v-else-if="eventList.length === 0 && !loading &!networkError" class="no-person" >
@@ -47,7 +74,6 @@
    
       </div>
     </div>
-  </div>
 </template>
 
 <script>
@@ -56,6 +82,7 @@
     import EventList from './EventList'
     import Loader from '../accounting/offering/SkeletonLoader'
     import finish from "../../services/progressbar/progress"
+    import deviceBreakpoint from "../../mixins/deviceBreakpoint";
     // import { useStore } from 'vuex'
     // import  store  from "../../store/store"
 // import router from "@/router/index";
@@ -68,6 +95,7 @@ export default {
   setup() {
       
       const eventList = ref([])
+      const { lgAndUp, xlAndUp } = deviceBreakpoint();
       const eventSummary = ref({})
       const loading = ref(false)
       const networkError = ref(false)
@@ -120,7 +148,7 @@ export default {
       eventList.value.splice(payload, 1)
     }
   
-    return { eventList, getEventList, loading, eventSummary, getPageActivity, networkError, deleteFromView };
+    return { eventList, getEventList, lgAndUp, xlAndUp, loading, eventSummary, getPageActivity, networkError, deleteFromView };
 
   },
 };
@@ -206,7 +234,7 @@ export default {
 
 .hr {
   border: 0.8px solid #0020440a;
-  margin: 0 45px;
+  /* margin: 0 45px; */
 }
 
 @media (max-width: 346px) {
@@ -238,8 +266,6 @@ export default {
 
 @media screen and (min-width: 990px) {
   .main-body {
-    width: 95%;
-    /* max-width: 1021px; */
     margin: 0 auto;
   }
 }
