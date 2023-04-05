@@ -171,7 +171,6 @@ export default {
     }
 
     watchEffect(() => {
-      console.log(props.donation)
       if (props.callPayment && Object.keys(props.initializePaymentResponse).length > 0) {
         if (selectedGateway.value == 'Paystack') {
           payWithPaystack(props.initializePaymentResponse);

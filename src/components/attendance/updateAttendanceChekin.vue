@@ -6,7 +6,7 @@
         Contributions
       </div>
       <div class="col-6 text-right align-self-center">
-        <i class="pi pi-chevron-down"></i>
+        <el-icon><ArrowDownBold /></el-icon>
       </div>
     </div>
     <div class="row mt-4">
@@ -19,7 +19,12 @@
                   {{ item.name }}
                 </div>
                 <div class="col-md-4 mt-3 mt-md-0">
-                  <input type="text" class="form-control" placeholder="Amount" v-model="item.amount" />
+                  <el-input
+                    type="text"
+                    class="w-100"
+                    placeholder="Amount"
+                    v-model="item.amount"
+                  />
                 </div>
               </div>
             </div>
@@ -33,7 +38,7 @@
         Summary attendance
       </div>
       <div class="col-2 text-right align-self-center">
-        <i class="pi pi-chevron-down"></i>
+        <el-icon><ArrowDownBold /></el-icon>
       </div>
     </div>
     <div class="row mt-4">
@@ -46,7 +51,12 @@
                   {{ item.name }}
                 </div>
                 <div class="col-md-4 mt-3 mt-md-0">
-                  <input type="text" class="form-control" placeholder="Enter Count" v-model="item.number" />
+                  <el-input
+                    type="text"
+                    class="w-100"
+                    placeholder="Enter Count"
+                    v-model="item.number"
+                  />
                 </div>
               </div>
             </div>
@@ -60,7 +70,7 @@
         Other Information
       </div>
       <div class="col-2 text-right align-self-center">
-        <i class="pi pi-chevron-down"></i>
+        <el-icon><ArrowDownBold /></el-icon>
       </div>
     </div>
     <div class="row mt-4">
@@ -73,7 +83,12 @@
                   {{ item.label }}
                 </div>
                 <div class="col-md-4 mt-3 mt-md-0">
-                  <input type="text" class="form-control" :placeholder="item.label" v-model="item.number" />
+                  <el-input
+                    type="text"
+                    class="w-100"
+                    :placeholder="item.label"
+                    v-model="item.number"
+                  />
                 </div>
               </div>
             </div>
@@ -82,10 +97,25 @@
       </div>
     </div>
     <div class="row mt-2">
-      <textarea class="form-control" rows="5" placeholder="Enter your note here" v-model="note"></textarea>
+      <el-input
+        v-model="note"
+        :rows="5"
+        type="textarea"
+        class="w-100"
+        placeholder="Enter your note here"
+      />
     </div>
     <div class="row d-flex justify-content-center my-4 c-pointer">
-      <el-button :loading="loading" @click="updateAttendanceCheckin" :color="primarycolor" round>Save</el-button>
+      <el-button color="#136acd" :loading="loading" round size="large" class=" border-0 text-white text-center"
+        @click="updateAttendanceCheckin">
+        Save
+      </el-button>
+      <!-- <div
+        class="default-btn primary-bg border-0 text-white text-center"
+        @click="updateAttendanceCheckin"
+      >
+        Save
+      </div> -->
     </div>
   </div>
 </template>
@@ -96,14 +126,15 @@ import axios from "@/gateway/backendapi";
 import { useRoute } from "vue-router";
 import router from "../../router";
 import allCustomFields from "../../services/customfield/customField";
+import { ElMessage } from "element-plus";
 export default {
   props: ["contributionItems", "attendanceType", "groupDetail"],
   setup(props) {
     const primarycolor = inject('primary--color')
     const note = ref("");
     const route = useRoute();
-    const dynamicCustomFields = ref([]);
     const loading = ref(false)
+    const dynamicCustomFields = ref([]);
     const churchContributionItems = computed(() => {
       if (
         props.groupDetail &&
@@ -171,7 +202,6 @@ export default {
           );
           if (y >= 0) {
             i.number = props.groupDetail.customAttributeData[y].data;
-            // i.attendanceTypeAttendanceID = props.groupDetail.attendances[y].id;
           }
           return i;
         });
@@ -180,6 +210,8 @@ export default {
     watchEffect(() => {
       if (props.groupDetail && Object.keys(props.groupDetail).length > 0) {
         note.value = props.groupDetail.note;
+      }else {
+        console.log('ddddd')
       }
     });
 
@@ -221,13 +253,14 @@ export default {
           "/api/CheckInAttendance/UpdateCheckInAttendance",
           body
         );
-        loading.value = false
+        console.log(data);
         ElMessage({
-          type: "success",
-          message: "Updated successfully",
-          duration: 5000,
-        });
-        
+            type: "success",
+            message: "Updated successfully",
+            duration: 5000,
+          });
+          loading.value = false
+
         if (route.fullPath.includes("/tenant/takeattendance")) {
           setTimeout(() => {
             router.push("/tenant/groupleader");
@@ -254,6 +287,7 @@ export default {
       churchAttendanceCategory,
       updateAttendanceCheckin,
       note,
+      loading,
       dynamicCustomFields,
       attendanceCustomField,
       loading,

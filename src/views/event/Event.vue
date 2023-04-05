@@ -1665,8 +1665,12 @@
                       class="dropdown-item font-weight-700 small-text"
                       href="#"
                       v-if="searchingForMembers && searchedMembers.length === 0"
-                      ><i class="pi pi-spin pi-spinner"></i
-                    ></a>
+                      >
+                      <!-- <i class="pi pi-spin pi-spinner"></i> -->
+                      <el-icon class="is-loading " >
+                            <Loading />
+                          </el-icon>
+                      </a>
                     <p
                       class="modal-promt pl-1 bg-secondary m-0"
                       v-if="

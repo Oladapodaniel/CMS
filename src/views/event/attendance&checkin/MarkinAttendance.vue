@@ -96,10 +96,10 @@
       </div>
       <div class="col-md-7">
         <span class="p-input-icon-left w-100">
-          <i class="pi pi-phone icon" />
-          <InputText
+          <!-- <i class="pi pi-phone icon" /> -->
+          <input
             @input="CheckXterAfterEleven"
-            class="w-100"
+            class="w-100 form-control"
             type="text"
             v-model="enteredValue"
             aria-required=""
