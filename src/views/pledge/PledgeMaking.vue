@@ -8,7 +8,7 @@
           </div>
           <div class="col-md-6 d-flex justify-content-md-end">
             <el-button
-              color="#136acd"
+              :color="primarycolor"
               class="header-btn text-white"
               data-toggle="modal"
               data-target="#exampleModalLong"
@@ -137,7 +137,7 @@
           </div>
           <div class="col-md-6 d-flex justify-content-md-end">
             <el-button
-              color="#136acd"
+              :color="primarycolor"
               class="header-btn text-white"
               data-toggle="modal"
               data-target="#exampleModalLong"
@@ -334,7 +334,7 @@
             <div class="modal-footer">
               <el-button class="" data-dismiss="modal" round>Cancel</el-button>
               <el-button
-                color="#136acd"
+                :color="primarycolor"
                 class="header-btn text-white"
                 round
                 @click="recordPayment"
@@ -353,7 +353,7 @@
 <script>
 import axios from "@/gateway/backendapi";
 import ReportModal from "@/components/firsttimer/ReportModal.vue";
-import { ref, computed, onMounted } from "vue";
+import { ref, computed, inject } from "vue";
 import Loading from "../../components/loading/LoadingComponent";
 import router from "../../router";
 import { useRoute } from "vue-router";
@@ -373,6 +373,7 @@ export default {
   },
   directives: {},
   setup() {
+    const primarycolor = inject('primarycolor')
     const selectedLink = ref(null);
     const SelectedChannelId = ref(null);
     const emaildata = ref(null);
@@ -801,7 +802,8 @@ export default {
       SelectedChannelId,
       closeRecordModal,
       savingRecord,
-      loadingSummary
+      loadingSummary,
+      primarycolor
     };
   },
 };

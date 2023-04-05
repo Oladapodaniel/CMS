@@ -357,7 +357,7 @@
           </p>
         </div>
         <div class="col-md-12 d-flex justify-content-end">
-          <el-dropdown split-button color="#136acd" class="split-button" size="large" trigger="click"
+          <el-dropdown split-button :color="primarycolor" class="split-button" size="large" trigger="click"
             @click="sendSMSDialog = true">
             Send
             <template #dropdown>
@@ -515,7 +515,7 @@
         <template #footer>
           <span class="dialog-footer">
             <el-button @click="display = false" round>Cancel</el-button>
-            <el-button color="#136acd" @click="contructScheduleMessageBody(2, '')" round>
+            <el-button :color="primarycolor" @click="contructScheduleMessageBody(2, '')" round>
               Confirm
             </el-button>
           </span>
@@ -573,7 +573,7 @@
 </template>
 
 <script>
-import { computed, onMounted, ref } from "vue";
+import { computed, onMounted, ref, inject } from "vue";
 import composeService from "../../services/communication/composer";
 import composerObj from "../../services/communication/composer";
 import { useRoute } from "vue-router";
@@ -590,6 +590,7 @@ import { ElMessage } from "element-plus";
 
 export default {
   setup() {
+    const primarycolor = inject('primarycolor')
     const router = useRouter();
     const editorData = ref("");
     const disableBtn = ref(false);
@@ -1215,6 +1216,7 @@ export default {
     };
 
     return {
+      primarycolor,
       editorData,
       // displays,
       editorConfig,

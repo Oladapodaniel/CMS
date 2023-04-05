@@ -98,7 +98,7 @@
             <el-input type="textarea" v-model="note" rows="12" class=" mt-4" placeholder="Type your note..." />
             <div class="d-flex justify-content-end mt-4">
                 <el-button @click="displayPosition = false" round>Close</el-button>
-                <el-button color="#136acd" :loading="noteLoading" @click="saveNote" round>Save</el-button>
+                <el-button :color="primarycolor" :loading="noteLoading" @click="saveNote" round>Save</el-button>
             </div>
         </template>
     </el-drawer>
@@ -142,7 +142,7 @@
                 </div>
                 <div class="d-flex justify-content-end mt-4 w-100">
                     <el-button @click="emailDisplayPosition = false" round>Close</el-button>
-                    <el-button color="#136acd" :loading="emailLoading" @click="sendEmail" round>Save</el-button>
+                    <el-button :color="primarycolor" :loading="emailLoading" @click="sendEmail" round>Save</el-button>
                 </div>
             </div>
 
@@ -243,7 +243,7 @@
                             </template>
                             <template #footer>
                                 <div class="d-flex justify-content-start">
-                                    <el-button @click="searchmemberr = false" color="#136acd" round>Done</el-button>
+                                    <el-button @click="searchmemberr = false" :color="primarycolor" round>Done</el-button>
                                 </div>
                             </template>
                         </el-drawer>
@@ -258,7 +258,7 @@
             </div>
             <div class="d-flex justify-content-end mt-3 w-100">
                 <el-button @click="taskDisplayPosition = false" round>Close</el-button>
-                <el-button color="#136acd" :loading="taskLoading" @click="saveTask" round>Save</el-button>
+                <el-button :color="primarycolor" :loading="taskLoading" @click="saveTask" round>Save</el-button>
             </div>
         </template>
     </el-drawer>
@@ -274,24 +274,19 @@
 </template>
 
 <script>
-import { computed, onMounted, ref, watchEffect } from "vue"
+import { computed, onMounted, ref, watchEffect, inject } from "vue"
 import SideActions from "./components/SideActions"
 import Activity from "./components/Activity"
 import Notes from "./components/Notes"
 import Emails from "./components/Emails"
 import SMS from "./components/SMS"
 import Tasks from "./components/Tasks"
-// import InputText from 'primevue/inputtext'
-// import Dialog from 'primevue/dialog';
-// import Editor from 'primevue/editor';
-import { useToast } from "primevue/usetoast";
 import { useRoute } from "vue-router"
 import axios from "@/gateway/backendapi";
 import lookupTable from "../../../services/lookup/lookupservice"
 import frmservice from "@/services/FRM/firsttimermanagement"
 import groupResponse from '../../../services/groupArray/groupResponse'
 import dateFormatter from '../../../services/dates/dateformatter'
-// import SelectButton from 'primevue/selectbutton';
 import SearchMember from "../../../components/membership/MembersSearch.vue"
 import celebAnim from "../../../services/celebration-animation/party"
 import router from '../../../router'
@@ -317,7 +312,7 @@ export default {
         DecoupledEditor
     },
     setup() {
-        const toast = useToast()
+        const primarycolor = inject('primarycolor')
         const route = useRoute()
         const showActivity = ref(true)
         const showNotes = ref(false)
@@ -1058,7 +1053,8 @@ export default {
             setActivityTypeReset,
             setResetPriority,
             setDueDateOnly,
-            pushNewComment
+            pushNewComment,
+            primarycolor
         }
     }
 }

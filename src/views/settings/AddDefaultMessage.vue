@@ -105,7 +105,7 @@
                 <el-button round size="large" >Discard</el-button>
                 </router-link
               >
-              <el-button color="#136acd" class="ml-2" :loading="loading" size="large" @click="callButton" round>Save</el-button>
+              <el-button :color="primarycolor" class="ml-2" :loading="loading" size="large" @click="callButton" round>Save</el-button>
           </div>
         </div>
       </div>
@@ -119,6 +119,7 @@ import { ElMessage } from "element-plus";
 import axios from "@/gateway/backendapi";
 
 export default {
+  inject: ['primarycolor'],
   data() {
     return {
       message: "",

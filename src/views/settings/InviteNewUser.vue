@@ -214,9 +214,9 @@
             <el-button
               round
               size="large"
-              color="#136acd"
+              :color="primarycolor"
               :loading="loading"
-              class="px-3 saveButton ml-3 text-white"
+              class="px-3 ml-3 text-white"
               style="border-radius: 22px; font-size: 16px; font-weight: 600"
               @click="callButton"
               >Save User</el-button
@@ -236,6 +236,7 @@ import { ElMessage } from "element-plus";
 import userRoles from "../../services/user/userRoles";
 export default {
   components: {},
+  inject: ['primarycolor'],
   data() {
     return {
       inviteNew: "Invite New User",

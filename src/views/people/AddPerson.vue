@@ -239,7 +239,7 @@
               <div></div>
               <div class="input-width d-flex justify-content-center my-4">
                 <el-button :loading="loading" :disabled="(loading || !person.firstName)"
-                  color="#136acd" class="w-100" @click="addPerson" round>Save</el-button>
+                  :color="primarycolor" class="w-100" @click="addPerson" round>Save</el-button>
               </div>
             </div>
           </el-form>
@@ -321,8 +321,8 @@
                 </div>
                 <div class="col-12 p-0">
                   <div class="d-flex justify-content-end">
-                    <el-button color="#136acd" data-dismiss="modal" round>Cancel</el-button>
-                    <el-button color="#136acd" :loading="addToGroupLoading" :data-dismiss="dismissAddToGroupModal"
+                    <el-button data-dismiss="modal" round>Cancel</el-button>
+                    <el-button :color="primarycolor" :loading="addToGroupLoading" :data-dismiss="dismissAddToGroupModal"
                       @click="addMemberToGroup" round>Save</el-button>
                   </div>
                 </div>
@@ -393,7 +393,7 @@
 
 <script>
 import moment from "moment";
-import { ref, reactive, computed } from "vue";
+import { ref, reactive, computed, inject } from "vue";
 import router from "@/router/index";
 import axios from "@/gateway/backendapi";
 import { useRoute } from "vue-router";
@@ -410,6 +410,7 @@ export default {
     SearchMembers,
   },
   setup() {
+    const primarycolor = inject('primarycolor')
     const store = useStore();
     const hideCelebTab = ref(false);
     const hideAddInfoTab = ref(true);
@@ -1186,7 +1187,8 @@ export default {
       filterNodeMethod,
       setGroupValue,
       flattenedTree,
-      addToGroupLoading
+      addToGroupLoading,
+      primarycolor
     };
   },
 };

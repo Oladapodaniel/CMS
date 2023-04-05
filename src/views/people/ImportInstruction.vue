@@ -24,7 +24,7 @@
                         <input type="file" @change="imageSelected" class="form-control w-100 c-pointer">
                     </div>
                     <div class="col-12 d-flex justify-content-center text-center  my-4">
-                        <el-button color="#136acd" :disabled="(image == '')" @click="uploadFile"
+                        <el-button :color="primarycolor" :disabled="(image == '')" @click="uploadFile"
                             :loading="uploadLoading" round>Upload and preview members</el-button>
                     </div>
                     <div class="border-bottom w-100 my-2 col-md-12 "></div>
@@ -154,7 +154,7 @@
                 <template #footer>
                     <span class="dialog-footer d-flex justify-content-end text-center">
                         <el-button @click="displayModal = false" round>Cancel</el-button>
-                        <el-button color="#136acd" :loading="loading" @click="addToMembers" round>
+                        <el-button :color="primarycolor" :loading="loading" @click="addToMembers" round>
                         Save
                         </el-button>
                     </span>
@@ -165,7 +165,7 @@
 </template>
 
 <script>
-import { ref } from "vue"
+import { ref, inject } from "vue"
 import axios from "@/gateway/backendapi";
 import finish from "../../services/progressbar/progress"
 import { useRoute } from "vue-router"
@@ -179,6 +179,7 @@ export default {
     components: {
     },
     setup(props, { emit }) {
+        const primarycolor = inject('primarycolor')
         const route = useRoute()
         const store = useStore();
         const image = ref("");
@@ -365,7 +366,7 @@ export default {
         getImportType()
 
         return {
-            imageSelected, image, uploadFile, memberData, addToMembers, closeModal, displayModal, addInstructionClass, toggleInstruction, loading, mdAndUp, lgAndUp, xlAndUp, uploadLoading
+            imageSelected, image, uploadFile, memberData, addToMembers, closeModal, displayModal, addInstructionClass, toggleInstruction, loading, mdAndUp, lgAndUp, xlAndUp, uploadLoading, primarycolor
         }
     }
 }

@@ -439,7 +439,7 @@
 
 <script>
 import axios from "@/gateway/backendapi";
-import { ref, computed } from "vue";
+import { ref, computed, inject } from "vue";
 import moment from "moment";
 import { useConfirm } from "primevue/useconfirm";
 import { useToast } from "primevue/usetoast";
@@ -461,6 +461,7 @@ export default {
   },
   props: ["eventList", "eventSummary"],
   setup(props, { emit }) {
+    const primarycolor = inject('primarycolor')
     const filterFormIsVissible = ref(false);
     const searchIsVisible = ref(false);
     const store = useStore();
@@ -690,6 +691,7 @@ export default {
       membersCount,
       deleteEvent,
       eventHeaders,
+      primarycolor
     };
   },
 };

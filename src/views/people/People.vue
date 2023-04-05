@@ -8,7 +8,7 @@
         <div class="d-flex mt-3 mt-sm-0">
           <el-button @click="importMembers" class="header-btn" round>Import</el-button>
           <router-link :to="`/tenant/people/add`" class="no-decoration">
-            <el-button color="#136acd" class="ml-2 header-btn" round>Add Member</el-button>
+            <el-button :color="primarycolor" class="ml-2 header-btn" round>Add Member</el-button>
           </router-link>
         </div>
       </div>
@@ -33,7 +33,7 @@
 </template>
 
 <script>
-import { computed, ref, watchEffect } from "vue";
+import { computed, ref, watchEffect, inject } from "vue";
 import router from "@/router/index";
 import { useRoute } from "vue-router";
 import { ElMessage } from 'element-plus'
@@ -48,6 +48,7 @@ export default {
     const tenantID = ref('')
     const route = useRoute();
     const { lgAndUp, xlAndUp } = deviceBreakpoint()
+    const primarycolor = inject('primarycolor')
 
     const isFormPage = computed(() => {
       if (route.path.includes("add")) return true;
@@ -101,7 +102,7 @@ export default {
       router.push({ name: 'ImportInstruction', query: { query: 'importpeople' } })
     }
 
-    return { addPersonClicked, tenantID, route, header, isFormPage, importMembers, memberlink, copylink, selectedLink, lgAndUp, xlAndUp,  };
+    return { addPersonClicked, tenantID, route, header, isFormPage, importMembers, memberlink, copylink, selectedLink, lgAndUp, xlAndUp, primarycolor };
   },
 };
 // transition method

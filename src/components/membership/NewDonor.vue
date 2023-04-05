@@ -173,7 +173,7 @@ export default {
     components: { ImageForm },
 
     setup(props, { emit }) {
-        const primarycolor = inject('primary--color')
+        const primarycolor = inject('primarycolor')
         const route = useRoute();
         const loading = ref(false)
         const donor = reactive({});

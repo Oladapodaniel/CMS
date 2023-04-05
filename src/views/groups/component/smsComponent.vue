@@ -22,7 +22,7 @@
                   <el-button @click="(display = false)" round>
                     Cancel
                   </el-button>
-                  <el-button color="#136acd" :loading="scheduleLoading" @click="contructScheduleMessageBody(2, '')"
+                  <el-button :color="primarycolor" :loading="scheduleLoading" @click="contructScheduleMessageBody(2, '')"
                     round>
                     Schedule
                   </el-button>
@@ -407,7 +407,7 @@
           </p>
         </div>
         <div class="col-md-12 d-flex justify-content-end">
-            <el-dropdown split-button color="#136acd" class="split-button" size="large" trigger="click"
+            <el-dropdown split-button :color="primarycolor" class="split-button" size="large" trigger="click"
               @click="sendSMSDialog = true">
               Send
               <template #dropdown>
@@ -587,7 +587,7 @@
                               DELIVERY</label>
                           </div>
                           <div class="col-md-12 send-now-div py-2 my-2 d-flex justify-content-center">
-                            <el-button color="#136acd" :loading="sendSMSLoading" @click="contructScheduleMessageBody(1, 'hybridKonnect')" round>Send SMS Now</el-button>
+                            <el-button :color="primarycolor" :loading="sendSMSLoading" @click="contructScheduleMessageBody(1, 'hybridKonnect')" round>Send SMS Now</el-button>
                           </div>
                           <div class="col-md-12 px-0">
                             <hr class="hr my-2" />
@@ -662,7 +662,7 @@
 </template>
 
 <script>
-import { computed, onMounted, ref, watchEffect } from "vue";
+import { computed, onMounted, ref, watchEffect, inject } from "vue";
 import composeService from "../../../services/communication/composer";
 import composerObj from "../../../services/communication/composer";
 import { useRoute } from "vue-router";
@@ -682,6 +682,7 @@ export default {
   setup(props, { emit }) {
     const toast = useToast();
     const editorData = ref("");
+    const primarycolor = inject('primarycolor')
     const disableBtn = ref(false);
     const phoneNumber = ref("");
     const editorConfig = {
@@ -1435,7 +1436,8 @@ export default {
       xsOnly,
       scheduleLoading,
       sendSMSDialog,
-      sendSMSLoading
+      sendSMSLoading,
+      primarycolor
     };
   },
 };

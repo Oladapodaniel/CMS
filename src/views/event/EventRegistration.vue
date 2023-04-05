@@ -68,7 +68,7 @@
         <!-- v-if="autosearch && !person.name" -->
       </div>
       <div class="col-3 offset-3 offset-sm-4 offset-md-5 mt-4" v-if="!names">
-        <el-button size="large" round color="#136acd"
+        <el-button size="large" round :color="primarycolor"
           class=" w-100 text-white border-0 text-center c-pointer">Register</el-button>
       </div>
     </div>
@@ -272,11 +272,11 @@
           <div class="col-md-3"></div>
           <div class="col-md-7 py-4 text-center">
             <el-button class="mr-3" round @click="notme">Not Me</el-button>
-            <el-button data-toggle="modal" data-target="#PaymentOptionModal" color="#136acd" @click="confirmCheck()"
+            <el-button data-toggle="modal" data-target="#PaymentOptionModal" :color="primarycolor" @click="confirmCheck()"
               v-if="fullEventData.paymentFormId" :disabled="!person.name || person.name.length < 1 || !person.email || disableClick" round>
               Make payment to register
             </el-button>
-            <el-button size="large" class=" mt-3 mt-sm-0 text-white" color="#136acd" @click="confirmToRegister"
+            <el-button size="large" class=" mt-3 mt-sm-0 text-white" :color="primarycolor" @click="confirmToRegister"
               :disabled="!person.name || person.name.length < 1 || disableClick" round v-else>
               Confirm to register
             </el-button>
@@ -333,7 +333,7 @@
 
 
 <script>
-import { computed, ref } from "vue";
+import { computed, ref, inject } from "vue";
 import axios from "@/gateway/backendapi";
 // import router from "../../router/index";
 import { useRoute } from "vue-router";
@@ -352,6 +352,7 @@ export default {
     FamilyWards,
   },
   setup() {
+    const primarycolor = inject('primarycolor')
     const connectName = ref("");
     const yearOfWedding = ref(null)
     const monthOfWedding = ref(null)
@@ -1108,6 +1109,7 @@ export default {
 
 
     return {
+      primarycolor,
       paymentFormCurrency,
       disableClick,
       setSelectedGender,

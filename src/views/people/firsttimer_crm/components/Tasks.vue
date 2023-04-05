@@ -229,7 +229,7 @@
                                 </template>
                                 <template #footer>
                                 <div class="d-flex justify-content-start">
-                                    <el-button @click="searchmemberr = false" color="#136acd" round>Done</el-button>
+                                    <el-button @click="searchmemberr = false" :color="primarycolor" round>Done</el-button>
                                 </div>
                                 </template>
                             </el-drawer>
@@ -303,7 +303,7 @@
 
 
 <script>
-import { ref } from "vue"
+import { ref, inject } from "vue"
 import dateFormatter from '../../../../services/dates/dateformatter'
 import frmservice from "@/services/FRM/firsttimermanagement"
 import SearchMember from "../../../../components/membership/MembersSearch.vue"
@@ -318,6 +318,7 @@ export default {
     },
     setup(props, { emit }) {
         const route = useRoute()
+        const primarycolor = inject('primarycolor')
         const reminder = ref([])
         const displayComment = ref(false)
         const taskComment = ref("")
@@ -572,7 +573,8 @@ export default {
             selectedTask,
             setTaskStatus,
             statuses,
-            searchmemberr
+            searchmemberr,
+            primarycolor
         }
     }
 }

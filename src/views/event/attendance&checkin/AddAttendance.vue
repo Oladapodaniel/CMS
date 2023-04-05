@@ -150,7 +150,7 @@
                     </el-button>
                     <el-button
                       class=" border-0 ml-2 text-white"
-                      color="#136acd"
+                      :color="primarycolor"
                       round
                       @click="createNewActivity"
                       data-dismiss="modal"
@@ -1090,7 +1090,7 @@
 </template>
 
 <script>
-import { computed, nextTick, ref } from "vue";
+import { computed, nextTick, ref, inject } from "vue";
 import { useRoute } from "vue-router";
 import router from "@/router/index";
 import groupService from "../../../services/groups/groupsservice";
@@ -1112,6 +1112,7 @@ export default {
   components: { CreateEventModal, GroupTree },
 
   setup() {
+    const primarycolor = inject('primarycolor')
     const store = useStore();
     const route = useRoute();
     const groups = ref([]);
@@ -1939,6 +1940,7 @@ export default {
       checkinCutOffTime,
       setFilterGroups,
       setNewGroup,
+      primarycolor
     };
   },
 };

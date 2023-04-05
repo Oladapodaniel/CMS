@@ -12,7 +12,7 @@
                   class="text-white  border-0 ml-3"
                   @click="post"
                   round
-                  color="#136acd"
+                  :color="primarycolor"
                   :loading="loading"
                 >
                   <span class="text-white">Save and Continue</span>
@@ -722,7 +722,7 @@
             "
           >
             <el-button class="default-btn" v-if="false">Preview</el-button>
-            <el-button  :loading="loading" round color="#136acd" class=" border-0 ml-3" @click="post">
+            <el-button  :loading="loading" round :color="primarycolor" class=" border-0 ml-3" @click="post">
               <span class="text-white">Save and Continue</span>
               <span></span>
             </el-button>
@@ -1648,10 +1648,10 @@
                         justify-content-center
                         py-2
                         text-decoration-none
-                        primary-text
+                        primary--text
                         c-pointer
                       "
-                      style="border-top: 1px solid #002044; color: #136acd"
+                      style="border-top: 1px solid #002044;"
                       @click="showAddMemberForm"
                       data-dismiss="modal"
                     >
@@ -1928,6 +1928,7 @@ export default {
     SearchMembers,
     NewDonor,
   },
+  inject: ['primarycolor'],
   data() {
     return {
       currDate: "",

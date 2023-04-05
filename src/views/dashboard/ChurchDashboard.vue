@@ -1,5 +1,5 @@
 <template>
-  <main :class="{ 'container-slim': lgAndUp || xlAndUp }" id="main">{{ primarycolor }}
+  <main :class="{ 'container-slim': lgAndUp || xlAndUp }" id="main">
     <div class="second-col container-top">
       <div class="create-btn-div">
         <div>
@@ -569,7 +569,7 @@ export default {
   },
 
   setup() {
-    const primarycolor = inject('primary--color')
+    const primarycolor = inject('primarycolor')
     const moreLinksVissible = ref(false);
     const offering = ref([23, 45, 65, 78, 89]);
     const attendanceBoolean = ref(true);

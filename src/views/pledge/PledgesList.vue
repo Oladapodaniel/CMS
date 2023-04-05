@@ -13,7 +13,7 @@
           </el-button>
         </router-link>
         <router-link class="" to="/tenant/pledge/makepledge">
-          <el-button color="#136acd" class="header-btn w-100 mt-3 mt-sm-0" round>
+          <el-button :color="primarycolor" class="header-btn w-100 mt-3 mt-sm-0" round>
             New Partnership/Pledge
           </el-button></router-link
         >
@@ -142,7 +142,7 @@
           class=""
           @click="filterPledge"
           round
-          color="#136acd"
+          :color="primarycolor"
           size="large"
         >
           Apply
@@ -269,7 +269,7 @@
 </template>
 
 <script>
-import { ref, computed, onMounted } from "vue";
+import { ref, computed, onMounted, inject } from "vue";
 import MembersSearch from "../../components/membership/MembersSearch.vue";
 import axios from "@/gateway/backendapi";
 import pledge from "../../services/pledgemodule/pledgemodule";
@@ -286,6 +286,7 @@ export default {
     Table,
   },
   setup() {
+    const primarycolor = inject('primarycolor')
     const networkError = ref(false);
     const route = useRoute();
     const selectedStatusID = ref(null);
@@ -636,6 +637,7 @@ export default {
       allPledgeStatus,
       selectedStatus,
       date,
+      primarycolor
       // singlePledge
     };
   },

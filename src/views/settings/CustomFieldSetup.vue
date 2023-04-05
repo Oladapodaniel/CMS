@@ -107,7 +107,7 @@
                           px-md-4 px-3
                           py-2
                         "
-                        color="#136acd"
+                        :color="primarycolor"
                         round
                         size="large"
                         :loading="loading"
@@ -363,7 +363,7 @@
 </template>
 
 <script>
-import { ref } from "vue";
+import { ref, inject } from "vue";
 import axios from "@/gateway/backendapi";
 import { ElMessage, ElMessageBox } from "element-plus";
 import finish from "../../services/progressbar/progress";
@@ -371,6 +371,7 @@ import finish from "../../services/progressbar/progress";
 export default {
   components: {},
   setup() {
+    const primarycolor = inject('primarycolor')
     const selectedControl = ref({});
     const currentInput = ref("")
     const selectedControlID = ref(null);
@@ -684,6 +685,7 @@ export default {
       customFieldLabel,
       customDropdownList,
       toggleCustomList,
+      primarycolor
     };
   },
 };

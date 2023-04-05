@@ -106,7 +106,7 @@
       />
     </div>
     <div class="row d-flex justify-content-center my-4 c-pointer">
-      <el-button color="#136acd" :loading="loading" round size="large" class=" border-0 text-white text-center"
+      <el-button :color="primarycolor" :loading="loading" round size="large" class=" border-0 text-white text-center"
         @click="updateAttendanceCheckin">
         Save
       </el-button>
@@ -130,7 +130,7 @@ import { ElMessage } from "element-plus";
 export default {
   props: ["contributionItems", "attendanceType", "groupDetail"],
   setup(props) {
-    const primarycolor = inject('primary--color')
+    const primarycolor = inject('primarycolor')
     const note = ref("");
     const route = useRoute();
     const loading = ref(false)

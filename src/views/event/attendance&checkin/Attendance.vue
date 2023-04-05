@@ -6,11 +6,12 @@
             </div>
             <div class="actions">
               <router-link
+                class="no-decoration"
                 :to="{ name: 'AddCheckin' }"
                 class="text-decoration-none"
                 v-if="route.path === '/tenant/attendancecheckin'"
               >
-                <el-button class="header-btn w-100 text-white" color="#136acd" round>
+                <el-button class="header-btn w-100 text-white" :color="primarycolor" round>
                   Add New Attendance
                 </el-button>
               </router-link>
@@ -25,17 +26,20 @@
 </template>
 
 <script>
+import { inject } from "vue";
 import { useRoute } from "vue-router";
 import deviceBreakpoint from "../../../mixins/deviceBreakpoint";
 export default {
   setup() {
     const route = useRoute();
     const { lgAndUp, xlAndUp } = deviceBreakpoint();
+    const primarycolor = inject('primarycolor')
 
     return {
       route,
       lgAndUp,
       xlAndUp,
+      primarycolor
     };
   },
 };
