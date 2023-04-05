@@ -12,7 +12,7 @@
           <div class="col-md-12 d-flex justify-content-center mt-4">
             <el-button
               class=" border-0 text-white"
-              color="#136acd"
+              :color="primarycolor"
               data-toggle="modal"
               data-target="#exampleModal"
               size="large"
@@ -26,7 +26,7 @@
 </template>
 
 <script>
-import { computed, ref, watchEffect } from 'vue';
+import { computed, ref, inject } from 'vue';
 import { useRoute } from 'vue-router';
 import DataRow from "./MarkAttendanceRow";
 import attendanceservice from '../../services/attendance/attendanceservice';
@@ -35,6 +35,7 @@ import attendanceservice from '../../services/attendance/attendanceservice';
         props: [ "isKiosk", "searchText", "fetchUsers","attendanceId" ],
         components: { DataRow },
         async setup(props, { emit }) {
+            const primarycolor = inject('primary--color')
             const route = useRoute();
             const people = ref([ ])
             const id = ref(route.query.id ? route.query.id : props.attendanceId)
@@ -81,6 +82,7 @@ import attendanceservice from '../../services/attendance/attendanceservice';
             }
 
             return {
+                primarycolor,
                 people,
                 listOfPeople,
                 toggleCheckin,

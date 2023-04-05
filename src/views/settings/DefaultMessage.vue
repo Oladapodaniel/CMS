@@ -41,7 +41,7 @@
               class="col-md-4 d-flex justify-content-between align-items-center"
             >
               <span class="py-2 hidden-header">MESSAGE</span>
-              <span class="py-2" v-if="allMessages.message.length < 18"><router-link class="route" :to="{path:'/tenant/settings/adddefaultmessage',query:{messageId:allMessages.id}}">{{allMessages.message}}</router-link></span>
+              <span class="py-2" v-if="allMessages && allMessages.message && allMessages.message.length < 18"><router-link class="route" :to="{path:'/tenant/settings/adddefaultmessage',query:{messageId:allMessages.id}}">{{allMessages.message}}</router-link></span>
               <el-tooltip v-else :content="`${allMessages.message}`" placement="top" >
                 <router-link class="route" :to="{path:'/tenant/settings/adddefaultmessage',query:{messageId:allMessages.id}}">{{allMessages.message.substring(0,18)+"..."}}</router-link>
               </el-tooltip>
@@ -50,7 +50,7 @@
               class="col-md-3 d-flex justify-content-between align-items-center"
             >
               <span class="py-2 hidden-header">SUBJECT</span>
-              <span class="py-2 text-xs-left" v-if="allMessages.subject.length < 18"> <router-link class="route" :to="{path:'/tenant/settings/adddefaultmessage',query:{messageId:allMessages.id}}">{{allMessages.subject}}</router-link></span>
+              <span class="py-2 text-xs-left" v-if="allMessages && allMessages.subject && allMessages.subject.length < 18"> <router-link class="route" :to="{path:'/tenant/settings/adddefaultmessage',query:{messageId:allMessages.id}}">{{allMessages.subject}}</router-link></span>
               <el-tooltip v-else :content="`${allMessages.subject}`" placement="top" >
                 {{allMessages.subject.substring(0,)+ "..."}}
               </el-tooltip>
@@ -67,7 +67,7 @@
               class="col-md-1 d-flex justify-content-between align-items-center"
             >
               <span class="py-4 hidden-header">TYPE</span>
-              <span class="py-2" v-if="messageName(allMessages.messageType).length < 18"> <router-link class="route" :to="{path:'/tenant/settings/adddefaultmessage',query:{messageId:allMessages.id}}">{{messageName(allMessages.messageType)}}</router-link></span>
+              <span class="py-2" v-if="allMessages && allMessages.messageType && messageName(allMessages.messageType).length < 18"> <router-link class="route" :to="{path:'/tenant/settings/adddefaultmessage',query:{messageId:allMessages.id}}">{{messageName(allMessages.messageType)}}</router-link></span>
               <el-tooltip v-else :content="`${messageName(allMessages.messageType)}`" placement="top" >
               <span> <router-link class="route" :to="{path:'/tenant/settings/adddefaultmessage',query:{messageId:allMessages.id}}">{{messageName(allMessages.messageType).substring(0,18) + "..."}}</router-link></span>
               </el-tooltip>

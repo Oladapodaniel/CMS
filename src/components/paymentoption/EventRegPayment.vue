@@ -1,6 +1,6 @@
 
 <template>
-  <div class="container">
+  <div class="container">{{ donation }}
     <div class="row">
       <div class="col-sm-12 p-4 text-center continue-text">Continue payment with</div>
     </div>
@@ -171,6 +171,7 @@ export default {
     }
 
     watchEffect(() => {
+      console.log(props.donation)
       if (props.callPayment && Object.keys(props.initializePaymentResponse).length > 0) {
         if (selectedGateway.value == 'Paystack') {
           payWithPaystack(props.initializePaymentResponse);

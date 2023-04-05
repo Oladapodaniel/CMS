@@ -85,13 +85,13 @@
       <textarea class="form-control" rows="5" placeholder="Enter your note here" v-model="note"></textarea>
     </div>
     <div class="row d-flex justify-content-center my-4 c-pointer">
-      <el-button :loading="loading" @click="updateAttendanceCheckin" color="#136acd" round>Save</el-button>
+      <el-button :loading="loading" @click="updateAttendanceCheckin" :color="primarycolor" round>Save</el-button>
     </div>
   </div>
 </template>
 
 <script>
-import { computed, ref, watchEffect } from "@vue/runtime-core";
+import { computed, ref, watchEffect, inject } from "@vue/runtime-core";
 import axios from "@/gateway/backendapi";
 import { useRoute } from "vue-router";
 import router from "../../router";
@@ -99,6 +99,7 @@ import allCustomFields from "../../services/customfield/customField";
 export default {
   props: ["contributionItems", "attendanceType", "groupDetail"],
   setup(props) {
+    const primarycolor = inject('primary--color')
     const note = ref("");
     const route = useRoute();
     const dynamicCustomFields = ref([]);
@@ -255,7 +256,8 @@ export default {
       note,
       dynamicCustomFields,
       attendanceCustomField,
-      loading
+      loading,
+      primarycolor
     };
   },
 };
