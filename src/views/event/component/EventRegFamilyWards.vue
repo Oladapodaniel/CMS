@@ -84,7 +84,7 @@
                     <div class="col-12">
                         <div class="row d-flex justify-content-end">
                             <el-button class="mr-2" data-dismiss="modal" round>Cancel</el-button>
-                            <el-button color="#136acd" data-dismiss="modal" @click="createPerson" round>Save</el-button>
+                            <el-button :color="primarycolor" data-dismiss="modal" @click="createPerson" round>Save</el-button>
                         </div>
                     </div>
 
@@ -95,13 +95,14 @@
 </template>
 
 <script>
-import { ref } from "vue"
+import { ref, inject } from "vue"
 import { watchEffect } from '@vue/runtime-core'
 import axios from "@/gateway/backendapi";
 export default {
     props: ['family', 'memberRoles', 'showWardModal', 'fullEventData'],
     emits: ['newmember', 'nofamilynewmember'],
     setup(props, { emit }) {
+        const primarycolor = inject('primarycolor')
         const showModal = ref("")
         const memberName = ref("")
         const memberPhone = ref("")
@@ -221,7 +222,8 @@ export default {
             memberName,
             createPerson,
             addMembers,
-            roleId
+            roleId,
+            primarycolor
         }
     }
 }

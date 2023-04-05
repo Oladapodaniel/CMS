@@ -159,7 +159,7 @@
                         <el-button round data-dismiss="modal">Cancel</el-button>
                       </div>
                       <div class="col-md-6">
-                        <el-button round :loading="loading" class=" border-0 text-white" color="#136acd"
+                        <el-button round :loading="loading" class=" border-0 text-white" :color="primarycolor"
                           data-dismiss="modal" @click="sendExistingUser">
                           Save
                         </el-button>
@@ -177,7 +177,7 @@
 </template>
 
 <script>
-import { computed, ref } from "vue";
+import { computed, ref, inject } from "vue";
 import { useRoute } from "vue-router";
 import { Search } from '@element-plus/icons-vue'
 import NewMember from "../../../views/event/attendance&checkin/NewMember";
@@ -198,6 +198,7 @@ export default {
   },
   setup() {
     const { mdAndUp, lgAndUp, xlAndUp, xsOnly } = deviceBreakpoint()
+    const primarycolor = inject('primarycolor')
     const isKioskMode = ref(false);
     const route = useRoute();
     const display = ref(false);
@@ -339,6 +340,7 @@ export default {
       lgAndUp,
       xlAndUp,
       xsOnly,
+      primarycolor,
       isKioskMode,
       enterKioskMode,
       kioskButtonText,

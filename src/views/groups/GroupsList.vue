@@ -5,7 +5,7 @@
         <div class="head-text">Groups</div>
 
         <div class="mt-2 my-1 link" v-if="!groupLeader">
-          <el-button class="header-btn" @click="router.push('/tenant/createpeoplegroup')" color="#136acd" round>
+          <el-button class="header-btn" @click="router.push('/tenant/createpeoplegroup')" :color="primarycolor" round>
             Add New Group
           </el-button>
           <!-- <router-link to="/tenant/createpeoplegroup" class="
@@ -129,7 +129,7 @@
 </template>
 
 <script>
-import { ref, computed, watch, watchEffect } from "vue";
+import { ref, computed, watch, watchEffect, inject } from "vue";
 import { useRoute, useRouter } from "vue-router";
 import groupsService from "../../services/groups/groupsservice";
 import { useStore } from "vuex";
@@ -145,6 +145,7 @@ export default {
   },
 
   setup() {
+    const primarycolor = inject('primarycolor')
     const store = useStore();
     const loading = ref(false);
     const displayConfirmModal = ref(false);
@@ -352,7 +353,8 @@ export default {
       removeSearchText,
       groupLeader,
       route,
-      router
+      router,
+      primarycolor
     };
   },
 };

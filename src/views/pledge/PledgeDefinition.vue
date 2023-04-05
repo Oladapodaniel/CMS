@@ -553,7 +553,7 @@
               <div class="row">
                 <div class="col-12 col-sm-12 col-lg-8 offset-lg-4">
                   <el-button
-                    color="#136acd"
+                    :color="primarycolor"
                     class="w-100"
                     round
                     :loading="loading"
@@ -632,7 +632,7 @@
 <script>
 import axios from "@/gateway/backendapi";
 import axio from "axios";
-import { ref, computed, watchEffect } from "vue";
+import { ref, computed, watchEffect, inject } from "vue";
 import finish from "../../services/progressbar/progress";
 import monthDayYear from "../../services/dates/dateformatter";
 import { useRoute } from "vue-router";
@@ -654,6 +654,7 @@ export default {
   inheritAttrs: false,
   setup() {
     const route = useRoute();
+    const primarycolor = inject('primarycolor')
     const startDate = ref("");
     const pledgeItemID = ref(route.query.id);
     const endDate = ref("");
@@ -1187,6 +1188,7 @@ export default {
       emailNotify,
       makeMandatory,
       pledgeDefinitionHeaders,
+      primarycolor
     };
   },
 };

@@ -19,7 +19,7 @@
             <div class="col-md-3" id="side-menu">  
               <div class="row">
                 <div class="col-md-12 mt-4">
-                  <el-button round class="font-weight-bold w-100" size="large" color="#136acd" >
+                  <el-button round class="font-weight-bold w-100" size="large" :color="primarycolor" >
                     Upload voice
                   </el-button>
                 </div>
@@ -37,11 +37,12 @@
 </template>
 
 <script>
-import { ref } from "vue";
+import { ref, inject } from "vue";
 import { useRoute } from "vue-router";
 import deviceBreakpoint from "../../mixins/deviceBreakpoint";
 export default {
   setup() {
+    const primarycolor = inject('primarycolor')
     const route = useRoute();
     const menuShouldShow = ref(false);
     const { lgAndUp, xlAndUp } = deviceBreakpoint()
@@ -55,6 +56,7 @@ export default {
       menuShouldShow,
       lgAndUp,
       xlAndUp,
+      primarycolor
 
     };
   },

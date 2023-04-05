@@ -28,7 +28,7 @@
                   </div>
                   <div class="actions col-md-6 d-flex justify-content-md-end">
                     <router-link :to="{ name: 'AddCheckin' }" v-if="showAttendanceCheckin">
-                      <el-button color="#136acd" class="ml-2 header-btn" round>Add New Attendance</el-button>
+                      <el-button :color="primarycolor" class="ml-2 header-btn" round>Add New Attendance</el-button>
                     </router-link>
                   </div>
                 </div>
@@ -562,7 +562,7 @@
                     <!-- Modal footer -->
                     <div class="modal-footer">
                       <el-button data-dismiss="modal" ref="dismissMoveModal" round>Close</el-button>
-                      <el-button color="#136acd" @click="moveMembers" :loading="moveLoading" round>Move</el-button>
+                      <el-button :color="primarycolor" @click="moveMembers" :loading="moveLoading" round>Move</el-button>
                     </div>
                   </div>
                 </div>
@@ -813,7 +813,7 @@
         <router-link to="/tenant/peoplegroups" class="no-decoration">
           <el-button round>Discard</el-button>
         </router-link>
-        <el-button color="#136acd" :loading="savingGroup" @click="saveGroupData" :disabled="savingGroup" round>{{
+        <el-button :color="primarycolor" :loading="savingGroup" @click="saveGroupData" :disabled="savingGroup" round>{{
           buttonText }}</el-button>
       </div>
     </div>
@@ -829,7 +829,7 @@
       <template #footer>
         <div class="d-flex justify-content-end">
           <el-button @click="closeArchiveModal" round>No</el-button>
-          <el-button color="#136acd" @click="archive('', 'multiple')" round>Yes</el-button>
+          <el-button :color="primarycolor" @click="archive('', 'multiple')" round>Yes</el-button>
         </div>
       </template>
     </el-dialog>
@@ -859,7 +859,7 @@
 </template>
 
 <script>
-import { computed, nextTick, ref } from "vue";
+import { computed, nextTick, ref, inject } from "vue";
 import composeService from "../../services/communication/composer";
 import axios from "@/gateway/backendapi";
 import router from "@/router/index";
@@ -899,6 +899,7 @@ export default {
     Table,
   },
   setup() {
+    const primarycolor = inject('primarycolor')
     const store = useStore();
     const route = useRoute();
     const display = ref(false);
@@ -1841,7 +1842,8 @@ export default {
       moveLoading,
       attendanceItemsLoading,
       dismissMoveModal,
-      confirmMultipleDelete
+      confirmMultipleDelete,
+      primarycolor
     };
   },
 };

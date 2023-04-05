@@ -243,7 +243,7 @@
               <label class="small-text" for=""></label>
             </div>
             <div class="col-12 col-md-5 ">
-              <el-button class="primary-btn font-weight-bold text-white px-4" @click.prevent="churchProfile"  color="#136acd" size="large" :loading="loading" round>Save</el-button>
+              <el-button class="primary-btn font-weight-bold text-white px-4" @click.prevent="churchProfile"  :color="primarycolor" size="large" :loading="loading" round>Save</el-button>
             </div>
             <div class="col-md-4"></div>
           </div>
@@ -257,12 +257,13 @@
 import axios from "@/gateway/backendapi";
 import { ElMessage } from "element-plus";
 import store from "@/store/store";
-import { ref } from "vue";
+import { ref, inject } from "vue";
 import router from "../../router";
 import TimeZone from "@/services/user/timeZone";
 export default {
   components: { },
   setup() {
+    const primarycolor = inject('primarycolor')
     const churchData = ref({});
     let filterFields = ref([]);
     const loading = ref(false)
@@ -400,6 +401,7 @@ export default {
       a,
       b,
       filterFields,
+      primarycolor
     };
   },
 };

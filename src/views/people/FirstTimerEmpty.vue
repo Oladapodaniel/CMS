@@ -8,7 +8,7 @@
       <div class="actions mt-3 mt-md-0">
         <el-button class="header-btn" @click="importFirstTimer" round>Import</el-button>
         <router-link :to="{ name: 'AddFirstTimer' }" class="no-decoration">
-          <el-button color="#136acd" class="ml-2 header-btn" round>Add First Timers</el-button>
+          <el-button :color="primarycolor" class="ml-2 header-btn" round>Add First Timers</el-button>
         </router-link>
       </div>
     </div>
@@ -31,8 +31,8 @@
       </div>
       <template #footer>
         <span class="dialog-footer">
-          <el-button @click="displayModal = false" color="#136acd" round plain>Cancel</el-button>
-          <el-button type="primary" color="#136acd" :loading="allGroupLoading" @click="addToFirstTimers" round>
+          <el-button @click="displayModal = false" round>Cancel</el-button>
+          <el-button :color="primarycolor" :loading="allGroupLoading" @click="addToFirstTimers" round>
             Save
           </el-button>
         </span>
@@ -73,7 +73,7 @@
 <script>
 import axios from '@/gateway/backendapi'
 import FirstTimersList from './FirstTimersList'
-import { ref } from 'vue';
+import { ref, inject } from 'vue';
 import finish from '../../services/progressbar/progress'
 import router from "@/router/index";
 import deviceBreakpoint from "../../mixins/deviceBreakpoint";
@@ -83,6 +83,7 @@ import store from '../../store/store';
 export default {
   components: { FirstTimersList },
   setup() {
+    const primarycolor = inject('primarycolor')
     const firstTimersList = ref(store.getters['membership/allFirstTimers'])
     const loading = ref(false)
     const importFile = ref("")
@@ -222,7 +223,7 @@ export default {
     //   loading.value = payload
     // }
 
-    return { firstTimersList, getFirstTmersList, loading, fileUpload, imageSelected, image, displayModal, importFile, firstTimerData, addToFirstTimers, closeModal, importFirstTimer, networkError, setFirsttimer, mdAndUp, lgAndUp, xlAndUp };
+    return { firstTimersList, getFirstTmersList, loading, fileUpload, imageSelected, image, displayModal, importFile, firstTimerData, addToFirstTimers, closeModal, importFirstTimer, networkError, setFirsttimer, mdAndUp, lgAndUp, xlAndUp, primarycolor };
   },
 };
 

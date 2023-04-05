@@ -35,7 +35,7 @@ import attendanceservice from '../../services/attendance/attendanceservice';
         props: [ "isKiosk", "searchText", "fetchUsers","attendanceId" ],
         components: { DataRow },
         async setup(props, { emit }) {
-            const primarycolor = inject('primary--color')
+            const primarycolor = inject('primarycolor')
             const route = useRoute();
             const people = ref([ ])
             const id = ref(route.query.id ? route.query.id : props.attendanceId)

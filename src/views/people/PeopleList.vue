@@ -37,7 +37,7 @@
       <template #footer>
         <span class="dialog-footer">
           <el-button @click="addToGroupDialog = false" round>Cancel</el-button>
-          <el-button type="primary" color="#136acd" :loading="allGroupLoading" @click="getAllMembersAndAddToGroup" round>
+          <el-button type="primary" :color="primarycolor" :loading="allGroupLoading" @click="getAllMembersAndAddToGroup" round>
             Add to group
           </el-button>
         </span>
@@ -52,7 +52,7 @@
       <template #footer>
         <span class="dialog-footer">
           <el-button @click="addToGroupSingle = false" round>Cancel</el-button>
-          <el-button type="primary" color="#136acd" :loading="singleGroupLoading" @click="moveMemberToGroup" round>
+          <el-button type="primary" :color="primarycolor" :loading="singleGroupLoading" @click="moveMemberToGroup" round>
             Add to group
           </el-button>
         </span>
@@ -66,7 +66,7 @@
       <template #footer>
         <span class="dialog-footer">
           <el-button @click="displayPositionArchive = false" round>No</el-button>
-          <el-button color="#136acd" :loading="archiveLoading" @click="archive('', 'multiple')" round>
+          <el-button :color="primarycolor" :loading="archiveLoading" @click="archive('', 'multiple')" round>
             Yes
           </el-button>
         </span>
@@ -162,7 +162,7 @@
           </div>
 
           <div class="col-md-3 d-flex flex-column align-items-center">
-            <el-button color="#136acd" @click="applyFilter" :loading="applyLoading" :disabled="disableBtn"
+            <el-button :color="primarycolor" @click="applyFilter" :loading="applyLoading" :disabled="disableBtn"
               round>Apply</el-button>
             <span class="mt-2">
               <el-button @click="clearAll" class="mr-2" text>Clear all</el-button>
@@ -311,7 +311,7 @@
 </template>
 
 <script>
-import { ref, computed, watch, watchEffect } from "vue";
+import { ref, computed, watch, watchEffect, inject } from "vue";
 import ByGenderChart from "@/components/charts/PieChart.vue";
 import ByMaritalStatusChart from "@/components/charts/PieChart.vue";
 import axios from "@/gateway/backendapi";
@@ -340,6 +340,7 @@ export default {
   },
 
   setup(props) {
+    const primarycolor = inject('primarycolor')
     const addClass = ref(false)
     const churchMembers = ref([]);
     const filterFormIsVissible = ref(false);
@@ -954,7 +955,8 @@ export default {
       handleSelectionChange,
       handleSizeChange,
       handleCurrentChange,
-      searchingMember
+      searchingMember,
+      primarycolor
     };
   },
 };
