@@ -1,12 +1,12 @@
 <template>
-  <main :class="{ 'container-slim': lgAndUp || xlAndUp }" id="main">
+  <main :class="{ 'container-slim': lgAndUp || xlAndUp }" id="main">{{ primarycolor }}
     <div class="second-col container-top">
       <div class="create-btn-div">
         <div>
           <h2 class="head-text">Dashboard</h2>
         </div>
         <el-dropdown trigger="click">
-          <el-button color="#136acd" class="header-btn w-100" round>
+          <el-button :color="primarycolor" class="header-btn w-100" round>
             Create new <el-icon class="el-icon--right"><arrow-down /></el-icon>
           </el-button>
           <template #dropdown>
@@ -199,11 +199,11 @@
           <div class="can-do">
             <h4>Things You Can Do</h4>
             <div class="can-do-links can-do">
-              <router-link to="/tenant/people/add">Add Member</router-link>
-              <router-link to="/tenant/sms/compose">Send SMS</router-link>
-              <router-link to="/tenant/people/addfirsttimer">Add First Timer</router-link>
-              <router-link to="/tenant/addoffering">Record Offering</router-link>
-              <router-link to="/tenant/transactionlist">Record Expense</router-link>
+              <router-link class="primary--text" to="/tenant/people/add">Add Member</router-link>
+              <router-link class="primary--text" to="/tenant/sms/compose">Send SMS</router-link>
+              <router-link class="primary--text" to="/tenant/people/addfirsttimer">Add First Timer</router-link>
+              <router-link class="primary--text" to="/tenant/addoffering">Record Offering</router-link>
+              <router-link class="primary--text" to="/tenant/transactionlist">Record Expense</router-link>
             </div>
           </div>
         </div>
@@ -225,7 +225,7 @@
               </div>
               <div>
                 <h1 class="font-weight-700 s-30 mt-2">{{ tenantInfoBasic.memberCount }}</h1>
-                <span class="size-text">Church Size</span>
+                <span class="size-text primary--text">Church Size</span>
               </div>
             </div>
             <div class="box-bottom px-3 py-2">
@@ -235,7 +235,7 @@
                 </div>
               </el-tooltip>
               <router-link :to="{ name: 'Subscription' }" class="mt-1 no-decoration">
-                <el-button :color="!buttonTextCheck.color ? '#136acd' : ''" class="mt-2" style="height: 25px"
+                <el-button :color="!buttonTextCheck.color ? primarycolor : ''" class="mt-2" style="height: 25px"
                   :class="[buttonTextCheck.color, { 'bg-warning': calculatedPercentage >= 90, 'border-0  bg-danger': notifiedDays <= 4 }]"
                   round>
                   <p class="mb-0 small" :class="[buttonTextCheck.color]">{{ buttonTextCheck.text }}</p>
@@ -248,7 +248,7 @@
               <img src="../../assets/inboxgroup.svg" alt="" style="position: relative; left: -8px;">
               <div>
                 <h1 class="font-weight-700 s-30">{{ tenantInfoBasic.smsUnit }}</h1>
-                <span class="size-text">SMS Units</span>
+                <span class="size-text primary--text">SMS Units</span>
               </div>
             </div>
             <div class="box-bottom px-3 py-2">
@@ -539,7 +539,7 @@
 import ByMaritalStatusChart from "@/components/charts/PieChart";
 import ByGenderChart from "@/components/charts/PieChart";
 import ColumnChart from "@/components/charts/ColumnChart.vue";
-import { computed, onMounted, ref } from "vue";
+import { computed, onMounted, ref, inject } from "vue";
 import mixin from "@/mixins/currentUser.mixin.js"
 import router from "@/router/index";
 import axios from "@/gateway/backendapi";
@@ -569,6 +569,7 @@ export default {
   },
 
   setup() {
+    const primarycolor = inject('primary--color')
     const moreLinksVissible = ref(false);
     const offering = ref([23, 45, 65, 78, 89]);
     const attendanceBoolean = ref(true);
@@ -970,7 +971,8 @@ export default {
       celebHeaders,
       dashboardLoading,
       createNew,
-      router
+      router,
+      primarycolor
     };
   },
 };
@@ -1119,7 +1121,7 @@ export default {
 .can-do-links a {
   margin-top: 10px;
   text-decoration: none;
-  color: #2b6ecd;
+  /* color: #2b6ecd; */
   font-weight: 700;
   font-size: 16px;
 }
@@ -1261,7 +1263,6 @@ tbody tr:nth-child(even) {
 }
 
 .size-text {
-  color: #136acd;
   font-weight: 700;
 }
 

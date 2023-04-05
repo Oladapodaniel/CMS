@@ -121,7 +121,7 @@
 </template>
 
 <script>
-import { computed, ref, watchEffect } from "@vue/runtime-core";
+import { computed, ref, watchEffect, inject } from "@vue/runtime-core";
 import axios from "@/gateway/backendapi";
 import { useRoute } from "vue-router";
 import router from "../../router";
@@ -130,6 +130,7 @@ import { ElMessage } from "element-plus";
 export default {
   props: ["contributionItems", "attendanceType", "groupDetail"],
   setup(props) {
+    const primarycolor = inject('primary--color')
     const note = ref("");
     const route = useRoute();
     const loading = ref(false)
@@ -287,7 +288,8 @@ export default {
       loading,
       dynamicCustomFields,
       attendanceCustomField,
-      loading
+      loading,
+      primarycolor
     };
   },
 };

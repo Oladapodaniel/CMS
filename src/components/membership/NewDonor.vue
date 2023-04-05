@@ -154,7 +154,7 @@
                     </div>
                     <div class="col-md-5 px-0 mt-3">
                         <el-button @click="onCancel" class="w-100" round>Cancel</el-button>
-                        <el-button color="#136acd" :loading="loading" class="w-100 ml-0 mt-2" @click="saveDonor"
+                        <el-button :color="primarycolor" :loading="loading" class="w-100 ml-0 mt-2" @click="saveDonor"
                             round>Save</el-button>
                     </div>
                 </div>
@@ -165,7 +165,7 @@
 
 <script>
 import moment from "moment";
-import { reactive, ref, computed } from 'vue'
+import { reactive, ref, computed, inject } from 'vue'
 import { useRoute } from "vue-router";
 import axios from "@/gateway/backendapi";
 import ImageForm from './ImageForm'
@@ -173,6 +173,7 @@ export default {
     components: { ImageForm },
 
     setup(props, { emit }) {
+        const primarycolor = inject('primary--color')
         const route = useRoute();
         const loading = ref(false)
         const donor = reactive({});
@@ -312,7 +313,8 @@ export default {
             addbirthDays,
             addBirthMonth,
             addBirthYears,
-            loading
+            loading,
+            primarycolor
 
             // getLookUps
             // gendersArr,
