@@ -43,7 +43,7 @@
                     :class="{ 'active-link': route.path.endsWith('/settings') }"
                   >
                     <router-link
-                      class="font-weight-bold link"
+                      class="font-weight-bold primary--text"
                       to="/tenant/settings"
                       >Users</router-link
                     >
@@ -63,7 +63,7 @@
                     }"
                   >
                     <router-link
-                      class="font-weight-bold link dd-list-item"
+                      class="font-weight-bold primary--text dd-list-item"
                       to="/tenant/settings/profile"
                       >Profile</router-link
                     >
@@ -83,7 +83,7 @@
                     }"
                   >
                     <router-link
-                      class="font-weight-bold link dd-list-item"
+                      class="font-weight-bold primary--text dd-list-item"
                       to="/tenant/settings/defaultmessage"
                       >Default message</router-link
                     >
@@ -97,35 +97,35 @@
                     }"
                   >
                     <router-link
-                      class="font-weight-bold link dd-list-item"
+                      class="font-weight-bold primary--text dd-list-item"
                       to="/tenant/settings/membership"
                       >Membership Category</router-link
                     >
                   </div>
                   <div class="col-md-12 my-2">
                     <router-link
-                      class="font-weight-bold link dd-list-item"
+                      class="font-weight-bold primary--text dd-list-item"
                       to="/tenant/settings/ageGroup"
                       >Age Group Category</router-link
                     >
                   </div>
                   <div class="col-md-12 my-2">
                     <router-link
-                      class="font-weight-bold link dd-list-item"
+                      class="font-weight-bold primary--text dd-list-item"
                       to="/tenant/settings/attendance"
                       >Attendance Category</router-link
                     >
                   </div>
                   <div class="col-md-12 my-2" v-if="false">
                     <router-link
-                      class="font-weight-bold link dd-list-item"
+                      class="font-weight-bold primary--text dd-list-item"
                       to="/tenant/settings/followupstatus"
                       >Follow Up Status</router-link
                     >
                   </div>
                   <div class="col-md-12 my-2">
                     <router-link
-                      class="font-weight-bold link dd-list-item"
+                      class="font-weight-bold primary--text dd-list-item"
                       to="/tenant/settings/firsttimersettings"
                       >New Guest Life Cycle Settings</router-link
                     >
@@ -147,14 +147,14 @@
 
                   <div class="col-md-12 my-2">
                     <router-link
-                      class="font-weight-bold link dd-list-item"
+                      class="font-weight-bold primary--text dd-list-item"
                       to="/tenant/settings/branchlevelsettings"
                       >Branch Level Settings</router-link
                     >
                   </div>
                   <div class="col-md-12 my-2">
                     <router-link
-                      class="font-weight-bold link dd-list-item"
+                      class="font-weight-bold primary--text dd-list-item"
                       to="/tenant/settings/customfieldsetup"
                       >Custom Field Setup</router-link
                     >
@@ -168,7 +168,7 @@
                   </div>
                   <div class="col-md-12 my-2">
                     <router-link
-                      class="font-weight-bold link dd-list-item"
+                      class="font-weight-bold primary--text dd-list-item"
                       to="/tenant/settings/social"
                       >Post Category</router-link
                     >
@@ -176,7 +176,7 @@
                 </div>
                 <div class="col-md-12 my-2" v-if="false">
                   <router-link
-                    class="font-weight-bold link"
+                    class="font-weight-bold primary--text"
                     to="/tenant/settings/giving"
                     >Online Giving Setup</router-link
                   >
@@ -256,11 +256,6 @@ export default {
 * {
   box-sizing: border-box;
   color: #02172e;
-}
-
-.link {
-  color: #136acd;
-  width: 100% !important;
 }
 
 .small-text {
