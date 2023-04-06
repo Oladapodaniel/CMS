@@ -1,7 +1,7 @@
 <template>
-  <div class="event mt-4" @click="hideModals">
-    <div class="bg col-md-10 offset-md-1">
-      <div class="container first-pane">
+  <div class="container-fluid container-wide container-top"  @click="hideModals">
+    <div class="col-md-12">
+      <div class=" first-pane">
         <div class="row">
           <div class="text-center text-sm-left col-sm-5 head-text">Events</div>
           <div class="text-center text-sm-right col-sm-7">
@@ -1913,7 +1913,6 @@
 import axios from "@/gateway/backendapi";
 import { ElMessage, ElMessageBox } from 'element-plus';
 import store from "@/store/store.js";
-import Toast from "primevue/usetoast";
 import membershipService from "../../services/membership/membershipservice";
 import CurrencyConverter from "./CurrencyConverter";
 import Dropdown from "primevue/dropdown";
@@ -1922,12 +1921,10 @@ import finish from "../../services/progressbar/progress";
 import SearchMembers from "../../components/membership/MembersSearch.vue";
 import NewDonor from "../../components/membership/NewDonor.vue";
 import deviceBreakpoint from "../../mixins/deviceBreakpoint";
-
 export default {
   components: {
     CurrencyConverter,
     Dropdown,
-    Toast,
     SearchMembers,
     NewDonor,
   },
@@ -2080,7 +2077,6 @@ export default {
     },
     currentDate() {
       this.currDate = this.eventDate;
-      console.log(this.currDate);
     },
 
     hideModals(e) {
@@ -2097,7 +2093,6 @@ export default {
     addOffering() {
       const showList = document.querySelector("#showList");
       showList.classList.toggle("offering-drop");
-      // console.log(this.offeringItem)
     },
     offering(offObj) {
       if (offObj) {
@@ -2123,7 +2118,6 @@ export default {
               : ""
           }`,
         });
-        console.log(offObj);
       } else {
         this.offeringItem.push({
           currency: "NGN",
@@ -2133,7 +2127,6 @@ export default {
           this.$refs.offeringInput.focus();
         });
       }
-      console.log(this.offeringItem);
       this.offeringText = "";
       const showList = document.querySelector("#showList");
       showList.classList.toggle("offering-drop");
@@ -2155,14 +2148,6 @@ export default {
       this.attendanceText = "";
       const showAttendance = document.querySelector("#showAttendance");
       showAttendance.classList.remove("offering-drop");
-      //
-      // if (this.$refs.focusAttendance == undefined) {
-      //   this.toggleFocus = !this.toggleFocus
-      // } else {
-      //   console.log('itis defined')
-      //   this.toggleFocus = false
-      //   this.$refs.focusAttendance.focus()
-      // }
     },
     addEvent(e) {
       this.selectedEventCategoryId = e.target.value;
@@ -2179,20 +2164,15 @@ export default {
     createFirstTimers() {
       document.querySelector("#modalTogglerFirstTimers").click();
     },
-    // triggerGiverModal (index) {
-    //   this.offeringToAddDonor = index;
-    //   this.$refs.modalTogglerGiver.click()
-    // },
     save() {
       this.firstTimers.push({
         ...this.firstTimersObj,
       });
-      this.$toast.add({
-        severity: "success",
-        summary: "Success",
-        detail: "First timer added",
-        life: 2000,
-      });
+      ElMessage({
+            type: "success",
+            message: "First timer added",
+            duration: 3000,
+          });
       this.firstTimersObj = {};
       console.log(this.firstTimers);
       this.$refs.closeFirstTimers.setAttribute("data-dismiss", "modal");
@@ -2210,11 +2190,9 @@ export default {
     },
     // Create Offering
     createNewOffering() {
-      // axios.post(`/api/offering/offeringTypeName?=${this.offeringCreate}`, {offeringTypeName: this.offeringCreate})
       axios
         .post(`/api/offering`, JSON.stringify(this.offeringCreate))
         .then((res) => {
-          console.log(res, "new offering");
           this.newOfferings = res.data.map((i) => {
             return { id: i.id, name: i.name };
           });
@@ -2234,15 +2212,12 @@ export default {
       axios
         .post(`/postAttendantType`, { name: this.attendanceCreate })
         .then((res) => {
-          console.log(res, "new attendance");
+          console.log(res);
         })
         .catch((err) => {
           NProgress.done();
-          console.log(err.response, "error saving event");
+          console.log(err.response);
         });
-      // this.newAttendances.push(this.attendanceCreate)
-      // this.attendanceCreate = '';
-      // console.log(this.newAttendances,"att");
       document
         .querySelector("#closeAttendance")
         .setAttribute("data-dismiss", "modal");
@@ -2255,12 +2230,10 @@ export default {
           .then((res) => {
             console.log(res);
             if (!res.data) {
-              this.$toast.add({
-                severity: "info",
-                summary: "Already exist",
-                detail:
-                  "Event name already exist, please create the event category with a new name.",
-                life: 4000,
+              ElMessage({
+                type: "info",
+                message: "Event name already exist, please create the event category with a new name.",
+                duration: 3000,
               });
             } else {
               let data = res.data.find((i) => i.name === this.eventCreate);
@@ -2271,11 +2244,10 @@ export default {
               console.log(data);
               this.selectedEventCategoryId = data.id;
               this.eventCreate = "";
-              this.$toast.add({
-                severity: "success",
-                summary: "Confirmed",
-                detail: "Event category saved successfully",
-                life: 4000,
+              ElMessage({
+                type: "success",
+                message: "Event category saved successfully",
+                duration: 3000,
               });
             }
           });
@@ -2290,13 +2262,11 @@ export default {
         axios.post(`/api/EventCategory?name=${this.eventText}`).then((res) => {
           console.log(res);
           if (!res.data) {
-            this.$toast.add({
-              severity: "info",
-              summary: "Already exist",
-              detail:
-                "Event name already exist, please create the event category with a new name.",
-              life: 4000,
-            });
+            ElMessage({
+                type: "info",
+                message: "Event name already exist, please create the event category with a new name.",
+                duration: 5000,
+              });
           } else {
             let data = res.data.find((i) => i.name === this.eventText);
             this.newEvents.push({
@@ -2306,12 +2276,11 @@ export default {
             console.log(data);
             this.selectedEventCategoryId = data.id;
             this.eventText = "";
-            this.$toast.add({
-              severity: "success",
-              summary: "Confirmed",
-              detail: "Event category saved successfully",
-              life: 4000,
-            });
+            ElMessage({
+                type: "success",
+                message: "Event category saved successfully",
+                duration: 5000,
+              });
           }
         });
         this.showCategory = false;
@@ -2360,35 +2329,30 @@ export default {
         axios
           .delete(`/deleteAttendance?ID=${id}`)
           .then((res) => {
-            console.log(res, "delete response from back");
             if (res.data) {
-              this.$toast.add({
-                severity: "success",
-                summary: "Confirmed",
-                detail: `Attendance Successfully Deleted`,
-                life: 3000,
+              ElMessage({
+                type: "success",
+                message: "Attendance Successfully Deleted",
+                duration: 5000,
               });
               this.attendanceItem = this.attendanceItem.filter(
                 (i) => id !== i.attendanceId
               );
             } else {
-              toast.add({
-                severity: "warn",
-                summary: "Delete Failed",
-                detail: `Please Try Again`,
-                life: 3000,
+              ElMessage({
+                type: "warning",
+                message: "Delete Failed, Please Try Again",
+                duration: 5000,
               });
             }
           })
           .catch((err) => {
             finish();
             if (err.response) {
-              console.log(err.response);
-              this.$toast.add({
-                severity: "error",
-                summary: "Unable to delete",
-                detail: `${err.response}`,
-                life: 3000,
+              ElMessage({
+                type: "error",
+                message: err.response,
+                duration: 5000,
               });
             }
           });
@@ -2400,11 +2364,11 @@ export default {
     deleteAttendance(id, index) {
        ElMessageBox.confirm(
         'Are you sure you want to proceed?',
-        'Warning',
+        "Confirm delete",
         {
           confirmButtonText: 'OK',
           cancelButtonText: 'Cancel',
-          type: 'warning',
+          type: 'error',
         }
       )
       .then(() => {
@@ -2423,18 +2387,12 @@ export default {
         axios
           .delete(`/api/EventCategory?ID=${id}`)
           .then((res) => {
-            console.log(res, "delete response from back");
             if (res.data === true) {
               ElMessage({
               type: 'success',
               message: 'Event Category Successfully Deleted',
+              duration: 5000
             })
-              // this.$toast.add({
-              //   severity: "success",
-              //   summary: "Confirmed",
-              //   detail: `Event Category Successfully Deleted`,
-              //   life: 3000,
-              // });
               this.attendanceItem = this.attendanceItem.filter(
                 (i) => id !== i.attendanceId
               );
@@ -2442,24 +2400,14 @@ export default {
               ElMessage({
               type: 'warning',
               message: 'This event category has been used to create event or Attendance report, delete any of the report then proceed by deleting the event category',
+              duration: 5000
             })
-              // this.$toast.add({
-              //   severity: "warn",
-              //   summary: "Delete Failed",
-              //   detail: `This event category has been used to create event or Attendance report, delete any of the report then proceed by deleting the event category`,
-              //   life: 3000,
-              // });
             } else {
                ElMessage({
               type: 'warning',
               message: 'Delete Failed, Try Again',
+              duration: 5000
             })
-              // toast.add({
-              //   severity: "warn",
-              //   summary: "Delete Failed",
-              //   detail: `Please Try Again`,
-              //   life: 3000,
-              // });
             }
           })
           .catch((err) => {
@@ -2470,13 +2418,8 @@ export default {
                   showClose: true,
                   message: `Unable to delete ${err.response}`,
                   type: 'error',
+                  duration: 5000
                 })
-              // this.$toast.add({
-              //   severity: "error",
-              //   summary: "Unable to delete",
-              //   detail: `${err.response}`,
-              //   life: 3000,
-              // });
             }
           });
       } else {
@@ -2488,11 +2431,11 @@ export default {
     deleteSelectedEventCategory(id, index) {
          ElMessageBox.confirm(
         'Are you sure you want to proceed?',
-        'Warning',
+        'Confirm delete',
         {
           confirmButtonText: 'OK',
           cancelButtonText: 'Cancel',
-          type: 'warning',
+          type: 'error',
         }
       )
         .then(() => {
@@ -2502,28 +2445,10 @@ export default {
           ElMessage({
             type: 'info',
             message: 'Delete canceled',
+            duration: 3000
           })
         })
         
-      // this.$confirm.require({
-      //   message: "Are you sure you want to proceed?",
-      //   header: "Confirmation",
-      //   icon: "pi pi-exclamation-triangle",
-      //   acceptClass: "confirm-delete",
-      //   rejectClass: "cancel-delete",
-      //   accept: () => {
-      //     this.delEventCategory(id, index);
-      //   },
-      //   reject: () => {
-  
-      //     this.$toast.add({
-      //       severity: "info",
-      //       summary: "Rejected",
-      //       detail: "You have rejected",
-      //       life: 3000,
-      //     });
-      //   },
-      // });
     },
 
     deleteOffering(id, index) {
@@ -2531,43 +2456,30 @@ export default {
         axios
           .delete(`/api/Financials/Contributions/Transactions/Delete?ID=${id}`)
           .then((res) => {
-            console.log(res, "delete response from back");
             if (res.data.status) {
               ElMessage({
                 type: 'success',
                 message: 'Offering Successfully Deleted',
+                duration: 5000
               })
-              // this.$toast.add({
-              //   severity: "success",
-              //   summary: "Confirmed",
-              //   detail: `Offering Successfully Deleted`,
-              //   life: 3000,
-              // });
               this.offeringItem = this.offeringItem.filter((i) => id !== i.id);
             } else {
               
                ElMessage({
                 type: 'info',
                 message: 'Delete Failed, Please Try Again',
+                duration: 5000
               })
-              // toast.add({
-              //   severity: "warn",
-              //   summary: "Delete Failed",
-              //   detail: `Please Try Again`,
-              //   life: 3000,
-              // });
             }
           })
           .catch((err) => {
             finish();
             if (err.response) {
-              console.log(err.response);
-              this.$toast.add({
-                severity: "error",
-                summary: "Unable to delete",
-                detail: `${err.response}`,
-                life: 3000,
-              });
+              ElMessage({
+                type: 'error',
+                message: err.response,
+                duration: 5000
+              })
             }
           });
       } else {
@@ -2578,11 +2490,11 @@ export default {
     delOffering(id, index) {
       ElMessageBox.confirm(
         'Are you sure you want to proceed?',
-        'Warning',
+        'Confirm delete',
         {
           confirmButtonText: 'OK',
           cancelButtonText: 'Cancel',
-          type: 'warning',
+          type: 'error',
         }
       )
         .then(() => {
@@ -2594,27 +2506,6 @@ export default {
             message: 'Delete canceled',
           })
         })
-
-      // this.$confirm.require({
-      //   message: "Are you sure you want to proceed?",
-      //   header: "Confirmation",
-      //   icon: "pi pi-exclamation-triangle",
-      //   acceptClass: "confirm-delete",
-      //   rejectClass: "cancel-delete",
-      //   accept: () => {
-      //     this.deleteOffering(id, index);
-      //     // toast.add({severity:'info', summary:'Confirmed', detail:'Member Deleted', life: 3000});
-      //   },
-      //   reject: () => {
-      //     //  this.$toast.add({severity:'info', summary:'Confirmed', detail:'Record deleted', life: 3000});
-      //     this.$toast.add({
-      //       severity: "info",
-      //       summary: "Rejected",
-      //       detail: "You have rejected",
-      //       life: 3000,
-      //     });
-      //   },
-      // });
     },
 
     toggleForm1() {
@@ -2632,29 +2523,26 @@ export default {
     post() {
       const invalidAttendanceItem = this.attendanceItem.find((i) => !i.number);
       if (invalidAttendanceItem) {
-        this.$toast.add({
-          severity: "warn",
-          summary: "Input the empty Field",
-          detail: `Enter count for all attendance item`,
-          life: 3000,
-        });
+        ElMessage({
+                type: 'warning',
+                message: 'Enter count for all attendance item',
+                duration: 5000
+              })
         return false;
       }
       const invalidOfferingItem = this.offeringItem.find((i) => !i.amount);
       if (invalidOfferingItem) {
-        this.$toast.add({
-          severity: "warn",
-          summary: "Enter Amount",
-          detail: `Enter amount for Offering item`,
-          life: 3000,
-        });
+        ElMessage({
+                type: 'warning',
+                message: 'Enter amount for Offering item',
+                duration: 5000
+              })
         return false;
       }
     
       this.eventObj = {
         attendances: this.attendanceItem,
         offerings: this.offeringItem.map((i) => {
-          console.log(i, "theman");
           delete i.showCurrency;
           delete i.fromCurrencyRate;
           if (i.amount.toString().includes(',') ) {
@@ -2666,7 +2554,6 @@ export default {
         activityFirstTimers: this.firstTimers,
         activityNewConverts: this.newConverts,
       };
-      console.log(this.eventObj, "the eventObject");
 
       // If preactivity id is empty, dont send preevent as part of the event object, else send it
       if (this.preActivityId) {
@@ -2720,10 +2607,6 @@ export default {
         activityNewConverts: this.newConverts,
         attendances: this.attendanceItem,
         offerings: this.offeringItem,
-        // offerings: this.offeringItem.map(i => {
-        //   i.currency = i.currency.split(" ")[0]
-        //   return i
-        // }),
         preEvent: this.updatePreEvent,
       };
 
@@ -2733,8 +2616,6 @@ export default {
         topic: this.topic,
         newConvertsCount: this.newConverts,
       };
-
-      console.log(this.eventObj);
       this.loading = true;
       if (this.$route.params.event) {
         axios
@@ -2747,12 +2628,19 @@ export default {
               "eventDataResponse",
               JSON.stringify(currentEvent)
             );
-            this.$router.push({
+            this.$store.dispatch("event/setEventItems").then(() => {
+           this.$router.push({
               name: "Report",
               params: { id: activityId },
               query: { edit: true },
             });
-            console.log(res.data, currentEvent, "markers");
+          });
+            // this.$router.push({
+            //   name: "Report",
+            //   params: { id: activityId },
+            //   query: { edit: true },
+            // });
+            console.log(res.data, currentEvent);
           })
           .catch((err) => {
             NProgress.done();
@@ -2774,14 +2662,16 @@ export default {
           .post("api/Events/CreateActivity", this.eventObj)
           .then((res) => {
             this.loading = false;
-            console.log(res, "main post");
             const activityId = res.data.currentEvent.id;
             localStorage.setItem("eventData", JSON.stringify(this.eventObj));
             localStorage.setItem(
               "eventDataResponse",
               JSON.stringify(res.data.currentEvent)
             );
-            this.$router.push({ name: "Report", params: { id: activityId } });
+            this.$store.dispatch("event/setEventItems").then(() => {
+           this.$router.push({ name: "Report", params: { id: activityId } });
+          });
+            // this.$router.push({ name: "Report", params: { id: activityId } });
           })
           .catch((err) => {
             NProgress.done();
@@ -2796,7 +2686,6 @@ export default {
                     ? data
                     : "An error occurred, please check the fields and try again";
             }
-            console.log(err.response);
           });
       }
     },
@@ -2809,9 +2698,6 @@ export default {
     },
     getLookUps() {
       axios.get("/api/LookUp/GetAllLookUps").then((res) => {
-        // res.data.map((i) => {
-        // })
-        console.log(res.data);
         res.data.find((i) => {
           if (i.type.toLowerCase() === "gender") {
             this.gender = i.lookUps;
@@ -2829,7 +2715,6 @@ export default {
         // this.selectedEventCategoryId = "";
         this.showEditEventCategory = true;
         this.categoryNametoEdit = this.selectedEventCategoryName;
-        console.log(this.selectedEventCategory);
       }
       if (action === "change") {
         this.selectedEventCategoryId = false;
@@ -2844,37 +2729,26 @@ export default {
       axios
         .put(`/api/EventCategory`, updatePayload)
         .then((res) => {
-          console.log(res);
           this.newEvents[this.selectedCategoryIndex].name =
             res.data[this.selectedCategoryIndex].name;
           // this.selectedEventCategoryName = res.data[this.selectedCategoryIndex].name
           // this.selectedEventCategoryId = res.data[this.selectedCategoryIndex].id
           this.showEditEventCategory = false;
-          this.$toast.add({
-            severity: "success",
-            summary: "Confirmed",
-            detail: "Updated successfully",
-            life: 4000,
-          });
+          ElMessage({
+                type: 'success',
+                message: 'Updated successfully',
+                duration: 5000
+              })
         })
         .catch((err) => {
           console.log(err);
         });
-      console.log(this.selectedCategoryIndex);
-      console.log(this.selectedEventCategoryName);
     },
-    // categorySelected(data) {
-    //   if (data.dataType === 'eventcategory') {
-    //     this.selectedEventCategory = this.newEvents.find(i => i.name === data.value);
-    //     this.selectedEventCategoryId = this.selectedEventCategory.id;
-    //   }
-    // },
 
     setIncomeAccount(index) {
       this.remitance[index].account =  this.incomeAccount.find((i) =>{
         return i.id === this.itemAccountID 
       })
-        console.log(this.remitance[index].account, "jhgjh");
     },
 
     dropDownMonth() {
@@ -3037,33 +2911,21 @@ export default {
     individualEvent(eventObj, index) {
       if (eventObj.id) {
         this.selectedEventCategoryName = eventObj.name;
-        this.selectedEventCategoryId = eventObj.id;
-        console.log(this.selectedEventCategoryId);
+        this.selectedEventCategoryId = eventObj.id
       } else {
         let arrLengthId = `${this.newEvents.length + 1}`;
         this.newEvents.push({
           name: this.eventText,
-          // id: "00000000-0000-0000-0000-000000000000"
           id: arrLengthId,
         });
         this.selectedEventCategoryName = this.event;
-        // this.selectedEventCategoryName = this.eventText;
-        // this.selectedEventCategoryId ="00000000-0000-0000-0000-000000000000"
-        // alert(this.selectedEventCategoryName)
-        // alert(this.eventText)
         this.selectedEventCategoryId = arrLengthId;
       }
-      console.log(this.newEvents);
       this.eventText = "";
-      // const showEventCategory = document.querySelector("#showEventCategory");
-      // showEventCategory.classList.remove("style-category");
       this.showCategory = false;
-
-      // Get the index  of the selected category to update the category from the update response
       this.selectedCategoryIndex = index;
     },
     getPreActivityId() {
-      // console.log(this.check)
       if (this.check == false) {
         axios
           .post("/api/Events/EventPreRegistration", {
@@ -3073,7 +2935,6 @@ export default {
           .then((res) => {
             this.preActivityId = res.data.activityId;
             this.eventRegistrationLink = res.data.eventRegistrationLink;
-            console.log(res.data);
           })
           .catch((err) => {
             NProgress.done();
@@ -3083,7 +2944,6 @@ export default {
     },
     getHowDidYouAboutUsId() {
       axios.get("/api/membership/howyouheardaboutus").then((res) => {
-        // console.log(res.data)
         this.howDidYouAboutUsId = res.data.map((i) => {
           return { name: i.name, id: i.id };
         });
@@ -3093,7 +2953,6 @@ export default {
       if (this.$route.params.event) {
         try {
           let res = await axios.get(`/api/Events/${this.$route.params.event}`);
-          console.log(res, "rthrhh");
           this.routeParams = this.$route.params.event;
           this.eventDate = res.data.activity.date.substr(0, 10);
           this.topic = res.data.activity.topic;
@@ -3101,7 +2960,6 @@ export default {
           this.selectedEventCategoryId = res.data.activity.eventCategoryId;
           this.attendanceItem = res.data.attendances;
           this.offeringItem = res.data.offerings.map((i) => {
-            console.log(i, "rririririrlo");
             return {
               activity: i.activity,
               activityID: i.activityID,
@@ -3129,10 +2987,7 @@ export default {
           this.newConverts = res.data.activityNewConverts;
           if (this.newConverts.length > 0) this.showForm3 = true;
           this.updatePreEvent = res.data.preEvent;
-          // this.offeringItem.find(i => console.log(i))
-          console.log(res.data);
           if (this.currencyList.length > 0) {
-            // this.currencyList.find(i => i.currencyId == )
           }
           for (let index = 0; index < this.offeringItem.length; index++) {
             const i = this.offeringItem[index];
@@ -3144,11 +2999,6 @@ export default {
             let toDestinationCurrencyRate = `usd${this.tenantCurrency.currency.toLowerCase()}`;
             let fromCurrencyRate = i.fromCurrencyRate;
             let amountToConvert = toNumber ? +toNumber : 0;
-            console.log(
-              amountToConvert,
-              fromCurrencyRate,
-              toDestinationCurrencyRate
-            );
             try {
               let result = await CurrencyConverterService.currencyConverter(
                 amountToConvert,
@@ -3156,7 +3006,6 @@ export default {
                 toDestinationCurrencyRate
               );
               this.convertedAmount2.push(result);
-              console.log(result, this.convertedAmount2);
             } catch (err) {
               console.log(err);
             }
@@ -3168,21 +3017,6 @@ export default {
     },
     convertCurrencyForExistingEvent() {
       console.log(this.offeringItem);
-
-      // this.offeringItem.forEach((i) => {
-      //     let toDestinationCurrencyRate = `usd${this.tenantCurrency.currency.toLowerCase()}`
-      //     let fromCurrencyRate = i.fromCurrencyRate
-      //     let amount = i.amount ? +i.amount : 0
-      //   console.log(amount, fromCurrencyRate, toDestinationCurrencyRate)
-      // try {
-      //   let result = await CurrencyConverterService.currencyConverter(amount, fromCurrencyRate, toDestinationCurrencyRate)
-      //   this.convertedAmount2.push(result)
-      //   console.log(result, this.convertedAmount2)
-      // }
-      // catch (err) {
-      //   console.log(err)
-      // }
-      //     })
     },
     getCurrenciesFromCountries() {
       let url = "/api/getallcountries";
@@ -3208,7 +3042,6 @@ export default {
       this.showCode = false;
     },
     updateOfferingId(e) {
-      // this.offeringItem[index].financialContributionID = id
       let index = this.offeringItem.findIndex(
         (i) => i.financialContributionID === e.target.value
       );
@@ -3221,8 +3054,6 @@ export default {
       let index = this.attendanceItem.findIndex(
         (i) => i.attendanceTypeID === e.target.value
       );
-      console.log(e.target.value, index, "target", e.target.textContent);
-      console.log(this.newAttendances, "new attendances");
       let attText = this.newAttendances.find(
         (i) => i.attendanceTypeID === e.target.value
       ).name;
@@ -3258,11 +3089,8 @@ export default {
     addExistingMember(member) {
       this.userSearchString = member.name;
       this.offeringItem[this.offeringToAddDonor].personID = member.id;
-      console.log(this.userSearchString, member);
     },
     getPersonId(payload) {
-      console.log(payload);
-      // personId.value = payload
       this.offeringItem[this.offeringToAddDonor].donor =
         payload.personFirstName;
       this.offeringItem[this.offeringToAddDonor].personID = payload.personId;
@@ -3270,7 +3098,6 @@ export default {
     async getCurrentlySignedInUser() {
       try {
         const res = await axios.get("/api/Membership/GetCurrentSignedInUser");
-        // console.log(res.data)
         this.tenantId = res.data.tenantId;
         // if(res.data.country == "Nigeria") {
         //     isPaystackChecked.value = true
@@ -3299,8 +3126,6 @@ export default {
             console.log(this.tenantCurrency);
           })
           .catch((err) => console.log(err));
-        // console.log(store.getters.currentUser)
-        // }
       } catch (err) {
         /*eslint no-undef: "warn"*/
         NProgress.done();
@@ -3328,27 +3153,12 @@ export default {
           fromCurrencyRate,
           toDestinationCurrencyRate
         );
-        console.log(result);
         this.convertedAmount2[index] = result;
       } catch (err) {
         console.log(err);
       }
-      // if (amount === 0) return false
-      // let propertyArr = Object.keys(this.currencyRate)
-      // let valueArr = Object.values(this.currencyRate)
-      // let fromIndex = propertyArr.indexOf(fromCurrencyRate)
-      // let fromRate = valueArr[fromIndex]
-      // let toIndex = propertyArr.indexOf(toDestinationCurrencyRate)
-      // let toRate = valueArr[toIndex]
-
-      // // console.log(amount, fromIndex, toIndex, amount, fromRate, toRate)
-      // let result = ( amount / fromRate ) * toRate
-      // console.log(result)
-      //
-      // console.log(this.convertedAmount2)
     },
     convertResult(payload) {
-      // this.convertedAmount[this.currencyIndex] = payload
       this.convertedResult = payload;
     },
     toggleRem() {
@@ -3366,7 +3176,6 @@ export default {
         .then((res) => {
           /*eslint no-undef: "warn"*/
           NProgress.done();
-          console.log(res);
           this.incomeAccount = res.data;
           if (res.data.length < 1) {
             this.displayResponsive = true;
@@ -3381,7 +3190,6 @@ export default {
       axios
         .get("/api/financials/accounts/getcashbankaccounts")
         .then((res) => {
-          console.log(res.data);
           this.cashBankAccount = res.data;
         })
         .catch((err) => {
@@ -3396,16 +3204,7 @@ export default {
       let contributionCategory = {
         name: this.contributionItemName,
         incomeAccountId: this.selectedIncomeAccount,  
-        
-      //   this.incomeAccount.find(
-      //   (i) => i.id === this.selectedIncomeAccount
-      // ).id,
-
         cashAccountId: this.selectedCashAccount
-        
-      //   this.cashBankAccount.find(
-      //   (i) => i.id ===  this.selectedCashAccount
-      // ).id,
       };
       if (this.remitance[0].account || this.remitance[0].percentage) {
         contributionCategory.incomeRemittance = this.remitance.map((i) => {
@@ -3418,7 +3217,6 @@ export default {
       } else {
         contributionCategory.incomeRemittance = null;
       }
-      console.log(contributionCategory);
       axios
         .post("/api/financials/contributions/items/save", contributionCategory)
         .then((res) => {
@@ -3426,12 +3224,11 @@ export default {
             name: this.contributionItemName,
             id: res.data.id,
           });
-          this.$toast.add({
-            severity: "success",
-            summary: "Saved",
-            detail: "Contribution Saved",
-            life: 3000,
-          });
+          ElMessage({
+                type: 'success',
+                message: 'Contribution Saved',
+                duration: 5000
+              })
           console.log(res);
 
           this.offeringItem.push({
@@ -3443,12 +3240,11 @@ export default {
           });
         })
         .catch((err) => {
-          this.$toast.add({
-            severity: "error",
-            summary: "Error",
-            detail: "Not Successful",
-            life: 3000,
-          });
+          ElMessage({
+                type: 'error',
+                message: 'Not Successful',
+                duration: 5000
+              })
           console.log(err);
         });
       e.target.setAttribute("data-dismiss", "modal");
@@ -3458,7 +3254,6 @@ export default {
         let { data } = await axios.get(
           `api/People/checkDuplicate?email=${this.firstTimersObj.email}&phoneNumber=${this.firstTimersObj.phoneNumber}`
         );
-        console.log(data);
         if (this.isPhoneValid !== "") {
           if (data === "phone number") {
             this.isPhoneValid = false;
@@ -3482,7 +3277,6 @@ export default {
         let { data } = await axios.get(
           `api/People/checkDuplicate?email=${this.firstTimersObj.email}&phoneNumber=${this.firstTimersObj.phoneNumber}`
         );
-        console.log(data);
         if (this.isEmailValid !== "") {
           if (data === "email") {
             this.isEmailValid = false;
@@ -3506,7 +3300,6 @@ export default {
         let { data } = await axios.get(
           `api/People/checkDuplicate?email=${this.newConvertsObj.email}&phoneNumber=${this.newConvertsObj.phoneNumber}`
         );
-        console.log(data);
         if (this.isPhoneValidNewConvert !== "") {
           if (data === "phone number") {
             this.isPhoneValidNewConvert = false;
@@ -3530,7 +3323,6 @@ export default {
         let { data } = await axios.get(
           `api/People/checkDuplicate?email=${this.newConvertsObj.email}&phoneNumber=${this.newConvertsObj.phoneNumber}`
         );
-        console.log(data);
         if (this.isEmailValidNewConvert !== "") {
           if (data === "email") {
             this.isEmailValidNewConvert = false;
@@ -3552,7 +3344,6 @@ export default {
     async getRates() {
       try {
         let { data } = await axios.get("/fxRates");
-        console.log(data);
         this.$store.dispatch("getRates", data);
       } catch (error) {
         console.log(error);
@@ -3560,25 +3351,21 @@ export default {
     },
     setContact(payload) {
       if (!payload.email) {
-        this.$toast.add({
-          severity: "warn",
-          summary: "No email associate with the person",
-          detail:
-            "This contact does not have any email, communicate with this person to create him as a user",
-          life: 15000,
-        });
+        ElMessage({
+                type: 'warning',
+                message: 'This contact does not have any email, communicate with this person to create him as a user',
+                duration: 5000
+              })
       }
       this.firstTimersObj.contactOwnerId = payload.id;
     },
     setContactNewConvert(payload) {
       if (!payload.email) {
-        this.$toast.add({
-          severity: "warn",
-          summary: "No email associate with the person",
-          detail:
-            "This contact does not have any email, communicate with this person to create him as a user",
-          life: 15000,
-        });
+        ElMessage({
+                type: 'warning',
+                message: 'This contact does not have any email, communicate with this person to create him as a user',
+                duration: 5000
+              })
       }
       this.firstTimersObj.contactOwnerId = payload.id;
     },
@@ -3593,20 +3380,17 @@ export default {
       await axios
         .get("/api/LookUp/GetAllLookUps")
         .then((res) => {
-          console.log(res, "lksa");
           this.maritalStatusArr = res.data.find((i) => {
             return i.type.toLowerCase() === "maritalstatus";
           }).lookUps;
         })
         .catch((err) => console.log(err.response));
-      console.log(this.maritalStatus, "maritalSS");
     }
 
     axios.get("/api/Financials/Contributions/Items").then((res) => {
       this.newOfferings = res.data.map((i) => {
         return { id: i.id, name: i.name };
       });
-      console.log(res.data, "offerings on load");
     });
     axios.get("/GetAttendanceType").then((res) => {
       this.newAttendances = res.data.map((i) => {
@@ -3659,19 +3443,11 @@ export default {
       // let x;
       let arr = [];
       if (this.newEvents.length > 0) {
-        console.log(this.newEvents, "new events");
         arr = this.newEvents.filter((i) => {
           return i.name.toLowerCase().includes(this.eventText.toLowerCase());
         });
-        // } else if (this.newEvents.length <= 0) {
-        // // return this.newEvents.filter((i) => {
-        // //     return i.name.toLowerCase().includes(this.eventText.toLowerCase());
-        // //     });
-        // // console.log(this.eventText)
-        //   return this.addEventCategoryText = this.eventText
       } else {
         return this.newEvents;
-        // this.addEventCategoryText = this.eventText
       }
       return arr;
     },
@@ -3691,7 +3467,6 @@ export default {
       });
     },
     selectedEventCategoryName() {
-      console.log(this.selectedEventCategoryId);
       if (!this.selectedEventCategoryId) return "";
       if (!this.newEvents.find((i) => i.id === this.selectedEventCategoryId))
         return "";
@@ -3764,8 +3539,6 @@ export default {
 }
 .btn-save {
   background: #136acd 0% 0% no-repeat padding-box;
-  /* border-radius: 22px;
-  color: white; */
   margin-left: 26px;
   text-align: center;
 }
@@ -3784,9 +3557,6 @@ export default {
   border: 1px solid #b2c2cd;
   border-radius: 5px;
 }
-/* .container.first-pane {
-  margin-top: 5px; 
-} */
 
 .event-category {
   display: inline-block;

@@ -22,7 +22,7 @@
 
         <div v-else class="row border" v-for="(workflow, index) in workflows" :key="index">
             <div class="col-md-8 p-2">
-                <router-link class="text-decoration-none text-primary font-weight-700" :to="`/tenant/workflow/add?workflowId=${workflow.id}&fw=true`">
+                <router-link class="text-decoration-none text-primary font-weight-700" :to="`/tenant/settings/workflow/add?workflowId=${workflow.id}&fw=true`">
                     {{ workflow.name }}
                 </router-link>
             </div>

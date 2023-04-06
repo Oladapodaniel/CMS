@@ -183,7 +183,6 @@
 import { ref, computed, onMounted } from "vue";
 import finish from "../../services/progressbar/progress";
 import axios from "@/gateway/backendapi";
-import InputText from "primevue/inputtext";
 import monthDayYear from "../../services/dates/dateformatter";
 import router from "../../router";
 import Table from "@/components/table/Table";
@@ -193,7 +192,6 @@ import store from "../../store/store";
 export default {
   components: {
     Table,
-    InputText,
   },
   setup() {
     const loading = ref(false);
