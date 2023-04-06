@@ -99,14 +99,6 @@
                       @click="saveCustomFields"
                     >
                       <el-button
-                        class="
-                          font-weight-bold
-                          text-white
-                          bold
-                          mt-sm-3 mt-lg-0 mt-xl-0 mt-md-0 mt-3
-                          px-md-4 px-3
-                          py-2
-                        "
                         :color="primarycolor"
                         round
                         size="large"

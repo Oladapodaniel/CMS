@@ -97,7 +97,7 @@
         <template #default>
             <el-input type="textarea" v-model="note" rows="12" class=" mt-4" placeholder="Type your note..." />
             <div class="d-flex justify-content-end mt-4">
-                <el-button @click="displayPosition = false" round>Close</el-button>
+                <el-button class="secondary-button" @click="displayPosition = false" round>Close</el-button>
                 <el-button :color="primarycolor" :loading="noteLoading" @click="saveNote" round>Save</el-button>
             </div>
         </template>
@@ -141,7 +141,7 @@
                     <DecoupledEditor v-model="emailBody" />
                 </div>
                 <div class="d-flex justify-content-end mt-4 w-100">
-                    <el-button @click="emailDisplayPosition = false" round>Close</el-button>
+                    <el-button class="secondary-button" @click="emailDisplayPosition = false" round>Close</el-button>
                     <el-button :color="primarycolor" :loading="emailLoading" @click="sendEmail" round>Save</el-button>
                 </div>
             </div>
@@ -257,7 +257,7 @@
                 </div>
             </div>
             <div class="d-flex justify-content-end mt-3 w-100">
-                <el-button @click="taskDisplayPosition = false" round>Close</el-button>
+                <el-button class="secondary-button" @click="taskDisplayPosition = false" round>Close</el-button>
                 <el-button :color="primarycolor" :loading="taskLoading" @click="saveTask" round>Save</el-button>
             </div>
         </template>

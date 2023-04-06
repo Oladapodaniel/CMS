@@ -6,7 +6,7 @@
         </div>
       </div>
       <div class="actions mt-3 mt-md-0">
-        <el-button class="header-btn" @click="importFirstTimer" round>Import</el-button>
+        <el-button class="header-btn secondary-button" @click="importFirstTimer" round>Import</el-button>
         <router-link :to="{ name: 'AddFirstTimer' }" class="no-decoration">
           <el-button :color="primarycolor" class="ml-2 header-btn" round>Add First Timers</el-button>
         </router-link>
@@ -31,7 +31,7 @@
       </div>
       <template #footer>
         <span class="dialog-footer">
-          <el-button @click="displayModal = false" round>Cancel</el-button>
+          <el-button class="secondary-button" @click="displayModal = false" round>Cancel</el-button>
           <el-button :color="primarycolor" :loading="allGroupLoading" @click="addToFirstTimers" round>
             Save
           </el-button>

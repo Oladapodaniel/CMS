@@ -727,7 +727,7 @@
               text-center text-sm-right
             "
           >
-            <el-button class="default-btn" v-if="false">Preview</el-button>
+            <el-button class="default-btn secondary-button" v-if="false">Preview</el-button>
             <el-button  :loading="loading" round :color="primarycolor" class=" border-0 ml-3" @click="post">
               <span class="text-white">Save and Continue</span>
               <span></span>

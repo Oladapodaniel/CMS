@@ -1,7 +1,7 @@
 <template>
   <div class="my-con">
     <div class="summary px-3">
-      <p class="summary-header">Summary</p>
+      <p class="summary-header primary--text">Summary</p>
 
       <div class="boards">
         <div class="board">
@@ -36,7 +36,7 @@
         placeholder="Select a group" size="large" class="w-100" />
       <template #footer>
         <span class="dialog-footer">
-          <el-button @click="addToGroupDialog = false" round>Cancel</el-button>
+          <el-button class="secondary-button" @click="addToGroupDialog = false" round>Cancel</el-button>
           <el-button type="primary" :color="primarycolor" :loading="allGroupLoading" @click="getAllMembersAndAddToGroup" round>
             Add to group
           </el-button>
@@ -51,7 +51,7 @@
         placeholder="Select a group" size="large" class="w-100" />
       <template #footer>
         <span class="dialog-footer">
-          <el-button @click="addToGroupSingle = false" round>Cancel</el-button>
+          <el-button class="secondary-button" @click="addToGroupSingle = false" round>Cancel</el-button>
           <el-button type="primary" :color="primarycolor" :loading="singleGroupLoading" @click="moveMemberToGroup" round>
             Add to group
           </el-button>
@@ -65,7 +65,7 @@
       <p class="p-m-0">You are about to archive your member(s). Do you want to continue ?</p>
       <template #footer>
         <span class="dialog-footer">
-          <el-button @click="displayPositionArchive = false" round>No</el-button>
+          <el-button class="secondary-button" @click="displayPositionArchive = false" round>No</el-button>
           <el-button :color="primarycolor" :loading="archiveLoading" @click="archive('', 'multiple')" round>
             Yes
           </el-button>
@@ -995,7 +995,6 @@ export default {
 
 .summary-header {
   margin: -0.8rem 10px 0.5rem 10px;
-  color: #136acd;
   opacity: 0.8;
   font-size: 22px;
   font-weight: 600;

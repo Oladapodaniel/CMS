@@ -13,7 +13,7 @@
                 template
                 file </div>
             <div class="col-12 col-md-12 mb-3">
-                <a href="/files/Template.csv" class="text-decoration-none font-weight-bold" download>Click here to
+                <a href="/files/Template.csv" class="no-decoration primary--text font-weight-bold" download>Click here to
                     download and view
                     our members Excel/CSV template.</a>
                 <span> You can use this as a template for creating your Excel/CSV file.</span>
@@ -34,7 +34,7 @@
             <div class="col-lg-12 col-md-12">
                 <div class="mt-4">
                     <span>Need help creating your Excel or CSV file?</span>
-                    <a href="#" @click="toggleInstruction" class=" text-decoration-none  font-weight-bold "> View
+                    <a href="#" @click="toggleInstruction" class="no-decoration primary--text font-weight-bold "> View
                         Instruction <i class="pi pi-angle-down"
                             :class="{ 'rollIcon': addInstructionClass, 'closeIcon': !addInstructionClass }"></i></a>
                 </div>
@@ -153,7 +153,7 @@
                 </div>
                 <template #footer>
                     <span class="dialog-footer d-flex justify-content-end text-center">
-                        <el-button @click="displayModal = false" round>Cancel</el-button>
+                        <el-button class="secondary-button" @click="displayModal = false" round>Cancel</el-button>
                         <el-button :color="primarycolor" :loading="loading" @click="addToMembers" round>
                         Save
                         </el-button>

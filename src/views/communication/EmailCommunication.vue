@@ -22,7 +22,11 @@
                   <div class="mt-2" v-show="xsOnly || smAndUp">
                     <i class="pi pi-bars" @click="toggleMenu"></i>
                   </div>
-                  <router-link to="/tenant/email/compose" class="w-100 mt-3 compose-btn text-decoration-none font-weight-700">Compose Email</router-link>
+                  <router-link to="/tenant/email/compose" class="no-decoration">
+                  <el-button round class="font-weight-bold w-100 mb-3" size="large" :color="primarycolor" >
+                    Compose Email
+                  </el-button>
+                </router-link>
                 </div>
               </div>
               <div class="row" :class="{ 'show mb-3': menuShouldShow, 'links-menu' : !menuShouldShow }">
@@ -84,11 +88,12 @@
 </template>
 
 <script>
-import { ref } from "vue";
+import { ref, inject } from "vue";
 import { useRoute } from 'vue-router';
 import deviceBreakpoint from "../../mixins/deviceBreakpoint";
 export default {
   setup() {
+    const primarycolor = inject('primarycolor')
     const route = useRoute();
     const menuShouldShow = ref(false);
     const { xsOnly, smAndUp, mdAndUp, lgAndUp, xlAndUp } = deviceBreakpoint()
@@ -104,7 +109,8 @@ export default {
       xlAndUp,
       mdAndUp,
       xsOnly,
-      smAndUp
+      smAndUp,
+      primarycolor
     }
   }
 };

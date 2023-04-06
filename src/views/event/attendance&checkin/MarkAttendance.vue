@@ -139,7 +139,7 @@
                         ">
                           Enter 3 or moore characters
                         </p>
-                        <a class="font-weight-bold small-text d-flex justify-content-center py-2 text-decoration-none primary-text c-pointer"
+                        <a class="font-weight-bold small-text d-flex justify-content-center py-2 text-decoration-none primary--text c-pointer"
                           style="border-top: 1px solid #002044; color: #136acd" @click="showAddMemberForm"
                           data-dismiss="modal">
                           <el-icon size="large" class="mr-2 primary-text d-flex align-items-center">
@@ -156,10 +156,10 @@
 
                     <div class="row mt-4">
                       <div class="col-md-6 d-md-flex justify-content-end">
-                        <el-button round data-dismiss="modal">Cancel</el-button>
+                        <el-button class="secondary-button" round data-dismiss="modal">Cancel</el-button>
                       </div>
                       <div class="col-md-6">
-                        <el-button round :loading="loading" class=" border-0 text-white" :color="primarycolor"
+                        <el-button round :loading="loading" class="text-white" :color="primarycolor"
                           data-dismiss="modal" @click="sendExistingUser">
                           Save
                         </el-button>

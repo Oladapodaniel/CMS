@@ -31,7 +31,7 @@
                     <router-link :to="{
                       name: 'SendMessage',
                       query: { messageId: item.id },
-                    }" class="text-decoration-none">
+                    }" class="no-decoration primary--text">
                       <el-tooltip class="box-item" effect="dark" :content="item.message" placement="top-start">
                         <span class="font-weight-600">{{
                           item.message && item.message.length > 25
@@ -92,7 +92,7 @@
                       name: 'DeliveryReport',
                       params: { messageId: item.id },
                       query: { units: item.smsUnitsUsed },
-                    }" class="small-text text-decoration-none">View report</router-link>
+                    }" class="small-text no-decoration primary--text">View report</router-link>
                   </div>
                 </template>
                 <template v-slot:action="{ item }">

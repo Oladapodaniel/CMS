@@ -54,7 +54,7 @@
                         name: 'ComposeEmail',
                         query: { messageId: item.id },
                       }"
-                      class="text-decoration-none"
+                      class="no-decoration primary--text"
                     >
                       <el-tooltip
                         class="box-item"
@@ -115,7 +115,7 @@
                         name: 'ComposeEmail',
                         query: { messageId: item.id },
                       }"
-                      class="text-decoration-none"
+                      class="no-decoration primary--text"
                     >
                       <span class="small-text">{{ item.sentByUser }}</span>
                     </router-link>

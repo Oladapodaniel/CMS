@@ -83,7 +83,7 @@
                     </div>
                     <div class="col-12">
                         <div class="row d-flex justify-content-end">
-                            <el-button class="mr-2" data-dismiss="modal" round>Cancel</el-button>
+                            <el-button class="mr-2 secondary-button" data-dismiss="modal" round>Cancel</el-button>
                             <el-button :color="primarycolor" data-dismiss="modal" @click="createPerson" round>Save</el-button>
                         </div>
                     </div>

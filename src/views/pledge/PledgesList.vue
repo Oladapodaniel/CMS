@@ -8,7 +8,7 @@
       </div>
       <div class="d-flex flex-column flex-sm-row mt-2  my-1 link">
         <router-link class="mr-1" to="/tenant/pledge/pledgedefinitionlist">
-          <el-button class="header-btn mr-3 w-100" round>
+          <el-button class="header-btn mr-3 w-100 secondary-button" round>
             Partnership/Pledge items
           </el-button>
         </router-link>

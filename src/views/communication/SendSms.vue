@@ -372,7 +372,7 @@
             ? '/tenant/sms/sent'
             : '/errorpage/expiredSubscription'
           ">
-            <el-button class="ml-3" round>Discard</el-button>
+            <el-button class="ml-3 secondary-button" round>Discard</el-button>
           </router-link>
 
           <!-- <span :class="{ 'cursor-close': disableBtn }">
@@ -514,7 +514,7 @@
         </div>
         <template #footer>
           <span class="dialog-footer">
-            <el-button @click="display = false" round>Cancel</el-button>
+            <el-button @click="display = false" class="secondary-button" round>Cancel</el-button>
             <el-button :color="primarycolor" @click="contructScheduleMessageBody(2, '')" round>
               Confirm
             </el-button>

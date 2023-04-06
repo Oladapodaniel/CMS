@@ -519,9 +519,11 @@
           </span>
           <router-link
           to="/tenant/email/sent"
-            class="default-btn d-flex justify-content-center short-btn align-items-center ml-3 text-decoration-none text-dark"
+            class="no-decoration"
           >
-            Discard
+            <el-button class="ml-3 secondary-button" size="large" @click="closeModal" round
+              >Discard</el-button
+            >
           </router-link>
         </div>
 
