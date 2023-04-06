@@ -1,23 +1,35 @@
 import axios from "@/gateway/backendapi";
+import eventitems from '../../services/events/eventsservice';
+
+
+const defaultState = (() => ({
+          eventData: {},
+          eventList: [],
+          reportData: {},
+          eventItems : {}
+      }))
 
 export default {
-  state: {
-    eventData: {},
-    eventList: [],
-    reportData: {}
-  },
-  getters: {
-    eventData: state => state.currentUser,
-    eventList: state => state.eventList,
-    reportData: state => state.reportData,
-  },
-
+  namespaced: true,
+  state: defaultState(),
+  
   mutations: {
     setEventData(state, payload) {
       state.eventData = payload;
     },
+    SET_EVENTITEMS (state, payload) {
+      state.eventItems = payload
+    },
     eventList(state, payload) {
       state.eventList = payload
+    },
+    addEventItem(state, payload) {
+      state.eventItems.push(payload);
+    },
+    removeEventItem(state, payload) {
+      state.eventItems = state.eventItems.filter(
+        (item) => item.id !== payload
+      );
     },
     clearState(state) {
       state.eventData = {}
@@ -34,6 +46,18 @@ export default {
     setEventData({ commit }, payload) {
       commit("setEventData", payload)
     },
+    setEventItems ({ commit }) {
+      return eventitems.getEventItems().then(response => {  
+          commit('SET_EVENTITEMS', response)
+          return response
+      })
+    },
+    removeEventItemFromStore({ commit }, payload) {
+      commit("removeEventItem", payload)
+  },
+  addEventItem({ commit }, payload) {
+      commit("addEventItem", payload);
+    },
     async eventList({ commit }) {
       try {
         const { data } = await axios.get("/api/eventreports/eventReports");
@@ -49,5 +73,15 @@ export default {
     setReportData({ commit }, payload) {
       commit("setReportData", payload);
     }
-  }
+  },
+
+  getters: {
+    geteventitems: (state) => {
+      return state.eventItems
+  },
+    eventData: state => state.currentUser,
+    eventList: state => state.eventList,
+    reportData: state => state.reportData,
+  },
+
 }
