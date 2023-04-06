@@ -217,8 +217,8 @@
               <div class="d-flex flex-column flex-lg-row justify-content-end w-100">
                 <div class="input-width">
                   <div class="d-flex flex-column">
-                    <el-button @click.prevent="onCancel" round>Cancel</el-button>
-                    <el-button @click.prevent="onSubmit" :loading="loading" class="my-3 mx-0"
+                    <el-button class="secondary-button" @click.prevent="onCancel" round>Cancel</el-button>
+                    <el-button @click.prevent="onSubmit" :loading="loading" class="secondary-button my-3 mx-0"
                       round>Save and add another</el-button>
                     <el-button class="mx-0 mx-sm-2" :color="primarycolor" :loading="loadingtwo" @click.prevent="saveAndRoute"
                       round>Save</el-button>
@@ -304,7 +304,7 @@
                   </div>
                   <template #footer>
                     <span class="dialog-footer d-flex justify-content-end text-center">
-                      <el-button @click="displayModal = false" round>Cancel</el-button>
+                      <el-button class="secondary-button" @click="displayModal = false" round>Cancel</el-button>
                       <el-button :color="primarycolor" :loading="createCatLoading" @click="createNewCat(2)" round>
                         Save
                       </el-button>
@@ -334,7 +334,7 @@
                       </p>
                     </div>
                     <div class="pr-0 col-md-12 d-md-flex justify-content-end">
-                      <el-button data-dismiss="modal" round>Cancel</el-button>
+                      <el-button class="secondary-button" data-dismiss="modal" round>Cancel</el-button>
                       <el-button :color="primarycolor" data-dismiss="modal" @click="createNewEvent" round>
                         Save
                       </el-button>
@@ -394,7 +394,7 @@
                   </p>
                 </div>
                 <div class="row mt-2 d-md-flex justify-content-end">
-                  <el-button  data-dismiss="modal" round>Cancel</el-button>
+                  <el-button class="secondary-button" data-dismiss="modal" round>Cancel</el-button>
                   <el-button :color="primarycolor" :data-dismiss="dismissAddToGroupModal" @click="addMemberToGroup"
                     round>Save</el-button>
                 </div>

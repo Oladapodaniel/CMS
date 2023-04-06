@@ -332,7 +332,7 @@
               </div>
             </div>
             <div class="modal-footer">
-              <el-button class="" data-dismiss="modal" round>Cancel</el-button>
+              <el-button class="secondary-button" data-dismiss="modal" round>Cancel</el-button>
               <el-button
                 :color="primarycolor"
                 class="header-btn text-white"

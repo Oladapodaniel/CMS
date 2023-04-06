@@ -1,7 +1,7 @@
 <template>
   <div class="container-fluid">
     <div class="row mb-4">
-      <div class="col-md-5 sub-header px-0">
+      <div class="col-md-5 sub-header primary--text px-0">
         Overview
       </div>
       <div class="col-md-4 mb-2 px-0 pr-md-1 mt-2 mt-md-0">
@@ -210,11 +210,6 @@ opacity: 1;
 } */
 
 .sub-header {
-  color: #136acd !important;
-  /* margin: 0 10px; */
-  /* margin-left: -1.75rem; */
-  color: #02172e;
-  opacity: 0.8;
   font-size: 25px;
   font-weight: 600;
 }

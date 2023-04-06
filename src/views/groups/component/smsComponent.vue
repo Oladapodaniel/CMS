@@ -19,7 +19,7 @@
             <template #footer>
               <span class="dialog-footer">
                 <div class="mt-2">
-                  <el-button @click="(display = false)" round>
+                  <el-button class="secondary-button" @click="(display = false)" round>
                     Cancel
                   </el-button>
                   <el-button :color="primarycolor" :loading="scheduleLoading" @click="contructScheduleMessageBody(2, '')"
@@ -417,7 +417,7 @@
                 </el-dropdown-menu>
               </template>
             </el-dropdown>
-          <el-button class="ml-3" size="large" @click="closeModal" round>Discard</el-button>
+          <el-button class="ml-3 secondary-button" size="large" @click="closeModal" round>Discard</el-button>
         </div>
         <div class="row">
           <div class="col-md-12">

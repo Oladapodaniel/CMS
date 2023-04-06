@@ -153,7 +153,7 @@
                         <h4 class="header4 text-md-right"></h4>
                     </div>
                     <div class="col-md-5 px-0 mt-3">
-                        <el-button @click="onCancel" class="w-100" round>Cancel</el-button>
+                        <el-button @click="onCancel" class="secondary-button w-100" round>Cancel</el-button>
                         <el-button :color="primarycolor" :loading="loading" class="w-100 ml-0 mt-2" @click="saveDonor"
                             round>Save</el-button>
                     </div>

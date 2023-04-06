@@ -6,7 +6,7 @@
           <div>{{ header }}</div>
         </div>
         <div class="d-flex mt-3 mt-sm-0">
-          <el-button @click="importMembers" class="header-btn" round>Import</el-button>
+          <el-button @click="importMembers" class="header-btn secondary-button" round>Import</el-button>
           <router-link :to="`/tenant/people/add`" class="no-decoration">
             <el-button :color="primarycolor" class="ml-2 header-btn" round>Add Member</el-button>
           </router-link>

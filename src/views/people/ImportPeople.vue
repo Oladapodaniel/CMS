@@ -52,7 +52,7 @@
           <template #footer>
               <div class="container">
                 <div class="row d-flex justify-content-end text-center">
-                  <el-button @click="closeModal" round>Cancel</el-button>
+                  <el-button class="secondary-button" @click="closeModal" round>Cancel</el-button>
                   <el-button :color="primarycolor" :loading="loading" @click="addToMembers" round>
                   Save
                   </el-button>

@@ -65,7 +65,7 @@
                 <div>
                   <router-link
                     to=""
-                    class="text-decoration-none"
+                    class="no-decoration primary--text"
                   >
                    <span class=" font-weight-600 ">
                         {{
@@ -84,7 +84,7 @@
                     to=""
                     class="text-decoration-none"
                   >
-                    <span class="text-primary small-text ml-1">{{ item.isExecuted === false ? "No" : "Yes" }}</span>
+                    <span class="primary--text small-text ml-1">{{ item.isExecuted === false ? "No" : "Yes" }}</span>
                   </router-link>
                 </div>
               </template>

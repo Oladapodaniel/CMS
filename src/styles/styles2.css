@@ -1,5 +1,68 @@
 /* Element plus component restyle */
 
+
+/* ====================================================== */
+
+/* Primary reusable classes */
+
+.primary--text {
+  color: #900a39 !important;
+}
+
+/* Button */
+
+.secondary-button {
+  border-color: #900a39 !important;
+  color: #900a39 !important;
+  transition: all .5s ease-in-out;
+}
+
+.secondary-button:hover {
+  background: #900a390f !important;
+  border-color: #900a390f !important;
+  color: #900a39 !important;
+  transition: all .2s ease-in-out;
+}
+
+.secondary-button:focus {
+  background: #900a390f !important;
+  border-color: #900a390f !important;
+  color: #900a39 !important;
+  transition: all .2s ease-in-out;
+}
+
+/* Pagination */
+
+.el-pagination.is-background li.is-active.number {
+  background-color: #900a39 !important;
+}
+
+/* Split button */
+
+.el-dropdown.split-button .el-button.el-button--large:not(.el-dropdown__caret-button) {
+  border-radius: 25px 0 0 25px;
+  background: #900a39;
+  color: #ffffff
+}
+
+.el-dropdown.split-button .el-dropdown__caret-button {
+  border-radius: 0 25px 25px 0;
+  background: #900a39;
+  color: #ffffff
+}
+
+/* Checkbox */
+
+.el-checkbox.is-checked .el-checkbox__inner, .el-checkbox__input.is-indeterminate .el-checkbox__inner {
+  background-color: #900a39 !important;
+  border-color: #900a39 !important;
+}
+
+.el-checkbox__inner:hover {
+  border-color: #900a39 !important;
+}
+/* ====================================================== */
+
 .el-input__wrapper {
   padding: 6px 11px !important;
 }
@@ -26,10 +89,6 @@ button.el-button.is-round {
 /* button.el-button.is-plain, button.el-button.is-round {
     min-width: 130px;
 } */
-
-.primary--text {
-  color: #900a39 !important;
-}
 
 .no-decoration {
   text-decoration: none !important;
@@ -74,17 +133,6 @@ li.el-menu-item.w-100,
   overflow: scroll;
 }
 
-.el-dropdown.split-button .el-button.el-button--large:not(.el-dropdown__caret-button) {
-  border-radius: 25px 0 0 25px;
-  background: #136acd;
-  color: #ffffff
-}
-
-.el-dropdown.split-button .el-dropdown__caret-button {
-  border-radius: 0 25px 25px 0;
-  background: #136acd;
-  color: #ffffff
-}
 
 .phone-input>div.el-input__wrapper {
   background: transparent;

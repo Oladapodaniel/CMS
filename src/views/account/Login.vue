@@ -66,7 +66,7 @@
         </div>
         <template #footer>
           <span class="dialog-footer">
-            <el-button @click="displayModal = false" round>Cancel</el-button>
+            <el-button @click="displayModal = false" class="secondary-button" round>Cancel</el-button>
             <el-button type="primary" @click="saveEmail" :loading="emailLoading" :color="primarycolor" round>
               Confirm
             </el-button>

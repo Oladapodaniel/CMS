@@ -442,7 +442,7 @@
                                                   justify-content-center
                                                   py-2
                                                   text-decoration-none
-                                                  primary-text
+                                                  primary--text
                                                   c-pointer" style="border-top: 1px solid #002044; color: #136acd;"
                                       @click="showAddMemberForm" data-dismiss="modal">
                                       <el-icon class="primary--text d-flex align-self-center mr-2">
@@ -487,18 +487,11 @@
                         </div>
                       </div>
                       <div class="modal-footer mb-2">
-                        <el-button class="default-btn cancel bg-white text-dark" data-dismiss="modal" round>
+                        <el-button class="secondary-button" data-dismiss="modal" round>
                           Cancel
                         </el-button>
 
-                        <el-button class="
-                                      primary-btn
-                                      default-btn
-                                      primary-bg
-                                      border-0
-                                      outline-none
-                                      text-white
-                                    " @click="addSelectedMembersToGroup" :data-dismiss="modalStatus" round>
+                        <el-button :color="primarycolor" @click="addSelectedMembersToGroup" :data-dismiss="modalStatus" round>
                           Add member
                         </el-button>
                       </div>
@@ -561,7 +554,7 @@
 
                     <!-- Modal footer -->
                     <div class="modal-footer">
-                      <el-button data-dismiss="modal" ref="dismissMoveModal" round>Close</el-button>
+                      <el-button class="secondary-button" data-dismiss="modal" ref="dismissMoveModal" round>Close</el-button>
                       <el-button :color="primarycolor" @click="moveMembers" :loading="moveLoading" round>Move</el-button>
                     </div>
                   </div>
@@ -811,7 +804,7 @@
       </div>
       <div class="col-md-12 d-flex justify-content-end action-btns">
         <router-link to="/tenant/peoplegroups" class="no-decoration">
-          <el-button round>Discard</el-button>
+          <el-button class="mr-2 secondary-button" round>Discard</el-button>
         </router-link>
         <el-button :color="primarycolor" :loading="savingGroup" @click="saveGroupData" :disabled="savingGroup" round>{{
           buttonText }}</el-button>
@@ -828,7 +821,7 @@
       </p>
       <template #footer>
         <div class="d-flex justify-content-end">
-          <el-button @click="closeArchiveModal" round>No</el-button>
+          <el-button class="secondary-button" @click="closeArchiveModal" round>No</el-button>
           <el-button :color="primarycolor" @click="archive('', 'multiple')" round>Yes</el-button>
         </div>
       </template>

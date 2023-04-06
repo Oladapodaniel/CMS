@@ -457,7 +457,7 @@
                     </div>
                 </div>
                 <div class="d-flex justify-content-end mt-3">
-                    <el-button @click="displayLogPane = false" round>Close</el-button>
+                    <el-button class="secondary-button" @click="displayLogPane = false" round>Close</el-button>
                     <el-button :color="primarycolor" :loading="logLoading" @click="saveLog" round>Save</el-button>
                 </div>
             </div>
@@ -492,7 +492,7 @@
                 </div>
             </div>
             <div class="d-flex justify-content-end mt-4">
-                <el-button @click="displaySMSPane = false" round>Close</el-button>
+                <el-button class="secondary-button" @click="displaySMSPane = false" round>Close</el-button>
                 <el-button :color="primarycolor" :loading="smsLoading" @click="sendSms" round>Send</el-button>
             </div>
         </template>
@@ -571,7 +571,7 @@
                 </div>
                 <div class="modal-footer border-0">
                     <div class="d-flex justify-content-end">
-                        <el-button data-dismiss="modal" round>Close</el-button>
+                        <el-button class="secondary-button" data-dismiss="modal" round>Close</el-button>
                         <el-button :color="primarycolor" :loading="loading" @click="convertToMember($event)"
                             :disabled="Object.keys(selectedMembershipClassification).length === 0"
                             round>Proceed</el-button>

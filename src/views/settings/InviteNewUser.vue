@@ -199,15 +199,8 @@
             <router-link to="/tenant/settings">
               <el-button
                 round
-                class="px-3 mr-3"
+                class="secondary-button"
                 size="large"
-                style="
-                  border-radius: 22px;
-                  font-size: 16px;
-                  font-weight: 600;
-                  outline: none;
-                  hover: none;
-                "
                 >Discard</el-button
               ></router-link
             >
@@ -217,7 +210,6 @@
               :color="primarycolor"
               :loading="loading"
               class="px-3 ml-3 text-white"
-              style="border-radius: 22px; font-size: 16px; font-weight: 600"
               @click="callButton"
               >Save User</el-button
             >

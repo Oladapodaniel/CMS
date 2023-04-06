@@ -145,7 +145,7 @@
                     <label for=""></label>
                   </div>
                   <div class="col-md-7 d-flex justify-content-center">
-                    <el-button class="default-btn mr-2" data-dismiss="modal" round>
+                    <el-button class="default-btn mr-2 secondary-button" data-dismiss="modal" round>
                       Cancel
                     </el-button>
                     <el-button

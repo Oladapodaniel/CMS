@@ -321,7 +321,7 @@
                 </div>
                 <div class="col-12 p-0">
                   <div class="d-flex justify-content-end">
-                    <el-button data-dismiss="modal" round>Cancel</el-button>
+                    <el-button class="secondary-button" data-dismiss="modal" round>Cancel</el-button>
                     <el-button :color="primarycolor" :loading="addToGroupLoading" :data-dismiss="dismissAddToGroupModal"
                       @click="addMemberToGroup" round>Save</el-button>
                   </div>
