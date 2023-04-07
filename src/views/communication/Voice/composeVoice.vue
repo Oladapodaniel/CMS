@@ -82,8 +82,8 @@
       </div>
 
       <div class="row">
-        <div class="col-md-2 pr-md-0 col-lg-2 align-self-center">
-          <span class="text-bold">Send to : </span>
+        <div class="col-md-2 px-0 col-lg-2 align-self-center">
+          <span class="small-text">Send to :</span>
         </div>
         <div class="p-0 col-md-10 col-lg-10 form-group mb-0">
           <div class="dropdown">
@@ -317,104 +317,7 @@
       </div>
       <!-- End member TEst -->
 
-      <!-- Select Person from DB -->
-      <div class="col-12 my-1 px-0" v-if="false">
-        <div class="row">
-          <div class="col-12 col-md-2"></div>
-          <div class="col-12 col-md-10 grey-rounded-border">
-            <span
-              class="email-destination m-1"
-              v-for="(member, indx) in selectedMembers"
-              :key="indx"
-            >
-              <span class="small-text">{{ member.name }}</span>
-              <span class="ml-2 remove-email" @click="removeMember(indx)"
-                >x</span
-              >
-            </span>
-
-            <div class="dropdown">
-              <!-- <input
-                placeholder="Select persons"
-                class="border-none dropdown-toggle my-1 px-1"
-                type="text"
-                id="dropdownMenu"
-                @input="searchForPerson"
-                v-model="searchText"
-                data-toggle="dropdown"
-                aria-haspopup="true"
-                aria-expanded="false"
-              /> -->
-
-              <div
-                class="dropdown-menu pt-0 w-100"
-                aria-labelledby="dropdownMenu"
-              >
-                <a
-                  class="dropdown-item px-1 c-pointer"
-                  v-for="(member, index) in memberSearchResults"
-                  :key="index"
-                  @click="selectMember(member, index)"
-                  >{{ member.name }}</a
-                >
-                <p
-                  class="bg-secondary p-1 mb-0 disable small-text"
-                  v-if="
-                    searchText.length < 3 &&
-                    loading == false &&
-                    memberSearchResults.length === 0
-                  "
-                >
-                  Enter 3 or more characters
-                </p>
-                <p
-                  aria-disabled="true"
-                  class="btn btn-default p-1 mb-0 disable small-text"
-                  v-if="
-                    memberSearchResults.length === 0 &&
-                    searchText.length >= 3 &&
-                    !loading
-                  "
-                >
-                  No match found
-                </p>
-                <p
-                  class="btn btn-default p-1 mb-0 disable"
-                  v-if="loading && searchText.length >= 3"
-                >
-                  <i class="fas fa-circle-notch fa-spin"></i>
-                </p>
-              </div>
-            </div>
-          </div>
-          <div
-            class="col-md-12 grey-rounded-border groups"
-            :class="{ hide: !groupsAreVissible }"
-          >
-            <div
-              class="row"
-              v-for="(category, index) in categories"
-              :key="index"
-            >
-              <div class="col-md-12">
-                <div class="row">
-                  <div class="col-md-12">
-                    <h4 class="px-14">{{ category }}</h4>
-                    <p
-                      v-for="(group, indx) in allGroups[index]"
-                      @click="selectGroup(group.category, group.id, group.name)"
-                      :key="indx"
-                      class="small-text"
-                    >
-                      {{ group.name }}
-                    </p>
-                  </div>
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
+ 
 
       <!-- Enter phone numbers -->
       <div class="col-12 my-1 px-0" v-if="phoneNumberSelectionTab">
@@ -491,11 +394,11 @@
         </div>
       </div>
       <div class="row">
-        <div class="col-md-2 mb-sm-2">
-          <span class="text-bold">Upload File : </span>
+        <div class="px-0 col-md-2 mb-sm-2">
+          <span class="text-bold">Upload File :</span>
         </div>
 
-        <div class="col-md-10 mb-0 px-0" style="background: #ffffff">
+        <!-- <div class="col-md-10 mb-0 px-0" style="background: #ffffff">
           <div class="col-md-12 border rounded mt-1 d-flex flex-column flex-md-row">
             <div class="col-md-4 px-0 mx-0">
               <button
@@ -523,10 +426,32 @@
               />
             </div>
           </div>
-        </div>
-        <div class="col-md-2"></div>
-        <div class="col-md-10"><div>Maximum 5mb file size</div></div>
-
+        </div> -->
+        <!-- <div class="col-md-2"></div>
+        <div class="col-md-10"><div>Maximum 5mb file size</div></div> -->
+        <!-- action="https://run.mocky.io/v3/9d059bf9-4660-45f2-925d-ce80ad6c4d15" -->
+        <el-upload
+          class="upload-demo w-100"
+          drag
+          multiple
+          :on-change="chooseVoiceFile"
+          accept="audio/*" 
+          :auto-upload="false"
+        >
+          <el-icon class="el-icon--upload"><upload-filled /></el-icon>
+          <div class="el-upload__text">
+            Drop file here or <em>click to upload</em>
+          </div>
+          <template #tip>
+            <div class="el-upload__tip">
+              jpg/png files with a size less than 500kb
+            </div>
+          </template>
+        </el-upload>
+        <audio controls ref="audioPlayer" class="mt-2" style="width: 100%; display: none">
+              <source src="" type="audio/mpeg">
+              Your browser does not support the audio element.
+            </audio>
         
       </div>
 
@@ -708,6 +633,8 @@ export default {
     const router = useRouter();
     const editorData = ref("");
     const disableBtn = ref(false);
+    const file = ref(null)
+    const audioPlayer = ref(null)
     const editorConfig = {
       // The configuration of the editor.
       height: "800",
@@ -824,6 +751,23 @@ export default {
       if (voice.value) detailsForVoice(voice.value);
       else detailsForVoice(blobMethod());
     };
+
+    const chooseVoiceFile = (e) =>{
+      console.log(audioPlayer.value)
+      const mediaPlayer = audioPlayer.value
+      file.value = e.raw;
+        const reader = new FileReader();
+
+        reader.addEventListener("load", function() {
+          mediaPlayer.src = reader.result;
+          mediaPlayer.style.display = "block";
+        });
+
+        if (file.value) {
+          reader.readAsDataURL(file.value);
+        }
+      }
+     
 
     const detailsForVoice = async (file) => {
       // const testing = blobMethod()
@@ -1427,6 +1371,9 @@ export default {
       checkFileType,
       displayAudio,
       handleAudio,
+      chooseVoiceFile,
+      file,
+      audioPlayer
     };
   },
 };
@@ -1786,10 +1733,6 @@ canvas {
 select {
   height: 25px;
   margin: 0px 5px;
-}
-
-a {
-  margin-left: 20px;
 }
 
 .app {
