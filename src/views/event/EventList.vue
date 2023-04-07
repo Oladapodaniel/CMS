@@ -351,7 +351,7 @@
           v-if="filterEvents.length > 0"
         >
           <template v-slot:isSent="{ item }">
-            <div class="c-pointer">
+            <div class="c-pointer td-first">
               {{ item.isSent ? "Sent" : "Unsent" }}
             </div>
           </template>
@@ -369,9 +369,9 @@
             </div>
           </template>
 
-          <template v-slot:attendance="{ item }">
-            <div class="c-pointer">
-              {{ item.attendance }}
+          <template v-slot:attendances="{ item }">
+            <div class="c-pointer ">
+              {{ item.attendances }}
             </div>
           </template>
           <template v-slot:firstTimers="{ item }">
@@ -1076,7 +1076,7 @@ export default {
   border-bottom-left-radius: 25px;
   background: #cecbcb70;
   padding: 7px;
-  margin-left: 10px;
+  /* margin-left: 10px; */
 }
 
 .top-con {
