@@ -371,7 +371,7 @@
 
           <template v-slot:attendance="{ item }">
             <div class="c-pointer">
-              {{ item.attendance }}
+              {{ item.attendances }}
             </div>
           </template>
           <template v-slot:firstTimers="{ item }">
