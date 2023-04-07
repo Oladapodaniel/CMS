@@ -1,12 +1,10 @@
 <template>
-  <div class="container-fluid">
+  <div class="" :class="{ 'container-slim': lgAndUp || xlAndUp }">
     <div class="row">
-      <div class="col-md-12 px-0">
-        <div class="container">
+      <div class="col-md-12">
           <div class="row mt-4">
-            <div class="col-md-5">
-              <h2 class="font-weight-bold head-text ">New Event and Report</h2>
-              <!-- page-hder -->
+            <div class="col-md-5 head-text ">
+                New Event and Report  
             </div>
             <div class="col-md-7 d-sm-flex justify-content-md-end">
               <a class="def-btn mr-3 px-md-4 my-sm-1" v-if="false"
@@ -18,13 +16,10 @@
                 >
               </router-link>
             </div>
-            <Toast />
           </div>
           <hr class="mb-4" />
-        </div>
         <div
-          class="container"
-          style="width: 80%"
+          class=""
           v-if="!isPending && !errorGettingReport"
         >
           <div class="row mx-1 mb-4 mt-3">
@@ -42,7 +37,7 @@
               <div class="my-3">
                 <span class="evt-name">
                   {{ stats.activityToday ? stats.activityToday.name : "" }}
-                  <i class="pi pi-info-circle"></i>
+                  <el-icon ><Warning /></el-icon>
                 </span>
               </div>
             </div>
@@ -68,24 +63,26 @@
                 <div class="col-md-12">
                   <div class="row" v-if="!reportApproved">
                     <div class="col-md-12 py-3 info-div">
-                      <span class="px-2"
-                        ><i class="pi pi-info-circle"></i
-                      ></span>
+                      <span class="px-2 "
+                        >
+                      <el-icon><Warning /></el-icon>
+                      </span>
                       <span class="font-weight-bold"
                         >This is a DRAFT event. You can take further actions
                         once you approve it.</span
                       >
                       <span class="px-2"
                         ><span style="color: #136acd">Learn more</span>
-                        <i class="pi pi-external-link ml-2"></i
-                      ></span>
+                        <el-icon class="border-secondary p-0 ml-1 border"><TopRight /></el-icon>
+                        </span>
                     </div>
                   </div>
                   <div class="row my-3">
                     <div class="col-md-1 d-flex align-items-center">
-                      <span class="file-icon"
-                        ><i class="pi pi-book" style="color: #136acd"></i
-                      ></span>
+                      <span class="file-icon " 
+                        >
+                      <el-icon  ><Document /></el-icon>
+                      </span>
                     </div>
                     <div class="col-md-5">
                       <span class="grey-text">Create </span>
@@ -93,7 +90,6 @@
                         <span class="dark-text">Created: </span>
                         <span class="grey-text">
                           just a moment ago
-                          <!-- {{ moment(eventData.activity.date, "YYYYMMDD").fromNow() }} {{ moment().startOf('second').fromNow() }} -->
                         </span>
                       </p>
                     </div>
@@ -122,8 +118,9 @@
                   <div class="row my-3">
                     <div class="col-md-1 d-flex align-items-center">
                       <span class="file-icon"
-                        ><i class="pi pi-arrow-down" style="color: #136acd"></i
-                      ></span>
+                        >
+                      <el-icon><Bottom /></el-icon>
+                      </span>
                     </div>
                     <div class="col-md-5 grey-text">
                       <span class="grey-text">Send </span>
@@ -165,22 +162,18 @@
                                         >
                                           Send this report
                                         </h5>
-                                        <button
-                                          type="button"
-                                          class="close"
+                                        <el-button
+                                          class="close mt-0"
                                           data-dismiss="modal"
                                           aria-label="Close"
                                         >
-                                          <span aria-hidden="true"
-                                            >&times;</span
-                                          >
-                                        </button>
+                                        <el-icon><Close /></el-icon>
+                                        </el-button>
                                       </div>
                                       <div
                                         class="modal-body pt-0 px-0"
                                         :data-dismiss="btnState"
                                       >
-                                        <!-- <ReportModal :eventName="eventDataResponse.name"/> -->
                                         <ReportModal
                                           :eventName="
                                             stats.activityToday
@@ -217,21 +210,22 @@
                     </div>
                     <div class="col-md-12 pt-2" v-if="willCopyLink">
                       <span class="d-flex" @click="copyLink">
-                        <input
+                        <el-input
                           type="text"
                           name=""
                           @keydown="(e) => e.preventDefault()"
-                          class="form-control mr-2"
+                          class="w-100 mr-2"
                           :value="location"
                           ref="shareableLinkField"
-                          style="width: 90%"
-                        />
-                        <span
-                          ><i
-                            class="pi pi-copy c-pointer"
-                            style="font-size: 1.5rem"
-                          ></i
-                        ></span>
+                        >
+                        <template #append>
+                          <el-button class="c-pointer" @click="copyLink">
+                            <el-icon>
+                              <CopyDocument />
+                            </el-icon>
+                          </el-button>
+                        </template>
+                        </el-input>
                       </span>
                     </div>
                   </div>
@@ -2274,28 +2268,27 @@ import { useRoute } from "vue-router";
 import axios from "@/gateway/backendapi";
 import composerObj from "../../services/communication/composer";
 import stopProgressBar from "../../services/progressbar/progress";
-// import EventReportStats from "@/components/eventreports/EventReportStats";
-import { useToast } from "primevue/usetoast";
+import deviceBreakpoint from "../../mixins/deviceBreakpoint";
 import moment from "moment";
 import Loading from "../../components/loading/LoadingComponent";
 import store from "../../store/store";
+import { ElMessage } from "element-plus";
 
 export default {
   components: { ReportAreaChart, ReportModal, Loading },
   setup() {
     const route = useRoute();
     const reportApproved = ref(false);
+    const { lgAndUp, xlAndUp } = deviceBreakpoint();
     const lastSent = ref("just a moment ago");
     const status = ref("Draft");
     // const markedAsSent = ref(false);
     const sendBtnText = ref("Send report");
-    // const eventDataResponse = ref({});
     // const topmost = ref(null);
     const middle = ref(null);
     const emaildata = ref(null);
     const bottom = ref(null);
     const btnState = ref("");
-    const toast = useToast();
     const url = ref("");
     const activityId = ref("");
 
@@ -2372,12 +2365,10 @@ export default {
                   </body>
                   `;
       const body = {
-        // message: topmost.value.innerHTMl.toString(),
 
         ispersonalized: false,
         contacts: messageObj.data.contacts,
         subject: messageObj.data.subject,
-        // user: "+2349086767765",
       };
       if (messageObj.medium === "sms") {
         body.gateWayToUse = "hostedsms";
@@ -2400,21 +2391,19 @@ export default {
         .sendMessage(url, body)
         .then((res) => {
           btnState.value = "";
-          console.log(res, "report response");
           if (res.status === false) {
-            toast.add({
-              severity: "error",
-              summary: "Sending Failed",
-              detail: res.message,
-              life: 3000,
-            });
+            ElMessage({
+            type: "error",
+            message: res.message,
+            duration: 3000,
+          });
           } else {
-            toast.add({
-              severity: "success",
-              summary: "Send Success",
-              detail: "Your report has been sent",
-              life: 3000,
-            });
+             ElMessage({
+                type: "success",
+                message: "Your report has been sent",
+                duration: 3000,
+              });
+           
             markAsSent();
           }
         })
@@ -2422,12 +2411,11 @@ export default {
           btnState.value = "";
           console.log(err);
           stopProgressBar();
-          toast.add({
-            severity: "error",
-            summary: "Sending Failed",
-            detail: "Report was not sent, please try again",
-            life: 3000,
-          });
+          ElMessage({
+                type: "error",
+                message: "Report was not sent, please try again",
+                duration: 3000,
+              });
         });
       btnState.value = "modal";
     };
@@ -2438,18 +2426,18 @@ export default {
     const copyLink = () => {
       try {
         willCopyLink.value = true;
-        const a = shareableLinkField.value;
+        const a = shareableLinkField.value.input;
+        console.log(a,"kkk");
         a.select();
         a.setSelectionRange(0, 200); /* For mobile devices */
 
         /* Copy the text inside the text field */
         document.execCommand("copy");
-        toast.add({
-          severity: "info",
-          summary: "Link Copied",
-          detail: "Shareable link copied to your clipboard",
-          life: 3000,
-        });
+        ElMessage({
+                type: "info",
+                message: "Shareable link copied to your clipboard",
+                duration: 3000,
+              });
       } catch (error) {
         console.log(error);
       }
@@ -2501,6 +2489,8 @@ export default {
 
     return {
       isPending,
+      lgAndUp, 
+      xlAndUp,
       errorGettingReport,
       reportApproved,
       toggleReportState,
@@ -2513,7 +2503,6 @@ export default {
       eventDateString,
       innerWidth,
       window,
-      // topmost,
       middle,
       bottom,
       sendReport,

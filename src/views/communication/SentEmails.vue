@@ -62,7 +62,7 @@
                         :content="item.subject"
                         placement="top-start"
                       > -->
-                        <div class="font-weight-600 text-dark">{{
+                        <!-- <div class="font-weight-600 text-dark">{{
                           item.subject && item.subject.length > 25
                             ? `${item.subject
                                 .split("")
@@ -71,7 +71,7 @@
                             : item.subject
                             ? item.subject
                             : ""
-                        }}</div>
+                        }}</div> -->
                       <!-- </el-tooltip> -->
                       <!-- <el-tooltip
                         class="box-item"
@@ -106,6 +106,11 @@
                     >
                       <span class="timestamp ml-1">{{ item.dateSent }}</span>
                     </router-link>
+                  </div>
+                </template>
+                <template v-slot:smsUnitsUsed="{ item }">
+                  <div>
+                    <span class="small-text">{{ item.smsUnitsUsed }}</span>
                   </div>
                 </template>
                 <template #sentBy="{ item }">
@@ -187,6 +192,7 @@ export default {
     const EmailHeaders = ref([
       { name: " MESSAGE", value: "message" },
       { name: " DATE", value: "dateSent" },
+      { name: " UNIT", value: "smsUnitsUsed" },
       { name: " SENTBY", value: "sentBy" },
       { name: '', value: 'delete' },
     ]);

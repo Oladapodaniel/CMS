@@ -1085,7 +1085,7 @@ export default {
             life: 2000,
           });
           setTimeout(() => {
-            router.push("/tenant/workflow/list");
+            router.push("/tenant/settings/workflow/list");
           }, 2200);
         } else {
           toast.add({
@@ -1120,7 +1120,7 @@ export default {
             life: 2000,
           });
           setTimeout(() => {
-            router.push("/tenant/workflow/list");
+            router.push("/tenant/settings/workflow/list");
           }, 2200);
         } else {
           toast.add({
