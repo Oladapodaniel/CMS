@@ -1235,11 +1235,11 @@
             </div>
           </div>
           <div class="modal-footer">
-            <el-button round class="" size="large" data-dismiss="modal">
+            <el-button round class="secondary-button" size="large" data-dismiss="modal">
               Cancel
             </el-button>
             <el-button
-              color="#136acd"
+              :color="primarycolor"
               class="text-white"
               round
               size="large"
@@ -1535,12 +1535,12 @@
             </div>
           </div>
           <div class="modal-footer">
-            <el-button round size="large"  data-dismiss="modal">
+            <el-button round size="large" class="secondary-button"  data-dismiss="modal">
               Cancel
             </el-button>
             <el-button
               round
-              color="#136acd"
+              :color="primarycolor"
               class=""
               size="large"
               ref="closeNewConverts"
@@ -1664,7 +1664,7 @@
 
                 <div class="row mt-4 d-flex justify-content-between">
                   <div class="col-6">
-                    <el-button round  data-dismiss="modal" size="large">
+                    <el-button round class="secondary-button"  data-dismiss="modal" size="large">
                       Cancel
                     </el-button>
                   </div>
@@ -1674,7 +1674,7 @@
                       size="large"
                       data-dismiss="modal"
                       @click="addDonor"
-                      color="#136acd"
+                      :color="primarycolor"
                       round
                     >
                       Save
@@ -1815,7 +1815,7 @@
             style="border: none"
           >
             <el-button
-              class=" secondary-btn px-5"
+              class=" secondary-button"
               color="#dde2e6"
               data-dismiss="modal"
               round
@@ -1829,7 +1829,7 @@
               class="border-0"
               round
               size="large"
-              color="#136acd"
+              :color="primarycolor"
               @click="createNewCon"
             >
               Save

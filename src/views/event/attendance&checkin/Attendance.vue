@@ -8,7 +8,6 @@
               <router-link
                 class="no-decoration"
                 :to="{ name: 'AddCheckin' }"
-                class="text-decoration-none"
                 v-if="route.path === '/tenant/attendancecheckin'"
               >
                 <el-button class="header-btn w-100 text-white" :color="primarycolor" round>

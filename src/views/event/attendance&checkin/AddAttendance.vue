@@ -1057,7 +1057,7 @@
             <div class="row">
               <div class="col-md-12 d-flex justify-content-center">
                 <el-button
-                color="#136acd"
+                :color="primarycolor"
                   class=" text-white border-0 "
                   round
                   :loading="loading"

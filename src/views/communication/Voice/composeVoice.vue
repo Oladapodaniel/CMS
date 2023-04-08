@@ -7,28 +7,20 @@
             Upload voice file
           </h4>
           <!-- <Toast /> -->
-          <el-dialog
-            title="Select Date and Time"
-            v-model="display"
-           :width="
-              mdAndUp || lgAndUp || xlAndUp ? `50%` : xsOnly ? `90%` : `70%`
-            "
-            align-center
-          >
+          <el-dialog title="Select Date and Time" v-model="display" :width="
+            mdAndUp || lgAndUp || xlAndUp ? `50%` : xsOnly ? `90%` : `70%`
+          " align-center>
             <div class="row">
               <div class="col-md-12">
-                <el-date-picker
-                  type="datetime"
-                  id="birthdaytime"
-                  placeholder="Select date and time"
-                  class="w-100"
-                  v-model="executionDate"
-                />
+                <el-date-picker type="datetime" id="birthdaytime" placeholder="Select date and time" class="w-100"
+                  v-model="executionDate" />
               </div>
             </div>
             <template #footer>
               <span class="dialog-footer">
-                <el-button round @click="() => (display = false)"><el-icon><Close /></el-icon> Cancel</el-button>
+                <el-button round @click="() => (display = false)"><el-icon>
+                    <Close />
+                  </el-icon> Cancel</el-button>
                 <el-button round color='#136acd' :loading="loading" @click="contructScheduleMessageBody(2, '')">
                   Schedule
                 </el-button>
@@ -86,52 +78,46 @@
           <span class="small-text">Send to :</span>
         </div>
         <div class="p-0 col-md-10 col-lg-10 form-group mb-0">
-          <div class="dropdown">
-            <button
-              class="btn btn-default border dropdown-toggle small-text"
-              type="button"
-              id="dropdownMenuButton"
-              data-toggle="dropdown"
-              aria-haspopup="true"
-              aria-expanded="false"
-              @click="closeDropdownIfOpen"
-            >
+          <el-dropdown trigger="click" class="w-100">
+            <div class="d-flex justify-content-between border-contribution text-dark w-100" size="large">
+              <span>Select Destination</span>
+              <div>
+                <el-icon class="el-icon--right">
+                  <arrow-down />
+                </el-icon>
+              </div>
+            </div>
+            <template #dropdown>
+              <el-dropdown-menu>
+                <el-dropdown-item v-for="(destination, index) in possibleSMSDestinations" :key="index">
+                  <a class="no-decoration text-dark" @click="showSection(index)">
+                    {{ destination }}
+                  </a>
+                </el-dropdown-item>
+              </el-dropdown-menu>
+            </template>
+          </el-dropdown>
+          <!-- <div class="dropdown">
+            <button class="btn btn-default border dropdown-toggle small-text" type="button" id="dropdownMenuButton"
+              data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" @click="closeDropdownIfOpen">
               Select Destination
             </button>
-            <div
-              class="dropdown-menu w-100"
-              aria-labelledby="dropdownMenuButton"
-            >
-              <a
-                class="dropdown-item c-pointer small-text"
-                v-for="(destination, index) in possibleSMSDestinations"
-                :key="index"
-                @click="showSection(index)"
-                >{{ destination }}</a
-              >
+            <div class="dropdown-menu w-100" aria-labelledby="dropdownMenuButton">
+              <a class="dropdown-item c-pointer small-text" v-for="(destination, index) in possibleSMSDestinations"
+                :key="index" @click="showSection(index)">{{ destination }}</a>
             </div>
-          </div>
-        </div>
-
-        <div class="col-md-12 pr-0 mt-3">
-          <hr class="hr my-1" />
+          </div> -->
         </div>
       </div>
 
       <div class="row" v-if="sendToAll">
-        <div class="col-12 col-sm-3"></div>
-        <div class="col-12 col-sm-9">
+        <div class="col-12 col-md-2 px-0"></div>
+        <div class="col-12 col-md-10 px-0">
           <span>
-            <el-input
-              class="w-100 my-1 px-1 small-text"
-              id="dropdownMenu"
-              value="All Contacts"
-              disabled
-            />
-            <span
-              class="close-allcontacts c-pointer"
-              @click="() => (sendToAll = false)"
-              ><el-icon class="mx-2"><Close /></el-icon>
+            <el-input class="w-100 my-2 small-text" id="dropdownMenu" value="All Contacts" disabled />
+            <span class="close-allcontacts c-pointer" @click="() => (sendToAll = false)"><el-icon class="mx-2 mt-2">
+                <Close />
+              </el-icon>
               <!-- <i class="pi pi-times "></i
             > -->
             </span>
@@ -143,67 +129,39 @@
       <div class="row mb-2" v-if="groupSelectionTab">
         <div class="col-md-2"></div>
         <div class="col-md-10 px-0 grey-rounded-border">
-          <ul
-            class="d-flex flex-wrap pl-1 mb-0 dd-item small-text"
-            @click="() => groupSelectInput.focus()"
-          >
-            <li
-              style="list-style: none; min-width: 100px"
-              v-for="(group, index) in selectedGroups"
-              :key="index"
-              class="email-destination d-flex justify-content-between m-1"
-            >
+          <ul class="d-flex flex-wrap pl-1 mb-0 dd-item small-text" @click="() => groupSelectInput.focus()">
+            <li style="list-style: none; min-width: 100px" v-for="(group, index) in selectedGroups" :key="index"
+              class="email-destination d-flex justify-content-between m-1">
               <!-- <span
               class="email-destination m-1"
               
             > -->
               <span>{{ group.name }}</span>
-              <span class="ml-2 remove-email" @click="removeGroup(index)"
-                >x</span
-              >
+              <span class="ml-2 remove-email" @click="removeGroup(index)">x</span>
               <!-- </span> -->
             </li>
             <li style="list-style: none" class="">
-              <input
-                type="text"
-                class="border-0 dd-item"
-                ref="groupSelectInput"
-                :class="{
-                  'w-100': selectedGroups.length === 0,
-                  'minimized-input-width': selectedGroups.length > 0,
-                }"
-                @focus="showGroupList"
-                @click="showGroupList"
-                style="padding: 0.5rem"
-                :placeholder="`${
-                  selectedGroups.length > 0 ? '' : 'Select groups'
-                }`"
-              />
+              <input type="text" class="border-0 dd-item" ref="groupSelectInput" :class="{
+                'w-100': selectedGroups.length === 0,
+                'minimized-input-width': selectedGroups.length > 0,
+              }" @focus="showGroupList" @click="showGroupList" style="padding: 0.5rem" :placeholder="`${selectedGroups.length > 0 ? '' : 'Select groups'
+  }`" />
             </li>
           </ul>
-          <div
-            class="col-md-12 px-2 select-groups-dropdown dd-item pt-2"
-            v-if="groupListShown"
-          >
+          <div class="col-md-12 px-2 select-groups-dropdown dd-item pt-2" v-if="groupListShown">
             <div class="row dd-item" v-if="categories.length === 0">
               <div class="col-md-12 dd-item">
                 <p class="small-text">No groups yet</p>
               </div>
             </div>
-            <div
-              class="row dd-item"
-              v-for="(category, index) in categories"
-              :key="index"
-            >
+            <div class="row dd-item" v-for="(category, index) in categories" :key="index">
               <div class="col-md-12 dd-item" v-if="allGroups[index].length > 0">
                 <div class="row dd-item">
                   <div class="col-md-12 dd-item">
                     <h6 class="text-uppercase dd-item font-weight-bold">
                       {{ category }}
                     </h6>
-                    <a
-                      class="dropdown-item px-1 c-pointer dd-item small-text"
-                      v-for="(group, indx) in allGroups[index]"
+                    <a class="dropdown-item px-1 c-pointer dd-item small-text" v-for="(group, indx) in allGroups[index]"
                       @click="
                         selectGroup(
                           group.category,
@@ -212,9 +170,7 @@
                           index,
                           indx
                         )
-                      "
-                      :key="indx"
-                    >
+                      " :key="indx">
                       {{ group.name }}
                     </a>
                   </div>
@@ -231,83 +187,46 @@
         <div class="row" v-if="membershipSelectionTab">
           <div class="col-12 col-md-2"></div>
           <div class="col-12 col-md-10 grey-rounded-border">
-            <ul
-              class="d-flex flex-wrap px-1 mb-0 m-dd-item"
-              @click="() => memberSelectInput.focus()"
-            >
-              <li
-                style="list-style: none; min-width: 100px"
-                v-for="(member, indx) in selectedMembers"
-                :key="indx"
-                class="email-destination d-flex justify-content-between m-1"
-              >
+            <ul class="d-flex flex-wrap px-1 mb-0 m-dd-item" @click="() => memberSelectInput.focus()">
+              <li style="list-style: none; min-width: 100px" v-for="(member, indx) in selectedMembers" :key="indx"
+                class="email-destination d-flex justify-content-between m-1">
                 <!-- <span
               class="email-destination m-1"
               
             > -->
                 <span>{{ member.name }}</span>
-                <span class="ml-2 remove-email" @click="removeMember(indx)"
-                  >x</span
-                >
+                <span class="ml-2 remove-email" @click="removeMember(indx)">x</span>
                 <!-- </span> -->
               </li>
               <li style="list-style: none" class="m-dd-item">
-                <input
-                  type="text"
-                  class="border-0 m-dd-item text"
-                  ref="memberSelectInput"
-                  @input="searchForPerson"
+                <input type="text" class="border-0 m-dd-item text" ref="memberSelectInput" @input="searchForPerson"
                   :class="{
                     'w-100': selectedMembers.length === 0,
                     'minimized-input-width': selectedMembers.length > 0,
-                  }"
-                  @focus="showMemberList"
-                  @click="showMemberList"
-                  v-model="searchText"
-                  style="padding: 0.5rem"
-                  :placeholder="`${
-                    selectedMembers.length > 0 ? '' : 'Select from members'
-                  }`"
-                />
+                  }" @focus="showMemberList" @click="showMemberList" v-model="searchText" style="padding: 0.5rem"
+                  :placeholder="`${selectedMembers.length > 0 ? '' : 'Select from members'
+                    }`" />
               </li>
             </ul>
-            <div
-              class="col-md-12 px-0 select-groups-dropdown m-dd-item"
-              v-if="memberListShown"
-            >
+            <div class="col-md-12 px-0 select-groups-dropdown m-dd-item" v-if="memberListShown">
               <div class="dropdownmenu pt-0 w-100 m-dd-item">
-                <a
-                  class="dropdown-item px-1 c-pointer m-dd-item"
-                  v-for="(member, index) in memberSearchResults"
-                  :key="index"
-                  @click="selectMember(member, index)"
-                  >{{ member.name }}</a
-                >
-                <p
-                  class="bg-secondary p-1 mb-0 disable m-dd-item"
-                  v-if="
-                    searchText.length < 3 &&
-                    loading == false &&
-                    memberSearchResults.length === 0
-                  "
-                >
+                <a class="dropdown-item px-1 c-pointer m-dd-item" v-for="(member, index) in memberSearchResults"
+                  :key="index" @click="selectMember(member, index)">{{ member.name }}</a>
+                <p class="bg-secondary p-1 mb-0 disable m-dd-item" v-if="
+                  searchText.length < 3 &&
+                  loading == false &&
+                  memberSearchResults.length === 0
+                ">
                   Enter 3 or more characters
                 </p>
-                <p
-                  aria-disabled="true"
-                  class="btn btn-default p-1 mb-0 disable m-dd-item"
-                  v-if="
-                    memberSearchResults.length === 0 &&
-                    searchText.length >= 3 &&
-                    !loading
-                  "
-                >
+                <p aria-disabled="true" class="btn btn-default p-1 mb-0 disable m-dd-item" v-if="
+                  memberSearchResults.length === 0 &&
+                  searchText.length >= 3 &&
+                  !loading
+                ">
                   No match found
                 </p>
-                <p
-                  class="btn btn-default p-1 mb-0 disable m-dd-item"
-                  v-if="loading && searchText.length >= 3"
-                >
+                <p class="btn btn-default p-1 mb-0 disable m-dd-item" v-if="loading && searchText.length >= 3">
                   <i class="fas fa-circle-notch fa-spin m-dd-item"></i>
                 </p>
               </div>
@@ -317,38 +236,24 @@
       </div>
       <!-- End member TEst -->
 
- 
+
 
       <!-- Enter phone numbers -->
       <div class="col-12 my-1 px-0" v-if="phoneNumberSelectionTab">
         <div class="row">
           <div class="col-12 col-md-2"></div>
-          <div class="col-12 col-md-10">
-            <textarea
-              class="form-control w-100 px-1 grey-rounded-border"
-              placeholder="Enter phone number(s)"
-              v-model="phoneNumber"
-            ></textarea>
+          <div class="col-12 col-md-10 px-0">
+            <textarea class="form-control w-100 px-1 grey-rounded-border" placeholder="Enter phone number(s)"
+              v-model="phoneNumber"></textarea>
           </div>
-          <div
-            class="col-md-12 grey-rounded-border groups"
-            :class="{ hide: !groupsAreVissible }"
-          >
-            <div
-              class="row"
-              v-for="(category, index) in categories"
-              :key="index"
-            >
+          <div class="col-md-12 grey-rounded-border groups" :class="{ hide: !groupsAreVissible }">
+            <div class="row" v-for="(category, index) in categories" :key="index">
               <div class="col-md-12">
                 <div class="row">
                   <div class="col-md-12">
                     <h4 class="px-14">{{ category }}</h4>
-                    <p
-                      v-for="(group, indx) in allGroups[index]"
-                      @click="selectGroup(group.category, group.id, group.name)"
-                      :key="indx"
-                      class="small-text"
-                    >
+                    <p v-for="(group, indx) in allGroups[index]"
+                      @click="selectGroup(group.category, group.id, group.name)" :key="indx" class="small-text">
                       {{ group.name }}
                     </p>
                   </div>
@@ -366,36 +271,81 @@
           <div class="d-flex justify-content-between">
             <input type="file" class="form-control-file" @change="uploadFile" />
             <div>
-              <i
-                class="pi pi-times mr-2 c-pointer"
-                @click="() => (contactUpload = false)"
-              ></i>
+              <i class="pi pi-times mr-2 c-pointer" @click="() => (contactUpload = false)"></i>
             </div>
           </div>
           <div class="mt-1">
-            <a
-              href="/files/Upload_Contact Template.csv"
-              class="template-text text-decoration-none font-weight-bold"
-              download
-              >Download template</a
-            >
+            <a href="/files/Upload_Contact Template.csv" class="template-text text-decoration-none font-weight-bold"
+              download>Download template</a>
           </div>
         </div>
       </div>
 
-      <div
-        class="row mt-1"
-        v-if="
-          phoneNumberSelectionTab || membershipSelectionTab || groupSelectionTab
-        "
-      >
-        <div class="col-md-12 pr-0">
-          <hr class="hr my-1" />
-        </div>
-      </div>
-      <div class="row">
+
+      <div class="row mt-3">
         <div class="px-0 col-md-2 mb-sm-2">
-          <span class="text-bold">Upload File :</span>
+          <span class="small-text">Select audio source :</span>
+        </div>
+        <div class="col-md-10 px-0">
+          <el-dropdown trigger="click" class="w-100">
+            <div class="d-flex justify-content-between border-contribution text-dark w-100" size="large">
+              <span>{{ voiceActionType && selectedVoiceType && Object.keys(voiceActionType.find(i => i.id ==
+                selectedVoiceType)).length > 0 ? voiceActionType.find(i => i.id == selectedVoiceType).name : 'Choose audio file source'
+              }} </span>
+              <div>
+                <el-icon class="el-icon--right">
+                  <arrow-down />
+                </el-icon>
+              </div>
+            </div>
+            <template #dropdown>
+              <el-dropdown-menu>
+                <el-dropdown-item v-for="(item, index) in voiceActionType" :key="index">
+                  <a class="no-decoration text-dark" @click="selectedVoiceType = item.id">
+                    {{ item.name }}
+                  </a>
+                </el-dropdown-item>
+              </el-dropdown-menu>
+            </template>
+          </el-dropdown>
+
+          <el-dropdown trigger="click" class="w-100 mt-3" v-if="selectedVoiceType == 1">
+            <div class="d-flex justify-content-between border-contribution text-dark w-100" size="large">
+              <span>{{ Object.keys(selectedVoiceaudio).length > 0 ? selectedVoiceaudio.fileBlobName : 'Select uploaded audio file'
+              }} </span>
+              <div>
+                <el-icon class="el-icon--right">
+                  <arrow-down />
+                </el-icon>
+              </div>
+            </div>
+            <template #dropdown>
+              <el-dropdown-menu>
+                <el-dropdown-item v-for="(item, index) in voiceAudioList" :key="index">
+                  <a class="no-decoration text-dark" @click="chooseVoiceAudio(item)">
+                    {{ item.fileBlobName }}
+                  </a>
+                </el-dropdown-item>
+              </el-dropdown-menu>
+            </template>
+          </el-dropdown>
+
+          <el-upload class="upload-demo w-100 mt-3" drag multiple :on-change="chooseVoiceFile" accept="audio/*"
+            :auto-upload="false" v-else-if="selectedVoiceType == 2">
+            <el-icon class="el-icon--upload"><upload-filled /></el-icon>
+            <div class="el-upload__text">
+              Drop file here or <em>click to upload</em>
+            </div>
+            <template #tip>
+              <div class="el-upload__tip">
+                jpg/png files with a size less than 500kb
+              </div>
+            </template>
+          </el-upload>
+          <audio controls ref="audioPlayer" class="mt-2" style="width: 100%; display: none">
+            <source src="" type="audio/mpeg">
+            Your browser does not support the audio element.
+          </audio>
         </div>
 
         <!-- <div class="col-md-10 mb-0 px-0" style="background: #ffffff">
@@ -430,29 +380,8 @@
         <!-- <div class="col-md-2"></div>
         <div class="col-md-10"><div>Maximum 5mb file size</div></div> -->
         <!-- action="https://run.mocky.io/v3/9d059bf9-4660-45f2-925d-ce80ad6c4d15" -->
-        <el-upload
-          class="upload-demo w-100"
-          drag
-          multiple
-          :on-change="chooseVoiceFile"
-          accept="audio/*" 
-          :auto-upload="false"
-        >
-          <el-icon class="el-icon--upload"><upload-filled /></el-icon>
-          <div class="el-upload__text">
-            Drop file here or <em>click to upload</em>
-          </div>
-          <template #tip>
-            <div class="el-upload__tip">
-              jpg/png files with a size less than 500kb
-            </div>
-          </template>
-        </el-upload>
-        <audio controls ref="audioPlayer" class="mt-2" style="width: 100%; display: none">
-              <source src="" type="audio/mpeg">
-              Your browser does not support the audio element.
-            </audio>
-        
+
+
       </div>
 
       <!-- start voice -->
@@ -481,65 +410,51 @@
 
       <div class="row mt-4 mb-5">
         <div class="col-md-12">
-          <p
-            class="mb-1 text-danger text-right font-weight-700"
-            v-if="invalidDestination"
-          >
+          <p class="mb-1 text-danger text-right font-weight-700" v-if="invalidDestination">
             Please select destination
           </p>
-          <p
-            class="mb-1 text-danger text-right font-weight-700"
-            v-if="invalidMessage"
-          >
+          <p class="mb-1 text-danger text-right font-weight-700" v-if="invalidMessage">
             Enter your message
           </p>
         </div>
         <div class="col-md-10 d-flex justify-content-end ml-4">
           <span :class="{ 'cursor-close': disableBtn }">
-            <el-dropdown size="large"  trigger="click" class="split-button" @click="checkFileType"   split-button >
-                Send
-                <template #dropdown>
-                  <el-dropdown-menu>
-                    <el-dropdown-item @click="showScheduleModal"><el-icon><Clock /></el-icon>Schedule</el-dropdown-item>
-                    <el-dropdown-item @click="draftMessage"><el-icon><MessageBox /></el-icon>Safe as Draft</el-dropdown-item>
-                  </el-dropdown-menu>
-                </template>
-              </el-dropdown>
-            <!-- <SplitButton
-              label="Send "
-              :model="sendOptions"
-              :disabled="disableBtn"
-              @click="checkFileType"
-            ></SplitButton> -->
+            <el-dropdown size="large" trigger="click" class="split-button" @click="checkFileType" split-button>
+              Send
+              <template #dropdown>
+                <el-dropdown-menu>
+                  <el-dropdown-item @click="showScheduleModal"><el-icon>
+                      <Clock />
+                    </el-icon>Schedule</el-dropdown-item>
+                  <el-dropdown-item @click="draftMessage"><el-icon>
+                      <MessageBox />
+                    </el-icon>Safe as Draft</el-dropdown-item>
+                </el-dropdown-menu>
+              </template>
+            </el-dropdown>
           </span>
-          <router-link
-            :to="
-              route.fullPath === '/tenant/sms/compose'
-                ? '/tenant/sms/sent'
-                : '/errorpage/expiredSubscription'
-            "
-            class="
-              default-btn
-              d-flex
-              justify-content-center
-              short-btn
-              align-items-center
-              ml-3
-              text-decoration-none text-dark
-            "
-          >
+          <!-- <router-link :to="
+            route.fullPath === '/tenant/sms/compose'
+              ? '/tenant/sms/sent'
+              : '/errorpage/expiredSubscription'
+          " class="
+                      default-btn
+                      d-flex
+                      justify-content-center
+                      short-btn
+                      align-items-center
+                      ml-3
+                      text-decoration-none text-dark
+                    ">
             Discard
+          </router-link> -->
+          <router-link class="no-decoration" to="/tenant/Voice">
+            <el-button class="secondary-button" round>Discard</el-button>
           </router-link>
         </div>
-        <div class="row">
+        <!-- <div class="row">
           <div class="col-md-12">
-            <div
-              class="modal fade"
-              id="sendsmsbtn"
-              tabindex="-1"
-              aria-labelledby="exampleModalLabel"
-              aria-hidden="true"
-            >
+            <div class="modal fade" id="sendsmsbtn" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
               <div class="modal-dialog modal-dialog-centered modal-lg">
                 <div class="modal-content">
                   <div class="modal-header grey-background">
@@ -547,42 +462,27 @@
                       <i class="pi pi-user mr-2"></i>
                       {{ sendModalHeader }}
                     </h5>
-                    <button
-                      type="button"
-                      class="close"
-                      data-dismiss="modal"
-                      aria-label="Close"
-                    >
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                       <span aria-hidden="true">&times;</span>
                     </button>
                   </div>
                   <div class="modal-body">
                     <div class="row" v-if="!nigerian">
                       <div class="col-md-12 text-center">
-                        <button
-                          class="
-                            primary-btn
-                            default-btn
-                            border-0
-                            px-4
-                            my-2
-                            primary-bg
-                            text-white
-                            outline-none
-                            extra-btn
-                          "
-                          data-dismiss="modal"
-                          @click="contructScheduleMessageBody(1, '')"
-                        >
+                        <button class="
+                                    primary-btn
+                                    default-btn
+                                    border-0
+                                    px-4
+                                    my-2
+                                    primary-bg
+                                    text-white
+                                    outline-none
+                                    extra-btn
+                                  " data-dismiss="modal" @click="contructScheduleMessageBody(1, '')">
                           Send SMS Now
                         </button>
-                        <!-- <button
-                          class="primary-btn default-btn border-0 px-4 my-2 primary-bg text-white outline-none extra-btn"
-                          data-dismiss="modal"
-                          @click="contructScheduleMessageBody(1, '')"
-                        >
-                          Send SMS Now {{ `${nigerian}` }}
-                        </button> -->
+                  
                       </div>
                     </div>
 
@@ -603,7 +503,7 @@
               </div>
             </div>
           </div>
-        </div>
+        </div> -->
       </div>
     </div>
   </div>
@@ -651,22 +551,29 @@ export default {
     const contactUpload = ref(false);
     const multipleContact = ref({});
     const uploadButton = ref(null);
-    const voice = ref("");
     const url = ref("");
     const voiceToEdit = ref("");
     const voiceName = ref("");
     const recMode = ref("");
     const canvas = ref(null);
-    const displayAudio = ref(false);
     const { mdAndUp, lgAndUp, xlAndUp, xsOnly } = deviceBreakpoint();
+    const voiceAudioList = ref([])
+    const selectedVoiceaudio = ref({})
+    const voiceActionType = ref([
+      { name: 'Choose from uploaded audio files', id: 1 },
+      { name: 'Upload a new audio file', id: 2 },
+    ])
+    const selectedVoiceType = ref(0)
+
+
+
+
+
     const uploadVoice = () => {
       console.log(uploadButton.value);
       uploadButton.value.click();
     };
 
-    const handleAudio = () => {
-      displayAudio.value = true;
-    };
     const onStream = (data) => {
       console.log("The blob data:", data);
     };
@@ -677,11 +584,11 @@ export default {
     };
 
     // function that selects the file
-    const audioSelected = (e) => {
-      console.log(e);
-      voice.value = e.target.files[0];
-      voiceName.value = e.target.files[0].name;
-    };
+    // const audioSelected = (e) => {
+    //   console.log(e);
+    //   voice.value = e.target.files[0];
+    //   voiceName.value = e.target.files[0].name;
+    // };
 
     const formatPhoneNumber = (phoneNumber) => {
       const numbers = [];
@@ -740,64 +647,67 @@ export default {
     // start();
     // audio end
     const checkFileType = () => {
-      if (!voice.value) {
+      if (Object.keys(selectedVoiceaudio.value).length === 0 && file.value instanceof File) {
         ElMessage({
-              type: 'warn',
-              message: "please record to upload",
-              duration: 5000
-            })
+          type: 'warning',
+          message: "Please choose an audio file to send as voice messages to your contacts",
+          duration: 8000
+        })
         return false;
       }
-      if (voice.value) detailsForVoice(voice.value);
-      else detailsForVoice(blobMethod());
-    };
+      if (multipleContact.value instanceof File) {
+        sendSMSToUploadedContacts();
+      }   else {
+        detailsForVoice();
+      }
+    }
 
-    const chooseVoiceFile = (e) =>{
+    const chooseVoiceFile = (e) => {
       console.log(audioPlayer.value)
       const mediaPlayer = audioPlayer.value
       file.value = e.raw;
-        const reader = new FileReader();
+      const reader = new FileReader();
 
-        reader.addEventListener("load", function() {
-          mediaPlayer.src = reader.result;
-          mediaPlayer.style.display = "block";
-        });
+      reader.addEventListener("load", function () {
+        mediaPlayer.src = reader.result;
+        mediaPlayer.style.display = "block";
+      });
 
-        if (file.value) {
-          reader.readAsDataURL(file.value);
-        }
+      if (file.value) {
+        reader.readAsDataURL(file.value);
       }
-     
+    }
 
-    const detailsForVoice = async (file) => {
-      // const testing = blobMethod()
-      // console.log(testing, 'blobMethod');
+
+    const detailsForVoice = async () => {
+      console.log(selectedMembers.value)
       let formData = new FormData();
-      formData.append("VoiceMessageFile", file);
-      formData.append("Contacts", []);
+      file.value instanceof File ?
+        formData.append("VoiceMessageFile", file.value) :
+        formData.append("VoiceMessageUrl", selectedVoiceaudio.value.filePath);
+      formData.append("ToContacts", selectedMembers.value.map(i => i.id).join(","));
       formData.append("GateWayToUse", "dotgovoice");
-      //   formData.append('GroupedContacts', selectedGroups.value.map((i) => i.data) )
-      //   formData.append('ToContacts', )
+      formData.append('GroupedContacts', selectedGroups.value.map((i) => i.data))
       formData.append("ToOthers", formatPhoneNumber(phoneNumber.value));
 
       try {
-        // alert('checking the error')
         let { data } = await axios.post(
           "/api/Messaging/SendVoiceMessage",
           formData
         );
+        console.log(data)
         ElMessage({
-              type: 'success',
-              message: 'You have successfully sent a voice note',
-              duration: 5000
-            })
+          type: 'success',
+          message: 'You have successfully sent a voice note',
+          duration: 5000
+        })
       } catch (err) {
         console.log(err);
         ElMessage({
-              type: 'error',
-              message: 'Sending failed, please try again',
-              duration: 5000
-            })
+          type: 'error',
+          message: 'Sending failed, please try again',
+          duration: 5000
+        })
       }
     };
     const toggleGroupsVissibility = () => {
@@ -936,10 +846,10 @@ export default {
         return false;
       }
       ElMessage({
-              type: 'info',
-              message: 'SMS is being sent....',
-              duration: 5000
-            })
+        type: 'info',
+        message: 'SMS is being sent....',
+        duration: 5000
+      })
       console.log(data);
       disableBtn.value = true;
       composeService
@@ -971,14 +881,13 @@ export default {
                 : "",
               smsUnitsUsed: res.data.unitsUsed,
               dateSent: res.data.returnObjects
-                ? `Today | ${
-                    moment.parseZone(
-                      new Date(
-                        res.data.returnObjects[0].communicationReport.date
-                      ).toLocaleDateString(),
-                      "YYYY MM DD HH ZZ"
-                    )._i
-                  }`
+                ? `Today | ${moment.parseZone(
+                  new Date(
+                    res.data.returnObjects[0].communicationReport.date
+                  ).toLocaleDateString(),
+                  "YYYY MM DD HH ZZ"
+                )._i
+                }`
                 : "",
               deliveryReport: [{ report: res.data.messageStatus }],
             };
@@ -1017,29 +926,31 @@ export default {
     };
 
     const draftMessage = async () => {
-      try {
-        const response = await composerObj.saveDraft(
-          {
-            body: editorData.value,
-            isDefaultBirthDayMessage: false,
-          },
-          "/api/Messaging/PostSmsDraft"
-        );
-        store.dispatch("communication/getSMSDrafts");
-        console.log(response, "draft response");
-        ElMessage({
-              type: 'success',
-              message: "Message saved as draft",
-              duration: 5000
-            })
-      } catch (error) {
-        console.log(error, "drafting error");
-        ElMessage({
-              type: 'warning',
-              message: "Message not saved as draft",
-              duration: 5000
-            })
-      }
+      // Api to save draft voice messages not yet available
+
+      // try {
+      //   const response = await composerObj.saveDraft(
+      //     {
+      //       body: editorData.value,
+      //       isDefaultBirthDayMessage: false,
+      //     },
+      //     "/api/Messaging/PostSmsDraft"
+      //   );
+      //   store.dispatch("communication/getSMSDrafts");
+      //   console.log(response, "draft response");
+      //   ElMessage({
+      //     type: 'success',
+      //     message: "Message saved as draft",
+      //     duration: 5000
+      //   })
+      // } catch (error) {
+      //   console.log(error, "drafting error");
+      //   ElMessage({
+      //     type: 'warning',
+      //     message: "Message not saved as draft",
+      //     duration: 5000
+      //   })
+      // }
     };
 
     const contructScheduleMessageBody = (sendOrSchedule, gateway) => {
@@ -1095,7 +1006,8 @@ export default {
     };
 
     const showScheduleModal = () => {
-      display.value = true;
+      // Set display to be true when voice schedule api is ready
+      // display.value = true;
     };
 
     const scheduleMessage = async (data) => {
@@ -1111,44 +1023,43 @@ export default {
           data
         );
         ElMessage({
-              type: 'success',
-              message: `Message scheduled for ${data.time}`,
-              duration: 5000
-            })
+          type: 'success',
+          message: `Message scheduled for ${data.time}`,
+          duration: 5000
+        })
         console.log(response, "Schedule response");
       } catch (error) {
         console.log(error);
         ElMessage({
-              type: 'error',
-              message: 'Could not schedule message',
-              duration: 5000
-            })
+          type: 'error',
+          message: 'Could not schedule message',
+          duration: 5000
+        })
       }
     };
 
-    const sendSMSToUploadedContacts = async (gateway) => {
+    const sendSMSToUploadedContacts = async () => {
       let formData = new FormData();
       formData.append("file", multipleContact.value);
       formData.append("message", editorData.value);
       formData.append("category", "");
-      formData.append("gatewayToUse", gateway);
       formData.append("isoCode", isoCode.value);
 
       try {
         let { data } = await axios.post("/api/messaging/upload", formData);
         console.log(data);
         ElMessage({
-              type: 'success',
-              message: data.response,
-              duration: 5000
-            })
+          type: 'success',
+          message: data.response,
+          duration: 5000
+        })
       } catch (err) {
         console.log(err);
         ElMessage({
-              type: 'error',
-              message: 'Sending failed, please try again',
-              duration: 5000
-            })
+          type: 'error',
+          message: 'Sending failed, please try again',
+          duration: 5000
+        })
       }
     };
 
@@ -1193,15 +1104,7 @@ export default {
         .catch((err) => console.log(err));
     }
 
-    const sendModalHeader = computed(() => {
-      if (userCountry.value !== "Nigeria") return "Confirm Send";
-      return "Send SMS Alternative";
-    });
 
-    const nigerian = computed(() => {
-      if (userCountry.value === "Nigeria") return true;
-      return false;
-    });
 
     const allGroups = ref([]);
     const categories = ref([]);
@@ -1279,10 +1182,10 @@ export default {
       } catch (error) {
         console.log(error);
         ElMessage({
-              type: 'error',
-              message: 'Could not load message!',
-              duration: 5000
-            })
+          type: 'error',
+          message: 'Could not load message!',
+          duration: 5000
+        })
       }
     };
 
@@ -1294,12 +1197,33 @@ export default {
       multipleContact.value = e.target.files[0];
     };
 
+    const getAllVoiceAudio = async () => {
+      try {
+        let data = await communicationService.getAllUploadedVoiceAudio();
+        console.log(data)
+        voiceAudioList.value = data
+      }
+      catch (err) {
+        console.error(err)
+      }
+    }
+    getAllVoiceAudio();
+
+    const chooseVoiceAudio = (item) => {
+      selectedVoiceaudio.value = item
+      const mediaPlayer = audioPlayer.value
+      mediaPlayer.src = item.filePath;
+      mediaPlayer.style.display = "block";
+    }
+
+
+
     return {
       editorData,
       showScheduleModal,
-      mdAndUp, 
-      lgAndUp, 
-      xlAndUp, 
+      mdAndUp,
+      lgAndUp,
+      xlAndUp,
       xsOnly,
       editorConfig,
       possibleSMSDestinations,
@@ -1343,8 +1267,6 @@ export default {
       invalidDestination,
       invalidMessage,
       sendToAll,
-      sendModalHeader,
-      nigerian,
       contructScheduleMessageBody,
       executionDate,
       moment,
@@ -1358,22 +1280,23 @@ export default {
       sendSMSToUploadedContacts,
       uploadButton,
       uploadVoice,
-      audioSelected,
-      voice,
+      // audioSelected,
       url,
       voiceToEdit,
-      detailsForVoice,
       voiceName,
       recMode,
       onStream,
       onResult,
       canvas,
       checkFileType,
-      displayAudio,
-      handleAudio,
       chooseVoiceFile,
       file,
-      audioPlayer
+      audioPlayer,
+      voiceAudioList,
+      selectedVoiceaudio,
+      chooseVoiceAudio,
+      voiceActionType,
+      selectedVoiceType
     };
   },
 };
@@ -1385,6 +1308,7 @@ export default {
   font-weight: 800;
   background-color: rgb(236, 230, 230);
 }
+
 .btn:hover {
   border: none !important;
 }
