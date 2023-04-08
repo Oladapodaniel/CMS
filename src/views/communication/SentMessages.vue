@@ -31,8 +31,8 @@
                     <router-link :to="{
                       name: 'SendMessage',
                       query: { messageId: item.id },
-                    }" class="no-decoration primary--text">
-                      <el-tooltip class="box-item" effect="dark" :content="item.message" placement="top-start">
+                    }" class="text-decoration-none">
+                      <!-- <el-tooltip class="box-item" effect="dark" :content="item.message" placement="top-start"> -->
                         <span class="font-weight-600">{{
                           item.message && item.message.length > 25
                             ? `${item.message
@@ -43,7 +43,7 @@
                               ? item.message
                               : ""
                         }}</span>
-                      </el-tooltip>
+                      <!-- </el-tooltip> -->
                     </router-link>
                   </div>
                 </template>

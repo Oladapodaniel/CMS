@@ -210,8 +210,6 @@ export default {
     watchEffect(() => {
       if (props.groupDetail && Object.keys(props.groupDetail).length > 0) {
         note.value = props.groupDetail.note;
-      }else {
-        console.log('ddddd')
       }
     });
 

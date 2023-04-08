@@ -43,7 +43,7 @@
               <span class="py-2 hidden-header">MESSAGE</span>
               <span class="py-2" v-if="allMessages && allMessages.message && allMessages.message.length < 18"><router-link class="route" :to="{path:'/tenant/settings/adddefaultmessage',query:{messageId:allMessages.id}}">{{allMessages.message}}</router-link></span>
               <el-tooltip v-else :content="`${allMessages.message}`" placement="top" >
-                <router-link class="route" :to="{path:'/tenant/settings/adddefaultmessage',query:{messageId:allMessages.id}}">{{allMessages.message.substring(0,18)+"..."}}</router-link>
+                <router-link class="route" :to="{path:'/tenant/settings/adddefaultmessage',query:{messageId:allMessages.id}}">{{allMessages.message ? allMessages.message.substring(0,18)+"..." : ""}}</router-link>
               </el-tooltip>
             </div>
             <div
@@ -52,7 +52,7 @@
               <span class="py-2 hidden-header">SUBJECT</span>
               <span class="py-2 text-xs-left" v-if="allMessages && allMessages.subject && allMessages.subject.length < 18"> <router-link class="route" :to="{path:'/tenant/settings/adddefaultmessage',query:{messageId:allMessages.id}}">{{allMessages.subject}}</router-link></span>
               <el-tooltip v-else :content="`${allMessages.subject}`" placement="top" >
-                {{allMessages.subject.substring(0,)+ "..."}}
+                {{allMessages.subject ? allMessages.subject.substring(0,)+ "..." : ""}}
               </el-tooltip>
             </div>
              <div
@@ -170,7 +170,6 @@ export default {
         const  {data} = await axios.get('/api/Settings/AllDefaultMessages')
         this.defaultMessage = data.returnObject;
         this.loading = false
-        console.log(this.defaultMessage)
       }catch(error){
         console.log(error)
       }

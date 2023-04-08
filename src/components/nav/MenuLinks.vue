@@ -261,24 +261,36 @@ export default {
         logo: '/',
         route: '/tenant/family',
       }
-
-      const report = {
+      const social = {
         id: 6,
+        name: 'Social & Mobile App',
+        logo: require('../../assets/dashboardlinks/social-icon.svg'),
+        route: '/tenant/social',
+        submenu: []
+      }
+      // const social = {
+      //   name: 'Social & Mobile App',
+      //   logo: '/',
+      //   route: '/tenant/social',
+      //   submenu: []
+      // }
+      const report = {
+        id: 7,
         name: 'Reports',
         logo: require('../../assets/dashboardlinks/reports-icon.svg'),
         route: '/tenant/reports',
         submenu: []
       }
-
-      const social = {
-        name: 'Social & Mobile App',
-        logo: '/',
-        route: '/tenant/social',
-        submenu: []
-      }
+      // const report = {
+      //   id: 6,
+      //   name: 'Reports',
+      //   logo: require('../../assets/dashboardlinks/reports-icon.svg'),
+      //   route: '/tenant/reports',
+      //   submenu: []
+      // }
 
       const media = {
-        name: 'Media Library',
+        name: 'Ecommerce/Media Library',
         logo: '/',
         route: '/tenant/media',
         submenu: []
@@ -316,12 +328,12 @@ export default {
           },
         ]
       }
-      const workflow = {
-        name: 'Workflow',
-        logo: '/',
-        route: '/tenant/workflow/list',
-        submenu: []
-      }
+      // const workflow = {
+      //   name: 'Workflow',
+      //   logo: '/',
+      //   route: '/tenant/workflow/list',
+      //   submenu: []
+      // }
 
       const settings = {
         name: 'Settings',
@@ -330,12 +342,12 @@ export default {
         submenu: []
       }
 
-      const archivedpeople = {
-        name: 'Archived People',
-        logo: '/',
-        route: '/tenant/archivedpeople',
-        submenu: []
-      }
+      // const archivedpeople = {
+      //   name: 'Archived People',
+      //   logo: '/',
+      //   route: '/tenant/archivedpeople',
+      //   submenu: []
+      // }
 
       const groupleader = {
         name: 'Leader Dashboard',
@@ -350,8 +362,15 @@ export default {
       }
 
 
+      // const more = {
+      //   id: 8,
+      //   name: 'More',
+      //   logo: '',
+      //   route: '/',
+      //   submenu: []
+      // }
       const more = {
-        id: 7,
+        id: 8,
         name: 'More',
         logo: '',
         route: '/',
@@ -393,7 +412,11 @@ export default {
         if (i.toLowerCase() == 'mobileadmin') {
           if (menuLink.value.findIndex(i => i.id == more.id) < 0) {
             menuLink.value.push(more)
-            menuLink.value.find(i => i.name.toLowerCase() == 'more').submenu.push(social, media)
+            menuLink.value.find(i => i.name.toLowerCase() == 'more').submenu.push(media)
+          }
+          if (menuLink.value.findIndex(i => i.id == social.id) < 0) {
+            menuLink.value.push(social)
+            // menuLink.value.find(i => i.name.toLowerCase() == 'more').submenu.push(social, media)
           }
         }
 
@@ -426,18 +449,25 @@ export default {
           if (menuLink.value.findIndex(i => i.id == report.id) < 0) {
             menuLink.value.push(report)
           }
+          if (menuLink.value.findIndex(i => i.id == social.id) < 0) {
+            menuLink.value.push(social)
+          }
           if (menuLink.value.findIndex(i => i.id == more.id) < 0) {
             menuLink.value.push(more)
-            menuLink.value.find(i => i.name.toLowerCase() == 'more').submenu.push(social, media, branch, workflow, archivedpeople, settings)
+            menuLink.value.find(i => i.name.toLowerCase() == 'more').submenu.push(media, branch, settings)
+            // menuLink.value.find(i => i.name.toLowerCase() == 'more').submenu.push(social, media, branch, workflow, archivedpeople, settings)
           } else {
-            menuLink.value.find(i => i.name.toLowerCase() == 'more').submenu.push(social, media, branch, workflow, archivedpeople, settings)
+            menuLink.value.find(i => i.name.toLowerCase() == 'more').submenu.push( media, branch, settings)
+            // menuLink.value.find(i => i.name.toLowerCase() == 'more').submenu.push(social, media, branch, workflow, archivedpeople, settings)
           }
         }
 
         if (i.toLowerCase() == 'admin') {
-          menuLink.value.push(dashboard, people, communication, event, financial, report, more)
+          menuLink.value.push(dashboard, people, communication, event, financial, social, report, more,)
+          // menuLink.value.push(dashboard, people, communication, event, financial,  report, more)
           menuLink.value.find(i => i.name.toLowerCase() == 'people').submenu.push(members, firsttimers, groups, families)
-          menuLink.value.find(i => i.name.toLowerCase() == 'more').submenu.push( workflow, social, media, branch,  archivedpeople, settings)
+          menuLink.value.find(i => i.name.toLowerCase() == 'more').submenu.push( media, branch, settings)
+          // menuLink.value.find(i => i.name.toLowerCase() == 'more').submenu.push( workflow, social, media, branch,  archivedpeople, settings)
         }
       })
     }

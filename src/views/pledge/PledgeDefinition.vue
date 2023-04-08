@@ -839,7 +839,7 @@ export default {
         pledgeDetails.id = route.query.id;
         pledgeDetails.paymentFormID = paymentFormId.value;
         try {
-          const response = await axios.put(
+           await axios.put(
             "/api/Pledge/UpdatePledgeDefinition",
             pledgeDetails
           );

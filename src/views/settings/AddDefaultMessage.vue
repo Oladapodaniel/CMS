@@ -149,14 +149,12 @@ export default {
         return i.value === this.selectCategoryID
       })
     },
-    callButton() {
+    callButton () {
       this.loading = true
       if (!this.$route.query.messageId) {
         this.createDefaultMessage();
-        this.loading = false
       } else {
         this.updateDefaultMessage();
-        this.loading = false
       }
     },
     createDefaultMessage() {

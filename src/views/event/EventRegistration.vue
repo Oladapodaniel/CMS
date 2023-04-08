@@ -762,6 +762,34 @@ export default {
           };
           registerMember(newFamily)
 
+          // // Register Family members individually
+          // familyWards.value.familyMembers.forEach(i => {
+          //   if (i.checkMember) {
+          //     let regFamMembers = {
+          //       person: {
+          //         personId: i.person.id
+          //       },
+          //       id: route.params.checkinId
+          //     }
+          //     axios.post("/EventRegistration", regFamMembers).then(res => {
+          //       console.log(res)
+          //     })
+          //       .catch(err => {
+          //         console.log(err)
+          //       })
+          //   }
+          // })
+          // let newFamily = {
+          //   person: {
+          //     personId: personData.value.personId,
+          //     mobilePhone: enteredValue.value,
+          //     homeAddress: personData.value.homeAddress ? personData.value.homeAddress : '',
+          //     email: personData.value.email ? personData.value.email : person.value.email,
+          //   },
+          //   id: route.params.checkinId
+          // };
+          // registerMember(newFamily)
+
         } else {
           confirm()
         }

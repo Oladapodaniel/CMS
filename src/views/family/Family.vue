@@ -1,114 +1,132 @@
 
 <template>
-    <div class="container-wide container-top">
-      <div class="row my-3 d-flex justify-content-between">
-        <div class="col-3 col-sm-6">
-          <h2 class="page-header">Family</h2>
-        </div>
+  <div :class="{ 'container-slim': lgAndUp || xlAndUp }">
+    <div class="container-fluid container-top">
+     
 
-        <div class="col-5 col-sm-6 head-button text-right">
-          <router-link to="/tenant/addfamily">
-            <button class="default-btn primary-bg border-0 text-white mr-3">Add Family</button>
+      <div
+        class="row d-flex flex-column flex-sm-row justify-content-sm-between"
+      >
+        <div class="head-text">Family</div>
+
+         <router-link to="/tenant/addfamily">
+             <el-button
+            class="header-btn"
+            :color="primarycolor"
+            round
+          >
+            Add Family
+          </el-button>
           </router-link>
-        </div>
-    </div>
-
-      <div class="row">
-      <div class="col-md-12">
-        <hr class="hr" />
-      </div>
       </div>
 
 
-    <div v-if="loading">
+         
+
+      <div v-if="loading">
         <Loader />
-    </div>
-    
+      </div>
 
-    <div class="row" v-if="familyList.length > 0 && !loading && !networkError">
+      <div
+        class="row"
+        v-if="familyList.length > 0 && !loading && !networkError"
+      >
         <!-- <OfferingList :contributionTransactions="contributionTransactions" @get-pages="getOfferingPages" @contri-transac="updateTransac" :totalItem="totalItem"/> -->
-        <FamilyList :familyList="familyList" @list-filtered="resetList"/>
-    </div> 
-    
-    <div class="no-person" v-else-if="familyList.length === 0 && !loading && !networkError">
-        <div class="empty-img">
-            <p><img src="../../assets/people/people-empty.svg" alt="" /></p>
-            <p class="tip">You haven't added any family yet</p>
-            <div class="c-pointer primary-bg col-sm-6 col-md-4 offset-sm-3 offset-md-4 default-btn border-0 text-white" @click="navigateToAddFamily">Add Family</div>
-        </div>
-    </div>
-    
-    <div  class="adjust-network" v-else-if="networkError">
-      <img src="../../assets/network-disconnected.png" >
-      <div>Opps, Your internet connection was disrupted</div>
-    </div>
+        <FamilyList :familyList="familyList" @list-filtered="resetList" />
+      </div>
 
-  
+      <div
+        class="no-person"
+        v-else-if="familyList.length === 0 && !loading && !networkError"
+      >
+        <div class="empty-img">
+          <p><img src="../../assets/people/people-empty.svg" alt="" /></p>
+          <p class="tip">You haven't added any family yet</p>
+          <div
+            class="c-pointer primary-bg col-sm-6 col-md-4 offset-sm-3 offset-md-4 default-btn border-0 text-white"
+            @click="navigateToAddFamily"
+          >
+            Add Family
+          </div>
+        </div>
+      </div>
+
+      <div class="adjust-network" v-else-if="networkError">
+        <img src="../../assets/network-disconnected.png" />
+        <div>Opps, Your internet connection was disrupted</div>
+      </div>
     </div>
+  </div>
 </template>
 
 <script>
-import { ref } from "vue"
+import { ref, inject } from "vue";
 import axios from "@/gateway/backendapi";
-import finish from '../../services/progressbar/progress'
-import FamilyList from "./FamilyList.vue"
-import Loader from '../accounting/offering/SkeletonLoader.vue'
-import router from '../../router';
+import finish from "../../services/progressbar/progress";
+import FamilyList from "./FamilyList.vue";
+import Loader from "../accounting/offering/SkeletonLoader.vue";
+import router from "../../router";
+import deviceBreakpoint from "../../mixins/deviceBreakpoint";
+
 export default {
-    components: {
-        FamilyList,
-        Loader
-    },
-    setup () {
-      const familyList = ref([])
-      const loading = ref(false)
-      const networkError = ref(false)
+  components: {
+    FamilyList,
+    Loader,
+  },
+  setup() {
+    const primarycolor = inject('primarycolor')
+    const familyList = ref([]);
+    const loading = ref(false);
+    const networkError = ref(false);
+    const { lgAndUp, xlAndUp } = deviceBreakpoint();
 
-      const getAllFamilies = async() => {
-        loading.value = true
-        try {
-          let data = await axios.get("/api/family/allfamilies")
-          console.log(data)
-          familyList.value = data.data
-          loading.value = false
+    const getAllFamilies = async () => {
+      loading.value = true;
+      try {
+        let data = await axios.get("/api/family/allfamilies");
+        console.log(data);
+        familyList.value = data.data;
+        loading.value = false;
+      } catch (err) {
+        finish();
+        console.log(err);
+        loading.value = false;
+        loading.value = false;
+        if (err.toString().toLowerCase().includes("network error")) {
+          networkError.value = true;
+        } else {
+          networkError.value = false;
         }
-        catch (err) {
-          finish()
-          console.log(err)
-          loading.value = false
-          loading.value = false
-              if(err.toString().toLowerCase().includes("network error")) {
-                networkError.value = true
-              } else {
-                networkError.value = false
-              }
-        }
       }
-      getAllFamilies()
+    };
+    getAllFamilies();
 
-      const resetList = (payload) => {
-        familyList.value = payload
-      }
+    const resetList = (payload) => {
+      familyList.value = payload;
+    };
 
-      const navigateToAddFamily = () => {
-        router.push('/tenant/addfamily')
-      }
+    const navigateToAddFamily = () => {
+      router.push("/tenant/addfamily");
+    };
 
-      return {
-        familyList,
-        getAllFamilies,
-        resetList,
-        loading,
-        networkError,
-        navigateToAddFamily
-      }
-    }
-}
+    return {
+      familyList,
+      getAllFamilies,
+      resetList,
+      loading,
+      networkError,
+      navigateToAddFamily,
+      lgAndUp,
+      xlAndUp,
+      primarycolor
+    };
+  },
+};
 </script>
 
 <style scoped>
 .page-header {
-    font: normal normal 800 29px Nunito sans;
+  font: normal normal 800 29px Nunito sans;
 }
 
 .no-person {

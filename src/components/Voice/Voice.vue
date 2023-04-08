@@ -12,7 +12,7 @@
       </div>
 
       <!-- Content Box -->
-      <main id="main" class="mt-3">
+      <main :class="{ 'main' : mdAndUp || lgAndUp || xlAndUp }" class="mt-3">
         <div class="container-fluid">
           <div class="row">
             <!-- Side menu -->
@@ -45,7 +45,7 @@ export default {
     const primarycolor = inject('primarycolor')
     const route = useRoute();
     const menuShouldShow = ref(false);
-    const { lgAndUp, xlAndUp } = deviceBreakpoint()
+    const { mdAndUp, lgAndUp, xlAndUp } = deviceBreakpoint()
     const toggleMenu = ()=>{
            menuShouldShow.value = !menuShouldShow.value
          };
@@ -54,6 +54,7 @@ export default {
       route,
       toggleMenu,
       menuShouldShow,
+      mdAndUp,
       lgAndUp,
       xlAndUp,
       primarycolor
@@ -79,7 +80,7 @@ export default {
   cursor: pointer;
 }
 
-#main {
+.main {
   border: 1px solid #02172e30;
   border-radius: 30px;
 }

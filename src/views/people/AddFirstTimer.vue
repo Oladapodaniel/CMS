@@ -17,7 +17,7 @@
             <div>
               <div class="cs-input">
                 <label for="imgUpload" class="choose-file">
-                  Choose file
+                  Choose image
                   <input type="file" class="input file-input" placeholder="" id="imgUpload" @change="imageSelected" />
                 </label>
               </div>
@@ -243,7 +243,7 @@
             <div>
               <div class="cs-input">
                 <label for="imgUpload" class="choose-file">
-                  Choose file
+                  Choose image
                   <input type="file" class="input file-input" placeholder="" id="imgUpload" @change="imageSelected" />
                 </label>
               </div>

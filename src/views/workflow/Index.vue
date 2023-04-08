@@ -5,7 +5,7 @@
                 <div class="heading-text">Ministry Workflows</div>
             </div>
             <div class="col-md-6 d-flex justify-content-end">
-                <router-link to="/tenant/workflow/add?fw=true" class="text-decoration-none font-weight-bold px-3 mx-2 p-2"><button class="default-btn border-0 primary-bg text-white ">Add</button></router-link>
+                <router-link to="/tenant/settings/workflow/add?fw=true" class="text-decoration-none font-weight-bold px-3 mx-2 p-2"><button class="default-btn border-0 primary-bg text-white ">Add</button></router-link>
             </div>
         </div>
         <!-- <div class="row mt-3 mb-4">
