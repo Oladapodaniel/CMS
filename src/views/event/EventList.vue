@@ -451,20 +451,14 @@
 import axios from "@/gateway/backendapi";
 import { ref, computed, inject } from "vue";
 import moment from "moment";
-import { useConfirm } from "primevue/useconfirm";
-import { useToast } from "primevue/usetoast";
 import { useStore } from "vuex";
 import userService from "../../services/user/userservice";
-import Tooltip from "primevue/tooltip";
 import monthDayYear from "../../services/dates/dateformatter";
 import convertNumber from "../../services/numbershortener/numberfomatter";
 import PaginationButtons from "../../components/pagination/PaginationButtons.vue";
 import finish from "../../services/progressbar/progress";
 import Table from "@/components/table/Table";
 export default {
-  directives: {
-    tooltip: Tooltip,
-  },
   components: {
     PaginationButtons,
     Table,
@@ -569,15 +563,9 @@ export default {
       //  delete firtimer
       axios.delete(`/api/People/DeleteOnePerson/${id}`).then((res) => {
         console.log(res);
-        // toast.add({
-        //   severity: "success",
-        //   summary: "Confirmed",
-        //   detail: "Member Deleted",
-        //   life: 3000,
-        // });
         ElMessage({
           type: "success",
-          message: "Confirmed",
+          message: "Member Deleted",
           duration: 3000,
         });
         churchMembers.value = churchMembers.value.filter(
@@ -585,19 +573,12 @@ export default {
         );
         NProgress.done();
         if (err.response.status === 400) {
-          toast.add({
-            severity: "error",
-            summary: "Unable to delete",
-            detail: "Ensure this member is not in any group",
-            life: 3000,
+          ElMessage({
+            type: "error",
+            message: "Unable to delete, Ensure this member is not in any group",
+            duration: 5000,
           });
         } else {
-          // toast.add({
-          //   severity: "error",
-          //   summary: "Unable to delete",
-          //   detail: "An error occurred, please try again",
-          //   life: 3000,
-          // });
           ElMessage({
             type: "error",
             message: "Unable to delete",
@@ -606,8 +587,6 @@ export default {
         }
       });
     };
-    const confirm = useConfirm();
-    let toast = useToast();
     const toggleMonthlyClass = () => {
       monthlyActiveBtn.value = !monthlyActiveBtn.value;
       yearlyActiveBtn.value = false;
