@@ -1022,10 +1022,6 @@ export default {
 .active-btn {
   background: #0e74c721;
 }
-<<<<<<< HEAD
-
-=======
->>>>>>> development
 @media screen and (max-width: 500px) {
   .picture,
   .firstname,
