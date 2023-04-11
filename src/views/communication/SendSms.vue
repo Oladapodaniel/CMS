@@ -3,14 +3,14 @@
     <div class="container" @click="closeDropdownIfOpen">
       <!-- <div class="container" @click="closeDropdownIfOpen"> -->
       <div class="row">
-        <div class="col-md-12 mb-3 mt-3 text-center">
+        <div class="col-md-12 mt-3 px-0">
           <h4 class="font-weight-bold">Compose SMS</h4>
         </div>
       </div>
 
-      <div class="row">
-        <div class="col-md-12 pr-0">
-          <hr class="hr mb-3" />
+      <div class="row my-3">
+        <div class="col-md-12 px-0">
+          <hr class="hr" />
         </div>
       </div>
 
@@ -19,7 +19,26 @@
           <span class="small-text">Send to : </span>
         </div>
         <div class="p-0 col-md-10 col-lg-10 form-group mb-0">
-          <div class="dropdown">
+          <el-dropdown trigger="click" class="w-100">
+            <div class="d-flex justify-content-between border-contribution text-dark w-100" size="large">
+              <span>Select Destination</span>
+              <div>
+                <el-icon class="el-icon--right">
+                  <arrow-down />
+                </el-icon>
+              </div>
+            </div>
+            <template #dropdown>
+              <el-dropdown-menu>
+                <el-dropdown-item v-for="(destination, index) in possibleSMSDestinations" :key="index">
+                  <a class="no-decoration text-dark" @click="showSection(index)">
+                    {{ destination }}
+                  </a>
+                </el-dropdown-item>
+              </el-dropdown-menu>
+            </template>
+          </el-dropdown>
+          <!-- <div class="dropdown">
             <button class="btn btn-default border dropdown-toggle small-text pl-md-0" type="button"
               id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"
               @click="closeDropdownIfOpen">
@@ -29,7 +48,7 @@
               <a class="dropdown-item c-pointer small-text" v-for="(destination, index) in possibleSMSDestinations"
                 :key="index" @click="showSection(index)">{{ destination }}</a>
             </div>
-          </div>
+          </div> -->
         </div>
       </div>
 
@@ -272,10 +291,26 @@
           <span class="font-weight-600 small-text">Sender: </span>
         </div>
         <div class="p-0 col-md-10">
-          <div class="dropdown">
+          <el-dropdown trigger="click" class="w-100">
+            <el-input v-model="searchSenderText" placeholder="Search sender id" />
+            <el-icon class="el-icon--right"><arrow-down /></el-icon>
+            <template #dropdown>
+              <el-dropdown-menu>
+                <el-dropdown-item v-for="(item, index) in searchSenderIDs" :key="index" @click="setIdToSubject(item)">
+                  {{ item.mask }}
+                </el-dropdown-item>
+                <el-dropdown-item class="primary--text" data-toggle="modal" data-target="#senderIdModal" divided>
+                  <el-icon>
+                    <CirclePlusFilled />
+                  </el-icon> Request new sender ID
+                </el-dropdown-item>
+              </el-dropdown-menu>
+            </template>
+          </el-dropdown>
+          <!-- <div class="dropdown">
             <button class="btn btn-default dropdown-toggle small-text pl-md-0 border" type="button"
               id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-              <!-- @click="closeDropdownIfOpen" -->
+              
               {{
                 Object.keys(selectedSender).length > 0
                 ? selectedSender.mask
@@ -301,7 +336,7 @@
                 sender id
               </a>
             </div>
-          </div>
+          </div> -->
         </div>
       </div>
 
@@ -407,10 +442,11 @@
         :width="mdAndUp || lgAndUp || xlAndUp ? `50%` : xsOnly ? `90%` : `70%`" align-center class="p-4">
         <div class="row" v-if="!nigerian">
           <div class="col-md-12 text-center">
-            <button class=" primary-btn default-btn px-4 my-2 border-0 primary-bg text-white outline-none extra-btn"
+            <el-button :color="primarycolor" @click="contructScheduleMessageBody(1, '')" round>Send SMS now</el-button>
+            <!-- <button class=" primary-btn default-btn px-4 my-2 border-0 primary-bg text-white outline-none extra-btn"
               data-dismiss="modal" @click="contructScheduleMessageBody(1, '')">
               Send SMS Now
-            </button>
+            </button> -->
           </div>
         </div>
 
@@ -440,10 +476,11 @@
                         (SENDER ID AND DEDICATED)</label>
                     </div>
                     <div class=" col-md-12 send-now-div py-2 my-2 d-flex justify-content-center">
-                      <button class=" primary-btn default-btn border-0 primary-bg px-4 my-2 font-weight-600 outline-none"
+                      <el-button :color="primarycolor" @click="contructScheduleMessageBody(1, 'hybridKonnect')" round>Send SMS now</el-button>
+                      <!-- <button class=" primary-btn default-btn border-0 primary-bg px-4 my-2 font-weight-600 outline-none"
                         data-dismiss="modal" @click="contructScheduleMessageBody(1, 'hybridKonnect')">
                         Send SMS Now
-                      </button>
+                      </button> -->
                     </div>
                     <div class="col-md-12 px-0">
                       <hr class="hr my-2" />
@@ -465,10 +502,11 @@
                         SENDER ID</label>
                     </div>
                     <div class=" col-md-12 my-2 send-now-div py-2 d-flex justify-content-center">
-                      <button class=" primary-btn default-btn px-4 border-0 my-2 grey-background text-grey outline-none"
+                      <el-button type="info" @click="contructScheduleMessageBody(1, 'hostedsms')" round>Send SMS now</el-button>
+                      <!-- <button class=" primary-btn default-btn px-4 border-0 my-2 grey-background text-grey outline-none"
                         data-dismiss="modal" @click="contructScheduleMessageBody(1, 'hostedsms')">
                         Send SMS Now
-                      </button>
+                      </button> -->
                     </div>
                     <div class="col-md-12 px-0">
                       <hr class="hr my-2" />
@@ -530,40 +568,38 @@
           <div class="modal-content">
             <div class="modal-header">
               <h5 class="modal-title" id="exampleModalLongTitle">
-                Create sender id
+                Request Sender ID
               </h5>
-              <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+              <button type="button" class="close" data-dismiss="modal" aria-label="Close" ref="closeModal">
                 <span aria-hidden="true">&times;</span>
               </button>
             </div>
             <div class="modal-body">
               <div class="container">
                 <div class="row">
-                  <div class="col-12">Enter sender id</div>
+                  <div class="col-12">Enter Sender ID</div>
                   <div class="col-12 mt-2">
-                    <input type="text" class="form-control" placeholder="Enter sender id" v-model="senderIdText"
-                      @input="validateSenderId" ref="senderIdRef" />
-                    <div class="invalid-feedback text-danger pl-2">
-                      <ul>
-                        <li>Should not contain any special characters</li>
-                        <li>
-                          Should not be less than 3 characters and more than 11
-                          characters
-                        </li>
-                      </ul>
-                    </div>
+                    <el-form ref="ruleFormRef" :model="senderIDValidateForm" label-width="100px" class="demo-ruleForm"
+                      :rules="rules">
+                      <el-form-item class="sender-id-input" prop="senderIdText">
+                        <el-input type="text" placeholder="Enter sender id" v-model="senderIDValidateForm.senderIdText" />
+                      </el-form-item>
+                    </el-form>
                   </div>
                 </div>
               </div>
             </div>
             <div class="modal-footer">
-              <button type="button" class="btn default-btn" data-dismiss="modal">
+              <el-button class="secondary-button" data-dismiss="modal" round>Cancel</el-button>
+              <el-button :color="primarycolor" :loading="senderidloading" @click="submitSenderForm(ruleFormRef)"
+                round>Request</el-button>
+              <!-- <button type="button" class="btn default-btn" data-dismiss="modal">
                 Close
               </button>
               <button type="button" class="btn default-btn primary-bg border-0 text-white" data-dismiss="modal"
-                @click="saveSenderId" :disabled="requestbtn">
+                >
                 Request sender id
-              </button>
+              </button> -->
             </div>
           </div>
         </div>
@@ -573,7 +609,7 @@
 </template>
 
 <script>
-import { computed, onMounted, ref, inject } from "vue";
+import { computed, onMounted, ref, inject, reactive } from "vue";
 import composeService from "../../services/communication/composer";
 import composerObj from "../../services/communication/composer";
 import { useRoute } from "vue-router";
@@ -598,6 +634,12 @@ export default {
       // The configuration of the editor.
       height: "800",
     };
+    const ruleFormRef = ref()
+    const senderIDValidateForm = reactive({
+      senderIdText: ''
+    })
+    const closeModal = ref()
+    const senderidloading = ref(false)
 
     const possibleSMSDestinations = composeService.possibleSMSDestinations;
     const groupsAreVissible = ref(false);
@@ -609,8 +651,6 @@ export default {
     const executionDate = ref("");
     const contactUpload = ref(false);
     const multipleContact = ref({});
-    const senderRef = ref(null);
-    const senderIdText = ref("");
     const tenantId = ref("");
     const senderIDs = ref([]);
     const selectedSender = ref({});
@@ -1140,50 +1180,65 @@ export default {
     };
     getSenderId();
 
+    const submitSenderForm  = async (formEl) => {
+      if (!formEl) return
+      await formEl.validate((valid, fields) => {
+        if (valid) {
+          saveSenderId();
+        } else {
+          console.log('error submit!', fields)
+        }
+      })
+    }
+
     const saveSenderId = async () => {
+      senderidloading.value = true
       let payload = {
         tenantID: tenantId.value,
-        mask: senderIdText.value,
+        mask: senderIDValidateForm.senderIdText,
       };
       try {
         let { data } = await axios.post(
           `/api/Messaging/RequestSenderID`,
           payload
-        );
-        if (data.status === 0) {
-          ElMessage({
-          type: "warning",
-          message: "PENDING, Sender id is pending for approval, when it is approved, you will see it among the sender id list",
-          duration: 6000,
-        });
-        } else if (data.status === 1) {
-          ElMessage({
-          type: "warning",
-          message: "PROCESSING, Sender id is processing for approval, when it is approved, you will see it among the sender id list",
-          duration: 6000,
-        });
-        } else if (data.status === 2) {
-          ElMessage({
-          type: "success",
-          message: "APPROVED, Sender id is approved!",
-          duration: 6000,
-        });
-        } else {
-          ElMessage({
-          type: "error",
-          message: "NOT APPROVED, Sender id is not approved, create another one.",
-          duration: 6000,
-        });
-        }
-        senderIdText.value = "";
-        senderIdRef.value.classList.remove("is-invalid");
-        senderIdRef.value.classList.remove("is-valid");
+          );
+          senderidloading.value = false;
+          closeModal.value.click();
+          if (data.status === 0) {
+            ElMessage({
+              type: "warning",
+              message: "PENDING, Sender id is pending for approval, when it is approved, you will see it among the sender id list",
+              duration: 6000,
+            });
+          } else if (data.status === 1) {
+            ElMessage({
+              type: "warning",
+              message: "PROCESSING, Sender id is processing for approval, when it is approved, you will see it among the sender id list",
+              duration: 6000,
+            });
+          } else if (data.status === 2) {
+            ElMessage({
+              type: "success",
+              message: "APPROVED, Sender id is approved!",
+              duration: 6000,
+            });
+          } else {
+            ElMessage({
+              type: "error",
+              message: "NOT APPROVED, Sender id is not approved, create another one.",
+              duration: 6000,
+            });
+          }
+          setIdToSubject({mask: senderIDValidateForm.senderIdText})
+          senderIDValidateForm.senderIdText = "";
+
         getSenderId();
       } catch (err) {
+        senderidloading.value = false
         console.log(err);
       }
     };
-
+    
     const searchSenderIDs = computed(() => {
       if (!searchSenderText.value) return senderIDs.value;
       return senderIDs.value.filter((i) => {
@@ -1194,26 +1249,27 @@ export default {
     });
 
     const setIdToSubject = (item) => {
+      searchSenderText.value = item.mask;
       subject.value = item.mask;
       selectedSender.value = item;
     };
 
-    const validateSenderId = (e) => {
+    const validateSenderId = async (rule, value, callback) => {
       var regExp = /^[a-zA-Z0-9]{3,11}$/;
-      var testString = e.target.value;
-
-      if (regExp.test(testString)) {
-        /* do something if letters are found in your string */
-        senderIdRef.value.classList.add("is-valid");
-        senderIdRef.value.classList.remove("is-invalid");
-        requestbtn.value = false;
+      var testString = senderIDValidateForm.senderIdText;
+      if (!regExp.test(testString)) {
+        // requestbtn.value = true
+        return callback(new Error('Should not contain any special characters AND Should not be less than 3 characters and more than 11 characters'))
       } else {
-        /* do something if letters are not found in your string */
-        senderIdRef.value.classList.add("is-invalid");
-        senderIdRef.value.classList.remove("is-valid");
-        requestbtn.value = true;
+        // requestbtn.value = false
       }
-    };
+    }
+
+    const rules = reactive({
+      senderIdText: [
+        { validator: validateSenderId, required: true, trigger: 'blur' },
+      ],
+    })
 
     return {
       primarycolor,
@@ -1273,8 +1329,6 @@ export default {
       uploadFile,
       multipleContact,
       sendSMSToUploadedContacts,
-      senderRef,
-      senderIdText,
       saveSenderId,
       tenantId,
       senderIDs,
@@ -1290,7 +1344,13 @@ export default {
       mdAndUp,
       lgAndUp,
       xlAndUp,
-      xsOnly
+      xsOnly,
+      ruleFormRef,
+      rules,
+      senderIDValidateForm,
+      closeModal,
+      senderidloading,
+      submitSenderForm
     };
   },
 };
@@ -1469,10 +1529,6 @@ input:focus {
 
 .modal-lg {
   max-width: 680px;
-}
-
-.modal-body {
-  padding: 2rem !important;
 }
 
 .grey-background {

@@ -232,3 +232,7 @@ div.firsttimersearchmember.el-drawer .el-drawer__header {
 div.uploadvoice div.el-upload.el-upload--text {
   width: 100%
 }
+
+div.sender-id-input .el-form-item__content {
+  margin-left: 0 !important
+}

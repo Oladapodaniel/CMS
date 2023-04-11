@@ -2,8 +2,8 @@
   <div>
     <div class="" @click="closeDropdownIfOpen">
       <div class="row">
-        <div class="col-12 col-md-12 mb-3 mt-3">
-          <h4 class="font-weight-bold text-center text-md-left">
+        <div class="col-12 col-md-12 mt-3 px-0">
+          <h4 class="font-weight-bold text-center text-md-left mb-0">
             Upload voice file
           </h4>
           <!-- <Toast /> -->
@@ -67,8 +67,8 @@
         </div>
       </div>
 
-      <div class="row">
-        <div class="col-md-12 pr-0">
+      <div class="row my-3">
+        <div class="col-md-12 px-0">
           <hr class="hr my-1" />
         </div>
       </div>
@@ -417,9 +417,9 @@
             Enter your message
           </p>
         </div>
-        <div class="col-md-10 d-flex justify-content-end ml-4">
+        <div class="w-100 d-flex justify-content-end ml-4">
           <span :class="{ 'cursor-close': disableBtn }">
-            <el-dropdown size="large" trigger="click" class="split-button" @click="checkFileType" split-button>
+            <el-dropdown size="large" trigger="click" class="split-button mr-3" @click="checkFileType" split-button>
               Send
               <template #dropdown>
                 <el-dropdown-menu>
@@ -449,7 +449,7 @@
             Discard
           </router-link> -->
           <router-link class="no-decoration" to="/tenant/Voice">
-            <el-button class="secondary-button" round>Discard</el-button>
+            <el-button class="secondary-button" size="large" round>Discard</el-button>
           </router-link>
         </div>
         <!-- <div class="row">
