@@ -457,8 +457,8 @@
                     </div>
                 </div>
                 <div class="d-flex justify-content-end mt-3">
-                    <el-button @click="displayLogPane = false" round>Close</el-button>
-                    <el-button color="#136acd" :loading="logLoading" @click="saveLog" round>Save</el-button>
+                    <el-button class="secondary-button" @click="displayLogPane = false" round>Close</el-button>
+                    <el-button :color="primarycolor" :loading="logLoading" @click="saveLog" round>Save</el-button>
                 </div>
             </div>
         </template>
@@ -492,8 +492,8 @@
                 </div>
             </div>
             <div class="d-flex justify-content-end mt-4">
-                <el-button @click="displaySMSPane = false" round>Close</el-button>
-                <el-button color="#136acd" :loading="smsLoading" @click="sendSms" round>Send</el-button>
+                <el-button class="secondary-button" @click="displaySMSPane = false" round>Close</el-button>
+                <el-button :color="primarycolor" :loading="smsLoading" @click="sendSms" round>Send</el-button>
             </div>
         </template>
     </el-drawer>
@@ -571,8 +571,8 @@
                 </div>
                 <div class="modal-footer border-0">
                     <div class="d-flex justify-content-end">
-                        <el-button data-dismiss="modal" round>Close</el-button>
-                        <el-button color="#136acd" :loading="loading" @click="convertToMember($event)"
+                        <el-button class="secondary-button" data-dismiss="modal" round>Close</el-button>
+                        <el-button :color="primarycolor" :loading="loading" @click="convertToMember($event)"
                             :disabled="Object.keys(selectedMembershipClassification).length === 0"
                             round>Proceed</el-button>
                         <!-- <div class="default-btn text-center c-pointer" data-dismiss="modal">Close</div>
@@ -627,7 +627,7 @@
 </template>
 
 <script>
-import { computed, ref, watchEffect } from "vue"
+import { computed, ref, watchEffect, inject } from "vue"
 import axios from "@/gateway/backendapi";
 import lookupTable from "../../../../services/lookup/lookupservice"
 import { useRoute } from "vue-router"
@@ -648,6 +648,7 @@ export default {
     setup(props, { emit }) {
         const route = useRoute()
         const store = useStore()
+        const primarycolor = inject('primarycolor')
         const selectedContact = ref({})
         const lifeCycle = ref([])
         const selectedLifeCycle = ref({})
@@ -1492,7 +1493,8 @@ export default {
             updateSelectedJoinInterest,
             joinInterestId,
             updateSelectedWantVisit,
-            visitId
+            visitId,
+            primarycolor
         }
 
     }

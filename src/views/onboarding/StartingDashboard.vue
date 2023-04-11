@@ -72,7 +72,7 @@
       <div class="row">
         <div class="col-md-10 offset-2 text-center my-4 text-lg-right" style="max-width: 900px; margin: auto">
           <router-link to="/tenant" class="font-weight-bold text-decoration-none">
-            <el-button type="primary" class="font-weight-bold" text>Skip To Dashboard >>></el-button>
+            <el-button class="font-weight-bold primary--text" text>Skip To Dashboard >>></el-button>
           </router-link>
         </div>
       </div>

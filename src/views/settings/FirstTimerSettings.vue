@@ -33,7 +33,7 @@
                       />
                     </div>
                     <div class="col-md-3 justify-content-end">
-                      <el-button round size="large" color="#136acd" class=" font-weight-bold primary-btn text-white px-md-4 px-3 py-1 bold  mt-sm-3 mt-lg-0 mt-xl-0 mt-md-0 mt-3" @click="saveFirstTimer">Save</el-button>
+                      <el-button round size="large" :color="primarycolor" class=" font-weight-bold primary-btn text-white px-md-4 px-3 py-1 bold  mt-sm-3 mt-lg-0 mt-xl-0 mt-md-0 mt-3" @click="saveFirstTimer">Save</el-button>
                     </div>
                   </div>
                   <div class="row mt-2 d-flex justify-content-around">
@@ -150,6 +150,7 @@ export default {
   directives: {
     'tooltip': Tooltip
 },
+inject: ['primarycolor'],
   data() {
     return {
       firstTimerData: [ ],

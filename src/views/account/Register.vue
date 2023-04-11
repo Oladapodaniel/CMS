@@ -87,8 +87,8 @@
           </div>
           <template #footer>
             <span class="dialog-footer">
-              <el-button @click="displayModal = false" color="#136acd" plain round>Cancel</el-button>
-              <el-button type="primary" @click="saveEmail" :loading="emailLoading" color="#136acd" round>
+              <el-button @click="displayModal = false" class="secondary-button" round>Cancel</el-button>
+              <el-button type="primary" @click="saveEmail" :loading="emailLoading" :color="primarycolor" round>
                 Confirm
               </el-button>
             </span>
@@ -104,10 +104,11 @@ import axios from "@/gateway/backendapi";
 import router from '../../router/index';
 import FBlogin from "@/mixins/facebookLogin"
 import store from "../../store/store";
-import { reactive, ref } from "vue";
+import { reactive, ref, inject } from "vue";
 
 export default {
   setup() {
+    const primarycolor = inject('primarycolor')
     const credentials = reactive({
       ChurchName: "Default Church",
       firstName: "First name",
@@ -190,7 +191,8 @@ export default {
       register,
       resetPassword,
       facebookLogin,
-      saveEmail
+      saveEmail,
+      primarycolor
     }
   }
   // data() {
@@ -264,7 +266,6 @@ export default {
   font-size: 14px;
   line-height: 1.4;
   text-decoration: none;
-  color: #136acd;
   font-weight: bold;
   cursor: pointer;
 }

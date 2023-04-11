@@ -153,8 +153,8 @@
                         <h4 class="header4 text-md-right"></h4>
                     </div>
                     <div class="col-md-5 px-0 mt-3">
-                        <el-button @click="onCancel" class="w-100" round>Cancel</el-button>
-                        <el-button color="#136acd" :loading="loading" class="w-100 ml-0 mt-2" @click="saveDonor"
+                        <el-button @click="onCancel" class="secondary-button w-100" round>Cancel</el-button>
+                        <el-button :color="primarycolor" :loading="loading" class="w-100 ml-0 mt-2" @click="saveDonor"
                             round>Save</el-button>
                     </div>
                 </div>
@@ -165,7 +165,7 @@
 
 <script>
 import moment from "moment";
-import { reactive, ref, computed } from 'vue'
+import { reactive, ref, computed, inject } from 'vue'
 import { useRoute } from "vue-router";
 import axios from "@/gateway/backendapi";
 import ImageForm from './ImageForm'
@@ -173,6 +173,7 @@ export default {
     components: { ImageForm },
 
     setup(props, { emit }) {
+        const primarycolor = inject('primarycolor')
         const route = useRoute();
         const loading = ref(false)
         const donor = reactive({});
@@ -312,7 +313,8 @@ export default {
             addbirthDays,
             addBirthMonth,
             addBirthYears,
-            loading
+            loading,
+            primarycolor
 
             // getLookUps
             // gendersArr,
@@ -408,4 +410,5 @@ export default {
     border: 1.6px solid rgb(229, 232, 237);
     border-radius: 4px;
     padding: 11px 7px;
-}</style>
+}
+</style>

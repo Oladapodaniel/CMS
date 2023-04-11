@@ -92,7 +92,7 @@
                       name: 'DeliveryReport',
                       params: { messageId: item.id },
                       query: { units: item.smsUnitsUsed },
-                    }" class="small-text text-decoration-none">View report</router-link>
+                    }" class="small-text no-decoration primary--text">View report</router-link>
                   </div>
                 </template>
                 <template v-slot:action="{ item }">

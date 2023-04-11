@@ -95,7 +95,7 @@
               <p class="text-danger font-weight-700 mb-1" v-if="invalidAmount">
                 Please enter amount
               </p>
-              <el-button color="#136acd" class="px-4" style="height: 43px; font-size: 1.06em" data-toggle="modal"
+              <el-button :color="primarycolor" class="px-4" style="height: 43px; font-size: 1.06em" data-toggle="modal"
                 data-target="#PaymentOptionModal" round>Buy SMS Unit</el-button>
             </div>
           </div>
@@ -149,7 +149,7 @@
 </template>
 
 <script>
-import { computed, ref } from "vue";
+import { computed, ref, inject } from "vue";
 import axios from "@/gateway/backendapi";
 import PaymentSuccessModal from "@/components/payment/PaymentSuccessful.vue"
 import store from '../../store/store'
@@ -164,6 +164,7 @@ import membershipService from "../../services/membership/membershipservice";
 export default {
   components: { PaymentSuccessModal },
   setup() {
+    const primarycolor = inject('primarycolor')
     const amount = ref(0);
     const smsUnits = ref(0);
     const invalidAmount = ref(false);
@@ -417,6 +418,7 @@ export default {
 
 
     return {
+      primarycolor,
       amount,
       smsUnits,
       totalAmount,

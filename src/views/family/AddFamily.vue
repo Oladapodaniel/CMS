@@ -84,7 +84,7 @@
                             Enter 3 or more characters
                             </p>
                             <a
-                            class="font-weight-bold small-text d-flex justify-content-center py-2 text-decoration-none primary-text c-pointer"
+                            class="font-weight-bold small-text d-flex justify-content-center py-2 text-decoration-none primary--text c-pointer"
                             style="border-top: 1px solid #002044; color: #136acd"
                             @click="showAddMemberForm"
                             data-dismiss="modal"
@@ -164,7 +164,7 @@
                                 Enter 3 or more characters
                                 </p>
                                 <a
-                                class="font-weight-bold small-text d-flex justify-content-center py-2 text-decoration-none primary-text c-pointer"
+                                class="font-weight-bold small-text d-flex justify-content-center py-2 text-decoration-none primary--text c-pointer"
                                 style="border-top: 1px solid #002044; color: #136acd"
                                 @click="showAddMemberFormForMother"
                                 data-dismiss="modal"
@@ -295,7 +295,7 @@
                                     Enter 3 or more characters
                                     </p>
                                     <a
-                                    class="font-weight-bold small-text d-flex justify-content-center py-2 text-decoration-none primary-text c-pointer"
+                                    class="font-weight-bold small-text d-flex justify-content-center py-2 text-decoration-none primary--text c-pointer"
                                     style="border-top: 1px solid #002044; color: #136acd"
                                     @click="showAddMemberFormForWard"
                                     data-dismiss="modal"

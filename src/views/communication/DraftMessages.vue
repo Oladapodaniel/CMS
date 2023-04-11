@@ -29,7 +29,7 @@
                 @checkedrow="handleSelectionChange" v-loading="loading">
                 <template #body="{ item }">
                   <div>
-                    <router-link class="font-weight-600" :to="{
+                    <router-link class="font-weight-600 no-decoration primary--text" :to="{
                       name: 'SendMessage',
                       query: { draftId: item.id },
                     }">{{ item.body.length > 50 ? `${item.body.slice(0, 50)}...` : item.body }}</router-link>

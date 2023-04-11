@@ -45,8 +45,8 @@
                   <!-- Button Area -->
                   <div class="row mt-3 mb-4">
                     <div class="col-md-12 d-flex justify-content-end p-0">
-                      <el-button v-on:click="resetInputFields" round>Cancel</el-button>
-                      <el-button color="#136acd" v-on:click="saveGroupDetails" :loading="loading" round>Save</el-button>
+                      <el-button v-on:click="resetInputFields" class="secondary-button" round>Cancel</el-button>
+                      <el-button :color="primarycolor" v-on:click="saveGroupDetails" :loading="loading" round>Save</el-button>
                     </div>
                   </div>
                 </div>
@@ -67,14 +67,20 @@ import { ElMessage } from 'element-plus'
 
 
 export default {
+  inject: ['primarycolor'],
   data() {
     return {
       phoneNumbers: [],
       enteredValue: "",
       groupNameValue: "",
       groupNameDisabled: true,
-      loading: false,
+      loading: false
     };
+  },
+  watch: {
+    primarycolor: function (val) {
+      console.log(val)
+    }
   },
 
   methods: {

@@ -119,5 +119,7 @@ for (const [key, component] of Object.entries(ElementPlusIconsVue)) {
   app.component(key, component)
 }
 
+app.provide('primarycolor', '#136acd')
+
 
 app.use(store).use(router).use(VueHighcharts, { Highcharts }).use(CKEditor).use(Toaster).use(PrimeVue).use(ToastService).use(ConfirmationService).use(ElementPlus).use(VueTelInput, VueTelInputOptions).mount('#app')

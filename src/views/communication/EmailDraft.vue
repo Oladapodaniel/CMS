@@ -40,7 +40,7 @@
                               name: 'ComposeEmail',
                               query: { emaildraft: item.id },
                             }"
-                      class="text-decoration-none"
+                      class="no-decoration primary--text"
                     >
                       <el-tooltip
                         class="box-item"
@@ -88,7 +88,7 @@
                               name: 'ComposeEmail',
                               query: { emaildraft: item.id },
                             }"
-                      class="text-decoration-none"
+                      class="no-decoration"
                     >
                       <span class="timestamp ml-1">{{ new Date(item.dateModified).toLocaleString() }}</span>
                     </router-link>

@@ -25,7 +25,7 @@
                 @checkedrow="handleSelectionChange" v-loading="loading">
                 <template #name="{ item }">
                   <span>
-                    <router-link class="font-weight-600" :to="{
+                    <router-link class="font-weight-600 no-decoration primary--text" :to="{
                       name: 'EditContactList',
                       params: { groupId: item.id },
                     }">{{ item.name }}</router-link>
