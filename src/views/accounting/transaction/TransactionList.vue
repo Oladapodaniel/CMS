@@ -1,7 +1,7 @@
 <template>
   <div class="whole-co container-wid container-top" @click="hideModals">
     <div class="main-co">
-      <div class="main-bod">
+      <div class="main-bod" v-if="!loading">
         <div class="top container-wide mt-3">
            <div class="header ">
                 <div class="events">Transaction</div>
@@ -273,6 +273,20 @@
           <!-- <LedgerForm /> -->
         </div>
       </div>
+       <el-skeleton class="w-100" animated v-if="loading">
+      <template #template>
+        <div style="display: flex;
+                align-items: center;
+                justify-content: space-between;
+                margin-top: 20px
+              ">
+          <el-skeleton-item variant="text" style="width: 240px; height: 240px" />
+          <el-skeleton-item variant="text" style="width: 240px; height: 240px" />
+        </div>
+        <!-- <el-skeleton-item variant="text" class="w-100" style="height: 25px" :rows="10"/> -->
+        <el-skeleton class="w-100 mt-5" style="height: 25px" :rows="20" animated />
+      </template>
+    </el-skeleton>
     </div>
   </div>
 </template>
@@ -297,6 +311,7 @@ export default {
   },
   setup() {
     const transactions = ref([ ]);
+    const loading = ref(false)
     const cashAndBank = ref([
       {
         name: {
@@ -491,6 +506,7 @@ export default {
     const accountTypes = ["assets", "liability", "income", "expense", "equity"];
 
     const getTransactionalAccounts = async () => {
+      loading.value = true;
       try {
         const response = await transactionService.getTransactionalAccounts();
         for (let group of accountTypes) {
@@ -499,8 +515,10 @@ export default {
           );
           transactionalAccounts.value.push(groupItems);
         }
+        loading.value = false;
       } catch (error) {
         console.log(error);
+        loading.value = false;
       }
     };
 
@@ -508,9 +526,11 @@ export default {
 
     const cashAndBankItems = ref([ ]);
     const getCashAndBanks = async () => {
+      loading.value = true;
       try {
         const response = await transactionService.getCashAndBank();
         cashAndBankItems.value = response;
+        loading.value = false;
       } catch (error) {
         console.log(error);
       }
@@ -556,6 +576,7 @@ export default {
 
     const accountsAndBalances = ref([ ])
     const getAccountBalances = async () => {
+      loading.value = true;
       try {
         const response = await transaction_service.getCashAndBankAccountBalances();
         accountsAndBalances.value = response;
@@ -566,9 +587,11 @@ export default {
           selectedTransaction.value.amount = `${currentUser.value && currentUser.value.currency ? currentUser.value.currency: ''}${accountsAndBalances.value[index] && accountsAndBalances.value[index].balance ? amountWithCommas(accountsAndBalances.value[index].balance) : 0}`;
           accountsAndBalances.value[index].currency = { shortCode: currentUser.value ? currentUser.value.currency : '' };
         }
+        loading.value = false;
         // if (!currentUser.value || !currentUser.value.tenantId) await getCurrentUser();
       } catch (error) {
         console.log(error);
+        loading.value = false;
       }
     }
     getAccountBalances()
@@ -607,6 +630,7 @@ export default {
 
     return {
       transactions,
+      loading,
       filterFormIsVissible,
       toggleFilterFormVissibility,
       toggleSearch,
