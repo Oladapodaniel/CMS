@@ -29,17 +29,8 @@
                     </div>
                     <div class="col-md-3 d-flex justify-content-end">
                       <el-button
-                        class="
-                          primary-btn
-                          text-white
-                          font-weight-bold
-                          px-md-4 px-3
-                          py-1
-                          bold
-                          mt-sm-3 mt-lg-0 mt-xl-0 mt-md-0 mt-3
-                        "
                         size="large"
-                        color="#136acd"
+                        :color="primarycolor"
                         round
                         @click="saveAttendant"
                         :loading="loading"
@@ -199,6 +190,7 @@ import finish from "../../services/progressbar/progress";
 
 export default {
   components: {},
+  inject: ['primarycolor'],
   data() {
     return {
       types: [],

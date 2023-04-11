@@ -38,7 +38,7 @@
                         </router-link></span>
                     </span>
                     <span class="small-text">
-                      <router-link class="text-decoration-none" :to="{
+                      <router-link class="no-decoration primary--text" :to="{
                         name: 'MessageDetails',
                         params: { messageId: item.id },
                       }">
@@ -68,11 +68,13 @@
                   }}</span>
                 </template>
                 <template v-slot:report="{ item }">
-                  <span class="c-pointer small-text primary-text">
+                  <span>
                     <router-link :to="{
                       name: 'MessageDetails',
                       params: { messageId: item.id },
-                    }"> View
+                    }"
+                    class="c-pointer small-text primary--text"
+                    > View
                     </router-link>
                   </span>
                 </template>

@@ -279,7 +279,7 @@
                                 </template>
                                 <template #footer>
                                 <div class="d-flex justify-content-start">
-                                    <el-button @click="searchmemberr = false" color="#136acd" round>Done</el-button>
+                                    <el-button @click="searchmemberr = false" :color="primarycolor" round>Done</el-button>
                                 </div>
                                 </template>
                             </el-drawer>
@@ -428,7 +428,7 @@
 
 
 <script>
-import { ref } from "vue"
+import { ref, inject } from "vue"
 import dateFormatter from '../../../../services/dates/dateformatter';
 import frmservice from "@/services/FRM/firsttimermanagement";
 import { useRoute } from "vue-router"
@@ -442,6 +442,7 @@ export default {
     props: ['personDetails', 'addNotes', 'addTask', 'dueDate', 'activities', 'loader', 'getReminder', 'activityType', 'taskPriority'],
     emits: ['individualtoggle', 'individualtoggletask', 'individualcallicon', 'edittask', 'edittask2', 'savetask', 'hovertask', 'outhovertask', "commentindex", "removecommetfromview", "editcommentinview", "setduedate", "removelog", "setstatus", "setcontact"],
     setup(props, { emit }) {
+        const primarycolor = inject('primarycolor')
         const route = useRoute()
         const noteIcon = ref(false)
         const taskIcon = ref(false)
@@ -793,7 +794,8 @@ export default {
             statuses,
             setTaskStatus,
             deleteLog,
-            showConfirmModal
+            showConfirmModal,
+            primarycolor
         }
     }
 }

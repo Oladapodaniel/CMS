@@ -248,7 +248,7 @@
             </div>
             <div class="col-md-11 mt-4 px-0 mb-4 d-flex justify-content-center">
               <div class="col-md-12">
-                <el-button class="w-100" color="#136acd" :loading="loading" :disabled="!personToggle"
+                <el-button class="w-100" :color="primarycolor" :loading="loading" :disabled="!personToggle"
                   @click="triggerPayment" round>{{ pledgeActionType
                     == '1' ? 'Pay' : 'Pledge'
                   }}</el-button>
@@ -329,7 +329,7 @@
 
 <script>
 import axios from "@/gateway/backendapi";
-import { ref, computed, reactive } from "vue";
+import { ref, computed, inject } from "vue";
 import { useToast } from "primevue/usetoast";
 import { useRoute } from "vue-router";
 import { useStore } from "vuex";
@@ -342,6 +342,7 @@ import { ElLoading } from 'element-plus'
 import swal from "sweetalert";
 export default {
   setup() {
+    const primarycolor = inject('primarycolor')
     const toast = useToast();
     const searchID = ref('')
     const selectPledgeItemID = ref(null)
@@ -882,7 +883,8 @@ export default {
       xlAndUp,
       paymentSuccessfulDialog,
       cardLoading,
-      triggerPayment
+      triggerPayment,
+      primarycolor
     };
   },
 };

@@ -217,10 +217,10 @@
               <div class="d-flex flex-column flex-lg-row justify-content-end w-100">
                 <div class="input-width">
                   <div class="d-flex flex-column">
-                    <el-button @click.prevent="onCancel" round>Cancel</el-button>
-                    <el-button @click.prevent="onSubmit" :loading="loading" class="my-3 mx-0"
+                    <el-button class="secondary-button" @click.prevent="onCancel" round>Cancel</el-button>
+                    <el-button @click.prevent="onSubmit" :loading="loading" class="secondary-button my-3 mx-0"
                       round>Save and add another</el-button>
-                    <el-button class="mx-0 mx-sm-2" color="#136acd" :loading="loadingtwo" @click.prevent="saveAndRoute"
+                    <el-button class="mx-0 mx-sm-2" :color="primarycolor" :loading="loadingtwo" @click.prevent="saveAndRoute"
                       round>Save</el-button>
                   </div>
                 </div>
@@ -304,8 +304,8 @@
                   </div>
                   <template #footer>
                     <span class="dialog-footer d-flex justify-content-end text-center">
-                      <el-button @click="displayModal = false" round>Cancel</el-button>
-                      <el-button color="#136acd" :loading="createCatLoading" @click="createNewCat(2)" round>
+                      <el-button class="secondary-button" @click="displayModal = false" round>Cancel</el-button>
+                      <el-button :color="primarycolor" :loading="createCatLoading" @click="createNewCat(2)" round>
                         Save
                       </el-button>
                     </span>
@@ -334,8 +334,8 @@
                       </p>
                     </div>
                     <div class="pr-0 col-md-12 d-md-flex justify-content-end">
-                      <el-button data-dismiss="modal" round>Cancel</el-button>
-                      <el-button color="#136acd" data-dismiss="modal" @click="createNewEvent" round>
+                      <el-button class="secondary-button" data-dismiss="modal" round>Cancel</el-button>
+                      <el-button :color="primarycolor" data-dismiss="modal" @click="createNewEvent" round>
                         Save
                       </el-button>
                     </div>
@@ -394,8 +394,8 @@
                   </p>
                 </div>
                 <div class="row mt-2 d-md-flex justify-content-end">
-                  <el-button  data-dismiss="modal" round>Cancel</el-button>
-                  <el-button color="#136acd" :data-dismiss="dismissAddToGroupModal" @click="addMemberToGroup"
+                  <el-button class="secondary-button" data-dismiss="modal" round>Cancel</el-button>
+                  <el-button :color="primarycolor" :data-dismiss="dismissAddToGroupModal" @click="addMemberToGroup"
                     round>Save</el-button>
                 </div>
               </div>
@@ -408,7 +408,7 @@
 </template>
 
 <script>
-import { ref, reactive, onMounted, computed, nextTick } from "vue";
+import { ref, reactive, onMounted, computed, nextTick, inject } from "vue";
 import axios from "@/gateway/backendapi";
 import router from "@/router/index";
 import Dropdown from "primevue/dropdown";
@@ -437,6 +437,7 @@ export default {
   },
 
   setup() {
+    const primarycolor = inject('primarycolor')
     const store = useStore();
     const showEventList = ref(false);
     const selectEventAttended = () => {
@@ -1313,7 +1314,8 @@ export default {
       lgAndUp,
       createCatLoading,
       imageSelected,
-      url
+      url,
+      primarycolor
     };
   },
 };

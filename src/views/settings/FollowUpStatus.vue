@@ -28,7 +28,7 @@
                       />
                     </div>
                     <div class="col-md-3">
-                      <el-button color="#136acd" :loading="loading" class="primary-btn px-5 text-white" size="large" round >Save</el-button>
+                      <el-button :color="primarycolor" :loading="loading" class="primary-btn px-5 text-white" size="large" round >Save</el-button>
                     </div>
                   </div>
                 </div>
@@ -108,6 +108,7 @@
 <script>
 import axios from "@/gateway/backendapi";
 export default {
+  inject: ['primarycolor'],
   data() {
     return {
       classifications: [ ],

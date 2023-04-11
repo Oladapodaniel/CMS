@@ -48,7 +48,7 @@
                         class="  font-weight-bold px-md-4 text-white border-0"
                         @click="saveBranch"
                         :loading="loading"
-                        color="#136acd"
+                        :color="primarycolor"
                         size="large"
                         round
                       >
@@ -224,6 +224,7 @@ export default {
   display: "Simple",
   components: {},
   directives: {},
+  inject: ['primarycolor'],
   data() {
     return {
       branchList: [],

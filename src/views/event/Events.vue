@@ -11,7 +11,7 @@
               <span><i class="pi pi-angle-down btn-icon"></i></span>
             </button>
               <router-link :to="{ name: 'Event' }">
-                <el-button round color="#136acd" class="header-btn">
+                <el-button round :color="primarycolor" class="header-btn">
                   Add Event
                 </el-button>
               </router-link>
@@ -78,7 +78,7 @@
 
 <script>
     // import axios from '@/gateway/backendapi'
-    import { ref, onMounted } from 'vue'
+    import { ref, onMounted, inject } from 'vue'
     import EventList from './EventList'
     import Loader from '../accounting/offering/SkeletonLoader'
     import finish from "../../services/progressbar/progress"
@@ -93,8 +93,7 @@ export default {
         EventList, Loader
        },
   setup() {
-      
-      // const eventList = ref([])
+      const primarycolor = inject('primarycolor')
       const { lgAndUp, xlAndUp } = deviceBreakpoint();
       const eventSummary = ref(store.getters["event/geteventitems"])
       const loading = ref(false);
@@ -136,7 +135,7 @@ export default {
       }
     });
   
-    return { eventList, getEventList, lgAndUp, xlAndUp, loading, eventSummary, getPageActivity, networkError, deleteFromView };
+    return { eventList, getEventList, lgAndUp, xlAndUp, loading, eventSummary, getPageActivity, networkError, deleteFromView, primarycolor };
 
   },
 };

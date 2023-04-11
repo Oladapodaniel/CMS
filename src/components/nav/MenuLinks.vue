@@ -9,7 +9,7 @@
         <a class="user-link">{{ tenantDisplayName }}
           <span class="user-link-icon c-pointer"><i class="pi pi-angle-right"></i></span></a>
       </div>
-      <el-menu default-active="1" active-text-color="#136acd" background-color="#ebeff4"
+      <el-menu default-active="1" :active-text-color="primarycolor" background-color="#ebeff4"
         class="el-menu-vertical-demo mt-3" text-color="#02172e" :unique-opened="true">
         <div v-for="(item, index) in menuLink" :key="index">
           <el-sub-menu :index="`${index + 1}`" v-if="item.submenu.length > 0">
@@ -61,7 +61,7 @@
 </template>
 
 <script>
-import { computed, ref, watchEffect } from "vue";
+import { computed, ref, watchEffect, inject } from "vue";
 import { useRoute } from "vue-router";
 import store from "@/store/store";
 import axios from "@/gateway/backendapi";
@@ -72,6 +72,7 @@ export default {
   },
   emits: ['tenantname', 'linkclicked'],
   setup(props, { emit }) {
+    const primarycolor = inject('primarycolor')
     const route = useRoute();
     const router = useRouter()
     const churchLogo = ref("");
@@ -506,6 +507,7 @@ export default {
       linkClicked,
       tenantInfo,
       getUser,
+      primarycolor
     };
   },
 };

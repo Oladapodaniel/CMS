@@ -102,10 +102,10 @@
           <div class="row align-items-center justify-content-center justify-content-sm-end">
               <router-link to="/tenant/settings/defaultmessage" class="no-decoration"
                 >
-                <el-button round size="large" >Discard</el-button>
+                <el-button class="secondary-button" round size="large" >Discard</el-button>
                 </router-link
               >
-              <el-button color="#136acd" class="ml-2" :loading="loading" size="large" @click="callButton" round>Save</el-button>
+              <el-button :color="primarycolor" class="ml-2" :loading="loading" size="large" @click="callButton" round>Save</el-button>
           </div>
         </div>
       </div>
@@ -119,6 +119,7 @@ import { ElMessage } from "element-plus";
 import axios from "@/gateway/backendapi";
 
 export default {
+  inject: ['primarycolor'],
   data() {
     return {
       message: "",
@@ -148,14 +149,12 @@ export default {
         return i.value === this.selectCategoryID
       })
     },
-    callButton() {
+    callButton () {
       this.loading = true
       if (!this.$route.query.messageId) {
         this.createDefaultMessage();
-        this.loading = false
       } else {
         this.updateDefaultMessage();
-        this.loading = false
       }
     },
     createDefaultMessage() {

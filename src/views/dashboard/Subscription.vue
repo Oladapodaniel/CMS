@@ -129,7 +129,7 @@
           </div>
           <div class="row mt-5">
             <div class="col-12" data-toggle="modal" data-target="#PaymentOptionModal">
-              <el-button color="#136acd" class="w-100" round :disabled="!selectedPlanId">
+              <el-button :color="primarycolor" class="w-100" round :disabled="!selectedPlanId">
                 Pay Now
               </el-button>
               <!-- <button class="btn pay-now text-white w-100 normal-text">
@@ -211,7 +211,7 @@
 import axios from "@/gateway/backendapi";
 import { useStore } from "vuex";
 import formatDate from "../../services/dates/dateformatter";
-import { computed, ref } from "vue";
+import { computed, ref, inject } from "vue";
 import membershipService from "../../services/membership/membershipservice";
 import productPricing from "../../services/user/productPricing";
 import { ElMessage, ElMessageBox } from 'element-plus';
@@ -220,6 +220,7 @@ import deviceBreakpoint from "../../mixins/deviceBreakpoint";
 
 export default {
   setup() {
+    const primarycolor = inject('primarycolor')
     const store = useStore();
     const subscriptionPlans = ref([]);
     const productsList = ref([]);
@@ -677,7 +678,8 @@ export default {
       lgAndUp,
       xlAndUp,
       xsOnly,
-      dashboardURL
+      dashboardURL,
+      primarycolor
     };
   },
 };

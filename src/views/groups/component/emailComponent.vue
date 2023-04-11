@@ -25,9 +25,9 @@
             <template #footer>
               <span class="dialog-footer">
                 <div class="mt-2">
-                  <el-button @click="display = false" round> Cancel </el-button>
+                  <el-button class="secondary-button" @click="display = false" round> Cancel </el-button>
                   <el-button
-                    color="#136acd"
+                    :color="primarycolor"
                     :loading="scheduleLoading"
                     @click="contructScheduleMessageBody(2)"
                     round
@@ -447,7 +447,7 @@
         <div class="col-md-12 d-flex justify-content-end">
           <el-dropdown
             split-button
-            color="#136acd"
+            :color="primarycolor"
             class="split-button"
             size="large"
             trigger="click"
@@ -465,7 +465,7 @@
               </el-dropdown-menu>
             </template>
           </el-dropdown>
-          <el-button class="ml-3" size="large" @click="closeModal" round
+          <el-button class="ml-3 secondary-button" size="large" @click="closeModal" round
             >Discard</el-button
           >
         </div>
@@ -475,7 +475,7 @@
 </template>
 
 <script>
-import { computed, onMounted, ref, watchEffect } from "vue";
+import { computed, onMounted, ref, watchEffect, inject } from "vue";
 import composeService from "../../../services/communication/composer";
 import composerObj from "../../../services/communication/composer";
 import { useRoute } from "vue-router";
@@ -498,6 +498,7 @@ export default {
   setup(props, { emit }) {
     const editorData = ref("");
     const selectedMembers = ref([]);
+    const primarycolor = inject('primarycolor')
 
     const onReady = (editor) => {
       editor.plugins.get("FileRepository").createUploadAdapter = (loader) => {
@@ -966,6 +967,7 @@ export default {
       xlAndUp,
       xsOnly,
       scheduleLoading,
+      primarycolor
     };
   },
 };

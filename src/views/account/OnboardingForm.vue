@@ -60,7 +60,7 @@
                     placeholder="Select size range" size="large" class="w-100" />
                 </el-form-item>
               </div>
-              <el-button class="w-100" color="#136acd" size="large" :disabled="!disableNext" :loading="loading"
+              <el-button class="w-100" :color="primarycolor" size="large" :disabled="!disableNext" :loading="loading"
                 @click="submitForm(ruleFormRef)" round>Next</el-button>
             </el-form>
           </div>
@@ -89,7 +89,7 @@ import axios from "@/gateway/backendapi";
 import router from "../../router/index";
 // import { VueTelInput } from "vue3-tel-input";
 // import "vue3-tel-input/dist/vue3-tel-input.css";
-import { ref, reactive } from "vue";
+import { ref, reactive, inject } from "vue";
 import finish from "../../services/progressbar/progress";
 import { ElNotification } from 'element-plus'
 export default {
@@ -106,6 +106,7 @@ export default {
   },
 
   setup() {
+    const primarycolor = inject('primarycolor')
     const ruleFormRef = ref()
     const rules = reactive({
       firstName: [
@@ -123,7 +124,8 @@ export default {
     })
     return {
       ruleFormRef,
-      rules
+      rules,
+      primarycolor
     }
   },
 

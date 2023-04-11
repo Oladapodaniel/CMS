@@ -27,7 +27,7 @@
                         placeholder="Post category name"
                         v-model="postName"
                       />
-                        <el-button size="large" color="#136acd" round class="primary-btn font-weight-bold text-white bold px-4 py-1 mt-sm-3 mt-lg-0 mt-xl-0" @click="savePost">Save</el-button>
+                        <el-button size="large" :color="primarycolor" round class="primary-btn font-weight-bold text-white bold px-4 py-1 mt-sm-3 mt-lg-0 mt-xl-0" @click="savePost">Save</el-button>
                       </div>
                     </div>
                     <div class="col-md-3 mt-md-0 mt-5 col-12 d-flex justify-content-center flex-column">
@@ -144,6 +144,7 @@ import finish from '../../services/progressbar/progress';
 import store from '@/store/store'
 
 export default {
+  inject: ['primarycolor'],
   data() {
     return {
       types: [ ],

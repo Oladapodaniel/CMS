@@ -29,7 +29,7 @@
                       />
                     </div>
                     <div class="col-md-3 d-flex justify-content-end">
-                       <el-button @click="saveAge" size="large" :loading="loading" class="font-weight-bold px-md-4 px-3 py-1 mt-sm-3 mt-lg-0 mt-xl-0 mt-md-0 mt-3  " color="#136acd"  round> Save </el-button>
+                       <el-button @click="saveAge" size="large" :loading="loading" class="font-weight-bold px-md-4 px-3 py-1 mt-sm-3 mt-lg-0 mt-xl-0 mt-md-0 mt-3  " :color="primarycolor"  round> Save </el-button>
                     </div>
                   </div>
                 </div>
@@ -184,6 +184,7 @@ import finish from "../../services/progressbar/progress";
 
 export default {
   components: {},
+  inject: ['primarycolor'],
   data() {
     return {
       types: [],

@@ -29,7 +29,7 @@
                       />
                     </div>
                     <div class="col-md-3 d-flex col-sm-12 justify-content-end">
-                      <el-button round class=" text-white bold  mt-sm-3 mt-lg-0 font-weight-bold mt-xl-0 mt-md-0 mt-3 px-md-4 px-3 py-1" :loading="loading" color="#136acd" size="large" @click="saveMembership">Save</el-button>
+                      <el-button round class=" text-white bold  mt-sm-3 mt-lg-0 font-weight-bold mt-xl-0 mt-md-0 mt-3 px-md-4 px-3 py-1" :loading="loading" :color="primarycolor" size="large" @click="saveMembership">Save</el-button>
                     </div>
                   </div>
                 </div>
@@ -115,6 +115,7 @@ import { ElMessage, ElMessageBox } from 'element-plus';
 import finish from "../../services/progressbar/progress"
 
 export default {
+  inject: ['primarycolor'],
   data() {
     return {
       classifications: [ ],

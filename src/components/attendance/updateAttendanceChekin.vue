@@ -106,7 +106,7 @@
       />
     </div>
     <div class="row d-flex justify-content-center my-4 c-pointer">
-      <el-button color="#136acd" :loading="loading" round size="large" class=" border-0 text-white text-center"
+      <el-button :color="primarycolor" :loading="loading" round size="large" class=" border-0 text-white text-center"
         @click="updateAttendanceCheckin">
         Save
       </el-button>
@@ -121,7 +121,7 @@
 </template>
 
 <script>
-import { computed, ref, watchEffect } from "@vue/runtime-core";
+import { computed, ref, watchEffect, inject } from "@vue/runtime-core";
 import axios from "@/gateway/backendapi";
 import { useRoute } from "vue-router";
 import router from "../../router";
@@ -130,6 +130,7 @@ import { ElMessage } from "element-plus";
 export default {
   props: ["contributionItems", "attendanceType", "groupDetail"],
   setup(props) {
+    const primarycolor = inject('primarycolor')
     const note = ref("");
     const route = useRoute();
     const loading = ref(false)
@@ -209,8 +210,6 @@ export default {
     watchEffect(() => {
       if (props.groupDetail && Object.keys(props.groupDetail).length > 0) {
         note.value = props.groupDetail.note;
-      }else {
-        console.log('ddddd')
       }
     });
 
@@ -289,7 +288,8 @@ export default {
       loading,
       dynamicCustomFields,
       attendanceCustomField,
-      loading
+      loading,
+      primarycolor
     };
   },
 };

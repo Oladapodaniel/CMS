@@ -12,14 +12,14 @@
       </div>
 
       <!-- Content Box -->
-      <main id="main" class="mt-3">
+      <main :class="{ 'main' : mdAndUp || lgAndUp || xlAndUp }" class="mt-3">
         <div class="container-fluid">
           <div class="row">
             <!-- Side menu -->
             <div class="col-md-3" id="side-menu">  
               <div class="row">
                 <div class="col-md-12 mt-4">
-                  <el-button round class="font-weight-bold w-100" size="large" color="#136acd" >
+                  <el-button round class="font-weight-bold w-100" size="large" :color="primarycolor" >
                     Upload voice
                   </el-button>
                 </div>
@@ -37,14 +37,15 @@
 </template>
 
 <script>
-import { ref } from "vue";
+import { ref, inject } from "vue";
 import { useRoute } from "vue-router";
 import deviceBreakpoint from "../../mixins/deviceBreakpoint";
 export default {
   setup() {
+    const primarycolor = inject('primarycolor')
     const route = useRoute();
     const menuShouldShow = ref(false);
-    const { lgAndUp, xlAndUp } = deviceBreakpoint()
+    const { mdAndUp, lgAndUp, xlAndUp } = deviceBreakpoint()
     const toggleMenu = ()=>{
            menuShouldShow.value = !menuShouldShow.value
          };
@@ -53,8 +54,10 @@ export default {
       route,
       toggleMenu,
       menuShouldShow,
+      mdAndUp,
       lgAndUp,
       xlAndUp,
+      primarycolor
 
     };
   },
@@ -77,7 +80,7 @@ export default {
   cursor: pointer;
 }
 
-#main {
+.main {
   border: 1px solid #02172e30;
   border-radius: 30px;
 }
