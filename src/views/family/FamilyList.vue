@@ -4,9 +4,7 @@
       <div class="col-12 px-0">
         <div class="top-con">
           <div class="">
-            <div class="col-2">
-              
-            </div>
+            <!-- <div class="col-2"></div> -->
 
             <div class="table-top p-3 mt-5">
               <div class="col-md-5 justify-content-flex-end">
@@ -126,7 +124,9 @@ import axios from "@/gateway/backendapi";
 import finish from "../../services/progressbar/progress";
 import router from "../../router";
 import { ElMessage, ElMessageBox } from "element-plus";
+// import { useStore } from "vuex";
 import Table from "@/components/table/Table";
+
 export default {
   props: ["familyList"],
   components: {
@@ -135,6 +135,9 @@ export default {
   setup(props, { emit }) {
     const searchText = ref("");
     const searchIsVisible = ref(false);
+
+    // const store = useStore();
+    // const groups = ref(store.getters['family/family']);
 
     const toggleSearch = () => {
       searchIsVisible.value = !searchIsVisible.value;
@@ -152,12 +155,10 @@ export default {
       );
     });
 
-      const searchGroupInDB = () => {
+    const searchGroupInDB = () => {
       if (searchText.value !== "" && props.familyList.length > 0) {
         return props.familyList.filter((i) => {
-          i.familyName
-              .toLowerCase()
-              .includes(searchText.value.toLowerCase());
+          i.familyName.toLowerCase().includes(searchText.value.toLowerCase());
         });
       } else {
         return props.familyList.value;
@@ -236,7 +237,7 @@ export default {
       deleteFamily,
       moveToEdit,
       familyHeaders,
-      searchGroupInDB
+      searchGroupInDB,
     };
   },
 };
@@ -269,6 +270,7 @@ export default {
   border: 1px solid #e0e0e0;
   border-bottom: none;
   justify-content: flex-end;
+  display: flex;
 }
 .table-top label:hover,
 .table-top p:hover {

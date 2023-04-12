@@ -2,36 +2,51 @@
 <template>
   <div :class="{ 'container-slim': lgAndUp || xlAndUp }">
     <div class="container-fluid container-top">
-     
-
       <div
         class="row d-flex flex-column flex-sm-row justify-content-sm-between"
       >
         <div class="head-text">Family</div>
 
-         <router-link to="/tenant/addfamily">
-             <el-button
-            class="header-btn"
-            color="#136acd"
-            round
-          >
+        <router-link to="/tenant/addfamily" class="no-decoration">
+          <el-button class="header-btn" color="#136acd" round>
             Add Family
           </el-button>
-          </router-link>
+        </router-link>
       </div>
 
+      <el-skeleton class="w-100" animated v-if="loading">
+        <template #template>
+          <div
+            style="
+              display: flex;
+              align-items: center;
+              justify-content: space-between;
+              margin-top: 20px;
+            "
+          >
+            <el-skeleton-item
+              variant="text"
+              style="width: 240px; height: 240px"
+            />
+            <el-skeleton-item
+              variant="text"
+              style="width: 240px; height: 240px"
+            />
+          </div>
 
-         
-
-      <div v-if="loading">
-        <Loader />
-      </div>
+          <el-skeleton
+            class="w-100 mt-5"
+            style="height: 25px"
+            :rows="20"
+            animated
+          />
+        </template>
+      </el-skeleton>
 
       <div
         class="row"
         v-if="familyList.length > 0 && !loading && !networkError"
       >
-        <!-- <OfferingList :contributionTransactions="contributionTransactions" @get-pages="getOfferingPages" @contri-transac="updateTransac" :totalItem="totalItem"/> -->
         <FamilyList :familyList="familyList" @list-filtered="resetList" />
       </div>
 
@@ -115,7 +130,7 @@ export default {
       loading,
       networkError,
       navigateToAddFamily,
-      
+
       lgAndUp,
       xlAndUp,
     };
