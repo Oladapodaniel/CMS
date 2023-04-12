@@ -259,6 +259,12 @@
                   </div>
                 </div>
               </div>
+              <!-- <Table :data="selectedTransactions" :headers="transactionHeaders" :checkMultipleItem="true"
+                @checkedrow="handleSelectionChange" v-loading="loading" v-if="searchMember.length > 0">
+                  <template v-slot:fullName="{ item }">
+                    <div @click="showMemberRow(item)" class="c-pointer">{{ item.firstName }} {{ item.lastName }}</div>
+                  </template>
+              </Table> -->
             </div>
             <!-- :class="{ 'slide-form' : showEditTransaction, 'hide-form' : !showEditTransaction }" -->
             <div class="table edit-transac col-12 border col-sm-10 col-md-8 w-100 w-sm-50 w-md-50 w-lg-50 col-lg-4 mobile-form mywidt " v-if="showEditTransaction">
@@ -316,7 +322,17 @@ export default {
     const confirm = useConfirm();
     const toast = useToast();
     const transactions = ref([]);
+    const transactionHeaders = ref([
+      { name: 'DATE', value: 'date' },
+      { name: 'DESCRIPTION', value: 'description' },
+      { name: 'AMOUNT', value: 'amount' },
+      { name: 'CATEGORY', value: 'category' },
+      { name: 'ACTION', value: 'action' },
+    ])
     // const types = ["assets", "liability", "income", "expense", "equity"];
+    // const handleSelectionChange = (val) => {
+    //   checkedFirstTimer.value = val
+    // }
     const cashAndBank = ref([
       {
         name: {
@@ -475,6 +491,7 @@ export default {
     const loading = ref(true);
     const refreshing = ref(false);
     const getTransactions = async () => {
+      loading.value = true;
       try {
         refreshing.value = true;
         const response = await transaction_service.getTransactions();
@@ -641,6 +658,8 @@ export default {
 
     return {
       transactions,
+      // handleSelectionChange,
+      transactionHeaders,
       filterFormIsVissible,
       toggleFilterFormVissibility,
       toggleSearch,

@@ -7,8 +7,12 @@
       >
         <div class="head-text">Family</div>
 
-        <router-link to="/tenant/addfamily" class="no-decoration">
-          <el-button class="header-btn" color="#136acd" round>
+         <router-link to="/tenant/addfamily">
+             <el-button
+            class="header-btn"
+            :color="primarycolor"
+            round
+          >
             Add Family
           </el-button>
         </router-link>
@@ -75,7 +79,7 @@
 </template>
 
 <script>
-import { ref } from "vue";
+import { ref, inject } from "vue";
 import axios from "@/gateway/backendapi";
 import finish from "../../services/progressbar/progress";
 import FamilyList from "./FamilyList.vue";
@@ -89,6 +93,7 @@ export default {
     Loader,
   },
   setup() {
+    const primarycolor = inject('primarycolor')
     const familyList = ref([]);
     const loading = ref(false);
     const networkError = ref(false);
@@ -130,9 +135,9 @@ export default {
       loading,
       networkError,
       navigateToAddFamily,
-
       lgAndUp,
       xlAndUp,
+      primarycolor
     };
   },
 };

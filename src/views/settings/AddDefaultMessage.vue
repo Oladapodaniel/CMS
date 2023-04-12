@@ -1,6 +1,6 @@
 <template>
   <div>
-    <div class="container">
+    <div class="container-fluid">
       <h1 class="">Default Message</h1>
       <div class="add-container2">
         <h2 class="" style="font-weight: bold">Add Default Message</h2>
@@ -47,10 +47,43 @@
               >
             </div>
             <div class=" col-12  col-sm-9">
-              <el-input v-model="subject" size="large" type="text" class="" id="inputPassword6" />
+              
+              <el-dropdown trigger="click" class="w-100" v-if="selectType.value === 0">
+                <el-input v-model="searchSenderText" placeholder="Search sender id" />
+                <el-icon class="el-icon--right"><arrow-down /></el-icon>
+            <template #dropdown>
+              <el-dropdown-menu>
+                <el-dropdown-item v-for="(item, index) in searchSenderIDs" :key="index" @click="setIdToSubject(item)">
+                  {{ item.mask }}
+                </el-dropdown-item>
+              </el-dropdown-menu>
+            </template>
+          </el-dropdown>
+          <div v-else-if="selectType.value == 2">
+            <!-- action="https://run.mocky.io/v3/9d059bf9-4660-45f2-925d-ce80ad6c4d15" -->
+            <el-upload
+              class="uploadvoice w-100"
+              :on-change="chooseVoiceFile"
+              accept="audio/*" 
+              :auto-upload="false"
+            >
+              <el-button class="w-100" type="info" plain>Click to upload</el-button>
+              <template #tip>
+                <div class="el-upload__tip">
+                  upload your audio file
+                </div>
+              </template>
+            </el-upload>
+            <audio controls ref="audioPlayer" class="mt-2" style="width: 100%; display: none">
+              <source src="" type="audio/mpeg">
+              Your browser does not support the audio element.
+            </audio>
+
+          </div>
+          <el-input v-model="subject" type="text" class="" id="inputPassword6" v-else />
             </div>
           </div>
-          <div class="row g-3 align-items-center">
+          <div class="row g-3 align-items-center" v-if="selectType.value !== 2">
             <div class="text-left text-sm-right col-12 col-sm-3">
               <label for="inputPassword6" class="col-form-label"
                 >Message:</label
@@ -66,28 +99,13 @@
               />
             </div>
           </div>
-          <div class="row  g-3 align-items-center justify-content-center">
-            <div class="col-md-5 d-flex  w-100">
-              <router-link to="/tenant/settings/defaultmessage"
+          <div class="row align-items-center justify-content-center justify-content-sm-end">
+              <router-link to="/tenant/settings/defaultmessage" class="no-decoration"
                 >
-                <el-button style="
-                    float: right;
-                    border-radius: 22px;
-                    font-size: 16px;
-                    font-weight: 600;
-                    outline: none;
-                    hover: none;
-                  " round size="large" >Discard</el-button>
+                <el-button class="secondary-button" round size="large" >Discard</el-button>
                 </router-link
               >
-              <el-button color="#136acd" :loading="loading" size="large" @click="callButton" class=" saveButton "  style="
-                  float: right;
-                  margin-left: 20px;
-                  border-radius: 22px;
-                  font-size: 16px;
-                  font-weight: 600;
-                "  round>Save</el-button>
-            </div>
+              <el-button :color="primarycolor" class="ml-2" :loading="loading" size="large" @click="callButton" round>Save</el-button>
           </div>
         </div>
       </div>
@@ -101,10 +119,12 @@ import { ElMessage } from "element-plus";
 import axios from "@/gateway/backendapi";
 
 export default {
+  inject: ['primarycolor'],
   data() {
     return {
       message: "",
       subject: "",
+      file: null,
       selectCategory: {},
       selectCategoryID: null,
       loading: false,
@@ -113,6 +133,9 @@ export default {
       selectTypeID: null,
       Sms: messageOptions.Sms,
       defaultMessage: {},
+      searchSenderText: "",
+      senderIDs: [],
+      selectedSender: {},
     };
   },
   methods: {
@@ -126,41 +149,43 @@ export default {
         return i.value === this.selectCategoryID
       })
     },
-    callButton() {
+    callButton () {
       this.loading = true
       if (!this.$route.query.messageId) {
         this.createDefaultMessage();
-        this.loading = false
       } else {
         this.updateDefaultMessage();
-        this.loading = false
       }
     },
     createDefaultMessage() {
       this.loading = true
       if (
-        this.subject === "" ||
-        this.message === "" ||
-        this.selectType === "" ||
-        this.selectCategory === ""
+        // this.subject === "" ||
+        // this.message === "" ||
+        // (this.selectType.value !== 2 && Object.keys(this.selectType).length === 0) ||
+        // (this.selectType.value !== 2 && Object.keys(this.selectCategory).length === 0)
+        (this.selectType.value !== 2 && this.subject == "") ||
+        (this.selectType.value !== 2 && this.message == "") ||
+        (Object.keys(this.selectCategory).length === 0) ||
+        (Object.keys(this.selectType).length === 0)
       ) 
-      
       {
         ElMessage({
           type: "error",
-          message: "Input Your Complete Messages",
-          duration: 5000
+          message: "Kindly fill in all fields before saving",
+          duration: 8000
         });
+        return false;
       }
-      
-      let newCreate = {
-        subject: this.subject,
-        message: this.message,
-        messageType: this.selectType.value,
-        category: this.selectCategory.value,
-      };
+
+      const formData = new FormData();
+      formData.append("category", this.selectCategory.value);
+      formData.append("messageType", this.selectType.value);
+      formData.append("subject", this.selectType.value !== 2 ? this.subject : "");
+      formData.append("message", this.selectType.value !== 2 ? this.message : "");
+      formData.append("voiceFile", this.file);
       axios
-        .post(`/api/Settings/CreateDefaultMessage`, newCreate)
+        .post(`/api/Settings/CreateDefaultMessage`, formData)
         .then((res) => {
           console.log(res);
           ElMessage({
@@ -183,15 +208,24 @@ export default {
     },
     async updateDefaultMessage() {
       this.loading = true
-      let newUpdate = {
-        id: this.defaultMessage.returnObject.id,
-        subject: this.subject,
-        message: this.message,
-        messageType: this.selectType.value,
-        category: this.selectCategory.value,
-      };
+      // let newUpdate = {
+      //   id: this.defaultMessage.returnObject.id,
+      //   subject: this.subject,
+      //   message: this.message,
+      //   messageType: this.selectType.value,
+      //   category: this.selectCategory.value,
+      // };
+
+      const formData = new FormData();
+      formData.append("id", this.defaultMessage.returnObject.id);
+      formData.append("category", this.selectCategory.value);
+      formData.append("messageType", this.selectType.value);
+      formData.append("subject", this.selectType.value !== 2 ? this.subject : "");
+      formData.append("message", this.selectType.value !== 2 ? this.message : "");
+      formData.append("voiceFile", this.file);
+
       axios
-        .put(`/api/Settings/UpdateDefaultMessage`, newUpdate)
+        .put(`/api/Settings/UpdateDefaultMessage`, formData)
         .then((res) => {
           console.log(res);
           this.$router.push("/tenant/settings/defaultmessage");
@@ -225,10 +259,50 @@ export default {
         }
       }
     },
+    async getSenderId () {
+      try {
+        let { data } = await axios.get(
+          `/api/Messaging/RetrieveTenantSenderIDs`
+        );
+        this.senderIDs = data.returnObject;
+      } catch (err) {
+        console.log(err);
+      }
+    },
+    setIdToSubject (item) {
+      this.searchSenderText = item.mask;
+      this.subject = item.mask
+      this.selectedSender = item;
+    },
+    chooseVoiceFile (e) {
+      const audioPlayer = this.$refs.audioPlayer
+      this.file = e.raw;
+        const reader = new FileReader();
+
+        reader.addEventListener("load", function() {
+          audioPlayer.src = reader.result;
+          audioPlayer.style.display = "block";
+        });
+
+        if (this.file) {
+          reader.readAsDataURL(this.file);
+        }
+    }
   },
   created() {
     this.getDefaultMessage();
+    this.getSenderId();
   },
+  computed: {
+    searchSenderIDs () {
+      if (!this.searchSenderText) return this.senderIDs;
+      return this.senderIDs.filter((i) => {
+        return i.mask
+          .toLowerCase()
+          .includes(this.searchSenderText.toLowerCase());
+      });
+    }
+  }
 };
 </script>
 
@@ -271,7 +345,6 @@ export default {
 }
 
 .row {
-  width: 80% !important;
   margin: auto;
   margin-bottom: 20px;
 }

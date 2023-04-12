@@ -1,7 +1,7 @@
 <template>
   <div class="my-con">
     <div class="summary px-3">
-      <p class="summary-header">Summary</p>
+      <p class="summary-header primary--text">Summary</p>
 
       <div class="boards">
         <div class="board">
@@ -36,8 +36,8 @@
         placeholder="Select a group" size="large" class="w-100" />
       <template #footer>
         <span class="dialog-footer">
-          <el-button @click="addToGroupDialog = false" round>Cancel</el-button>
-          <el-button type="primary" color="#136acd" :loading="allGroupLoading" @click="getAllMembersAndAddToGroup" round>
+          <el-button class="secondary-button" @click="addToGroupDialog = false" round>Cancel</el-button>
+          <el-button type="primary" :color="primarycolor" :loading="allGroupLoading" @click="getAllMembersAndAddToGroup" round>
             Add to group
           </el-button>
         </span>
@@ -51,8 +51,8 @@
         placeholder="Select a group" size="large" class="w-100" />
       <template #footer>
         <span class="dialog-footer">
-          <el-button @click="addToGroupSingle = false" round>Cancel</el-button>
-          <el-button type="primary" color="#136acd" :loading="singleGroupLoading" @click="moveMemberToGroup" round>
+          <el-button class="secondary-button" @click="addToGroupSingle = false" round>Cancel</el-button>
+          <el-button type="primary" :color="primarycolor" :loading="singleGroupLoading" @click="moveMemberToGroup" round>
             Add to group
           </el-button>
         </span>
@@ -65,8 +65,8 @@
       <p class="p-m-0">You are about to archive your member(s). Do you want to continue ?</p>
       <template #footer>
         <span class="dialog-footer">
-          <el-button @click="displayPositionArchive = false" round>No</el-button>
-          <el-button color="#136acd" :loading="archiveLoading" @click="archive('', 'multiple')" round>
+          <el-button class="secondary-button" @click="displayPositionArchive = false" round>No</el-button>
+          <el-button :color="primarycolor" :loading="archiveLoading" @click="archive('', 'multiple')" round>
             Yes
           </el-button>
         </span>
@@ -162,7 +162,7 @@
           </div>
 
           <div class="col-md-3 d-flex flex-column align-items-center">
-            <el-button color="#136acd" @click="applyFilter" :loading="applyLoading" :disabled="disableBtn"
+            <el-button :color="primarycolor" @click="applyFilter" :loading="applyLoading" :disabled="disableBtn"
               round>Apply</el-button>
             <span class="mt-2">
               <el-button @click="clearAll" class="mr-2" text>Clear all</el-button>
@@ -311,7 +311,7 @@
 </template>
 
 <script>
-import { ref, computed, watch, watchEffect } from "vue";
+import { ref, computed, watch, watchEffect, inject } from "vue";
 import ByGenderChart from "@/components/charts/PieChart.vue";
 import ByMaritalStatusChart from "@/components/charts/PieChart.vue";
 import axios from "@/gateway/backendapi";
@@ -340,6 +340,7 @@ export default {
   },
 
   setup(props) {
+    const primarycolor = inject('primarycolor')
     const addClass = ref(false)
     const churchMembers = ref([]);
     const filterFormIsVissible = ref(false);
@@ -954,7 +955,8 @@ export default {
       handleSelectionChange,
       handleSizeChange,
       handleCurrentChange,
-      searchingMember
+      searchingMember,
+      primarycolor
     };
   },
 };
@@ -993,7 +995,6 @@ export default {
 
 .summary-header {
   margin: -0.8rem 10px 0.5rem 10px;
-  color: #136acd;
   opacity: 0.8;
   font-size: 22px;
   font-weight: 600;

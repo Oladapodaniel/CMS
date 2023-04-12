@@ -145,12 +145,12 @@
                     <label for=""></label>
                   </div>
                   <div class="col-md-7 d-flex justify-content-center">
-                    <el-button class="default-btn mr-2" data-dismiss="modal" round>
+                    <el-button class="default-btn mr-2 secondary-button" data-dismiss="modal" round>
                       Cancel
                     </el-button>
                     <el-button
                       class=" border-0 ml-2 text-white"
-                      color="#136acd"
+                      :color="primarycolor"
                       round
                       @click="createNewActivity"
                       data-dismiss="modal"
@@ -1057,7 +1057,7 @@
             <div class="row">
               <div class="col-md-12 d-flex justify-content-center">
                 <el-button
-                color="#136acd"
+                :color="primarycolor"
                   class=" text-white border-0 "
                   round
                   :loading="loading"
@@ -1090,7 +1090,7 @@
 </template>
 
 <script>
-import { computed, nextTick, ref } from "vue";
+import { computed, nextTick, ref, inject } from "vue";
 import { useRoute } from "vue-router";
 import router from "@/router/index";
 import groupService from "../../../services/groups/groupsservice";
@@ -1112,6 +1112,7 @@ export default {
   components: { CreateEventModal, GroupTree },
 
   setup() {
+    const primarycolor = inject('primarycolor')
     const store = useStore();
     const route = useRoute();
     const groups = ref([]);
@@ -1939,6 +1940,7 @@ export default {
       checkinCutOffTime,
       setFilterGroups,
       setNewGroup,
+      primarycolor
     };
   },
 };

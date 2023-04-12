@@ -28,7 +28,7 @@
                   </div>
                   <div class="actions col-md-6 d-flex justify-content-md-end">
                     <router-link :to="{ name: 'AddCheckin' }" v-if="showAttendanceCheckin">
-                      <el-button color="#136acd" class="ml-2 header-btn" round>Add New Attendance</el-button>
+                      <el-button :color="primarycolor" class="ml-2 header-btn" round>Add New Attendance</el-button>
                     </router-link>
                   </div>
                 </div>
@@ -144,8 +144,7 @@
                     <label for="groupName" class="font-weight-600">Group name</label>
                   </div>
                   <div class="col-md-8">
-                    <el-input type="text" v-model="groupData.name" class="w-100 ml-0" id="formGroup"
-                      @input="validateGroupName" />
+                    <el-input type="text" v-model="groupData.name" class="w-100 ml-0" id="formGroup" />
                   </div>
                 </div>
               </div>
@@ -443,7 +442,7 @@
                                                   justify-content-center
                                                   py-2
                                                   text-decoration-none
-                                                  primary-text
+                                                  primary--text
                                                   c-pointer" style="border-top: 1px solid #002044; color: #136acd;"
                                       @click="showAddMemberForm" data-dismiss="modal">
                                       <el-icon class="primary--text d-flex align-self-center mr-2">
@@ -488,18 +487,11 @@
                         </div>
                       </div>
                       <div class="modal-footer mb-2">
-                        <el-button class="default-btn cancel bg-white text-dark" data-dismiss="modal" round>
+                        <el-button class="secondary-button" data-dismiss="modal" round>
                           Cancel
                         </el-button>
 
-                        <el-button class="
-                                      primary-btn
-                                      default-btn
-                                      primary-bg
-                                      border-0
-                                      outline-none
-                                      text-white
-                                    " @click="addSelectedMembersToGroup" :data-dismiss="modalStatus" round>
+                        <el-button :color="primarycolor" @click="addSelectedMembersToGroup" :data-dismiss="modalStatus" round>
                           Add member
                         </el-button>
                       </div>
@@ -562,8 +554,8 @@
 
                     <!-- Modal footer -->
                     <div class="modal-footer">
-                      <el-button data-dismiss="modal" ref="dismissMoveModal" round>Close</el-button>
-                      <el-button color="#136acd" @click="moveMembers" :loading="moveLoading" round>Move</el-button>
+                      <el-button class="secondary-button" data-dismiss="modal" ref="dismissMoveModal" round>Close</el-button>
+                      <el-button :color="primarycolor" @click="moveMembers" :loading="moveLoading" round>Move</el-button>
                     </div>
                   </div>
                 </div>
@@ -812,9 +804,9 @@
       </div>
       <div class="col-md-12 d-flex justify-content-end action-btns">
         <router-link to="/tenant/peoplegroups" class="no-decoration">
-          <el-button round>Discard</el-button>
+          <el-button class="mr-2 secondary-button" round>Discard</el-button>
         </router-link>
-        <el-button color="#136acd" :loading="savingGroup" @click="saveGroupData" :disabled="savingGroup" round>{{
+        <el-button :color="primarycolor" :loading="savingGroup" @click="saveGroupData" :disabled="savingGroup" round>{{
           buttonText }}</el-button>
       </div>
     </div>
@@ -829,8 +821,8 @@
       </p>
       <template #footer>
         <div class="d-flex justify-content-end">
-          <el-button @click="closeArchiveModal" round>No</el-button>
-          <el-button color="#136acd" @click="archive('', 'multiple')" round>Yes</el-button>
+          <el-button class="secondary-button" @click="closeArchiveModal" round>No</el-button>
+          <el-button :color="primarycolor" @click="archive('', 'multiple')" round>Yes</el-button>
         </div>
       </template>
     </el-dialog>
@@ -860,7 +852,7 @@
 </template>
 
 <script>
-import { computed, nextTick, ref } from "vue";
+import { computed, nextTick, ref, inject } from "vue";
 import composeService from "../../services/communication/composer";
 import axios from "@/gateway/backendapi";
 import router from "@/router/index";
@@ -900,6 +892,7 @@ export default {
     Table,
   },
   setup() {
+    const primarycolor = inject('primarycolor')
     const store = useStore();
     const route = useRoute();
     const display = ref(false);
@@ -1074,13 +1067,13 @@ export default {
             ElMessage({
               message: "Please ensure you have a strong internet",
               type: "warning",
-              life: "4000",
+              duration: 4000,
             });
           } else if (err.toString().toLowerCase().includes("timeout")) {
             ElMessage({
               message: "Request timeout, Please refresh the page and try again",
               type: "warning",
-              life: "4000",
+              duration: 4000,
               showClose: true,
             });
           }
@@ -1098,7 +1091,7 @@ export default {
           ElMessage({
             message: "Member(s) Copy Successfully",
             type: "success",
-            life: "4000",
+            duration: 4000,
             showClose: true,
           });
           store.dispatch("groups/updateGroupPeopleCopy", {
@@ -1111,15 +1104,15 @@ export default {
           if (err.toString().toLowerCase().includes("network error")) {
             ElMessage({
               message: "Please ensure you have a strong internet",
-              type: "Warn",
-              life: "4000",
+              type: "warning",
+              duration: 4000,
               showClose: true,
             });
           } else if (err.toString().toLowerCase().includes("timeout")) {
             ElMessage({
               message: "Please refresh the page",
-              type: "warn",
-              life: "4000",
+              type: "warning",
+              duration: 4000,
             });
           }
         });
@@ -1150,7 +1143,7 @@ export default {
               ElMessage({
                 message: "The member was removed",
                 type: "success",
-                duration: "2500",
+                duration: 5000,
               });
               groupsService.editGroupInStore(
                 { name: groupData.value.name, id: route.params.groupId },
@@ -1175,7 +1168,7 @@ export default {
               ElMessage({
                 type: "success",
                 message: res.message,
-                duration: "5000"
+                duration: 5000
               });
 
               store.dispatch("groups/updateGroupPeopleCount", {
@@ -1379,7 +1372,7 @@ export default {
             ElMessage({
               message: "Group members updated successfully",
               type: "success",
-              duration: "2500",
+              duration: 5000,
             });
           }
         })
@@ -1390,7 +1383,7 @@ export default {
           ElMessage({
             message: "Failed updating group",
             type: "error",
-            duration: "2500",
+            duration: 5000,
           });
         });
     };
@@ -1398,27 +1391,22 @@ export default {
     const createGroup = (data) => {
       axios
         .post("/api/CreateGroup", data)
-        .then((res) => {
-          groupsService.addGroupToStore(res.data, groupMembers.value.length);
+        .then(() => {
           savingGroup.value = false;
-          router.push("/tenant/peoplegroups");
+          store.dispatch("groups/setGroups").then(() => {
+            router.push("/tenant/peoplegroups");
+          })
         })
         .catch((err) => {
           finish();
           savingGroup.value = false;
-          console.log(err.response);
+          console.log(err);
           ElMessage({
             message: "Failed saving group",
             type: "error",
-            duration: "2500",
+            duration: 5000,
           });
         });
-    };
-
-    const validateGroupName = (e) => {
-      if (e.target.value) {
-        groupNameIsInvalid.value = false;
-      }
     };
 
     const getGroupById = async () => {
@@ -1469,14 +1457,14 @@ export default {
         if (error.toString().toLowerCase().includes("network error")) {
           ElMessage({
             message: "Please ensure you have a strong internet",
-            type: "warn",
-            duration: "4000",
+            type: "warning",
+            duration: 4000,
           });
         } else if (error.toString().toLowerCase().includes("timeout")) {
           ElMessage({
             message: "Please refresh the page",
-            type: "warn",
-            duration: "4000",
+            type: "warning",
+            duration: 4000,
           });
         }
       }
@@ -1493,8 +1481,8 @@ export default {
       if (!route.params.groupId) {
         ElMessage({
           message: "Please ensure you create the group first before you import",
-          type: "warn",
-          duration: "5000",
+          type: "warning",
+          duration: 5000,
         });
       }
     };
@@ -1515,7 +1503,7 @@ export default {
         ElMessage({
           message: "Member approved successfully",
           type: "Success",
-          duration: "4000",
+          duration: 4000,
         });
         awaitingApprovals.value = awaitingApprovals.value.filter((i) => {
           return i.personID !== member.personID;
@@ -1527,14 +1515,14 @@ export default {
         if (error.toString().toLowerCase().includes("network error")) {
           ElMessage({
             message: "Please ensure you have a strong internet",
-            type: "warn",
-            duration: "4000",
+            type: "warning",
+            duration: 4000,
           });
         } else if (error.toString().toLowerCase().includes("timeout")) {
           ElMessage({
             message: "Please refresh the page",
-            type: "warn",
-            duration: "4000",
+            type: "warning",
+            duration: 4000,
           });
         }
         console.log(error);
@@ -1577,7 +1565,7 @@ export default {
           ElMessage({
             message: "Member archived successfully",
             type: "success",
-            duration: "5000",
+            duration: 5000,
           });
         }
         if (data && type == "multiple") {
@@ -1589,7 +1577,7 @@ export default {
           ElMessage({
             message: "Member(s) archived successfully",
             type: "success",
-            duration: "5000",
+            duration: 5000,
           });
           displayPositionArchive.value = false;
         }
@@ -1628,7 +1616,7 @@ export default {
         ElMessage({
           message: `${data.response}`,
           type: "success",
-          duration: "4000",
+          duration: 4000,
         });
         groupData.value.children.push(data.returnObject);
       } catch (error) {
@@ -1637,7 +1625,7 @@ export default {
           ElMessage({
             message: `${error.response}`,
             type: "error",
-            duration: "4000",
+            duration: 4000,
           });
         }
       }
@@ -1762,7 +1750,6 @@ export default {
       modalStatus,
       groupNameIsInvalid,
       saveGroupData,
-      validateGroupName,
       buttonText,
       loadingMembers,
       route,
@@ -1848,7 +1835,8 @@ export default {
       moveLoading,
       attendanceItemsLoading,
       dismissMoveModal,
-      confirmMultipleDelete
+      confirmMultipleDelete,
+      primarycolor
     };
   },
 };

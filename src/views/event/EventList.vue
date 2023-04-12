@@ -327,7 +327,7 @@
                 </div>
 
                 <div class="col-md-3 d-flex flex-column align-items-center">
-                  <el-button round color="#136acd" class="text-white">
+                  <el-button round :color="primarycolor" class="text-white">
                     Apply
                   </el-button>
                   <span class="mt-2">
@@ -351,7 +351,7 @@
           v-if="filterEvents.length > 0"
         >
           <template v-slot:isSent="{ item }">
-            <div class="c-pointer">
+            <div class="c-pointer td-first">
               {{ item.isSent ? "Sent" : "Unsent" }}
             </div>
           </template>
@@ -369,9 +369,9 @@
             </div>
           </template>
 
-          <template v-slot:attendance="{ item }">
-            <div class="c-pointer">
-              {{ item.attendance }}
+          <template v-slot:attendances="{ item }">
+            <div class="c-pointer ">
+              {{ item.attendances }}
             </div>
           </template>
           <template v-slot:firstTimers="{ item }">
@@ -449,28 +449,23 @@
 
 <script>
 import axios from "@/gateway/backendapi";
-import { ref, computed } from "vue";
+import { ref, computed, inject } from "vue";
 import moment from "moment";
-import { useConfirm } from "primevue/useconfirm";
-import { useToast } from "primevue/usetoast";
 import { useStore } from "vuex";
 import userService from "../../services/user/userservice";
-import Tooltip from "primevue/tooltip";
 import monthDayYear from "../../services/dates/dateformatter";
 import convertNumber from "../../services/numbershortener/numberfomatter";
 import PaginationButtons from "../../components/pagination/PaginationButtons.vue";
 import finish from "../../services/progressbar/progress";
 import Table from "@/components/table/Table";
 export default {
-  directives: {
-    tooltip: Tooltip,
-  },
   components: {
     PaginationButtons,
     Table,
   },
   props: ["eventList", "eventSummary"],
   setup(props, { emit }) {
+    const primarycolor = inject('primarycolor')
     const filterFormIsVissible = ref(false);
     const searchIsVisible = ref(false);
     const store = useStore();
@@ -490,7 +485,6 @@ export default {
       { name: "NEW CONVERTS", value: "newConverts" },
       { name: "ACTION", value: "action" },
     ]);
-
     const deleteEvent = (id, index) => {
       axios
         .delete(`/api/Events/DeleteActivity?activityId=${id}`)
@@ -542,23 +536,18 @@ export default {
           });
         });
     };
-
     const toggleFilterFormVissibility = () => {
       filterFormIsVissible.value = !filterFormIsVissible.value;
     };
-
     const toggleSearch = () => {
       searchIsVisible.value = !searchIsVisible.value;
     };
-
     const getUserCurrency = async () => {
       const user = await userService.getCurrentUser();
       console.log(user, "user");
       userCurrency.value = user.currency;
     };
-
     if (!userCurrency.value) getUserCurrency();
-
     const filterEvents = computed(() => {
       if (searchText.value !== "") {
         return props.eventList.filter((i) => {
@@ -570,43 +559,26 @@ export default {
         return props.eventList;
       }
     });
-
     const deleteMember = (id) => {
       //  delete firtimer
       axios.delete(`/api/People/DeleteOnePerson/${id}`).then((res) => {
         console.log(res);
-        // toast.add({
-        //   severity: "success",
-        //   summary: "Confirmed",
-        //   detail: "Member Deleted",
-        //   life: 3000,
-        // });
         ElMessage({
           type: "success",
-          message: "Confirmed",
+          message: "Member Deleted",
           duration: 3000,
         });
-
         churchMembers.value = churchMembers.value.filter(
           (item) => item.id !== id
         );
-
         NProgress.done();
         if (err.response.status === 400) {
-          toast.add({
-            severity: "error",
-            summary: "Unable to delete",
-            detail: "Ensure this member is not in any group",
-            life: 3000,
+          ElMessage({
+            type: "error",
+            message: "Unable to delete, Ensure this member is not in any group",
+            duration: 5000,
           });
         } else {
-          // toast.add({
-          //   severity: "error",
-          //   summary: "Unable to delete",
-          //   detail: "An error occurred, please try again",
-          //   life: 3000,
-          // });
-
           ElMessage({
             type: "error",
             message: "Unable to delete",
@@ -615,36 +587,27 @@ export default {
         }
       });
     };
-
-    const confirm = useConfirm();
-    let toast = useToast();
-
     const toggleMonthlyClass = () => {
       monthlyActiveBtn.value = !monthlyActiveBtn.value;
       yearlyActiveBtn.value = false;
       allTimeActiveBtn.value = false;
     };
-
     const toggleYearlyClass = () => {
       yearlyActiveBtn.value = !yearlyActiveBtn.value;
       allTimeActiveBtn.value = false;
       monthlyActiveBtn.value = false;
     };
-
     const toggleAllTimeClass = () => {
       allTimeActiveBtn.value = !allTimeActiveBtn.value;
       yearlyActiveBtn.value = false;
       monthlyActiveBtn.value = false;
     };
-
     const date = (offDate) => {
       return monthDayYear.monthDayYear(offDate);
     };
-
     const convert = (number) => {
       return convertNumber.convertNumber(number);
     };
-
     const currentPage = ref(0);
     const getPeopleByPage = async (page) => {
       if (page < 0) return false;
@@ -661,7 +624,6 @@ export default {
         console.log(error);
       }
     };
-
     const membersCount = computed(() => {
       console.log(
         props.eventSummary.activities.length,
@@ -683,7 +645,6 @@ export default {
         return props.eventList;
       }
     };
-
     return {
       // sentEvent,
       searchEventInDB,
@@ -711,6 +672,7 @@ export default {
       membersCount,
       deleteEvent,
       eventHeaders,
+      primarycolor
     };
   },
 };
@@ -720,16 +682,13 @@ export default {
 * {
   box-sizing: border-box;
 }
-
 /* .events {
   font: normal normal 800 28px Nunito sans;
 }
-
 .btn-preview {
   border: 1px solid #797e81;
   border-radius: 22px;
 }
-
 .btn-save {
   background: #136acd 0% 0% no-repeat padding-box;
   border-radius: 22px;
@@ -741,16 +700,13 @@ export default {
   /* background: #f1f5f8; */
   /* height: 100vh; */
 }
-
 .main-con {
   width: 100%;
   height: 70%;
 }
-
 .main-body {
   height: 100%;
 }
-
 .button {
   padding: 8px 10px;
   border: none;
@@ -763,20 +719,16 @@ export default {
   text-decoration: none;
   box-sizing: border-box;
 }
-
 .button:hover {
   cursor: pointer;
 }
-
 .add-person-btn {
   background: #136acd;
   color: #fff;
 }
-
 .btn-icon {
   padding: 0 8px;
 }
-
 .text-color {
   color: #212529;
   text-decoration: none;
@@ -784,14 +736,12 @@ export default {
 .text-color:hover {
   color: #007bff;
 }
-
 .top {
   display: flex;
   justify-content: space-between;
   align-items: center;
   padding: 10px;
 }
-
 .page-header {
   font-weight: 800;
   font-size: 40px;
@@ -799,13 +749,11 @@ export default {
 .more-btn {
   background: #dde2e6;
 }
-
 .my-con {
   /* display: flex; */
   justify-content: space-between;
   margin: 24px 0;
 }
-
 .summary {
   /* width: 20%; */
   border-radius: 30px;
@@ -814,7 +762,6 @@ export default {
   background: #fff;
   margin-bottom: 24px;
 }
-
 .table {
   /* box-shadow: 0px 1px 4px #02172e45; */
   border: 1px solid #dde2e6;
@@ -822,7 +769,6 @@ export default {
   text-align: left;
   width: 100%;
 }
-
 .summary-header {
   margin: 0 10px;
   color: #02172e;
@@ -830,11 +776,9 @@ export default {
   font-size: 26px;
   font-weight: 600;
 }
-
 .boards {
   display: flex;
 }
-
 .board {
   width: 30%;
   border-radius: 10px;
@@ -844,13 +788,11 @@ export default {
   box-shadow: 0px 1px 4px #02172e45;
   border: 1px solid #dde2e6;
 }
-
 .chart-con {
   width: 70%;
   display: flex;
   justify-content: space-evenly;
 }
-
 .board-top {
   display: flex;
   justify-content: space-between;
@@ -859,25 +801,20 @@ export default {
   /* box-shadow: 0px 3px 6px #2c28281c; */
   padding: 0 4px;
 }
-
 .total {
   margin-bottom: 40px;
   font-size: 37px;
 }
-
 .total-text {
   font-size: 12px;
 }
-
 .percent {
   color: #136acd;
 }
-
 .hr {
   border: 1px solid #0020440a;
   margin: 0 4px 10px 0;
 }
-
 .tbl-footer-btn {
   background: transparent;
   padding: 4px;
@@ -888,32 +825,26 @@ export default {
   border: 1px solid #8898aa80;
   outline: transparent;
 }
-
 .action-icon {
   text-align: center;
 }
-
 .data-value {
   display: flex;
   /* padding-left: 6px; */
 }
-
 .theader {
   margin: 0;
 }
-
 .filter-options {
   height: 0;
   overflow: hidden;
   transition: all 0.5s ease-in-out;
 }
-
 .filter-options-shown {
   height: 130px !important;
   overflow: hidden;
   transition: all 0.5s ease-in-out;
 }
-
 .apply-btn {
   background: #136acd;
   color: #fff;
@@ -924,12 +855,10 @@ export default {
   font-weight: 700;
   outline: transparent;
 }
-
 .clear-link,
 .hide-link {
   color: #136acd;
 }
-
 .clear-link,
 .hide-link {
   color: #136acd;
@@ -941,12 +870,10 @@ export default {
   border: 1px solid #d4dde3;
   border-bottom: none;
 }
-
 .table-top label:hover,
 .table-top p:hover {
   cursor: pointer;
 }
-
 .label-search {
   width: 0;
   background: transparent;
@@ -960,7 +887,6 @@ export default {
   width: 70%;
   outline: none;
 }
-
 .label-search .search-btn {
   display: flex;
   align-items: center;
@@ -968,13 +894,11 @@ export default {
   padding: 4px;
   border-radius: 5px;
 }
-
 .label-search .empty-btn {
   display: flex;
   align-items: center;
   padding: 0 5px;
 }
-
 .show-search {
   width: 174px;
   overflow: hidden;
@@ -983,20 +907,16 @@ export default {
   background: #ebeff4;
   transition: all 0.9s cubic-bezier(0.38, 0.77, 0.2, -0.54);
 }
-
 /* .filter,
 .search {
     width: 25% !important
 } */
-
 .select-all input {
   margin: 0 8px 0 -5px !important;
 }
-
 .itemroute-color {
   color: #136acd;
 }
-
 .add-btn {
   width: 180px;
   background: #136acd;
@@ -1008,7 +928,6 @@ export default {
   justify-content: center;
   height: 42px;
 }
-
 .more {
   background: #dde2e6;
   border-radius: 22px;
@@ -1018,14 +937,12 @@ export default {
   outline: transparent;
   height: 42px;
 }
-
 .average {
   box-shadow: 0px 1px 4px #02172e45;
   border: 1px solid #dde2e6;
   border-radius: 30px;
   padding: 10px;
 }
-
 /* .average  */
 .avg {
   font: normal normal bold 24px/32px Nunito Sans;
@@ -1033,7 +950,6 @@ export default {
   color: #136acd;
   margin-top: 1em;
 }
-
 .avg-table {
   margin-top: 1em;
   border: 1px solid #dde2e6;
@@ -1048,26 +964,22 @@ export default {
   color: #002044;
   padding: 15px;
 }
-
 .avg-table > div > div:nth-child(2) {
   font: normal normal normal 32px/13px Nunito Sans;
   letter-spacing: 0px;
   color: #002044;
   padding: 15px;
 }
-
 .avg-table > div:nth-child(5) {
   font: normal normal normal 14px/13px Nunito Sans;
   letter-spacing: 0px;
   color: #002044;
 }
-
 .thead {
   background: #f1f3f9;
   padding: 0 25px;
   font-size: 0.7em;
 }
-
 .td-first {
   font: normal normal 800 14px/19px Nunito Sans;
   letter-spacing: 0px;
@@ -1076,23 +988,19 @@ export default {
   border-bottom-left-radius: 25px;
   background: #cecbcb70;
   padding: 7px;
-  margin-left: 10px;
+  /* margin-left: 10px; */
 }
-
 .top-con {
   padding: 0px 25px;
 }
-
 .default-btn {
   border: none;
   box-shadow: 0px 3px 6px #2c28281c;
   border: 1px solid #dde2e6;
 }
-
 .active-btn {
   background: #0e74c721;
 }
-
 @media screen and (max-width: 500px) {
   .picture,
   .firstname,
@@ -1100,38 +1008,31 @@ export default {
   .phone {
     width: 100%;
   }
-
   .table-body .check {
     width: 100%;
     display: flex;
     justify-content: flex-end;
     margin: 10px 0;
   }
-
   .data-text {
     display: inline-block;
   }
-
   .data-row {
     flex-direction: column;
   }
-
   .data-con {
     /* text-align: center; */
     display: flex;
     justify-content: space-between;
   }
-
   .action-icon {
     width: 100%;
     text-align: right;
   }
-
   .table-header {
     display: none;
   }
 }
-
 @media screen and (min-width: 500px) {
   /* .picture,
   .firstname,
@@ -1142,16 +1043,13 @@ export default {
   .theader {
     width: 23%;
   }
-
   .table-body .check {
     width: 3%;
   }
-
   .action {
     width: 5%;
   }
 }
-
 @media screen and (max-width: 768px) {
   .filter-options-shown {
     height: 300px !important;
@@ -1171,28 +1069,23 @@ export default {
     margin-top: 15px !important;
   }
 }
-
 @media screen and (max-width: 1024px) {
   .my-con {
     flex-direction: column;
   }
-
   .table {
     width: 98%;
     margin: 24px auto;
   }
-
   .summary {
     width: 98%;
     margin: auto;
   }
 }
-
 .row-divider {
   border: 1px solid #0020440a;
   margin: 0;
 }
-
 .table-footer {
   display: flex;
   justify-content: flex-end;
@@ -1200,97 +1093,79 @@ export default {
   padding: 10px 25px;
   border-radius: 0px 0px 22px 22px;
 }
-
 @media screen and (max-width: 1399px) {
   .boards {
     /* flex-direction: column; */
     flex-wrap: wrap;
     justify-content: space-around;
   }
-
   .board {
     width: 45%;
     margin: 8px;
     max-height: 310px;
   }
-
   .board.fig {
     box-shadow: none !important;
     border: none;
   }
-
   .board.members-count {
     padding: 24px;
   }
-
   .chart-con {
     flex-direction: column;
   }
-
   .summary {
     border-radius: none !important;
     box-shadow: none !important;
   }
-
   .board.fig {
     box-shadow: none !important;
     border: none;
   }
 }
-
 @media screen and (min-width: 1400px) {
   .table {
     margin-top: 2em;
   }
-
   .total-text {
     font-size: 18px;
   }
-
   .summary {
     width: 30%;
   }
-
   .my-con {
     display: flex;
     flex-direction: row-reverse;
   }
-
   .boards {
     display: flex;
     flex-direction: column;
   }
-
   .board {
     width: 100%;
     margin-bottom: 22px;
     padding: 0 8px;
   }
-
   .board.fig {
     padding: 24px 8px 0 8px;
     border: none;
     box-shadow: none;
   }
-
   .board.members-count {
     width: 95% !important;
     margin: auto;
   }
-
   .chart-con {
     width: 100%;
     display: flex;
     flex-direction: column;
   }
-
   .chart-con div {
     width: 100% !important;
     margin-bottom: 10px !important;
     min-height: 390px !important;
   }
 }
-
 .table-header {
   padding: 12px;
   color: black;
@@ -1298,12 +1173,10 @@ export default {
   font-size: 11px;
   font-weight: 700;
 }
-
 .table-body {
   padding: 0px;
   border-bottom: 1.5px solid #6d6d6d19;
 }
-
 .fa-ellipsis-v {
   padding: 10px;
 }

@@ -52,8 +52,8 @@
           <template #footer>
               <div class="container">
                 <div class="row d-flex justify-content-end text-center">
-                  <el-button @click="closeModal" round>Cancel</el-button>
-                  <el-button color="#136acd" :loading="loading" @click="addToMembers" round>
+                  <el-button class="secondary-button" @click="closeModal" round>Cancel</el-button>
+                  <el-button :color="primarycolor" :loading="loading" @click="addToMembers" round>
                   Save
                   </el-button>
                 </div>
@@ -66,7 +66,7 @@
 </template>
 
 <script>
-import { ref } from 'vue'
+import { ref, inject } from 'vue'
 import axios from "@/gateway/backendapi";
 import Dialog from 'primevue/dialog';
 import finish from '../../services/progressbar/progress'
@@ -80,6 +80,7 @@ export default {
   setup(props, { emit }) {
     // const addPerson = (path) => router.push(path);
       const toast = useToast()
+      const primarycolor = inject('primarycolor')
       const memberData = ref([])
       const image = ref("")
       const displayModal = ref(false)
@@ -204,7 +205,8 @@ export default {
       addToMembers,
       closeModal,
       loading,
-      importMembers
+      importMembers,
+      primarycolor
     };
   },
 };

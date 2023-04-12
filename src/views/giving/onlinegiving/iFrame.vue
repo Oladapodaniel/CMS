@@ -240,7 +240,7 @@
                       <!-- button section -->
                       <div class="row my-3">
                         <div class="col-md-12 text-center mt-4">
-                          <el-button class="px-4" data-toggle="modal" data-target="#PaymentOptionModal" color="#136acd" round>Give now</el-button>
+                          <el-button class="px-4" data-toggle="modal" data-target="#PaymentOptionModal" :color="primarycolor" round>Give now</el-button>
                         </div>
                       </div>
                       <!--end of button section -->
@@ -342,9 +342,9 @@
 </template>
 
 <script>
-import { ref, computed } from "vue";
+import { ref, computed, inject } from "vue";
 import axios from "@/gateway/backendapi";
-import PaymentOptionModal from "./PaymentOptionModal";
+import PaymentOptionModal from "../../../components/paymentoption/PaymentOptionModal.vue";
 import { useRoute, useRouter } from "vue-router";
 import finish from "../../../services/progressbar/progress"
 import SignUp from "./SignUp"
@@ -356,6 +356,7 @@ export default {
     SignUp
   },
   setup() {
+    const primarycolor = inject('primarycolor')
     const route = useRoute()
     const router = useRouter()
     const hideTabOne = ref(true);
@@ -759,7 +760,8 @@ export default {
       purposeList,
       callPayment,
       initializePaymentResponse,
-      resetCallPayment
+      resetCallPayment,
+      primarycolor
     };
   },
 };

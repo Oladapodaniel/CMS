@@ -1,13 +1,12 @@
 <template>
   <div class="container-fluid">
-      <el-dialog v-model="display" title="Create New Member"
-        :width="mdAndUp || lgAndUp || xlAndUp ? `50%` : `90%`">
-        <div class="row">
-          <div class="col-md-8">
-            <NewMember @cancel="() => display = false" @refresh="refresh"/>
-          </div>
+    <el-dialog v-model="display" title="Create New Member" :width="mdAndUp || lgAndUp || xlAndUp ? `50%` : `90%`">
+      <div class="row">
+        <div class="col-md-8">
+          <NewMember @cancel="() => display = false" @refresh="refresh" />
         </div>
-      </el-dialog>
+      </div>
+    </el-dialog>
     <!-- <Dialog
       header="Create New Member"
       v-model:visible="display"
@@ -25,7 +24,8 @@
       <div class="col-md-12">
         <h4 class="font-weight-bold">Manual Check-in and Checkout</h4>
         <p class="small-text">
-          Checkin members by clicking on the check-in box and check-out box to checkout, search for members in group and use kiosk mode on mobile phones and tablets
+          Checkin members by clicking on the check-in box and check-out box to checkout, search for members in group and
+          use kiosk mode on mobile phones and tablets
         </p>
       </div>
     </div>
@@ -33,12 +33,7 @@
       <div class="col-md-12 py-4">
         <div class="row">
           <div class="col-md-8">
-            <el-input
-              v-model="searchText"
-              class="w-100 m-2"
-              placeholder="Search"
-              :prefix-icon="Search"
-            />
+            <el-input v-model="searchText" class="w-100 m-2" placeholder="Search" :prefix-icon="Search" />
             <!-- <p class="search-span px-2">
               <i class="pi pi-search p-2" style="height: 30px; width: 30px"></i>
               <input
@@ -50,31 +45,20 @@
             </p> -->
           </div>
           <div class="col-md-4 d-md-flex justify-content-end d-none">
-            <el-button
-            round
-            size="large"
-              class=" kiosk-mode mt-2 "
-              @click="enterKioskMode"
-            >
+            <el-button round size="large" class=" kiosk-mode mt-2 " @click="enterKioskMode">
               {{ kioskButtonText }} kiosk mode
             </el-button>
           </div>
         </div>
 
-        <div
-          class="row mt-4 main-th font-weight-700 py-2 grey-rounded-bg"
-          :class="{ 'kiosk-th-size': isKioskMode }"
-        >
-        
+        <div class="row mt-4 main-th font-weight-700 py-2 grey-rounded-bg" :class="{ 'kiosk-th-size': isKioskMode }">
+
           <div class="col-md-3" :class="{ 'order-3': isKioskMode }">Name</div>
           <div class="col-md-3" :class="{ 'order-4': isKioskMode }">Phone</div>
           <div class="col-md-2" :class="{ 'order-5': isKioskMode }">Registered</div>
-           
-            
-          <div
-            class="col-md-2 d-none"
-            :class="{ 'd-flex order-2': isKioskMode }"
-          >
+
+
+          <div class="col-md-2 d-none" :class="{ 'd-flex order-2': isKioskMode }">
             Picture
           </div>
           <!--  :class="{ 'd-flex order-2': isKioskMode }" -->
@@ -84,50 +68,41 @@
           <div class="col-md-2" :class="{ 'd-none': isKioskMode }">
             Check out
           </div>
-       
-          
+
+
         </div>
 
         <div class="row pt-2" :class="{ 'kiosk-tb-size': isKioskMode }">
-              <Suspense>
-                <template #default>
-                  <div class="w-100">
-                    <TableData :isKiosk="isKioskMode" @refreshed="refreshed" :fetchUsers="fetchUsers" :attendanceId="attendanceID" :searchText="searchText" />
-                    <AttendanceCheckinUpdate :contributionItems="contributionItems" :attendanceType="attendanceType" :groupDetail="groupDetail"/>
-                  </div>
-                </template>
-                <template #fallback>
-                    <div class="row">
-                      <!-- <div class="col-md-12 pl-4">Loading...</div> -->
-                      <el-icon class="is-loading " >
-                        <Loading />
-                      </el-icon>
-                    </div>
-                </template>
-            </Suspense>
+          <Suspense>
+            <template #default>
+              <div class="w-100">
+                <TableData :isKiosk="isKioskMode" @refreshed="refreshed" :fetchUsers="fetchUsers"
+                  :attendanceId="attendanceID" :searchText="searchText" />
+                <AttendanceCheckinUpdate :contributionItems="contributionItems" :attendanceType="attendanceType"
+                  :groupDetail="groupDetail" />
+              </div>
+            </template>
+            <template #fallback>
+              <div class="row">
+                <!-- <div class="col-md-12 pl-4">Loading...</div> -->
+                <el-icon class="is-loading">
+                  <Loading />
+                </el-icon>
+              </div>
+            </template>
+          </Suspense>
         </div>
 
         <!-- Modal -->
-        <div
-          class="modal fade"
-          id="exampleModal"
-          tabindex="-1"
-          role="dialog"
-          aria-labelledby="exampleModalLabel"
-          aria-hidden="true"
-        >
+        <div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
+          aria-hidden="true">
           <div class="modal-dialog modal-lg" role="document">
             <div class="modal-content">
               <div class="modal-header">
                 <h5 class="modal-title font-weight-bold" id="exampleModalLabel">
                   Add Member
                 </h5>
-                <button
-                  type="button"
-                  class="close"
-                  data-dismiss="modal"
-                  aria-label="Close"
-                >
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                   <span aria-hidden="true">&times;</span>
                 </button>
               </div>
@@ -138,64 +113,38 @@
                   </div>
                   <div class="col-md-7">
                     <div class="dropdown">
-                      
-                      <input
-                        type="text"
-                        class="form-control"
-                        id="dropdownMenuButton"
-                        data-toggle="dropdown"
-                        v-model="userSearchString"
-                        @input="searchForUsers"
-                      />
-                      <div
-                        class="dropdown-menu w-100"
-                        aria-labelledby="dropdownMenuButton"
-                      >
+
+                      <input type="text" class="form-control" id="dropdownMenuButton" data-toggle="dropdown"
+                        v-model="userSearchString" @input="searchForUsers" />
+                      <div class="dropdown-menu w-100" aria-labelledby="dropdownMenuButton">
                         <div class="row w-100 mx-auto" v-if="false">
                           <div class="col-md-12">
-                            <el-input
-                              type="text"
-                              class="w-100"
-                              placeholder="Find event"
-                            />
+                            <el-input type="text" class="w-100" placeholder="Find event" />
                           </div>
                         </div>
 
-                        <a
-                          class="dropdown-item font-weight-700 small-text"
-                          href="#"
-                          v-for="(member, index) in searchedMembers"
-                          :key="index"
-                          @click="addExistingMember(member)"
-                          >{{ member.name }}</a
-                        >
-                        <a
-                          class="dropdown-item font-weight-700 small-text"
-                          href="#"
-                          v-if="
-                            searchingForMembers && searchedMembers.length === 0
-                          "
-                          >
-                          <el-icon class="is-loading " >
+                        <a class="dropdown-item font-weight-700 small-text" href="#"
+                          v-for="(member, index) in searchedMembers" :key="index" @click="addExistingMember(member)">{{
+                            member.name }}</a>
+                        <a class="dropdown-item font-weight-700 small-text" href="#" v-if="
+                          searchingForMembers && searchedMembers.length === 0
+                        ">
+                          <el-icon class="is-loading ">
                             <Loading />
                           </el-icon>
                         </a>
-                        <p
-                          class="modal-promt pl-1 bg-secondary m-0"
-                          v-if="
-                            userSearchString.length < 3 &&
-                            searchedMembers.length === 0
-                          "
-                        >
+                        <p class="modal-promt pl-1 bg-secondary m-0" v-if="
+                          userSearchString.length < 3 &&
+                          searchedMembers.length === 0
+                        ">
                           Enter 3 or moore characters
                         </p>
-                        <a
-                          class="font-weight-bold small-text d-flex justify-content-center py-2 text-decoration-none primary-text c-pointer"
-                          style="border-top: 1px solid #002044; color: #136acd"
-                          @click="showAddMemberForm"
-                          data-dismiss="modal"
-                        >
-                        <el-icon size="large" class="mr-2 primary-text d-flex align-items-center"><CirclePlus /></el-icon>
+                        <a class="font-weight-bold small-text d-flex justify-content-center py-2 text-decoration-none primary--text c-pointer"
+                          style="border-top: 1px solid #002044; color: #136acd" @click="showAddMemberForm"
+                          data-dismiss="modal">
+                          <el-icon size="large" class="mr-2 primary-text d-flex align-items-center">
+                            <CirclePlus />
+                          </el-icon>
                           <!-- <i
                             class="pi pi-plus-circle mr-2 primary-text d-flex align-items-center"
                             style="color: #136acd"
@@ -207,17 +156,11 @@
 
                     <div class="row mt-4">
                       <div class="col-md-6 d-md-flex justify-content-end">
-                        <el-button round  data-dismiss="modal">Cancel</el-button>
+                        <el-button class="secondary-button" round data-dismiss="modal">Cancel</el-button>
                       </div>
                       <div class="col-md-6">
-                        <el-button
-                          round
-                          :loading="loading"
-                          class=" border-0 text-white"
-                          color="#136acd"
-                          data-dismiss="modal"
-                          @click="sendExistingUser"
-                        >
+                        <el-button round :loading="loading" class="text-white" :color="primarycolor"
+                          data-dismiss="modal" @click="sendExistingUser">
                           Save
                         </el-button>
                       </div>
@@ -234,7 +177,7 @@
 </template>
 
 <script>
-import { computed, ref } from "vue";
+import { computed, ref, inject } from "vue";
 import { useRoute } from "vue-router";
 import { Search } from '@element-plus/icons-vue'
 import NewMember from "../../../views/event/attendance&checkin/NewMember";
@@ -247,14 +190,15 @@ import axios from "@/gateway/backendapi";
 import { ElMessage } from "element-plus";
 
 export default {
-    props: [ "attendanceID" ],
-  components: { 
-    NewMember, 
+  props: ["attendanceID"],
+  components: {
+    NewMember,
     TableData,
     AttendanceCheckinUpdate
   },
   setup() {
     const { mdAndUp, lgAndUp, xlAndUp, xsOnly } = deviceBreakpoint()
+    const primarycolor = inject('primarycolor')
     const isKioskMode = ref(false);
     const route = useRoute();
     const display = ref(false);
@@ -264,6 +208,7 @@ export default {
     const contributionItems = ref([]);
     const attendanceType = ref([]);
     const groupDetail = ref({});
+    const loading = ref(false);
 
     const enterKioskMode = () => {
       isKioskMode.value = !isKioskMode.value;
@@ -298,8 +243,8 @@ export default {
         console.log(error);
       }
     };
-    
-    const personData = ref({ });
+
+    const personData = ref({});
     const addExistingMember = (member) => {
       userSearchString.value = member.name;
       personData.value = {
@@ -313,22 +258,28 @@ export default {
     }
 
     const sendExistingUser = async () => {
-      console.log(personData.value)
-      const response = await attendanceservice.checkin(personData.value);
-      if (response) {
-        searchText.value = "";
-        ElMessage({
+      loading.value = true
+      try {
+        const response = await attendanceservice.checkin(personData.value);
+        loading.value = false
+        if (response) {
+          searchText.value = "";
+          ElMessage({
             type: "success",
             message: "Checkin was successful",
             duration: 5000,
           });
-        refresh();
-      } else {
-        ElMessage({
+          refresh();
+        } else {
+          ElMessage({
             type: "error",
             message: "Checkin was not successful",
             duration: 5000,
           });
+        }
+      } catch (err) {
+        loading.value = false
+        console.err(err)
       }
     }
 
@@ -352,43 +303,44 @@ export default {
       fetchUsers.value = false;
     }
 
-    const getContributionsItem = async() => {
-        try {
-            let { data } = await axios.get("/api/Financials/Contributions/Items")
-            contributionItems.value = data
-        }
-        catch (err) {
-            console.log(err)
-        }
-    }
-    getContributionsItem() 
-    
-    const getAttendanceType = async() => {
-        try {
-            let { data } = await axios.get("/GetAttendanceType")
-            attendanceType.value = data
-        }
-        catch (err) {
-            console.log(err)
-        }
-    }
-    getAttendanceType() 
-
-    const getGroupDetails = async() => {
+    const getContributionsItem = async () => {
       try {
-          let data = await attendanceservice.getReport(route.query.id)
-          groupDetail.value = data
+        let { data } = await axios.get("/api/Financials/Contributions/Items")
+        contributionItems.value = data
       }
       catch (err) {
-          console.log(err)
+        console.log(err)
       }
-  }
-  getGroupDetails()
+    }
+    getContributionsItem()
+
+    const getAttendanceType = async () => {
+      try {
+        let { data } = await axios.get("/GetAttendanceType")
+        attendanceType.value = data
+      }
+      catch (err) {
+        console.log(err)
+      }
+    }
+    getAttendanceType()
+
+    const getGroupDetails = async () => {
+      try {
+        let data = await attendanceservice.getReport(route.query.id)
+        groupDetail.value = data
+      }
+      catch (err) {
+        console.log(err)
+      }
+    }
+    getGroupDetails()
     return {
-      mdAndUp, 
-      lgAndUp, 
-      xlAndUp, 
+      mdAndUp,
+      lgAndUp,
+      xlAndUp,
       xsOnly,
+      primarycolor,
       isKioskMode,
       enterKioskMode,
       kioskButtonText,
@@ -407,7 +359,8 @@ export default {
       contributionItems,
       attendanceType,
       Search,
-      groupDetail
+      groupDetail,
+      loading
     };
   },
 };

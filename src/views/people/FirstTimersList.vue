@@ -94,7 +94,7 @@
             </div>
 
             <div class="col-md-3 d-flex flex-column align-items-center">
-              <el-button color="#136acd" @click="applyFilter" :loading="applyLoading" :disabled="disableBtn"
+              <el-button :color="primarycolor" @click="applyFilter" :loading="applyLoading" :disabled="disableBtn"
                 round>Apply</el-button>
               <span class="mt-2">
                 <el-button @click="clearAll" class="mr-2" text>Clear all</el-button>
@@ -216,7 +216,7 @@
       <el-image class="w-100" :src="selectedImageUrl" fit="contain" />
       <template #footer>
         <span class="dialog-footer">
-          <el-button color="#136acd" @click="imageDialog = false" round>
+          <el-button :color="primarycolor" @click="imageDialog = false" round>
             Done
           </el-button>
         </span>
@@ -260,7 +260,7 @@
 </template>
 
 <script>
-import { ref, computed, watch, watchEffect } from "vue";
+import { ref, computed, watch, watchEffect, inject } from "vue";
 import SideBar from "../groups/sidemodal/SideModal.vue";
 import smsComponent from "../groups/component/smsComponent.vue";
 import emailComponent from "../groups/component/emailComponent.vue";
@@ -287,6 +287,7 @@ export default {
 
   setup(props, { emit }) {
     const store = useStore()
+    const primarycolor = inject('primarycolor')
     const churchMembers = ref([]);
     const filter = ref({});
     const searchIsVisible = ref(false);
@@ -852,7 +853,8 @@ export default {
       lgAndUp,
       xlAndUp,
       applyLoading,
-      searchingMember
+      searchingMember,
+      primarycolor
     };
   },
 };

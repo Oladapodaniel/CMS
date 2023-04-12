@@ -219,7 +219,7 @@
         >
           <el-button
             :loading="loading"
-            color="#136acd"
+            :color="primarycolor"
             class=""
             round
             @click="makePledge"
@@ -236,7 +236,7 @@
 
 <script>
 import axios from "@/gateway/backendapi";
-import { ref } from "vue";
+import { ref, inject } from "vue";
 import MembersSearch from "../../components/membership/MembersSearch.vue";
 import router from "../../router";
 import { useRoute } from "vue-router";
@@ -251,6 +251,7 @@ export default {
     ToggleButton,
   },
   setup() {
+    const primarycolor = inject('primarycolor')
     const route = useRoute();
     const showPerson = ref(false);
     const churchName = ref("");
@@ -482,6 +483,7 @@ export default {
       showPerson,
       validateRangeAmount,
       withinRange,
+      primarycolor
     };
   },
 };

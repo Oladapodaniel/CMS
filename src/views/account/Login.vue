@@ -27,10 +27,10 @@
             <el-input type="password" placeholder="Password" v-model="state.credentials.password" show-password/>
           </el-form-item>
           <div class="f-password-div">
-            <router-link to="/forgotpassword" class="forgot-password">Forgot it?</router-link>
+            <router-link to="/forgotpassword" class="forgot-password primary--text">Forgot it?</router-link>
           </div>
           <el-form-item>
-            <el-button size="large" color="#136acd" @click="login" class="w-100" :loading="signInLoading" round>Sign
+            <el-button size="large" :color="primarycolor" @click="login" class="w-100" :loading="signInLoading" round>Sign
               In</el-button>
             <el-divider>
               or
@@ -66,8 +66,8 @@
         </div>
         <template #footer>
           <span class="dialog-footer">
-            <el-button @click="displayModal = false" color="#136acd" plain round>Cancel</el-button>
-            <el-button type="primary" @click="saveEmail" :loading="emailLoading" color="#136acd" round>
+            <el-button @click="displayModal = false" class="secondary-button" round>Cancel</el-button>
+            <el-button type="primary" @click="saveEmail" :loading="emailLoading" :color="primarycolor" round>
               Confirm
             </el-button>
           </span>
@@ -80,7 +80,7 @@
 <script>
 import axios from "@/gateway/backendapi";
 import { ElNotification } from 'element-plus'
-import { reactive, ref } from "vue";
+import { reactive, ref, inject } from "vue";
 import router from "../../router/index";
 import setupService from "../../services/setup/setupservice";
 import { useGtag } from "vue-gtag-next";
@@ -97,6 +97,7 @@ export default {
     };
     track();
     const signInLoading = ref(false)
+    const primarycolor = inject('primarycolor')
 
     const state = reactive({
       passwordType: "password",
@@ -219,7 +220,8 @@ export default {
       invalidEmailObj,
       emailLoading,
       facebookLogin,
-      saveEmail
+      saveEmail,
+      primarycolor
     };
   },
 };
@@ -274,7 +276,6 @@ export default {
   font-size: 14px;
   line-height: 1.4;
   text-decoration: none;
-  color: #136acd;
   font-weight: bold;
   cursor: pointer;
 }
