@@ -36,7 +36,6 @@ const transactionals = {
             if (!this.groupedAccounts || this.groupedAccounts.length === 0 || force) {
                 transaction_service.getTransactionalAccounts()
                 .then(res => {
-                    console.log(res, "new jhiuvithbviwehnrijntuiwhntruiwbtutwbubeiubvueib");
                     const data = [];
                     for (let group of this.accountTypes) {
                         data.push(res.filter(i => i.accountType.toLowerCase() === group));

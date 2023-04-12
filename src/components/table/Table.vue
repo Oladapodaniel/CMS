@@ -183,7 +183,8 @@ export default {
 
 .table-head h2 {
     font-weight: 600;
-    font-size: 14px;
+    /* font-weight: bold; */
+    font-size: 15px;
     font-style: normal;
     text-transform: lowercase;
     margin: 0;
@@ -195,7 +196,8 @@ export default {
 }
 
 tbody tr td {
-    font-size: 15px;
+    font-size: 14px;
+    /* font-weight: 600; */
 }
 tbody h2 {
     font-weight: 600;

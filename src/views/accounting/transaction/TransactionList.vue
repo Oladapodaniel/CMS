@@ -1,30 +1,33 @@
 <template>
   <div class="whole-co container-wid container-top" @click="hideModals">
     <div class="main-co">
-      <div class="main-bod" v-if="!loading">
+      <div class="main-bod" >
         <div class="top container-wide mt-3">
            <div class="header ">
-                <div class="events">Transaction</div>
+                <div class="head-text">Transaction</div>
               </div>
           <div class="row mt-2 header-btns justify-content-center">
             <!-- <div class="actions"> -->
-              <div class="col-8 col-sm-4  mt-2 mt-sm-0 mt-md-0 mt-lg-0  mx-auto mx-sm-0 mx-md-0">
-                 <button
-                    class="more-btn align-items-center justify-content-center d-flex w-100 default-btn border-0"
+              <div class="col-12 col-sm-4  mt-2 mt-sm-0 mt-md-0 mt-lg-0  mx-auto mx-sm-0 mx-md-0">
+                 <el-button
+                    class="more-btn header-btn align-items-center justify-content-center d-flex w-100  border-0"
+                    round
+                    color="#dde2e6"
+                    size="large"
                     @click="toggleTransac(1)"
                   >
                     Add Income
-                  </button>
+                  </el-button>
               </div>
 
-              <div class="col-8 col-sm-4  mt-2 mt-sm-0 mt-md-0 mt-lg-0 mx-auto mx-sm-0 mx-md-0">
-                <button
+              <div class="col-12 col-sm-4  mt-2 mt-sm-0 mt-md-0 mt-lg-0 mx-auto mx-sm-0 mx-md-0">
+                <el-button
                   class="more-btn align-items-center justify-content-center d-flex w-100 default-btn border-0"
                   @click="toggleTransac(2)">
                    Add Expense
-                </button>
+                </el-button>
               </div>
-              <div class="col-8 col-sm-4  mt-2 mt-sm-0 mt-md-0 mt-lg-0 mx-auto mx-sm-0 mx-md-0">
+              <div class="col-12 col-sm-4  mt-2 mt-sm-0 mt-md-0 mt-lg-0 mx-auto mx-sm-0 mx-md-0">
                 <a class="dropdown show more-btn align-items-center justify-content-center w-100 d-flex default-btn border-0 text-decoration-none">
                   <a class="dropdown-toggle text-decoration-none text-dark" href="#" role="button" id="dropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                     More
@@ -39,7 +42,7 @@
           </div>
         </div>
 
-        <div class="container-wide">
+        <div class="container-wide" v-if="!loading">
           <div class="col-12 col-sm-8 col-lg-6 px-0 mt-5">
             <div class="d-flex">
               <button
