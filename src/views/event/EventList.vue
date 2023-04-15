@@ -392,7 +392,7 @@
                 <MoreFilled />
               </el-icon>
               <template #dropdown>
-                <el-dropdown-menu>
+                <el-dropdown-menu class="overflow-hidden">
                   <el-dropdown-item>
                     <router-link
                       :to="`/tenant/report/${item.activityId}`"
@@ -458,6 +458,7 @@ import convertNumber from "../../services/numbershortener/numberfomatter";
 import PaginationButtons from "../../components/pagination/PaginationButtons.vue";
 import finish from "../../services/progressbar/progress";
 import Table from "@/components/table/Table";
+import { ElMessage, ElMessageBox } from 'element-plus'
 export default {
   components: {
     PaginationButtons,

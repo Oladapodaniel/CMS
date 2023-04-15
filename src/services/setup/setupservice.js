@@ -30,6 +30,7 @@ const setupService = {
         store.dispatch('groups/clearGroup')
         store.dispatch('pledge/clearState')
         store.dispatch('event/clearState')
+        store.dispatch('transaction/clearState')
     }
 }
 
