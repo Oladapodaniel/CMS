@@ -152,7 +152,19 @@ const communicationService = {
         return new Promise((resolve, reject) => {
             axios.get('api/Messaging/getAllUploadAudioVoice')
                 .then(res => {
-                    console.log(res);
+                    resolve(res.data);
+                })
+                .catch(error => {
+                    stopProgressBar();
+                    if (error.response) reject(error.response);
+                    if (!error.response) reject(error);
+                })
+        })
+    },
+    getAllSentVoice() {
+        return new Promise((resolve, reject) => {
+            axios.get('api/Messaging/getAllSentVoice')
+                .then(res => {
                     resolve(res.data);
                 })
                 .catch(error => {
