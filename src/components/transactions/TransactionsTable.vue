@@ -124,7 +124,7 @@
                 </el-icon>
               </div>
               <Table :data="selectedTransactions" :headers="transactionHeaders" :checkMultipleItem="true"
-                @checkedrow="handleSelectionChange" v-loading="loading">
+                @checkedrow="handleSelectionChange" v-loading="loading" >
                   <template v-slot:date="{ item }">
                     <div @click="rowSelected(item)" class="c-pointer">{{ formatDate(item.date) }}</div>
                   </template>
@@ -185,8 +185,9 @@
   </div>
 </template>
 <script>
-import { ref, computed, watch } from "vue";
+import { ref, computed, onMounted, watchEffect, watch } from "vue";
 import axios from "@/gateway/backendapi";
+import finish from "../../services/progressbar/progress";
 import TransactionForm from "../../views/accounting/transaction/EditTransaction";
 import transaction_service from "../../services/financials/transaction_service";
 import dateFormatter from "../../services/dates/dateformatter";
@@ -194,6 +195,7 @@ import dateFormatter from "../../services/dates/dateformatter";
 import LedgerForm from "../../views/accounting/transaction/components/LedgerForm";
 import numbers_formatter from "../../services/numbers/numbers_formatter"
 import Table from "@/components/table/Table"
+import store from "../../store/store";
 import { ElMessage, ElMessageBox } from 'element-plus'
 
 export default {
@@ -295,7 +297,6 @@ export default {
         accountDisplay.value = false;
         showAccount.value = false;
         showCurrency.value = false;
-        // selectAccount.value.classList.remove("style-account")
       }
     };
 
@@ -321,7 +322,6 @@ export default {
         .get(url)
         .then((res) => {
           currencyList.value = res.data.map((i) => {
-            //   return `${i.currency} ${i.name}`
             return {
               name: i.currency,
               id: i.id,
@@ -368,35 +368,36 @@ export default {
         return liabilities.value;
       }
     });
-
-    // const showEditTransaction = ref(false);
     const closeIt = (payload) => {
       emit("toggle-edit-form", payload);
-      //   showEditTransaction.value = payload;
     };
 
     const transacObj = (payload) => {
       transactions.value.push(payload);
     };
 
-    const allTransactions = ref([]);
-    const loading = ref(true);
+    const allTransactions = ref(store.getters["transaction/gettransactions"]);
+    const loading = ref(false);
     const refreshing = ref(false);
     const getTransactions = async () => {
       loading.value = true;
-      try {
-        refreshing.value = true;
-        const response = await transaction_service.getTransactions();
-        loading.value = false;
-        refreshing.value = false;
-        allTransactions.value = response;
+      emit("tableloading", loading.value)
+         try {
+            refreshing.value = true;
+              await store.dispatch("transaction/getTransaction").then((res) => {
+          finish();
+            loading.value = false;
+            emit("tableloading", loading.value)
+            refreshing.value = false;
+            allTransactions.value = res;
+        });
       } catch (error) {
         console.log(error);
         loading.value = false;
+        emit("tableloading", loading.value)
         refreshing.value = false;
       }
     };
-    getTransactions();
 
     const searchText = ref("");
 
@@ -404,15 +405,6 @@ export default {
       if (!allTransactions.value || allTransactions.value.length === 0)
         return [];
       const targeted = allTransactions.value;
-      // const targeted = allTransactions.value.filter(
-      //   (i) =>
-      //     i.accountType.toLowerCase() ===
-      //     types[
-      //       props.selectedTransactionType > 0
-      //         ? props.selectedTransactionType
-      //         : 0
-      //     ]
-      // );
       if (!searchText.value) return targeted;
       return targeted.filter((i) => {
         return (
@@ -485,12 +477,12 @@ export default {
           allTransactions.value.splice(index, 1);
           refreshing.value = true;
           emit("reload-accounts")
-          getTransactions();
           ElMessage({
             type: "success",
             message: response.data.response,
             duration: 3000,
           });
+        store.dispatch('transaction/removeTransactionFromStore', id)
         } else {
           ElMessage({
             type: "error",
@@ -534,6 +526,21 @@ export default {
       getTransactions();
       emit('reload-accounts');
     }
+      onMounted(() => {
+      if ((!allTransactions.value) ||
+        allTransactions.value  &&
+        allTransactions.value.length == 0
+      )
+        getTransactions();
+        
+          
+    });
+
+    // watchEffect(() =>{
+    //   emit("tableloading", loading.value)
+    //   console.log(loading.value, "ggggg");
+    // })
+    
 
     return {
       transactions,
