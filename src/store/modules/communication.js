@@ -12,6 +12,7 @@ export default {
         sentEmails: [],
         addSmsToSentList: {},
         addToSentEmail: {},
+        sentVoiceList: []
     },
 
     mutations: {
@@ -77,6 +78,10 @@ export default {
         removeSentEmails(state, payload) {
             state.sentEmails = state.sentEmails.filter(i => i.id !== payload);
 
+        },
+
+        setSentVoiceList (state, payload) {
+            state.sentVoiceList = payload
         },
 
         clearState(state) {
@@ -175,6 +180,13 @@ export default {
         removeSentEmails({ commit }, payload) {
             commit("removeSentEmails", payload)
         },
+        getAllSentVoice ({ commit }) {
+            return communicationService.getAllSentVoice().then(response => {
+                console.log(response)
+                commit("setSentVoiceList", response)
+                return response
+            })
+        },
         clearState({ commit }) {
             commit("clearState")
         },
@@ -189,6 +201,7 @@ export default {
         sentEmails: state => state.sentEmails,
         getEmailDraftById: state => id => state.emailDrafts.find(i => i.id === id),
         addSmsToSentList: state => state.addSmsToSentList,
-        addToSentEmail: state => state.addToSentEmail
+        addToSentEmail: state => state.addToSentEmail,
+        sentVoiceList: state => state.sentVoiceList
     },
 }
