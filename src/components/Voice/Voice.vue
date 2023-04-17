@@ -19,8 +19,8 @@
             <div class="col-md-3" id="side-menu">  
               <div class="row">
                 <div class="col-md-12 mt-4">
-                  <el-button round class="font-weight-bold w-100" size="large" :color="primarycolor" >
-                    Upload voice
+                  <el-button round class="font-weight-bold w-100" size="large" :color="primarycolor" @click="nextPage">
+                    Compose voice
                   </el-button>
                 </div>
               </div>
@@ -40,6 +40,7 @@
 import { ref, inject } from "vue";
 import { useRoute } from "vue-router";
 import deviceBreakpoint from "../../mixins/deviceBreakpoint";
+import router from "../../router";
 export default {
   setup() {
     const primarycolor = inject('primarycolor')
@@ -50,15 +51,19 @@ export default {
            menuShouldShow.value = !menuShouldShow.value
          };
 
+    const nextPage = () => {
+      router.push('/tenant/voice/sendvoicemessage')
+    }
     return {
       route,
+      router,
       toggleMenu,
       menuShouldShow,
       mdAndUp,
       lgAndUp,
       xlAndUp,
-      primarycolor
-
+      primarycolor,
+      nextPage
     };
   },
 };

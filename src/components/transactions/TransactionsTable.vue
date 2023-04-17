@@ -143,7 +143,7 @@
                         <MoreFilled />
                       </el-icon>
                       <template #dropdown>
-                        <el-dropdown-menu class="overflow-hidden">
+                        <el-dropdown-menu>
                           <el-dropdown-item>
                             <div
                               @click.prevent="showConfirmModal(item.id, index)"

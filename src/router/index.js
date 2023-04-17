@@ -992,21 +992,32 @@ const routes = [
         },
         {
             path: 'voice',
-            name: 'voice',
+            name: 'Voice',
             meta: {
                 title: 'Churchplus - Voice Communication',
             },
             component: () =>
-                import( /* webpackChunkName: "scheduled" */ '@/components/Voice/Voice'),
-            children: [{
-                path: '',
-                name: 'Record',
-                meta: {
-                    title: 'Churchplus -Voice Record',
+                import( /* webpackChunkName: "voicemodule" */ '@/components/Voice/Voice'),
+            children: [
+                {
+                    path: 'voicelist',
+                    name: 'VoiceList',
+                    meta: {
+                        title: 'Churchplus -Voice List',
+                    },
+                    component: () =>
+                        import( /* webpackChunkName: "voicelist" */ '@/views/communication/Voice/VoiceList')
                 },
-                component: () =>
-                    import( /* webpackChunkName: "inbox" */ '@/views/communication/Voice/composeVoice')
-            }]
+                {
+                    path: 'sendvoicemessage',
+                    name: 'composeVoice',
+                    meta: {
+                        title: 'Churchplus - Send Voice Message',
+                    },
+                    component: () =>
+                        import( /* webpackChunkName: "sendvoicemessage" */ '@/views/communication/Voice/composeVoice')
+                }
+            ]
         },
         {
             path: 'peoplegroups:actionType?',
@@ -1932,7 +1943,7 @@ router.beforeEach((to, from, next) => {
     if ((role && role.length === 1 && role[0] === "FollowUp" && token) && (to.path !== "/tenant/followup" && to.name !== "FirsttimerManagement")) {
         localStorage.removeItem('token')
         next("/")
-    } 
+    }
     else {
         next(true)
     }
