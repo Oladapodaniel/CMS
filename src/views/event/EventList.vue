@@ -392,7 +392,7 @@
                 <MoreFilled />
               </el-icon>
               <template #dropdown>
-                <el-dropdown-menu class="overflow-hidden">
+                <el-dropdown-menu>
                   <el-dropdown-item>
                     <router-link
                       :to="`/tenant/report/${item.activityId}`"
