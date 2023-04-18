@@ -329,9 +329,9 @@
               <Table :data="tenantInfoCeleb" :headers="celebHeaders" class="mt-3" :checkMultipleItem="false">
                 <template #name="{ item }">
                   <div class="c-pointer" @click="showCelebrationDetail(item)">
-                    <el-card shadow="hover" class="c-pointer person-image" v-if="item.pictureUrl"
+                    <el-card shadow="hover" class="c-pointer person-image" v-if="item.photo"
                       style="border-radius: 50%; height: 26px; width: 26px;">
-                      <img :src="item ? item.pictureUrl : ''" alt=""
+                      <img :src="item ? item.photo : ''" alt=""
                         style="border-radius: 50%; height: 26px; width: 26px; object-fit: cover" />
                     </el-card>
                     <el-avatar :size="25" class="mt-1" v-else><el-icon color="#000000">
