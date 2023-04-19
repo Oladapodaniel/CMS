@@ -493,7 +493,6 @@
 
                 <el-dropdown class="w-100" trigger="click">
                   <span class="el-dropdown-link w-100">
-      
                     <div
                       class="d-flex justify-content-between border-contribution text-dark w-100"
                       size="large"
@@ -530,9 +529,7 @@
 
               <div class="col-md-6 mt-4">
                 <!-- <button class="default-btn" data-dismiss="modal">Cancel</button> -->
-                <el-button size="large" round
-                  >Cancel</el-button
-                >
+                <el-button size="large" round>Cancel</el-button>
               </div>
               <div class="col-md-6 mt-4">
                 <!-- <button
@@ -610,12 +607,11 @@
         </div>
       </div>
     </Dialog>
-
   </div>
 </template>
 
 <script>
-import { ref ,inject } from "vue";
+import { ref, inject } from "vue";
 import FamilyWards from "./FamilyWards";
 import membershipService from "../../services/membership/membershipservice";
 import Dialog from "primevue/dialog";
@@ -638,7 +634,7 @@ export default {
   setup() {
     const toast = useToast();
     const route = useRoute();
-      const primarycolor = inject('primarycolor')
+    const primarycolor = inject("primarycolor");
     const familyMembers = ref([]);
     const memberRoles = ref([]);
     const close = ref("");
@@ -940,7 +936,10 @@ export default {
               message: "Failed, try again",
             });
           }
-          router.push("/tenant/family");
+          store.dispatch("family/getAllFamilies").then(() => {
+            router.push("/tenant/family");
+          });
+          
         } catch (err) {
           ElMessage({
             type: "error",
@@ -956,7 +955,9 @@ export default {
             type: "success",
             message: "Family updated successfully",
           });
-          router.push("/tenant/family");
+          store.dispatch("family/getAllFamilies").then(() => {
+            router.push("/tenant/family");
+          });
         } catch (err) {
           console.log(err);
         }
@@ -1106,7 +1107,6 @@ export default {
       routeParams,
       loading,
       primarycolor,
-
     };
   },
 };

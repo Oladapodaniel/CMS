@@ -31,6 +31,8 @@ const setupService = {
         store.dispatch('pledge/clearState')
         store.dispatch('event/clearState')
         store.dispatch('transaction/clearState')
+        store.dispatch('family/clearState')
+
     }
 }
 

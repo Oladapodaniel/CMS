@@ -180,6 +180,7 @@ export default {
           });
           let listFiltered = props.familyList.filter((i) => i.id !== id);
           emit("list-filtered", listFiltered);
+           store.dispatch('allFamilies/removeallFamilyFromStore', id)
         })
         .catch((err) => {
           console.log(err);
