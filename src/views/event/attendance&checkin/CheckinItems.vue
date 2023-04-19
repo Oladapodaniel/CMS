@@ -80,7 +80,6 @@ export default {
       await store.dispatch("attendance/setAttendanceItemData").then((res) => {
         items.value = res.items
         totalItems.value = res.totalItems
-        console.log(items.value, "jjj")
         loading.value = false;
         cantGetItems.value = false;
       });
@@ -107,7 +106,6 @@ export default {
       items.value = payload.items;
     };
     onMounted(() => {
-      console.log(items.value, "uuuu")
       if ((!items.value) || (items.value && items.value.items && items.value.items.length == 0)){
         getAttendanceItems();
       }

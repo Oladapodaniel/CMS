@@ -3,139 +3,97 @@
     <div class="container-fluid">
       <div class="row">
         <div class="col-md-12 px-0">
-          <ConfirmDialog />
-          <Toast />
           <div class="parent-table">
-            <div class="table" style="height: fit-content" :class="{ 'bordered': !showEditTransaction , 'removeTable': showEditTransaction}">
-              <div class="container-fluid small-text py-2">
-                <div class="row justify-content-center">
-                  <div class="col-sm-3  col-md-3 col-lg-3 col-8 py-2 py-md-0 d-flex align-items-center justify-content-center ">
-                    <input
-                      type="checkbox"
-                      name="all"
-                      id="all"
-                      @click="toggleSelect"
-                    />
-                    <label class="ml-2 mb-0 c-pointer font-weight-700">SELECT ALL</label>
-                  </div>
-                  <div class="col-sm-3 col-md-3 col-lg-3 col-8  py-md-0 d-flex align-items-center justify-content-center">
+            <div class=" px-0 container-fluid mt-4" style="height: fit-content" :class="{ 'bordered': !showEditTransaction , 'removeTable': showEditTransaction}">
+              <div class="container-fluid table-top  py-3">
+                <div class="row justify-content-end">
+                  <div class="col-md-3 col-lg-3 col-8  py-md-0 d-flex align-items-center justify-content-end">
                     <p
                       @click="toggleFilterFormVissibility"
                       class="mb-0 c-pointer mt-2 mt-sm-0 mt-md-0 mt-lg-0 font-weight-700"
                     >
-                      <i class="fas fa-filter"></i>
-                      FILTER
+                      <el-icon :size="13">
+                        <Filter />
+                      </el-icon>
+                      <span class="ml-1"> FILTER</span>
                     </p>
                   </div>
-                  <div class="col-sm-3 col-md-3 col-lg-3 col-8  d-flex align-items-center justify-content-center mt-2 py-2 py-md-0">
-                    <p class="search-tex mb-0 mt-0 mt-sm-4 mt-md-4 mt-lg-4">
-                      <span class="mr-2 c-pointer font-weight-700" @click="toggleSearch"
-                        ><i class="pi pi-search mr-1"></i> <span v-if="!searchIsVisible">SEARCH</span></span
-                      >
-                      <label
-                        class="label-search d-flex"
-                        :class="{ 'show-search': searchIsVisible }"
-                      >
-                        <input
-                          type="text"
-                          placeholder="Search..."
-                          v-model="searchText"
-                        />
-                        <span class="empty-btn">x</span>
-                        <span class="search-btn">
-                          <i class="pi pi-search"></i>
-                        </span>
-                      </label>
-                    </p>
-                  </div>
-                </div>
-              </div>
-
-              <!-- <div class="top-con">
-                <div class="table-top my-4 px-4">
-                  <div class="select-all">
-                    <input
-                      type="checkbox"
-                      name="all"
-                      id="all"
-                      @click="toggleSelect"
-                    />
-                    <label>SELECT ALL</label>
-                  </div>
-                  <div class="filter">
-                    <p @click="toggleFilterFormVissibility">
-                      <i class="fas fa-filter"></i>
-                      FILTER
-                    </p>
-                  </div>
-                  <p @click="toggleSearch" class="search-text">
-                    <i class="pi pi-search"></i> SEARCH
-                  </p>
-                  <div class="search d-flex">
-                    <label
-                      class="label-search d-flex"
-                      :class="{ 'show-search': searchIsVisible }"
+                  <div class=" col-md-5  col-12  d-flex align-items-center justify-content-center mt-2 py-2 py-md-0">
+                    <el-input
+                      size="small"
+                      v-model="searchText"
+                      placeholder="Search..."
+                      @input="searchingMember = true"
+                      @keyup.enter.prevent="searchTrancInDB"
+                      class="input-with-select"
                     >
-                      <input type="text" placeholder="Search..." />
-                      <span class="empty-btn">x</span>
-                      <span class="search-btn">
-                        <i class="pi pi-search"></i>
-                      </span>
-                    </label>
+                      <template #suffix>
+                        <el-button
+                          style="padding: 5px; height: 22px"
+                          @click.prevent="searchText = ''"
+                        >
+                          <el-icon :size="13">
+                            <Close />
+                          </el-icon>
+                        </el-button>
+                      </template>
+                      <template #append>
+                        <el-button @click.prevent="searchTrancInDB">
+                          <el-icon :size="13">
+                            <Search />
+                          </el-icon>
+                        </el-button>
+                      </template>
+                    </el-input>
                   </div>
                 </div>
-              </div>
-               -->
-              <div
+                <div
                 class="filter-options"
                 :class="{ 'filter-options-shown': filterFormIsVissible }"
               >
                 <div class="container-fluid">
-                  <div class="row">
-                    <div class="col-md-9">
+                  <div class="row mt-3">
+                    <div class="col-md-9 ">
                       <div class="row">
                         <div
-                          class="col-12 col-sm-6 offset-sm-3 offset-md-0 form-group inp w-100"
+                          class="col-12 col-sm-12 col-md-6 offset-sm-0 offset-md-0 inp w-100"
                         >
-                          <!-- <div class="input-field"> -->
-
-                          <input
+                          <el-input
                             type="text"
-                            class="input w-100"
+                            class="w-100"
                             placeholder="Category"
                           />
-                          <!-- </div> -->
                         </div>
 
                         <div
-                          class="col-12 col-sm-6 form-group d-none d-md-block"
+                          class="col-12 col-sm-6  d-none d-md-block"
                         >
-                          <input
-                            type="date"
-                            class="form-control input inp w-100"
-                          />
+                        <el-date-picker
+                          v-model="datete"
+                          type="date"
+                          placeholder="Date"
+                          size="large"
+                          class="w-100"
+                          format="MM/DD/YYYY"
+                          value-format="MM-DD-YYYY"
+                        />
                         </div>
                       </div>
 
                       <div class="row">
                         <div
-                          class="col-12 col-sm-6 form-group d-none d-md-block"
+                          class="col-12 col-sm-6  d-none d-md-block"
                         >
-                          <input
+                          <el-input
                             type="text"
-                            class="input w-100"
+                            class="w-100"
                             placeholder="Description"
                           />
                         </div>
 
                         <div
-                          class="col-12 col-sm-6 form-group d-none d-md-block"
+                          class="col-12 col-sm-6 d-none d-md-block"
                         >
-                          <!-- <input
-                            type="text"
-                            class="input w-100"
-                            placeholder="Phone Number"
-                          /> -->
                         </div>
                       </div>
                     </div>
@@ -159,114 +117,48 @@
                   </div>
                 </div>
               </div>
-              <div class="container-fluid d-none d-md-block">
-                <div class="row t-header">
-                  <!-- <div class="col-12 parent-desc first p-2 pl-4"> -->
-                    <div class="col-md-1 px-3"></div>
-                    <div class="small-text text-capitalize col-md-2 font-weight-bold">Date</div>
-                    <div class="small-text text-capitalize col-md-3 font-weight-bold">Description</div>
-                    <div class="small-text text-capitalize col-md-3 font-weight-bold">Amount</div>
-                    <div class="small-text text-capitalize col-md-2 font-weight-bold">Category</div>
-                    <div class="small-text text-capitalize col-md-1 font-weight-bold">Action</div>
-                  <!-- </div> -->
-                </div>
               </div>
-
               <div class="row mt-3" v-if="refreshing && !loading">
-                <div class="col-md-12 text-center">
-                  <i class="pi pi-spin pi-spinner primary-text" style="fontSize: 3rem"></i>
-                </div>
+                <el-icon class="is-loading" :size="20">
+                  <Loading />
+                </el-icon>
               </div>
-              <LoadingComponent :loading="loading" />
-
-              <div class="row" style="margin:0;">
-                <div
-                  class="col-12 parent-desc py-2 px-0 c-pointer tr-border-bottom"
-                  v-for="(item, index) in selectedTransactions"
-                  :key="index"
-                >
-                  <div class="row w-100" style="margin:0">
-                    <div class="col-md-1 d-flex d-md-block px-3 justify-content-end">
-                      <input
-                        type="checkbox"
-                        v-model="item.check"
-                        class="form-check"
-                      />
-                    </div>
-
-                    <div class="desc small-text col-md-2 px-1" @click="rowSelected(item)">
-                      <p class="mb-0 d-flex justify-content-between">
-                        <span class="text-dark font-weight-bold d-flex d-md-none">Date</span>
-                        <span>{{ formatDate(item.date) }}</span>
-                      </p>
-                    </div>
-
-                    <div class="col-md-3 small-text  px-1" @click="rowSelected(item)">
-                      <div class="d-flex justify-content-between">
-                        <span class="text-dark font-weight-bold d-flex d-md-none">Description</span>
-                      <div>
-
-                        <div class="desc small-text text-right text-md-left">{{ item.narration }}</div>
-                      </div>
-                      </div>
-                    </div>
-
-                    <div class="desc-head small-text col-md-3 px-1" @click="rowSelected(item)">
-                      <p class="mb-0 d-flex justify-content-between">
-                        <span class="text-dark font-weight-bold d-flex d-md-none">Amount</span>
-                        <span class="font-weight-bold" :class="{ 'text-danger': item.amount < 0, 'text-success': item.amount > 0 }">{{ item.currency ? item.currency.symbol : "" }}{{ amountWithCommas(Math.abs(item.amount)) }}</span>
-                      </p>
-                    </div>
-
-                    <div class="choose-cat small-text col-md-2 px-1">
-                      <p class="mb-0 d-flex justify-content-between">
-                        <span class="text-dark font-weight-bold d-flex d-md-none">Category</span>
-                        <span><span class="primary-text c-pointer"
-                        >{{ item.category }}</span
-                      ></span>
-                      </p>
-                    </div>
-
-                    <div class="small-text col-md-1 px-1">
-                      <!-- <p class="mb-0 d-flex justify-content-between">
-                        <span class="text-dark font-weight-bold d-flex d-md-none">Mark</span>
-                        <span>Marked</span>
-                      </p> -->
-                      <div class="action w-100  data action-icon">
-                         <div>
-                            <p class="mb-0">
-                              <span class="text-dark font-weight-bold d-flex d-md-none">Action</span>
-                            </p>
-                          </div>
-                        <div class="dropdown">
-                          <i
-                            class="fas fa-ellipsis-v cursor-pointer"
-                            id="dropdownMenuButton"
-                            data-toggle="dropdown"
-                            aria-haspopup="true"
-                            aria-expanded="false"
-                          ></i>
-                          <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
-                            <a
-                              class="dropdown-item elipsis-items text-color cursor-pointer"
-                              @click.prevent="showConfirmModal(item.id, index)"
-                              >Delete</a
-                            >
-                          </div>
-                        </div>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-              </div>
-              <!-- <Table :data="selectedTransactions" :headers="transactionHeaders" :checkMultipleItem="true"
-                @checkedrow="handleSelectionChange" v-loading="loading" v-if="searchMember.length > 0">
-                  <template v-slot:fullName="{ item }">
-                    <div @click="showMemberRow(item)" class="c-pointer">{{ item.firstName }} {{ item.lastName }}</div>
+              <Table :data="selectedTransactions" :headers="transactionHeaders" :checkMultipleItem="true"
+                @checkedrow="handleSelectionChange" v-loading="loading" >
+                  <template v-slot:date="{ item }">
+                    <div @click="rowSelected(item)" class="c-pointer">{{ formatDate(item.date) }}</div>
                   </template>
-              </Table> -->
+                  <template v-slot:description="{ item }">
+                    <div @click="rowSelected(item)" class="c-pointer">{{ item.narration }}</div>
+                  </template>
+                  <template v-slot:amount="{ item }">
+                    <div @click="rowSelected(item)" class="c-pointer" :class="{ 'text-danger': item.amount < 0, 'text-success': item.amount > 0 }">{{ item.currency ? item.currency.symbol : "" }}{{ amountWithCommas(Math.abs(item.amount)) }}</div>
+                  </template>
+                  <template v-slot:category="{ item }">
+                    <div @click="rowSelected(item)" class="c-pointer primary-text">{{ item.category }}</div>
+                  </template>
+                  <template v-slot:action="{ item }">
+                    <el-dropdown trigger="click">
+                      <el-icon>
+                        <MoreFilled />
+                      </el-icon>
+                      <template #dropdown>
+                        <el-dropdown-menu>
+                          <el-dropdown-item>
+                            <div
+                              @click.prevent="showConfirmModal(item.id, index)"
+                              class="text-color"
+                            >
+                              Delete
+                            </div>
+                          </el-dropdown-item>
+                        </el-dropdown-menu>
+                      </template>
+                    </el-dropdown>
+                  </template>
+              </Table>
             </div>
-            <!-- :class="{ 'slide-form' : showEditTransaction, 'hide-form' : !showEditTransaction }" -->
+
             <div class="table edit-transac col-12 border col-sm-10 col-md-8 w-100 w-sm-50 w-md-50 w-lg-50 col-lg-4 mobile-form mywidt " v-if="showEditTransaction">
               <TransactionForm
                 v-if="transactionDetails.type !== 'ledger'"
@@ -284,7 +176,6 @@
                 :journalEntry="journalEntry"
                 :gettingSelectedTrsn="gettingSelectedTrsn"
               />
-              <!-- :transacProp="transacPropsValue" -->
             </div>
           </div>
 
@@ -294,17 +185,18 @@
   </div>
 </template>
 <script>
-import { ref, computed, watch } from "vue";
+import { ref, computed, onMounted, watchEffect, watch } from "vue";
 import axios from "@/gateway/backendapi";
+import finish from "../../services/progressbar/progress";
 import TransactionForm from "../../views/accounting/transaction/EditTransaction";
 import transaction_service from "../../services/financials/transaction_service";
 import dateFormatter from "../../services/dates/dateformatter";
 // import transactionService from "../../services/financials/transaction_service";
 import LedgerForm from "../../views/accounting/transaction/components/LedgerForm";
-import LoadingComponent from "../loading/LoadingComponent";
 import numbers_formatter from "../../services/numbers/numbers_formatter"
-import { useConfirm } from "primevue/useconfirm";
-import { useToast } from "primevue/usetoast";
+import Table from "@/components/table/Table"
+import store from "../../store/store";
+import { ElMessage, ElMessageBox } from 'element-plus'
 
 export default {
   props: [
@@ -316,12 +208,12 @@ export default {
   components: {
     TransactionForm,
     LedgerForm,
-    LoadingComponent,
+    Table
   },
   setup(props, { emit }) {
-    const confirm = useConfirm();
-    const toast = useToast();
     const transactions = ref([]);
+    const datete = ref('');
+    const searchingMember = ref(true);
     const transactionHeaders = ref([
       { name: 'DATE', value: 'date' },
       { name: 'DESCRIPTION', value: 'description' },
@@ -330,9 +222,21 @@ export default {
       { name: 'ACTION', value: 'action' },
     ])
     // const types = ["assets", "liability", "income", "expense", "equity"];
-    // const handleSelectionChange = (val) => {
-    //   checkedFirstTimer.value = val
-    // }
+    const handleSelectionChange = (val) => {
+      // checkedFirstTimer.value = val
+    }
+    const searchTrancInDB = () => {
+      if (searchText.value !== "" && allTransactions.value.length > 0) {
+        return allTransactions.value.filter((i) => {
+          if (i.narration)
+            return i.narration
+              .toLowerCase()
+              .includes(searchText.value.toLowerCase());
+        });
+      } else {
+        return allTransactions.value;
+      }
+    };
     const cashAndBank = ref([
       {
         name: {
@@ -393,17 +297,10 @@ export default {
         accountDisplay.value = false;
         showAccount.value = false;
         showCurrency.value = false;
-        // selectAccount.value.classList.remove("style-account")
       }
     };
 
     const transactionItem = (e) => {
-      // selectedTransaction.value = e.target.innerHTML
-
-      console.log(
-        e.target.children[0].innerHTML,
-        e.target.children[0].nextElementSibling.innerHTML
-      );
       selectedTransaction.value = {
         type: e.target.children[0].innerHTML,
         amount: e.target.children[0].nextElementSibling.innerHTML,
@@ -425,14 +322,12 @@ export default {
         .get(url)
         .then((res) => {
           currencyList.value = res.data.map((i) => {
-            //   return `${i.currency} ${i.name}`
             return {
               name: i.currency,
               id: i.id,
               country: i.name,
             };
           });
-          console.log(res.data);
         })
         .catch((err) => console.log(err));
     };
@@ -447,7 +342,6 @@ export default {
               i.country.toLowerCase().includes(currencyText.value.toLowerCase())
             );
         });
-        // console.log(currencyText)
       } else {
         return currencyList.value;
       }
@@ -459,7 +353,6 @@ export default {
           if (i)
             return i.toLowerCase().includes(accountText.value.toLowerCase());
         });
-        // console.log(currencyText)
       } else {
         return accountType.value;
       }
@@ -471,41 +364,40 @@ export default {
           if (i)
             return i.toLowerCase().includes(accountText.value.toLowerCase());
         });
-        // console.log(currencyText)
       } else {
         return liabilities.value;
       }
     });
-
-    // const showEditTransaction = ref(false);
     const closeIt = (payload) => {
       emit("toggle-edit-form", payload);
-      //   showEditTransaction.value = payload;
     };
 
     const transacObj = (payload) => {
       transactions.value.push(payload);
     };
 
-    const allTransactions = ref([]);
-    const loading = ref(true);
+    const allTransactions = ref(store.getters["transaction/gettransactions"]);
+    const loading = ref(false);
     const refreshing = ref(false);
     const getTransactions = async () => {
       loading.value = true;
-      try {
-        refreshing.value = true;
-        const response = await transaction_service.getTransactions();
-        loading.value = false;
-        refreshing.value = false;
-        allTransactions.value = response;
-        console.log(response, "ALL TRANS");
+      emit("tableloading", loading.value)
+         try {
+            refreshing.value = true;
+              await store.dispatch("transaction/getTransaction").then((res) => {
+          finish();
+            loading.value = false;
+            emit("tableloading", loading.value)
+            refreshing.value = false;
+            allTransactions.value = res;
+        });
       } catch (error) {
         console.log(error);
         loading.value = false;
+        emit("tableloading", loading.value)
         refreshing.value = false;
       }
     };
-    getTransactions();
 
     const searchText = ref("");
 
@@ -513,15 +405,6 @@ export default {
       if (!allTransactions.value || allTransactions.value.length === 0)
         return [];
       const targeted = allTransactions.value;
-      // const targeted = allTransactions.value.filter(
-      //   (i) =>
-      //     i.accountType.toLowerCase() ===
-      //     types[
-      //       props.selectedTransactionType > 0
-      //         ? props.selectedTransactionType
-      //         : 0
-      //     ]
-      // );
       if (!searchText.value) return targeted;
       return targeted.filter((i) => {
         return (
@@ -560,21 +443,12 @@ export default {
       }
     };
 
-    // watch(
-    //   () => props.transactionDetails,
-    //   (data) => {
-    //     console.log(data, "in watch");
-    //     getGroupedTransactions(data)
-    //   }
-    // );
-
     const getGroupedTransactions = async accountGroupId => {
       try {
         refreshing.value = true;
         const { data } = await transaction_service.getTransactionsByAccount(accountGroupId);
         refreshing.value = false;
         allTransactions.value = data;
-        console.log(data);
       } catch (error) {
         console.log(error);
         refreshing.value = false;
@@ -599,66 +473,79 @@ export default {
     const deleteTransaction = async (id, index) => {
       try {
         const response = await transaction_service.deleteTransaction(id);
-        console.log(response.data, "delete response");
         if (response.data.status) {
           allTransactions.value.splice(index, 1);
           refreshing.value = true;
           emit("reload-accounts")
-          getTransactions();
-          toast.add({
-            severity: "success",
-            summary: "Delete Successful",
-            detail: "The transaction was deleted successfully",
-            life: 3000,
+          ElMessage({
+            type: "success",
+            message: response.data.response,
+            duration: 3000,
           });
+        store.dispatch('transaction/removeTransactionFromStore', id)
         } else {
-          toast.add({
-            severity: "error",
-            summary: "Delete Failed",
-            detail: "The transaction could not be deleted",
-            life: 3000,
+          ElMessage({
+            type: "error",
+            message: "Delete Failed",
+            duration: 3000,
           });
         }
       } catch (error) {
         console.log(error);
-        toast.add({
-          severity: "error",
-          summary: "Delete Failed",
-          detail: "The transaction could not be deleted",
-          life: 3000,
-        });
+         ElMessage({
+            type: "error",
+            message: "Delete Failed",
+            duration: 3000,
+          });
       }
     }
 
     const showConfirmModal = (id, index) => {
-      confirm.require({
-        message: "Are you sure you want to delete this transaction? This operation can't be reversed.",
-        header: "Confirmation",
-        icon: "pi pi-exclamation-triangle",
-        acceptClass: "confirm-delete",
-        rejectClass: "cancel-delete",
-        accept: () => {
+      ElMessageBox.confirm(
+        "Are you sure you want to proceed?",
+        "Confirm delete",
+        {
+          confirmButtonText: "OK",
+          cancelButtonText: "Cancel",
+          type: "error",
+        }
+      )
+        .then(() => {
           deleteTransaction(id, index);
-        },
-        reject: () => {
-          toast.add({
-            severity: "info",
-            summary: "Rejected",
-            detail: "Operation Cancelled",
-            life: 3000,
+        })
+        .catch(() => {
+          ElMessage({
+            type: "info",
+            message: "Rejected",
+            duration: 5000,
           });
-        },
-      });
+        });
     };
 
     const journalEntrySaved = () => {
       getTransactions();
       emit('reload-accounts');
     }
+      onMounted(() => {
+      if ((!allTransactions.value) ||
+        allTransactions.value  &&
+        allTransactions.value.length == 0
+      )
+        getTransactions();
+        
+          
+    });
+
+    // watchEffect(() =>{
+    //   emit("tableloading", loading.value)
+    //   console.log(loading.value, "ggggg");
+    // })
+    
 
     return {
       transactions,
-      // handleSelectionChange,
+      handleSelectionChange,
+      datete,
       transactionHeaders,
       filterFormIsVissible,
       toggleFilterFormVissibility,
@@ -669,6 +556,7 @@ export default {
       accountDisplay,
       toggleAccount,
       hideModals,
+      searchingMember,
       selectedTransaction,
       transactionItem,
       displayModal,
@@ -686,6 +574,7 @@ export default {
       accountText,
       filterAccount,
       filterLiabilities,
+      searchTrancInDB,
       //   showEditTransaction,
       closeIt,
       transacObj,
@@ -776,9 +665,16 @@ html {
   margin: 0 4px;
 }
 
+/* .table-top {
+  font-weight: 800;
+  font-size: 12px;
+} */
 .table-top {
   font-weight: 800;
   font-size: 12px;
+  background: #fff;
+  border: 1px solid #E0E0E0;
+  border-bottom: none;
 }
 
 .table-top label:hover,

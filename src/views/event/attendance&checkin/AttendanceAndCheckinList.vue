@@ -322,7 +322,6 @@ export default {
       axios
         .delete(`/api/CheckInAttendance/checkout?attendanceId=${id}`)
         .then((res) => {
-          console.log(res.status);
           if (res.status === 200) {
             ElMessage({
             type: "success",
@@ -342,7 +341,6 @@ export default {
         .catch((err) => {
           
           if (err.response) {
-            console.log(err.response);
              ElMessage({
             type: "error",
             message: err.response,
@@ -460,7 +458,6 @@ export default {
         const { data } = await axios.get(
           `/api/CheckInAttendance/AllCheckInAttendances?page=${page}`
         );
-        console.log(data);
         if (data.items.length > 0) {
           emit("pagedattendance", data);
         }

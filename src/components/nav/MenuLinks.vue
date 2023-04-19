@@ -180,7 +180,7 @@ export default {
           {
             name: 'Voice',
             logo: '/',
-            route: '/tenant/Voice',
+            route: '/tenant/voice/voicelist',
           },
         ]
       }

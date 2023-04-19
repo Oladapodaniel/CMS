@@ -65,7 +65,6 @@ let converter = {
         axios
           .get("/fxRates")
           .then((res) => {
-            console.log(res, "Blah");
             vm.conversionData = res.data;
             resolve(res.data);
           })

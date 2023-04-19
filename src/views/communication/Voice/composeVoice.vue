@@ -4,7 +4,7 @@
       <div class="row">
         <div class="col-12 col-md-12 mt-3 px-0">
           <h4 class="font-weight-bold text-center text-md-left mb-0">
-            Upload voice file
+            Compose voice message
           </h4>
           <!-- <Toast /> -->
           <el-dialog title="Select Date and Time" v-model="display" :width="
@@ -89,8 +89,8 @@
             </div>
             <template #dropdown>
               <el-dropdown-menu>
-                <el-dropdown-item v-for="(destination, index) in possibleSMSDestinations" :key="index">
-                  <a class="no-decoration text-dark" @click="showSection(index)">
+                <el-dropdown-item v-for="(destination, index) in possibleSMSDestinations" :key="index" @click="showSection(index)">
+                  <a class="no-decoration text-dark">
                     {{ destination }}
                   </a>
                 </el-dropdown-item>
@@ -110,7 +110,7 @@
         </div>
       </div>
 
-      <div class="row" v-if="sendToAll">
+      <!-- <div class="row" v-if="sendToAll">
         <div class="col-12 col-md-2 px-0"></div>
         <div class="col-12 col-md-10 px-0">
           <span>
@@ -118,17 +118,15 @@
             <span class="close-allcontacts c-pointer" @click="() => (sendToAll = false)"><el-icon class="mx-2 mt-2">
                 <Close />
               </el-icon>
-              <!-- <i class="pi pi-times "></i
-            > -->
             </span>
           </span>
         </div>
-      </div>
+      </div> -->
 
       <!-- Start TEst -->
       <div class="row mb-2" v-if="groupSelectionTab">
         <div class="col-md-2"></div>
-        <div class="col-md-10 px-0 grey-rounded-border">
+        <div class="col-md-10 px-0 grey-rounded-border mt-3">
           <ul class="d-flex flex-wrap pl-1 mb-0 dd-item small-text" @click="() => groupSelectInput.focus()">
             <li style="list-style: none; min-width: 100px" v-for="(group, index) in selectedGroups" :key="index"
               class="email-destination d-flex justify-content-between m-1">
@@ -144,8 +142,7 @@
               <input type="text" class="border-0 dd-item" ref="groupSelectInput" :class="{
                 'w-100': selectedGroups.length === 0,
                 'minimized-input-width': selectedGroups.length > 0,
-              }" @focus="showGroupList" @click="showGroupList" style="padding: 0.5rem" :placeholder="`${selectedGroups.length > 0 ? '' : 'Select groups'
-  }`" />
+              }" @focus="showGroupList" @click="showGroupList" style="padding: 0.5rem" :placeholder="`${selectedGroups.length > 0 ? '' : 'Select groups' }`" />
             </li>
           </ul>
           <div class="col-md-12 px-2 select-groups-dropdown dd-item pt-2" v-if="groupListShown">
@@ -180,9 +177,7 @@
           </div>
         </div>
       </div>
-      <!-- End TEst -->
 
-      <!-- Start member TEst -->
       <div class="col-12 my-1 px-0">
         <div class="row" v-if="membershipSelectionTab">
           <div class="col-12 col-md-2"></div>
@@ -234,7 +229,6 @@
           </div>
         </div>
       </div>
-      <!-- End member TEst -->
 
 
 
@@ -283,6 +277,14 @@
 
 
       <div class="row mt-3">
+        <div class="col-md-2 px-0 col-lg-2 align-self-center">
+          <span class="small-text">Subject :</span>
+        </div>
+        <div class="p-0 col-md-10 col-lg-10 form-group mb-0">
+          <el-input type="text" pleaceholder="Enter your subject" v-model="subject"/>
+        </div>
+      </div>
+      <div class="row mt-3">
         <div class="px-0 col-md-2 mb-sm-2">
           <span class="small-text">Select audio source :</span>
         </div>
@@ -300,8 +302,8 @@
             </div>
             <template #dropdown>
               <el-dropdown-menu>
-                <el-dropdown-item v-for="(item, index) in voiceActionType" :key="index">
-                  <a class="no-decoration text-dark" @click="selectedVoiceType = item.id">
+                <el-dropdown-item v-for="(item, index) in voiceActionType" :key="index" @click="selectedVoiceType = item.id">
+                  <a class="no-decoration text-dark">
                     {{ item.name }}
                   </a>
                 </el-dropdown-item>
@@ -321,8 +323,8 @@
             </div>
             <template #dropdown>
               <el-dropdown-menu>
-                <el-dropdown-item v-for="(item, index) in voiceAudioList" :key="index">
-                  <a class="no-decoration text-dark" @click="chooseVoiceAudio(item)">
+                <el-dropdown-item v-for="(item, index) in voiceAudioList" :key="index" @click="chooseVoiceAudio(item)">
+                  <a class="no-decoration text-dark">
                     {{ item.fileBlobName }}
                   </a>
                 </el-dropdown-item>
@@ -338,7 +340,7 @@
             </div>
             <template #tip>
               <div class="el-upload__tip">
-                jpg/png files with a size less than 500kb
+                {{ [ ".m4a", ".mp2", ".mp3", ".ogg", ".wav", ".wma", ".webm" ].join(", ") }} files are accepted
               </div>
             </template>
           </el-upload>
@@ -383,30 +385,6 @@
 
 
       </div>
-
-      <!-- start voice -->
-      <div class="p-2 controlAudio" v-show="displayAudio">
-        <select name="" id="micSelect"></select>
-        <select id="visSelect">
-          <option value="frequencybars">Bar</option>
-          <option value="sinewave">Wave</option>
-          <option value="circle">Circle</option>
-        </select>
-
-        <a id="download">Download</a>
-
-        <div class="audio-controls">
-          <button id="record">Record</button>
-          <button id="stop">Stop</button>
-          <audio id="audio" controls></audio>
-        </div>
-
-        <div id="msg">Recording...</div>
-        <div class="d-flex justify-content-center align-items-center">
-          <canvas width="500" height="200" ref="canvas"></canvas>
-        </div>
-      </div>
-      <!-- end voice -->
 
       <div class="row mt-4 mb-5">
         <div class="col-md-12">
@@ -647,7 +625,7 @@ export default {
     // start();
     // audio end
     const checkFileType = () => {
-      if (Object.keys(selectedVoiceaudio.value).length === 0 && file.value instanceof File) {
+      if (Object.keys(selectedVoiceaudio.value).length === 0 && !(file.value instanceof File)) {
         ElMessage({
           type: 'warning',
           message: "Please choose an audio file to send as voice messages to your contacts",
@@ -682,13 +660,17 @@ export default {
     const detailsForVoice = async () => {
       console.log(selectedMembers.value)
       let formData = new FormData();
-      file.value instanceof File ?
-        formData.append("VoiceMessageFile", file.value) :
-        formData.append("VoiceMessageUrl", selectedVoiceaudio.value.filePath);
+      selectedVoiceType.value === 2 ? formData.append("VoiceMessageFile", file.value) : null;
+      selectedVoiceType.value === 1 ? formData.append("VoiceMessageUrl", selectedVoiceaudio.value.filePath) : null;
+      formData.append("subject", subject.value);
       formData.append("ToContacts", selectedMembers.value.map(i => i.id).join(","));
       formData.append("GateWayToUse", "dotgovoice");
       formData.append('GroupedContacts', selectedGroups.value.map((i) => i.data))
       formData.append("ToOthers", formatPhoneNumber(phoneNumber.value));
+
+//       for (var pair of formData.entries()) {
+//     console.log(pair[0]+ ', ' + pair[1]); 
+// }
 
       try {
         let { data } = await axios.post(
@@ -701,6 +683,7 @@ export default {
           message: 'You have successfully sent a voice note',
           duration: 5000
         })
+        router.push("/tenant/voice/voicelist")
       } catch (err) {
         console.log(err);
         ElMessage({
@@ -720,7 +703,7 @@ export default {
       if (index === 3) phoneNumberSelectionTab.value = true;
       if (index === 4) contactUpload.value = true;
       if (index === 0) {
-        sendToAll.value = true;
+        groupSelectionTab.value = true;
         selectedGroups.value.push({
           data: "membership_00000000-0000-0000-0000-000000000000",
           name: "All Contacts",

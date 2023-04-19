@@ -411,7 +411,7 @@
                   </el-dropdown-item>
                   <el-dropdown-item>
                     <div
-                      @click.prevent="showConfirmModal(item.id, index)"
+                      @click.prevent="showConfirmModal(item.activityId, index)"
                       class="text-color"
                     >
                       Delete
@@ -458,6 +458,7 @@ import convertNumber from "../../services/numbershortener/numberfomatter";
 import PaginationButtons from "../../components/pagination/PaginationButtons.vue";
 import finish from "../../services/progressbar/progress";
 import Table from "@/components/table/Table";
+import { ElMessage, ElMessageBox } from 'element-plus'
 export default {
   components: {
     PaginationButtons,

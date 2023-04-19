@@ -543,7 +543,7 @@
               />
             </div>
             <div
-              v-if="convertedAmount"
+              v-if="convertedAmount2"
               class="col-4 col-sm-2 align-self-center converted-amount"
             >
               {{
@@ -1906,7 +1906,6 @@
       </div>
     </Dialog> -->
   </div>
-  <ConfirmDialog />
 </template>
 
 <script>
@@ -1915,7 +1914,6 @@ import { ElMessage, ElMessageBox } from 'element-plus';
 import store from "@/store/store.js";
 import membershipService from "../../services/membership/membershipservice";
 import CurrencyConverter from "./CurrencyConverter";
-import Dropdown from "primevue/dropdown";
 import CurrencyConverterService from "../../services/currency-converter/currencyConverter";
 import finish from "../../services/progressbar/progress";
 import SearchMembers from "../../components/membership/MembersSearch.vue";
@@ -1924,7 +1922,6 @@ import deviceBreakpoint from "../../mixins/deviceBreakpoint";
 export default {
   components: {
     CurrencyConverter,
-    Dropdown,
     SearchMembers,
     NewDonor,
   },
@@ -3138,7 +3135,7 @@ export default {
       let removeCharacters = amount.replace(/[^0-9.]/g, "");
       let toNumber = parseFloat(removeCharacters);
 
-      this.currencyAmount = e.target.value;
+      this.currencyAmount = e;
       this.currencyIndex = index;
 
       let toDestinationCurrencyRate = `usd${this.tenantCurrency.currency.toLowerCase()}`;
