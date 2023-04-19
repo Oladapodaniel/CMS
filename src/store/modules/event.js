@@ -35,6 +35,7 @@ export default {
       state.eventData = {}
       state.eventList = []
       state.reportData = {}
+      state.geteventitems = {}
     },
 
     setReportData(state, payload) {
