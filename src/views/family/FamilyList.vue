@@ -4,16 +4,12 @@
       <div class="col-12 px-0">
         <div class="top-con">
           <div class="">
-            <!-- <div class="col-2"></div> -->
-
             <div class="table-top p-3 mt-5">
               <div class="col-md-5 justify-content-flex-end">
                 <el-input
                   size="small"
                   v-model="searchText"
                   placeholder="Search..."
-                  @input="searchingMember = true"
-                  @keyup.enter.prevent="searchMemberInDB"
                   class="input-with-select"
                 >
                   <template #suffix>
@@ -27,7 +23,7 @@
                     </el-button>
                   </template>
                   <template #append>
-                    <el-button @click.prevent="searchMemberInDB">
+                    <el-button>
                       <el-icon :size="13">
                         <Search />
                       </el-icon>
@@ -179,8 +175,8 @@ export default {
 
           ElMessage({
             type: "success",
-            message: "Confirmed",
-            duration: 3000,
+            message: "Family Deleted",
+            duration: 3000
           });
           let listFiltered = props.familyList.filter((i) => i.id !== id);
           emit("list-filtered", listFiltered);
@@ -203,10 +199,7 @@ export default {
       )
         .then(() => {
           deleteFamily(item, id);
-          ElMessage({
-            type: "info",
-            message: "Family Deleted",
-          });
+          
         })
         .catch(() => {
           ElMessage({
