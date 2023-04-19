@@ -411,7 +411,7 @@
                   </el-dropdown-item>
                   <el-dropdown-item>
                     <div
-                      @click.prevent="showConfirmModal(item.id, index)"
+                      @click.prevent="showConfirmModal(item.activityId, index)"
                       class="text-color"
                     >
                       Delete
