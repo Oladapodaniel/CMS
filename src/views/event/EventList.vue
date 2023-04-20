@@ -489,19 +489,19 @@ export default {
     const deleteEvent = (id, index) => {
       axios
         .delete(`/api/Events/DeleteActivity?activityId=${id}`)
-        .then((res) => {
-          console.log(res);
+        .then(() => {
           ElMessage({
             type: "success",
             message: "Delete Successful",
             duration: 4000,
           });
-          emit("delete-event", index);
           store.dispatch("event/removeEventItemFromStore", id);
+          emit("delete-event", index);
+          
         })
         .catch((err) => {
           finish();
-          if (err.response.toString().toLowerCase().includes("network error")) {
+          if (err.toString().toLowerCase().includes("network error")) {
             ElMessage({
               type: "info",
               message: "Please ensure you have a strong internet connection",
