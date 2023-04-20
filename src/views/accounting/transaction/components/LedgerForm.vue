@@ -60,15 +60,6 @@
       </div>
     </div>
 
-    <!-- <div class="row d-flex justify-content-around">
-      <div class="col-5 bordered-bottom">
-        <h5 class="font-weight-700">Debits</h5>
-      </div>
-      <div class="col-5 bordered-bottom">
-        <h5 class="font-weight-700">Credits</h5>
-      </div>
-    </div> -->
-
     <div class="row bordered-bottom pb-3 mb-3">
       <div class="col-md-12">
         <div class="row">
