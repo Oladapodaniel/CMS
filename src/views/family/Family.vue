@@ -7,12 +7,8 @@
       >
         <div class="head-text">Family</div>
 
-         <router-link to="/tenant/addfamily">
-             <el-button
-            class="header-btn"
-            :color="primarycolor"
-            round
-          >
+        <router-link to="/tenant/addfamily" class="no-decoration">
+          <el-button class="header-btn" :color="primarycolor" round>
             Add Family
           </el-button>
         </router-link>
@@ -79,13 +75,14 @@
 </template>
 
 <script>
-import { ref, inject } from "vue";
+import { ref, inject, onMounted } from "vue";
 import axios from "@/gateway/backendapi";
 import finish from "../../services/progressbar/progress";
 import FamilyList from "./FamilyList.vue";
 import Loader from "../accounting/offering/SkeletonLoader.vue";
 import router from "../../router";
 import deviceBreakpoint from "../../mixins/deviceBreakpoint";
+import store from "../../store/store";
 
 export default {
   components: {
@@ -93,8 +90,8 @@ export default {
     Loader,
   },
   setup() {
-    const primarycolor = inject('primarycolor')
-    const familyList = ref([]);
+    const primarycolor = inject("primarycolor");
+    const familyList = ref(store.getters["family/allFamilies"]);
     const loading = ref(false);
     const networkError = ref(false);
     const { lgAndUp, xlAndUp } = deviceBreakpoint();
@@ -102,9 +99,9 @@ export default {
     const getAllFamilies = async () => {
       loading.value = true;
       try {
-        let data = await axios.get("/api/family/allfamilies");
+        let data = await store.dispatch("family/getAllFamilies");
         console.log(data);
-        familyList.value = data.data;
+        familyList.value = data;
         loading.value = false;
       } catch (err) {
         finish();
@@ -118,7 +115,10 @@ export default {
         }
       }
     };
-    getAllFamilies();
+
+    onMounted(() => {
+      if (familyList.value && familyList.value.length == 0) getAllFamilies();
+    });
 
     const resetList = (payload) => {
       familyList.value = payload;
@@ -137,7 +137,7 @@ export default {
       navigateToAddFamily,
       lgAndUp,
       xlAndUp,
-      primarycolor
+      primarycolor,
     };
   },
 };

@@ -130,7 +130,7 @@ li.el-menu-item.w-100,
 
 .el-dropdown-menu {
   max-height: 400px;
-  overflow: scroll;
+  overflow: auto;
 }
 
 

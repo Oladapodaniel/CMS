@@ -1,8 +1,5 @@
 <template>
   <div class="container-wide container-top">
-    <!-- <div class="row my-3">
-      <div class="col-12 page-header">Add Family</div>
-    </div> -->
     <div class="head-text">
       <div>Add Family</div>
     </div>
@@ -21,16 +18,10 @@
           </div>
 
           <div class="col-md-8">
-            <el-input
-              type="text"
-              v-model="familyName"
-              autocomplete="off"
-            />
+            <el-input type="text" v-model="familyName" autocomplete="off" />
           </div>
         </div>
       </div>
-
-        
 
       <div class="col-md-6 offset-md-2 mt-4">
         <div class="row">
@@ -39,8 +30,8 @@
           </div>
           <!-- Father Dropdown -->
           <div class="col-md-8">
-            <div class="dropdown">
-              <input
+            <!-- <div class="dropdown">
+              <el-input
                 type="text"
                 class="form-control"
                 id="dropdownMenuButton"
@@ -91,14 +82,50 @@
                   @click="showAddMemberForm"
                   data-dismiss="modal"
                 >
-                  <i
-                    class="pi pi-plus-circle mr-2 primary-text d-flex align-items-center"
-                    style="color: #136acd"
-                  ></i>
+                  
+                  <el-icon class="mr-2 primary-text d-flex align-items-center" style="color: #136acd" :size="20"  ><CirclePlus /></el-icon>
                   Add new member
                 </a>
               </div>
-            </div>
+            </div> -->
+            <el-dropdown class="w-100" trigger="click">
+              <span class="el-dropdown-link w-100">
+                <el-input
+                  type="text"
+                  v-model="userSearchString"
+                  @input="searchForUsers"
+                  ref="searchRef"
+                  :disabled="routeParams !== ''"
+                  autocomplete="off"
+                />
+              </span>
+              <template #dropdown>
+                <el-dropdown-menu>
+                  <el-icon
+                    class="is-loading"
+                    v-if="loading && userSearchString.length >= 3"
+                  >
+                    <Loading />
+                  </el-icon>
+                  <el-dropdown-item
+                    v-for="(member, index) in searchedMembers"
+                    :key="index"
+                    @click="addExistingMember(member)"
+                    >{{ member.name }}
+                  </el-dropdown-item>
+                  <el-dropdown-item v-if="userSearchString.length < 3" disabled
+                    >Enter 3 or more characters</el-dropdown-item
+                  >
+                  <el-dropdown-item
+                    @click="showAddMemberForm"
+                    style="color: #136acd"
+                    divided
+                    ><el-icon><CirclePlus /></el-icon>Add new
+                    member</el-dropdown-item
+                  >
+                </el-dropdown-menu>
+              </template>
+            </el-dropdown>
           </div>
         </div>
       </div>
@@ -111,7 +138,7 @@
             <label for="" class="">Mother</label>
           </div>
           <div class="col-md-8">
-            <div class="dropdown">
+            <!-- <div class="dropdown">
               <el-input
                 type="text"
                 id="dropdownMenuButton"
@@ -167,14 +194,56 @@
                   @click="showAddMemberFormForMother"
                   data-dismiss="modal"
                 >
-                  <i
-                    class="pi pi-plus-circle mr-2 primary-text d-flex align-items-center"
+                  <el-icon
+                    class="mr-2 primary-text d-flex align-items-center"
                     style="color: #136acd"
-                  ></i>
+                    :size="20"
+                    ><CirclePlus
+                  /></el-icon>
+
                   Add new member
                 </a>
               </div>
-            </div>
+            </div> -->
+
+            <el-dropdown class="w-100" trigger="click">
+              <span class="el-dropdown-link w-100">
+                <el-input
+                  type="text"
+                  v-model="userSearchString"
+                  @input="searchForUsers"
+                  ref="searchRef"
+                  :disabled="routeParams !== ''"
+                  autocomplete="off"
+                />
+              </span>
+              <template #dropdown>
+                <el-dropdown-menu>
+                  <el-icon
+                    class="is-loading"
+                    v-if="loading && userSearchString.length >= 3"
+                  >
+                    <Loading />
+                  </el-icon>
+                  <el-dropdown-item
+                    v-for="(member, index) in motherSearchedMembers"
+                    :key="index"
+                    @click="addExistingMemberForMother(member)"
+                    >{{ member.name }}
+                  </el-dropdown-item>
+                  <el-dropdown-item v-if="userSearchString.length < 3" disabled
+                    >Enter 3 or more characters</el-dropdown-item
+                  >
+                  <el-dropdown-item
+                    @click="showAddMemberForm"
+                    style="color: #136acd"
+                    divided
+                    ><el-icon><CirclePlus /></el-icon>Add new
+                    member</el-dropdown-item
+                  >
+                </el-dropdown-menu>
+              </template>
+            </el-dropdown>
           </div>
         </div>
       </div>
@@ -185,11 +254,7 @@
           </div>
 
           <div class="col-md-8">
-            <el-input
-              type="text"
-              v-model="email"
-              autocomplete="off"
-            />
+            <el-input type="text" v-model="email" autocomplete="off" />
           </div>
         </div>
       </div>
@@ -201,11 +266,7 @@
           </div>
 
           <div class="col-md-8">
-            <el-input
-              type="text"
-              v-model="homePhone"
-              autocomplete="off"
-            />
+            <el-input type="text" v-model="homePhone" autocomplete="off" />
           </div>
         </div>
       </div>
@@ -233,15 +294,31 @@
 
     <div class="row my-5">
       <div class="col-md-10 mx-auto d-flex justify-content-center my-5">
-        <button class="default-btn text-dark font-weight-bold border mx-4">
+        <!-- <button class="default-btn text-dark font-weight-bold border mx-4">
           Cancel
-        </button>
-        <button
+        </button> -->
+        <el-button
+          round
+          size="large"
+          class="border-0 text-dark font-weight-bold mx-4"
+        >
+          Cancel
+        </el-button>
+
+        <!-- <button
           @click="createFamily"
           class="default-btn font-weight-bold border text-white primary-bg mx-4"
         >
           Save
-        </button>
+        </button> -->
+        <el-button
+          size="large"
+          @click="createFamily"
+          class="font-weight-bold border text-white primary-bg mx-4"
+          round
+        >
+          Save
+        </el-button>
       </div>
     </div>
 
@@ -279,25 +356,22 @@
             <div class="row px-4 pb-3">
               <div class="col-sm-10">Search for ward in church</div>
               <div class="dropdown col-sm-10">
-                <el-input
+                <!-- <el-input
                   type="text"
                   placeholder="Enter ward name"
-                  class=" mt-2"
+                  class="mt-2"
                   id="dropdownMenuButton"
                   data-toggle="dropdown"
                   v-model="wardSearchString"
                   @input="wardSearchForUsers"
-                />
-                <div
+                /> -->
+                <!-- <div
                   class="dropdown-menu w-100"
                   aria-labelledby="dropdownMenuButton"
                 >
                   <div class="row w-100 mx-auto" v-if="false">
                     <div class="col-md-12">
-                      <el-input
-                        type="text"
-                        placeholder="Find event"
-                      />
+                      <el-input type="text" placeholder="Find event" />
                     </div>
                   </div>
 
@@ -333,18 +407,56 @@
                     @click="showAddMemberFormForWard"
                     data-dismiss="modal"
                   >
-                    <i
-                      class="pi pi-plus-circle mr-2 primary-text d-flex align-items-center"
+                    <el-icon
+                      class="mr-2 primary-text d-flex align-items-center"
                       style="color: #136acd"
-                    ></i>
+                      :size="20"
+                      ><CirclePlus
+                    /></el-icon>
+
                     Add new member
                   </a>
-                </div>
+                </div> -->
+                <el-dropdown class="w-100" trigger="click">
+                  <span class="el-dropdown-link w-100">
+                    <el-input
+                      type="text"
+                      v-model="wardSearchString"
+                      @input="wardSearchForUsers"
+                      placeholder="Enter ward name"
+                      autocomplete="off"
+                    />
+                  </span>
+                  <template #dropdown>
+                    <el-dropdown-menu>
+                      <el-icon class="is-loading" v-if="false">
+                        <el-input type="text" placeholder="Find event" />
+                      </el-icon>
+                      <el-dropdown-item
+                        v-for="(member, index) in wardSearchedMembers"
+                        :key="index"
+                        @click="addExistingMemberForWard(member)"
+                        >{{ member.name }}</el-dropdown-item
+                      >
+                      <el-dropdown-item
+                        v-if="
+                          wardSearchString.length < 3 &&
+                          wardSearchedMembers.length === 0
+                        "
+                        >Enter 3 or more characters</el-dropdown-item
+                      >
+                      <el-dropdown-item @click="showAddMemberFormForWard"
+                        ><el-icon><CirclePlus /></el-icon>Add new
+                        member</el-dropdown-item
+                      >
+                    </el-dropdown-menu>
+                  </template>
+                </el-dropdown>
               </div>
 
               <div class="col-sm-10 mt-3">Role</div>
               <div class="col-sm-10">
-                <div class="dropdown">
+                <!-- <div class="dropdown">
                   <button
                     class="btn w-100 d-flex justify-content-between border"
                     type="button"
@@ -358,7 +470,10 @@
                       {{ roleId.name ? roleId.name : "Select role" }}
                     </span>
                     <span>
-                      <i class="pi pi-angle-down offset-sm-2 ofering"></i>
+                    
+                      <el-icon class="offset-sm-2 ofering"
+                        ><ArrowDown
+                      /></el-icon>
                     </span>
                   </button>
                   <div
@@ -374,20 +489,66 @@
                       >{{ itm.name }}</a
                     >
                   </div>
-                </div>
+                </div> -->
+
+                <el-dropdown class="w-100" trigger="click">
+                  <span class="el-dropdown-link w-100">
+                    <div
+                      class="d-flex justify-content-between border-contribution text-dark w-100"
+                      size="large"
+                    >
+                      <span>{{
+                        roleId.name ? roleId.name : "Select role"
+                      }}</span>
+                      <div>
+                        <el-icon class="el-icon--right">
+                          <arrow-down />
+                        </el-icon>
+                      </div>
+                    </div>
+                  </span>
+
+                  <template #dropdown>
+                    <el-dropdown-menu>
+                      <el-icon
+                        class="is-loading"
+                        v-if="loading && userSearchString.length >= 3"
+                      >
+                        <Loading />
+                      </el-icon>
+                      <el-dropdown-item
+                        v-for="(itm, indx) in memberRoles"
+                        :key="indx"
+                        @click="selectmemberRole(itm)"
+                        >{{ itm.name }}
+                      </el-dropdown-item>
+                    </el-dropdown-menu>
+                  </template>
+                </el-dropdown>
               </div>
 
               <div class="col-md-6 mt-4">
-                <button class="default-btn" data-dismiss="modal">Cancel</button>
+                <!-- <button class="default-btn" data-dismiss="modal">Cancel</button> -->
+                <el-button size="large" round>Cancel</el-button>
               </div>
               <div class="col-md-6 mt-4">
-                <button
+                <!-- <button
                   class="default-btn primary-bg border-0 text-white"
                   data-dismiss="modal"
                   @click="addWard"
                 >
                   Save
-                </button>
+                </button> -->
+
+                <el-button
+                  round
+                  :color="primarycolor"
+                  size="large"
+                  class="border-0 text-white text-center"
+                  @click="addWard"
+                >
+                  Save
+                </el-button>
               </div>
             </div>
           </div>
@@ -446,24 +607,21 @@
         </div>
       </div>
     </Dialog>
-
-    <Toast />
   </div>
 </template>
 
 <script>
-import { ref } from "vue";
+import { ref, inject } from "vue";
 import FamilyWards from "./FamilyWards";
-// import MemberForm from "../ChildCheckinPortal/FormMember.vue"
 import membershipService from "../../services/membership/membershipservice";
 import Dialog from "primevue/dialog";
 import NewPerson from "../../components/membership/NewDonor.vue";
 import axios from "@/gateway/backendapi";
 import router from "@/router/index";
 import { useRoute } from "vue-router";
-import Dropdown from "primevue/dropdown";
+// import Dropdown from "primevue/dropdown";
 import { ElMessage } from "element-plus";
-import { useToast } from "primevue/usetoast";
+// import { useToast } from "primevue/usetoast";
 
 export default {
   components: {
@@ -471,11 +629,12 @@ export default {
     // MemberForm,
     Dialog,
     NewPerson,
-    Dropdown,
+    // Dropdown,
   },
   setup() {
-    const toast = useToast();
+    // const toast = useToast();
     const route = useRoute();
+    const primarycolor = inject("primarycolor");
     const familyMembers = ref([]);
     const memberRoles = ref([]);
     const close = ref("");
@@ -502,40 +661,23 @@ export default {
     const editPersonId = ref("");
     const wardState = ref(1);
     const memberIndex = ref(0);
+    const loading = ref(false);
     // const constructSelectedMember = ref({})
     const showWardModal = ref(false);
     const routeParams = ref(route.params.familyId);
 
     const getFamilyRoles = async () => {
-      console.log(routeParams.value !== "");
       try {
         let { data } = await axios.get("/getfamilyroles");
-        console.log(data);
         memberRoles.value = data.result;
         getFamilyDetails();
-      } catch (err) {
-        console.log(err);
-      }
+      } catch (err) {}
     };
     getFamilyRoles();
 
     const dismissModal = () => {
       close.value.click();
     };
-
-    // const pushToView = (payload) => {
-    //     let data = {
-    //         person: {
-    //             firstName: payload.firstName,
-    //             lastName: payload.lastName,
-    //             pictureUrl: payload.pictureUrl,
-    //             genderID: payload.genderID
-    //         },
-    //         familyRoleID: payload.roleId
-    //     }
-    //     familyMembers.value.push(data)
-    //     console.log(data)
-    // }
 
     // Search member for father
     const searchForUsers = () => {
@@ -552,7 +694,6 @@ export default {
         searchedMembers.value = response;
       } catch (error) {
         searchingForMembers.value = false;
-        console.log(error);
       }
     };
 
@@ -562,7 +703,6 @@ export default {
 
     const selectmemberRole = (itm) => {
       roleId.value = itm;
-      console.log(roleId.value, "nn😂😁😁");
     };
 
     const addExistingMember = (member) => {
@@ -576,8 +716,6 @@ export default {
         email: member.email,
         phone: member.phone,
       };
-      console.log(userSearchString.value, member);
-      console.log(father.value);
     };
 
     const getFatherId = (payload) => {
@@ -668,15 +806,8 @@ export default {
       wardSearchString.value = member.name;
       //   wardIndex.value = index
       selectedMember.value = member;
-      //   mother.value = {
-      //       firstName: member.name.split(" ")[0],
-      //       lastName: member.name.split(" ")[1],
-      //       id: member.id,
-      //       email: member.email,
-      //       phone: member.phone
-      //   }
+
       console.log(wardSearchString.value, member);
-      //   console.log(mother.value)
     };
 
     const getWardId = (payload) => {
@@ -693,12 +824,10 @@ export default {
     const addWard = async () => {
       console.log(wardState.value);
       if (!selectedMember.value.id) {
-        toast.add({
-          severity: "info",
-          summary: "The ward has to be selected from the church",
-          detail:
-            "Kindly choose the ward from the church membership list or create him/her as a member first",
-          life: 10000,
+        ElMessage({
+          type: "info",
+          message: "The ward has to be selected from the church",
+          duration: 1000,
         });
         wardSearchString.value = "";
         return false;
@@ -792,45 +921,8 @@ export default {
         fatherId: father.value.id,
         motherId: mother.value.id,
       };
-      // if (userSearchString.value) {
-      //    updateProfile.father = {
-      //        id: father.value.id
-      //     //   firstName: userSearchString.value,
-      //     //   lastName: profile.value.lastName,
-      //     //   pictureUrl: profile.value.pictureUrl
-      //     }
-      // }
-      // if (motherSearchString.value) {
-      //   updateProfile.mother = {
-      //       id: mother.value.id
-      //     //   firstName: motherSearchString.value,
-      //     //   lastName: profile.value.lastName,
-      //     //   pictureUrl: profile.value.pictureUrl
-      //     }
-      // }
 
       if (!route.params.familyId) {
-        // if (!father.value.id) {
-        //     toast.add({
-        //         severity: "info",
-        //         summary: "The father has to be selected from the church",
-        //         detail: "Kindly choose the father from the church membership list or create him as a member first",
-        //         life: 10000,
-        //     });
-        //     userSearchString.value = ""
-        //     return false
-        // }
-        // if (!mother.value.id) {
-        //     console.log("Select mother")
-        //     toast.add({
-        //         severity: "info",
-        //         summary: "The mother has to be selected from the church",
-        //         detail: "Kindly choose the mother from the church membership list or create her as a member first",
-        //         life: 10000,
-        //     });
-        //     motherSearchString.value = ""
-        //     return false
-        // }
         try {
           let res = await axios.post("/api/family/createFamily", family);
           if (res.status === 200) {
@@ -844,7 +936,10 @@ export default {
               message: "Failed, try again",
             });
           }
-          router.push("/tenant/family");
+          store.dispatch("family/getAllFamilies").then(() => {
+            router.push("/tenant/family");
+          });
+          
         } catch (err) {
           ElMessage({
             type: "error",
@@ -860,7 +955,9 @@ export default {
             type: "success",
             message: "Family updated successfully",
           });
-          router.push("/tenant/family");
+          store.dispatch("family/getAllFamilies").then(() => {
+            router.push("/tenant/family");
+          });
         } catch (err) {
           console.log(err);
         }
@@ -1008,6 +1105,8 @@ export default {
       setWardModal,
       removeWard,
       routeParams,
+      loading,
+      primarycolor,
     };
   },
 };
