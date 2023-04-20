@@ -27,16 +27,19 @@ export default {
       state.eventItems.push(payload);
     },
     removeEventItem(state, payload) {
-      state.eventItems = state.eventItems.filter(
+      state.eventItems.activities = state.eventItems.activities.filter(
         (item) => item.id !== payload
       );
     },
     clearState(state) {
-      state.eventData = {}
-      state.eventList = []
-      state.reportData = {}
-      state.geteventitems = {}
+      Object.assign(state, defaultState())
     },
+    // clearState(state) {
+    //   state.eventData = {}
+    //   state.eventList = []
+    //   state.reportData = {}
+    //   state.geteventitems = {}
+    // },
 
     setReportData(state, payload) {
       state.reportData = payload;
