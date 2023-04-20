@@ -7,44 +7,54 @@
     </div>
     <div class="row mt-3" v-if="gettingSelectedTrsn">
       <div class="col-md-12 text-center">
-        <i class="pi pi-spin pi-spinner primary-text" style="fontSize: 3rem"></i>
+        <el-icon class="is-loading " >
+            <Loading />
+          </el-icon>
       </div>
     </div>
     <div class="row">
       <div class="col-md-12">
-        <div class="container">
+        <!-- <div class="container"> -->
           <div class="row">
-            <div class="col-md-12 desc-area">
+            <div class="col-md-12">
               <label for="" class="form-label" style="font-size: 14px"
                 >Description</label
               >
-              <textarea
+              <el-input  v-model="memo" type="textarea" placeholder="Write a description" :rows="2" class="w-100" />
+              <!-- <textarea
                 name=""
                 id=""
                 class="w-100 border-0 textarea"
                 rows="1"
                 placeholder="Write a description"
                 v-model="memo"
-              ></textarea>
+              ></textarea> -->
             </div>
           </div>
-        </div>
+        <!-- </div> -->
       </div>
     </div>
 
-    <div class="row bordered-bottom pb-3 mb-3">
-      <div class="col-md-7 d-flex align-items-end">
-        <input
+    <div class="row bordered-bottom pb-2 mb-3">
+      <div class="col-md-10 d-flex mt-3 ">
+        <el-date-picker
+            v-model="transactionDate"
+            type="date"
+            class="w-100"
+            size="large"
+            format="MM/DD/YYYY"
+          />
+        <!-- <input
           type="date"
           name=""
           id=""
           class="form-control"
           v-model="transactionDate"
-        />
+        /> -->
       </div>
-      <div class="col-md-5 d-md-flex flex-column align-items-end">
+      <div class="col-md-2 mt-2 d-md-flex flex-column ">
         <span class="small-text mb-n2">Total</span>
-        <span class="font=weight-700" style="font-size: 30px">{{
+        <span class="font=weight-700" style="font-size: 25px">{{
           totalAmount
         }}</span>
       </div>
@@ -77,63 +87,50 @@
           <div class="col-md-12" v-if="transaction.category === 'inflow'">
             <div class="row">
               <div class="col-md-8">
-                <div class="dropdown">
-                  <button
-                    class="btn btn-white w-100 bordered text-left bg-light d-flex justify-content-between"
-                    type="button"
-                    id="dropdownMenuButton"
-                    data-toggle="dropdown"
-                    aria-haspopup="true"
-                    aria-expanded="false"
-                  >
-                    <!-- :disabled="accountGroupId" -->
-                    <span>
-                      {{
+                <el-dropdown trigger="click" class="w-100">
+                    <span class="el-dropdown-link w-100">
+                      <div
+                        class="d-flex justify-content-between border-contribution  w-100"
+                        size="large"
+                      >
+                        {{
                         !transaction.account
                           ? "Select account type"
                           : transaction.account
                       }}
+                        <div>
+                          <el-icon class="el-icon--right">
+                            <arrow-down />
+                          </el-icon>
+                        </div>
+                      </div>
                     </span>
-                    <span><i class="pi pi-angle-down"></i></span>
-                  </button>
-                  <div
-                    class="dropdown-menu w-100"
-                    style="max-height: 300px; overflow: auto"
-                    aria-labelledby="dropdownMenuButton"
-                  >
-                    <div class="container">
-                      <div
-                        class="row"
+                    <template #dropdown>
+                      <el-dropdown-menu>
+                        <el-dropdown-item
                         v-for="(accounts, index) in transactionalAccounts"
-                        :key="index"
-                      >
+                        :key="index" >
                         <div class="col-md-12 px-2">
                           <h6
                             class="mb-0 text-capitalize font-weight-bold"
                             v-if="accounts.length > 0"
                           >
                             {{ accountTypes[index] }}
+                            
                           </h6>
-                        </div>
-                        <div class="col-md-12">
-                          <a
-                            class="dropdown-item px-1 px-14"
-                            href="#"
-                            v-for="(account, indx) in accounts"
+                          <div class="py-1" v-for="(account, indx) in accounts"
                             :key="indx"
-                            @click="selectAccount(1, indexe, account)"
-                            >{{ account.text }}</a
-                          >
+                            @click="selectAccount(1, indexe, account)"  >{{ account.text }}</div>
                         </div>
-                      </div>
-                    </div>
-                  </div>
-                </div>
+                        </el-dropdown-item>
+                      </el-dropdown-menu>
+                    </template>
+                </el-dropdown>
               </div>
               <div class="col-md-4 mb-2 pl-0">
-                <input
+                <el-input
                   type="text"
-                  class="form-control w-100"
+                  class="w-100"
                   v-model="transaction.amount"
                 />
               </div>
@@ -147,8 +144,8 @@
           <a
             class="text-decoration-none font-weight-700 link-color c-pointer"
             @click="addRecord('inflow')"
-            ><span style="font-size:18px">Add Debit</span> <i class="pi pi-plus-circle" style="font-size: 14px"></i
-          ></a>
+            ><span style="font-size:18px">Add Debit</span> <el-icon class="mt-2s"><CirclePlus /></el-icon> 
+          </a>
         </div>
         <div class="col-4 px-0 text-center">
           <span class="font-weight-bold">{{ sumOfRecords(debitRecords) }}</span>
@@ -174,7 +171,46 @@
           <div class="col-md-12" v-if="transaction.category === 'outflow'">
             <div class="row">
               <div class="col-md-8">
-                <div class="dropdown">
+                <el-dropdown trigger="click" class="w-100">
+                    <span class="el-dropdown-link w-100">
+                      <div
+                        class="d-flex justify-content-between border-contribution  w-100"
+                        size="large"
+                      >
+                        {{
+                        !transaction.account
+                          ? "Select account type"
+                          : transaction.account
+                      }}
+                        <div>
+                          <el-icon class="el-icon--right">
+                            <arrow-down />
+                          </el-icon>
+                        </div>
+                      </div>
+                    </span>
+                    <template #dropdown>
+                      <el-dropdown-menu>
+                        <el-dropdown-item
+                        v-for="(accounts, index) in transactionalAccounts"
+                        :key="index" >
+                        <div class="col-md-12 px-2">
+                          <h6
+                            class="mb-0 text-capitalize font-weight-bold"
+                            v-if="accounts.length > 0"
+                          >
+                            {{ accountTypes[index] }}
+                            
+                          </h6>
+                          <div class="py-1" v-for="(account, indx) in accounts"
+                            :key="indx"
+                            @click="selectAccount(0, indexe, account)"  >{{ account.text }}</div>
+                        </div>
+                        </el-dropdown-item>
+                      </el-dropdown-menu>
+                    </template>
+                </el-dropdown>
+                <!-- <div class="dropdown">
                   <button
                     class="btn btn-white w-100 bordered text-left bg-light d-flex justify-content-between"
                     type="button"
@@ -183,7 +219,6 @@
                     aria-haspopup="true"
                     aria-expanded="false"
                   >
-                    <!-- :disabled="accountGroupId" -->
                     <span>
                       {{
                         !transaction.account
@@ -225,12 +260,12 @@
                       </div>
                     </div>
                   </div>
-                </div>
+                </div> -->
               </div>
               <div class="col-md-4 mb-2 pl-0">
-                <input
+                <el-input
                   type="text"
-                  class="form-control w-100"
+                  class=" w-100"
                   v-model="transaction.amount"
                 />
               </div>
@@ -243,8 +278,8 @@
               class="text-decoration-none font-weight-bold link-color c-pointer"
               @click="addRecord('outflow')"
               ><span style="font-size:18px">Add Credit</span> 
-              <i class="pi pi-plus-circle ml-1" style="font-size: 14px"></i
-            ></a>
+             <el-icon class="mt-2"><CirclePlus /></el-icon> 
+            </a>
           </div>
           <div class="col-4 text-center px-0">
             <span class="font-weight-bold">{{
@@ -260,13 +295,15 @@
         <span class="text-center text-danger font-weight-700">Unbalanced</span>
       </div>
       <div class="col-md-12 d-flex justify-content-center my-3">
-        <button
-          class="default-btn primary-bg text-white font-weight-700 border-0"
+        <el-button
+          class=" text-white font-weight-700 border-0"
+          round
+          color="#136acd"
           @click="saveTransaction"
           :disabled="unbalanced || journalEntry.date"
         >
           Save
-        </button>
+        </el-button>
         <Toast />
       </div>
     </div>
@@ -274,19 +311,19 @@
 </template>
 
 <script>
-import { ref } from "@vue/reactivity";
+import { ref} from "@vue/reactivity";
 import transactionals from "../../chartOfAccount/utilities/transactionals";
 import { computed, watch } from '@vue/runtime-core';
 import transaction_service from '../../../../services/financials/transaction_service';
-import { useToast } from "primevue/usetoast"
+import { ElMessage } from 'element-plus'
 
 export default {
   props: ['journalEntry', 'gettingSelectedTrsn'],
 
   setup(props, { emit }) {
-    const toast = useToast();
 
     const selectedAccountType = ref({});
+    // const primarycolor = inject('primarycolor')
     const transactionalAccounts = ref([]);
     const accountTypes = ["assets", "liability", "equity", "income", "expense"];
 
@@ -380,13 +417,25 @@ export default {
         try {
                 const response = await transaction_service.saveJournalTransaction(body);
                 if (response.status >= 200 && response.status <= 300) {
-                    toast.add({severity:'success', summary:'Successful', detail:`The transaction was succesful`, life: 3000});
+                  ElMessage({
+                  type: "success",
+                  message: "The transaction was succesful",
+                  duration: 3000,
+                });
                     emit('entrysaved');
                 } else {
-                    toast.add({severity:'error', summary:'Transaction failed', detail:`An error occurred, please try again`, life: 3000});
+                  ElMessage({
+                  type: "error",
+                  message: "Transaction failed, please try again",
+                  duration: 3000,
+                });
                 }
             } catch (error) {
-                toast.add({severity:'error', summary:'Transaction failed', detail:`An error occurred, please try again`, life: 3000});
+              ElMessage({
+                  type: "error",
+                  message: "Transaction failed, please try again",
+                  duration: 3000,
+                });
                 console.log(error);
             }
     }
@@ -426,6 +475,7 @@ export default {
     })
 
     return {
+      // primarycolor,
       accountTypes,
       selectedAccountType,
       selectAccount,
@@ -449,6 +499,12 @@ export default {
 <style scoped>
 .bordered-bottom {
   border-bottom: 1px solid#00204412 !important;
+}
+.border-contribution {
+  border: 1.6px solid rgb(255, 255, 255);
+  border-radius: 4px;
+  padding: 11px 7px;
+  background-color: white;
 }
 
 .bordered-top {
