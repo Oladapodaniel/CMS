@@ -18,10 +18,8 @@
             </div>
             <template #footer>
               <span class="dialog-footer">
-                <el-button round @click="() => (display = false)"><el-icon>
-                    <Close />
-                  </el-icon> Cancel</el-button>
-                <el-button round color='#136acd' :loading="loading" @click="contructScheduleMessageBody(2, '')">
+                <el-button class="secondary-button" round @click="() => (display = false)">Cancel</el-button>
+                <el-button round :color="primarycolor" :loading="loading" @click="contructScheduleMessageBody(2, '')">
                   Schedule
                 </el-button>
               </span>
@@ -488,7 +486,7 @@
 </template>
 
 <script>
-import { computed, onMounted, ref } from "vue";
+import { computed, onMounted, ref, inject } from "vue";
 import composeService from "../../../services/communication/composer";
 import composerObj from "../../../services/communication/composer";
 import { useRoute } from "vue-router";
@@ -517,6 +515,7 @@ export default {
       // The configuration of the editor.
       height: "800",
     };
+    const primarycolor = inject('primarycolor')
 
     const possibleSMSDestinations = composeService.possibleSMSDestinations;
     const groupsAreVissible = ref(false);
@@ -979,9 +978,10 @@ export default {
         sendSMSToUploadedContacts(gateway);
       } else if (sendOrSchedule == 2) {
         const dateToBeExecuted = executionDate.value;
-        data.executionDate = dateToBeExecuted.split("T")[0];
+        console.log(new Date(dateToBeExecuted).toISOString())
+        data.executionDate = new Date(dateToBeExecuted).toISOString().split("T")[0];
         data.date = dateToBeExecuted;
-        data.time = dateToBeExecuted.split("T")[1];
+        data.time = new Date(dateToBeExecuted).toISOString().split("T")[1];
         scheduleMessage(data);
       } else {
         sendSMS(data);
@@ -990,7 +990,7 @@ export default {
 
     const showScheduleModal = () => {
       // Set display to be true when voice schedule api is ready
-      // display.value = true;
+      display.value = true;
     };
 
     const scheduleMessage = async (data) => {
@@ -1002,7 +1002,7 @@ export default {
       console.log(data);
       try {
         const response = await composerObj.sendMessage(
-          "/api/Messaging/saveSmsSchedule",
+          "/api/Messaging/saveVoiceSchedule",
           data
         );
         ElMessage({
@@ -1279,7 +1279,8 @@ export default {
       selectedVoiceaudio,
       chooseVoiceAudio,
       voiceActionType,
-      selectedVoiceType
+      selectedVoiceType,
+      primarycolor
     };
   },
 };

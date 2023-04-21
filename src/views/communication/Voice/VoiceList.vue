@@ -41,6 +41,11 @@
                     <div class="font-weight-600">{{ item.smsUnitsUsed }}</div>
                 </div>
             </template>
+            <template #report="{ item }">
+                <div>
+                    <div class="font-weight-600" @click="$router.push(`/tenant/sms/report/${item.id}`)">View report</div>
+                </div>
+            </template>
         </Table>
     </div>
 </template>
@@ -64,6 +69,7 @@ export default {
             { name: 'Date Sent', value: 'dateSent' },
             { name: 'Sent By', value: 'sentByUser' },
             { name: 'Unit used', value: 'smsUnitsUsed' },
+            { name: 'Report', value: 'report' }
         ])
         const voiceLoading = ref(false)
         const getAllSentVoice = async () => {
