@@ -19,7 +19,8 @@
             <template #footer>
               <span class="dialog-footer">
                 <el-button class="secondary-button" round @click="() => (display = false)">Cancel</el-button>
-                <el-button round :color="primarycolor" :loading="loading" @click="contructScheduleMessageBody(2, '')">
+                <el-button round :color="primarycolor" :loading="loadingSchedule"
+                  @click="contructScheduleMessageBody(2, 'dotgovoice')">
                   Schedule
                 </el-button>
               </span>
@@ -87,7 +88,8 @@
             </div>
             <template #dropdown>
               <el-dropdown-menu>
-                <el-dropdown-item v-for="(destination, index) in possibleSMSDestinations" :key="index" @click="showSection(index)">
+                <el-dropdown-item v-for="(destination, index) in possibleSMSDestinations" :key="index"
+                  @click="showSection(index)">
                   <a class="no-decoration text-dark">
                     {{ destination }}
                   </a>
@@ -140,7 +142,8 @@
               <input type="text" class="border-0 dd-item" ref="groupSelectInput" :class="{
                 'w-100': selectedGroups.length === 0,
                 'minimized-input-width': selectedGroups.length > 0,
-              }" @focus="showGroupList" @click="showGroupList" style="padding: 0.5rem" :placeholder="`${selectedGroups.length > 0 ? '' : 'Select groups' }`" />
+              }" @focus="showGroupList" @click="showGroupList" style="padding: 0.5rem"
+                :placeholder="`${selectedGroups.length > 0 ? '' : 'Select groups'}`" />
             </li>
           </ul>
           <div class="col-md-12 px-2 select-groups-dropdown dd-item pt-2" v-if="groupListShown">
@@ -279,7 +282,7 @@
           <span class="small-text">Subject :</span>
         </div>
         <div class="p-0 col-md-10 col-lg-10 form-group mb-0">
-          <el-input type="text" pleaceholder="Enter your subject" v-model="subject"/>
+          <el-input type="text" pleaceholder="Enter your subject" v-model="subject" />
         </div>
       </div>
       <div class="row mt-3">
@@ -289,8 +292,7 @@
         <div class="col-md-10 px-0">
           <el-dropdown trigger="click" class="w-100">
             <div class="d-flex justify-content-between border-contribution text-dark w-100" size="large">
-              <span>{{ voiceActionType && selectedVoiceType && Object.keys(voiceActionType.find(i => i.id ==
-                selectedVoiceType)).length > 0 ? voiceActionType.find(i => i.id == selectedVoiceType).name : 'Choose audio file source'
+              <span>{{ voiceActionType && selectedVoiceType && Object.keys(voiceActionType.find(i => i.id == selectedVoiceType)).length > 0 ? voiceActionType.find(i => i.id == selectedVoiceType).name : 'Choose audio file source'
               }} </span>
               <div>
                 <el-icon class="el-icon--right">
@@ -300,7 +302,8 @@
             </div>
             <template #dropdown>
               <el-dropdown-menu>
-                <el-dropdown-item v-for="(item, index) in voiceActionType" :key="index" @click="selectedVoiceType = item.id">
+                <el-dropdown-item v-for="(item, index) in voiceActionType" :key="index"
+                  @click="selectedVoiceType = item.id">
                   <a class="no-decoration text-dark">
                     {{ item.name }}
                   </a>
@@ -338,7 +341,7 @@
             </div>
             <template #tip>
               <div class="el-upload__tip">
-                {{ [ ".m4a", ".mp2", ".mp3", ".ogg", ".wav", ".wma", ".webm" ].join(", ") }} files are accepted
+                {{ [".m4a", ".mp2", ".mp3", ".ogg", ".wav", ".wma", ".webm"].join(", ") }} files are accepted
               </div>
             </template>
           </el-upload>
@@ -402,9 +405,9 @@
                   <el-dropdown-item @click="showScheduleModal"><el-icon>
                       <Clock />
                     </el-icon>Schedule</el-dropdown-item>
-                  <el-dropdown-item @click="draftMessage"><el-icon>
+                  <!-- <el-dropdown-item @click="draftMessage"><el-icon>
                       <MessageBox />
-                    </el-icon>Safe as Draft</el-dropdown-item>
+                    </el-icon>Save as draft</el-dropdown-item> -->
                 </el-dropdown-menu>
               </template>
             </el-dropdown>
@@ -493,7 +496,6 @@ import { useRoute } from "vue-router";
 import { useRouter } from "vue-router";
 import store from "../../../store/store";
 import axios from "@/gateway/backendapi";
-import stopProgressBar from "../../../services/progressbar/progress";
 import communicationService from "../../../services/communication/communicationservice";
 import dateFormatter from "../../../services/dates/dateformatter";
 import deviceBreakpoint from "../../../mixins/deviceBreakpoint";
@@ -523,7 +525,7 @@ export default {
     const membershipSelectionTab = ref(false);
     const phoneNumberSelectionTab = ref(false);
     const selectedGroups = ref([]);
-    const sendToAll = ref(false);
+    // const sendToAll = ref(false);
     const executionDate = ref("");
     const contactUpload = ref(false);
     const multipleContact = ref({});
@@ -634,7 +636,7 @@ export default {
       }
       if (multipleContact.value instanceof File) {
         sendSMSToUploadedContacts();
-      }   else {
+      } else {
         detailsForVoice();
       }
     }
@@ -665,11 +667,11 @@ export default {
       formData.append("ToContacts", selectedMembers.value.map(i => i.id).join(","));
       formData.append("GateWayToUse", "dotgovoice");
       formData.append('GroupedContacts', selectedGroups.value.map((i) => i.data))
-      formData.append("ToOthers", formatPhoneNumber(phoneNumber.value));
+      formData.append("ToOthers", formatPhoneNumber(phoneNumber.value).join(","));
 
-//       for (var pair of formData.entries()) {
-//     console.log(pair[0]+ ', ' + pair[1]); 
-// }
+      for (var pair of formData.entries()) {
+        console.log(pair[0] + ', ' + pair[1]);
+      }
 
       try {
         let { data } = await axios.post(
@@ -801,6 +803,7 @@ export default {
     const subject = ref("");
     const phoneNumber = ref("");
     const loading = ref(false);
+    const loadingSchedule = ref(false);
     // const isPersonalized = ref(false);
 
     const isoCode = ref("");
@@ -808,104 +811,104 @@ export default {
     const invalidMessage = ref(false);
     const invalidDestination = ref(false);
 
-    const sendSMS = (data) => {
-      invalidDestination.value = false;
-      invalidMessage.value = false;
+    // const sendSMS = (data) => {
+    //   invalidDestination.value = false;
+    //   invalidMessage.value = false;
 
-      if (
-        selectedGroups.value.length === 0 &&
-        !phoneNumber.value &&
-        selectedMembers.value.length === 0 &&
-        !sendToAll.value &&
-        !multipleContact.value instanceof File
-      ) {
-        invalidDestination.value = true;
-        return false;
-      }
+    //   if (
+    //     selectedGroups.value.length === 0 &&
+    //     !phoneNumber.value &&
+    //     selectedMembers.value.length === 0 &&
+    //     !sendToAll.value &&
+    //     !multipleContact.value instanceof File
+    //   ) {
+    //     invalidDestination.value = true;
+    //     return false;
+    //   }
 
-      if (!editorData.value) {
-        invalidMessage.value = true;
-        return false;
-      }
-      ElMessage({
-        type: 'info',
-        message: 'SMS is being sent....',
-        duration: 5000
-      })
-      console.log(data);
-      disableBtn.value = true;
-      composeService
-        .sendMessage("/api/Messaging/sendSms", data)
-        .then((res) => {
-          disableBtn.value = false;
-          if (res.data.message.includes("You do not have")) {
-            ElMessage({
-              type: 'warning',
-              message: res.data.message,
-              duration: 5000
-            })
-          } else {
-            ElMessage({
-              type: 'success',
-              message: 'SMS Sent successfully',
-              duration: 5000
-            })
+    //   if (!editorData.value) {
+    //     invalidMessage.value = true;
+    //     return false;
+    //   }
+    //   ElMessage({
+    //     type: 'info',
+    //     message: 'SMS is being sent....',
+    //     duration: 5000
+    //   })
+    //   console.log(data);
+    //   disableBtn.value = true;
+    //   composeService
+    //     .sendMessage("/api/Messaging/sendSms", data)
+    //     .then((res) => {
+    //       disableBtn.value = false;
+    //       if (res.data.message.includes("You do not have")) {
+    //         ElMessage({
+    //           type: 'warning',
+    //           message: res.data.message,
+    //           duration: 5000
+    //         })
+    //       } else {
+    //         ElMessage({
+    //           type: 'success',
+    //           message: 'SMS Sent successfully',
+    //           duration: 5000
+    //         })
 
-            store.dispatch("removeSMSUnitCharge", pageCount.value * 1.5);
-            console.log(pageCount, "Page count ");
+    //         store.dispatch("removeSMSUnitCharge", pageCount.value * 1.5);
+    //         console.log(pageCount, "Page count ");
 
-            console.log(res);
-            // Save the res to store in other to get it in the view sent sms page
-            let sentObj = {
-              message: res.data.message,
-              id: res.data.returnObjects
-                ? res.data.returnObjects[0].communicationReportID
-                : "",
-              smsUnitsUsed: res.data.unitsUsed,
-              dateSent: res.data.returnObjects
-                ? `Today | ${moment.parseZone(
-                  new Date(
-                    res.data.returnObjects[0].communicationReport.date
-                  ).toLocaleDateString(),
-                  "YYYY MM DD HH ZZ"
-                )._i
-                }`
-                : "",
-              deliveryReport: [{ report: res.data.messageStatus }],
-            };
-            console.log(sentObj);
-            store.dispatch("communication/addSmsToSentList", sentObj);
-            setTimeout(() => {
-              router.push({ name: "SentMessages" });
-            }, 3500);
-          }
-        })
-        .catch((err) => {
-          stopProgressBar();
-          disableBtn.value = false;
-          // toast.removeAllGroups();
-          console.log(err);
-          if (err.toString().toLowerCase().includes("network error")) {
-            ElMessage({
-              type: 'warning',
-              message: "Please ensure you have internet access",
-              duration: 5000
-            })
-          } else if (err.toString().toLowerCase().includes("timeout")) {
-            ElMessage({
-              type: 'warning',
-              message: "SMS took too long, please check your network and try again",
-              duration: 5000
-            })
-          } else {
-            ElMessage({
-              type: 'warning',
-              message: "SMS sending failed, Please try again",
-              duration: 5000
-            })
-          }
-        });
-    };
+    //         console.log(res);
+    //         // Save the res to store in other to get it in the view sent sms page
+    //         let sentObj = {
+    //           message: res.data.message,
+    //           id: res.data.returnObjects
+    //             ? res.data.returnObjects[0].communicationReportID
+    //             : "",
+    //           smsUnitsUsed: res.data.unitsUsed,
+    //           dateSent: res.data.returnObjects
+    //             ? `Today | ${moment.parseZone(
+    //               new Date(
+    //                 res.data.returnObjects[0].communicationReport.date
+    //               ).toLocaleDateString(),
+    //               "YYYY MM DD HH ZZ"
+    //             )._i
+    //             }`
+    //             : "",
+    //           deliveryReport: [{ report: res.data.messageStatus }],
+    //         };
+    //         console.log(sentObj);
+    //         store.dispatch("communication/addSmsToSentList", sentObj);
+    //         setTimeout(() => {
+    //           router.push({ name: "SentMessages" });
+    //         }, 3500);
+    //       }
+    //     })
+    //     .catch((err) => {
+    //       stopProgressBar();
+    //       disableBtn.value = false;
+    //       // toast.removeAllGroups();
+    //       console.log(err);
+    //       if (err.toString().toLowerCase().includes("network error")) {
+    //         ElMessage({
+    //           type: 'warning',
+    //           message: "Please ensure you have internet access",
+    //           duration: 5000
+    //         })
+    //       } else if (err.toString().toLowerCase().includes("timeout")) {
+    //         ElMessage({
+    //           type: 'warning',
+    //           message: "SMS took too long, please check your network and try again",
+    //           duration: 5000
+    //         })
+    //       } else {
+    //         ElMessage({
+    //           type: 'warning',
+    //           message: "SMS sending failed, Please try again",
+    //           duration: 5000
+    //         })
+    //       }
+    //     });
+    // };
 
     const draftMessage = async () => {
       // Api to save draft voice messages not yet available
@@ -938,54 +941,61 @@ export default {
     const contructScheduleMessageBody = (sendOrSchedule, gateway) => {
       const data = {
         subject: subject.value,
-        message: editorData.value,
-        contacts: [],
+        // message: editorData.value,
+        // contacts: [],
         isPersonalized: isPersonalized.value,
         groupedContacts: selectedGroups.value.map((i) => i.data),
-        // toContacts: sendToAll./value ? "allcontacts_00000000-0000-0000-0000-000000000000" : "",
+        toContacts: selectedMembers.value.map(i => i.id).join(","),
         isoCode: isoCode.value,
-        category: "",
-        emailAddress: "",
-        emailDisplayName: "",
+        toOthers: formatPhoneNumber(phoneNumber.value).join(","),
         gateWayToUse: gateway,
+        voiceMessageFile: selectedVoiceType.value === 2 ? file.value : null,
+        voiceMessageUrl: selectedVoiceType.value === 1 ? selectedVoiceaudio.value.filePath : null
       };
 
-      const numbers = [];
-      phoneNumber.value.split(",").forEach((i) => {
-        i.split("\n").forEach((j) => {
-          if (j) numbers.push(j);
-        });
-      });
+      // selectedVoiceType.value === 2 ? formData.append("VoiceMessageFile", file.value) : null;
+      // selectedVoiceType.value === 1 ? formData.append("VoiceMessageUrl", selectedVoiceaudio.value.filePath) : null;
+      // formData.append("subject", subject.value);
+      // formData.append("ToContacts", selectedMembers.value.map(i => i.id).join(","));
+      // formData.append("GateWayToUse", "dotgovoice");
+      // formData.append('GroupedContacts', selectedGroups.value.map((i) => i.data))
+      // formData.append("ToOthers", formatPhoneNumber(phoneNumber.value));
 
-      data.toOthers = numbers.join();
+      // const numbers = [];
+      // phoneNumber.value.split(",").forEach((i) => {
+      //   i.split("\n").forEach((j) => {
+      //     if (j) numbers.push(j);
+      //   });
+      // });
 
-      if (selectedMembers.value.length > 0) {
-        data.ToContacts =
-          data && data.ToContacts
-            ? data.ToContacts.length > 0
-              ? ","
-              : ""
-            : "";
-        data.ToContacts += selectedMembers.value
-          .map((i) => {
-            console.log(i, "person");
-            if (i.id) return i.id;
-          })
-          .join();
-      }
+      // data.toOthers = numbers.join();
+
+      // if (selectedMembers.value.length > 0) {
+      //   data.ToContacts =
+      //     data && data.ToContacts
+      //       ? data.ToContacts.length > 0
+      //         ? ","
+      //         : ""
+      //       : "";
+      //   data.ToContacts += selectedMembers.value
+      //     .map((i) => {
+      //       console.log(i, "person");
+      //       if (i.id) return i.id;
+      //     })
+      //     .join();
+      // }
 
       if (multipleContact.value instanceof File) {
         sendSMSToUploadedContacts(gateway);
       } else if (sendOrSchedule == 2) {
         const dateToBeExecuted = executionDate.value;
-        console.log(new Date(dateToBeExecuted).toISOString())
-        data.executionDate = new Date(dateToBeExecuted).toISOString().split("T")[0];
-        data.date = dateToBeExecuted;
-        data.time = new Date(dateToBeExecuted).toISOString().split("T")[1];
+        data.executionDate = new Date(dateToBeExecuted).toISOString();
+        data.date = new Date(dateToBeExecuted).toISOString();
         scheduleMessage(data);
-      } else {
-        sendSMS(data);
       }
+      //  else {
+      //   sendSMS(data);
+      // }
     };
 
     const showScheduleModal = () => {
@@ -994,7 +1004,7 @@ export default {
     };
 
     const scheduleMessage = async (data) => {
-      display.value = false;
+      loadingSchedule.value = true
       const formattedDate = dateFormatter.monthDayTime(data.executionDate);
       console.log(formattedDate, "Formatted Date");
       console.log(data.executionDate);
@@ -1005,14 +1015,17 @@ export default {
           "/api/Messaging/saveVoiceSchedule",
           data
         );
+        loadingSchedule.value = false
+        display.value = false;
         ElMessage({
           type: 'success',
-          message: `Message scheduled for ${data.time}`,
-          duration: 5000
+          message: `Voice message scheduled for ${new Date(data.date).toLocaleTimeString()}`,
+          duration: 6000
         })
         console.log(response, "Schedule response");
       } catch (error) {
         console.log(error);
+        loadingSchedule.value = false
         ElMessage({
           type: 'error',
           message: 'Could not schedule message',
@@ -1122,25 +1135,25 @@ export default {
     const groupSelectInput = ref(null);
     const memberSelectInput = ref(null);
 
-    const data = () => {
-      const data = {
-        subject: subject.value,
-        message: editorData.value,
-        contacts: [],
-        isPersonalized: isPersonalized.value,
-        groupedContacts: selectedGroups.value.map((i) => i.data),
-        toContacts: sendToAll.value
-          ? "allcontacts_00000000-0000-0000-0000-000000000000"
-          : "",
-        isoCode: isoCode.value,
-        category: "",
-        emailAddress: "",
-        emailDisplayName: "",
-        // gateWayToUse: gateway,
-      };
+    // const data = () => {
+    //   const data = {
+    //     subject: subject.value,
+    //     message: editorData.value,
+    //     contacts: [],
+    //     isPersonalized: isPersonalized.value,
+    //     groupedContacts: selectedGroups.value.map((i) => i.data),
+    //     toContacts: sendToAll.value
+    //       ? "allcontacts_00000000-0000-0000-0000-000000000000"
+    //       : "",
+    //     isoCode: isoCode.value,
+    //     category: "",
+    //     emailAddress: "",
+    //     emailDisplayName: "",
+    //     // gateWayToUse: gateway,
+    //   };
 
-      console.log(data);
-    };
+    //   console.log(data);
+    // };
 
     const getDefaultMessage = async (messageId) => {
       try {
@@ -1208,6 +1221,7 @@ export default {
       lgAndUp,
       xlAndUp,
       xsOnly,
+      loadingSchedule,
       editorConfig,
       possibleSMSDestinations,
       groupsAreVissible,
@@ -1228,7 +1242,7 @@ export default {
       filteredMembers,
       charactersCount,
       pageCount,
-      sendSMS,
+      // sendSMS,
       phoneNumber,
       searchForPerson,
       loading,
@@ -1249,12 +1263,11 @@ export default {
       memberSelectInput,
       invalidDestination,
       invalidMessage,
-      sendToAll,
+      // sendToAll,
       contructScheduleMessageBody,
       executionDate,
       moment,
       isPersonalized,
-      data,
       route,
       disableBtn,
       contactUpload,
@@ -1674,5 +1687,4 @@ select {
 
 .template-text {
   color: rgb(15, 71, 134);
-}
-</style>
+}</style>

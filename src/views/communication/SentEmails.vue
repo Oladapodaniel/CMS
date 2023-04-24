@@ -207,6 +207,7 @@ export default {
         if (data && data.length > 0) {
           emails.value = data;
         }
+        NProgress.done();
       } catch (error) {
         loading.value = false;
         NProgress.done();

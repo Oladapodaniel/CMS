@@ -43,7 +43,7 @@
             </template>
             <template #report="{ item }">
                 <div>
-                    <div class="font-weight-600" @click="$router.push(`/tenant/sms/report/${item.id}`)">View report</div>
+                    <div class="font-weight-600 primary--text c-pointer" @click="$router.push(`/tenant/voice/report/${item.id}`)">View_report</div>
                 </div>
             </template>
         </Table>

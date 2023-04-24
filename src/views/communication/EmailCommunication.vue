@@ -91,10 +91,8 @@
             </div>
 
             <!-- Bigger row -->
-            <div class="col-md-9">
-                <router-view>
-
-                </router-view>
+            <div class="col-md-9 px-0 px-md-2">
+                <router-view></router-view>
             </div>
           </div>
         </div>
