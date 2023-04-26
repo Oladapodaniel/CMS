@@ -189,7 +189,7 @@
         <template v-slot:redeemed="{ item }">
           <div class="c-pointer" @click="pledgeListClick(item.id)">
             {{ item.currencySymbol
-            }}{{ Math.abs(item.totalPaymentSum).toLocaleString() }}..00
+            }}{{ Math.abs(item.totalPaymentSum).toLocaleString() }}.00
           </div>
         </template>
         <template v-slot:date="{ item }">
