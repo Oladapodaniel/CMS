@@ -941,6 +941,7 @@ export default {
       const formattedDate = dateFormatter.monthDayTime(data.date)
       try {
         await composerObj.sendMessage("/api/Messaging/saveSmsSchedule", data);
+        router.push('/tenant/sms/scheduled')
         ElMessage({
           type: "success",
           message: `Message scheduled for ${formattedDate}`,
