@@ -2068,10 +2068,11 @@ export default {
 
   methods: {
     getCorrectDate(date) {
-      let myDate = new Date(date).toLocaleDateString();
-        let arr = myDate.split('/');
-        arr.unshift(arr.splice(2, 1)[0])
-         return arr.join('-')
+      // let myDate = new Date(date).toLocaleDateString();
+      //   let arr = myDate.split('/');
+      //   arr.unshift(arr.splice(2, 1)[0])
+      //    return arr.join('-')
+         return new Date(date).toLocaleDateString().replaceAll('/', '-')
     },
     currentDate() {
       this.currDate = this.eventDate;
