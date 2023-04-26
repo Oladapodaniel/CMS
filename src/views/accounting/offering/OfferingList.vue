@@ -3,14 +3,16 @@
     <div class="row table">
       <div class="col-12 mt-4 w-100">
         <div class="row">
-          <!-- {{contributionSummary}} -->
           <div class="col-12 col-md-4">
             <div class="col-12 mb-5">
-              <Dropdown
-                v-model="selectedPeriod"
-                :options="periods"
-                optionLabel="name"
-                placeholder="Select a period "
+              <el-select-v2
+                v-model="selectedPeriodId"
+                :options="
+                  periods.map((i) => ({ label: i.name, value: i.name }))
+                "
+                @change="setSelectedPeriod"
+                placeholder="Select a period"
+                size="large"
                 class="w-100"
               />
             </div>
@@ -50,484 +52,231 @@
       </div>
     </div>
 
-    <div class="row table">
-      <div class="col-12 px-0" id="table">
-        <div
-          class="top-con"
-          id="ignore2"
-          :class="{ 'mt-0': marked.length > 0 }"
-        >
-          <div class="table-top">
-            <div class="select-all">
-              <input
-                type="checkbox"
-                name="all"
-                id="all"
-                @change="markAll"
-                :checked="marked.length === searchContribution.length"
-              />
-              <label>SELECT ALL</label>
-              <i
-                class="
-                  pi pi-trash
-                  text-danger
-                  mr-3
-                  c-pointer
-                  d-flex-inline
-                  align-items-center
+    <div class="row">
+      <div class="col-12 p-0  mt-5">
+        <div class="table-top p-3 mt-5">
+          <div
+            class="row d-flex flex-column flex-sm-row justify-content-sm-end"
+          >     
+              <span><el-icon :size="20" class=" c-pointer" v-if="marked.length > 0" @click="modal" >
+                <Delete />
+              </el-icon></span>
+              <div
+                class="filter col-md-2"
+                @click="
+                  printJS({
+                    ignoreElements: ['ignore1', 'ignore2'],
+                    maxWidth: 867,
+                    header: 'OFFERING TRANSACTIONS',
+                    printable: printContribution,
+                    properties: ['DATE', 'OFFERING', 'AMOUNT', 'DONOR'],
+                    type: 'json',
+                    headerStyle:
+                      'font-family: Nunito Sans, Calibri; text-align: center;',
+                    gridHeaderStyle:
+                      'border: 1.5px solid #6d6d6d19; font-family: Nunito Sans, calibri; padding: 7px; text-align: left;',
+                    gridStyle:
+                      'border: 1.5px solid #6d6d6d19; font-family: Nunito Sans, calibri; padding: 7px; font-weight: 300',
+                  })
                 "
-                style="font-size: 20px; margin-bottom: 12px"
-                v-if="marked.length > 0"
-                @click="modal"
               >
-              </i
-              >&nbsp; &nbsp;
-              <!-- <i
-                class="pi pi-trash color-deleteicon c-pointer pt-2 px-2"
-                v-tooltip.top="'Delete Offering(s)'"
-                style="font-size: 20px"
-                v-if="marked.length > 0"
-                @click="showConfirmModal1"
-              ></i
-              >&nbsp; &nbsp; -->
-              <!-- <a href="#" data-toggle="modal" data-target="#myGroupModal">
-                <i
-                  class="ml-3 mr-2 color-groupicon pi pi-plus-circle c-pointer"
-                  v-tooltip.top="'Add all member to Group'"
-                  style="font-size: 22px"
-                  v-if="marked.length == 0"
-                >
-                </i>
-              </a> -->
-              <!-- <a href="#" data-toggle="modal" data-target="#myModal">
-                <i
-                  class="ml-3 mr-2 color-groupicon pi pi-users c-pointer"
-                  v-tooltip.top="'Add to Group'"
-                  style="font-size: 22px"
-                  v-if="marked.length > 0"
-                >
-                </i>
-              </a> -->
-              <!-- <i
-                class="fa fa-file-archive-o color-groupicon c-pointer ml-2 mr-2"
-                v-if="marked.length > 0"
-                v-tooltip.top="'Archive member(s)'"
-                @click="openPositionArchive('center')"
-                aria-hidden="true"
-                style="font-size: 20px"
-              ></i> -->
-
-              <!-- <span
-                class="c-pointer"
-                v-if="marked.length > 0"
-                @click="sendMarkedMemberSms"
-                >Send SMS</span
-              > -->
-              <!-- &nbsp; &nbsp;
-              <span
-                class="c-pointer"
-                v-if="marked.length > 0"
-                @click="sendMarkedMemberEmail"
-                >Send Email</span
-              > -->
-            </div>
-            <div
-              class="filter col-2"
-              @click="
-                printJS({
-                  ignoreElements: ['ignore1', 'ignore2'],
-                  maxWidth: 867,
-                  header: 'OFFERING TRANSACTIONS',
-                  printable: printContribution,
-                  properties: ['DATE', 'OFFERING', 'AMOUNT', 'DONOR'],
-                  type: 'json',
-                  headerStyle:
-                    'font-family: Nunito Sans, Calibri; text-align: center;',
-                  gridHeaderStyle:
-                    'border: 1.5px solid #6d6d6d19; font-family: Nunito Sans, calibri; padding: 7px; text-align: left;',
-                  gridStyle:
-                    'border: 1.5px solid #6d6d6d19; font-family: Nunito Sans, calibri; padding: 7px; font-weight: 300',
-                })
-              "
-            >
-              <p class="mt-2">
-                <i class="pi pi-print"></i>
-                PRINT
-              </p>
-            </div>
-            <div class="filter col-2">
-              <p @click="toggleFilterFormVissibility" class="mt-2">
-                <i class="fas fa-filter"></i>
-                FILTER
-              </p>
-            </div>
-            <div class="col-2">
-              <p @click="toggleSearch" class="search-text w-100 mt-2">
-                <i class="pi pi-search"></i> SEARCH
-              </p>
-            </div>
-
-            <div class="search d-flex ml-2">
-              <label
-                class="label-search d-flex"
-                :class="{
-                  'show-search': searchIsVisible,
-                  'hide-search': !searchIsVisible,
-                }"
+                <p class="mb-0 mr-3 d-flex my-3 my-sm-0">
+                  <el-icon :size="20" ><Printer /></el-icon>
+                  <span class="ml-1"> PRINT</span>
+                </p>
+              </div>
+            <div class="col-md-2">
+              <p
+                @click="toggleFilterFormVissibility"
+                class="mb-0 mr-3 d-flex my-3 my-sm-0 c-pointer"
               >
-                <input
-                  type="text"
-                  placeholder="Search..."
-                  v-model="searchText"
-                  @input="searchOfferingInDB"
-                />
-                <span class="empty-btn">x</span>
-                <span class="search-btn">
-                  <i class="pi pi-search"></i>
-                </span>
-              </label>
+                <el-icon :size="20">
+                  <Filter />
+                </el-icon>
+                <span class="ml-1"> FILTER</span>
+              </p>
+            </div>
+            <div class="col-md-5">
+              <el-input
+                size="small"
+                v-model="searchText"
+                placeholder="Search..."
+                @input="searchOfferingInDB"
+                @keyup.enter.prevent="searchOfferingInDB"
+                class="input-with-select"
+              >
+                <template #suffix>
+                  <el-button
+                    style="padding: 5px; height: 22px"
+                    @click.prevent="searchText = ''"
+                  >
+                    <el-icon :size="13">
+                      <Close />
+                    </el-icon>
+                  </el-button>
+                </template>
+                <template #append>
+                  <el-button @click.prevent="searchOfferingInDB">
+                    <el-icon :size="13">
+                      <Search />
+                    </el-icon>
+                  </el-button>
+                </template>
+              </el-input>
             </div>
           </div>
-        </div>
-        <div
-          class="filter-options"
-          :class="{ 'filter-options-shown': filterFormIsVissible }"
-          id="ignore1"
-        >
-          <div class="container-fluid">
-            <div class="row">
-              <div class="col-md-9">
-                <div class="row">
-                  <div
-                    class="
-                      col-12 col-sm-6 col-md-4
-                      offset-sm-3 offset-md-0
-                      form-group
-                      inp
-                      w-100
-                    "
-                  >
-                    <!-- <div class="input-field"> -->
+          <div
+            class="filter-options"
+            :class="{ 'filter-options-shown': filterFormIsVissible }"
+            id="ignore1"
+          >
+            <div class="container-fluid">
+              <div class="row">
+                <div class="col-md-9">
+                  <div class="row">
+                    <div
+                      class="col-12 col-sm-6 col-md-4 offset-sm-3 offset-md-0 form-group inp w-100"
+                    >
+                      <input
+                        type="text"
+                        class="input w-100"
+                        placeholder="Offering"
+                        v-model="filter.contribution"
+                      />
+                    </div>
 
-                    <input
-                      type="text"
-                      class="input w-100"
-                      placeholder="Offering"
-                      v-model="filter.contribution"
-                    />
-                  </div>
-
-                  <div class="col-12 col-md-4 form-group d-none d-md-block">
-                    <input
-                      type="text"
-                      class="input w-100"
-                      placeholder="donor"
-                      v-model="filter.donor"
-                    />
+                    <div class="col-12 col-md-4 form-group d-none d-md-block">
+                      <input
+                        type="text"
+                        class="input w-100"
+                        placeholder="donor"
+                        v-model="filter.donor"
+                      />
+                    </div>
                   </div>
                 </div>
-              </div>
 
-              <div class="col-md-3 d-flex flex-column align-items-center">
-                <button class="apply-btn text-white" @click="applyFilter">
-                  Apply
-                </button>
-                <span class="mt-2">
-                  <a class="clear-link mr-2" @click="clearAll">Clear all</a>
-                  <span class="mx-2"
-                    ><i class="fas fa-circle" style="font-size: 4px"></i></span
-                  ><a class="hide-link ml-2" @click="hide">Hide</a>
-                </span>
+                <div class="col-md-3 d-flex flex-column align-items-center">
+                  <el-button round :color="primarycolor" class=" text-white" @click="applyFilter">
+                    Apply
+                  </el-button>
+                  <span class="mt-2">
+                    <a class="clear-link mr-2" @click="clearAll">Clear all</a>
+                    <span class="mx-2"
+                      ><i
+                        class="fas fa-circle"
+                        style="font-size: 4px"
+                      ></i></span
+                    ><a class="hide-link ml-2" @click="hide">Hide</a>
+                  </span>
+                </div>
               </div>
             </div>
           </div>
         </div>
-
-        <!-- contribution -->
-
         <div v-if="searchContribution.length > 0">
-          <div class="container-fluid d-none d-md-block">
-            <div class="row t-header">
-              <div class="col-md-1"></div>
-              <div class="small-text text-capitalize col-md-2 font-weight-bold">
-                Date
+          <Table
+            :data="searchContribution"
+            :headers="offeringHeaders"
+            :checkMultipleItem="true"
+            v-loading="loading"
+            @checkedrow="handleSelectionChange"
+          >
+            <template v-slot:date="{ item }">
+              <div class="c-pointer" @click="offeringDetails(item.id)">
+                {{ date(item.date) }}
               </div>
-              <div class="small-text text-capitalize col-md-2 font-weight-bold">
-                Offering
+            </template>
+            <template v-slot:offering="{ item }">
+              <div class="c-pointer" @click="offeringDetails(item.id)">
+                {{ item.contribution }}
               </div>
-              <div class="small-text text-capitalize col-md-2 font-weight-bold">
-                Amount
+            </template>
+            <template v-slot:amount="{ item }">
+              <div class="c-pointer" @click="offeringDetails(item.id)">
+                {{ item.currencyName }}{{ Math.abs(item.amount).toLocaleString() }}.00
               </div>
-              <div class="small-text text-capitalize col-md-2 font-weight-bold">
-                Source
+            </template>
+            <template v-slot:source="{ item }">
+              <div class="c-pointer" @click="offeringDetails(item.id)">
+                {{ item.channel }}
               </div>
-              <div class="small-text text-capitalize col-md-2 font-weight-bold">
-                Donor
+            </template>
+            <template v-slot:donor="{ item }">
+              <div class="c-pointer" @click="offeringDetails(item.id)">
+                {{ item.donor }}
               </div>
-              <div class="small-text text-capitalize col-md-1 font-weight-bold">
-                Action
-              </div>
-            </div>
-          </div>
-
-          <loadingComponent :loading="loading" />
-          <div v-if="!loading">
-            <div class="row" style="margin: 0">
-              <div
-                class="
-                  col-12
-                  parent-desc
-                  py-2
-                  px-0
-                  c-pointer
-                  tr-border-bottom
-                  hover
-                "
-                v-for="(item, index) in searchContribution"
-                :key="item.id"
-              >
-                <div class="row w-100" style="margin: 0">
-                  <div
-                    class="col-md-1 d-flex d-md-block px-3 justify-content-end"
-                  >
-                    <input
-                      type="checkbox"
-                      class="form-check"
-                      @change="markOne(item)"
-                      :checked="marked.findIndex((i) => i.id === item.id) >= 0"
-                    />
-                  </div>
-
-                  <div class="desc small-text col-md-2 px-1">
-                    <p class="mb-0 d-flex justify-content-between">
-                      <span
-                        class="
-                          text-dark
-                          font-weight-bold
-                          d-flex d-md-none
-                          fontIncrease
-                        "
-                        >Date</span
-                      >
+            </template>
+            <template v-slot:action="{ item }">
+              <el-dropdown trigger="click">
+                <el-icon>
+                  <MoreFilled />
+                </el-icon>
+                <template #dropdown>
+                  <el-dropdown-menu>
+                    <el-dropdown-item>
                       <router-link
-                        class="text-decoration-none fontIncrease"
+                        class="text-decoration-none"
+                        :to="
+                          !item.activityId ||
+                          item.activityId ===
+                            '00000000-0000-0000-0000-000000000000'
+                            ? {
+                                name: 'OfferingReport',
+                                query: {
+                                  report: item.date.split('T')[0],
+                                },
+                              }
+                            : {
+                                name: 'OfferingReport',
+                                query: {
+                                  report: item.date.split('T')[0],
+                                  activityID: item.activityId,
+                                },
+                              }
+                        "
+                      >
+                        View Report
+                      </router-link>
+                    </el-dropdown-item>
+                    <el-dropdown-item>
+                      <router-link
                         :to="{
                           name: 'AddOffering',
                           params: { offId: item.id },
                         }"
-                        ><span class="text-decoration-none">{{
-                          date(item.date)
-                        }}</span></router-link
                       >
-                    </p>
-                  </div>
-
-                  <div class="col-md-2 px-1">
-                    <div class="d-flex small justify-content-between">
-                      <span
-                        class="
-                          text-dark
-                          font-weight-bold
-                          d-flex d-md-none
-                          fontIncrease
-                        "
-                        >Offering</span
+                        Edit
+                      </router-link>
+                    </el-dropdown-item>
+                    <el-dropdown-item>
+                      <div
+                        @click="showConfirmModal(item.id, index)"
+                        class="text-color"
                       >
-                      <div>
-                        <div class="desc small-text text-right text-md-left">
-                          <router-link
-                            class="text-decoration-none fontIncrease"
-                            :to="{
-                              name: 'AddOffering',
-                              params: { offId: item.id },
-                            }"
-                            >{{ item.contribution }}</router-link
-                          >
-                        </div>
+                        Delete
                       </div>
-                    </div>
-                  </div>
-
-                  <div class="desc-head small-text col-md-2 px-1">
-                    <p class="mb-0 d-flex justify-content-between">
-                      <span
-                        class="
-                          text-dark
-                          font-weight-bold
-                          d-flex d-md-none
-                          fontIncrease
-                        "
-                        >Amount</span
-                      >
-                      <span
-                        ><router-link
-                          class="text-decoration-none ml-3 fontIncrease"
-                          :to="{
-                            name: 'AddOffering',
-                            params: { offId: item.id },
-                          }"
-                          >{{ item.currencyName }}
-                          {{ item.amount }}</router-link
-                        ></span
-                      >
-                    </p>
-                  </div>
-
-                  <div class="desc-head small-text col-md-2 px-1">
-                    <p class="mb-0 d-flex justify-content-between">
-                      <span
-                        class="
-                          text-dark
-                          font-weight-bold
-                          d-flex d-md-none
-                          fontIncrease
-                        "
-                        >Source</span
-                      >
-                      <span
-                        ><router-link
-                          class="text-decoration-none ml-3 fontIncrease"
-                          :to="{
-                            name: 'AddOffering',
-                            params: { offId: item.id },
-                          }"
-                          >{{ item.channel }}</router-link
-                        ></span
-                      >
-                    </p>
-                  </div>
-
-                  <div class="small-text col-md-2 px-1">
-                    <p class="mb-0 d-flex justify-content-between">
-                      <span
-                        class="
-                          text-dark
-                          font-weight-bold
-                          d-flex d-md-none
-                          fontIncrease
-                        "
-                        >Donor</span
-                      >
-                      <span
-                        ><span class="primary-text c-pointer"
-                          ><router-link
-                            class="text-decoration-none fontIncrease"
-                            :to="{
-                              name: 'AddOffering',
-                              params: { offId: item.id },
-                            }"
-                            >{{ item.donor }}</router-link
-                          ></span
-                        ></span
-                      >
-                    </p>
-                  </div>
-
-                  <div class="col-md-1">
-                    <div>
-                      <div class="dropdown">
-                        <span class="d-flex justify-content-between">
-                          <span class="d-md-none d-sm-flex"></span>
-                          <span class="d-sm-flex small">
-                            <i
-                              class="
-                                fas
-                                fa-ellipsis-v
-                                cursor-pointer
-                                ml-2
-                                fontIncrease
-                              "
-                              id="dropdownMenuButton"
-                              data-toggle="dropdown"
-                              aria-haspopup="true"
-                              aria-expanded="false"
-                            ></i>
-                            <div
-                              class="dropdown-menu"
-                              aria-labelledby="dropdownMenuButton"
-                            >
-                              <router-link
-                                :to="
-                                  !item.activityId ||
-                                  item.activityId ===
-                                    '00000000-0000-0000-0000-000000000000'
-                                    ? {
-                                        name: 'OfferingReport',
-                                        query: {
-                                          report: item.date.split('T')[0],
-                                        },
-                                      }
-                                    : {
-                                        name: 'OfferingReport',
-                                        query: {
-                                          report: item.date.split('T')[0],
-                                          activityID: item.activityId,
-                                        },
-                                      }
-                                "
-                              >
-                                <a class="dropdown-item elipsis-items">
-                                  View Report
-                                </a>
-                              </router-link>
-                              <router-link
-                                :to="{
-                                  name: 'AddOffering',
-                                  params: { offId: item.id },
-                                }"
-                              >
-                                <a class="dropdown-item elipsis-items">
-                                  Edit
-                                </a>
-                              </router-link>
-                              <a
-                                class="
-                                  dropdown-item
-                                  elipsis-items
-                                  cursor-pointer
-                                "
-                                @click="showConfirmModal(item.id, index)"
-                                >Delete</a
-                              >
-                            </div>
-                          </span>
-                        </span>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-              </div>
-            </div>
-          </div>
+                    </el-dropdown-item>
+                  </el-dropdown-menu>
+                </template>
+              </el-dropdown>
+            </template>
+          </Table>
         </div>
-
-        <!-- <div
-          class="col-md-12 col py-3"
-          v-if="
-            listOfOfferingItems.length === 0 &&
-            props.contributionTransactions.length !== 0 &&
-            !loading
-          "
-        >
-          <p class="text-danger d-flex justify-content-center">
-            Record not available in database
-          </p>
-        </div> -->
         <div class="text-danger d-flex justify-content-center" v-else>
           No records found
         </div>
-
-        <div class="col-12">
-          <div class="table-footer">
-            <Pagination
-              @getcontent="getPeopleByPage"
-              :itemsCount="50"
-              :currentPage="currentPage"
-              :totalItems="totalItem"
+        <div class="d-flex justify-content-end my-3">
+            <el-pagination
+              v-model:current-page="serverOptions.page"
+              v-model:page-size="serverOptions.rowsPerPage"
+              background
+              layout="total, prev, pager, next, jumper"
+              :total="totalOfferingCount"
+              @size-change="handleSizeChange"
+              @current-change="handleCurrentChange"
             />
           </div>
-        </div>
-
         <ConfirmDialog />
         <Toast />
       </div>
@@ -536,15 +285,15 @@
 </template>
 
 <script>
-import { ref, computed } from "vue";
+import { ref, computed, watch, inject } from "vue";
 import axios from "@/gateway/backendapi";
+import Table from "@/components/table/Table";
+import router from "../../../router";
 // import { useStore } from 'vuex'
 // import { store } from "../../../store/store"
 import Pagination from "../../../components/pagination/PaginationButtons";
 import { useRoute } from "vue-router";
 import moment from "moment";
-import { useConfirm } from "primevue/useconfirm";
-import { useToast } from "primevue/usetoast";
 import finish from "../../../services/progressbar/progress";
 import monthDayYear from "../../../services/dates/dateformatter";
 import printJS from "print-js";
@@ -556,12 +305,14 @@ import numbers_formatter from "../../../services/numbers/numbers_formatter";
 import store from "../../../store/store";
 import loadingComponent from "@/components/loading/LoadingComponent";
 import stopProgressBar from "../../../services/progressbar/progress";
+import { ElMessage, ElMessageBox } from 'element-plus'
 export default {
   props: ["contributionTransactions", "totalItem"],
   emits: ["marked"],
   components: {
     // ByGenderChart,
     // ByMaritalStatusChart,
+    Table,
     Pagination,
     ContributionAreaChart,
     ContributionPieChart,
@@ -569,19 +320,51 @@ export default {
     loadingComponent,
   },
   setup(props, { emit }) {
-    // const contributionTransactions = ref([]);
-    // const getFirstTimerSummary = ref({});
     const filter = ref({});
-    const searchIsVisible = ref(false);
+    const primarycolor = inject('primarycolor')
+    const selectedPeriodId = ref(null);
     const filterResult = ref([]);
     const noRecords = ref(false);
     const searchText = ref("");
     const tenantCurrency = ref({});
+    const offeringHeaders = ref([
+      { name: "Date", value: "date" },
+      { name: "OFFERING", value: "offering" },
+      { name: "AMOUNT", value: "amount" },
+      { name: "SOURCE", value: "source" },
+      { name: "DONOR", value: "donor" },
+      { name: "ACTION", value: "action" },
+    ]);
     const Allsummary = ref([
       { name: "Not Sure", y: 20 },
       { name: "Male", y: 16 },
       { name: "Female", y: 3 },
     ]);
+    const serverOptions = ref({
+      page: 1,
+      rowsPerPage: 100,
+    });
+
+    watch(serverOptions, () => {
+      getPeopleByPage();
+    },
+      { deep: true }
+    );
+    const handleSizeChange = (val) => {
+      console.log(`${val} items per page`)
+    }
+    const handleCurrentChange = (val) => {
+      console.log(`current page: ${val}`)
+    }
+
+    const totalOfferingCount = computed(() => {
+      if (
+        !props.totalItem
+      )
+        return 0;
+      return props.totalItem;
+    });
+    
     const chartClass = ref(true);
     const periods = ref([
       { name: "One Week" },
@@ -601,9 +384,6 @@ export default {
     const filterFormIsVissible = ref(false);
     const toggleFilterFormVissibility = () =>
       (filterFormIsVissible.value = !filterFormIsVissible.value);
-    const toggleSearch = () => {
-      searchIsVisible.value = !searchIsVisible.value;
-    };
     const getRoute = () => {
       console.log(route.fullPath);
       if (route.fullPath === "/tenant/offering") {
@@ -612,6 +392,17 @@ export default {
     };
     getRoute();
 
+    const offeringDetails = (id) => {
+      router.push(`/tenant/addoffering/${id}`);
+    };
+    selectedPeriodId.value = selectedPeriod.value.name;
+    const setSelectedPeriod = () => {
+      selectedPeriod.value = periods.value.find(
+        (i) => i.name == selectedPeriodId.value
+      );
+      console.log(selectedPeriod.value, "iiiiii");
+    };
+
     const marked = ref([]);
 
     const convert = (x) => {
@@ -619,81 +410,66 @@ export default {
     };
 
     const deleteMarked = () => {
-      // let newarray = []
-      // let dft = convert(marked.value);
       let dft = convert(marked.value);
-      console.log(dft, "👌😂😂");
       axios
         .post(`/api/Financials/Contributions/Transactions/DeleteMultiple`, dft)
         .then((res) => {
-          let incomingRes = res.data;
-          console.log(incomingRes, "🙌❤🙌❤🙌");
-          // if (incomingRes.response.toString().toLowerCase().includes("Successful")) {
-          toast.add({
-            severity: "success",
-            summary: "Confirmed",
-            detail: "Offering(s) deleted successfully.",
-            life: 4000,
+          let incomingRes = res.data.response;
+          ElMessage({
+            type: "success",
+            message: `Offering(s) deleted ${incomingRes}`,
+            duration: 4000,
           });
-          // attendanceList.value = attendanceList.value.filter((item) => {
-          //       const y = checkedAttendance.value.findIndex(
-          //         (i) => i.id === item.id
-          //       );
-          //        console.log(y , "old are u now");
-          //       if (y >= 0) return false;
-          //       return true;
-          //     });
           emit("marked", marked.value);
-          // }
-          // checkedAttendance.value = [];
         })
         .catch((err) => {
           stopProgressBar();
           if (err.toString().toLowerCase().includes("network error")) {
-            toast.add({
-              severity: "warn",
-              summary: "Network Error",
-              detail: "Please ensure you have a strong internet connection",
-              life: 4000,
-            });
+            ElMessage({
+            type: "warning",
+            message: "Network Error,Please ensure you have a strong internet connection",
+            duration: 5000,
+          });
           } else if (err.toString().toLowerCase().includes("timeout")) {
-            toast.add({
-              severity: "warn",
-              summary: "Request Delayed",
-              detail: "Request took too long to respond",
-              life: 4000,
-            });
+             ElMessage({
+            type: "warning",
+            message: "Request took too long to respond",
+            duration: 5000,
+          });
           } else {
-            toast.add({
-              severity: "warn",
-              summary: "Delete Failed",
-              detail: "Unable to delete attendance",
-              life: 4000,
-            });
+             ElMessage({
+                type: "warning",
+                message: "Unable to delete attendance",
+                duration: 5000,
+              });
           }
           console.log(err);
         });
     };
 
     const modal = () => {
-      confirm.require({
-        message: "Are you sure you want to proceed?",
-        header: "Confirmation",
-        icon: "pi pi-exclamation-triangle",
-        acceptClass: "confirm-delete",
-        rejectClass: "cancel-delete",
-        accept: () => {
+       ElMessageBox.confirm(
+        "Are you sure you want to proceed?",
+        "Confirm delete",
+        {
+          confirmButtonText: "OK",
+          cancelButtonText: "Cancel",
+          type: "error",
+        }
+      )
+        .then(() => {
           deleteMarked();
-        },
-        reject: () => {
-          toast.add({
-            severity: "info",
-            summary: "Rejected",
-            detail: "You have rejected",
-            life: 3000,
+        })
+        .catch(() => {
+          ElMessage({
+            type: "info",
+            message: "Rejected",
+            duration: 5000,
           });
-        },
-      });
+        });
+    };
+    const handleSelectionChange = (val) => {
+      marked.value = val;
     };
 
     const markOne = (item) => {
@@ -740,65 +516,57 @@ export default {
         .then((res) => {
           console.log(res);
           if (res.data.status) {
-            toast.add({
-              severity: "success",
-              summary: "Delete Successful",
-              detail: `Offering Transaction Deleted`,
-              life: 3000,
-            });
+            ElMessage({
+                type: "success",
+                message: "Offering Transaction Deleted",
+                duration: 5000,
+              });
             emit("contri-transac", index);
           } else {
-            toast.add({
-              severity: "warn",
-              summary: "Delete Failed",
-              detail: `Please Try Again`,
-              life: 3000,
-            });
+            ElMessage({
+                type: "warning",
+                message: "Delete Failed, Please Try Again",
+                duration: 5000,
+              });
           }
         })
         .catch((err) => {
           finish();
           if (err.response) {
-            console.log(err.response);
-            toast.add({
-              severity: "error",
-              summary: "Unable to delete",
-              detail: `${err.response}`,
-              life: 3000,
-            });
+            ElMessage({
+                type: "error",
+                message: `${err.response}`,
+                duration: 5000,
+              });
           }
         });
     };
-    const confirm = useConfirm();
-    let toast = useToast();
     const showConfirmModal = (id, index) => {
-      confirm.require({
-        message: "Are you sure you want to proceed?",
-        header: "Confirmation",
-        icon: "pi pi-exclamation-triangle",
-        acceptClass: "confirm-delete",
-        rejectClass: "cancel-delete",
-        accept: () => {
-          deleteOffering(id, index);
-          // toast.add({severity:'info', summary:'Confirmed', detail:'Member Deleted', life: 3000});
-        },
-        reject: () => {
-          toast.add({
-            severity: "info",
-            summary: "Rejected",
-            detail: "You have rejected",
-            life: 3000,
+       ElMessageBox.confirm(
+        "Are you sure you want to proceed?",
+        "Confirm delete",
+        {
+          confirmButtonText: "OK",
+          cancelButtonText: "Cancel",
+          type: "error",
+        }
+      )
+        .then(() => {
+         deleteOffering(id, index);
+        })
+        .catch(() => {
+          ElMessage({
+            type: "info",
+            message: "Rejected",
+            duration: 5000,
           });
-        },
-      });
+        });
     };
     const currentPage = ref(0);
-    const getPeopleByPage = async (page) => {
-      console.log(page);
-      // if (page < 1) return false;
+    const getPeopleByPage = async () => {
       try {
         const { data } = await axios.get(
-          `/api/Financials/Contributions/Transactions?page=${page}`
+          `/api/Financials/Contributions/Transactions?page=${serverOptions.value.page}`
         );
         if (data) {
           console.log(data);
@@ -855,18 +623,18 @@ export default {
     // Tosin
     const loading = ref(false);
     const searchOfferingsInDB = ref([]);
-    const searchOfferingInDB = (event) => {
+    const searchOfferingInDB = () => {
       loading.value = true;
+      console.log(searchText.value, "llll");
       let url =
         "/api/Financials/Contributions/FilteredTransactions?contribution=" +
-        event.target.value;
+        searchText.value;
       axios
         .get(url)
         .then((res) => {
           loading.value = false;
           console.log(res);
           searchOfferingsInDB.value = res.data;
-          console.log(searchOfferingsInDB.value, "🎁🎁");
         })
         .catch((err) => {
           console.log(err);
@@ -892,11 +660,6 @@ export default {
     const searchContribution = computed(() => {
       if (searchText.value !== "" && searchOfferingsInDB.value.length > 0) {
         return searchOfferingsInDB.value;
-        // return props.contributionTransactions.filter((i) => {
-        //   return i.contribution
-        //     .toLowerCase()
-        //     .includes(searchText.value.toLowerCase());
-        // });
       } else if (
         filterResult.value.length > 0 &&
         (filter.value.contribution || filter.value.event || filter.value.donor)
@@ -1070,7 +833,7 @@ export default {
         selectedPeriod.value.name === "One Year"
       )
         return [1, 2, 3, 4, 5, 6, 7];
-        return [];
+      return [];
     });
 
     const amountWithCommas = (amount) =>
@@ -1078,27 +841,30 @@ export default {
 
     return {
       deleteMarked,
+      primarycolor,
+      handleSizeChange,
+      totalOfferingCount,
+      handleCurrentChange,
+      serverOptions,
+      offeringDetails,
+      offeringHeaders,
+      setSelectedPeriod,
+      selectedPeriodId,
       markAll,
       modal,
       markOne,
       marked,
-      // contributionTransactions,
       deleteOffering,
       filterFormIsVissible,
       toggleFilterFormVissibility,
       moment,
-      // firstTimerSummary,
-      // getFirstTimerSummary,
       applyFilter,
       filter,
-      toggleSearch,
-      searchIsVisible,
       filterResult,
       noRecords,
       searchText,
       searchContribution,
       showConfirmModal,
-      // deleteMember,
       offeringCount,
       currentPage,
       getPeopleByPage,
@@ -1114,6 +880,7 @@ export default {
       series,
       attendanceSeries,
       pieChart,
+      handleSelectionChange,
       LineGraphXAxis,
       amountWithCommas,
       tenantCurrency,
@@ -1142,6 +909,17 @@ export default {
   color: #136acd;
   text-decoration: none;
   width: 241px;
+}
+.table-top {
+  font-weight: 800;
+  font-size: 12px;
+  background: #fff;
+  border: 1px solid #d4dde3;
+  border-bottom: none;
+}
+.table-top label:hover,
+.table-top p:hover {
+  cursor: pointer;
 }
 .page-header {
   font-weight: 700;
@@ -1226,16 +1004,7 @@ export default {
 .hide-link {
   color: #136acd;
 }
-.table-top {
-  font-weight: 800;
-  font-size: 12px;
-  display: flex;
-  justify-content: flex-end;
-}
-.table-top label:hover,
-.table-top p:hover {
-  cursor: pointer;
-}
+
 @media (max-width: 660px) {
   .select-all {
     display: none;
