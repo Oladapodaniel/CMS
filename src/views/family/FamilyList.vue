@@ -114,13 +114,14 @@
 <script>
 import { ref, computed } from "vue";
 import dateFormatter from "../../services/dates/dateformatter";
-import { useConfirm } from "primevue/useconfirm";
-import { useToast } from "primevue/usetoast";
+// import { useConfirm } from "primevue/useconfirm";
+// import { useToast } from "primevue/usetoast";
 import axios from "@/gateway/backendapi";
 import finish from "../../services/progressbar/progress";
 import router from "../../router";
 import { ElMessage, ElMessageBox } from "element-plus";
 // import { useStore } from "vuex";
+import store from "../../store/store";
 import Table from "@/components/table/Table";
 
 export default {
@@ -180,7 +181,7 @@ export default {
           });
           let listFiltered = props.familyList.filter((i) => i.id !== id);
           emit("list-filtered", listFiltered);
-           store.dispatch('allFamilies/removeallFamilyFromStore', id)
+           store.dispatch('family/removeFamilyFromStore', id)
         })
         .catch((err) => {
           console.log(err);
@@ -188,7 +189,7 @@ export default {
         });
     };
 
-    const showConfirmModal = (item, id) => {
+    const showConfirmModal = (id) => {
       ElMessageBox.confirm(
         "Are you sure you want to proceed?",
         "Confirm delete",
@@ -199,7 +200,7 @@ export default {
         }
       )
         .then(() => {
-          deleteFamily(item, id);
+          deleteFamily(id);
           
         })
         .catch(() => {

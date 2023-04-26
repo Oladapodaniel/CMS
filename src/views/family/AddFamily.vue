@@ -210,8 +210,8 @@
               <span class="el-dropdown-link w-100">
                 <el-input
                   type="text"
-                  v-model="userSearchString"
-                  @input="searchForUsers"
+                  v-model="motherSearchString"
+                  @input="motherSearchForUsers"
                   ref="searchRef"
                   :disabled="routeParams !== ''"
                   autocomplete="off"
@@ -221,7 +221,10 @@
                 <el-dropdown-menu>
                   <el-icon
                     class="is-loading"
-                    v-if="loading && userSearchString.length >= 3"
+                    v-if="
+                    motherSearchingForMembers &&
+                    motherSearchedMembers.length === 0
+                  "
                   >
                     <Loading />
                   </el-icon>
@@ -231,11 +234,14 @@
                     @click="addExistingMemberForMother(member)"
                     >{{ member.name }}
                   </el-dropdown-item>
-                  <el-dropdown-item v-if="userSearchString.length < 3" disabled
+                  <el-dropdown-item v-if="
+                    motherSearchString.length < 3 &&
+                    motherSearchedMembers.length === 0
+                  " disabled
                     >Enter 3 or more characters</el-dropdown-item
                   >
                   <el-dropdown-item
-                    @click="showAddMemberForm"
+                    @click="showAddMemberFormForMother"
                     style="color: #136acd"
                     divided
                     ><el-icon><CirclePlus /></el-icon>Add new
@@ -314,6 +320,7 @@
         <el-button
           size="large"
           @click="createFamily"
+          :loading="loading"
           class="font-weight-bold border text-white primary-bg mx-4"
           round
         >
@@ -347,7 +354,8 @@
               data-dismiss="modal"
               aria-label="Close"
             >
-              <span aria-hidden="true"><i class="pi pi-times"></i> </span>
+              <!-- <span aria-hidden="true"><i class="pi pi-times"></i> </span> -->
+              <span><el-icon><Close /></el-icon></span>
             </button>
           </div>
 
@@ -529,7 +537,7 @@
 
               <div class="col-md-6 mt-4">
                 <!-- <button class="default-btn" data-dismiss="modal">Cancel</button> -->
-                <el-button size="large" round>Cancel</el-button>
+                <el-button size="large" data-dismiss="modal" round>Cancel</el-button>
               </div>
               <div class="col-md-6 mt-4">
                 <!-- <button
@@ -544,6 +552,7 @@
                   round
                   :color="primarycolor"
                   size="large"
+                  data-dismiss="modal"
                   class="border-0 text-white text-center"
                   @click="addWard"
                 >
@@ -621,6 +630,7 @@ import router from "@/router/index";
 import { useRoute } from "vue-router";
 // import Dropdown from "primevue/dropdown";
 import { ElMessage } from "element-plus";
+import store from "../../store/store";
 // import { useToast } from "primevue/usetoast";
 
 export default {
@@ -898,6 +908,7 @@ export default {
     };
 
     const createFamily = async () => {
+      loading.value = true;
       const family = {
         familyName: familyName.value,
         fatherId: father.value.id,
@@ -925,28 +936,35 @@ export default {
       if (!route.params.familyId) {
         try {
           let res = await axios.post("/api/family/createFamily", family);
+         
           if (res.status === 200) {
             ElMessage({
               type: "success",
               message: "Family created successfully",
             });
+             loading.value = false;
+             store.dispatch("family/getAllFamilies").then(() => {
+            router.push("/tenant/family");
+          });
+
+
           } else {
             ElMessage({
               type: "error",
               message: "Failed, try again",
             });
           }
-          store.dispatch("family/getAllFamilies").then(() => {
-            router.push("/tenant/family");
-          });
+         
           
         } catch (err) {
+          // console.log(err.response, "MECHANIC")
           ElMessage({
             type: "error",
             message: err.response.data.errors.FamilyName[0],
             duration: 5000,
           });
         }
+        
       } else {
         try {
           let res = await axios.put("/api/family/editProfile", updateProfile);
@@ -970,7 +988,7 @@ export default {
           const res = await axios.get(
             `/api/Family/family?personId=${route.params.familyId}`
           );
-          console.log(res);
+          console.log(res, "🎈🎈🎄");
           familyName.value = res.data.familyName;
 
           userSearchString.value = `${
