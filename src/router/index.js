@@ -1016,7 +1016,16 @@ const routes = [
                     },
                     component: () =>
                         import( /* webpackChunkName: "sendvoicemessage" */ '@/views/communication/Voice/composeVoice')
-                }
+                },
+                {
+                    path: 'report/:messageId',
+                    name: 'VoiceDeliveryReport',
+                    meta: {
+                        title: 'Churchplus - Voice Communication - Delivery Report',
+                    },
+                    component: () =>
+                        import( /* webpackChunkName: "deliveryreport" */ '@/views/communication/DeliveryReport')
+                },
             ]
         },
         {

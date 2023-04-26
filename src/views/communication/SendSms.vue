@@ -38,33 +38,9 @@
               </el-dropdown-menu>
             </template>
           </el-dropdown>
-          <!-- <div class="dropdown">
-            <button class="btn btn-default border dropdown-toggle small-text pl-md-0" type="button"
-              id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"
-              @click="closeDropdownIfOpen">
-              Select Destination
-            </button>
-            <div class="dropdown-menu w-100" aria-labelledby="dropdownMenuButton">
-              <a class="dropdown-item c-pointer small-text" v-for="(destination, index) in possibleSMSDestinations"
-                :key="index" @click="showSection(index)">{{ destination }}</a>
-            </div>
-          </div> -->
         </div>
       </div>
 
-      <div class="row" v-if="sendToAll">
-        <div class="col-md-2"></div>
-        <div class="col-md-10 px-0">
-          <span>
-            <el-input class="dropdown-toggle my-1 px-1 small-text" type="text" id="dropdownMenu" value="All Contacts"
-              disabled />
-            <span class="close-allcontacts c-pointer" @click="() => (sendToAll = false)"><i
-                class="pi pi-times"></i></span>
-          </span>
-        </div>
-      </div>
-
-      <!-- Start TEst -->
       <div class="row mb-2" v-if="groupSelectionTab">
         <div class="col-md-2"></div>
         <div class="col-md-10 px-0 grey-rounded-border mt-2">
@@ -647,7 +623,7 @@ export default {
     const membershipSelectionTab = ref(false);
     const phoneNumberSelectionTab = ref(false);
     const selectedGroups = ref([]);
-    const sendToAll = ref(false);
+    // const sendToAll = ref(false);
     const executionDate = ref("");
     const contactUpload = ref(false);
     const multipleContact = ref({});
@@ -670,7 +646,7 @@ export default {
       if (index === 3) phoneNumberSelectionTab.value = true;
       if (index === 4) contactUpload.value = true;
       if (index === 0) {
-        sendToAll.value = true;
+        groupSelectionTab.value = true;
         selectedGroups.value.push({
           data: "membership_00000000-0000-0000-0000-000000000000",
           name: "All Contacts",
@@ -778,7 +754,6 @@ export default {
         selectedGroups.value.length === 0 &&
         !phoneNumber.value &&
         selectedMembers.value.length === 0 &&
-        !sendToAll.value &&
         !multipleContact.value instanceof File
       ) {
         invalidDestination.value = true;
@@ -1316,7 +1291,7 @@ export default {
       memberSelectInput,
       invalidDestination,
       invalidMessage,
-      sendToAll,
+      // sendToAll,
       sendModalHeader,
       nigerian,
       contructScheduleMessageBody,

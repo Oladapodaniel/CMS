@@ -1280,10 +1280,11 @@ export default {
 
     const newAcctivityDate = ref("");
     const getCorrectDate = (date) =>{
-      let myDate = new Date(date).toLocaleDateString();
-        let arr = myDate.split('/');
-        arr.unshift(arr.splice(2, 1)[0])
-         return arr.join('-')
+      // let myDate = new Date(date).toLocaleDateString();
+      //   let arr = myDate.split('/');
+      //   arr.unshift(arr.splice(2, 1)[0])
+      //    return arr.join('-')
+      return new Date(date).toLocaleDateString().replaceAll('/', '-')
     }
     const createNewActivity = async () => {
       if (!newAcctivityDate.value && !selectedCategory.value) return false;
@@ -1293,24 +1294,21 @@ export default {
       //     console.log(res);
       //   }
       //   catch(error){
-
       //   }
       // }
       try {
         const response = await eventsService.createNewActivity({
-          
           activity: {
             date: getCorrectDate(newAcctivityDate.value),
             eventCategoryId: selectedCategory.value.id,
           },
         });
-        console.log(response, "hh");
         const newActivity = {
           id: response.currentEvent.id,
           name: `${response.currentEvent.name} (${new Date(
             response.currentEvent.activityDate
           ).toDateString()})`,
-          date: newAcctivityDate.value,
+          date: getCorrectDate(newAcctivityDate.value),
         };
         selectedEvent.value = newActivity;
         events.value.push(newActivity);

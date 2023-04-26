@@ -46,7 +46,7 @@
           <span class="small-text">Send to : </span>
         </div>
         <div class="p-0 col-md-10 col-lg-10 form-group mb-0">
-          <div class="dropdown">
+          <!-- <div class="dropdown">
             <button
               class="btn btn-default border dropdown-toggle small-text"
               type="button"
@@ -70,7 +70,26 @@
                 >{{ destination }}</a
               >
             </div>
-          </div>
+          </div> -->
+          <el-dropdown trigger="click" class="w-100">
+            <div class="d-flex justify-content-between border-contribution text-dark w-100" size="large">
+              <span>Select Destination</span>
+              <div>
+                <el-icon class="el-icon--right">
+                  <arrow-down />
+                </el-icon>
+              </div>
+            </div>
+            <template #dropdown>
+              <el-dropdown-menu>
+                <el-dropdown-item v-for="(destination, index) in possibleEmailDestinations" :key="index">
+                  <a class="no-decoration text-dark" @click="showSection(index)">
+                    {{ destination }}
+                  </a>
+                </el-dropdown-item>
+              </el-dropdown-menu>
+            </template>
+          </el-dropdown>
         </div>
       </div>
 
@@ -80,22 +99,7 @@
         </div>
       </div>
 
-      <div class="row" v-if="sendToAll">
-        <div class="col-md-2"></div>
-        <div class="col-md-10 px-0">
-          <span>
-            <el-input
-              class="w-100  my-1 px-1 small-text"
-              id="dropdownMenu"
-              value="All Contacts"
-              disabled
-            />
-            <span class="close-allcontacts c-pointer" @click="() => sendToAll = false">x</span>
-          </span>
-        </div>
-      </div>
 
-      <!-- Start TEst -->
       <div class="row mb-2" v-if="groupSelectionTab">
         <div class="col-md-2"></div>
         <div class="col-md-10 px-0 grey-rounded-border">
@@ -107,7 +111,7 @@
               style="list-style: none; min-width: 100px"
               v-for="(group, index) in selectedGroups"
               :key="index"
-              class="email-destination d-flex justify-content-between m-1 small-text"
+              class="email-destination d-flex justify-content-between m-1 small-text align-items-center"
             >
               <span class="small-text">{{ group.name }}</span>
               <span class="ml-2 remove-email" @click="removeGroup(index)"
@@ -718,7 +722,6 @@ export default {
     const emailSelectionTab = ref(false);
     const email = ref("")
     const selectedGroups = ref([]);
-    const sendToAll = ref(false);
     const executionDate = ref('');
 
     const toggleGroupsVissibility = () => {
@@ -731,7 +734,7 @@ export default {
       if (index === 3) emailSelectionTab.value = true;
       if (index === 4) phoneNumberSelectionTab.value = true;
       if (index === 0) {
-        sendToAll.value = true;
+        groupSelectionTab.value = true;
         selectedGroups.value.push({ data: "membership_00000000-0000-0000-0000-000000000000", name: "All Contacts"
         })
       }
@@ -838,8 +841,7 @@ export default {
       if (
         selectedGroups.value.length === 0 &&
         !phoneNumber.value && !email.value &&
-        selectedMembers.value.length === 0 &&
-        !sendToAll.value
+        selectedMembers.value.length === 0
       ) {
         invalidDestination.value = true;
         return false;
@@ -1151,7 +1153,6 @@ export default {
       memberSelectInput,
       invalidDestination,
       invalidMessage,
-      sendToAll,
       sendModalHeader,
       nigerian,
       onEditorReady,

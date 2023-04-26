@@ -1,39 +1,62 @@
 <template>
-    <div class="container-top" :class="{ 'container-slim': lgAndUp || xlAndUp }">
-      <div class="create-btn-div">
-        <div >
-          <h2 class="head-text ">Voice</h2>
-        </div>
+  <div class="container-top" :class="{ 'container-slim': lgAndUp || xlAndUp }">
+    <div class="create-btn-div">
+      <div>
+        <h2 class="head-text ">Voice</h2>
       </div>
-      <div class="row">
-        <div class="col-md-12">
-          <hr class="hr" />
-        </div>
+    </div>
+    <div class="row">
+      <div class="col-md-12">
+        <hr class="hr" />
       </div>
+    </div>
 
-      <!-- Content Box -->
-      <main :class="{ 'main' : mdAndUp || lgAndUp || xlAndUp }" class="mt-3">
-        <div class="container-fluid">
-          <div class="row">
-            <!-- Side menu -->
-            <div class="col-md-3" id="side-menu">  
-              <div class="row">
-                <div class="col-md-12 mt-4">
-                  <el-button round class="font-weight-bold w-100" size="large" :color="primarycolor" @click="nextPage">
-                    Compose voice
-                  </el-button>
+    <!-- Content Box -->
+    <main :class="{ 'main': mdAndUp || lgAndUp || xlAndUp }" class="mt-3">
+      <div class="container-fluid">
+        <div class="row">
+          <!-- Side menu -->
+          <div class="col-md-3" id="side-menu">
+            <div class="row">
+              <div class="col-md-12 mt-4">
+                <div class="mt-2" v-show="xsOnly || smAndUp">
+                  <i class="pi pi-bars" @click="toggleMenu"></i>
                 </div>
+                <el-button round class="font-weight-bold w-100" size="large" :color="primarycolor" @click="nextPage">
+                  Compose voice
+                </el-button>
               </div>
             </div>
 
-            <!-- Bigger row -->
-            <div class="col-md-9 col-xl-8" style="margin: auto">
-              <router-view> </router-view>
+            <div class="row mt-4" :class="{ 'show mb-3': menuShouldShow, 'links-menu': !menuShouldShow }">
+              <div class="col-md-12">
+                <div class="row menu-item-con py-2" :class="{ 'active-link': route.path === '/tenant/voice/voicelist' }">
+                  <div class="col-md-12 menu-item-div m-auto">
+                    <a class="btn btn-default font-weight-bold">
+                      <span class="menu-item">
+                        <router-link class="r-link text-decoration-none d-flex align-items-center "
+                          to="/tenant/voice/voicelist">
+                          <el-icon class="mr-3  menu-icon">
+                            <Tickets />
+                          </el-icon>
+                          <span class="active">All Sent Voice</span>
+                        </router-link>
+                      </span>
+                    </a>
+                  </div>
+                </div>
+              </div>
             </div>
           </div>
+
+          <!-- Bigger row -->
+          <div class="col-md-9 col-xl-8" style="margin: auto">
+            <router-view> </router-view>
+          </div>
         </div>
-      </main>
-    </div>
+      </div>
+    </main>
+  </div>
 </template>
 
 <script>
@@ -46,10 +69,10 @@ export default {
     const primarycolor = inject('primarycolor')
     const route = useRoute();
     const menuShouldShow = ref(false);
-    const { mdAndUp, lgAndUp, xlAndUp } = deviceBreakpoint()
-    const toggleMenu = ()=>{
-           menuShouldShow.value = !menuShouldShow.value
-         };
+    const { xsOnly, smAndUp, mdAndUp, lgAndUp, xlAndUp } = deviceBreakpoint()
+    const toggleMenu = () => {
+      menuShouldShow.value = !menuShouldShow.value
+    };
 
     const nextPage = () => {
       router.push('/tenant/voice/sendvoicemessage')
@@ -59,6 +82,8 @@ export default {
       router,
       toggleMenu,
       menuShouldShow,
+      xsOnly,
+      smAndUp,
       mdAndUp,
       lgAndUp,
       xlAndUp,
@@ -70,7 +95,6 @@ export default {
 </script>
 
 <style scoped>
-
 .toggle {
   display: none;
   width: 20px;
@@ -90,10 +114,11 @@ export default {
   border-radius: 30px;
 }
 
-#main-tool{
+#main-tool {
   display: flex;
   justify-content: space-between;
 }
+
 #side-menu {
   border-right: 1px solid #02172e30;
 }
@@ -199,20 +224,23 @@ export default {
 .r-link {
   color: #002044;
 }
+
 .router-link-exact-active i {
   color: #136acd;
   opacity: 1;
 }
 
-@media screen and (max-width: 765px){
+@media screen and (max-width: 765px) {
   .toggle {
     display: block;
   }
+
   .show {
     overflow: hidden;
-    height: 270px;
+    height: 45px;
     transition: all 0.5s cubic-bezier(0.645, 0.045, 0.355, 1);
   }
+
   .links-menu {
     height: 0;
     overflow: hidden;
@@ -271,5 +299,4 @@ export default {
   .menu-item-div {
     padding-left: 40px;
   }
-}
-</style>
+}</style>
