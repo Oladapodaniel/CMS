@@ -640,6 +640,7 @@ export default {
       { name: "DAY", value: "dayOfCelebration" },
       { name: "TYPE", value: "celebration" },
       { name: "PHONE", value: "phone" },
+      { name: "ACTION", value: "action" }
     ]);
 
     const createNew = ref([
