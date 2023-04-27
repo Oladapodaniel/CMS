@@ -295,12 +295,12 @@
           Continue payment with
         </div>
       </div>
-      <div class="row row-button c-pointer" @click="(initiatePayment(1))">
+      <div class="row row-button c-pointer" v-if="paystackGate" @click="(initiatePayment(1))">
         <div class="d-flex justify-content-center w-100">
           <img style="width: 150px" src="../../assets/4PaystackLogo.png" alt="paystack" />
         </div>
       </div>
-      <div class="row row-button c-pointer mt-3 mb-5" @click="(initiatePayment(2))">
+      <div class="row row-button c-pointer mt-3 mb-5" v-if="flutterwaveGate" @click="(initiatePayment(2))">
         <div class="d-flex justify-content-center w-100">
           <img style="width: 150px" src="../../assets/flutterwave_logo_color@2x.png" alt="flutterwave" />
         </div>
@@ -399,6 +399,7 @@ export default {
     const paymentSuccessfulDialog = ref(false)
     const { mdAndUp, lgAndUp, xlAndUp, xsOnly } = deviceBreakpoint();
     const cardLoading = ref(false);
+    const pledgePaymentForm = ref({})
 
 
 
@@ -418,6 +419,7 @@ export default {
         return i.id == selectPledgeItemID.value
       })
 
+      pledgePaymentForm.value = selectedPledgeItem.value.fillPaymentFormDTO
       selectedCurrency.value = selectedPledgeItem.value.currency;
       selectedCurrencyCode.value = selectedCurrency.value.shortCode
 
@@ -556,6 +558,7 @@ export default {
           churchName.value = res.data.pledgeItemDTO.tenantName
           selectedCurrency.value = contributionDetail.value.currency
           selectedCurrencyCode.value = contributionDetail.value.currency.shortCode
+          pledgePaymentForm.value = contributionDetail.value.fillPaymentFormDTO
         } else if (route.query.pledgeID) {
           // For pledge
           let decomposedPledgeList = [{ ...res.data.pledgeItemDTO }]
@@ -575,6 +578,7 @@ export default {
           memberAlreadyPledgedToPledgeItem.value = true
           selectedCurrency.value = contributionDetail.value.currency
           selectedCurrencyCode.value = contributionDetail.value.currency.shortCode
+          pledgePaymentForm.value = contributionDetail.value.fillPaymentFormDTO
         } else {
           // Generic page
           contributionDetail.value.pledgeItemDTOs = res.data.pledgeItemDTOs;
@@ -604,6 +608,17 @@ export default {
     getAllCurrencies();
 
 
+    const paystackGate = computed(() => {
+      if (!pledgePaymentForm.value || !pledgePaymentForm.value.paymentGateWays) return false
+      return pledgePaymentForm.value.paymentGateWays.find(i => i.paymentGateway.name === "Paystack")
+    })
+
+    const flutterwaveGate = computed(() => {
+      if (!pledgePaymentForm.value || !pledgePaymentForm.value.paymentGateWays) return false
+      return pledgePaymentForm.value.paymentGateWays.find(i => i.paymentGateway.name === "FlutterWave")
+    })
+
+
     const payWithPaystack = (responseObject) => {
       /*eslint no-undef: "warn"*/
       let handler = PaystackPop.setup({
@@ -613,6 +628,7 @@ export default {
         amount: amountToPayNow.value * 100,
         currency: selectedCurrencyCode.value,
         channels: ['card', 'bank', 'ussd', 'qr', 'mobile_money', 'bank_transfer'],
+        subaccount: pledgePaymentForm.value.paymentGateWays.find(i => i.paymentGateway.name === "Paystack").subAccountID,
         ref: responseObject.transactionReference,
         onClose: function () {
           ElMessage({
@@ -623,7 +639,6 @@ export default {
           })
         },
         callback: function (response) {
-          console.log(response)
           let trans_id = response.trxref
            let tx_ref = response.trxref
           confirmPayment(tx_ref, trans_id);
@@ -707,21 +722,25 @@ export default {
         currency: selectedCurrencyCode.value,
         country: country,
         payment_options: "card,ussd",
+        subaccounts: [
+          {
+            id: pledgePaymentForm.value.paymentGateWays.find(i => i.paymentGateway.name === "FlutterWave").subAccountID,
+          }
+        ],
         customer: {
           name: contactDetail.value && Object.keys(contactDetail.value).length > 0 ? `${contactDetail.value.firstName} ${contactDetail.value.lastName}` : `${newContact.value.firstName} ${newContact.value.lastName}`,
           phone_number: userSearchString.value,
           email: contactDetail.value.email ? contactDetail.value.email : newContact.value.email,
         },
         callback: (response) => {
-          console.log(response)
           let trans_id = response.transaction_id
            let tx_ref = response.tx_ref
           confirmPayment(trans_id, tx_ref);
         },
         onclose: () => console.log("Payment closed"),
         customizations: {
-          title: "Contribution",
-          description: "Payment for Contribution ",
+          title: churchName.value,
+          description: `Pledge payment to ${churchName.value}`,
           logo: churchLogo2.value,
         },
       });
@@ -884,7 +903,10 @@ export default {
       paymentSuccessfulDialog,
       cardLoading,
       triggerPayment,
-      primarycolor
+      primarycolor,
+      pledgePaymentForm,
+      paystackGate,
+      flutterwaveGate
     };
   },
 };
@@ -951,7 +973,7 @@ export default {
   border-radius: 25px;
   box-shadow: 0 4px 12px rgb(0 0 0 / 10%);
   background: #fff;
-  margin: 12px 70px;
+  margin: 12px 20px;
   transition: all 0.4s ease-in-out;
   max-height: 45px;
 }

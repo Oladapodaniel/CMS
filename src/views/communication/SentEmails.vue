@@ -200,17 +200,13 @@ export default {
     const getSentEmails = async () => {
       try {
         loading.value = true;
-        /*eslint no-undef: "warn"*/
-        NProgress.start();
         const data = await communicationService.getSentEmails(0);
         loading.value = false;
         if (data && data.length > 0) {
           emails.value = data;
         }
-        NProgress.done();
       } catch (error) {
         loading.value = false;
-        NProgress.done();
         console.log(error);
       }
     };
