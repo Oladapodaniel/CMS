@@ -1,6 +1,6 @@
 <template>
-<div>
-    <div class="container-wide container-top">
+<div class="container-top" :class="{ 'container-slim': lgAndUp || xlAndUp }">
+    <div class="">
       <div class=" d-flex flex-column flex-md-row justify-content-md-between my-3">
         <div class=" first-timers-text">
           <h2 class="page-header">Offerings</h2>
@@ -16,13 +16,13 @@
         </div>
       </div>
     </div>
-
-    <div class="container-wide">
-      <div class="row">
+    <div class="row">
       <div class="col-md-12">
         <hr class="hr" />
       </div>
     </div>
+    <div class="container-fluid">
+      
     <el-skeleton class="w-100" animated v-if="loading">
           <template #template>
             <div
@@ -74,6 +74,7 @@ import { ref, inject } from 'vue'
 import { useStore } from 'vuex'
 // import { store } from "../../../store/store"
 import axios from "@/gateway/backendapi"
+import deviceBreakpoint from "../../../mixins/deviceBreakpoint";
 import OfferingList from './OfferingList'
 export default {
     components: {
@@ -81,6 +82,7 @@ export default {
     },
     setup () {
         const contributionTransactions = ref([])
+        const { lgAndUp, xlAndUp } = deviceBreakpoint();
         const primarycolor = inject('primarycolor')
         const totalItem = ref(0)
         const loading = ref(false)
@@ -132,7 +134,7 @@ export default {
       contributionTransactions.value.splice(payload, 1)
     }
         return {
-            contributionTransactions, primarycolor, loading, getOfferingPages, updateTransac, totalItem, networkError, removeMultipleOffering
+            contributionTransactions, primarycolor, xlAndUp, lgAndUp, loading, getOfferingPages, updateTransac, totalItem, networkError, removeMultipleOffering
         }
     }
 }

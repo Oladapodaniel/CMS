@@ -1,10 +1,8 @@
 <template>
   <div class="pb-4">
-    <div class="row table">
-      <div class="col-12 mt-4 w-100">
-        <div class="row">
-          <div class="col-12 col-md-4">
-            <div class="col-12 mb-5">
+    <div class="row mt-5 ">
+          <div class="col-12 p-0 col-md-4">
+            <div class="col-12 p-0 mb-5">
               <el-select-v2
                 v-model="selectedPeriodId"
                 :options="
@@ -48,8 +46,6 @@
               :xAxis="LineGraphXAxis"
             />
           </div>
-        </div>
-      </div>
     </div>
 
     <div class="row">
@@ -289,7 +285,6 @@ import { ref, computed, watch, inject } from "vue";
 import axios from "@/gateway/backendapi";
 import Table from "@/components/table/Table";
 import router from "../../../router";
-// import { useStore } from 'vuex'
 // import { store } from "../../../store/store"
 import Pagination from "../../../components/pagination/PaginationButtons";
 import { useRoute } from "vue-router";
@@ -298,7 +293,6 @@ import finish from "../../../services/progressbar/progress";
 import monthDayYear from "../../../services/dates/dateformatter";
 import printJS from "print-js";
 import Dropdown from "primevue/dropdown";
-// import ContributionColumnChart from "../../../components/charts/ColumnChart.vue";
 import ContributionPieChart from "../../../components/charts/PieChart.vue";
 import ContributionAreaChart from "../../../components/charts/AreaChart.vue";
 import numbers_formatter from "../../../services/numbers/numbers_formatter";
@@ -310,8 +304,6 @@ export default {
   props: ["contributionTransactions", "totalItem"],
   emits: ["marked"],
   components: {
-    // ByGenderChart,
-    // ByMaritalStatusChart,
     Table,
     Pagination,
     ContributionAreaChart,
@@ -385,7 +377,6 @@ export default {
     const toggleFilterFormVissibility = () =>
       (filterFormIsVissible.value = !filterFormIsVissible.value);
     const getRoute = () => {
-      console.log(route.fullPath);
       if (route.fullPath === "/tenant/offering") {
         chartClass.value = true;
       }
@@ -400,7 +391,6 @@ export default {
       selectedPeriod.value = periods.value.find(
         (i) => i.name == selectedPeriodId.value
       );
-      console.log(selectedPeriod.value, "iiiiii");
     };
 
     const marked = ref([]);
@@ -473,9 +463,7 @@ export default {
     };
 
     const markOne = (item) => {
-      // console.log(ft, "chechbyOne");
       const offeringIdx = marked.value.findIndex((i) => i.id === item.id);
-      console.log(offeringIdx, "chechdetail");
       if (offeringIdx < 0) {
         marked.value.push(item);
       } else {
@@ -484,7 +472,6 @@ export default {
     };
 
     const markAll = () => {
-      console.log(marked.value);
       if (marked.value.length < props.contributionTransactions.length) {
         props.contributionTransactions.forEach((i) => {
           const memberInmarked = marked.value.findIndex((j) => j.id === i.id);
@@ -495,7 +482,6 @@ export default {
       } else {
         marked.value = [];
       }
-      console.log(marked.value, "all");
     };
 
     const printContribution = computed(() => {
@@ -503,7 +489,6 @@ export default {
       return props.contributionTransactions.map((i) => {
         return {
           DATE: monthDayYear.monthDayYear(i.eventDate),
-          // EVENT: i.eventName,
           OFFERING: i.contribution,
           AMOUNT: i.amount,
           DONOR: i.donor ? i.donor : "",
@@ -514,7 +499,6 @@ export default {
       axios
         .delete(`/api/Financials/Contributions/Transactions/Delete?ID=${id}`)
         .then((res) => {
-          console.log(res);
           if (res.data.status) {
             ElMessage({
                 type: "success",
@@ -569,7 +553,6 @@ export default {
           `/api/Financials/Contributions/Transactions?page=${serverOptions.value.page}`
         );
         if (data) {
-          console.log(data);
           emit("get-pages", data);
           currentPage.value = page;
         }
@@ -608,9 +591,7 @@ export default {
       axios
         .get(url)
         .then((res) => {
-          // noRecords.value = true;
           filterResult.value = res.data;
-          console.log(res.data);
           if (res.data.length === 0) {
             noRecords.value = true;
           } else {
@@ -625,7 +606,6 @@ export default {
     const searchOfferingsInDB = ref([]);
     const searchOfferingInDB = () => {
       loading.value = true;
-      console.log(searchText.value, "llll");
       let url =
         "/api/Financials/Contributions/FilteredTransactions?contribution=" +
         searchText.value;
@@ -633,7 +613,6 @@ export default {
         .get(url)
         .then((res) => {
           loading.value = false;
-          console.log(res);
           searchOfferingsInDB.value = res.data;
         })
         .catch((err) => {
@@ -675,7 +654,6 @@ export default {
         let { data } = await axios.get(
           "/api/financials/contributions/transactions/summary"
         );
-        console.log(data);
         contributionSummary.value = data;
       } catch (err) {
         console.log(err);
@@ -690,7 +668,6 @@ export default {
           .get(`/api/Lookup/TenantCurrency?tenantID=${res.data.tenantId}`)
           .then((res) => {
             tenantCurrency.value = res.data;
-            console.log(res.data);
           })
           .catch((err) => console.log(err));
       } catch (err) {
