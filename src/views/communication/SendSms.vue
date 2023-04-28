@@ -268,7 +268,14 @@
         </div>
         <div class="p-0 col-md-10">
           <el-dropdown trigger="click" class="w-100">
-            <el-input v-model="searchSenderText" placeholder="Search sender id" />
+            <el-input v-model="searchSenderText" placeholder="Search sender id">
+              <template #append>
+                <el-button>
+                  <el-icon :size="15">
+                    <ArrowDownBold />
+                  </el-icon>
+                </el-button>
+              </template></el-input>
             <el-icon class="el-icon--right"><arrow-down /></el-icon>
             <template #dropdown>
               <el-dropdown-menu>
@@ -452,7 +459,8 @@
                         (SENDER ID AND DEDICATED)</label>
                     </div>
                     <div class=" col-md-12 send-now-div py-2 my-2 d-flex justify-content-center">
-                      <el-button :color="primarycolor" @click="contructScheduleMessageBody(1, 'hybridKonnect')" round>Send SMS now</el-button>
+                      <el-button :color="primarycolor" @click="contructScheduleMessageBody(1, 'hybridKonnect')" round>Send
+                        SMS now</el-button>
                       <!-- <button class=" primary-btn default-btn border-0 primary-bg px-4 my-2 font-weight-600 outline-none"
                         data-dismiss="modal" @click="contructScheduleMessageBody(1, 'hybridKonnect')">
                         Send SMS Now
@@ -478,7 +486,8 @@
                         SENDER ID</label>
                     </div>
                     <div class=" col-md-12 my-2 send-now-div py-2 d-flex justify-content-center">
-                      <el-button type="info" @click="contructScheduleMessageBody(1, 'hostedsms')" round>Send SMS now</el-button>
+                      <el-button type="info" @click="contructScheduleMessageBody(1, 'hostedsms')" round>Send SMS
+                        now</el-button>
                       <!-- <button class=" primary-btn default-btn px-4 border-0 my-2 grey-background text-grey outline-none"
                         data-dismiss="modal" @click="contructScheduleMessageBody(1, 'hostedsms')">
                         Send SMS Now
@@ -1156,7 +1165,7 @@ export default {
     };
     getSenderId();
 
-    const submitSenderForm  = async (formEl) => {
+    const submitSenderForm = async (formEl) => {
       if (!formEl) return
       await formEl.validate((valid, fields) => {
         if (valid) {
@@ -1177,36 +1186,36 @@ export default {
         let { data } = await axios.post(
           `/api/Messaging/RequestSenderID`,
           payload
-          );
-          senderidloading.value = false;
-          closeModal.value.click();
-          if (data.status === 0) {
-            ElMessage({
-              type: "warning",
-              message: "PENDING, Sender id is pending for approval, when it is approved, you will see it among the sender id list",
-              duration: 6000,
-            });
-          } else if (data.status === 1) {
-            ElMessage({
-              type: "warning",
-              message: "PROCESSING, Sender id is processing for approval, when it is approved, you will see it among the sender id list",
-              duration: 6000,
-            });
-          } else if (data.status === 2) {
-            ElMessage({
-              type: "success",
-              message: "APPROVED, Sender id is approved!",
-              duration: 6000,
-            });
-          } else {
-            ElMessage({
-              type: "error",
-              message: "NOT APPROVED, Sender id is not approved, create another one.",
-              duration: 6000,
-            });
-          }
-          setIdToSubject({mask: senderIDValidateForm.senderIdText})
-          senderIDValidateForm.senderIdText = "";
+        );
+        senderidloading.value = false;
+        closeModal.value.click();
+        if (data.status === 0) {
+          ElMessage({
+            type: "warning",
+            message: "PENDING, Sender id is pending for approval, when it is approved, you will see it among the sender id list",
+            duration: 6000,
+          });
+        } else if (data.status === 1) {
+          ElMessage({
+            type: "warning",
+            message: "PROCESSING, Sender id is processing for approval, when it is approved, you will see it among the sender id list",
+            duration: 6000,
+          });
+        } else if (data.status === 2) {
+          ElMessage({
+            type: "success",
+            message: "APPROVED, Sender id is approved!",
+            duration: 6000,
+          });
+        } else {
+          ElMessage({
+            type: "error",
+            message: "NOT APPROVED, Sender id is not approved, create another one.",
+            duration: 6000,
+          });
+        }
+        setIdToSubject({ mask: senderIDValidateForm.senderIdText })
+        senderIDValidateForm.senderIdText = "";
 
         getSenderId();
       } catch (err) {
@@ -1214,7 +1223,7 @@ export default {
         console.log(err);
       }
     };
-    
+
     const searchSenderIDs = computed(() => {
       if (!searchSenderText.value) return senderIDs.value;
       return senderIDs.value.filter((i) => {

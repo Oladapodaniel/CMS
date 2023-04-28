@@ -122,7 +122,7 @@
             </div>
           </div>
           <div
-            class="filter-options"
+            class="filter-options mt-3"
             :class="{ 'filter-options-shown': filterFormIsVissible }"
             id="ignore1"
           >
@@ -133,18 +133,18 @@
                     <div
                       class="col-12 col-sm-6 col-md-4 offset-sm-3 offset-md-0 form-group inp w-100"
                     >
-                      <input
+                      <el-input
                         type="text"
-                        class="input w-100"
+                        class="w-100"
                         placeholder="Offering"
                         v-model="filter.contribution"
                       />
                     </div>
 
                     <div class="col-12 col-md-4 form-group d-none d-md-block">
-                      <input
+                      <el-input
                         type="text"
-                        class="input w-100"
+                        class=" w-100"
                         placeholder="donor"
                         v-model="filter.donor"
                       />
@@ -273,8 +273,6 @@
               @current-change="handleCurrentChange"
             />
           </div>
-        <ConfirmDialog />
-        <Toast />
       </div>
     </div>
   </div>
@@ -285,14 +283,12 @@ import { ref, computed, watch, inject } from "vue";
 import axios from "@/gateway/backendapi";
 import Table from "@/components/table/Table";
 import router from "../../../router";
-// import { store } from "../../../store/store"
 import Pagination from "../../../components/pagination/PaginationButtons";
 import { useRoute } from "vue-router";
 import moment from "moment";
 import finish from "../../../services/progressbar/progress";
 import monthDayYear from "../../../services/dates/dateformatter";
 import printJS from "print-js";
-import Dropdown from "primevue/dropdown";
 import ContributionPieChart from "../../../components/charts/PieChart.vue";
 import ContributionAreaChart from "../../../components/charts/AreaChart.vue";
 import numbers_formatter from "../../../services/numbers/numbers_formatter";
@@ -308,7 +304,6 @@ export default {
     Pagination,
     ContributionAreaChart,
     ContributionPieChart,
-    Dropdown,
     loadingComponent,
   },
   setup(props, { emit }) {

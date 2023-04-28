@@ -1284,7 +1284,7 @@ export default {
       //   let arr = myDate.split('/');
       //   arr.unshift(arr.splice(2, 1)[0])
       //    return arr.join('-')
-      return new Date(date).toLocaleDateString().replaceAll('/', '-')
+      return new Date(date).toLocaleDateString("en-US").replaceAll('/', '-')
     }
     const createNewActivity = async () => {
       if (!newAcctivityDate.value && !selectedCategory.value) return false;

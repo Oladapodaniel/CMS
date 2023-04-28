@@ -37,7 +37,8 @@
       <template #footer>
         <span class="dialog-footer">
           <el-button class="secondary-button" @click="addToGroupDialog = false" round>Cancel</el-button>
-          <el-button type="primary" :color="primarycolor" :loading="allGroupLoading" @click="getAllMembersAndAddToGroup" round>
+          <el-button type="primary" :color="primarycolor" :loading="allGroupLoading" @click="getAllMembersAndAddToGroup"
+            round>
             Add to group
           </el-button>
         </span>
@@ -147,12 +148,12 @@
           <div class="col-md-9">
             <div class="row">
               <div class="
-                          col-12 col-sm-6
-                          offset-sm-3 offset-md-0
-                          form-group
-                          inp
-                          w-100
-                        ">
+                            col-12 col-sm-6
+                            offset-sm-3 offset-md-0
+                            form-group
+                            inp
+                            w-100
+                          ">
                 <el-input placeholder="First name" class="w-100" v-model="filter.name" @input="setFilteredValue" />
               </div>
               <div class="col-12 col-sm-6 form-group d-none d-md-block">
@@ -232,7 +233,7 @@
                   <router-link :to="`/tenant/people/add/${item.id}`" class="text-color">Edit</router-link>
                 </a></li>
               <li><a class="dropdown-item" href="#">
-                <div @click.prevent="showConfirmModal(item.id, index)" class="text-color">Delete</div>
+                  <div @click.prevent="showConfirmModal(item.id, index)" class="text-color">Delete</div>
                 </a></li>
             </ul>
           </div>
@@ -240,17 +241,12 @@
       </template>
     </Table>
     <div v-if="searchMember.length == 0">
-      <el-alert
-        title="Member not found"
-        type="warning"
-        description="Try searching with another keyword"
-        show-icon
-        center
-      />
+      <el-alert title="Member not found" type="warning" description="Try searching with another keyword" show-icon
+        center />
     </div>
     <div class="d-flex justify-content-end my-3" v-if="searchMember.length > 0">
       <el-pagination v-model:current-page="serverOptions.page" v-model:page-size="serverOptions.rowsPerPage" background
-        layout="total, prev, pager, next, jumper" :total="serverItemsLength" @size-change="handleSizeChange"
+        layout="prev, pager, next, jumper" :total="serverItemsLength" @size-change="handleSizeChange"
         @current-change="handleCurrentChange" />
     </div>
 
@@ -499,6 +495,7 @@ export default {
     const getMemberSummary = () => {
       store.dispatch('membership/setMembershipSummary').then(response => {
         membershipSummary.value = response
+        serverItemsLength.value = membershipSummary.value.totalMember
       })
     }
     getMemberSummary()
@@ -616,7 +613,6 @@ export default {
 
     watchEffect(() => {
       churchMembers.value = props.list
-      serverItemsLength.value = membershipSummary.value.totalMember
     })
 
     const toggleSelect = () => {
@@ -671,13 +667,13 @@ export default {
       paginatedTableLoading.value = true;
       searchingMember.value = true;
       let url =
-      `/api/Membership/GetSearchedUSers?searchText=${searchText.value}`;
+        `/api/Membership/GetSearchedUSers?searchText=${searchText.value}`;
       axios
-      .get(url)
-      .then((res) => {
-        paginatedTableLoading.value = false;
-        searchingMember.value = false;
-        searchPeopleNamesInDB.value = res.data.map((i) => {
+        .get(url)
+        .then((res) => {
+          paginatedTableLoading.value = false;
+          searchingMember.value = false;
+          searchPeopleNamesInDB.value = res.data.map((i) => {
             return {
               firstName: i.name.split(" ")[0],
               lastName: i.name.split(" ")[1],
