@@ -13,73 +13,101 @@
         </div>
         <div class="container-fluid mt-2 ">
             <div class="row py-5 " style="background: #ebeff4;  border-radius: 0.5rem;">
-                <div class="col-12 col-md-6 col-lg-3 mt-2 mt-sm-0 mt-md-0 mt-lg-0 ">
-                    <div><label for="" class="font-weight-bold">Select Members</label></div>
-                    <div>
-                        <MultiSelect v-model="selectedMember" :options="memberShips" optionLabel="name" placeholder="Select Member" :filter="true" class="multiselect-custom w-100">
-                            <template #value="slotProps">
-                                <div class="country-item country-item-value bg-secondary font-weight-bold small" v-for="option of slotProps.value" :key="option.code">
-                                    <div>{{option.name}}</div>
-                                </div>
-                                <template v-if="!slotProps.value || slotProps.value.length === 0">
-                                    Select Member
-                                </template>
-                            </template>
-                            <template #option="slotProps">
-                                <div class="country-item">
-                                    <div>{{slotProps.option.name}}</div>
-                                </div>
-                            </template>
-                        </MultiSelect>
-                    </div>
+              <div class="col-md-9 col-12">
+                <div class="row">
+                  <div class="col-12 col-md-6  mt-2 mt-sm-0 mt-md-0 mt-lg-0 ">
+                      <div><label for="" class="font-weight-bold">Select Members</label></div>
+                      <div>
+                          <MultiSelect v-model="selectedMember" :options="memberShips" optionLabel="name" placeholder="Select Member" :filter="true" class="multiselect-custom w-100">
+                              <template #value="slotProps">
+                                  <div class="country-item country-item-value bg-secondary font-weight-bold small" v-for="option of slotProps.value" :key="option.code">
+                                      <div>{{option.name}}</div>
+                                  </div>
+                                  <template v-if="!slotProps.value || slotProps.value.length === 0">
+                                      Select Member
+                                  </template>
+                              </template>
+                              <template #option="slotProps">
+                                  <div class="country-item">
+                                      <div>{{slotProps.option.name}}</div>
+                                  </div>
+                              </template>
+                          </MultiSelect>
+                      </div>
 
+                  </div>
+                  <div class="col-12 col-md-6 mt-2 mt-sm-0 mt-md-0 mt-lg-0 ">
+                      <div class=""><label for="" class=" ml-2 font-weight-bold">Gender</label></div>
+                      <div>
+                          <MultiSelect v-model="selectedGender" :options="memberGender" optionLabel="name" placeholder="Select gender" :filter="true" class="multiselect-custom w-100">
+                              <template #value="slotProps">
+                                  <div class="country-item country-item-value bg-secondary font-weight-bold small" v-for="option of slotProps.value" :key="option.code">
+                                      <div>{{option.name}}</div>
+                                  </div>
+                                  <template v-if="!slotProps.value || slotProps.value.length === 0">
+                                      Select Gender
+                                  </template>
+                              </template>
+                              <template #option="slotProps">
+                                  <div class="country-item">
+                                      <div>{{slotProps.option.name}}</div>
+                                  </div>
+                              </template>
+                          </MultiSelect>
+                      </div>
+                  </div>
+                  <div class="col-12 col-md-6  mt-2 mt-sm-0 mt-md-0 mt-lg-0 ">
+                      <div><label for="" class="font-weight-bold">Marital Status</label></div>
+                      <div>
+                          <MultiSelect v-model="selectedMaritalStatus" :options="memberMaritalStatus" optionLabel="name" placeholder="Marital status" :filter="true" class="multiselect-custom w-100">
+                              <template #value="slotProps">
+                                  <div class="country-item country-item-value bg-secondary font-weight-bold small " v-for="option of slotProps.value" :key="option.code">
+                                      <div>{{option.name}}</div>
+                                  </div>
+                                  <template v-if="!slotProps.value || slotProps.value.length === 0">
+                                      Marital status
+                                  </template>
+                              </template>
+                              <template #option="slotProps">
+                                  <div class="country-item">
+                                      <div>{{slotProps.option.name}}</div>
+                                  </div>
+                              </template>
+                          </MultiSelect>
+                      </div>
+                  </div>
+                  <!-- <div class="col-12 col-md-6  mt-2 mt-sm-0 mt-md-0 mt-lg-0 ">
+                      <div><label for="" class="font-weight-bold">Age Group</label></div>
+                      <div>
+                          <MultiSelect v-model="selectedMaritalStatus" :options="memberMaritalStatus" optionLabel="name" placeholder="Age group" :filter="true" class="multiselect-custom w-100">
+                              <template #value="slotProps">
+                                  <div class="country-item country-item-value bg-secondary font-weight-bold small " v-for="option of slotProps.value" :key="option.code">
+                                      <div>{{option.name}}</div>
+                                  </div>
+                                  <template v-if="!slotProps.value || slotProps.value.length === 0">
+                                      Age group
+                                  </template>
+                              </template>
+                              <template #option="slotProps">
+                                  <div class="country-item">
+                                      <div>{{slotProps.option.name}}</div>
+                                  </div>
+                              </template>
+                          </MultiSelect>
+                      </div>
+                  </div> -->
                 </div>
-                <div class="col-12 col-md-6 col-lg-3 mt-2 mt-sm-0 mt-md-0 mt-lg-0 ">
-                    <div class=""><label for="" class=" ml-2 font-weight-bold">Gender</label></div>
-                    <div>
-                        <MultiSelect v-model="selectedGender" :options="memberGender" optionLabel="name" placeholder="Select gender" :filter="true" class="multiselect-custom w-100">
-                            <template #value="slotProps">
-                                <div class="country-item country-item-value bg-secondary font-weight-bold small" v-for="option of slotProps.value" :key="option.code">
-                                    <div>{{option.name}}</div>
-                                </div>
-                                <template v-if="!slotProps.value || slotProps.value.length === 0">
-                                    Select Gender
-                                </template>
-                            </template>
-                            <template #option="slotProps">
-                                <div class="country-item">
-                                    <div>{{slotProps.option.name}}</div>
-                                </div>
-                            </template>
-                        </MultiSelect>
-                    </div>
-                </div>
-                <div class="col-12 col-md-6 col-lg-3 mt-2 mt-sm-0 mt-md-0 mt-lg-0 ">
-                    <div><label for="" class="font-weight-bold">Marital Status</label></div>
-                    <div>
-                        <MultiSelect v-model="selectedMaritalStatus" :options="memberMaritalStatus" optionLabel="name" placeholder="Marital status" :filter="true" class="multiselect-custom w-100">
-                            <template #value="slotProps">
-                                <div class="country-item country-item-value bg-secondary font-weight-bold small " v-for="option of slotProps.value" :key="option.code">
-                                    <div>{{option.name}}</div>
-                                </div>
-                                <template v-if="!slotProps.value || slotProps.value.length === 0">
-                                    Marital status
-                                </template>
-                            </template>
-                            <template #option="slotProps">
-                                <div class="country-item">
-                                    <div>{{slotProps.option.name}}</div>
-                                </div>
-                            </template>
-                        </MultiSelect>
-                    </div>
-                </div>
-                <div class="col-12 col-md-6 col-lg-3">
+              </div>
+              <div class="col-12 col-md-3 d-flex align-items-center ">
+                <div class="row ">
+                  <div class="col-12  ">
                     <label for="" ></label>
-                    <div class="mt-2" @click="genarateReport">
-                        <button class=" default-btn generate-report c-pointer font-weight-normal ">Generate Report </button>
+                    <div class="" @click="genarateReport">
+                        <button class="  default-btn generate-report c-pointer font-weight-normal ">Generate Report </button>
                     </div>
                 </div>
+                </div>
+              </div>
             </div>
         </div>
         <div id="element-to-print">

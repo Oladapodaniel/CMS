@@ -350,6 +350,7 @@ import finish from "../../../services/progressbar/progress"
 import SignUp from "./SignUp"
 import supportedCurrencies from "../../../services/user/flutterwaveSupportedCurrency"
 import { ElMessage } from 'element-plus'
+import { ElLoading } from 'element-plus';
 export default {
   components: {
     PaymentOptionModal,
