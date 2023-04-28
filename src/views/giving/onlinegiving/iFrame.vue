@@ -540,7 +540,7 @@ export default {
       try {
         let { data } = await axios.post('/initailizedonationpayment', donationObj.value)
         finish()
-        initializePaymentResponse.value = data.result;
+        initializePaymentResponse.value = data;
         callPayment.value = true
         loading.close();
       }
