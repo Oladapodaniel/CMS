@@ -1439,7 +1439,7 @@ export default {
             contributions
           )
           .then((res) => {
-            console.log(res);
+            console.log(res, 'ffff');
             localStorage.setItem(
               "contriTransact",
               JSON.stringify(res.data.returnObject)
