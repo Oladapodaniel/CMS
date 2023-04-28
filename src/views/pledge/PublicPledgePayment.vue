@@ -657,7 +657,7 @@ export default {
     };
     getFlutterwaveModules();
 
-    const confirmPayment = async (tx_ref, trans_id) => {
+    const confirmPayment = async (trans_id, tx_ref) => {
 
       try {
         const res = await axios.post(
