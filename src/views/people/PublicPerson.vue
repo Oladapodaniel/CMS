@@ -1123,14 +1123,6 @@ export default {
         "note",
         personNotes.value ? JSON.stringify(personNotes.value) : []
       );
-      // formData.append(
-      //   "customAttributeData",
-      //   dynamicCustomFields.value.map(i => ({
-      //   customAttributeID: i.id,
-      //   data: i.data,
-      //   entityID: route.params.personId
-      // }))
-      // );
       formData.append(
         "customAttributeData",
         JSON.stringify(
@@ -1141,10 +1133,6 @@ export default {
           }))
         )
       );
-      console.log(dynamicCustomFields.value, "😊😍🤣🤣😂");
-      console.log(formData);
-      /*eslint no-undef: "warn"*/
-      // NProgress.start();
       try {
         loading.value = true;
         let response = await axios.post(
@@ -1180,7 +1168,6 @@ export default {
       } catch (err) {
         console.log(err);
         loading.value = false;
-        // NProgress.done();
         if (err.toString().toLowerCase().includes("network error")) {
           toast.add({
             severity: "warn",

@@ -24,6 +24,7 @@
                   <Delete />
                 </el-icon>
               </div>
+
               <Table :data="searchedMessages" :headers="SMSHeaders" :checkMultipleItem="true"
                 @checkedrow="handleSelectionChange" v-loading="loading">
                 <template #message="{ item }">
@@ -33,16 +34,16 @@
                       query: { messageId: item.id },
                     }" class="text-decoration-none">
                       <!-- <el-tooltip class="box-item" effect="dark" :content="item.message" placement="top-start"> -->
-                        <span class="font-weight-600">{{
-                          item.message && item.message.length > 25
-                            ? `${item.message
-                              .split("")
-                              .slice(0, 25)
-                              .join("")}...`
-                            : item.message
-                              ? item.message
-                              : ""
-                        }}</span>
+                      <span class="font-weight-600">{{
+                        item.message && item.message.length > 25
+                        ? `${item.message
+                          .split("")
+                          .slice(0, 25)
+                          .join("")}...`
+                        : item.message
+                          ? item.message
+                          : ""
+                      }}</span>
                       <!-- </el-tooltip> -->
                     </router-link>
                   </div>
@@ -132,8 +133,11 @@
         <div class="conatiner">
           <div class="row">
             <div class="col-md-12 mb-3 pagination-container">
-              <PaginationButtons @getcontent="getSMSByPage" :itemsCount="itemsCount" :currentPage="currentPage"
-                :totalItems="sentSMS.totalItems" />
+              <!-- <PaginationButtons @getcontent="getSMSByPage" :itemsCount="itemsCount" :currentPage="currentPage"
+                :totalItems="sentSMS.totalItems" /> -->
+              <el-pagination v-model:current-page="serverOptions.page" v-model:page-size="serverOptions.rowsPerPage"
+                background layout="prev, pager, next, jumper" :total="totalItems" @size-change="handleSizeChange"
+                @current-change="handleCurrentChange" />
             </div>
           </div>
         </div>
@@ -144,11 +148,11 @@
 
 <script>
 import axios from "@/gateway/backendapi";
-import { computed, ref } from "vue";
+import { computed, ref, watch } from "vue";
 import communicationService from "../../services/communication/communicationservice";
 import { useStore } from "vuex";
 import UnitsArea from "../../components/units/UnitsArea";
-import PaginationButtons from "../../components/pagination/PaginationButtons";
+// import PaginationButtons from "../../components/pagination/PaginationButtons";
 import stopProgressBar from "../../services/progressbar/progress";
 import { ElMessage, ElMessageBox } from 'element-plus'
 import Table from "@/components/table/Table"
@@ -156,7 +160,7 @@ import Table from "@/components/table/Table"
 export default {
   components: {
     UnitsArea,
-    PaginationButtons,
+    // PaginationButtons,
     Table
   },
   setup() {
@@ -165,6 +169,7 @@ export default {
     const sentSMS = ref(store.getters["communication/allSentSMS"]);
     const currentPage = ref(0);
     const searchText = ref("");
+    const totalItems = ref(0)
     const SMSHeaders = ref([
       { name: ' MESSAGE', value: 'message' },
       { name: ' DATE', value: 'dateSent' },
@@ -172,36 +177,52 @@ export default {
       { name: ' UNIT', value: 'smsUnitsUsed' },
       { name: ' REPORT', value: 'report' },
     ])
+    const serverOptions = ref({
+      page: 1,
+      rowsPerPage: 100,
+    });
+
+    watch(serverOptions, () => {
+      getSMSByPage();
+    },
+      { deep: true }
+    );
 
 
 
     const getSentSMS = async () => {
       try {
         loading.value = true;
-        /*eslint no-undef: "warn"*/
-        NProgress.start();
         const data = await communicationService.getAllSentSMS(0);
         loading.value = false;
         if (data) {
           sentSMS.value = data.sentSMS;
+          totalItems.value = data.totalItems
         }
       } catch (error) {
         loading.value = false;
-        NProgress.done();
         console.log(error);
       }
     };
 
-    const getSMSByPage = async (page) => {
+    const getSMSByPage = async () => {
+      loading.value = true;
       try {
-        const data = await communicationService.getAllSentSMS(page);
+        const data = await communicationService.getAllSentSMS(serverOptions.value.page);
+        loading.value = false;
         if (data) {
           sentSMS.value = data.sentSMS;
-          currentPage.value = page;
+          currentPage.value = serverOptions.value.page;
           isSortedByStatus.value = true;
         }
       } catch (error) {
         console.log(error);
+        loading.value = false;
+        ElMessage({
+          type: 'error',
+          message: `Could not generate page ${serverOptions.value.page}, please try again`,
+          duration: 5000
+        })
       }
     };
 
@@ -330,6 +351,13 @@ export default {
       marked.value = val
     }
 
+    const handleSizeChange = (val) => {
+      console.log(`${val} items per page`)
+    }
+    const handleCurrentChange = (val) => {
+      console.log(`current page: ${val}`)
+    }
+
     return {
       sentSMS,
       loading,
@@ -348,7 +376,11 @@ export default {
       sortByStatus,
       isSortedByStatus,
       SMSHeaders,
-      handleSelectionChange
+      handleSelectionChange,
+      serverOptions,
+      handleCurrentChange,
+      handleSizeChange,
+      totalItems
     };
   },
 };
