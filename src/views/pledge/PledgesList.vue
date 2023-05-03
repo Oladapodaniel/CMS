@@ -52,7 +52,7 @@
       v-if="allPledgeList.length > 0 && !loading && !networkError"
     >
       <div
-        class="row border py-3 mt-3 rounded"
+        class="row border border-bottom-0 py-3 mt-3 rounded"
       >
         <div class="col-md-12 px-0 d-flex flex-wrap" v-for="(item, index) in pledgesSummary"
         :key="index">
@@ -105,8 +105,8 @@
               </span>
             </h3>
           </div>
-          <div class="col-md-12 px-0">
-          <hr class="bg-secondary font-weight-bold" />
+          <div class="col-md-12  px-0">
+          <hr class="bg-secondary " />
         </div>
         </div>
         
