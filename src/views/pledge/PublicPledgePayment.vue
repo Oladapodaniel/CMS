@@ -468,6 +468,8 @@ export default {
           amountToPledge.value = data.pledgeResponseDTO.amount
           amountToPayNow.value = data.pledgeResponseDTO.balance
           pledgedData.value = data.pledgeResponseDTO
+          selectedCurrency.value = data.pledgeResponseDTO.currency
+          selectedCurrencyCode.value = data.pledgeResponseDTO.currency.shortCode
           
         } else {
           memberAlreadyPledgedToPledgeItem.value = false
@@ -550,6 +552,7 @@ export default {
         cardLoading.value = false
         finish();
         if (route.query.pledgeDefinitionID) {
+          console.log(1)
           // For pledge definition
           contributionDetail.value = res.data.pledgeItemDTO;
           contributionDetail.value.pledgeItemDTOs = [res.data.pledgeItemDTO]
@@ -561,6 +564,8 @@ export default {
           pledgePaymentForm.value = contributionDetail.value.fillPaymentFormDTO
         } else if (route.query.pledgeID) {
           // For pledge
+          console.log(2)
+          console.log(res.data)
           let decomposedPledgeList = [{ ...res.data.pledgeItemDTO }]
           contributionDetail.value = res.data.pledgeItemDTO;
           contributionDetail.value.pledgeItemDTOs = decomposedPledgeList
@@ -576,10 +581,11 @@ export default {
           amountToPledge.value = res.data.pledgeResponseDTO.amount
           pledgedData.value = res.data.pledgeResponseDTO
           memberAlreadyPledgedToPledgeItem.value = true
-          selectedCurrency.value = contributionDetail.value.currency
-          selectedCurrencyCode.value = contributionDetail.value.currency.shortCode
+          selectedCurrency.value = res.data.pledgeResponseDTO.currency
+          selectedCurrencyCode.value = res.data.pledgeResponseDTO.currency.shortCode
           pledgePaymentForm.value = contributionDetail.value.fillPaymentFormDTO
         } else {
+          console.log(3)
           // Generic page
           contributionDetail.value.pledgeItemDTOs = res.data.pledgeItemDTOs;
           churchLogo2.value = res.data.pledgeItemDTOs[0].logo
