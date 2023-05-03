@@ -6,26 +6,29 @@
       <div class="">
         <div class="head-text">Partnership and Pledges</div>
       </div>
-      <div class="d-flex flex-column flex-sm-row mt-2  my-1 link">
+      <div class="d-flex flex-column flex-sm-row mt-2 my-1 link">
         <router-link class="mr-1" to="/tenant/pledge/pledgedefinitionlist">
           <el-button class="header-btn mr-3 w-100 secondary-button" round>
             Partnership/Pledge items
           </el-button>
         </router-link>
         <router-link class="" to="/tenant/pledge/makepledge">
-          <el-button :color="primarycolor" class="header-btn w-100 mt-3 mt-sm-0" round>
+          <el-button
+            :color="primarycolor"
+            class="header-btn w-100 mt-3 mt-sm-0"
+            round
+          >
             New Partnership/Pledge
           </el-button></router-link
         >
       </div>
     </div>
-    <div class="d-flex flex-wrap flex-column flex-sm-row row" v-if="route.fullPath == '/tenant/pledge/pledgeslist'">
-      <div
-        class="col-12 py-md-4 mt-3"
-      >
-        <div class="font-weight-bold">
-          Copy and Share the link 
-        </div>
+    <div
+      class="d-flex flex-wrap flex-column flex-sm-row row"
+      v-if="route.fullPath == '/tenant/pledge/pledgeslist'"
+    >
+      <div class="col-12 py-md-4 mt-3">
+        <div class="font-weight-bold">Copy and Share the link</div>
         <div class="p-inputgroup form-group mt-2">
           <el-input
             v-model="memberlink"
@@ -48,36 +51,65 @@
       class="container-fluid"
       v-if="allPledgeList.length > 0 && !loading && !networkError"
     >
-      <div class="row border py-3 mt-3 rounded">
-        <div class="col-sm-6 col-lg-4">
-          <div class="text-secondary font-weight-bold small">Total pledge</div>
-          <h3 class="font-weight-700 mt-3">
-            {{ Math.abs(getAllPledgeAmount.length == 0 ?  pledgesSummary.totalPledges : getAllPledgeAmount).toLocaleString()  }}.00
-            <span class="text-secondary small">{{
-              pledgesSummary.symbol
-            }}</span>
-          </h3>
-        </div>
-        <div class="col-sm-6 col-lg-4 mt-3 mt-sm-0">
-          <div class="font-weight-bold small text-secondary">
-            Total Payments
-          </div> 
-          <h3 class="font-weight-700 mt-3 text-success">
-            {{ Math.abs(getAllTotalPayment.length == 0 ? pledgesSummary.totalPayments : getAllTotalPayment ).toLocaleString() }}.00
-            <span class="small">{{ pledgesSummary.symbol }}</span>
-          </h3>
-        </div>
-        <div class="col-md-12 col-lg-4 mt-3 mt-md-0">
-          <div class="text-secondary font-weight-bold small">
-            Total Balance
+      <div
+        class="row border border-bottom-0 py-3 mt-3 rounded"
+      >
+        <div class="col-md-12 px-0 d-flex flex-wrap" v-for="(item, index) in pledgesSummary"
+        :key="index">
+          <div class="col-sm-6 col-lg-4">
+            <div class="text-secondary font-weight-bold small">
+              Total pledge
+            </div>
+            <h3 class="font-weight-700 mt-3">
+              {{
+                Math.abs(
+                  getAllPledgeAmount.length == 0
+                    ? item.totalPledges
+                    : getAllPledgeAmount
+                ).toLocaleString()
+              }}.00
+              <span class="text-secondary small">{{
+                item.symbol
+              }}</span>
+            </h3>
           </div>
-          <h3 class="font-weight-700 mt-3 text-danger">
-            {{ Math.abs(getAllTotalBalance.length == 0  ? pledgeBalance : getAllTotalBalance).toLocaleString()}}.00
-            <span class="small">
-              {{ pledgesSummary.symbol }}
-            </span>
-          </h3>
+          <div class="col-sm-6 col-lg-4 mt-3 mt-sm-0">
+            <div class="font-weight-bold small text-secondary">
+              Total Payments
+            </div>
+            <h3 class="font-weight-700 mt-3 text-success">
+              {{
+                Math.abs(
+                  getAllTotalPayment.length == 0
+                    ? item.totalPayments
+                    : getAllTotalPayment
+                ).toLocaleString()
+              }}.00
+              <span class="small">{{ item.symbol }}</span>
+            </h3>
+          </div>
+          <div class="col-md-12 col-lg-4 mt-3 mt-md-0">
+            <div class="text-secondary font-weight-bold small">
+              Total Balance
+            </div>
+            <h3 class="font-weight-700 mt-3 text-danger">
+              {{
+                Math.abs(
+                  getAllTotalBalance.length == 0
+                    ? item.totalPledges - item.totalPayments
+                    : getAllTotalBalance
+                ).toLocaleString()
+              }}.00
+              <span class="small">
+                {{ item.symbol }}
+              </span>
+            </h3>
+          </div>
+          <div class="col-md-12  px-0">
+          <hr class="bg-secondary " />
         </div>
+        </div>
+        
       </div>
     </div>
     <div
@@ -136,7 +168,8 @@
       </div>
       <div
         class="col-12 col-md-6 d-flex col-lg-2 mt-3 pl-lg-0 text-sm-center mt-lg-0"
-      ><div @click="reSet" class="mt-2 pr-2 text-primary ">Reset</div>
+      >
+        <div @click="reSet" class="mt-2 c-pointer pr-2 text-primary">Reset</div>
         <el-button
           :loading="filterLoading"
           class=""
@@ -234,15 +267,29 @@
     </div>
     <el-skeleton class="w-100" animated v-if="loading">
       <template #template>
-        <div style="display: flex;
-                align-items: center;
-                justify-content: space-between;
-                margin-top: 20px
-              ">
-          <el-skeleton-item variant="text" style="width: 240px; height: 240px" />
-          <el-skeleton-item variant="text" style="width: 240px; height: 240px" />
+        <div
+          style="
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin-top: 20px;
+          "
+        >
+          <el-skeleton-item
+            variant="text"
+            style="width: 240px; height: 240px"
+          />
+          <el-skeleton-item
+            variant="text"
+            style="width: 240px; height: 240px"
+          />
         </div>
-        <el-skeleton class="w-100 mt-5" style="height: 25px" :rows="20" animated />
+        <el-skeleton
+          class="w-100 mt-5"
+          style="height: 25px"
+          :rows="20"
+          animated
+        />
       </template>
     </el-skeleton>
     <div
@@ -286,7 +333,7 @@ export default {
     Table,
   },
   setup() {
-    const primarycolor = inject('primarycolor')
+    const primarycolor = inject("primarycolor");
     const networkError = ref(false);
     const route = useRoute();
     const selectedStatusID = ref(null);
@@ -354,16 +401,19 @@ export default {
       });
     };
     const copylink = () => {
-      selectedLink.value.input.setSelectionRange(0, selectedLink.value.input.value.length); /* For mobile devices */
+      selectedLink.value.input.setSelectionRange(
+        0,
+        selectedLink.value.input.value.length
+      ); /* For mobile devices */
       selectedLink.value.input.select();
 
       /* Copy the text inside the text field */
       document.execCommand("copy");
       ElMessage({
         showClose: true,
-        message: 'Copied to clipboard',
-        type: 'success',
-      })
+        message: "Copied to clipboard",
+        type: "success",
+      });
     };
 
     const setSelectedStatus = () => {
@@ -387,31 +437,50 @@ export default {
 
     const getAllPledgeDefinition = async () => {
       try {
-        const res = await pledge.getPledgeDefinition();;
+        const res = await pledge.getPledgeDefinition();
         allPledgeDefinitionList.value = res.returnObject;
       } catch (error) {
         console.log(error);
       }
     };
     getAllPledgeDefinition();
-    const getAllPledgeAmount = ref([])
-    const getAllTotalPayment = ref([])
-    const getAllTotalBalance = ref([])
+    const getAllPledgeAmount = ref([]);
+    const getAllTotalPayment = ref([]);
+    const getAllTotalBalance = ref([]);
     const filterPledge = async () => {
       filterLoading.value = true;
-      let selectedContactValue = selectedContact.value && selectedContact.value.id ? selectedContact.value.id : "";
-      let selectedCategoryValue = selectedCategory.value && selectedCategory.value.id  ? selectedCategory.value.id : "" ;
-      let selectedStatusValue = selectedStatus.value && selectedStatus.value.status ? selectedStatus.value.status : "" ;
-      let startDateValue = startDate.value ?  new Date(startDate.value ).toLocaleDateString("en-US") : ''
-      let endDateValue = endDate.value ? new Date(endDate.value).toLocaleDateString("en-US") : ''
+      let selectedContactValue =
+        selectedContact.value && selectedContact.value.id
+          ? selectedContact.value.id
+          : "";
+      let selectedCategoryValue =
+        selectedCategory.value && selectedCategory.value.id
+          ? selectedCategory.value.id
+          : "";
+      let selectedStatusValue =
+        selectedStatus.value && selectedStatus.value.status
+          ? selectedStatus.value.status
+          : "";
+      let startDateValue = startDate.value
+        ? new Date(startDate.value).toLocaleDateString("en-US")
+        : "";
+      let endDateValue = endDate.value
+        ? new Date(endDate.value).toLocaleDateString("en-US")
+        : "";
       try {
         const res = await axios.get(
           `/api/Pledge/GetAllPledgesSearch?personId=${selectedContactValue}&status=${selectedStatusValue}&pledgeItemID=${selectedCategoryValue}&startDate=${startDateValue}&endDate=${endDateValue}`
         );
         filterResult.value = res.data.returnObject;
-        getAllPledgeAmount.value = res.data.returnObject.map((i) => i.amount).reduce((b, a) => b + a, 0);
-        getAllTotalPayment.value = res.data.returnObject.map((i) => i.totalPaymentSum).reduce((b, a) => b + a, 0);
-        getAllTotalBalance.value = res.data.returnObject.map((i) => i.balance).reduce((b, a) => b + a, 0);
+        getAllPledgeAmount.value = res.data.returnObject
+          .map((i) => i.amount)
+          .reduce((b, a) => b + a, 0);
+        getAllTotalPayment.value = res.data.returnObject
+          .map((i) => i.totalPaymentSum)
+          .reduce((b, a) => b + a, 0);
+        getAllTotalBalance.value = res.data.returnObject
+          .map((i) => i.balance)
+          .reduce((b, a) => b + a, 0);
         console.log(getAllPledgeAmount.value, "jkkj");
         filterLoading.value = false;
       } catch (error) {
@@ -419,21 +488,26 @@ export default {
         console.log(error);
       }
     };
-    const reSet = () =>{
-      if(startDate.value || endDate.value || selectedCategory.value || selectedContact.value || selectedStatus.value ){
-        startDate.value = ""
-        endDate.value = ""
-        selectedCategory.value = new Object()
-        selectedContact.value  = new Object()
-        selectedStatus.value = new Object()
-        selectedCategoryID.value = null
-        selectedStatusID.value = null
-        getAllTotalBalance.value = []
-        getAllTotalPayment.value = []
-        getAllPledgeAmount.value = []
-      }      
-      
-    }
+    const reSet = () => {
+      if (
+        startDate.value ||
+        endDate.value ||
+        selectedCategory.value ||
+        selectedContact.value ||
+        selectedStatus.value
+      ) {
+        startDate.value = "";
+        endDate.value = "";
+        selectedCategory.value = new Object();
+        selectedContact.value = new Object();
+        selectedStatus.value = new Object();
+        selectedCategoryID.value = null;
+        selectedStatusID.value = null;
+        getAllTotalBalance.value = [];
+        getAllTotalPayment.value = [];
+        getAllPledgeAmount.value = [];
+      }
+    };
     const getCurrentlySignedInUser = async () => {
       try {
         const res = await axios.get("/api/Membership/GetCurrentSignedInUser");
@@ -462,7 +536,9 @@ export default {
         filterResult.value.length > 0 &&
         (selectedContact.value.name ||
           selectedStatus.value.status ||
-          selectedCategory.value.name || endDate.value || startDate.value )
+          selectedCategory.value.name ||
+          endDate.value ||
+          startDate.value)
       ) {
         return filterResult.value;
       } else {
@@ -528,7 +604,8 @@ export default {
           allPledgeList.value = allPledgeList.value.filter(
             (pledgelist) => pledgelist.id !== id
           );
-          store.dispatch('pledge/removePledgeFromStore', id)
+          store.dispatch("pledge/removePledgeFromStore", id);
+          getAllPledgesSummary()
         })
         .catch((err) => {
           if (err.response.status === 400) {
@@ -637,7 +714,7 @@ export default {
       allPledgeStatus,
       selectedStatus,
       date,
-      primarycolor
+      primarycolor,
       // singlePledge
     };
   },
