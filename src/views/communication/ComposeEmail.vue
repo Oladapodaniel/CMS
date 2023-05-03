@@ -941,7 +941,10 @@ export default {
 
 
       if (sendOrSchedule == 2) {
-        data.executionDate = executionDate.value;
+        const dateToBeExecuted = executionDate.value;
+        data.executionDate = new Date(dateToBeExecuted).toISOString();
+        data.date = new Date(dateToBeExecuted).toISOString();
+        // data.executionDate = executionDate.value;
         scheduleMessage(data);
       } else {
         sendSMS(data);

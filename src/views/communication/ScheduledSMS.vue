@@ -30,13 +30,13 @@
                 <template #subject="{ item }">
                   <span>
                     <span class="font-weight-600">{{
-                    !item.jsonActionParameters.subject ? "(no subject)" : item.jsonActionParameters.subject
+                    !item.subject ? "(no subject)" : item.subject
                     }}</span>
                   </span>
                 </template>
                 <template #message="{ item }">
                   <span class="font-weight-600 ">{{
-                  `${item.jsonActionParameters.message ? item.jsonActionParameters.message
+                  `${item.message ? item.message
                       .split("")
                       .slice(0, 30)
                       .join("") : ''}...`

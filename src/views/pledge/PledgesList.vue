@@ -52,9 +52,9 @@
       v-if="allPledgeList.length > 0 && !loading && !networkError"
     >
       <div
-        class="row border border-bottom-0 py-3 mt-3 rounded"
+        class="row border   mt-3 rounded"
       >
-        <div class="col-md-12 px-0 d-flex flex-wrap" v-for="(item, index) in pledgesSummary"
+        <div class="col-md-12 pt-3 py-2 border-remove px-0 d-flex flex-wrap" v-for="(item, index) in pledgesSummary"
         :key="index">
           <div class="col-sm-6 col-lg-4">
             <div class="text-secondary font-weight-bold small">
@@ -105,9 +105,9 @@
               </span>
             </h3>
           </div>
-          <div class="col-md-12  px-0">
-          <hr class="bg-secondary " />
-        </div>
+          <!-- <div class="col-md-12  px-0" v-if="pledgesSummary.length > 0 ">
+            <hr class="bg-secondary border-remove   " />
+          </div> -->
         </div>
         
       </div>
@@ -760,6 +760,12 @@ export default {
 
 .link a:hover {
   color: #fff;
+}
+.border-remove {
+  border-bottom: 1px solid rgb(189, 189, 189) !important;
+}
+.border-remove:last-child{
+  border: none !important;
 }
 
 .table {

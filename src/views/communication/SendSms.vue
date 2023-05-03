@@ -269,6 +269,13 @@
         <div class="p-0 col-md-10">
           <el-dropdown trigger="click" class="w-100">
             <el-input v-model="searchSenderText" placeholder="Search sender id">
+              <!-- <template #suffix>
+              <el-button style="padding: 5px; height: 22px;" @click.prevent="searchText = ''">
+                <el-icon :size="13">
+                  <Close />
+                </el-icon>
+              </el-button>
+              </template> -->
               <template #append>
                 <el-button>
                   <el-icon :size="15">
@@ -539,7 +546,7 @@
           <span class="dialog-footer">
             <el-button @click="display = false" class="secondary-button" round>Cancel</el-button>
             <el-button :color="primarycolor" @click="contructScheduleMessageBody(2, '')" round>
-              Confirm
+              Schedule
             </el-button>
           </span>
         </template>
@@ -924,10 +931,11 @@ export default {
         if (multipleContact.value instanceof File) {
           sendSMSToUploadedContacts(gateway);
         } else if (sendOrSchedule == 2) {
-          const dateToBeExecuted = executionDate.value.toISOString();
-          data.executionDate = dateToBeExecuted.split("T")[0];
-          data.date = dateToBeExecuted;
-          data.time = dateToBeExecuted.split("T")[1];
+          const dateToBeExecuted = executionDate.value;
+          data.executionDate = new Date(dateToBeExecuted).toISOString();;
+          // data.executionDate = dateToBeExecuted.split("T")[0];
+          data.date = new Date(dateToBeExecuted).toISOString();
+          data.time = new Date(dateToBeExecuted).toISOString().split("T")[1];
           scheduleMessage(data);
         } else {
           sendSMS(data);
