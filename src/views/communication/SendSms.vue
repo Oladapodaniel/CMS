@@ -596,7 +596,7 @@
 </template>
 
 <script>
-import { computed, onMounted, ref, inject, reactive } from "vue";
+import { computed, onMounted, ref, inject, reactive, watchEffect } from "vue";
 import composeService from "../../services/communication/composer";
 import composerObj from "../../services/communication/composer";
 import { useRoute } from "vue-router";
@@ -649,6 +649,7 @@ export default {
     const selectedSender = ref({});
     const searchSenderText = ref("");
     const senderIdRef = ref();
+    const iSoStringFormat = ref('')
     const requestbtn = ref(false);
     const sendSMSDialog = ref(false);
     const { mdAndUp, lgAndUp, xlAndUp, xsOnly } = deviceBreakpoint();
@@ -657,13 +658,15 @@ export default {
       groupsAreVissible.value = !groupsAreVissible.value;
     };
 
-    // const getCorrectDate = () =>{
-    //   const getTimeZonebyHours =  new Date(executionDate.value).getHours()
-    //   const getTimeZonebyminute =  new Date(executionDate.value).getMinutes()
-    //   const getTimeZonebySeconds =  new Date(executionDate.value).getSeconds()
-    //   console.log(getTimeZonebyHours, getTimeZonebyminute, getTimeZonebySeconds , "uuuuu");
-    // }
-    // getCorrectDate()
+    
+
+  watchEffect(() =>{
+      if(executionDate.value){
+       iSoStringFormat.value = dateFormatter.getISOStringGMT(executionDate.value)
+      }
+  })
+    
+   
 
     const showSection = (index) => {
       if (index === 1) groupSelectionTab.value = true;
@@ -945,11 +948,9 @@ export default {
         if (multipleContact.value instanceof File) {
           sendSMSToUploadedContacts(gateway);
         } else if (sendOrSchedule == 2) {
-          const dateToBeExecuted = executionDate.value;
-          data.executionDate = new Date(dateToBeExecuted).toISOString();;
-          // data.executionDate = dateToBeExecuted.split("T")[0];
-          data.date = new Date(dateToBeExecuted).toISOString();
-          data.time = new Date(dateToBeExecuted).toISOString().split("T")[1];
+          data.executionDate = iSoStringFormat.value
+          data.date = iSoStringFormat.value
+          data.time = iSoStringFormat.value.split("T")[1];
           scheduleMessage(data);
         } else {
           sendSMS(data);
@@ -1280,6 +1281,7 @@ export default {
 
     return {
       primarycolor,
+      iSoStringFormat,
       setSelectedSenderIdCheckin,
       editorData,
       // displays,
