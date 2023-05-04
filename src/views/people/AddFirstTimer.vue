@@ -41,7 +41,7 @@
             <el-form-item prop="phoneNumber" class="validate-phone">
               <div class="d-flex flex-column flex-lg-row justify-content-end w-100">
                 <label for="firstName" class="mr-3 font-weight-600">Phone number</label>
-                <el-input type="text" ref="validatePhone" @blur="checkForDuplicatePhone" class="input-width"
+                <el-input type="number" ref="validatePhone" @blur="checkForDuplicatePhone" class="input-width"
                   v-model="firstTimersObj.phoneNumber" placeholder="Phone number" />
               </div>
             </el-form-item>

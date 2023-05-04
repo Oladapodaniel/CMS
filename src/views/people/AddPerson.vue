@@ -60,7 +60,7 @@
             <el-form-item>
               <div class="d-flex flex-column flex-lg-row justify-content-end w-100">
                 <label for="firstName" class="mr-3 font-weight-600">Phone number</label>
-                <el-input type="text" class="input-width" v-model="person.mobilePhone" placeholder="Phone number" />
+                <el-input type="number" class="input-width" v-model="person.mobilePhone" placeholder="Phone number" />
               </div>
             </el-form-item>
             <el-form-item>
@@ -95,6 +95,39 @@
                 </div>
               </div>
             </el-form-item>
+            <el-form-item>
+                  <div class="d-flex flex-column flex-lg-row justify-content-end w-100">
+                    <label for="" class="mr-3 font-weight-600 related-info">Related information Including <br /><span
+                        class="small primary--text">small groups and cell/house
+                        fellowship
+                        membership</span></label>
+                    <div class="input-width d-flex">
+                      <el-tabs type="border-card" class="w-100">
+                        <el-tab-pane label="Group">
+                          <span v-for="(item, index) in peopleInGroupIDs" :key="item.id">| &nbsp;
+                            <span class="text-grey">{{ item.name }} &nbsp; <i
+                                class="pi pi-times-circle text-danger c-pointer"
+                                @click="showConfirmModal(index, item)"></i></span>&nbsp; | &nbsp;
+                          </span>
+                          <div>
+                            <button class="info-btn" data-toggle="modal" data-target="#addToGroup" @click.prevent="">
+                              Add to Group
+                            </button>
+                          </div>
+                        </el-tab-pane>
+                        <el-tab-pane label="Note">
+                          <div v-for="(item, index) in personNotes" :key="index">
+                            <div class="font-weight-700">{{ item.title }}</div>
+                            <div class="mb-2">{{ item.description }}</div>
+                          </div>
+                          <button class="info-btn" data-toggle="modal" data-target="#personNote" @click.prevent="">
+                            New Notes
+                          </button>
+                        </el-tab-pane>
+                      </el-tabs>
+                    </div>
+                  </div>
+                </el-form-item>
             <div class="d-flex align-items-center">
               <div class="font-weight-700">Celebrations </div>
               <el-divider>
@@ -197,39 +230,6 @@
                       <el-icon class="is-loading ml-2" v-if="customFileLoading">
                         <Loading />
                       </el-icon>
-                    </div>
-                  </div>
-                </el-form-item>
-                <el-form-item>
-                  <div class="d-flex flex-column flex-lg-row justify-content-end w-100">
-                    <label for="" class="mr-3 font-weight-600 related-info">Related information Including <br /><span
-                        class="small primary--text">small groups and cell/house
-                        fellowship
-                        membership</span></label>
-                    <div class="input-width d-flex">
-                      <el-tabs type="border-card" class="w-100">
-                        <el-tab-pane label="Group">
-                          <span v-for="(item, index) in peopleInGroupIDs" :key="item.id">| &nbsp;
-                            <span class="text-grey">{{ item.name }} &nbsp; <i
-                                class="pi pi-times-circle text-danger c-pointer"
-                                @click="showConfirmModal(index, item)"></i></span>&nbsp; | &nbsp;
-                          </span>
-                          <div>
-                            <button class="info-btn" data-toggle="modal" data-target="#addToGroup" @click.prevent="">
-                              Add to Group
-                            </button>
-                          </div>
-                        </el-tab-pane>
-                        <el-tab-pane label="Note">
-                          <div v-for="(item, index) in personNotes" :key="index">
-                            <div class="font-weight-700">{{ item.title }}</div>
-                            <div class="mb-2">{{ item.description }}</div>
-                          </div>
-                          <button class="info-btn" data-toggle="modal" data-target="#personNote" @click.prevent="">
-                            New Notes
-                          </button>
-                        </el-tab-pane>
-                      </el-tabs>
                     </div>
                   </div>
                 </el-form-item>

@@ -4,14 +4,10 @@
       <div class="col-md-12">
         <h4>Add Attendance</h4>
       </div>
-      <el-dialog v-model="display" title="Create Event Category"
-        :width="mdAndUp || lgAndUp || xlAndUp ? `50%` : `90%`">
+      <el-dialog v-model="display" title="Create Event Category" :width="mdAndUp || lgAndUp || xlAndUp ? `50%` : `90%`">
         <div class="row">
           <div class="col-md-12">
-            <CreateEventModal
-              @new-created="newCategoryCreated"
-              @closeeventmodal="closeModal"
-            />
+            <CreateEventModal @new-created="newCategoryCreated" @closeeventmodal="closeModal" />
           </div>
         </div>
       </el-dialog>
@@ -19,23 +15,12 @@
 
     <div class="row">
       <div class="col-md">
-        <div
-          class="modal"
-          tabindex="-1"
-          role="dialog"
-          id="newActModal"
-          :data-toggle="showBtModal"
-        >
+        <div class="modal" tabindex="-1" role="dialog" id="newActModal" :data-toggle="showBtModal">
           <div class="modal-dialog" role="document">
             <div class="modal-content">
               <div class="modal-header">
                 <h5 class="modal-title">Create Event</h5>
-                <button
-                  type="button"
-                  class="close"
-                  data-dismiss="modal"
-                  aria-label="Close"
-                >
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                   <span aria-hidden="true">&times;</span>
                 </button>
               </div>
@@ -46,59 +31,37 @@
                   </div>
                   <div class="col-md-7">
                     <div class="dropdown">
-                      <button
-                        class="default-btn w-100 text-left pr-1"
-                        type="button"
-                        style="
+                      <button class="default-btn w-100 text-left pr-1" type="button" style="
                           border-radius: 4px;
                           border: 1px solid #ced4da;
                           color: #6c757d;
-                        "
-                        id="dropdownMenuButton"
-                        data-toggle="dropdown"
-                        aria-haspopup="true"
-                        aria-expanded="false"
-                      >
+                        " id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                         {{ selectedCategoryName }}
                         <el-icon class="el-icon--right float-right
                             pr-1 ">
-                            <arrow-down />
-                          </el-icon>
-                        
+                          <arrow-down />
+                        </el-icon>
+
                       </button>
-                      <div
-                        class="dropdown-menu w-100"
-                        aria-labelledby="dropdownMenuButton"
-                        style="max-height: 350px; overflow-y: auto"
-                      >
+                      <div class="dropdown-menu w-100" aria-labelledby="dropdownMenuButton"
+                        style="max-height: 350px; overflow-y: auto">
                         <div class="row w-100 mx-auto">
                           <div class="col-md-12">
-                            <el-input
-                              type="text"
-                              class="w-100"
-                              placeholder="Find event"
-                              v-model="categorySearchText"
-                            />
+                            <el-input type="text" class="w-100" placeholder="Find event" v-model="categorySearchText" />
                           </div>
                         </div>
 
-                        <a
-                          class="
+                        <a class="
                             dropdown-item
                             font-weight-700
                             small-text
                             py-2
                             c-pointer
-                          "
-                          v-for="(category, index) in filteredCategories"
-                          :key="index"
-                          @click="selectCategory(category)"
-                          >{{ category.name }}</a
-                        >
+                          " v-for="(category, index) in filteredCategories" :key="index"
+                          @click="selectCategory(category)">{{ category.name }}</a>
 
                         <!-- Hidden -->
-                        <a
-                          class="
+                        <a class="
                             font-weight-bold
                             small-text
                             d-flex
@@ -107,12 +70,11 @@
                             text-decoration-none
                             primary-text
                             c-pointer
-                          "
-                          style="border-top: 1px solid #002044; color: #136acd"
-                          data-dismiss="modal"
-                          @click="() => (display = true)"
-                        >
-                          <el-icon class="mr-2"><CirclePlus /></el-icon>
+                          " style="border-top: 1px solid #002044; color: #136acd" data-dismiss="modal"
+                          @click="() => (display = true)">
+                          <el-icon class="mr-2">
+                            <CirclePlus />
+                          </el-icon>
                           Create new event
                         </a>
                       </div>
@@ -125,13 +87,8 @@
                     <label for="">Event date</label>
                   </div>
                   <div class="col-md-7">
-                    <el-date-picker
-                      v-model="newAcctivityDate"
-                      type="date"
-                      format="MM/DD/YYYY"
-                      size="large"
-                      class="w-100"
-                    />
+                    <el-date-picker v-model="newAcctivityDate" type="date" format="MM/DD/YYYY" size="large"
+                      class="w-100" />
                     <!-- <input
                       type="date"
                       class="form-control"
@@ -148,15 +105,8 @@
                     <el-button class="default-btn mr-2 secondary-button" data-dismiss="modal" round>
                       Cancel
                     </el-button>
-                    <el-button
-                      class=" border-0 ml-2 text-white"
-                      :color="primarycolor"
-                      round
-                      @click="createNewActivity"
-                      data-dismiss="modal"
-                      :data-toggle="showBtModal"
-                      ref="popModal"
-                    >
+                    <el-button class=" border-0 ml-2 text-white" :color="primarycolor" round @click="createNewActivity"
+                      data-dismiss="modal" :data-toggle="showBtModal" ref="popModal">
                       Save
                     </el-button>
                   </div>
@@ -181,13 +131,12 @@
                 <el-input class="w-100" placeholder="Select from events and activities" v-model="selectedEvent.name" />
                 <template #dropdown>
                   <el-dropdown-menu class="menu-height">
-                    <el-dropdown-item v-for="(event, index) in filteredEvents" :key="index"
-                      @click="selectEvent(event)">{{ event.name }}</el-dropdown-item>
+                    <el-dropdown-item v-for="(event, index) in filteredEvents" :key="index" @click="selectEvent(event)">{{
+                      event.name }}</el-dropdown-item>
                     <el-dropdown-item class="d-flex justify-content-center text-primary font-weight-700"
-                      data-toggle="modal" data-target="#newActModal"
-                        ref="openModalBtn" divided><el-icon>
+                      data-toggle="modal" data-target="#newActModal" ref="openModalBtn" divided><el-icon>
                         <CirclePlus />
-                      </el-icon> 
+                      </el-icon>
                       Create new event
                     </el-dropdown-item>
                   </el-dropdown-menu>
@@ -290,63 +239,41 @@
                 check-on-click-node
                 class="w-100"
               /> -->
-            <button
-              class="
+            <button class="
                 form-control
                 d-flex
                 justify-content-between
                 align-items-center
                 exempt-hide
-              "
-              @click="setGroupProp"
-            >
+              " @click="setGroupProp">
               <span class="exempt-hide">
-                <span
-                  v-if="selectedGroups.length > 0 && selectedGroups.length <= 2"
-                >
-                
-                  <span v-for="item in selectedGroups" :key="item.id"
-                    ><span class="eachGroup">{{ item && item.name }}</span></span>
+                <span v-if="selectedGroups.length > 0 && selectedGroups.length <= 2">
+
+                  <span v-for="item in selectedGroups" :key="item.id"><span class="eachGroup">{{ item && item.name
+                  }}</span></span>
                 </span>
-                <span
-                  v-if="selectedGroups.length > 0 && selectedGroups.length > 2"
-                >
-                  <span
-                    v-for="item in selectedGroups.slice(0, 2)"
-                    :key="item.id"
-                    >
-                    <span class="eachGroup">{{  item.name  }}</span></span>
+                <span v-if="selectedGroups.length > 0 && selectedGroups.length > 2">
+                  <span v-for="item in selectedGroups.slice(0, 2)" :key="item.id">
+                    <span class="eachGroup">{{ item.name }}</span></span>
                 </span>
                 <span v-if="selectedGroups.length === 0">Select group</span>
               </span>
               <el-icon class="el-icon--right
                   pr-1 ">
-                  <arrow-down />
-                </el-icon>
+                <arrow-down />
+              </el-icon>
             </button>
-            <div
-              class="div-card p-2 exempt-hide"
-              :class="{
+            <div class="div-card p-2 exempt-hide" :class="{
                 'd-none': hideDiv,
                 'd-block': !hideDiv,
-              }"
-            >
+              }">
               <el-icon class="is-loading " v-if="grouploading && groups.length === 0">
-              <Loading />
-            </el-icon>
-              <el-input
-                type="text"
-                class="w-100 exempt-hide"
-                v-model="searchGroupText"
-                ref="searchGroupRef"
-                placeholder="Search for group"
-              />
-              <GroupTree
-                :items="searchForGroups"
-                :addGroupValue="true"
-                @filteredGroup="setFilterGroups"
-                @newgroup="setNewGroup"
-              />
+                <Loading />
+              </el-icon>
+              <el-input type="text" class="w-100 exempt-hide" v-model="searchGroupText" ref="searchGroupRef"
+                placeholder="Search for group" />
+              <GroupTree :items="searchForGroups" :addGroupValue="true" @filteredGroup="setFilterGroups"
+                @newgroup="setNewGroup" />
             </div>
           </div>
         </div>
@@ -358,114 +285,75 @@
               <span class="mt-2" :class="{
                   rollIcon: templateDisplay,
                   closeIcon: !templateDisplay,
-                }"
-                @click="toggleTemplate"><el-icon><ArrowUp /></el-icon></span>
+                }" @click="toggleTemplate"><el-icon>
+                  <ArrowUp />
+                </el-icon></span>
             </div>
           </div>
         </div>
 
-        <div
-          class="row"
-          :class="{
+        <div class="row" :class="{
             'show-tem-free': templateDisplay && addFreeClass,
             'show-tem': templateDisplay && addPaidClass,
             'hide-tem': !templateDisplay,
-          }"
-        >
+          }">
           <div class="container-fluid">
             <div class="row my-3">
-              <div
-                class="
+              <div class="
                   col-sm-3 col-md-4 col-lg-4
                   text-sm-right
                   align-self-center
-                "
-              >
+                ">
                 <label for="" class="font-weight-600">Event Banner</label>
               </div>
-              <div
-                v-if="imageUrl"
-                class="col-sm-5 col-md-4 col-lg-4"
-                :class="{ 'img-border ': imageUrl === '' }"
-              >
+              <div v-if="imageUrl" class="col-sm-5 col-md-4 col-lg-4" :class="{ 'img-border ': imageUrl === '' }">
                 <img :src="imageUrl" class="w-100" />
-                <div
-                  class="
+                <div class="
                     col-12 col-sm-12 col-md-12
                     px-0
                     mx-0
                     d-flex
                     text-center
                     cursor-pointer
-                  "
-                >
+                  ">
                   <div class="d-flex col-md-12 px-0 mx-0">
-                    <input
-                      type="text"
-                      class="form-control border-right-0"
-                      v-model="image.name"
-                    />
-                    <div
-                      class="
+                    <input type="text" class="form-control border-right-0" v-model="image.name" />
+                    <div class="
                         upload-button
                         align-self-center
                         text-center
                         cursor-pointer
-                      "
-                      @click="altClick"
-                    >
+                      " @click="altClick">
                       Upload
-                      <input
-                        type="file"
-                        @change="chooseFile"
-                        ref="binImage"
-                        hidden
-                      />
+                      <input type="file" @change="chooseFile" ref="binImage" hidden />
                     </div>
                   </div>
                 </div>
               </div>
-              <div
-                v-if="!imageUrl"
-                class="
+              <div v-if="!imageUrl" class="
                   col-12 col-sm-6 col-md-6
                   px-0
                   mx-0
                   d-flex
                   text-center
                   cursor-pointer
-                "
-              >
+                ">
                 <div class="d-flex col-md-10">
-                  <input
-                    type="text"
-                    class="form-control"
-                    v-model="image.name"
-                  />
-                  <div
-                    class="upload-button text-center cursor-pointer"
-                    @click="altClick"
-                  >
+                  <input type="text" class="form-control" v-model="image.name" />
+                  <div class="upload-button text-center cursor-pointer" @click="altClick">
                     Upload
-                    <input
-                      type="file"
-                      @change="chooseFile"
-                      ref="binImage"
-                      hidden
-                    />
+                    <input type="file" @change="chooseFile" ref="binImage" hidden />
                   </div>
                 </div>
               </div>
 
               <!-- <div class="col-sm-3 col-md-4"></div> -->
-              <div
-                class="
+              <div class="
                   col-sm-12 col-md-12 col-lg-12
                   d-flex
                   justify-content-center
                   mt-2
-                "
-              >
+                ">
                 <div class="col-sm-7 col-md-4">
                   Browse or Drop your banner here.Maximum 5MB in size JPG, PNG,
                   or GIF formats.
@@ -474,21 +362,15 @@
             </div>
 
             <div class="row my-3">
-              <div
-                class="
+              <div class="
                   col-sm-3 col-md-4 col-lg-4
                   text-sm-right
                   align-self-center
-                "
-              >
+                ">
                 <label for="" class="font-weight-600">Event Details</label>
               </div>
               <div class="col-sm-7 col-md-6 col-lg-5">
-                <el-input
-                  v-model="eventDetails"
-                  :rows="2"
-                  type="textarea"
-                />
+                <el-input v-model="eventDetails" :rows="2" type="textarea" />
                 <!-- <textarea
                   name=""
                   id=""
@@ -501,22 +383,15 @@
             </div>
 
             <div class="row my-3">
-              <div
-                class="
+              <div class="
                   col-sm-3 col-md-4 col-lg-4
                   text-sm-right
                   align-self-center
-                "
-              >
+                ">
                 <label for="" class="font-weight-600">Slot</label>
               </div>
               <div class="col-sm-7 col-md-6 col-lg-5">
-                <el-input
-                  type="number"
-                  class="w-100"
-                  v-model="slot"
-                  placeholder="slot available"
-                />
+                <el-input type="number" class="w-100" v-model="slot" placeholder="slot available" />
               </div>
             </div>
 
@@ -525,96 +400,59 @@
               <div class="col-sm-7 col-md-6 col-lg-5">
                 <div class="row">
                   <div class="col-sm-4 align-self-center">
-                    <span
-                      class="font-weight-700 cursor-pointer"
-                      @click="showFreeTab"
-                      :class="{ 'active-tab': addFreeClass }"
-                      >Free</span
-                    >&nbsp;&nbsp;/&nbsp;&nbsp;<span
-                      class="font-weight-700 cursor-pointer"
-                      @click="showPaidTab"
-                      :class="{ 'active-tab': addPaidClass }"
-                      >Paid</span
-                    >
+                    <span class="font-weight-700 cursor-pointer" @click="showFreeTab"
+                      :class="{ 'active-tab': addFreeClass }">Free</span>&nbsp;&nbsp;/&nbsp;&nbsp;<span
+                      class="font-weight-700 cursor-pointer" @click="showPaidTab"
+                      :class="{ 'active-tab': addPaidClass }">Paid</span>
                   </div>
-                  <div
-                    class="col-sm-8 mt-3 mt-sm-0"
-                    :class="{
+                  <div class="col-sm-8 mt-3 mt-sm-0" :class="{
                       'show-amount': addPaidClass,
                       'hide-amount': !addPaidClass,
-                    }"
-                  >
-                    <el-input
-                      type="text"
-                      class="w-100"
-                      placeholder="Enter amount"
-                      v-model="amount"
-                    />
+                    }">
+                    <el-input type="text" class="w-100" placeholder="Enter amount" v-model="amount" />
                   </div>
                 </div>
               </div>
               <div class="col-sm-2 col-lg-3"></div>
 
-              <div
-                class="col-12"
-                :class="{
+              <div class="col-12" :class="{
                   'show-paid': addPaidClass,
                   'hide-paid': !addPaidClass,
-                }"
-              >
+                }">
                 <div class="row">
-                  <div
-                    class="
+                  <div class="
                       col-sm-3 col-md-4 col-lg-4
                       text-sm-right
                       mt-4
                       font-weight-600
-                    "
-                  >
+                    ">
                     Select Bank
                   </div>
                   <div class="col-sm-7 col-md-6 col-lg-5">
                     <div class="dropdown w-100 mt-4">
-                      <button
-                        class="default-btn w-100 text-left pr-1"
-                        type="button"
-                        style="
+                      <button class="default-btn w-100 text-left pr-1" type="button" style="
                           border-radius: 4px;
                           border: 1px solid #ced4da;
                           color: #6c757d;
-                        "
-                        id="dropdownMenuButton"
-                        data-toggle="dropdown"
-                        aria-haspopup="true"
-                        aria-expanded="false"
-                      >
+                        " id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                         {{
                           !selectedBank
-                            ? "Select"
-                            : selectedBank.name.length > 27
+                          ? "Select"
+                          : selectedBank.name.length > 27
                             ? `${selectedBank.name.slice(0, 27)}...`
                             : selectedBank.name
                         }}
                         <el-icon class="manual-dd-icon
                             float-right
-                            pr-1"><ArrowDown /></el-icon>
+                            pr-1">
+                          <ArrowDown />
+                        </el-icon>
                       </button>
-                      <div
-                        class="dropdown-menu p-2"
-                        aria-labelledby="dropdownMenuButton"
-                        style="max-height: 350px; overflow-y: auto"
-                      >
-                        <el-input
-                          type="text"
-                          class="w-100"
-                          placeholder="Search bank"
-                          v-model="bankSearchText"
-                        />
-                        <a
-                          class="dropdown-item elipsis-items cursor-pointer"
-                          v-for="item in filteredBanks"
-                          :key="item.id"
-                        >
+                      <div class="dropdown-menu p-2" aria-labelledby="dropdownMenuButton"
+                        style="max-height: 350px; overflow-y: auto">
+                        <el-input type="text" class="w-100" placeholder="Search bank" v-model="bankSearchText" />
+                        <a class="dropdown-item elipsis-items cursor-pointer" v-for="item in filteredBanks"
+                          :key="item.id">
                           <div @click="setBank(item)">
                             {{ item ? item.name : "" }}
                           </div>
@@ -623,82 +461,55 @@
                     </div>
                   </div>
                   <div class="col-sm-2 col-lg-3"></div>
-                  <div
-                    class="
+                  <div class="
                       col-sm-3 col-md-4 col-lg-4
                       text-sm-right
                       mt-4
                       font-weight-600
-                    "
-                  >
+                    ">
                     Account Number
                   </div>
                   <div class="col-sm-7 col-md-6 col-lg-5">
-                    <el-input
-                      type="text"
-                      class="w-100 mt-4 input-height"
-                      placeholder="Enter account number"
-                      v-model="accountNumber"
-                      @blur="resolveCustomerDetail"
-                    />
+                    <el-input type="text" class="w-100 mt-4 input-height" placeholder="Enter account number"
+                      v-model="accountNumber" @blur="resolveCustomerDetail" />
                   </div>
                   <div class="col-sm-2 col-lg-3"></div>
 
-                  <div
-                    class="
+                  <div class="
                       col-sm-3 col-md-4 col-lg-4
                       text-sm-right
                       mt-4
                       font-weight-600
-                    "
-                  >
+                    ">
                     Account Name
                   </div>
                   <div class="col-sm-7 col-md-6 col-lg-5">
-                    <el-input
-                      type="text"
-                      class="w-100 mt-4 input-height"
-                      placeholder="account name"
-                      v-model="accountName"
-                      ref="accNameRef"
-                      disabled
-                    />
+                    <el-input type="text" class="w-100 mt-4 input-height" placeholder="account name" v-model="accountName"
+                      ref="accNameRef" disabled />
                   </div>
-                  <div
-                    class="col-sm-2 col-lg-3 align-self-center mt-4"
-                    v-if="loading"
-                  >
-                    <div
-                      class="spinner-border text-primary"
-                      style="width: 3rem; height: 3rem"
-                      role="status"
-                    >
+                  <div class="col-sm-2 col-lg-3 align-self-center mt-4" v-if="loading">
+                    <div class="spinner-border text-primary" style="width: 3rem; height: 3rem" role="status">
                       <span class="sr-only">Loading...</span>
                     </div>
                   </div>
 
-                  <div
-                    class="
+                  <div class="
                       col-sm-3 col-md-4 col-lg-4
                       text-sm-right
                       mt-4
                       font-weight-600
-                    "
-                  >
-                    Income Account 
+                    ">
+                    Income Account
                   </div>
                   <div class="col-sm-7 col-md-6 col-lg-5">
                     <el-dropdown trigger="click" class="w-100 mt-4">
                       <span class="el-dropdown-link w-100">
-                        <div
-                          class="d-flex justify-content-between border-contribution text-secondary w-100"
-                          size="large"
-                        >
+                        <div class="d-flex justify-content-between border-contribution text-secondary w-100" size="large">
                           <span>{{
                             selectedIncomeAccount &&
                             Object.keys(selectedIncomeAccount).length > 0
-                              ? selectedIncomeAccount.text
-                              : "Select"
+                            ? selectedIncomeAccount.text
+                            : "Select"
                           }}</span>
                           <div>
                             <el-icon class="el-icon--right">
@@ -707,55 +518,34 @@
                           </div>
                         </div>
                       </span>
-                        <template #dropdown>
-                          <el-dropdown-menu>
-                            <el-dropdown-item
-                              v-for="(itm, indx) in incomeAccount"
-                              :key="indx"
-                              @click="setIncomeAccount(itm)"
-                              >{{ itm.text }}
-                            </el-dropdown-item>
-                          </el-dropdown-menu>
-                        </template>
+                      <template #dropdown>
+                        <el-dropdown-menu>
+                          <el-dropdown-item v-for="(itm, indx) in incomeAccount" :key="indx"
+                            @click="setIncomeAccount(itm)">{{ itm.text }}
+                          </el-dropdown-item>
+                        </el-dropdown-menu>
+                      </template>
                     </el-dropdown>
-                    <!-- <el-select-v2
-                        v-model="selectedIncomeAccountID"
-                        class="w-100 mt-4 font-weight-normal"
-                        :options="
-                          incomeAccount.map((i) => ({
-                            label: i.text,
-                            value: i.id,
-                          }))
-                        "
-                        placeholder="Select"
-                        @change="setIncomeAccount"
-                        size="large"
-                      /> -->
                   </div>
                   <div class="col-sm-2 col-lg-3"></div>
 
-                  <div
-                    class="
+                  <div class="
                       col-sm-3 col-md-4 col-lg-4
                       text-sm-right
                       mt-4
                       font-weight-600
-                    "
-                  >
+                    ">
                     Cash Account
                   </div>
                   <div class="col-sm-7 col-md-6 col-lg-5">
                     <el-dropdown trigger="click" class="w-100 mt-4">
                       <span class="el-dropdown-link w-100">
-                        <div
-                          class="d-flex justify-content-between border-contribution text-secondary w-100"
-                          size="large"
-                        >
+                        <div class="d-flex justify-content-between border-contribution text-secondary w-100" size="large">
                           <span>{{
                             selectedCashAccount &&
                             Object.keys(selectedCashAccount).length > 0
-                              ? selectedCashAccount.text
-                              : "Select"
+                            ? selectedCashAccount.text
+                            : "Select"
                           }}</span>
                           <div>
                             <el-icon class="el-icon--right">
@@ -764,30 +554,14 @@
                           </div>
                         </div>
                       </span>
-                        <template #dropdown>
-                          <el-dropdown-menu>
-                            <el-dropdown-item
-                              v-for="(itm, indx) in cashBankAccount"
-                              :key="indx"
-                              @click="setcashBankAccount(itm)"
-                              >{{ itm.text }}
-                            </el-dropdown-item>
-                          </el-dropdown-menu>
-                        </template>
+                      <template #dropdown>
+                        <el-dropdown-menu>
+                          <el-dropdown-item v-for="(itm, indx) in cashBankAccount" :key="indx"
+                            @click="setcashBankAccount(itm)">{{ itm.text }}
+                          </el-dropdown-item>
+                        </el-dropdown-menu>
+                      </template>
                     </el-dropdown>
-                    <!-- <el-select-v2
-                        v-model="selectedCashAccountID"
-                        class="w-100 mt-4 font-weight-normal"
-                        :options="
-                          cashBankAccount.map((i) => ({
-                            label: i.text,
-                            value: i.id,
-                          }))
-                        "
-                        placeholder="Select"
-                        @change="setcashBankAccount"
-                        size="large"
-                      /> -->
                   </div>
                   <div class="col-sm-2 col-lg-3"></div>
                 </div>
@@ -795,221 +569,93 @@
             </div>
 
             <div class="row mt-3">
-              <div
-                class="
+              <div class="
                   col-sm-3 col-md-4 col-lg-4
                   text-sm-right
                   align-self-center
-                "
-              >
+                ">
                 <label for="" class="font-weight-600">SMS</label>
               </div>
               <div class="col-sm-7 col-md-6 col-lg-5 mt-2">
                 <ul class="nav nav-tabs" id="myTab" role="tablist">
                   <li class="nav-item">
-                    <a
-                      class="nav-link active"
-                      id="home-tab"
-                      data-toggle="tab"
-                      href="#home"
-                      role="tab"
-                      aria-controls="home"
-                      aria-selected="true"
-                      >Checkin</a
-                    >
+                    <a class="nav-link active" id="home-tab" data-toggle="tab" href="#home" role="tab"
+                      aria-controls="home" aria-selected="true">Checkin</a>
                   </li>
                   <li class="nav-item">
-                    <a
-                      class="nav-link"
-                      id="profile-tab"
-                      data-toggle="tab"
-                      href="#profile"
-                      role="tab"
-                      aria-controls="profile"
-                      aria-selected="false"
-                      >Registration</a
-                    >
+                    <a class="nav-link" id="profile-tab" data-toggle="tab" href="#profile" role="tab"
+                      aria-controls="profile" aria-selected="false">Registration</a>
                   </li>
                 </ul>
                 <div class="tab-content" id="myTabContent">
-                  <div
-                    class="tab-pane fade show active"
-                    id="home"
-                    role="tabpanel"
-                    aria-labelledby="home-tab"
-                  >
-                  <el-input
-                    v-model="checkinSMS"
-                    :rows="2"
-                    type="textarea"
-                    class="mt-2"
-                  />
-                    <!-- <textarea
-                      name=""
-                      id=""
-                      cols="30"
-                      rows="3"
-                      class="form-control mt-2"
-                      v-model="checkinSMS"
-                    ></textarea> -->
+                  <div class="tab-pane fade show active" id="home" role="tabpanel" aria-labelledby="home-tab">
+                    <SenderIdVue @setselectedsenderid="setSelectedSenderIdCheckin" />
+                    <el-input v-model="checkinSMS" :rows="4" type="textarea" class="mt-2" />
                   </div>
-                  <div
-                    class="tab-pane fade"
-                    id="profile"
-                    role="tabpanel"
-                    aria-labelledby="profile-tab"
-                  >
-                  <el-input
-                    v-model="registrationSMS"
-                    :rows="2"
-                    type="textarea"
-                    class="mt-2"
-                  />
-                    <!-- <textarea
-                      name=""
-                      id=""
-                      cols="30"
-                      rows="3"
-                      class="form-control mt-2"
-                      v-model="registrationSMS"
-                    ></textarea> -->
+                  <div class="tab-pane fade" id="profile" role="tabpanel" aria-labelledby="profile-tab">
+                    <SenderIdVue @setselectedsenderid="setSelectedSenderIdRegistration" />
+                    <el-input v-model="registrationSMS" :rows="4" type="textarea" class="mt-2" />
                   </div>
                 </div>
               </div>
 
               <div class="col-sm-2 col-lg-3"></div>
 
-              <div
-                class="
+              <div class="
                   col-sm-3 col-md-4 col-lg-4
                   text-sm-right
                   mt-3
                   align-self-center
-                "
-              >
+                ">
                 <label for="" class="font-weight-600">Email</label>
               </div>
               <div class="col-sm-7 col-md-6 col-lg-5 mt-3">
                 <ul class="nav nav-tabs" id="myTab" role="tablist">
                   <li class="nav-item">
-                    <a
-                      class="nav-link active"
-                      id="home-tab"
-                      data-toggle="tab"
-                      href="#first"
-                      role="tab"
-                      aria-controls="home"
-                      aria-selected="true"
-                      >Checkin</a
-                    >
+                    <a class="nav-link active" id="home-tab" data-toggle="tab" href="#first" role="tab"
+                      aria-controls="home" aria-selected="true">Checkin</a>
                   </li>
                   <li class="nav-item">
-                    <a
-                      class="nav-link"
-                      id="profile-tab"
-                      data-toggle="tab"
-                      href="#second"
-                      role="tab"
-                      aria-controls="profile"
-                      aria-selected="false"
-                      >Registration</a
-                    >
+                    <a class="nav-link" id="profile-tab" data-toggle="tab" href="#second" role="tab"
+                      aria-controls="profile" aria-selected="false">Registration</a>
                   </li>
                 </ul>
                 <div class="tab-content" id="myTabContent">
-                  <div
-                    class="tab-pane fade show active"
-                    id="first"
-                    role="tabpanel"
-                    aria-labelledby="home-tab"
-                  >
-                  <el-input
-                    v-model="checkinEmail"
-                    :rows="2"
-                    type="textarea"
-                    class="mt-2"
-                  />
-                    <!-- <textarea
-                      name=""
-                      id=""
-                      cols="30"
-                      rows="3"
-                      class="form-control mt-2"
-                      v-model="checkinEmail"
-                    ></textarea> -->
+                  <div class="tab-pane fade show active" id="first" role="tabpanel" aria-labelledby="home-tab">
+                    <el-input v-model="checkinEmailSubject" type="text" class="mt-2" />
+                    <el-input v-model="checkinEmail" :rows="4" type="textarea" class="mt-2" />
                   </div>
-                  <div
-                    class="tab-pane fade"
-                    id="second"
-                    role="tabpanel"
-                    aria-labelledby="profile-tab"
-                  >
-                   <el-input
-                    v-model="registrationEmail"
-                    :rows="2"
-                    type="textarea"
-                    class="mt-2"
-                  />
-                    
-                    <!-- <textarea
-                      name=""
-                      id=""
-                      cols="30"
-                      rows="3"
-                      class="form-control mt-2"
-                      v-model="registrationEmail"
-                    ></textarea> -->
+                  <div class="tab-pane fade" id="second" role="tabpanel" aria-labelledby="profile-tab">
+                    <el-input v-model="registrationEmailSubject" type="text" class="mt-2" />
+                    <el-input v-model="registrationEmail" :rows="4" type="textarea" class="mt-2" />
                   </div>
                 </div>
               </div>
 
               <div class="col-sm-2 col-lg-3"></div>
 
-              <div
-                class="
+              <div class="
                   col-sm-3 col-md-4 col-lg-4
                   text-sm-right
                   mt-3
                   align-self-center
-                "
-              >
+                ">
                 <label for="" class="font-weight-600">Cut-off time</label>
               </div>
               <div class="col-sm-7 col-md-6 col-lg-5 mt-3">
                 <ul class="nav nav-tabs" id="myTab" role="tablist">
                   <li class="nav-item">
-                    <a
-                      class="nav-link active"
-                      id="home-tab"
-                      data-toggle="tab"
-                      href="#checkintime"
-                      role="tab"
-                      aria-controls="home"
-                      aria-selected="true"
-                      >Checkin</a
-                    >
+                    <a class="nav-link active" id="home-tab" data-toggle="tab" href="#checkintime" role="tab"
+                      aria-controls="home" aria-selected="true">Checkin</a>
                   </li>
                   <li class="nav-item">
-                    <a
-                      class="nav-link"
-                      id="profile-tab"
-                      data-toggle="tab"
-                      href="#regTime"
-                      role="tab"
-                      aria-controls="profile"
-                      aria-selected="false"
-                      >Registration</a
-                    >
+                    <a class="nav-link" id="profile-tab" data-toggle="tab" href="#regTime" role="tab"
+                      aria-controls="profile" aria-selected="false">Registration</a>
                   </li>
                 </ul>
                 <div class="tab-content" id="myTabContent">
-                  <div
-                    class="tab-pane fade show active"
-                    id="checkintime"
-                    role="tabpanel"
-                    aria-labelledby="home-tab"
-                  >
-                  <!-- <el-date-picker
+                  <div class="tab-pane fade show active" id="checkintime" role="tabpanel" aria-labelledby="home-tab">
+                    <!-- <el-date-picker
                     v-model="checkinCutOffTime"
                     type="datetime"
                     format="MM/DD/YYYY hh:mm:ss "
@@ -1017,30 +663,17 @@
                     class="w-100 my-3"
                     value-format="YYYY-MM-DD hh:mm:ss a"
                   /> -->
-                    <input
-                      type="datetime-local"
-                      class="form-control my-3"
-                      v-model="checkinCutOffTime"
-                    />
+                    <input type="datetime-local" class="form-control my-3" v-model="checkinCutOffTime" />
                   </div>
-                  <div
-                    class="tab-pane fade"
-                    id="regTime"
-                    role="tabpanel"
-                    aria-labelledby="profile-tab"
-                  >
-                   <!-- <el-date-picker
+                  <div class="tab-pane fade" id="regTime" role="tabpanel" aria-labelledby="profile-tab">
+                    <!-- <el-date-picker
                     v-model="checkinCutOffTime"
                     type="datetime"
                     format="MM/DD/YYYY"
                     size="large"
                     class="w-100 my-3"
                   /> -->
-                    <input
-                      type="datetime-local"
-                      class="form-control my-3"
-                      v-model="regCutOffTimer"
-                    />
+                    <input type="datetime-local" class="form-control my-3" v-model="regCutOffTimer" />
                   </div>
                 </div>
               </div>
@@ -1056,19 +689,11 @@
           <div class="col-sm-7 col-md-6 col-lg-5">
             <div class="row">
               <div class="col-md-12 d-flex justify-content-center">
-                <el-button
-                :color="primarycolor"
-                  class=" text-white border-0 "
-                  round
-                  :loading="loading"
-                  size="large"
-                  @click="onContinue"
-                  :disabled="
-                    !selectedEvent.id ||
+                <el-button :color="primarycolor" class=" text-white border-0 " round :loading="loading" size="large"
+                  @click="onContinue" :disabled="!selectedEvent.id ||
                     selectedGroups.length === 0 ||
                     !selectedEvent.name
-                  "
-                >
+                    ">
                   <!-- <i
                     class="fas fa-circle-notch fa-spin mr-2 text-white"
                     v-if="loading"
@@ -1107,10 +732,10 @@ import deviceBreakpoint from "../../../mixins/deviceBreakpoint";
 import collector from "../../../services/groupArray/mapTree";
 import flatten from "../../../services/groupArray/flatTree";
 import { ElMessage } from "element-plus";
+import SenderIdVue from "../../../components/senderId/SenderId.vue";
 
 export default {
-  components: { CreateEventModal, GroupTree },
-
+  components: { CreateEventModal, GroupTree, SenderIdVue },
   setup() {
     const primarycolor = inject('primarycolor')
     const store = useStore();
@@ -1152,6 +777,10 @@ export default {
     const checkinCutOffTime = ref("");
     const regCutOffTimer = ref("");
     const { mdAndUp, lgAndUp, xlAndUp, xsOnly } = deviceBreakpoint()
+    const checkinSMSSubject = ref("");
+    const registrationSMSSubject = ref("");
+    const registrationEmailSubject = ref("");
+    const checkinEmailSubject = ref("");
 
     // const selectedGroup = ref({});
     const selectedGroups = ref([]);
@@ -1161,35 +790,15 @@ export default {
     const attendanceCheID = ref(route.params.id);
     const eventNameDate = ref("");
 
-    const setIncomeAccount = (item) =>{
+    const setIncomeAccount = (item) => {
       selectedIncomeAccount.value = item;
     }
     const setGroupValue = () => {
       flattenedTree.value.find(i => i.value == selectedGroups.value)
     }
-    const setcashBankAccount = (item) =>{
+    const setcashBankAccount = (item) => {
       selectedCashAccount.value = item;
     }
-    // /api/CheckInAttendance/UpdateCheckInAttendance
-
-    // const singleCheckinAttendance = async () => {
-    //   try {
-    //     const res = await axios.get(
-    //       `/api/CheckInAttendance/GetCheckInItem?checkinId=${attendanceCheID.value}`
-    //     );
-    //     eventNameDate.value = `${res.data.fullEventName} (${new Date(
-    //       res.data.eventDate
-    //     ).toDateString()})`;
-    //     selectedEvent.value.name = `${res.data.fullEventName} (${new Date(
-    //       res.data.eventDate
-    //     ).toDateString()})`;
-    //     console.log(eventNameDate.value, "eventName");
-    //     console.log(res, "updateATTENDANCE");
-    //   } catch (error) {
-    //     console.log(error);
-    //   }
-    // };
-    // singleCheckinAttendance();
 
     const getSingleCheckinAttendance = async () => {
       try {
@@ -1204,15 +813,12 @@ export default {
         selectedEvent.value.name = `${res.data.returnObject.attendanceItem.fullEventName} (${new Date(
           res.data.returnObject.attendanceItem.eventDate
         ).toDateString()})`;
-        // selectedGroups.value = groupArray
-        // searchGroupText.value = res.data.returnObject.attendanceItem.fullGroupName
-        console.log(selectedGroups.value, "jghgh");
-        console.log(res, "singleATTENDANCE");
       } catch (error) {
         console.log(error);
       }
     };
-    getSingleCheckinAttendance();
+    if (attendanceCheID.value) getSingleCheckinAttendance();
+
     const groupMappedTree = ref([]);
     const flattenedTree = ref([])
     const getGroups = async () => {
@@ -1226,7 +832,7 @@ export default {
         let data = { children: groups.value };
         const { children } = collector(data);
         groupMappedTree.value = children;
-         if (groupMappedTree.value && groupMappedTree.value.length > 0) {
+        if (groupMappedTree.value && groupMappedTree.value.length > 0) {
           flattenedTree.value = groupMappedTree.value.flatMap(flatten());
         }
 
@@ -1249,7 +855,7 @@ export default {
         console.log(error);
       }
     };
-   const filterNodeMethod = (value, data) => data.label.toLowerCase().includes(value.toLowerCase())
+    const filterNodeMethod = (value, data) => data.label.toLowerCase().includes(value.toLowerCase())
     const selectedEvent = ref({});
     const selectEvent = (selected) => {
       selectedEvent.value = selected;
@@ -1264,7 +870,6 @@ export default {
     const getEventCategories = async () => {
       try {
         const response = await eventsService.getEventCategories();
-        console.log(response, "categories");
         eventCategories.value = response;
       } catch (error) {
         console.log(error);
@@ -1279,23 +884,11 @@ export default {
     };
 
     const newAcctivityDate = ref("");
-    const getCorrectDate = (date) =>{
-      // let myDate = new Date(date).toLocaleDateString();
-      //   let arr = myDate.split('/');
-      //   arr.unshift(arr.splice(2, 1)[0])
-      //    return arr.join('-')
+    const getCorrectDate = (date) => {
       return new Date(date).toLocaleDateString("en-US").replaceAll('/', '-')
     }
     const createNewActivity = async () => {
       if (!newAcctivityDate.value && !selectedCategory.value) return false;
-      // if(route.params.id){
-      //   try{
-      //     const res = await axios.put('/api/CheckInAttendance/UpdateCheckInAttendance')
-      //     console.log(res);
-      //   }
-      //   catch(error){
-      //   }
-      // }
       try {
         const response = await eventsService.createNewActivity({
           activity: {
@@ -1313,16 +906,16 @@ export default {
         selectedEvent.value = newActivity;
         events.value.push(newActivity);
         ElMessage({
-            type: "success",
-            message: "Event created successfully",
-            duration: 2000,
-          });
+          type: "success",
+          message: "Event created successfully",
+          duration: 2000,
+        });
       } catch (error) {
         ElMessage({
-            type: "error",
-            message: "Could not create event",
-            duration: 2000,
-          });
+          type: "error",
+          message: "Could not create event",
+          duration: 2000,
+        });
         console.log(error);
       }
     };
@@ -1407,9 +1000,9 @@ export default {
       formData.append("details", eventDetails.value);
       selectedBank.value
         ? formData.append(
-            "bankCode",
-            selectedBank.value ? selectedBank.value.code : ""
-          )
+          "bankCode",
+          selectedBank.value ? selectedBank.value.code : ""
+        )
         : "";
       accountName.value
         ? formData.append("accountName", accountName.value)
@@ -1420,30 +1013,40 @@ export default {
       formData.append("contributionItemName", selectedEvent.value.name);
       selectedCashAccount.value
         ? formData.append(
-            "cashAccountId",
-            selectedCashAccount.value ? selectedCashAccount.value.id : ""
-          )
+          "cashAccountId",
+          selectedCashAccount.value ? selectedCashAccount.value.id : ""
+        )
         : "";
       selectedIncomeAccount.value && selectedIncomeAccount.value.id
         ? formData.append(
-            "incomeAccountId",
-            selectedIncomeAccount.value && selectedIncomeAccount.value.id ? selectedIncomeAccount.value.id : ""
-          )
+          "incomeAccountId",
+          selectedIncomeAccount.value && selectedIncomeAccount.value.id ? selectedIncomeAccount.value.id : ""
+        )
         : "";
       registrationSMS.value
         ? formData.append("registrationSMS", registrationSMS.value)
         : "";
+      registrationSMSSubject.value
+        ? formData.append("registrationSMSSubject", registrationSMSSubject.value)
+        : "";
       registrationEmail.value
         ? formData.append("registrationEmail", registrationEmail.value)
         : "";
+      registrationEmailSubject.value
+        ? formData.append("registrationEmailSubject", registrationEmailSubject.value)
+        : "";
       checkinSMS.value ? formData.append("checkinSMS", checkinSMS.value) : "";
+      checkinSMSSubject.value ? formData.append("checkInSMSSubject", checkinSMSSubject.value) : "";
       checkinEmail.value
         ? formData.append("checkinEmail", checkinEmail.value)
         : "";
+      checkinEmailSubject.value
+        ? formData.append("checkinEmailSubject", checkinEmailSubject.value)
+        : "";
       selectedEvent.value
         ? formData.append(
-            "activityDate", getCorrectDate(selectedEvent.value.date)
-          )
+          "activityDate", getCorrectDate(selectedEvent.value.date)
+        )
         : "";
       formData.append("isPaidFor", addPaidClass.value);
       amount.value ? formData.append("amount", amount.value) : "";
@@ -1465,7 +1068,7 @@ export default {
 
 
 
-        if(attendanceCheID.value){
+      if (attendanceCheID.value) {
         attendanceCheID.value
           ? formData.append("Id", attendanceCheID.value)
           : "";
@@ -1478,11 +1081,11 @@ export default {
           console.log(res);
           store.dispatch("attendance/setItemData", res);
           ElMessage({
-                    type: "success",
-                    message: res.data.response,
-                    duration: 5000
-                    });
-                    store.dispatch('attendance/setAttendanceItemData');
+            type: "success",
+            message: res.data.response,
+            duration: 5000
+          });
+          store.dispatch('attendance/setAttendanceItemData');
           router.push({
             name: "CheckinType",
             query: {
@@ -1497,9 +1100,9 @@ export default {
         } catch (error) {
           console.log(error);
         }
-        }else {
-          try {
-          const response = await axios.post( 
+      } else {
+        try {
+          const response = await axios.post(
             "api/CheckInAttendance/CreateAttendanceCheckIn", formData
             // "/api/CheckinAttendance/MultipleCheckinAttendanceItem",
             // checkinEvent
@@ -1526,7 +1129,7 @@ export default {
           console.log(error);
           loadingsave.value = false;
         }
-        }
+      }
       //         if (
       //   !attendanceCheID.value &&
       //   !amount.value &&
@@ -1730,7 +1333,6 @@ export default {
       axios
         .get("/api/Financials/GetBanks")
         .then((res) => {
-          console.log(res);
           nigerianBanks.value = res.data;
         })
         .catch((err) => {
@@ -1747,13 +1349,11 @@ export default {
             Authorization: `Bearer ${process.env.VUE_APP_PAYSTACK_SECRET_KEY}`,
           },
         };
-        console.log(header, "header");
 
         let { data } = await axio.get(
           `https://api.paystack.co/bank/resolve?account_number=${accountNumber.value}&bank_code=${selectedBank.value.code}`,
           header
         );
-        console.log(data);
         accountName.value = data.data.account_name;
         accNameRef.value.focus();
         // disabled.value = false
@@ -1761,10 +1361,10 @@ export default {
         loading.value = false;
 
         ElMessage({
-                  type: "success",
-                  message: 'Account Check Successful',
-                  duration: 5000
-                });
+          type: "success",
+          message: 'Account Check Successful',
+          duration: 5000
+        });
       } catch (error) {
         finish();
         console.log(error);
@@ -1772,19 +1372,17 @@ export default {
         loading.value = false;
 
         ElMessage({
-                  type: "error",
-                  message: 'Account Check Error, Please check your banks details again ',
-                  duration: 5000
-                });
+          type: "error",
+          message: 'Account Check Error, Please check your banks details again ',
+          duration: 5000
+        });
       }
-      console.log(selectedBank.value.code, accountNumber.value);
     };
 
     const getCashBankAccount = () => {
       axios
         .get("/api/financials/accounts/getcashbankaccounts")
         .then((res) => {
-          console.log(res.data);
           cashBankAccount.value = res.data;
         })
         .catch((err) => {
@@ -1810,10 +1408,8 @@ export default {
     };
 
     const chooseFile = (e) => {
-      console.log(e.target.files[0]);
       image.value = e.target.files[0];
       imageUrl.value = URL.createObjectURL(image.value);
-      console.log(imageUrl.value);
       // imageUrl.value = URL.createObjectURL(image.value);
     };
 
@@ -1854,6 +1450,14 @@ export default {
     const setNewGroup = (payload) => {
       groups.value.push(payload);
     };
+
+    const setSelectedSenderIdCheckin = (payload) => {
+      checkinSMSSubject.value = payload
+    }
+
+    const setSelectedSenderIdRegistration = (payload) => {
+      registrationSMSSubject.value = payload
+    }
 
     return {
       selectedEvent,
@@ -1938,7 +1542,13 @@ export default {
       checkinCutOffTime,
       setFilterGroups,
       setNewGroup,
-      primarycolor
+      primarycolor,
+      checkinSMSSubject,
+      registrationSMSSubject,
+      setSelectedSenderIdCheckin,
+      setSelectedSenderIdRegistration,
+      registrationEmailSubject,
+      checkinEmailSubject
     };
   },
 };
@@ -1959,6 +1569,7 @@ export default {
 .contn-btn:disabled {
   opacity: 0.3;
 }
+
 .menu-height {
   max-height: 400px;
   overflow: scroll;
@@ -2037,6 +1648,7 @@ export default {
   overflow: hidden;
   transition: all 0.6s ease-in-out;
 }
+
 .input-width {
   width: 100%
 }
