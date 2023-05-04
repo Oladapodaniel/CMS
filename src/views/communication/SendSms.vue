@@ -267,15 +267,10 @@
           <span class="font-weight-600 small-text">Sender: </span>
         </div>
         <div class="p-0 col-md-10">
-          <el-dropdown trigger="click" class="w-100">
+          <!-- {{searchSenderText}} -->
+          <SenderID @setselectedsenderid="setSelectedSenderIdCheckin" />
+          <!-- <el-dropdown trigger="click" class="w-100">
             <el-input v-model="searchSenderText" placeholder="Search sender id">
-              <!-- <template #suffix>
-              <el-button style="padding: 5px; height: 22px;" @click.prevent="searchText = ''">
-                <el-icon :size="13">
-                  <Close />
-                </el-icon>
-              </el-button>
-              </template> -->
               <template #append>
                 <el-button>
                   <el-icon :size="15">
@@ -296,7 +291,7 @@
                 </el-dropdown-item>
               </el-dropdown-menu>
             </template>
-          </el-dropdown>
+          </el-dropdown> -->
           <!-- <div class="dropdown">
             <button class="btn btn-default dropdown-toggle small-text pl-md-0 border" type="button"
               id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
@@ -615,10 +610,16 @@ import moment from "moment";
 import swal from 'sweetalert';
 import deviceBreakpoint from "../../mixins/deviceBreakpoint";
 import { ElMessage } from "element-plus";
+import { useToast } from "primevue/usetoast";
+import SenderID from "../../components/senderId/SenderId.vue";
 
 export default {
+  components: {
+    SenderID
+  },
   setup() {
     const primarycolor = inject('primarycolor')
+    const toast = useToast();
     const router = useRouter();
     const editorData = ref("");
     const disableBtn = ref(false);
@@ -655,6 +656,14 @@ export default {
     const toggleGroupsVissibility = () => {
       groupsAreVissible.value = !groupsAreVissible.value;
     };
+
+    // const getCorrectDate = () =>{
+    //   const getTimeZonebyHours =  new Date(executionDate.value).getHours()
+    //   const getTimeZonebyminute =  new Date(executionDate.value).getMinutes()
+    //   const getTimeZonebySeconds =  new Date(executionDate.value).getSeconds()
+    //   console.log(getTimeZonebyHours, getTimeZonebyminute, getTimeZonebySeconds , "uuuuu");
+    // }
+    // getCorrectDate()
 
     const showSection = (index) => {
       if (index === 1) groupSelectionTab.value = true;
@@ -761,6 +770,11 @@ export default {
     const isPersonalized = ref(false);
     const invalidMessage = ref(false);
     const invalidDestination = ref(false);
+
+    const setSelectedSenderIdCheckin = (payload) => {
+      searchSenderText.value = payload
+      subject.value = payload;
+    }
 
     const sendSMS = (data) => {
       invalidDestination.value = false;
@@ -1266,6 +1280,7 @@ export default {
 
     return {
       primarycolor,
+      setSelectedSenderIdCheckin,
       editorData,
       // displays,
       editorConfig,
