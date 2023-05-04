@@ -489,7 +489,7 @@
 </template>
 
 <script>
-import { computed, onMounted, ref, inject } from "vue";
+import { computed, onMounted, ref, inject, watchEffect } from "vue";
 import composeService from "../../../services/communication/composer";
 import composerObj from "../../../services/communication/composer";
 import { useRoute } from "vue-router";
@@ -524,6 +524,7 @@ export default {
     const groupSelectionTab = ref(false);
     const membershipSelectionTab = ref(false);
     const phoneNumberSelectionTab = ref(false);
+    const iSoStringFormat = ref('')
     const selectedGroups = ref([]);
     // const sendToAll = ref(false);
     const executionDate = ref("");
@@ -988,9 +989,9 @@ export default {
       if (multipleContact.value instanceof File) {
         sendSMSToUploadedContacts(gateway);
       } else if (sendOrSchedule == 2) {
-        const dateToBeExecuted = executionDate.value;
-        data.executionDate = new Date(dateToBeExecuted).toISOString();
-        data.date = new Date(dateToBeExecuted).toISOString();
+          data.executionDate = iSoStringFormat.value
+          data.date = iSoStringFormat.value
+          data.time = iSoStringFormat.value.split("T")[1];
         scheduleMessage(data);
       }
       //  else {
@@ -1002,6 +1003,11 @@ export default {
       // Set display to be true when voice schedule api is ready
       display.value = true;
     };
+    watchEffect(() =>{
+      if(executionDate.value){
+       iSoStringFormat.value = dateFormatter.getISOStringGMT(executionDate.value)
+      }
+  })
 
     const scheduleMessage = async (data) => {
       loadingSchedule.value = true
@@ -1216,6 +1222,7 @@ export default {
 
     return {
       editorData,
+      iSoStringFormat,
       showScheduleModal,
       mdAndUp,
       lgAndUp,
