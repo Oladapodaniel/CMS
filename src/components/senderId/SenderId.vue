@@ -124,6 +124,7 @@ const searchSenderIDs = computed(() => {
 });
 
 const setIdToSubject = (item) => {
+    console.log(item, 'LLll');
     searchSenderText.value = item.mask;
     emit('setselectedsenderid', item.mask)
 };
