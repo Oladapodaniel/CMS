@@ -622,11 +622,11 @@
                 </ul>
                 <div class="tab-content" id="myTabContent">
                   <div class="tab-pane fade show active" id="first" role="tabpanel" aria-labelledby="home-tab">
-                    <el-input v-model="checkinEmailSubject" type="text" class="mt-2" />
+                    <el-input v-model="checkinEmailSubject" type="text" placeholder="Enter subject" class="mt-2" />
                     <el-input v-model="checkinEmail" :rows="4" type="textarea" class="mt-2" />
                   </div>
                   <div class="tab-pane fade" id="second" role="tabpanel" aria-labelledby="profile-tab">
-                    <el-input v-model="registrationEmailSubject" type="text" class="mt-2" />
+                    <el-input v-model="registrationEmailSubject" placeholder="Enter subject" type="text" class="mt-2" />
                     <el-input v-model="registrationEmail" :rows="4" type="textarea" class="mt-2" />
                   </div>
                 </div>
