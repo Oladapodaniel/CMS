@@ -12,8 +12,9 @@
           " align-center>
             <div class="row">
               <div class="col-md-12">
-                <el-date-picker type="datetime" id="birthdaytime" placeholder="Select date and time" class="w-100"
-                  v-model="executionDate" />
+                <!-- <el-date-picker type="datetime" id="birthdaytime" placeholder="Select date and time" class="w-100"
+                  v-model="executionDate" /> -->
+                  <input type="datetime-local" class="form-control my-3" v-model="executionDate" placeholder="Select date and time" />
               </div>
             </div>
             <template #footer>
