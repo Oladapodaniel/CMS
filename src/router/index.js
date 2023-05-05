@@ -797,6 +797,15 @@ const routes = [
                 import( /* webpackChunkName: "addfirsttimer" */ '../views/people/FirstTimerEmpty.vue')
         },
         {
+            path: 'newconvertlist',
+            name: 'NewConvert',
+            meta: {
+                title: 'Churchplus - New Convert',
+            },
+            component: () =>
+                import( /* webpackChunkName: "addfirsttimer" */ '../views/people/NewConvert.vue')
+        },
+        {
             path: '/chartpage',
             name: 'FirstTimersChartArea',
             component: () =>

@@ -535,7 +535,8 @@
       <el-dialog v-model="display" :title="sendModalHeader"
         :width="mdAndUp || lgAndUp || xlAndUp ? `50%` : xsOnly ? `90%` : `70%`" align-center class="p-4">
         <div class="row">
-          <el-date-picker v-model="executionDate" type="datetime" class="w-100" placeholder="Select date and time" />
+          <!-- <el-date-picker v-model="executionDate" type="datetime" class="w-100" placeholder="Select date and time" /> -->
+          <input type="datetime-local" class="form-control my-3" v-model="executionDate" placeholder="Select date and time" />
         </div>
         <template #footer>
           <span class="dialog-footer">
