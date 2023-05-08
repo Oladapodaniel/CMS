@@ -15,7 +15,56 @@
         </router-link>
       </div>
     </div>
-    <div class="event-list">
+    <div class="event-list container-fluid">
+      <!-- <Table
+          :data="searchNewConvert"
+          :headers="NewConvertHeaders"
+          :checkMultipleItem="false"
+          v-if="searchNewConvert.length > 0"
+        >
+        <template v-slot:date="{ item }">
+            <div class="c-pointer">
+              {{ formatDate(item.dateCreated) }}
+            </div>
+          </template>
+          <template v-slot:familyName="{ item }">
+            <div class="c-pointer">
+              {{ item.familyName }}
+            </div>
+          </template>
+
+          <template v-slot:email="{ item }">
+            <div class="c-pointer">
+              {{ item.email }}
+            </div>
+          </template>
+
+          <template v-slot:phone="{ item }">
+            <div class="c-pointer">
+              {{ item.homePhone }}
+            </div>
+          </template>
+
+          <template v-slot:action="{ item }">
+            <el-dropdown trigger="click">
+              <el-icon>
+                <MoreFilled />
+              </el-icon>
+              <template #dropdown>
+                <el-dropdown-menu>
+                  <el-dropdown-item>
+                    <div
+                      class="text-decoration-none text-color"
+                      @click="showConfirmModal(item.id)"
+                    >
+                      Delete
+                    </div>
+                  </el-dropdown-item>
+                </el-dropdown-menu>
+              </template>
+            </el-dropdown>
+          </template>
+      </Table> -->
     </div>
     <!-- <div
       v-if="firstTimersList.length === 0 && !loading && !networkError"
@@ -65,11 +114,23 @@
 import { ref, inject } from "vue";
 import axios from "@/gateway/backendapi";
 import deviceBreakpoint from "../../mixins/deviceBreakpoint";
+import Table from "@/components/table/Table";
 
 export default {
+  components: {
+    Table
+  },
   setup() {
     const { mdAndUp, lgAndUp, xlAndUp } = deviceBreakpoint()
     const primarycolor = inject('primarycolor')
+    const loading = ref(false)
+    const NewConvertHeaders = ref([
+      { name: "DATE", value: "date" },
+      { name: "FAMILY NAME", value: "familyName" },
+      { name: "EMAIL", value: "email" },
+      { name: "PHONE", value: "phone" },
+      { name: "ACTION", value: "action" },
+    ]);
 
 
     const getAllNewConvert = async () =>{
@@ -86,7 +147,7 @@ export default {
     getAllNewConvert()
 
     return {
-    mdAndUp, lgAndUp ,xlAndUp, primarycolor
+    mdAndUp, lgAndUp ,xlAndUp, primarycolor, loading, NewConvertHeaders
     }
   },
 };
