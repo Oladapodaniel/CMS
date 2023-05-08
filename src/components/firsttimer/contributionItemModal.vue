@@ -123,12 +123,11 @@
 <script>
 import { ref } from "vue";
 import axios from "@/gateway/backendapi";
-import { useToast } from "primevue/usetoast";
+import { ElMessage } from "element-plus";
 import finish from "../../services/progressbar/progress";
 
 export default {
   setup(props, { emit }) {
-    const toast = useToast();
     const name = ref("");
     const selectedIncomeAccount = ref("");
     const incomeAccount = ref([]);
@@ -174,6 +173,9 @@ export default {
         .then((res) => {
           console.log(res.data);
           cashBankAccount.value = res.data;
+          if (res.data.length < 1) {
+            emit("show-update-modal", true);
+          }
         })
         .catch((err) => {
           console.log(err);
@@ -201,7 +203,8 @@ export default {
 
     const setCashAccountType = () => {
       selectedCashAccount.value = cashBankAccount.value.find(
-        () => i.id == selectedCashAccountId.value
+        (i) => i.id == selectedCashAccountId.value
+        
       );
     };
 
@@ -228,21 +231,18 @@ export default {
         .then((res) => {
           finish();
           emit("item-name", { name: res.data.name, id: res.data.id });
-          toast.add({
-            severity: "success",
-            summary: "Saved",
-            detail: "Contribution Saved",
-            life: 3000,
+          ElMessage({
+            type: "success",
+            message: "Contribution Saved",
+            duration: 5000,
           });
-          console.log(res);
         })
         .catch((err) => {
           finish();
-          toast.add({
-            severity: "error",
-            summary: "Error",
-            detail: "Not Successful",
-            life: 3000,
+          ElMessage({
+            type: "error",
+            message: "Not Successful",
+            duration: 5000,
           });
           console.log(err);
         });

@@ -180,11 +180,14 @@
               <div class="small-text text-capitalize col-md-2 font-weight-bold">
                 Date
               </div>
-              <div class="small-text text-capitalize col-md-3 font-weight-bold">
+              <div class="small-text text-capitalize col-md-2 font-weight-bold">
                 Donation
               </div>
-              <div class="small-text text-capitalize col-md-3 font-weight-bold">
+              <div class="small-text text-capitalize col-md-2 font-weight-bold">
                 Amount
+              </div>
+              <div class="small-text text-capitalize col-md-2 font-weight-bold">
+                Channel
               </div>
               <div class="small-text text-capitalize col-md-2 font-weight-bold">
                 Donor
@@ -231,7 +234,7 @@
                     </p>
                   </div>
 
-                  <div class="col-md-3 small-text px-1">
+                  <div class="col-md-2 small-text px-1">
                     <div class="d-flex justify-content-between">
                       <span class="text-dark font-weight-bold d-flex d-md-none"
                         >Donation</span
@@ -244,12 +247,20 @@
                     </div>
                   </div>
 
-                  <div class="desc-head small-text col-md-3 px-1">
+                  <div class="desc-head small-text col-md-2 px-1">
                     <p class="mb-0 d-flex justify-content-between">
                       <span class="text-dark font-weight-bold d-flex d-md-none"
                         >Amount</span
                       >
                       <span>{{ item.currencyName }} {{ item.amount }}</span>
+                    </p>
+                  </div>
+                  <div class="small-text col-md-2 px-1">
+                    <p class="mb-0 d-flex justify-content-between">
+                      <span class="text-dark font-weight-bold d-flex d-md-none"
+                        >Channel</span
+                      >
+                      <span>{{ item.channel }}</span>
                     </p>
                   </div>
 

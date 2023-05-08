@@ -251,26 +251,30 @@ export default {
           "/api/CheckInAttendance/UpdateCheckInAttendance",
           body
         );
-        console.log(data);
         ElMessage({
             type: "success",
             message: "Updated successfully",
             duration: 5000,
           });
           loading.value = false
-
-        if (route.fullPath.includes("/tenant/takeattendance")) {
-          setTimeout(() => {
-            router.push("/tenant/groupleader");
-          }, 3000);
+          
+          if (route.fullPath.includes("/tenant/takeattendance")) {
+            setTimeout(() => {
+              router.push("/tenant/groupleader");
+            }, 3000);
+          }
+        } catch (err) {
+          console.log(err);
+          loading.value = false
+          ElMessage({
+              type: "error",
+              message: "Update not successful, please try again",
+              duration: 5000,
+            });
         }
-      } catch (err) {
-        console.log(err);
-        loading.value = false
-      }
-    };
-
-    const getAllCustomFields = async () => {
+      };
+      
+      const getAllCustomFields = async () => {
       try {
         let data = await allCustomFields.allCustomFields();
         dynamicCustomFields.value = data.filter((i) => i.entityType === 5);

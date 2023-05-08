@@ -679,7 +679,7 @@
 </template>
 
 <script>
-import { computed, onMounted, ref } from "vue";
+import { computed, onMounted, ref, watchEffect } from "vue";
 import composeService from "../../services/communication/composer";
 import composerObj from "../../services/communication/composer";
 import { useRoute } from "vue-router";
@@ -723,10 +723,16 @@ export default {
     const email = ref("")
     const selectedGroups = ref([]);
     const executionDate = ref('');
+    const iSoStringFormat = ref('')
 
     const toggleGroupsVissibility = () => {
       groupsAreVissible.value = !groupsAreVissible.value;
     };
+      watchEffect(() =>{
+      if(executionDate.value){
+       iSoStringFormat.value = dateFormatter.getISOStringGMT(executionDate.value)
+      }
+  })
 
     const showSection = (index) => {
       if (index === 1) groupSelectionTab.value = true;
@@ -941,12 +947,15 @@ export default {
 
 
       if (sendOrSchedule == 2) {
-        data.executionDate = executionDate.value;
+        data.executionDate = iSoStringFormat.value;
+        data.date = iSoStringFormat.value;
+        data.time = iSoStringFormat.value.split("T")[1];
         scheduleMessage(data);
       } else {
         sendSMS(data);
       }
     };
+
 
     const showScheduleModal = () => {
       display.value = true;
@@ -960,6 +969,7 @@ export default {
           "/api/Messaging/saveEmailSchedule",
           data
         );
+        router.push('/tenant/email/schedules')
         ElMessage({
               type: 'success',
               message: `message Scheduled for  ${formattedDate}` ,
@@ -1111,6 +1121,7 @@ export default {
 
     return {
       loadedMessage,
+      iSoStringFormat,
       showScheduleModal,
       editorData,
       possibleEmailDestinations,

@@ -13,73 +13,104 @@
         </div>
         <div class="container-fluid mt-2 ">
             <div class="row py-5 " style="background: #ebeff4;  border-radius: 0.5rem;">
-                <div class="col-12 col-md-6 col-lg-3 mt-2 mt-sm-0 mt-md-0 mt-lg-0 ">
-                    <div><label for="" class="font-weight-bold">Select Members</label></div>
-                    <div>
-                        <MultiSelect v-model="selectedMember" :options="memberShips" optionLabel="name" placeholder="Select Member" :filter="true" class="multiselect-custom w-100">
-                            <template #value="slotProps">
-                                <div class="country-item country-item-value bg-secondary font-weight-bold small" v-for="option of slotProps.value" :key="option.code">
-                                    <div>{{option.name}}</div>
-                                </div>
-                                <template v-if="!slotProps.value || slotProps.value.length === 0">
-                                    Select Member
-                                </template>
-                            </template>
-                            <template #option="slotProps">
-                                <div class="country-item">
-                                    <div>{{slotProps.option.name}}</div>
-                                </div>
-                            </template>
-                        </MultiSelect>
-                    </div>
+              <div class="col-md-9 col-12">
+                <div class="row">
+                  <div class="col-12 col-md-6  mt-2 mt-sm-0 mt-md-0 mt-lg-0 ">
+                      <div><label for="" class="font-weight-bold">Select Members</label></div>
+                      <div>
+                          <MultiSelect v-model="selectedMember" :options="memberShips" optionLabel="name" placeholder="Select Member" :filter="true" class="multiselect-custom w-100">
+                              <template #value="slotProps">
+                                  <div class="country-item country-item-value bg-secondary font-weight-bold small" v-for="option of slotProps.value" :key="option.code">
+                                      <div>{{option.name}}</div>
+                                  </div>
+                                  <template v-if="!slotProps.value || slotProps.value.length === 0">
+                                      Select Member
+                                  </template>
+                              </template>
+                              <template #option="slotProps">
+                                  <div class="country-item">
+                                      <div>{{slotProps.option.name}}</div>
+                                  </div>
+                              </template>
+                          </MultiSelect>
+                      </div>
 
+                  </div>
+                  <div class="col-12 col-md-6 mt-2 mt-sm-0 mt-md-0 mt-lg-0 ">
+                      <div class=""><label for="" class=" ml-2 font-weight-bold">Gender</label></div>
+                      <div>
+                          <MultiSelect v-model="selectedGender" :options="memberGender" optionLabel="name" placeholder="Select gender" :filter="true" class="multiselect-custom w-100">
+                              <template #value="slotProps">
+                                  <div class="country-item country-item-value bg-secondary font-weight-bold small" v-for="option of slotProps.value" :key="option.code">
+                                      <div>{{option.name}}</div>
+                                  </div>
+                                  <template v-if="!slotProps.value || slotProps.value.length === 0">
+                                      Select Gender
+                                  </template>
+                              </template>
+                              <template #option="slotProps">
+                                  <div class="country-item">
+                                      <div>{{slotProps.option.name}}</div>
+                                  </div>
+                              </template>
+                          </MultiSelect>
+                      </div>
+                  </div>
+                  <div class="col-12 col-md-6  mt-2 mt-sm-0 mt-md-0 mt-lg-0 ">
+                      <div><label for="" class="font-weight-bold">Marital Status</label></div>
+                      <div>
+                          <MultiSelect v-model="selectedMaritalStatus" :options="memberMaritalStatus" optionLabel="name" placeholder="Marital status" :filter="true" class="multiselect-custom w-100">
+                              <template #value="slotProps">
+                                  <div class="country-item country-item-value bg-secondary font-weight-bold small " v-for="option of slotProps.value" :key="option.code">
+                                      <div>{{option.name}}</div>
+                                  </div>
+                                  <template v-if="!slotProps.value || slotProps.value.length === 0">
+                                      Marital status
+                                  </template>
+                              </template>
+                              <template #option="slotProps">
+                                  <div class="country-item">
+                                      <div>{{slotProps.option.name}}</div>
+                                  </div>
+                              </template>
+                          </MultiSelect>
+                      </div>
+                  </div>
+                  <div class="col-12 col-md-6  mt-2 mt-sm-0 mt-md-0 mt-lg-0 ">
+                      <div><label for="" class="font-weight-bold">Age Group</label></div>
+                      <!-- <el-select-v2 v-model="ageGroupId" @change="setSelectedAgeGroup"
+                        :options="memberAgegroup.map(i => ({ label: i.name, value: i.id }))" placeholder="Age group"
+                        size="large" class="w-100 mr-1" /> -->
+                      <div>
+                          <MultiSelect v-model="selectedAgeGroup" :options="memberAgegroup" optionLabel="name" placeholder="Age group" :filter="true" class="multiselect-custom w-100">
+                              <template #value="slotProps">
+                                  <div class="country-item country-item-value bg-secondary font-weight-bold small " v-for="option of slotProps.value" :key="option.code">
+                                      <div>{{option.name}}</div>
+                                  </div>
+                                  <template v-if="!slotProps.value || slotProps.value.length === 0">
+                                      Age group
+                                  </template>
+                              </template>
+                              <template #option="slotProps">
+                                  <div class="country-item">
+                                      <div>{{slotProps.option.name}}</div>
+                                  </div>
+                              </template>
+                          </MultiSelect>
+                      </div>
+                  </div>
                 </div>
-                <div class="col-12 col-md-6 col-lg-3 mt-2 mt-sm-0 mt-md-0 mt-lg-0 ">
-                    <div class=""><label for="" class=" ml-2 font-weight-bold">Gender</label></div>
-                    <div>
-                        <MultiSelect v-model="selectedGender" :options="memberGender" optionLabel="name" placeholder="Select gender" :filter="true" class="multiselect-custom w-100">
-                            <template #value="slotProps">
-                                <div class="country-item country-item-value bg-secondary font-weight-bold small" v-for="option of slotProps.value" :key="option.code">
-                                    <div>{{option.name}}</div>
-                                </div>
-                                <template v-if="!slotProps.value || slotProps.value.length === 0">
-                                    Select Gender
-                                </template>
-                            </template>
-                            <template #option="slotProps">
-                                <div class="country-item">
-                                    <div>{{slotProps.option.name}}</div>
-                                </div>
-                            </template>
-                        </MultiSelect>
-                    </div>
-                </div>
-                <div class="col-12 col-md-6 col-lg-3 mt-2 mt-sm-0 mt-md-0 mt-lg-0 ">
-                    <div><label for="" class="font-weight-bold">Marital Status</label></div>
-                    <div>
-                        <MultiSelect v-model="selectedMaritalStatus" :options="memberMaritalStatus" optionLabel="name" placeholder="Marital status" :filter="true" class="multiselect-custom w-100">
-                            <template #value="slotProps">
-                                <div class="country-item country-item-value bg-secondary font-weight-bold small " v-for="option of slotProps.value" :key="option.code">
-                                    <div>{{option.name}}</div>
-                                </div>
-                                <template v-if="!slotProps.value || slotProps.value.length === 0">
-                                    Marital status
-                                </template>
-                            </template>
-                            <template #option="slotProps">
-                                <div class="country-item">
-                                    <div>{{slotProps.option.name}}</div>
-                                </div>
-                            </template>
-                        </MultiSelect>
-                    </div>
-                </div>
-                <div class="col-12 col-md-6 col-lg-3">
+              </div>
+              <div class="col-12 col-md-3 d-flex align-items-center ">
+                <div class="row ">
+                  <div class="col-12  ">
                     <label for="" ></label>
-                    <div class="mt-2" @click="genarateReport">
-                        <button class=" default-btn generate-report c-pointer font-weight-normal ">Generate Report </button>
+                    <div class="" @click="genarateReport">
+                        <button class="  default-btn generate-report c-pointer font-weight-normal ">Generate Report </button>
                     </div>
                 </div>
+                </div>
+              </div>
             </div>
         </div>
         <div id="element-to-print">
@@ -121,9 +152,9 @@
                   </div>
                   </div>
               </div>
-              <!-- <div class="row" :class="{ 'show-report': showReport, 'hide-report' : !showReport}">
+              <div class="row" :class="{ 'show-report': showReport, 'hide-report' : !showReport}">
                 <div class="col-12 table d-flex flex-wrap">
-                    <div class="col-12 col-sm-12  col-md-6 col-lg-6">
+                    <!-- <div class="col-12 col-sm-12  col-md-6 col-lg-6">
                       <div class="col-12 text-center mt-3 mt-sm-3 mt-md-0 mt-lg-2 " >
                           <div class="col-12  font-weight-bold ">Membership By Members</div>
                           <div class="col-12 ">
@@ -135,9 +166,9 @@
                               />
                           </div>
                       </div>
-                    </div>
-                    <div class="col-12 col-sm-12  col-md-6 col-lg-6" >
-                      <div class="col-12   text-center mt-3 mt-sm-3 mt-md-0 mt-lg-2  ">
+                    </div> -->
+                    <div class="col-12 col-sm-12 d-flex justify-content-center" >
+                      <div class="col-6   text-center mt-3 mt-sm-3 mt-md-0 mt-lg-2  ">
                           <div class="col-12 w-100  font-weight-bold" >Membership By Age Group</div>
                           <div class="col-12 ">
                               <MembershipPieChart
@@ -151,7 +182,7 @@
                       </div>
                   </div>
                 </div>
-              </div> -->
+              </div>
           </div>
           <!-- <div > -->
               <!-- <div class="row "> -->
@@ -231,14 +262,16 @@ export default {
         MultiSelect,
         // PaginationButtons
          },
-    setup() {
+    setup(prop) {
     const selectedMember = ref();
     const selectedGender = ref();
     const selectedMaritalStatus = ref();
     const showReport = ref(false)
     const memberShips = ref({});
+    const selectedAgeGroup = ref()
     const memberMaritalStatus = ref({});
     const memberGender = ref({});
+    const memberAgegroup = ref([]);
     // const genderSummary = ref([]);
     const membersInChurch = ref([]);
     const genderChartResult = ref([]);
@@ -364,12 +397,14 @@ export default {
     const genarateReport = () => {
         const memberID =  selectedMember.value.map((i) => i.id)
         const genderID =  selectedGender.value.map((i) => i.id)
+        const ageGroupID =  selectedAgeGroup.value.map((i) => i.id)
         const maritalStatusID = selectedMaritalStatus.value.map((i) => i.id)
         let body = {
         gender : genderID,
         maritalStatus : maritalStatusID,
         membershipStatus : maritalStatusID,
-        membershipType : memberID
+        membershipType : memberID,
+        membershipAgeGroup : ageGroupID
         }
         axios.post('/api/Reports/people/getAllContactsByParameterReport',body)
         .then((res) =>{
@@ -445,8 +480,26 @@ export default {
     };
     getGender();
 
+    const getAgeGroup = async () => {
+      try {
+        axios
+          .get('/api/Settings/GetTenantAgeGroups')
+          .then((res) => {
+            memberAgegroup.value = res.data;
+            console.log(res.data,'Samson');
+          })
+          .catch((err) => console.log(err));
+        // donationSummary.value = data;
+      } catch (err) {
+        console.log(err);
+      }
+    };
+    getAgeGroup();
+
      return {
         genarateReport,
+        memberAgegroup,
+        selectedAgeGroup,
         genderChartResult,
         memberChartResult,
         maritalStatusChartResult,

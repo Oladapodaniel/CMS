@@ -267,7 +267,9 @@
           <span class="font-weight-600 small-text">Sender: </span>
         </div>
         <div class="p-0 col-md-10">
-          <el-dropdown trigger="click" class="w-100">
+          <!-- {{searchSenderText}} -->
+          <SenderID @setselectedsenderid="setSelectedSenderIdCheckin" />
+          <!-- <el-dropdown trigger="click" class="w-100">
             <el-input v-model="searchSenderText" placeholder="Search sender id">
               <template #append>
                 <el-button>
@@ -289,7 +291,7 @@
                 </el-dropdown-item>
               </el-dropdown-menu>
             </template>
-          </el-dropdown>
+          </el-dropdown> -->
           <!-- <div class="dropdown">
             <button class="btn btn-default dropdown-toggle small-text pl-md-0 border" type="button"
               id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
@@ -539,7 +541,7 @@
           <span class="dialog-footer">
             <el-button @click="display = false" class="secondary-button" round>Cancel</el-button>
             <el-button :color="primarycolor" @click="contructScheduleMessageBody(2, '')" round>
-              Confirm
+              Schedule
             </el-button>
           </span>
         </template>
@@ -594,7 +596,7 @@
 </template>
 
 <script>
-import { computed, onMounted, ref, inject, reactive } from "vue";
+import { computed, onMounted, ref, inject, reactive, watchEffect } from "vue";
 import composeService from "../../services/communication/composer";
 import composerObj from "../../services/communication/composer";
 import { useRoute } from "vue-router";
@@ -608,10 +610,16 @@ import moment from "moment";
 import swal from 'sweetalert';
 import deviceBreakpoint from "../../mixins/deviceBreakpoint";
 import { ElMessage } from "element-plus";
+import { useToast } from "primevue/usetoast";
+import SenderID from "../../components/senderId/SenderId.vue";
 
 export default {
+  components: {
+    SenderID
+  },
   setup() {
     const primarycolor = inject('primarycolor')
+    const toast = useToast();
     const router = useRouter();
     const editorData = ref("");
     const disableBtn = ref(false);
@@ -641,6 +649,7 @@ export default {
     const selectedSender = ref({});
     const searchSenderText = ref("");
     const senderIdRef = ref();
+    const iSoStringFormat = ref('')
     const requestbtn = ref(false);
     const sendSMSDialog = ref(false);
     const { mdAndUp, lgAndUp, xlAndUp, xsOnly } = deviceBreakpoint();
@@ -648,6 +657,16 @@ export default {
     const toggleGroupsVissibility = () => {
       groupsAreVissible.value = !groupsAreVissible.value;
     };
+
+    
+
+  watchEffect(() =>{
+      if(executionDate.value){
+       iSoStringFormat.value = dateFormatter.getISOStringGMT(executionDate.value)
+      }
+  })
+    
+   
 
     const showSection = (index) => {
       if (index === 1) groupSelectionTab.value = true;
@@ -754,6 +773,11 @@ export default {
     const isPersonalized = ref(false);
     const invalidMessage = ref(false);
     const invalidDestination = ref(false);
+
+    const setSelectedSenderIdCheckin = (payload) => {
+      searchSenderText.value = payload
+      subject.value = payload;
+    }
 
     const sendSMS = (data) => {
       invalidDestination.value = false;
@@ -924,10 +948,9 @@ export default {
         if (multipleContact.value instanceof File) {
           sendSMSToUploadedContacts(gateway);
         } else if (sendOrSchedule == 2) {
-          const dateToBeExecuted = executionDate.value.toISOString();
-          data.executionDate = dateToBeExecuted.split("T")[0];
-          data.date = dateToBeExecuted;
-          data.time = dateToBeExecuted.split("T")[1];
+          data.executionDate = iSoStringFormat.value
+          data.date = iSoStringFormat.value
+          data.time = iSoStringFormat.value.split("T")[1];
           scheduleMessage(data);
         } else {
           sendSMS(data);
@@ -1258,6 +1281,8 @@ export default {
 
     return {
       primarycolor,
+      iSoStringFormat,
+      setSelectedSenderIdCheckin,
       editorData,
       // displays,
       editorConfig,
