@@ -57,56 +57,6 @@
               </template>
             </el-dropdown>
           </div>
-          <!-- <div
-            class="select-elem-con pointer form-control d-flex justify-content-space-between align-items-center close-modal c-pointer"
-            @click="showAccount = !showAccount"
-          >
-            <span class="ofering close-modal">{{
-              selectedCashAccount && selectedCashAccount.name ? selectedCashAccount.name : selectedCashAccount && selectedCashAccount.text ? selectedCashAccount.text : "Select"
-            }}</span
-            ><span>
-              <el-icon class="close-modal"><ArrowDown /></el-icon>
-            </span>
-          </div> -->
-          <!-- <div
-            class="ofering close-modal"
-            :class="{ 'style-account': showAccount }"
-            v-if="showAccount"
-            ref="selectAccount"
-          >
-            <div class="px-3 pt-3 close-modal">
-              <input
-                type="text"
-                placeholder="Search"
-                class="form-control ofering mb-1 close-modal"
-                v-model="accountText"
-              />
-            </div>
-
-            <div class="container-fluid">
-              <div class="row">
-                <div class="  col-md-12 px-0" v-for="(account, index) in filteredCashandBank" :key="index" @click="accountFlow($event, account)">
-                  <div class="header-border hover-text close-modal">
-                    <div v-if="account">
-                      <div class="close-modal offset-sm-1  py-2 small-text" >{{ account.text }}</div>
-                    </div>
-                    <div v-else>
-                      <div class="text-center px-3 py-2 text-danger">
-                        No Match Found
-                      </div>
-                    </div>
-                  </div>
-                </div>
-                <div class="col-md-12" v-if="filteredCashandBank.length === 0">
-                  <div class="text-center px-3 py-2 text-danger">
-                      No Match Found
-                    </div>
-                </div>
-              </div>
-            </div>
-
-           
-          </div> -->
         </div>
         <div class="col-sm-5 col-md-5 col-lg-5 col-12 ">
           <div class="label-text">Amount</div>
@@ -129,8 +79,8 @@
                 style="border: 1px solid #ced4da;border-radius: 4px;background: rgb(253, 253, 253)"
               >
                 <span class="text-left">{{ splittedTransactions.length === 0 || !splittedTransactions[index].text ? "Select" : splittedTransactions[index].text }}</span>
-                <span class="float-right"><i class="pi pi-chevron-down" style="fontSize: .9rem"></i></span> 
-              </button><input type="text" placeholder="amount" :class="{ 'col-4': splittedTransactions.length > 1 }" class="form-control d-inline" v-model="i.amount" v-if="splittedTransactions.length > 1"><span v-if="splittedTransactions.length > 1" class="col-1 px-1" @click="removeSplit(index)"><i class="pi pi-trash"></i></span>
+                <span class="float-right"><el-icon :size="16"><ArrowUp /></el-icon></span> 
+              </button><input type="text" placeholder="amount" :class="{ 'col-4': splittedTransactions.length > 1 }" class="form-control d-inline" v-model="i.amount" v-if="splittedTransactions.length > 1"><span v-if="splittedTransactions.length > 1" class="col-1 px-1" @click="removeSplit(index)"><el-icon><Delete /></el-icon></span>
               <div class="dropdown-menu cursor-pointer w-100" id="noTransfrom" aria-labelledby="dropdownMenuButton">
                 <div class="row">
                   <div class="col-md-11 mx-auto">
@@ -187,10 +137,10 @@
         <div class="col-3 line pl-0"><hr /></div>
         <div
           class="error-div col-10 offset-1 mt-3"
-          v-if="parseInt(totalAmount.amount) > transacObj.amount" 
+         v-if="parseInt(totalAmount.amount) > transacObj.amount" 
         >
           <div class="row">
-            <i class="pi pi-exclamation-circle col-1" aria-hidden="true"></i>
+            <div class="col-1"><el-icon><Warning /></el-icon></div>
             <p class="error-message col-10 pl-0">
               The sum of the above lines should not exceed the total deposit
               amount of {{ transacObj.amount }}
@@ -209,11 +159,8 @@
               <span>
                 {{ transactionDetails.id ? 'Update' : 'Save' }}
               </span>
-                <!-- <span v-if="savingAccount" style="position: absolute;left:1.5rem"><i class="pi pi-spin pi-spinner" style="fontSize: 1rem"></i></span> -->
-              <!-- <span :class="{ 'pr-5': savingAccount }" class="pr-2" style="width: 20px"></span> -->
             </el-button>
           </div>
-          <!-- <div class=" text-center cpon"><button class="default-btn primary-bg text-white border-0" @click="saveIncome" :disabled="!formIsValid">Save</button></div> -->
         </div>
       </div>
     </div>
@@ -221,10 +168,11 @@
 </template>
 
 <script>
-import { ref, computed, nextTick, onUpdated, inject, watch, proxyRefs } from "vue";
+import { ref, computed, nextTick, onUpdated, inject, watch, watchEffect, proxyRefs } from "vue";
 import transaction_service from "../../../services/financials/transaction_service";
 import chart_of_accounts from '../../../services/financials/chart_of_accounts';
 import SearchMember from "../../../components/search/SearchMember"
+import dateFormatter from "../../../services/dates/dateformatter";
 import store from "../../../store/store";
 import { ElMessage } from 'element-plus'
 export default {
@@ -246,6 +194,13 @@ export default {
     const descrp = ref("");
     const selectedCashAccount = ref({ });
     const selectedIncomeOrExpenseAccount = ref({ });
+    const iSoStringFormat = ref('')
+     watchEffect(() =>{
+      if(transacObj.value.date){
+       iSoStringFormat.value = dateFormatter.getISOStringGMT(transacObj.value.date)
+       console.log(iSoStringFormat.value, "iiii");
+      }
+  })
 
     const filterAccount = computed(() => {
       if (accountText.value.text !== "" && accountType.value.length > 0) {
@@ -447,7 +402,7 @@ export default {
             transactionID: i.transactionID
           }
         }),
-        date: transacObj.value.date,
+        date: iSoStringFormat.value,
         debitAccountID: selectedCashAccount.value.id,
         memo: transacObj.value.memo,
         transactionNumber: props.transactionDetails.transactionNumber ? props.transactionDetails.transactionNumber : ""
@@ -501,7 +456,7 @@ export default {
                 }
               }),
               creditAccountID: selectedCashAccount.value.id,
-              date: transacObj.value.date,
+              date: iSoStringFormat.value,
               memo: transacObj.value.memo,
               transactionNumber: props.transactionDetails.transactionNumber ? props.transactionDetails.transactionNumber : "",
               amount: Math.abs(+transacObj.value.amount),
@@ -533,6 +488,7 @@ export default {
 
     const dateField = ref(null);
     watch(() => props.transactionDetails, (data) => {
+      console.log(data, "jjujujj")
       transacObj.value.date = new Date(data.date);
       transacObj.value.amount = Math.abs(data.amount);
       transacObj.value.memo = data.memo;
@@ -620,6 +576,7 @@ export default {
 
     return {
       showAccount,
+      iSoStringFormat,
       accountText,
       filterAccount,
       accountType,

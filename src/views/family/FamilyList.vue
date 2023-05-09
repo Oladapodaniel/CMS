@@ -103,9 +103,6 @@
         <div class="col-12">
           <div class="table-footer"></div>
         </div>
-
-        <ConfirmDialog />
-        <Toast />
       </div>
     </div>
   </div>
@@ -114,13 +111,10 @@
 <script>
 import { ref, computed } from "vue";
 import dateFormatter from "../../services/dates/dateformatter";
-// import { useConfirm } from "primevue/useconfirm";
-// import { useToast } from "primevue/usetoast";
 import axios from "@/gateway/backendapi";
 import finish from "../../services/progressbar/progress";
 import router from "../../router";
 import { ElMessage, ElMessageBox } from "element-plus";
-// import { useStore } from "vuex";
 import store from "../../store/store";
 import Table from "@/components/table/Table";
 
@@ -131,15 +125,6 @@ export default {
   },
   setup(props, { emit }) {
     const searchText = ref("");
-    const searchIsVisible = ref(false);
-
-    // const store = useStore();
-    // const groups = ref(store.getters['family/family']);
-
-    const toggleSearch = () => {
-      searchIsVisible.value = !searchIsVisible.value;
-    };
-
     const formatDate = (date) => {
       return dateFormatter.monthDayYear(date);
     };
@@ -160,12 +145,6 @@ export default {
       } else {
         return props.familyList.value;
       }
-    };
-    const removeSearchText = () => {
-      searchText.value = "";
-    };
-    const clearInput = () => {
-      searchIsVisible.value = !searchIsVisible.value;
     };
 
     const deleteFamily = (id) => {
@@ -226,7 +205,6 @@ export default {
       formatDate,
       searchFamily,
       searchText,
-      searchIsVisible,
       toggleSearch,
       showConfirmModal,
       deleteFamily,
