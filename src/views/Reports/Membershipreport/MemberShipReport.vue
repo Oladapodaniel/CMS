@@ -203,6 +203,7 @@
                               <th scope="col">Phone</th>
                               <th scope="col">Email</th>
                               <th scope="col">Gender</th>
+                              <th scope="col">Age Group</th>
                               <th scope="col">Home Address</th>
                               <th scope="col">Birthday</th>
                               <!-- <th scope="col">Marital Status</th>
@@ -219,6 +220,7 @@
                               <td>{{member.mobilePhone}}</td>
                               <td>{{member.email}}</td>
                               <td>{{member.gender}}</td>
+                              <td>{{member.ageGroup}}</td>
                               <td>{{member.homeAddress}}</td>
                               <td>{{member.birthDay}}</td>
                               <!-- <td>{{member.maritalStatus}}</td>
@@ -304,7 +306,6 @@ export default {
           value: result[prop].length
         })
       }
-      console.log(genderChartResult.value, "genderChartR")
     };
 
     const mappedGender = computed(() => {
@@ -356,7 +357,6 @@ export default {
           value: result[prop].length
         })
       }
-      console.log(maritalStatusChartResult.value, "marital result")
     };
 
     const mappedMaritalStatus = computed(() => {
