@@ -135,13 +135,6 @@
                   class="w-100 mt-2"
                   required
                 />
-                <!-- <el-input
-                  placeholder=""
-                  v-model="eventDate"
-                  type="date"
-                  class="form-control"
-                  required
-                /> -->
               </div>
               <div class="col-12 col-sm-5">
                 <label for="topic">Topic</label>
@@ -351,16 +344,6 @@
                   "
                   size="large"
                 />
-              <!-- <select class="w-100 form-control" v-model="item.paymentChannel">
-                <option value="Cheque">Cheque</option>
-                <option value="Cash">Cash</option>
-                <option value="Cheque">Cheque</option>
-                <option value="POS">POS</option>
-                <option value="Online">Online</option>
-                <option value="Bank Transfer">Bank Transfer</option>
-                <option value="USSD">USSD</option>
-                <option value="Text">Text</option>
-              </select> -->
             </div>
 
             <div class="col-3 col-sm-2 col-lg-1">
@@ -383,8 +366,6 @@
                 }}</span
                 ><span style="margin-top: 4px">
                   <el-icon class="close-modal"><ArrowDownBold /></el-icon>
-                  <!-- <i class="pi pi-angle-down close-modal" aria-hidden="true"></i
-                > -->
                 </span>
               </div>
               <div
@@ -437,7 +418,6 @@
               {{ item.amount }}
             </div>
             <div class="col-1 mt-2" @click="delOffering(item.id, index)">
-              <!-- <i class="pi pi-trash" aria-hidden="true"></i> -->
                <el-icon><Delete /></el-icon>
             </div>
             <div
@@ -497,9 +477,6 @@
           >
             {{ newOffering.name }}
           </div>
-          <!-- v-if="filterOffering.length >= 1" -->
-          <!-- @click="offering(null)" -->
-          <!-- class="create ofering pointer" -->
           <div
             type="button"
             data-toggle="modal"
@@ -508,13 +485,6 @@
           >
             Create New Offering Item
           </div>
-          <!-- <div
-            v-else
-            @click="offering({ name: offeringText })"
-            class="create pointer"
-          >
-            Create "{{ offeringText }}" offering item
-          </div> -->
         </div>
         <button
           hidden
@@ -558,7 +528,6 @@
             </div>
           </div>
         </div>
-        <!-- <div class="col-sm-12 text-center add-attendance" @click="createFirstTimers">Add First Timers</div> -->
         <button
           hidden
           type="button"
@@ -576,14 +545,6 @@
             type="textarea"
             placeholder="Notes..."
           />
-        <!-- <textarea
-          class="col-sm-12 textarea form-control"
-          placeholder="Notes..."
-          rows="5"
-          v-model="note"
-        >
-        </textarea> -->
-        <!-- </div> -->
       </div>
 
       <div class="form col-12 col-sm-12 offset-md-0 col-md-12">
@@ -593,10 +554,6 @@
           </div>
           <div class="col-2 text-right">
             <el-icon :class="{ roll3: showForm3 }"><ArrowUp /></el-icon>
-            <!-- <i
-              class="pi pi-angle-up"
-              aria-hidden="true"
-            ></i> -->
           </div>
         </div>
         <div
@@ -656,7 +613,6 @@
                     <div>{{ item.phoneNumber }}</div>
                   </div>
                   <div class="col-sm-1" @click="deleteFirstTimer(index)">
-                    <!-- <i class="pi pi-trash"></i> -->
                      <el-icon><Delete /></el-icon>
                   </div>
                 </div>
@@ -694,7 +650,6 @@
                     <div>{{ item.phoneNumber }}</div>
                   </div>
                   <div class="col-sm-1" @click="deleteNewConvert(index)">
-                    <!-- <i class="pi pi-trash"></i> -->
                      <el-icon><Delete /></el-icon>
                   </div>
                 </div>
@@ -757,14 +712,13 @@
         <div class="modal-content">
           <div class="modal-header">
             <div class="modal-title" id="exampleModalLabel">Add Event</div>
-            <button
-              type="button"
-              class="close"
-              data-dismiss="modal"
-              aria-label="Close"
-            >
-              <span aria-hidden="true">&times;</span>
-            </button>
+            <el-button
+                  class="close"
+                  data-dismiss="modal"
+                  aria-label="Close"
+                >
+                  <el-icon class="mt-3" :size="16"><CloseBold /></el-icon>
+                </el-button>
           </div>
           <div class="modal-body">
             <div class="row">
@@ -772,22 +726,25 @@
                 New Event
               </div>
               <div class="col-sm-7">
-                <input type="text" v-model="eventCreate" class="form-control" />
+                <el-input type="text" v-model="eventCreate" class="w-100" />
               </div>
             </div>
           </div>
           <div class="modal-footer">
-            <button type="button" class="btn btn-second" data-dismiss="modal">
-              Cancel
-            </button>
-            <button
-              type="button"
-              class="apply-btn"
-              id="closeEvent"
-              @click="createNewEvent"
-            >
-              Save
-            </button>
+            <el-button class="" data-dismiss="modal" round size="large">
+                  Cancel
+                </el-button>
+                <el-button
+                  class=""
+                  id="closeEvent"
+                  data-dismiss="modal"
+                  round
+                  :color="primarycolor"
+                  size="large"
+                  @click="createNewEvent"
+                >
+                  Save
+                </el-button>
           </div>
         </div>
       </div>
@@ -1823,8 +1780,6 @@
             >
               Close
             </el-button>
-            <!-- <button type="button" class="btn btn-primary">Save changes</button> -->
-
             <el-button
               class="border-0"
               round
@@ -1838,24 +1793,6 @@
         </div>
       </div>
     </div>
-    <!-- <Dialog
-      v-model:visible="displayResponsive"
-      :breakpoints="{ '960px': '75vw', '640px': '100vw' }"
-      :style="{ width: '80vw' }"
-    >
-      <p>
-        You have no income account to create a offering item, go to Chart of
-        Account and click 'Update Account' to update your accounts.
-      </p>
-      <template #footer>
-        <Button
-          label="Go to Chart Of Accounts"
-          icon="pi pi-check"
-          @click="closeResponsive"
-          autofocus
-        />
-      </template>
-    </Dialog> -->
     <el-dialog v-model="displayResponsive"
       :width="mdAndUp || lgAndUp || xlAndUp ? `50%` : `90%`">
       <p>
@@ -1864,8 +1801,6 @@
       </p>
       <div class="row">
         <div class="col-md-12">
-          <!-- label="Go to Chart Of Accounts"
-          icon="pi pi-check" -->
         <el-button
         
           @click="closeResponsive"
@@ -1873,7 +1808,6 @@
         >
         Go to Chart Of Accounts
         </el-button>
-      <!-- </template> -->
       </div>
     </div>
     </el-dialog>
@@ -1889,22 +1823,6 @@
         </div>
       </div>
     </el-dialog>
-    <!-- <Dialog
-      header="Create New Member"
-      v-model:visible="display"
-      :style="{ width: '70vw', maxWidth: '600px' }"
-      :modal="true"
-      position="top"
-    >
-      <div class="row">
-        <div class="col-md-12">
-          <NewDonor
-            @cancel="() => (display = false)"
-            @person-id="getPersonId($event)"
-          />
-        </div>
-      </div>
-    </Dialog> -->
   </div>
 </template>
 
@@ -2068,10 +1986,11 @@ export default {
 
   methods: {
     getCorrectDate(date) {
-      let myDate = new Date(date).toLocaleDateString();
-        let arr = myDate.split('/');
-        arr.unshift(arr.splice(2, 1)[0])
-         return arr.join('-')
+      // let myDate = new Date(date).toLocaleDateString();
+      //   let arr = myDate.split('/');
+      //   arr.unshift(arr.splice(2, 1)[0])
+      //    return arr.join('-')
+         return new Date(date).toLocaleDateString("en-US").replaceAll('/', '-')
     },
     currentDate() {
       this.currDate = this.eventDate;

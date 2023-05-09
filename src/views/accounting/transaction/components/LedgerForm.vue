@@ -2,7 +2,7 @@
   <div class="container">
     <div class="row bordered-bottom pb-2 mb-3">
       <div class="col-md-12">
-        <h5 class="mb-0 py-2 d-flex justify-content-between"><span>General Ledger</span> <span @click="closeLedgerForm"><i class="pi pi-times c-pointer"></i></span></h5>
+        <h5 class="mb-0 py-2 d-flex justify-content-between"><span>General Ledger</span> <span @click="closeLedgerForm" class="c-pointer"><el-icon><Close /></el-icon></span></h5>
       </div>
     </div>
     <div class="row mt-3" v-if="gettingSelectedTrsn">
@@ -36,7 +36,7 @@
     </div>
 
     <div class="row bordered-bottom pb-2 mb-3">
-      <div class="col-md-10 d-flex mt-3 ">
+      <div class="col-md-12 d-flex mt-3 ">
         <el-date-picker
             v-model="transactionDate"
             type="date"
@@ -52,7 +52,7 @@
           v-model="transactionDate"
         /> -->
       </div>
-      <div class="col-md-2 mt-2 d-md-flex flex-column ">
+      <div class="col-md-12 mt-2 d-md-flex flex-column ">
         <span class="small-text mb-n2">Total</span>
         <span class="font=weight-700" style="font-size: 25px">{{
           totalAmount
@@ -61,13 +61,10 @@
     </div>
 
     <div class="row bordered-bottom pb-3 mb-3">
-      <div class="col-md-12">
-        <div class="row">
-          <div class="col-md-8"></div>
-          <div class="col-md-4 pl-0">
-            <h6 class="font-weight-700 text-center mb-n1">Debits</h6>
+      <div class="col-md-12 d-flex justify-content-center">
+          <div class="col-md-4 mb-3">
+            <h5 class="font-weight-700 text-center mb-n1">Debits</h5>
           </div>
-        </div>
       </div>
       <div class="col-md-12">
         <div
@@ -118,7 +115,7 @@
                     </template>
                 </el-dropdown>
               </div>
-              <div class="col-md-4 mb-2 pl-0">
+              <div class="col-md-4 mb-2 adjust-screen mt-3 mt-sm-0 ">
                 <el-input
                   type="text"
                   class="w-100"
@@ -146,11 +143,10 @@
 
     <div class="row">
       <div class="col-md-12">
-        <div class="row">
-          <div class="col-md-8"></div>
-          <div class="col-md-4 pl-0">
-            <h6 class="font-weight-700 text-center mb-n1">Credits</h6>
-          </div>
+        <div class="col-md-12 d-flex justify-content-center">
+            <div class="col-md-4 mb-3">
+              <h5 class="font-weight-700 text-center mb-n1">Credits</h5>
+            </div>
         </div>
       </div>
       <div class="col-md-12">
@@ -201,62 +197,11 @@
                       </el-dropdown-menu>
                     </template>
                 </el-dropdown>
-                <!-- <div class="dropdown">
-                  <button
-                    class="btn btn-white w-100 bordered text-left bg-light d-flex justify-content-between"
-                    type="button"
-                    id="dropdownMenuButton"
-                    data-toggle="dropdown"
-                    aria-haspopup="true"
-                    aria-expanded="false"
-                  >
-                    <span>
-                      {{
-                        !transaction.account
-                          ? "Select account type"
-                          : transaction.account
-                      }}
-                    </span>
-                    <span><i class="pi pi-angle-down"></i></span>
-                  </button>
-                  <div
-                    class="dropdown-menu w-100"
-                    style="max-height: 300px; overflow: auto"
-                    aria-labelledby="dropdownMenuButton"
-                  >
-                    <div class="container">
-                      <div
-                        class="row"
-                        v-for="(accounts, index) in transactionalAccounts"
-                        :key="index"
-                      >
-                        <div class="col-md-12 px-2">
-                          <h6
-                            class="mb-0 text-capitalize font-weight-bold"
-                            v-if="accounts.length > 0"
-                          >
-                            {{ accountTypes[index] }}
-                          </h6>
-                        </div>
-                        <div class="col-md-12">
-                          <a
-                            class="dropdown-item px-1 px-14"
-                            href="#"
-                            v-for="(account, indx) in accounts"
-                            :key="indx"
-                            @click="selectAccount(0, indexe, account)"
-                            >{{ account.text }}</a
-                          >
-                        </div>
-                      </div>
-                    </div>
-                  </div>
-                </div> -->
               </div>
-              <div class="col-md-4 mb-2 pl-0">
+              <div class="col-md-4 mb-2 adjust-screen mt-3 mt-sm-0 ">
                 <el-input
                   type="text"
-                  class=" w-100"
+                  class="w-100"
                   v-model="transaction.amount"
                 />
               </div>
@@ -304,8 +249,9 @@
 <script>
 import { ref} from "@vue/reactivity";
 import transactionals from "../../chartOfAccount/utilities/transactionals";
-import { computed, watch } from '@vue/runtime-core';
+import { computed, watch, watchEffect } from '@vue/runtime-core';
 import transaction_service from '../../../../services/financials/transaction_service';
+import dateFormatter from "../../../../services/dates/dateformatter";
 import { ElMessage } from 'element-plus'
 
 export default {
@@ -314,6 +260,7 @@ export default {
   setup(props, { emit }) {
 
     const selectedAccountType = ref({});
+    const iSoStringFormat = ref("")
     // const primarycolor = inject('primarycolor')
     const transactionalAccounts = ref([]);
     const accountTypes = ["assets", "liability", "equity", "income", "expense"];
@@ -397,7 +344,7 @@ export default {
         const body = journalTransactions.value.map(i => {
             return {
                 memo: memo.value,
-                date: transactionDate.value,
+                date: iSoStringFormat.value,
                 debitAccountID: i.debitAccountID,
                 creditAccountID: i.creditAccountID,
                 amount: i.amount,
@@ -465,9 +412,18 @@ export default {
       }
     })
 
+    watchEffect(() =>{
+      if(transactionDate.value){
+       iSoStringFormat.value = dateFormatter.getISOStringGMT(transactionDate.value)
+       console.log(iSoStringFormat.value, "iiii");
+      }
+  })
+
+
     return {
       // primarycolor,
       accountTypes,
+      iSoStringFormat,
       selectedAccountType,
       selectAccount,
       transactionalAccounts,
@@ -526,5 +482,10 @@ export default {
 
 .link-color {
   color: #343a40;
+}
+@media screen and (max-width: 767px ) {
+  .adjust-screen{
+    margin-top: 15px !important;
+  }
 }
 </style>

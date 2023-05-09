@@ -779,8 +779,8 @@ export default {
     if (route.query.id) getSinglePledgeDefinition();
 
     const newConItems = (payload) => {
-      contributionItems.value.push(payload);
-      selectedContribution.value = item;
+      contributionItems.value.push(payload)
+      selectedContribution.value = payload
     };
 
     const selectContribution = (item) => {

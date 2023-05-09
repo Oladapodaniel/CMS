@@ -797,6 +797,15 @@ const routes = [
                 import( /* webpackChunkName: "addfirsttimer" */ '../views/people/FirstTimerEmpty.vue')
         },
         {
+            path: 'newconvertlist',
+            name: 'NewConvert',
+            meta: {
+                title: 'Churchplus - New Convert',
+            },
+            component: () =>
+                import( /* webpackChunkName: "addfirsttimer" */ '../views/people/NewConvert.vue')
+        },
+        {
             path: '/chartpage',
             name: 'FirstTimersChartArea',
             component: () =>
@@ -1016,7 +1025,16 @@ const routes = [
                     },
                     component: () =>
                         import( /* webpackChunkName: "sendvoicemessage" */ '@/views/communication/Voice/composeVoice')
-                }
+                },
+                {
+                    path: 'report/:messageId',
+                    name: 'VoiceDeliveryReport',
+                    meta: {
+                        title: 'Churchplus - Voice Communication - Delivery Report',
+                    },
+                    component: () =>
+                        import( /* webpackChunkName: "deliveryreport" */ '@/views/communication/DeliveryReport')
+                },
             ]
         },
         {

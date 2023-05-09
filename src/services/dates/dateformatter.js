@@ -30,6 +30,17 @@ const dateFormatter = {
             "YYYY MM DD HH ZZ"
           )._i;
     },
+    getISOStringGMT(date) {
+        const getDateByDay = new Date(date).getDate()
+        const getDateByMonth = new Date(date).getMonth()+1
+        const getDatebyYear  = new Date(date).getFullYear()
+        const getCorrectDate = `${getDatebyYear  }-${getDateByMonth < 10 ? '0'+ getDateByMonth : getDateByMonth }-${ getDateByDay < 10 ? '0'+ getDateByDay : getDateByDay }`
+        const getTimeZonebyHours =  new Date(date).getHours()
+        const getTimeZonebyminute =  new Date(date).getMinutes()
+        const getTimeZonebySeconds =  new Date(date).getSeconds()
+        const getCorrectTime = `${getTimeZonebyHours < 10 ? '0'+ getTimeZonebyHours : getTimeZonebyHours  }:${getTimeZonebyminute < 10 ? '0'+ getTimeZonebyminute : getTimeZonebyminute }:${getTimeZonebySeconds < 10 ? '0'+getTimeZonebySeconds : getTimeZonebySeconds  }`
+        return  new Date(getCorrectDate).toISOString().split('T')[0]+'T'+getCorrectTime
+    },
 
 }
 
