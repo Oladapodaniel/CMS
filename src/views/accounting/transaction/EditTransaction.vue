@@ -329,6 +329,7 @@ export default {
           data = expenseAccounts.value;
         }
         if (!incomeExpenseSearchText.value) return data;
+        console.log(data, "kkkk")
 
         return data.filter(i => i.name.toLowerCase().inludes(incomeExpenseSearchText.value));
     })
