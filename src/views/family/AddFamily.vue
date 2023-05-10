@@ -582,7 +582,7 @@
       </div>
     </Dialog>
 
-    <Dialog
+    <!-- <Dialog
       header="Create New Member"
       v-model:visible="motherDisplay"
       :style="{ width: '70vw', maxWidth: '600px' }"
@@ -597,8 +597,19 @@
           />
         </div>
       </div>
-    </Dialog>
-
+    </Dialog> -->
+    <el-dialog header= "Create New Member" v-model:visible="motherDisplay" :style="{ width: '70vw', maxWidth: '600px' }"
+      :modal="true"
+      position="top" >
+      <div class="row">
+        <div class="col-md-12">
+          <NewPerson
+            @cancel="() => (motherDisplay = false)"
+            @person-id="getMotherId($event)"
+          />
+        </div>
+      </div>
+    </el-dialog>
     <Dialog
       header="Create New Member"
       v-model:visible="wardDisplay"
@@ -922,7 +933,7 @@ export default {
           };
         }),
       };
-      console.log(family);
+      // console.log(family);
 
       const updateProfile = {
         id: familyMain.value.familyId,
