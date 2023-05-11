@@ -73,12 +73,12 @@
                           class="text-center"
                           divided
                           >
-                          <a
+                          <!-- <a
                             class="font-weight-bold small-text d-flex justify-content-center p-3 text-decoration-none primary-text"
                           >
                             <el-icon size="large"><Files /></el-icon>
                             Upload Bank Statement
-                          </a>
+                          </a> -->
                           <a
                             class="font-weight-bold small-text d-flex justify-content-center p-3 text-decoration-none primary-text" @click="openModal"
                           >
@@ -407,7 +407,6 @@ export default {
     };
 
     const transactionItem = (item) => {
-      console.log(item, 'rrr');
       selectedTransaction.value = {
         type: item.text,
         amount: item.fund,

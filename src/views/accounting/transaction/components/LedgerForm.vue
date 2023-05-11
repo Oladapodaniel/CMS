@@ -240,7 +240,6 @@
         >
           Save
         </el-button>
-        <Toast />
       </div>
     </div>
   </div>
@@ -354,15 +353,21 @@ export default {
 
         try {
                 const response = await transaction_service.saveJournalTransaction(body);
-                if (response.status >= 200 && response.status <= 300) {
+                if (response.data.status === true && response.status >= 200 && response.status <= 300) {
                   ElMessage({
                   type: "success",
-                  message: "The transaction was succesful",
+                  message: `The transaction was ${response.data.response}`,
                   duration: 3000,
                 });
                     emit('entrysaved');
-                } else {
+                } else if( response.data.status == false && response.data.response.toLowerCase().includes("must equal")) {
                   ElMessage({
+                  type: "error",
+                  message: response.data.response,
+                  duration: 3000,
+                });
+                }else {
+                   ElMessage({
                   type: "error",
                   message: "Transaction failed, please try again",
                   duration: 3000,
@@ -415,7 +420,6 @@ export default {
     watchEffect(() =>{
       if(transactionDate.value){
        iSoStringFormat.value = dateFormatter.getISOStringGMT(transactionDate.value)
-       console.log(iSoStringFormat.value, "iiii");
       }
   })
 
