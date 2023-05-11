@@ -389,8 +389,9 @@ export default {
 
     watch(() => props.journalEntry, () => {
       if (props.journalEntry && props.journalEntry.date) {
+        // console.log(props.journalEntry.date.toLocaleString().includes('T') ? props.journalEntry.date.toLocaleString().split('T')[0] : props.journalEntry.date.toLocaleString(), "jjjjjjj");
         memo.value = props.journalEntry.memo;
-        transactionDate.value = props.journalEntry.date.toLocaleString().includes('T') ? props.journalEntry.date.toLocaleString().split('T')[0] : props.journalEntry.date.toLocaleString();
+        transactionDate.value = props.journalEntry.date
         journalTransactions.value = [
           ...props.journalEntry.debitSplitAccounts.map(i => {
             i = {
