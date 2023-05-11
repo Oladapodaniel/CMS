@@ -119,9 +119,11 @@
               </div>
               </div>
               <div class="row mt-3" v-if="refreshing && !loading">
-                <el-icon class="is-loading" :size="20">
+               <div class="col-md-12 d-flex justify-conter-center">
+                  <el-icon class="is-loading" :size="20">
                   <Loading />
-                </el-icon>
+                  </el-icon>
+               </div>
               </div>
               <Table :data="selectedTransactions" :headers="transactionHeaders" :checkMultipleItem="true"
                 @checkedrow="handleSelectionChange" v-loading="loading" >
@@ -471,17 +473,21 @@ export default {
 
 
     const deleteTransaction = async (id, index) => {
+       refreshing.value = true;
       try {
         const response = await transaction_service.deleteTransaction(id);
         if (response.data.status) {
-          allTransactions.value.splice(index, 1);
-          refreshing.value = true;
+          // allTransactions.value.splice(index, 1);
+          allTransactions.value = allTransactions.value.filter(
+            (item) => item.id !== id
+          );
           emit("reload-accounts")
           ElMessage({
             type: "success",
             message: response.data.response,
             duration: 3000,
           });
+           refreshing.value = false;
         store.dispatch('transaction/removeTransactionFromStore', id)
         } else {
           ElMessage({
@@ -491,6 +497,7 @@ export default {
           });
         }
       } catch (error) {
+         refreshing.value = false;
         console.log(error);
          ElMessage({
             type: "error",
@@ -535,11 +542,6 @@ export default {
         
           
     });
-
-    // watchEffect(() =>{
-    //   emit("tableloading", loading.value)
-    //   console.log(loading.value, "ggggg");
-    // })
     
 
     return {
