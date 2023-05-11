@@ -236,7 +236,7 @@
           round
           color="#136acd"
           @click="saveTransaction"
-          :disabled="unbalanced || journalEntry.date"
+          :disabled="unbalanced || journalDate"
         >
           Save
         </el-button>
@@ -260,6 +260,7 @@ export default {
 
     const selectedAccountType = ref({});
     const iSoStringFormat = ref("")
+    const journalDate = ref(props.journalEntry.date)
     // const primarycolor = inject('primarycolor')
     const transactionalAccounts = ref([]);
     const accountTypes = ["assets", "liability", "equity", "income", "expense"];
@@ -428,6 +429,7 @@ export default {
     return {
       // primarycolor,
       accountTypes,
+      journalDate,
       iSoStringFormat,
       selectedAccountType,
       selectAccount,
