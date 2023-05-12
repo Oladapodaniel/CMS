@@ -221,6 +221,9 @@
                   " :class="{ 'fade-text': !item.email, 'text-color': item.email }">Send
                     Email</router-link>
                 </a></li>
+              <li @click="displayWhatsappDrawer(item)"><a class="dropdown-item" href="#">
+                  Send Whatsapp
+                </a></li>
               <li @click="archive(item.id, 'single')"><a class="dropdown-item" href="#">
                   <div class="text-color">Archive</div>
                 </a></li>
@@ -303,6 +306,25 @@
         </div>
       </template>
     </el-drawer>
+    
+    <el-drawer v-model="showWhatsapp" :size="mdAndUp || lgAndUp || xlAndUp ? '70%' : '100%'" direction="rtl">
+      <template #header>
+        <h4>Send Whatsapp message to {{ whatsappRecipient.firstName }}</h4>
+      </template>
+      <template #default>
+        <div>
+          <div>Recipient</div>
+          <vue-tel-input style="height: 40px" v-model="whatsappRecipient.mobilePhone" mode="international"></vue-tel-input>
+        </div>
+        <div class="mt-3">Message</div>
+        <div>
+          <el-input type="textarea" rows="8" v-model="whatsappmessage"></el-input>
+        </div>
+      </template>
+      <template #footer>
+        <el-button :color="primarycolor" @click="sendWhatsapp()" round>Send</el-button>
+      </template>
+    </el-drawer>
   </div>
 </template>
 
@@ -323,6 +345,7 @@ import { ElMessage, ElMessageBox } from 'element-plus'
 import router from "../../router/index"
 import Table from "@/components/table/Table"
 import groupsService from "../../services/groups/groupsservice";
+import io from "socket.io-client"
 
 export default {
   props: ["list", "peopleCount"],
@@ -348,6 +371,7 @@ export default {
     const searchText = ref("");
     const showSMS = ref(false)
     const showEmail = ref(false)
+    const showWhatsapp = ref(false)
     const contacts = ref([])
     const markedMembers = ref([])
     const chooseGrouptoMoveAllMembers = ref()
@@ -378,6 +402,10 @@ export default {
     const archiveLoading = ref(false)
     const applyLoading = ref(false)
     const searchingMember = ref(true)
+    const socket = io('https://whatsapp-web-server.vercel.app');
+    // const socket = io('http://localhost:3001');
+    const whatsappmessage = ref("")
+    const whatsappRecipient = ref("")
 
     watch(serverOptions, () => {
       getPeopleByPage();
@@ -878,6 +906,18 @@ export default {
       console.log(`current page: ${val}`)
     }
 
+    const sendWhatsapp = () => {
+      socket.emit('sendwhatsappmessage', {
+        phone_number: whatsappRecipient.value.mobilePhone,
+        message: whatsappmessage.value
+      })
+    }
+
+    const displayWhatsappDrawer = (item) => {
+      showWhatsapp.value = true
+      whatsappRecipient.value = item
+    }
+
     return {
       churchMembers,
       chooseGroupto,
@@ -920,6 +960,7 @@ export default {
       showSMS,
       sendMarkedMemberEmail,
       showEmail,
+      showWhatsapp,
       contacts,
       markedMembers,
       chooseGrouptoMoveAllMembers,
@@ -952,7 +993,11 @@ export default {
       handleSizeChange,
       handleCurrentChange,
       searchingMember,
-      primarycolor
+      primarycolor,
+      sendWhatsapp,
+      whatsappmessage,
+      displayWhatsappDrawer,
+      whatsappRecipient
     };
   },
 };
