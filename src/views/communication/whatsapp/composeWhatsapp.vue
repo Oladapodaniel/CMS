@@ -54,8 +54,7 @@
               </div>
             </div>
             <template #footer>
-              <Button label="Cancel" icon="pi pi-times" @click="() => (display = false)"
-                class="p-button-raised p-button-text p-button-plain mr-3" style="
+              <Button label="Cancel" icon="pi pi-times" @click="() => (display = false)" class="p-button-raised p-button-text p-button-plain mr-3" style="
                   color: #136acd;
                   background: #fff !important;
                   border-radius: 22px;
@@ -538,7 +537,8 @@ export default {
     QRCodeVue3
   },
   setup() {
-    const socket = io('http://localhost:3001');
+    const socket = io('https://whatsapp-web-server.vercel.app');
+//    const socket = io('http://localhost:3001');
     const session = ref("")
     const qrCode = ref("")
     const sessionId = ref("")
