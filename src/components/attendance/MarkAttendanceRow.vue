@@ -70,10 +70,10 @@
               <span class="hidden-header hide font-weight-700">Action</span>
               <span>
                 <div
-                      class="text-decoration-none text-danger"
+                      class="text-decoration-none"
                       @click="showConfirmModal(person)"
                     >
-                     <el-icon class="text-danger"><Delete /></el-icon>
+                     <el-icon class="text-danger" ><Delete /></el-icon>
                     </div>
               </span>
             </span>
@@ -222,7 +222,7 @@ export default {
         .delete(`/api/CheckInAttendance/DeletePersonEventAttendance?id=${item.id}&checkInAttendanceId=${item.attendanceID}`)
         .then((res) => {
           console.log(res, 'hhhhh');
-          if (res) {
+          if (res.data) {
             ElMessage({
                 type: "success",
                 message: "CheckInAttendance Deleted",
@@ -276,10 +276,10 @@ export default {
 </script>
 
 <style scoped>
-* {
+/* * {
   color: #02172e;
-  /* font-family: Nunito Sans !important; */
-}
+  font-family: Nunito Sans !important;
+} */
 
 .hide {
   display: none !important;
