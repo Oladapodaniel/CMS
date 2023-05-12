@@ -2,7 +2,7 @@
   <div :class="{ 'container-slim': lgAndUp || xlAndUp }" class="container-top h-100">
     <div class="d-flex flex-column flex-md-row justify-content-md-between botom mb-4">
       <div class=" c-pointer" @click="firttimerDetail">
-        <div class="   head-text">Firttimers</div>
+        <div class="   head-text">First Timers</div>
         <div class="" :class="{ baseline: showFirsttimer, 'hide-base': !showFirsttimer }"></div>
       </div>
       <div class=" c-pointer" @click="newConvertDetail">
