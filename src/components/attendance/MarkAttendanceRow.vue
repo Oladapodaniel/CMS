@@ -221,7 +221,6 @@ export default {
       axios
         .delete(`/api/CheckInAttendance/DeletePersonEventAttendance?id=${item.id}&checkInAttendanceId=${item.attendanceID}`)
         .then((res) => {
-          console.log(res, 'hhhhh');
           if (res.data) {
             ElMessage({
                 type: "success",
