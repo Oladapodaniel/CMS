@@ -7,11 +7,11 @@
         <div>New Convert</div>
       </div>
       <div class="mt-3 mt-md-0">
-        <router-link :to="{ name: 'AddFirstTimer' }" class="text-decoration-none">
+        <!-- <router-link :to="{ name: 'AddFirstTimer' }" class="text-decoration-none">
           <el-button :color="primarycolor" class="ml-2 header-btn" round
             >Add New Convert</el-button
           >
-        </router-link>
+        </router-link> -->
       </div>
     </div>
     <div class="">
