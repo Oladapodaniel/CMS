@@ -105,9 +105,6 @@
               </span>
             </h3>
           </div>
-          <!-- <div class="col-md-12  px-0" v-if="pledgesSummary.length > 0 ">
-            <hr class="bg-secondary border-remove   " />
-          </div> -->
         </div>
         
       </div>

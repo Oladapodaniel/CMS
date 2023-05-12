@@ -2,7 +2,7 @@
     <div class="container-fluid">
         <!-- <div>{{attendanceId}}iughyuibui</div> -->
         <div class="row">
-            <DataRow :isKioskMode="isKiosk" v-for="(person, index) in listOfPeople" :key="index" :person="person" @togglecheckout="toggleCheckout" @togglecheckin="toggleCheckin" />
+            <DataRow :isKioskMode="isKiosk" v-for="(person, index) in listOfPeople" :key="index" @attendancepersonid="attendancePersonId" :person="person" @togglecheckout="toggleCheckout" @togglecheckin="toggleCheckin" />
         </div>
 
         <div class="row pb-4" v-if="listOfPeople.length === 0" >
@@ -57,6 +57,10 @@ import attendanceservice from '../../services/attendance/attendanceservice';
                 return people.value.filter(i => i.name.toLowerCase().includes(props.searchText.toLowerCase()))
             })
 
+            const attendancePersonId = (payload) =>{
+                people.value = people.value.filter((i) => i.id !== payload)
+            }
+
             const toggleCheckin = data => {
                 const userIndex = people.value.findIndex(i => i.id === data.id);
                 if (userIndex >= 0) {
@@ -87,6 +91,7 @@ import attendanceservice from '../../services/attendance/attendanceservice';
                 listOfPeople,
                 toggleCheckin,
                 toggleCheckout,
+                attendancePersonId,
             }
         }
     }

@@ -1,7 +1,6 @@
 <template>
   <div
-    :class="{ 'container-slim': lgAndUp || xlAndUp }"
-    class="container-top h-100"
+    class="container-fluid px-0"
   >
     <div class="d-flex flex-column flex-md-row justify-content-md-between">
       <div class="head-text">
@@ -148,7 +147,7 @@
 </template>
 
 <script>
-import { ref, inject, computed } from "vue";
+import { ref, inject, computed, watchEffect } from "vue";
 import axios from "@/gateway/backendapi";
 import dateFormatter from "../../services/dates/dateformatter";
 import deviceBreakpoint from "../../mixins/deviceBreakpoint";
@@ -157,10 +156,11 @@ import finish from "../../services/progressbar/progress";
 import { ElMessage, ElMessageBox } from "element-plus";
 
 export default {
+  props: ['newConvertList'],
   components: {
     Table
   },
-  setup() {
+  setup(props) {
     const { mdAndUp, lgAndUp, xlAndUp } = deviceBreakpoint()
     const primarycolor = inject('primarycolor')
     const loading = ref(false)
@@ -188,28 +188,28 @@ export default {
       );
     });
 
-    const getAllNewConvert = async () =>{
-      loading.value = true
+    // const getAllNewConvert = async () =>{
+    //   loading.value = true
 
-        try{
-            const res = await axios.get('api/People/GetAllNewConverts?page=1')
-            allNewConvert.value = res.data.response
-            console.log(allNewConvert.value, "hhhh");
-            loading.value = false
-        }
-        catch(err){
-            finish();
-        loading.value = false;
-        loading.value = false;
-        if (err.toString().toLowerCase().includes("network error")) {
-          networkError.value = true;
-        } else {
-          networkError.value = false;
-        }
+    //     try{
+    //         const res = await axios.get('api/People/GetAllNewConverts?page=1')
+    //         allNewConvert.value = res.data.response
+    //         console.log(allNewConvert.value, "hhhh");
+    //         loading.value = false
+    //     }
+    //     catch(err){
+    //         finish();
+    //     loading.value = false;
+    //     loading.value = false;
+    //     if (err.toString().toLowerCase().includes("network error")) {
+    //       networkError.value = true;
+    //     } else {
+    //       networkError.value = false;
+    //     }
 
-        }
-    }
-    getAllNewConvert()
+    //     }
+    // }
+    // getAllNewConvert()
 
     const showConfirmModal = (id) => {
       ElMessageBox.confirm(
@@ -252,6 +252,12 @@ export default {
           finish();
         });
     };
+
+    watchEffect(() => {
+      if (props.newConvertList) {
+        allNewConvert.value = props.newConvertList
+      }
+    })
 
     return {
     mdAndUp, lgAndUp ,xlAndUp, primarycolor, loading, NewConvertHeaders, formatDate, networkError, 

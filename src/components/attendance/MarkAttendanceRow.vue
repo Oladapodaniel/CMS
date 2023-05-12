@@ -3,7 +3,7 @@
     <div class="row over-con">
       <div class="col-md-12">
         <div class="row py-2 tb-row" :class="{ 'kiosk-tb-size': isKioskMode }">
-          <div class="col-md-3" :class="{ 'order-3': isKioskMode }">
+          <div class="col-md-2" :class="{ 'order-3': isKioskMode }">
             <span class="d-flex justify-content-between">
               <span class="hidden-header hide font-weight-700">Name</span>
               <span
@@ -11,7 +11,7 @@
               >
             </span>
           </div>
-          <div class="col-md-3" :class="{ 'order-4': isKioskMode }">
+          <div class="col-md-2" :class="{ 'order-4': isKioskMode }">
             <span class="d-flex justify-content-between">
               <span class="hidden-header hide font-weight-700"
                 >Phone Number</span
@@ -65,6 +65,19 @@
               </span>
             </span>
           </div>
+          <div class="col-md-2" :class="{ 'd-none': isKioskMode }">
+            <span class="d-flex justify-content-between">
+              <span class="hidden-header hide font-weight-700">Action</span>
+              <span>
+                <div
+                      class="text-decoration-none text-danger"
+                      @click="showConfirmModal(person)"
+                    >
+                     <el-icon class="text-danger"><Delete /></el-icon>
+                    </div>
+              </span>
+            </span>
+          </div>
         </div>
 
         <div class="row">
@@ -87,9 +100,11 @@
 <script>
 import { ref } from "vue";
 import MemberTag from "../../views/event/attendance&checkin/AttendanceTag";
+import axios from "@/gateway/backendapi";
 import attendanceservice from "../../services/attendance/attendanceservice";
+import finish from "../../services/progressbar/progress";
 import deviceBreakpoint from "../../mixins/deviceBreakpoint";
-import { ElMessage } from "element-plus";
+import { ElMessage, ElMessageBox } from 'element-plus'
 
 export default {
   props: ["isKioskMode", "person"],
@@ -179,13 +194,73 @@ export default {
       }
       console.log(response, "rrr");
     };
+    const showConfirmModal = (item) => {
+      console.log(item, "nnjnnjnjk");
+       ElMessageBox.confirm(
+        "Are you sure you want to proceed?",
+        "Confirm delete",
+        {
+          confirmButtonText: "OK",
+          cancelButtonText: "Cancel",
+          type: "error",
+        }
+      )
+        .then(() => {
+          deleteCheckinAttendance(item);
+        })
+        .catch(() => {
+          ElMessage({
+            type: "info",
+            message: "Rejected",
+            duration: 5000,
+          });
+        });
+    };
+
+    const deleteCheckinAttendance = (item) => {
+      axios
+        .delete(`/api/CheckInAttendance/DeletePersonEventAttendance?id=${item.id}&checkInAttendanceId=${item.attendanceID}`)
+        .then((res) => {
+          console.log(res, 'hhhhh');
+          if (res) {
+            ElMessage({
+                type: "success",
+                message: "CheckInAttendance Deleted",
+                duration: 5000,
+              });
+              // props.person.filter((i) => i.id !== item.id);
+            emit("attendancepersonid", item.id);
+          } else {
+            ElMessage({
+                type: "warning",
+                message: "Delete Failed, Please Try Again",
+                duration: 5000,
+              });
+          }
+        })
+        .catch((err) => {
+          console.log(err)
+          finish();
+          // if (err.response)
+          //  {
+            ElMessage({
+                type: "error",
+                message:  "Delete Failed, Please Try Again",
+                duration: 5000,
+              });
+          // }
+        });
+    };
 
     const checkout = () => {
       console.log(checkedOut.value, "checked in");
     };
 
+
     return {
       checkedIn,
+      deleteCheckinAttendance,
+      showConfirmModal,
       mdAndUp, 
       lgAndUp, 
       xlAndUp, 

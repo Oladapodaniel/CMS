@@ -258,6 +258,7 @@ export default {
         loading.value = false;
         console.log(data);
         attendanceReport.value = data;
+        console.log(attendanceReport.value, "thehthth");
         groupReport(data, "personId");
         groupReportByDate(data, "activityID");
 

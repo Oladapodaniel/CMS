@@ -1,6 +1,19 @@
 <template>
   <div :class="{ 'container-slim': lgAndUp || xlAndUp }" class="container-top h-100">
-    <div class="d-flex flex-column flex-md-row justify-content-md-between">
+    <div class="d-flex flex-column flex-md-row justify-content-md-between botom mb-4">
+      <div class=" c-pointer" @click="firttimerDetail">
+        <div class="   head-text">Firttimers</div>
+        <div class="" :class="{ baseline: showFirsttimer, 'hide-base': !showFirsttimer }"></div>
+      </div>
+      <div class=" c-pointer" @click="newConvertDetail">
+        <div class="  head-text">New Convert</div>
+        <div class="" :class="{
+          baselinetwo: showNewConvert,
+          'hide-basetwo': !showNewConvert,
+        }"></div>
+      </div>
+    </div>
+    <div class="d-flex flex-column flex-md-row justify-content-md-between" v-if="showFirsttimer">
       <div class="head-text">
         <div>First Timers Analytics
         </div>
@@ -12,7 +25,11 @@
         </router-link>
       </div>
     </div>
-
+    <div class="d-flex flex-column flex-md-row justify-content-md-center">
+      <el-icon v-if="(firstTimersList.length == 0)" class="is-loading" :size="30">
+        <Loading />
+      </el-icon>
+    </div>
     <el-dialog v-model="displayModal" title="First Timers to import from file"
       :width="mdAndUp || lgAndUp || xlAndUp ? `50%` : `90%`" align-center>
       <div class="container">
@@ -38,14 +55,23 @@
         </span>
       </template>
     </el-dialog>
-
-    <div v-if="firstTimersList.length > 0 && !loading && !networkError" class="event-list">
+    
+    <div v-if="firstTimersList.length > 0 && !loading && !networkError && showFirsttimer" class="event-list">
       <FirstTimersList :firstTimersList="firstTimersList" />
     </div>
-    <div v-if="firstTimersList.length === 0 && !loading && !networkError" class="no-person">
+    <div v-if="newConvertList.length > 0 && !loading && !networkError && showNewConvert" class="event-list">
+      <NewConvertList :newConvertList="newConvertList" />
+    </div>
+    <div v-if="firstTimersList.length === 0 && !loading && !networkError && !showFirsttimer" class="no-person">
       <div class="empty-img">
         <p><img src="../../assets/people/people-empty.svg" alt="" /></p>
         <p class="tip">You haven't added any first timer yet</p>
+      </div>
+    </div>
+    <div v-if="newConvertList.length === 0 && !loading && !networkError && !showNewConvert" class="no-person">
+      <div class="empty-img">
+        <p><img src="../../assets/people/people-empty.svg" alt="" /></p>
+        <p class="tip">You haven't added any new convert yet</p>
       </div>
     </div>
     <div v-else-if="networkError && !loading" class="adjust-network">
@@ -53,7 +79,7 @@
       <div>Opps, Your internet connection was disrupted</div>
     </div>
 
-    <el-skeleton class="w-100" animated v-if="loading">
+    <el-skeleton class="w-100" animated v-if="loading ">
       <template #template>
         <div style="display: flex;
                 align-items: center;
@@ -73,6 +99,7 @@
 <script>
 import axios from '@/gateway/backendapi'
 import FirstTimersList from './FirstTimersList'
+import NewConvertList from './NewConvert.vue'
 import { ref, inject } from 'vue';
 import finish from '../../services/progressbar/progress'
 import router from "@/router/index";
@@ -81,11 +108,14 @@ import store from '../../store/store';
 
 
 export default {
-  components: { FirstTimersList },
+  components: { FirstTimersList, NewConvertList },
   setup() {
     const primarycolor = inject('primarycolor')
     const firstTimersList = ref(store.getters['membership/allFirstTimers'])
     const loading = ref(false)
+    const showFirsttimer = ref(true)
+    const showNewConvert = ref(false)
+    const newConvertList = ref([])
     const importFile = ref("")
     const image = ref("");
     const displayModal = ref(false)
@@ -113,6 +143,27 @@ export default {
     }
     if (firstTimersList.value.length == 0) getFirstTmersList()
 
+    const getAllNewConvert = async () =>{
+      loading.value = true
+
+        try{
+            const res = await axios.get('api/People/GetAllNewConverts?page=1')
+            newConvertList.value = res.data.response
+            loading.value = false
+        }
+        catch(err){
+            finish();
+        loading.value = false;
+        if (err.toString().toLowerCase().includes("network error")) {
+          networkError.value = true;
+        } else {
+          networkError.value = false;
+        }
+
+        }
+    }
+   if (newConvertList.value.length == 0) getAllNewConvert()
+
     const fileUpload = () => {
       importFile.value.click()
     }
@@ -120,6 +171,17 @@ export default {
     const closeModal = () => {
       displayModal.value = false
     }
+
+    const firttimerDetail = async () => {
+      showFirsttimer.value = true;
+      showNewConvert.value = false;
+    };
+
+    const newConvertDetail = async () => {
+      showFirsttimer.value = false;
+      showNewConvert.value = true;
+    };
+
 
     const imageSelected = async (e) => {
       image.value = e.target.files[0];
@@ -223,7 +285,7 @@ export default {
     //   loading.value = payload
     // }
 
-    return { firstTimersList, getFirstTmersList, loading, fileUpload, imageSelected, image, displayModal, importFile, firstTimerData, addToFirstTimers, closeModal, importFirstTimer, networkError, setFirsttimer, mdAndUp, lgAndUp, xlAndUp, primarycolor };
+    return { firstTimersList, newConvertList, newConvertDetail, firttimerDetail, showFirsttimer, showNewConvert, getFirstTmersList, loading, fileUpload, imageSelected, image, displayModal, importFile, firstTimerData, addToFirstTimers, closeModal, importFirstTimer, networkError, setFirsttimer, mdAndUp, lgAndUp, xlAndUp, primarycolor };
   },
 };
 
@@ -234,38 +296,70 @@ export default {
   box-sizing: border-box;
 }
 
-/* .top {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  padding: 10px;
-} */
+.botom {
+  border-bottom: 7px solid rgb(252, 248, 248);
+  border-radius: 2px;
+  position: relative;
+  /* border-bottom-right-radius: 10px;
+  border-bottom-left-radius: 10px; */
 
-/* .button {
-  padding: 8px 10px;
-  border: none;
-  border-radius: 22px;
-  width: 180px;
-  font-size: 16px;
-  font-weight: 600;
-  margin: 4px 8px;
-  outline: none;
-  text-decoration: none;
-  box-sizing: border-box;
+  /* height: 4px; */
+}
+.botom {
+    display: flex;
+    gap: 1.5rem;
+  }
+.baseline {
+  transition: all 150ms ease-in-out;
+  background-color: #136acd;
+  position: relative;
+  border-radius: 10px;
+  height: 4px;
+  top: 5px;
+  left: 0px;
+  /* width: 35%; */
+  opacity: 1;
 }
 
-.button:hover {
-  cursor: pointer;
-} */
-
-/* .more-btn {
-  background: #dde2e6;
+.hide-base {
+  transition: all 150ms ease-in-out;
+  background-color: #136acd;
+  position: relative;
+  border-radius: 10px;
+  z-index: 175;
+  height: 4px;
+  top: 35px;
+  left: 0px;
+  opacity: 0;
 }
 
-.add-person-btn {
-  background: #136acd;
-  color: #fff;
-} */
+.baselinetwo {
+  transition: all 150ms ease-in-out;
+  background-color: #136acd;
+  position: relative;
+  border-radius: 10px;
+  height: 4px;
+  top: 5px;
+  left: 0px;
+  opacity: 1;
+}
+
+.hide-basetwo {
+  transition: all 150ms ease-in-out;
+  background-color: #136acd;
+  position: absolute;
+  /* background-color: #33475b; */
+  /* color: #136acd" */
+  border-radius: 10px;
+  /* bottom: -2.5px; */
+  z-index: 175;
+  height: 4px;
+  top: 36px;
+  left: 0px;
+  width: 50%;
+  opacity: 0;
+}
+
 
 .btn-icon {
   padding: 0 8px;
