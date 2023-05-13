@@ -1,6 +1,6 @@
 
 <template>
-  <div class="container">{{ donation }}
+  <div class="container">
     <div class="row">
       <div class="col-sm-12 p-4 text-center continue-text">Continue payment with</div>
     </div>
