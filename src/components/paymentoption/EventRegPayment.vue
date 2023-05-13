@@ -16,23 +16,6 @@
     </div>
 
 
-  <!--  <div class="row row-button d-flex justify-content-center">
-      <div class="col-8 col-sm-6">
-        <img class="w-100 img-height" src="../../../assets/paypal-logo-2@2x.png" alt="paypal"/>
-      </div>
-
-     
-    </div>
-
-    <div class="row row-button d-flex justify-content-center" v-if="stripe">
-      <div class="col-7 col-sm-4">
-        <img class="w-100 img-height" src="../../../assets/Stripe_logo.jpg" alt="stripe"/>
-      </div>
-
-  
-        </div> -->
-
-
   </div>
 </template>
 
