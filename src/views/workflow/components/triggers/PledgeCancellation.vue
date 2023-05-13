@@ -11,7 +11,18 @@
                 <label for="" class="font-weight-600">Groups</label>
             </div>
             <div class="col-md-12 mb-2">
-                <MultiSelect @change="groupSelected" v-model="selectedGroups" :options="groups" optionLabel="name" placeholder="Select groups" class="w-100"  display="chip" />
+                <el-tree-select v-model="data.groups" :data="groupMappedTree" :render-after-expand="false" check-strictly
+                    multiple show-checkbox check-on-click-node class="w-100" @change="handleSelectedGroups" />
+            </div>
+        </div>
+        
+        <div class="row mt-1">
+            <div class="col-md-12">
+                <label for="" class="font-weight-600">With pledges</label>
+            </div>
+            <div class="col-md-12 mb-2">
+                <el-tree-select v-model="data.pledges" :data="allPledgeDefinitionList" :render-after-expand="false" check-strictly
+                    multiple show-checkbox check-on-click-node class="w-100" @change="handleSelectedPledges" />
             </div>
         </div>
 
@@ -19,24 +30,27 @@
 </template>
 
 <script>
-import MultiSelect from "primevue/multiselect"
 import TriggerDescription from "../TriggerDescription.vue"
 import { reactive, ref } from '@vue/reactivity'
-import { watch } from '@vue/runtime-core'
+import { watchEffect } from '@vue/runtime-core'
 import workflow_util from '../../utlity/workflow_util'
-// import { computed } from '@vue/runtime-core'
 export default {
-    props: [ "groups", "selectedTriggerIndex", "condition" ],
-    components: { TriggerDescription, MultiSelect },
+    props: [ "groups", "selectedTriggerIndex", "condition", "groupMappedTree", "allPledgeDefinitionList" ],
+    components: { TriggerDescription },
 
     setup (props, { emit }) {
         const data = reactive({ });
         const selectedGroups = ref('')
-        const groupSelected = (e) => {
+        const handleSelectedGroups = () => {
             
-            const allGroupsIndex = selectedGroups.value.findIndex(i => i.id === "00000000-0000-0000-0000-000000000000");
-            data.groups = allGroupsIndex < 0 ? e.value.map(i => i.id).join(',') : "00000000-0000-0000-0000-000000000000";
+            // const allGroupsIndex = selectedGroups.value.findIndex(i => i.id === "00000000-0000-0000-0000-000000000000");
+            // data.groups = allGroupsIndex < 0 ? e.value.map(i => i.id).join(',') : "00000000-0000-0000-0000-000000000000";
             emit('updatetrigger', JSON.stringify(data), props.selectedTriggerIndex);
+        }
+
+
+        const handleSelectedPledges = () => {
+            emit('updatetrigger', JSON.stringify(data), props.selectedTriggerIndex)
         }
 
         // const description = computed(() => {
@@ -51,19 +65,24 @@ export default {
         }
 
         const parsedData = ref({ })
-        watch(() => {
+        watchEffect(() => {
             if (props.condition.jsonCondition) {
                 parsedData.value = JSON.parse(props.condition.jsonCondition);
-                selectedGroups.value = props.groups.length > 0 ? workflow_util .getGroups(parsedData.value.groups, props.groups) : [ ];
-                data.groups = parsedData.value.groups;
+                data.groups = parsedData.value.groups ? parsedData.value.groups.split(",") : [];
+                data.pledges = parsedData.value.pledges ? parsedData.value.pledges.split(",") : [];
+                
+                // selectedGroups.value = props.groups.length > 0 ? workflow_util .getGroups(parsedData.value.groups, props.groups) : [ ];
+                // data.groups = parsedData.value.groups;
             }
         })
 
         return {
-            groupSelected,
+            handleSelectedGroups,
             selectedGroups,
             // description,
             removeTrigger,
+            data,
+            handleSelectedPledges
         }
     }
 }

@@ -42,24 +42,41 @@
       <div class="col-md-12 py-4">
         <div class="row" id="ignore1">
           <div class="col-md-7">
-            <p class="search-span px-2">
-              <i class="pi pi-search p-2" style="height: 30px; width: 30px"></i>
-              <input
-                type="text"
-                class="search-control"
-                placeholder="Search"
+            <p class=" px-2">
+              <el-input
                 v-model="searchText"
+                class="w-100 m-2"
+                placeholder="Search"
+                :prefix-icon="Search"
               />
             </p>
           </div>
-          <div class="col-md-3 offset-sm-2">
+          <div class="col-md-3 offset-sm-2 ">
             <div class="row">
-              <div class="col-sm-5 cursor-pointer small-text font-weight-700" @click="sortAttendanceDataByPresent" v-tooltip.top="
-            'Sort column'"><i class="pi pi-sort-alt primary-text" style="color:#136acd"></i> SORT</div>
+              <div class="col-md-5 mt-3 d-flex cursor-pointer small-text font-weight-700" @click="sortAttendanceDataByPresent">
+                <el-icon class="text-primary" ><Sort /></el-icon>
+                <el-tooltip
+                  class=""
+                  effect="dark"
+                  content="Sort column"
+                  placement="top-start"
+                >
+                  <div>SORT</div>
+                </el-tooltip>
+              </div>
 
-            <div class="dropdown col-sm-7">
-              <div class="cursor-pointer small-text font-weight-700" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" v-tooltip.top="'Print Attendance'"><i class="pi pi-print primary-text" style="color:#136acd"></i> PRINT</div>
-
+            <div class="dropdown col-sm-7 mt-3 mt-3">
+              <div class="cursor-pointer d-flex small-text font-weight-700" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" >
+                <el-icon  class="text-primary"><Printer /></el-icon>
+                <el-tooltip
+                  class=""
+                  effect="dark"
+                  content="Print Attendance"
+                  placement="top-start"
+                >
+                  <div class="ml-1">PRINT</div>
+                </el-tooltip>
+              </div>
                 
                 <div class="dropdown-menu style-account" aria-labelledby="dropdownMenuButton">
                 <!-- Print Those Present -->
@@ -141,9 +158,8 @@
             <span class="d-flex justify-content-between">
               <span class="hidden-header hide font-weight-700">Checked-in</span>
               <span>
-                <i class="pi pi-check attended" v-if="person.isPresent"></i>
-                <i class="pi pi-times" v-else></i>
-                <!-- <span v-else>--</span> -->
+                <el-icon class="attended" v-if="person.isPresent"><Check /></el-icon>
+                <el-icon v-else><Close /></el-icon>
               </span>
             </span>
           </div>
@@ -167,7 +183,6 @@
       </div>
     </div>
   </div>
-    <Toast />
 </template>
 
 <script>
@@ -176,22 +191,17 @@ import ReportChart from "../../../components/charts/SecondReportPie";
 import attendanceservice from '../../../services/attendance/attendanceservice';
 import { useRoute } from "vue-router";
 import dateFormatter from '../../../services/dates/dateformatter';
-import Tooltip from 'primevue/tooltip';
 import LoadingComponent from "../../../components/loading/LoadingComponent"
 import printJS from 'print-js'
+import { Search } from '@element-plus/icons-vue'
 import axios from "@/gateway/backendapi";
-import { useToast } from "primevue/usetoast";
+import { ElMessage } from "element-plus";
 
 export default {
     components: { ReportChart, LoadingComponent },
-    directives: {
-      'tooltip': Tooltip
-    },
     setup() {
         const route = useRoute();
         const data = ref([]);
-        const toast = useToast()
-
         const reportData = ref({ });
         const loading = ref(true);
         const op = ref()
@@ -221,13 +231,11 @@ export default {
         }
 
         const absentees = computed(() => {
-          // if (reportData.value.status && reportData.value.status.toLowerCase() !== "ended") return 0;
           if (!reportData.value || !reportData.value.peopoleAttendancesDTOs || reportData.value.peopoleAttendancesDTOs.length === 0) return 0;
           return reportData.value.peopoleAttendancesDTOs.filter(i => !i.isPresent).length;
         })
 
         const attendees = computed(() => {
-          // if (reportData.value.status && reportData.value.status.toLowerCase() !== "ended") return 0;
           if (!reportData.value || !reportData.value.peopoleAttendancesDTOs || reportData.value.peopoleAttendancesDTOs.length === 0) return 0;
           return reportData.value.peopoleAttendancesDTOs.filter(i => i.isPresent).length;
         })
@@ -340,12 +348,12 @@ export default {
                   reportData.value.peopoleAttendancesDTOs[index].phoneNumber = data.data
                   } else {
                   reportData.value.peopoleAttendancesDTOs[index].phoneNumber = 'No phone'
-                    toast.add({
-                      severity: "info",
-                      summary: 'Not found',
-                      detail: data.data,
-                      life: 5000,
-                    });
+                  ElMessage({
+                        type: "info",
+                        message: data.data,
+                        duration: 2000,
+                      });
+                   
                     }
               
             } catch (err){
@@ -376,6 +384,7 @@ export default {
             filterAbsentAttendance,
             toggle,
             op,
+            Search,
             phoneNumber,
             noNumber
         }

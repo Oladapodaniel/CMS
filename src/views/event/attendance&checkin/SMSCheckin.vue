@@ -18,7 +18,8 @@
                             <div class="col-md-8 px-0 d-flex align-items-center ml-n5">
                                 <div class="card border-0 w-100">
                                     <div class="card-body shadow-lg border-0 pl-5 text-center">
-                                        <p class="my-3 text-color">Send <span class="font-weight-700 text-color">{{ code }}</span> to 08089622349</p>
+                                        <p class="my-3 text-color">Send <span class="font-weight-700 text-color">{{ code }}</span> to   08085538320</p> 
+                                        <!-- 08089622349 -->
                                         <!-- <p class="my-3 text-color">Send <span class="font-weight-700 text-color">{{ code }}</span> to {{ smsNumber }}</p> -->
                                     </div>
                                 </div>

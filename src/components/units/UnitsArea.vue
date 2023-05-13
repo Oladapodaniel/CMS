@@ -1,22 +1,19 @@
 <template>
-    <div class="container-fluid">
-        <div class="row d-sm-flex align-items-center units-div mt-3">
-            <div class="col-sm-12">
-                <h4 class="font-weight-bold mb-0 center-flexed">{{ balance.toFixed(2) }}</h4>
-                <p class="font-weight-bold mb-0 center-flexed">
-                SMS Units
-                </p>
-            </div>
-            <div class="col-sm-12 d-flex justify-content-center">
-                <button
-                class="btn buy-btn center-flexed"
-                @click="payWithPaystack"
-                >
-                <span class="btn-text box-btn-text2"> BUY UNITS </span>
-                </button>
-            </div>
-        </div>
+  <div class="">
+    <div class="d-sm-flex align-items-center flex-column units-div mt-3">
+      <div class="col-sm-12">
+        <h4 class="font-weight-bold mb-0 center-flexed">{{ balance.toFixed(2) }}</h4>
+        <p class="font-weight-bold mb-0 center-flexed">
+          SMS Units
+        </p>
+      </div>
+      <div class="col-sm-12 d-flex justify-content-center mt-2">
+        <el-button class="btn buy-btn center-flexed" @click="goToBuyUnit">
+          <span class="btn-text box-btn-text2"> BUY UNITS </span>
+        </el-button>
+      </div>
     </div>
+  </div>
 </template>
 
 <script>
@@ -24,48 +21,43 @@ import { ref, computed } from 'vue'
 import userService from "../../services/user/userservice"
 import router from "@/router/index";
 import { useStore } from "vuex"
-// import axios from "@/gateway/backendapi";
 
-    export default {
-        setup() {
-            const store = useStore();
-            
-            const currentUser = ref(store.getters.currentUser && store.getters.currentUser.smsBalance ? store.getters.currentUser.smsBalance : 0)
+export default {
+  setup() {
+    const store = useStore();
+    const currentUser = ref(store.getters.currentUser && store.getters.currentUser.smsBalance ? store.getters.currentUser.smsBalance : 0)
+    const getCurrentUserBalance = async () => {
 
-            const getCurrentUserBalance = async () => {
-              
-                try {
-                  const data = await userService.getCurrentUser();
-                  currentUser.value = data.smsBalance;
-                  // alert(currentUser.value)
-                  console.log(data, "daataaaaa")
-                  } catch (error) {
-                      console.log(error);
-                  }
-              }
-            if (!currentUser.value || currentUser.value === 0)  getCurrentUserBalance();
-            
-            const balance = computed(() => {
-                  return currentUser.value;
-            })
-
-            const  payWithPaystack = () => {
-                router.push("/tenant/units")
-            };
-
-            return {
-                balance,
-                payWithPaystack,
-                currentUser
-            }
-        }
+      try {
+        const data = await userService.getCurrentUser();
+        currentUser.value = data.smsBalance;
+      } catch (error) {
+        console.log(error);
+      }
     }
+    if (!currentUser.value || currentUser.value === 0) getCurrentUserBalance();
+
+    const balance = computed(() => {
+      return currentUser.value;
+    })
+
+    const goToBuyUnit = () => {
+      router.push("/tenant/units")
+    };
+
+    return {
+      balance,
+      goToBuyUnit,
+      currentUser
+    }
+  }
+}
 </script>
 
 <style scoped>
 .units-div {
   border: 1px solid #dde2e6;
-  border-radius: 20px;
+  border-radius: 7px;
   padding: 15px 0;
   background: #f5ebeb1c !important;
 }
@@ -82,6 +74,7 @@ import { useStore } from "vuex"
   font-size: 11px;
   font-weight: 700;
 }
+
 .box-btn-text2 {
   font-weight: 800;
   /* color: #ffe50f; */
@@ -122,7 +115,7 @@ import { useStore } from "vuex"
   }
 
   .center-flexed {
-      text-align: center;
+    text-align: center;
   }
 }
 </style>

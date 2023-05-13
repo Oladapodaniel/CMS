@@ -1,16 +1,22 @@
 <template>
-<div class="ml-n5">
-    <div class="chart-header" v-if="header">
+<div>
+  <div class="d-flex">
+    <img src="../../assets/people/members-icon.svg" alt="" style="margin-left: -30px;" />
+    <div class="chart-header-text">
+              <p>{{ header }}</p>
+          </div>
+  </div>
+    <!-- <div class="chart-header" v-if="header">
           <div class="icon-div">
               <img src="../../assets/people/members-icon.svg" alt="">
           </div>
-          <div class="header-text">
+          <div class="chart-header-text">
               <p>{{ header }}</p>
           </div>
-      </div>
+      </div> -->
 </div>
   <div class="wrapper">
-    <div :class="{ 'chart-div' :  !fullPath.includes('/checkin'), 'no-chart-class' : fullPath.includes('/checkin') }" :id="domId" :style="!fullPath.includes('/checkin') ? 'height: 530px' : 'height: 100%'" ref="chartDiv"></div>
+    <div :class="{ 'chart-div' :  !fullPath.includes('/checkin'), 'no-chart-class' : fullPath.includes('/checkin') }" :id="domId" :style="!fullPath.includes('/checkin') ? 'height: 502px' : 'height: 100%'" ref="chartDiv"></div>
     <!-- :class="{ 'chart-div' : !route.fullPath.includes('/checkin'), 'no-chart-div' : route.fullPath.includes('/checkin') }" -->
   </div>
 </template>
@@ -139,7 +145,7 @@ const getRoute = () => {
 
 .chart-header {
     display: flex;
-    margin-top: -66px;
+    /* margin-top: -66px; */
 }
 
 .icon-div img {
@@ -147,15 +153,17 @@ const getRoute = () => {
     margin-left: -30px;
 }
 
-.chart-header p {
+/* .chart-header p {
     font-size: 25px;
     font-weight: 600;
     margin: 0 0 10px 0;
-}
+} */
 
-.header-text {
+.chart-header-text {
     display: flex;
     align-items: center;
+    font-weight: 700;
+    font-size: 20px;
 }
 
 @media screen and (min-width: 1100px) {
@@ -172,39 +180,35 @@ const getRoute = () => {
     }
 }
 
-  @media (max-width: 575px) {
+  /* @media (max-width: 575px) {
       .wrapper {
           margin-left: -1.4rem!important;
       }
-  }
+  } */
 
   @media (max-width: 767px) {
-    .chart-header p {
+    /* .chart-header p {
     font-size: 23px;
     font-weight: 600;
     margin: 0px 0px -25px -10px;
-    }
+    } */
     .icon-div img {
     height: 108px;
     margin-left: -30px;
     margin-top: 32px;
 }
   }
-</style>
-
-<style>
-    .chart-div {
-         border: 1px solid #DDE2E6;
-        border-radius: 30px;
-        margin: 0 0 24px 0;
-        box-shadow: 0px 1px 4px #02172E45;
-        border: 1px solid #DDE2E6;
-        padding: 25px 0;
-    }
-
-    .no-chart-div {
-         border: none;
-        border-radius: 0px;
-        box-shadow: none;
-    }
+.no-chart-div {
+     border: none;
+    border-radius: 0px;
+    box-shadow: none;
+}
+.chart-div {
+     /* border: 1px solid #DDE2E6; */
+    /* border-radius: 30px;
+    margin: 0 0 24px 0;
+    box-shadow: 0px 1px 4px #02172E45;
+    border: 1px solid #DDE2E6;*/
+    /* padding: 10px 0;  */
+}
 </style>

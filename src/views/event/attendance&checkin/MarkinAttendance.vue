@@ -96,10 +96,10 @@
       </div>
       <div class="col-md-7">
         <span class="p-input-icon-left w-100">
-          <i class="pi pi-phone icon" />
-          <InputText
+          <!-- <i class="pi pi-phone icon" /> -->
+          <input
             @input="CheckXterAfterEleven"
-            class="w-100"
+            class="w-100 form-control"
             type="text"
             v-model="enteredValue"
             aria-required=""
@@ -112,6 +112,9 @@
       <div class="col-md-3"></div>
       <div class="col-md-5">
         <div class="loading-div my-5" v-if="showLoading">
+          <el-icon class="is-loading " >
+            <Loading />
+          </el-icon>
           <i
             class="pi pi-spin pi-spinner loading-indicator"
             style="fontsize: 2rem"

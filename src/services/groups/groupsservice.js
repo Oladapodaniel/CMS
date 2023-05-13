@@ -65,23 +65,23 @@ const grousService = {
         }
     },
 
-    async removeGroupFromStore(id) {
+    async removeGroupFromStore(index) {
         try {
-            store.dispatch("groups/removeGroup", id);
+            store.dispatch("groups/removeGroup", index);
         } catch (error) {
             console.log(error);
         }
     },
 
-    async addGroupToStore(data, peopleCount) {
+    async removeMultipleMemberFromGroup(groupId, personIds) {
         try {
-            const group = {
-                id: data.id,
-                name: data.name,
-                peopleInGroupsCount: peopleCount,
-            }
-            store.dispatch("groups/addGroup", group);
+            const { data } = await axios.put("/api/RemoveMultiplePeopleFromGroup", {
+                groupId: groupId,
+                personIds: personIds
+            });
+            return data;
         } catch (error) {
+            stopProgressBar();
             console.log(error);
         }
     }

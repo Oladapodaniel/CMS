@@ -1,30 +1,33 @@
 <template>
-  <div class="whole-co container-wid container-top" @click="hideModals">
+  <div class=" container-top"  :class="{ 'container-slim': lgAndUp || xlAndUp }"  @click="hideModals">
     <div class="main-co">
-      <div class="main-bod">
-        <div class="top container-wide mt-3">
+        <div class="top container-fluid px-0 ">
            <div class="header ">
-                <div class="events">Transaction</div>
+                <div class="head-text">Transaction</div>
               </div>
           <div class="row mt-2 header-btns justify-content-center">
             <!-- <div class="actions"> -->
-              <div class="col-8 col-sm-4  mt-2 mt-sm-0 mt-md-0 mt-lg-0  mx-auto mx-sm-0 mx-md-0">
-                 <button
-                    class="more-btn align-items-center justify-content-center d-flex w-100 default-btn border-0"
+              <div class="col-12 col-sm-4  mt-2 mt-sm-0 mt-md-0 mt-lg-0  mx-auto mx-sm-0 mx-md-0">
+                 <el-button
+                    class="more-btn header-btn align-items-center justify-content-center d-flex w-100  border-0"
+                    round
+                    size="large"
                     @click="toggleTransac(1)"
                   >
                     Add Income
-                  </button>
+                  </el-button>
               </div>
 
-              <div class="col-8 col-sm-4  mt-2 mt-sm-0 mt-md-0 mt-lg-0 mx-auto mx-sm-0 mx-md-0">
-                <button
-                  class="more-btn align-items-center justify-content-center d-flex w-100 default-btn border-0"
+              <div class="col-12 col-sm-4  mt-2 mt-sm-0 mt-md-0 mt-lg-0 mx-auto mx-sm-0 mx-md-0">
+                <el-button
+                  class="more-btn header-btn align-items-center justify-content-center d-flex w-100 border-0"
+                  size="large"
+                  round
                   @click="toggleTransac(2)">
                    Add Expense
-                </button>
+                </el-button>
               </div>
-              <div class="col-8 col-sm-4  mt-2 mt-sm-0 mt-md-0 mt-lg-0 mx-auto mx-sm-0 mx-md-0">
+              <div class="col-12 col-sm-4  mt-2 mt-sm-0 mt-md-0 mt-lg-0 mx-auto mx-sm-0 mx-md-0">
                 <a class="dropdown show more-btn align-items-center justify-content-center w-100 d-flex default-btn border-0 text-decoration-none">
                   <a class="dropdown-toggle text-decoration-none text-dark" href="#" role="button" id="dropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                     More
@@ -39,71 +42,63 @@
           </div>
         </div>
 
-        <div class="container-wide">
+        <div class="container-fluid px-0">
           <div class="col-12 col-sm-8 col-lg-6 px-0 mt-5">
-            <div class="d-flex">
-              <button
-                class="form-control  align-items-center d-flex transaction-button close-modal"
-                @click="toggleAccount"
-              >
-                <div class="close-modal">{{ selectedTransaction.type }}</div>
-                <div class="close-modal  mr-2"> {{ selectedTransaction.amount }}</div>
-              </button>
-              <i
-                class="pi pi-angle-down arrow-icon close-modal"
-                @click="toggleAccount"
-              ></i>
-            </div>
-            <div class="style-category close-modal" v-if="accountDisplay">
-
-              <div class="header-border close-modal">
-                <div
-                  class="manual-dd-item close-modal"
-                  v-for="(cash, index) in accountsAndBalancesList"
-                  :key="index"
-                  @click="selectAnAccount(cash, index)"
-                >
-                  <div
-                    class="d-flex justify-content-between py-1 px-3 close-modal"
-                  >
-                    <div class="close-modal">{{ cash.text }}</div>
-                    <div class="close-modal">{{ cash.currency && cash.currency.shortCode ? cash.currency.shortCode : currentUser.currency }}{{ cash.balance }}</div>
-                  </div>
-                </div>
-              </div>
-
-              <!-- <div class="row"> -->
-              <div
-                class="col-md-12 create-event px-2 d-flex justify-content-between close-modal small-text"
-              >
-                <a
-                  href="#"
-                  class="craete-event-btn font-weight-bold p-3 close-modal"
-                  ><i
-                    class="pi pi-file-text-o close-modal"
-                    aria-hidden="true"
-                  ></i>
-                  Upload Bank Statement</a
-                >
-                <a
-                  class="craete-event-btn font-weight-bold px-2 py-3 close-modal"
-                  @click="openModal"
-                  ><i class="pi pi-plus-circle" aria-hidden="true"></i> Add a
-                  new account</a
-                >
-              </div>
-              <!-- </div> -->
-            </div>
+            <el-dropdown trigger="click" class="w-100">
+                    <span class="el-dropdown-link w-100">
+                      <div
+                        class="d-flex justify-content-between border-contribution  w-100"
+                        size="large"
+                      >
+                        <span class="text-secondary">{{ selectedTransaction.type }}</span>
+                        <span class="text-secondary">{{ selectedTransaction.amount }}</span>
+                        <div>
+                          <el-icon class="el-icon--right">
+                            <arrow-down />
+                          </el-icon>
+                        </div>
+                      </div>
+                    </span>
+                    <template #dropdown>
+                      <el-dropdown-menu>
+                        <el-dropdown-item
+                          v-for="(cash, index) in accountsAndBalancesList"
+                          :key="index"
+                           @click="selectAnAccount(cash, index)"
+                          >
+                          <div class="close-modal">{{ cash.text }}</div>
+                          <div class="close-modal">{{ cash.currency && cash.currency.shortCode ? cash.currency.shortCode : currentUser.currency }}{{ cash.balance }}</div>
+                        </el-dropdown-item>
+                        <el-dropdown-item
+                          class="text-center"
+                          divided
+                          >
+                          <!-- <a
+                            class="font-weight-bold small-text d-flex justify-content-center p-3 text-decoration-none primary-text"
+                          >
+                            <el-icon size="large"><Files /></el-icon>
+                            Upload Bank Statement
+                          </a> -->
+                          <a
+                            class="font-weight-bold small-text d-flex justify-content-center p-3 text-decoration-none primary-text" @click="openModal"
+                          >
+                            <el-icon size="large">
+                              <CirclePlus />
+                            </el-icon>
+                            Add a
+                            new account
+                          </a>
+                          </el-dropdown-item
+                        >
+                      </el-dropdown-menu>
+                    </template>
+                  </el-dropdown>
           </div>
 
           <!-- <h5>Modal</h5> -->
-          <Dialog
-            header="Add an Account"
-            :visible="displayModal"
-            :style="{ width: '50vw' }"
-            :modal="true"
-          >
-            <div class="row mt-2">
+          <el-dialog v-model="displayModal"
+          :width="mdAndUp || lgAndUp || xlAndUp ? `50%` : `90%`">
+          <div class="row mt-2">
               <div class="col-sm-3 align-self-center text-right p-0">
                 Account Type <span class="text-danger">*</span>
               </div>
@@ -114,11 +109,7 @@
                 >
                   <span class="ofering close-modal">Select one</span
                   ><span>
-                    <i
-                      class="pi pi-angle-down close-modal"
-                      aria-hidden="true"
-                    ></i
-                  ></span>
+                   <el-icon><ArrowDown /></el-icon></span>
                 </div>
                 <div
                   class="ofering close-modal"
@@ -142,7 +133,7 @@
                     <div class="header-border close-modal">
                       <div>
                         <div
-                          @click="transactionItem"
+                          @click="transactionItem(account)"
                           class="manual-dd-item close-modal"
                           v-for="(account, indx) in accounts"
                           :key="indx"
@@ -166,7 +157,7 @@
                 Account Name <span class="text-danger">*</span>
               </div>
               <div class="col-sm-7">
-                <input type="text" v-model="newAccount.name" class="form-control" />
+                <el-input type="text" v-model="newAccount.name" class="w-100" />
               </div>
             </div>
             <div class="row mt-2">
@@ -180,11 +171,7 @@
                 >
                   <span class="ofering close-modal">NGN - Nigeria</span
                   ><span>
-                    <i
-                      class="pi pi-angle-down close-modal"
-                      aria-hidden="true"
-                    ></i
-                  ></span>
+                    <el-icon><ArrowDown /></el-icon></span>
                 </div>
                 <div
                   class="ofering close-modal"
@@ -229,8 +216,8 @@
               <div class="col-sm-3 align-self-center text-right p-0">
                 Account ID
               </div>
-              <div class="col-sm-5">
-                <input type="text" class="form-control" />
+              <div class="col-sm-7">
+                <el-input type="text" class="w-100" />
               </div>
             </div>
             <div class="row mt-2">
@@ -238,65 +225,90 @@
                 Description
               </div>
               <div class="col-sm-7">
-                <textarea class="form-control" v-model="newAccount.description" rows="4"></textarea>
+                <!-- <textarea class="form-control" v-model="newAccount.description" rows="4"></textarea> -->
+                <el-input
+                   v-model="newAccount.description"
+                  :rows="4"
+                  type="textarea"
+                />
               </div>
             </div>
             <template #footer>
 
-              <button
-                type="button"
-                class="btn secondary-btn px-4"
+              <el-button
+                color="#EBEFF4"
+                round
+                size="large"
+                class=" secondary-btn px-4"
                 @click="closeModal"
               >
                 Close
-              </button>
-              <button
-                type="button"
-                class="btn primary-btn px-4 mr-0 text-white"
+              </el-button>
+              <el-button
+                round
+                size="large"
+                :color="primarycolor"
+                class=" px-4 mr-0 text-white"
                 @click="saveAccount"
               >
                 Save
-              </button>
+              </el-button>
             </template>
-          </Dialog>
-
+        </el-dialog>
+        <el-skeleton class="w-100" animated v-if="tableLoading">
+          <template #template>
+            <div style="display: flex;
+                    align-items: center;
+                    justify-content: space-between;
+                    margin-top: 20px
+                  ">
+              <el-skeleton-item variant="text" style="width: 240px; height: 240px" />
+              <el-skeleton-item variant="text" style="width: 240px; height: 240px" />
+            </div>
+            <!-- <el-skeleton-item variant="text" class="w-100" style="height: 25px" :rows="10"/> -->
+            <el-skeleton class="w-100 mt-5" style="height: 25px" :rows="20" animated />
+          </template>
+        </el-skeleton>
           <TransactionTable
+            v-else
             :showEditTransaction="showEditTransaction"
             :transactionDetails="transacPropsValue"
             :selectedTransactionType="selectedTransactionType"
             :journalEntry="journalEntry"
             @toggle-edit-form="closeIt"
             @select-row="selectRow"
+            @tableloading="setTableLoading"
             @select-journal="selectJournalEntry"
             @reload-accounts="reloadAccounts"
           />
           <!-- <LedgerForm /> -->
         </div>
-      </div>
     </div>
   </div>
 </template>
 <script>
-import { ref, computed } from "vue";
-import Dialog from "primevue/dialog";
+import { ref, computed, inject } from "vue";
 import axios from "@/gateway/backendapi";
 import transactionService from "../../../services/financials/transaction_service";
 import TransactionTable from "../../../components/transactions/TransactionsTable"
 import transaction_service from '../../../services/financials/transaction_service';
 import numbers_formatter from '../../../services/numbers/numbers_formatter';
+import deviceBreakpoint from "../../../mixins/deviceBreakpoint";
 // import LedgerForm from "../transaction/components/LedgerForm";
 import { useStore } from "vuex";
 import userService from '../../../services/user/userservice';
 import currencyConverter from "../../../services/currency-converter/currencyConverter"
 
+
 export default {
   components: {
-    Dialog,
     TransactionTable,
     // LedgerForm,
   },
   setup() {
     const transactions = ref([ ]);
+    const loading = ref(false)
+    const { mdAndUp, lgAndUp, xlAndUp, xsOnly } = deviceBreakpoint()
     const cashAndBank = ref([
       {
         name: {
@@ -320,6 +332,12 @@ export default {
 
     const store = useStore();
     const currentUser = ref(store.getters.currentUser);
+
+    const tableLoading = ref(false)
+
+    const setTableLoading = (payload) =>{
+      tableLoading.value = payload
+    }
 
     const getCurrentUser = async () => {
       try {
@@ -366,6 +384,7 @@ export default {
     const accountText = ref("");
     const showEditTransaction = ref(false);
     const transacPropsValue = ref({});
+    const primarycolor = inject('primarycolor')
 
     const toggleFilterFormVissibility = () =>
       (filterFormIsVissible.value = !filterFormIsVissible.value);
@@ -387,11 +406,15 @@ export default {
       }
     };
 
-    const transactionItem = (e) => {
+    const transactionItem = (item) => {
       selectedTransaction.value = {
-        type: e.target.children[0].innerHTML,
-        amount: e.target.children[0].nextElementSibling.innerHTML,
+        type: item.text,
+        amount: item.fund,
       };
+      // selectedTransaction.value = {
+      //   type: e.target.children[0].innerHTML,
+      //   amount: e.target.children[0].nextElementSibling.innerHTML,
+      // };
       accountDisplay.value = false;
     };
 
@@ -491,6 +514,7 @@ export default {
     const accountTypes = ["assets", "liability", "income", "expense", "equity"];
 
     const getTransactionalAccounts = async () => {
+      loading.value = true;
       try {
         const response = await transactionService.getTransactionalAccounts();
         for (let group of accountTypes) {
@@ -499,8 +523,10 @@ export default {
           );
           transactionalAccounts.value.push(groupItems);
         }
+        loading.value = false;
       } catch (error) {
         console.log(error);
+        loading.value = false;
       }
     };
 
@@ -508,9 +534,11 @@ export default {
 
     const cashAndBankItems = ref([ ]);
     const getCashAndBanks = async () => {
+      loading.value = true;
       try {
         const response = await transactionService.getCashAndBank();
         cashAndBankItems.value = response;
+        loading.value = false;
       } catch (error) {
         console.log(error);
       }
@@ -556,6 +584,7 @@ export default {
 
     const accountsAndBalances = ref([ ])
     const getAccountBalances = async () => {
+      // loading.value = true;
       try {
         const response = await transaction_service.getCashAndBankAccountBalances();
         accountsAndBalances.value = response;
@@ -566,9 +595,11 @@ export default {
           selectedTransaction.value.amount = `${currentUser.value && currentUser.value.currency ? currentUser.value.currency: ''}${accountsAndBalances.value[index] && accountsAndBalances.value[index].balance ? amountWithCommas(accountsAndBalances.value[index].balance) : 0}`;
           accountsAndBalances.value[index].currency = { shortCode: currentUser.value ? currentUser.value.currency : '' };
         }
+        loading.value = false;
         // if (!currentUser.value || !currentUser.value.tenantId) await getCurrentUser();
       } catch (error) {
         console.log(error);
+        loading.value = false;
       }
     }
     getAccountBalances()
@@ -607,6 +638,9 @@ export default {
 
     return {
       transactions,
+      loading,
+      setTableLoading,
+      tableLoading,
       filterFormIsVissible,
       toggleFilterFormVissibility,
       toggleSearch,
@@ -631,6 +665,7 @@ export default {
       filterCurrency,
       currencyText,
       accountText,
+      primarycolor,
       filterAccount,
       filterLiabilities,
       showEditTransaction,
@@ -638,7 +673,10 @@ export default {
       closeIt,
       transacObj,
       transacPropsValue,
-
+      mdAndUp,
+      xlAndUp,
+      xsOnly,
+      lgAndUp,
       transactionalAccounts,
       accountTypes,
       cashAndBankItems,
@@ -680,7 +718,7 @@ html {
 
 .main-con {
   width: 100%;
-  height: 70%;
+  /* height: 70%; */
 }
 
 .main-body {
@@ -690,7 +728,7 @@ html {
 .top {
   display: flex;
   justify-content: space-between;
-  align-items: center;
+  /* align-items: center; */
 }
 
 .button {

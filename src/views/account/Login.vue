@@ -2,9 +2,7 @@
   <div>
     <div class="main-section">
       <div class="logo-con">
-        <a class="logo-link"
-          ><img src="../../assets/churchplus-logo.png" alt="Churchplus Logo"
-        /></a>
+        <a class="logo-link"><img src="../../assets/churchplus-logo.png" alt="Churchplus Logo" /></a>
       </div>
       <div class="header">
         <h1>Sign in</h1>
@@ -18,153 +16,88 @@
         <div class="error-div" v-if="state.notAUser">
           <p class="error-message">
             Not a registered user,
-            <a
-              href="/register"
-              class="primary-text font-weight-bold text-decoration-none"
-              >Register now</a
-            >
+            <a href="/register" class="primary-text font-weight-bold text-decoration-none">Register now</a>
           </p>
         </div>
-
-        <form @submit="login">
-          <div>
-            <input
-              type="email"
-              v-model="state.credentials.userName"
-              class="input"
-              placeholder="Email"
-              required
-            />
-          </div>
-          <div>
-            <input
-              class="input"
-              v-model="state.credentials.password"
-              type="password"
-              placeholder="Password"
-              required
-            />
-          </div>
+        <el-form :model="state" class="mt-3" @keyup.enter.native="login">
+          <el-form-item>
+            <el-input type="email" placeholder="Email" v-model="state.credentials.userName" />
+          </el-form-item>
+          <el-form-item>
+            <el-input type="password" placeholder="Password" v-model="state.credentials.password" show-password/>
+          </el-form-item>
           <div class="f-password-div">
-            <router-link to="/forgotpassword" class="forgot-password"
-              >Forgot it?</router-link
-            >
+            <router-link to="/forgotpassword" class="forgot-password primary--text">Forgot it?</router-link>
           </div>
-
-          <button
-            class="submit-btn sign-in-btn"
-            :class="{ 'btn-loading': loading }"
-          >
-            <i class="fas fa-circle-notch fa-spin" v-if="loading"></i>
-            <span>Sign in</span>
-            <span></span>
-          </button>
-        </form>
-
-        <div style="margin: 24px 0">
-          <span class="or">or</span>
-        </div>
-
-        <div v-if="false">
-          <button type="submit" class="google-btn btn-logo sign-in-btn">
-            <img src="../../assets/google.png" alt="Google Icon" />
-            <span>Sign up with Google</span>
-            <span></span>
-          </button>
-        </div>
-        <div>
-          <button
-            class="facebook-btn btn-logo sign-in-btn"
-            @click="facebookLogin"
-          >
-            <img
-              src="../../assets/facebook-small.png"
-              class="fb-icon"
-              alt="Facebook Icon"
-            />
-            <span>Sign in with Facebook</span>
-            <span></span>
-          </button>
-        </div>
+          <el-form-item>
+            <el-button size="large" :color="primarycolor" @click="login" class="w-100" :loading="signInLoading" round>Sign
+              In</el-button>
+            <el-divider>
+              or
+            </el-divider>
+            <div class="facebook-btn btn-logo sign-in-btn" @click="facebookLogin">
+              <img src="../../assets/facebook-small.png" class="fb-icon" alt="Facebook Icon" />
+              <span>Sign in with Facebook</span>
+              <span></span>
+            </div>
+          </el-form-item>
+        </el-form>
       </div>
 
       <div class="bottom-container">
         <div>
           <p class="sign-up-prompt">
             Don't have an account yet?
-            <a href="/register" class="sign-up"><strong>Sign up now</strong></a>
+            <router-link to="/register" class="sign-up primary--text"><strong>Sign up now</strong></router-link>
           </p>
-          <!-- <p class="sign-up-prompt">Don't have an account yet? <router-link to="/register" class="sign-up"><strong>Sign up now</strong></router-link></p> -->
         </div>
       </div>
-      <Toast></Toast>
-      <!-- <a class="fb-login-button" id="fb" data-width="380px" data-size="large" scope="public_profile,email" onlogin="checkLoginState();" data-button-type="continue_with" data-layout="rounded" data-auto-logout-link="false" data-use-continue-as="false" ref="loginFacebook" style="margin-top: 10px;"></a> -->
-      <!-- <Button label="Show" icon="pi pi-external-link" @click="openModal" /> -->
-      <Dialog
-        header="Please enter your email"
-        v-model:visible="displayModal"
-        :style="{ width: '50vw' }"
-        :modal="true"
-      >
+      <el-dialog v-model="displayModal" title="Please enter your email" width="80%" align-center>
         <div class="container">
           <div class="row mt-2">
             <div class="col-12"></div>
-            <div class="col-sm-3 align-self-center">
+            <div class="col-sm-2 align-self-center">
               Email <span class="text-danger">*</span>
             </div>
-            <div class="col-sm-9">
-              <input
-                type="text"
-                class="form-control"
-                v-model="invalidEmailObj.email"
-              />
+            <div class="col-sm-10">
+              <el-input type="text" label="Email" v-model="invalidEmailObj.email" />
             </div>
           </div>
         </div>
         <template #footer>
-          <div class="col-12">
-            <button
-              @click="saveEmail"
-              class="btn default-btn border-0 primary-bg ml-md-4"
-            >
-              <i
-                class="fas fa-circle-notch fa-spin mr-2 text-white"
-                v-if="loading"
-              ></i>
-              <span class="text-white">Save</span>
-              <span></span>
-            </button>
-          </div>
+          <span class="dialog-footer">
+            <el-button @click="displayModal = false" class="secondary-button" round>Cancel</el-button>
+            <el-button type="primary" @click="saveEmail" :loading="emailLoading" :color="primarycolor" round>
+              Confirm
+            </el-button>
+          </span>
         </template>
-      </Dialog>
+      </el-dialog>
     </div>
   </div>
 </template>
 
 <script>
 import axios from "@/gateway/backendapi";
-// import { useStore } from "vuex";
-import { useToast } from "primevue/usetoast"
-import { reactive, ref } from "vue";
+import { ElNotification } from 'element-plus'
+import { reactive, ref, inject } from "vue";
 import router from "../../router/index";
 import setupService from "../../services/setup/setupservice";
-import finish from "../../services/progressbar/progress";
-// import membershipService from "../../services/membership/membershipservice";
 import { useGtag } from "vue-gtag-next";
+import FBlogin from "@/mixins/facebookLogin"
 
 export default {
   setup() {
-    // const store = useStore();
-    const toast = useToast()
     const { event } = useGtag()
     const track = () => {
       event('aaa', {
-        'event_category' : 'login',
-        'event_label' : 'ccc'
+        'event_category': 'login',
+        'event_label': 'ccc'
       })
     };
-
     track();
+    const signInLoading = ref(false)
+    const primarycolor = inject('primarycolor')
 
     const state = reactive({
       passwordType: "password",
@@ -174,25 +107,10 @@ export default {
       notAUser: false,
     });
     const loading = ref(false);
-    const displayModal = ref(false);
-    const invalidEmailObj = ref({});
+    const {facebookLogin, displayModal, saveEmail, emailLoading, invalidEmailObj} = FBlogin()
 
-    const loginFacebook = ref(null);
-
-    // const getCurrentlyUser = () =>{
-    //   console.log(store.getters.currentUser, 'myName is Gideon')
-    //   if(!store.getters.currentUser) {
-    //       membershipService.getSignedInUser()
-    //       .then((res) => {
-    //         console.log(res ,'Tosin like peanut')
-    //       }).catch(err => console.log(err))
-    //       } 
-    //   }; 
-    // getCurrentlyUser();
-      
-
-    const login = async (e) => {
-      e.preventDefault();
+    const login = async () => {
+      signInLoading.value = true
       localStorage.setItem("email", state.credentials.userName);
       state.showError = false;
       state.notUser = false;
@@ -200,6 +118,7 @@ export default {
         loading.value = true;
         const res = await axios.post("/login", state.credentials);
         const { data } = res;
+        signInLoading.value = false
         if (!data || !data.token) {
           router.push({
             name: "EmailSent",
@@ -210,95 +129,78 @@ export default {
         localStorage.setItem("token", data.token);
         localStorage.setItem("expiryDate", data.expiryTime);
         localStorage.setItem('roles', JSON.stringify(data.roles))
-        console.log(data, "Church data");
-        setTimeout(() => {
-          setupService.setup();
-        }, 5000);
-        
+        if (data.roles.length > 0) {
+          let roleIndex = data.roles.findIndex(i => {
+            return i.toLowerCase() == "family" || i.toLowerCase() == "mobileuser"
+          })
 
-        if(data.roles.length > 0){
-        let roleIndex = data.roles.findIndex(i => {
-          return i.toLowerCase() == "family" || i.toLowerCase() == "mobileuser"
-        })
+          let adminIndex = data.roles.findIndex(i => {
+            return i.toLowerCase() == "admin"
+          })
 
-        let adminIndex = data.roles.findIndex(i => {
-          return i.toLowerCase() == "admin"
-        })
-        
-        if (adminIndex !== -1) {
-          setTimeout(() => {
-            setupService.setup();
-              }, 5000);
-              if (data.churchSize >= data.subscribedChurchSize) {
-                router.push("/errorpage/member-capacity-reached")
+          if (adminIndex !== -1) {
+            setTimeout(() => {
+              setupService.setup();
+            }, 5000);
+            if (data.churchSize >= data.subscribedChurchSize) {
+              router.push("/errorpage/member-capacity-reached")
+            } else {
+              if (data.churchSize > 0) {
+                router.push("/tenant");
+              } else {
+                router.push("/next");
+              }
+            }
+          } else if (adminIndex === -1 && roleIndex !== -1) {
+            localStorage.clear()
+            ElNotification({
+              title: 'Unauthorized',
+              message: 'You do not have access to this page, contact your church admin',
+              type: 'error',
+            })
+          } else {
+            if (data.churchSize >= data.subscribedChurchSize) {
+              router.push("/errorpage/member-capacity-reached")
+            } else {
+              if (data.roles.indexOf("GroupLeader") !== -1) {
+                router.push({
+                  name: "GroupLeaderDashboard"
+                });
+              } else if (data.roles.length === 1 && data.roles[0] === 'FollowUp') {
+                router.push("/tenant/followup");
+              } else if (data.roles.indexOf("FinancialAccount") !== -1) {
+                router.push("/tenant/offering");
+              } else if (data.roles.indexOf("MobileAdmin") !== -1) {
+                router.push("/tenant/social");
+              } else if (data.roles.indexOf("Reports") !== -1) {
+                router.push("/tenant/reports");
               } else {
                 if (data.churchSize > 0) {
-                    router.push("/tenant");
-                  } else {
-                    router.push("/next");
-                  }
-              }
-        } else if (adminIndex === -1 && roleIndex !== -1) {
-            localStorage.clear()
-            toast.add({
-              severity:'info', 
-              summary: 'Unauthorized', 
-              detail:'You do not have access to this page, contact your church admin', 
-              life: 10000}) 
-            router.push('/')
-          } else {
-              if (data.churchSize >= data.subscribedChurchSize) {
-                router.push("/errorpage/member-capacity-reached")
-              } else {
-                if (data.roles.indexOf("GroupLeader") !== -1) {
-                  router.push( {
-                    name: "GroupLeaderDashboard"
-                  });
-                } else if (data.roles.length === 1 && data.roles[0] === 'FollowUp' ) {
-                  router.push("/tenant/followup");
-                } else if (data.roles.indexOf("FinancialAccount") !== -1) {
-                  router.push("/tenant/offering");
-                }else if (data.roles.indexOf("MobileAdmin") !== -1) {
-                  router.push("/tenant/social");
-                }else if (data.roles.indexOf("Reports") !== -1) {
-                  router.push("/tenant/reports");
-                }else {
-                  setTimeout(() => {
-                    setupService.setup();
-                  }, 5000);
-                  if (data.churchSize > 0) {
-                    router.push("/tenant");
-                  } else {
-                    router.push("/next");
-                  }
+                  router.push("/tenant");
+                } else {
+                  router.push("/next");
                 }
               }
+            }
+            setTimeout(() => {
+              setupService.setup();
+            }, 5000);
           }
         }
         loading.value = false
       } catch (err) {
         /*eslint no-undef: "warn"*/
-        console.log(err.response, "login error");
+        signInLoading.value = false
         console.log(err, "login error");
         NProgress.done();
         loading.value = false;
-
         const { status } = err.response;
         const { onboarded } = err.response.data;
 
-        // if (err.status.code ===  401 ){
-        //   localStorage.clear()
-        //   router.push('/')
-        //   store.dispatch('clearCurrentUser', {})
-        //   store.dispatch('groups/clearGroup')
-        //   store.dispatch('membership/clearMember')
-        //   setupService.clearStore();
-        // }
-
-        if (status && status == 400 && onboarded === false ) {
+        if (status && status == 400 && onboarded === false) {
           router.push("/onboarding");
         } else {
-          if (status === 404 ) {
+          if (status === 404) {
             state.notAUser = true;
           } else {
             state.errorMessage = err.response.data.message;
@@ -307,83 +209,19 @@ export default {
         }
       }
     };
-
-    const itemSelected = (data) => {
-      console.log(data);
-    };
-
-    const loginWithFacebook = () => {
-      console.log(loginFacebook.value);
-      loginFacebook.value.click();
-    };
-
-    const facebookLogin = () => {
-      FB.login(
-        function(response) {
-          let token = {
-            accessToken: response.authResponse.accessToken,
-          };
-          axios
-            .post("/Login/Facebook", token)
-            .then((res) => {
-              finish();
-              console.log(res, "login");
-              if (res.data.success === "Email Required") {
-                displayModal.value = true;
-                invalidEmailObj.value = res.data;
-              } else if (res.data.isOnboarded) {
-                localStorage.setItem("email", res.data.username);
-                localStorage.setItem("token", res.data.token);
-                router.push("/tenant");
-              } else {
-                localStorage.setItem("email", res.data.username);
-                localStorage.setItem("pretoken", res.data.token);
-                if (res.data.username) router.push("/onboarding");
-              }
-            })
-            .catch((err) => {
-              finish();
-              console.log(err);
-            });
-        },
-        // { scope: "user_birthday" }
-      );
-    };
-
-    const saveEmail = async () => {
-      displayModal.value = false;
-      try {
-        const res = await axios.post(
-          "/Register/Facebook",
-          invalidEmailObj.value
-        );
-        console.log(res);
-        if (res.data.isOnboarded) {
-          localStorage.setItem("email", res.data.username);
-          localStorage.setItem("token", res.data.token);
-          router.push("/tenant");
-        } else {
-          localStorage.setItem("email", res.data.username);
-          localStorage.setItem("pretoken", res.data.token);
-          if (res.data.username) router.push("/onboarding");
-        }
-      } catch (err) {
-        console.log(err);
-      }
-    };
+    
 
     return {
+      signInLoading,
       state,
       login,
       loading,
-      itemSelected,
-      loginWithFacebook,
-      loginFacebook,
-      facebookLogin,
       displayModal,
       invalidEmailObj,
+      emailLoading,
+      facebookLogin,
       saveEmail,
-      // getCurrentlyUser
+      primarycolor
     };
   },
 };
@@ -438,7 +276,6 @@ export default {
   font-size: 14px;
   line-height: 1.4;
   text-decoration: none;
-  color: #136acd;
   font-weight: bold;
   cursor: pointer;
 }
@@ -496,6 +333,7 @@ export default {
   flex-direction: row;
   color: #8b9ba5;
 }
+
 .or:before,
 .or:after {
   content: "";
@@ -507,6 +345,7 @@ export default {
 .or:before {
   margin-right: 10px;
 }
+
 .or:after {
   margin-left: 10px;
 }
@@ -517,6 +356,7 @@ export default {
 
 .facebook-btn {
   background: #3b5998;
+  cursor: pointer;
 }
 
 .fb-icon {
@@ -538,11 +378,10 @@ export default {
   color: #4d6575;
   font-size: 14px;
   line-height: 1.4;
-  margin-top: 60px;
+  margin-top: 30px;
 }
 
 .sign-up {
-  color: inherit;
   text-decoration: underline;
 }
 

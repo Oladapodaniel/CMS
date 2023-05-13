@@ -19,7 +19,6 @@
     href="https://fonts.googleapis.com/css2?family=Nunito+Sans:ital,wght@0,200;0,300;0,400;0,600;0,700;0,800;0,900;1,200;1,300;1,400;1,600;1,700;1,800;1,900&display=swap"
     rel="stylesheet">
   <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
-  <script src="https://cdn.sinch.com/latest/sinch.min.js"></script>
   <script async defer src="https://apis.google.com/js/api.js"></script>
   <!-- onload="this.onload=function(){};handleClientLoad()" -->
   <!-- onreadystatechange="if (this.readyState === 'complete') this.onload()" -->
@@ -160,6 +159,9 @@
   <link href="https://unpkg.com/nprogress@0.2.0/nprogress.css" rel="stylesheet" />
   <script src="https://unpkg.com/nprogress@0.2.0/nprogress.js"></script>
 
+<!-- //   <script src="https://cdn.lr-ingest.com/LogRocket.min.js" crossorigin="anonymous"></script>
+// <script>window.LogRocket && window.LogRocket.init('taw8su/churchplus');</script> -->
+
 </head>
 
 <body>
@@ -218,76 +220,50 @@
       fjs.parentNode.insertBefore(js, fjs);
     }(document, 'script', 'facebook-jssdk'));
 
-    const checkLoginState = () => {
-      FB.getLoginStatus(function (response) {
-        let token = {
-          accessToken: response.authResponse.accessToken
-        }
-        axios.post('https://churchplusv3coreapi.azurewebsites.net/Login/Facebook', token)
-          .then(res => {
-            if (res.data.isOnboarded) {
-              localStorage.setItem("email", res.data.username)
-              localStorage.setItem("token", res.data.token);
-              window.location.href = "/tenant";
-            } else {
-              localStorage.setItem("email", res.data.username)
-              localStorage.setItem("pretoken", res.data.token)
-              if (res.data.username) window.location.href = "/onboarding";
-            }
+    // const checkLoginState = () => {
+    //   FB.getLoginStatus(function (response) {
+    //     let token = {
+    //       accessToken: response.authResponse.accessToken
+    //     }
+    //     axios.post('https://churchplusv3coreapi.azurewebsites.net/Login/Facebook', token)
+    //       .then(res => {
+    //         if (res.data.isOnboarded) {
+    //           localStorage.setItem("email", res.data.username)
+    //           localStorage.setItem("token", res.data.token);
+    //           window.location.href = "/tenant";
+    //         } else {
+    //           localStorage.setItem("email", res.data.username)
+    //           localStorage.setItem("pretoken", res.data.token)
+    //           if (res.data.username) window.location.href = "/onboarding";
+    //         }
 
-          })
-          .catch(err => console.log(err))
-      });
-    }
+    //       })
+    //       .catch(err => console.log(err))
+    //   });
+    // }
   </script>
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/underscore.js/1.9.1/underscore-min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/underscore.js/1.9.1/underscore-min.js" async defer></script>
 
 
 </body>
-<!--Start of Tawk.to Script-->
-<!-- <script type="text/javascript">
-  var Tawk_API=Tawk_API||{}, Tawk_LoadStart=new Date();
-  (function(){
-  var s1=document.createElement("script"),s0=document.getElementsByTagName("script")[0];
-  s1.async=true;
-  s1.src='https://embed.tawk.to/60ccab9765b7290ac636ac8f/1f8folltk';
-  s1.charset='UTF-8';
-  s1.setAttribute('crossorigin','*');
-  s0.parentNode.insertBefore(s1,s0);
-  })();
-  </script> -->
-  <!-- End of Tawk.to Script -->
-  <!-- <script src="./go.js"></script> -->
-    <!-- <div class="p-4 w-full"> -->
 
   <!--Start of Tawk.to Script-->
 <script type="text/javascript">
-  var Tawk_API=Tawk_API||{}, Tawk_LoadStart=new Date();
-  (function(){
-  var s1=document.createElement("script"),s0=document.getElementsByTagName("script")[0];
-  s1.async=true;
-  s1.src='https://embed.tawk.to/60ba6591de99a4282a1b7128/1f7c1pgqv';
-  s1.charset='UTF-8';
-  s1.setAttribute('crossorigin','*');
-  s0.parentNode.insertBefore(s1,s0);
-  })();
+  if (
+      !window.location.href.toLowerCase().includes('/partnership/pay') &&
+      !window.location.href.toLowerCase().includes('/createmember') &&
+      !window.location.href.toLowerCase().includes('/createfirsttimer')
+      ) {
+    var Tawk_API=Tawk_API||{}, Tawk_LoadStart=new Date();
+    (function(){
+    var s1=document.createElement("script"),s0=document.getElementsByTagName("script")[0];
+    s1.async=true;
+    s1.src='https://embed.tawk.to/60ba6591de99a4282a1b7128/1f7c1pgqv';
+    s1.charset='UTF-8';
+    s1.setAttribute('crossorigin','*');
+    s0.parentNode.insertBefore(s1,s0);
+    })();
+  }
   </script>
   <!--End of Tawk.to Script-->
-
-  <!-- <link rel="stylesheet" href="./DataInspector.css" /> -->
-  <!-- <script src="../src/components/Organisation/DataInspector.js"></script> -->
-  <!-- <script src="../src/components/Organisation/goSample.js"></script> -->
-
-  <!--Load Kendo styles from the Kendo CDN service-->
-<!-- <link rel="stylesheet" href="https://kendo.cdn.telerik.com/2022.1.119/styles/kendo.common.min.css"/>
-<link rel="stylesheet" href="https://kendo.cdn.telerik.com/2022.1.119/styles/kendo.default.min.css"/> -->
-
-<!--Load the required libraries - jQuery, Kendo, Babel and Vue-->
-<!-- <script src="https://code.jquery.com/jquery-1.12.4.min.js"></script>
-<script src="https://kendo.cdn.telerik.com/2022.1.119/js/kendo.all.min.js"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/babel-core/5.6.15/browser-polyfill.min.js"></script> -->
-<!-- <script src="https://unpkg.com/vue/dist/vue.min.js"></script> -->
-
-<!--Load the required Kendo Vue package(s)-->
-<!-- <script src="https://unpkg.com/@progress/kendo-dateinputs-vue-wrapper/dist/cdn/kendo-dateinputs-vue-wrapper.min.js"></script> -->
 </html>

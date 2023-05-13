@@ -1,32 +1,55 @@
 <template>
-<div>
-    <div class="container-wide container-top">
-      <div class="row my-3">
-      <div class="col-md-4 first-timers-text">
-        <h2 class="page-header">Offerings</h2>
-      </div>
+<div class="container-top" :class="{ 'container-slim': lgAndUp || xlAndUp }">
+    <div class="">
+      <div class=" d-flex flex-column flex-md-row justify-content-md-between my-3">
+        <div class=" first-timers-text">
+          <h2 class="page-header">Offerings</h2>
+        </div>
 
-      <div class="col-md-8 d-flex head-button">
-        <router-link to="/tenant/contributionCategory">
-          <button class="default-btn mr-3">View Offering Items</button>
-        </router-link>
-        <router-link to="/tenant/addoffering" class="add-btn">
-          Add Offering
-        </router-link>
+        <div class="d-flex head-button ">
+          <router-link to="/tenant/contributionCategory"  class=" mr-0 mr-md-2 w-100">
+            <el-button round size="large" class=" w-100  ">View Offering Items</el-button>
+          </router-link>
+          <router-link to="/tenant/addoffering" class="w-100 mt-2 mt-sm-0">
+          <el-button  round size="large" :color="primarycolor" class="header-btn w-100 ">Add Offering</el-button>
+          </router-link>
+        </div>
       </div>
     </div>
-    </div>
-
-    <div class="container-wide">
-      <div class="row">
+    <div class="row">
       <div class="col-md-12">
         <hr class="hr" />
       </div>
     </div>
-
-    <div v-if="loading">
-        <Loader />
-    </div>
+    <div class="container-fluid">
+      
+    <el-skeleton class="w-100" animated v-if="loading">
+          <template #template>
+            <div
+              style="
+                display: flex;
+                align-items: center;
+                justify-content: space-between;
+                margin-top: 20px;
+              "
+            >
+              <el-skeleton-item
+                variant="text"
+                style="width: 240px; height: 240px"
+              />
+              <el-skeleton-item
+                variant="text"
+                style="width: 240px; height: 240px"
+              />
+            </div>
+            <el-skeleton
+              class="w-100 mt-5"
+              style="height: 25px"
+              :rows="20"
+              animated
+            />
+          </template>
+        </el-skeleton>
     
 
     <div v-if="contributionTransactions.length > 0 && !loading && !networkError">
@@ -47,42 +70,38 @@
 </template>
 
 <script>
-import { ref } from 'vue'
+import { ref, inject } from 'vue'
 import { useStore } from 'vuex'
 // import { store } from "../../../store/store"
 import axios from "@/gateway/backendapi"
+import deviceBreakpoint from "../../../mixins/deviceBreakpoint";
 import OfferingList from './OfferingList'
-import Loader from './SkeletonLoader'
-// import mixin from "@/mixins/expiredSub.mixin.js"
 export default {
-  // mixins: [mixin],
     components: {
-       
-        OfferingList, Loader
+        OfferingList
     },
     setup () {
         const contributionTransactions = ref([])
+        const { lgAndUp, xlAndUp } = deviceBreakpoint();
+        const primarycolor = inject('primarycolor')
         const totalItem = ref(0)
         const loading = ref(false)
         const networkError = ref(false)
 
         const removeMultipleOffering = (payload) => {
-          console.log(payload, "oiiipoii")
           contributionTransactions.value = contributionTransactions.value.filter((item) => {
                   const y = payload.findIndex(
                     (i) => i.id === item.id
                   );
-                  console.log(y , "old are u now");
                   if (y >= 0) return false;
                   return true;
                 });
-                console.log(contributionTransactions.value, "the boy is good ")
         }
         const getContributionTransactions = () => {
             let store = useStore()
-            console.log(store.getters['contributions/contributionList'])
             if (store.getters['contributions/contributionList'].length > 0) {
                 contributionTransactions.value = store.getters['contributions/contributionList']
+                console.log(contributionTransactions.value, "hiiiuuu");
             } else {
                 loading.value = true
                 axios
@@ -92,6 +111,7 @@ export default {
                     contributionTransactions.value = res.data.returnObject.contribution;
                     totalItem.value = res.data.returnObject.totalItem
                     console.log(res.data);
+                    console.log(res.data.returnObject.totalItem, "yyyy");
                     })
                     .catch((err) => {
                         loading.value = false
@@ -103,11 +123,6 @@ export default {
                         }
                     });
             }
-    
-    // get from  to store
-    
-    // savev to sstore
-    // store.dispatch('contributions/contributionList')
     };
     getContributionTransactions();
 
@@ -119,7 +134,7 @@ export default {
       contributionTransactions.value.splice(payload, 1)
     }
         return {
-            contributionTransactions, loading, getOfferingPages, updateTransac, totalItem, networkError, removeMultipleOffering
+            contributionTransactions, primarycolor, xlAndUp, lgAndUp, loading, getOfferingPages, updateTransac, totalItem, networkError, removeMultipleOffering
         }
     }
 }
@@ -200,7 +215,7 @@ export default {
      
 
    .first-timers-text {
-    text-align: center;
+    text-align: start;
   }
   .head-button {
     display: flex;

@@ -1,6 +1,5 @@
 import axios from "@/gateway/backendapi";
 import stopProgressBar from "../../services/progressbar/progress"
-// import store from "../../store/store"
 
 
 const communicationService = {
@@ -75,8 +74,6 @@ const communicationService = {
 
     async getEmailDraftById(id) {
         try {
-            // const email = store.getters["communication/getEmailDraftById"](id);
-            // if (email && email.id) return email;
             const { data } = await axios.get(`/api/Messaging/getEmailDraftByID?id=${id}`);
             return data;
         } catch (error) {
@@ -88,9 +85,7 @@ const communicationService = {
 
     async getSentEmails(page) {
         try {
-            console.log(page);
             const { data } = await axios.get(`/api/Messaging/getAllSentEmails`);
-            // const { data } = await axios.get(`/api/Messaging/getAllSentEmails?page=${page}`);
             return data;
         } catch (error) {
             stopProgressBar();
@@ -144,6 +139,32 @@ const communicationService = {
             axios.get(url)
                 .then(res => {
                     console.log(res);
+                    resolve(res.data);
+                })
+                .catch(error => {
+                    stopProgressBar();
+                    if (error.response) reject(error.response);
+                    if (!error.response) reject(error);
+                })
+        })
+    },
+    getAllUploadedVoiceAudio() {
+        return new Promise((resolve, reject) => {
+            axios.get('api/Messaging/getAllUploadAudioVoice')
+                .then(res => {
+                    resolve(res.data);
+                })
+                .catch(error => {
+                    stopProgressBar();
+                    if (error.response) reject(error.response);
+                    if (!error.response) reject(error);
+                })
+        })
+    },
+    getAllSentVoice() {
+        return new Promise((resolve, reject) => {
+            axios.get('api/Messaging/getAllSentVoice')
+                .then(res => {
                     resolve(res.data);
                 })
                 .catch(error => {

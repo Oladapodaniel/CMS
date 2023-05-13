@@ -4,15 +4,10 @@ let userPlan = {}
 const getPlan = async () => {
     try {
         const response = await axios.get(`/api/Subscription/GetSubscription`)
-        console.log(response, "🎇🎇");
-       userPlan = response.data.returnObject.subscriptionPlans.find((i) => {
-
-           return i.id === response.data.returnObject.id
+        userPlan = response.data.returnObject.subscriptionPlans.find((i) => {
+            return i.id === response.data.returnObject.id
         })
-
-        if(userPlan.id) return response.data.returnObject;
-
-        console.log(response);
+        if (userPlan.id) return response.data.returnObject;
     } catch (error) {
 
         console.log(error)
@@ -20,5 +15,5 @@ const getPlan = async () => {
 }
 
 export default {
- userPlan, getPlan
+    userPlan, getPlan
 }

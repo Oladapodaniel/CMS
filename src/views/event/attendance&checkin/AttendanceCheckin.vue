@@ -1,15 +1,14 @@
 <template>
-  <div class="container">
+  <div class="container-fluid">
     <div class="row">
       <div class="col-md-12 px-0">
         <Suspense>
           <template #default>
             <CheckinList />
           </template>
+
           <template #fallback>
-            <div class="row">
-              <div class="col-md-12 px-4">Loading...</div>
-            </div>
+           
           </template>
         </Suspense>
       </div>

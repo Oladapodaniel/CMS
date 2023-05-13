@@ -5,26 +5,23 @@
     <!-- <div>{{ showEditTransaction }}</div> -->
     <div class="col-12 parent-desc d-flex justify-content-between first p-3">
       <div>Edit Transaction Details</div>
-      <i
-        class="pi pi-times c-pointer"
-        @click="closeTransac"
-        aria-hidden="true"
-      ></i>
+      <el-icon @click="closeTransac" class="mt-0" ><Close /></el-icon>
     </div>
     <div class="container">
       <div class="row mt-3" v-if="gettingExpenseAccounts || gettingSelectedTrsn">
         <div class="col-md-12 text-center">
-          <i class="pi pi-spin pi-spinner primary-text" style="fontSize: 3rem"></i>
+          <el-icon class="is-loading " >
+            <Loading />
+          </el-icon>
         </div>
       </div>
       <div class="row mt-4">
         <div class="col-12">
-          <!-- <label for="description">Write a Description</label> -->
         </div>
         <div class="col-12">
           <div class="label-text">Write a Description <span class="text-danger">*</span></div>
-          <input
-            class="form-control"
+          <el-input
+            class="w-100"
             id="description"
             ref="descrp"
             v-model="transacObj.memo"
@@ -35,17 +32,18 @@
         </div>
         <div class="col-12 mt-1">
           <div class="label-text">Date <span class="text-danger">*</span></div>
-          <input
-            type="date"
+          <el-date-picker
             v-model="transacObj.date"
+            type="date"
             id="date"
-            class="form-control"
+            class="w-100"
+            size="large"
             ref="dateField"
+            format="MM/DD/YYYY"
           />
         </div>
       </div>
-      <div class="row mt-3">
-        <div class="col-7 pr-0">
+      <div class="row mt-3"><div class="col-7 pr-0">
           <div class="label-text">Cash Account</div>
           <div
             class="select-elem-con pointer form-control d-flex justify-content-space-between align-items-center close-modal c-pointer"
@@ -57,12 +55,6 @@
             ><span>
               <i class="pi pi-angle-down close-modal" aria-hidden="true"></i
             ></span>
-            <!-- <span class="ofering close-modal">{{
-              !transacObj.accountFlow ? "Select" : transacObj.accountFlow
-            }}</span
-            ><span>
-              <i class="pi pi-angle-down close-modal" aria-hidden="true"></i
-            ></span> -->
           </div>
           <div
             class="ofering close-modal"
@@ -82,22 +74,9 @@
             <div class="container-fluid">
               <div class="row">
                 <div class="  col-md-12 px-0" v-for="(account, index) in filteredCashandBank" :key="index" @click="accountFlow($event, account)">
-                  <!-- <div class="desc-head py-1 px-3 close-modal text-capitalize" v-if="accounts.length > 0">{{ accTypes[index] }}</div> -->
                   <div class="header-border hover-text close-modal">
                     <div v-if="account">
                       <div class="close-modal offset-sm-1  py-2 small-text" >{{ account.text }}</div>
-                      <!-- <div
-                        @click="accountFlow($event, item)"
-                        class="manual-dd-item close-modal"
-                        v-for="(item, indx) in accounts"
-                        :key="indx"
-                      >
-                        <div
-                          class="d-flex justify-content-between py-2 px-3 close-modal"
-                        >
-                          <div class="close-modal offset-sm-1">{{ item.text }}</div>
-                        </div>
-                      </div> -->
                     </div>
                     <div v-else>
                       <div class="text-center px-3 py-2 text-danger">
@@ -117,20 +96,32 @@
            
           </div>
         </div>
+        <!-- <div class="col-7 pr-0">
+          <div class="label-text">Cash Account</div>
+          <div class="input-width">
+            <el-dropdown class="w-100" trigger="click">
+              <el-input class="w-100" placeholder="Select" v-model="selectedCashAccount" />
+              <template #dropdown>
+                <el-dropdown-menu class="menu-height">
+                  <el-dropdown-item v-for="(account, index) in filteredCashandBank" :key="index"
+                   @click="accountFlow($event, account)">{{ account.text }}</el-dropdown-item>
+                </el-dropdown-menu>
+              </template>
+            </el-dropdown>
+          </div>
+        </div> -->
         <div class="col-sm-5 col-md-5 col-lg-5 col-12 ">
           <div class="label-text">Amount</div>
-          <input
+          <el-input
             type="number"
-            class="form-control w-100"
+            class=" w-100"
             v-model="transacObj.amount"
             placeholder="0.00"
           />
         </div>
-        <!-- <div class="col-12 text-right vendor mt-1">{{ transactionDetails.vendor }}</div> -->
       </div>
 
       <div>
-        <!-- <div v-if="transacObj.splitCategories.length <= 0"> -->
         <div class="row mt-3">
           <div class="col-12" v-for="(i, index) in splittedTransactions" :key="index">
             <div class="label-text">{{ transactionDetails.id && transactionDetails.debitSplitAccounts && transactionDetails.debitSplitAccounts.length > 0 ? "Expense Account" : transactionDetails.id ? "Income Account" : transactionDetails.account }}</div>
@@ -140,8 +131,8 @@
                 style="border: 1px solid #ced4da;border-radius: 4px;background: rgb(253, 253, 253)"
               >
                 <span class="text-left">{{ splittedTransactions.length === 0 || !splittedTransactions[index].text ? "Select" : splittedTransactions[index].text }}</span>
-                <span class="float-right"><i class="pi pi-chevron-down" style="fontSize: .9rem"></i></span> 
-              </button><input type="text" placeholder="amount" :class="{ 'col-4': splittedTransactions.length > 1 }" class="form-control d-inline" v-model="i.amount" v-if="splittedTransactions.length > 1"><span v-if="splittedTransactions.length > 1" class="col-1 px-1" @click="removeSplit(index)"><i class="pi pi-trash"></i></span>
+                <span class="float-right"><el-icon :size="16"><ArrowUp /></el-icon></span> 
+              </button><input type="text" placeholder="amount" :class="{ 'col-4': splittedTransactions.length > 1 }" class="form-control d-inline" v-model="i.amount" v-if="splittedTransactions.length > 1"><span v-if="splittedTransactions.length > 1" class="col-1 px-1" @click="removeSplit(index)"><el-icon><Delete /></el-icon></span>
               <div class="dropdown-menu cursor-pointer w-100" id="noTransfrom" aria-labelledby="dropdownMenuButton">
                 <div class="row">
                   <div class="col-md-11 mx-auto">
@@ -183,20 +174,25 @@
         <div class="col-3 line pr-0"><hr /></div>
         <div
           class="col-6 mt-2 text-center split"
-          v-tooltip.top="
-            'Create multiple categories to associate(split) this trasaction between different accounts.'
-          "
           @click="splitTransaction"
         >
-          Split this {{ transactionDetails.account === 'Expense Account' ? 'expense' : 'income' }} <i class="pi pi-info-circle"></i>
+         <el-tooltip
+        class="box-item"
+        effect="dark"
+        content='Create multiple categories to associate(split) this trasaction between different accounts.'
+        placement="top"
+      >
+         <div>Split this {{ transactionDetails.account === 'Expense Account' ? 'expense' : 'income' }} <el-icon><InfoFilled /></el-icon></div> 
+         </el-tooltip>
+         
         </div>
         <div class="col-3 line pl-0"><hr /></div>
         <div
           class="error-div col-10 offset-1 mt-3"
-          v-if="parseInt(totalAmount.amount) > transacObj.amount"
+         v-if="parseInt(totalAmount.amount) > transacObj.amount" 
         >
           <div class="row">
-            <i class="pi pi-exclamation-circle col-1" aria-hidden="true"></i>
+            <div class="col-1"><el-icon><Warning /></el-icon></div>
             <p class="error-message col-10 pl-0">
               The sum of the above lines should not exceed the total deposit
               amount of {{ transacObj.amount }}
@@ -204,68 +200,58 @@
           </div>
         </div>
         <div class="col-12 mt-4">
-          <textarea
-            class="form-control"
-            v-model="transacObj.note"
-            rows="3"
-            placeholder="Notes"
-          ></textarea>
+          <el-input  v-model="transacObj.note" type="textarea" :rows="3" class="w-100" />
         </div>
         <div class="col-12 mt-1 modified">
           Transaction last modified on {{ new Date(Date.now()).toLocaleDateString() }}
         </div>
         <div class="col-6 offset-sm-3 mb-2 mt-3">
           <div class=" text-center cpon">
-            <button class="default-btn primary-bg text-white border-0 d-flex justify-content-center" :disabled="!formIsValid || savingAccount" @click="saveIncome">
+            <el-button class=" primary-bg text-white border-0 d-flex justify-content-center" :loading="savingAccount" :color="primarycolor" round size="large" :disabled="!formIsValid || savingAccount" @click="saveIncome">
               <span>
                 {{ transactionDetails.id ? 'Update' : 'Save' }}
               </span>
-                <span v-if="savingAccount" style="position: absolute;left:1.5rem"><i class="pi pi-spin pi-spinner" style="fontSize: 1rem"></i></span>
-              <!-- <span :class="{ 'pr-5': savingAccount }" class="pr-2" style="width: 20px"></span> -->
-            </button>
+            </el-button>
           </div>
-          <!-- <div class=" text-center cpon"><button class="default-btn primary-bg text-white border-0" @click="saveIncome" :disabled="!formIsValid">Save</button></div> -->
         </div>
       </div>
-      <Toast />
     </div>
   </div>
 </template>
 
 <script>
-import { ref, computed, nextTick, onUpdated, watch, proxyRefs } from "vue";
-import Tooltip from "primevue/tooltip";
+import { ref, computed, nextTick, inject, watch, watchEffect, proxyRefs } from "vue";
 import transaction_service from "../../../services/financials/transaction_service";
 import chart_of_accounts from '../../../services/financials/chart_of_accounts';
-import { useToast } from "primevue/usetoast";
 import SearchMember from "../../../components/search/SearchMember"
-// import Dropdown from 'primevue/dropdown';
+import dateFormatter from "../../../services/dates/dateformatter";
+import store from "../../../store/store";
+import { ElMessage } from 'element-plus'
 export default {
   components: { SearchMember },
-  directives: {
-    tooltip: Tooltip,
-  },
   props: ["transactionDetails", "showEditTransaction", "gettingSelectedTrsn"],
   setup(props, { emit }) {
     const showAccount = ref(false);
     const accountText = ref("");
     const accountType = ref([ ]);
+    const primarycolor = inject('primarycolor')
     const liabilities = ref(["Credit Card", "Loan and Line of Credit"]);
     const showUncategorized = ref(false);
     const uncategorizedText = ref("");
     const transacObj = ref(props.transactionDetails);
     const splittedTransactions = ref([ { ...props.transactionDetails }])
-    // const transacObj = ref({
-    //   // splitCategories: [],
-    // });
-
-    const toast = useToast();
     const savingAccount = ref(false);
 
     const amountRef = ref("");
     const descrp = ref("");
     const selectedCashAccount = ref({ });
     const selectedIncomeOrExpenseAccount = ref({ });
+    const iSoStringFormat = ref('')
+     watchEffect(() =>{
+      if(transacObj.value.date){
+       iSoStringFormat.value = dateFormatter.getISOStringGMT(transacObj.value.date)
+      }
+  })
 
     const filterAccount = computed(() => {
       if (accountText.value !== "" && accountType.value.length > 0) {
@@ -273,7 +259,6 @@ export default {
           if (i)
             return i.toLowerCase().includes(accountText.value.toLowerCase());
         });
-        // console.log(currencyText)
       } else {
         return accountType.value;
       }
@@ -305,7 +290,6 @@ export default {
               .toLowerCase()
               .includes(uncategorizedText.value.toLowerCase());
         });
-        // console.log(currencyText)
       } else {
         return accountType.value;
       }
@@ -325,8 +309,6 @@ export default {
     });
 
     const categoryAccount = (e) => {
-      // console.log(e.target.innerText)
-      // console.log(splitCategories.value.length)
       transacObj.value.splitCategories[
         transacObj.value.splitCategories.length - 1
       ].category = e.target.innerHTML;
@@ -345,7 +327,6 @@ export default {
     };
 
     const accountFlow = (e, account) => {
-      console.log(e.target.innerText);
       // transacObj.value.accountFlow = e.target.innerText;
       showAccount.value = !showAccount.value;
       selectedCashAccount.value = account;
@@ -394,38 +375,12 @@ export default {
           data = expenseAccounts.value;
         }
         if (!incomeExpenseSearchText.value) return data;
-
-        return data.filter(i => i.name.toLowerCase().inludes(incomeExpenseSearchText.value));
+        return data.filter(i => i.text.toLowerCase().includes(incomeExpenseSearchText.value));
     })
 
     const closeTransac = () => {
       emit("close-it", false);
     };
-
-    const saveTransac = () => {
-      // console.log(transacObj.value)
-      // emit('transac-obj', transacObj.value)
-      // emit('close-it', false)
-      // let arr = [{ amount: 1 },{ amount: 2 },{ amount: 3 },{ amount: 4 },]
-      // let sum = arr.reduce((a, b) => {
-      //     return { amount: a.amount + b.amount }
-      // })
-      // console.log(sum)
-      // if (parseInt(totalAmount.value.amount) > transacObj.value.amount) {
-      //     console.log('Already More')
-      // } else {
-      //     console.log('Not yet more')
-      // }
-      // console.log(transacObj.value.amount, totalAmount.value.amount, 'transac')
-      // amountRef.value.select()
-      // console.log(showEditTransaction.value)
-    };
-
-    onUpdated(() => {
-      // if (showEditTransaction.value == true) {
-      // descrp.value.focus()
-      // }
-    });
 
     const gettingIncomeAccounts = ref(false);
     const getIncomeAccounts = async () => {
@@ -466,7 +421,6 @@ export default {
       for (let group of accountHeads.value) {
         accounts.push(group.accountHeadsDTO)
       }
-      console.log(accounts, "computed accounts");
       return accounts;
     })
 
@@ -484,7 +438,7 @@ export default {
             transactionID: i.transactionID
           }
         }),
-        date: transacObj.value.date,
+        date: iSoStringFormat.value,
         debitAccountID: selectedCashAccount.value.id,
         memo: transacObj.value.memo,
         transactionNumber: props.transactionDetails.transactionNumber ? props.transactionDetails.transactionNumber : ""
@@ -497,10 +451,19 @@ export default {
 
     const toastMessage = (response) => {
       if (response.status) {
-          toast.add({severity:'success', summary:'Success', detail: "Transaction saved successfully", life: 3000});
+        ElMessage({
+          type: "success",
+          message: "Transaction saved successfully",
+          duration: 3000,
+        });
+          store.dispatch("transaction/getTransaction")
           emit("reload")
         } else {
-          toast.add({severity:'error', summary:'Operation Failed', detail: `The operation was not successful`, life: 3000});
+          ElMessage({
+          type: "error",
+          message: "The operation was not successful",
+          duration: 3000,
+        });
         }
     }
 
@@ -529,7 +492,7 @@ export default {
                 }
               }),
               creditAccountID: selectedCashAccount.value.id,
-              date: transacObj.value.date,
+              date: iSoStringFormat.value,
               memo: transacObj.value.memo,
               transactionNumber: props.transactionDetails.transactionNumber ? props.transactionDetails.transactionNumber : "",
               amount: Math.abs(+transacObj.value.amount),
@@ -561,14 +524,15 @@ export default {
 
     const dateField = ref(null);
     watch(() => props.transactionDetails, (data) => {
-      transacObj.value.date = new Date(data.date);
+      transacObj.value.date = data.date;
       transacObj.value.amount = Math.abs(data.amount);
       transacObj.value.memo = data.memo;
       splittedTransactions.value = [ { }]
       selectedCashAccount.value = data.account;
 
       if (props.transactionDetails.id) {
-        transacObj.value.date = data.date && data.date.toLocaleString().includes('T') ? data.date.toLocaleString().split('T')[0] : data.date.toLocaleString();
+        transacObj.value.date = data.date;
+        // transacObj.value.date = data.date && data.date.toLocaleString().includes('T') ? data.date.toLocaleString().split('T')[0] : data.date.toLocaleString();
         // transacObj.value.date = new Date(data.date).toISOString().substr(0, 10)
         if (data.debitSplitAccounts && data.debitSplitAccounts.length > 0) {
           splittedTransactions.value = data.debitSplitAccounts.map(i => {
@@ -609,8 +573,8 @@ export default {
     getCashAndBank();
 
     const filteredCashandBank = computed(() => {
-      if (!cashandbank.value || cashandbank.value.length === 0) return [ ];
-      return cashandbank.value.filter(i => i.text.includes(accountText.value));
+        if (!cashandbank.value || cashandbank.value.length === 0) return [ ];
+        return cashandbank.value.filter(i => i.text.toLowerCase().includes(accountText.value));
     })
 
     const splitTransaction = () => {
@@ -644,6 +608,7 @@ export default {
 
     return {
       showAccount,
+      iSoStringFormat,
       accountText,
       filterAccount,
       accountType,
@@ -656,7 +621,6 @@ export default {
       filterUncategorizedLiabilities,
       closeTransac,
       transacObj,
-      saveTransac,
       categoryAccount,
       splitWithdrawal,
       deleteSplit,
@@ -665,7 +629,7 @@ export default {
       amountRef,
       descrp,
       categories,
-
+      primarycolor,
       transactionalAccounts,
       accountTypes,
       expenseIncomeAccounts,
@@ -739,6 +703,21 @@ export default {
   cursor: pointer;
 }
 
+/* .input-width {
+  width: 100%
+}
+
+.input-width {
+  width: 100%
+}
+
+@media (min-width: 992px) {
+  .input-width {
+    width: 350px
+  }
+
+} */
+
 .style-uncategorized {
   box-shadow: 0px 3px 15px #797e8159;
   position: absolute;
@@ -751,6 +730,10 @@ export default {
 .style-uncategorized div div div:hover {
   /* background-color: #ecf0f3; */
   cursor: pointer;
+}
+.menu-height {
+  max-height: 400px;
+  overflow: scroll;
 }
 
 .desc-head {

@@ -1,9 +1,7 @@
 <template>
   <div>
     <div class="logo-con">
-      <a class="logo-link"
-        ><img src="../../assets/churchplus-logo.png" alt="Churchplus Logo"
-      /></a>
+      <a class="logo-link"><img src="../../assets/churchplus-logo.png" alt="Churchplus Logo" /></a>
     </div>
     <div class="main-con">
       <div class="main-section">
@@ -12,17 +10,11 @@
           <p class="intro-subtext">Where do you want to start ?</p>
         </div>
         <div class="boxes-con">
-          <router-link
-            class="box"
-            to="/tenant/people/add"
-            style="text-decoration: none"
-          >
-            <div class="inner-box">
+          <router-link class="box" to="/tenant/people/add" style="text-decoration: none">
+            <el-card shadow="hover">
+              <div class="inner-box">
               <div class="img-box">
-                <img
-                  src="../../assets/add-member-big.svg"
-                  alt="Add Member Icon"
-                />
+                <img src="../../assets/add-member-big.svg" alt="Add Member Icon" />
               </div>
               <div class="box-text can-dogi">
                 <div class="box-header-text">
@@ -33,19 +25,14 @@
                 </div>
               </div>
             </div>
+            </el-card>
           </router-link>
 
-          <router-link
-            class="box can-do"
-            to="/tenant/sms/compose"
-            style="text-decoration: none"
-          >
+          <router-link class="box can-do" to="/tenant/sms/compose" style="text-decoration: none">
+            <el-card shadow="hover">
             <div class="inner-box">
               <div class="img-box">
-                <img
-                  src="../../assets/sms-email-big.svg"
-                  alt="Add Member Icon"
-                />
+                <img src="../../assets/sms-email-big.svg" alt="Add Member Icon" />
               </div>
               <div class="box-text can-do">
                 <div class="box-header-text">
@@ -56,19 +43,14 @@
                 </div>
               </div>
             </div>
+            </el-card>
           </router-link>
 
-          <router-link
-            class="box"
-            to="/tenant/people/addfirsttimer"
-            style="text-decoration: none"
-          >
+          <router-link class="box" to="/tenant/people/addfirsttimer" style="text-decoration: none">
+            <el-card shadow="hover">
             <div class="inner-box">
               <div class="img-box">
-                <img
-                  src="../../assets/add-first-timer.svg"
-                  alt="Add Member Icon"
-                />
+                <img src="../../assets/add-first-timer.svg" alt="Add Member Icon" />
               </div>
               <div class="box-text can-do">
                 <div class="box-header-text">
@@ -77,9 +59,10 @@
                 <div class="box-small-text">
                   <p>Keep accurate record and follow up your first timers with our automation system.</p>
                 </div>
-                
+
               </div>
             </div>
+            </el-card>
           </router-link>
         </div>
       </div>
@@ -87,8 +70,10 @@
 
     <div class="rcontainer">
       <div class="row">
-        <div class="col-md-10 offset-2 text-center my-4 text-lg-right" style="max-width: 900px; margin: auto"> 
-          <router-link to="/tenant" class="font-weight-bold text-decoration-none">Skip To Dashboard  >>></router-link>
+        <div class="col-md-10 offset-2 text-center my-4 text-lg-right" style="max-width: 900px; margin: auto">
+          <router-link to="/tenant" class="font-weight-bold text-decoration-none">
+            <el-button class="font-weight-bold primary--text" text>Skip To Dashboard >>></el-button>
+          </router-link>
         </div>
       </div>
     </div>
@@ -96,33 +81,25 @@
 </template>
 
 <script>
-import  { ref } from 'vue'
-import store from '../../store/modules/auth'
+import { ref } from 'vue'
 import axios from "@/gateway/backendapi"
 export default {
   setup() {
-       const data =  ref({})
-      const churchData = () => {
-          axios.get("/api/Membership/GetCurrentSignedInUser")
-              .then(res => {
-                console.log(res.data);
-                data.value = res.data
-              })
-              .catch(err => console.log(err))
-      }
-      churchData()
+    const data = ref({})
+    const churchData = () => {
+      axios.get("/api/Membership/GetCurrentSignedInUser")
+        .then(res => {
+          data.value = res.data
+        })
+        .catch(err => console.log(err))
+    }
+    churchData()
 
 
     return {
       data,
       churchData
     };
-  },
-
-  methods: {
-    // actionSelected(url) {
-    //   this.$router.push(url);
-    // }
   },
 
   mounted() {
@@ -175,20 +152,13 @@ export default {
   min-width: 210px;
   max-width: 279px;
   max-height: 366px;
-  border: 1px solid #55828794;
   border-radius: 10px;
   margin: 10px;
-  padding: 30px 0;
   transition: all 0.4s ease-in-out;
 }
 
-.box:hover {
-  cursor: pointer;
-  box-shadow: 0px 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
-}
-
 .img-box {
-  width: 60%;
+  width: 100px;
   margin: 37px auto;
 }
 
@@ -242,7 +212,6 @@ export default {
 
 @media screen and (min-width: 870px) {
   .inner-box {
-    width: 70%;
     margin: auto;
   }
 }

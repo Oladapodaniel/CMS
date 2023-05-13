@@ -1,24 +1,27 @@
 <template>
-  <div class="container-top container-wide">
+  <div>
     <div class="container-fluid">
-      <div class="row d-flex justify-content-between px-3">
-        <div class="heading-text">Create Pledge Item</div>
+      <div class="row">
+        <div class="head-text">Create Pledge Item</div>
+        <div class="col-12 mt-3 px-0">
+          <div class="text-primary c-pointer col-md-2" @click="previousPage"> 
+            <el-icon><DArrowLeft /></el-icon> Back
+          </div>
+        </div>
       </div>
       <div class="mt-4 d-block d-md-none text-center" v-if="groupLoading">
-        <i class="pi pi-spin pi-spinner py-4" style="font-size: 3rem"></i>
+        <el-icon class="s-20">
+            <Loading />
+          </el-icon>
       </div>
       <div class="row">
-        <div class="col-md-8">
+        <div class="col-md-10 col-lg-8">
           <!-- Contribution item -->
           <div class="row mt-5">
             <div class="col-md-10 offset-md-2">
               <div class="row">
                 <div
-                  class="
-                    col-12 col-sm-12 col-lg-4
-                    text-sm-left text-lg-right
-                    align-self-center
-                  "
+                  class="col-12 col-sm-12 col-lg-4 text-sm-left text-lg-right align-self-center"
                 >
                   <label for="" class=""
                     >Contribution <sup class="text-danger">*</sup>
@@ -26,81 +29,51 @@
                 </div>
 
                 <div class="col-12 col-sm-12 col-lg-8">
-                  <div class="mt-2">
-                    <button
-                      class="btn w-100 text-left"
-                      type="button"
-                      style="
-                        border-radius: 4px;
-                        border: 1px solid #ced4da;
-                        color: #6c757d;
-                      "
-                      id="dropdownMenuButton"
-                      data-toggle="dropdown"
-                      aria-haspopup="true"
-                      aria-expanded="false"
-                    >
-                      {{
-                        selectedContribution &&
-                        Object.keys(selectedContribution).length > 0
-                          ? selectedContribution.name
-                          : "Select contribution"
-                      }}
-                      <i
-                        class="
-                          pi pi-chevron-down
-                          manual-dd-icon
-                          float-right
-                          pt-1
-                        "
-                      ></i>
-                    </button>
-                    <div
-                      class="dropdown-menu scroll w-100"
-                      aria-labelledby="dropdownMenuButton"
-                    >
-                      <a
-                        class="
-                          dropdown-item
-                          font-weight-700
-                          small-text
-                          py-2
-                          c-pointer
-                        "
-                        v-for="(itm, indx) in contributionItems"
-                        :key="indx"
-                        @click="selectContribution(itm)"
-                        >{{ itm.name }}</a
+                  <el-dropdown trigger="click" class="w-100">
+                    <span class="el-dropdown-link w-100">
+                      <div
+                        class="d-flex justify-content-between border-contribution  w-100"
+                        size="large"
                       >
-                      <a
-                        class="
-                          font-weight-bold
-                          small-text
-                          d-flex
-                          justify-content-center
-                          py-2
-                          text-decoration-none
-                          primary-text
-                        "
-                        style="border-top: 1px solid #002044; color: #136acd"
-                        href="#"
-                        type="button"
-                        data-toggle="modal"
-                        data-target="#exampleModalCenter"
-                      >
-                        <i
-                          class="
-                            pi pi-plus-circle
-                            mr-2
-                            d-flex
-                            align-items-center
-                          "
-                          style="color: #136acd"
-                        ></i>
-                        Create new Contribution Item
-                      </a>
-                    </div>
-                  </div>
+                        <span class="text-secondary">{{
+                          selectedContribution &&
+                          Object.keys(selectedContribution).length > 0
+                            ? selectedContribution.name
+                            : "Select contribution"
+                        }}</span>
+                        <div>
+                          <el-icon class="el-icon--right">
+                            <arrow-down />
+                          </el-icon>
+                        </div>
+                      </div>
+                    </span>
+                    <template #dropdown>
+                      <el-dropdown-menu>
+                        <el-dropdown-item
+                          v-for="(itm, indx) in contributionItems"
+                          :key="indx"
+                          @click="selectContribution(itm)"
+                          >{{ itm.name }}
+                        </el-dropdown-item>
+                        <el-dropdown-item
+                          data-toggle="modal"
+                          data-target="#exampleModalCenter"
+                          class="text-center"
+                          divided
+                          ><a
+                            class="font-weight-bold small-text d-flex justify-content-center py-2 text-decoration-none primary-text"
+                            style="color: #136acd"
+                          >
+                            <el-icon size="large">
+                              <CirclePlus />
+                            </el-icon>
+                            Create new contribution item
+                          </a></el-dropdown-item
+                        >
+                      </el-dropdown-menu>
+                    </template>
+                  </el-dropdown>
                 </div>
               </div>
             </div>
@@ -144,11 +117,7 @@
             <div class="col-md-10 offset-md-2">
               <div class="row">
                 <div
-                  class="
-                    col-12 col-sm-12 col-lg-4
-                    text-sm-left text-lg-right
-                    align-self-center
-                  "
+                  class="col-12 col-sm-12 col-lg-4 text-sm-left text-lg-right align-self-center"
                 >
                   <label for="" class=""
                     >Name <sup class="text-danger">*</sup>
@@ -156,10 +125,9 @@
                 </div>
 
                 <div class="col-12 col-sm-12 col-lg-8">
-                  <input
+                  <el-input
                     type="text"
                     v-model="pledgeName"
-                    class="form-control"
                     :class="{ 'is-invalid': !isNameValid }"
                     @blur="checkNameValue"
                     placeholder="Enter pledge name"
@@ -173,11 +141,7 @@
             <div class="col-md-10 offset-md-2 mt-3">
               <div class="row">
                 <div
-                  class="
-                    col-12 col-sm-12 col-lg-4
-                    text-sm-left text-lg-right
-                    align-self-center
-                  "
+                  class="col-12 col-sm-12 col-lg-4 text-sm-left text-lg-right align-self-center"
                 >
                   <label for="" class=""
                     >Currency <sup class="text-danger">*</sup>
@@ -185,70 +149,64 @@
                 </div>
 
                 <div class="col-12 col-sm-12 col-lg-8">
-                  <Dropdown
-                    v-model="selectedCurrency"
-                    class="w-100 font-weight-normal"
-                    :options="currencyList"
-                    optionLabel="name"
-                    placeholder="Select Currency"
-                  >
-                    <template #value="slotProps">
+                  <el-dropdown trigger="click" class="w-100">
+                    <span class="el-dropdown-link w-100">
                       <div
-                        class="country-item country-item-value"
-                        v-if="slotProps.value"
+                        class="d-flex justify-content-between border-contribution  w-100"
+                        size="large"
                       >
-                        <div>{{ slotProps.value.name }}</div>
-                        <!-- <div>{{slotProps.placeholder}}</div> -->
-                      </div>
-                      <span v-else>
-                        {{ slotProps.placeholder }}
-                      </span>
-                    </template>
-                    <template #option="slotProps">
-                      <div class="country-item">
+                        <span class="text-secondary">{{
+                          selectedCurrency &&
+                          Object.keys(selectedCurrency).length > 0
+                            ? selectedCurrency.name
+                            : "Select Currency"
+                        }}</span>
                         <div>
-                          {{ slotProps.option.name }} -
-                          {{ slotProps.option.country }}
+                          <el-icon class="el-icon--right">
+                            <arrow-down />
+                          </el-icon>
                         </div>
                       </div>
+                    </span>
+                    <template #dropdown>
+                      <el-dropdown-menu>
+                        <el-dropdown-item
+                          v-for="(itm, indx) in currencyList"
+                          :key="indx"
+                          @click="setSelectedCurrency(itm)"
+                          >{{ itm.name }}  -  {{itm.country}}
+                        </el-dropdown-item>
+                        <el-dropdown-item
+                          class="text-center"
+                          divided
+                          ></el-dropdown-item
+                        >
+                      
+                      </el-dropdown-menu>
                     </template>
-                  </Dropdown>
+                  </el-dropdown>
+                  <!-- <el-select-v2
+                    v-model="selectedCurrencyId"
+                    class="w-100 font-weight-normal"
+                    :options="
+                      currencyList.map((i) => ({
+                            label: i.name,
+                            value: i.id,
+                          }))
+                    "
+                    placeholder="Select Currency"
+                    size="large"
+                    @change="setSelectedCurrency"
+                  >
+                    <template #default="{ item }">
+                      <span style="margin-right: 8px"
+                        >{{ item.label }} - {{ countryCurrency(item) }}</span
+                      >
+                    </template>
+                  </el-select-v2> -->
                 </div>
               </div>
             </div>
-            <!-- <div class="col-md-10 my-1 offset-md-2 mt-3">
-              <div class="row">
-                <div
-                  class="
-                    col-12 col-sm-12 col-lg-4
-                    text-sm-left text-lg-right
-                    align-self-center
-                  "
-                >
-                  <label for="" class=""
-                    >Target amount <sup class="text-danger">*</sup>
-                  </label>
-                </div>
-
-                <div
-                  class="
-                    col-12 col-sm-12 col-lg-8
-                    d-flex
-                    flex-wrap
-                    align-self-center
-                  "
-                >
-                  <div class="col-12 m-0 p-0">
-                    <input
-                      type="text"
-                      v-model="targetAmount"
-                      class="form-control w-100"
-                      placeholder=" Enter Amount"
-                    />
-                  </div>
-                </div>
-              </div>
-            </div> -->
           </div>
 
           <!-- Pledge type -->
@@ -256,21 +214,12 @@
             <div class="col-md-10 mt-1 offset-md-2">
               <div class="row">
                 <div
-                  class="
-                    col-12 col-sm-12 col-lg-4
-                    text-sm-left text-lg-right
-                    align-self-center
-                  "
+                  class="col-12 col-sm-12 col-lg-4 text-sm-left text-lg-right align-self-center"
                 >
                   <label for="" class="">Pledge type </label>
                 </div>
                 <div
-                  class="
-                    col-12 col-sm-12 col-lg-8
-                    d-flex
-                    justify-content-between
-                    flex-wrap
-                  "
+                  class="col-12 col-sm-12 col-lg-8 d-flex justify-content-between flex-wrap"
                 >
                   <div
                     class="col-md-4 border py-2 c-pointer free-will"
@@ -297,19 +246,14 @@
                 <div class="col-md-12 mt-3" v-if="pledgeCategory == 'specific'">
                   <div class="row">
                     <div
-                      class="
-                        col-12 col-sm-12 col-lg-4
-                        text-sm-left text-lg-right
-                        align-self-center
-                      "
+                      class="col-12 col-sm-12 col-lg-4 text-sm-left text-lg-right align-self-center"
                     >
                       <label for="" class=""> Amount </label>
                     </div>
                     <div class="col-12 col-sm-12 col-lg-8">
-                      <input
+                      <el-input
                         type="text"
                         v-model="specificAmount"
-                        class="form-control"
                         placeholder="Enter specific amount"
                       />
                     </div>
@@ -318,33 +262,29 @@
                 <div class="col-md-12 mt-3" v-if="pledgeCategory == 'range'">
                   <div class="row">
                     <div
-                      class="
-                        col-12 col-sm-12 col-lg-4
-                        text-sm-left text-lg-right
-                        align-self-center
-                      "
+                      class="col-12 col-sm-12 col-lg-4 text-sm-left text-lg-right align-self-center"
                     >
                       <label for="" class="d-none d-lg-block"> Amount </label>
                     </div>
-                    <div class="col-12 col-sm-12 col-lg-4">
+                    <div class="col-12 col-lg-4">
                       <label for="" class="d-block d-lg-none">
                         Amount From
                       </label>
-                      <input
+
+                      <el-input
                         type="text"
                         v-model="amountFrom"
-                        class="form-control"
                         placeholder="From"
                       />
                     </div>
-                    <div class="col-12 col-sm-12 mt-3 mt-md-0 mt-lg-0 col-lg-4">
+                    <div class="col-12 mt-3 mt-md-0 mt-lg-0 col-lg-4 pl-lg-0">
                       <label for="" class="d-block d-lg-none">
                         Amount To
                       </label>
-                      <input
+
+                      <el-input
                         type="text"
                         v-model="amountTo"
-                        class="form-control"
                         placeholder="To"
                       />
                     </div>
@@ -359,13 +299,8 @@
             <div class="col-md-10 offset-md-2">
               <div class="row">
                 <div
-                  class="
-                    col-12 col-sm-12 col-lg-4
-                    text-sm-left text-lg-right
-                    align-self-center
-                  "
+                  class="col-12 col-sm-12 col-lg-4 text-sm-left text-lg-right align-self-center"
                 >
-                  <label for="" class=""> Frequency </label>
                 </div>
 
                 <div class="col-12 col-sm-12 col-lg-8 d-flex flex-wrap">
@@ -377,14 +312,7 @@
                     One time
                   </div>
                   <div
-                    class="
-                      col-12
-                      mt-4 mt-lg-0
-                      col-sm-12 col-lg-6
-                      border
-                      py-2
-                      c-pointer
-                    "
+                    class="col-12 mt-4 mt-lg-0 col-sm-12 col-lg-6 border py-2 c-pointer"
                     :class="{
                       'show-reoccuring': pledgeFrequency == 'reoccuring',
                     }"
@@ -396,40 +324,22 @@
                 <div class="col-md-12 mt-3" v-if="pledgeFrequency == 'onetime'">
                   <div class="row">
                     <div
-                      class="
-                        col-12 col-sm-12 col-lg-4
-                        text-sm-left text-lg-right
-                        align-self-center
-                      "
+                      class="col-12 col-sm-12 col-lg-4 text-sm-left text-lg-right align-self-center"
                     >
                       <label for="" class=""> Start Date </label>
                     </div>
                     <div class="col-12 col-sm-12 col-lg-8">
-                      <Calendar
-                        dateFormat="dd/mm/yy"
+                      <el-date-picker
+                        v-model="dateRangeValue"
+                        type="daterange"
+                        unlink-panels
+                        range-separator="To"
+                        start-placeholder="Start date"
+                        end-placeholder="End date"
+                        :shortcuts="shortcuts"
+                        size="large"
                         class="w-100"
-                        id="icon"
-                        v-model="startDate"
-                        :showIcon="true"
-                      />
-                    </div>
-                    <div
-                      class="
-                        col-12 col-sm-12 col-lg-4
-                        text-sm-left text-lg-right
-                        mt-2
-                        align-self-center
-                      "
-                    >
-                      <label for="" class=""> End Date </label>
-                    </div>
-                    <div class="col-12 col-sm-12 col-lg-8 mt-2">
-                      <Calendar
-                        dateFormat="dd/mm/yy"
-                        class="w-100"
-                        id="icon"
-                        v-model="endDate"
-                        :showIcon="true"
+                        @change="setDatePicker"
                       />
                     </div>
                   </div>
@@ -440,45 +350,94 @@
                 >
                   <div class="row">
                     <div
-                      class="
-                        col-12 col-sm-12 col-lg-4
-                        text-sm-left text-lg-right
-                        align-self-center
-                      "
+                      class="col-12 col-sm-12 col-lg-4 text-sm-left text-lg-right align-self-center"
                     >
-                      <label for="" class=""> Range </label>
+                      <label for="" class="">Frequency</label>
                     </div>
                     <div class="col-12 col-sm-12 col-lg-8">
-                      <Dropdown
-                        v-model="selectedRange"
+                      <el-select-v2
+                        v-model="setSelectedRange"
                         class="w-100 font-weight-normal"
-                        :options="reOccuringRange"
-                        optionLabel="name"
-                        placeholder="Range"
+                        :options="
+                          reOccuringRange.map((i) => ({
+                            label: i.name,
+                            value: i.id,
+                          }))
+                        "
+                        placeholder="Frequency"
+                        @change="rangeSelected"
+                        size="large"
                       />
                     </div>
                   </div>
                 </div>
+
                 <div class="col-md-12 mt-3">
                   <div class="row">
                     <div
-                      class="
-                        col-12 col-sm-12 col-lg-4
-                        text-sm-left text-lg-right
-                        align-self-center
-                      "
+                      class="col-12 col-sm-12 col-lg-4 text-sm-left text-lg-right align-self-center"
                     >
                       <label for="" class=""> Choose group(s) </label>
                     </div>
                     <div class="col-12 col-sm-12 col-lg-8">
-                      <MultiSelect
-                        v-model="selectedGroups"
-                        optionLabel="name"
-                        :options="groups"
-                        placeholder="Select groups"
+                      <el-tree-select
+                        v-model="selectedGroupTree"
+                        :data="groupMappedTree"
+                        :render-after-expand="false"
+                        check-strictly
+                        multiple
+                        show-checkbox
+                        check-on-click-node
                         class="w-100"
-                        display="chip"
                       />
+                    </div>
+                  </div>
+                </div>
+
+                <div class="col-md-12 mt-3">
+                  <div class="row">
+                    <div
+                      class="col-12 col-sm-12 col-lg-4 text-sm-left text-lg-right align-self-center"
+                    >
+                      <label for="" class="">Notify members</label>
+                    </div>
+                    <div class="col-12 col-sm-12 col-lg-8">
+                      <el-checkbox v-model="notify" size="large" />
+                    </div>
+                  </div>
+                </div>
+                <div class="col-md-12">
+                  <Transition name="slide-fade">
+                    <div class="row" v-if="notify">
+                      <div
+                        class="col-12 col-sm-12 col-lg-4 text-sm-left text-lg-right align-self-center"
+                      >
+                        <label for="" class="">Notify via</label>
+                      </div>
+                      <div class="col-12 col-sm-12 col-lg-8">
+                        <el-checkbox
+                          v-model="SMSnotify"
+                          label="SMS"
+                          size="large"
+                        />
+                        <el-checkbox
+                          v-model="emailNotify"
+                          label="Email"
+                          size="large"
+                        />
+                      </div>
+                    </div>
+                  </Transition>
+                </div>
+                <div class="col-md-12">
+                  <div class="row">
+                    <div
+                      class="col-12 col-sm-12 col-lg-4 text-sm-left text-lg-right align-self-center"
+                    >
+                      <label for="" class="">Make mandatory</label>
+                    </div>
+                    <div class="col-12 col-sm-12 col-lg-8">
+                      <el-checkbox v-model="makeMandatory" size="large" />
                     </div>
                   </div>
                 </div>
@@ -501,68 +460,33 @@
             <div class="col-md-10 offset-md-2">
               <div class="row">
                 <div
-                  class="
-                    col-12 col-sm-12 col-lg-4
-                    text-sm-left text-lg-right
-                    align-self-center
-                  "
+                  class="col-12 col-sm-12 col-lg-4 text-sm-left text-lg-right align-self-center"
                 >
                   <label for="" class="">Bank </label>
                 </div>
 
                 <div class="col-12 col-sm-12 col-lg-8">
                   <div class="dropdown w-100">
-                    <button
-                      class="default-btn w-100 text-left pr-1"
-                      type="button"
-                      style="
-                        border-radius: 4px;
-                        border: 1px solid #ced4da;
-                        color: #6c757d;
-                      "
-                      id="dropdownMenuButton"
-                      data-toggle="dropdown"
-                      aria-haspopup="true"
-                      aria-expanded="false"
-                    >
-                      <div
-                        class="
-                          d-flex
-                          justify-content-between
-                          align-items-center
-                        "
-                      >
-                        <span>{{
-                          !selectedBank
-                            ? "Choose bank"
-                            : selectedBank.name.length > 27
-                            ? `${selectedBank.name.slice(0, 27)}...`
-                            : selectedBank.name
-                        }}</span>
-                        <i class="pi pi-chevron-down pr-1"></i>
-                      </div>
-                    </button>
-                    <div
-                      class="dropdown-menu p-2 w-100"
-                      aria-labelledby="dropdownMenuButton"
-                      style="max-height: 350px; overflow-y: auto"
-                    >
-                      <input
-                        type="text"
-                        class="form-control"
-                        placeholder="Search bank"
-                        v-model="bankSearchText"
-                      />
-                      <a
-                        class="dropdown-item cursor-pointer"
-                        v-for="item in filteredBanks"
-                        :key="item.id"
-                      >
-                        <div @click="setBank(item)">
-                          {{ item ? item.name : "" }}
-                        </div>
-                      </a>
-                    </div>
+                    <el-dropdown trigger="click" class="w-100">
+                      <span class="el-dropdown-link w-100">
+                        <el-input
+                          type="text"
+                          placeholder="Search bank"
+                          v-model="bankSearchText"
+                        />
+                      </span>
+                      <template #dropdown>
+                        <el-dropdown-menu>
+                          <el-dropdown-item
+                            v-for="item in filteredBanks"
+                            :key="item.id"
+                            @click="setBank(item)"
+                          >
+                            {{ item ? item.name : "" }}
+                          </el-dropdown-item>
+                        </el-dropdown-menu>
+                      </template>
+                    </el-dropdown>
                   </div>
                 </div>
               </div>
@@ -580,9 +504,8 @@
                 </div>
 
                 <div class="col-12 col-sm-12 col-lg-8">
-                  <input
+                  <el-input
                     type="text"
-                    class="form-control"
                     placeholder="Enter account number"
                     v-model="accountNumber"
                     @blur="resolveCustomerDetail"
@@ -591,12 +514,10 @@
                     class="col-sm-2 col-lg-3 align-self-center mt-4"
                     v-if="accountResolving"
                   >
-                    <div
-                      class="spinner-border text-primary"
-                      style="width: 3rem; height: 3rem"
-                      role="status"
-                    >
-                      <span class="sr-only">Loading...</span>
+                    <div style="width: 3rem; height: 3rem" role="status">
+                      <el-icon class="is-loading">
+                        <Loading />
+                      </el-icon>
                     </div>
                   </div>
                 </div>
@@ -627,286 +548,83 @@
             </div>
           </div>
 
-          <!-- Income account -->
-          <!-- <div class="row my-1 mt-4">
+          <div class="row my-1 mt-5">
             <div class="col-md-10 offset-md-2">
               <div class="row">
-                <div
-                  class="col-12 col-sm-12 col-lg-4 text-sm-left text-lg-right"
-                >
-                  <label for="" class="">Income Account</label>
-                </div>
-
-                <div class="col-12 col-sm-12 col-lg-8">
-                  <Dropdown
-                    v-model="selectedIncomeAccount"
-                    class="w-100 p-0"
-                    :options="incomeAccount"
-                    optionLabel="text"
-                    :filter="false"
-                    placeholder="Select income account"
-                    :showClear="false"
+                <div class="col-12 col-sm-12 col-lg-8 offset-lg-4">
+                  <el-button
+                    :color="primarycolor"
+                    class="w-100"
+                    round
+                    :loading="loading"
+                    @click="savePledge"
+                    >Save</el-button
                   >
-                  </Dropdown>
                 </div>
-              </div>
-            </div>
-          </div> -->
-
-          <!-- Cash account -->
-          <!-- <div class="row my-1 mt-4">
-            <div class="col-md-10 offset-md-2">
-              <div class="row">
-                <div
-                  class="col-12 col-sm-12 col-lg-4 text-sm-left text-lg-right"
-                >
-                  <label for="" class="">Cash Account</label>
-                </div>
-
-                <div class="col-12 col-sm-12 col-lg-8">
-                  <Dropdown
-                    v-model="selectedCashAccount"
-                    :options="cashBankAccount"
-                    optionLabel="text"
-                    :filter="false"
-                    placeholder="Select cash account"
-                    class="w-100 p-0"
-                    :showClear="false"
-                  >
-                  </Dropdown>
-                </div>
-              </div>
-            </div>
-          </div> -->
-
-          <!-- Save button -->
-          <div class="col-md-9 offset-md-5 my-4">
-            <div class="row d-flex justify-content-center">
-              <div class="col-md-5 mt-2 mt-md-0">
-                <button
-                  class="default-btn primary-bg border-0 text-white"
-                  data-dismiss="modal"
-                  @click="savePledge"
-                >
-                  <i
-                    class="pi pi-spin pi-spinner text-white"
-                    v-if="loading"
-                  ></i>
-                  Save
-                </button>
               </div>
             </div>
           </div>
         </div>
         <div class="col-md-4">
-          <div class="mt-4 d-none d-md-block" v-if="groupLoading">
-            <i class="pi pi-spin pi-spinner py-4" style="font-size: 3rem"></i>
+          <div class="mt-4 d-none d-md-block" v-loading="groupLoading" >
           </div>
         </div>
       </div>
-      <div class="row mt-3" v-if="pledgesBoundToItem.length > 0">
-        <div class="container-fluid d-none d-md-block">
-          <div class="row t-header mt-4 border-bottom pb-2">
-            <div class="small-text text-capitalize col-md-2 font-weight-bold">
-              Name
-            </div>
-            <div class="small-text text-capitalize col-md-2 font-weight-bold">
-              Contact
-            </div>
-            <div class="small-text text-capitalize col-md-2 font-weight-bold">
-              Pledge Amount
-            </div>
-            <div class="small-text text-capitalize col-md-2 font-weight-bold">
-              Redemeed
-            </div>
-            <div class="small-text text-capitalize col-md-2 font-weight-bold">
-              Date
-            </div>
-            <div class="small-text text-capitalize col-md-2 font-weight-bold">
-              Link
-            </div>
-            <!-- 
-                <div
-                  class="small-text text-capitalize col-md-1 font-weight-bold"
-                >
-                  Pledges
-                </div> -->
-            <!-- <div
-                  class="small-text text-capitalize col-md-1 font-weight-bold"
-                >
-                  Action
-                </div> -->
-          </div>
-        </div>
-
-        <div class="row w-100" style="margin: 0">
-          <div class="col-12 parent-desc pb-2 px-0">
-            <div
-              class="
-                row
-                w-100
-                c-pointer
-                text-dark
-                border-top
-                py-3
-                hover
-                d-flex
-                align-items-center
-              "
-              style="margin: 0"
-              v-for="(item, index) in pledgesBoundToItem"
-              :key="index"
+      <div class="mt-3">
+        <Table
+          :data="pledgesBoundToItem"
+          :headers="pledgeDefinitionHeaders"
+          :checkMultipleItem="false"
+          v-if="pledgesBoundToItem.length > 0"
+        >
+          <template #pledgeType="{ item }">
+            <span>{{ item.pledgeType.name }}</span>
+          </template>
+          <template v-slot:person="{ item }">
+            <span> {{ item.person ? item.person.firstName : "" }}</span>
+            <span>{{ item.person ? item.person.lastName : "" }}</span>
+          </template>
+          <template v-slot:amount="{ item }">
+            <span
+              >{{
+                item && item.pledgeType && item.pledgeType.currency
+                  ? item.pledgeType.currency.symbol
+                  : ""
+              }}
+              {{ item.amount }}</span
             >
-              <div class="col-md-2">
-                <div class="mb-0 d-flex small justify-content-between">
-                  <span
-                    class="
-                      text-dark
-                      font-weight-bold
-                      d-flex d-md-none
-                      fontIncrease
-                    "
-                    style="font-size: 15px"
-                    >Name</span
-                  >
-                  <div class="small-text">
-                    {{ item && item.pledgeType ? item.pledgeType.name : "" }}
-                  </div>
-                </div>
-              </div>
-              <!-- <div class="col-md-3">
-                <div class="mb-0 small d-flex justify-content-between">
-                  <span
-                    class="
-                      text-dark
-                      font-weight-bold
-                      d-flex d-md-none
-                      fontIncrease
-                    "
-                    style="font-size: 15px"
-                    >Contribution</span
-                  >
-                  <div class="small-text">
-                    {{
-                      item && item.pledgeType && item.pledgeType.contribution
-                        ? item.pledgeType.contribution.name
-                        : ""
-                    }}
-                  </div>
-                </div>
-              </div> -->
-              <div class="col-md-2">
-                <div class="mb-0 small d-flex justify-content-between">
-                  <span
-                    class="
-                      text-dark
-                      font-weight-bold
-                      d-flex d-md-none
-                      fontIncrease
-                    "
-                    style="font-size: 15px"
-                    >Contact
-                  </span>
-                  <div class="small-text">
-                    {{ item.person ? item.person.firstName : '' }} {{ item.person ? item.person.lastName : '' }}
-                  </div>
-                </div>
-              </div>
-              <div class="col-md-2">
-                <div class="d-flex small justify-content-between">
-                  <span
-                    class="
-                      text-dark
-                      font-weight-bold
-                      d-flex d-md-none
-                      fontIncrease
-                    "
-                    style="font-size: 15px"
-                    >Pledge Amount</span
-                  >
-                  <div class="small-text text-right text-md-center">
-                    {{
-                      item && item.pledgeType && item.pledgeType.currency
-                        ? item.pledgeType.currency.symbol
-                        : ""
-                    }}{{ item.amount }}
-                  </div>
-                </div>
-              </div>
-              <div class="col-md-2">
-                <div class="d-flex small justify-content-between">
-                  <span
-                    class="
-                      text-dark
-                      font-weight-bold
-                      d-flex d-md-none
-                      fontIncrease
-                    "
-                    style="font-size: 15px"
-                    >Redeemed</span
-                  >
-                  <div class="small-text text-right text-md-center">
-                    {{
-                      item && item.pledgeType && item.pledgeType.currency
-                        ? item.pledgeType.currency.symbol
-                        : ""
-                    }}{{ item.amount }}
-                  </div>
-                </div>
-              </div>
-              <div class="col-md-2">
-                <div class="d-flex small justify-content-between">
-                  <span
-                    class="
-                      text-dark
-                      font-weight-bold
-                      d-flex d-md-none
-                      fontIncrease
-                    "
-                    style="font-size: 15px"
-                    >Date</span
-                  >
-                  <div class="small-text text-right text-md-center">
-                    {{ dateFormat(item.date) }}
-                  </div>
-                </div>
-              </div>
-              <div class="col-md-2">
-                    <div class="d-flex small justify-content-between">
-                      <span
-                        class="
-                          text-dark
-                          font-weight-bold
-                          d-flex d-md-none
-                          fontIncrease
-                        "
-                        style="font-size: 15px"
-                        >Link</span
-                      >
-                      <div class="small-text text-right text-md-center">
-                        <router-link
-                          :to="`/partnership/pay/${pledgeItemID}`"
-                          class="text-color text-primary text-decoration-none"
-                        >
-                        PaymentLink
-                        </router-link>
-                        <!-- <router-link
-                          :to="`/partnership/pay/${item.id}`"
-                          class="text-color text-primary text-decoration-none"
-                        >
-                        PaymentLink
-                        </router-link> -->
-                      </div>
-                    </div>
-                  </div>
+          </template>
+          <template v-slot:redeemed="{ item }">
+            <span
+              >{{
+                item && item.pledgeType && item.pledgeType.currency
+                  ? item.pledgeType.currency.symbol
+                  : ""
+              }}
+              {{ item.amount }}</span
+            >
+          </template>
+          <template v-slot:date="{ item }">
+            <span>{{ dateFormat(item.date) }}</span>
+          </template>
+          <template v-slot:pledgeItemID>
+            <div class="small-text">
+              <router-link
+                :to="`/partnership/pay?pledgeDefinitionID=${pledgeItemID}`"
+                class="text-color text-primary text-decoration-none"
+              >
+                PaymentLink
+              </router-link>
             </div>
-          </div>
-        </div>
+          </template>
+        </Table>
       </div>
+
       <div class="row d-flex justify-content-center my-4" v-if="pledgeLoader">
-        <i class="pi pi-spin pi-spinner py-4" style="font-size: 3rem"></i>
+        <el-icon class="s-20">
+            <Loading />
+          </el-icon>
       </div>
-      <Toast />
     </div>
   </div>
 </template>
@@ -914,41 +632,31 @@
 <script>
 import axios from "@/gateway/backendapi";
 import axio from "axios";
-import { ref, computed, watchEffect } from "vue";
-// import { useStore } from "vuex";
-import Dropdown from "primevue/dropdown";
-import InputText from "primevue/inputtext";
-import { useToast } from "primevue/usetoast";
-import Calendar from "primevue/calendar";
+import { ref, computed, watchEffect, inject } from "vue";
 import finish from "../../services/progressbar/progress";
 import monthDayYear from "../../services/dates/dateformatter";
 import { useRoute } from "vue-router";
 import ContributionItems from "@/components/firsttimer/contributionItemModal";
 import router from "../../router";
-// import store from "../../store/store";
-import ToggleButton from "../donation/toggleButton.vue";
-import CascadeSelect from "primevue/cascadeselect";
-import grousService from "../../services/groups/groupsservice";
-import MultiSelect from "primevue/multiselect";
-import InputSwitch from "primevue/inputswitch";
+import { ElMessage } from "element-plus";
 import store from "../../store/store";
-import workflow_util from "../workflow/utlity/workflow_util.js";
+import ToggleButton from "../donation/toggleButton.vue";
+import grousService from "../../services/groups/groupsservice";
+import datePickerShortcut from "@/mixins/el-datepicker-shortcut.vue";
+import collector from "../../services/groupArray/mapTree";
+import Table from "@/components/table/Table";
 export default {
   components: {
-    Dropdown,
     ContributionItems,
-    Calendar,
-    InputText,
-    CascadeSelect,
     ToggleButton,
-    MultiSelect,
-    InputSwitch,
+    Table,
   },
+  inheritAttrs: false,
   setup() {
-    const toast = useToast();
     const route = useRoute();
+    const primarycolor = inject('primarycolor')
     const startDate = ref("");
-    const pledgeItemID = ref(route.query.id)
+    const pledgeItemID = ref(route.query.id);
     const endDate = ref("");
     const Address = ref("");
     const loading = ref(false);
@@ -956,10 +664,9 @@ export default {
     const pledgeCategory = ref("freewill");
     const pledgeFrequency = ref("");
     const showRange = ref(false);
-    // const showFreeWill = ref(false)
-    // const showPledgeType = ref(false)
     const selectedRange = ref({});
     const selectedContribution = ref({});
+    const selectedCurrencyId = ref(null);
     const selectedCurrency = ref({ name: "Select currency" });
     const isNameValid = ref(true);
     const pledgeName = ref("");
@@ -971,13 +678,22 @@ export default {
     const contributionItems = ref([]);
     const singlePledge = ref({});
     const targetAmount = ref("");
+    const setSelectedRange = ref(null);
     const reOccuringRange = ref([
-      { name: "Daily" },
-      { name: "Weekly" },
-      { name: "Monthly" },
-      { name: "Quarterly" },
-      { name: "SemiAnnually" },
-      { name: "Yearly" },
+      { name: "Daily", id: 1 },
+      { name: "Weekly", id: 2 },
+      { name: "Monthly", id: 3 },
+      { name: "Quarterly", id: 4 },
+      { name: "SemiAnnually", id: 5 },
+      { name: "Yearly", id: 6 },
+    ]);
+    const pledgeDefinitionHeaders = ref([
+      { name: "NAME", value: "pledgeType" },
+      { name: "CONTACT", value: "person" },
+      { name: "PLEDGE AMOUNT", value: "amount" },
+      { name: "REDEMEED", value: "redeemed" },
+      { name: "DATE", value: "date" },
+      { name: "LINK", value: "pledgeItemID" },
     ]);
     const selectedBank = ref("");
     const bankSearchText = ref("");
@@ -985,7 +701,6 @@ export default {
     const accountNumber = ref("");
     const accountName = ref("");
     const accountResolving = ref(false);
-    // const disabled = ref(true);
     const selectedIncomeAccount = ref({});
     const incomeAccount = ref([]);
     const selectedCashAccount = ref({});
@@ -997,6 +712,14 @@ export default {
     const pledgeLoader = ref(false);
     const groupLoading = ref(false);
     const paymentFormId = ref("");
+    const dateRangeValue = ref(null);
+    const { shortcuts } = ref(datePickerShortcut());
+    const groupMappedTree = ref([]);
+    const selectedGroupTree = ref();
+    const notify = ref(false);
+    const SMSnotify = ref(false);
+    const emailNotify = ref(false);
+    const makeMandatory = ref(false);
 
     const date = (offDate) => {
       return monthDayYear.normalDate(offDate);
@@ -1009,28 +732,22 @@ export default {
           `/api/Pledge/GetSinglePledgeDefinitions?ID=${route.query.id}`
         );
         finish();
+        console.log(dateRangeValue.value, 'jfghjfgjgk')
         groupLoading.value = false;
         pledgeLoader.value = false;
         getAllCurrencies(res.data.returnObject.currency.id);
         getContributionCategory(res.data.returnObject.financialContributionID);
-        selectedGroups.value = workflow_util.getGroups(
-          res.data.returnObject.compulsoryCondition,
-          groups.value
-        );
+        selectedGroupTree.value = res.data.returnObject.compulsoryCondition ? res.data.returnObject.compulsoryCondition.split(",") : [];
         targetAmount.value = res.data.returnObject.totalTargetAmount;
         pledgeName.value = res.data.returnObject.name;
         specificAmount.value = res.data.returnObject.donorPaymentSpecificAmount;
         amountFrom.value = res.data.returnObject.donorPaymentRangeFromAmount;
         amountTo.value = res.data.returnObject.donorPaymentRangeToAmount;
-        endDate.value = res.data.returnObject.pledgeTypeFrequencyOneTimeEndDate;
-        startDate.value =
-          res.data.returnObject.pledgeTypeFrequencyOneTimeStartDate;
-        selectedRange.value =
-          reOccuringRange.value[
-            res.data.returnObject.pledgeTypeFrequencyReOccuring
-          ];
-        // showPledgeType.value = res.data.returnObject.donorPaymentType
-        if (startDate.value && endDate.value) {
+        dateRangeValue.value = [ res.data.returnObject.pledgeTypeFrequencyOneTimeStartDate, res.data.returnObject.pledgeTypeFrequencyOneTimeEndDate ];
+        setDatePicker();
+        setSelectedRange.value = res.data.returnObject.pledgeTypeFrequencyReOccuring
+        selectedRange.value = reOccuringRange.value.find(i => i.id == setSelectedRange.value);
+        if (dateRangeValue.value && dateRangeValue.value.length > 0) {
           pledgeFrequency.value = "onetime";
         }
 
@@ -1055,16 +772,15 @@ export default {
         console.log(pledgesBoundToItem.value, "pledgesBoundToItem");
         paymentFormId.value = res.data.returnObject.paymentFormID;
       } catch (error) {
-        console.log(error);
         pledgeLoader.value = false;
         groupLoading.value = false;
       }
     };
+    if (route.query.id) getSinglePledgeDefinition();
 
     const newConItems = (payload) => {
-      console.log(payload);
-      contributionItems.value.push(payload);
-      selectedContribution.value = item;
+      contributionItems.value.push(payload)
+      selectedContribution.value = payload
     };
 
     const selectContribution = (item) => {
@@ -1090,12 +806,12 @@ export default {
           } else {
             networkError.value = false;
           }
-          console.log(err);
         });
     };
     getContributionCategory();
 
     const savePledge = async () => {
+      console.log(selectedGroupTree.value)
       let pledgeDetails = {
         contributionID: selectedContribution.value.id,
         totalTargetAmount: targetAmount.value,
@@ -1106,41 +822,38 @@ export default {
         donorPaymentRangeToAmount: amountTo.value,
         pledgeTypeFrequencyOneTimeStartDate: startDate.value,
         pledgeTypeFrequencyOneTimeEndDate: endDate.value,
-        pledgeTypeFrequencyReOccuring: selectedRange.value
-          ? selectedRange.value.name
-          : "",
+        pledgeTypeFrequencyReOccuring: selectedRange.value ? selectedRange.value.name : "",
         currencyID: selectedCurrency.value.id,
-        compulsoryCondition: selectedGroups.value.map((i) => i.id).join(","),
+        compulsoryCondition: selectedGroupTree.value.join(","),
         bankName: selectedBank.value.name,
         bankCode: selectedBank.value.code,
         accountName: accountName.value,
         accountNumber: accountNumber.value,
-        // isActive: true
+        notifyMembers: notify.value,
+        smsNotify: SMSnotify.value,
+        emailNotify: emailNotify.value,
+        isCompulsory: makeMandatory.value,
       };
       loading.value = true;
       if (route.query.id) {
         pledgeDetails.id = route.query.id;
         pledgeDetails.paymentFormID = paymentFormId.value;
         try {
-          const response = await axios.put(
+           await axios.put(
             "/api/Pledge/UpdatePledgeDefinition",
             pledgeDetails
           );
-
-          toast.add({
-            severity: "success",
-            summary: "Successful",
-            detail: "Pledge definition updated successfully",
-            life: 3000,
+          ElMessage({
+            type: "success",
+            message: "Pledge definition updated successfully",
+            duration: 3000,
           });
-
-          console.log(response, "response");
-
-          router.push("/tenant/pledge/pledgedefinitionlist");
+          store.dispatch("pledge/getPledgeDefinition").then(() => {
+            router.push("/tenant/pledge/pledgedefinitionlist");
+          });
 
           loading.value = false;
         } catch (error) {
-          console.log(error);
           loading.value = false;
         }
       } else {
@@ -1151,15 +864,15 @@ export default {
           );
           finish();
           loading.value = false;
-
-          toast.add({
-            severity: "success",
-            summary: "Successful",
-            detail: "Pledge definition created successfully",
-            life: 2000,
+          ElMessage({
+            type: "success",
+            message: "Pledge definition created successfully",
+            duration: 2000,
           });
 
-          router.push("/tenant/pledge/pledgedefinitionlist");
+          store.dispatch("pledge/getPledgeDefinition").then(() => {
+            router.push("/tenant/pledge/pledgedefinitionlist");
+          });
 
           targetAmount.value = "";
           amountTo.value = "";
@@ -1172,7 +885,6 @@ export default {
           startDate.value = "";
           endDate.value = "";
         } catch (error) {
-          console.log(error);
           loading.value = false;
         }
       }
@@ -1235,7 +947,6 @@ export default {
       axios
         .get("/api/Financials/GetBanks")
         .then((res) => {
-          console.log(res);
           nigerianBanks.value = res.data;
         })
         .catch((err) => {
@@ -1245,6 +956,7 @@ export default {
     getBanks();
 
     const setBank = (item) => {
+      bankSearchText.value = item.name;
       selectedBank.value = item;
     };
 
@@ -1260,25 +972,22 @@ export default {
             PBFPubKey: process.env.VUE_APP_FLUTTERWAVE_PUBLIC_KEY_LIVE,
           }
         );
-        console.log(data);
         accountName.value = data.data.data.accountname;
-        // disabled.value = false;
 
         accountResolving.value = false;
 
         if (data.data.data.responsemessage.toLowerCase().includes("sorry")) {
-          toast.add({
-            severity: "warn",
-            summary: "Unable to verify",
-            detail: data.data.data.responsemessage,
-            life: 8000,
+
+          ElMessage({
+            type: "warn",
+            message: data.data.data.responsemessage,
+            duration: 8000,
           });
         } else {
-          toast.add({
-            severity: "success",
-            summary: "Account Check Successful",
-            detail: "The account check was successful",
-            life: 8000,
+          ElMessage({
+            type: "success",
+            message: "Account Check Successful",
+            duration: 8000,
           });
         }
       } catch (error) {
@@ -1288,18 +997,16 @@ export default {
         accountResolving.value = false;
 
         if (!accountNumber.value || accountNumber.value === "") {
-          toast.add({
-            severity: "warn",
-            summary: "No account number found",
-            detail: "Please enter your account number",
-            life: 4000,
+          ElMessage({
+            type: "warn",
+            message: "No account number found",
+            duration: 4000,
           });
         } else {
-          toast.add({
-            severity: "error",
-            summary: "Account Check Error",
-            detail: "Please check your banks details again",
-            life: 4000,
+          ElMessage({
+            type: "error",
+            message: "Please check your banks details again",
+            duration: 4000,
           });
         }
       }
@@ -1333,15 +1040,18 @@ export default {
     const getGroups = async () => {
       groupLoading.value = true;
       try {
-        const response = await grousService.getGroups();
-        groups.value = response.map((i) => {
-          return { id: i.id, name: i.name };
+        const { response } = await grousService.getGroups();
+        groups.value = response.groupResonseDTO.map((i) => {
+          return { id: i.id, name: i.name, children: i.children };
         });
         groups.value.unshift({
           id: "0000-000-0000-0000-0000-0000",
           name: "Entire ministry",
         });
-        if (route.query.id) getSinglePledgeDefinition();
+        let data = { children: groups.value };
+        const { children } = collector(data);
+        groupMappedTree.value = children;
+        
         groupLoading.value = false;
       } catch (error) {
         console.log(error);
@@ -1377,8 +1087,37 @@ export default {
       }
     });
 
+    const countryCurrency = (item) => {
+      if (currencyList.value.length > 0)
+        return currencyList.value.find((i) => i.id == item.value)
+          ? currencyList.value.find((i) => i.id == item.value).country
+          : "";
+    };
+
+    const rangeSelected = () => {
+      selectedRange.value = reOccuringRange.value.find(
+        (i) => i.id == setSelectedRange.value
+      );
+    };
+
+    const setSelectedCurrency = (item) => {
+      selectedCurrency.value = item;
+    };
+
+    const setDatePicker = () => {
+      startDate.value = dateRangeValue.value[0];
+      endDate.value = dateRangeValue.value[1];
+    };
+     const previousPage =() =>{
+      router.push("/tenant/pledge/pledgedefinitionlist")
+    }
+
+    const filterNodeMethod = (value, data) =>
+      data.label.toLowerCase().includes(value.toLowerCase());
+
     return {
       newConItems,
+      previousPage,
       pledgeItemID,
       date,
       currencyList,
@@ -1391,6 +1130,7 @@ export default {
       amountTo,
       specificAmount,
       checkNameValue,
+      selectedCurrencyId,
       selectedCurrency,
       selectedContribution,
       startDate,
@@ -1431,9 +1171,24 @@ export default {
       dateFormat,
       compulsoryCondition,
       pledgeLoader,
-      // disabled,
       paymentFormId,
       groupLoading,
+      countryCurrency,
+      setSelectedCurrency,
+      shortcuts,
+      dateRangeValue,
+      setDatePicker,
+      groupMappedTree,
+      selectedGroupTree,
+      filterNodeMethod,
+      setSelectedRange,
+      rangeSelected,
+      notify,
+      SMSnotify,
+      emailNotify,
+      makeMandatory,
+      pledgeDefinitionHeaders,
+      primarycolor
     };
   },
 };
@@ -1448,30 +1203,37 @@ export default {
   width: 17px;
   margin-right: 0.5rem;
 }
+
 .scroll {
   max-height: 200px;
   overflow-y: scroll;
   overflow-x: hidden;
 }
+
 .heading-text {
   font: normal normal 800 1.5rem Nunito sans;
 }
+
 .show-specific {
   background-image: linear-gradient(to top, #accbee 0%, #e7f0fd 100%);
   font-weight: bold;
 }
+
 .show-range {
   background-image: linear-gradient(to top, #accbee 0%, #e7f0fd 100%);
   font-weight: bold;
 }
+
 .show-free-will {
   background-image: linear-gradient(to top, #accbee 0%, #e7f0fd 100%);
   font-weight: bold;
 }
+
 .show-one-time {
   background-image: linear-gradient(to top, #accbee 0%, #e7f0fd 100%);
   font-weight: bold;
 }
+
 .show-reoccuring {
   background-image: linear-gradient(to top, #accbee 0%, #e7f0fd 100%);
   font-weight: bold;
@@ -1480,12 +1242,10 @@ export default {
 .hover:hover {
   background: #eee;
 }
+
 .desc-head {
   font-weight: 700;
 }
-/* .desc {
-  color: #9b9a9c;
-} */
 
 .pi-spinner {
   color: #136acd;
@@ -1494,4 +1254,12 @@ export default {
 .fa-ellipsis-v {
   padding: 10px;
 }
+
+.border-contribution {
+  border: 1.6px solid rgb(229, 232, 237);
+  border-radius: 4px;
+  padding: 11px 7px;
+}
+
+
 </style>

@@ -1,286 +1,426 @@
 <template>
-    <div>
-        <div class="container">
-            <h1 class="">Default Message</h1>
-            <div class="add-container2">
-                <h2 class="" style="font-weight:bold">Add Default Message</h2>
-                <hr>
-                <div class="container-form">
-                <div class="row g-3 align-items-center">
-                        <div class="col-auto w-25 ">
-                            <label for="inputPassword6" class="col-form-label">Category:</label>
-                        </div>
-                         <div class="col-auto w-75">
-                            <Dropdown v-model="selectCategory" :options="Membership" optionLabel="name" placeholder="Select category" :filter="false" filterPlaceholder="Membership Information Update Message" style="width:100%; text-align:left" />
-                        </div>
+  <div>
+    <div class="container-fluid">
+      <h1 class="">Default Message</h1>
+      <div class="add-container2">
+        <h2 class="" style="font-weight: bold">Add Default Message</h2>
+        <hr />
+        <div class="container-form">
+          <div class="row g-3 align-items-center">
+            <div class="text-left text-sm-right col-12 col-sm-3">
+              <label for="inputPassword6" class="col-form-label"
+                >Category:</label
+              >
+            </div>
+            <div class=" col-12  col-sm-9">
+              <el-select-v2
+                  v-model="selectCategoryID"
+                  @change="setSelectCategory"
+                  :options="Membership.map((i) =>({label: i.name , value: i.value }))"
+                  placeholder="Select category"
+                  class="w-100"
+                  size="large"
+                  style="width: 100%; text-align: left"
+                />
+            </div>
+          </div>
+          <div class="row g-3 align-items-center">
+            <div class="text-left text-sm-right col-12 col-sm-3">
+              <label for="inputPassword6" class="col-form-label">Type:</label>
+            </div>
+            <div class=" col-12  col-sm-9">
+              <el-select-v2
+                  v-model="selectTypeID"
+                  @change="setSelectType"
+                  :options="Sms.map((i) =>({label: i.name , value: i.value }))"
+                  placeholder="Select type"
+                  class="w-100"
+                  size="large"
+                  style="width: 100%; text-align: left"
+                />
+            </div>
+          </div>
+          <div class="row g-3 align-items-center">
+            <div class="  text-left text-sm-right col-12 col-sm-3">
+              <label for="inputPassword6" class="col-form-label"
+                >Subject:</label
+              >
+            </div>
+            <div class=" col-12  col-sm-9">
+              
+              <el-dropdown trigger="click" class="w-100" v-if="selectType.value === 0">
+                <el-input v-model="searchSenderText" placeholder="Search sender id" />
+                <el-icon class="el-icon--right"><arrow-down /></el-icon>
+            <template #dropdown>
+              <el-dropdown-menu>
+                <el-dropdown-item v-for="(item, index) in searchSenderIDs" :key="index" @click="setIdToSubject(item)">
+                  {{ item.mask }}
+                </el-dropdown-item>
+              </el-dropdown-menu>
+            </template>
+          </el-dropdown>
+          <div v-else-if="selectType.value == 2">
+            <!-- action="https://run.mocky.io/v3/9d059bf9-4660-45f2-925d-ce80ad6c4d15" -->
+            <el-upload
+              class="uploadvoice w-100"
+              :on-change="chooseVoiceFile"
+              accept="audio/*" 
+              :auto-upload="false"
+            >
+              <el-button class="w-100" type="info" plain>Click to upload</el-button>
+              <template #tip>
+                <div class="el-upload__tip">
+                  upload your audio file
                 </div>
-                 <div class="row g-3 align-items-center">
-                        <div class="col-auto w-25">
-                            <label for="inputPassword6" class="col-form-label">Type:</label>
-                        </div>
-                        <div class="col-auto w-75">
-                          <Dropdown v-model="selectType" :options="Sms" optionLabel="name" placeholder="Select type" :filter="false" filterPlaceholder="Sms"  style="width:100%; text-align:left" />
-                        </div>
-                       
-                       
-                </div>
-                <Toast/>
-                <ConfirmDialog/>
-                <div class="row g-3 align-items-center">
-                        <div class="col-auto w-25">
-                            <label for="inputPassword6" class="col-form-label">Subject:</label>
-                        </div>
-                        <div class="col-auto w-75">
-                            <input type="text" v-model="subject" id="inputPassword6" class="form-control" style="height:40px" aria-describedby="passwordHelpInline">
-                        </div>
-                </div>
-                <div class="row g-3 align-items-center">
-                        <div class="col-auto w-25">
-                            <label for="inputPassword6" class="col-form-label">Message:</label>
-                        </div>
-                        <div class="col-auto w-75">
-                           <!-- <textarea name="" id="" style=" border-color:rgb(119, 119, 119);; ; outline-color: none;"></textarea> -->
-                           <Textarea v-model="message" rows="" cols="" style="border-radius:5px;height:110px; width:100%;" />
-                        </div>  
-                </div>
-                 <div class="row g-3 align-items-center">
-                        <div class="col-auto w-25">
-                        </div>
-                        <div class="col-auto w-100 button-add">
-                           <button type="button" class="btn btn-primary h-25 saveButton" style="float:right; margin-left:20px; border-radius:22px; font-size: 16px; font-weight: 600" @click="callButton">Save</button>
-                           <!-- <button type="button" class="btn btn-secondary h-25 saveButton" style="float:right; margin-left:20px; border-radius:22px; font-size: 16px; font-weight: 600" @click="updateDefaultMessage">Save</button> -->
-                           <router-link to="/tenant/settings/defaultmessage"><button type="button" class="btn h-25 btn-outline-secondary discard mobileResp" style="float:right; border-radius: 22px; font-size: 16px; font-weight: 600; outline: none; hover:none">Discard</button></router-link>
-                        </div> 
-                </div>
-                 </div>
-            </div> 
+              </template>
+            </el-upload>
+            <audio controls ref="audioPlayer" class="mt-2" style="width: 100%; display: none">
+              <source src="" type="audio/mpeg">
+              Your browser does not support the audio element.
+            </audio>
+
+          </div>
+          <el-input v-model="subject" type="text" class="" id="inputPassword6" v-else />
+            </div>
+          </div>
+          <div class="row g-3 align-items-center" v-if="selectType.value !== 2">
+            <div class="text-left text-sm-right col-12 col-sm-3">
+              <label for="inputPassword6" class="col-form-label"
+                >Message:</label
+              >
+            </div>
+            <div class="col-12  col-sm-9">
+              <el-input
+                v-model="message"
+                :rows="2"
+                type="textarea"
+                placeholder=""
+                style="border-radius: 5px; width: 100%"
+              />
+            </div>
+          </div>
+          <div class="row align-items-center justify-content-center justify-content-sm-end">
+              <router-link to="/tenant/settings/defaultmessage" class="no-decoration"
+                >
+                <el-button class="secondary-button" round size="large" >Discard</el-button>
+                </router-link
+              >
+              <el-button :color="primarycolor" class="ml-2" :loading="loading" size="large" @click="callButton" round>Save</el-button>
+          </div>
         </div>
-        
+      </div>
     </div>
+  </div>
 </template>
 
 <script>
-import Dropdown from 'primevue/dropdown';
-import Toast from 'primevue/toast'
-import Textarea from 'primevue/textarea';
-import messageOptions from '../../services/defaultmessage/default_message_service';
-import ConfirmDialog from 'primevue/confirmdialog'
+import messageOptions from "../../services/defaultmessage/default_message_service";
+import { ElMessage } from "element-plus";
 import axios from "@/gateway/backendapi";
 
-    export default {
-        components: {Dropdown, Textarea, Toast, ConfirmDialog},
-        
-        data() {
-	return {
-        message:'',
-        subject:'',
-		selectCategory: null,
-		Membership: messageOptions.Membership,
-        selectType: null,
-		Sms: messageOptions.Sms,
-        defaultMessage:{},
-	}
-},
-methods:{
-    callButton(){
-        if(!this.$route.query.messageId){
-            this.createDefaultMessage()
-        } else {
-            this.updateDefaultMessage()
-        }
-
+export default {
+  inject: ['primarycolor'],
+  data() {
+    return {
+      message: "",
+      subject: "",
+      file: null,
+      selectCategory: {},
+      selectCategoryID: null,
+      loading: false,
+      Membership: messageOptions.Membership,
+      selectType: {},
+      selectTypeID: null,
+      Sms: messageOptions.Sms,
+      defaultMessage: {},
+      searchSenderText: "",
+      senderIDs: [],
+      selectedSender: {},
+    };
+  },
+  methods: {
+    setSelectType(){
+      this.selectType = this.Sms.find((i) =>{
+        return i.value === this.selectTypeID
+      })
     },
-    createDefaultMessage(){
-        
-        if( this.subject === "" || this.message === "" || this.selectType.value === "" || this.selectCategory.value === ""){
-             this.$toast.add({
-                severity:'error', 
-                summary:'Confirmed', 
-                detail:'Input Your Complete Messages', 
-                life: 4000
-                });
-                        }
-        let newCreate = {
-          subject: this.subject,
-          message: this.message,
-          messageType: this.selectType.value ,
-          category: this.selectCategory.value
-        }
-        axios.post(`/api/Settings/CreateDefaultMessage`,newCreate)
-        .then((res)=>{
-            console.log(res);
-            this.$router.push('/tenant/settings/defaultmessage')
-        }).catch((error)=>{
-            console.log(error);
-        })
+    setSelectCategory(){
+      this.selectCategory = this.Membership.find((i) =>{
+        return i.value === this.selectCategoryID
+      })
     },
-    async updateDefaultMessage(){
-        let newUpdate={
-            id: this.defaultMessage.returnObject.id,
-            subject: this.subject,
-            message: this.message,
-            messageType: this.selectType.value,
-            category: this.selectCategory.value
-        }
-        axios.put(`/api/Settings/UpdateDefaultMessage`,newUpdate)
-        .then((res)=>{
-            console.log(res);
-            this.$router.push('/tenant/settings/defaultmessage')
-        }).catch((error)=>{
-         console.log(error);   
-        })
+    callButton () {
+      this.loading = true
+      if (!this.$route.query.messageId) {
+        this.createDefaultMessage();
+      } else {
+        this.updateDefaultMessage();
+      }
     },
-    async getDefaultMessage(){
-      if (this.$route.query.messageId) {
-          try{
-            const {data} = await axios.get(`/api/Settings/GetDefaultMessage/${this.$route.query.messageId}`);
-                this.defaultMessage = data;
-                this.message = data.returnObject.message;
-                this.subject = data.returnObject.subject;
-                this.selectCategory = this.Membership.find(i =>i.value === data.returnObject.category);  
-                this.selectType =  this.Sms.find(i => i.value === data.returnObject.messageType );
-                console.log(this.defaultMessage);
-
-            }catch(error){
-                console.log(error);
-            }
+    createDefaultMessage() {
+      this.loading = true
+      if (
+        // this.subject === "" ||
+        // this.message === "" ||
+        // (this.selectType.value !== 2 && Object.keys(this.selectType).length === 0) ||
+        // (this.selectType.value !== 2 && Object.keys(this.selectCategory).length === 0)
+        (this.selectType.value !== 2 && this.subject == "") ||
+        (this.selectType.value !== 2 && this.message == "") ||
+        (Object.keys(this.selectCategory).length === 0) ||
+        (Object.keys(this.selectType).length === 0)
+      ) 
+      {
+        ElMessage({
+          type: "error",
+          message: "Kindly fill in all fields before saving",
+          duration: 8000
+        });
+        return false;
       }
 
+      const formData = new FormData();
+      formData.append("category", this.selectCategory.value);
+      formData.append("messageType", this.selectType.value);
+      formData.append("subject", this.selectType.value !== 2 ? this.subject : "");
+      formData.append("message", this.selectType.value !== 2 ? this.message : "");
+      formData.append("voiceFile", this.file);
+      axios
+        .post(`/api/Settings/CreateDefaultMessage`, formData)
+        .then((res) => {
+          console.log(res);
+          ElMessage({
+            type: "success",
+            message: "Default Message Created succesfully",
+            duration: 5000
+          });
+          this.loading = false
+          this.$router.push("/tenant/settings/defaultmessage");
+        })
+        .catch((error) => {
+          ElMessage({
+            type: "error",
+            message: "Failed",
+            duration: 5000
+          });
+          console.log(error);
+          this.loading = false
+        });
     },
+    async updateDefaultMessage() {
+      this.loading = true
+      // let newUpdate = {
+      //   id: this.defaultMessage.returnObject.id,
+      //   subject: this.subject,
+      //   message: this.message,
+      //   messageType: this.selectType.value,
+      //   category: this.selectCategory.value,
+      // };
 
-     
-},
-created(){
-    this.getDefaultMessage()
+      const formData = new FormData();
+      formData.append("id", this.defaultMessage.returnObject.id);
+      formData.append("category", this.selectCategory.value);
+      formData.append("messageType", this.selectType.value);
+      formData.append("subject", this.selectType.value !== 2 ? this.subject : "");
+      formData.append("message", this.selectType.value !== 2 ? this.message : "");
+      formData.append("voiceFile", this.file);
 
-}
-        
+      axios
+        .put(`/api/Settings/UpdateDefaultMessage`, formData)
+        .then((res) => {
+          console.log(res);
+          this.$router.push("/tenant/settings/defaultmessage");
+          this.loading = false
+        })
+        .catch((error) => {
+          console.log(error);
+          this.loading = false
+        });
+    },
+    async getDefaultMessage() {
+      if (this.$route.query.messageId) {
+        try {
+          const { data } = await axios.get(
+            `/api/Settings/GetDefaultMessage/${this.$route.query.messageId}`
+          );
+          this.defaultMessage = data;
+          this.message = data.returnObject.message;
+          this.subject = data.returnObject.subject;
+          this.selectCategory = this.Membership.find(
+            (i) => i.value === data.returnObject.category
+          );
+         this.selectCategoryID = this.selectCategory.value
+          this.selectType = this.Sms.find(
+            (i) => i.value === data.returnObject.messageType
+          );
+          this.selectTypeID = this.selectType.value
+          console.log(this.defaultMessage);
+        } catch (error) {
+          console.log(error);
+        }
+      }
+    },
+    async getSenderId () {
+      try {
+        let { data } = await axios.get(
+          `/api/Messaging/RetrieveTenantSenderIDs`
+        );
+        this.senderIDs = data.returnObject;
+      } catch (err) {
+        console.log(err);
+      }
+    },
+    setIdToSubject (item) {
+      this.searchSenderText = item.mask;
+      this.subject = item.mask
+      this.selectedSender = item;
+    },
+    chooseVoiceFile (e) {
+      const audioPlayer = this.$refs.audioPlayer
+      this.file = e.raw;
+        const reader = new FileReader();
+
+        reader.addEventListener("load", function() {
+          audioPlayer.src = reader.result;
+          audioPlayer.style.display = "block";
+        });
+
+        if (this.file) {
+          reader.readAsDataURL(this.file);
+        }
     }
+  },
+  created() {
+    this.getDefaultMessage();
+    this.getSenderId();
+  },
+  computed: {
+    searchSenderIDs () {
+      if (!this.searchSenderText) return this.senderIDs;
+      return this.senderIDs.filter((i) => {
+        return i.mask
+          .toLowerCase()
+          .includes(this.searchSenderText.toLowerCase());
+      });
+    }
+  }
+};
 </script>
 
 <style scoped>
-.pagination{
-    padding: 10px;
+.pagination {
+  padding: 10px;
+}
+* {
+  box-sizing: border-box;
+}
+.container {
+  width: 90%;
+}
+.container h1 {
+  font-size: 34px;
+  margin-top: 18px;
+  text-align: left;
+  margin-bottom: 40px;
+  font-weight: bolder;
+  letter-spacing: 0px;
+  color: #02172e;
+  opacity: 1;
+}
+.container-form {
+  width: 90%;
+  height: auto;
+  margin: auto;
+}
+.add-container2 {
+  border-style: solid;
+  border-width: 1px;
+  border-color: rgb(212, 210, 210);
+  border-radius: 10px;
+  margin-top: 60px;
+}
+.add-container2 h2 {
+  font-size: 24px;
+  padding: 20px 1px 1px 35px;
+  text-align: left;
+}
 
+.row {
+  margin: auto;
+  margin-bottom: 20px;
 }
-*{
-    box-sizing: border-box;
+.button-add button {
+  width: 80px;
 }
-.container{
-    width: 90%;
+.col-auto {
+  text-align: right;
 }
-.container h1{
-    font-size: 34px;
-    margin-top: 18px;
-    text-align: left;
-    margin-bottom: 40px;
-    font-weight: bolder;
-    letter-spacing: 0px;
-    color: #02172E;
-    opacity: 1; 
+.btn-outline-secondary:hover {
+  background-color: white;
+  color: rgb(110, 104, 104);
 }
-.container-form{
-    width:90% ;
-    height: auto;
-    margin: auto;
-}
-.add-container2{
-    border-style: solid;
-    border-width: 1px;
-    border-color:rgb(212, 210, 210);
-    border-radius:10px;
-    margin-top: 60px;
-}
-.add-container2 h2{
-    font-size: 24px;
-    padding: 20px 1px 1px 35px;
-    text-align: left;
-}
-
-.row{
-    width: 80%!important;
-    margin: auto;
-    margin-bottom: 20px;
-}
-.button-add button{
-    width: 80px;
-}
-.col-auto{
-    text-align: right;
-}
-.btn-outline-secondary:hover{
-    background-color: white;
-    color: rgb(110, 104, 104);
-}
-@media screen and (max-width:992px) {
-    .container{
-    width: 100%
-}
-.body{
+@media screen and (max-width: 992px) {
+  .container {
+    width: 100%;
+  }
+  .body {
     background-color: blue;
+  }
+  .container-form {
+    width: 100%;
+  }
 }
-.container-form{
-    width:100% ;
-} 
-   
-}
-@media screen and (max-width:375px) {
-    .container{
-    width: 100%
-}
-.container-form{
-    width:100% ;
-} 
-.row{
-    width: 90%!important;
+@media screen and (max-width: 375px) {
+  .container {
+    width: 100%;
+  }
+  .container-form {
+    width: 100%;
+  }
+  .row {
+    width: 90% !important;
     margin: auto;
     margin-bottom: 20px;
-} 
+  }
 }
-@media screen and (max-width:320px) {
-    .container{
-    width: 100%
-}
+@media screen and (max-width: 320px) {
+  .container {
+    width: 100%;
+  }
 
-@media screen and (max-width: 375px) {
+  @media screen and (max-width: 375px) {
     .mobileResp {
-        /* width: 94% !important; */
-        /* margin: auto;
-        margin-bottom: 20px; */
-        float: left;
+      float: left;
     }
-}
+  }
 
-.container h1{
+  .container h1 {
     font-size: 25px;
     margin-top: 18px;
     text-align: left;
     margin-bottom: 40px;
     font-weight: bolder;
     letter-spacing: 0px;
-    color: #02172E;
-    opacity: 1; 
-}
-.add-container2 h2{
+    color: #02172e;
+    opacity: 1;
+  }
+  .add-container2 h2 {
     font-size: 20px;
     padding: 20px 1px 1px 35px;
     text-align: left;
-}
-.container-form{
-    width:100% ;
-} 
-.row{
-    width: 100%!important;
+  }
+  .container-form {
+    width: 100%;
+  }
+  .row {
+    width: 100% !important;
     margin-bottom: 20px;
     font-size: 13px;
-}
-.saveButton{
-    margin-left: 3px!important;
-}
-.row textarea{
+  }
+  .saveButton {
+    margin-left: 3px !important;
+  }
+  .row textarea {
     border-color: rgb(119, 119, 119);
-}
-
-   
+  }
 }
 </style>

@@ -1,7 +1,12 @@
 <template>
-  <div class="container-wide container-top">
-    <div class="row d-flex justify-content-between px-3">
-      <div class="heading-text">Make a Pledge</div>
+  <div class="container-fluid">
+    <div class="row">
+      <div class="head-text">Make a Pledge</div>
+      <div class="col-12 mt-3 px-0">
+        <div class="text-primary c-pointer col-md-2" @click="previousPage">
+          <el-icon><DArrowLeft /></el-icon> Back
+        </div>
+      </div>
     </div>
     <div class="container">
       <div class="row mt-5">
@@ -11,48 +16,55 @@
               <label for="">Select Pledge</label>
             </div>
 
-            <div class="dropdown ofering col-md-8 col-12 mb-3">
-              <button
-                class="btn d-flex justify-content-between col-12 border"
-                type="button"
-                id="dropdownMenuButton"
-                data-toggle="dropdown"
-                aria-haspopup="true"
-                aria-expanded="false"
-              >
-                <span class="ofering">
-                  &nbsp;&nbsp;&nbsp;
-                  {{
-                    selectedPledge.name ? selectedPledge.name : "Select Pledge"
-                  }}
+            <div class="ofering col-md-8 col-12 mb-3">
+              <el-dropdown trigger="click" class="w-100">
+                <span class="el-dropdown-link w-100">
+                  <div
+                    class="d-flex justify-content-between border-contribution text-secondary w-100"
+                    size="large"
+                  >
+                    <span>{{
+                      selectedPledge &&
+                      Object.keys(selectedPledge).length > 0
+                        ? selectedPledge.name
+                        : "Select Pledge"
+                    }}</span>
+                    <div>
+                      <el-icon class="el-icon--right">
+                        <arrow-down />
+                      </el-icon>
+                    </div>
+                  </div>
                 </span>
-                <span>
-                  <i
-                    class="pi pi-angle-down offset-sm-2 ofering"
-                    aria-hidden="true"
-                  ></i>
-                </span>
-              </button>
-              <div
-                class="dropdown-menu scroll w-100"
-                aria-labelledby="dropdownMenuButton"
-              >
-                <a
-                  class="dropdown-item cursor-pointer"
-                  v-for="(item, index) in allPledgeList"
-                  :key="index"
-                >
-                  <div @click="PledgesType(item)">{{ item.name }}</div>
-                </a>
-                <div class="dropdown-divider"></div>
-                <a class="dropdown-item">
-                  <router-link
-                    to="/tenant/pledge/pledgedefinition"
-                    class="border-0 font-weight-bold"
-                    >Create New Pledge
-                  </router-link>
-                </a>
-              </div>
+                <template #dropdown>
+                  <el-dropdown-menu>
+                    <el-dropdown-item
+                      v-for="(itm, indx) in allPledgeList"
+                      :key="indx"
+                      @click="PledgesType(itm)"
+                      >{{ itm.name }}
+                    </el-dropdown-item>
+                    <el-dropdown-item
+                      class="text-center w-100"
+                      divided
+                      ><a
+                        class="font-weight-bold small-text d-flex justify-content-center py-2 text-decoration-none primary-text"
+                        style="color: #136acd"
+                      >
+                        <router-link
+                          to="/tenant/pledge/pledgedefinition"
+                          class="border-0 font-weight-bold"
+                          >
+                        <el-icon size="large">
+                          <CirclePlus />
+                        </el-icon>
+                          Create New Pledge Item
+                        </router-link>
+                      </a></el-dropdown-item
+                    >
+                  </el-dropdown-menu>
+                </template>
+              </el-dropdown>
             </div>
           </div>
           <div class="row mt-3">
@@ -71,10 +83,10 @@
               <label for="">Pledge Amount</label>
             </div>
             <div class="ofering col-md-8 col-12">
-              <input
-                type="number"
+              <el-input
+                type="text"
                 v-model="selectedPledge.donorPaymentRange"
-                class="form-control"
+                class="input-width"
                 :class="{ 'is-invalid': !withinRange }"
                 @blur="validateRangeAmount"
                 placeholder="Enter pledge amount"
@@ -100,11 +112,11 @@
               <label for="">Pledge Amount</label>
             </div>
             <div class="ofering col-md-8 col-12">
-              <input
-                type="number"
+              <el-input
+                type="text"
                 v-model="selectedPledge.donorPaymentSpecificAmount"
                 :disabled="checking"
-                class="form-control"
+                class="input-width"
               />
             </div>
           </div>
@@ -113,17 +125,17 @@
               <label for="">Pledge Amount</label>
             </div>
             <div class="ofering col-md-8 col-12">
-              <input
-                type="number"
+              <el-input
+                type="text"
                 v-model="freewillAmount"
-                class="form-control"
+                class="input-width"
                 placeholder="Enter pledge amount"
               />
             </div>
           </div>
         </div>
         <div
-          class="col-md-3 pledge-shadow mb-3 mb-md-0 order-first order-md-last"
+          class="col-md-3 mt-3 mt-md-0 pledge-shadow mb-3 mb-md-0 order-first order-md-last"
           v-if="selectedPledge.donorPaymentType == 2"
         >
           <h4 class="text-center font-weight-bold">RANGE</h4>
@@ -153,7 +165,7 @@
           </h5>
         </div>
         <div
-          class="col-md-3 pledge-shadow"
+          class="col-md-3 mt-3 mt-md-0 pledge-shadow"
           v-if="selectedPledge.donorPaymentType == 1"
         >
           <h4 class="text-center font-weight-bold">SPECIFIC</h4>
@@ -174,7 +186,7 @@
           </h5>
         </div>
         <div
-          class="col-md-3 pledge-shadow"
+          class="col-md-3 mt-3 mt-md-0 pledge-shadow"
           v-if="selectedPledge.donorPaymentType == 0"
         >
           <h4 class="text-center font-weight-bold">FREE WILL</h4>
@@ -187,7 +199,7 @@
           </h5>
         </div>
         <div
-          class="col-md-3 pledge-shadow"
+          class="col-md-3 mt-3 mt-md-0 pledge-shadow"
           v-if="Object.keys(selectedPledge).length == 0"
         >
           <h4 class="text-center font-weight-bold">Givers Never Lack</h4>
@@ -203,59 +215,45 @@
 
       <div class="row mt-3">
         <div
-          class="
-            col-12
-            d-flex
-            justify-content-center
-            text-center text-sm-right
-          "
+          class="col-12 d-flex justify-content-center text-center text-sm-right"
         >
-          <button
-            class="default-btn primary-bg border-0 ml-3"
+          <el-button
+            :loading="loading"
+            :color="primarycolor"
+            class=""
+            round
             @click="makePledge"
             :disabled="!withinRange"
           >
-            <i
-              class="fas fa-circle-notch fa-spin mr-2 text-white"
-              v-if="loading"
-            ></i>
             <span class="text-white">Save and Continue</span>
             <span></span>
-          </button>
+          </el-button>
         </div>
       </div>
     </div>
   </div>
-  <Toast />
 </template>
 
 <script>
 import axios from "@/gateway/backendapi";
-import { ref } from "vue";
-import Dropdown from "primevue/dropdown";
-import InputText from "primevue/inputtext";
-import { useToast } from "primevue/usetoast";
+import { ref, inject } from "vue";
 import MembersSearch from "../../components/membership/MembersSearch.vue";
 import router from "../../router";
 import { useRoute } from "vue-router";
+import pledge from "../../services/pledgemodule/pledgemodule";
 import finish from "../../services/progressbar/progress";
-// import monthDayYear from "../../services/dates/dateformatter";
-// import store from "../../store/store";
-import CascadeSelect from "primevue/cascadeselect";
+import store from "../../store/store";
+import { ElMessage } from "element-plus";
 import ToggleButton from "../donation/toggleButton.vue";
 export default {
   components: {
     MembersSearch,
-    Dropdown,
-    InputText,
-    CascadeSelect,
     ToggleButton,
   },
   setup() {
-    const toast = useToast();
+    const primarycolor = inject('primarycolor')
     const route = useRoute();
     const showPerson = ref(false);
-    const showPledge = ref(false);
     const churchName = ref("");
     const Address = ref("");
     const loading = ref(false);
@@ -270,8 +268,6 @@ export default {
     const amountFrom = ref("");
     const makePledgeData = ref("");
     const selectedContact = ref({});
-    // const selectedDetail = ref({})
-    const isActive = ref(null);
     const amountTo = ref("");
     const withinRange = ref(true);
     const pledgeCategory = ref([
@@ -279,11 +275,9 @@ export default {
       { name: "Specific" },
       { name: "Range" },
     ]);
-    const pledgeDate = ref("");
 
     const PledgesType = (item) => {
       selectedPledge.value = item;
-      // showPledge.value = !showPledge.value
     };
     const selectPerson = () => {
       selectedContact.value = {};
@@ -297,11 +291,6 @@ export default {
     const chooseContact = (payload) => {
       payload.firstName = payload.name;
       selectedContact.value = payload;
-      console.log(selectedContact.value, "allContact");
-    };
-
-    const active = (payload) => {
-      isActive.value = payload;
     };
 
     const getSinglePledge = async () => {
@@ -309,14 +298,10 @@ export default {
         const res = await axios.get(
           `/api/Pledge/GetOnePledge?ID=${route.query.id}`
         );
-        console.log(res, 'jjjj');
-        // selectedPledge.value = res.data.returnObject.pledgeItemName;
         selectedPledge.value = res.data.returnObject.pledgeType;
         selectedContact.value = res.data.returnObject.contact;
         selectedContact.value = `${
-          res.data.returnObject.contact
-            ? res.data.returnObject.contact
-            : ""
+          res.data.returnObject.contact ? res.data.returnObject.contact : ""
         }`;
       } catch (error) {
         console.log(error);
@@ -327,15 +312,9 @@ export default {
     const getAllPledgeDefinition = async () => {
       try {
         checking.value = false;
-        const res = await axios.get("/api/Pledge/GetAllPledgeDefinitions");
+        const res = await pledge.getPledgeDefinition();
         finish();
-        allPledgeList.value = res.data.returnObject;
-        isActive.value = res.data.returnObject.map((i) => {
-          return {
-            isActive: i.isActive,
-          };
-        });
-        console.log(allPledgeList.value, "getPledgeList");
+        allPledgeList.value = res.returnObject;
         checking.value = true;
       } catch (error) {
         console.log(error);
@@ -350,10 +329,10 @@ export default {
         donorAmountBase = freewillAmount.value;
       } else if (selectedPledge.value.donorPaymentType == 1) {
         donorAmountBase = selectedPledge.value.donorPaymentSpecificAmount;
-      } else  {
+      } else {
         donorAmountBase = selectedPledge.value.donorPaymentRange;
-        rangeBase = selectedPledge.value.donorPaymentRangeFromAmount
-      } 
+        rangeBase = selectedPledge.value.donorPaymentRangeFromAmount;
+      }
 
       const makePledgeDetails = {
         personID: selectedContact.value.id,
@@ -378,26 +357,19 @@ export default {
             "/api/Pledge/UpdatePledge",
             makePledgeDetail
           );
-
-          toast.add({
-            severity: "success",
-            summary: "Successful",
-            detail: "Pledge updated successfully",
-            life: 3000,
+          ElMessage({
+            type: "success",
+            message: "Pledge updated successfully",
+            duration: 5000,
           });
-
-          console.log(response, "response");
           makePledgeData.value = response.data.returnObject;
-          router.push({
-            name: "PledgeMaking",
-            query: {
-              // id: makePledgeData.value.pledgeTypeID,
-              pledgeTypeID: makePledgeData.value.id,
-              // pledgeType: selectedPledge.value.name,
-              // name: selectedContact.value.name,
-              // date: pledgeDate.value,
-              // amount: donorAmountBase
-            },
+          store.dispatch("pledge/getPledges").then(() => {
+            router.push({
+              name: "PledgeMaking",
+              query: {
+                pledgeTypeID: makePledgeData.value.id,
+              },
+            });
           });
 
           loading.value = false;
@@ -412,46 +384,36 @@ export default {
             makePledgeDetails
           );
           finish();
-          console.log(res.data, "PledgeSave");
           makePledgeData.value = res.data.returnObject;
           loading.value = false;
-
-          toast.add({
-            severity: "success",
-            summary: "Successful",
-            detail: "You are successfully make a Pledge",
-            life: 2000,
+          ElMessage({
+            type: "success",
+            message: "You have made a pledge successfully",
+            duration: 5000,
           });
-
-          router.push({
-            name: "PledgeMaking",
-            query: {
-              // id: makePledgeData.value.pledgeTypeID,
-              pledgeTypeID: makePledgeData.value.id,
-              // pledgeType: selectedPledge.value.name,
-              // name: selectedContact.value.name,
-              // date: pledgeDate.value,
-              // amount: donorAmountBase
-            },
+          store.dispatch("pledge/getPledges").then(() => {
+            router.push({
+              name: "PledgeMaking",
+              query: {
+                pledgeTypeID: makePledgeData.value.id,
+              },
+            });
           });
         } catch (error) {
           loading.value = false;
           if (error.response) {
-            toast.add({
-              severity: "warn",
-              summary: "Not successful",
-              detail: `Please ensure to fill up the fields`,
-              life: 8000,
-            });
+            ElMessage({
+            type: "warning",
+            message: "Please ensure to fill up the fields",
+            duration: 5000,
+          });
           } else {
-            toast.add({
-              severity: "error",
-              summary: "Network Error",
-              detail: `Please ensure you have a strong internet  connection`,
-              life: 4000,
-            });
+            ElMessage({
+            type: "warning",
+            message: "Please ensure you have a strong internet  connection",
+            duration: 5000,
+          });
           }
-          console.log(error);
         }
       }
     };
@@ -480,24 +442,22 @@ export default {
           selectedPledge.value.donorPaymentRangeToAmount
       ) {
         withinRange.value = false;
-        toast.add({
-          severity: "warn",
-          summary: "info",
-          detail: "Amount is not within range",
-          life: 4000,
-        });
+         ElMessage({
+            type: "warning",
+            message: "Amount is not within range",
+            duration: 5000,
+          });
       } else {
         withinRange.value = true;
       }
     };
-
-    const currentDate = () => {
-      pledgeDate.value = new Date().toISOString().substr(0, 10);
+    const previousPage = () => {
+      router.push("/tenant/pledge/pledgeslist");
     };
-    currentDate();
 
     return {
       allPledgeList,
+      previousPage,
       PledgesType,
       checking,
       makePledge,
@@ -509,7 +469,6 @@ export default {
       amountTo,
       amountFrom,
       freewillAmount,
-      // savePledge,
       checkEmailValue,
       churchName,
       selectedContact,
@@ -521,24 +480,22 @@ export default {
       checkNameValue,
       isNameValid,
       isEmailValid,
-      isActive,
-      active,
       showPerson,
-      showPledge,
       validateRangeAmount,
       withinRange,
-      pledgeDate
-      // selectedDetail
+      primarycolor
     };
   },
 };
 </script>
 
 <style scoped>
-.heading-text {
-  font: normal normal 800 1.5rem Nunito sans;
-}
 
+.border-contribution {
+  border: 1.6px solid rgb(229, 232, 237);
+  border-radius: 4px;
+  padding: 11px 7px;
+}
 .scroll {
   max-height: 400px;
   overflow-y: scroll;
@@ -564,17 +521,6 @@ export default {
 .attendance-body div {
   padding: 5px;
 }
-
-/* .form {
-  margin-top: 50px;
-  background: #ffffff 0% 0% no-repeat padding-box;
-  box-shadow: 0px 3px 15px #797e8159;
-  border: 1px solid #dde2e6;
-  border-radius: 7px;
-}
-.form .second-form.row.first-row {
-  padding: 30px;
-} */
 
 .attendance-header {
   background-color: #ecf0f3;
@@ -635,41 +581,25 @@ export default {
   cursor: pointer;
 }
 
-.dropdown-container select {
-  /* for Firefox */
-  -moz-appearance: none;
-  /* for Safari, Chrome, Opera */
-  -webkit-appearance: none;
-}
-/* for IE10 */
-.dropdown-container select::-ms-expand {
-  display: none;
-}
-
-.select-elem-con {
-  padding: 47px 0;
-  height: 150px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  border: 1px solid #ebeff4;
-  border-radius: 8px;
-  font-size: 1.2em;
-  font-weight: 600;
-}
 .event-buttons a:hover,
 .pointer {
   cursor: pointer;
 }
 
-.select-elem-con:hover {
-  background: rgba(166, 200, 232, 0.302);
-  transition: all 0.4s ease-in-out;
-}
 
 .pledge-shadow {
   box-shadow: rgba(17, 17, 26, 0.1) 0px 0px 16px;
   border-radius: 10px;
   padding: 15px;
+}
+.input-width {
+  width: 100%
+}
+
+@media (min-width: 992px) {
+  .input-width {
+    width: 350px
+  }
+
 }
 </style>

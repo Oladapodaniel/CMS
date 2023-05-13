@@ -6,8 +6,6 @@
           <h2 class="ageGroup">Age Group Category</h2>
         </div>
       </div>
-        <Toast />
-      <ConfirmDialog></ConfirmDialog>
       <div class="row grey-border pt-1 pb-5">
         <div class="col-md-12">
           <div class="row">
@@ -21,15 +19,17 @@
                 <div class="col-md-12 py-5 grey-background">
                   <div class="row d-md-flex justify-content-around">
                     <div class="col-md-7">
-                      <input
-                        type="text"
-                        class="form-control"
-                        placeholder="Age Group category"
+                      <el-input
                         v-model="ageGroup"
+                        :rows="2"
+                        type="text"
+                        placeholder="Age Group category"
+                        style="border-radius: 5px; width: 100%"
+                        size="large"
                       />
                     </div>
                     <div class="col-md-3 d-flex justify-content-end">
-                      <button class="btn primary-btn text-white bold px-md-5 px-4 py-1 mt-sm-3 mt-lg-0 mt-xl-0 mt-md-0 mt-3" @click="saveAge">Save</button>
+                       <el-button @click="saveAge" size="large" :loading="loading" class="font-weight-bold px-md-4 px-3 py-1 mt-sm-3 mt-lg-0 mt-xl-0 mt-md-0 mt-3  " :color="primarycolor"  round> Save </el-button>
                     </div>
                   </div>
                 </div>
@@ -50,44 +50,108 @@
             <div class="col-md-12">
               <div class="row">
                 <div
-                  class="col-md-7 d-flex px-md-0 px-5 justify-content-between align-items-center mb-md-0 mb-5"
+                  class="
+                    col-md-7
+                    d-flex
+                    px-md-0 px-5
+                    justify-content-between
+                    align-items-center
+                    mb-md-0 mb-5
+                  "
                 >
-                  <span class="py-2 hidden-header ">NAME</span>
-                  <span class="py-2 text-xs-left mr-md-0 mr-4 mr-md-0 ml-md-3 mr-4">{{ type.name }}</span>
+                  <span class="py-2 hidden-header">NAME</span>
+                  <span
+                    class="py-2 text-xs-left mr-md-0 mr-4 mr-md-0 ml-md-3 mr-4"
+                    >{{ type.name }}</span
+                  >
                 </div>
                 <div
-                  class="col-md-5 mb-md-0 mb-2 col-12 d-flex justify-md-content-end justify-content-start align-items-end"
+                  class="
+                    col-md-5
+                    mb-md-0 mb-2
+                    col-12
+                    d-flex
+                    justify-md-content-end justify-content-start
+                    align-items-end
+                  "
                 >
-                  <span class="py-md-4 hidden-header hidden-header1">ACTION</span>
-                  <div class="row">
+                  <span class="py-md-4 hidden-header hidden-header1"
+                    >ACTION</span
+                  >
+                  <div class="row py-2">
                     <div class="col-md-6 col-6 d-flex justify-content-start">
-                      <button class="btn secondary-btn py-1 px-4" @click="openType(index)">View</button>
+                      <el-button
+                        class=" secondary-btn  py-1 px-4"
+                        color="#EBEFF4"
+                        @click="openType(index)"
+                        round
+                      >
+                        View
+                      </el-button>
                     </div>
                     <div class="col-md-6 col-6 d-flex justify-content-end">
-                      <button class="delbtn py-1 px-3 primary-btn" @click="deletePop(type.id)">Delete</button>
+                      <el-button
+                        class="delbtn   py-1 px-3 primary-btn"
+                        @click="deletePop(type.id)"
+                        round
+                      >
+                        Delete
+                      </el-button>
                     </div>
                   </div>
                 </div>
               </div>
 
-              <div class="row grey-background mt-2 py-2" v-if="vissibleTab === `tab_${index}`">
+              <div
+                class="row grey-background mt-2 py-2"
+                v-if="vissibleTab === `tab_${index}`"
+              >
                 <div
-                  class="col-md-7 d-flex justify-content-between align-items-center"
+                  class="
+                    col-md-7
+                    d-flex
+                    justify-content-between
+                    align-items-center
+                  "
                 >
                   <label for="" class="d-flex mt-4">
                     <span class="mr-2">Name</span>
-                    <input type="text" class="form-control" v-model="typeName">
+                    <el-input
+                      type="text"
+                      class="w-100  "
+                      v-model="typeName"
+                    />
                   </label>
                 </div>
                 <div
-                  class="col-md-5 d-flex justify-content-end align-items-center mt-0"
+                  class="
+                    col-md-5
+                    d-flex
+                    justify-content-end
+                    align-items-center
+                    mt-0
+                  "
                 >
                   <div class="row">
-                    <div class="col-md-6 col-6 d-flex justify-content-start">
-                      <button class="btn primary-btn save-btn py-1 px-4 ml-md-0 ml-5" @click="updateAge(type.id, index)">Save</button>
+                    <div class="col-md-6 col-6">
+                      <el-button
+                        class="save-btn text-white  py-1 px-4 ml-md-0 ml-5"
+                        @click="updateAge(type.id, index)"
+                        round
+                        :loading="loading"
+                      >
+                        Save
+                      </el-button>
                     </div>
-                    <div class="col-md-6 col-6 d-flex justify-content-end">
-                      <button class="btn secondary-btn py-1 px-3" @click="discard">Discard</button>
+                    <div class="col-md-6 col-6">
+                      <el-button
+                        class=" secondary-btn py-1 px-3"
+                        @click="discard"
+                        color="#EBEFF4"
+                        round
+                      >
+                        Discard
+                      </el-button>
                     </div>
                   </div>
                 </div>
@@ -100,9 +164,12 @@
               </div>
             </div>
           </div>
-          <div class=" col-12 text-center p-5" v-if="loading">
-             <i class="pi pi-spin pi-spinner text-center text-primary" style="fontSize: 3rem"></i>
-         </div>
+          <div class="col-12 text-center p-5" v-if="loading">
+            <i
+              class="pi pi-spin pi-spinner text-center text-primary"
+              style="fontsize: 3rem"
+            ></i>
+          </div>
         </div>
       </div>
     </div>
@@ -111,88 +178,109 @@
 
 <script>
 import axios from "@/gateway/backendapi";
-import Toast from 'primevue/toast';
-import ConfirmDialog from 'primevue/confirmdialog';
-import membershipService from '../../services/membership/membershipservice';
-import finish from '../../services/progressbar/progress'
+import { ElMessage, ElMessageBox } from "element-plus";
+import membershipService from "../../services/membership/membershipservice";
+import finish from "../../services/progressbar/progress";
 
 export default {
-  components:{
-    Toast,
-    ConfirmDialog,
-
-  },
+  components: {},
+  inject: ['primarycolor'],
   data() {
     return {
-      types: [ ],
+      types: [],
       vissibleTab: "",
+      loading: false,
       typeName: "",
       ageGroup: "",
       tenantId: "",
-      loading: false
-    }
+      loading: false,
+    };
   },
 
   methods: {
     async getGroup() {
+      this.loading = true;
       try {
-        this.loading = true
         const { data } = await axios.get("/api/Settings/GetTenantAgeGroups");
         this.types = data;
-        this.loading = false
+        this.loading = false;
       } catch (error) {
         console.log(error);
       }
     },
-     async saveAge(){
-      
-      try{
-         await axios.post('/api/Settings/CreateTenantAgeGroup/'+ this.ageGroup);
-        this.getGroup()
-        this.ageGroup = ""
-        this.$toast.add({severity:'success', summary: '', detail:' Age Group Save Successfully', life: 3000});
-      }catch (error) {
-        finish()
-        console.log(error)
-      }
-    },  
-    async deleteAge(id){
+    async saveAge() {
+      this.loading = true
       try {
-        await axios.delete('/api/Settings/DeleteTenantAgeGroup/'+id);
-        this.types = this.types.filter(i => i.id !== id);
-         this.$toast.add({severity:'success', summary: '', detail:'Age Group Deleted Successfully', life: 3000});
-      } catch (error){
-        finish()
+        await axios.post("/api/Settings/CreateTenantAgeGroup/" + this.ageGroup);
+        this.getGroup();
+        this.ageGroup = "";
+        ElMessage({
+          type: "success",
+          message: "Age Group Save Successfully",
+          duration: 5000
+        });
+
+        this.loading = false
+
+      } catch (error) {
+        finish();
+        console.log(error);
+        this.loading = false
+      }
+    },
+    async deleteAge(id) {
+      try {
+        await axios.delete("/api/Settings/DeleteTenantAgeGroup/" + id);
+        this.types = this.types.filter((i) => i.id !== id);
+        ElMessage({
+          type: "success",
+          message: "Age Group Deleted Successfully",
+          duration: 5000
+        });
+      } catch (error) {
+        finish();
         console.log(error);
       }
     },
-     deletePop(id) {
-            this.$confirm.require({
-                message: 'Are you sure you want to Delete?',
-                header: 'Delete Confirmation',
-                icon: 'pi pi-exclamation-circle',
-                acceptClass: 'confirm-delete',
-                rejectClass: 'cancel-delete',
-                accept: () => {
-                  this.deleteAge(id)
-                    //callback to execute when user confirms the action
-                },
-                reject: () => {
-                    //callback to execute when user rejects the action
-                }
-            });
-        },
-        async updateAge(id, index){
-      try{
-        await axios.put('/api/Settings/UpdateTenantAgeGroup', { name:this.typeName, id:id });
+    deletePop(id) {
+      ElMessageBox.confirm("Are you sure you want to Delete?", "Confirm delete", 
+     {
+          confirmButtonText: 'OK',
+          cancelButtonText: 'Cancel',
+          type: 'error',
+        }
+        )
+        .then(() => {
+          this.deleteAge(id);
+        })
+        .catch(() => {
+          ElMessage({
+            type: "info",
+            message: "Delete canceled",
+            duration: 5000
+          });
+        });
+    },
+    async updateAge(id, index) {
+      this.loading = true
+      try {
+        await axios.put("/api/Settings/UpdateTenantAgeGroup", {
+          name: this.typeName,
+          id: id,
+        });
         this.types[index].name = this.typeName;
-        this.discard()
-        this.$toast.add({severity:'success', summary: '', detail:'Age Group Updated Successfully', life: 3000});
-      }catch (error){
-        finish()
-        console.log(error)
+        this.discard();
+        ElMessage({
+          type: "success",
+          message: "Age Group Updated Successfully",
+          duration: 5000
+        });
+        this.loading = false
+      } catch (error) {
+        finish();
+        console.log(error);
+        this.loading = false
       }
-
     },
     openType(index) {
       this.vissibleTab = `tab_${index}`;
@@ -203,15 +291,12 @@ export default {
       this.vissibleTab = "";
     },
   },
-  
 
   created() {
     this.getGroup();
-    membershipService.getSignedInUser()
-      .then(res => {
-        this.tenantId = res.tenantId;
-      })
-
+    membershipService.getSignedInUser().then((res) => {
+      this.tenantId = res.tenantId;
+    });
   },
 };
 </script>
@@ -232,46 +317,48 @@ input::placeholder {
 }
 
 .grey-background {
-    background: #DDE2E6;
+  background: #dde2e6;
 }
 
 .save-btn {
-  background: #50AB00;
+  background: #50ab00;
 }
-.delbtn:hover{
-    background-color:red!important;
-    color: white!important;
-  }
-  .delbtn{
-  background-color: #F2BC9E!important;
-  color: black!important;
+.delbtn:hover {
+  background-color: red !important;
+  color: white !important;
 }
-.delbtn:focus{
-  outline: none!important;
-  border: none!important;
+.delbtn {
+  background-color: #f2bc9e !important;
+  color: black !important;
 }
-.ageGroup{
-  font: var(--unnamed-font-style-normal) normal 800 34px/46px var(--unnamed-font-family-nunito-sans);
+.delbtn:focus {
+  outline: none !important;
+  border: none !important;
+}
+.ageGroup {
+  font: var(--unnamed-font-style-normal) normal 800 34px/46px
+    var(--unnamed-font-family-nunito-sans);
   letter-spacing: var(--unnamed-character-spacing-0);
   text-align: left;
   font: normal normal 800 34px/46px Nunito Sans;
   letter-spacing: 0px;
-  color: #02172E;
+  color: #02172e;
   opacity: 1;
 }
-.ageGroup1{
-  font: var(--unnamed-font-style-normal) normal var(--unnamed-font-weight-bold) 24px/32px var(--unnamed-font-family-nunito-sans);
+.ageGroup1 {
+  font: var(--unnamed-font-style-normal) normal var(--unnamed-font-weight-bold)
+    24px/32px var(--unnamed-font-family-nunito-sans);
   letter-spacing: var(--unnamed-character-spacing-0);
   text-align: left;
   font: normal normal bold 24px/32px Nunito Sans;
   letter-spacing: 0px;
-  color: #02172E;
+  color: #02172e;
   opacity: 1;
 }
 
 @media screen and (max-width: 767px) {
-  .hidden-header1{
-    display: none!important;
+  .hidden-header1 {
+    display: none !important;
   }
 
   .hidden-header {
@@ -284,25 +371,26 @@ input::placeholder {
   }
 }
 @media screen and (max-width: 390px) {
-  .ageGroup{
-  font: var(--unnamed-font-style-normal) normal 500 20px/25px var(--unnamed-font-family-nunito-sans);
-  letter-spacing: var(--unnamed-character-spacing-0);
-  text-align: left;
-  font: normal normal 800 20px/25px Nunito Sans;
-  letter-spacing: 0px;
-  color: #02172E;
-  opacity: 1;
-}
-.ageGroup1{
-  font: var(--unnamed-font-style-normal) normal var(--unnamed-font-weight-bold) 24px/32px var(--unnamed-font-family-nunito-sans);
-  letter-spacing: var(--unnamed-character-spacing-0);
-  text-align: left;
-  font: normal normal bold 20px/25px Nunito Sans;
-  letter-spacing: 0px;
-  color: #02172E;
-  opacity: 1;
-}
-
-  
+  .ageGroup {
+    font: var(--unnamed-font-style-normal) normal 500 20px/25px
+      var(--unnamed-font-family-nunito-sans);
+    letter-spacing: var(--unnamed-character-spacing-0);
+    text-align: left;
+    font: normal normal 800 20px/25px Nunito Sans;
+    letter-spacing: 0px;
+    color: #02172e;
+    opacity: 1;
+  }
+  .ageGroup1 {
+    font: var(--unnamed-font-style-normal) normal
+      var(--unnamed-font-weight-bold) 24px/32px
+      var(--unnamed-font-family-nunito-sans);
+    letter-spacing: var(--unnamed-character-spacing-0);
+    text-align: left;
+    font: normal normal bold 20px/25px Nunito Sans;
+    letter-spacing: 0px;
+    color: #02172e;
+    opacity: 1;
+  }
 }
 </style>

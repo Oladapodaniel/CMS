@@ -13,8 +13,6 @@ export default {
   setup(props) {
     const chart = ref(null);
 
-    console.log(props);
-
     onUpdated(() => {
       var highchartsOptions = {
         chart: {

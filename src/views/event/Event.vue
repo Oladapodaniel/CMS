@@ -1,32 +1,27 @@
 <template>
-  <div class="event mt-4" @click="hideModals">
-    <div class="bg col-md-10 offset-md-1">
-      <div class="container first-pane">
+  <div class="container-fluid container-wide container-top"  @click="hideModals">
+    <div class="col-md-12">
+      <div class=" first-pane">
         <div class="row">
-          <Toast />
-        </div>
-        <div class="row">
-          <div class="text-center text-sm-left col-sm-5 events">Events</div>
+          <div class="text-center text-sm-left col-sm-5 head-text">Events</div>
           <div class="text-center text-sm-right col-sm-7">
             <div class="row">
               <div class="col-md-12 d-lg-flex justify-content-end">
-                <button class="default-btn" v-if="false">Preview</button>
-                <button
-                  class="default-btn primary-bg border-0 ml-3"
+                <el-button class="default-btn" v-if="false">Preview</el-button>
+                <el-button
+                  class="text-white  border-0 ml-3"
                   @click="post"
+                  round
+                  :color="primarycolor"
+                  :loading="loading"
                 >
-                  <i
-                    class="fas fa-circle-notch fa-spin mr-2 text-white"
-                    v-if="loading"
-                  ></i>
                   <span class="text-white">Save and Continue</span>
                   <span></span>
-                </button>
+                </el-button>
               </div>
             </div>
           </div>
         </div>
-
         <div class="row mt-1">
           <div class="col-md-12">
             <span class="float-right text-danger font-weight-bold">{{
@@ -53,16 +48,12 @@
               @click="showCategory = !showCategory"
               v-if="!selectedEventCategoryId && !showEditEventCategory"
             >
-              <span class="ofering"
-                ><i class="pi pi-calendar ofering"></i>&nbsp;&nbsp;&nbsp;Select
-                Category</span
-              ><span>
-                <i
-                  class="pi pi-angle-down offset-sm-2 ofering"
-                  :class="{ roll3: showForm3 }"
-                  aria-hidden="true"
-                ></i
-              ></span>
+              <span class="ofering">
+                <el-icon ><Calendar /></el-icon>
+                &nbsp;&nbsp;&nbsp;Select
+                Category</span><span class="mt-1" >
+                  <el-icon class="ofering offset-sm-2" :class="{ roll3: showForm3 }"  ><ArrowDown /></el-icon>
+              </span>
             </div>
             <div
               class="ofering"
@@ -100,7 +91,7 @@
               </div>
             </div>
             <div class="selected-category" v-if="selectedEventCategoryId">
-              <p><i class="pi pi-calendar mr-2"></i> Events</p>
+              <p><el-icon  class="mr-2"><Calendar /></el-icon> Events</p>
               <h4>{{ selectedEventCategoryName }}</h4>
               <div class="event-buttons">
                 <a @click="changeSelectedEventCategory('edit')">Edit</a>
@@ -116,15 +107,15 @@
             <div class="edit-category" v-if="showEditEventCategory">
               <div class="edit-form">
                 <div class="edit-input">
-                  <input
+                  <el-input
                     type="text"
-                    class="form-control"
+                    class="w-100"
                     v-model="categoryNametoEdit"
                     autofocus
                   />
                 </div>
                 <div class="edit-input" @click="updateEventCategory">
-                  <button>Save</button>
+                  <el-button round :loading="loading">Save</el-button>
                 </div>
               </div>
             </div>
@@ -136,11 +127,12 @@
                 <label for="date">Date</label>
               </div>
               <div class="col-12 col-sm-7">
-                <input
-                  placeholder=""
+                <el-date-picker
                   v-model="eventDate"
                   type="date"
-                  class="form-control"
+                  format="MM/DD/YYYY"
+                  size="large"
+                  class="w-100 mt-2"
                   required
                 />
               </div>
@@ -148,14 +140,14 @@
                 <label for="topic">Topic</label>
               </div>
               <div class="col-12 col-sm-7">
-                <input type="text" v-model="topic" class="form-control" />
+                <el-input type="text" v-model="topic" class="w-100 mt-2" />
               </div>
 
               <div class="col-12 col-sm-5">
                 <label for="preacher">Preacher</label>
               </div>
               <div class="col-12 col-sm-7">
-                <input type="text" v-model="preacher" class="form-control" />
+                <el-input type="text" v-model="preacher" class="w-100 mt-2" />
               </div>
             </div>
           </div>
@@ -177,9 +169,9 @@
           :key="indx"
         >
           <div class="row">
-            <div class="col-6 col-md-3">
+            <div class="col-6 col-md-3 mt-1">
               <select
-                class="form-control"
+                class="form-control "
                 v-if="item.attendanceTypeID && !routeParams"
               >
                 <option
@@ -194,7 +186,7 @@
                 </option>
               </select>
               <select
-                class="form-control"
+                class="form-control "
                 v-if="item.attendanceTypeID && routeParams"
                 v-model="item.attendanceTypeID"
                 @change="updateAttendanceId"
@@ -219,10 +211,10 @@
               />
             </div>
             <div class="col-5 col-md-3 offset-md-2">
-              <input
+              <el-input
                 type="number"
                 v-model.number="item.number"
-                class="form-control"
+                class="w-100 "
                 placeholder="Enter Count"
               />
             </div>
@@ -236,7 +228,7 @@
               class="col-1"
               @click="deleteAttendance(item.attendanceId, indx)"
             >
-              <i class="pi pi-trash" aria-hidden="true"></i>
+              <el-icon class="mt-3"><Delete /></el-icon>
             </div>
           </div>
         </div>
@@ -246,8 +238,7 @@
           id="addAttendance"
           @click="addAttendance"
         >
-          <i class="pi pi-plus-circle ofering" aria-hidden="true"></i
-          >&nbsp;&nbsp;Add Attendance Item
+          <el-icon class="mr-2"><CirclePlus /></el-icon>Add Attendance Item
         </div>
         <div class="display ofering" id="showAttendance" ref="attendanceDrop">
           <input
@@ -275,16 +266,6 @@
             Create "{{ attendanceText }}" attendance item
           </div>
         </div>
-        <!-- <button
-          hidden
-          type="button"
-          id="modalTogglerAttendance"
-          class="btn btn-primary"
-          data-toggle="modal"
-          data-target="#exampleModalAttendance"
-        >
-          Launch demo modal<div></div>
-        </button> -->
         <div class="col-sm-12 empty">
           <div class="row">
             <div class="offset-sm-7 px-0 col-2 offset-4">TOTAL</div>
@@ -304,10 +285,6 @@
             <div class="col-sm-2">Total</div>
           </div>
         </div>
-        <!-- <div>{{ offeringItem }}</div> -->
-        <!-- <div>{{ newOfferings }}</div> -->
-        <!-- Selected offerings -->
-        <!-- <div>{{ convertedAmount2 }}</div> -->
         <div
           class="attendance-body stretch"
           id="offeringBody"
@@ -315,7 +292,7 @@
           :key="index"
         >
           <div class="row">
-            <div class="col-12 col-sm-8 col-lg-3">
+            <div class="col-12 col-sm-8 col-lg-3 mt-1">
               <select
                 class="form-control"
                 v-if="item.financialContributionID && !routeParams"
@@ -356,23 +333,24 @@
               />
             </div>
             <div class="col-3 col-sm-4 col-lg-2">
-              <select class="w-100 form-control" v-model="item.paymentChannel">
-                <!-- <option :value="select">Select</option> -->
-                <option value="Cheque">Cheque</option>
-                <option value="Cash">Cash</option>
-                <option value="Cheque">Cheque</option>
-                <option value="POS">POS</option>
-                <option value="Online">Online</option>
-                <option value="Bank Transfer">Bank Transfer</option>
-                <option value="USSD">USSD</option>
-                <option value="Text">Text</option>
-              </select>
+              <el-select-v2
+                  v-model="item.paymentChannel"
+                  class="w-100 font-weight-normal"
+                  :options="
+                    paymentChannels.map((i) => ({
+                      label: i,
+                      value: i,
+                    }))
+                  "
+                  size="large"
+                />
             </div>
 
             <div class="col-3 col-sm-2 col-lg-1">
               <div
                 class="
                   currency
+                  py-2
                   pointer
                   d-flex
                   justify-content-around
@@ -387,19 +365,19 @@
                     : tenantCurrency.currency
                 }}</span
                 ><span style="margin-top: 4px">
-                  <i class="pi pi-angle-down close-modal" aria-hidden="true"></i
-                ></span>
+                  <el-icon class="close-modal"><ArrowDownBold /></el-icon>
+                </span>
               </div>
               <div
                 class="ofering close-modal"
                 :class="{ 'style-account': item.showCurrency }"
                 v-if="item.showCurrency"
               >
-                <div class="p-2">
-                  <input
+                <div class="">
+                  <el-input
                     type="text"
                     placeholder="Search"
-                    class="form-control close-modal ofering mb-1"
+                    class=" close-modal  mb-1"
                     v-model="currencyText"
                   />
                 </div>
@@ -428,9 +406,9 @@
               </div>
             </div>
             <div class="col-6 col-lg-3">
-              <input
+              <el-input
                 type="text"
-                class="form-control"
+                class="w-100"
                 v-model="item.amount"
                 placeholder="Enter Amount"
                 @input="sendAmount($event, index)"
@@ -439,8 +417,8 @@
             <div class="col-1 d-none d-lg-block">
               {{ item.amount }}
             </div>
-            <div class="col-1" @click="delOffering(item.id, index)">
-              <i class="pi pi-trash" aria-hidden="true"></i>
+            <div class="col-1 mt-2" @click="delOffering(item.id, index)">
+               <el-icon><Delete /></el-icon>
             </div>
             <div
               v-if="item.donor == ''"
@@ -481,8 +459,7 @@
           id="addOffering"
           @click="addOffering"
         >
-          <i class="pi pi-plus-circle ofering" aria-hidden="true"></i
-          >&nbsp;&nbsp;Add Offering Item
+          <el-icon class="mr-2"><CirclePlus /></el-icon>Add Offering Item
         </div>
         <div class="display ofering" id="showList" ref="offeringDrop">
           <input
@@ -500,9 +477,6 @@
           >
             {{ newOffering.name }}
           </div>
-          <!-- v-if="filterOffering.length >= 1" -->
-          <!-- @click="offering(null)" -->
-          <!-- class="create ofering pointer" -->
           <div
             type="button"
             data-toggle="modal"
@@ -511,13 +485,6 @@
           >
             Create New Offering Item
           </div>
-          <!-- <div
-            v-else
-            @click="offering({ name: offeringText })"
-            class="create pointer"
-          >
-            Create "{{ offeringText }}" offering item
-          </div> -->
         </div>
         <button
           hidden
@@ -546,7 +513,7 @@
               />
             </div>
             <div
-              v-if="convertedAmount"
+              v-if="convertedAmount2"
               class="col-4 col-sm-2 align-self-center converted-amount"
             >
               {{
@@ -561,7 +528,6 @@
             </div>
           </div>
         </div>
-        <!-- <div class="col-sm-12 text-center add-attendance" @click="createFirstTimers">Add First Timers</div> -->
         <button
           hidden
           type="button"
@@ -573,14 +539,12 @@
           Launch demo modal
         </button>
         <!-- <div class="col-sm-12 empty"></div> -->
-        <textarea
-          class="col-sm-12 textarea form-control"
-          placeholder="Notes..."
-          rows="5"
-          v-model="note"
-        >
-        </textarea>
-        <!-- </div> -->
+         <el-input
+            v-model="note"
+            :rows="5"
+            type="textarea"
+            placeholder="Notes..."
+          />
       </div>
 
       <div class="form col-12 col-sm-12 offset-md-0 col-md-12">
@@ -589,11 +553,7 @@
             <div>First Timers and New Convert</div>
           </div>
           <div class="col-2 text-right">
-            <i
-              class="pi pi-angle-up"
-              :class="{ roll3: showForm3 }"
-              aria-hidden="true"
-            ></i>
+            <el-icon :class="{ roll3: showForm3 }"><ArrowUp /></el-icon>
           </div>
         </div>
         <div
@@ -653,7 +613,7 @@
                     <div>{{ item.phoneNumber }}</div>
                   </div>
                   <div class="col-sm-1" @click="deleteFirstTimer(index)">
-                    <i class="pi pi-trash"></i>
+                     <el-icon><Delete /></el-icon>
                   </div>
                 </div>
               </div>
@@ -690,7 +650,7 @@
                     <div>{{ item.phoneNumber }}</div>
                   </div>
                   <div class="col-sm-1" @click="deleteNewConvert(index)">
-                    <i class="pi pi-trash"></i>
+                     <el-icon><Delete /></el-icon>
                   </div>
                 </div>
               </div>
@@ -716,15 +676,11 @@
               text-center text-sm-right
             "
           >
-            <button class="default-btn" v-if="false">Preview</button>
-            <button class="default-btn primary-bg border-0 ml-3" @click="post">
-              <i
-                class="fas fa-circle-notch fa-spin mr-2 text-white"
-                v-if="loading"
-              ></i>
+            <el-button class="default-btn secondary-button" v-if="false">Preview</el-button>
+            <el-button  :loading="loading" round :color="primarycolor" class=" border-0 ml-3" @click="post">
               <span class="text-white">Save and Continue</span>
               <span></span>
-            </button>
+            </el-button>
           </div>
         </div>
       </div>
@@ -756,14 +712,13 @@
         <div class="modal-content">
           <div class="modal-header">
             <div class="modal-title" id="exampleModalLabel">Add Event</div>
-            <button
-              type="button"
-              class="close"
-              data-dismiss="modal"
-              aria-label="Close"
-            >
-              <span aria-hidden="true">&times;</span>
-            </button>
+            <el-button
+                  class="close"
+                  data-dismiss="modal"
+                  aria-label="Close"
+                >
+                  <el-icon class="mt-3" :size="16"><CloseBold /></el-icon>
+                </el-button>
           </div>
           <div class="modal-body">
             <div class="row">
@@ -771,22 +726,25 @@
                 New Event
               </div>
               <div class="col-sm-7">
-                <input type="text" v-model="eventCreate" class="form-control" />
+                <el-input type="text" v-model="eventCreate" class="w-100" />
               </div>
             </div>
           </div>
           <div class="modal-footer">
-            <button type="button" class="btn btn-second" data-dismiss="modal">
-              Cancel
-            </button>
-            <button
-              type="button"
-              class="apply-btn"
-              id="closeEvent"
-              @click="createNewEvent"
-            >
-              Save
-            </button>
+            <el-button class="" data-dismiss="modal" round size="large">
+                  Cancel
+                </el-button>
+                <el-button
+                  class=""
+                  id="closeEvent"
+                  data-dismiss="modal"
+                  round
+                  :color="primarycolor"
+                  size="large"
+                  @click="createNewEvent"
+                >
+                  Save
+                </el-button>
           </div>
         </div>
       </div>
@@ -975,14 +933,13 @@
             <div class="modal-title" id="exampleModalLabel">
               Add First Timers
             </div>
-            <button
-              type="button"
-              class="close"
+            <el-button
+              class="close mt-0"
               data-dismiss="modal"
               aria-label="Close"
             >
-              <span aria-hidden="true">&times;</span>
-            </button>
+              <el-icon  ><CloseBold /></el-icon>
+            </el-button>
           </div>
           <div class="modal-body">
             <div class="container">
@@ -994,9 +951,9 @@
                     >Firstname<sup class="text-danger">*</sup></label
                   >
                   <div class="col-sm-6">
-                    <input
+                    <el-input
                       type="text"
-                      class="form-control input-first"
+                      class="input-first w-100"
                       v-model="firstTimersObj.firstName"
                       id="Firstname"
                       required
@@ -1010,10 +967,10 @@
                     >Last Name</label
                   >
                   <div class="col-sm-6">
-                    <input
+                    <el-input
                       type="text"
                       v-model="firstTimersObj.lastName"
-                      class="form-control input-first"
+                      class="input-first w-100"
                       id="surname"
                       required
                     />
@@ -1026,10 +983,10 @@
                     >Phone number</label
                   >
                   <div class="col-sm-6">
-                    <input
+                    <el-input
                       type="number"
                       v-model="firstTimersObj.phoneNumber"
-                      class="form-control input-first"
+                      class=" input-first w-100"
                       :class="{ 'is-invalid': !isPhoneValid }"
                       id="phone number"
                       ref="validatePhone"
@@ -1047,9 +1004,9 @@
                     >Email</label
                   >
                   <div class="col-sm-6">
-                    <input
+                    <el-input
                       type="email"
-                      class="form-control input-first"
+                      class="input-first w-100"
                       :class="{ 'is-invalid': !isEmailValid }"
                       v-model="firstTimersObj.email"
                       id="email"
@@ -1068,10 +1025,10 @@
                     >Address</label
                   >
                   <div class="col-sm-6">
-                    <input
+                    <el-input
                       type="text"
                       v-model="firstTimersObj.address"
-                      class="form-control input-first"
+                      class="w-100 input-first"
                       id="address"
                     />
                   </div>
@@ -1096,63 +1053,51 @@
                     >Birthday</label
                   >
                   <div class="col-sm-2 mb-4">
-                    <Dropdown
-                      :options="[...day]"
-                      :filter="false"
-                      v-model="firstTimersObj.birthday"
-                      placeholder="Day"
-                      class="w-100"
-                      :showClear="false"
-                    >
-                    </Dropdown>
+                    <el-select-v2
+                        v-model="firstTimersObj.birthday"
+                        :options="day.map((i) =>({label: i, value: i }))"
+                        placeholder="Day"
+                        class="w-100"
+                        size="large"
+                      />
                   </div>
                   <div class="col-sm-2 mb-4 px-sm-0">
-                    <Dropdown
-                      :options="[...months]"
-                      :filter="false"
-                      v-model="valueMonth"
-                      @change="dropDownMonth"
-                      placeholder="Month"
-                      class="w-100"
-                      :showClear="false"
-                    >
-                    </Dropdown>
+                    <el-select-v2
+                        @change="dropDownMonth" v-model="valueMonth"
+                        :options="months.map((i) =>({label: i , value: i}))"
+                        placeholder="Month"
+                        class="w-100"
+                        size="large"
+                      />
                   </div>
                   <div class="col-sm-2 mb-4">
-                    <Dropdown
-                      :options="[...birthYearsArr]"
-                      :filter="false"
-                      v-model="firstTimersObj.birthYear"
-                      placeholder="Year"
-                      class="w-100"
-                      :showClear="false"
-                    >
-                    </Dropdown>
+                    <el-select-v2
+                        v-model="firstTimersObj.birthYear"
+                        :options="birthYearsArr.map((i) =>({label: i, value: i }))"
+                        placeholder="Year"
+                        class="w-100"
+                        size="large"
+                      />
                   </div>
                   <div class="col-sm-3 mb-4 offset-sm-3 pr-sm-0">
-                    <Dropdown
-                      :options="maritalStatusArr"
-                      optionLabel="value"
-                      :filter="false"
-                      v-model="valueMarital"
-                      @change="dropDownMarital"
-                      placeholder="Marital Status"
-                      class="w-100"
-                      :showClear="false"
-                    >
-                    </Dropdown>
+                    <el-select-v2
+                        v-model="valueMarital"
+                        @change="dropDownMarital"
+                        :options="maritalStatusArr.map((i) =>({label: i.value , value: i.id }))"
+                        placeholder="Marital Status"
+                        class="w-100"
+                        size="large"
+                      />
                   </div>
                   <div class="col-sm-3 mb-4">
-                    <Dropdown
-                      :options="[...genders]"
-                      :filter="false"
-                      v-model="valueGender"
-                      @change="dropDownGender"
-                      placeholder="Gender"
-                      class="w-100"
-                      :showClear="false"
-                    >
-                    </Dropdown>
+                    <el-select-v2
+                        v-model="valueGender"
+                        @change="dropDownGender"
+                        :options="gender.map((i) =>({label: i.value , value: i.id }))"
+                        placeholder="Gender"
+                        class="w-100"
+                        size="large"
+                      />
                   </div>
                 </div>
 
@@ -1164,11 +1109,7 @@
                   <span>Insights</span
                   ><span style="border: 0px solid red; width: 70%"><hr /></span
                   ><span
-                    ><i
-                      class="pi pi-angle-up"
-                      :class="{ roll1: showForm1 }"
-                      aria-hidden="true"
-                    ></i>
+                    ><el-icon :class="{ roll: showForm1 }"><ArrowUp /></el-icon>
                   </span>
                 </span>
 
@@ -1178,59 +1119,47 @@
                 >
                   <div class="col-sm-6 offset-sm-3 mb-4">
                     <div>How did you hear about us</div>
-
-                    <Dropdown
-                      :options="[...howYouHeard]"
-                      :filter="false"
-                      v-model="valueHeard"
-                      @change="dropDownHeard"
-                      placeholder="Select"
-                      class="w-100"
-                      :showClear="false"
-                    >
-                    </Dropdown>
+                      <el-select-v2
+                        v-model="valueHeard"
+                        @change="dropDownHeard"
+                        :options="howYouHeard.map((i) =>({label: i , value: i }))"
+                        placeholder="Select"
+                        class="w-100"
+                        size="large"
+                      />
                   </div>
                   <div class="col-sm-6 offset-sm-3 mb-4">
                     <div>Preferred means of communication</div>
-
-                    <Dropdown
-                      :options="[...comMeansArr]"
-                      :filter="false"
+                     <el-select-v2
                       v-model="valueComm"
-                      @change="dropDownComm"
+                       @change="dropDownComm"
+                      :options="comMeansArr.map((i) =>({label: i , value: i }))"
                       placeholder="Select"
                       class="w-100"
-                      :showClear="false"
-                    >
-                    </Dropdown>
+                      size="large"
+                    />
                   </div>
                   <div class="col-sm-6 offset-sm-3 mb-4">
                     <div>Interested in joining us</div>
-
-                    <Dropdown
-                      :options="[...joinInterest]"
-                      :filter="false"
+                    <el-select-v2
                       v-model="valueInterest"
-                      @change="dropDownInterest"
-                      placeholder="Select"
+                      @change="dropDownInterest" 
+                      :options="joinInterest.map((i) =>({label: i , value: i }))"
                       class="w-100"
-                      :showClear="false"
-                    >
-                    </Dropdown>
+                      placeholder="Select"
+                      size="large"
+                    />
                   </div>
                   <div class="col-sm-6 offset-sm-3 mb-4">
                     <div>Want to be visited?</div>
-
-                    <Dropdown
-                      :options="[...wantVisitArr]"
-                      :filter="false"
+                     <el-select-v2
                       v-model="valueVisit"
                       @change="dropDownVisit"
+                      :options="wantVisitArr.map((i) =>({label: i , value: i }))"
                       placeholder="Select"
                       class="w-100"
-                      :showClear="false"
-                    >
-                    </Dropdown>
+                      size="large"
+                    />
                   </div>
                 </div>
                 <span
@@ -1240,11 +1169,7 @@
                   <span>Follow up and retention</span
                   ><span style="width: 60%"><hr /></span
                   ><span
-                    ><i
-                      class="pi pi-angle-up"
-                      :class="{ roll: showForm }"
-                      aria-hidden="true"
-                    ></i>
+                    ><el-icon :class="{ roll: showForm }"><ArrowUp /></el-icon>
                   </span>
                 </span>
                 <div
@@ -1254,39 +1179,32 @@
                   <div class="col-sm-3 offset-sm-3 mt-4 mb-4">
                     Send Welcome SMS
                   </div>
-                  <div class="mt-4 mb-4">
-                    <input
-                      type="checkbox"
-                      name="sms"
-                      v-model="firstTimersObj.sendWelcomeSms"
-                    />
+                  <div class="mt-3 mb-4">
+                    <el-checkbox v-model="firstTimersObj.sendWelcomeSms"  />
                   </div>
 
                   <div class="col-sm-3 mt-4 mb-4">Send Welcome Email</div>
-                  <div class="mt-4 mb-4">
-                    <input
-                      type="checkbox"
-                      name="sms"
-                      value="email"
-                      v-model="firstTimersObj.sendWelcomeEmail"
-                    />
+                  <div class="mt-3 mb-4">
+                    <el-checkbox v-model="firstTimersObj.sendWelcomeEmail"  />
                   </div>
                 </div>
               </form>
             </div>
           </div>
           <div class="modal-footer">
-            <button type="button" class="btn btn-second" data-dismiss="modal">
+            <el-button round class="secondary-button" size="large" data-dismiss="modal">
               Cancel
-            </button>
-            <button
-              type="button"
-              class="apply-btn"
+            </el-button>
+            <el-button
+              :color="primarycolor"
+              class="text-white"
+              round
+              size="large"
               ref="closeFirstTimers"
               @click="save"
             >
               Save
-            </button>
+            </el-button>
           </div>
         </div>
       </div>
@@ -1307,14 +1225,13 @@
             <div class="modal-title" id="exampleModalLabel">
               Add New Convert
             </div>
-            <button
-              type="button"
-              class="close"
+            <el-button
+              class="close mt-0"
               data-dismiss="modal"
               aria-label="Close"
             >
-              <span aria-hidden="true">&times;</span>
-            </button>
+              <el-icon  ><CloseBold /></el-icon>
+            </el-button>
           </div>
           <div class="modal-body">
             <div class="container">
@@ -1326,9 +1243,9 @@
                     >Firstname<sup class="text-danger">*</sup></label
                   >
                   <div class="col-sm-6">
-                    <input
+                    <el-input
                       type="text"
-                      class="form-control input-first"
+                      class="w-100 input-first"
                       v-model="newConvertsObj.firstName"
                       id="Firstname"
                       required
@@ -1342,10 +1259,10 @@
                     >Last Name</label
                   >
                   <div class="col-sm-6">
-                    <input
+                    <el-input
                       type="text"
                       v-model="newConvertsObj.lastName"
-                      class="form-control input-first"
+                      class="w-100 input-first"
                       id="surname"
                       required
                     />
@@ -1358,9 +1275,9 @@
                     >Phone number</label
                   >
                   <div class="col-sm-6">
-                    <input
+                    <el-input
                       v-model="newConvertsObj.phoneNumber"
-                      class="form-control input-first"
+                      class="w-100 input-first"
                       id="phone number"
                       type="number"
                       :class="{ 'is-invalid': !isPhoneValidNewConvert }"
@@ -1379,11 +1296,11 @@
                     >Email</label
                   >
                   <div class="col-sm-6">
-                    <input
+                    <el-input
                       v-model="newConvertsObj.email"
                       id="email"
                       type="email"
-                      class="form-control input-first"
+                      class="w-100 input-first"
                       :class="{ 'is-invalid': !isEmailValidNewConvert }"
                       ref="validateEmailNewConvert"
                       @blur="checkForDuplicateEmailNewConvert"
@@ -1400,10 +1317,10 @@
                     >Address</label
                   >
                   <div class="col-sm-6">
-                    <input
+                    <el-input
                       type="text"
                       v-model="newConvertsObj.address"
-                      class="form-control input-first"
+                      class="w-100 input-first"
                       id="address"
                     />
                   </div>
@@ -1429,67 +1346,56 @@
                     >Birthday</label
                   >
                   <div class="col-sm-2 mb-4">
-                    <Dropdown
-                      :options="[...day]"
-                      :filter="false"
+                    <el-select-v2
                       v-model="newConvertsObj.birthday"
+                      :options="day.map((i) =>({label: i , value: i }))"
                       placeholder="Day"
                       class="w-100"
-                      :showClear="false"
-                    >
-                    </Dropdown>
+                      size="large"
+                    />
                   </div>
 
                   <div class="col-sm-2 mb-4 px-sm-0">
-                    <Dropdown
-                      :options="[...months]"
-                      :filter="false"
+                    <el-select-v2
                       v-model="valueMonth"
                       @change="dropDownMonthNewConvert"
+                      :options="months.map((i) =>({label: i , value: i }))"
                       placeholder="Month"
                       class="w-100"
-                      :showClear="false"
-                    >
-                    </Dropdown>
+                      size="large"
+                    />
                   </div>
 
                   <div class="col-sm-2 mb-4">
-                    <Dropdown
-                      :options="[...birthYearsArr]"
-                      :filter="false"
+                    <el-select-v2
                       v-model="firstTimersObj.birthYear"
+                      :options="birthYearsArr.map((i) =>({label: i , value: i }))"
                       placeholder="Year"
                       class="w-100"
-                      :showClear="false"
-                    >
-                    </Dropdown>
+                      size="large"
+                    />
                   </div>
 
                   <div class="col-sm-3 mb-4 offset-sm-3 pr-sm-0">
-                    <Dropdown
-                      :options="[...maritalStatusArr]"
-                      optionLabel="value"
-                      :filter="false"
+                    <el-select-v2
                       v-model="firstTimersObj.valueMarital"
                       @change="dropDownMaritalNewConvert"
+                      :options="maritalStatusArr.map((i) =>({label: i.value , value: i.id }))"
                       placeholder="Marital Status"
                       class="w-100"
-                      :showClear="false"
-                    >
-                    </Dropdown>
+                      size="large"
+                    />
                   </div>
 
                   <div class="col-sm-3 mb-4">
-                    <Dropdown
-                      :options="[...genders]"
-                      :filter="false"
+                    <el-select-v2
                       v-model="valueGender"
                       @change="dropDownGenderNewConvert"
+                      :options="gender.map((i) =>({label: i.value , value: i.id }))"
                       placeholder="Gender"
                       class="w-100"
-                      :showClear="false"
-                    >
-                    </Dropdown>
+                      size="large"
+                    />
                   </div>
                 </div>
 
@@ -1500,11 +1406,7 @@
                   <span>Insights</span
                   ><span style="border: 0px solid red; width: 70%"><hr /></span
                   ><span
-                    ><i
-                      class="pi pi-angle-up"
-                      :class="{ roll1: showForm1 }"
-                      aria-hidden="true"
-                    ></i>
+                    ><el-icon :class="{ roll: showForm1 }"><ArrowUp /></el-icon>
                   </span>
                 </span>
 
@@ -1514,58 +1416,50 @@
                 >
                   <div class="col-sm-6 offset-sm-3 mb-4">
                     <div>How did you hear about us</div>
-                    <Dropdown
-                      :options="[...howYouHeard]"
-                      :filter="false"
+                     <el-select-v2
                       v-model="valueHeard"
-                      @change="dropDownHeardNewConvert"
+                      @change="dropDownHeardNewConvert" 
+                      :options="howYouHeard.map((i) =>({label: i , value: i }))"
                       placeholder="Select"
                       class="w-100"
-                      :showClear="false"
-                    >
-                    </Dropdown>
+                      size="large"
+                    />
                   </div>
 
                   <div class="col-sm-6 offset-sm-3 mb-4">
                     <div>Preferred means of communication</div>
-                    <Dropdown
-                      :options="[...comMeansArr]"
-                      :filter="false"
+                     <el-select-v2
                       v-model="valueComm"
                       @change="dropDownCommNewConvert"
+                      :options="comMeansArr.map((i) =>({label: i , value: i }))"
                       placeholder="Select"
                       class="w-100"
-                      :showClear="false"
-                    >
-                    </Dropdown>
+                      size="large"
+                    />
                   </div>
 
                   <div class="col-sm-6 offset-sm-3 mb-4">
                     <div>Interested in joining us</div>
-                    <Dropdown
-                      :options="[...joinInterest]"
-                      :filter="false"
+                    <el-select-v2
                       v-model="valueInterest"
-                      @change="dropDownInterestNewConvert"
+                       @change="dropDownInterestNewConvert" 
+                      :options="joinInterest.map((i) =>({label: i , value: i }))"
                       placeholder="Select"
                       class="w-100"
-                      :showClear="false"
-                    >
-                    </Dropdown>
+                      size="large"
+                    />
                   </div>
 
                   <div class="col-sm-6 offset-sm-3 mb-4">
                     <div>Want to be visited?</div>
-                    <Dropdown
-                      :options="[...wantVisitArr]"
-                      :filter="false"
+                    <el-select-v2
                       v-model="valueVisit"
                       @change="dropDownVisitNewConvert"
+                      :options="wantVisitArr.map((i) =>({label: i , value: i }))"
                       placeholder="Select"
                       class="w-100"
-                      :showClear="false"
-                    >
-                    </Dropdown>
+                      size="large"
+                    />
                   </div>
                 </div>
                 <span
@@ -1575,11 +1469,7 @@
                   <span>Follow up and retention</span
                   ><span style="width: 60%"><hr /></span
                   ><span
-                    ><i
-                      class="pi pi-angle-up"
-                      :class="{ roll: showForm }"
-                      aria-hidden="true"
-                    ></i>
+                    ><el-icon :class="{ roll: showForm }"><ArrowUp /></el-icon>
                   </span>
                 </span>
                 <div
@@ -1589,39 +1479,32 @@
                   <div class="col-sm-3 offset-sm-3 mt-4 mb-4">
                     Send Welcome SMS
                   </div>
-                  <div class="mt-4 mb-4">
-                    <input
-                      type="checkbox"
-                      name="sms"
-                      v-model="firstTimersObj.sendWelcomeSms"
-                    />
+                  <div class="mt-3 mb-4">
+                    <el-checkbox v-model="firstTimersObj.sendWelcomeSms"  />
                   </div>
 
                   <div class="col-sm-3 mt-4 mb-4">Send Welcome Email</div>
-                  <div class="mt-4 mb-4">
-                    <input
-                      type="checkbox"
-                      name="sms"
-                      value="email"
-                      v-model="firstTimersObj.sendWelcomeEmail"
-                    />
+                  <div class="mt-3 mb-4">
+                    <el-checkbox v-model="firstTimersObj.sendWelcomeEmail"  />
                   </div>
                 </div>
               </form>
             </div>
           </div>
           <div class="modal-footer">
-            <button type="button" class="btn btn-second" data-dismiss="modal">
+            <el-button round size="large" class="secondary-button"  data-dismiss="modal">
               Cancel
-            </button>
-            <button
-              type="button"
-              class="apply-btn"
+            </el-button>
+            <el-button
+              round
+              :color="primarycolor"
+              class=""
+              size="large"
               ref="closeNewConverts"
               @click="saveNewConvert"
             >
               Save
-            </button>
+            </el-button>
           </div>
         </div>
       </div>
@@ -1641,14 +1524,13 @@
             <h5 class="modal-title font-weight-bold" id="exampleModalLabel">
               Add Donor
             </h5>
-            <button
-              type="button"
+            <el-button
               class="close"
               data-dismiss="modal"
               aria-label="Close"
             >
-              <span aria-hidden="true">&times;</span>
-            </button>
+              <span aria-hidden="true" class="mt-3"><el-icon><CloseBold /></el-icon></span>
+            </el-button>
           </div>
           <div class="modal-body">
             <div class="row my-4">
@@ -1670,9 +1552,9 @@
                       autocomplete="off"
                     />
                     <div class="input-group-append">
-                      <span class="input-group-text"
-                        ><i class="pi pi-chevron-down"></i
-                      ></span>
+                      <span class="input-group-text">
+                        <el-icon><ArrowDownBold /></el-icon>
+                        </span>
                     </div>
                   </div>
                   <div
@@ -1681,9 +1563,9 @@
                   >
                     <div class="row w-100 mx-auto" v-if="false">
                       <div class="col-md-12">
-                        <input
+                        <el-input
                           type="text"
-                          class="form-control"
+                          class="w-100"
                           placeholder="Find event"
                         />
                       </div>
@@ -1701,8 +1583,11 @@
                       class="dropdown-item font-weight-700 small-text"
                       href="#"
                       v-if="searchingForMembers && searchedMembers.length === 0"
-                      ><i class="pi pi-spin pi-spinner"></i
-                    ></a>
+                      >
+                      <el-icon class="is-loading " >
+                            <Loading />
+                          </el-icon>
+                      </a>
                     <p
                       class="modal-promt pl-1 bg-secondary m-0"
                       v-if="
@@ -1720,23 +1605,15 @@
                         justify-content-center
                         py-2
                         text-decoration-none
-                        primary-text
+                        primary--text
                         c-pointer
                       "
-                      style="border-top: 1px solid #002044; color: #136acd"
+                      style="border-top: 1px solid #002044;"
                       @click="showAddMemberForm"
                       data-dismiss="modal"
                     >
-                      <i
-                        class="
-                          pi pi-plus-circle
-                          mr-2
-                          primary-text
-                          d-flex
-                          align-items-center
-                        "
-                        style="color: #136acd"
-                      ></i>
+                      <el-icon class="d-flex
+                          align-items-center mr-1"><CirclePlus /></el-icon>
                       Add new donor
                     </a>
                   </div>
@@ -1744,18 +1621,21 @@
 
                 <div class="row mt-4 d-flex justify-content-between">
                   <div class="col-6">
-                    <button class="default-btn" data-dismiss="modal">
+                    <el-button round class="secondary-button"  data-dismiss="modal" size="large">
                       Cancel
-                    </button>
+                    </el-button>
                   </div>
                   <div class="col-6">
-                    <button
-                      class="default-btn primary-bg border-0 text-white"
+                    <el-button
+                      class="border-0 text-white"
+                      size="large"
                       data-dismiss="modal"
                       @click="addDonor"
+                      :color="primarycolor"
+                      round
                     >
                       Save
-                    </button>
+                    </el-button>
                   </div>
                 </div>
               </div>
@@ -1778,14 +1658,13 @@
         <div class="modal-content">
           <div class="modal-header" style="border: none">
             <h5 class="modal-title" id="exampleModalLongTitle">Add Offering</h5>
-            <button
-              type="button"
-              class="close"
+            <el-button
+              class="close mt-0"
               data-dismiss="modal"
               aria-label="Close"
             >
-              <span aria-hidden="true">&times;</span>
-            </button>
+              <span aria-hidden="true"><el-icon><CloseBold /></el-icon></span>
+            </el-button>
           </div>
           <div class="modal-body">
             <div class="container">
@@ -1794,9 +1673,9 @@
                   <label>Name</label>
                 </div>
                 <div class="col-lg-5 col-sm-12 my-auto">
-                  <input
+                  <el-input
                     type="text"
-                    class="form-control textbox-height w-100"
+                    class=" textbox-height w-100"
                     placeholder=""
                     v-model="contributionItemName"
                     required
@@ -1806,31 +1685,25 @@
                   <label>Income Account</label>
                 </div>
                 <div class="col-lg-5 col-sm-12 mt-3">
-                  <Dropdown
-                    v-model="selectedIncomeAccount"
-                    class="w-100"
-                    :options="incomeAccount"
-                    optionLabel="text"
-                    :filter="true"
-                    placeholder="Select"
-                    :showClear="false"
-                  >
-                  </Dropdown>
+                   <el-select-v2
+                      v-model="selectedIncomeAccount"
+                      :options="incomeAccount.map((i) =>({label: i.text , value: i.id }))"
+                      placeholder="Select"
+                      size="large"
+                      class="w-100"
+                    />
                 </div>
                 <div class="col-sm-4 mt-3 text-right pr-0">
                   <label>Cash Account</label>
                 </div>
                 <div class="col-lg-5 col-sm-12 mt-3">
-                  <Dropdown
-                    v-model="selectedCashAccount"
-                    :options="cashBankAccount"
-                    optionLabel="text"
-                    :filter="false"
-                    placeholder="Select"
-                    class="w-100 p-0"
-                    :showClear="false"
-                  >
-                  </Dropdown>
+                  <el-select-v2
+                      v-model="selectedCashAccount"
+                      :options="cashBankAccount.map((i) =>({label: i.text , value: i.id }))"
+                      placeholder="Select"
+                      size="large"
+                      class="w-100"
+                    />
                 </div>
                 <div class="col-sm-12 d-flex" @click="toggleRem">
                   <i class="check-it mr-2">
@@ -1853,25 +1726,23 @@
                     <label>Income Account</label>
                   </div>
                   <div class="col-lg-5 col-sm-12 mt-5">
-                    <Dropdown
-                      v-model="item.account"
-                      class="w-100"
-                      :options="incomeAccount"
-                      optionLabel="text"
-                      :filter="true"
+                    <el-select-v2
+                      v-model="itemAccountID"
+                      @change="setIncomeAccount(index)"
+                      :options="incomeAccount.map((i) =>({label: i.text , value: i.id }))"
                       placeholder="Select"
-                      :showClear="false"
-                    >
-                    </Dropdown>
+                      size="large"
+                      class="w-100"
+                    />
                   </div>
 
                   <div class="col-sm-4 text-right align-self-center mt-3">
                     <label>Percentage %</label>
                   </div>
                   <div class="col-lg-5 col-sm-12 mt-3">
-                    <input
+                    <el-input
                       type="text"
-                      class="form-control textbox-height w-100"
+                      class="textbox-height w-100"
                       placeholder=""
                       v-model="item.percentage"
                       required
@@ -1879,16 +1750,18 @@
                   </div>
 
                   <div class="col-sm-2 col-12 adjust-down">
-                    <button
+                    <el-button
                       v-on:click="addRemittance"
-                      class="btn btnIcons btn-secondary"
+                      round
+                      size="large"
+                      class="btnIcons text-primary"
                     >
-                      <i class="pi pi-plus-circle icons" aria-hidden="true"></i>
+                      <el-icon class="mr-2"><CirclePlus /></el-icon>
                       Add
-                    </button>
+                    </el-button>
                   </div>
                   <div class="col-sm-1 adjust-down" @click="deleteItem(index)">
-                    <i class="pi pi-trash"></i>
+                     <el-icon><Delete /></el-icon>
                   </div>
                 </div>
               </div>
@@ -1898,52 +1771,49 @@
             class="modal-footer d-flex justify-content-center mt-4 ml-5"
             style="border: none"
           >
-            <button
-              type="button"
-              class="btn secondary-btn px-5"
+            <el-button
+              class=" secondary-button"
+              color="#dde2e6"
               data-dismiss="modal"
+              round
+              size="large"
             >
               Close
-            </button>
-            <!-- <button type="button" class="btn btn-primary">Save changes</button> -->
-
-            <button
-              class="add-person-btn button default-btn border-0"
+            </el-button>
+            <el-button
+              class="border-0"
+              round
+              size="large"
+              :color="primarycolor"
               @click="createNewCon"
             >
               Save
-            </button>
+            </el-button>
           </div>
         </div>
       </div>
     </div>
-    <Dialog
-      v-model:visible="displayResponsive"
-      :breakpoints="{ '960px': '75vw', '640px': '100vw' }"
-      :style="{ width: '80vw' }"
-    >
+    <el-dialog v-model="displayResponsive"
+      :width="mdAndUp || lgAndUp || xlAndUp ? `50%` : `90%`">
       <p>
         You have no income account to create a offering item, go to Chart of
         Account and click 'Update Account' to update your accounts.
       </p>
-      <template #footer>
-        <!-- <Button label="No" icon="pi pi-times" @click="closeResponsive" class="p-button-text"/> -->
-        <Button
-          label="Go to Chart Of Accounts"
-          icon="pi pi-check"
+      <div class="row">
+        <div class="col-md-12">
+        <el-button
+        
           @click="closeResponsive"
           autofocus
-        />
-      </template>
-    </Dialog>
+        >
+        Go to Chart Of Accounts
+        </el-button>
+      </div>
+    </div>
+    </el-dialog>
 
-    <Dialog
-      header="Create New Member"
-      v-model:visible="display"
-      :style="{ width: '70vw', maxWidth: '600px' }"
-      :modal="true"
-      position="top"
-    >
+    <el-dialog v-model="display" title="Create New Member"
+      :width="mdAndUp || lgAndUp || xlAndUp ? `50%` : `90%`">
       <div class="row">
         <div class="col-md-12">
           <NewDonor
@@ -1952,31 +1822,28 @@
           />
         </div>
       </div>
-    </Dialog>
+    </el-dialog>
   </div>
-  <ConfirmDialog />
 </template>
 
 <script>
 import axios from "@/gateway/backendapi";
+import { ElMessage, ElMessageBox } from 'element-plus';
 import store from "@/store/store.js";
-import Toast from "primevue/usetoast";
 import membershipService from "../../services/membership/membershipservice";
 import CurrencyConverter from "./CurrencyConverter";
-import Dropdown from "primevue/dropdown";
 import CurrencyConverterService from "../../services/currency-converter/currencyConverter";
 import finish from "../../services/progressbar/progress";
 import SearchMembers from "../../components/membership/MembersSearch.vue";
 import NewDonor from "../../components/membership/NewDonor.vue";
-
+import deviceBreakpoint from "../../mixins/deviceBreakpoint";
 export default {
   components: {
     CurrencyConverter,
-    Dropdown,
-    Toast,
     SearchMembers,
     NewDonor,
   },
+  inject: ['primarycolor'],
   data() {
     return {
       currDate: "",
@@ -1984,6 +1851,10 @@ export default {
       //   currency: '',
       amount: null,
       preEventTopic: "",
+      xsOnly : deviceBreakpoint(),
+      mdAndUp: deviceBreakpoint(),
+      lgAndUp: deviceBreakpoint(),
+      xlAndUp: deviceBreakpoint(),
       details: "",
       eventRules: "",
       preActivityId: "",
@@ -2008,6 +1879,7 @@ export default {
       newOfferings: [],
       attendanceCreate: null,
       newAttendances: ["Adult", "Children"],
+      paymentChannels: ['Cheque', 'Cash', 'Cheque', 'POS', 'Online', 'Bank Transfer' , 'USSDText'],
       channel: "",
       eventCreate: null,
       newEvents: [],
@@ -2031,13 +1903,14 @@ export default {
         "November",
         "December",
       ],
-      valueMonth: "",
-      valueMarital: "",
-      valueGender: "",
-      valueHeard: "",
-      valueComm: "",
-      valueInterest: "",
-      valueVisit: "",
+      valueMonth: null,
+      itemAccountID: null,
+      valueMarital: null,
+      valueGender: null,
+      valueHeard: null,
+      valueComm: null,
+      valueInterest: null,
+      valueVisit: null,
       showForm1: false,
       showForm: false,
       showForm2: false,
@@ -2095,9 +1968,9 @@ export default {
       applyRem: false,
       remitance: [{}],
       incomeAccount: [],
-      selectedIncomeAccount: "",
+      selectedIncomeAccount: null,
       contributionItemName: "",
-      selectedCashAccount: "",
+      selectedCashAccount: null,
       cashBankAccount: [],
       isPhoneValid: true,
       isEmailValid: true,
@@ -2112,9 +1985,15 @@ export default {
   },
 
   methods: {
+    getCorrectDate(date) {
+      // let myDate = new Date(date).toLocaleDateString();
+      //   let arr = myDate.split('/');
+      //   arr.unshift(arr.splice(2, 1)[0])
+      //    return arr.join('-')
+         return new Date(date).toLocaleDateString("en-US").replaceAll('/', '-')
+    },
     currentDate() {
       this.currDate = this.eventDate;
-      console.log(this.currDate);
     },
 
     hideModals(e) {
@@ -2131,7 +2010,6 @@ export default {
     addOffering() {
       const showList = document.querySelector("#showList");
       showList.classList.toggle("offering-drop");
-      // console.log(this.offeringItem)
     },
     offering(offObj) {
       if (offObj) {
@@ -2157,7 +2035,6 @@ export default {
               : ""
           }`,
         });
-        console.log(offObj);
       } else {
         this.offeringItem.push({
           currency: "NGN",
@@ -2167,7 +2044,6 @@ export default {
           this.$refs.offeringInput.focus();
         });
       }
-      console.log(this.offeringItem);
       this.offeringText = "";
       const showList = document.querySelector("#showList");
       showList.classList.toggle("offering-drop");
@@ -2189,14 +2065,6 @@ export default {
       this.attendanceText = "";
       const showAttendance = document.querySelector("#showAttendance");
       showAttendance.classList.remove("offering-drop");
-      //
-      // if (this.$refs.focusAttendance == undefined) {
-      //   this.toggleFocus = !this.toggleFocus
-      // } else {
-      //   console.log('itis defined')
-      //   this.toggleFocus = false
-      //   this.$refs.focusAttendance.focus()
-      // }
     },
     addEvent(e) {
       this.selectedEventCategoryId = e.target.value;
@@ -2213,20 +2081,15 @@ export default {
     createFirstTimers() {
       document.querySelector("#modalTogglerFirstTimers").click();
     },
-    // triggerGiverModal (index) {
-    //   this.offeringToAddDonor = index;
-    //   this.$refs.modalTogglerGiver.click()
-    // },
     save() {
       this.firstTimers.push({
         ...this.firstTimersObj,
       });
-      this.$toast.add({
-        severity: "success",
-        summary: "Success",
-        detail: "First timer added",
-        life: 2000,
-      });
+      ElMessage({
+            type: "success",
+            message: "First timer added",
+            duration: 3000,
+          });
       this.firstTimersObj = {};
       console.log(this.firstTimers);
       this.$refs.closeFirstTimers.setAttribute("data-dismiss", "modal");
@@ -2244,11 +2107,9 @@ export default {
     },
     // Create Offering
     createNewOffering() {
-      // axios.post(`/api/offering/offeringTypeName?=${this.offeringCreate}`, {offeringTypeName: this.offeringCreate})
       axios
         .post(`/api/offering`, JSON.stringify(this.offeringCreate))
         .then((res) => {
-          console.log(res, "new offering");
           this.newOfferings = res.data.map((i) => {
             return { id: i.id, name: i.name };
           });
@@ -2268,15 +2129,12 @@ export default {
       axios
         .post(`/postAttendantType`, { name: this.attendanceCreate })
         .then((res) => {
-          console.log(res, "new attendance");
+          console.log(res);
         })
         .catch((err) => {
           NProgress.done();
-          console.log(err.response, "error saving event");
+          console.log(err.response);
         });
-      // this.newAttendances.push(this.attendanceCreate)
-      // this.attendanceCreate = '';
-      // console.log(this.newAttendances,"att");
       document
         .querySelector("#closeAttendance")
         .setAttribute("data-dismiss", "modal");
@@ -2289,12 +2147,10 @@ export default {
           .then((res) => {
             console.log(res);
             if (!res.data) {
-              this.$toast.add({
-                severity: "info",
-                summary: "Already exist",
-                detail:
-                  "Event name already exist, please create the event category with a new name.",
-                life: 4000,
+              ElMessage({
+                type: "info",
+                message: "Event name already exist, please create the event category with a new name.",
+                duration: 3000,
               });
             } else {
               let data = res.data.find((i) => i.name === this.eventCreate);
@@ -2305,11 +2161,10 @@ export default {
               console.log(data);
               this.selectedEventCategoryId = data.id;
               this.eventCreate = "";
-              this.$toast.add({
-                severity: "success",
-                summary: "Confirmed",
-                detail: "Event category saved successfully",
-                life: 4000,
+              ElMessage({
+                type: "success",
+                message: "Event category saved successfully",
+                duration: 3000,
               });
             }
           });
@@ -2324,13 +2179,11 @@ export default {
         axios.post(`/api/EventCategory?name=${this.eventText}`).then((res) => {
           console.log(res);
           if (!res.data) {
-            this.$toast.add({
-              severity: "info",
-              summary: "Already exist",
-              detail:
-                "Event name already exist, please create the event category with a new name.",
-              life: 4000,
-            });
+            ElMessage({
+                type: "info",
+                message: "Event name already exist, please create the event category with a new name.",
+                duration: 5000,
+              });
           } else {
             let data = res.data.find((i) => i.name === this.eventText);
             this.newEvents.push({
@@ -2340,12 +2193,11 @@ export default {
             console.log(data);
             this.selectedEventCategoryId = data.id;
             this.eventText = "";
-            this.$toast.add({
-              severity: "success",
-              summary: "Confirmed",
-              detail: "Event category saved successfully",
-              life: 4000,
-            });
+            ElMessage({
+                type: "success",
+                message: "Event category saved successfully",
+                duration: 5000,
+              });
           }
         });
         this.showCategory = false;
@@ -2394,35 +2246,30 @@ export default {
         axios
           .delete(`/deleteAttendance?ID=${id}`)
           .then((res) => {
-            console.log(res, "delete response from back");
             if (res.data) {
-              this.$toast.add({
-                severity: "success",
-                summary: "Confirmed",
-                detail: `Attendance Successfully Deleted`,
-                life: 3000,
+              ElMessage({
+                type: "success",
+                message: "Attendance Successfully Deleted",
+                duration: 5000,
               });
               this.attendanceItem = this.attendanceItem.filter(
                 (i) => id !== i.attendanceId
               );
             } else {
-              toast.add({
-                severity: "warn",
-                summary: "Delete Failed",
-                detail: `Please Try Again`,
-                life: 3000,
+              ElMessage({
+                type: "warning",
+                message: "Delete Failed, Please Try Again",
+                duration: 5000,
               });
             }
           })
           .catch((err) => {
             finish();
             if (err.response) {
-              console.log(err.response);
-              this.$toast.add({
-                severity: "error",
-                summary: "Unable to delete",
-                detail: `${err.response}`,
-                life: 3000,
+              ElMessage({
+                type: "error",
+                message: err.response,
+                duration: 5000,
               });
             }
           });
@@ -2432,26 +2279,24 @@ export default {
       // this.convertedAmount2.splice(index, 1)
     },
     deleteAttendance(id, index) {
-      this.$confirm.require({
-        message: "Are you sure you want to proceed?",
-        header: "Confirmation",
-        icon: "pi pi-exclamation-triangle",
-        acceptClass: "confirm-delete",
-        rejectClass: "cancel-delete",
-        accept: () => {
+       ElMessageBox.confirm(
+        'Are you sure you want to proceed?',
+        "Confirm delete",
+        {
+          confirmButtonText: 'OK',
+          cancelButtonText: 'Cancel',
+          type: 'error',
+        }
+      )
+      .then(() => {
           this.delAttendance(id, index);
-          // toast.add({severity:'info', summary:'Confirmed', detail:'Member Deleted', life: 3000});
-        },
-        reject: () => {
-          //  this.$toast.add({severity:'info', summary:'Confirmed', detail:'Record deleted', life: 3000});
-          this.$toast.add({
-            severity: "info",
-            summary: "Rejected",
-            detail: "You have rejected",
-            life: 3000,
-          });
-        },
-      });
+        })
+        .catch(() => {
+          ElMessage({
+            type: 'info',
+            message: 'Delete canceled',
+          })
+        })
     },
 
     delEventCategory(id, index) {
@@ -2459,43 +2304,39 @@ export default {
         axios
           .delete(`/api/EventCategory?ID=${id}`)
           .then((res) => {
-            console.log(res, "delete response from back");
             if (res.data === true) {
-              this.$toast.add({
-                severity: "success",
-                summary: "Confirmed",
-                detail: `Event Category Successfully Deleted`,
-                life: 3000,
-              });
+              ElMessage({
+              type: 'success',
+              message: 'Event Category Successfully Deleted',
+              duration: 5000
+            })
               this.attendanceItem = this.attendanceItem.filter(
                 (i) => id !== i.attendanceId
               );
             } else if (res.data === false) {
-              this.$toast.add({
-                severity: "warn",
-                summary: "Delete Failed",
-                detail: `This event category has been used to create event or Attendance report, delete any of the report then proceed by deleting the event category`,
-                life: 3000,
-              });
+              ElMessage({
+              type: 'warning',
+              message: 'This event category has been used to create event or Attendance report, delete any of the report then proceed by deleting the event category',
+              duration: 5000
+            })
             } else {
-              toast.add({
-                severity: "warn",
-                summary: "Delete Failed",
-                detail: `Please Try Again`,
-                life: 3000,
-              });
+               ElMessage({
+              type: 'warning',
+              message: 'Delete Failed, Try Again',
+              duration: 5000
+            })
             }
           })
           .catch((err) => {
             finish();
             if (err.response) {
               console.log(err.response);
-              this.$toast.add({
-                severity: "error",
-                summary: "Unable to delete",
-                detail: `${err.response}`,
-                life: 3000,
-              });
+              ElMessage({
+                  showClose: true,
+                  message: `Unable to delete ${err.response}`,
+                  type: 'error',
+                  duration: 5000
+                })
             }
           });
       } else {
@@ -2505,26 +2346,26 @@ export default {
     },
 
     deleteSelectedEventCategory(id, index) {
-      this.$confirm.require({
-        message: "Are you sure you want to proceed?",
-        header: "Confirmation",
-        icon: "pi pi-exclamation-triangle",
-        acceptClass: "confirm-delete",
-        rejectClass: "cancel-delete",
-        accept: () => {
+         ElMessageBox.confirm(
+        'Are you sure you want to proceed?',
+        'Confirm delete',
+        {
+          confirmButtonText: 'OK',
+          cancelButtonText: 'Cancel',
+          type: 'error',
+        }
+      )
+        .then(() => {
           this.delEventCategory(id, index);
-          // toast.add({severity:'info', summary:'Confirmed', detail:'Member Deleted', life: 3000});
-        },
-        reject: () => {
-          //  this.$toast.add({severity:'info', summary:'Confirmed', detail:'Record deleted', life: 3000});
-          this.$toast.add({
-            severity: "info",
-            summary: "Rejected",
-            detail: "You have rejected",
-            life: 3000,
-          });
-        },
-      });
+        })
+        .catch(() => {
+          ElMessage({
+            type: 'info',
+            message: 'Delete canceled',
+            duration: 3000
+          })
+        })
+        
     },
 
     deleteOffering(id, index) {
@@ -2532,34 +2373,30 @@ export default {
         axios
           .delete(`/api/Financials/Contributions/Transactions/Delete?ID=${id}`)
           .then((res) => {
-            console.log(res, "delete response from back");
             if (res.data.status) {
-              this.$toast.add({
-                severity: "success",
-                summary: "Confirmed",
-                detail: `Offering Successfully Deleted`,
-                life: 3000,
-              });
+              ElMessage({
+                type: 'success',
+                message: 'Offering Successfully Deleted',
+                duration: 5000
+              })
               this.offeringItem = this.offeringItem.filter((i) => id !== i.id);
             } else {
-              toast.add({
-                severity: "warn",
-                summary: "Delete Failed",
-                detail: `Please Try Again`,
-                life: 3000,
-              });
+              
+               ElMessage({
+                type: 'info',
+                message: 'Delete Failed, Please Try Again',
+                duration: 5000
+              })
             }
           })
           .catch((err) => {
             finish();
             if (err.response) {
-              console.log(err.response);
-              this.$toast.add({
-                severity: "error",
-                summary: "Unable to delete",
-                detail: `${err.response}`,
-                life: 3000,
-              });
+              ElMessage({
+                type: 'error',
+                message: err.response,
+                duration: 5000
+              })
             }
           });
       } else {
@@ -2568,26 +2405,24 @@ export default {
     },
 
     delOffering(id, index) {
-      this.$confirm.require({
-        message: "Are you sure you want to proceed?",
-        header: "Confirmation",
-        icon: "pi pi-exclamation-triangle",
-        acceptClass: "confirm-delete",
-        rejectClass: "cancel-delete",
-        accept: () => {
+      ElMessageBox.confirm(
+        'Are you sure you want to proceed?',
+        'Confirm delete',
+        {
+          confirmButtonText: 'OK',
+          cancelButtonText: 'Cancel',
+          type: 'error',
+        }
+      )
+        .then(() => {
           this.deleteOffering(id, index);
-          // toast.add({severity:'info', summary:'Confirmed', detail:'Member Deleted', life: 3000});
-        },
-        reject: () => {
-          //  this.$toast.add({severity:'info', summary:'Confirmed', detail:'Record deleted', life: 3000});
-          this.$toast.add({
-            severity: "info",
-            summary: "Rejected",
-            detail: "You have rejected",
-            life: 3000,
-          });
-        },
-      });
+        })
+        .catch(() => {
+          ElMessage({
+            type: 'info',
+            message: 'Delete canceled',
+          })
+        })
     },
 
     toggleForm1() {
@@ -2605,29 +2440,26 @@ export default {
     post() {
       const invalidAttendanceItem = this.attendanceItem.find((i) => !i.number);
       if (invalidAttendanceItem) {
-        this.$toast.add({
-          severity: "warn",
-          summary: "Input the empty Field",
-          detail: `Enter count for all attendance item`,
-          life: 3000,
-        });
+        ElMessage({
+                type: 'warning',
+                message: 'Enter count for all attendance item',
+                duration: 5000
+              })
         return false;
       }
       const invalidOfferingItem = this.offeringItem.find((i) => !i.amount);
       if (invalidOfferingItem) {
-        this.$toast.add({
-          severity: "warn",
-          summary: "Enter Amount",
-          detail: `Enter amount for Offering item`,
-          life: 3000,
-        });
+        ElMessage({
+                type: 'warning',
+                message: 'Enter amount for Offering item',
+                duration: 5000
+              })
         return false;
       }
     
       this.eventObj = {
         attendances: this.attendanceItem,
         offerings: this.offeringItem.map((i) => {
-          console.log(i, "theman");
           delete i.showCurrency;
           delete i.fromCurrencyRate;
           if (i.amount.toString().includes(',') ) {
@@ -2639,7 +2471,6 @@ export default {
         activityFirstTimers: this.firstTimers,
         activityNewConverts: this.newConverts,
       };
-      console.log(this.eventObj, "the eventObject");
 
       // If preactivity id is empty, dont send preevent as part of the event object, else send it
       if (this.preActivityId) {
@@ -2663,7 +2494,7 @@ export default {
         };
       } else {
         this.eventObj.activity = {
-          date: this.eventDate === "" ? "01.01.0001 00:00:00" : this.eventDate,
+          date: this.eventDate === "" ? "01.01.0001 00:00:00" : this.getCorrectDate(this.eventDate),
           topic: this.topic,
           preacher: this.preacher,
           note: this.note,
@@ -2684,7 +2515,7 @@ export default {
 
       let updateEvent = {
         activity: {
-          date: this.eventDate,
+          date: this.getCorrectDate(this.eventDate),
           topic: this.topic,
           preacher: this.preacher,
           eventCategoryId: this.selectedEventCategoryId,
@@ -2693,10 +2524,6 @@ export default {
         activityNewConverts: this.newConverts,
         attendances: this.attendanceItem,
         offerings: this.offeringItem,
-        // offerings: this.offeringItem.map(i => {
-        //   i.currency = i.currency.split(" ")[0]
-        //   return i
-        // }),
         preEvent: this.updatePreEvent,
       };
 
@@ -2706,8 +2533,6 @@ export default {
         topic: this.topic,
         newConvertsCount: this.newConverts,
       };
-
-      console.log(this.eventObj);
       this.loading = true;
       if (this.$route.params.event) {
         axios
@@ -2720,12 +2545,19 @@ export default {
               "eventDataResponse",
               JSON.stringify(currentEvent)
             );
-            this.$router.push({
+            this.$store.dispatch("event/setEventItems").then(() => {
+           this.$router.push({
               name: "Report",
               params: { id: activityId },
               query: { edit: true },
             });
-            console.log(res.data, currentEvent, "markers");
+          });
+            // this.$router.push({
+            //   name: "Report",
+            //   params: { id: activityId },
+            //   query: { edit: true },
+            // });
+            console.log(res.data, currentEvent);
           })
           .catch((err) => {
             NProgress.done();
@@ -2747,14 +2579,16 @@ export default {
           .post("api/Events/CreateActivity", this.eventObj)
           .then((res) => {
             this.loading = false;
-            console.log(res, "main post");
             const activityId = res.data.currentEvent.id;
             localStorage.setItem("eventData", JSON.stringify(this.eventObj));
             localStorage.setItem(
               "eventDataResponse",
               JSON.stringify(res.data.currentEvent)
             );
-            this.$router.push({ name: "Report", params: { id: activityId } });
+            this.$store.dispatch("event/setEventItems").then(() => {
+           this.$router.push({ name: "Report", params: { id: activityId } });
+          });
+            // this.$router.push({ name: "Report", params: { id: activityId } });
           })
           .catch((err) => {
             NProgress.done();
@@ -2769,7 +2603,6 @@ export default {
                     ? data
                     : "An error occurred, please check the fields and try again";
             }
-            console.log(err.response);
           });
       }
     },
@@ -2782,9 +2615,6 @@ export default {
     },
     getLookUps() {
       axios.get("/api/LookUp/GetAllLookUps").then((res) => {
-        // res.data.map((i) => {
-        // })
-        console.log(res.data);
         res.data.find((i) => {
           if (i.type.toLowerCase() === "gender") {
             this.gender = i.lookUps;
@@ -2802,7 +2632,6 @@ export default {
         // this.selectedEventCategoryId = "";
         this.showEditEventCategory = true;
         this.categoryNametoEdit = this.selectedEventCategoryName;
-        console.log(this.selectedEventCategory);
       }
       if (action === "change") {
         this.selectedEventCategoryId = false;
@@ -2817,34 +2646,30 @@ export default {
       axios
         .put(`/api/EventCategory`, updatePayload)
         .then((res) => {
-          console.log(res);
           this.newEvents[this.selectedCategoryIndex].name =
             res.data[this.selectedCategoryIndex].name;
           // this.selectedEventCategoryName = res.data[this.selectedCategoryIndex].name
           // this.selectedEventCategoryId = res.data[this.selectedCategoryIndex].id
           this.showEditEventCategory = false;
-          this.$toast.add({
-            severity: "success",
-            summary: "Confirmed",
-            detail: "Updated successfully",
-            life: 4000,
-          });
+          ElMessage({
+                type: 'success',
+                message: 'Updated successfully',
+                duration: 5000
+              })
         })
         .catch((err) => {
           console.log(err);
         });
-      console.log(this.selectedCategoryIndex);
-      console.log(this.selectedEventCategoryName);
     },
-    // categorySelected(data) {
-    //   if (data.dataType === 'eventcategory') {
-    //     this.selectedEventCategory = this.newEvents.find(i => i.name === data.value);
-    //     this.selectedEventCategoryId = this.selectedEventCategory.id;
-    //   }
-    // },
-    dropDownMonth(e) {
-      console.log(e);
-      switch (e.value) {
+
+    setIncomeAccount(index) {
+      this.remitance[index].account =  this.incomeAccount.find((i) =>{
+        return i.id === this.itemAccountID 
+      })
+    },
+
+    dropDownMonth() {
+      switch (this.valueMonth) {
         case "January":
           this.firstTimersObj.birthMonth = "1";
           break;
@@ -2887,41 +2712,40 @@ export default {
           break;
       }
     },
-    dropDownMarital(e) {
+    dropDownMarital() {
       this.firstTimersObj.maritalStatusId = this.maritalStatusArr.find((i) => {
-        return i.value === e.value.value;
+        return i.id === this.valueMarital;
       }).id;
     },
-    dropDownGender(e) {
+    dropDownGender() {
       this.firstTimersObj.genderId = this.gender.find(
-        (i) => i.value === e.value
+        (i) => i.id === this.valueGender
       ).id;
     },
-    dropDownHeard(e) {
+    dropDownHeard() {
       this.firstTimersObj.howDidYouAboutUsId = this.howDidYouAboutUsId.find(
-        (i) => i.name === e.value
+        (i) => i.name === this.valueHeard
       ).id;
     },
-    dropDownComm(e) {
+    dropDownComm() {
       this.firstTimersObj.communicationMeans = this.comMeansArr.indexOf(
-        e.value
+        this.valueComm
       );
     },
-    dropDownInterest(e) {
+    dropDownInterest() {
       this.firstTimersObj.interestedInJoining = this.joinInterest.indexOf(
-        e.value
+        this.valueInterest
       );
     },
-    dropDownVisit(e) {
-      this.firstTimersObj.wantToBeVisited = this.wantVisitArr.indexOf(e.value);
+    dropDownVisit() {
+      this.firstTimersObj.wantToBeVisited = this.wantVisitArr.indexOf(this.valueVisit);
     },
     deleteFirstTimer(index) {
       this.firstTimers.splice(index, 1);
     },
 
-    dropDownMonthNewConvert(e) {
-      console.log(e);
-      switch (e.value) {
+    dropDownMonthNewConvert() {
+      switch (this.valueMonth) {
         case "January":
           this.firstTimersObj.birthMonth = "1";
           break;
@@ -2964,33 +2788,33 @@ export default {
           break;
       }
     },
-    dropDownMaritalNewConvert(e) {
+    dropDownMaritalNewConvert() {
       this.newConvertsObj.maritalStatusId = this.maritalStatusArr.find(
-        (i) => i.value === e.value.value
+        (i) => i.id === this.firstTimersObj.valueMarital
       ).id;
     },
-    dropDownGenderNewConvert(e) {
+    dropDownGenderNewConvert() {
       this.newConvertsObj.genderId = this.gender.find(
-        (i) => i.value === e.value
+        (i) => i.id === this.valueGender
       ).id;
     },
-    dropDownHeardNewConvert(e) {
+    dropDownHeardNewConvert() {
       this.newConvertsObj.howDidYouAboutUsId = this.howDidYouAboutUsId.find(
-        (i) => i.name === e.value
+        (i) => i.name === this.valueHeard
       ).id;
     },
-    dropDownCommNewConvert(e) {
+    dropDownCommNewConvert() {
       this.newConvertsObj.communicationMeans = this.comMeansArr.indexOf(
-        e.value
+        this.valueComm
       );
     },
-    dropDownInterestNewConvert(e) {
+    dropDownInterestNewConvert() {
       this.newConvertsObj.interestedInJoining = this.joinInterest.indexOf(
-        e.value
+        this.valueInterest
       );
     },
-    dropDownVisitNewConvert(e) {
-      this.newConvertsObj.wantToBeVisited = this.wantVisitArr.indexOf(e.value);
+    dropDownVisitNewConvert() {
+      this.newConvertsObj.wantToBeVisited = this.wantVisitArr.indexOf(this.valueVisit);
     },
     deleteNewConvert(index) {
       this.newConverts.splice(index, 1);
@@ -3004,33 +2828,21 @@ export default {
     individualEvent(eventObj, index) {
       if (eventObj.id) {
         this.selectedEventCategoryName = eventObj.name;
-        this.selectedEventCategoryId = eventObj.id;
-        console.log(this.selectedEventCategoryId);
+        this.selectedEventCategoryId = eventObj.id
       } else {
         let arrLengthId = `${this.newEvents.length + 1}`;
         this.newEvents.push({
           name: this.eventText,
-          // id: "00000000-0000-0000-0000-000000000000"
           id: arrLengthId,
         });
         this.selectedEventCategoryName = this.event;
-        // this.selectedEventCategoryName = this.eventText;
-        // this.selectedEventCategoryId ="00000000-0000-0000-0000-000000000000"
-        // alert(this.selectedEventCategoryName)
-        // alert(this.eventText)
         this.selectedEventCategoryId = arrLengthId;
       }
-      console.log(this.newEvents);
       this.eventText = "";
-      // const showEventCategory = document.querySelector("#showEventCategory");
-      // showEventCategory.classList.remove("style-category");
       this.showCategory = false;
-
-      // Get the index  of the selected category to update the category from the update response
       this.selectedCategoryIndex = index;
     },
     getPreActivityId() {
-      // console.log(this.check)
       if (this.check == false) {
         axios
           .post("/api/Events/EventPreRegistration", {
@@ -3040,7 +2852,6 @@ export default {
           .then((res) => {
             this.preActivityId = res.data.activityId;
             this.eventRegistrationLink = res.data.eventRegistrationLink;
-            console.log(res.data);
           })
           .catch((err) => {
             NProgress.done();
@@ -3050,7 +2861,6 @@ export default {
     },
     getHowDidYouAboutUsId() {
       axios.get("/api/membership/howyouheardaboutus").then((res) => {
-        // console.log(res.data)
         this.howDidYouAboutUsId = res.data.map((i) => {
           return { name: i.name, id: i.id };
         });
@@ -3060,7 +2870,6 @@ export default {
       if (this.$route.params.event) {
         try {
           let res = await axios.get(`/api/Events/${this.$route.params.event}`);
-          console.log(res, "rthrhh");
           this.routeParams = this.$route.params.event;
           this.eventDate = res.data.activity.date.substr(0, 10);
           this.topic = res.data.activity.topic;
@@ -3068,7 +2877,6 @@ export default {
           this.selectedEventCategoryId = res.data.activity.eventCategoryId;
           this.attendanceItem = res.data.attendances;
           this.offeringItem = res.data.offerings.map((i) => {
-            console.log(i, "rririririrlo");
             return {
               activity: i.activity,
               activityID: i.activityID,
@@ -3096,10 +2904,7 @@ export default {
           this.newConverts = res.data.activityNewConverts;
           if (this.newConverts.length > 0) this.showForm3 = true;
           this.updatePreEvent = res.data.preEvent;
-          // this.offeringItem.find(i => console.log(i))
-          console.log(res.data);
           if (this.currencyList.length > 0) {
-            // this.currencyList.find(i => i.currencyId == )
           }
           for (let index = 0; index < this.offeringItem.length; index++) {
             const i = this.offeringItem[index];
@@ -3111,11 +2916,6 @@ export default {
             let toDestinationCurrencyRate = `usd${this.tenantCurrency.currency.toLowerCase()}`;
             let fromCurrencyRate = i.fromCurrencyRate;
             let amountToConvert = toNumber ? +toNumber : 0;
-            console.log(
-              amountToConvert,
-              fromCurrencyRate,
-              toDestinationCurrencyRate
-            );
             try {
               let result = await CurrencyConverterService.currencyConverter(
                 amountToConvert,
@@ -3123,7 +2923,6 @@ export default {
                 toDestinationCurrencyRate
               );
               this.convertedAmount2.push(result);
-              console.log(result, this.convertedAmount2);
             } catch (err) {
               console.log(err);
             }
@@ -3135,21 +2934,6 @@ export default {
     },
     convertCurrencyForExistingEvent() {
       console.log(this.offeringItem);
-
-      // this.offeringItem.forEach((i) => {
-      //     let toDestinationCurrencyRate = `usd${this.tenantCurrency.currency.toLowerCase()}`
-      //     let fromCurrencyRate = i.fromCurrencyRate
-      //     let amount = i.amount ? +i.amount : 0
-      //   console.log(amount, fromCurrencyRate, toDestinationCurrencyRate)
-      // try {
-      //   let result = await CurrencyConverterService.currencyConverter(amount, fromCurrencyRate, toDestinationCurrencyRate)
-      //   this.convertedAmount2.push(result)
-      //   console.log(result, this.convertedAmount2)
-      // }
-      // catch (err) {
-      //   console.log(err)
-      // }
-      //     })
     },
     getCurrenciesFromCountries() {
       let url = "/api/getallcountries";
@@ -3175,7 +2959,6 @@ export default {
       this.showCode = false;
     },
     updateOfferingId(e) {
-      // this.offeringItem[index].financialContributionID = id
       let index = this.offeringItem.findIndex(
         (i) => i.financialContributionID === e.target.value
       );
@@ -3188,8 +2971,6 @@ export default {
       let index = this.attendanceItem.findIndex(
         (i) => i.attendanceTypeID === e.target.value
       );
-      console.log(e.target.value, index, "target", e.target.textContent);
-      console.log(this.newAttendances, "new attendances");
       let attText = this.newAttendances.find(
         (i) => i.attendanceTypeID === e.target.value
       ).name;
@@ -3225,11 +3006,8 @@ export default {
     addExistingMember(member) {
       this.userSearchString = member.name;
       this.offeringItem[this.offeringToAddDonor].personID = member.id;
-      console.log(this.userSearchString, member);
     },
     getPersonId(payload) {
-      console.log(payload);
-      // personId.value = payload
       this.offeringItem[this.offeringToAddDonor].donor =
         payload.personFirstName;
       this.offeringItem[this.offeringToAddDonor].personID = payload.personId;
@@ -3237,7 +3015,6 @@ export default {
     async getCurrentlySignedInUser() {
       try {
         const res = await axios.get("/api/Membership/GetCurrentSignedInUser");
-        // console.log(res.data)
         this.tenantId = res.data.tenantId;
         // if(res.data.country == "Nigeria") {
         //     isPaystackChecked.value = true
@@ -3266,8 +3043,6 @@ export default {
             console.log(this.tenantCurrency);
           })
           .catch((err) => console.log(err));
-        // console.log(store.getters.currentUser)
-        // }
       } catch (err) {
         /*eslint no-undef: "warn"*/
         NProgress.done();
@@ -3279,7 +3054,7 @@ export default {
       let removeCharacters = amount.replace(/[^0-9.]/g, "");
       let toNumber = parseFloat(removeCharacters);
 
-      this.currencyAmount = e.target.value;
+      this.currencyAmount = e;
       this.currencyIndex = index;
 
       let toDestinationCurrencyRate = `usd${this.tenantCurrency.currency.toLowerCase()}`;
@@ -3295,27 +3070,12 @@ export default {
           fromCurrencyRate,
           toDestinationCurrencyRate
         );
-        console.log(result);
         this.convertedAmount2[index] = result;
       } catch (err) {
         console.log(err);
       }
-      // if (amount === 0) return false
-      // let propertyArr = Object.keys(this.currencyRate)
-      // let valueArr = Object.values(this.currencyRate)
-      // let fromIndex = propertyArr.indexOf(fromCurrencyRate)
-      // let fromRate = valueArr[fromIndex]
-      // let toIndex = propertyArr.indexOf(toDestinationCurrencyRate)
-      // let toRate = valueArr[toIndex]
-
-      // // console.log(amount, fromIndex, toIndex, amount, fromRate, toRate)
-      // let result = ( amount / fromRate ) * toRate
-      // console.log(result)
-      //
-      // console.log(this.convertedAmount2)
     },
     convertResult(payload) {
-      // this.convertedAmount[this.currencyIndex] = payload
       this.convertedResult = payload;
     },
     toggleRem() {
@@ -3333,7 +3093,6 @@ export default {
         .then((res) => {
           /*eslint no-undef: "warn"*/
           NProgress.done();
-          console.log(res);
           this.incomeAccount = res.data;
           if (res.data.length < 1) {
             this.displayResponsive = true;
@@ -3348,7 +3107,6 @@ export default {
       axios
         .get("/api/financials/accounts/getcashbankaccounts")
         .then((res) => {
-          console.log(res.data);
           this.cashBankAccount = res.data;
         })
         .catch((err) => {
@@ -3362,9 +3120,8 @@ export default {
     createNewCon(e) {
       let contributionCategory = {
         name: this.contributionItemName,
-        incomeAccountId: this.selectedIncomeAccount.id,
-
-        cashAccountId: this.selectedCashAccount.id,
+        incomeAccountId: this.selectedIncomeAccount,  
+        cashAccountId: this.selectedCashAccount
       };
       if (this.remitance[0].account || this.remitance[0].percentage) {
         contributionCategory.incomeRemittance = this.remitance.map((i) => {
@@ -3377,7 +3134,6 @@ export default {
       } else {
         contributionCategory.incomeRemittance = null;
       }
-      console.log(contributionCategory);
       axios
         .post("/api/financials/contributions/items/save", contributionCategory)
         .then((res) => {
@@ -3385,12 +3141,11 @@ export default {
             name: this.contributionItemName,
             id: res.data.id,
           });
-          this.$toast.add({
-            severity: "success",
-            summary: "Saved",
-            detail: "Contribution Saved",
-            life: 3000,
-          });
+          ElMessage({
+                type: 'success',
+                message: 'Contribution Saved',
+                duration: 5000
+              })
           console.log(res);
 
           this.offeringItem.push({
@@ -3402,12 +3157,11 @@ export default {
           });
         })
         .catch((err) => {
-          this.$toast.add({
-            severity: "error",
-            summary: "Error",
-            detail: "Not Successful",
-            life: 3000,
-          });
+          ElMessage({
+                type: 'error',
+                message: 'Not Successful',
+                duration: 5000
+              })
           console.log(err);
         });
       e.target.setAttribute("data-dismiss", "modal");
@@ -3417,7 +3171,6 @@ export default {
         let { data } = await axios.get(
           `api/People/checkDuplicate?email=${this.firstTimersObj.email}&phoneNumber=${this.firstTimersObj.phoneNumber}`
         );
-        console.log(data);
         if (this.isPhoneValid !== "") {
           if (data === "phone number") {
             this.isPhoneValid = false;
@@ -3441,7 +3194,6 @@ export default {
         let { data } = await axios.get(
           `api/People/checkDuplicate?email=${this.firstTimersObj.email}&phoneNumber=${this.firstTimersObj.phoneNumber}`
         );
-        console.log(data);
         if (this.isEmailValid !== "") {
           if (data === "email") {
             this.isEmailValid = false;
@@ -3465,7 +3217,6 @@ export default {
         let { data } = await axios.get(
           `api/People/checkDuplicate?email=${this.newConvertsObj.email}&phoneNumber=${this.newConvertsObj.phoneNumber}`
         );
-        console.log(data);
         if (this.isPhoneValidNewConvert !== "") {
           if (data === "phone number") {
             this.isPhoneValidNewConvert = false;
@@ -3489,7 +3240,6 @@ export default {
         let { data } = await axios.get(
           `api/People/checkDuplicate?email=${this.newConvertsObj.email}&phoneNumber=${this.newConvertsObj.phoneNumber}`
         );
-        console.log(data);
         if (this.isEmailValidNewConvert !== "") {
           if (data === "email") {
             this.isEmailValidNewConvert = false;
@@ -3511,7 +3261,6 @@ export default {
     async getRates() {
       try {
         let { data } = await axios.get("/fxRates");
-        console.log(data);
         this.$store.dispatch("getRates", data);
       } catch (error) {
         console.log(error);
@@ -3519,25 +3268,21 @@ export default {
     },
     setContact(payload) {
       if (!payload.email) {
-        this.$toast.add({
-          severity: "warn",
-          summary: "No email associate with the person",
-          detail:
-            "This contact does not have any email, communicate with this person to create him as a user",
-          life: 15000,
-        });
+        ElMessage({
+                type: 'warning',
+                message: 'This contact does not have any email, communicate with this person to create him as a user',
+                duration: 5000
+              })
       }
       this.firstTimersObj.contactOwnerId = payload.id;
     },
     setContactNewConvert(payload) {
       if (!payload.email) {
-        this.$toast.add({
-          severity: "warn",
-          summary: "No email associate with the person",
-          detail:
-            "This contact does not have any email, communicate with this person to create him as a user",
-          life: 15000,
-        });
+        ElMessage({
+                type: 'warning',
+                message: 'This contact does not have any email, communicate with this person to create him as a user',
+                duration: 5000
+              })
       }
       this.firstTimersObj.contactOwnerId = payload.id;
     },
@@ -3552,20 +3297,17 @@ export default {
       await axios
         .get("/api/LookUp/GetAllLookUps")
         .then((res) => {
-          console.log(res, "lksa");
           this.maritalStatusArr = res.data.find((i) => {
             return i.type.toLowerCase() === "maritalstatus";
           }).lookUps;
         })
         .catch((err) => console.log(err.response));
-      console.log(this.maritalStatus, "maritalSS");
     }
 
     axios.get("/api/Financials/Contributions/Items").then((res) => {
       this.newOfferings = res.data.map((i) => {
         return { id: i.id, name: i.name };
       });
-      console.log(res.data, "offerings on load");
     });
     axios.get("/GetAttendanceType").then((res) => {
       this.newAttendances = res.data.map((i) => {
@@ -3618,19 +3360,11 @@ export default {
       // let x;
       let arr = [];
       if (this.newEvents.length > 0) {
-        console.log(this.newEvents, "new events");
         arr = this.newEvents.filter((i) => {
           return i.name.toLowerCase().includes(this.eventText.toLowerCase());
         });
-        // } else if (this.newEvents.length <= 0) {
-        // // return this.newEvents.filter((i) => {
-        // //     return i.name.toLowerCase().includes(this.eventText.toLowerCase());
-        // //     });
-        // // console.log(this.eventText)
-        //   return this.addEventCategoryText = this.eventText
       } else {
         return this.newEvents;
-        // this.addEventCategoryText = this.eventText
       }
       return arr;
     },
@@ -3650,7 +3384,6 @@ export default {
       });
     },
     selectedEventCategoryName() {
-      console.log(this.selectedEventCategoryId);
       if (!this.selectedEventCategoryId) return "";
       if (!this.newEvents.find((i) => i.id === this.selectedEventCategoryId))
         return "";
@@ -3701,10 +3434,18 @@ export default {
 </script>
 
 <style scoped>
+
 .event {
   font-family: "Nunito sans";
   /* margin-top: 20px; */
 }
+
+.scroll {
+  max-height: 200px;
+  overflow-y: scroll;
+  overflow-x: hidden;
+}
+
 .events {
   font: normal normal 800 28px Nunito sans;
 }
@@ -3715,8 +3456,6 @@ export default {
 }
 .btn-save {
   background: #136acd 0% 0% no-repeat padding-box;
-  /* border-radius: 22px;
-  color: white; */
   margin-left: 26px;
   text-align: center;
 }
@@ -3735,9 +3474,6 @@ export default {
   border: 1px solid #b2c2cd;
   border-radius: 5px;
 }
-/* .container.first-pane {
-  margin-top: 5px; 
-} */
 
 .event-category {
   display: inline-block;
@@ -3898,8 +3634,9 @@ export default {
   border-radius: 111px;
 }
 .currency {
+  margin-top: 6px;
   width: 123%;
-  height: 100%;
+  /* height: 100%; */
   font-size: 0.8em;
   background: rgba(207, 207, 207, 0.651);
   border: none;
@@ -4092,11 +3829,6 @@ tr.event-list td {
   letter-spacing: 0px;
   color: #136acd;
   text-align: center;
-}
-.input-first {
-  /* width: 320px; */
-  height: 39px;
-  border: 1px solid #b9c5cf;
 }
 .close-slide1 {
   height: 0;
@@ -4336,11 +4068,8 @@ input.codeInput {
 }
 
 .btnIcons {
-  width: 110px;
-  height: 41px;
-  color: #136acd;
+ 
   background-color: #dde2e6;
-  border-radius: 40px;
   border: none;
 }
 
@@ -4405,6 +4134,15 @@ input.codeInput {
 @media (max-width: 600px) {
   .events {
     margin-top: 2rem;
+  }
+}
+@media (max-width: 576px) {
+  .select-elem-con {
+  /* padding: 47px 0; */
+  height: 60px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
   }
 }
 </style>

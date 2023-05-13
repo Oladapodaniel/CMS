@@ -3,7 +3,7 @@
         <div class="row">
             <div class="col-md-12">
                 <div class="row">
-                    <div class="col-6 offset-3 col-md-10 offset-md-1 upl-img-box border" style="border: 2px solid red;">
+                    <div class="col-6 offset-3 col-md-10 offset-md-1 upl-img-box">
                         <img v-if="url" class="img-style" :src="url" alt="Uploaded Image" />
                           <img
                             v-else-if="!pictureUrl"
@@ -76,10 +76,7 @@ import axios from "@/gateway/backendapi"
                 axios.post("/api/Media/UploadProfilePicture", formData)
                 .then(res => {
                     loading.value = false
-                console.log(res)
                 pictureUrl.value = res.data.pictureUrl
-                // url.value = URL.createObjectURL(image.value);
-
                 emit("pictureurl", pictureUrl.value)
                 })
                 .catch(err => {
@@ -91,12 +88,9 @@ import axios from "@/gateway/backendapi"
             watchEffect(() => {
                 if (props.editPicture) {
                     pictureUrl.value = props.editPicture
-                    console.log('hereeeee')
                 }
-                console.log(props.memberDetails, 'hereeee')
                 if ((!props.memberDetails || Object.keys(props.memberDetails).length === 0) && (url.value || pictureUrl.value)) {
                     pictureUrl.value = ""
-                    // url.value = ""
                 }
 
                 if (props.resetImage) {

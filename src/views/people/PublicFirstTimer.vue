@@ -1,5 +1,30 @@
 <template>
   <div class="container container-top">
+    <div class="col-md-12 d-flex justify-content-center my-3">
+      <div class="col-md-3 mt-4 d-flex align-items-center">
+        <div class="pl-2">
+          <img
+            :src="churchLogo2"
+            v-if="churchLogo2"
+            class="link-image"
+            alt=""
+            style="width: 60px"
+          />
+          <img
+            src="../../assets/dashboardlinks/churchcloud.png"
+            v-else
+            class="link-image"
+            alt=""
+          />
+        </div>
+        <span
+          ><h4 class="font-weight-bold mt-3">
+            {{ churchName ? churchName : "Churchplus" }}
+          </h4></span
+        >
+      </div>
+    </div>
+
     <div class="row">
       <h3 class="col-12 header-text font-weight-bold">Add First timers</h3>
       <div class="mt-3 col-12">Bio:</div>
@@ -354,7 +379,11 @@ export default {
     const toast = useToast();
     const store = useStore();
     const showError = ref(false);
+    const churchLogo2 = ref("");
+    const churchName = ref("")
     const newEvents = ref([]);
+    
+
     const day = ref([
       1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21,
       22, 23, 24, 25, 26, 27, 28, 29, 30, 31,
@@ -427,6 +456,18 @@ export default {
       }
     };
     getCustomFields();
+
+    const getFirstTimer = async () => {
+      try {
+        const res = await axios.get(`/TenantInfo?tenantID=${route.params.id}`);
+        console.log(res.data, "yamarita");
+        churchLogo2.value = res.data.logo;
+        churchName.value = res.data.name;
+      } catch (error) {
+        console.log(error);
+      }
+    };
+    getFirstTimer();
 
     const filterEventCategory = computed(() => {
       // let x;
@@ -904,7 +945,7 @@ export default {
         } else {
           let group = await grousService.getGroups();
           if (group) {
-            allGroups.value = group;
+            allGroups.value = group.response.groupResonseDTO;
           }
         }
       } catch (error) {
@@ -960,7 +1001,10 @@ export default {
       showAddInfoTab,
       hideAddInfoTab,
       birthMonth,
+      churchLogo2,
+      churchName,
       newEvent,
+
       //   createNewEvent,
       invalidEventDetails,
       savingNewEvent,

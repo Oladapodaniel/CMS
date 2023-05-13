@@ -16,23 +16,20 @@
                   <h4 class="mt-2 mb-2 ml-5 memCat1">Membership Categories</h4>
                 </div>
               </div>
-              <!--prime Vue -->
-              <Toast />
-              <ConfirmDialog></ConfirmDialog>
-
               <div class="row">
                 <div class="col-md-12 py-5 grey-background">
                   <div class="row d-md-flex justify-content-around">
                     <div class="col-md-7 col-sm-12">
-                      <input
+                      <el-input
                         type="text"
-                        class="form-control"
+                        class="w-100"
+                        size="large"
                         placeholder="Membership category name"
                         v-model="classificationTypes"
                       />
                     </div>
                     <div class="col-md-3 d-flex col-sm-12 justify-content-end">
-                      <button class="btn primary-btn text-white bold  mt-sm-3 mt-lg-0 mt-xl-0 mt-md-0 mt-3 px-md-5 px-4 py-1" @click="saveMembership">Save</button>
+                      <el-button round class=" text-white bold  mt-sm-3 mt-lg-0 font-weight-bold mt-xl-0 mt-md-0 mt-3 px-md-4 px-3 py-1" :loading="loading" :color="primarycolor" size="large" @click="saveMembership">Save</el-button>
                     </div>
                   </div>
                 </div>
@@ -62,12 +59,12 @@
                   class="col-md-5 mb-md-0 mb-2 col-12 d-flex justify-md-content-end justify-content-start align-items-end"
                 >
                   <span class="py-md-4 hidden-header hidden-header1">ACTION</span>
-                  <div class="row">
+                  <div class="row py-2">
                     <div class="col-md-6 col-6 d-flex justify-content-start">
-                      <button class="btn secondary-btn py-1 px-4" @click="openClassification(index)">View</button>
+                      <el-button  round color="#EBEFF4" class=" secondary-btn py-1 px-4" @click="openClassification(index)">View</el-button>
                     </div>
                     <div class="col-md-6 col-6 d-flex justify-content-end">
-                      <button class="delbtn py-1 primary-btn px-3" @click="deletePop(classification.id)">Delete</button>
+                      <el-button round  class="delbtn py-1 primary-btn px-3" @click="deletePop(classification.id)">Delete</el-button>
                     </div>
                   </div>
                 </div>
@@ -79,7 +76,7 @@
                 >
                   <label for="" class="d-flex mt-4">
                     <span class="mr-2">Name</span>
-                    <input type="text" class="form-control" v-model="classificationName">
+                    <el-input type="text" class="w-100"  v-model="classificationName"/>
                   </label>
                 </div>
                 <div
@@ -87,10 +84,10 @@
                 >
                   <div class="row mt-0">
                     <div class="col-md-6 col-6 d-flex justify-content-start">
-                      <button class="btn primary-btn save-btn py-1 px-4 ml-md-0 ml-5" @click="updateMembership(classification.id, index)">Save</button>
+                      <el-button round  class=" primary-btn text-white save-btn py-1 px-4 ml-md-0 ml-5" @click="updateMembership(classification.id, index)">Save</el-button>
                     </div>
                     <div class="col-md-6 col-6 d-flex justify-content-end">
-                      <button class="btn secondary-btn py-1  px-3 bor" @click="discard">Discard</button>
+                      <el-button round  class="secondary-btn py-1  px-3 bor" color="#EBEFF4"  @click="discard">Discard</el-button>
                     </div>
                   </div>
                 </div>
@@ -114,15 +111,11 @@
 
 <script>
 import axios from "@/gateway/backendapi";
-import Toast from 'primevue/toast';
-import ConfirmDialog from 'primevue/confirmdialog';
+import { ElMessage, ElMessageBox } from 'element-plus';
 import finish from "../../services/progressbar/progress"
 
 export default {
-  components:{
-     Toast,
-    ConfirmDialog,
-  },
+  inject: ['primarycolor'],
   data() {
     return {
       classifications: [ ],
@@ -162,7 +155,11 @@ export default {
         await axios.put('/api/Settings/UpdateTenantPeopleClassification', { name: this.classificationName, id:id});
         this.classifications[index].name = this.classificationName;
         this.discard()
-        this.$toast.add({severity:'success', summary: '', detail:'Membership Updated Successfully', life: 3000});
+        ElMessage({
+          type: "success",
+          message: "Membership Updated Successfully",
+          duration: 5000
+        });
       }catch (error){
         finish()
         console.log(error)
@@ -173,11 +170,19 @@ export default {
         let {data} = await axios.delete('/api/Settings/DeleteTenantPeopleClassification/'+id);
         console.log(data.status);
         if(data.status === false){
-          this.$toast.add({severity:'error', summary: '', detail: 'This people classification you are trying to delete has been used to save contacts. You can not delete it. You can rename instead.', life: 9000})
+            ElMessage({
+            showClose: true,
+            message: 'This people classification you are trying to delete has been used to save contacts. You can not delete it. You can rename instead.',
+            type: 'error',
+            duration: 5000
+          })
         }else{
           this.classifications = this.classifications.filter(i => i.id !== id);
-         this.$toast.add({severity:'success', summary: '', detail:'Membership Deleted Successfully', life: 3000});
-
+          ElMessage({
+              type: 'success',
+              message: 'Membership Deleted Successfully',
+              duration: 5000
+            })
         }
         
       } catch (error){
@@ -186,20 +191,25 @@ export default {
       }
     },
      deletePop(id) {
-            this.$confirm.require({
-                message: 'Are you sure you want to Delete?',
-                header: 'Delete Confirmation',
-                icon: 'pi pi-exclamation-circle',
-                acceptClass: 'confirm-delete',
-                rejectClass: 'cancel-delete',
-                accept: () => {
-                  this.deleteMembership(id)
-                    //callback to execute when user confirms the action
-                },
-                reject: () => {
-                    'No internet'
-                }
-            });
+       ElMessageBox.confirm(
+        'Are you sure you want to proceed?',
+        'Confirm delete',
+       {
+          confirmButtonText: 'OK',
+          cancelButtonText: 'Cancel',
+          type: 'error',
+        }
+      )
+      .then(() => {
+          this.deleteMembership(id)
+        })
+        .catch(() => {
+          ElMessage({
+            type: 'info',
+            message: 'Delete canceled',
+            duration: 5000
+          })
+        })
         },
 
     openClassification(index) {

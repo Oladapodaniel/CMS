@@ -1,5 +1,28 @@
 <template>
-  <div class="dropdown">
+  <el-dropdown class="w-100" trigger="click">
+        <span class="el-dropdown-link w-100">
+          <el-input 
+          type="text"
+          :class="{ 'phone-input': stylesidebarinput }"
+          v-model="userSearchString"
+          @input="searchForUsers"
+          ref="searchRef"
+          placeholder="Search from members"
+          autocomplete="off"
+          />
+        </span>
+        <template #dropdown>
+          <el-dropdown-menu>
+            <el-icon class="is-loading" v-if="loading && userSearchString.length >= 3">
+              <Loading />
+            </el-icon>
+            <el-dropdown-item v-for="(member, index) in members" :key="index" @click="selectMember(member)">{{ member.name }} - {{ member.phone }}</el-dropdown-item>
+            <el-dropdown-item v-if="userSearchString.length < 3" disabled>Enter 3 or more characters</el-dropdown-item>
+            <el-dropdown-item @click="() => (display = true)" divided><el-icon><CirclePlus /></el-icon>Add new member</el-dropdown-item>
+          </el-dropdown-menu>
+        </template>
+      </el-dropdown>
+  <!-- <div class="dropdown">
     <div
       class="input-group mb-3"
       id="dropdownMenuButton"
@@ -55,7 +78,7 @@
         >Add new member</a
       >
     </div>
-  </div>
+  </div> -->
   <Dialog
     header="Create New Member"
     v-model:visible="display"
@@ -187,10 +210,10 @@ export default {
   overflow: scroll;
 }
 
-.phone-input {
+/* .phone-input {
   background: transparent;
   border: 0;
   border-bottom: 1px solid #cbd6e2;
   border-radius: 0;
-}
+} */
 </style>

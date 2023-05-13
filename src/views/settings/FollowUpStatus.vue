@@ -20,14 +20,15 @@
                 <div class="col-md-12 py-5 grey-background">
                   <div class="row d-md-flex justify-content-around">
                     <div class="col-md-7">
-                      <input
+                      <el-input
                         type="text"
-                        class="form-control"
+                        class="w-100"
+                        size="large"
                         placeholder="Add follow up status name"
                       />
                     </div>
                     <div class="col-md-3">
-                      <button class="btn primary-btn px-5 text-white">Save</button>
+                      <el-button :color="primarycolor" :loading="loading" class="primary-btn px-5 text-white" size="large" round >Save</el-button>
                     </div>
                   </div>
                 </div>
@@ -59,10 +60,10 @@
                   <span class="py-4 hidden-header">ACTION</span>
                   <div class="row">
                     <div class="col-md-6">
-                      <button class="btn secondary-btn py-1 px-4" @click="openClassification(index)">View</button>
+                      <el-button round size="large" color="#EBEFF4"  class=" secondary-btn py-1 px-4" @click="openClassification(index)">View</el-button>
                     </div>
                     <div class="col-md-6">
-                      <button class="btn btn-danger py-1 primary-btn">Delete</button>
+                      <el-button round size="large" class=" btn-danger py-1 primary-btn">Delete</el-button>
                     </div>
                   </div>
                 </div>
@@ -74,7 +75,7 @@
                 >
                   <label for="" class="d-flex">
                     <span class="mr-2">Name</span>
-                    <input type="text" class="form-control" v-model="classificationName">
+                    <el-input type="text" class="w-100" round size="large" v-model="classificationName" />
                   </label>
                 </div>
                 <div
@@ -82,10 +83,10 @@
                 >
                   <div class="row">
                     <div class="col-md-6">
-                      <button class="btn primary-btn save-btn py-1 px-4">Save</button>
+                      <el-button round  class=" primary-btn save-btn py-1 px-4">Save</el-button>
                     </div>
                     <div class="col-md-6">
-                      <button class="btn secondary-btn py-1 px-4" @click="discard">Discard</button>
+                      <el-button round color="#EBEFF4" class=" secondary-btn py-1 px-4" @click="discard">Discard</el-button>
                     </div>
                   </div>
                 </div>
@@ -106,13 +107,14 @@
 
 <script>
 import axios from "@/gateway/backendapi";
-
 export default {
+  inject: ['primarycolor'],
   data() {
     return {
       classifications: [ ],
       vissibleTab: "",
       classificationName: "",
+      loading: false
     }
   },
   

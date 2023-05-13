@@ -1,526 +1,81 @@
 
 
 <template>
-  <div>
-    <div class="nav-con">
-      <div>
-        <div class="nav" @click="linkClicked">
-          <div class="w-100">
-            <div class="user">
-            <img
-              :src="churchLogo"
-              v-if="churchLogo"
-              class="link-image"
-              alt=""
-            />
-            <img
-              src="../../assets/dashboardlinks/churchcloud.png"
-              v-else
-              class="link-image"
-              alt=""
-            />
-            <!-- <a  class="user-link">Grace... <span class="user-link-icon"> ></span></a> -->
-            <a class="user-link"
-              >{{ tenantDisplayName }}
-              <span class="user-link-icon c-pointer"
-                ><i class="pi pi-angle-right"></i></span
-            ></a>
-          </div>
-          <router-link to="/tenant" class="link routelink dashboard-link" v-if="admin || basicUser || canAccessFirstTimers" >
-            <img
-              src="../../assets/dashboardlinks/dashboard-icon.svg"
-              class="link-icon"
-              alt=""
-            />
-            Dashboard
-          </router-link>
-
-          <a
-            class="link dd"
-            :class="{
-              'router-link-exact-active':
-                route.path.includes('people') ||
-                route.path.includes('first-time'),
-            }"
-          >
-            <span @click="togglePeopleDropDown" v-if="admin || basicUser || groupLeader || canAccessFirstTimers">
-              <img
-                src="../../assets/dashboardlinks/people.svg"
-                class="link-icon"
-                alt=""
-              />
-              <span class="drop-link"
-                >People
-                <span class="user-link-icon">
-                  <i
-                    class="pi pi-angle-up more-icon"
-                    :class="{ 'tbb-icon-rotate': peopleLinkDropped }"
-                  ></i></span
-              ></span>
-            </span>
-          </a>
-          <ul class="dd-list people-dd" :class="{ 'dd-hide-list': !peopleLinkDropped }">
-            <li class="dd-list-item" v-if="admin || basicUser">
-              <router-link class="dd-link-item routelink" :to="`/tenant/people`"
-                >Members</router-link
-              >
-            </li>
-            <li class="dd-list-item" v-if="admin || basicUser || canAccessFirstTimers">
-              <router-link class="dd-link-item routelink" :to="`/tenant/firsttimerslist`"
-                >First Timers</router-link
-              >
-            </li>
-            <li class="dd-list-item" v-if="groupLeader">
-              <router-link class="dd-link-item routelink" to="/tenant/groupleader"
-                >Dashboard</router-link
-              >
-            </li>
-            <li class="dd-list-item" v-if="admin || basicUser || groupLeader">
-              <router-link class="dd-link-item routelink" to="/tenant/peoplegroups"
-                >Groups/Department</router-link
-              >
-            </li>
-            <!-- Hidden -->
-            <li class="dd-list-item" v-if="admin || basicUser">
-              <router-link class="dd-link-item routelink" :to="{ name: 'Family' }">Families</router-link>
-            </li>
-          </ul>
-          <!-- </a> -->
-
-          <a
-            class="link dd"
-            :class="{
-              'router-link-exact-active': route.path.includes('communication'),
-            }"
-            
-          >
-            <span @click="toggleCommDropDown" v-if="admin || basicUser">
-              <img
-                src="../../assets/dashboardlinks/com-icon.svg"
-                class="link-icon comm-link-icon"
-                alt=""
-              />
-              <span class="drop-link"
-                >Communication
-                <span class="user-link-icon">
-                  <i
-                    class="pi pi-angle-up more-icon"
-                    :class="{ 'tbb-icon-rotate': commLinkDropped }"
-                  ></i></span
-              ></span>
-            </span>
-          </a>
-          <ul class="dd-list" :class="{ 'dd-hide-list': !commLinkDropped }">
-            <li class="dd-list-item">
-              <router-link class="dd-link-item routelink" to="/tenant/sms/sent"
-                >SMS</router-link
-              >
-            </li>
-            <!-- Hidden -->
-            <li class="dd-list-item">
-              <router-link
-                class="dd-link-item routelink"
-                to="/tenant/email"
-                >Email</router-link
-              >
-            </li>
-            <!-- <li class="dd-list-item">
-              <router-link class="dd-link-item routelink" to="/tenant/whatsapp">Whatsapp</router-link>
-            </li> -->
-            <li class="dd-list-item">
-              <router-link class="dd-link-item routelink" to="/tenant/Voice">Voice</router-link>
-            </li>
-            </ul>
-          
-
-          <a
-            class="link dd"
-            :class="{
-              'router-link-exact-active': route.path.includes('/tenant/event'),
-            }"
-          >
-            <span @click="toggleEventsDropDown" v-if="admin || basicUser">
-              <img
-                src="../../assets/dashboardlinks/events-icon.svg"
-                class="link-icon"
-                alt=""
-              />
-              <span class="drop-link"
-                >Events
-                <span class="user-link-icon">
-                  <i
-                    class="pi pi-angle-up more-icon"
-                    :class="{ 'tbb-icon-rotate': eventsLinkDropped }"
-                  ></i></span
-              ></span>
-            </span>
-          </a>
-          <ul
-            class="dd-list events-list"
-            :class="{ 'dd-hide-list': !eventsLinkDropped }"
-          >
-            <li class="dd-list-item">
-              <router-link class="dd-link-item routelink" :to="`/tenant/events`"
-                >Events</router-link
-              >
-            </li>
-            <li class="dd-list-item">
-              <router-link class="dd-link-item routelink" to="/tenant/attendancecheckin"
-                >Attendance & Checkin</router-link
-              >
-            </li>
-          </ul>
-          <!-- </a> -->
-
-          <!-- Hidden -->
-          <a
-            class="link dd"
-            :class="{
-              'router-link-exact-active': route.path.includes(
-                'tenant/accounting'
-              ),
-            }"
-
-          >
-            <span @click="toggleAccDropDown" v-if="admin || financialAccount">
-              <img
-                src="../../assets/dashboardlinks/acc-icon.svg
-                "
-                class="link-icon"
-                alt=""
-              />
-              <span class="drop-link"
-                >Financials
-                <span class="user-link-icon">
-                  <i
-                    class="pi pi-angle-up more-icon"
-                    :class="{ 'tbb-icon-rotate': accLinkDropped }"
-                  ></i></span
-              ></span>
-            </span>
-          </a>
-          <ul
-            class="dd-list acc-list"
-            :class="{ 'dd-hide-list': !accLinkDropped }"
-
-          >
-            <li class="dd-list-item"  v-if="false">
-              <router-link class="dd-link-item routelink" to="">Dashboard</router-link>
-            </li>
-            <li class="dd-list-item">
-              <router-link class="dd-link-item routelink" to="/tenant/offering">Offerings</router-link>
-            </li>
-            <li class="dd-list-item">
-              <router-link class="dd-link-item routelink" to="/tenant/onlinedonation">Online Donation</router-link>
-            </li>
-            <!-- <li class="dd-list-item">
-              <router-link class="dd-link-item routelink" to="/tenant/pledge/pledgeslist">Partnership/Pledge</router-link>
-            </li> -->
-            <li class="dd-list-item">
-              <router-link class="dd-link-item routelink" to="/tenant/pledge/pledgeslist">Partnership/Pledges</router-link>
-            </li>
-            <li class="dd-list-item">
-              <router-link class="dd-link-item routelink" to="/tenant/transactionlist"
-                >Transactions</router-link
-              >
-            </li>
-            <li class="dd-list-item"  v-if="false">
-              <router-link class="dd-link-item routelink" to="">Expense workflow</router-link>
-            </li>
-            <li class="dd-list-item">
-              <router-link class="dd-link-item routelink" to="/tenant/chartofaccount"
-                >Charts of Account</router-link
-              >
-            </li>
-            <!-- <li class="dd-list-item">
-              <router-link class="dd-link-item routelink" to="/tenant/payment"
-                >Payment Form</router-link
-              >
-            </li> -->
-          </ul>
-
-          
-          <!-- </a> -->
-
-          <a
-            class="link2 dd"
-            
-            
-          >
-            <span class="workflow" @click="workFlow" v-if="admin || basicUser">
-              <img
-                src="../../assets/workflow.png"
-                class="link-icon comm-link-icon"
-                alt=""
-              />
-              <span class="drop-link"
-                >Workflow
-                <span class="ml-1 badge badge-warning badge-pill badges-hover ">New</span>
-                <!-- <span class="user-link-icon">
-                  <i
-                    class="pi pi-angle-up more-icon"
-                    :class="{ 'tbb-icon-rotate': commLinkDropped }"
-                  ></i></span
-              > -->
-              </span>
-            </span>
-          </a>
-            <!-- <a
-            class="link badges-hover dd"
-            :class="{
-              'router-link-exact-active': route.path.includes(
-                'tenant/pledge'
-              ),
-            }"
-
-          >
-            <span @click="togglePledgeDropDown" v-if="admin || basicUser" class="myimage">
-              <img
-                src="../../assets/dashboardlinks/partner-icon.png
-                "
-                class="link-icon"
-                alt=""
-              />
-              <span class="drop-link"
-                >Partner/Pledge<span class="ml-1 badge badge-warning badge-pill badges-hover ">New</span>
-                <span class="user-link-icon">
-                  <i
-                    class="pi pi-angle-up more-icon"
-                    :class="{ 'tbb-icon-rotate': pledgeLinkDropped }"
-                  ></i></span
-              ></span>
-            </span>
-          </a> -->
-          <!-- <ul
-            class="dd-list pledge-list"
-            :class="{ 'dd-hide-list': !pledgeLinkDropped }"
-
-          >
-            <li class="dd-list-item">
-              <router-link class="dd-link-item routelink" to="/tenant/pledge/pledgeslist">Pledges</router-link>
-            </li>
-            <li class="dd-list-item">
-              <router-link class="dd-link-item routelink" to="/tenant/pledge/pledgepaymentlist">Payment</router-link>
-            </li>
-          </ul> -->
-          <!-- multiBranching -->
-            <a
-            class="link dd"
-            :class="{
-              'router-link-exact-active': route.path.includes('/tenant/event'),
-            }"
-          >
-            <span @click="toggleBranchDropDown" v-if="admin || basicUser">
-              <img
-                src="../../assets/dashboardlinks/branches.svg"
-                class="link-icon branch"
-                alt=""
-              />
-              <span class="drop-link"
-                >Branch
-                <span class="user-link-icon">
-                  <i
-                    class="pi pi-angle-up more-icon"
-                    :class="{ 'tbb-icon-rotate': branchLinkDropped }"
-                  ></i></span
-              ></span>
-            </span>
-          </a>
-          <ul
-            class="dd-list branch-list"
-            :class="{ 'dd-hide-list': !branchLinkDropped }"
-          >
-            <li class="dd-list-item">
-              <router-link class="dd-link-item routelink" :to="`/tenant/branch/branchsummary`"
-                >Dashboard</router-link
-              >
-            </li>
-            <li class="dd-list-item" v-if="admin || basicUser">
-              <router-link class="dd-link-item routelink" :to="`/tenant/branch/branch_members`"
-                >People</router-link
-              >
-            </li>
-            <li class="dd-list-item" v-if="false">
-              <router-link class="dd-link-item routelink" :to="`/tenant/firsttimerslist`"
-                >FirstTimer</router-link
-              >
-            </li>
-            <li class="dd-list-item" v-if="false">
-              <router-link class="dd-link-item routelink" :to="`/tenant/events`"
-                >Communication</router-link
-              >
-            </li>
-            <li class="dd-list-item" v-if="admin || basicUser">
-              <router-link class="dd-link-item routelink" to="/tenant/branch/branch_attendance"
-                >Attendance</router-link
-              >
-            </li>
-            <li class="dd-list-item" v-if="admin || basicUser">
-              <router-link class="dd-link-item routelink" to="/tenant/branch/branch_transactions"
-                >Financial</router-link
-              >
-            </li>
-            <li class="dd-list-item" v-if="admin || basicUser">
-              <router-link class="dd-link-item routelink" to="/tenant/branch/branch_report"
-                >Report</router-link
-              >
-            </li>
-          </ul>
-
-          <!-- Hidden -->
-          <!-- <router-link to="tenant/reports"> -->
-          <a class="link routelink" @click="goToReport" v-if="admin || basicUser || report || financialAccount">
-            <img
-              src="../../assets/dashboardlinks/reports-icon.svg"
-              class="link-icon"
-              alt=""
-
-            />
-            Reports
-          </a>
-          <!-- </router-link> -->
-          <a v-if="followup"  class="link routelink">
-                <router-link class="dd-link-item routelink" to="/tenant/followup">
-                <img
-                  src="../../assets/dashboardlinks/follow-up-icon.svg"
-                  class="link-icon"
-                  alt=""
-                />
-                Follow up
-                </router-link>
-              </a>
-
-          <div v-if="admin || basicUser || mobileAdmin">
-            <div>
-              <p @click="showMore" class="more-tab">
-                <span>{{ dropDownText }}...</span>
-                <span
-                  ><i
-                    class="pi pi-angle-up more-icon"
-                    :class="{ 'tbb-icon-rotate': moreShown }"
-                  ></i
-                ></span>
-              </p>
-            </div>
-            <div class="more-links" :class="{ 'hide-more-links': moreShown }">
-              <!-- <a v-if="followup"  class="link follow-up routelink">
-                <router-link class="dd-link-item routelink" to="/tenant/followup">
-                <img
-                  src="../../assets/dashboardlinks/follow-up-icon.svg"
-                  class="link-icon"
-                  alt=""
-                />
-                Follow up
-                </router-link>
-              </a> -->
-
-              <router-link  to="/tenant/social" class="link routelink text-decoration-none">
-                <img
-                  src="../../assets/dashboardlinks/social-icon.svg"
-                  class="link-icon"
-                  alt=""
-                />
-                Social & Mobile App
-              </router-link>
-
-              <router-link  to="/tenant/media" class="link routelink text-decoration-none">
-                <img
-                  src="../../assets/dashboardlinks/social-icon.svg"
-                  class="link-icon"
-                  alt=""
-                />
-                Media Library
-              </router-link>
-
-              <router-link  to="/tenant/archivedpeople" class="link routelink text-decoration-none">
-                <img
-                  src="../../assets/dashboardlinks/people.svg"
-                  class="link-icon"
-                  alt=""
-                />
-                Archived People
-              </router-link>
-
-              <a v-if="false"  class="link routelink">
-                <img
-                  src="../../assets/dashboardlinks/media.svg"
-                  class="link-icon"
-                  alt=""
-                />
-                Media & Monetization
-              </a>
-<!-- /tenant/archivedpeople -->
-              <router-link v-if="false"  to="" class="link routelink text-decoration-none">
-                <img
-                  src="../../assets/dashboardlinks/people.svg"
-                  class="link-icon"
-                  alt=""
-                />
-                Archived People
-              </router-link>
-            </div>
-          </div>
-        
-        
-          </div>
-          <div class="w-100 align-self-end">
-            <hr class="hr" />
-            <router-link class="text-dark" to="/tenant/settings" v-if="admin"> 
-              <div class="link">
-                Settings
-              </div>
-            </router-link>
-            <div class="link" @click="logout">Logout</div>
-          </div>
-
-
-         
-          
-
-          <!-- Hidden -->
-          <a class="link routelink" v-if="false"> Integration </a>
-          <!-- <OverlayPanel ref="flyOverRef" appendTo="body" :showCloseIcon="false" id="overlay_panel" :breakpoints="{'960px': '75vw'}" class="p-0">
-              <div class="container-fluid p-0 my-3" >
-                <router-link class="text-dark" to="/tenant/settings"> 
-                <div class="row py-2 px-3 hover-flyover" @click="closeOverlay">
-                  Settings
-                  
-                </div>
-                </router-link>
-                
-                <a href="https://churchplus.azurewebsites.net/Account/LogOn" target="_a" class="text-dark">
-                <div class="row py-2 px-3 hover-flyover" @click="closeOverlay">
-                  
-                  Visit ChurchPlus Classic
-                  
-                </div>
-                </a>
-              </div>
-        </OverlayPanel> -->
-        </div>
+  <el-row @click="linkClicked">
+    <el-col :span="24">
+      <div class="user mr-3 mt-4">
+        <img :src="churchLogo" v-if="churchLogo" class="link-image" alt="" />
+        <img src="../../assets/dashboardlinks/churchcloud.png" v-else class="link-image" alt="" />
+        <a class="user-link">{{ tenantDisplayName }}
+          <span class="user-link-icon c-pointer"><i class="pi pi-angle-right"></i></span></a>
       </div>
-    </div>
-  </div>
+      <el-menu default-active="1" :active-text-color="primarycolor" background-color="#ebeff4"
+        class="el-menu-vertical-demo mt-3" text-color="#02172e" :unique-opened="true">
+        <div v-for="(item, index) in menuLink" :key="index">
+          <el-sub-menu :index="`${index + 1}`" v-if="item.submenu.length > 0">
+            <template #title>
+              <el-icon>
+                <img :src="item.logo" class="link-icon" alt="" v-if="item.logo" />
+                <More color="#76787A" v-else />
+              </el-icon>
+              <span>{{ item.name }}</span>
+            </template>
+            <div v-for="(x, indexe) in item.submenu" :key="indexe">
+              <el-sub-menu :index="`${index + 1}-${indexe + 1}`" v-if="x.submenu && x.submenu.length > 0">
+                <template #title>{{ x.name }}</template>
+                <el-menu-item :index="`${index + 1}-${indexe + 1}-${indexee + 1}`" v-for="(y, indexee) in x.submenu"
+                  :key="indexee" @click="routeToPage(y)">{{ y.name }}</el-menu-item>
+              </el-sub-menu>
+              <el-menu-item-group @click="routeToPage(x)" v-else>
+                <el-menu-item :index="`${index + 1}-${indexe + 1}`">{{ x.name }}</el-menu-item>
+              </el-menu-item-group>
+            </div>
+          </el-sub-menu>
+          <el-menu-item :index="`${index + 1}`" class="w-100" @click="routeToPage(item)" v-else>
+            <el-icon>
+              <img :src="item.logo" class="link-icon" alt="" />
+            </el-icon>
+            <span>{{ item.name }}</span>
+          </el-menu-item>
+        </div>
+      </el-menu>
+    </el-col>
+  </el-row>
+  <el-row>
+    <el-col :span="24">
+      <div class="nav">
+        <div class="w-100 align-self-end">
+          <hr class="hr" />
+          <div class="d-flex ml-3">
+            <el-icon class="mt-1">
+              <TopLeft />
+            </el-icon>
+            <div class="ml-3 c-pointer" @click="logout">Logout</div>
+          </div>
+        </div>
+        <a class="link routelink" v-if="false"> Integration </a>
+      </div>
+    </el-col>
+  </el-row>
+
 </template>
 
 <script>
-import { computed, ref } from "vue";
+import { computed, ref, watchEffect, inject } from "vue";
 import { useRoute } from "vue-router";
 import store from "@/store/store";
 import axios from "@/gateway/backendapi";
 import { useRouter } from 'vue-router'
 import setupService from '../../services/setup/setupservice';
-import OverlayPanel from 'primevue/overlaypanel';
 export default {
   components: {
-    OverlayPanel
   },
+  emits: ['tenantname', 'linkclicked'],
   setup(props, { emit }) {
+    const primarycolor = inject('primarycolor')
     const route = useRoute();
     const router = useRouter()
-    const moreShown = ref(false);
     const churchLogo = ref("");
-    // const flyOverRef = ref(false)
     const roleOfCurrentUser = computed(() => {
       if (!localStorage.getItem('roles')) return []
       return JSON.parse(localStorage.getItem('roles'))
@@ -534,103 +89,32 @@ export default {
     const report = ref(!admin.value && roleOfCurrentUser.value.some(i => i.toLowerCase() === 'reports'))
     const groupLeader = ref(!admin.value && roleOfCurrentUser.value.some(i => i.toLowerCase() === 'groupleader'))
     const canAccessFirstTimers = ref(!admin.value && roleOfCurrentUser.value.some(i => i.toLowerCase() === 'canaccessfirsttimers'))
-    
 
-
-    const showMore = () => {
-      moreShown.value = !moreShown.value;
-    };
-
-    const peopleLinkDropped = ref(false);
-    const togglePeopleDropDown = () => {
-      peopleLinkDropped.value = !peopleLinkDropped.value;
-      commLinkDropped.value = false;
-      accLinkDropped.value = false;
-      eventsLinkDropped.value = false;
-      branchLinkDropped.value = false
-      pledgeLinkDropped.value = false;
-    };
-
-    const commLinkDropped = ref(false);
-    const toggleCommDropDown = () => {
-      commLinkDropped.value = !commLinkDropped.value;
-      peopleLinkDropped.value = false;
-      eventsLinkDropped.value = false;
-      accLinkDropped.value = false;
-      branchLinkDropped.value = false;
-      pledgeLinkDropped.value = false;
-    };
-
-    const eventsLinkDropped = ref(false);
-    const toggleEventsDropDown = () => {
-      eventsLinkDropped.value = !eventsLinkDropped.value;
-      commLinkDropped.value = false;
-      accLinkDropped.value = false;
-      peopleLinkDropped.value = false;
-      branchLinkDropped.value = false;
-      pledgeLinkDropped.value = false;
-    };
-
-     const branchLinkDropped = ref(false);
-      const toggleBranchDropDown = () => {
-      branchLinkDropped.value = !branchLinkDropped.value;
-      commLinkDropped.value = false;
-      accLinkDropped.value = false;
-      peopleLinkDropped.value = false;
-      pledgeLinkDropped.value = false;
-    };
-
-    const accLinkDropped = ref(false);
-    const toggleAccDropDown = () => {
-      accLinkDropped.value = !accLinkDropped.value;
-      commLinkDropped.value = false;
-      eventsLinkDropped.value = false;
-      peopleLinkDropped.value = false;
-      branchLinkDropped.value = false
-      pledgeLinkDropped.value = false
-    };
-
-    const pledgeLinkDropped  = ref(false);
-    const togglePledgeDropDown = () => {
-      pledgeLinkDropped.value = !pledgeLinkDropped.value;
-      commLinkDropped.value = false;
-      eventsLinkDropped.value = false;
-      peopleLinkDropped.value = false;
-      branchLinkDropped.value = false
-    };
-
-    const dropDownText = computed(() => {
-      return moreShown.value ? "Less" : "More";
-    });
 
     const tenantInfo = ref({});
 
-    const getChurchProfile = async() => {
-            try {
-                let res = await axios.get(`/GetChurchProfileById?tenantId=${tenantInfo.value.tenantId}`)
-                churchLogo.value = res.data.returnObject.logo
-            }
-            catch (err) {
-                console.log(err)
-            }
-        }
-
-    const currentUser = () => {
-      if (!store.getters.currentUser || !store.getters.currentUser.churchName) {
-        axios
-          .get("/api/Membership/GetCurrentSignedInUser")
-          .then((res) => {
-            tenantInfo.value = res.data;
-            getChurchProfile()
-          })
-          .catch((err) => console.log(err.respone));
-      } else {
-        tenantInfo.value.churchName = store.getters.currentUser.churchName;
-        tenantInfo.value.tenantId = store.getters.currentUser.tenantId;
-        getChurchProfile()
+    const getChurchProfile = async () => {
+      try {
+        let res = await axios.get(`/GetChurchProfileById?tenantId=${tenantInfo.value.tenantId}`)
+        churchLogo.value = res.data.returnObject.logo
+      }
+      catch (err) {
+        console.log(err)
       }
     }
-    currentUser()
+
+    const getUser = computed(() => {
+      if (!store.getters.currentUser || (store.getters.currentUser && Object.keys(store.getters.currentUser).length == 0)) return ''
+      return store.getters.currentUser
+    })
+
+    watchEffect(() => {
+      if (getUser.value) {
+        tenantInfo.value = getUser.value;
+        getChurchProfile()
+        emit('tenantname', tenantInfo.value)
+      }
+    })
 
     const tenantDisplayName = computed(() => {
       if (!tenantInfo.value.churchName) return "";
@@ -641,52 +125,374 @@ export default {
       return name;
     });
 
-    const linkClicked = (e) => {
-      if (e.target.classList.contains("routelink")) {
-        emit('linkclicked', true);
-      }
-    }
-
     const logout = () => {
       localStorage.clear()
       router.push('/')
       store.dispatch('clearCurrentUser', {})
-      store.dispatch('groups/clearGroup')
-      store.dispatch('membership/clearMember')
       setupService.clearStore();
     }
 
-    const goToReport = () => {
-      router.push('/tenant/reports')
+    const menuLink = ref([])
+
+    const displayRoleMenu = () => {
+      const adminIndex = roleOfCurrentUser.value.findIndex(i => i.toLowerCase() == 'admin')
+      if (adminIndex >= 0) {
+        roleOfCurrentUser.value.unshift(roleOfCurrentUser.value.splice(adminIndex, 1)[0])
+      }
+
+      const basicIndex = roleOfCurrentUser.value.findIndex(i => i.toLowerCase() == 'basicuser')
+      if (basicIndex >= 0) {
+        roleOfCurrentUser.value.unshift(roleOfCurrentUser.value.splice(basicIndex, 1)[0])
+      }
+
+      const dashboard = {
+        name: 'Dashboard',
+        logo: require('../../assets/dashboardlinks/dashboard-icon.svg'),
+        route: '/tenant',
+        submenu: [],
+        id: 1
+      }
+
+      const people = {
+        id: 2,
+        name: 'People',
+        logo: require('../../assets/dashboardlinks/people.svg'),
+        route: '/',
+        submenu: []
+      }
+
+      const communication = {
+        id: 3,
+        name: 'Communication',
+        logo: require('../../assets/dashboardlinks/com-icon.svg'),
+        route: '/',
+        submenu: [
+          {
+            name: 'SMS',
+            logo: '/',
+            route: '/tenant/sms/sent',
+          },
+          {
+            name: 'Email',
+            logo: '/',
+            route: '/tenant/email',
+          },
+          {
+            name: 'Voice',
+            logo: '/',
+            route: '/tenant/voice/voicelist',
+          },
+        ]
+      }
+
+      const event = {
+        id: 4,
+        name: 'Events',
+        logo: require('../../assets/dashboardlinks/events-icon.svg'),
+        route: '/',
+        submenu: [
+          {
+            name: 'Services',
+            logo: '/',
+            route: '/tenant/events',
+          },
+          {
+            name: 'Attendance & Checkin',
+            logo: '/',
+            route: '/tenant/attendancecheckin',
+          }
+        ]
+      }
+
+      const financial = {
+        id: 5,
+        name: 'Financials',
+        logo: require('../../assets/dashboardlinks/acc-icon.svg'),
+        route: '/',
+        submenu: [
+          {
+            name: 'Offerings',
+            logo: '/',
+            route: '/tenant/offering',
+          },
+          {
+            name: 'Online Donation',
+            logo: '/',
+            route: '/tenant/onlinedonation',
+          },
+          {
+            name: 'Partnership / Pledges',
+            logo: '/',
+            route: '/tenant/pledge/pledgeslist',
+          },
+          {
+            name: 'Transactions',
+            logo: '/',
+            route: '/tenant/transactionlist',
+          },
+          {
+            name: 'Charts of Account',
+            logo: '/',
+            route: '/tenant/chartofaccount',
+          },
+        ]
+      }
+
+      const members = {
+        name: 'Members',
+        logo: '/',
+        route: '/tenant/people',
+      }
+
+      const firsttimers = {
+        name: 'First Timers',
+        logo: '/',
+        route: '/tenant/firsttimerslist',
+      }
+
+      const groups = {
+        name: 'Groups / Departments',
+        logo: '/',
+        route: '/tenant/peoplegroups',
+      }
+
+      const families = {
+        name: 'Families',
+        logo: '/',
+        route: '/tenant/family',
+      }
+      const social = {
+        id: 6,
+        name: 'Social & Mobile App',
+        logo: require('../../assets/dashboardlinks/social-icon.svg'),
+        route: '/tenant/social',
+        submenu: []
+      }
+      // const social = {
+      //   name: 'Social & Mobile App',
+      //   logo: '/',
+      //   route: '/tenant/social',
+      //   submenu: []
+      // }
+      const report = {
+        id: 7,
+        name: 'Reports',
+        logo: require('../../assets/dashboardlinks/reports-icon.svg'),
+        route: '/tenant/reports',
+        submenu: []
+      }
+      // const report = {
+      //   id: 6,
+      //   name: 'Reports',
+      //   logo: require('../../assets/dashboardlinks/reports-icon.svg'),
+      //   route: '/tenant/reports',
+      //   submenu: []
+      // }
+
+      const media = {
+        name: 'Ecommerce/Media Library',
+        logo: '/',
+        route: '/tenant/media',
+        submenu: []
+      }
+
+      const branch = {
+        name: 'Branches',
+        logo: '',
+        route: '/',
+        submenu: [
+          {
+            name: 'Dashboard',
+            logo: '/',
+            route: '/tenant/branch/branchsummary',
+          },
+          {
+            name: 'People',
+            logo: '/',
+            route: '/tenant/branch/branch_members',
+          },
+          {
+            name: 'Attendance',
+            logo: '/',
+            route: '/tenant/branch/branch_attendance',
+          },
+          {
+            name: 'Financials',
+            logo: '/',
+            route: '/tenant/branch/branch_transactions',
+          },
+          {
+            name: 'Reports',
+            logo: '/',
+            route: '/tenant/branch/branch_report',
+          },
+        ]
+      }
+      // const workflow = {
+      //   name: 'Workflow',
+      //   logo: '/',
+      //   route: '/tenant/workflow/list',
+      //   submenu: []
+      // }
+
+      const settings = {
+        name: 'Settings',
+        logo: '/',
+        route: '/tenant/settings',
+        submenu: []
+      }
+
+      // const archivedpeople = {
+      //   name: 'Archived People',
+      //   logo: '/',
+      //   route: '/tenant/archivedpeople',
+      //   submenu: []
+      // }
+
+      const groupleader = {
+        name: 'Leader Dashboard',
+        logo: '/',
+        route: '/tenant/groupleader'
+      }
+
+      const followup = {
+        name: 'Follow up',
+        logo: '/',
+        route: '/tenant/followup'
+      }
+
+
+      // const more = {
+      //   id: 8,
+      //   name: 'More',
+      //   logo: '',
+      //   route: '/',
+      //   submenu: []
+      // }
+      const more = {
+        id: 8,
+        name: 'More',
+        logo: '',
+        route: '/',
+        submenu: []
+      }
+
+
+      roleOfCurrentUser.value.forEach(i => {
+        // If people object is not already in the list, push it and its submenu, else just push its sub menu
+        if (i.toLowerCase() == 'canaccessfirsttimers') {
+          if (menuLink.value.findIndex(i => i.id == people.id) < 0) {
+            menuLink.value.push(people)
+            menuLink.value.find(i => i.name.toLowerCase() == 'people').submenu.push(firsttimers)
+          } else {
+            menuLink.value.find(i => i.name.toLowerCase() == 'people').submenu.push(firsttimers)
+          }
+        }
+
+
+        if (i.toLowerCase() == 'followup') {
+          if (menuLink.value.findIndex(i => i.id == people.id) < 0) {
+            menuLink.value.push(people)
+            menuLink.value.find(i => i.name.toLowerCase() == 'people').submenu.push(followup)
+          } else {
+            menuLink.value.find(i => i.name.toLowerCase() == 'people').submenu.push(followup)
+          }
+        }
+
+        if (i.toLowerCase() == 'financialaccount') {
+          if (menuLink.value.findIndex(i => i.id == financial.id) < 0) {
+            menuLink.value.push(financial)
+          }
+        }
+        if (i.toLowerCase() == 'reports') {
+          if (menuLink.value.findIndex(i => i.id == report.id) < 0) {
+            menuLink.value.push(report)
+          }
+        }
+        if (i.toLowerCase() == 'mobileadmin') {
+          if (menuLink.value.findIndex(i => i.id == more.id) < 0) {
+            menuLink.value.push(more)
+            menuLink.value.find(i => i.name.toLowerCase() == 'more').submenu.push(media)
+          }
+          if (menuLink.value.findIndex(i => i.id == social.id) < 0) {
+            menuLink.value.push(social)
+            // menuLink.value.find(i => i.name.toLowerCase() == 'more').submenu.push(social, media)
+          }
+        }
+
+        if (i.toLowerCase() == 'groupleader') {
+          if (menuLink.value.findIndex(i => i.id == people.id) < 0) {
+            menuLink.value.push(people)
+            menuLink.value.find(i => i.name.toLowerCase() == 'people').submenu.push(groupleader)
+          } else {
+            menuLink.value.find(i => i.name.toLowerCase() == 'people').submenu.push(groupleader)
+          }
+        }
+
+        if (i.toLowerCase() == 'basicuser') {
+          if (menuLink.value.findIndex(i => i.id == dashboard.id) < 0) {
+            menuLink.value.push(dashboard)
+          }
+          if (menuLink.value.findIndex(i => i.id == people.id) < 0) {
+            menuLink.value.push(people)
+            menuLink.value.find(i => i.name.toLowerCase() == 'people').submenu.push(members, firsttimers, groups, families)
+          } else {
+            menuLink.value.find(i => i.name.toLowerCase() == 'people').submenu.push(members, firsttimers, groups, families)
+          }
+
+          if (menuLink.value.findIndex(i => i.id == communication.id) < 0) {
+            menuLink.value.push(communication)
+          }
+          if (menuLink.value.findIndex(i => i.id == event.id) < 0) {
+            menuLink.value.push(event)
+          }
+          if (menuLink.value.findIndex(i => i.id == report.id) < 0) {
+            menuLink.value.push(report)
+          }
+          if (menuLink.value.findIndex(i => i.id == social.id) < 0) {
+            menuLink.value.push(social)
+          }
+          if (menuLink.value.findIndex(i => i.id == more.id) < 0) {
+            menuLink.value.push(more)
+            menuLink.value.find(i => i.name.toLowerCase() == 'more').submenu.push(media, branch, settings)
+            // menuLink.value.find(i => i.name.toLowerCase() == 'more').submenu.push(social, media, branch, workflow, archivedpeople, settings)
+          } else {
+            menuLink.value.find(i => i.name.toLowerCase() == 'more').submenu.push( media, branch, settings)
+            // menuLink.value.find(i => i.name.toLowerCase() == 'more').submenu.push(social, media, branch, workflow, archivedpeople, settings)
+          }
+        }
+
+        if (i.toLowerCase() == 'admin') {
+          menuLink.value.push(dashboard, people, communication, event, financial, social, report, more,)
+          // menuLink.value.push(dashboard, people, communication, event, financial,  report, more)
+          menuLink.value.find(i => i.name.toLowerCase() == 'people').submenu.push(members, firsttimers, groups, families)
+          menuLink.value.find(i => i.name.toLowerCase() == 'more').submenu.push( media, branch, settings)
+          // menuLink.value.find(i => i.name.toLowerCase() == 'more').submenu.push( workflow, social, media, branch,  archivedpeople, settings)
+        }
+      })
     }
-    const workFlow = () => {
-      router.push('/tenant/workflow/list')
+    displayRoleMenu()
+
+    const routeToPage = (item) => {
+      router.push(item.route)
     }
-    
+
+    const linkClicked = (e) => {
+      if (e.target.classList.contains('el-menu-item') && e.target.classList.contains('is-active')) {
+        emit('linkclicked', true);
+      }
+
+      if (e.target.parentElement.classList.contains('el-menu-item') && e.target.parentElement.classList.contains('is-active')) {
+        emit('linkclicked', true);
+      }
+    }
+
 
     return {
       route,
-      workFlow,
-      pledgeLinkDropped,
-      togglePledgeDropDown,
-      moreShown,
-      showMore,
-      dropDownText,
-      peopleLinkDropped,
-      togglePeopleDropDown,
-      commLinkDropped,
-      toggleCommDropDown,
-      accLinkDropped,
-      toggleAccDropDown,
-      eventsLinkDropped,
-      toggleEventsDropDown,
-      toggleBranchDropDown,
       tenantDisplayName,
-      linkClicked,
       churchLogo,
       logout,
-      goToReport,
-      branchLinkDropped,
       roleOfCurrentUser,
       followup,
       admin,
@@ -695,7 +501,13 @@ export default {
       mobileAdmin,
       report,
       groupLeader,
-      canAccessFirstTimers
+      canAccessFirstTimers,
+      menuLink,
+      routeToPage,
+      linkClicked,
+      tenantInfo,
+      getUser,
+      primarycolor
     };
   },
 };
@@ -704,17 +516,7 @@ export default {
 <style scoped>
 * {
   box-sizing: border-box;
-}
-
-.workflow img{
-  margin-left: 0px;
-  height: 25px;
-  opacity: 0.5;
-}
-
-.myimage img{
-  height: 30px;
-  opacity: 0.5;
+  font-size: 16px
 }
 
 .user {
@@ -724,75 +526,25 @@ export default {
   margin-left: 16px;
 }
 
-.nav {
-  display: flex;
-  flex-direction: inherit;
-  padding: 8px 20px 24px 4px;
-  background: #ebeff4;
-  z-index: 100;
-  min-height: 100vh;
-  /* border: 2px solid red; */
-}
 
 .nav .link {
-  display: flex;
   justify-content: start;
   color: #02172e;
   text-decoration: none;
   opacity: 0.8;
-  margin: 22px 0 0 0;
-  padding-left: 25px;
-}
-.nav .link2 {
-  display: flex;
-  justify-content: start;
-  color: #02172e;
-  text-decoration: none;
-  opacity: 0.8;
-  margin: 22px 0 0 0;
-  padding-left: 25px;
-}
-
-.user-link,
-.drop-link {
-  width: 100%;
+  margin: 0 0 0 10px;
+  font-size: 0.9em;
+  cursor: pointer
 }
 
 
-.badges-hover:hover {
-  background-color: yellow !important;
-  color: rgb(0, 0, 0) !important;
-  filter:   
-    opacity(95%) !important;
-}
 
-.user-link-icon {
-  float: right;
-  opacity: 0.5;
-}
-
-.nav .link2:hover {
-  filter: 
-    opacity(95%) ;
-}
-.nav .link:hover {
-  filter: grayscale(29%) brightness(3%) hue-rotate(338deg) saturate(940%)
-    opacity(95%) contrast(989%);
-}
-
-.nav router-link:hover {
-  color: #00204412 ;
-}
-
-.link:hover {
-  cursor: pointer;
-}
 .nav .user {
   opacity: 1;
   display: flex;
 }
 
-.nav .user a {
+.user a {
   text-decoration: none;
   color: #1d262d;
   font-size: 17px;
@@ -820,132 +572,7 @@ export default {
   opacity: 0.5;
 }
 
-.more-icon {
-  float: right;
-  transition: all 0.5s ease-in-out;
-  transform: rotate(180deg);
-  opacity: 0.5;
-}
 
-.tbb-icon-rotate {
-  transition: all 0.5s ease-in-out;
-  transform: rotate(0deg);
-  color: #190138;
-  font-size: 20px;
-}
-
-.more-icon:hover {
-  cursor: pointer;
-  filter: grayscale(29%) brightness(3%) hue-rotate(338deg) saturate(940%)
-    opacity(95%) contrast(989%);
-}
-
-.comm {
-  margin-left: -10px;
-}
-
-.link.router-link-exact-active {
-  filter: invert(29%) sepia(74%) saturate(1909%) hue-rotate(197deg)
-    brightness(91%) contrast(189%);
-  opacity: 1 !important;
-  border-left: 4px solid #136acd;
-  border-radius: 2px 2px;
-}
-
-.more-links {
-  height: 0;
-  overflow: hidden;
-  transition: all 0.5s ease-in-out;
-}
-
-/*
-  Only Social and Mobile link active
-
-  Increase height there are more links
-
-  */
-.hide-more-links {
-  transition: all 0.5s ease-in-out;
-  height: 160px;
-}
-
-.follow-up {
-  margin-top: 0 !important;
-}
-
-.more-tab {
-  font-size: 18px;
-  padding-left: 25px;
-  margin: 30px 0 10px 0;
-  color: #02172e;
-  opacity: 0.5;
-}
-
-.more-tab:hover {
-  cursor: pointer;
-}
-
-.dashboard-link {
-  margin-top: 22px !important;
-}
-
-.dd {
-  display: flex;
-  flex-direction: column;
-}
-
-.dd:hover {
-  cursor: pointer;
-}
-
-.dd-list {
-  margin-bottom: 0;
-  margin-left: 20px !important;
-  overflow: hidden;
-  /* Change to 170px */
-  height: 124px;
-  transition: all 0.3s ease-in-out;
-}
-
-.events-list {
-  height: 90px;
-}
-
-.branch-list {
-      height: 217px;
-}
-
-.acc-list {
-  height: 211px;
-}
-.pledge-list {
-  height: 90px;
-}
-
-.people-dd {
-  height: 170px;
-}
-
-.dd-hide-list {
-  height: 0;
-  overflow: hidden;
-  transition: all 0.5s ease-in-out;
-}
-
-.dd-list-item {
-  list-style: none;
-  padding-top: 19px;
-}
-
-.dd-link-item {
-  color: #02172e;
-  text-decoration: none;
-  /* opacity: 0.5; */
-}
-
-.comm-link-icon {
-  margin-left: -10px;
-}
 
 @media screen and (max-width: 1100px) {
   .nav {
@@ -957,17 +584,5 @@ export default {
   /* .nav .link {
     opacity: 1;
   } */
-}
-
-/* .hover-flyover:hover {
-    background: rgba(202, 202, 202, 0.356);
-    cursor: pointer;
-    text-decoration: none;
-} */
-
-.push-link-down {
-    position: relative;
-    left: 0;
-    top: 27em;
 }
 </style>

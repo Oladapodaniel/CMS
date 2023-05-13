@@ -3,180 +3,80 @@
     <div class="container" @click="closeDropdownIfOpen">
       <!-- <div class="container" @click="closeDropdownIfOpen"> -->
       <div class="row">
-        <div class="col-md-12 mb-3 mt-3 offset-3 offset-md-0">
+        <div class="col-md-12 mt-3 px-0">
           <h4 class="font-weight-bold">Compose SMS</h4>
-          <Toast />
+        </div>
+      </div>
 
-          <Dialog
-            header="Select Date and Time"
-            v-model:visible="display"
-            :style="{ width: '50vw', maxWidth: '600px' }"
-            :modal="true"
-          >
-            <div class="row">
-              <div class="col-md-12">
-                <input
-                  type="datetime-local"
-                  id="birthdaytime"
-                  class="form-control"
-                  name="birthdaytime"
-                  v-model="executionDate"
-                />
-              </div>
-            </div>
-            <template #footer>
-              <Button
-                label="Cancel"
-                icon="pi pi-times"
-                @click="() => (display = false)"
-                class="p-button-raised p-button-text p-button-plain mr-3"
-                style="
-                  color: #136acd;
-                  background: #fff !important;
-                  border-radius: 22px;
-                "
-              />
-              <Button
-                label="Schedule"
-                class="p-button-rounded"
-                style="background: #136acd"
-                @click="contructScheduleMessageBody(2, '')"
-              />
-            </template>
-          </Dialog>
+      <div class="row my-3">
+        <div class="col-md-12 px-0">
+          <hr class="hr" />
         </div>
       </div>
 
       <div class="row">
-        <div class="col-md-12 pr-0">
-          <hr class="hr my-1" />
-        </div>
-      </div>
-
-      <div class="row">
-        <div class="col-md-2 pr-md-0 col-lg-2 align-self-center">
+        <div class="col-md-2 px-0 col-lg-2 align-self-center">
           <span class="small-text">Send to : </span>
         </div>
         <div class="p-0 col-md-10 col-lg-10 form-group mb-0">
-          <div class="dropdown">
-            <button
-              class="btn btn-default border dropdown-toggle small-text pl-md-0"
-              type="button"
-              id="dropdownMenuButton"
-              data-toggle="dropdown"
-              aria-haspopup="true"
-              aria-expanded="false"
-              @click="closeDropdownIfOpen"
-            >
-              Select Destination
-            </button>
-            <div
-              class="dropdown-menu w-100"
-              aria-labelledby="dropdownMenuButton"
-            >
-              <a
-                class="dropdown-item c-pointer small-text"
-                v-for="(destination, index) in possibleSMSDestinations"
-                :key="index"
-                @click="showSection(index)"
-                >{{ destination }}</a
-              >
+          <el-dropdown trigger="click" class="w-100">
+            <div class="d-flex justify-content-between border-contribution text-dark w-100" size="large">
+              <span>Select Destination</span>
+              <div>
+                <el-icon class="el-icon--right">
+                  <arrow-down />
+                </el-icon>
+              </div>
             </div>
-          </div>
+            <template #dropdown>
+              <el-dropdown-menu>
+                <el-dropdown-item v-for="(destination, index) in possibleSMSDestinations" :key="index">
+                  <a class="no-decoration text-dark" @click="showSection(index)">
+                    {{ destination }}
+                  </a>
+                </el-dropdown-item>
+              </el-dropdown-menu>
+            </template>
+          </el-dropdown>
         </div>
       </div>
 
-      <div class="row mb-1">
-        <div class="col-md-12 pr-0">
-          <hr class="hr my-1" />
-        </div>
-      </div>
-
-      <div class="row" v-if="sendToAll">
-        <div class="col-md-2"></div>
-        <div class="col-md-10 px-0">
-          <span>
-            <input
-              class="form-control dropdown-toggle my-1 px-1 small-text"
-              type="text"
-              id="dropdownMenu"
-              value="All Contacts"
-              disabled
-            />
-            <span
-              class="close-allcontacts c-pointer"
-              @click="() => (sendToAll = false)"
-              ><i class="pi pi-times"></i
-            ></span>
-          </span>
-        </div>
-      </div>
-
-      <!-- Start TEst -->
       <div class="row mb-2" v-if="groupSelectionTab">
         <div class="col-md-2"></div>
-        <div class="col-md-10 px-0 grey-rounded-border">
-          <ul
-            class="d-flex flex-wrap pl-1 mb-0 dd-item small-text"
-            @click="() => groupSelectInput.focus()"
-          >
-            <li
-              style="list-style: none; min-width: 100px"
-              v-for="(group, index) in selectedGroups"
-              :key="index"
-              class="email-destination d-flex justify-content-between m-1"
-            >
+        <div class="col-md-10 px-0 grey-rounded-border mt-2">
+          <ul class="d-flex flex-wrap pl-1 mb-0 dd-item small-text" @click="() => groupSelectInput.focus()">
+            <li style="list-style: none; min-width: 100px" v-for="(group, index) in selectedGroups" :key="index"
+              class="email-destination d-flex justify-content-between m-1">
               <!-- <span
               class="email-destination m-1"
               
             > -->
               <span>{{ group.name }}</span>
-              <span class="ml-2 remove-email" @click="removeGroup(index)"
-                >x</span
-              >
+              <span class="ml-2 remove-email" @click="removeGroup(index)">x</span>
               <!-- </span> -->
             </li>
             <li style="list-style: none" class="">
-              <input
-                type="text"
-                class="border-0 dd-item"
-                ref="groupSelectInput"
-                :class="{
-                  'w-100': selectedGroups.length === 0,
-                  'minimized-input-width': selectedGroups.length > 0,
-                }"
-                @focus="showGroupList"
-                @click="showGroupList"
-                style="padding: 0.5rem"
-                :placeholder="`${
-                  selectedGroups.length > 0 ? '' : 'Select groups'
-                }`"
-              />
+              <input type="text" class="border-0 dd-item" ref="groupSelectInput" :class="{
+                'w-100': selectedGroups.length === 0,
+                'minimized-input-width': selectedGroups.length > 0,
+              }" @focus="showGroupList" @click="showGroupList" style="padding: 0.5rem" :placeholder="`${selectedGroups.length > 0 ? '' : 'Select groups'
+  }`" />
             </li>
           </ul>
-          <div
-            class="col-md-12 px-2 select-groups-dropdown dd-item pt-2"
-            v-if="groupListShown"
-          >
+          <div class="col-md-12 px-2 select-groups-dropdown dd-item pt-2" v-if="groupListShown">
             <div class="row dd-item" v-if="categories.length === 0">
               <div class="col-md-12 dd-item">
                 <p class="small-text">No groups yet</p>
               </div>
             </div>
-            <div
-              class="row dd-item"
-              v-for="(category, index) in categories"
-              :key="index"
-            >
+            <div class="row dd-item" v-for="(category, index) in categories" :key="index">
               <div class="col-md-12 dd-item" v-if="allGroups[index].length > 0">
                 <div class="row dd-item">
                   <div class="col-md-12 dd-item">
                     <h6 class="text-uppercase dd-item font-weight-bold">
                       {{ category }}
                     </h6>
-                    <a
-                      class="dropdown-item px-1 c-pointer dd-item small-text"
-                      v-for="(group, indx) in allGroups[index]"
+                    <a class="dropdown-item px-1 c-pointer dd-item small-text" v-for="(group, indx) in allGroups[index]"
                       @click="
                         selectGroup(
                           group.category,
@@ -185,9 +85,7 @@
                           index,
                           indx
                         )
-                      "
-                      :key="indx"
-                    >
+                      " :key="indx">
                       {{ group.name }}
                     </a>
                   </div>
@@ -203,83 +101,45 @@
       <div class="row" v-if="membershipSelectionTab">
         <div class="col-md-2"></div>
         <div class="col-md-10 pl-0 grey-rounded-border">
-          <ul
-            class="d-flex flex-wrap px-1 mb-0 m-dd-item"
-            @click="() => memberSelectInput.focus()"
-          >
-            <li
-              style="list-style: none; min-width: 100px"
-              v-for="(member, indx) in selectedMembers"
-              :key="indx"
-              class="email-destination d-flex justify-content-between m-1"
-            >
+          <ul class="d-flex flex-wrap px-1 mb-0 m-dd-item" @click="() => memberSelectInput.focus()">
+            <li style="list-style: none; min-width: 100px" v-for="(member, indx) in selectedMembers" :key="indx"
+              class="email-destination d-flex justify-content-between m-1">
               <!-- <span
               class="email-destination m-1"
               
             > -->
               <span>{{ member.name }}</span>
-              <span class="ml-2 remove-email" @click="removeMember(indx)"
-                >x</span
-              >
+              <span class="ml-2 remove-email" @click="removeMember(indx)">x</span>
               <!-- </span> -->
             </li>
             <li style="list-style: none" class="m-dd-item">
-              <input
-                type="text"
-                class="border-0 m-dd-item text"
-                ref="memberSelectInput"
-                @input="searchForPerson"
-                :class="{
-                  'w-100': selectedMembers.length === 0,
-                  'minimized-input-width': selectedMembers.length > 0,
-                }"
-                @focus="showMemberList"
-                @click="showMemberList"
-                v-model="searchText"
-                style="padding: 0.5rem"
-                :placeholder="`${
-                  selectedMembers.length > 0 ? '' : 'Select from members'
-                }`"
-              />
+              <input type="text" class="border-0 m-dd-item text" ref="memberSelectInput" @input="searchForPerson" :class="{
+                'w-100': selectedMembers.length === 0,
+                'minimized-input-width': selectedMembers.length > 0,
+              }" @focus="showMemberList" @click="showMemberList" v-model="searchText" style="padding: 0.5rem"
+                :placeholder="`${selectedMembers.length > 0 ? '' : 'Select from members'
+                  }`" />
             </li>
           </ul>
-          <div
-            class="col-md-12 px-0 select-groups-dropdown m-dd-item"
-            v-if="memberListShown"
-          >
+          <div class="col-md-12 px-0 select-groups-dropdown m-dd-item" v-if="memberListShown">
             <div class="dropdownmenu pt-0 w-100 m-dd-item">
-              <a
-                class="dropdown-item px-1 c-pointer m-dd-item"
-                v-for="(member, index) in memberSearchResults"
-                :key="index"
-                @click="selectMember(member, index)"
-                >{{ member.name }}</a
-              >
-              <p
-                class="bg-secondary p-1 mb-0 disable m-dd-item"
-                v-if="
-                  searchText.length < 3 &&
-                  loading == false &&
-                  memberSearchResults.length === 0
-                "
-              >
+              <a class="dropdown-item px-1 c-pointer m-dd-item" v-for="(member, index) in memberSearchResults"
+                :key="index" @click="selectMember(member, index)">{{ member.name }}</a>
+              <p class="bg-secondary p-1 mb-0 disable m-dd-item" v-if="
+                searchText.length < 3 &&
+                loading == false &&
+                memberSearchResults.length === 0
+              ">
                 Enter 3 or more characters
               </p>
-              <p
-                aria-disabled="true"
-                class="btn btn-default p-1 mb-0 disable m-dd-item"
-                v-if="
-                  memberSearchResults.length === 0 &&
-                  searchText.length >= 3 &&
-                  !loading
-                "
-              >
+              <p aria-disabled="true" class="btn btn-default p-1 mb-0 disable m-dd-item" v-if="
+                memberSearchResults.length === 0 &&
+                searchText.length >= 3 &&
+                !loading
+              ">
                 No match found
               </p>
-              <p
-                class="btn btn-default p-1 mb-0 disable m-dd-item"
-                v-if="loading && searchText.length >= 3"
-              >
+              <p class="btn btn-default p-1 mb-0 disable m-dd-item" v-if="loading && searchText.length >= 3">
                 <i class="fas fa-circle-notch fa-spin m-dd-item"></i>
               </p>
             </div>
@@ -293,15 +153,9 @@
         <div class="row">
           <div class="col-md-2"></div>
           <div class="col-md-10 py-2 px-0 grey-rounded-border">
-            <span
-              class="email-destination m-1"
-              v-for="(member, indx) in selectedMembers"
-              :key="indx"
-            >
+            <span class="email-destination m-1" v-for="(member, indx) in selectedMembers" :key="indx">
               <span class="small-text">{{ member.name }}</span>
-              <span class="ml-2 remove-email" @click="removeMember(indx)"
-                >x</span
-              >
+              <span class="ml-2 remove-email" @click="removeMember(indx)">x</span>
             </span>
 
             <div class="dropdown">
@@ -317,66 +171,37 @@
                 aria-expanded="false"
               /> -->
 
-              <div
-                class="dropdown-menu pt-0 w-100"
-                aria-labelledby="dropdownMenu"
-              >
-                <a
-                  class="dropdown-item px-1 c-pointer"
-                  v-for="(member, index) in memberSearchResults"
-                  :key="index"
-                  @click="selectMember(member, index)"
-                  >{{ member.name }}</a
-                >
-                <p
-                  class="bg-secondary p-1 mb-0 disable small-text"
-                  v-if="
-                    searchText.length < 3 &&
-                    loading == false &&
-                    memberSearchResults.length === 0
-                  "
-                >
+              <div class="dropdown-menu pt-0 w-100" aria-labelledby="dropdownMenu">
+                <a class="dropdown-item px-1 c-pointer" v-for="(member, index) in memberSearchResults" :key="index"
+                  @click="selectMember(member, index)">{{ member.name }}</a>
+                <p class="bg-secondary p-1 mb-0 disable small-text" v-if="
+                  searchText.length < 3 &&
+                  loading == false &&
+                  memberSearchResults.length === 0
+                ">
                   Enter 3 or more characters
                 </p>
-                <p
-                  aria-disabled="true"
-                  class="btn btn-default p-1 mb-0 disable small-text"
-                  v-if="
-                    memberSearchResults.length === 0 &&
-                    searchText.length >= 3 &&
-                    !loading
-                  "
-                >
+                <p aria-disabled="true" class="btn btn-default p-1 mb-0 disable small-text" v-if="
+                  memberSearchResults.length === 0 &&
+                  searchText.length >= 3 &&
+                  !loading
+                ">
                   No match found
                 </p>
-                <p
-                  class="btn btn-default p-1 mb-0 disable"
-                  v-if="loading && searchText.length >= 3"
-                >
+                <p class="btn btn-default p-1 mb-0 disable" v-if="loading && searchText.length >= 3">
                   <i class="fas fa-circle-notch fa-spin"></i>
                 </p>
               </div>
             </div>
           </div>
-          <div
-            class="col-md-12 grey-rounded-border groups"
-            :class="{ hide: !groupsAreVissible }"
-          >
-            <div
-              class="row"
-              v-for="(category, index) in categories"
-              :key="index"
-            >
+          <div class="col-md-12 grey-rounded-border groups" :class="{ hide: !groupsAreVissible }">
+            <div class="row" v-for="(category, index) in categories" :key="index">
               <div class="col-md-12">
                 <div class="row">
                   <div class="col-md-12">
                     <h4 class="px-14">{{ category }}</h4>
-                    <p
-                      v-for="(group, indx) in allGroups[index]"
-                      @click="selectGroup(group.category, group.id, group.name)"
-                      :key="indx"
-                      class="small-text"
-                    >
+                    <p v-for="(group, indx) in allGroups[index]"
+                      @click="selectGroup(group.category, group.id, group.name)" :key="indx" class="small-text">
                       {{ group.name }}
                     </p>
                   </div>
@@ -392,31 +217,16 @@
         <div class="row">
           <div class="col-md-2"></div>
           <div class="col-md-10 py-2 px-0">
-            <textarea
-              class="form-control w-100 px-1 grey-rounded-border"
-              placeholder="Enter phone number(s)"
-              v-model="phoneNumber"
-            ></textarea>
+            <el-input type="textarea" class="w-100" rows="4" placeholder="Enter phone number(s)" v-model="phoneNumber" />
           </div>
-          <div
-            class="col-md-12 grey-rounded-border groups"
-            :class="{ hide: !groupsAreVissible }"
-          >
-            <div
-              class="row"
-              v-for="(category, index) in categories"
-              :key="index"
-            >
+          <div class="col-md-12 grey-rounded-border groups" :class="{ hide: !groupsAreVissible }">
+            <div class="row" v-for="(category, index) in categories" :key="index">
               <div class="col-md-12">
                 <div class="row">
                   <div class="col-md-12">
                     <h4 class="px-14">{{ category }}</h4>
-                    <p
-                      v-for="(group, indx) in allGroups[index]"
-                      @click="selectGroup(group.category, group.id, group.name)"
-                      :key="indx"
-                      class="small-text"
-                    >
+                    <p v-for="(group, indx) in allGroups[index]"
+                      @click="selectGroup(group.category, group.id, group.name)" :key="indx" class="small-text">
                       {{ group.name }}
                     </p>
                   </div>
@@ -434,102 +244,100 @@
           <div class="d-flex justify-content-between">
             <input type="file" class="form-control-file" @change="uploadFile" />
             <div>
-              <i
-                class="pi pi-times mr-2 c-pointer"
-                @click="() => (contactUpload = false)"
-              ></i>
+              <i class="pi pi-times mr-2 c-pointer" @click="() => (contactUpload = false)"></i>
             </div>
           </div>
           <div class="mt-1">
-            <a
-              href="/files/Upload_Contact Template.csv"
-              class="template-text text-decoration-none font-weight-bold"
-              download
-              >Download template</a
-            >
+            <a href="/files/Upload_Contact Template.csv" class="template-text text-decoration-none font-weight-bold"
+              download>Download template</a>
           </div>
         </div>
       </div>
 
-      <div
-        class="row mt-1"
-        v-if="
-          phoneNumberSelectionTab || membershipSelectionTab || groupSelectionTab
-        "
-      >
+      <div class="row mt-1" v-if="
+        phoneNumberSelectionTab || membershipSelectionTab || groupSelectionTab
+      ">
         <div class="col-md-12 pr-0">
           <hr class="hr my-1" />
         </div>
       </div>
 
-      <div class="row">
-        <div class="col-md-2">
+      <div class="row mt-3">
+        <div class="col-md-2 px-0">
           <span class="font-weight-600 small-text">Sender: </span>
         </div>
         <div class="p-0 col-md-10">
-          <div class="dropdown">
-            <button
-              class="btn btn-default dropdown-toggle small-text pl-md-0 border"
-              type="button"
-              id="dropdownMenuButton"
-              data-toggle="dropdown"
-              aria-haspopup="true"
-              aria-expanded="false"
-            >
-              <!-- @click="closeDropdownIfOpen" -->
+          <!-- {{searchSenderText}} -->
+          <SenderID @setselectedsenderid="setSelectedSenderIdCheckin" />
+          <!-- <el-dropdown trigger="click" class="w-100">
+            <el-input v-model="searchSenderText" placeholder="Search sender id">
+              <template #append>
+                <el-button>
+                  <el-icon :size="15">
+                    <ArrowDownBold />
+                  </el-icon>
+                </el-button>
+              </template></el-input>
+            <el-icon class="el-icon--right"><arrow-down /></el-icon>
+            <template #dropdown>
+              <el-dropdown-menu>
+                <el-dropdown-item v-for="(item, index) in searchSenderIDs" :key="index" @click="setIdToSubject(item)">
+                  {{ item.mask }}
+                </el-dropdown-item>
+                <el-dropdown-item class="primary--text" data-toggle="modal" data-target="#senderIdModal" divided>
+                  <el-icon>
+                    <CirclePlusFilled />
+                  </el-icon> Request new sender ID
+                </el-dropdown-item>
+              </el-dropdown-menu>
+            </template>
+          </el-dropdown> -->
+          <!-- <div class="dropdown">
+            <button class="btn btn-default dropdown-toggle small-text pl-md-0 border" type="button"
+              id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+              
               {{
                 Object.keys(selectedSender).length > 0
-                  ? selectedSender.mask
-                  : "Select Sender Id"
+                ? selectedSender.mask
+                : "Select Sender Id"
               }}
             </button>
-            <div
-              class="dropdown-menu w-100 pb-0"
-              aria-labelledby="dropdownMenuButton"
-            >
+            <div class="dropdown-menu w-100 pb-0" aria-labelledby="dropdownMenuButton">
               <div class="px-2"></div>
-              <a
-                v-for="(item, index) in searchSenderIDs"
-                :key="index"
-                class="dropdown-item c-pointer small-text font-weight-700 py-2"
-                @click="setIdToSubject(item)"
-                >{{ item.mask }}
+              <a v-for="(item, index) in searchSenderIDs" :key="index"
+                class="dropdown-item c-pointer small-text font-weight-700 py-2" @click="setIdToSubject(item)">{{
+                  item.mask
+                }}
               </a>
-              <a
-                class="
-                  dropdown-item
-                  c-pointer
-                  font-weight-700
-                  text-center
-                  create-new-bg
-                  border-top
-                  py-2
-                "
-                data-toggle="modal"
-                data-target="#senderIdModal"
-                ><i class="pi pi-plus-circle"></i>&nbsp;Request new sender id
+              <a class="
+                      dropdown-item
+                      c-pointer
+                      font-weight-700
+                      text-center
+                      create-new-bg
+                      border-top
+                      py-2
+                    " data-toggle="modal" data-target="#senderIdModal"><i class="pi pi-plus-circle"></i>&nbsp;Request new
+                sender id
               </a>
             </div>
-          </div>
+          </div> -->
         </div>
       </div>
 
-      <div class="row">
-        <div class="col-md-2">
+      <div class="row mt-3">
+        <div class="col-md-2 px-0">
           <span class="font-weight-600 small-text">Message: </span>
         </div>
         <div class="col-md-10 px-0">
-          <textarea
+          <el-input type="textarea" rows="10" v-model="editorData" />
+          <!-- <textarea
             rows="10"
             class="text-area my-2 small-text"
             v-model="editorData"
-          ></textarea>
+          ></textarea> -->
           <div class="col-md-12 px-0 small-text">
-            <p
-              class="bg-success mb-0 p-1"
-              v-if="editorData.length > 0"
-              :class="{ amber: charactersCount > 160 }"
-            >
+            <p class="bg-success mb-0 p-1" v-if="editorData.length > 0" :class="{ amber: charactersCount > 160 }">
               <span>Characters count {{ charactersCount }}</span>
               <span class="float-right">Page {{ pageCount }}</span>
             </p>
@@ -542,7 +350,7 @@
           <div class="row">
             <div class="col-md-2"></div>
             <div class="col-md-10 pl-0">
-              <input type="checkbox" v-model="isPersonalized" class="mr-3" />
+              <el-checkbox v-model="isPersonalized" class="mr-3" size="large" />
               <span class="font-weight-700 px-14">Personal Message</span>
             </div>
           </div>
@@ -551,11 +359,9 @@
           <div class="row">
             <div class="col-md-2"></div>
             <div class="col-md-10 pl-0">
-              <span class="hint"
-                >Insert #name# any where you want the contact name to appear in
+              <span class="hint">Insert #name# any where you want the contact name to appear in
                 the message, it will be replaced by the actual name of the
-                member when sending the message.</span
-              >
+                member when sending the message.</span>
             </div>
           </div>
         </div>
@@ -563,37 +369,46 @@
 
       <div class="row mt-4 mb-5">
         <div class="col-md-12">
-          <p
-            class="mb-1 text-danger text-right font-weight-700"
-            v-if="invalidDestination"
-          >
+          <p class="mb-1 text-danger text-right font-weight-700" v-if="invalidDestination">
             Please select destination
           </p>
-          <p
-            class="mb-1 text-danger text-right font-weight-700"
-            v-if="invalidMessage"
-          >
+          <p class="mb-1 text-danger text-right font-weight-700" v-if="invalidMessage">
             Enter your message
           </p>
         </div>
         <div class="col-md-12 d-flex justify-content-end">
-          <span :class="{ 'cursor-close': disableBtn }">
+          <el-dropdown split-button :color="primarycolor" class="split-button" size="large" trigger="click"
+            @click="sendSMSDialog = true">
+            Send
+            <template #dropdown>
+              <el-dropdown-menu>
+                <el-dropdown-item @click="showScheduleModal">Schedule</el-dropdown-item>
+                <el-dropdown-item @click="draftMessage">Save as draft</el-dropdown-item>
+              </el-dropdown-menu>
+            </template>
+          </el-dropdown>
+
+          <router-link class="no-decoration" :to="route.fullPath.includes('/tenant/sms/compose')
+            ? '/tenant/sms/sent'
+            : '/errorpage/expiredSubscription'
+          ">
+            <el-button class="ml-3 secondary-button" round>Discard</el-button>
+          </router-link>
+
+          <!-- <span :class="{ 'cursor-close': disableBtn }">
             <SplitButton
               label="Send"
               :model="sendOptions"
               :disabled="disableBtn"
-              @click="data"
               data-toggle="modal"
               data-target="#sendsmsbtn"
             ></SplitButton>
-          </span>
-          <router-link
-            :to="
-              route.fullPath.includes('/tenant/sms/compose')
-                ? '/tenant/sms/sent'
-                : '/errorpage/expiredSubscription'
-            "
-            class="
+          </span> -->
+          <!-- <router-link :to="
+            route.fullPath.includes('/tenant/sms/compose')
+              ? '/tenant/sms/sent'
+              : '/errorpage/expiredSubscription'
+          " class="
               default-btn
               d-flex
               justify-content-center
@@ -601,312 +416,178 @@
               align-items-center
               ml-3
               text-decoration-none text-dark
-            "
-          >
+            ">
             Discard
-          </router-link>
+          </router-link> -->
         </div>
-        <div class="row">
+      </div>
+
+      <!-- Send SMS modal -->
+      <el-dialog v-model="sendSMSDialog" :title="sendModalHeader"
+        :width="mdAndUp || lgAndUp || xlAndUp ? `50%` : xsOnly ? `90%` : `70%`" align-center class="p-4">
+        <div class="row" v-if="!nigerian">
+          <div class="col-md-12 text-center">
+            <el-button :color="primarycolor" @click="contructScheduleMessageBody(1, '')" round>Send SMS now</el-button>
+            <!-- <button class=" primary-btn default-btn px-4 my-2 border-0 primary-bg text-white outline-none extra-btn"
+              data-dismiss="modal" @click="contructScheduleMessageBody(1, '')">
+              Send SMS Now
+            </button> -->
+          </div>
+        </div>
+
+        <div class="row" v-else>
           <div class="col-md-12">
-            <div
-              class="modal fade"
-              id="sendsmsbtn"
-              tabindex="-1"
-              aria-labelledby="exampleModalLabel"
-              aria-hidden="true"
-            >
-              <div class="modal-dialog modal-dialog-centered modal-lg">
-                <div class="modal-content">
-                  <div class="modal-header grey-background">
-                    <h5 class="modal-title" id="exampleModalLabel">
-                      <i class="pi pi-user mr-2"></i>
-                      {{ sendModalHeader }}
-                    </h5>
-                    <button
-                      type="button"
-                      class="close"
-                      data-dismiss="modal"
-                      aria-label="Close"
-                    >
-                      <span aria-hidden="true">&times;</span>
-                    </button>
-                  </div>
-                  <div class="modal-body">
-                    <div class="col-md-12">
-              <!-- <Dialog
-                header="Action Needed"
-                v-model:visible="displays"
-                :style="{ width: '70vw', maxWidth: '600px' }"
-                :modal="true"
-              >
-                <div class="row">
-                  <div class="col-md-12">
-                    <div class="col-md-12  mt-2 notecolour font-weight-bold">
-                           <span class="text-dark font-weight-bold "> NB :</span>  Messages sent between 8pm to 8am (Night
-                            Messages) will be delivered using the dedicated
-                            phone number. If you wish to use sender ID, kindly
-                            send messages between 8am in the morning to 8pm in
-                            the evening.
-                          </div>
-                  </div>
-                </div>
-              </Dialog> -->
+            <div class="row">
+              <div class="col-md-12 px-1">
+                <p>
+                  We are providing more options to reach and
+                  communicate with your members
+                </p>
+              </div>
             </div>
-                    <div class="row" v-if="!nigerian">
-                      <div class="col-md-12 text-center">
-                        <button
-                          class="
-                            primary-btn
-                            default-btn
-                            px-4
-                            my-2
-                            border-0
-                            primary-bg
-                            text-white
-                            outline-none
-                            extra-btn
-                          "
-                          data-dismiss="modal"
-                          @click="contructScheduleMessageBody(1, '')"
-                        >
-                          Send SMS Now
-                        </button>
-                      </div>
+
+            <div class="row">
+              <div class="col-md-12 px-1">
+                <hr class="hr" />
+              </div>
+            </div>
+
+            <div class="row d-flex justify-content-between">
+              <div class="col-md-6 px-1">
+                <div class="container">
+                  <div class="row">
+                    <div class="col-md-12">
+                      <label for="" class="small-text font-weight-600 py-2">NEW** HYBRID BULK SMS - 100% SMS DELIVERY
+                        (SENDER ID AND DEDICATED)</label>
                     </div>
-
-                    <div class="row" v-else>
-                      <div class="col-md-12">
-                        <div class="row">
-                          <div class="col-md-12 px-1">
-                            <p>
-                              We are providing more options to reach and
-                              communicate with your members
-                            </p>
-                          </div>
-                        </div>
-
-                        <div class="row">
-                          <div class="col-md-12 px-1">
-                            <hr class="hr" />
-                          </div>
-                        </div>
-
-                        <div class="row d-flex justify-content-between">
-                          <div class="col-md-6 px-1">
-                            <div class="container">
-                              <div class="row">
-                                <div class="col-md-12">
-                                  <label
-                                    for=""
-                                    class="small-text font-weight-600 py-2"
-                                    >NEW** HYBRID BULK SMS - 100% SMS DELIVERY
-                                    (SENDER ID AND DEDICATED)</label
-                                  >
-                                </div>
-                                <div
-                                  class="
-                                    col-md-12
-                                    send-now-div
-                                    py-2
-                                    my-2
-                                    d-flex
-                                    justify-content-center
-                                  "
-                                >
-                                  <button
-                                    class="
-                                      primary-btn
-                                      default-btn
-                                      border-0
-                                      primary-bg
-                                      px-4
-                                      my-2
-                                      font-weight-600
-                                      outline-none
-                                    "
-                                    data-dismiss="modal"
-                                    @click="
-                                      contructScheduleMessageBody(
-                                        1,
-                                        'hybridKonnect'
-                                      )
-                                    "
-                                  >
-                                    Send SMS Now
-                                  </button>
-                                </div>
-                                <div class="col-md-12 px-0">
-                                  <hr class="hr my-2" />
-                                </div>
-                                <div class="col-md-12 px-0 d-flex flex-column">
-                                  <span>Sender ID Customization - YES</span>
-                                  <span>Not Affected by DND.</span>
-                                  <span
-                                    >Failed SMS are Retried with Other
-                                    Options.</span
-                                  >
-                                </div>
-                              </div>
-                            </div>
-                          </div>
-
-                          <!-- <div class="col-md-12 px-0">
-                            <hr class="hr my-2" />
-                          </div> -->
-
-                          <div class="col-md-6 px-1 mt-3 mt-md-0">
-                            <div class="container">
-                              <div class="row">
-                                <div class="col-md-12">
-                                  <label
-                                    for=""
-                                    class="small-text font-weight-600 py-2"
-                                    >DEDICATED NUMBER CHANNEL- USES NUMBER AS
-                                    SENDER ID</label
-                                  >
-                                </div>
-                                <div
-                                  class="
-                                    col-md-12
-                                    my-2
-                                    send-now-div
-                                    py-2
-                                    d-flex
-                                    justify-content-center
-                                  "
-                                >
-                                  <button
-                                    class="
-                                      primary-btn
-                                      default-btn
-                                      px-4
-                                      border-0
-                                      my-2
-                                      grey-background
-                                      text-grey
-                                      outline-none
-                                    "
-                                    data-dismiss="modal"
-                                    @click="
-                                      contructScheduleMessageBody(
-                                        1,
-                                        'hostedsms'
-                                      )
-                                    "
-                                  >
-                                    Send SMS Now
-                                  </button>
-                                </div>
-                                <div class="col-md-12 px-0">
-                                  <hr class="hr my-2" />
-                                </div>
-                                <div class="col-md-12 px-0 d-flex flex-column">
-                                  <span>Sender ID Customization - NO</span>
-                                  <span>Not Affected by DND.</span>
-                                  <span
-                                    >Failed SMS are not retried with other
-                                    options.</span
-                                  >
-                                </div>
-                              </div>
-                            </div>
-                          </div>
-                          
-                        </div>
-                        <div class="row mt-3">
-                          <div class="col-md-12 px-1">
-                            <hr class="hr" />
-                          </div>
-                        </div>
-                        <div class="row">
-                          <div class="col-md-12 small-text mt-2 notecolour font-weight-bold">
-                           <span class="text-dark font-weight-bold "> NB :</span>  Messages sent between 8pm to 8am (Night
-                            Messages) will be delivered using the dedicated
-                            phone number. If you wish to use sender ID, kindly
-                            send messages between 8am in the morning to 8pm in
-                            the evening.
-                          </div>
-                        </div>
-                      </div>
+                    <div class=" col-md-12 send-now-div py-2 my-2 d-flex justify-content-center">
+                      <el-button :color="primarycolor" @click="contructScheduleMessageBody(1, 'hybridKonnect')" round>Send
+                        SMS now</el-button>
+                      <!-- <button class=" primary-btn default-btn border-0 primary-bg px-4 my-2 font-weight-600 outline-none"
+                        data-dismiss="modal" @click="contructScheduleMessageBody(1, 'hybridKonnect')">
+                        Send SMS Now
+                      </button> -->
+                    </div>
+                    <div class="col-md-12 px-0">
+                      <hr class="hr my-2" />
+                    </div>
+                    <div class="col-md-12 px-0 d-flex flex-column">
+                      <span>Sender ID Customization - YES</span>
+                      <span>Not Affected by DND.</span>
+                      <span>Failed SMS are Retried with Other
+                        Options.</span>
                     </div>
                   </div>
-                  <!-- <div class="modal-footer">
-                    
-                  </div> -->
                 </div>
+              </div>
+              <div class="col-md-6 px-1 mt-3 mt-md-0">
+                <div class="container">
+                  <div class="row">
+                    <div class="col-md-12">
+                      <label for="" class="small-text font-weight-600 py-2">DEDICATED NUMBER CHANNEL- USES NUMBER AS
+                        SENDER ID</label>
+                    </div>
+                    <div class=" col-md-12 my-2 send-now-div py-2 d-flex justify-content-center">
+                      <el-button type="info" @click="contructScheduleMessageBody(1, 'hostedsms')" round>Send SMS
+                        now</el-button>
+                      <!-- <button class=" primary-btn default-btn px-4 border-0 my-2 grey-background text-grey outline-none"
+                        data-dismiss="modal" @click="contructScheduleMessageBody(1, 'hostedsms')">
+                        Send SMS Now
+                      </button> -->
+                    </div>
+                    <div class="col-md-12 px-0">
+                      <hr class="hr my-2" />
+                    </div>
+                    <div class="col-md-12 px-0 d-flex flex-column">
+                      <span>Sender ID Customization - NO</span>
+                      <span>Not Affected by DND.</span>
+                      <span>Failed SMS are not retried with other
+                        options.</span>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+            </div>
+            <div class="row mt-3">
+              <div class="col-md-12 px-1">
+                <hr class="hr" />
+              </div>
+            </div>
+            <div class="row">
+              <div class="col-md-12 small-text mt-2 notecolour font-weight-bold">
+                <span class="text-dark font-weight-bold "> NB :</span>
+                <span>
+                  Messages sent between 8pm to 8am (Night
+                  Messages) will be delivered using the dedicated
+                  phone number. If you wish to use sender ID, kindly
+                  send messages between 8am in the morning to 8pm in
+                  the evening.
+                </span>
               </div>
             </div>
           </div>
         </div>
-      </div>
+      </el-dialog>
+
+      <!-- Schedudle SMS modal -->
+
+      <el-dialog v-model="display" :title="sendModalHeader"
+        :width="mdAndUp || lgAndUp || xlAndUp ? `50%` : xsOnly ? `90%` : `70%`" align-center class="p-4">
+        <div class="row">
+          <!-- <el-date-picker v-model="executionDate" type="datetime" class="w-100" placeholder="Select date and time" /> -->
+          <input type="datetime-local" class="form-control my-3" v-model="executionDate" placeholder="Select date and time" />
+        </div>
+        <template #footer>
+          <span class="dialog-footer">
+            <el-button @click="display = false" class="secondary-button" round>Cancel</el-button>
+            <el-button :color="primarycolor" @click="contructScheduleMessageBody(2, '')" round>
+              Schedule
+            </el-button>
+          </span>
+        </template>
+      </el-dialog>
+
       <!-- Create sender id modal -->
       <!-- Modal -->
-      <div
-        class="modal fade"
-        id="senderIdModal"
-        tabindex="-1"
-        role="dialog"
-        aria-labelledby="exampleModalCenterTitle"
-        aria-hidden="true"
-      >
+      <div class="modal fade" id="senderIdModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle"
+        aria-hidden="true">
         <div class="modal-dialog modal-dialog-centered" role="document">
           <div class="modal-content">
             <div class="modal-header">
               <h5 class="modal-title" id="exampleModalLongTitle">
-                Create sender id
+                Request Sender ID
               </h5>
-              <button
-                type="button"
-                class="close"
-                data-dismiss="modal"
-                aria-label="Close"
-              >
+              <button type="button" class="close" data-dismiss="modal" aria-label="Close" ref="closeModal">
                 <span aria-hidden="true">&times;</span>
               </button>
             </div>
             <div class="modal-body">
               <div class="container">
                 <div class="row">
-                  <div class="col-12">Enter sender id</div>
+                  <div class="col-12">Enter Sender ID</div>
                   <div class="col-12 mt-2">
-                    <input
-                      type="text"
-                      class="form-control"
-                      placeholder="Enter sender id"
-                      v-model="senderIdText"
-                      @input="validateSenderId"
-                      ref="senderIdRef"
-                    />
-                    <div class="invalid-feedback text-danger pl-2">
-                      <ul>
-                        <li>Should not contain any special characters</li>
-                        <li>
-                          Should not be less than 3 characters and more than 11
-                          characters
-                        </li>
-                      </ul>
-                    </div>
+                    <el-form ref="ruleFormRef" :model="senderIDValidateForm" label-width="100px" class="demo-ruleForm"
+                      :rules="rules">
+                      <el-form-item class="sender-id-input" prop="senderIdText">
+                        <el-input type="text" placeholder="Enter sender id" v-model="senderIDValidateForm.senderIdText" />
+                      </el-form-item>
+                    </el-form>
                   </div>
                 </div>
               </div>
             </div>
             <div class="modal-footer">
-              <button
-                type="button"
-                class="btn default-btn"
-                data-dismiss="modal"
-              >
+              <el-button class="secondary-button" data-dismiss="modal" round>Cancel</el-button>
+              <el-button :color="primarycolor" :loading="senderidloading" @click="submitSenderForm(ruleFormRef)"
+                round>Request</el-button>
+              <!-- <button type="button" class="btn default-btn" data-dismiss="modal">
                 Close
               </button>
-              <button
-                type="button"
-                class="btn default-btn primary-bg border-0 text-white"
-                data-dismiss="modal"
-                @click="saveSenderId"
-                :disabled="requestbtn"
-              >
+              <button type="button" class="btn default-btn primary-bg border-0 text-white" data-dismiss="modal"
+                >
                 Request sender id
-              </button>
+              </button> -->
             </div>
           </div>
         </div>
@@ -916,12 +597,11 @@
 </template>
 
 <script>
-import { computed, onMounted, ref } from "vue";
+import { computed, onMounted, ref, inject, reactive, watchEffect } from "vue";
 import composeService from "../../services/communication/composer";
 import composerObj from "../../services/communication/composer";
 import { useRoute } from "vue-router";
 import { useRouter } from "vue-router";
-import { useToast } from "primevue/usetoast";
 import store from "../../store/store";
 import axios from "@/gateway/backendapi";
 import stopProgressBar from "../../services/progressbar/progress";
@@ -929,9 +609,17 @@ import communicationService from "../../services/communication/communicationserv
 import dateFormatter from "../../services/dates/dateformatter";
 import moment from "moment";
 import swal from 'sweetalert';
+import deviceBreakpoint from "../../mixins/deviceBreakpoint";
+import { ElMessage } from "element-plus";
+import { useToast } from "primevue/usetoast";
+import SenderID from "../../components/senderId/SenderId.vue";
 
 export default {
+  components: {
+    SenderID
+  },
   setup() {
+    const primarycolor = inject('primarycolor')
     const toast = useToast();
     const router = useRouter();
     const editorData = ref("");
@@ -940,6 +628,12 @@ export default {
       // The configuration of the editor.
       height: "800",
     };
+    const ruleFormRef = ref()
+    const senderIDValidateForm = reactive({
+      senderIdText: ''
+    })
+    const closeModal = ref()
+    const senderidloading = ref(false)
 
     const possibleSMSDestinations = composeService.possibleSMSDestinations;
     const groupsAreVissible = ref(false);
@@ -947,23 +641,33 @@ export default {
     const membershipSelectionTab = ref(false);
     const phoneNumberSelectionTab = ref(false);
     const selectedGroups = ref([]);
-    const sendToAll = ref(false);
+    // const sendToAll = ref(false);
     const executionDate = ref("");
     const contactUpload = ref(false);
     const multipleContact = ref({});
-    const senderRef = ref(null);
-    const senderIdText = ref("");
     const tenantId = ref("");
     const senderIDs = ref([]);
     const selectedSender = ref({});
     const searchSenderText = ref("");
     const senderIdRef = ref();
+    const iSoStringFormat = ref('')
     const requestbtn = ref(false);
-    const displays = ref(false);
+    const sendSMSDialog = ref(false);
+    const { mdAndUp, lgAndUp, xlAndUp, xsOnly } = deviceBreakpoint();
 
     const toggleGroupsVissibility = () => {
       groupsAreVissible.value = !groupsAreVissible.value;
     };
+
+    
+
+  watchEffect(() =>{
+      if(executionDate.value){
+       iSoStringFormat.value = dateFormatter.getISOStringGMT(executionDate.value)
+      }
+  })
+    
+   
 
     const showSection = (index) => {
       if (index === 1) groupSelectionTab.value = true;
@@ -971,7 +675,7 @@ export default {
       if (index === 3) phoneNumberSelectionTab.value = true;
       if (index === 4) contactUpload.value = true;
       if (index === 0) {
-        sendToAll.value = true;
+        groupSelectionTab.value = true;
         selectedGroups.value.push({
           data: "membership_00000000-0000-0000-0000-000000000000",
           name: "All Contacts",
@@ -1071,6 +775,11 @@ export default {
     const invalidMessage = ref(false);
     const invalidDestination = ref(false);
 
+    const setSelectedSenderIdCheckin = (payload) => {
+      searchSenderText.value = payload
+      subject.value = payload;
+    }
+
     const sendSMS = (data) => {
       invalidDestination.value = false;
       invalidMessage.value = false;
@@ -1079,7 +788,6 @@ export default {
         selectedGroups.value.length === 0 &&
         !phoneNumber.value &&
         selectedMembers.value.length === 0 &&
-        !sendToAll.value &&
         !multipleContact.value instanceof File
       ) {
         invalidDestination.value = true;
@@ -1090,12 +798,10 @@ export default {
         invalidMessage.value = true;
         return false;
       }
-
-      toast.add({
-        severity: "info",
-        summary: "Sending SMS",
-        detail: "SMS is being sent....",
-        life: 2500,
+      ElMessage({
+        type: "info",
+        message: "SMS is being sent...",
+        duration: 3000,
       });
 
       // if (selectedMembers.value.length > 0) data.contacts = selectedMembers.value;
@@ -1104,15 +810,9 @@ export default {
         .sendMessage("/api/Messaging/sendSms", data)
         .then((res) => {
           disableBtn.value = false;
-          // console.log(res.data.message, "God is good");
+          console.log(res.data, "God is good");
           if (res.data.status) {
-            // toast.add({
-            //   severity: "success",
-            //   summary: "SMS Sent",
-            //   detail: `SMS Sent successfully`,
-            //   life: 7000,
-            // });
-            
+
             swal({
               title: "Success!",
               text: "Your sms has been sent successfully!",
@@ -1121,45 +821,36 @@ export default {
               confirmButtonColor: '#8CD4F5',
               dangerMode: true,
             })
-            
-          }else if(res.data.message.includes("You do not have sufficient")){
-            toast.add({
-              severity: "warn",
-              summary: "Insufficient Unit",
-              detail: `${res.data.message}`,
-              life: 6000,
-            });
 
           } else if (
             res.data &&
             res.data.message &&
-            res.data.message.includes("You do not have")
+            res.data.message.toLowercase().includes("you do not have")
           ) {
-            toast.add({
-              severity: "warn",
-              summary: "Insufficient Unit",
-              detail: `${res.data.message}`,
-              life: 6000,
+            ElMessage({
+              message: "Insufficient unit" + ", " + res.data.message,
+              type: "warning",
+              duration: 6000,
             });
           } else {
-            toast.add({
-              severity: "warn",
-              summary: "Not sent",
-              detail: `Message not sent, please try again`,
-              life: 6000,
+            ElMessage({
+              type: "warning",
+              message: "Message not sent, please try again",
+              duration: 6000,
             });
           }
 
           store.dispatch("removeSMSUnitCharge", res.data.unitsUsed);
+          console.log(res.data, "res.data:");
 
           // Save the res to store in other to get it in the view sent sms page
           let sentObj = {
-            message: res.data.sentMessageDTO.message,
-            id: res.data.channel,
-            smsUnitsUsed: res.data.sentMessageDTO.smsUnitsUsed,
+            message: res.data.sentMessageDTO ? res.data.sentMessageDTO.message : "",
+            id: res.data && res.data.sentMessageDTO && res.data.sentMessageDTO.id ? res.data.sentMessageDTO.id : "",
+            smsUnitsUsed: res.data.sentMessageDTO ? res.data.sentMessageDTO.smsUnitsUsed : "",
             dateSent: "",
             deliveryReport: [{ report: "-" }],
-            report: res.data.sentMessageDTO.report,
+            report: res.data.sentMessageDTO ? res.data.sentMessageDTO.report : "",
           };
           store.dispatch("communication/addSmsToSentList", sentObj);
           setTimeout(() => {
@@ -1172,26 +863,22 @@ export default {
           toast.removeAllGroups();
           console.log(err);
           if (err.toString().toLowerCase().includes("network error")) {
-            toast.add({
-              severity: "warn",
-              summary: "You 're Offline",
-              detail: "Please ensure you have internet access",
-              life: 4000,
+            ElMessage({
+              type: "warning",
+              message: "Please ensure you have internet access",
+              duration: 6000,
             });
           } else if (err.toString().toLowerCase().includes("timeout")) {
-            toast.add({
-              severity: "warn",
-              summary: "Request Delayed",
-              detail:
-                "SMS took too long, please check your network and try again",
-              life: 4000,
+            ElMessage({
+              type: "warning",
+              message: "SMS took too long, please check your network and try again",
+              duration: 6000,
             });
           } else {
-            toast.add({
-              severity: "warn",
-              summary: "Failed operation",
-              detail: "SMS sending failed, Please try again",
-              life: 400,
+            ElMessage({
+              type: "warning",
+              message: "SMS sending failed, Please try again",
+              duration: 6000,
             });
           }
         });
@@ -1199,7 +886,7 @@ export default {
 
     const draftMessage = async () => {
       try {
-        const response = await composerObj.saveDraft(
+        await composerObj.saveDraft(
           {
             body: editorData.value,
             isDefaultBirthDayMessage: false,
@@ -1207,19 +894,16 @@ export default {
           "/api/Messaging/PostSmsDraft"
         );
         store.dispatch("communication/getSMSDrafts");
-        toast.add({
-          severity: "success",
-          summary: "Draft Saved",
-          detail: "Message saved as draft",
-          life: 2500,
+        ElMessage({
+          type: "success",
+          message: "Message saved as draft",
+          duration: 6000,
         });
       } catch (error) {
-        console.log(error);
-        toast.add({
-          severity: "warn",
-          summary: "Failed",
-          detail: "Message not saved as draft",
-          life: 2500,
+        ElMessage({
+          type: "warning",
+          message: "Message not saved as draft",
+          duration: 6000,
         });
       }
     };
@@ -1231,7 +915,6 @@ export default {
         contacts: [],
         isPersonalized: isPersonalized.value,
         groupedContacts: selectedGroups.value.map((i) => i.data),
-        // toContacts: sendToAll./value ? "allcontacts_00000000-0000-0000-0000-000000000000" : "",
         isoCode: isoCode.value,
         category: "",
         emailAddress: "",
@@ -1266,19 +949,18 @@ export default {
         if (multipleContact.value instanceof File) {
           sendSMSToUploadedContacts(gateway);
         } else if (sendOrSchedule == 2) {
-          const dateToBeExecuted = executionDate.value;
-          data.executionDate = dateToBeExecuted.split("T")[0];
-          data.date = dateToBeExecuted;
-          data.time = dateToBeExecuted.split("T")[1];
+          data.executionDate = iSoStringFormat.value
+          data.date = iSoStringFormat.value
+          data.time = iSoStringFormat.value.split("T")[1];
           scheduleMessage(data);
         } else {
           sendSMS(data);
         }
       } else {
-        toast.add({
-          severity: "warn",
-          summary: "No sender id selected",
-          detail: `Kindly select a sender id and try again`,
+        ElMessage({
+          type: "warning",
+          message: "No sender id selected, Kindly select a sender id and try again",
+          duration: 7000,
         });
       }
     };
@@ -1289,24 +971,21 @@ export default {
 
     const scheduleMessage = async (data) => {
       display.value = false;
-      // const formattedDate = dateFormatter.monthDayTime(data.executionDate);
-      // console.log(formattedDate, "Formatted Date");
-      // console.log(data.executionDate);
-
-      // console.log(data);
+      const formattedDate = dateFormatter.monthDayTime(data.date)
       try {
         await composerObj.sendMessage("/api/Messaging/saveSmsSchedule", data);
-        toast.add({
-          severity: "success",
-          summary: "message Scheduled",
-          detail: `Message scheduled for ${data.time}`,
+        router.push('/tenant/sms/scheduled')
+        ElMessage({
+          type: "success",
+          message: `Message scheduled for ${formattedDate}`,
+          duration: 6000,
         });
       } catch (error) {
         console.log(error);
-        toast.add({
-          severity: "error",
-          summary: "Schedule Failed",
-          detail: "Could not schedule message",
+        ElMessage({
+          type: "error",
+          message: "Schedule failed, please try again",
+          duration: 6000,
         });
       }
     };
@@ -1321,20 +1000,17 @@ export default {
 
       try {
         let { data } = await axios.post("/api/messaging/upload", formData);
-        // console.log(data);
-        toast.add({
-          severity: "success",
-          summary: "Success",
-          detail: data.response,
-          life: 5000,
+        ElMessage({
+          type: "success",
+          message: data.response,
+          duration: 6000,
         });
       } catch (err) {
         console.log(err);
-        toast.add({
-          severity: "error",
-          summary: "Not sent",
-          detail: "Sending failed, please try again",
-          life: 5000,
+        ElMessage({
+          type: "error",
+          message: "Sending failed, please try again",
+          duration: 6000,
         });
       }
     };
@@ -1391,27 +1067,27 @@ export default {
       return false;
     });
 
-    const sendOptions = [
-      {
-        label: "Schedule",
-        icon: "pi pi-clock",
-        command: () => {
-          showScheduleModal();
-        },
-      },
-      {
-        label: "Save as Draft",
-        icon: "pi pi-save",
-        command: () => {
-          draftMessage();
-        },
-      },
-      // {
-      //   label: "Upload",
-      //   icon: "pi pi-upload",
-      //   to: "/fileupload",
-      // },
-    ];
+    // const sendOptions = [
+    //   {
+    //     label: "Schedule",
+    //     icon: "pi pi-clock",
+    //     command: () => {
+    //       showScheduleModal();
+    //     },
+    //   },
+    //   {
+    //     label: "Save as Draft",
+    //     icon: "pi pi-save",
+    //     command: () => {
+    //       draftMessage();
+    //     },
+    //   },
+    //   // {
+    //   //   label: "Upload",
+    //   //   icon: "pi pi-upload",
+    //   //   to: "/fileupload",
+    //   // },
+    // ];
 
     const allGroups = ref([]);
     const categories = ref([]);
@@ -1444,24 +1120,24 @@ export default {
     const groupSelectInput = ref(null);
     const memberSelectInput = ref(null);
 
-    const data = () => {
-      displays.value = true
-      const data = {
-        subject: subject.value,
-        message: editorData.value,
-        contacts: [],
-        isPersonalized: isPersonalized.value,
-        groupedContacts: selectedGroups.value.map((i) => i.data),
-        toContacts: sendToAll.value
-          ? "allcontacts_00000000-0000-0000-0000-000000000000"
-          : "",
-        isoCode: isoCode.value,
-        category: "",
-        emailAddress: "",
-        emailDisplayName: "",
-        // gateWayToUse: gateway,
-      };
-    };
+    // const data = () => {
+    //   // displays.value = true
+    //   const data = {
+    //     subject: subject.value,
+    //     message: editorData.value,
+    //     contacts: [],
+    //     isPersonalized: isPersonalized.value,
+    //     groupedContacts: selectedGroups.value.map((i) => i.data),
+    //     toContacts: sendToAll.value
+    //       ? "allcontacts_00000000-0000-0000-0000-000000000000"
+    //       : "",
+    //     isoCode: isoCode.value,
+    //     category: "",
+    //     emailAddress: "",
+    //     emailDisplayName: "",
+    //     // gateWayToUse: gateway,
+    //   };
+    // };
 
     const getDefaultMessage = async (messageId) => {
       try {
@@ -1485,10 +1161,10 @@ export default {
         subject.value = subj;
       } catch (error) {
         console.log(error);
-        toast.add({
-          severity: "error",
-          summary: "Error",
-          detail: "Could not load message!",
+        ElMessage({
+          type: "error",
+          message: "Could not load message",
+          duration: 6000,
         });
       }
     };
@@ -1513,52 +1189,61 @@ export default {
     };
     getSenderId();
 
+    const submitSenderForm = async (formEl) => {
+      if (!formEl) return
+      await formEl.validate((valid, fields) => {
+        if (valid) {
+          saveSenderId();
+        } else {
+          console.log('error submit!', fields)
+        }
+      })
+    }
+
     const saveSenderId = async () => {
+      senderidloading.value = true
       let payload = {
         tenantID: tenantId.value,
-        mask: senderIdText.value,
+        mask: senderIDValidateForm.senderIdText,
       };
       try {
         let { data } = await axios.post(
           `/api/Messaging/RequestSenderID`,
           payload
         );
+        senderidloading.value = false;
+        closeModal.value.click();
         if (data.status === 0) {
-          toast.add({
-            severity: "warn",
-            summary: "Pending",
-            detail:
-              "Sender id is pending for approval, when it is approved, you will see it among the sender id list",
-            life: 5000,
+          ElMessage({
+            type: "warning",
+            message: "PENDING, Sender id is pending for approval, when it is approved, you will see it among the sender id list",
+            duration: 6000,
           });
         } else if (data.status === 1) {
-          toast.add({
-            severity: "warn",
-            summary: "Processing",
-            detail:
-              "Sender id is processing for approval, when it is approved, you will see it among the sender id list",
-            life: 5000,
+          ElMessage({
+            type: "warning",
+            message: "PROCESSING, Sender id is processing for approval, when it is approved, you will see it among the sender id list",
+            duration: 6000,
           });
         } else if (data.status === 2) {
-          toast.add({
-            severity: "success",
-            summary: "Approved",
-            detail: "Sender id is approved!",
-            life: 6000,
+          ElMessage({
+            type: "success",
+            message: "APPROVED, Sender id is approved!",
+            duration: 6000,
           });
         } else {
-          toast.add({
-            severity: "warn",
-            summary: "Not Approved",
-            detail: "Sender id is not approved, create another one.",
-            life: 4000,
+          ElMessage({
+            type: "error",
+            message: "NOT APPROVED, Sender id is not approved, create another one.",
+            duration: 6000,
           });
         }
-        senderIdText.value = "";
-        senderIdRef.value.classList.remove("is-invalid");
-        senderIdRef.value.classList.remove("is-valid");
+        setIdToSubject({ mask: senderIDValidateForm.senderIdText })
+        senderIDValidateForm.senderIdText = "";
+
         getSenderId();
       } catch (err) {
+        senderidloading.value = false
         console.log(err);
       }
     };
@@ -1573,30 +1258,34 @@ export default {
     });
 
     const setIdToSubject = (item) => {
+      searchSenderText.value = item.mask;
       subject.value = item.mask;
       selectedSender.value = item;
     };
 
-    const validateSenderId = (e) => {
+    const validateSenderId = async (rule, value, callback) => {
       var regExp = /^[a-zA-Z0-9]{3,11}$/;
-      var testString = e.target.value;
-
-      if (regExp.test(testString)) {
-        /* do something if letters are found in your string */
-        senderIdRef.value.classList.add("is-valid");
-        senderIdRef.value.classList.remove("is-invalid");
-        requestbtn.value = false;
+      var testString = senderIDValidateForm.senderIdText;
+      if (!regExp.test(testString)) {
+        // requestbtn.value = true
+        return callback(new Error('Should not contain any special characters AND Should not be less than 3 characters and more than 11 characters'))
       } else {
-        /* do something if letters are not found in your string */
-        senderIdRef.value.classList.add("is-invalid");
-        senderIdRef.value.classList.remove("is-valid");
-        requestbtn.value = true;
+        // requestbtn.value = false
       }
-    };
+    }
+
+    const rules = reactive({
+      senderIdText: [
+        { validator: validateSenderId, required: true, trigger: 'blur' },
+      ],
+    })
 
     return {
+      primarycolor,
+      iSoStringFormat,
+      setSelectedSenderIdCheckin,
       editorData,
-      displays,
+      // displays,
       editorConfig,
       possibleSMSDestinations,
       groupsAreVissible,
@@ -1629,7 +1318,6 @@ export default {
       display,
       showDateTimeSelectionModal,
       scheduleMessage,
-      sendOptions,
       draftMessage,
       groupListShown,
       showGroupList,
@@ -1639,22 +1327,19 @@ export default {
       memberSelectInput,
       invalidDestination,
       invalidMessage,
-      sendToAll,
+      // sendToAll,
       sendModalHeader,
       nigerian,
       contructScheduleMessageBody,
       executionDate,
       moment,
       isPersonalized,
-      data,
       route,
       disableBtn,
       contactUpload,
       uploadFile,
       multipleContact,
       sendSMSToUploadedContacts,
-      senderRef,
-      senderIdText,
       saveSenderId,
       tenantId,
       senderIDs,
@@ -1665,16 +1350,29 @@ export default {
       senderIdRef,
       searchSenderIDs,
       requestbtn,
+      sendSMSDialog,
+      showScheduleModal,
+      mdAndUp,
+      lgAndUp,
+      xlAndUp,
+      xsOnly,
+      ruleFormRef,
+      rules,
+      senderIDValidateForm,
+      closeModal,
+      senderidloading,
+      submitSenderForm
     };
   },
 };
 </script>
 
 <style scoped>
-.notecolour{
+.notecolour {
   /* color: rgb(199, 129, 23);; */
   color: rgb(252, 54, 87);
 }
+
 .input {
   display: block;
   width: 100%;
@@ -1795,7 +1493,8 @@ input:focus {
 .groups {
   max-height: 165px;
   overflow: auto;
-  -ms-overflow-style: none; /* IE and Edge */
+  -ms-overflow-style: none;
+  /* IE and Edge */
   scrollbar-width: none;
 }
 
@@ -1841,10 +1540,6 @@ input:focus {
 
 .modal-lg {
   max-width: 680px;
-}
-
-.modal-body {
-  padding: 2rem !important;
 }
 
 .grey-background {

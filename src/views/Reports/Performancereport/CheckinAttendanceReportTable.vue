@@ -4,8 +4,8 @@
       <thead>
         <tr class="table-row-bg font-weight-bold">
           <th class="">Name</th>
-          <th class="">Gender</th>
           <th class="">Phone</th>
+          <th class="">Email</th>
           <th class="">Group</th>
           <th
             class="rotate-text"
@@ -41,8 +41,8 @@
       <tbody class="small-text font-weight-bold text-nowrap">
         <tr v-for="(item, index) in groupedReport" :key="index">
           <td>{{ item.value[0].name }}</td>
-          <td>{{ item.value[0].gender }}</td>
           <td>{{ item.value[0].phone }}</td>
+          <td>{{ item.value[0].email }}</td>
           <td>{{ item.value[0].groupName }}</td>
           <td v-for="(itemm, index) in groupedReportByDate" :key="index">
             {{
