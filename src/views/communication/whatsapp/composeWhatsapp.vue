@@ -537,8 +537,8 @@ export default {
     QRCodeVue3
   },
   setup() {
-    // const socket = io('https://whatsapp-web-server.vercel.app');
-   const socket = io('http://localhost:3001');
+    const socket = io('https://whatsapp-web-server-pposictoc-oladapodaniel.vercel.app');
+  //  const socket = io('http://localhost:3001');
     const session = ref("")
     const qrCode = ref("")
     const sessionId = ref("")

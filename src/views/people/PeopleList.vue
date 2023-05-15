@@ -402,7 +402,7 @@ export default {
     const archiveLoading = ref(false)
     const applyLoading = ref(false)
     const searchingMember = ref(true)
-    const socket = io('whatsapp-web-server-em0h37mv2-oladapodaniel.vercel.app');
+    const socket = io('https://whatsapp-web-server-pposictoc-oladapodaniel.vercel.app/');
     // const socket = io('http://localhost:3001');
     const whatsappmessage = ref("")
     const whatsappRecipient = ref("")
