@@ -1,15 +1,21 @@
 <template>
   <div class="container-fluid  mx-0 tool">
     <div class="row justify-content-center mx-0  ">
-      <div class="col-md-12   d-flex justify-content-center my-3  ">
-        <div class="mt-4  d-flex align-items-center">
-          <div class="pl-2">
+      <div class="col-md-12  my-3  ">
+        <div class="mt-4 col-md-12 px-0 justify-content-center text-center d-flex align-items-center">
+          <div class=" col-sm-7  col-md-6 col-lg-4 col-12 ">
             <img :src="churchLogo2" v-if="churchLogo2" class="link-image" alt="" style="width:60px" />
             <img src="../../assets/dashboardlinks/churchcloud.png" v-else class="link-image " alt="" />
           </div>
-          <span>
+           
+          <!-- <span>
             <h4 class="font-weight-bold mt-3">{{ churchName ? churchName : "Churchplus" }}</h4>
-          </span>
+          </span> -->
+        </div>
+        <div class="col-md-12 px-0 d-flex justify-content-center text-center   heading-text">
+          <div class="col-sm-7 col-md-6 col-lg-4 col-12 ">
+            {{ contributionDetail.name }} {{ !route.query.tenantID && contributionDetail.name ? 'Payment' : "" }}
+          </div>
         </div>
       </div>
     </div>
@@ -18,10 +24,6 @@
       <div class="col-11 col-sm-8 col-md-7 col-lg-5 card pb-2" v-loading="cardLoading">
         <div class="container">
           <div class="row mt-4 justify-content-center">
-            <div class="col-md-12 text-center  heading-text">
-              {{ contributionDetail.name }} {{ !route.query.tenantID && contributionDetail.name ? 'Payment' : "" }}
-            </div>
-
             <div class="col-md-11 mt-3 px-0">
               <div class="col-md-12">
                 <label for="">Pledge Name<sup class="text-danger">*</sup></label>
@@ -920,7 +922,8 @@ export default {
 
 <style scoped>
 .heading-text {
-  font: normal normal 800 1.5rem Nunito sans;
+  font: normal normal 700 1.5rem Nunito sans;
+  font-weight: 700;
 }
 
 
