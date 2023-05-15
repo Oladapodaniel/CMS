@@ -3,7 +3,7 @@
     <div class="row justify-content-center mx-0  ">
       <div class="col-md-12  my-3  ">
         <div class="mt-4 col-md-12 px-0 justify-content-center text-center d-flex align-items-center">
-          <div class=" col-sm-7  col-md-6 col-lg-4 col-12 ">
+          <div class=" col-sm-7  col-md-6 col-lg-4 col-12 mb-2 ">
             <img :src="churchLogo2" v-if="churchLogo2" class="link-image" alt="" style="width:60px" />
             <img src="../../assets/dashboardlinks/churchcloud.png" v-else class="link-image " alt="" />
           </div>
