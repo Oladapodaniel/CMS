@@ -4,8 +4,8 @@
       <div class="col-md-12  my-3  ">
         <div class="mt-4 col-md-12 px-0 justify-content-center text-center d-flex align-items-center">
           <div class=" col-sm-7  col-md-6 col-lg-4 col-12 mb-2 ">
-            <img :src="churchLogo2" v-if="churchLogo2" class="link-image" alt="" style="width:60px" />
-            <img src="../../assets/dashboardlinks/churchcloud.png" v-else class="link-image " alt="" />
+            <img :src="churchLogo2" v-if="churchLogo2" class="link-image" alt="" style="width:75px" />
+            <img src="../../assets/dashboardlinks/churchcloud.png" style="width:100px" v-else class="link-image " alt="" />
           </div>
            
           <!-- <span>
@@ -13,7 +13,7 @@
           </span> -->
         </div>
         <div class="col-md-12 px-0 d-flex justify-content-center text-center   heading-text">
-          <div class="col-sm-7 col-md-6 col-lg-4 col-12 ">
+          <div class="col-sm-7  col-md-6 col-lg-4 col-12 px-0 ">
             {{ contributionDetail.name }} {{ !route.query.tenantID && contributionDetail.name ? 'Payment' : "" }}
           </div>
         </div>
@@ -40,7 +40,7 @@
               </div>
               <div class="col-md-12">
                 <el-input @keyup.enter="checkContact" @blur="checkContact" v-model="userSearchString" class="w-100"
-                  placeholder="Enter phone number" :disabled="route.query.pledgeID && route.query.pledgeID.length > 0">
+                  placeholder="Enter phone number" type="number" :disabled="route.query.pledgeID && route.query.pledgeID.length > 0">
                   <template #prefix>
                     <el-icon>
                       <Phone />
@@ -258,33 +258,34 @@
 
             </div>
 
-            <div class="row justify-content-center">
-              <div class="col-md-6  text-center align-item-center mb-4">
-                <div class="">Powered by</div>
-                <div>
-                  <img src="../../assets/logoblue.png" alt="churchplus Logo" class="w-50 mx-2 " />
-                </div>
-              </div>
-
-            </div>
-
             <div class=" row mt-3 d-flex justify-content-center">
               <div class="col-10 col-sm-8 col-md-7   pl-0">
-                <div class="row">
-                  <div class="col-3">
+                <div class="row justify-content-center">
+                  <!-- <div class="col-3">
                     <img src="../../assets/VisaDebit.png" class="w-100">
+                  </div> -->
+                  <div class="col-md-10 col-12   d-flex">
+                    <div class=" col-md-6 text-center ">
+                      <img src="../../assets/Full-Flutterwave.png" class="w-100">
+                   </div>
+                    <div class=" col-md-6 text-center mt-1  ">
+                      <img src="../../assets/paystack.png" class="w-100">
+                    </div>
                   </div>
-                  <div class="col-3 pr-0">
-                    <img src="../../assets/Full-Flutterwave.png" class="w-100">
-                  </div>
-                  <div class="col-3 pr-0">
-                    <img src="../../assets/paystack.png" class="w-100">
-                  </div>
-                  <div class="col-3 pl-0 text-right">
+                  <!-- <div class="col-3 pl-0 text-right">
                     <img src="../../assets/paypal.png" class="w-50">
-                  </div>
+                  </div> -->
                 </div>
               </div>
+            </div>
+            <div class="row justify-content-center">
+              <div class="col-md-6 col-12 text-center align-item-center my-4">
+                <div class=" col-md-12">Powered by</div>
+                <div class="image-adjust  col-md-12">
+                  <img src="../../assets/logoblue.png" alt="churchplus Logo" class=" mx-2 " />
+                </div>
+              </div>
+
             </div>
           </div>
         </div>
@@ -924,6 +925,7 @@ export default {
 .heading-text {
   font: normal normal 700 1.5rem Nunito sans;
   font-weight: 700;
+  font-size: 19px;
 }
 
 
@@ -968,6 +970,10 @@ export default {
 #walletpana img {
   width: 70%;
   height: 100%;
+}
+.image-adjust img{
+  width: 40%  !important;
+  /* height: 100%; */
 }
 
 .continue-text {
