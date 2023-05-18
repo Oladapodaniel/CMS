@@ -60,7 +60,8 @@
             <el-form-item>
               <div class="d-flex flex-column flex-lg-row justify-content-end w-100">
                 <label for="firstName" class="mr-3 font-weight-600">Phone number</label>
-                <el-input type="number" class="input-width" v-model="person.mobilePhone" placeholder="Phone number" />
+                <!-- <el-input type="number" class="input-width" v-model="person.mobilePhone" placeholder="Phone number" /> -->
+                <vue-tel-input style="height: 40px" class="input-width" v-model="person.mobilePhone" mode="international"></vue-tel-input>
               </div>
             </el-form-item>
             <el-form-item>
@@ -528,7 +529,7 @@ export default {
       formData.append("picture", image.value ? image.value : "");
       formData.append(
         "mobilePhone",
-        personObj.mobilePhone ? personObj.mobilePhone : ""
+        personObj.mobilePhone ? personObj.mobilePhone.trim().replaceAll(" ", "") : ""
       );
       formData.append("email", personObj.email ? personObj.email : "");
       formData.append(

@@ -103,14 +103,17 @@
           <el-tooltip class="box-item" effect="dark" v-if="marked.length > 0" content="Send SMS" placement="top-start">
             <img src="../../assets/sms.png" style="width: 20px; margin-top: -13px" class="ml-2 c-pointer"
               @click="sendMarkedMemberSms" alt="Send SMS" />
-            <!-- <el-icon :size="20" class="ml-2 c-pointer" v-if="marked.length > 0" @click="sendMarkedMemberSms">
-                    
-                  </el-icon> -->
           </el-tooltip>
           <el-tooltip class="box-item" effect="dark" v-if="marked.length > 0" content="Send Email" placement="top-start">
             <el-icon :size="20" class="ml-2 c-pointer" v-if="marked.length > 0" @click="sendMarkedMemberEmail">
               <Message />
             </el-icon>
+          </el-tooltip>
+          <el-tooltip class="box-item" effect="dark" v-if="marked.length > 0" content="Send Whatsapp message"
+            placement="top-start">
+            <img src="../../assets/whatsappblackwhite.svg" style="width: 20px; margin-top: -13px" class="ml-2 c-pointer"
+              @click="displayWhatsappDrawer(null)" alt="Send Whatsapp message" />
+
           </el-tooltip>
         </div>
         <div class="d-flex flex-column flex-sm-row justify-content-sm-between">
@@ -206,19 +209,17 @@
             </el-icon>
             <ul class="dropdown-menu">
               <li class="dropdown-item"><a>
-                  <router-link :to="
-                    item.mobilePhone
-                      ? `/tenant/sms/compose?phone=${item.mobilePhone}`
-                      : ''
-                  " :class="{ 'fade-text': !item.mobilePhone, 'text-color': item.mobilePhone }">Send
+                  <router-link :to="item.mobilePhone
+                    ? `/tenant/sms/compose?phone=${item.mobilePhone}`
+                    : ''
+                    " :class="{ 'fade-text': !item.mobilePhone, 'text-color': item.mobilePhone }">Send
                     SMS</router-link>
                 </a></li>
               <li><a class="dropdown-item" href="#">
-                  <router-link :to="
-                    item.email
-                      ? `/tenant/email/compose?phone=${item.email}`
-                      : ''
-                  " :class="{ 'fade-text': !item.email, 'text-color': item.email }">Send
+                  <router-link :to="item.email
+                    ? `/tenant/email/compose?phone=${item.email}`
+                    : ''
+                    " :class="{ 'fade-text': !item.email, 'text-color': item.email }">Send
                     Email</router-link>
                 </a></li>
               <li @click="displayWhatsappDrawer(item)"><a class="dropdown-item" href="#">
@@ -262,20 +263,18 @@
           <div class="text-secondary small">{{ selectedImage.mobilePhone }}</div>
           <div class="text-secondary small">{{ selectedImage.email }}</div>
           <div class="mt-2">
-            <router-link :to="
-              selectedImage.mobilePhone
-                ? `/tenant/sms/compose?phone=${selectedImage.mobilePhone}`
-                : ''
-            " v-if="selectedImage.mobilePhone">
+            <router-link :to="selectedImage.mobilePhone
+              ? `/tenant/sms/compose?phone=${selectedImage.mobilePhone}`
+              : ''
+              " v-if="selectedImage.mobilePhone">
               <el-button @click="imageDialog = false" round>
                 Send SMS
               </el-button>
             </router-link>
-            <router-link :to="
-              selectedImage.email
-                ? `/tenant/email/compose?phone=${selectedImage.email}`
-                : ''
-            " v-if="selectedImage.email">
+            <router-link :to="selectedImage.email
+              ? `/tenant/email/compose?phone=${selectedImage.email}`
+              : ''
+              " v-if="selectedImage.email">
               <el-button @click="imageDialog = false" class="ml-2" round>
                 Send Email
               </el-button>
@@ -306,15 +305,27 @@
         </div>
       </template>
     </el-drawer>
-    
+
     <el-drawer v-model="showWhatsapp" :size="mdAndUp || lgAndUp || xlAndUp ? '70%' : '100%'" direction="rtl">
       <template #header>
-        <h4>Send Whatsapp message to {{ whatsappRecipient.firstName }}</h4>
+        <h4>Send Whatsapp message to {{ sendWhatsappToMultiple ? 'selected members' : whatsappRecipient.firstName }}</h4>
       </template>
       <template #default>
         <div>
-          <div>Recipient</div>
-          <vue-tel-input style="height: 40px" v-model="whatsappRecipient.mobilePhone" mode="international"></vue-tel-input>
+          <div>You can send message to your members via their Whatsapp number. Make sure that the number are correctly formatted.</div>
+          <div>A correct format should include the country code with the phone number. E.g +2349059403948. It works either with the '+' symbol or without it.</div>
+          <div>Recipient{{ sendWhatsappToMultiple ? 's' : '' }}</div>
+          <div class="d-flex align-items-center flex-wrap" v-if="sendWhatsappToMultiple">
+            <div class="multiple_numbers d-flex align-items-center ml-2 mt-3" v-for="(item, index) in marked"
+              :key="item.id">
+              <span>{{ item.mobilePhone }}</span>
+              <el-icon class="c-pointer ml-2" @click="marked.splice(index, 1)">
+                <CircleClose />
+              </el-icon>
+            </div>
+          </div>
+          <vue-tel-input style="height: 40px" v-model="whatsappRecipient.mobilePhone" mode="international"
+            v-else></vue-tel-input>
         </div>
         <div class="mt-3">Message</div>
         <div>
@@ -402,16 +413,23 @@ export default {
     const archiveLoading = ref(false)
     const applyLoading = ref(false)
     const searchingMember = ref(true)
-    const socket = io('https://whatsapp-web-server-pposictoc-oladapodaniel.vercel.app/');
-    // const socket = io('http://localhost:3001');
+    // const socket = io('https://whatsapp-web-server-pposictoc-oladapodaniel.vercel.app/');
+    const socket = io('http://localhost:3001');
     const whatsappmessage = ref("")
     const whatsappRecipient = ref("")
+    const sendWhatsappToMultiple = ref(false)
 
     watch(serverOptions, () => {
       getPeopleByPage();
     },
       { deep: true }
     );
+
+    watchEffect(() => {
+      socket.on('messagesent', (data) => {
+        console.log(data, 'status')
+      })
+    })
 
     const showMemberRow = (item) => {
       router.push(`/tenant/people/add/${item.id}`)
@@ -907,15 +925,31 @@ export default {
     }
 
     const sendWhatsapp = () => {
-      socket.emit('sendwhatsappmessage', {
-        phone_number: whatsappRecipient.value.mobilePhone,
-        message: whatsappmessage.value
-      })
+      if (sendWhatsappToMultiple.value) {
+        socket.emit('sendwhatsappmessage', {
+          phone_number: marked.value.map(i => i.mobilePhone),
+          message: whatsappmessage.value,
+          type: 'multiple'
+        })
+      }
+      else {
+        socket.emit('sendwhatsappmessage', {
+          phone_number: whatsappRecipient.value.mobilePhone.trim().replaceAll(" ", ""),
+          message: whatsappmessage.value,
+          type: 'single'
+        })
+      }
     }
 
     const displayWhatsappDrawer = (item) => {
       showWhatsapp.value = true
-      whatsappRecipient.value = item
+      if (item) {
+        whatsappRecipient.value = item
+        sendWhatsappToMultiple.value = false
+      } else {
+        marked.value = marked.value.filter(i => i.mobilePhone).splice(0, 10)
+        sendWhatsappToMultiple.value = true
+      }
     }
 
     return {
@@ -997,7 +1031,8 @@ export default {
       sendWhatsapp,
       whatsappmessage,
       displayWhatsappDrawer,
-      whatsappRecipient
+      whatsappRecipient,
+      sendWhatsappToMultiple
     };
   },
 };
@@ -1233,5 +1268,11 @@ export default {
 
 .fa-ellipsis-v {
   padding: 10px
+}
+
+.multiple_numbers {
+  padding: 10px;
+  border-radius: 25px;
+  background: #eee;
 }
 </style>
