@@ -72,10 +72,7 @@
                       : "Select Event"
                   }}
                 </button>
-                <i
-                  @click="selectEventAttended"
-                  class="pi pi-chevron-down cursor-pointer manual-dd-icon align-self-center close-modal"
-                ></i>
+                <el-icon :size="17" @click="selectEventAttended" class="cursor-pointer manual-dd-icon align-self-center close-modal"><ArrowDown /></el-icon>
                 <div
                   class="input-field manual-dd-con close-modal"
                   v-if="showEventList"
@@ -198,8 +195,10 @@
                     >
                       <span class="ofering">{{ selectEvent }}</span
                       ><span>
-                        <i class="pi pi-angle-down" aria-hidden="true"></i
-                      ></span>
+                        <!-- <i class="pi pi-angle-down" aria-hidden="true"></i> -->
+                        <el-icon :size="17"><ArrowDown /></el-icon>
+                        
+                        </span>
                     </div>
                     <div
                       class="ofering"
