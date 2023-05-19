@@ -1,11 +1,19 @@
 <template>
-   <button @click="connect()">Connect</button>
+   <!-- <button @click="connect()">Connect</button>
   <button @click="disconnect()">Disconnect</button>
-   <p>State: {{ connected }}</p>
+   <p>State: {{ connected }}</p> -->
   <div>QR Code</div>
   <div>
     <!-- :width="200"
           :height="200" -->
+        <!--  // gradient: {
+          //   type: 'linear',
+          //   rotation: 0,
+          //   colorStops: [
+          //     { offset: 0, color: '#000000' },
+          //     { offset: 1, color: '#000000' },
+          //   ],
+          // }, -->
           <div>
             <input type="text" v-model="session" class="form-control" />
             <el-button type="primary" @click="createSessionForWhatsapp">Create session</el-button>
@@ -15,23 +23,16 @@
             <input type="text" v-model="getSessionId" class="form-control" />
             <el-button type="primary" @click="getSessionForWhatsapp">Get session</el-button>
           </div>
-    <QRCodeVue3
+          <QRCodeVue3 :value="qrCode" />
+    <!-- <QRCodeVue3
       :value="qrCode"
       :qrOptions="{ typeNumber: 0, mode: 'Byte', errorCorrectionLevel: 'H' }"
       :imageOptions="{ hideBackgroundDots: true, imageSize: 0.4, margin: 0 }" :dotsOptions="{
         type: 'square',
         color: '#000000',
-        gradient: {
-          type: 'linear',
-          rotation: 0,
-          colorStops: [
-            { offset: 0, color: '#000000' },
-            { offset: 1, color: '#000000' },
-          ],
-        },
       }" :backgroundOptions="{ color: '#ffffff' }" :cornersSquareOptions="{ type: 'dot', color: '#000000' }"
       :cornersDotOptions="{ type: undefined, color: '#000000' }" fileExt="png" :download="true" myclass="my-qur"
-      imgclass="img-qr" downloadButton="my-button" :downloadOptions="{ name: 'vqr', extension: 'png' }" />
+      imgclass="img-qr" downloadButton="my-button" :downloadOptions="{ name: 'vqr', extension: 'png' }" /> -->
     <!-- value="2@RM511Zj9OrLu9s/uTymglfX8e+vJxb4itmt/bQbj0UD9fD4wxkHOQRD8SbXBiR2w8C88BvJE2TPfsg==,7n1KCwVQZ3Drnel7DRJt8Fe61+ima5ha3m1pyj+qAm8=,4juNrIake52fImy3EKhc2wi/zo0gTVlk6q11wny4HSw=,12x1d3ES7BC7cdWysD1sXg/FW8mT6qwyzOok7sJh6Ws=" -->
   </div>
 
@@ -533,17 +534,18 @@ import communicationService from "../../../services/communication/communications
 import dateFormatter from "../../../services/dates/dateformatter";
 import moment from 'moment'
 import QRCodeVue3 from "qrcode-vue3";
-// import io from "socket.io-client"
-import { state } from "@/socket";
-import { socket } from "@/socket";
+import io from "socket.io-client"
+
+// import { state } from "@/socket";
+// import { socket } from "@/socket";
 
 export default {
   components: {
     QRCodeVue3
   },
   setup() {
-    // const socket = io('https://whatsapp-web-server-pposictoc-oladapodaniel.vercel.app');
-  //  const socket = io('http://localhost:3001');
+    // const socket = io('https://whatsapp-web-server-q1wo.onrender.com');
+   const socket = io('http://localhost:3001');
     const session = ref("")
     const qrCode = ref("")
     const sessionId = ref("")
@@ -607,17 +609,17 @@ watchEffect(() => {
 
 })
 
-const connected = computed(() => {
-    return state.connected;
-  })
+// const connected = computed(() => {
+//     return state.connected;
+//   })
 
-  const connect = () => {
-      socket.connect();
-    }
+//   const connect = () => {
+//       socket.connect();
+//     }
 
-   const disconnect = () => {
-      socket.disconnect();
-    }
+//    const disconnect = () => {
+//       socket.disconnect();
+//     }
 
 const createSessionForWhatsapp = () => {
   socket.emit('createsession', { id: session.value })
@@ -629,6 +631,7 @@ const getAllChats = () => {
 }
 
 const getSessionForWhatsapp = () => {
+  console.log('getting session, check WS')
   socket.emit('getsession', { id: getSessionId.value })
 }
 
@@ -1204,9 +1207,9 @@ const getSessionForWhatsapp = () => {
       getAllChats,
       getSessionId,
       getSessionForWhatsapp,
-      connected,
-      connect,
-      disconnect
+      // connected,
+      // connect,
+      // disconnect
     };
   },
 };
