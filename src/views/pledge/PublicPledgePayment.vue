@@ -29,12 +29,12 @@
                 <label for="">Pledge Name<sup class="text-danger">*</sup></label>
               </div>
               <div class="col-md-12">
-                <el-dropdown trigger="click" class="w-100">
-                    <span class="el-dropdown-link w-100">
+                <el-dropdown trigger="click" class="w-100" :disabled="!route.query.tenantID">
+                    <span class="el-dropdown-link w-100" >
                       <div
                         class="d-flex justify-content-between border-contribution  w-100"
                         size="large"
-                        :disabled="!route.query.tenantID"
+                        
                       >
                         <span class="text-secondary">{{
                           selectedPledgeItem &&
