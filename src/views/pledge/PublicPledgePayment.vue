@@ -29,7 +29,7 @@
                 <label for="">Pledge Name<sup class="text-danger">*</sup></label>
               </div>
               <div class="col-md-12">
-                <!-- <select
+                <select
                 class="form-control"
                 v-model="selectPledgeItemID"
                 :disabled="!route.query.tenantID"
@@ -43,8 +43,8 @@
                 >
                   <p>{{ itm.name }}</p>
                 </option>
-              </select> -->
-              <div class="dropdown">
+              </select>
+              <!-- <div class="dropdown">
                       <button
                         class="btn btn-white w-100 border d-flex justify-content-between"
                         type="button"
@@ -87,7 +87,7 @@
                           </div>
                         </div>
                       </div>
-                    </div>
+                    </div> -->
                 <!-- <el-dropdown trigger="click" class="w-100" :disabled="!route.query.tenantID">
                     <span class="el-dropdown-link w-100" >
                       <div
@@ -660,8 +660,8 @@ export default {
           // For pledge definition
           contributionDetail.value = res.data.pledgeItemDTO;
           contributionDetail.value.pledgeItemDTOs = [res.data.pledgeItemDTO]
-          // selectPledgeItemID.value = contributionDetail.value.id
-          selectedPledgeItem.value.name = contributionDetail.value.name
+          selectPledgeItemID.value = contributionDetail.value.id
+          // selectedPledgeItem.value.name = contributionDetail.value.name
           // selectedPledgeItem.value = contributionDetail.value.id
           churchLogo2.value = res.data.pledgeItemDTO.logo
           churchName.value = res.data.pledgeItemDTO.tenantName
@@ -675,8 +675,8 @@ export default {
           let decomposedPledgeList = [{ ...res.data.pledgeItemDTO }]
           contributionDetail.value = res.data.pledgeItemDTO;
           contributionDetail.value.pledgeItemDTOs = decomposedPledgeList
-          // selectPledgeItemID.value = contributionDetail.value.id
-          selectedPledgeItem.value.name = contributionDetail.value.name
+          selectPledgeItemID.value = contributionDetail.value.id
+          // selectedPledgeItem.value.name = contributionDetail.value.name
           // selectedPledgeItem.value = contributionDetail.value.id
           churchLogo2.value = res.data.pledgeItemDTO.logo
           churchName.value = res.data.pledgeItemDTO.tenantName
