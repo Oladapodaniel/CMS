@@ -54,7 +54,6 @@
                         aria-expanded="false"
                         :disabled="!route.query.tenantID"
                       >
-                        <!-- :disabled="accountGroupId" -->
                         <span>
                           {{
                            selectedPledgeItem &&
@@ -661,7 +660,7 @@ export default {
           // For pledge definition
           contributionDetail.value = res.data.pledgeItemDTO;
           contributionDetail.value.pledgeItemDTOs = [res.data.pledgeItemDTO]
-          selectPledgeItemID.value = contributionDetail.value.id
+          // selectPledgeItemID.value = contributionDetail.value.id
           selectedPledgeItem.value.name = contributionDetail.value.name
           // selectedPledgeItem.value = contributionDetail.value.id
           churchLogo2.value = res.data.pledgeItemDTO.logo
@@ -676,7 +675,7 @@ export default {
           let decomposedPledgeList = [{ ...res.data.pledgeItemDTO }]
           contributionDetail.value = res.data.pledgeItemDTO;
           contributionDetail.value.pledgeItemDTOs = decomposedPledgeList
-          selectPledgeItemID.value = contributionDetail.value.id
+          // selectPledgeItemID.value = contributionDetail.value.id
           selectedPledgeItem.value.name = contributionDetail.value.name
           // selectedPledgeItem.value = contributionDetail.value.id
           churchLogo2.value = res.data.pledgeItemDTO.logo
