@@ -4,7 +4,7 @@
       <div class="col-md-12  my-3  ">
         <div class="mt-4 col-md-12 px-0 justify-content-center text-center d-flex align-items-center">
           <div class=" col-sm-7  col-md-6 col-lg-4 col-12 mb-2 ">
-            <img :src="churchLogo2" v-if="churchLogo2" class="link-image" alt="" style="width:75px" />
+            <img :src="churchLogo2" v-if="churchLogo2" class="link-image" alt="" style="width:80px" />
             <img src="../../assets/dashboardlinks/churchcloud.png" style="width:100px" v-else class="link-image " alt="" />
           </div>
            
@@ -29,7 +29,23 @@
                 <label for="">Pledge Name<sup class="text-danger">*</sup></label>
               </div>
               <div class="col-md-12">
-                <el-dropdown trigger="click" class="w-100" :disabled="!route.query.tenantID">
+                <select
+                class="form-control"
+                v-model="selectPledgeItemID"
+                :disabled="!route.query.tenantID"
+                 @change="setSelectPledgeItem"
+              
+              >
+              <!-- <option v-if="route.query.tenantID"  >{{selectedPledgeItem.name}}</option> -->
+                <option
+                  v-for="(itm, index) in contributionDetail.pledgeItemDTOs"
+                  :key="index"
+                  :value="itm.id"
+                >
+                  <p>{{ itm.name }}</p>
+                </option>
+              </select>
+                <!-- <el-dropdown trigger="click" class="w-100" :disabled="!route.query.tenantID">
                     <span class="el-dropdown-link w-100" >
                       <div
                         class="d-flex justify-content-between border-contribution  w-100"
@@ -59,7 +75,7 @@
                         </el-dropdown-item>
                       </el-dropdown-menu>
                     </template>
-                  </el-dropdown>
+                  </el-dropdown> -->
                 <!-- <el-select-v2 v-model="selectPledgeItemID" @change="setSelectPledgeItem"
                   :options="contributionDetail.pledgeItemDTOs ? contributionDetail.pledgeItemDTOs.map(i => ({ label: i.name, value: i.id })) : []"
                   placeholder="Select Pledge" size="large" class="w-100" :disabled="!route.query.tenantID" /> -->
@@ -381,6 +397,7 @@ export default {
     const searchID = ref('')
     const selectPledgeItemID = ref(null)
     const selectedPledgeItem = ref({})
+    const selectedee = ref({name : "Selected"})
     const appltoggle = ref(false);
     const personToggle = ref(false);
     const associationLogo = ref("")
@@ -557,18 +574,6 @@ export default {
         withinRange.value = true;
       }
     };
-    const selectContribution = (item) => {
-      console.log(item, 'ddd');
-      selectedPledgeItem.value = item;
-
-      pledgePaymentForm.value = selectedPledgeItem.value.fillPaymentFormDTO
-      selectedCurrency.value = selectedPledgeItem.value.currency;
-      selectedCurrencyCode.value = selectedCurrency.value.shortCode
-
-      if (userSearchString.value) {
-        checkContact();
-      }
-    };
 
     const validatePaidAmount = () => {
       if (amountToPledge.value == 0 || amountToPledge.value < 0) {
@@ -601,8 +606,9 @@ export default {
           // For pledge definition
           contributionDetail.value = res.data.pledgeItemDTO;
           contributionDetail.value.pledgeItemDTOs = [res.data.pledgeItemDTO]
-          // selectPledgeItemID.value = contributionDetail.value.id
-          selectedPledgeItem.value.name = contributionDetail.value.name
+          selectPledgeItemID.value = contributionDetail.value.id
+          // selectedPledgeItem.value.name = contributionDetail.value.name
+          // selectedPledgeItem.value = contributionDetail.value.id
           churchLogo2.value = res.data.pledgeItemDTO.logo
           churchName.value = res.data.pledgeItemDTO.tenantName
           selectedCurrency.value = contributionDetail.value.currency
@@ -615,8 +621,9 @@ export default {
           let decomposedPledgeList = [{ ...res.data.pledgeItemDTO }]
           contributionDetail.value = res.data.pledgeItemDTO;
           contributionDetail.value.pledgeItemDTOs = decomposedPledgeList
-          // selectPledgeItemID.value = contributionDetail.value.id
-          selectedPledgeItem.value.name = contributionDetail.value.name
+          selectPledgeItemID.value = contributionDetail.value.id
+          // selectedPledgeItem.value.name = contributionDetail.value.name
+          // selectedPledgeItem.value = contributionDetail.value.id
           churchLogo2.value = res.data.pledgeItemDTO.logo
           churchName.value = res.data.pledgeItemDTO.tenantName
           contactDetail.value = res.data.person
@@ -936,7 +943,6 @@ export default {
       checkContact,
       selectedPledgeItem,
       route,
-      selectContribution,
       pledgeAmountWithComma,
       pledgeActionType,
       memberAlreadyPledgedToPledgeItem,
@@ -960,7 +966,8 @@ export default {
       primarycolor,
       pledgePaymentForm,
       paystackGate,
-      flutterwaveGate
+      flutterwaveGate,
+      selectedee
     };
   },
 };
