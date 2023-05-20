@@ -182,6 +182,11 @@ export default {
             logo: '/',
             route: '/tenant/voice/voicelist',
           },
+          {
+            name: 'Whatsapp',
+            logo: '/',
+            route: '/tenant/whatsapp',
+          },
         ]
       }
 
