@@ -29,9 +29,40 @@
                 <label for="">Pledge Name<sup class="text-danger">*</sup></label>
               </div>
               <div class="col-md-12">
-                <el-select-v2 v-model="selectPledgeItemID" @change="setSelectPledgeItem"
+                <el-dropdown trigger="click" class="w-100">
+                    <span class="el-dropdown-link w-100">
+                      <div
+                        class="d-flex justify-content-between border-contribution  w-100"
+                        size="large"
+                        :disabled="!route.query.tenantID"
+                      >
+                        <span class="text-secondary">{{
+                          selectedPledgeItem &&
+                          Object.keys(selectedPledgeItem).length > 0
+                            ? selectedPledgeItem.name
+                            : "Select Pledge"
+                        }}</span>
+                        <div>
+                          <el-icon class="el-icon--right">
+                            <arrow-down />
+                          </el-icon>
+                        </div>
+                      </div>
+                    </span>
+                    <template #dropdown>
+                      <el-dropdown-menu class="w-100">
+                        <el-dropdown-item
+                          v-for="(itm, indx) in contributionDetail.pledgeItemDTOs"
+                          :key="indx"
+                          @click="selectContribution(itm)"
+                          >{{ itm.name }}
+                        </el-dropdown-item>
+                      </el-dropdown-menu>
+                    </template>
+                  </el-dropdown>
+                <!-- <el-select-v2 v-model="selectPledgeItemID" @change="setSelectPledgeItem"
                   :options="contributionDetail.pledgeItemDTOs ? contributionDetail.pledgeItemDTOs.map(i => ({ label: i.name, value: i.id })) : []"
-                  placeholder="Select Pledge" size="large" class="w-100" :disabled="!route.query.tenantID" />
+                  placeholder="Select Pledge" size="large" class="w-100" :disabled="!route.query.tenantID" /> -->
               </div>
             </div>
             <div class="col-md-11 mt-3 px-0">
@@ -421,7 +452,6 @@ export default {
       selectedPledgeItem.value = contributionDetail.value.pledgeItemDTOs.find(i => {
         return i.id == selectPledgeItemID.value
       })
-
       pledgePaymentForm.value = selectedPledgeItem.value.fillPaymentFormDTO
       selectedCurrency.value = selectedPledgeItem.value.currency;
       selectedCurrencyCode.value = selectedCurrency.value.shortCode
@@ -527,6 +557,18 @@ export default {
         withinRange.value = true;
       }
     };
+    const selectContribution = (item) => {
+      console.log(item, 'ddd');
+      selectedPledgeItem.value = item;
+
+      pledgePaymentForm.value = selectedPledgeItem.value.fillPaymentFormDTO
+      selectedCurrency.value = selectedPledgeItem.value.currency;
+      selectedCurrencyCode.value = selectedCurrency.value.shortCode
+
+      if (userSearchString.value) {
+        checkContact();
+      }
+    };
 
     const validatePaidAmount = () => {
       if (amountToPledge.value == 0 || amountToPledge.value < 0) {
@@ -559,7 +601,8 @@ export default {
           // For pledge definition
           contributionDetail.value = res.data.pledgeItemDTO;
           contributionDetail.value.pledgeItemDTOs = [res.data.pledgeItemDTO]
-          selectPledgeItemID.value = contributionDetail.value.id
+          // selectPledgeItemID.value = contributionDetail.value.id
+          selectedPledgeItem.value.name = contributionDetail.value.name
           churchLogo2.value = res.data.pledgeItemDTO.logo
           churchName.value = res.data.pledgeItemDTO.tenantName
           selectedCurrency.value = contributionDetail.value.currency
@@ -572,7 +615,8 @@ export default {
           let decomposedPledgeList = [{ ...res.data.pledgeItemDTO }]
           contributionDetail.value = res.data.pledgeItemDTO;
           contributionDetail.value.pledgeItemDTOs = decomposedPledgeList
-          selectPledgeItemID.value = contributionDetail.value.id
+          // selectPledgeItemID.value = contributionDetail.value.id
+          selectedPledgeItem.value.name = contributionDetail.value.name
           churchLogo2.value = res.data.pledgeItemDTO.logo
           churchName.value = res.data.pledgeItemDTO.tenantName
           contactDetail.value = res.data.person
@@ -892,6 +936,7 @@ export default {
       checkContact,
       selectedPledgeItem,
       route,
+      selectContribution,
       pledgeAmountWithComma,
       pledgeActionType,
       memberAlreadyPledgedToPledgeItem,
