@@ -15,7 +15,8 @@
             <input type="text" v-model="getSessionId" class="form-control" />
             <el-button type="primary" @click="getSessionForWhatsapp">Get session</el-button>
           </div>
-    <QRCodeVue3
+          <VueQrcode :value="qrCode" :size="200" :color="{ dark: '#000000ff', light: '#ffffffff' }" type="image/png" level="L" />
+    <!-- <QRCodeVue3
       :value="qrCode"
       :qrOptions="{ typeNumber: 0, mode: 'Byte', errorCorrectionLevel: 'H' }"
       :imageOptions="{ hideBackgroundDots: true, imageSize: 0.4, margin: 0 }" :dotsOptions="{
@@ -31,7 +32,7 @@
         },
       }" :backgroundOptions="{ color: '#ffffff' }" :cornersSquareOptions="{ type: 'dot', color: '#000000' }"
       :cornersDotOptions="{ type: undefined, color: '#000000' }" fileExt="png" :download="true" myclass="my-qur"
-      imgclass="img-qr" downloadButton="my-button" :downloadOptions="{ name: 'vqr', extension: 'png' }" />
+      imgclass="img-qr" downloadButton="my-button" :downloadOptions="{ name: 'vqr', extension: 'png' }" /> -->
     <!-- value="2@RM511Zj9OrLu9s/uTymglfX8e+vJxb4itmt/bQbj0UD9fD4wxkHOQRD8SbXBiR2w8C88BvJE2TPfsg==,7n1KCwVQZ3Drnel7DRJt8Fe61+ima5ha3m1pyj+qAm8=,4juNrIake52fImy3EKhc2wi/zo0gTVlk6q11wny4HSw=,12x1d3ES7BC7cdWysD1sXg/FW8mT6qwyzOok7sJh6Ws=" -->
   </div>
 
@@ -532,7 +533,7 @@ import stopProgressBar from "../../../services/progressbar/progress";
 import communicationService from "../../../services/communication/communicationservice";
 import dateFormatter from "../../../services/dates/dateformatter";
 import moment from 'moment'
-import QRCodeVue3 from "qrcode-vue3";
+import VueQrcode from 'vue-qrcode';
 import io from "socket.io-client"
 
 // import { state } from "@/socket";
@@ -540,7 +541,7 @@ import io from "socket.io-client"
 
 export default {
   components: {
-    QRCodeVue3
+    VueQrcode
   },
   setup() {
     const socket = io('https://whatsapp-web-server-q1wo.onrender.com');
