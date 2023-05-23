@@ -544,7 +544,8 @@ export default {
     VueQrcode
   },
   setup() {
-    const socket = io('https://whatsapp-web-server-q1wo.onrender.com');
+    const socket = io('https://whatsapp-web-server-production.up.railway.app');
+    // const socket = io('https://whatsapp-web-server-q1wo.onrender.com');
   //  const socket = io('http://localhost:3001');
     const session = ref("")
     const qrCode = ref("")
