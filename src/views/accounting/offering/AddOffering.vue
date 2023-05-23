@@ -950,7 +950,6 @@
           type="textarea"
           placeholder="Notes..."
         />
-        <Toast />
       </div>
       <div class="col-md-12 mt-3 mb-2 justify-content-end d-flex px-0">
         <el-button
@@ -1444,8 +1443,8 @@ export default {
               JSON.stringify(res.data.returnObject)
             );
             loading.value = false;
-
-            if (Object.keys(selectedEventAttended.value).length > 0) {
+             store.dispatch('contributions/setContributionList').then(() =>{
+              if (Object.keys(selectedEventAttended.value).length > 0) {
               router.push({
                 name: "OfferingReport",
                 query: {
@@ -1454,11 +1453,29 @@ export default {
                 },
               });
             } else {
-              router.push({
-                name: "OfferingReport",
-                query: { report: eventDate.value },
-              });
+              store.dispatch('contributions/setContributionList').then(() =>{
+                  router.push({
+                  name: "OfferingReport",
+                  query: { report: eventDate.value },
+                });
+              })
             }
+             })
+
+            // if (Object.keys(selectedEventAttended.value).length > 0) {
+            //   router.push({
+            //     name: "OfferingReport",
+            //     query: {
+            //       report: eventDate.value,
+            //       activityID: selectedEventAttended.value.activityID,
+            //     },
+            //   });
+            // } else {
+            //   router.push({
+            //     name: "OfferingReport",
+            //     query: { report: eventDate.value },
+            //   });
+            // }
 
             let contriTransact = res.data.returnObject.map((i) => {
               return {
@@ -1506,8 +1523,8 @@ export default {
               JSON.stringify(res.data.returnObject)
             );
             loading.value = false;
-
-            if (Object.keys(selectedEventAttended.value).length > 0) {
+            store.dispatch('contributions/setContributionList').then(() =>{
+              if (Object.keys(selectedEventAttended.value).length > 0) {
               router.push({
                 name: "OfferingReport",
                 query: {
@@ -1516,11 +1533,15 @@ export default {
                 },
               });
             } else {
-              router.push({
+              store.dispatch('contributions/setContributionList').then(() =>{
+                router.push({
                 name: "OfferingReport",
                 query: { report: eventDate.value },
               });
+              })
             }
+            })
+            
           })
           .catch((err) => {
             loading.value = false;

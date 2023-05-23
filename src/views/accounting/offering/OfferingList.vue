@@ -501,6 +501,7 @@ export default {
                 duration: 5000,
               });
             emit("contri-transac", index);
+            store.dispatch('contributions/removeContributionFromStore', id)
           } else {
             ElMessage({
                 type: "warning",
