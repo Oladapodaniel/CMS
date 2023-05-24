@@ -1,15 +1,21 @@
 <template>
   <div class="container-fluid  mx-0 tool">
     <div class="row justify-content-center mx-0  ">
-      <div class="col-md-12   d-flex justify-content-center my-3  ">
-        <div class="mt-4  d-flex align-items-center">
-          <div class="pl-2">
-            <img :src="churchLogo2" v-if="churchLogo2" class="link-image" alt="" style="width:60px" />
-            <img src="../../assets/dashboardlinks/churchcloud.png" v-else class="link-image " alt="" />
+      <div class="col-md-12  my-3  ">
+        <div class="mt-4 col-md-12 px-0 justify-content-center text-center d-flex align-items-center">
+          <div class=" col-sm-7  col-md-6 col-lg-4 col-12 mb-2 ">
+            <img :src="churchLogo2" v-if="churchLogo2" class="link-image" alt="" style="width:80px" />
+            <img src="../../assets/dashboardlinks/churchcloud.png" style="width:100px" v-else class="link-image " alt="" />
           </div>
-          <span>
+           
+          <!-- <span>
             <h4 class="font-weight-bold mt-3">{{ churchName ? churchName : "Churchplus" }}</h4>
-          </span>
+          </span> -->
+        </div>
+        <div class="col-md-12 px-0 d-flex justify-content-center text-center   heading-text">
+          <div class="col-sm-7  col-md-6 col-lg-4 col-12 px-0 ">
+            {{ contributionDetail.name }} {{ !route.query.tenantID && contributionDetail.name ? 'Payment' : "" }}
+          </div>
         </div>
       </div>
     </div>
@@ -18,18 +24,104 @@
       <div class="col-11 col-sm-8 col-md-7 col-lg-5 card pb-2" v-loading="cardLoading">
         <div class="container">
           <div class="row mt-4 justify-content-center">
-            <div class="col-md-12 text-center  heading-text">
-              {{ contributionDetail.name }} {{ !route.query.tenantID && contributionDetail.name ? 'Payment' : "" }}
-            </div>
-
             <div class="col-md-11 mt-3 px-0">
               <div class="col-md-12">
                 <label for="">Pledge Name<sup class="text-danger">*</sup></label>
               </div>
               <div class="col-md-12">
-                <el-select-v2 v-model="selectPledgeItemID" @change="setSelectPledgeItem"
+                <select
+                class="form-control"
+                v-model="selectPledgeItemID"
+                :disabled="!route.query.tenantID"
+                 @change="setSelectPledgeItem"
+              
+              >
+                <option
+                  v-for="(itm, index) in contributionDetail.pledgeItemDTOs"
+                  :key="index"
+                  :value="itm.id"
+                >
+                  <p>{{ itm.name }}</p>
+                </option>
+              </select>
+              <!-- <div class="dropdown">
+                      <button
+                        class="btn btn-white w-100 border d-flex justify-content-between"
+                        type="button"
+                        id="dropdownMenuButton"
+                        data-toggle="dropdown"
+                        aria-haspopup="true"
+                        aria-expanded="false"
+                        :disabled="!route.query.tenantID"
+                      >
+                        <span>
+                          {{
+                           selectedPledgeItem &&
+                          Object.keys(selectedPledgeItem).length > 0
+                            ? selectedPledgeItem.name
+                            : "Select Pledge"
+                          }}
+                        </span>
+
+                        <i class="pi pi-chevron-down"></i>
+                      </button>
+                      <div
+                        class="dropdown-menu w-100"
+                        style="max-height: 300px; overflow: auto"
+                        aria-labelledby="dropdownMenuButton"
+                      >
+                        <div class="container">
+                          <div
+                            class="row"
+                          >
+                            <div class="col-md-12">
+                              <a
+                                class="dropdown-item px-1 px-14"
+                                href="#"
+                                v-for="(itm, indx) in contributionDetail.pledgeItemDTOs"
+                                :key="indx"
+                                @click="selectContribution(itm)"
+                                >{{ itm.name }}</a
+                              >
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                    </div> -->
+                <!-- <el-dropdown trigger="click" class="w-100" :disabled="!route.query.tenantID">
+                    <span class="el-dropdown-link w-100" >
+                      <div
+                        class="d-flex justify-content-between border-contribution  w-100"
+                        size="large"
+                        
+                      >
+                        <span class="text-secondary">{{
+                          selectedPledgeItem &&
+                          Object.keys(selectedPledgeItem).length > 0
+                            ? selectedPledgeItem.name
+                            : "Select Pledge"
+                        }}</span>
+                        <div>
+                          <el-icon class="el-icon--right">
+                            <arrow-down />
+                          </el-icon>
+                        </div>
+                      </div>
+                    </span>
+                    <template #dropdown>
+                      <el-dropdown-menu class="w-100">
+                        <el-dropdown-item
+                          v-for="(itm, indx) in contributionDetail.pledgeItemDTOs"
+                          :key="indx"
+                          @click="selectContribution(itm)"
+                          >{{ itm.name }}
+                        </el-dropdown-item>
+                      </el-dropdown-menu>
+                    </template>
+                  </el-dropdown> -->
+                <!-- <el-select-v2 v-model="selectPledgeItemID" @change="setSelectPledgeItem"
                   :options="contributionDetail.pledgeItemDTOs ? contributionDetail.pledgeItemDTOs.map(i => ({ label: i.name, value: i.id })) : []"
-                  placeholder="Select Pledge" size="large" class="w-100" :disabled="!route.query.tenantID" />
+                  placeholder="Select Pledge" size="large" class="w-100" :disabled="!route.query.tenantID" /> -->
               </div>
             </div>
             <div class="col-md-11 mt-3 px-0">
@@ -38,7 +130,7 @@
               </div>
               <div class="col-md-12">
                 <el-input @keyup.enter="checkContact" @blur="checkContact" v-model="userSearchString" class="w-100"
-                  placeholder="Enter phone number" :disabled="route.query.pledgeID && route.query.pledgeID.length > 0">
+                  placeholder="Enter phone number" type="number" :disabled="route.query.pledgeID && route.query.pledgeID.length > 0">
                   <template #prefix>
                     <el-icon>
                       <Phone />
@@ -256,33 +348,34 @@
 
             </div>
 
-            <div class="row justify-content-center">
-              <div class="col-md-6  text-center align-item-center mb-4">
-                <div class="">Powered by</div>
-                <div>
-                  <img src="../../assets/logoblue.png" alt="churchplus Logo" class="w-50 mx-2 " />
-                </div>
-              </div>
-
-            </div>
-
             <div class=" row mt-3 d-flex justify-content-center">
               <div class="col-10 col-sm-8 col-md-7   pl-0">
-                <div class="row">
-                  <div class="col-3">
+                <div class="row justify-content-center">
+                  <!-- <div class="col-3">
                     <img src="../../assets/VisaDebit.png" class="w-100">
+                  </div> -->
+                  <div class="col-md-10 col-12   d-flex">
+                    <div class=" col-md-6 text-center ">
+                      <img src="../../assets/Full-Flutterwave.png" class="w-100">
+                   </div>
+                    <div class=" col-md-6 text-center mt-1  ">
+                      <img src="../../assets/paystack.png" class="w-100">
+                    </div>
                   </div>
-                  <div class="col-3 pr-0">
-                    <img src="../../assets/Full-Flutterwave.png" class="w-100">
-                  </div>
-                  <div class="col-3 pr-0">
-                    <img src="../../assets/paystack.png" class="w-100">
-                  </div>
-                  <div class="col-3 pl-0 text-right">
+                  <!-- <div class="col-3 pl-0 text-right">
                     <img src="../../assets/paypal.png" class="w-50">
-                  </div>
+                  </div> -->
                 </div>
               </div>
+            </div>
+            <div class="row justify-content-center">
+              <div class="col-md-6 col-12 text-center align-item-center my-4">
+                <div class=" col-md-12">Powered by</div>
+                <div class="image-adjust  col-md-12">
+                  <img src="../../assets/logoblue.png" alt="churchplus Logo" class=" mx-2 " />
+                </div>
+              </div>
+
             </div>
           </div>
         </div>
@@ -347,6 +440,7 @@ export default {
     const searchID = ref('')
     const selectPledgeItemID = ref(null)
     const selectedPledgeItem = ref({})
+    const selectedee = ref({name : "Selected"})
     const appltoggle = ref(false);
     const personToggle = ref(false);
     const associationLogo = ref("")
@@ -418,7 +512,6 @@ export default {
       selectedPledgeItem.value = contributionDetail.value.pledgeItemDTOs.find(i => {
         return i.id == selectPledgeItemID.value
       })
-
       pledgePaymentForm.value = selectedPledgeItem.value.fillPaymentFormDTO
       selectedCurrency.value = selectedPledgeItem.value.currency;
       selectedCurrencyCode.value = selectedCurrency.value.shortCode
@@ -427,6 +520,17 @@ export default {
         checkContact();
       }
     }
+    const selectContribution = (item) => {
+      console.log(item, 'lklklkl');
+      selectedPledgeItem.value = item;
+      pledgePaymentForm.value = selectedPledgeItem.value.fillPaymentFormDTO
+      selectedCurrency.value = selectedPledgeItem.value.currency;
+      selectedCurrencyCode.value = selectedCurrency.value.shortCode
+
+      if (userSearchString.value) {
+        checkContact();
+      }
+    };
 
     const setSelectedCurrency = () => {
       selectedCurrency.value = currencyList.value.find(i => i.shortCode == selectedCurrencyCode.value);
@@ -557,6 +661,8 @@ export default {
           contributionDetail.value = res.data.pledgeItemDTO;
           contributionDetail.value.pledgeItemDTOs = [res.data.pledgeItemDTO]
           selectPledgeItemID.value = contributionDetail.value.id
+          // selectedPledgeItem.value.name = contributionDetail.value.name
+          // selectedPledgeItem.value = contributionDetail.value.id
           churchLogo2.value = res.data.pledgeItemDTO.logo
           churchName.value = res.data.pledgeItemDTO.tenantName
           selectedCurrency.value = contributionDetail.value.currency
@@ -570,6 +676,8 @@ export default {
           contributionDetail.value = res.data.pledgeItemDTO;
           contributionDetail.value.pledgeItemDTOs = decomposedPledgeList
           selectPledgeItemID.value = contributionDetail.value.id
+          // selectedPledgeItem.value.name = contributionDetail.value.name
+          // selectedPledgeItem.value = contributionDetail.value.id
           churchLogo2.value = res.data.pledgeItemDTO.logo
           churchName.value = res.data.pledgeItemDTO.tenantName
           contactDetail.value = res.data.person
@@ -889,6 +997,7 @@ export default {
       checkContact,
       selectedPledgeItem,
       route,
+      selectContribution,
       pledgeAmountWithComma,
       pledgeActionType,
       memberAlreadyPledgedToPledgeItem,
@@ -912,7 +1021,8 @@ export default {
       primarycolor,
       pledgePaymentForm,
       paystackGate,
-      flutterwaveGate
+      flutterwaveGate,
+      selectedee
     };
   },
 };
@@ -920,7 +1030,9 @@ export default {
 
 <style scoped>
 .heading-text {
-  font: normal normal 800 1.5rem Nunito sans;
+  font: normal normal 700 1.5rem Nunito sans;
+  font-weight: 700;
+  font-size: 19px;
 }
 
 
@@ -965,6 +1077,10 @@ export default {
 #walletpana img {
   width: 70%;
   height: 100%;
+}
+.image-adjust img{
+  width: 40%  !important;
+  /* height: 100%; */
 }
 
 .continue-text {

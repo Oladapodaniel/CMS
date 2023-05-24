@@ -53,8 +53,8 @@
 
         <div class="row mt-4 main-th font-weight-700 py-2 grey-rounded-bg" :class="{ 'kiosk-th-size': isKioskMode }">
 
-          <div class="col-md-3" :class="{ 'order-3': isKioskMode }">Name</div>
-          <div class="col-md-3" :class="{ 'order-4': isKioskMode }">Phone</div>
+          <div class="col-md-2" :class="{ 'order-3': isKioskMode }">Name</div>
+          <div class="col-md-2" :class="{ 'order-4': isKioskMode }">Phone</div>
           <div class="col-md-2" :class="{ 'order-5': isKioskMode }">Registered</div>
 
 
@@ -67,6 +67,9 @@
           </div>
           <div class="col-md-2" :class="{ 'd-none': isKioskMode }">
             Check out
+          </div>
+          <div class="col-md-2" :class="{ 'd-none': isKioskMode }">
+            Action
           </div>
 
 

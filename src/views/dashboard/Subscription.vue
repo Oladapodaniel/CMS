@@ -320,7 +320,7 @@ import { computed, ref, inject } from "vue";
 import membershipService from "../../services/membership/membershipservice";
 import productPricing from "../../services/user/productPricing";
 import { ElMessage, ElMessageBox } from "element-plus";
-// import { ElLoading } from 'element-plus';
+import { ElLoading } from 'element-plus';
 import deviceBreakpoint from "../../mixins/deviceBreakpoint";
 
 export default {

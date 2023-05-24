@@ -1,49 +1,61 @@
 <template>
   <div
-    :class="{ 'container-slim': lgAndUp || xlAndUp }"
-    class="container-top h-100"
+    class="container-fluid px-0"
   >
     <div class="d-flex flex-column flex-md-row justify-content-md-between">
       <div class="head-text">
         <div>New Convert</div>
       </div>
       <div class="mt-3 mt-md-0">
-        <router-link :to="{ name: 'AddFirstTimer' }" class="text-decoration-none">
+        <!-- <router-link :to="{ name: 'AddFirstTimer' }" class="text-decoration-none">
           <el-button :color="primarycolor" class="ml-2 header-btn" round
             >Add New Convert</el-button
           >
-        </router-link>
+        </router-link> -->
       </div>
     </div>
     <div class="">
       <div class="top-con">
           <div class="">
             <div class="table-top p-3 mt-5">
-              <div class="col-md-5 justify-content-flex-end">
-                <el-input
-                  size="small"
-                  v-model="searchText"
-                  placeholder="Search..."
-                  class="input-with-select"
-                >
-                  <template #suffix>
-                    <el-button
-                      style="padding: 5px; height: 22px"
-                      @click.prevent="searchText = ''"
+              <div class="d-flex flex-column flex-sm-row justify-content-sm-between">
+                 <div>
+                    <el-tooltip class="box-item" effect="dark" v-if="marked.length > 0" content="Send SMS" placement="top-start">
+                      <img src="../../assets/sms.png" style="width: 20px; margin-top: -13px" class="ml-2 c-pointer"
+                        @click="sendMarkedMemberSms" alt="Send SMS" />
+                    </el-tooltip>
+                    <el-tooltip class="box-item" effect="dark" v-if="marked.length > 0" content="Send Email" placement="top-start">
+                      <el-icon :size="20" class="ml-2 c-pointer" v-if="marked.length > 0" @click="sendMarkedMemberEmail">
+                        <Message />
+                      </el-icon>
+                    </el-tooltip>
+                  </div>
+                  <div class="d-flex flex-column flex-sm-row justify-content-sm-end">
+                    <el-input
+                      size="small"
+                      v-model="searchText"
+                      placeholder="Search..."
+                      class="input-with-select"
                     >
-                      <el-icon :size="13">
-                        <Close />
-                      </el-icon>
-                    </el-button>
-                  </template>
-                  <template #append>
-                    <el-button>
-                      <el-icon :size="13">
-                        <Search />
-                      </el-icon>
-                    </el-button>
-                  </template>
-                </el-input>
+                      <template #suffix>
+                        <el-button
+                          style="padding: 5px; height: 22px"
+                          @click.prevent="searchText = ''"
+                        >
+                          <el-icon :size="13">
+                            <Close />
+                          </el-icon>
+                        </el-button>
+                      </template>
+                      <template #append>
+                        <el-button>
+                          <el-icon :size="13">
+                            <Search />
+                          </el-icon>
+                        </el-button>
+                      </template>
+                    </el-input>
+                  </div>
               </div>
             </div>
           </div>
@@ -51,7 +63,7 @@
       <Table
           :data="searchNewConvert"
           :headers="NewConvertHeaders"
-          :checkMultipleItem="false"
+          :checkMultipleItem="true" @checkedrow="handleSelectionChange"
           v-if="searchNewConvert.length > 0 "
         >
           <template v-slot:fullname="{ item }">
@@ -116,6 +128,27 @@
       <img src="../../assets/network-disconnected.png" />
       <div>Opps, Your internet connection was disrupted</div>
     </div>
+    <el-drawer v-model="showSMS" :size="mdAndUp || lgAndUp || xlAndUp ? '70%' : '100%'" direction="rtl">
+      <template #header>
+        <h4>Send SMS</h4>
+      </template>
+      <template #default>
+        <div>
+          <smsComponent :phoneNumbers="contacts" @closesidemodal="() => showSMS = false" />
+        </div>
+      </template>
+    </el-drawer>
+
+    <el-drawer v-model="showEmail" :size="mdAndUp || lgAndUp || xlAndUp ? '70%' : '100%'" direction="rtl">
+      <template #header>
+        <h4>Send Email</h4>
+      </template>
+      <template #default>
+        <div>
+          <emailComponent :selectedGroupMembers="markedMembers" @closesidemodal="() => showEmail = false" />
+        </div>
+      </template>
+    </el-drawer>
 
     <el-skeleton class="w-100" animated v-if="loading">
       <template #template>
@@ -148,23 +181,33 @@
 </template>
 
 <script>
-import { ref, inject, computed } from "vue";
+import { ref, inject, computed, watchEffect } from "vue";
 import axios from "@/gateway/backendapi";
 import dateFormatter from "../../services/dates/dateformatter";
 import deviceBreakpoint from "../../mixins/deviceBreakpoint";
 import Table from "@/components/table/Table";
 import finish from "../../services/progressbar/progress";
 import { ElMessage, ElMessageBox } from "element-plus";
+import smsComponent from "../groups/component/smsComponent.vue";
+import emailComponent from "../groups/component/emailComponent.vue";
 
 export default {
+  props: ['newConvertList'],
   components: {
-    Table
+    Table,
+    smsComponent,
+    emailComponent
   },
-  setup() {
+  setup(props) {
     const { mdAndUp, lgAndUp, xlAndUp } = deviceBreakpoint()
     const primarycolor = inject('primarycolor')
     const loading = ref(false)
     const networkError = ref(false)
+    const showSMS = ref(false)
+    const marked = ref([])
+    const markedMembers = ref([])
+    const showEmail = ref(false)
+    const contacts = ref([])
     const searchText = ref('')
     const allNewConvert = ref([])
     const NewConvertHeaders = ref([
@@ -187,29 +230,22 @@ export default {
         i.fullName.toLowerCase().includes(searchText.value.toLowerCase())
       );
     });
-
-    const getAllNewConvert = async () =>{
-      loading.value = true
-
-        try{
-            const res = await axios.get('api/People/GetAllNewConverts?page=1')
-            allNewConvert.value = res.data.response
-            console.log(allNewConvert.value, "hhhh");
-            loading.value = false
-        }
-        catch(err){
-            finish();
-        loading.value = false;
-        loading.value = false;
-        if (err.toString().toLowerCase().includes("network error")) {
-          networkError.value = true;
-        } else {
-          networkError.value = false;
-        }
-
-        }
+    const sendMarkedMemberSms = () => {
+      contacts.value = marked.value.filter((i) => i.phoneNumber).map((i) => i.phoneNumber).join()
+      showSMS.value = true;
     }
-    getAllNewConvert()
+
+    const sendMarkedMemberEmail = () => {
+      showEmail.value = true;
+      markedMembers.value = marked.value.map((i) => {
+        i.id = i.id
+        return i
+      });
+
+    }
+    const handleSelectionChange = (val) => {
+      marked.value = val
+    }
 
     const showConfirmModal = (id) => {
       ElMessageBox.confirm(
@@ -253,10 +289,24 @@ export default {
         });
     };
 
+    watchEffect(() => {
+      if (props.newConvertList) {
+        allNewConvert.value = props.newConvertList
+      }
+    })
+
     return {
     mdAndUp, lgAndUp ,xlAndUp, primarycolor, loading, NewConvertHeaders, formatDate, networkError, 
     showConfirmModal,
+    showSMS,
+    contacts,
+    showEmail,
+    markedMembers,
+    marked,
+    handleSelectionChange,
     deleteNewConvert,
+    sendMarkedMemberEmail,
+    sendMarkedMemberSms,
     allNewConvert,
     searchNewConvert,
     searchText
@@ -272,7 +322,5 @@ export default {
   background: #fff;
   border: 1px solid #e0e0e0;
   border-bottom: none;
-  justify-content: flex-end;
-  display: flex;
 }
 </style>

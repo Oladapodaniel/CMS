@@ -12,8 +12,7 @@
             :width="mdAndUp || lgAndUp || xlAndUp ? `50%` : xsOnly ? `90%` : `70%`" align-center>
             <div class="row">
               <div class="col-md-12">
-                <el-date-picker v-model="executionDate" type="datetime" class="w-100"
-                  placeholder="Select date and time" />
+               <input type="datetime-local" class="form-control my-3" v-model="executionDate" placeholder="Select date and time" />
               </div>
             </div>
             <template #footer>
@@ -702,6 +701,7 @@ export default {
     const selectedGroups = ref([]);
     const sendToAll = ref(false);
     const executionDate = ref("");
+    const iSoStringFormat = ref("");
     const contactUpload = ref(false);
     const multipleContact = ref({});
     const senderRef = ref(null);
@@ -1017,10 +1017,9 @@ export default {
         if (multipleContact.value instanceof File) {
           sendSMSToUploadedContacts(gateway);
         } else if (sendOrSchedule == 2) {
-          const dateToBeExecuted = executionDate.value.toISOString();
-          data.executionDate = dateToBeExecuted.split("T")[0];
-          data.date = dateToBeExecuted;
-          data.time = dateToBeExecuted.split("T")[1];
+          data.executionDate = iSoStringFormat.value
+          data.date = iSoStringFormat.value
+          data.time = iSoStringFormat.value.split("T")[1];
           scheduleMessage(data);
         } else {
           sendSMS(data);
@@ -1052,10 +1051,10 @@ export default {
         console.log(response)
   
         ElMessage({
-            type: 'success',
-            message: response.data,
-            duration: 5000
-          })
+          type: "success",
+          message: `Message scheduled for${formattedDate}`,
+          duration: 5000,
+        });
 
       } catch (error) {
         console.log(error);
@@ -1358,8 +1357,15 @@ export default {
       }
     };
 
+    watchEffect(() =>{
+      if(executionDate.value){
+       iSoStringFormat.value = dateFormatter.getISOStringGMT(executionDate.value)
+      }
+  })
+
     return {
       editorData,
+      iSoStringFormat,
       editorConfig,
       possibleSMSDestinations,
       groupsAreVissible,

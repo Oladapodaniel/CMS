@@ -1,18 +1,25 @@
 import axios from "@/gateway/backendapi";
+import contributionservice from  "../../services/financials/contributionservice"
+
+const defaultState = (() => ({
+    contributionList: [],
+    contributionsList: {},
+    contributionItems: [],
+    paymentData: {}
+}))
 
 export default {
     namespaced: true,
-    state: {
-        contributionList: [],
-        contributionItems: [],
-        paymentData: {}
-    },
-    getters: {
-        contributionList: state => state.contributionList, 
-        contributionItems: state => state.contributionItems,
-        paymentData: state => state.paymentData
-    },
+    state: defaultState(),
+    // state: {
+    //     contributionList: [],
+    //     contributionItems: [],
+    //     paymentData: {}
+    // }
     mutations: {
+        SET_CONTRIBUTION (state, payload) {
+            state.contributionsList = payload
+        },
         saveList(state, payload) {
             state.contributionList = payload.returnObject.contribution
         },
@@ -25,14 +32,39 @@ export default {
         newlyAddedContribution(state, payload) {
             payload.forEach(i => state.contributionList.unshift(i))
         },
+        removeContribution(state, payload) {
+            state.contributionsList = state.contributionsList.filter(
+              (item) => item.id !== payload
+            );
+          },
+          addContribution(state, payload) {
+            state.contributionsList.push(payload);
+          },
 
+        // clearState(state) {
+        //     state.contributionList = []
+        //     state.contributionItems = []
+        //     state.paymentData = {}
+        // }
         clearState(state) {
-            state.contributionList = []
-            state.contributionItems = []
-            state.paymentData = {}
-        }
+            Object.assign(state, defaultState())
+          }
     },
     actions: {
+        setContributionList ({ commit }) {
+            return contributionservice.getContributionList().then(response => {  
+                commit('SET_CONTRIBUTION', response.returnObject)
+                return response.returnObject
+            })
+        },
+
+        removeContributionFromStore({ commit }, payload) {
+            commit("removeContribution", payload)
+        },
+        addContribution({ commit }, payload) {
+            commit("addContribution", payload);
+          },
+
         async contributionList({ commit }) {
                 try {
                     const { data } = await axios.get("/api/Financials/Contributions/Transactions");
@@ -58,5 +90,13 @@ export default {
         clearState({ commit }) {
             commit("clearState")
         },
-    }
+    },
+    getters: {
+        contributionList: state => state.contributionList, 
+        contributionItems: state => state.contributionItems,
+        paymentData: state => state.paymentData,
+        contributionsItem: (state) => {
+            return state.contributionsList
+        },
+    },
 }

@@ -1,6 +1,6 @@
 
 <template>
-  <div class="container">{{ donation }}
+  <div class="container">
     <div class="row">
       <div class="col-sm-12 p-4 text-center continue-text">Continue payment with</div>
     </div>
@@ -14,23 +14,6 @@
         <img class="img-pay" src="../../assets/flutterwave_logo_color@2x.png" alt="flutterwave" />
       </div>
     </div>
-
-
-  <!--  <div class="row row-button d-flex justify-content-center">
-      <div class="col-8 col-sm-6">
-        <img class="w-100 img-height" src="../../../assets/paypal-logo-2@2x.png" alt="paypal"/>
-      </div>
-
-     
-    </div>
-
-    <div class="row row-button d-flex justify-content-center" v-if="stripe">
-      <div class="col-7 col-sm-4">
-        <img class="w-100 img-height" src="../../../assets/Stripe_logo.jpg" alt="stripe"/>
-      </div>
-
-  
-        </div> -->
 
 
   </div>

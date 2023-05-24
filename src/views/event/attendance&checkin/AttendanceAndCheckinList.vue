@@ -247,7 +247,10 @@ export default {
         const { data } = await axios.get(
           `api/CheckInAttendance/AllCheckInAttendances?page=${serverOptions.value.page}`
         );
-        attendanceMember.value = data;
+        // attendanceList.value = data;
+        if (data.items.length > 0) {
+          emit("pagedattendance", data);
+        }
         paginatedTableLoading.value = false;
       } catch (error) {
         paginatedTableLoading.value = false;
@@ -264,7 +267,11 @@ export default {
 
     watchEffect(() => {
       serverItemsLength.value = props.totalItems;
+      // if (props.list) {
+      //   churchMembers.value = props.firstTimersList
+      // }
     });
+    
     const handleSizeChange = (val) => {
       `${val} items per page`
     };

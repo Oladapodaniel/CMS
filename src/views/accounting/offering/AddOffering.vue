@@ -72,10 +72,7 @@
                       : "Select Event"
                   }}
                 </button>
-                <i
-                  @click="selectEventAttended"
-                  class="pi pi-chevron-down cursor-pointer manual-dd-icon align-self-center close-modal"
-                ></i>
+                <el-icon :size="17" @click="selectEventAttended" class="cursor-pointer manual-dd-icon align-self-center close-modal"><ArrowDown /></el-icon>
                 <div
                   class="input-field manual-dd-con close-modal"
                   v-if="showEventList"
@@ -198,8 +195,10 @@
                     >
                       <span class="ofering">{{ selectEvent }}</span
                       ><span>
-                        <i class="pi pi-angle-down" aria-hidden="true"></i
-                      ></span>
+                        <!-- <i class="pi pi-angle-down" aria-hidden="true"></i> -->
+                        <el-icon :size="17"><ArrowDown /></el-icon>
+                        
+                        </span>
                     </div>
                     <div
                       class="ofering"
@@ -951,7 +950,6 @@
           type="textarea"
           placeholder="Notes..."
         />
-        <Toast />
       </div>
       <div class="col-md-12 mt-3 mb-2 justify-content-end d-flex px-0">
         <el-button
@@ -1445,8 +1443,8 @@ export default {
               JSON.stringify(res.data.returnObject)
             );
             loading.value = false;
-
-            if (Object.keys(selectedEventAttended.value).length > 0) {
+             store.dispatch('contributions/setContributionList').then(() =>{
+              if (Object.keys(selectedEventAttended.value).length > 0) {
               router.push({
                 name: "OfferingReport",
                 query: {
@@ -1455,11 +1453,29 @@ export default {
                 },
               });
             } else {
-              router.push({
-                name: "OfferingReport",
-                query: { report: eventDate.value },
-              });
+              store.dispatch('contributions/setContributionList').then(() =>{
+                  router.push({
+                  name: "OfferingReport",
+                  query: { report: eventDate.value },
+                });
+              })
             }
+             })
+
+            // if (Object.keys(selectedEventAttended.value).length > 0) {
+            //   router.push({
+            //     name: "OfferingReport",
+            //     query: {
+            //       report: eventDate.value,
+            //       activityID: selectedEventAttended.value.activityID,
+            //     },
+            //   });
+            // } else {
+            //   router.push({
+            //     name: "OfferingReport",
+            //     query: { report: eventDate.value },
+            //   });
+            // }
 
             let contriTransact = res.data.returnObject.map((i) => {
               return {
@@ -1507,8 +1523,8 @@ export default {
               JSON.stringify(res.data.returnObject)
             );
             loading.value = false;
-
-            if (Object.keys(selectedEventAttended.value).length > 0) {
+            store.dispatch('contributions/setContributionList').then(() =>{
+              if (Object.keys(selectedEventAttended.value).length > 0) {
               router.push({
                 name: "OfferingReport",
                 query: {
@@ -1517,11 +1533,15 @@ export default {
                 },
               });
             } else {
-              router.push({
+              store.dispatch('contributions/setContributionList').then(() =>{
+                router.push({
                 name: "OfferingReport",
                 query: { report: eventDate.value },
               });
+              })
             }
+            })
+            
           })
           .catch((err) => {
             loading.value = false;

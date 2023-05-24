@@ -14,12 +14,13 @@
           >
             <div class="row">
               <div class="col-md-12">
-                <el-date-picker
+                <!-- <el-date-picker
                   v-model="executionDate"
                   type="datetime"
                   class="w-100"
                   placeholder="Select date and time"
-                />
+                /> -->
+                <input type="datetime-local" class="form-control my-3" v-model="executionDate" placeholder="Select date and time" />
               </div>
             </div>
             <template #footer>
@@ -497,6 +498,7 @@ export default {
   },
   setup(props, { emit }) {
     const editorData = ref("");
+    const iSoStringFormat = ref("");
     const selectedMembers = ref([]);
     const primarycolor = inject('primarycolor')
 
@@ -739,7 +741,9 @@ export default {
       }
 
       if (sendOrSchedule == 2) {
-        data.executionDate = executionDate.value.toISOString();
+          data.executionDate = iSoStringFormat.value
+          data.date = iSoStringFormat.value
+          data.time = iSoStringFormat.value.split("T")[1];
         scheduleMessage(data);
       } else {
         sendEmail(data);
@@ -909,9 +913,15 @@ export default {
     if (route.query.messageId) {
       getMessage(route.query.messageId);
     }
+    watchEffect(() =>{
+      if(executionDate.value){
+       iSoStringFormat.value = dateFormatter.getISOStringGMT(executionDate.value)
+      }
+  })
 
     return {
       loadedMessage,
+      iSoStringFormat,
       editorData,
       possibleEmailDestinations,
       groupsAreVissible,

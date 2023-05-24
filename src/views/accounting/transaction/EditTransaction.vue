@@ -43,12 +43,64 @@
           />
         </div>
       </div>
-      <div class="row mt-3">
-        <div class="col-7 pr-0">
+      <div class="row mt-3"><div class="col-7 pr-0">
+          <div class="label-text">Cash Account</div>
+          <div
+            class="select-elem-con pointer form-control d-flex justify-content-space-between align-items-center close-modal c-pointer"
+            @click="showAccount = !showAccount"
+          >
+            <span class="ofering close-modal">{{
+              selectedCashAccount && selectedCashAccount.name ? selectedCashAccount.name : selectedCashAccount && selectedCashAccount.text ? selectedCashAccount.text : "Select"
+            }}</span
+            ><span>
+              <i class="pi pi-angle-down close-modal" aria-hidden="true"></i
+            ></span>
+          </div>
+          <div
+            class="ofering close-modal"
+            :class="{ 'style-account': showAccount }"
+            v-if="showAccount"
+            ref="selectAccount"
+          >
+            <div class="px-3 pt-3 close-modal">
+              <input
+                type="text"
+                placeholder="Search"
+                class="form-control ofering mb-1 close-modal"
+                v-model="accountText"
+              />
+            </div>
+
+            <div class="container-fluid">
+              <div class="row">
+                <div class="  col-md-12 px-0" v-for="(account, index) in filteredCashandBank" :key="index" @click="accountFlow($event, account)">
+                  <div class="header-border hover-text close-modal">
+                    <div v-if="account">
+                      <div class="close-modal offset-sm-1  py-2 small-text" >{{ account.text }}</div>
+                    </div>
+                    <div v-else>
+                      <div class="text-center px-3 py-2 text-danger">
+                        No Match Found
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                <div class="col-md-12" v-if="filteredCashandBank.length === 0">
+                  <div class="text-center px-3 py-2 text-danger">
+                      No Match Found
+                    </div>
+                </div>
+              </div>
+            </div>
+
+           
+          </div>
+        </div>
+        <!-- <div class="col-7 pr-0">
           <div class="label-text">Cash Account</div>
           <div class="input-width">
             <el-dropdown class="w-100" trigger="click">
-              <el-input class="w-100" placeholder="Select" v-model="selectedCashAccount.text" />
+              <el-input class="w-100" placeholder="Select" v-model="selectedCashAccount" />
               <template #dropdown>
                 <el-dropdown-menu class="menu-height">
                   <el-dropdown-item v-for="(account, index) in filteredCashandBank" :key="index"
@@ -57,7 +109,7 @@
               </template>
             </el-dropdown>
           </div>
-        </div>
+        </div> -->
         <div class="col-sm-5 col-md-5 col-lg-5 col-12 ">
           <div class="label-text">Amount</div>
           <el-input
@@ -168,7 +220,7 @@
 </template>
 
 <script>
-import { ref, computed, nextTick, onUpdated, inject, watch, watchEffect, proxyRefs } from "vue";
+import { ref, computed, nextTick, inject, watch, watchEffect, proxyRefs } from "vue";
 import transaction_service from "../../../services/financials/transaction_service";
 import chart_of_accounts from '../../../services/financials/chart_of_accounts';
 import SearchMember from "../../../components/search/SearchMember"
@@ -198,17 +250,15 @@ export default {
      watchEffect(() =>{
       if(transacObj.value.date){
        iSoStringFormat.value = dateFormatter.getISOStringGMT(transacObj.value.date)
-       console.log(iSoStringFormat.value, "iiii");
       }
   })
 
     const filterAccount = computed(() => {
-      if (accountText.value.text !== "" && accountType.value.length > 0) {
+      if (accountText.value !== "" && accountType.value.length > 0) {
         return accountType.value.filter((i) => {
           if (i)
-            return i.toLowerCase().includes(accountText.value.text.toLowerCase());
+            return i.toLowerCase().includes(accountText.value.toLowerCase());
         });
-        // console.log(currencyText)
       } else {
         return accountType.value;
       }
@@ -240,7 +290,6 @@ export default {
               .toLowerCase()
               .includes(uncategorizedText.value.toLowerCase());
         });
-        // console.log(currencyText)
       } else {
         return accountType.value;
       }
@@ -260,8 +309,6 @@ export default {
     });
 
     const categoryAccount = (e) => {
-      // console.log(e.target.innerText)
-      // console.log(splitCategories.value.length)
       transacObj.value.splitCategories[
         transacObj.value.splitCategories.length - 1
       ].category = e.target.innerHTML;
@@ -280,7 +327,6 @@ export default {
     };
 
     const accountFlow = (e, account) => {
-      console.log(e.target.innerText);
       // transacObj.value.accountFlow = e.target.innerText;
       showAccount.value = !showAccount.value;
       selectedCashAccount.value = account;
@@ -329,22 +375,12 @@ export default {
           data = expenseAccounts.value;
         }
         if (!incomeExpenseSearchText.value) return data;
-
-        return data.filter(i => i.name.toLowerCase().inludes(incomeExpenseSearchText.value));
+        return data.filter(i => i.text.toLowerCase().includes(incomeExpenseSearchText.value));
     })
 
     const closeTransac = () => {
       emit("close-it", false);
     };
-
-    const saveTransac = () => {
-    };
-
-    onUpdated(() => {
-      // if (showEditTransaction.value == true) {
-      // descrp.value.focus()
-      // }
-    });
 
     const gettingIncomeAccounts = ref(false);
     const getIncomeAccounts = async () => {
@@ -488,15 +524,15 @@ export default {
 
     const dateField = ref(null);
     watch(() => props.transactionDetails, (data) => {
-      console.log(data, "jjujujj")
-      transacObj.value.date = new Date(data.date);
+      transacObj.value.date = data.date;
       transacObj.value.amount = Math.abs(data.amount);
       transacObj.value.memo = data.memo;
       splittedTransactions.value = [ { }]
       selectedCashAccount.value = data.account;
 
       if (props.transactionDetails.id) {
-        transacObj.value.date = data.date && data.date.toLocaleString().includes('T') ? data.date.toLocaleString().split('T')[0] : data.date.toLocaleString();
+        transacObj.value.date = data.date;
+        // transacObj.value.date = data.date && data.date.toLocaleString().includes('T') ? data.date.toLocaleString().split('T')[0] : data.date.toLocaleString();
         // transacObj.value.date = new Date(data.date).toISOString().substr(0, 10)
         if (data.debitSplitAccounts && data.debitSplitAccounts.length > 0) {
           splittedTransactions.value = data.debitSplitAccounts.map(i => {
@@ -537,12 +573,8 @@ export default {
     getCashAndBank();
 
     const filteredCashandBank = computed(() => {
-      if (!selectedCashAccount.value.text) return cashandbank.value;
-      return cashandbank.value.filter((i) =>
-        i.text.toLowerCase().includes(selectedCashAccount.value.text.toLowerCase())
-      );
-      // if (!cashandbank.value || cashandbank.value.length === 0) return [ ];
-      // return cashandbank.value.filter(i => i.text.includes(accountText.value));
+        if (!cashandbank.value || cashandbank.value.length === 0) return [ ];
+        return cashandbank.value.filter(i => i.text.toLowerCase().includes(accountText.value));
     })
 
     const splitTransaction = () => {
@@ -589,7 +621,6 @@ export default {
       filterUncategorizedLiabilities,
       closeTransac,
       transacObj,
-      saveTransac,
       categoryAccount,
       splitWithdrawal,
       deleteSplit,
