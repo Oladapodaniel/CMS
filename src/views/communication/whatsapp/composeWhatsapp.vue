@@ -1,7 +1,7 @@
 <template>
-   <!-- <button @click="connect()">Connect</button>
+   <button @click="connect()">Connect</button>
   <button @click="disconnect()">Disconnect</button>
-   <p>State: {{ connected }}</p> -->
+   <p>State: {{ connected }}</p>
   <div>QR Code</div>
   <div>
     <!-- :width="200"
@@ -534,17 +534,17 @@ import communicationService from "../../../services/communication/communications
 import dateFormatter from "../../../services/dates/dateformatter";
 import moment from 'moment'
 import VueQrcode from 'vue-qrcode';
-import io from "socket.io-client"
+// import io from "socket.io-client"
 
-// import { state } from "@/socket";
-// import { socket } from "@/socket";
+import { state } from "@/socket";
+import { socket } from "@/socket";
 
 export default {
   components: {
     VueQrcode
   },
   setup() {
-    const socket = io('https://whatsapp-web-server-production.up.railway.app');
+    // const socket = io('https://whatsapp-web-server-production.up.railway.app');
     // const socket = io('https://whatsapp-web-server-q1wo.onrender.com');
   //  const socket = io('http://localhost:3001');
     const session = ref("")
@@ -610,17 +610,17 @@ watchEffect(() => {
 
 })
 
-// const connected = computed(() => {
-//     return state.connected;
-//   })
+const connected = computed(() => {
+    return state.connected;
+  })
 
-//   const connect = () => {
-//       socket.connect();
-//     }
+  const connect = () => {
+      socket.connect();
+    }
 
-//    const disconnect = () => {
-//       socket.disconnect();
-//     }
+   const disconnect = () => {
+      socket.disconnect();
+    }
 
 const createSessionForWhatsapp = () => {
   socket.emit('createsession', { id: session.value })
@@ -1208,9 +1208,9 @@ const getSessionForWhatsapp = () => {
       getAllChats,
       getSessionId,
       getSessionForWhatsapp,
-      // connected,
-      // connect,
-      // disconnect
+      connected,
+      connect,
+      disconnect
     };
   },
 };

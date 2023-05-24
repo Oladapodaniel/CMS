@@ -356,7 +356,8 @@ import { ElMessage, ElMessageBox } from 'element-plus'
 import router from "../../router/index"
 import Table from "@/components/table/Table"
 import groupsService from "../../services/groups/groupsservice";
-import io from "socket.io-client"
+// import io from "socket.io-client"
+import { socket } from "@/socket";
 
 export default {
   props: ["list", "peopleCount"],
@@ -413,8 +414,9 @@ export default {
     const archiveLoading = ref(false)
     const applyLoading = ref(false)
     const searchingMember = ref(true)
+    // const socket = io('https://whatsapp-web-server-production.up.railway.app');
     // const socket = io('https://whatsapp-web-server-pposictoc-oladapodaniel.vercel.app/');
-    const socket = io('http://localhost:3001');
+    // const socket = io('http://localhost:3001');
     const whatsappmessage = ref("")
     const whatsappRecipient = ref("")
     const sendWhatsappToMultiple = ref(false)
