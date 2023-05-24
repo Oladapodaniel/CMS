@@ -430,6 +430,11 @@ export default {
     watchEffect(() => {
       socket.on('messagesent', (data) => {
         console.log(data, 'status')
+        ElMessage({
+          type: 'success',
+          message: 'Whatsapp message sent successfully 🎉',
+          duration: 8000
+        })
       })
     })
 
@@ -928,6 +933,7 @@ export default {
 
     const sendWhatsapp = () => {
       if (sendWhatsappToMultiple.value) {
+        console.log(1)
         socket.emit('sendwhatsappmessage', {
           phone_number: marked.value.map(i => i.mobilePhone),
           message: whatsappmessage.value,
@@ -935,8 +941,9 @@ export default {
         })
       }
       else {
+        console.log(2)
         socket.emit('sendwhatsappmessage', {
-          phone_number: whatsappRecipient.value.mobilePhone.trim().replaceAll(" ", ""),
+          phone_number: whatsappRecipient.value.mobilePhone,
           message: whatsappmessage.value,
           type: 'single'
         })
