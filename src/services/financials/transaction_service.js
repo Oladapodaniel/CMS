@@ -261,7 +261,37 @@ const getTransactionsByAccount = (id) => {
                 }
             })
     })
+
 }
+
+const getDonationTransaction =()=>{
+    return new Promise((resolve, reject) =>{
+        axios
+        .get("/api/Financials/Donation/Transactions")
+        .then(res =>{
+            resolve(res.data);
+        })
+        .catch(err =>{
+            if (err.response){
+                reject(err.response);
+            } else{
+                reject(err)
+            }
+        })
+    })
+}
+
+
+
+
+
+// get from  to store
+
+// savev to sstore
+// store.dispatch('contributions/contributionList')
+
+
+
 
 
 
@@ -270,5 +300,5 @@ export default { getTransactionalAccounts, testPoint, getTransactions, getCashAn
     saveJournalTransaction,
     deleteTransaction,
     getEditTransactions,
-    getTransactionsByAccount,
+    getTransactionsByAccount, getDonationTransaction
 };
