@@ -18,4 +18,21 @@ const getContributionList = async () => {
             })
     })
 }
-export default { getContributionList };
+const getContributionItem = async () => {
+    return new Promise((resolve, reject) => {
+        axios.get("/api/financials/contributions/items")
+            .then(res => {
+                resolve(res.data);
+            })
+            .catch(error => {
+                 /*eslint no-undef: "warn"*/
+                 NProgress.done();
+                if (error.response) {
+                    reject(error.response);
+                } else {
+                    reject(error);
+                }
+            })
+    })
+}
+export default { getContributionList, getContributionItem };

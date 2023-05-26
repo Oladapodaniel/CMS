@@ -1,28 +1,51 @@
 <template>
-    <div class="container-wide container-top">
-      <div class="row my-3">
-      <div class="col-md-6 first-timers-text">
-        <h2 class="page-header">Offering Items</h2>
+    <div class="" :class="{ 'container-slim': lgAndUp || xlAndUp }">
+    <div class="container-fluid container-top " >
+      <div class=" row mb-2 d-flex flex-column flex-sm-row justify-content-sm-between ">
+        <div class="head-text">
+          Offering Items
+        </div>
+        <router-link to="/tenant/offeringcategory" class="  no-decoration">
+            <el-button class="header-btn" :color="primarycolor" round>
+              Add Offering Category
+            </el-button>
+          </router-link>
       </div>
+    
 
-      <div class="col-md-6 head-button">
-        <router-link to="/tenant/offeringcategory" class="add-btn">
-          Add Offering Category
-        </router-link>
-      </div>
-    </div>
-    </div>
-
-    <div class="container-wide">
+    <div class="container-fluid px-0">
       <div class="row">
-      <div class="col-md-12">
+      <div class="col-md-12 px-0">
         <hr class="hr" />
       </div>
     </div>
-
-    <div v-if="loading">
-        <Loader />
-    </div>
+    <el-skeleton class="w-100" animated v-if="loading">
+      <template #template>
+        <div
+          style="
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin-top: 20px;
+          "
+        >
+          <el-skeleton-item
+            variant="text"
+            style="width: 240px; height: 240px"
+          />
+          <el-skeleton-item
+            variant="text"
+            style="width: 240px; height: 240px"
+          />
+        </div>
+        <el-skeleton
+          class="w-100 mt-5"
+          style="height: 25px"
+          :rows="20"
+          animated
+        />
+      </template>
+    </el-skeleton>
 
 
     <div v-if="contributionItems.length > 0 && !loading && !networkError">
@@ -38,61 +61,55 @@
       <img src="../../../assets/network-disconnected.png" >
       <div>Opps, Your internet connection was disrupted</div>
     </div>
-</div>
+    </div>
+    </div>
+    </div>      
 </template>
 
 <script>
-import { ref } from 'vue'
-import { useStore } from 'vuex'
-// import { store } from "../../../store/store"
-import axios from "@/gateway/backendapi"
+import { ref, inject, onMounted } from 'vue'
+import store from "../../../store/store"
 import ContributionCategoryList from './ContributionCategoryList'
 import Loader from './SkeletonLoader'
 import finish from '../../../services/progressbar/progress'
+import deviceBreakpoint from "../../../mixins/deviceBreakpoint";
 export default {
     components: {
         ContributionCategoryList, Loader
     },
     setup () {
-        const contributionItems = ref([])
-        const loading = ref(false)
+        const contributionItems = ref(store.getters["contributions/contributionsItem"])
+        const loading = ref(false);
+        const primarycolor = inject("primarycolor");
+        const { lgAndUp, xlAndUp } = deviceBreakpoint();
         const networkError = ref(false)
 
 
-        const getContributionCategory = () => {
-            let store = useStore()
-            console.log(store.getters['contributions/contributionItems'])
-            if (store.getters['contributions/contributionItems'].length > 0) {
-                contributionItems.value = store.getters['contributions/contributionItems']
-            } else {
-                loading.value = true
-                axios
-                    .get("/api/financials/contributions/items")
-                    .then((res) => {
-                        loading.value = false
-                    contributionItems.value = res.data;
-                    console.log(res.data, '🎁🍾🍾s');
-                    })
-                    .catch((err) => {
-                      finish()
-                        loading.value = false
-                        if(err.toString().toLowerCase().includes("network error")) {
+        const getContributionCategory = async () => {
+              try {
+                      loading.value = true
+                      await store.dispatch("contributions/setContributionItem").then((res) => {
+                        contributionItems.value = res;
+                        loading.value = false;
+                      });
+                    } catch (error) {
+                      console.log(error);
+                       finish()
+                      loading.value = false;
+                      if(err.toString().toLowerCase().includes("network error")) {
                           networkError.value = true
                         } else {
                           networkError.value = false
                         }
-                        console.log(err)
-                    });
-            }
-
-    // get from  to store
-
-    // savev to sstore
-    // store.dispatch('contributions/contributionList')
+                    }
     };
-    getContributionCategory();
+
+    onMounted(() => {
+      if (contributionItems.value && contributionItems.value.length == 0) getContributionCategory();;
+    });
 
     const getOfferingPages = (payload) => {
+      console.log(payload, 'kjhkjhk');
       contributionItems.value = payload
     }
 
@@ -100,7 +117,7 @@ export default {
       contributionItems.value.splice(payload, 1)
     }
         return {
-            contributionItems, loading, getOfferingPages, updateItems, networkError
+            contributionItems, loading, lgAndUp, xlAndUp, primarycolor,  getOfferingPages, updateItems, networkError
         }
     }
 }

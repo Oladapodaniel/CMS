@@ -37,7 +37,7 @@
               <div class="my-3">
                 <span class="evt-name">
                   {{ stats.activityToday ? stats.activityToday.name : "" }}
-                  <el-icon ><Warning /></el-icon>
+                 <el-icon><InfoFilled /></el-icon>
                 </span>
               </div>
             </div>
@@ -2427,7 +2427,6 @@ export default {
       try {
         willCopyLink.value = true;
         const a = shareableLinkField.value.input;
-        console.log(a,"kkk");
         a.select();
         a.setSelectionRange(0, 200); /* For mobile devices */
 

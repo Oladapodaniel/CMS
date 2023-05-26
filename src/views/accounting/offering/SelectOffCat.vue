@@ -8,25 +8,23 @@
       </div>
     </div>
   </div>
-  <Dialog
-    v-model:visible="displayResponsive"
-    :breakpoints="{ '960px': '75vw', '640px': '100vw' }"
-    :style="{ width: '80vw' }"
-  >
-    <p>
-      You have no income account to create a offering item, go to Chart of
-      Account and click 'Update Account' to update your accounts.
-    </p>
-    <template #footer>
-      <!-- <Button label="No" icon="pi pi-times" @click="closeResponsive" class="p-button-text"/> -->
-      <Button
+
+  <el-dialog v-model="displayResponsive" :width="mdAndUp || lgAndUp || xlAndUp ? `50%` : xsOnly ? `90%` : `70%`" align-center>
+      <p>
+        You have no income account to create a offering item, go to Chart of
+        Account and click 'Update Account' to update your accounts.
+      </p>
+      <template #footer>
+        <el-button
+         round
+         :color="primarycolor"
         label="Go to Chart Of Accounts"
         icon="pi pi-check"
         @click="closeResponsive"
         autofocus
       />
-    </template>
-  </Dialog>
+      </template>
+    </el-dialog>
 
   <!-- input area -->
   <div class="container-wide">
@@ -35,9 +33,9 @@
         <label for="" class="label">Name</label>
       </div>
       <div class="col-sm-5 mt-sm-3">
-        <input
+        <el-input
           type="text"
-          class="form-control textbox-height"
+          class="w-100"
           placeholder=""
           v-model="name"
           required
@@ -47,7 +45,20 @@
         <label for="" class="label">Income Account</label>
       </div>
       <div class="col-sm-5 mt-sm-3">
-        <Dropdown
+        <el-select-v2
+                  v-model="selectedIncomeAccountID"
+                  class="w-100 font-weight-normal"
+                  placeholder="Select"
+                  @change="setSelectedIncomeAccount"
+                  :options="
+                    incomeAccount.map((i) => ({
+                      label: i.text,
+                      value: i.id,
+                    }))
+                  "
+                  size="large"
+                />
+        <!-- <Dropdown
           v-model="selectedIncomeAccount"
           class="w-100 p-0"
           :options="incomeAccount"
@@ -56,13 +67,26 @@
           placeholder="Select"
           :showClear="false"
         >
-        </Dropdown>
+        </Dropdown> -->
       </div>
       <div class="col-sm-4 mt-3 mt-sm-3 text-sm-right">
         <label for="" class="label">Cash Account</label>
       </div>
       <div class="col-sm-5 mt-sm-3">
-        <Dropdown
+        <el-select-v2
+                  v-model="selectedCashAccountID"
+                  class="w-100 font-weight-normal"
+                  placeholder="Select"
+                  @change="setSelectedCashAccount"
+                  :options="
+                    cashBankAccount.map((i) => ({
+                      label: i.text,
+                      value: i.id,
+                    }))
+                  "
+                  size="large"
+                />
+        <!-- <Dropdown
           v-model="selectedCashAccount"
           :options="cashBankAccount"
           optionLabel="text"
@@ -71,7 +95,7 @@
           class="w-100 p-0"
           :showClear="false"
         >
-        </Dropdown>
+        </Dropdown> -->
       </div>
 
       <div class="col-sm-12 mt-4" @click="toggleRem">
@@ -92,62 +116,55 @@
       <div class="col-lg-6 offset-lg-4" v-if="applyRem">
         <div v-for="(item, index) in remitance" :key="index">
           <div class="row mt-3 mb-4">
-            <div class="col-5 col-sm-6">
+            <div class="col-12 col-sm-6">
               <div class="">Account</div>
-
-              <div class="dropdown">
-                <div
-                  class="
-                    d-flex
-                    justify-content-between
-                    align-items-center
-                    c-pointer
-                    border
-                    p-2
-                    w-100
-                    mt-2
-                  "
-                  id="dropdownMenuButton"
-                  data-toggle="dropdown"
-                  style="border-radius: 4px"
-                >
-                  <div>
-                    {{ item && item.account ? item.account.text : "Select account" }}
-                  </div>
-                  <i class="pi pi-chevron-down"></i>
-                </div>
-                <div
-                  class="dropdown-menu w-100 dropdown-height"
-                  aria-labelledby="dropdownMenuButton"
-                >
-                  <div
-                    v-for="(remitance, indexRemit) in remittanceResult"
-                    :key="indexRemit"
-                  >
-                    <div class="pl-2 py-2 font-weight-700 border-bottom">
-                      {{ remitance.name }}
-                    </div>
-                    <div
-                      v-for="(value, indexValue) in remitance.value"
-                      :key="indexValue"
-                      class="dropdown-item c-pointer py-2"
-                      @click="setRemittance(value, index)"
-                    >
-                      {{ value.text }}
-                    </div>
-                  </div>
-                </div>
-              </div>
+              <el-dropdown trigger="click" class="w-100 mt-2">
+                    <span class="el-dropdown-link w-100">
+                      <div
+                        class="d-flex justify-content-between border-contribution  w-100"
+                        size="large"
+                      >
+                       <div>
+                          {{ item && item.account ? item.account.text : "Select account" }}
+                        </div>
+                        <div>
+                          <el-icon class="el-icon--right">
+                            <arrow-down />
+                          </el-icon>
+                        </div>
+                      </div>
+                    </span>
+                    <template #dropdown>
+                      <el-dropdown-menu>
+                        <el-dropdown-item v-for="(remitance, indexRemit) in remittanceResult"
+                        :key="indexRemit">
+                          <div class="col-md-12 px-2">
+                            <div class="py-2 font-weight-700 border-bottom">
+                              {{ remitance.name }}
+                            </div>
+                            <div
+                              v-for="(value, indexValue) in remitance.value"
+                              :key="indexValue"
+                              class=" c-pointer py-2"
+                              @click="setRemittance(value, index)"
+                            >
+                              {{ value.text }}
+                            </div>
+                          </div>
+                        </el-dropdown-item>
+                      </el-dropdown-menu>
+                    </template>
+                </el-dropdown>
             </div>
 
-            <div class="col-5 col-sm-4 pl-sm-0">
+            <div class="col-12 col-sm-5 ">
               <div class="">Percentage %</div>
 
               <div class="mt-2">
-                <input
+                <el-input
                   type="number"
                   v-model="item.percentage"
-                  class="form-control textbox-height"
+                  class="w-100"
                   placeholder=""
                 />
               </div>
@@ -186,26 +203,27 @@
     </div>
     <div class="row">
       <div class="col-2 mt-3 mb-3 offset-sm-4" v-if="applyRem">
-        <button v-on:click="addRemittance" class="btn btnIcons btn-secondary">
-          <i class="pi pi-plus-circle icons" aria-hidden="true"></i>
+        <el-button v-on:click="addRemittance" round  class=" text-primary bg-secondary">
+          <el-icon><CirclePlus /></el-icon>
           Add
-        </button>
+        </el-button>
       </div>
       <div
         class="col-5 mt-3 mb-3 offset-4"
         :class="{ 'col-sm-2 offset-sm-1': applyRem }"
       >
-        <button
-          class="add-person-btn button default-btn border-0 w-100"
+        <el-button
+        :loading="loading"
+          class=" w-100 text-white"
+          :color="primarycolor"
           @click="save"
+          round
         >
-          <i class="pi pi-spin pi-spinner text-white mr-2" v-if="loading"></i>
           Save
-        </button>
+        </el-button>
       </div>
     </div>
   </div>
-  <Toast />
 </template>
 
 
@@ -217,35 +235,36 @@
 
 
 <script>
-import { computed, ref } from "vue";
+import { computed, inject, ref } from "vue";
 import axios from "@/gateway/backendapi";
+import store from "../../../store/store";
 import Dropdown from "primevue/dropdown";
-import Dialog from "primevue/dialog";
-import Toast from "primevue/toast";
-import { useToast } from "primevue/usetoast";
 import { useRouter } from "vue-router";
 import { useRoute } from "vue-router";
 import groupData from "../../../services/groupArray/groupResponse";
+import deviceBreakpoint from "../../../mixins/deviceBreakpoint";
+import { ElMessage } from 'element-plus'
 export default {
   components: {
     Dropdown,
-    Toast,
-    Dialog,
   },
   setup() {
     const router = useRouter();
     const route = useRoute();
+    const primarycolor = inject('primarycolor')
     const applyRem = ref(false);
     const cashBankAccount = ref([]);
     const remitance = ref([{}]);
     const incomeAccount = ref([]);
+    const selectedIncomeAccountID = ref(null);
+    const selectedCashAccountID = ref(null);
     const selectedIncomeAccount = ref(null);
     const selectedCashAccount = ref(null);
     const name = ref("");
-    const toast = useToast();
     const displayResponsive = ref(false);
     const remittanceAccounts = ref([]);
     const remittanceResult = ref([]);
+    const { xsOnly, mdAndUp, lgAndUp, xlAndUp } = deviceBreakpoint()
     const loading = ref(false);
     const ungroupedRemittanceResult = ref([])
 
@@ -265,28 +284,36 @@ export default {
         });
     };
     getCashBankAccount();
+    const setSelectedIncomeAccount  = () =>{
+      selectedIncomeAccount.value = incomeAccount.value.find(i => i.id == selectedIncomeAccountID.value)
+      console.log(selectedIncomeAccount.value, "jkhj");
+    }
+    const setSelectedCashAccount  = () =>{
+      selectedCashAccount.value = cashBankAccount.value.find(i => i.id == selectedCashAccountID.value)
+      console.log(selectedCashAccount.value, "jkhj");
+    }
 
     const deleteItem = (index) => {
       if (remitance.value.length > 1) {
         remitance.value.splice(index, 1);
       } else {
-        toast.add({
-          severity: "error",
-          summary: "Cannot delete",
-          detail: `You must have at least one field to apply for remittance`,
-          life: 5000,
-        });
+        ElMessage({
+              type: 'error',
+              showClose: true,
+              message: 'Cannot Delete, You must have at least one field to apply for remittance',
+              duration: 5000
+            })
       }
     };
 
     const addRemittance = () => {
       if (100 - +sumPercentage.value.percentage <= 0) {
-        toast.add({
-          severity: "error",
-          summary: "Limit Reached",
-          detail: ` You have ${sumPercentage.value.percentage}% remittance percentage, The sum of the percentages should not exceed the 100%`,
-          life: 5000,
-        });
+        ElMessage({
+              type: 'error',
+              showClose: true,
+              message: ` You have ${sumPercentage.value.percentage}% remittance percentage, The sum of the percentages should not exceed the 100%`,
+              duration: 5000
+            })
       } else {
         remitance.value.push({
           percentage: 0,
@@ -338,22 +365,25 @@ export default {
       axios
         .post("/api/financials/contributions/items/save", contributionCategory)
         .then((res) => {
-          toast.add({
-            severity: "success",
-            summary: "Saved",
-            detail: "Contribution Saved",
-            life: 3000,
-          });
+          ElMessage({
+              type: 'success',
+              showClose: true,
+              message: "Contribution Saved",
+              duration: 5000
+            })
           loading.value = false;
-          router.push({ name: "ContributionCategory" });
+          store.dispatch('contributions/setContributionItem').then(() =>{
+            router.push({ name: "ContributionCategory" });
+          })
+          
         })
         .catch((err) => {
-          toast.add({
-            severity: "error",
-            summary: "Error",
-            detail: "Not Sucessful",
-            life: 3000,
-          });
+          ElMessage({
+              type: 'error',
+              showClose: true,
+              message: "Not Sucessful",
+              duration: 5000
+            })
           console.log(err);
           loading.value = false;
         });
@@ -365,22 +395,24 @@ export default {
       axios
         .put(`/api/Financials/Contributions/Items/edit`, contributionCategory)
         .then((res) => {
-          toast.add({
-            severity: "success",
-            summary: "edited",
-            detail: "Edit Succefully",
-            life: 3000,
-          });
+          ElMessage({
+              type: 'success',
+              showClose: true,
+              message: "Edit Succefully",
+              duration: 5000
+            })
           loading.value = false;
-          router.push({ name: "ContributionCategory" });
+           store.dispatch('contributions/setContributionItem').then(() =>{
+            router.push({ name: "ContributionCategory" });
+          })
         })
         .catch((err) => {
-          toast.add({
-            severity: "error",
-            summary: "Error",
-            detail: "Not Sucessful",
-            life: 3000,
-          });
+          ElMessage({
+              type: 'error',
+              showClose: true,
+              message: "Not Sucessful",
+              duration: 5000
+            })
           loading.value = false;
           console.log(err);
         });
@@ -419,12 +451,12 @@ export default {
           createOfferingItems(contributionCategory);
         }
       } else {
-        toast.add({
-          severity: "error",
-          summary: "No account selected",
-          detail: `Please select an income and cash account`,
-          life: 5000,
-        });
+         ElMessage({
+              type: 'error',
+              showClose: true,
+              message: "Please select an income and cash account",
+              duration: 5000
+            })
       }
     };
     const sumPercentage = computed(() => {
@@ -465,12 +497,10 @@ export default {
             let data = {};
             data.percentage = i.percentage;
             if (i.distinationCashBankAccount == '00000000-0000-0000-0000-000000000000') {
-              console.log('2223')
               data.account = ungroupedRemittanceResult.value.find(j => {
                 return j.id == i.distinationIncomeAccount
               })
             } else {
-              console.log('2223')
               data.account = ungroupedRemittanceResult.value.find(j => {
                 return j.id == i.distinationCashBankAccount
               })
@@ -489,16 +519,24 @@ export default {
 
     return {
       applyRem,
+      setSelectedIncomeAccount,
+      selectedIncomeAccountID,
+      selectedCashAccountID,
+      setSelectedCashAccount,
+      primarycolor,
       toggleRem,
       cashBankAccount,
       remitance,
       addRemittance,
       incomeAccount,
       save,
+      xsOnly, 
+      mdAndUp, 
+      lgAndUp, 
+      xlAndUp,
       selectedIncomeAccount,
       name,
       selectedCashAccount,
-      toast,
       deleteItem,
       sumPercentage,
       openResponsive,
@@ -572,10 +610,6 @@ export default {
     width: 90%;
     margin: 0 auto;
   }
-}
-
-.textbox-height {
-  height: 41px;
 }
 @media screen and (max-width: 360px) {
   .page-header {

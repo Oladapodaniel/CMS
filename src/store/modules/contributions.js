@@ -4,6 +4,7 @@ import contributionservice from  "../../services/financials/contributionservice"
 const defaultState = (() => ({
     contributionList: [],
     contributionsList: {},
+    contributionsItem: [],
     contributionItems: [],
     paymentData: {}
 }))
@@ -19,6 +20,9 @@ export default {
     mutations: {
         SET_CONTRIBUTION (state, payload) {
             state.contributionsList = payload
+        },
+        SET_CONTRIBUTIONITEM (state, payload) {
+            state.contributionsItem = payload
         },
         saveList(state, payload) {
             state.contributionList = payload.returnObject.contribution
@@ -37,9 +41,17 @@ export default {
               (item) => item.id !== payload
             );
           },
-          addContribution(state, payload) {
+        addContribution(state, payload) {
             state.contributionsList.push(payload);
-          },
+        },
+        removeContributionItem(state, payload) {
+            state.contributionsItem = state.contributionsItem.filter(
+                (item) => item.id !== payload
+            );
+            },
+        addContributionItem(state, payload) {
+        state.contributionsItem.push(payload);
+        },
 
         // clearState(state) {
         //     state.contributionList = []
@@ -57,12 +69,24 @@ export default {
                 return response.returnObject
             })
         },
+        setContributionItem ({ commit }) {
+            return contributionservice.getContributionItem().then(response => {  
+                commit('SET_CONTRIBUTIONITEM', response)
+                return response
+            })
+        },
 
         removeContributionFromStore({ commit }, payload) {
             commit("removeContribution", payload)
         },
         addContribution({ commit }, payload) {
             commit("addContribution", payload);
+          },
+        removeContributionItemFromStore({ commit }, payload) {
+            commit("removeContributionItem", payload)
+        },
+        addContributionItem({ commit }, payload) {
+            commit("addContributionItem", payload);
           },
 
         async contributionList({ commit }) {
@@ -95,8 +119,11 @@ export default {
         contributionList: state => state.contributionList, 
         contributionItems: state => state.contributionItems,
         paymentData: state => state.paymentData,
-        contributionsItem: (state) => {
+        contributionsList: (state) => {
             return state.contributionsList
+        },
+        contributionsItem: (state) => {
+            return state.contributionsItem
         },
     },
 }

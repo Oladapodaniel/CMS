@@ -125,6 +125,7 @@ import { ref } from "vue";
 import axios from "@/gateway/backendapi";
 import { ElMessage } from "element-plus";
 import finish from "../../services/progressbar/progress";
+import store from "../../store/store"
 
 export default {
   setup(props, { emit }) {
@@ -231,6 +232,7 @@ export default {
         .then((res) => {
           finish();
           emit("item-name", { name: res.data.name, id: res.data.id });
+          store.dispatch('contributions/setContributionItem')
           ElMessage({
             type: "success",
             message: "Contribution Saved",

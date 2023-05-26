@@ -49,7 +49,7 @@
             <div class=" col-12  col-sm-9">
               
               <el-dropdown trigger="click" class="w-100" v-if="selectType.value === 0">
-                <el-input v-model="searchSenderText" placeholder="Search sender id" />
+                <el-input v-model="subject" placeholder="Search sender id" />
                 <el-icon class="el-icon--right"><arrow-down /></el-icon>
             <template #dropdown>
               <el-dropdown-menu>
@@ -244,6 +244,7 @@ export default {
           );
           this.defaultMessage = data;
           this.message = data.returnObject.message;
+          // this.searchSenderText = data.returnObject.subject;
           this.subject = data.returnObject.subject;
           this.selectCategory = this.Membership.find(
             (i) => i.value === data.returnObject.category
@@ -295,11 +296,11 @@ export default {
   },
   computed: {
     searchSenderIDs () {
-      if (!this.searchSenderText) return this.senderIDs;
+      if (!this.subject) return this.senderIDs;
       return this.senderIDs.filter((i) => {
         return i.mask
           .toLowerCase()
-          .includes(this.searchSenderText.toLowerCase());
+          .includes(this.subject.toLowerCase());
       });
     }
   }

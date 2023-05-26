@@ -15,7 +15,6 @@
             <a class="def-btn px-sm-2 px-lg-4 my-sm-1">Create another report</a>
           </router-link>
         </div>
-        <Toast />
       </div>
       <hr class="mb-4" />
     </div>
@@ -33,10 +32,7 @@
                   ? contributionReport.activityName
                   : ""
               }}
-              <i
-                v-if="contributionReport.activityName"
-                class="pi pi-info-circle"
-              ></i>
+              <el-icon class="mt-2 ml-1" v-if="contributionReport.activityName" ><InfoFilled /></el-icon>
             </span>
           </div>
         </div>
@@ -55,22 +51,24 @@
             <div class="col-md-12">
               <div class="row" v-if="!reportApproved">
                 <div class="col-md-12 py-3 info-div">
-                  <span class="px-2"><i class="pi pi-info-circle"></i></span>
+                  <span class="px-2"><el-icon><InfoFilled /></el-icon></span>
                   <span class="font-weight-bold"
                     >This is a DRAFT report. You can take further actions once
                     you approve it.</span
                   >
                   <span class="px-2"
                     ><span style="color: #136acd">Learn more</span>
-                    <i class="pi pi-external-link-alt ml-2"></i
-                  ></span>
+                    <el-icon class="border-secondary p-0 ml-1 border"><TopRight /></el-icon>
+                    </span>
                 </div>
               </div>
               <div class="row my-3">
                 <div class="col-md-1 d-flex align-items-center">
                   <span class="file-icon"
-                    ><i class="pi pi-book" style="color: #136acd"></i
-                  ></span>
+                    >
+                    <el-icon  :color="primarycolor"  ><Document /></el-icon>
+                   
+                  </span>
                 </div>
                 <div class="col-md-5">
                   <span class="grey-text">Create </span>
@@ -96,8 +94,9 @@
               <div class="row my-3">
                 <div class="col-md-1 d-flex align-items-center">
                   <span class="file-icon"
-                    ><i class="pi pi-location-arrow" style="color: #136acd"></i
-                  ></span>
+                    >
+                  <el-icon><Bottom /></el-icon>
+                  </span>
                 </div>
                 <div class="col-md-5 grey-text">
                   <span class="grey-text">Send </span>
@@ -190,21 +189,23 @@
 
                 <div class="col-md-12 pt-2" v-if="willCopyLink">
                   <span class="d-flex" @click="copyLink">
-                    <input
+                    <el-input
                       type="text"
                       name=""
                       @keydown="(e) => e.preventDefault()"
-                      class="form-control mr-2"
+                      class="w-100 mr-2"
                       :value="location"
                       ref="shareableLinkField"
                       style="width: 90%"
-                    />
-                    <span
-                      ><i
-                        class="pi pi-copy c-pointer"
-                        style="font-size: 1.5rem"
-                      ></i
-                    ></span>
+                    >
+                      <template #append>
+                        <el-button class="c-pointer" @click="copyLink">
+                          <el-icon>
+                            <CopyDocument />
+                          </el-icon>
+                        </el-button>
+                      </template>
+                    </el-input>
                   </span>
                 </div>
               </div>
@@ -1465,24 +1466,23 @@
             </div>
           </div>
         </div>
-        <Toast />
       </div>
     </div>
   </div>
 </template>
 
 <script>
-import { ref } from "vue";
+import { ref, inject } from "vue";
 // import ReportAreaChart from "@/components/charts/AreaChart.vue";
 // import eventsService from '../../../services/events/eventsservice';
 import ReportModal from "@/components/firsttimer/ReportModal.vue";
 import composerObj from "../../../services/communication/composer";
-import { useToast } from "primevue/usetoast";
 import stopProgressBar from "../../../services/progressbar/progress";
 import axios from "@/gateway/backendapi";
 // // import { useStore } from 'vuex'
 import { useRoute } from "vue-router";
 import formatDate from "../../../services/dates/dateformatter";
+import { ElMessage } from "element-plus";
 import numbers_formatter from "../../../services/numbers/numbers_formatter";
 
 export default {
@@ -1495,10 +1495,10 @@ export default {
     const contributionReport = ref([]);
     const emaildata = ref(null);
     const btnState = ref("");
-    const toast = useToast();
     const churchName = ref("");
     const routeParams = ref(route.query.report);
     const routeActivityId = ref(route.query.activityID);
+    const primarycolor = inject("primarycolor");
     const url = ref(`my.churchplus.co/tenant/report/${route.params.report}`);
     const sendBtnText = ref("Send Report");
     // const markedAsSent =  ref('mark as sent')
@@ -1632,34 +1632,31 @@ export default {
           btnState.value = "";
           console.log(res, "report response");
           if (res.status === false) {
-            toast.add({
-              severity: "error",
-              summary: "Sending Failed",
-              detail: res.message,
-              life: 3000,
-            });
+            ElMessage({
+                type: "error",
+                message: res.message,
+                duration: 3000,
+              });
           } else {
-            toast.add({
-              severity: "success",
-              summary: "Send Success",
-              detail: "Your report has been sent",
-              life: 3000,
-            });
+            ElMessage({
+                type: "success",
+                message: "Send Success",
+                duration: 3000,
+              });
           }
         })
         .catch((err) => {
           btnState.value = "";
           console.log(err);
           stopProgressBar();
-          toast.add({
-            severity: "error",
-            summary: "Sending Failed",
-            detail: "Report was not sent, please try again",
-            life: 3000,
-          });
+
+          ElMessage({
+                type: "error",
+                message: "Sending Failed",
+                duration: 3000,
+              });
         });
       btnState.value = "modal";
-      console.log(btnState.value);
     };
 
     const getChurchName = (payload) => {
@@ -1684,19 +1681,16 @@ export default {
     const copyLink = () => {
       try {
         willCopyLink.value = true;
-        const a = shareableLinkField.value;
+        const a = shareableLinkField.value.input;
         a.select();
         a.setSelectionRange(0, 200); /* For mobile devices */
-        console.log(willCopyLink, "Samson");
-
         /* Copy the text inside the text field */
         document.execCommand("copy");
-        toast.add({
-          severity: "info",
-          summary: "Link Copied",
-          detail: "Shareable link copied to your clipboard",
-          life: 4000,
-        });
+        ElMessage({
+                type: "info",
+                message: "Shareable link copied to your clipboard",
+                duration: 3000,
+              });
       } catch (error) {
         console.log(error);
       }
@@ -1704,6 +1698,7 @@ export default {
 
     return {
       reportApproved,
+      primarycolor,
       lastSent,
       status,
       toggleReportState,
@@ -1732,7 +1727,7 @@ export default {
 
 <style scoped>
 * {
-  color: #1c252c;
+  /* color: #1c252c; */
   box-sizing: border-box;
 }
 

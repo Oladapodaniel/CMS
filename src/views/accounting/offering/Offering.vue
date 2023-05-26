@@ -81,10 +81,10 @@ export default {
         OfferingList
     },
     setup () {
-        const contributionTransactions = ref(store.getters["contributions/contributionsItem"].contribution)
+        const contributionTransactions = ref(store.getters["contributions/contributionsList"].contribution)
         const { lgAndUp, xlAndUp } = deviceBreakpoint();
         const primarycolor = inject('primarycolor')
-        const totalItem = ref(store.getters["contributions/contributionsItem"].totalItem)
+        const totalItem = ref(store.getters["contributions/contributionsList"].totalItem)
         const loading = ref(false)
         const networkError = ref(false)
 
