@@ -32,6 +32,7 @@ const setupService = {
         store.dispatch('event/clearState')
         store.dispatch('transaction/clearState')
         store.dispatch('family/clearState')
+        store.dispatch("donation/clearState")
 
     }
 }
