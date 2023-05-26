@@ -60,7 +60,22 @@
                 <label for="date">Event</label>
               </div>
               <div class="col-10 col-md-9">
-                <button
+                <el-dropdown class="w-100" trigger="click">
+                <el-input class="w-100" placeholder="Select Events " v-model="selectedEventAttended.name" />
+                <template #dropdown>
+                  <el-dropdown-menu class="menu-height">
+                    <el-dropdown-item v-for="(event, index) in filteredEvents" :key="index" @click="eventAttendedSelected(event)">{{
+                      event.name }}</el-dropdown-item>
+                    <el-dropdown-item class="d-flex justify-content-center text-primary font-weight-700"
+                      data-toggle="modal" data-target="#eventModal" ref="openModalBtn" divided><el-icon>
+                        <CirclePlus />
+                      </el-icon>
+                      Create new event
+                    </el-dropdown-item>
+                  </el-dropdown-menu>
+                </template>
+              </el-dropdown>
+                <!-- <button
                   @click.prevent="selectEventAttended"
                   class="form-control dd text-left close-modal"
                 >
@@ -71,9 +86,9 @@
                         : selectedEventAttended.name
                       : "Select Event"
                   }}
-                </button>
-                <el-icon :size="17" @click="selectEventAttended" class="cursor-pointer manual-dd-icon align-self-center close-modal"><ArrowDown /></el-icon>
-                <div
+                </button> -->
+                <!-- <el-icon :size="17" @click="selectEventAttended" class="cursor-pointer manual-dd-icon align-self-center close-modal"><ArrowDown /></el-icon> -->
+                <!-- <div
                   class="input-field manual-dd-con close-modal"
                   v-if="showEventList"
                 >
@@ -135,12 +150,12 @@
                       </div>
                     </div>
                   </div>
-                </div>
+                </div> -->
               </div>
             </div>
           </div>
 
-          <div class="col-12 col-md-6">
+          <div class="col-12 col-md-6 mt-md-0 mt-3">
             <div class="row nested-row align-items-end">
               <div class="col-2 col-md-1 px-0">
                 <label for="date">Date</label>
@@ -189,18 +204,31 @@
                     >
                   </div>
                   <div class="col-md-7">
-                    <div
+                    <el-dropdown class="w-100" trigger="click">
+                      <el-input class="w-100" placeholder="Select Events " v-model="selectEvent" />
+                      <template #dropdown>
+                        <el-dropdown-menu class="menu-height">
+                          <el-dropdown-item v-for="(eventCategory, index) in filterEventCategory" :key="index" @click="individualEvent(eventCategory)">{{
+                            eventCategory.name }}</el-dropdown-item>
+                          <el-dropdown-item class="d-flex justify-content-center text-primary font-weight-700"
+                            data-toggle="modal" data-target="#exampleModalEvent"  divided><el-icon>
+                              <CirclePlus />
+                            </el-icon>
+                            Add New Event
+                          </el-dropdown-item>
+                        </el-dropdown-menu>
+                      </template>
+                    </el-dropdown>
+                    <!-- <div
                       class="select-elem-con pointer d-flex justify-content-space-between"
                       @click="showCategory = !showCategory"
                     >
                       <span class="ofering">{{ selectEvent }}</span
                       ><span>
-                        <!-- <i class="pi pi-angle-down" aria-hidden="true"></i> -->
                         <el-icon :size="17"><ArrowDown /></el-icon>
-                        
                         </span>
-                    </div>
-                    <div
+                    </div> -->
+                    <!-- <div
                       class="ofering"
                       :class="{ 'style-category': showCategory }"
                       v-if="showCategory"
@@ -239,7 +267,7 @@
                       <div v-else class="create mt-3" @click="createNewCat(1)">
                         Create "{{ eventText }}" event
                       </div>
-                    </div>
+                    </div> -->
 
                     <!---- Event Modal---->
                   </div>
@@ -250,7 +278,8 @@
                       >Event date</label
                     >
                   </div>
-                  <div class="col-md-7">
+                  <div class="col-md-7"> 
+                    <!-- {{newEvent.activity.date}} -->
                     <el-date-picker
                       v-model="newEvent.activity.date"
                       type="date"
@@ -276,7 +305,7 @@
                             Enter event name and date
                           </p>
                         </div>
-                        <div class="col-md-12 d-md-flex justify-content-end">
+                        <div class="col-md-12 d-md-flex  justify-content-sm-center justify-content-md-end">
                           <el-button
                             class="w-100 px-4"
                             data-dismiss="modal"
@@ -287,7 +316,7 @@
                             Close
                           </el-button>
                           <el-button
-                            class="w-100 px-4 text-white"
+                            class="w-100 px-4 mx-0 mt-md-0 mt-2 text-white"
                             data-dismiss="modal"
                             round
                             size="large"
@@ -950,7 +979,6 @@
           type="textarea"
           placeholder="Notes..."
         />
-        <Toast />
       </div>
       <div class="col-md-12 mt-3 mb-2 justify-content-end d-flex px-0">
         <el-button
@@ -970,7 +998,7 @@
 </template>
 
 <script>
-import { ref, onMounted, computed, inject } from "vue";
+import { ref, onMounted, watchEffect, computed, inject } from "vue";
 import axios from "@/gateway/backendapi";
 import NewDonor from "../../../components/membership/NewDonor.vue";
 import membershipService from "../../../services/membership/membershipservice";
@@ -979,6 +1007,7 @@ import { useStore } from "vuex";
 import CurrencyConverter from "../../event/CurrencyConverter";
 import CurrencyConverterService from "../../../services/currency-converter/currencyConverter";
 import { useRoute } from "vue-router";
+import dateFormatter from "../../../services/dates/dateformatter";
 import finish from "../../../services/progressbar/progress";
 import deviceBreakpoint from "../../../mixins/deviceBreakpoint";
 import { ElMessage } from 'element-plus'
@@ -997,11 +1026,11 @@ export default {
     const eventsSearchString = ref("");
     const newEvents = ref([]);
     const selectedEventAttended = ref({});
-    const selectEvent = ref("Select Event");
+    const selectEvent = ref("");
     const primarycolor = inject("primarycolor");
     const showCategory = ref(false);
     const eventText = ref("");
-    const eventDate = ref(new Date().toISOString().substr(0, 10));
+    const eventDate = ref("");
     const newEventCategoryName = ref("");
     const displayModal = ref(false);
     const invalidEventDetails = ref(false);
@@ -1040,12 +1069,15 @@ export default {
     const currencyIndex = ref(0);
     const currencyRate = ref("");
     const convertedResult = ref(0);
+    const iSoStringFormat = ref("")
     const paymentChannels = ref(['Cheque', 'Cash', 'Cheque', 'POS', 'Online', 'Bank Transfer' , 'USSDText'],)
 
     const addOffering = () => {
       offeringDrop.value.classList.toggle("offering-drop");
       focusInp.value.focus();
     };
+
+    
 
     const hideModals = (e) => {
       if (!e.target.classList.contains("ofering")) {
@@ -1072,9 +1104,9 @@ export default {
     };
 
     const filteredEvents = computed(() => {
-      if (!eventsSearchString.value) return eventsAttended.value;
+      if (!selectedEventAttended.value.name) return eventsAttended.value;
       return eventsAttended.value.filter((i) =>
-        i.name.toLowerCase().includes(eventsSearchString.value.toLowerCase())
+        i.name.toLowerCase().includes(selectedEventAttended.value.name.toLowerCase())
       );
     });
 
@@ -1098,7 +1130,7 @@ export default {
     };
 
     const eventAttendedSelected = (eventObj) => {
-      console.log(eventObj);
+      // console.log(eventObj);
       selectedEventAttended.value = eventObj;
       showEventList.value = false;
       eventsSearchString.value = "";
@@ -1107,6 +1139,8 @@ export default {
     const newEvent = ref({
       activity: {},
     });
+
+    
 
     const individualEvent = (obj) => {
       selectEvent.value = obj.name;
@@ -1120,7 +1154,7 @@ export default {
       if (newEvents.value.length > 0) {
         console.log(newEvents.value, "new events");
         arr = newEvents.value.filter((i) => {
-          return i.name.toLowerCase().includes(eventText.value.toLowerCase());
+          return i.name.toLowerCase().includes(selectEvent.value.toLowerCase());
         });
       } else {
         return newEvents.value;
@@ -1140,7 +1174,8 @@ export default {
       try {
         let data;
         const theText =
-          eventParams === 1 ? eventText.value : newEventCategoryName.value;
+          eventParams === 1 ? selectEvent.value : newEventCategoryName.value;
+          // eventParams === 1 ? eventText.value : newEventCategoryName.value;
         data = await axios.post(`/api/EventCategory?name=${theText}`);
         console.log(data.data);
         newEvents.value = data.data;
@@ -1195,6 +1230,13 @@ export default {
       displayModal.value = false;
     };
 
+    watchEffect(() =>{
+      // console.log(newEvent.value, "jjkjjl");/
+      if(eventDate.value){
+       iSoStringFormat.value = dateFormatter.getISOStringGMT(eventDate.value)
+      }
+  })
+
     const getOffering = () => {
       axios.get("/api/financials/contributions/items").then((res) => {
         newOfferings.value = res.data;
@@ -1226,7 +1268,7 @@ export default {
               ? "Cash"
               : offObj.paymentChannel,
           donor: "",
-          date: eventDate.value,
+          date: iSoStringFormat.value,
           activityID: selectedEventAttended.value.activityID,
           currencyID:
             currencyList.value && tenantCurrency.value
@@ -1444,21 +1486,39 @@ export default {
               JSON.stringify(res.data.returnObject)
             );
             loading.value = false;
-
-            if (Object.keys(selectedEventAttended.value).length > 0) {
+             store.dispatch('contributions/setContributionList').then(() =>{
+              if (Object.keys(selectedEventAttended.value).length > 0) {
               router.push({
                 name: "OfferingReport",
                 query: {
-                  report: eventDate.value,
+                  report: iSoStringFormat.value,
                   activityID: selectedEventAttended.value.activityID,
                 },
               });
             } else {
-              router.push({
-                name: "OfferingReport",
-                query: { report: eventDate.value },
-              });
+              store.dispatch('contributions/setContributionList').then(() =>{
+                  router.push({
+                  name: "OfferingReport",
+                  query: { report: iSoStringFormat.value },
+                });
+              })
             }
+             })
+
+            // if (Object.keys(selectedEventAttended.value).length > 0) {
+            //   router.push({
+            //     name: "OfferingReport",
+            //     query: {
+            //       report: eventDate.value,
+            //       activityID: selectedEventAttended.value.activityID,
+            //     },
+            //   });
+            // } else {
+            //   router.push({
+            //     name: "OfferingReport",
+            //     query: { report: eventDate.value },
+            //   });
+            // }
 
             let contriTransact = res.data.returnObject.map((i) => {
               return {
@@ -1506,21 +1566,25 @@ export default {
               JSON.stringify(res.data.returnObject)
             );
             loading.value = false;
-
-            if (Object.keys(selectedEventAttended.value).length > 0) {
+            store.dispatch('contributions/setContributionList').then(() =>{
+              if (Object.keys(selectedEventAttended.value).length > 0) {
               router.push({
                 name: "OfferingReport",
                 query: {
-                  report: eventDate.value,
+                  report: iSoStringFormat.value,
                   activityID: selectedEventAttended.value.activityID,
                 },
               });
             } else {
-              router.push({
+              store.dispatch('contributions/setContributionList').then(() =>{
+                router.push({
                 name: "OfferingReport",
-                query: { report: eventDate.value },
+                query: { report: iSoStringFormat.value },
               });
+              })
             }
+            })
+            
           })
           .catch((err) => {
             loading.value = false;
@@ -1817,6 +1881,7 @@ export default {
       currencyRate,
       convertResult,
       convertedResult,
+      iSoStringFormat
     };
   },
 };

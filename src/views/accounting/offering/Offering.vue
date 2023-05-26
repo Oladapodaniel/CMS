@@ -52,10 +52,10 @@
         </el-skeleton>
     
 
-    <div v-if="contributionTransactions.length > 0 && !loading && !networkError">
+    <div v-if="(contributionTransactions && contributionTransactions.length > 0 ) && !loading && !networkError">
         <OfferingList :contributionTransactions="contributionTransactions" @marked="removeMultipleOffering" @get-pages="getOfferingPages" @contri-transac="updateTransac" :totalItem="totalItem"/>
     </div> 
-    <div class="no-person"  v-else-if="contributionTransactions.length === 0 && !loading && !networkError">
+    <div class="no-person"  v-else-if="(contributionTransactions && contributionTransactions.length === 0 ) && !loading && !networkError">
         <div class="empty-img">
             <p><img src="../../../assets/people/people-empty.svg" alt="" /></p>
             <p class="tip">You haven't added any offering transaction yet</p>
@@ -70,10 +70,10 @@
 </template>
 
 <script>
-import { ref, inject } from 'vue'
-import { useStore } from 'vuex'
-// import { store } from "../../../store/store"
-import axios from "@/gateway/backendapi"
+import { ref, onMounted, inject } from 'vue'
+// import { useStore } from 'vuex'
+import store from "../../../store/store";
+// import axios from "@/gateway/backendapi"
 import deviceBreakpoint from "../../../mixins/deviceBreakpoint";
 import OfferingList from './OfferingList'
 export default {
@@ -81,10 +81,10 @@ export default {
         OfferingList
     },
     setup () {
-        const contributionTransactions = ref([])
+        const contributionTransactions = ref(store.getters["contributions/contributionsList"].contribution)
         const { lgAndUp, xlAndUp } = deviceBreakpoint();
         const primarycolor = inject('primarycolor')
-        const totalItem = ref(0)
+        const totalItem = ref(store.getters["contributions/contributionsList"].totalItem)
         const loading = ref(false)
         const networkError = ref(false)
 
@@ -97,34 +97,30 @@ export default {
                   return true;
                 });
         }
-        const getContributionTransactions = () => {
-            let store = useStore()
-            if (store.getters['contributions/contributionList'].length > 0) {
-                contributionTransactions.value = store.getters['contributions/contributionList']
-                console.log(contributionTransactions.value, "hiiiuuu");
-            } else {
-                loading.value = true
-                axios
-                    .get("/api/Financials/Contributions/Transactions")
-                    .then((res) => {
-                        loading.value = false
-                    contributionTransactions.value = res.data.returnObject.contribution;
-                    totalItem.value = res.data.returnObject.totalItem
-                    console.log(res.data);
-                    console.log(res.data.returnObject.totalItem, "yyyy");
-                    })
-                    .catch((err) => {
-                        loading.value = false
-                        console.log(err)
-                        if(err.toString().toLowerCase().includes("network error")) {
+        const getContributionTransactions = async () => {
+                try {
+                      loading.value = true
+                      await store.dispatch("contributions/setContributionList").then((res) => {
+                        contributionTransactions.value = res.contribution;
+                        totalItem.value = res.totalItem
+                        loading.value = false;
+                      });
+                    } catch (error) {
+                      console.log(error);
+                      loading.value = false;
+                      if(err.toString().toLowerCase().includes("network error")) {
                           networkError.value = true
                         } else {
                           networkError.value = false
                         }
-                    });
-            }
+                    }
     };
-    getContributionTransactions();
+
+    onMounted(() => {
+      if ((!contributionTransactions.value) || (contributionTransactions.value && contributionTransactions.value.contribution && contributionTransactions.value.contribution.length == 0)){
+        getContributionTransactions();
+      }
+    });
 
     const getOfferingPages = (payload) => {
       contributionTransactions.value = payload.returnObject.contribution

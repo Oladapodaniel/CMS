@@ -205,7 +205,7 @@ export default {
       formatDate,
       searchFamily,
       searchText,
-      toggleSearch,
+      // toggleSearch,
       showConfirmModal,
       deleteFamily,
       moveToEdit,

@@ -19,7 +19,7 @@
     <div class="row">
       <div class="col-12 px-0" id="table">
         <div class="top-con" id="ignore2">
-          <div class="table-top" v-if="searchPledge && searchPledge.length > 0">
+          <div class="table-top" >
             <div class="col-12 col-sm-4 my-3">
               <el-input
                 size="small"
@@ -51,15 +51,28 @@
                 {{ item.name }}
               </div>
             </template>
+            <template v-slot:pledgeType="{ item }">
+              <div v-if="item.donorPaymentType === 2" class="c-pointer" @click="pledgeClick(item.id)">
+                
+                  Range
+                
+              </div>
+              <div v-if="item.donorPaymentType === 1" class="c-pointer" @click="pledgeClick(item.id)">
+                
+                  Specific
+                
+              </div>
+              <div v-if="item.donorPaymentType === 0" class="c-pointer" @click="pledgeClick(item.id)">
+              
+                  Freewill
+                
+              </div>
+            </template>
             <template v-slot:pledgeAmount="{ item }">
               <div class="c-pointer" @click="pledgeClick(item.id)">
                 {{ item && item.currency ? item.currency.symbol : "" }}
                 {{
-                  Math.abs(
-                    item.donorPaymentSpecificAmount
-                      ? item.donorPaymentSpecificAmount
-                      : item.totalPledgeAmount
-                  ).toLocaleString()
+                  Math.abs(item.totalPledgeAmount).toLocaleString()
                 }}.00
               </div>
             </template>
@@ -204,7 +217,8 @@ export default {
     );
     const pledgeHeaders = ref([
       { name: "NAME", value: "name" },
-      { name: "PLEDGE AMOUNT", value: "pledgeAmount" },
+      { name: "PLEDGE TYPE", value: "pledgeType" },
+      { name: "TOTAL PLEDGED", value: "pledgeAmount" },
       { name: "REDEEMED", value: "redeemed" },
       { name: "BALANCE", value: "balance" },
       { name: "DATE", value: "date" },

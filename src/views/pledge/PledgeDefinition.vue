@@ -471,7 +471,7 @@
                       <span class="el-dropdown-link w-100">
                         <el-input
                           type="text"
-                          placeholder="Search bank"
+                          placeholder='Select Bank'
                           v-model="bankSearchText"
                         />
                       </span>
@@ -680,12 +680,12 @@ export default {
     const targetAmount = ref("");
     const setSelectedRange = ref(null);
     const reOccuringRange = ref([
-      { name: "Daily", id: 1 },
-      { name: "Weekly", id: 2 },
-      { name: "Monthly", id: 3 },
-      { name: "Quarterly", id: 4 },
-      { name: "SemiAnnually", id: 5 },
-      { name: "Yearly", id: 6 },
+      { name: "Daily", id: 0 },
+      { name: "Weekly", id: 1 },
+      { name: "Monthly", id: 2 },
+      { name: "Quarterly", id: 3 },
+      { name: "SemiAnnually", id: 4 },
+      { name: "Yearly", id: 5 },
     ]);
     const pledgeDefinitionHeaders = ref([
       { name: "NAME", value: "pledgeType" },
@@ -725,6 +725,19 @@ export default {
       return monthDayYear.normalDate(offDate);
     };
 
+    const getBanks = () => {
+      axios
+        .get("/api/Financials/GetBanks")
+        .then((res) => {
+          nigerianBanks.value = res.data;
+          if (route.query.id) getSinglePledgeDefinition();
+        })
+        .catch((err) => {
+          console.log(err);
+        });
+    };
+    getBanks();
+
     const getSinglePledgeDefinition = async () => {
       pledgeLoader.value = true;
       try {
@@ -732,7 +745,6 @@ export default {
           `/api/Pledge/GetSinglePledgeDefinitions?ID=${route.query.id}`
         );
         finish();
-        console.log(dateRangeValue.value, 'jfghjfgjgk')
         groupLoading.value = false;
         pledgeLoader.value = false;
         getAllCurrencies(res.data.returnObject.currency.id);
@@ -741,13 +753,19 @@ export default {
         targetAmount.value = res.data.returnObject.totalTargetAmount;
         pledgeName.value = res.data.returnObject.name;
         specificAmount.value = res.data.returnObject.donorPaymentSpecificAmount;
+        accountName.value = res.data.returnObject.paymentForm.accountName;
+        accountNumber.value = res.data.returnObject.paymentForm.accountNumber;
+        bankSearchText.value =  nigerianBanks.value.find(i => i.code == res.data.returnObject.paymentForm.bankCode).name, 
+                                 
         amountFrom.value = res.data.returnObject.donorPaymentRangeFromAmount;
         amountTo.value = res.data.returnObject.donorPaymentRangeToAmount;
         dateRangeValue.value = [ res.data.returnObject.pledgeTypeFrequencyOneTimeStartDate, res.data.returnObject.pledgeTypeFrequencyOneTimeEndDate ];
+        console.log(res.data.returnObject.name, "kkkkk");
         setDatePicker();
+        
         setSelectedRange.value = res.data.returnObject.pledgeTypeFrequencyReOccuring
         selectedRange.value = reOccuringRange.value.find(i => i.id == setSelectedRange.value);
-        if (dateRangeValue.value && dateRangeValue.value.length > 0) {
+        if (dateRangeValue.value ) {
           pledgeFrequency.value = "onetime";
         }
 
@@ -776,7 +794,7 @@ export default {
         groupLoading.value = false;
       }
     };
-    if (route.query.id) getSinglePledgeDefinition();
+    
 
     const newConItems = (payload) => {
       contributionItems.value.push(payload)
@@ -942,18 +960,6 @@ export default {
         i.name.toLowerCase().includes(bankSearchText.value.toLowerCase())
       );
     });
-
-    const getBanks = () => {
-      axios
-        .get("/api/Financials/GetBanks")
-        .then((res) => {
-          nigerianBanks.value = res.data;
-        })
-        .catch((err) => {
-          console.log(err);
-        });
-    };
-    getBanks();
 
     const setBank = (item) => {
       bankSearchText.value = item.name;
