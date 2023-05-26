@@ -1,46 +1,4 @@
 <template>
-   <button @click="connect()">Connect</button>
-  <button @click="disconnect()">Disconnect</button>
-   <p>State: {{ connected }}</p>
-  <div>QR Code</div>
-  <div>
-    <!-- :width="200"
-          :height="200" -->
-          <div>
-            <input type="text" v-model="session" class="form-control" />
-            <el-button type="primary" @click="createSessionForWhatsapp">Create session</el-button>
-            <el-button v-if="sessionId" type="warning" @click="getAllChats" plain round>Get All Chats</el-button>
-          </div>
-          <div>
-            <input type="text" v-model="getSessionId" class="form-control" />
-            <el-button type="primary" @click="getSessionForWhatsapp">Get session</el-button>
-          </div>
-          <VueQrcode :value="qrCode" :size="200" :color="{ dark: '#000000ff', light: '#ffffffff' }" type="image/png" level="L" />
-    <!-- <QRCodeVue3
-      :value="qrCode"
-      :qrOptions="{ typeNumber: 0, mode: 'Byte', errorCorrectionLevel: 'H' }"
-      :imageOptions="{ hideBackgroundDots: true, imageSize: 0.4, margin: 0 }" :dotsOptions="{
-        type: 'square',
-        color: '#000000',
-        gradient: {
-          type: 'linear',
-          rotation: 0,
-          colorStops: [
-            { offset: 0, color: '#000000' },
-            { offset: 1, color: '#000000' },
-          ],
-        },
-      }" :backgroundOptions="{ color: '#ffffff' }" :cornersSquareOptions="{ type: 'dot', color: '#000000' }"
-      :cornersDotOptions="{ type: undefined, color: '#000000' }" fileExt="png" :download="true" myclass="my-qur"
-      imgclass="img-qr" downloadButton="my-button" :downloadOptions="{ name: 'vqr', extension: 'png' }" /> -->
-    <!-- value="2@RM511Zj9OrLu9s/uTymglfX8e+vJxb4itmt/bQbj0UD9fD4wxkHOQRD8SbXBiR2w8C88BvJE2TPfsg==,7n1KCwVQZ3Drnel7DRJt8Fe61+ima5ha3m1pyj+qAm8=,4juNrIake52fImy3EKhc2wi/zo0gTVlk6q11wny4HSw=,12x1d3ES7BC7cdWysD1sXg/FW8mT6qwyzOok7sJh6Ws=" -->
-  </div>
-
-  <div>
-    <!-- <img
-      src="2@RM511Zj9OrLu9s/uTymglfX8e+vJxb4itmt/bQbj0UD9fD4wxkHOQRD8SbXBiR2w8C88BvJE2TPfsg==,7n1KCwVQZ3Drnel7DRJt8Fe61+ima5ha3m1pyj+qAm8=,4juNrIake52fImy3EKhc2wi/zo0gTVlk6q11wny4HSw=,12x1d3ES7BC7cdWysD1sXg/FW8mT6qwyzOok7sJh6Ws=" /> -->
-
-  </div>
   <div>
     <div class="container" @click="closeDropdownIfOpen">
       <!-- <div class="container" @click="closeDropdownIfOpen"> -->

@@ -306,33 +306,49 @@
       </template>
     </el-drawer>
 
-    <el-drawer v-model="showWhatsapp" :size="mdAndUp || lgAndUp || xlAndUp ? '70%' : '100%'" direction="rtl">
+    <el-drawer v-model="showWhatsapp" :size="mdAndUp || lgAndUp || xlAndUp ? '70%' : '100%'" direction="rtl"
+      class="whatsappdrawer">
       <template #header>
-        <h4>Send Whatsapp message to {{ sendWhatsappToMultiple ? 'selected members' : whatsappRecipient.firstName }}</h4>
+
       </template>
       <template #default>
-        <div>
-          <div>You can send message to your members via their Whatsapp number. Make sure that the number are correctly formatted.</div>
-          <div>A correct format should include the country code with the phone number. E.g +2349059403948. It works either with the '+' symbol or without it.</div>
-          <div>Recipient{{ sendWhatsappToMultiple ? 's' : '' }}</div>
-          <div class="d-flex align-items-center flex-wrap" v-if="sendWhatsappToMultiple">
-            <div class="multiple_numbers d-flex align-items-center ml-2 mt-3" v-for="(item, index) in marked"
-              :key="item.id">
-              <span>{{ item.mobilePhone }}</span>
-              <el-icon class="c-pointer ml-2" @click="marked.splice(index, 1)">
-                <CircleClose />
-              </el-icon>
-            </div>
+        <div v-if="whatsappClientState">
+          <div class="d-flex justify-content-center align-items-center">
+            <img src="../../assets/whatsappwhiteoutline.svg" />
+            <h4 class="font-weight-700 text-dark mb-0 ml-2">
+              Send Whatsapp message to</h4>
           </div>
-          <vue-tel-input style="height: 40px" v-model="whatsappRecipient.mobilePhone" mode="international"
-            v-else></vue-tel-input>
+          <div class="text-center s-20 font-weight-600">{{ sendWhatsappToMultiple ? 'Selected Members' : whatsappRecipient.firstName }}</div>
         </div>
-        <div class="mt-3">Message</div>
-        <div>
-          <el-input type="textarea" rows="8" v-model="whatsappmessage"></el-input>
+        <div v-if="whatsappClientState">
+          <div>
+            <div>You can send message to your members via their Whatsapp number. Make sure that the number are correctly
+              formatted.</div>
+            <div>A correct format should include the country code with the phone number. E.g +2349059403948. It works
+              either with the '+' symbol or without it.</div>
+            <div>Recipient{{ sendWhatsappToMultiple ? 's' : '' }}</div>
+            <div class="d-flex align-items-center flex-wrap" v-if="sendWhatsappToMultiple">
+              <div class="multiple_numbers d-flex align-items-center ml-2 mt-3" v-for="(item, index) in marked"
+                :key="item.id">
+                <span>{{ item.mobilePhone }}</span>
+                <el-icon class="c-pointer ml-2" @click="marked.splice(index, 1)">
+                  <CircleClose />
+                </el-icon>
+              </div>
+            </div>
+            <vue-tel-input style="height: 40px" v-model="whatsappRecipient.mobilePhone" mode="international"
+              v-else></vue-tel-input>
+          </div>
+          <div class="mt-3">Message</div>
+          <div>
+            <el-input type="textarea" rows="8" v-model="whatsappmessage"></el-input>
+          </div>
+        </div>
+        <div v-else class="mt-5">
+          <AuthenticateWhatsapp />
         </div>
       </template>
-      <template #footer>
+      <template #footer v-if="whatsappClientState">
         <el-button :color="primarycolor" @click="sendWhatsapp()" round>Send</el-button>
       </template>
     </el-drawer>
@@ -356,8 +372,8 @@ import { ElMessage, ElMessageBox } from 'element-plus'
 import router from "../../router/index"
 import Table from "@/components/table/Table"
 import groupsService from "../../services/groups/groupsservice";
-// import io from "socket.io-client"
 import { socket } from "@/socket";
+import AuthenticateWhatsapp from '../../components/whatsapp/AuthenticateWhatsapp.vue';
 
 export default {
   props: ["list", "peopleCount"],
@@ -367,7 +383,8 @@ export default {
     smsComponent,
     emailComponent,
     SideBar,
-    Table
+    Table,
+    AuthenticateWhatsapp
   },
 
   setup(props) {
@@ -961,6 +978,10 @@ export default {
       }
     }
 
+    const whatsappClientState = computed(() => {
+      return store.getters["communication/isWhatsappClientReady"]
+    })
+
     return {
       churchMembers,
       chooseGroupto,
@@ -1041,7 +1062,8 @@ export default {
       whatsappmessage,
       displayWhatsappDrawer,
       whatsappRecipient,
-      sendWhatsappToMultiple
+      sendWhatsappToMultiple,
+      whatsappClientState
     };
   },
 };
@@ -1283,5 +1305,4 @@ export default {
   padding: 10px;
   border-radius: 25px;
   background: #eee;
-}
-</style>
+}</style>

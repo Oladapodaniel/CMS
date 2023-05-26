@@ -2,50 +2,39 @@
   <div>
     <div class="container">
       <div class="row mt-4">
-        <div class="col-md-12 d-flex justify-content-center">
-          <h1 class="font-weight-bold ">WHATSAPP</h1>
-        </div>
-      </div>
-      <div class="row">
         <div class="col-md-12">
-          <hr class="hr" />
+          <h2 class="font-weight-bold text-white position-absolute mt-3 ml-4">Whatsapp</h2>
+          <img src="../../assets/whatsappbg.svg" class="w-100" />
         </div>
       </div>
 
       <!-- Content Box -->
       <main id="main" class="mt-3">
         <div class="container-fluid">
-          <div class="row">
+          <div class="row" style="min-height: 75vh">
             <!-- Side mennu -->
-            <div class="col-md-3" id="side-menu">  
+            <div class="col-md-3" id="side-menu">
               <div class="row">
                 <div class="col-md-12 d-flex justify-content-center mt-4 mb-5">
-                  <div class=" ml-3 mt-2 toggle"  >
+                  <div class=" ml-3 mt-2 toggle">
                     <i class="pi pi-bars" @click="toggleMenu"></i>
                   </div>
-                  <router-link
-                    to="/tenant/whatsapp"
-                    class="btn compose-btn border-0 font-weight-bold default-btn border-none"
-                    >Compose SMS</router-link
-                  >
+                  <router-link to="/tenant/whatsapp"  v-if="whatsappClientState"
+                    class="btn compose-btn border-0 font-weight-bold default-btn border-none">Compose Whatsapp</router-link>
+                  <router-link to="" v-else
+                    class="btn compose-btn border-0 font-weight-bold default-btn border-none">Connect Whatsapp</router-link>
                 </div>
               </div>
-              <div class="row mb-3" :class="{ 'show': menuShouldShow, 'links-menu' : !menuShouldShow }"  >
-                <div class="col-md-12 " >
-                  <div
-                    class="row menu-item-con py-2"
-                    :class="{
-                      'active-link':
-                        route.path.includes('/tenant/sms/sent'),
-                    }"
-                  >
+              <div class="row mb-3" :class="{ 'show': menuShouldShow, 'links-menu': !menuShouldShow }">
+                <div class="col-md-12 ">
+                  <div class="row menu-item-con py-2" :class="{
+                    'active-link':
+                      route.path.includes('/tenant/sms/sent'),
+                  }"  v-if="whatsappClientState">
                     <div class="col-md-12 menu-item-div m-auto">
                       <a class="btn btn-default font-weight-bold">
                         <span class="menu-item">
-                          <router-link
-                            class="r-link text-decoration-none"
-                            to="/tenant/sms/sent"
-                          >
+                          <router-link class="r-link text-decoration-none" to="/tenant/sms/sent">
                             <i class="pi pi-arrow-circle-up mr-3 menu-icon"></i>
                             <span class="active">Sent</span>
                           </router-link>
@@ -54,94 +43,42 @@
                     </div>
                   </div>
 
-                  <div
-                    class="row menu-item-con py-2"
-                    :class="{
-                      'active-link':
-                        route.path === '/tenant/sms',
-                    }"
-                  >
-                    <div class="col-md-12 menu-item-div m-auto">
-                      <a class="btn btn-default font-weight-bold">
-                        <span class="menu-item"
-                          ><router-link
-                            class="r-link text-decoration-none"
-                            to="/tenant/sms"
-                          >
-                            <i class="fas fa-inbox mr-3 menu-icon"></i>
-                            <span class="active">Replies</span>
-                          </router-link>
-                          <!-- <span class="inbox-count ml-md-2">3</span> -->
-                        </span>
-                      </a>
-                    </div>
-                  </div>
 
-                  <div
-                    class="row menu-item-con py-2"
-                    :class="{
-                      'active-link':
-                        route.path === '/tenant/sms/draft',
-                    }"
-                  >
+                  <div class="row menu-item-con py-2" :class="{
+                    'active-link':
+                      route.path === '/tenant/sms/scheduled',
+                  }"  v-if="whatsappClientState">
                     <div class="col-md-12 menu-item-div m-auto">
                       <a class="btn btn-default font-weight-bold">
                         <span class="menu-item">
-                          <router-link
-                            class="r-link text-decoration-none"
-                            to="/tenant/sms/draft"
-                          >
-                            <i class="pi pi-envelope mr-3 menu-icon"></i>
-                            <span class="active">Draft</span>
-                          </router-link>
-                        </span>
-                      </a>
-                    </div>
-                  </div>
-
-                  <div
-                    class="row menu-item-con py-2"
-                    :class="{
-                      'active-link':
-                        route.path === '/tenant/sms/contacts',
-                    }"
-                  >
-                    <div class="col-md-12 menu-item-div m-auto">
-                      <a class="btn btn-default font-weight-bold">
-                        <span class="menu-item">
-                          <router-link
-                            class="r-link text-decoration-none"
-                            to="/tenant/sms/contacts"
-                          >
-                            <i class="pi pi-list mr-3 menu-icon"></i>
-                            <span class="active">Contact List</span>
-                          </router-link>
-                        </span>
-                      </a>
-                    </div>
-                  </div>
-
-                  <div
-                    class="row menu-item-con py-2"
-                    :class="{
-                      'active-link':
-                        route.path === '/tenant/sms/scheduled',
-                    }"
-                  >
-                    <div class="col-md-12 menu-item-div m-auto">
-                      <a class="btn btn-default font-weight-bold">
-                        <span class="menu-item">
-                          <router-link
-                            class="r-link text-decoration-none"
-                            to="/tenant/sms/scheduled"
-                          >
+                          <router-link class="r-link text-decoration-none" to="/tenant/sms/scheduled">
                             <!-- <i class="pi pi-list mr-3 menu-icon"></i> -->
-                            <i
-                              class="pi pi-clock mr-3 menu-icon"
-                              aria-hidden="true"
-                            ></i>
+                            <i class="pi pi-clock mr-3 menu-icon" aria-hidden="true"></i>
                             <span class="active">Scheduled</span>
                           </router-link>
+                        </span>
+                      </a>
+                    </div>
+                  </div>
+                  <div class="row menu-item-con py-2" v-if="!whatsappClientState">
+                    <div class="col-md-12 menu-item-div m-auto">
+                      <a class="btn btn-default font-weight-bold">
+                        <span class="menu-item">
+                            <img src="../../assets/greyoutlinewhatsapp.svg" class="mr-3" width="22" />
+                            <span class="active">Not connected</span>
+                        </span>
+                      </a>
+                    </div>
+                  </div>
+                  <div class="row menu-item-con py-2" v-else>
+                    <div class="col-md-12 menu-item-div m-auto">
+                      <a class="btn btn-default font-weight-bold">
+                        <span class="menu-item">
+                            <img src="../../assets/utlinewhatsapp.svg" class="mr-3" width="22" />
+                            <span style="color: #078E2D">Connected</span>
+                            <span>
+                            <img src="../../assets/checkvector.svg" class="ml-3" width="20" />
+                            </span>
                         </span>
                       </a>
                     </div>
@@ -162,27 +99,56 @@
 </template>
 
 <script>
-import { ref } from "vue";
+import { ref, computed } from "@vue/reactivity";
+// import { watchEffect } from "vue";
 import { useRoute } from "vue-router";
+import store from "../../store/store";
 export default {
+  beforeRouteEnter (to, from, next) {
+    console.log('befbore route enteredx')
+    const whatsappClientState = computed(() => {
+      return store.getters["communication/isWhatsappClientReady"]
+    })
+    console.log(whatsappClientState.value)
+
+    if (!whatsappClientState.value && to.fullPath == '/tenant/whatsapp') {
+      next(
+        {
+          path: '/tenant/whatsapp/auth'
+        }
+      )
+    } else {
+      next()
+    }
+  },
   setup() {
     const route = useRoute();
     const menuShouldShow = ref(false);
-    const toggleMenu = ()=>{
-           menuShouldShow.value = !menuShouldShow.value
-         };
+    const toggleMenu = () => {
+      menuShouldShow.value = !menuShouldShow.value
+    };
+
+    const whatsappClientState = computed(() => {
+      return store.getters["communication/isWhatsappClientReady"]
+    })
+
+    // watchEffect(() => {
+    //   store.dispatch('communication/isWhatsappClientReady', true)
+    // })
+    
+    
 
     return {
       route,
       toggleMenu,
-      menuShouldShow
+      menuShouldShow,
+      whatsappClientState
     };
   },
 };
 </script>
 
 <style scoped>
-
 .toggle {
   display: none;
   width: 20px;
@@ -307,20 +273,23 @@ export default {
 .r-link {
   color: #002044;
 }
+
 .router-link-exact-active i {
   color: #136acd;
   opacity: 1;
 }
 
-@media screen and (max-width: 765px){
+@media screen and (max-width: 765px) {
   .toggle {
     display: block;
   }
+
   .show {
     overflow: hidden;
     height: 270px;
     transition: all 0.5s cubic-bezier(0.645, 0.045, 0.355, 1);
   }
+
   .links-menu {
     height: 0;
     overflow: hidden;

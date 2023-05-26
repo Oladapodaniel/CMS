@@ -128,6 +128,10 @@ li.el-menu-item.w-100,
   text-align: left;
 }
 
+div.el-dialog.is-align-center.QRCodeDialog {
+  border-radius: 25px;
+}
+
 .el-dropdown-menu {
   max-height: 400px;
   overflow: auto;
@@ -235,4 +239,8 @@ div.uploadvoice div.el-upload.el-upload--text {
 
 div.sender-id-input .el-form-item__content {
   margin-left: 0 !important
+}
+
+div.whatsappdrawer.el-drawer .el-drawer__footer {
+  text-align: left
 }
