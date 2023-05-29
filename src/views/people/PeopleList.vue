@@ -318,17 +318,23 @@
             <h4 class="font-weight-700 text-dark mb-0 ml-2">
               Send Whatsapp message to</h4>
           </div>
-          <div class="text-center s-20 font-weight-600">{{ sendWhatsappToMultiple ? 'Selected Members' : whatsappRecipient.firstName }}</div>
+          <h4 class="text-center text-secondary font-weight-600">{{ sendWhatsappToMultiple ? 'Selected Members' :
+            whatsappRecipient.firstName }}</h4>
         </div>
         <div v-if="whatsappClientState">
           <div>
-            <div>You can send message to your members via their Whatsapp number. Make sure that the number are correctly
-              formatted.</div>
-            <div>A correct format should include the country code with the phone number. E.g +2349059403948. It works
-              either with the '+' symbol or without it.</div>
-            <div>Recipient{{ sendWhatsappToMultiple ? 's' : '' }}</div>
+            <div>Recipient{{ sendWhatsappToMultiple ? 's' : '' }}
+              <el-tooltip class="box-item" effect="customized"
+                content="<div>Make sure that the numbers are correctly formatted.</div> <div>A correct format should include the country code with the phone number. E.g +2349059403948.</div> <div>It works either with the '+' symbol or without it.</div>"
+                raw-content
+                placement="top">
+                <el-icon>
+                  <InfoFilled />
+                </el-icon>
+              </el-tooltip>
+            </div>
             <div class="d-flex align-items-center flex-wrap" v-if="sendWhatsappToMultiple">
-              <div class="multiple_numbers d-flex align-items-center ml-2 mt-3" v-for="(item, index) in marked"
+              <div class="multiple_numbers d-flex align-items-center mr-2 mt-2" v-for="(item, index) in marked.filter(i => i.mobilePhone).splice(0, 10)"
                 :key="item.id">
                 <span>{{ item.mobilePhone }}</span>
                 <el-icon class="c-pointer ml-2" @click="marked.splice(index, 1)">
@@ -336,12 +342,13 @@
                 </el-icon>
               </div>
             </div>
-            <vue-tel-input style="height: 40px" v-model="whatsappRecipient.mobilePhone" mode="international"
-              v-else></vue-tel-input>
+            <vue-tel-input class="mt-2" style="height: 40px" v-model="whatsappRecipient.mobilePhone" mode="international"
+            v-else></vue-tel-input>
+            <div v-if="sendWhatsappToMultiple && marked.length > 10" class="text-secondary font-weight-600 mt-2">and {{ marked.length - 10 }} {{ marked.length - 10 > 1 ? 'others' : 'other' }}</div>
           </div>
-          <div class="mt-3">Message</div>
-          <div>
-            <el-input type="textarea" rows="8" v-model="whatsappmessage"></el-input>
+          <!-- <div class="mt-3">Message</div> -->
+          <div class="mt-4">
+            <el-input type="textarea" rows="8" placeholder="Enter your message" v-model="whatsappmessage"></el-input>
           </div>
         </div>
         <div v-else class="mt-5">
@@ -349,7 +356,7 @@
         </div>
       </template>
       <template #footer v-if="whatsappClientState">
-        <el-button :color="primarycolor" @click="sendWhatsapp()" round>Send</el-button>
+        <el-button :color="primarycolor" @click="sendWhatsapp()" round>Send <img src="../../assets/send-jet.svg" class="ml-2" /></el-button>
       </template>
     </el-drawer>
   </div>
@@ -374,6 +381,7 @@ import Table from "@/components/table/Table"
 import groupsService from "../../services/groups/groupsservice";
 import { socket } from "@/socket";
 import AuthenticateWhatsapp from '../../components/whatsapp/AuthenticateWhatsapp.vue';
+import swal from "sweetalert";
 
 export default {
   props: ["list", "peopleCount"],
@@ -447,11 +455,17 @@ export default {
     watchEffect(() => {
       socket.on('messagesent', (data) => {
         console.log(data, 'status')
-        ElMessage({
-          type: 'success',
-          message: 'Whatsapp message sent successfully 🎉',
-          duration: 8000
-        })
+        // ElMessage({
+        //   type: 'success',
+        //   message: 'Whatsapp message sent successfully 🎉',
+        //   duration: 8000
+        // })
+
+        swal(
+            " Success",
+            "Whatsapp message sent successfully!",
+            "success"
+          );
       })
     })
 
@@ -973,7 +987,7 @@ export default {
         whatsappRecipient.value = item
         sendWhatsappToMultiple.value = false
       } else {
-        marked.value = marked.value.filter(i => i.mobilePhone).splice(0, 10)
+        // marked.value = marked.value.filter(i => i.mobilePhone).splice(0, 10)
         sendWhatsappToMultiple.value = true
       }
     }
@@ -1303,6 +1317,7 @@ export default {
 
 .multiple_numbers {
   padding: 10px;
-  border-radius: 25px;
+  border-radius: 5px;
   background: #eee;
-}</style>
+}
+</style>

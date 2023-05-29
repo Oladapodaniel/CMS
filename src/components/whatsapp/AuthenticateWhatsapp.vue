@@ -60,7 +60,7 @@ export default {
         const primarycolor = inject('primarycolor');
         const QRCodeDialog = ref(false);
         const qrCode = ref("");
-        let sessionId = ref(`session-${uuid().substring(0, 13)}`);
+        let sessionId = ref(``);
         const qrloading = ref(false);
         const sessionStatus = ref("");
         const isClientReady = ref(false)
@@ -94,6 +94,7 @@ export default {
             }
         }
 
+        
         const getSessionIdFromBackend = async () => {
             try {
                 let { data } = await axios.get("/api/Settings/GetWhatsAppSession");
@@ -130,7 +131,16 @@ export default {
                 isClientReady.value = true
                 connectingExistingSession.value = false
                 store.dispatch('communication/isWhatsappClientReady', isClientReady.value)
-                // if the get endpoint returned null
+                
+
+                if (route.fullPath == '/tenant/whatsapp/auth') {
+                    router.push('/tenant/whatsapp')
+                }
+            })
+
+            socket.on('remotesessionsaved', (data) => {
+                console.log(data, 'Remote session saved')
+                // if the get session endpoint returned no session, then save the current to backend
                 if (sessionStatus.value == 'noSession') {
                     saveSessionIdonAuthSuccess();
                 }
@@ -142,22 +152,17 @@ export default {
 
 
             if (socketconnected.value) {
-                console.log('scket cnnected')
-                getSessionIdFromBackend();
+                console.log('socket connected')
+                if (!isClientReady.value) getSessionIdFromBackend();
+                
             } else {
-                console.log('scket  nt cnnected')
+                console.log('socket not connected')
                 connectingExistingSession.value = false;
-                // ElMessage({
-                //     type: "warn",
-                //     message: "Something went wrong, please try again",
-                //     duration: 5000,
-                // });
             }
-
         })
 
         const proceedAction = () => {
-            QRCodeDialog = false
+            QRCodeDialog.value = false
             if (route.fullPath == '/tenant/whatsapp/auth') {
                 router.push('/tenant/whatsapp')
             }
