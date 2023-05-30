@@ -466,6 +466,7 @@ export default {
             "Whatsapp message sent successfully!",
             "success"
           );
+          showWhatsapp.value = false
       })
     })
 
