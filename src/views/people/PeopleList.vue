@@ -312,6 +312,7 @@
 
       </template>
       <template #default>
+        <el-button @click="saveSessionIdonAuthSuccess">Clear session</el-button>
         <div v-if="whatsappClientState">
           <div class="d-flex justify-content-center align-items-center">
             <img src="../../assets/whatsappwhiteoutline.svg" />
@@ -326,16 +327,15 @@
             <div>Recipient{{ sendWhatsappToMultiple ? 's' : '' }}
               <el-tooltip class="box-item" effect="customized"
                 content="<div>Make sure that the numbers are correctly formatted.</div> <div>A correct format should include the country code with the phone number. E.g +2349059403948.</div> <div>It works either with the '+' symbol or without it.</div>"
-                raw-content
-                placement="top">
+                raw-content placement="top">
                 <el-icon>
                   <InfoFilled />
                 </el-icon>
               </el-tooltip>
             </div>
             <div class="d-flex align-items-center flex-wrap" v-if="sendWhatsappToMultiple">
-              <div class="multiple_numbers d-flex align-items-center mr-2 mt-2" v-for="(item, index) in marked.filter(i => i.mobilePhone).splice(0, 10)"
-                :key="item.id">
+              <div class="multiple_numbers d-flex align-items-center mr-2 mt-2"
+                v-for="(item, index) in marked.filter(i => i.mobilePhone).splice(0, 10)" :key="item.id">
                 <span>{{ item.mobilePhone }}</span>
                 <el-icon class="c-pointer ml-2" @click="marked.splice(index, 1)">
                   <CircleClose />
@@ -343,8 +343,9 @@
               </div>
             </div>
             <vue-tel-input class="mt-2" style="height: 40px" v-model="whatsappRecipient.mobilePhone" mode="international"
-            v-else></vue-tel-input>
-            <div v-if="sendWhatsappToMultiple && marked.length > 10" class="text-secondary font-weight-600 mt-2">and {{ marked.length - 10 }} {{ marked.length - 10 > 1 ? 'others' : 'other' }}</div>
+              v-else></vue-tel-input>
+            <div v-if="sendWhatsappToMultiple && marked.length > 10" class="text-secondary font-weight-600 mt-2">and {{
+              marked.length - 10 }} {{ marked.length - 10 > 1 ? 'others' : 'other' }}</div>
           </div>
           <!-- <div class="mt-3">Message</div> -->
           <div class="mt-4">
@@ -356,7 +357,8 @@
         </div>
       </template>
       <template #footer v-if="whatsappClientState">
-        <el-button :color="primarycolor" @click="sendWhatsapp()" round>Send <img src="../../assets/send-jet.svg" class="ml-2" /></el-button>
+        <el-button :color="primarycolor" @click="sendWhatsapp()" round>Send <img src="../../assets/send-jet.svg"
+            class="ml-2" /></el-button>
       </template>
     </el-drawer>
   </div>
@@ -445,6 +447,8 @@ export default {
     const whatsappmessage = ref("")
     const whatsappRecipient = ref("")
     const sendWhatsappToMultiple = ref(false)
+    const allcountries = ref([])
+    const tenantCountry = ref({})
 
     watch(serverOptions, () => {
       getPeopleByPage();
@@ -462,11 +466,11 @@ export default {
         // })
 
         swal(
-            " Success",
-            "Whatsapp message sent successfully!",
-            "success"
-          );
-          showWhatsapp.value = false
+          " Success",
+          "Whatsapp message sent successfully!",
+          "success"
+        );
+        showWhatsapp.value = false
       })
     })
 
@@ -912,6 +916,12 @@ export default {
       if (getUser.value) {
         currentUser.value = getUser.value
       }
+
+      if (allcountries.value.length > 0 && getUser.value && Object.keys(getUser.value).length > 0) {
+        tenantCountry.value = allcountries.value.find(i => {
+          return i.isoCode == getUser.value.isoCode
+        })
+      }
     })
 
     const openPositionArchive = () => {
@@ -953,7 +963,10 @@ export default {
     }
 
     const handleSelectionChange = (val) => {
-      marked.value = val
+      marked.value = val.map(i => {
+        i.mobilePhone = i.mobilePhone && i.mobilePhone.substring(0, 1) == '0' ? `+${tenantCountry.value.phoneCode}${i.mobilePhone.substring(1)}` : `${i.mobilePhone}`
+        return i
+      })
     }
 
     const handleSizeChange = (val) => {
@@ -996,6 +1009,30 @@ export default {
     const whatsappClientState = computed(() => {
       return store.getters["communication/isWhatsappClientReady"]
     })
+
+    const getAllCountries = async () => {
+      try {
+        let { data } = await axios.get('/api/getallcountries');
+        console.log(data)
+        allcountries.value = data
+      }
+      catch (error) {
+        console.error(error)
+      }
+    }
+
+    getAllCountries();
+
+
+    const saveSessionIdonAuthSuccess = async () => {
+            try {
+                let response = await axios.post(`/api/Settings/SaveWhatsAppSession?session=`);
+                console.log(response);
+            }
+            catch (err) {
+                console.error(err)
+            }
+        }
 
     return {
       churchMembers,
@@ -1078,7 +1115,11 @@ export default {
       displayWhatsappDrawer,
       whatsappRecipient,
       sendWhatsappToMultiple,
-      whatsappClientState
+      whatsappClientState,
+      getUser,
+      allcountries,
+      tenantCountry,
+      saveSessionIdonAuthSuccess
     };
   },
 };

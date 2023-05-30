@@ -5,15 +5,16 @@
         </div>
         <h1 class="send-text s-20 mt-3 text-center">Send Whatsapp Message <br />to
             Members easily</h1>
-        <p class="text-center">Sync ChurchPlus with Whatsapp</p>
-        <div class="d-flex justify-content-center">
-            <el-button :color="primarycolor" @click="createGetWhatsappSession(sessionId, 'createsession')" round
+            <p class="text-center">Sync ChurchPlus with Whatsapp</p>
+            <div class="d-flex justify-content-center">
+                <el-button :color="primarycolor" @click="createGetWhatsappSession(sessionId, 'createsession')" round
                 class="text-white text-center">
                 Connect now
             </el-button>
         </div>
     </div>
     <el-dialog v-model="QRCodeDialog" title="" width="50%" class="QRCodeDialog" align-center>
+        
         <div class="d-flex align-items-center flex-column" v-if="isClientReady">
             <img src="../../assets/7efs.gif" width="200" />
             <h1 class="s-20 font-weight-700 text-dark">Whatsapp is Connected</h1>
@@ -60,7 +61,7 @@ export default {
         const primarycolor = inject('primarycolor');
         const QRCodeDialog = ref(false);
         const qrCode = ref("");
-        let sessionId = ref(``);
+        let sessionId = ref(`session-${uuid().substring(0, 13)}`);
         const qrloading = ref(false);
         const sessionStatus = ref("");
         const isClientReady = ref(false)
@@ -124,6 +125,12 @@ export default {
                 console.log(qr)
                 qrloading.value = false
                 qrCode.value = qr
+
+                // Reauthenticate user
+                if (!QRCodeDialog.value) {
+                    connectingExistingSession.value = false
+                    QRCodeDialog.value = true
+                }
             })
 
             socket.on('ready', (data) => {
