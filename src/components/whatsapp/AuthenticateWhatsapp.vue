@@ -140,9 +140,9 @@ export default {
                 store.dispatch('communication/isWhatsappClientReady', isClientReady.value)
                 
 
-                if (route.fullPath == '/tenant/whatsapp/auth') {
-                    router.push('/tenant/whatsapp')
-                }
+                // if (route.fullPath == '/tenant/whatsapp/auth') {
+                //     router.push('/tenant/whatsapp')
+                // }
             })
 
             socket.on('remotesessionsaved', (data) => {
