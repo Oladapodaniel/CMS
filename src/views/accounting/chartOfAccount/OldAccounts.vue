@@ -5,8 +5,9 @@
         <div class="pb-3">
           <span class="chart-head"> Update Charts of Accounts</span>
           <span class="help"
-            ><i class="pi pi-question-circle-o" aria-hidden="true"></i
-          ></span>
+            >
+          <el-icon :size="20"><QuestionFilled /></el-icon>
+          </span>
         </div>
       </div>
     </div>
@@ -35,7 +36,7 @@
       <div class="row">
         <div class="col-12 py-2 mt-4 account-head">
           {{ item.name }} <small class="font-weight-normal">{{ item.groupSubHead }}</small
-          ><i class="pi pi-question-circle-o help" aria-hidden="true"></i>
+          ><el-icon :size="20"><QuestionFilled /></el-icon>
         </div>
       </div>
       <div
@@ -49,8 +50,9 @@
         </div>
         <div class="col-6 col-md-5">{{ itm.description }}</div>
         <div class="col-6 col-md-2 text-right">
-          <i class="pi pi-pencil c-pointer" data-toggle="modal" data-target="#assetsModal" aria-hidden="true" @click="editAccount(item, itm)"></i>
-          <i class="pi pi-trash ml-2 c-pointer" aria-hidden="true" @click="deleteAccount(itm.id, index, indx)"></i>
+          <el-icon data-toggle="modal" data-target="#assetsModal" :size="20" @click="editAccount(item, itm)" class="c-pointer mx-2"><EditPen /></el-icon>
+          <el-icon class="c-pointer" :size="20" @click="deleteAccount(itm.id, index, indx)"><Delete /></el-icon>
+
         </div>
       </div>
       <div class="row row-border align-items-center py-3" v-if="item.accounts.length === 0">
@@ -66,7 +68,10 @@
               class="c-pointer text-decoration-none primary-text"
               data-toggle="modal"
               data-target="#assetsModal"
-              ><i class="pi pi-plus-circle"></i>&nbsp; &nbsp; Add a new
+              >
+              <el-icon  :size="20"><CirclePlus /></el-icon>
+              &nbsp; &nbsp; 
+              Add a new
               Account</a
             >
           </div>
@@ -89,14 +94,14 @@
           <h5 class="modal-title font-weight-bold" id="exampleModalLabel">
             Add an account
           </h5>
-          <button
-            type="button"
+          <el-button
+            round
             class="close"
             data-dismiss="modal"
             aria-label="Close"
           >
-            <span aria-hidden="true" ref="closeModalBtn">&times;</span>
-          </button>
+            <span aria-hidden="true" ref="closeModalBtn"><el-icon :size="20"><Close /></el-icon></span>
+          </el-button>
         </div>
         <div class="modal-body">
           <UpdateAccountModal
@@ -115,8 +120,6 @@
     </div>
   </div>
   <!-- END BT -->
-  <ConfirmDialog></ConfirmDialog>
-  <Toast />
 </template>
 
 <script>
@@ -124,8 +127,6 @@ import { ref, computed, nextTick } from "vue";
 import UpdateAccountModal from "./components/UpdateOldAccount";
 import transactionals from './utilities/transactionals';
 import ConfirmDialog from 'primevue/confirmdialog';
-import { useConfirm } from "primevue/useconfirm";
-import { useToast } from "primevue/usetoast";
 import chart_of_accounts from '../../../services/financials/chart_of_accounts';
 import transaction_service from '../../../services/financials/transaction_service';
 
@@ -144,8 +145,6 @@ export default {
     const currencyList = ref([]);
     const inpFocus = ref("");
     const inpFocus2 = ref("");
-    const confirm = useConfirm();
-    const toast = useToast();
 
     const toggleCode = () => {
       showCode.value = !showCode.value;
@@ -224,15 +223,6 @@ export default {
 
     const oldAccounts = computed(() => {
       if (!chartsOfAccount.value || chartsOfAccount.value.length === 0) return [ ];
-      // let targeted = [ ];
-      // for (let accounts of chartsOfAccount.value) {
-      //   for (let nestedAccounts of accounts.accounts) {
-      //     for (let account of nestedAccounts.accounts) {
-      //       targeted.push(account);
-      //     }
-      //   }
-      // }
-      // console.log(targeted, "tagettef");
       return chartsOfAccount.value;
     })
 
@@ -277,20 +267,12 @@ export default {
       try {
         const response = await transactionals.getTransactionalAccounts();
         transactionalAccounts.value = response;
-        // const equity = response[2];
-        // transactionalAccounts.value.splice(2, 1);
-        // transactionalAccounts.value.push(equity);
-        console.log(transactionalAccounts.value, "WWWW");
+        
       } catch (error) {
         console.log(error);
       }
     };
     getTransactionalAccounts();
-
-    // const selectedAccountType = ref({ });
-    // const selectAccountType = (account) => {
-    //   selectedAccountType.value = account;
-    // }
 
     const closeModalBtn = ref(null);
     const closeAccountModal = (data) => {
@@ -306,34 +288,45 @@ export default {
     const editAccount = (account) => {
       console.log(account, "to be edited");
       accountToEdit.value = account;
-      // accountGroupId.value = group.name;
       typesFOrSelectedAccount.value = accountGroups.value.find(i => i.key.toLowerCase() === accountTypes[account.accountType]).accountHeadsDTO;
     }
 
     const deleteAccount = (id, index, indx) => {
-      confirm.require({
-          message: 'Are you sure you want to delete this account?',
-          header: 'Confirmation',
-          icon: 'pi pi-exclamation-triangle',
-          acceptClass: 'confirm-delete',
-          rejectClass: 'cancel-delete',
-          accept: async () => {
-              //callback to execute when user confirms the action
-              try {
+      ElMessageBox.confirm(
+        "Are you sure you want to proceed?",
+        "Confirm delete",
+        {
+          confirmButtonText: "OK",
+          cancelButtonText: "Cancel",
+          type: "error",
+        }
+      )
+        .then( async () => {
+          try {
                 const response = await chart_of_accounts.deleteAccount(id);
-                toast.add({severity:'success', summary:'Account Deleted', detail: `${response.response}`, life: 3000});
+                ElMessage({
+                  type: "success",
+                  message: `${response.response}`,
+                  duration: 3000,
+                });
                 emit("asset-deleted", index, indx);
               } catch (error) {
-                toast.add({severity:'error', summary:'Delete Error', detail:'Account not deleted', life: 3000});
+                ElMessage({
+                  type: "error",
+                  message: "Account not deleted",
+                  duration: 3000,
+                });
                 console.log(error);
               }
-          },
-          reject: () => {
-              //callback to execute when user rejects the action
-              // toast.add({severity:'error', summary:'Delete Error', detail:'Account not deleted', life: 3000});
-          }
-      });
-    }
+        })
+        .catch(() => {
+          ElMessage({
+            type: "info",
+            message: "Delete canceled",
+            duration: 5000,
+          });
+        });
+    };
 
     const cities = ref([
       {

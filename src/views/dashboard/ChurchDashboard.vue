@@ -176,7 +176,7 @@
           </div>
           <div class="col-md-12 py-3 m-0 day1" v-if="notifiedDays === 1">
             <div class="mt-0">
-              1 days remaining before your subscription expires, kindly
+              1 day remaining before your subscription expires, kindly
               subscribe before
               {{
                 moment
