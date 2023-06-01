@@ -12,10 +12,22 @@
                     Account Type <span class="text-danger">*</span>
                   </div>
                   <div class="col-md-7">
-                      <button class="  btn d-flex justify-content-between  col-12 border  " type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                    <el-select-v2
+                        v-model="selectedAccountTypeID"
+                        class="w-100 font-weight-normal"
+                        :options="
+                          transactionalAccounts.map((i) => ({
+                            label: i.name,
+                            value: i.id,
+                          }))
+                        "
+                        placeholder="Select account type"
+                        @change="setSelectedAccountType"
+                        size="large"
+                      />
+                      <!-- <button class="  btn d-flex justify-content-between  col-12 border  " type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                           <span class="ofering">
                               &nbsp;&nbsp;&nbsp; {{ selectedAccountType.name ?  selectedAccountType.name : 'Select account type' }}
-                              <!-- {{ item.account ? item.account : 'Select' }} -->
                           </span>
                           <span>
                               <i class="pi pi-angle-down offset-sm-2 ofering"></i>
@@ -25,15 +37,7 @@
                           <a class="dropdown-item" v-for="(itm, indx) in transactionalAccounts" :key="indx">
                               <div class="cursor-pointer" @click="selectAccountType(itm)"> {{itm.name}}</div> 
                           </a>
-                      </div>
-                    <!-- <Dropdown
-                      v-model="selectedAccountType"
-                      :options="transactionalAccounts"
-                      optionLabel="name"
-                      style="width: 100%"
-                      placeholder="Select account type"
-                    >
-                    </Dropdown> -->
+                      </div> -->
                   </div>
                 </div>
 
@@ -42,10 +46,10 @@
                     Account Name <span class="text-danger">*</span>
                   </div>
                   <div class="col-md-7">
-                    <input
+                    <el-input
                       type="text"
                       v-model="newAccount.name"
-                      class="form-control"
+                      class="w-100"
                     />
                   </div>
                 </div>
@@ -56,11 +60,23 @@
                 >
                   <div class="col-md-4 text-md-right">Account Currency</div>
                   <div class="col-md-7" id="currencySelect">
+                    <el-select-v2
+                        v-model="selectedCurrencyID"
+                        class="w-100 font-weight-normal"
+                        :options="
+                          accountCurrencies.map((i) => ({
+                            label: i.displayName,
+                            value: i.id,
+                          }))
+                        "
+                        placeholder="Select account currency"
+                        @change="setSelectedCurrency"
+                        size="large"
+                      />
 
-                      <button class="  btn d-flex justify-content-between  col-12 border  " type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                      <!-- <button class="  btn d-flex justify-content-between  col-12 border  " type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                           <span class="ofering">
                               &nbsp;&nbsp;&nbsp; {{ selectedCurrency.name ?  selectedCurrency.name : 'Select account currency' }}
-                              <!-- {{ item.account ? item.account : 'Select' }} -->
                           </span>
                           <span>
                               <i class="pi pi-angle-down offset-sm-2 ofering"></i>
@@ -70,36 +86,28 @@
                           <a class="dropdown-item" v-for="(itm, indx) in accountCurrencies" :key="indx">
                               <div class="cursor-pointer" @click="selectCurrency(itm)"> {{itm.name}}</div> 
                           </a>
-                      </div>
-                    <!-- <Dropdown
-                      v-model="selectedCurrency"
-                      :options="accountCurrencies"
-                      optionLabel="displayName"
-                      placeholder="Select account currency"
-                      style="width: 100%"
-                      :filter="true"
-                    /> -->
+                      </div> -->
                   </div>
                 </div>
-
-                <!-- <div class="row my-3" v-if="account.accountType !== 4">
-                  <div class="col-md-4 text-md-right">Account ID</div>
-                  <div class="col-md-7">
-                    <input
-                      type="text"
-                      v-model="newAccount.accountID"
-                      class="form-control"
-                    />
-                  </div>
-                </div> -->
-
                 <div
                   class="row my-3"
                   v-if="account.accountType === 2 || account.accountType === 3"
                 >
                   <div class="col-md-4 text-md-right">Fund</div>
                   <div class="col-md-7">
-                    <button
+                    <el-select-v2
+                        v-model="selectedFundID"
+                        class="w-100 font-weight-normal"
+                        :options="
+                          funds.map((i) => ({
+                            label: i.name,
+                            value: i.id,
+                          }))
+                        "
+                        @change="setSelectedFund"
+                        size="large"
+                      />
+                    <!-- <button
                       class="btn d-flex justify-content-between col-12 border"
                       type="button"
                       id="dropdownMenuButton"
@@ -114,13 +122,12 @@
                             ? selectedFund.name
                             : "Select fund"
                         }}
-                        <!-- {{ item.account ? item.account : 'Select' }} -->
                       </span>
                       <span>
                         <i class="pi pi-angle-down offset-sm-2 ofering"></i>
                       </span>
-                    </button>
-                    <div
+                    </button> -->
+                    <!-- <div
                       class="dropdown-menu scroll w-100"
                       aria-labelledby="dropdownMenuButton"
                     >
@@ -133,27 +140,27 @@
                           {{ itm.name }}
                         </div>
                       </a>
-                    </div>
-                    <!-- <Dropdown
-                      v-model="selectedFund"
-                      :options="funds"
-                      optionLabel="name"
-                      style="width: 100%"
-                    /> -->
+                    </div> -->
                   </div>
                 </div>
 
                 <div class="row my-3" v-if="account.accountType !== 4">
                   <div class="col-md-4 text-md-right">Description</div>
                   <div class="col-md-7">
-                    <textarea
+                    <el-input
+                      v-model="newAccount.description"
+                      :rows="5"
+                      type="textarea"
+                      class="w-100"
+                    />
+                    <!-- <textarea
                       v-model="newAccount.description"
                       name=""
                       id=""
                       cols="30"
                       rows="5"
                       class="form-control"
-                    ></textarea>
+                    ></textarea> -->
                   </div>
                 </div>
               </div>
@@ -161,7 +168,10 @@
 
             <div class="row my-4" v-if="savingAccount">
               <div class="col-md-12 text-center">
-                <i class="pi pi-spin pi-spinner" style="fontsize: 3rem"></i>
+                <!-- <i class="pi pi-spin pi-spinner" style="fontsize: 3rem"></i> -->
+                <el-icon :size="20" class="is-loading">
+                  <Loading />
+                </el-icon>
               </div>
             </div>
 
@@ -175,15 +185,18 @@
             </div>
             <div class="row" style="border-top: 1px solid #dee2e6">
               <div class="col-md-12 d-flex justify-content-end mt-3">
-                <button class="default-btn mr-3" data-dismiss="modal">
+                <el-button round class=" mr-3" data-dismiss="modal">
                   Cancel
-                </button>
-                <button
+                </el-button>
+                <el-button
                   @click="onSave"
-                  class="default-btn primary-bg border-0 text-white"
+                  round
+                  :loading="savingAccount"
+                  :color="primarycolor"
+                  class=" border-0 text-white"
                 >
                   Save
-                </button>
+                </el-button>
               </div>
             </div>
           </div>
@@ -195,11 +208,10 @@
 </template>
 
 <script>
-import Dropdown from "primevue/dropdown";
-import { ref, watch } from "vue";
+import { ref, watch, inject } from "vue";
 import transactionals from "../utilities/transactionals";
 import chart_of_accounts from "../../../../services/financials/chart_of_accounts";
-import { useToast } from "primevue/usetoast";
+import { ElMessage } from "element-plus";
 import { useStore } from "vuex";
 import membershipService from "../../../../services/membership/membershipservice";
 
@@ -215,20 +227,30 @@ export default {
     "account",
     "currency",
   ],
-  components: { Dropdown },
+  components: {  },
   setup(props, { emit }) {
-    const toast = useToast();
     const store = useStore();
-
     const selectedAccountType = ref({});
+    const primarycolor = inject("primarycolor");
     const selectedCurrency = ref({});
     const selectedFund = ref({});
     const newAccount = ref({});
+    const selectedCurrencyID = ref(null)
+    const selectedAccountTypeID = ref(null)
+    const selectedFundID = ref(null)
     const userCurrency = ref(store.getters.currentUser.currency);
 
     const selectFunds = (item) => {
       selectedFund.value = item;
     };
+
+    const setSelectedCurrency = () => {
+      selectedCurrency.value = accountCurrencies.value.find((i) => i.id == selectedCurrencyID.value)
+    }
+    
+    const setSelectedFund = () => {
+      selectFunds.value = funds.value.find((i) => i.id == selectedFundID.value)
+    }
     const selectCurrency = (item) => {
       selectedCurrency.value = item;
     };
@@ -236,6 +258,10 @@ export default {
     const selectAccountType = (account) => {
       selectedAccountType.value = account;
     };
+    const setSelectedAccountType = () => {
+      selectedAccountType.value = transactionalAccounts.value.find((i) => i.id == selectedAccountTypeID.value)
+      console.log(selectedAccountType.value, "jlkjkljiouiuoo");
+    }
 
     const funds = ref([]);
     const getFunds = async () => {
@@ -253,11 +279,10 @@ export default {
         savingAccount.value = true;
         const response = await chart_of_accounts.editAccount(body);
         savingAccount.value = false;
-        toast.add({
-          severity: "success",
-          summary: "Account Updated",
-          detail: `${response.response}`,
-          life: 2500,
+        ElMessage({
+          type: "success",
+          message: `${response.response}`,
+          duration: 3000,
         });
         newAccount.value = {};
         emit("save-account", {
@@ -266,11 +291,10 @@ export default {
         });
       } catch (error) {
         savingAccount.value = false;
-        toast.add({
-          severity: "error",
-          summary: "Account Update Failed",
-          detail: `An error occurred, please try again`,
-          life: 3000,
+        ElMessage({
+          type: "error",
+          message: "Account Update Failed",
+          duration: 3000,
         });
         newAccount.value = {};
         emit("save-account", {
@@ -306,18 +330,16 @@ export default {
               success: false,
               type: props.financialAccountType,
             });
-            toast.add({
-              severity: "error",
-              summary: "Account Creation Failed",
-              detail: `An error occurred, please try again`,
-              life: 3000,
+             ElMessage({
+              type: "error",
+              message: "Account Creation Failed",
+              duration: 3000,
             });
           } else {
-            toast.add({
-              severity: "success",
-              summary: "Account Created",
-              detail: `The account ${newAccount.value.name} was created successfully`,
-              life: 2500,
+            ElMessage({
+              type: "success",
+              message: `The account ${newAccount.value.name} was created successfully`,
+              duration: 3000,
             });
             newAccount.value = {};
             emit("save-account", {
@@ -394,10 +416,17 @@ export default {
 
     return {
       selectFunds,
+      selectedFundID,
+      setSelectedFund,
+      selectedCurrencyID,
+      setSelectedCurrency,
+      selectedAccountTypeID,
+      setSelectedAccountType,
       selectCurrency,
       selectAccountType,
       selectedAccountType,
       funds,
+      primarycolor,
       newAccount,
       selectedCurrency,
       selectedFund,

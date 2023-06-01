@@ -494,9 +494,7 @@ export default {
     const { mdAndUp, lgAndUp, xlAndUp, xsOnly } = deviceBreakpoint();
     const cardLoading = ref(false);
     const pledgePaymentForm = ref({})
-
-
-
+    FLWupportedCurrencies.value = FLWupportedCurrencies.value.filter( i => i.value === "NGN" || i.value === "GBP" || i.value === "USD" || i.value === "EUR" );
     const pledgeAmountWithComma = computed(() => {
       if (amountToPledge.value) return amountToPledge.value.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ',');
     })
