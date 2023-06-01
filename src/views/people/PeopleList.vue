@@ -357,7 +357,7 @@
         </div>
       </template>
       <template #footer v-if="whatsappClientState">
-        <el-button :color="primarycolor" @click="sendWhatsapp()" round>Send <img src="../../assets/send-jet.svg"
+        <el-button :color="primarycolor" :loading="sendingwhatsappmessage" @click="sendWhatsapp()" round>Send <img src="../../assets/send-jet.svg"
             class="ml-2" /></el-button>
       </template>
     </el-drawer>
@@ -449,6 +449,7 @@ export default {
     const sendWhatsappToMultiple = ref(false)
     const allcountries = ref([])
     const tenantCountry = ref({})
+    const sendingwhatsappmessage = ref(false)
 
     watch(serverOptions, () => {
       getPeopleByPage();
@@ -471,6 +472,7 @@ export default {
           "success"
         );
         showWhatsapp.value = false
+        sendingwhatsappmessage.value = false
       })
     })
 
@@ -977,6 +979,7 @@ export default {
     }
 
     const sendWhatsapp = () => {
+      sendingwhatsappmessage.value = true
       if (sendWhatsappToMultiple.value) {
         console.log(1)
         socket.emit('sendwhatsappmessage', {
@@ -1119,7 +1122,8 @@ export default {
       getUser,
       allcountries,
       tenantCountry,
-      saveSessionIdonAuthSuccess
+      saveSessionIdonAuthSuccess,
+      sendingwhatsappmessage
     };
   },
 };
