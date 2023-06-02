@@ -47,11 +47,16 @@
                 </div>
             </template>
         </Table>
+        <div class="d-flex justify-content-end my-3">
+            <el-pagination v-model:current-page="serverOptions.page" v-model:page-size="serverOptions.rowsPerPage" background
+                layout="total, sizes, prev, pager, next, jumper" :total="totalSentVoiceList" @size-change="handleSizeChange"
+                @current-change="handleCurrentChange" />
+        </div>
     </div>
 </template>
 
 <script>
-import { ref, computed } from "vue"
+import { ref, computed, watch } from "vue"
 import Table from "@/components/table/Table"
 import store from "../../../store/store"
 import { ElMessage } from 'element-plus'
@@ -63,6 +68,9 @@ export default {
         // const store  = useStore()
         const sentVoiceList = ref([])
         const searchVoiceText = ref("")
+        const totalSentVoiceList = ref("");
+        const paginationPage = ref("");
+        const paginatedTableLoading = ref(false);
         const voiceHeaders = ref([
             { name: 'Subject', value: 'subject' },
             { name: 'Audio URL', value: 'message' },
@@ -77,9 +85,45 @@ export default {
             await store.dispatch("communication/getAllSentVoice").then(res => {
                 voiceLoading.value = false
                 sentVoiceList.value = res.sentSMS
+                totalSentVoiceList.value = res.totalItems
+                paginationPage.value = res.page
+                // console.log(sentVoiceList.value, "jhgjhgjkkgkjj")
             })
         }
         getAllSentVoice();
+
+    const serverOptions = ref({
+      page: 1,
+      rowsPerPage: 100,
+    });
+
+     watch(serverOptions, () => {
+      getTransactionByPage();
+    },
+      { deep: true }
+    );
+
+    const handleSizeChange = (val) => {
+      console.log(`${val} items per page`)
+    }
+    const handleCurrentChange = (val) => {
+      console.log(`current page: ${val}`)
+    }
+
+    const getTransactionByPage = async () => {
+      paginatedTableLoading.value = true
+      try {
+        const { data } = await axios.get(
+          `api/Messaging/getAllSentVoice?page=${serverOptions.value.page}`
+        );
+        sentVoiceList.value = data;
+        console.log(sentVoiceList.value, "khkhkjhk");
+        paginatedTableLoading.value = false
+      } catch (error) {
+        paginatedTableLoading.value = false
+        console.log(error);
+      }
+    };
 
         const copyToClipBoard = async (item) => {
             await navigator.clipboard.writeText(item.message).then(() => {
@@ -99,6 +143,12 @@ export default {
         });
         return {
             sentVoiceList,
+            serverOptions,
+            paginatedTableLoading,
+            paginationPage,
+            handleSizeChange,
+            totalSentVoiceList,
+            handleCurrentChange,
             voiceLoading,
             voiceHeaders,
             copyToClipBoard,

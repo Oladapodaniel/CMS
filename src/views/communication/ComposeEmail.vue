@@ -878,7 +878,23 @@ export default {
               }
             });
             
-          }          
+          } else if (
+            res.data &&
+            !res.data.status
+
+          ) {
+            ElMessage({
+              message: res.data.message || "An error Occur" ,
+              type: "warning",
+              duration: 6000,
+            });
+          } else {
+            ElMessage({
+              type: "warning",
+              message: "Message not sent, please try again",
+              duration: 6000,
+            });
+          }      
         })
         .catch((err) => {
           stopProgressBar();
