@@ -267,10 +267,12 @@
           </div>
         </div>
         <div class="col-sm-12 empty">
-          <div class="row">
-            <div class="offset-sm-7 px-0 col-2 offset-4">TOTAL</div>
-            <div class="col-3 px-0">
-              <div style="margin-left: -3%">{{ addAttendanceTotal }}</div>
+          <div class="row justify-content-end">
+            <div class="col-md-6 d-flex flex-wrap">
+              <div class="col-12 col-sm-4 ">TOTAL</div>
+              <div class="col-12 col-sm-6  ">
+                <div>{{ addAttendanceTotal }}</div>
+              </div>
             </div>
           </div>
         </div>
@@ -498,11 +500,12 @@
         </button>
 
         <div class="col-sm-12 empty">
-          <div class="row">
-            <div class="col-3 col-sm-3 total-2 text-sm-right offset-sm-5">
+          <div class="row justify-content-end">
+            <div class="col-md-6 d-flex flex-wrap">
+              <div class="col-12 col-sm-3  col-sm-3 total-2 ">
               TOTAL
             </div>
-            <div class="col-3 col-sm-3 offset-sm-1 ofering">
+            <div class="col-4 col-sm-2   ofering">
               <CurrencyConverter
                 :tenantCurrency="tenantCurrency.currency"
                 :selectedCurrency="selectedCurrencyName"
@@ -514,7 +517,7 @@
             </div>
             <div
               v-if="convertedAmount2"
-              class="col-4 col-sm-2 align-self-center converted-amount"
+              class=" col-8 col-sm-4  align-self-center text-right text-sm-left converted-amout"
             >
               {{
                 convertedResult
@@ -526,6 +529,8 @@
                   : 0.0
               }}
             </div>
+            </div>
+            
           </div>
         </div>
         <button
