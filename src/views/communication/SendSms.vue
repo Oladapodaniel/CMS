@@ -810,7 +810,6 @@ export default {
         .sendMessage("/api/Messaging/sendSms", data)
         .then((res) => {
           disableBtn.value = false;
-          console.log(res.data, "God is good");
           if (res.data.status) {
 
             swal({
@@ -824,14 +823,19 @@ export default {
 
           } else if (
             res.data &&
-            res.data.message &&
-            res.data.message.toLowercase().includes("you do not have")
+            !res.data.status
+
           ) {
             ElMessage({
-              message: "Insufficient unit" + ", " + res.data.message,
+              message: res.data.message || "An error Occur" ,
               type: "warning",
               duration: 6000,
             });
+            // ElMessage({
+            //   message: "Insufficient unit" + ", " + res.data.message,
+            //   type: "warning",
+            //   duration: 6000,
+            // });
           } else {
             ElMessage({
               type: "warning",
@@ -841,7 +845,6 @@ export default {
           }
 
           store.dispatch("removeSMSUnitCharge", res.data.unitsUsed);
-          console.log(res.data, "res.data:");
 
           // Save the res to store in other to get it in the view sent sms page
           let sentObj = {
@@ -854,8 +857,13 @@ export default {
           };
           store.dispatch("communication/addSmsToSentList", sentObj);
           setTimeout(() => {
-            router.push({ name: "SentMessages" });
+            if(route.fullPath === '/sendsmsexpired'){
+              router.push('/errorpage/expiredSubscription')
+            }else{
+              router.push({ name: "SentMessages" });
+            }
           }, 3500);
+
         })
         .catch((err) => {
           stopProgressBar();

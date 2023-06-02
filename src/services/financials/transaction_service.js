@@ -104,7 +104,7 @@ const getCashAndBank = () => {
 
 const getTransactions = () => {
     return new Promise((resolve, reject) => {
-        axios.get("/api/Financials/Accounts/Transactions")
+        axios.get("/api/Financials/Accounts/Transactions?page=1")
             .then(res => {
                 resolve(res.data);
             })

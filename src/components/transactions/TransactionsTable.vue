@@ -159,6 +159,11 @@
                     </el-dropdown>
                   </template>
               </Table>
+              <div class="d-flex justify-content-end my-3">
+                <el-pagination v-model:current-page="serverOptions.page" v-model:page-size="serverOptions.rowsPerPage" background
+                  layout="total, sizes, prev, pager, next, jumper" :total="totalTransaction" @size-change="handleSizeChange"
+                  @current-change="handleCurrentChange" />
+              </div>
             </div>
 
             <div class="table edit-transac col-12 border col-sm-10 col-md-8 w-100 w-sm-50 w-md-50 w-lg-50 col-lg-4 mobile-form mywidt " v-if="showEditTransaction">
@@ -216,6 +221,8 @@ export default {
     const transactions = ref([]);
     const datete = ref('');
     const searchingMember = ref(true);
+    const paginatedTableLoading = ref(false);
+    const totalTransaction = ref(0)
     const transactionHeaders = ref([
       { name: 'DATE', value: 'date' },
       { name: 'DESCRIPTION', value: 'description' },
@@ -227,6 +234,34 @@ export default {
     const handleSelectionChange = (val) => {
       // checkedFirstTimer.value = val
     }
+    
+
+    const serverOptions = ref({
+      page: 1,
+      rowsPerPage: 100,
+    });
+
+     watch(serverOptions, () => {
+      getTransactionByPage();
+    },
+      { deep: true }
+    );
+
+    const getTransactionByPage = async () => {
+      paginatedTableLoading.value = true
+      try {
+        const { data } = await axios.get(
+          `/api/Financials/Accounts/Transactions?page=${serverOptions.value.page}`
+        );
+        allTransactions.value = data;
+        console.log(allTransactions.value, "khkhkjhk");
+        paginatedTableLoading.value = false
+      } catch (error) {
+        paginatedTableLoading.value = false
+        console.log(error);
+      }
+    };
+
     const searchTrancInDB = () => {
       if (searchText.value !== "" && allTransactions.value.length > 0) {
         return allTransactions.value.filter((i) => {
@@ -528,6 +563,12 @@ export default {
           });
         });
     };
+    const handleSizeChange = (val) => {
+      console.log(`${val} items per page`)
+    }
+    const handleCurrentChange = (val) => {
+      console.log(`current page: ${val}`)
+    }
 
     const journalEntrySaved = () => {
       getTransactions();
@@ -546,11 +587,16 @@ export default {
 
     return {
       transactions,
+      handleCurrentChange,
+      handleSizeChange,
+      serverOptions,
       handleSelectionChange,
+      paginatedTableLoading,
       datete,
       transactionHeaders,
       filterFormIsVissible,
       toggleFilterFormVissibility,
+      getTransactionByPage,
       toggleSearch,
       searchIsVisible,
       cashAndBank,
@@ -565,6 +611,7 @@ export default {
       openModal,
       closeModal,
       showAccount,
+      totalTransaction,
       accountType,
       liabilities,
       getCurrenciesFromCountries,
