@@ -330,12 +330,12 @@
             </div>
             <div class="col-md-11 mt-4 px-0 mb-4 d-flex justify-content-center">
               <div class="col-md-12">
-                <el-button class="w-100 secondary-button mt-3" size="large" @click="cancelPledge" round>Cancel
-                  pledge</el-button>
-                <el-button class="w-100 ml-0 mt-3" :color="primarycolor" :loading="loading" size="large"
-                  :disabled="!personToggle" @click="triggerPayment" round>{{ pledgeActionType
+                <el-button class="w-100 mt-3" :color="primarycolor" :loading="loading" size="large"
+                :disabled="!personToggle" @click="triggerPayment" round>{{ pledgeActionType
                     == '1' ? 'Pay' : 'Pledge'
                   }}</el-button>
+                  <el-button class="w-100 secondary-button mt-3 ml-0" size="large" @click="cancelPledge" v-if="memberAlreadyPledgedToPledgeItem" round>Cancel
+                    pledge</el-button>
               </div>
 
             </div>
@@ -948,7 +948,7 @@ export default {
       )
         .then(async () => {
           try {
-            let { data } = await axios.put(`/api/Pledge/CancelPledge?pledgeID=${route.query.pledgeID}`);
+            let { data } = await axios.put(`/api/Pledge/CancelPledge?pledgeID=${pledgedData.value.id}`);
             console.log(data);
             if (data.status) {
               swal({
