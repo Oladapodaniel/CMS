@@ -5,9 +5,10 @@
         <div class="mt-4 col-md-12 px-0 justify-content-center text-center d-flex align-items-center">
           <div class=" col-sm-7  col-md-6 col-lg-4 col-12 mb-2 ">
             <img :src="churchLogo2" v-if="churchLogo2" class="link-image" alt="" style="width:80px" />
-            <img src="../../assets/dashboardlinks/churchcloud.png" style="width:100px" v-else class="link-image " alt="" />
+            <img src="../../assets/dashboardlinks/churchcloud.png" style="width:100px" v-else class="link-image "
+              alt="" />
           </div>
-           
+
           <!-- <span>
             <h4 class="font-weight-bold mt-3">{{ churchName ? churchName : "Churchplus" }}</h4>
           </span> -->
@@ -29,22 +30,13 @@
                 <label for="">Pledge Name<sup class="text-danger">*</sup></label>
               </div>
               <div class="col-md-12">
-                <select
-                class="form-control"
-                v-model="selectPledgeItemID"
-                :disabled="!route.query.tenantID"
-                 @change="setSelectPledgeItem"
-              
-              >
-                <option
-                  v-for="(itm, index) in contributionDetail.pledgeItemDTOs"
-                  :key="index"
-                  :value="itm.id"
-                >
-                  <p>{{ itm.name }}</p>
-                </option>
-              </select>
-              <!-- <div class="dropdown">
+                <select class="form-control" v-model="selectPledgeItemID" :disabled="!route.query.tenantID"
+                  @change="setSelectPledgeItem">
+                  <option v-for="(itm, index) in contributionDetail.pledgeItemDTOs" :key="index" :value="itm.id">
+                    <p>{{ itm.name }}</p>
+                  </option>
+                </select>
+                <!-- <div class="dropdown">
                       <button
                         class="btn btn-white w-100 border d-flex justify-content-between"
                         type="button"
@@ -129,22 +121,25 @@
                 <label for="">Phone Number<sup class="text-danger">*</sup></label>
               </div>
               <div class="col-md-12">
-                <el-input @keyup.enter="checkContact" @blur="checkContact" v-model="userSearchString" class="w-100"
-                  placeholder="Enter phone number" type="number" :disabled="route.query.pledgeID && route.query.pledgeID.length > 0">
-                  <template #prefix>
-                    <el-icon>
-                      <Phone />
-                    </el-icon>
-                  </template>
-                  <template #append>
-                    <el-button :disabled="route.query.pledgeID && route.query.pledgeID.length > 0">
-                      <el-icon style="vertical-align: middle">
-                        <Search />
+                <div class="d-flex flex-column flex-sm-row">
+                  <el-input @keyup.enter="checkContact" @blur="checkContact" v-model="userSearchString" class=""
+                    placeholder="Enter phone number" type="number"
+                    :disabled="route.query.pledgeID && route.query.pledgeID.length > 0">
+                    <template #prefix>
+                      <el-icon>
+                        <Phone />
                       </el-icon>
-                    </el-button>
-                  </template>
-                </el-input>
-                <div class="col-12">
+                    </template>
+                  </el-input>
+                  <el-button :disabled="route.query.pledgeID && route.query.pledgeID.length > 0"
+                    class="ml-sm-2 mt-2 mt-sm-0" style="height: 42px" size="large" type="primary" plain>
+                    <el-icon class="mr-1" style="vertical-align: middle">
+                      <Search />
+                    </el-icon>
+                    Get my details
+                  </el-button>
+                </div>
+                <div class="col-12 px-0 mt-1">
                   <p class="text-danger" v-if="showNoPhoneError" :class="{ 'my-1': showLoading }">
                     Please enter your phone number
                   </p>
@@ -232,9 +227,8 @@
             <div v-if="personToggle && !showLoading" class=" mt-1 col-md-11 px-0">
               <hr class="w-100">
             </div>
-            <div class="col-md-11 mt-3 px-0" v-if="
-              donorDetail.donorPaymentType == 1 && personToggle
-            ">
+            <div class="col-md-11 mt-3 px-0" v-if="donorDetail.donorPaymentType == 1 && personToggle
+              ">
               <div class="col-md-12 text-center">
                 <label for="">Pledge amount</label>
               </div>
@@ -242,9 +236,8 @@
                 <h2 class="font-weight-700 text-center">{{ pledgeAmountWithComma }}</h2>
               </div>
             </div>
-            <div class="col-md-11 mt-3 px-0" v-if="
-              donorDetail.donorPaymentType == 2 && personToggle
-            ">
+            <div class="col-md-11 mt-3 px-0" v-if="donorDetail.donorPaymentType == 2 && personToggle
+              ">
               <div class="col-md-12 text-center">
                 <div class="mb-1">Pledge amount range is within</div>
                 <label for="">
@@ -262,17 +255,16 @@
                 </label>
               </div>
             </div>
-            <div class="col-md-11 mt-3 px-0" v-if="
-              personToggle && !showLoading
-            ">
+            <div class="col-md-11 mt-3 px-0" v-if="personToggle && !showLoading
+                ">
               <div class="col-md-12 ">
-                <label for="">{{ memberAlreadyPledgedToPledgeItem ? 'Amount pledged' : 'How much do you want to pledge?' }}</label>
+                <label for="">{{ memberAlreadyPledgedToPledgeItem ? 'Amount pledged' : 'How much do you want to pledge?'
+                }}</label>
               </div>
               <!-- For range -->
               <div class="col-md-12" v-if="donorDetail.donorPaymentType == 2">
                 <el-input v-model="amountToPledge" :class="{ 'is-invalid': !withinRange }" placeholder="Enter amount"
-                  @blur="validateRangeAmount" class="input-with-select"
-                  :disabled="memberAlreadyPledgedToPledgeItem">
+                  @blur="validateRangeAmount" class="input-with-select" :disabled="memberAlreadyPledgedToPledgeItem">
                   <template #prepend>
                     <el-select v-model="selectedCurrencyCode" placeholder="Select" style="width: 115px"
                       @change="setSelectedCurrency" filterable>
@@ -318,14 +310,12 @@
                 </el-input>
               </div>
             </div>
-            <div v-if="
-              personToggle && !showLoading
-            " class="mt-4 col-md-11">
+            <div v-if="personToggle && !showLoading
+              " class="mt-4 col-md-11">
               <hr class="w-100">
             </div>
-            <div class="col-md-11 mt-3 px-0" v-if="
-              personToggle && !showLoading
-            ">
+            <div class="col-md-11 mt-3 px-0" v-if="personToggle && !showLoading
+              ">
               <Transition name="slide-fade">
                 <div class="col-md-12 font-weight-bold" v-if="pledgeActionType == '1'">
                   <label for="">How much do you want to pay now ?</label>
@@ -340,8 +330,10 @@
             </div>
             <div class="col-md-11 mt-4 px-0 mb-4 d-flex justify-content-center">
               <div class="col-md-12">
-                <el-button class="w-100" :color="primarycolor" :loading="loading" :disabled="!personToggle"
-                  @click="triggerPayment" round>{{ pledgeActionType
+                <el-button class="w-100 secondary-button mt-3" size="large" @click="cancelPledge" round>Cancel
+                  pledge</el-button>
+                <el-button class="w-100 ml-0 mt-3" :color="primarycolor" :loading="loading" size="large"
+                  :disabled="!personToggle" @click="triggerPayment" round>{{ pledgeActionType
                     == '1' ? 'Pay' : 'Pledge'
                   }}</el-button>
               </div>
@@ -357,7 +349,7 @@
                   <div class="col-md-10 col-12   d-flex">
                     <div class=" col-md-6 text-center ">
                       <img src="../../assets/Full-Flutterwave.png" class="w-100">
-                   </div>
+                    </div>
                     <div class=" col-md-6 text-center mt-1  ">
                       <img src="../../assets/paystack.png" class="w-100">
                     </div>
@@ -427,12 +419,13 @@ import { useToast } from "primevue/usetoast";
 import { useRoute } from "vue-router";
 import { useStore } from "vuex";
 import finish from "../../services/progressbar/progress";
-import { ElMessage } from 'element-plus';
+import { ElMessage, ElMessageBox } from 'element-plus';
 import mask from "../../services/dates/maskText";
 import supportedCurrencies from "../../services/user/flutterwaveSupportedCurrency"
 import deviceBreakpoint from "../../mixins/deviceBreakpoint";
 import { ElLoading } from 'element-plus'
 import swal from "sweetalert";
+import router from "../../router";
 export default {
   setup() {
     const primarycolor = inject('primarycolor')
@@ -440,7 +433,7 @@ export default {
     const searchID = ref('')
     const selectPledgeItemID = ref(null)
     const selectedPledgeItem = ref({})
-    const selectedee = ref({name : "Selected"})
+    const selectedee = ref({ name: "Selected" })
     const appltoggle = ref(false);
     const personToggle = ref(false);
     const associationLogo = ref("")
@@ -494,7 +487,7 @@ export default {
     const { mdAndUp, lgAndUp, xlAndUp, xsOnly } = deviceBreakpoint();
     const cardLoading = ref(false);
     const pledgePaymentForm = ref({})
-    FLWupportedCurrencies.value = FLWupportedCurrencies.value.filter( i => i.value === "NGN" || i.value === "GBP" || i.value === "USD" || i.value === "EUR" );
+    FLWupportedCurrencies.value = FLWupportedCurrencies.value.filter(i => i.value === "NGN" || i.value === "GBP" || i.value === "USD" || i.value === "EUR");
     const pledgeAmountWithComma = computed(() => {
       if (amountToPledge.value) return amountToPledge.value.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ',');
     })
@@ -572,7 +565,7 @@ export default {
           pledgedData.value = data.pledgeResponseDTO
           selectedCurrency.value = data.pledgeResponseDTO.currency
           selectedCurrencyCode.value = data.pledgeResponseDTO.currency.shortCode
-          
+
         } else {
           memberAlreadyPledgedToPledgeItem.value = false
           pledgedData.value = new Object();
@@ -752,7 +745,7 @@ export default {
         },
         callback: function (response) {
           let trans_id = response.trxref
-           let tx_ref = response.trxref
+          let tx_ref = response.trxref
           confirmPayment(tx_ref, trans_id);
         },
       });
@@ -846,7 +839,7 @@ export default {
         },
         callback: (response) => {
           let trans_id = response.transaction_id
-           let tx_ref = response.tx_ref
+          let tx_ref = response.tx_ref
           confirmPayment(trans_id, tx_ref);
         },
         onclose: () => console.log("Payment closed"),
@@ -884,7 +877,7 @@ export default {
         background: 'rgba(255, 255, 255, 0.9)',
       })
       let gatewayService = gatewayType === 1 ? 'Paystack' : gatewayType == 2 ? 'Flutterwave' : null
-      
+
       newContact.value = { ...newContact.value, mobilePhone: userSearchString.value }
       let payload = {
         person: contactDetail.value && Object.keys(contactDetail.value).length > 0 && contactDetail.value.id ? { id: contactDetail.value.id } : newContact.value,
@@ -943,6 +936,43 @@ export default {
       }
     }
 
+    const cancelPledge = () => {
+      ElMessageBox.confirm(
+        'You are about to cancel this pledge. Are you sure?',
+        'Confirm delete',
+        {
+          confirmButtonText: 'OK',
+          cancelButtonText: 'Cancel',
+          type: 'error',
+        }
+      )
+        .then(async () => {
+          try {
+            let { data } = await axios.put(`/api/Pledge/CancelPledge?pledgeID=${route.query.pledgeID}`);
+            console.log(data);
+            if (data.status) {
+              swal({
+                title: "Success",
+                text: 'Pledge cancelled successfully',
+                icon: "success",
+                button: 'OK',
+                closeOnClickOutside: false,
+              }).then(() => {
+                window.location.replace(`${window.location.origin}/partnership/pay?tenantID=${data.returnObject.pledgeType.tenantID}`);
+              })
+            }
+          }
+          catch (err) {
+            console.error(err);
+          }
+        })
+        .catch(() => {
+          ElMessage({
+            type: 'info',
+            message: 'Action discarded',
+          })
+        })
+    }
 
     return {
       selectPledgeItemID,
@@ -1020,7 +1050,8 @@ export default {
       pledgePaymentForm,
       paystackGate,
       flutterwaveGate,
-      selectedee
+      selectedee,
+      cancelPledge
     };
   },
 };
@@ -1076,8 +1107,9 @@ export default {
   width: 70%;
   height: 100%;
 }
-.image-adjust img{
-  width: 40%  !important;
+
+.image-adjust img {
+  width: 40% !important;
   /* height: 100%; */
 }
 
