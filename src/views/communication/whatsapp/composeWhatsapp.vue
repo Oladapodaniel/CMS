@@ -1108,8 +1108,8 @@ export default {
         })
       }
       swal({
-        title: "Success!",
-        text: "Your Whatsapp message is being sent",
+        title: "Success",
+        text: "Your Whatsapp message is being sent!",
         icon: "success",
       })
     }
