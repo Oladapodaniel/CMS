@@ -145,6 +145,9 @@
           <el-select-v2 v-model="userWhatsappGroupsId"
             :options="userWhatsappGroups.map(i => ({ value: i.id.user, label: i.formattedTitle }))"
             placeholder="Select whatsapp group" size="large" class="w-100" multiple />
+            <el-icon class="is-loading" v-if="whatsappGroupsLoading">
+              <Loading />
+            </el-icon>
           <!-- <el-dropdown trigger="click" class="w-100">
             <div class="d-flex justify-content-between border-contribution text-dark w-100" size="large">
               <span>Select Whatsapp group</span>
@@ -570,6 +573,7 @@ export default {
 
     const allcountries = ref([])
     const tenantCountry = ref({})
+    const whatsappGroupsLoading = ref(true)
 
     watchEffect(() => {
       socket.emit('connected', 'Hello From Client')
@@ -589,6 +593,7 @@ export default {
       })
 
       socket.on('allchats', (data) => {
+        whatsappGroupsLoading.value = false
         console.log(data, 'AllChats Here 🥰🎉')
       })
 
@@ -1267,7 +1272,8 @@ export default {
       allcountries,
       allcountries,
       getUser,
-      tenantCountry
+      tenantCountry,
+      whatsappGroupsLoading
     };
   },
 };
