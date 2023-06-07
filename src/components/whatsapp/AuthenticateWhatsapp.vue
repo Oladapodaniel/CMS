@@ -97,6 +97,8 @@ export default {
 
         
         const getSessionIdFromBackend = async () => {
+            // QRCodeDialog.value = true
+            // isClientReady.value = true
             try {
                 let { data } = await axios.get("/api/Settings/GetWhatsAppSession");
                 console.log(data);
@@ -138,7 +140,7 @@ export default {
                 isClientReady.value = true
                 connectingExistingSession.value = false
                 store.dispatch('communication/isWhatsappClientReady', isClientReady.value)
-                
+                QRCodeDialog.value = true
 
                 // if (route.fullPath == '/tenant/whatsapp/auth') {
                 //     router.push('/tenant/whatsapp')
@@ -154,6 +156,7 @@ export default {
             })
 
             socket.on('allchats', (data) => {
+                store.dispatch('communication/allClientChat', data.chats)
                 console.log(data, 'AllChats Here 🥰🎉')
             })
 

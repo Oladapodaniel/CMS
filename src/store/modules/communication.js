@@ -13,7 +13,8 @@ export default {
         addSmsToSentList: {},
         addToSentEmail: {},
         sentVoiceList: [],
-        isWhatsappClientReady: false
+        isWhatsappClientReady: false,
+        allClientWhatsappChat: []
     },
 
     mutations: {
@@ -86,6 +87,9 @@ export default {
         },
         SET_WHATSAPP_STATE (state, payload) {
             state.isWhatsappClientReady = payload
+        },
+        SET_CLIENT_CHAT (state, payload) {
+            state.allClientWhatsappChat = payload
         },
 
         clearState(state) {
@@ -194,6 +198,10 @@ export default {
         isWhatsappClientReady ({ commit }, payload) {
             commit('SET_WHATSAPP_STATE', payload)
         },
+        allClientChat ({ commit }, payload) {
+            commit('SET_CLIENT_CHAT', payload)
+            console.log(payload, 'hhhhh');
+        },
         clearState({ commit }) {
             commit("clearState")
         },
@@ -210,6 +218,7 @@ export default {
         addSmsToSentList: state => state.addSmsToSentList,
         addToSentEmail: state => state.addToSentEmail,
         sentVoiceList: state => state.sentVoiceList,
-        isWhatsappClientReady: state => state.isWhatsappClientReady
+        isWhatsappClientReady: state => state.isWhatsappClientReady,
+        allClientWhatsappChat: state => state.allClientWhatsappChat
     },
 }
