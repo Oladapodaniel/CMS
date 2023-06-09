@@ -28,8 +28,8 @@
               </el-sub-menu>
               <el-menu-item-group @click="routeToPage(x)" v-else>
                 <el-menu-item :index="`${index + 1}-${indexe + 1}`">{{ x.name }}
-                  <el-tag type="warning" class="mx-1" effect="dark" v-if="index === 2 && indexe === 3" size="" round>
-                    Beta
+                  <el-tag type="warning" class="ml-3" effect="dark" v-if="index === 2 && indexe === 3" size="" round>
+                    <span style="display: flex; font-size: 14px">Beta</span>
                   </el-tag>
                 </el-menu-item>
               </el-menu-item-group>
