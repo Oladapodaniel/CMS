@@ -113,8 +113,8 @@ import { ref, computed } from "@vue/reactivity";
 // import { watchEffect } from "vue";
 import { useRoute } from "vue-router";
 import store from "../../store/store";
-import { socket } from "@/socket";
-import { ElMessage, ElMessageBox } from 'element-plus'
+// import { socket } from "@/socket";
+// import { ElMessage, ElMessageBox } from 'element-plus'
 export default {
   beforeRouteEnter (to, from, next) {
     console.log('befbore route enteredx')
@@ -124,12 +124,11 @@ export default {
     console.log(whatsappClientState.value)
 
     if (!whatsappClientState.value && to.fullPath == '/tenant/whatsapp') {
-      next(
-        {
-          path: '/tenant/whatsapp/auth'
-        }
-      )
+
+      console.log('herrr', 1)
+      next({ path: '/tenant/whatsapp/auth' })
     } else {
+        console.log('herrr', 2)
       next()
     }
   },
