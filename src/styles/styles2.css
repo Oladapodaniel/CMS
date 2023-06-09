@@ -106,18 +106,32 @@ button.el-button.is-round {
   left: unset !important;
 }
 
+/* Nav menu items */
+
 .el-sub-menu__title,
 li.el-menu-item.w-100,
 .el-menu.el-menu--inline>li.el-menu-item {
-  height: 40px !important;
+  height: 34px !important;
+}
+
+.el-sub-menu div.el-sub-menu__title {
+  font-size: 16px;
 }
 
 .el-menu-item-group li.el-menu-item {
-  height: 25px;
+  height: 34px;
 }
 
 .el-sub-menu.is-active>div.el-sub-menu__title {
   font-weight: 800 !important;
+}
+
+li.el-menu-item-group div.el-menu-item-group__title {
+  display: none;
+}
+
+li.el-menu-item:hover{
+  background: #d6e7f4;
 }
 
 .el-dialog.is-align-center.person-image-dialog div.el-dialog__body {
@@ -126,6 +140,10 @@ li.el-menu-item.w-100,
 
 .dialog-footer.person-image-dialog-footer {
   text-align: left;
+}
+
+div.el-dialog.is-align-center.QRCodeDialog {
+  border-radius: 25px;
 }
 
 .el-dropdown-menu {
@@ -235,4 +253,21 @@ div.uploadvoice div.el-upload.el-upload--text {
 
 div.sender-id-input .el-form-item__content {
   margin-left: 0 !important
+}
+
+div.whatsappdrawer.el-drawer .el-drawer__footer {
+  text-align: left
+}
+
+/* =============================================================================== */
+/* El tooltip */
+.el-popper.is-customized {
+  /* Set padding to ensure the height is 32px */
+  padding: 6px 12px;
+  background: linear-gradient(90deg, rgb(159, 229, 151), rgb(204, 229, 129));
+}
+
+.el-popper.is-customized .el-popper__arrow::before {
+  background: linear-gradient(45deg, #b2e68d, #bce689);
+  right: 0;
 }

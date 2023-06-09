@@ -12,7 +12,9 @@ export default {
         sentEmails: [],
         addSmsToSentList: {},
         addToSentEmail: {},
-        sentVoiceList: []
+        sentVoiceList: [],
+        isWhatsappClientReady: false,
+        allClientWhatsappChat: []
     },
 
     mutations: {
@@ -82,6 +84,12 @@ export default {
 
         setSentVoiceList (state, payload) {
             state.sentVoiceList = payload
+        },
+        SET_WHATSAPP_STATE (state, payload) {
+            state.isWhatsappClientReady = payload
+        },
+        SET_CLIENT_CHAT (state, payload) {
+            state.allClientWhatsappChat = payload
         },
 
         clearState(state) {
@@ -187,6 +195,13 @@ export default {
                 return response
             })
         },
+        isWhatsappClientReady ({ commit }, payload) {
+            commit('SET_WHATSAPP_STATE', payload)
+        },
+        allClientChat ({ commit }, payload) {
+            commit('SET_CLIENT_CHAT', payload)
+            console.log(payload, 'hhhhh');
+        },
         clearState({ commit }) {
             commit("clearState")
         },
@@ -202,6 +217,8 @@ export default {
         getEmailDraftById: state => id => state.emailDrafts.find(i => i.id === id),
         addSmsToSentList: state => state.addSmsToSentList,
         addToSentEmail: state => state.addToSentEmail,
-        sentVoiceList: state => state.sentVoiceList
+        sentVoiceList: state => state.sentVoiceList,
+        isWhatsappClientReady: state => state.isWhatsappClientReady,
+        allClientWhatsappChat: state => state.allClientWhatsappChat
     },
 }

@@ -24,22 +24,22 @@
   <!-- onreadystatechange="if (this.readyState === 'complete') this.onload()" -->
 
   <!-- AddEvent script -->
-<script type="text/javascript" src="https://addevent.com/libs/atc/1.6.1/atc.min.js" async defer></script>
+  <script type="text/javascript" src="https://addevent.com/libs/atc/1.6.1/atc.min.js" async defer></script>
 
-<!-- AddEvent Settings -->
-<script type="text/javascript">
-  window.addeventasync = function(){
+  <!-- AddEvent Settings -->
+  <script type="text/javascript">
+    window.addeventasync = function () {
       addeventatc.settings({
-          appleical  : {show:true, text:"Apple Calendar"},
-          google     : {show:true, text:"Google <em>(online)</em>"},
-          office365  : {show:true, text:"Office 365 <em>(online)</em>"},
-          outlook    : {show:true, text:"Outlook"},
-          outlookcom : {show:true, text:"Outlook.com <em>(online)</em>"},
-          yahoo      : {show:true, text:"Yahoo <em>(online)</em>"}
+        appleical: { show: true, text: "Apple Calendar" },
+        google: { show: true, text: "Google <em>(online)</em>" },
+        office365: { show: true, text: "Office 365 <em>(online)</em>" },
+        outlook: { show: true, text: "Outlook" },
+        outlookcom: { show: true, text: "Outlook.com <em>(online)</em>" },
+        yahoo: { show: true, text: "Yahoo <em>(online)</em>" }
       });
-  };
+    };
   </script>
-  
+
 
   <style>
     body {
@@ -143,7 +143,7 @@
       border-radius: 20px !important;
     }
 
-    #currencySelect .p-dropdown-items	 {
+    #currencySelect .p-dropdown-items {
       max-width: 300px !important
     }
 
@@ -159,7 +159,7 @@
   <link href="https://unpkg.com/nprogress@0.2.0/nprogress.css" rel="stylesheet" />
   <script src="https://unpkg.com/nprogress@0.2.0/nprogress.js"></script>
 
-<!-- //   <script src="https://cdn.lr-ingest.com/LogRocket.min.js" crossorigin="anonymous"></script>
+  <!-- //   <script src="https://cdn.lr-ingest.com/LogRocket.min.js" crossorigin="anonymous"></script>
 // <script>window.LogRocket && window.LogRocket.init('taw8su/churchplus');</script> -->
 
 </head>
@@ -193,7 +193,7 @@
   <script src="https://cdnjs.cloudflare.com/ajax/libs/axios/0.21.1/axios.min.js"
     integrity="sha512-bZS47S7sPOxkjU/4Bt0zrhEtWx0y0CRkhEp8IckzK+ltifIIE9EMIMTuT/mEzoIMewUINruDBIR/jJnbguonqQ=="
     crossorigin="anonymous"></script>
-    <span id="tawktohh"></span>
+  <span id="tawktohh"></span>
 
   <!-- Facebook SDK for Javascript -->
   <script>
@@ -219,51 +219,50 @@
       js.src = "https://connect.facebook.net/en_US/sdk.js";
       fjs.parentNode.insertBefore(js, fjs);
     }(document, 'script', 'facebook-jssdk'));
-
-    // const checkLoginState = () => {
-    //   FB.getLoginStatus(function (response) {
-    //     let token = {
-    //       accessToken: response.authResponse.accessToken
-    //     }
-    //     axios.post('https://churchplusv3coreapi.azurewebsites.net/Login/Facebook', token)
-    //       .then(res => {
-    //         if (res.data.isOnboarded) {
-    //           localStorage.setItem("email", res.data.username)
-    //           localStorage.setItem("token", res.data.token);
-    //           window.location.href = "/tenant";
-    //         } else {
-    //           localStorage.setItem("email", res.data.username)
-    //           localStorage.setItem("pretoken", res.data.token)
-    //           if (res.data.username) window.location.href = "/onboarding";
-    //         }
-
-    //       })
-    //       .catch(err => console.log(err))
-    //   });
-    // }
   </script>
+  <!-- Meta Pixel Code -->
+  <script>
+    !function (f, b, e, v, n, t, s) {
+      if (f.fbq) return; n = f.fbq = function () {
+        n.callMethod ?
+        n.callMethod.apply(n, arguments) : n.queue.push(arguments)
+      };
+      if (!f._fbq) f._fbq = n; n.push = n; n.loaded = !0; n.version = '2.0';
+      n.queue = []; t = b.createElement(e); t.async = !0;
+      t.src = v; s = b.getElementsByTagName(e)[0];
+      s.parentNode.insertBefore(t, s)
+    }(window, document, 'script',
+      'https://connect.facebook.net/en_US/fbevents.js');
+    fbq('init', '780615695985579');
+    fbq('track', 'PageView');
+  </script>
+  <noscript><img height="1" width="1" style="display:none"
+      src="https://www.facebook.com/tr?id=780615695985579&ev=PageView&noscript=1" /></noscript>
+  <!-- End Meta Pixel Code -->
+
   <script src="https://cdnjs.cloudflare.com/ajax/libs/underscore.js/1.9.1/underscore-min.js" async defer></script>
 
 
 </body>
 
-  <!--Start of Tawk.to Script-->
+<!--Start of Tawk.to Script-->
 <script type="text/javascript">
   if (
-      !window.location.href.toLowerCase().includes('/partnership/pay') &&
-      !window.location.href.toLowerCase().includes('/createmember') &&
-      !window.location.href.toLowerCase().includes('/createfirsttimer')
-      ) {
-    var Tawk_API=Tawk_API||{}, Tawk_LoadStart=new Date();
-    (function(){
-    var s1=document.createElement("script"),s0=document.getElementsByTagName("script")[0];
-    s1.async=true;
-    s1.src='https://embed.tawk.to/60ba6591de99a4282a1b7128/1f7c1pgqv';
-    s1.charset='UTF-8';
-    s1.setAttribute('crossorigin','*');
-    s0.parentNode.insertBefore(s1,s0);
+    !window.location.href.toLowerCase().includes('/partnership/pay') &&
+    !window.location.href.toLowerCase().includes('/createmember') &&
+    !window.location.href.toLowerCase().includes('/createfirsttimer')
+  ) {
+    var Tawk_API = Tawk_API || {}, Tawk_LoadStart = new Date();
+    (function () {
+      var s1 = document.createElement("script"), s0 = document.getElementsByTagName("script")[0];
+      s1.async = true;
+      s1.src = 'https://embed.tawk.to/60ba6591de99a4282a1b7128/1f7c1pgqv';
+      s1.charset = 'UTF-8';
+      s1.setAttribute('crossorigin', '*');
+      s0.parentNode.insertBefore(s1, s0);
     })();
   }
-  </script>
-  <!--End of Tawk.to Script-->
+</script>
+<!--End of Tawk.to Script-->
+
 </html>

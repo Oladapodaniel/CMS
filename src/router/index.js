@@ -989,15 +989,26 @@ const routes = [
             },
             component: () =>
                 import( /* webpackChunkName: "scheduled" */ '@/components/whatsapp/whatsapp'),
-            children: [{
-                path: '',
-                name: 'Compose',
-                meta: {
-                    title: 'Churchplus - Whatsapp Compose',
+            children: [
+                {
+                    path: 'auth',
+                    name: 'ConnectWhatsapp',
+                    meta: {
+                        title: 'Churchplus - Connect Whatsapp',
+                    },
+                    component: () =>
+                        import( /* webpackChunkName: "inbox" */ '@/views/communication/whatsapp/ConnectWhatsapp')
                 },
-                component: () =>
-                    import( /* webpackChunkName: "inbox" */ '@/views/communication/whatsapp/composeWhatsapp')
-            }]
+                {
+                    path: '',
+                    name: 'Compose',
+                    meta: {
+                        title: 'Churchplus - Whatsapp Compose',
+                    },
+                    component: () =>
+                        import( /* webpackChunkName: "inbox" */ '@/views/communication/whatsapp/composeWhatsapp')
+                }
+            ]
         },
         {
             path: 'voice',
