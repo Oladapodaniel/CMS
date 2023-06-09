@@ -106,18 +106,32 @@ button.el-button.is-round {
   left: unset !important;
 }
 
+/* Nav menu items */
+
 .el-sub-menu__title,
 li.el-menu-item.w-100,
 .el-menu.el-menu--inline>li.el-menu-item {
-  height: 40px !important;
+  height: 34px !important;
+}
+
+.el-sub-menu div.el-sub-menu__title {
+  font-size: 16px;
 }
 
 .el-menu-item-group li.el-menu-item {
-  height: 25px;
+  height: 34px;
 }
 
 .el-sub-menu.is-active>div.el-sub-menu__title {
   font-weight: 800 !important;
+}
+
+li.el-menu-item-group div.el-menu-item-group__title {
+  display: none;
+}
+
+li.el-menu-item:hover{
+  background: #d6e7f4;
 }
 
 .el-dialog.is-align-center.person-image-dialog div.el-dialog__body {

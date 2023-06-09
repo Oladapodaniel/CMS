@@ -312,7 +312,6 @@
 
       </template>
       <template #default>
-        <el-button @click="saveSessionIdonAuthSuccess">Clear session</el-button>
         <div v-if="whatsappClientState">
           <div class="d-flex justify-content-center align-items-center">
             <img src="../../assets/whatsappwhiteoutline.svg" />
@@ -1026,17 +1025,6 @@ export default {
 
     getAllCountries();
 
-
-    const saveSessionIdonAuthSuccess = async () => {
-            try {
-                let response = await axios.post(`/api/Settings/SaveWhatsAppSession?session=`);
-                console.log(response);
-            }
-            catch (err) {
-                console.error(err)
-            }
-        }
-
     return {
       churchMembers,
       chooseGroupto,
@@ -1122,7 +1110,6 @@ export default {
       getUser,
       allcountries,
       tenantCountry,
-      saveSessionIdonAuthSuccess,
       sendingwhatsappmessage
     };
   },

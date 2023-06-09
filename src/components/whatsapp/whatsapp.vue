@@ -83,6 +83,16 @@
                       </a>
                     </div>
                   </div>
+                  <!-- <div class="row menu-item-con py-2">
+                    <div class="col-md-12 menu-item-div m-auto">
+                      <a class="btn btn-default font-weight-bold" @click="confirmDelete">
+                        <span class="menu-item">
+                            <img src="../../assets/logouticon.png" class="mr-3" width="22" />
+                            <span class="active">Logout</span>
+                        </span>
+                      </a>
+                    </div>
+                  </div> -->
                 </div>
               </div>
             </div>
@@ -103,6 +113,8 @@ import { ref, computed } from "@vue/reactivity";
 // import { watchEffect } from "vue";
 import { useRoute } from "vue-router";
 import store from "../../store/store";
+import { socket } from "@/socket";
+import { ElMessage, ElMessageBox } from 'element-plus'
 export default {
   beforeRouteEnter (to, from, next) {
     console.log('befbore route enteredx')
@@ -124,6 +136,7 @@ export default {
   setup() {
     const route = useRoute();
     const menuShouldShow = ref(false);
+    const sessionId = ref("");
     const toggleMenu = () => {
       menuShouldShow.value = !menuShouldShow.value
     };
@@ -132,9 +145,59 @@ export default {
       return store.getters["communication/isWhatsappClientReady"]
     })
 
-    // watchEffect(() => {
-    //   store.dispatch('communication/isWhatsappClientReady', true)
-    // })
+  //   const confirmDelete = () => {
+  //     ElMessageBox.confirm(
+  //   'proxy will permanently delete the file. Continue?',
+  //   'Warning',
+  //   {
+  //     confirmButtonText: 'OK',
+  //     cancelButtonText: 'Cancel',
+  //     type: 'warning',
+  //   }
+  // )
+  //   .then(() => {
+  //     logoutWhatsappSession()
+  //   })
+  //   .catch(() => {
+  //     ElMessage({
+  //       type: 'info',
+  //       message: 'Delete canceled',
+  //     })
+  //   })
+  //   }
+
+    // const logoutWhatsappSession = () => {
+    //   socket.emit('deleteremotesession', {
+    //     session: 'RemoteAuth-session-8538942b-1bce'
+    //     // session: sessionId.value
+    //   })
+    // }
+
+      
+    // const getSessionIdFromBackend = async () => {
+    //         try {
+    //             let { data } = await axios.get("/api/Settings/GetWhatsAppSession");
+    //             console.log(data);
+    //             if (data) {
+    //                 sessionId.value = data
+    //             }
+    //         }
+    //         catch (err) {
+    //             console.error(err)
+    //         }
+    //     }
+    //     if (whatsappClientState.value) getSessionIdFromBackend()
+    // const getSessionId = async () => {
+    //         try {
+    //             let response = await axios.post(`/api/Settings/SaveWhatsAppSession?session=`);
+    //             console.log(response);
+
+    //         }
+    //         catch (err) {
+    //             console.error(err)
+    //         }
+    //     }
+    //     getSessionId()
     
     
 
@@ -142,7 +205,10 @@ export default {
       route,
       toggleMenu,
       menuShouldShow,
-      whatsappClientState
+      whatsappClientState,
+      // logoutWhatsappSession,
+      sessionId,
+      // confirmDelete
     };
   },
 };

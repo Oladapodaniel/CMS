@@ -27,7 +27,11 @@
                   :key="indexee" @click="routeToPage(y)">{{ y.name }}</el-menu-item>
               </el-sub-menu>
               <el-menu-item-group @click="routeToPage(x)" v-else>
-                <el-menu-item :index="`${index + 1}-${indexe + 1}`">{{ x.name }}</el-menu-item>
+                <el-menu-item :index="`${index + 1}-${indexe + 1}`">{{ x.name }}
+                  <el-tag type="warning" class="mx-1" effect="dark" v-if="index === 2 && indexe === 3" size="" round>
+                    Beta
+                  </el-tag>
+                </el-menu-item>
               </el-menu-item-group>
             </div>
           </el-sub-menu>
@@ -57,7 +61,6 @@
       </div>
     </el-col>
   </el-row>
-
 </template>
 
 <script>
@@ -462,7 +465,7 @@ export default {
             menuLink.value.find(i => i.name.toLowerCase() == 'more').submenu.push(media, branch, settings)
             // menuLink.value.find(i => i.name.toLowerCase() == 'more').submenu.push(social, media, branch, workflow, archivedpeople, settings)
           } else {
-            menuLink.value.find(i => i.name.toLowerCase() == 'more').submenu.push( media, branch, settings)
+            menuLink.value.find(i => i.name.toLowerCase() == 'more').submenu.push(media, branch, settings)
             // menuLink.value.find(i => i.name.toLowerCase() == 'more').submenu.push(social, media, branch, workflow, archivedpeople, settings)
           }
         }
@@ -471,7 +474,7 @@ export default {
           menuLink.value.push(dashboard, people, communication, event, financial, social, report, more,)
           // menuLink.value.push(dashboard, people, communication, event, financial,  report, more)
           menuLink.value.find(i => i.name.toLowerCase() == 'people').submenu.push(members, firsttimers, groups, families)
-          menuLink.value.find(i => i.name.toLowerCase() == 'more').submenu.push( media, branch, settings)
+          menuLink.value.find(i => i.name.toLowerCase() == 'more').submenu.push(media, branch, settings)
           // menuLink.value.find(i => i.name.toLowerCase() == 'more').submenu.push( workflow, social, media, branch,  archivedpeople, settings)
         }
       })
