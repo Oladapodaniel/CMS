@@ -995,9 +995,9 @@ export default {
       }
 
       // // Send to phoneNumbers
-      if (allSelectedNumbers.value.length > 0) {
+      if (allSelectedNumbers.value.length > 0 || phoneNumber.value) {
         socket.emit('sendwhatsappmessage', {
-          phone_number: allSelectedNumbers.value.length > 0 ? allSelectedNumbers.value : phoneNumber.value.replaceAll(" ", "").trim(),
+          phone_number: allSelectedNumbers.value.length > 0 ? allSelectedNumbers.value : [phoneNumber.value.replaceAll(" ", "").trim()],
           message: editorData.value,
           type: 'multiple'
         })
