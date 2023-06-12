@@ -1089,7 +1089,7 @@ export default {
       console.log(userWhatsappGroupsId.value)
 
       //   // Send to Whatsapp Groups
-      if (userWhatsappGroupsId && userWhatsappGroupsId.value.length > 0) {
+      if (userWhatsappGroupsId.value && userWhatsappGroupsId.value.length > 0) {
         socket.emit('sendtogroups', {
           groups: userWhatsappGroupsId.value,
           message: editorData.value
