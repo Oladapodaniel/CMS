@@ -20,12 +20,13 @@ let converter = {
     
     let propertyArr = Object.keys(currencyRate);
     let valueArr = Object.values(currencyRate);
-    let fromIndex = propertyArr.indexOf(fromCurrencyRate);
+    let fromIndex = propertyArr.indexOf(fromCurrencyRate) > 0 ? propertyArr.indexOf(fromCurrencyRate) : propertyArr.indexOf('usdusd') ;
     let fromRate = valueArr[fromIndex];
     let toIndex = propertyArr.indexOf(toDestinationCurrencyRate);
     let toRate = valueArr[toIndex];
     let result = (amount / fromRate) * toRate;
-    console.log(result);
+    console.log(propertyArr, fromCurrencyRate);
+    console.log(fromIndex, fromRate, toIndex, toRate);
     return result;
   },
   async convertCurrencyTo(amount, fromCurrencyRate, toDestinationCurrencyRate) {

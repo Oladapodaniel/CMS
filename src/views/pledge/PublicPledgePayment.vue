@@ -714,7 +714,7 @@ export default {
 
 
     const paystackGate = computed(() => {
-      if (!pledgePaymentForm.value || !pledgePaymentForm.value.paymentGateWays) return false
+      if (!pledgePaymentForm.value || !pledgePaymentForm.value.paymentGateWays || (selectedCurrencyCode.value.toLowerCase() !== 'ngn')) return false
       return pledgePaymentForm.value.paymentGateWays.find(i => i.paymentGateway.name === "Paystack")
     })
 
