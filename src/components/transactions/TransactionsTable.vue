@@ -455,7 +455,7 @@ export default {
     });
 
     const formatDate = (date) => {
-      return dateFormatter.monthDayYear(date);
+      return dateFormatter.monthDayTime(date);
     };
 
     const gettingSelectedTrsn = ref(false);

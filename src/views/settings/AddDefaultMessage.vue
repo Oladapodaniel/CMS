@@ -208,14 +208,6 @@ export default {
     },
     async updateDefaultMessage() {
       this.loading = true
-      // let newUpdate = {
-      //   id: this.defaultMessage.returnObject.id,
-      //   subject: this.subject,
-      //   message: this.message,
-      //   messageType: this.selectType.value,
-      //   category: this.selectCategory.value,
-      // };
-
       const formData = new FormData();
       formData.append("id", this.defaultMessage.returnObject.id);
       formData.append("category", this.selectCategory.value);
@@ -254,7 +246,13 @@ export default {
             (i) => i.value === data.returnObject.messageType
           );
           this.selectTypeID = this.selectType.value
-          console.log(this.defaultMessage);
+
+          setTimeout(() => {
+            // Display voice audio if available
+          const audioPlayer = this.$refs.audioPlayer
+              audioPlayer.src = data.returnObject.voiceUrl;
+              audioPlayer.style.display = "block";
+          }, 1000);
         } catch (error) {
           console.log(error);
         }
@@ -279,7 +277,6 @@ export default {
       const audioPlayer = this.$refs.audioPlayer
       this.file = e.raw;
         const reader = new FileReader();
-
         reader.addEventListener("load", function() {
           audioPlayer.src = reader.result;
           audioPlayer.style.display = "block";
