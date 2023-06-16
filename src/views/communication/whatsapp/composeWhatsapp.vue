@@ -145,9 +145,9 @@
           <el-select-v2 v-model="userWhatsappGroupsId"
             :options="userWhatsappGroups.map(i => ({ value: i.id.user, label: i.formattedTitle }))"
             placeholder="Select whatsapp group" size="large" class="w-100" multiple />
-            <el-icon class="is-loading" v-if="whatsappGroupsLoading">
-              <Loading />
-            </el-icon>
+          <el-icon class="is-loading" v-if="whatsappGroupsLoading">
+            <Loading />
+          </el-icon>
           <!-- <el-dropdown trigger="click" class="w-100">
             <div class="d-flex justify-content-between border-contribution text-dark w-100" size="large">
               <span>Select Whatsapp group</span>
@@ -314,36 +314,18 @@
         </div>
         <div class="col-md-10 px-0">
           <textarea rows="10" class="text-area my-2 small-text" v-model="editorData"></textarea>
-          <div class="col-md-12 px-0 small-text">
+          <img src="../../../assets/smiling-face.png" width="20" class="mt-3 c-pointer" @click="displayEmoji = !displayEmoji" />
+          <transition name="el-fade-in-linear">
+            <VuemojiPicker v-show="displayEmoji" @emojiClick="handleEmojiClick" class="mt-2" style="position: absolute" />
+          </transition>
+          <!-- <div class="col-md-12 px-0 small-text">
             <p class="bg-success mb-0 p-1" v-if="editorData.length > 0" :class="{ amber: charactersCount > 160 }">
               <span>Characters count {{ charactersCount }}</span>
               <span class="float-right">Page {{ pageCount }}</span>
             </p>
-          </div>
+          </div> -->
         </div>
       </div>
-
-      <!-- <div class="row my-3">
-        <div class="col-md-12 form-group">
-          <div class="row">
-            <div class="col-md-2"></div>
-            <div class="col-md-10 pl-0">
-              <input type="checkbox" v-model="isPersonalized" class="mr-3" />
-              <span class="font-weight-700 px-14">Personal Message</span>
-            </div>
-          </div>
-        </div>
-        <div class="col-md-12">
-          <div class="row">
-            <div class="col-md-2"></div>
-            <div class="col-md-10 pl-0">
-              <span class="hint">Insert #name# any where you want the contact name to appear in
-                the message, it will be replaced by the actual name of the
-                member when sending the message.</span>
-            </div>
-          </div>
-        </div>
-      </div> -->
 
       <div class="row mt-4 mb-5">
         <div class="col-md-12">
@@ -356,131 +338,10 @@
         </div>
         <div class="w-100 mt-3 d-flex justify-content-end">
           <span>
-            <!-- <SplitButton label="Send" :model="sendOptions" :disabled="disableBtn" @click="data" data-toggle="modal"
-              data-target="#sendsmsbtn"></SplitButton> -->
             <el-button :color="primarycolor" size="large" @click="sendWhatsappMessage" round>Send Whatsapp
               message</el-button>
           </span>
-          <!-- <router-link
-            :to="route.fullPath === '/tenant/sms/compose' ? '/tenant/sms/sent' : '/errorpage/expiredSubscription'"
-            class="default-btn d-flex justify-content-center short-btn align-items-center ml-3 text-decoration-none text-dark">
-            Discard
-          </router-link> -->
         </div>
-        <!-- <div class="row">
-          <div class="col-md-12">
-            <div class="modal fade" id="sendsmsbtn" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
-              <div class="modal-dialog modal-dialog-centered modal-lg">
-                <div class="modal-content">
-                  <div class="modal-header grey-background">
-                    <h5 class="modal-title" id="exampleModalLabel">
-                      <i class="pi pi-user mr-2"></i>
-                      {{ sendModalHeader }}
-                    </h5>
-                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                      <span aria-hidden="true">&times;</span>
-                    </button>
-                  </div>
-                  <div class="modal-body">
-                    <div class="row" v-if="!nigerian">
-                      <div class="col-md-12 text-center">
-                        <button
-                          class="primary-btn default-btn border-0 px-4 my-2 primary-bg text-white outline-none extra-btn"
-                          data-dismiss="modal" @click="contructScheduleMessageBody(1, '')">
-                          Send SMS Now
-                        </button>
-                        
-                      </div>
-                    </div>
-
-                    <div class="row" v-else>
-                      <div class="col-md-12">
-                        <div class="row">nige
-                          <div class="col-md-12 px-1">
-                            <p>
-                              We are providing more options to reach and
-                              communicate with your members
-                            </p>
-                          </div>
-                        </div>
-
-                        <div class="row">
-                          <div class="col-md-12 px-1">
-                            <hr class="hr" />
-                          </div>
-                        </div>
-
-                        <div class="row d-flex justify-content-between">
-                          <div class="col-md-6 px-1">
-                            <div class="container">
-                              <div class="row">
-                                <div class="col-md-12">
-                                  <label for="" class="small-text font-weight-600 py-2">NEW** BULK SMS - 100% SMS
-                                    DELIVERY</label>
-                                </div>
-                                <div class="col-md-12 send-now-div py-2 my-2 d-flex justify-content-center">
-                                  <button
-                                    class="primary-btn default-btn primary-bg border-0 px-4 my-2 font-weight-600 outline-none"
-                                    data-dismiss="modal" @click="
-                                      contructScheduleMessageBody(
-                                        1,
-                                        'hostedsms'
-                                      )
-                                      ">
-                                    Send SMS Now
-                                  </button>
-                                </div>
-                                <div class="col-md-12 px-0">
-                                  <hr class="hr my-2" />
-                                </div>
-                                <div class="col-md-12 px-0 d-flex flex-column">
-                                  <span>Please note:</span>
-                                  <span>100% delivery to all valid phone
-                                    numbers.</span>
-                                  <span>Not Affected by DND.</span>
-                                  <span>Dedicated phone number: No sender
-                                    customization.</span>
-                                </div>
-                              </div>
-                            </div>
-                          </div>
-
-                          <div class="col-md-6 px-1">
-                            <div class="container">
-                              <div class="row">
-                                <div class="col-md-12">
-                                  <label for="" class="small-text font-weight-600 py-2">REGULAR BULK SMS- PROVIDER</label>
-                                </div>
-                                <div class="col-md-12 my-2 send-now-div py-2 d-flex justify-content-center">
-                                  
-                                  <button
-                                    class="primary-btn default-btn border-0 px-4 my-2 grey-background text-grey outline-none"
-                                    data-dismiss="modal" @click="contructScheduleMessageBody(1, '')">
-                                    Send SMS Now
-                                  </button>
-                                </div>
-                                <div class="col-md-12 px-0">
-                                  <hr class="hr my-2" />
-                                </div>
-                                <div class="col-md-12 px-0 d-flex flex-column">
-                                  <span>Please note:</span>
-                                  <span>Uses the regular bulk sms engine</span>
-                                  <span>Delivery rate varies and is affected by DND
-                                    number.</span>
-                                  <span>Sender Name can be customized.</span>
-                                </div>
-                              </div>
-                            </div>
-                          </div>
-                        </div>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-              </div>
-            </div>
-          </div>
-        </div> -->
       </div>
     </div>
   </div>
@@ -502,13 +363,15 @@ import moment from 'moment'
 import VueQrcode from 'vue-qrcode';
 import swal from 'sweetalert';
 // import io from "socket.io-client"
+import { VuemojiPicker } from 'vuemoji-picker'
 
 import { state } from "@/socket";
 import { socket } from "@/socket";
 
 export default {
   components: {
-    VueQrcode
+    VueQrcode,
+    VuemojiPicker
   },
   setup() {
     // const socket = io('https://whatsapp-web-server-production.up.railway.app');
@@ -546,6 +409,7 @@ export default {
     const whatsappGroupSelectionTab = ref(false);
     const broadcastSelectionTab = ref(false);
     const selectedGroups = ref([]);
+    const displayEmoji = ref(false);
     // const sendToAll = ref(false);
     // const executionDate = ref("");
     const contactUpload = ref(false)
@@ -726,124 +590,7 @@ export default {
     const invalidMessage = ref(false);
     const invalidDestination = ref(false);
 
-    // const sendSMS = (data) => {
-    //   invalidDestination.value = false;
-    //   invalidMessage.value = false;
 
-    //   if (
-    //     selectedGroups.value.length === 0 &&
-    //     !phoneNumber.value &&
-    //     selectedMembers.value.length === 0 &&
-    //     !multipleContact.value instanceof File
-    //   ) {
-    //     invalidDestination.value = true;
-    //     return false;
-    //   }
-
-    //   if (!editorData.value) {
-    //     invalidMessage.value = true;
-    //     return false;
-    //   }
-
-    //   toast.add({
-    //     severity: "info",
-    //     summary: "Sending SMS",
-    //     detail: "SMS is being sent....",
-    //     life: 2500,
-    //   });
-    //   console.log(data)
-
-    //   // if (selectedMembers.value.length > 0) data.contacts = selectedMembers.value;
-    //   disableBtn.value = true
-    //   composeService
-    //     .sendMessage("/api/Messaging/sendSms", data)
-    //     .then((res) => {
-    //       disableBtn.value = false
-    //       // if (res.status === 200) {
-    //       if (res.data.message.includes("You do not have")) {
-    //         toast.add({
-    //           severity: "warn",
-    //           summary: "Insufficient Unit",
-    //           detail: `${res.data.message}`,
-    //           life: 6000,
-    //         });
-
-
-    //       } else {
-    //         toast.add({
-    //           severity: "success",
-    //           summary: "SMS Sent",
-    //           detail: `SMS Sent successfully`,
-    //           life: 6000,
-    //         });
-
-    //         store.dispatch("removeSMSUnitCharge", pageCount.value * 1.5);
-    //         console.log(pageCount, "Page count ");
-
-    //         console.log(res);
-    //         // Save the res to store in other to get it in the view sent sms page
-    //         let sentObj = {
-    //           message: res.data.message,
-    //           id: res.data.returnObjects ? res.data.returnObjects[0].communicationReportID : '',
-    //           smsUnitsUsed: res.data.unitsUsed,
-    //           dateSent: res.data.returnObjects ? `Today | ${moment.parseZone(new Date(res.data.returnObjects[0].communicationReport.date).toLocaleDateString(), 'YYYY MM DD HH ZZ')._i}` : "",
-    //           deliveryReport: [{ report: res.data.messageStatus }]
-    //         }
-    //         console.log(sentObj)
-    //         store.dispatch("communication/addSmsToSentList", sentObj)
-    //         setTimeout(() => {
-    //           router.push({ name: "SentMessages" })
-    //         }, 3500)
-
-    //       }
-
-    //       // } else if (typeof res === "object") {
-    //       //   toast.add({
-    //       //     severity: "error",
-    //       //     summary: "Failed operation",
-    //       //     detail: typeof res === "object" ? "SMS sending failed" : res,
-    //       //     life: 2500,
-    //       //   });
-
-
-
-    //       // }
-
-    //     })
-    //     .catch((err) => {
-    //       stopProgressBar();
-    //       disableBtn.value = false
-    //       toast.removeAllGroups();
-    //       console.log(err)
-    //       if (err.toString().toLowerCase().includes("network error")) {
-    //         toast.add({
-    //           severity: "warn",
-    //           summary: "You 're Offline",
-    //           detail: "Please ensure you have internet access",
-    //           life: 4000,
-    //         });
-    //       } else if (err.toString().toLowerCase().includes('timeout')) {
-    //         toast.add({
-    //           severity: "warn",
-    //           summary: "Request Delayed",
-    //           detail: "SMS took too long, please check your network and try again",
-    //           life: 4000,
-    //         });
-    //       } else {
-    //         toast.add({
-    //           severity: "warn",
-    //           summary: "Failed operation",
-    //           detail: "SMS sending failed, Please try again",
-    //           life: 400,
-    //         });
-    //       }
-    //     });
-    // };
-
-    // const draftMessage = async () => {
-    //   try {
-    //     const response = await composerObj.saveDraft(
-    
 
     const sendSMSToUploadedContacts = async (gateway) => {
       let formData = new FormData()
@@ -915,38 +662,6 @@ export default {
         .catch((err) => console.log(err));
     }
 
-    // const sendModalHeader = computed(() => {
-    //   if (userCountry.value !== "Nigeria") return "Confirm Send";
-    //   return "Send SMS Alternative";
-    // });
-
-    // const nigerian = computed(() => {
-    //   if (userCountry.value === "Nigeria") return true;
-    //   return false;
-    // });
-
-    // const sendOptions = [
-    //   {
-    //     label: "Schedule",
-    //     icon: "pi pi-clock",
-    //     command: () => {
-    //       console.log("Hello");
-    //       showScheduleModal();
-    //     },
-    //   },
-    //   {
-    //     label: "Save as Draft",
-    //     icon: "pi pi-save",
-    //     command: () => {
-    //       draftMessage();
-    //     },
-    //   },
-    //   // {
-    //   //   label: "Upload",
-    //   //   icon: "pi pi-upload",
-    //   //   to: "/fileupload",
-    //   // },
-    // ];
 
     const allGroups = ref([]);
     const categories = ref([]);
@@ -961,11 +676,6 @@ export default {
         })
         .catch((err) => console.log(err));
     })
-
-    // const display = ref(false);
-    // const showDateTimeSelectionModal = () => {
-    //   display.value = !display.value;
-    // };
 
     const groupListShown = ref(false);
     const showGroupList = () => {
@@ -1042,56 +752,14 @@ export default {
       }
     })
 
-    // const data = () => {
-    //   const data = {
-    //     subject: subject.value,
-    //     message: editorData.value,
-    //     contacts: [],
-    //     isPersonalized: isPersonalized.value,
-    //     groupedContacts: selectedGroups.value.map((i) => i.data),
-    //     toContacts: sendToAll.value ? "allcontacts_00000000-0000-0000-0000-000000000000" : "",
-    //     isoCode: isoCode.value,
-    //     category: "",
-    //     emailAddress: "",
-    //     emailDisplayName: "",
-    //     // gateWayToUse: gateway,
-    //   };
-
-    //   console.log(data)
-    // }
-
-    // const getDefaultMessage = async messageId => {
-    //   try {
-    //     const { returnObject: { message } } = await communicationService.getDefaultMessage(messageId);
-    //     editorData.value = message;
-    //   } catch (error) {
-    //     console.log(error);
-    //   }
-    // }
-
-    // if (route.query.defaultId) getDefaultMessage(route.query.defaultId);
-
-    // const getMessage = async messageId => {
-    //   try {
-    //     const { message, subject: subj } = await composeService.getSMSById(messageId);
-    //     editorData.value = message;
-    //     subject.value = subj;
-    //   } catch (error) {
-    //     console.log(error)
-    //     toast.add({
-    //       severity: "error",
-    //       summary: "Error",
-    //       detail: "Could not load message!",
-    //     });
-    //   }
-    // }
-
-    // if (route.query.messageId) {
-    //   getMessage(route.query.messageId);
-    // }
-
     const uploadFile = (e) => {
       multipleContact.value = e.target.files[0]
+    }
+
+    const handleEmojiClick = (data) => {
+      console.log(data)
+      editorData.value += data.unicode
+      displayEmoji.value = false
     }
 
     return {
@@ -1171,7 +839,9 @@ export default {
       allcountries,
       getUser,
       tenantCountry,
-      whatsappGroupsLoading
+      whatsappGroupsLoading,
+      handleEmojiClick,
+      displayEmoji
     };
   },
 };

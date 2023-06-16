@@ -4621,6 +4621,11 @@ elliptic@^6.5.3:
     minimalistic-assert "^1.0.1"
     minimalistic-crypto-utils "^1.0.1"
 
+emoji-picker-element@^1.10.1:
+  version "1.18.1"
+  resolved "https://registry.yarnpkg.com/emoji-picker-element/-/emoji-picker-element-1.18.1.tgz#64026962e849eb8db775b9b43381924dbc637b4d"
+  integrity sha512-dnNLIhcrm3NQVJamcUBI5UE3SRdmKjKekwL0jWImPJC/wu1OsbHLvt1ONj/sF4p6PXFWNhSLtlu0uMOYm4fPuQ==
+
 emoji-regex@^7.0.1:
   version "7.0.3"
   resolved "https://registry.npmjs.org/emoji-regex/-/emoji-regex-7.0.3.tgz"
@@ -10364,6 +10369,11 @@ vue-demi@*:
   resolved "https://registry.npmjs.org/vue-demi/-/vue-demi-0.13.11.tgz"
   integrity sha512-IR8HoEEGM65YY3ZJYAjMlKygDQn25D5ajNFNoKh9RSDMQtlzCxtfQjdQgv9jjK+m3377SsJXY8ysq8kLCZL25A==
 
+vue-demi@^0.12.4:
+  version "0.12.5"
+  resolved "https://registry.yarnpkg.com/vue-demi/-/vue-demi-0.12.5.tgz#8eeed566a7d86eb090209a11723f887d28aeb2d1"
+  integrity sha512-BREuTgTYlUr0zw0EZn3hnhC3I6gPWv+Kwh4MCih6QcAeaTlaIX0DwOVN0wHej7hSvDPecz4jygy/idsgKfW58Q==
+
 vue-eslint-parser@^2.0.3:
   version "2.0.3"
   resolved "https://registry.npmjs.org/vue-eslint-parser/-/vue-eslint-parser-2.0.3.tgz"
@@ -10502,6 +10512,14 @@ vuedraggable@^4.1.0:
   integrity sha512-FU5HCWBmsf20GpP3eudURW3WdWTKIbEIQxh9/8GE806hydR9qZqRRxRE3RjqX7PkuLuMQG/A7n3cfj9rCEchww==
   dependencies:
     sortablejs "1.14.0"
+
+vuemoji-picker@^0.1.4:
+  version "0.1.4"
+  resolved "https://registry.yarnpkg.com/vuemoji-picker/-/vuemoji-picker-0.1.4.tgz#e8410e0f2e2cfadf21d79210b04149962913b334"
+  integrity sha512-gy+MkjcUn92mBENC4b/zqNMW0oz+F005KTf7mWhe1DVUuNhJVsEG2VPJQBIOa7yg+Owd68v7CBrF5TDf45jjzw==
+  dependencies:
+    emoji-picker-element "^1.10.1"
+    vue-demi "^0.12.4"
 
 vuex@^4.0.0-0:
   version "4.1.0"
