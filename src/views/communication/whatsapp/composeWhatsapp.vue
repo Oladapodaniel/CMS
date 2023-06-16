@@ -314,7 +314,40 @@
         </div>
         <div class="col-md-10 px-0">
           <textarea rows="10" class="text-area my-2 small-text" v-model="editorData"></textarea>
-          <img src="../../../assets/smiling-face.png" width="20" class="mt-3 c-pointer" @click="displayEmoji = !displayEmoji" />
+          <div class="d-flex align-items-start mt-3">
+            <img src="../../../assets/smiling-face.png" width="20" class="c-pointer"
+              @click="displayEmoji = !displayEmoji" />
+
+            <!-- action="https://run.mocky.io/v3/9d059bf9-4660-45f2-925d-ce80ad6c4d15" -->
+            <!-- :on-exceed="handleExceed" -->
+            <!-- :on-preview="handlePreview"
+            :on-remove="handleRemove"
+            :before-remove="beforeRemove" -->
+            <el-upload class="upload-demo" multiple :limit="1" :on-change="chooseFile" :on-remove="handleRemove" :auto-upload="false">
+              <el-icon class="ml-2">
+                <Paperclip />
+              </el-icon>
+              <!-- <template #tip>
+                <div class="el-upload__tip">
+                  jpg/png files with a size less than 500KB.
+                </div>
+              </template> -->
+            </el-upload>
+          </div>
+          <!-- "image/png" -->
+          <!-- "audio/mpeg" -->
+          <!-- "video/mp4" -->
+          <!-- "application/pdf" -->
+          <img :src="selectedFileUrl" v-show="fileImage" style="width: 50%" />
+          <audio ref="audioPlayer" controls class="mt-2" style="width: 100%;" v-show="fileAudio">
+            <source src="" type="audio/mpeg">
+            Your browser does not support the audio element.
+          </audio>
+          <video ref="videoPlayer" style="width: 100%" height="240" controls v-show="fileVideo">
+            <source src="" />
+            <!-- <source src="movie.mp4" type="video/mp4"> -->
+            Your browser does not support the video tag.
+          </video>
           <transition name="el-fade-in-linear">
             <VuemojiPicker v-show="displayEmoji" @emojiClick="handleEmojiClick" class="mt-2" style="position: absolute" />
           </transition>
@@ -387,7 +420,7 @@ export default {
     const editorData = ref("");
     // const disableBtn = ref(false)
     const editorConfig = {
-      // The configuration of the editor.
+      // The configuration of the editor. 
       height: "800",
     };
     const userWhatsappGroupsId = ref(null)
@@ -410,8 +443,14 @@ export default {
     const broadcastSelectionTab = ref(false);
     const selectedGroups = ref([]);
     const displayEmoji = ref(false);
-    // const sendToAll = ref(false);
-    // const executionDate = ref("");
+    const fileImage = ref(false);
+    const fileAudio = ref(false);
+    const fileVideo = ref(false);
+    const audioPlayer = ref(null);
+    const videoPlayer = ref(null);
+    const selectedFileUrl = ref("");
+
+
     const contactUpload = ref(false)
     const multipleContact = ref({})
     const userWhatsappGroups = computed(() => {
@@ -762,6 +801,52 @@ export default {
       displayEmoji.value = false
     }
 
+    const chooseFile = (e) => {
+      console.log(e.raw)
+      if (e.raw.type.includes('image')) {
+        fileAudio.value = false
+        fileVideo.value = false
+        fileImage.value = true
+        selectedFileUrl.value = URL.createObjectURL(e.raw);
+      } else if (e.raw.type.includes('audio')) {
+        const reader = new FileReader();
+        reader.addEventListener("load", function () {
+          audioPlayer.value.src = reader.result;
+          fileAudio.value = true
+          fileVideo.value = false
+          fileImage.value = false
+        });
+
+        if (e.raw) {
+          reader.readAsDataURL(e.raw);
+        }
+        
+      } else if (e.raw.type.includes('video')) {
+        const reader = new FileReader();
+        reader.addEventListener("load", function () {
+          videoPlayer.value.src = reader.result;
+          fileAudio.value = false
+          fileVideo.value = true
+          fileImage.value = false
+        });
+
+        if (e.raw) {
+          reader.readAsDataURL(e.raw);
+        }
+
+      } else {
+        console.log('Different file type')
+      }
+    }
+
+    const handleRemove = () => {
+      fileAudio.value = false;
+      fileVideo.value = false;
+      fileImage.value = false
+      selectedFileUrl.value = false
+    }
+    
+
     return {
       editorData,
       editorConfig,
@@ -784,19 +869,10 @@ export default {
       filteredMembers,
       charactersCount,
       pageCount,
-      // sendSMS,
       phoneNumber,
       searchForPerson,
       loading,
       memberSearchResults,
-      // sendOptionsIsShown,
-      // toggleSendOptionsDisplay,
-      // closeDropdownIfOpen,
-      // display,
-      // showDateTimeSelectionModal,
-      // scheduleMessage,
-      // sendOptions,
-      // draftMessage,
       groupListShown,
       showGroupList,
       groupSelectInput,
@@ -805,15 +881,9 @@ export default {
       memberSelectInput,
       invalidDestination,
       invalidMessage,
-      // sendToAll,
-      // sendModalHeader,
-      // nigerian,
-      // contructScheduleMessageBody,
-      // executionDate,
       moment,
       isPersonalized,
       route,
-      // disableBtn,
       contactUpload,
       uploadFile,
       multipleContact,
@@ -841,7 +911,15 @@ export default {
       tenantCountry,
       whatsappGroupsLoading,
       handleEmojiClick,
-      displayEmoji
+      displayEmoji,
+      chooseFile,
+      fileAudio,
+      fileImage,
+      fileVideo,
+      audioPlayer,
+      videoPlayer,
+      selectedFileUrl,
+      handleRemove
     };
   },
 };
