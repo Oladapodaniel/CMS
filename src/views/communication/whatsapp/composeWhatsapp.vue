@@ -334,6 +334,9 @@
               </template> -->
             </el-upload>
           </div>
+          <transition name="el-fade-in-linear">
+            <VuemojiPicker v-show="displayEmoji" @emojiClick="handleEmojiClick" class="mt-2" style="position: absolute" />
+          </transition>
           <!-- "image/png" -->
           <!-- "audio/mpeg" -->
           <!-- "video/mp4" -->
@@ -348,9 +351,6 @@
             <!-- <source src="movie.mp4" type="video/mp4"> -->
             Your browser does not support the video tag.
           </video>
-          <transition name="el-fade-in-linear">
-            <VuemojiPicker v-show="displayEmoji" @emojiClick="handleEmojiClick" class="mt-2" style="position: absolute" />
-          </transition>
           <!-- <div class="col-md-12 px-0 small-text">
             <p class="bg-success mb-0 p-1" v-if="editorData.length > 0" :class="{ amber: charactersCount > 160 }">
               <span>Characters count {{ charactersCount }}</span>
@@ -843,7 +843,7 @@ export default {
       fileAudio.value = false;
       fileVideo.value = false;
       fileImage.value = false
-      selectedFileUrl.value = false
+      selectedFileUrl.value = ""
     }
     
 
