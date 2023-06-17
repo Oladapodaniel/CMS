@@ -1599,17 +1599,10 @@ export default {
     };
 
     const addCurrency = async (e, index, item) => {
-      // console.log(e.target.innerHTML, index)
-      // offeringItem.value[index].currency = e.target.innerHTML.split(" ")[0]
-      // if (item.id) {
       offeringItem.value[index].currencyID = item.id;
       offeringItem.value[index].showCurrency = false;
       console.log(item, index);
-
       selectedCurrencyName.value = e.target.innerHTML.split(" ")[0];
-      // } else {
-      //       offeringItem.value[index].currencyID = 721
-      // }
       offeringItem.value[
         index
       ].fromCurrencyRate = `usd${item.name.toLowerCase()}`;
@@ -1701,6 +1694,8 @@ export default {
       let toDestinationCurrencyRate = `usd${tenantCurrency.value.toLowerCase()}`;
       let fromCurrencyRate = offeringItem.value[index].fromCurrencyRate;
       let amountToConvert = toNumber ? toNumber : 0;
+
+      console.log(amountToConvert, fromCurrencyRate, toDestinationCurrencyRate)
 
       try {
         let result = await CurrencyConverterService.currencyConverter(

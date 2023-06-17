@@ -25,7 +25,7 @@ let converter = {
     let toIndex = propertyArr.indexOf(toDestinationCurrencyRate);
     let toRate = valueArr[toIndex];
     let result = (amount / fromRate) * toRate;
-    console.log(result);
+    console.log(result, currencyRate, fromCurrencyRate, fromIndex, fromRate, toIndex, toRate);
     return result;
   },
   async convertCurrencyTo(amount, fromCurrencyRate, toDestinationCurrencyRate) {
