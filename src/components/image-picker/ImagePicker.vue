@@ -40,7 +40,8 @@
         <div class="row" v-else>
             <div class="col-md-12 text-center my-4">
                 <span>
-                  <img v-if="file && (file.type && file.type.includes('image'))" style="border-radius:15px;max-width:100%;max-height:300px" class="mx-auto h-100 no-lazyload" :src="fileUrl" alt="">
+                  <img v-if="file && (file.type && file.type.includes('image'))" style="border-radius:15px;max-width:100%;max-height:300px" 
+                  class="mx-auto h-100 no-lazyload" :src="fileUrl" alt="">
                   <video
                     v-if="file && (file.type && file.type.includes('video'))"
                     style="width: 100%;border-radius:10px"
@@ -55,14 +56,14 @@
                 </span>
             </div>
             <div class="col-md-12 text-center py-4">
-                <button class="default-btn border-0 text-white primary-bg" @click="uploaded(false, '')">Upload</button>
+                <button class="default-btn border-0 text-white primary-bg" @click="uploaded(false, '')">Continue</button>
             </div>
         </div>
       </div>
 
-      <div class="col-md-12 d-flex justify-content-end py-2" v-if="!loading && gallery.length > 0">
+      <!-- <div class="col-md-12 d-flex justify-content-end py-2" v-if="!loading && gallery.length > 0">
         <Pagination :itemsCount="50" :currentPage="currentPage" @getcontent="getImagesByPage" />
-      </div>
+      </div> -->
     </div>
   </div>
 </template>
@@ -114,8 +115,11 @@ export default {
             file.value = null;
             if (e.target.files[0]) {
                 file.value = e.target.files[0];
+                // console.log(file.value,  'jjjjjj');
+                // emit('uploadimage', { data: file.value })
                 fileUrl.value = URL.createObjectURL(file.value);
                 console.log(fileUrl.value, "url");
+                
                 willUpload.value = true;
             }
         }
@@ -127,8 +131,10 @@ export default {
         const uploaded = (isUrl, selectedImageUrl) => {
             if (!isUrl) {
                 emit('uploaded', { isUrl, data: file.value })
+                console.log({isUrl, data: file.value}, 'kjkjkjk')
             } else {
                 emit('uploaded', { isUrl, data: selectedImageUrl })
+                console.log({isUrl, data: selectedImageUrl}, 'kjk')
             }
         }
 

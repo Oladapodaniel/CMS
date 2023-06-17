@@ -219,10 +219,12 @@ export default {
   },
   setup(props, { emit }) {
     const transactions = ref([]);
+    const allTransactions = ref(store.getters["transaction/gettransactions"].records);
+    const totalTransaction = ref(store.getters["transaction/gettransactions"].totalItems);
     const datete = ref('');
     const searchingMember = ref(true);
     const paginatedTableLoading = ref(false);
-    const totalTransaction = ref(0)
+    // const totalTransaction = ref(0)
     const transactionHeaders = ref([
       { name: 'DATE', value: 'date' },
       { name: 'DESCRIPTION', value: 'description' },
@@ -251,7 +253,7 @@ export default {
       paginatedTableLoading.value = true
       try {
         const { data } = await axios.get(
-          `/api/Financials/Accounts/Transactions?page=${serverOptions.value.page}`
+          `/api/Financials/Accounts/v2/Transactions?page=${serverOptions.value.page}`
         );
         allTransactions.value = data;
         console.log(allTransactions.value, "khkhkjhk");
@@ -413,7 +415,6 @@ export default {
       transactions.value.push(payload);
     };
 
-    const allTransactions = ref(store.getters["transaction/gettransactions"]);
     const loading = ref(false);
     const refreshing = ref(false);
     const getTransactions = async () => {
@@ -426,7 +427,8 @@ export default {
             loading.value = false;
             emit("tableloading", loading.value)
             refreshing.value = false;
-            allTransactions.value = res;
+            allTransactions.value = res.records;
+            totalTransaction.value = res.totalItems
         });
       } catch (error) {
         console.log(error);
@@ -574,15 +576,20 @@ export default {
       getTransactions();
       emit('reload-accounts');
     }
-      onMounted(() => {
-      if ((!allTransactions.value) ||
-        allTransactions.value  &&
-        allTransactions.value.length == 0
-      )
+    onMounted(() => {
+      if ((!allTransactions.value) || (allTransactions.value && allTransactions.value.records && allTransactions.value.records.length == 0)){
         getTransactions();
+      }
+    });
+    //   onMounted(() => {
+    //   if ((!allTransactions.value) ||
+    //     allTransactions.value  &&
+    //     allTransactions.value.length == 0
+    //   )
+    //     getTransactions();
         
           
-    });
+    // });
     
 
     return {

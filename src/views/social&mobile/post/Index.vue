@@ -70,7 +70,8 @@
         <div class="row"></div>
       </div>
 
-      <div class="col-md-12 post-add-ons py-2" v-if="!route.query.postId">
+      <!-- <div class="col-md-12 post-add-ons py-2" v-if="!route.query.postId"> -->
+      <div class="col-md-12 post-add-ons py-2">
         <div class="row">
           <div class="col-md-12">
             <a class="text-decoration-none px-md-2 c-pointer">
@@ -309,6 +310,7 @@
         position="top"
       >
         <ImagePicker @uploaded="fileUploaded" />
+         <!-- @uploadimage="imageUpload" -->
       </Dialog>
       <Dialog
         header="Select Date and Time"
@@ -401,12 +403,13 @@ export default {
     const getPostById = async () => {
       try {
         const postData = await social_service.getPostById(route.query.postId);
-        console.log(postData);
+        console.log(postData, 'lijhkjk');
         postToEdit.value.content = postData.content;
         postToEdit.value.mediaUrl = postData.mediaUrl;
         postToEdit.value.postId = postData.postId;
         message.value = postData.content;
         fileUrl.value = postData.mediaUrl;
+        mediaUrl.value = postData.mediaUrl;
         showOnMainThread.value = postData.showOnMainThread;
         isUrl.value = true;
         getPostCategoryById(postData.postCategoryId);
@@ -446,14 +449,23 @@ export default {
 
     const makePost = () => {
       if (route.query.postId) {
-        const body = {
-          content: message.value,
-          mediaUrl: postToEdit.value.mediaUrl,
-          title: postCategory.value.name,
-          postId: route.query.postId,
-          showOnMainThread: showOnMainThread.value ? showOnMainThread.value : false
-        };
-        updatePost(body);
+        const formData = new FormData();
+        console.log(file.value, "jjnkjk");
+        // formData.append("mediaFile", file.value ? file.value : "");
+        formData.append("content", message.value ? message.value : "");
+        formData.append("mediaUrl", mediaUrl.value ? mediaUrl.value : "");
+        formData.append("postId", route.query.postId);
+        formData.append("title", postCategory.value.name );
+        formData.append("showOnMainThread", showOnMainThread.value ? showOnMainThread.value : false );
+        // const body = {
+        //   content: message.value,
+        //   mediaUrl: postToEdit.value.mediaUrl,
+        //   title: postCategory.value.name,
+        //   postId: route.query.postId,
+        //   showOnMainThread: showOnMainThread.value ? showOnMainThread.value : false
+        // };
+        updatePost(formData);
+        // updatePost(body);
       } else {
         craetePost();
       }
@@ -499,7 +511,8 @@ export default {
               "/api/Media/UploadProfilePicture",
               formData
             );
-            console.log(data);
+            console.log(data, 'hhjlkdata');
+            mediaUrl.value = data.pictureUrl;
             getFacebookPhotoId(data.pictureUrl);
           } catch (err) {
             console.log(err);
@@ -530,6 +543,7 @@ export default {
     const craetePost = () => {
       if (!message.value) return false;
       const formData = new FormData();
+      console.log(file.value, "file");
       formData.append("mediaFile", file.value ? file.value : "");
       formData.append("content", message.value ? message.value : "");
       formData.append("mediaUrl", mediaUrl.value ? mediaUrl.value : "");
@@ -629,9 +643,17 @@ export default {
 
     const isUrl = ref(false);
     const showImagePicker = ref(false);
+    // const imageUpload = (payload) => {
+    //          isUrl.value = true;
+    //   console.log(payload.data, 'hjyhju')
+    //   file.value = payload.data
+    //   mediaUrl.value = payload.data;
+    //   fileUrl.value = URL.createObjectURL(payload.data);
+    //   showImagePicker.value = false;
+    // }
 
     const fileUploaded = (payload) => {
-      console.log(payload, "payload");
+      console.log(payload, "payloads");
       isUrl.value = false;
       if (payload.isUrl) {
         isUrl.value = true;
@@ -640,15 +662,19 @@ export default {
         file.value = "";
         console.log(fileUrl.value, "url");
       } else {
+        // imageUpload()
         file.value = payload.data;
         fileUrl.value = URL.createObjectURL(payload.data);
-        mediaUrl.value = "";
+        console.log(fileUrl.value, 'jhjhjhj');
+        console.log(file.value, 'oooooj');
+        mediaUrl.value = payload.data;
       }
       showImagePicker.value = false;
 
       // Upload to get image url
       uploadPicture(payload.data);
     };
+    
 
     const rowsCount = computed(() => {
       if (!message.value) return 2;
@@ -708,6 +734,7 @@ export default {
       removeFile,
       showImagePicker,
       fileUploaded,
+      // imageUpload,
       isUrl,
       rowsCount,
       route,

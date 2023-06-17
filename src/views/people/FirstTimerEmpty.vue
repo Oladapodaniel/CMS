@@ -26,7 +26,7 @@
       </div>
     </div>
     <div class="d-flex flex-column flex-md-row justify-content-md-center">
-      <el-icon v-if="(firstTimersList.length == 0)" class="is-loading" :size="30">
+      <el-icon v-if="(firstTimersList.length == 0 && loading )" class="is-loading" :size="30">
         <Loading />
       </el-icon>
     </div>
@@ -65,13 +65,21 @@
     <div v-if="firstTimersList.length === 0 && !loading && !networkError && !showFirsttimer" class="no-person">
       <div class="empty-img">
         <p><img src="../../assets/people/people-empty.svg" alt="" /></p>
-        <p class="tip">You haven't added any first timer yet</p>
+        <p class="tip">You haven't added any New convert yet</p>
+        <el-button :color="primarycolor"  class="ml-2 header-btn" round>Add New Convert</el-button>
+        <!-- <router-link :to="{ name: 'AddNewConvert' }" class="no-decoration">
+          <el-button :color="primarycolor" class="ml-2 header-btn" round>Add New Convert</el-button>
+        </router-link> -->
       </div>
     </div>
     <div v-if="newConvertList.length === 0 && !loading && !networkError && !showNewConvert" class="no-person">
       <div class="empty-img">
         <p><img src="../../assets/people/people-empty.svg" alt="" /></p>
-        <p class="tip">You haven't added any new convert yet</p>
+        <p class="tip">You haven't added any First timer yet</p>
+        <el-button :color="primarycolor" @click="addNewFirsttimer" class="ml-2 header-btn" round>Add First Timers</el-button>
+        <!-- <router-link :to="{ name: 'AddFirstTimer' }" class="no-decoration">
+          <el-button :color="primarycolor" class="ml-2 header-btn" round>Add First Timers</el-button>
+        </router-link> -->
       </div>
     </div>
     <div v-else-if="networkError && !loading" class="adjust-network">
@@ -122,6 +130,13 @@ export default {
     const firstTimerData = ref([])
     const networkError = ref(false)
     const { mdAndUp, lgAndUp, xlAndUp } = deviceBreakpoint()
+
+    const addNewFirsttimer = () => {
+      router.push('/tenant/people/addfirsttimer')
+    }
+    const addNewConvert = () => {
+      router.push('/tenant/people/addfirsttimer')
+    }
 
     const getFirstTmersList = async () => {
       try {
@@ -285,7 +300,7 @@ export default {
     //   loading.value = payload
     // }
 
-    return { firstTimersList, newConvertList, newConvertDetail, firttimerDetail, showFirsttimer, showNewConvert, getFirstTmersList, loading, fileUpload, imageSelected, image, displayModal, importFile, firstTimerData, addToFirstTimers, closeModal, importFirstTimer, networkError, setFirsttimer, mdAndUp, lgAndUp, xlAndUp, primarycolor };
+    return { firstTimersList, newConvertList,  addNewFirsttimer, addNewConvert,  newConvertDetail, firttimerDetail, showFirsttimer, showNewConvert, getFirstTmersList, loading, fileUpload, imageSelected, image, displayModal, importFile, firstTimerData, addToFirstTimers, closeModal, importFirstTimer, networkError, setFirsttimer, mdAndUp, lgAndUp, xlAndUp, primarycolor };
   },
 };
 

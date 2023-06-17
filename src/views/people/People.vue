@@ -26,6 +26,12 @@
             </el-button>
           </template>
         </el-input>
+        <!-- <div class=" image" >
+          <img
+            src="../../assets/group2.svg"
+            alt="marked Attendance image"
+          />
+        </div> -->
       </div>
     </div>
     <router-view />
@@ -39,6 +45,8 @@ import { useRoute } from "vue-router";
 import { ElMessage } from 'element-plus'
 import deviceBreakpoint from "../../mixins/deviceBreakpoint";
 import { useStore } from 'vuex'
+// import axios from 'axios';
+import axios from "@/gateway/backendapi";
 
 
 export default {
@@ -55,6 +63,7 @@ export default {
       return false;
     });
 
+    
     const getUser = computed(() => {
       if (!store.getters.currentUser || (store.getters.currentUser && Object.keys(store.getters.currentUser).length == 0)) return ''
       return store.getters.currentUser
@@ -70,6 +79,17 @@ export default {
       if (!tenantID.value) return ""
       return `${window.location.origin}/createmember/${tenantID.value}`
     })
+    const getQrCode = async () => {
+      try{
+        const res = await axios.get(`/api/Settings/GetQRCode?link=${window.location.origin}/createmember/${tenantID.value}`)
+        console.log(res, 'hhhh');
+      }
+      catch(error){
+        console.log(error);
+      }
+    }
+    getQrCode()
+
 
     const copylink = () => {
       selectedLink.value.input.setSelectionRange(0, selectedLink.value.input.value.length); /* For mobile devices */
