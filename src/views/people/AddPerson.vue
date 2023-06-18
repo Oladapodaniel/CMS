@@ -394,7 +394,7 @@
 
 <script>
 import moment from "moment";
-import { ref, reactive, computed, inject } from "vue";
+import { ref, reactive, computed, inject, watchEffect } from "vue";
 import router from "@/router/index";
 import axios from "@/gateway/backendapi";
 import { useRoute } from "vue-router";
@@ -590,13 +590,22 @@ export default {
       );
 
       formData.append(
-        "customAttributeData",
-        JSON.stringify(dynamicCustomFields.value.map(i => ({
-          customAttributeID: i.id,
-          data: i.data,
-          entityID: route.params.personId
+        "customAttributeDataString",
+        JSON.stringify(dynamicCustomFields.value.map(i => {
+          if (route.params.personId) {
+            return {
+              customAttributeID: i.id,
+              data: i.data,
+              entityID: i.entityID
+            }
+          } else {
+            return {
+              customAttributeID: i.id,
+              data: i.data,
+            }
+          }
+          
         }))
-        )
       );
       if (route.params.personId) {
         try {
@@ -778,9 +787,7 @@ export default {
         selectedMaritalStatus.value = maritalStatus.value.find(
           (i) => i.id === memberToEdit.value.maritalStatusID
         );
-        console.log(maritalStatus.value.find(
-          (i) => i.id === memberToEdit.value.maritalStatusID
-        ))
+        
         if (memberToEdit.value.maritalStatusID) {
           maritalStatusId.value = maritalStatus.value.find(
             (i) => i.id === memberToEdit.value.maritalStatusID
@@ -828,10 +835,10 @@ export default {
       person.email = data.email;
       person.lastName = data.lastName;
       person.firstName = data.firstName;
-      person.mobilePhone = data.mobilePhone;
+      person.mobilePhone = data.mobilePhone ? data.mobilePhone : "";
       person.address = data.homeAddress;
       person.occupation = data.occupation;
-      person.dayOfBirth = data.dayOfBirth == 0 ? null :data.dayOfBirth;
+      person.dayOfBirth = data.dayOfBirth == 0 ? null : data.dayOfBirth;
       person.monthOfBirth = data.monthOfBirth 
         ? months[data.monthOfBirth - 1]
         : null;
@@ -852,7 +859,15 @@ export default {
         name: `${data.followupPersonName}`,
         id: data.followupPersonID
       }
-    console.log(data,"train🎡🎠")
+    dynamicCustomFields.value = data.customAttributeData.map(i => {
+      i.customAttribute.data = i.data == "true" ? true : i.data == "false" ? false : i.data
+      i.customAttribute.entityID = i.entityID
+      return i.customAttribute
+    })
+
+    if (dynamicCustomFields.value.length === 0) {
+      getCustomFields()
+    }
     };
 
     const getMemberToEdit = () => {
@@ -897,11 +912,9 @@ export default {
 ;
           }
         }
-        console.log(allGroups.value)
         let data = { children: allGroups.value }
         const { children } = collector(data);
         groupMappedTree.value = children
-        console.log(groupMappedTree.value, 'hereee')
         if (groupMappedTree.value && groupMappedTree.value.length > 0) {
           flattenedTree.value = groupMappedTree.value.flatMap(flatten());
         }
@@ -1058,7 +1071,7 @@ export default {
         console.log(err)
       }
     }
-    getCustomFields();
+    if (!route.params.personId) getCustomFields();
 
     const setCloseGroupModal = () => {
       closeAddToGroup.value.click()

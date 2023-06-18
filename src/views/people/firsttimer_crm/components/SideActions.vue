@@ -283,7 +283,7 @@
                             <div class="col-12 mt-2">
 
 
-                                <el-popover placement="bottom" title="Update name" :width="370" trigger="click"
+                                <el-popover placement="bottom" title="Update address" :width="370" trigger="click"
                                     content="this is content, this is content, this is content">
                                     <template #reference>
                                         <div class="task-border border-transparent d-flex justify-content-between p-2"
@@ -342,6 +342,29 @@
                                         </el-dropdown-menu>
                                     </template>
                                 </el-dropdown>
+                            </div>
+                        </div>
+                        <div class="row" v-for="(item, index) in dynamicCustomFields" :key="index">
+                            <div class="col-12 mt-4 label-text" v-if="route.query.memberType == 0">{{ item.label }}
+                                attended
+                            </div>
+                            <div class="col-12 mt-2" v-if="route.query.memberType == 0">
+                                <el-select-v2 v-model="item.data"
+                                    :options="item.parameterValues.split(',').map(i => ({ label: i, value: i }))"
+                                    :placeholder="item.label" size="large" class="phone-input" v-if="(item.controlType == 1)"/>
+                                    <el-input type="text" class="phone-input" v-model="item.data" :placeholder="item.label"
+                                    v-if="(item.controlType == 0)" />
+                                    <el-input type="number" class="phone-input" v-model="item.data" :placeholder="item.label"
+                                    v-if="(item.controlType == 7)" />
+                                    <el-input type="email" class="phone-input" v-model="item.data" :placeholder="item.label"
+                                    v-if="(item.controlType == 4)" />
+                                    <div class="phone-input" v-if="(item.controlType == 2)">
+                                    <el-checkbox v-model="item.data" size="large" />
+                                    </div>
+                                    <el-date-picker v-model="item.data" class="phone-input" type="date" :placeholder="item.label"
+                                    size="default" v-if="(item.controlType == 3)" />
+                                    <input type="file" class="form-control phone-input" @change="uploadImage($event, index)"
+                                    :placeholder="item.label" v-if="(item.controlType == 6)"/>
                             </div>
                         </div>
                     </div>
@@ -639,6 +662,7 @@ import party from "party-js";
 import swal from "sweetalert";
 import { ElMessage } from 'element-plus'
 import deviceBreakpoint from "../../../../mixins/deviceBreakpoint";
+import allCustomFields from "../../../../services/customfield/customField"
 export default {
     components: {
         SearchMember
@@ -722,6 +746,7 @@ export default {
         const comMeansId = ref(null)
         const joinInterestId = ref(null)
         const visitId = ref(null)
+        const dynamicCustomFields = ref([]);
 
 
         const selectedContactLog = computed(() => {
@@ -1139,7 +1164,16 @@ export default {
                     birthMonth: selectedBirthMonth.value ? month.value.findIndex(i => i == selectedBirthMonth.value) + 1 : props.personDetails.birthMonth,
                     birthYear: selectedBirthYear.value ? selectedBirthYear.value : props.personDetails.birthYear,
                     firstTimerId: route.params.personId,
-                    pictureUrl: pictureUrl.value
+                    pictureUrl: pictureUrl.value,
+                    customAttributeDataString: JSON.stringify(dynamicCustomFields.value.map(i => {
+                        if (route.params.personId) {
+                            return {
+                            customAttributeID: i.id,
+                            data: i.data,
+                            entityID: i.entityID
+                            }
+                        } 
+                    }))
                 }
 
                 try {
@@ -1374,6 +1408,32 @@ export default {
             selectedMembershipClassification.value = payload
         }
 
+        const getCustomFields = async () => {
+      try {
+        let data = await allCustomFields.allCustomFields()
+        dynamicCustomFields.value = data.filter(i => i.entityType === 1)
+      }
+      catch (err) {
+        console.log(err)
+      }
+    }
+    if (props.personDetails && props.personDetails.customAttributeData && props.personDetails.customAttributeData.length === 0) getCustomFields();
+
+        watchEffect(() => {
+            console.log(props.personDetails);
+            if (props.personDetails && props.personDetails.customAttributeData && props.personDetails.customAttributeData.length > 0) {
+            dynamicCustomFields.value = props.personDetails.customAttributeData.map(i => {
+                i.customAttribute.data = i.data == "true" ? true : i.data == "false" ? false : i.data
+                i.customAttribute.entityID = i.entityID
+                return i.customAttribute
+                })
+
+                if (dynamicCustomFields.value.length === 0) {
+                getCustomFields()
+                }
+            }
+            })
+
         return {
             selectedContact,
             lifeCycle,
@@ -1494,7 +1554,8 @@ export default {
             joinInterestId,
             updateSelectedWantVisit,
             visitId,
-            primarycolor
+            primarycolor,
+            dynamicCustomFields
         }
 
     }

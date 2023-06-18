@@ -303,10 +303,6 @@ export default {
         Emails,
         SMS,
         Tasks,
-        // InputText,
-        // Dialog,
-        // Editor,
-        // SelectButton,
         SearchMember,
         NewPerson,
         DecoupledEditor
@@ -330,7 +326,6 @@ export default {
         const displayEmailPane = ref(false)
         const taskDisplayPosition = ref(false)
         const op = ref("")
-        // const todoTask = ref("")
         const theTask = ref("")
         const taskNote = ref("")
         const personDetails = ref({})
@@ -341,23 +336,16 @@ export default {
         const activityType = ref([])
         const selectedTodo = ref({})
         const taskPriority = ref(frmservice.priority())
-        // const priorityRef = ref("")
         const selectedPriority = ref({})
         const dueDate = ref([])
-        // const dueDateRef = ref("")
         const selectedDueDate = ref({})
-        // const reminderRef = ref("")
         const selectedReminder = ref({})
-        // const allContacts = ref([])
         const selectedContact = ref({})
-        // const contactRef = ref("")
         const loader = ref(false)
         const groupedActivities = ref([])
         const searchActivitiesText = ref("")
-        // const inputFocus = ref(false)
         const confeti = ref()
         const displayAnim = ref(false)
-        // const displayNewMemberModal = ref(false)
         const searchmemberr = ref(false)
         const positiondialog = ref('bottomright')
         const { xsOnly } = deviceBreakpoint()
@@ -450,18 +438,15 @@ export default {
         }
 
         const setIconProp = (payload) => {
-            // noteList.value[payload].noteIcon = !noteList.value[payload].noteIcon
             activities.value[payload].noteIcon = !activities.value[payload].noteIcon
         }
 
         const setIconPropTask = (payload) => {
-            // taskList.value[payload].taskIcon = !taskList.value[payload].taskIcon
             searchActivities.value[payload.parentIndex].value[payload.mainIndex].taskIcon = !searchActivities.value[payload.parentIndex].value[payload.mainIndex].taskIcon
         }
 
         const setIconMainTask = (payload) => {
             taskList.value[payload].taskIcon = !taskList.value[payload].taskIcon
-            // searchActivities.value[payload.parentIndex].value[payload.mainIndex].taskIcon = !searchActivities.value[payload.parentIndex].value[payload.mainIndex].taskIcon
         }
 
         const sendEmail = async () => {
