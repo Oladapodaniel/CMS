@@ -1,6 +1,6 @@
 <template>
   <div>
-    <div class="row">
+    <!-- <div class="row">
       <div class="col-12">
         <div class="font-weight-bold py-md-2 mt-4">Share the link to your first timers to enable them to add their
           details to your
@@ -18,7 +18,7 @@
           </el-input>
         </div>
       </div>
-    </div>
+    </div> -->
     <div class="my-con">
       <div>
         <FirstTimersChartArea @firsttimers="setFirsttimer" @totalfirstimer="setTotalFirstTimer" />

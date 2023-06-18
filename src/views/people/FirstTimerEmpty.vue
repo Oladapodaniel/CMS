@@ -25,6 +25,25 @@
         </router-link>
       </div>
     </div>
+    <div class="row">
+      <div class="col-12">
+        <div class="font-weight-bold py-md-2 mt-4">Share the link to your first timers to enable them to add their
+          details to your
+          church.</div>
+        <div class="p-inputgroup form-group mt-1">
+          <el-input v-model="firstTimerLink" placeholder="Click the copy button when the link appears" ref="selectedLink"
+            class="input-with-select">
+            <template #append>
+              <el-button @click="copylink">
+                <el-icon>
+                  <CopyDocument />
+                </el-icon>
+              </el-button>
+            </template>
+          </el-input>
+        </div>
+      </div>
+    </div>
     <div class="d-flex flex-column flex-md-row justify-content-md-center">
       <el-icon v-if="(firstTimersList.length == 0 && loading )" class="is-loading" :size="30">
         <Loading />
@@ -108,11 +127,12 @@
 import axios from '@/gateway/backendapi'
 import FirstTimersList from './FirstTimersList'
 import NewConvertList from './NewConvert.vue'
-import { ref, inject } from 'vue';
+import { ref, inject, computed, watchEffect } from 'vue';
 import finish from '../../services/progressbar/progress'
 import router from "@/router/index";
 import deviceBreakpoint from "../../mixins/deviceBreakpoint";
 import store from '../../store/store';
+import { ElMessage, ElMessageBox } from 'element-plus'
 
 
 export default {
@@ -121,6 +141,8 @@ export default {
     const primarycolor = inject('primarycolor')
     const firstTimersList = ref(store.getters['membership/allFirstTimers'])
     const loading = ref(false)
+    const tenantID = ref("")
+    const selectedLink = ref(null)
     const showFirsttimer = ref(true)
     const showNewConvert = ref(false)
     const newConvertList = ref([])
@@ -284,6 +306,19 @@ export default {
       }
     }
 
+    const copylink = () => {
+      selectedLink.value.input.setSelectionRange(0, selectedLink.value.input.value.length); /* For mobile devices */
+      selectedLink.value.input.select();
+
+      /* Copy the text inside the text field */
+      document.execCommand("copy");
+      ElMessage({
+        showClose: true,
+        message: 'Copied to clipboard',
+        type: 'success',
+      })
+    }
+
     const importFirstTimer = () => {
       router.push({ name: 'ImportInstruction', query: { query: 'importfirsttimer' } })
     }
@@ -291,6 +326,21 @@ export default {
     const setFirsttimer = (payload) => {
       firstTimersList.value = payload
     }
+    const getUser = computed(() => {
+      if (!store.getters.currentUser || (store.getters.currentUser && Object.keys(store.getters.currentUser).length == 0)) return ''
+      return store.getters.currentUser
+    })
+
+     watchEffect(() => {
+      if (getUser.value) {
+        tenantID.value = getUser.value.tenantId
+      }
+    })
+
+    const firstTimerLink = computed(() => {
+      if (!tenantID.value) return ""
+      return `${window.location.origin}/createfirsttimer/${tenantID.value}`
+    })
 
     // const setLoading = (payload) => {
     //   loading.value = payload
@@ -300,7 +350,7 @@ export default {
     //   loading.value = payload
     // }
 
-    return { firstTimersList, newConvertList,  addNewFirsttimer, addNewConvert,  newConvertDetail, firttimerDetail, showFirsttimer, showNewConvert, getFirstTmersList, loading, fileUpload, imageSelected, image, displayModal, importFile, firstTimerData, addToFirstTimers, closeModal, importFirstTimer, networkError, setFirsttimer, mdAndUp, lgAndUp, xlAndUp, primarycolor };
+    return { firstTimersList, newConvertList, copylink, selectedLink, tenantID, getUser, firstTimerLink,  addNewFirsttimer, addNewConvert,  newConvertDetail, firttimerDetail, showFirsttimer, showNewConvert, getFirstTmersList, loading, fileUpload, imageSelected, image, displayModal, importFile, firstTimerData, addToFirstTimers, closeModal, importFirstTimer, networkError, setFirsttimer, mdAndUp, lgAndUp, xlAndUp, primarycolor };
   },
 };
 
