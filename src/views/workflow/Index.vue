@@ -1,12 +1,12 @@
 <template>
-    <div class="container-fluid mt-3 container-wide">
-        <div class="row my-4">
+    <div class="container-top" :class="{ 'container-slim': lgAndUp || xlAndUp }"   > 
+        <div class="row mt-4">
             <div class="col-md-6">
-                <div class="heading-text">Ministry Workflows</div>
+                <div class="head-text mt-1">Ministry Workflows</div>
             </div>
             <div class="col-md-6 d-flex justify-content-end">
-                <router-link to="/tenant/settings/workflow/add?fw=true" class="text-decoration-none font-weight-bold px-3 mx-2 p-2"><button class="default-btn border-0 primary-bg text-white ">Add</button></router-link>
-            </div>
+                <router-link to="/tenant/workflow/add?fw=true" class="text-decoration-none font-weight-bold px-3 mx-2 p-2"><el-button :color="primarycolor" round class="border-0 header-btn text-white ">Add</el-button></router-link>
+            </div>  
         </div>
         <!-- <div class="row mt-3 mb-4">
             <div class="col-md-12 py-2 w-links-con">
@@ -25,15 +25,24 @@
 </template>
 
 <script>
+import {  inject } from "vue";
 import { useRoute } from "vue-router";
+import deviceBreakpoint from "../../mixins/deviceBreakpoint";
+import router from "../../router";
 import authMixin from "../../mixins/auth.mixins"
 export default {
     mixins: [ authMixin ],
     setup () {
         const route = useRoute();
+        const primarycolor = inject("primarycolor");
+        const { lgAndUp, xlAndUp } = deviceBreakpoint()
 
+     
         return {
             route,
+            primarycolor,
+            lgAndUp,
+            xlAndUp
         }
     }
 }

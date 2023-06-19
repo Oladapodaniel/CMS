@@ -133,7 +133,7 @@
                   <div class="col-md-12 my-2">
                     <router-link
                       class="font-weight-bold primary--text dd-list-item"
-                      to="/tenant/settings/workflow/list"
+                      to="/tenant/workflow/list"
                       >Workflow</router-link
                     >
                   </div>

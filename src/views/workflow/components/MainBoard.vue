@@ -1,6 +1,11 @@
 <template>
-  <div class="container-fluid mb-4">
+  <div class="container-fluid  mb-4">
     <div class="row">
+      <div class="col-md-12 mb-3 px-0">
+          <div class="text-primary c-pointer px-0 col-md-2" @click="previousPage">
+            <el-icon><DArrowLeft /></el-icon> Back
+          </div>
+      </div>
       <Toast></Toast>
       <div class="col-md-12">
         <div class="row">
@@ -1085,7 +1090,7 @@ export default {
             life: 2000,
           });
           setTimeout(() => {
-            router.push("/tenant/settings/workflow/list");
+            router.push("/tenant/workflow/list");
           }, 2200);
         } else {
           toast.add({
@@ -1120,7 +1125,7 @@ export default {
             life: 2000,
           });
           setTimeout(() => {
-            router.push("/tenant/settings/workflow/list");
+            router.push("/tenant/workflow/list");
           }, 2200);
         } else {
           toast.add({
@@ -1260,9 +1265,14 @@ export default {
       // done.value = false;
       // triggerDescriptions.value = descriptionHelper(workflow.value.triggers, groups.value, contributionItems.value)
     };
+    const previousPage = () =>{
+        router.push("/tenant/workflow/list")
+     }
+
 
     return {
       showTriggers,
+      previousPage,
       // triggersIsVissible,
       toggleTriggers,
       triggers,

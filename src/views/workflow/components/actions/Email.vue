@@ -74,6 +74,9 @@
                 <label for="" class="font-weight-600">And message</label>
             </div>
             <div class="col-md-12">
+              <!-- <div id="app">
+              </div> -->
+              <!-- <DecoupledEditor v-model="item.message" @change="handleMessage" :loadedMessage="loadedMessage"  :label="'you find me'" /> -->
                 <textarea name="" id="" class="w-100 form-control" rows="3" v-model="item.message" @change="handleMessage"></textarea>
             </div>
         </div>
@@ -83,13 +86,18 @@
 <script>
 import { reactive, ref } from '@vue/reactivity';
 import { watchEffect } from '@vue/runtime-core';
+import DecoupledEditor from '@/components/RichEditor';
 export default {
     props: [ "selectedActionIndex", "parameters", "selectEmailList" ],
+    components: { 
+    DecoupledEditor,
+  },
     setup (props, { emit }) {
         const data = reactive([])
         const actionType = reactive(0)
         const person = ref(false);
         const removeOthers = ref([])
+        const loadedMessage = ref("")
         const handleSendPersonMail = () => {
 
             if (data[props.selectedActionIndex]) {
@@ -239,12 +247,15 @@ export default {
         }
         const message = ref('');
         const handleMessage = () => {
+            console.log('jjjjjj');
             if (data[props.selectedActionIndex]) {
                 data[props.selectedActionIndex].JSONActionParameters.message = removeOthers.value[0].message;
+                // loadedMessage.value = removeOthers.value
             }   else {
                 data[props.selectedActionIndex] = new Object()
                 data[props.selectedActionIndex].JSONActionParameters = new Object()
                 data[props.selectedActionIndex].JSONActionParameters.message = removeOthers.value[0].message;
+                // loadedMessage.value = removeOthers.value
             }
 
             emit('updateaction', data, props.selectedActionIndex, actionType);
@@ -311,6 +322,7 @@ export default {
         return {
             person,
             handleSendPersonMail,
+            loadedMessage,
             parent,
             handleSendPersonsParentMail,
             spouse,

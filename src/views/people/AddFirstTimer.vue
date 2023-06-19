@@ -629,13 +629,22 @@ export default {
           break;
       }
 
-      firstTimersObj.value.customAttributeData = dynamicCustomFields.value.map(
-        (i) => ({
-          customAttributeID: i.id,
-          data: i.data,
-          entityID: route.params.personId,
-        })
-      );
+      firstTimersObj.value.customAttributeDataString = JSON.stringify(dynamicCustomFields.value.map(
+        (i) => {
+          if (route.params.personId) {
+            return {
+              customAttributeID: i.id,
+              data: i.data,
+              entityID: route.params.personId,
+              }
+          } else {
+            return {
+              customAttributeID: i.id,
+              data: i.data,
+            }
+          }
+        }
+      ));
 
       if (!routeToFRM.value) {
         loading.value = true;

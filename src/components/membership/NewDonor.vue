@@ -6,6 +6,16 @@
                     <div class="col-md-8">
                         <div class="row my-3">
                             <div class="col-md-4 text-md-right pr-md-0">
+                                <label for="" class="font-weight-700">Membership</label>
+                            </div>
+                            <div class="col-md-8">
+                                <el-select-v2 v-model="memberClassificationId" @change="setSelectedMem"
+                                    :options="memberships.map(i => ({ label: i.name, value: i.id }))" placeholder="--Select membership--"
+                                    size="large" class="w-100" />
+                            </div>
+                        </div>
+                        <div class="row my-3">
+                            <div class="col-md-4 text-md-right pr-md-0">
                                 <label for="" class="font-weight-700">Firstname<span class="text-danger">*</span></label>
                             </div>
                             <div class="col-md-8">
@@ -167,7 +177,9 @@
 import moment from "moment";
 import { reactive, ref, computed, inject } from 'vue'
 import { useRoute } from "vue-router";
+import router from "@/router/index";
 import axios from "@/gateway/backendapi";
+import { useStore } from "vuex";
 import ImageForm from './ImageForm'
 export default {
     components: { ImageForm },
@@ -175,7 +187,9 @@ export default {
     setup(props, { emit }) {
         const primarycolor = inject('primarycolor')
         const route = useRoute();
+        const store = useStore();
         const loading = ref(false)
+        const memberClassificationId = ref(null)
         const donor = reactive({});
         const image = ref('');
         let person = reactive({
@@ -189,7 +203,33 @@ export default {
         const birthDay = ref("");
         const birthYear = ref("");
         const genderType = ref({});
+        const selectedMembership = ref(null);
         const daysInBirthMonth = ref(birthDate.daysInMonth());
+        let memberships = ref(store.getters["lookups/peopleClassifications"]);
+
+        const getPeopleClassifications = async () => {
+            try {
+                const response = await axios.get(
+                "/api/Settings/GetTenantPeopleClassification"
+                );
+                const { data } = response;
+                memberships.value = data;
+                console.log(memberships.value, 'kkkhhh');
+            } catch (err) {
+                if (err.response && err.response.status === 401) {
+                localStorage.removeItem("token");
+
+                router.push("/");
+                }
+                console.log(err);
+            }
+            };
+            getPeopleClassifications()
+
+            const setSelectedMem = () => {
+                selectedMembership.value = memberships.value.find((i) => i.id == memberClassificationId.value )
+                // console.log(selectedMembership.value, 'hhhhh');
+            }
 
         const addGenderType = (gender) => {
             genderType.value = gender;
@@ -251,7 +291,7 @@ export default {
             formData.append("mobilePhone", donor.mobilePhone ? donor.mobilePhone : "")
             formData.append("email", donor.email ? donor.email : "")
             formData.append("gender", genderType.value.id ? genderType.value.id : "")
-
+            formData.append("peopleClassificationID", selectedMembership.value ? selectedMembership.value.id : "" );
             formData.append("dayOfBirth", birthDay.value ? birthDay.value : "")
             formData.append("monthOfBirth", months.value.indexOf(birthMonth.value) + 1 ? months.value.indexOf(birthMonth.value) + 1 : "")
             formData.append("yearOfBirth", birthYear.value ? birthYear.value : "")
@@ -296,6 +336,10 @@ export default {
 
         return {
             donor,
+            memberClassificationId,
+            selectedMembership,
+            memberships,
+            setSelectedMem,
             saveDonor,
             onCancel,
             setImage,

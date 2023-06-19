@@ -1,5 +1,12 @@
 <template>
-    <div class="container-fluid">
+    <div class="container-fluid ">
+        <div class="row">
+            <div class="col-md-12 mb-3 px-0">
+                <div class="text-primary c-pointer px-0 col-md-2" @click="previousPage">
+                <el-icon><DArrowLeft /></el-icon> Back
+                </div>
+            </div>
+        </div>
         <Toast></Toast>
         <ConfirmDialog />
         <div class="row border">
@@ -22,7 +29,7 @@
 
         <div v-else class="row border" v-for="(workflow, index) in workflows" :key="index">
             <div class="col-md-8 p-2">
-                <router-link class="text-decoration-none text-primary font-weight-700" :to="`/tenant/settings/workflow/add?workflowId=${workflow.id}&fw=true`">
+                <router-link class="text-decoration-none text-primary font-weight-700" :to="`/tenant/workflow/add?workflowId=${workflow.id}&fw=true`">
                     {{ workflow.name }}
                 </router-link>
             </div>
@@ -43,6 +50,7 @@ import workflowFunctions from '../utlity/workflow_service'
 import { useConfirm } from "primevue/useconfirm";
 import { useToast } from "primevue/usetoast";
 import axios from "@/gateway/backendapi";
+import router from "../../../router";
 
 export default {
     components: { 
@@ -55,6 +63,10 @@ export default {
         
         const loading = ref(false)
         const workflows = ref([])
+
+        const previousPage = () =>{
+            router.push("/tenant/settings")
+        }
 
         const getWorkflows = async () => {
             try {
@@ -109,6 +121,7 @@ export default {
 
         return {
             workflows,
+            previousPage,
             loading,
             confirmDelete,
         }
