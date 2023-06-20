@@ -43,8 +43,8 @@
                             </div>
                         </div>
                         <div class="row">
-                            <div class="offset-1 p-2 col-2 mt-3 ml-3 save-btn btn-btn c-pointer"
-                                @click="editBasicDetails">Save
+                            <div class="offset-1 p-2 col-2 mt-3 ml-3 save-btn btn-btn c-pointer" @click="editBasicDetails">
+                                Save
                             </div>
                         </div>
                     </el-popover>
@@ -85,8 +85,7 @@
             <div class="ml-2 ml-sm-3 c-pointer text-center">
                 <el-dropdown trigger="click">
                     <span class="el-dropdown-link primary--text">
-                        <el-tooltip class="box-item" effect="dark" content="Log activity performed"
-                            placement="top-start">
+                        <el-tooltip class="box-item" effect="dark" content="Log activity performed" placement="top-start">
                             <div class="icon-bg"><el-icon>
                                     <Plus />
                                 </el-icon></div>
@@ -212,7 +211,7 @@
                         <el-dropdown class="w-100" trigger="click">
                             <div class="w-100 p-2 mt-2 phone-input d-flex justify-content-between c-pointer">
                                 <div>{{ selectedLifeCycle && Object.keys(selectedLifeCycle).length > 0 ?
-                                        selectedLifeCycle.name : "Select lifecycle"
+                                    selectedLifeCycle.name : "Select lifecycle"
                                 }}</div>
                                 <el-icon class="el-icon--right"><arrow-down /></el-icon>
                             </div>
@@ -265,9 +264,8 @@
                             </div>
                             <div class="col-12 mt-4 label-text">Date of birth</div>
                             <div class="col-4 p-0 mt-2">
-                                <el-select-v2 v-model="selectedBirthday"
-                                    :options="day.map(i => ({ label: i, value: i }))" placeholder="Select option"
-                                    size="large" class="phone-input w-100" />
+                                <el-select-v2 v-model="selectedBirthday" :options="day.map(i => ({ label: i, value: i }))"
+                                    placeholder="Select option" size="large" class="phone-input w-100" />
                             </div>
                             <div class="col-4 p-0 mt-2">
                                 <el-select-v2 v-model="selectedBirthMonth"
@@ -275,9 +273,8 @@
                                     size="large" class="phone-input w-100" />
                             </div>
                             <div class="col-4 p-0 mt-2">
-                                <el-select-v2 v-model="selectedBirthYear"
-                                    :options="year.map(i => ({ label: i, value: i }))" placeholder="Select option"
-                                    size="large" class="phone-input w-100" />
+                                <el-select-v2 v-model="selectedBirthYear" :options="year.map(i => ({ label: i, value: i }))"
+                                    placeholder="Select option" size="large" class="phone-input w-100" />
                             </div>
                             <div class="col-12 mt-4 label-text">Address</div>
                             <div class="col-12 mt-2">
@@ -318,19 +315,18 @@
                                     <span class="el-dropdown-link w-100">
                                         <div class="phone-input py-2 w-100 d-flex justify-content-between">
                                             <div>{{ Object.keys(selectedEventAttended).length > 0 ?
-                                                    selectedEventAttended.name :
-                                                    personDetails.activityID && eventsAttended.length > 0 ?
-                                                        eventsAttended.find(i => {
-                                                            if (i.activityID == personDetails.activityID) return i
-                                                            return 'no id'
-                                                        }).name : "Select event attended"
+                                                selectedEventAttended.name :
+                                                personDetails.activityID && eventsAttended.length > 0 ?
+                                                    eventsAttended.find(i => {
+                                                        if (i.activityID == personDetails.activityID) return i
+                                                        return 'no id'
+                                                    }).name : "Select event attended"
                                             }}</div>
                                             <el-icon class="el-icon--right"><arrow-down /></el-icon>
                                         </div>
                                     </span>
                                     <template #dropdown>
-                                        <el-input class="w-100" v-model="eventsSearchString"
-                                            placeholder="Search event" />
+                                        <el-input class="w-100" v-model="eventsSearchString" placeholder="Search event" />
                                         <el-dropdown-menu>
 
                                             <el-dropdown-item v-for="(event, index) in filteredEvents" :key="index"
@@ -351,20 +347,21 @@
                             <div class="col-12 mt-2" v-if="route.query.memberType == 0">
                                 <el-select-v2 v-model="item.data"
                                     :options="item.parameterValues.split(',').map(i => ({ label: i, value: i }))"
-                                    :placeholder="item.label" size="large" class="phone-input" v-if="(item.controlType == 1)"/>
-                                    <el-input type="text" class="phone-input" v-model="item.data" :placeholder="item.label"
+                                    :placeholder="item.label" size="large" class="phone-input"
+                                    v-if="(item.controlType == 1)" />
+                                <el-input type="text" class="phone-input" v-model="item.data" :placeholder="item.label"
                                     v-if="(item.controlType == 0)" />
-                                    <el-input type="number" class="phone-input" v-model="item.data" :placeholder="item.label"
+                                <el-input type="number" class="phone-input" v-model="item.data" :placeholder="item.label"
                                     v-if="(item.controlType == 7)" />
-                                    <el-input type="email" class="phone-input" v-model="item.data" :placeholder="item.label"
+                                <el-input type="email" class="phone-input" v-model="item.data" :placeholder="item.label"
                                     v-if="(item.controlType == 4)" />
-                                    <div class="phone-input" v-if="(item.controlType == 2)">
+                                <div class="phone-input" v-if="(item.controlType == 2)">
                                     <el-checkbox v-model="item.data" size="large" />
-                                    </div>
-                                    <el-date-picker v-model="item.data" class="phone-input" type="date" :placeholder="item.label"
-                                    size="default" v-if="(item.controlType == 3)" />
-                                    <input type="file" class="form-control phone-input" @change="uploadImage($event, index)"
-                                    :placeholder="item.label" v-if="(item.controlType == 6)"/>
+                                </div>
+                                <el-date-picker v-model="item.data" class="phone-input" type="date"
+                                    :placeholder="item.label" size="default" v-if="(item.controlType == 3)" />
+                                <input type="file" class="form-control phone-input" @change="uploadImage($event, index)"
+                                    :placeholder="item.label" v-if="(item.controlType == 6)" />
                             </div>
                         </div>
                     </div>
@@ -449,8 +446,8 @@
                                 <el-dropdown-menu>
                                     <el-dropdown-item disabled>{{ `${personDetails.firstName}
                                                                             ${personDetails.lastName}(${selectedLog.value === 'email' ? personDetails.email
-                                                :
-                                                personDetails.phoneNumber})`
+                                            :
+                                            personDetails.phoneNumber})`
                                     }}</el-dropdown-item>
                                 </el-dropdown-menu>
                             </template>
@@ -461,7 +458,7 @@
                         <el-dropdown trigger="click">
                             <span class="el-dropdown-link primary--text">
                                 {{ Object.keys(selectedCallOutcome).length > 0 ? selectedCallOutcome.value :
-                                        "Select an outcome"
+                                    "Select an outcome"
                                 }} <el-icon class="el-icon--right"><arrow-down /></el-icon>
                             </span>
                             <template #dropdown>
@@ -510,8 +507,8 @@
                     </el-dropdown>
                 </div>
                 <div class="col-12 p-0 mt-3">
-                    <el-input v-model="smsMessage" type="textarea" placeholder="Type your message here ..."
-                        class="w-100" rows="12" />
+                    <el-input v-model="smsMessage" type="textarea" placeholder="Type your message here ..." class="w-100"
+                        rows="12" />
                 </div>
             </div>
             <div class="d-flex justify-content-end mt-4">
@@ -527,7 +524,7 @@
         </p>
         <div class="dropdown w-100 ">
             <div id="dropdownMenuButton" class="w-100  border py-2 pl-3 rounded" data-toggle="dropdown">{{
-                    Object.keys(genderType).length > 0 ? genderType.value : 'Gender'
+                Object.keys(genderType).length > 0 ? genderType.value : 'Gender'
             }}</div>
             <div class="dropdown-menu w-100" aria-labelledby="dropdownMenuButton">
                 <a class="dropdown-item  " href="#" v-for="(gender, index) in genders" :key="index"
@@ -548,8 +545,8 @@
     </Dialog>
 
     <!-- Convert to member modal -->
-    <div class="modal fade" id="convertToMemberModal" tabindex="-1" role="dialog"
-        aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+    <div class="modal fade" id="convertToMemberModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle"
+        aria-hidden="true">
         <div class="modal-dialog modal-dialog-centered" role="document">
             <div class="modal-content">
                 <div class="modal-header">
@@ -573,8 +570,8 @@
                                             aria-haspopup="true" aria-expanded="false">
                                             <div>
                                                 {{ selectedMembershipClassification &&
-                                                        Object.keys(selectedMembershipClassification).length > 0 ?
-                                                        selectedMembershipClassification.name : 'Select membership category'
+                                                    Object.keys(selectedMembershipClassification).length > 0 ?
+                                                    selectedMembershipClassification.name : 'Select membership category'
                                                 }}
                                             </div>
                                             <el-icon class="el-icon--right"><arrow-down /></el-icon>
@@ -596,8 +593,7 @@
                     <div class="d-flex justify-content-end">
                         <el-button class="secondary-button" data-dismiss="modal" round>Close</el-button>
                         <el-button :color="primarycolor" :loading="loading" @click="convertToMember($event)"
-                            :disabled="Object.keys(selectedMembershipClassification).length === 0"
-                            round>Proceed</el-button>
+                            :disabled="Object.keys(selectedMembershipClassification).length === 0" round>Proceed</el-button>
                         <!-- <div class="default-btn text-center c-pointer" data-dismiss="modal">Close</div>
                         <button class="primary-bg default-btn border-0 text-white text-center ml-3 c-pointer"
                             :disabled="Object.keys(selectedMembershipClassification).length === 0"
@@ -627,8 +623,8 @@
                         <div class="row">
                             <div class="col-12">Enter sender id</div>
                             <div class="col-12 mt-2">
-                                <input type="text" class="form-control" placeholder="Enter sender id"
-                                    v-model="senderIdText" @input="validateSenderId" ref="senderIdRef" />
+                                <input type="text" class="form-control" placeholder="Enter sender id" v-model="senderIdText"
+                                    @input="validateSenderId" ref="senderIdRef" />
                                 <div class="invalid-feedback text-danger pl-2">
                                     <ul>
                                         <li>Should not contain any special characters</li>
@@ -1168,11 +1164,11 @@ export default {
                     customAttributeDataString: JSON.stringify(dynamicCustomFields.value.map(i => {
                         if (route.params.personId) {
                             return {
-                            customAttributeID: i.id,
-                            data: i.data,
-                            entityID: i.entityID
+                                customAttributeID: i.id,
+                                data: i.data,
+                                entityID: i.entityID
                             }
-                        } 
+                        }
                     }))
                 }
 
@@ -1409,30 +1405,32 @@ export default {
         }
 
         const getCustomFields = async () => {
-      try {
-        let data = await allCustomFields.allCustomFields()
-        dynamicCustomFields.value = data.filter(i => i.entityType === 1)
-      }
-      catch (err) {
-        console.log(err)
-      }
-    }
-    if (props.personDetails && props.personDetails.customAttributeData && props.personDetails.customAttributeData.length === 0) getCustomFields();
+            try {
+                let data = await allCustomFields.allCustomFields()
+                dynamicCustomFields.value = data.filter(i => i.entityType === 1)
+            }
+            catch (err) {
+                console.log(err)
+            }
+        }
+        if (props.personDetails && props.personDetails.customAttributeData && props.personDetails.customAttributeData.length === 0) getCustomFields();
 
         watchEffect(() => {
             console.log(props.personDetails);
             if (props.personDetails && props.personDetails.customAttributeData && props.personDetails.customAttributeData.length > 0) {
-            dynamicCustomFields.value = props.personDetails.customAttributeData.map(i => {
-                i.customAttribute.data = i.data == "true" ? true : i.data == "false" ? false : i.data
-                i.customAttribute.entityID = i.entityID
-                return i.customAttribute
+                dynamicCustomFields.value = props.personDetails.customAttributeData.map(i => {
+                    i.customAttribute.data = i.data == "true" ? true : i.data == "false" ? false : i.data
+                    i.customAttribute.entityID = i.entityID
+                    return i.customAttribute
                 })
 
                 if (dynamicCustomFields.value.length === 0) {
-                getCustomFields()
+                    getCustomFields()
                 }
+            } else {
+                getCustomFields()
             }
-            })
+        })
 
         return {
             selectedContact,
