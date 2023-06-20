@@ -1,6 +1,16 @@
 <template>
   <div>
-    <div class="container">
+    <div class="container-fluid">
+      <div class="row">
+        <div class="col-md-12   align-items-center d-flex justify-content-center" style="height: 50vh;">
+          <div class="empty-img  text-center " >
+            <p><img src="../../../assets/people/people-empty.svg" alt="" /></p>
+            <h4 class="tip text-secondary font-weight-bold ">Social Media Intergration is coming soon </h4>
+          </div>
+        </div>
+      </div>
+    </div>
+    <!-- <div class="container">
       <div class="row">
         <div
           class="mt-5 col-xl-6 col-lg-6 col-md-6 col-sm-12 col-12 text-sm-center"
@@ -118,7 +128,6 @@
         <div
           class="col-lg-5 col-md-8 time1 text-lg-center text-sm-center text-center"
         >
-          <!-- <input type="date" class="border-0 d-flex justify-content-end"> -->
           <span>
             <input
               placeholder="7/26/2020"
@@ -149,8 +158,6 @@
             iconPos="right"
             class="p-button-raised p-button-rounded mt-5 mb-5"
           />
-          <!-- Chart -->
-          <!-- <h3>Multi Axis</h3> -->
           <Chart type="bar" :data="multiAxisData" :options="multiAxisOptions" />
         </div>
         <div class="col-md-4 post mt-sm-5 mt-5">
@@ -159,14 +166,6 @@
               <h5 class="las">Latest post</h5>
             </div>
             <div class="col-lg-6 col-md-5 p-3 text-sm-center">
-              <!-- <input type="date" value="#ff0000" class="w-100 border-0 text-light calendar1"> -->
-              <!-- <input
-                  placeholder=""
-                  v-model="eventDate"
-                  type="date"
-                  class="form-control w-100 border-0 text-light calendar1"
-                  required
-                /> -->
 
               <i class="pi pi-calendar-plus text-light mt-2"></i>
               <span class="text-light"> 07/26/2020</span>
@@ -229,10 +228,8 @@
             <div class="col-lg-3 col-md-0 col-sm-0 col-0">
               <div class="row">
                 <div class="col-md-2">
-                  <!-- <span><i class="pi pi-share-alt text-light"></i></span> -->
                 </div>
                 <div class="col-md-2">
-                  <!-- <h5 class="num4">11</h5> -->
                 </div>
               </div>
             </div>
@@ -305,16 +302,14 @@
           </div>
         </div>
       </div>
-    </div>
+    </div> -->
 
   </div>
 </template>
 
 <script>
-// import Chart from "primevue/chart";
 export default {
   components: {
-    // Chart,
   },
 
   data() {
@@ -414,6 +409,16 @@ export default {
   letter-spacing: 0px;
   color: #02172e;
   opacity: 1;
+}
+/* .empty-img {
+  width: 30%;
+  min-width: 397px;
+  margin: auto;
+} */
+
+.empty-img img {
+  width: 100%;
+  max-width: 200px;
 }
 .box1 {
   background: #ffffff 0% 0% no-repeat padding-box;

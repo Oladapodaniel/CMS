@@ -13,27 +13,43 @@
         </div>
       </div>
     </div>
-    <div class="p-col-12 py-md-4 mt-3" v-if="route.fullPath == '/tenant/people'">
-      <div class="font-weight-bold">Share the link to your members to enable them to add their details to your
-        church .</div>
-      <div class="p-inputgroup form-group mt-2">
-        <el-input v-model="memberlink" placeholder="Click the copy button when the link appears" ref="selectedLink" class="input-with-select" >
-          <template #append>
-            <el-button @click="copylink">
-              <el-icon>
-                <CopyDocument />
-              </el-icon>
-            </el-button>
-          </template>
-        </el-input>
-        <!-- <div class=" image" >
+    <div class="row">
+      <div class="col-md-2 mt-2  " v-if="route.fullPath == '/tenant/people'" >
+        <div class="font-weight-bold py-md-2 mt-4">QR Code</div>
+        <div class=" image" @click="getQrCode" >
           <img
             src="../../assets/group2.svg"
-            alt="marked Attendance image"
+            alt="Member image"
           />
-        </div> -->
+        </div>
       </div>
+      <div class="col-md-10 py-md-4 mt-3" v-if="route.fullPath == '/tenant/people'">
+        <div class="font-weight-bold">Share the link to your members to enable them to add their details to your
+          church .</div>
+        <div class="p-inputgroup form-group mt-2">
+          <el-input v-model="memberlink" placeholder="Click the copy button when the link appears" ref="selectedLink" class="input-with-select" >
+            <template #append>
+              <el-button @click="copylink">
+                <el-icon>
+                  <CopyDocument />
+                </el-icon>
+              </el-button>
+            </template>
+          </el-input>
+        </div>
     </div>
+    </div>
+    <el-dialog v-model="QRCodeDialog" title="" :width="mdAndUp || lgAndUp || xlAndUp ? `50%` : xsOnly ? `90%` : `70%`"  class="QRCodeDialog" align-center>
+        
+        <div class="d-flex align-items-center flex-column" >
+          <h4 class="text-capitalize font-weight-bold"> Members QR Code For Registration</h4>
+        </div>
+        <div class=" d-flex justify-content-center " >
+            <div class="img-wrapper  ">
+                <img  v-if="qrCode" :src="qrCode" class="image-wrapper w-100"  />
+            </div>
+        </div>
+    </el-dialog>
     <router-view />
   </main>
 </template>
@@ -55,7 +71,9 @@ export default {
     const selectedLink = ref(null)
     const tenantID = ref('')
     const route = useRoute();
-    const { lgAndUp, xlAndUp } = deviceBreakpoint()
+    const QRCodeDialog = ref(false)
+    const qrCode = ref('')
+    const { lgAndUp, xlAndUp, mdAndUp, xsOnly } = deviceBreakpoint()
     const primarycolor = inject('primarycolor')
 
     const isFormPage = computed(() => {
@@ -82,13 +100,15 @@ export default {
     const getQrCode = async () => {
       try{
         const res = await axios.get(`/api/Settings/GetQRCode?link=${window.location.origin}/createmember/${tenantID.value}`)
-        console.log(res, 'hhhh');
+        QRCodeDialog.value = true
+        qrCode.value = res.data
+        // console.log(res, 'hhhh');
       }
       catch(error){
         console.log(error);
       }
     }
-    getQrCode()
+
 
 
     const copylink = () => {
@@ -122,7 +142,7 @@ export default {
       router.push({ name: 'ImportInstruction', query: { query: 'importpeople' } })
     }
 
-    return { addPersonClicked, tenantID, route, header, isFormPage, importMembers, memberlink, copylink, selectedLink, lgAndUp, xlAndUp, primarycolor };
+    return { addPersonClicked, tenantID, mdAndUp, route, xsOnly, QRCodeDialog, qrCode, header, getQrCode, isFormPage, importMembers, memberlink, copylink, selectedLink, lgAndUp, xlAndUp, primarycolor };
   },
 };
 // transition method
@@ -136,6 +156,17 @@ export default {
 * {
   box-sizing: border-box;
 }
+.image img{
+  height: 2.5rem;
+}
+/* .img-wrapper img{
+  height: 40rem;
+  width: 5px;
+}
+.img-wrapper{
+  width: 60%;
+} */
+
 
 .events {
   font: normal normal 800 29px Nunito sans;
