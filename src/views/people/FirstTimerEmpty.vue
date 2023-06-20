@@ -83,13 +83,13 @@
         </span>
       </template>
     </el-dialog>
-    <el-dialog v-model="QRCodeDialog" title="" :width="mdAndUp || lgAndUp || xlAndUp ? `50%` : xsOnly ? `90%` : `70%`"  class="QRCodeDialog" align-center>
+    <el-dialog v-model="QRCodeDialog" title="" :width="mdAndUp || lgAndUp || xlAndUp ? `30%` : xsOnly ? `90%` : `70%`" class="QRCodeDialog" align-center>
         
         <div class="d-flex align-items-center flex-column" >
           <h4 class="text-capitalize font-weight-bold"> First Timers QR Code For Registration</h4>
         </div>
-        <div class=" d-flex justify-content-center " >
-            <div class="img-wrapper  ">
+        <div class=" d-flex justify-content-center "  >
+            <div class="img-wrapper  " >
                 <img  v-if="qrCode" :src="qrCode" class="image-wrapper w-100"  />
             </div>
         </div>

@@ -39,7 +39,7 @@
         </div>
     </div>
     </div>
-    <el-dialog v-model="QRCodeDialog" title="" :width="mdAndUp || lgAndUp || xlAndUp ? `50%` : xsOnly ? `90%` : `70%`"  class="QRCodeDialog" align-center>
+    <el-dialog v-model="QRCodeDialog" title="" :width="mdAndUp || lgAndUp || xlAndUp ? `30%` : xsOnly ? `90%` : `70%`"  class="QRCodeDialog" align-center>
         
         <div class="d-flex align-items-center flex-column" >
           <h4 class="text-capitalize font-weight-bold"> Members QR Code For Registration</h4>
