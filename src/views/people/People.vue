@@ -23,7 +23,7 @@
           />
         </div>
       </div>
-      <div class="col-md-10 py-md-4 mt-3" v-if="route.fullPath == '/tenant/people'">
+      <div class="col-md-10 pl-0 py-md-4 mt-3" v-if="route.fullPath == '/tenant/people'">
         <div class="font-weight-bold">Share the link to your members to enable them to add their details to your
           church .</div>
         <div class="p-inputgroup form-group mt-2">

@@ -35,13 +35,13 @@
           />
         </div>
       </div>
-      <div class="col-md-10">
+      <div class="col-md-10 pl-0 ">
         <div class="font-weight-bold py-md-2 mt-4">Share the link to your first timers to enable them to add their
           details to your
           church.</div>
         <div class="p-inputgroup form-group mt-1">
           <el-input v-model="firstTimerLink" placeholder="Click the copy button when the link appears" ref="selectedLink"
-            class="input-with-select">
+            class="input-with-select w-100">
             <template #append>
               <el-button @click="copylink">
                 <el-icon>
