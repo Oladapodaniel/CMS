@@ -449,6 +449,7 @@ export default {
     const audioPlayer = ref(null);
     const videoPlayer = ref(null);
     const selectedFileUrl = ref("");
+    const whatsappAttachment = ref({});
 
 
     const contactUpload = ref(false)
@@ -482,6 +483,9 @@ export default {
       socket.emit('connected', 'Hello From Client')
       socket.on('hello', (data) => {
         console.log('Hello Emittted from the server', data)
+      })
+      socket.on('ping', () => {
+        socket.emit('pong', 'pong')
       })
       socket.on('qr', (data) => {
         console.log('QR RECEIVED', data)
@@ -734,11 +738,13 @@ export default {
       console.log(selectedMembers.value, 'selected memener');
       console.log(allSelectedNumbers.value, 'phnennumber');
       console.log(userWhatsappGroupsId.value)
+      console.log(whatsappAttachment.value)
 
       //   // Send to Whatsapp Groups
       if (userWhatsappGroupsId.value && userWhatsappGroupsId.value.length > 0) {
         socket.emit('sendtogroups', {
           groups: userWhatsappGroupsId.value,
+          whatsappAttachment: whatsappAttachment.value,
           message: editorData.value
         })
       }
@@ -748,6 +754,7 @@ export default {
         socket.emit('sendwhatsappmessage', {
           phone_number: allSelectedNumbers.value.length > 0 ? allSelectedNumbers.value : [phoneNumber.value.replaceAll(" ", "").trim()],
           message: editorData.value,
+          whatsappAttachment: whatsappAttachment.value,
           type: 'multiple'
         })
       }
@@ -756,6 +763,7 @@ export default {
         socket.emit('sendwhatsappmessage', {
           phone_number: selectedMembers.value.map(i => i.phone ? i.phone.substring(0, 1) == '0' ? `+${tenantCountry.value.phoneCode}${i.phone.substring(1)}` : `${i.phone}` : null).filter(i => i),
           message: editorData.value,
+          whatsappAttachment: whatsappAttachment.value,
           type: 'multiple'
         })
       }
@@ -808,10 +816,33 @@ export default {
         fileVideo.value = false
         fileImage.value = true
         selectedFileUrl.value = URL.createObjectURL(e.raw);
+
+        const file = e.raw;
+        const reader = new FileReader();
+
+        reader.onload = (f) => {
+          const base64String = f.target.result.split(",")[1];
+          console.log(base64String);
+          whatsappAttachment.value = {
+            base64: base64String,
+            mimeType: e.raw.type
+          }
+        };
+
+        reader.readAsDataURL(file);
+
       } else if (e.raw.type.includes('audio')) {
         const reader = new FileReader();
-        reader.addEventListener("load", function () {
+        reader.addEventListener("load", function (f) {
           audioPlayer.value.src = reader.result;
+          const base64String = f.target.result.split(",")[1];
+          whatsappAttachment.value = {
+            base64: base64String,
+            mimeType: e.raw.type,
+            fileName: e.raw.name,
+            fileSize: e.raw.size
+          }
+          console.log(whatsappAttachment.value, "attachment");
           fileAudio.value = true
           fileVideo.value = false
           fileImage.value = false
@@ -820,30 +851,61 @@ export default {
         if (e.raw) {
           reader.readAsDataURL(e.raw);
         }
-        
+        console.log(whatsappAttachment.value, "attachment");
       } else if (e.raw.type.includes('video')) {
         const reader = new FileReader();
-        reader.addEventListener("load", function () {
+        reader.addEventListener("load", function (f) {
           videoPlayer.value.src = reader.result;
+          const base64String = f.target.result.split(",")[1];
+          // console.log(f.target, 1)
+          // console.log(f.target.result, 1)
+          whatsappAttachment.value = {
+            base64: base64String,
+            mimeType: e.raw.type,
+            fileName: e.raw.name,
+            fileSize: e.raw.size
+          }
+          console.log(whatsappAttachment.value, "attachment");
           fileAudio.value = false
           fileVideo.value = true
           fileImage.value = false
+        });
+        
+        if (e.raw) {
+          reader.readAsDataURL(e.raw);
+        }
+        
+      } else {
+        const reader = new FileReader();
+        reader.addEventListener("load", function (f) {
+          selectedFileUrl.value.src = reader.result;
+          const base64String = f.target.result.split(",")[1];
+          whatsappAttachment.value = {
+            base64: base64String,
+            mimeType: e.raw.type,
+            fileName: e.raw.name,
+            fileSize: e.raw.size
+          }
+          console.log(whatsappAttachment.value, "attachment");
+          fileAudio.value = false
+          fileVideo.value = false
+          fileImage.value = true
         });
 
         if (e.raw) {
           reader.readAsDataURL(e.raw);
         }
-
-      } else {
         console.log('Different file type')
       }
+      console.log(whatsappAttachment.value, "attachmenthere");
     }
-
+    
     const handleRemove = () => {
       fileAudio.value = false;
       fileVideo.value = false;
       fileImage.value = false
       selectedFileUrl.value = ""
+      whatsappAttachment.value = {}
     }
     
 
@@ -919,7 +981,8 @@ export default {
       audioPlayer,
       videoPlayer,
       selectedFileUrl,
-      handleRemove
+      handleRemove,
+      whatsappAttachment
     };
   },
 };
