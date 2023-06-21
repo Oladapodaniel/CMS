@@ -856,15 +856,16 @@ export default {
         const reader = new FileReader();
         reader.addEventListener("load", function (f) {
           videoPlayer.value.src = reader.result;
-          const base64String = f.target.result.split(",")[1];
+          // const base64String = f.target.result.split(",")[1];
           // console.log(f.target, 1)
           // console.log(f.target.result, 1)
-          whatsappAttachment.value = {
-            base64: base64String,
-            mimeType: e.raw.type,
-            fileName: e.raw.name,
-            fileSize: e.raw.size
-          }
+          whatsappAttachment.value = e.raw
+          // whatsappAttachment.value = {
+          //   base64: base64String,
+          //   mimeType: e.raw.type,
+          //   fileName: e.raw.name,
+          //   fileSize: e.raw.size
+          // }
           console.log(whatsappAttachment.value, "attachment");
           fileAudio.value = false
           fileVideo.value = true
