@@ -323,7 +323,8 @@
             <!-- :on-preview="handlePreview"
             :on-remove="handleRemove"
             :before-remove="beforeRemove" -->
-            <el-upload class="upload-demo" multiple :limit="1" :on-change="chooseFile" :on-remove="handleRemove" :auto-upload="false">
+            <el-upload class="upload-demo" multiple :limit="1" :on-change="chooseFile" :on-remove="handleRemove"
+              :auto-upload="false">
               <el-icon class="ml-2">
                 <Paperclip />
               </el-icon>
@@ -856,26 +857,26 @@ export default {
         const reader = new FileReader();
         reader.addEventListener("load", function (f) {
           videoPlayer.value.src = reader.result;
-          // const base64String = f.target.result.split(",")[1];
-          // console.log(f.target, 1)
-          // console.log(f.target.result, 1)
-          whatsappAttachment.value = e.raw
-          // whatsappAttachment.value = {
-          //   base64: base64String,
-          //   mimeType: e.raw.type,
-          //   fileName: e.raw.name,
-          //   fileSize: e.raw.size
-          // }
+          const base64String = f.target.result.split(",")[1];
+          const chunkSize = 1024; // Specify your desired chunk size
+
+          sendBase64InChunks(base64String, chunkSize);
+          whatsappAttachment.value = {
+            // base64: base64String,
+            mimeType: e.raw.type,
+            fileName: e.raw.name,
+            fileSize: e.raw.size
+          }
           console.log(whatsappAttachment.value, "attachment");
           fileAudio.value = false
           fileVideo.value = true
           fileImage.value = false
         });
-        
+
         if (e.raw) {
           reader.readAsDataURL(e.raw);
         }
-        
+
       } else {
         const reader = new FileReader();
         reader.addEventListener("load", function (f) {
@@ -900,7 +901,7 @@ export default {
       }
       console.log(whatsappAttachment.value, "attachmenthere");
     }
-    
+
     const handleRemove = () => {
       fileAudio.value = false;
       fileVideo.value = false;
@@ -908,7 +909,21 @@ export default {
       selectedFileUrl.value = ""
       whatsappAttachment.value = {}
     }
-    
+
+
+    const sendBase64InChunks = (base64String, chunkSize) => {
+      const totalChunks = Math.ceil(base64String.length / chunkSize);
+
+      for (let i = 0; i < totalChunks; i++) {
+        const start = i * chunkSize;
+        const end = start + chunkSize;
+        const chunk = base64String.substring(start, end);
+        console.log('===================================== \n' + chunk + '\n==================================================')
+        socket.emit('chunk', chunk);
+      }
+    }
+
+
 
     return {
       editorData,
