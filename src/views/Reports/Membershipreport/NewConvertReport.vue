@@ -144,11 +144,12 @@
               <!-- <th scope="col">Title</th> -->
               <th scope="col">First Name</th>
               <th scope="col">Last Name</th>
-                <th scope="col">Phone</th>
+              <th scope="col">Phone</th>
               <th scope="col">Email</th>
               <th scope="col">Home Address</th>
               <th scope="col">Gender</th>
               <th scope="col">Current Status</th>
+              <th scope="col" v-for="item in dynamicCustomFields">{{ item.label }}</th>
               <!-- <th scope="col">Contact Status</th> -->
               <!-- <th scope="col">Marital Status</th>
               <th scope="col">Event Name</th>
@@ -170,6 +171,8 @@
                <td>{{ newConvert.homeAddress }}</td>
               <td>{{ newConvert.gender }}</td>
                <td>{{ newConvert.contactStatus}}</td>
+               <td v-show="newConvert.customAttributeData.length > 0" v-for="item in dynamicCustomFields">{{  getMemberCustomAttributeData(newConvert.customAttributeData, item)  }}</td>
+                <td v-show="newConvert.customAttributeData.length === 0" v-for="item in dynamicCustomFields.length">{{ "--" }}</td>
               <!-- <td>{{ newConvert.maritalStatus }}</td>
               <td>{{ newConvert.name }}</td>
               <td>{{ newConvert.description }}</td>
@@ -199,6 +202,7 @@ import dateFormatter from  "../../../services/dates/dateformatter";
 import Listbox from 'primevue/listbox';
 import printJS from "print-js";
 import exportService from "../../../services/exportFile/exportservice";
+import allCustomFields from "../../../services/customfield/customField"
 
 export default {
   components: {
@@ -218,6 +222,7 @@ export default {
     const selectedFileType = ref({});
     const fileHeaderToExport = ref([]);
     const fileToExport = ref([]);
+    const dynamicCustomFields = ref([]);
     const allMembersInChurch = () => {
       axios
         .get(`/api/Reports/people/getNewConvertsReport?startDate=${new Date(startDate.value).toLocaleDateString("en-US")}&endDate=${new Date(endDate.value).toLocaleDateString("en-US")}`)
@@ -257,6 +262,25 @@ console.log(newConvertsInChurch.value, "✌️✌️");
       return dateFormatter.monthDayYear(activityDate);
     };
 
+
+    const getCustomFields = async () => {
+      try {
+        let data = await allCustomFields.allCustomFields()
+        dynamicCustomFields.value = data.filter(i => i.entityType === 2)
+      }
+      catch (err) {
+        console.log(err)
+      }
+    }
+    getCustomFields();
+
+    const getMemberCustomAttributeData = (memberCustomData, singleCustomField) => {
+      if (memberCustomData && memberCustomData.length === 0) return '--'
+      const findData = memberCustomData.findIndex(i => i.customAttribute.id === singleCustomField.id)
+      if (findData >= 0) return memberCustomData[findData].data
+      return '--'
+    }
+
     return {
       Calendar,
       startDate,
@@ -269,7 +293,9 @@ console.log(newConvertsInChurch.value, "✌️✌️");
       fileName,
       bookTypeList,
       selectedFileType,
-      downloadFile
+      downloadFile,
+      dynamicCustomFields,
+      getMemberCustomAttributeData
     };
   },
 };
