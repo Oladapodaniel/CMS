@@ -1,11 +1,10 @@
 <template>
-  <div>
+  <div>{{ clientSessionId }}clientSessionId
     <div class="container">
       <!-- <div class="container" @click="closeDropdownIfOpen"> -->
       <div class="row">
         <div class="col-md-12 mb-3 mt-3 offset-3 offset-md-0">
           <h4 class="font-weight-bold">Compose Whatsapp Message</h4>
-          <Toast />
 
           <!-- <Dialog header="Select Date and Time" v-model:visible="display" :style="{ width: '50vw', maxWidth: '600px' }"
             :modal="true">
@@ -386,19 +385,13 @@ import { computed, onMounted, ref, watchEffect, inject } from "vue";
 import composeService from "../../../services/communication/composer";
 import composerObj from "../../../services/communication/composer";
 import { useRoute } from "vue-router";
-// import { useRouter } from "vue-router";
-import { useToast } from "primevue/usetoast";
 import store from "../../../store/store";
 import axios from "@/gateway/backendapi";
-// import stopProgressBar from "../../../services/progressbar/progress";
 import communicationService from "../../../services/communication/communicationservice";
-// import dateFormatter from "../../../services/dates/dateformatter";
 import moment from 'moment'
 import VueQrcode from 'vue-qrcode';
 import swal from 'sweetalert';
-// import io from "socket.io-client"
 import { VuemojiPicker } from 'vuemoji-picker'
-
 import { state } from "@/socket";
 import { socket } from "@/socket";
 
@@ -408,20 +401,14 @@ export default {
     VuemojiPicker
   },
   setup() {
-    // const socket = io('https://whatsapp-web-server-production.up.railway.app');
-    // const socket = io('https://whatsapp-web-server-q1wo.onrender.com');
-    //  const socket = io('http://localhost:3001');
     const session = ref("")
     const qrCode = ref("")
     const sessionId = ref("")
     const getSessionId = ref("")
     const primarycolor = inject('primarycolor')
     const toast = useToast();
-    // const router = useRouter()
     const editorData = ref("");
-    // const disableBtn = ref(false)
     const editorConfig = {
-      // The configuration of the editor. 
       height: "800",
     };
     const userWhatsappGroupsId = ref(null)
@@ -451,10 +438,14 @@ export default {
     const videoPlayer = ref(null);
     const selectedFileUrl = ref("");
     const whatsappAttachment = ref({});
-
-
     const contactUpload = ref(false)
     const multipleContact = ref({})
+
+
+    const clientSessionId = computed(() => {
+      if (!store.getters["communication/whatsappSessionId"]) return ""
+      return store.getters["communication/whatsappSessionId"]
+    })
     const userWhatsappGroups = computed(() => {
       if (store.getters["communication/allClientWhatsappChat"] && store.getters["communication/allClientWhatsappChat"].length > 0) return store.getters["communication/allClientWhatsappChat"].filter(i => i.isGroup)
       return []
@@ -744,15 +735,17 @@ export default {
       //   // Send to Whatsapp Groups
       if (userWhatsappGroupsId.value && userWhatsappGroupsId.value.length > 0) {
         socket.emit('sendtogroups', {
+          id: clientSessionId.value,
           groups: userWhatsappGroupsId.value,
           whatsappAttachment: whatsappAttachment.value,
           message: editorData.value
         })
       }
-
+      
       // // Send to phoneNumbers
       if (allSelectedNumbers.value.length > 0 || phoneNumber.value) {
         socket.emit('sendwhatsappmessage', {
+          id: clientSessionId.value,
           phone_number: allSelectedNumbers.value.length > 0 ? allSelectedNumbers.value : [phoneNumber.value.replaceAll(" ", "").trim()],
           message: editorData.value,
           whatsappAttachment: whatsappAttachment.value,
@@ -762,6 +755,7 @@ export default {
       // Send to selectedMembers
       if (selectedMembers.value.length > 0) {
         socket.emit('sendwhatsappmessage', {
+          id: clientSessionId.value,
           phone_number: selectedMembers.value.map(i => i.phone ? i.phone.substring(0, 1) == '0' ? `+${tenantCountry.value.phoneCode}${i.phone.substring(1)}` : `${i.phone}` : null).filter(i => i),
           message: editorData.value,
           whatsappAttachment: whatsappAttachment.value,
@@ -998,7 +992,8 @@ export default {
       videoPlayer,
       selectedFileUrl,
       handleRemove,
-      whatsappAttachment
+      whatsappAttachment,
+      clientSessionId
     };
   },
 };

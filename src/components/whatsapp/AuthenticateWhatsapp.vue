@@ -81,6 +81,7 @@ export default {
             }
             console.log(sessionId)
             console.log('creating session, check WS')
+            store.dispatch('communication/whatsappSessionId', sessionId)
             socket.emit('getsession', { id: sessionId })
         }
 

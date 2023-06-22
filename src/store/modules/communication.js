@@ -13,6 +13,7 @@ export default {
         addSmsToSentList: {},
         addToSentEmail: {},
         sentVoiceList: [],
+        whatsappSessionId: "",
         isWhatsappClientReady: false,
         allClientWhatsappChat: []
     },
@@ -84,6 +85,9 @@ export default {
 
         setSentVoiceList (state, payload) {
             state.sentVoiceList = payload
+        },
+        setSessionId (state, payload) {
+            state.whatsappSessionId = payload
         },
         SET_WHATSAPP_STATE (state, payload) {
             state.isWhatsappClientReady = payload
@@ -195,6 +199,9 @@ export default {
                 return response
             })
         },
+        whatsappSessionId ({ commit }, payload) {
+            commit('setSessionId', payload)
+        },
         isWhatsappClientReady ({ commit }, payload) {
             commit('SET_WHATSAPP_STATE', payload)
         },
@@ -218,6 +225,7 @@ export default {
         addSmsToSentList: state => state.addSmsToSentList,
         addToSentEmail: state => state.addToSentEmail,
         sentVoiceList: state => state.sentVoiceList,
+        whatsappSessionId: state => state.whatsappSessionId,
         isWhatsappClientReady: state => state.isWhatsappClientReady,
         allClientWhatsappChat: state => state.allClientWhatsappChat
     },
