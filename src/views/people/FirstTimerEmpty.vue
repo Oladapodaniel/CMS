@@ -25,14 +25,23 @@
         </router-link>
       </div>
     </div>
-    <div class="row">
-      <div class="col-12">
+    <div class="row" v-if="showFirsttimer">
+      <div class="col-md-2  ">
+        <div class="font-weight-bold py-md-2 mt-4">QR Code</div>
+        <div class=" image" @click="getQrCode" >
+          <img
+            src="../../assets/group2.svg"
+            alt="First Timer image"
+          />
+        </div>
+      </div>
+      <div class="col-md-10 pl-0 ">
         <div class="font-weight-bold py-md-2 mt-4">Share the link to your first timers to enable them to add their
           details to your
           church.</div>
         <div class="p-inputgroup form-group mt-1">
           <el-input v-model="firstTimerLink" placeholder="Click the copy button when the link appears" ref="selectedLink"
-            class="input-with-select">
+            class="input-with-select w-100">
             <template #append>
               <el-button @click="copylink">
                 <el-icon>
@@ -74,6 +83,17 @@
         </span>
       </template>
     </el-dialog>
+    <el-dialog v-model="QRCodeDialog" title="" :width="mdAndUp || lgAndUp || xlAndUp ? `30%` : xsOnly ? `90%` : `70%`" class="QRCodeDialog" align-center>
+        
+        <div class="d-flex align-items-center flex-column" >
+          <h4 class="text-capitalize font-weight-bold"> First Timers QR Code For Registration</h4>
+        </div>
+        <div class=" d-flex justify-content-center "  >
+            <div class="img-wrapper  " >
+                <img  v-if="qrCode" :src="qrCode" class="image-wrapper w-100"  />
+            </div>
+        </div>
+    </el-dialog>
     
     <div v-if="firstTimersList.length > 0 && !loading && !networkError && showFirsttimer" class="event-list">
       <FirstTimersList :firstTimersList="firstTimersList" />
@@ -81,21 +101,18 @@
     <div v-if="newConvertList.length > 0 && !loading && !networkError && showNewConvert" class="event-list">
       <NewConvertList :newConvertList="newConvertList" />
     </div>
-    <div v-if="firstTimersList.length === 0 && !loading && !networkError && !showFirsttimer" class="no-person">
+    <div v-if="firstTimersList.length === 0 && !loading && !networkError && showFirsttimer" class="no-person">
+      <div class="empty-img">
+        <p><img src="../../assets/people/people-empty.svg" alt="" /></p>
+         <p class="tip">You haven't added any First timer yet</p>
+         <el-button :color="primarycolor" @click="addNewFirsttimer" class="ml-2 header-btn" round>Add First Timers</el-button>
+      </div>
+    </div>
+    <div v-if="newConvertList.length === 0 && !loading && !networkError && showNewConvert" class="no-person">
       <div class="empty-img">
         <p><img src="../../assets/people/people-empty.svg" alt="" /></p>
         <p class="tip">You haven't added any New convert yet</p>
         <el-button :color="primarycolor"  class="ml-2 header-btn" round>Add New Convert</el-button>
-        <!-- <router-link :to="{ name: 'AddNewConvert' }" class="no-decoration">
-          <el-button :color="primarycolor" class="ml-2 header-btn" round>Add New Convert</el-button>
-        </router-link> -->
-      </div>
-    </div>
-    <div v-if="newConvertList.length === 0 && !loading && !networkError && !showNewConvert" class="no-person">
-      <div class="empty-img">
-        <p><img src="../../assets/people/people-empty.svg" alt="" /></p>
-        <p class="tip">You haven't added any First timer yet</p>
-        <el-button :color="primarycolor" @click="addNewFirsttimer" class="ml-2 header-btn" round>Add First Timers</el-button>
         <!-- <router-link :to="{ name: 'AddFirstTimer' }" class="no-decoration">
           <el-button :color="primarycolor" class="ml-2 header-btn" round>Add First Timers</el-button>
         </router-link> -->
@@ -127,6 +144,7 @@
 import axios from '@/gateway/backendapi'
 import FirstTimersList from './FirstTimersList'
 import NewConvertList from './NewConvert.vue'
+import VueQrcode from 'vue-qrcode';
 import { ref, inject, computed, watchEffect } from 'vue';
 import finish from '../../services/progressbar/progress'
 import router from "@/router/index";
@@ -136,7 +154,7 @@ import { ElMessage, ElMessageBox } from 'element-plus'
 
 
 export default {
-  components: { FirstTimersList, NewConvertList },
+  components: { FirstTimersList, NewConvertList, VueQrcode },
   setup() {
     const primarycolor = inject('primarycolor')
     const firstTimersList = ref(store.getters['membership/allFirstTimers'])
@@ -148,10 +166,12 @@ export default {
     const newConvertList = ref([])
     const importFile = ref("")
     const image = ref("");
+    const QRCodeDialog = ref(false)
     const displayModal = ref(false)
     const firstTimerData = ref([])
     const networkError = ref(false)
-    const { mdAndUp, lgAndUp, xlAndUp } = deviceBreakpoint()
+    const qrCode = ref("");
+    const { mdAndUp, lgAndUp, xlAndUp, xsOnly } = deviceBreakpoint()
 
     const addNewFirsttimer = () => {
       router.push('/tenant/people/addfirsttimer')
@@ -218,6 +238,8 @@ export default {
       showFirsttimer.value = false;
       showNewConvert.value = true;
     };
+    
+    
 
 
     const imageSelected = async (e) => {
@@ -342,6 +364,17 @@ export default {
       return `${window.location.origin}/createfirsttimer/${tenantID.value}`
     })
 
+    const getQrCode = async () => {
+      try{
+        const res = await axios.get(`/api/Settings/GetQRCode?link=${window.location.origin}/createfirsttimer/${tenantID.value}`)
+        QRCodeDialog.value = true
+        qrCode.value = res.data
+      }
+      catch(error){
+        console.log(error);
+      }
+    }
+
     // const setLoading = (payload) => {
     //   loading.value = payload
     // }
@@ -350,7 +383,7 @@ export default {
     //   loading.value = payload
     // }
 
-    return { firstTimersList, newConvertList, copylink, selectedLink, tenantID, getUser, firstTimerLink,  addNewFirsttimer, addNewConvert,  newConvertDetail, firttimerDetail, showFirsttimer, showNewConvert, getFirstTmersList, loading, fileUpload, imageSelected, image, displayModal, importFile, firstTimerData, addToFirstTimers, closeModal, importFirstTimer, networkError, setFirsttimer, mdAndUp, lgAndUp, xlAndUp, primarycolor };
+    return { firstTimersList, newConvertList, QRCodeDialog, xsOnly, qrCode, getQrCode, copylink, selectedLink, tenantID, getUser, firstTimerLink,  addNewFirsttimer, addNewConvert,  newConvertDetail, firttimerDetail, showFirsttimer, showNewConvert, getFirstTmersList, loading, fileUpload, imageSelected, image, displayModal, importFile, firstTimerData, addToFirstTimers, closeModal, importFirstTimer, networkError, setFirsttimer, mdAndUp, lgAndUp, xlAndUp, primarycolor };
   },
 };
 
@@ -359,6 +392,10 @@ export default {
 <style scoped>
 * {
   box-sizing: border-box;
+}
+
+.image img{
+  height: 2.5rem;
 }
 
 .botom {
