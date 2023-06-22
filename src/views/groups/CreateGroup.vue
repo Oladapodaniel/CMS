@@ -307,6 +307,23 @@
         </div>
 
         <div class="row pb-4">
+          <!-- <div class="col-md-12 pl-0 ">
+            <div class="font-weight-bold py-md-2 mt-4">Share the link to your first timers to enable them to add their
+              details to your
+              church.</div>
+            <div class="p-inputgroup form-group mt-1">
+              <el-input v-model="groupLink" placeholder="Click the copy button when the link appears" ref="selectedLink"
+                class="input-with-select border-0 w-100">
+                <template #append>
+                  <el-button @click="copylink">
+                    <el-icon>
+                      <CopyDocument />
+                    </el-icon>
+                  </el-button>
+                </template>
+              </el-input>
+            </div>
+          </div> -->
           <div class="col-md-12">
             <div class="
                           d-flex
@@ -853,7 +870,7 @@
 </template>
 
 <script>
-import { computed, nextTick, ref, inject } from "vue";
+import { computed, nextTick, watchEffect, ref, inject } from "vue";
 import composeService from "../../services/communication/composer";
 import axios from "@/gateway/backendapi";
 import router from "@/router/index";
@@ -897,6 +914,7 @@ export default {
     const store = useStore();
     const route = useRoute();
     const display = ref(false);
+    const selectedLink = ref(null)
     const memberDia = ref(true);
     const selectedTree = ref();
     const moveSelectedTree = ref();
@@ -922,6 +940,7 @@ export default {
     const attendanceData = ref([]);
     const showAttendanceCheckin = ref(false);
     const selectedGroupMembers = ref([]);
+    const tenantID = ref("")
     const showSMS = ref(false);
     const isGroupLeader = ref(false);
     const enableLogin = ref(false);
@@ -978,6 +997,33 @@ export default {
       }
     };
     getGroups();
+    const getUser = computed(() => {
+      if (!store.getters.currentUser || (store.getters.currentUser && Object.keys(store.getters.currentUser).length == 0)) return ''
+      return store.getters.currentUser
+    })
+
+    watchEffect(() => {
+      if (getUser.value) {
+        tenantID.value = getUser.value.tenantId
+      }
+    })
+
+    const groupLink = computed(() => {
+      if (!tenantID.value) return ""
+      return `${window.location.origin}/creategroup/${tenantID.value}/${route.params.groupId}`
+    })
+    const copylink = () => {
+      selectedLink.value.input.setSelectionRange(0, selectedLink.value.input.value.length); /* For mobile devices */
+      selectedLink.value.input.select();
+
+      /* Copy the text inside the text field */
+      document.execCommand("copy");
+      ElMessage({
+        showClose: true,
+        message: 'Copied to clipboard',
+        type: 'success',
+      })
+    }
 
     const flattenTree = (tree) => {
       let treevalue = { children: tree };
@@ -1766,6 +1812,7 @@ export default {
       saveGroupData,
       buttonText,
       loadingMembers,
+      groupLink,
       route,
       savingGroup,
       memberSelectInput,
@@ -1795,6 +1842,8 @@ export default {
       showAttendanceCheckin,
       groupMappedTree,
       filterNodeMethod,
+      copylink,
+      selectedLink,
       newPersonData,
       totalItems,
       attendanceData,
@@ -1804,6 +1853,7 @@ export default {
       showEmail,
       isGroupLeader,
       enableLogin,
+      tenantID,
       sendMarkedMemberSms,
       sendMarkedMemberEmail,
       uploadToGroup,
