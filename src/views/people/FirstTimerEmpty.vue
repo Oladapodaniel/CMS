@@ -77,7 +77,7 @@
         </div>
       </div>
       <div class="col-md-10 pl-0 ">
-        <div class="font-weight-bold py-md-2 mt-4">Share the link to your new convverts to enable them to add their
+        <div class="font-weight-bold py-md-2 mt-4">Share the link to your new converts to enable them to add their
           details to your
           church.</div>
         <div class="p-inputgroup form-group mt-1">
