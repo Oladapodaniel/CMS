@@ -258,7 +258,8 @@
                               <el-tree-select v-model="selectedTree" class="w-100" placeholder="Select group"
                                 :data="groupMappedTree" :render-after-expand="false"
                                 :filter-node-method="filterNodeMethod" @change="setGroupValue" filterable
-                                check-strictly />
+                                check-strictly 
+                                />
                             </div>
                           </div>
 
@@ -547,7 +548,7 @@
                       <div class="col-md-12"></div>
                       <div class="col-md-12 form-group w-100">
                         <el-tree-select v-model="moveSelectedTree" class="w-100" placeholder="Select group"
-                          :data="groupMappedTree" :render-after-expand="false" :filter-node-method="filterNodeMethod"
+                          :data="groupMappedTree " :render-after-expand="false" :filter-node-method="filterNodeMethod"
                           @change="setSelectedGroupToMove" filterable check-strictly />
                       </div>
                     </div>
@@ -900,6 +901,7 @@ export default {
     const selectedTree = ref();
     const moveSelectedTree = ref();
     const groupMappedTree = ref([]);
+    const addGroupBtn = ref([{label: "Add Group", value : 1}]);
     const modalBtn = ref(null);
     const groupData = ref({});
     const searchText = ref("");
@@ -962,8 +964,14 @@ export default {
       try {
         let data = await grousService.getGroups();
         getAllGroup.value = data.response.groupResonseDTO;
+        console.log(getAllGroup.value, 'jkhjh');
         grouploading.value = false;
+        //  let arrayOfObj = [
+        //             {label: "Add Group", value : 1, id: "1" }
+        //             ]
+      //  getAllGroup.value =  getAllGroup.value.concat(arrayOfObj)
         flattenedTree.value = flattenTree(getAllGroup.value);
+        console.log(flattenedTree.value, 'falt');
       } catch (error) {
         console.log(error);
         grouploading.value = false;
@@ -974,7 +982,12 @@ export default {
     const flattenTree = (tree) => {
       let treevalue = { children: tree };
       const { children } = collector(treevalue);
-      groupMappedTree.value = children;
+      // let arrayOfObj = [
+      //               {label: "Add Group", id : 3}
+      //               ]
+
+      groupMappedTree.value = children
+      // groupMappedTree.value.concat(arrayOfObj)
       if (groupMappedTree.value && groupMappedTree.value.length > 0) {
         return groupMappedTree.value.flatMap(flatten());
       }
@@ -1734,6 +1747,7 @@ export default {
 
     return {
       groupData,
+      addGroupBtn,
       selectedAttendanceId,
       searchForMembers,
       searchText,

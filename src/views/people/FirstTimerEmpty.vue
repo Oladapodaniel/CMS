@@ -13,15 +13,28 @@
         }"></div>
       </div>
     </div>
-    <div class="d-flex flex-column flex-md-row justify-content-md-between" v-if="showFirsttimer">
-      <div class="head-text">
+    <div class="d-flex flex-column flex-md-row justify-content-md-end" v-if="showFirsttimer">
+      <!-- <div class="head-text">
         <div>First Timers Analytics
         </div>
+      </div> -->
+      <div class="mt-3 mt-md-0 d-flex flex-sm-nowrap flex-wrap ">
+        <el-button class="header-btn secondary-button w-100" @click="importFirstTimer" round>Import</el-button>
+        <router-link :to="{ name: 'AddFirstTimer' }" class="no-decoration w-100">
+          <el-button :color="primarycolor" class=" ml-sm-2 ml-0 mt-2 mt-sm-0 w-100 header-btn" round>Add First Timers</el-button>
+        </router-link>
       </div>
-      <div class="actions mt-3 mt-md-0">
-        <el-button class="header-btn secondary-button" @click="importFirstTimer" round>Import</el-button>
-        <router-link :to="{ name: 'AddFirstTimer' }" class="no-decoration">
-          <el-button :color="primarycolor" class="ml-2 header-btn" round>Add First Timers</el-button>
+    </div>
+    <div v-if="showNewConvert" class="d-flex flex-column flex-md-row justify-content-md-end">
+      <!-- <div class="head-text">
+        <div>New Convert</div>
+      </div> -->
+      <div class="mt-3 mt-md-0 d-flex flex-sm-nowrap flex-wrap">
+        <el-button class="header-btn secondary-button w-100" @click="importNewConvert" round>Import</el-button>
+        <router-link :to="{ name: 'AddNewConvert' }" class="text-decoration-none w-100">
+          <el-button :color="primarycolor" class="ml-sm-2 ml-0 mt-2 mt-sm-0 w-100  header-btn" round
+            >Add New Convert</el-button
+          >
         </router-link>
       </div>
     </div>
@@ -44,6 +57,34 @@
             class="input-with-select w-100">
             <template #append>
               <el-button @click="copylink">
+                <el-icon>
+                  <CopyDocument />
+                </el-icon>
+              </el-button>
+            </template>
+          </el-input>
+        </div>
+      </div>
+    </div>
+    <div class="row" v-if="showNewConvert">
+      <div class="col-md-2  ">
+        <div class="font-weight-bold py-md-2 mt-4">QR Code</div>
+        <div class=" image" @click="getQrCode" >
+          <img
+            src="../../assets/group2.svg"
+            alt="First Timer image"
+          />
+        </div>
+      </div>
+      <div class="col-md-10 pl-0 ">
+        <div class="font-weight-bold py-md-2 mt-4">Share the link to your first timers to enable them to add their
+          details to your
+          church.</div>
+        <div class="p-inputgroup form-group mt-1">
+          <el-input v-model="newConvertLink" placeholder="Click the copy button when the link appears" ref="selectedLink"
+            class="input-with-select w-100">
+            <template #append>
+              <el-button @click="copylink2">
                 <el-icon>
                   <CopyDocument />
                 </el-icon>
@@ -83,10 +124,21 @@
         </span>
       </template>
     </el-dialog>
-    <el-dialog v-model="QRCodeDialog" title="" :width="mdAndUp || lgAndUp || xlAndUp ? `30%` : xsOnly ? `90%` : `70%`" class="QRCodeDialog" align-center>
+    <el-dialog v-if="showFirsttimer" v-model="QRCodeDialog" title="" :width="mdAndUp || lgAndUp || xlAndUp ? `30%` : xsOnly ? `90%` : `70%`" class="QRCodeDialog" align-center>
         
         <div class="d-flex align-items-center flex-column" >
           <h4 class="text-capitalize font-weight-bold"> First Timers QR Code For Registration</h4>
+        </div>
+        <div class=" d-flex justify-content-center "  >
+            <div class="img-wrapper  " >
+                <img  v-if="qrCode" :src="qrCode" class="image-wrapper w-100"  />
+            </div>
+        </div>
+    </el-dialog>
+    <el-dialog v-if="showNewConvert" v-model="QRCodeDialog" title="" :width="mdAndUp || lgAndUp || xlAndUp ? `30%` : xsOnly ? `90%` : `70%`" class="QRCodeDialog" align-center>
+        
+        <div class="d-flex align-items-center flex-column" >
+          <h4 class="text-capitalize font-weight-bold"> New Converts QR Code For Registration</h4>
         </div>
         <div class=" d-flex justify-content-center "  >
             <div class="img-wrapper  " >
@@ -112,10 +164,7 @@
       <div class="empty-img">
         <p><img src="../../assets/people/people-empty.svg" alt="" /></p>
         <p class="tip">You haven't added any New convert yet</p>
-        <el-button :color="primarycolor"  class="ml-2 header-btn" round>Add New Convert</el-button>
-        <!-- <router-link :to="{ name: 'AddFirstTimer' }" class="no-decoration">
-          <el-button :color="primarycolor" class="ml-2 header-btn" round>Add First Timers</el-button>
-        </router-link> -->
+        <el-button :color="primarycolor" @click="addNewConvert"  class="ml-2 header-btn" round>Add New Convert</el-button>
       </div>
     </div>
     <div v-else-if="networkError && !loading" class="adjust-network">
@@ -177,7 +226,7 @@ export default {
       router.push('/tenant/people/addfirsttimer')
     }
     const addNewConvert = () => {
-      router.push('/tenant/people/addfirsttimer')
+      router.push('/tenant/people/addnewconvert')
     }
 
     const getFirstTmersList = async () => {
@@ -341,6 +390,19 @@ export default {
       })
     }
 
+    const copylink2 = () => {
+      selectedLink.value.input.setSelectionRange(0, selectedLink.value.input.value.length); /* For mobile devices */
+      selectedLink.value.input.select();
+
+      /* Copy the text inside the text field */
+      document.execCommand("copy");
+      ElMessage({
+        showClose: true,
+        message: 'Copied to clipboard',
+        type: 'success',
+      })
+    }
+
     const importFirstTimer = () => {
       router.push({ name: 'ImportInstruction', query: { query: 'importfirsttimer' } })
     }
@@ -363,6 +425,10 @@ export default {
       if (!tenantID.value) return ""
       return `${window.location.origin}/createfirsttimer/${tenantID.value}`
     })
+    const newConvertLink = computed(() => {
+      if (!tenantID.value) return ""
+      return `${window.location.origin}/createnewconvert/${tenantID.value}`
+    })
 
     const getQrCode = async () => {
       try{
@@ -374,6 +440,19 @@ export default {
         console.log(error);
       }
     }
+    const getQrCode2 = async () => {
+      try{
+        const res = await axios.get(`/api/Settings/GetQRCode?link=${window.location.origin}/createnewconvert/${tenantID.value}`)
+        QRCodeDialog.value = true
+        qrCode.value = res.data
+      }
+      catch(error){
+        console.log(error);
+      }
+    }
+      const importNewConvert = () => {
+      router.push({ name: 'ImportInstruction', query: { query: 'importnewconvert' } })
+    }
 
     // const setLoading = (payload) => {
     //   loading.value = payload
@@ -383,7 +462,7 @@ export default {
     //   loading.value = payload
     // }
 
-    return { firstTimersList, newConvertList, QRCodeDialog, xsOnly, qrCode, getQrCode, copylink, selectedLink, tenantID, getUser, firstTimerLink,  addNewFirsttimer, addNewConvert,  newConvertDetail, firttimerDetail, showFirsttimer, showNewConvert, getFirstTmersList, loading, fileUpload, imageSelected, image, displayModal, importFile, firstTimerData, addToFirstTimers, closeModal, importFirstTimer, networkError, setFirsttimer, mdAndUp, lgAndUp, xlAndUp, primarycolor };
+    return { firstTimersList, newConvertLink, copylink2,  importNewConvert, getQrCode2, newConvertList, QRCodeDialog, xsOnly, qrCode, getQrCode, copylink, selectedLink, tenantID, getUser, firstTimerLink,  addNewFirsttimer, addNewConvert,  newConvertDetail, firttimerDetail, showFirsttimer, showNewConvert, getFirstTmersList, loading, fileUpload, imageSelected, image, displayModal, importFile, firstTimerData, addToFirstTimers, closeModal, importFirstTimer, networkError, setFirsttimer, mdAndUp, lgAndUp, xlAndUp, primarycolor };
   },
 };
 

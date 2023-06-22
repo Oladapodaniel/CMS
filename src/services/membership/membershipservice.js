@@ -20,6 +20,24 @@ const membershipService = {
                 })
         })
     },
+    getNewConverts() {
+        return new Promise((resolve, reject) => {
+            axios.get("api/People/GetAllNewConverts?page=1")
+                .then(res => {
+                    resolve(res.data);
+                    // store.dispatch("setMembers", res.data);
+                })
+                .catch(error => {
+                    /*eslint no-undef: "warn"*/
+                    NProgress.done();
+                    if (error.response) {
+                        reject(error.response);
+                    } else {
+                        reject(error);
+                    }
+                })
+        })
+    },
 
     getSignedInUser() {
         return new Promise((resolve, reject) => {

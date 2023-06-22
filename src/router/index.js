@@ -181,6 +181,15 @@ const routes = [
                         import( /* webpackChunkName: "addfirsttimer" */ '../views/people/AddFirstTimer.vue')
                 },
                 {
+                    path: 'addnewconvert',
+                    name: 'AddNewConvert',
+                    meta: {
+                        title: 'Churchplus - New Convert Form',
+                    },
+                    component: () =>
+                        import( /* webpackChunkName: "addfirsttimer" */ '../views/people/AddNewConvert.vue')
+                },
+                {
                     path: 'add/:personId?',
                     name: 'AddPerson',
                     meta: {
@@ -1877,6 +1886,15 @@ const routes = [
         },
         component: () =>
             import( /* webpackChunkName: "emailsent" */ '../views/people/PublicFirstTimer.vue')
+    },
+    {
+        path: '/createnewconvert/:id',
+        name: 'PublicFirstTimer',
+        meta: {
+            title: 'Register firsttimer',
+        },
+        component: () =>
+            import( /* webpackChunkName: "emailsent" */ '../views/people/PublicNewConvert.vue')
     },
     {
         path: '/errorpage',

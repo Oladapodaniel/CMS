@@ -286,7 +286,40 @@ export default {
 
         const addToMembers = async () => {
             loading.value = true
-            if (route.query.query === "importpeople") {
+            if(route.query.query === "importnewconvert" ){
+                try{
+                     let { data } = await axios.post("/api/People/AddNewConverts", memberData.value)
+                        console.log(data, 'hhhjhk');
+                        displayModal.value = false
+                        loading.value = false
+                        ElMessage({
+                        type: 'success',
+                        message: `${data.returnObject.createdRecord}`,
+                        duration: 8000
+                    })
+                     router.push("/tenant/firsttimerslist")
+                }
+                catch (err){
+                     loading.value = false
+                    finish()
+                    if (err.toString().toLowerCase().includes("network error")) {
+                        ElMessage({
+                            type: 'warning',
+                            message: "Please ensure you have strong internet connection",
+                            duration: 5000
+                        })
+                    } else if (err.toString().toLowerCase().includes("timeout")) {
+                        ElMessage({
+                            type: 'warning',
+                            message: "Request took too long to respond, please refresh and try again",
+                            duration: 5000
+                        })
+                    }
+                    console.log(err)
+
+                }
+
+            } else if (route.query.query === "importpeople") {
                 try {
                     let { data } = await axios.post("/api/People/CreatePeople", memberData.value)
                     displayModal.value = false
