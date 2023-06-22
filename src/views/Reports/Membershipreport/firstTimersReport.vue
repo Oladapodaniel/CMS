@@ -140,6 +140,8 @@
                 <th scope="col">Home Address</th>
                 <th scope="col">Gender</th>
                 <th scope="col">Current Status</th>
+                <th scope="col" v-for="item in dynamicCustomFields">{{ item.label }}</th>
+                
                 <!-- <th scope="col">Marital Status</th> -->
                 <!-- <th scope="col">Activity Date</th> -->
 
@@ -154,6 +156,8 @@
                 <td>{{ firstTimer.homeAddress }}</td>
                 <td>{{ firstTimer.gender }}</td>
                 <td>{{ firstTimer.status }}</td>
+                <td v-show="firstTimer.customAttributeData.length > 0" v-for="item in dynamicCustomFields">{{  getMemberCustomAttributeData(firstTimer.customAttributeData, item)  }}</td>
+                <td v-show="firstTimer.customAttributeData.length === 0" v-for="item in dynamicCustomFields.length">{{ "--" }}</td>
                 <!-- <td>{{ firstTimer.maritalStatus }}</td> -->
                 <!-- <td>{{ formatDate(firstTimer.activityDate) }}</td> -->
               </tr>
@@ -181,6 +185,7 @@ import dateFormatter from "../../../services/dates/dateformatter";
 import printJS from "print-js";
 import exportService from "../../../services/exportFile/exportservice";
 import Listbox from 'primevue/listbox';
+import allCustomFields from "../../../services/customfield/customField"
 
 export default {
   components: {
@@ -202,6 +207,7 @@ export default {
     const selectedFileType = ref({});
     const fileHeaderToExport = ref([]);
     const fileToExport = ref([]);
+    const dynamicCustomFields = ref([]);
     const generateReport = () => {
       axios
         .get(
@@ -265,6 +271,23 @@ export default {
       return dateFormatter.monthDayTime(activityDate);
     };
 
+    const getAllCustomFields = async () => {
+      try {
+        let data = await allCustomFields.allCustomFields();
+        dynamicCustomFields.value = data.filter((i) => i.entityType === 1);
+      } catch (err) {
+        console.log(err);
+      }
+    };
+    getAllCustomFields();
+
+    const getMemberCustomAttributeData = (memberCustomData, singleCustomField) => {
+      if (memberCustomData && memberCustomData.length === 0) return '--'
+      const findData = memberCustomData.findIndex(i => i.customAttribute.id === singleCustomField.id)
+      if(findData >= 0) return memberCustomData[findData].data
+      return '--'
+    }
+
     return {
       Calendar,
       startDate,
@@ -281,6 +304,8 @@ export default {
       bookTypeList,
       printJS,
       selectedFileType,
+      dynamicCustomFields,
+      getMemberCustomAttributeData
     };
   },
 };

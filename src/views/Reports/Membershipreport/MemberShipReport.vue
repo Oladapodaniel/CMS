@@ -206,6 +206,7 @@
                               <th scope="col">Age Group</th>
                               <th scope="col">Home Address</th>
                               <th scope="col">Birthday</th>
+                              <th scope="col" v-for="item in dynamicCustomFields">{{ item.label }}</th>
                               <!-- <th scope="col">Marital Status</th>
                               <th scope="col">Age Group</th>
                               <th scope="col">Birthday</th> -->
@@ -223,9 +224,8 @@
                               <td>{{member.ageGroup}}</td>
                               <td>{{member.homeAddress}}</td>
                               <td>{{member.birthDay}}</td>
-                              <!-- <td>{{member.maritalStatus}}</td>
-                              <td>{{member.ageGroup}}</td>
-                              <td>{{member.birthDay}}</td> -->
+                              <td v-show="member.customAttributeData.length > 0" v-for="item in dynamicCustomFields">{{  getMemberCustomAttributeData(member.customAttributeData, item)  }}</td>
+                              <td v-show="member.customAttributeData.length === 0" v-for="item in dynamicCustomFields.length">{{ "--" }}</td>
                               </tr>
                           </tbody>
                           </table>
@@ -245,15 +245,11 @@
 import {computed, ref } from "vue";
 import axios from "@/gateway/backendapi";
 import MembershipPieChart from '../../../components/charts/ReportPieChart.vue';
-// import PaginationButtons from "../../../components/pagination/PaginationButtons";
 import Listbox from 'primevue/listbox';
 import MultiSelect from 'primevue/multiselect';
-// import ExcelExport from "../../../services/exportFile/exportToExcel"
-// import InputText from 'primevue/inputtext';
 import printJS from "print-js";
-// import html2pdf from "html2pdf.js";
 import exportService from "../../../services/exportFile/exportservice"
-// import Piechart from "../../../components/charts/PieChart2.vue"
+import allCustomFields from "../../../services/customfield/customField"
 export default {
     components: {
         // GenderPieChart,
@@ -286,6 +282,7 @@ export default {
     const selectedFileType = ref("");
     const fileHeaderToExport = ref([])
     const fileToExport = ref([]);
+    const dynamicCustomFields = ref([]);
 
 
    const genderChart = (array, key) => {
@@ -299,8 +296,6 @@ export default {
       }, []); // empty object is the initial value for result object
       // genderChartResult.value
       for (const prop in result) {
-        // genderChartResult.value
-        console.log(prop, result[prop])
         genderChartResult.value.push({
           name: prop,
           value: result[prop].length
@@ -326,8 +321,6 @@ export default {
       // genderChartResult.value
 
       for (const prop in result) {
-        // genderChartResult.value
-        console.log(prop, result[prop])
         memberChartResult.value.push({
           name: prop,
           value: result[prop].length
@@ -350,8 +343,6 @@ export default {
       }, []); // empty object is the initial value for result object
       // genderChartResult.value
       for (const prop in result) {
-        // genderChartResult.value
-        console.log(prop, result[prop])
         maritalStatusChartResult.value.push({
           name: prop,
           value: result[prop].length
@@ -375,9 +366,6 @@ export default {
       }, []); // empty object is the initial value for result object
       // genderChartResult.value
       for (const prop in result) {
-        // genderChartResult.value
-        console.log(prop, result[prop])
-        // ageGroupChartResult.value = []
         ageGroupChartResult.value.push({
           name: prop,
           value: result[prop].length
@@ -408,9 +396,7 @@ export default {
         }
         axios.post('/api/Reports/people/getAllContactsByParameterReport',body)
         .then((res) =>{
-            console.log(res.data)
             membersInChurch.value = res.data;
-            console.log(membersInChurch.value, 'allbyGideon')
             genderChart(res.data,'gender')
             maritalStatusChart(res.data,'maritalStatus')
             memberChart(res.data,'membership')
@@ -486,7 +472,6 @@ export default {
           .get('/api/Settings/GetTenantAgeGroups')
           .then((res) => {
             memberAgegroup.value = res.data;
-            console.log(res.data,'Samson');
           })
           .catch((err) => console.log(err));
         // donationSummary.value = data;
@@ -495,6 +480,24 @@ export default {
       }
     };
     getAgeGroup();
+
+    const getCustomFields = async () => {
+      try {
+        let data = await allCustomFields.allCustomFields()
+        dynamicCustomFields.value = data.filter(i => i.entityType === 0)
+      }
+      catch (err) {
+        console.log(err)
+      }
+    }
+    getCustomFields();
+
+    const getMemberCustomAttributeData = (memberCustomData, singleCustomField) => {
+      if (memberCustomData && memberCustomData.length === 0) return '--'
+      const findData = memberCustomData.findIndex(i => i.customAttribute.id === singleCustomField.id)
+      if(findData >= 0) return memberCustomData[findData].data
+      return '--'
+    }
 
      return {
         genarateReport,
@@ -529,7 +532,9 @@ export default {
         fileHeaderToExport,
         printJS,
         // downLoadExcel,
-        downloadFile
+        downloadFile,
+        dynamicCustomFields,
+        getMemberCustomAttributeData
     }
 }
 }
