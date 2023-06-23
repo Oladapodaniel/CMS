@@ -13,7 +13,7 @@
             </el-button>
         </div>
     </div>
-    <el-dialog v-model="QRCodeDialog" title="" width="50%" class="QRCodeDialog" align-center>
+    <el-dialog v-model="QRCodeDialog" title="" width="50%" class="QRCodeDialog" :close-on-click-modal="false" :close-on-press-escape="false" :show-close="false" align-center>
         
         <div class="d-flex align-items-center flex-column" v-if="isClientReady">
             <img src="../../assets/7efs.gif" width="200" />

@@ -1,5 +1,5 @@
 <template>
-  <div>{{ clientSessionId }}clientSessionId
+  <div>
     <div class="container">
       <!-- <div class="container" @click="closeDropdownIfOpen"> -->
       <div class="row">
@@ -341,6 +341,12 @@
           <!-- "audio/mpeg" -->
           <!-- "video/mp4" -->
           <!-- "application/pdf" -->
+          <el-progress
+            :text-inside="true"
+            :stroke-width="24"
+            :percentage="chunkProgress"
+            status="success"
+          />
           <img :src="selectedFileUrl" v-show="fileImage" style="width: 50%" />
           <audio ref="audioPlayer" controls class="mt-2" style="width: 100%;" v-show="fileAudio">
             <source src="" type="audio/mpeg">
@@ -406,7 +412,6 @@ export default {
     const sessionId = ref("")
     const getSessionId = ref("")
     const primarycolor = inject('primarycolor')
-    const toast = useToast();
     const editorData = ref("");
     const editorConfig = {
       height: "800",
@@ -440,6 +445,7 @@ export default {
     const whatsappAttachment = ref({});
     const contactUpload = ref(false)
     const multipleContact = ref({})
+    const chunkProgress = ref(0)
 
 
     const clientSessionId = computed(() => {
@@ -496,9 +502,9 @@ export default {
         console.log(data, 'AllChats Here 🥰🎉')
       })
 
-      socket.on('groupmessagesent', (data) => {
-        console.log(data, 'grup message');
-      })
+      // socket.on('groupmessagesent', (data) => {
+      //   console.log(data, 'grup message');
+      // })
 
     })
 
@@ -627,34 +633,34 @@ export default {
 
 
 
-    const sendSMSToUploadedContacts = async (gateway) => {
-      let formData = new FormData()
-      formData.append("file", multipleContact.value)
-      formData.append("message", editorData.value)
-      formData.append('category', '')
-      formData.append('gatewayToUse', gateway)
-      formData.append('isoCode', isoCode.value)
+    // const sendSMSToUploadedContacts = async (gateway) => {
+    //   let formData = new FormData()
+    //   formData.append("file", multipleContact.value)
+    //   formData.append("message", editorData.value)
+    //   formData.append('category', '')
+    //   formData.append('gatewayToUse', gateway)
+    //   formData.append('isoCode', isoCode.value)
 
-      try {
-        let { data } = await axios.post('/api/messaging/upload', formData)
-        console.log(data)
-        toast.add({
-          severity: "success",
-          summary: "Success",
-          detail: data.response,
-          life: 5000
-        });
-      }
-      catch (err) {
-        console.log(err);
-        toast.add({
-          severity: "error",
-          summary: "Not sent",
-          detail: "Sending failed, please try again",
-          life: 5000
-        });
-      }
-    }
+    //   try {
+    //     let { data } = await axios.post('/api/messaging/upload', formData)
+    //     console.log(data)
+    //     toast.add({
+    //       severity: "success",
+    //       summary: "Success",
+    //       detail: data.response,
+    //       life: 5000
+    //     });
+    //   }
+    //   catch (err) {
+    //     console.log(err);
+    //     toast.add({
+    //       severity: "error",
+    //       summary: "Not sent",
+    //       detail: "Sending failed, please try again",
+    //       life: 5000
+    //     });
+    //   }
+    // }
 
     const userCountry = ref("");
 
@@ -749,7 +755,6 @@ export default {
           phone_number: allSelectedNumbers.value.length > 0 ? allSelectedNumbers.value : [phoneNumber.value.replaceAll(" ", "").trim()],
           message: editorData.value,
           whatsappAttachment: whatsappAttachment.value,
-          type: 'multiple'
         })
       }
       // Send to selectedMembers
@@ -759,7 +764,6 @@ export default {
           phone_number: selectedMembers.value.map(i => i.phone ? i.phone.substring(0, 1) == '0' ? `+${tenantCountry.value.phoneCode}${i.phone.substring(1)}` : `${i.phone}` : null).filter(i => i),
           message: editorData.value,
           whatsappAttachment: whatsappAttachment.value,
-          type: 'multiple'
         })
       }
       swal({
@@ -805,6 +809,7 @@ export default {
     }
 
     const chooseFile = (e) => {
+      // uploadPicture(e.raw)
       console.log(e.raw)
       if (e.raw.type.includes('image')) {
         fileAudio.value = false
@@ -817,10 +822,13 @@ export default {
 
         reader.onload = (f) => {
           const base64String = f.target.result.split(",")[1];
-          console.log(base64String);
+          const chunkSize = 1024; // Specify your desired chunk size
+
+          sendBase64InChunks(base64String, chunkSize);
           whatsappAttachment.value = {
-            base64: base64String,
-            mimeType: e.raw.type
+            mimeType: e.raw.type,
+            fileName: e.raw.name,
+            fileSize: e.raw.size
           }
         };
 
@@ -831,8 +839,10 @@ export default {
         reader.addEventListener("load", function (f) {
           audioPlayer.value.src = reader.result;
           const base64String = f.target.result.split(",")[1];
+          const chunkSize = 1024; // Specify your desired chunk size
+
+          sendBase64InChunks(base64String, chunkSize);
           whatsappAttachment.value = {
-            base64: base64String,
             mimeType: e.raw.type,
             fileName: e.raw.name,
             fileSize: e.raw.size
@@ -853,7 +863,6 @@ export default {
           videoPlayer.value.src = reader.result;
           const base64String = f.target.result.split(",")[1];
           const chunkSize = 1024; // Specify your desired chunk size
-
           sendBase64InChunks(base64String, chunkSize);
           whatsappAttachment.value = {
             // base64: base64String,
@@ -874,10 +883,11 @@ export default {
       } else {
         const reader = new FileReader();
         reader.addEventListener("load", function (f) {
-          selectedFileUrl.value.src = reader.result;
+          // selectedFileUrl.value.src = reader.result;
           const base64String = f.target.result.split(",")[1];
+          const chunkSize = 1024; // Specify your desired chunk size
+          sendBase64InChunks(base64String, chunkSize);
           whatsappAttachment.value = {
-            base64: base64String,
             mimeType: e.raw.type,
             fileName: e.raw.name,
             fileSize: e.raw.size
@@ -902,18 +912,25 @@ export default {
       fileImage.value = false
       selectedFileUrl.value = ""
       whatsappAttachment.value = {}
+      chunkProgress.value = 0
     }
 
 
     const sendBase64InChunks = (base64String, chunkSize) => {
       const totalChunks = Math.ceil(base64String.length / chunkSize);
-
+      let uploadedChunks = 0; 
       for (let i = 0; i < totalChunks; i++) {
+
         const start = i * chunkSize;
         const end = start + chunkSize;
         const chunk = base64String.substring(start, end);
         console.log('===================================== \n' + chunk + '\n==================================================')
         socket.emit('chunk', chunk);
+        uploadedChunks++; // Increment the uploadedChunks count
+
+        // Calculate progress in percentage
+        chunkProgress.value = Math.round((uploadedChunks / totalChunks) * 100);
+        console.log(`Progress: ${chunkProgress.value}%`);
       }
     }
 
@@ -959,7 +976,7 @@ export default {
       contactUpload,
       uploadFile,
       multipleContact,
-      sendSMSToUploadedContacts,
+      // sendSMSToUploadedContacts,
       session,
       qrCode,
       createSessionForWhatsapp,
@@ -993,7 +1010,8 @@ export default {
       selectedFileUrl,
       handleRemove,
       whatsappAttachment,
-      clientSessionId
+      clientSessionId,
+      chunkProgress
     };
   },
 };
