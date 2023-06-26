@@ -14,7 +14,7 @@ const URL = process.env.NODE_ENV === "production" ? 'https://app-0816c2a3-8f36-4
 // const URL = process.env.NODE_ENV === "development" ? 'https://whatsapp-web-server-production.up.railway.app' : "http://localhost:3001";
 console.log(process.env.NODE_ENV, URL)
 
-export const socket = io(URL);
+export const socket = io(URL, {transports: ['websocket'], upgrade: false});
 
 socket.on("connect", () => {
   state.connected = true;
