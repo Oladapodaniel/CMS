@@ -113,6 +113,7 @@ import { ref, computed } from "@vue/reactivity";
 // import { watchEffect } from "vue";
 import { useRoute } from "vue-router";
 import store from "../../store/store";
+// import axios from "@/gateway/backendapi";
 // import { socket } from "@/socket";
 // import { ElMessage, ElMessageBox } from 'element-plus'
 export default {
