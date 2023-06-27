@@ -50,7 +50,7 @@ import axios from "@/gateway/backendapi";
 import store from "../../store/store";
 import { useRoute } from "vue-router";
 import router from "../../router";
-// import { ElMessage } from "element-plus";
+import { ElMessage } from "element-plus";
 
 export default {
     components: {
@@ -159,6 +159,15 @@ export default {
             socket.on('allchats', (data) => {
                 store.dispatch('communication/allClientChat', data.chats)
                 console.log(data, 'AllChats Here 🥰🎉')
+            })
+
+            socket.on('reconnectclient', ({ id, message }) => {
+                createGetWhatsappSession(id, 'getsession')
+                ElMessage({
+                    showClose: true,
+                    message: message,
+                    type: 'success',
+                })
             })
 
 
