@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div @click="hideEmojiWrapper">
     <div class="container">
       <!-- <div class="container" @click="closeDropdownIfOpen"> -->
       <div class="row">
@@ -143,7 +143,7 @@
         <div class="col-md-10 px-0">
           <el-select-v2 v-model="userWhatsappGroupsId"
             :options="userWhatsappGroups.map(i => ({ value: i.id.user, label: i.formattedTitle }))"
-            placeholder="Select whatsapp group" size="large" class="w-100" multiple />
+            placeholder="Select whatsapp group" size="large" class="w-100" filterable multiple />
           <el-icon class="is-loading" v-if="whatsappGroupsLoading">
             <Loading />
           </el-icon>
@@ -314,7 +314,7 @@
         <div class="col-md-10 px-0">
           <textarea rows="10" class="text-area my-2 small-text" v-model="editorData"></textarea>
           <div class="d-flex align-items-start mt-3">
-            <img src="../../../assets/smiling-face.png" width="20" class="c-pointer"
+            <img src="../../../assets/smiling-face.png" width="20" class="c-pointer emoji-wrapper"
               @click="displayEmoji = !displayEmoji" />
 
             <!-- action="https://run.mocky.io/v3/9d059bf9-4660-45f2-925d-ce80ad6c4d15" -->
@@ -322,9 +322,9 @@
             <!-- :on-preview="handlePreview"
             :on-remove="handleRemove"
             :before-remove="beforeRemove" -->
-            <el-upload class="upload-demo" multiple :limit="1" :on-change="chooseFile" :on-remove="handleRemove"
+            <el-upload class="upload-demo" multiple :limit="1" :on-change="chooseFile" accept="image/*" :on-remove="handleRemove"
               :auto-upload="false">
-              <el-icon class="ml-2">
+              <el-icon class="ml-2" style="font-size: 20px; color: #7d7d7d;">
                 <Paperclip />
               </el-icon>
               <!-- <template #tip>
@@ -335,13 +335,14 @@
             </el-upload>
           </div>
           <transition name="el-fade-in-linear">
-            <VuemojiPicker v-show="displayEmoji" @emojiClick="handleEmojiClick" class="mt-2" style="position: absolute" />
+            <VuemojiPicker v-show="displayEmoji" @emojiClick="handleEmojiClick" class="mt-2 emoji-wrapper " style="position: absolute" />
           </transition>
           <!-- "image/png" -->
           <!-- "audio/mpeg" -->
           <!-- "video/mp4" -->
           <!-- "application/pdf" -->
           <el-progress
+            v-if="chunkProgress > 0"
             :text-inside="true"
             :stroke-width="24"
             :percentage="chunkProgress"
@@ -805,7 +806,6 @@ export default {
     const handleEmojiClick = (data) => {
       console.log(data)
       editorData.value += data.unicode
-      displayEmoji.value = false
     }
 
     const chooseFile = (e) => {
@@ -920,7 +920,6 @@ export default {
       const totalChunks = Math.ceil(base64String.length / chunkSize);
       let uploadedChunks = 0; 
       for (let i = 0; i < totalChunks; i++) {
-
         const start = i * chunkSize;
         const end = start + chunkSize;
         const chunk = base64String.substring(start, end);
@@ -931,6 +930,12 @@ export default {
         // Calculate progress in percentage
         chunkProgress.value = Math.round((uploadedChunks / totalChunks) * 100);
         console.log(`Progress: ${chunkProgress.value}%`);
+      }
+    }
+
+    const hideEmojiWrapper = (e) => {
+      if (!e.target.parentElement.className.includes('emoji-wrapper') && !e.target.className.includes('emoji-wrapper')) {
+        displayEmoji.value = false
       }
     }
 
@@ -1011,7 +1016,8 @@ export default {
       handleRemove,
       whatsappAttachment,
       clientSessionId,
-      chunkProgress
+      chunkProgress,
+      hideEmojiWrapper
     };
   },
 };
