@@ -348,7 +348,7 @@
             :percentage="chunkProgress"
             status="success"
           />
-          <img :src="selectedFileUrl" v-show="fileImage" style="width: 50%" />
+          <img :src="selectedFileUrl" v-show="fileImage" class="mt-2" style="width: 50%" />
           <audio ref="audioPlayer" controls class="mt-2" style="width: 100%;" v-show="fileAudio">
             <source src="" type="audio/mpeg">
             Your browser does not support the audio element.
