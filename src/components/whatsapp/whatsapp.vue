@@ -117,22 +117,6 @@ import store from "../../store/store";
 // import { socket } from "@/socket";
 // import { ElMessage, ElMessageBox } from 'element-plus'
 export default {
-  beforeRouteEnter (to, from, next) {
-    console.log('befbore route enteredx')
-    const whatsappClientState = computed(() => {
-      return store.getters["communication/isWhatsappClientReady"]
-    })
-    console.log(whatsappClientState.value)
-
-    if (!whatsappClientState.value && to.fullPath == '/tenant/whatsapp') {
-
-      console.log('herrr', 1)
-      next({ path: '/tenant/whatsapp/auth' })
-    } else {
-        console.log('herrr', 2)
-      next()
-    }
-  },
   setup() {
     const route = useRoute();
     const menuShouldShow = ref(false);
