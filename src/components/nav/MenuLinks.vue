@@ -388,7 +388,7 @@ export default {
 
       roleOfCurrentUser.value.forEach(i => {
         // If people object is not already in the list, push it and its submenu, else just push its sub menu
-        if (i.toLowerCase() == 'canaccessfirsttimers') {
+        if (i.toLowerCase() == 'canaccessfirsttimers' && roleOfCurrentUser.value.indexOf('Admin') < 0) {
           if (menuLink.value.findIndex(i => i.id == people.id) < 0) {
             menuLink.value.push(people)
             menuLink.value.find(i => i.name.toLowerCase() == 'people').submenu.push(firsttimers)
@@ -437,7 +437,7 @@ export default {
           }
         }
 
-        if (i.toLowerCase() == 'basicuser') {
+        if (i.toLowerCase() == 'basicuser' && roleOfCurrentUser.value.indexOf('Admin') < 0) {
           if (menuLink.value.findIndex(i => i.id == dashboard.id) < 0) {
             menuLink.value.push(dashboard)
           }
