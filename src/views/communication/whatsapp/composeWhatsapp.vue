@@ -503,9 +503,10 @@ export default {
         console.log(data, 'AllChats Here 🥰🎉')
       })
 
-      // socket.on('groupmessagesent', (data) => {
-      //   console.log(data, 'grup message');
-      // })
+      socket.on('chunkprogress', (data) => {
+        chunkProgress.value = data
+        console.log(chunkProgress.value);
+      })
 
     })
 
