@@ -977,22 +977,25 @@ export default {
       console.log(`current page: ${val}`)
     }
 
+    const clientSessionId = computed(() => {
+      if (!store.getters["communication/whatsappSessionId"]) return ""
+      return store.getters["communication/whatsappSessionId"]
+    })
+
     const sendWhatsapp = () => {
       sendingwhatsappmessage.value = true
       if (sendWhatsappToMultiple.value) {
-        console.log(1)
         socket.emit('sendwhatsappmessage', {
+          id: clientSessionId.value,
           phone_number: marked.value.map(i => i.mobilePhone),
-          message: whatsappmessage.value,
-          type: 'multiple'
+          message: whatsappmessage.value
         })
       }
       else {
-        console.log(2)
         socket.emit('sendwhatsappmessage', {
+          id: clientSessionId.value,
           phone_number: whatsappRecipient.value.mobilePhone,
-          message: whatsappmessage.value,
-          type: 'single'
+          message: whatsappmessage.value
         })
       }
     }
@@ -1110,7 +1113,8 @@ export default {
       getUser,
       allcountries,
       tenantCountry,
-      sendingwhatsappmessage
+      sendingwhatsappmessage,
+      clientSessionId
     };
   },
 };

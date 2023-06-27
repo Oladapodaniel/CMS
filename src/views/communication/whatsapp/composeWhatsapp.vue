@@ -378,7 +378,7 @@
         </div>
         <div class="w-100 mt-3 d-flex justify-content-end">
           <span>
-            <el-button :color="primarycolor" size="large" @click="sendWhatsappMessage" round>Send Whatsapp
+            <el-button :color="primarycolor" :disable="chunkProgress > 0 && chunkProgress < 95" size="large" @click="sendWhatsappMessage" round>Send Whatsapp
               message</el-button>
           </span>
         </div>
@@ -406,6 +406,16 @@ export default {
   components: {
     VueQrcode,
     VuemojiPicker
+  },
+  beforeRouteEnter (to, from, next) {
+    const whatsappClientState = computed(() => {
+      return store.getters["communication/isWhatsappClientReady"]
+    })
+    if (!whatsappClientState.value && to.fullPath == '/tenant/whatsapp') {
+      next({ path: '/tenant/whatsapp/auth' })
+    } else {
+      next()
+    }
   },
   setup() {
     const session = ref("")
@@ -941,7 +951,7 @@ export default {
     }
 
     const hideEmojiWrapper = (e) => {
-      if (!e.target.parentElement.className.includes('emoji-wrapper') && !e.target.className.includes('emoji-wrapper')) {
+      if ((!e.target && e.target.parentElement && e.target.parentElement.className.includes('emoji-wrapper')) && (!e.target && e.target.parentElement && !e.target.className.includes('emoji-wrapper'))) {
         displayEmoji.value = false
       }
     }
