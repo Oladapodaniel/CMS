@@ -1099,7 +1099,7 @@ export default {
         personNotes.value ? JSON.stringify(personNotes.value) : []
       );
       formData.append(
-        "customAttributeData",
+        "customAttributeDataString",
         JSON.stringify(
           dynamicCustomFields.value.map((i) => ({
             customAttributeID: i.id,
