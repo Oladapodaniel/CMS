@@ -25,7 +25,7 @@
       <div class="col-11 col-sm-8 col-md-7 col-lg-5 card pb-2" v-loading="cardLoading">
         <div class="container-fluid">
           <div class="row mt-2 justify-content-center">
-            <div class="col-md-11  px-0">
+            <div class="col-md-12  px-0">
               <div class="col-md-12 px-0 ">
                 <label for="" class="text-small  m-0 ">Pledge Name<sup class="text-danger ">*</sup></label>
               </div>
@@ -120,8 +120,8 @@
               <!-- <div class="col-md-12">
                 <label for="" >Phone Number<sup class="text-danger">*</sup></label>
               </div> -->
-              <div class="col-md-12 px-0">
-                <div class="d-flex flex-column flex-sm-row">
+              <div class="col-md-12 px-0 ">
+                <div class=" d-flex flex-column flex-sm-row">
                   <!-- <span class="w-100 border d-flex  text-right align-items-center  "><sup class=" border mt-2 text-danger ">*</sup></span> -->
                   <el-input @keyup.enter="checkContact"  @blur="checkContact" v-model="userSearchString" class=" input-adjustno"
                     placeholder="Enter phone number" type="number"
@@ -175,7 +175,7 @@
             </div>
             <div class="col-md-12 px-0 " v-if="personToggle && Object.keys(contactDetail).length == 0 && !showLoading">
               <div class="row">
-                <div class="col-md-6">
+                <div class="col-md-12">
                   <div class="row">
                     <!-- <div class="col-md-12">
                       <label for="">First Name</label>
@@ -314,12 +314,14 @@
                 </el-input>
               </div>
             </div>
-            <div v-if="personToggle && !showLoading
+            <!-- <div v-if="personToggle && !showLoading
               " class=" col-md-11">
               <hr class="w-100">
+            </div> -->
+            <div class=" col-md-11">
+              <hr class="w-100">
             </div>
-            <div class="col-md-12   px-0" v-if="personToggle && !showLoading
-              ">
+            <!-- <div class="col-md-12   px-0" v-if="personToggle && !showLoading"> -->
               <!-- <Transition name="slide-fade">
                 <div class="col-md-12 font-weight-bold text-small" v-if="pledgeActionType == '1'">
                   <label for="">How much do you want to pay now ?</label>
@@ -331,7 +333,7 @@
                   <el-input type="number"   class="input-adjust mb-1" v-model="amountToPayNow" placeholder="Enter amount to pay" />
                 </div>
               </Transition> -->
-            </div>
+            <!-- </div> -->
             <div class="col-md-11  px-0  d-flex justify-content-center">
               <div class="col-md-12">
                 <el-button class="w-100  text-small  input-adjust" :color="primarycolor" :loading="loading" size="large"
