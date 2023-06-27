@@ -1,38 +1,38 @@
 <template>
   <div class="container-fluid  mx-0 tool">
-    <div class="row justify-content-center mx-0  ">
-      <div class="col-md-12  my-3  ">
-        <div class="mt-4 col-md-12 px-0 justify-content-center text-center d-flex align-items-center">
-          <div class=" col-sm-7  col-md-6 col-lg-4 col-12 mb-2 ">
-            <img :src="churchLogo2" v-if="churchLogo2" class="link-image" alt="" style="width:80px" />
-            <img src="../../assets/dashboardlinks/churchcloud.png" style="width:100px" v-else class="link-image "
-              alt="" />
-          </div>
+    <div class="row d-flex justify-content-center align-items-center">
+      <div class="col-11 col-sm-8 col-md-7 col-lg-5 d-flex justify-content-center ">
+        <div class="d-flex    ">
+            <div class=" mb-2  ">
+              <img :src="churchLogo2" v-if="churchLogo2" class="link-image" alt="" style="width:45px" />
+              <img src="../../assets/dashboardlinks/churchcloud.png" style="width:100px" v-else class="link-image "
+                alt="" />
+            </div>
 
-          <!-- <span>
-            <h4 class="font-weight-bold mt-3">{{ churchName ? churchName : "Churchplus" }}</h4>
-          </span> -->
-        </div>
-        <div class="col-md-12 px-0 d-flex justify-content-center text-center   heading-text">
-          <div class="col-sm-7  col-md-6 col-lg-4 col-12 px-0 ">
-            {{ contributionDetail.name }} {{ !route.query.tenantID && contributionDetail.name ? 'Payment' : "" }}
-          </div>
+            <!-- <span>
+              <h4 class="font-weight-bold mt-3">{{ churchName ? churchName : "Churchplus" }}</h4>
+            </span> -->
+            
+              <div class=" font-weight-bold  text-small mt-2  px-0 ">
+                <!-- Moses Orimolade Education Foundation Pledge Portal -->
+                {{ contributionDetail.name }} {{ !route.query.tenantID && contributionDetail.name ? 'Payment' : "" }}
+              </div>
         </div>
       </div>
     </div>
 
     <div class="row d-flex justify-content-center">
       <div class="col-11 col-sm-8 col-md-7 col-lg-5 card pb-2" v-loading="cardLoading">
-        <div class="container">
-          <div class="row mt-4 justify-content-center">
-            <div class="col-md-11 mt-3 px-0">
-              <div class="col-md-12">
-                <label for="">Pledge Name<sup class="text-danger">*</sup></label>
+        <div class="container-fluid">
+          <div class="row mt-2 justify-content-center">
+            <div class="col-md-11  px-0">
+              <div class="col-md-12 px-0 ">
+                <label for="" class="text-small  m-0 ">Pledge Name<sup class="text-danger ">*</sup></label>
               </div>
-              <div class="col-md-12">
-                <select class="form-control" v-model="selectPledgeItemID" :disabled="!route.query.tenantID"
+              <div class="col-md-12 px-0">
+                <select class="form-control  text-small input-adjust" v-model="selectPledgeItemID" :disabled="!route.query.tenantID"
                   @change="setSelectPledgeItem">
-                  <option v-for="(itm, index) in contributionDetail.pledgeItemDTOs" :key="index" :value="itm.id">
+                  <option  v-for="(itm, index) in contributionDetail.pledgeItemDTOs" :key="index" :value="itm.id">
                     <p>{{ itm.name }}</p>
                   </option>
                 </select>
@@ -116,13 +116,14 @@
                   placeholder="Select Pledge" size="large" class="w-100" :disabled="!route.query.tenantID" /> -->
               </div>
             </div>
-            <div class="col-md-11 mt-3 px-0">
-              <div class="col-md-12">
-                <label for="">Phone Number<sup class="text-danger">*</sup></label>
-              </div>
-              <div class="col-md-12">
+            <div class="col-md-12 mt-2 px-0 ">
+              <!-- <div class="col-md-12">
+                <label for="" >Phone Number<sup class="text-danger">*</sup></label>
+              </div> -->
+              <div class="col-md-12 px-0">
                 <div class="d-flex flex-column flex-sm-row">
-                  <el-input @keyup.enter="checkContact" @blur="checkContact" v-model="userSearchString" class=""
+                  <!-- <span class="w-100 border d-flex  text-right align-items-center  "><sup class=" border mt-2 text-danger ">*</sup></span> -->
+                  <el-input @keyup.enter="checkContact"  @blur="checkContact" v-model="userSearchString" class=" input-adjustno"
                     placeholder="Enter phone number" type="number"
                     :disabled="route.query.pledgeID && route.query.pledgeID.length > 0">
                     <template #prefix>
@@ -131,8 +132,8 @@
                       </el-icon>
                     </template>
                   </el-input>
-                  <el-button :disabled="route.query.pledgeID && route.query.pledgeID.length > 0"
-                    class="ml-sm-2 mt-2 mt-sm-0" style="height: 42px" size="large" type="primary" plain>
+                  <el-button  :disabled="route.query.pledgeID && route.query.pledgeID.length > 0"
+                    class="ml-sm-2 mt-2 mt-sm-0 input-adjust" style="height: 42px" size="large" type="primary" plain>
                     <el-icon class="mr-1" style="vertical-align: middle">
                       <Search />
                     </el-icon>
@@ -140,12 +141,12 @@
                   </el-button>
                 </div>
                 <div class="col-12 px-0 mt-1">
-                  <p class="text-danger" v-if="showNoPhoneError" :class="{ 'my-1': showLoading }">
+                  <p class="text-danger text-small" v-if="showNoPhoneError" :class="{ 'mt-1': showLoading }">
                     Please enter your phone number
                   </p>
                 </div>
-                <div class="col-md-12" v-if="showLoading">
-                  <div class="loading-div my-3">
+                <div class="col-md-12 px-0" v-if="showLoading">
+                  <div class="loading-div my-1">
                     <el-icon class="is-loading">
                       <Loading />
                     </el-icon>
@@ -153,31 +154,34 @@
                   </div>
                 </div>
               </div>
-              <div class=" col-md-12 mt-2 small" style="color: #f59b47;"
-                v-if="personToggle && Object.keys(contactDetail).length == 0" :class="{ 'mt-3': showLoading }">
-                Your detail were not found kindly enter your detail below to continue!
-              </div>
-              <div class="col-12 d-flex  justify-content-between flex-wrap">
-
-                <div
-                  class="col-sm-6 mx-0 px-0 col-12 font-weight-700 d-flex justify-content-center  justify-content-sm-start mt-2">
-                  <div> {{ maxName }}</div>
+              
+              <div class="col-12 d-flex px-0 "  v-if="contactDetail || maxName " >
+                <div class="col-12  mx-0 px-0 d-flex  justify-content-between ">
+                  <div
+                  class="col-sm-6 mx-0 text-small text-lowercase px-0  ">
+                  <div class="mr-1"> {{ maxName ? maxName : "" }}</div>
                 </div>
                 <div
-                  class="col-sm-6 mx-0 px-0 col-12 d-flex justify-content-center font-weight-700 justify-content-sm-end mt-2">
+                  class="col-sm-6  mx-0 px-0 text-small   text-lowercase   ">
                   <div> {{ contactDetail && contactDetail.email && maxEmail ? maxEmail : "" }}</div>
                 </div>
+                </div>
+                
+              </div>
+              <div class=" col-md-12 p-0 text-center  small" style="color: #f59b47;"
+                v-if="personToggle && Object.keys(contactDetail).length == 0" :class="{ 'mt-0': showLoading }">
+                Please enter your details
               </div>
             </div>
-            <div class="col-md-11 " v-if="personToggle && Object.keys(contactDetail).length == 0 && !showLoading">
+            <div class="col-md-12 px-0 " v-if="personToggle && Object.keys(contactDetail).length == 0 && !showLoading">
               <div class="row">
                 <div class="col-md-6">
                   <div class="row">
-                    <div class="col-md-12">
+                    <!-- <div class="col-md-12">
                       <label for="">First Name</label>
-                    </div>
+                    </div> -->
                     <div class="col-md-12">
-                      <el-input v-model="newContact.firstName" class="w-100" placeholder="Enter name">
+                      <el-input v-model="newContact.firstName" class="w-100 input-adjustno" placeholder="Enter name">
                         <template #prefix>
                           <el-icon>
                             <User />
@@ -187,7 +191,7 @@
                     </div>
                   </div>
                 </div>
-                <div class="col-md-6">
+                <!-- <div class="col-md-6">
                   <div class="row">
                     <div class="col-md-12">
                       <label for="">Last Name</label>
@@ -202,12 +206,12 @@
                       </el-input>
                     </div>
                   </div>
-                </div>
-                <div class="col-md-12 mt-3">
+                </div> -->
+                <!-- <div class="col-md-12 mt-3">
                   <label for="">Email</label>
-                </div>
-                <div class="col-md-12">
-                  <el-input v-model="newContact.email" class="w-100" placeholder="Enter email">
+                </div> -->
+                <div class="col-md-12 mt-2">
+                  <el-input v-model="newContact.email" class="w-100 input-adjustno" placeholder="Enter email">
                     <template #prefix>
                       <el-icon>
                         <Message />
@@ -217,62 +221,62 @@
                 </div>
               </div>
             </div>
-            <div class="col-md-11 mt-2" v-if="personToggle && !route.query.pledgeID && !memberAlreadyPledgedToPledgeItem">
+            <!-- <div class="col-md-11 mt-2" v-if="personToggle && !route.query.pledgeID && !memberAlreadyPledgedToPledgeItem">
               <el-radio-group v-model="pledgeActionType">
                 <el-radio label="1" size="large">Pledge and pay now</el-radio>
                 <el-radio label="2" size="large">Pledge only</el-radio>
               </el-radio-group>
-            </div>
+            </div> -->
 
-            <div v-if="personToggle && !showLoading" class=" mt-1 col-md-11 px-0">
+            <div v-if="personToggle && !showLoading" class="  col-md-11 px-0">
               <hr class="w-100">
             </div>
-            <div class="col-md-11 mt-3 px-0" v-if="donorDetail.donorPaymentType == 1 && personToggle
+            <div class="col-md-12 mt-2 px-0" v-if="donorDetail.donorPaymentType == 1 && personToggle
               ">
               <div class="col-md-12 text-center">
                 <label for="">Pledge amount</label>
               </div>
-              <div class="col-md-12">
+              <div class="col-md-12 px-0">
                 <h2 class="font-weight-700 text-center">{{ pledgeAmountWithComma }}</h2>
               </div>
             </div>
-            <div class="col-md-11 mt-3 px-0" v-if="donorDetail.donorPaymentType == 2 && personToggle
+            <div class="col-md-12  px-0" v-if="donorDetail.donorPaymentType == 2 && personToggle
               ">
-              <div class="col-md-12 text-center">
+              <div class="col-md-12 px-0 text-center text-small">
                 <div class="mb-1">Pledge amount range is within</div>
                 <label for="">
-                  <h2 class="font-weight-700 d-inline">{{
+                  <h5 class="font-weight-bold fontwght d-inline">{{
                     Math.abs(
                       donorDetail.donorPaymentRangeFromAmount
                     ).toLocaleString()
-                  }}</h2>
+                  }}</h5>
                   -
-                  <h2 class="font-weight-700 d-inline">{{
+                  <h5 class="font-weight-700 fontwght d-inline">{{
                     Math.abs(
                       donorDetail.donorPaymentRangeToAmount
                     ).toLocaleString()
-                  }}</h2>
+                  }}</h5>
                 </label>
               </div>
             </div>
-            <div class="col-md-11 mt-3 px-0" v-if="personToggle && !showLoading
+            <div class="col-md-12  px-0" v-if="personToggle && !showLoading
                 ">
-              <div class="col-md-12 ">
-                <label for="">{{ memberAlreadyPledgedToPledgeItem ? 'Amount pledged' : 'How much do you want to pledge?'
+              <div class="col-md-12 px-0 text-small font-weight-bold ">
+                <label for="">{{ memberAlreadyPledgedToPledgeItem ? 'Amount pledged' : 'Amonut to pay '
                 }}</label>
               </div>
               <!-- For range -->
-              <div class="col-md-12" v-if="donorDetail.donorPaymentType == 2">
-                <el-input v-model="amountToPledge" :class="{ 'is-invalid': !withinRange }" placeholder="Enter amount"
-                  @blur="validateRangeAmount" class="input-with-select" :disabled="memberAlreadyPledgedToPledgeItem">
+              <div class="col-md-12 px-0" v-if="donorDetail.donorPaymentType == 2">
+                <el-input v-model="amountToPledge" :class="{ 'is-invalid': !withinRange }" type="number" placeholder="Enter amount"
+                  @blur="validateRangeAmount" class="input-adjustno" :disabled="memberAlreadyPledgedToPledgeItem">
                   <template #prepend>
-                    <el-select v-model="selectedCurrencyCode" placeholder="Select" style="width: 115px"
+                    <el-select v-model="selectedCurrencyCode" class=" input-adjustnos  border-0" placeholder="Select" style="width: 115px"
                       @change="setSelectedCurrency" filterable>
                       <el-option v-for="item in FLWupportedCurrencies" :label="item.value" :value="item.value" />
                     </el-select>
                   </template>
                 </el-input>
-                <div class="invalid-feedback">
+                <div class="invalid-feedback ">
                   Please make sure the amount is within the range of
                   {{
                     Math.abs(
@@ -288,18 +292,18 @@
                 </div>
               </div>
               <!-- For free will -->
-              <div class="col-md-12" v-if="donorDetail.donorPaymentType == 0">
-                <el-input v-model="amountToPledge" placeholder="Enter amount" class="input-with-select"
+              <div class="col-md-12 px-0" v-if="donorDetail.donorPaymentType == 0">
+                <el-input v-model="amountToPledge" placeholder="Enter amount" type="number" class="input-adjustno"
                   :disabled="memberAlreadyPledgedToPledgeItem">
                   <template #prepend>
-                    <el-select v-model="selectedCurrencyCode" placeholder="Select" style="width: 115px"
+                    <el-select v-model="selectedCurrencyCode" placeholder="Select" class="input-adjustnos" style="width: 115px"
                       @change="setSelectedCurrency" filterable>
                       <el-option v-for="item in FLWupportedCurrencies" :label="item.value" :value="item.value" />
                     </el-select>
                   </template>
                 </el-input>
               </div>
-              <div class="col-md-12" v-if="donorDetail.donorPaymentType == 1">
+              <div class="col-md-12 px-0" v-if="donorDetail.donorPaymentType == 1">
                 <el-input v-model="amountToPledge" placeholder="Enter amount" class="input-with-select" disabled>
                   <template #prepend>
                     <el-select v-model="selectedCurrencyCode" placeholder="Select" style="width: 115px"
@@ -311,42 +315,44 @@
               </div>
             </div>
             <div v-if="personToggle && !showLoading
-              " class="mt-4 col-md-11">
+              " class=" col-md-11">
               <hr class="w-100">
             </div>
-            <div class="col-md-11 mt-3 px-0" v-if="personToggle && !showLoading
+            <div class="col-md-12   px-0" v-if="personToggle && !showLoading
               ">
-              <Transition name="slide-fade">
-                <div class="col-md-12 font-weight-bold" v-if="pledgeActionType == '1'">
+              <!-- <Transition name="slide-fade">
+                <div class="col-md-12 font-weight-bold text-small" v-if="pledgeActionType == '1'">
                   <label for="">How much do you want to pay now ?</label>
                 </div>
-              </Transition>
+              </Transition> -->
               <!-- Range, Free will and Specific -->
-              <Transition name="slide-fade">
-                <div class="col-md-12" v-if="pledgeActionType == '1'">
-                  <el-input type="text" v-model="amountToPayNow" placeholder="Enter amount to pay" />
+              <!-- <Transition name="slide-fade">
+                <div class="col-md-12 px-0 " v-if="pledgeActionType == '1'">
+                  <el-input type="number"   class="input-adjust mb-1" v-model="amountToPayNow" placeholder="Enter amount to pay" />
                 </div>
-              </Transition>
+              </Transition> -->
             </div>
-            <div class="col-md-11 mt-4 px-0 mb-4 d-flex justify-content-center">
+            <div class="col-md-11  px-0  d-flex justify-content-center">
               <div class="col-md-12">
-                <el-button class="w-100 mt-3" :color="primarycolor" :loading="loading" size="large"
+                <el-button class="w-100  text-small  input-adjust" :color="primarycolor" :loading="loading" size="large"
                 :disabled="!personToggle" @click="triggerPayment" round>{{ pledgeActionType
                     == '1' ? 'Pay' : 'Pledge'
                   }}</el-button>
-                  <el-button class="w-100 secondary-button mt-3 ml-0" size="large" @click="cancelPledge" v-if="memberAlreadyPledgedToPledgeItem" round>Cancel
-                    pledge</el-button>
+                  <!-- <el-button class="w-100 secondary-button  ml-0" size="large" @click="cancelPledge" v-if="memberAlreadyPledgedToPledgeItem" round>
+                    Cancel
+                    pledge
+                    </el-button> -->
               </div>
 
             </div>
 
-            <div class=" row mt-3 d-flex justify-content-center">
+            <div class=" row mt-1 d-flex justify-content-center">
               <div class="col-10 col-sm-8 col-md-7   pl-0">
                 <div class="row justify-content-center">
                   <!-- <div class="col-3">
                     <img src="../../assets/VisaDebit.png" class="w-100">
                   </div> -->
-                  <div class="col-md-10 col-12   d-flex">
+                  <div class="col-md-10 col-12 text-small   d-flex">
                     <div class=" col-md-6 text-center ">
                       <img src="../../assets/Full-Flutterwave.png" class="w-100">
                     </div>
@@ -360,23 +366,35 @@
                 </div>
               </div>
             </div>
-            <div class="row justify-content-center">
-              <div class="col-md-6 col-12 text-center align-item-center my-4">
-                <div class=" col-md-12">Powered by</div>
-                <div class="image-adjust  col-md-12">
-                  <img src="../../assets/logoblue.png" alt="churchplus Logo" class=" mx-2 " />
+            <div class="row justify-content-center ">
+              <div class=" col-10 col-sm-8 col-md-7   ">
+                <div class="row  justify-content-center"> 
+                  <!-- <div class="col-md-12 d-flex    "> -->
+                    <div class=" col-md-6 text-center text-small  image-adjust  ">Powered by <img src="../../assets/logoblue.png" alt="churchplus Logo"  /></div>
+                    <!-- <div class="image-adjust col-md-5 border  ">
+                      <img src="../../assets/logoblue.png" alt="churchplus Logo" class=" border " />
+                    </div> -->
+                  <!-- </div> -->
+                </div>
+              </div>
+            </div>
+            <!-- <div class="row justify-content-center">
+              <div class="col-md-4  d-flex  align-item-center mb-4">
+                <div class="  text-small border ">Powered by</div>
+                <div class="image-adjust border  ">
+                  <img src="../../assets/logoblue.png" alt="churchplus Logo" class=" border " />
                 </div>
               </div>
 
-            </div>
+            </div> -->
           </div>
         </div>
       </div>
     </div>
     <el-dialog v-model="paymentDialog" title="Payment methods"
-      :width="mdAndUp || lgAndUp || xlAndUp ? `50%` : xsOnly ? `90%` : `70%`" align-center>
+      :width="mdAndUp || lgAndUp || xlAndUp ? `50%` : xsOnly ? `90%` : `70%`" align-top>
       <div class="row">
-        <div class="col-sm-12 p-4 text-center continue-text">
+        <div class="col-sm-12 p-2 text-center text-small continue-text">
           Continue payment with
         </div>
       </div>
@@ -385,9 +403,19 @@
           <img style="width: 150px" src="../../assets/4PaystackLogo.png" alt="paystack" />
         </div>
       </div>
-      <div class="row row-button c-pointer mt-3 mb-5" v-if="flutterwaveGate" @click="(initiatePayment(2))">
+      <div class="row row-button c-pointer mt-3 " v-if="flutterwaveGate" @click="(initiatePayment(2))">
         <div class="d-flex justify-content-center w-100">
           <img style="width: 150px" src="../../assets/flutterwave_logo_color@2x.png" alt="flutterwave" />
+        </div>
+      </div>
+      <div class="row">
+        <div class=" col-md-11">
+          <hr class="w-100">
+        </div>
+      </div>
+      <div class="row">
+        <div class="col-md-12 ">
+          <span class="notecolour text-small col-md-12 px-0 font-weight-bold "> <span class="text-dark  font-weight-bold">NB: </span  >FlutterWave currently processes only Credit Cards</span>
         </div>
       </div>
     </el-dialog>
@@ -562,6 +590,7 @@ export default {
           memberAlreadyPledgedToPledgeItem.value = true
           amountToPledge.value = data.pledgeResponseDTO.amount
           amountToPayNow.value = data.pledgeResponseDTO.balance
+          // amountToPayNow.value = data.pledgeResponseDTO.balance
           pledgedData.value = data.pledgeResponseDTO
           selectedCurrency.value = data.pledgeResponseDTO.currency
           selectedCurrencyCode.value = data.pledgeResponseDTO.currency.shortCode
@@ -572,21 +601,21 @@ export default {
           amountToPayNow.value = ""
         }
 
-        if (!data.person) {
-          ElMessage({
-            type: 'warning',
-            showClose: true,
-            message: 'Your details were not found kindly enter them below',
-            duration: 10000
-          })
-        } else {
-          ElMessage({
-            type: 'success',
-            showClose: true,
-            message: 'Member details found, kindly proceed to make your pledge',
-            duration: 10000
-          })
-        }
+        // if (!data.person) {
+        //   ElMessage({
+        //     type: 'warning',
+        //     showClose: true,
+        //     message: 'Your details were not found kindly enter them below',
+        //     duration: 10000
+        //   })
+        // } else {
+        //   ElMessage({
+        //     type: 'success',
+        //     showClose: true,
+        //     message: 'Member details found, kindly proceed to make your pledge',
+        //     duration: 10000
+        //   })
+        // }
         loading.value = false;
         autosearch.value = false;
 
@@ -730,7 +759,8 @@ export default {
         key: process.env.VUE_APP_PAYSTACK_PUBLIC_KEY_LIVE,
         // key: process.env.VUE_APP_PAYSTACK_API_KEY,
         email: contactDetail.value.email ? contactDetail.value.email : newContact.value.email,
-        amount: amountToPayNow.value * 100,
+        // amount: amountToPayNow.value * 100,
+        amount: amountToPledge.value * 100,
         currency: selectedCurrencyCode.value,
         channels: ['card', 'bank', 'ussd', 'qr', 'mobile_money', 'bank_transfer'],
         subaccount: pledgePaymentForm.value.paymentGateWays.find(i => i.paymentGateway.name === "Paystack").subAccountID,
@@ -823,7 +853,8 @@ export default {
         public_key: process.env.VUE_APP_FLUTTERWAVE_PUBLIC_KEY_LIVE,
         // public_key: process.env.VUE_APP_FLUTTERWAVE_TEST_KEY_TEST,
         tx_ref: responseObject.transactionReference,
-        amount: amountToPayNow.value,
+        amount: amountToPledge.value,
+        // amount: amountToPayNow.value,
         currency: selectedCurrencyCode.value,
         country: country,
         payment_options: "card,ussd",
@@ -853,11 +884,12 @@ export default {
 
     const triggerPayment = () => {
       if (pledgeActionType.value == '1') {
-        if (!amountToPayNow.value) {
+        // if (!amountToPayNow.value) {
+        if (!amountToPledge.value) {
           ElMessage({
             type: 'warning',
             showClose: true,
-            message: "Please enter amount to pay",
+            message: "Please enter amount ",
             duration: 5000
           })
         } else {
@@ -884,6 +916,8 @@ export default {
         pledgeItemDTO: donorDetail.value,
         pledgeResponseDTO: pledgedData.value && Object.keys(pledgedData.value).length > 0 ? pledgedData.value : { currency: selectedCurrency.value, amount: amountToPledge.value },
         pledgePaymentDTO: pledgeActionType.value == 1 ? { currency: selectedCurrency.value, amount: amountToPayNow.value } : null,
+        pledgePaymentDTO: pledgeActionType.value == 1 ? { currency: selectedCurrency.value, amount: amountToPledge.value } : null,
+        // pledgePaymentDTO: pledgedData.value && Object.keys(pledgedData.value).length > 0 ? pledgedData.value : { currency: selectedCurrency.value, amount: amountToPledge.value },
       }
       if (gatewayService) payload.gateway = gatewayService
 
@@ -1074,6 +1108,8 @@ export default {
   padding: 10px 17px;
 }
 
+
+
 .loading-indicator {
   font-size: 76px;
   position: absolute;
@@ -1089,6 +1125,11 @@ export default {
 
 .loading-div .is-loading {
   font-size: 2rem
+}
+
+.notecolour {
+  /* color: rgb(199, 129, 23);; */
+  color: rgb(0, 0, 0);
 }
 
 .phone-input {
@@ -1121,13 +1162,13 @@ export default {
 }
 
 .row-button {
-  padding: 10px;
+  padding: 5px;
   border-radius: 25px;
   box-shadow: 0 4px 12px rgb(0 0 0 / 10%);
   background: #fff;
   margin: 12px 20px;
   transition: all 0.4s ease-in-out;
-  max-height: 45px;
+  max-height: 40px;
 }
 
 .row-button:hover {
@@ -1140,6 +1181,35 @@ export default {
     margin: 12px 10px
   }
 }
+@media (max-width: 400px) {
+  .text-small{
+  font-size: 13px;
+}
+.input-adjust{
+  height: calc(1.2em + 0.81rem + 2px) !important;
+  padding: 0.3rem 0.4rem !important ;
+}
+.input-adjustno{
+  /* border: 1px solid red; */
+  height: calc(1.2em + 0.895rem + 2px) !important;
+  /* padding: 0.4rem 0.8rem !important ; */
+}
+.input-adjustnos{
+  /* border: 1px solid red; */
+  /* height: calc(1em + 0.5rem + 2px) !important; */
+  /* padding: 0.4rem 0.1rem !important ; */
+   /* width: 80% !important; */
+   height: calc(1.2em + 0.895rem + 2px) !important;
+   /* width: 30% !important; */
+   border: none !important;
+}
+.fontwght{
+  /* font-weight: 600 !important;
+   */
+   font-size: 18px !important;
+}
+}
+
 
 .tool {
   background-image: url("../../assets/coloured-patterns.svg");

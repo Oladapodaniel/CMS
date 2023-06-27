@@ -1870,7 +1870,7 @@ const routes = [
         ]
     },
     {
-        path: '/createmember/:id',
+        path: '/createmember/',
         name: 'PublicPerson',
         meta: {
             title: 'Register member',
@@ -1889,9 +1889,9 @@ const routes = [
     },
     {
         path: '/createnewconvert/:id',
-        name: 'PublicFirstTimer',
+        name: 'PublicNewConvert',
         meta: {
-            title: 'Register firsttimer',
+            title: 'Register newconvert',
         },
         component: () =>
             import( /* webpackChunkName: "emailsent" */ '../views/people/PublicNewConvert.vue')

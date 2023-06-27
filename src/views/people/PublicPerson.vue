@@ -1,6 +1,6 @@
 <template>
-  <div class="container container-top ">
-       <div class="col-md-12 d-flex justify-content-center my-3">
+  <div class="container container-top">
+    <div class="col-md-12 d-flex justify-content-center my-3">
       <div class="col-md-3 mt-4 d-flex align-items-center">
         <div class="pl-2">
           <img
@@ -16,7 +16,6 @@
             class="link-image"
             alt=""
           />
-        
         </div>
         <span
           ><h4 class="font-weight-bold mt-3">
@@ -29,7 +28,6 @@
       <h3 class="header-text font-weight-bold">Add Contact</h3>
       <Toast />
     </div>
-
     <div class="form-div">
       <form @submit.prevent="addPerson">
         <div class="bio-div mt-2">
@@ -439,7 +437,7 @@
             'show-addinfo-tab': !hideAddInfoTab,
           }"
         > -->
-        <div v-if="true" class="add-info--con">
+        <div v-if="!route.query.groupID" class="add-info--con">
           <div class="label-text-box">
             <p>Related information</p>
             <small
@@ -532,14 +530,7 @@
         </div> -->
         <div class="submit-div">
           <button
-            class="
-              primary-bg
-              px-md-4
-              outline-none
-              default-btn
-              text-white
-              border-0
-            "
+            class="primary-bg px-md-4 outline-none default-btn text-white border-0"
             :disabled="loading || !person.firstName"
           >
             <i class="fas fa-circle-notch fa-spin mr-2" v-if="loading"></i>
@@ -549,39 +540,21 @@
         </div>
       </form>
       <div class="row">
-               <div class="col-12 d-flex justify-content-center">
-                    <div
-                      class="
-                        col-md-6
-                        text-center
-                        align-item-center
-                        px-md-4
-                        mb-3
-                        mt-5
-                      "
-                    >
-                      <a href="/" class="text-decoration-none">
-                        <div class="">Powered by</div>
-                        <div
-                          class="
-                            img-fluid
-                            col-6
-                            offset-3
-                            col-md-4
-                            offset-md-4
-                            px-0
-                          "
-                        >
-                          <img
-                            src="../../assets/logoblue.png"
-                            alt="churchplus Logo"
-                            class="w-50 mx-2"
-                          />
-                        </div>
-                      </a>
-                    </div>
-                  </div>    
+        <div class="col-12 d-flex justify-content-center">
+          <div class="col-md-6 text-center align-item-center px-md-4 mb-3 mt-5">
+            <a href="/" class="text-decoration-none">
+              <div class="">Powered by</div>
+              <div class="img-fluid col-6 offset-3 col-md-4 offset-md-4 px-0">
+                <img
+                  src="../../assets/logoblue.png"
+                  alt="churchplus Logo"
+                  class="w-50 mx-2"
+                />
+              </div>
+            </a>
           </div>
+        </div>
+      </div>
     </div>
 
     <!-- Modal
@@ -702,14 +675,7 @@
               <div class="col-md-7">
                 <div class="dropdown show">
                   <button
-                    class="
-                      btn
-                      border
-                      w-100
-                      d-flex
-                      justify-content-between
-                      align-items-center
-                    "
+                    class="btn border w-100 d-flex justify-content-between align-items-center"
                     type="button"
                     id="dropdownMenuLink"
                     data-toggle="dropdown"
@@ -885,7 +851,7 @@
 
 <script>
 import moment from "moment";
-import { ref, reactive, computed } from "vue";
+import { ref, reactive, computed, inject } from "vue";
 // import router from "@/router/index";
 // import store from "../../store/store"
 import axios from "@/gateway/backendapi";
@@ -902,12 +868,15 @@ import swal from "sweetalert";
 // import lookupService from "../../services/lookup/lookupservice";
 
 export default {
-  components: { Dropdown, Calendar, 
-  
-  // InputText
-   },
+  components: {
+    Dropdown,
+    Calendar,
+
+    // InputText
+  },
   setup() {
     // const $toast = getCurrentInstance().ctx.$toast;
+    const primarycolor = inject("primarycolor");
     const toast = useToast();
     const store = useStore();
     const hideCelebTab = ref(false);
@@ -925,6 +894,12 @@ export default {
     const noteDetails = ref({});
     const churchLogo = ref("");
     const churchName = ref("");
+
+    console.log(route.query.tenantId, 'hhhhhhh');
+    console.log(route.query.groupID, 'httttt');
+    // console.log(route.papersonId, 'httttt');
+    // console.log(route.params.id, 'httttt');
+    
 
     const loading = ref(false);
     const months = [
@@ -955,7 +930,7 @@ export default {
     const getCustomFields = async () => {
       try {
         let { data } = await axios.get(
-          `/GetAllCustomFields?entityType=0&&tenantID=${route.params.id}`
+          `/GetAllCustomFields?entityType=0&&tenantID=${route.query.tenantId}`
         );
         dynamicCustomFields.value = data;
       } catch (err) {
@@ -1133,64 +1108,127 @@ export default {
           }))
         )
       );
-      try {
-        loading.value = true;
-        let response = await axios.post(
-          `/PublicMemberRegister?tenantID=${route.params.id}`,
-          formData
-        );
-        console.log(response);
-        disableClick.value = false;
-
-        if (response.status === 200 || response.status === 201) {
-          loading.value = false;
-          swal(
-            "Registration Successful!",
-            "Your membership details has been added successfully!",
-            "success"
+      if (route.query.groupID) {
+        try {
+          loading.value = true;
+          let response = await axios.post(
+            `/PublicMemberRegister?tenantID=${route.query.tenantId}&groupId=${route.query.groupID}`,
+            formData
           );
-        }
-        selectedGender.value = "";
-        selectedAgeGroup.value = "";
-        selectedMaritalStatus.value = "";
-        person.firstName = "";
-        person.lastName = "";
-        person.mobilePhone = "";
-        person.email = "";
-        person.address = "";
-        person.dayOfBirth = "";
-        person.monthOfBirth = "";
-        person.yearOfBirth = "";
-        person.dayOfWedding = "";
-        person.monthOfWedding = "";
-        person.yearOfWedding = "";
-        person.occupation = "";
-      } catch (err) {
-        console.log(err);
-        loading.value = false;
-        if (err.toString().toLowerCase().includes("network error")) {
-          toast.add({
-            severity: "warn",
-            summary: "You 're Offline",
-            detail: "Please ensure you have internet access",
-            life: 6000,
-          });
-        } else {
-          showError.value = true;
+          console.log(response);
+          disableClick.value = false;
+
+          if (response.status === 200 || response.status === 201) {
+            loading.value = false;
+            swal(
+              "Registration Successful!",
+              "Your membership details has been added successfully!",
+              "success"
+            );
+          }
+          selectedGender.value = "";
+          selectedAgeGroup.value = "";
+          selectedMaritalStatus.value = "";
+          person.firstName = "";
+          person.lastName = "";
+          person.mobilePhone = "";
+          person.email = "";
+          person.address = "";
+          person.dayOfBirth = "";
+          person.monthOfBirth = "";
+          person.yearOfBirth = "";
+          person.dayOfWedding = "";
+          person.monthOfWedding = "";
+          person.yearOfWedding = "";
+          person.occupation = "";
+        } catch (err) {
+          console.log(err);
           loading.value = false;
-          if (err.response && err.response.status === 400) {
-            errMessage.value = err.response.data.message;
+          if (err.toString().toLowerCase().includes("network error")) {
             toast.add({
               severity: "warn",
-              summary: "Attention!",
-              detail: errMessage.value
-                ? errMessage.value
-                : "Save operation failed",
+              summary: "You 're Offline",
+              detail: "Please ensure you have internet access",
               life: 6000,
             });
+          } else {
+            showError.value = true;
+            loading.value = false;
+            if (err.response && err.response.status === 400) {
+              errMessage.value = err.response.data.message;
+              toast.add({
+                severity: "warn",
+                summary: "Attention!",
+                detail: errMessage.value
+                  ? errMessage.value
+                  : "Save operation failed",
+                life: 6000,
+              });
+            }
+          }
+        }
+        
+      } else {
+        try {
+          loading.value = true;
+          let response = await axios.post(
+            `/PublicMemberRegister?tenantID=${route.query.tenantId}`,
+            formData
+          );
+          console.log(response);
+          disableClick.value = false;
+
+          if (response.status === 200 || response.status === 201) {
+            loading.value = false;
+            swal(
+              "Registration Successful!",
+              "Your membership details has been added successfully!",
+              "success"
+            );
+          }
+          selectedGender.value = "";
+          selectedAgeGroup.value = "";
+          selectedMaritalStatus.value = "";
+          person.firstName = "";
+          person.lastName = "";
+          person.mobilePhone = "";
+          person.email = "";
+          person.address = "";
+          person.dayOfBirth = "";
+          person.monthOfBirth = "";
+          person.yearOfBirth = "";
+          person.dayOfWedding = "";
+          person.monthOfWedding = "";
+          person.yearOfWedding = "";
+          person.occupation = "";
+        } catch (err) {
+          console.log(err);
+          loading.value = false;
+          if (err.toString().toLowerCase().includes("network error")) {
+            toast.add({
+              severity: "warn",
+              summary: "You 're Offline",
+              detail: "Please ensure you have internet access",
+              life: 6000,
+            });
+          } else {
+            showError.value = true;
+            loading.value = false;
+            if (err.response && err.response.status === 400) {
+              errMessage.value = err.response.data.message;
+              toast.add({
+                severity: "warn",
+                summary: "Attention!",
+                detail: errMessage.value
+                  ? errMessage.value
+                  : "Save operation failed",
+                life: 6000,
+              });
+            }
           }
         }
       }
+        
     };
 
     let ageGroups = ref([]);
@@ -1219,7 +1257,7 @@ export default {
     const getPeopleClassifications = async () => {
       try {
         const response = await axios.get(
-          `/public/PeopleClassifications?tenantId=${route.params.id}`
+          `/public/PeopleClassifications?tenantId=${route.query.tenantId}`
         );
         const { data } = response;
         memberships.value = data;
@@ -1234,7 +1272,7 @@ export default {
 
     const getAgeGroups = () => {
       axios
-        .get(`/public/AgeGroups?tenantId=${route.params.id}`)
+        .get(`/public/AgeGroups?tenantId=${route.query.tenantId}`)
         .then((res) => {
           ageGroups.value = res.data;
           // getPersonAgeGroupId();
@@ -1350,29 +1388,23 @@ export default {
     const groupToAddTo = ref({});
     const allGroups = ref([]);
 
-
     const getPublicMember = async () => {
       try {
-        const res = await axios.get(`/TenantInfo?tenantID=${route.params.id}`);
+        const res = await axios.get(`/TenantInfo?tenantID=${route.query.tenantId}`);
         console.log(res.data, "public member😎😎🤦‍♀️");
         churchLogo.value = res.data.logo;
         churchName.value = res.data.name;
-        console.log(churchLogo.value, 
-        "😎")
-
-      } 
-      catch (error) {
+        console.log(churchLogo.value, "😎");
+      } catch (error) {
         console.log(error);
-        
       }
-      
     };
     getPublicMember();
 
     const getGroups = async () => {
       try {
         let groups = await axios.get(
-          `/public/groups?tenantId=${route.params.id}`
+          `/public/groups?tenantId=${route.query.tenantId}`
         );
         console.log(groups);
         allGroups.value = groups.data;
@@ -1382,9 +1414,9 @@ export default {
     };
     getGroups();
 
-
     const addToGroupError = ref(false);
     const dismissAddToGroupModal = ref("");
+    
 
     const addMemberToGroup = async () => {
       console.log(
@@ -1491,6 +1523,7 @@ export default {
       editBirthDateValue,
       editAnnDateValue,
       birthMonth,
+      route,
       birthDay,
       birthYear,
       annMonth,
@@ -1543,6 +1576,7 @@ export default {
       noteDetails,
       savePersonNote,
       dynamicCustomFields,
+      primarycolor,
       churchLogo,
       churchName,
     };

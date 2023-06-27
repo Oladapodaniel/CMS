@@ -346,7 +346,7 @@
       </div>
 
       <div class="row my-3">
-        <div class="col-md-12 form-group">
+        <!-- <div class="col-md-12 form-group">
           <div class="row">
             <div class="col-md-2"></div>
             <div class="col-md-10 pl-0">
@@ -354,7 +354,7 @@
               <span class="font-weight-700 px-14">Personal Message</span>
             </div>
           </div>
-        </div>
+        </div> -->
         <div class="col-md-12">
           <div class="row">
             <div class="col-md-2"></div>
