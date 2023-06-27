@@ -924,12 +924,18 @@ export default {
         const end = start + chunkSize;
         const chunk = base64String.substring(start, end);
         console.log('===================================== \n' + chunk + '\n==================================================')
-        socket.emit('chunk', chunk);
+        socket.emit('chunk', 
+        {
+          chunk,
+          uploadedChunks,
+          totalChunks
+        });
         uploadedChunks++; // Increment the uploadedChunks count
 
-        // Calculate progress in percentage
-        chunkProgress.value = Math.round((uploadedChunks / totalChunks) * 100);
-        console.log(`Progress: ${chunkProgress.value}%`);
+        // socket.emit('chunkprogress', {
+        //   uploadedChunks,
+        //   totalChunks
+        // })
       }
     }
 
