@@ -577,7 +577,7 @@ export default {
           break;
       }
 
-      firstTimersObj.value.customAttributeData = dynamicCustomFields.value.map(
+      firstTimersObj.value.customAttributeDataString = dynamicCustomFields.value.map(
         (i) => ({
           customAttributeID: i.id,
           data: i.data,
