@@ -262,7 +262,7 @@
             <div class="col-md-12  px-0" v-if="personToggle && !showLoading
                 ">
               <div class="col-md-12 px-0 text-small font-weight-bold ">
-                <label for="">{{ memberAlreadyPledgedToPledgeItem ? 'Amount pledged' : 'Amonut to pay '
+                <label for="">{{ memberAlreadyPledgedToPledgeItem ? 'Amount pledged' : 'Amount to pay '
                 }}</label>
               </div>
               <!-- For range -->
