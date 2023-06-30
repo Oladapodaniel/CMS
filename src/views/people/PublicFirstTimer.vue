@@ -148,7 +148,7 @@
               class="input form-control"
               type="text"
               aria-required=""
-              vz-model="item.data"
+              v-model="item.data"
             />
             <Dropdown
               v-else-if="item.controlType == 1"
