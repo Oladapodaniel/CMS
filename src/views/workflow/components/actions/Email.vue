@@ -69,7 +69,7 @@
             </div>
         </div>
 
-        <div class="row mt-4 mb-5">
+        <div class="row mt-4 mb-5"> {{item.message}}
             <div class="col-md-12 px-0">
                 <label for="" class="font-weight-600">And message</label>
             </div>

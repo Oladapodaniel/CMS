@@ -159,6 +159,9 @@
                     </el-dropdown>
                   </template>
               </Table>
+              <div class="d-flex justify-content-center my-2 " v-if="(allTransactions && allTransactions.length === 0)  && !loading">
+                <div>No data</div>
+              </div>
               <div class="d-flex justify-content-end my-3">
                 <el-pagination v-model:current-page="serverOptions.page" v-model:page-size="serverOptions.rowsPerPage" background
                   layout="total, sizes, prev, pager, next, jumper" :total="totalTransaction" @size-change="handleSizeChange"
@@ -255,7 +258,7 @@ export default {
         const { data } = await axios.get(
           `/api/Financials/Accounts/v2/Transactions?page=${serverOptions.value.page}`
         );
-        allTransactions.value = data;
+        allTransactions.value = data.records;
         console.log(allTransactions.value, "khkhkjhk");
         paginatedTableLoading.value = false
       } catch (error) {
@@ -594,6 +597,7 @@ export default {
 
     return {
       transactions,
+      allTransactions,
       handleCurrentChange,
       handleSizeChange,
       serverOptions,

@@ -60,6 +60,7 @@ import { ref, computed, watch } from "vue"
 import Table from "@/components/table/Table"
 import store from "../../../store/store"
 import { ElMessage } from 'element-plus'
+import axios from "@/gateway/backendapi";
 export default {
     components: {
         Table
@@ -113,12 +114,17 @@ export default {
     const getTransactionByPage = async () => {
       paginatedTableLoading.value = true
       try {
+         voiceLoading.value = true
         const { data } = await axios.get(
-          `api/Messaging/getAllSentVoice?page=${serverOptions.value.page}`
+          `api/Messaging/getAllSentVoice?Page=${serverOptions.value.page}`
         );
-        sentVoiceList.value = data;
+        voiceLoading.value = false
+        sentVoiceList.value = data.sentSMS;
+        totalSentVoiceList.value = data.totalItems
+        paginationPage.value = data.page
         console.log(sentVoiceList.value, "khkhkjhk");
         paginatedTableLoading.value = false
+        getAllSentVoice()
       } catch (error) {
         paginatedTableLoading.value = false
         console.log(error);
@@ -149,6 +155,7 @@ export default {
             handleSizeChange,
             totalSentVoiceList,
             handleCurrentChange,
+            getTransactionByPage,
             voiceLoading,
             voiceHeaders,
             copyToClipBoard,
