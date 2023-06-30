@@ -272,7 +272,7 @@
                   <template #prepend>
                     <el-select v-model="selectedCurrencyCode" class=" input-adjustnos  border-0" placeholder="Select" style="width: 115px"
                       @change="setSelectedCurrency" filterable>
-                      <el-option v-for="item in FLWupportedCurrencies" :label="item.value" :value="item.value" />
+                      <el-option v-for="item in FLWupportedCurrencies" :label="item.value" :value="item.value" :key="item.value" />
                     </el-select>
                   </template>
                 </el-input>
@@ -298,7 +298,7 @@
                   <template #prepend>
                     <el-select v-model="selectedCurrencyCode" placeholder="Select" class="input-adjustnos" style="width: 115px"
                       @change="setSelectedCurrency" filterable>
-                      <el-option v-for="item in FLWupportedCurrencies" :label="item.value" :value="item.value" />
+                      <el-option v-for="item in FLWupportedCurrencies" :label="item.value" :value="item.value" :key="item.value" />
                     </el-select>
                   </template>
                 </el-input>
@@ -308,7 +308,7 @@
                   <template #prepend>
                     <el-select v-model="selectedCurrencyCode" placeholder="Select" style="width: 115px"
                       @change="setSelectedCurrency" filterable>
-                      <el-option v-for="item in FLWupportedCurrencies" :label="item.value" :value="item.value" />
+                      <el-option v-for="item in FLWupportedCurrencies" :label="item.value" :value="item.value"  :key="item.value" />
                     </el-select>
                   </template>
                 </el-input>

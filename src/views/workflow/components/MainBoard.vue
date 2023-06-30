@@ -1048,6 +1048,7 @@ export default {
     const name = ref("");
     const isActive = ref(false);
     const saveWorkflow = async () => {
+      console.log(workflow.value, 'dddpppp');
       const data = workflow.value.triggers.map((i) => {
         return {
           // JSONCondition: i.JSONCondition,
@@ -1061,6 +1062,8 @@ export default {
           }) : [],
         };
       });
+
+      console.log(data, 'klkjkllk');
 
       const reqBody = {
         id: workflow.value.id,
