@@ -378,7 +378,7 @@
         </div>
         <div class="w-100 mt-3 d-flex justify-content-end">
           <span>
-            <el-button :color="primarycolor" :disable="chunkProgress > 0 && chunkProgress < 95" size="large" @click="sendWhatsappMessage" round>Send Whatsapp
+            <el-button :color="primarycolor" :disabled="chunkProgress > 0 && chunkProgress < 95" size="large" @click="sendWhatsappMessage" round>Send Whatsapp
               message</el-button>
           </span>
         </div>
@@ -464,8 +464,13 @@ export default {
       return store.getters["communication/whatsappSessionId"]
     })
     const userWhatsappGroups = computed(() => {
-      if (store.getters["communication/allClientWhatsappChat"] && store.getters["communication/allClientWhatsappChat"].length > 0) return store.getters["communication/allClientWhatsappChat"].filter(i => i.isGroup)
+      if (store.getters["communication/allClientWhatsappChat"] && store.getters["communication/allClientWhatsappChat"].length > 0) {
+        whatsappGroupsLoading.value = false
+        return store.getters["communication/allClientWhatsappChat"].filter(i => i.isGroup)
+      } else {
+        whatsappGroupsLoading.value = false
       return []
+      }
     })
     const toggleGroupsVissibility = () => {
       groupsAreVissible.value = !groupsAreVissible.value;
