@@ -2,18 +2,6 @@
   <div
     class="container-fluid px-0"
   >
-    <div class="d-flex flex-column flex-md-row justify-content-md-between">
-      <div class="head-text">
-        <div>New Convert</div>
-      </div>
-      <div class="mt-3 mt-md-0">
-        <!-- <router-link :to="{ name: 'AddFirstTimer' }" class="text-decoration-none">
-          <el-button :color="primarycolor" class="ml-2 header-btn" round
-            >Add New Convert</el-button
-          >
-        </router-link> -->
-      </div>
-    </div>
     <div class="">
       <div class="top-con">
           <div class="">
@@ -67,40 +55,47 @@
           v-if="searchNewConvert.length > 0 "
         >
           <template v-slot:fullname="{ item }">
-            <div class="c-pointer">
+            <div @click="showMemberRow(item)" class="c-pointer">
               {{ item.fullName }}
             </div>
           </template>
 
           <template v-slot:phone="{ item }">
-            <div class="c-pointer">
+            <div @click="showMemberRow(item)" class="c-pointer">
               {{ item.phoneNumber }}
             </div>
           </template>
 
           <template v-slot:date="{ item }">
-            <div class="c-pointer">
+            <div @click="showMemberRow(item)" class="c-pointer">
               {{ formatDate(item.date) }}
             </div>
           </template>
           <template v-slot:howDidYouAboutUsName="{ item }">
-            <div class="c-pointer">
+            <div @click="showMemberRow(item)" class="c-pointer">
               {{ item.howDidYouAboutUsName }}
             </div>
           </template>
           <template v-slot:interactions="{ item }">
-            <div class="c-pointer">
+            <div @click="showMemberRow(item)"  class="c-pointer">
               {{ item.interactions }}
             </div>
           </template>
 
-          <!-- <template v-slot:action="{ item }">
+          <template v-slot:action="{ item }">
             <el-dropdown trigger="click">
               <el-icon>
                 <MoreFilled />
               </el-icon>
               <template #dropdown>
                 <el-dropdown-menu>
+                  <el-dropdown-item>
+                    <router-link
+                      :to="`/tenant/people/addnewconvert?id=${item.id}`"
+                      class="text-color"
+                      >Edit</router-link
+                    >
+                  </el-dropdown-item>
                   <el-dropdown-item>
                     <div
                       class="text-decoration-none text-color"
@@ -112,7 +107,7 @@
                 </el-dropdown-menu>
               </template>
             </el-dropdown>
-          </template> -->
+          </template>
       </Table>
     </div>
     <div
@@ -183,6 +178,7 @@
 <script>
 import { ref, inject, computed, watchEffect } from "vue";
 import axios from "@/gateway/backendapi";
+import router from "@/router/index";
 import dateFormatter from "../../services/dates/dateformatter";
 import deviceBreakpoint from "../../mixins/deviceBreakpoint";
 import Table from "@/components/table/Table";
@@ -217,12 +213,15 @@ export default {
       { name: "SOURCE", value: "howDidYouAboutUsName" },
       { name: "INTERESTED", value: "interestedInJoining" },
       { name: "INTERACTIONS", value: "interactions" },
-      // { name: "ACTION", value: "action" },
+      { name: "ACTION", value: "action" },
     ]);
 
     const formatDate = (date) => {
       return dateFormatter.monthDayYear(date);
     };
+    const showMemberRow = (item) => {
+      router.push(`/tenant/people/addnewconvert?id=${item.id}`)
+    }
     const searchNewConvert = computed(() => {
       if (allNewConvert.value === 0 && searchText.value === "")
         return allNewConvert.value;
@@ -269,8 +268,7 @@ export default {
         });
     };
     const deleteNewConvert = (id) => {
-      axios
-        .delete(`/api/Family/deleteFamily?id=${id}`)
+      axios.delete(`api/People/DeleteNewConvert/${id}`)
         .then((res) => {
           console.log(res);
 
@@ -279,8 +277,7 @@ export default {
             message: "New Convert Deleted",
             duration: 3000
           });
-          allNewConvert.value.filter((i) => i.id !== id);
-          // emit("list-filtered", listFiltered);
+          allNewConvert.value = allNewConvert.value.filter((i) => i.id !== id);
           //  store.dispatch('family/removeFamilyFromStore', id)
         })
         .catch((err) => {
@@ -308,6 +305,7 @@ export default {
     sendMarkedMemberEmail,
     sendMarkedMemberSms,
     allNewConvert,
+    showMemberRow,
     searchNewConvert,
     searchText
     }

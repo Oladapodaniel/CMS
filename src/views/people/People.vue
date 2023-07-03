@@ -95,11 +95,11 @@ export default {
 
     const memberlink = computed(() => {
       if (!tenantID.value) return ""
-      return `${window.location.origin}/createmember/${tenantID.value}`
+      return `${window.location.origin}/createmember?tenantId=${tenantID.value}`
     })
     const getQrCode = async () => {
       try{
-        const res = await axios.get(`/api/Settings/GetQRCode?link=${window.location.origin}/createmember/${tenantID.value}`)
+        const res = await axios.get(`/api/Settings/GetQRCode?link=${window.location.origin}/createmember?tenantId=${tenantID.value}`)
         QRCodeDialog.value = true
         qrCode.value = res.data
         // console.log(res, 'hhhh');

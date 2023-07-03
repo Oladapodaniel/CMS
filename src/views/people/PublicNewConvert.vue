@@ -26,7 +26,7 @@
     </div>
 
     <div class="row">
-      <h3 class="col-12 header-text font-weight-bold">Add First timers</h3>
+      <h3 class="col-12 header-text font-weight-bold">Add New Converts </h3>
       <div class="mt-3 col-12">Bio:</div>
     </div>
     <div class="row">
@@ -148,7 +148,7 @@
               class="input form-control"
               type="text"
               aria-required=""
-              v-model="item.data"
+              vz-model="item.data"
             />
             <Dropdown
               v-else-if="item.controlType == 1"
@@ -518,7 +518,7 @@ export default {
       firstTimersObj.value.maritalStatusId = selectedMaritalStatus.value
         ? selectedMaritalStatus.value.id
         : 0;
-      firstTimersObj.value.activityID = selectedEventAttended.value
+      firstTimersObj.value.activityId = selectedEventAttended.value
         ? selectedEventAttended.value.activityID
         : "00000000-0000-0000-0000-000000000000";
       firstTimersObj.value.howDidYouAboutUsId = selectedAboutUsSource.value
@@ -577,7 +577,7 @@ export default {
           break;
       }
 
-      firstTimersObj.value.customAttributeDataString = dynamicCustomFields.value.map(
+      firstTimersObj.value.customAttributeData = dynamicCustomFields.value.map(
         (i) => ({
           customAttributeID: i.id,
           data: i.data,
@@ -589,7 +589,7 @@ export default {
 
       loading.value = true;
       axios
-        .post("/api/PublicContents/FirstTimer", firstTimersObj.value)
+        .post("/api/PublicContents/NewConvert", firstTimersObj.value)
         .then((res) => {
           finish();
           console.log(res.data);
@@ -601,7 +601,7 @@ export default {
           //     detail: "First timer created successfully",
           //     life: 8000,
           //   });
-          swal("Successful", "First timer created successfully!", "success");
+          swal("Successful", "New Convert created successfully!", "success");
 
           firstTimersObj.value = {};
           selectedEventAttended.value = {};
@@ -856,7 +856,7 @@ export default {
       if (route.params.firstTimerId) {
         try {
           let { data } = await axios.get(
-            `/api/People/firstTimer/${route.params.firstTimerId}`
+            `/api/People/NewConvert/${route.params.firstTimerId}`
           );
           firstTimerPhone.value = data.phoneNumber;
           firstTimerEmail.value = data.email;

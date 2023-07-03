@@ -346,7 +346,7 @@
       </div>
 
       <div class="row my-3">
-        <div class="col-md-12 form-group">
+        <!-- <div class="col-md-12 form-group">
           <div class="row">
             <div class="col-md-2"></div>
             <div class="col-md-10 pl-0">
@@ -354,7 +354,7 @@
               <span class="font-weight-700 px-14">Personal Message</span>
             </div>
           </div>
-        </div>
+        </div> -->
         <div class="col-md-12">
           <div class="row">
             <div class="col-md-2"></div>
@@ -423,11 +423,11 @@
       </div>
 
       <!-- Send SMS modal -->
-      <el-dialog v-model="sendSMSDialog" :title="sendModalHeader"
-        :width="mdAndUp || lgAndUp || xlAndUp ? `50%` : xsOnly ? `90%` : `70%`" align-center class="p-4">
+      <el-dialog v-model="sendSMSDialog" title=""
+        :width="mdAndUp || lgAndUp || xlAndUp ? `50%` : xsOnly ? `90%` : `70%`" align-center class="px-4">
         <div class="row" v-if="!nigerian">
           <div class="col-md-12 text-center">
-            <el-button :color="primarycolor" @click="contructScheduleMessageBody(1, '')" round>Send SMS now</el-button>
+            <el-button :color="primarycolor" class="w-100" @click="contructScheduleMessageBody(1, '')" round>Send SMS now</el-button>
             <!-- <button class=" primary-btn default-btn px-4 my-2 border-0 primary-bg text-white outline-none extra-btn"
               data-dismiss="modal" @click="contructScheduleMessageBody(1, '')">
               Send SMS Now
@@ -440,35 +440,35 @@
             <div class="row">
               <div class="col-md-12 px-1">
                 <p>
-                  We are providing more options to reach and
-                  communicate with your members
+                 <strong> Multi-Layered SMS Send:</strong>  We leverage 3 channels to ensure you get the best delivery for your SMS. 👏🥳
+
                 </p>
               </div>
             </div>
 
-            <div class="row">
+            <!-- <div class="row">
               <div class="col-md-12 px-1">
                 <hr class="hr" />
               </div>
-            </div>
+            </div> -->
 
             <div class="row d-flex justify-content-between">
-              <div class="col-md-6 px-1">
+              <div class="col-md-12 px-1">
                 <div class="container">
                   <div class="row">
-                    <div class="col-md-12">
+                    <!-- <div class="col-md-12">
                       <label for="" class="small-text font-weight-600 py-2">NEW** HYBRID BULK SMS - 100% SMS DELIVERY
                         (SENDER ID AND DEDICATED)</label>
-                    </div>
+                    </div> -->
                     <div class=" col-md-12 send-now-div py-2 my-2 d-flex justify-content-center">
-                      <el-button :color="primarycolor" @click="contructScheduleMessageBody(1, 'hybridKonnect')" round>Send
+                      <el-button :color="primarycolor" class="w-100" @click="contructScheduleMessageBody(1, 'hybridKonnect')" round>Send 
                         SMS now</el-button>
                       <!-- <button class=" primary-btn default-btn border-0 primary-bg px-4 my-2 font-weight-600 outline-none"
                         data-dismiss="modal" @click="contructScheduleMessageBody(1, 'hybridKonnect')">
                         Send SMS Now
                       </button> -->
                     </div>
-                    <div class="col-md-12 px-0">
+                    <!-- <div class="col-md-12 px-0">
                       <hr class="hr my-2" />
                     </div>
                     <div class="col-md-12 px-0 d-flex flex-column">
@@ -476,11 +476,11 @@
                       <span>Not Affected by DND.</span>
                       <span>Failed SMS are Retried with Other
                         Options.</span>
-                    </div>
+                    </div> -->
                   </div>
                 </div>
               </div>
-              <div class="col-md-6 px-1 mt-3 mt-md-0">
+              <!-- <div class="col-md-6 px-1 mt-3 mt-md-0">
                 <div class="container">
                   <div class="row">
                     <div class="col-md-12">
@@ -490,10 +490,6 @@
                     <div class=" col-md-12 my-2 send-now-div py-2 d-flex justify-content-center">
                       <el-button type="info" @click="contructScheduleMessageBody(1, 'hostedsms')" round>Send SMS
                         now</el-button>
-                      <!-- <button class=" primary-btn default-btn px-4 border-0 my-2 grey-background text-grey outline-none"
-                        data-dismiss="modal" @click="contructScheduleMessageBody(1, 'hostedsms')">
-                        Send SMS Now
-                      </button> -->
                     </div>
                     <div class="col-md-12 px-0">
                       <hr class="hr my-2" />
@@ -506,24 +502,29 @@
                     </div>
                   </div>
                 </div>
-              </div>
+              </div> -->
 
             </div>
-            <div class="row mt-3">
+            <!-- <div class="row mt-3">
               <div class="col-md-12 px-1">
                 <hr class="hr" />
               </div>
-            </div>
+            </div> -->
             <div class="row">
               <div class="col-md-12 small-text mt-2 notecolour font-weight-bold">
                 <span class="text-dark font-weight-bold "> NB :</span>
                 <span>
-                  Messages sent between 8pm to 8am (Night
-                  Messages) will be delivered using the dedicated
+                 Messages should be sent between 8am to 8pm (By NCC). 
+                 Messages sent after 8pm will be delivered the next day by 8am. 
+                 This affects MTN, GLO and 9Mobile
+                </span>
+                <!-- <span>
+                  Messages sent between <span class="text-secondary"> 8pm to 8am (Night
+                  Messages)</span> will be delivered using the dedicated
                   phone number. If you wish to use sender ID, kindly
                   send messages between 8am in the morning to 8pm in
                   the evening.
-                </span>
+                </span> -->
               </div>
             </div>
           </div>
@@ -532,7 +533,7 @@
 
       <!-- Schedudle SMS modal -->
 
-      <el-dialog v-model="display" :title="sendModalHeader"
+      <el-dialog v-model="display" title=""
         :width="mdAndUp || lgAndUp || xlAndUp ? `50%` : xsOnly ? `90%` : `70%`" align-center class="p-4">
         <div class="row">
           <!-- <el-date-picker v-model="executionDate" type="datetime" class="w-100" placeholder="Select date and time" /> -->
@@ -1378,7 +1379,7 @@ export default {
 <style scoped>
 .notecolour {
   /* color: rgb(199, 129, 23);; */
-  color: rgb(252, 54, 87);
+  color: rgb(249, 174, 34);
 }
 
 .input {
@@ -1542,9 +1543,9 @@ input:focus {
   overflow-y: auto;
 }
 
-.send-now-div {
+/* .send-now-div {
   border: 1px solid #ddd;
-}
+} */
 
 .modal-lg {
   max-width: 680px;

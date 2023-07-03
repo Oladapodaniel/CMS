@@ -215,6 +215,25 @@ main.el-main {
   overflow: inherit;
 }
 
+/* @media (max-width: 400px){
+  div.input-adjustno.el-input-group_prepend.el-select{
+    height: calc(1.2em + 0.895rem + 2px) !important;
+
+  }
+} */
+@media (max-width: 400px){
+  div.input-adjustnos .el-input__wrapper{
+    height: calc(1.2em + 0.895rem + 2px) !important;
+    /* width: 30% !important; */
+
+  }
+  div.input-adjustno .el-input-group__prepend{
+    /* height: calc(1.2em + 0.895rem + 2px) !important; */
+    width: 40% !important;
+
+  }
+}
+
 @media (max-width: 421px) {
   .el-button+.el-button.add-member {
     margin-left: 0;
