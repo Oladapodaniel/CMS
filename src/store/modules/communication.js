@@ -98,12 +98,16 @@ export default {
 
         clearState(state) {
             state.allSentSMS = []
-            state.smsReplies = [],
+            state.smsReplies = []
             state.smsDrafts = []
             state.emailDrafts = []
             state.sentEmails = []
             state.addSmsToSentList = {}
             state.addToSentEmail = {}
+            state.sentVoiceList = []
+            state.whatsappSessionId = "",
+            state.isWhatsappClientReady = false,
+            state.allClientWhatsappChat = []
         }
     },
 
