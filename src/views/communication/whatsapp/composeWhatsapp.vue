@@ -929,6 +929,7 @@ export default {
       selectedFileUrl.value = ""
       whatsappAttachment.value = {}
       chunkProgress.value = 0
+      socket.emit('clearfile', '')
     }
 
 
