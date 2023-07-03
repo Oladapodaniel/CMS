@@ -21,11 +21,11 @@
             <h1 class="s-20 font-weight-700 text-dark"> Successfully.</h1>
             <el-button @click="proceedAction" class="mt-5" text>Click here to proceed</el-button>
         </div>
-        <div class="d-flex justify-content-center align-items-center" v-else>
+        <div class="d-flex justify-content-md-center flex-column flex-md-row align-items-sm-center" v-else>
             <div v-loading="qrloading">
-                <VueQrcode :value="qrCode" :size="200" :color="{ dark: '#000000ff', light: '#ffffffff' }" type="image/png"
+                <VueQrcode :value="qrCode" :size="200" class="w-100" :color="{ dark: '#000000ff', light: '#ffffffff' }" type="image/png"
                     level="L" v-if="qrCode" />
-                <img src="../../assets/qrcode.png" v-else />
+                <img src="../../assets/qrcode.png" class="w-100" v-else />
             </div>
             <div class="ml-4">
                 <h1 class="send-text s-20">Scan the QR Code <br />with your phone</h1>

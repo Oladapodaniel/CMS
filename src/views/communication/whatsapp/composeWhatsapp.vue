@@ -472,7 +472,7 @@ export default {
     };
 
     const showSection = (index) => {
-      // if (index === 1) groupSelectionTab.value = true;
+      if (index === 1) groupSelectionTab.value = true;
       if (index === 0) membershipSelectionTab.value = true;
       if (index === 1) phoneNumberSelectionTab.value = true;
       // if (index === 4) contactUpload.value = true;
