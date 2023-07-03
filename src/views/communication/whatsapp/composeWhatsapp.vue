@@ -468,7 +468,6 @@ export default {
         whatsappGroupsLoading.value = false
         return store.getters["communication/allClientWhatsappChat"].filter(i => i.isGroup)
       } else {
-        whatsappGroupsLoading.value = false
       return []
       }
     })
