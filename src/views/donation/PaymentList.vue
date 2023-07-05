@@ -1,9 +1,8 @@
 <template>
 <div class="row container-top">
-          <div class="col-12 table">
-            <div class="top-con">
+          <div class="col-12 ">
+            <!-- <div class="top-con">
               <div class="table-top w-100 my-3 select-all  px-4">
-                <!-- <div class="select-all col-1"></div> -->
                 <div class="row w-100">
                       
                 <div class="col-12 d-flex justify-content-center">
@@ -27,95 +26,102 @@
                 </div>
                 </div>
               </div>
-            </div>
-            <!-- <div
-              class="filter-options"
-              :class="{ 'filter-options-shown': filterFormIsVissible }"
-            >
-              <div class="container-fluid">
-                <div class="row">
-                  <div class="col-md-9">
-                    <div class="row">
-                      <div
-                        class="col-12 col-sm-6 offset-sm-3 offset-md-0 form-group inp w-100"
-                      >
-                        
-
-                        <input
-                          type="text"
-                          class="input w-100"
-                          placeholder="Contribution"
-                      
-                        />
-                      </div>
-
-                      <div class="col-12 col-sm-6 form-group d-none d-md-block">
-                        <input
-                          type="date"
-                          class="form-control input inp w-100"
-                     
-                        />
-                      </div>
-                    </div>
-
-                    <div class="row">
-                      <div class="col-12 col-sm-6 form-group d-none d-md-block">
-                        <input
-                          type="text"
-                          class="input w-100"
-                          placeholder="event"
-            
-                        />
-                      </div>
-
-                      <div class="col-12 col-sm-6 form-group d-none d-md-block">
-                        <input
-                          type="text"
-                          class="input w-100"
-                          placeholder="donor"
-                  
-                        />
-                      </div>
-                    </div>
-                  </div>
-
-                  <div class="col-md-3 d-flex flex-column align-items-center">
-                    <button class="apply-btn text-white" @click="applyFilter">
-                      Apply
-                    </button>
-                    <span class="mt-2">
-                      <a class="clear-link mr-2" @click="clearAll">Clear all</a>
-                      <span class="mx-2"
-                        ><i
-                          class="fas fa-circle"
-                          style="font-size: 4px"
-                        ></i></span
-                      ><a class="hide-link ml-2" @click="hide">Hide</a>
-                    </span>
-                  </div>
-                </div>
-              </div>
             </div> -->
-
-           
-            <div class="row table-header">
+            <!-- <div class="row table-header">
                 <div class="col-sm-4 d-none d-sm-block">
                     NAME
                 </div>
                     <div class="col-sm-3 d-none d-sm-block">
                     BANK
                 </div>
-                    <!-- <div class="col-sm-2 d-none d-sm-block">
+                    <div class="col-sm-2 d-none d-sm-block">
                     AMOUNT
-                </div> -->
+                </div>
                     <div class="col-sm-2 d-none d-sm-block">
                     DATE
                 </div>
                     <div class="col-sm-2 d-none d-sm-block" >
                     STATUS
                 </div>
+            </div> -->
+            <div class="top-con" id="ignore2">
+              <div class="table-top" >
+                <div class="col-12 col-sm-4 my-3">
+                  <el-input
+                    size="small"
+                    v-model="searchText"
+                    placeholder="Search..."
+                    @keyup.enter.prevent="searchPaymentInDB"
+                    class="input-with-select"
+                  >
+                    <template #append>
+                      <el-button @click.prevent="searchPaymentInDB">
+                        <el-icon :size="13">
+                          <Search />
+                        </el-icon>
+                      </el-button>
+                    </template>
+                  </el-input>
+                </div>
+              </div>
             </div>
-            <div class="table-body row" v-for="item in searchPaymentList" :key="item.id">
+            <Table
+              :data="searchPaymentList"
+              :headers="paymentHeaders"
+              :checkMultipleItem="false"
+              v-loading="loading"
+            >
+              <template v-slot:name="{ item }">
+                <div class="c-pointer" @click="paymentListClick(item.id)">
+                  {{ item.name }}
+                </div>
+              </template>
+              <template v-slot:bank="{ item }">
+                <div class="c-pointer" @click="paymentListClick(item.id)">
+                  {{ item.bank }}
+                </div>
+              </template>
+              <template v-slot:date="{ item }">
+                <div class="c-pointer" @click="paymentListClick(item.id)">
+                  {{ date(item.date) }}
+                </div>
+              </template>
+              <template v-slot:status="{ item }">
+                <div class="c-pointer" @click="paymentListClick(item.id)">
+                  {{ item.isActive ? "Active" : "Inactive" }}
+                </div>
+              </template>
+              <template v-slot:action="{ item }">
+                <el-dropdown trigger="click">
+                  <el-icon>
+                    <MoreFilled />
+                  </el-icon>
+                  <template #dropdown>
+                    <el-dropdown-menu>
+                      <el-dropdown-item>
+                        <router-link :to="{ name: 'PaymentOption', params: { paymentId: item.id } }">
+                          View Details
+                        </router-link>
+                      </el-dropdown-item>
+                      <el-dropdown-item>
+                        <router-link :to="{ name: 'PaymentTransaction', params: { editPayment: item.id } }">
+                          Edit
+                        </router-link>
+                      </el-dropdown-item>
+                      <el-dropdown-item>
+                        <div
+                          @click="showConfirmModal(item.id)"
+                          class="text-color"
+                        >
+                          Delete
+                        </div>
+                      </el-dropdown-item>
+                    </el-dropdown-menu>
+                  </template>
+                </el-dropdown>
+              </template>
+            </Table>
+            <!-- <div class="table-body row" v-for="item in searchPaymentList" :key="item.id">
                 <div class="col-6 d-block d-sm-none">
                 <div class="col-sm-4">
                     NAME
@@ -123,9 +129,9 @@
                     <div class="col-sm-3">
                     BANK
                 </div>
-                    <!-- <div class="col-sm-2">
+                    <div class="col-sm-2">
                     AMOUNT
-                </div> -->
+                </div>
                     <div class="col-sm-2">
                     DATE
                 </div>
@@ -139,11 +145,11 @@
                     <router-link :to="`/tenant/payments/${item.id}`" class="itemroute-color">{{ item.name }}</router-link>
                 </div>
                 <div class="col-sm-3 text-right text-sm-left text-md-left">
-                     <router-link :to="`/tenant/payments/${item.id}`" class="itemroute-color  ">{{ item.bankName }}</router-link>
+                     <router-link :to="`/tenant/payments/${item.id}`" class="itemroute-color  ">{{ item.bank }}</router-link>
                 </div>
-                <!-- <div class="col-sm-2">
+                <div class="col-sm-2">
                      <router-link :to="`/tenant/payments/${item.id}`" class="itemroute-color">{{ item.amount }}</router-link>
-                </div> -->
+                </div>
                 <div class="col-sm-2 text-right text-sm-left text-md-left">
                      <router-link :to="`/tenant/payments/${item.id}`" class="itemroute-color">{{ date(item.date) }}</router-link>
                 </div>
@@ -181,15 +187,12 @@
             </div>
           
                 </div>
-            </div>
-            <div class="col-12">
-                    <div class="table-footer">
-                        <PaginationButtons  @getcontent="getPeopleByPage" :itemsCount="offeringCount" :currentPage="currentPage"/>
-                    </div>
+            </div> -->
+            <!-- <div class="col-12">
+                <div class="table-footer">
+                    <PaginationButtons  @getcontent="getPeopleByPage" :itemsCount="offeringCount" :currentPage="currentPage"/>
                 </div>
-            
-            <ConfirmDialog />
-            <Toast />
+            </div> -->
             
           </div>
 
@@ -201,15 +204,17 @@
 <script>
 import { ref, computed } from 'vue'
 import moment from "moment";
-import { useConfirm } from "primevue/useconfirm";
-import { useToast } from "primevue/usetoast";
 import axios from "@/gateway/backendapi";
 import finish from '../../services/progressbar/progress'
-import PaginationButtons from "../../components/pagination/PaginationButtons.vue";
+// import PaginationButtons from "../../components/pagination/PaginationButtons.vue";
 import formatDate from "../../services/dates/dateformatter"
+import Table from "@/components/table/Table";
+import { ElMessage, ElMessageBox } from "element-plus";
 export default {
     props: ['paymentList'],
-    components: { PaginationButtons },
+    components: { Table, 
+        // PaginationButtons 
+    },
     setup (props, { emit }) {
         const filterFormIsVissible = ref(false);
         const searchIsVisible = ref(false);
@@ -233,8 +238,18 @@ export default {
               searchText = "";
              }
 
+          const paymentListClick = (item) =>{
+            router.push(`tenant/paymnets/${item}`)
+          }
 
 
+          const paymentHeaders = ref([
+            { name: "NAME", value: "name" },
+            { name: "BANK", value: "bank" },
+            { name: "DATE", value: "date" },
+            { name: "STATUS", value: "status" },
+            { name: "ACTION", value: "action" },
+          ]);
         const toggleFilterFormVissibility = () =>
         (filterFormIsVissible.value = !filterFormIsVissible.value);
 
@@ -268,65 +283,68 @@ export default {
 
         };
           getBanks();
+          const searchPaymentInDB = () => {
+              if (searchText.value !== "" && props.paymentList.length > 0) {
+                return props.paymentList.filter((i) => {
+                  if (i.name)
+                    return i.name
+                      .toLowerCase()
+                      .includes(searchText.value.toLowerCase());
+                });
+              } else {
+                return props.paymentList;
+              }
+            };
 
         const deleteOffering = (id) => {
-            console.log(props.paymentList)
-
             axios
                 .delete(`/api/PaymentForm/Delete?paymentFormID=${id}`)
                 .then((res) => {
                 console.log(res);
-                toast.add({
-                    severity: "success",
-                    summary: "Confirmed",
-                    detail: "Payment form deleted",
-                    life: 3000,
-                });
+                ElMessage({
+                    type: "success",
+                    message: "Payment form deleted",
+                    duration: 5000,
+                  });
                 emit('delete-payment', id)
                 })
                 .catch((err) => {
                 finish()
                 if (err.response.status === 400) {
-                    toast.add({
-                    severity: "error",
-                    summary: "Unable to delete",
-                    detail: "Ensure this member is not in any group",
-                    life: 3000,
-                    });
+                   ElMessage({
+                    type: "error",
+                    message: "Unable to delete, Ensure this member is not in any group",
+                    duration: 5000,
+                  });
                 } else {
-                    toast.add({
-                    severity: "error",
-                    summary: "Unable to delete",
-                    detail: "An error occurred, please try again",
-                    life: 3000,
-                    });
+                  ElMessage({
+                    type: "error",
+                    message: "Unable to delete, An error occurred, please try again",
+                    duration: 5000,
+                  });
                 }
                 });
             };
-
-
-        const confirm = useConfirm();
-    let toast = useToast();
     const showConfirmModal = (id) => {
-      confirm.require({
-        message: "Are you sure you want to proceed?",
-        header: "Confirmation",
-        icon: "pi pi-exclamation-triangle",
-        acceptClass: "confirm-delete",
-        rejectClass: "cancel-delete",
-        accept: () => {
-          deleteOffering(id);
-          // toast.add({severity:'info', summary:'Confirmed', detail:'Member Deleted', life: 3000});
-        },
-        reject: () => {
-          toast.add({
-            severity: "info",
-            summary: "Rejected",
-            detail: "You have rejected",
-            life: 3000,
+      ElMessageBox.confirm(
+        "Are you sure you want to proceed?",
+        "Confirm delete",
+        {
+          confirmButtonText: "OK",
+          cancelButtonText: "Cancel",
+          type: "error",
+        }
+      )
+        .then(() => {
+           deleteOffering(id);
+        })
+        .catch(() => {
+          ElMessage({
+            type: "info",
+            message: "Delete canceled",
+            duration: 5000,
           });
-        },
-      });
+        });
     };
 
       const date = date => {
@@ -334,7 +352,7 @@ export default {
       }
 
         return  {
-            moment,searchPaymentList, showConfirmModal,searchText, removeSearchText, deleteOffering, filterFormIsVissible, toggleFilterFormVissibility, toggleSearch, searchIsVisible,banks,
+            moment,searchPaymentList, showConfirmModal,searchText, searchPaymentInDB, paymentListClick, paymentHeaders, removeSearchText, deleteOffering, filterFormIsVissible, toggleFilterFormVissibility, toggleSearch, searchIsVisible,banks,
             loading, getPaymentGateway, date
         }
     }
@@ -345,8 +363,12 @@ export default {
 .table-top {
   font-weight: 800;
   font-size: 12px;
+  background: #fff;
+  border: 1px solid #e0e0e0;
+  border-bottom: none;
+  display: flex;
+  justify-content: flex-end;
 }
-
 .table-top label:hover,
 .table-top p:hover {
   cursor: pointer;
@@ -420,12 +442,12 @@ header {
     .filter{
       width: 50%;
     }
-    .table-top {
+    /* .table-top {
     font-weight: 800;
     font-size: 12px;
     display: flex;
     flex-wrap: wrap;
-  }
+  } */
 }
 
 

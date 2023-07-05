@@ -680,13 +680,28 @@ export default {
           "/api/Messaging/SendVoiceMessage",
           formData
         );
-        console.log(data)
-        ElMessage({
+        console.log(data, 'LLLKKK')
+        if(data.status){
+          ElMessage({
           type: 'success',
           message: 'You have successfully sent a voice note',
           duration: 5000
         })
         router.push("/tenant/voice/voicelist")
+        }else if(data && !data.status){
+          ElMessage({
+              message: data.message || "An error Occur" ,
+              type: "warning",
+              duration: 6000,
+            });
+
+        }else{
+           ElMessage({
+              type: 'error',
+              message: "Voice not sent, please try again",
+              duration: 5000,
+            })
+        }
       } catch (err) {
         console.log(err);
         ElMessage({

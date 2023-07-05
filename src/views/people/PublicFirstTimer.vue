@@ -422,6 +422,7 @@ export default {
       sendWelcomeEmail: true,
     });
     const showCategory = ref(false);
+    const formdatImage = ref('')
     const eventText = ref("");
     const displayModal = ref(false);
     const selectEvent = ref("Select Event");
@@ -512,84 +513,193 @@ export default {
     const loading = ref(false);
 
     const onSubmit = async () => {
-      firstTimersObj.value.genderId = selectedGender.value
-        ? selectedGender.value.id
-        : 0;
-      firstTimersObj.value.maritalStatusId = selectedMaritalStatus.value
-        ? selectedMaritalStatus.value.id
-        : 0;
-      firstTimersObj.value.activityID = selectedEventAttended.value
-        ? selectedEventAttended.value.activityID
-        : "00000000-0000-0000-0000-000000000000";
-      firstTimersObj.value.howDidYouAboutUsId = selectedAboutUsSource.value
-        ? selectedAboutUsSource.value.id
-        : "00000000-0000-0000-0000-000000000000";
-      firstTimersObj.value.communicationMeans = selectedCommunicationMeans.value
-        ? comMeansArr.value.indexOf(selectedCommunicationMeans.value) + 1
-        : 0;
-      firstTimersObj.value.interestedInJoining = selectedJoinInterest.value
-        ? joinInterestArr.value.indexOf(selectedJoinInterest.value) + 1
-        : 0;
-      firstTimersObj.value.wantToBeVisited = selectedVisitOption.value
-        ? wantVisitArr.value.indexOf(selectedVisitOption.value) + 1
-        : 0;
-
+      const formData = new FormData();
+      formData.append(
+        "genderId", selectedGender.value ? selectedGender.value.id : 0,
+      );
+      
+      formData.append(
+        "maritalStatusId", selectedMaritalStatus.value ? selectedMaritalStatus.value.id : 0,
+      );
+      formData.append(
+        "activityID", selectedEventAttended.value ? selectedEventAttended.value.activityID : "00000000-0000-0000-0000-000000000000",
+      );
+      formData.append(
+        "howDidYouAboutUsId", selectedAboutUsSource.value ? selectedAboutUsSource.value.id : "00000000-0000-0000-0000-000000000000",
+      );
+      
+      formData.append(
+        "communicationMeans", selectedCommunicationMeans.value ? comMeansArr.value.indexOf(selectedCommunicationMeans.value) + 1 : 0,
+      );
+      
+      formData.append(
+        "interestedInJoining", selectedJoinInterest.value ? joinInterestArr.value.indexOf(selectedJoinInterest.value) + 1 : 0,
+      );
+      formData.append(
+        "wantToBeVisited", selectedVisitOption.value ? wantVisitArr.value.indexOf(selectedVisitOption.value) + 1 : 0,
+      );
+      formData.append(
+        "tenantId", route.params.id,
+      );
+      formData.append(
+        "imageUrl", formdatImage.value ? formdatImage.value : '',
+      );
+      formData.append(
+        "phoneNumber", firstTimersObj.value.phoneNumber ? firstTimersObj.value.phoneNumber : '',
+      );
+      formData.append(
+        "email", firstTimersObj.value.email ? firstTimersObj.value.email : '',
+      );
+      formData.append(
+        "lastName", firstTimersObj.value.lastName ? firstTimersObj.value.lastName : '',
+      );
+      formData.append(
+        "firstName", firstTimersObj.value.firstName ? firstTimersObj.value.firstName : '',
+      );
+      formData.append(
+        "birthYear", firstTimersObj.value.birthYear ? firstTimersObj.value.birthYear : '',
+      );
+      formData.append(
+        "birthday", firstTimersObj.value.birthday ? firstTimersObj.value.birthday : '',
+      );
+       formData.append(
+        "customAttributeDataString",
+        JSON.stringify(
+          dynamicCustomFields.value.map((i) => ({
+            customAttributeID: i.id,
+            data: i.data,
+            entityID: route.params.personId,
+          }))
+        )
+      );
+      // formData.append(
+      //   "customAttributeDataString", dynamicCustomFields.value.map(
+      //   (i) => ({
+      //     customAttributeID: i.id,
+      //     data: i.data,
+      //     entityID: route.params.personId,
+      //   })
+      // ),
+      // );
+      
+      // firstTimersObj.value.genderId = selectedGender.value
+      //   ? selectedGender.value.id
+      //   : 0;
+      // firstTimersObj.value.maritalStatusId = selectedMaritalStatus.value
+      //   ? selectedMaritalStatus.value.id
+      //   : 0;
+      // firstTimersObj.value.activityID = selectedEventAttended.value
+      //   ? selectedEventAttended.value.activityID
+      //   : "00000000-0000-0000-0000-000000000000";
+      // firstTimersObj.value.howDidYouAboutUsId = selectedAboutUsSource.value
+      //   ? selectedAboutUsSource.value.id
+      //   : "00000000-0000-0000-0000-000000000000";
+      // firstTimersObj.value.communicationMeans = selectedCommunicationMeans.value
+      //   ? comMeansArr.value.indexOf(selectedCommunicationMeans.value) + 1
+      //   : 0;
+      // firstTimersObj.value.interestedInJoining = selectedJoinInterest.value
+      //   ? joinInterestArr.value.indexOf(selectedJoinInterest.value) + 1
+      //   : 0;
+      // firstTimersObj.value.wantToBeVisited = selectedVisitOption.value
+      //   ? wantVisitArr.value.indexOf(selectedVisitOption.value) + 1
+      //   : 0;
       switch (birthMonth.value) {
         case "January":
-          firstTimersObj.value.birthMonth = 1;
+          formData.append('birthMonth', '1')
           break;
         case "February":
-          firstTimersObj.value.birthMonth = 2;
+          formData.append('birthMonth', '2')
           break;
         case "March":
-          firstTimersObj.value.birthMonth = 3;
+          formData.append('birthMonth', '3')
           break;
         case "April":
-          firstTimersObj.value.birthMonth = 4;
+          formData.append('birthMonth', '4')
           break;
         case "May":
-          firstTimersObj.value.birthMonth = 5;
+          formData.append('birthMonth', '5')
           break;
         case "June":
-          firstTimersObj.value.birthMonth = 6;
+          formData.append('birthMonth', '6')
           break;
         case "July":
-          firstTimersObj.value.birthMonth = 7;
+          formData.append('birthMonth', '7')
           break;
         case "August":
-          firstTimersObj.value.birthMonth = 8;
+          formData.append('birthMonth', '8')
           break;
         case "September":
-          firstTimersObj.value.birthMonth = 9;
+          formData.append('birthMonth', '9')
           break;
         case "October":
-          firstTimersObj.value.birthMonth = 10;
+          formData.append('birthMonth', '10')
           break;
         case "November":
-          firstTimersObj.value.birthMonth = "11";
+          formData.append('birthMonth', '11')
           break;
         case "December":
-          firstTimersObj.value.birthMonth = "12";
+          formData.append('birthMonth', '12')
           break;
         default:
-          // firstTimersObj.value.birthMonth = "12";
           console.log("No month chosen");
           break;
       }
+      // switch (birthMonth.value) {
+      //   case "January":
+      //     firstTimersObj.value.birthMonth = 1;
+      //     break;
+      //   case "February":
+      //     firstTimersObj.value.birthMonth = 2;
+      //     break;
+      //   case "March":
+      //     firstTimersObj.value.birthMonth = 3;
+      //     break;
+      //   case "April":
+      //     firstTimersObj.value.birthMonth = 4;
+      //     break;
+      //   case "May":
+      //     firstTimersObj.value.birthMonth = 5;
+      //     break;
+      //   case "June":
+      //     firstTimersObj.value.birthMonth = 6;
+      //     break;
+      //   case "July":
+      //     firstTimersObj.value.birthMonth = 7;
+      //     break;
+      //   case "August":
+      //     firstTimersObj.value.birthMonth = 8;
+      //     break;
+      //   case "September":
+      //     firstTimersObj.value.birthMonth = 9;
+      //     break;
+      //   case "October":
+      //     firstTimersObj.value.birthMonth = 10;
+      //     break;
+      //   case "November":
+      //     firstTimersObj.value.birthMonth = "11";
+      //     break;
+      //   case "December":
+      //     firstTimersObj.value.birthMonth = "12";
+      //     break;
+      //   default:
+      //     console.log("No month chosen");
+      //     break;
+      // }
 
-      firstTimersObj.value.customAttributeDataString = dynamicCustomFields.value.map(
-        (i) => ({
-          customAttributeID: i.id,
-          data: i.data,
-          entityID: route.params.personId,
-        })
-      );
+      // firstTimersObj.value.customAttributeDataString = dynamicCustomFields.value.map(
+      //   (i) => ({
+      //     customAttributeID: i.id,
+      //     data: i.data,
+      //     entityID: route.params.personId,
+      //   })
+      // );
 
-      firstTimersObj.value.tenantId = route.params.id;
+      // firstTimersObj.value.tenantId = route.params.id;
 
       loading.value = true;
       axios
-        .post("/api/PublicContents/FirstTimer", firstTimersObj.value)
+        .post("/api/PublicContents/FirstTimer", formData)
+        // .post("/api/PublicContents/FirstTimer", firstTimersObj.value)
         .then((res) => {
           finish();
           console.log(res.data);
@@ -917,9 +1027,9 @@ export default {
         }
       }
     };
-
     const setImageToUrl = (payload) => {
       firstTimersObj.value.imageUrl = payload;
+      formdatImage.value = payload
     };
 
     const setContact = (payload) => {
@@ -999,6 +1109,7 @@ export default {
       hideCelebTab,
       showCelebTab,
       showAddInfoTab,
+      formdatImage,
       hideAddInfoTab,
       birthMonth,
       churchLogo2,

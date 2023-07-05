@@ -1,9 +1,7 @@
 <template>
-  <div>
-    <div
-      class="container-top"
-      :class="{ 'container-slim': lgAndUp || xlAndUp }"
-    >
+  <div class="container-top"
+      :class="{ 'container-slim': lgAndUp || xlAndUp }">
+    <div>
       <div
         class="d-flex flex-column flex-md-row justify-content-md-between my-3"
       >
@@ -30,9 +28,9 @@
       </div>
     </div>
 
-    <div class="container-wide">
+    <div class="container-fluid">
       <div class="row">
-        <div class="col-md-12">
+        <div class="col-md-12 px-0">
           <hr class="hr" />
         </div>
       </div>
