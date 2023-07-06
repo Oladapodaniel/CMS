@@ -139,6 +139,28 @@
             />
           </div>
         </div>
+        <div>
+          <div class="d-md-flex justify-content-md-end mt-3 ">
+            <label for="" class="label">Which Group[s] Do You Belong To?</label>
+              <div class="p-2 border   add-group bg-white">
+                <div v-for="(item, index) in firstTimerInGroup" :key="index">
+                  <div class="pt-1">{{ index + 1 }}. {{ item.name }}</div>
+                </div>
+                <div v-if="firstTimerInGroup.length === 0">
+                  No group added yet
+                </div>
+                <div class="
+                  font-weight-700
+                  text-primary
+                  border-top
+                  text-center
+                  c-pointer
+                " data-toggle="modal" data-target="#addToGroup">
+                  Choose group
+                </div>
+              </div>
+          </div>
+        </div>
         <!-- Additional field -->
         <div v-for="item in dynamicCustomFields" :key="item.id">
           <div class="d-md-flex flex-wrap justify-content-md-end mt-3">
@@ -351,6 +373,126 @@
         </div>
       </div>
     </div>
+      <div
+      class="modal fade"
+      id="addToGroup"
+      tabindex="-1"
+      role="dialog"
+      aria-labelledby="addToGroup"
+      aria-hidden="true"
+    >
+      <div class="modal-dialog modal-lg" role="document">
+        <div class="modal-content">
+          <div class="modal-header" style="background: #ebeff4">
+            <h5 class="modal-title font-weight-bold" id="addToGroup">
+              Group Membership
+            </h5>
+            <button
+              type="button"
+              class="close"
+              data-dismiss="modal"
+              aria-label="Close"
+            >
+              <span aria-hidden="true">&times;</span>
+            </button>
+          </div>
+          <div class="modal-body">
+            <div class="row my-4">
+              <div class="col-md-4 text-md-right">
+                <label for="" class="font-weight-600">Name</label>
+              </div>
+              <div class="col-md-7">
+                <div class="dropdown show">
+                  <button
+                    class="btn border w-100 d-flex justify-content-between align-items-center"
+                    type="button"
+                    id="dropdownMenuLink"
+                    data-toggle="dropdown"
+                    aria-haspopup="true"
+                    aria-expanded="false"
+                    @click="focusInput"
+                  >
+                    <div>
+                      {{
+                        Object.keys(groupToAddTo).length > 0
+                          ? groupToAddTo.name
+                          : "Select a group"
+                      }}
+                    </div>
+                    <i class="pi pi-chevron-down"></i>
+                  </button>
+                  <div
+                    class="dropdown-menu w-100 scroll-card"
+                    aria-labelledby="dropdownMenuLink"
+                  >
+                    <input
+                      type="text"
+                      v-model="searchGroupText"
+                      class="form-control input-width-adjust"
+                      placeholder="Search groups"
+                      ref="searchRef"
+                    />
+                    <a
+                      class="dropdown-item"
+                      v-for="item in searchAllGroups"
+                      :key="item.id"
+                    >
+                      <div class="c-pointer" @click="selectGroup(item)">
+                        {{ item.name }}
+                      </div>
+                    </a>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <div class="row">
+              <div class="col-md-4 text-md-right">
+                <label for="" class="font-weight-600">Position</label>
+              </div>
+              <div class="col-md-7">
+                <input
+                  type="text"
+                  v-model="position"
+                  class="form-control"
+                  placeholder="e.g Member"
+                />
+              </div>
+            </div>
+
+            <div class="row">
+              <div class="col-md-4">
+                <label for="" class="font-weight-600"></label>
+              </div>
+
+              <div class="col-md-7">
+                <div class="col-md-12 mt-3 text-center">
+                  <p class="my-1 text-danger" v-if="addToGroupError">
+                    Please select a group
+                  </p>
+                </div>
+                <div class="row mt-2">
+                  <div class="col-md-6 d-md-flex justify-content-end">
+                    <button class="default-btn" data-dismiss="modal">
+                      Cancel
+                    </button>
+                  </div>
+                  <div class="col-md-6">
+                    <button
+                      class="default-btn primary-bg border-0 text-white"
+                      :data-dismiss="dismissAddToGroupModal"
+                      @click="addMemberToGroup"
+                    >
+                      Save
+                    </button>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
   </div>
   <Toast />
 </template>
@@ -438,6 +580,7 @@ export default {
     const position = ref("");
     const addToGroupError = ref(false);
     const dismissAddToGroupModal = ref("");
+    const searchRef = ref(null);
     const route = useRoute();
 
     const eventName = computed(() => {
@@ -490,6 +633,11 @@ export default {
     const closeModal = () => {
       displayModal.value = false;
     };
+    const focusInput = () => {
+      setTimeout(() => {
+        searchRef.value.focus();
+      }, 1000);
+    };
 
     const newEventCategoryName = ref("");
 
@@ -505,11 +653,28 @@ export default {
     // const birthMonth = ref(null)
 
     const hideCelebTab = ref(true);
+    const searchGroupText = ref('');
     const hideAddInfoTab = ref(true);
     const showCelebTab = () => (hideCelebTab.value = !hideCelebTab.value);
     const showAddInfoTab = () => (hideAddInfoTab.value = !hideAddInfoTab.value);
 
     const loading = ref(false);
+
+    const searchAllGroups = computed(() => {
+      if (!searchGroupText.value && allGroups.value.length > 0) {
+        return allGroups.value;
+      } else {
+        return allGroups.value.filter((i) => {
+          if (i.name)
+            return i.name
+              .toLowerCase()
+              .includes(searchGroupText.value.toLowerCase());
+        });
+      }
+    });
+    const selectGroup = (item) => {
+      groupToAddTo.value = item;
+    };
 
     const onSubmit = async () => {
       firstTimersObj.value.genderId = selectedGender.value
@@ -584,6 +749,15 @@ export default {
           entityID: route.params.personId,
         })
       );
+      firstTimersObj.value.groups =
+        firstTimerInGroup.value.length > 0
+          ? firstTimerInGroup.value.map((i) => {
+            return {
+              groupId: i.groupId,
+              position: i.position,
+            };
+          })
+          : [];
 
       firstTimersObj.value.tenantId = route.params.id;
 
@@ -977,6 +1151,8 @@ export default {
       onSubmit,
       onCancel,
       firstTimersObj,
+      searchAllGroups,
+      searchGroupText,
       day,
       month,
       year,
@@ -987,6 +1163,7 @@ export default {
       joinInterestArr,
       wantVisitArr,
       comMeansArr,
+      selectGroup,
       loading,
       selectedGender,
       selectedMaritalStatus,
@@ -998,6 +1175,7 @@ export default {
       selectedFollowUp,
       hideCelebTab,
       showCelebTab,
+      focusInput,
       showAddInfoTab,
       hideAddInfoTab,
       birthMonth,
@@ -1038,6 +1216,7 @@ export default {
       groupToAddTo,
       position,
       dynamicCustomFields,
+      searchRef,
       addToGroupError,
       dismissAddToGroupModal,
       addMemberToGroup,
