@@ -23,10 +23,6 @@
             <hr class="hr" />
         </div>
       </div>
-
-      <!-- <div v-if="loading">
-        <Loader />
-    </div> -->
     <el-skeleton class="w-100" animated v-if="loading ">
       <template #template>
         <div style="display: flex;
@@ -37,7 +33,6 @@
           <el-skeleton-item variant="text" style="width: 240px; height: 240px" />
           <el-skeleton-item variant="text" style="width: 240px; height: 240px" />
         </div>
-        <!-- <el-skeleton-item variant="text" class="w-100" style="height: 25px" :rows="10"/> -->
         <el-skeleton class="w-100 mt-5" style="height: 25px" :rows="20" animated />
       </template>
     </el-skeleton>
