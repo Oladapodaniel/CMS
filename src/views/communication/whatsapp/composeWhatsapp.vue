@@ -430,8 +430,8 @@ export default {
     const userWhatsappGroupsId = ref(null)
 
     const possibleSMSDestinations = [
-      // "All contacts", 
-      // "Select group from database", 
+      "All contacts", 
+      "Select group from database", 
       "Select person from membership database",
       "Phone numbers",
       // "Upload contacts", 
@@ -457,6 +457,7 @@ export default {
     const contactUpload = ref(false)
     const multipleContact = ref({})
     const chunkProgress = ref(0)
+    const groupMembersData = ref([])
 
 
     const clientSessionId = computed(() => {
@@ -476,17 +477,37 @@ export default {
     };
 
     const showSection = (index) => {
-      // if (index === 1) groupSelectionTab.value = true;
-      if (index === 0) membershipSelectionTab.value = true;
-      if (index === 1) phoneNumberSelectionTab.value = true;
+      if (index === 0) (groupSelectionTab.value = true), (selectedGroups.value.push({ data: "membership_00000000-0000-0000-0000-000000000000", name: "All Contacts" })), (getMemberPhoneNumber());
+      if (index === 1) (groupSelectionTab.value = true)
+      if (index === 2) (membershipSelectionTab.value = true)
+      if (index === 3) (phoneNumberSelectionTab.value = true)
+      if (index === 4) (whatsappGroupSelectionTab.value = true)
       // if (index === 4) contactUpload.value = true;
-      // if (index === 0) {
-      //   groupSelectionTab.value = true;
-      //   selectedGroups.value.push({ data: "membership_00000000-0000-0000-0000-000000000000", name: "All Contacts" })
-      // }
-      if (index === 2) whatsappGroupSelectionTab.value = true
-      // if (index === 6) broadcastSelectionTab.value = true
+      
     };
+
+    const getMemberPhoneNumber = async() => {
+      const payload = {
+        subject: "",
+        message: editorData.value,
+        contacts: [],
+        isPersonalized: false,
+        groupedContacts: selectedGroups.value.map((i) => i.data),
+        isoCode: "",
+        category: "",
+        emailAddress: "",
+        emailDisplayName: "",
+        gateWayToUse: "",
+      }
+
+      try {
+        let { data } = await axios.post("/api/Messaging/getCommunicationAudience", payload)
+        groupMembersData.value = data.contacts
+      }
+      catch (err) {
+        console.log(err);
+      }
+    }
 
     const allcountries = ref([])
     const tenantCountry = ref({})
@@ -577,6 +598,8 @@ export default {
       allGroups.value[indexInCategories].splice(indexInGroup, 1);
       groupListShown.value = false;
       console.log(selectedGroups);
+
+      getMemberPhoneNumber()
     };
 
     const removeGroup = (index) => {
@@ -643,7 +666,7 @@ export default {
     // const isPersonalized = ref(false);
 
     const isoCode = ref("");
-    const isPersonalized = ref(false);
+    // const isPersonalized = ref(false);
     const invalidMessage = ref(false);
     const invalidDestination = ref(false);
 
@@ -778,6 +801,16 @@ export default {
         socket.emit('sendwhatsappmessage', {
           id: clientSessionId.value,
           phone_number: selectedMembers.value.map(i => i.phone ? i.phone.substring(0, 1) == '0' ? `+${tenantCountry.value.phoneCode}${i.phone.substring(1)}` : `${i.phone}` : null).filter(i => i),
+          message: editorData.value,
+          whatsappAttachment: whatsappAttachment.value,
+        })
+      }
+      
+      // Send to selectedGroups || All contacts
+      if (groupMembersData.value.length > 0) {
+        socket.emit('sendwhatsappmessage', {
+          id: clientSessionId.value,
+          phone_number: groupMembersData.value.map(i => i.phone ? i.phone.substring(0, 1) == '0' ? `+${tenantCountry.value.phoneCode}${i.phone.substring(1)}` : `${i.phone}` : null).filter(i => i),
           message: editorData.value,
           whatsappAttachment: whatsappAttachment.value,
         })
@@ -998,7 +1031,7 @@ export default {
       invalidDestination,
       invalidMessage,
       moment,
-      isPersonalized,
+      // isPersonalized,
       route,
       contactUpload,
       uploadFile,
@@ -1039,7 +1072,8 @@ export default {
       whatsappAttachment,
       clientSessionId,
       chunkProgress,
-      hideEmojiWrapper
+      hideEmojiWrapper,
+      groupMembersData
     };
   },
 };

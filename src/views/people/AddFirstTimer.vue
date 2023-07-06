@@ -518,6 +518,7 @@ export default {
     const loadingtwo = ref(false)
     const { mdAndUp, lgAndUp, xlAndUp, xsOnly } = deviceBreakpoint()
     const createCatLoading = ref(false)
+    const contactOwner = ref({})
 
     const eventName = computed(() => {
       return newEvents.value.map((i) => i.name);
@@ -557,79 +558,107 @@ export default {
     const loading = ref(false);
 
     const onSubmit = async () => {
-      firstTimersObj.value.genderId = selectedGender.value
-        ? selectedGender.value.id
-        : 0;
-      firstTimersObj.value.maritalStatusId = selectedMaritalStatus.value
-        ? selectedMaritalStatus.value.id
-        : 0;
-      firstTimersObj.value.activityID = selectedEventAttended.value
-        ? selectedEventAttended.value.activityID
-        : "00000000-0000-0000-0000-000000000000";
-      firstTimersObj.value.howDidYouAboutUsId = selectedAboutUsSource.value
-        ? selectedAboutUsSource.value.id
-        : "00000000-0000-0000-0000-000000000000";
-      firstTimersObj.value.communicationMeans = selectedCommunicationMeans.value
-        ? comMeansArr.value.indexOf(selectedCommunicationMeans.value) + 1
-        : 0;
-      firstTimersObj.value.interestedInJoining = selectedJoinInterest.value
-        ? joinInterestArr.value.indexOf(selectedJoinInterest.value) + 1
-        : 0;
-      firstTimersObj.value.wantToBeVisited = selectedVisitOption.value
-        ? wantVisitArr.value.indexOf(selectedVisitOption.value) + 1
-        : 0;
-      firstTimersObj.value.groups =
-        firstTimerInGroup.value.length > 0
-          ? firstTimerInGroup.value.map((i) => {
-            return {
-              groupId: i.groupId,
-              position: i.position,
-            };
-          })
-          : [];
+      let formData = new FormData();
+      formData.append('firstName', firstTimersObj.value && firstTimersObj.value.firstName ? firstTimersObj.value.firstName : "")
+      formData.append('lastName', firstTimersObj.value && firstTimersObj.value.lastName ? firstTimersObj.value.lastName : "")
+      formData.append('phoneNumber', firstTimersObj.value && firstTimersObj.value.phoneNumber ? firstTimersObj.value.phoneNumber : "")
+      formData.append('email', firstTimersObj.value && firstTimersObj.value.email ? firstTimersObj.value.email : "")
+      formData.append('genderId', selectedGender.value ? selectedGender.value.id : 0)
+      formData.append('maritalStatusId', selectedMaritalStatus.value ? selectedMaritalStatus.value.id : 0)
+      formData.append('activityID', selectedEventAttended.value && selectedEventAttended.value.activityID ? selectedEventAttended.value.activityID : "00000000-0000-0000-0000-000000000000")
+      formData.append('howDidYouAboutUsId', selectedAboutUsSource.value ? selectedAboutUsSource.value.id : "00000000-0000-0000-0000-000000000000")
+      formData.append('communicationMeans', selectedCommunicationMeans.value ? comMeansArr.value.indexOf(selectedCommunicationMeans.value) + 1 : 0)
+      formData.append('interestedInJoining', selectedJoinInterest.value ? joinInterestArr.value.indexOf(selectedJoinInterest.value) + 1 : 0)
+      formData.append('wantToBeVisited', selectedVisitOption.value ? wantVisitArr.value.indexOf(selectedVisitOption.value) + 1 : 0)
+      formData.append('groups', firstTimerInGroup.value.length > 0 ? JSON.stringify(firstTimerInGroup.value.map((i) => ({ groupId: i.groupId, position: i.position }))) : [])
+      formData.append('contactOwnerId', Object.keys(contactOwner.value).length > 0 ? contactOwner.value.id : "00000000-0000-0000-0000-000000000000")
+      formData.append('imageUrl', firstTimersObj.value && firstTimersObj.value.imageUrl ? firstTimersObj.value.imageUrl : "")
+
+      // firstTimersObj.value.genderId = selectedGender.value
+      //   ? selectedGender.value.id
+      //   : 0;
+      // firstTimersObj.value.maritalStatusId = selectedMaritalStatus.value
+      //   ? selectedMaritalStatus.value.id
+      //   : 0;
+      // firstTimersObj.value.activityID = selectedEventAttended.value
+      //   ? selectedEventAttended.value.activityID
+      //   : "00000000-0000-0000-0000-000000000000";
+      // firstTimersObj.value.howDidYouAboutUsId = selectedAboutUsSource.value
+      //   ? selectedAboutUsSource.value.id
+      //   : "00000000-0000-0000-0000-000000000000";
+      // firstTimersObj.value.communicationMeans = selectedCommunicationMeans.value
+      //   ? comMeansArr.value.indexOf(selectedCommunicationMeans.value) + 1
+      //   : 0;
+      // firstTimersObj.value.interestedInJoining = selectedJoinInterest.value
+      //   ? joinInterestArr.value.indexOf(selectedJoinInterest.value) + 1
+      //   : 0;
+      // firstTimersObj.value.wantToBeVisited = selectedVisitOption.value
+      //   ? wantVisitArr.value.indexOf(selectedVisitOption.value) + 1
+      //   : 0;
+      // firstTimersObj.value.groups =
+        // firstTimerInGroup.value.length > 0
+        //   ? firstTimerInGroup.value.map((i) => {
+        //     return {
+        //       groupId: i.groupId,
+        //       position: i.position,
+        //     };
+        //   })
+        //   : [];
 
       switch (birthMonth.value) {
         case "January":
-          firstTimersObj.value.birthMonth = "1";
+          formData.append('birthMonth', "1")
+          // firstTimersObj.value.birthMonth = "1";
           break;
-        case "February":
-          firstTimersObj.value.birthMonth = "2";
+          case "February":
+          formData.append('birthMonth', "2")
+          // firstTimersObj.value.birthMonth = "2";
           break;
-        case "March":
-          firstTimersObj.value.birthMonth = "3";
+          case "March":
+          formData.append('birthMonth', "3")
+          // firstTimersObj.value.birthMonth = "3";
           break;
-        case "April":
-          firstTimersObj.value.birthMonth = "4";
+          case "April":
+          formData.append('birthMonth', "4")
+          // firstTimersObj.value.birthMonth = "4";
           break;
-        case "May":
-          firstTimersObj.value.birthMonth = "5";
+          case "May":
+          formData.append('birthMonth', "5")
+          // firstTimersObj.value.birthMonth = "5";
           break;
-        case "June":
-          firstTimersObj.value.birthMonth = "6";
+          case "June":
+          formData.append('birthMonth', "6")
+          // firstTimersObj.value.birthMonth = "6";
           break;
-        case "July":
-          firstTimersObj.value.birthMonth = "7";
+          case "July":
+          formData.append('birthMonth', "7")
+          // firstTimersObj.value.birthMonth = "7";
           break;
-        case "August":
-          firstTimersObj.value.birthMonth = "8";
+          case "August":
+            formData.append('birthMonth', "8")
+            // firstTimersObj.value.birthMonth = "8";
+            break;
+            case "September":
+          formData.append('birthMonth', "9")
+          // firstTimersObj.value.birthMonth = "9";
           break;
-        case "September":
-          firstTimersObj.value.birthMonth = "9";
+          case "October":
+          formData.append('birthMonth', "10")
+          // firstTimersObj.value.birthMonth = "10";
           break;
-        case "October":
-          firstTimersObj.value.birthMonth = "10";
-          break;
-        case "November":
-          firstTimersObj.value.birthMonth = "11";
-          break;
-        case "December":
-          firstTimersObj.value.birthMonth = "12";
-          break;
-        default:
-          break;
-      }
-
-      firstTimersObj.value.customAttributeDataString = JSON.stringify(dynamicCustomFields.value.map(
+          case "November":
+            formData.append('birthMonth', "11")
+            // firstTimersObj.value.birthMonth = "11";
+            break;
+            case "December":
+              formData.append('birthMonth', "12")
+              // firstTimersObj.value.birthMonth = "12";
+              break;
+              default:
+                break;
+              }
+              
+      formData.append('customAttributeDataString', JSON.stringify(dynamicCustomFields.value.map(
         (i) => {
           if (route.params.personId) {
             return {
@@ -644,7 +673,23 @@ export default {
             }
           }
         }
-      ));
+      )))
+      // firstTimersObj.value.customAttributeDataString = JSON.stringify(dynamicCustomFields.value.map(
+      //   (i) => {
+      //     if (route.params.personId) {
+      //       return {
+      //         customAttributeID: i.id,
+      //         data: i.data,
+      //         entityID: route.params.personId,
+      //         }
+      //     } else {
+      //       return {
+      //         customAttributeID: i.id,
+      //         data: i.data,
+      //       }
+      //     }
+      //   }
+      // ));
 
       if (!routeToFRM.value) {
         loading.value = true;
@@ -715,7 +760,7 @@ export default {
         }
       } else {
         axios
-          .post("/api/people/firsttimer", firstTimersObj.value)
+          .post("/api/people/firsttimer", formData)
           .then((res) => {
             finish();
             loading.value = false;
@@ -1090,7 +1135,8 @@ export default {
           duration: 15000
         })
       }
-      firstTimersObj.value.contactOwnerId = payload.id;
+      contactOwner.value = payload
+      // firstTimersObj.value.contactOwnerId = payload.id;
     };
 
     const getGroups = async () => {
@@ -1324,7 +1370,8 @@ export default {
       createCatLoading,
       imageSelected,
       url,
-      primarycolor
+      primarycolor,
+      contactOwner
     };
   },
 };
