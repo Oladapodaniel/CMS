@@ -736,9 +736,15 @@ export default {
 
 
                     if (route.fullPath === "/tenant/payments") {
-                        router.push({ name: 'PaymentOption', params: { paymentId: res.data.id } })
+                        store.dispatch("payment/getPayments").then(() => {
+                           router.push({ name: 'PaymentOption', params: { paymentId: res.data.id } })
+                        });
+                        // router.push({ name: 'PaymentOption', params: { paymentId: res.data.id } })
                     } else if (route.fullPath === "/donationsetup") {
-                        router.push({ name: 'OnboardingSuccessful' })
+                         store.dispatch("payment/getPayments").then(() => {
+                          router.push({ name: 'OnboardingSuccessful' })
+                        });
+                        // router.push({ name: 'OnboardingSuccessful' })
                     }
                     finish()
                 }

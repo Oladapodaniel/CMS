@@ -13,6 +13,7 @@ const setupService = {
         store.dispatch("lookups/getPeopleClassifications");
         store.dispatch("lookups/getUserSources");
         store.dispatch("membership/setMembers");
+        store.dispatch("membership/setMembers");
         // store.dispatch("membership/getFirstTimers");
         store.dispatch('contributions/contributionList')
         store.dispatch("communication/addSmsToSentList");
@@ -29,6 +30,7 @@ const setupService = {
         store.dispatch("clearPeopleInStore");
         store.dispatch('groups/clearGroup')
         store.dispatch('pledge/clearState')
+        store.dispatch('payment/clearState')
         store.dispatch('event/clearState')
         store.dispatch('transaction/clearState')
         store.dispatch('family/clearState')

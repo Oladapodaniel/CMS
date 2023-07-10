@@ -737,6 +737,7 @@ export default {
               message: "Your update was successful",
               duration: 3000
             })
+            store.dispatch('membership/setFirstTimerData');
           }
         } catch (err) {
           loading.value = false;

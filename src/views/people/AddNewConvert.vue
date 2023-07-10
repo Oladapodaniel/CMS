@@ -692,6 +692,7 @@ export default {
               message: "Your update was successful",
               duration: 3000
             })
+            store.dispatch('membership/setNewConvertData');
           }
         } catch (err) {
           loading.value = false;
@@ -726,7 +727,7 @@ export default {
               message: "New Convert created successfully",
               duration: 5000
             })
-            // store.dispatch('membership/setFirstTimerData');
+            store.dispatch('membership/setNewConvertData');
             store.dispatch('dashboard/getDashboard');
 
             if (!routeToFRM.value) {

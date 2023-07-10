@@ -232,6 +232,7 @@ export default {
                     duration: 5000,
                   });
                 emit('delete-payment', id)
+                store.dispatch("payment/removePaymentFromStore", id);
                 })
                 .catch((err) => {
                 finish()

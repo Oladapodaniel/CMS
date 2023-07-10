@@ -278,7 +278,7 @@ export default {
             duration: 3000
           });
           allNewConvert.value = allNewConvert.value.filter((i) => i.id !== id);
-          //  store.dispatch('family/removeFamilyFromStore', id)
+           store.dispatch('membership/removeNewConvertFromStore', id)
         })
         .catch((err) => {
           console.log(err);
