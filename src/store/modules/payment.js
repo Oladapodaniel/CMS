@@ -42,6 +42,7 @@ export default {
         clearState ({ commit }) {
             commit('clearState')
         }
+        
     },
     getters: {
         getpayments: (state) => {

@@ -131,6 +131,7 @@
 <script>
 import { ref, computed } from 'vue'
 import moment from "moment";
+import store from "../../store/store";
 import axios from "@/gateway/backendapi";
 import finish from '../../services/progressbar/progress'
 import formatDate from "../../services/dates/dateformatter"
@@ -231,8 +232,8 @@ export default {
                     message: "Payment form deleted",
                     duration: 5000,
                   });
-                emit('delete-payment', id)
-                store.dispatch("payment/removePaymentFromStore", id);
+                    emit('delete-payment', id)
+                    // store.dispatch("payment/removePaymentFromStore", id);
                 })
                 .catch((err) => {
                 finish()
