@@ -1,10 +1,8 @@
 <template>
   <div class="">
     <div
-      class="container-fluid px-0 pt-4 vh-100"
-      style="background-color: rgb(227, 231, 255)"
+      class="container-fluid px-0 pb-4 pt-4 backgroundColor "
     >
-      <!-- <div class="container-fluid" style="background-color: #E3E7FF"> -->
       <div class="row">
         <div class="col-md-12">
           <div class="row justify-content-center">
@@ -272,6 +270,9 @@ export default {
   display: inline-block;
   width: 60px;
   height: 27px;
+}
+.backgroundColor{
+  background-color: rgb(227, 231, 255);
 }
 .price-header {
   text-transform: lowercase;
