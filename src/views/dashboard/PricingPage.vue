@@ -67,28 +67,28 @@
               </div>
             </div>
             <div class="col-md-11 mt-4">
-              <div class="row">
+              <div class="row justify-content-between">
                 <div
-                  class="col-12 col-sm-6 col-md-3 text-center d-flex justify-content-center"
+                  class="col-10 col-sm-5 col-md-3 mx-auto text-center "
                   v-for="(item, index) in productPricing"
                   :key="index"
                 >
-                  <div class="row">
+                  <div class="row justify-content-center">
                     <div
-                      class="col-md-11 py-5 rounded my-3 d-flex justify-content-center border bg-white"
+                      class="col-md-11    py-5 rounded my-3 d-flex justify-content-center border bg-white"
                     >
                       <div class="col-md-10">
                         <div class="mt-4 h4 font-weight-bold price-header">
                           {{ item.subscriptionPlan.description }}
                         </div>
                         <div v-if="item.currency.country === 'Nigeria'">
-                          <div class="mt-4 head-text" v-if="togglePrice">
+                          <div class="mt-4 head-text " v-if="togglePrice">
                             {{ item.currency.symbol
                             }} {{
                               item.subscriptionPlan.amountInNaira.toLocaleString()
                             }}<span class="small text-secondary">/mo</span>
                           </div>
-                          <div class="mt-4 head-text" v-else>
+                          <div class="mt-4 head-text   " v-else>
                             {{ item.currency.symbol
                             }} {{
                               (
@@ -129,10 +129,10 @@
                           class="mt-4"
                           v-if="item.subscriptionPlan.membershipSize < 500"
                         >
-                          <img src="../../assets/icon_5-1.png" alt="" />
+                          <img class="w-100" src="../../assets/icon_5-1.png" alt="" />
                         </div>
                         <div class="mt-4" v-else>
-                          <img src="../../assets/icon_4-1.png" alt="" />
+                          <img class="w-100" src="../../assets/icon_4-1.png" alt="" />
                         </div>
                         <div class="mt-4 font-weight-bold">
                           ({{ item.subscriptionPlan.membershipSize }} Membership
