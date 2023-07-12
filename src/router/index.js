@@ -1679,6 +1679,15 @@ const routes = [
         component: () =>
             import( /* webpackChunkName: "partnershippayment" */ '../views/pledge/PublicPledgePayment.vue')
     },
+    {
+        path: '/pricing',
+        name: 'PricingPage',
+        meta: {
+            title: 'Churchplus - Pricing ',
+        },
+        component: () =>
+            import( /* webpackChunkName: "dashboard" */ '../views/dashboard/PricingPage.vue')
+    },
     // {
     //     path: '/PublicPledgeMaking/:id',
     //     name: 'PublicPledgeMaking',
@@ -1981,6 +1990,7 @@ router.beforeEach((to, from, next) => {
         to.name === "PublicPerson" ||
         to.name === "PublicFirstTimer" ||
         to.name === "EventRegistration" ||
+        to.name === "PricingPage" ||
         to.name === "PublicPledgePayment") && !tokenIsValid) return next(true)
 
 
