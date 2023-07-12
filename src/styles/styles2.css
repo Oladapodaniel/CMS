@@ -51,6 +51,13 @@
   color: #ffffff
 }
 
+.el-select-group__title {
+  text-transform: uppercase !important;
+  font-weight: 700;
+  color: #4e4e4e !important;
+  font-size: 18px !important
+}
+
 /* Checkbox */
 
 .el-checkbox.is-checked .el-checkbox__inner, .el-checkbox__input.is-indeterminate .el-checkbox__inner {
@@ -290,3 +297,5 @@ div.whatsappdrawer.el-drawer .el-drawer__footer {
   background: linear-gradient(45deg, #b2e68d, #bce689);
   right: 0;
 }
+
+
