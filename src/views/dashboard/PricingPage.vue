@@ -75,54 +75,55 @@
                 >
                   <div class="row justify-content-center">
                     <div
-                      class="col-md-11    py-5 rounded mb-3 d-flex justify-content-center border bg-white"
+                      class="col-md-11    py-5 rounded mb-3 d-flex justify-content-center border bg-white" style="min-height: 100% !important"
                     >
-                      <div class="col-md-10">
+                    <div class="row justify-content-center">
+                        <div class="col-md-10 ">
                         <div class="mt-4 h4 font-weight-bold price-header">
                           {{ item.subscriptionPlan.description }}
                         </div>
                         <div v-if="item.currency.country === 'Nigeria'">
-                          <div class="mt-4 head-text " v-if="togglePrice">
+                          <div class="mt-4 head-text  " v-if="togglePrice">
                             {{ item.currency.symbol
-                            }} {{
+                            }}{{
                               item.subscriptionPlan.amountInNaira.toLocaleString()
-                            }}<span class="small text-secondary">/mo</span>
+                            }}<div class="small text-secondary"> /month</div>
                           </div>
                           <div class="mt-4 head-text   " v-else>
                             {{ item.currency.symbol
-                            }} {{
+                            }}{{
                               (
                                 item.subscriptionPlan.amountInNaira * 12
                               ).toLocaleString()
                             }}
-                            <span class="small text-secondary">/yr</span>
+                            <div class="small text-secondary"> /year</div>
                           </div>
                         </div>
                         <div v-else-if="item.currency.shortCode === 'USD'">
                           <div class="mt-4 head-text" v-if="togglePrice">
-                            $ {{
+                            ${{
                               item.subscriptionPlan.amountInDollar.toLocaleString()
-                            }}<span class="small text-secondary">/mo</span>
+                            }}<div class="small text-secondary"> /month</div>
                           </div>
                           <div class="mt-4 head-text" v-else>
-                            $ {{
+                            ${{
                               (
                                 item.subscriptionPlan.amountInDollar * 12
                               ).toLocaleString()
                             }}
-                            <span class="small text-secondary">/yr</span>
+                            <div class="small text-secondary">/year</div>
                           </div>
                         </div>
                         <div v-else>
                           <div class="mt-4 head-text" v-if="togglePrice">
                             {{ item.currency.symbol
-                            }} {{ item.price.toLocaleString()
-                            }}<span class="small text-secondary">/mo</span>
+                            }}{{ item.price.toLocaleString()
+                            }}<div class="small text-secondary"> /month</div>
                           </div>
                           <div class="mt-4 head-text" v-else>
                             {{ item.currency.symbol
-                            }} {{ (item.price * 12).toLocaleString() }}
-                            <span class="small text-secondary">/yr</span>
+                            }}{{ (item.price * 12).toLocaleString() }}
+                            <div class="small text-secondary"> /year</div>
                           </div>
                         </div>
                         <div
@@ -148,12 +149,14 @@
                         <div class="mt-4">Accounting</div>
                         <div class="mt-4">Event Management</div>
                         <div class="my-4">
-                          Communication(SMS, Email, WhatsApp, Voice)
+                          Communication ( SMS, Email, WhatsApp, Voice)
                         </div>
                         <div class="">Membership Managament</div>
                         <div class="my-4">Reports</div>
                         <div class="">Free Online Giving</div>
-                      </div>
+                        </div>
+                    </div>
+                      
                     </div>
                   </div>
                 </div>
