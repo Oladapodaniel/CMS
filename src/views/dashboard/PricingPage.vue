@@ -1,12 +1,12 @@
 <template>
   <div class="">
     <div
-      class="container-fluid px-0 pb-4 pt-4 backgroundColor "
+      class="container-fluid px-0 pb-4  backgroundColor "
     >
       <div class="row">
         <div class="col-md-12">
           <div class="row justify-content-center">
-            <div class="col-md-12 d-flex justify-content-center my-3">
+            <div class="col-md-12 d-flex justify-content-center mt-2">
               <div class="col-md-4 col-11 col-sm-8">
                 <el-dropdown trigger="click" class="w-100">
                     <el-input
@@ -66,7 +66,7 @@
                 Yearly Pricing
               </div>
             </div>
-            <div class="col-md-11 mt-4">
+            <div class="col-md-11 ">
               <div class="row justify-content-between">
                 <div
                   class="col-10 col-sm-5 col-md-3 mx-auto text-center "
@@ -75,7 +75,7 @@
                 >
                   <div class="row justify-content-center">
                     <div
-                      class="col-md-11    py-5 rounded my-3 d-flex justify-content-center border bg-white"
+                      class="col-md-11    py-5 rounded mb-3 d-flex justify-content-center border bg-white"
                     >
                       <div class="col-md-10">
                         <div class="mt-4 h4 font-weight-bold price-header">
