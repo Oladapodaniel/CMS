@@ -6,8 +6,8 @@
       <div class="row">
         <div class="col-md-12">
           <div class="row justify-content-center">
-            <div class="col-md-12 d-flex justify-content-center mt-2">
-              <div class="col-md-4 col-11 col-sm-8">
+            <div class="col-md-12 d-flex justify-content-center ">
+              <div class="col-md-4 col-11 col-sm-8 mt-2">
                 <el-dropdown trigger="click" class="w-100">
                     <el-input
                       type="text"
