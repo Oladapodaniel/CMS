@@ -75,7 +75,7 @@
                 >
                   <div class="row justify-content-center">
                     <div
-                      class="col-md-11    py-5 rounded mb-3 d-flex justify-content-center border bg-white" style="min-height: 100% !important"
+                      class="col-md-11    py-5 rounded mb-3 d-flex justify-content-center border bg-white" style="min-height: 930px;"
                     >
                     <div class="row justify-content-center">
                         <div class="col-md-10 ">
