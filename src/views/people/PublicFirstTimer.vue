@@ -651,9 +651,6 @@ export default {
     };
 
     const birthMonth = ref(null);
-
-    // const birthMonth = ref(null)
-
     const hideCelebTab = ref(true);
     const hideAddInfoTab = ref(true);
     const showCelebTab = () => (hideCelebTab.value = !hideCelebTab.value);
@@ -722,37 +719,6 @@ export default {
           }))
         )
       );
-      // formData.append(
-      //   "customAttributeDataString", dynamicCustomFields.value.map(
-      //   (i) => ({
-      //     customAttributeID: i.id,
-      //     data: i.data,
-      //     entityID: route.params.personId,
-      //   })
-      // ),
-      // );
-      
-      // firstTimersObj.value.genderId = selectedGender.value
-      //   ? selectedGender.value.id
-      //   : 0;
-      // firstTimersObj.value.maritalStatusId = selectedMaritalStatus.value
-      //   ? selectedMaritalStatus.value.id
-      //   : 0;
-      // firstTimersObj.value.activityID = selectedEventAttended.value
-      //   ? selectedEventAttended.value.activityID
-      //   : "00000000-0000-0000-0000-000000000000";
-      // firstTimersObj.value.howDidYouAboutUsId = selectedAboutUsSource.value
-      //   ? selectedAboutUsSource.value.id
-      //   : "00000000-0000-0000-0000-000000000000";
-      // firstTimersObj.value.communicationMeans = selectedCommunicationMeans.value
-      //   ? comMeansArr.value.indexOf(selectedCommunicationMeans.value) + 1
-      //   : 0;
-      // firstTimersObj.value.interestedInJoining = selectedJoinInterest.value
-      //   ? joinInterestArr.value.indexOf(selectedJoinInterest.value) + 1
-      //   : 0;
-      // firstTimersObj.value.wantToBeVisited = selectedVisitOption.value
-      //   ? wantVisitArr.value.indexOf(selectedVisitOption.value) + 1
-      //   : 0;
       switch (birthMonth.value) {
         case "January":
           formData.append('birthMonth', '1')
@@ -794,57 +760,6 @@ export default {
           console.log("No month chosen");
           break;
       }
-      // switch (birthMonth.value) {
-      //   case "January":
-      //     firstTimersObj.value.birthMonth = 1;
-      //     break;
-      //   case "February":
-      //     firstTimersObj.value.birthMonth = 2;
-      //     break;
-      //   case "March":
-      //     firstTimersObj.value.birthMonth = 3;
-      //     break;
-      //   case "April":
-      //     firstTimersObj.value.birthMonth = 4;
-      //     break;
-      //   case "May":
-      //     firstTimersObj.value.birthMonth = 5;
-      //     break;
-      //   case "June":
-      //     firstTimersObj.value.birthMonth = 6;
-      //     break;
-      //   case "July":
-      //     firstTimersObj.value.birthMonth = 7;
-      //     break;
-      //   case "August":
-      //     firstTimersObj.value.birthMonth = 8;
-      //     break;
-      //   case "September":
-      //     firstTimersObj.value.birthMonth = 9;
-      //     break;
-      //   case "October":
-      //     firstTimersObj.value.birthMonth = 10;
-      //     break;
-      //   case "November":
-      //     firstTimersObj.value.birthMonth = "11";
-      //     break;
-      //   case "December":
-      //     firstTimersObj.value.birthMonth = "12";
-      //     break;
-      //   default:
-      //     console.log("No month chosen");
-      //     break;
-      // }
-
-      // firstTimersObj.value.customAttributeDataString = dynamicCustomFields.value.map(
-      //   (i) => ({
-      //     customAttributeID: i.id,
-      //     data: i.data,
-      //     entityID: route.params.personId,
-      //   })
-      // );
-
-      // firstTimersObj.value.tenantId = route.params.id;
 
       loading.value = true;
       axios
@@ -864,10 +779,14 @@ export default {
           swal("Successful", "First timer created successfully!", "success");
 
           firstTimersObj.value = {};
+          birthMonth.value = "";
+          selectedVisitOption.value = "";
+          selectedJoinInterest.value = "";
+          selectedCommunicationMeans.value = "";
+          selectedAboutUsSource.value = "";
           selectedEventAttended.value = {};
-          selectedMaritalStatus.value = {};
-          selectedGender.value = {};
-          birthMonth.value = {};
+          selectedMaritalStatus.value = "";
+          selectedGender.value = "";
         })
         .catch((err) => {
           finish();
@@ -1046,76 +965,7 @@ export default {
           });
           console.log(res.data, "HYH");
         });
-
-      //   console.log(route.params.firstTimerId);
-      //   if (route.params.firstTimerId) {
-      //     axios
-      //       .get(`/api/People/firstTimer/${route.params.firstTimerId}`)
-      //       .then((res) => {
-      //         console.log(res.data, "DFGHG");
-      //         ftimerId.value = res.data.personId;
-
-      //         firstTimersObj.value = res.data;
-      //         firstTimersObj.value.sendWelcomeSMS = res.data.sendSms;
-      //         firstTimersObj.value.sendWelcomeEmail = res.data.sendEmail;
-
-      //         selectedGender.value = res.data.genderId ? genderArr.value.find(i => i.id === res.data.genderId) : { };
-
-      //         selectedMaritalStatus.value = res.data.maritalStatusId ? maritalStatusArr.value.find(i => i.id === res.data.maritalStatusId) : { };
-
-      //         selectedAboutUsSource.value = getUserSource(res.data.howDidYouAboutUsId)
-
-      //         selectedCommunicationMeans.value = res.data.communicationMeans ? comMeansArr.value[res.data.communicationMeans - 1] : ""
-
-      //         selectedJoinInterest.value = res.data.interestedInJoining ? joinInterestArr.value[res.data.interestedInJoining - 1] : ""
-
-      //         selectedVisitOption.value = res.data.wantsToBeVisited ? wantVisitArr.value[res.data.wantsToBeVisited - 1] : ""
-      //         console.log(wantVisitArr.value[res.data.wantsToBeVisited - 1], res.data.wantsToBeVisited)
-
-      //         firstTimersObj.value.birthday = res.data.birthday ? Number(res.data.birthday) : "";
-
-      //         firstTimersObj.value.birthYear = res.data.birthYear ? +res.data.birthYear : "";
-
-      //         birthMonth.value = res.data.birthMonth ? month.value[Number(res.data.birthMonth) - 1] : "";
-      //         console.log(eventsAttended.value, "EA");
-
-      //         selectedEventAttended.value = getEventUserAttended(res.data.activityID)
-      //       })
-      //       .catch(err => {
-      //         finish()
-      //         console.log(err)
-      //         toast.add({
-      //           severity: "error",
-      //           summary: "Error getting details",
-      //           detail: "Unable to get person details, ensure you have a strong network connection",
-      //           life: 5000,
-      //         });
-      //       })
-      //   }
     });
-
-    // const getUserSource = sourceId => {
-    //   if (sourceId && howDidYouAboutUs.value && howDidYouAboutUs.value.length > 0) return howDidYouAboutUs.value.find(i => i.id === sourceId);
-    //   if (!sourceId) {
-    //     axios.get("/api/membership/howyouheardaboutus").then((res) => {
-    //       howDidYouAboutUs.value = res.data.map((i) => {
-    //         return { name: i.name, id: i.id };
-    //       });
-    //       return howDidYouAboutUs.value.find(i => i.id === res.data.howDidYouAboutUsId);
-    //     });
-    //   } else {
-    //     return null;
-    //   }
-    // }
-
-    // const getEventUserAttended = userEventId => {
-    //   if (!userEventId) return { };
-    //   if (eventsAttended.value && eventsAttended.value.length > 0) return eventsAttended.value.find(i => i.activityID === userEventId);
-    //   axios.get("/api/Events/EventActivity").then((res) => {
-    //     eventsAttended.value = res.data;
-    //     return eventsAttended.value.find(i => i.activityID === userEventId);
-    //   });
-    // }
 
     const year = computed(() => {
       const arrOfYears = [];
