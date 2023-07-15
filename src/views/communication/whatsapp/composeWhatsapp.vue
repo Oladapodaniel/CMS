@@ -1,4 +1,5 @@
 <template>
+  <!-- <testing /> -->
   <div @click="hideEmojiWrapper">
     <div class="container">
       <!-- <div class="container" @click="closeDropdownIfOpen"> -->
@@ -331,22 +332,24 @@ import swal from 'sweetalert';
 import { VuemojiPicker } from 'vuemoji-picker'
 import { state } from "@/socket";
 import { socket } from "@/socket";
+// import testing from "./testing.vue"
 
 export default {
   components: {
     VueQrcode,
-    VuemojiPicker
+    VuemojiPicker,
+    // testing
   },
-  beforeRouteEnter (to, from, next) {
-    const whatsappClientState = computed(() => {
-      return store.getters["communication/isWhatsappClientReady"]
-    })
-    if (!whatsappClientState.value && to.fullPath == '/tenant/whatsapp') {
-      next({ path: '/tenant/whatsapp/auth' })
-    } else {
-      next()
-    }
-  },
+  // beforeRouteEnter (to, from, next) {
+  //   const whatsappClientState = computed(() => {
+  //     return store.getters["communication/isWhatsappClientReady"]
+  //   })
+  //   if (!whatsappClientState.value && to.fullPath == '/tenant/whatsapp') {
+  //     next({ path: '/tenant/whatsapp/auth' })
+  //   } else {
+  //     next()
+  //   }
+  // },
   setup() {
     const session = ref("")
     const qrCode = ref("")
