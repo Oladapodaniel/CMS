@@ -20,6 +20,9 @@ export default {
     setFirstTimers(state, payload) {
       state.firstTimers = payload;
     },
+    setNewConverts(state, payload) {
+      state.newConverts = payload;
+    },
     updateMember(state, payload) {
       const targetMembersIndex = state.members.findIndex(i => i.id === payload.id);
       state.members[targetMembersIndex] = payload;
@@ -27,6 +30,9 @@ export default {
 
     addMember(state, payload) {
       state.members.push(payload);
+    },
+    addNewConvert(state, payload) {
+      state.newConverts.push(payload);
     },
 
     removeMember(state, payload) {
@@ -37,6 +43,11 @@ export default {
     },
     removeFirstTimer(state, payload) {
       state.firstTimers = state.firstTimers.filter(
+        (item) => item.id !== payload
+      );
+    },
+    removeNewConvert(state, payload) {
+      state.newConverts = state.newConverts.filter(
         (item) => item.id !== payload
       );
     },
@@ -66,8 +77,17 @@ export default {
         return response.response.firstTimers
       })
     },
+    setNewConvertData({ commit }) {
+      return membershipService.getNewConverts().then((response) => {
+        commit("setNewConverts", response.response)
+        return response.response
+      })
+    },
     removeFirstTimerFromStore({ commit }, payload) {
         commit("removeFirstTimer", payload)
+    },
+    removeNewConvertFromStore({ commit }, payload) {
+        commit("removeNewConvert", payload)
     },
     setup({ commit }) {
       lookupService.getLookUps()
@@ -88,6 +108,9 @@ export default {
     addMember({ commit }, payload) {
       commit("addMember", payload);
     },
+    addNewConvert({ commit }, payload) {
+      commit("addNewConvert", payload);
+    },
 
     removeMember({ commit }, payload) {
       commit("removeMember", payload);
@@ -101,6 +124,7 @@ export default {
   getters: {
     members: state => state.members,
     allFirstTimers: state => state.firstTimers,
+    allNewConverts: state => state.newConverts,
     getMemberById: (state) => (id) => {
       return state.members.find(i => i.id === id)
     },

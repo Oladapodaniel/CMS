@@ -394,7 +394,7 @@
               ></span> -->
             </span>
           </span>
-          <div class="bio-info">
+          <div class="bio-info ">
             <div class="inputs">
               <div class="input-field">
                 <label for="" class="label">Occupation</label>
@@ -437,15 +437,60 @@
             'show-addinfo-tab': !hideAddInfoTab,
           }"
         > -->
-        <div v-if="!route.query.groupID" class="add-info--con">
-          <div class="label-text-box">
+        <div v-if="!route.query.groupID" class="">
+          <div class="inputs">
+            <div class="input-field pr-0 pr-md-1 ">
+                <label for="firstName" class=" mr-2 font-weight-600">Which Group[s] Do You Belong To?</label>
+                  <div class="p-2 border input-width add-group bg-white">
+                    <div v-for="(item, index) in peopleInGroupIDs" :key="index">
+                      <div class="pt-1">{{ index + 1 }}. {{ item.name }}</div>
+                    </div>
+                    <div v-if="peopleInGroupIDs.length === 0">
+                      No group added yet
+                    </div>
+                    <div class="
+                      font-weight-700
+                      text-primary
+                      border-top
+                      text-center
+                      c-pointer
+                    " data-toggle="modal" data-target="#addToGroup">
+                      Choose group
+                    </div>
+                  </div>
+            </div>
+          </div>
+          
+          <!-- <div class="label-text-box">
             <p>Related information</p>
             <small
               >Including small groups and cell/house fellowship
               membership</small
             >
-          </div>
-          <div class="info-box">
+          </div> -->
+          <!-- <div class="d-flex flex-column flex-lg-row justify-content-center w-100">
+                <label for="firstName" class="mr-3 font-weight-600">Which Group[s] Do You Belong To?</label>
+                <div class="input-width">
+                  <div class="p-2 border add-group bg-white">
+                    <div v-for="(item, index) in peopleInGroupIDs" :key="index">
+                      <div class="pt-1">{{ index + 1 }}. {{ item.name }}</div>
+                    </div>
+                    <div v-if="peopleInGroupIDs.length === 0">
+                      No group added yet
+                    </div>
+                    <div class="
+                      font-weight-700
+                      text-primary
+                      border-top
+                      text-center
+                      c-pointer
+                    " data-toggle="modal" data-target="#addToGroup">
+                      Choose group
+                    </div>
+                  </div>
+                </div>
+              </div> -->
+          <!-- <div class="info-box">
             <div class="nav-bar">
               <div
                 class="groups box"
@@ -522,7 +567,7 @@
                 New Notes
               </button>
             </div>
-          </div>
+          </div> -->
         </div>
 
         <!-- <div class="error-div">
@@ -1602,6 +1647,19 @@ export default {
 
 .contn-btn:disabled {
   opacity: 0.3;
+}
+.input-width {
+  width: 100%
+}
+
+.input-width {
+  width: 100%
+}
+
+@media (min-width: 992px) {
+  .input-width {
+    width: 340px
+  }
 }
 
 .cs-select.day {

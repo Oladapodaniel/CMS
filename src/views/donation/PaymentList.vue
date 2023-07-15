@@ -99,12 +99,12 @@
                   <template #dropdown>
                     <el-dropdown-menu>
                       <el-dropdown-item>
-                        <router-link :to="{ name: 'PaymentOption', params: { paymentId: item.id } }">
+                        <router-link  class="text-color" :to="{ name: 'PaymentOption', params: { paymentId: item.id } }">
                           View Details
                         </router-link>
                       </el-dropdown-item>
                       <el-dropdown-item>
-                        <router-link :to="{ name: 'PaymentTransaction', params: { editPayment: item.id } }">
+                        <router-link class="text-color" :to="{ name: 'PaymentTransaction', params: { editPayment: item.id } }">
                           Edit
                         </router-link>
                       </el-dropdown-item>
@@ -121,79 +121,6 @@
                 </el-dropdown>
               </template>
             </Table>
-            <!-- <div class="table-body row" v-for="item in searchPaymentList" :key="item.id">
-                <div class="col-6 d-block d-sm-none">
-                <div class="col-sm-4">
-                    NAME
-                </div>
-                    <div class="col-sm-3">
-                    BANK
-                </div>
-                    <div class="col-sm-2">
-                    AMOUNT
-                </div>
-                    <div class="col-sm-2">
-                    DATE
-                </div>
-                    <div class="col-sm-2" >
-                    STATUS
-                </div>
-            </div>
-            <div class="col-6 col-sm-12">
-                <div class="row">
-                <div class="col-sm-4 text-right text-sm-left text-md-left ">
-                    <router-link :to="`/tenant/payments/${item.id}`" class="itemroute-color">{{ item.name }}</router-link>
-                </div>
-                <div class="col-sm-3 text-right text-sm-left text-md-left">
-                     <router-link :to="`/tenant/payments/${item.id}`" class="itemroute-color  ">{{ item.bank }}</router-link>
-                </div>
-                <div class="col-sm-2">
-                     <router-link :to="`/tenant/payments/${item.id}`" class="itemroute-color">{{ item.amount }}</router-link>
-                </div>
-                <div class="col-sm-2 text-right text-sm-left text-md-left">
-                     <router-link :to="`/tenant/payments/${item.id}`" class="itemroute-color">{{ date(item.date) }}</router-link>
-                </div>
-                <div class="col-sm-2 text-right text-sm-left text-md-left" >
-                     <router-link :to="`/tenant/payments/${item.id}`" class="itemroute-color">{{ item.isActive ? "Active" : "Inactive" }}</router-link>
-                </div>
-                <div class="col-sm-1 text-right text-sm-left text-md-left">
-                    <div class="dropdown">
-              <i
-                class="fas fa-ellipsis-v cursor-pointer"
-                id="dropdownMenuButton"
-                data-toggle="dropdown"
-                aria-haspopup="true"
-                aria-expanded="false"
-              ></i>
-              <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
-                <router-link :to="{ name: 'PaymentOption', params: { paymentId: item.id } }">
-                <a class="dropdown-item elipsis-items">
-                 View Details
-                </a>
-                </router-link>
-                <router-link :to="{ name: 'PaymentTransaction', params: { editPayment: item.id } }">
-                <a class="dropdown-item elipsis-items">
-                 Edit
-                </a>
-                </router-link>
-                <a
-                  class="dropdown-item elipsis-items cursor-pointer"
-                  @click="showConfirmModal(item.id)"
-                  >Delete</a
-                >
-              </div>
-            </div>
-            </div>
-            </div>
-          
-                </div>
-            </div> -->
-            <!-- <div class="col-12">
-                <div class="table-footer">
-                    <PaginationButtons  @getcontent="getPeopleByPage" :itemsCount="offeringCount" :currentPage="currentPage"/>
-                </div>
-            </div> -->
-            
           </div>
 
     </div>
@@ -204,17 +131,16 @@
 <script>
 import { ref, computed } from 'vue'
 import moment from "moment";
+import store from "../../store/store";
 import axios from "@/gateway/backendapi";
 import finish from '../../services/progressbar/progress'
-// import PaginationButtons from "../../components/pagination/PaginationButtons.vue";
 import formatDate from "../../services/dates/dateformatter"
 import Table from "@/components/table/Table";
+import router from "../../router";
 import { ElMessage, ElMessageBox } from "element-plus";
 export default {
     props: ['paymentList'],
-    components: { Table, 
-        // PaginationButtons 
-    },
+    components: { Table},
     setup (props, { emit }) {
         const filterFormIsVissible = ref(false);
         const searchIsVisible = ref(false);
@@ -239,7 +165,7 @@ export default {
              }
 
           const paymentListClick = (item) =>{
-            router.push(`tenant/paymnets/${item}`)
+            router.push(`/tenant/payments/${item}`)
           }
 
 
@@ -306,7 +232,8 @@ export default {
                     message: "Payment form deleted",
                     duration: 5000,
                   });
-                emit('delete-payment', id)
+                    emit('delete-payment', id)
+                    // store.dispatch("payment/removePaymentFromStore", id);
                 })
                 .catch((err) => {
                 finish()
@@ -378,6 +305,13 @@ export default {
   height: 0;
   overflow: hidden;
   transition: all 0.5s ease-in-out;
+}
+.text-color {
+  color: #212529;
+  text-decoration: none !important;
+}
+.text-color:hover {
+  color: #007bff;
 }
 
 .filter-options-shown {

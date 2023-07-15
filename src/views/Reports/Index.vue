@@ -1,9 +1,9 @@
 <template>
-    <div class="container container-top container-wide">
-        <div class=" row mt-2" >
-            <div ><h3 class="font-weight-bold"> Reports</h3></div>
+    <div class="container-fluid " >
+        <div class=" row" >
+            <div class="head-text"> Reports</div>
         </div>
-        <div class="row" style=" background: #f5f8fa;">
+        <div class="row mt-2" style=" background: #f5f8fa;">
             <div class="col-12  c-pointer" v-if="!financialAccount" :class="{ 'col-sm-6' : !canAccessFinancial, 'col-sm-4' : canAccessFinancial }" @click="togglePeople">
                 <div class="p-3 header4"> Membership </div> 
                 <div :class="{ 'baseline' : showPeople, 'hide-base' : !showPeople }"></div>
@@ -16,18 +16,6 @@
                 <div class="p-3 header4 "> Financial </div> 
                 <div :class="{ 'baseline' : showFinancial, 'hide-base' : !showFinancial }"></div>
             </div>
-            <!-- <div class="col-12 col-sm-6 col-md-2 col-lg-2 c-pointer" @click="toggleMobile">
-                <div class="p-3"> Mobile usage </div> 
-                <div :class="{ 'baseline' : showMobile, 'hide-base' : !showMobile }"></div>
-            </div>
-            <div class="col-12 col-sm-6 col-md-2 col-lg-2 c-pointer" @click="toggleFollowup">
-                <div class="p-3"> Follow up </div> 
-                <div :class="{ 'baseline' : showFollowup, 'hide-base' : !showFollowup }"></div>
-            </div>
-            <div class="col-12 col-sm-6 col-md-2 col-lg-2 c-pointer" @click="toggleOthers">
-                <div class="p-3"> Others </div> 
-                <div :class="{ 'baseline' : showOthers, 'hide-base' : !showOthers }"></div>
-            </div> -->
         </div>
         <div class="row mt-3">
             <div class="col-12" v-if="showPeople">

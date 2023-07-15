@@ -194,7 +194,7 @@ import axios from '@/gateway/backendapi'
 import FirstTimersList from './FirstTimersList'
 import NewConvertList from './NewConvert.vue'
 import VueQrcode from 'vue-qrcode';
-import { ref, inject, computed, watchEffect } from 'vue';
+import { ref, inject, computed, watchEffect, onMounted } from 'vue';
 import finish from '../../services/progressbar/progress'
 import router from "@/router/index";
 import deviceBreakpoint from "../../mixins/deviceBreakpoint";
@@ -212,7 +212,7 @@ export default {
     const selectedLink = ref(null)
     const showFirsttimer = ref(true)
     const showNewConvert = ref(false)
-    const newConvertList = ref([])
+    const newConvertList = ref(store.getters['membership/allNewConverts'])
     const importFile = ref("")
     const image = ref("");
     const QRCodeDialog = ref(false)
@@ -253,9 +253,14 @@ export default {
       loading.value = true
 
         try{
-            const res = await axios.get('api/People/GetAllNewConverts?page=1')
-            newConvertList.value = res.data.response
-            loading.value = false
+          store.dispatch('membership/setNewConvertData').then(response => {
+          newConvertList.value = response
+          console.log(newConvertList.value, "kljk");
+          loading.value = false
+        })
+            // const res = await axios.get('api/People/GetAllNewConverts?page=1')
+            // newConvertList.value = res.data.response
+            // loading.value = false
         }
         catch(err){
             finish();
@@ -268,7 +273,7 @@ export default {
 
         }
     }
-   if (newConvertList.value.length == 0) getAllNewConvert()
+  //  if (newConvertList.value.length == 0) getAllNewConvert()
 
     const fileUpload = () => {
       importFile.value.click()
@@ -453,6 +458,10 @@ export default {
       const importNewConvert = () => {
       router.push({ name: 'ImportInstruction', query: { query: 'importnewconvert' } })
     }
+    onMounted(() => {
+      if (newConvertList.value && newConvertList.value.length == 0)
+        getAllNewConvert();
+    });
 
     // const setLoading = (payload) => {
     //   loading.value = payload

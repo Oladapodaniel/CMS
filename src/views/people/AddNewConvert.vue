@@ -112,7 +112,7 @@
             </el-form-item>
             <el-form-item>
               <div class="d-flex flex-column flex-lg-row justify-content-end w-100">
-                <label for="firstName" class="mr-3 font-weight-600">Add to group</label>
+                <label for="firstName" class=" font-weight-600">Which Group[s] Do You Belong To?</label>
                 <div class="input-width">
                   <div class="p-2 border add-group bg-white">
                     <div v-for="(item, index) in NewConvertInGroup" :key="index">
@@ -692,6 +692,7 @@ export default {
               message: "Your update was successful",
               duration: 3000
             })
+            store.dispatch('membership/setNewConvertData');
           }
         } catch (err) {
           loading.value = false;
@@ -726,7 +727,7 @@ export default {
               message: "New Convert created successfully",
               duration: 5000
             })
-            // store.dispatch('membership/setFirstTimerData');
+            store.dispatch('membership/setNewConvertData');
             store.dispatch('dashboard/getDashboard');
 
             if (!routeToFRM.value) {

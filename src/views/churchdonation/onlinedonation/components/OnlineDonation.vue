@@ -260,7 +260,6 @@
 <script>
 import { ref, computed , inject , watch } from "vue";
 import axios from "@/gateway/backendapi";
-import Pagination from "../../../../components/pagination/PaginationButtons";
 import { useRoute } from "vue-router";
 import moment from "moment";
 import finish from "../../../../services/progressbar/progress";
@@ -277,7 +276,6 @@ export default {
   props: ["donationTransactions", "totalItem"],
   emits: ["marked"],
   components: {
-    Pagination,
     DonationAreaChart,
     DonationPieChart,
     loadingComponent,

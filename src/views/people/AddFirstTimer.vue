@@ -112,7 +112,7 @@
             </el-form-item>
             <el-form-item>
               <div class="d-flex flex-column flex-lg-row justify-content-end w-100">
-                <label for="firstName" class="mr-3 font-weight-600">Add to group</label>
+                <label for="firstName" class="mr-3 font-weight-600">Which Group[s] Do You Belong To?</label>
                 <div class="input-width">
                   <div class="p-2 border add-group bg-white">
                     <div v-for="(item, index) in firstTimerInGroup" :key="index">
@@ -737,6 +737,7 @@ export default {
               message: "Your update was successful",
               duration: 3000
             })
+            store.dispatch('membership/setFirstTimerData');
           }
         } catch (err) {
           loading.value = false;

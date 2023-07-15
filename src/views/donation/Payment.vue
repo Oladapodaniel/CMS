@@ -23,10 +23,6 @@
             <hr class="hr" />
         </div>
       </div>
-
-      <!-- <div v-if="loading">
-        <Loader />
-    </div> -->
     <el-skeleton class="w-100" animated v-if="loading ">
       <template #template>
         <div style="display: flex;
@@ -37,7 +33,6 @@
           <el-skeleton-item variant="text" style="width: 240px; height: 240px" />
           <el-skeleton-item variant="text" style="width: 240px; height: 240px" />
         </div>
-        <!-- <el-skeleton-item variant="text" class="w-100" style="height: 25px" :rows="10"/> -->
         <el-skeleton class="w-100 mt-5" style="height: 25px" :rows="20" animated />
       </template>
     </el-skeleton>
@@ -60,10 +55,10 @@
 </template>
 
 <script>
-import { ref, inject } from 'vue'
+import { ref, inject, onMounted } from 'vue'
 // import { useStore } from 'vuex'
-// import { store } from "../../../store/store"
-import axios from "@/gateway/backendapi"
+import store from "../../store/store"
+// import axios from "@/gateway/backendapi"
 import deviceBreakpoint from "../../mixins/deviceBreakpoint";
 import PaymentList from './PaymentList'
 // import Loader from '../accounting/offering/SkeletonLoader'
@@ -72,36 +67,42 @@ export default {
          PaymentList
     },
     setup () {
-        const paymentList = ref([])
+        const paymentList = ref(store.getters["payment/getpayments"]);
         const loading = ref(false)
         const networkError = ref(false)
         const primarycolor = inject('primarycolor')
         const { lgAndUp, xlAndUp } = deviceBreakpoint()
 
 
-        const getPaymentList = () => {
+        const getPaymentList = async () => {
+              try {
+                loading.value = true
+                      store.dispatch('payment/getPayments').then(response => {
+                      paymentList.value = response
+                      console.log(paymentList.value, "kljk");
+                      loading.value = false
+                })
+              } catch (error) {
+                console.log(error);
+                 loading.value = false
+                        if(error.toString().toLowerCase().includes("network error")) {
+                          networkError.value = true
+                        } else {
+                          networkError.value = false
+                        }
+              }
             // let store = useStore()
             // console.log(store.getters['contributions/paymentList'])
             // if (store.getters['contributions/paymentList'].length > 0) {
             //     paymentList.value = store.getters['contributions/paymentList']
             // } else {
-                loading.value = true
-                axios
-                    .get("/api/PaymentForm/GetAll")
-                    .then((res) => {
-                        loading.value = false
-                    paymentList.value = res.data;
-                    console.log(res.data);
-                    })
-                    .catch((err) => {
-                        loading.value = false
-                        console.log(err)
-                        if(err.toString().toLowerCase().includes("network error")) {
-                          networkError.value = true
-                        } else {
-                          networkError.value = false
-                        }
-                    });
+                // axios
+                //     .get("/api/PaymentForm/GetAll")
+                    // .then((res) => {
+                    //     loading.value = false
+                    // paymentList.value = res.data;
+                    // console.log(res.data);
+                    // })
             // }
     
     // get from  to store
@@ -109,13 +110,16 @@ export default {
     // savev to sstore
     // store.dispatch('contributions/contributionList')
     };
-    getPaymentList();
 
     const deletePayment = (payload) => {
       paymentList.value = paymentList.value.filter(
                   (item) => item.id !== payload
                 );
     }
+    onMounted(() => {
+      if (paymentList.value && paymentList.value.length == 0)
+       getPaymentList()
+    });
         return  {
             paymentList, loading, deletePayment, networkError, primarycolor, lgAndUp, xlAndUp
         }

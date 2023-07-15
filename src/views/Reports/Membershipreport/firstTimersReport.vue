@@ -1,19 +1,18 @@
 <template>
-  <div class="container-fluid px-5">
+  <div class="container-fluid ">
     <!-- header area -->
-    <div class="container">
+    <!-- <div class="container"> -->
       <div
         class="
-          row
+          row 
           d-flex
           flex-row
           justify-content-between
-          mt-5
           align-items-center
         "
       >
         <div class="centered-items">
-          <h3 class="heading-text">First Timers Report</h3>
+          <h3 class="head-text">First Timers Report</h3>
         </div>
 
         <!-- <div  class="centered-items pr-3">
@@ -45,17 +44,24 @@
       </div>
     
 
-    </div>
+    <!-- </div> -->
     <!--end of header area -->
     <!-- date area -->
-      <div class="container-fluid bg-area my-3">
-        <div class="row px-4 w-100 ml-md-5 px-sm-4 mt-sm-3 ">
+      <!-- <div class="  bg-area my-3"> -->
+        <div class="row bg-area pl-5   mt-sm-3 ">
               <div class="col-md-4 col-sm-12 px-md-0">
                   <div class="p-field p-col-12 pt-md-2 pb-2">
                     <div>
                       <label for="icon" class="mb-0 font-weight-bold">Start Date</label>
                     </div>
-                    <Calendar class="w-100" id="icon" v-model="startDate" :showIcon="true" dateFormat="dd/mm/yy"/>
+                    <!-- <Calendar class="w-100" id="icon" v-model="startDate" :showIcon="true" dateFormat="dd/mm/yy"/> -->
+                      <el-date-picker
+                        v-model="startDate"
+                        type="date"
+                        format="DD/MM/YYYY"
+                        size="large"
+                        class="w-100"
+                      />
                   </div>
               </div>
               <div class="col-md-4 col-sm-12 pr-md-0">
@@ -63,20 +69,30 @@
                     <div>
                       <label for="icon" class="mb-0 font-weight-bold">End Date</label>
                     </div>
-                    <Calendar class="w-100" id="icon" v-model="endDate" :showIcon="true" dateFormat="dd/mm/yy"/>
+                    <!-- <Calendar class="w-100" id="icon" v-model="endDate" :showIcon="true" dateFormat="dd/mm/yy"/> -->
+                    <el-date-picker
+                        v-model="endDate"
+                        type="date"
+                        format="DD/MM/YYYY"
+                        size="large"
+                        class="w-100"
+                      />
                   </div>
               </div>
             <div class="col-md-4 col-sm-12 pr-md-0">
                   <div class="p-field p-col-12 pt-md-2">
-                    <button
-                            class="default-btn generate-report c-pointer font-weight-normal mt-4"
+                    <el-button
+                            class=" c-pointer  mt-4"  
+                            :color="primarycolor"
+                            :loading="loading"
+                            round
                             @click="generateReport">
                             Generate Report
-                    </button>
+                    </el-button>
                   </div>
               </div>
         </div>
-      </div>
+      <!-- </div> -->
     <!--end of date area -->
     <div id="element-to-print">
       <section>
@@ -140,7 +156,7 @@
                 <th scope="col">Home Address</th>
                 <th scope="col">Gender</th>
                 <th scope="col">Current Status</th>
-                <th scope="col" v-for="item in dynamicCustomFields">{{ item.label }}</th>
+                <th scope="col" v-for="(item, index) in dynamicCustomFields" :key="index">{{ item.label }}</th>
                 
                 <!-- <th scope="col">Marital Status</th> -->
                 <!-- <th scope="col">Activity Date</th> -->
@@ -156,8 +172,8 @@
                 <td>{{ firstTimer.homeAddress }}</td>
                 <td>{{ firstTimer.gender }}</td>
                 <td>{{ firstTimer.status }}</td>
-                <td v-show="firstTimer.customAttributeData.length > 0" v-for="item in dynamicCustomFields">{{  getMemberCustomAttributeData(firstTimer.customAttributeData, item)  }}</td>
-                <td v-show="firstTimer.customAttributeData.length === 0" v-for="item in dynamicCustomFields.length">{{ "--" }}</td>
+                <td v-show="firstTimer.customAttributeData.length > 0" v-for="(item, index) in dynamicCustomFields" :key="index">{{  getMemberCustomAttributeData(firstTimer.customAttributeData, item)  }}</td>
+                <td v-show="firstTimer.customAttributeData.length === 0" v-for="(item, index) in dynamicCustomFields.length" :key="index" >{{ "--" }}</td>
                 <!-- <td>{{ firstTimer.maritalStatus }}</td> -->
                 <!-- <td>{{ formatDate(firstTimer.activityDate) }}</td> -->
               </tr>
@@ -176,7 +192,7 @@
 </template>
 
 <script>
-import { ref } from "vue";
+import { ref, inject } from "vue";
 import Calendar from "primevue/calendar";
 import ByGenderChart from "@/components/charts/PieChart.vue";
 // import PaginationButtons from "../../../components/pagination/PaginationButtons";
@@ -200,8 +216,10 @@ export default {
     const firstTimerInChurch = ref([]);
     const genderChartResult = ref([]);
     const data = ref([]);
+    const primarycolor = inject("primarycolor");
     const maritalChartInfo = ref([]);
     const showExport = ref(false);
+    const loading = ref(false);
     const fileName = ref("");
     const bookTypeList = ref([{name: "xlsx" }, {name: "csv" }, {name: "txt" }, {name: "" }]);
     const selectedFileType = ref({});
@@ -209,6 +227,7 @@ export default {
     const fileToExport = ref([]);
     const dynamicCustomFields = ref([]);
     const generateReport = () => {
+      loading.value = true
       axios
         .get(
           `/api/Reports/people/getFirstTimersReport?startDate=${new Date(
@@ -231,9 +250,12 @@ export default {
             );
           }, 1000);
           /* End function to call service and populate table */
+          loading.value = false
         })
+        
         .catch((err) => {
           console.log(err);
+          loading.value = false
         });
     };
 
@@ -291,10 +313,12 @@ export default {
     return {
       Calendar,
       startDate,
+      primarycolor,
       endDate,
       firstTimerInChurch,
       generateReport,
       formatDate,
+      loading,
       genderChartResult,
       data,
       maritalChartInfo,

@@ -1,7 +1,7 @@
 <template>
-    <div class="container container-top container-wide mb-4">
-       <div class="row d-flex justify-content-between px-3">
-              <div class="heading-text">People Report</div>
+    <div class="container-fluid  mb-4">
+       <div class="row d-flex justify-content-between ">
+              <div class="head-text">People Report</div>
               <div class="default-btn border-secondary font-weight-normal c-pointer"
                 @click="() => (showExport = !showExport)"
                 style="width: fixed; position:relative">
@@ -11,7 +11,7 @@
                         </div>
               </div>
         </div>
-        <div class="container-fluid mt-2 ">
+        <div class="container-fluid px-0 mt-2 ">
             <div class="row py-5 " style="background: #ebeff4;  border-radius: 0.5rem;">
               <div class="col-md-9 col-12">
                 <div class="row">
@@ -56,7 +56,7 @@
                           </MultiSelect>
                       </div>
                   </div>
-                  <div class="col-12 col-md-6  mt-2 mt-sm-0 mt-md-0 mt-lg-0 ">
+                  <div class="col-12 col-md-6  mt-2  ">
                       <div><label for="" class="font-weight-bold">Marital Status</label></div>
                       <div>
                           <MultiSelect v-model="selectedMaritalStatus" :options="memberMaritalStatus" optionLabel="name" placeholder="Marital status" :filter="true" class="multiselect-custom w-100">
@@ -76,7 +76,7 @@
                           </MultiSelect>
                       </div>
                   </div>
-                  <div class="col-12 col-md-6  mt-2 mt-sm-0 mt-md-0 mt-lg-0 ">
+                  <div class="col-12 col-md-6  mt-2  ">
                       <div><label for="" class="font-weight-bold">Age Group</label></div>
                       <!-- <el-select-v2 v-model="ageGroupId" @change="setSelectedAgeGroup"
                         :options="memberAgegroup.map(i => ({ label: i.name, value: i.id }))" placeholder="Age group"
@@ -106,7 +106,7 @@
                   <div class="col-12  ">
                     <label for="" ></label>
                     <div class="" @click="genarateReport">
-                        <button class="  default-btn generate-report c-pointer font-weight-normal ">Generate Report </button>
+                        <el-button round :color="primarycolor" :loading="loading" class="  text-white  c-pointer  ">Generate Report </el-button>
                     </div>
                 </div>
                 </div>
@@ -114,7 +114,7 @@
             </div>
         </div>
         <div id="element-to-print">
-          <div  class="container-fluid ">
+          <div  class="container-fluid px-0 ">
               <div  class="row" :class="{ 'show-report': showReport, 'hide-report' : !showReport}">
                   <!-- <div class="col-12 ">
                       <div class="mt-5 pb-2 text-center Display-1 heading-text">
@@ -188,12 +188,12 @@
               <!-- <div class="row "> -->
                   <section>
                       <!-- table header -->
-                      <div v-if="membersInChurch[0]" class=" mt-4 container-fluid table-main px-0 remove-styles2 remove-border responsiveness  "
+                      <div v-if="membersInChurch[0]" class="  mt-4 container-fluid table-main px-0 remove-styles2 remove-border responsiveness  "
                       :class="{ 'show-report': showReport, 'hide-report' : !showReport}" >
-                          <table class="table remove-styles mt-0 table-hover table-header-area " id="table" >
-                          <thead class="table-header-area-main" >
+                          <table class="table remove-styles   mt-0  table-hover table-header-area " id="table" >
+                          <thead class="table-header-area-main  " >
                               <tr
-                              class="text-capitalize text-nowrap"
+                              class="text-capitalize text-nowrap "
                               style="border-bottom: 0"
                               >
                               <!-- <th scope="col">Church Activity</th> -->
@@ -206,7 +206,7 @@
                               <th scope="col">Age Group</th>
                               <th scope="col">Home Address</th>
                               <th scope="col">Birthday</th>
-                              <th scope="col" v-for="item in dynamicCustomFields">{{ item.label }}</th>
+                              <th scope="col" v-for="(item, index) in dynamicCustomFields" :key="index">{{ item.label }}</th>
                               <!-- <th scope="col">Marital Status</th>
                               <th scope="col">Age Group</th>
                               <th scope="col">Birthday</th> -->
@@ -224,8 +224,8 @@
                               <td>{{member.ageGroup}}</td>
                               <td>{{member.homeAddress}}</td>
                               <td>{{member.birthDay}}</td>
-                              <td v-show="member.customAttributeData.length > 0" v-for="item in dynamicCustomFields">{{  getMemberCustomAttributeData(member.customAttributeData, item)  }}</td>
-                              <td v-show="member.customAttributeData.length === 0" v-for="item in dynamicCustomFields.length">{{ "--" }}</td>
+                              <td v-show="member.customAttributeData.length > 0" v-for="(item , index) in dynamicCustomFields" :key="index">{{  getMemberCustomAttributeData(member.customAttributeData, item)  }}</td>
+                              <td v-show="member.customAttributeData.length === 0" v-for="(item, index) in dynamicCustomFields.length" :key="index">{{ "--" }}</td>
                               </tr>
                           </tbody>
                           </table>
@@ -242,7 +242,7 @@
 </template>
 
 <script>
-import {computed, ref } from "vue";
+import {computed, ref, inject } from "vue";
 import axios from "@/gateway/backendapi";
 import MembershipPieChart from '../../../components/charts/ReportPieChart.vue';
 import Listbox from 'primevue/listbox';
@@ -262,9 +262,11 @@ export default {
          },
     setup(prop) {
     const selectedMember = ref();
+    const primarycolor = inject("primarycolor");
     const selectedGender = ref();
     const selectedMaritalStatus = ref();
     const showReport = ref(false)
+    const loading = ref(false)
     const memberShips = ref({});
     const selectedAgeGroup = ref()
     const memberMaritalStatus = ref({});
@@ -383,6 +385,7 @@ export default {
       }
 
     const genarateReport = () => {
+        loading.value = true
         const memberID =  selectedMember.value.map((i) => i.id)
         const genderID =  selectedGender.value.map((i) => i.id)
         const ageGroupID =  selectedAgeGroup.value.map((i) => i.id)
@@ -405,11 +408,14 @@ export default {
                         fileHeaderToExport.value = exportService.tableHeaderToJson(document.getElementsByTagName("th"))
                         fileToExport.value = exportService.tableToJson(document.getElementById("table"))
                     }, 1000)
+
+                    loading.value =  false
                     
                     showReport.value = true;
 
         }).catch((error) =>{
             console.log(error)
+            loading.value =  false
         })
 
           showReport.value = true;
@@ -512,6 +518,7 @@ export default {
         maritalStatusChart,
         ageGroupChart,
         showReport,
+        primarycolor,
         //  genderSummary,
         memberShips,
         memberMaritalStatus,
@@ -523,6 +530,7 @@ export default {
         mappedAgeGroup,
         selectedMember,
         selectedGender,
+        loading,
         selectedMaritalStatus,
         showExport,
         fileName,

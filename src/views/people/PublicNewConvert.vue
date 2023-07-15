@@ -51,7 +51,7 @@
             <input
               type="text"
               class="input form-control"
-              v-model="firstTimersObj.firstName"
+              v-model="newConvertObj.firstName"
               name=""
               id="firstname"
               required
@@ -65,7 +65,7 @@
               type="text"
               class="input form-control"
               placeholder=""
-              v-model="firstTimersObj.lastName"
+              v-model="newConvertObj.lastName"
               name=""
             />
           </div>
@@ -76,7 +76,7 @@
             <input
               class="input form-control"
               placeholder=""
-              v-model="firstTimersObj.phoneNumber"
+              v-model="newConvertObj.phoneNumber"
               type="text"
               :class="{ 'is-invalid': !isPhoneValid }"
               id="phone number"
@@ -119,7 +119,7 @@
             <input
               class="input form-control"
               placeholder=""
-              v-model="firstTimersObj.email"
+              v-model="newConvertObj.email"
               type="email"
               :class="{ 'is-invalid': !isEmailValid }"
               id="email"
@@ -135,8 +135,30 @@
               type="text"
               class="input form-control"
               placeholder=""
-              v-model="firstTimersObj.address"
+              v-model="newConvertObj.address"
             />
+          </div>
+        </div>
+        <div>
+          <div class="d-md-flex justify-content-md-end mt-3 ">
+            <label for="" class="label">Which Group[s] Do You Belong To?</label>
+              <div class="p-2 border   add-group bg-white">
+                <div v-for="(item, index) in firstTimerInGroup" :key="index">
+                  <div class="pt-1">{{ index + 1 }}. {{ item.name }}</div>
+                </div>
+                <div v-if="firstTimerInGroup.length === 0">
+                  No group added yet
+                </div>
+                <div class="
+                  font-weight-700
+                  text-primary
+                  border-top
+                  text-center
+                  c-pointer
+                " data-toggle="modal" data-target="#addToGroup">
+                  Choose group
+                </div>
+              </div>
           </div>
         </div>
         <!-- Additional field -->
@@ -206,7 +228,7 @@
               <div class="cstm-select">
                 <div class="cs-select" style="width: 87px">
                   <Dropdown
-                    v-model="firstTimersObj.birthday"
+                    v-model="newConvertObj.birthday"
                     :options="day"
                     placeholder="Day"
                     style="width: 100%"
@@ -227,7 +249,7 @@
               <div class="cstm-select mr-0">
                 <div class="cs-select" style="width: 113px">
                   <Dropdown
-                    v-model="firstTimersObj.birthYear"
+                    v-model="newConvertObj.birthYear"
                     :options="year"
                     placeholder="Year"
                     style="width: 100%"
@@ -325,7 +347,7 @@
                 border-0
               "
               @click.prevent="onSubmit"
-              :disabled="loading || !firstTimersObj.firstName"
+              :disabled="loading || !newConvertObj.firstName"
             >
               <i
                 class="pi pi-spin pi-spinner text-white mr-2"
@@ -347,6 +369,126 @@
                 />
               </div>
             </a>
+          </div>
+        </div>
+      </div>
+    </div>
+      <div
+      class="modal fade"
+      id="addToGroup"
+      tabindex="-1"
+      role="dialog"
+      aria-labelledby="addToGroup"
+      aria-hidden="true"
+    >
+      <div class="modal-dialog modal-lg" role="document">
+        <div class="modal-content">
+          <div class="modal-header" style="background: #ebeff4">
+            <h5 class="modal-title font-weight-bold" id="addToGroup">
+              Group Membership
+            </h5>
+            <button
+              type="button"
+              class="close"
+              data-dismiss="modal"
+              aria-label="Close"
+            >
+              <span aria-hidden="true">&times;</span>
+            </button>
+          </div>
+          <div class="modal-body">
+            <div class="row my-4">
+              <div class="col-md-4 text-md-right">
+                <label for="" class="font-weight-600">Name</label>
+              </div>
+              <div class="col-md-7">
+                <div class="dropdown show">
+                  <button
+                    class="btn border w-100 d-flex justify-content-between align-items-center"
+                    type="button"
+                    id="dropdownMenuLink"
+                    data-toggle="dropdown"
+                    aria-haspopup="true"
+                    aria-expanded="false"
+                    @click="focusInput"
+                  >
+                    <div>
+                      {{
+                        Object.keys(groupToAddTo).length > 0
+                          ? groupToAddTo.name
+                          : "Select a group"
+                      }}
+                    </div>
+                    <i class="pi pi-chevron-down"></i>
+                  </button>
+                  <div
+                    class="dropdown-menu w-100 scroll-card"
+                    aria-labelledby="dropdownMenuLink"
+                  >
+                    <input
+                      type="text"
+                      v-model="searchGroupText"
+                      class="form-control input-width-adjust"
+                      placeholder="Search groups"
+                      ref="searchRef"
+                    />
+                    <a
+                      class="dropdown-item"
+                      v-for="item in searchAllGroups"
+                      :key="item.id"
+                    >
+                      <div class="c-pointer" @click="selectGroup(item)">
+                        {{ item.name }}
+                      </div>
+                    </a>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <div class="row">
+              <div class="col-md-4 text-md-right">
+                <label for="" class="font-weight-600">Position</label>
+              </div>
+              <div class="col-md-7">
+                <input
+                  type="text"
+                  v-model="position"
+                  class="form-control"
+                  placeholder="e.g Member"
+                />
+              </div>
+            </div>
+
+            <div class="row">
+              <div class="col-md-4">
+                <label for="" class="font-weight-600"></label>
+              </div>
+
+              <div class="col-md-7">
+                <div class="col-md-12 mt-3 text-center">
+                  <p class="my-1 text-danger" v-if="addToGroupError">
+                    Please select a group
+                  </p>
+                </div>
+                <div class="row mt-2">
+                  <div class="col-md-6 d-md-flex justify-content-end">
+                    <button class="default-btn" data-dismiss="modal">
+                      Cancel
+                    </button>
+                  </div>
+                  <div class="col-md-6">
+                    <button
+                      class="default-btn primary-bg border-0 text-white"
+                      :data-dismiss="dismissAddToGroupModal"
+                      @click="addMemberToGroup"
+                    >
+                      Save
+                    </button>
+                  </div>
+                </div>
+              </div>
+            </div>
           </div>
         </div>
       </div>
@@ -417,7 +559,7 @@ export default {
     const howDidYouAboutUs = ref([]);
     const selectedAboutUsSource = ref(null);
     const selectedFollowUp = ref(null);
-    const firstTimersObj = ref({
+    const newConvertObj = ref({
       sendWelcomeSMS: false,
       sendWelcomeEmail: true,
     });
@@ -429,8 +571,8 @@ export default {
     const isEmailValid = ref(true);
     const validatePhone = ref("");
     const validateEmail = ref("");
-    const firstTimerPhone = ref("");
-    const firstTimerEmail = ref("");
+    const newConvertPhone = ref("");
+    const newConvertEmail = ref("");
     const firstTimerInGroup = ref([]);
     const dynamicCustomFields = ref([]);
     const allGroups = ref([]);
@@ -438,6 +580,7 @@ export default {
     const position = ref("");
     const addToGroupError = ref(false);
     const dismissAddToGroupModal = ref("");
+    const searchRef = ref(null);
     const route = useRoute();
 
     const eventName = computed(() => {
@@ -490,6 +633,11 @@ export default {
     const closeModal = () => {
       displayModal.value = false;
     };
+    const focusInput = () => {
+      setTimeout(() => {
+        searchRef.value.focus();
+      }, 1000);
+    };
 
     const newEventCategoryName = ref("");
 
@@ -505,91 +653,117 @@ export default {
     // const birthMonth = ref(null)
 
     const hideCelebTab = ref(true);
+    const searchGroupText = ref('');
     const hideAddInfoTab = ref(true);
     const showCelebTab = () => (hideCelebTab.value = !hideCelebTab.value);
     const showAddInfoTab = () => (hideAddInfoTab.value = !hideAddInfoTab.value);
 
     const loading = ref(false);
 
+    const searchAllGroups = computed(() => {
+      if (!searchGroupText.value && allGroups.value.length > 0) {
+        return allGroups.value;
+      } else {
+        return allGroups.value.filter((i) => {
+          if (i.name)
+            return i.name
+              .toLowerCase()
+              .includes(searchGroupText.value.toLowerCase());
+        });
+      }
+    });
+    const selectGroup = (item) => {
+      groupToAddTo.value = item;
+    };
+
     const onSubmit = async () => {
-      firstTimersObj.value.genderId = selectedGender.value
+      newConvertObj.value.genderId = selectedGender.value
         ? selectedGender.value.id
         : 0;
-      firstTimersObj.value.maritalStatusId = selectedMaritalStatus.value
+      newConvertObj.value.maritalStatusId = selectedMaritalStatus.value
         ? selectedMaritalStatus.value.id
         : 0;
-      firstTimersObj.value.activityId = selectedEventAttended.value
+      newConvertObj.value.activityId = selectedEventAttended.value
         ? selectedEventAttended.value.activityID
         : "00000000-0000-0000-0000-000000000000";
-      firstTimersObj.value.howDidYouAboutUsId = selectedAboutUsSource.value
+      newConvertObj.value.howDidYouAboutUsId = selectedAboutUsSource.value
         ? selectedAboutUsSource.value.id
         : "00000000-0000-0000-0000-000000000000";
-      firstTimersObj.value.communicationMeans = selectedCommunicationMeans.value
+      newConvertObj.value.communicationMeans = selectedCommunicationMeans.value
         ? comMeansArr.value.indexOf(selectedCommunicationMeans.value) + 1
         : 0;
-      firstTimersObj.value.interestedInJoining = selectedJoinInterest.value
+      newConvertObj.value.interestedInJoining = selectedJoinInterest.value
         ? joinInterestArr.value.indexOf(selectedJoinInterest.value) + 1
         : 0;
-      firstTimersObj.value.wantToBeVisited = selectedVisitOption.value
+      newConvertObj.value.wantToBeVisited = selectedVisitOption.value
         ? wantVisitArr.value.indexOf(selectedVisitOption.value) + 1
         : 0;
 
       switch (birthMonth.value) {
         case "January":
-          firstTimersObj.value.birthMonth = 1;
+          newConvertObj.value.birthMonth = 1;
           break;
         case "February":
-          firstTimersObj.value.birthMonth = 2;
+          newConvertObj.value.birthMonth = 2;
           break;
         case "March":
-          firstTimersObj.value.birthMonth = 3;
+          newConvertObj.value.birthMonth = 3;
           break;
         case "April":
-          firstTimersObj.value.birthMonth = 4;
+          newConvertObj.value.birthMonth = 4;
           break;
         case "May":
-          firstTimersObj.value.birthMonth = 5;
+          newConvertObj.value.birthMonth = 5;
           break;
         case "June":
-          firstTimersObj.value.birthMonth = 6;
+          newConvertObj.value.birthMonth = 6;
           break;
         case "July":
-          firstTimersObj.value.birthMonth = 7;
+          newConvertObj.value.birthMonth = 7;
           break;
         case "August":
-          firstTimersObj.value.birthMonth = 8;
+          newConvertObj.value.birthMonth = 8;
           break;
         case "September":
-          firstTimersObj.value.birthMonth = 9;
+          newConvertObj.value.birthMonth = 9;
           break;
         case "October":
-          firstTimersObj.value.birthMonth = 10;
+          newConvertObj.value.birthMonth = 10;
           break;
         case "November":
-          firstTimersObj.value.birthMonth = "11";
+          newConvertObj.value.birthMonth = "11";
           break;
         case "December":
-          firstTimersObj.value.birthMonth = "12";
+          newConvertObj.value.birthMonth = "12";
           break;
         default:
-          // firstTimersObj.value.birthMonth = "12";
+          // newConvertObj.value.birthMonth = "12";
           console.log("No month chosen");
           break;
       }
 
-      firstTimersObj.value.customAttributeData = dynamicCustomFields.value.map(
+      newConvertObj.value.customAttributeData = dynamicCustomFields.value.map(
         (i) => ({
           customAttributeID: i.id,
           data: i.data,
           entityID: route.params.personId,
         })
       );
+      newConvertObj.value.groups =
+        firstTimerInGroup.value.length > 0
+          ? firstTimerInGroup.value.map((i) => {
+            return {
+              groupId: i.groupId,
+              position: i.position,
+            };
+          })
+          : [];
 
-      firstTimersObj.value.tenantId = route.params.id;
+      newConvertObj.value.tenantId = route.params.id;
 
       loading.value = true;
       axios
-        .post("/api/PublicContents/NewConvert", firstTimersObj.value)
+        .post("/api/PublicContents/NewConvert", newConvertObj.value)
         .then((res) => {
           finish();
           console.log(res.data);
@@ -602,12 +776,15 @@ export default {
           //     life: 8000,
           //   });
           swal("Successful", "New Convert created successfully!", "success");
-
-          firstTimersObj.value = {};
+          newConvertObj.value = {};
+          birthMonth.value = "";
+          selectedVisitOption.value = "";
+          selectedJoinInterest.value = "";
+          selectedCommunicationMeans.value = "";
+          selectedAboutUsSource.value = "";
           selectedEventAttended.value = {};
-          selectedMaritalStatus.value = {};
-          selectedGender.value = {};
-          birthMonth.value = {};
+          selectedMaritalStatus.value = "";
+          selectedGender.value = "";
         })
         .catch((err) => {
           finish();
@@ -745,10 +922,10 @@ export default {
               maritalStatusArr.value = i.lookUps;
               if (ftimerId.value) {
                 selectedMaritalStatus.value = maritalStatusArr.value.find(
-                  (i) => i.id === firstTimersObj.value.maritalStatusId
+                  (i) => i.id === newConvertObj.value.maritalStatusId
                 );
                 selectedGender.value = genderArr.value.find(
-                  (i) => i.id === firstTimersObj.value.genderId
+                  (i) => i.id === newConvertObj.value.genderId
                 );
               }
             }
@@ -771,77 +948,7 @@ export default {
           });
           console.log(res.data, "HYH");
         });
-
-      //   console.log(route.params.firstTimerId);
-      //   if (route.params.firstTimerId) {
-      //     axios
-      //       .get(`/api/People/firstTimer/${route.params.firstTimerId}`)
-      //       .then((res) => {
-      //         console.log(res.data, "DFGHG");
-      //         ftimerId.value = res.data.personId;
-
-      //         firstTimersObj.value = res.data;
-      //         firstTimersObj.value.sendWelcomeSMS = res.data.sendSms;
-      //         firstTimersObj.value.sendWelcomeEmail = res.data.sendEmail;
-
-      //         selectedGender.value = res.data.genderId ? genderArr.value.find(i => i.id === res.data.genderId) : { };
-
-      //         selectedMaritalStatus.value = res.data.maritalStatusId ? maritalStatusArr.value.find(i => i.id === res.data.maritalStatusId) : { };
-
-      //         selectedAboutUsSource.value = getUserSource(res.data.howDidYouAboutUsId)
-
-      //         selectedCommunicationMeans.value = res.data.communicationMeans ? comMeansArr.value[res.data.communicationMeans - 1] : ""
-
-      //         selectedJoinInterest.value = res.data.interestedInJoining ? joinInterestArr.value[res.data.interestedInJoining - 1] : ""
-
-      //         selectedVisitOption.value = res.data.wantsToBeVisited ? wantVisitArr.value[res.data.wantsToBeVisited - 1] : ""
-      //         console.log(wantVisitArr.value[res.data.wantsToBeVisited - 1], res.data.wantsToBeVisited)
-
-      //         firstTimersObj.value.birthday = res.data.birthday ? Number(res.data.birthday) : "";
-
-      //         firstTimersObj.value.birthYear = res.data.birthYear ? +res.data.birthYear : "";
-
-      //         birthMonth.value = res.data.birthMonth ? month.value[Number(res.data.birthMonth) - 1] : "";
-      //         console.log(eventsAttended.value, "EA");
-
-      //         selectedEventAttended.value = getEventUserAttended(res.data.activityID)
-      //       })
-      //       .catch(err => {
-      //         finish()
-      //         console.log(err)
-      //         toast.add({
-      //           severity: "error",
-      //           summary: "Error getting details",
-      //           detail: "Unable to get person details, ensure you have a strong network connection",
-      //           life: 5000,
-      //         });
-      //       })
-      //   }
     });
-
-    // const getUserSource = sourceId => {
-    //   if (sourceId && howDidYouAboutUs.value && howDidYouAboutUs.value.length > 0) return howDidYouAboutUs.value.find(i => i.id === sourceId);
-    //   if (!sourceId) {
-    //     axios.get("/api/membership/howyouheardaboutus").then((res) => {
-    //       howDidYouAboutUs.value = res.data.map((i) => {
-    //         return { name: i.name, id: i.id };
-    //       });
-    //       return howDidYouAboutUs.value.find(i => i.id === res.data.howDidYouAboutUsId);
-    //     });
-    //   } else {
-    //     return null;
-    //   }
-    // }
-
-    // const getEventUserAttended = userEventId => {
-    //   if (!userEventId) return { };
-    //   if (eventsAttended.value && eventsAttended.value.length > 0) return eventsAttended.value.find(i => i.activityID === userEventId);
-    //   axios.get("/api/Events/EventActivity").then((res) => {
-    //     eventsAttended.value = res.data;
-    //     return eventsAttended.value.find(i => i.activityID === userEventId);
-    //   });
-    // }
-
     const year = computed(() => {
       const arrOfYears = [];
       let currentYear = new Date().getFullYear();
@@ -858,16 +965,16 @@ export default {
           let { data } = await axios.get(
             `/api/People/NewConvert/${route.params.firstTimerId}`
           );
-          firstTimerPhone.value = data.phoneNumber;
-          firstTimerEmail.value = data.email;
+          newConvertPhone.value = data.phoneNumber;
+          newConvertEmail.value = data.email;
         } catch (err) {
           console.log(err);
         }
       }
-      if (firstTimersObj.value.phoneNumber !== firstTimerPhone.value) {
+      if (newConvertObj.value.phoneNumber !== newConvertPhone.value) {
         try {
           let { data } = await axios.get(
-            `api/People/checkDuplicate?phoneNumber=${firstTimersObj.value.phoneNumber}`
+            `api/People/checkDuplicate?phoneNumber=${newConvertObj.value.phoneNumber}`
           );
           console.log(data, validatePhone.value);
           if (data === "phone number") {
@@ -891,16 +998,16 @@ export default {
           let { data } = await axios.get(
             `/api/People/firstTimer/${route.params.firstTimerId}`
           );
-          firstTimerEmail.value = data.email;
+          newConvertEmail.value = data.email;
         } catch (err) {
           console.log(err);
         }
       }
 
-      if (firstTimersObj.value.email !== firstTimerEmail.value) {
+      if (newConvertObj.value.email !== newConvertEmail.value) {
         try {
           let { data } = await axios.get(
-            `api/People/checkDuplicate?email=${firstTimersObj.value.email}`
+            `api/People/checkDuplicate?email=${newConvertObj.value.email}`
           );
           console.log(data);
           if (data === "email") {
@@ -919,7 +1026,7 @@ export default {
     };
 
     const setImageToUrl = (payload) => {
-      firstTimersObj.value.imageUrl = payload;
+      newConvertObj.value.imageUrl = payload;
     };
 
     const setContact = (payload) => {
@@ -932,7 +1039,7 @@ export default {
           life: 15000,
         });
       }
-      firstTimersObj.value.contactOwnerId = payload.id;
+      newConvertObj.value.contactOwnerId = payload.id;
     };
 
     const getGroups = async () => {
@@ -976,7 +1083,9 @@ export default {
     return {
       onSubmit,
       onCancel,
-      firstTimersObj,
+      newConvertObj,
+      searchAllGroups,
+      searchGroupText,
       day,
       month,
       year,
@@ -987,6 +1096,7 @@ export default {
       joinInterestArr,
       wantVisitArr,
       comMeansArr,
+      selectGroup,
       loading,
       selectedGender,
       selectedMaritalStatus,
@@ -998,6 +1108,7 @@ export default {
       selectedFollowUp,
       hideCelebTab,
       showCelebTab,
+      focusInput,
       showAddInfoTab,
       hideAddInfoTab,
       birthMonth,
@@ -1029,8 +1140,8 @@ export default {
       isEmailValid,
       validatePhone,
       validateEmail,
-      firstTimerPhone,
-      firstTimerEmail,
+      newConvertPhone,
+      newConvertEmail,
       setImageToUrl,
       setContact,
       firstTimerInGroup,
@@ -1038,6 +1149,7 @@ export default {
       groupToAddTo,
       position,
       dynamicCustomFields,
+      searchRef,
       addToGroupError,
       dismissAddToGroupModal,
       addMemberToGroup,

@@ -1,29 +1,11 @@
 <template>
+  <!-- <testing /> -->
   <div @click="hideEmojiWrapper">
     <div class="container">
       <!-- <div class="container" @click="closeDropdownIfOpen"> -->
       <div class="row">
         <div class="col-md-12 mb-3 mt-3 offset-3 offset-md-0">
           <h4 class="font-weight-bold">Compose Whatsapp Message</h4>
-
-          <!-- <Dialog header="Select Date and Time" v-model:visible="display" :style="{ width: '50vw', maxWidth: '600px' }"
-            :modal="true">
-            <div class="row">
-              <div class="col-md-12">
-                <input type="datetime-local" id="birthdaytime" class="form-control" name="birthdaytime"
-                  v-model="executionDate" />
-              </div>
-            </div>
-            <template #footer>
-              <Button label="Cancel" icon="pi pi-times" @click="() => (display = false)" class="p-button-raised p-button-text p-button-plain mr-3" style="
-                  color: #136acd;
-                  background: #fff !important;
-                  border-radius: 22px;
-                " />
-              <Button label="Schedule" class="p-button-rounded" style="background: #136acd"
-                @click="contructScheduleMessageBody(2, '')" />
-            </template>
-          </Dialog> -->
         </div>
       </div>
 
@@ -38,16 +20,6 @@
           <span class="small-text">Send to: </span>
         </div>
         <div class="col-10 px-md-0 col-lg-10 form-group mb-0">
-          <!-- <div class="dropdown">
-            <button class="btn btn-default dropdown-toggle small-text pl-md-0" type="button" id="dropdownMenuButton"
-              data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" @click="closeDropdownIfOpen">
-              Select Destination
-            </button>
-            <div class="dropdown-menu w-100" aria-labelledby="dropdownMenuButton">
-              <a class="dropdown-item c-pointer small-text" v-for="(destination, index) in possibleSMSDestinations"
-                :key="index" @click="showSection(index)">{{ destination }}</a>
-            </div>
-          </div> -->
           <el-dropdown trigger="click" class="w-100">
             <div class="d-flex justify-content-between border-contribution text-dark w-100" size="large">
               <span>Select Destination</span>
@@ -70,28 +42,57 @@
           </el-dropdown>
         </div>
       </div>
-
-      <div class="row mb-1">
-        <div class="col-md-12 pr-0">
-          <hr class="hr my-1" />
-        </div>
-      </div>
-      <!-- 
+      
       <div class="row" v-if="sendToAll">
         <div class="col-md-2"></div>
         <div class="col-md-10 px-0">
           <span>
             <input class="form-control dropdown-toggle my-1 px-1 small-text" type="text" id="dropdownMenu"
               value="All Contacts" disabled />
-            <span class="close-allcontacts c-pointer" @click="() => sendToAll = false"><i class="pi pi-times"></i></span>
+            <span class="close-allcontacts c-pointer" @click="(sendToAll = false),(selectedGroups = selectedGroups.filter(i => i.data !== 'membership_00000000-0000-0000-0000-000000000000')),(getMemberPhoneNumber())"><i class="pi pi-times"></i></span>
           </span>
         </div>
-      </div> -->
+      </div>
+      <div class="row my-2" v-if="groupSelectionTab">
+        <div class="col-2 pr-md-0 col-lg-2 align-self-center">
+        </div>
+        <div class="col-10 px-md-0 col-lg-10 form-group mb-0">
+          <el-select v-model="groupMultipleIDs" placeholder="Select" class="group-category w-100" @remove-tag="removeTag" filterable multiple>
+            <el-option-group
+              v-for="(group, index) in categories"
+              :key="group"
+              :label="group"
+            >    
+              <el-option
+                v-for="(item, indx) in allGroups[index]"
+                :key="item.id"
+                :label="item.name"
+                :value="item.id"
+                @click="selectGroup(item.category, item.id, item.name, index, indx)"
+              />
+            </el-option-group>
+          </el-select>
+        </div>
+      </div>
 
-      <div class="row mb-2" v-if="groupSelectionTab">
+      
+
+      
+
+      <!-- <el-select-v2  
+      v-if="categories"
+        v-model="groupMultipleIDs"
+        
+        placeholder="Please select"
+        style="width: 240px"
+        filterable
+        multiple
+      /> -->
+
+      <!-- <div class="row mb-2" v-if="groupSelectionTab">
         <div class="col-md-2"></div>
-        <div class="col-md-10 px-0 grey-rounded-border">
-          <ul class="d-flex flex-wrap pl-1 mb-0 dd-item small-text" @click="() => groupSelectInput.focus()">
+        <div class="col-md-10 px-0 grey-rounded-border"> -->
+          <!-- <ul class="d-flex flex-wrap pl-1 mb-0 dd-item small-text" @click="() => groupSelectInput.focus()">
             <li style="list-style: none; min-width: 100px" v-for="(group, index) in selectedGroups" :key="index"
               class="email-destination d-flex justify-content-between m-1">
               <span>{{ group.name }}</span>
@@ -104,8 +105,8 @@
               }" @focus="showGroupList" @click="showGroupList" style="padding: 0.5rem" :placeholder="`${selectedGroups.length > 0 ? '' : 'Select groups'
   }`" />
             </li>
-          </ul>
-          <div class="col-md-12 px-2 select-groups-dropdown dd-item pt-2" v-if="groupListShown">
+          </ul> -->
+          <!-- <div class="col-md-12 px-2 select-groups-dropdown dd-item pt-2" v-if="groupListShown">
             <div class="row dd-item" v-if="categories.length === 0">
               <div class="col-md-12 dd-item">
                 <p class="small-text">No groups yet</p>
@@ -134,9 +135,9 @@
                 </div>
               </div>
             </div>
-          </div>
-        </div>
-      </div>
+          </div> -->
+        <!-- </div>
+      </div> -->
 
       <div class="row mb-2" v-if="whatsappGroupSelectionTab">
         <div class="col-md-2"></div>
@@ -147,54 +148,8 @@
           <el-icon class="is-loading" v-if="whatsappGroupsLoading">
             <Loading />
           </el-icon>
-          <!-- <el-dropdown trigger="click" class="w-100">
-            <div class="d-flex justify-content-between border-contribution text-dark w-100" size="large">
-              <span>Select Whatsapp group</span>
-              <div>
-                <el-icon class="el-icon--right">
-                  <arrow-down />
-                </el-icon>
-              </div>
-            </div>
-            <template #dropdown>
-              <el-dropdown-menu>
-                <el-dropdown-item v-for="(group, index) in userWhatsappGroups" :key="index">
-                  <a class="no-decoration text-dark">
-                    {{ group.formattedTitle }}
-                  </a>
-                </el-dropdown-item>
-              </el-dropdown-menu>
-            </template>
-          </el-dropdown> -->
         </div>
       </div>
-
-
-      <div class="row mb-2" v-if="broadcastSelectionTab">
-        <div class="col-md-2"></div>
-        <div class="col-md-10 px-0">
-          <el-dropdown trigger="click" class="w-100">
-            <div class="d-flex justify-content-between border-contribution text-dark w-100" size="large">
-              <span>Select broadcast list</span>
-              <div>
-                <el-icon class="el-icon--right">
-                  <arrow-down />
-                </el-icon>
-              </div>
-            </div>
-            <template #dropdown>
-              <el-dropdown-menu>
-                <el-dropdown-item v-for="(group, index) in userWhatsappGroups" :key="index">
-                  <a class="no-decoration text-dark">
-                    <!-- {{ group }} -->
-                  </a>
-                </el-dropdown-item>
-              </el-dropdown-menu>
-            </template>
-          </el-dropdown>
-        </div>
-      </div>
-
 
       <div class="row" v-if="membershipSelectionTab">
         <div class="col-md-2"></div>
@@ -264,25 +219,7 @@
             <el-button class="mt-2" type="primary"
               @click="(allSelectedNumbers.push(phoneNumber.replaceAll(' ', '').trim())), (phoneNumber = '')"
               plain>add</el-button>
-            <!-- <el-button class="mt-2" type="primary" plain>done</el-button> -->
-            <!-- <textarea class="form-control w-100 px-1 grey-rounded-border" placeholder="Enter phone number(s)"
-              v-model="phoneNumber"></textarea> -->
           </div>
-          <!-- <div class="col-md-12 grey-rounded-border groups" :class="{ hide: !groupsAreVissible }">
-            <div class="row" v-for="(category, index) in categories" :key="index">
-              <div class="col-md-12">
-                <div class="row">
-                  <div class="col-md-12">
-                    <h4 class="px-14">{{ category }}</h4>
-                    <p v-for="(group, indx) in allGroups[index]"
-                      @click="selectGroup(group.category, group.id, group.name)" :key="indx" class="small-text">
-                      {{ group.name }}
-                    </p>
-                  </div>
-                </div>
-              </div>
-            </div>
-          </div> -->
         </div>
       </div>
 
@@ -358,12 +295,6 @@
             <!-- <source src="movie.mp4" type="video/mp4"> -->
             Your browser does not support the video tag.
           </video>
-          <!-- <div class="col-md-12 px-0 small-text">
-            <p class="bg-success mb-0 p-1" v-if="editorData.length > 0" :class="{ amber: charactersCount > 160 }">
-              <span>Characters count {{ charactersCount }}</span>
-              <span class="float-right">Page {{ pageCount }}</span>
-            </p>
-          </div> -->
         </div>
       </div>
 
@@ -428,22 +359,24 @@ import { VuemojiPicker } from 'vuemoji-picker'
 import { state } from "@/socket";
 import { socket } from "@/socket";
 import deviceBreakpoint from "../../../mixins/deviceBreakpoint";
+// import testing from "./testing.vue"
 
 export default {
   components: {
     VueQrcode,
-    VuemojiPicker
+    VuemojiPicker,
+    // testing
   },
-  beforeRouteEnter (to, from, next) {
-    const whatsappClientState = computed(() => {
-      return store.getters["communication/isWhatsappClientReady"]
-    })
-    if (!whatsappClientState.value && to.fullPath == '/tenant/whatsapp') {
-      next({ path: '/tenant/whatsapp/auth' })
-    } else {
-      next()
-    }
-  },
+  // beforeRouteEnter (to, from, next) {
+  //   const whatsappClientState = computed(() => {
+  //     return store.getters["communication/isWhatsappClientReady"]
+  //   })
+  //   if (!whatsappClientState.value && to.fullPath == '/tenant/whatsapp') {
+  //     next({ path: '/tenant/whatsapp/auth' })
+  //   } else {
+  //     next()
+  //   }
+  // },
   setup() {
     const session = ref("")
     const qrCode = ref("")
@@ -461,17 +394,14 @@ export default {
       "Select group from database", 
       "Select person from membership database",
       "Phone numbers",
-      // "Upload contacts", 
       "Select from Whatsapp groups",
-      // "Select from Whatsapp broadcast list"
     ];
     const allSelectedNumbers = ref([])
-    const groupsAreVissible = ref(false);
+    const sendToAll = ref(false);
     const groupSelectionTab = ref(false);
     const membershipSelectionTab = ref(false);
     const phoneNumberSelectionTab = ref(false);
     const whatsappGroupSelectionTab = ref(false);
-    const broadcastSelectionTab = ref(false);
     const selectedGroups = ref([]);
     const displayEmoji = ref(false);
     const fileImage = ref(false);
@@ -490,6 +420,7 @@ export default {
     const { mdAndUp, lgAndUp, xlAndUp, xsOnly } = deviceBreakpoint();
     const scheduledWhatsappDate = ref("")
     const chatRecipients = ref([])
+    const groupMultipleIDs = ref([])
 
 
     const clientSessionId = computed(() => {
@@ -504,12 +435,12 @@ export default {
       return []
       }
     })
-    const toggleGroupsVissibility = () => {
-      groupsAreVissible.value = !groupsAreVissible.value;
-    };
+    // const toggleGroupsVissibility = () => {
+    //   groupsAreVissible.value = !groupsAreVissible.value;
+    // };
 
     const showSection = (index) => {
-      if (index === 0) (groupSelectionTab.value = true), (selectedGroups.value.push({ data: "membership_00000000-0000-0000-0000-000000000000", name: "All Contacts" })), (getMemberPhoneNumber());
+      if (index === 0) (sendToAll.value = true), (selectedGroups.value.push({ data: "membership_00000000-0000-0000-0000-000000000000", name: "All Contacts" })), (getMemberPhoneNumber());
       if (index === 1) (groupSelectionTab.value = true)
       if (index === 2) (membershipSelectionTab.value = true)
       if (index === 3) (phoneNumberSelectionTab.value = true)
@@ -603,21 +534,6 @@ export default {
       socket.emit('getsession', { id: getSessionId.value })
     }
 
-    // const sendOptionsIsShown = ref(false);
-    // const toggleSendOptionsDisplay = () =>
-    //   (sendOptionsIsShown.value = !sendOptionsIsShown.value);
-
-    // const closeDropdownIfOpen = (e) => {
-    //   if (!e.target.classList.contains("dd-item")) {
-    //     sendOptionsIsShown.value = false;
-    //     groupListShown.value = false;
-    //   }
-
-    //   if (!e.target.classList.contains("m-dd-item")) {
-    //     memberListShown.value = false;
-    //   }
-    // };
-
     const selectGroup = (
       category,
       id,
@@ -625,12 +541,12 @@ export default {
       indexInCategories,
       indexInGroup
     ) => {
-      selectedGroups.value.push({ data: `${category}_${id}`, name });
-      groupsAreVissible.value = false;
-      allGroups.value[indexInCategories].splice(indexInGroup, 1);
-      groupListShown.value = false;
-      console.log(selectedGroups);
-
+      const group_index = selectedGroups.value.findIndex(i => i.data == `${category}_${id}`)
+      if (group_index < 0) {
+        selectedGroups.value.push({ data: `${category}_${id}`, name });
+      } else {
+        selectedGroups.value.splice(group_index, 1)
+      }
       getMemberPhoneNumber()
     };
 
@@ -645,7 +561,6 @@ export default {
     const selectedMembers = ref([]);
     const selectMember = (selectedMember, index) => {
       selectedMembers.value.push(selectedMember);
-      console.log(memberSearchResults.value, "search members");
       memberSearchResults.value.splice(index, 1);
       memberListShown.value = false;
       searchText.value = "";
@@ -781,6 +696,7 @@ export default {
       composeService
         .getCommunicationGroups()
         .then((res) => {
+          console.log(res, 'ehehhe');
           for (let prop in res) {
             categories.value.push(prop);
             allGroups.value.push(res[prop]);
@@ -789,11 +705,11 @@ export default {
         .catch((err) => console.log(err));
     })
 
-    const groupListShown = ref(false);
-    const showGroupList = () => {
-      groupListShown.value = true;
-      console.log(groupSelectInput.value);
-    };
+    // const groupListShown = ref(false);
+    // const showGroupList = () => {
+    //   // groupListShown.value = true;
+    //   console.log(groupSelectInput.value);
+    // };
 
     const memberListShown = ref(false);
     const showMemberList = () => {
@@ -1102,13 +1018,17 @@ export default {
     }
 
 
+    const removeTag = (value) => {
+      console.log(value);
+      selectedGroups.value = selectedGroups.value.filter(i => !i.data.includes(value))
+    }
 
     return {
       editorData,
       editorConfig,
       possibleSMSDestinations,
-      groupsAreVissible,
-      toggleGroupsVissibility,
+      sendToAll,
+      // toggleGroupsVissibility,
       selectedGroups,
       selectGroup,
       removeGroup,
@@ -1129,8 +1049,8 @@ export default {
       searchForPerson,
       loading,
       memberSearchResults,
-      groupListShown,
-      showGroupList,
+      // groupListShown,
+      // showGroupList,
       groupSelectInput,
       memberListShown,
       showMemberList,
@@ -1157,7 +1077,6 @@ export default {
       userWhatsappGroups,
       primarycolor,
       whatsappGroupSelectionTab,
-      broadcastSelectionTab,
       userWhatsappGroupsId,
       sendWhatsappMessage,
       allSelectedNumbers,
@@ -1189,7 +1108,10 @@ export default {
       mdAndUp,
       lgAndUp,
       xlAndUp,
-      xsOnly
+      xsOnly,
+      groupMultipleIDs,
+      getMemberPhoneNumber,
+      removeTag
     };
   },
 };
