@@ -182,7 +182,7 @@ export default {
                 })
             })
 
-            socket.once('newmessage', (data) => {
+            socket.on('newmessage', (data) => {
                 console.log(data);
                 ElNotification({
                     title: data._data.notifyName,
