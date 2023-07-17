@@ -182,19 +182,15 @@ export default {
                 })
             })
 
-            socket.on('newmessage', (data) => {
+            socket.once('newmessage', (data) => {
                 console.log(data);
                 ElNotification({
-                    title: 'Whatsapp',
-                    message: 'New message received!',
+                    title: data._data.notifyName,
+                    message: !data.hasMedia ? data._data.body : '** Media File **',
                     type: 'success',
                 })
+                
             })
-            
-            socket.on('schedulepayload', (data) => {
-                console.log(data, 'schedulepayload here');
-            })
-
 
             if (socketconnected.value) {
                 console.log('socket connected')

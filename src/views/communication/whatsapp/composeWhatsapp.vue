@@ -151,7 +151,7 @@
         </div>
       </div>
 
-      <div class="row" v-if="membershipSelectionTab">
+      <div class="row mt-2" v-if="membershipSelectionTab">
         <div class="col-md-2"></div>
         <div class="col-md-10 pl-0 grey-rounded-border">
           <ul class="d-flex flex-wrap px-1 mb-0 m-dd-item" @click="() => memberSelectInput.focus()">
