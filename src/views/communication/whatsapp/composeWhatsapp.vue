@@ -57,7 +57,7 @@
         <div class="col-2 pr-md-0 col-lg-2 align-self-center">
         </div>
         <div class="col-10 px-md-0 col-lg-10 form-group mb-0">
-          <el-select v-model="groupMultipleIDs" placeholder="Select" class="group-category w-100" @remove-tag="removeTag" filterable multiple>
+          <el-select v-model="groupMultipleIDs" placeholder="Select group" class="group-category w-100" @remove-tag="removeTag" filterable multiple>
             <el-option-group
               v-for="(group, index) in categories"
               :key="group"
@@ -335,7 +335,7 @@
         <template #footer>
           <span class="dialog-footer">
             <el-button @click="whatsappScheduleDialog = false" class="secondary-button" round>Cancel</el-button>
-            <el-button :color="primarycolor" @click="scheduleWhatsappMessage" round>
+            <el-button :color="primarycolor" :loading="scheduleloading" @click="scheduleWhatsappMessage" round>
               Schedule
             </el-button>
           </span>
@@ -360,6 +360,7 @@ import { state } from "@/socket";
 import { socket } from "@/socket";
 import deviceBreakpoint from "../../../mixins/deviceBreakpoint";
 // import testing from "./testing.vue"
+import dateFormatter from "../../../services/dates/dateformatter";
 
 export default {
   components: {
@@ -367,16 +368,16 @@ export default {
     VuemojiPicker,
     // testing
   },
-  // beforeRouteEnter (to, from, next) {
-  //   const whatsappClientState = computed(() => {
-  //     return store.getters["communication/isWhatsappClientReady"]
-  //   })
-  //   if (!whatsappClientState.value && to.fullPath == '/tenant/whatsapp') {
-  //     next({ path: '/tenant/whatsapp/auth' })
-  //   } else {
-  //     next()
-  //   }
-  // },
+  beforeRouteEnter (to, from, next) {
+    const whatsappClientState = computed(() => {
+      return store.getters["communication/isWhatsappClientReady"]
+    })
+    if (!whatsappClientState.value && to.fullPath == '/tenant/whatsapp') {
+      next({ path: '/tenant/whatsapp/auth' })
+    } else {
+      next()
+    }
+  },
   setup() {
     const session = ref("")
     const qrCode = ref("")
@@ -421,6 +422,7 @@ export default {
     const scheduledWhatsappDate = ref("")
     const chatRecipients = ref([])
     const groupMultipleIDs = ref([])
+    const scheduleloading = ref(false)
 
 
     const clientSessionId = computed(() => {
@@ -505,7 +507,6 @@ export default {
         chunkProgress.value = data
         console.log(chunkProgress.value);
       })
-
     })
 
     const connected = computed(() => {
@@ -942,7 +943,10 @@ export default {
       selectedFileUrl.value = ""
       whatsappAttachment.value = {}
       chunkProgress.value = 0
-      socket.emit('clearfile', '')
+      socket.emit('clearfile', {
+        data: "",
+        id: clientSessionId.value
+      })
     }
 
 
@@ -958,7 +962,8 @@ export default {
         {
           chunk,
           uploadedChunks,
-          totalChunks
+          totalChunks,
+          id: clientSessionId.value
         });
         uploadedChunks++; // Increment the uploadedChunks count
 
@@ -976,6 +981,7 @@ export default {
     }
 
     const scheduleWhatsappMessage = async() => {
+      scheduleloading.value = true
       if (allSelectedNumbers.value.length > 0 || phoneNumber.value) {
         const recipients = allSelectedNumbers.value.length > 0 ? allSelectedNumbers.value : [phoneNumber.value.replaceAll(" ", "").trim()]
         chatRecipients.value = chatRecipients.value.concat(recipients)
@@ -994,8 +1000,6 @@ export default {
       console.log(chatRecipients.value);
       const uniqueNumbers = new Set(chatRecipients.value);
       console.log(Array.from(uniqueNumbers));
-
-
       const payload = {
         message: editorData.value,
         whatsappAttachment: whatsappAttachment.value,
@@ -1011,8 +1015,16 @@ export default {
       try {
         let { data } = await axios.post("/api/Messaging/saveWhatsAppSchedule", payload)
         console.log(data, 'schedule successful');
+        whatsappScheduleDialog.value = false;
+        scheduleloading.value = false
+        swal({
+          title: "Success",
+          text: `Your Whatsapp message has been scheduled for\n${dateFormatter.monthDayTime(scheduledWhatsappDate.value)}`,
+          icon: "success",
+        })
       }
       catch (err) {
+        scheduleloading.value = false
         console.error(err);
       }
     }
@@ -1111,7 +1123,8 @@ export default {
       xsOnly,
       groupMultipleIDs,
       getMemberPhoneNumber,
-      removeTag
+      removeTag,
+      scheduleloading
     };
   },
 };
