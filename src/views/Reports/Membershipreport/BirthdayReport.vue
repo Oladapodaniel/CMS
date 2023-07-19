@@ -1,104 +1,94 @@
 <template>
-  <div class="container-fluid px-5" id="element-to-print">
+  <div class="container-fluid" id="element-to-print">
     <!-- header area -->
-    <div class="container">
-      <div
-        class="
-          row
-          d-flex
-          flex-row
-          justify-content-between
-          mt-5
-          align-items-center
-        "
-      >
-        <div class="centered-items">
-          <h3 class="heading-text ml-2">Birthday Report</h3>
-        </div>
-        <div class="default-btn border-secondary font-weight-normal c-pointer"
-                @click="() => (showExport = !showExport)"
-                style="width: fixed; position:relative">Export &nbsp; &nbsp; <i class="pi pi-angle-down" ></i>
-                <div class=" c-pointer" style="width: 6rem; z-index:1000; position:absolute" v-if="showExport">
-                      <Listbox @click="downloadFile" v-model="selectedFileType" :options="bookTypeList" optionLabel="name"/>
-                </div>
-        </div>
-        <!-- <div class="centered-items pr-3">
-          <button
-            class="default-btn font-weight-normal"
-            @click="() => (showExport = !showExport)"
-          >
-            Export &nbsp; &nbsp; <i class="pi pi-angle-down"></i>
-          </button>
-        </div> -->
+    <!-- <div class="container"> -->
+    <div class="row d-flex flex-row justify-content-between align-items-center">
+      <div class="centered-items">
+        <h3 class="head-text">Birthday Report</h3>
       </div>
-      <!-- <transition name="move" mode="out-in">
-        <div class="row my-4" v-if="showExport">
-          <div class="col-sm-5">
-            <span class="p-float-label ml-n3">
-              <InputText
-                id="inputtext"
-                class="w-100"
-                type="text"
-                v-model="fileName"
-              />
-              <label for="inputtext">Enter file name</label>
-            </span>
-          </div>
-          <div class="col-sm-4">
-            <Dropdown
-              v-model="selectedFileType"
-              class="w-100"
-              :options="bookTypeList"
-              placeholder="Select file type"
-            />
-          </div>
-          <div @click="downloadFile" class="col-sm-2 offset-sm-1">
-            <div
-              class="
-                default-btn
-                d-flex
-                align-items-center
-                justify-content-center
-                c-pointer
-                generate-report
-              "
-            >
-              Download
+      <div class="c-pointer my-sm-0 my-2">
+        <el-dropdown trigger="click" class="w-100">
+          <div
+            class="d-flex justify-content-between default-btn text-dark w-100"
+            size="large"
+          >
+            <span class="mt-1">Export</span>
+            <div class="mt-1">
+              <el-icon class="el-icon--right">
+                <arrow-down />
+              </el-icon>
             </div>
           </div>
-        </div>
-      </transition> -->
-    </div>
+          <template #dropdown>
+            <el-dropdown-menu>
+              <el-dropdown-item
+                v-for="(bookType, index) in bookTypeList"
+                :key="index"
+              >
+                <a
+                  class="no-decoration text-dark"
+                  @click="downloadFile(bookType)"
+                >
+                  {{ bookType.name }}
+                </a>
+              </el-dropdown-item>
+            </el-dropdown-menu>
+          </template>
+        </el-dropdown>
 
-       <div class="container-fluid bg-area my-3">
-        <div class="row px-4 w-100 ml-md-5 px-sm-4 mt-sm-3 ">
-              <div class="col-md-4 col-sm-12 px-md-0">
-                  <div class="p-field p-col-12 pt-md-2 pb-2">
-                    <div>
-                      <label for="icon" class="mb-0 font-weight-bold">Start Date</label>
-                    </div>
-                    <Calendar class="w-100" id="icon" v-model="startDate" :showIcon="true" dateFormat="dd/mm/yy"/>
-                  </div>
-              </div>
-              <div class="col-md-4 col-sm-12 pr-md-0">
-                  <div class="p-field p-col-12 pt-md-2">
-                    <div>
-                      <label for="icon" class="mb-0 font-weight-bold">End Date</label>
-                    </div>
-                    <Calendar class="w-100" id="icon" v-model="endDate" :showIcon="true" dateFormat="dd/mm/yy"/>
-                  </div>
-              </div>
-            <div class="col-md-4 col-sm-12 pr-md-0">
-                  <div class="p-field p-col-12 pt-md-2">
-                    <button
-                            class="default-btn generate-report c-pointer font-weight-normal mt-4"
-                            @click="getBirthdayReport">
-                            Generate Report
-                    </button>
-                  </div>
-              </div>
+        <!-- Export &nbsp; &nbsp; <i class="pi pi-angle-down" ></i>
+                <div class=" c-pointer" style="width: 6rem; z-index:1000; position:absolute" v-if="showExport">
+                      <Listbox @click="downloadFile" v-model="selectedFileType" :options="bookTypeList" optionLabel="name"/>
+                </div> -->
+      </div>
+    </div>
+    <!-- </div> -->
+
+    <!-- <div class="container-fluid bg-area my-3"> -->
+    <div class="row pl-1 pl-md-5 bg-area mt-sm-3">
+      <div class="col-md-4 col-sm-12 px-md-0">
+        <div class="p-field p-col-12 pt-md-2 pb-2">
+          <div>
+            <label for="icon" class="mb-0 font-weight-bold">Start Date</label>
+          </div>
+          <el-date-picker
+            v-model="startDate"
+            type="date"
+            format="DD/MM/YYYY"
+            size="large"
+            class="w-100"
+          />
         </div>
       </div>
+      <div class="col-md-4 col-sm-12 pr-md-0">
+        <div class="p-field p-col-12 pt-md-2">
+          <div>
+            <label for="icon" class="mb-0 font-weight-bold">End Date</label>
+          </div>
+          <el-date-picker
+            v-model="endDate"
+            type="date"
+            format="DD/MM/YYYY"
+            size="large"
+            class="w-100"
+          />
+        </div>
+      </div>
+      <div class="col-md-4 col-sm-12 pr-md-0">
+        <div class="p-field p-col-12 pt-md-2">
+          <el-button
+            class="c-pointer mt-4"
+            round
+            :color="primarycolor"
+            :loading="loading"
+            @click="getBirthdayReport"
+          >
+            Generate Report
+          </el-button>
+        </div>
+      </div>
+    </div>
+    <!-- </div> -->
     <!--end of header area -->
 
     <!-- date area -->
@@ -115,15 +105,21 @@
           </div>
         </div> -->
 
-        <div  class="container-fluid">
-          <div class="row mt-4" :class="{ 'show-report': showReport, 'hide-report' : !showReport}">
+        <div class="container-fluid px-0">
+          <div
+            class="row mt-4"
+            :class="{ 'show-report': showReport, 'hide-report': !showReport }"
+          >
             <!-- <div class="col-12">
               <div class="mb-3 text-center Display-1 heading-text">
                 Birthday Report
               </div>
             </div> -->
             <!-- <div class="col-12 col-sm-12 col-md-6 col-lg-6"> -->
-            <div class="row table"  :class=" birthdays &&  birthdays.length > 0 ? 'graph-area' : '' ">
+            <div
+              class="row table"
+              :class="birthdays && birthdays.length > 0 ? 'graph-area' : ''"
+            >
               <div class="col-12 col-sm-12 col-md-6 col-lg-6 p-3 text-center">
                 <div class="col-12 font-weight-bold">Membership By Gender</div>
                 <div class="col-12" v-if="genderSummary.length === 0">
@@ -138,7 +134,7 @@
                   />
                 </div>
               </div>
-              <div class="col-12 col-sm-12 col-md-6 col-lg-6 p-3 text-center" >
+              <div class="col-12 col-sm-12 col-md-6 col-lg-6 p-3 text-center">
                 <div class="col-12 font-weight-bold">
                   Membership By Marital Status
                 </div>
@@ -177,22 +173,18 @@
 
       <section>
         <!-- table header -->
-        <div v-if="birthdays.length > 0">
+        <div v-if="birthdays.length > 0" class="row">
           <div
-            class="
-              container-fluid
-              table-main
-              px-0
-              remove-styles2 remove-border
-              mt-5
-              scroll-table
-            "
+            class="container-fluid table-main px-0 remove-styles2 remove-border mt-5 scroll-table"
           >
-            <table id="table" class="table remove-styles mt-0 table-hover table-header-area">
+            <table
+              id="table"
+              class="table remove-styles mt-0 table-hover table-header-area"
+            >
               <thead class="table-header-area-main">
                 <tr
                   class="small-text text-capitalize text-nowrap font-weight-bold"
-                  style="border-bottom: 0; font-size:medium"
+                  style="border-bottom: 0; font-size: medium"
                 >
                   <th scope="col">First Name</th>
                   <th scope="col">Last Name</th>
@@ -206,7 +198,10 @@
                   <!-- <th scope="col">Home Address</th> -->
                 </tr>
               </thead>
-              <tbody class="font-weight-bold text-nowrap" style="font-size: small">
+              <tbody
+                class="font-weight-bold text-nowrap"
+                style="font-size: small"
+              >
                 <tr v-for="(item, index) in birthdays" :key="index">
                   <td>{{ item.firstName }}</td>
                   <td>{{ item.lastName }}</td>
@@ -222,8 +217,8 @@
               </tbody>
             </table>
             <div class="table-foot d-flex justify-content-end mt-3">
-            <!-- <PaginationButtons /> -->
-          </div>
+              <!-- <PaginationButtons /> -->
+            </div>
           </div>
         </div>
         <!--end table header -->
@@ -233,23 +228,21 @@
 </template>
 
 <script>
-import { computed, ref } from "vue";
-import Calendar from "primevue/calendar";
+import { computed, ref, inject } from "vue";
 // import ByGenderChart from "@/components/charts/PieChart.vue";
 import BirthdayChart from "../../../components/charts/PieChart.vue";
 // import PaginationButtons from "../../../components/pagination/PaginationButtons";
-import Listbox from 'primevue/listbox';
+import Listbox from "primevue/listbox";
 import axios from "@/gateway/backendapi";
 // import html2pdf from "html2pdf.js";
 // import Dropdown from "primevue/dropdown";
 // import InputText from "primevue/inputtext";
 import printJS from "print-js";
 import exportService from "../../../services/exportFile/exportservice";
-import store from '../../../store/store'
+import store from "../../../store/store";
 
 export default {
   components: {
-    Calendar,
     Listbox,
     // ByGenderChart,
     // PaginationButtons,
@@ -265,33 +258,40 @@ export default {
     const genderResult = ref([]);
     const maritalStatusResult = ref([]);
     const showExport = ref(false);
+    const loading = ref(false);
+    const primarycolor = inject("primarycolor");
     const showReport = ref(false);
     const fileName = ref("");
-    const bookTypeList = ref([{ name : 'xlsx'}, { name: 'csv'}, {name: 'txt'} ])
+    const bookTypeList = ref([
+      { name: "xlsx" },
+      { name: "csv" },
+      { name: "txt" },
+    ]);
     const selectedFileType = ref({});
     const fileHeaderToExport = ref([]);
     const fileToExport = ref([]);
     const allMembersInChurch = () => {
-      store.dispatch('membership/setMembershipSummary').then(response => {
-          membersInChurch.value = response;
-          console.log(membersInChurch.value, "✌️✌️");
-          /* function to call service and populate table */
-          setTimeout(() => {
-            fileHeaderToExport.value = exportService.tableHeaderToJson(
-              document.getElementsByTagName("th")
-            );
-            fileToExport.value = exportService.tableToJson(
-              document.getElementById("table")
-            );
-          }, 1000);
-          /* End function to call service and populate table */
-          })
+      store.dispatch("membership/setMembershipSummary").then((response) => {
+        membersInChurch.value = response;
+        console.log(membersInChurch.value, "✌️✌️");
+        /* function to call service and populate table */
+        setTimeout(() => {
+          fileHeaderToExport.value = exportService.tableHeaderToJson(
+            document.getElementsByTagName("th")
+          );
+          fileToExport.value = exportService.tableToJson(
+            document.getElementById("table")
+          );
+        }, 1000);
+        /* End function to call service and populate table */
+      });
     };
 
     /* Code For Exporting File */
-    const downloadFile = () => {
+    const downloadFile = (item) => {
       exportService.downLoadExcel(
-        selectedFileType.value.name,
+        // selectedFileType.value.name,
+        item.name,
         document.getElementById("element-to-print"),
         fileName.value,
         fileHeaderToExport.value,
@@ -355,6 +355,7 @@ export default {
     const getBirthdayReport = async () => {
       let start = new Date(startDate.value).toLocaleDateString("en-US");
       let end = new Date(endDate.value).toLocaleDateString("en-US");
+      loading.value = true;
       try {
         let data = await axios.get(
           `/api/Reports/people/getBirthdaysReport?startdate=${start}&enddate=${end}`
@@ -364,12 +365,18 @@ export default {
         groupByGender(data.data, "gender");
         groupByMaritalStatus(data.data, "maritalStatus");
         setTimeout(() => {
-                        fileHeaderToExport.value = exportService.tableHeaderToJson(document.getElementsByTagName("th"))
-                        fileToExport.value = exportService.tableToJson(document.getElementById("table"))
-                    }, 1000)
-                     showReport.value = true;
+          fileHeaderToExport.value = exportService.tableHeaderToJson(
+            document.getElementsByTagName("th")
+          );
+          fileToExport.value = exportService.tableToJson(
+            document.getElementById("table")
+          );
+        }, 1000);
+        showReport.value = true;
+        loading.value = false;
       } catch (err) {
         console.log(err);
+        loading.value = false;
       }
     };
 
@@ -389,13 +396,14 @@ export default {
     // };
 
     return {
-      Calendar,
       startDate,
       endDate,
       birthdays,
       membersInChurch,
       allMembersInChurch,
       getBirthdayReport,
+      loading,
+      primarycolor,
       genderSummary,
       groupByGender,
       genderResult,
@@ -409,7 +417,7 @@ export default {
       bookTypeList,
       selectedFileType,
       downloadFile,
-      showReport
+      showReport,
     };
   },
 };
@@ -430,11 +438,11 @@ export default {
   background: #fff;
   min-width: 7.6rem;
 } */
-.show-report{
-    display: block;
+.show-report {
+  display: block;
 }
-.hide-report{
-    display: none;
+.hide-report {
+  display: none;
 }
 .default-btn {
   font-weight: 600;
@@ -505,12 +513,12 @@ export default {
   border-bottom-right-radius: 0 !important;
 }
 
-.graph-area{
-    border: 1px solid #dde2e6;
-    border-radius: 0.5rem;
-    padding: 1rem 0rem;
-    margin: 2rem 0rem !important;
-     width: 100% !important;
+.graph-area {
+  border: 1px solid #dde2e6;
+  border-radius: 0.5rem;
+  padding: 1rem 0rem;
+  margin: 2rem 0rem !important;
+  width: 100% !important;
   box-shadow: 0 0.063rem 0.25rem #02172e45;
 }
 

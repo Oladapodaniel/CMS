@@ -1,127 +1,137 @@
 <template>
-  <div class="container-fluid ">
+  <div class="container-fluid">
     <!-- header area -->
     <!-- <div class="container"> -->
-      <div
-        class="
-          row 
-          d-flex
-          flex-row
-          justify-content-between
-          align-items-center
-        "
-      >
-        <div class="centered-items">
-          <h3 class="head-text">First Timers Report</h3>
-        </div>
-
-        <!-- <div  class="centered-items pr-3">
-          <button
-            class="default-btn font-weight-normal"
-            @click="() => (showExport = !showExport)">
-            Export &nbsp; &nbsp; <i class="pi pi-angle-down"></i>
-          </button>
-        </div> -->
-          <div
-          class="default-btn font-weight-normal c-pointer"
-          @click="() => (showExport = !showExport)"
-          style="width: fixed; position:relative">
-                   Export &nbsp; &nbsp; <i class="pi pi-angle-down" ></i>
-                   <div
-                        class=" c-pointer"
-                        style="width: 6rem; z-index:1000; position:absolute"
-                        v-if="showExport">
-
-                         <Listbox
-                         @click="downloadFile"
-                         v-model="selectedFileType"
-                         :options="bookTypeList"
-                         optionLabel="name"/>
-                    </div>
-              </div>
-
-
+    <div class="row d-flex flex-row justify-content-between align-items-center">
+      <div class="centered-items">
+        <div class="head-text">First Timers Report</div>
       </div>
-    
+      <div class="my-sm-0 my-2 c-pointer">
+        <el-dropdown trigger="click" class="w-100">
+          <div
+            class="d-flex justify-content-between default-btn text-dark w-100"
+            size="large"
+          >
+            <span class="mt-1">Export</span>
+            <div class="mt-1">
+              <el-icon class="el-icon--right">
+                <arrow-down />
+              </el-icon>
+            </div>
+          </div>
+          <template #dropdown>
+            <el-dropdown-menu>
+              <el-dropdown-item
+                v-for="(bookType, index) in bookTypeList"
+                :key="index"
+              >
+                <a
+                  class="no-decoration text-dark"
+                  @click="downloadFile(bookType)"
+                >
+                  {{ bookType.name }}
+                </a>
+              </el-dropdown-item>
+            </el-dropdown-menu>
+          </template>
+        </el-dropdown>
+        <!-- Export &nbsp; &nbsp; <i class="pi pi-angle-down"></i>
+        <div
+          class="c-pointer"
+          style="width: 6rem; z-index: 1000; position: absolute"
+          v-if="showExport"
+        >
+          <Listbox
+            @click="downloadFile"
+            v-model="selectedFileType"
+            :options="bookTypeList"
+            optionLabel="name"
+          />
+        </div> -->
+      </div>
+    </div>
 
     <!-- </div> -->
     <!--end of header area -->
     <!-- date area -->
-      <!-- <div class="  bg-area my-3"> -->
-        <div class="row bg-area pl-5   mt-sm-3 ">
-              <div class="col-md-4 col-sm-12 px-md-0">
-                  <div class="p-field p-col-12 pt-md-2 pb-2">
-                    <div>
-                      <label for="icon" class="mb-0 font-weight-bold">Start Date</label>
-                    </div>
-                    <!-- <Calendar class="w-100" id="icon" v-model="startDate" :showIcon="true" dateFormat="dd/mm/yy"/> -->
-                      <el-date-picker
-                        v-model="startDate"
-                        type="date"
-                        format="DD/MM/YYYY"
-                        size="large"
-                        class="w-100"
-                      />
-                  </div>
-              </div>
-              <div class="col-md-4 col-sm-12 pr-md-0">
-                  <div class="p-field p-col-12 pt-md-2">
-                    <div>
-                      <label for="icon" class="mb-0 font-weight-bold">End Date</label>
-                    </div>
-                    <!-- <Calendar class="w-100" id="icon" v-model="endDate" :showIcon="true" dateFormat="dd/mm/yy"/> -->
-                    <el-date-picker
-                        v-model="endDate"
-                        type="date"
-                        format="DD/MM/YYYY"
-                        size="large"
-                        class="w-100"
-                      />
-                  </div>
-              </div>
-            <div class="col-md-4 col-sm-12 pr-md-0">
-                  <div class="p-field p-col-12 pt-md-2">
-                    <el-button
-                            class=" c-pointer  mt-4"  
-                            :color="primarycolor"
-                            :loading="loading"
-                            round
-                            @click="generateReport">
-                            Generate Report
-                    </el-button>
-                  </div>
-              </div>
+    <!-- <div class="  bg-area my-3"> -->
+    <div class="row pl-1 pl-md-5 bg-area mt-sm-3">
+      <div class="col-md-4 col-sm-12 px-md-0">
+        <div class="p-field p-col-12 pt-md-2 pb-2">
+          <div>
+            <label for="icon" class="mb-0 font-weight-bold">Start Date</label>
+          </div>
+          <!-- <Calendar class="w-100" id="icon" v-model="startDate" :showIcon="true" dateFormat="dd/mm/yy"/> -->
+          <el-date-picker
+            v-model="startDate"
+            type="date"
+            format="DD/MM/YYYY"
+            size="large"
+            class="w-100"
+          />
         </div>
-      <!-- </div> -->
+      </div>
+      <div class="col-md-4 col-sm-12 pr-md-0">
+        <div class="p-field p-col-12 pt-md-2">
+          <div>
+            <label for="icon" class="mb-0 font-weight-bold">End Date</label>
+          </div>
+          <!-- <Calendar class="w-100" id="icon" v-model="endDate" :showIcon="true" dateFormat="dd/mm/yy"/> -->
+          <el-date-picker
+            v-model="endDate"
+            type="date"
+            format="DD/MM/YYYY"
+            size="large"
+            class="w-100"
+          />
+        </div>
+      </div>
+      <div class="col-md-4 col-sm-12 pr-md-0">
+        <div class="p-field p-col-12 pt-md-2">
+          <el-button
+            class="c-pointer mt-4"
+            :color="primarycolor"
+            :loading="loading"
+            round
+            @click="generateReport"
+          >
+            Generate Report
+          </el-button>
+        </div>
+      </div>
+    </div>
+    <!-- </div> -->
     <!--end of date area -->
-    <div id="element-to-print">
-      <section>
+    <div id="element-to-print" class="">
+      <section class="row">
         <!-- chart area -->
         <div
-          class="chart row"
+          class="chart container-fluid"
           :class="
             firstTimerInChurch && firstTimerInChurch.length > 0
               ? 'graph-area'
               : ''
           "
         >
-          <div class="chart1 col-12 col-md-6">
-            <ByGenderChart
-              domId="chart"
-              title="By Gender"
-              distance="5"
-              :titleMargin="10"
-              :summary="data"
-            />
-          </div>
-          <div class="chart1 col-12 col-md-6">
-            <ByGenderChart
-              domId="chartid"
-              title="Marital Status"
-              distance="5"
-              :titleMargin="10"
-              :summary="maritalChartInfo"
-            />
+          <div class="row">
+            <div class="chart1 col-12 col-md-6">
+              <ByGenderChart
+                domId="chart"
+                title="By Gender"
+                distance="5"
+                :titleMargin="10"
+                :summary="data"
+              />
+            </div>
+            <div class="chart1 col-12 col-md-6">
+              <ByGenderChart
+                domId="chartid"
+                title="Marital Status"
+                distance="5"
+                :titleMargin="10"
+                :summary="maritalChartInfo"
+              />
+            </div>
           </div>
         </div>
         <!--end of chart area -->
@@ -129,62 +139,81 @@
 
       <section>
         <!-- table header -->
-      <div v-if="firstTimerInChurch.length > 0">
+        <div v-if="firstTimerInChurch.length > 0" class="row">
           <div
-          class="
-            container-fluid
-            table-main
-            px-0
-            remove-styles2 remove-border
-            responsiveness
-          "
-        >
-          <table
-            id="table"
-            class="table remove-styles mt-0 table-hover table-header-area"
+            class="container-fluid table-main remove-styles2 remove-border responsiveness"
           >
-            <thead class="table-header-area-main">
-              <tr
-                class="text-capitalize text-nowrap font-weight-bold"
-                style="border-bottom: 0; font-size:medium"
-              >
-                <!-- <th scope="col">Church Activity</th> -->
-                <th scope="col">First Name</th>
-                <th scope="col">Last Name</th>
-                <th scope="col">Phone</th>
-                <th scope="col">Email</th>
-                <th scope="col">Home Address</th>
-                <th scope="col">Gender</th>
-                <th scope="col">Current Status</th>
-                <th scope="col" v-for="(item, index) in dynamicCustomFields" :key="index">{{ item.label }}</th>
-                
-                <!-- <th scope="col">Marital Status</th> -->
-                <!-- <th scope="col">Activity Date</th> -->
+            <table
+              id="table"
+              class="table remove-styles mt-0 table-hover table-header-area"
+            >
+              <thead class="table-header-area-main">
+                <tr
+                  class="text-capitalize text-nowrap font-weight-bold"
+                  style="border-bottom: 0; font-size: medium"
+                >
+                  <!-- <th scope="col">Church Activity</th> -->
+                  <th scope="col">First Name</th>
+                  <th scope="col">Last Name</th>
+                  <th scope="col">Phone</th>
+                  <th scope="col">Email</th>
+                  <th scope="col">Home Address</th>
+                  <th scope="col">Gender</th>
+                  <th scope="col">Current Status</th>
+                  <th
+                    scope="col"
+                    v-for="(item, index) in dynamicCustomFields"
+                    :key="index"
+                  >
+                    {{ item.label }}
+                  </th>
 
-              </tr>
-            </thead>
-            <tbody class="small-text font-weight-bold text-nowrap">
-              <tr v-for="(firstTimer, index) in firstTimerInChurch" :key="index">
-                <td>{{ firstTimer.firstName }}</td>
-                <td>{{ firstTimer.lastName }}</td>
-                <td>{{ firstTimer.mobilePhone }}</td>
-                <td>{{ firstTimer.email }}</td>
-                <td>{{ firstTimer.homeAddress }}</td>
-                <td>{{ firstTimer.gender }}</td>
-                <td>{{ firstTimer.status }}</td>
-                <td v-show="firstTimer.customAttributeData.length > 0" v-for="(item, index) in dynamicCustomFields" :key="index">{{  getMemberCustomAttributeData(firstTimer.customAttributeData, item)  }}</td>
-                <td v-show="firstTimer.customAttributeData.length === 0" v-for="(item, index) in dynamicCustomFields.length" :key="index" >{{ "--" }}</td>
-                <!-- <td>{{ firstTimer.maritalStatus }}</td> -->
-                <!-- <td>{{ formatDate(firstTimer.activityDate) }}</td> -->
-              </tr>
-            </tbody>
-          </table>
-          <div class="table-foot d-flex justify-content-end mt-3">
-            <!-- mt-n3" -->
-            <!-- <PaginationButtons /> -->
+                  <!-- <th scope="col">Marital Status</th> -->
+                  <!-- <th scope="col">Activity Date</th> -->
+                </tr>
+              </thead>
+              <tbody class="small-text font-weight-bold text-nowrap">
+                <tr
+                  v-for="(firstTimer, index) in firstTimerInChurch"
+                  :key="index"
+                >
+                  <td>{{ firstTimer.firstName }}</td>
+                  <td>{{ firstTimer.lastName }}</td>
+                  <td>{{ firstTimer.mobilePhone }}</td>
+                  <td>{{ firstTimer.email }}</td>
+                  <td>{{ firstTimer.homeAddress }}</td>
+                  <td>{{ firstTimer.gender }}</td>
+                  <td>{{ firstTimer.status }}</td>
+                  <td
+                    v-show="firstTimer.customAttributeData.length > 0"
+                    v-for="(item, index) in dynamicCustomFields"
+                    :key="index"
+                  >
+                    {{
+                      getMemberCustomAttributeData(
+                        firstTimer.customAttributeData,
+                        item
+                      )
+                    }}
+                  </td>
+                  <td
+                    v-show="firstTimer.customAttributeData.length === 0"
+                    v-for="(item, index) in dynamicCustomFields.length"
+                    :key="index"
+                  >
+                    {{ "--" }}
+                  </td>
+                  <!-- <td>{{ firstTimer.maritalStatus }}</td> -->
+                  <!-- <td>{{ formatDate(firstTimer.activityDate) }}</td> -->
+                </tr>
+              </tbody>
+            </table>
+            <div class="table-foot d-flex justify-content-end mt-3">
+              <!-- mt-n3" -->
+              <!-- <PaginationButtons /> -->
+            </div>
           </div>
         </div>
-      </div>
         <!--end table header  -->
       </section>
     </div>
@@ -200,8 +229,8 @@ import axios from "@/gateway/backendapi";
 import dateFormatter from "../../../services/dates/dateformatter";
 import printJS from "print-js";
 import exportService from "../../../services/exportFile/exportservice";
-import Listbox from 'primevue/listbox';
-import allCustomFields from "../../../services/customfield/customField"
+import Listbox from "primevue/listbox";
+import allCustomFields from "../../../services/customfield/customField";
 
 export default {
   components: {
@@ -221,13 +250,18 @@ export default {
     const showExport = ref(false);
     const loading = ref(false);
     const fileName = ref("");
-    const bookTypeList = ref([{name: "xlsx" }, {name: "csv" }, {name: "txt" }, {name: "" }]);
+    const bookTypeList = ref([
+      { name: "xlsx" },
+      { name: "csv" },
+      { name: "txt" },
+      { name: "" },
+    ]);
     const selectedFileType = ref({});
     const fileHeaderToExport = ref([]);
     const fileToExport = ref([]);
     const dynamicCustomFields = ref([]);
     const generateReport = () => {
-      loading.value = true
+      loading.value = true;
       axios
         .get(
           `/api/Reports/people/getFirstTimersReport?startDate=${new Date(
@@ -250,12 +284,13 @@ export default {
             );
           }, 1000);
           /* End function to call service and populate table */
-          loading.value = false
+          loading.value = false;
         })
-        
+
         .catch((err) => {
           console.log(err);
-          loading.value = false
+
+          loading.value = false;
         });
     };
 
@@ -284,8 +319,15 @@ export default {
     };
 
     /* Code For Exporting File */
-    const downloadFile = () => {
-      exportService.downLoadExcel(selectedFileType.value.name, document.getElementById("element-to-print"), fileName.value, fileHeaderToExport.value,  fileToExport.value,);
+    const downloadFile = (item) => {
+      exportService.downLoadExcel(
+        // selectedFileType.value.name,
+        item.name,
+        document.getElementById("element-to-print"),
+        fileName.value,
+        fileHeaderToExport.value,
+        fileToExport.value
+      );
     };
     /* End Code For Exporting File */
 
@@ -303,12 +345,17 @@ export default {
     };
     getAllCustomFields();
 
-    const getMemberCustomAttributeData = (memberCustomData, singleCustomField) => {
-      if (memberCustomData && memberCustomData.length === 0) return '--'
-      const findData = memberCustomData.findIndex(i => i.customAttribute.id === singleCustomField.id)
-      if(findData >= 0) return memberCustomData[findData].data
-      return '--'
-    }
+    const getMemberCustomAttributeData = (
+      memberCustomData,
+      singleCustomField
+    ) => {
+      if (memberCustomData && memberCustomData.length === 0) return "--";
+      const findData = memberCustomData.findIndex(
+        (i) => i.customAttribute.id === singleCustomField.id
+      );
+      if (findData >= 0) return memberCustomData[findData].data;
+      return "--";
+    };
 
     return {
       Calendar,
@@ -329,7 +376,7 @@ export default {
       printJS,
       selectedFileType,
       dynamicCustomFields,
-      getMemberCustomAttributeData
+      getMemberCustomAttributeData,
     };
   },
 };
@@ -352,26 +399,25 @@ export default {
 } */
 
 .default-btn {
-    font-weight: 600;
-    white-space: initial;
-    font-size: 1rem;
-    border-radius: 3rem;
-    border: 1px solid #002044;
-    padding: .5rem 1.25rem;
-    width: auto;
-	/* border:none; */
-    /* outline: transparent !important; */
-    max-height: 40px;
-    /* background: #6c757d47 !important; */
-    color:#000;
-    text-decoration: none;
-    min-width: 121px;
+  font-weight: 600;
+  white-space: initial;
+  font-size: 1rem;
+  border-radius: 3rem;
+  border: 1px solid #002044;
+  padding: 0.5rem 1.25rem;
+  width: auto;
+  /* border:none; */
+  /* outline: transparent !important; */
+  max-height: 40px;
+  /* background: #6c757d47 !important; */
+  color: #000;
+  text-decoration: none;
+  min-width: 121px;
 }
 
 .default-btn:hover {
   text-decoration: none;
 }
-
 
 .generate-report {
   font-size: 1rem;

@@ -1,34 +1,45 @@
 <template>
-  <div class="container-fluid px-5">
+  <div class="container-fluid">
     <!-- header area -->
-    <div class="container">
+    <!-- <div class="container"> -->
       <div
         class="
           row
           d-flex
           flex-row
           justify-content-between
-          mt-5
           align-items-center
         "
       >
         <div class="centered-items">
-          <h3 class="heading-text ml-2">New Convert Report</h3>
-          <p class="ml-2">This reports provides a detailed report of new converts in your ministry.</p>
+          <div class="head-text">New Convert Report</div>
+          <p class="">This reports provides a detailed report of new converts in your ministry.</p>
         </div>
-
-        <!-- <div class="centered-items pr-3">
-          <button class="default-btn font-weight-normal"
-          @click="() => (showExport = !showExport)">
-            Export &nbsp; &nbsp; <i class="pi pi-angle-down"></i>
-          </button>
-        </div> -->
-
           <div
-          class="default-btn font-weight-normal c-pointer"
-          @click="() => (showExport = !showExport)"
-          style="width: fixed; position:relative">
-                   Export &nbsp; &nbsp; <i class="pi pi-angle-down" ></i>
+          class=" c-pointer my-sm-0 my-2">
+          <el-dropdown trigger="click" class="w-100 ">
+            <div class="d-flex justify-content-between default-btn  text-dark w-100"
+                size="large">
+                <span class="mt-1 ">Export</span>
+                <div class="mt-1 ">
+                    <el-icon class="el-icon--right">
+                        <arrow-down />
+                    </el-icon>
+                </div>
+            </div>
+            <template #dropdown>
+                <el-dropdown-menu>
+                    <el-dropdown-item v-for="(bookType, index) in bookTypeList" :key="index">
+                        <a class="no-decoration text-dark" @click="downloadFile(bookType)">
+                            {{ bookType.name }}
+                        </a>
+                    </el-dropdown-item>
+                </el-dropdown-menu>
+            </template>
+          </el-dropdown>
+
+          
+                   <!-- Export &nbsp; &nbsp; <i class="pi pi-angle-down" ></i>
                    <div
                         class=" c-pointer"
                         style="width: 6rem; z-index:1000; position:absolute"
@@ -39,60 +50,26 @@
                          v-model="selectedFileType"
                          :options="bookTypeList"
                          optionLabel="name"/>
-                    </div>
+                    </div> -->
               </div>
 
       </div>
-      <!-- <transition name="move" mode="out-in">
-         <div class="row my-4" v-if="showExport">
-        <div class="col-sm-5">
-          <span class="p-float-label ml-n3">
-            <InputText
-              id="inputtext"
-              class="w-100"
-              type="text"
-              v-model="fileName"
-            />
-            <label for="inputtext">Enter file name</label>
-          </span>
-        </div>
-        <div class="col-sm-4">
-          <Dropdown
-            v-model="selectedFileType"
-            class="w-100"
-            :options="bookTypeList"
-            placeholder="Select file type"
-          />
-        </div> -->
-        <!-- <div class="">Export</div> -->
-        <!-- <div @click="downloadFile" class="col-sm-2 offset-sm-1">
-          <div
-            class="
-              default-btn
-              d-flex
-              align-items-center
-              justify-content-center
-              c-pointer
-              generate-report
-            "
-          >
-            Download
-          </div>
-        </div>
-      </div>
-      </transition> -->
-    </div>
-    <!--end of header area -->
 
     <!-- date area -->
-   <div class="container-fluid bg-area my-3">
-        <div class="row px-4 w-100 ml-md-5 px-sm-4 mt-sm-3 ">
+   <!-- <div class="container-fluid  my-3"> -->
+        <div class="row pl-1 pl-md-5 bg-area  mt-sm-3 ">
               <div class="col-md-4 col-sm-12 px-md-0">
                   <div class="p-field p-col-12 pt-md-2 pb-2">
                     <div>
                       <label for="icon" class="mb-0 font-weight-bold">Start Date</label>
                     </div>
-                    <Calendar class="w-100" id="icon" v-model="startDate" :showIcon="true" dateFormat="dd/mm/yy"/>
+                    <el-date-picker
+                        v-model="startDate"
+                        type="date"
+                        format="DD/MM/YYYY"
+                        size="large"
+                        class="w-100"
+                      />
                   </div>
               </div>
               <div class="col-md-4 col-sm-12 pr-md-0">
@@ -100,20 +77,29 @@
                     <div>
                       <label for="icon" class="mb-0 font-weight-bold">End Date</label>
                     </div>
-                    <Calendar class="w-100" id="icon" v-model="endDate" :showIcon="true" dateFormat="dd/mm/yy"/>
+                    <el-date-picker
+                        v-model="endDate"
+                        type="date"
+                        format="DD/MM/YYYY"
+                        size="large"
+                        class="w-100"
+                      />
                   </div>
               </div>
             <div class="col-md-4 col-sm-12 pr-md-0">
                   <div class="p-field p-col-12 pt-md-2">
-                    <button
-                            class="default-btn generate-report c-pointer font-weight-normal mt-4"
+                    <el-button
+                            class=" mt-4"
+                            :color="primarycolor"
+                            :loading="loading"
+                            round
                             @click="allMembersInChurch">
                             Generate Report
-                    </button>
+                    </el-button>
                   </div>
               </div>
         </div>
-      </div>
+      <!-- </div> -->
     <!--end of date area -->
 
     <section>
@@ -133,7 +119,7 @@
 
     <section>
       <!-- table header -->
-     <div v-if="newConvertsInChurch.length > 0">
+     <div v-if="newConvertsInChurch.length > 0" class="mt-5 row">
         <div class="container-fluid table-main px-0 remove-styles2 remove-border responsiveness" >
         <table id="table" class="table remove-styles mt-0  table-hover table-header-area">
           <thead class="table-header-area-main">
@@ -149,14 +135,7 @@
               <th scope="col">Home Address</th>
               <th scope="col">Gender</th>
               <th scope="col">Current Status</th>
-              <th scope="col" v-for="item in dynamicCustomFields">{{ item.label }}</th>
-              <!-- <th scope="col">Contact Status</th> -->
-              <!-- <th scope="col">Marital Status</th>
-              <th scope="col">Event Name</th>
-              <th scope="col">Description</th>
-              <th scope="col">Activity Date</th>
-              <th scope="col">Contact Date</th> -->
-
+              <th scope="col" v-for="(item, index) in dynamicCustomFields" :key="index">{{ item.label }}</th>
             </tr>
           </thead>
           <tbody class="font-weight-bold text-nowrap"
@@ -171,14 +150,8 @@
                <td>{{ newConvert.homeAddress }}</td>
               <td>{{ newConvert.gender }}</td>
                <td>{{ newConvert.contactStatus}}</td>
-               <td v-show="newConvert.customAttributeData.length > 0" v-for="item in dynamicCustomFields">{{  getMemberCustomAttributeData(newConvert.customAttributeData, item)  }}</td>
-                <td v-show="newConvert.customAttributeData.length === 0" v-for="item in dynamicCustomFields.length">{{ "--" }}</td>
-              <!-- <td>{{ newConvert.maritalStatus }}</td>
-              <td>{{ newConvert.name }}</td>
-              <td>{{ newConvert.description }}</td>
-              <td>{{ formatDate(newConvert.activityDate) }}</td>
-              <td>{{ formatDate(newConvert.contactDate)}}</td> -->
-
+               <td v-show="newConvert.customAttributeData.length > 0" v-for="(item, index) in dynamicCustomFields" :key="index">{{  getMemberCustomAttributeData(newConvert.customAttributeData, item)  }}</td>
+                <td v-show="newConvert.customAttributeData.length === 0" v-for="(item, index) in dynamicCustomFields.length" :key="index">{{ "--" }}</td>
             </tr>
           </tbody>
         </table>
@@ -193,8 +166,7 @@
 </template>
 
 <script>
-import { ref } from "vue";
-import Calendar from "primevue/calendar";
+import { ref, inject } from "vue";
 import ByGenderChart from "@/components/charts/PieChart.vue";
 // import PaginationButtons from "../../../components/pagination/PaginationButtons";
 import axios from "@/gateway/backendapi";
@@ -206,7 +178,6 @@ import allCustomFields from "../../../services/customfield/customField"
 
 export default {
   components: {
-    Calendar,
     ByGenderChart,
     Listbox,
     // PaginationButtons,
@@ -216,20 +187,21 @@ export default {
     const endDate = ref("");
     const newConvertsInChurch = ref([]);
     const showExport = ref(false);
+    const loading = ref(false);
     const fileName = ref("");
-    // const bookTypeList = ref(["xlsx", "csv", "txt"]);
+    const primarycolor = inject("primarycolor");
     const bookTypeList = ref([{name: "xlsx" }, {name: "csv" }, {name: "txt" }, {name: "" }]);
     const selectedFileType = ref({});
     const fileHeaderToExport = ref([]);
     const fileToExport = ref([]);
     const dynamicCustomFields = ref([]);
     const allMembersInChurch = () => {
+      loading.value = true;
       axios
         .get(`/api/Reports/people/getNewConvertsReport?startDate=${new Date(startDate.value).toLocaleDateString("en-US")}&endDate=${new Date(endDate.value).toLocaleDateString("en-US")}`)
         .then((res) => {
           console.log(res);
           newConvertsInChurch.value = res.data;
-console.log(newConvertsInChurch.value, "✌️✌️");
  /* function to call service and populate table */
           setTimeout(() => {
             fileHeaderToExport.value = exportService.tableHeaderToJson(
@@ -239,17 +211,20 @@ console.log(newConvertsInChurch.value, "✌️✌️");
               document.getElementById("table")
             );
           }, 1000);
+          loading.value = false;
           /* End function to call service and populate table */
         })
         .catch((err) => {
           console.log(err);
+          loading.value = false;
         });
     };
 
             /* Code For Exporting File */
-    const downloadFile = () => {
+    const downloadFile = (item) => {
       exportService.downLoadExcel(
-        selectedFileType.value.name,
+        // selectedFileType.value.name,
+        item.name,
         document.getElementById("element-to-print"),
         fileName.value,
         fileHeaderToExport.value,
@@ -282,7 +257,7 @@ console.log(newConvertsInChurch.value, "✌️✌️");
     }
 
     return {
-      Calendar,
+      loading,
       startDate,
       endDate,
       newConvertsInChurch,
@@ -295,7 +270,8 @@ console.log(newConvertsInChurch.value, "✌️✌️");
       selectedFileType,
       downloadFile,
       dynamicCustomFields,
-      getMemberCustomAttributeData
+      getMemberCustomAttributeData,
+      primarycolor
     };
   },
 };

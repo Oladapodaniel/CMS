@@ -146,7 +146,7 @@
                   class="ju header4 d-md-flex justify-content-md-start"
                   style="color: #136acd"
                 >
-                  Wedding Annivarsary Report
+                  Wedding Anniversary Report
                 </h4></router-link
               >
               <router-link to="/tenant/reports/weddinganniversaryreport"

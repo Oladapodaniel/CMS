@@ -1441,7 +1441,7 @@ export default {
   border-radius: 50%;
   vertical-align: middle;
   border: 1px solid #b9c5cf;
-  -webkit-appearance: none;
+  /* -webkit-appearance: none; */
   outline: none;
   cursor: pointer;
 }
