@@ -118,7 +118,7 @@ button.el-button.is-round {
 .el-sub-menu__title,
 li.el-menu-item.w-100,
 .el-menu.el-menu--inline>li.el-menu-item {
-  height: 34px !important;
+  height: 40px !important;
 }
 
 .el-sub-menu div.el-sub-menu__title {
@@ -127,6 +127,7 @@ li.el-menu-item.w-100,
 
 .el-menu-item-group li.el-menu-item {
   height: 34px;
+  /* padding-left: 60px !important; */
 }
 
 .el-sub-menu.is-active>div.el-sub-menu__title {

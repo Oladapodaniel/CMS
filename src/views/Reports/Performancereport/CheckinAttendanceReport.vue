@@ -1,25 +1,39 @@
 <template>
-  <div class="container-wide container-top mb-5" @click="closeDropdownIfOpen">
-    <div class="row d-flex justify-content-between">
-      <div class="header">Attendance Report</div>
+  <div class="container-fluid " @click="closeDropdownIfOpen">
+    <div class="row flex-row justify-content-between align-items-center">
+      <div class="head-text">Attendance Report</div>
       <div
-        class="default-btn border-secondary font-weight-normal c-pointer"
-        @click="() => (showExport = !showExport)"
-        style="width: fixed; position: relative"
+        class="my-sm-0 my-2 c-pointer"
       >
-        Export &nbsp; &nbsp; <i class="pi pi-angle-down"></i>
-        <div
-          class="c-pointer"
-          style="width: 6rem; z-index: 1000; position: absolute"
-          v-if="showExport"
-        >
-          <Listbox
-            @click="downLoadExcel"
-            v-model="selectedFileType"
-            :options="bookTypeList"
-            optionLabel="name"
-          />
-        </div>
+
+        <el-dropdown trigger="click" class="w-100">
+          <div
+            class="d-flex justify-content-between default-btn text-dark w-100"
+            size="large"
+          >
+            <span class="mt-1">Export</span>
+            <div class="mt-1">
+              <el-icon class="el-icon--right">
+                <arrow-down />
+              </el-icon>
+            </div>
+          </div>
+          <template #dropdown>
+            <el-dropdown-menu>
+              <el-dropdown-item
+                v-for="(bookType, index) in bookTypeList"
+                :key="index"
+              >
+                <a
+                  class="no-decoration text-dark"
+                  @click="downLoadExcel(bookType)"
+                >
+                  {{ bookType.name }}
+                </a>
+              </el-dropdown-item>
+            </el-dropdown-menu>
+          </template>
+        </el-dropdown>
       </div>
     </div>
     <div
@@ -31,16 +45,22 @@
           <div class="col-sm-6">
             <div class="font-weight-600">Select Event</div>
             <div class="mt-2">
-              <Dropdown
-                placeholder="Select event"
-                style="width: 100%"
-                :options="events"
-                optionLabel="text"
-                v-model="selectedEvent"
-              />
+              <el-select-v2
+                        v-model="selectedEventID"
+                        class="w-100 font-weight-normal"
+                        :options="
+                          events.map((i) => ({
+                            label: i.text,
+                            value: i.id,
+                          }))
+                        "
+                        placeholder="Select event"
+                        @change="setSelectedEvent"
+                        size="large"
+                      />
             </div>
           </div>
-          <div class="col-sm-6">
+          <div class="col-sm-6 mt-3 mt-sm-0">
             <div class="font-weight-600">Select Group</div>
             <div class="mt-2">
               <button
@@ -73,7 +93,7 @@
                   </span>
                   <span v-if="checkedGroup.length === 0">Select group</span>
                 </span>
-                <i class="pi pi-chevron-down exempt-hide"></i>
+               <el-icon class="exemple-hide "><ArrowDown /></el-icon>
               </button>
               <div
                 class="div-card p-2 exempt-hide"
@@ -95,30 +115,29 @@
                 />
                 <GroupTree :items="searchForGroups" :addGroupValue="true" @filteredGroup="setFilterGroups"/>
               </div>
-              <!-- <Dropdown placeholder="Select group" style="width: 100%" :options="groups" optionLabel="name" v-model="selectedGroups"/> -->
             </div>
           </div>
-          <div class="col-sm-6 mt-4">
+          <div class="col-sm-6 mt-3">
             <div class="font-weight-600">Start Date</div>
             <div class="mt-2">
-              <Calendar
-                id="icon"
-                class="w-100"
+              <el-date-picker
                 v-model="startDate"
-                :showIcon="true"
-                dateFormat="dd/mm/yy"
+                type="date"
+                format="DD/MM/YYYY"
+                size="large"
+                class="w-100"
               />
             </div>
           </div>
-          <div class="col-sm-6 mt-4">
+          <div class="col-sm-6 mt-3">
             <div class="font-weight-600">End Date</div>
             <div class="mt-2">
-              <Calendar
-                id="icon"
-                class="w-100"
+              <el-date-picker
                 v-model="endDate"
-                :showIcon="true"
-                dateFormat="dd/mm/yy"
+                type="date"
+                format="DD/MM/YYYY"
+                size="large"
+                class="w-100"
               />
             </div>
           </div>
@@ -128,17 +147,15 @@
         <div style="height: 33%"></div>
         <div
           class="
-            default-btn
             mt-2
-            generate-report
             text-center
-            col-md-10 col-lg-10 col-10
             c-pointer
-            font-weight-bold
           "
           @click="getAttendanceReport"
         >
-          <i class="pi pi-spin" v-show="loading"></i>Generate Report
+          <el-button class="" round :loading="loading" :color="primarycolor">
+            Generate Report
+          </el-button> 
         </div>
       </div>
     </div>
@@ -155,42 +172,31 @@
         @data-header-to-export="setTableHeaderData"
       />
     </div>
-    <Toast />
   </div>
 </template>
 
 <script>
-import { ref, computed, nextTick } from "vue";
-import Dropdown from "primevue/dropdown";
-// import InputText from 'primevue/inputtext';
-import Listbox from "primevue/listbox";
-import Calendar from "primevue/calendar";
+import { ref, computed, nextTick, inject } from "vue";
 import GroupReportTable from "./CheckinAttendanceReportTable.vue";
 import axios from "@/gateway/backendapi";
 import ExcelExport from "../../../services/exportFile/exportToExcel";
-import { useToast } from "primevue/usetoast";
-// import printJS from "print-js";
+import { ElMessage } from "element-plus";
 import html2pdf from "html2pdf.js";
 import GroupTree from "../../groups/component/GroupTreeCheckboxParent.vue";
 import grousService from "../../../services/groups/groupsservice";
-// import { useStore } from "vuex";
 export default {
   components: {
-    Dropdown,
-    Calendar,
-    Listbox,
-    // InputText,
     GroupReportTable,
     GroupTree,
   },
   setup() {
-    // const store = useStore();
-    const toast = useToast();
     const startDate = ref("");
     const endDate = ref("");
     const events = ref([]);
+    const primarycolor = inject("primarycolor");
     const groups = ref([]);
     const selectedEvent = ref({});
+    const selectedEventID = ref(null);
     const selectedGroups = ref({});
     const attendanceReport = ref([]);
     const groupedReport = ref([]);
@@ -223,13 +229,15 @@ export default {
       }
     };
     getEvents();
+    const setSelectedEvent = () =>{
+      selectedEvent.value = events.value.find((i) => i.id === selectedEventID.value)
+    }
 
     const getGroups = async () => {
       grouploading.value = true;
       try {
         let data = await grousService.getGroups();
         groups.value = data.response.groupResonseDTO;
-        console.log(data);
         grouploading.value = false;
       } catch (err) {
         console.log(err);
@@ -256,26 +264,18 @@ export default {
         );
         searched.value = true;
         loading.value = false;
-        console.log(data);
         attendanceReport.value = data;
-        console.log(attendanceReport.value, "thehthth");
         groupReport(data, "personId");
         groupReportByDate(data, "activityID");
 
         if (data.length === 0 && searched.value) {
-          toast.add({
-            severity: "warn",
-            summary: "No data for this date range",
-            detail: "Select other parameters to generate report",
-            life: 8000,
-          });
+          ElMessage({
+              type: "warning",
+              showClose: true,
+              message: "No data for this date range",
+              duration: 5000,
+            });
         }
-
-        // groupedReport.value.forEach(i => {
-        //         for (let j = 0; i.value.length < groupedReportByDate.value.length; j++) {
-        //                 i.value.unshift({ attendance: '' })
-        //         }
-        // })
       } catch (err) {
         console.log(err);
         loading.value = false;
@@ -291,7 +291,6 @@ export default {
         // Return the current iteration `result` value, this will be taken as next iteration `result` value and accumulate
         return result;
       }, {}); // empty object is the initial value for result object
-      console.log(result);
       groupedReport.value = [];
       for (const prop in result) {
         console.log(prop, result[prop]);
@@ -300,7 +299,6 @@ export default {
           value: result[prop],
         });
       }
-      console.log(groupedReport.value);
     };
 
     const groupReportByDate = (array, key) => {
@@ -321,7 +319,6 @@ export default {
           value: result[prop],
         });
       }
-      console.log(groupedReportByDate.value);
     };
 
     // const getIPDetails = async() => {
@@ -336,28 +333,8 @@ export default {
 
     // getIPDetails()
 
-    const downLoadExcel = () => {
-      if (selectedFileType.value.name === "pdf") {
-        // printJS({
-        // //   ignoreElements: ['ignore1', 'ignore2'],
-        //   maxWidth: 867,
-        //   header: 'DONATION TRANSACTIONS',
-        //   printable: [{
-        //         DATE: '543',
-        //         EVENT: '5242',
-        //         DONATION: '4242',
-        //         AMOUNT: 23432,
-        //         DONOR: '234234234'
-        //         }],
-        //   properties: ['DATE', 'DONATION', 'AMOUNT', 'DONOR'],
-        //   type: 'json',
-        //   headerStyle:
-        //     'font-family: Nunito Sans, Calibri; text-align: center;',
-        //   gridHeaderStyle:
-        //     'border: 1.5px solid #6d6d6d19; font-family: Nunito Sans, calibri; padding: 7px; text-align: left;',
-        //   gridStyle:
-        //     'border: 1.5px solid #6d6d6d19; font-family: Nunito Sans, calibri; padding: 7px; font-weight: 300',
-        // })
+    const downLoadExcel = (item) => {
+      if (item.name === "pdf") {
         var element = document.getElementById("element-to-print");
         var opt = {
           // margin:       1,
@@ -371,31 +348,16 @@ export default {
         // New Promise-based usage:
         html2pdf().set(opt).from(element).save();
         html2pdf(element);
-
-        // var doc = new jsPDF();  //create jsPDF object
-        // doc.fromHTML(document.getElementById("element-to-print"), // page element which you want to print as PDF
-        // 15,
-        // 15,
-        // {
-        //     'width': 170  //set width
-        // },
-        // function(a)
-        // {
-        //     doc.save(`${fileName.value}.pdf`); // save file name as HTML2PDF.pdf
-        // });
       } else {
         const filterVal = fileHeaderToExport.value.map((i, index) => index);
         const list = fileToExport.value;
         const header = fileHeaderToExport.value;
-        console.log(filterVal);
-        console.log(fileHeaderToExport.value);
-
         ExcelExport.exportToExcel(
           filterVal,
           list,
           header,
           fileName.value,
-          selectedFileType.value.name
+          item.name
         );
       }
     };
@@ -422,13 +384,6 @@ export default {
         i.name.toLowerCase().includes(searchGroupText.value.toLowerCase())
       );
     });
-
-    // watchEffect(() => {
-    //   if (store.getters["groups/checkedTreeGroup"]) {
-    //     checkedGroup.value = store.getters["groups/checkedTreeGroup"];
-    //   }
-    // });
-
     const closeDropdownIfOpen = (e) => {
       if (!e.target.classList.contains("exempt-hide") && !e.target.classList.contains("p-hidden-accessible") && !e.target.classList.contains("p-checkbox-box") && !e.target.classList.contains("p-checkbox-icon")) {
         hideDiv.value = true
@@ -436,22 +391,18 @@ export default {
     };
 
     const setFilterGroups = (payload) => {
-      console.log(payload)
       checkedGroup.value = payload
     }
-
-    // onBeforeRouteLeave(() => {
-    //   console.log("leaving route")
-    //   resetCheckedGroup.value = true
-    // })
 
     return {
       startDate,
       endDate,
       events,
       groups,
+      setSelectedEvent,
       selectedEvent,
       getAttendanceReport,
+      selectedEventID,
       startDate,
       endDate,
       selectedGroups,
@@ -469,6 +420,7 @@ export default {
       fileToExport,
       setTableHeaderData,
       fileHeaderToExport,
+      primarycolor,
       searched,
       loading,
       setGroupProp,

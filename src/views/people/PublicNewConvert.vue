@@ -683,7 +683,7 @@ export default {
       newConvertObj.value.maritalStatusId = selectedMaritalStatus.value
         ? selectedMaritalStatus.value.id
         : 0;
-      newConvertObj.value.activityId = selectedEventAttended.value
+      newConvertObj.value.activityId = selectedEventAttended.value && selectedEventAttended.value.activityID
         ? selectedEventAttended.value.activityID
         : "00000000-0000-0000-0000-000000000000";
       newConvertObj.value.howDidYouAboutUsId = selectedAboutUsSource.value

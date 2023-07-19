@@ -668,7 +668,7 @@ export default {
         "maritalStatusId", selectedMaritalStatus.value ? selectedMaritalStatus.value.id : 0,
       );
       formData.append(
-        "activityID", selectedEventAttended.value ? selectedEventAttended.value.activityID : "00000000-0000-0000-0000-000000000000",
+        "activityID", selectedEventAttended.value && selectedEventAttended.value.activityID ? selectedEventAttended.value.activityID : "",
       );
       formData.append(
         "howDidYouAboutUsId", selectedAboutUsSource.value ? selectedAboutUsSource.value.id : "00000000-0000-0000-0000-000000000000",

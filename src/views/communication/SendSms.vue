@@ -1277,7 +1277,7 @@ export default {
       var testString = senderIDValidateForm.senderIdText;
       if (!regExp.test(testString)) {
         // requestbtn.value = true
-        return callback(new Error('Should not contain any special characters AND Should not be less than 3 characters and more than 11 characters'))
+        return callback(new Error('Should not contain any special characters AND Should not be less than 3 characters and not more than 11 characters'))
       } else {
         // requestbtn.value = false
       }

@@ -565,7 +565,7 @@ export default {
       formData.append('email', firstTimersObj.value && firstTimersObj.value.email ? firstTimersObj.value.email : "")
       formData.append('genderId', selectedGender.value ? selectedGender.value.id : 0)
       formData.append('maritalStatusId', selectedMaritalStatus.value ? selectedMaritalStatus.value.id : 0)
-      formData.append('activityID', selectedEventAttended.value && selectedEventAttended.value.activityID ? selectedEventAttended.value.activityID : "00000000-0000-0000-0000-000000000000")
+      formData.append('activityID', selectedEventAttended.value && selectedEventAttended.value.activityID ? selectedEventAttended.value.activityID : "" )
       formData.append('howDidYouAboutUsId', selectedAboutUsSource.value ? selectedAboutUsSource.value.id : "00000000-0000-0000-0000-000000000000")
       formData.append('communicationMeans', selectedCommunicationMeans.value ? comMeansArr.value.indexOf(selectedCommunicationMeans.value) + 1 : 0)
       formData.append('interestedInJoining', selectedJoinInterest.value ? joinInterestArr.value.indexOf(selectedJoinInterest.value) + 1 : 0)
@@ -701,7 +701,7 @@ export default {
           lastName: firstTimersObj.value.lastName,
           phoneNumber: firstTimersObj.value.phoneNumber,
           email: firstTimersObj.value.email,
-          activityID: firstTimersObj.value.activityID,
+          activityID: firstTimersObj.value && firstTimersObj.value.activityID ? firstTimersObj.value.activityID : "",
           address: firstTimersObj.value.address,
           birthday: firstTimersObj.value.birthday,
           birthMonth: firstTimersObj.value.birthMonth,

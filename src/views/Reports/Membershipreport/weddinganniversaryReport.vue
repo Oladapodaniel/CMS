@@ -2,7 +2,7 @@
   <div class="container-fluid">
     <!-- header area -->
     <!-- <div class="container"> -->
-    <div class="row d-flex flex-row justify-content-between align-items-center">
+    <div class="row  flex-row justify-content-between align-items-center">
       <div class="centered-items">
         <div class="head-text">Wedding Anniversary Report</div>
       </div>
@@ -35,18 +35,6 @@
             </el-dropdown-menu>
           </template>
         </el-dropdown>
-        <!-- Export &nbsp; &nbsp; <i class="pi pi-angle-down" ></i>
-                   <div
-                        class=" c-pointer"
-                        style="width: 6rem; z-index:1000; position:absolute"
-                        v-if="showExport">
-
-                         <Listbox
-                         @click="downloadFile"
-                         v-model="selectedFileType"
-                         :options="bookTypeList"
-                         optionLabel="name"/>
-                    </div> -->
       </div>
     </div>
     <!-- </div> -->
@@ -286,9 +274,9 @@ export default {
           );
           if (weddingAnniversary.value.length == 0) {
             ElMessage({
-              type: "error",
+              type: "Warning",
               showClose: true,
-              message: "report is not found for this range",
+              message: "No data for this date range",
               duration: 5000,
             });
           }
