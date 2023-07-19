@@ -182,15 +182,15 @@ export default {
                 })
             })
 
-            socket.on('newmessage', (data) => {
-                console.log(data);
-                ElNotification({
-                    title: data._data.notifyName,
-                    message: !data.hasMedia ? data._data.body : '** Media File **',
-                    type: 'success',
-                })
+            // socket.on('newmessage', (data) => {
+            //     console.log(data);
+            //     ElNotification({
+            //         title: data._data.notifyName,
+            //         message: !data.hasMedia ? data._data.body : '** Media File **',
+            //         type: 'success',
+            //     })
                 
-            })
+            // })
 
             if (socketconnected.value) {
                 console.log('socket connected')
