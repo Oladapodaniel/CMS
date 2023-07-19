@@ -5,16 +5,17 @@
         </div>
         <h1 class="send-text s-20 mt-3 text-center">Send Whatsapp Message <br />to
             Members easily</h1>
-            <p class="text-center">Sync ChurchPlus with Whatsapp</p>
-            <div class="d-flex justify-content-center">
-                <el-button :color="primarycolor" @click="createGetWhatsappSession(sessionId, 'createsession')" round
+        <p class="text-center">Sync ChurchPlus with Whatsapp</p>
+        <div class="d-flex justify-content-center">
+            <el-button :color="primarycolor" @click="createGetWhatsappSession(sessionId, 'createsession')" round
                 class="text-white text-center">
                 Connect now
             </el-button>
         </div>
     </div>
-    <el-dialog v-model="QRCodeDialog" title="" width="50%" class="QRCodeDialog" :close-on-click-modal="false" :close-on-press-escape="false" :show-close="false" align-center>
-        
+    <el-dialog v-model="QRCodeDialog" title="" width="50%" class="QRCodeDialog" :close-on-click-modal="false"
+        :close-on-press-escape="false" :show-close="false" align-center>
+
         <div class="d-flex align-items-center flex-column" v-if="isClientReady">
             <img src="../../assets/7efs.gif" width="200" />
             <h1 class="s-20 font-weight-700 text-dark">Whatsapp is Connected</h1>
@@ -23,8 +24,8 @@
         </div>
         <div class="d-flex justify-content-md-center flex-column flex-md-row align-items-sm-center" v-else>
             <div v-loading="qrloading">
-                <VueQrcode :value="qrCode" :size="200" class="w-100" :color="{ dark: '#000000ff', light: '#ffffffff' }" type="image/png"
-                    level="L" v-if="qrCode" />
+                <VueQrcode :value="qrCode" :size="200" class="w-100" :color="{ dark: '#000000ff', light: '#ffffffff' }"
+                    type="image/png" level="L" v-if="qrCode" />
                 <img src="../../assets/qrcode.png" class="w-100" v-else />
             </div>
             <div class="ml-4">
@@ -51,6 +52,7 @@ import store from "../../store/store";
 import { useRoute } from "vue-router";
 import router from "../../router";
 import { ElMessage } from "element-plus";
+import { ElNotification } from 'element-plus';
 
 export default {
     components: {
@@ -96,7 +98,7 @@ export default {
             }
         }
 
-        
+
         const getSessionIdFromBackend = async () => {
             // QRCodeDialog.value = true
             // isClientReady.value = true
@@ -170,11 +172,30 @@ export default {
                 })
             })
 
+            socket.on('clientdestroyed', () => {
+                QRCodeDialog.value = false
+                ElMessage({
+                    type: 'warning',
+                    showClose: true,
+                    message: "QR Code timed out, click the connect button to reconnect.",
+                    duration: 5000
+                })
+            })
+
+            socket.on('newmessage', (data) => {
+                console.log(data);
+                ElNotification({
+                    title: data._data.notifyName,
+                    message: !data.hasMedia ? data._data.body : '** Media File **',
+                    type: 'success',
+                })
+                
+            })
 
             if (socketconnected.value) {
                 console.log('socket connected')
                 if (!isClientReady.value) getSessionIdFromBackend();
-                
+
             } else {
                 console.log('socket not connected')
                 connectingExistingSession.value = false;
