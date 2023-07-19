@@ -951,27 +951,34 @@ export default {
 
 
     const sendBase64InChunks = (base64String, chunkSize) => {
-      const totalChunks = Math.ceil(base64String.length / chunkSize);
-      let uploadedChunks = 0; 
-      for (let i = 0; i < totalChunks; i++) {
-        const start = i * chunkSize;
-        const end = start + chunkSize;
-        const chunk = base64String.substring(start, end);
-        console.log('===================================== \n' + chunk + '\n==================================================')
-        socket.emit('chunk', 
-        {
-          chunk,
-          uploadedChunks,
-          totalChunks,
-          id: clientSessionId.value
-        });
-        uploadedChunks++; // Increment the uploadedChunks count
+      socket.emit('chunk', 
+      {
+        base64String,
+        // uploadedChunks,
+        // totalChunks,
+        id: clientSessionId.value
+      });
+      // const totalChunks = Math.ceil(base64String.length / chunkSize);
+      // let uploadedChunks = 0; 
+      // for (let i = 0; i < totalChunks; i++) {
+      //   const start = i * chunkSize;
+      //   const end = start + chunkSize;
+      //   const chunk = base64String.substring(start, end);
+      //   console.log('===================================== \n' + chunk + '\n==================================================')
+      //   socket.emit('chunk', 
+      //   {
+      //     chunk,
+      //     uploadedChunks,
+      //     totalChunks,
+      //     id: clientSessionId.value
+      //   });
+      //   uploadedChunks++; // Increment the uploadedChunks count
 
         // socket.emit('chunkprogress', {
         //   uploadedChunks,
         //   totalChunks
         // })
-      }
+      // }
     }
 
     const hideEmojiWrapper = (e) => {
