@@ -278,13 +278,13 @@
           <!-- "audio/mpeg" -->
           <!-- "video/mp4" -->
           <!-- "application/pdf" -->
-          <el-progress
+          <!-- <el-progress
             v-if="chunkProgress > 0"
             :text-inside="true"
             :stroke-width="24"
             :percentage="chunkProgress"
             status="success"
-          />
+          /> -->
           <img :src="selectedFileUrl" v-show="fileImage" class="mt-2" style="width: 50%" />
           <audio ref="audioPlayer" controls class="mt-2" style="width: 100%;" v-show="fileAudio">
             <source src="" type="audio/mpeg">
@@ -309,7 +309,7 @@
         </div>
         <div class="w-100 mt-3 d-flex justify-content-end">
           <span>
-            <el-dropdown split-button :color="primarycolor" :disabled="chunkProgress > 0 && chunkProgress < 95" size="large" @click="sendWhatsappMessage" class="split-button" trigger="click">
+            <el-dropdown split-button :color="primarycolor" :disabled="Object.keys(whatsappAttachment).length > 0 && !fileReady" size="large" @click="sendWhatsappMessage" class="split-button" trigger="click">
               Send Whatsapp message
             <template #dropdown>
               <el-dropdown-menu>
@@ -415,7 +415,7 @@ export default {
     const contactUpload = ref(false)
     const multipleContact = ref({})
     const base64String = ref("")
-    const chunkProgress = ref(0)
+    const fileReady = ref(false)
     const groupMembersData = ref([])
     const whatsappScheduleDialog = ref(false)
     const { mdAndUp, lgAndUp, xlAndUp, xsOnly } = deviceBreakpoint();
@@ -503,9 +503,8 @@ export default {
         console.log(data, 'AllChats Here 🥰🎉')
       })
 
-      socket.on('chunkprogress', (data) => {
-        chunkProgress.value = data
-        console.log(chunkProgress.value);
+      socket.on('fileready', () => {
+        fileReady.value = true
       })
     })
 
@@ -942,7 +941,7 @@ export default {
       fileImage.value = false
       selectedFileUrl.value = ""
       whatsappAttachment.value = {}
-      chunkProgress.value = 0
+      fileReady.value = false
       socket.emit('clearfile', {
         data: "",
         id: clientSessionId.value
@@ -1117,7 +1116,7 @@ export default {
       whatsappAttachment,
       clientSessionId,
       base64String,
-      chunkProgress,
+      fileReady,
       hideEmojiWrapper,
       groupMembersData,
       whatsappScheduleDialog,
