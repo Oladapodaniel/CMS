@@ -35,11 +35,6 @@
             </el-dropdown-menu>
           </template>
         </el-dropdown>
-
-        <!-- Export &nbsp; &nbsp; <i class="pi pi-angle-down" ></i>
-                <div class=" c-pointer" style="width: 6rem; z-index:1000; position:absolute" v-if="showExport">
-                      <Listbox @click="downloadFile" v-model="selectedFileType" :options="bookTypeList" optionLabel="name"/>
-                </div> -->
       </div>
     </div>
     <!-- </div> -->
@@ -231,24 +226,14 @@
 import { computed, ref, inject } from "vue";
 // import ByGenderChart from "@/components/charts/PieChart.vue";
 import BirthdayChart from "../../../components/charts/PieChart.vue";
-// import PaginationButtons from "../../../components/pagination/PaginationButtons";
-import Listbox from "primevue/listbox";
 import axios from "@/gateway/backendapi";
-// import html2pdf from "html2pdf.js";
-// import Dropdown from "primevue/dropdown";
-// import InputText from "primevue/inputtext";
 import printJS from "print-js";
 import exportService from "../../../services/exportFile/exportservice";
 import store from "../../../store/store";
 
 export default {
   components: {
-    Listbox,
-    // ByGenderChart,
-    // PaginationButtons,
     BirthdayChart,
-    // Dropdown,
-    // InputText,
   },
   setup() {
     const startDate = ref();
@@ -273,7 +258,6 @@ export default {
     const allMembersInChurch = () => {
       store.dispatch("membership/setMembershipSummary").then((response) => {
         membersInChurch.value = response;
-        console.log(membersInChurch.value, "✌️✌️");
         /* function to call service and populate table */
         setTimeout(() => {
           fileHeaderToExport.value = exportService.tableHeaderToJson(
@@ -321,10 +305,8 @@ export default {
         // Return the current iteration `result` value, this will be taken as next iteration `result` value and accumulate
         return result;
       }, {}); // empty object is the initial value for result object
-      console.log(result);
       genderSummary.value = [];
       for (const prop in result) {
-        console.log(prop, result[prop]);
         genderResult.value.push({
           name: prop,
           value: result[prop].length,
@@ -341,10 +323,8 @@ export default {
         // Return the current iteration `result` value, this will be taken as next iteration `result` value and accumulate
         return result;
       }, {}); // empty object is the initial value for result object
-      console.log(result);
       maritalStatusSummary.value = [];
       for (const prop in result) {
-        console.log(prop, result[prop]);
         maritalStatusResult.value.push({
           name: prop,
           value: result[prop].length,
@@ -360,7 +340,6 @@ export default {
         let data = await axios.get(
           `/api/Reports/people/getBirthdaysReport?startdate=${start}&enddate=${end}`
         );
-        console.log(data);
         birthdays.value = data.data;
         groupByGender(data.data, "gender");
         groupByMaritalStatus(data.data, "maritalStatus");

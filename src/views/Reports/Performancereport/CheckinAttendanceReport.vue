@@ -1,11 +1,8 @@
 <template>
-  <div class="container-fluid " @click="closeDropdownIfOpen">
+  <div class="container-fluid" @click="closeDropdownIfOpen">
     <div class="row flex-row justify-content-between align-items-center">
       <div class="head-text">Attendance Report</div>
-      <div
-        class="my-sm-0 my-2 c-pointer"
-      >
-
+      <div class="my-sm-0 my-2 c-pointer">
         <el-dropdown trigger="click" class="w-100">
           <div
             class="d-flex justify-content-between default-btn text-dark w-100"
@@ -46,31 +43,25 @@
             <div class="font-weight-600">Select Event</div>
             <div class="mt-2">
               <el-select-v2
-                        v-model="selectedEventID"
-                        class="w-100 font-weight-normal"
-                        :options="
-                          events.map((i) => ({
-                            label: i.text,
-                            value: i.id,
-                          }))
-                        "
-                        placeholder="Select event"
-                        @change="setSelectedEvent"
-                        size="large"
-                      />
+                v-model="selectedEventID"
+                class="w-100 font-weight-normal"
+                :options="
+                  events.map((i) => ({
+                    label: i.text,
+                    value: i.id,
+                  }))
+                "
+                placeholder="Select event"
+                @change="setSelectedEvent"
+                size="large"
+              />
             </div>
           </div>
           <div class="col-sm-6 mt-3 mt-sm-0">
             <div class="font-weight-600">Select Group</div>
             <div class="mt-2">
               <button
-                class="
-                  form-control
-                  d-flex
-                  justify-content-between
-                  align-items-center
-                  exempt-hide
-                "
+                class="form-control d-flex justify-content-between align-items-center exempt-hide"
                 @click="setGroupProp"
               >
                 <span class="exempt-hide">
@@ -93,7 +84,7 @@
                   </span>
                   <span v-if="checkedGroup.length === 0">Select group</span>
                 </span>
-               <el-icon class="exemple-hide "><ArrowDown /></el-icon>
+                <el-icon class="exemple-hide"><ArrowDown /></el-icon>
               </button>
               <div
                 class="div-card p-2 exempt-hide"
@@ -102,10 +93,16 @@
                   'd-block': !hideDiv,
                 }"
               >
-                <i
+                <el-icon
+                  v-if="grouploading && groups.length === 0"
+                  class="is-loading text-center exempt-hide"
+                >
+                  <Loading />
+                </el-icon>
+                <!-- <i
                   class="pi pi-spin pi-spinner text-center exempt-hide"
                   v-if="grouploading && groups.length === 0"
-                ></i>
+                ></i> -->
                 <input
                   type="text"
                   class="form-control exempt-hide"
@@ -113,7 +110,11 @@
                   ref="searchGroupRef"
                   placeholder="Search for group"
                 />
-                <GroupTree :items="searchForGroups" :addGroupValue="true" @filteredGroup="setFilterGroups"/>
+                <GroupTree
+                  :items="searchForGroups"
+                  :addGroupValue="true"
+                  @filteredGroup="setFilterGroups"
+                />
               </div>
             </div>
           </div>
@@ -143,19 +144,12 @@
           </div>
         </div>
       </div>
-      <div class="col-sm-2 col-md-3">
-        <div style="height: 33%"></div>
-        <div
-          class="
-            mt-2
-            text-center
-            c-pointer
-          "
-          @click="getAttendanceReport"
-        >
+      <div class="col-sm-2 col-md-3 d-flex align-items-center">
+        <!-- <div style="height: 33%"></div> -->
+        <div class="mt-2 text-center c-pointer" @click="getAttendanceReport">
           <el-button class="" round :loading="loading" :color="primarycolor">
             Generate Report
-          </el-button> 
+          </el-button>
         </div>
       </div>
     </div>
@@ -229,9 +223,11 @@ export default {
       }
     };
     getEvents();
-    const setSelectedEvent = () =>{
-      selectedEvent.value = events.value.find((i) => i.id === selectedEventID.value)
-    }
+    const setSelectedEvent = () => {
+      selectedEvent.value = events.value.find(
+        (i) => i.id === selectedEventID.value
+      );
+    };
 
     const getGroups = async () => {
       grouploading.value = true;
@@ -255,12 +251,13 @@ export default {
         groupIDs: checkedGroup.value,
         eventID: selectedEvent.value.id,
         startDate: start,
-        endDate: end
-      }
+        endDate: end,
+      };
 
       try {
         let { data } = await axios.post(
-          `/api/Reports/events/getCheckInAttendanceReport`, payload
+          `/api/Reports/events/getCheckInAttendanceReport`,
+          payload
         );
         searched.value = true;
         loading.value = false;
@@ -270,11 +267,11 @@ export default {
 
         if (data.length === 0 && searched.value) {
           ElMessage({
-              type: "warning",
-              showClose: true,
-              message: "No data for this date range",
-              duration: 5000,
-            });
+            type: "warning",
+            showClose: true,
+            message: "No data for this date range",
+            duration: 5000,
+          });
         }
       } catch (err) {
         console.log(err);
@@ -293,7 +290,6 @@ export default {
       }, {}); // empty object is the initial value for result object
       groupedReport.value = [];
       for (const prop in result) {
-        console.log(prop, result[prop]);
         groupedReport.value.push({
           name: prop,
           value: result[prop],
@@ -310,10 +306,8 @@ export default {
         // Return the current iteration `result` value, this will be taken as next iteration `result` value and accumulate
         return result;
       }, {}); // empty object is the initial value for result object
-      console.log(result);
       groupedReportByDate.value = [];
       for (const prop in result) {
-        console.log(prop, result[prop]);
         groupedReportByDate.value.push({
           name: prop,
           value: result[prop],
@@ -347,7 +341,7 @@ export default {
 
         // New Promise-based usage:
         html2pdf().set(opt).from(element).save();
-        html2pdf(element);
+        // html2pdf(element);
       } else {
         const filterVal = fileHeaderToExport.value.map((i, index) => index);
         const list = fileToExport.value;
@@ -385,14 +379,19 @@ export default {
       );
     });
     const closeDropdownIfOpen = (e) => {
-      if (!e.target.classList.contains("exempt-hide") && !e.target.classList.contains("p-hidden-accessible") && !e.target.classList.contains("p-checkbox-box") && !e.target.classList.contains("p-checkbox-icon")) {
-        hideDiv.value = true
+      if (
+        !e.target.classList.contains("exempt-hide") &&
+        !e.target.classList.contains("p-hidden-accessible") &&
+        !e.target.classList.contains("p-checkbox-box") &&
+        !e.target.classList.contains("p-checkbox-icon")
+      ) {
+        hideDiv.value = true;
       }
     };
 
     const setFilterGroups = (payload) => {
-      checkedGroup.value = payload
-    }
+      checkedGroup.value = payload;
+    };
 
     return {
       startDate,

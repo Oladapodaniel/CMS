@@ -2,7 +2,7 @@
   <div class="container-fluid">
     <!-- header area -->
     <!-- <div class="container"> -->
-    <div class="row d-flex flex-row justify-content-between align-items-center">
+    <div class="row flex-row justify-content-between align-items-center">
       <div class="centered-items">
         <div class="head-text">First Timers Report</div>
       </div>

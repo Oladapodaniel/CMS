@@ -4,15 +4,15 @@
             <div class="head-text"> Reports</div>
         </div>
         <div class="row mt-2" style=" background: #f5f8fa;">
-            <div class="col-12  c-pointer" v-if="!financialAccount" :class="{ 'col-sm-6' : !canAccessFinancial, 'col-sm-4' : canAccessFinancial }" @click="togglePeople">
+            <div class="col-12 px-0 c-pointer" v-if="!financialAccount" :class="{ 'col-sm-6' : !canAccessFinancial, 'col-sm-4' : canAccessFinancial }" @click="togglePeople">
                 <div class="p-3 header4"> Membership </div> 
                 <div :class="{ 'baseline' : showPeople, 'hide-base' : !showPeople }"></div>
             </div>
-            <div class="col-12 c-pointer" v-if="!financialAccount" :class="{ 'col-sm-6' : !canAccessFinancial, 'col-sm-4' : canAccessFinancial }" @click="togglePerformance">
+            <div class="col-12 px-0 c-pointer" v-if="!financialAccount" :class="{ 'col-sm-6' : !canAccessFinancial, 'col-sm-4' : canAccessFinancial }" @click="togglePerformance">
                 <div class="p-3 header4"> Attendance </div> 
                 <div :class="{ 'baseline' : showPerformance, 'hide-base' : !showPerformance }"></div>
             </div>
-            <div class="col-12 col-sm-4 c-pointer"  @click="toggleFinancial" v-if="canAccessFinancial || financialAccount">
+            <div class="col-12  px-0 col-sm-4 c-pointer"  @click="toggleFinancial" v-if="canAccessFinancial || financialAccount">
                 <div class="p-3 header4 "> Financial </div> 
                 <div :class="{ 'baseline' : showFinancial, 'hide-base' : !showFinancial }"></div>
             </div>

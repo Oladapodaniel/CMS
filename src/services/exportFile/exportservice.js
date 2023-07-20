@@ -19,19 +19,11 @@ const downLoadExcel = (selectedFileType, element, fileName, fileHeaderToExport, 
 
         // New Promise-based usage:
         html2pdf().set(opt).from(element).save();
-        html2pdf(element);
+        // html2pdf(element);
     } else {
         const filterVal = fileHeaderToExport.map((i, index) => index)
         const list = fileToExport
         const header = fileHeaderToExport
-        console.log(filterVal)
-        console.log(fileHeaderToExport)
-        console.log(filterVal)
-        console.log(list)
-        console.log(header)
-        console.log(fileName)
-        console.log(selectedFileType)
-
         ExcelExport.exportFile(filterVal, list, header, fileName, selectedFileType)
     }
 }

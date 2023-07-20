@@ -39,19 +39,6 @@
             </el-dropdown-menu>
           </template>
         </el-dropdown>
-
-        <!-- Export &nbsp; &nbsp; <i class="pi pi-angle-down" ></i>
-                   <div
-                        class=" c-pointer"
-                        style="width: 6rem; z-index:1000; position:absolute"
-                        v-if="showExport">
-
-                         <Listbox
-                         @click="downloadFile"
-                         v-model="selectedFileType"
-                         :options="bookTypeList"
-                         optionLabel="name"/>
-                    </div> -->
       </div>
     </div>
 
@@ -189,7 +176,6 @@
             </tbody>
           </table>
           <div class="table-foot d-flex justify-content-end mt-3">
-            <!-- <PaginationButtons /> -->
           </div>
         </div>
       </div>
@@ -201,10 +187,8 @@
 <script>
 import { ref, inject } from "vue";
 import ByGenderChart from "@/components/charts/PieChart.vue";
-// import PaginationButtons from "../../../components/pagination/PaginationButtons";
 import axios from "@/gateway/backendapi";
 import dateFormatter from "../../../services/dates/dateformatter";
-import Listbox from "primevue/listbox";
 import printJS from "print-js";
 import exportService from "../../../services/exportFile/exportservice";
 import allCustomFields from "../../../services/customfield/customField";
@@ -212,8 +196,6 @@ import allCustomFields from "../../../services/customfield/customField";
 export default {
   components: {
     ByGenderChart,
-    Listbox,
-    // PaginationButtons,
   },
   setup() {
     const startDate = ref("");
@@ -244,7 +226,6 @@ export default {
           ).toLocaleDateString("en-US")}`
         )
         .then((res) => {
-          console.log(res);
           newConvertsInChurch.value = res.data;
           /* function to call service and populate table */
           setTimeout(() => {

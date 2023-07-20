@@ -1,80 +1,88 @@
 <template>
-  <div class="container container-top container-wide mb-4">
-    <div class="row d-flex justify-content-between px-3">
-      <div class="heading-text">New Convert Performance Report</div>
-      <div
-        class="default-btn mb-2 font-weight-normal border-secondary c-pointer"
-        @click="() => (showExport = !showExport)"
-        style="width: fixed; position: relative"
-      >
-        Export &nbsp; &nbsp; <i class="pi pi-angle-down"></i>
-        <div
-          class="c-pointer"
-          style="width: 6rem; z-index: 1000; position: absolute"
-          v-if="showExport"
-        >
-          <Listbox
-            @click="downloadFile"
-            v-model="selectedFileType"
-            :options="bookTypeList"
-            optionLabel="name"
-          />
-        </div>
+  <div class="container-fluid">
+    <div class="row justify-content-between">
+      <div class="head-text">New Convert Performance Report</div>
+      <div class="my-sm-0 my-2 c-pointer">
+        <el-dropdown trigger="click" class="w-100">
+          <div
+            class="d-flex justify-content-between default-btn text-dark w-100"
+            size="large"
+          >
+            <span class="mt-1">Export</span>
+            <div class="mt-1">
+              <el-icon class="el-icon--right">
+                <arrow-down />
+              </el-icon>
+            </div>
+          </div>
+          <template #dropdown>
+            <el-dropdown-menu>
+              <el-dropdown-item
+                v-for="(bookType, index) in bookTypeList"
+                :key="index"
+              >
+                <a
+                  class="no-decoration text-dark"
+                  @click="downloadFile(bookType)"
+                >
+                  {{ bookType.name }}
+                </a>
+              </el-dropdown-item>
+            </el-dropdown-menu>
+          </template>
+        </el-dropdown>
       </div>
     </div>
 
     <!-- date area -->
-    <div class="container-fluid my-2 pt-4 pb-5 bg-area">
-      <div class="row px-4 w-100 ml-md-5 px-sm-4 mt-sm-3">
-        <div class="col-md-4 col-sm-12 px-md-0">
-          <div class="p-field p-col-12 pt-md-2 pb-2">
-            <div>
-              <label for="icon" class="mb-0 font-weight-bold">Start Date</label>
-            </div>
-            <Calendar
-              dateFormat="dd/mm/yy"
-              class="w-100"
-              id="icon"
-              v-model="startDate"
-              :showIcon="true"
-            />
+    <!-- <div class="container-fluid my-2 pt-4 pb-5 bg-area"> -->
+    <div class="row pl-1 pl-md-5 bg-area mt-sm-3">
+      <div class="col-md-4 col-sm-12 px-md-0">
+        <div class="p-field p-col-12 pt-md-2 pb-2">
+          <div>
+            <label for="icon" class="mb-0 font-weight-bold">Start Date</label>
           </div>
+          <el-date-picker
+            v-model="startDate"
+            type="date"
+            format="DD/MM/YYYY"
+            size="large"
+            class="w-100"
+          />
         </div>
-        <div class="col-md-4 col-sm-12 pr-md-0">
-          <div class="p-field p-col-12 pt-md-2">
-            <div>
-              <label for="icon" class="mb-0 font-weight-bold">End Date</label>
-            </div>
-            <Calendar
-              dateFormat="dd/mm/yy"
-              class="w-100"
-              id="icon"
-              v-model="endDate"
-              :showIcon="true"
-            />
+      </div>
+      <div class="col-md-4 col-sm-12 pr-md-0">
+        <div class="p-field p-col-12 pt-md-2">
+          <div>
+            <label for="icon" class="mb-0 font-weight-bold">End Date</label>
           </div>
+          <el-date-picker
+            v-model="endDate"
+            type="date"
+            format="DD/MM/YYYY"
+            size="large"
+            class="w-100"
+          />
         </div>
-        <div class="col-md-4 col-sm-12 pr-md-0">
-          <div class="p-field p-col-12 pt-md-2">
-            <button
-              class="
-                default-btn
-                generate-report
-                c-pointer
-                font-weight-normal
-                mt-4
-              "
-              @click="generateReport"
-            >
-              Generate Report
-            </button>
-          </div>
+      </div>
+      <div class="col-md-4 col-sm-12 pr-md-0">
+        <div class="p-field p-col-12 pt-md-2">
+          <el-button
+            class="c-pointer mt-4"
+            round
+            :color="primarycolor"
+            :loading="loading"
+            @click="generateReport"
+          >
+            Generate Report
+          </el-button>
         </div>
       </div>
     </div>
+    <!-- </div> -->
 
     <div id="element-to-print">
-      <div class="container-fluid">
+      <div class="container-fluid px-0">
         <div class="row w-100"></div>
         <div
           class="row"
@@ -113,46 +121,44 @@
         </div>
       </div>
       <section>
-        <div
-          class="
-            container-fluid
-            mt-4
-            table-main
-            px-0
-            remove-styles2 remove-border
-            responsiveness
-          "
-          :class="{ 'show-report': showReport, 'hide-report': !showReport }"
-        >
-          <table
-            class="table remove-styles mt-0 table-hover table-header-area"
-            id="table"
+        <div class="row">
+          <div
+            class="container-fluid table-main remove-styles2 remove-border responsiveness container-fluid mt-4"
+            :class="{ 'show-report': showReport, 'hide-report': !showReport }"
           >
-            <thead class="table-header-area-main">
-              <tr class="text-capitalize text-nowrap" style="border-bottom: 0">
-                <th scope="col">Name</th>
-                <th scope="col">Phone</th>
-                <th scope="col">Email</th>
-                <th scope="col">Home Address</th>
-                <th scope="col">Gender</th>
-              </tr>
-            </thead>
-            <tbody
-              class="font-weight-bold text-nowrap"
-              style="font-size: small"
+            <table
+              class="table remove-styles mt-0 table-hover table-header-area"
+              id="table"
             >
-              <tr
-                v-for="(NewConvert, index) in newConvertInChurch"
-                :key="index"
+              <thead class="table-header-area-main">
+                <tr
+                  class="text-capitalize text-nowrap"
+                  style="border-bottom: 0"
+                >
+                  <th scope="col">Name</th>
+                  <th scope="col">Phone</th>
+                  <th scope="col">Email</th>
+                  <th scope="col">Home Address</th>
+                  <th scope="col">Gender</th>
+                </tr>
+              </thead>
+              <tbody
+                class="font-weight-bold text-nowrap"
+                style="font-size: small"
               >
-                <td>{{ NewConvert.lastName }} {{ NewConvert.firstName }}</td>
-                <td>{{ NewConvert.mobilePhone }}</td>
-                <td>{{ NewConvert.email }}</td>
-                <td>{{ NewConvert.homeAddress }}</td>
-                <td>{{ NewConvert.gender }}</td>
-              </tr>
-            </tbody>
-          </table>
+                <tr
+                  v-for="(NewConvert, index) in newConvertInChurch"
+                  :key="index"
+                >
+                  <td>{{ NewConvert.lastName }} {{ NewConvert.firstName }}</td>
+                  <td>{{ NewConvert.mobilePhone }}</td>
+                  <td>{{ NewConvert.email }}</td>
+                  <td>{{ NewConvert.homeAddress }}</td>
+                  <td>{{ NewConvert.gender }}</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
         </div>
       </section>
     </div>
@@ -160,23 +166,19 @@
 </template>
 
 <script>
-import { computed, ref } from "vue";
-import Calendar from "primevue/calendar";
+import { computed, ref, inject } from "vue";
 import axios from "@/gateway/backendapi";
 import PerformancePieChart from "../../../components/charts/ReportPieChart.vue";
 import PerformanceColumnChart from "../../../components/charts/ColumnChart.vue";
-import Listbox from "primevue/listbox";
 import MultiSelect from "primevue/multiselect";
 import dateFormatter from "../../../services/dates/dateformatter";
 import exportService from "../../../services/exportFile/exportservice";
 import printJS from "print-js";
 export default {
   components: {
-    Listbox,
     MultiSelect,
     PerformancePieChart,
     PerformanceColumnChart,
-    Calendar,
   },
   setup() {
     const showReport = ref(false);
@@ -189,7 +191,9 @@ export default {
     ]);
     const startDate = ref("");
     const endDate = ref("");
+    const primarycolor = inject("primarycolor");
     const newConvertInChurch = ref([]);
+    const loading = ref(false);
     const genderChartResult = ref([]);
     const maritalStatusChartResult = ref([]);
     const eventDateChartResult = ref([]);
@@ -238,13 +242,11 @@ export default {
       }, []); // empty object is the initial value for result object
       for (const prop in result) {
         // genderChartResult.value
-        console.log(prop, result[prop]);
         genderChartResult.value.push({
           name: prop,
           value: result[prop].length,
         });
       }
-      console.log(genderChartResult.value);
     };
 
     const mappedGender = computed(() => {
@@ -266,13 +268,12 @@ export default {
       // genderChartResult.value
       for (const prop in result) {
         // genderChartResult.value
-        console.log(prop, result[prop]);
+
         maritalStatusChartResult.value.push({
           name: prop,
           value: result[prop].length,
         });
       }
-      console.log(maritalStatusChartResult.value);
     };
 
     const mappedMaritalStatus = computed(() => {
@@ -293,13 +294,12 @@ export default {
       // genderChartResult.value
       for (const prop in result) {
         // genderChartResult.value
-        console.log(prop, result[prop]);
+
         eventDateChartResult.value.push({
           name: prop,
           //   value: result[prop].length
         });
       }
-      console.log(eventDateChartResult.value);
     };
 
     const mappedEventDate = computed(() => {
@@ -308,6 +308,7 @@ export default {
     });
 
     const generateReport = () => {
+      loading.value = true;
       axios
         .get(
           `/api/Reports/people/getFirstTimersReport?startDate=${new Date(
@@ -330,14 +331,16 @@ export default {
             );
           }, 1000);
           showReport.value = true;
+          loading.value = false;
         })
         .catch((err) => {
           console.log(err);
+          loading.value = false;
         });
     };
-    const downloadFile = () => {
+    const downloadFile = (item) => {
       exportService.downLoadExcel(
-        selectedFileType.value.name,
+        item.name,
         document.getElementById("element-to-print"),
         fileName.value,
         fileHeaderToExport.value,
@@ -351,6 +354,8 @@ export default {
     return {
       attendanceChart,
       mainAttendanceData,
+      loading,
+      primarycolor,
       attendanceData,
       genderChartResult,
       attendanceSeries,
@@ -435,6 +440,11 @@ export default {
   border-radius: 0.5rem;
   padding: 0.2rem 0 1.2rem 0;
 }
+.responsiveness {
+  max-width: 100%;
+  /* overflow-y: scroll; */
+  overflow-x: scroll;
+}
 
 .table {
   width: 100% !important;
@@ -458,7 +468,7 @@ export default {
   width: 100% !important;
   box-shadow: 0 0.063rem 0.25rem #02172e45 !important;
   border: 0.063rem solid #dde2e6 !important;
-  border-radius: 30px !important;
+  /* border-radius: 30px !important; */
   text-align: left !important;
   margin-bottom: auto !important;
   padding-bottom: 0.5rem !important;

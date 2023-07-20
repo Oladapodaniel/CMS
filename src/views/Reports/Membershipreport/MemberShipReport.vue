@@ -35,10 +35,6 @@
             </el-dropdown-menu>
           </template>
         </el-dropdown>
-        <!-- Export &nbsp; &nbsp; <i class="pi pi-angle-down" ></i>
-                        <div class=" c-pointer" style="width: 6rem; z-index:1000; position:absolute" v-if="showExport">
-                              <Listbox @click="downloadFile" v-model="selectedFileType" :options="bookTypeList" optionLabel="name"/>
-                        </div> -->
       </div>
     </div>
     <div class="container-fluid px-0 mt-2">
@@ -290,11 +286,11 @@
       </div>
       <!-- <div > -->
       <!-- <div class="row "> -->
-      <section>
+      <section class="row">
         <!-- table header -->
         <div
           v-if="membersInChurch[0]"
-          class="mt-4 container-fluid table-main px-0 remove-styles2 remove-border responsiveness"
+          class="mt-4 container-fluid table-main remove-styles2 remove-border responsiveness"
           :class="{ 'show-report': showReport, 'hide-report': !showReport }"
         >
           <table
@@ -320,9 +316,6 @@
                 >
                   {{ item.label }}
                 </th>
-                <!-- <th scope="col">Marital Status</th>
-                              <th scope="col">Age Group</th>
-                              <th scope="col">Birthday</th> -->
               </tr>
             </thead>
             <tbody class="small-text font-weight-bold text-nowrap">
@@ -359,9 +352,6 @@
               </tr>
             </tbody>
           </table>
-          <!-- <div class="table-foot d-flex justify-content-end mt-n3">
-                          <PaginationButtons />
-                          </div> -->
         </div>
         <!--end table header -->
       </section>
@@ -375,20 +365,14 @@
 import { computed, ref, inject } from "vue";
 import axios from "@/gateway/backendapi";
 import MembershipPieChart from "../../../components/charts/ReportPieChart.vue";
-import Listbox from "primevue/listbox";
 import MultiSelect from "primevue/multiselect";
 import printJS from "print-js";
 import exportService from "../../../services/exportFile/exportservice";
 import allCustomFields from "../../../services/customfield/customField";
 export default {
   components: {
-    // GenderPieChart,
-    // InputText,
     MembershipPieChart,
-    // Dropdown,
-    Listbox,
     MultiSelect,
-    // PaginationButtons
   },
   setup(prop) {
     const selectedMember = ref();
@@ -575,12 +559,9 @@ export default {
         axios
           .get("/api/Reports/people/getMemberClassification")
           .then((res) => {
-            // tenantCurrency.value = res.data;
             memberShips.value = res.data;
-            // console.log(res.data,'Fejiro');
           })
           .catch((err) => console.log(err));
-        // donationSummary.value = data;
       } catch (err) {
         console.log(err);
       }
@@ -593,10 +574,8 @@ export default {
           .get("/api/Reports/people/getMaritalStatus")
           .then((res) => {
             memberMaritalStatus.value = res.data;
-            // console.log(res,'gideon');
           })
           .catch((err) => console.log(err));
-        // donationSummary.value = data;
       } catch (err) {
         console.log(err);
       }
@@ -609,10 +588,8 @@ export default {
           .get("/api/Reports/people/getGender")
           .then((res) => {
             memberGender.value = res.data;
-            // console.log(res,'Samson');
           })
           .catch((err) => console.log(err));
-        // donationSummary.value = data;
       } catch (err) {
         console.log(err);
       }
@@ -627,7 +604,6 @@ export default {
             memberAgegroup.value = res.data;
           })
           .catch((err) => console.log(err));
-        // donationSummary.value = data;
       } catch (err) {
         console.log(err);
       }

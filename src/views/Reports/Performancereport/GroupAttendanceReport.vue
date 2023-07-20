@@ -1,25 +1,36 @@
 <template>
-  <div class="container-wide container-top mb-5" @click="closeDropdownIfOpen">
+  <div class="container-fluid" @click="closeDropdownIfOpen">
     <div class="row d-flex justify-content-between">
-      <div class="header">Group Attendance Report</div>
-      <div
-        class="default-btn border-secondary font-weight-normal c-pointer"
-        @click="() => (showExport = !showExport)"
-        style="width: fixed; position: relative"
-      >
-        Export &nbsp; &nbsp; <i class="pi pi-angle-down"></i>
-        <div
-          class="c-pointer"
-          style="width: 6rem; z-index: 1000; position: absolute"
-          v-if="showExport"
-        >
-          <Listbox
-            @click="downLoadExcel"
-            v-model="selectedFileType"
-            :options="bookTypeList"
-            optionLabel="name"
-          />
-        </div>
+      <div class="head-text">Group Attendance Report</div>
+      <div class="my-sm-0 my-2 c-pointer">
+        <el-dropdown trigger="click" class="w-100">
+          <div
+            class="d-flex justify-content-between default-btn text-dark w-100"
+            size="large"
+          >
+            <span class="mt-1">Export</span>
+            <div class="mt-1">
+              <el-icon class="el-icon--right">
+                <arrow-down />
+              </el-icon>
+            </div>
+          </div>
+          <template #dropdown>
+            <el-dropdown-menu>
+              <el-dropdown-item
+                v-for="(bookType, index) in bookTypeList"
+                :key="index"
+              >
+                <a
+                  class="no-decoration text-dark"
+                  @click="downLoadExcel(bookType)"
+                >
+                  {{ bookType.name }}
+                </a>
+              </el-dropdown-item>
+            </el-dropdown-menu>
+          </template>
+        </el-dropdown>
       </div>
     </div>
     <div
@@ -31,12 +42,18 @@
           <div class="col-sm-6">
             <div class="font-weight-600">Select Event</div>
             <div class="mt-2">
-              <Dropdown
+              <el-select-v2
+                v-model="selectedEventID"
+                class="w-100 font-weight-normal"
+                :options="
+                  events.map((i) => ({
+                    label: i.text,
+                    value: i.id,
+                  }))
+                "
                 placeholder="Select event"
-                style="width: 100%"
-                :options="events"
-                optionLabel="text"
-                v-model="selectedEvent"
+                @change="setSelectedEvent"
+                size="large"
               />
             </div>
           </div>
@@ -44,13 +61,7 @@
             <div class="font-weight-600">Select Group</div>
             <div class="mt-2">
               <button
-                class="
-                  form-control
-                  d-flex
-                  justify-content-between
-                  align-items-center
-                  exempt-hide
-                "
+                class="form-control d-flex justify-content-between align-items-center exempt-hide"
                 @click="setGroupProp"
               >
                 <span class="exempt-hide">
@@ -73,7 +84,7 @@
                   </span>
                   <span v-if="checkedGroup.length === 0">Select group</span>
                 </span>
-                <i class="pi pi-chevron-down exempt-hide"></i>
+                <el-icon class="exemple-hide"><ArrowDown /></el-icon>
               </button>
               <div
                 class="div-card p-2 exempt-hide"
@@ -82,10 +93,12 @@
                   'd-block': !hideDiv,
                 }"
               >
-                <i
-                  class="pi pi-spin pi-spinner text-center exempt-hide"
+                <el-icon
                   v-if="grouploading && groups.length === 0"
-                ></i>
+                  class="is-loading text-center exempt-hide"
+                >
+                  <Loading />
+                </el-icon>
                 <input
                   type="text"
                   class="form-control exempt-hide"
@@ -101,47 +114,40 @@
               </div>
             </div>
           </div>
-          <div class="col-sm-6 mt-4">
+          <div class="col-sm-6 mt-3">
             <div class="font-weight-600">Start Date</div>
             <div class="mt-2">
-              <Calendar
-                id="icon"
-                class="w-100"
+              <el-date-picker
                 v-model="startDate"
-                :showIcon="true"
-                dateFormat="dd/mm/yy"
+                type="date"
+                format="DD/MM/YYYY"
+                size="large"
+                class="w-100"
               />
             </div>
           </div>
-          <div class="col-sm-6 mt-4">
+          <div class="col-sm-6 mt-3">
             <div class="font-weight-600">End Date</div>
             <div class="mt-2">
-              <Calendar
-                id="icon"
-                class="w-100"
+              <el-date-picker
                 v-model="endDate"
-                :showIcon="true"
-                dateFormat="dd/mm/yy"
+                type="date"
+                format="DD/MM/YYYY"
+                size="large"
+                class="w-100"
               />
             </div>
           </div>
         </div>
       </div>
-      <div class="col-sm-2 col-md-3">
-        <div style="height: 33%"></div>
+      <div class="col-sm-2 col-md-3 d-flex mt-3 mt-sm-0 align-items-center">
         <div
-          class="
-            default-btn
-            mt-2
-            generate-report
-            text-center
-            col-md-10 col-lg-10 col-10
-            c-pointer
-            font-weight-bold
-          "
+          class="text-center col-md-10 col-lg-10 col-10 c-pointer"
           @click="getAttendanceReport"
         >
-          <i class="pi pi-spin" v-show="loading"></i>Generate Report
+          <el-button class="" round :loading="loading" :color="primarycolor">
+            Generate Report
+          </el-button>
         </div>
       </div>
     </div>
@@ -178,36 +184,28 @@
         </table>
       </div>
     </div>
-    <Toast />
   </div>
 </template>
 
 <script>
-import { ref, computed, nextTick } from "vue";
-import Dropdown from "primevue/dropdown";
-import Listbox from "primevue/listbox";
-import Calendar from "primevue/calendar";
+import { ref, computed, nextTick, inject } from "vue";
+import { ElMessage } from "element-plus";
 import axios from "@/gateway/backendapi";
 import exportService from "../../../services/exportFile/exportservice";
-import { useToast } from "primevue/usetoast";
 import html2pdf from "html2pdf.js";
 import GroupTree from "../../groups/component/GroupTreeCheckboxParent.vue";
 import grousService from "../../../services/groups/groupsservice";
 import dateFormatter from "../../../services/dates/dateformatter";
 export default {
   components: {
-    Dropdown,
-    Calendar,
-    Listbox,
     GroupTree,
   },
   setup() {
-    // const store = useStore();
-    const toast = useToast();
     const startDate = ref("");
     const endDate = ref("");
     const events = ref([]);
     const groups = ref([]);
+    const primarycolor = inject("primarycolor");
     const selectedEvent = ref({});
     const selectedGroups = ref({});
     const availabilityReport = ref([]);
@@ -226,6 +224,7 @@ export default {
     const fileHeaderToExport = ref([]);
     const searched = ref(false);
     const loading = ref(false);
+    const selectedEventID = ref(null);
     const searchGroupRef = ref();
     const searchGroupText = ref("");
     const hideDiv = ref(true);
@@ -243,6 +242,12 @@ export default {
     };
     getEvents();
 
+    const setSelectedEvent = () => {
+      selectedEvent.value = events.value.find(
+        (i) => i.id === selectedEventID.value
+      );
+    };
+
     const dateFormat = (date) => {
       return dateFormatter.monthDayYear(date);
     };
@@ -252,7 +257,6 @@ export default {
       try {
         let data = await grousService.getGroups();
         groups.value = data.response.groupResonseDTO;
-        console.log(data);
         grouploading.value = false;
       } catch (err) {
         console.log(err);
@@ -280,7 +284,6 @@ export default {
         );
         searched.value = true;
         loading.value = false;
-        console.log(data);
         availabilityReport.value = data;
         // groupReport(data, "personId");
         // groupReportByDate(data, "activityID");
@@ -294,19 +297,13 @@ export default {
         }, 1000);
 
         if (data.length === 0 && searched.value) {
-          toast.add({
-            severity: "warn",
-            summary: "No data for this date range",
-            detail: "Select other parameters to generate report",
-            life: 8000,
+          ElMessage({
+            type: "warning",
+            showClose: true,
+            message: "No data for this date range",
+            duration: 5000,
           });
         }
-
-        // groupedReport.value.forEach(i => {
-        //         for (let j = 0; i.value.length < groupedReportByDate.value.length; j++) {
-        //                 i.value.unshift({ attendance: '' })
-        //         }
-        // })
       } catch (err) {
         console.log(err);
         loading.value = false;
@@ -322,16 +319,13 @@ export default {
         // Return the current iteration `result` value, this will be taken as next iteration `result` value and accumulate
         return result;
       }, {}); // empty object is the initial value for result object
-      console.log(result);
       groupedReport.value = [];
       for (const prop in result) {
-        console.log(prop, result[prop]);
         groupedReport.value.push({
           name: prop,
           value: result[prop],
         });
       }
-      console.log(groupedReport.value);
     };
 
     const groupReportByDate = (array, key) => {
@@ -343,32 +337,16 @@ export default {
         // Return the current iteration `result` value, this will be taken as next iteration `result` value and accumulate
         return result;
       }, {}); // empty object is the initial value for result object
-      console.log(result);
       groupedReportByDate.value = [];
       for (const prop in result) {
-        console.log(prop, result[prop]);
         groupedReportByDate.value.push({
           name: prop,
           value: result[prop],
         });
       }
-      console.log(groupedReportByDate.value);
     };
-
-    // const getIPDetails = async() => {
-    //     try {
-    //         let data = await axio.get('http://www.geoplugin.net/json.gp?ip=52.25.109.230')
-    //         console.log(data)
-    //     }
-    //     catch (err) {
-    //         console.log(err)
-    //     }
-    // }
-
-    // getIPDetails()
-
-    const downLoadExcel = () => {
-      if (selectedFileType.value.name === "pdf") {
+    const downLoadExcel = (item) => {
+      if (item.name === "pdf") {
         var element = document.getElementById("element-to-print");
         var opt = {
           // margin:       1,
@@ -384,7 +362,7 @@ export default {
         html2pdf(element);
       } else {
         exportService.downLoadExcel(
-          selectedFileType.value.name,
+          item.name,
           document.getElementById("element-to-print"),
           fileName.value,
           fileHeaderToExport.value,
@@ -420,12 +398,13 @@ export default {
     };
 
     const setFilterGroups = (payload) => {
-      console.log(payload);
       checkedGroup.value = payload;
     };
 
     return {
       startDate,
+      selectedEventID,
+      setSelectedEvent,
       endDate,
       events,
       groups,
@@ -437,6 +416,7 @@ export default {
       groupReport,
       groupedReport,
       groupReportByDate,
+      primarycolor,
       groupedReportByDate,
       downLoadExcel,
       selectedFileType,

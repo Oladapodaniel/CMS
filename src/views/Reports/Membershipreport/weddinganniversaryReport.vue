@@ -274,7 +274,7 @@ export default {
           );
           if (weddingAnniversary.value.length == 0) {
             ElMessage({
-              type: "Warning",
+              type: "warning",
               showClose: true,
               message: "No data for this date range",
               duration: 5000,

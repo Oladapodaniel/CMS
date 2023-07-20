@@ -4,7 +4,8 @@
       <div class="mb-3">
         <div class="head-text">Church Activities Attendance Report</div>
         <div class="pl-1">
-          This reports gives an indepth view of the growth and attendance pattern of the ministry
+          This reports gives an indepth view of the growth and attendance
+          pattern of the ministry
         </div>
       </div>
       <div class="my-sm-0 my-2 c-pointer">
@@ -39,7 +40,7 @@
       </div>
     </div>
 
-    <div style="background: #ebeff4" class="row m-0 py-5 mb-2">
+    <div style="background: #ebeff4" class="row py-5 mb-2">
       <div class="col-12 col-md-6 col-lg-3">
         <div><label for="" class="font-weight-bold">Select Event</label></div>
 
@@ -79,19 +80,12 @@
         <div>
           <div>
             <el-date-picker
-                v-model="startDate"
-                type="date"
-                format="DD/MM/YYYY"
-                size="large"
-                class="w-100"
-              />
-            <!-- <Calendar
-              id="icon"
               v-model="startDate"
-              class="calendar1 w-100"
-              :showIcon="true"
-              dateFormat="dd/mm/yy"
-            /> -->
+              type="date"
+              format="DD/MM/YYYY"
+              size="large"
+              class="w-100"
+            />
           </div>
         </div>
       </div>
@@ -99,19 +93,12 @@
         <div><label for="" class="font-weight-bold">End Date</label></div>
         <div>
           <el-date-picker
-                v-model="endDate"
-                type="date"
-                format="DD/MM/YYYY"
-                size="large"
-                class="w-100"
-              />
-          <!-- <Calendar
-            id="icon"
-            class="w-100"
             v-model="endDate"
-            :showIcon="true"
-            dateFormat="dd/mm/yy"
-          /> -->
+            type="date"
+            format="DD/MM/YYYY"
+            size="large"
+            class="w-100"
+          />
         </div>
       </div>
       <div class="col-12 col-md-6 col-lg-3">
@@ -129,12 +116,12 @@
         </div>
       </div>
     </div>
-    <div id="element-to-print">
+    <div id="element-to-print" class="row">
       <h3 class="font-weight-bold mt-5 ml-2" v-show="activityReport > 0">
         SERVICE PERFORMANCE ANALYSIS REPORT
       </h3>
 
-      <div class="borderInner mb-2">
+      <div class="w-100 mb-2">
         <h5 class="ml-3 mt-4"></h5>
         <div
           class="round-border"
@@ -153,7 +140,7 @@
         </div>
       </div>
       <div
-        class="area-chart mt-5 lineGrap"
+        class="area-chart w-100 mt-5 lineGrap"
         v-show="activityReport.length > 0"
         :class="{ 'show-report': showReport, 'hide-report': !showReport }"
       >
@@ -168,7 +155,7 @@
         />
       </div>
 
-      <div class="borderInner mt-5">
+      <div class="w-100 mt-5">
         <h5 class="ml-3 mt-4"></h5>
         <div
           class="round-border"
@@ -202,7 +189,7 @@
                         :series="categoryData"
                       />
                     </div> -->
-      <section>
+      <section class="w-100">
         <!-- table header -->
 
         <div
@@ -238,7 +225,6 @@
       </section>
     </div>
   </div>
-  <Toast />
 </template>
 
 
@@ -318,7 +304,7 @@ export default {
       activityReport.value = [];
       const eventId =
         selectedEvents.value.length === 1 ? selectedEvents.value[0].id : "";
-        loading.value = true
+      loading.value = true;
       axios
         .get(
           `/api/Reports/events/getActivityAttendanceReport?startDate=${new Date(
@@ -329,7 +315,6 @@ export default {
         )
         .then((res) => {
           activityReport.value = res.data;
-          console.log(activityReport.value);
           mainAttendanceData.value = [];
           attendanceData.value = [];
           series.value = [];
@@ -346,7 +331,7 @@ export default {
             );
           }, 1000);
           showReport.value = true;
-          loading.value = false
+          loading.value = false;
 
           if (activityReport.value.length === 0) {
             ElMessage({
@@ -357,9 +342,9 @@ export default {
             });
           }
         })
-        .catch((err) =>{
-          console.log(err) 
-          loading.value = false
+        .catch((err) => {
+          console.log(err);
+          loading.value = false;
         });
     };
 
@@ -372,8 +357,6 @@ export default {
       for (const prop in dateSeries) {
         attendanceSeries.value.unshift(dateFormatter.monthDayYear(prop));
       }
-      console.log(attendanceGroup.value);
-      console.log(attendanceSeries.value);
     };
     const groupName = () => {
       const result = groupData.groupData(activityReport.value, "name");
@@ -423,8 +406,6 @@ export default {
     const summaryChart = computed(() => {
       if (Object.keys(attendanceGroup.value).length === 0) return new Object();
       Object.entries(attendanceGroup.value).forEach(([key, value]) => {
-        console.log(key, value);
-
         let newArr = [];
         value.forEach((i) => {
           let valIndex = Object.keys(i).findIndex((i) => i === "attendance");
@@ -437,7 +418,6 @@ export default {
           data: newArr,
         });
       });
-      console.log(categoryData.value);
       //     attendanceGroup.value.Babies ? attendanceGroup.value.Babies.forEach(i => {
       //     let babiesIndex = Object.keys(i).findIndex(i => i === 'attendance')
       //     let babiesValue = Object.values(i)[babiesIndex]
