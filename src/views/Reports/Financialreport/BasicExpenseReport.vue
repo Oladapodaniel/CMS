@@ -1,98 +1,40 @@
 <template>
-  <div class="container-fluid px-5">
+  <div class="container-fluid">
     <!-- header area -->
-    <div class="container">
+  
       <div
         class="
           row
-          d-flex
           flex-row
           justify-content-between
-          mt-5
           align-items-center
         "
       >
         <div class="centered-items">
-          <h3 class="heading-text ml-2">Basic Expense Report</h3>
-           <p class="ml-2">This reports provides a detailed list of all the church expenses in a simplied display.</p>
+          <h3 class="head-text">Basic Expense Report</h3>
+           <p class="ml-1">This reports provides a detailed list of all the church expenses in a simplied display.</p>
         </div>
-
-        <!-- <div class="centered-items pr-3">
-          <button class="default-btn font-weight-normal"
-          @click="() => (showExport = !showExport)">
-            Export &nbsp; &nbsp; <i class="pi pi-angle-down"></i>
-          </button>
-        </div> -->
-
-           <!-- <div
-          class="default-btn font-weight-normal c-pointer"
-          @click="() => (showExport = !showExport)"
-          style="width: fixed; position:relative">
-                   Export &nbsp; &nbsp; <i class="pi pi-angle-down" ></i>
-                   <div
-                        class=" c-pointer"
-                        style="width: 6rem; z-index:1000; position:absolute"
-                        v-if="showExport">
-
-                         <Listbox
-                         @click="downloadFile"
-                         v-model="selectedFileType"
-                         :options="bookTypeList"
-                         optionLabel="name"/>
-                    </div>
-              </div> -->
 
       </div>
-      <!-- <transition name="move" mode="out-in">
-               <div class="row my-4" v-if="showExport">
-        <div class="col-sm-5">
-          <span class="p-float-label ml-n3">
-            <InputText
-              id="inputtext"
-              class="w-100"
-              type="text"
-              v-model="fileName"
-            />
-            <label for="inputtext">Enter file name</label>
-          </span>
-        </div>
-        <div class="col-sm-4">
-          <Dropdown
-            v-model="selectedFileType"
-            class="w-100"
-            :options="bookTypeList"
-            placeholder="Select file type"
-          />
-        </div> -->
-        <!-- <div class="">Export</div> -->
-        <!-- <div @click="downloadFile" class="col-sm-2 offset-sm-1">
-          <div
-            class="
-              default-btn
-              d-flex
-              align-items-center
-              justify-content-center
-              c-pointer
-              generate-report
-            "
-          >
-            Download
-          </div>
-        </div>
-      </div>
-      </transition> -->
 
-    </div>
+
     <!--end of header area -->
     <!-- date area -->
- <div class="container-fluid bg-area my-3">
-        <div class="row px-4 w-100 ml-md-5 px-sm-4 mt-sm-3 ">
+        <div class="row pl-1 pl-md-5 bg-area mt-sm-3 ">
               <div class="col-md-4 col-sm-12 px-md-0">
                   <div class="p-field p-col-12 pt-md-2 pb-2">
                     <div>
                       <label for="icon" class="mb-0 font-weight-bold">Start Date</label>
                     </div>
-                    <Calendar class="w-100" id="icon" v-model="startDate" :showIcon="true"  dateFormat="dd/mm/yy"/>
+                    <!-- <Calendar class="w-100" id="icon" v-model="startDate" :showIcon="true"  dateFormat="dd/mm/yy"/> -->
+
+                    <el-date-picker
+                      v-model="startDate"
+                      type="date"
+                      format="DD/MM/YYYY"
+                      size="large"
+                      class="w-100"
+                    />
                   </div>
               </div>
               <div class="col-md-4 col-sm-12 pr-md-0">
@@ -100,20 +42,31 @@
                     <div>
                       <label for="icon" class="mb-0 font-weight-bold">End Date</label>
                     </div>
-                    <Calendar class="w-100" id="icon" v-model="endDate" :showIcon="true"  dateFormat="dd/mm/yy"/>
+                    <!-- <Calendar class="w-100" id="icon" v-model="endDate" :showIcon="true"  dateFormat="dd/mm/yy"/> -->
+                    <el-date-picker
+                      v-model="endDate"
+                      type="date"
+                      format="DD/MM/YYYY"
+                      size="large"
+                      class="w-100"
+                    />
                   </div>
               </div>
             <div class="col-md-4 col-sm-12 pr-md-0">
                   <div class="p-field p-col-12 pt-md-2">
-                    <button
-                            class="default-btn generate-report c-pointer font-weight-normal mt-4"
-                            @click="generateReport">
-                            Generate Report
-                    </button>
+                    <el-button
+                      class="c-pointer mt-4"
+                      :color="primarycolor"
+                      round
+                      :loading="loading"
+                      @click="generateReport"
+                    >
+                      Generate Report
+                    </el-button>
                   </div>
               </div>
         </div>
-      </div>
+      
     <!--end of date area -->
     <div id="element-to-print">
       <section>
@@ -131,7 +84,7 @@
             />
           </div>
 
-           <div class="chart1 col-12 col-md-6">
+           <div class="chart1 col-12 col-md-6" :class="{ 'show-report': showReport, 'hide-report': !showReport }">
           <BasicExpenseColumnChart
             domId="chart1"
             title=""
@@ -214,28 +167,20 @@
 </template>
 
 <script>
-import { ref, computed } from "vue";
+import { ref, computed, inject } from "vue";
 import Calendar from "primevue/calendar";
 import BasicExpensePieChart from "@/components/charts/ReportPieChart.vue";
 import BasicExpenseColumnChart from "../../../components/charts/ReportColumnChart.vue";
 import axios from "@/gateway/backendapi";
 import dateFormatter from  "../../../services/dates/dateformatter";
-// import Listbox from 'primevue/listbox';
 import printJS from "print-js";
 import exportService from "../../../services/exportFile/exportserviceforbasicexpense.js";
 import groupResponse from '../../../services/groupArray/groupResponse.js';
-// import numbers_formatter from "../../../services/numbers/numbers_formatter.js"
-// import PerformanceColumnChart from "@/components/charts/ColumnChart2.vue";
-// import PaginationButtons from "../../../components/pagination/PaginationButtons";
 
 export default {
   components: {
-  Calendar,
   BasicExpensePieChart,
   BasicExpenseColumnChart,
-    // Listbox,
-    // PerformanceColumnChart,
-    // PaginationButtons,
   },
   setup() {
     const startDate = ref("");
@@ -249,41 +194,49 @@ export default {
     const mappedExpensesCol = ref([]);
     const expencesDetails = ref([]);
     const showExport = ref(false);
+    const showReport = ref(false);
+    const loading = ref(false);
+    const primarycolor = inject("primarycolor");
     const fileName = ref("");
     const bookTypeList = ref([{name: "xlsx" }, {name: "csv" }, {name: "txt" }, {name: "pdf" }]);
     const selectedFileType = ref("");
     const fileHeaderToExport = ref([]);
     const fileToExport = ref([]);
     const generateReport = () => {
+      loading.value = true
       axios
         .get(`/api/Reports/financials/getAccountTypeReport?startDate=${new Date(startDate.value).toLocaleDateString("en-US")}&endDate=${new Date(endDate.value).toLocaleDateString("en-US")}&accountType=${3}`)
         .then((res) => {
-          console.log(res, "🎄🎄🎄");
           accountTransaction.value = res.data;
           groupedFundType()
           groupChart( accountTransaction.value,'accountName');
+          if (accountTransaction.value.length > 0) {
+            showReport.value = true;
+          } else {
+            showReport.value = false;
+          }
 
            /* function to call service and populate table */
           setTimeout(() => {
             fileHeaderToExport.value = exportService.tableHeaderToJson(
               document.getElementsByTagName("th")
             );
-            console.log(document.getElementById("table"));
             fileToExport.value = exportService.tableToJson(
               document.getElementById("table")
             );
           }, 1000);
+          loading.value = false
           /* End function to call service and populate table */
 
         })
         .catch((err) => {
           console.log(err);
+          loading.value = false;
         });
     };
 
          /* Code For Exporting File */
     const downloadFile = () => {
-     console.log();
       exportService.downLoadExcel(
         selectedFileType.value.name,
         document.getElementById("element-to-print"),
@@ -303,20 +256,18 @@ export default {
                 // Return the current iteration `result` value, this will be taken as next iteration `result` value and accumulate
                 return result;
             }, {}); // empty object is the initial value for result object
-            console.log(result)
             for (const prop in result) {
-                console.log(prop, result[prop])
                 groupedAccountName.value.push({
                 name: prop,
                 value: result[prop].reduce((acc, cur) => {
                   return Math.abs(acc + cur.amount)
                 }, 0),
                 })
-                console.log(groupedAccountName.value)
+               
             }
 
             for (const prop in result) {
-                console.log(prop, result[prop])
+                
                 columnChartArray.value.push({
                 name: prop,
                 data: result[prop].reduce((acc, cur) => {
@@ -324,7 +275,7 @@ export default {
                 }, 0),
                 })
             }
-            console.log(columnChartArray.value)
+           
         };
 
         const mappedExpenses = computed(() => {
@@ -349,18 +300,18 @@ export default {
 
     const groupedFundType = () => {
       fundType.value = groupResponse.groupData(accountTransaction.value, 'fund')
-      console.log(fundType.value, "🎼🎼🎉🎉");
+     
         for (const prop in fundType.value) {
           funds.value.push({
           name:prop,
           value: fundType.value[prop]
           })
       }
-      console.log(funds.value);
+     
     };
 
     const total = (arr) => {
-      console.log(arr, "kgkfuvygu");
+      
           if(!arr || arr.length === 0) return 0
           return arr.reduce((acc, cur) => {
         return acc + cur.amount
@@ -382,7 +333,10 @@ export default {
 
 
     return {
-      Calendar,
+      primarycolor,
+      columnChartArray,
+      showReport,
+      loading,
       startDate,
       endDate,
       accountTransaction,
@@ -424,6 +378,13 @@ export default {
     width: auto;
     max-height: 40px;
     min-width: 121px;
+}
+
+.show-report {
+  display: block;
+}
+.hide-report {
+  display: none;
 }
 
 .generate-report {

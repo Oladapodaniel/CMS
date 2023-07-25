@@ -460,7 +460,8 @@ export default {
     });
 
     const formatDate = (date) => {
-      return dateFormatter.monthDayTime(date);
+      // return dateFormatter.monthDayTime(date);
+      return dateFormatter.monthDayYear(date);
     };
 
     const gettingSelectedTrsn = ref(false);
@@ -512,7 +513,7 @@ export default {
     const amountWithCommas = amount => numbers_formatter.amountWithCommas(amount);
 
 
-    const deleteTransaction = async (id, index) => {
+    const delTransaction = async (id, index) => {
        refreshing.value = true;
       try {
         const response = await transaction_service.deleteTransaction(id);
@@ -558,7 +559,7 @@ export default {
         }
       )
         .then(() => {
-          deleteTransaction(id, index);
+          delTransaction(id, index);
         })
         .catch(() => {
           ElMessage({
@@ -646,7 +647,7 @@ export default {
       closeLedgerForm,
       loading,
       amountWithCommas,
-      deleteTransaction,
+      delTransaction,
       showConfirmModal,
       refreshing,
       gettingSelectedTrsn,

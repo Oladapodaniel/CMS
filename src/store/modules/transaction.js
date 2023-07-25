@@ -16,7 +16,7 @@ export default {
             state.transaction.push(payload);
           },
         removeTransaction(state, payload) {
-        state.transaction = state.transaction.filter(
+        state.transaction.records = state.transaction.records.filter(
             (item) => item.id !== payload
         );
         },
