@@ -1989,6 +1989,7 @@ router.beforeEach((to, from, next) => {
         to.name === "PublicResetPassword" ||
         to.name === "PublicPerson" ||
         to.name === "PublicFirstTimer" ||
+        to.name === "PublicNewConvert" ||
         to.name === "EventRegistration" ||
         to.name === "PricingPage" ||
         to.name === "PublicPledgePayment") && !tokenIsValid) return next(true)

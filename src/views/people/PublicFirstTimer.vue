@@ -266,7 +266,7 @@
         </div>
       </div>
     </div>
-    <div class="row">
+    <!-- <div class="row">
       <span class="celeb-tab col-12 my-3" @click="showCelebTab">
         <span class="tab-header">More:</span>
         <span class="w-100"><hr class="hr w-100" /></span>
@@ -329,7 +329,7 @@
         </div>
         <div class="col-4 mt-3"></div>
       </div>
-    </div>
+    </div> -->
     <div class="row">
       <div class="col-12 mt-3">
         <div class="mt-2">

@@ -1,7 +1,7 @@
 <template>
-  <div class="container-fluid px-5">
+  <div class="container-fluid ">
     <!-- header area -->
-    <div class="container">
+
       <div
         class="
           row
@@ -16,42 +16,25 @@
           <h3 class="heading-text ml-2">Accounting Transactions Report</h3>
         </div>
 
-        <!-- <div class="centered-items">
-          <button class="default-btn font-weight-normal">
-            Export &nbsp; &nbsp; <i class="pi pi-angle-down"></i>
-          </button>
-        </div> -->
-
-         <!-- <div
-          class="default-btn font-weight-normal c-pointer"
-          @click="() => (showExport = !showExport)"
-          style="width: fixed; position:relative">
-                   Export &nbsp; &nbsp; <i class="pi pi-angle-down" ></i>
-                   <div
-                        class=" c-pointer"
-                        style="width: 6rem; z-index:1000; position:absolute"
-                        v-if="showExport">
-
-                         <Listbox
-                         @click="downloadFile"
-                         v-model="selectedFileType"
-                         :options="bookTypeList"
-                         optionLabel="name"/>
-                    </div>
-              </div> -->
-
       </div>
-    </div>
+  
     <!--end of header area -->
     <!-- date area -->
-     <div class="container-fluid bg-area my-3">
-        <div class="row px-4 w-100 ml-md-5 px-sm-4 mt-sm-3 ">
+
+        <div class="row pl-1 pl-md-5 bg-area mt-sm-3 ">
               <div class="col-md-4 col-sm-12 px-md-0">
                   <div class="p-field p-col-12 pt-md-2 pb-2">
                     <div>
                       <label for="icon" class="mb-0 font-weight-bold">Start Date</label>
                     </div>
-                    <Calendar class="w-100" id="icon" v-model="startDate" :showIcon="true" dateFormat="dd/mm/yy"/>
+                    <el-date-picker
+                      v-model="startDate"
+                      type="date"
+                      format="DD/MM/YYYY"
+                      size="large"
+                      class="w-100"
+                    />
+          
                   </div>
               </div>
               <div class="col-md-4 col-sm-12 pr-md-0">
@@ -59,24 +42,40 @@
                     <div>
                       <label for="icon" class="mb-0 font-weight-bold">End Date</label>
                     </div>
-                    <Calendar class="w-100" id="icon" v-model="endDate" :showIcon="true" dateFormat="dd/mm/yy"/>
+                    <!-- <Calendar class="w-100" id="icon" v-model="endDate" :showIcon="true" dateFormat="dd/mm/yy"/> -->
+                    <el-date-picker
+                      v-model="endDate"
+                      type="date"
+                      format="DD/MM/YYYY"
+                      size="large"
+                      class="w-100"
+                    />
                   </div>
               </div>
             <div class="col-md-4 col-sm-12 pr-md-0">
                   <div class="p-field p-col-12 pt-md-2">
-                    <button
+                    <el-button
+                      class="c-pointer mt-4"
+                      :color="primarycolor"
+                      round
+                      :loading="loading"
+                      @click="generateReport"
+                    >
+                      Generate Report
+                    </el-button>
+                    <!-- <button
                             class="default-btn generate-report c-pointer font-weight-normal mt-4"
                             @click="generateReport">
                             Generate Report
-                    </button>
+                    </button> -->
                   </div>
               </div>
         </div>
-      </div>
+    
     <!--end of date area -->
-    <div id="element-to-print">
-      <section>
-        <!-- chart area -->
+    <div id="element-to-print" class="row">
+      <section class=""> 
+   
         <div  class="chart">
           <div style="width: 45%" class="ml-md-4 chart1">
             <ByGenderChart
@@ -88,10 +87,10 @@
             />
           </div>
         </div>
-        <!--end of chart area -->
+      
       </section>
 
-      <section>
+      <section class="col-md-12 px-0">
         <!-- table header -->
         <div v-if="accountTransaction.length > 0">
               <div  class="mt-2 container-fluid table-main px-0 remove-styles2 remove-border responsiveness" >
@@ -101,15 +100,7 @@
               class="text-capitalize text-nowrap font-weight-bold"
                 style="border-bottom: 0; font-size:medium"
               >
-              <!-- <div>
-                <tr>
-
-                  <div class="text-capitalize font-weight-normal"></div>
-                </tr> -->
-                <!-- <th scope="col">Fund</th>
-                <th scope="col"><span></span></th> -->
-              <!-- </div> -->
-                <!-- <th scope="col">Fund</th> -->
+             
                 <th scope="col">Account Name</th>
                 <th scope="col">Reference Number</th>
                 <th scope="col">Description</th>
@@ -132,9 +123,7 @@
                   <td></td>
                   <td></td>
                </tr>
-                <!-- <div v-for="(item, index) in fund.value" :key="index">
-                 <div>{{item}}</div>
-                 </div> -->
+              
               <tr v-for="(account, indxx) in fund.value"
               :key="indxx">
                       <!-- <td>{{ account.fund }}</td> -->
@@ -178,9 +167,6 @@
                   </tr>
             </tbody>
           </table>
-          <!-- <div class="table-foot d-flex justify-content-end mt-n3">
-            <PaginationButtons />
-          </div> -->
         </div>
         </div>
 
@@ -191,29 +177,25 @@
 </template>
 
 <script>
-import { ref, } from "vue";
-import Calendar from "primevue/calendar";
+import { ref, inject } from "vue";
 import ByGenderChart from "@/components/charts/PieChart.vue";
-// import PaginationButtons from "../../../components/pagination/PaginationButtons";
 import axios from "@/gateway/backendapi";
 import dateFormatter from  "../../../services/dates/dateformatter";
 import printJS from "print-js";
 import exportService from "../../../services/exportFile/exportservice";
-// import Listbox from 'primevue/listbox';
 import groupResponse from '../../../services/groupArray/groupResponse.js';
 
 export default {
   components: {
-    Calendar,
     ByGenderChart,
-    // Listbox,
-    // PaginationButtons,
   },
   setup() {
     const startDate = ref("");
+    const primarycolor = inject("primarycolor");
+    const loading = ref(false)
     const endDate = ref("");
     const accountTransaction = ref([]);
-    // const firstTimerChart = ref([])
+    const firstTimerChart = ref([])
       const showExport = ref(false);
     const fileName = ref("");
     // const bookTypeList = ref(["xlsx", "csv", "txt"]);
@@ -224,11 +206,10 @@ export default {
     const fundType = ref([]);
     const funds = ref([]);
     const generateReport = () => {
+      loading.value = true;
       axios
         .get(`/api/Reports/financials/getAccountTransactionsReport?startDate=${new Date(startDate.value).toLocaleDateString("en-US")}&endDate=${new Date(endDate.value).toLocaleDateString("en-US")}`)
         .then((res) => {
-
-          console.log(res, "🎄🎄🎄");
           accountTransaction.value = res.data.filter(i => i !== null)
           console.log(accountTransaction.value, "✌️✌️");
           groupedFundType()
@@ -241,21 +222,19 @@ export default {
               document.getElementById("table")
             );
           }, 1000);
+
+          loading.value = false;
           /* End function to call service and populate table */
         })
         .catch((err) => {
           console.log(err);
+          loading.value = false;
         });
     };
 
 
        /* Code For Exporting File */
     const downloadFile = () => {
- console.log(fileHeaderToExport.value, "🎁🎁")
-
-  console.log(fileName.value, "🎁🎁")
-  // alert(selectedFileType.value)
-  console.log(fileToExport.value, "🎁🎁")
 
       exportService.downLoadExcel(
         selectedFileType.value.name, document.getElementById("element-to-print"), fileName.value, fileHeaderToExport.value,  fileToExport.value,);
@@ -302,11 +281,12 @@ export default {
 
     return {
       total,
+      loading,
+      primarycolor,
       sumOfCreditAndDebit,
       fundType,
       funds,
       groupedFundType,
-      Calendar,
       startDate,
       endDate,
       accountTransaction,
@@ -318,7 +298,7 @@ export default {
       bookTypeList,
       printJS,
       selectedFileType,
-      // firstTimerChart
+      firstTimerChart
     };
   },
 };
