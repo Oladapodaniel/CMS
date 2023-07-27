@@ -102,13 +102,13 @@
                         <div v-else-if="item.currency.shortCode === 'USD'">
                           <div class="mt-4 head-text" v-if="togglePrice">
                             ${{
-                              item.subscriptionPlan.amountInDollar.toLocaleString()
+                              item.price.toLocaleString()
                             }}<div class="small text-secondary"> /month</div>
                           </div>
                           <div class="mt-4 head-text" v-else>
                             ${{
                               (
-                                item.subscriptionPlan.amountInDollar * 12
+                                item.price * 12
                               ).toLocaleString()
                             }}
                             <div class="small text-secondary">/year</div>

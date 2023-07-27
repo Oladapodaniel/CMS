@@ -45,7 +45,98 @@
               <div>
                 <label for="" class="font-weight-bold">Select Members</label>
               </div>
-              <div>
+              <div class="mt-2">
+              <button
+                class="form-control d-flex justify-content-between align-items-center exempt-hide"
+                @click="setGroupProp"
+              >
+                <span class="exempt-hide">
+                  <span
+                    v-if="selectedMember.length > 0 && selectedMember.length <= 2"
+                  >
+                    <span v-for="item in selectedMember" :key="item.id"
+                      ><span class="eachGroup">{{ item.name }}</span></span
+                    >
+                  </span>
+                  <span
+                    v-if="selectedMember.length > 0 && selectedMember.length > 2"
+                  >
+                    <span
+                      v-for="item in selectedMember.slice(0, 2)"
+                      :key="item.id"
+                      ><span class="eachGroup">{{ item.name }}</span></span
+                    >
+                    ...
+                  </span>
+                  <span v-if="selectedMember.length === 0">Select Members</span>
+                </span>
+                <el-icon class="exemple-hide"><ArrowDown /></el-icon>
+              </button>
+              <div
+                class="div-card py-3 px-2 exempt-hide"
+                :class="{
+                  'd-none': hideDiv,
+                  'd-block': !hideDiv,
+                }"
+              >
+                <el-icon
+                  v-if="memberShips.length === 0"
+                  class="is-loading text-center exempt-hide"
+                >
+                  <Loading />
+                </el-icon>
+                <input
+                  type="text"
+                  class="form-control exempt-hide"
+                  v-model="searchMemberText"
+                  ref="searchMemberRef"
+                  placeholder="Search for group"
+                />
+                <div class="row">
+                  <div class="col-12">
+                    <div>
+                      <div>
+                        <el-checkbox v-model="allChecked" @change="checkAll" class="exempt-hide " />
+                        <!-- <Checkbox
+                          id="binary"
+                          v-model="allChecked"
+                          :binary="true"
+                          class="exempt-hide"
+                          @change="checkAll"
+                        /> -->
+                        <span class="font-weight-700">&nbsp; &nbsp;Select all</span>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                <ul class="p-0 w-100">
+                    <li v-for="(member, index) in searchForMembers" :key="index" class="p-2  c-pointer parent-li border-top exempt-hide">
+                      <div class="row exempt-hide">
+                        <div class="text-primary exempt-hide">
+                          <span>
+                            <el-checkbox   v-model="member.displayCheck" @change="getCheckedGroup(member)" class="exempt-hide all-check" />
+                            <!-- <Checkbox id="binary" v-model="member.displayCheck" :binary="true" class="exempt-hide all-check" @change="getCheckedGroup(member)" /> -->
+                          </span>
+                        </div>
+                        <div class="text-primary exempt-hide">
+                          <span class="p-3 exempt-hide">{{ member.name }}</span>
+                        </div>
+              
+                      </div>
+                    </li>
+                    <li class="shadow-sm text-center border p-2 font-weight-700 c-pointer" >
+                      <i class="pi pi-plus-circle"></i>&nbsp;Add new group
+                    </li>
+                    </ul>
+                <!-- <GroupTree
+                  :items="searchForMembers"
+                  :addGroupValue="true"
+                  @filteredGroup="setFilterGroups"
+                /> -->
+              </div>
+            </div>
+              <!-- <div>
+                
                 <MultiSelect
                   v-model="selectedMember"
                   :options="memberShips"
@@ -74,7 +165,7 @@
                     </div>
                   </template>
                 </MultiSelect>
-              </div>
+              </div> -->
             </div>
             <div class="col-12 col-md-6 mt-2 mt-sm-0 mt-md-0 mt-lg-0">
               <div class="">
@@ -362,26 +453,31 @@
 </template>
 
 <script>
-import { computed, ref, inject } from "vue";
+import { computed, ref, nextTick, inject } from "vue";
 import axios from "@/gateway/backendapi";
 import MembershipPieChart from "../../../components/charts/ReportPieChart.vue";
 import MultiSelect from "primevue/multiselect";
 import printJS from "print-js";
+import GroupTree from "../../groups/component/GroupTreeCheckboxParent.vue";
 import exportService from "../../../services/exportFile/exportservice";
 import allCustomFields from "../../../services/customfield/customField";
 export default {
   components: {
     MembershipPieChart,
     MultiSelect,
+    GroupTree
+    
   },
   setup(prop) {
-    const selectedMember = ref();
+    const selectedMember = ref([]);
     const primarycolor = inject("primarycolor");
+    const allChecked = ref(false)
     const selectedGender = ref();
+    const displayCheck = ref(false)
     const selectedMaritalStatus = ref();
     const showReport = ref(false);
     const loading = ref(false);
-    const memberShips = ref({});
+    const memberShips = ref([]);
     const selectedAgeGroup = ref();
     const memberMaritalStatus = ref({});
     const memberGender = ref({});
@@ -391,8 +487,10 @@ export default {
     const genderChartResult = ref([]);
     const memberChartResult = ref([]);
     const maritalStatusChartResult = ref([]);
+    const hideDiv = ref(true);
     const ageGroupChartResult = ref([]);
     const showExport = ref(false);
+    const checked = ref(false);
     const fileName = ref("");
     const bookTypeList = ref([
       { name: "xlsx" },
@@ -404,6 +502,20 @@ export default {
     const fileHeaderToExport = ref([]);
     const fileToExport = ref([]);
     const dynamicCustomFields = ref([]);
+    const searchMemberRef = ref();
+    const searchMemberText = ref("");
+
+    const searchForMembers = computed(() => {
+      if (!searchMemberText.value && memberShips.value.length > 0)
+        return memberShips.value;
+      return memberShips.value.filter((i) =>
+        i.name.toLowerCase().includes(searchMemberText.value.toLowerCase())
+      );
+    });
+    const setFilterGroups = (payload) => {
+      console.log(payload, 'illk');
+      // selectedMember.value = payload;
+    };
 
     const genderChart = (array, key) => {
       // Accepts the array and key
@@ -423,6 +535,31 @@ export default {
           value: result[prop].length,
         });
       }
+    };
+
+    const checkAll = () => {
+     memberShips.value.forEach((i) => {
+        if (allChecked.value) {
+          i.displayCheck = true;
+        } else {
+          i.displayCheck = false;
+        }
+        getCheckedGroup(i);
+      });
+      // checked.value = true;
+    };
+    const getCheckedGroup = (item) => {
+    
+    if(item.displayCheck){
+    const memberIndex = selectedMember.value.findIndex((i) => i.id === item.id )
+    if(memberIndex < 0){
+      selectedMember.value.push(item)
+    }
+    } else {
+      selectedMember.value = selectedMember.value.filter((i) => i.id !== item.id );
+    }
+    
+    // displayCheck.value = item
     };
 
     const mappedGender = computed(() => {
@@ -495,6 +632,13 @@ export default {
           value: result[prop].length,
         });
       }
+    };
+
+    const setGroupProp = () => {
+      hideDiv.value = !hideDiv.value;
+      nextTick(() => {
+        searchMemberRef.value.focus();
+      });
     };
 
     const mappedAgeGroup = computed(() => {
@@ -634,10 +778,18 @@ export default {
 
     return {
       genarateReport,
+      setFilterGroups,
+      getCheckedGroup,
+      searchForMembers,
+      searchMemberText,
+      allChecked,
+      searchMemberRef,
       memberAgegroup,
       selectedAgeGroup,
       genderChartResult,
       memberChartResult,
+      setGroupProp,
+      hideDiv,
       maritalStatusChartResult,
       ageGroupChartResult,
       genderChart,
@@ -649,6 +801,8 @@ export default {
       //  genderSummary,
       memberShips,
       memberMaritalStatus,
+      checkAll,
+      checked,
       memberGender,
       membersInChurch,
       mappedGender,
@@ -665,7 +819,9 @@ export default {
       selectedFileType,
       fileToExport,
       fileHeaderToExport,
+      displayCheck,
       printJS,
+      
       // downLoadExcel,
       downloadFile,
       dynamicCustomFields,
@@ -704,6 +860,17 @@ export default {
 .default-btn:hover {
   text-decoration: none;
 }
+.roll-icon {
+  transform: rotate(-90deg);
+  /* transition: all .5s ease-in-out; */
+}
+
+.eachGroup {
+  padding: 5px 10px;
+  background: #eee;
+  border-radius: 25px;
+  margin: 0 3px;
+}
 
 .generate-report {
   font-size: 1rem;
@@ -721,6 +888,24 @@ export default {
   background-color: #ebeff4;
   border-radius: 0.5rem;
   padding: 0.2rem 0 1.2rem 0;
+}
+li {
+  list-style-type: none;
+}
+
+li li:hover {
+  /* border: 2px solid red; */
+  background: rgba(224, 223, 223, 0.46);
+}
+.div-card {
+  position: absolute;
+  background: white;
+  z-index: 1;
+  width: 100%;
+  top: 70px;
+  box-shadow: 0 0 11px rgba(33, 33, 33, 0.2);
+  max-height: 400px;
+  overflow: scroll;
 }
 
 .table {
