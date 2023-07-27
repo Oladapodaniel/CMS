@@ -1,24 +1,5 @@
 <template>
   <div>
-    <!-- <div class="row">
-      <div class="col-12">
-        <div class="font-weight-bold py-md-2 mt-4">Share the link to your first timers to enable them to add their
-          details to your
-          church.</div>
-        <div class="p-inputgroup form-group mt-1">
-          <el-input v-model="firstTimerLink" placeholder="Click the copy button when the link appears" ref="selectedLink"
-            class="input-with-select">
-            <template #append>
-              <el-button @click="copylink">
-                <el-icon>
-                  <CopyDocument />
-                </el-icon>
-              </el-button>
-            </template>
-          </el-input>
-        </div>
-      </div>
-    </div> -->
     <div class="my-con">
       <div>
         <FirstTimersChartArea @firsttimers="setFirsttimer" @totalfirstimer="setTotalFirstTimer" />
@@ -501,18 +482,13 @@ export default {
     // Tosin
 
     const searchMember = computed(() => {
-      console.log(1)
       if (searchText.value !== "" && searchNamesInDB.value.length > 0) {
-        console.log(2)
         return searchNamesInDB.value;
       } else if (searchNamesInDB.value.length == 0 && searchText.value !== "" && !paginatedTableLoading.value && !searchingMember.value) {
-        console.log(3)
         return []
       } else if (filterResult.value.length > 0 && (filter.value.name || filter.value.phoneNumber)) {
-        console.log(4)
         return filterResult.value;
       } else {
-        console.log(5)
         return churchMembers.value;
       }
     });

@@ -4,22 +4,22 @@
     <div class="container">
       <!-- <div class="container" @click="closeDropdownIfOpen"> -->
       <div class="row">
-        <div class="col-md-12 mb-3 mt-3 offset-3 offset-md-0">
+        <div class="col-md-12 my-3 text-center text-md-left">
           <h4 class="font-weight-bold">Compose Whatsapp Message</h4>
         </div>
       </div>
 
       <div class="row">
-        <div class="col-md-12 pr-0">
+        <div class="col-md-12 p-0">
           <hr class="hr my-1" />
         </div>
       </div>
 
       <div class="row">
-        <div class="col-2 pr-md-0 col-lg-2 align-self-center">
+        <div class="col-12 p-0 col-sm-2 align-self-center">
           <span class="small-text">Send to: </span>
         </div>
-        <div class="col-10 px-md-0 col-lg-10 form-group mb-0">
+        <div class="col-12 p-0 col-sm-10 form-group mb-0">
           <el-dropdown trigger="click" class="w-100">
             <div class="d-flex justify-content-between border-contribution text-dark w-100" size="large">
               <span>Select Destination</span>
@@ -139,7 +139,7 @@
         <!-- </div>
       </div> -->
 
-      <div class="row mb-2" v-if="whatsappGroupSelectionTab">
+      <div class="row my-2" v-if="whatsappGroupSelectionTab">
         <div class="col-md-2"></div>
         <div class="col-md-10 px-0">
           <el-select-v2 v-model="userWhatsappGroupsId"
@@ -154,16 +154,49 @@
       <div class="row mt-2" v-if="membershipSelectionTab">
         <div class="col-md-2"></div>
         <div class="col-md-10 pl-0 grey-rounded-border">
-          <ul class="d-flex flex-wrap px-1 mb-0 m-dd-item" @click="() => memberSelectInput.focus()">
+
+
+          <el-dropdown trigger="click" class="w-100">
+            <span class="el-dropdown-link w-100">
+              <ul class="d-flex flex-wrap px-1 mb-0 w-100">
             <li style="list-style: none; min-width: 100px" v-for="(member, indx) in selectedMembers" :key="indx"
               class="email-destination d-flex justify-content-between m-1">
-              <!-- <span
-              class="email-destination m-1"
+              <span>{{ member.name }}</span>
+              <span class="ml-2 remove-email" @click="removeMember(indx)">
+                <el-icon><CircleClose /></el-icon></span>
+            </li>
+            <li style="list-style: none">
+              <input type="text" class="border-0 m-dd-item text" ref="memberSelectInput" @input="searchForPerson" :class="{
+                'w-100': selectedMembers.length === 0,
+                'minimized-input-width': selectedMembers.length > 0,
+              }" @focus="showMemberList" @click="showMemberList" v-model="searchText" style="padding: 0.5rem"
+                :placeholder="`${selectedMembers.length > 0 ? '' : 'Select from membership database'
+                  }`" />
+            </li>
+          </ul>
+            </span>
+            <template #dropdown>
+              <el-dropdown-menu>
+                <el-dropdown-item v-for="(member, index) in memberSearchResults" :key="index" @click="selectMember(member, index)">{{ member.name }}</el-dropdown-item>
+                <el-dropdown-item v-if="memberSearchResults.length === 0 && searchText.length >= 3 && !loading">No match found</el-dropdown-item>
+                <el-dropdown-item divided>
+                  <el-icon class="is-loading mr-1" v-if="loading">
+                      <Loading />
+                  </el-icon>
+                  Enter 3 or more characters
+                </el-dropdown-item>
+              </el-dropdown-menu>
+            </template>
+          </el-dropdown>
+
+
+          <!-- <ul class="d-flex flex-wrap px-1 mb-0 m-dd-item" @click="() => memberSelectInput.focus()">
+            <li style="list-style: none; min-width: 100px" v-for="(member, indx) in selectedMembers" :key="indx"
+              class="email-destination d-flex justify-content-between m-1">
               
-            > -->
               <span>{{ member.name }}</span>
               <span class="ml-2 remove-email" @click="removeMember(indx)">x</span>
-              <!-- </span> -->
+              
             </li>
             <li style="list-style: none" class="m-dd-item">
               <input type="text" class="border-0 m-dd-item text" ref="memberSelectInput" @input="searchForPerson" :class="{
@@ -194,7 +227,7 @@
                 <i class="fas fa-circle-notch fa-spin m-dd-item"></i>
               </p>
             </div>
-          </div>
+          </div> -->
         </div>
       </div>
 
@@ -245,7 +278,7 @@
 
 
       <div class="row">
-        <div class="col-md-2">
+        <div class="col-md-2 p-0">
           <span class="font-weight-600 small-text">Message: </span>
         </div>
         <div class="col-md-10 px-0">
@@ -272,7 +305,7 @@
             </el-upload>
           </div>
           <transition name="el-fade-in-linear">
-            <VuemojiPicker v-show="displayEmoji" @emojiClick="handleEmojiClick" class="mt-2 emoji-wrapper " style="position: absolute" />
+            <VuemojiPicker v-show="displayEmoji" @emojiClick="handleEmojiClick" class="mt-2 emoji-wrapper " style="position: absolute; z-index: 1000" />
           </transition>
           <!-- "image/png" -->
           <!-- "audio/mpeg" -->
@@ -309,7 +342,7 @@
         </div>
         <div class="w-100 mt-3 d-flex justify-content-end">
           <span>
-            <el-dropdown split-button :color="primarycolor" :disabled="Object.keys(whatsappAttachment).length > 0 && !fileReady" size="large" @click="sendWhatsappMessage" class="split-button" trigger="click">
+            <el-dropdown split-button :color="primarycolor" size="large" @click="sendWhatsappMessage" class="split-button" trigger="click">
               Send Whatsapp message
             <template #dropdown>
               <el-dropdown-menu>
@@ -501,6 +534,10 @@ export default {
       socket.on('allchats', (data) => {
         whatsappGroupsLoading.value = false
         console.log(data, 'AllChats Here 🥰🎉')
+      })
+      
+      socket.on('chunkprogress', (data) => {
+        console.log(data, 'data')
       })
 
       socket.on('fileready', () => {
@@ -950,38 +987,39 @@ export default {
 
 
     const sendBase64InChunks = (base64String, chunkSize) => {
-      socket.emit('chunk', 
-      {
-        base64String,
-        // uploadedChunks,
-        // totalChunks,
-        id: clientSessionId.value
-      });
-      // const totalChunks = Math.ceil(base64String.length / chunkSize);
-      // let uploadedChunks = 0; 
-      // for (let i = 0; i < totalChunks; i++) {
-      //   const start = i * chunkSize;
-      //   const end = start + chunkSize;
-      //   const chunk = base64String.substring(start, end);
-      //   console.log('===================================== \n' + chunk + '\n==================================================')
-      //   socket.emit('chunk', 
-      //   {
-      //     chunk,
-      //     uploadedChunks,
-      //     totalChunks,
-      //     id: clientSessionId.value
-      //   });
-      //   uploadedChunks++; // Increment the uploadedChunks count
+      console.log(base64String, 'great')
+      // socket.emit('chunk', 
+      // {
+      //   base64String,
+      //   // uploadedChunks,
+      //   // totalChunks,
+      //   id: clientSessionId.value
+      // });
+      const totalChunks = Math.ceil(base64String.length / chunkSize);
+      let uploadedChunks = 0; 
+      for (let i = 0; i < totalChunks; i++) {
+        const start = i * chunkSize;
+        const end = start + chunkSize;
+        const chunk = base64String.substring(start, end);
+        console.log('===================================== \n' + chunk + '\n==================================================')
+        uploadedChunks++; // Increment the uploadedChunks count
+        socket.emit('chunk', 
+        {
+          chunk,
+          uploadedChunks,
+          totalChunks,
+          id: clientSessionId.value
+        });
 
         // socket.emit('chunkprogress', {
         //   uploadedChunks,
         //   totalChunks
         // })
-      // }
+      }
     }
 
     const hideEmojiWrapper = (e) => {
-      if ((!e.target && e.target.parentElement && e.target.parentElement.className.includes('emoji-wrapper')) && (!e.target && e.target.parentElement && !e.target.className.includes('emoji-wrapper'))) {
+      if (!e.target.className.includes('emoji-wrapper')) {
         displayEmoji.value = false
       }
     }
@@ -1223,10 +1261,12 @@ input:focus {
 }
 
 .email-destination {
-  padding: 0.1rem 0.4rem;
+  padding: 4px;
   border: 1px solid #02172e0d;
-  border-radius: 8px;
+  border-radius: 4px;
   background: #02172e14;
+  align-items: center;
+  height: 30px;
 }
 
 

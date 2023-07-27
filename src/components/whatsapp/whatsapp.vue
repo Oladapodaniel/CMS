@@ -1,6 +1,6 @@
 <template>
   <div>
-    <div class="container">
+    <div class="container p-0">
       <div class="row mt-4">
         <div class="col-md-12">
           <h2 class="font-weight-bold text-white position-absolute mt-3 ml-4">Whatsapp</h2>
@@ -51,7 +51,7 @@
                     <div class="col-md-12 menu-item-div m-auto">
                       <a class="btn btn-default font-weight-bold">
                         <span class="menu-item">
-                          <router-link class="r-link text-decoration-none" to="/tenant/sms/scheduled">
+                          <router-link class="r-link text-decoration-none" to="/tenant/whatsapp/scheduledmessages">
                             <!-- <i class="pi pi-list mr-3 menu-icon"></i> -->
                             <i class="pi pi-clock mr-3 menu-icon" aria-hidden="true"></i>
                             <span class="active">Scheduled</span>
