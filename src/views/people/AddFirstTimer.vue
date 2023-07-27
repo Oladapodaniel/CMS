@@ -570,7 +570,7 @@ export default {
       formData.append('communicationMeans', selectedCommunicationMeans.value ? comMeansArr.value.indexOf(selectedCommunicationMeans.value) + 1 : 0)
       formData.append('interestedInJoining', selectedJoinInterest.value ? joinInterestArr.value.indexOf(selectedJoinInterest.value) + 1 : 0)
       formData.append('wantToBeVisited', selectedVisitOption.value ? wantVisitArr.value.indexOf(selectedVisitOption.value) + 1 : 0)
-      formData.append('groups', firstTimerInGroup.value.length > 0 ? JSON.stringify(firstTimerInGroup.value.map((i) => ({ groupId: i.groupId, position: i.position }))) : [])
+      formData.append('groupsString', firstTimerInGroup.value.length > 0 ? JSON.stringify(firstTimerInGroup.value.map((i) => ({ groupId: i.groupId, position: i.position }))) : [])
       formData.append('contactOwnerId', Object.keys(contactOwner.value).length > 0 ? contactOwner.value.id : "00000000-0000-0000-0000-000000000000")
       formData.append('imageUrl', firstTimersObj.value && firstTimersObj.value.imageUrl ? firstTimersObj.value.imageUrl : "")
 

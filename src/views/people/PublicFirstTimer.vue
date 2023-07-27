@@ -708,7 +708,7 @@ export default {
       formData.append(
         "birthday", firstTimersObj.value.birthday ? firstTimersObj.value.birthday : '',
       );
-      formData.append('groups', firstTimerInGroup.value.length > 0 ? JSON.stringify(firstTimerInGroup.value.map((i) => ({ groupId: i.groupId, position: i.position }))) : []);
+      formData.append('groupsString', firstTimerInGroup.value.length > 0 ? JSON.stringify(firstTimerInGroup.value.map((i) => ({ groupId: i.groupId, position: i.position }))) : []);
        formData.append(
         "customAttributeDataString",
         JSON.stringify(

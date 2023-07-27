@@ -46,6 +46,9 @@
                 <label for="" class="font-weight-bold">Select Members</label>
               </div>
               <div class="mt-2">
+                <SelectAllDropdown :items="memberShips" @selected-item="selectedItems" />
+              </div>
+              <!-- <div class="mt-2">
                 <button
                   class="form-control d-flex justify-content-between align-items-center exempt-hide"
                   @click="setGroupProp"
@@ -73,7 +76,7 @@
                       ...
                     </span>
                     <span v-if="selectedMember.length === 0"
-                      >Select Members</span
+                      >Select</span
                     >
                   </span>
                   <el-icon class="exemple-hide"><ArrowDown /></el-icon>
@@ -96,7 +99,7 @@
                     class="form-control exempt-hide"
                     v-model="searchMemberText"
                     ref="searchMemberRef"
-                    placeholder="Search for group"
+                    placeholder="Search"
                   />
                   <div class="row">
                     <div class="col-12 px-3">
@@ -107,13 +110,6 @@
                             @change="checkAll"
                             class="exempt-hide"
                           />
-                          <!-- <Checkbox
-                          id="binary"
-                          v-model="allChecked"
-                          :binary="true"
-                          class="exempt-hide"
-                          @change="checkAll"
-                        /> -->
                           <span class="font-weight-700"
                             >&nbsp; &nbsp;Select all</span
                           >
@@ -135,7 +131,6 @@
                               @change="getCheckedGroup(member)"
                               class="exempt-hide all-check"
                             />
-                            <!-- <Checkbox id="binary" v-model="member.displayCheck" :binary="true" class="exempt-hide all-check" @change="getCheckedGroup(member)" /> -->
                           </span>
                         </div>
                         <div class="text-primary exempt-hide">
@@ -143,19 +138,9 @@
                         </div>
                       </div>
                     </li>
-                    <li
-                      class="shadow-sm text-center border p-2 font-weight-700 c-pointer"
-                    >
-                      <i class="pi pi-plus-circle"></i>&nbsp;Add new group
-                    </li>
                   </ul>
-                  <!-- <GroupTree
-                  :items="searchForMembers"
-                  :addGroupValue="true"
-                  @filteredGroup="setFilterGroups"
-                /> -->
                 </div>
-              </div>
+              </div> -->
               <!-- <div>
                 
                 <MultiSelect
@@ -496,6 +481,7 @@ import { computed, ref, nextTick, inject } from "vue";
 import axios from "@/gateway/backendapi";
 import MembershipPieChart from "../../../components/charts/ReportPieChart.vue";
 import MultiSelect from "primevue/multiselect";
+import SelectAllDropdown  from "../ReportsDropdown.vue";
 import printJS from "print-js";
 import GroupTree from "../../groups/component/GroupTreeCheckboxParent.vue";
 import exportService from "../../../services/exportFile/exportservice";
@@ -504,14 +490,13 @@ export default {
   components: {
     MembershipPieChart,
     MultiSelect,
+    SelectAllDropdown,
     GroupTree,
   },
   setup(prop) {
     const selectedMember = ref([]);
     const primarycolor = inject("primarycolor");
-    const allChecked = ref(false);
     const selectedGender = ref();
-    const displayCheck = ref(false);
     const selectedMaritalStatus = ref();
     const showReport = ref(false);
     const loading = ref(false);
@@ -525,10 +510,8 @@ export default {
     const genderChartResult = ref([]);
     const memberChartResult = ref([]);
     const maritalStatusChartResult = ref([]);
-    const hideDiv = ref(true);
     const ageGroupChartResult = ref([]);
     const showExport = ref(false);
-    const checked = ref(false);
     const fileName = ref("");
     const bookTypeList = ref([
       { name: "xlsx" },
@@ -540,21 +523,9 @@ export default {
     const fileHeaderToExport = ref([]);
     const fileToExport = ref([]);
     const dynamicCustomFields = ref([]);
-    const searchMemberRef = ref();
-    const searchMemberText = ref("");
-
-    const searchForMembers = computed(() => {
-      if (!searchMemberText.value && memberShips.value.length > 0)
-        return memberShips.value;
-      return memberShips.value.filter((i) =>
-        i.name.toLowerCase().includes(searchMemberText.value.toLowerCase())
-      );
-    });
-    const setFilterGroups = (payload) => {
-      console.log(payload, "illk");
-      // selectedMember.value = payload;
-    };
-
+    const selectedItems = (payload) => {
+      selectedMember.value = payload
+    }
     const genderChart = (array, key) => {
       // Accepts the array and key
       // Return the end result
@@ -573,34 +544,6 @@ export default {
           value: result[prop].length,
         });
       }
-    };
-
-    const checkAll = () => {
-      memberShips.value.forEach((i) => {
-        if (allChecked.value) {
-          i.displayCheck = true;
-        } else {
-          i.displayCheck = false;
-        }
-        getCheckedGroup(i);
-      });
-      // checked.value = true;
-    };
-    const getCheckedGroup = (item) => {
-      if (item.displayCheck) {
-        const memberIndex = selectedMember.value.findIndex(
-          (i) => i.id === item.id
-        );
-        if (memberIndex < 0) {
-          selectedMember.value.push(item);
-        }
-      } else {
-        selectedMember.value = selectedMember.value.filter(
-          (i) => i.id !== item.id
-        );
-      }
-
-      // displayCheck.value = item
     };
 
     const mappedGender = computed(() => {
@@ -673,13 +616,6 @@ export default {
           value: result[prop].length,
         });
       }
-    };
-
-    const setGroupProp = () => {
-      hideDiv.value = !hideDiv.value;
-      nextTick(() => {
-        searchMemberRef.value.focus();
-      });
     };
 
     const mappedAgeGroup = computed(() => {
@@ -819,31 +755,22 @@ export default {
 
     return {
       genarateReport,
-      setFilterGroups,
-      getCheckedGroup,
-      searchForMembers,
-      searchMemberText,
-      allChecked,
-      searchMemberRef,
       memberAgegroup,
       selectedAgeGroup,
       genderChartResult,
       memberChartResult,
-      setGroupProp,
-      hideDiv,
       maritalStatusChartResult,
       ageGroupChartResult,
       genderChart,
       memberChart,
       maritalStatusChart,
+      selectedItems,
       ageGroupChart,
       showReport,
       primarycolor,
       //  genderSummary,
       memberShips,
       memberMaritalStatus,
-      checkAll,
-      checked,
       memberGender,
       membersInChurch,
       mappedGender,
@@ -860,7 +787,6 @@ export default {
       selectedFileType,
       fileToExport,
       fileHeaderToExport,
-      displayCheck,
       printJS,
 
       // downLoadExcel,
