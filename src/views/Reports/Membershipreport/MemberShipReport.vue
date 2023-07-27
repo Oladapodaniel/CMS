@@ -46,95 +46,116 @@
                 <label for="" class="font-weight-bold">Select Members</label>
               </div>
               <div class="mt-2">
-              <button
-                class="form-control d-flex justify-content-between align-items-center exempt-hide"
-                @click="setGroupProp"
-              >
-                <span class="exempt-hide">
-                  <span
-                    v-if="selectedMember.length > 0 && selectedMember.length <= 2"
-                  >
-                    <span v-for="item in selectedMember" :key="item.id"
-                      ><span class="eachGroup">{{ item.name }}</span></span
-                    >
-                  </span>
-                  <span
-                    v-if="selectedMember.length > 0 && selectedMember.length > 2"
-                  >
-                    <span
-                      v-for="item in selectedMember.slice(0, 2)"
-                      :key="item.id"
-                      ><span class="eachGroup">{{ item.name }}</span></span
-                    >
-                    ...
-                  </span>
-                  <span v-if="selectedMember.length === 0">Select Members</span>
-                </span>
-                <el-icon class="exemple-hide"><ArrowDown /></el-icon>
-              </button>
-              <div
-                class="div-card py-3 px-2 exempt-hide"
-                :class="{
-                  'd-none': hideDiv,
-                  'd-block': !hideDiv,
-                }"
-              >
-                <el-icon
-                  v-if="memberShips.length === 0"
-                  class="is-loading text-center exempt-hide"
+                <button
+                  class="form-control d-flex justify-content-between align-items-center exempt-hide"
+                  @click="setGroupProp"
                 >
-                  <Loading />
-                </el-icon>
-                <input
-                  type="text"
-                  class="form-control exempt-hide"
-                  v-model="searchMemberText"
-                  ref="searchMemberRef"
-                  placeholder="Search for group"
-                />
-                <div class="row">
-                  <div class="col-12">
-                    <div>
+                  <span class="exempt-hide">
+                    <span
+                      v-if="
+                        selectedMember.length > 0 && selectedMember.length <= 2
+                      "
+                    >
+                      <span v-for="item in selectedMember" :key="item.id"
+                        ><span class="eachGroup">{{ item.name }}</span></span
+                      >
+                    </span>
+                    <span
+                      v-if="
+                        selectedMember.length > 0 && selectedMember.length > 2
+                      "
+                    >
+                      <span
+                        v-for="item in selectedMember.slice(0, 2)"
+                        :key="item.id"
+                        ><span class="eachGroup">{{ item.name }}</span></span
+                      >
+                      ...
+                    </span>
+                    <span v-if="selectedMember.length === 0"
+                      >Select Members</span
+                    >
+                  </span>
+                  <el-icon class="exemple-hide"><ArrowDown /></el-icon>
+                </button>
+                <div
+                  class="div-card p-2 exempt-hide"
+                  :class="{
+                    'd-none': hideDiv,
+                    'd-block': !hideDiv,
+                  }"
+                >
+                  <el-icon
+                    v-if="memberShips.length === 0"
+                    class="is-loading text-center exempt-hide"
+                  >
+                    <Loading />
+                  </el-icon>
+                  <input
+                    type="text"
+                    class="form-control exempt-hide"
+                    v-model="searchMemberText"
+                    ref="searchMemberRef"
+                    placeholder="Search for group"
+                  />
+                  <div class="row">
+                    <div class="col-12 px-3">
                       <div>
-                        <el-checkbox v-model="allChecked" @change="checkAll" class="exempt-hide " />
-                        <!-- <Checkbox
+                        <div>
+                          <el-checkbox
+                            v-model="allChecked"
+                            @change="checkAll"
+                            class="exempt-hide"
+                          />
+                          <!-- <Checkbox
                           id="binary"
                           v-model="allChecked"
                           :binary="true"
                           class="exempt-hide"
                           @change="checkAll"
                         /> -->
-                        <span class="font-weight-700">&nbsp; &nbsp;Select all</span>
+                          <span class="font-weight-700"
+                            >&nbsp; &nbsp;Select all</span
+                          >
+                        </div>
                       </div>
                     </div>
                   </div>
-                </div>
-                <ul class="p-0 w-100">
-                    <li v-for="(member, index) in searchForMembers" :key="index" class="p-2  c-pointer parent-li border-top exempt-hide">
+                  <ul class="px-2 w-100">
+                    <li
+                      v-for="(member, index) in searchForMembers"
+                      :key="index"
+                      class="px-2 pt-2 c-pointer parent-li border-top exempt-hide"
+                    >
                       <div class="row exempt-hide">
                         <div class="text-primary exempt-hide">
                           <span>
-                            <el-checkbox   v-model="member.displayCheck" @change="getCheckedGroup(member)" class="exempt-hide all-check" />
+                            <el-checkbox
+                              v-model="member.displayCheck"
+                              @change="getCheckedGroup(member)"
+                              class="exempt-hide all-check"
+                            />
                             <!-- <Checkbox id="binary" v-model="member.displayCheck" :binary="true" class="exempt-hide all-check" @change="getCheckedGroup(member)" /> -->
                           </span>
                         </div>
                         <div class="text-primary exempt-hide">
                           <span class="p-3 exempt-hide">{{ member.name }}</span>
                         </div>
-              
                       </div>
                     </li>
-                    <li class="shadow-sm text-center border p-2 font-weight-700 c-pointer" >
+                    <li
+                      class="shadow-sm text-center border p-2 font-weight-700 c-pointer"
+                    >
                       <i class="pi pi-plus-circle"></i>&nbsp;Add new group
                     </li>
-                    </ul>
-                <!-- <GroupTree
+                  </ul>
+                  <!-- <GroupTree
                   :items="searchForMembers"
                   :addGroupValue="true"
                   @filteredGroup="setFilterGroups"
                 /> -->
+                </div>
               </div>
-            </div>
               <!-- <div>
                 
                 <MultiSelect
@@ -306,34 +327,46 @@
                           Congregation Members Report
                       </div>
                   </div> -->
-          <div class="col-12 mt-4 round-border d-flex flex-wrap">
-            <div class="col-12 col-sm-12 col-md-6 col-lg-6">
-              <div class="col-12 mt-sm-3 mt-md-0 mt-lg-2 text-center">
-                <div class="col-12 font-weight-bold">Membership By Gender</div>
-                <!-- <div class="col-12" >No Data Available</div> -->
-                <div class="col-12">
-                  <MembershipPieChart
-                    domId="chart1"
-                    distance="5"
-                    :titleMargin="10"
-                    :summary="mappedGender"
-                  />
+          <div class="col-md-12 mt-4 round-border">
+            <div class="row">
+              <div class="col-12 col-md-6 col-lg-6">
+                <div class="row">
+                  <div class="col-md-12 mt-sm-3 mt-md-0 mt-lg-2 text-center">
+                    <div class="row">
+                      <div class="col-md-12 font-weight-bold">
+                        Membership By Gender
+                      </div>
+                      <!-- <div class="col-12" >No Data Available</div> -->
+                      <div class="col-md-12">
+                        <MembershipPieChart
+                          domId="chart1"
+                          distance="5"
+                          :titleMargin="10"
+                          :summary="mappedGender"
+                        />
+                      </div>
+                    </div>
+                  </div>
                 </div>
               </div>
-            </div>
-            <div class="col-12 col-sm-12 col-md-6 col-lg-6">
-              <div class="col-12 mt-3 mt-sm-3 mt-md-0 mt-lg-2 text-center">
-                <div class="col-12 font-weight-bold">
-                  Membership By Marital Status
-                </div>
-                <!-- <div class="col-12" :class="{ 'show-report': !showReport, 'hide-report' : showReport}">No Data Available</div> -->
-                <div class="col-12">
-                  <MembershipPieChart
-                    domId="chart2"
-                    distance="5"
-                    :titleMargin="10"
-                    :summary="mappedMaritalStatus"
-                  />
+              <div class="col-12 col-md-6 col-lg-6">
+                <div class="row">
+                  <div class="col-md-12 mt-sm-3 mt-md-0 mt-lg-2 text-center">
+                    <div class="row">
+                      <div class="col-md-12 font-weight-bold">
+                        Membership By Marital Status
+                      </div>
+                      <!-- <div class="col-12" :class="{ 'show-report': !showReport, 'hide-report' : showReport}">No Data Available</div> -->
+                      <div class="col-md-12">
+                        <MembershipPieChart
+                          domId="chart2"
+                          distance="5"
+                          :titleMargin="10"
+                          :summary="mappedMaritalStatus"
+                        />
+                      </div>
+                    </div>
+                  </div>
                 </div>
               </div>
             </div>
@@ -343,7 +376,7 @@
           class="row"
           :class="{ 'show-report': showReport, 'hide-report': !showReport }"
         >
-          <div class="col-12 table d-flex flex-wrap">
+          <div class="col-md-12 round-border mt-3">
             <!-- <div class="col-12 col-sm-12  col-md-6 col-lg-6">
                       <div class="col-12 text-center mt-3 mt-sm-3 mt-md-0 mt-lg-2 " >
                           <div class="col-12  font-weight-bold ">Membership By Members</div>
@@ -357,18 +390,24 @@
                           </div>
                       </div>
                     </div> -->
-            <div class="col-12 col-sm-12 d-flex justify-content-center">
-              <div class="col-6 text-center mt-3 mt-sm-3 mt-md-0 mt-lg-2">
-                <div class="col-12 w-100 font-weight-bold">
-                  Membership By Age Group
-                </div>
-                <div class="col-12">
-                  <MembershipPieChart
-                    domId="char4"
-                    distance="5"
-                    :titleMargin="10"
-                    :summary="mappedAgeGroup"
-                  />
+            <div class="row">
+              <div class="col-md-12">
+                <div class="row justify-content-center">
+                  <div class="col-md-6  text-center mt-3 mt-sm-3 mt-md-0 mt-lg-2">
+                    <div class="row">
+                      <div class="col-md-12 px-0 font-weight-bold">
+                        Membership By Age Group
+                      </div>
+                      <div class="col-md-12 px-0">
+                        <MembershipPieChart
+                          domId="chart4"
+                          distance="5"
+                          :titleMargin="10"
+                          :summary="mappedAgeGroup"
+                        />
+                      </div>
+                    </div>
+                  </div>
                 </div>
               </div>
             </div>
@@ -465,15 +504,14 @@ export default {
   components: {
     MembershipPieChart,
     MultiSelect,
-    GroupTree
-    
+    GroupTree,
   },
   setup(prop) {
     const selectedMember = ref([]);
     const primarycolor = inject("primarycolor");
-    const allChecked = ref(false)
+    const allChecked = ref(false);
     const selectedGender = ref();
-    const displayCheck = ref(false)
+    const displayCheck = ref(false);
     const selectedMaritalStatus = ref();
     const showReport = ref(false);
     const loading = ref(false);
@@ -513,7 +551,7 @@ export default {
       );
     });
     const setFilterGroups = (payload) => {
-      console.log(payload, 'illk');
+      console.log(payload, "illk");
       // selectedMember.value = payload;
     };
 
@@ -538,7 +576,7 @@ export default {
     };
 
     const checkAll = () => {
-     memberShips.value.forEach((i) => {
+      memberShips.value.forEach((i) => {
         if (allChecked.value) {
           i.displayCheck = true;
         } else {
@@ -549,17 +587,20 @@ export default {
       // checked.value = true;
     };
     const getCheckedGroup = (item) => {
-    
-    if(item.displayCheck){
-    const memberIndex = selectedMember.value.findIndex((i) => i.id === item.id )
-    if(memberIndex < 0){
-      selectedMember.value.push(item)
-    }
-    } else {
-      selectedMember.value = selectedMember.value.filter((i) => i.id !== item.id );
-    }
-    
-    // displayCheck.value = item
+      if (item.displayCheck) {
+        const memberIndex = selectedMember.value.findIndex(
+          (i) => i.id === item.id
+        );
+        if (memberIndex < 0) {
+          selectedMember.value.push(item);
+        }
+      } else {
+        selectedMember.value = selectedMember.value.filter(
+          (i) => i.id !== item.id
+        );
+      }
+
+      // displayCheck.value = item
     };
 
     const mappedGender = computed(() => {
@@ -821,7 +862,7 @@ export default {
       fileHeaderToExport,
       displayCheck,
       printJS,
-      
+
       // downLoadExcel,
       downloadFile,
       dynamicCustomFields,
