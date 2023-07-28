@@ -43,8 +43,24 @@
     <div style="background: #ebeff4" class="row py-5 mb-2">
       <div class="col-12 col-md-6 col-lg-3">
         <div><label for="" class="font-weight-bold">Select Event</label></div>
-
         <div>
+          <!-- <SelectAllDropdown :items="allEvents" @selected-item="setSelectedEvent" /> -->
+          <el-select-v2
+                v-model="selectedEventID"
+                class="w-100 font-weight-normal"
+                :options="
+                  allEvents.map((i) => ({
+                    label: i.text,
+                    value: i.id,
+                  }))
+                "
+                placeholder="Select event"
+                @change="setSelectedEvent"
+                size="large"
+              />
+        </div>
+
+        <!-- <div>
           <MultiSelect
             v-model="selectedEvents"
             :options="allEvents"
@@ -71,7 +87,7 @@
               </div>
             </template>
           </MultiSelect>
-        </div>
+        </div> -->
       </div>
       <div class="col-12 col-md-6 col-lg-3">
         <div class="">
@@ -232,7 +248,6 @@
 import { computed, ref, inject } from "vue";
 import PerformanceColumnChart from "../../../components/charts/ReportColumnChart.vue";
 import groupData from "../../../services/groupArray/groupResponse";
-import MultiSelect from "primevue/multiselect";
 import ReportAreaChart from "../../../components/charts/AreaChart.vue";
 import axios from "@/gateway/backendapi";
 import dateFormatter from "../../../services/dates/dateformatter.js";
@@ -241,7 +256,6 @@ import printJS from "print-js";
 import { ElMessage } from "element-plus";
 export default {
   components: {
-    MultiSelect,
     PerformanceColumnChart,
     ReportAreaChart,
   },
@@ -260,8 +274,8 @@ export default {
       { name: "pdf" },
     ]);
     const showExport = ref(false);
-    const allEvents = ref({});
-    const selectedEvents = ref();
+    const allEvents = ref([]);
+    const selectedEvents = ref([]);
     const series = ref([]);
     const activityReport = ref([]);
     const attendanceSeries = ref([]);
@@ -280,6 +294,7 @@ export default {
     const categoryData = ref([]);
     const attendanceGroup = ref({});
     const grousService = ref([]);
+    const selectedEventID = ref(null);
     const groupedActivityService = ref([]);
     const downloadFile = (item) => {
       exportService.downLoadExcel(
@@ -290,6 +305,12 @@ export default {
         fileToExport.value
       );
     };
+
+    const setSelectedEvent = () =>  {
+      selectedEvents.value = allEvents.value.find((i) => i.id === selectedEventID.value )
+      console.log(selectedEvents.value, 'Events');
+
+    }
 
     const getAllEvents = () => {
       axios
@@ -302,8 +323,7 @@ export default {
     getAllEvents();
     const getActivityReport = () => {
       activityReport.value = [];
-      const eventId =
-        selectedEvents.value.length === 1 ? selectedEvents.value[0].id : "";
+      const eventId = selectedEvents.value ? selectedEvents.value.id : ''
       loading.value = true;
       axios
         .get(
@@ -536,6 +556,8 @@ export default {
       attendanceChart,
       womenData,
       maleData,
+      setSelectedEvent,
+      selectedEventID,
       boyData,
       girlData,
       ChildrenData,

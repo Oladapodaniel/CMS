@@ -37,7 +37,24 @@
       <div class="col-12 col-md-6 col-lg-3">
         <div><label for="" class="font-weight-bold">Select Event</label></div>
         <div>
-          <!-- <Dropdown v-model="selectedSummary" :options="allEvents" optionLabel="text" class="w-100" placeholder="All Events" :filter="false" filterPlaceholder="Find Car"/> -->
+          <el-select-v2
+                v-model="selectedEventID"
+                class="w-100 font-weight-normal"
+                :options="
+                  allEvents.map((i) => ({
+                    label: i.text,
+                    value: i.id,
+                  }))
+                "
+                placeholder="Select event"
+                @change="setSelectedEvent"
+                size="large"
+              />
+        </div>
+        <!-- <div>
+          <SelectAllDropdown :items="allEvents" @selected-item="setSelectedEvent" />
+        </div> -->
+        <!-- <div>
           <MultiSelect
             v-model="selectedSummary"
             :options="allEvents"
@@ -64,7 +81,7 @@
               </div>
             </template>
           </MultiSelect>
-        </div>
+        </div> -->
       </div>
       <div class="col-12 col-md-6 col-lg-3">
         <div class="">
@@ -254,7 +271,6 @@
         </div> -->
         </div>
         <!--end table header -->
-        <Toast />
       </section>
     </div>
   </div>
@@ -268,12 +284,10 @@ import exportService from "../../../services/exportFile/exportservice";
 import printJS from "print-js";
 import axios from "@/gateway/backendapi";
 import dateFormatter from "../../../services/dates/dateformatter.js";
-import MultiSelect from "primevue/multiselect";
 import { ElMessage } from "element-plus";
 
 export default {
   components: {
-    MultiSelect,
     PerformanceColumnChart,
   },
 
@@ -282,6 +296,7 @@ export default {
       return dateFormatter.normalDate(date);
     };
     const showExport = ref(false);
+    const selectedEventID  = ref(null);
     const showReport = ref(false);
     const loading = ref(false);
     const primarycolor = inject("primarycolor");
@@ -315,7 +330,7 @@ export default {
     const analysisReport = ref([]);
     const startDate = ref("");
     const endDate = ref("");
-    const selectedSummary = ref();
+    const selectedSummary = ref([]);
     const selectedSummaryChart = ref([]);
     const report = ref([]);
     const attendanceData = ref([]);
@@ -338,6 +353,9 @@ export default {
         .catch((err) => console.log(err));
     };
     getAllEvents();
+    const setSelectedEvent = () =>  {
+      selectedSummary.value = allEvents.value.find((i) => i.id === selectedEventID.value )
+    }
     const downloadFile = () => {
       exportService.downLoadExcel(
         item.name,
@@ -350,8 +368,7 @@ export default {
     const getAnalysisReport = () => {
       loading.value = true;
       analysisReport.value = [];
-      const activityId =
-        selectedSummary.value.length === 1 ? selectedSummary.value[0].id : "";
+      const activityId =  selectedSummary.value ? selectedSummary.value.id : ''
       axios
         .get(
           `/api/Reports/events/getActivityAnalysisReport?startDate=${new Date(
@@ -519,7 +536,9 @@ export default {
       startDate,
       endDate,
       selectedSummary,
+      setSelectedEvent,
       selectedSummaryChart,
+      selectedEventID,
       allEvents,
       analysisReport,
       getAnalysisReport,

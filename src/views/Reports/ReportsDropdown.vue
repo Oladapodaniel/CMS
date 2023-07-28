@@ -1,5 +1,5 @@
 <template>
-    <div class="mt-2">
+    <div class="">
                 <button
                   class="form-control d-flex justify-content-between align-items-center exempt-hide"
                   @click="setGroupProp"
@@ -11,8 +11,10 @@
                       "
                     >
                       <span v-for="item in selectedMember" :key="item.id"
-                        ><span class="eachGroup">{{ item.name }}</span></span
-                      >
+                        >
+                        <span v-if="item.name" class="eachGroup">{{ item.name }}</span>
+                        <span v-else class="eachGroup">{{ item.text }}</span>
+                        </span>
                     </span>
                     <span
                       v-if="
@@ -22,7 +24,10 @@
                       <span
                         v-for="item in selectedMember.slice(0, 2)"
                         :key="item.id"
-                        ><span class="eachGroup">{{ item.name }}</span></span
+                        >
+                        <span v-if="item.name" class="eachGroup">{{ item.name }}</span>
+                        <span v-else class="eachGroup">{{ item.text }}</span>
+                        </span
                       >
                       ...
                     </span>
@@ -85,7 +90,8 @@
                           </span>
                         </div>
                         <div class="text-primary exempt-hide">
-                          <span class="p-3 exempt-hide">{{ member.name }}</span>
+                          <span v-if="member.name" class="p-3 exempt-hide">{{ member.name }}</span>
+                          <span v-else class="p-3 exempt-hide">{{ member.text }}</span>
                         </div>
                       </div>
                     </li>

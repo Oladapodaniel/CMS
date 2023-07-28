@@ -46,102 +46,9 @@
                 <label for="" class="font-weight-bold">Select Members</label>
               </div>
               <div class="mt-2">
-                <SelectAllDropdown :items="memberShips" @selected-item="selectedItems" />
+                <SelectAllDropdown :items="memberShips" @selected-item="setSelectedMember" />
               </div>
               <!-- <div class="mt-2">
-                <button
-                  class="form-control d-flex justify-content-between align-items-center exempt-hide"
-                  @click="setGroupProp"
-                >
-                  <span class="exempt-hide">
-                    <span
-                      v-if="
-                        selectedMember.length > 0 && selectedMember.length <= 2
-                      "
-                    >
-                      <span v-for="item in selectedMember" :key="item.id"
-                        ><span class="eachGroup">{{ item.name }}</span></span
-                      >
-                    </span>
-                    <span
-                      v-if="
-                        selectedMember.length > 0 && selectedMember.length > 2
-                      "
-                    >
-                      <span
-                        v-for="item in selectedMember.slice(0, 2)"
-                        :key="item.id"
-                        ><span class="eachGroup">{{ item.name }}</span></span
-                      >
-                      ...
-                    </span>
-                    <span v-if="selectedMember.length === 0"
-                      >Select</span
-                    >
-                  </span>
-                  <el-icon class="exemple-hide"><ArrowDown /></el-icon>
-                </button>
-                <div
-                  class="div-card p-2 exempt-hide"
-                  :class="{
-                    'd-none': hideDiv,
-                    'd-block': !hideDiv,
-                  }"
-                >
-                  <el-icon
-                    v-if="memberShips.length === 0"
-                    class="is-loading text-center exempt-hide"
-                  >
-                    <Loading />
-                  </el-icon>
-                  <input
-                    type="text"
-                    class="form-control exempt-hide"
-                    v-model="searchMemberText"
-                    ref="searchMemberRef"
-                    placeholder="Search"
-                  />
-                  <div class="row">
-                    <div class="col-12 px-3">
-                      <div>
-                        <div>
-                          <el-checkbox
-                            v-model="allChecked"
-                            @change="checkAll"
-                            class="exempt-hide"
-                          />
-                          <span class="font-weight-700"
-                            >&nbsp; &nbsp;Select all</span
-                          >
-                        </div>
-                      </div>
-                    </div>
-                  </div>
-                  <ul class="px-2 w-100">
-                    <li
-                      v-for="(member, index) in searchForMembers"
-                      :key="index"
-                      class="px-2 pt-2 c-pointer parent-li border-top exempt-hide"
-                    >
-                      <div class="row exempt-hide">
-                        <div class="text-primary exempt-hide">
-                          <span>
-                            <el-checkbox
-                              v-model="member.displayCheck"
-                              @change="getCheckedGroup(member)"
-                              class="exempt-hide all-check"
-                            />
-                          </span>
-                        </div>
-                        <div class="text-primary exempt-hide">
-                          <span class="p-3 exempt-hide">{{ member.name }}</span>
-                        </div>
-                      </div>
-                    </li>
-                  </ul>
-                </div>
-              </div> -->
-              <!-- <div>
                 
                 <MultiSelect
                   v-model="selectedMember"
@@ -178,6 +85,9 @@
                 <label for="" class="ml-2 font-weight-bold">Gender</label>
               </div>
               <div>
+                <SelectAllDropdown :items="memberGender" @selected-item="setSelectedGender" />
+              </div>
+              <!-- <div>
                 <MultiSelect
                   v-model="selectedGender"
                   :options="memberGender"
@@ -206,13 +116,16 @@
                     </div>
                   </template>
                 </MultiSelect>
-              </div>
+              </div> -->
             </div>
             <div class="col-12 col-md-6 mt-2">
               <div>
                 <label for="" class="font-weight-bold">Marital Status</label>
               </div>
               <div>
+                <SelectAllDropdown :items="memberMaritalStatus" @selected-item="setSelectedMaritalStatus" />
+              </div>
+              <!-- <div>
                 <MultiSelect
                   v-model="selectedMaritalStatus"
                   :options="memberMaritalStatus"
@@ -241,7 +154,7 @@
                     </div>
                   </template>
                 </MultiSelect>
-              </div>
+              </div> -->
             </div>
             <div class="col-12 col-md-6 mt-2">
               <div>
@@ -251,6 +164,9 @@
                         :options="memberAgegroup.map(i => ({ label: i.name, value: i.id }))" placeholder="Age group"
                         size="large" class="w-100 mr-1" /> -->
               <div>
+                <SelectAllDropdown :items="memberAgegroup" @selected-item="setSelectedAgeGroup" />
+              </div>
+              <!-- <div>
                 <MultiSelect
                   v-model="selectedAgeGroup"
                   :options="memberAgegroup"
@@ -279,7 +195,7 @@
                     </div>
                   </template>
                 </MultiSelect>
-              </div>
+              </div> -->
             </div>
           </div>
         </div>
@@ -480,7 +396,6 @@
 import { computed, ref, nextTick, inject } from "vue";
 import axios from "@/gateway/backendapi";
 import MembershipPieChart from "../../../components/charts/ReportPieChart.vue";
-import MultiSelect from "primevue/multiselect";
 import SelectAllDropdown  from "../ReportsDropdown.vue";
 import printJS from "print-js";
 import GroupTree from "../../groups/component/GroupTreeCheckboxParent.vue";
@@ -489,21 +404,20 @@ import allCustomFields from "../../../services/customfield/customField";
 export default {
   components: {
     MembershipPieChart,
-    MultiSelect,
     SelectAllDropdown,
     GroupTree,
   },
   setup(prop) {
     const selectedMember = ref([]);
     const primarycolor = inject("primarycolor");
-    const selectedGender = ref();
+    const selectedGender = ref([]);
     const selectedMaritalStatus = ref();
     const showReport = ref(false);
     const loading = ref(false);
     const memberShips = ref([]);
-    const selectedAgeGroup = ref();
-    const memberMaritalStatus = ref({});
-    const memberGender = ref({});
+    const selectedAgeGroup = ref([]);
+    const memberMaritalStatus = ref([]);
+    const memberGender = ref([]);
     const memberAgegroup = ref([]);
     // const genderSummary = ref([]);
     const membersInChurch = ref([]);
@@ -523,8 +437,19 @@ export default {
     const fileHeaderToExport = ref([]);
     const fileToExport = ref([]);
     const dynamicCustomFields = ref([]);
-    const selectedItems = (payload) => {
-      selectedMember.value = payload
+    const setSelectedMember = (payload) => {
+      selectedMember.value = payload;
+    }
+    const setSelectedGender = (payload) => {
+      selectedGender.value = payload
+      console.log(selectedGender.value, 'gender');
+    }
+    const setSelectedMaritalStatus = (payload) => {
+      selectedMaritalStatus.value = payload
+      console.log(selectedMaritalStatus.value, 'Marital');
+    }
+    const setSelectedAgeGroup = (payload) => {
+      selectedAgeGroup.value = payload
     }
     const genderChart = (array, key) => {
       // Accepts the array and key
@@ -764,7 +689,10 @@ export default {
       genderChart,
       memberChart,
       maritalStatusChart,
-      selectedItems,
+      setSelectedMember,
+      setSelectedGender,
+      setSelectedAgeGroup,
+      setSelectedMaritalStatus,
       ageGroupChart,
       showReport,
       primarycolor,
