@@ -179,18 +179,12 @@
 import { computed, ref, inject } from "vue";
 
 import axios from "@/gateway/backendapi";
-
-import MultiSelect from "primevue/multiselect";
 import dateFormatter from "../../../services/dates/dateformatter";
 import printJS from "print-js";
 import exportService from "../../../services/exportFile/exportservice";
 import currencyConverter from "../../../services/currency-converter/currencyConverter";
 
 export default {
-  components: {
-    MultiSelect,
-  },
-
   setup() {
     const accountType = ref([]);
     const startDate = ref("");

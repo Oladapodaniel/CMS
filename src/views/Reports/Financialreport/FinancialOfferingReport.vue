@@ -79,14 +79,17 @@
             </div>
 
             <div class="col-md-6 col-sm-12 pr-md-0">
-              <div class="p-field pt-md-2 p-col-12 ">
+              <div class="p-field pt-md-2 p-col-12">
                 <div>
                   <label for="icon" class="mb-0 font-weight-bold"
                     >Select Categories</label
                   >
                 </div>
                 <div>
-                  <SelectAllDropdown :items="Categories" @selected-item="setSelectedAgeGroup" />
+                  <SelectAllDropdown
+                    :items="Categories"
+                    @selected-item="setSelectedAgeGroup"
+                  />
                 </div>
 
                 <!-- <MultiSelect
@@ -253,7 +256,7 @@ import OfferingPieChart from "../../../components/charts/ReportPieChart.vue";
 import OfferingColumnChart from "../../../components/charts/ReportColumnChart.vue";
 import dateFormatter from "../../../services/dates/dateformatter";
 import printJS from "print-js";
-import SelectAllDropdown  from "../ReportsDropdown.vue";
+import SelectAllDropdown from "../ReportsDropdown.vue";
 import MembersSearch from "../../../components/membership/MembersSearch.vue";
 import exportService from "../../../services/exportFile/exportservice";
 import groupArray from "../../../services/groupArray/groupResponse";
@@ -377,8 +380,8 @@ export default {
     };
     getMemberClassification();
     const setSelectedAgeGroup = (payload) => {
-      selectedCategories.value = payload
-    }
+      selectedCategories.value = payload;
+    };
 
     const genarateReport = () => {
       offeringColumnChartResult.value = [];

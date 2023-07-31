@@ -46,18 +46,18 @@
         <div>
           <!-- <SelectAllDropdown :items="allEvents" @selected-item="setSelectedEvent" /> -->
           <el-select-v2
-                v-model="selectedEventID"
-                class="w-100 font-weight-normal"
-                :options="
-                  allEvents.map((i) => ({
-                    label: i.text,
-                    value: i.id,
-                  }))
-                "
-                placeholder="Select event"
-                @change="setSelectedEvent"
-                size="large"
-              />
+            v-model="selectedEventID"
+            class="w-100 font-weight-normal"
+            :options="
+              allEvents.map((i) => ({
+                label: i.text,
+                value: i.id,
+              }))
+            "
+            placeholder="Select event"
+            @change="setSelectedEvent"
+            size="large"
+          />
         </div>
 
         <!-- <div>
@@ -233,9 +233,6 @@
               </tr>
             </tbody>
           </table>
-          <!-- <div class="table-foot d-flex justify-content-end">
-          <PaginationButtons />
-        </div> -->
         </div>
         <!--end table header -->
       </section>
@@ -306,11 +303,12 @@ export default {
       );
     };
 
-    const setSelectedEvent = () =>  {
-      selectedEvents.value = allEvents.value.find((i) => i.id === selectedEventID.value )
-      console.log(selectedEvents.value, 'Events');
-
-    }
+    const setSelectedEvent = () => {
+      selectedEvents.value = allEvents.value.find(
+        (i) => i.id === selectedEventID.value
+      );
+      console.log(selectedEvents.value, "Events");
+    };
 
     const getAllEvents = () => {
       axios
@@ -323,7 +321,7 @@ export default {
     getAllEvents();
     const getActivityReport = () => {
       activityReport.value = [];
-      const eventId = selectedEvents.value ? selectedEvents.value.id : ''
+      const eventId = selectedEvents.value ? selectedEvents.value.id : "";
       loading.value = true;
       axios
         .get(

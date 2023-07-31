@@ -155,7 +155,7 @@
     </div>
 
     <div
-      class="row mt-4"
+      class="row mt-4 pagebreak"
       id="element-to-print"
       v-if="groupedReport.length > 0 && searched"
     >

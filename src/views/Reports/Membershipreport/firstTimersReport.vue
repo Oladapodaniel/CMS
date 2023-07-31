@@ -35,19 +35,6 @@
             </el-dropdown-menu>
           </template>
         </el-dropdown>
-        <!-- Export &nbsp; &nbsp; <i class="pi pi-angle-down"></i>
-        <div
-          class="c-pointer"
-          style="width: 6rem; z-index: 1000; position: absolute"
-          v-if="showExport"
-        >
-          <Listbox
-            @click="downloadFile"
-            v-model="selectedFileType"
-            :options="bookTypeList"
-            optionLabel="name"
-          />
-        </div> -->
       </div>
     </div>
 
@@ -61,7 +48,6 @@
           <div>
             <label for="icon" class="mb-0 font-weight-bold">Start Date</label>
           </div>
-          <!-- <Calendar class="w-100" id="icon" v-model="startDate" :showIcon="true" dateFormat="dd/mm/yy"/> -->
           <el-date-picker
             v-model="startDate"
             type="date"
@@ -76,7 +62,6 @@
           <div>
             <label for="icon" class="mb-0 font-weight-bold">End Date</label>
           </div>
-          <!-- <Calendar class="w-100" id="icon" v-model="endDate" :showIcon="true" dateFormat="dd/mm/yy"/> -->
           <el-date-picker
             v-model="endDate"
             type="date"
@@ -222,22 +207,16 @@
 
 <script>
 import { ref, inject } from "vue";
-import Calendar from "primevue/calendar";
 import ByGenderChart from "@/components/charts/PieChart.vue";
-// import PaginationButtons from "../../../components/pagination/PaginationButtons";
 import axios from "@/gateway/backendapi";
 import dateFormatter from "../../../services/dates/dateformatter";
 import printJS from "print-js";
 import exportService from "../../../services/exportFile/exportservice";
-import Listbox from "primevue/listbox";
 import allCustomFields from "../../../services/customfield/customField";
 
 export default {
   components: {
-    Calendar,
     ByGenderChart,
-    Listbox,
-    // PaginationButtons
   },
   setup() {
     const startDate = ref("");
@@ -358,7 +337,6 @@ export default {
     };
 
     return {
-      Calendar,
       startDate,
       primarycolor,
       endDate,

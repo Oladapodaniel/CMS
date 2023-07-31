@@ -1,5 +1,5 @@
 <template>
-  <div class="container-fluid mb-4">
+  <div class="container-fluid mb-4 pagebreak">
     <div class="row d-flex justify-content-between">
       <div class="head-text">People Report</div>
       <div
@@ -45,8 +45,11 @@
               <div>
                 <label for="" class="font-weight-bold">Select Members</label>
               </div>
-              <div class="mt-2">
-                <SelectAllDropdown :items="memberShips" @selected-item="setSelectedMember" />
+              <div class="">
+                <SelectAllDropdown
+                  :items="memberShips"
+                  @selected-item="setSelectedMember"
+                />
               </div>
               <!-- <div class="mt-2">
                 
@@ -85,7 +88,10 @@
                 <label for="" class="ml-2 font-weight-bold">Gender</label>
               </div>
               <div>
-                <SelectAllDropdown :items="memberGender" @selected-item="setSelectedGender" />
+                <SelectAllDropdown
+                  :items="memberGender"
+                  @selected-item="setSelectedGender"
+                />
               </div>
               <!-- <div>
                 <MultiSelect
@@ -123,7 +129,10 @@
                 <label for="" class="font-weight-bold">Marital Status</label>
               </div>
               <div>
-                <SelectAllDropdown :items="memberMaritalStatus" @selected-item="setSelectedMaritalStatus" />
+                <SelectAllDropdown
+                  :items="memberMaritalStatus"
+                  @selected-item="setSelectedMaritalStatus"
+                />
               </div>
               <!-- <div>
                 <MultiSelect
@@ -164,7 +173,10 @@
                         :options="memberAgegroup.map(i => ({ label: i.name, value: i.id }))" placeholder="Age group"
                         size="large" class="w-100 mr-1" /> -->
               <div>
-                <SelectAllDropdown :items="memberAgegroup" @selected-item="setSelectedAgeGroup" />
+                <SelectAllDropdown
+                  :items="memberAgegroup"
+                  @selected-item="setSelectedAgeGroup"
+                />
               </div>
               <!-- <div>
                 <MultiSelect
@@ -217,7 +229,7 @@
         </div>
       </div>
     </div>
-    <div id="element-to-print">
+    <div id="element-to-print" class="">
       <div class="container-fluid px-0">
         <div
           class="row"
@@ -294,7 +306,9 @@
             <div class="row">
               <div class="col-md-12">
                 <div class="row justify-content-center">
-                  <div class="col-md-6  text-center mt-3 mt-sm-3 mt-md-0 mt-lg-2">
+                  <div
+                    class="col-md-6 text-center mt-3 mt-sm-3 mt-md-0 mt-lg-2"
+                  >
                     <div class="row">
                       <div class="col-md-12 px-0 font-weight-bold">
                         Membership By Age Group
@@ -393,10 +407,10 @@
 </template>
 
 <script>
-import { computed, ref, nextTick, inject } from "vue";
+import { computed, ref, inject } from "vue";
 import axios from "@/gateway/backendapi";
 import MembershipPieChart from "../../../components/charts/ReportPieChart.vue";
-import SelectAllDropdown  from "../ReportsDropdown.vue";
+import SelectAllDropdown from "../ReportsDropdown.vue";
 import printJS from "print-js";
 import GroupTree from "../../groups/component/GroupTreeCheckboxParent.vue";
 import exportService from "../../../services/exportFile/exportservice";
@@ -439,18 +453,18 @@ export default {
     const dynamicCustomFields = ref([]);
     const setSelectedMember = (payload) => {
       selectedMember.value = payload;
-    }
+    };
     const setSelectedGender = (payload) => {
-      selectedGender.value = payload
-      console.log(selectedGender.value, 'gender');
-    }
+      selectedGender.value = payload;
+      console.log(selectedGender.value, "gender");
+    };
     const setSelectedMaritalStatus = (payload) => {
-      selectedMaritalStatus.value = payload
-      console.log(selectedMaritalStatus.value, 'Marital');
-    }
+      selectedMaritalStatus.value = payload;
+      console.log(selectedMaritalStatus.value, "Marital");
+    };
     const setSelectedAgeGroup = (payload) => {
-      selectedAgeGroup.value = payload
-    }
+      selectedAgeGroup.value = payload;
+    };
     const genderChart = (array, key) => {
       // Accepts the array and key
       // Return the end result

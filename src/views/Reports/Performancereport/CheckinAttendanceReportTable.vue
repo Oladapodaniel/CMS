@@ -67,15 +67,13 @@
 
 <script>
 import { ref, watchEffect } from "vue";
-import PaginationButtons from "../../../components/pagination/PaginationButtons.vue";
+
 import dateFormatter from "../../../services/dates/dateformatter";
 // import { find } from 'highcharts';
 export default {
   props: ["groupedReport", "groupedReportByDate"],
   emits: ["data-to-export", "data-header-to-export"],
-  components: {
-    PaginationButtons,
-  },
+  
   setup(props, { emit }) {
     const searchText = ref("");
     const searchIsVisible = ref(false);

@@ -103,7 +103,7 @@
     <div class="row mt-5">
       <div class="col-md-12 col-12 px-0 text-center">
         <div
-          class="row tabl  border-0 report d-flex justify-content-between p-2 p-md-4"
+          class="row tabl border-0 report d-flex justify-content-between p-2 p-md-4"
         >
           <div class="col-md-6 col-12 pr-md-4 p-0">
             <h4 class="ju header4">Contributions</h4>

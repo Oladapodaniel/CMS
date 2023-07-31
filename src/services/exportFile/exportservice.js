@@ -9,10 +9,11 @@ const downLoadExcel = (selectedFileType, element, fileName, fileHeaderToExport, 
     if (selectedFileType === "pdf") {
         var element = document.getElementById('element-to-print'); //fix
         var opt = {
-            // margin:       1,
+            margin:       0.3,
+            width:      150,
             filename: `${fileName}.pdf`,
             image: { type: 'jpeg', quality: 0.98 },
-            html2canvas: { scale: 2 },
+            html2canvas: { scale: 2, logging: true, dpi: 192, letterRendering: true },
             jsPDF: { unit: 'in', format: 'letter', orientation: 'portrait' },
             pagebreak: { mode: ['avoid-all', 'css', 'legacy'] }
         };

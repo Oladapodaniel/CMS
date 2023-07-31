@@ -2,7 +2,7 @@
   <div class="container-fluid">
     <!-- header area -->
     <!-- <div class="container"> -->
-    <div class="row  flex-row justify-content-between align-items-center">
+    <div class="row flex-row justify-content-between align-items-center">
       <div class="centered-items">
         <div class="head-text">Wedding Anniversary Report</div>
       </div>
@@ -48,7 +48,7 @@
           <div>
             <label for="icon" class="mb-0 font-weight-bold">Start Date</label>
           </div>
-          <!-- <Calendar class="w-100" id="icon" v-model="startDate" :showIcon="true" dateFormat="dd/mm/yy"/> -->
+
           <el-date-picker
             v-model="startDate"
             type="date"
@@ -63,7 +63,7 @@
           <div>
             <label for="icon" class="mb-0 font-weight-bold">End Date</label>
           </div>
-          <!-- <Calendar class="w-100" id="icon" v-model="endDate" :showIcon="true" dateFormat="dd/mm/yy"/> -->
+
           <el-date-picker
             v-model="endDate"
             type="date"
@@ -212,26 +212,19 @@
 
 <script>
 import { ref, inject } from "vue";
-import Calendar from "primevue/calendar";
+
 import ByGenderChart from "@/components/charts/PieChart.vue";
-// import PaginationButtons from "../../../components/pagination/PaginationButtons";
+
 import axios from "@/gateway/backendapi";
 import dateFormatter from "../../../services/dates/dateformatter";
-import { ElMessage, ElMessageBox } from "element-plus";
-// import Dropdown from "primevue/dropdown";
-// import InputText from "primevue/inputtext";
-import Listbox from "primevue/listbox";
+import { ElMessage } from "element-plus";
+
 import printJS from "print-js";
 import exportService from "../../../services/exportFile/exportservice";
 
 export default {
   components: {
-    Calendar,
     ByGenderChart,
-    Listbox,
-    // Dropdown,
-    // InputText,
-    // PaginationButtons,
   },
   setup() {
     const startDate = ref("");
@@ -366,7 +359,6 @@ export default {
     };
 
     return {
-      Calendar,
       startDate,
       primarycolor,
       loading,
