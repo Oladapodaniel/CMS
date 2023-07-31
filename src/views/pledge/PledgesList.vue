@@ -544,7 +544,7 @@ export default {
     });
 
     const date = (offDate) => {
-      return monthDayYear.monthDayTime(offDate);
+      return monthDayYear.monthDayYear(offDate);
     };
     const chooseContact = (payload) => {
       selectedContact.value = payload;
