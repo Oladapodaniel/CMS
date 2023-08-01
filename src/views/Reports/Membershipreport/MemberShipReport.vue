@@ -229,8 +229,11 @@
         </div>
       </div>
     </div>
-    <div id="element-to-print" class="">
-      <div class="container-fluid px-0">
+    <div id="element-to-print" class="row">
+      <!-- <div class="container-fluid">
+        <div class="head text"></div>
+      </div> -->
+      <div class="container-fluid">
         <div
           class="row"
           :class="{ 'show-report': showReport, 'hide-report': !showReport }"
@@ -331,73 +334,79 @@
       </div>
       <!-- <div > -->
       <!-- <div class="row "> -->
-      <section class="row">
-        <!-- table header -->
-        <div
-          v-if="membersInChurch[0]"
-          class="mt-4 container-fluid table-main remove-styles2 remove-border responsiveness"
-          :class="{ 'show-report': showReport, 'hide-report': !showReport }"
-        >
-          <table
-            class="table remove-styles mt-0 table-hover table-header-area"
-            id="table"
+      <section class="container-fluid">
+        <div class="row">
+          <div
+            v-if="membersInChurch[0]"
+            class="mt-4 container-fluid px-0 table-main remove-styles2 remove-border responsiveness"
+            :class="{ 'show-report': showReport, 'hide-report': !showReport }"
           >
-            <thead class="table-header-area-main">
-              <tr class="text-capitalize text-nowrap" style="border-bottom: 0">
-                <!-- <th scope="col">Church Activity</th> -->
-                <th scope="col">Membership</th>
-                <th scope="col">First Name</th>
-                <th scope="col">Last Name</th>
-                <th scope="col">Phone</th>
-                <th scope="col">Email</th>
-                <th scope="col">Gender</th>
-                <th scope="col">Age Group</th>
-                <th scope="col">Home Address</th>
-                <th scope="col">Birthday</th>
-                <th
-                  scope="col"
-                  v-for="(item, index) in dynamicCustomFields"
-                  :key="index"
+            <table
+              class="table remove-styles mt-0 table-hover table-header-area"
+              id="table"
+            >
+              <thead class="table-header-area-main">
+                <tr
+                  class="text-capitalize text-nowrap"
+                  style="border-bottom: 0"
                 >
-                  {{ item.label }}
-                </th>
-              </tr>
-            </thead>
-            <tbody class="small-text font-weight-bold text-nowrap">
-              <tr v-for="(member, index) in membersInChurch" :key="index">
-                <!-- <td>{{member.churchActivity}}</td> -->
-                <td>{{ member.membership }}</td>
-                <td>{{ member.firstName }}</td>
-                <td>{{ member.lastName }}</td>
-                <td>{{ member.mobilePhone }}</td>
-                <td>{{ member.email }}</td>
-                <td>{{ member.gender }}</td>
-                <td>{{ member.ageGroup }}</td>
-                <td>{{ member.homeAddress }}</td>
-                <td>{{ member.birthDay }}</td>
-                <td
-                  v-show="member.customAttributeData.length > 0"
-                  v-for="(item, index) in dynamicCustomFields"
-                  :key="index"
-                >
-                  {{
-                    getMemberCustomAttributeData(
-                      member.customAttributeData,
-                      item
-                    )
-                  }}
-                </td>
-                <td
-                  v-show="member.customAttributeData.length === 0"
-                  v-for="(item, index) in dynamicCustomFields.length"
-                  :key="index"
-                >
-                  {{ "--" }}
-                </td>
-              </tr>
-            </tbody>
-          </table>
+                  <!-- <th scope="col">Church Activity</th> -->
+                  <th scope="col">Membership</th>
+                  <th scope="col">First Name</th>
+                  <th scope="col">Last Name</th>
+                  <th scope="col">Phone</th>
+                  <th scope="col">Email</th>
+                  <th scope="col">Gender</th>
+                  <th scope="col">Age Group</th>
+                  <th scope="col">Home Address</th>
+                  <th scope="col">Birthday</th>
+                  <th
+                    scope="col"
+                    v-for="(item, index) in dynamicCustomFields"
+                    :key="index"
+                  >
+                    {{ item.label }}
+                  </th>
+                </tr>
+              </thead>
+              <tbody class="small-text font-weight-bold text-nowrap">
+                <tr v-for="(member, index) in membersInChurch" :key="index">
+                  <!-- <td>{{member.churchActivity}}</td> -->
+                  <td>{{ member.membership }}</td>
+                  <td>{{ member.firstName }}</td>
+                  <td>{{ member.lastName }}</td>
+                  <td>{{ member.mobilePhone }}</td>
+                  <td>{{ member.email }}</td>
+                  <td>{{ member.gender }}</td>
+                  <td>{{ member.ageGroup }}</td>
+                  <td>{{ member.homeAddress }}</td>
+                  <td>{{ member.birthDay }}</td>
+                  <td
+                    v-show="member.customAttributeData.length > 0"
+                    v-for="(item, index) in dynamicCustomFields"
+                    :key="index"
+                  >
+                    {{
+                      getMemberCustomAttributeData(
+                        member.customAttributeData,
+                        item
+                      )
+                    }}
+                  </td>
+                  <td
+                    v-show="member.customAttributeData.length === 0"
+                    v-for="(item, index) in dynamicCustomFields.length"
+                    :key="index"
+                  >
+                    {{ "--" }}
+                  </td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
         </div>
+        <!-- table header -->
+
         <!--end table header -->
       </section>
     </div>

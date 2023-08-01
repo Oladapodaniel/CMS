@@ -471,6 +471,17 @@ const routes = [
                 },
                 {
 
+                    path: 'mainbranchsummary',
+                    name: "MainBranch",
+                    meta: {
+                        title: 'Churchplus - Branch',
+                    },
+                    component: () =>
+                        import( /* webpackChunkName: "addfirsttimer" */ '../views/branch/MainBranch')
+
+                },
+                {
+
                     path: 'addbranch',
                     name: "AddBranch",
                     meta: {
