@@ -59,10 +59,10 @@
         </div>
       </div>
     </div>
-
+  </div>
     <!--end of date area -->
     <div id="element-to-print">
-      <section>
+      <section class="container-fluid px-0">
         <!-- chart area -->
         <!-- d-flex justify-content-center -->
         <div
@@ -102,9 +102,9 @@
         <!--end of chart area -->
       </section>
 
-      <section>
+      <section class="container-fluid">
         <!-- table header -->
-        <div v-if="accountTransaction.length > 0">
+        <div class="row" v-if="accountTransaction.length > 0">
           <div
             class="mt-2 container-fluid table-main px-0 remove-styles2 remove-border responsiveness"
           >
@@ -175,16 +175,10 @@
                 </tr>
               </tbody>
             </table>
-            <div class="table-foot d-flex justify-content-end mt-3">
-              <!-- <PaginationButtons /> -->
-            </div>
           </div>
         </div>
-        <!-- <button @click="amountTotal">click me</button> -->
-        <!--end table header -->
       </section>
     </div>
-  </div>
 </template>
 
 <script>

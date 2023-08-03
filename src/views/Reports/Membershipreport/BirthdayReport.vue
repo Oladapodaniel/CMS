@@ -246,7 +246,7 @@ export default {
     const loading = ref(false);
     const primarycolor = inject("primarycolor");
     const showReport = ref(false);
-    const fileName = ref("");
+    const fileName = ref("Birthday Report");
     const bookTypeList = ref([
       { name: "xlsx" },
       { name: "csv" },

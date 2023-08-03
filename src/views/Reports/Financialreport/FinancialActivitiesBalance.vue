@@ -33,50 +33,36 @@
         </el-dropdown>
       </div>
     </div>
-    <div class="container-fluid px-0 mt-3">
-      <div style="background: #ebeff4; border-radius: 0.5rem" class="row py-5">
-        <div class="col-12 col-md-6 col-lg-3">
-          <div>
-            <label for="" class="font-weight-bold">Select Account</label>
-          </div>
+    <div style="background: #ebeff4; border-radius: 0.5rem" class="row mt-4 py-5">
+      <div class="col-12 col-md-6 col-lg-3">
+        <div>
+          <label for="" class="font-weight-bold">Select Account</label>
+        </div>
 
-          <div>
-            <el-select-v2
-              v-model="selectedAccountID"
-              class="w-100 font-weight-normal"
-              :options="
-                accountType.map((i) => ({
-                  label: i.name,
-                  value: i.id,
-                }))
-              "
-              placeholder="Select Account"
-              @change="setSelectedAccount"
-              size="large"
-            />
-          </div>
+        <div>
+          <el-select-v2
+            v-model="selectedAccountID"
+            class="w-100 font-weight-normal"
+            :options="
+              accountType.map((i) => ({
+                label: i.name,
+                value: i.id,
+              }))
+            "
+            placeholder="Select Account"
+            @change="setSelectedAccount"
+            size="large"
+          />
         </div>
-        <div class="col-12 col-md-6 col-lg-3">
-          <div class="">
-            <label for="icon" class="ml-2 font-weight-bold">Start Date</label>
-          </div>
-          <div>
-            <div>
-              <el-date-picker
-                v-model="startDate"
-                type="date"
-                format="DD/MM/YYYY"
-                size="large"
-                class="w-100"
-              />
-            </div>
-          </div>
+      </div>
+      <div class="col-12 col-md-6 col-lg-3">
+        <div class="">
+          <label for="icon" class="ml-2 font-weight-bold">Start Date</label>
         </div>
-        <div class="col-12 col-md-6 col-lg-3">
-          <div><label for="icon" class="font-weight-bold">End Date</label></div>
+        <div>
           <div>
             <el-date-picker
-              v-model="endDate"
+              v-model="startDate"
               type="date"
               format="DD/MM/YYYY"
               size="large"
@@ -84,94 +70,120 @@
             />
           </div>
         </div>
-        <div class="col-12 col-md-6 col-lg-3">
-          <el-button
-            class="c-pointer mt-4"
-            :color="primarycolor"
-            round
-            :loading="loading"
-            @click="generateReport"
-          >
-            Generate Report
-          </el-button>
+      </div>
+      <div class="col-12 col-md-6 col-lg-3">
+        <div><label for="icon" class="font-weight-bold">End Date</label></div>
+        <div>
+          <el-date-picker
+            v-model="endDate"
+            type="date"
+            format="DD/MM/YYYY"
+            size="large"
+            class="w-100"
+          />
         </div>
       </div>
-    </div>
-
-    <section
-      :class="{ 'show-report': showReport, 'hide-report': !showReport }"
-      class="row"
-    >
-      <!-- table header -->
-      <div
-        id="element-to-print"
-        class="container-top container-fluid table-main px-0 remove-styles2 remove-border responsiveness"
-      >
-        <table class="table remove-styles mt-0 table-header-area" id="table">
-          <thead class="table-header-area-main">
-            <tr
-              class="font-weight-bold text-capitalize text-nowrap"
-              style="border-bottom: 0"
-            >
-              <th scope="col">Date</th>
-              <th scope="col">Account Name</th>
-              <th scope="col">Ref Number</th>
-              <th scope="col">Description</th>
-              <th scope="col">Debit</th>
-              <th scope="col">Credit</th>
-              <th scope="col">Balance</th>
-            </tr>
-          </thead>
-          <tbody class="font-weight-bold text-nowrap small-text">
-            <tr v-for="(AccountList, index) in accountInChurch" :key="index">
-              <td>{{ formatDate(AccountList.date) }}</td>
-              <td>{{ AccountList.accountName }}</td>
-              <td>{{ AccountList.refNumber }}</td>
-              <td>{{ AccountList.description }}</td>
-              <td class="text-success">
-                {{ Math.abs(AccountList.debit).toLocaleString() }}.00
-              </td>
-              <td class="text-danger">
-                {{ Math.abs(AccountList.credit).toLocaleString() }}.00
-              </td>
-              <td class="text-dark font-weight-bolder">
-                {{
-                  AccountList && AccountList.currency
-                    ? AccountList.currency.symbol
-                    : ""
-                }}{{ Math.abs(AccountList.balance).toLocaleString() }}
-              </td>
-            </tr>
-          </tbody>
-          <tbody
-            class="font-weight-bolder text-nowrap"
-            style="font-size: small"
-          >
-            <tr class="answer-row">
-              <td class="gross-total">Total Balance</td>
-              <td></td>
-              <td></td>
-              <td></td>
-              <td></td>
-              <td></td>
-              <td class="gross-total">
-                {{
-                  accountInChurch.length > 0
-                    ? currentUser.currencySymbol +
-                      accountInChurch[
-                        accountInChurch.length - 1
-                      ].balance.toLocaleString()
-                    : 0
-                }}
-                <hr class="horizontal-rule" />
-              </td>
-            </tr>
-          </tbody>
-        </table>
+      <div class="col-12 col-md-6 col-lg-3">
+        <el-button
+          class="c-pointer mt-4"
+          :color="primarycolor"
+          round
+          :loading="loading"
+          @click="generateReport"
+        >
+          Generate Report
+        </el-button>
       </div>
-      <!--end table header -->
-    </section>
+    </div>
   </div>
+    <div id="element-to-print">
+      <div
+        class="container-fluid d-flex justify-content-center my-2"
+        v-if="displayTitle"
+      >
+        <div class="head-text">Accounting Activity and Balance Report</div>
+      </div>
+      <section
+        :class="{ 'show-report': showReport, 'hide-report': !showReport }"
+        class="container-fluid"
+      >
+        <div class="row">
+          <div
+            class="container-top container-fluid table-main px-0 remove-styles2 remove-border responsiveness"
+          >
+            <table
+              class="table remove-styles mt-0 table-header-area"
+              id="table"
+            >
+              <thead class="table-header-area-main">
+                <tr
+                  class="font-weight-bold text-capitalize text-nowrap"
+                  style="border-bottom: 0"
+                >
+                  <th scope="col">Date</th>
+                  <th scope="col">Account Name</th>
+                  <th scope="col">Ref Number</th>
+                  <th scope="col">Description</th>
+                  <th scope="col">Debit</th>
+                  <th scope="col">Credit</th>
+                  <th scope="col">Balance</th>
+                </tr>
+              </thead>
+              <tbody class="font-weight-bold text-nowrap small-text">
+                <tr
+                  v-for="(AccountList, index) in accountInChurch"
+                  :key="index"
+                >
+                  <td>{{ formatDate(AccountList.date) }}</td>
+                  <td>{{ AccountList.accountName }}</td>
+                  <td>{{ AccountList.refNumber }}</td>
+                  <td>{{ AccountList.description }}</td>
+                  <td class="text-success">
+                    {{ Math.abs(AccountList.debit).toLocaleString() }}.00
+                  </td>
+                  <td class="text-danger">
+                    {{ Math.abs(AccountList.credit).toLocaleString() }}.00
+                  </td>
+                  <td class="text-dark font-weight-bolder">
+                    {{
+                      AccountList && AccountList.currency
+                        ? AccountList.currency.symbol
+                        : ""
+                    }}{{ Math.abs(AccountList.balance).toLocaleString() }}
+                  </td>
+                </tr>
+              </tbody>
+              <tbody
+                class="font-weight-bolder text-nowrap"
+                style="font-size: small"
+              >
+                <tr class="answer-row">
+                  <td class="gross-total">Total Balance</td>
+                  <td></td>
+                  <td></td>
+                  <td></td>
+                  <td></td>
+                  <td></td>
+                  <td class="gross-total">
+                    {{
+                      accountInChurch.length > 0
+                        ? currentUser.currencySymbol +
+                          accountInChurch[
+                            accountInChurch.length - 1
+                          ].balance.toLocaleString()
+                        : 0
+                    }}
+                    <hr class="horizontal-rule" />
+                  </td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+        <!-- table header -->
+        <!--end table header -->
+      </section>
+    </div>
 </template>
 
 
@@ -194,9 +206,10 @@ export default {
     const acountID = ref([]);
     const showReport = ref(false);
     const showExport = ref(false);
+    const displayTitle = ref(false);
     const primarycolor = inject("primarycolor");
     const loading = ref(false);
-    const fileName = ref("");
+    const fileName = ref("Accounting Activity & Balance Report");
     const selectedAccountID = ref(null);
     const bookTypeList = ref([
       { name: "xlsx" },
@@ -239,6 +252,11 @@ export default {
       return sumAllBalance;
     });
     const downloadFile = (item) => {
+      if (item.name === "pdf") {
+        displayTitle.value = true;
+      } else {
+        displayTitle.value = false;
+      }
       exportService.downLoadExcel(
         item.name,
         document.getElementById("element-to-print"),
@@ -359,6 +377,7 @@ export default {
       bookTypeList,
       fileName,
       printJS,
+      displayTitle,
 
       acountID,
       sumBalance,

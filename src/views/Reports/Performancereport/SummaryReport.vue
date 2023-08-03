@@ -38,50 +38,19 @@
         <div><label for="" class="font-weight-bold">Select Event</label></div>
         <div>
           <el-select-v2
-                v-model="selectedEventID"
-                class="w-100 font-weight-normal"
-                :options="
-                  allEvents.map((i) => ({
-                    label: i.text,
-                    value: i.id,
-                  }))
-                "
-                placeholder="Select event"
-                @change="setSelectedEvent"
-                size="large"
-              />
+            v-model="selectedEventID"
+            class="w-100 font-weight-normal"
+            :options="
+              allEvents.map((i) => ({
+                label: i.text,
+                value: i.id,
+              }))
+            "
+            placeholder="Select event"
+            @change="setSelectedEvent"
+            size="large"
+          />
         </div>
-        <!-- <div>
-          <SelectAllDropdown :items="allEvents" @selected-item="setSelectedEvent" />
-        </div> -->
-        <!-- <div>
-          <MultiSelect
-            v-model="selectedSummary"
-            :options="allEvents"
-            optionLabel="text"
-            placeholder="Select Events"
-            :filter="true"
-            class="multiselect-custom w-100"
-          >
-            <template #value="slotProps">
-              <div
-                class="country-item country-item-value bg-secondary font-weight-bold small"
-                v-for="option of slotProps.value"
-                :key="option.code"
-              >
-                <div>{{ option.text }}</div>
-              </div>
-              <template v-if="!slotProps.value || slotProps.value.length === 0">
-                All Events
-              </template>
-            </template>
-            <template #option="slotProps">
-              <div class="country-item">
-                <div>{{ slotProps.option.text }}</div>
-              </div>
-            </template>
-          </MultiSelect>
-        </div> -->
       </div>
       <div class="col-12 col-md-6 col-lg-3">
         <div class="">
@@ -125,153 +94,140 @@
         </div>
       </div>
     </div>
-    <div id="element-to-print">
-      <h3
-        class="font-weight-bold mt-5 ml-2"
-        v-show="analysisReport.length > 0"
-      ></h3>
-
-      <div
-        class="borderInner mb-2"
-        :class="{ 'show-report': showReport, 'hide-report': !showReport }"
-      >
-        <h5 class="ml-3 mt-5"></h5>
-        <div class="round-border" v-show="analysisReport.length > 0">
-          <PerformanceColumnChart
-            domId="chart"
-            title="Service Performance Chart"
-            distance="5"
-            :titleMargin="10"
-            :data="FTNCChart"
-            :series="series"
-            :seriesText="`First timer and new convert analysis`"
-          />
-        </div>
-      </div>
-      <div
-        class="borderInner mb-2"
-        :class="{ 'show-report': showReport, 'hide-report': !showReport }"
-      >
-        <h5 class="ml-3 mt-5"></h5>
-        <div class="round-border" v-show="analysisReport.length > 0">
-          <PerformanceColumnChart
-            domId="chart1"
-            title=" Attendance Analysis Chart"
-            distance="5"
-            :titleMargin="10"
-            :data="attendanceChart"
-            :series="series"
-            :seriesText="`Attendance analysis`"
-          />
-        </div>
-      </div>
-      <div
-        class="borderInner mb-2"
-        :class="{ 'show-report': showReport, 'hide-report': !showReport }"
-      >
-        <h5 class="ml-3 mt-5"></h5>
-        <div class="round-border" v-show="analysisReport.length > 0">
-          <PerformanceColumnChart
-            domId="chart2"
-            title="First Timers Analysis Chart"
-            distance="5"
-            :titleMargin="10"
-            :data="firstTimerChart"
-            :series="series"
-            :seriesText="`First Timers Analysis Chart`"
-          />
-        </div>
-      </div>
-      <div
-        class="borderInner mb-2"
-        :class="{ 'show-report': showReport, 'hide-report': !showReport }"
-      >
-        <h5 class="ml-3 mt-5"></h5>
-        <div class="round-border" v-show="analysisReport.length > 0">
-          <PerformanceColumnChart
-            domId="chart3"
-            title="New Converts Analysis Chart"
-            distance="5"
-            :titleMargin="10"
-            :data="newConvertsChart"
-            :series="series"
-            :seriesText="`New Converts Analysis Chart`"
-          />
-        </div>
-      </div>
-
-      <section>
-        <!-- table header -->
-
+  </div>
+  <div id="element-to-print">
+    <div
+      class="container-fluid d-flex justify-content-center my-2"
+      v-if="displayTitle"
+    >
+      <div class="head-text">Church Activities Performance Summary Report</div>
+    </div>
+    <div class="container-fluid">
+      <div class="row">
         <div
-          class="container-fluid table-main px-0 remove-styles2 remove-border responsiveness mb-5 mt-5"
-          id="table"
-          v-show="analysisReport.length > 0"
+          class="borderInner mb-2"
           :class="{ 'show-report': showReport, 'hide-report': !showReport }"
         >
-          <table class="table remove-styles mt-0 table-hover table-header-area">
-            <thead class="table-header-area-main">
-              <tr
-                class="font-weight-bold text-capitalize text-nowrap"
-                style="border-bottom: 0"
-              >
-                <th scope="col">Event Name</th>
-                <th scope="col">Date</th>
-                <th scope="col">Description</th>
-                <th scope="col">Topic</th>
-                <!-- <th scope="col">Text</th> -->
-                <th scope="col">First Timers</th>
-                <th scope="col">New Converts</th>
-                <th scope="col">Testimonies</th>
-              </tr>
-            </thead>
-            <tbody class="font-weight-bold small-text text-nowrap">
-              <tr v-for="(analysisTable, index) in analysisReport" :key="index">
-                <!-- <td>{{index === 0 ? analysisTable.text : ""}}</td> -->
-                <td>
-                  {{
-                    selectedSummary.length > 1 ||
-                    (selectedSummary.length == 1 && index == 0)
-                      ? analysisTable.eventName
-                      : ""
-                  }}
-                </td>
-                <td>{{ formatDate(analysisTable.date) }}</td>
-                <td>{{ analysisTable.description }}</td>
-                <td>{{ analysisTable.topic }}</td>
-                <!-- <td>{{analysisTable.text}}</td> -->
-                <td>{{ analysisTable.firstTimers }}</td>
-                <td>{{ analysisTable.newConverts }}</td>
-                <td>{{ analysisTable.testmonies }}</td>
-              </tr>
-              <!-- <tr>
-               <td></td>
-              <td>Aug 8 2021</td>
-              <td>Sunday Service 08 aug, 21</td>
-              <td></td>
-              <td></td>
-              <td>0</td>
-              <td>0</td>
-              <td>0</td>
-            </tr> -->
-              <!-- <tr>
-               <td></td>
-              <td>Aug 8 2021</td>
-              <td>Sunday Service 08 aug, 21</td>
-              <td></td>
-              <td></td>
-              <td>0</td>
-              <td>0</td>
-              <td>0</td>
-            </tr> -->
-            </tbody>
-          </table>
-          <!-- <div class="table-foot d-flex justify-content-end">
-          <PaginationButtons />
-        </div> -->
+          <h5 class="ml-3 mt-5"></h5>
+          <div class="round-border" v-show="analysisReport.length > 0">
+            <PerformanceColumnChart
+              domId="chart"
+              title="Service Performance Chart"
+              distance="5"
+              :titleMargin="10"
+              :data="FTNCChart"
+              :series="series"
+              :seriesText="`First timer and new convert analysis`"
+            />
+          </div>
         </div>
-        <!--end table header -->
-      </section>
+        <div
+          class="borderInner mb-2"
+          :class="{ 'show-report': showReport, 'hide-report': !showReport }"
+        >
+          <h5 class="ml-3 mt-5"></h5>
+          <div class="round-border" v-show="analysisReport.length > 0">
+            <PerformanceColumnChart
+              domId="chart1"
+              title=" Attendance Analysis Chart"
+              distance="5"
+              :titleMargin="10"
+              :data="attendanceChart"
+              :series="series"
+              :seriesText="`Attendance analysis`"
+            />
+          </div>
+        </div>
+        <div
+          class="borderInner mb-2"
+          :class="{ 'show-report': showReport, 'hide-report': !showReport }"
+        >
+          <h5 class="ml-3 mt-5"></h5>
+          <div class="round-border" v-show="analysisReport.length > 0">
+            <PerformanceColumnChart
+              domId="chart2"
+              title="First Timers Analysis Chart"
+              distance="5"
+              :titleMargin="10"
+              :data="firstTimerChart"
+              :series="series"
+              :seriesText="`First Timers Analysis Chart`"
+            />
+          </div>
+        </div>
+        <div
+          class="borderInner mb-2"
+          :class="{ 'show-report': showReport, 'hide-report': !showReport }"
+        >
+          <h5 class="ml-3 mt-5"></h5>
+          <div class="round-border" v-show="analysisReport.length > 0">
+            <PerformanceColumnChart
+              domId="chart3"
+              title="New Converts Analysis Chart"
+              distance="5"
+              :titleMargin="10"
+              :data="newConvertsChart"
+              :series="series"
+              :seriesText="`New Converts Analysis Chart`"
+            />
+          </div>
+        </div>
+
+        <section class="container-fluid">
+          <!-- table header -->
+          <div class="row">
+            <div
+              class="container-fluid table-main px-0 remove-styles2 remove-border responsiveness mb-5 mt-5"
+              id="table"
+              v-show="analysisReport.length > 0"
+              :class="{ 'show-report': showReport, 'hide-report': !showReport }"
+            >
+              <table
+                class="table remove-styles mt-0 table-hover table-header-area"
+              >
+                <thead class="table-header-area-main">
+                  <tr
+                    class="font-weight-bold text-capitalize text-nowrap"
+                    style="border-bottom: 0"
+                  >
+                    <th scope="col">Event Name</th>
+                    <th scope="col">Date</th>
+                    <th scope="col">Description</th>
+                    <th scope="col">Topic</th>
+
+                    <th scope="col">First Timers</th>
+                    <th scope="col">New Converts</th>
+                    <th scope="col">Testimonies</th>
+                  </tr>
+                </thead>
+                <tbody class="font-weight-bold small-text text-nowrap">
+                  <tr
+                    v-for="(analysisTable, index) in analysisReport"
+                    :key="index"
+                  >
+                    <td>
+                      {{
+                        selectedSummary.length > 1 ||
+                        (selectedSummary.length == 1 && index == 0)
+                          ? analysisTable.eventName
+                          : ""
+                      }}
+                    </td>
+                    <td>{{ formatDate(analysisTable.date) }}</td>
+                    <td>{{ analysisTable.description }}</td>
+                    <td>{{ analysisTable.topic }}</td>
+
+                    <td>{{ analysisTable.firstTimers }}</td>
+                    <td>{{ analysisTable.newConverts }}</td>
+                    <td>{{ analysisTable.testmonies }}</td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
+          <!--end table header -->
+        </section>
+      </div>
     </div>
   </div>
 </template>
@@ -296,11 +252,12 @@ export default {
       return dateFormatter.normalDate(date);
     };
     const showExport = ref(false);
-    const selectedEventID  = ref(null);
+    const selectedEventID = ref(null);
     const showReport = ref(false);
     const loading = ref(false);
+    const displayTitle = ref(false);
     const primarycolor = inject("primarycolor");
-    const fileName = ref("");
+    const fileName = ref("Church Activities  Summary Report");
     const bookTypeList = ref([
       { name: "xlsx" },
       { name: "csv" },
@@ -353,10 +310,17 @@ export default {
         .catch((err) => console.log(err));
     };
     getAllEvents();
-    const setSelectedEvent = () =>  {
-      selectedSummary.value = allEvents.value.find((i) => i.id === selectedEventID.value )
-    }
-    const downloadFile = () => {
+    const setSelectedEvent = () => {
+      selectedSummary.value = allEvents.value.find(
+        (i) => i.id === selectedEventID.value
+      );
+    };
+    const downloadFile = (item) => {
+      if (item.name === "pdf") {
+        displayTitle.value = true;
+      } else {
+        displayTitle.value = false;
+      }
       exportService.downLoadExcel(
         item.name,
         document.getElementById("element-to-print"),
@@ -368,7 +332,7 @@ export default {
     const getAnalysisReport = () => {
       loading.value = true;
       analysisReport.value = [];
-      const activityId =  selectedSummary.value ? selectedSummary.value.id : ''
+      const activityId = selectedSummary.value ? selectedSummary.value.id : "";
       axios
         .get(
           `/api/Reports/events/getActivityAnalysisReport?startDate=${new Date(
@@ -514,24 +478,13 @@ export default {
         color: "#d00000",
         data: testmoniesData.value,
       });
-
-      //  mainFirstTimerData.value.push({
-      //      name: 'firstTimers',
-      //      color: '#3f37c9',
-      //      data: firstTimerData.value
-      //  })
-
-      //  mainNewConvertData.value.push({
-      //      name: 'newConverts',
-      //      color: '#3f37c9',
-      //      data: newConvertData.value
-      //  })
       return mainFirsttimerNewCovertData.value;
     });
 
     return {
       formatDate,
       primarycolor,
+      displayTitle,
       loading,
       startDate,
       endDate,

@@ -203,7 +203,7 @@ export default {
     const newConvertsInChurch = ref([]);
     const showExport = ref(false);
     const loading = ref(false);
-    const fileName = ref("");
+    const fileName = ref("New Convert(M) Report");
     const primarycolor = inject("primarycolor");
     const bookTypeList = ref([
       { name: "xlsx" },

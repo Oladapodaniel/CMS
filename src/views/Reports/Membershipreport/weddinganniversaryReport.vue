@@ -237,7 +237,7 @@ export default {
     const membershipAgeGroup = ref([]);
     const showExport = ref(false);
     const loading = ref(false);
-    const fileName = ref("");
+    const fileName = ref("Wedding Anniversary Report");
     // const bookTypeList = ref(["xlsx", "csv", "txt"]);
     const bookTypeList = ref([
       { name: "xlsx" },

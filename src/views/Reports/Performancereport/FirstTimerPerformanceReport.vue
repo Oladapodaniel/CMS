@@ -77,123 +77,83 @@
         </div>
       </div>
     </div>
-    <!--end of date area -->
-    <div id="element-to-print" class="row">
-      <div class="container-fluid">
-        <div class="row">
-          <!-- <div class="col-12 " :class="{ 'show-report': showReport, 'hide-report' : !showReport}">
-                    <div class="mt-5 display-1 font-weight-bold text-center heading-text">
-                       First Timers Analysis Report 
-                    </div>
-                </div> -->
-          <!-- <div class="col-12 w-100 text-center ">
-                    <div class="col-12   text-center">
-                        <div class="col-12 font-weight-bold">Firsttimer By Event Date</div>
-                        <div class="col-12" :class="{ 'show-report': !showReport, 'hide-report' : showReport}">No Data Available</div>
-                        <div class="col-12 " :class="{ 'show-report': showReport, 'hide-report' : !showReport}">
-                            <PerformanceColumnChart
-                                domId="chart1"
-                                title="Firsttimer By Event Date"
-                                distance="5"
-                                :titleMargin="10"
-                                :data="pieChart"
-                                subtitle="Monthly Attendance of Events"
-                                :series="mappedEventDate"
-                                :attendanceSeries="attendanceSeries"
-                        
-                            />
-                        </div>            
-                    </div>
-                </div> -->
-        </div>
-        <div
-          class="row"
-          :class="{ 'show-report': showReport, 'hide-report': !showReport }"
-        >
-          <div class="col-12 round-border mt-3 d-flex flex-wrap">
-            <div class="col-12 col-sm-12 col-md-6 col-lg-6">
-              <div class="col-12 text-center">
-                <div class="col-12 font-weight-bold">Gender Distribution</div>
-                <div class="col-12">
-                  <PerformancePieChart
-                    domId="chart2"
-                    distance="5"
-                    :titleMargin="10"
-                    :summary="mappedGender"
-                  />
-                </div>
+  </div>
+  <!--end of date area -->
+  <div id="element-to-print">
+    <div
+      class="container-fluid d-flex justify-content-center my-2"
+      v-if="displayTitle"
+    >
+      <div class="head-text">First Timer Performance Report</div>
+    </div>
+    <div class="container-fluid">
+      <div
+        class="row"
+        :class="{ 'show-report': showReport, 'hide-report': !showReport }"
+      >
+        <div class="col-12 round-border mt-3 d-flex flex-wrap">
+          <div class="col-12 col-sm-12 col-md-6 col-lg-6">
+            <div class="col-12 text-center">
+              <div class="col-12 font-weight-bold">Gender Distribution</div>
+              <div class="col-12">
+                <PerformancePieChart
+                  domId="chart2"
+                  distance="5"
+                  :titleMargin="10"
+                  :summary="mappedGender"
+                />
               </div>
             </div>
-            <div class="col-12 col-sm-12 col-md-6 col-lg-6">
-              <div class="col-12 text-center mt-3 mt-sm-0 mt-md-0 mt-lg-0">
-                <div class="col-12 font-weight-bold">Marital Status</div>
-                <div class="col-12">
-                  <PerformancePieChart
-                    domId="chart3"
-                    distance="5"
-                    :titleMargin="10"
-                    :summary="mappedMaritalStatus"
-                  />
-                </div>
+          </div>
+          <div class="col-12 col-sm-12 col-md-6 col-lg-6">
+            <div class="col-12 text-center mt-3 mt-sm-0 mt-md-0 mt-lg-0">
+              <div class="col-12 font-weight-bold">Marital Status</div>
+              <div class="col-12">
+                <PerformancePieChart
+                  domId="chart3"
+                  distance="5"
+                  :titleMargin="10"
+                  :summary="mappedMaritalStatus"
+                />
               </div>
             </div>
           </div>
         </div>
       </div>
-      <!-- <div > -->
-      <!-- <div class="row "> -->
-      <section class="w-100">
-        <!-- table header -->
-        <div
-          class="mt-4 container-fluid table-main px-0 remove-styles2 remove-border responsiveness"
-          :class="{ 'show-report': showReport, 'hide-report': !showReport }"
-        >
-          <table
-            class="table remove-styles mt-0 table-hover table-header-area"
-            id="table"
-          >
-            <thead class="table-header-area-main">
-              <tr class="text-capitalize text-nowrap" style="border-bottom: 0">
-                <!-- <th scope="col">Church Activity</th> -->
-                <th scope="col">Name</th>
-                <th scope="col">Phone</th>
-                <th scope="col">Email</th>
-                <th scope="col">Home Address</th>
-                <th scope="col">Gender</th>
-                <!-- <th scope="col">Marital Status</th> -->
-                <!-- <th scope="col">Activity Date</th> -->
-                <!-- <th scope="col">Current Status</th> -->
-              </tr>
-            </thead>
-            <tbody
-              class="font-weight-bold text-nowrap"
-              style="font-size: small"
-            >
-              <tr
-                v-for="(firstTimer, index) in firstTimerInChurch"
-                :key="index"
-              >
-                <!-- <td>{{ firstTimer.event }}</td> -->
-                <td>{{ firstTimer.lastName }} {{ firstTimer.firstName }}</td>
-                <td>{{ firstTimer.mobilePhone }}</td>
-                <td>{{ firstTimer.email }}</td>
-                <td>{{ firstTimer.homeAddress }}</td>
-                <td>{{ firstTimer.gender }}</td>
-                <!-- <td>{{ firstTimer.maritalStatus }}</td> -->
-                <!-- <td>{{ formatDate(firstTimer.activityDate) }}</td> -->
-                <!-- <td>{{ firstTimer.status }}</td> -->
-              </tr>
-            </tbody>
-          </table>
-          <!-- <div class="table-foot d-flex justify-content-end mt-n3">
-                <PaginationButtons />
-                </div> -->
-        </div>
-        <!--end table header -->
-      </section>
     </div>
-    <!-- </div> -->
-    <!-- </div> -->
+
+    <section class="w-100">
+      <!-- table header -->
+      <div
+        class="mt-4 container-fluid table-main px-0 remove-styles2 remove-border responsiveness"
+        :class="{ 'show-report': showReport, 'hide-report': !showReport }"
+      >
+        <table
+          class="table remove-styles mt-0 table-hover table-header-area"
+          id="table"
+        >
+          <thead class="table-header-area-main">
+            <tr class="text-capitalize text-nowrap" style="border-bottom: 0">
+              <th scope="col">Name</th>
+              <th scope="col">Phone</th>
+              <th scope="col">Email</th>
+              <th scope="col">Home Address</th>
+              <th scope="col">Gender</th>
+            </tr>
+          </thead>
+          <tbody class="font-weight-bold text-nowrap" style="font-size: small">
+            <tr v-for="(firstTimer, index) in firstTimerInChurch" :key="index">
+              <td>{{ firstTimer.lastName }} {{ firstTimer.firstName }}</td>
+              <td>{{ firstTimer.mobilePhone }}</td>
+              <td>{{ firstTimer.email }}</td>
+              <td>{{ firstTimer.homeAddress }}</td>
+              <td>{{ firstTimer.gender }}</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+      <!--end table header -->
+    </section>
   </div>
 </template>
 
@@ -215,6 +175,7 @@ export default {
   setup() {
     const showReport = ref(false);
     const loading = ref(false);
+    const displayTitle = ref(false);
     const primarycolor = inject("primarycolor");
     const startDate = ref("");
     const endDate = ref("");
@@ -226,7 +187,7 @@ export default {
     const attendanceData = ref([]);
     const mainAttendanceData = ref([]);
     const showExport = ref(false);
-    const fileName = ref("");
+    const fileName = ref("FirstTimerAttendance Report");
     const bookTypeList = ref([
       { name: "xlsx" },
       { name: "csv" },
@@ -365,6 +326,11 @@ export default {
     };
 
     const downloadFile = (item) => {
+      if (item.name === "pdf") {
+        displayTitle.value = true;
+      } else {
+        displayTitle.value = false;
+      }
       exportService.downLoadExcel(
         item.name,
         document.getElementById("element-to-print"),
@@ -381,6 +347,7 @@ export default {
     return {
       attendanceChart,
       primarycolor,
+      displayTitle,
       loading,
       mainAttendanceData,
       attendanceData,

@@ -40,59 +40,56 @@
         contributions
       </div>
     </div>
-    <div class="container-fluid px-0">
-      <div class="row py-5" style="background: #ebeff4; border-radius: 0.5rem">
-        <div class="col-sm-9 col-12">
-          <div class="row">
-            <div class="col-md-6 col-sm-12 pr-md-0">
-              <div class="p-field p-col-12 pt-md-2 pb-2">
-                <div>
-                  <label for="icon" class="mb-0 font-weight-bold"
-                    >Start Date</label
-                  >
-                </div>
-                <el-date-picker
-                  v-model="startDate"
-                  type="date"
-                  format="DD/MM/YYYY"
-                  size="large"
-                  class="w-100"
+    <div class="row py-5" style="background: #ebeff4; border-radius: 0.5rem">
+      <div class="col-sm-9 col-12">
+        <div class="row">
+          <div class="col-md-6 col-sm-12 pr-md-0">
+            <div class="p-field p-col-12 pt-md-2 pb-2">
+              <div>
+                <label for="icon" class="mb-0 font-weight-bold"
+                  >Start Date</label
+                >
+              </div>
+              <el-date-picker
+                v-model="startDate"
+                type="date"
+                format="DD/MM/YYYY"
+                size="large"
+                class="w-100"
+              />
+            </div>
+          </div>
+
+          <div class="col-md-6 col-sm-12 pr-md-0">
+            <div class="p-field p-col-11 pt-md-2">
+              <div>
+                <label for="icon" class="mb-0 font-weight-bold">End Date</label>
+              </div>
+              <el-date-picker
+                v-model="endDate"
+                type="date"
+                format="DD/MM/YYYY"
+                size="large"
+                class="w-100"
+              />
+            </div>
+          </div>
+
+          <div class="col-md-6 col-sm-12 pr-md-0">
+            <div class="p-field pt-md-2 p-col-12">
+              <div>
+                <label for="icon" class="mb-0 font-weight-bold"
+                  >Select Categories</label
+                >
+              </div>
+              <div>
+                <SelectAllDropdown
+                  :items="Categories"
+                  @selected-item="setSelectedAgeGroup"
                 />
               </div>
-            </div>
 
-            <div class="col-md-6 col-sm-12 pr-md-0">
-              <div class="p-field p-col-11 pt-md-2">
-                <div>
-                  <label for="icon" class="mb-0 font-weight-bold"
-                    >End Date</label
-                  >
-                </div>
-                <el-date-picker
-                  v-model="endDate"
-                  type="date"
-                  format="DD/MM/YYYY"
-                  size="large"
-                  class="w-100"
-                />
-              </div>
-            </div>
-
-            <div class="col-md-6 col-sm-12 pr-md-0">
-              <div class="p-field pt-md-2 p-col-12">
-                <div>
-                  <label for="icon" class="mb-0 font-weight-bold"
-                    >Select Categories</label
-                  >
-                </div>
-                <div>
-                  <SelectAllDropdown
-                    :items="Categories"
-                    @selected-item="setSelectedAgeGroup"
-                  />
-                </div>
-
-                <!-- <MultiSelect
+              <!-- <MultiSelect
                   v-model="selectedCategories"
                   :options="Categories"
                   optionLabel="name"
@@ -120,69 +117,72 @@
                     </div>
                   </template>
                 </MultiSelect> -->
-              </div>
-            </div>
-            <div class="col-sm-12 col-md-6 pr-md-0 pt-md-2">
-              <div>
-                <label for="" class="mb-0 font-weight-bold"
-                  >Select Member</label
-                >
-              </div>
-              <MembersSearch
-                @memberdetail="chooseContact"
-                :currentMember="selectedContact"
-              />
             </div>
           </div>
+          <div class="col-sm-12 col-md-6 pr-md-0 pt-md-2">
+            <div>
+              <label for="" class="mb-0 font-weight-bold">Select Member</label>
+            </div>
+            <MembersSearch
+              @memberdetail="chooseContact"
+              :currentMember="selectedContact"
+            />
+          </div>
         </div>
-        <div class="col-9 col-md-6 col-lg-3 d-flex align-items-center">
-          <el-button
-            class="c-pointer mt-4"
-            :color="primarycolor"
-            round
-            :loading="loading"
-            @click="genarateReport"
-          >
-            Generate Report
-          </el-button>
+      </div>
+      <div class="col-9 col-md-6 col-lg-3 d-flex align-items-center">
+        <el-button
+          class="c-pointer mt-4"
+          :color="primarycolor"
+          round
+          :loading="loading"
+          @click="genarateReport"
+        >
+          Generate Report
+        </el-button>
+      </div>
+    </div>
+  </div>
+  <div id="element-to-print" class="">
+    <div
+      class="container-fluid d-flex justify-content-center my-2"
+      v-if="displayTitle"
+    >
+      <div class="head-text">Offering And Contribution Report</div>
+    </div>
+    <div class="container-fluid">
+      <div
+        class="row"
+        :class="{ 'show-report': showReport, 'hide-report': !showReport }"
+      >
+        <div class="col-12 round-border container-fluid d-flex mt-3 flex-wrap">
+          <div class="col-12 col-md-6 col-lg-6">
+            <OfferingColumnChart
+              domId="chart1"
+              title="Offering Report"
+              distance="5"
+              :titleMargin="10"
+              :data="offeringDetail"
+              subtitle="Offering And Giving Data"
+              :series="mappedOfferingCol"
+              yAxisText="Offering"
+            />
+          </div>
+
+          <div class="col-12 col-md-6 mt-3 col-lg-6">
+            <OfferingPieChart
+              domId="chart3"
+              distance="5"
+              :titleMargin="10"
+              :summary="mappedOffering"
+            />
+          </div>
         </div>
       </div>
     </div>
-    <div id="element-to-print" class="row">
-      <div class="container-fluid">
-        <div
-          class="row"
-          :class="{ 'show-report': showReport, 'hide-report': !showReport }"
-        >
-          <div
-            class="col-12 round-border container-fluid d-flex mt-3 flex-wrap"
-          >
-            <div class="col-12 col-md-6 col-lg-6">
-              <OfferingColumnChart
-                domId="chart1"
-                title="Offering Report"
-                distance="5"
-                :titleMargin="10"
-                :data="offeringDetail"
-                subtitle="Offering And Giving Data"
-                :series="mappedOfferingCol"
-                yAxisText="Offering"
-              />
-            </div>
-
-            <div class="col-12 col-md-6 mt-3 col-lg-6">
-              <OfferingPieChart
-                domId="chart3"
-                distance="5"
-                :titleMargin="10"
-                :summary="mappedOffering"
-              />
-            </div>
-          </div>
-        </div>
-      </div>
-      <section class="w-100">
-        <!-- table header -->
+    <section class="container-fluid">
+      <!-- table header -->
+      <div class="row">
         <div
           v-if="offeringInChurch.length > 0"
           class="mt-3 container-fluid table-main px-0 remove-styles2 remove-border responsiveness"
@@ -242,9 +242,9 @@
             </tbody>
           </table>
         </div>
-        <!--end table header -->
-      </section>
-    </div>
+      </div>
+      <!--end table header -->
+    </section>
   </div>
 </template>
 
@@ -273,6 +273,7 @@ export default {
     const Categories = ref([]);
     const selectedCategories = ref([]);
     const showReport = ref(false);
+    const displayTitle = ref(false);
     const primarycolor = inject("primarycolor");
     const startDate = ref("");
     const endDate = ref("");
@@ -290,7 +291,7 @@ export default {
     const columnData = ref([]);
     const showExport = ref(false);
     const loading = ref(false);
-    const fileName = ref("");
+    const fileName = ref("Offering And Contribution Report");
     const bookTypeList = ref([
       { name: "xlsx" },
       { name: "csv" },
@@ -451,6 +452,11 @@ export default {
       fileToExport.value = exportService.tableToJson(
         document.getElementById("table")
       );
+      if (item.name === "pdf") {
+        displayTitle.value = true;
+      } else {
+        displayTitle.value = false;
+      }
       exportService.downLoadExcel(
         item.name,
         document.getElementById("element-to-print"),
@@ -465,6 +471,7 @@ export default {
 
     return {
       mainOfferingData,
+      displayTitle,
       chooseContact,
       offeringDetail,
       offeringData,

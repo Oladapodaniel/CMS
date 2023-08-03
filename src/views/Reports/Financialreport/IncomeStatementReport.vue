@@ -35,14 +35,6 @@
           </template>
         </el-dropdown>
       </div>
-
-      <!-- <div class="default-btn border-secondary font-weight-normal c-pointer" @click="() => (showExport = !showExport)"
-          style="width: fixed; position:relative">
-          Export &nbsp; &nbsp; <i class="pi pi-angle-down"></i>
-          <div class=" c-pointer" style="width: 6rem; z-index:1000; position:absolute" v-if="showExport">
-            <Listbox @click="downloadFile" v-model="selectedFileType" :options="bookTypeList" optionLabel="name" />
-          </div>
-        </div> -->
     </div>
     <div>
       <p class="">
@@ -96,16 +88,24 @@
         </div>
       </div>
     </div>
+
+  </div>
     <!--end of date area -->
-    <div id="element-to-print" class="row">
-      <section class="container-fluid px-0">
+    <div id="element-to-print" class="">
+      <div
+      class="container-fluid d-flex justify-content-center my-2"
+      v-if="displayTitle"
+    >
+      <div class="head-text">Income Statement Report</div>
+    </div>
+      <section class="container-fluid  " :class="
+            incomeStatement && incomeStatement.length > 0 ? 'graph-area' : ''
+          ">
         <!-- chart area -->
         <div
           id=""
-          class="chart row"
-          :class="
-            incomeStatement && incomeStatement.length > 0 ? 'graph-area' : ''
-          "
+          class="  row"
+          
         >
           <div class="col-12 col-md-6">
             <IncomeStatementChart
@@ -136,8 +136,9 @@
         <!--end of chart area-->
       </section>
 
-      <section class="col-md-12 px-0">
+      <section class="container-fluid ">
         <!-- table header -->
+        <div class="row">
         <div
           id=""
           v-if="groupedIncomeItemToDisplay.length > 0"
@@ -149,7 +150,7 @@
                 class="small-text text-capitalize text-nowrap font-weight-bold"
                 style="border-bottom: 0; font-size: medium"
               >
-                <!-- <th scope="col">Fund</th> -->
+              
                 <th scope="col">Account Category</th>
                 <th scope="col">Account Name</th>
                 <th scope="col">Description</th>
@@ -168,7 +169,7 @@
                 <td class="fundType-color" style="font-size: medium">
                   {{ row }}
                 </td>
-                <!-- <td></td> -->
+              
                 <td></td>
                 <td></td>
                 <td></td>
@@ -178,7 +179,7 @@
                 v-for="(account, indx) in tableData[row].expenses"
                 :key="indx"
               >
-                <!-- <td></td> -->
+             
                 <td class="accounType-color">
                   {{ indx === 0 ? account.accountCategory : "" }}
                 </td>
@@ -196,7 +197,7 @@
               </tr>
               <tr class="answer-row" v-if="tableData[row].incomes.length > 0">
                 <td class="subtotal">Subtotal</td>
-                <!-- <td></td> -->
+       
                 <td></td>
                 <td></td>
                 <td class="subtotal">
@@ -206,7 +207,7 @@
                 <td></td>
               </tr>
               <tr v-for="(account, indx) in tableData[row].incomes" :key="indx">
-                <!-- <td></td> -->
+          
                 <td class="accounType-color">
                   {{ indx === 0 ? account.accountCategory : "" }}
                 </td>
@@ -224,7 +225,7 @@
               </tr>
               <tr class="answer-row" v-if="tableData[row].incomes.length > 0">
                 <td class="subtotal">Subtotal</td>
-                <!-- <td></td> -->
+  
                 <td></td>
                 <td></td>
                 <td class="subtotal">
@@ -235,7 +236,7 @@
               </tr>
               <tr class="answer-row" v-if="tableData[row].incomes.length > 0">
                 <td class="total-answer">Total</td>
-                <!-- <td></td> -->
+                
                 <td></td>
                 <td></td>
                 <td class="total-answer">
@@ -245,7 +246,7 @@
                 <td></td>
               </tr>
               <tr style="background-color: #fff">
-                <!-- <td>&nbsp;</td> -->
+       
                 <td>&nbsp;</td>
                 <td>&nbsp;</td>
                 <td>&nbsp;</td>
@@ -258,7 +259,7 @@
             >
               <tr class="answer-row2">
                 <td class="gross-total">Gross Total</td>
-                <!-- <td></td> -->
+            
                 <td></td>
                 <td></td>
                 <td class="gross-total responsive-horizontalrule">
@@ -274,15 +275,13 @@
               </tr>
             </tbody>
           </table>
-          <div class="table-foot d-flex justify-content-end mt-3">
-            <!-- <PaginationButtons /> -->
-          </div>
+        </div>
+
         </div>
 
         <!--end table header -->
       </section>
     </div>
-  </div>
 </template>
 
 <script>
@@ -319,7 +318,8 @@ export default {
     const loading = ref(false);
     const showExport = ref(false);
     const showReport = ref(false);
-    const fileName = ref("");
+    const displayTitle = ref(false);
+    const fileName = ref("Income Statement Report");
     const bookTypeList = ref([
       { name: "xlsx" },
       { name: "csv" },
@@ -455,6 +455,11 @@ export default {
 
     /* Code For Exporting File */
     const downloadFile = (item) => {
+      if (item.name === "pdf") {
+        displayTitle.value = true;
+      } else {
+        displayTitle.value = false;
+      }
       exportService.downLoadExcel(
         item.name,
         document.getElementById("element-to-print"),
@@ -566,6 +571,7 @@ export default {
       formatDate,
       groupedIncomeStatements,
       groupedExpenseStatements,
+      displayTitle,
       churchIncomes,
       churchExpense,
       groupedIncomeItemToDisplay,

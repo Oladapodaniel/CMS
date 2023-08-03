@@ -1,7 +1,6 @@
 <template>
   <div class="container-fluid">
     <!-- header area -->
-    <!-- <div class="container"> -->
     <div class="row flex-row justify-content-between align-items-center">
       <div class="centered-items">
         <div class="head-text">First Timers Report</div>
@@ -38,10 +37,8 @@
       </div>
     </div>
 
-    <!-- </div> -->
     <!--end of header area -->
     <!-- date area -->
-    <!-- <div class="  bg-area my-3"> -->
     <div class="row pl-1 pl-md-5 bg-area mt-sm-3">
       <div class="col-md-4 col-sm-12 px-md-0">
         <div class="p-field p-col-12 pt-md-2 pb-2">
@@ -85,44 +82,48 @@
         </div>
       </div>
     </div>
-    <!-- </div> -->
+  </div>
     <!--end of date area -->
-    <div id="element-to-print" class="">
-      <section class="row">
-        <!-- chart area -->
-        <div
-          class="chart container-fluid"
-          :class="
-            firstTimerInChurch && firstTimerInChurch.length > 0
-              ? 'graph-area'
-              : ''
-          "
+    <div id="element-to-print">
+      <div
+          class="container-fluid d-flex justify-content-center my-2"
+          v-if="displayTitle"
         >
-          <div class="row">
-            <div class="chart1 col-12 col-md-6">
-              <ByGenderChart
-                domId="chart"
-                title="By Gender"
-                distance="5"
-                :titleMargin="10"
-                :summary="data"
-              />
-            </div>
-            <div class="chart1 col-12 col-md-6">
-              <ByGenderChart
-                domId="chartid"
-                title="Marital Status"
-                distance="5"
-                :titleMargin="10"
-                :summary="maritalChartInfo"
-              />
-            </div>
+          <div class="head-text">People Report</div>
+      </div>
+        <!-- chart area -->
+      <div
+        class="chart container-fluid"
+        :class="
+          firstTimerInChurch && firstTimerInChurch.length > 0
+            ? 'graph-area'
+            : ''
+        "
+      >
+        <div class="row">
+          <div class="chart1 col-12 col-md-6">
+            <ByGenderChart
+              domId="chart"
+              title="By Gender"
+              distance="5"
+              :titleMargin="10"
+              :summary="data"
+            />
+          </div>
+          <div class="chart1 col-12 col-md-6">
+            <ByGenderChart
+              domId="chartid"
+              title="Marital Status"
+              distance="5"
+              :titleMargin="10"
+              :summary="maritalChartInfo"
+            />
           </div>
         </div>
+      </div>
         <!--end of chart area -->
-      </section>
 
-      <section>
+      <section class="container-fluid">
         <!-- table header -->
         <div v-if="firstTimerInChurch.length > 0" class="row">
           <div
@@ -137,7 +138,7 @@
                   class="text-capitalize text-nowrap font-weight-bold"
                   style="border-bottom: 0; font-size: medium"
                 >
-                  <!-- <th scope="col">Church Activity</th> -->
+    
                   <th scope="col">First Name</th>
                   <th scope="col">Last Name</th>
                   <th scope="col">Phone</th>
@@ -153,8 +154,6 @@
                     {{ item.label }}
                   </th>
 
-                  <!-- <th scope="col">Marital Status</th> -->
-                  <!-- <th scope="col">Activity Date</th> -->
                 </tr>
               </thead>
               <tbody class="small-text font-weight-bold text-nowrap">
@@ -188,8 +187,7 @@
                   >
                     {{ "--" }}
                   </td>
-                  <!-- <td>{{ firstTimer.maritalStatus }}</td> -->
-                  <!-- <td>{{ formatDate(firstTimer.activityDate) }}</td> -->
+               
                 </tr>
               </tbody>
             </table>
@@ -202,7 +200,7 @@
         <!--end table header  -->
       </section>
     </div>
-  </div>
+
 </template>
 
 <script>
@@ -228,7 +226,8 @@ export default {
     const maritalChartInfo = ref([]);
     const showExport = ref(false);
     const loading = ref(false);
-    const fileName = ref("");
+    const displayTitle = ref(false);
+    const fileName = ref("First Timers(M) Report");
     const bookTypeList = ref([
       { name: "xlsx" },
       { name: "csv" },
@@ -277,8 +276,7 @@ export default {
       return [
         getSumOfItems(arr, "gender", "Male"),
         getSumOfItems(arr, "gender", "Female"),
-        // getSumOfItems(arr, "gender", null),
-        // getSumOfItems(arr, "gender", "Other"),
+     
       ];
     };
 
@@ -286,7 +284,7 @@ export default {
       return [
         getSumOfItems(arr, "maritalStatus", "Married"),
         getSumOfItems(arr, "maritalStatus", "Single"),
-        // getSumOfItems(arr, "maritalStatus", null),
+     
       ];
     };
 
@@ -299,8 +297,12 @@ export default {
 
     /* Code For Exporting File */
     const downloadFile = (item) => {
+      if (item.name === "pdf") {
+        displayTitle.value = true;
+      } else {
+        displayTitle.value = false;
+      }
       exportService.downLoadExcel(
-        // selectedFileType.value.name,
         item.name,
         document.getElementById("element-to-print"),
         fileName.value,
@@ -347,6 +349,7 @@ export default {
       genderChartResult,
       data,
       maritalChartInfo,
+      displayTitle,
       fileName,
       downloadFile,
       showExport,
@@ -361,20 +364,6 @@ export default {
 </script>
 
 <style scoped>
-/* .default-btn {
-  font-weight: 800;
-  font-size: 1rem;
-  white-space: initial;
-  border-radius: 3rem;
-  border: 1px solid #136acd;
-  padding: 0.5rem 1.25rem;
-  color: #136acd;
-  width: auto;
-  outline: transparent !important;
-  max-height: 2.5rem;
-  background: #fff;
-  min-width: 7.6rem;
-} */
 
 .default-btn {
   font-weight: 600;

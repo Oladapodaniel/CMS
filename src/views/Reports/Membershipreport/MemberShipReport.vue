@@ -1,5 +1,5 @@
 <template>
-  <div class="container-fluid mb-4 pagebreak">
+  <div class="container-fluid mb-4">
     <div class="row d-flex justify-content-between">
       <div class="head-text">People Report</div>
       <div
@@ -51,37 +51,6 @@
                   @selected-item="setSelectedMember"
                 />
               </div>
-              <!-- <div class="mt-2">
-                
-                <MultiSelect
-                  v-model="selectedMember"
-                  :options="memberShips"
-                  optionLabel="name"
-                  placeholder="Select Member"
-                  :filter="true"
-                  class="multiselect-custom w-100"
-                >
-                  <template #value="slotProps">
-                    <div
-                      class="country-item country-item-value bg-secondary font-weight-bold small"
-                      v-for="option of slotProps.value"
-                      :key="option.code"
-                    >
-                      <div>{{ option.name }}</div>
-                    </div>
-                    <template
-                      v-if="!slotProps.value || slotProps.value.length === 0"
-                    >
-                      Select Member
-                    </template>
-                  </template>
-                  <template #option="slotProps">
-                    <div class="country-item">
-                      <div>{{ slotProps.option.name }}</div>
-                    </div>
-                  </template>
-                </MultiSelect>
-              </div> -->
             </div>
             <div class="col-12 col-md-6 mt-2 mt-sm-0 mt-md-0 mt-lg-0">
               <div class="">
@@ -93,36 +62,6 @@
                   @selected-item="setSelectedGender"
                 />
               </div>
-              <!-- <div>
-                <MultiSelect
-                  v-model="selectedGender"
-                  :options="memberGender"
-                  optionLabel="name"
-                  placeholder="Select gender"
-                  :filter="true"
-                  class="multiselect-custom w-100"
-                >
-                  <template #value="slotProps">
-                    <div
-                      class="country-item country-item-value bg-secondary font-weight-bold small"
-                      v-for="option of slotProps.value"
-                      :key="option.code"
-                    >
-                      <div>{{ option.name }}</div>
-                    </div>
-                    <template
-                      v-if="!slotProps.value || slotProps.value.length === 0"
-                    >
-                      Select Gender
-                    </template>
-                  </template>
-                  <template #option="slotProps">
-                    <div class="country-item">
-                      <div>{{ slotProps.option.name }}</div>
-                    </div>
-                  </template>
-                </MultiSelect>
-              </div> -->
             </div>
             <div class="col-12 col-md-6 mt-2">
               <div>
@@ -134,80 +73,18 @@
                   @selected-item="setSelectedMaritalStatus"
                 />
               </div>
-              <!-- <div>
-                <MultiSelect
-                  v-model="selectedMaritalStatus"
-                  :options="memberMaritalStatus"
-                  optionLabel="name"
-                  placeholder="Marital status"
-                  :filter="true"
-                  class="multiselect-custom w-100"
-                >
-                  <template #value="slotProps">
-                    <div
-                      class="country-item country-item-value bg-secondary font-weight-bold small"
-                      v-for="option of slotProps.value"
-                      :key="option.code"
-                    >
-                      <div>{{ option.name }}</div>
-                    </div>
-                    <template
-                      v-if="!slotProps.value || slotProps.value.length === 0"
-                    >
-                      Marital status
-                    </template>
-                  </template>
-                  <template #option="slotProps">
-                    <div class="country-item">
-                      <div>{{ slotProps.option.name }}</div>
-                    </div>
-                  </template>
-                </MultiSelect>
-              </div> -->
             </div>
             <div class="col-12 col-md-6 mt-2">
               <div>
                 <label for="" class="font-weight-bold">Age Group</label>
               </div>
-              <!-- <el-select-v2 v-model="ageGroupId" @change="setSelectedAgeGroup"
-                        :options="memberAgegroup.map(i => ({ label: i.name, value: i.id }))" placeholder="Age group"
-                        size="large" class="w-100 mr-1" /> -->
+
               <div>
                 <SelectAllDropdown
                   :items="memberAgegroup"
                   @selected-item="setSelectedAgeGroup"
                 />
               </div>
-              <!-- <div>
-                <MultiSelect
-                  v-model="selectedAgeGroup"
-                  :options="memberAgegroup"
-                  optionLabel="name"
-                  placeholder="Age group"
-                  :filter="true"
-                  class="multiselect-custom w-100"
-                >
-                  <template #value="slotProps">
-                    <div
-                      class="country-item country-item-value bg-secondary font-weight-bold small"
-                      v-for="option of slotProps.value"
-                      :key="option.code"
-                    >
-                      <div>{{ option.name }}</div>
-                    </div>
-                    <template
-                      v-if="!slotProps.value || slotProps.value.length === 0"
-                    >
-                      Age group
-                    </template>
-                  </template>
-                  <template #option="slotProps">
-                    <div class="country-item">
-                      <div>{{ slotProps.option.name }}</div>
-                    </div>
-                  </template>
-                </MultiSelect>
-              </div> -->
             </div>
           </div>
         </div>
@@ -229,101 +106,56 @@
         </div>
       </div>
     </div>
-    <div id="element-to-print" class="row">
-      <!-- <div class="container-fluid">
-        <div class="head text"></div>
-      </div> -->
-      <div class="container-fluid">
-        <div
-          class="row"
-          :class="{ 'show-report': showReport, 'hide-report': !showReport }"
-        >
-          <!-- <div class="col-12 ">
-                      <div class="mt-5 pb-2 text-center Display-1 heading-text">
-                          Congregation Members Report
-                      </div>
-                  </div> -->
-          <div class="col-md-12 mt-4 round-border">
-            <div class="row">
-              <div class="col-12 col-md-6 col-lg-6">
-                <div class="row">
-                  <div class="col-md-12 mt-sm-3 mt-md-0 mt-lg-2 text-center">
-                    <div class="row">
-                      <div class="col-md-12 font-weight-bold">
-                        Membership By Gender
-                      </div>
-                      <!-- <div class="col-12" >No Data Available</div> -->
-                      <div class="col-md-12">
-                        <MembershipPieChart
-                          domId="chart1"
-                          distance="5"
-                          :titleMargin="10"
-                          :summary="mappedGender"
-                        />
-                      </div>
+  </div>
+  <div id="element-to-print">
+    <div
+      class="container-fluid d-flex justify-content-center my-2"
+      v-if="displayTitle"
+    >
+      <div class="head-text">People Report</div>
+    </div>
+    <div class="container-fluid">
+      <div
+        class="row"
+        :class="{ 'show-report': showReport, 'hide-report': !showReport }"
+      >
+        <div class="col-md-12 mt-4 round-border">
+          <div class="row">
+            <div class="col-12 col-md-6 col-lg-6">
+              <div class="row">
+                <div class="col-md-12 mt-sm-3 mt-md-0 mt-lg-2 text-center">
+                  <div class="row">
+                    <div class="col-md-12 font-weight-bold">
+                      Membership By Gender
                     </div>
-                  </div>
-                </div>
-              </div>
-              <div class="col-12 col-md-6 col-lg-6">
-                <div class="row">
-                  <div class="col-md-12 mt-sm-3 mt-md-0 mt-lg-2 text-center">
-                    <div class="row">
-                      <div class="col-md-12 font-weight-bold">
-                        Membership By Marital Status
-                      </div>
-                      <!-- <div class="col-12" :class="{ 'show-report': !showReport, 'hide-report' : showReport}">No Data Available</div> -->
-                      <div class="col-md-12">
-                        <MembershipPieChart
-                          domId="chart2"
-                          distance="5"
-                          :titleMargin="10"
-                          :summary="mappedMaritalStatus"
-                        />
-                      </div>
+
+                    <div class="col-md-12">
+                      <MembershipPieChart
+                        domId="chart1"
+                        distance="5"
+                        :titleMargin="10"
+                        :summary="mappedGender"
+                      />
                     </div>
                   </div>
                 </div>
               </div>
             </div>
-          </div>
-        </div>
-        <div
-          class="row"
-          :class="{ 'show-report': showReport, 'hide-report': !showReport }"
-        >
-          <div class="col-md-12 round-border mt-3">
-            <!-- <div class="col-12 col-sm-12  col-md-6 col-lg-6">
-                      <div class="col-12 text-center mt-3 mt-sm-3 mt-md-0 mt-lg-2 " >
-                          <div class="col-12  font-weight-bold ">Membership By Members</div>
-                          <div class="col-12 ">
-                              <MembershipPieChart
-                                  domId="chart3"
-                                  distance="5"
-                                  :titleMargin="10"
-                                  :summary="mappedMember"
-                              />
-                          </div>
-                      </div>
-                    </div> -->
-            <div class="row">
-              <div class="col-md-12">
-                <div class="row justify-content-center">
-                  <div
-                    class="col-md-6 text-center mt-3 mt-sm-3 mt-md-0 mt-lg-2"
-                  >
-                    <div class="row">
-                      <div class="col-md-12 px-0 font-weight-bold">
-                        Membership By Age Group
-                      </div>
-                      <div class="col-md-12 px-0">
-                        <MembershipPieChart
-                          domId="chart4"
-                          distance="5"
-                          :titleMargin="10"
-                          :summary="mappedAgeGroup"
-                        />
-                      </div>
+            <div class="col-12 col-md-6 col-lg-6">
+              <div class="row">
+                <div class="col-md-12 mt-sm-3 mt-md-0 mt-lg-2 text-center">
+                  <div class="row">
+                    <div class="col-md-12 font-weight-bold">
+                      Membership By Marital Status
+                    </div>
+
+                    <div class="col-md-12">
+                      <MembershipPieChart
+                        domId="chart2"
+                        distance="5"
+                        :titleMargin="10"
+                        :summary="mappedMaritalStatus"
+                      />
                     </div>
                   </div>
                 </div>
@@ -332,86 +164,122 @@
           </div>
         </div>
       </div>
-      <!-- <div > -->
-      <!-- <div class="row "> -->
-      <section class="container-fluid">
-        <div class="row">
-          <div
-            v-if="membersInChurch[0]"
-            class="mt-4 container-fluid px-0 table-main remove-styles2 remove-border responsiveness"
-            :class="{ 'show-report': showReport, 'hide-report': !showReport }"
-          >
-            <table
-              class="table remove-styles mt-0 table-hover table-header-area"
-              id="table"
-            >
-              <thead class="table-header-area-main">
-                <tr
-                  class="text-capitalize text-nowrap"
-                  style="border-bottom: 0"
-                >
-                  <!-- <th scope="col">Church Activity</th> -->
-                  <th scope="col">Membership</th>
-                  <th scope="col">First Name</th>
-                  <th scope="col">Last Name</th>
-                  <th scope="col">Phone</th>
-                  <th scope="col">Email</th>
-                  <th scope="col">Gender</th>
-                  <th scope="col">Age Group</th>
-                  <th scope="col">Home Address</th>
-                  <th scope="col">Birthday</th>
-                  <th
-                    scope="col"
-                    v-for="(item, index) in dynamicCustomFields"
-                    :key="index"
-                  >
-                    {{ item.label }}
-                  </th>
-                </tr>
-              </thead>
-              <tbody class="small-text font-weight-bold text-nowrap">
-                <tr v-for="(member, index) in membersInChurch" :key="index">
-                  <!-- <td>{{member.churchActivity}}</td> -->
-                  <td>{{ member.membership }}</td>
-                  <td>{{ member.firstName }}</td>
-                  <td>{{ member.lastName }}</td>
-                  <td>{{ member.mobilePhone }}</td>
-                  <td>{{ member.email }}</td>
-                  <td>{{ member.gender }}</td>
-                  <td>{{ member.ageGroup }}</td>
-                  <td>{{ member.homeAddress }}</td>
-                  <td>{{ member.birthDay }}</td>
-                  <td
-                    v-show="member.customAttributeData.length > 0"
-                    v-for="(item, index) in dynamicCustomFields"
-                    :key="index"
-                  >
-                    {{
-                      getMemberCustomAttributeData(
-                        member.customAttributeData,
-                        item
-                      )
-                    }}
-                  </td>
-                  <td
-                    v-show="member.customAttributeData.length === 0"
-                    v-for="(item, index) in dynamicCustomFields.length"
-                    :key="index"
-                  >
-                    {{ "--" }}
-                  </td>
-                </tr>
-              </tbody>
-            </table>
+      <div
+        class="row"
+        :class="{ 'show-report': showReport, 'hide-report': !showReport }"
+      >
+        <div class="col-md-12 round-border mt-3">
+          <!-- <div class="col-12 col-sm-12  col-md-6 col-lg-6">
+                    <div class="col-12 text-center mt-3 mt-sm-3 mt-md-0 mt-lg-2 " >
+                        <div class="col-12  font-weight-bold ">Membership By Members</div>
+                        <div class="col-12 ">
+                            <MembershipPieChart
+                                domId="chart3"
+                                distance="5"
+                                :titleMargin="10"
+                                :summary="mappedMember"
+                            />
+                        </div>
+                    </div>
+                  </div> -->
+          <div class="row">
+            <div class="col-md-12">
+              <div class="row justify-content-center">
+                <div class="col-md-6 text-center mt-3 mt-sm-3 mt-md-0 mt-lg-2">
+                  <div class="row">
+                    <div class="col-md-12 px-0 font-weight-bold">
+                      Membership By Age Group
+                    </div>
+                    <div class="col-md-12 px-0">
+                      <MembershipPieChart
+                        domId="chart4"
+                        distance="5"
+                        :titleMargin="10"
+                        :summary="mappedAgeGroup"
+                      />
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
           </div>
         </div>
-        <!-- table header -->
-
-        <!--end table header -->
-      </section>
+      </div>
     </div>
-    <!-- </div> -->
-    <!-- </div> -->
+    <!-- <div > -->
+    <!-- <div class="row "> -->
+    <section class="container-fluid">
+      <div class="row">
+        <div
+          v-if="membersInChurch[0]"
+          class="mt-4 container-fluid px-0 table-main remove-styles2 remove-border responsiveness"
+          :class="{ 'show-report': showReport, 'hide-report': !showReport }"
+        >
+          <table
+            class="table remove-styles mt-0 table-hover table-header-area"
+            id="table"
+          >
+            <thead class="table-header-area-main">
+              <tr class="text-capitalize text-nowrap" style="border-bottom: 0">
+                <!-- <th scope="col">Church Activity</th> -->
+                <th scope="col">Membership</th>
+                <th scope="col">First Name</th>
+                <th scope="col">Last Name</th>
+                <th scope="col">Phone</th>
+                <th scope="col">Email</th>
+                <th scope="col">Gender</th>
+                <th scope="col">Age Group</th>
+                <th scope="col">Home Address</th>
+                <th scope="col">Birthday</th>
+                <th
+                  scope="col"
+                  v-for="(item, index) in dynamicCustomFields"
+                  :key="index"
+                >
+                  {{ item.label }}
+                </th>
+              </tr>
+            </thead>
+            <tbody class="small-text font-weight-bold text-nowrap">
+              <tr v-for="(member, index) in membersInChurch" :key="index">
+                <!-- <td>{{member.churchActivity}}</td> -->
+                <td>{{ member.membership }}</td>
+                <td>{{ member.firstName }}</td>
+                <td>{{ member.lastName }}</td>
+                <td>{{ member.mobilePhone }}</td>
+                <td>{{ member.email }}</td>
+                <td>{{ member.gender }}</td>
+                <td>{{ member.ageGroup }}</td>
+                <td>{{ member.homeAddress }}</td>
+                <td>{{ member.birthDay }}</td>
+                <td
+                  v-show="member.customAttributeData.length > 0"
+                  v-for="(item, index) in dynamicCustomFields"
+                  :key="index"
+                >
+                  {{
+                    getMemberCustomAttributeData(
+                      member.customAttributeData,
+                      item
+                    )
+                  }}
+                </td>
+                <td
+                  v-show="member.customAttributeData.length === 0"
+                  v-for="(item, index) in dynamicCustomFields.length"
+                  :key="index"
+                >
+                  {{ "--" }}
+                </td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+      <!-- table header -->
+
+      <!--end table header -->
+    </section>
   </div>
 </template>
 
@@ -436,20 +304,20 @@ export default {
     const selectedGender = ref([]);
     const selectedMaritalStatus = ref();
     const showReport = ref(false);
+    const displayTitle = ref(false);
     const loading = ref(false);
     const memberShips = ref([]);
     const selectedAgeGroup = ref([]);
     const memberMaritalStatus = ref([]);
     const memberGender = ref([]);
     const memberAgegroup = ref([]);
-    // const genderSummary = ref([]);
     const membersInChurch = ref([]);
     const genderChartResult = ref([]);
     const memberChartResult = ref([]);
     const maritalStatusChartResult = ref([]);
     const ageGroupChartResult = ref([]);
     const showExport = ref(false);
-    const fileName = ref("");
+    const fileName = ref("People report");
     const bookTypeList = ref([
       { name: "xlsx" },
       { name: "csv" },
@@ -465,11 +333,9 @@ export default {
     };
     const setSelectedGender = (payload) => {
       selectedGender.value = payload;
-      console.log(selectedGender.value, "gender");
     };
     const setSelectedMaritalStatus = (payload) => {
       selectedMaritalStatus.value = payload;
-      console.log(selectedMaritalStatus.value, "Marital");
     };
     const setSelectedAgeGroup = (payload) => {
       selectedAgeGroup.value = payload;
@@ -557,7 +423,7 @@ export default {
         );
         return result;
       }, []); // empty object is the initial value for result object
-      // genderChartResult.value
+
       for (const prop in result) {
         ageGroupChartResult.value.push({
           name: prop,
@@ -572,6 +438,11 @@ export default {
     });
 
     const downloadFile = (item) => {
+      if (item.name === "pdf") {
+        displayTitle.value = true;
+      } else {
+        displayTitle.value = false;
+      }
       exportService.downLoadExcel(
         item.name,
         document.getElementById("element-to-print"),
@@ -703,6 +574,7 @@ export default {
 
     return {
       genarateReport,
+      displayTitle,
       memberAgegroup,
       selectedAgeGroup,
       genderChartResult,
@@ -719,7 +591,6 @@ export default {
       ageGroupChart,
       showReport,
       primarycolor,
-      //  genderSummary,
       memberShips,
       memberMaritalStatus,
       memberGender,
@@ -739,8 +610,6 @@ export default {
       fileToExport,
       fileHeaderToExport,
       printJS,
-
-      // downLoadExcel,
       downloadFile,
       dynamicCustomFields,
       getMemberCustomAttributeData,

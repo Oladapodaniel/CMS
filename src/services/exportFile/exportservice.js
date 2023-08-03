@@ -9,8 +9,8 @@ const downLoadExcel = (selectedFileType, element, fileName, fileHeaderToExport, 
     if (selectedFileType === "pdf") {
         var element = document.getElementById('element-to-print'); //fix
         var opt = {
-            margin:       0.3,
-            padding:      1,
+            // margin:       0.3,
+            // padding:      1,
             filename: `${fileName}.pdf`,
             image: { type: 'jpeg', quality: 0.98 },
             html2canvas: { scale: 2, logging: true, dpi: 192, letterRendering: true },

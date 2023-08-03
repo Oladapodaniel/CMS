@@ -35,7 +35,6 @@
     </div>
 
     <!-- date area -->
-    <!-- <div class="container-fluid my-2 pt-4 pb-5 bg-area"> -->
     <div class="row pl-1 pl-md-5 bg-area mt-sm-3">
       <div class="col-md-4 col-sm-12 px-md-0">
         <div class="p-field p-col-12 pt-md-2 pb-2">
@@ -79,89 +78,89 @@
         </div>
       </div>
     </div>
-    <!-- </div> -->
+  </div>
 
-    <div id="element-to-print">
-      <div class="container-fluid px-0">
-        <div class="row w-100"></div>
-        <div
-          class="row"
-          :class="{ 'show-report': showReport, 'hide-report': !showReport }"
-        >
-          <div
-            class="col-12 container-fluid round-border mt-3 d-flex flex-wrap"
-          >
-            <div class="col-12 col-sm-12 col-md-6 col-lg-6">
-              <div class="col-12 text-center">
-                <div class="col-12 font-weight-bold">Gender Distribution</div>
-                <div class="col-12">
-                  <PerformancePieChart
-                    domId="chart2"
-                    distance="5"
-                    :titleMargin="10"
-                    :summary="mappedGender"
-                  />
-                </div>
+  <div id="element-to-print">
+    <div
+      class="container-fluid d-flex justify-content-center my-2"
+      v-if="displayTitle"
+    >
+      <div class="head-text">New Convert Performance Report</div>
+    </div>
+    <div class="container-fluid">
+      <div class="row"></div>
+      <div
+        class="row"
+        :class="{ 'show-report': showReport, 'hide-report': !showReport }"
+      >
+        <div class="col-12 container-fluid round-border mt-3 d-flex flex-wrap">
+          <div class="col-12 col-sm-12 col-md-6 col-lg-6">
+            <div class="col-12 text-center">
+              <div class="col-12 font-weight-bold">Gender Distribution</div>
+              <div class="col-12">
+                <PerformancePieChart
+                  domId="chart2"
+                  distance="5"
+                  :titleMargin="10"
+                  :summary="mappedGender"
+                />
               </div>
             </div>
-            <div class="col-12 col-sm-12 col-md-6 col-lg-6">
-              <div class="col-12 text-center mt-3 mt-sm-0 mt-md-0 mt-lg-0">
-                <div class="col-12 font-weight-bold">Marital Status</div>
-                <div class="col-12">
-                  <PerformancePieChart
-                    domId="chart3"
-                    distance="5"
-                    :titleMargin="10"
-                    :summary="mappedMaritalStatus"
-                  />
-                </div>
+          </div>
+          <div class="col-12 col-sm-12 col-md-6 col-lg-6">
+            <div class="col-12 text-center mt-3 mt-sm-0 mt-md-0 mt-lg-0">
+              <div class="col-12 font-weight-bold">Marital Status</div>
+              <div class="col-12">
+                <PerformancePieChart
+                  domId="chart3"
+                  distance="5"
+                  :titleMargin="10"
+                  :summary="mappedMaritalStatus"
+                />
               </div>
             </div>
           </div>
         </div>
       </div>
-      <section>
-        <div class="row">
-          <div
-            class="container-fluid table-main remove-styles2 remove-border responsiveness container-fluid mt-4"
-            :class="{ 'show-report': showReport, 'hide-report': !showReport }"
-          >
-            <table
-              class="table remove-styles mt-0 table-hover table-header-area"
-              id="table"
-            >
-              <thead class="table-header-area-main">
-                <tr
-                  class="text-capitalize text-nowrap"
-                  style="border-bottom: 0"
-                >
-                  <th scope="col">Name</th>
-                  <th scope="col">Phone</th>
-                  <th scope="col">Email</th>
-                  <th scope="col">Home Address</th>
-                  <th scope="col">Gender</th>
-                </tr>
-              </thead>
-              <tbody
-                class="font-weight-bold text-nowrap"
-                style="font-size: small"
-              >
-                <tr
-                  v-for="(NewConvert, index) in newConvertInChurch"
-                  :key="index"
-                >
-                  <td>{{ NewConvert.lastName }} {{ NewConvert.firstName }}</td>
-                  <td>{{ NewConvert.mobilePhone }}</td>
-                  <td>{{ NewConvert.email }}</td>
-                  <td>{{ NewConvert.homeAddress }}</td>
-                  <td>{{ NewConvert.gender }}</td>
-                </tr>
-              </tbody>
-            </table>
-          </div>
-        </div>
-      </section>
     </div>
+    <section class="container-fluid">
+      <div class="row">
+        <div
+          class="container-fluid table-main remove-styles2 remove-border responsiveness container-fluid mt-4"
+          :class="{ 'show-report': showReport, 'hide-report': !showReport }"
+        >
+          <table
+            class="table remove-styles mt-0 table-hover table-header-area"
+            id="table"
+          >
+            <thead class="table-header-area-main">
+              <tr class="text-capitalize text-nowrap" style="border-bottom: 0">
+                <th scope="col">Name</th>
+                <th scope="col">Phone</th>
+                <th scope="col">Email</th>
+                <th scope="col">Home Address</th>
+                <th scope="col">Gender</th>
+              </tr>
+            </thead>
+            <tbody
+              class="font-weight-bold text-nowrap"
+              style="font-size: small"
+            >
+              <tr
+                v-for="(NewConvert, index) in newConvertInChurch"
+                :key="index"
+              >
+                <td>{{ NewConvert.lastName }} {{ NewConvert.firstName }}</td>
+                <td>{{ NewConvert.mobilePhone }}</td>
+                <td>{{ NewConvert.email }}</td>
+                <td>{{ NewConvert.homeAddress }}</td>
+                <td>{{ NewConvert.gender }}</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </section>
   </div>
 </template>
 
@@ -182,6 +181,7 @@ export default {
   },
   setup() {
     const showReport = ref(false);
+    const displayTitle = ref(false);
     const pieChart = ref([
       {
         name: "First Timer ",
@@ -201,7 +201,7 @@ export default {
     const attendanceData = ref([]);
     const mainAttendanceData = ref([]);
     const showExport = ref(false);
-    const fileName = ref("");
+    const fileName = ref("New Convert Performance Report");
     const bookTypeList = ref([
       { name: "xlsx" },
       { name: "csv" },
@@ -339,6 +339,11 @@ export default {
         });
     };
     const downloadFile = (item) => {
+      if (item.name === "pdf") {
+        displayTitle.value = true;
+      } else {
+        displayTitle.value = false;
+      }
       exportService.downLoadExcel(
         item.name,
         document.getElementById("element-to-print"),
@@ -357,6 +362,7 @@ export default {
       loading,
       primarycolor,
       attendanceData,
+      displayTitle,
       genderChartResult,
       attendanceSeries,
       maritalStatusChart,

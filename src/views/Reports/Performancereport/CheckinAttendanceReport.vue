@@ -153,20 +153,30 @@
         </div>
       </div>
     </div>
-
-    <div
-      class="row mt-4 pagebreak"
-      id="element-to-print"
-      v-if="groupedReport.length > 0 && searched"
+  </div>  
+  <div
+    class=" mt-4 "
+    id="element-to-print"
+    v-if="groupedReport.length > 0 && searched"
+  >
+  <div
+      class="container-fluid d-flex justify-content-center my-2"
+      v-if="displayTitle"
     >
+    <div class="head-text">Attendance Report</div>
+  </div>
+  <div class="container-fluid">
+    <div class="row">
       <GroupReportTable
-        :groupedReport="groupedReport"
-        :groupedReportByDate="groupedReportByDate"
-        @data-to-export="setDataToExport"
-        @data-header-to-export="setTableHeaderData"
-      />
+      :groupedReport="groupedReport"
+      :groupedReportByDate="groupedReportByDate"
+      @data-to-export="setDataToExport"
+      @data-header-to-export="setTableHeaderData"
+    />
     </div>
   </div>
+  </div>
+  
 </template>
 
 <script>
@@ -189,6 +199,7 @@ export default {
     const events = ref([]);
     const primarycolor = inject("primarycolor");
     const groups = ref([]);
+    const displayTitle = ref(false);
     const selectedEvent = ref({});
     const selectedEventID = ref(null);
     const selectedGroups = ref({});
@@ -202,7 +213,7 @@ export default {
       { name: "pdf" },
     ]);
     const selectedFileType = ref({});
-    const fileName = ref("");
+    const fileName = ref("Attendance Report");
     const showExport = ref(false);
     const fileToExport = ref([]);
     const fileHeaderToExport = ref([]);
@@ -329,6 +340,7 @@ export default {
 
     const downLoadExcel = (item) => {
       if (item.name === "pdf") {
+        displayTitle.value = true;
         var element = document.getElementById("element-to-print");
         var opt = {
           // margin:       1,
@@ -343,6 +355,7 @@ export default {
         html2pdf().set(opt).from(element).save();
         // html2pdf(element);
       } else {
+        displayTitle.value = false;
         const filterVal = fileHeaderToExport.value.map((i, index) => index);
         const list = fileToExport.value;
         const header = fileHeaderToExport.value;
@@ -395,6 +408,7 @@ export default {
 
     return {
       startDate,
+      displayTitle,
       endDate,
       events,
       groups,

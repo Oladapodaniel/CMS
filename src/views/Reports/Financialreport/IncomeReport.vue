@@ -36,9 +36,7 @@
       </div>
     </div>
     <!-- header area -->
-    <div
-      class="row flex-row justify-content-between align-items-center"
-    ></div>
+    <div class="row flex-row justify-content-between align-items-center"></div>
     <!--end of header area -->
 
     <!-- date area -->
@@ -85,12 +83,20 @@
         </div>
       </div>
     </div>
-    <section
-      id="element-to-print" class="row"
-      :class="{ hideClass: !toggleReport, showClass: toggleReport }"
+  </div>
+  <section
+    id="element-to-print"
+    class=""
+    :class="{ hideClass: !toggleReport, showClass: toggleReport }"
+  >
+    <div
+      class="container-fluid d-flex justify-content-center my-2"
+      v-if="displayTitle"
     >
-    <div class="container-fluid px-0 mt-4">
-        <div class="row chart-div">
+      <div class="head-text">Basic Income And Revenue Report</div>
+    </div>
+    <div class="container-fluid chart-div mt-4">
+      <div class="row">
         <div class="col-12 col-sm-12 col-md-6 col-lg-6">
           <div class="col-12 text-center" style="">
             <!-- <div class="col-12  font-weight-bold pt-3">Membership By Marital Status</div> -->
@@ -123,72 +129,75 @@
         </div>
       </div>
     </div>
-      <!-- chart area -->
-      
-      <!-- table header -->
-      <div
-        class="container-fluid table-main px-0 remove-styles2 remove-border my-4"
-      >
-        <table
-          class="table remove-styles mt-0 table-responsive table-hover table-header-area"
-          id="table"
+    <!-- chart area -->
+
+    <!-- table header -->
+    <div class="container-fluid">
+      <div class="row">
+        <div
+          class="container-fluid table-main px-0 remove-styles2 remove-border my-4"
         >
-          <thead class="table-header-area-main">
-            <tr
-              class="font-weight-bold text-capitalize text-nowrap"
-              style="border-bottom: 0"
-            >
-              <th scope="col">Fund</th>
-              <th scope="col">Account Category</th>
-              <th scope="col">Account Name</th>
-              <th scope="col">Description</th>
-              <th scope="col">Amount</th>
-              <th scope="col">Date</th>
-            </tr>
-          </thead>
-          <tbody
-            class="font-weight-bold small-text text-nowrap"
-            v-for="(group, index) in Array.from(series)"
-            :key="index"
+          <table
+            class="table remove-styles mt-0 table-responsive table-hover table-header-area"
+            id="table"
           >
-            <tr v-for="(item, index) in accounts(group)" :key="index">
-              <td>{{ item ? item.fund : "" }}</td>
-              <td>{{ item ? item.accountCategory : "" }}</td>
-              <td>{{ item.accountName ? item.accountName : "" }}</td>
-              <td>{{ item ? item.description : "" }}</td>
-              <td>
-                {{ item && item.currency ? item.currency.symbol : ""
-                }}{{ item ? Math.abs(item.amount) : "" }}
+            <thead class="table-header-area-main">
+              <tr
+                class="font-weight-bold text-capitalize text-nowrap"
+                style="border-bottom: 0"
+              >
+                <th scope="col">Fund</th>
+                <th scope="col">Account Category</th>
+                <th scope="col">Account Name</th>
+                <th scope="col">Description</th>
+                <th scope="col">Amount</th>
+                <th scope="col">Date</th>
+              </tr>
+            </thead>
+            <tbody
+              class="font-weight-bold small-text text-nowrap"
+              v-for="(group, index) in Array.from(series)"
+              :key="index"
+            >
+              <tr v-for="(item, index) in accounts(group)" :key="index">
+                <td>{{ item ? item.fund : "" }}</td>
+                <td>{{ item ? item.accountCategory : "" }}</td>
+                <td>{{ item.accountName ? item.accountName : "" }}</td>
+                <td>{{ item ? item.description : "" }}</td>
+                <td>
+                  {{ item && item.currency ? item.currency.symbol : ""
+                  }}{{ item ? Math.abs(item.amount) : "" }}
+                </td>
+                <td>{{ item ? formatDate(item.date) : "" }}</td>
+              </tr>
+              <tr class="second-row">
+                <td class="totalAmount">Total Income</td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td class="totalAmount">
+                  {{ currencySymbol }}{{ numberWithCommas(grouped(group)) }}
+                </td>
+                <td></td>
+              </tr>
+            </tbody>
+            <tr class="grand-total">
+              <td class="gross-total">Grand Total</td>
+              <td></td>
+              <td></td>
+              <td></td>
+              <td class="gross-total responsive-horizontalrule">
+                {{ currencySymbol }}{{ numberWithCommas(grandTotal) }}
+                <hr class="horizontal-rule" />
               </td>
-              <td>{{ item ? formatDate(item.date) : "" }}</td>
-            </tr>
-            <tr class="second-row">
-              <td class="totalAmount">Total Income</td>
-              <td></td>
-              <td></td>
-              <td></td>
-              <td class="totalAmount">
-                {{ currencySymbol }}{{ numberWithCommas(grouped(group)) }}
-              </td>
               <td></td>
             </tr>
-          </tbody>
-          <tr class="grand-total">
-            <td class="gross-total">Grand Total</td>
-            <td></td>
-            <td></td>
-            <td></td>
-            <td class="gross-total responsive-horizontalrule">
-              {{ currencySymbol }}{{ numberWithCommas(grandTotal) }}
-              <hr class="horizontal-rule" />
-            </td>
-            <td></td>
-          </tr>
-        </table>
+          </table>
+        </div>
       </div>
-      <!--end table header -->
-    </section>
-  </div>
+    </div>
+    <!--end table header -->
+  </section>
 </template>
 
 <script>
@@ -219,10 +228,11 @@ export default {
     const columnChartData = ref([]);
     const series = ref([]);
     const showReport = ref(false);
+    const displayTitle = ref(false);
     const incomeReportData = ref([]);
     const currentUser = ref([]);
     const pieChartData = ref([]);
-    const fileName = ref("");
+    const fileName = ref("Basic Income And Revenue Report");
     const selectedFileType = ref("");
     const bookTypeList = ref([
       { name: "xlsx" },
@@ -260,7 +270,7 @@ export default {
             endDate.value
           ).toLocaleDateString("en-US")}&accountType=2`
         )
-        // .get(`/api/Reports/financials/getIncomeStatementReport?startDate=${new Date(startDate.value).toLocaleDateString("en-US")}&endDate=${new Date(endDate.value).toLocaleDateString("en-US")}`)
+       
         .then((res) => {
           incomeReportData.value = res.data;
           pieChartData.value = [];
@@ -314,6 +324,11 @@ export default {
       showReport.value = true;
     };
     const downloadFile = (item) => {
+      if (item.name === "pdf") {
+        displayTitle.value = true;
+      } else {
+        displayTitle.value = false;
+      }
       exportService.downLoadExcel(
         item.name,
         document.getElementById("element-to-print"),
@@ -427,6 +442,7 @@ export default {
       getIncomeDetailAccountName,
       groupedAccountName,
       downloadFile,
+      displayTitle,
       formatDate,
       incomeEndPoint,
       getRandomColor,

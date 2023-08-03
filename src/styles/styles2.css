@@ -8,20 +8,6 @@
 .primary--text {
   color: #136acd !important;
 }
-
-.page-break {
-  /* page-break-before: auto;
-        page-break-after: auto; 
-        page-break-inside: avoid;
-        border: 1px solid red;
-        position: relative; */
-  display: block;
-  clear: both;
-  page-break-after: always;
-  border: 1px solid red;
-  /* width: 100%; */
-  
-}
 /* Button */
 
 .secondary-button {

@@ -39,12 +39,10 @@
         </el-dropdown>
       </div>
     </div>
-
     <div style="background: #ebeff4" class="row py-5 mb-2">
       <div class="col-12 col-md-6 col-lg-3">
         <div><label for="" class="font-weight-bold">Select Event</label></div>
         <div>
-          <!-- <SelectAllDropdown :items="allEvents" @selected-item="setSelectedEvent" /> -->
           <el-select-v2
             v-model="selectedEventID"
             class="w-100 font-weight-normal"
@@ -59,35 +57,6 @@
             size="large"
           />
         </div>
-
-        <!-- <div>
-          <MultiSelect
-            v-model="selectedEvents"
-            :options="allEvents"
-            optionLabel="text"
-            placeholder="Select Events"
-            :filter="true"
-            class="multiselect-custom w-100"
-          >
-            <template #value="slotProps">
-              <div
-                class="country-item country-item-value bg-secondary font-weight-bold small"
-                v-for="option of slotProps.value"
-                :key="option.code"
-              >
-                <div>{{ option.text }}</div>
-              </div>
-              <template v-if="!slotProps.value || slotProps.value.length === 0">
-                All Events
-              </template>
-            </template>
-            <template #option="slotProps">
-              <div class="country-item">
-                <div>{{ slotProps.option.text }}</div>
-              </div>
-            </template>
-          </MultiSelect>
-        </div> -->
       </div>
       <div class="col-12 col-md-6 col-lg-3">
         <div class="">
@@ -132,110 +101,105 @@
         </div>
       </div>
     </div>
-    <div id="element-to-print" class="row">
-      <h3 class="font-weight-bold mt-5 ml-2" v-show="activityReport > 0">
-        SERVICE PERFORMANCE ANALYSIS REPORT
-      </h3>
-
-      <div class="w-100 mb-2">
-        <h5 class="ml-3 mt-4"></h5>
+  </div>
+  <div id="element-to-print" class="">
+    <div
+      class="container-fluid d-flex justify-content-center my-2"
+      v-if="displayTitle"
+    >
+      <div class="head-text">Church Activities Attendance Report</div>
+    </div>
+    <div class="container-fluid">
+      <div class="row">
+        <div class="w-100 mb-2">
+          <h5 class="ml-3 mt-4"></h5>
+          <div
+            class="round-border"
+            v-show="activityReport.length > 0"
+            :class="{ 'show-report': showReport, 'hide-report': !showReport }"
+          >
+            <PerformanceColumnChart
+              domId="chart"
+              title="Attendance Analysis Chart"
+              distance="5"
+              :titleMargin="10"
+              :data="attendanceChart"
+              :series="series"
+              :seriesText="`Attendance analysis`"
+            />
+          </div>
+        </div>
         <div
-          class="round-border"
+          class="area-chart w-100 mt-5 lineGrap"
           v-show="activityReport.length > 0"
           :class="{ 'show-report': showReport, 'hide-report': !showReport }"
         >
-          <PerformanceColumnChart
-            domId="chart"
-            title="Attendance Analysis Chart"
-            distance="5"
-            :titleMargin="10"
-            :data="attendanceChart"
-            :series="series"
-            :seriesText="`Attendance analysis`"
+          <ReportAreaChart
+            elemId="chart"
+            domId="areaChart1"
+            title="Attendance Analysis Line Graph"
+            subtitle=""
+            lineColor="#50AB00"
+            :xAxis="series"
+            :series="attendanceData"
           />
         </div>
-      </div>
-      <div
-        class="area-chart w-100 mt-5 lineGrap"
-        v-show="activityReport.length > 0"
-        :class="{ 'show-report': showReport, 'hide-report': !showReport }"
-      >
-        <ReportAreaChart
-          elemId="chart"
-          domId="areaChart1"
-          title="Attendance Analysis Line Graph"
-          subtitle=""
-          lineColor="#50AB00"
-          :xAxis="series"
-          :series="attendanceData"
-        />
-      </div>
 
-      <div class="w-100 mt-5">
-        <h5 class="ml-3 mt-4"></h5>
-        <div
-          class="round-border"
-          v-show="activityReport.length > 0"
-          :class="{ 'show-report': showReport, 'hide-report': !showReport }"
-        >
-          <PerformanceColumnChart
-            domId="chart1"
-            title="Attendance Analysis Chart By Category"
-            distance="5"
-            :titleMargin="10"
-            :data="summaryChart"
-            :series="attendanceSeries"
-            :seriesText="`Attendance analysis`"
-          />
+        <div class="w-100 mt-5">
+          <h5 class="ml-3 mt-4"></h5>
+          <div
+            class="round-border"
+            v-show="activityReport.length > 0"
+            :class="{ 'show-report': showReport, 'hide-report': !showReport }"
+          >
+            <PerformanceColumnChart
+              domId="chart1"
+              title="Attendance Analysis Chart By Category"
+              distance="5"
+              :titleMargin="10"
+              :data="summaryChart"
+              :series="attendanceSeries"
+              :seriesText="`Attendance analysis`"
+            />
+          </div>
         </div>
-      </div>
-      <!-- <div
-                      class="area-chart mt-5"
-                      v-show="
-                        activityReport.length > 0
-                      "
-                    >
-                      <ReportAreaChart
-                        elemId="chart"
-                        domId="areaChart"
-                        title="Attendance Analysis Line Graph By Category"
-                        subtitle=""
-                       lineColor="#50AB00"
-                        :xAxis="series"
-                        :series="categoryData"
-                      />
-                    </div> -->
-      <section class="w-100">
-        <!-- table header -->
+        <section class="w-100">
+          <!-- table header -->
 
-        <div
-          class="container-fluid table-main px-0 remove-styles2 remove-border responsiveness mb-5 mt-5"
-          id="table"
-          v-show="activityReport.length > 0"
-          :class="{ 'show-report': showReport, 'hide-report': !showReport }"
-        >
-          <table class="table remove-styles mt-0 table-hover table-header-area">
-            <thead class="table-header-area-main">
-              <tr
-                class="text-capitalize text-nowrap font-weight-bolder"
-                style="border-bottom: 0"
-              >
-                <th scope="col">Event Name & Date</th>
-                <th scope="col">Category</th>
-                <th scope="col">Category Attendance</th>
-              </tr>
-            </thead>
-            <tbody class="font-weight-bolder text-nowrap">
-              <tr v-for="(item, index) in groupedActivityService" :key="index">
-                <td>{{ item.name }}</td>
-                <td>{{ item.category }}</td>
-                <td>{{ item.amount }}</td>
-              </tr>
-            </tbody>
-          </table>
-        </div>
-        <!--end table header -->
-      </section>
+          <div
+            class="container-fluid table-main px-0 remove-styles2 remove-border responsiveness mb-5 mt-5"
+            id="table"
+            v-show="activityReport.length > 0"
+            :class="{ 'show-report': showReport, 'hide-report': !showReport }"
+          >
+            <table
+              class="table remove-styles mt-0 table-hover table-header-area"
+            >
+              <thead class="table-header-area-main">
+                <tr
+                  class="text-capitalize text-nowrap font-weight-bolder"
+                  style="border-bottom: 0"
+                >
+                  <th scope="col">Event Name & Date</th>
+                  <th scope="col">Category</th>
+                  <th scope="col">Category Attendance</th>
+                </tr>
+              </thead>
+              <tbody class="font-weight-bolder text-nowrap">
+                <tr
+                  v-for="(item, index) in groupedActivityService"
+                  :key="index"
+                >
+                  <td>{{ item.name }}</td>
+                  <td>{{ item.category }}</td>
+                  <td>{{ item.amount }}</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+          <!--end table header -->
+        </section>
+      </div>
     </div>
   </div>
 </template>
@@ -259,7 +223,7 @@ export default {
   setup() {
     const showReport = ref(false);
     const loading = ref(false);
-    const fileName = ref("");
+    const fileName = ref("Church Activities Attendance Report");
     const primarycolor = inject("primarycolor");
     const selectedFileType = ref({});
     const fileHeaderToExport = ref([]);
@@ -271,6 +235,7 @@ export default {
       { name: "pdf" },
     ]);
     const showExport = ref(false);
+    const displayTitle = ref(false);
     const allEvents = ref([]);
     const selectedEvents = ref([]);
     const series = ref([]);
@@ -294,6 +259,11 @@ export default {
     const selectedEventID = ref(null);
     const groupedActivityService = ref([]);
     const downloadFile = (item) => {
+      if (item.name === "pdf") {
+        displayTitle.value = true;
+      } else {
+        displayTitle.value = false;
+      }
       exportService.downLoadExcel(
         item.name,
         document.getElementById("element-to-print"),
@@ -546,6 +516,7 @@ export default {
       startDate,
       endDate,
       selectedEvents,
+      displayTitle,
       allEvents,
       activityReport,
       getActivityReport,

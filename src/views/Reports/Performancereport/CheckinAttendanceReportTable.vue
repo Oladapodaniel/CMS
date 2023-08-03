@@ -1,5 +1,5 @@
 <template>
-  <div class="col-sm-12 p-0 scroll-table">
+  <div class="col-md-12 p-0 scroll-table">
     <table class="table table-hover" style="border-radius: 0" id="table">
       <thead>
         <tr class="table-row-bg font-weight-bold">

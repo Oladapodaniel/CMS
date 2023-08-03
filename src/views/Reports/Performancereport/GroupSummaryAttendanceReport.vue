@@ -149,48 +149,60 @@
         </div>
       </div>
     </div>
-
+  </div>
+  <div
+    class="mt-4"
+    id="element-to-print"
+    v-if="availabilityReport.length > 0 && searched"
+  >
     <div
-      class="row mt-4"
-      id="element-to-print"
-      v-if="availabilityReport.length > 0 && searched"
+      class="container-fluid d-flex justify-content-center my-2"
+      v-if="displayTitle"
     >
-      <div class="col-sm-12 p-0 scroll-table">
-        <table class="table table-hover" style="border-radius: 0" id="table">
-          <thead>
-            <tr class="table-row-bg font-weight-bold">
-              <th>Group</th>
-              <th>Leader</th>
-              <th>Leader_Phone</th>
-              <th>Event</th>
-              <th>Date</th>
-              <th v-for="item in attendanceType" :key="item.id">
-                {{ item.name }}
-              </th>
-              <th v-for="item in dynamicCustomFields" :key="item.id">
-                {{ item.label }}
-              </th>
-            </tr>
-          </thead>
-          <tbody class="small-text font-weight-bold text-nowrap">
-            <tr v-for="(item, index) in availabilityReport" :key="index">
-              <td>{{ item.groupName }}</td>
-              <td>{{ item.groupLeaderName }}</td>
-              <td>{{ item.groupLeaderPhone }}</td>
-              <td>{{ item.eventName }}</td>
-              <td>{{ dateFormat(item.eventDate) }}</td>
-              <td v-for="(attendance, index) in item.attendances" :key="index">
-                {{ attendance.number }}
-              </td>
-              <td
-                v-for="(customfield, index) in item.customAttributeData"
-                :key="index"
-              >
-                {{ customfield.data || 0 }}
-              </td>
-            </tr>
-          </tbody>
-        </table>
+      <div class="head-text">Group Summary Attendance Report</div>
+    </div>
+    <div class="container-fluid">
+      <div class="row">
+        <div class="col-md-12 p-0 scroll-table">
+          <table class="table table-hover" style="border-radius: 0" id="table">
+            <thead>
+              <tr class="table-row-bg font-weight-bold">
+                <th>Group</th>
+                <th>Leader</th>
+                <th>Leader_Phone</th>
+                <th>Event</th>
+                <th>Date</th>
+                <th v-for="item in attendanceType" :key="item.id">
+                  {{ item.name }}
+                </th>
+                <th v-for="item in dynamicCustomFields" :key="item.id">
+                  {{ item.label }}
+                </th>
+              </tr>
+            </thead>
+            <tbody class="small-text font-weight-bold text-nowrap">
+              <tr v-for="(item, index) in availabilityReport" :key="index">
+                <td>{{ item.groupName }}</td>
+                <td>{{ item.groupLeaderName }}</td>
+                <td>{{ item.groupLeaderPhone }}</td>
+                <td>{{ item.eventName }}</td>
+                <td>{{ dateFormat(item.eventDate) }}</td>
+                <td
+                  v-for="(attendance, index) in item.attendances"
+                  :key="index"
+                >
+                  {{ attendance.number }}
+                </td>
+                <td
+                  v-for="(customfield, index) in item.customAttributeData"
+                  :key="index"
+                >
+                  {{ customfield.data || 0 }}
+                </td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
       </div>
     </div>
   </div>
@@ -229,8 +241,9 @@ export default {
       { name: "pdf" },
     ]);
     const selectedFileType = ref({});
-    const fileName = ref("");
+    const fileName = ref("Group Summary Attendance Report");
     const showExport = ref(false);
+    const displayTitle = ref(false);
     const fileToExport = ref([]);
     const fileHeaderToExport = ref([]);
     const searched = ref(false);
@@ -367,6 +380,7 @@ export default {
 
     const downLoadExcel = (item) => {
       if (item.name === "pdf") {
+        displayTitle.value = true;
         var element = document.getElementById("element-to-print");
         var opt = {
           // margin:       1,
@@ -381,6 +395,7 @@ export default {
         html2pdf().set(opt).from(element).save();
         html2pdf(element);
       } else {
+        displayTitle.value = false;
         exportService.downLoadExcel(
           item.name,
           document.getElementById("element-to-print"),
@@ -452,6 +467,7 @@ export default {
       startDate,
       setSelectedEvent,
       selectedEventID,
+      displayTitle,
       endDate,
       events,
       primarycolor,
