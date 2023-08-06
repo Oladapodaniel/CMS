@@ -15,7 +15,8 @@ export default {
         sentVoiceList: [],
         whatsappSessionId: "",
         isWhatsappClientReady: false,
-        allClientWhatsappChat: []
+        allClientWhatsappChat: [],
+        scheduledWhatsappList: []
     },
 
     mutations: {
@@ -83,17 +84,20 @@ export default {
 
         },
 
-        setSentVoiceList (state, payload) {
+        setSentVoiceList(state, payload) {
             state.sentVoiceList = payload
         },
-        setSessionId (state, payload) {
+        setSessionId(state, payload) {
             state.whatsappSessionId = payload
         },
-        SET_WHATSAPP_STATE (state, payload) {
+        SET_WHATSAPP_STATE(state, payload) {
             state.isWhatsappClientReady = payload
         },
-        SET_CLIENT_CHAT (state, payload) {
+        SET_CLIENT_CHAT(state, payload) {
             state.allClientWhatsappChat = payload
+        },
+        setScheduledWhatsappMessage(state, payload) {
+            state.scheduledWhatsappList = payload
         },
 
         clearState(state) {
@@ -106,8 +110,8 @@ export default {
             state.addToSentEmail = {}
             state.sentVoiceList = []
             state.whatsappSessionId = "",
-            state.isWhatsappClientReady = false,
-            state.allClientWhatsappChat = []
+                state.isWhatsappClientReady = false,
+                state.allClientWhatsappChat = []
         }
     },
 
@@ -196,22 +200,29 @@ export default {
         removeSentEmails({ commit }, payload) {
             commit("removeSentEmails", payload)
         },
-        getAllSentVoice ({ commit }) {
+        getAllSentVoice({ commit }) {
             return communicationService.getAllSentVoice().then(response => {
                 console.log(response)
                 commit("setSentVoiceList", response)
                 return response
             })
         },
-        whatsappSessionId ({ commit }, payload) {
+        whatsappSessionId({ commit }, payload) {
             commit('setSessionId', payload)
         },
-        isWhatsappClientReady ({ commit }, payload) {
+        isWhatsappClientReady({ commit }, payload) {
             commit('SET_WHATSAPP_STATE', payload)
         },
-        allClientChat ({ commit }, payload) {
+        allClientChat({ commit }, payload) {
             commit('SET_CLIENT_CHAT', payload)
             console.log(payload, 'hhhhh');
+        },
+        async setScheduledWhatsappMessages ({ commit }) {
+            return communicationService.getAllScheduledWhatsappMessage().then(response => {
+                console.log(response)
+                commit("setScheduledWhatsappMessage", response)
+                return response
+            })
         },
         clearState({ commit }) {
             commit("clearState")
@@ -231,6 +242,7 @@ export default {
         sentVoiceList: state => state.sentVoiceList,
         whatsappSessionId: state => state.whatsappSessionId,
         isWhatsappClientReady: state => state.isWhatsappClientReady,
-        allClientWhatsappChat: state => state.allClientWhatsappChat
+        allClientWhatsappChat: state => state.allClientWhatsappChat,
+        scheduledWhatsappList: state => state.scheduledWhatsappList
     },
 }

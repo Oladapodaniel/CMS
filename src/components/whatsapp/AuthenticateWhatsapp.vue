@@ -13,7 +13,7 @@
             </el-button>
         </div>
     </div>
-    <el-dialog v-model="QRCodeDialog" title="" width="50%" class="QRCodeDialog" :close-on-click-modal="false"
+    <el-dialog v-model="QRCodeDialog" title="" :width="mdAndUp || lgAndUp || xlAndUp ? '50%' : '90%' " class="QRCodeDialog" :close-on-click-modal="false"
         :close-on-press-escape="false" :show-close="false" align-center>
 
         <div class="d-flex align-items-center flex-column" v-if="isClientReady">
@@ -52,6 +52,7 @@ import store from "../../store/store";
 import { useRoute } from "vue-router";
 import router from "../../router";
 import { ElMessage } from "element-plus";
+import deviceBreakpoint from "../../mixins/deviceBreakpoint";
 import { ElNotification } from 'element-plus';
 
 export default {
@@ -68,6 +69,7 @@ export default {
         const sessionStatus = ref("");
         const isClientReady = ref(false)
         const connectingExistingSession = ref(false)
+        const { mdAndUp, lgAndUp, xlAndUp, xsOnly } = deviceBreakpoint()
 
 
         const socketconnected = computed(() => {
@@ -221,7 +223,11 @@ export default {
             isClientReady,
             socketconnected,
             connectingExistingSession,
-            proceedAction
+            proceedAction,
+            mdAndUp, 
+            lgAndUp, 
+            xlAndUp,
+            xsOnly
         }
     }
 }
