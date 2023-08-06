@@ -56,9 +56,9 @@
         </div>
       </div>
       <div class="row my-2" v-if="groupSelectionTab">
-        <div class="col-2 pr-md-0 col-lg-2 align-self-center">
+        <div class="pr-0 col-md-2 align-self-center">
         </div>
-        <div class="col-10 px-md-0 col-lg-10 form-group mb-0">
+        <div class="px-0 col-md-10 form-group mb-0">
           <el-select v-model="groupMultipleIDs" placeholder="Select group" class="group-category w-100"
             @remove-tag="removeTag" filterable multiple>
             <el-option-group v-for="(group, index) in categories" :key="group" :label="group">
@@ -258,6 +258,7 @@
                 <CirclePlusFilled />
               </el-icon>&nbsp;Add
             </el-button>
+            <div><code style="color: black;"><small>NB: Make sure you click the add button to include the number to the tray of recipient numbers.</small></code></div>
           </div>
         </div>
       </div>
@@ -299,14 +300,18 @@
           <div><span class="font-weight-bold">NB:</span> To personalise your message, type <span class="font-weight-bold">#name#</span> where you want the recipient's name to appear in your message content</div>
           <div class="d-flex align-items-start mt-3">
             <img src="../../../assets/smiling-face.png" width="20" class="c-pointer emoji-wrapper"
-              @click="displayEmoji = !displayEmoji" />
+            @click="displayEmoji = !displayEmoji" />
+            <transition name="el-fade-in-linear">
+              <VuemojiPicker v-show="displayEmoji" @emojiClick="handleEmojiClick" class="mt-2 emoji-wrapper "
+                style="position: absolute; z-index: 1000" />
+            </transition>
 
             <!-- action="https://run.mocky.io/v3/9d059bf9-4660-45f2-925d-ce80ad6c4d15" -->
             <!-- :on-exceed="handleExceed" -->
             <!-- :on-preview="handlePreview"
             :on-remove="handleRemove"
             :before-remove="beforeRemove" -->
-            <el-upload class="upload-demo" multiple :limit="1" :on-change="chooseFile" :on-remove="handleRemove"
+            <el-upload class="upload-demo" multiple :limit="1" :on-change="chooseFile" accept="image/*"  :on-remove="handleRemove"
               :auto-upload="false">
               <el-icon class="ml-2" style="font-size: 20px; color: #7d7d7d;">
                 <Paperclip />
@@ -318,10 +323,6 @@
               </template> -->
             </el-upload>
           </div>
-          <transition name="el-fade-in-linear">
-            <VuemojiPicker v-show="displayEmoji" @emojiClick="handleEmojiClick" class="mt-2 emoji-wrapper "
-              style="position: absolute; z-index: 1000" />
-          </transition>
           <!-- "image/png" -->
           <!-- "audio/mpeg" -->
           <!-- "video/mp4" -->
@@ -1070,7 +1071,7 @@ export default {
         const start = i * chunkSize;
         const end = start + chunkSize;
         const chunk = base64String.substring(start, end);
-        console.log('===================================== \n' + chunk + '\n==================================================')
+        console.log('==== \n' + chunk + '\n=====')
         uploadedChunks++; // Increment the uploadedChunks count
         socket.emit('chunk',
           {
@@ -1088,7 +1089,8 @@ export default {
     }
 
     const hideEmojiWrapper = (e) => {
-      if (!e.target.className.includes('emoji-wrapper')) {
+      console.log(e)
+      if (!e.target.className.includes('emoji-wrapper') && (!e.target.className.includes('light') && (e.target.localName.toLowerCase() !== 'emoji-picker'))) {
         displayEmoji.value = false
       }
     }

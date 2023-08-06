@@ -14,7 +14,7 @@ export default {
         addToSentEmail: {},
         sentVoiceList: [],
         whatsappSessionId: "",
-        isWhatsappClientReady: false,
+        isWhatsappClientReady: true,
         allClientWhatsappChat: [],
         scheduledWhatsappList: []
     },
