@@ -8,9 +8,6 @@
             Add Branch
           </el-button>
         </div>
-        <!-- <div class=" c-pointer header-btn " data-toggle="modal" data-target="#statusmodal" ref="statusmodalBtn">
-                    Add Branch
-                </div> -->
       </div>
     </div>
     <div class="container-fluid">
@@ -40,12 +37,12 @@
             </div>
           </div>
         </div>
-        <div class="col-md-2 mt-3 mt-md-0  font-weight-bold">
+        <div class="col-md-2 mt-3 mt-md-0 font-weight-bold">
           <div class="row card-summary shadow">
             <div class="col-md-2">
               <div class="row">
                 <div class="text-primary col-md-2 mt-2">
-                  <el-icon :size="40" class="rounded-circle p-1 icon"
+                  <el-icon :size="35" class="rounded-circle p-1 icon"
                     ><Share
                   /></el-icon>
                 </div>
@@ -66,7 +63,7 @@
             <div class="col-md-2">
               <div class="row">
                 <div class="text-primary col-md-2 mt-2">
-                  <el-icon :size="40" class="rounded-circle p-1 icon"
+                  <el-icon :size="35" class="rounded-circle p-1 icon"
                     ><User
                   /></el-icon>
                 </div>
@@ -82,12 +79,12 @@
             </div>
           </div>
         </div>
-        <div class="col-md-2 mt-3 mt-md-0  font-weight-bold">
+        <div class="col-md-2 mt-3 mt-md-0 font-weight-bold">
           <div class="row card-summary shadow">
             <div class="col-md-2">
               <div class="row">
                 <div class="text-primary col-md-2 mt-2">
-                  <el-icon :size="40" class="rounded-circle p-1 icon"
+                  <el-icon :size="35" class="rounded-circle p-1 icon"
                     ><Notebook
                   /></el-icon>
                 </div>
@@ -99,17 +96,17 @@
             <div
               class="total-bg col-md-12 py-3 font-weight-bold px-0 box-bottom text-center"
             >
-              Average Attendance
+              {{ averageAttendace }}
             </div>
           </div>
         </div>
-        <div class="col-md-2 mt-3 mt-md-0  font-weight-bold">
+        <div class="col-md-2 mt-3 mt-md-0 font-weight-bold">
           <div class="row card-summary shadow">
             <div class="col-md-2">
               <div class="row">
                 <div class="text-primary col-md-2 mt-2">
-                  <el-icon :size="40" class="rounded-circle p-1 icon"
-                    ><Share
+                  <el-icon :size="35" class="rounded-circle p-1 icon"
+                    ><TrendCharts
                   /></el-icon>
                 </div>
               </div>
@@ -119,6 +116,12 @@
               v-if="openHideAmonut"
             >
               150,000
+            </div>
+            <div
+              class="col-md-12 mt-4 pt-2 font-weight-bold text-secondary h4 text-right"
+              v-if="!openHideAmonut"
+            >
+              **********
             </div>
             <div
               class="total-bg col-md-12 py-3 font-weight-bold px-0 box-bottom text-center"
@@ -147,28 +150,20 @@
             </div>
             <div class="col-md-12 mt-3">
               <div class="row">
-                <div class="col-md-4">
+                <div class="col-md-12">
                   <div class="font-weight-bold">First Timers</div>
-                  <div
-                    class=" mt-3"
-                  >
-                  <RadialChart domId="view2" />
-                  </div>
+                  <!-- <div class="mt-3 col-md-12">
+                    <RadialChart domId="view2" />
+                  </div> -->
                 </div>
-                <div class="col-md-4">
+                <!-- <div class="col-md-4">
                   <div class="font-weight-bold">Finance</div>
-                  <div
-                    class="mt-3"
-                  
-                  ><RadialChart domId="view4" /></div>
+                  <div class="mt-3"><RadialChart domId="view4" /></div>
                 </div>
                 <div class="col-md-4">
                   <div class="font-weight-bold">New Convert</div>
-                  <div
-                    class=" mt-3"
-                    style=""
-                  ><RadialChart domId="view1" /></div>
-                </div>
+                  <div class="mt-3" style=""><RadialChart domId="view1" /></div>
+                </div> -->
               </div>
             </div>
           </div>
@@ -190,20 +185,19 @@
                 NGN 150,000
               </div>
               <div
-                class="font-weight-bold mt-2 text-secondary h4"
+                class="font-weight-bold mt-2 text-secondary h5"
                 v-if="!openHideAmonut"
               >
                 HIDDEN
               </div>
             </div>
             <div class="col-md-12">
-           
-                      <PieChart
-                        domId="view"
-                        distance="5"
-                        :titleMargin="10"
-                        :summary="branchData"
-                      />
+              <PieChart
+                domId="view"
+                distance="5"
+                :titleMargin="10"
+                :summary="branchData"
+              />
             </div>
           </div>
         </div>
@@ -211,10 +205,14 @@
     </div>
     <div class="container-fluid mt-4">
       <div class="row border">
-        <div class="col-md-12 border border-bottom-0 h5 font-weight-bold py-3 rounded">
+        <!-- <div
+          class="col-md-12 border border-bottom-0 h5 font-weight-bold py-3 rounded"
+        >
           First Timer Attendance
-        </div>
-        <div class="col-md-12 border border-bottom-0 d-flex justify-content-end py-3">
+        </div> -->
+        <div
+          class="col-md-12  d-flex justify-content-end py-3"
+        >
           <div>
             <el-dropdown trigger="click" class="w-100">
               <span class="el-dropdown-link w-100">
@@ -247,19 +245,27 @@
             </el-dropdown>
           </div>
         </div>
-        <div class="col-md-12" >
-            <ColumnChart domId="chart2" 
-                 :data="branchData2" :series="seriesData"
-                 />
+        <div class="col-md-12">
+          <ColumnChart
+            domId="chart2"
+            :data="branchData2"
+            :series="seriesData"
+            :title="firstTimerHeader"
+            :header=" firstTimerHeader"
+          />
         </div>
       </div>
     </div>
     <div class="container-fluid mt-4">
       <div class="row border">
-        <div class="col-md-12 border border-bottom-0 h5 font-weight-bold py-3 rounded">
+        <!-- <div
+          class="col-md-12 border border-bottom-0 h5 font-weight-bold py-3 rounded"
+        >
           Members Attendance
-        </div>
-        <div class="col-md-12 border border-bottom-0 d-flex justify-content-end py-3">
+        </div> -->
+        <div
+          class="col-md-12 mt-2 d-flex justify-content-end py-3"
+        >
           <div>
             <el-dropdown trigger="click" class="w-100">
               <span class="el-dropdown-link w-100">
@@ -292,19 +298,27 @@
             </el-dropdown>
           </div>
         </div>
-        <div class="col-md-12" >
-            <ColumnChart domId="chart4" 
-                 :data="branchData2" :series="seriesData"
-                 />
+        <div class="col-md-12">
+          <ColumnChart
+            domId="chart4"
+            :data="branchData2"
+            :series="seriesData"
+            :title="membersHeader"
+            :header=" membersHeader"
+          />
         </div>
       </div>
     </div>
     <div class="container-fluid mt-4">
       <div class="row border">
-        <div class="col-md-12 border border-bottom-0 h5 font-weight-bold py-3 rounded">
+        <!-- <div
+          class="col-md-12 border border-bottom-0 h5 font-weight-bold py-3 rounded"
+        >
           Income & Expenses
-        </div>
-        <div class="col-md-12 border border-bottom-0 d-flex justify-content-end py-3">
+        </div> -->
+        <div
+          class="col-md-12  d-flex justify-content-end py-3"
+        >
           <div>
             <el-dropdown trigger="click" class="w-100">
               <span class="el-dropdown-link w-100">
@@ -337,10 +351,105 @@
             </el-dropdown>
           </div>
         </div>
-        <div class="col-md-12" >
-            <ColumnChart domId="chart1" 
-                 :data="branchData2" :series="seriesData"
-                 />
+        <div class="col-md-12">
+          <ColumnChart
+            domId="chart1"
+            :data="branchData2"
+            :series="seriesData"
+            :title="IncomeExpHeader"
+            :header=" IncomeExpHeader"
+          />
+        </div>
+      </div>
+    </div>
+    <div class="container-fluid mt-4">
+      <div class="row border">
+        <div class="col-md-6">
+          <div class="row">
+            <div class="col-md-12 py-3  primary-bg text-white ">
+              <el-icon :size="20"><List /></el-icon> Branch list
+            </div>
+            <div class="col-md-12 d-flex justify-content-end mt-3">
+              <div>Member Size</div>
+            </div>
+            <div class="col-md-12 mt-3">
+              <div class="row border">
+                <div
+                  class="col-md-12 py-2 border bg-secondary d-flex justify-content-between"
+                >
+                  <div class="font-weight-bold h6">Amazing Grace</div>
+                  <div>150,000</div>
+                </div>
+                <div
+                  class="col-md-12 py-2 border d-flex justify-content-between"
+                >
+                  <div class="font-weight-bold h6">Amazing</div>
+                  <div>150,000</div>
+                </div>
+                <div
+                  class="col-md-12 d-flex py-2 border justify-content-between"
+                >
+                  <div class="font-weight-bold h6">Amazing</div>
+                  <div>150,000</div>
+                </div>
+                <div
+                  class="col-md-12 d-flex py-2 border justify-content-between"
+                >
+                  <div class="font-weight-bold h6">Amazing</div>
+                  <div>150,000</div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="col-md-6">
+          <div class="row">
+            <div class="col-md-12 bg-secondary py-3">
+              <el-icon :size="20" class=""><Expand /></el-icon> Branch Hierarchy
+            </div>
+            <div class="col-md-12">
+              <div class="row">
+                <div class="col-md-12 d-flex justify-content-between mt-3">
+                  <div class="font-weight-bold">Amazing Grace</div>
+                  <div class="small text-primary">View Branch</div>
+                </div>
+                <div class="col-md-12 mt-3">
+                  <div class="mt-2">
+                    First Timer : <span class="font-weight-bold">250</span>
+                  </div>
+                  <div class="mt-2">
+                    Member Size : <span class="font-weight-bold">150,000</span>
+                  </div>
+                  <div class="mt-2">
+                    Average Income :
+                    <span class="font-weight-bold">NGN 3,000,000</span>
+                  </div>
+                  <div class="mt-2">
+                    Average Expenses :
+                    <span class="font-weight-bold">NGN 800,000</span>
+                  </div>
+                </div>
+                <div class="col-md-12">
+                  <hr class="w-100" />
+                </div>
+                <div class="col-md-12 d-flex justify-content-center">
+                  <div class="small">Pastor's Profile</div>
+                </div>
+                <div class="col-md-12 d-flex justify-content-center">
+                  <img src="../../assets/best-Copy.jpg" alt="" />
+                </div>
+                <div class="col-md-12 d-flex justify-content-center">
+                  <div class="font-weight-bold">Dr. Paul Akasas</div>
+                </div>
+                <div class="col-md-12 d-flex justify-content-center">
+                  <div>0705560884767</div>
+                </div>
+                <div class="col-md-12 d-flex justify-content-center">
+                  <div>paualgg@gmail.com</div>
+                </div>
+              </div>
+            </div>
+          </div>
         </div>
       </div>
     </div>
@@ -349,47 +458,78 @@
 
 <script>
 import { ref, inject, onMounted, onUpdated } from "vue";
-import PieChart from '../../components/charts/BranchPieChart.vue'
-import DonutChart from '../../components/charts/DonutChart.vue'
-import RadialChart from '../../components/charts/RadialChart.vue'
-import ColumnChart from "@/components/charts/ColumnChart.vue";
+import PieChart from "../../components/charts/BranchPieChart.vue";
+import DonutChart from "../../components/charts/DonutChart.vue";
+import RadialChart from "../../components/charts/RadialChart.vue";
+import ColumnChart from "@/components/charts/BranchColumnChart.vue";
 export default {
-    components: {
-        PieChart,
-        DonutChart,
-        RadialChart,
-        ColumnChart
-        },
+  components: {
+    PieChart,
+    DonutChart,
+    RadialChart,
+    ColumnChart,
+  },
   setup() {
     const primarycolor = inject("primarycolor");
     const openHideAmonut = ref(true);
     const selectedMonthly = ref("Branches");
+    const firstTimerHeader = ref("First Timer Attendance");
+    const membersHeader = ref("Members Attendance");
+    const IncomeExpHeader = ref("Income & Expenses");
     const selectedBranches = ref("Branches");
     const selectedWeekly = ref("Branches");
-    const branchData = ref( [ 
-    { name: null, "value": 34 }, 
-    { name: "Website", value: 2 }, 
-    { name: "Flyer", value: 5 }, 
-    { name: "Friend", value: 9 }, 
-    { name: "Not Specified", value: 2 }, 
-    { name: "Social Media", value: 6 }
-     ]
-    )
-    const branchData2 = ref( [ { name: "Income & Expense", color : "#002044", data: [  2, 1, 0, 1, 4, 4, 4, 0, 10, 2, 6, 6 ] } ]
-        );
-    const seriesData = ref([ "Amazing", "beatidah", "Covenant", "Hope", "Delight", "Royalp", "Gracious", "Solanata", "Delight", "Hope", "Redeeemed", "ChritApo",  ])
-    
+    const attendance = ref("Average Attendance");
+    const averageAttendace = ref("");
+    const branchData = ref([
+      { name: null, value: 34 },
+      { name: "Website", value: 2 },
+      { name: "Flyer", value: 5 },
+      { name: "Friend", value: 9 },
+      { name: "Not Specified", value: 2 },
+      { name: "Social Media", value: 6 },
+    ]);
+    const branchData2 = ref([
+      {
+        name: "Income",
+        color: "#002044",
+        data: [2, 1, 0, 1, 4, 4, 4, 0, 10, 2, 6, 6],
+      },
+      {
+        name: "Expense",
+        color: "#4baaf5",
+        data: [1, 1, 2, 1, 4, 55, 4, 4, 9, 12, 6, 50],
+      },
+    ]);
+    const seriesData = ref([
+      "Amazing",
+      "beatidah",
+      "Covenant",
+      "Hope",
+      "Delight",
+      "Royalp",
+      "Gracious",
+      "Solanata",
+      "Delight",
+      "Hope",
+      "Redeeemed",
+      "ChritApo",
+    ]);
+
     onUpdated(() => {
-        if(branchData.value){
-            branchData.value
-        }else{
-            branchData.value
-        }
-    })
+      if (branchData.value) {
+        branchData.value;
+      } else {
+        branchData.value;
+      }
+    });
+    onMounted(() => {
+      const lastCharacters = attendance.value.slice(-3);
+      averageAttendace.value = attendance.value.replace(lastCharacters, "...");
+    });
     const chartItemdropdown = ref([
       { name: "Branches", id: 1 },
-      { name: "Weekly", id: 1 },
-      { name: "Monthly", id: 1 },
+      { name: "Weekly", id: 2 },
+      { name: "Monthly", id: 3 },
     ]);
 
     const hideOpen = () => {
@@ -408,17 +548,22 @@ export default {
     return {
       primarycolor,
       branchData2,
+      firstTimerHeader,
       selectedBranches,
       selectedMonthly,
       selectedWeekly,
       selectedType1,
       selectedType2,
       selectedType3,
+      IncomeExpHeader,
+      membersHeader,
       hideOpen,
       branchData,
       seriesData,
       chartItemdropdown,
       openHideAmonut,
+      attendance,
+      averageAttendace,
     };
   },
 };

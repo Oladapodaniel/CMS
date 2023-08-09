@@ -1,19 +1,17 @@
 <template>
   <div class="con">
-    <div :id="domId" class="chart summary-chart" style="height: 100%"></div>
+    <div :id="domId" class="chart summary-chart h-100" ref="chart"></div>
   </div>
 </template>
 
 <script>
-import { onMounted, ref } from "vue";
+import { onMounted, onUpdated, ref } from "vue";
 import Highcharts from "highcharts";
 
 export default {
-    props: [
-    "domId",
-  ],
+  props: ["domId"],
   setup(props) {
-    const chart = ref(null);
+    const charts = ref(null);
     const getSummary = ref([]);
 
     onMounted(() => {
@@ -23,7 +21,7 @@ export default {
           type: "column",
           inverted: true,
           polar: true,
-          renderTo: props.domId,
+          renderTo: props.domId
         },
         title: {
           text: "",
@@ -103,21 +101,25 @@ export default {
           },
         ],
       };
-      chart.value = new Highcharts.chart(highchartsOptions);
+      charts.value = new Highcharts.chart(highchartsOptions);
     });
 
-    return { chart, getSummary };
+    return { charts, getSummary };
   },
 };
 </script>
 
 <style scoped>
 .con {
-  display: flex;
+  /* display: flex;
   justify-content: center;
   align-items: center;
-  width: 100%;
+  width: 100%; */
+  height: 600px;
 }
+/* #container {
+    height: 600px;
+} */
 
 .chart {
   display: flex;
@@ -134,7 +136,7 @@ export default {
   /* box-shadow: 0px 1px 4px #02172E45; */
   /* border: 1px solid #DDE2E6; */
   /* border-radius: 22px; */
-  color: #660792de
+  color: #660792de;
   /* margin-bottom: 24px; */
 }
 </style>

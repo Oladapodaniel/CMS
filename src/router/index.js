@@ -450,6 +450,29 @@ const routes = [
         },
         {
 
+            path: 'branches',
+            name: "singleBranch",
+            meta: {
+                title: 'Churchplus - Branch',
+            },
+            component: () =>
+                import( /* webpackChunkName: "addfirsttimer" */ '../views/branch/singleBranch'),
+            children: [
+                {
+
+                    path: 'summary',
+                    name: "singleBranchSummary",
+                    meta: {
+                        title: 'Churchplus - Branch',
+                    },
+                    component: () =>
+                        import( /* webpackChunkName: "addfirsttimer" */ '../views/branch/singleBranchSummary')
+
+                },
+            ]
+        },
+        {
+
             path: 'branch',
             name: "Branch",
             meta: {
