@@ -1050,6 +1050,15 @@ const routes = [
                     },
                     component: () =>
                         import( /* webpackChunkName: "composewhatsapp" */ '@/views/communication/whatsapp/composeWhatsapp')
+                },
+                {
+                    path: 'scheduledmessages',
+                    name: 'ScheduledList',
+                    meta: {
+                        title: 'Churchplus - Whatsapp Scheduled Messages',
+                    },
+                    component: () =>
+                        import( /* webpackChunkName: "scheduledwhatsapp" */ '@/views/communication/whatsapp/ScheduledList')
                 }
             ]
         },

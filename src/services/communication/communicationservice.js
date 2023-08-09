@@ -173,6 +173,19 @@ const communicationService = {
                     if (!error.response) reject(error);
                 })
         })
+    },
+    getAllScheduledWhatsappMessage() {
+        return new Promise((resolve, reject) => {
+            axios.get('/api/Messaging/getWhatAppSchedules?page=1')
+                .then(res => {
+                    resolve(res.data);
+                })
+                .catch(error => {
+                    stopProgressBar();
+                    if (error.response) reject(error.response);
+                    if (!error.response) reject(error);
+                })
+        })
     }
 }
 

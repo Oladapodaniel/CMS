@@ -193,7 +193,6 @@
 import axios from '@/gateway/backendapi'
 import FirstTimersList from './FirstTimersList'
 import NewConvertList from './NewConvert.vue'
-import VueQrcode from 'vue-qrcode';
 import { ref, inject, computed, watchEffect, onMounted } from 'vue';
 import finish from '../../services/progressbar/progress'
 import router from "@/router/index";
@@ -203,7 +202,7 @@ import { ElMessage, ElMessageBox } from 'element-plus'
 
 
 export default {
-  components: { FirstTimersList, NewConvertList, VueQrcode },
+  components: { FirstTimersList, NewConvertList },
   setup() {
     const primarycolor = inject('primarycolor')
     const firstTimersList = ref(store.getters['membership/allFirstTimers'])
