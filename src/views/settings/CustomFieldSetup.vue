@@ -593,10 +593,12 @@ export default {
           message: "Custom Field created successfully",
           duration: 5000
         });
-        selectedEntityType.value = "";
         customFieldLabel.value = "";
+        selectedControl.value = new Object;
+        selectedControlID.value = null;
+        selectedEntityType.value = new Object();
+        selectedEntityTypeID.value = null
         dropdownList.value = [];
-        selectedControl.value = "";
       } catch (error) {
         console.log(error);
       }
