@@ -346,8 +346,190 @@
           data-target="#exampleModalFirstTimers">
           Launch demo modal
         </button>
+
+
+
+
+
+
+        <!-- ========================= -->
+{{ expenseItem }}
+<!-- {{
+  {
+    name, id, cashaccount, amount
+  }
+}} -->
+
+        <div class="col-12 offset-sm-1 add">Add Expense</div>
+        <div class="attendance-header d-none d-lg-block">
+          <div class="row">
+            <div class="col-sm-3">Expense Item</div>
+            <div class="col-sm-2">Cash Account</div>
+            <div class="col-sm-4">Amount</div>
+            <div class="col-sm-2">Total</div>
+          </div>
+        </div>
+        <div class="attendance-body stretch" id="offeringBody" v-for="(item, index) in expenseItem" :key="index">
+          <div class="row">
+            <div class="col-12 col-sm-8 col-lg-3 mt-1">
+              <select class="form-control" v-if="item.id && !routeParams">
+                <option v-for="(expense, index) in expenseList" :key="index" :value="expense.id"
+                :selected="expense.id === item.id"
+                >
+                  {{ expense.text }}
+                </option>
+              </select>
+
+              <!-- <select class="form-control" v-else-if="item.financialContributionID && routeParams"
+                v-model="item.financialContributionID" @change="updateOfferingId">
+                <option v-for="(newOffering, index) in newOfferings" :key="index" :value="newOffering.id">
+                  <p>{{ newOffering.name }}</p>
+                </option>
+              </select> -->
+              <input type="text" class="form-control" name="" id="" v-else-if="!item.id"
+                v-model="item.text" placeholder="Enter Expense Item" ref="offeringInput" />
+            </div>
+            <div class="col-3 col-sm-4 col-lg-2">
+              <el-select-v2 v-model="item.cashAccountId" class="w-100 font-weight-normal" :options="cashAccounts.map((i) => ({ label: i.text, value: i.id }))
+                " size="large" />
+            </div>
+
+            <div class="col-3 col-sm-2 col-lg-1">
+              <div class="
+                  currency
+                  py-2
+                  pointer
+                  d-flex
+                  justify-content-around
+                  align-items-center
+                  close-modal
+                " @click="item.showCurrency = !item.showCurrency">
+                <span class="ofering close-modal">{{
+                  item.currencyName
+                  ? item.currencyName
+                  : tenantCurrency.currency
+                }}</span><span style="margin-top: 4px">
+                  <el-icon class="close-modal">
+                    <ArrowDownBold />
+                  </el-icon>
+                </span>
+              </div>
+              <div class="ofering close-modal" :class="{ 'style-account': item.showCurrency }" v-if="item.showCurrency">
+                <div class="">
+                  <el-input type="text" placeholder="Search" class=" close-modal  mb-1" v-model="currencyText" />
+                </div>
+                <div class="header-border close-modal" v-if="filterCurrency.length > 0">
+                  <div class="manual-dd-item close-modal" v-for="item in filterCurrency" :key="item.id">
+                    <div class="d-flex justify-content-between p-1 close-modal">
+                      <div class="close-modal offset-sm-1" @click="(expenseItem[index].currencyID = item.id),(expenseItem[index].showCurrency = false)">
+                        {{ item.name }} - {{ item.country }}
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                <div class="header-border close-modal" v-else>
+                  <div class="p-3 text-center text-danger">No Match Found</div>
+                </div>
+              </div>
+            </div>
+            <div class="col-6 col-lg-3">
+              <el-input type="text" class="w-100" v-model="item.amount" placeholder="Enter Amount" />
+            </div>
+            <div class="col-1 d-none d-lg-block">
+              {{ item.amount }}
+            </div>
+            <div class="col-1 mt-2" @click="delExpense(item.id, index)">
+              <el-icon>
+                <Delete />
+              </el-icon>
+            </div>
+            <!-- <div v-if="item.donor == ''" data-toggle="modal" data-target="#exampleModal" class="
+                col-8 col-sm-3
+                offset-sm-5
+                donor-text
+                pt-0
+                align-self-center
+              " @click="setAddToDonor(index)">
+              Add Donor
+            </div>
+            <div v-else class="
+                col-8 col-sm-5
+                offset-sm-5
+                donor-text-name
+                pt-0
+                align-self-center
+                mt-1
+              " @click="setAddToDonor(index)" data-toggle="modal" data-target="#exampleModal">
+              {{ item.donor }} <span class="donor-text">edit</span>
+            </div> -->
+          </div>
+        </div>
+
+        <div class="col-sm-12 text-center add-attendance ofering" id="addOffering" @click="displayExpenseCard">
+          <el-icon class="mr-2">
+            <CirclePlus />
+          </el-icon>Add Expense Item
+        </div>
+        <div class="display ofering" ref="expenseCard">
+          <input type="text" class="form-control mb-3 ofering" v-model="expenseText"
+            placeholder="Search expense item" />
+
+          <div class="ofering pointer" v-for="(expense, index) in filterExpense" :key="index"
+            @click="addExpense(expense)">
+            {{ expense.text }}
+          </div>
+          <div type="button" data-toggle="modal" data-target="#exampleModalCenter" class="create ofering pointer">
+            Create New Expense Item
+          </div>
+        </div>
+        <button hidden type="button" id="modalTogglerOffering" class="btn btn-primary" data-toggle="modal"
+          data-target="#exampleModalOffering">
+          Launch demo modal
+        </button>
+
+        <div class="col-sm-12 empty">
+          <div class="row justify-content-end">
+            <div class="col-md-6 d-flex flex-wrap">
+              <div class="col-12 col-sm-3  col-sm-3 total-2 ">
+                TOTAL
+              </div>
+              <div class="col-4 col-sm-2   ofering">
+                <CurrencyConverter :tenantCurrency="tenantCurrency.currency" :selectedCurrency="selectedCurrencyName"
+                  :currencyList="currencyList" :currencyAmount="addContributionTotal" @conversion-result="convertResult"
+                  @currency-rate="setCurrencyRate" />
+              </div>
+              <div v-if="convertedAmount2"
+                class=" col-8 col-sm-4  align-self-center text-right text-sm-left converted-amout ml-4">
+                <!-- Make this a computed that displays the value whenever the value of these variable changes -->
+                {{
+                  convertedResult
+                  ? convertedResult.toFixed(2)
+                  : addContributionTotal && addContributionTotal.toString() !== "NaN"
+                    ? addContributionTotal.toFixed(2)
+                    : offeringItemsSum()
+                }}
+              </div>
+            </div>
+
+          </div>
+        </div>
+        <button hidden type="button" id="modalTogglerFirstTimers" class="btn btn-primary" data-toggle="modal"
+          data-target="#exampleModalFirstTimers">
+          Launch demo modal
+        </button>
+
+
+
+
+
+        <!-- ================== -->
+
+
+
+
+
         <!-- <div class="col-sm-12 empty"></div> -->
-        <el-input v-model="note" :rows="5" type="textarea" placeholder="Notes..." />
+        <el-input v-model="note" :rows="5" type="textarea" placeholder="Enter your notes ..." />
       </div>
 
       <div class="form col-12 col-sm-12 offset-md-0 col-md-12">
@@ -1231,6 +1413,9 @@ export default {
       check: false,
       offeringCreate: null,
       newOfferings: [],
+      expenseList: [],
+      expenseItem: [],
+      cashAccounts: [],
       attendanceCreate: null,
       newAttendances: ["Adult", "Children"],
       paymentChannels: ['Cheque', 'Cash', 'Cheque', 'POS', 'Online', 'Bank Transfer', 'USSDText'],
@@ -1239,6 +1424,7 @@ export default {
       newEvents: [],
       attendanceText: "",
       offeringText: "",
+      expenseText: "",
       day: [
         1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20,
         21, 22, 23, 24, 25, 26, 27, 28, 29, 30, 31,
@@ -1400,6 +1586,23 @@ export default {
       this.offeringText = "";
       const showList = document.querySelector("#showList");
       showList.classList.toggle("offering-drop");
+    },
+    displayExpenseCard() {
+      this.$refs.expenseCard.classList.toggle("offering-drop")
+    },
+    addExpense(expense) {
+      console.log(expense, 'expense')
+      this.expenseItem.push({
+        name: expense.text,
+        id: expense.id,
+        currencyID:
+            expense.currencyID == undefined ||
+              expense.currencyID == "" ||
+              expense.currencyID == null
+              ? this.tenantCurrency.currencyId
+              : expense.currencyID,
+      })
+      this.$refs.expenseCard.classList.remove("offering-drop")
     },
     attendance(attObj) {
       if (attObj) {
@@ -1756,6 +1959,41 @@ export default {
         this.offeringItem.splice(index, 1);
       }
     },
+    deleteExpense(id, index) {
+      // if (id) {
+        // axios
+        //   .delete(`/api/Financials/Contributions/Transactions/Delete?ID=${id}`)
+        //   .then((res) => {
+        //     if (res.data.status) {
+        //       ElMessage({
+        //         type: 'success',
+        //         message: 'Offering Successfully Deleted',
+        //         duration: 5000
+        //       })
+        //       this.offeringItem = this.offeringItem.filter((i) => id !== i.id);
+        //     } else {
+
+        //       ElMessage({
+        //         type: 'info',
+        //         message: 'Delete Failed, Please Try Again',
+        //         duration: 5000
+        //       })
+        //     }
+        //   })
+        //   .catch((err) => {
+        //     finish();
+        //     if (err.response) {
+        //       ElMessage({
+        //         type: 'error',
+        //         message: err.response,
+        //         duration: 5000
+        //       })
+        //     }
+        //   });
+      // } else {
+      // }
+      this.expenseItem.splice(index, 1);
+    },
 
     delOffering(id, index) {
       ElMessageBox.confirm(
@@ -1769,6 +2007,26 @@ export default {
       )
         .then(() => {
           this.deleteOffering(id, index);
+        })
+        .catch(() => {
+          ElMessage({
+            type: 'info',
+            message: 'Delete canceled',
+          })
+        })
+    },
+    delExpense(id, index) {
+      ElMessageBox.confirm(
+        'Are you sure you want to proceed?',
+        'Confirm delete',
+        {
+          confirmButtonText: 'OK',
+          cancelButtonText: 'Cancel',
+          type: 'error',
+        }
+      )
+        .then(() => {
+          this.deleteExpense(id, index);
         })
         .catch(() => {
           ElMessage({
@@ -2685,6 +2943,13 @@ export default {
         return { attendanceTypeID: i.id, name: i.name };
       });
     });
+    axios.get("/api/Financials/Accounts/GetExpenseAccounts").then((res) => {
+      this.expenseList = res.data
+    });
+    axios.get("/api/Financials/Accounts/GetCashBankAccounts").then((res) => {
+      this.cashAccounts = res.data
+      console.log(this.cashAccounts, 'ddd')
+    });
 
     this.currentDate();
     this.getCurrentlySignedInUser();
@@ -2725,6 +2990,15 @@ export default {
         });
       } else {
         return this.newOfferings;
+      }
+    },
+    filterExpense() {
+      if (this.expenseText !== "" && this.expenseList.length > 0) {
+        return this.expenseList.filter((i) => {
+          return i.text.toLowerCase().includes(this.expenseText.toLowerCase());
+        });
+      } else {
+        return this.expenseList;
       }
     },
     filterEventCategory() {

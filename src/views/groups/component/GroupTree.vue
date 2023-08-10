@@ -260,34 +260,43 @@ export default {
 
     const confirmDelete = (id, index) => {
       ElMessageBox.confirm(
-        "Are you sure you want to proceed? This operation can't be reversed ",
+        "Are you sure you want to proceed?",
         "Confirm delete",
         {
           confirmButtonText: "OK",
           cancelButtonText: "Cancel",
           type: "error",
         }
-      );
-      try {
-        groupsService.deleteGroup(id).then((res) => {
-          console.log(res, "Delete Response");
-          if (res !== false) {
-            groups.value.splice(index, 1);
-            ElMessage({
-              type: "success",
-              message: "Group was deleted",
-              duration: 5000,
+      )
+        .then(() => {
+          try {
+            groupsService.deleteGroup(id).then((res) => {
+              console.log(res, "Delete Response");
+              if (res !== false) {
+                groups.value.splice(index, 1);
+                ElMessage({
+                  type: "success",
+                  message: "Group was deleted",
+                  duration: 5000,
+                });
+                groupsService.removeGroupFromStore(id);
+              }
             });
-            groupsService.removeGroupFromStore(id);
+          } catch (error) {
+            ElMessage({
+              type: "info",
+              message: "Delete discarded",
+            });
+            console.log(error);
           }
+        })
+        .catch(() => {
+          ElMessage({
+            type: "info",
+            message: "Rejected",
+            duration: 5000,
+          });
         });
-      } catch (error) {
-        ElMessage({
-          type: "info",
-          message: "Delete discarded",
-        });
-        console.log(error);
-      }
     };
 
     return {

@@ -244,6 +244,7 @@
         <div class="row">
           <div class="col-md-12 col-12 btnn">
             <el-button
+              v-if="route.params.groupId"
               class="default-btn border outline-none font-weight-bold c-pointer text-center text-dark"
               data-toggle="collapse"
               data-dismiss="modal"
@@ -1289,7 +1290,7 @@ export default {
     const searchGroupMemberText = ref("");
     const field = ref();
     const groups = ref([]);
-    const selectedIntendedSubGroup = ref({});
+    const selectedIntendedSubGroup = ref("");
     const searchGroupText = ref("");
     const grouploading = ref(false);
     const moveLoading = ref(false);
@@ -1357,16 +1358,16 @@ export default {
         searchGroupRef.value.focus();
       });
     };
-    const setGroupValue = () => {
-      const response = flattenedTree.value.find(
-        (i) => i.value == selectedTree.value
-      );
-      console.log(response, 'llllll');
-      selectedIntendedSubGroup.value = {
-        name: response.label,
-        id: response.value,
-      };
-    };
+    // const setGroupValue = () => {
+    //   const response = flattenedTree.value.find(
+    //     (i) => i.value == selectedTree.value
+    //   );
+    //   console.log(response, 'llllll');
+    //   selectedIntendedSubGroup.value = {
+    //     name: response.label,
+    //     id: response.value,
+    //   };
+    // };
 
     
     
@@ -1559,8 +1560,9 @@ export default {
 
     const setFilterGroups = (payload) => {
       // console.log(payload[0].id, 'fsddsd');
+      console.log(payload, 'here');
       selectedTree.value = payload;
-      selectedIntendedSubGroup.value = payload[0]
+      selectedIntendedSubGroup.value = payload.map(i => i.id).join(",")
       // const response = flattenedTree.value.find(
       //   (i) => i.value == selectedTree.value
       // );
@@ -2061,14 +2063,16 @@ export default {
     const addSubGroup = async () => {
       try {
         const { data } = await axios.post(
-          `/api/Group/AddSubGroupToGroup?SuperGroupID=${route.params.groupId}&&SubGroupID=${selectedIntendedSubGroup.value.id}`
+          `/api/Group/AddSubGroupsToGroup?SuperGroupID=${route.params.groupId}&SubGroupID=${selectedIntendedSubGroup.value}`
         );
         ElMessage({
-          message: `${data.response}`,
+          message: data.returnObject.length > 1 ? "Subgroups added successfully" : "Subgroup added successfully",
           type: "success",
           duration: 4000,
         });
-        groupData.value.children.push(data.returnObject);
+        data.returnObject.forEach(i => {
+          groupData.value.children.push(i);
+        })
       } catch (error) {
         console.log(error.response);
         if (error.response) {
@@ -2278,7 +2282,7 @@ export default {
       setSelectedGroupToCopy,
       setCopyGroupProp,
       selectedTree,
-      setGroupValue,
+      // setGroupValue,
       flattenedTree,
       mdAndUp,
       lgAndUp,
