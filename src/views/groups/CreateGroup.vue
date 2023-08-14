@@ -264,7 +264,7 @@
             >
               Import
             </el-button>
-            <el-button v-if="!route.params.groupId"
+            <el-button
               class="default-btn outline-none font-weight-bold border c-pointer header-btn text-dark add-member"
               data-toggle="modal"
               data-target="#exampleModal"
