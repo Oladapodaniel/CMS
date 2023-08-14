@@ -342,7 +342,7 @@
               </div>
             </div>
           </div>
-          <div class="col-12 text-center p-5" v-if="loading">
+          <div class="col-12 text-center p-5" v-if="loadingfields">
             <i
               class="pi pi-spin pi-spinner text-center text-primary"
               style="fontsize: 3rem"
@@ -375,6 +375,7 @@ export default {
     const vissibleTab = ref(false);
     const selectedEntityType = ref({});
     const loading = ref(false);
+    const loadingfields = ref(false);
     const customEntityType = ref({});
     const customControlType = ref({});
     const customLabel = ref("");
@@ -571,7 +572,7 @@ export default {
     };
 
     const saveCustomFields = async () => {
-      console.log(dropdownList.value);
+      loading.value = true
       const body = {
         entityType: selectedEntityType.value.name,
         tenantID: tenantId.value,
@@ -579,14 +580,14 @@ export default {
         parameterValues: dropdownList.value ? dropdownList.value.join(",") : "",
         controlType: selectedControl.value.name,
       };
-
+      
       try {
         const { data } = await axios.post(
           "/api/CustomFields/SaveCustomFields",
           body
-        );
-
-        console.log(data, "saveCustomizable");
+          );
+          
+        loading.value = false
         allCustomFieldList.value.push(data);
         ElMessage({
           type: "success",
@@ -594,17 +595,19 @@ export default {
           duration: 5000
         });
         customFieldLabel.value = "";
-        selectedControl.value = new Object;
+        selectedControl.value = new Object();
         selectedControlID.value = null;
         selectedEntityType.value = new Object();
         selectedEntityTypeID.value = null
         dropdownList.value = [];
       } catch (error) {
         console.log(error);
+        loading.value = false
       }
     };
 
     const getAllCustomFields = async () => {
+      loadingfields.value = true
       try {
         const res = await axios.get("/api/CustomFields/GetAllCustomFields");
         console.log(res.data, "allCustomFields");
@@ -621,12 +624,14 @@ export default {
             id: i.id,
           };
         });
+        loadingfields.value = false
         console.log(getAllcontrolType.value, "allcontrol");
         console.log(getAllEntityType.value, "allEntity");
         console.log(allCustomFieldList.value, "allCustomFieldList");
       } catch (err) {
         /*eslint no-undef: "warn"*/
         console.log(err);
+        loadingfields.value = false
       }
     };
     getAllCustomFields();
@@ -679,7 +684,8 @@ export default {
       customFieldLabel,
       customDropdownList,
       toggleCustomList,
-      primarycolor
+      primarycolor,
+      loadingfields
     };
   },
 };

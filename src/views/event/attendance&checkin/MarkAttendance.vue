@@ -64,9 +64,11 @@
           <!--  :class="{ 'd-flex order-2': isKioskMode }" -->
           <div class="col-md-2" :class="{ 'order-1': isKioskMode }">
             Check in
+            <div><el-checkbox class="custom-checkbox"  /> Select all</div>
           </div>
           <div class="col-md-2" :class="{ 'd-none': isKioskMode }">
             Check out
+            <div><el-checkbox class="custom-checkbox"  /> Select all</div>
           </div>
           <div class="col-md-2" :class="{ 'd-none': isKioskMode }">
             Action
