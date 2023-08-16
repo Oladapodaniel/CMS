@@ -1,9 +1,9 @@
 <template>
   <div>
-    <div class="container-wide container-top">
-      <div class="row my-3">
+    <div class=" container-fluid ">
+      <div class="row mb-3">
       <div class="col-md-6 first-timers-text">
-        <h2 class="page-header">Branch Attendance</h2>
+        <h2 class="head-text">Branch Attendance</h2>
       </div>
 
       <div class="col-md-6 d-flex flex-row-reverse">

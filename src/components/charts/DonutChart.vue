@@ -1,75 +1,85 @@
 <template>
-    <div class="con">
-        <div :id="domId" class="chart summary-chart" style="height: 100%"></div>
-    </div>
+  <div class="con">
+    <div :id="domId" class="chart summary-chart" style="height: 100%"></div>
+  </div>
 </template>
 
 <script>
-import { onUpdated, onMounted, ref } from "vue";
+import { onUpdated, ref } from "vue";
 import Highcharts from "highcharts";
+import axio from "axios";
 export default {
-     props: [
-    "domId",
-  ],
+  props: ["domId", "total", "data"],
   setup(props) {
-    // const startYear = 1965,
-    //   endYear = 2020,
-    //   btn = document.getElementById("play-pause-button"),
-    //   input = document.getElementById("play-range"),
-    //   nbr = 6;
-
-    // let dataset, chart;
-
-    // function getData(year) {
-    //   const output = Object.entries(dataset).map((country) => {
-    //     const [countryName, countryData] = country;
-    //     return [countryName, Number(countryData[year])];
-    //   });
-    //   return [output[0], output.slice(1, nbr)];
-    // }
-
-    // function getSubtitle() {
-    //   const totalNumber = getData(input.value)[0][1].toFixed(2);
-    //   return `<span style="font-size: 80px">${input.value}</span>
-    //     <br>
-    //     <span style="font-size: 22px">
-    //         Total: <b> ${totalNumber}</b> TWh
-    //     </span>`;
-    // }
     const chart = ref(null);
+    const dataset = ref({});
+    const inputValue = ref(props.total);
     const getSummary = ref([]);
+    const summaryOutput = ref([])
 
-    onMounted(() => {
-      //   dataset = await fetch(
-      //     "https://cdn.jsdelivr.net/gh/highcharts/highcharts@88f2067/samples/data/nuclear-energy-production.json"
-      //   ).then((response) => response.json());
+
+    const nbr = ref(props.data.length);
+
+    onUpdated(async () => {
+      getSummary.value = props.data;
+      const getData = () => {
+        summaryOutput.value = getSummary.value.map((country) => {
+          const countryName = country.name;
+          const countryData = country.value;
+          return [countryName, countryData];
+        });
+        if (summaryOutput.value) {
+          return [summaryOutput.value, summaryOutput.value.slice(0, nbr.value)];
+        } else {
+          return summaryOutput.value;
+        }
+      };
+
+      const getSubtitle = () => {
+        return `
+      <div class="text-center  row">
+           <div class="col-md-12 ">
+           <b class=" text-center">Total Value</b>
+           <div class=" h2 font-weight-bold text-center">${props.total}</div>
+           </div>
+        </div>
+        `;
+      };
+      getData()
+      getSubtitle();
+      try {
+        const { data } = await axio.get(
+          "https://cdn.jsdelivr.net/gh/highcharts/highcharts@88f2067/samples/data/nuclear-energy-production.json"
+        );
+        dataset.value = data;
+      } catch (error) {}
       var highchartsOptions = {
         chart: {
           type: "donut",
-        //   inverted: true,
-        //   polar: true,
+          height: 350,
           renderTo: props.domId,
         },
 
         title: {
-          text: "Nuclear energy production from 1965 to 2021 in US, UK, France, Germany, and Japan",
+          text: "",
           align: "center",
         },
         subtitle: {
           useHTML: true,
-          text: 'Hallowed be Your name',
+          text: getSubtitle(),
           floating: true,
-          verticalAlign: "middle",
-          y: 30,
+          // verticalAlign: "",
+          y: 90,
         },
 
         legend: {
-          enabled: false,
+          enabled: true,
+          layout: "horizontal",
         },
 
         tooltip: {
           valueDecimals: 2,
-          valueSuffix: " TWh",
+          valueSuffix: " ",
         },
 
         plotOptions: {
@@ -80,7 +90,7 @@ export default {
             size: "100%",
             innerSize: "80%",
             dataLabels: {
-              enabled: true,
+              enabled: false,
               crop: false,
               distance: "-10%",
               style: {
@@ -89,91 +99,37 @@ export default {
               },
               connectorWidth: 0,
             },
+            showInLegend: true,
           },
         },
-        colors: ["#FCE700", "#F8C4B4", "#f6e1ea", "#B8E8FC", "#BCE29E"],
+        colors: [
+          "#136acd",
+          "#dde2e6",
+          "#969899",
+          "#a7b8cc",
+          "#4aaeed",
+          "#88dfeb",
+          "#9e73fa",
+          "#666562",
+          "#42c5f5",
+        ],
         series: [
           {
             type: "pie",
-            name: 1889,
-            // name: startYear,
-            // data: getData(startYear)[1],
-            data: [1999,1332,3323,3232,223334,4424,8999],
+            data: getData()[nbr.value],
           },
         ],
       };
       chart.value = new Highcharts.chart(highchartsOptions);
     })();
 
-    /*
-     * Pause the timeline, either when the range is ended, or when clicking the pause button.
-     * Pausing stops the timer and resets the button to play mode.
-     */
-    // function pause(button) {
-    //   button.title = "play";
-    //   button.className = "fa fa-play";
-    //   clearTimeout(chart.sequenceTimer);
-    //   chart.sequenceTimer = undefined;
-    // }
-
-    /*
-     * Update the chart. This happens either on updating (moving) the range input,
-     * or from a timer when the timeline is playing.
-     */
-    // function update(increment) {
-    //   if (increment) {
-    //     input.value = parseInt(input.value, 10) + increment;
-    //   }
-    //   if (input.value >= endYear) {
-    //     // Auto-pause
-    //     pause(btn);
-    //   }
-
-    //   chart.update(
-    //     {
-    //       subtitle: {
-    //         text: getSubtitle(),
-    //       },
-    //     },
-    //     false,
-    //     false,
-    //     false
-    //   );
-
-    //   chart.series[0].update({
-    //     name: input.value,
-    //     data: getData(input.value)[1],
-    //   });
-    // }
-
-    /*
-     * Play the timeline.
-     */
-    // function play(button) {
-    //   button.title = "pause";
-    //   button.className = "fa fa-pause";
-    //   chart.sequenceTimer = setInterval(function () {
-    //     update(1);
-    //   }, 500);
-    // }
-
-    // btn.addEventListener("click", function () {
-    //   if (chart.sequenceTimer) {
-    //     pause(this);
-    //   } else {
-    //     play(this);
-    //   }
-    // });
-    /*
-     * Trigger the update on the range bar click.
-     */
-    // input.addEventListener("input", function () {
-    //   update();
-    // });
-
     return {
       chart,
       getSummary,
+      inputValue,
+      dataset,
+      nbr,
+      summaryOutput
     };
   },
 };
@@ -202,7 +158,7 @@ export default {
   /* box-shadow: 0px 1px 4px #02172E45; */
   /* border: 1px solid #DDE2E6; */
   /* border-radius: 22px; */
-  color: #660792de
+  color: #660792de;
   /* margin-bottom: 24px; */
 }
 </style>

@@ -1,7 +1,7 @@
 <template>
     <div class="container-fluid mt-5 mb-4 p-0">
        <div class="row d-flex justify-content-between px-3 mb-3">
-              <div class="heading-text">Member Report</div>
+              <div class="head-text">Member Report</div>
               <div class="default-btn border-secondary font-weight-normal c-pointer"
                 @click="() => (showExport = !showExport)"
                 style="width: fixed; position:relative">

@@ -2,9 +2,9 @@
   <div class="container-top" :class="{ 'container-slim': lgAndUp || xlAndUp }">
     <div class="row">
       <div class="col-md-12 mb-3 px-0 d-flex">
-        <el-icon :size="30"><Back /></el-icon>
+        <div class="" @click="backArrow"><el-icon  :size="30"><Back /></el-icon></div>
         <el-icon :size="30" class="ml-2 primary--text"><Share /></el-icon>
-        <div class="ml-2 head-text">Amazing Grace</div>
+        <div class="ml-2 head-text">{{branchName}}</div>
       </div>
     </div>
     <div class="row">
@@ -12,37 +12,37 @@
         <div class="row">
           <div class="col-md-11 branch-corner">
             <div class="row">
-              <router-link
-                class="py-3 d-flex col-md-12 text-white rounded primary-bg text-decoration-none"
-                to="/tenant/branch/singleBaranhSummary"
+              <router-link @click="toggleDashboard"
+                class="py-3 d-flex col-md-12  rounded  text-decoration-none" :class="{'side-icon' : showDashboard, 'text-dark' : !showDashboard }"
+                to="/tenant/branches/summary"
               >
                 <el-icon :size="25"><HomeFilled /></el-icon>
-                <div class="mt-1">Dashboard</div>
+                <div class="mt-1 pl-1"> Dashboard</div>
               </router-link>
-              <router-link
-                class="py-3 text-dark col-md-12 text-decoration-none"
-                to="/tenant/branch/singleBaranhSummary"
+              <router-link @click="togglePeople"
+                class="py-3  d-flex col-md-12  text-decoration-none" :class="{'side-icon' : showPeople, 'text-dark' : !showPeople }"
+                to="/tenant/branches/members_branch"
               >
-                <img class="rounded-circle p-1 icon" src="../../assets/dashboardlinks/people.svg" alt="" />
-                People
+                <img class="rounded-circle p-1  icon" src="../../assets/dashboardlinks/people.svg" alt="" />
+               <div class="ml-1 "> People </div>
               </router-link>
-              <router-link
-                class="py-3 d-flex text-dark col-md-12 text-decoration-none"
-                to="/tenant/branch/singleBaranhSummary"
+              <router-link @click="toggleAttendance"
+                class="py-3 d-flex col-md-12 text-decoration-none" :class="{'side-icon' : showAttendance, 'text-dark' : !showAttendance }"
+                to="/tenant/branches/branchattendance"
               >
                 <el-icon class="rounded-circle p-1 icon" :size="30"><Memo /></el-icon>
                 <div class="mt-1">Attendance</div>
               </router-link>
-              <router-link
-                class="py-3 text-dark col-md-12 text-decoration-none"
-                to="/tenant/branch/singleBaranhSummary"
+              <router-link @click="toggleFinancial"
+                class="py-3  col-md-12  text-decoration-none"  :class="{'side-icon' : showFinancial, 'text-dark' : !showFinancial }"
+                to="/tenant/branches/branchtransaction"
               >
                 <img class="rounded-circle p-1 icon" src="../../assets/dashboardlinks/acc-icon.svg" alt="" />
                 Financial
               </router-link>
-              <router-link
-                class="py-3 text-dark col-md-12 text-decoration-none"
-                to="/tenant/branch/singleBaranhSummary"
+              <router-link @click="toggleReport"
+                class="py-3 col-md-12 text-decoration-none" :class="{'side-icon' : showReport, 'text-dark' : !showReport }"
+                to="/tenant/branches/branchreport"
               >
                 <img class="rounded-circle p-1 icon"
                   src="../../assets/dashboardlinks/reports-icon.svg"
@@ -52,8 +52,8 @@
               </router-link>
             </div>
           </div>
-          <div class="col-md-12 my-3">
-            <el-button @click="displayVisible" round size="large w-100">
+          <div class="col-md-9 d-flex justify-content-center  my-3">
+            <el-button @click="displayVisible" round size="large" class="w-100">
               <el-icon :size="20"><Unlock /></el-icon> Access
             </el-button>
           </div>
@@ -85,10 +85,19 @@
 <script>
 import { ref } from "vue";
 import deviceBreakpoint from "../../mixins/deviceBreakpoint";
+import router from '../../router';
 export default {
   setup() {
     const { lgAndUp, mdAndUp, xlAndUp } = deviceBreakpoint();
     const dialogVisible = ref(false)
+    const showDashboard = ref(true)
+    const showPeople = ref(false)
+    const showAttendance = ref(false)
+    const showFinancial = ref(false)
+    const showReport = ref(false)
+    const branchName = ref('')
+
+    branchName.value = localStorage.getItem('branchName')
 
     const displayVisible = () =>{
       dialogVisible.value = true
@@ -97,9 +106,61 @@ export default {
       // dialogVisible.value = true
     }
 
+    const toggleDashboard = () => {
+      showDashboard.value = true
+      showPeople.value = false
+      showAttendance.value = false
+      showFinancial.value = false
+      showReport.value = false
+    }
+    const togglePeople = () => {
+      showDashboard.value = false
+      showPeople.value = true
+      showAttendance.value = false
+      showFinancial.value = false
+      showReport.value = false
+    }
+    const toggleAttendance = () => {
+      showDashboard.value = false
+      showPeople.value = false
+      showAttendance.value = true
+      showFinancial.value = false
+      showReport.value = false
+    }
+    const toggleFinancial = () => {
+   showDashboard.value = false
+      showPeople.value = false
+      showAttendance.value = false
+      showFinancial.value = true
+      showReport.value = false
+    }
+    const toggleReport = () => {
+      showDashboard.value = false
+      showPeople.value = false
+      showAttendance.value = false
+      showFinancial.value = false
+      showReport.value = true
+    }
+
+    const backArrow = () => {
+       router.push("/tenant/branch/mainbranchsummary")
+    }
+
     return {
       lgAndUp,
+      toggleDashboard,
+      toggleAttendance,
+      toggleFinancial,
+      togglePeople,
+      toggleReport,
+      showReport,
+      showAttendance,
+      showDashboard,
+      showFinancial,
+      showPeople,
+      backArrow,
       mdAndUp,
+      branchName,
       displayVisible,
       sendRequest,
       dialogVisible,
@@ -119,4 +180,14 @@ export default {
   background: #c0dbfacc;
   /* padding: 1rem; */
 }
+
+.side-icon{
+
+  background: #136acd;
+  color: white !important;
+}
+/* .side-icon:hover{
+background: #136acd;
+color: white;
+} */
 </style>
