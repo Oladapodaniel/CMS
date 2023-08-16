@@ -5,7 +5,7 @@
 </template>
 
 <script>
-import { onUpdated, onMounted, ref } from "vue";
+import { onUpdated, ref } from "vue";
 import Highcharts from "highcharts";
 
 export default {
@@ -23,12 +23,12 @@ export default {
     const chart = ref(null);
     const getSummary = ref([]);
 
-    onMounted(() => {
+    onUpdated(() => {
       try {
         getSummary.value = [ ]
         props.summary.forEach((i) => {
           let summaryObj = {
-            name: i.name === 'Not_Specified' ? `<div style="font-weight: 200;">Not Sure</div>` : i.name === null ? 'Not Sure' : `<div style="font-weight: 200;">${i.name}</div>`,
+            name: i.name === 'Not_Specified' ? `<div style="font-weight: 200;">Not Sure</div>` : i.name === null ? 'Not Sure' : `<div class="" style="font-weight: 200;">${i.name}</div>`,
             y: i.value,
           };
           getSummary.value.push(summaryObj);
@@ -44,12 +44,13 @@ var highchartsOptions = {
         plotShadow: false,
         type: 'pie',
         renderTo: props.domId,
-        height: 250,
+        height: 350,
+        
     },
     legend : {
-          align: 'bottom',
+          // align: 'bottom',
           layout: 'horizontal',
-          // verticalAlign: 'top',
+          verticalAlign: 'bottom',
           x: 10,
           y: 20
         },
@@ -69,7 +70,7 @@ var highchartsOptions = {
             allowPointSelect: true,
             cursor: 'pointer',
             // colors: pieColors,
-            colors: ["#136acd", "#dde2e6", '#67a9cf', '#708eb1', '#61915e', '#1f06ffc0', "#078292de", "#660792de", '#927d07c2'],
+            colors: ["#136acd", "#dde2e6", '#969899', '#a7b8cc', '#4aaeed', "#88dfeb", "#9e73fa", '#666562', '#42c5f5'],
             dataLabels: {
                 enabled: false,
                 format: '<b>{point.name}</b><br>{point.percentage:.1f} %',
@@ -108,6 +109,7 @@ var highchartsOptions = {
   display: flex;
   align-items: center;
   width: 100% !important;
+  
 }
 
 .chart div {

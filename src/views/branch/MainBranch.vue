@@ -4,17 +4,33 @@
       <div class="head-text">Manage Branches</div>
       <div class="mb-3">
         <div class="c-pointer">
-          <el-button round class="header-btn" :color="primarycolor">
+          <!-- <router-link to="/tenant/branch/addbranch"> -->
+          <el-button
+            round
+            class="header-btn"
+            data-toggle="modal"
+            data-target="#statusmodal"
+            :color="primarycolor"
+          >
             Add Branch
           </el-button>
+          <!-- </router-link> -->
         </div>
       </div>
     </div>
+    <!-- <div class="container-fluid">
+      <div class="row justify-content-end">
+        <div class="col-md-6 d-flex justify-content-between">
+          <div></div>
+          <div></div>
+        </div>
+      </div>
+    </div> -->
     <div class="container-fluid">
       <div
         class="py-5 pr-3 row flex-wrap justify-content-between branch-corner"
       >
-        <div class="d-flex align-items-start">
+        <div class="col-md-3 px-0 d-flex align-items-start">
           <img src="../../assets/thingstodo.svg" alt="" />
           <div class="font-weight-bold">
             <div class="font-weight-bold h5">Things You Can Do</div>
@@ -38,18 +54,23 @@
           </div>
         </div>
         <div class="col-md-2 mt-3 mt-md-0 font-weight-bold">
-          <div class="row card-summary shadow">
+          <div class="row card-summary shadow" style="min-width: 100%">
             <div class="col-md-2">
               <div class="row">
-                <div class="text-primary col-md-2 mt-2">
-                  <el-icon :size="35" class="rounded-circle p-1 icon"
+                <div class="col-md-2 mt-2 text-color">
+                  <img
+                    src="../../assets/git-branch.png"
+                    class="rounded-circle px-1 py-1 icon"
+                    alt=""
+                  />
+                  <!-- <el-icon :size="35" class="rounded-circle p-1 icon"
                     ><Share
-                  /></el-icon>
+                  /></el-icon> -->
                 </div>
               </div>
             </div>
             <div class="col-md-12 mt-4 pt-2 font-weight-bold h4 text-right">
-              30
+              {{ getTotalBranches }}
             </div>
             <div
               class="total-bg col-md-12 py-3 font-weight-bold px-0 box-bottom text-center"
@@ -59,18 +80,23 @@
           </div>
         </div>
         <div class="col-md-2 mt-3 mt-md-0 font-weight-bold">
-          <div class="row card-summary shadow">
+          <div class="row card-summary shadow" style="min-width: 100%">
             <div class="col-md-2">
               <div class="row">
-                <div class="text-primary col-md-2 mt-2">
-                  <el-icon :size="35" class="rounded-circle p-1 icon"
+                <div class="primary--text col-md-2 mt-2">
+                  <img
+                    src="../../assets/users4.png"
+                    alt=""
+                    class="rounded-circle p-1 icon"
+                  />
+                  <!-- <el-icon :size="35" class="rounded-circle p-1 icon"
                     ><User
-                  /></el-icon>
+                  /></el-icon> -->
                 </div>
               </div>
             </div>
             <div class="col-md-12 mt-4 pt-2 font-weight-bold h4 text-right">
-              2,986
+              {{ getTotalPeople }}
             </div>
             <div
               class="total-bg col-md-12 py-3 font-weight-bold px-0 box-bottom text-center"
@@ -80,18 +106,23 @@
           </div>
         </div>
         <div class="col-md-2 mt-3 mt-md-0 font-weight-bold">
-          <div class="row card-summary shadow">
+          <div class="row card-summary shadow" style="min-width: 100%">
             <div class="col-md-2">
               <div class="row">
                 <div class="text-primary col-md-2 mt-2">
-                  <el-icon :size="35" class="rounded-circle p-1 icon"
+                  <img
+                    src="../../assets/Vector.png"
+                    class="rounded-circle py-1 px-2 icon"
+                    alt=""
+                  />
+                  <!-- <el-icon :size="35" class="rounded-circle p-1 icon"
                     ><Notebook
-                  /></el-icon>
+                  /></el-icon> -->
                 </div>
               </div>
             </div>
             <div class="col-md-12 mt-4 pt-2 font-weight-bold h4 text-right">
-              85
+              {{ getAllAverageAttendance }}
             </div>
             <div
               class="total-bg col-md-12 py-3 font-weight-bold px-0 box-bottom text-center"
@@ -101,13 +132,15 @@
           </div>
         </div>
         <div class="col-md-2 mt-3 mt-md-0 font-weight-bold">
-          <div class="row card-summary shadow">
+          <div class="row card-summary shadow" style="min-width: 100%">
             <div class="col-md-2">
               <div class="row">
-                <div class="text-primary col-md-2 mt-2">
-                  <el-icon :size="35" class="rounded-circle p-1 icon"
-                    ><TrendCharts
-                  /></el-icon>
+                <div class="col-md-2 mt-2">
+                  <img
+                    src="../../assets/money.png"
+                    class="rounded-circle p-1 icon"
+                    alt=""
+                  />
                 </div>
               </div>
             </div>
@@ -115,7 +148,8 @@
               class="col-md-12 mt-4 pt-2 font-weight-bold h4 text-right"
               v-if="openHideAmonut"
             >
-              150,000
+              {{ getAllAverageIncome }}
+              <!-- {{branchesAnalytics.averageIncome}} -->
             </div>
             <div
               class="col-md-12 mt-4 pt-2 font-weight-bold text-secondary h4 text-right"
@@ -135,16 +169,22 @@
     <div class="container-fluid mt-3">
       <div class="row justify-content-between">
         <div class="col-md-7 col-12">
-          <div class="row rounded shadow" style="height: 30vh">
+          <div class="row rounded shadow">
             <div class="col-md-12 mt-3 d-flex justify-content-between">
               <div class="font-weight-bold">Total Attendance Chart</div>
               <div>view All</div>
             </div>
             <div class="col-md-12 d-flex justify-content-center">
-              <!-- <div><DonutChart domId="charts" /></div> -->
+              <div class="w-100">
+                <DonutChart
+                  domId="charts"
+                  :data="mappedAverageAttendanceItem"
+                  :total="getAllAverageAttendance"
+                />
+              </div>
             </div>
           </div>
-          <div class="row">
+          <!-- <div class="row">
             <div class="col-md-12 mt-4">
               <div class="font-weight-bold">Top Performing Branches</div>
             </div>
@@ -152,25 +192,25 @@
               <div class="row">
                 <div class="col-md-12">
                   <div class="font-weight-bold">First Timers</div>
-                  <!-- <div class="mt-3 col-md-12">
+                  <div class="mt-3 col-md-12">
                     <RadialChart domId="view2" />
-                  </div> -->
+                  </div>
                 </div>
-                <!-- <div class="col-md-4">
+                <div class="col-md-4">
                   <div class="font-weight-bold">Finance</div>
                   <div class="mt-3"><RadialChart domId="view4" /></div>
                 </div>
                 <div class="col-md-4">
                   <div class="font-weight-bold">New Convert</div>
                   <div class="mt-3" style=""><RadialChart domId="view1" /></div>
-                </div> -->
+                </div>
               </div>
             </div>
-          </div>
+          </div> -->
         </div>
-        <div class="col-md-4 col-12 mt-3 mt-md-0 shadow rounded">
+        <div class="col-md-4 px-0 mx-0 col-12 mt-3 mt-md-0 shadow rounded">
           <div class="row">
-            <div class="col-md-12">
+            <div class="col-md-12 pl-4">
               <div class="mt-2">Average income</div>
               <div @click="hideOpen">
                 <div class="mt-2" v-if="openHideAmonut">
@@ -182,7 +222,7 @@
               </div>
 
               <div class="font-weight-bold h5 mt-2" v-if="openHideAmonut">
-                NGN 150,000
+                NGN {{ getAllAverageIncome }}
               </div>
               <div
                 class="font-weight-bold mt-2 text-secondary h5"
@@ -191,12 +231,12 @@
                 HIDDEN
               </div>
             </div>
-            <div class="col-md-12">
+            <div class="col-md-12 px-0 d-flex justify-content-center mb-3">
               <PieChart
                 domId="view"
                 distance="5"
                 :titleMargin="10"
-                :summary="branchData"
+                :summary="mappedAverageIncomeChart"
               />
             </div>
           </div>
@@ -210,9 +250,7 @@
         >
           First Timer Attendance
         </div> -->
-        <div
-          class="col-md-12  d-flex justify-content-end py-3"
-        >
+        <div class="col-md-12 d-flex justify-content-end py-3">
           <div>
             <el-dropdown trigger="click" class="w-100">
               <span class="el-dropdown-link w-100">
@@ -248,24 +286,17 @@
         <div class="col-md-12">
           <ColumnChart
             domId="chart2"
-            :data="branchData2"
-            :series="seriesData"
+            :data="firstTimerChart"
+            :series="series"
             :title="firstTimerHeader"
-            :header=" firstTimerHeader"
+            :header="firstTimerHeader"
           />
         </div>
       </div>
     </div>
     <div class="container-fluid mt-4">
       <div class="row border">
-        <!-- <div
-          class="col-md-12 border border-bottom-0 h5 font-weight-bold py-3 rounded"
-        >
-          Members Attendance
-        </div> -->
-        <div
-          class="col-md-12 mt-2 d-flex justify-content-end py-3"
-        >
+        <div class="col-md-12 mt-2 d-flex justify-content-end py-3">
           <div>
             <el-dropdown trigger="click" class="w-100">
               <span class="el-dropdown-link w-100">
@@ -301,10 +332,10 @@
         <div class="col-md-12">
           <ColumnChart
             domId="chart4"
-            :data="branchData2"
-            :series="seriesData"
+            :data="membersAttendanceChart"
+            :series="series"
             :title="membersHeader"
-            :header=" membersHeader"
+            :header="membersHeader"
           />
         </div>
       </div>
@@ -316,9 +347,7 @@
         >
           Income & Expenses
         </div> -->
-        <div
-          class="col-md-12  d-flex justify-content-end py-3"
-        >
+        <div class="col-md-12 d-flex justify-content-end py-3">
           <div>
             <el-dropdown trigger="click" class="w-100">
               <span class="el-dropdown-link w-100">
@@ -354,11 +383,175 @@
         <div class="col-md-12">
           <ColumnChart
             domId="chart1"
-            :data="branchData2"
-            :series="seriesData"
+            :data="incomeExpenseChart"
+            :series="series"
             :title="IncomeExpHeader"
-            :header=" IncomeExpHeader"
+            :header="IncomeExpHeader"
           />
+        </div>
+      </div>
+    </div>
+    <div
+      data-toggle="modal"
+      data-target="#levelmodal"
+      ref="levelmodalBtn"
+      hidden
+    >
+      Show modal
+    </div>
+    <div
+      class="modal fade"
+      id="levelmodal"
+      tabindex="-1"
+      role="dialog"
+      aria-labelledby="importgroupModalLabel"
+      aria-hidden="true"
+    >
+      <div
+        class="modal-dialog modal-dialog-centered"
+        role="document"
+        ref="modal"
+      >
+        <div class="modal-content pr-2">
+          <div class="modal-header py-3">
+            <h5 class="modal-title font-weight-700" id="importgroupModalLabel">
+              Set up your branch level
+            </h5>
+            <button
+              type="button"
+              class="close"
+              data-dismiss="modal"
+              aria-label="Close"
+              ref="closeGroupModal"
+            >
+              <span aria-hidden="true">&times;</span>
+            </button>
+          </div>
+          <div class="modal-body">
+            <div class="row">
+              <div class="col-md-12">
+                <div class="mb-3" style="font-size: 1.2em">
+                  You dont have branch hierarchies set up yet, create the
+                  hierarchies, then you can proceed to create your branch
+                </div>
+                <BranchSettings />
+                <button
+                  class="mt-3 mb-3 offset-5 col-4 default-btn primary-bg text-white font-weight-bold c-pointer border-0 text-center"
+                  data-dismiss="modal"
+                  @click="goToAddBranch"
+                >
+                  Proceed
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div data-toggle="modal" data-target="#joinmodal" ref="joinmodalBtn" hidden>
+      Show modal
+    </div>
+    <div
+      class="modal fade"
+      id="joinmodal"
+      tabindex="-1"
+      role="dialog"
+      aria-labelledby="importgroupModalLabel"
+      aria-hidden="true"
+    >
+      <div
+        class="modal-dialog modal-dialog-centered"
+        role="document"
+        ref="modal"
+      >
+        <div class="modal-content pr-2">
+          <div class="modal-header py-3">
+            <h5 class="modal-title font-weight-700" id="importgroupModalLabel">
+              Enter your code to join a branch network
+            </h5>
+            <button
+              type="button"
+              ref="closeJoinNetworkModal"
+              class="close"
+              data-dismiss="modal"
+              aria-label="Close"
+            >
+              <span aria-hidden="true">&times;</span>
+            </button>
+          </div>
+          <div class="modal-body">
+            <div class="row">
+              <div class="col-md-12">
+                <div class="p-field p-col-12 p-md-4">
+                  <span class="p-float-label">
+                    <el-input
+                      class="w-100"
+                      id="inputtext"
+                      type="text"
+                      v-model="code"
+                    />
+                    <label for="inputtext">Enter your code</label>
+                  </span>
+                </div>
+                <button
+                  class="mt-3 mb-3 offset-5 col-4 default-btn primary-bg text-white font-weight-bold c-pointer border-0 text-center"
+                  @click="joinNetwork"
+                >
+                  Join network
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div
+      class="modal fade"
+      id="statusmodal"
+      tabindex="-1"
+      role="dialog"
+      aria-labelledby="importgroupModalLabel"
+      aria-hidden="true"
+    >
+      <div
+        class="modal-dialog modal-dialog-centered"
+        role="document"
+        ref="modal"
+      >
+        <div class="modal-content pr-2">
+          <div class="modal-header py-3">
+            <h5 class="modal-title font-weight-700">
+              Which of these option best suit your intentions?
+            </h5>
+            <button
+              type="button"
+              class="close"
+              data-dismiss="modal"
+              aria-label="Close"
+              ref="closeStatusModal"
+            >
+              <span aria-hidden="true">&times;</span>
+            </button>
+          </div>
+          <div class="modal-body">
+            <div class="row">
+              <div class="col-md-10 offset-1">
+                <div
+                  class="default-btn border mb-3 text-center c-pointer"
+                  @click="setUpBranch"
+                >
+                  Setup branch network
+                </div>
+                <div
+                  class="default-btn border mb-3 text-center c-pointer"
+                  data-dismiss="modal"
+                  @click="joinBranch"
+                >
+                  Join branch network
+                </div>
+              </div>
+            </div>
+          </div>
         </div>
       </div>
     </div>
@@ -366,37 +559,115 @@
       <div class="row border">
         <div class="col-md-6">
           <div class="row">
-            <div class="col-md-12 py-3  primary-bg text-white ">
-              <el-icon :size="20"><List /></el-icon> Branch list
+            <div
+              class="col-md-12 py-3 text-center"
+              :class="{
+                'primary-bg text-white': showBranchDetail,
+                'total-bg': !showBranchDetail,
+              }"
+              @click="branchDetail"
+            >
+              <el-icon :size="20"><List /></el-icon>
+              <!-- <img src="../../assets/list-bullets.png" class="" alt=""> -->
+              Branch list
             </div>
             <div class="col-md-12 d-flex justify-content-end mt-3">
-              <div>Member Size</div>
+              <div class="font-weight-bold">
+                <img src="../../assets/users4.png" alt="" class=" " /> Member
+                Size
+              </div>
             </div>
             <div class="col-md-12 mt-3">
-              <div class="row border">
+              <div
+                class="row border"
+                v-for="(item, index) in allBranchDetail"
+                :key="index"
+              >
                 <div
-                  class="col-md-12 py-2 border bg-secondary d-flex justify-content-between"
+                  class="col-md-12 py-2 border border-bottom-0 c-pointer d-flex justify-content-between"
+                  :class="{ 'branch-bg': colorChange }"
+                  @click="branchItem(item)"
                 >
-                  <div class="font-weight-bold h6">Amazing Grace</div>
-                  <div>150,000</div>
+                  <div class="font-weight-bold h6">{{ item.name }}</div>
+                  <div>{{ item.membershipSize }}</div>
                 </div>
-                <div
-                  class="col-md-12 py-2 border d-flex justify-content-between"
-                >
-                  <div class="font-weight-bold h6">Amazing</div>
-                  <div>150,000</div>
-                </div>
-                <div
-                  class="col-md-12 d-flex py-2 border justify-content-between"
-                >
-                  <div class="font-weight-bold h6">Amazing</div>
-                  <div>150,000</div>
-                </div>
-                <div
-                  class="col-md-12 d-flex py-2 border justify-content-between"
-                >
-                  <div class="font-weight-bold h6">Amazing</div>
-                  <div>150,000</div>
+              </div>
+              <div
+                class="col-md-12 d-block d-md-none"
+                :class="{
+                  'branchItem-section-hidden': !branchItemSection,
+                  'branchItem-section': branchItemSection,
+                }"
+              >
+                <div class="row">
+                  <div class="col-md-12 d-flex justify-content-between mt-3">
+                    <div class="font-weight-bold">
+                      {{ branchProfile.name }}
+                    </div>
+                    <div
+                      class="small text-primary"
+                      @click="viewBranch(branchProfile.id)"
+                    >
+                      View Branch
+                    </div>
+                  </div>
+                  <div class="col-md-12 mt-3">
+                    <div class="mt-2">
+                      First Timer :
+                      <span class="font-weight-bold">{{
+                        branchProfile.firstTimerCount
+                      }}</span>
+                    </div>
+                    <div class="mt-2">
+                      Member Size :
+                      <span class="font-weight-bold">{{
+                        branchProfile.membershipSize
+                      }}</span>
+                    </div>
+                    <div class="mt-2">
+                      Average Income :
+                      <span class="font-weight-bold"
+                        >NGN {{ branchProfile.currentYearAverageIncome }}</span
+                      >
+                    </div>
+                    <div class="mt-2">
+                      Average Expenses :
+                      <span class="font-weight-bold"
+                        >NGN {{ branchProfile.currentYearAverageExpense }}</span
+                      >
+                    </div>
+                  </div>
+                  <div class="col-md-12">
+                    <hr class="w-100" />
+                  </div>
+                  <div class="col-md-12 d-flex justify-content-center">
+                    <div class="small">Pastor's Profile</div>
+                  </div>
+                  <div
+                    class="col-md-12 d-flex justify-content-center pastor-picture"
+                  >
+                    <img
+                      v-if="branchProfile.logo"
+                      :src="branchProfile.logo"
+                      alt=""
+                    />
+                    <img
+                      v-else
+                      src="../../assets/people/avatar-male.png"
+                      alt=""
+                    />
+                  </div>
+                  <div class="col-md-12 d-flex justify-content-center">
+                    <div class="font-weight-bold">
+                      {{ branchProfile.pastorName }}
+                    </div>
+                  </div>
+                  <div class="col-md-12 d-flex justify-content-center">
+                    <div>{{ branchProfile.phoneNumber }}</div>
+                  </div>
+                  <div class="col-md-12 d-flex justify-content-center">
+                    <div>{{ branchProfile.pastorEmail }}</div>
+                  </div>
                 </div>
               </div>
             </div>
@@ -404,29 +675,51 @@
         </div>
         <div class="col-md-6">
           <div class="row">
-            <div class="col-md-12 bg-secondary py-3">
+            <div
+              class="col-md-12 bg-secondary text-center py-3"
+              :class="{
+                'primary-bg text-white': showbranchHierachy,
+                'total-bg': !showbranchHierachy,
+              }"
+              @click="branchHierachy"
+            >
               <el-icon :size="20" class=""><Expand /></el-icon> Branch Hierarchy
             </div>
-            <div class="col-md-12">
+            <div class="col-md-12 d-none d-md-block" v-if="viewBranchDetail">
               <div class="row">
                 <div class="col-md-12 d-flex justify-content-between mt-3">
-                  <div class="font-weight-bold">Amazing Grace</div>
-                  <div class="small text-primary">View Branch</div>
+                  <div class="font-weight-bold">{{ branchProfile.name }}</div>
+                  <div
+                    class="small text-primary font-weight-bold"
+                    @click="viewBranch(branchProfile)"
+                  >
+                    View Branch
+                  </div>
                 </div>
                 <div class="col-md-12 mt-3">
                   <div class="mt-2">
-                    First Timer : <span class="font-weight-bold">250</span>
+                    First Timer :
+                    <span class="font-weight-bold">{{
+                      branchProfile.firstTimerCount
+                    }}</span>
                   </div>
                   <div class="mt-2">
-                    Member Size : <span class="font-weight-bold">150,000</span>
+                    Member Size :
+                    <span class="font-weight-bold">{{
+                      branchProfile.membershipSize
+                    }}</span>
                   </div>
                   <div class="mt-2">
                     Average Income :
-                    <span class="font-weight-bold">NGN 3,000,000</span>
+                    <span class="font-weight-bold"
+                      >NGN {{ branchProfile.currentYearAverageIncome }}</span
+                    >
                   </div>
                   <div class="mt-2">
                     Average Expenses :
-                    <span class="font-weight-bold">NGN 800,000</span>
+                    <span class="font-weight-bold"
+                      >NGN {{ branchProfile.currentYearAverageExpense }}</span
+                    >
                   </div>
                 </div>
                 <div class="col-md-12">
@@ -435,17 +728,77 @@
                 <div class="col-md-12 d-flex justify-content-center">
                   <div class="small">Pastor's Profile</div>
                 </div>
-                <div class="col-md-12 d-flex justify-content-center">
-                  <img src="../../assets/best-Copy.jpg" alt="" />
+                <div
+                  class="col-md-12 d-flex justify-content-center pastor-picture"
+                >
+                  <img
+                    v-if="branchProfile.logo"
+                    :src="branchProfile.logo"
+                    alt=""
+                  />
+                  <img
+                    v-else
+                    src="../../assets/people/avatar-male.png"
+                    alt=""
+                  />
                 </div>
                 <div class="col-md-12 d-flex justify-content-center">
-                  <div class="font-weight-bold">Dr. Paul Akasas</div>
+                  <div class="font-weight-bold">
+                    {{ branchProfile.pastorName }}
+                  </div>
                 </div>
                 <div class="col-md-12 d-flex justify-content-center">
-                  <div>0705560884767</div>
+                  <div>{{ branchProfile.phoneNumber }}</div>
                 </div>
                 <div class="col-md-12 d-flex justify-content-center">
-                  <div>paualgg@gmail.com</div>
+                  <div>{{ branchProfile.email }}</div>
+                </div>
+              </div>
+            </div>
+            <div class="col-md-12" v-if="!viewBranchDetail">
+              <div class="row">
+                <div
+                  class="col-md-12 domId d-flex justify-content-center align-items-center"
+                  v-show="mappedBranch.length > 0"
+                >
+                  <OrganizationChart
+                    :value="data1"
+                    :collapsible="true"
+                    class="company"
+                    selectionMode="single"
+                    v-model:selectionKeys="selection"
+                  >
+                    <template #person="slotProps">
+                      <div class="node-content">
+                        <img :src="slotProps.node.data.label.logo" width="32" />
+                        <div>{{ slotProps.node.data.name }}</div>
+                      </div>
+                    </template>
+                    <template #default="slotProps">
+                      <span>{{
+                        slotProps.node && slotProps.node.data
+                          ? slotProps.node.data.name
+                          : ""
+                      }}</span>
+                    </template>
+                  </OrganizationChart>
+                </div>
+                <div
+                  class="col-12 border p-3"
+                  style="height: 100%; border-radius: 5px; font-size: 1.5em"
+                  v-show="mappedBranch.length === 0"
+                >
+                  <div>👋 Hey!</div>
+                  <div class="mt-3">
+                    Welcome to the branching feature in Churchplus.
+                  </div>
+                  <div class="mt-3">
+                    Manage your ministry branches easily via this branch
+                    feature. Start by setting up your ministry's hierarchies in
+                    <router-link to="/tenant/settings/branchlevelsettings"
+                      >Settings</router-link
+                    >, then create your branches.
+                  </div>
                 </div>
               </div>
             </div>
@@ -457,21 +810,31 @@
 </template>
 
 <script>
-import { ref, inject, onMounted, onUpdated } from "vue";
+import { ref, inject, onMounted, onUpdated, computed } from "vue";
 import PieChart from "../../components/charts/BranchPieChart.vue";
+import BranchSettings from "../settings/BranchLevelSettings.vue";
+import router from "../../router";
+import axios from "@/gateway/backendapi";
 import DonutChart from "../../components/charts/DonutChart.vue";
 import RadialChart from "../../components/charts/RadialChart.vue";
 import ColumnChart from "@/components/charts/BranchColumnChart.vue";
+import store from "../../store/store";
+import OrganizationChart from "primevue/organizationchart";
+import { ElMessage, ElMessageBox } from "element-plus";
 export default {
   components: {
     PieChart,
     DonutChart,
+    BranchSettings,
     RadialChart,
     ColumnChart,
+    OrganizationChart,
   },
   setup() {
     const primarycolor = inject("primarycolor");
+    const data1 = ref({});
     const openHideAmonut = ref(true);
+    const code = ref("");
     const selectedMonthly = ref("Branches");
     const firstTimerHeader = ref("First Timer Attendance");
     const membersHeader = ref("Members Attendance");
@@ -479,6 +842,41 @@ export default {
     const selectedBranches = ref("Branches");
     const selectedWeekly = ref("Branches");
     const attendance = ref("Average Attendance");
+    const showbranchHierachy = ref(false);
+    const branchItemSection = ref(false);
+    const showBranchDetail = ref(true);
+    const viewBranchDetail = ref(false);
+    const branchesAnalytics = ref({});
+    const averageIncomeChartResult = ref([]);
+    const colorChange = ref(false);
+    const allBranchDetail = ref([]);
+    const series = ref([]);
+    const joinmodalBtn = ref();
+    const firstTimerData = ref([]);
+    const mainMembersData = ref([]);
+    const mainIncomeExpenseData = ref([]);
+    const expenseData = ref([]);
+    const incomeData = ref([]);
+    const membersData = ref([]);
+    const firstTimerAttendanceData = ref([]);
+    const mappedBranch = ref([]);
+    const branchProfile = ref({});
+    const getAllAverageIncome = ref("");
+    const getAllAverageAttendance = ref("");
+    const closeJoinNetworkModal = ref();
+    const getTotalPeople = ref("");
+    const getTotalBranches = ref("");
+    const selection = ref({});
+    const getAverageIncomeChart = ref([]);
+    const hierarchies = ref([]);
+    const closeStatusModal = ref();
+    const levelmodalBtn = ref();
+    const getAverageAttendanceItem = ref([]);
+    const tenantId = ref(
+      store.getters.currentUser && store.getters.currentUser.tenantId
+        ? store.getters.currentUser.tenantId
+        : 0
+    );
     const averageAttendace = ref("");
     const branchData = ref([
       { name: null, value: 34 },
@@ -500,20 +898,6 @@ export default {
         data: [1, 1, 2, 1, 4, 55, 4, 4, 9, 12, 6, 50],
       },
     ]);
-    const seriesData = ref([
-      "Amazing",
-      "beatidah",
-      "Covenant",
-      "Hope",
-      "Delight",
-      "Royalp",
-      "Gracious",
-      "Solanata",
-      "Delight",
-      "Hope",
-      "Redeeemed",
-      "ChritApo",
-    ]);
 
     onUpdated(() => {
       if (branchData.value) {
@@ -522,6 +906,23 @@ export default {
         branchData.value;
       }
     });
+
+    const viewBranch = (item) => {
+      console.log(item, "mmmmmmmm");
+      localStorage.setItem("branchId", item.id);
+      localStorage.setItem("branchName", item.name);
+      router.push("/tenant/branches/summary");
+    };
+
+    const branchItem = (item) => {
+      viewBranchDetail.value = true;
+      branchItemSection.value = !branchItemSection.value;
+      branchProfile.value = item;
+      colorChange.value = true;
+      showBranchDetail.value = true;
+      showbranchHierachy.value = false;
+    };
+
     onMounted(() => {
       const lastCharacters = attendance.value.slice(-3);
       averageAttendace.value = attendance.value.replace(lastCharacters, "...");
@@ -532,8 +933,305 @@ export default {
       { name: "Monthly", id: 3 },
     ]);
 
+    const getallBracnches = async () => {
+      try {
+        let { data } = await axios.get(
+          `/api/Branching/getallbranches/${tenantId.value}`
+        );
+        console.log(data, ",lklkll");
+      } catch (error) {
+        console.log(error);
+      }
+    };
+    getallBracnches();
+    const getHierarchies = async () => {
+      try {
+        let { data } = await axios.get("/branching/hierarchies");
+        console.log(data);
+        hierarchies.value = data.returnObject;
+      } catch (err) {
+        console.log(err);
+      }
+    };
+    getHierarchies();
+
+    const setUpBranch = () => {
+      if (hierarchies.value.length === 0) {
+        levelmodalBtn.value.click();
+      } else {
+        closeStatusModal.value.click();
+        router.push("/tenant/branch/addbranch");
+      }
+    };
+
+    const joinBranch = () => {
+      joinmodalBtn.value.click();
+    };
+
+    const membersAttendanceChart = computed(() => {
+      if (allBranchDetail.value.length === 0) return [];
+      allBranchDetail.value.forEach((i) => {
+        let membersIndex = Object.keys(i).findIndex(
+          (i) => i === "membershipSize"
+        );
+        let membersValue = Object.values(i)[membersIndex];
+        membersData.value.unshift(membersValue);
+      });
+      // membersData.value.unshift( branchesAnalytics.value.totalMembers);
+      console.log(membersData.value, "allMemberss");
+
+      mainMembersData.value.push({
+        name: " Members ",
+        color: "#01058A",
+        data: membersData.value,
+      });
+
+      return mainMembersData.value;
+    });
+
+    const incomeExpenseChart = computed(() => {
+      if (allBranchDetail.value.length === 0) return [];
+      allBranchDetail.value.forEach((i) => {
+        let incomeIndex = Object.keys(i).findIndex(
+          (i) => i === "currentYearIncome"
+        );
+        let incomeValue = Object.values(i)[incomeIndex];
+        incomeData.value.unshift(Math.abs(incomeValue));
+
+        let expenseIndex = Object.keys(i).findIndex(
+          (i) => i === "currentYearExpense"
+        );
+        let expenseValue = Object.values(i)[expenseIndex];
+        expenseData.value.unshift(expenseValue);
+      });
+      // membersData.value.unshift( branchesAnalytics.value.totalMembers);
+
+      mainIncomeExpenseData.value.push({
+        name: " Income ",
+        color: "#01058A",
+        data: incomeData.value,
+      });
+      mainIncomeExpenseData.value.push({
+        name: " Expenses ",
+        color: "#1AA8E9",
+        data: expenseData.value,
+      });
+
+      return mainIncomeExpenseData.value;
+    });
+
+    const firstTimerChart = computed(() => {
+      if (allBranchDetail.value.length === 0) return [];
+      allBranchDetail.value.forEach((i) => {
+        let firstTimersIndex = Object.keys(i).findIndex(
+          (i) => i === "firstTimerCount"
+        );
+        let firstTimersValue = Object.values(i)[firstTimersIndex];
+        firstTimerData.value.unshift(firstTimersValue);
+      });
+
+      firstTimerAttendanceData.value.push({
+        name: "First Timer",
+        color: `#1AA8E9`,
+        // color: `#${Math.floor(Math.random() * 16777215).toString(16)}`,
+        data: firstTimerData.value,
+      });
+      return firstTimerAttendanceData.value;
+    });
+
+    const getFirtTimerSeris = () => {
+      allBranchDetail.value.forEach((i) => {
+        let serviceIndex = Object.keys(i).findIndex((i) => i === "name");
+        let serviceValue = Object.values(i)[serviceIndex];
+        // let serviceValue = serviceIndex
+        series.value.unshift(serviceValue);
+      });
+    };
+
+    const averageIncomeChart = (array, key) => {
+      // Accepts the array and key
+      // Return the end result
+      averageIncomeChartResult.value = [];
+      let result = array.reduce((result, currentValue) => {
+        // If an array already present for key, push it to the array. Else create an array and push the object
+        (result[currentValue[key]] = result[currentValue[key]] || []).push(
+          currentValue
+        );
+        return result;
+      }, []); // empty object is the initial value for result object
+      for (const prop in result) {
+        averageIncomeChartResult.value.push({
+          name: prop,
+          value: result[prop].length,
+        });
+      }
+
+      console.log(averageIncomeChartResult.value, "iihhhhjhj");
+    };
+
+    const mappedAverageIncome = computed(() => {
+      if (averageIncomeChartResult.value.length === 0) return [];
+      return averageIncomeChartResult.value.map((i) => i);
+    });
+
+    const mappedAverageIncomeChart = computed(() => {
+      if (getAverageIncomeChart.value.length === 0) return [];
+      return getAverageIncomeChart.value.map((i) => i);
+    });
+    const mappedAverageAttendanceItem = computed(() => {
+      if (getAverageAttendanceItem.value.length === 0) return [];
+      return getAverageAttendanceItem.value.map((i) => i);
+    });
+
+    const getBranches = async () => {
+      try {
+        let { data } = await axios.get("/api/Branching");
+        console.log(data, "kkkk");
+        allBranchDetail.value = data.returnObject;
+        getAllAverageIncome.value = data.returnObject
+          .map((i) => i.currentYearAverageIncome)
+          .reduce((b, a) => b + a, 0);
+        getAllAverageAttendance.value = data.returnObject
+          .map((i) => i.currentYearAverageAttendance)
+          .reduce((b, a) => b + a, 0)
+          .toFixed(0);
+        getTotalPeople.value = data.returnObject
+          .map((i) => i.membershipSize)
+          .reduce((b, a) => b + a, 0);
+        getTotalBranches.value = data.returnObject.length;
+        getAverageIncomeChart.value = data.returnObject.map((i) => ({
+          name: i.name,
+          value: i.currentYearAverageIncome,
+        }));
+        getAverageAttendanceItem.value = data.returnObject.map((i) => ({
+          name: i.name,
+          value: i.currentYearAverageAttendance,
+        }));
+        mappedBranch.value = data.returnObject.map((i) => {
+          return {
+            mainID: i.id,
+            // title: 'CEO',
+            // name: i.name,
+            data: { name: i.name, avatar: i.logo, label: "CEO" },
+            // image: i.logo,
+            parent: i.parentID,
+            styleClass: "p-person",
+          };
+        });
+        console.log(mappedBranch.value);
+        let matchedValues = [];
+
+        const allIDs = mappedBranch.value.map((i) => i.mainID);
+        let sum = 0;
+        allIDs.forEach((i) => {
+          mappedBranch.value.forEach((j, ind) => {
+            if (i == j.parent) {
+              j.id = ind;
+              j.parentid = sum;
+              matchedValues.push(j);
+            }
+          });
+          sum++;
+        });
+        const unflatten = function (array, parent, tree) {
+          tree = typeof tree !== "undefined" ? tree : [];
+          parent = typeof parent !== "undefined" ? parent : { id: 0 };
+          var children = _.filter(array, function (child) {
+            return child.parentid == parent.id;
+          });
+          if (!_.isEmpty(children)) {
+            if (parent.id == 0) {
+              tree = children;
+            } else {
+              parent["children"] = children;
+            }
+            _.each(children, function (child) {
+              unflatten(array, child);
+            });
+          }
+          return tree;
+        };
+        let treeConstruted = unflatten(matchedValues);
+        const HQ = data.returnObject.find((i) =>
+          i.parentID.includes("00000000-000")
+        );
+        const belowHQ = data.returnObject[0];
+        let treeData = {
+          key: "0",
+          type: "person",
+          styleClass: "p-hq",
+          data: {
+            label: HQ ? HQ : belowHQ,
+            name: HQ && HQ.name ? HQ.name : belowHQ.name,
+            avatar: HQ && HQ.logo ? HQ.logo : belowHQ.logo,
+          },
+          children: treeConstruted,
+        };
+        data1.value = treeData;
+        averageIncomeChart(data.returnObject, "currentYearAverageIncome");
+        getFirtTimerSeris();
+      } catch (error) {
+        console.log(error);
+      }
+    };
+    getBranches();
+
+    const getBranchesAnalytics = async () => {
+      try {
+        let { data } = await axios.get(
+          `/api/Branching/analytics?branchID=${tenantId.value}`
+        );
+        console.log(data, "tttttyui");
+        branchesAnalytics.value = data;
+      } catch (error) {
+        console.log(error);
+      }
+    };
+    getBranchesAnalytics();
+
+    const goToAddBranch = () => {
+      closeStatusModal.value.click();
+      router.push("/tenant/branch/addbranch");
+    };
+    const joinNetwork = async () => {
+      try {
+        let { data } = await axios.post("/api/Branching/joinnetwork", {
+          code: code.value,
+        });
+        closeJoinNetworkModal.value.click();
+        ElMessage({
+          type: "success",
+          message: data.response,
+          duration: 5000,
+        });
+      } catch (err) {
+        console.log(err);
+      }
+    };
+
+    //  const getUser = computed(() => {
+    //   if (!store.getters.currentUser || (store.getters.currentUser && Object.keys(store.getters.currentUser).length == 0)) return ''
+    //   return store.getters.currentUser
+    // })
+
+    //  watchEffect(() => {
+    //   if (getUser.value) {
+    //     tenantID.value = getUser.value.tenantId
+    //   }
+    // })
+
     const hideOpen = () => {
       openHideAmonut.value = !openHideAmonut.value;
+    };
+    const branchHierachy = () => {
+      showbranchHierachy.value = true;
+      showBranchDetail.value = false;
+      viewBranchDetail.value = false;
+      branchItemSection.value = false;
+    };
+    const branchDetail = () => {
+      showBranchDetail.value = true;
+      showbranchHierachy.value = false;
     };
     const selectedType1 = (item) => {
       selectedMonthly.value = item;
@@ -547,23 +1245,68 @@ export default {
 
     return {
       primarycolor,
+      mappedBranch,
+      membersAttendanceChart,
+      joinNetwork,
+      selection,
+      incomeExpenseChart,
+      firstTimerChart,
+      branchItemSection,
+      colorChange,
+      branchProfile,
+      viewBranch,
       branchData2,
       firstTimerHeader,
       selectedBranches,
+      showbranchHierachy,
+      mappedAverageIncome,
+      mappedAverageIncomeChart,
+      mappedAverageAttendanceItem,
+      branchItem,
+      firstTimerData,
+      firstTimerAttendanceData,
+      mainIncomeExpenseData,
+      incomeData,
+      setUpBranch,
+      joinBranch,
+      hierarchies,
+      code,
+      expenseData,
+      averageIncomeChartResult,
+      getAllAverageIncome,
+      getAllAverageAttendance,
+      getTotalPeople,
+      getTotalBranches,
+      mainMembersData,
+      allBranchDetail,
+      branchHierachy,
+      showBranchDetail,
+      series,
+      branchesAnalytics,
+      branchDetail,
       selectedMonthly,
       selectedWeekly,
       selectedType1,
       selectedType2,
       selectedType3,
+      joinmodalBtn,
+      viewBranchDetail,
+      membersData,
       IncomeExpHeader,
       membersHeader,
+      tenantId,
       hideOpen,
+      data1,
+      levelmodalBtn,
       branchData,
-      seriesData,
+      closeStatusModal,
       chartItemdropdown,
       openHideAmonut,
+      goToAddBranch,
       attendance,
+      closeJoinNetworkModal,
       averageAttendace,
+      getAverageIncomeChart,
     };
   },
 };
@@ -574,6 +1317,31 @@ export default {
   border-radius: 0.5rem;
   background: #f3f3f3;
 }
+.text-color img {
+  color: #136acd !important;
+}
+
+.domId {
+  height: 530px;
+  border-radius: 5px;
+  min-width: 300px;
+  overflow: scroll !important;
+  background: #ebeff4;
+}
+.pastor-picture img {
+  height: 10rem;
+}
+.branchItem-section-hidden {
+  transition: all 0.8s ease-in-out;
+  height: 0 !important;
+  overflow: hidden !important;
+}
+
+.branchItem-section {
+  transition: all 0.8s ease-in-out;
+  height: 30rem !important;
+  overflow: hidden !important;
+}
 .box-bottom {
   background: #f1f5f8;
   box-shadow: 0px 11px 17px rgba(206, 205, 205, 0.360784);
@@ -582,9 +1350,16 @@ export default {
 .icon {
   background: #c0dbfacc;
   /* padding: 1rem; */
+  height: 2.1rem;
 }
 .total-bg {
   background: #f1f5f8;
+}
+.branch-bg {
+  background: #ffffff;
+}
+.branch-bg:hover {
+  background: #ebeff4;
 }
 .card-summary {
   background: #ffff;

@@ -358,6 +358,7 @@ export default {
           value: result[prop].length,
         });
       }
+      console.log(genderChartResult.value, 'iihhhhjhj');
     };
 
     const mappedGender = computed(() => {
@@ -469,6 +470,7 @@ export default {
         .post("/api/Reports/people/getAllContactsByParameterReport", body)
         .then((res) => {
           membersInChurch.value = res.data;
+          console.log(membersInChurch.value, 'ppppp');
           genderChart(res.data, "gender");
           maritalStatusChart(res.data, "maritalStatus");
           memberChart(res.data, "membership");

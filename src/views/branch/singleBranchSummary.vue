@@ -41,7 +41,7 @@
                   <el-dropdown-item>
                     <router-link
                       class="w-100 text-dark text-decoration-none"
-                      to="/tenant/branch/singleBaranhSummary"
+                      to="/tenant/whatsapp/auth"
                     >
                       <el-icon class="text-primary"><ChatRound /></el-icon>
                       Send Whatsap
@@ -57,14 +57,15 @@
             <div class="col-md-2">
               <div class="row">
                 <div class="text-primary col-md-2 mt-2">
-                  <el-icon :size="35" class="rounded-circle p-1 icon"
+                  <img src="../../assets/users4.png" class="rounded-circle p-2  icon" alt="">
+                  <!-- <el-icon :size="35" class="rounded-circle p-1 icon"
                     ><UserFilled
-                  /></el-icon>
+                  /></el-icon> -->
                 </div>
               </div>
             </div>
             <div class="col-md-12 mt-4 pt-2 font-weight-bold h4 text-right">
-              30
+              {{getTotalPeople}}
             </div>
             <div
               class="total-bg col-md-12 py-3 font-weight-bold px-0 box-bottom text-center"
@@ -78,14 +79,19 @@
             <div class="col-md-2">
               <div class="row">
                 <div class="text-primary col-md-2 mt-2">
-                  <el-icon :size="35" class="rounded-circle p-1 icon"
+                  <img
+                    src="../../assets/Vector.png"
+                    class="rounded-circle p-1 icon"
+                    alt=""
+                  />
+                  <!-- <el-icon :size="35" class="rounded-circle p-1 icon"
                     ><Notebook
-                  /></el-icon>
+                  /></el-icon> -->
                 </div>
               </div>
             </div>
             <div class="col-md-12 mt-4 pt-2 font-weight-bold h4 text-right">
-              30
+              {{getAllAverageAttendance}}
             </div>
             <div
               class="total-bg col-md-12 py-3 font-weight-bold px-0 box-bottom text-center"
@@ -99,14 +105,19 @@
             <div class="col-md-2">
               <div class="row">
                 <div class="text-primary col-md-2 mt-2">
-                  <el-icon :size="35" class="rounded-circle p-1 icon"
+                  <img
+                    src="../../assets/money.png"
+                    class="rounded-circle p-1 icon"
+                    alt=""
+                  />
+                  <!-- <el-icon :size="35" class="rounded-circle p-1 icon"
                     ><TrendCharts
-                  /></el-icon>
+                  /></el-icon> -->
                 </div>
               </div>
             </div>
             <div class="col-md-12 mt-4 pt-2 font-weight-bold h4 text-right">
-              2,986
+              {{getAllAverageIncome}}
             </div>
             <div
               class="total-bg col-md-12 py-3 font-weight-bold px-0 box-bottom text-center"
@@ -155,8 +166,8 @@
         <div class="col-md-12">
           <ColumnChart
             domId="chart1"
-            :data="branchData2"
-            :series="seriesData"
+            :data="incomeExpenseChart"
+            :series="series"
             :title="IncomeExpHeader"
             :header="IncomeExpHeader"
           />
@@ -199,8 +210,8 @@
         <div class="col-md-12">
           <ColumnChart
             domId="chart2"
-            :data="branchData2"
-            :series="seriesData"
+            :data="firstTimerChart"
+            :series="series"
             :title="firstTimerHeader"
             :header="firstTimerHeader"
           />
@@ -211,8 +222,9 @@
 </template>
 
 <script>
-import { ref, inject, onMounted, onUpdated } from "vue";
+import { ref, inject, onMounted, onUpdated, computed } from "vue";
 import ColumnChart from "@/components/charts/BranchColumnChart.vue";
+import axios from "@/gateway/backendapi";
 export default {
   components: {
     ColumnChart,
@@ -222,7 +234,23 @@ export default {
     const firstTimerHeader = ref("First Timer Attendance");
     const selectedMonthly = ref("Monthly");
     const selectedWeekly = ref("Monthly");
+    const branchesAnalytics = ref({});
     const IncomeExpHeader = ref("Income & Expenses");
+    const branchId =  ref('')
+    const getAllAverageIncome =  ref('')
+    const getAllAverageAttendance =  ref('')
+    const getTotalPeople =  ref('')
+    const allBranches =  ref([])
+    const expenseData =  ref([])
+    const incomeData =  ref([])
+    const series =  ref([])
+    const mainIncomeExpenseData =  ref([])
+    const firstTimerAttendanceData =  ref([])
+    const firstTimerData =  ref([])
+
+
+    
+
 
     const QuickActions = ref([
       { name: "Send SMS", id: 1 },
@@ -241,20 +269,111 @@ export default {
         data: [1, 1, 2, 1, 4, 55, 4, 4, 9, 12, 6, 50],
       },
     ]);
-    const seriesData = ref([
-      "Amazing",
-      "beatidah",
-      "Covenant",
-      "Hope",
-      "Delight",
-      "Royalp",
-      "Gracious",
-      "Solanata",
-      "Delight",
-      "Hope",
-      "Redeeemed",
-      "ChritApo",
-    ]);
+
+  onMounted(() => {
+    const branchID = localStorage.getItem('branchId')
+    branchId.value =   branchID
+
+    console.log( branchId.value, '9099090');
+  })
+    
+    const getBranchesAnalytics = async () => {
+      const branchID = localStorage.getItem('branchId')
+      try {
+        let { data } = await axios.get(
+          `/api/Branching/analytics?branchID=${
+            branchID
+          }`
+        );
+        branchesAnalytics.value = data
+        console.log( branchesAnalytics.value, 'llllllllll');
+      } catch (error) {
+        console.log(error);
+      }
+    };
+    getBranchesAnalytics();
+
+    const getAllBranches = async () => {
+      try {
+        let { data } = await axios.get(
+          `/api/Branching/${
+            branchId.value
+          }`
+        );
+
+        allBranches.value = data.returnObject
+        getAllAverageIncome.value = data.returnObject.map((i) => i.currentYearAverageIncome).reduce((b, a) => b + a, 0);
+        getAllAverageAttendance.value = data.returnObject.map((i) => i.currentYearAverageAttendance).reduce((b, a) => b + a, 0);
+        getTotalPeople.value = data.returnObject.map((i) => i.membershipSize).reduce((b, a) => b + a, 0);
+        console.log( allBranches.value, 'allbranches');
+        getFirtTimerSeris()
+
+      } catch (error) {
+        console.log(error);
+      }
+    }
+    getAllBranches()
+
+    const incomeExpenseChart = computed(() => {
+      if (allBranches.value.length === 0) return [];
+      allBranches.value.forEach((i) => {   
+        let incomeIndex = Object.keys(i).findIndex(
+          (i) => i === " currentYearIncome"
+        );
+        let incomeValue = Object.values(i)[incomeIndex];
+        incomeData.value.unshift( incomeValue);
+        
+        let expenseIndex = Object.keys(i).findIndex(
+          (i) => i === "currentYearExpense"
+        );
+        let expenseValue = Object.values(i)[expenseIndex];
+        expenseData.value.unshift( expenseValue);
+        
+      });
+      // membersData.value.unshift( branchesAnalytics.value.totalMembers);
+
+      mainIncomeExpenseData.value.push({
+        name: " Income ",
+        color: "#01058A",
+        data: incomeData.value,
+      });
+      mainIncomeExpenseData.value.push({
+        name: " Expenses ",
+        color: "#1AA8E9",
+        data: expenseData.value,
+      });
+
+      return mainIncomeExpenseData.value;
+    });
+
+    const firstTimerChart = computed(() => {
+      if (allBranches.value.length === 0) return [];
+      allBranches.value.forEach((i) => {
+        let firstTimersIndex = Object.keys(i).findIndex(
+          (i) => i === "firstTimerCount"
+        );
+        let firstTimersValue = Object.values(i)[firstTimersIndex];
+        firstTimerData.value.unshift(firstTimersValue);
+
+      });
+
+      firstTimerAttendanceData.value.push({
+        name: "First Timer",
+        color: `#1AA8E9`,
+        // color: `#${Math.floor(Math.random() * 16777215).toString(16)}`,
+        data: firstTimerData.value,
+      });
+      return firstTimerAttendanceData.value;
+    });
+
+     const getFirtTimerSeris = () => {
+      allBranches.value.forEach((i) => {
+        let serviceIndex = Object.keys(i).findIndex((i) => i === "name");
+        let serviceValue = Object.values(i)[serviceIndex];
+        // let serviceValue = serviceIndex
+        series.value.unshift(serviceValue);
+      });
+    };
 
     const chartItemdropdown = ref([
       // { name: "Branches", id: 1 },
@@ -271,16 +390,29 @@ export default {
 
     return {
       selectedAction,
+      branchId,
       selectedType2,
       selectedType1,
       chartItemdropdown,
+      getAllAverageIncome,
+      allBranches,
+      branchesAnalytics,
+      getAllAverageAttendance,
+      incomeExpenseChart,
+      getTotalPeople,
       selectedMonthly,
       selectedWeekly,
       QuickActions,
-      seriesData,
+      series,
+      firstTimerAttendanceData,
+      firstTimerData,
+      firstTimerChart,
       branchData2,
       firstTimerHeader,
+      incomeData,
+      expenseData,
       IncomeExpHeader,
+      mainIncomeExpenseData,
     };
   },
 };

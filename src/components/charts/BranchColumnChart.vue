@@ -20,7 +20,7 @@
 </template>
 
 <script>
-import { onMounted, ref } from "vue";
+import { onMounted, onUpdated, ref } from "vue";
 import Highcharts from "highcharts";
 import { useRoute } from "vue-router";
 export default {
@@ -43,7 +43,7 @@ export default {
     const route = useRoute();
     const fullPath = ref("");
 
-    onMounted(() => {
+    onUpdated(() => {
       headerText.value = props.header;
 
       var highchartsOptions = {
@@ -79,7 +79,7 @@ export default {
                 ? props.series[0] == 1
                   ? "Weekly"
                   : "Monthly"
-                : "No series",
+                : "Branches",
           },
           categories: props.series,
         },
@@ -104,27 +104,6 @@ export default {
           },
         },
         series: props.data,
-        //  [
-        //   {
-        //     name: props.microtitle,
-        //     color: "#002044",
-        //     // data: props.data.data
-        //     data: props.data ? props.data.data : props.data
-        //     // data: [127, 335, 400, 345, 307, 0, 0]
-        //       //  data: [2, 6, 3, 1, 1, 6],
-        //   },
-        //   {
-        //     name: "Female",
-        //     color: "#EBEFF4",
-        //     data: [10, 34, 21, 16, 15, 4],
-        //   },
-        //   {
-        //     name: "Others",
-        //     color: "#002044",
-        //     data: [5, 12, 25, 4, 16, 2],
-        //   },
-        // ],
-        //   credits: false,
       };
       chart.value = new Highcharts.chart(highchartsOptions);
     });
@@ -165,12 +144,6 @@ export default {
   margin-left: -30px;
 }
 
-/* .chart-header p {
-    font-size: 25px;
-    font-weight: 600;
-    margin: 0 0 10px 0;
-} */
-
 .chart-header-text {
   display: flex;
   align-items: center;
@@ -192,18 +165,7 @@ export default {
   }
 }
 
-/* @media (max-width: 575px) {
-      .wrapper {
-          margin-left: -1.4rem!important;
-      }
-  } */
-
 @media (max-width: 767px) {
-  /* .chart-header p {
-    font-size: 23px;
-    font-weight: 600;
-    margin: 0px 0px -25px -10px;
-    } */
   .icon-div img {
     height: 108px;
     margin-left: -30px;
@@ -214,13 +176,5 @@ export default {
   border: none;
   border-radius: 0px;
   box-shadow: none;
-}
-.chart-div {
-  /* border: 1px solid #DDE2E6; */
-  /* border-radius: 30px;
-    margin: 0 0 24px 0;
-    box-shadow: 0px 1px 4px #02172E45;
-    border: 1px solid #DDE2E6;*/
-  /* padding: 10px 0;  */
 }
 </style>
