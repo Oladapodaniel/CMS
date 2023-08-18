@@ -312,28 +312,29 @@ export default {
           {
             name: 'Dashboard',
             logo: '/',
-            route: '/tenant/branch/branchsummary',
+            route: '/tenant/branch/mainbranchsummary',
+            // route: '/tenant/branch/branchsummary',
           },
-          {
-            name: 'People',
-            logo: '/',
-            route: '/tenant/branch/branch_members',
-          },
-          {
-            name: 'Attendance',
-            logo: '/',
-            route: '/tenant/branch/branch_attendance',
-          },
-          {
-            name: 'Financials',
-            logo: '/',
-            route: '/tenant/branch/branch_transactions',
-          },
-          {
-            name: 'Reports',
-            logo: '/',
-            route: '/tenant/branch/branch_report',
-          },
+          // {
+          //   name: 'People',
+          //   logo: '/',
+          //   route: '/tenant/branch/branch_members',
+          // },
+          // {
+          //   name: 'Attendance',
+          //   logo: '/',
+          //   route: '/tenant/branch/branch_attendance',
+          // },
+          // {
+          //   name: 'Financials',
+          //   logo: '/',
+          //   route: '/tenant/branch/branch_transactions',
+          // },
+          // {
+          //   name: 'Reports',
+          //   logo: '/',
+          //   route: '/tenant/branch/branch_report',
+          // },
         ]
       }
       // const workflow = {

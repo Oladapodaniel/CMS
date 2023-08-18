@@ -64,7 +64,7 @@
                 </div>
               </div>
             </div>
-            <div class="col-md-12 mt-4 pt-2 font-weight-bold h4 text-right">
+            <div class="col-md-12 mt-4 pt-2 font-weight-bold h4 text-right " v-loading="loading">
               {{getTotalPeople}}
             </div>
             <div
@@ -90,7 +90,7 @@
                 </div>
               </div>
             </div>
-            <div class="col-md-12 mt-4 pt-2 font-weight-bold h4 text-right">
+            <div class="col-md-12 mt-4 pt-2 font-weight-bold h4 text-right" v-loading="loading">
               {{getAllAverageAttendance}}
             </div>
             <div
@@ -116,7 +116,7 @@
                 </div>
               </div>
             </div>
-            <div class="col-md-12 mt-4 pt-2 font-weight-bold h4 text-right">
+            <div class="col-md-12 mt-4 pt-2 font-weight-bold h4 text-right" v-loading="loading">
               {{getAllAverageIncome}}
             </div>
             <div
@@ -128,9 +128,9 @@
         </div>
       </div>
     </div>
-    <div class="container-fluid">
-      <div class="row border mt-4">
-        <div class="col-md-12 d-flex justify-content-end py-3">
+    <div class="container-fluid" >
+      <div class="row border mt-4" v-loading="loading" >
+        <!-- <div class="col-md-12 d-flex justify-content-end py-3">
           <div>
             <el-dropdown trigger="click" class="w-100">
               <span class="el-dropdown-link w-100">
@@ -162,7 +162,7 @@
               </template>
             </el-dropdown>
           </div>
-        </div>
+        </div> -->
         <div class="col-md-12">
           <ColumnChart
             domId="chart1"
@@ -173,8 +173,8 @@
           />
         </div>
       </div>
-      <div class="row border mt-4">
-        <div class="col-md-12 d-flex justify-content-end py-3">
+      <div class="row border mt-4" v-loading="loading">
+        <!-- <div class="col-md-12 d-flex justify-content-end py-3">
           <div>
             <el-dropdown trigger="click" class="w-100">
               <span class="el-dropdown-link w-100">
@@ -206,7 +206,7 @@
               </template>
             </el-dropdown>
           </div>
-        </div>
+        </div> -->
         <div class="col-md-12">
           <ColumnChart
             domId="chart2"
@@ -225,6 +225,7 @@
 import { ref, inject, onMounted, onUpdated, computed } from "vue";
 import ColumnChart from "@/components/charts/BranchColumnChart.vue";
 import axios from "@/gateway/backendapi";
+// import { ElMessage } from "element-plus";
 export default {
   components: {
     ColumnChart,
@@ -237,6 +238,7 @@ export default {
     const branchesAnalytics = ref({});
     const IncomeExpHeader = ref("Income & Expenses");
     const branchId =  ref('')
+    const loading =  ref(false)
     const getAllAverageIncome =  ref('')
     const getAllAverageAttendance =  ref('')
     const getTotalPeople =  ref('')
@@ -294,6 +296,7 @@ export default {
     getBranchesAnalytics();
 
     const getAllBranches = async () => {
+      loading.value = true
       try {
         let { data } = await axios.get(
           `/api/Branching/${
@@ -303,12 +306,15 @@ export default {
 
         allBranches.value = data.returnObject
         getAllAverageIncome.value = data.returnObject.map((i) => i.currentYearAverageIncome).reduce((b, a) => b + a, 0);
-        getAllAverageAttendance.value = data.returnObject.map((i) => i.currentYearAverageAttendance).reduce((b, a) => b + a, 0);
+        getAllAverageAttendance.value = data.returnObject.map((i) => i.currentYearAverageAttendance).reduce((b, a) => b + a, 0).toFixed(0);
         getTotalPeople.value = data.returnObject.map((i) => i.membershipSize).reduce((b, a) => b + a, 0);
         console.log( allBranches.value, 'allbranches');
         getFirtTimerSeris()
 
+        loading.value = false
+
       } catch (error) {
+        loading.value = false
         console.log(error);
       }
     }
@@ -318,10 +324,10 @@ export default {
       if (allBranches.value.length === 0) return [];
       allBranches.value.forEach((i) => {   
         let incomeIndex = Object.keys(i).findIndex(
-          (i) => i === " currentYearIncome"
+          (i) => i === "currentYearIncome"
         );
         let incomeValue = Object.values(i)[incomeIndex];
-        incomeData.value.unshift( incomeValue);
+        incomeData.value.unshift( Math.abs(incomeValue));
         
         let expenseIndex = Object.keys(i).findIndex(
           (i) => i === "currentYearExpense"
@@ -330,7 +336,6 @@ export default {
         expenseData.value.unshift( expenseValue);
         
       });
-      // membersData.value.unshift( branchesAnalytics.value.totalMembers);
 
       mainIncomeExpenseData.value.push({
         name: " Income ",
@@ -400,6 +405,7 @@ export default {
       getAllAverageAttendance,
       incomeExpenseChart,
       getTotalPeople,
+      loading,
       selectedMonthly,
       selectedWeekly,
       QuickActions,

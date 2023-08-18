@@ -4,13 +4,10 @@
       <div class="head-text">People Report</div>
       <div
         class="my-sm-0 my-2 c-pointer"
-        @click="() => (showExport = !showExport)"
-        style="width: fixed; position: relative"
       >
         <el-dropdown trigger="click" class="w-100">
           <div
             class="d-flex justify-content-between default-btn text-dark w-100"
-            size="large"
           >
             <span class="mt-1">Export</span>
             <div class="mt-1">
@@ -97,6 +94,7 @@
                   round
                   :color="primarycolor"
                   :loading="loading"
+                  size="large"
                   class="text-white c-pointer"
                   >Generate Report
                 </el-button>

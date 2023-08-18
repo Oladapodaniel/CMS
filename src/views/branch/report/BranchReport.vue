@@ -1,5 +1,5 @@
 <template>
-    <div class="container-fluid ">
+    <div class="container-fluid px-0 ">
         <div class=" row" >
             <div class="head-text">Branch Reports</div>
         </div>
