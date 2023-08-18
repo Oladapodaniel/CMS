@@ -1,365 +1,229 @@
 <template>
   <div>
-    <div class="container-fluid">
+    <div class="container-fluid px-0">
       <div class="row mb-3">
-      <div class="col-md-6 first-timers-text">
-        <h2 class="head-text">Branch Transactions</h2>
-      </div>
+        <div class="col-md-6 px-0 first-timers-text">
+          <h2 class="head-text">Branch Transactions</h2>
+        </div>
 
-      <div class="col-md-6 d-flex flex-row-reverse">
+        <!-- <div class="col-md-6 d-flex flex-row-reverse">
         <BranchSelect class="w-50" @selectedbranch="setSelectedBranch" />
+      </div> -->
       </div>
-    </div>
-    <div class="row">
-        <div class="col-12">
-          Here you can view and manage the transactions of your branches, select the branch you want to view its transactions from the dropdown at the top-right corner.
+      <div class="row">
+        <div class="col-md-12 px-0">
+          Here you can view and manage the transactions of your branches, select
+          the branch you want to view its transactions from the dropdown at the
+          top-right corner.
         </div>
       </div>
-
-      <loadingComponent :loading="loading" />
-      <div class="row table" v-if="branchTransactions.length > 0">
-      <div class="col-12 px-0" id="table">
-        <div class="top-con">
-          <div class="table-top d-flex justify-content-end">
-            <!-- <div class="filter col-2">
-              <p @click="toggleFilterFormVissibility" class="mt-2">
-                <i class="fas fa-filter"></i>
-                FILTER
-              </p>
-            </div> -->
-            <div class="col-5 col-sm-3 col-md-2">
-              <p @click="toggleSearch" class="search-text w-100 mt-2">
-                <i class="pi pi-search"></i> SEARCH
-              </p>
-            </div>
-
-            <div class="search d-flex ml-2">
-              <label
-                class="label-search d-flex"
-                :class="{
-                  'show-search': searchIsVisible,
-                  'hide-search': !searchIsVisible,
-                }"
+      <div class="row" v-if="loading && branchTransactions.length == 0">
+        <div class="col-md-12 d-flex justify-content-center mt-5">
+          <el-icon
+            :size="40"
+            class="is-loading"
+          >
+            <Loading />
+          </el-icon>
+        </div>
+      </div>
+      <div class="row" v-if="branchTransactions.length > 0">
+        <div class="col-12 px-0" id="table">
+          <div class="top-con">
+            <div class="table-top p-3 mt-5">
+              <div
+                class="d-flex flex-column flex-sm-row justify-content-sm-end"
               >
-                <input
-                  type="text"
-                  placeholder="Search..."
+                <el-input
+                  size="small"
                   v-model="searchText"
-                />
-                <span class="empty-btn">x</span>
-                <span class="search-btn">
-                  <i class="pi pi-search"></i>
-                </span>
-              </label>
-            </div>
-          </div>
-        </div>
-        <div
-          class="filter-options"
-          :class="{ 'filter-options-shown': filterFormIsVissible }"
-        >
-          <div class="container-fluid">
-            <div class="row">
-              <div class="col-md-9">
-                <div class="row">
-                  <div
-                    class="
-                      col-12 col-sm-6 col-md-4
-                      offset-sm-3 offset-md-0
-                      form-group
-                      inp
-                      w-100
-                    "
-                  >
-                  
-                    <input
-                      type="text"
-                      class="input w-100"
-                      placeholder="Offering"
-                    
-                    />
-                  </div>
-
-                  <div class="col-12 col-md-4 form-group d-none d-md-block">
-                    <input
-                      type="text"
-                      class="input w-100"
-                     
-                    />
-                  </div>
-                </div>
-              </div>
-
-              <div class="col-md-3 d-flex flex-column align-items-center">
-                <button class="apply-btn text-white" @click="applyFilter">
-                  Apply
-                </button>
-                <span class="mt-2">
-                  <a class="clear-link mr-2" @click="clearAll">Clear all</a>
-                  <span class="mx-2"
-                    ><i class="fas fa-circle" style="font-size: 4px"></i></span
-                  ><a class="hide-link ml-2" @click="hide">Hide</a>
-                </span>
-              </div>
-            </div>
-          </div>
-        </div>
-
-    
-    <!-- <div > -->
-          <div class="container-fluid d-none d-md-block">
-            <div class="row t-header">
-              <!-- <div class="col-md-1">
-                <Checkbox id="binary" v-model="sendToMysef" :binary="true"/>
-              </div> -->
-              <div class="small-text col-md-2 font-weight-bold">
-                DATE
-              </div>
-              <div class="small-text col-md-3 font-weight-bold">
-                DESCRIPTION
-              </div>
-              <div class="small-text col-md-2 font-weight-bold">
-                AMOUNT
-              </div>
-              <div class="small-text col-md-2 font-weight-bold">
-                EVENT
-              </div>
-              <div class="small-text col-md-2 font-weight-bold">
-                DONOR
-              </div>
-              <div class="small-text col-md-1 font-weight-bold">
-                CHANNEL
-              </div>
-            </div>
-          </div>
-        <div class="container-fluid">
-          <div class="row">
-            <div
-              class=" col-12 py-2 px-0 c-pointer tr-border-bottom hover"
-              v-for="item in searchBranchTransactions"
-              :key="item.id"
-            >
-              <div class="row w-100" style="margin: 0">
-                <!-- <div
-                  class="col-md-1 d-flex d-md-block px-3 justify-content-end"
+                  placeholder="Search..."
+                  class="w-50"
                 >
-                  <input
-                    type="checkbox"
-                    v-model="item.check"
-                    class="form-check"
-                  />
-                  <Checkbox id="binary" v-model="item.check" :binary="true"/>
-                </div> -->
-
-                <div class="desc small-text col-md-2">
-                  <p class="mb-0 d-flex justify-content-between">
-                    <span
-                      class="
-                        text-dark
-                        font-weight-bold
-                        d-flex d-md-none
-                        fontIncrease
-                      "
-                      >Date</span
+                  <template #suffix>
+                    <el-button
+                      style="padding: 5px; height: 22px"
+                      @click.prevent="searchText = ''"
                     >
-                    <span class="text-decoration-none">
-                        {{ formatDate(item.date) }}
-                      </span>
-                  </p>
-                </div>
-
-                <div class="desc small-text col-md-3">
-                  <p class="mb-0 d-flex justify-content-between">
-                    <span
-                      class="
-                        text-dark
-                        font-weight-bold
-                        d-flex d-md-none
-                        fontIncrease
-                      "
-                      >Description</span
-                    >
-                    <span class="text-decoration-none">
-                        {{ item.contribution }}
-                      </span>
-                  </p>
-                </div>
-
-                <div class="desc small-text col-md-2">
-                  <div class="d-flex justify-content-between">
-                    <span
-                      class="
-                        text-dark
-                        font-weight-bold
-                        d-flex d-md-none
-                        fontIncrease
-                      "
-                      >Amount</span
-                    >
-                    <div>
-                      <div class="desc small-text text-right text-md-left">
-                        {{ item.currencyName }} {{ item.amount }}
-                      </div>
-                    </div>
-                  </div>
-                </div>
-
-                <div class="col-md-2 desc-head small-text ">
-                  <p class="mb-0 d-flex justify-content-between">
-                    <span
-                      class="
-                        text-dark
-                        font-weight-bold
-                        d-flex d-md-none
-                        fontIncrease
-                      "
-                      >Event</span
-                    >
-                    <span
-                      >{{ item.eventName }}</span
-                    >
-                  </p>
-                </div>
-                
-                <div class="desc-head small-text col-md-2">
-                  <p class="mb-0 d-flex justify-content-between">
-                    <span
-                      class="
-                        text-dark
-                        font-weight-bold
-                        d-flex d-md-none
-                        fontIncrease
-                      "
-                      >Donor</span
-                    >
-                    <span
-                      >{{ item.donor }}</span
-                    >
-                  </p>
-                </div>
-
-                <!-- <div class="small-text col-md-2 px-1">
-                  <p class="mb-0 d-flex justify-content-between">
-                    <span
-                      class="
-                        text-dark
-                        font-weight-bold
-                        d-flex d-md-none
-                        fontIncrease
-                      "
-                      >Donor</span
-                    >
-                    <span
-                      ><span class="primary-text c-pointer"
-                        ><router-link
-                          class="text-decoration-none fontIncrease"
-                          :to="{
-                            name: 'AddOffering',
-                            params: { offId: item.id },
-                          }"
-                          >{{ item.donor }}</router-link
-                        ></span
-                      ></span
-                    >
-                  </p>
-                </div> -->
-                <div class="desc-head small-text col-md-1">
-                  <p class="mb-0 d-flex justify-content-between">
-                    <span
-                      class="
-                        text-dark
-                        font-weight-bold
-                        d-flex d-md-none
-                        fontIncrease
-                      "
-                      >Channel</span
-                    >
-                    <span
-                      >{{ item.channel }}</span
-                    >
-                  </p>
-                </div>
+                      <el-icon :size="13">
+                        <Close />
+                      </el-icon>
+                    </el-button>
+                  </template>
+                  <template #append>
+                    <el-button>
+                      <el-icon :size="13">
+                        <Search />
+                      </el-icon>
+                    </el-button>
+                  </template>
+                </el-input>
               </div>
             </div>
           </div>
-        </div>
+          <div>
+            <Table
+              :data="searchBranchTransactions"
+              :headers="branchTransactionHeaders"
+              v-loading="loading"
+              :checkMultipleItem="false"
+              @checkedrow="handleSelectionChange"
+              v-if="searchBranchTransactions.length > 0"
+            >
+              <template v-slot:date="{ item }">
+                {{ item.eventName }}
+                <div class="c-pointer">
+                  {{ formatDate(item.date) }}
+                </div>
+              </template>
 
+              <template v-slot:description="{ item }">
+                <div class="c-pointer">
+                  {{ item.contribution }}
+                </div>
+              </template>
 
-        <div class="col-12">
-          <div class="table-footer">
-            <Pagination
-              @getcontent="getPeopleByPage"
-              :itemsCount="50"
-              :currentPage="currentPage"
-              :totalItems="totalItem"
-            />
+              <template v-slot:amount="{ item }">
+                <div class="c-pointer">
+                  {{ item.currencyName }} {{ item.amount }}
+                </div>
+              </template>
+              <template v-slot:event="{ item }">
+                <div class="c-pointer">
+                  {{ item.eventName }}
+                </div>
+              </template>
+              <template v-slot:donor="{ item }">
+                <router-link
+                  class="text-decoration-none fontIncrease"
+                  :to="{
+                    name: 'AddOffering',
+                    params: { offId: item.id },
+                  }"
+                  >{{ item.donor }}</router-link
+                >
+              </template>
+              <template v-slot:channel="{ item }">
+                <div class="c-pointer">
+                  {{ item.channel }}
+                </div>
+              </template>
+            </Table>
+            <div
+              class="d-flex justify-content-end my-3"
+              v-if="searchBranchTransactions.length > 0"
+            >
+              <el-pagination
+                v-model:current-page="serverOptions.page"
+                v-model:page-size="serverOptions.rowsPerPage"
+                background
+                layout="prev, pager, next, jumper"
+                :total="searchBranchTransactions.length"
+                @size-change="handleSizeChange"
+                @current-change="handleCurrentChange"
+              />
+            </div>
           </div>
         </div>
       </div>
-    </div>
     </div>
   </div>
-  <ConfirmDialog />
-  <Toast />
 </template>
 
 <script>
-import { ref, computed } from '@vue/runtime-core';
-import BranchSelect from "../component/BranchSelect.vue"
+import { ref, computed } from "@vue/runtime-core";
+import BranchSelect from "../component/BranchSelect.vue";
 import axios from "@/gateway/backendapi";
-// import { useConfirm } from "primevue/useConfirm";
-import { useToast } from "primevue/usetoast";
-import loadingComponent from "@/components/loading/LoadingComponent";
-import dateFormatter from '../../../services/dates/dateformatter';
-import Pagination from "../../../components/pagination/PaginationButtons.vue";
+import dateFormatter from "../../../services/dates/dateformatter";
+import Table from "@/components/table/Table";
+import { ElMessage } from "element-plus";
 
 export default {
-  // props: ["list", "peopleCount"],
   components: {
     BranchSelect,
-    loadingComponent,
-    Pagination
+    Table,
   },
 
-  // directives: {
-  //   tooltip: Tooltip,
-  // },
-
   setup() {
-    // const confirm = useConfirm()
-    const toast = useToast()
-    const selectedBranch = ref({})
-    const branchTransactions = ref([])
+    const selectedBranch = ref({});
+    const branchTransactions = ref([]);
+    const marked = ref([]);
     const filterFormIsVissible = ref(false);
     const searchIsVisible = ref(false);
     const searchText = ref("");
-    const loading = ref(false)
-    const branchId = ref("")
-    const totalItem = ref(0)
+    const loading = ref(false);
+    const branchId = ref("");
+    const totalItem = ref(0);
+    const branchID = ref(localStorage.getItem("branchId"));
+    const branchTransactionHeaders = ref([
+      { name: "DATE", value: "date" },
+      { name: "DESCRIPTION", value: "description" },
+      { name: "AMOUNT", value: "amount" },
+      { name: "EVENT", value: "event" },
+      { name: "DONOR", value: "donor" },
+      { name: "CHANNEL", value: "channel" },
+    ]);
 
-    const setSelectedBranch = async(payload) => {
-      loading.value = true
-      branchId.value = payload.id
+    const setSelectedBranch = async (payload) => {
+      loading.value = true;
+      branchId.value = payload.id;
       try {
-        let { data } = await axios.get(`/api/Branching/${payload.id}/transactions`)
-        loading.value = false
-        console.log(data)
-        branchTransactions.value = data.returnObject.contribution
-        totalItem.value = data.returnObject.totalItem
+        let { data } = await axios.get(
+          `/api/Branching/${payload.id}/transactions`
+        );
+        loading.value = false;
+        console.log(data);
+        branchTransactions.value = data.returnObject.contribution;
+        totalItem.value = data.returnObject.totalItem;
         if (data.returnObject.contribution.length === 0) {
-          toast.add({
-              severity: "warn",
-              summary: "No transaction found",
-              detail: "There are no transaction in this branch yet.",
-              life: 5000,
-            });
+          ElMessage({
+            type: "warning",
+            message: "There are no transaction in this branch yet.",
+            duration: 5000,
+          });
         }
+      } catch (err) {
+        loading.value = false;
+        console.log(err);
       }
-      catch (err) {
-        loading.value = false
-        console.log(err)
+    };
+    const handleSizeChange = (val) => {
+      console.log(`${val} items per page`);
+    };
+    const handleCurrentChange = (val) => {
+      console.log(`current page: ${val}`);
+    };
+    const handleSelectionChange = (val) => {
+      marked.value = val;
+    };
+    const serverOptions = ref({
+      page: 1,
+      rowsPerPage: 100,
+    });
+
+    const getTransactionList = async () => {
+      loading.value = true;
+      try {
+        let { data } = await axios.get(
+          `/api/Branching/${branchID.value}/transactions`
+        );
+        loading.value = false;
+        console.log(data);
+        branchTransactions.value = data.returnObject.contribution;
+        totalItem.value = data.returnObject.totalItem;
+        if (data.returnObject.contribution.length === 0) {
+          ElMessage({
+            type: "warning",
+            message: "There are no transaction in this branch yet.",
+            duration: 5000,
+          });
+        }
+      } catch (err) {
+        loading.value = false;
+        console.log(err);
       }
-    }
+    };
+    getTransactionList();
 
     const toggleFilterFormVissibility = () =>
       (filterFormIsVissible.value = !filterFormIsVissible.value);
@@ -367,25 +231,28 @@ export default {
       searchIsVisible.value = !searchIsVisible.value;
     };
 
-    const searchBranchTransactions = computed(() => {  
-      if (branchTransactions.value.length > 0 && !searchText.value) return branchTransactions.value
-      return branchTransactions.value.filter(i => {
-        return i.contribution.toLowerCase().includes(searchText.value.toLowerCase())
-      })
-    })
+    const searchBranchTransactions = computed(() => {
+      if (branchTransactions.value.length > 0 && !searchText.value)
+        return branchTransactions.value;
+      return branchTransactions.value.filter((i) => {
+        return i.contribution
+          .toLowerCase()
+          .includes(searchText.value.toLowerCase());
+      });
+    });
 
     const formatDate = (date) => {
-      return dateFormatter.monthDayYear(date)
-    }
+      return dateFormatter.monthDayYear(date);
+    };
 
     const currentPage = ref(0);
-    const getPeopleByPage = async (page) => {
-      if (page < 0) return false;
+    const getPeopleByPage = async () => {
+      // if (page < 0) return false;
       try {
         const { data } = await axios.get(
-          `/api/Branching/${branchId.value}/transactions?page=${page}`
+          `/api/Branching/${branchID.value}/transactions?page=${serverOptions.value.page}`
         );
-        console.log(data)
+        console.log(data);
         branchTransactions.value = data.returnObject.contribution;
         currentPage.value = page;
       } catch (error) {
@@ -450,10 +317,15 @@ export default {
     //     },
     //   });
     // };
-    
 
     return {
       setSelectedBranch,
+      branchTransactionHeaders,
+      handleSizeChange,
+      handleCurrentChange,
+      handleSelectionChange,
+      serverOptions,
+      marked,
       selectedBranch,
       branchTransactions,
       filterFormIsVissible,
@@ -467,9 +339,10 @@ export default {
       loading,
       formatDate,
       getPeopleByPage,
+      branchID,
       branchId,
       currentPage,
-      totalItem
+      totalItem,
     };
   },
 };
@@ -477,7 +350,7 @@ export default {
 
 <style scoped>
 .page-header {
-    font: normal normal 800 29px Nunito sans;
+  font: normal normal 800 29px Nunito sans;
 }
 
 .filter-options-shown {
@@ -485,14 +358,12 @@ export default {
   overflow: hidden;
   transition: all 0.5s ease-in-out;
 }
-
 .table-top {
   font-weight: 800;
   font-size: 12px;
-}
-
-.table-top label:hover,
-.table-top p:hover {
+  background: #fff;
+  border: 1px solid #d4dde3;
+  border-bottom: none;
   cursor: pointer;
 }
 
@@ -524,8 +395,8 @@ export default {
 }
 
 .itemroute-color {
-    color: #136acd;
-    cursor: pointer;
+  color: #136acd;
+  cursor: pointer;
 }
 
 @media (max-width: 767px) {

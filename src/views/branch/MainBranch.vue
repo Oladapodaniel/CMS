@@ -28,7 +28,7 @@
     </div> -->
     <div class="container-fluid">
       <div
-        class="py-5 pr-3 row flex-wrap justify-content-between branch-corner"
+        class="py-5 px-3 pl-3 pl-md-0 row flex-wrap justify-content-between branch-corner"
       >
         <div class="col-md-3 px-0 d-flex align-items-start">
           <img src="../../assets/thingstodo.svg" alt="" />
@@ -69,7 +69,10 @@
                 </div>
               </div>
             </div>
-            <div class="col-md-12 mt-4 pt-2 font-weight-bold h4 text-right">
+            <div
+              class="col-md-12 mt-4 pt-2 font-weight-bold h4 text-right"
+              v-loading="loading"
+            >
               {{ getTotalBranches }}
             </div>
             <div
@@ -95,7 +98,10 @@
                 </div>
               </div>
             </div>
-            <div class="col-md-12 mt-4 pt-2 font-weight-bold h4 text-right">
+            <div
+              class="col-md-12 mt-4 pt-2 font-weight-bold h4 text-right"
+              v-loading="loading"
+            >
               {{ getTotalPeople }}
             </div>
             <div
@@ -121,7 +127,10 @@
                 </div>
               </div>
             </div>
-            <div class="col-md-12 mt-4 pt-2 font-weight-bold h4 text-right">
+            <div
+              class="col-md-12 mt-4 pt-2 font-weight-bold h4 text-right"
+              v-loading="loading"
+            >
               {{ getAllAverageAttendance }}
             </div>
             <div
@@ -146,10 +155,10 @@
             </div>
             <div
               class="col-md-12 mt-4 pt-2 font-weight-bold h4 text-right"
+              v-loading="loading"
               v-if="openHideAmonut"
             >
               {{ getAllAverageIncome }}
-              <!-- {{branchesAnalytics.averageIncome}} -->
             </div>
             <div
               class="col-md-12 mt-4 pt-2 font-weight-bold text-secondary h4 text-right"
@@ -168,7 +177,7 @@
     </div>
     <div class="container-fluid mt-3">
       <div class="row justify-content-between">
-        <div class="col-md-7 col-12">
+        <div class="col-md-7 col-12" v-loading="loading">
           <div class="row rounded shadow">
             <div class="col-md-12 mt-3 d-flex justify-content-between">
               <div class="font-weight-bold">Total Attendance Chart</div>
@@ -208,7 +217,10 @@
             </div>
           </div> -->
         </div>
-        <div class="col-md-4 px-0 mx-0 col-12 mt-3 mt-md-0 shadow rounded">
+        <div
+          class="col-md-4 px-0 mx-0 col-12 mt-3 mt-md-0 shadow rounded"
+          v-loading="loading"
+        >
           <div class="row">
             <div class="col-md-12 pl-4">
               <div class="mt-2">Average income</div>
@@ -243,14 +255,9 @@
         </div>
       </div>
     </div>
-    <div class="container-fluid mt-4">
+    <div class="container-fluid mt-4" v-loading="loading">
       <div class="row border">
-        <!-- <div
-          class="col-md-12 border border-bottom-0 h5 font-weight-bold py-3 rounded"
-        >
-          First Timer Attendance
-        </div> -->
-        <div class="col-md-12 d-flex justify-content-end py-3">
+        <!-- <div class="col-md-12 d-flex justify-content-end py-3">
           <div>
             <el-dropdown trigger="click" class="w-100">
               <span class="el-dropdown-link w-100">
@@ -282,7 +289,7 @@
               </template>
             </el-dropdown>
           </div>
-        </div>
+        </div> -->
         <div class="col-md-12">
           <ColumnChart
             domId="chart2"
@@ -294,9 +301,9 @@
         </div>
       </div>
     </div>
-    <div class="container-fluid mt-4">
+    <div class="container-fluid mt-4" v-loading="loading">
       <div class="row border">
-        <div class="col-md-12 mt-2 d-flex justify-content-end py-3">
+        <!-- <div class="col-md-12 mt-2 d-flex justify-content-end py-3">
           <div>
             <el-dropdown trigger="click" class="w-100">
               <span class="el-dropdown-link w-100">
@@ -328,7 +335,7 @@
               </template>
             </el-dropdown>
           </div>
-        </div>
+        </div> -->
         <div class="col-md-12">
           <ColumnChart
             domId="chart4"
@@ -340,14 +347,9 @@
         </div>
       </div>
     </div>
-    <div class="container-fluid mt-4">
+    <div class="container-fluid mt-4" v-loading="loading">
       <div class="row border">
-        <!-- <div
-          class="col-md-12 border border-bottom-0 h5 font-weight-bold py-3 rounded"
-        >
-          Income & Expenses
-        </div> -->
-        <div class="col-md-12 d-flex justify-content-end py-3">
+        <!-- <div class="col-md-12 d-flex justify-content-end py-3">
           <div>
             <el-dropdown trigger="click" class="w-100">
               <span class="el-dropdown-link w-100">
@@ -379,7 +381,7 @@
               </template>
             </el-dropdown>
           </div>
-        </div>
+        </div> -->
         <div class="col-md-12">
           <ColumnChart
             domId="chart1"
@@ -688,9 +690,13 @@
             <div class="col-md-12 d-none d-md-block" v-if="viewBranchDetail">
               <div class="row">
                 <div class="col-md-12 d-flex justify-content-between mt-3">
-                  <div class="font-weight-bold">{{ branchProfile.name }}</div>
+                  <div class="font-weight-bold h5">
+                    <img src="../../assets/git-branch.png" class="pr-2" alt="" />{{
+                      branchProfile.name
+                    }}
+                  </div>
                   <div
-                    class="small text-primary font-weight-bold"
+                    class=" text-primary font-weight-bold"
                     @click="viewBranch(branchProfile)"
                   >
                     View Branch
@@ -806,6 +812,33 @@
         </div>
       </div>
     </div>
+    <el-skeleton class="w-100" animated v-if="loading">
+      <template #template>
+        <div
+          style="
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin-top: 20px;
+          "
+        >
+          <el-skeleton-item
+            variant="text"
+            style="width: 240px; height: 240px"
+          />
+          <el-skeleton-item
+            variant="text"
+            style="width: 240px; height: 240px"
+          />
+        </div>
+        <el-skeleton
+          class="w-100 mt-5"
+          style="height: 25px"
+          :rows="20"
+          animated
+        />
+      </template>
+    </el-skeleton>
   </div>
 </template>
 
@@ -820,7 +853,7 @@ import RadialChart from "../../components/charts/RadialChart.vue";
 import ColumnChart from "@/components/charts/BranchColumnChart.vue";
 import store from "../../store/store";
 import OrganizationChart from "primevue/organizationchart";
-import { ElMessage, ElMessageBox } from "element-plus";
+import { ElMessage } from "element-plus";
 export default {
   components: {
     PieChart,
@@ -849,6 +882,7 @@ export default {
     const branchesAnalytics = ref({});
     const averageIncomeChartResult = ref([]);
     const colorChange = ref(false);
+    const loading = ref(false);
     const allBranchDetail = ref([]);
     const series = ref([]);
     const joinmodalBtn = ref();
@@ -944,6 +978,7 @@ export default {
       }
     };
     getallBracnches();
+
     const getHierarchies = async () => {
       try {
         let { data } = await axios.get("/branching/hierarchies");
@@ -977,7 +1012,7 @@ export default {
         let membersValue = Object.values(i)[membersIndex];
         membersData.value.unshift(membersValue);
       });
-      // membersData.value.unshift( branchesAnalytics.value.totalMembers);
+
       console.log(membersData.value, "allMemberss");
 
       mainMembersData.value.push({
@@ -1004,7 +1039,6 @@ export default {
         let expenseValue = Object.values(i)[expenseIndex];
         expenseData.value.unshift(expenseValue);
       });
-      // membersData.value.unshift( branchesAnalytics.value.totalMembers);
 
       mainIncomeExpenseData.value.push({
         name: " Income ",
@@ -1065,8 +1099,6 @@ export default {
           value: result[prop].length,
         });
       }
-
-      console.log(averageIncomeChartResult.value, "iihhhhjhj");
     };
 
     const mappedAverageIncome = computed(() => {
@@ -1084,6 +1116,7 @@ export default {
     });
 
     const getBranches = async () => {
+      loading.value = true;
       try {
         let { data } = await axios.get("/api/Branching");
         console.log(data, "kkkk");
@@ -1170,7 +1203,9 @@ export default {
         data1.value = treeData;
         averageIncomeChart(data.returnObject, "currentYearAverageIncome");
         getFirtTimerSeris();
+        loading.value = false;
       } catch (error) {
+        loading.value = false;
         console.log(error);
       }
     };
@@ -1209,17 +1244,6 @@ export default {
       }
     };
 
-    //  const getUser = computed(() => {
-    //   if (!store.getters.currentUser || (store.getters.currentUser && Object.keys(store.getters.currentUser).length == 0)) return ''
-    //   return store.getters.currentUser
-    // })
-
-    //  watchEffect(() => {
-    //   if (getUser.value) {
-    //     tenantID.value = getUser.value.tenantId
-    //   }
-    // })
-
     const hideOpen = () => {
       openHideAmonut.value = !openHideAmonut.value;
     };
@@ -1256,6 +1280,7 @@ export default {
       branchProfile,
       viewBranch,
       branchData2,
+      loading,
       firstTimerHeader,
       selectedBranches,
       showbranchHierachy,

@@ -6,7 +6,6 @@
         <el-dropdown trigger="click" class="w-100">
           <div
             class="d-flex justify-content-between default-btn text-dark w-100"
-            size="large"
           >
             <span class="mt-1">Export</span>
             <div class="mt-1">
@@ -169,26 +168,17 @@ import { computed, ref, inject } from "vue";
 import axios from "@/gateway/backendapi";
 import PerformancePieChart from "../../../components/charts/ReportPieChart.vue";
 import PerformanceColumnChart from "../../../components/charts/ColumnChart.vue";
-import MultiSelect from "primevue/multiselect";
 import dateFormatter from "../../../services/dates/dateformatter";
 import exportService from "../../../services/exportFile/exportservice";
 import printJS from "print-js";
 export default {
   components: {
-    MultiSelect,
     PerformancePieChart,
     PerformanceColumnChart,
   },
   setup() {
     const showReport = ref(false);
     const displayTitle = ref(false);
-    const pieChart = ref([
-      {
-        name: "First Timer ",
-        color: "#002044",
-        data: [0, 3, 13, 14, 0, 15, 20, 20],
-      },
-    ]);
     const startDate = ref("");
     const endDate = ref("");
     const primarycolor = inject("primarycolor");
@@ -377,7 +367,6 @@ export default {
       endDate,
       generateReport,
       showReport,
-      pieChart,
       showExport,
       fileName,
       bookTypeList,

@@ -3,8 +3,9 @@
     <div class="row">
       <div class="col-md-12 mb-3 px-0 d-flex">
         <div class="" @click="backArrow"><el-icon  :size="30"><Back /></el-icon></div>
-        <el-icon :size="30" class="ml-2 primary--text"><Share /></el-icon>
-        <div class="ml-2 head-text">{{branchName}}</div>
+        <!-- <el-icon :size="30" class="ml-2 primary--text"><Share /></el-icon> -->
+        
+        <div class="ml-2 head-text"><img src="../../assets/git-branch.png" class="pr-1 icon-size" alt="" /> {{branchName}}</div>
       </div>
     </div>
     <div class="row">
@@ -52,11 +53,11 @@
               </router-link>
             </div>
           </div>
-          <div class="col-md-9 d-flex justify-content-center  my-3">
+          <!-- <div class="col-md-9 d-flex justify-content-center  my-3">
             <el-button @click="displayVisible" round size="large" class="w-100">
-              <el-icon :size="20"><Unlock /></el-icon> Access
+              <el-icon :size="20"><Unlock /></el-icon> Access <span class="red-cicle"></span>
             </el-button>
-          </div>
+          </div> -->
         </div>
       </div>
       <div class="col-md-9">
@@ -175,12 +176,21 @@ export default {
   border-radius: 0.5rem;
   background: #f3f3f3;
 }
+.red-cicle{
+  background: red;
+  border-radius: 50%;
+  height: 10px;
+  width: 10px;
+}
+
+.icon-size{
+  width: 35px;
+}
 
 .icon {
   background: #c0dbfacc;
   /* padding: 1rem; */
 }
-
 .side-icon{
 
   background: #136acd;
