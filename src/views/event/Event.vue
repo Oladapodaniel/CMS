@@ -124,10 +124,10 @@
         <div class="attendance-body" id="attendanceBody" v-for="(item, indx) in attendanceItem" :key="indx">
           <div class="row">
             <div class="col-6 col-md-3 mt-1">
-              <select class="form-control " v-if="item.attendanceTypeID && !routeParams">
+              <select class="form-control " v-if="item.attendanceTypeID && !routeParams" v-model="item.attendanceTypeID"
+                @change="setSelectedAttendanceName($event, indx)">
                 <option v-for="(newAttendance, index) in newAttendances" :key="index"
-                  :value="newAttendance.attendanceTypeID" :selected="newAttendance.attendanceTypeID === item.attendanceTypeID
-                    ">
+                  :value="newAttendance.attendanceTypeID">
                   {{ newAttendance.name }}
                 </option>
               </select>
@@ -184,7 +184,6 @@
             </div>
           </div>
         </div>
-        <!-- <textarea class="col-sm-12 textarea form-control" rows="5">Note ...</textarea> -->
 
         <div class="col-12 offset-sm-1 add">Add Offering</div>
         <div class="attendance-header d-none d-lg-block">
@@ -198,9 +197,9 @@
         <div class="attendance-body stretch" id="offeringBody" v-for="(item, index) in offeringItem" :key="index">
           <div class="row">
             <div class="col-12 col-sm-8 col-lg-3 mt-1">
-              <select class="form-control" v-if="item.financialContributionID && !routeParams">
-                <option v-for="(newOffering, index) in newOfferings" :key="index" :value="newOffering.id"
-                  :selected="newOffering.id === item.financialContributionID">
+              <select class="form-control" v-if="item.financialContributionID && !routeParams"
+                v-model="item.financialContributionID" @change="setSelectedOfferingItem($event, index)">
+                <option v-for="(newOffering, index) in newOfferings" :key="index" :value="newOffering.id">
                   {{ newOffering.name }}
                 </option>
               </select>
@@ -353,8 +352,8 @@
 
 
         <!-- ========================= -->
-{{ expenseItem }}
-<!-- {{
+        <!-- {{ expenseItem }} -->
+        <!-- {{
   {
     name, id, cashaccount, amount
   }
@@ -365,36 +364,35 @@
           <div class="row">
             <div class="col-sm-3">Expense Item</div>
             <div class="col-sm-2">Cash Account</div>
-            <div class="col-sm-4">Amount</div>
+            <div class="col-sm-5">Amount</div>
             <div class="col-sm-2">Total</div>
           </div>
         </div>
         <div class="attendance-body stretch" id="offeringBody" v-for="(item, index) in expenseItem" :key="index">
           <div class="row">
             <div class="col-12 col-sm-8 col-lg-3 mt-1">
-              <select class="form-control" v-if="item.id && !routeParams">
-                <option v-for="(expense, index) in expenseList" :key="index" :value="expense.id"
-                :selected="expense.id === item.id"
-                >
+              <select class="form-control" v-if="item.debitSplitAccounts[0].accountID"
+                v-model="item.debitSplitAccounts[0].accountID">
+                <option v-for="(expense, index) in expenseList" :key="index" :value="expense.id">
                   {{ expense.text }}
                 </option>
               </select>
 
-              <!-- <select class="form-control" v-else-if="item.financialContributionID && routeParams"
-                v-model="item.financialContributionID" @change="updateOfferingId">
-                <option v-for="(newOffering, index) in newOfferings" :key="index" :value="newOffering.id">
-                  <p>{{ newOffering.name }}</p>
+              <!-- <select class="form-control" v-else-if="item.debitSplitAccounts[0].accountID && routeParams"
+                v-model="item.debitSplitAccounts[0].accountID">
+                <option v-for="(expense, index) in expenseList" :key="index" :value="expense.id">
+                  <p>{{ expense.text }}</p>
                 </option>
               </select> -->
-              <input type="text" class="form-control" name="" id="" v-else-if="!item.id"
-                v-model="item.text" placeholder="Enter Expense Item" ref="offeringInput" />
+              <!-- <input type="text" class="form-control" name="" id="" v-else-if="!item.debitSplitAccounts[0].accountID" v-model="item.text"
+                placeholder="Enter Expense Item" ref="offeringInput" /> -->
             </div>
             <div class="col-3 col-sm-4 col-lg-2">
-              <el-select-v2 v-model="item.cashAccountId" class="w-100 font-weight-normal" :options="cashAccounts.map((i) => ({ label: i.text, value: i.id }))
+              <el-select-v2 v-model="item.creditAccountID" class="w-100 font-weight-normal" :options="cashAccounts.map((i) => ({ label: i.text, value: i.id }))
                 " size="large" />
             </div>
 
-            <div class="col-3 col-sm-2 col-lg-1">
+            <!-- <div class="col-3 col-sm-2 col-lg-1">
               <div class="
                   currency
                   py-2
@@ -421,7 +419,8 @@
                 <div class="header-border close-modal" v-if="filterCurrency.length > 0">
                   <div class="manual-dd-item close-modal" v-for="item in filterCurrency" :key="item.id">
                     <div class="d-flex justify-content-between p-1 close-modal">
-                      <div class="close-modal offset-sm-1" @click="(expenseItem[index].currencyID = item.id),(expenseItem[index].showCurrency = false)">
+                      <div class="close-modal offset-sm-1"
+                        @click="(expenseItem[index].currencyID = item.id), (expenseItem[index].showCurrency = false)">
                         {{ item.name }} - {{ item.country }}
                       </div>
                     </div>
@@ -431,12 +430,13 @@
                   <div class="p-3 text-center text-danger">No Match Found</div>
                 </div>
               </div>
-            </div>
+            </div> -->
             <div class="col-6 col-lg-3">
-              <el-input type="text" class="w-100" v-model="item.amount" placeholder="Enter Amount" />
+              <el-input type="text" class="w-100" v-model="item.debitSplitAccounts[0].amount"
+                @input="setAmountIndex($event, index)" placeholder="Enter Amount" />
             </div>
-            <div class="col-1 d-none d-lg-block">
-              {{ item.amount }}
+            <div class="col-2 d-none d-lg-block">
+              {{ item.debitSplitAccounts[0].amount }}
             </div>
             <div class="col-1 mt-2" @click="delExpense(item.id, index)">
               <el-icon>
@@ -471,16 +471,15 @@
           </el-icon>Add Expense Item
         </div>
         <div class="display ofering" ref="expenseCard">
-          <input type="text" class="form-control mb-3 ofering" v-model="expenseText"
-            placeholder="Search expense item" />
+          <input type="text" class="form-control mb-3 ofering" v-model="expenseText" placeholder="Search expense item" />
 
           <div class="ofering pointer" v-for="(expense, index) in filterExpense" :key="index"
             @click="addExpense(expense)">
             {{ expense.text }}
           </div>
-          <div type="button" data-toggle="modal" data-target="#exampleModalCenter" class="create ofering pointer">
+          <!-- <div type="button" data-toggle="modal" data-target="#exampleModalCenter" class="create ofering pointer">
             Create New Expense Item
-          </div>
+          </div> -->
         </div>
         <button hidden type="button" id="modalTogglerOffering" class="btn btn-primary" data-toggle="modal"
           data-target="#exampleModalOffering">
@@ -494,13 +493,14 @@
                 TOTAL
               </div>
               <div class="col-4 col-sm-2   ofering">
-                <CurrencyConverter :tenantCurrency="tenantCurrency.currency" :selectedCurrency="selectedCurrencyName"
+                {{ this.expenseItem.reduce((a, b) => { return a + +b.amount }, 0) }}
+                <!-- <CurrencyConverter :tenantCurrency="tenantCurrency.currency" :selectedCurrency="selectedCurrencyName"
                   :currencyList="currencyList" :currencyAmount="addContributionTotal" @conversion-result="convertResult"
-                  @currency-rate="setCurrencyRate" />
+                  @currency-rate="setCurrencyRate" /> -->
               </div>
-              <div v-if="convertedAmount2"
+              <!-- <div v-if="convertedAmount2"
                 class=" col-8 col-sm-4  align-self-center text-right text-sm-left converted-amout ml-4">
-                <!-- Make this a computed that displays the value whenever the value of these variable changes -->
+                 Make this a computed that displays the value whenever the value of these variable changes 
                 {{
                   convertedResult
                   ? convertedResult.toFixed(2)
@@ -508,7 +508,7 @@
                     ? addContributionTotal.toFixed(2)
                     : offeringItemsSum()
                 }}
-              </div>
+              </div> -->
             </div>
 
           </div>
@@ -1269,8 +1269,8 @@
                 </div>
                 <div class="col-lg-5 col-sm-12 mt-3">
                   <el-select-v2 v-model="selectedIncomeAccount"
-                    :options="incomeAccount.map((i) => ({ label: i.text, value: i.id }))" placeholder="Select" size="large"
-                    class="w-100" />
+                    :options="incomeAccount.map((i) => ({ label: i.text, value: i.id }))" placeholder="Select"
+                    size="large" class="w-100" />
                 </div>
                 <div class="col-sm-4 mt-3 text-right pr-0">
                   <label>Cash Account</label>
@@ -1521,6 +1521,7 @@ export default {
       displayResponsive: false,
       display: false,
       note: "",
+      expenseAmountIndex: 0
     };
   },
 
@@ -1551,6 +1552,14 @@ export default {
       const showList = document.querySelector("#showList");
       showList.classList.toggle("offering-drop");
     },
+    setSelectedOfferingItem(e, index) {
+      const selectedOffering = this.newOfferings.find(i => i.id == e.target.value)
+      this.offeringItem[index].name = selectedOffering.name
+    },
+    setSelectedAttendanceName(e, index) {
+      const selectedAttendance = this.newAttendances.find(i => i.attendanceTypeID == e.target.value)
+      this.attendanceItem[index].attendanceTypeName = selectedAttendance.name
+    },
     offering(offObj) {
       if (offObj) {
         this.offeringItem.push({
@@ -1570,8 +1579,8 @@ export default {
               : offObj.currencyID,
           donor: "",
           fromCurrencyRate: `usd${this.tenantCurrency.currency
-              ? this.tenantCurrency.currency.toLowerCase()
-              : ""
+            ? this.tenantCurrency.currency.toLowerCase()
+            : ""
             }`,
         });
       } else {
@@ -1592,17 +1601,35 @@ export default {
     },
     addExpense(expense) {
       console.log(expense, 'expense')
-      this.expenseItem.push({
-        name: expense.text,
-        id: expense.id,
-        currencyID:
-            expense.currencyID == undefined ||
-              expense.currencyID == "" ||
-              expense.currencyID == null
-              ? this.tenantCurrency.currencyId
-              : expense.currencyID,
-      })
+      // this.expenseItem.push({
+      //   name: expense.text,
+      //   id: expense.id,
+      //   currencyID:
+      //     expense.currencyID == undefined ||
+      //       expense.currencyID == "" ||
+      //       expense.currencyID == null
+      //       ? this.tenantCurrency.currencyId
+      //       : expense.currencyID,
+      // })
+
+      const expensePayload = {
+        debitSplitAccounts: [
+          {
+            accountID: expense.id,
+            contactID: ""
+          }
+        ],
+        date: this.eventDate,
+        memo: expense.text,
+        transactionNumber: "",
+        category: "outflow",
+        amount: 0
+      }
+      this.expenseItem.push(expensePayload)
       this.$refs.expenseCard.classList.remove("offering-drop")
+    },
+    setAmountIndex(e, index) {
+      this.expenseItem[index].amount = e
     },
     attendance(attObj) {
       if (attObj) {
@@ -1960,39 +1987,38 @@ export default {
       }
     },
     deleteExpense(id, index) {
-      // if (id) {
-        // axios
-        //   .delete(`/api/Financials/Contributions/Transactions/Delete?ID=${id}`)
-        //   .then((res) => {
-        //     if (res.data.status) {
-        //       ElMessage({
-        //         type: 'success',
-        //         message: 'Offering Successfully Deleted',
-        //         duration: 5000
-        //       })
-        //       this.offeringItem = this.offeringItem.filter((i) => id !== i.id);
-        //     } else {
-
-        //       ElMessage({
-        //         type: 'info',
-        //         message: 'Delete Failed, Please Try Again',
-        //         duration: 5000
-        //       })
-        //     }
-        //   })
-        //   .catch((err) => {
-        //     finish();
-        //     if (err.response) {
-        //       ElMessage({
-        //         type: 'error',
-        //         message: err.response,
-        //         duration: 5000
-        //       })
-        //     }
-        //   });
-      // } else {
-      // }
-      this.expenseItem.splice(index, 1);
+      if (id) {
+      axios
+        .delete(`/api/Financials/Accounts/Transactions/Delete?ID=${id}`)
+        .then((res) => {
+          if (res.data.status) {
+            ElMessage({
+              type: 'success',
+              message: 'Expense Successfully Deleted',
+              duration: 5000
+            })
+            this.expenseItem.splice(index, 1);
+          } else {
+            ElMessage({
+              type: 'info',
+              message: 'Delete Failed, Please Try Again',
+              duration: 5000
+            })
+          }
+        })
+        .catch((err) => {
+          finish();
+          if (err.response) {
+            ElMessage({
+              type: 'error',
+              message: err.response,
+              duration: 5000
+            })
+          }
+        });
+      } else {
+        this.expenseItem.splice(index, 1);
+      }
     },
 
     delOffering(id, index) {
@@ -2078,7 +2104,7 @@ export default {
           }
           return i;
         }),
-
+        expensesTransactions: this.expenseItem,
         activityFirstTimers: this.firstTimers,
         activityNewConverts: this.newConverts,
       };
@@ -2130,11 +2156,13 @@ export default {
           topic: this.topic,
           preacher: this.preacher,
           eventCategoryId: this.selectedEventCategoryId,
+          note: this.note
         },
         activityFirstTimers: this.firstTimers,
         activityNewConverts: this.newConverts,
         attendances: this.attendanceItem,
         offerings: this.offeringItem,
+        expensesTransactions: this.expenseItem,
         preEvent: this.updatePreEvent,
       };
 
@@ -2488,27 +2516,10 @@ export default {
           this.selectedEventCategoryId = res.data.activity.eventCategoryId;
           this.attendanceItem = res.data.attendances;
           this.offeringItem = res.data.offerings.map((i) => {
-            return {
-              activity: i.activity,
-              activityID: i.activityID,
-              amount: i.amount,
-              contribution: i.contribution,
-              fromCurrencyRate: i.currency.name,
-              currencyName: i.currency.shortCode,
-              currencyID: i.currencyID,
-              date: i.date,
-              financialContributionID: i.financialContributionID,
-              id: i.id,
-              memo: i.memo,
-              paymentChannel: i.paymentChannel,
-              person: i.person,
-              personEmail: i.personEmail,
-              personID: i.personID,
-              donor: i.personName,
-              personPhoneNumber: i.personPhoneNumber,
-              tenantID: i.tenantID,
-              transactionNumber: i.transactionNumber,
-            };
+            i.fromCurrencyRate = i.currency.name
+            i.currencyName = i.currency.shortCode
+            i.donor = i.personName
+            return i
           });
           this.firstTimers = res.data.activityFirstTimers;
           if (this.firstTimers.length > 0) this.showForm3 = true;
@@ -2538,542 +2549,559 @@ export default {
               console.log(err);
             }
           }
-        } catch (err) {
-          console.log(err);
-        }
-      }
-    },
-    convertCurrencyForExistingEvent() {
-      console.log(this.offeringItem);
-    },
-    getCurrenciesFromCountries() {
-      let url = "/api/getallcountries";
-      axios
-        .get(url)
-        .then((res) => {
-          this.currencyList = res.data.map((i) => {
-            // return `${i.currency} ${i.name}`
-            return {
-              name: i.currency,
-              id: i.currencyId,
-              country: i.name,
-            };
-          });
-        })
-        .catch((err) => console.log(err));
-    },
-    toggleCode() {
-      this.showCode = !this.showCode;
-    },
-    getCurrency(e) {
-      console.log(e.target.innerHTML);
-      this.showCode = false;
-    },
-    updateOfferingId(e) {
-      let index = this.offeringItem.findIndex(
-        (i) => i.financialContributionID === e.target.value
-      );
-      console.log(e.target.value, index, "target", e.target.textContent);
-      let offText = this.newOfferings.find((i) => i.id === e.target.value).name;
-      console.log(offText);
-      this.offeringItem[index].name = offText;
-    },
-    updateAttendanceId(e) {
-      let index = this.attendanceItem.findIndex(
-        (i) => i.attendanceTypeID === e.target.value
-      );
-      let attText = this.newAttendances.find(
-        (i) => i.attendanceTypeID === e.target.value
-      ).name;
 
-      this.attendanceItem[index].attendanceTypeName = attText;
-    },
-    setAddToDonor(index) {
-      this.offeringToAddDonor = index;
-    },
-    addDonor() {
-      let donorName = this.userSearchString;
-      this.offeringItem[this.offeringToAddDonor].donor = donorName;
-      this.donorBoolean = true;
-      this.userSearchString = "";
-    },
-    searchForUsers() {
-      if (this.userSearchString.length >= 3) {
-        this.startSearch(this.userSearchString);
-      }
-    },
-
-    async startSearch(str) {
-      try {
-        this.searchingForMembers = true;
-        const response = await membershipService.searchMembers(str);
-        this.searchingForMembers = false;
-        this.searchedMembers = response;
-      } catch (error) {
-        this.searchingForMembers = false;
-        console.log(error);
-      }
-    },
-    addExistingMember(member) {
-      this.userSearchString = member.name;
-      this.offeringItem[this.offeringToAddDonor].personID = member.id;
-    },
-    getPersonId(payload) {
-      this.offeringItem[this.offeringToAddDonor].donor =
-        payload.personFirstName;
-      this.offeringItem[this.offeringToAddDonor].personID = payload.personId;
-    },
-    async getCurrentlySignedInUser() {
-      try {
-        const res = await axios.get("/api/Membership/GetCurrentSignedInUser");
-        this.tenantId = res.data.tenantId;
-        // if(res.data.country == "Nigeria") {
-        //     isPaystackChecked.value = true
-        //     isFlutterwave.value = true
-        //     isPaypal.value = true
-        // } else {
-        //     isPaypal.value = true
-        //     isFlutterwave.value = true
-        // }
-        // let store = useStore()
-        // if (store.getters.currentUser) {
-        //   axios.get(`/api/Lookup/TenantCurrency?tenantID=${store.getters.currentUser.tenantId}`)
-        //   .then(res => {
-        //     this.tenantCurrency = res.data.currency
-        //     console.log(res.data)
-        //   })
-        //   .catch(err => console.log(err))
-        //   console.log(store.getters.currentUser)
-        // } else {
-        axios
-          .get(`/api/Lookup/TenantCurrency?tenantID=${res.data.tenantId}`)
-          .then((res) => {
-            this.tenantCurrency = res.data;
-            this.getEventById();
-            this.convertCurrencyForExistingEvent();
-            console.log(this.tenantCurrency);
-          })
-          .catch((err) => console.log(err));
-      } catch (err) {
-        /*eslint no-undef: "warn"*/
-        NProgress.done();
-        console.log(err);
-      }
-    },
-    async sendAmount(e, index) {
-      let amount = this.offeringItem[index].amount.toString();
-      let removeCharacters = amount.replace(/[^0-9.]/g, "");
-      let toNumber = parseFloat(removeCharacters);
-
-      this.currencyAmount = e;
-      this.currencyIndex = index;
-
-      let toDestinationCurrencyRate = `usd${this.tenantCurrency.currency.toLowerCase()}`;
-      let fromCurrencyRate = this.offeringItem[index].fromCurrencyRate;
-
-      let amountToConvert = toNumber ? toNumber : 0;
-
-      console.log(amountToConvert, fromCurrencyRate, toDestinationCurrencyRate);
-
-      try {
-        let result = await CurrencyConverterService.currencyConverter(
-          amountToConvert,
-          fromCurrencyRate,
-          toDestinationCurrencyRate
-        );
-        console.log(result);
-        // if (!isNaN(result)) {
-        this.convertedAmount2[index] = result;
-        console.log(1)
-        // } else {
-        //   // this.convertedAmount2[index] = amount
-        //   console.log(2, amount)
-        // }
+          this.expenseItem = res.data.expensesTransactions
+          // .map(i => {
+          //   return {
+          //     debitSplitAccounts: [
+          //       {
+          //         accountID: i.debitSplitAccounts.accoundID,
+          //         contactID: i.debitSplitAccounts.contactID
+          //       }
+          //     ],
+          //     date: i.date,
+          //     memo: i.memo,
+          //     transactionNumber: i.transactionNumber,
+          //     category: i.category,
+          //     amount: i.amount
+          //   }
+          // }
+          // })
       } catch (err) {
         console.log(err);
       }
-    },
-    convertResult(payload) {
-      this.convertedResult = payload;
-    },
-    toggleRem() {
-      this.applyRem = !this.applyRem;
-    },
-    addRemittance() {
-      this.remitance.push({});
-    },
-    deleteItem(index) {
-      this.remitance.splice(index, 1);
-    },
-    getIncomeAccount() {
-      axios
-        .get("/api/Financials/Accounts/GetIncomeAccounts")
-        .then((res) => {
-          /*eslint no-undef: "warn"*/
-          NProgress.done();
-          this.incomeAccount = res.data;
-          if (res.data.length < 1) {
-            this.displayResponsive = true;
-          }
-        })
-        .catch((err) => {
-          NProgress.done();
-          console.log(err);
-        });
-    },
-    getCashBankAccount() {
-      axios
-        .get("/api/financials/accounts/getcashbankaccounts")
-        .then((res) => {
-          this.cashBankAccount = res.data;
-        })
-        .catch((err) => {
-          console.log(err);
-        });
-    },
-    closeResponsive() {
-      this.displayResponsive = false;
-      this.$router.push({ name: "ChartOfAccount" });
-    },
-    createNewCon(e) {
-      let contributionCategory = {
-        name: this.contributionItemName,
-        incomeAccountId: this.selectedIncomeAccount,
-        cashAccountId: this.selectedCashAccount
-      };
-      if (this.remitance[0].account || this.remitance[0].percentage) {
-        contributionCategory.incomeRemittance = this.remitance.map((i) => {
+    }
+  },
+  convertCurrencyForExistingEvent() {
+    console.log(this.offeringItem);
+  },
+  getCurrenciesFromCountries() {
+    let url = "/api/getallcountries";
+    axios
+      .get(url)
+      .then((res) => {
+        this.currencyList = res.data.map((i) => {
+          // return `${i.currency} ${i.name}`
           return {
-            financialFundID: i.account.financialFundID,
-            distinationIncomeAccount: i.account.id,
-            percentage: i.percentage,
+            name: i.currency,
+            id: i.currencyId,
+            country: i.name,
           };
         });
-      } else {
-        contributionCategory.incomeRemittance = null;
-      }
+      })
+      .catch((err) => console.log(err));
+  },
+  toggleCode() {
+    this.showCode = !this.showCode;
+  },
+  getCurrency(e) {
+    console.log(e.target.innerHTML);
+    this.showCode = false;
+  },
+  updateOfferingId(e) {
+    let index = this.offeringItem.findIndex(
+      (i) => i.financialContributionID === e.target.value
+    );
+    console.log(e.target.value, index, "target", e.target.textContent);
+    let offText = this.newOfferings.find((i) => i.id === e.target.value).name;
+    console.log(offText);
+    this.offeringItem[index].name = offText;
+  },
+  updateAttendanceId(e) {
+    let index = this.attendanceItem.findIndex(
+      (i) => i.attendanceTypeID === e.target.value
+    );
+    let attText = this.newAttendances.find(
+      (i) => i.attendanceTypeID === e.target.value
+    ).name;
+
+    this.attendanceItem[index].attendanceTypeName = attText;
+  },
+  setAddToDonor(index) {
+    this.offeringToAddDonor = index;
+  },
+  addDonor() {
+    let donorName = this.userSearchString;
+    this.offeringItem[this.offeringToAddDonor].donor = donorName;
+    this.donorBoolean = true;
+    this.userSearchString = "";
+  },
+  searchForUsers() {
+    if (this.userSearchString.length >= 3) {
+      this.startSearch(this.userSearchString);
+    }
+  },
+
+  async startSearch(str) {
+    try {
+      this.searchingForMembers = true;
+      const response = await membershipService.searchMembers(str);
+      this.searchingForMembers = false;
+      this.searchedMembers = response;
+    } catch (error) {
+      this.searchingForMembers = false;
+      console.log(error);
+    }
+  },
+  addExistingMember(member) {
+    this.userSearchString = member.name;
+    this.offeringItem[this.offeringToAddDonor].personID = member.id;
+  },
+  getPersonId(payload) {
+    this.offeringItem[this.offeringToAddDonor].donor =
+      payload.personFirstName;
+    this.offeringItem[this.offeringToAddDonor].personID = payload.personId;
+  },
+  async getCurrentlySignedInUser() {
+    try {
+      const res = await axios.get("/api/Membership/GetCurrentSignedInUser");
+      this.tenantId = res.data.tenantId;
+      // if(res.data.country == "Nigeria") {
+      //     isPaystackChecked.value = true
+      //     isFlutterwave.value = true
+      //     isPaypal.value = true
+      // } else {
+      //     isPaypal.value = true
+      //     isFlutterwave.value = true
+      // }
+      // let store = useStore()
+      // if (store.getters.currentUser) {
+      //   axios.get(`/api/Lookup/TenantCurrency?tenantID=${store.getters.currentUser.tenantId}`)
+      //   .then(res => {
+      //     this.tenantCurrency = res.data.currency
+      //     console.log(res.data)
+      //   })
+      //   .catch(err => console.log(err))
+      //   console.log(store.getters.currentUser)
+      // } else {
       axios
-        .post("/api/financials/contributions/items/save", contributionCategory)
+        .get(`/api/Lookup/TenantCurrency?tenantID=${res.data.tenantId}`)
         .then((res) => {
-          this.newOfferings.push({
-            name: this.contributionItemName,
-            id: res.data.id,
-          });
-          ElMessage({
-            type: 'success',
-            message: 'Contribution Saved',
-            duration: 5000
-          })
-          console.log(res);
-
-          this.offeringItem.push({
-            name: res.data.name,
-            financialContributionID: res.data.id,
-            paymentChannel: "Cash",
-            currencyID: this.tenantCurrency.currencyId,
-            donor: "",
-          });
+          this.tenantCurrency = res.data;
+          this.getEventById();
+          this.convertCurrencyForExistingEvent();
+          console.log(this.tenantCurrency);
         })
-        .catch((err) => {
-          ElMessage({
-            type: 'error',
-            message: 'Not Successful',
-            duration: 5000
-          })
-          console.log(err);
-        });
-      e.target.setAttribute("data-dismiss", "modal");
-    },
-    async checkForDuplicatePhone() {
-      try {
-        let { data } = await axios.get(
-          `api/People/checkDuplicate?email=${this.firstTimersObj.email}&phoneNumber=${this.firstTimersObj.phoneNumber}`
-        );
-        if (this.isPhoneValid !== "") {
-          if (data === "phone number") {
-            this.isPhoneValid = false;
-          } else if (data === "email and phone number") {
-            this.isPhoneValid = false;
-            this.isEmailValid = false;
-          } else {
-            this.isPhoneValid = true;
-            this.$refs.validatePhone.classList.add("is-valid");
-          }
-        } else {
-          this.$refs.validatePhone.classList.remove("is-valid");
-          this.$refs.validatePhone.classList.remove("is-invalid");
-        }
-      } catch (error) {
-        console.log(error);
-      }
-    },
-    async checkForDuplicateEmail() {
-      try {
-        let { data } = await axios.get(
-          `api/People/checkDuplicate?email=${this.firstTimersObj.email}&phoneNumber=${this.firstTimersObj.phoneNumber}`
-        );
-        if (this.isEmailValid !== "") {
-          if (data === "email") {
-            this.isEmailValid = false;
-          } else if (data === "email and phone number") {
-            this.isEmailValid = false;
-            this.isPhoneValid = false;
-          } else {
-            this.isEmailValid = true;
-            this.$refs.validateEmail.classList.add("is-valid");
-          }
-        } else {
-          this.$refs.validateEmail.classList.remove("is-valid");
-          this.$refs.validateEmail.classList.remove("is-invalid");
-        }
-      } catch (error) {
-        console.log(error);
-      }
-    },
-    async checkForDuplicatePhoneNewConvert() {
-      try {
-        let { data } = await axios.get(
-          `api/People/checkDuplicate?email=${this.newConvertsObj.email}&phoneNumber=${this.newConvertsObj.phoneNumber}`
-        );
-        if (this.isPhoneValidNewConvert !== "") {
-          if (data === "phone number") {
-            this.isPhoneValidNewConvert = false;
-          } else if (data === "email and phone number") {
-            this.isPhoneValidNewConvert = false;
-            this.isEmailValidNewConvert = false;
-          } else {
-            this.isPhoneValidNewConvert = true;
-            this.$refs.validatePhoneNewConvert.classList.add("is-valid");
-          }
-        } else {
-          this.$refs.validatePhoneNewConvert.classList.remove("is-valid");
-          this.$refs.validatePhoneNewConvert.classList.remove("is-invalid");
-        }
-      } catch (error) {
-        console.log(error);
-      }
-    },
-    async checkForDuplicateEmailNewConvert() {
-      try {
-        let { data } = await axios.get(
-          `api/People/checkDuplicate?email=${this.newConvertsObj.email}&phoneNumber=${this.newConvertsObj.phoneNumber}`
-        );
-        if (this.isEmailValidNewConvert !== "") {
-          if (data === "email") {
-            this.isEmailValidNewConvert = false;
-          } else if (data === "email and phone number") {
-            this.isEmailValidNewConvert = false;
-            this.isPhoneValidNewConvert = false;
-          } else {
-            this.isEmailValidNewConvert = true;
-            this.$refs.validateEmailNewConvert.classList.add("is-valid");
-          }
-        } else {
-          this.$refs.validateEmailNewConvert.classList.remove("is-valid");
-          this.$refs.validateEmailNewConvert.classList.remove("is-invalid");
-        }
-      } catch (error) {
-        console.log(error);
-      }
-    },
-    async getRates() {
-      try {
-        let { data } = await axios.get("/fxRates");
-        this.$store.dispatch("getRates", data);
-      } catch (error) {
-        console.log(error);
-      }
-    },
-    setContact(payload) {
-      if (!payload.email) {
-        ElMessage({
-          type: 'warning',
-          message: 'This contact does not have any email, communicate with this person to create him as a user',
-          duration: 5000
-        })
-      }
-      this.firstTimersObj.contactOwnerId = payload.id;
-    },
-    setContactNewConvert(payload) {
-      if (!payload.email) {
-        ElMessage({
-          type: 'warning',
-          message: 'This contact does not have any email, communicate with this person to create him as a user',
-          duration: 5000
-        })
-      }
-      this.firstTimersObj.contactOwnerId = payload.id;
-    },
-    showAddMemberForm() {
-      this.display = true;
-    },
-    offeringItemsSum() {
-      let sum = 0
-      if (this.offeringItem.length > 0) {
-        this.offeringItem.filter(i => i.amount).forEach(element => {
-          sum += +element.amount
-        });
-        return sum
-      } else {
-        return 0
-      }
+        .catch((err) => console.log(err));
+    } catch (err) {
+      /*eslint no-undef: "warn"*/
+      NProgress.done();
+      console.log(err);
     }
   },
-  async created() {
-    if (store.getters["lookups/maritalStatus"].length > 0) {
-      this.maritalStatusArr = store.getters["lookups/maritalStatus"];
+  async sendAmount(e, index) {
+    let amount = this.offeringItem[index].amount.toString();
+    let removeCharacters = amount.replace(/[^0-9.]/g, "");
+    let toNumber = parseFloat(removeCharacters);
+
+    this.currencyAmount = e;
+    this.currencyIndex = index;
+
+    let toDestinationCurrencyRate = `usd${this.tenantCurrency.currency.toLowerCase()}`;
+    let fromCurrencyRate = this.offeringItem[index].fromCurrencyRate;
+
+    let amountToConvert = toNumber ? toNumber : 0;
+
+    console.log(amountToConvert, fromCurrencyRate, toDestinationCurrencyRate);
+
+    try {
+      let result = await CurrencyConverterService.currencyConverter(
+        amountToConvert,
+        fromCurrencyRate,
+        toDestinationCurrencyRate
+      );
+      console.log(result);
+      // if (!isNaN(result)) {
+      this.convertedAmount2[index] = result;
+      console.log(1)
+      // } else {
+      //   // this.convertedAmount2[index] = amount
+      //   console.log(2, amount)
+      // }
+    } catch (err) {
+      console.log(err);
+    }
+  },
+  convertResult(payload) {
+    this.convertedResult = payload;
+  },
+  toggleRem() {
+    this.applyRem = !this.applyRem;
+  },
+  addRemittance() {
+    this.remitance.push({});
+  },
+  deleteItem(index) {
+    this.remitance.splice(index, 1);
+  },
+  getIncomeAccount() {
+    axios
+      .get("/api/Financials/Accounts/GetIncomeAccounts")
+      .then((res) => {
+        /*eslint no-undef: "warn"*/
+        NProgress.done();
+        this.incomeAccount = res.data;
+        if (res.data.length < 1) {
+          this.displayResponsive = true;
+        }
+      })
+      .catch((err) => {
+        NProgress.done();
+        console.log(err);
+      });
+  },
+  getCashBankAccount() {
+    axios
+      .get("/api/financials/accounts/getcashbankaccounts")
+      .then((res) => {
+        this.cashBankAccount = res.data;
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+  },
+  closeResponsive() {
+    this.displayResponsive = false;
+    this.$router.push({ name: "ChartOfAccount" });
+  },
+  createNewCon(e) {
+    let contributionCategory = {
+      name: this.contributionItemName,
+      incomeAccountId: this.selectedIncomeAccount,
+      cashAccountId: this.selectedCashAccount
+    };
+    if (this.remitance[0].account || this.remitance[0].percentage) {
+      contributionCategory.incomeRemittance = this.remitance.map((i) => {
+        return {
+          financialFundID: i.account.financialFundID,
+          distinationIncomeAccount: i.account.id,
+          percentage: i.percentage,
+        };
+      });
     } else {
-      await axios
-        .get("/api/LookUp/GetAllLookUps")
-        .then((res) => {
-          this.maritalStatusArr = res.data.find((i) => {
-            return i.type.toLowerCase() === "maritalstatus";
-          }).lookUps;
+      contributionCategory.incomeRemittance = null;
+    }
+    axios
+      .post("/api/financials/contributions/items/save", contributionCategory)
+      .then((res) => {
+        this.newOfferings.push({
+          name: this.contributionItemName,
+          id: res.data.id,
+        });
+        ElMessage({
+          type: 'success',
+          message: 'Contribution Saved',
+          duration: 5000
         })
-        .catch((err) => console.log(err.response));
-    }
+        console.log(res);
 
-    axios.get("/api/Financials/Contributions/Items").then((res) => {
-      this.newOfferings = res.data.map((i) => {
-        return { id: i.id, name: i.name };
+        this.offeringItem.push({
+          name: res.data.name,
+          financialContributionID: res.data.id,
+          paymentChannel: "Cash",
+          currencyID: this.tenantCurrency.currencyId,
+          donor: "",
+        });
+      })
+      .catch((err) => {
+        ElMessage({
+          type: 'error',
+          message: 'Not Successful',
+          duration: 5000
+        })
+        console.log(err);
       });
-    });
-    axios.get("/GetAttendanceType").then((res) => {
-      this.newAttendances = res.data.map((i) => {
-        return { attendanceTypeID: i.id, name: i.name };
-      });
-    });
-    axios.get("/api/Financials/Accounts/GetExpenseAccounts").then((res) => {
-      this.expenseList = res.data
-    });
-    axios.get("/api/Financials/Accounts/GetCashBankAccounts").then((res) => {
-      this.cashAccounts = res.data
-      console.log(this.cashAccounts, 'ddd')
-    });
-
-    this.currentDate();
-    this.getCurrentlySignedInUser();
-    this.getEventCategories();
-    this.getLookUps();
-    this.getHowDidYouAboutUsId();
-
-    this.getCurrenciesFromCountries();
-    this.getIncomeAccount();
-    this.getCashBankAccount();
-    this.getRates();
+    e.target.setAttribute("data-dismiss", "modal");
   },
-  computed: {
-    filterAttendance() {
-      if (this.attendanceText !== "" && this.newAttendances.length > 0) {
-        return this.newAttendances.filter((i) => {
-          return i.name
-            .toLowerCase()
-            .includes(this.attendanceText.toLowerCase());
-        });
+  async checkForDuplicatePhone() {
+    try {
+      let { data } = await axios.get(
+        `api/People/checkDuplicate?email=${this.firstTimersObj.email}&phoneNumber=${this.firstTimersObj.phoneNumber}`
+      );
+      if (this.isPhoneValid !== "") {
+        if (data === "phone number") {
+          this.isPhoneValid = false;
+        } else if (data === "email and phone number") {
+          this.isPhoneValid = false;
+          this.isEmailValid = false;
+        } else {
+          this.isPhoneValid = true;
+          this.$refs.validatePhone.classList.add("is-valid");
+        }
       } else {
-        return this.newAttendances;
+        this.$refs.validatePhone.classList.remove("is-valid");
+        this.$refs.validatePhone.classList.remove("is-invalid");
       }
-    },
-    birthYearsArr() {
-      const arrOfYears = [];
-      let currentYear = new Date().getFullYear();
-      while (arrOfYears.length <= 100) {
-        arrOfYears.push(currentYear);
-        currentYear = currentYear - 1;
-      }
-      return arrOfYears;
-    },
-    filterOffering() {
-      if (this.offeringText !== "" && this.newOfferings.length > 0) {
-        return this.newOfferings.filter((i) => {
-          return i.name.toLowerCase().includes(this.offeringText.toLowerCase());
-        });
-      } else {
-        return this.newOfferings;
-      }
-    },
-    filterExpense() {
-      if (this.expenseText !== "" && this.expenseList.length > 0) {
-        return this.expenseList.filter((i) => {
-          return i.text.toLowerCase().includes(this.expenseText.toLowerCase());
-        });
-      } else {
-        return this.expenseList;
-      }
-    },
-    filterEventCategory() {
-      // let x;
-      let arr = [];
-      if (this.newEvents.length > 0) {
-        arr = this.newEvents.filter((i) => {
-          return i.name.toLowerCase().includes(this.eventText.toLowerCase());
-        });
-      } else {
-        return this.newEvents;
-      }
-      return arr;
-    },
-    addContributionTotal() {
-      if (this.convertedAmount2.length <= 0) return 0;
-      return this.convertedAmount2.reduce((a, b) => {
-        return +a + +b;
-      });
-    },
-    addAttendanceTotal() {
-      if (this.attendanceItem.length <= 0) return 0;
-      if (this.attendanceItem.length === 1)
-        return this.attendanceItem[0].number;
-      const number = this.attendanceItem.map((i) => +i.number);
-      return number.reduce((a, b) => {
-        return (a || 0) + (b || 0);
-      });
-    },
-    selectedEventCategoryName() {
-      if (!this.selectedEventCategoryId) return "";
-      if (!this.newEvents.find((i) => i.id === this.selectedEventCategoryId))
-        return "";
-      return this.newEvents.find((i) => i.id === this.selectedEventCategoryId)
-        .name;
-    },
-    eventCategoriesArr() {
-      const arr = this.newEvents.map((i) => i.name);
-      return arr;
-    },
-    genders() {
-      return this.gender.map((i) => {
-        return i.value;
-      });
-    },
-    maritalStatuses() {
-      return this.maritalStatusArr.map((i) => {
-        return i.value;
-      });
-    },
-    howYouHeard() {
-      return this.howDidYouAboutUsId.map((i) => {
-        return i.name;
-      });
-    },
-    filterCurrency() {
-      if (this.currencyText !== "" && this.currencyList.length > 0) {
-        return this.currencyList.filter((i) => {
-          if (i.name)
-            return (
-              i.name.toLowerCase().includes(this.currencyText.toLowerCase()) ||
-              i.country.toLowerCase().includes(this.currencyText.toLowerCase())
-            );
-        });
-      } else {
-        return this.currencyList;
-      }
-    },
-    fromCurrencyRate() {
-      if (this.selectedCurrencyName)
-        return `usd${props.selectedCurrency.toLowerCase()}`;
-      return `usd${props.tenantCurrency ? props.tenantCurrency.toLowerCase() : ""
-        }`;
+    } catch (error) {
+      console.log(error);
     }
   },
+  async checkForDuplicateEmail() {
+    try {
+      let { data } = await axios.get(
+        `api/People/checkDuplicate?email=${this.firstTimersObj.email}&phoneNumber=${this.firstTimersObj.phoneNumber}`
+      );
+      if (this.isEmailValid !== "") {
+        if (data === "email") {
+          this.isEmailValid = false;
+        } else if (data === "email and phone number") {
+          this.isEmailValid = false;
+          this.isPhoneValid = false;
+        } else {
+          this.isEmailValid = true;
+          this.$refs.validateEmail.classList.add("is-valid");
+        }
+      } else {
+        this.$refs.validateEmail.classList.remove("is-valid");
+        this.$refs.validateEmail.classList.remove("is-invalid");
+      }
+    } catch (error) {
+      console.log(error);
+    }
+  },
+  async checkForDuplicatePhoneNewConvert() {
+    try {
+      let { data } = await axios.get(
+        `api/People/checkDuplicate?email=${this.newConvertsObj.email}&phoneNumber=${this.newConvertsObj.phoneNumber}`
+      );
+      if (this.isPhoneValidNewConvert !== "") {
+        if (data === "phone number") {
+          this.isPhoneValidNewConvert = false;
+        } else if (data === "email and phone number") {
+          this.isPhoneValidNewConvert = false;
+          this.isEmailValidNewConvert = false;
+        } else {
+          this.isPhoneValidNewConvert = true;
+          this.$refs.validatePhoneNewConvert.classList.add("is-valid");
+        }
+      } else {
+        this.$refs.validatePhoneNewConvert.classList.remove("is-valid");
+        this.$refs.validatePhoneNewConvert.classList.remove("is-invalid");
+      }
+    } catch (error) {
+      console.log(error);
+    }
+  },
+  async checkForDuplicateEmailNewConvert() {
+    try {
+      let { data } = await axios.get(
+        `api/People/checkDuplicate?email=${this.newConvertsObj.email}&phoneNumber=${this.newConvertsObj.phoneNumber}`
+      );
+      if (this.isEmailValidNewConvert !== "") {
+        if (data === "email") {
+          this.isEmailValidNewConvert = false;
+        } else if (data === "email and phone number") {
+          this.isEmailValidNewConvert = false;
+          this.isPhoneValidNewConvert = false;
+        } else {
+          this.isEmailValidNewConvert = true;
+          this.$refs.validateEmailNewConvert.classList.add("is-valid");
+        }
+      } else {
+        this.$refs.validateEmailNewConvert.classList.remove("is-valid");
+        this.$refs.validateEmailNewConvert.classList.remove("is-invalid");
+      }
+    } catch (error) {
+      console.log(error);
+    }
+  },
+  async getRates() {
+    try {
+      let { data } = await axios.get("/fxRates");
+      this.$store.dispatch("getRates", data);
+    } catch (error) {
+      console.log(error);
+    }
+  },
+  setContact(payload) {
+    if (!payload.email) {
+      ElMessage({
+        type: 'warning',
+        message: 'This contact does not have any email, communicate with this person to create him as a user',
+        duration: 5000
+      })
+    }
+    this.firstTimersObj.contactOwnerId = payload.id;
+  },
+  setContactNewConvert(payload) {
+    if (!payload.email) {
+      ElMessage({
+        type: 'warning',
+        message: 'This contact does not have any email, communicate with this person to create him as a user',
+        duration: 5000
+      })
+    }
+    this.firstTimersObj.contactOwnerId = payload.id;
+  },
+  showAddMemberForm() {
+    this.display = true;
+  },
+  offeringItemsSum() {
+    let sum = 0
+    if (this.offeringItem.length > 0) {
+      this.offeringItem.filter(i => i.amount).forEach(element => {
+        sum += +element.amount
+      });
+      return sum
+    } else {
+      return 0
+    }
+  }
+},
+  async created() {
+  if (store.getters["lookups/maritalStatus"].length > 0) {
+    this.maritalStatusArr = store.getters["lookups/maritalStatus"];
+  } else {
+    await axios
+      .get("/api/LookUp/GetAllLookUps")
+      .then((res) => {
+        this.maritalStatusArr = res.data.find((i) => {
+          return i.type.toLowerCase() === "maritalstatus";
+        }).lookUps;
+      })
+      .catch((err) => console.log(err.response));
+  }
+
+  axios.get("/api/Financials/Contributions/Items").then((res) => {
+    this.newOfferings = res.data.map((i) => {
+      return { id: i.id, name: i.name };
+    });
+  });
+  axios.get("/GetAttendanceType").then((res) => {
+    this.newAttendances = res.data.map((i) => {
+      return { attendanceTypeID: i.id, name: i.name };
+    });
+  });
+  axios.get("/api/Financials/Accounts/GetExpenseAccounts").then((res) => {
+    this.expenseList = res.data
+  });
+  axios.get("/api/Financials/Accounts/GetCashBankAccounts").then((res) => {
+    this.cashAccounts = res.data
+  });
+
+  this.currentDate();
+  this.getCurrentlySignedInUser();
+  this.getEventCategories();
+  this.getLookUps();
+  this.getHowDidYouAboutUsId();
+
+  this.getCurrenciesFromCountries();
+  this.getIncomeAccount();
+  this.getCashBankAccount();
+  this.getRates();
+},
+computed: {
+  filterAttendance() {
+    if (this.attendanceText !== "" && this.newAttendances.length > 0) {
+      return this.newAttendances.filter((i) => {
+        return i.name
+          .toLowerCase()
+          .includes(this.attendanceText.toLowerCase());
+      });
+    } else {
+      return this.newAttendances;
+    }
+  },
+  birthYearsArr() {
+    const arrOfYears = [];
+    let currentYear = new Date().getFullYear();
+    while (arrOfYears.length <= 100) {
+      arrOfYears.push(currentYear);
+      currentYear = currentYear - 1;
+    }
+    return arrOfYears;
+  },
+  filterOffering() {
+    if (this.offeringText !== "" && this.newOfferings.length > 0) {
+      return this.newOfferings.filter((i) => {
+        return i.name.toLowerCase().includes(this.offeringText.toLowerCase());
+      });
+    } else {
+      return this.newOfferings;
+    }
+  },
+  filterExpense() {
+    if (this.expenseText !== "" && this.expenseList.length > 0) {
+      return this.expenseList.filter((i) => {
+        return i.text.toLowerCase().includes(this.expenseText.toLowerCase());
+      });
+    } else {
+      return this.expenseList;
+    }
+  },
+  filterEventCategory() {
+    // let x;
+    let arr = [];
+    if (this.newEvents.length > 0) {
+      arr = this.newEvents.filter((i) => {
+        return i.name.toLowerCase().includes(this.eventText.toLowerCase());
+      });
+    } else {
+      return this.newEvents;
+    }
+    return arr;
+  },
+  addContributionTotal() {
+    if (this.convertedAmount2.length <= 0) return 0;
+    return this.convertedAmount2.reduce((a, b) => {
+      return +a + +b;
+    });
+  },
+  addAttendanceTotal() {
+    if (this.attendanceItem.length <= 0) return 0;
+    if (this.attendanceItem.length === 1)
+      return this.attendanceItem[0].number;
+    const number = this.attendanceItem.map((i) => +i.number);
+    return number.reduce((a, b) => {
+      return (a || 0) + (b || 0);
+    });
+  },
+  selectedEventCategoryName() {
+    if (!this.selectedEventCategoryId) return "";
+    if (!this.newEvents.find((i) => i.id === this.selectedEventCategoryId))
+      return "";
+    return this.newEvents.find((i) => i.id === this.selectedEventCategoryId)
+      .name;
+  },
+  eventCategoriesArr() {
+    const arr = this.newEvents.map((i) => i.name);
+    return arr;
+  },
+  genders() {
+    return this.gender.map((i) => {
+      return i.value;
+    });
+  },
+  maritalStatuses() {
+    return this.maritalStatusArr.map((i) => {
+      return i.value;
+    });
+  },
+  howYouHeard() {
+    return this.howDidYouAboutUsId.map((i) => {
+      return i.name;
+    });
+  },
+  filterCurrency() {
+    if (this.currencyText !== "" && this.currencyList.length > 0) {
+      return this.currencyList.filter((i) => {
+        if (i.name)
+          return (
+            i.name.toLowerCase().includes(this.currencyText.toLowerCase()) ||
+            i.country.toLowerCase().includes(this.currencyText.toLowerCase())
+          );
+      });
+    } else {
+      return this.currencyList;
+    }
+  },
+  fromCurrencyRate() {
+    if (this.selectedCurrencyName)
+      return `usd${props.selectedCurrency.toLowerCase()}`;
+    return `usd${props.tenantCurrency ? props.tenantCurrency.toLowerCase() : ""
+      }`;
+  }
+},
 };
 </script>
 

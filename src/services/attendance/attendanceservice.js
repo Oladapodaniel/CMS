@@ -139,6 +139,23 @@ const getAttendanceItemsByGroupID = async (id) => {
     })
 }
 
+const checkinAllMembers = async (payload) => {
+    return new Promise((resolve, reject) => {
+        axios.post(`/api/CheckinAttendance/MarkAllAttendance`, payload)
+            .then(res => {
+                resolve(res.data);
+            })
+            .catch(error => {
+                stopProgressBar();
+                if (error.response) {
+                    reject(error.response);
+                } else {
+                    reject(error);
+                }
+            })
+    })
+}
+
 const generateEventReportDefaultMessage = (eventAnalysisData) => {
     console.log(eventAnalysisData, "data");
     if (eventAnalysisData.activityToday) {
@@ -182,4 +199,4 @@ const generateEventReportDefaultMessage = (eventAnalysisData) => {
 }
 
 
-export default { saveCheckAttendanceItem, startCheckinProces, getItems, getItemByCode, getReport, checkin, checkout, generateEventReportDefaultMessage, getAttendanceItemsByGroupID };
+export default { saveCheckAttendanceItem, startCheckinProces, getItems, getItemByCode, getReport, checkin, checkout, checkinAllMembers, generateEventReportDefaultMessage, getAttendanceItemsByGroupID };

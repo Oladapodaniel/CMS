@@ -33,7 +33,7 @@
       <div class="col-md-12 py-4">
         <div class="row">
           <div class="col-md-8">
-            <el-input v-model="searchText" class="w-100 m-2" placeholder="Search" :prefix-icon="Search" />
+            <el-input v-model="searchText" class="w-100 m-2" placeholder="Search" :prefix-icon="Search" v-if="groupDetail && groupDetail.peopoleAttendancesDTOs && groupDetail.peopoleAttendancesDTOs.length > 0 && !attendanceTableLoading" />
             <!-- <p class="search-span px-2">
               <i class="pi pi-search p-2" style="height: 30px; width: 30px"></i>
               <input
@@ -45,13 +45,41 @@
             </p> -->
           </div>
           <div class="col-md-4 d-md-flex justify-content-end d-none">
-            <el-button round size="large" class=" kiosk-mode mt-2 " @click="enterKioskMode">
+            <!-- <el-button round size="large" class=" kiosk-mode mt-2 " @click="enterKioskMode">
               {{ kioskButtonText }} kiosk mode
-            </el-button>
+            </el-button> -->
+            <transition name="el-fade-in-linear">
+              <div
+                v-show="marked.length > 0 && groupDetail && groupDetail.peopoleAttendancesDTOs && groupDetail.peopoleAttendancesDTOs.length > 0"
+                class="transition-box">
+                <el-dropdown trigger="click" class="mt-2 w-100">
+                  <span class="el-dropdown-link w-100">
+                    <div class="d-flex justify-content-between border-contribution" size="large">
+                      <div>
+                        {{ selectedCheckinoption ? selectedCheckinoption : 'Check members in/out' }}
+                      </div>
+                      <div>
+                        <el-icon class="el-icon--right">
+                          <arrow-down />
+                        </el-icon>
+                      </div>
+                    </div>
+                  </span>
+                  <template #dropdown>
+                    <el-dropdown-menu>
+                      <el-dropdown-item v-for="(item, index) in checkinoption" :key="index"
+                        @click="checkinAllMembers(index)">
+                        {{ item }}
+                      </el-dropdown-item>
+                    </el-dropdown-menu>
+                  </template>
+                </el-dropdown>
+              </div>
+            </transition>
           </div>
         </div>
 
-        <div class="row mt-4 main-th font-weight-700 py-2 grey-rounded-bg" :class="{ 'kiosk-th-size': isKioskMode }">
+        <!-- <div class="row mt-4 main-th font-weight-700 py-2 grey-rounded-bg" :class="{ 'kiosk-th-size': isKioskMode }">
 
           <div class="col-md-2" :class="{ 'order-3': isKioskMode }">Name</div>
           <div class="col-md-2" :class="{ 'order-4': isKioskMode }">Phone</div>
@@ -61,7 +89,7 @@
           <div class="col-md-2 d-none" :class="{ 'd-flex order-2': isKioskMode }">
             Picture
           </div>
-          <!--  :class="{ 'd-flex order-2': isKioskMode }" -->
+          
           <div class="col-md-2" :class="{ 'order-1': isKioskMode }">
             Check in
             <div><el-checkbox class="custom-checkbox"  /> Select all</div>
@@ -75,17 +103,59 @@
           </div>
 
 
-        </div>
+        </div> -->
 
         <div class="row pt-2" :class="{ 'kiosk-tb-size': isKioskMode }">
           <Suspense>
             <template #default>
               <div class="w-100">
-                <TableData :isKiosk="isKioskMode" @refreshed="refreshed" :fetchUsers="fetchUsers"
-                  :attendanceId="attendanceID" :searchText="searchText" />
-                <AttendanceCheckinUpdate :contributionItems="contributionItems" :attendanceType="attendanceType"
-                  :groupDetail="groupDetail" />
-              </div>
+                <!-- <TableData :isKiosk="isKioskMode" @refreshed="refreshed" :fetchUsers="fetchUsers"
+                  :attendanceId="attendanceID" :searchText="searchText" /> -->
+                <Table :data="listOfPeople" :headers="attendanceHeader" :checkMultipleItem="true"
+                  @checkedrow="handleSelectionChange" v-loading="attendanceTableLoading"
+                  v-if="groupDetail && groupDetail.peopoleAttendancesDTOs && groupDetail.peopoleAttendancesDTOs.length > 0">
+                  <template v-slot:name="{ item }">
+                    <div class="c-pointer">{{ item.name }}</div>
+                  </template>
+                  <template v-slot:phone="{ item }">
+                    <div class="c-pointer">{{ item.phone }}</div>
+                  </template>
+                  <template v-slot:isRegistered="{ item }">
+                    {{ item.isRegistered ? "Yes" : "No" }}
+                    <!-- <div class="c-pointer">{{ item.isRegistered }}</div> -->
+                  </template>
+                  <template v-slot:isPresent="{ item }">
+                    <el-checkbox class="custom-checkbox" v-model="item.isPresent" @change="checkin($event, 1, item)"
+                      :disabled="checking" />
+                    <!-- <div class="c-pointer">{{ item.isPresent }}</div> -->
+                  </template>
+                  <template v-slot:isCheckedOut="{ item }">
+                    <el-checkbox class="custom-checkbox" v-model="item.isCheckedOut" @change="checkin($event, 2, item)"
+                      :disabled="checking" />
+                    <!-- <div class="c-pointer">{{ item.isCheckedOut }}</div> -->
+                  </template>
+                  <template v-slot:action="{ item }">
+                    <div class="text-decoration-none" @click="showConfirmModal(item)">
+                      <el-icon class="text-danger">
+                        <Delete />
+                      </el-icon>
+                    </div>
+                  </template>
+                </Table>
+                <div class="row pb-4" v-if="listOfPeople.length === 0 && !attendanceTableLoading">
+                  <div class="col-md-12 text-center">
+                    <p class="my-2">No records found</p>
+                  </div>
+                  <div class="col-md-12 d-flex justify-content-center">
+                    <el-button class=" border-0 text-white" :color="primarycolor" data-toggle="modal"
+                      data-target="#exampleModal" size="large" round>
+                      Add member
+                    </el-button>
+                  </div> 
+                  </div>
+                  <AttendanceCheckinUpdate :contributionItems="contributionItems" :attendanceType="attendanceType"
+                    :groupDetail="groupDetail" />
+                </div>
             </template>
             <template #fallback>
               <div class="row">
@@ -107,7 +177,7 @@
                 <h5 class="modal-title font-weight-bold" id="exampleModalLabel">
                   Add Member
                 </h5>
-                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close" ref="close">
                   <span aria-hidden="true">&times;</span>
                 </button>
               </div>
@@ -128,21 +198,19 @@
                           </div>
                         </div>
 
-                        <a class="dropdown-item font-weight-700 small-text" href="#"
+                        <a class="dropdown-item font-weight-700 small-text"
                           v-for="(member, index) in searchedMembers" :key="index" @click="addExistingMember(member)">{{
                             member.name }}</a>
-                        <a class="dropdown-item font-weight-700 small-text" href="#" v-if="
-                          searchingForMembers && searchedMembers.length === 0
-                        ">
+                        <a class="dropdown-item font-weight-700 small-text" href="#" v-if="searchingForMembers && searchedMembers.length === 0
+                          ">
                           <el-icon class="is-loading ">
                             <Loading />
                           </el-icon>
                         </a>
-                        <p class="modal-promt pl-1 bg-secondary m-0" v-if="
-                          userSearchString.length < 3 &&
+                        <p class="modal-promt pl-1 bg-secondary m-0" v-if="userSearchString.length < 3 &&
                           searchedMembers.length === 0
-                        ">
-                          Enter 3 or moore characters
+                          ">
+                          Enter 3 or more characters
                         </p>
                         <a class="font-weight-bold small-text d-flex justify-content-center py-2 text-decoration-none primary--text c-pointer"
                           style="border-top: 1px solid #002044; color: #136acd" @click="showAddMemberForm"
@@ -164,8 +232,8 @@
                         <el-button class="secondary-button" round data-dismiss="modal">Cancel</el-button>
                       </div>
                       <div class="col-md-6">
-                        <el-button round :loading="loading" class="text-white" :color="primarycolor"
-                          data-dismiss="modal" @click="sendExistingUser">
+                        <el-button round :loading="loading" class="text-white" :color="primarycolor" data-dismiss="modal"
+                          @click="sendExistingUser">
                           Save
                         </el-button>
                       </div>
@@ -192,14 +260,16 @@ import attendanceservice from '../../../services/attendance/attendanceservice';
 import AttendanceCheckinUpdate from "../../../components/attendance/updateAttendanceChekin.vue"
 import deviceBreakpoint from "../../../mixins/deviceBreakpoint";
 import axios from "@/gateway/backendapi";
-import { ElMessage } from "element-plus";
+import { ElMessage, ElMessageBox } from "element-plus";
+import Table from "@/components/table/Table"
 
 export default {
   props: ["attendanceID"],
   components: {
     NewMember,
     TableData,
-    AttendanceCheckinUpdate
+    AttendanceCheckinUpdate,
+    Table
   },
   setup() {
     const { mdAndUp, lgAndUp, xlAndUp, xsOnly } = deviceBreakpoint()
@@ -214,6 +284,20 @@ export default {
     const attendanceType = ref([]);
     const groupDetail = ref({});
     const loading = ref(false);
+    const attendanceTableLoading = ref(false);
+    const checking = ref(false);
+    const attendanceHeader = ref([
+      { name: 'NAME', value: 'name' },
+      { name: 'Phone', value: 'phone' },
+      { name: 'Registered', value: 'isRegistered' },
+      { name: 'Checkin', value: 'isPresent' },
+      { name: 'Checkout', value: 'isCheckedOut' },
+      { name: 'Action', value: 'action' },
+    ])
+    const marked = ref([]);
+    const checkinoption = ref(['Checkin all group members', 'Checkout all group members']);
+    const selectedCheckinoption = ref("");
+    const close = ref(null);
 
     const enterKioskMode = () => {
       isKioskMode.value = !isKioskMode.value;
@@ -271,10 +355,12 @@ export default {
           searchText.value = "";
           ElMessage({
             type: "success",
-            message: "Checkin was successful",
+            message: "Member added to this group and checkin was successful",
             duration: 5000,
           });
-          refresh();
+          getGroupDetails();
+          console.log(close.value);
+          close.value.click();
         } else {
           ElMessage({
             type: "error",
@@ -288,17 +374,6 @@ export default {
       }
     }
 
-    // const getRegisteredPeople = async (id) => {
-    //   try {
-    //     const response = await attendanceservice.getReport(id);
-    //     console.log(response, "REPORT");
-    //     people.value = response.peopoleAttendancesDTOs;
-    //   } catch (error) {
-    //     console.log(error);
-    //   }
-    // };
-
-    // getRegisteredPeople(route.query.id);
     const refresh = () => {
       searchText.value = "";
       fetchUsers.value = true;
@@ -331,15 +406,162 @@ export default {
     getAttendanceType()
 
     const getGroupDetails = async () => {
+      attendanceTableLoading.value = true
       try {
         let data = await attendanceservice.getReport(route.query.id)
         groupDetail.value = data
+        console.log(data, 'reaching');
+        attendanceTableLoading.value = false
       }
       catch (err) {
+        attendanceTableLoading.value = false
         console.log(err)
       }
     }
     getGroupDetails()
+
+    const listOfPeople = computed(() => {
+      if (groupDetail.value && groupDetail.value.peopoleAttendancesDTOs && groupDetail.value.peopoleAttendancesDTOs.length > 0 && !searchText.value) return groupDetail.value.peopoleAttendancesDTOs;
+      if (groupDetail.value && groupDetail.value.peopoleAttendancesDTOs && groupDetail.value.peopoleAttendancesDTOs.length > 0 && searchText.value) return groupDetail.value.peopoleAttendancesDTOs.filter(i => i.name.toLowerCase().includes(searchText.value.toLowerCase()))
+      return []
+    })
+
+    const handleSelectionChange = (val) => {
+      console.log(val);
+      marked.value = val
+    }
+
+    const checkin = async (e, option, item) => {
+      console.log(option, "hhjjjjj");
+      let response = {};
+      if (option === 1) {
+        try {
+          response = await attendanceservice.checkin({
+            checkInAttendanceID: item.attendanceID,
+            personAttendanceID: item.id,
+          });
+          ElMessage({
+            type: `${e ? "success" : "info"}`,
+            message: `${e ? "Checked" : "Unchecked"} Successfully, member marked ${e ? "present" : "absent"}`,
+            duration: 5000,
+          });
+        } catch (error) {
+          console.log(error)
+          ElMessage({
+            type: "error",
+            message: "Checkin was not successfulll",
+            duration: 5000,
+          });
+        }
+      } else {
+        try {
+          checking.value = true;
+          response = await attendanceservice.checkout({
+            checkInAttendanceID: props.person.attendanceID,
+            personAttendanceID: props.person.id,
+          });
+          checking.value = false;
+
+          if (response.trim() === "User Was Not Checked In Earlier") {
+            ElMessage({
+              type: "info",
+              message: response,
+              duration: 5000,
+            });
+          } else {
+            ElMessage({
+              type: `${e ? "success" : "info"}`,
+              message: `${response} , Member has ${e ? "checked out" : "not checked out"}`,
+              duration: 5000,
+            });
+          }
+        } catch (error) {
+          checking.value = false;
+          ElMessage({
+            type: "error",
+            message: "Checkin was not successful",
+            duration: 5000,
+          });
+        }
+      }
+      console.log(response, "rrr");
+    };
+
+    const showConfirmModal = (item) => {
+      ElMessageBox.confirm(
+        "Are you sure you want to proceed?",
+        "Confirm delete",
+        {
+          confirmButtonText: "OK",
+          cancelButtonText: "Cancel",
+          type: "error",
+        }
+      )
+        .then(() => {
+          deleteCheckinAttendance(item);
+        })
+        .catch(() => {
+          ElMessage({
+            type: "info",
+            message: "Rejected",
+            duration: 5000,
+          });
+        });
+    };
+
+    const deleteCheckinAttendance = (item) => {
+      axios
+        .delete(`/api/CheckInAttendance/DeletePersonEventAttendance?id=${item.id}&checkInAttendanceId=${item.attendanceID}`)
+        .then((res) => {
+          if (res.data) {
+            ElMessage({
+              type: "success",
+              message: "CheckIn attendance Deleted",
+              duration: 5000,
+            });
+            groupDetail.value.peopoleAttendancesDTOs = groupDetail.value.peopoleAttendancesDTOs.filter(i => i.id !== item.id)
+          } else {
+            ElMessage({
+              type: "warning",
+              message: "Delete Failed, Please Try Again",
+              duration: 5000,
+            });
+          }
+        })
+        .catch((err) => {
+          console.log(err)
+          finish();
+          ElMessage({
+            type: "error",
+            message: "Delete Failed, Please Try Again",
+            duration: 5000,
+          });
+          // }
+        });
+    };
+
+    const checkinAllMembers = async (index) => {
+      index == 0 ? selectedCheckinoption.value = "Checkin all members" : selectedCheckinoption.value = "Checkout all members"
+      attendanceTableLoading.value = true
+      try {
+        await attendanceservice.checkinAllMembers({
+          checkInAttendanceID: route.query.id,
+          checkin: index == 0 ? true : false,
+          personAttendanceIDs: marked.value.map(i => i.id),
+        });
+        getGroupDetails()
+        ElMessage({
+          type: "success",
+          message: `${index == 0 ? 'All members successfully checked in' : 'All members successfully checked out'}`,
+          duration: 5000,
+        });
+      }
+      catch (err) {
+        attendanceTableLoading.value = false
+        console.log(err);
+      }
+    }
+
     return {
       mdAndUp,
       lgAndUp,
@@ -365,7 +587,19 @@ export default {
       attendanceType,
       Search,
       groupDetail,
-      loading
+      loading,
+      attendanceHeader,
+      handleSelectionChange,
+      attendanceTableLoading,
+      checkin,
+      checking,
+      showConfirmModal,
+      checkinAllMembers,
+      marked,
+      checkinoption,
+      selectedCheckinoption,
+      listOfPeople,
+      close
     };
   },
 };
