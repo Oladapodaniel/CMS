@@ -450,6 +450,73 @@ const routes = [
         },
         {
 
+            path: 'branches',
+            name: "singleBranch",
+            meta: {
+                title: 'Churchplus - Branch',
+            },
+            component: () =>
+                import( /* webpackChunkName: "addfirsttimer" */ '../views/branch/singleBranch'),
+            children: [
+                {
+
+                    path: 'summary',
+                    name: "singleBranchSummary",
+                    meta: {
+                        title: 'Churchplus - Branch',
+                    },
+                    component: () =>
+                        import( /* webpackChunkName: "addfirsttimer" */ '../views/branch/singleBranchSummary')
+
+                },
+                {
+
+                    path: 'members_branch',
+                    name: "MemberBranch",
+                    meta: {
+                        title: 'Churchplus - Branch',
+                    },
+                    component: () =>
+                        import( /* webpackChunkName: "addfirsttimer" */ '../views/branch/subpages/People.vue')
+
+                },
+                {
+
+                    path: 'branchattendance',
+                    name: "BranchAttendanc",
+                    meta: {
+                        title: 'Churchplus - Branch',
+                    },
+                    component: () =>
+                    import( /* webpackChunkName: "branchattendance" */ '../views/branch/subpages/BranchAttendance.vue')
+
+                },
+                {
+
+                    path: 'branchtransaction',
+                    name: "BranchTransaction",
+                    meta: {
+                        title: 'Churchplus - Branch',
+                    },
+                    component: () =>
+                    import( /* webpackChunkName: "branchtransactions" */ '../views/branch/subpages/BranchTransactions.vue')
+
+                },
+                {
+
+                    path: 'branchreport',
+                    name: "BranchRepot",
+                    meta: {
+                        title: 'Churchplus - Branch',
+                    },
+                    component: () =>
+                    import( /* webpackChunkName: "branchreport" */ '../views/branch/report/BranchReport.vue')
+
+                },
+            ]
+        },
+        {
+
             path: 'branch',
             name: "Branch",
             meta: {

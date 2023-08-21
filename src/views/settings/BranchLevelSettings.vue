@@ -37,15 +37,10 @@
                       />
                     </div>
                     <div
-                      class="
-                        col-md-3
-                        d-flex
-                        justify-content-center
-                        mt-3 mt-md-0
-                      "
+                      class="col-md-3 d-flex justify-content-center mt-3 mt-md-0"
                     >
                       <el-button
-                        class="  font-weight-bold px-md-4 text-white border-0"
+                        class="font-weight-bold px-md-4 text-white border-0"
                         @click="saveBranch"
                         :loading="loading"
                         :color="primarycolor"
@@ -86,6 +81,65 @@
               ></i>
             </div>
           </div>
+          <!-- <div class="row mt-2">
+            <el-timeline class="col-md-12">
+              <el-timeline-item
+                v-for="(branch, indx) in branchList"
+                :key="indx"
+                class="w-100"
+                :timestamp="indx + 1 "
+                :color="primarycolor"
+                placement="top"
+              >
+                <el-card>
+                  <div class="row pl-3">
+                    <div
+                      class="col-md-7 px-0 d-flex justify-content-between align-items-center mb-md-0 mb-3"
+                    >
+                      <span class="py-2 hidden-header">NAME</span>
+
+                      <span class="py-2 text-xs-left mr-md-0 mr-4">{{
+                        branch.name
+                      }}</span>
+                    </div>
+
+                    <div
+                      class="col-md-5 px-0 mb-md-0 mb-2 col-12 d-flex justify-content-end align-items-end"
+                    >
+                      <span class="py-md-4 hidden-header hidden-header1"
+                        >ACTION</span
+                      >
+                      <div class="row">
+                        <div
+                          class="col-md-6 col-6 d-flex justify-content-center"
+                        >
+                          <el-button
+                            class="secondary-btn py-1 px-4"
+                            @click="openClassification(branch.index)"
+                            round
+                            color="#EBEFF4"
+                          >
+                            View
+                          </el-button>
+                        </div>
+                        <div
+                          class="col-md-6 col-6 d-flex justify-content-start"
+                        >
+                          <el-button
+                            class="py-1 w-100 primary-btn delete-btn"
+                            @click="deletePop(branch.id)"
+                            round
+                          >
+                            Delete
+                          </el-button>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </el-card>
+              </el-timeline-item>
+            </el-timeline>
+          </div> -->
 
           <div
             class="list-group-item list-group row"
@@ -96,14 +150,7 @@
             <div class="col-md-12">
               <div class="row pl-3">
                 <div
-                  class="
-                    col-md-7
-                    px-0
-                    d-flex
-                    justify-content-between
-                    align-items-center
-                    mb-md-0 mb-3
-                  "
+                  class="col-md-7 px-0 d-flex justify-content-between align-items-center mb-md-0 mb-3"
                 >
                   <span class="py-2 hidden-header">NAME</span>
 
@@ -113,15 +160,7 @@
                 </div>
 
                 <div
-                  class="
-                    col-md-5
-                    px-0
-                    mb-md-0 mb-2
-                    col-12
-                    d-flex
-                    justify-content-end
-                    align-items-end
-                  "
+                  class="col-md-5 px-0 mb-md-0 mb-2 col-12 d-flex justify-content-end align-items-end"
                 >
                   <span class="py-md-4 hidden-header hidden-header1"
                     >ACTION</span
@@ -129,7 +168,7 @@
                   <div class="row">
                     <div class="col-md-6 col-6 d-flex justify-content-center">
                       <el-button
-                        class=" secondary-btn py-1 px-4"
+                        class="secondary-btn py-1 px-4"
                         @click="openClassification(branch.index)"
                         round
                         color="#EBEFF4"
@@ -139,7 +178,7 @@
                     </div>
                     <div class="col-md-6 col-6 d-flex justify-content-start">
                       <el-button
-                        class=" py-1 primary-btn delete-btn"
+                        class="py-1 primary-btn delete-btn"
                         @click="deletePop(branch.id)"
                         round
                       >
@@ -155,32 +194,16 @@
                 v-if="vissibleTab === `tab_${branch.index}`"
               >
                 <div
-                  class="
-                    col-md-7
-                    d-flex
-                    justify-content-between
-                    align-items-center
-                    mb-md-0 mb-2
-                  "
+                  class="col-md-7 d-flex justify-content-between align-items-center mb-md-0 mb-2"
                 >
                   <label for="" class="d-flex mt-4">
                     <span class="mr-2">Name</span>
-                    <el-input
-                      type="text"
-                      class="w-100"
-                      v-model="branch.name"
-                    />
+                    <el-input type="text" class="w-100" v-model="branch.name" />
                   </label>
                   <label for="" class="d-flex mt-4"> </label>
                 </div>
                 <div
-                  class="
-                    col-md-5
-                    d-flex
-                    justify-content-end
-                    align-items-center
-                    mt-0
-                  "
+                  class="col-md-5 d-flex justify-content-end align-items-center mt-0"
                 >
                   <div class="row">
                     <div class="col-md-6 col-6 d-flex justify-content-start">
@@ -194,7 +217,7 @@
                     </div>
                     <div class="col-md-6 col-6 d-flex justify-content-end">
                       <el-button
-                        class=" secondary-btn py-1 px-3"
+                        class="secondary-btn py-1 px-3"
                         @click="discard"
                         color="#EBEFF4"
                         round
@@ -224,7 +247,7 @@ export default {
   display: "Simple",
   components: {},
   directives: {},
-  inject: ['primarycolor'],
+  inject: ["primarycolor"],
   data() {
     return {
       branchList: [],
@@ -270,7 +293,7 @@ export default {
           ElMessage({
             type: "success",
             message: "Branch Level Order Updated Successfully",
-            duration: 5000
+            duration: 5000,
           });
         }, 1000);
       } catch (error) {
@@ -298,7 +321,7 @@ export default {
         ElMessage({
           type: "success",
           message: "Branch Save Successfully",
-          duration: 5000
+          duration: 5000,
         });
       } catch (error) {
         finish();
@@ -307,11 +330,7 @@ export default {
     },
     //Update FirstTimer
     async updateBranch(item) {
-      let body = { ...item,
-        id: item.id,
-        name:   item.name,
-        level: item.level,
-      };
+      let body = { ...item, id: item.id, name: item.name, level: item.level };
 
       try {
         let response = await axios.put(`/branching/${item.id}/edit`, body);
@@ -320,7 +339,7 @@ export default {
         ElMessage({
           type: "success",
           message: "New Branch Updated Successfully",
-          duration: 5000
+          duration: 5000,
         });
       } catch (error) {
         finish();
@@ -336,7 +355,7 @@ export default {
         ElMessage({
           type: "success",
           message: "Delete Successfully",
-          duration: 5000
+          duration: 5000,
         });
       } catch (error) {
         finish();
@@ -345,11 +364,13 @@ export default {
     },
     //pop Alert
     deletePop(id) {
-      ElMessageBox.confirm("Are you sure you want to Delete?", "Confirm delete", 
-      {
-          confirmButtonText: 'OK',
-          cancelButtonText: 'Cancel',
-          type: 'error',
+      ElMessageBox.confirm(
+        "Are you sure you want to Delete?",
+        "Confirm delete",
+        {
+          confirmButtonText: "OK",
+          cancelButtonText: "Cancel",
+          type: "error",
         }
       )
         .then(() => {
@@ -359,7 +380,7 @@ export default {
           ElMessage({
             type: "info",
             message: "Delete canceled",
-            duration: 5000
+            duration: 5000,
           });
         });
     },
@@ -367,7 +388,7 @@ export default {
     openClassification(index) {
       this.vissibleTab = `tab_${index}`;
       this.branchName = this.branchList[index].name;
-      // this.singleBranch = this.branchList[index].name 
+      // this.singleBranch = this.branchList[index].name
     },
 
     discard() {

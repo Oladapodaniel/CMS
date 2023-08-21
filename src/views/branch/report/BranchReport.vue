@@ -1,14 +1,14 @@
 <template>
-    <div class="container container-top container-wide">
-        <div class=" row mt-2" >
-            <div ><h3 class="page-header">Branch Reports</h3></div>
+    <div class="container-fluid px-0 ">
+        <div class=" row" >
+            <div class="head-text">Branch Reports</div>
         </div>
         <div class="row" style=" background: #f5f8fa;">
-            <div class="col-12 col-sm-6  c-pointer " @click="toggleMember">
+            <div class="col-12 col-sm-6 px-0 c-pointer " @click="toggleMember">
                 <div class="p-3 header4"> Membership </div> 
                 <div :class="{ 'baseline' : showMember, 'hide-base' : !showMember }"></div>
             </div>
-            <div class="col-12 col-sm-6 c-pointer" @click="toggleService">
+            <div class="col-12 col-sm-6 px-0 c-pointer" @click="toggleService">
                 <div class="p-3 header4">Church Activities</div> 
                 <div :class="{ 'baseline' : showService, 'hide-base' : !showService }"></div>
             </div>

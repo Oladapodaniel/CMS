@@ -81,13 +81,8 @@
         <div class="container-fluid mb-3 ">
             <div class="row">
                 <div class="col-12 domId p-3" v-show="mappedBranch.length > 0">
-                    <!-- <div class="dhx_sample-container">
-                        <div class="dhx_sample-widget w-100" ref="editor"></div>
-                    </div> -->
-                    <!-- <Organisation domId="orgchart2" :data="mappedBranch"/> -->
                     <OrganizationChart :value="data1" :collapsible="true" class="company" selectionMode="single" v-model:selectionKeys="selection">
                         <template #person="slotProps">
-                            <!-- <div class="node-header ui-corner-top">{{slotProps.node.data.label}}</div> -->
                             <div class="node-content">
                                 <img :src="slotProps.node.data.label.logo" width="32">
                                 <div>{{slotProps.node.data.name}}</div>

@@ -4,13 +4,10 @@
       <div class="head-text">People Report</div>
       <div
         class="my-sm-0 my-2 c-pointer"
-        @click="() => (showExport = !showExport)"
-        style="width: fixed; position: relative"
       >
         <el-dropdown trigger="click" class="w-100">
           <div
             class="d-flex justify-content-between default-btn text-dark w-100"
-            size="large"
           >
             <span class="mt-1">Export</span>
             <div class="mt-1">
@@ -97,6 +94,7 @@
                   round
                   :color="primarycolor"
                   :loading="loading"
+                  size="large"
                   class="text-white c-pointer"
                   >Generate Report
                 </el-button>
@@ -358,6 +356,7 @@ export default {
           value: result[prop].length,
         });
       }
+      console.log(genderChartResult.value, 'iihhhhjhj');
     };
 
     const mappedGender = computed(() => {
@@ -469,6 +468,7 @@ export default {
         .post("/api/Reports/people/getAllContactsByParameterReport", body)
         .then((res) => {
           membersInChurch.value = res.data;
+          console.log(membersInChurch.value, 'ppppp');
           genderChart(res.data, "gender");
           maritalStatusChart(res.data, "maritalStatus");
           memberChart(res.data, "membership");

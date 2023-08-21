@@ -1,369 +1,297 @@
 <template>
   <div>
-    <div class="container-wide container-top">
-      <div class="row my-3">
-      <div class="col-md-6 first-timers-text">
-        <h2 class="page-header">Branch Attendance</h2>
-      </div>
+    <div class="container-fluid px-0">
+      <div class="row mb-3">
+        <div class="col-md-12 px-0 first-timers-text">
+          <h2 class="head-text">Branch Attendance</h2>
+        </div>
 
-      <div class="col-md-6 d-flex flex-row-reverse">
+        <!-- <div class="col-md-6 d-flex flex-row-reverse">
         <BranchSelect class="w-50" @selectedbranch="setSelectedBranch" />
+      </div> -->
       </div>
-    </div>
-    <div class="row">
-        <div class="col-12">
-          Here you can view and manage the transactions of your branches, select the branch you want to view its transactions from the dropdown at the top-right corner.
+      <div class="row">
+        <div class="col-md-12 px-0">
+          Here you can view and manage the transactions of your branches, select
+          the branch you want to view its transactions from the dropdown at the
+          top-right corner.
         </div>
       </div>
-
-      <loadingComponent :loading="loading" />
-      <div class="row table" v-if="branchAttendance.length > 0">
-      <div class="col-12 px-0" id="table">
-        <div class="top-con">
-          <div class="table-top d-flex justify-content-end">
-            <!-- <div class="filter col-2">
-              <p @click="toggleFilterFormVissibility" class="mt-2">
-                <i class="fas fa-filter"></i>
-                FILTER
-              </p>
-            </div> -->
-            <div class="col-5 col-sm-3 col-md-2">
-              <p @click="toggleSearch" class="search-text w-100 mt-2">
-                <i class="pi pi-search"></i> SEARCH
-              </p>
-            </div>
-
-            <div class="search d-flex ml-2">
-              <label
-                class="label-search d-flex"
-                :class="{
-                  'show-search': searchIsVisible,
-                  'hide-search': !searchIsVisible,
-                }"
+      <div class="row" v-if="loading && branchAttendance.length == 0">
+        <div class="col-md-12 d-flex justify-content-center mt-5">
+          <el-icon
+            :size="40"
+            class="is-loading"
+          >
+            <Loading />
+          </el-icon>
+        </div>
+      </div>
+      <div class="row" v-loading="loading" v-if="branchAttendance.length > 0">
+        <div class="col-12 px-0" id="table">
+          <div class="top-con">
+            <div class="table-top p-3 mt-5">
+              <div
+                class="d-flex flex-column flex-sm-row justify-content-sm-end"
               >
-                <input
-                  type="text"
-                  placeholder="Search..."
+                <el-input
+                  size="small"
                   v-model="searchText"
-                />
-                <span class="empty-btn">x</span>
-                <span class="search-btn">
-                  <i class="pi pi-search"></i>
-                </span>
-              </label>
-            </div>
-          </div>
-        </div>
-        <div
-          class="filter-options"
-          :class="{ 'filter-options-shown': filterFormIsVissible }"
-        >
-          <div class="container-fluid">
-            <div class="row">
-              <div class="col-md-9">
-                <div class="row">
-                  <div
-                    class="
-                      col-12 col-sm-6 col-md-4
-                      offset-sm-3 offset-md-0
-                      form-group
-                      inp
-                      w-100
-                    "
-                  >
-                  
-                    <input
-                      type="text"
-                      class="input w-100"
-                      placeholder="Offering"
-                    
-                    />
-                  </div>
-
-                  <div class="col-12 col-md-4 form-group d-none d-md-block">
-                    <input
-                      type="text"
-                      class="input w-100"
-                     
-                    />
-                  </div>
-                </div>
-              </div>
-
-              <div class="col-md-3 d-flex flex-column align-items-center">
-                <button class="apply-btn text-white" @click="applyFilter">
-                  Apply
-                </button>
-                <span class="mt-2">
-                  <a class="clear-link mr-2" @click="clearAll">Clear all</a>
-                  <span class="mx-2"
-                    ><i class="fas fa-circle" style="font-size: 4px"></i></span
-                  ><a class="hide-link ml-2" @click="hide">Hide</a>
-                </span>
-              </div>
-            </div>
-          </div>
-        </div>
-
-    
-    <!-- <div > -->
-          <div class="container-fluid d-none d-md-block">
-            <div class="row t-header">
-              <!-- <div class="col-md-1">
-                <Checkbox id="binary" v-model="sendToMysef" :binary="true"/>
-              </div> -->
-              <div class="small-text col-md-4 font-weight-bold">
-                EVENT
-              </div>
-              <div class="small-text col-md-4 font-weight-bold">
-                DATE
-              </div>
-              <div class="small-text col-md-4 font-weight-bold">
-                GROUP
-              </div>
-            </div>
-          </div>
-        <div class="container-fluid">
-          <div class="row">
-            <div
-              class=" col-12 py-2 px-0 c-pointer tr-border-bottom hover"
-              v-for="(item, index) in searchBranchAttendance"
-              :key="item.id"
-            >
-              <div class="row w-100" style="margin: 0">
-                <!-- <div
-                  class="col-md-1 d-flex d-md-block px-3 justify-content-end"
+                  placeholder="Search..."
+                  class="w-50"
                 >
-                  <input
-                    type="checkbox"
-                    v-model="item.check"
-                    class="form-check"
-                  />
-                  <Checkbox id="binary" v-model="item.check" :binary="true"/>
-                </div> -->
-                <div class="desc-head small-text col-md-4">
-                  <p class="mb-0 d-flex justify-content-between">
-                    <span
-                      class="
-                        text-dark
-                        font-weight-bold
-                        d-flex d-md-none
-                        fontIncrease
-                      "
-                      >Event</span
+                  <template #suffix>
+                    <el-button
+                      style="padding: 5px; height: 22px"
+                      @click.prevent="searchText = ''"
                     >
-                    <router-link :to="{ name: 'CheckinType', 
-                                        query: { 
-                                            activityID: item.eventID,
-                                            activityName: item.fullEventName,
-                                            groupId: item.groupID,
-                                            groupName: item.fullGroupName,
-                                            id: item.id,
-                                            code: item.attendanceCode,
-                                            fromBranch: true
-                                        } 
-                                    }" class="itemroute-color">
-                        <span class="text-decoration-none">
-                            {{ item.fullEventName }}
-                        </span>
-                    </router-link>
-                  </p>
-                </div>
-
-                <div class="desc-head small-text col-md-4">
-                  <p class="mb-0 d-flex justify-content-between">
-                    <span
-                      class="
-                        text-dark
-                        font-weight-bold
-                        d-flex d-md-none
-                        fontIncrease
-                      "
-                      >Date</span
-                    >
-                    <router-link :to="{ name: 'CheckinType', 
-                                        query: { 
-                                            activityID: item.eventID,
-                                            activityName: item.fullEventName,
-                                            groupId: item.groupID,
-                                            groupName: item.fullGroupName,
-                                            id: item.id,
-                                            code: item.attendanceCode,
-                                            fromBranch: true
-                                        } 
-                                    }" class="itemroute-color">
-                        <span class="text-decoration-none">
-                            {{ formatDate(item.eventDate) }}
-                        </span>
-                    </router-link>
-                  </p>
-                </div>
-
-                <div class="desc-head small-text col-md-3">
-                  <div class="d-flex justify-content-between">
-                    <span
-                      class="
-                        text-dark
-                        font-weight-bold
-                        d-flex d-md-none
-                        fontIncrease
-                      "
-                      >Group</span
-                    >
-                    <div>
-                      <div class="desc small-text text-right text-md-left">
-                          <router-link :to="{ name: 'CheckinType', 
-                                        query: { 
-                                            activityID: item.eventID,
-                                            activityName: item.fullEventName,
-                                            groupId: item.groupID,
-                                            groupName: item.fullGroupName,
-                                            id: item.id,
-                                            code: item.attendanceCode,
-                                            fromBranch: true
-                                        } 
-                                    }" class="itemroute-color">
-                        {{ item.fullGroupName }}
-                          </router-link>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-                <div class="col-md-1">
-                  <div>
-                    <div class="dropdown">
-                      <span class="d-flex justify-content-between">
-                        <span class="d-md-none d-sm-flex"></span>
-                        <span class="d-sm-flex small">
-                          <i
-                            class="
-                              fas
-                              fa-ellipsis-v
-                              cursor-pointer
-                              ml-2
-                              fontIncrease
-                            "
-                            id="dropdownMenuButton"
-                            data-toggle="dropdown"
-                            aria-haspopup="true"
-                            aria-expanded="false"
-                          ></i>
-                          <div
-                            class="dropdown-menu"
-                            aria-labelledby="dropdownMenuButton"
-                          >
-                            <router-link
-                              :to="{
-                                name: 'AttendanceReport',
-                                params: { id: item.id },
-                              }"
-                            >
-                              <a class="dropdown-item elipsis-items"> View details </a>
-                            </router-link>
-                            <router-link :to="{ name: 'CheckinType', 
-                                        query: { 
-                                            activityID: item.eventID,
-                                            activityName: item.fullEventName,
-                                            groupId: item.groupID,
-                                            groupName: item.fullGroupName,
-                                            id: item.id,
-                                            code: item.attendanceCode,
-                                            fromBranch: true
-                                        } 
-                                    }">
-                              <a class="dropdown-item elipsis-items"> Checkin </a>
-                            </router-link>
-                            <a
-                              class="dropdown-item elipsis-items cursor-pointer"
-                              @click="showConfirmModal(item.id, index)"
-                              >Delete</a
-                            >
-                          </div>
-                        </span>
-                      </span>
-                    </div>
-                  </div>
-                </div>
+                      <el-icon :size="13">
+                        <Close />
+                      </el-icon>
+                    </el-button>
+                  </template>
+                  <template #append>
+                    <el-button>
+                      <el-icon :size="13">
+                        <Search />
+                      </el-icon>
+                    </el-button>
+                  </template>
+                </el-input>
               </div>
             </div>
           </div>
-        </div>
+          <div>
+            <Table
+              :data="searchBranchAttendance"
+              :headers="branchAtendanceHeaders"
+              v-loading="loading"
+              :checkMultipleItem="false"
+              @checkedrow="handleSelectionChange"
+              v-if="searchBranchAttendance.length > 0"
+            >
+              <template v-slot:event="{ item }">
+                <div class="c-pointer">
+                  <router-link
+                    :to="{
+                      name: 'CheckinType',
+                      query: {
+                        activityID: item.eventID,
+                        activityName: item.fullEventName,
+                        groupId: item.groupID,
+                        groupName: item.fullGroupName,
+                        id: item.id,
+                        code: item.attendanceCode,
+                        fromBranch: true,
+                      },
+                    }"
+                    class="itemroute-color"
+                  >
+                    {{ item.fullEventName }}
+                  </router-link>
+                </div>
+              </template>
 
+              <template v-slot:date="{ item }">
+                <div class="c-pointer">
+                  <router-link
+                    :to="{
+                      name: 'CheckinType',
+                      query: {
+                        activityID: item.eventID,
+                        activityName: item.fullEventName,
+                        groupId: item.groupID,
+                        groupName: item.fullGroupName,
+                        id: item.id,
+                        code: item.attendanceCode,
+                        fromBranch: true,
+                      },
+                    }"
+                    class="itemroute-color"
+                  >
+                    {{ formatDate(item.eventDate) }}
+                  </router-link>
+                </div>
+              </template>
 
-        <div class="col-12">
-          <div class="table-footer">
-            <Pagination
-              @getcontent="getPeopleByPage"
-              :itemsCount="50"
-              :currentPage="currentPage"
-              :totalItems="totalItem"
-            />
+              <template v-slot:group="{ item }">
+                <div class="c-pointer">
+                  <router-link
+                    :to="{
+                      name: 'CheckinType',
+                      query: {
+                        activityID: item.eventID,
+                        activityName: item.fullEventName,
+                        groupId: item.groupID,
+                        groupName: item.fullGroupName,
+                        id: item.id,
+                        code: item.attendanceCode,
+                        fromBranch: true,
+                      },
+                    }"
+                    class="itemroute-color"
+                  >
+                    {{ item.fullGroupName }}
+                  </router-link>
+                </div>
+              </template>
+              <template v-slot:action="{ item }">
+                <el-dropdown trigger="click">
+                  <el-icon>
+                    <MoreFilled />
+                  </el-icon>
+                  <template #dropdown>
+                    <el-dropdown-menu>
+                      <el-dropdown-item>
+                        <router-link
+                          class="itemroute-color"
+                          :to="{
+                            name: 'AttendanceReport',
+                            params: { id: item.id },
+                          }"
+                        >
+                          View details
+                        </router-link>
+                      </el-dropdown-item>
+                      <el-dropdown-item>
+                        <router-link
+                          class="text-decoration-none text-color"
+                          :to="{
+                            name: 'CheckinType',
+                            query: {
+                              activityID: item.eventID,
+                              activityName: item.fullEventName,
+                              groupId: item.groupID,
+                              groupName: item.fullGroupName,
+                              id: item.id,
+                              code: item.attendanceCode,
+                              fromBranch: true,
+                            },
+                          }"
+                        >
+                          Checkin
+                        </router-link>
+                      </el-dropdown-item>
+                      <el-dropdown-item>
+                        <div
+                          class="text-decoration-none text-color"
+                          @click="showConfirmModal(item.id, index)"
+                        >
+                          Delete
+                        </div>
+                      </el-dropdown-item>
+                    </el-dropdown-menu>
+                  </template>
+                </el-dropdown>
+              </template>
+            </Table>
+            <div
+              class="d-flex justify-content-end my-3"
+              v-if="searchBranchAttendance.length > 0"
+            >
+              <el-pagination
+                v-model:current-page="serverOptions.page"
+                v-model:page-size="serverOptions.rowsPerPage"
+                background
+                layout="prev, pager, next, jumper"
+                :total="searchBranchAttendance.length"
+                @size-change="handleSizeChange"
+                @current-change="handleCurrentChange"
+              />
+            </div>
           </div>
         </div>
       </div>
-    </div>
     </div>
   </div>
-  <ConfirmDialog />
-  <Toast />
 </template>
 
 <script>
-import { ref, computed } from '@vue/runtime-core';
-import BranchSelect from "../component/BranchSelect.vue"
+import { ref, computed } from "@vue/runtime-core";
+import BranchSelect from "../component/BranchSelect.vue";
 import axios from "@/gateway/backendapi";
-import { useConfirm } from "primevue/useconfirm";
-import { useToast } from "primevue/usetoast";
-import loadingComponent from "@/components/loading/LoadingComponent";
-import dateFormatter from '../../../services/dates/dateformatter';
-import Pagination from "../../../components/pagination/PaginationButtons.vue";
+import dateFormatter from "../../../services/dates/dateformatter";
+import Table from "@/components/table/Table";
+import { ElMessage, ElMessageBox } from "element-plus";
 
 export default {
-  // props: ["list", "peopleCount"],
   components: {
     BranchSelect,
-    loadingComponent,
-    Pagination
+    Table,
   },
 
-  // directives: {
-  //   tooltip: Tooltip,
-  // },
-
   setup() {
-    const confirm = useConfirm()
-    const toast = useToast()
-    const selectedBranch = ref({})
-    const branchAttendance = ref([])
+    const selectedBranch = ref({});
+    const branchAttendance = ref([]);
+    const marked = ref([]);
     const filterFormIsVissible = ref(false);
     const searchIsVisible = ref(false);
     const searchText = ref("");
-    const loading = ref(false)
-    const branchId = ref("")
-    const totalItem = ref(0)
+    const loading = ref(false);
+    const branchId = ref("");
+    const totalItem = ref(0);
+    const branchID = ref(localStorage.getItem("branchId"));
+    const branchAtendanceHeaders = ref([
+      { name: "EVENT", value: "event" },
+      { name: "DATE", value: "date" },
+      { name: "GROUP", value: "group" },
+      { name: "ACTION", value: "action" },
+    ]);
 
-    const setSelectedBranch = async(payload) => {
-      loading.value = true
-      branchId.value = payload.id
+    const setSelectedBranch = async (payload) => {
+      loading.value = true;
+      branchId.value = payload.id;
       try {
-        let { data } = await axios.get(`/api/checkinattendance/allcheckinattendances?branchId=${payload.id}`)
-        loading.value = false
-        console.log(data)
-        branchAttendance.value = data
+        let { data } = await axios.get(
+          `/api/checkinattendance/allcheckinattendances?branchId=${payload.id}`
+        );
+        loading.value = false;
+
+        branchAttendance.value = data;
         if (data.length === 0) {
-          toast.add({
-              severity: "warn",
-              summary: "No checkin attendance found",
-              detail: "There are no checkin attendance in this branch yet.",
-              life: 5000,
-            });
+          ElMessage({
+            type: "warning",
+            message: "There are no checkin attendance in this branch yet.",
+            duration: 5000,
+          });
         }
+      } catch (err) {
+        loading.value = false;
+        console.log(err);
       }
-      catch (err) {
-        loading.value = false
-        console.log(err)
+    };
+
+    const handleSizeChange = (val) => {
+      console.log(`${val} items per page`);
+    };
+    const handleCurrentChange = (val) => {
+      console.log(`current page: ${val}`);
+    };
+    const handleSelectionChange = (val) => {
+      marked.value = val;
+    };
+
+    const getAttendanceList = async () => {
+      loading.value = true;
+      try {
+        let { data } = await axios.get(
+          `/api/checkinattendance/allcheckinattendances?branchId=${branchID.value}`
+        );
+        branchAttendance.value = data.items;
+        loading.value = false;
+        if (data && data.items.length === 0) {
+          ElMessage({
+            type: "warning",
+            message: "There are no checkin attendance in this branch yet.",
+            duration: 5000,
+          });
+        }
+      } catch (err) {
+        loading.value = false;
+        console.log(err);
       }
-    }
+    };
+    getAttendanceList();
 
     const toggleFilterFormVissibility = () =>
       (filterFormIsVissible.value = !filterFormIsVissible.value);
@@ -371,29 +299,38 @@ export default {
       searchIsVisible.value = !searchIsVisible.value;
     };
 
-    const searchBranchAttendance = computed(() => {  
-      if (branchAttendance.value.length > 0 && !searchText.value) return branchAttendance.value
-      return branchAttendance.value.filter(i => {
-        return i.contribution.toLowerCase().includes(searchText.value.toLowerCase())
-      })
-    })
+    const searchBranchAttendance = computed(() => {
+      if (branchAttendance.value.length > 0 && !searchText.value)
+        return branchAttendance.value;
+      return branchAttendance.value.filter((i) => {
+        return i.contribution
+          .toLowerCase()
+          .includes(searchText.value.toLowerCase());
+      });
+    });
 
     const formatDate = (date) => {
-      return dateFormatter.monthDayYear(date)
-    }
+      return dateFormatter.monthDayYear(date);
+    };
+    const serverOptions = ref({
+      page: 1,
+      rowsPerPage: 100,
+    });
 
     const currentPage = ref(0);
-    const getPeopleByPage = async (page) => {
-      if (page < 0) return false;
+    const getPeopleByPage = async () => {
+      loading.value = true;
       try {
         const { data } = await axios.get(
-          `/api/Branching/${branchId.value}/transactions?page=${page}`
+          `/api/Branching/${branchID.value}/transactions?page=${serverOptions.value.page}`
         );
-        console.log(data)
+
         branchAttendance.value = data.returnObject.contribution;
         currentPage.value = page;
+        loading.value = false;
       } catch (error) {
         console.log(error);
+        loading.value = false;
       }
     };
 
@@ -401,73 +338,73 @@ export default {
       axios
         .delete(`/api/CheckInAttendance/checkout?attendanceId=${id}`)
         .then((res) => {
-          console.log(res.status);
           if (res.status === 200) {
-            toast.add({
-              severity: "success",
-              summary: "Delete Successful",
-              detail: `${res.data}`,
-              life: 3000,
+            ElMessage({
+              type: "success",
+              message: res.data,
+              duration: 5000,
             });
-            branchAttendance.value.splice(index, 1)
+            branchAttendance.value.splice(index, 1);
           } else {
-            toast.add({
-              severity: "warn",
-              summary: "Delete Failed",
-              detail: `Please Try Again`,
-              life: 3000,
+            ElMessage({
+              type: "warning",
+              message: "Delete Failed",
+              duration: 5000,
             });
           }
         })
         .catch((err) => {
           //     finish()
           if (err.response) {
-            console.log(err.response);
-            toast.add({
-              severity: "error",
-              summary: "Unable to delete",
-              detail: `${err.response}`,
-              life: 3000,
+            ElMessage({
+              type: "error",
+              message: err.response,
+              duration: 5000,
             });
           } else if (
-            err && err.response && err.response.toString().toLowerCase().includes("network error")
+            err &&
+            err.response &&
+            err.response.toString().toLowerCase().includes("network error")
           ) {
-            toast.add({
-              severity: "warn",
-              summary: "Unable to delete",
-              detail: `Please ensure you have a strong internet connection`,
-              life: 3000,
+            ElMessage({
+              type: "warning",
+              message: "Please ensure you have a strong internet connection",
+              duration: 5000,
             });
           }
         });
     };
 
     const showConfirmModal = (id, index) => {
-      confirm.require({
-        message: "Are you sure you want to proceed?",
-        header: "Confirmation",
-        icon: "pi pi-exclamation-triangle",
-        acceptClass: "confirm-delete",
-        rejectClass: "cancel-delete",
-        accept: () => {
+      ElMessageBox.confirm(
+        "Are you sure you want to proceed?",
+        "Confirm delete",
+        {
+          confirmButtonText: "OK",
+          cancelButtonText: "Cancel",
+          type: "error",
+        }
+      )
+        .then(() => {
           deleteAttendance(id, index);
-          // toast.add({severity:'info', summary:'Confirmed', detail:'Member Deleted', life: 3000});
-        },
-        reject: () => {
-          toast.add({
-            severity: "info",
-            summary: "Rejected",
-            detail: "You have rejected",
-            life: 3000,
+        })
+        .catch(() => {
+          ElMessage({
+            type: "info",
+            message: "Delete canceled",
           });
-        },
-      });
+        });
     };
-    
 
     return {
       setSelectedBranch,
+      branchAtendanceHeaders,
+      handleSizeChange,
+      handleSelectionChange,
+      marked,
+      handleCurrentChange,
       selectedBranch,
+      serverOptions,
       branchAttendance,
       filterFormIsVissible,
       searchIsVisible,
@@ -478,11 +415,12 @@ export default {
       showConfirmModal,
       deleteAttendance,
       loading,
+      branchID,
       formatDate,
       getPeopleByPage,
       branchId,
       currentPage,
-      totalItem
+      totalItem,
     };
   },
 };
@@ -490,7 +428,7 @@ export default {
 
 <style scoped>
 .page-header {
-    font: normal normal 800 29px Nunito sans;
+  font: normal normal 800 29px Nunito sans;
 }
 
 .filter-options-shown {
@@ -499,20 +437,18 @@ export default {
   transition: all 0.5s ease-in-out;
 }
 
-.table-top {
-  font-weight: 800;
-  font-size: 12px;
-}
-
-.table-top label:hover,
-.table-top p:hover {
-  cursor: pointer;
-}
-
 .filter-options {
   height: 0;
   overflow: hidden;
   transition: all 0.5s ease-in-out;
+}
+.table-top {
+  font-weight: 800;
+  font-size: 12px;
+  background: #fff;
+  border: 1px solid #d4dde3;
+  border-bottom: none;
+  cursor: pointer;
 }
 
 .img-resize {
@@ -537,8 +473,9 @@ export default {
 }
 
 .itemroute-color {
-    color: #136acd;
-    cursor: pointer;
+  color: #136acd;
+  cursor: pointer;
+  text-decoration: none;
 }
 
 @media (max-width: 767px) {
