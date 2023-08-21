@@ -314,8 +314,10 @@
                     ">
                     <label for="" class="font-weight-600">Event Banner</label>
                   </div>
-                  <div v-if="imageUrl" class="col-sm-5 col-md-4 col-lg-4" :class="{ 'img-border ': imageUrl === '' }">
-                    <img :src="imageUrl" class="w-100" />
+                  <div v-if="imageUrl" class="col-sm-6 col-md-5" :class="{ 'img-border ': imageUrl === '' }">
+                    <div class="d-flex">
+                      <img :src="imageUrl" class="w-50 mx-auto mb-2" />
+                    </div>
                     <div class="
                         col-12 col-sm-12 col-md-12
                         px-0
@@ -363,7 +365,7 @@
                       mt-2
                     ">
                     <div class="col-sm-7 col-md-4">
-                      <small><code>Browse your banner here.</code></small>
+                      <small><code>Click to upload your banner.</code></small>
                     </div>
                   </div>
                 </div>
@@ -716,7 +718,7 @@
           <div class="col-sm-7 col-md-6 col-lg-5">
             <div class="row">
               <div class="col-md-12 d-flex justify-content-center">
-                <el-button :color="primarycolor" class=" text-white border-0 " round :loading="loading" size="large"
+                <el-button :color="primarycolor" class=" text-white border-0 " round :loading="loadingsave" size="large"
                   @click="onContinue" :disabled="!selectedEvent.id ||
                     selectedGroups.length === 0 ||
                     !selectedEvent.name

@@ -393,7 +393,7 @@
                     </div>
                   </div>
                   <div class="col-12">
-                    <GroupTree :items="groupData.children" />
+                    <GroupTree :items="groupData.children" @removesubgroup="removeSubGroup" />
                     <!-- <div
                       class="font-weight-700 my-3"
                       v-show="
@@ -690,6 +690,7 @@
                 </div>
 
                 <!-- Import Member To Group Modal -->
+                
                 <div
                   class="modal fade"
                   id="importgroup"
@@ -2186,6 +2187,10 @@ export default {
       return dateFormatter.monthDayYear(date);
     };
 
+    const removeSubGroup = (payload) => {
+      groupData.value.children = groupData.value.children.filter(i => i.id !== payload)
+    }
+
     return {
       groupData,
       addGroupBtn,
@@ -2304,7 +2309,8 @@ export default {
       confirmMultipleDelete,
       primarycolor,
       setFilterGroups,
-      hideDiv
+      hideDiv,
+      removeSubGroup
     };
   },
 };

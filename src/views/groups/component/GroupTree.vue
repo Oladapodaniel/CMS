@@ -1,183 +1,153 @@
 <template>
-  <div
-    class=" row w-100  text-dark "
-    style="margin: 0"
-    
-  >
+  <div class=" row w-100  text-dark " style="margin: 0">
     <div class="col-md-12 desc">
       <p class="">
-        <span
-          class="text-dark font-weight-bold d-flex d-md-none fontIncrease"
-          style="font-size: 15px"
-          >Group Name</span
-          
-        >
-        <ul class="p-0 w-100">
+        <span class="text-dark font-weight-bold d-flex d-md-none fontIncrease" style="font-size: 15px">Group Name</span>
+      <ul class="p-0 w-100">
         <li v-for="(group, index) in items" :key="index" class="p-2  c-pointer parent-li border-top exempt-hide">
           <div class="row exempt-hide justify-content-between">
-            <div class="text-primary exempt-hide" >
+            <div class="text-primary exempt-hide">
               <span>
-                <i class="pi pi-chevron-down roll-icon exempt-hide ml-4"  v-if="group.children && group.children.length > 0" @click="toggleItems(group, $event)"></i>
+                <i class="pi pi-chevron-down roll-icon exempt-hide ml-4"
+                  v-if="group.children && group.children.length > 0" @click="toggleItems(group, $event)"></i>
               </span>
               <span class="text-primary exempt-hide" @click="groupClick(group, $event)">
                 <span class="p-3 exempt-hide">{{ group.name }}</span>
               </span>
             </div>
-            
+
             <div class="col-3 text-primary" @click="groupClick(group.id)">
               <div @click="groupClick(group.id)">
                 <div class="d-flex small justify-content-between text-primary">
-                  <span class="text-dark font-weight-bold d-flex d-md-none fontIncrease" style="font-size:15px">Membership Size</span>
-                    <div class="small-text text-right text-md-center">
-                      {{ group.peopleInGroupsCount }}
-                    </div>
+                  <span class="text-dark font-weight-bold d-flex d-md-none fontIncrease" style="font-size:15px">Membership
+                    Size</span>
+                  <div class="small-text text-right text-md-center">
+                    {{ group.peopleInGroupsCount }}
+                  </div>
                 </div>
               </div>
             </div>
             <div class=" d-flex justify-content-end">
-              <!-- <i class="pi pi-trash text-danger" @click="removeSubGroup(group, $event)"></i> -->
-        
-                      <div>
-                        <div class="dropdown">
-                          <span class="d-flex justify-content-between">
-                            
-                            
-                              <i
-                                class="
+              <div>
+                <div class="dropdown">
+                  <span class="d-flex justify-content-between">
+
+
+                    <i class="
                                   fas
                                   fa-ellipsis-v
                                   cursor-pointer
                                   ml-2
                                   fontIncrease
-                                "
-                                id="dropdownMenuButton"
-                                data-toggle="dropdown"
-                                aria-haspopup="true"
-                                aria-expanded="false"
-                              ></i>
+                                " id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true"
+                      aria-expanded="false"></i>
 
-                              <div
-                                class="dropdown-menu"
-                                aria-labelledby="dropdownMenuButton"
-                              >
-                                <a class="dropdown-item">
-                                  <a
-                                    @click="sendGroupSms(group)"
-                                    >Send SMS</a>
-                                </a>
-                                <a class="dropdown-item" @click="sendGroupEmail(group)">
-                                    Send Email
-                                </a>
-                                <a
-                                  class="dropdown-item"
-                                  @click="confirmDelete(group.id, index)"
-                                  >Delete</a
-                                >
-                              </div>
-                          
-                          </span>
-                        </div>
-                      </div>
-                 
+                    <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+                      <a class="dropdown-item">
+                        <a @click="sendGroupSms(group)">Send SMS</a>
+                      </a>
+                      <a class="dropdown-item" @click="sendGroupEmail(group)">
+                        Send Email
+                      </a>
+                      <a class="dropdown-item" @click="confirmRemove(group.id, index)">Remove</a>
+                      <a class="dropdown-item" @click="confirmDelete(group.id, index)">Delete</a>
+                    </div>
+
+                  </span>
+                </div>
+              </div>
+
             </div>
           </div>
-            <div class="d-none"  @click="checkForGroup(group, $event)">
-            <GroupTree
-                :items="group.children"
-                v-if="group.children"
-                :class="{ 'd-none' : !showCheckBox }"
-                
-              /> 
-            </div>                   
+          <div class="d-none" @click="checkForGroup(group, $event)">
+            <GroupTree :items="group.children" v-if="group.children" :class="{ 'd-none': !showCheckBox }" />
+          </div>
         </li>
-        <li class="shadow-sm text-center border p-2 font-weight-700 c-pointer" @click="openCreateGroupModal" v-if="onDropDown">
+        <li class="shadow-sm text-center border p-2 font-weight-700 c-pointer" @click="openCreateGroupModal"
+          v-if="onDropDown">
           <i class="pi pi-plus-circle"></i>&nbsp;Add new group
         </li>
-        </ul>
+      </ul>
       </p>
     </div>
   </div>
 
-  <Dialog header="Create group" v-model:visible="displayCreateGroup"  style="width: 450px" :breakpoints="{'960px': '75vw'}" :modal="true">
-      <div class="row">
-        <div class="col-12">
-          <div class="mb-1">Group name<sup class="text-danger">*</sup></div>
-          <input class="form-control" v-model="newGroup.name" required/>
-        </div>
-        <div class="col-12 mt-4">
-          <div class="mb-1">Description</div>
-          <textarea class="form-control" rows="4" v-model="newGroup.description"></textarea>
-        </div>
+  <Dialog header="Create group" v-model:visible="displayCreateGroup" style="width: 450px" :breakpoints="{ '960px': '75vw' }"
+    :modal="true">
+    <div class="row">
+      <div class="col-12">
+        <div class="mb-1">Group name<sup class="text-danger">*</sup></div>
+        <input class="form-control" v-model="newGroup.name" required />
       </div>
-      
+      <div class="col-12 mt-4">
+        <div class="mb-1">Description</div>
+        <textarea class="form-control" rows="4" v-model="newGroup.description"></textarea>
+      </div>
+    </div>
 
-      <template #footer>
-          <div class="d-flex justify-content-end mt-3">
-            <el-button class="text-center c-pointer" @click="displayCreateGroup = false" round>Cancel</el-button>
-            <el-button class= " text-white primary-bg text-center c-pointer" @click="createGroup" round><el-icon v-if="createGroupLoading"  :size="20">
-                          <Loading />
-                        </el-icon>Create group </el-button>
-          </div>
-      </template>
-     
+
+    <template #footer>
+      <div class="d-flex justify-content-end mt-3">
+        <el-button class="text-center c-pointer" @click="displayCreateGroup = false" round>Cancel</el-button>
+        <el-button class=" text-white primary-bg text-center c-pointer" @click="createGroup" round><el-icon
+            v-if="createGroupLoading" :size="20">
+            <Loading />
+          </el-icon>Create group </el-button>
+      </div>
+    </template>
+
   </Dialog>
-   <el-drawer v-model="showSMS" :size="mdAndUp || lgAndUp || xlAndUp ? '70%' : '100%'" direction="rtl">
-      <template #default>
-        <div>
-          <smsComponent :groupData ="groupListDetails" @closesidemodal="() => showSMS = false" />
-        </div>
-      </template>
-    </el-drawer>
+  <el-drawer v-model="showSMS" :size="mdAndUp || lgAndUp || xlAndUp ? '70%' : '100%'" direction="rtl">
+    <template #default>
+      <div>
+        <smsComponent :groupData="groupListDetails" @closesidemodal="() => showSMS = false" />
+      </div>
+    </template>
+  </el-drawer>
 
-    <el-drawer v-model="showEmail" :size="mdAndUp || lgAndUp || xlAndUp ? '70%' : '100%'" direction="rtl">
-      <template #default>
-        <div>
-          <emailComponent :groupData ="groupListDetails"  @closesidemodal="() => showEmail = false" />
-        </div>
-      </template>
-    </el-drawer>
-
-  
+  <el-drawer v-model="showEmail" :size="mdAndUp || lgAndUp || xlAndUp ? '70%' : '100%'" direction="rtl">
+    <template #default>
+      <div>
+        <emailComponent :groupData="groupListDetails" @closesidemodal="() => showEmail = false" />
+      </div>
+    </template>
+  </el-drawer>
 </template>
 
 <script>
 import Dialog from "primevue/dialog";
 import { ref } from "@vue/reactivity";
-// import { useToast } from "primevue/usetoast";
 import axios from "@/gateway/backendapi";
 import { watchEffect } from "@vue/runtime-core";
 import { useStore } from "vuex";
-// import { useConfirm } from "primevue/useconfirm";
 import { onBeforeRouteLeave } from "vue-router";
-// import Sidebar from "primevue/sidebar";
 import smsComponent from "../component/smsComponent.vue";
 import emailComponent from "../component/emailComponent.vue";
 import groupsService from "../../../services/groups/groupsservice";
 import deviceBreakpoint from "../../../mixins/deviceBreakpoint";
 import { ElMessage, ElMessageBox } from "element-plus";
+import { useRoute } from "vue-router"
 export default {
   name: "GroupTree",
   props: ["items", "addGroupValue", "showCheckBox"],
-  emits: ["group", "groupp", "closemodal"],
+  emits: ["group", "groupp", "closemodal", "removesubgroup"],
   inheritAttrs: false,
   components: {
     Dialog,
-    // Sidebar,
     smsComponent,
     emailComponent,
   },
   setup(props, { emit }) {
     const store = useStore();
     const { mdAndUp, lgAndUp, xlAndUp } = deviceBreakpoint();
-    // const confirm = useConfirm()
     const displayCreateGroup = ref(false);
     const newGroup = ref({});
-    // const toast = useToast();
     const onDropDown = ref(false);
     const createGroupLoading = ref(false);
     const showSMS = ref(false);
     const showEmail = ref(false);
     const groupListDetails = ref([]);
+    const route = useRoute()
 
     const toggleItems = (i, e) => {
       e.target.classList.toggle("roll-icon");
@@ -211,9 +181,7 @@ export default {
     });
 
     const checkForGroup = (group, e) => {
-      console.log(group);
       let grouped = group.children.find((i) => i.name == e.target.textContent);
-      // emit("group", grouped);
       emit("group", { selectedGroup: grouped, iconElement: e.target });
     };
 
@@ -233,7 +201,6 @@ export default {
           duration: 5000,
         });
         displayCreateGroup.value = false;
-        console.log(data);
       } catch (err) {
         createGroupLoading.value = false;
         console.log(err);
@@ -260,7 +227,7 @@ export default {
 
     const confirmDelete = (id, index) => {
       ElMessageBox.confirm(
-        "Are you sure you want to proceed?",
+        "Your are about to delete this group, are you sure you want to proceed?",
         "Confirm delete",
         {
           confirmButtonText: "OK",
@@ -271,15 +238,13 @@ export default {
         .then(() => {
           try {
             groupsService.deleteGroup(id).then((res) => {
-              console.log(res, "Delete Response");
               if (res !== false) {
-                groups.value.splice(index, 1);
+                emit('removesubgroup', id)
                 ElMessage({
                   type: "success",
                   message: "Group was deleted",
                   duration: 5000,
                 });
-                groupsService.removeGroupFromStore(id);
               }
             });
           } catch (error) {
@@ -294,6 +259,43 @@ export default {
           ElMessage({
             type: "info",
             message: "Rejected",
+            duration: 5000,
+          });
+        });
+      };
+      const confirmRemove = (id, index) => {
+        ElMessageBox.confirm(
+          "You are about to remove this sub-group from this group, are you sure you want to proceed?",
+          "Confirm removal",
+          {
+            confirmButtonText: "OK",
+            cancelButtonText: "Cancel",
+            type: "warning",
+          }
+          )
+          .then(() => {
+            try {
+              groupsService.removeGroup({ superGroupID: route.params.groupId, subGroupID: id }).then((res) => {
+                console.log(res)
+                emit('removesubgroup', id)
+                ElMessage({
+                  type: "success",
+                  message: "Sub-group was removed successfully",
+                  duration: 5000,
+                });
+            });
+          } catch (error) {
+            ElMessage({
+              type: "info",
+              message: "Removal unsuccessful",
+            });
+            console.log(error);
+          }
+        })
+        .catch(() => {
+          ElMessage({
+            type: "info",
+            message: "Removal discarded",
             duration: 5000,
           });
         });
@@ -318,6 +320,7 @@ export default {
       showEmail,
       groupListDetails,
       confirmDelete,
+      confirmRemove
     };
   },
 };
