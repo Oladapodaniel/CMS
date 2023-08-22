@@ -2567,6 +2567,7 @@ export default {
           //   }
           // }
           // })
+          this.note = res.data.activity.note
       } catch (err) {
         console.log(err);
       }

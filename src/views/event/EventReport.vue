@@ -996,7 +996,7 @@
           </div>
 
           <div class="row email-data" ref="emaildata">
-            <table align="center" style="
+            <!-- <table align="center" style="
                 border-collapse: collapse;
                 max-width: 800px;
                 padding: 0pt 0pt 0pt 0pt;
@@ -1009,7 +1009,7 @@
                   <td colspan="3" style="
                       width: 337.5pt;
                       padding: 0pt 5.4pt;
-                      background: rgb(255, 27, 27);
+                      background: rgb(255,81,89);
                       vertical-align: top;
                     ">
                     <p style="margin-bottom: 0pt; margin-top: 0pt">
@@ -1034,7 +1034,7 @@
                   <td colspan="3" style="
                       width: 203.3pt;
                       padding: 0pt 5.4pt;
-                      background: rgb(175, 31, 31);
+                      background: rgb(152,4,3);
                       vertical-align: top;
                     ">
                     <p style="margin-bottom: 0pt; margin-top: 0pt">
@@ -1886,7 +1886,1006 @@
                   </td>
                 </tr>
               </tbody>
+            </table> -->
+            <!-- <table
+              style="border-collapse: collapse; max-width: 800px; padding: 0pt 0pt 0pt 0pt; box-shadow: 0px 3px 15px #00000029; border: 1px solid #dde2e6; border-radius: 5px;"
+              align="center">
+              <tbody>
+                <tr>
+                  <td style="width: 337.5pt; padding: 0pt 5.4pt; background: #ff5159; vertical-align: top;" colspan="3">
+                    <p style="margin-bottom: 0pt; margin-top: 0pt;"><span
+                        style="font-weight: bold; font-size: 16px;">&nbsp;</span></p>
+                    <p style="margin-bottom: 0pt; margin-top: 0pt;"><span
+                        style="color: #ffffff; font-weight: bold; font-size: 16px;">&nbsp;</span></p>
+                    <p style="margin-bottom: 0pt; margin-top: 0pt;"><span
+                        style="font-weight: bold; font-size: 16px;">&nbsp; &nbsp; &nbsp; &nbsp;</span><span
+                        style="font-weight: bold; font-size: 29px;">&nbsp;</span><span
+                        style="color: #ffffff; font-weight: bold; font-size: 29px;">Event&nbsp;and&nbsp;Report</span></p>
+                  </td>
+                  <td style="width: 203.3pt; padding: 0pt 5.4pt; background: #980403; vertical-align: top;" colspan="3">
+                    <p style="margin-bottom: 0pt; margin-top: 0pt;"><span
+                        style="font-weight: bold; font-size: 16px;">&nbsp;</span></p>
+                    <p style="margin-bottom: 0pt; margin-top: 0pt;"><span
+                        style="font-weight: bold; font-size: 16px;">&nbsp;</span></p>
+                    <p style="margin-bottom: 0pt; margin-top: 0pt;"><span
+                        style="color: #ffffff; font-weight: bold; font-size: 16px;">Total&nbsp;Attendance: {{
+                          stats.todayAttendance }}</span></p>
+                    <p style="margin-bottom: 0pt; margin-top: 0pt;"><span
+                        style="color: #ffffff; font-weight: bold; font-size: 16px;">Total&nbsp;Offering: {{
+                          stats.todayOffering }}</span></p>
+                    <p style="margin-bottom: 0pt; margin-top: 0pt;">&nbsp;</p>
+                    <p style="margin-bottom: 0pt; margin-top: 0pt;">&nbsp;</p>
+                  </td>
+                </tr>
+                <tr>
+                  <td style="width: 337.5pt; padding: 0pt 5.4pt; vertical-align: top;" colspan="3">
+                    <p style="margin-bottom: 0pt; margin-top: 0pt;"><span
+                        style="font-weight: bold; font-size: 16px;">&nbsp;</span></p>
+                    <p style="text-indent: 20pt; margin-bottom: 0pt; margin-top: 0pt;"><span
+                        style="color: #c0c0c0; font-weight: bold; font-size: 13px;">Event&nbsp;Name</span></p>
+                    <p style="margin-bottom: 0pt; margin-top: 0pt;"><span
+                        style="font-weight: bold; font-size: 24px;">&nbsp; {{ stats.activityToday ?
+                          stats.activityToday.name : "" }} <br /> <span
+                          style="font-size: 14px; color: red; padding-left: 20px;">{{ eventDateString }}.</span></span>
+                    </p>
+                  </td>
+                  <td style="width: 203.3pt; padding: 0pt 5.4pt; vertical-align: top;" colspan="3">
+                    <p style="margin-bottom: 0pt; margin-top: 0pt;"><span
+                        style="font-weight: bold; font-size: 16px;">&nbsp;</span></p>
+                    <p style="margin-bottom: 0pt; margin-top: 0pt;"><span
+                        style="font-weight: bold; font-size: 16px;">Preacher: {{ stats.activityToday ?
+                          stats.activityToday.preacher : "" }}</span></p>
+                    <p style="margin-bottom: 0pt; margin-top: 0pt;"><span
+                        style="font-weight: bold; font-size: 16px;">Topic: {{ stats.activityToday ?
+                          stats.activityToday.topic : "" }}</span></p>
+                    <p style="margin-bottom: 0pt; margin-top: 0pt;"><span
+                        style="font-weight: bold; font-size: 16px;">First&nbsp;timers: {{ stats.todayFirstTimer }}</span>
+                    </p>
+                    <p style="margin-bottom: 0pt; margin-top: 0pt;"><span
+                        style="font-weight: bold; font-size: 16px;">New&nbsp;Converts: {{ stats.todayNewConvert }}</span>
+                    </p>
+                  </td>
+                </tr>
+                <tr>
+                  <td style="width: 152.3pt; padding: 0pt 5.4pt; background: #000000; vertical-align: top;">
+                    <p style="margin-bottom: 0pt; margin-top: 0pt; text-align: center;"><span
+                        style="font-weight: normal; font-size: 21px; color: #ffffff;">Attendance</span></p>
+                  </td>
+                  <td style="width: 388.5pt; padding: 0pt 5.4pt; vertical-align: top;" colspan="5">
+                    <p style="margin-bottom: 0pt; margin-top: 0pt;"><span
+                        style="font-weight: bold; font-size: 16px;">&nbsp;</span></p>
+                  </td>
+                </tr>
+                <tr>
+                  <td style="width: 152.3pt; padding: 0pt 5.4pt; vertical-align: top;">
+                    <p style="margin-bottom: 0pt; margin-top: 0pt; text-align: center;"><span
+                        style="font-weight: normal; font-size: 21px;">&nbsp;</span></p>
+                  </td>
+                  <td style="width: 388.5pt; padding: 0pt 5.4pt; vertical-align: top;" colspan="5">
+                    <p style="margin-bottom: 0pt; margin-top: 0pt;"><span
+                        style="font-weight: bold; font-size: 16px;">&nbsp;</span></p>
+                  </td>
+                </tr>
+                <tr>
+                  <td
+                    style="width: 152.3pt; padding: 0pt 5.4pt; border-bottom: 2.25pt solid #000000; vertical-align: top;">
+                    <p style="text-indent: 21pt; margin-bottom: 0pt; margin-top: 0pt; text-align: center;"><span
+                        style="font-weight: bold; font-size: 18px; color: #000;">Attendance&nbsp;item</span></p>
+                  </td>
+                  <td
+                    style="width: 188.2pt; padding: 0pt 5.4pt; border-bottom: 2.25pt solid #000000; vertical-align: top;"
+                    colspan="3">
+                    <p style="margin-bottom: 0pt; margin-top: 0pt; text-align: center;"><span
+                        style="font-weight: bolder; font-size: 18px; color: #000;">Count</span></p>
+                  </td>
+                  <td
+                    style="width: 200.3pt; padding: 0pt 5.4pt; border-bottom: 2.25pt solid #000000; vertical-align: top;"
+                    colspan="2">
+                    <p style="margin-bottom: 0pt; margin-top: 0pt; text-align: center;"><span
+                        style="font-weight: bold; font-size: 18px; color: #000;">Total</span></p>
+                  </td>
+                </tr>
+                <tr style="font-weight: normal;" v-for="(attendance, index) in activityAttendances" :key="index">
+                  <td
+                    style="width: 152.3pt; padding: 0pt 5.4pt; border-top: none; border-bottom: 31.875pt none #ffffff; vertical-align: top;">
+                    <p style="text-indent: 21pt; margin-bottom: 0pt; margin-top: 0pt; text-align: center;"><span
+                        style="font-weight: normal; font-size: 13px;">{{ attendance.attendanceTypeName }}</span></p>
+                  </td>
+                  <td
+                    style="width: 188.2pt; padding: 0pt 5.4pt; border-top: none; border-bottom: 31.875pt none #ffffff; vertical-align: top;"
+                    colspan="3">
+                    <p style="margin-bottom: 0pt; margin-top: 0pt; text-align: center;"><span
+                        style="font-weight: normal; font-size: 13px;">{{ attendance.number }}</span></p>
+                  </td>
+                  <td
+                    style="width: 200.3pt; padding: 0pt 5.4pt; border-top: none; border-bottom: 31.875pt none #ffffff; vertical-align: top;"
+                    colspan="2">
+                    <p style="margin-bottom: 0pt; margin-top: 0pt; text-align: center;"><span
+                        style="font-weight: normal; font-size: 13px;">{{ attendance.number }}</span></p>
+                  </td>
+                </tr>
+                <tr style="border-top: 3px solid;">
+                  <td style="width: 152.3pt; padding: 0pt 5.4pt; border-top: none; vertical-align: top;">
+                    <p style="text-indent: 21pt; margin-bottom: 0pt; margin-top: 0pt; text-align: center;"><span
+                        style="font-weight: bold; font-size: 16px;">&nbsp;</span></p>
+                  </td>
+                  <td style="width: 188.2pt; padding: 0pt 5.4pt; border-top: none; vertical-align: top;" colspan="3">
+                    <p style="margin-bottom: 0pt; margin-top: 0pt; text-align: center;"><span
+                        style="font-weight: bold; font-size: 16px;">Total</span></p>
+                  </td>
+                  <td style="width: 200.3pt; padding: 0pt 5.4pt; border-top: none; vertical-align: top;" colspan="2">
+                    <p style="margin-bottom: 0pt; margin-top: 0pt; text-align: center;"><span
+                        style="font-weight: bold; font-size: 16px;">{{ stats.todayAttendance }}</span></p>
+                  </td>
+                </tr>
+                <tr>
+                  <td style="width: 152.3pt; padding: 0pt 5.4pt; border-top: none; vertical-align: top;">
+                    <p style="text-indent: 21pt; margin-bottom: 0pt; margin-top: 0pt; text-align: center;"><span
+                        style="font-weight: bold; font-size: 16px;">&nbsp;</span></p>
+                  </td>
+                  <td style="width: 188.2pt; padding: 0pt 5.4pt; border-top: none; vertical-align: top;" colspan="3">
+                    <p style="margin-bottom: 0pt; margin-top: 0pt; text-align: center;"><span
+                        style="font-weight: bold; font-size: 16px;">&nbsp;</span></p>
+                  </td>
+                  <td style="width: 200.3pt; padding: 0pt 5.4pt; border-top: none; vertical-align: top;" colspan="2">
+                    <p style="margin-bottom: 0pt; margin-top: 0pt; text-align: center;"><span
+                        style="font-weight: bold; font-size: 16px;">&nbsp;</span></p>
+                  </td>
+                </tr>
+                <tr>
+                  <td style="width: 152.3pt; padding: 0pt 5.4pt; background: #000000; vertical-align: top;">
+                    <p style="margin-bottom: 0pt; margin-top: 0pt; text-align: center;"><span
+                        style="font-size: 21px; color: #ffffff;">Offering</span></p>
+                  </td>
+                  <td style="width: 188.2pt; padding: 0pt 5.4pt; vertical-align: top;" colspan="3">
+                    <p style="margin-bottom: 0pt; margin-top: 0pt; text-align: center;"><span
+                        style="font-weight: bold; font-size: 16px;">&nbsp;</span></p>
+                  </td>
+                  <td style="width: 200.3pt; padding: 0pt 5.4pt; vertical-align: top;" colspan="2">
+                    <p style="margin-bottom: 0pt; margin-top: 0pt; text-align: center;"><span
+                        style="font-weight: bold; font-size: 16px;">&nbsp;</span></p>
+                  </td>
+                </tr>
+                <tr>
+                  <td style="width: 152.3pt; padding: 0pt 5.4pt; vertical-align: top;">
+                    <p style="margin-bottom: 0pt; margin-top: 0pt; text-align: center;"><span
+                        style="font-size: 21px;">&nbsp;</span></p>
+                  </td>
+                  <td style="width: 188.2pt; padding: 0pt 5.4pt; vertical-align: top;" colspan="3">
+                    <p style="margin-bottom: 0pt; margin-top: 0pt; text-align: center;"><span
+                        style="font-weight: bold; font-size: 16px;">&nbsp;</span></p>
+                  </td>
+                  <td style="width: 200.3pt; padding: 0pt 5.4pt; vertical-align: top;" colspan="2">
+                    <p style="margin-bottom: 0pt; margin-top: 0pt; text-align: center;"><span
+                        style="font-weight: bold; font-size: 16px;">&nbsp;</span></p>
+                  </td>
+                </tr>
+                <tr style="border-bottom: 3px solid;">
+                  <td
+                    style="width: 152.3pt; padding: 0pt 5.4pt; border-right: 31.875pt none #ffffff; border-bottom: 31.875pt none #ffffff; vertical-align: top;">
+                    <p style="margin-bottom: 0pt; margin-top: 0pt; text-align: center;"><span
+                        style="font-weight: bold; font-size: 18px; color: #000;">Offering&nbsp;Item</span></p>
+                  </td>
+                  <td
+                    style="width: 126.75pt; padding: 0pt 5.4pt; border-left: none; border-right: 31.875pt none #ffffff; border-bottom: 31.875pt none #ffffff; vertical-align: top;">
+                    <p style="margin-bottom: 0pt; margin-top: 0pt; text-align: center;"><span
+                        style="font-weight: bold; font-size: 18px; color: #000;">Channel</span></p>
+                  </td>
+                  <td
+                    style="width: 155.25pt; padding: 0pt 5.4pt; border-left: none; border-right: 31.875pt none #ffffff; border-bottom: 31.875pt none #ffffff; vertical-align: top;"
+                    colspan="3">
+                    <p style="margin-bottom: 0pt; margin-top: 0pt; text-align: center;"><span
+                        style="font-weight: bold; font-size: 18px; color: #000;">Amount</span></p>
+                  </td>
+                  <td
+                    style="width: 106.5pt; padding: 0pt 5.4pt; border-left: none; border-bottom: 31.875pt none #ffffff; vertical-align: top;">
+                    <p style="margin-bottom: 0pt; margin-top: 0pt; text-align: center;"><span
+                        style="font-weight: bold; font-size: 18px; color: #000;">Total</span></p>
+                  </td>
+                </tr>
+                <tr style="font-weight: normal; font-size: 13px;" v-for="(offering, index) in activityOfferings" :key="index">
+                  <td
+                    style="width: 152.3pt; padding: 0pt 5.4pt; border-right: 31.875pt none #ffffff; border-top: none; border-bottom: 31.875pt none #ffffff; vertical-align: top;">
+                    <p style="margin-bottom: 0pt; margin-top: 0pt; text-align: center;"><span
+                        style="font-weight: normal; font-size: 13px;">{{ offering.contribution }}</span></p>
+                  </td>
+                  <td
+                    style="width: 126.75pt; padding: 0pt 5.4pt; border-left: none; border-right: 31.875pt none #ffffff; border-top: none; border-bottom: 31.875pt none #ffffff; vertical-align: top;">
+                    <p style="margin-bottom: 0pt; margin-top: 0pt; text-align: center;"><span
+                        style="font-weight: normal; font-size: 13px;">{{ offering.channel }}</span></p>
+                  </td>
+                  <td
+                    style="width: 155.25pt; padding: 0pt 5.4pt; border-left: none; border-right: 31.875pt none #ffffff; border-top: none; border-bottom: 31.875pt none #ffffff; vertical-align: top;"
+                    colspan="3">
+                    <p style="margin-bottom: 0pt; margin-top: 0pt; text-align: center;"><span
+                        style="font-weight: normal; font-size: 13px;">{{ offering.currencyName }}&nbsp;{{ offering.amount
+                        }}</span></p>
+                  </td>
+                  <td
+                    style="width: 106.5pt; padding: 0pt 5.4pt; border-left: none; border-top: none; border-bottom: 31.875pt none #ffffff; vertical-align: top;">
+                    <p style="margin-bottom: 0pt; margin-top: 0pt; text-align: center;"><span
+                        style="font-weight: normal; font-size: 13px;">{{ offering.currencyName }}&nbsp;{{ offering.amount
+                        }}</span></p>
+                  </td>
+                </tr>
+                <tr style="border-top: 3px solid;">
+                  <td
+                    style="width: 152.3pt; padding: 0pt 5.4pt; border-right: 31.875pt none #ffffff; border-top: none; border-bottom: 31.875pt none #ffffff; vertical-align: top;">
+                    <p style="margin-bottom: 0pt; margin-top: 0pt; text-align: center;"><span
+                        style="font-weight: bold; font-size: 16px;">&nbsp;</span></p>
+                  </td>
+                  <td
+                    style="width: 126.75pt; padding: 0pt 5.4pt; border-left: none; border-right: 31.875pt none #ffffff; border-top: none; border-bottom: 31.875pt none #ffffff; vertical-align: top;">
+                    <p style="margin-bottom: 0pt; margin-top: 0pt; text-align: center;"><span
+                        style="font-weight: bold; font-size: 16px;">&nbsp;</span></p>
+                  </td>
+                  <td
+                    style="width: 155.25pt; padding: 0pt 5.4pt; border-left: none; border-right: 31.875pt none #ffffff; border-top: none; border-bottom: 31.875pt none #ffffff; vertical-align: top;"
+                    colspan="3">
+                    <p style="margin-bottom: 0pt; margin-top: 0pt; text-align: center;"><span
+                        style="font-weight: bold; font-size: 16px;">Total</span></p>
+                  </td>
+                  <td
+                    style="width: 106.5pt; padding: 0pt 5.4pt; border-left: none; border-top: none; border-bottom: 31.875pt none #ffffff; vertical-align: top;">
+                    <p style="margin-bottom: 0pt; margin-top: 0pt; text-align: center;"><span
+                        style="font-weight: bold; font-size: 16px;">{{ stats.tenantCurrencyName }}&nbsp;{{
+                          stats.todayOffering }}</span></p>
+                  </td>
+                </tr>
+                <tr>
+                  <td
+                    style="width: 152.3pt; padding: 0pt 5.4pt; border-right: 31.875pt none #ffffff; border-top: none; border-bottom: 31.875pt none #ffffff; vertical-align: top;">
+                    <p style="margin-bottom: 0pt; margin-top: 0pt; text-align: center;"><span
+                        style="font-weight: bold; font-size: 16px;">&nbsp;</span></p>
+                  </td>
+                  <td
+                    style="width: 126.75pt; padding: 0pt 5.4pt; border-left: none; border-right: 31.875pt none #ffffff; border-top: none; border-bottom: 31.875pt none #ffffff; vertical-align: top;">
+                    <p style="margin-bottom: 0pt; margin-top: 0pt; text-align: center;"><span
+                        style="font-weight: bold; font-size: 16px;">&nbsp;</span></p>
+                  </td>
+                  <td
+                    style="width: 155.25pt; padding: 0pt 5.4pt; border-left: none; border-right: 31.875pt none #ffffff; border-top: none; border-bottom: 31.875pt none #ffffff; vertical-align: top;"
+                    colspan="3">
+                    <p style="margin-bottom: 0pt; margin-top: 0pt; text-align: center;"><span
+                        style="font-weight: bold; font-size: 16px;">&nbsp;</span></p>
+                  </td>
+                  <td
+                    style="width: 106.5pt; padding: 0pt 5.4pt; border-left: none; border-top: none; border-bottom: 31.875pt none #ffffff; vertical-align: top;">
+                    <p style="margin-bottom: 0pt; margin-top: 0pt; text-align: center;"><span
+                        style="font-weight: bold; font-size: 16px;">&nbsp;</span></p>
+                  </td>
+                </tr>
+                <tr>
+                  <td
+                    style="width: 152.3pt; padding: 0pt 5.4pt; border-right: 31.875pt none #ffffff; border-top: none; border-bottom: 31.875pt none #ffffff; vertical-align: top;">
+                    &nbsp;</td>
+                  <td
+                    style="width: 126.75pt; padding: 0pt 5.4pt; border-left: none; border-right: 31.875pt none #ffffff; border-top: none; border-bottom: 31.875pt none #ffffff; vertical-align: top;">
+                    &nbsp;</td>
+                  <td
+                    style="width: 155.25pt; padding: 0pt 5.4pt; border-left: none; border-right: 31.875pt none #ffffff; border-top: none; border-bottom: 31.875pt none #ffffff; vertical-align: top;"
+                    colspan="3">&nbsp;</td>
+                  <td
+                    style="width: 106.5pt; padding: 0pt 5.4pt; border-left: none; border-top: none; border-bottom: 31.875pt none #ffffff; vertical-align: top;">
+                    <p style="margin-bottom: 0pt; margin-top: 0pt; text-align: center;"><span
+                        style="font-weight: bold; font-size: 16px;"><a style="color: blue; font-weight: bold;">View full
+                          report</a></span></p>
+                  </td>
+                </tr>
+                <tr style="height: 40px; background: #eee;">
+                  <td
+                    style="width: 152.3pt; padding: 0pt 5.4pt; border-right: 31.875pt none #ffffff; border-top: none; border-bottom: 31.875pt none #ffffff; vertical-align: top;">
+                    &nbsp;</td>
+                  <td
+                    style="width: 126.75pt; padding: 0pt 5.4pt; border-left: none; border-right: 31.875pt none #ffffff; border-top: none; border-bottom: 31.875pt none #ffffff; vertical-align: top;"
+                    colspan="3">
+                    <p style="margin-bottom: 0pt; margin-top: 0pt; text-align: center;"><span
+                        style="font-weight: bold; font-size: 14px; margin-top: 20px;">Powered By ChurchPlus</span></p>
+                  </td>
+                  <td
+                    style="width: 155.25pt; padding: 0pt 5.4pt; border-left: none; border-right: 31.875pt none #ffffff; border-top: none; border-bottom: 31.875pt none #ffffff; vertical-align: top;">
+                    &nbsp;</td>
+                  <td
+                    style="width: 106.5pt; padding: 0pt 5.4pt; border-left: none; border-top: none; border-bottom: 31.875pt none #ffffff; vertical-align: top;">
+                    &nbsp;</td>
+                </tr>
+              </tbody>
+            </table> -->
+
+            <!-- <table style="border-collapse: collapse; max-width: 800px; padding: 0pt 0pt 0pt 0pt; box-shadow: 0px 3px 15px #00000029; border: 1px solid #dde2e6; border-radius: 5px;" align="center">
+<tbody>
+<tr>
+<td style="width: 337.5pt; padding: 0pt 5.4pt; background: #ff5159; vertical-align: top;" colspan="5">
+<p style="margin-bottom: 0pt; margin-top: 0pt;"><span style="font-weight: bold; font-size: 16px;">&nbsp;</span></p>
+<p style="margin-bottom: 0pt; margin-top: 0pt;"><span style="color: #ffffff; font-weight: bold; font-size: 16px;">&nbsp;</span></p>
+<p style="margin-bottom: 0pt; margin-top: 0pt;"><span style="font-weight: bold; font-size: 16px;">&nbsp; &nbsp; &nbsp; </span><span style="color: #ffffff; font-weight: bold; font-size: 29px;">Event&nbsp;and&nbsp;Report</span></p>
+</td>
+<td style="width: 203.3pt; padding: 0pt 5.4pt; background: #980403; vertical-align: top;" colspan="2">
+<p style="margin-bottom: 0pt; margin-top: 0pt;"><span style="font-weight: bold; font-size: 16px;">&nbsp;</span></p>
+<p style="margin-bottom: 0pt; margin-top: 0pt;"><span style="font-weight: bold; font-size: 16px;">&nbsp;</span></p>
+<p style="margin-bottom: 0pt; margin-top: 0pt;"><span style="color: #ffffff; font-weight: bold; font-size: 16px;">&nbsp; &nbsp; &nbsp;Total&nbsp;Attendance: {{ stats.todayAttendance }}</span></p>
+<p style="margin-bottom: 0pt; margin-top: 0pt;"><span style="color: #ffffff; font-weight: bold; font-size: 16px;">&nbsp; &nbsp; &nbsp;Total&nbsp;Offering: {{ stats.todayOffering }}</span></p>
+<p style="margin-bottom: 0pt; margin-top: 0pt;">&nbsp;</p>
+<p style="margin-bottom: 0pt; margin-top: 0pt;">&nbsp;</p>
+</td>
+</tr>
+<tr>
+<td style="width: 337.5pt; padding: 0pt 5.4pt; vertical-align: top;" colspan="3">
+<p style="margin-bottom: 0pt; margin-top: 0pt;"><span style="font-weight: bold; font-size: 16px;">&nbsp;</span></p>
+<p style="text-indent: 20pt; margin-bottom: 0pt; margin-top: 0pt;"><span style="color: #c0c0c0; font-weight: bold; font-size: 13px;">Event&nbsp;Name</span></p>
+<p style="margin-bottom: 0pt; margin-top: 0pt;"><span style="font-weight: normal; font-size: 24px;">&nbsp; &nbsp; {{ stats.activityToday ? stats.activityToday.name : "" }} <br /> <span style="font-size: 14px; color: red; padding-left: 20px;">&nbsp; {{ eventDateString }}.</span></span></p>
+</td>
+<td style="width: 203.3pt; padding: 0pt 5.4pt; vertical-align: top;" colspan="3">
+<p style="margin-bottom: 0pt; margin-top: 0pt;"><span style="font-weight: bold; font-size: 16px;">&nbsp;</span></p>
+<p style="margin-bottom: 0pt; margin-top: 0pt;"><span style="font-weight: bold; font-size: 16px;">&nbsp; &nbsp; &nbsp;Preacher: {{ stats.activityToday ? stats.activityToday.preacher : "" }}</span></p>
+<p style="margin-bottom: 0pt; margin-top: 0pt;"><span style="font-weight: bold; font-size: 16px;">&nbsp; &nbsp; &nbsp;Topic: {{ stats.activityToday ? stats.activityToday.topic : "" }}</span></p>
+<p style="margin-bottom: 0pt; margin-top: 0pt;"><span style="font-weight: bold; font-size: 16px;">&nbsp; &nbsp; &nbsp;First&nbsp;timers: {{ stats.todayFirstTimer }}</span></p>
+<p style="margin-bottom: 0pt; margin-top: 0pt;"><span style="font-weight: bold; font-size: 16px;">&nbsp; &nbsp; &nbsp;</span><span style="font-weight: bold; font-size: 16px;">New&nbsp;Converts: {{ stats.todayNewConvert }}</span></p>
+</td>
+</tr>
+<tr>
+<td style="width: 152.3pt; padding: 0pt 5.4pt; background: #000000; vertical-align: top;">
+<p style="margin-bottom: 0pt; margin-top: 0pt;"><span style="font-weight: normal; font-size: 20px; color: #ffffff;">&nbsp; &nbsp; &nbsp;Attendance</span></p>
+</td>
+<td style="width: 388.5pt; padding: 0pt 5.4pt; vertical-align: top;" colspan="5">
+<p style="margin-bottom: 0pt; margin-top: 0pt;"><span style="font-weight: bold; font-size: 16px;">&nbsp;</span></p>
+</td>
+</tr>
+<tr>
+<td style="width: 152.3pt; padding: 0pt 5.4pt; vertical-align: top;">
+<p style="margin-bottom: 0pt; margin-top: 0pt; text-align: center;"><span style="font-weight: normal; font-size: 21px;">&nbsp;</span></p>
+</td>
+<td style="width: 388.5pt; padding: 0pt 5.4pt; vertical-align: top;" colspan="5">
+<p style="margin-bottom: 0pt; margin-top: 0pt;"><span style="font-weight: bold; font-size: 16px;">&nbsp;</span></p>
+</td>
+</tr>
+<tr>
+<td style="width: 152.3pt; padding: 0pt 5.4pt; border-bottom: 2.25pt solid #000000; vertical-align: top;">
+<p style="text-indent: 21pt; margin-bottom: 0pt; margin-top: 0pt;"><span style="font-weight: bold; font-size: 18px; color: #000;">Attendance&nbsp;item</span></p>
+</td>
+<td style="width: 188.2pt; padding: 0pt 5.4pt; border-bottom: 2.25pt solid #000000; vertical-align: top;" colspan="3">
+<p style="margin-bottom: 0pt; margin-top: 0pt;"><span style="font-weight: bolder; font-size: 18px; color: #000;">Count</span></p>
+</td>
+<td style="width: 200.3pt; padding: 0pt 5.4pt; border-bottom: 2.25pt solid #000000; vertical-align: top;" colspan="3">
+<p style="margin-bottom: 0pt; margin-top: 0pt;"><span style="font-weight: bold; font-size: 18px; color: #000;">Total</span></p>
+</td>
+</tr>
+<tr style="font-weight: normal;" v-for="(attendance, index) in activityAttendances" :key="index">
+<td style="width: 152.3pt; padding: 0pt 5.4pt; border-top: none; border-bottom: 31.875pt none #ffffff; vertical-align: top;">
+<p style="text-indent: 21pt; margin-bottom: 0pt; margin-top: 0pt;"><span style="font-weight: normal; font-size: 13px;">{{ attendance.attendanceTypeName }}</span></p>
+</td>
+<td style="width: 188.2pt; padding: 0pt 5.4pt; border-top: none; border-bottom: 31.875pt none #ffffff; vertical-align: top;" colspan="3">
+<p style="margin-bottom: 0pt; margin-top: 0pt;"><span style="font-weight: normal; font-size: 13px;">{{ attendance.number }}</span></p>
+</td>
+<td style="width: 200.3pt; padding: 0pt 5.4pt; border-top: none; border-bottom: 31.875pt none #ffffff; vertical-align: top;" colspan="2">
+<p style="margin-bottom: 0pt; margin-top: 0pt;"><span style="font-weight: normal; font-size: 13px;">{{ attendance.number }}</span></p>
+</td>
+</tr>
+<tr style="border-top: 3px solid;">
+<td style="width: 152.3pt; padding: 0pt 5.4pt; border-top: none; vertical-align: top;">
+<p style="text-indent: 21pt; margin-bottom: 0pt; margin-top: 0pt; text-align: center;"><span style="font-weight: bold; font-size: 16px;">&nbsp;</span></p>
+</td>
+<td style="width: 188.2pt; padding: 0pt 5.4pt; border-top: none; vertical-align: top;" colspan="3">
+<p style="margin-bottom: 0pt; margin-top: 0pt; text-align: right;"><span style="font-weight: bold; font-size: 16px;">Total:</span></p>
+</td>
+<td style="width: 200.3pt; padding: 0pt 5.4pt; border-top: none; vertical-align: top;" colspan="2">
+<p style="margin-bottom: 0pt; margin-top: 0pt;"><span style="font-weight: bold; font-size: 16px;">{{ stats.todayAttendance }}</span></p>
+</td>
+</tr>
+<tr>
+<td style="width: 152.3pt; padding: 0pt 5.4pt; border-top: none; vertical-align: top;">
+<p style="text-indent: 21pt; margin-bottom: 0pt; margin-top: 0pt; text-align: center;"><span style="font-weight: bold; font-size: 16px;">&nbsp;</span></p>
+</td>
+<td style="width: 188.2pt; padding: 0pt 5.4pt; border-top: none; vertical-align: top;" colspan="3">
+<p style="margin-bottom: 0pt; margin-top: 0pt; text-align: center;"><span style="font-weight: bold; font-size: 16px;">&nbsp;</span></p>
+</td>
+<td style="width: 200.3pt; padding: 0pt 5.4pt; border-top: none; vertical-align: top;" colspan="2">
+<p style="margin-bottom: 0pt; margin-top: 0pt; text-align: center;"><span style="font-weight: bold; font-size: 16px;">&nbsp;</span></p>
+</td>
+</tr>
+<tr>
+<td style="width: 152.3pt; padding: 0pt 5.4pt; background: #000000; vertical-align: top;">
+<p style="margin-bottom: 0pt; margin-top: 0pt;"><span style="font-size: 20px; color: #ffffff;">&nbsp; &nbsp; &nbsp; Offering</span></p>
+</td>
+<td style="width: 188.2pt; padding: 0pt 5.4pt; vertical-align: top;" colspan="3">
+<p style="margin-bottom: 0pt; margin-top: 0pt; text-align: center;"><span style="font-weight: bold; font-size: 16px;">&nbsp;</span></p>
+</td>
+<td style="width: 200.3pt; padding: 0pt 5.4pt; vertical-align: top;" colspan="2">
+<p style="margin-bottom: 0pt; margin-top: 0pt; text-align: center;"><span style="font-weight: bold; font-size: 16px;">&nbsp;</span></p>
+</td>
+</tr>
+<tr>
+<td style="width: 152.3pt; padding: 0pt 5.4pt; vertical-align: top;">
+<p style="margin-bottom: 0pt; margin-top: 0pt; text-align: center;"><span style="font-size: 21px;">&nbsp;</span></p>
+</td>
+<td style="width: 188.2pt; padding: 0pt 5.4pt; vertical-align: top;" colspan="3">
+<p style="margin-bottom: 0pt; margin-top: 0pt; text-align: center;"><span style="font-weight: bold; font-size: 16px;">&nbsp;</span></p>
+</td>
+<td style="width: 200.3pt; padding: 0pt 5.4pt; vertical-align: top;" colspan="2">
+<p style="margin-bottom: 0pt; margin-top: 0pt; text-align: center;"><span style="font-weight: bold; font-size: 16px;">&nbsp;</span></p>
+</td>
+</tr>
+<tr style="border-bottom: 3px solid;">
+<td style="width: 152.3pt; padding: 0pt 5.4pt; border-right: 31.875pt none #ffffff; border-bottom: 31.875pt none #ffffff; vertical-align: top;">
+<p style="margin-bottom: 0pt; margin-top: 0pt;"><span style="font-weight: bold; font-size: 18px; color: #000;">&nbsp; &nbsp; &nbsp; Offering&nbsp;Item</span></p>
+</td>
+<td style="width: 126.75pt; padding: 0pt 5.4pt; border-left: none; border-right: 31.875pt none #ffffff; border-bottom: 31.875pt none #ffffff; vertical-align: top;">
+<p style="margin-bottom: 0pt; margin-top: 0pt;"><span style="font-weight: bold; font-size: 18px; color: #000;">Channel</span></p>
+</td>
+<td style="width: 155.25pt; padding: 0pt 5.4pt; border-left: none; border-right: 31.875pt none #ffffff; border-bottom: 31.875pt none #ffffff; vertical-align: top;" colspan="3">
+<p style="margin-bottom: 0pt; margin-top: 0pt;"><span style="font-weight: bold; font-size: 18px; color: #000;">Amount</span></p>
+</td>
+<td style="width: 106.5pt; padding: 0pt 5.4pt; border-left: none; border-bottom: 31.875pt none #ffffff; vertical-align: top;">
+<p style="margin-bottom: 0pt; margin-top: 0pt;"><span style="font-weight: bold; font-size: 18px; color: #000;">Total</span></p>
+</td>
+</tr>
+<tr style="font-weight: normal; font-size: 13px;"  v-for="(offering, index) in activityOfferings" :key="index">
+<td style="width: 152.3pt; padding: 0pt 5.4pt; border-right: 31.875pt none #ffffff; border-top: none; border-bottom: 31.875pt none #ffffff; vertical-align: top;">
+<p style="margin-bottom: 0pt; margin-top: 0pt;"><span style="font-weight: normal; font-size: 13px;">&nbsp; &nbsp; &nbsp; &nbsp; &nbsp;{{ offering.contribution }}</span></p>
+</td>
+<td style="width: 126.75pt; padding: 0pt 5.4pt; border-left: none; border-right: 31.875pt none #ffffff; border-top: none; border-bottom: 31.875pt none #ffffff; vertical-align: top;">
+<p style="margin-bottom: 0pt; margin-top: 0pt;"><span style="font-weight: normal; font-size: 13px;">{{ offering.channel }}</span></p>
+</td>
+<td style="width: 155.25pt; padding: 0pt 5.4pt; border-left: none; border-right: 31.875pt none #ffffff; border-top: none; border-bottom: 31.875pt none #ffffff; vertical-align: top;" colspan="3">
+<p style="margin-bottom: 0pt; margin-top: 0pt;"><span style="font-weight: normal; font-size: 13px;">{{ offering.currencyName }}&nbsp;{{ offering.amount }}</span></p>
+</td>
+<td style="width: 106.5pt; padding: 0pt 5.4pt; border-left: none; border-top: none; border-bottom: 31.875pt none #ffffff; vertical-align: top;">
+<p style="margin-bottom: 0pt; margin-top: 0pt;"><span style="font-weight: normal; font-size: 13px;">{{ offering.currencyName }}&nbsp;{{ offering.amount }}</span></p>
+</td>
+</tr>
+<tr style="border-top: 3px solid;">
+<td style="width: 152.3pt; padding: 0pt 5.4pt; border-right: 31.875pt none #ffffff; border-top: none; border-bottom: 31.875pt none #ffffff; vertical-align: top;">
+<p style="margin-bottom: 0pt; margin-top: 0pt; text-align: center;"><span style="font-weight: bold; font-size: 16px;">&nbsp;</span></p>
+</td>
+<td style="width: 126.75pt; padding: 0pt 5.4pt; border-left: none; border-right: 31.875pt none #ffffff; border-top: none; border-bottom: 31.875pt none #ffffff; vertical-align: top;">
+<p style="margin-bottom: 0pt; margin-top: 0pt; text-align: center;"><span style="font-weight: bold; font-size: 16px;">&nbsp;</span></p>
+</td>
+<td style="width: 155.25pt; padding: 0pt 5.4pt; border-left: none; border-right: 31.875pt none #ffffff; border-top: none; border-bottom: 31.875pt none #ffffff; vertical-align: top;" colspan="3">
+<p style="margin-bottom: 0pt; margin-top: 0pt; text-align: right;"><span style="font-weight: bold; font-size: 16px;">Total:</span></p>
+</td>
+<td style="width: 106.5pt; padding: 0pt 5.4pt; border-left: none; border-top: none; border-bottom: 31.875pt none #ffffff; vertical-align: top;">
+<p style="margin-bottom: 0pt; margin-top: 0pt;"><span style="font-weight: bold; font-size: 16px;">{{ stats.tenantCurrencyName }}&nbsp;{{ stats.todayOffering }}</span></p>
+</td>
+</tr>
+<tr>
+<td style="width: 152.3pt; padding: 0pt 5.4pt; border-right: 31.875pt none #ffffff; border-top: none; border-bottom: 31.875pt none #ffffff; vertical-align: top;">
+<p style="margin-bottom: 0pt; margin-top: 0pt; text-align: center;"><span style="font-weight: bold; font-size: 16px;">&nbsp;</span></p>
+</td>
+<td style="width: 126.75pt; padding: 0pt 5.4pt; border-left: none; border-right: 31.875pt none #ffffff; border-top: none; border-bottom: 31.875pt none #ffffff; vertical-align: top;">
+<p style="margin-bottom: 0pt; margin-top: 0pt; text-align: center;"><span style="font-weight: bold; font-size: 16px;">&nbsp;</span></p>
+</td>
+<td style="width: 155.25pt; padding: 0pt 5.4pt; border-left: none; border-right: 31.875pt none #ffffff; border-top: none; border-bottom: 31.875pt none #ffffff; vertical-align: top;" colspan="3">
+<p style="margin-bottom: 0pt; margin-top: 0pt; text-align: center;"><span style="font-weight: bold; font-size: 16px;">&nbsp;</span></p>
+</td>
+<td style="width: 106.5pt; padding: 0pt 5.4pt; border-left: none; border-top: none; border-bottom: 31.875pt none #ffffff; vertical-align: top;">
+<p style="margin-bottom: 0pt; margin-top: 0pt; text-align: center;"><span style="font-weight: bold; font-size: 16px;">&nbsp;</span></p>
+</td>
+</tr>
+<tr>
+<td style="width: 152.3pt; padding: 0pt 5.4pt; border-right: 31.875pt none #ffffff; border-top: none; border-bottom: 31.875pt none #ffffff; vertical-align: top;">&nbsp;</td>
+<td style="width: 126.75pt; padding: 0pt 5.4pt; border-left: none; border-right: 31.875pt none #ffffff; border-top: none; border-bottom: 31.875pt none #ffffff; vertical-align: top;">&nbsp;</td>
+<td style="width: 155.25pt; padding: 0pt 5.4pt; border-left: none; border-right: 31.875pt none #ffffff; border-top: none; border-bottom: 31.875pt none #ffffff; vertical-align: top;" colspan="3">&nbsp;</td>
+<td style="width: 106.5pt; padding: 0pt 5.4pt; border-left: none; border-top: none; border-bottom: 31.875pt none #ffffff; vertical-align: top;">
+<p style="margin-bottom: 0pt; margin-top: 0pt; text-align: center;"><span style="font-weight: bold; font-size: 16px;"><a style="color: blue; font-weight: bold;">View full report</a></span></p>
+</td>
+</tr>
+<tr style="height: 40px; background: #eee;">
+<td style="width: 152.3pt; padding: 0pt 5.4pt; border-right: 31.875pt none #ffffff; border-top: none; border-bottom: 31.875pt none #ffffff; vertical-align: top;">&nbsp;</td>
+<td style="width: 126.75pt; padding: 0pt 5.4pt; border-left: none; border-right: 31.875pt none #ffffff; border-top: none; border-bottom: 31.875pt none #ffffff; vertical-align: top;" colspan="4">
+<p style="margin-bottom: 0pt; margin-top: 0pt; text-align: center;"><span style="font-weight: bold; font-size: 14px; margin-top: 20px;">Powered By ChurchPlus</span></p>
+</td>
+<td style="width: 155.25pt; padding: 0pt 5.4pt; border-left: none; border-right: 31.875pt none #ffffff; border-top: none; border-bottom: 31.875pt none #ffffff; vertical-align: top;">&nbsp;</td>
+<td style="width: 106.5pt; padding: 0pt 5.4pt; border-left: none; border-top: none; border-bottom: 31.875pt none #ffffff; vertical-align: top;">&nbsp;</td>
+</tr>
+</tbody>
+</table> -->
+
+            <table
+              style="border-collapse: collapse; max-width: 800px; padding: 0pt 0pt 0pt 0pt; box-shadow: 0px 3px 15px #00000029; border: 1px solid #dde2e6; border-radius: 5px;"
+              align="center">
+              <tbody>
+                <tr>
+                  <td style="width: 337.5pt; padding: 0pt 5.4pt; background: #ff5159; vertical-align: top;" colspan="5">
+                    <p style="margin-bottom: 0pt; margin-top: 0pt;"><span
+                        style="font-weight: bold; font-size: 16px;">&nbsp;</span></p>
+                    <p style="margin-bottom: 0pt; margin-top: 0pt;"><span
+                        style="color: #ffffff; font-weight: bold; font-size: 16px;">&nbsp;</span></p>
+                    <p style="margin-bottom: 0pt; margin-top: 0pt;"><span
+                        style="font-weight: bold; font-size: 16px;">&nbsp; &nbsp; &nbsp; </span><span
+                        style="color: #ffffff; font-weight: bold; font-size: 29px;">Event&nbsp;and&nbsp;Report</span></p>
+                  </td>
+                  <td style="width: 203.3pt; padding: 0pt 5.4pt; background: #980403; vertical-align: top;" colspan="2">
+                    <p style="margin-bottom: 0pt; margin-top: 0pt;"><span
+                        style="font-weight: bold; font-size: 16px;">&nbsp;</span></p>
+                    <p style="margin-bottom: 0pt; margin-top: 0pt;"><span
+                        style="font-weight: bold; font-size: 16px;">&nbsp;</span></p>
+                    <p style="margin-bottom: 0pt; margin-top: 0pt;"><span
+                        style="color: #ffffff; font-weight: bold; font-size: 16px;">&nbsp; &nbsp;
+                        &nbsp;Total&nbsp;Attendance: {{ stats.todayAttendance }}</span></p>
+                    <p style="margin-bottom: 0pt; margin-top: 0pt;"><span
+                        style="color: #ffffff; font-weight: bold; font-size: 16px;">&nbsp; &nbsp;
+                        &nbsp;Total&nbsp;Offering: {{ stats.todayOffering }}</span></p>
+                    <p style="margin-bottom: 0pt; margin-top: 0pt;">&nbsp;</p>
+                    <p style="margin-bottom: 0pt; margin-top: 0pt;">&nbsp;</p>
+                  </td>
+                </tr>
+                <tr>
+                  <td style="width: 337.5pt; padding: 0pt 5.4pt; vertical-align: top;" colspan="5">
+                    <p style="margin-bottom: 0pt; margin-top: 0pt;"><span
+                        style="font-weight: bold; font-size: 16px;">&nbsp;</span></p>
+                    <p style="text-indent: 20pt; margin-bottom: 0pt; margin-top: 0pt;"><span
+                        style="color: #c0c0c0; font-weight: bold; font-size: 13px;">Event&nbsp;Name</span></p>
+                    <p style="margin-bottom: 0pt; margin-top: 0pt;"><span
+                        style="font-weight: bold; font-size: 24px;">&nbsp; &nbsp; {{ stats.activityToday ?
+                          stats.activityToday.name : "" }} <br /> <span
+                          style="font-size: 14px; color: red; padding-left: 20px;">&nbsp; {{ eventDateString
+                          }}.</span></span></p>
+                  </td>
+                  <td style="width: 203.3pt; padding: 0pt 5.4pt; vertical-align: top;" colspan="3">
+                    <p style="margin-bottom: 0pt; margin-top: 0pt;"><span
+                        style="font-weight: bold; font-size: 16px;">&nbsp;</span></p>
+                    <p style="margin-bottom: 0pt; margin-top: 0pt;"><span
+                        style="font-weight: bold; font-size: 16px;">&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; Preacher: {{
+                          stats.activityToday ? stats.activityToday.preacher : "" }}</span></p>
+                    <p style="margin-bottom: 0pt; margin-top: 0pt;"><span
+                        style="font-weight: bold; font-size: 16px;">&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; Topic: {{
+                          stats.activityToday ? stats.activityToday.topic : "" }}</span></p>
+                    <p style="margin-bottom: 0pt; margin-top: 0pt;"><span
+                        style="font-weight: bold; font-size: 16px;">&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; First&nbsp;timers:
+                        {{ stats.todayFirstTimer }}</span></p>
+                    <p style="margin-bottom: 0pt; margin-top: 0pt;"><span
+                        style="font-weight: bold; font-size: 16px;">&nbsp; &nbsp; &nbsp; &nbsp; &nbsp;&nbsp;</span><span
+                        style="font-weight: bold; font-size: 16px;">New&nbsp;Converts: {{ stats.todayNewConvert }}</span>
+                    </p>
+                  </td>
+                </tr>
+                <tr>
+                  <td style="width: 152.3pt; padding: 0pt 5.4pt; background: #000000; vertical-align: top;">
+                    <p style="margin-bottom: 0pt; margin-top: 0pt;"><span
+                        style="font-weight: normal; font-size: 20px; color: #ffffff;">&nbsp; &nbsp;
+                        &nbsp;Attendance</span></p>
+                  </td>
+                  <td style="width: 388.5pt; padding: 0pt 5.4pt; vertical-align: top;" colspan="5">
+                    <p style="margin-bottom: 0pt; margin-top: 0pt;"><span
+                        style="font-weight: bold; font-size: 16px;">&nbsp;</span></p>
+                  </td>
+                </tr>
+                <tr>
+                  <td style="width: 152.3pt; padding: 0pt 5.4pt; vertical-align: top;">
+                    <p style="margin-bottom: 0pt; margin-top: 0pt; text-align: center;"><span
+                        style="font-weight: normal; font-size: 21px;">&nbsp;</span></p>
+                  </td>
+                  <td style="width: 388.5pt; padding: 0pt 5.4pt; vertical-align: top;" colspan="5">
+                    <p style="margin-bottom: 0pt; margin-top: 0pt;"><span
+                        style="font-weight: bold; font-size: 16px;">&nbsp;</span></p>
+                  </td>
+                </tr>
+                <tr>
+                  <td
+                    style="width: 152.3pt; padding: 0pt 5.4pt; border-bottom: 2.25pt solid #000000; vertical-align: top;">
+                    <p style="text-indent: 21pt; margin-bottom: 0pt; margin-top: 0pt;"><span
+                        style="font-weight: bold; font-size: 18px; color: #000;">Attendance&nbsp;item</span></p>
+                  </td>
+                  <td
+                    style="width: 188.2pt; padding: 0pt 5.4pt; border-bottom: 2.25pt solid #000000; vertical-align: top;"
+                    colspan="3">
+                    <p style="margin-bottom: 0pt; margin-top: 0pt;"><span
+                        style="font-weight: bolder; font-size: 18px; color: #000;">Count</span></p>
+                  </td>
+                  <td
+                    style="width: 200.3pt; padding: 0pt 5.4pt; border-bottom: 2.25pt solid #000000; vertical-align: top;"
+                    colspan="3">
+                    <p style="margin-bottom: 0pt; margin-top: 0pt;"><span
+                        style="font-weight: bold; font-size: 18px; color: #000;">Total</span></p>
+                  </td>
+                </tr>
+                <tr style="font-weight: normal;" v-for="(attendance, index) in activityAttendances" :key="index">
+                  <td
+                    style="width: 152.3pt; padding: 0pt 5.4pt; border-top: none; border-bottom: 31.875pt none #ffffff; vertical-align: top;">
+                    <p style="text-indent: 21pt; margin-bottom: 0pt; margin-top: 0pt;"><span
+                        style="font-weight: normal; font-size: 13px;">{{ attendance.attendanceTypeName }}</span></p>
+                  </td>
+                  <td
+                    style="width: 188.2pt; padding: 0pt 5.4pt; border-top: none; border-bottom: 31.875pt none #ffffff; vertical-align: top;"
+                    colspan="3">
+                    <p style="margin-bottom: 0pt; margin-top: 0pt;"><span style="font-weight: normal; font-size: 13px;">{{
+                      attendance.number }}</span></p>
+                  </td>
+                  <td
+                    style="width: 200.3pt; padding: 0pt 5.4pt; border-top: none; border-bottom: 31.875pt none #ffffff; vertical-align: top;"
+                    colspan="2">
+                    <p style="margin-bottom: 0pt; margin-top: 0pt;"><span style="font-weight: normal; font-size: 13px;">{{
+                      attendance.number }}</span></p>
+                  </td>
+                </tr>
+                <tr style="border-top: 3px solid;">
+                  <td style="width: 152.3pt; padding: 0pt 5.4pt; border-top: none; vertical-align: top;">
+                    <p style="text-indent: 21pt; margin-bottom: 0pt; margin-top: 0pt; text-align: center;"><span
+                        style="font-weight: bold; font-size: 16px;">&nbsp;</span></p>
+                  </td>
+                  <td style="width: 188.2pt; padding: 0pt 5.4pt; border-top: none; vertical-align: top;" colspan="3">
+                    <p style="margin-bottom: 0pt; margin-top: 0pt; text-align: right;"><span
+                        style="font-weight: bold; font-size: 16px;">Total:</span></p>
+                  </td>
+                  <td style="width: 200.3pt; padding: 0pt 5.4pt; border-top: none; vertical-align: top;" colspan="2">
+                    <p style="margin-bottom: 0pt; margin-top: 0pt;"><span style="font-weight: bold; font-size: 16px;">{{
+                      stats.todayAttendance }}</span></p>
+                  </td>
+                </tr>
+                <tr>
+                  <td style="width: 152.3pt; padding: 0pt 5.4pt; border-top: none; vertical-align: top;">
+                    <p style="text-indent: 21pt; margin-bottom: 0pt; margin-top: 0pt; text-align: center;"><span
+                        style="font-weight: bold; font-size: 16px;">&nbsp;</span></p>
+                  </td>
+                  <td style="width: 188.2pt; padding: 0pt 5.4pt; border-top: none; vertical-align: top;" colspan="3">
+                    <p style="margin-bottom: 0pt; margin-top: 0pt; text-align: center;"><span
+                        style="font-weight: bold; font-size: 16px;">&nbsp;</span></p>
+                  </td>
+                  <td style="width: 200.3pt; padding: 0pt 5.4pt; border-top: none; vertical-align: top;" colspan="2">
+                    <p style="margin-bottom: 0pt; margin-top: 0pt; text-align: center;"><span
+                        style="font-weight: bold; font-size: 16px;">&nbsp;</span></p>
+                  </td>
+                </tr>
+                <tr>
+                  <td style="width: 152.3pt; padding: 0pt 5.4pt; background: #000000; vertical-align: top;">
+                    <p style="margin-bottom: 0pt; margin-top: 0pt;"><span style="font-size: 20px; color: #ffffff;">&nbsp;
+                        &nbsp; &nbsp; Offering</span></p>
+                  </td>
+                  <td style="width: 188.2pt; padding: 0pt 5.4pt; vertical-align: top;" colspan="3">
+                    <p style="margin-bottom: 0pt; margin-top: 0pt; text-align: center;"><span
+                        style="font-weight: bold; font-size: 16px;">&nbsp;</span></p>
+                  </td>
+                  <td style="width: 200.3pt; padding: 0pt 5.4pt; vertical-align: top;" colspan="2">
+                    <p style="margin-bottom: 0pt; margin-top: 0pt; text-align: center;"><span
+                        style="font-weight: bold; font-size: 16px;">&nbsp;</span></p>
+                  </td>
+                </tr>
+                <tr>
+                  <td style="width: 152.3pt; padding: 0pt 5.4pt; vertical-align: top;">
+                    <p style="margin-bottom: 0pt; margin-top: 0pt; text-align: center;"><span
+                        style="font-size: 21px;">&nbsp;</span></p>
+                  </td>
+                  <td style="width: 188.2pt; padding: 0pt 5.4pt; vertical-align: top;" colspan="3">
+                    <p style="margin-bottom: 0pt; margin-top: 0pt; text-align: center;"><span
+                        style="font-weight: bold; font-size: 16px;">&nbsp;</span></p>
+                  </td>
+                  <td style="width: 200.3pt; padding: 0pt 5.4pt; vertical-align: top;" colspan="2">
+                    <p style="margin-bottom: 0pt; margin-top: 0pt; text-align: center;"><span
+                        style="font-weight: bold; font-size: 16px;">&nbsp;</span></p>
+                  </td>
+                </tr>
+                <tr style="border-bottom: 3px solid;">
+                  <td
+                    style="width: 152.3pt; padding: 0pt 5.4pt; border-right: 31.875pt none #ffffff; border-bottom: 31.875pt none #ffffff; vertical-align: top;">
+                    <p style="margin-bottom: 0pt; margin-top: 0pt;"><span
+                        style="font-weight: bold; font-size: 18px; color: #000;">&nbsp; &nbsp; &nbsp;
+                        Offering&nbsp;Item</span></p>
+                  </td>
+                  <td
+                    style="width: 126.75pt; padding: 0pt 5.4pt; border-left: none; border-right: 31.875pt none #ffffff; border-bottom: 31.875pt none #ffffff; vertical-align: top;">
+                    <p style="margin-bottom: 0pt; margin-top: 0pt;"><span
+                        style="font-weight: bold; font-size: 18px; color: #000;">Channel</span></p>
+                  </td>
+                  <td
+                    style="width: 155.25pt; padding: 0pt 5.4pt; border-left: none; border-right: 31.875pt none #ffffff; border-bottom: 31.875pt none #ffffff; vertical-align: top;"
+                    colspan="3">
+                    <p style="margin-bottom: 0pt; margin-top: 0pt;"><span
+                        style="font-weight: bold; font-size: 18px; color: #000;">Amount</span></p>
+                  </td>
+                  <td
+                    style="width: 106.5pt; padding: 0pt 5.4pt; border-left: none; border-bottom: 31.875pt none #ffffff; vertical-align: top;">
+                    <p style="margin-bottom: 0pt; margin-top: 0pt;"><span
+                        style="font-weight: bold; font-size: 18px; color: #000;">Total</span></p>
+                  </td>
+                </tr>
+                <tr style="font-weight: normal; font-size: 13px;" v-for="(offering, index) in activityOfferings"
+                  :key="index">
+                  <td
+                    style="width: 152.3pt; padding: 0pt 5.4pt; border-right: 31.875pt none #ffffff; border-top: none; border-bottom: 31.875pt none #ffffff; vertical-align: top;">
+                    <p style="margin-bottom: 0pt; margin-top: 0pt;"><span
+                        style="font-weight: normal; font-size: 13px;">&nbsp; &nbsp; &nbsp; &nbsp; &nbsp;{{
+                          offering.contribution }}</span></p>
+                  </td>
+                  <td
+                    style="width: 126.75pt; padding: 0pt 5.4pt; border-left: none; border-right: 31.875pt none #ffffff; border-top: none; border-bottom: 31.875pt none #ffffff; vertical-align: top;">
+                    <p style="margin-bottom: 0pt; margin-top: 0pt;"><span style="font-weight: normal; font-size: 13px;">{{
+                      offering.channel }}</span></p>
+                  </td>
+                  <td
+                    style="width: 155.25pt; padding: 0pt 5.4pt; border-left: none; border-right: 31.875pt none #ffffff; border-top: none; border-bottom: 31.875pt none #ffffff; vertical-align: top;"
+                    colspan="3">
+                    <p style="margin-bottom: 0pt; margin-top: 0pt;"><span style="font-weight: normal; font-size: 13px;">{{
+                      offering.currencyName }}&nbsp;{{ offering.amount }}</span></p>
+                  </td>
+                  <td
+                    style="width: 106.5pt; padding: 0pt 5.4pt; border-left: none; border-top: none; border-bottom: 31.875pt none #ffffff; vertical-align: top;">
+                    <p style="margin-bottom: 0pt; margin-top: 0pt;"><span style="font-weight: normal; font-size: 13px;">{{
+                      offering.currencyName }}&nbsp;{{ offering.amount }}</span></p>
+                  </td>
+                </tr>
+                <tr style="border-top: 3px solid;">
+                  <td
+                    style="width: 152.3pt; padding: 0pt 5.4pt; border-right: 31.875pt none #ffffff; border-top: none; border-bottom: 31.875pt none #ffffff; vertical-align: top;">
+                    <p style="margin-bottom: 0pt; margin-top: 0pt; text-align: center;"><span
+                        style="font-weight: bold; font-size: 16px;">&nbsp;</span></p>
+                  </td>
+                  <td
+                    style="width: 126.75pt; padding: 0pt 5.4pt; border-left: none; border-right: 31.875pt none #ffffff; border-top: none; border-bottom: 31.875pt none #ffffff; vertical-align: top;">
+                    <p style="margin-bottom: 0pt; margin-top: 0pt; text-align: center;"><span
+                        style="font-weight: bold; font-size: 16px;">&nbsp;</span></p>
+                  </td>
+                  <td
+                    style="width: 155.25pt; padding: 0pt 5.4pt; border-left: none; border-right: 31.875pt none #ffffff; border-top: none; border-bottom: 31.875pt none #ffffff; vertical-align: top;"
+                    colspan="3">
+                    <p style="margin-bottom: 0pt; margin-top: 0pt; text-align: right;"><span
+                        style="font-weight: bold; font-size: 16px;">Total:</span></p>
+                  </td>
+                  <td
+                    style="width: 106.5pt; padding: 0pt 5.4pt; border-left: none; border-top: none; border-bottom: 31.875pt none #ffffff; vertical-align: top;">
+                    <p style="margin-bottom: 0pt; margin-top: 0pt;"><span style="font-weight: bold; font-size: 16px;">{{
+                      stats.tenantCurrencyName }}&nbsp;{{ stats.todayOffering }}</span></p>
+                  </td>
+                </tr>
+                <tr>
+                  <td
+                    style="width: 152.3pt; padding: 0pt 5.4pt; border-right: 31.875pt none #ffffff; border-top: none; border-bottom: 31.875pt none #ffffff; vertical-align: top;">
+                    <p style="margin-bottom: 0pt; margin-top: 0pt; text-align: center;"><span
+                        style="font-weight: bold; font-size: 16px;">&nbsp;</span></p>
+                  </td>
+                  <td
+                    style="width: 126.75pt; padding: 0pt 5.4pt; border-left: none; border-right: 31.875pt none #ffffff; border-top: none; border-bottom: 31.875pt none #ffffff; vertical-align: top;">
+                    <p style="margin-bottom: 0pt; margin-top: 0pt; text-align: center;"><span
+                        style="font-weight: bold; font-size: 16px;">&nbsp;</span></p>
+                  </td>
+                  <td
+                    style="width: 155.25pt; padding: 0pt 5.4pt; border-left: none; border-right: 31.875pt none #ffffff; border-top: none; border-bottom: 31.875pt none #ffffff; vertical-align: top;"
+                    colspan="3">
+                    <p style="margin-bottom: 0pt; margin-top: 0pt; text-align: center;"><span
+                        style="font-weight: bold; font-size: 16px;">&nbsp;</span></p>
+                  </td>
+                  <td
+                    style="width: 106.5pt; padding: 0pt 5.4pt; border-left: none; border-top: none; border-bottom: 31.875pt none #ffffff; vertical-align: top;">
+                    <p style="margin-bottom: 0pt; margin-top: 0pt; text-align: center;"><span
+                        style="font-weight: bold; font-size: 16px;">&nbsp;</span></p>
+                  </td>
+                </tr>
+                <tr>
+                  <td style="width: 152.3pt; padding: 0pt 5.4pt; background: #000000; vertical-align: top;">
+                    <p style="margin-bottom: 0pt; margin-top: 0pt;"><span style="font-size: 20px; color: #ffffff;">&nbsp;
+                        &nbsp; &nbsp; Expense</span></p>
+                  </td>
+                  <td style="width: 188.2pt; padding: 0pt 5.4pt; vertical-align: top;" colspan="3">
+                    <p style="margin-bottom: 0pt; margin-top: 0pt; text-align: center;"><span
+                        style="font-weight: bold; font-size: 16px;">&nbsp;</span></p>
+                  </td>
+                  <td style="width: 200.3pt; padding: 0pt 5.4pt; vertical-align: top;" colspan="2">
+                    <p style="margin-bottom: 0pt; margin-top: 0pt; text-align: center;"><span
+                        style="font-weight: bold; font-size: 16px;">&nbsp;</span></p>
+                  </td>
+                </tr>
+                <tr>
+                  <td style="width: 152.3pt; padding: 0pt 5.4pt; vertical-align: top;">
+                    <p style="margin-bottom: 0pt; margin-top: 0pt; text-align: center;"><span
+                        style="font-size: 21px;">&nbsp;</span></p>
+                  </td>
+                  <td style="width: 188.2pt; padding: 0pt 5.4pt; vertical-align: top;" colspan="3">
+                    <p style="margin-bottom: 0pt; margin-top: 0pt; text-align: center;"><span
+                        style="font-weight: bold; font-size: 16px;">&nbsp;</span></p>
+                  </td>
+                  <td style="width: 200.3pt; padding: 0pt 5.4pt; vertical-align: top;" colspan="2">
+                    <p style="margin-bottom: 0pt; margin-top: 0pt; text-align: center;"><span
+                        style="font-weight: bold; font-size: 16px;">&nbsp;</span></p>
+                  </td>
+                </tr>
+                <tr style="border-bottom: 3px solid;">
+                  <td
+                    style="width: 152.3pt; padding: 0pt 5.4pt; border-right: 31.875pt none #ffffff; border-bottom: 31.875pt none #ffffff; vertical-align: top;">
+                    <p style="margin-bottom: 0pt; margin-top: 0pt;"><span
+                        style="font-weight: bold; font-size: 18px; color: #000;">&nbsp; &nbsp; &nbsp;
+                        Expense&nbsp;Item</span></p>
+                  </td>
+                  <td
+                    style="width: 126.75pt; padding: 0pt 5.4pt; border-left: none; border-right: 31.875pt none #ffffff; border-bottom: 31.875pt none #ffffff; vertical-align: top;">
+                    <p style="margin-bottom: 0pt; margin-top: 0pt;"><span
+                        style="font-weight: bold; font-size: 18px; color: #000;">Cash account</span></p>
+                  </td>
+                  <td
+                    style="width: 155.25pt; padding: 0pt 5.4pt; border-left: none; border-right: 31.875pt none #ffffff; border-bottom: 31.875pt none #ffffff; vertical-align: top;"
+                    colspan="3">
+                    <p style="margin-bottom: 0pt; margin-top: 0pt;"><span
+                        style="font-weight: bold; font-size: 18px; color: #000;">Amount</span></p>
+                  </td>
+                </tr>
+                <tr style="font-weight: normal; font-size: 13px;" v-for="(expense, index) in activityExpenses"
+                  :key="index">
+                  <td
+                    style="width: 152.3pt; padding: 0pt 5.4pt; border-right: 31.875pt none #ffffff; border-top: none; border-bottom: 31.875pt none #ffffff; vertical-align: top;">
+                    <p style="margin-bottom: 0pt; margin-top: 0pt;"><span
+                        style="font-weight: normal; font-size: 13px;">&nbsp; &nbsp; &nbsp; &nbsp; &nbsp;{{
+                          expense.memo }}</span></p>
+                  </td>
+                  <td
+                    style="width: 126.75pt; padding: 0pt 5.4pt; border-left: none; border-right: 31.875pt none #ffffff; border-top: none; border-bottom: 31.875pt none #ffffff; vertical-align: top;">
+                    <p style="margin-bottom: 0pt; margin-top: 0pt;"><span style="font-weight: normal; font-size: 13px;">{{
+                      getCashBankById(expense.creditAccountID) }}</span></p>
+                  </td>
+                  <td
+                    style="width: 155.25pt; padding: 0pt 5.4pt; border-left: none; border-right: 31.875pt none #ffffff; border-top: none; border-bottom: 31.875pt none #ffffff; vertical-align: top;"
+                    colspan="3">
+                    <p style="margin-bottom: 0pt; margin-top: 0pt;"><span style="font-weight: normal; font-size: 13px;">{{
+                      expense.amount }}</span></p>
+                  </td>
+                </tr>
+                <tr style="border-top: 3px solid;">
+                  <td
+                    style="width: 152.3pt; padding: 0pt 5.4pt; border-right: 31.875pt none #ffffff; border-top: none; border-bottom: 31.875pt none #ffffff; vertical-align: top;">
+                    <p style="margin-bottom: 0pt; margin-top: 0pt; text-align: center;"><span
+                        style="font-weight: bold; font-size: 16px;">&nbsp;</span></p>
+                  </td>
+                  <td
+                    style="width: 155.25pt; padding: 0pt 5.4pt; border-left: none; border-right: 31.875pt none #ffffff; border-top: none; border-bottom: 31.875pt none #ffffff; vertical-align: top;"
+                    colspan="3">
+                    <p style="margin-bottom: 0pt; margin-top: 0pt; text-align: right;"><span
+                        style="font-weight: bold; font-size: 16px;">Total:</span></p>
+                  </td>
+                  <td
+                    style="width: 106.5pt; padding: 0pt 5.4pt; border-left: none; border-top: none; border-bottom: 31.875pt none #ffffff; vertical-align: top;">
+                    <p style="margin-bottom: 0pt; margin-top: 0pt;"><span style="font-weight: bold; font-size: 16px;">{{
+                      summedExpense }}</span></p>
+                  </td>
+                </tr>
+                <tr style="border-top: 3px solid;">
+                  <td
+                    style="width: 152.3pt; padding: 0pt 5.4pt; border-right: 31.875pt none #ffffff; border-top: none; border-bottom: 31.875pt none #ffffff; vertical-align: top;">
+                    <p style="margin-bottom: 0pt; margin-top: 0pt; text-align: center;"><span
+                        style="font-weight: bold; font-size: 16px;">&nbsp;</span></p>
+                  </td>
+                  <td
+                    style="width: 155.25pt; padding: 0pt 5.4pt; border-left: none; border-right: 31.875pt none #ffffff; border-top: none; border-bottom: 31.875pt none #ffffff; vertical-align: top;"
+                    colspan="3">
+                    <p style="margin-bottom: 0pt; margin-top: 0pt; text-align: right;"><span
+                        style="font-weight: bold; font-size: 16px;">Net Income:</span></p>
+                  </td>
+                  <td
+                    style="width: 106.5pt; padding: 0pt 5.4pt; border-left: none; border-top: none; border-bottom: 31.875pt none #ffffff; vertical-align: top;">
+                    <p style="margin-bottom: 0pt; margin-top: 0pt;"><span style="font-weight: bold; font-size: 16px;">{{
+                      stats.tenantCurrencyName }}&nbsp;{{ parseInt(stats.todayOffering) - parseInt(summedExpense) }}</span></p>
+                  </td>
+                </tr>
+                <tr>
+                  <td
+                    style="width: 152.3pt; padding: 0pt 5.4pt; border-right: 31.875pt none #ffffff; border-top: none; border-bottom: 31.875pt none #ffffff; vertical-align: top;">
+                    <p style="margin-bottom: 0pt; margin-top: 0pt; text-align: center;"><span
+                        style="font-weight: bold; font-size: 16px;">&nbsp;</span></p>
+                  </td>
+                  <td
+                    style="width: 126.75pt; padding: 0pt 5.4pt; border-left: none; border-right: 31.875pt none #ffffff; border-top: none; border-bottom: 31.875pt none #ffffff; vertical-align: top;">
+                    <p style="margin-bottom: 0pt; margin-top: 0pt; text-align: center;"><span
+                        style="font-weight: bold; font-size: 16px;">&nbsp;</span></p>
+                  </td>
+                  <td
+                    style="width: 155.25pt; padding: 0pt 5.4pt; border-left: none; border-right: 31.875pt none #ffffff; border-top: none; border-bottom: 31.875pt none #ffffff; vertical-align: top;"
+                    colspan="3">
+                    <p style="margin-bottom: 0pt; margin-top: 0pt; text-align: center;"><span
+                        style="font-weight: bold; font-size: 16px;">&nbsp;</span></p>
+                  </td>
+                  <td
+                    style="width: 106.5pt; padding: 0pt 5.4pt; border-left: none; border-top: none; border-bottom: 31.875pt none #ffffff; vertical-align: top;">
+                    <p style="margin-bottom: 0pt; margin-top: 0pt; text-align: center;"><span
+                        style="font-weight: bold; font-size: 16px;">&nbsp;</span></p>
+                  </td>
+                </tr>
+                <tr>
+                  <td style="width: 152.3pt; padding: 0pt 5.4pt; background: #000000; vertical-align: top;">
+                    <p style="margin-bottom: 0pt; margin-top: 0pt;"><span style="font-size: 20px; color: #ffffff;">&nbsp;
+                        &nbsp; &nbsp; Note</span></p>
+                  </td>
+                  <td style="width: 188.2pt; padding: 0pt 5.4pt; vertical-align: top;" colspan="3">
+                    <p style="margin-bottom: 0pt; margin-top: 0pt; text-align: center;"><span
+                        style="font-weight: bold; font-size: 16px;">&nbsp;</span></p>
+                  </td>
+                  <td style="width: 200.3pt; padding: 0pt 5.4pt; vertical-align: top;" colspan="2">
+                    <p style="margin-bottom: 0pt; margin-top: 0pt; text-align: center;"><span
+                        style="font-weight: bold; font-size: 16px;">&nbsp;</span></p>
+                  </td>
+                </tr>
+                <tr>
+                  <td style="width: 152.3pt; padding: 0pt 5.4pt; vertical-align: top;">
+                    <p style="margin-bottom: 0pt; margin-top: 0pt; text-align: center;"><span
+                        style="font-size: 21px;">&nbsp;</span></p>
+                  </td>
+                  <td style="width: 188.2pt; padding: 0pt 5.4pt; vertical-align: top;" colspan="3">
+                    <p style="margin-bottom: 0pt; margin-top: 0pt; text-align: center;"><span
+                        style="font-weight: bold; font-size: 16px;">&nbsp;</span></p>
+                  </td>
+                  <td style="width: 200.3pt; padding: 0pt 5.4pt; vertical-align: top;" colspan="2">
+                    <p style="margin-bottom: 0pt; margin-top: 0pt; text-align: center;"><span
+                        style="font-weight: bold; font-size: 16px;">&nbsp;</span></p>
+                  </td>
+                </tr>
+                <tr style="border-bottom: 3px solid;">
+                  <td colspan="8"
+                    style="width: 152.3pt; padding: 0pt 5.4pt; border-right: 31.875pt none #ffffff; border-bottom: 31.875pt none #ffffff; vertical-align: top;">
+                    <p style="margin-bottom: 0pt; margin-top: 0pt;"><span
+                        style="font-weight: bold; font-size: 18px; color: #000; background: #eee; padding: 7px; border-radius: 10px">&nbsp;
+                        &nbsp; &nbsp;
+                        {{ stats.activityToday.note ? stats.activityToday.note : "No note to display" }}</span></p>
+                  </td>
+                </tr>
+                <tr>
+                  <td style="width: 152.3pt; padding: 0pt 5.4pt; vertical-align: top;">
+                    <p style="margin-bottom: 0pt; margin-top: 0pt; text-align: center;"><span
+                        style="font-size: 21px;">&nbsp;</span></p>
+                  </td>
+                  <td style="width: 188.2pt; padding: 0pt 5.4pt; vertical-align: top;" colspan="3">
+                    <p style="margin-bottom: 0pt; margin-top: 0pt; text-align: center;"><span
+                        style="font-weight: bold; font-size: 16px;">&nbsp;</span></p>
+                  </td>
+                  <td style="width: 200.3pt; padding: 0pt 5.4pt; vertical-align: top;" colspan="2">
+                    <p style="margin-bottom: 0pt; margin-top: 0pt; text-align: center;"><span
+                        style="font-weight: bold; font-size: 16px;">&nbsp;</span></p>
+                  </td>
+                </tr>
+                <tr>
+                  <td
+                    style="width: 152.3pt; padding: 0pt 5.4pt; border-right: 31.875pt none #ffffff; border-top: none; border-bottom: 31.875pt none #ffffff; vertical-align: top;">
+                    <p style="margin-bottom: 0pt; margin-top: 0pt; text-align: center;"><span
+                        style="font-weight: bold; font-size: 16px;">&nbsp;</span></p>
+                  </td>
+                  <td
+                    style="width: 126.75pt; padding: 0pt 5.4pt; border-left: none; border-right: 31.875pt none #ffffff; border-top: none; border-bottom: 31.875pt none #ffffff; vertical-align: top;">
+                    <p style="margin-bottom: 0pt; margin-top: 0pt; text-align: center;"><span
+                        style="font-weight: bold; font-size: 16px;">&nbsp;</span></p>
+                  </td>
+                  <td
+                    style="width: 155.25pt; padding: 0pt 5.4pt; border-left: none; border-right: 31.875pt none #ffffff; border-top: none; border-bottom: 31.875pt none #ffffff; vertical-align: top;"
+                    colspan="3">
+                    <p style="margin-bottom: 0pt; margin-top: 0pt; text-align: center;"><span
+                        style="font-weight: bold; font-size: 16px;">&nbsp;</span></p>
+                  </td>
+                  <td
+                    style="width: 106.5pt; padding: 0pt 5.4pt; border-left: none; border-top: none; border-bottom: 31.875pt none #ffffff; vertical-align: top;">
+                    <p style="margin-bottom: 0pt; margin-top: 0pt; text-align: center;"><span
+                        style="font-weight: bold; font-size: 16px;">&nbsp;</span></p>
+                  </td>
+                </tr>
+                <tr>
+                  <td
+                    style="width: 152.3pt; padding: 0pt 5.4pt; border-right: 31.875pt none #ffffff; border-top: none; border-bottom: 31.875pt none #ffffff; vertical-align: top;">
+                    &nbsp;</td>
+                  <td
+                    style="width: 126.75pt; padding: 0pt 5.4pt; border-left: none; border-right: 31.875pt none #ffffff; border-top: none; border-bottom: 31.875pt none #ffffff; vertical-align: top;">
+                    &nbsp;</td>
+                  <td
+                    style="width: 155.25pt; padding: 0pt 5.4pt; border-left: none; border-right: 31.875pt none #ffffff; border-top: none; border-bottom: 31.875pt none #ffffff; vertical-align: top;"
+                    colspan="3">&nbsp;</td>
+                  <td
+                    style="width: 106.5pt; padding: 0pt 5.4pt; border-left: none; border-top: none; border-bottom: 31.875pt none #ffffff; vertical-align: top;">
+                    <p style="margin-bottom: 0pt; margin-top: 0pt; text-align: center;"><span
+                        style="font-weight: bold; font-size: 16px;"><a :href="url"
+                          style="color: blue; font-weight: bold;">View full report</a></span></p>
+                  </td>
+                </tr>
+                <tr style="height: 40px; background: #eee;">
+                  <td
+                    style="width: 152.3pt; padding: 0pt 5.4pt; border-right: 31.875pt none #ffffff; border-top: none; border-bottom: 31.875pt none #ffffff; vertical-align: top;">
+                    &nbsp;</td>
+                  <td
+                    style="width: 126.75pt; padding: 0pt 5.4pt; border-left: none; border-right: 31.875pt none #ffffff; border-top: none; border-bottom: 31.875pt none #ffffff; vertical-align: top;"
+                    colspan="4">
+                    <p style="margin-bottom: 0pt; margin-top: 0pt; text-align: center;"><span
+                        style="font-weight: bold; font-size: 14px; margin-top: 20px;">Powered By ChurchPlus</span></p>
+                  </td>
+                  <td
+                    style="width: 155.25pt; padding: 0pt 5.4pt; border-left: none; border-right: 31.875pt none #ffffff; border-top: none; border-bottom: 31.875pt none #ffffff; vertical-align: top;">
+                    &nbsp;</td>
+                  <td
+                    style="width: 106.5pt; padding: 0pt 5.4pt; border-left: none; border-top: none; border-bottom: 31.875pt none #ffffff; vertical-align: top;">
+                    &nbsp;</td>
+                </tr>
+              </tbody>
             </table>
+
           </div>
         </div>
 
@@ -2496,5 +3495,4 @@ a {
   .def-btn {
     max-width: 280px;
   }
-}
-</style>
+}</style>
