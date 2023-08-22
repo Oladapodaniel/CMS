@@ -33,7 +33,7 @@
       <div class="col-md-12 py-4">
         <div class="row">
           <div class="col-md-8">
-            <el-input v-model="searchText" class="w-100 m-2" placeholder="Search" :prefix-icon="Search" v-if="groupDetail && groupDetail.peopoleAttendancesDTOs && groupDetail.peopoleAttendancesDTOs.length > 0 && !attendanceTableLoading" />
+            <el-input v-model="searchText" class="w-100 m-md-2" placeholder="Search" :prefix-icon="Search" v-if="groupDetail && groupDetail.peopoleAttendancesDTOs && groupDetail.peopoleAttendancesDTOs.length > 0 && !attendanceTableLoading" />
             <!-- <p class="search-span px-2">
               <i class="pi pi-search p-2" style="height: 30px; width: 30px"></i>
               <input
@@ -44,7 +44,7 @@
               />
             </p> -->
           </div>
-          <div class="col-md-4 d-md-flex justify-content-end d-none">
+          <div class="col-md-4">
             <!-- <el-button round size="large" class=" kiosk-mode mt-2 " @click="enterKioskMode">
               {{ kioskButtonText }} kiosk mode
             </el-button> -->
@@ -457,8 +457,8 @@ export default {
         try {
           checking.value = true;
           response = await attendanceservice.checkout({
-            checkInAttendanceID: props.person.attendanceID,
-            personAttendanceID: props.person.id,
+            checkInAttendanceID: item.attendanceID,
+            personAttendanceID: item.id,
           });
           checking.value = false;
 
@@ -476,6 +476,7 @@ export default {
             });
           }
         } catch (error) {
+          console.log(error)
           checking.value = false;
           ElMessage({
             type: "error",
