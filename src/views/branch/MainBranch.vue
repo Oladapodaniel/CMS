@@ -54,10 +54,12 @@
                 <!-- </router-link
               > -->
             </div>
-            <div class="mt-2 h6 font-weight-bold">
-              <router-link class="primary--text" to="/tenant/email/compose"
-                >Send Email</router-link
-              >
+            <div class="mt-2 h6 font-weight-bold" @click="sendMarkedBranchEmail">
+              <!-- <router-link class="primary--text" to="/tenant/email/compose"
+                > -->
+                Send Email
+                <!-- </router-link
+              > -->
             </div>
             <div class="mt-2 h6 font-weight-bold">
               <router-link
@@ -845,6 +847,17 @@
         </div>
       </template>
     </el-drawer>
+    <el-drawer v-model="showEmail" :size="mdAndUp || lgAndUp || xlAndUp ? '70%' : '100%'" direction="rtl">
+      <template #header>
+        <h4>Send Email</h4>
+      </template>
+      <template #default>
+        <div>
+          <emailComponent @closesidemodal="() => showEmail = false" />
+          <!-- <emailComponent :selectedGroupMembers="markedMembers" @closesidemodal="() => showEmail = false" /> -->
+        </div>
+      </template>
+    </el-drawer>
     <el-skeleton class="w-100" animated v-if="loading">
       <template #template>
         <div
@@ -948,6 +961,7 @@ export default {
     const closeStatusModal = ref();
     const levelmodalBtn = ref();
     const branchSideShow = ref(false)
+    const showEmail = ref(false)
     const getAverageAttendanceItem = ref([]);
     const tenantId = ref(
       store.getters.currentUser && store.getters.currentUser.tenantId
@@ -966,6 +980,11 @@ export default {
       // contacts.value = marked.value.filter((i) => i.mobilePhone).map((i) => i.mobilePhone).join()
       showSMS.value = true;
     }
+    const sendMarkedBranchEmail = () => {
+      // contacts.value = marked.value.filter((i) => i.mobilePhone).map((i) => i.mobilePhone).join()
+      showEmail.value = true;
+    }
+    
     const branchData = ref([
       { name: null, value: 34 },
       { name: "Website", value: 2 },
@@ -1371,6 +1390,7 @@ export default {
       series,
       branchesAnalytics,
       branchDetail,
+      sendMarkedBranchEmail,
       selectedMonthly,
       selectedWeekly,
       selectedType1,
@@ -1394,6 +1414,7 @@ export default {
       goToAddBranch,
       attendance,
       closeJoinNetworkModal,
+      showEmail,
       averageAttendace,
       getAverageIncomeChart,
     };
