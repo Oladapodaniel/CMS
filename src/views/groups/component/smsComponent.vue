@@ -8,28 +8,46 @@
           <!-- {{ phoneNumbers }}phoneNumbers {{ groupData }} data -->
           <Toast />
 
-          <el-dialog title="Select Date and Time" v-model="display"
-            :width="mdAndUp || lgAndUp || xlAndUp ? `50%` : xsOnly ? `90%` : `70%`" align-center>
+          <el-dialog
+            title="Select Date and Time"
+            v-model="display"
+            :width="
+              mdAndUp || lgAndUp || xlAndUp ? `50%` : xsOnly ? `90%` : `70%`
+            "
+            align-center
+          >
             <div class="row">
               <div class="col-md-12">
-               <input type="datetime-local" class="form-control my-3" v-model="executionDate" placeholder="Select date and time" />
+                <input
+                  type="datetime-local"
+                  class="form-control my-3"
+                  v-model="executionDate"
+                  placeholder="Select date and time"
+                />
               </div>
             </div>
             <template #footer>
               <span class="dialog-footer">
                 <div class="mt-2">
-                  <el-button class="secondary-button" @click="(display = false)" round>
+                  <el-button
+                    class="secondary-button"
+                    @click="display = false"
+                    round
+                  >
                     Cancel
                   </el-button>
-                  <el-button :color="primarycolor" :loading="scheduleLoading" @click="contructScheduleMessageBody(2, '')"
-                    round>
+                  <el-button
+                    :color="primarycolor"
+                    :loading="scheduleLoading"
+                    @click="contructScheduleMessageBody(2, '')"
+                    round
+                  >
                     Schedule
                   </el-button>
                 </div>
               </span>
             </template>
           </el-dialog>
-
         </div>
       </div>
 
@@ -39,23 +57,61 @@
         </div>
       </div>
 
-      <div v-if="false" class="row">
+      <div
+        v-if="route.fullPath == '/tenant/branch/mainbranchsummary'"
+        class="row"
+      >
         <div class="col-md-2 pr-md-0 col-lg-2 align-self-center">
           <span class="small-text">Send to : </span>
         </div>
         <div class="p-0 col-md-10 col-lg-10 form-group mb-0">
+          <el-dropdown trigger="click" class="w-100">
+            <div class="d-flex justify-content-between border-contribution text-dark w-100" size="large">
+              <span>Select Destination</span>
+              <div>
+                <el-icon class="el-icon--right">
+                  <arrow-down />
+                </el-icon>
+              </div>
+            </div>
+            <template #dropdown>
+              <el-dropdown-menu>
+                <el-dropdown-item v-for="(destination, index) in possibleBranchSMSDestination" :key="index">
+                  <a class="no-decoration text-dark" @click="showSection(index)">
+                    {{ destination }}
+                  </a>
+                </el-dropdown-item>
+              </el-dropdown-menu>
+            </template>
+          </el-dropdown>
+        </div>
+        <!-- <div class="p-0 col-md-10 col-lg-10 form-group mb-0">
           <div class="dropdown">
-            <button class="btn btn-default border dropdown-toggle small-text pl-md-0" type="button"
-              id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"
-              @click="closeDropdownIfOpen">
+            <button
+              class="btn btn-default border dropdown-toggle small-text pl-md-0 dd-item"
+              type="button"
+              id="dropdownMenuButton"
+              data-toggle="dropdown"
+              aria-haspopup="true"
+              aria-expanded="false"
+              @click="closeDropdownIfOpen"
+            >{{possibleBranchSMSDestination}}
               Select Destination
             </button>
-            <div class="dropdown-menu w-100" aria-labelledby="dropdownMenuButton">
-              <a class="dropdown-item c-pointer small-text" v-for="(destination, index) in possibleSMSDestinations"
-                :key="index" @click="showSection(index)">{{ destination }}</a>
+            <div
+              class="dropdown-menu w-100 dd-item"
+              aria-labelledby="dropdownMenuButton"
+            >
+              <a
+                class="dropdown-item c-pointer small-text dd-item"
+                v-for="(destination, index) in possibleBranchSMSDestination"
+                :key="index"
+                @click="showSection(index)"
+                >{{ destination }}</a
+              >
             </div>
           </div>
-        </div>
+        </div> -->
       </div>
 
       <div v-if="false" class="row mb-1">
@@ -68,10 +124,18 @@
         <div class="col-md-2"></div>
         <div class="col-md-10 px-0">
           <span>
-            <input class="form-control dropdown-toggle my-1 px-1 small-text" type="text" id="dropdownMenu"
-              value="All Contacts" disabled />
-            <span class="close-allcontacts c-pointer" @click="() => (sendToAll = false)"><i
-                class="pi pi-times"></i></span>
+            <input
+              class="form-control dropdown-toggle my-1 px-1 small-text"
+              type="text"
+              id="dropdownMenu"
+              value="All Contacts"
+              disabled
+            />
+            <span
+              class="close-allcontacts c-pointer"
+              @click="() => (sendToAll = false)"
+              ><i class="pi pi-times"></i
+            ></span>
           </span>
         </div>
       </div>
@@ -80,39 +144,67 @@
       <div class="row mb-2" v-if="groupSelectionTab">
         <div class="col-md-2"></div>
         <div class="col-md-10 px-0 grey-rounded-border">
-          <ul class="d-flex flex-wrap pl-1 mb-0 dd-item small-text" @click="() => groupSelectInput.focus()">
-            <li style="list-style: none; min-width: 100px" v-for="(group, index) in selectedGroups" :key="index"
-              class="email-destination d-flex justify-content-between m-1">
+          <ul
+            class="d-flex flex-wrap pl-1 mb-0 dd-item small-text"
+            @click="() => groupSelectInput.focus()"
+          >
+            <li
+              style="list-style: none; min-width: 100px"
+              v-for="(group, index) in selectedGroups"
+              :key="index"
+              class="email-destination d-flex justify-content-between m-1"
+            >
               <!-- <span
               class="email-destination m-1"
               
             > -->
               <span>{{ group.name }}</span>
-              <span class="ml-2 remove-email" @click="removeGroup(index)">x</span>
+              <span class="ml-2 remove-email" @click="removeGroup(index)"
+                >x</span
+              >
               <!-- </span> -->
             </li>
             <li style="list-style: none" class="">
-              <input type="text" class="border-0 dd-item" ref="groupSelectInput" :class="{
-                'w-100': selectedGroups.length === 0,
-                'minimized-input-width': selectedGroups.length > 0,
-              }" @focus="showGroupList" @click="showGroupList" style="padding: 0.5rem" :placeholder="`${selectedGroups.length > 0 ? '' : 'Select groups'
-}`" />
+              <input
+                type="text"
+                class="border-0 dd-item"
+                ref="groupSelectInput"
+                :class="{
+                  'w-100': selectedGroups.length === 0,
+                  'minimized-input-width': selectedGroups.length > 0,
+                }"
+                @focus="showGroupList"
+                @click="showGroupList"
+                style="padding: 0.5rem"
+                :placeholder="`${
+                  selectedGroups.length > 0 ? '' : 'Select groups'
+                }`"
+              />
             </li>
           </ul>
-          <div class="col-md-12 px-2 select-groups-dropdown dd-item pt-2" v-if="groupListShown">
+          <div
+            class="col-md-12 px-2 select-groups-dropdown dd-item pt-2"
+            v-if="groupListShown"
+          >
             <div class="row dd-item" v-if="categories.length === 0">
               <div class="col-md-12 dd-item">
                 <p class="small-text">No groups yet</p>
               </div>
             </div>
-            <div class="row dd-item" v-for="(category, index) in categories" :key="index">
+            <div
+              class="row dd-item"
+              v-for="(category, index) in categories"
+              :key="index"
+            >
               <div class="col-md-12 dd-item" v-if="allGroups[index].length > 0">
                 <div class="row dd-item">
                   <div class="col-md-12 dd-item">
                     <h6 class="text-uppercase dd-item font-weight-bold">
                       {{ category }}
                     </h6>
-                    <a class="dropdown-item px-1 c-pointer dd-item small-text" v-for="(group, indx) in allGroups[index]"
+                    <a
+                      class="dropdown-item px-1 c-pointer dd-item small-text"
+                      v-for="(group, indx) in allGroups[index]"
                       @click="
                         selectGroup(
                           group.category,
@@ -121,7 +213,9 @@
                           index,
                           indx
                         )
-                      " :key="indx">
+                      "
+                      :key="indx"
+                    >
                       {{ group.name }}
                     </a>
                   </div>
@@ -137,46 +231,83 @@
       <div class="row" v-if="membershipSelectionTab">
         <div class="col-md-2"></div>
         <div class="col-md-10 pl-0 grey-rounded-border">
-          <ul class="d-flex flex-wrap px-1 mb-0 m-dd-item" @click="() => memberSelectInput.focus()">
-            <li style="list-style: none; min-width: 100px" v-for="(member, indx) in selectedMembers" :key="indx"
-              class="email-destination d-flex justify-content-between m-1">
+          <ul
+            class="d-flex flex-wrap px-1 mb-0 m-dd-item"
+            @click="() => memberSelectInput.focus()"
+          >
+            <li
+              style="list-style: none; min-width: 100px"
+              v-for="(member, indx) in selectedMembers"
+              :key="indx"
+              class="email-destination d-flex justify-content-between m-1"
+            >
               <!-- <span
               class="email-destination m-1"
               
             > -->
               <span>{{ member.name }}</span>
-              <span class="ml-2 remove-email" @click="removeMember(indx)">x</span>
+              <span class="ml-2 remove-email" @click="removeMember(indx)"
+                >x</span
+              >
               <!-- </span> -->
             </li>
             <li style="list-style: none" class="m-dd-item">
-              <input type="text" class="border-0 m-dd-item text" ref="memberSelectInput" @input="searchForPerson"
+              <input
+                type="text"
+                class="border-0 m-dd-item text"
+                ref="memberSelectInput"
+                @input="searchForPerson"
                 :class="{
                   'w-100': selectedMembers.length === 0,
                   'minimized-input-width': selectedMembers.length > 0,
-                }" @focus="showMemberList" @click="showMemberList" v-model="searchText" style="padding: 0.5rem"
-                :placeholder="`${selectedMembers.length > 0 ? '' : 'Select from members'
-                }`" />
+                }"
+                @focus="showMemberList"
+                @click="showMemberList"
+                v-model="searchText"
+                style="padding: 0.5rem"
+                :placeholder="`${
+                  selectedMembers.length > 0 ? '' : 'Select from members'
+                }`"
+              />
             </li>
           </ul>
-          <div class="col-md-12 px-0 select-groups-dropdown m-dd-item" v-if="memberListShown">
+          <div
+            class="col-md-12 px-0 select-groups-dropdown m-dd-item"
+            v-if="memberListShown"
+          >
             <div class="dropdownmenu pt-0 w-100 m-dd-item">
-              <a class="dropdown-item px-1 c-pointer m-dd-item" v-for="(member, index) in memberSearchResults"
-                :key="index" @click="selectMember(member, index)">{{ member.name }}</a>
-              <p class="bg-secondary p-1 mb-0 disable m-dd-item" v-if="
-                searchText.length < 3 &&
-                loading == false &&
-                memberSearchResults.length === 0
-              ">
+              <a
+                class="dropdown-item px-1 c-pointer m-dd-item"
+                v-for="(member, index) in memberSearchResults"
+                :key="index"
+                @click="selectMember(member, index)"
+                >{{ member.name }}</a
+              >
+              <p
+                class="bg-secondary p-1 mb-0 disable m-dd-item"
+                v-if="
+                  searchText.length < 3 &&
+                  loading == false &&
+                  memberSearchResults.length === 0
+                "
+              >
                 Enter 3 or more characters
               </p>
-              <p aria-disabled="true" class="btn btn-default p-1 mb-0 disable m-dd-item" v-if="
-                memberSearchResults.length === 0 &&
-                searchText.length >= 3 &&
-                !loading
-              ">
+              <p
+                aria-disabled="true"
+                class="btn btn-default p-1 mb-0 disable m-dd-item"
+                v-if="
+                  memberSearchResults.length === 0 &&
+                  searchText.length >= 3 &&
+                  !loading
+                "
+              >
                 No match found
               </p>
-              <p class="btn btn-default p-1 mb-0 disable m-dd-item" v-if="loading && searchText.length >= 3">
+              <p
+                class="btn btn-default p-1 mb-0 disable m-dd-item"
+                v-if="loading && searchText.length >= 3"
+              >
                 <i class="fas fa-circle-notch fa-spin m-dd-item"></i>
               </p>
             </div>
@@ -190,9 +321,15 @@
         <div class="row">
           <div class="col-md-2"></div>
           <div class="col-md-10 py-2 px-0 grey-rounded-border">
-            <span class="email-destination m-1" v-for="(member, indx) in selectedMembers" :key="indx">
+            <span
+              class="email-destination m-1"
+              v-for="(member, indx) in selectedMembers"
+              :key="indx"
+            >
               <span class="small-text">{{ member.name }}</span>
-              <span class="ml-2 remove-email" @click="removeMember(indx)">x</span>
+              <span class="ml-2 remove-email" @click="removeMember(indx)"
+                >x</span
+              >
             </span>
 
             <div class="dropdown">
@@ -208,37 +345,66 @@
                 aria-expanded="false"
               /> -->
 
-              <div class="dropdown-menu pt-0 w-100" aria-labelledby="dropdownMenu">
-                <a class="dropdown-item px-1 c-pointer" v-for="(member, index) in memberSearchResults" :key="index"
-                  @click="selectMember(member, index)">{{ member.name }}</a>
-                <p class="bg-secondary p-1 mb-0 disable small-text" v-if="
-                  searchText.length < 3 &&
-                  loading == false &&
-                  memberSearchResults.length === 0
-                ">
+              <div
+                class="dropdown-menu pt-0 w-100"
+                aria-labelledby="dropdownMenu"
+              >
+                <a
+                  class="dropdown-item px-1 c-pointer"
+                  v-for="(member, index) in memberSearchResults"
+                  :key="index"
+                  @click="selectMember(member, index)"
+                  >{{ member.name }}</a
+                >
+                <p
+                  class="bg-secondary p-1 mb-0 disable small-text"
+                  v-if="
+                    searchText.length < 3 &&
+                    loading == false &&
+                    memberSearchResults.length === 0
+                  "
+                >
                   Enter 3 or more characters
                 </p>
-                <p aria-disabled="true" class="btn btn-default p-1 mb-0 disable small-text" v-if="
-                  memberSearchResults.length === 0 &&
-                  searchText.length >= 3 &&
-                  !loading
-                ">
+                <p
+                  aria-disabled="true"
+                  class="btn btn-default p-1 mb-0 disable small-text"
+                  v-if="
+                    memberSearchResults.length === 0 &&
+                    searchText.length >= 3 &&
+                    !loading
+                  "
+                >
                   No match found
                 </p>
-                <p class="btn btn-default p-1 mb-0 disable" v-if="loading && searchText.length >= 3">
+                <p
+                  class="btn btn-default p-1 mb-0 disable"
+                  v-if="loading && searchText.length >= 3"
+                >
                   <i class="fas fa-circle-notch fa-spin"></i>
                 </p>
               </div>
             </div>
           </div>
-          <div class="col-md-12 grey-rounded-border groups" :class="{ hide: !groupsAreVissible }">
-            <div class="row" v-for="(category, index) in categories" :key="index">
+          <div
+            class="col-md-12 grey-rounded-border groups"
+            :class="{ hide: !groupsAreVissible }"
+          >
+            <div
+              class="row"
+              v-for="(category, index) in categories"
+              :key="index"
+            >
               <div class="col-md-12">
                 <div class="row">
                   <div class="col-md-12">
                     <h4 class="px-14">{{ category }}</h4>
-                    <p v-for="(group, indx) in allGroups[index]"
-                      @click="selectGroup(group.category, group.id, group.name)" :key="indx" class="small-text">
+                    <p
+                      v-for="(group, indx) in allGroups[index]"
+                      @click="selectGroup(group.category, group.id, group.name)"
+                      :key="indx"
+                      class="small-text"
+                    >
                       {{ group.name }}
                     </p>
                   </div>
@@ -254,17 +420,31 @@
         <div v-if="false" class="row">
           <div class="col-md-2"></div>
           <div class="col-md-10 py-2 px-0">
-            <textarea class="form-control w-100 px-1 grey-rounded-border" placeholder="Enter phone number(s)"
-              v-model="phoneNumber"></textarea>
+            <textarea
+              class="form-control w-100 px-1 grey-rounded-border"
+              placeholder="Enter phone number(s)"
+              v-model="phoneNumber"
+            ></textarea>
           </div>
-          <div class="col-md-12 grey-rounded-border groups" :class="{ hide: !groupsAreVissible }">
-            <div class="row" v-for="(category, index) in categories" :key="index">
+          <div
+            class="col-md-12 grey-rounded-border groups"
+            :class="{ hide: !groupsAreVissible }"
+          >
+            <div
+              class="row"
+              v-for="(category, index) in categories"
+              :key="index"
+            >
               <div class="col-md-12">
                 <div class="row">
                   <div class="col-md-12">
                     <h4 class="px-14">{{ category }}</h4>
-                    <p v-for="(group, indx) in allGroups[index]"
-                      @click="selectGroup(group.category, group.id, group.name)" :key="indx" class="small-text">
+                    <p
+                      v-for="(group, indx) in allGroups[index]"
+                      @click="selectGroup(group.category, group.id, group.name)"
+                      :key="indx"
+                      class="small-text"
+                    >
                       {{ group.name }}
                     </p>
                   </div>
@@ -282,19 +462,29 @@
           <div class="d-flex justify-content-between">
             <input type="file" class="form-control-file" @change="uploadFile" />
             <div>
-              <i class="pi pi-times mr-2 c-pointer" @click="() => (contactUpload = false)"></i>
+              <i
+                class="pi pi-times mr-2 c-pointer"
+                @click="() => (contactUpload = false)"
+              ></i>
             </div>
           </div>
           <div class="mt-1">
-            <a href="/files/Upload_Contact Template.csv" class="template-text text-decoration-none font-weight-bold"
-              download>Download template</a>
+            <a
+              href="/files/Upload_Contact Template.csv"
+              class="template-text text-decoration-none font-weight-bold"
+              download
+              >Download template</a
+            >
           </div>
         </div>
       </div>
 
-      <div class="row mt-1" v-if="
-        phoneNumberSelectionTab || membershipSelectionTab || groupSelectionTab
-      ">
+      <div
+        class="row mt-1"
+        v-if="
+          phoneNumberSelectionTab || membershipSelectionTab || groupSelectionTab
+        "
+      >
         <div class="col-md-12 pr-0">
           <hr class="hr my-1" />
         </div>
@@ -308,17 +498,23 @@
           <el-dropdown trigger="click" class="w-100">
             <el-button class="w-100">
               <div class="d-flex justify-content-between">
-                <div>{{
+                <div>
+                  {{
                     Object.keys(selectedSender).length > 0
                       ? selectedSender.mask
                       : "Select Sender Id"
-                }}</div>
+                  }}
+                </div>
                 <el-icon class="el-icon--right"><arrow-down /></el-icon>
               </div>
             </el-button>
             <template #dropdown>
               <el-dropdown-menu>
-                <el-dropdown-item v-for="(item, index) in searchSenderIDs" :key="index" @click="setIdToSubject(item)">
+                <el-dropdown-item
+                  v-for="(item, index) in searchSenderIDs"
+                  :key="index"
+                  @click="setIdToSubject(item)"
+                >
                   {{ item.mask }}
                 </el-dropdown-item>
               </el-dropdown-menu>
@@ -364,9 +560,17 @@
           <span class="font-weight-600 small-text">Message: </span>
         </div>
         <div class="col-md-10 px-0">
-          <textarea rows="10" class="text-area my-2 small-text" v-model="editorData"></textarea>
+          <textarea
+            rows="10"
+            class="text-area my-2 small-text"
+            v-model="editorData"
+          ></textarea>
           <div class="col-md-12 px-0 small-text">
-            <p class="bg-success mb-0 p-1" v-if="editorData.length > 0" :class="{ amber: charactersCount > 160 }">
+            <p
+              class="bg-success mb-0 p-1"
+              v-if="editorData.length > 0"
+              :class="{ amber: charactersCount > 160 }"
+            >
               <span>Characters count {{ charactersCount }}</span>
               <span class="float-right">Page {{ pageCount }}</span>
             </p>
@@ -388,9 +592,11 @@
           <div class="row">
             <div class="col-md-2"></div>
             <div class="col-md-10 pl-0">
-              <span class="hint">Insert #name# any where you want the contact name to appear in
+              <span class="hint"
+                >Insert #name# any where you want the contact name to appear in
                 the message, it will be replaced by the actual name of the
-                member when sending the message.</span>
+                member when sending the message.</span
+              >
             </div>
           </div>
         </div>
@@ -398,25 +604,47 @@
 
       <div class="row mt-4 mb-5">
         <div class="col-md-12">
-          <p class="mb-1 text-danger text-right font-weight-700" v-if="invalidDestination">
+          <p
+            class="mb-1 text-danger text-right font-weight-700"
+            v-if="invalidDestination"
+          >
             Please select destination
           </p>
-          <p class="mb-1 text-danger text-right font-weight-700" v-if="invalidMessage">
+          <p
+            class="mb-1 text-danger text-right font-weight-700"
+            v-if="invalidMessage"
+          >
             Enter your message
           </p>
         </div>
         <div class="col-md-12 d-flex justify-content-end">
-            <el-dropdown split-button :color="primarycolor" class="split-button" size="large" trigger="click"
-              @click="sendSMSDialog = true">
-              Send
-              <template #dropdown>
-                <el-dropdown-menu>
-                  <el-dropdown-item @click="showScheduleModal">Schedule</el-dropdown-item>
-                  <el-dropdown-item @click="draftMessage">Save as draft</el-dropdown-item>
-                </el-dropdown-menu>
-              </template>
-            </el-dropdown>
-          <el-button class="ml-3 secondary-button" size="large" @click="closeModal" round>Discard</el-button>
+          <el-dropdown
+            split-button
+            :color="primarycolor"
+            class="split-button"
+            size="large"
+            trigger="click"
+            @click="sendSMSDialog = true"
+          >
+            Send
+            <template #dropdown>
+              <el-dropdown-menu>
+                <el-dropdown-item @click="showScheduleModal"
+                  >Schedule</el-dropdown-item
+                >
+                <el-dropdown-item @click="draftMessage"
+                  >Save as draft</el-dropdown-item
+                >
+              </el-dropdown-menu>
+            </template>
+          </el-dropdown>
+          <el-button
+            class="ml-3 secondary-button"
+            size="large"
+            @click="closeModal"
+            round
+            >Discard</el-button
+          >
         </div>
         <div class="row">
           <div class="col-md-12">
@@ -557,16 +785,21 @@
                 </div>
               </div>
             </div> -->
-            <el-dialog :title="sendModalHeader" v-model="sendSMSDialog"
-              :width="mdAndUp || lgAndUp || xlAndUp ? `50%` : xsOnly ? `90%` : `70%`" align-center>
-
+            <el-dialog
+              :title="sendModalHeader"
+              v-model="sendSMSDialog"
+              :width="
+                mdAndUp || lgAndUp || xlAndUp ? `50%` : xsOnly ? `90%` : `70%`
+              "
+              align-center
+            >
               <div class="row">
                 <div class="col-md-12">
                   <div class="row">
                     <div class="col-md-12 px-1">
                       <p>
-                        We are providing more options to reach and
-                        communicate with your members
+                        We are providing more options to reach and communicate
+                        with your members
                       </p>
                     </div>
                   </div>
@@ -582,23 +815,38 @@
                       <div class="container">
                         <div class="row">
                           <div class="col-md-12">
-                            <label for="" class="small-text font-weight-600 py-2">NEW** HYBRID BULK SMS - 100% SMS
-                              DELIVERY</label>
+                            <label
+                              for=""
+                              class="small-text font-weight-600 py-2"
+                              >NEW** HYBRID BULK SMS - 100% SMS DELIVERY</label
+                            >
                           </div>
-                          <div class="col-md-12 send-now-div py-2 my-2 d-flex justify-content-center">
-                            <el-button :color="primarycolor" :loading="sendSMSLoading" @click="contructScheduleMessageBody(1, 'hybridKonnect')" round>Send SMS Now</el-button>
+                          <div
+                            class="col-md-12 send-now-div py-2 my-2 d-flex justify-content-center"
+                          >
+                            <el-button
+                              :color="primarycolor"
+                              :loading="sendSMSLoading"
+                              @click="
+                                contructScheduleMessageBody(1, 'hybridKonnect')
+                              "
+                              round
+                              >Send SMS Now</el-button
+                            >
                           </div>
                           <div class="col-md-12 px-0">
                             <hr class="hr my-2" />
                           </div>
                           <div class="col-md-12 px-0 d-flex flex-column">
                             <span>Please note:</span>
-                            <span>100% delivery to all valid phone
-                              numbers.</span>
+                            <span
+                              >100% delivery to all valid phone numbers.</span
+                            >
                             <span>Sender ID Customization - YES</span>
                             <span>Not Affected by DND.</span>
-                            <span>Failed SMS are Retried with Other
-                              Options.</span>
+                            <span
+                              >Failed SMS are Retried with Other Options.</span
+                            >
                           </div>
                         </div>
                       </div>
@@ -614,15 +862,26 @@
   </div>
   <!-- Create sender id modal -->
   <!-- Modal -->
-  <div class="modal fade" id="senderIdModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle"
-    aria-hidden="true">
+  <div
+    class="modal fade"
+    id="senderIdModal"
+    tabindex="-1"
+    role="dialog"
+    aria-labelledby="exampleModalCenterTitle"
+    aria-hidden="true"
+  >
     <div class="modal-dialog modal-dialog-centered" role="document">
       <div class="modal-content">
         <div class="modal-header">
           <h5 class="modal-title" id="exampleModalLongTitle">
             Create sender id
           </h5>
-          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <button
+            type="button"
+            class="close"
+            data-dismiss="modal"
+            aria-label="Close"
+          >
             <span aria-hidden="true">&times;</span>
           </button>
         </div>
@@ -631,8 +890,14 @@
             <div class="row">
               <div class="col-12">Enter sender id</div>
               <div class="col-12 mt-2">
-                <input type="text" class="form-control" placeholder="Enter sender id" v-model="senderIdText"
-                  @input="validateSenderId" ref="senderIdRef" />
+                <input
+                  type="text"
+                  class="form-control"
+                  placeholder="Enter sender id"
+                  v-model="senderIdText"
+                  @input="validateSenderId"
+                  ref="senderIdRef"
+                />
                 <div class="invalid-feedback text-danger pl-2">
                   <ul>
                     <li>Should not contain any special characters</li>
@@ -650,8 +915,13 @@
           <button type="button" class="btn default-btn" data-dismiss="modal">
             Close
           </button>
-          <button type="button" class="btn default-btn primary-bg border-0 text-white" data-dismiss="modal"
-            @click="saveSenderId" :disabled="requestbtn">
+          <button
+            type="button"
+            class="btn default-btn primary-bg border-0 text-white"
+            data-dismiss="modal"
+            @click="saveSenderId"
+            :disabled="requestbtn"
+          >
             Request sender id
           </button>
         </div>
@@ -673,15 +943,15 @@ import communicationService from "../../../services/communication/communications
 import dateFormatter from "../../../services/dates/dateformatter";
 import moment from "moment";
 import deviceBreakpoint from "../../../mixins/deviceBreakpoint";
-import { ElMessage } from 'element-plus'
+import { ElMessage } from "element-plus";
 
 export default {
   props: ["phoneNumbers", "groupData"],
-  emits: ['closesidemodal'],
+  emits: ["closesidemodal"],
   setup(props, { emit }) {
     const toast = useToast();
     const editorData = ref("");
-    const primarycolor = inject('primarycolor')
+    const primarycolor = inject("primarycolor");
     const disableBtn = ref(false);
     const phoneNumber = ref("");
     const editorConfig = {
@@ -694,6 +964,8 @@ export default {
     };
 
     const possibleSMSDestinations = composeService.possibleSMSDestinations;
+    const possibleBranchSMSDestination = ref(composeService.possibleBranchSMSDestinations);
+    console.log(possibleBranchSMSDestination.value, 'llllllllllllll');
     const groupsAreVissible = ref(false);
     const groupSelectionTab = ref(false);
     const membershipSelectionTab = ref(false);
@@ -712,10 +984,10 @@ export default {
     const searchSenderText = ref("");
     const senderIdRef = ref();
     const requestbtn = ref(false);
-    const { mdAndUp, lgAndUp, xlAndUp, xsOnly } = deviceBreakpoint()
-    const scheduleLoading = ref(false)
-    const sendSMSDialog = ref(false)
-    const sendSMSLoading = ref(false)
+    const { mdAndUp, lgAndUp, xlAndUp, xsOnly } = deviceBreakpoint();
+    const scheduleLoading = ref(false);
+    const sendSMSDialog = ref(false);
+    const sendSMSLoading = ref(false);
     // const watchPhoneNumber = ref("")
 
     watchEffect(() => {
@@ -734,18 +1006,27 @@ export default {
 
     const showSection = (index) => {
       if (index === 1) groupSelectionTab.value = true;
-      if (index === 2) membershipSelectionTab.value = true;
-      if (index === 3) phoneNumberSelectionTab.value = true;
-      if (index === 4) contactUpload.value = true;
+      // if (index === 2) membershipSelectionTab.value = true;
+      if (index === 2) phoneNumberSelectionTab.value = true;
+      if (index === 3) contactUpload.value = true;
       if (index === 0) {
         sendToAll.value = true;
         selectedGroups.value.push({
           data: "membership_00000000-0000-0000-0000-000000000000",
-          name: "All Contacts",
+          name: "All branches",
         });
       }
       // console.log(index)
     };
+    const getAllBranch = async () => {
+      try {
+         let { data } = await axios.get("/api/Branching");
+         console.log(data, 'kll;');
+      } catch (error) {
+        
+      }
+    }
+    getAllBranch()
 
     const sendOptionsIsShown = ref(false);
     const toggleSendOptionsDisplay = () =>
@@ -791,7 +1072,6 @@ export default {
       memberListShown.value = false;
       searchText.value = "";
       memberSearchResults.value = [];
-
     };
     const removeMember = (index) => {
       selectedMembers.value.splice(index, 1);
@@ -820,9 +1100,7 @@ export default {
                 return false;
               return true;
             });
-
           });
-
       } else {
         memberSearchResults.value = [];
       }
@@ -844,7 +1122,7 @@ export default {
     const invalidDestination = ref(false);
 
     const sendSMS = (data) => {
-      sendSMSLoading.value = true
+      sendSMSLoading.value = true;
       invalidDestination.value = false;
       invalidMessage.value = false;
 
@@ -876,10 +1154,9 @@ export default {
         .sendMessage("/api/Messaging/sendSms", data)
         .then((res) => {
           // disableBtn.value = false;
-          sendSMSLoading.value = false
-          sendSMSDialog.value = false
+          sendSMSLoading.value = false;
+          sendSMSDialog.value = false;
           if (res.status == 200 && res.data.status) {
-            
             toast.add({
               severity: "success",
               summary: "SMS Sent",
@@ -889,7 +1166,7 @@ export default {
 
             // Save the res to store in other to get it in the view sent sms page
             // let sentObj = {
-              //   message: res.data.message,
+            //   message: res.data.message,
             //   id: res.data.channel,
             //   smsUnitsUsed: res.data.unitsUsed,
             //   dateSent: "",
@@ -897,7 +1174,12 @@ export default {
             // };
             // console.log(sentObj);
             // store.dispatch("communication/addSmsToSentList", sentObj);
-          } else if (res && res.data && res.data.message && res.data.message.includes("You do not have")) {
+          } else if (
+            res &&
+            res.data &&
+            res.data.message &&
+            res.data.message.includes("You do not have")
+          ) {
             toast.add({
               severity: "warn",
               summary: "Insufficient Unit",
@@ -912,12 +1194,11 @@ export default {
               life: 6000,
             });
           }
-
         })
         .catch((err) => {
           stopProgressBar();
           // disableBtn.value = false;
-          sendSMSLoading.value = false
+          sendSMSLoading.value = false;
           toast.removeAllGroups();
           console.log(err);
           if (err.toString().toLowerCase().includes("network error")) {
@@ -1007,7 +1288,6 @@ export default {
             : "";
         data.ToContacts += selectedMembers.value
           .map((i) => {
-
             if (i.id) return i.id;
           })
           .join();
@@ -1017,8 +1297,8 @@ export default {
         if (multipleContact.value instanceof File) {
           sendSMSToUploadedContacts(gateway);
         } else if (sendOrSchedule == 2) {
-          data.executionDate = iSoStringFormat.value
-          data.date = iSoStringFormat.value
+          data.executionDate = iSoStringFormat.value;
+          data.date = iSoStringFormat.value;
           data.time = iSoStringFormat.value.split("T")[1];
           scheduleMessage(data);
         } else {
@@ -1038,7 +1318,7 @@ export default {
     };
 
     const scheduleMessage = async (data) => {
-      scheduleLoading.value = true
+      scheduleLoading.value = true;
       const formattedDate = dateFormatter.monthDayTime(data.executionDate);
 
       try {
@@ -1046,19 +1326,18 @@ export default {
           "/api/Messaging/saveSmsSchedule",
           data
         );
-        scheduleLoading.value = false
+        scheduleLoading.value = false;
         display.value = false;
-        console.log(response)
-  
+        console.log(response);
+
         ElMessage({
           type: "success",
           message: `Message scheduled for${formattedDate}`,
           duration: 5000,
         });
-
       } catch (error) {
         console.log(error);
-        scheduleLoading.value = false
+        scheduleLoading.value = false;
         toast.add({
           severity: "error",
           summary: "Schedule Failed",
@@ -1115,7 +1394,6 @@ export default {
     if (route.query.draftId) {
       communicationService.getDraftsById(route.query.draftId).then((res) => {
         if (res) {
-
           editorData.value = res.body;
         } else {
           console.log(res, "error response");
@@ -1127,7 +1405,6 @@ export default {
       isoCode.value = store.getters.currentUser.isoCode;
       userCountry.value = store.getters.currentUser.country;
       tenantId.value = store.getters.tenantId;
-
     } else {
       axios
         .get("/api/Membership/GetCurrentSignedInUser")
@@ -1135,7 +1412,6 @@ export default {
           isoCode.value = res.data.isoCode;
           userCountry.value = res.data.country;
           tenantId.value = store.getters.tenantId;
-
         })
         .catch((err) => console.log(err));
     }
@@ -1183,7 +1459,6 @@ export default {
             categories.value.push(prop);
             allGroups.value.push(res[prop]);
           }
-
         })
         .catch((err) => console.log(err));
     });
@@ -1196,7 +1471,6 @@ export default {
     const groupListShown = ref(false);
     const showGroupList = () => {
       groupListShown.value = true;
-
     };
 
     const memberListShown = ref(false);
@@ -1222,7 +1496,6 @@ export default {
     //     emailDisplayName: "",
     //     // gateWayToUse: gateway,
     //   };
-
 
     // };
 
@@ -1357,17 +1630,20 @@ export default {
       }
     };
 
-    watchEffect(() =>{
-      if(executionDate.value){
-       iSoStringFormat.value = dateFormatter.getISOStringGMT(executionDate.value)
+    watchEffect(() => {
+      if (executionDate.value) {
+        iSoStringFormat.value = dateFormatter.getISOStringGMT(
+          executionDate.value
+        );
       }
-  })
+    });
 
     return {
       editorData,
       iSoStringFormat,
       editorConfig,
       possibleSMSDestinations,
+      possibleBranchSMSDestination,
       groupsAreVissible,
       toggleGroupsVissibility,
       selectedGroups,
@@ -1443,7 +1719,7 @@ export default {
       scheduleLoading,
       sendSMSDialog,
       sendSMSLoading,
-      primarycolor
+      primarycolor,
     };
   },
 };

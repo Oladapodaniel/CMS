@@ -47,7 +47,13 @@
       <div class="col-12 col-md-6 col-lg-3" v-show="allEvents.length > 0">
         <div><label for="" class="font-weight-bold">Select Event</label></div>
         <div>
-          <div class="">
+          <div class="w-100">
+              <SelectAllDropdown
+                :items="allEvents"
+                @selected-item="setSelectedEvent"
+              />
+            </div>
+          <!-- <div class="">
             <el-select-v2
               v-model="selectedEventID"
               class="w-100 font-weight-normal"
@@ -61,7 +67,7 @@
               @change="setSelectedEvent"
               size="large"
             />
-          </div>
+          </div> -->
         </div>
       </div>
       <div class="col-12 col-md-6 col-lg-3" v-show="allEvents.length > 0">
@@ -112,7 +118,7 @@
         class="container-fluid d-flex justify-content-center my-2"
         v-if="displayTitle"
       >
-        <div class="head-text">Church Activities Attendance Report</div>
+        <div class="head-text">{{fileName}}</div>
       </div>
 
       <div class="borderInner mb-2">
@@ -226,6 +232,7 @@ import axios from "@/gateway/backendapi";
 
 import dateFormatter from "../../../services/dates/dateformatter.js";
 import exportService from "../../../services/exportFile/exportservice";
+import SelectAllDropdown from "../../Reports/ReportsDropdown.vue";
 import printJS from "print-js";
 
 import BranchSelect from "../component/BranchSelect.vue";
@@ -235,12 +242,13 @@ export default {
   components: {
     PerformanceColumnChart,
     ReportAreaChart,
+    SelectAllDropdown,
     BranchSelect,
     // ProgressSpinner,
   },
   setup() {
     const showReport = ref(false);
-    const fileName = ref("Church Activities Report");
+    const fileName = ref(localStorage.getItem("branchName"));
     const primarycolor = inject("primarycolor");
     const selectedFileType = ref("");
     const fileHeaderToExport = ref([]);
@@ -254,7 +262,7 @@ export default {
     const showExport = ref(false);
     const displayTitle = ref(false);
     const allEvents = ref([]);
-    const selectedEvent = ref({});
+    const selectedEvent = ref([]);
     const series = ref([]);
     const activityReport = ref([]);
     const attendanceSeries = ref([]);
@@ -293,10 +301,14 @@ export default {
     const loading = ref(false);
     const branchId = ref("");
 
-    const setSelectedEvent = () => {
-      selectedEvent.value = allEvents.value.find(
-        (i) => i.id === selectedEventID.value
-      );
+    // const setSelectedEvent = () => {
+    //   selectedEvent.value = allEvents.value.find(
+    //     (i) => i.id === selectedEventID.value
+    //   );
+    // };
+    const setSelectedEvent = (payload) => {
+      selectedEvent.value = payload;
+      console.log(payload, 'kkkkkkkkkkkkkkkkkkkkkkkkk');
     };
 
     const setSelectedBranch = async (payload) => {
@@ -334,6 +346,7 @@ export default {
     const getActivityReport = () => {
       loading.value = true;
       activityReport.value = [];
+      const eventID = selectedEvent.value.map((i) => i.id);
       axios
         .get(
           `/api/branchreports/event/getactivityanalysisreport?startDate=${new Date(
@@ -341,7 +354,7 @@ export default {
           ).toLocaleDateString("en-US")}&endDate=${new Date(
             endDate.value
           ).toLocaleDateString("en-US")}&eventId=${
-            selectedEvent.value.id
+            eventID
           }&tenantID=${branchID.value}`
         )
         .then((res) => {

@@ -125,7 +125,7 @@
         class="container-fluid d-flex justify-content-center my-2"
         v-if="displayTitle"
       >
-        <div class="head-text">People Report</div>
+        <div class="head-text">{{fileName}}</div>
       </div>
       <div class="container-fluid">
         <div
@@ -233,7 +233,7 @@ export default {
     const maritalStatusChartResult = ref([]);
     const ageGroupChartResult = ref([]);
     const showExport = ref(false);
-    const fileName = ref("Member Report");
+    const fileName = ref(localStorage.getItem("branchName"));
     const bookTypeList = ref([
       { name: "xlsx" },
       { name: "csv" },

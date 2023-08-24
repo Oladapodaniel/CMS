@@ -11,6 +11,7 @@
             data-toggle="modal"
             data-target="#statusmodal"
             :color="primarycolor"
+            ref="statusmodalBtn"
           >
             Add Branch
           </el-button>
@@ -28,148 +29,167 @@
     </div> -->
     <div class="container-fluid">
       <div
-        class="py-5 px-3 pl-3 pl-md-0 row flex-wrap justify-content-between branch-corner"
+        class="py-5 px-3 pl-3 pl-md-0 row justify-content-between branch-corner"
       >
-        <div class="col-md-3 px-0 d-flex align-items-start">
-          <img src="../../assets/thingstodo.svg" alt="" />
-          <div class="font-weight-bold">
+        <div class="col-md-3 col-sm-12 px-0 d-flex align-items-start">
+          <img src="../../assets/thingstodo.svg" class="" alt="" />
+          <div class="font-weight-bold col-md-12 px-0">
             <div class="font-weight-bold h5">Things You Can Do</div>
             <div class="mt-2">
               <router-link class="primary--text" to="/tenant/people/add"
                 >Add Member</router-link
               >
             </div>
-            <div class="mt-2">
-              <router-link class="primary--text" to="/tenant/sms/compose"
-                >Send SMS</router-link
-              >
-            </div>
-            <div class="mt-2">
+            <div class="mt-2 h6 font-weight-bold">
               <router-link
                 class="primary--text"
                 to="/tenant/people/addfirsttimer"
                 >Add First Timer</router-link
               >
             </div>
+            <div class="mt-2 h6 font-weight-bold primary--text" @click="sendMarkedMemberSms" >
+              <!-- <router-link class="primary--text" to="/tenant/sms/compose"
+                > -->
+                Send SMS
+                <!-- </router-link
+              > -->
+            </div>
+            <div class="mt-2 h6 font-weight-bold">
+              <router-link class="primary--text" to="/tenant/email/compose"
+                >Send Email</router-link
+              >
+            </div>
+            <div class="mt-2 h6 font-weight-bold">
+              <router-link
+                class="primary--text"
+                to="/tenant/voice/sendvoicemessage"
+                >Send Voice</router-link
+              >
+            </div>
           </div>
         </div>
-        <div class="col-md-2 mt-3 mt-md-0 font-weight-bold">
-          <div class="row card-summary shadow" style="min-width: 100%">
-            <div class="col-md-2">
-              <div class="row">
-                <div class="col-md-2 mt-2 text-color">
-                  <img
-                    src="../../assets/git-branch.png"
-                    class="rounded-circle px-1 py-1 icon"
-                    alt=""
-                  />
-                  <!-- <el-icon :size="35" class="rounded-circle p-1 icon"
+        <div class="col-md-2 col-sm-6 mt-3 mt-md-0 font-weight-bold">
+          <div class="row justify-content-center" style="min-width: 100%">
+            <div class="col-md-12 col-sm-11 card-summary px-0 shadow">
+              <div class="col-md-12">
+                <div class="row">
+                  <div class="col-md-2 mt-2 text-color">
+                    <img
+                      src="../../assets/git-branch.png"
+                      class="rounded-circle px-1 py-1 icon"
+                      alt=""
+                    />
+                    <!-- <el-icon :size="35" class="rounded-circle p-1 icon"
                     ><Share
                   /></el-icon> -->
+                  </div>
                 </div>
               </div>
-            </div>
-            <div
-              class="col-md-12 mt-4 pt-2 font-weight-bold h4 text-right"
-              v-loading="loading"
-            >
-              {{ getTotalBranches }}
-            </div>
-            <div
-              class="total-bg col-md-12 py-3 font-weight-bold px-0 box-bottom text-center"
-            >
-              Total Branches
+              <div
+                class="col-md-12 mt-4 pt-2 font-weight-bold h4 text-right"
+                v-loading="loading"
+              >
+                {{ getTotalBranches }}
+              </div>
+              <div
+                class="total-bg col-md-12 py-3 font-weight-bold px-0 box-bottom text-center"
+              >
+                Total Branches
+              </div>
             </div>
           </div>
         </div>
-        <div class="col-md-2 mt-3 mt-md-0 font-weight-bold">
-          <div class="row card-summary shadow" style="min-width: 100%">
-            <div class="col-md-2">
-              <div class="row">
-                <div class="primary--text col-md-2 mt-2">
-                  <img
-                    src="../../assets/users4.png"
-                    alt=""
-                    class="rounded-circle p-1 icon"
-                  />
-                  <!-- <el-icon :size="35" class="rounded-circle p-1 icon"
+        <div class="col-md-2 col-sm-6 mt-3 mt-md-0 font-weight-bold">
+          <div class="row justify-content-center" style="min-width: 100%">
+            <div class="col-md-12 col-sm-11 card-summary px-0 shadow">
+              <div class="col-md-12">
+                <div class="row">
+                  <div class="primary--text col-md-2 mt-2">
+                    <img
+                      src="../../assets/users4.png"
+                      alt=""
+                      class="rounded-circle p-1 icon"
+                    />
+                    <!-- <el-icon :size="35" class="rounded-circle p-1 icon"
                     ><User
                   /></el-icon> -->
+                  </div>
                 </div>
               </div>
-            </div>
-            <div
-              class="col-md-12 mt-4 pt-2 font-weight-bold h4 text-right"
-              v-loading="loading"
-            >
-              {{ getTotalPeople }}
-            </div>
-            <div
-              class="total-bg col-md-12 py-3 font-weight-bold px-0 box-bottom text-center"
-            >
-              Total People
+              <div
+                class="col-md-12 mt-4 pt-2 font-weight-bold h4 text-right"
+                v-loading="loading"
+              >
+                {{ getTotalPeople }}
+              </div>
+              <div
+                class="total-bg col-md-12 py-3 font-weight-bold px-0 box-bottom text-center"
+              >
+                Total People
+              </div>
             </div>
           </div>
         </div>
-        <div class="col-md-2 mt-3 mt-md-0 font-weight-bold">
-          <div class="row card-summary shadow" style="min-width: 100%">
-            <div class="col-md-2">
-              <div class="row">
-                <div class="text-primary col-md-2 mt-2">
-                  <img
-                    src="../../assets/Vector.png"
-                    class="rounded-circle py-1 px-2 icon"
-                    alt=""
-                  />
-                  <!-- <el-icon :size="35" class="rounded-circle p-1 icon"
-                    ><Notebook
-                  /></el-icon> -->
+        <div class="col-md-2 col-sm-6 mt-3 mt-md-0 font-weight-bold">
+          <div class="row justify-content-center " style="min-width: 100%">
+            <div class="col-md-12 col-sm-11  card-summary px-0 shadow">
+              <div class="col-md-12">
+                <div class="row">
+                  <div class="text-primary col-md-2 mt-2">
+                    <img
+                      src="../../assets/Vector.png"
+                      class="rounded-circle py-1 px-2 icon"
+                      alt=""
+                    />
+                  </div>
                 </div>
               </div>
-            </div>
-            <div
-              class="col-md-12 mt-4 pt-2 font-weight-bold h4 text-right"
-              v-loading="loading"
-            >
-              {{ getAllAverageAttendance }}
-            </div>
-            <div
-              class="total-bg col-md-12 py-3 font-weight-bold px-0 box-bottom text-center"
-            >
-              {{ averageAttendace }}
+              <div
+                class="col-md-12 mt-4 pt-2 font-weight-bold h4 text-right"
+                v-loading="loading"
+              >
+                {{ getAllAverageAttendance }}
+              </div>
+              <div
+                class="total-bg col-md-12 py-3 font-weight-bold px-0 box-bottom text-center"
+              >
+                {{ averageAttendace }}
+              </div>
             </div>
           </div>
         </div>
-        <div class="col-md-2 mt-3 mt-md-0 font-weight-bold">
-          <div class="row card-summary shadow" style="min-width: 100%">
-            <div class="col-md-2">
-              <div class="row">
-                <div class="col-md-2 mt-2">
-                  <img
-                    src="../../assets/money.png"
-                    class="rounded-circle p-1 icon"
-                    alt=""
-                  />
+        <div class="col-md-2 col-sm-6 mt-3 mt-md-0 font-weight-bold">
+          <div class="row justify-content-center" style="min-width: 100%">
+            <div class="col-md-12 col-sm-11 card-summary px-0 shadow">
+              <div class="col-md-12">
+                <div class="row">
+                  <div class="col-md-2 mt-2">
+                    <img
+                      src="../../assets/money.png"
+                      class="rounded-circle p-1 icon"
+                      alt=""
+                    />
+                  </div>
                 </div>
               </div>
-            </div>
-            <div
-              class="col-md-12 mt-4 pt-2 font-weight-bold h4 text-right"
-              v-loading="loading"
-              v-if="openHideAmonut"
-            >
-              {{ getAllAverageIncome }}
-            </div>
-            <div
-              class="col-md-12 mt-4 pt-2 font-weight-bold text-secondary h4 text-right"
-              v-if="!openHideAmonut"
-            >
-              **********
-            </div>
-            <div
-              class="total-bg col-md-12 py-3 font-weight-bold px-0 box-bottom text-center"
-            >
-              Average Income
+              <div
+                class="col-md-12 mt-4 pt-2 font-weight-bold h4 text-right"
+                v-loading="loading"
+                v-if="openHideAmonut"
+              >
+                {{ getAllAverageIncome }}
+              </div>
+              <div
+                class="col-md-12 mt-4 pt-2 font-weight-bold text-secondary h4 text-right"
+                v-if="!openHideAmonut"
+              >
+                **********
+              </div>
+              <div
+                class="total-bg col-md-12 py-3 font-weight-bold px-0 box-bottom text-center"
+              >
+                Average Income
+              </div>
             </div>
           </div>
         </div>
@@ -177,8 +197,8 @@
     </div>
     <div class="container-fluid mt-3">
       <div class="row justify-content-between">
-        <div class="col-md-7 col-12" v-loading="loading">
-          <div class="row rounded shadow">
+        <div class="col-md-7 col-12  rounded shadow" v-loading="loading">
+          <div class="row ">
             <div class="col-md-12 mt-3 d-flex justify-content-between">
               <div class="font-weight-bold">Total Attendance Chart</div>
               <div>view All</div>
@@ -607,7 +627,7 @@
                       {{ branchProfile.name }}
                     </div>
                     <div
-                      class="small text-primary"
+                      class="small text-primary cursor-pointer"
                       @click="viewBranch(branchProfile.id)"
                     >
                       View Branch
@@ -691,12 +711,14 @@
               <div class="row">
                 <div class="col-md-12 d-flex justify-content-between mt-3">
                   <div class="font-weight-bold h5">
-                    <img src="../../assets/git-branch.png" class="pr-2" alt="" />{{
-                      branchProfile.name
-                    }}
+                    <img
+                      src="../../assets/git-branch.png"
+                      class="pr-2"
+                      alt=""
+                    />{{ branchProfile.name }}
                   </div>
                   <div
-                    class=" text-primary font-weight-bold"
+                    class="text-primary font-weight-bold cursor-pointer"
                     @click="viewBranch(branchProfile)"
                   >
                     View Branch
@@ -812,6 +834,17 @@
         </div>
       </div>
     </div>
+    <el-drawer v-model="showSMS" :size="mdAndUp || lgAndUp || xlAndUp ? '70%' : '100%'" direction="rtl">
+      <template #header>
+        <h4>Send SMS</h4>
+      </template>
+      <template #default>
+        <div>
+          <smsComponent @closesidemodal="() => showSMS = false" />
+          <!-- <smsComponent :phoneNumbers="contacts" @closesidemodal="() => showSMS = false" /> -->
+        </div>
+      </template>
+    </el-drawer>
     <el-skeleton class="w-100" animated v-if="loading">
       <template #template>
         <div
@@ -847,18 +880,24 @@ import { ref, inject, onMounted, onUpdated, computed } from "vue";
 import PieChart from "../../components/charts/BranchPieChart.vue";
 import BranchSettings from "../settings/BranchLevelSettings.vue";
 import router from "../../router";
+import deviceBreakpoint from "../../mixins/deviceBreakpoint";
 import axios from "@/gateway/backendapi";
 import DonutChart from "../../components/charts/DonutChart.vue";
 import RadialChart from "../../components/charts/RadialChart.vue";
 import ColumnChart from "@/components/charts/BranchColumnChart.vue";
+import smsComponent from "../groups/component/smsComponent.vue";
+import emailComponent from "../groups/component/emailComponent.vue";
 import store from "../../store/store";
 import OrganizationChart from "primevue/organizationchart";
 import { ElMessage } from "element-plus";
+import { useRoute } from "vue-router"
 export default {
   components: {
     PieChart,
     DonutChart,
     BranchSettings,
+    emailComponent,
+    smsComponent,
     RadialChart,
     ColumnChart,
     OrganizationChart,
@@ -867,6 +906,7 @@ export default {
     const primarycolor = inject("primarycolor");
     const data1 = ref({});
     const openHideAmonut = ref(true);
+    const route = useRoute()
     const code = ref("");
     const selectedMonthly = ref("Branches");
     const firstTimerHeader = ref("First Timer Attendance");
@@ -875,10 +915,12 @@ export default {
     const selectedBranches = ref("Branches");
     const selectedWeekly = ref("Branches");
     const attendance = ref("Average Attendance");
+    const { mdAndUp, lgAndUp, xlAndUp, xsOnly } = deviceBreakpoint()
     const showbranchHierachy = ref(false);
     const branchItemSection = ref(false);
     const showBranchDetail = ref(true);
     const viewBranchDetail = ref(false);
+    const showSMS = ref(false);
     const branchesAnalytics = ref({});
     const averageIncomeChartResult = ref([]);
     const colorChange = ref(false);
@@ -905,13 +947,25 @@ export default {
     const hierarchies = ref([]);
     const closeStatusModal = ref();
     const levelmodalBtn = ref();
+    const branchSideShow = ref(false)
     const getAverageAttendanceItem = ref([]);
     const tenantId = ref(
       store.getters.currentUser && store.getters.currentUser.tenantId
         ? store.getters.currentUser.tenantId
         : 0
     );
-    const averageAttendace = ref("");
+    const averageAttendace = ref("");  
+
+    const getRoute = () => {
+      if (route.fullPath === "/tenant/branch/mainbranchsummary") {
+        branchSideShow.value = true;
+      }
+    };
+    getRoute();
+    const sendMarkedMemberSms = () => {
+      // contacts.value = marked.value.filter((i) => i.mobilePhone).map((i) => i.mobilePhone).join()
+      showSMS.value = true;
+    }
     const branchData = ref([
       { name: null, value: 34 },
       { name: "Website", value: 2 },
@@ -955,6 +1009,7 @@ export default {
       colorChange.value = true;
       showBranchDetail.value = true;
       showbranchHierachy.value = false;
+      store.dispatch("setCurrentBranch", item);
     };
 
     onMounted(() => {
@@ -1272,8 +1327,14 @@ export default {
       mappedBranch,
       membersAttendanceChart,
       joinNetwork,
+      mdAndUp, 
+      lgAndUp, 
+      xlAndUp, 
+      xsOnly,
       selection,
       incomeExpenseChart,
+      route,
+      branchSideShow,
       firstTimerChart,
       branchItemSection,
       colorChange,
@@ -1295,6 +1356,7 @@ export default {
       setUpBranch,
       joinBranch,
       hierarchies,
+      showSMS,
       code,
       expenseData,
       averageIncomeChartResult,
@@ -1313,6 +1375,7 @@ export default {
       selectedWeekly,
       selectedType1,
       selectedType2,
+      branchSideShow,
       selectedType3,
       joinmodalBtn,
       viewBranchDetail,
@@ -1324,6 +1387,7 @@ export default {
       data1,
       levelmodalBtn,
       branchData,
+      sendMarkedMemberSms,
       closeStatusModal,
       chartItemdropdown,
       openHideAmonut,
@@ -1389,5 +1453,6 @@ export default {
 .card-summary {
   background: #ffff;
   border-radius: 0.5rem;
+  /* width: 100% !important; */
 }
 </style>

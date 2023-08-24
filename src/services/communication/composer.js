@@ -9,6 +9,19 @@ const composerObj = {
         "Select person from membership database",
         "Emails",
         
+    ],
+    possibleBranchSMSDestinations: [
+        "All branches",
+        "Select a branch",
+        "Phone numbers",
+        "Upload contacts",
+    ],
+    
+    possibleBranchEMAIlDestinations: [
+        "All branch",
+        "Select a branch",
+        "Emails",
+        
         
     ],
 
@@ -17,7 +30,7 @@ const composerObj = {
         "Select group from database",
         "Select person from membership database",
         "Phone numbers",
-        "Upload contacts"
+        "Upload contacts",
     ],
 
     getCommunicationGroups() {

@@ -13,7 +13,6 @@
           <hr class="hr" />
         </div>
       </div>
-
       <div class="row">
         <div class="col-md-2 px-0 col-lg-2 align-self-center">
           <span class="small-text">Send to : </span>
@@ -667,6 +666,16 @@ export default {
        iSoStringFormat.value = dateFormatter.getISOStringGMT(executionDate.value)
       }
   })
+
+  const getAllBranches = async () => {
+    try {
+      let { data } = await axios.get("/api/Branching");
+      console.log(data, 'lllll')
+    } catch (error) {
+      
+    }
+  }
+  getAllBranches()
     
    
 
