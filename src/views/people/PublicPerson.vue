@@ -977,7 +977,7 @@ export default {
         let { data } = await axios.get(
           `/GetAllCustomFields?entityType=0&&tenantID=${route.query.tenantId}`
         );
-        dynamicCustomFields.value = data;
+        dynamicCustomFields.value = data.sort((a, b) => a.order - b.order);
       } catch (err) {
         console.log(err);
       }
