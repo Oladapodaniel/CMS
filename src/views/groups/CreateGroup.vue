@@ -244,6 +244,7 @@
         <div class="row">
           <div class="col-md-12 col-12 btnn">
             <el-button
+              v-if="route.params.groupId"
               class="default-btn border outline-none font-weight-bold c-pointer text-center text-dark"
               data-toggle="collapse"
               data-dismiss="modal"
@@ -263,7 +264,7 @@
             >
               Import
             </el-button>
-            <el-button v-if="!route.params.groupId"
+            <el-button
               class="default-btn outline-none font-weight-bold border c-pointer header-btn text-dark add-member"
               data-toggle="modal"
               data-target="#exampleModal"
@@ -392,7 +393,7 @@
                     </div>
                   </div>
                   <div class="col-12">
-                    <GroupTree :items="groupData.children" />
+                    <GroupTree :items="groupData.children" @removesubgroup="removeSubGroup" />
                     <!-- <div
                       class="font-weight-700 my-3"
                       v-show="
@@ -689,6 +690,7 @@
                 </div>
 
                 <!-- Import Member To Group Modal -->
+                
                 <div
                   class="modal fade"
                   id="importgroup"
@@ -1289,7 +1291,7 @@ export default {
     const searchGroupMemberText = ref("");
     const field = ref();
     const groups = ref([]);
-    const selectedIntendedSubGroup = ref({});
+    const selectedIntendedSubGroup = ref("");
     const searchGroupText = ref("");
     const grouploading = ref(false);
     const moveLoading = ref(false);
@@ -1357,16 +1359,16 @@ export default {
         searchGroupRef.value.focus();
       });
     };
-    const setGroupValue = () => {
-      const response = flattenedTree.value.find(
-        (i) => i.value == selectedTree.value
-      );
-      console.log(response, 'llllll');
-      selectedIntendedSubGroup.value = {
-        name: response.label,
-        id: response.value,
-      };
-    };
+    // const setGroupValue = () => {
+    //   const response = flattenedTree.value.find(
+    //     (i) => i.value == selectedTree.value
+    //   );
+    //   console.log(response, 'llllll');
+    //   selectedIntendedSubGroup.value = {
+    //     name: response.label,
+    //     id: response.value,
+    //   };
+    // };
 
     
     
@@ -1559,8 +1561,9 @@ export default {
 
     const setFilterGroups = (payload) => {
       // console.log(payload[0].id, 'fsddsd');
+      console.log(payload, 'here');
       selectedTree.value = payload;
-      selectedIntendedSubGroup.value = payload[0]
+      selectedIntendedSubGroup.value = payload.map(i => i.id).join(",")
       // const response = flattenedTree.value.find(
       //   (i) => i.value == selectedTree.value
       // );
@@ -2061,14 +2064,16 @@ export default {
     const addSubGroup = async () => {
       try {
         const { data } = await axios.post(
-          `/api/Group/AddSubGroupToGroup?SuperGroupID=${route.params.groupId}&&SubGroupID=${selectedIntendedSubGroup.value.id}`
+          `/api/Group/AddSubGroupsToGroup?SuperGroupID=${route.params.groupId}&SubGroupID=${selectedIntendedSubGroup.value}`
         );
         ElMessage({
-          message: `${data.response}`,
+          message: data.returnObject.length > 1 ? "Subgroups added successfully" : "Subgroup added successfully",
           type: "success",
           duration: 4000,
         });
-        groupData.value.children.push(data.returnObject);
+        data.returnObject.forEach(i => {
+          groupData.value.children.push(i);
+        })
       } catch (error) {
         console.log(error.response);
         if (error.response) {
@@ -2182,6 +2187,10 @@ export default {
       return dateFormatter.monthDayYear(date);
     };
 
+    const removeSubGroup = (payload) => {
+      groupData.value.children = groupData.value.children.filter(i => i.id !== payload)
+    }
+
     return {
       groupData,
       addGroupBtn,
@@ -2278,7 +2287,7 @@ export default {
       setSelectedGroupToCopy,
       setCopyGroupProp,
       selectedTree,
-      setGroupValue,
+      // setGroupValue,
       flattenedTree,
       mdAndUp,
       lgAndUp,
@@ -2300,7 +2309,8 @@ export default {
       confirmMultipleDelete,
       primarycolor,
       setFilterGroups,
-      hideDiv
+      hideDiv,
+      removeSubGroup
     };
   },
 };

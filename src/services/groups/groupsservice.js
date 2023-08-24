@@ -51,6 +51,17 @@ const grousService = {
             return false;
         }
     },
+    
+    async removeGroup({ superGroupID, subGroupID }) {
+        try {
+            const { data } = await axios.post(`/api/Group/RemoveSubGroupFromGroup?superGroupID=${superGroupID}&subGroupID=${subGroupID}`);
+            return data;
+        } catch (error) {
+            stopProgressBar();
+            console.log(error);
+            return false;
+        }
+    },
 
     async editGroupInStore(data, peopleCount) {
         try {

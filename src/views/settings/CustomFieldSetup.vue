@@ -22,88 +22,56 @@
                     <div class="col-md-7">
                       <div class="col-md-12 col-sm-12">
                         <label for=""> Specify Your Label here..</label>
-                        <el-input
-                          type="text"
-                          class="w-100"
-                          placeholder="Specify Your Label here.."
-                          v-model="customFieldLabel"
-                        />
+                        <el-input type="text" class="w-100" placeholder="Specify Your Label here.."
+                          v-model="customFieldLabel" />
                       </div>
                       <div class="col-md-12 col-sm-12 mt-3">
-                        <label for=""
-                          >Select the type of control you want to use</label
-                        >
-                        <el-select-v2
-                          v-model="selectedControlID"
-                          @change="setselectedControl"
-                          :options="
-                            controlType.map((i) => ({
-                              label: i.name,
-                              value: i.id,
-                            }))
-                          "
-                          placeholder="Select type"
-                          class="w-100"
-                          size="large"
-                          
-                        />
+                        <label for="">Select the type of control you want to use</label>
+                        <el-select-v2 v-model="selectedControlID" @change="setselectedControl" :options="controlType.map((i) => ({
+                          label: i.name,
+                          value: i.id,
+                        }))
+                          " placeholder="Select type" class="w-100" size="large" />
                       </div>
-                      <div
-                        class="col-md-12 col-sm-12 mt-3 w-100"
-                        v-if="selectedControl.name == 'DropdownList'"
-                      >
+                      <div class="col-md-12 col-sm-12 mt-3 w-100" v-if="selectedControl.name == 'DropdownList'">
                         <label for="">
-                          Enter your Dropdown list here </label
-                        >
-                       <div class="row  justify-content-center">
-                         <div class="col-md-12">
-                          <div class="chip-container col-md-12 p-0 m-0 ">
-                          <div class="chip px-2  d-flex justify-content-between my-2 mx-1" v-for="(chip, i) of dropdownList" :key="chip.label">
-                            <span>{{chip}}</span>
-                            <i class=" pt-1 text-dark align-items-center" @click="deleteChip(i)"><el-icon><CircleClose /></el-icon></i>
+                          Enter your Dropdown list here </label>
+                        <div class="row  justify-content-center">
+                          <div class="col-md-12">
+                            <div class="chip-container col-md-12 p-0 m-0 ">
+                              <div class="chip px-2  d-flex justify-content-between my-2 mx-1"
+                                v-for="(chip, i) of dropdownList" :key="chip.label">
+                                <span>{{ chip }}</span>
+                                <i class=" pt-1 text-dark align-items-center" @click="deleteChip(i)"><el-icon>
+                                    <CircleClose />
+                                  </el-icon></i>
+                              </div>
+                              <input class="inputt  py-2 " v-model="currentInput" @keypress.enter="saveChip"
+                                @keydown.delete="backspaceDelete">
+                            </div>
                           </div>
-                          <input class="inputt  py-2 "  v-model="currentInput" @keypress.enter="saveChip" @keydown.delete="backspaceDelete" >
                         </div>
-                         </div>
-                       </div>
                       </div>
                       <div class="col-md-12 col-sm-12 mt-3">
-                        <label for=""
-                          >Select the Entity Type you want to Extend
+                        <label for="">Select the Entity Type you want to Extend
                         </label>
-                        <el-select-v2
-                          v-model="selectedEntityTypeID"
-                          @change="setselectedEntityType"
-                          :options="
-                            entityType.map((i) => ({
-                              label: i.name,
-                              value: i.id,
-                            }))
-                          "
-                          placeholder="Select type"
-                          class="w-100"
-                          size="large"
-                          style="width: 100%; text-align: left"
-                        />
+                        <el-select-v2 v-model="selectedEntityTypeID" @change="setselectedEntityType" :options="entityType.map((i) => ({
+                          label: i.name,
+                          value: i.id,
+                        }))
+                          " placeholder="Select type" class="w-100" size="large"
+                          style="width: 100%; text-align: left" />
                       </div>
                     </div>
 
-                    <div
-                      class="
+                    <div class="
                         col-md-12
                         d-flex
                         justify-content-center
                         mt-3
                         col-sm-3
-                      "
-                      @click="saveCustomFields"
-                    >
-                      <el-button
-                        :color="primarycolor"
-                        round
-                        size="large"
-                        :loading="loading"
-                      >
+                      " @click="saveCustomFields">
+                      <el-button :color="primarycolor" round size="large" :loading="loading">
                         Save
                       </el-button>
                     </div>
@@ -127,16 +95,16 @@
               <span class="py-2 font-weight-bold mr-md-3 mr-0">ACTION</span>
             </div>
           </div>
+          <!-- :disabled="!enabled" -->
+          <!-- <div> {{ index }} - {{ element.label }} </div> -->
 
-          <div
-            class="row py-2"
-            v-for="(customFieldList, index) in allCustomFieldList"
-            :key="index"
-          >
-            <div class="col-md-12">
-              <div class="row">
-                <div
-                  class="
+          <draggable :list="allCustomFieldList" item-key="id" class="list-group" ghost-class="ghost"
+            :move="checkMove" @start="dragging = true" @end="dragging = false">
+            <template #item="{ element, index }">
+              <div class="row py-2 graggable">
+                <div class="col-md-12">
+                  <div class="row">
+                    <div class="
                     col-md-3
                     d-flex
                     px-md-0 px-4
@@ -144,16 +112,11 @@
                     align-items-center
                     mb-md-0 mb-5
                     flex-wrap
-                  "
-                >
-                  <span class="py-2 hidden-header">LABEL:</span>
-                  <span
-                    class="py-2 text-xs-left mr-md-0 ml-md-3 mr-4 font-text"
-                    >{{ customFieldList.label }}</span
-                  >
-                </div>
-                <div
-                  class="
+                  ">
+                      <span class="py-2 hidden-header">LABEL:</span>
+                      <span class="py-2 text-xs-left mr-md-0 ml-md-3 mr-4 font-text">{{ element.label }}</span>
+                    </div>
+                    <div class="
                     col-md-3
                     d-flex
                     px-md-0 px-4
@@ -161,16 +124,14 @@
                     align-items-center
                     mb-md-0 mb-5
                     flex-wrap
-                  "
-                >
-                  <span class="py-2 hidden-header small">CONTROL TYPE:</span>
-                  <span class="py-2 text-sm-end font-text">{{
-                    getControlName(customFieldList.controlType)
-                  }}
-                  </span>
-                </div>
-                <div
-                  class="
+                  ">
+                      <span class="py-2 hidden-header small">CONTROL TYPE:</span>
+                      <span class="py-2 text-sm-end font-text">{{
+                        getControlName(element.controlType)
+                      }}
+                      </span>
+                    </div>
+                    <div class="
                     col-md-3
                     d-flex
                     px-md-0 
@@ -178,175 +139,116 @@
                     align-items-center
                     mb-md-0 mb-5
                     flex-wrap
-                  "
-                >
-                  <span class="py-2 hidden-header">ENTITY TYPE:</span>
-                  <span class="py-2 text-sm-end font-text">{{
-                    getEntityName(customFieldList.entityType)
-                  }}</span>
-                </div>
-                <div
-                  class="
+                  ">
+                      <span class="py-2 hidden-header">ENTITY TYPE:</span>
+                      <span class="py-2 text-sm-end font-text">{{
+                        getEntityName(element.entityType)
+                      }}</span>
+                    </div>
+                    <div class="
                     col-md-3
                     mb-md-0 mb-2
                     col-12
                     d-flex
                     justify-content-md-center
                     align-items-end
-                  "
-                >
-                  <span class="py-md-4 hidden-header hidden-header1"
-                    >ACTION</span
-                  >
-                  <div
-                    class="
+                  ">
+                      <span class="py-md-4 hidden-header hidden-header1">ACTION</span>
+                      <div class="
                       d-flex
                       justify-content-md-center fllexxwrap justify-content-sm-start
-                    "
-                  >
-                    <el-button
-                      class="py-1 px-4 mb-md-3"
-                      color="#EBEFF4"
-                      round
-                      @click="openClassification(index)"
-                    >
-                      View
-                    </el-button>
-                    <el-button
-                      class="delbtn py-1 primary-btn px-3 mb-md-3"
-                      @click="deleteCustomField(customFieldList.id, index)"
-                      round
-                    >
-                      Delete
-                    </el-button>
-                  </div>
-                </div>
-              </div>
-              <div
-                class="row grey-background  "
-                v-if="vissibleTab === `tab_${index}`"
-              >
-                <div class="col-md-12"
-                  :class="{
-                    'show-view-dropdown': toggleCustomList,
-                    'hide-view-dropdown': !toggleCustomList,
-                  }"
-                >
-                  <div class="col-md-9 d-flex flex-wrap mt-3">
-                    <div class="col-md-4 text-md-right text-left">
-                      <label for="">Label</label>
-                    </div>
-                    <div class="col-md-8">
-                      <el-input
-                        type="text"
-                        class="w-100"
-                        v-model="customLabel"
-                        size="large"
-                      />
+                    ">
+                        <el-button class="py-1 px-4 mb-md-3" color="#EBEFF4" round @click="openClassification(index)">
+                          View
+                        </el-button>
+                        <el-button class="delbtn py-1 primary-btn px-3 mb-md-3"
+                          @click="deleteCustomField(element.id, index)" round>
+                          Delete
+                        </el-button>
+                      </div>
                     </div>
                   </div>
-                  <div class="col-md-9 d-flex flex-wrap mt-3">
-                    <div class="col-md-4 text-md-right text-left">
-                      <label for="">Control type</label>
-                    </div>
-                    <div class="col-md-8">
-                      <el-select-v2
-                          v-model="customControlTypeID"
-                          @change="setcustomControlType"
-                          :options="
-                            controlType.map((i) => ({
-                              label: i.name,
-                              value: i.id,
-                            }))
-                          "
-                          placeholder="Select type"
-                          class="w-100"
-                          size="large"
-                          style="width: 100%; text-align: left"
-                        />
-                    </div>
-                  </div>
-
-                  <div
-                    class="col-md-9 d-flex flex-wrap my-3"
-                    v-if="customControlType.name == 'DropdownList'"
-                  >
-                    <div class="col-md-4 text-md-right text-left">
-                      <!-- <label for="">Label</label> -->
-                    </div>
-                    <div class="col-md-8">
-                      <el-input
-                        type="text"
-                        class="w-100"
-                        size="large"
-                        v-model="customDropdownList"
-                      />
-                    </div>
-                  </div>
-
-                  <div class="col-md-9 d-flex flex-wrap my-3">
-                    <div class="col-md-4 text-md-right text-left">
-                      <label for="">Entity type</label>
-                    </div>
-                    <div class="col-md-8">
-                      <el-select-v2
-                          v-model="customEntityTypeID"
-                          @change="setcustomEntityType"
-                          :options="
-                            entityType.map((i) => ({
-                              label: i.name,
-                              value: i.id,
-                            }))
-                          "
-                          placeholder="Select type"
-                          class="w-100"
-                          size="large"
-                          style="width: 100%; text-align: left"
-                        />
-                    </div>
-                  </div>
-                  <div class="col-md-12">
-                    <div class="row mt-0 d-flex justify-content-center">
-                      <div class="save-discard-btn">
-                        <div class="">
-                          <el-button
-                            class=" save-btn text-white py-1 px-4"
-                            round
-                            @click="
-                              updateCustomField(customFieldList.id, index)
-                            "
-                          >
-                            Save
-                          </el-button>
+                  <div class="row grey-background  " v-if="vissibleTab === `tab_${index}`">
+                    <div class="col-md-12" :class="{
+                      'show-view-dropdown': toggleCustomList,
+                      'hide-view-dropdown': !toggleCustomList,
+                    }">
+                      <div class="col-md-9 d-flex flex-wrap mt-3">
+                        <div class="col-md-4 text-md-right text-left">
+                          <label for="">Label</label>
                         </div>
-                        <div class="">
-                          <el-button
-                            class=" secondary-btn py-1 px-3 m bor"
-                            round
-                            color="#EBEFF4"
-                            @click="discard"
-                          >
-                            Discard
-                          </el-button>
+                        <div class="col-md-8">
+                          <el-input type="text" class="w-100" v-model="customLabel" size="large" />
+                        </div>
+                      </div>
+                      <div class="col-md-9 d-flex flex-wrap mt-3">
+                        <div class="col-md-4 text-md-right text-left">
+                          <label for="">Control type</label>
+                        </div>
+                        <div class="col-md-8">
+                          <el-select-v2 v-model="customControlTypeID" @change="setcustomControlType" :options="controlType.map((i) => ({
+                            label: i.name,
+                            value: i.id,
+                          }))
+                            " placeholder="Select type" class="w-100" size="large" style="width: 100%; text-align: left" />
+                        </div>
+                      </div>
+  
+                      <div class="col-md-9 d-flex flex-wrap my-3" v-if="customControlType.name == 'DropdownList'">
+                        <div class="col-md-4 text-md-right text-left">
+                  
+                        </div>
+                        <div class="col-md-8">
+                          <el-input type="text" class="w-100" size="large" v-model="customDropdownList" />
+                        </div>
+                      </div>
+  
+                      <div class="col-md-9 d-flex flex-wrap my-3">
+                        <div class="col-md-4 text-md-right text-left">
+                          <label for="">Entity type</label>
+                        </div>
+                        <div class="col-md-8">
+                          <el-select-v2 v-model="customEntityTypeID" @change="setcustomEntityType" :options="entityType.map((i) => ({
+                            label: i.name,
+                            value: i.id,
+                          }))
+                            " placeholder="Select type" class="w-100" size="large" style="width: 100%; text-align: left" />
+                        </div>
+                      </div>
+                      <div class="col-md-12">
+                        <div class="row mt-0 d-flex justify-content-center">
+                          <div class="save-discard-btn">
+                            <div class="">
+                              <el-button class=" save-btn text-white py-1 px-4" round @click="
+                                updateCustomField(element.id, index)
+                                ">
+                                Save
+                              </el-button>
+                            </div>
+                            <div class="">
+                              <el-button class=" secondary-btn py-1 px-3 m bor" round color="#EBEFF4" @click="discard">
+                                Discard
+                              </el-button>
+                            </div>
+                          </div>
                         </div>
                       </div>
                     </div>
                   </div>
+  
+                  <div class="row">
+                    <div class="col-md-12 px-0">
+                      <hr class="hr my-0" />
+                    </div>
+                  </div>
                 </div>
               </div>
+            </template>
+          </draggable>
 
-              <div class="row">
-                <div class="col-md-12 px-0">
-                  <hr class="hr my-0" />
-                </div>
-              </div>
-            </div>
-          </div>
-          <div class="col-12 text-center p-5" v-if="loading">
-            <i
-              class="pi pi-spin pi-spinner text-center text-primary"
-              style="fontsize: 3rem"
-            ></i>
+
+          <div class="col-12 text-center p-5" v-if="loadingfields">
+            <i class="pi pi-spin pi-spinner text-center text-primary" style="fontsize: 3rem"></i>
           </div>
         </div>
       </div>
@@ -359,9 +261,12 @@ import { ref, inject } from "vue";
 import axios from "@/gateway/backendapi";
 import { ElMessage, ElMessageBox } from "element-plus";
 import finish from "../../services/progressbar/progress";
+import draggable from 'vuedraggable'
 
 export default {
-  components: {},
+  components: {
+    draggable
+  },
   setup() {
     const primarycolor = inject('primarycolor')
     const selectedControl = ref({});
@@ -375,6 +280,7 @@ export default {
     const vissibleTab = ref(false);
     const selectedEntityType = ref({});
     const loading = ref(false);
+    const loadingfields = ref(false);
     const customEntityType = ref({});
     const customControlType = ref({});
     const customLabel = ref("");
@@ -402,17 +308,20 @@ export default {
       { name: "EventRegistrationForm", id: "4" },
       { name: "CheckInAttendance", id: "5" },
     ]);
-    const saveChip = () =>{
-      ((dropdownList.value.indexOf(currentInput.value) === -1) ) && dropdownList.value.push(currentInput.value);
+    const dragging = ref(false)
+
+    const saveChip = () => {
+      ((dropdownList.value.indexOf(currentInput.value) === -1)) && dropdownList.value.push(currentInput.value);
       currentInput.value = '';
     }
-    const deleteChip = (index) =>{
+    const deleteChip = (index) => {
       dropdownList.value.splice(index, 1);
     }
-    const backspaceDelete = ({which}) =>{
-       which == 8 && currentInput.value === '' && dropdownList.value.splice(dropdownList.value.length - 1);
+    const backspaceDelete = ({ which }) => {
+      which == 8 && currentInput.value === '' && dropdownList.value.splice(dropdownList.value.length - 1);
     }
-    const setcustomEntityType = () => { setcustomControlType
+    const setcustomEntityType = () => {
+      setcustomControlType
       customEntityType.value = entityType.value.find((i) => {
         return i.id === customEntityTypeID.value;
       });
@@ -482,8 +391,8 @@ export default {
     };
 
     const showConfirmModal = (id, index) => {
-      ElMessageBox.confirm("Are you sure you want to Delete?", "Confirm delete", 
-     {
+      ElMessageBox.confirm("Are you sure you want to Delete?", "Confirm delete",
+        {
           confirmButtonText: 'OK',
           cancelButtonText: 'Cancel',
           type: 'error',
@@ -535,11 +444,11 @@ export default {
       customControlType.value = controlType.value.find(
         (i) => i.id == allCustomFieldList.value[index].controlType
       );
-       customControlTypeID.value =  customControlType.value.id
-       customEntityTypeID.value = customEntityType.value.id
+      customControlTypeID.value = customControlType.value.id
+      customEntityTypeID.value = customEntityType.value.id
       toggleCustomList.value = !toggleCustomList.value;
-     
-      
+
+
     };
 
     const updateCustomField = async () => {
@@ -571,7 +480,7 @@ export default {
     };
 
     const saveCustomFields = async () => {
-      console.log(dropdownList.value);
+      loading.value = true
       const body = {
         entityType: selectedEntityType.value.name,
         tenantID: tenantId.value,
@@ -586,23 +495,27 @@ export default {
           body
         );
 
-        console.log(data, "saveCustomizable");
+        loading.value = false
         allCustomFieldList.value.push(data);
         ElMessage({
           type: "success",
           message: "Custom Field created successfully",
           duration: 5000
         });
-        selectedEntityType.value = "";
         customFieldLabel.value = "";
+        selectedControl.value = new Object();
+        selectedControlID.value = null;
+        selectedEntityType.value = new Object();
+        selectedEntityTypeID.value = null
         dropdownList.value = [];
-        selectedControl.value = "";
       } catch (error) {
         console.log(error);
+        loading.value = false
       }
     };
 
     const getAllCustomFields = async () => {
+      loadingfields.value = true
       try {
         const res = await axios.get("/api/CustomFields/GetAllCustomFields");
         console.log(res.data, "allCustomFields");
@@ -619,12 +532,14 @@ export default {
             id: i.id,
           };
         });
+        loadingfields.value = false
         console.log(getAllcontrolType.value, "allcontrol");
         console.log(getAllEntityType.value, "allEntity");
         console.log(allCustomFieldList.value, "allCustomFieldList");
       } catch (err) {
         /*eslint no-undef: "warn"*/
         console.log(err);
+        loadingfields.value = false
       }
     };
     getAllCustomFields();
@@ -638,6 +553,10 @@ export default {
         ? controlType.value.find((i) => i.id == id).name
         : "";
     };
+
+    const checkMove = (e) => {
+      window.console.log("Future index: " + e.draggedContext.futureIndex);
+    }
 
     return {
       controlType,
@@ -677,29 +596,32 @@ export default {
       customFieldLabel,
       customDropdownList,
       toggleCustomList,
-      primarycolor
+      primarycolor,
+      loadingfields,
+      checkMove,
+      dragging
     };
   },
 };
 </script>
 
 <style scoped>
-
 .chip-container {
   /* width: 425px; */
   border: 1px solid #ccc;
   background: #ffffff;
   min-height: 34px;
-  display:flex;
+  display: flex;
   flex-wrap: wrap;
   align-content: space-between;
 }
+
 .chip {
   padding: 0.3rem 0.3rem;
   border: 1px solid #02172e0d;
   border-radius: 25px;
   background: #02172e14;
-    /* margin:4px;
+  /* margin:4px;
     background: #e0e0e0;
     padding:0px 4px;
     border: 1px solid #ccc;
@@ -707,19 +629,20 @@ export default {
     display:flex;
     align-items: center; */
 }
-i {
-      cursor: pointer;
-      opacity: .56;
-      margin-left:8px;
-    }
 
-    .inputt {
-    /* flex: 1 1 auto;
+i {
+  cursor: pointer;
+  opacity: .56;
+  margin-left: 8px;
+}
+
+.inputt {
+  /* flex: 1 1 auto;
     width: 30px; */
-    border: none;
-    outline: none;
-    padding: 4px;
-  }
+  border: none;
+  outline: none;
+  padding: 4px;
+}
 
 .table-header-row {
   background: #ebeff4;
@@ -740,6 +663,7 @@ i {
   overflow: hidden;
   transition: all 0.5s ease-in-out;
 }
+
 .hide-view-dropdown {
   height: 0px;
   overflow: hidden;
@@ -753,6 +677,7 @@ i {
 .grey-background {
   background: #dde2e6;
 }
+
 .email-destination {
   padding: 0.1rem 0.4rem;
   border: 1px solid #02172e0d;
@@ -772,21 +697,24 @@ i {
 .save-btn {
   background: #50ab00;
 }
+
 .delbtn:hover {
   background-color: red !important;
   color: white !important;
 }
+
 .delbtn {
   background-color: #f2bc9e !important;
   color: black !important;
 }
+
 .delbtn:focus {
   outline: none !important;
   border: none !important;
 }
+
 .memCat {
-  font: var(--unnamed-font-style-normal) normal 800 34px/46px
-    var(--unnamed-font-family-nunito-sans);
+  font: var(--unnamed-font-style-normal) normal 800 34px/46px var(--unnamed-font-family-nunito-sans);
   letter-spacing: var(--unnamed-character-spacing-0);
   text-align: left;
   font: normal normal 800 34px/46px Nunito Sans;
@@ -794,9 +722,9 @@ i {
   color: #02172e;
   opacity: 1;
 }
+
 .memCat1 {
-  font: var(--unnamed-font-style-normal) normal var(--unnamed-font-weight-bold)
-    24px/32px var(--unnamed-font-family-nunito-sans);
+  font: var(--unnamed-font-style-normal) normal var(--unnamed-font-weight-bold) 24px/32px var(--unnamed-font-family-nunito-sans);
   letter-spacing: var(--unnamed-character-spacing-0);
   text-align: left;
   font: normal normal bold 24px/32px Nunito Sans;
@@ -809,6 +737,7 @@ i {
   .hidden-header1 {
     display: none !important;
   }
+
   .hidden-header {
     display: inline-block;
     font-weight: 700;
@@ -818,12 +747,15 @@ i {
   .table-header-row {
     display: none;
   }
+
   .bold:hover {
     color: white !important;
   }
+
   .bold {
     color: rgb(187, 176, 176) !important;
   }
+
   .bor {
     border: #02172e !important;
   }
@@ -831,28 +763,30 @@ i {
 
 @media screen and (max-width: 746px) {
   .show-view-dropdown {
-  height: 400px;
-  overflow: hidden;
-  transition: all 0.5s ease-in-out;
+    height: 400px;
+    overflow: hidden;
+    transition: all 0.5s ease-in-out;
+  }
 }
-}
+
 @media screen and (max-width: 348px) {
   .show-view-dropdown {
-  height: 450px;
-  overflow: hidden;
-  transition: all 0.5s ease-in-out;
+    height: 450px;
+    overflow: hidden;
+    transition: all 0.5s ease-in-out;
+  }
 }
-}
+
 @media screen and (max-width: 300px) {
-  .fllexxwrap{
+  .fllexxwrap {
     flex-wrap: wrap;
     justify-content: center;
   }
 }
+
 @media screen and (max-width: 390px) {
   .memCat {
-    font: var(--unnamed-font-style-normal) normal 500 20px/25px
-      var(--unnamed-font-family-nunito-sans);
+    font: var(--unnamed-font-style-normal) normal 500 20px/25px var(--unnamed-font-family-nunito-sans);
     letter-spacing: var(--unnamed-character-spacing-0);
     text-align: left;
     font: normal normal 800 20px/25px Nunito Sans;
@@ -860,10 +794,9 @@ i {
     color: #02172e;
     opacity: 1;
   }
+
   .memCat1 {
-    font: var(--unnamed-font-style-normal) normal
-      var(--unnamed-font-weight-bold) 18px/20px
-      var(--unnamed-font-family-nunito-sans);
+    font: var(--unnamed-font-style-normal) normal var(--unnamed-font-weight-bold) 18px/20px var(--unnamed-font-family-nunito-sans);
     letter-spacing: var(--unnamed-character-spacing-0);
     text-align: left;
     font: normal normal bold 18px/20px Nunito Sans;
@@ -880,5 +813,12 @@ i {
     font-size: 13px;
     font-weight: bold;
   }
+}
+
+.graggable {
+    cursor: move; /* fallback if grab cursor is unsupported */
+    cursor: grab;
+    cursor: -moz-grab;
+    cursor: -webkit-grab;
 }
 </style>
