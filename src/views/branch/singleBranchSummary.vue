@@ -21,22 +21,35 @@
               <template #dropdown>
                 <el-dropdown-menu>
                   <el-dropdown-item>
-                    <router-link
+                    <!-- <router-link
                       class="w-100 text-dark text-decoration-none"
                       :to="`/tenant/sms/compose?id=${singleBranchInfo.id}`"
                     >
                       <el-icon class="text-primary"><ChatDotRound /></el-icon>
                       Send SMS
-                    </router-link>
+                    </router-link> -->
+                    <div
+                      class="w-100 text-dark text-decoration-none" @click="toggleSMS(singleBranchInfo.id)"
+                    >
+                      <el-icon class="text-primary"><ChatDotRound /></el-icon>
+                      Send SMS
+                    </div>
                   </el-dropdown-item>
                   <el-dropdown-item>
-                    <router-link
+                    <div
+                     @click="toggleEMAIL(singleBranchInfo.id)"
+                      class="w-100 text-dark text-decoration-none"
+                    >
+                      <el-icon class="text-primary"><Message /></el-icon>
+                      Send Email
+                    </div>
+                    <!-- <router-link
                       class="w-100 text-dark text-decoration-none"
                       to="/tenant/email/compose"
                     >
                       <el-icon class="text-primary"><Message /></el-icon>
                       Send Email
-                    </router-link>
+                    </router-link> -->
                   </el-dropdown-item>
                   <el-dropdown-item>
                     <router-link
@@ -219,6 +232,28 @@
         </div>
       </div>
     </div>
+    <el-drawer v-model="showSMS" :size="mdAndUp || lgAndUp || xlAndUp ? '70%' : '100%'" direction="rtl">
+      <template #header>
+        <h4>Send SMS</h4>
+      </template>
+      <template #default>
+        <div>
+          <smsComponent @closesidemodal="() => showSMS = false" />
+          <!-- <smsComponent :phoneNumbers="contacts" @closesidemodal="() => showSMS = false" /> -->
+        </div>
+      </template>
+    </el-drawer>
+    <el-drawer v-model="showEmail" :size="mdAndUp || lgAndUp || xlAndUp ? '70%' : '100%'" direction="rtl">
+      <template #header>
+        <h4>Send Email</h4>
+      </template>
+      <template #default>
+        <div>
+          <emailComponent @closesidemodal="() => showEmail = false" />
+          <!-- <emailComponent :selectedGroupMembers="markedMembers" @closesidemodal="() => showEmail = false" /> -->
+        </div>
+      </template>
+    </el-drawer>
   </div>
 </template>
 
@@ -226,11 +261,16 @@
 import { ref, inject, onMounted, onUpdated, computed } from "vue";
 import ColumnChart from "@/components/charts/BranchColumnChart.vue";
 import axios from "@/gateway/backendapi";
+import smsComponent from "../groups/component/smsComponent.vue";
+import emailComponent from "../groups/component/emailComponent.vue";
 // import { ElMessage } from "element-plus";
+import deviceBreakpoint from "../../mixins/deviceBreakpoint";
 import store from "../../store/store";
 export default {
   components: {
     ColumnChart,
+    smsComponent,
+    emailComponent
   },
   setup() {
     const selectedAction = ref("Quick Action");
@@ -251,7 +291,10 @@ export default {
     const mainIncomeExpenseData =  ref([])
     const firstTimerAttendanceData =  ref([])
     const firstTimerData =  ref([])
+    const showEmail = ref(false)
+    const showSMS = ref(false)
     const singleBranchInfo =  ref({})
+    const { mdAndUp, lgAndUp, xlAndUp, xsOnly } = deviceBreakpoint()
     const branchItem = ref(store.getters.currentBranch)
     console.log(store.getters.currentBranch, 'i have more than a soing');
 
@@ -299,6 +342,17 @@ export default {
       }
     };
     getBranchesAnalytics();
+
+    const toggleSMS = (id) => {
+      showSMS.value = true
+      console.log(id, 'id 1')
+      
+    }
+    const toggleEMAIL = (id) => {
+      showEmail.value = true
+      console.log(id, 'id 2')
+      
+    }
 
     const getAllBranches = async () => {
       // const singleBranchID = localStorage.getItem('branchId')
@@ -425,6 +479,12 @@ export default {
       selectedAction,
       branchId,
       selectedType2,
+      mdAndUp, 
+      lgAndUp, 
+      xlAndUp, 
+      xsOnly,
+      toggleEMAIL,
+      toggleSMS,
       selectedType1,
       chartItemdropdown,
       getAllAverageIncome,
@@ -441,6 +501,8 @@ export default {
       series,
       firstTimerAttendanceData,
       singleBranchInfo,
+      showSMS,
+      showEmail,
       firstTimerData,
       firstTimerChart,
       branchData2,
@@ -449,6 +511,7 @@ export default {
       expenseData,
       IncomeExpHeader,
       mainIncomeExpenseData,
+      toggleSMS
     };
   },
 };

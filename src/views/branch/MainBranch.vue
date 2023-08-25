@@ -54,7 +54,7 @@
                 <!-- </router-link
               > -->
             </div>
-            <div class="mt-2 h6 font-weight-bold" @click="sendMarkedBranchEmail">
+            <div class="mt-2 h6 font-weight-bold primary--text" @click="sendMarkedBranchEmail">
               <!-- <router-link class="primary--text" to="/tenant/email/compose"
                 > -->
                 Send Email

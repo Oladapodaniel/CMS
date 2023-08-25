@@ -25,7 +25,7 @@
                 <Service/> 
             </div>
             <div class="col-12 p-0" v-if="showFinancial">
-                <!-- <Service/>  -->
+                <Financial/> 
             </div>
         </div>
     </div>
@@ -36,11 +36,13 @@
 import { ref } from "vue"
 import Member from "./MembershipReport.vue"
 import Service from "./ServiceReport.vue"
+import Financial from "./financialReport/index.vue"
 
 export default {
     components: {
         Member,
-        Service
+        Service,
+        Financial
     },
     
     setup() {

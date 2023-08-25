@@ -946,7 +946,7 @@ import deviceBreakpoint from "../../../mixins/deviceBreakpoint";
 import { ElMessage } from "element-plus";
 
 export default {
-  props: ["phoneNumbers", "groupData"],
+  props: ["phoneNumbers", "groupData", "branchID"],
   emits: ["closesidemodal"],
   setup(props, { emit }) {
     const toast = useToast();
