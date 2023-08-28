@@ -346,7 +346,6 @@ export default {
       // Return the end result
       offeringChartResult.value = [];
       let result = array.reduce((result, currentValue) => {
-        // If an array already present for key, push it to the array. Else create an array and push the object
         (result[currentValue[key]] = result[currentValue[key]] || []).push(
           currentValue
         );
