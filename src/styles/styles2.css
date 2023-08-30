@@ -149,7 +149,7 @@ li.el-menu-item:hover{
   text-align: left;
 }
 
-div.el-dialog.is-align-center.QRCodeDialog {
+div.el-dialog.is-align-center.QRCodeDialog, div.el-dialog.is-align-center.pastorsDialog {
   border-radius: 25px;
 }
 

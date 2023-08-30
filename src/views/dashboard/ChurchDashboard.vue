@@ -532,6 +532,65 @@
         </div>
       </div>
     </div>
+    <el-dialog v-model="pastorsDialog" title="" class="pastorsDialog" :width="mdAndUp || lgAndUp || xlAndUp ? `50%` : `90%`" align-center>
+      <div class="row">
+        <div class="col-md-12">
+          <div class="pastor-text text-center">
+            Now that you have onboarded
+          </div>
+          <div class="text-center">
+            Enter your pastor details below
+          </div>
+
+          <div class="row">
+            <div class="col-md-12">
+                <div class="row">
+                    <div class="col-md-8 order-2 order-md-1">
+                        <div class="row my-3">
+                            <div class="col-md-4 text-md-right pr-md-0">
+                                <label for="" class="font-weight-700">Name<span class="text-danger">*</span></label>
+                            </div>
+                            <div class="col-md-8">
+                                <el-input type="text" v-model="pastordata.name" placeholder="Enter name" />
+                            </div>
+                        </div>
+
+                        <div class="row my-3">
+                            <div class="col-md-4 text-md-right pr-md-0">
+                                <label for="" class="font-weight-700">Phone Number</label>
+                            </div>
+                            <div class="col-md-8">
+                                <el-input type="text" v-model="pastordata.mobilePhone" placeholder="Enter phone number" />
+                            </div>
+                        </div>
+                        <div class="row my-3">
+                            <div class="col-md-4 text-md-right pr-md-0">
+                                <label for="" class="font-weight-700">Email</label>
+                            </div>
+                            <div class="col-md-8">
+                                <el-input type="text" v-model="pastordata.email" placeholder="Email" />
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-4 order-1 order-md-2 mt-3 mt-md-0">
+                        <ImageForm @image="setImage" />
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-md-3 text-md-right">
+                        <h4 class="header4 text-md-right"></h4>
+                    </div>
+                    <div class="col-md-5 px-0 mt-3 d-flex justify-content-end">
+                        <el-button class="secondary-button" @click="pastorsDialog = false" round>Maybe later</el-button>
+                        <el-button :color="primarycolor" :loading="savingPastorData" @click="savepastordata"
+                            round>Save</el-button>
+                    </div>
+                </div>
+            </div>
+        </div>
+        </div>
+      </div>
+    </el-dialog>
   </main>
 </template>
 
@@ -539,7 +598,7 @@
 import ByMaritalStatusChart from "@/components/charts/PieChart";
 import ByGenderChart from "@/components/charts/PieChart";
 import ColumnChart from "@/components/charts/ColumnChart.vue";
-import { computed, onMounted, ref, inject } from "vue";
+import { computed, onMounted, ref, inject, watchEffect } from "vue";
 import mixin from "@/mixins/currentUser.mixin.js"
 import router from "@/router/index";
 import axios from "@/gateway/backendapi";
@@ -550,6 +609,9 @@ import formatDate from "../../services/dates/dateformatter";
 import deviceBreakpoint from "../../mixins/deviceBreakpoint";
 import Table from "@/components/table/Table"
 import store from "../../store/store"
+import ImageForm from "../../components/membership/ImageForm.vue"
+import swal from "sweetalert";
+import { ElMessage } from 'element-plus'
 // import { useStore } from 'vuex';
 
 export default {
@@ -558,7 +620,8 @@ export default {
     ColumnChart,
     ByMaritalStatusChart,
     ByGenderChart,
-    Table
+    Table,
+    ImageForm
   },
   data() {
     return {}
@@ -631,7 +694,7 @@ export default {
       "Dec",
     ]);
 
-    const { lgAndUp, xlAndUp } = deviceBreakpoint()
+    const { mdAndUp, lgAndUp, xlAndUp } = deviceBreakpoint()
 
 
     const celebHeaders = ref([
@@ -651,6 +714,9 @@ export default {
       { name: 'Social media post', to: '/tenant/social/post' },
       { name: 'Mobile app post', to: '/tenant/social/post' },
     ])
+    const pastorsDialog = ref(false)
+    const pastordata = ref({})
+    const savingPastorData = ref(false)
 
     const series = computed(() => {
       if (attendanceSeries.value === "weekly") return xAxis.value;
@@ -915,6 +981,68 @@ export default {
       return (totalMembers / currentPlan.membershipSize) * 100;
     };
 
+    const setImage = (payload) => {
+      pastordata.value.image = payload
+    }
+
+    const getUser = computed(() => {
+      if (!store.getters.currentUser || (store.getters.currentUser && Object.keys(store.getters.currentUser).length == 0)) return ''
+      return store.getters.currentUser
+    })
+
+    const savepastordata = async () => {
+      savingPastorData.value = true
+      let formData = new FormData();
+      formData.append("pastorName", pastordata.value.name)
+      formData.append("pastorEmail", pastordata.value.email)
+      formData.append("pastorPhone", pastordata.value.mobilePhone)
+      formData.append("pastorPicture", pastordata.value.image ? pastordata.value.image : "")
+      formData.append("id", "")
+
+      try {
+        let { data } = await axios.put("/api/Dashboard/UpdateTenantPastors", formData)
+        console.log(data, 'saved');
+        savingPastorData.value = false
+        pastorsDialog.value = false
+        swal(
+            "Success!",
+            "Pastor's data saved successfully!",
+            "success"
+          );
+        }
+        catch (err) {
+          console.error(err);
+          savingPastorData.value = false
+          ElMessage({
+            type: 'error',
+            message: 'Unable to add pastors data, please try again',
+            duration: 5000
+          })
+      }
+    }
+
+    
+    const getChurchProfile = async () => {
+      try {
+        let { data } = await axios.get(`/GetChurchProfileById?tenantId=${getUser.value.tenantId}`)
+        console.log(data);
+        if (!data.returnObject.pastorName) {
+          pastorsDialog.value = true
+        }
+      }
+      catch (err) {
+        console.error(err);
+      }
+    }
+
+    watchEffect(() => {
+      if (getUser.value) {
+        getChurchProfile()
+      }
+    })
+
+
+
 
     return {
       celebrations,
@@ -967,13 +1095,19 @@ export default {
       buttonTextCheck,
       celeb,
       attendanceSeries,
+      mdAndUp,
       lgAndUp,
       xlAndUp,
       celebHeaders,
       dashboardLoading,
       createNew,
       router,
-      primarycolor
+      primarycolor,
+      pastorsDialog,
+      pastordata,
+      savepastordata,
+      savingPastorData,
+      setImage
     };
   },
 };
@@ -1498,5 +1632,11 @@ tbody tr:nth-child(even) {
   height: 30px;
   object-fit: cover;
   border-radius: 50%;
+}
+
+.pastor-text {
+  color: #124191;
+  font-weight: 800;
+  font-size: 18px;
 }
 </style>
