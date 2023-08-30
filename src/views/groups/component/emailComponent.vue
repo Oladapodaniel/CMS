@@ -46,6 +46,59 @@
           <hr class="hr my-1" />
         </div>
       </div>
+      <div 
+      v-if="route.fullPath == '/tenant/branch/mainbranchsummary'"
+      class="row">
+        <div class="col-md-2 pr-md-0 col-lg-2 align-self-center">
+          <span class="small-text">Send to : </span>
+        </div>
+        <div class="p-0 col-md-10 col-lg-10 form-group mb-0">
+          <!-- <div class="dropdown">
+            <button
+              class="btn btn-default border dropdown-toggle small-text"
+              type="button"
+              id="dropdownMenuButton"
+              data-toggle="dropdown"
+              aria-haspopup="true"
+              aria-expanded="false"
+              @click="closeDropdownIfOpen"
+            >
+              Select Destination
+            </button>
+            <div
+              class="dropdown-menu w-100"
+              aria-labelledby="dropdownMenuButton"
+            >
+              <a
+                class="dropdown-item c-pointer small-text"
+                v-for="(destination, index) in possibleEmailDestinations"
+                :key="index"
+                @click="showSection(index)"
+                >{{ destination }}</a
+              >
+            </div>
+          </div> -->
+          <el-dropdown trigger="click" class="w-100">
+            <div class="d-flex justify-content-between border-contribution text-dark w-100" size="large">
+              <span>Select Destination</span>
+              <div>
+                <el-icon class="el-icon--right">
+                  <arrow-down />
+                </el-icon>
+              </div>
+            </div>
+            <template #dropdown>
+              <el-dropdown-menu>
+                <el-dropdown-item v-for="(destination, index) in possibleBranchEMAIlDestination" :key="index">
+                  <a class="no-decoration text-dark" @click="showSection(index)">
+                    {{ destination }}
+                  </a>
+                </el-dropdown-item>
+              </el-dropdown-menu>
+            </template>
+          </el-dropdown>
+        </div>
+      </div>
 
       <div class="row" v-if="sendToAll">
         <div class="col-md-2"></div>
@@ -491,7 +544,7 @@ import DecoupledEditor from "@/components/RichEditor";
 import deviceBreakpoint from "../../../mixins/deviceBreakpoint";
 
 export default {
-  props: ["selectedGroupMembers", "groupData"],
+  props: ["selectedGroupMembers", "groupData", "branchID"],
   emits: ["closesidemodal"],
   components: {
     DecoupledEditor,
@@ -508,7 +561,7 @@ export default {
       };
     };
 
-    const possibleEmailDestinations = composeService.possibleEmailDestinations;
+    const possibleBranchEMAIlDestination = composeService.possibleBranchEMAIlDestinations;
     const groupsAreVissible = ref(false);
     const groupSelectionTab = ref(false);
     const membershipSelectionTab = ref(false);
@@ -580,6 +633,16 @@ export default {
       { name: "Me", id: 1 },
       { name: "You", id: 2 },
     ];
+    const getAllBranch = async () => {
+      try {
+         let { data } = await axios.get("/api/Branching");
+         console.log(data, 'kll;');
+      } catch (error) {
+        
+      }
+    }
+    getAllBranch()
+
     const selectMember = (selectedMember, index) => {
       selectedMembers.value.push(selectedMember);
       console.log(memberSearchResults.value, "search members");
@@ -923,7 +986,7 @@ export default {
       loadedMessage,
       iSoStringFormat,
       editorData,
-      possibleEmailDestinations,
+      possibleBranchEMAIlDestination,
       groupsAreVissible,
       toggleGroupsVissibility,
       selectedGroups,
@@ -945,6 +1008,7 @@ export default {
       searchForPerson,
       loading,
       memberSearchResults,
+      route,
       subject,
       sendOptionsIsShown,
       toggleSendOptionsDisplay,

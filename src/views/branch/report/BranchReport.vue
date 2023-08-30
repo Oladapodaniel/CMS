@@ -4,13 +4,17 @@
             <div class="head-text">Branch Reports</div>
         </div>
         <div class="row" style=" background: #f5f8fa;">
-            <div class="col-12 col-sm-6 px-0 c-pointer " @click="toggleMember">
+            <div class="col-12 col-sm-4 px-0 c-pointer " @click="toggleMember">
                 <div class="p-3 header4"> Membership </div> 
                 <div :class="{ 'baseline' : showMember, 'hide-base' : !showMember }"></div>
             </div>
-            <div class="col-12 col-sm-6 px-0 c-pointer" @click="toggleService">
+            <div class="col-12 col-sm-4 px-0 c-pointer" @click="toggleService">
                 <div class="p-3 header4">Church Activities</div> 
                 <div :class="{ 'baseline' : showService, 'hide-base' : !showService }"></div>
+            </div>
+            <div class="col-12 col-sm-4 px-0 c-pointer" @click="toggleFinancial">
+                <div class="p-3 header4">Financial</div> 
+                <div :class="{ 'baseline' : showFinancial, 'hide-base' : !showFinancial }"></div>
             </div>
         </div>
         <div class="row mt-3">
@@ -19,6 +23,9 @@
             </div>
             <div class="col-12 p-0" v-if="showService">
                 <Service/> 
+            </div>
+            <div class="col-12 p-0" v-if="showFinancial">
+                <Financial/> 
             </div>
         </div>
     </div>
@@ -29,26 +36,36 @@
 import { ref } from "vue"
 import Member from "./MembershipReport.vue"
 import Service from "./ServiceReport.vue"
+import Financial from "./financialReport/index.vue"
 
 export default {
     components: {
         Member,
-        Service
+        Service,
+        Financial
     },
     
     setup() {
         const showMember = ref(true)
         const showService = ref(false)
+        const showFinancial = ref(false)
      
 
         // const route = useRoute()
         const toggleMember = () => {
             showMember.value = true
             showService.value = false
+            showFinancial.value = false
         }
         const toggleService = () => {
             showMember.value = false
             showService.value = true
+            showFinancial.value = false
+        }
+        const toggleFinancial = () => {
+            showMember.value = false
+            showService.value = false
+            showFinancial.value = true
         }
        
        
@@ -58,8 +75,10 @@ export default {
         return{
             showMember,
             showService,
+            showFinancial,
             toggleMember,
             toggleService,
+            toggleFinancial
            
             // route
         }

@@ -513,6 +513,17 @@ const routes = [
                     import( /* webpackChunkName: "branchreport" */ '../views/branch/report/BranchReport.vue')
 
                 },
+                // {
+
+                //     path: 'branchincomestatementreport',
+                //     name: "BranchIncomeStatement",
+                //     meta: {
+                //         title: 'Churchplus - Branch',
+                //     },
+                //     component: () =>
+                //     import( /* webpackChunkName: "branchreport" */ '../views/branch/report/financialReport/BranchIncomeStatement.vue')
+
+                // },
             ]
         },
         {

@@ -1,126 +1,111 @@
 <template>
-    <div class="">
-                <button
-                  class="form-control d-flex justify-content-between align-items-center exempt-hide"
-                  @click="setGroupProp"
-                >
-                  <span class="exempt-hide">
-                    <span
-                      v-if="
-                        selectedMember.length > 0 && selectedMember.length <= 2
-                      "
-                    >
-                      <span v-for="item in selectedMember" :key="item.id"
-                        >
-                        <span v-if="item.name" class="eachGroup">{{ item.name }}</span>
-                        <span v-else class="eachGroup">{{ item.text }}</span>
-                        </span>
-                    </span>
-                    <span
-                      v-if="
-                        selectedMember.length > 0 && selectedMember.length > 2
-                      "
-                    >
-                      <span
-                        v-for="item in selectedMember.slice(0, 2)"
-                        :key="item.id"
-                        >
-                        <span v-if="item.name" class="eachGroup">{{ item.name }}</span>
-                        <span v-else class="eachGroup">{{ item.text }}</span>
-                        </span
-                      >
-                      ...
-                    </span>
-                    <span v-if="selectedMember.length === 0"
-                      >Select</span
-                    >
-                  </span>
-                  <el-icon class="exemple-hide"><ArrowDown /></el-icon>
-                </button>
-                <div
-                  class="div-card p-2 exempt-hide"
-                  :class="{
-                    'd-none': hideDiv,
-                    'd-block': !hideDiv,
-                  }"
-                >
-                  <el-icon
-                    v-if="searchForMembers.length === 0"
-                    class="is-loading text-center exempt-hide"
-                  >
-                    <Loading />
-                  </el-icon>
-                  <input
-                    type="text"
-                    class="form-control exempt-hide"
-                    v-model="searchMemberText"
-                    ref="searchMemberRef"
-                    placeholder="Search"
-                  />
-                  <div class="row">
-                    <div class="col-12 px-3">
-                      <div>
-                        <div>
-                          <el-checkbox
-                            v-model="allChecked"
-                            @change="checkAll"
-                            class="exempt-hide"
-                          />
-                          <span class="font-weight-700"
-                            >&nbsp; &nbsp;Select all</span
-                          >
-                        </div>
-                      </div>
-                    </div>
-                  </div>
-                  <ul class="px-2 w-100">
-                    <li
-                      v-for="(member, index) in searchForMembers"
-                      :key="index"
-                      class="px-2 pt-2 c-pointer parent-li border-top exempt-hide"
-                    >
-                      <div class="row exempt-hide">
-                        <div class="text-primary exempt-hide">
-                          <span>
-                            <el-checkbox
-                              v-model="member.displayCheck"
-                              @change="getCheckedGroup(member)"
-                              class="exempt-hide all-check"
-                            />
-                          </span>
-                        </div>
-                        <div class="text-primary exempt-hide">
-                          <span v-if="member.name" class="p-3 exempt-hide">{{ member.name }}</span>
-                          <span v-else class="p-3 exempt-hide">{{ member.text }}</span>
-                        </div>
-                      </div>
-                    </li>
-                  </ul>
-                </div>
-              </div>
+  <div class="">
+    <button
+      class="form-control d-flex justify-content-between align-items-center exempt-hide"
+      @click="setGroupProp"
+    >
+      <span class="exempt-hide">
+        <span v-if="selectedMember.length > 0 && selectedMember.length <= 2">
+          <span v-for="item in selectedMember" :key="item.id">
+            <span v-if="item.name" class="eachGroup">{{ item.name }}</span>
+            <span v-else class="eachGroup">{{ item.text }}</span>
+          </span>
+        </span>
+        <span v-if="selectedMember.length > 0 && selectedMember.length > 2">
+          <span v-for="item in selectedMember.slice(0, 2)" :key="item.id">
+            <span v-if="item.name" class="eachGroup">{{ item.name }}</span>
+            <span v-else class="eachGroup">{{ item.text }}</span>
+          </span>
+          ...
+        </span>
+        <span v-if="selectedMember.length === 0">Select</span>
+      </span>
+      <el-icon class="exemple-hide"><ArrowDown /></el-icon>
+    </button>
+    <div
+      class="div-card p-2 exempt-hide"
+      :class="{
+        'd-none': hideDiv,
+        'd-block': !hideDiv,
+      }"
+    >
+      <el-icon
+        v-if="searchForMembers.length === 0"
+        class="is-loading text-center exempt-hide"
+      >
+        <Loading />
+      </el-icon>
+      <input
+        type="text"
+        class="form-control exempt-hide"
+        v-model="searchMemberText"
+        ref="searchMemberRef"
+        placeholder="Search"
+      />
+      <div class="row">
+        <div class="col-12 px-3">
+          <div>
+            <div>
+              <el-checkbox
+                v-model="allChecked"
+                @change="checkAll"
+                class="exempt-hide"
+              />
+              <span class="font-weight-700">&nbsp; &nbsp;Select all</span>
+            </div>
+          </div>
+        </div>
+      </div>
+      <ul class="px-2 w-100">
+        <li
+          v-for="(member, index) in searchForMembers"
+          :key="index"
+          class="px-2 pt-2 c-pointer parent-li border-top exempt-hide"
+        >
+          <div class="row exempt-hide">
+            <div class="text-primary exempt-hide">
+              <span>
+                <el-checkbox
+                  v-model="member.displayCheck"
+                  @change="getCheckedGroup(member)"
+                  class="exempt-hide all-check"
+                />
+              </span>
+            </div>
+            <div class="text-primary exempt-hide">
+              <span v-if="member.name" class="p-3 exempt-hide">{{
+                member.name
+              }}</span>
+              <span v-else class="p-3 exempt-hide">{{ member.text }}</span>
+            </div>
+          </div>
+        </li>
+      </ul>
+    </div>
+  </div>
 </template>
 
 <script>
 import { computed, ref, nextTick, inject } from "vue";
 export default {
-    //  name: "ReportDropdown",
-     props: ["items"],
-     emits: ["selected-item"],
-     
-    setup(props, { emit }) {
-        const allChecked = ref(false)
-        const displayCheck = ref(false);
-        const searchMemberRef = ref();
-        const selectedMember = ref([]);
-        const hideDiv = ref(true);
-        const selectItem = ref([])
-        const searchMemberText = ref("");
+  //  name: "ReportDropdown",
+  props: ["items"],
+  emits: ["selected-item"],
 
-        const setGroupProp = () => {
-            hideDiv.value = !hideDiv.value;
-            nextTick(() => {
-                searchMemberRef.value.focus();
-            });
+  setup(props, { emit }) {
+    const allChecked = ref(false);
+    const displayCheck = ref(false);
+    const searchMemberRef = ref();
+    const selectedMember = ref([]);
+    const hideDiv = ref(true);
+    const selectItem = ref([]);
+    const searchMemberText = ref("");
+
+    const setGroupProp = () => {
+      hideDiv.value = !hideDiv.value;
+      nextTick(() => {
+        searchMemberRef.value.focus();
+      });
     };
     const checkAll = () => {
       props.items.forEach((i) => {
@@ -139,44 +124,41 @@ export default {
           (i) => i.id === item.id
         );
         if (memberIndex < 0) {
-           selectedMember.value.push(item);
-          emit("selected-item", selectedMember.value)
+          selectedMember.value.push(item);
+          emit("selected-item", selectedMember.value);
         }
       } else {
         selectedMember.value = selectedMember.value.filter(
           (i) => i.id !== item.id
         );
-        emit("selected-item", selectedMember.value)
+        emit("selected-item", selectedMember.value);
       }
 
       // displayCheck.value = item
     };
 
     const searchForMembers = computed(() => {
-      if (!searchMemberText.value && props.items.length > 0)
-        return props.items;
+      if (!searchMemberText.value && props.items.length > 0) return props.items;
       return props.items.filter((i) =>
         i.name.toLowerCase().includes(searchMemberText.value.toLowerCase())
       );
     });
 
-
-        return{
-            allChecked,
-            checkAll,
-            getCheckedGroup,
-            setGroupProp,
-            searchForMembers,
-            searchMemberRef,
-            searchMemberText,
-            hideDiv,
-            displayCheck,
-            selectItem,
-            selectedMember
-        }
-        
-    },
-}
+    return {
+      allChecked,
+      checkAll,
+      getCheckedGroup,
+      setGroupProp,
+      searchForMembers,
+      searchMemberRef,
+      searchMemberText,
+      hideDiv,
+      displayCheck,
+      selectItem,
+      selectedMember,
+    };
+  },
+};
 </script>
 
 <style scoped>
@@ -203,6 +185,6 @@ li li:hover {
   padding: 5px 10px;
   background: #eee;
   border-radius: 25px;
-  margin: 0 3px;
+  margin: 0 4px;
 }
 </style>
