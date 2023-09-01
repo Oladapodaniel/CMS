@@ -19,14 +19,6 @@
         </div>
       </div>
     </div>
-    <!-- <div class="container-fluid">
-      <div class="row justify-content-end">
-        <div class="col-md-6 d-flex justify-content-between">
-          <div></div>
-          <div></div>
-        </div>
-      </div>
-    </div> -->
     <div class="container-fluid">
       <div
         class="py-5 px-3 pl-3 pl-md-0 row justify-content-between branch-corner"
@@ -47,26 +39,26 @@
                 >Add First Timer</router-link
               >
             </div>
-            <div class="mt-2 h6 font-weight-bold primary--text" @click="sendMarkedMemberSms" >
+            <div
+              class="mt-2 h6 font-weight-bold primary--text"
+              @click="sendMarkedMemberSms"
+            >
               <!-- <router-link class="primary--text" to="/tenant/sms/compose"
                 > -->
-                Send SMS
-                <!-- </router-link
+              Send SMS
+              <!-- </router-link
               > -->
             </div>
-            <div class="mt-2 h6 font-weight-bold primary--text" @click="sendMarkedBranchEmail">
-              <!-- <router-link class="primary--text" to="/tenant/email/compose"
-                > -->
-                Send Email
-                <!-- </router-link
-              > -->
+            <div
+              class="mt-2 h6 font-weight-bold primary--text"
+              @click="sendMarkedBranchEmail"
+            >
+              Send Email
             </div>
             <div class="mt-2 h6 font-weight-bold">
-              <router-link
-                class="primary--text"
-                to="/tenant/voice/sendvoicemessage"
-                >Send Voice</router-link
-              >
+              <div @click="displayWhatsappDrawer" class="primary--text">
+                Send Whatsap
+              </div>
             </div>
           </div>
         </div>
@@ -133,8 +125,8 @@
           </div>
         </div>
         <div class="col-md-2 col-sm-6 mt-3 mt-md-0 font-weight-bold">
-          <div class="row justify-content-center " style="min-width: 100%">
-            <div class="col-md-12 col-sm-11  card-summary px-0 shadow">
+          <div class="row justify-content-center" style="min-width: 100%">
+            <div class="col-md-12 col-sm-11 card-summary px-0 shadow">
               <div class="col-md-12">
                 <div class="row">
                   <div class="text-primary col-md-2 mt-2">
@@ -199,8 +191,8 @@
     </div>
     <div class="container-fluid mt-3">
       <div class="row justify-content-between">
-        <div class="col-md-7 col-12  rounded shadow" v-loading="loading">
-          <div class="row ">
+        <div class="col-md-7 col-12 rounded shadow" v-loading="loading">
+          <div class="row">
             <div class="col-md-12 mt-3 d-flex justify-content-between">
               <div class="font-weight-bold">Total Attendance Chart</div>
               <div>view All</div>
@@ -317,7 +309,6 @@
             domId="chart2"
             :data="firstTimerChart"
             :series="series"
-            :title="firstTimerHeader"
             :header="firstTimerHeader"
           />
         </div>
@@ -363,7 +354,6 @@
             domId="chart4"
             :data="membersAttendanceChart"
             :series="series"
-            :title="membersHeader"
             :header="membersHeader"
           />
         </div>
@@ -409,7 +399,6 @@
             domId="chart1"
             :data="incomeExpenseChart"
             :series="series"
-            :title="IncomeExpHeader"
             :header="IncomeExpHeader"
           />
         </div>
@@ -836,29 +825,132 @@
         </div>
       </div>
     </div>
-    <el-drawer v-model="showSMS" :size="mdAndUp || lgAndUp || xlAndUp ? '70%' : '100%'" direction="rtl">
+    <el-drawer
+      v-model="showSMS"
+      :size="mdAndUp || lgAndUp || xlAndUp ? '70%' : '100%'"
+      direction="rtl"
+    >
       <template #header>
         <h4>Send SMS</h4>
       </template>
       <template #default>
         <div>
-          <smsComponent @closesidemodal="() => showSMS = false" />
+          <smsComponent @closesidemodal="() => (showSMS = false)" />
           <!-- <smsComponent :phoneNumbers="contacts" @closesidemodal="() => showSMS = false" /> -->
         </div>
       </template>
     </el-drawer>
-    <el-drawer v-model="showEmail" :size="mdAndUp || lgAndUp || xlAndUp ? '70%' : '100%'" direction="rtl">
+    <el-drawer
+      v-model="showEmail"
+      :size="mdAndUp || lgAndUp || xlAndUp ? '70%' : '100%'"
+      direction="rtl"
+    >
       <template #header>
         <h4>Send Email</h4>
       </template>
       <template #default>
         <div>
-          <emailComponent @closesidemodal="() => showEmail = false" />
+          <emailComponent @closesidemodal="() => (showEmail = false)" />
           <!-- <emailComponent :selectedGroupMembers="markedMembers" @closesidemodal="() => showEmail = false" /> -->
         </div>
       </template>
     </el-drawer>
-    <el-skeleton class="w-100" animated v-if="loading">
+    <el-drawer
+      v-model="showWhatsapp"
+      :size="mdAndUp || lgAndUp || xlAndUp ? '70%' : '100%'"
+      direction="rtl"
+      class="whatsappdrawer"
+    >
+      <template #header> </template>
+      <template #default>
+        <div v-if="whatsappClientState">
+          <div class="d-flex justify-content-center align-items-center">
+            <img src="../../assets/whatsappwhiteoutline.svg" />
+            <h4 class="font-weight-700 text-dark mb-0 ml-2">
+              Send Whatsapp message to
+            </h4>
+          </div>
+          <h4 class="text-center text-secondary font-weight-600">
+            {{
+              sendWhatsappToMultiple
+                ? "Selected Members"
+                : whatsappRecipient.firstName
+            }}
+          </h4>
+        </div>
+        <div v-if="false">
+          <!-- <div v-if="whatsappClientState"> -->
+          <div>
+            <div>
+              Recipient{{ sendWhatsappToMultiple ? "s" : "" }}
+              <el-tooltip
+                class="box-item"
+                effect="customized"
+                content="<div>Make sure that the numbers are correctly formatted.</div> <div>A correct format should include the country code with the phone number. E.g +2349059403948.</div> <div>It works either with the '+' symbol or without it.</div>"
+                raw-content
+                placement="top"
+              >
+                <el-icon>
+                  <InfoFilled />
+                </el-icon>
+              </el-tooltip>
+            </div>
+            <div
+              class="d-flex align-items-center flex-wrap"
+              v-if="sendWhatsappToMultiple"
+            >
+              <el-tag
+                class="mx-1"
+                size="large"
+                closable
+                v-for="(item, index) in marked
+                  .filter((i) => i.mobilePhone)
+                  .splice(0, 10)"
+                :key="item.id"
+                @close="marked.splice(index, 1)"
+                >{{ item.mobilePhone }}</el-tag
+              >
+            </div>
+            <vue-tel-input
+              class="mt-2"
+              style="height: 40px"
+              v-model="whatsappRecipient.mobilePhone"
+              mode="international"
+              v-else
+            ></vue-tel-input>
+            <div
+              v-if="sendWhatsappToMultiple && marked.length > 10"
+              class="text-secondary font-weight-600 mt-2"
+            >
+              and {{ marked.length - 10 }}
+              {{ marked.length - 10 > 1 ? "others" : "other" }}
+            </div>
+          </div>
+          <!-- <div class="mt-3">Message</div> -->
+          <div class="mt-4">
+            <el-input
+              type="textarea"
+              rows="8"
+              placeholder="Enter your message"
+              v-model="whatsappmessage"
+            ></el-input>
+          </div>
+        </div>
+        <div v-else class="mt-5">
+          <AuthenticateWhatsapp />
+        </div>
+      </template>
+      <template #footer v-if="whatsappClientState">
+        <el-button
+          :color="primarycolor"
+          :loading="sendingwhatsappmessage"
+          @click="sendWhatsapp()"
+          round
+          >Send <img src="../../assets/send-jet.svg" class="ml-2"
+        /></el-button>
+      </template>
+    </el-drawer>
+    <!-- <el-skeleton class="w-100" animated v-if="loading">
       <template #template>
         <div
           style="
@@ -884,12 +976,14 @@
           animated
         />
       </template>
-    </el-skeleton>
+    </el-skeleton> -->
   </div>
 </template>
 
 <script>
-import { ref, inject, onMounted, onUpdated, computed } from "vue";
+import { ref, inject, onMounted, onUpdated, watchEffect, computed } from "vue";
+import { socket } from "@/socket";
+import AuthenticateWhatsapp from "../../components/whatsapp/AuthenticateWhatsapp.vue";
 import PieChart from "../../components/charts/BranchPieChart.vue";
 import BranchSettings from "../settings/BranchLevelSettings.vue";
 import router from "../../router";
@@ -903,13 +997,14 @@ import emailComponent from "../groups/component/emailComponent.vue";
 import store from "../../store/store";
 import OrganizationChart from "primevue/organizationchart";
 import { ElMessage } from "element-plus";
-import { useRoute } from "vue-router"
+import { useRoute } from "vue-router";
 export default {
   components: {
     PieChart,
     DonutChart,
     BranchSettings,
     emailComponent,
+    AuthenticateWhatsapp,
     smsComponent,
     RadialChart,
     ColumnChart,
@@ -919,7 +1014,7 @@ export default {
     const primarycolor = inject("primarycolor");
     const data1 = ref({});
     const openHideAmonut = ref(true);
-    const route = useRoute()
+    const route = useRoute();
     const code = ref("");
     const selectedMonthly = ref("Branches");
     const firstTimerHeader = ref("First Timer Attendance");
@@ -928,8 +1023,9 @@ export default {
     const selectedBranches = ref("Branches");
     const selectedWeekly = ref("Branches");
     const attendance = ref("Average Attendance");
-    const { mdAndUp, lgAndUp, xlAndUp, xsOnly } = deviceBreakpoint()
+    const { mdAndUp, lgAndUp, xlAndUp, xsOnly } = deviceBreakpoint();
     const showbranchHierachy = ref(false);
+    const sendWhatsappToMultiple = ref(false);
     const branchItemSection = ref(false);
     const showBranchDetail = ref(true);
     const viewBranchDetail = ref(false);
@@ -960,15 +1056,16 @@ export default {
     const hierarchies = ref([]);
     const closeStatusModal = ref();
     const levelmodalBtn = ref();
-    const branchSideShow = ref(false)
-    const showEmail = ref(false)
+    const branchSideShow = ref(false);
+    const showWhatsapp = ref(false);
+    const showEmail = ref(false);
     const getAverageAttendanceItem = ref([]);
     const tenantId = ref(
       store.getters.currentUser && store.getters.currentUser.tenantId
         ? store.getters.currentUser.tenantId
         : 0
     );
-    const averageAttendace = ref("");  
+    const averageAttendace = ref("");
 
     const getRoute = () => {
       if (route.fullPath === "/tenant/branch/mainbranchsummary") {
@@ -979,40 +1076,11 @@ export default {
     const sendMarkedMemberSms = () => {
       // contacts.value = marked.value.filter((i) => i.mobilePhone).map((i) => i.mobilePhone).join()
       showSMS.value = true;
-    }
+    };
     const sendMarkedBranchEmail = () => {
       // contacts.value = marked.value.filter((i) => i.mobilePhone).map((i) => i.mobilePhone).join()
       showEmail.value = true;
-    }
-    
-    const branchData = ref([
-      { name: null, value: 34 },
-      { name: "Website", value: 2 },
-      { name: "Flyer", value: 5 },
-      { name: "Friend", value: 9 },
-      { name: "Not Specified", value: 2 },
-      { name: "Social Media", value: 6 },
-    ]);
-    const branchData2 = ref([
-      {
-        name: "Income",
-        color: "#002044",
-        data: [2, 1, 0, 1, 4, 4, 4, 0, 10, 2, 6, 6],
-      },
-      {
-        name: "Expense",
-        color: "#4baaf5",
-        data: [1, 1, 2, 1, 4, 55, 4, 4, 9, 12, 6, 50],
-      },
-    ]);
-
-    onUpdated(() => {
-      if (branchData.value) {
-        branchData.value;
-      } else {
-        branchData.value;
-      }
-    });
+    };
 
     const viewBranch = (item) => {
       console.log(item, "mmmmmmmm");
@@ -1041,6 +1109,23 @@ export default {
       { name: "Monthly", id: 3 },
     ]);
 
+    // const sendWhatsapp = () => {
+    //   sendingwhatsappmessage.value = true
+    //   if (sendWhatsappToMultiple.value) {
+    //     socket.emit('sendwhatsappmessage', {
+    //       id: clientSessionId.value,
+    //       phone_number: marked.value.map(i => i.mobilePhone),
+    //       message: whatsappmessage.value
+    //     })
+    //   }
+    //   else {
+    //     socket.emit('sendwhatsappmessage', {
+    //       id: clientSessionId.value,
+    //       phone_number: whatsappRecipient.value.mobilePhone,
+    //       message: whatsappmessage.value
+    //     })
+    //   }
+    // }
     const getallBracnches = async () => {
       try {
         let { data } = await axios.get(
@@ -1097,6 +1182,25 @@ export default {
 
       return mainMembersData.value;
     });
+    watchEffect(() => {
+      socket.on("messagesent", (data) => {
+        console.log(data, "status");
+
+        swal(" Success", "Whatsapp message sent successfully!", "success");
+        showWhatsapp.value = false;
+        sendingwhatsappmessage.value = false;
+      });
+    });
+    const displayWhatsappDrawer = (item) => {
+      showWhatsapp.value = true;
+      if (item) {
+        // whatsappRecipient.value = item;
+        sendWhatsappToMultiple.value = false;
+      } else {
+        // marked.value = marked.value.filter(i => i.mobilePhone).splice(0, 10)
+        sendWhatsappToMultiple.value = true;
+      }
+    };
 
     const incomeExpenseChart = computed(() => {
       if (allBranchDetail.value.length === 0) return [];
@@ -1187,6 +1291,10 @@ export default {
     const mappedAverageAttendanceItem = computed(() => {
       if (getAverageAttendanceItem.value.length === 0) return [];
       return getAverageAttendanceItem.value.map((i) => i);
+    });
+
+    const whatsappClientState = computed(() => {
+      return store.getters["communication/isWhatsappClientReady"];
     });
 
     const getBranches = async () => {
@@ -1346,9 +1454,9 @@ export default {
       mappedBranch,
       membersAttendanceChart,
       joinNetwork,
-      mdAndUp, 
-      lgAndUp, 
-      xlAndUp, 
+      mdAndUp,
+      lgAndUp,
+      xlAndUp,
       xsOnly,
       selection,
       incomeExpenseChart,
@@ -1359,7 +1467,6 @@ export default {
       colorChange,
       branchProfile,
       viewBranch,
-      branchData2,
       loading,
       firstTimerHeader,
       selectedBranches,
@@ -1369,9 +1476,11 @@ export default {
       mappedAverageAttendanceItem,
       branchItem,
       firstTimerData,
+      sendWhatsappToMultiple,
       firstTimerAttendanceData,
       mainIncomeExpenseData,
       incomeData,
+      showWhatsapp,
       setUpBranch,
       joinBranch,
       hierarchies,
@@ -1387,6 +1496,7 @@ export default {
       allBranchDetail,
       branchHierachy,
       showBranchDetail,
+      whatsappClientState,
       series,
       branchesAnalytics,
       branchDetail,
@@ -1406,13 +1516,13 @@ export default {
       hideOpen,
       data1,
       levelmodalBtn,
-      branchData,
       sendMarkedMemberSms,
       closeStatusModal,
       chartItemdropdown,
       openHideAmonut,
       goToAddBranch,
       attendance,
+      displayWhatsappDrawer,
       closeJoinNetworkModal,
       showEmail,
       averageAttendace,

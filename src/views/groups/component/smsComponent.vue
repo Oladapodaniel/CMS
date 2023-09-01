@@ -57,16 +57,16 @@
         </div>
       </div>
 
-      <div
-        v-if="route.fullPath == '/tenant/branch/mainbranchsummary'"
-        class="row"
-      >
+      <div v-if="route.fullPath == '/tenant/branches/summary'" class="row">
         <div class="col-md-2 pr-md-0 col-lg-2 align-self-center">
           <span class="small-text">Send to : </span>
         </div>
         <div class="p-0 col-md-10 col-lg-10 form-group mb-0">
           <el-dropdown trigger="click" class="w-100">
-            <div class="d-flex justify-content-between border-contribution text-dark w-100" size="large">
+            <div
+              class="d-flex justify-content-between border-contribution text-dark w-100"
+              size="large"
+            >
               <span>Select Destination</span>
               <div>
                 <el-icon class="el-icon--right">
@@ -76,8 +76,14 @@
             </div>
             <template #dropdown>
               <el-dropdown-menu>
-                <el-dropdown-item v-for="(destination, index) in possibleBranchSMSDestination" :key="index">
-                  <a class="no-decoration text-dark" @click="showSection(index)">
+                <el-dropdown-item
+                  v-for="(destination, index) in possibleSMSDestinations"
+                  :key="index"
+                >
+                  <a
+                    class="no-decoration text-dark"
+                    @click="showSection(index)"
+                  >
                     {{ destination }}
                   </a>
                 </el-dropdown-item>
@@ -85,33 +91,44 @@
             </template>
           </el-dropdown>
         </div>
-        <!-- <div class="p-0 col-md-10 col-lg-10 form-group mb-0">
-          <div class="dropdown">
-            <button
-              class="btn btn-default border dropdown-toggle small-text pl-md-0 dd-item"
-              type="button"
-              id="dropdownMenuButton"
-              data-toggle="dropdown"
-              aria-haspopup="true"
-              aria-expanded="false"
-              @click="closeDropdownIfOpen"
-            >{{possibleBranchSMSDestination}}
-              Select Destination
-            </button>
+      </div>
+      <div
+        v-if="route.fullPath == '/tenant/branch/mainbranchsummary'"
+        class="row"
+      >
+        <div class="col-md-2 pr-md-0 col-lg-2 align-self-center">
+          <span class="small-text">Send to : </span>
+        </div>
+        <div class="p-0 col-md-10 col-lg-10 form-group mb-0">
+          <el-dropdown trigger="click" class="w-100">
             <div
-              class="dropdown-menu w-100 dd-item"
-              aria-labelledby="dropdownMenuButton"
+              class="d-flex justify-content-between border-contribution text-dark w-100"
+              size="large"
             >
-              <a
-                class="dropdown-item c-pointer small-text dd-item"
-                v-for="(destination, index) in possibleBranchSMSDestination"
-                :key="index"
-                @click="showSection(index)"
-                >{{ destination }}</a
-              >
+              <span>Select Destination</span>
+              <div>
+                <el-icon class="el-icon--right">
+                  <arrow-down />
+                </el-icon>
+              </div>
             </div>
-          </div>
-        </div> -->
+            <template #dropdown>
+              <el-dropdown-menu>
+                <el-dropdown-item
+                  v-for="(destination, index) in possibleBranchSMSDestination"
+                  :key="index"
+                >
+                  <a
+                    class="no-decoration text-dark"
+                    @click="showSelection(index)"
+                  >
+                    {{ destination }}
+                  </a>
+                </el-dropdown-item>
+              </el-dropdown-menu>
+            </template>
+          </el-dropdown>
+        </div>
       </div>
 
       <div v-if="false" class="row mb-1">
@@ -134,6 +151,25 @@
             <span
               class="close-allcontacts c-pointer"
               @click="() => (sendToAll = false)"
+              ><i class="pi pi-times"></i
+            ></span>
+          </span>
+        </div>
+      </div>
+      <div class="row" v-if="sendToAllBranches">
+        <div class="col-md-2"></div>
+        <div class="col-md-10 px-0">
+          <span>
+            <input
+              class="form-control dropdown-toggle my-1 px-1 small-text"
+              type="text"
+              id="dropdownMenu"
+              value="All Branch(s)"
+              disabled
+            />
+            <span
+              class="close-allcontacts c-pointer"
+              @click="() => (sendToAllBranches = false)"
               ><i class="pi pi-times"></i
             ></span>
           </span>
@@ -241,15 +277,10 @@
               :key="indx"
               class="email-destination d-flex justify-content-between m-1"
             >
-              <!-- <span
-              class="email-destination m-1"
-              
-            > -->
               <span>{{ member.name }}</span>
               <span class="ml-2 remove-email" @click="removeMember(indx)"
                 >x</span
               >
-              <!-- </span> -->
             </li>
             <li style="list-style: none" class="m-dd-item">
               <input
@@ -312,6 +343,48 @@
               </p>
             </div>
           </div>
+        </div>
+      </div>
+      <div class="row" v-if="branchesSelectionTab">
+        <div class="col-md-2"></div>
+        <div class="col-md-10 mt-3 px-0 grey-rounder-border">
+          <el-dropdown trigger="click" class="w-100">
+            <span class="el-dropdown-link w-100">
+              <div
+                class="d-flex justify-content-between border-contribution w-100"
+              >
+                <div class="w-100">
+                  <span v-if="selectedBranch.length > 0 ">
+                    <el-tag
+                      class="mx-1"
+                      size="large"
+                      closable
+                      v-for="(item, index) in selectedBranch"
+                      :key="item.id"
+                      @close="selectedBranch.splice(index, 1)"
+                      >{{ item.name }}</el-tag
+                    >
+                  </span>
+                  <span  v-else> Select Branch </span>
+                </div>
+                <span class="text-right">
+                  <el-icon class="el-icon--right">
+                    <arrow-down />
+                  </el-icon>
+                </span>
+              </div>
+            </span>
+            <template #dropdown>
+              <el-dropdown-menu>
+                <el-dropdown-item
+                  v-for="(itm, indx) in allBranches"
+                  :key="indx"
+                  @click="selectBranch(itm, indx)"
+                  >{{ itm.name }}
+                </el-dropdown-item>
+              </el-dropdown-menu>
+            </template>
+          </el-dropdown>
         </div>
       </div>
       <!-- End member TEst -->
@@ -417,7 +490,45 @@
 
       <!-- Enter phone numbers -->
       <div class="col-md-12 my-1 px-0" v-if="phoneNumberSelectionTab">
-        <div v-if="false" class="row">
+        <div class="row">
+          <div class="col-md-2"></div>
+          <div class="col-md-10 py-2 px-0">
+            <el-input
+              type="textarea"
+              class="w-100"
+              rows="4"
+              placeholder="Enter phone number(s)"
+              v-model="phoneNumber"
+            />
+          </div>
+          <div
+            class="col-md-12 grey-rounded-border groups"
+            :class="{ hide: !groupsAreVissible }"
+          >
+            <div
+              class="row"
+              v-for="(category, index) in categories"
+              :key="index"
+            >
+              <div class="col-md-12">
+                <div class="row">
+                  <div class="col-md-12">
+                    <h4 class="px-14">{{ category }}</h4>
+                    <p
+                      v-for="(group, indx) in allGroups[index]"
+                      @click="selectGroup(group.category, group.id, group.name)"
+                      :key="indx"
+                      class="small-text"
+                    >
+                      {{ group.name }}
+                    </p>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <!-- <div class="row">
           <div class="col-md-2"></div>
           <div class="col-md-10 py-2 px-0">
             <textarea
@@ -452,7 +563,7 @@
               </div>
             </div>
           </div>
-        </div>
+        </div> -->
       </div>
 
       <!-- Start upload contact -->
@@ -482,7 +593,10 @@
       <div
         class="row mt-1"
         v-if="
-          phoneNumberSelectionTab || membershipSelectionTab || groupSelectionTab
+          phoneNumberSelectionTab ||
+          membershipSelectionTab ||
+          groupSelectionTab ||
+          branchesSelectionTab
         "
       >
         <div class="col-md-12 pr-0">
@@ -490,7 +604,7 @@
         </div>
       </div>
 
-      <div class="row">
+      <div class="row mt-2">
         <div class="col-md-2">
           <span class="font-weight-600 small-text">Sender: </span>
         </div>
@@ -964,14 +1078,18 @@ export default {
     };
 
     const possibleSMSDestinations = composeService.possibleSMSDestinations;
-    const possibleBranchSMSDestination = ref(composeService.possibleBranchSMSDestinations);
-    console.log(possibleBranchSMSDestination.value, 'llllllllllllll');
+    const possibleBranchSMSDestination = ref(
+      composeService.possibleBranchSMSDestinations
+    );
+    console.log(possibleBranchSMSDestination.value, "llllllllllllll");
     const groupsAreVissible = ref(false);
     const groupSelectionTab = ref(false);
     const membershipSelectionTab = ref(false);
-    const phoneNumberSelectionTab = ref(true);
+    const branchesSelectionTab = ref(false);
+    const phoneNumberSelectionTab = ref(false);
     const selectedGroups = ref([]);
     const sendToAll = ref(false);
+    const sendToAllBranches = ref(false);
     const executionDate = ref("");
     const iSoStringFormat = ref("");
     const contactUpload = ref(false);
@@ -980,6 +1098,7 @@ export default {
     const senderIdText = ref("");
     const tenantId = ref("");
     const senderIDs = ref([]);
+    const allBranches = ref([]);
     const selectedSender = ref({});
     const searchSenderText = ref("");
     const senderIdRef = ref();
@@ -1006,11 +1125,24 @@ export default {
 
     const showSection = (index) => {
       if (index === 1) groupSelectionTab.value = true;
-      // if (index === 2) membershipSelectionTab.value = true;
+      if (index === 2) membershipSelectionTab.value = true;
+      if (index === 3) phoneNumberSelectionTab.value = true;
+      if (index === 4) contactUpload.value = true;
+      if (index === 0) {
+        sendToAll.value = true;
+        selectedGroups.value.push({
+          data: "membership_00000000-0000-0000-0000-000000000000",
+          name: "All contact",
+        });
+      }
+      // console.log(index)
+    };
+    const showSelection = (index) => {
+      if (index === 1) branchesSelectionTab.value = true;
       if (index === 2) phoneNumberSelectionTab.value = true;
       if (index === 3) contactUpload.value = true;
       if (index === 0) {
-        sendToAll.value = true;
+        sendToAllBranches.value = true;
         selectedGroups.value.push({
           data: "membership_00000000-0000-0000-0000-000000000000",
           name: "All branches",
@@ -1020,13 +1152,12 @@ export default {
     };
     const getAllBranch = async () => {
       try {
-         let { data } = await axios.get("/api/Branching");
-         console.log(data, 'kll;');
-      } catch (error) {
-        
-      }
-    }
-    getAllBranch()
+        let { data } = await axios.get("/api/Branching");
+        console.log(data, "kll;");
+        allBranches.value = data.returnObject;
+      } catch (error) {}
+    };
+    getAllBranch();
 
     const sendOptionsIsShown = ref(false);
     const toggleSendOptionsDisplay = () =>
@@ -1065,6 +1196,7 @@ export default {
       { name: "You", id: 2 },
     ];
     const selectedMembers = ref([]);
+    const selectedBranch = ref([]);
     const selectMember = (selectedMember, index) => {
       selectedMembers.value.push(selectedMember);
 
@@ -1072,6 +1204,9 @@ export default {
       memberListShown.value = false;
       searchText.value = "";
       memberSearchResults.value = [];
+    };
+    const selectBranch = (item) => {
+      selectedBranch.value.push(item);
     };
     const removeMember = (index) => {
       selectedMembers.value.splice(index, 1);
@@ -1131,6 +1266,7 @@ export default {
         !phoneNumber.value &&
         selectedMembers.value.length === 0 &&
         !sendToAll.value &&
+        !sendToAllBranches.value &&
         !multipleContact.value instanceof File
       ) {
         invalidDestination.value = true;
@@ -1287,6 +1423,19 @@ export default {
               : ""
             : "";
         data.ToContacts += selectedMembers.value
+          .map((i) => {
+            if (i.id) return i.id;
+          })
+          .join();
+      }
+      if (selectedBranch.value.length > 0) {
+        data.ToContacts =
+          data && data.ToContacts
+            ? data.ToContacts.length > 0
+              ? ","
+              : ""
+            : "";
+        data.ToContacts += selectedBranch.value
           .map((i) => {
             if (i.id) return i.id;
           })
@@ -1652,12 +1801,15 @@ export default {
       showSection,
       groupSelectionTab,
       membershipSelectionTab,
+      branchesSelectionTab,
       phoneNumberSelectionTab,
       categories,
       allGroups,
       selectedMembers,
       removeMember,
       selectMember,
+      selectBranch,
+      selectedBranch,
       searchText,
       filteredMembers,
       charactersCount,
@@ -1685,6 +1837,7 @@ export default {
       invalidDestination,
       invalidMessage,
       sendToAll,
+      sendToAllBranches,
       sendModalHeader,
       // nigerian,
       contructScheduleMessageBody,
@@ -1695,6 +1848,7 @@ export default {
       route,
       // disableBtn,
       contactUpload,
+      allBranches,
       uploadFile,
       multipleContact,
       sendSMSToUploadedContacts,
@@ -1712,6 +1866,7 @@ export default {
       requestbtn,
       closeModal,
       showScheduleModal,
+      showSelection,
       mdAndUp,
       lgAndUp,
       xlAndUp,

@@ -12,14 +12,14 @@ const composerObj = {
     ],
     possibleBranchSMSDestinations: [
         "All branches",
-        "Select a branch",
+        "Choose branch(s)",
         "Phone numbers",
         "Upload contacts",
     ],
     
     possibleBranchEMAIlDestinations: [
         "All branch",
-        "Select a branch",
+        "Choose branch(s)",
         "Emails",
         
         
