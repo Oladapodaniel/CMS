@@ -59,14 +59,14 @@ export default {
           enabled: false,
         },
         title: {
-          text: '',
-        //   text: `<b>${props.title}<b>`,
+          // text: '',
+          text: `<b>${props.title ? props.title : ""}<b>`,
           align: "left",
           x: 70,
           margin: 50,
         },
         subtitle: {
-          text: "",
+          text: props.subtitle,
           align: "left",
           x: 70,
           y: 50,
