@@ -3,7 +3,7 @@
         <div class="row">
             <div class="col-md-12">
                 <div class="row">
-                    <div class="col-6 offset-3 col-md-10 offset-md-1 upl-img-box">
+                    <div class="col-12 d-flex justify-content-center upl-img-box">
                         <img v-if="url" class="img-style" :src="url" alt="Uploaded Image" />
                           <img
                             v-else-if="!pictureUrl"

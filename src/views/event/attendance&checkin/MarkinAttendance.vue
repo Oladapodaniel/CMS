@@ -350,7 +350,7 @@
         </div>
        
        
-        <!-- <div v-for="(item, index) in dynamicCustomFields" :key="index" class="row my-3" >
+        <div v-for="(item, index) in dynamicCustomFields" :key="index" class="row my-3" >
           <div
             class="
               col-md-3
@@ -428,7 +428,7 @@
               />
             </span>
           </div>
-        </div> -->
+        </div> 
 
         
 
@@ -512,7 +512,7 @@ export default {
     const selectedGroups = ref([]);
     const selectedGroupList = ref([]);
     const filteredGroups = ref([]);
-    // const dynamicCustomFields = ref([]);
+    const dynamicCustomFields = ref([]);
 
     const birthMonth = ref("");
     // const birthYear = ref("");
@@ -737,11 +737,11 @@ export default {
         ? months.indexOf(birthMonth.value) + 1
         : null;
       newPerson.person.dayOfBirth = birthDay.value ? birthDay.value : null;
-      // newPerson.customAttributeData = dynamicCustomFields.value.map(i => ({
-      //     customAttributeID: i.id,
-      //     data: i.data,
-      //     entityID: personData.value.personId
-      //   }))
+      newPerson.customAttributeData = dynamicCustomFields.value.map(i => ({
+          customAttributeID: i.id,
+          data: i.data,
+          entityID: personData.value.personId
+        }))
       // newPerson.person.yearOfBirth = birthYear.value ? birthYear.value : null;
 
       console.log(personData.value, "p data");
@@ -873,16 +873,16 @@ export default {
 
     /*end of masking functions */
 
-    // const getAllCustomFields = async () => {
-    //   try {
-    //     let data = await allCustomFields.allCustomFields()
-    //      dynamicCustomFields.value = data.filter(i => i.entityType === 5)
-    //   }
-    //   catch (err) {
-    //     console.log(err)
-    //   }
-    // }
-    // getAllCustomFields()
+    const getAllCustomFields = async () => {
+      try {
+        let data = await allCustomFields.allCustomFields()
+         dynamicCustomFields.value = data.filter(i => i.entityType === 5).sort((a, b) => a.order - b.order)
+      }
+      catch (err) {
+        console.log(err)
+      }
+    }
+    getAllCustomFields()
 
     return {
       toggleBase,
@@ -932,7 +932,7 @@ export default {
       selectedGroups,
       selectedGroupList,
       filteredGroups,
-      // dynamicCustomFields
+      dynamicCustomFields
     };
   },
 };

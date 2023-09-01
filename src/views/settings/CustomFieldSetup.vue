@@ -98,8 +98,8 @@
           <!-- :disabled="!enabled" -->
           <!-- <div> {{ index }} - {{ element.label }} </div> -->
 
-          <draggable :list="allCustomFieldList" item-key="id" class="list-group" ghost-class="ghost"
-            :move="checkMove" @start="dragging = true" @end="dragging = false">
+          <draggable item-key="id" class="list-group" v-model="allCustomFieldList" ghost-class="ghost"
+             @start="dragging = true" @end="(dragging = false),(reorderCustomField())" v-loading="reoderloading">
             <template #item="{ element, index }">
               <div class="row py-2 graggable">
                 <div class="col-md-12">
@@ -150,21 +150,35 @@
                     mb-md-0 mb-2
                     col-12
                     d-flex
-                    justify-content-md-center
-                    align-items-end
+                    justify-content-md-start
+                    align-items-center
                   ">
                       <span class="py-md-4 hidden-header hidden-header1">ACTION</span>
                       <div class="
                       d-flex
-                      justify-content-md-center fllexxwrap justify-content-sm-start
+                      justify-content-md-between w-100 fllexxwrap
                     ">
-                        <el-button class="py-1 px-4 mb-md-3" color="#EBEFF4" round @click="openClassification(index)">
+                    <el-dropdown class="w-100" trigger="click">
+                      <span class="el-dropdown-link">
+                        <el-icon>
+                          <MoreFilled />
+                        </el-icon>
+                      </span>
+                      <template #dropdown>
+                        <el-dropdown-menu>
+                          <el-dropdown-item @click="openClassification(index)">View</el-dropdown-item>
+                          <el-dropdown-item @click="deleteCustomField(element.id, index)">Delete</el-dropdown-item>
+                        </el-dropdown-menu>
+                      </template>
+                    </el-dropdown>
+                    <img src="../../assets/drag-and-drop.png"/>
+                        <!-- <el-button class="py-1 px-4 mb-md-3" color="#EBEFF4" round @click="openClassification(index)">
                           View
                         </el-button>
                         <el-button class="delbtn py-1 primary-btn px-3 mb-md-3"
                           @click="deleteCustomField(element.id, index)" round>
                           Delete
-                        </el-button>
+                        </el-button> -->
                       </div>
                     </div>
                   </div>
@@ -257,7 +271,7 @@
 </template>
 
 <script>
-import { ref, inject } from "vue";
+import { ref, inject, watchEffect } from "vue";
 import axios from "@/gateway/backendapi";
 import { ElMessage, ElMessageBox } from "element-plus";
 import finish from "../../services/progressbar/progress";
@@ -309,6 +323,8 @@ export default {
       { name: "CheckInAttendance", id: "5" },
     ]);
     const dragging = ref(false)
+    const reoderloading = ref(false)
+  
 
     const saveChip = () => {
       ((dropdownList.value.indexOf(currentInput.value) === -1)) && dropdownList.value.push(currentInput.value);
@@ -519,7 +535,7 @@ export default {
       try {
         const res = await axios.get("/api/CustomFields/GetAllCustomFields");
         console.log(res.data, "allCustomFields");
-        allCustomFieldList.value = res.data;
+        allCustomFieldList.value = res.data.sort((a, b) => a.order - b.order);
         getAllcontrolType.value = res.data.map((i) => {
           return {
             name: i.controlType,
@@ -554,9 +570,28 @@ export default {
         : "";
     };
 
-    const checkMove = (e) => {
-      window.console.log("Future index: " + e.draggedContext.futureIndex);
+    const reorderCustomField = async () => {
+      reoderloading.value = true
+      let payload = allCustomFieldList.value.map((i, index) => {
+        i.order = index
+        return i
+      })
+      try {
+        let data = await axios.post("/api/CustomFields/ReorderCustomFields", payload)
+        console.log(data)
+        reoderloading.value = false
+        ElMessage({
+          type: "success",
+          message: "Custom fields reordered successfully",
+          duration: 5000
+        });
+      }
+      catch (error) {
+        console.error(error)
+        reoderloading.value = false
+      }
     }
+  
 
     return {
       controlType,
@@ -598,8 +633,9 @@ export default {
       toggleCustomList,
       primarycolor,
       loadingfields,
-      checkMove,
-      dragging
+      reorderCustomField,
+      dragging,
+      reoderloading
     };
   },
 };

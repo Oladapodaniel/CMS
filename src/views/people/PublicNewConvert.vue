@@ -590,10 +590,9 @@ export default {
     const getCustomFields = async () => {
       try {
         let { data } = await axios.get(
-          `/GetAllCustomFields?entityType=1&&tenantID=${route.params.id}`
+          `/GetAllCustomFields?entityType=2&&tenantID=${route.params.id}`
         );
-        console.log(data, "🙌🙌🙌🙌🙌");
-        dynamicCustomFields.value = data;
+        dynamicCustomFields.value = data.sort((a, b) => a.order - b.order);
       } catch (err) {
         console.log(err);
       }
