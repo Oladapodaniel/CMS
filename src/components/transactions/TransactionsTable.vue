@@ -139,6 +139,23 @@
                   <template v-slot:category="{ item }">
                     <div @click="rowSelected(item)" class="c-pointer primary-text">{{ item.category }}</div>
                   </template>
+                  <template v-slot:approve="{ item }">
+                    <div class="c-pointer">
+                        <div class="spinner-border text-primary" style="font-size: 10px; width: 26px; height: 26px;" role="status"
+                          v-show="item.approvingServiceReport">
+                          <span class="sr-only">Loading...</span>
+                        </div>
+                        <div v-if="!item.approved && !item.approvingServiceReport" @click="approveReport(item, 1)">
+                          <el-icon size="27">
+                            <CircleCheck />
+                          </el-icon>
+                        </div>
+                        <video height="30" autoplay @click="approveReport(item, 2)" class="approveservicereport" v-if="item.approved && !item.approvingServiceReport">
+                          <source src="../../assets/check_animated.mp4" type="video/mp4" />
+                          Your browser does not support the video tag.
+                        </video>
+                    </div>
+                  </template>
                   <template v-slot:action="{ item }">
                     <el-dropdown trigger="click">
                       <el-icon>
@@ -233,6 +250,7 @@ export default {
       { name: 'DESCRIPTION', value: 'description' },
       { name: 'AMOUNT', value: 'amount' },
       { name: 'CATEGORY', value: 'category' },
+      { name: 'Approve', value: 'approve' },
       { name: 'ACTION', value: 'action' },
     ])
     // const types = ["assets", "liability", "income", "expense", "equity"];
@@ -585,15 +603,38 @@ export default {
         getTransactions();
       }
     });
-    //   onMounted(() => {
-    //   if ((!allTransactions.value) ||
-    //     allTransactions.value  &&
-    //     allTransactions.value.length == 0
-    //   )
-    //     getTransactions();
-        
-          
-    // });
+  
+    const approveReport = async (item, type) => {
+      const index = selectedTransactions.value.findIndex(i => i.id == item.id)
+      selectedTransactions.value[index].approvingServiceReport = true
+      let payload = {
+        id: item.id,
+        approved: type == 1 ? true : false,
+        memo: item.narration
+      }
+      
+      try {
+        await transaction_service.approveFinancialReport(payload)       
+        if (index >= 0) {
+          selectedTransactions.value[index].approved = type == 1 ? true : false
+        }
+        selectedTransactions.value[index].approvingServiceReport = false
+        ElMessage({
+          type: "success",
+          message: `Transaction ${type == 1 ? "approved successfully" : "unapproved"}`,
+          duration: 5000,
+        });
+      }
+      catch (err) {
+          selectedTransactions.value[index].approvingServiceReport = false
+          console.error(err);
+          ElMessage({
+            type: "error",
+            message: `Report not successfully approved, please try again`,
+            duration: 5000,
+          });
+        }
+    }
     
 
     return {
@@ -651,7 +692,8 @@ export default {
       showConfirmModal,
       refreshing,
       gettingSelectedTrsn,
-      journalEntrySaved
+      journalEntrySaved,
+      approveReport
     };
   },
 };
