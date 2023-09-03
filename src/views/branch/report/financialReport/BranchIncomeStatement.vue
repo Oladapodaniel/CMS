@@ -258,7 +258,7 @@
               style="font-size: small"
             >
               <tr class="answer-row2">
-                <td class="gross-total">Gross Total</td>
+                <td class="gross-total">Net Total</td>
             
                 <td></td>
                 <td></td>
