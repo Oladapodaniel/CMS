@@ -316,6 +316,7 @@
                               <el-input
                                 type="text"
                                 v-model="groupData.name"
+                                size="large"
                                 disabled
                               />
                             </div>
@@ -336,31 +337,22 @@
                                 filterable
                                 check-strictly
                               /> -->
-                              <button class="
-                                  form-control
+                              <div class="
+                                  border-contribution
                                   d-flex
                                   justify-content-between
                                   align-items-center
                                   exempt-hide
                                 " @click="setGroupProp">
                                 <span class="exempt-hide">
-                                  <span v-if="selectedTree.length > 0 && selectedTree.length <= 2">
-
-                                    <span v-for="item in selectedTree" :key="item.id"><span class="eachGroup">{{ item && item.name
-                                    }}</span></span>
-                                  </span>
-                                  <span v-if="selectedTree.length > 0 && selectedTree.length > 2">
-                                    <span v-for="item in selectedTree.slice(0, 2)" :key="item.id">
-                                      <span class="eachGroup">{{ item.name }}</span>
-                                      </span>
-                                  </span>
+                                    <el-tag type="info" v-for="item in selectedTree" :key="item.id">{{ item && item.name }}</el-tag>
                                   <span v-if="selectedTree.length === 0">Select group</span>
                                 </span>
                                 <el-icon class="el-icon--right
                                     pr-1 ">
                                   <arrow-down />
                                 </el-icon>
-                              </button>
+                              </div>
                               <div class="div-card p-2 exempt-hide" :class="{
                                   'd-none': hideDiv,
                                   'd-block': !hideDiv,
@@ -2674,7 +2666,6 @@ export default {
   background: white;
   z-index: 1;
   width: 100%;
-  top: 136px;
   box-shadow: 0 0 11px rgba(33, 33, 33, 0.2);
   max-height: 400px;
   overflow: scroll;
