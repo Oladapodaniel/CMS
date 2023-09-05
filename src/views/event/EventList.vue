@@ -333,20 +333,20 @@
         </Table>
         <!-- {{membersCount}} {{currentPage}} -->
 
-        <div class="table-footer">
+        <!-- <div class="table-footer">
           <PaginationButtons @getcontent="getPeopleByPage" :itemsCount="membersCount" :currentPage="currentPage" />
-        </div>
-        <!-- <div class="d-flex justify-content-end my-3">
+        </div> -->
+        <div class="d-flex justify-content-end my-3">
             <el-pagination
               v-model:current-page="serverOptions.page"
               v-model:page-size="serverOptions.rowsPerPage"
               background
               layout="total, prev, pager, next, jumper"
-              :total="serverItemsLength"
+              :total="filterEvents.length"
               @size-change="handleSizeChange"
               @current-change="handleCurrentChange"
             />
-          </div> -->
+          </div>
       </div>
     </div>
   </div>
@@ -354,7 +354,7 @@
 
 <script>
 import axios from "@/gateway/backendapi";
-import { ref, computed, inject } from "vue";
+import { ref, computed, inject, watch } from "vue";
 import moment from "moment";
 import { useStore } from "vuex";
 import userService from "../../services/user/userservice";
@@ -423,6 +423,13 @@ export default {
           }
         });
     };
+
+    const serverOptions = ref({
+      page: 1,
+      rowsPerPage: 100,
+    });
+
+    
     const showConfirmModal = (id, index) => {
       ElMessageBox.confirm(
         "Are you sure you want to proceed?",
@@ -517,16 +524,29 @@ export default {
       return convertNumber.convertNumber(number);
     };
     const currentPage = ref(0);
-    const getPeopleByPage = async (page) => {
-      if (page < 0) return false;
+    const handleSizeChange = (val) => {
+      console.log(`${val} items per page`)
+    }
+    const handleCurrentChange = (val) => {
+      console.log(`current page: ${val}`)
+    }
+
+    watch(serverOptions, () => {
+      getPeopleByPage();
+    },
+      { deep: true }
+    );
+    
+    const getPeopleByPage = async () => {
+      // if (page < 0) return false;
       try {
         const { data } = await axios.get(
-          `/api/eventreports/eventReports?page=${page}`
+          `/api/eventreports/eventReports?page=${serverOptions.value.page}`
         );
         if (data.activities.length > 0) {
           filterEvents.value = [];
           emit("activity-per-page", data.activities);
-          currentPage.value = page;
+          // currentPage.value = page;
         }
       } catch (error) {
         console.log(error);
@@ -588,7 +608,10 @@ export default {
     return {
       // sentEvent,
       searchEventInDB,
+      handleSizeChange,
+      handleCurrentChange,
       filterFormIsVissible,
+      serverOptions,
       searchingMember,
       toggleFilterFormVissibility,
       searchIsVisible,

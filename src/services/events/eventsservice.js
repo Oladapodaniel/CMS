@@ -92,9 +92,9 @@ const eventsService = {
                 })
         })
     },
-    getEventItems(body) {
+    getEventItems() {
         return new Promise((resolve, reject) => {
-            axios.get('/api/eventreports/eventReports', body)
+            axios.get('/api/eventreports/eventReports')
                 .then(res => {
                     resolve( res.data );
                 })

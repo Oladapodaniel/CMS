@@ -229,7 +229,7 @@ export default {
             route: '/tenant/onlinedonation',
           },
           {
-            name: 'Partnership / Pledges',
+            name: 'Dues/Pledges/Partnership',
             logo: '/',
             route: '/tenant/pledge/pledgeslist',
           },
