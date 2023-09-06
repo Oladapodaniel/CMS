@@ -1056,6 +1056,7 @@ export default {
     const hierarchies = ref([]);
     const closeStatusModal = ref();
     const levelmodalBtn = ref();
+    const sendingwhatsappmessage = ref(false);
     const branchSideShow = ref(false);
     const showWhatsapp = ref(false);
     const showEmail = ref(false);
@@ -1524,6 +1525,7 @@ export default {
       attendance,
       displayWhatsappDrawer,
       closeJoinNetworkModal,
+      sendingwhatsappmessage,
       showEmail,
       averageAttendace,
       getAverageIncomeChart,

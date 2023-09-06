@@ -133,11 +133,11 @@
         <div class="conatiner">
           <div class="row">
             <div class="col-md-12 mb-3 pagination-container">
-              <!-- <PaginationButtons @getcontent="getSMSByPage" :itemsCount="itemsCount" :currentPage="currentPage"
-                :totalItems="sentSMS.totalItems" /> -->
-              <el-pagination v-model:current-page="serverOptions.page" v-model:page-size="serverOptions.rowsPerPage"
+              <PaginationButtons @getcontent="getSMSByPage" :itemsCount="itemsCount" :currentPage="currentPage"
+                :totalItems="sentSMS.totalItems" />
+              <!-- <el-pagination v-model:current-page="serverOptions.page" v-model:page-size="serverOptions.rowsPerPage"
                 background layout="prev, pager, next, jumper" :total="totalItems" @size-change="handleSizeChange"
-                @current-change="handleCurrentChange" />
+                @current-change="handleCurrentChange" /> -->
             </div>
           </div>
         </div>
@@ -152,7 +152,7 @@ import { computed, ref, watch } from "vue";
 import communicationService from "../../services/communication/communicationservice";
 import { useStore } from "vuex";
 import UnitsArea from "../../components/units/UnitsArea";
-// import PaginationButtons from "../../components/pagination/PaginationButtons";
+import PaginationButtons from "../../components/pagination/PaginationButtons";
 import stopProgressBar from "../../services/progressbar/progress";
 import { ElMessage, ElMessageBox } from 'element-plus'
 import Table from "@/components/table/Table"
@@ -160,7 +160,7 @@ import Table from "@/components/table/Table"
 export default {
   components: {
     UnitsArea,
-    // PaginationButtons,
+    PaginationButtons,
     Table
   },
   setup() {
