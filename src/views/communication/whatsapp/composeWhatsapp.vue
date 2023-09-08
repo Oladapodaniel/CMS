@@ -137,7 +137,7 @@
         <div class="col-md-2"></div>
         <div class="col-md-10 px-0">
           <el-select-v2 v-model="userWhatsappGroupsId"
-            :options="userWhatsappGroups.map(i => ({ value: i.id.user, label: i.formattedTitle }))"
+            :options="userWhatsappGroups.map(i => ({ value: i.id.user, label: i.name }))"
             placeholder="Select whatsapp group" size="large" class="w-100" filterable multiple />
           <el-icon class="is-loading" v-if="whatsappGroupsLoading">
             <Loading />
@@ -930,7 +930,7 @@ export default {
         const reader = new FileReader();
 
         reader.onload = (f) => {
-          base64String.value = f.target.result.split(",")[1];
+          base64String.value = f.target.result;
           const chunkSize = 1024; // Specify your desired chunk size
 
           socket.emit('resetmediaobject', 
