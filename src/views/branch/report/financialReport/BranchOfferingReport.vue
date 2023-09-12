@@ -126,6 +126,7 @@
             <MembersSearch
               @memberdetail="chooseContact"
               :currentMember="selectedContact"
+              :reportBranchID="reportBranchID"
             />
           </div>
         </div>
@@ -258,7 +259,7 @@
 </template>
 
 <script>
-import { computed, ref, inject } from "vue";
+import { computed, ref, inject, onMounted } from "vue";
 import axios from "@/gateway/backendapi";
 import { ElMessage } from "element-plus";
 import OfferingPieChart from "../../../../components/charts/ReportPieChart.vue";
@@ -284,10 +285,12 @@ export default {
     const showReport = ref(false);
     const displayTitle = ref(false);
     const primarycolor = inject("primarycolor");
+    const reportBranchID = ref("")
     const startDate = ref("");
     const endDate = ref("");
     const selectedContact = ref({});
     const selectedofferingCategory = ref();
+    
     const offeringPersonID = ref("");
     const offeringInChurch = ref([]);
 
@@ -317,6 +320,11 @@ export default {
       });
     });
 
+    onMounted(() => {
+      let branchID = localStorage.getItem("branchId")
+      reportBranchID.value = branchID
+      console.log(reportBranchID.value, 'kkjjjj');
+    })
     const offeringDetail = computed(() => {
       mappedOfferingCol.value = [];
       mainOfferingData.value = [];
@@ -376,9 +384,10 @@ export default {
     };
 
     const getMemberClassification = async () => {
+      let branchID = localStorage.getItem("branchId");
       try {
         axios
-          .get("/api/Financials/Contributions/Items")
+          .get(`/api/BranchNetwork/Contributions/Items?BranchId=${branchID}`)
           .then((res) => {
             Categories.value = res.data;
           })
@@ -544,6 +553,7 @@ export default {
 
     return {
       mainOfferingData,
+      reportBranchID,
       displayTitle,
       chooseContact,
       offeringDetail,

@@ -14,14 +14,19 @@
           <hr class="hr my-1" />
         </div>
       </div>
-
-      <div class="row">
+      <div
+        v-if="route.fullPath == '/tenant/branch/mainbranchsummary'"
+        class="row"
+      >
         <div class="col-12 p-0 col-sm-2 align-self-center">
           <span class="small-text">Send to: </span>
         </div>
         <div class="col-12 p-0 col-sm-10 form-group mb-0">
           <el-dropdown trigger="click" class="w-100">
-            <div class="d-flex justify-content-between border-contribution text-dark w-100" size="large">
+            <div
+              class="d-flex justify-content-between border-contribution text-dark w-100"
+              size="large"
+            >
               <span>Select Destination</span>
               <div>
                 <el-icon class="el-icon--right">
@@ -31,8 +36,44 @@
             </div>
             <template #dropdown>
               <el-dropdown-menu>
-                <el-dropdown-item v-for="(destination, index) in possibleSMSDestinations" :key="index"
-                  @click="showSection(index)">
+                <el-dropdown-item
+                  v-for="(destination, index) in possibleWhatsappDestinations"
+                  :key="index"
+                  @click="showSection2(index)"
+                >
+                  <a class="no-decoration text-dark">
+                    {{ destination }}
+                  </a>
+                </el-dropdown-item>
+              </el-dropdown-menu>
+            </template>
+          </el-dropdown>
+        </div>
+      </div>
+      <div class="row" v-else>
+        <div class="col-12 p-0 col-sm-2 align-self-center">
+          <span class="small-text">Send to: </span>
+        </div>
+        <div class="col-12 p-0 col-sm-10 form-group mb-0">
+          <el-dropdown trigger="click" class="w-100">
+            <div
+              class="d-flex justify-content-between border-contribution text-dark w-100"
+              size="large"
+            >
+              <span>Select Destination</span>
+              <div>
+                <el-icon class="el-icon--right">
+                  <arrow-down />
+                </el-icon>
+              </div>
+            </div>
+            <template #dropdown>
+              <el-dropdown-menu>
+                <el-dropdown-item
+                  v-for="(destination, index) in possibleSMSDestinations"
+                  :key="index"
+                  @click="showSection(index)"
+                >
                   <a class="no-decoration text-dark">
                     {{ destination }}
                   </a>
@@ -47,31 +88,112 @@
         <div class="col-md-2"></div>
         <div class="col-md-10 px-0">
           <span>
-            <input class="form-control dropdown-toggle my-1 px-1 small-text" type="text" id="dropdownMenu"
-              value="All Contacts" disabled />
-            <span class="close-allcontacts c-pointer"
-              @click="(sendToAll = false), (selectedGroups = selectedGroups.filter(i => i.data !== 'membership_00000000-0000-0000-0000-000000000000')), (getMemberPhoneNumber())"><i
-                class="pi pi-times"></i></span>
+            <input
+              class="form-control dropdown-toggle my-1 px-1 small-text"
+              type="text"
+              id="dropdownMenu"
+              value="All Contacts"
+              disabled
+            />
+            <span
+              class="close-allcontacts c-pointer"
+              @click="
+                (sendToAll = false),
+                  (selectedGroups = selectedGroups.filter(
+                    (i) =>
+                      i.data !==
+                      'membership_00000000-0000-0000-0000-000000000000'
+                  )),
+                  getMemberPhoneNumber()
+              "
+              ><i class="pi pi-times"></i
+            ></span>
+          </span>
+        </div>
+      </div>
+      <div class="row" v-if="sendToAll">
+        <div class="col-md-2"></div>
+        <div class="col-md-10 px-0">
+          <span>
+            <input
+              class="form-control dropdown-toggle my-1 px-1 small-text"
+              type="text"
+              id="dropdownMenu"
+              value="All Contacts"
+              disabled
+            />
+            <span
+              class="close-allcontacts c-pointer"
+              @click="
+                (sendToAll = false),
+                  (selectedGroups = selectedGroups.filter(
+                    (i) =>
+                      i.data !==
+                      'membership_00000000-0000-0000-0000-000000000000'
+                  )),
+                  getMemberPhoneNumber()
+              "
+              ><i class="pi pi-times"></i
+            ></span>
+          </span>
+        </div>
+      </div>
+      <div class="row" v-if="sendToAllBranches">
+        <div class="col-md-2"></div>
+        <div class="col-md-10 px-0">
+          <span>
+            <input
+              class="form-control dropdown-toggle my-1 px-1 small-text"
+              type="text"
+              id="dropdownMenu"
+              value="All Branch(s)"
+              disabled
+            />
+            <span
+              class="close-allcontacts c-pointer"
+              @click="
+                (sendToAllBranches = false),
+                  (selectedGroups = selectedGroups.filter(
+                    (i) =>
+                      i.data !==
+                      'membership_00000000-0000-0000-0000-000000000000'
+                  )),
+                  getMemberPhoneNumber()
+              "
+              ><i class="pi pi-times"></i
+            ></span>
           </span>
         </div>
       </div>
       <div class="row my-2" v-if="groupSelectionTab">
-        <div class="pr-0 col-md-2 align-self-center">
-        </div>
+        <div class="pr-0 col-md-2 align-self-center"></div>
         <div class="px-0 col-md-10 form-group mb-0">
-          <el-select v-model="groupMultipleIDs" placeholder="Select group" class="group-category w-100"
-            @remove-tag="removeTag" filterable multiple>
-            <el-option-group v-for="(group, index) in categories" :key="group" :label="group">
-              <el-option v-for="(item, indx) in allGroups[index]" :key="item.id" :label="item.name" :value="item.id"
-                @click="selectGroup(item.category, item.id, item.name, index, indx)" />
+          <el-select
+            v-model="groupMultipleIDs"
+            placeholder="Select group"
+            class="group-category w-100"
+            @remove-tag="removeTag"
+            filterable
+            multiple
+          >
+            <el-option-group
+              v-for="(group, index) in categories"
+              :key="group"
+              :label="group"
+            >
+              <el-option
+                v-for="(item, indx) in allGroups[index]"
+                :key="item.id"
+                :label="item.name"
+                :value="item.id"
+                @click="
+                  selectGroup(item.category, item.id, item.name, index, indx)
+                "
+              />
             </el-option-group>
           </el-select>
         </div>
       </div>
-
-
-
-
 
       <!-- <el-select-v2  
       v-if="categories"
@@ -136,48 +258,131 @@
       <div class="row my-2" v-if="whatsappGroupSelectionTab">
         <div class="col-md-2"></div>
         <div class="col-md-10 px-0">
-          <el-select-v2 v-model="userWhatsappGroupsId"
-            :options="userWhatsappGroups.map(i => ({ value: i.id.user, label: i.name }))"
-            placeholder="Select whatsapp group" size="large" class="w-100" filterable multiple />
+          <el-select-v2
+            v-model="userWhatsappGroupsId"
+            :options="
+              userWhatsappGroups.map((i) => ({
+                value: i.id.user,
+                label: i.formattedTitle,
+              }))
+            "
+            placeholder="Select whatsapp group"
+            size="large"
+            class="w-100"
+            filterable
+            multiple
+          />
           <el-icon class="is-loading" v-if="whatsappGroupsLoading">
             <Loading />
           </el-icon>
         </div>
       </div>
 
+      <div class="row" v-if="branchesSelectionTab">
+        <div class="col-md-2"></div>
+        <div class="col-md-10 mt-3 px-0 grey-rounder-border">
+          <el-dropdown trigger="click" class="w-100">
+            <span class="el-dropdown-link w-100">
+              <div
+                class="d-flex justify-content-between border-contribution w-100"
+              >
+                <div class="w-100">
+                  <span v-if="selectedBranch.length > 0">
+                    <el-tag
+                      class="mx-1"
+                      size="large"
+                      closable
+                      v-for="(item, index) in selectedBranch"
+                      :key="item.id"
+                      @close="selectedBranch.splice(index, 1)"
+                      >{{ item.name }}</el-tag
+                    >
+                  </span>
+                  <span v-else> Select Branch </span>
+                </div>
+                <span class="text-right">
+                  <el-icon class="el-icon--right">
+                    <arrow-down />
+                  </el-icon>
+                </span>
+              </div>
+            </span>
+            <template #dropdown>
+              <el-dropdown-menu>
+                <el-dropdown-item
+                  v-for="(itm, indx) in branchList"
+                  :key="indx"
+                  @click="selectBranch(itm, indx)"
+                  >{{ itm.name }}
+                </el-dropdown-item>
+              </el-dropdown-menu>
+            </template>
+          </el-dropdown>
+        </div>
+      </div>
+
       <div class="row mt-2" v-if="membershipSelectionTab">
         <div class="col-md-2"></div>
         <div class="col-md-10 pl-0 grey-rounded-border">
-
-
           <el-dropdown trigger="click" class="w-100">
             <span class="el-dropdown-link w-100">
               <ul class="d-flex flex-wrap px-1 mb-0 w-100">
-                <li style="list-style: none; min-width: 100px" v-for="(member, indx) in selectedMembers" :key="indx"
+                <el-tag
+                  class="mx-1 my-1"
+                  size="large"
+                  closable
+                  v-for="(member, indx) in selectedMembers"
+                  :key="indx"
+                  @close="selectedMembers.splice(indx, 1)"
+                  >{{ member.name }}</el-tag
+                >
+                <!-- <li style="list-style: none; min-width: 100px" v-for="(member, indx) in selectedMembers" :key="indx"
                   class="email-destination d-flex justify-content-between m-1">
                   <span>{{ member.name }}</span>
                   <span class="ml-2 remove-email" @click="removeMember(indx)">
                     <el-icon>
                       <CircleClose />
                     </el-icon></span>
-                </li>
+                </li> -->
                 <li style="list-style: none">
-                  <input type="text" class="border-0 m-dd-item text" ref="memberSelectInput" @input="searchForPerson"
+                  <input
+                    type="text"
+                    class="border-0 m-dd-item text"
+                    ref="memberSelectInput"
+                    @input="searchForPerson"
                     :class="{
                       'w-100': selectedMembers.length === 0,
                       'minimized-input-width': selectedMembers.length > 0,
-                    }" @focus="showMemberList" @click="showMemberList" v-model="searchText" style="padding: 0.5rem"
-                    :placeholder="`${selectedMembers.length > 0 ? '' : 'Select from membership database'
-                      }`" />
+                    }"
+                    @focus="showMemberList"
+                    @click="showMemberList"
+                    v-model="searchText"
+                    style="padding: 0.5rem"
+                    :placeholder="`${
+                      selectedMembers.length > 0
+                        ? ''
+                        : 'Select from membership database'
+                    }`"
+                  />
                 </li>
               </ul>
             </span>
             <template #dropdown>
               <el-dropdown-menu>
-                <el-dropdown-item v-for="(member, index) in memberSearchResults" :key="index"
-                  @click="selectMember(member, index)">{{ member.name }}</el-dropdown-item>
-                <el-dropdown-item v-if="memberSearchResults.length === 0 && searchText.length >= 3 && !loading">No match
-                  found</el-dropdown-item>
+                <el-dropdown-item
+                  v-for="(member, index) in memberSearchResults"
+                  :key="index"
+                  @click="selectMember(member, index)"
+                  >{{ member.name }}</el-dropdown-item
+                >
+                <el-dropdown-item
+                  v-if="
+                    memberSearchResults.length === 0 &&
+                    searchText.length >= 3 &&
+                    !loading
+                  "
+                  >No match found</el-dropdown-item
+                >
                 <el-dropdown-item divided>
                   <el-icon class="is-loading mr-1" v-if="loading">
                     <Loading />
@@ -187,7 +392,6 @@
               </el-dropdown-menu>
             </template>
           </el-dropdown>
-
 
           <!-- <ul class="d-flex flex-wrap px-1 mb-0 m-dd-item" @click="() => memberSelectInput.focus()">
             <li style="list-style: none; min-width: 100px" v-for="(member, indx) in selectedMembers" :key="indx"
@@ -230,18 +434,25 @@
         </div>
       </div>
 
-
-
-
       <!-- Enter phone numbers -->
       <div class="col-md-12 my-1 px-0" v-if="phoneNumberSelectionTab">
         <div class="row">
           <div class="col-md-2"></div>
           <div class="col-md-10 py-2 px-0">
             <div class="d-flex flex-wrap">
-              <el-tag class="mx-1" size="large" closable v-for="(item, index) in allSelectedNumbers" :key="index"
-                @close="(allSelectedNumbers.splice(index, 1)), (toOthers.splice(index, 1)), (getMemberPhoneNumber())">{{
-                  item }}</el-tag>
+              <el-tag
+                class="mx-1"
+                size="large"
+                closable
+                v-for="(item, index) in allSelectedNumbers"
+                :key="index"
+                @close="
+                  allSelectedNumbers.splice(index, 1),
+                    toOthers.splice(index, 1),
+                    getMemberPhoneNumber()
+                "
+                >{{ item }}</el-tag
+              >
               <!-- <div class="multiple_numbers mr-2 mt-2 flex" v-for="(item, index) in allSelectedNumbers" :key="index">
                 {{ item }}
                 <el-icon class="c-pointer ml-2" @click="(allSelectedNumbers.splice(index, 1)),(toOthers.splice(index, 1)),(getMemberPhoneNumber())">
@@ -249,16 +460,33 @@
                 </el-icon>
               </div> -->
             </div>
-            <vue-tel-input style="height: 40px" class="input-width mt-3" v-model="phoneNumber"
-              mode="international"></vue-tel-input>
-            <el-button class="mt-2" type="primary"
-              @click="(allSelectedNumbers.push(phoneNumber.replaceAll(' ', '').trim())), (toOthers.push(phoneNumber.replaceAll(' ', '').trim())), (getMemberPhoneNumber()), (phoneNumber = '')"
-              plain>
-              <el-icon>
-                <CirclePlusFilled />
-              </el-icon>&nbsp;Add
+            <vue-tel-input
+              style="height: 40px"
+              class="input-width mt-3"
+              v-model="phoneNumber"
+              mode="international"
+            ></vue-tel-input>
+            <el-button
+              class="mt-2"
+              type="primary"
+              @click="
+                allSelectedNumbers.push(phoneNumber.replaceAll(' ', '').trim()),
+                  toOthers.push(phoneNumber.replaceAll(' ', '').trim()),
+                  getMemberPhoneNumber(),
+                  (phoneNumber = '')
+              "
+              plain
+            >
+              <el-icon> <CirclePlusFilled /> </el-icon>&nbsp;Add
             </el-button>
-            <div><code style="color: black;"><small>NB: Make sure you click the add button to include the number to the tray of recipient numbers.</small></code></div>
+            <div>
+              <code style="color: black"
+                ><small
+                  >NB: Make sure you click the add button to include the number
+                  to the tray of recipient numbers.</small
+                ></code
+              >
+            </div>
           </div>
         </div>
       </div>
@@ -268,21 +496,35 @@
         <div class="col-sm-2"></div>
         <div class="col-sm-10 px-0 grey-rounded-border p-2">
           <div class="d-flex justify-content-between">
-            <input type="file" class="form-control-file" @change="uploadFile">
-            <div><i class="pi pi-times mr-2 c-pointer" @click="() => contactUpload = false"></i></div>
+            <input type="file" class="form-control-file" @change="uploadFile" />
+            <div>
+              <i
+                class="pi pi-times mr-2 c-pointer"
+                @click="() => (contactUpload = false)"
+              ></i>
+            </div>
           </div>
-          <div class="mt-1"><a href="/files/Upload_Contact Template.csv"
-              class="template-text text-decoration-none font-weight-bold" download>Download template</a></div>
+          <div class="mt-1">
+            <a
+              href="/files/Upload_Contact Template.csv"
+              class="template-text text-decoration-none font-weight-bold"
+              download
+              >Download template</a
+            >
+          </div>
         </div>
       </div>
 
-      <div class="row mt-1" v-if="phoneNumberSelectionTab || membershipSelectionTab || groupSelectionTab
-        ">
+      <div
+        class="row mt-1"
+        v-if="
+          phoneNumberSelectionTab || membershipSelectionTab || groupSelectionTab ||  branchesSelectionTab
+        "
+      >
         <div class="col-md-12 pr-0">
           <hr class="hr my-1" />
         </div>
       </div>
-
 
       <div class="row">
         <div class="col-md-2 p-0">
@@ -297,13 +539,25 @@
             type="textarea"
             placeholder="Type your message ..."
           />
-          <div><span class="font-weight-bold">NB:</span> To personalise your message, type <span class="font-weight-bold">#name#</span> where you want the recipient's name to appear in your message content</div>
+          <div>
+            <span class="font-weight-bold">NB:</span> To personalise your
+            message, type <span class="font-weight-bold">#name#</span> where you
+            want the recipient's name to appear in your message content
+          </div>
           <div class="d-flex align-items-start mt-3">
-            <img src="../../../assets/smiling-face.png" width="20" class="c-pointer emoji-wrapper"
-            @click="displayEmoji = !displayEmoji" />
+            <img
+              src="../../../assets/smiling-face.png"
+              width="20"
+              class="c-pointer emoji-wrapper"
+              @click="displayEmoji = !displayEmoji"
+            />
             <transition name="el-fade-in-linear">
-              <VuemojiPicker v-show="displayEmoji" @emojiClick="handleEmojiClick" class="mt-2 emoji-wrapper "
-                style="position: absolute; z-index: 1000" />
+              <VuemojiPicker
+                v-show="displayEmoji"
+                @emojiClick="handleEmojiClick"
+                class="mt-2 emoji-wrapper"
+                style="position: absolute; z-index: 1000"
+              />
             </transition>
 
             <!-- action="https://run.mocky.io/v3/9d059bf9-4660-45f2-925d-ce80ad6c4d15" -->
@@ -311,9 +565,16 @@
             <!-- :on-preview="handlePreview"
             :on-remove="handleRemove"
             :before-remove="beforeRemove" -->
-            <el-upload class="upload-demo" multiple :limit="1" :on-change="chooseFile" accept="image/*"  :on-remove="handleRemove"
-              :auto-upload="false">
-              <el-icon class="ml-2" style="font-size: 20px; color: #7d7d7d;">
+            <el-upload
+              class="upload-demo"
+              multiple
+              :limit="1"
+              :on-change="chooseFile"
+              accept="image/*"
+              :on-remove="handleRemove"
+              :auto-upload="false"
+            >
+              <el-icon class="ml-2" style="font-size: 20px; color: #7d7d7d">
                 <Paperclip />
               </el-icon>
               <!-- <template #tip>
@@ -334,13 +595,34 @@
             :percentage="chunkProgress"
             status="success"
           /> -->
-          <el-progress type="circle" :percentage="chunkProgress" v-if="chunkProgress > 0" />
-          <img :src="selectedFileUrl" v-show="fileImage" class="mt-2" style="width: 50%" />
-          <audio ref="audioPlayer" controls class="mt-2" style="width: 100%;" v-show="fileAudio">
-            <source src="" type="audio/mpeg">
+          <el-progress
+            type="circle"
+            :percentage="chunkProgress"
+            v-if="chunkProgress > 0"
+          />
+          <img
+            :src="selectedFileUrl"
+            v-show="fileImage"
+            class="mt-2"
+            style="width: 50%"
+          />
+          <audio
+            ref="audioPlayer"
+            controls
+            class="mt-2"
+            style="width: 100%"
+            v-show="fileAudio"
+          >
+            <source src="" type="audio/mpeg" />
             Your browser does not support the audio element.
           </audio>
-          <video ref="videoPlayer" style="width: 100%" height="240" controls v-show="fileVideo">
+          <video
+            ref="videoPlayer"
+            style="width: 100%"
+            height="240"
+            controls
+            v-show="fileVideo"
+          >
             <source src="" />
             <!-- <source src="movie.mp4" type="video/mp4"> -->
             Your browser does not support the video tag.
@@ -359,12 +641,21 @@
         </div> -->
         <div class="w-100 mt-3 d-flex justify-content-end">
           <span>
-            <el-dropdown split-button :color="primarycolor" size="large" @click="sendWhatsappMessage" class="split-button"
-              :disabled="memberdataloading" trigger="click">
+            <el-dropdown
+              split-button
+              :color="primarycolor"
+              size="large"
+              @click="sendWhatsappMessage"
+              class="split-button"
+              :disabled="memberdataloading"
+              trigger="click"
+            >
               Send Whatsapp message
               <template #dropdown>
                 <el-dropdown-menu>
-                  <el-dropdown-item @click="whatsappScheduleDialog = true">Schedule</el-dropdown-item>
+                  <el-dropdown-item @click="whatsappScheduleDialog = true"
+                    >Schedule</el-dropdown-item
+                  >
                   <!-- <el-dropdown-item >Save as draft</el-dropdown-item> -->
                 </el-dropdown-menu>
               </template>
@@ -377,17 +668,38 @@
     </div>
 
     <!-- Schedudle Whatsapp modal -->
-    <el-dialog v-model="whatsappScheduleDialog" title=""
-      :width="mdAndUp || lgAndUp || xlAndUp ? `50%` : xsOnly ? `90%` : `70%`" align-center class="p-4">
+    <el-dialog
+      v-model="whatsappScheduleDialog"
+      title=""
+      :width="mdAndUp || lgAndUp || xlAndUp ? `50%` : xsOnly ? `90%` : `70%`"
+      align-center
+      class="p-4"
+    >
       <div class="row">
-        <div class="s-18 font-weight-bold">Select date and time to schedule your message</div>
-        <input type="datetime-local" class="form-control my-3" placeholder="Select date and time"
-          v-model="scheduledWhatsappDate" />
+        <div class="s-18 font-weight-bold">
+          Select date and time to schedule your message
+        </div>
+        <input
+          type="datetime-local"
+          class="form-control my-3"
+          placeholder="Select date and time"
+          v-model="scheduledWhatsappDate"
+        />
       </div>
       <template #footer>
         <span class="dialog-footer">
-          <el-button @click="whatsappScheduleDialog = false" class="secondary-button" round>Cancel</el-button>
-          <el-button :color="primarycolor" :loading="scheduleloading" @click="scheduleWhatsappMessage" round>
+          <el-button
+            @click="whatsappScheduleDialog = false"
+            class="secondary-button"
+            round
+            >Cancel</el-button
+          >
+          <el-button
+            :color="primarycolor"
+            :loading="scheduleloading"
+            @click="scheduleWhatsappMessage"
+            round
+          >
             Schedule
           </el-button>
         </span>
@@ -404,10 +716,10 @@ import { useRoute } from "vue-router";
 import store from "../../../store/store";
 import axios from "@/gateway/backendapi";
 import communicationService from "../../../services/communication/communicationservice";
-import moment from 'moment'
-import VueQrcode from 'vue-qrcode';
-import swal from 'sweetalert';
-import { VuemojiPicker } from 'vuemoji-picker'
+import moment from "moment";
+import VueQrcode from "vue-qrcode";
+import swal from "sweetalert";
+import { VuemojiPicker } from "vuemoji-picker";
 import { state } from "@/socket";
 import { socket } from "@/socket";
 import deviceBreakpoint from "../../../mixins/deviceBreakpoint";
@@ -415,6 +727,7 @@ import deviceBreakpoint from "../../../mixins/deviceBreakpoint";
 import dateFormatter from "../../../services/dates/dateformatter";
 
 export default {
+  props: ["allBranchDetail"],
   components: {
     VueQrcode,
     VuemojiPicker,
@@ -422,25 +735,26 @@ export default {
   },
   beforeRouteEnter(to, from, next) {
     const whatsappClientState = computed(() => {
-      return store.getters["communication/isWhatsappClientReady"]
-    })
-    if (!whatsappClientState.value && to.fullPath == '/tenant/whatsapp') {
-      next({ path: '/tenant/whatsapp/auth' })
+      return store.getters["communication/isWhatsappClientReady"];
+    });
+    if (!whatsappClientState.value && to.fullPath == "/tenant/whatsapp") {
+      next({ path: "/tenant/whatsapp/auth" });
     } else {
-      next()
+      next();
     }
   },
-  setup() {
-    const session = ref("")
-    const qrCode = ref("")
-    const sessionId = ref("")
-    const getSessionId = ref("")
-    const primarycolor = inject('primarycolor')
+  setup(props) {
+    const session = ref("");
+    const qrCode = ref("");
+    const sessionId = ref("");
+    const getSessionId = ref("");
+    const primarycolor = inject("primarycolor");
     const editorData = ref("");
+    const branchList = ref(props.allBranchDetail);
     const editorConfig = {
       height: "800",
     };
-    const userWhatsappGroupsId = ref(null)
+    const userWhatsappGroupsId = ref(null);
 
     const possibleSMSDestinations = [
       "All contacts",
@@ -449,14 +763,22 @@ export default {
       "Phone numbers",
       "Select from Whatsapp groups",
     ];
-    const allSelectedNumbers = ref([])
+    const possibleWhatsappDestinations = [
+      "All Branch(s)",
+      "Choose branch(s)",
+      "Phone numbers",
+      //   "Select from Whatsapp groups",
+    ];
+    const allSelectedNumbers = ref([]);
     const sendToAll = ref(false);
     const groupSelectionTab = ref(false);
     const membershipSelectionTab = ref(false);
     const phoneNumberSelectionTab = ref(false);
     const whatsappGroupSelectionTab = ref(false);
+     const sendToAllBranches = ref(false);
     const selectedGroups = ref([]);
     const displayEmoji = ref(false);
+    const branchesSelectionTab = ref(false);
     const fileImage = ref(false);
     const fileAudio = ref(false);
     const fileVideo = ref(false);
@@ -464,50 +786,75 @@ export default {
     const videoPlayer = ref(null);
     const selectedFileUrl = ref("");
     const whatsappAttachment = ref({});
-    const contactUpload = ref(false)
-    const multipleContact = ref({})
-    const base64String = ref("")
-    const fileReady = ref(false)
-    const groupMembersData = ref([])
-    const whatsappScheduleDialog = ref(false)
+    const selectedBranch = ref([]);
+    const contactUpload = ref(false);
+    const multipleContact = ref({});
+    const base64String = ref("");
+    const fileReady = ref(false);
+    const groupMembersData = ref([]);
+    const whatsappScheduleDialog = ref(false);
     const { mdAndUp, lgAndUp, xlAndUp, xsOnly } = deviceBreakpoint();
-    const scheduledWhatsappDate = ref("")
-    const chatRecipients = ref([])
-    const groupMultipleIDs = ref([])
-    const scheduleloading = ref(false)
-    const toOthers = ref([])
-    const memberdataloading = ref(false)
-    const chunkProgress = ref(0)
-
+    const scheduledWhatsappDate = ref("");
+    const chatRecipients = ref([]);
+    const groupMultipleIDs = ref([]);
+    const scheduleloading = ref(false);
+    const toOthers = ref([]);
+    const memberdataloading = ref(false);
+    const chunkProgress = ref(0);
 
     const clientSessionId = computed(() => {
-      if (!store.getters["communication/whatsappSessionId"]) return ""
-      return store.getters["communication/whatsappSessionId"]
-    })
+      if (!store.getters["communication/whatsappSessionId"]) return "";
+      return store.getters["communication/whatsappSessionId"];
+    });
     const userWhatsappGroups = computed(() => {
-      if (store.getters["communication/allClientWhatsappChat"] && store.getters["communication/allClientWhatsappChat"].length > 0) {
-        whatsappGroupsLoading.value = false
-        return store.getters["communication/allClientWhatsappChat"].filter(i => i.isGroup)
+      if (
+        store.getters["communication/allClientWhatsappChat"] &&
+        store.getters["communication/allClientWhatsappChat"].length > 0
+      ) {
+        whatsappGroupsLoading.value = false;
+        return store.getters["communication/allClientWhatsappChat"].filter(
+          (i) => i.isGroup
+        );
       } else {
-        return []
+        return [];
       }
-    })
+    });
     // const toggleGroupsVissibility = () => {
     //   groupsAreVissible.value = !groupsAreVissible.value;
     // };
 
     const showSection = (index) => {
-      if (index === 0) (sendToAll.value = true), (selectedGroups.value.push({ data: "membership_00000000-0000-0000-0000-000000000000", name: "All Contacts" })), (getMemberPhoneNumber());
-      if (index === 1) (groupSelectionTab.value = true)
-      if (index === 2) (membershipSelectionTab.value = true)
-      if (index === 3) (phoneNumberSelectionTab.value = true)
-      if (index === 4) (whatsappGroupSelectionTab.value = true)
+      if (index === 0)
+        (sendToAll.value = true),
+          selectedGroups.value.push({
+            data: "membership_00000000-0000-0000-0000-000000000000",
+            name: "All Contacts",
+          }),
+          getMemberPhoneNumber();
+      if (index === 1) groupSelectionTab.value = true;
+      if (index === 2) membershipSelectionTab.value = true;
+      if (index === 3) phoneNumberSelectionTab.value = true;
+      if (index === 4) whatsappGroupSelectionTab.value = true;
       // if (index === 4) contactUpload.value = true;
+    };
 
+    const showSection2 = (index) => {
+      getMemberPhoneNumber();
+      //   if (index === 2) whatsappGroupSelectionTab.value = true;
+      if (index === 1) branchesSelectionTab.value = true;
+      if (index === 2) phoneNumberSelectionTab.value = true;
+      //   if (index === 3) contactUpload.value = true;
+      if (index === 0) {
+        sendToAllBranches.value = true;
+        selectedGroups.value.push({
+          data: "branch_00000000-0000-0000-0000-000000000000",
+          name: "All branches",
+        });
+      }
     };
 
     const getMemberPhoneNumber = async () => {
-      memberdataloading.value = true
+      memberdataloading.value = true;
       const payload = {
         subject: "",
         message: editorData.value,
@@ -519,84 +866,90 @@ export default {
         emailAddress: "",
         emailDisplayName: "",
         gateWayToUse: "",
-        toOthers: toOthers.value.length > 0 ? toOthers.value.join(",") : ""
-      }
+        toOthers: toOthers.value.length > 0 ? toOthers.value.join(",") : "",
+      };
 
       try {
-        let { data } = await axios.post("/api/Messaging/getCommunicationAudience", payload)
-        memberdataloading.value = false
-        groupMembersData.value = data.contacts
-      }
-      catch (err) {
+        let { data } = await axios.post(
+          "/api/BranchNetwork/getCommunicationAudience",
+          payload
+        );
+        memberdataloading.value = false;
+        groupMembersData.value = data.contacts;
+      } catch (err) {
         console.log(err);
-        memberdataloading.value = false
+        memberdataloading.value = false;
       }
-    }
+    };
 
-    const allcountries = ref([])
-    const tenantCountry = ref({})
-    const whatsappGroupsLoading = ref(true)
+    const allcountries = ref([]);
+    const tenantCountry = ref({});
+    const whatsappGroupsLoading = ref(true);
+
+    const selectBranch = (item) => {
+      selectedBranch.value.push(item);
+    };
 
     watchEffect(() => {
-      socket.emit('connected', 'Hello From Client')
-      socket.on('hello', (data) => {
-        console.log('Hello Emittted from the server', data)
-      })
-      socket.on('ping', () => {
-        socket.emit('pong', 'pong')
-      })
-      socket.on('qr', (data) => {
-        console.log('QR RECEIVED', data)
-        const { qr } = data
-        console.log(qr, 'hweww')
-        qrCode.value = qr
-      })
+      socket.emit("connected", "Hello From Client");
+      socket.on("hello", (data) => {
+        console.log("Hello Emittted from the server", data);
+      });
+      socket.on("ping", () => {
+        socket.emit("pong", "pong");
+      });
+      socket.on("qr", (data) => {
+        console.log("QR RECEIVED", data);
+        const { qr } = data;
+        console.log(qr, "hweww");
+        qrCode.value = qr;
+      });
 
-      socket.on('ready', (data) => {
-        console.log('READY', data)
-        sessionId.value = data.id
-      })
+      socket.on("ready", (data) => {
+        console.log("READY", data);
+        sessionId.value = data.id;
+      });
 
-      socket.on('allchats', (data) => {
-        whatsappGroupsLoading.value = false
-        console.log(data, 'AllChats Here 🥰🎉')
-      })
+      socket.on("allchats", (data) => {
+        whatsappGroupsLoading.value = false;
+        console.log(data, "AllChats Here 🥰🎉");
+      });
 
-      socket.on('chunkprogress', (data) => {
-        console.log(data, 'data')
-        chunkProgress.value = data
-      })
+      socket.on("chunkprogress", (data) => {
+        console.log(data, "data");
+        chunkProgress.value = data;
+      });
 
-      socket.on('fileready', () => {
-        fileReady.value = true
-      })
-    })
+      socket.on("fileready", () => {
+        fileReady.value = true;
+      });
+    });
 
     const connected = computed(() => {
       return state.connected;
-    })
+    });
 
     const connect = () => {
       socket.connect();
-    }
+    };
 
     const disconnect = () => {
       socket.disconnect();
-    }
+    };
 
     const createSessionForWhatsapp = () => {
-      socket.emit('createsession', { id: session.value })
-    }
+      socket.emit("createsession", { id: session.value });
+    };
 
     const getAllChats = () => {
-      console.log('reaching')
-      socket.emit('getAllChats', sessionId.value)
-    }
+      console.log("reaching");
+      socket.emit("getAllChats", sessionId.value);
+    };
 
     const getSessionForWhatsapp = () => {
-      console.log('getting session')
-      socket.emit('getsession', { id: getSessionId.value })
-    }
+      console.log("getting session");
+      socket.emit("getsession", { id: getSessionId.value });
+    };
 
     const selectGroup = (
       category,
@@ -605,13 +958,15 @@ export default {
       indexInCategories,
       indexInGroup
     ) => {
-      const group_index = selectedGroups.value.findIndex(i => i.data == `${category}_${id}`)
+      const group_index = selectedGroups.value.findIndex(
+        (i) => i.data == `${category}_${id}`
+      );
       if (group_index < 0) {
         selectedGroups.value.push({ data: `${category}_${id}`, name });
       } else {
-        selectedGroups.value.splice(group_index, 1)
+        selectedGroups.value.splice(group_index, 1);
       }
-      getMemberPhoneNumber()
+      getMemberPhoneNumber();
     };
 
     const removeGroup = (index) => {
@@ -642,27 +997,31 @@ export default {
     });
     const memberSearchResults = ref([]);
     const searchForPerson = (e) => {
-      if (e.target.value.length >= 3) {
-        memberSearchResults.value = [];
-        loading.value = true;
-        composerObj
-          .searchMemberDB("/api/Membership/GetSearchedUSers", e.target.value)
-          .then((res) => {
-            loading.value = false;
-            memberSearchResults.value = res.filter((i) => {
-              const memberInExistingCollection = selectedMembers.value.find(
-                (j) => j.id === i.id
-              );
-              console.log(memberInExistingCollection, "em");
-              if (memberInExistingCollection && memberInExistingCollection.id)
-                return false;
-              return true;
+      if (route.fullPath == "/tenant/branches/summary") {
+        if (e.target.value.length >= 3) {
+          memberSearchResults.value = [];
+          loading.value = true;
+          axios
+            .get(
+              `/api/BranchNetwork/GetSearchedUSers?searchText=${e.target.value}&BranchdId=${branchID}`
+            )
+            .then((res) => {
+              loading.value = false;
+              memberSearchResults.value = res.filter((i) => {
+                const memberInExistingCollection = selectedMembers.value.find(
+                  (j) => j.id === i.id
+                );
+                console.log(memberInExistingCollection, "em");
+                if (memberInExistingCollection && memberInExistingCollection.id)
+                  return false;
+                return true;
+              });
+              console.log(memberSearchResults.value, "res");
             });
-            console.log(memberSearchResults.value, "res");
-          });
-        console.log(memberSearchResults.value);
-      } else {
-        memberSearchResults.value = [];
+          console.log(memberSearchResults.value);
+        } else {
+          memberSearchResults.value = [];
+        }
       }
     };
 
@@ -680,8 +1039,6 @@ export default {
     // const isPersonalized = ref(false);
     const invalidMessage = ref(false);
     const invalidDestination = ref(false);
-
-
 
     // const sendSMSToUploadedContacts = async (gateway) => {
     //   let formData = new FormData()
@@ -753,21 +1110,33 @@ export default {
         .catch((err) => console.log(err));
     }
 
-
     const allGroups = ref([]);
     const categories = ref([]);
-    onMounted(() => {
-      composeService
-        .getCommunicationGroups()
-        .then((res) => {
-          console.log(res, 'ehehhe');
-          for (let prop in res) {
-            categories.value.push(prop);
-            allGroups.value.push(res[prop]);
-          }
-        })
-        .catch((err) => console.log(err));
-    })
+    onMounted(async () => {
+      if (route.fullPath == "/tenant/branches/summary") {
+        const branchID = localStorage.getItem("branchId");
+        try {
+          const { data } = await axios.get(
+            `/api/BranchNetwork/getCommunicationGroups?TenantId=${branchID}`
+          );
+          for (let prop in data) {
+              categories.value.push(prop);
+              allGroups.value.push(data[prop]);
+            }
+        
+        } catch (error) {}
+      } else {
+        composeService
+          .getCommunicationGroups()
+          .then((res) => {
+            for (let prop in res) {
+              categories.value.push(prop);
+              allGroups.value.push(res[prop]);
+            }
+          })
+          .catch((err) => console.log(err));
+      }
+    });
 
     // const groupListShown = ref(false);
     // const showGroupList = () => {
@@ -782,12 +1151,11 @@ export default {
     const groupSelectInput = ref(null);
     const memberSelectInput = ref(null);
 
-
     const sendWhatsappMessage = () => {
-      console.log(selectedMembers.value, 'selected memener');
-      console.log(allSelectedNumbers.value, 'phnennumber');
-      console.log(userWhatsappGroupsId.value)
-      console.log(whatsappAttachment.value)
+      console.log(selectedMembers.value, "selected memener");
+      console.log(allSelectedNumbers.value, "phnennumber");
+      console.log(userWhatsappGroupsId.value);
+      console.log(whatsappAttachment.value);
       chatRecipients.value = new Array();
 
       // Phone numbers recipients
@@ -802,48 +1170,71 @@ export default {
 
       // Send to selectedGroups || All contacts || Phone Numbers
       if (groupMembersData.value.length > 0 || phoneNumber.value) {
-        const recipients = groupMembersData.value.length > 0 ? groupMembersData.value.map(i => ({
-          phoneNumber: i.phone ? i.phone.substring(0, 1) == '0' ? `+${tenantCountry.value.phoneCode}${i.phone.substring(1)}` : `${i.phone}` : null,
-          name: i.name ? i.name : ""
-        })).filter(i => i.phoneNumber) : phoneNumber.value ? [{ name: "", phoneNumber: phoneNumber.value.replaceAll(" ", "").trim() }] : []
-        chatRecipients.value = chatRecipients.value.concat(recipients)
+        const recipients =
+          groupMembersData.value.length > 0
+            ? groupMembersData.value
+                .map((i) => ({
+                  phoneNumber: i.phone
+                    ? i.phone.substring(0, 1) == "0"
+                      ? `+${tenantCountry.value.phoneCode}${i.phone.substring(
+                          1
+                        )}`
+                      : `${i.phone}`
+                    : null,
+                  name: i.name ? i.name : "",
+                }))
+                .filter((i) => i.phoneNumber)
+            : phoneNumber.value
+            ? [
+                {
+                  name: "",
+                  phoneNumber: phoneNumber.value.replaceAll(" ", "").trim(),
+                },
+              ]
+            : [];
+        chatRecipients.value = chatRecipients.value.concat(recipients);
       }
-
 
       // Selected members recipients
       if (selectedMembers.value.length > 0) {
-        const recipients = selectedMembers.value.map(i => ({
-          phoneNumber: i.phone ? i.phone.substring(0, 1) == '0' ? `+${tenantCountry.value.phoneCode}${i.phone.substring(1)}` : `${i.phone}` : null,
-          name: i.name ? i.name : ""
-        })).filter(i => i.phoneNumber)
-        chatRecipients.value = chatRecipients.value.concat(recipients)
+        const recipients = selectedMembers.value
+          .map((i) => ({
+            phoneNumber: i.phone
+              ? i.phone.substring(0, 1) == "0"
+                ? `+${tenantCountry.value.phoneCode}${i.phone.substring(1)}`
+                : `${i.phone}`
+              : null,
+            name: i.name ? i.name : "",
+          }))
+          .filter((i) => i.phoneNumber);
+        chatRecipients.value = chatRecipients.value.concat(recipients);
       }
 
-
-
-      console.log(chatRecipients.value,);
+      console.log(chatRecipients.value);
       // Remove object with duplicate recipient numbers
-      const ids = chatRecipients.value.map(o => o.phoneNumber)
-      const removeDuplicate = chatRecipients.value.filter(({ phoneNumber }, index) => !ids.includes(phoneNumber, index + 1))
-      console.log(removeDuplicate)
+      const ids = chatRecipients.value.map((o) => o.phoneNumber);
+      const removeDuplicate = chatRecipients.value.filter(
+        ({ phoneNumber }, index) => !ids.includes(phoneNumber, index + 1)
+      );
+      console.log(removeDuplicate);
       // const uniqueNumbers = new Set(chatRecipients.value.phoneNumber);
       // console.log(Array.from(uniqueNumbers));
 
-      socket.emit('sendwhatsappmessage', {
+      socket.emit("sendwhatsappmessage", {
         id: clientSessionId.value,
         phone_number: removeDuplicate,
         message: editorData.value,
         whatsappAttachment: whatsappAttachment.value,
-      })
+      });
 
       // Send to Whatsapp Groups
       if (userWhatsappGroupsId.value && userWhatsappGroupsId.value.length > 0) {
-        socket.emit('sendtogroups', {
+        socket.emit("sendtogroups", {
           id: clientSessionId.value,
           groups: userWhatsappGroupsId.value,
           whatsappAttachment: whatsappAttachment.value,
-          message: editorData.value
-        })
+          message: editorData.value,
+        });
       }
 
       // // // Send to phoneNumbers
@@ -880,134 +1271,137 @@ export default {
         title: "Success",
         text: "Your Whatsapp message is being sent!",
         icon: "success",
-      })
-    }
+      });
+    };
 
     const getAllCountries = async () => {
       try {
-        let { data } = await axios.get('/api/getallcountries');
-        console.log(data)
-        allcountries.value = data
+        let { data } = await axios.get("/api/getallcountries");
+        console.log(data);
+        allcountries.value = data;
+      } catch (error) {
+        console.error(error);
       }
-      catch (error) {
-        console.error(error)
-      }
-    }
+    };
     getAllCountries();
 
     const getUser = computed(() => {
-      if (!store.getters.currentUser || (store.getters.currentUser && Object.keys(store.getters.currentUser).length == 0)) return ''
-      return store.getters.currentUser
-    })
+      if (
+        !store.getters.currentUser ||
+        (store.getters.currentUser &&
+          Object.keys(store.getters.currentUser).length == 0)
+      )
+        return "";
+      return store.getters.currentUser;
+    });
 
     watchEffect(() => {
-      if (allcountries.value.length > 0 && getUser.value && Object.keys(getUser.value).length > 0) {
-        tenantCountry.value = allcountries.value.find(i => {
-          return i.isoCode == getUser.value.isoCode
-        })
+      if (
+        allcountries.value.length > 0 &&
+        getUser.value &&
+        Object.keys(getUser.value).length > 0
+      ) {
+        tenantCountry.value = allcountries.value.find((i) => {
+          return i.isoCode == getUser.value.isoCode;
+        });
       }
-    })
+    });
 
     const uploadFile = (e) => {
-      multipleContact.value = e.target.files[0]
-    }
+      multipleContact.value = e.target.files[0];
+    };
 
     const handleEmojiClick = (data) => {
-      console.log(data)
-      editorData.value += data.unicode
-    }
+      console.log(data);
+      editorData.value += data.unicode;
+    };
 
     const chooseFile = (e) => {
       // uploadPicture(e.raw)
-      console.log(e.raw)
-      if (e.raw.type.includes('image')) {
-        fileAudio.value = false
-        fileVideo.value = false
-        fileImage.value = true
+      console.log(e.raw);
+      if (e.raw.type.includes("image")) {
+        fileAudio.value = false;
+        fileVideo.value = false;
+        fileImage.value = true;
         selectedFileUrl.value = URL.createObjectURL(e.raw);
 
         const file = e.raw;
         const reader = new FileReader();
 
         reader.onload = (f) => {
-          base64String.value = f.target.result;
+          base64String.value = f.target.result.split(",")[1];
           const chunkSize = 1024; // Specify your desired chunk size
 
-          socket.emit('resetmediaobject', 
-          {
+          socket.emit("resetmediaobject", {
             data: "",
-            id: clientSessionId.value
+            id: clientSessionId.value,
           });
 
           sendBase64InChunks(base64String.value, chunkSize);
           whatsappAttachment.value = {
             mimeType: e.raw.type,
             fileName: e.raw.name,
-            fileSize: e.raw.size
-          }
+            fileSize: e.raw.size,
+          };
         };
 
         reader.readAsDataURL(file);
-
-      } else if (e.raw.type.includes('audio')) {
+      } else if (e.raw.type.includes("audio")) {
         const reader = new FileReader();
         reader.addEventListener("load", function (f) {
           audioPlayer.value.src = reader.result;
           base64String.value = f.target.result.split(",")[1];
           const chunkSize = 1024; // Specify your desired chunk size
 
-          socket.emit('resetmediaobject', 
-            {
-              data: "",
-              id: clientSessionId.value
-            });
+          socket.emit("resetmediaobject", {
+            data: "",
+            id: clientSessionId.value,
+          });
 
           sendBase64InChunks(base64String.value, chunkSize);
           whatsappAttachment.value = {
             mimeType: e.raw.type,
             fileName: e.raw.name,
-            fileSize: e.raw.size
-          }
+            fileSize: e.raw.size,
+          };
           console.log(whatsappAttachment.value, "attachment");
-          fileAudio.value = true
-          fileVideo.value = false
-          fileImage.value = false
+          fileAudio.value = true;
+          fileVideo.value = false;
+          fileImage.value = false;
         });
 
         if (e.raw) {
           reader.readAsDataURL(e.raw);
         }
         console.log(whatsappAttachment.value, "attachment");
-      } else if (e.raw.type.includes('video')) {
+      } else if (e.raw.type.includes("video")) {
         const reader = new FileReader();
         reader.addEventListener("load", function (f) {
           videoPlayer.value.src = reader.result;
           base64String.value = f.target.result.split(",")[1];
           const chunkSize = 1024; // Specify your desired chunk size
 
-          socket.emit('resetmediaobject', 
-            {
-              data: "",
-              id: clientSessionId.value
-            });
+          socket.emit("resetmediaobject", {
+            data: "",
+            id: clientSessionId.value,
+          });
 
           sendBase64InChunks(base64String.value, chunkSize);
           whatsappAttachment.value = {
             // base64: base64String.value,
             mimeType: e.raw.type,
             fileName: e.raw.name,
-            fileSize: e.raw.size
-          }
+            fileSize: e.raw.size,
+          };
           console.log(whatsappAttachment.value, "attachment");
-          fileAudio.value = false
-          fileVideo.value = true
-          fileImage.value = false
+          fileAudio.value = false;
+          fileVideo.value = true;
+          fileImage.value = false;
         });
 
         if (e.raw) {
           reader.readAsDataURL(e.raw);
         }
-
       } else {
         const reader = new FileReader();
         reader.addEventListener("load", function (f) {
@@ -1015,49 +1409,47 @@ export default {
           base64String.value = f.target.result.split(",")[1];
           const chunkSize = 1024; // Specify your desired chunk size
 
-          socket.emit('resetmediaobject',
-            {
-              data: "",
-              id: clientSessionId.value
-            });
+          socket.emit("resetmediaobject", {
+            data: "",
+            id: clientSessionId.value,
+          });
           sendBase64InChunks(base64String.value, chunkSize);
           whatsappAttachment.value = {
             mimeType: e.raw.type,
             fileName: e.raw.name,
-            fileSize: e.raw.size
-          }
+            fileSize: e.raw.size,
+          };
           console.log(whatsappAttachment.value, "attachment");
-          fileAudio.value = false
-          fileVideo.value = false
-          fileImage.value = true
+          fileAudio.value = false;
+          fileVideo.value = false;
+          fileImage.value = true;
         });
 
         if (e.raw) {
           reader.readAsDataURL(e.raw);
         }
-        console.log('Different file type')
+        console.log("Different file type");
       }
       console.log(whatsappAttachment.value, "attachmenthere");
-    }
+    };
 
     const handleRemove = () => {
       fileAudio.value = false;
       fileVideo.value = false;
-      fileImage.value = false
-      selectedFileUrl.value = ""
-      whatsappAttachment.value = {}
-      fileReady.value = false
-      chunkProgress.value = 0
-      socket.emit('clearfile', {
+      fileImage.value = false;
+      selectedFileUrl.value = "";
+      whatsappAttachment.value = {};
+      fileReady.value = false;
+      chunkProgress.value = 0;
+      socket.emit("clearfile", {
         data: "",
-        id: clientSessionId.value
-      })
-    }
-
+        id: clientSessionId.value,
+      });
+    };
 
     const sendBase64InChunks = (base64String, chunkSize) => {
-      console.log(base64String, 'great')
-      // socket.emit('chunk', 
+      console.log(base64String, "great");
+      // socket.emit('chunk',
       // {
       //   base64String,
       //   // uploadedChunks,
@@ -1071,32 +1463,35 @@ export default {
         const start = i * chunkSize;
         const end = start + chunkSize;
         const chunk = base64String.substring(start, end);
-        console.log('==== \n' + chunk + '\n=====')
+        console.log("==== \n" + chunk + "\n=====");
         uploadedChunks++; // Increment the uploadedChunks count
-        socket.emit('chunk',
-          {
-            chunk,
-            uploadedChunks,
-            totalChunks,
-            id: clientSessionId.value
-          });
+        socket.emit("chunk", {
+          chunk,
+          uploadedChunks,
+          totalChunks,
+          id: clientSessionId.value,
+        });
 
         // socket.emit('chunkprogress', {
         //   uploadedChunks,
         //   totalChunks
         // })
       }
-    }
+    };
 
     const hideEmojiWrapper = (e) => {
-      console.log(e)
-      if (!e.target.className.includes('emoji-wrapper') && (!e.target.className.includes('light') && (e.target.localName.toLowerCase() !== 'emoji-picker'))) {
-        displayEmoji.value = false
+      console.log(e);
+      if (
+        !e.target.className.includes("emoji-wrapper") &&
+        !e.target.className.includes("light") &&
+        e.target.localName.toLowerCase() !== "emoji-picker"
+      ) {
+        displayEmoji.value = false;
       }
-    }
+    };
 
     const scheduleWhatsappMessage = async () => {
-      scheduleloading.value = true
+      scheduleloading.value = true;
       chatRecipients.value = new Array();
       // if (allSelectedNumbers.value.length > 0 || phoneNumber.value) {
       //   const recipients = allSelectedNumbers.value.length > 0 ? allSelectedNumbers.value : [phoneNumber.value.replaceAll(" ", "").trim()]
@@ -1115,30 +1510,53 @@ export default {
 
       // Send to selectedGroups || All contacts || Phone Numbers
       if (groupMembersData.value.length > 0 || phoneNumber.value) {
-        const recipients = groupMembersData.value.length > 0 ? groupMembersData.value.map(i => ({
-          phoneNumber: i.phone ? i.phone.substring(0, 1) == '0' ? `+${tenantCountry.value.phoneCode}${i.phone.substring(1)}` : `${i.phone}` : null,
-          name: i.name ? i.name : ""
-        })).filter(i => i.phoneNumber) : phoneNumber.value ? [{ name: "", phoneNumber: phoneNumber.value.replaceAll(" ", "").trim() }] : []
-        chatRecipients.value = chatRecipients.value.concat(recipients)
+        const recipients =
+          groupMembersData.value.length > 0
+            ? groupMembersData.value
+                .map((i) => ({
+                  phoneNumber: i.phone
+                    ? i.phone.substring(0, 1) == "0"
+                      ? `+${tenantCountry.value.phoneCode}${i.phone.substring(
+                          1
+                        )}`
+                      : `${i.phone}`
+                    : null,
+                  name: i.name ? i.name : "",
+                }))
+                .filter((i) => i.phoneNumber)
+            : phoneNumber.value
+            ? [
+                {
+                  name: "",
+                  phoneNumber: phoneNumber.value.replaceAll(" ", "").trim(),
+                },
+              ]
+            : [];
+        chatRecipients.value = chatRecipients.value.concat(recipients);
       }
-
 
       // Selected members recipients
       if (selectedMembers.value.length > 0) {
-        const recipients = selectedMembers.value.map(i => ({
-          phoneNumber: i.phone ? i.phone.substring(0, 1) == '0' ? `+${tenantCountry.value.phoneCode}${i.phone.substring(1)}` : `${i.phone}` : null,
-          name: i.name ? i.name : ""
-        })).filter(i => i.phoneNumber)
-        chatRecipients.value = chatRecipients.value.concat(recipients)
+        const recipients = selectedMembers.value
+          .map((i) => ({
+            phoneNumber: i.phone
+              ? i.phone.substring(0, 1) == "0"
+                ? `+${tenantCountry.value.phoneCode}${i.phone.substring(1)}`
+                : `${i.phone}`
+              : null,
+            name: i.name ? i.name : "",
+          }))
+          .filter((i) => i.phoneNumber);
+        chatRecipients.value = chatRecipients.value.concat(recipients);
       }
-
-
 
       // console.log(chatRecipients.value, );
       // Remove object with duplicate recipient numbers
-      const ids = chatRecipients.value.map(o => o.phoneNumber)
-      const removeDuplicate = chatRecipients.value.filter(({ phoneNumber }, index) => !ids.includes(phoneNumber, index + 1))
-      console.log(removeDuplicate)
+      const ids = chatRecipients.value.map((o) => o.phoneNumber);
+      const removeDuplicate = chatRecipients.value.filter(
+        ({ phoneNumber }, index) => !ids.includes(phoneNumber, index + 1)
+      );
+      console.log(removeDuplicate);
 
       // console.log(chatRecipients.value);
       // const uniqueNumbers = new Set(chatRecipients.value);
@@ -1148,44 +1566,52 @@ export default {
         whatsappAttachment: whatsappAttachment.value,
         sessionId: clientSessionId.value,
         chatRecipients: removeDuplicate,
-        groupRecipients: userWhatsappGroupsId.value ? userWhatsappGroupsId.value : [],
+        groupRecipients: userWhatsappGroupsId.value
+          ? userWhatsappGroupsId.value
+          : [],
         base64File: base64String.value,
-        date: scheduledWhatsappDate.value
-      }
+        date: scheduledWhatsappDate.value,
+      };
       console.log(payload);
 
-
       try {
-        let { data } = await axios.post("/api/Messaging/saveWhatsAppSchedule", payload)
-        console.log(data, 'schedule successful');
+        let { data } = await axios.post(
+          "/api/Messaging/saveWhatsAppSchedule",
+          payload
+        );
+        console.log(data, "schedule successful");
         whatsappScheduleDialog.value = false;
-        scheduleloading.value = false
+        scheduleloading.value = false;
         swal({
           title: "Success",
-          text: `Your Whatsapp message has been scheduled for\n${dateFormatter.monthDayTime(scheduledWhatsappDate.value)}`,
+          text: `Your Whatsapp message has been scheduled for\n${dateFormatter.monthDayTime(
+            scheduledWhatsappDate.value
+          )}`,
           icon: "success",
-        })
-      }
-      catch (err) {
-        scheduleloading.value = false
+        });
+      } catch (err) {
+        scheduleloading.value = false;
         console.error(err);
       }
-    }
-
+    };
 
     const removeTag = (value) => {
       console.log(value);
-      selectedGroups.value = selectedGroups.value.filter(i => !i.data.includes(value))
-      getMemberPhoneNumber()
-    }
+      selectedGroups.value = selectedGroups.value.filter(
+        (i) => !i.data.includes(value)
+      );
+      getMemberPhoneNumber();
+    };
 
     return {
       editorData,
       editorConfig,
       possibleSMSDestinations,
+      possibleWhatsappDestinations,
       sendToAll,
       // toggleGroupsVissibility,
       selectedGroups,
+      branchList,
       selectGroup,
       removeGroup,
       showSection,
@@ -1194,6 +1620,7 @@ export default {
       phoneNumberSelectionTab,
       categories,
       allGroups,
+      selectedBranch,
       selectedMembers,
       removeMember,
       selectMember,
@@ -1203,6 +1630,7 @@ export default {
       pageCount,
       phoneNumber,
       searchForPerson,
+      branchesSelectionTab,
       loading,
       memberSearchResults,
       // groupListShown,
@@ -1214,7 +1642,9 @@ export default {
       invalidDestination,
       invalidMessage,
       moment,
+      selectBranch,
       // isPersonalized,
+      showSection2,
       route,
       contactUpload,
       uploadFile,
@@ -1233,6 +1663,7 @@ export default {
       userWhatsappGroups,
       primarycolor,
       whatsappGroupSelectionTab,
+      sendToAllBranches,
       userWhatsappGroupsId,
       sendWhatsappMessage,
       allSelectedNumbers,
@@ -1271,7 +1702,7 @@ export default {
       scheduleloading,
       toOthers,
       memberdataloading,
-      chunkProgress
+      chunkProgress,
     };
   },
 };
@@ -1371,7 +1802,6 @@ input:focus {
   align-items: center;
   height: 30px;
 }
-
 
 .close-allcontacts {
   position: absolute;
@@ -1522,11 +1952,12 @@ input:focus {
 }
 
 .template-text {
-  color: rgb(15, 71, 134)
+  color: rgb(15, 71, 134);
 }
 
 .multiple_numbers {
   padding: 10px;
   border-radius: 5px;
   background: #eee;
-}</style>
+}
+</style>

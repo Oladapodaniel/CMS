@@ -104,7 +104,7 @@ import NewPerson from "./NewDonor.vue";
 import Dialog from "primevue/dialog";
 export default {
   emits: ["memberdetail", "resetclearpersonvalue"],
-  props: ["currentMember", "stylesidebarinput", "clearPersonValue"],
+  props: ["currentMember", "stylesidebarinput", "reportBranchID", "clearPersonValue"],
   components: {
     NewPerson,
     Dialog,
@@ -115,10 +115,28 @@ export default {
     const members = ref([]);
     const loading = ref(false);
     const display = ref(false);
+    console.log(props.reportBranchID, 'llllll');
 
     const searchForUsers = async () => {
       loading.value = true;
-      if (userSearchString.value.length >= 3) {
+      if (props.reportBranchID) {
+        let reportBranchId = props.reportBranchID
+        if (userSearchString.value.length >= 3) {
+        try {
+          const { data } = await axios.get(
+            `/api/BranchNetwork/GetSearchedUSers?searchText=${userSearchString.value}&BranchdId=${reportBranchId}`
+          );
+          members.value = data;
+          loading.value = false;
+        } catch (error) {
+          console.log(error);
+          loading.value = false;
+        }
+      } else if (userSearchString.value === "") {
+        members.value = new Array();
+      }
+      } else {
+        if (userSearchString.value.length >= 3) {
         try {
           const { data } = await axios.get(
             `/api/Membership/GetSearchedUSers?searchText=${userSearchString.value}`
@@ -131,6 +149,7 @@ export default {
         }
       } else if (userSearchString.value === "") {
         members.value = new Array();
+      }
       }
     };
 

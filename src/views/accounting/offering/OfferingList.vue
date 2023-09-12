@@ -1,86 +1,88 @@
 <template>
   <div class="pb-4">
-    <div class="row mt-5 ">
-          <div class="col-12 p-0 col-md-4">
-            <div class="col-12 p-0 mb-5">
-              <el-select-v2
-                v-model="selectedPeriodId"
-                :options="
-                  periods.map((i) => ({ label: i.name, value: i.name }))
-                "
-                @change="setSelectedPeriod"
-                placeholder="Select a period"
-                size="large"
-                class="w-100"
-              />
-            </div>
-            <div class="col-12 w-100">
-              <h2 class="font-weight-bold py-3 mb-3">
-                {{ tenantCurrency.currency }}
-                {{
-                  chartData ? amountWithCommas(Math.round(chartData.income)) : 0
-                }}
-              </h2>
-            </div>
-          </div>
+    <div class="row mt-5">
+      <div class="col-12 p-0 col-md-4">
+        <div class="col-12 p-0 mb-5">
+          <el-select-v2
+            v-model="selectedPeriodId"
+            :options="periods.map((i) => ({ label: i.name, value: i.name }))"
+            @change="setSelectedPeriod"
+            placeholder="Select a period"
+            size="large"
+            class="w-100"
+          />
+        </div>
+        <div class="col-12 w-100">
+          <h2 class="font-weight-bold py-3 mb-3">
+            {{ tenantCurrency.currency }}
+            {{ chartData ? amountWithCommas(Math.round(chartData.income)) : 0 }}
+          </h2>
+        </div>
+      </div>
 
-          <div class="col-12 col-md-4">
-            <ContributionPieChart
-              domId="chart"
-              distance="5"
-              :titleMargin="10"
-              :summary="pieChart"
-            />
-          </div>
-          <div class="col-12 col-md-4">
-            <ContributionAreaChart
-              elemId="chart"
-              domId="areaChart3"
-              title="So Far"
-              lineColor="#002044"
-              :subtitle="chartData.name"
-              :series="
-                chartData && chartData.barChart ? chartData.barChart.data : {}
-              "
-              :attendanceSeries="attendanceSeries"
-              :xAxis="LineGraphXAxis"
-            />
-          </div>
+      <div class="col-12 col-md-4">
+        <ContributionPieChart
+          domId="chart"
+          distance="5"
+          :titleMargin="10"
+          :summary="pieChart"
+        />
+      </div>
+      <div class="col-12 col-md-4">
+        <ContributionAreaChart
+          elemId="chart"
+          domId="areaChart3"
+          title="So Far"
+          lineColor="#002044"
+          :subtitle="chartData.name"
+          :series="
+            chartData && chartData.barChart ? chartData.barChart.data : {}
+          "
+          :attendanceSeries="attendanceSeries"
+          :xAxis="LineGraphXAxis"
+        />
+      </div>
     </div>
 
     <div class="row">
-      <div class="col-12 p-0  mt-5">
+      <div class="col-12 p-0 mt-5">
         <div class="table-top p-3 mt-5">
           <div
             class="row d-flex flex-column flex-sm-row justify-content-sm-end"
-          >     
-              <span><el-icon :size="20" class=" c-pointer" v-if="marked.length > 0" @click="modal" >
-                <Delete />
-              </el-icon></span>
-              <div
-                class="filter col-md-2"
-                @click="
-                  printJS({
-                    ignoreElements: ['ignore1', 'ignore2'],
-                    maxWidth: 867,
-                    header: 'OFFERING TRANSACTIONS',
-                    printable: printContribution,
-                    properties: ['DATE', 'OFFERING', 'AMOUNT', 'DONOR'],
-                    type: 'json',
-                    headerStyle:
-                      'font-family: Nunito Sans, Calibri; text-align: center;',
-                    gridHeaderStyle:
-                      'border: 1.5px solid #6d6d6d19; font-family: Nunito Sans, calibri; padding: 7px; text-align: left;',
-                    gridStyle:
-                      'border: 1.5px solid #6d6d6d19; font-family: Nunito Sans, calibri; padding: 7px; font-weight: 300',
-                  })
-                "
+          >
+            <span
+              ><el-icon
+                :size="20"
+                class="c-pointer"
+                v-if="marked.length > 0"
+                @click="modal"
               >
-                <p class="mb-0 mr-3 d-flex my-3 my-sm-0">
-                  <el-icon :size="20" ><Printer /></el-icon>
-                  <span class="ml-1"> PRINT</span>
-                </p>
-              </div>
+                <Delete /> </el-icon
+            ></span>
+            <div
+              class="filter col-md-2"
+              @click="
+                printJS({
+                  ignoreElements: ['ignore1', 'ignore2'],
+                  maxWidth: 867,
+                  header: 'OFFERING TRANSACTIONS',
+                  printable: printContribution,
+                  properties: ['DATE', 'OFFERING', 'AMOUNT', 'DONOR'],
+                  type: 'json',
+                  headerStyle:
+                    'font-family: Nunito Sans, Calibri; text-align: center;',
+                  gridHeaderStyle:
+                    'border: 1.5px solid #6d6d6d19; font-family: Nunito Sans, calibri; padding: 7px; text-align: left;',
+                  gridStyle:
+                    'border: 1.5px solid #6d6d6d19; font-family: Nunito Sans, calibri; padding: 7px; font-weight: 300',
+                })
+              "
+            >
+              <p class="mb-0 mr-3 d-flex my-3 my-sm-0">
+                <el-icon :size="20"><Printer /></el-icon>
+                <span class="ml-1"> PRINT</span>
+              </p>
+            </div>
             <div class="col-md-2">
               <p
                 @click="toggleFilterFormVissibility"
@@ -144,7 +146,7 @@
                     <div class="col-12 col-md-4 form-group d-none d-md-block">
                       <el-input
                         type="text"
-                        class=" w-100"
+                        class="w-100"
                         placeholder="donor"
                         v-model="filter.donor"
                       />
@@ -153,7 +155,12 @@
                 </div>
 
                 <div class="col-md-3 d-flex flex-column align-items-center">
-                  <el-button round :color="primarycolor" class=" text-white" @click="applyFilter">
+                  <el-button
+                    round
+                    :color="primarycolor"
+                    class="text-white"
+                    @click="applyFilter"
+                  >
                     Apply
                   </el-button>
                   <span class="mt-2">
@@ -190,7 +197,8 @@
             </template>
             <template v-slot:amount="{ item }">
               <div class="c-pointer" @click="offeringDetails(item.id)">
-                {{ item.currencyName }}{{ Math.abs(item.amount).toLocaleString() }}.00
+                {{ item.currencyName
+                }}{{ Math.abs(item.amount).toLocaleString() }}.00
               </div>
             </template>
             <template v-slot:source="{ item }">
@@ -262,17 +270,24 @@
         <div class="text-danger d-flex justify-content-center" v-else>
           No records found
         </div>
+        <!-- <div class="table-footer">
+          <Pagination
+            @getcontent="getPeopleByPage"
+            :itemsCount="totalOfferingCount"
+            :currentPage="currentPage"
+          />
+        </div> -->
         <div class="d-flex justify-content-end my-3">
-            <el-pagination
-              v-model:current-page="serverOptions.page"
-              v-model:page-size="serverOptions.rowsPerPage"
-              background
-              layout="total, prev, pager, next, jumper"
-              :total="totalOfferingCount"
-              @size-change="handleSizeChange"
-              @current-change="handleCurrentChange"
-            />
-          </div>
+          <el-pagination
+            v-model:current-page="serverOptions.page"
+            v-model:page-size="serverOptions.rowsPerPage"
+            background
+            layout="total, prev, pager, next, jumper"
+            :total="totalOfferingCount"
+            @size-change="handleSizeChange"
+            @current-change="handleCurrentChange"
+          />
+        </div>
       </div>
     </div>
   </div>
@@ -295,7 +310,7 @@ import numbers_formatter from "../../../services/numbers/numbers_formatter";
 import store from "../../../store/store";
 import loadingComponent from "@/components/loading/LoadingComponent";
 import stopProgressBar from "../../../services/progressbar/progress";
-import { ElMessage, ElMessageBox } from 'element-plus'
+import { ElMessage, ElMessageBox } from "element-plus";
 export default {
   props: ["contributionTransactions", "totalItem"],
   emits: ["marked"],
@@ -308,7 +323,7 @@ export default {
   },
   setup(props, { emit }) {
     const filter = ref({});
-    const primarycolor = inject('primarycolor')
+    const primarycolor = inject("primarycolor");
     const selectedPeriodId = ref(null);
     const filterResult = ref([]);
     const noRecords = ref(false);
@@ -332,26 +347,25 @@ export default {
       rowsPerPage: 100,
     });
 
-    watch(serverOptions, () => {
-      getPeopleByPage();
-    },
+    watch(
+      serverOptions,
+      () => {
+        getPeopleByPage();
+      },
       { deep: true }
     );
     const handleSizeChange = (val) => {
-      console.log(`${val} items per page`)
-    }
+      console.log(`${val} items per page`);
+    };
     const handleCurrentChange = (val) => {
-      console.log(`current page: ${val}`)
-    }
+      console.log(`current page: ${val}`);
+    };
 
     const totalOfferingCount = computed(() => {
-      if (
-        !props.totalItem
-      )
-        return 0;
+      if (!props.totalItem) return 0;
       return props.totalItem;
     });
-    
+
     const chartClass = ref(true);
     const periods = ref([
       { name: "One Week" },
@@ -411,29 +425,30 @@ export default {
           stopProgressBar();
           if (err.toString().toLowerCase().includes("network error")) {
             ElMessage({
-            type: "warning",
-            message: "Network Error,Please ensure you have a strong internet connection",
-            duration: 5000,
-          });
+              type: "warning",
+              message:
+                "Network Error,Please ensure you have a strong internet connection",
+              duration: 5000,
+            });
           } else if (err.toString().toLowerCase().includes("timeout")) {
-             ElMessage({
-            type: "warning",
-            message: "Request took too long to respond",
-            duration: 5000,
-          });
+            ElMessage({
+              type: "warning",
+              message: "Request took too long to respond",
+              duration: 5000,
+            });
           } else {
-             ElMessage({
-                type: "warning",
-                message: "Unable to delete attendance",
-                duration: 5000,
-              });
+            ElMessage({
+              type: "warning",
+              message: "Unable to delete attendance",
+              duration: 5000,
+            });
           }
           console.log(err);
         });
     };
 
     const modal = () => {
-       ElMessageBox.confirm(
+      ElMessageBox.confirm(
         "Are you sure you want to proceed?",
         "Confirm delete",
         {
@@ -496,33 +511,33 @@ export default {
         .then((res) => {
           if (res.data.status) {
             ElMessage({
-                type: "success",
-                message: "Offering Transaction Deleted",
-                duration: 5000,
-              });
+              type: "success",
+              message: "Offering Transaction Deleted",
+              duration: 5000,
+            });
             emit("contri-transac", index);
-            store.dispatch('contributions/removeContributionFromStore', id)
+            store.dispatch("contributions/removeContributionFromStore", id);
           } else {
             ElMessage({
-                type: "warning",
-                message: "Delete Failed, Please Try Again",
-                duration: 5000,
-              });
+              type: "warning",
+              message: "Delete Failed, Please Try Again",
+              duration: 5000,
+            });
           }
         })
         .catch((err) => {
           finish();
           if (err.response) {
             ElMessage({
-                type: "error",
-                message: `${err.response}`,
-                duration: 5000,
-              });
+              type: "error",
+              message: `${err.response}`,
+              duration: 5000,
+            });
           }
         });
     };
     const showConfirmModal = (id, index) => {
-       ElMessageBox.confirm(
+      ElMessageBox.confirm(
         "Are you sure you want to proceed?",
         "Confirm delete",
         {
@@ -532,7 +547,7 @@ export default {
         }
       )
         .then(() => {
-         deleteOffering(id, index);
+          deleteOffering(id, index);
         })
         .catch(() => {
           ElMessage({
@@ -548,9 +563,10 @@ export default {
         const { data } = await axios.get(
           `/api/Financials/Contributions/Transactions?page=${serverOptions.value.page}`
         );
-        if (data) {
+        console.log(data, 'bbb');
+        if (data && data.returnObject.contribution.length > 0) {
           emit("get-pages", data);
-          currentPage.value = page;
+          currentPage.value = serverOptions.value.page;
         }
       } catch (error) {
         console.log(error);
