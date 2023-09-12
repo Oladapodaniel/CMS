@@ -493,14 +493,14 @@
         </Table>
         <!-- {{membersCount}} {{currentPage}} -->
 
-        <div class="table-footer">
+        <!-- <div class="table-footer">
           <PaginationButtons
             @getcontent="getPeopleByPage"
             :itemsCount="membersCount"
             :currentPage="currentPage"
           />
-        </div>
-        <!-- <div class="d-flex justify-content-end my-3">
+        </div> -->
+        <div class="d-flex justify-content-end my-3">
           <el-pagination
             v-model:current-page="serverOptions.page"
             v-model:page-size="serverOptions.rowsPerPage"
@@ -510,7 +510,7 @@
             @size-change="handleSizeChange"
             @current-change="handleCurrentChange"
           />
-        </div> -->
+        </div>
       </div>
     </div>
   </div>
@@ -701,16 +701,16 @@ export default {
       { deep: true }
     );
 
-    const getPeopleByPage = async (page) => {
-      if (page < 0) return false;
+    const getPeopleByPage = async () => {
+      // if (page < 0) return false;
       try {
         const { data } = await axios.get(
-          `/api/eventreports/eventReports?page=${page}`
+          `/api/eventreports/eventReports?page=${serverOptions.value.page}`
         );
         if (data.activities.length > 0) {
           filterEvents.value = [];
           emit("activity-per-page", data.activities);
-          currentPage.value = page;
+          currentPage.value = serverOptions.value.page;
         }
       } catch (error) {
         console.log(error);

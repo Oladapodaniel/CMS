@@ -94,7 +94,7 @@ const eventsService = {
     },
     getEventItems() {
         return new Promise((resolve, reject) => {
-            axios.get('/api/eventreports/eventReports')
+            axios.get('/api/eventreports/eventReports?page=1')
                 .then(res => {
                     resolve( res.data );
                 })
