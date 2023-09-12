@@ -7,16 +7,25 @@
     </div>
 
     <div class="row mt-4 mobileResponsive">
-      <div class="col-6 col-sm-1 text-center default-btn cursor-pointer monthRessponsive"
-        :class="{ 'active-btn': monthlyActiveBtn }" @click="toggleMonthlyClass">
+      <div
+        class="col-6 col-sm-1 text-center default-btn cursor-pointer monthRessponsive"
+        :class="{ 'active-btn': monthlyActiveBtn }"
+        @click="toggleMonthlyClass"
+      >
         <div>Monthly</div>
       </div>
-      <div class="col-6 col-sm-1 ml-sm-2 text-center default-btn cursor-pointer yearResponsive"
-        :class="{ 'active-btn': yearlyActiveBtn }" @click="toggleYearlyClass">
+      <div
+        class="col-6 col-sm-1 ml-sm-2 text-center default-btn cursor-pointer yearResponsive"
+        :class="{ 'active-btn': yearlyActiveBtn }"
+        @click="toggleYearlyClass"
+      >
         <div>Yearly</div>
       </div>
-      <div class="col-6 offset-3 offset-sm-0 col-sm-1 ml-sm-2 mt-3 mt-sm-0 text-center default-btn cursor-pointer"
-        :class="{ 'active-btn': allTimeActiveBtn }" @click="toggleAllTimeClass">
+      <div
+        class="col-6 offset-3 offset-sm-0 col-sm-1 ml-sm-2 mt-3 mt-sm-0 text-center default-btn cursor-pointer"
+        :class="{ 'active-btn': allTimeActiveBtn }"
+        @click="toggleAllTimeClass"
+      >
         <div>All Time</div>
       </div>
     </div>
@@ -25,43 +34,63 @@
     <div class="row avg-table mt-4" v-if="monthlyActiveBtn">
       <div class="col-6 col-md-3 first-row">
         <div>Attendance</div>
-        <el-tooltip class="box-item" effect="dark" :content="eventSummary.attendanceAverage.monthly.toString()"
-          placement="left-start">
+        <el-tooltip
+          class="box-item"
+          effect="dark"
+          :content="eventSummary.attendanceAverage.monthly.toString()"
+          placement="left-start"
+        >
           <div>{{ convert(eventSummary.attendanceAverage.monthly) }}</div>
         </el-tooltip>
       </div>
       <div class="col-6 col-md-3">
         <div>
-          Offering<span style="font-size: 15px" class="font-weight-700">({{ userCurrency }})</span>
+          Offering<span style="font-size: 15px" class="font-weight-700"
+            >({{ userCurrency }})</span
+          >
         </div>
-        <el-tooltip class="box-item" effect="dark" :content="`${eventSummary &&
-          eventSummary.offeringAverage &&
-          eventSummary.offeringAverage.monthly
-          ? eventSummary.offeringAverage.monthly.toString()
-          : '-- --'
-          }`" placement="left-start">
+        <el-tooltip
+          class="box-item"
+          effect="dark"
+          :content="`${
+            eventSummary &&
+            eventSummary.offeringAverage &&
+            eventSummary.offeringAverage.monthly
+              ? eventSummary.offeringAverage.monthly.toString()
+              : '-- --'
+          }`"
+          placement="left-start"
+        >
           <div>
             {{
               eventSummary &&
               eventSummary.offeringAverage &&
               eventSummary.offeringAverage.monthly
-              ? convert(eventSummary.offeringAverage.monthly)
-              : "-- --"
+                ? convert(eventSummary.offeringAverage.monthly)
+                : "-- --"
             }}
           </div>
         </el-tooltip>
       </div>
       <div class="col-6 col-md-3">
         <div>First Timers</div>
-        <el-tooltip class="box-item" effect="dark" :content="eventSummary.firstTimerAverage.monthly.toString()"
-          placement="left-start">
+        <el-tooltip
+          class="box-item"
+          effect="dark"
+          :content="eventSummary.firstTimerAverage.monthly.toString()"
+          placement="left-start"
+        >
           <div>{{ convert(eventSummary.firstTimerAverage.monthly) }}</div>
         </el-tooltip>
       </div>
       <div class="col-6 col-md-3">
         <div>New Converts</div>
-        <el-tooltip class="box-item" effect="dark" :content="eventSummary.newConvertAverage.monthly.toString()"
-          placement="left-start">
+        <el-tooltip
+          class="box-item"
+          effect="dark"
+          :content="eventSummary.newConvertAverage.monthly.toString()"
+          placement="left-start"
+        >
           <div>{{ convert(eventSummary.newConvertAverage.monthly) }}</div>
         </el-tooltip>
       </div>
@@ -71,43 +100,63 @@
     <div class="row avg-table mt-4" v-if="yearlyActiveBtn">
       <div class="col-6 col-md-3 first-row">
         <div>Attendance</div>
-        <el-tooltip class="box-item" effect="dark" :content="eventSummary.attendanceAverage.yearly.toString()"
-          placement="left-start">
+        <el-tooltip
+          class="box-item"
+          effect="dark"
+          :content="eventSummary.attendanceAverage.yearly.toString()"
+          placement="left-start"
+        >
           <div>{{ convert(eventSummary.attendanceAverage.yearly) }}</div>
         </el-tooltip>
       </div>
       <div class="col-6 col-md-3">
         <div>
-          Offering<span style="font-size: 15px" class="font-weight-700">({{ userCurrency }})</span>
+          Offering<span style="font-size: 15px" class="font-weight-700"
+            >({{ userCurrency }})</span
+          >
         </div>
-        <el-tooltip class="box-item" effect="dark" :content="eventSummary &&
-          eventSummary.offeringAverage &&
-          eventSummary.offeringAverage.yearly
-          ? eventSummary.offeringAverage.yearly.toString()
-          : '-- --'
-          " placement="left-start">
+        <el-tooltip
+          class="box-item"
+          effect="dark"
+          :content="
+            eventSummary &&
+            eventSummary.offeringAverage &&
+            eventSummary.offeringAverage.yearly
+              ? eventSummary.offeringAverage.yearly.toString()
+              : '-- --'
+          "
+          placement="left-start"
+        >
           <div>
             {{
               eventSummary &&
               eventSummary.offeringAverage &&
               eventSummary.offeringAverage.yearly
-              ? convert(eventSummary.offeringAverage.yearly)
-              : "-- --"
+                ? convert(eventSummary.offeringAverage.yearly)
+                : "-- --"
             }}
           </div>
         </el-tooltip>
       </div>
       <div class="col-6 col-md-3">
         <div>First Timers</div>
-        <el-tooltip class="box-item" effect="dark" :content="eventSummary.firstTimerAverage.yearly.toString()"
-          placement="left-start">
+        <el-tooltip
+          class="box-item"
+          effect="dark"
+          :content="eventSummary.firstTimerAverage.yearly.toString()"
+          placement="left-start"
+        >
           <div>{{ convert(eventSummary.firstTimerAverage.yearly) }}</div>
         </el-tooltip>
       </div>
       <div class="col-6 col-md-3">
         <div>New Converts</div>
-        <el-tooltip class="box-item" effect="dark" :content="`${eventSummary.newConvertAverage.yearly.toString()}`"
-          placement="left-start">
+        <el-tooltip
+          class="box-item"
+          effect="dark"
+          :content="`${eventSummary.newConvertAverage.yearly.toString()}`"
+          placement="left-start"
+        >
           <div>{{ convert(eventSummary.newConvertAverage.yearly) }}</div>
         </el-tooltip>
       </div>
@@ -117,43 +166,63 @@
     <div class="row avg-table mt-4" v-if="allTimeActiveBtn">
       <div class="col-6 col-md-3 first-row">
         <div>Attendance</div>
-        <el-tooltip class="box-item" effect="dark" :content="eventSummary.attendanceAverage.allTime.toString()"
-          placement="top-start">
+        <el-tooltip
+          class="box-item"
+          effect="dark"
+          :content="eventSummary.attendanceAverage.allTime.toString()"
+          placement="top-start"
+        >
           <div>{{ convert(eventSummary.attendanceAverage.allTime) }}</div>
         </el-tooltip>
       </div>
       <div class="col-6 col-md-3">
         <div>
-          Offering<span style="font-size: 15px" class="font-weight-700">({{ userCurrency }})</span>
+          Offering<span style="font-size: 15px" class="font-weight-700"
+            >({{ userCurrency }})</span
+          >
         </div>
-        <el-tooltip class="box-item" effect="dark" :content="eventSummary &&
-          eventSummary.offeringAverage &&
-          eventSummary.offeringAverage.allTime
-          ? eventSummary.offeringAverage.allTime.toString()
-          : '-- --'
-          " placement="top-start">
+        <el-tooltip
+          class="box-item"
+          effect="dark"
+          :content="
+            eventSummary &&
+            eventSummary.offeringAverage &&
+            eventSummary.offeringAverage.allTime
+              ? eventSummary.offeringAverage.allTime.toString()
+              : '-- --'
+          "
+          placement="top-start"
+        >
           <div>
             {{
               eventSummary &&
               eventSummary.offeringAverage &&
               eventSummary.offeringAverage.allTime
-              ? convert(eventSummary.offeringAverage.allTime)
-              : "-- --"
+                ? convert(eventSummary.offeringAverage.allTime)
+                : "-- --"
             }}
           </div>
         </el-tooltip>
       </div>
       <div class="col-6 col-md-3">
         <div>First Timers</div>
-        <el-tooltip class="box-item" effect="dark" :content="eventSummary.firstTimerAverage.allTime.toString()"
-          placement="top-start">
+        <el-tooltip
+          class="box-item"
+          effect="dark"
+          :content="eventSummary.firstTimerAverage.allTime.toString()"
+          placement="top-start"
+        >
           <div>{{ convert(eventSummary.firstTimerAverage.allTime) }}</div>
         </el-tooltip>
       </div>
       <div class="col-6 col-md-3">
         <div>New Converts</div>
-        <el-tooltip class="box-item" effect="dark" :content="eventSummary.newConvertAverage.allTime.toString()"
-          placement="top-start">
+        <el-tooltip
+          class="box-item"
+          effect="dark"
+          :content="eventSummary.newConvertAverage.allTime.toString()"
+          placement="top-start"
+        >
           <div>{{ convert(eventSummary.newConvertAverage.allTime) }}</div>
         </el-tooltip>
       </div>
@@ -165,9 +234,14 @@
     <div class="row">
       <div class="col-sm-12 p-0 mt-5">
         <div class="table-top p-3 mt-5">
-          <div class="row d-flex flex-column flex-sm-row justify-content-sm-end">
+          <div
+            class="row d-flex flex-column flex-sm-row justify-content-sm-end"
+          >
             <div class="col-md-2">
-              <p @click="toggleFilterFormVissibility" class="mb-0 mr-3 d-flex my-3 my-sm-0 c-pointer">
+              <p
+                @click="toggleFilterFormVissibility"
+                class="mb-0 mr-3 d-flex my-3 my-sm-0 c-pointer"
+              >
                 <el-icon :size="13">
                   <Filter />
                 </el-icon>
@@ -175,10 +249,19 @@
               </p>
             </div>
             <div class="col-md-5">
-              <el-input size="small" v-model="searchText" placeholder="Search..." @input="searchingMember = true"
-                @keyup.enter.prevent="searchPeopleInDB($event)" class="input-with-select">
+              <el-input
+                size="small"
+                v-model="searchText"
+                placeholder="Search..."
+                @input="searchingMember = true"
+                @keyup.enter.prevent="searchPeopleInDB($event)"
+                class="input-with-select"
+              >
                 <template #suffix>
-                  <el-button style="padding: 5px; height: 22px" @click.prevent="searchText = ''">
+                  <el-button
+                    style="padding: 5px; height: 22px"
+                    @click.prevent="searchText = ''"
+                  >
                     <el-icon :size="13">
                       <Close />
                     </el-icon>
@@ -195,28 +278,50 @@
             </div>
           </div>
 
-          <div class="filter-options mt-3" :class="{ 'filter-options-shown': filterFormIsVissible }">
+          <div
+            class="filter-options mt-3"
+            :class="{ 'filter-options-shown': filterFormIsVissible }"
+          >
             <div class="container-fluid">
               <div class="row">
                 <div class="col-md-9">
                   <div class="row">
-                    <div class="col-12 col-sm-6 offset-sm-3 offset-md-0 form-group inp w-100">
-                      <el-input type="text" class="w-100" placeholder="First Name" />
+                    <div
+                      class="col-12 col-sm-6 offset-sm-3 offset-md-0 form-group inp w-100"
+                    >
+                      <el-input
+                        type="text"
+                        class="w-100"
+                        placeholder="First Name"
+                      />
                     </div>
 
                     <div class="col-12 col-sm-6 form-group d-none d-md-block">
-                      <el-date-picker type="date" class="w-100" size="large" placeholder="Pick a Date"
-                        format="MM/DD/YYYY" />
+                      <el-date-picker
+                        type="date"
+                        class="w-100"
+                        size="large"
+                        placeholder="Pick a Date"
+                        format="MM/DD/YYYY"
+                      />
                     </div>
                   </div>
 
                   <div class="row">
                     <div class="col-12 col-sm-6 form-group d-none d-md-block">
-                      <el-input type="text" class="w-100" placeholder="Last Name" />
+                      <el-input
+                        type="text"
+                        class="w-100"
+                        placeholder="Last Name"
+                      />
                     </div>
 
                     <div class="col-12 col-sm-6 form-group d-none d-md-block">
-                      <el-input type="text" class="w-100" placeholder="Phone Number" />
+                      <el-input
+                        type="text"
+                        class="w-100"
+                        placeholder="Phone Number"
+                      />
                     </div>
                   </div>
                 </div>
@@ -227,80 +332,126 @@
                   </el-button>
                   <span class="mt-2">
                     <a class="clear-link mr-2" @click="clearAll">Clear all</a>
-                    <span class="mx-2"><i class="fas fa-circle" style="font-size: 4px"></i></span><a
-                      class="hide-link ml-2" @click="hide">Hide</a>
+                    <span class="mx-2"
+                      ><i
+                        class="fas fa-circle"
+                        style="font-size: 4px"
+                      ></i></span
+                    ><a class="hide-link ml-2" @click="hide">Hide</a>
                   </span>
                 </div>
               </div>
             </div>
           </div>
         </div>
-        <Table :headers="eventHeaders" :checkMultipleItem="false" :data="filterEvents" v-if="filterEvents.length > 0">
+        <Table
+          :headers="eventHeaders"
+          :checkMultipleItem="false"
+          :data="filterEvents"
+          v-if="filterEvents.length > 0"
+        >
           <template v-slot:isSent="{ item }">
             <div class="c-pointer td-first">
-              <router-link :to="`/tenant/event/${item.activityId}`" class="text-decoration-none text-color">
-              {{ item.isSent ? "Sent" : "Unsent" }}
+              <router-link
+                :to="`/tenant/event/${item.activityId}`"
+                class="text-decoration-none text-color"
+              >
+                {{ item.isSent ? "Sent" : "Unsent" }}
               </router-link>
             </div>
           </template>
           <template v-slot:eventName="{ item }">
-            <router-link :to="`/tenant/event/${item.activityId}`" class="text-decoration-none text-color">
-            <div class="c-pointer">{{ item.eventName }}</div>
+            <router-link
+              :to="`/tenant/event/${item.activityId}`"
+              class="text-decoration-none text-color"
+            >
+              <div class="c-pointer">{{ item.eventName }}</div>
             </router-link>
           </template>
           <template v-slot:title="{ item }">
             <div class="c-pointer">
-              <router-link :to="`/tenant/event/${item.activityId}`" class="text-decoration-none text-color">
-              {{ item.title }}
+              <router-link
+                :to="`/tenant/event/${item.activityId}`"
+                class="text-decoration-none text-color"
+              >
+                {{ item.title }}
               </router-link>
             </div>
           </template>
           <template v-slot:date="{ item }">
             <div class="c-pointer">
-              <router-link :to="`/tenant/event/${item.activityId}`" class="text-decoration-none text-color">
-              <span>{{ date(item.activityDate) }}</span>
+              <router-link
+                :to="`/tenant/event/${item.activityId}`"
+                class="text-decoration-none text-color"
+              >
+                <span>{{ date(item.activityDate) }}</span>
               </router-link>
             </div>
           </template>
 
           <template v-slot:attendances="{ item }">
-            <div class="c-pointer ">
-              <router-link :to="`/tenant/event/${item.activityId}`" class="text-decoration-none text-color">
-              {{ item.attendances }}
+            <div class="c-pointer">
+              <router-link
+                :to="`/tenant/event/${item.activityId}`"
+                class="text-decoration-none text-color"
+              >
+                {{ item.attendances }}
               </router-link>
             </div>
           </template>
           <template v-slot:firstTimers="{ item }">
             <div class="c-pointer">
-              <router-link :to="`/tenant/event/${item.activityId}`" class="text-decoration-none text-color">
-              {{ item.firstTimers }}
+              <router-link
+                :to="`/tenant/event/${item.activityId}`"
+                class="text-decoration-none text-color"
+              >
+                {{ item.firstTimers }}
               </router-link>
             </div>
           </template>
 
           <template v-slot:newConverts="{ item }">
             <div class="c-pointer">
-              <router-link :to="`/tenant/event/${item.activityId}`" class="text-decoration-none text-color">
-              {{ item.newConverts }}
+              <router-link
+                :to="`/tenant/event/${item.activityId}`"
+                class="text-decoration-none text-color"
+              >
+                {{ item.newConverts }}
               </router-link>
             </div>
           </template>
 
           <template v-slot:approve="{ item }">
             <div class="c-pointer">
-                <div class="spinner-border text-primary" style="font-size: 10px; width: 26px; height: 26px;" role="status"
-                  v-show="item.approvingServiceReport">
-                  <span class="sr-only">Loading...</span>
-                </div>
-                <div v-if="!item.approved && !item.approvingServiceReport" @click="approveReport(item, 1)">
-                  <el-icon size="27">
-                    <CircleCheck />
-                  </el-icon>
-                </div>
-                <video height="30" autoplay @click="approveReport(item, 2)" class="approveservicereport" v-if="item.approved && !item.approvingServiceReport">
-                  <source src="../../assets/check_animated.mp4" type="video/mp4" />
-                  Your browser does not support the video tag.
-                </video>
+              <div
+                class="spinner-border text-primary"
+                style="font-size: 10px; width: 26px; height: 26px"
+                role="status"
+                v-show="item.approvingServiceReport"
+              >
+                <span class="sr-only">Loading...</span>
+              </div>
+              <div
+                v-if="!item.approved && !item.approvingServiceReport"
+                @click="approveReport(item, 1)"
+              >
+                <el-icon size="27">
+                  <CircleCheck />
+                </el-icon>
+              </div>
+              <video
+                height="30"
+                autoplay
+                @click="approveReport(item, 2)"
+                class="approveservicereport"
+                v-if="item.approved && !item.approvingServiceReport"
+              >
+                <source
+                  src="../../assets/check_animated.mp4"
+                  type="video/mp4"
+                />
+                Your browser does not support the video tag.
+              </video>
             </div>
           </template>
 
@@ -312,17 +463,26 @@
               <template #dropdown>
                 <el-dropdown-menu>
                   <el-dropdown-item>
-                    <router-link :to="`/tenant/report/${item.activityId}`" class="text-decoration-none text-color">
+                    <router-link
+                      :to="`/tenant/report/${item.activityId}`"
+                      class="text-decoration-none text-color"
+                    >
                       View Report
                     </router-link>
                   </el-dropdown-item>
                   <el-dropdown-item>
-                    <router-link :to="`/tenant/event/${item.activityId}`" class="text-decoration-none text-color">
+                    <router-link
+                      :to="`/tenant/event/${item.activityId}`"
+                      class="text-decoration-none text-color"
+                    >
                       Edit
                     </router-link>
                   </el-dropdown-item>
                   <el-dropdown-item>
-                    <div @click.prevent="showConfirmModal(item.activityId, index)" class="text-color">
+                    <div
+                      @click.prevent="showConfirmModal(item.activityId, index)"
+                      class="text-color"
+                    >
                       Delete
                     </div>
                   </el-dropdown-item>
@@ -334,19 +494,23 @@
         <!-- {{membersCount}} {{currentPage}} -->
 
         <div class="table-footer">
-          <PaginationButtons @getcontent="getPeopleByPage" :itemsCount="membersCount" :currentPage="currentPage" />
+          <PaginationButtons
+            @getcontent="getPeopleByPage"
+            :itemsCount="membersCount"
+            :currentPage="currentPage"
+          />
         </div>
         <!-- <div class="d-flex justify-content-end my-3">
-            <el-pagination
-              v-model:current-page="serverOptions.page"
-              v-model:page-size="serverOptions.rowsPerPage"
-              background
-              layout="total, prev, pager, next, jumper"
-              :total="serverItemsLength"
-              @size-change="handleSizeChange"
-              @current-change="handleCurrentChange"
-            />
-          </div> -->
+          <el-pagination
+            v-model:current-page="serverOptions.page"
+            v-model:page-size="serverOptions.rowsPerPage"
+            background
+            layout="total, prev, pager, next, jumper"
+            :total="filterEvents.length"
+            @size-change="handleSizeChange"
+            @current-change="handleCurrentChange"
+          />
+        </div> -->
       </div>
     </div>
   </div>
@@ -354,7 +518,7 @@
 
 <script>
 import axios from "@/gateway/backendapi";
-import { ref, computed, inject } from "vue";
+import { ref, computed, inject, watch } from "vue";
 import moment from "moment";
 import { useStore } from "vuex";
 import userService from "../../services/user/userservice";
@@ -363,7 +527,7 @@ import convertNumber from "../../services/numbershortener/numberfomatter";
 import PaginationButtons from "../../components/pagination/PaginationButtons.vue";
 import finish from "../../services/progressbar/progress";
 import Table from "@/components/table/Table";
-import { ElMessage, ElMessageBox } from 'element-plus'
+import { ElMessage, ElMessageBox } from "element-plus";
 import eventsService from "../../services/events/eventsservice";
 export default {
   components: {
@@ -372,7 +536,7 @@ export default {
   },
   props: ["eventList", "eventSummary"],
   setup(props, { emit }) {
-    const primarycolor = inject('primarycolor')
+    const primarycolor = inject("primarycolor");
     const filterFormIsVissible = ref(false);
     const searchIsVisible = ref(false);
     const store = useStore();
@@ -404,7 +568,6 @@ export default {
           });
           store.dispatch("event/removeEventItemFromStore", id);
           emit("delete-event", index);
-
         })
         .catch((err) => {
           finish();
@@ -423,6 +586,12 @@ export default {
           }
         });
     };
+
+    const serverOptions = ref({
+      page: 1,
+      rowsPerPage: 100,
+    });
+
     const showConfirmModal = (id, index) => {
       ElMessageBox.confirm(
         "Are you sure you want to proceed?",
@@ -517,6 +686,21 @@ export default {
       return convertNumber.convertNumber(number);
     };
     const currentPage = ref(0);
+    const handleSizeChange = (val) => {
+      console.log(`${val} items per page`);
+    };
+    const handleCurrentChange = (val) => {
+      console.log(`current page: ${val}`);
+    };
+
+    watch(
+      serverOptions,
+      () => {
+        getPeopleByPage();
+      },
+      { deep: true }
+    );
+
     const getPeopleByPage = async (page) => {
       if (page < 0) return false;
       try {
@@ -555,40 +739,46 @@ export default {
     };
 
     const approveReport = async (item, type) => {
-      const index = filterEvents.value.findIndex(i => i.activityId == item.activityId)
-      filterEvents.value[index].approvingServiceReport = true
+      const index = filterEvents.value.findIndex(
+        (i) => i.activityId == item.activityId
+      );
+      filterEvents.value[index].approvingServiceReport = true;
       let payload = {
         preEvent: {
           preActivityId: item.activityId,
-          approved: type == 1 ? true : false
-        }
-      }
+          approved: type == 1 ? true : false,
+        },
+      };
       try {
-        await eventsService.approveServiceReport(payload)        
+        await eventsService.approveServiceReport(payload);
         if (index >= 0) {
-          filterEvents.value[index].approved = type == 1 ? true : false
+          filterEvents.value[index].approved = type == 1 ? true : false;
         }
-        filterEvents.value[index].approvingServiceReport = false
+        filterEvents.value[index].approvingServiceReport = false;
         ElMessage({
           type: "success",
-          message: `Service report ${type == 1 ? "approved successfully" : "unapproved"}`,
+          message: `Service report ${
+            type == 1 ? "approved successfully" : "unapproved"
+          }`,
+          duration: 5000,
+        });
+      } catch (err) {
+        filterEvents.value[index].approvingServiceReport = false;
+        console.error(err);
+        ElMessage({
+          type: "error",
+          message: `Report not successfully approved, please try again`,
           duration: 5000,
         });
       }
-      catch (err) {
-          filterEvents.value[index].approvingServiceReport = false
-          console.error(err);
-          ElMessage({
-            type: "error",
-            message: `Report not successfully approved, please try again`,
-            duration: 5000,
-          });
-        }
-    }
+    };
     return {
       // sentEvent,
       searchEventInDB,
+      handleSizeChange,
+      handleCurrentChange,
       filterFormIsVissible,
+      serverOptions,
       searchingMember,
       toggleFilterFormVissibility,
       searchIsVisible,
@@ -613,7 +803,7 @@ export default {
       deleteEvent,
       eventHeaders,
       primarycolor,
-      approveReport
+      approveReport,
     };
   },
 };
@@ -947,21 +1137,21 @@ export default {
   /* border-radius: 30px; */
 }
 
-.avg-table>div>div:first-child {
+.avg-table > div > div:first-child {
   font: normal normal 600 16px/13px Nunito Sans;
   letter-spacing: 0px;
   color: #002044;
   padding: 15px;
 }
 
-.avg-table>div>div:nth-child(2) {
+.avg-table > div > div:nth-child(2) {
   font: normal normal normal 32px/13px Nunito Sans;
   letter-spacing: 0px;
   color: #002044;
   padding: 15px;
 }
 
-.avg-table>div:nth-child(5) {
+.avg-table > div:nth-child(5) {
   font: normal normal normal 14px/13px Nunito Sans;
   letter-spacing: 0px;
   color: #002044;
@@ -999,7 +1189,6 @@ export default {
 }
 
 @media screen and (max-width: 500px) {
-
   .picture,
   .firstname,
   .lastname,
@@ -1039,7 +1228,6 @@ export default {
 }
 
 @media screen and (min-width: 500px) {
-
   /* .picture,
   .firstname,
   .lastname,

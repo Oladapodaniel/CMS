@@ -4,12 +4,12 @@
       class="d-flex flex-wrap flex-column flex-sm-row justify-content-between"
     >
       <div class="">
-        <div class="head-text">Partnership and Pledges</div>
+        <div class="head-text">Dues, Pledges and Partnership</div>
       </div>
       <div class="d-flex flex-column flex-sm-row mt-2 my-1 link">
         <router-link class="mr-1" to="/tenant/pledge/pledgedefinitionlist">
           <el-button class="header-btn mr-3 w-100 secondary-button" round>
-            Partnership/Pledge items
+            Dues/Partnership/Pledge items
           </el-button>
         </router-link>
         <router-link class="" to="/tenant/pledge/makepledge">
