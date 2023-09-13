@@ -564,7 +564,7 @@ export default {
           `/api/Financials/Contributions/Transactions?page=${serverOptions.value.page}`
         );
         console.log(data, 'bbb');
-        if (data && data.returnObject.contribution.length > 0) {
+        if (data && data.length > 0) {
           emit("get-pages", data);
           currentPage.value = serverOptions.value.page;
         }

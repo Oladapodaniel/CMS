@@ -55,11 +55,11 @@
             >
               Send Email
             </div>
-            <!-- <div class="mt-2 h6 font-weight-bold cursor-pointer" >
+            <div class="mt-2 h6 font-weight-bold cursor-pointer" >
               <div @click="displayWhatsappDrawer" class="primary--text">
                 Send Whatsap
               </div>
-            </div> -->
+            </div>
           </div>
         </div>
         <div class="col-md-2 col-sm-6 mt-3 mt-md-0 font-weight-bold">
@@ -248,7 +248,7 @@
               </div>
 
               <div class="font-weight-bold h5 mt-2" v-if="openHideAmonut">
-                NGN {{ getAllAverageIncome }}
+                 {{ getAllAverageIncome }}
               </div>
               <div
                 class="font-weight-bold mt-2 text-secondary h5"
@@ -640,13 +640,13 @@
                     <div class="mt-2">
                       Average Income :
                       <span class="font-weight-bold"
-                        >NGN {{ branchProfile.currentYearAverageIncome }}</span
+                        > {{ branchProfile.currentYearAverageIncome }}</span
                       >
                     </div>
                     <div class="mt-2">
                       Average Expenses :
                       <span class="font-weight-bold"
-                        >NGN {{ branchProfile.currentYearAverageExpense }}</span
+                        > {{ branchProfile.currentYearAverageExpense }}</span
                       >
                     </div>
                   </div>
@@ -731,13 +731,13 @@
                   <div class="mt-2">
                     Average Income :
                     <span class="font-weight-bold"
-                      >NGN {{ branchProfile.currentYearAverageIncome }}</span
+                      > {{ branchProfile.currentYearAverageIncome }}</span
                     >
                   </div>
                   <div class="mt-2">
                     Average Expenses :
                     <span class="font-weight-bold"
-                      >NGN {{ branchProfile.currentYearAverageExpense }}</span
+                      > {{ branchProfile.currentYearAverageExpense }}</span
                     >
                   </div>
                 </div>
@@ -1111,6 +1111,7 @@ export default {
       showBranchDetail.value = true;
       showbranchHierachy.value = false;
       store.dispatch("setCurrentBranch", item);
+      console.log(item, 'jjkjk');
     };
 
     onMounted(() => {

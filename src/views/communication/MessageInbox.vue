@@ -114,8 +114,8 @@ export default {
   },
   setup() {
     const store = useStore();
-    const replies = ref(store.getters["communication/smsReplies"]);
-    const currentPage = ref(0);
+    const replies = ref(store.getters["communication/smsReplies"].data);
+    const currentPage = ref(1);
     const loading = ref(false);
     const searchSms = ref("");
     const repliesHeader = ref([
@@ -134,7 +134,7 @@ export default {
         );
         loading.value = false;
         if (data) {
-          replies.value = data;
+          replies.value = data.data;
           store.dispatch("communication/getSMSReplies");
         }
       } catch (error) {
@@ -142,12 +142,12 @@ export default {
       }
     };
 
-    if (!replies.value || replies.value.length === 0) getSMSReplies();
+    if ( (!replies.value) || (replies.value && replies.value.data && replies.value.data.length == 0)) getSMSReplies();
 
     const getRepliesByPage = async (page) => {
       try {
         const data = await communicationService.getSMSReplies(page);
-        if (data && data.length > 0) {
+        if (data) {
           replies.value = data;
           currentPage.value = page;
         }
@@ -162,7 +162,7 @@ export default {
     });
 
     const searchSMS = computed(() => {
-      if (searchSms.value === "" && replies.value.length > 0) {
+      if (searchSms.value === ""  ) {
         return replies.value;
       }
       return replies.value.filter((i) =>

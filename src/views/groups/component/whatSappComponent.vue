@@ -111,33 +111,6 @@
           </span>
         </div>
       </div>
-      <div class="row" v-if="sendToAll">
-        <div class="col-md-2"></div>
-        <div class="col-md-10 px-0">
-          <span>
-            <input
-              class="form-control dropdown-toggle my-1 px-1 small-text"
-              type="text"
-              id="dropdownMenu"
-              value="All Contacts"
-              disabled
-            />
-            <span
-              class="close-allcontacts c-pointer"
-              @click="
-                (sendToAll = false),
-                  (selectedGroups = selectedGroups.filter(
-                    (i) =>
-                      i.data !==
-                      'membership_00000000-0000-0000-0000-000000000000'
-                  )),
-                  getMemberPhoneNumber()
-              "
-              ><i class="pi pi-times"></i
-            ></span>
-          </span>
-        </div>
-      </div>
       <div class="row" v-if="sendToAllBranches">
         <div class="col-md-2"></div>
         <div class="col-md-10 px-0">
@@ -156,7 +129,7 @@
                   (selectedGroups = selectedGroups.filter(
                     (i) =>
                       i.data !==
-                      'membership_00000000-0000-0000-0000-000000000000'
+                      'branch_00000000-0000-0000-0000-000000000000'
                   )),
                   getMemberPhoneNumber()
               "
@@ -294,7 +267,8 @@
                       closable
                       v-for="(item, index) in selectedBranch"
                       :key="item.id"
-                      @close="selectedBranch.splice(index, 1)"
+                      @close="selectedBranch.splice(index, 1)
+                      "
                       >{{ item.name }}</el-tag
                     >
                   </span>
@@ -788,6 +762,7 @@ export default {
     const whatsappAttachment = ref({});
     const selectedBranch = ref([]);
     const contactUpload = ref(false);
+    const tenantId = ref("");
     const multipleContact = ref({});
     const base64String = ref("");
     const fileReady = ref(false);
@@ -839,37 +814,42 @@ export default {
     };
 
     const showSection2 = (index) => {
-      getMemberPhoneNumber();
-      //   if (index === 2) whatsappGroupSelectionTab.value = true;
-      if (index === 1) branchesSelectionTab.value = true;
-      if (index === 2) phoneNumberSelectionTab.value = true;
-      //   if (index === 3) contactUpload.value = true;
-      if (index === 0) {
+        if (index === 0) {
         sendToAllBranches.value = true;
         selectedGroups.value.push({
           data: "branch_00000000-0000-0000-0000-000000000000",
           name: "All branches",
         });
       }
+      
+      //   if (index === 2) whatsappGroupSelectionTab.value = true;
+      if (index === 1) branchesSelectionTab.value = true;
+      getMemberPhoneNumber();
+      if (index === 2) phoneNumberSelectionTab.value = true;
+      //   if (index === 3) contactUpload.value = true;
+    
     };
+    console.log(selectedBranch.value, 'kjjllklk');
 
     const getMemberPhoneNumber = async () => {
       memberdataloading.value = true;
-      const payload = {
-        subject: "",
-        message: editorData.value,
-        contacts: [],
-        isPersonalized: false,
-        groupedContacts: selectedGroups.value.map((i) => i.data),
-        isoCode: "",
-        category: "",
-        emailAddress: "",
-        emailDisplayName: "",
-        gateWayToUse: "",
-        toOthers: toOthers.value.length > 0 ? toOthers.value.join(",") : "",
-      };
-
-      try {
+      if (route.fullPath == "/tenant/branches/summary") {
+         const branchID = localStorage.getItem("branchId");
+         const payload = {
+          subject: "",
+          message: editorData.value,
+          tenantID: branchID,
+          contacts: [],
+          isPersonalized: false,
+          groupedContacts: selectedGroups.value.map((i) => i.data),
+          isoCode: "",
+          category: "",
+          emailAddress: "",
+          emailDisplayName: "",
+          gateWayToUse: "",
+          toOthers: toOthers.value.length > 0 ? toOthers.value.join(",") : "",
+        };
+        try {
         let { data } = await axios.post(
           "/api/BranchNetwork/getCommunicationAudience",
           payload
@@ -880,6 +860,50 @@ export default {
         console.log(err);
         memberdataloading.value = false;
       }
+        
+      } else {
+        const payload = {
+          subject: "",
+          message: editorData.value,
+          tenantID: tenantId.value,
+          contacts: [],
+          isPersonalized: false,
+          groupedContacts: selectedBranch.value.length > 0 ? [selectedBranch.value.map((i) => {if (i.id) return `branch_${i.id}`;}).join(),] : selectedGroups.value.map((i) => i.data) ,
+          isoCode: "",
+          category: "",
+          emailAddress: "",
+          emailDisplayName: "",
+          gateWayToUse: "",
+          toOthers: toOthers.value.length > 0 ? toOthers.value.join(",") : "",
+        };
+        try {
+        let { data } = await axios.post(
+          "/api/BranchNetwork/getCommunicationAudience",
+          payload
+        );
+        memberdataloading.value = false;
+        groupMembersData.value = data.contacts;
+      } catch (err) {
+        console.log(err);
+        memberdataloading.value = false;
+      }
+      }
+      
+     
+
+      // if (route.fullPath == "/tenant/branch/mainbranchsummary") {
+        
+      // }
+      // if (selectedBranch.value.length > 0) {
+      //   payload.groupedContacts = [
+      //     selectedBranch.value
+      //       .map((i) => {
+      //         if (i.id) return `branch_${i.id}`;
+      //       })
+      //       .join(),
+      //   ];
+      // }
+
     };
 
     const allcountries = ref([]);
@@ -888,6 +912,7 @@ export default {
 
     const selectBranch = (item) => {
       selectedBranch.value.push(item);
+      getMemberPhoneNumber()
     };
 
     watchEffect(() => {
@@ -1100,12 +1125,14 @@ export default {
     if (store.getters.currentUser && store.getters.currentUser.isoCode) {
       isoCode.value = store.getters.currentUser.isoCode;
       userCountry.value = store.getters.currentUser.country;
+      tenantId.value = store.getters.tenantId;
     } else {
       axios
         .get("/api/Membership/GetCurrentSignedInUser")
         .then((res) => {
           isoCode.value = res.data.isoCode;
           userCountry.value = res.data.country;
+          tenantId.value = store.getters.tenantId;
         })
         .catch((err) => console.log(err));
     }
@@ -1627,6 +1654,7 @@ export default {
       searchText,
       filteredMembers,
       charactersCount,
+      tenantId,
       pageCount,
       phoneNumber,
       searchForPerson,

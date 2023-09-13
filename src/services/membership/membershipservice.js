@@ -4,7 +4,7 @@ import store from '../../store/store'
 const membershipService = {
     getMembers() {
         return new Promise((resolve, reject) => {
-            axios.get("/api/People/GetPeopleBasicInfo")
+            axios.get("/api/People/GetPeopleBasicInfo?page=1")
                 .then(res => {
                     resolve(res.data);
                     // store.dispatch("setMembers", res.data);

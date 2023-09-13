@@ -38,12 +38,12 @@
                       Send Email
                     </div>
                   </el-dropdown-item>
-                  <!-- <el-dropdown-item>
+                  <el-dropdown-item>
                     <div @click="displayWhatsappDrawer(singleBranchInfo)">
                       <el-icon class="text-primary"><ChatRound /></el-icon>
                       Send Whatsap
                     </div>
-                  </el-dropdown-item> -->
+                  </el-dropdown-item>
                 </el-dropdown-menu>
               </template>
             </el-dropdown>

@@ -130,14 +130,14 @@
           </div>
         </div>
 
-        <div class="conatiner">
+        <div class="conatiner-fluid">
           <div class="row">
             <div class="col-md-12 mb-3 pagination-container">
-              <PaginationButtons @getcontent="getSMSByPage" :itemsCount="itemsCount" :currentPage="currentPage"
-                :totalItems="sentSMS.totalItems" />
-              <!-- <el-pagination v-model:current-page="serverOptions.page" v-model:page-size="serverOptions.rowsPerPage"
-                background layout="prev, pager, next, jumper" :total="totalItems" @size-change="handleSizeChange"
-                @current-change="handleCurrentChange" /> -->
+              <!-- <PaginationButtons @getcontent="getSMSByPage" :itemsCount="itemsCount" :currentPage="currentPage"
+                :totalItems="sentSMS.totalItems" /> -->
+                <el-pagination v-model:current-page="serverOptions.page" v-model:page-size="serverOptions.rowsPerPage"
+                background layout="total, prev, pager, next, jumper" :total="totalItems" @size-change="handleSizeChange"
+                @current-change="handleCurrentChange"/>
             </div>
           </div>
         </div>
@@ -166,10 +166,10 @@ export default {
   setup() {
     const loading = ref(false);
     const store = useStore();
-    const sentSMS = ref(store.getters["communication/allSentSMS"]);
-    const currentPage = ref(0);
+    const sentSMS = ref(store.getters["communication/allSentSMS"].data);
+    // const currentPage = ref(0);
     const searchText = ref("");
-    const totalItems = ref(0)
+    const totalItems = ref(store.getters["communication/allSentSMS"].totalItems)
     const SMSHeaders = ref([
       { name: ' MESSAGE', value: 'message' },
       { name: ' DATE', value: 'dateSent' },
@@ -182,7 +182,7 @@ export default {
       rowsPerPage: 100,
     });
 
-    watch(serverOptions, () => {
+    watch(serverOptions.value, () => {
       getSMSByPage();
     },
       { deep: true }
@@ -193,10 +193,11 @@ export default {
     const getSentSMS = async () => {
       try {
         loading.value = true;
-        const data = await communicationService.getAllSentSMS(0);
+        const data = await communicationService.getAllSentSMS(1);
         loading.value = false;
         if (data) {
-          sentSMS.value = data.sentSMS;
+          sentSMS.value = data.data;
+          // console.log(sentSMS.value, "senjjiik");
           totalItems.value = data.totalItems
         }
       } catch (error) {
@@ -211,8 +212,9 @@ export default {
         const data = await communicationService.getAllSentSMS(serverOptions.value.page);
         loading.value = false;
         if (data) {
-          sentSMS.value = data.sentSMS;
-          currentPage.value = serverOptions.value.page;
+          sentSMS.value = data.data;
+          totalItems.value = data.totalItems
+          // currentPage.value = serverOptions.value.page;
           isSortedByStatus.value = true;
         }
       } catch (error) {
@@ -362,7 +364,7 @@ export default {
       sentSMS,
       loading,
       itemsCount,
-      currentPage,
+      // currentPage,
       getSMSByPage,
       messages,
       searchText,

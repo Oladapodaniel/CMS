@@ -488,8 +488,8 @@
         v-model:current-page="serverOptions.page"
         v-model:page-size="serverOptions.rowsPerPage"
         background
-        layout="prev, pager, next, jumper"
-        :total="serverItemsLength"
+        layout="total, prev, pager, next, jumper"
+        :total="totalItems"
         @size-change="handleSizeChange"
         @current-change="handleCurrentChange"
       />
@@ -703,7 +703,7 @@ import AuthenticateWhatsapp from "../../components/whatsapp/AuthenticateWhatsapp
 import swal from "sweetalert";
 
 export default {
-  props: ["list", "peopleCount"],
+  props: ["list",  'totalItems'],
   components: {
     ByGenderChart,
     ByMaritalStatusChart,
@@ -728,6 +728,7 @@ export default {
     const showSMS = ref(false);
     const showEmail = ref(false);
     const showWhatsapp = ref(false);
+    const totalItems = ref(props.totalItems);
     const contacts = ref([]);
     const markedMembers = ref([]);
     const chooseGrouptoMoveAllMembers = ref();
@@ -899,7 +900,7 @@ export default {
         const { data } = await axios.get(
           `/api/People/GetPeopleBasicInfo?page=${serverOptions.value.page}`
         );
-        churchMembers.value = data;
+        churchMembers.value = data.data;
         paginatedTableLoading.value = false;
       } catch (error) {
         paginatedTableLoading.value = false;
@@ -1443,6 +1444,7 @@ export default {
       paginatedTableLoading,
       selectedImage,
       imageDialog,
+      totalItems,
       mdAndUp,
       lgAndUp,
       xlAndUp,

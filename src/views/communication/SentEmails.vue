@@ -150,12 +150,15 @@
         <div class="conatiner">
           <div class="row">
             <div class="col-md-12 mb-3 pagination-container">
-              <PaginationButtons
+              <el-pagination v-model:current-page="serverOptions.page" v-model:page-size="serverOptions.rowsPerPage"
+                background layout="total, prev, pager, next, jumper" :total="totalItems" @size-change="handleSizeChange"
+                @current-change="handleCurrentChange"/>
+              <!-- <PaginationButtons
                 @getcontent="getEmailsByPage"
                 :itemsCount="itemsCount"
                 :currentPage="currentPage"
                 
-              />
+              /> -->
             </div>
           </div>
         </div>
@@ -165,7 +168,7 @@
 </template>
 
 <script>
-import { computed, ref } from "vue";
+import { computed, ref, watch } from "vue";
 import communicationService from "../../services/communication/communicationservice";
 import PaginationButtons from "../../components/pagination/PaginationButtons";
 import axios from "@/gateway/backendapi";
@@ -181,12 +184,13 @@ export default {
   directives: {},
   setup() {
     const emails = ref([]);
-    const emailsInStore = ref(store.getters["communication/sentEmails"]);
+    const emailsInStore = ref(store.getters["communication/sentEmails"].data);
     emails.value =
       emailsInStore.value && emailsInStore.value.length > 0
         ? emailsInStore.value
         : [];
-    const currentPage = ref(0);
+    // const currentPage = ref(0);
+    const totalItems = ref(store.getters["communication/sentEmails"].totalItems)
     const loading = ref(true);
     const searchMail = ref("");
     const EmailHeaders = ref([
@@ -200,10 +204,12 @@ export default {
     const getSentEmails = async () => {
       try {
         loading.value = true;
-        const data = await communicationService.getSentEmails(0);
+        const data = await communicationService.getSentEmails(1);
+        console.log(data, 'jj');
         loading.value = false;
-        if (data && data.length > 0) {
-          emails.value = data;
+        if (data && data.data.length > 0) {
+          emails.value = data.data;
+          totalItems.value = data.totalItems
         }
       } catch (error) {
         loading.value = false;
@@ -211,6 +217,18 @@ export default {
       }
     };
     getSentEmails();
+
+    const serverOptions = ref({
+      page: 1,
+      rowsPerPage: 100,
+    });
+
+    watch(serverOptions.value, () => {
+      getEmailsByPage();
+    },
+      { deep: true }
+    );
+
 
     const handleSelectionChange = (val) => {
       markedMail.value = val;
@@ -228,12 +246,13 @@ export default {
       return `${formatted}`;
     };
 
-    const getEmailsByPage = async (page) => {
+    const getEmailsByPage = async () => {
       try {
-        const data = await communicationService.getSentEmails(page);
+        const data = await communicationService.getSentEmails(serverOptions.value.page);
         if (data) {
-          emails.value = data;
-          currentPage.value = page;
+          emails.value = data.data;
+          // currentPage.value = page;
+          totalItems.value = data.totalItems
         }
       } catch (error) {
         console.log(error);
@@ -371,16 +390,28 @@ export default {
         });
     };
 
+    const handleSizeChange = (val) => {
+      console.log(`${val} items per page`)
+    }
+    const handleCurrentChange = (val) => {
+      console.log(`current page: ${val}`)
+    }
+
+
     return {
+      handleSizeChange,
+      handleCurrentChange,
       emails,
       EmailHeaders,
       handleSelectionChange,
       Search,
+      totalItems,
       formatMessage,
       getEmailsByPage,
       itemsCount,
-      currentPage,
+      // currentPage,
       loading,
+      serverOptions,
       createElementFromHTML,
       searchMail,
       searchEmails,

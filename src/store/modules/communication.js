@@ -140,8 +140,8 @@ export default {
 
         async getAllSentSMS({ commit }) {
             try {
-                const { data } = await axios.get("/api/Messaging/getAllSentSms?page=0");
-                commit("setAllSentSMS", data.sentSMS);
+                const { data } = await axios.get("/api/Messaging/getAllSentSms?page=1");
+                commit("setAllSentSMS", data);
             } catch (error) {
                 console.log(error);
             }
@@ -149,7 +149,7 @@ export default {
 
         async getSMSReplies({ commit }) {
             try {
-                const data = await communicationService.getSMSReplies(0);
+                const data = await communicationService.getSMSReplies(1);
                 if (data) commit("setSMSReplies", data);
             } catch (error) {
                 console.log(error);
@@ -167,7 +167,7 @@ export default {
 
         async getSentEmails({ commit }) {
             try {
-                const data = await communicationService.getSentEmails(0);
+                const { data } = await communicationService.getSentEmails(1);
                 if (data) commit("setSentEmails", data);
             } catch (error) {
                 console.log(error);

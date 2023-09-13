@@ -1,5 +1,5 @@
 <template>
-  <PeopleList :list="peopleInStore" :peopleCount="peopleInStore.length" v-if="!loading && (peopleInStore.length > 0 || errorGettingPeople)" />
+  <PeopleList :list="peopleInStore" :totalItems="totalItems" v-if="!loading && (peopleInStore.length > 0 || errorGettingPeople)" />
   <div class="no-person mt-5" v-else-if="!loading && peopleInStore.length === 0 && !errorGettingPeople">
     <div class="container">
       <div class="row">
@@ -42,18 +42,21 @@ export default {
     const loading = ref(false);
     const errorGettingPeople = ref(false);
     const dataStore = useStore();
-    const peopleInStore = ref(dataStore.getters['membership/members'])
+    const totalItems = ref(dataStore.getters['membership/members'].totalItems)
+    const peopleInStore = ref(dataStore.getters['membership/members'].data)
 
     const getMembers = async () => {
       loading.value = true
       store.dispatch('membership/setMembers').then(res => {
-        peopleInStore.value = res
+        peopleInStore.value = res.data
+        totalItems.value = res.totalItems
         loading.value = false
       })
     }
+    
 
     onMounted(() => {
-      if (peopleInStore.value.length == 0) {
+      if ( (!peopleInStore.value) || (peopleInStore.value && peopleInStore.value.data && peopleInStore.value.data.length == 0)) {
         getMembers()
       }
     });
@@ -62,6 +65,7 @@ export default {
     return {
       people,
       peopleInStore,
+      totalItems,
       loading,
       errorGettingPeople,
     };

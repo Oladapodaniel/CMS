@@ -83,9 +83,9 @@ const communicationService = {
         }
     },
 
-    async getSentEmails(page) {
+    async getSentEmails() {
         try {
-            const { data } = await axios.get(`/api/Messaging/getAllSentEmails`);
+            const { data } = await axios.get(`/api/Messaging/getAllSentEmails?page=1`);
             return data;
         } catch (error) {
             stopProgressBar();
