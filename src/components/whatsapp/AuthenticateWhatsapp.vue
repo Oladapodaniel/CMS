@@ -139,6 +139,27 @@ export default {
                     QRCodeDialog.value = true
                 }
             })
+            
+            socket.on('qrcodeexpired', (data) => {
+                QRCodeDialog.value = false
+                ElMessage({
+                    type: 'warning',
+                    showClose: true,
+                    message: data.message,
+                    duration: 10000
+                })
+            })
+            
+            socket.on('whatsapperror', (data) => {
+                QRCodeDialog.value = false
+                connectingExistingSession.value = false
+                ElMessage({
+                    type: 'error',
+                    showClose: true,
+                    message: data.message,
+                    duration: 10000
+                })
+            })
 
             socket.on('ready', (data) => {
                 console.log('READY', data)
@@ -171,16 +192,6 @@ export default {
                     showClose: true,
                     message: message,
                     type: 'success',
-                })
-            })
-
-            socket.on('clientdestroyed', () => {
-                QRCodeDialog.value = false
-                ElMessage({
-                    type: 'warning',
-                    showClose: true,
-                    message: "QR Code timed out, click the connect button to reconnect.",
-                    duration: 5000
                 })
             })
 
