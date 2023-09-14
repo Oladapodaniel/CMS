@@ -1694,14 +1694,14 @@ export default {
     if (store.getters.currentUser && store.getters.currentUser.isoCode) {
       isoCode.value = store.getters.currentUser.isoCode;
       userCountry.value = store.getters.currentUser.country;
-      tenantId.value = store.getters.tenantId;
+      tenantId.value = store.getters.currentUser.tenantId;
     } else {
       axios
         .get("/api/Membership/GetCurrentSignedInUser")
         .then((res) => {
           isoCode.value = res.data.isoCode;
           userCountry.value = res.data.country;
-          tenantId.value = store.getters.tenantId;
+          tenantId.value = store.getters.currentUser.tenantId;
         })
         .catch((err) => console.log(err));
     }

@@ -73,8 +73,8 @@ export default {
     },
     setFirstTimerData({ commit }) {
       return membershipService.getFirstTimers().then((response) => {
-        commit("setFirstTimers", response.response.firstTimers)
-        return response.response.firstTimers
+        commit("setFirstTimers", response.response)
+        return response.response
       })
     },
     setNewConvertData({ commit }) {

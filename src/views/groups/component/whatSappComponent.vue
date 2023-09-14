@@ -1125,14 +1125,17 @@ export default {
     if (store.getters.currentUser && store.getters.currentUser.isoCode) {
       isoCode.value = store.getters.currentUser.isoCode;
       userCountry.value = store.getters.currentUser.country;
-      tenantId.value = store.getters.tenantId;
+      tenantId.value = store.getters.currentUser.tenantId;
+  console.log(tenantId.value, 'kkkkkkkkkkk');
     } else {
       axios
         .get("/api/Membership/GetCurrentSignedInUser")
         .then((res) => {
           isoCode.value = res.data.isoCode;
           userCountry.value = res.data.country;
+        console.log(res.data, ';jjjj');
           tenantId.value = store.getters.tenantId;
+          
         })
         .catch((err) => console.log(err));
     }

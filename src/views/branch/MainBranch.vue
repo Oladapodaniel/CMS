@@ -731,13 +731,13 @@
                   <div class="mt-2">
                     Average Income :
                     <span class="font-weight-bold"
-                      > {{ branchProfile.currentYearAverageIncome }}</span
+                      > {{branchProfile.currency.symbol}} {{ branchProfile.currentYearAverageIncome }}</span
                     >
                   </div>
                   <div class="mt-2">
                     Average Expenses :
                     <span class="font-weight-bold"
-                      > {{ branchProfile.currentYearAverageExpense }}</span
+                      > {{branchProfile.currency.symbol}} {{ branchProfile.currentYearAverageExpense }}</span
                     >
                   </div>
                 </div>

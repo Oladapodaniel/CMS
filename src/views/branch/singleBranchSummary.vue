@@ -128,7 +128,7 @@
               class="col-md-12 mt-4 pt-2 font-weight-bold h4 text-right"
               v-loading="loading"
             >
-              {{ singleBranchInfo.currentYearAverageIncome }}
+             {{ singleBranchInfo.currentYearAverageIncome }}
             </div>
             <div
               class="total-bg col-md-12 py-3 font-weight-bold px-0 box-bottom text-center"

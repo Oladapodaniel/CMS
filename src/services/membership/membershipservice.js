@@ -1,5 +1,6 @@
-import axios from "@/gateway/backendapi";
+
 import store from '../../store/store'
+import axios from "@/gateway/backendapi";
 
 const membershipService = {
     getMembers() {
@@ -77,7 +78,7 @@ const membershipService = {
 
     getFirstTimers() {
         return new Promise((resolve, reject) => {
-            axios.get("/api/People/getAllFirstTimers")
+            axios.get("/api/People/GetAllFirstTimers?page=1")
                 .then(res => {
                     resolve(res.data);
                 })
