@@ -746,7 +746,7 @@ export default {
     const serverItemsLength = ref(0);
     const serverOptions = ref({
       page: 1,
-      rowsPerPage: 100,
+      rowsPerPage: 50,
     });
     const paginatedTableLoading = ref(false);
     const selectedImage = ref({});
@@ -770,7 +770,7 @@ export default {
     const sendingwhatsappmessage = ref(false);
 
     watch(
-      serverOptions,
+      serverOptions.value,
       () => {
         getPeopleByPage();
       },

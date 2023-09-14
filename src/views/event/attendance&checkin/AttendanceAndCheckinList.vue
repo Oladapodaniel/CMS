@@ -217,7 +217,7 @@ export default {
     ]);
     const serverOptions = ref({
       page: 1,
-      rowsPerPage: 100,
+      rowsPerPage: 50,
     });
 
     const serverItemsLength = ref(0);
@@ -247,8 +247,9 @@ export default {
         const { data } = await axios.get(
           `api/CheckInAttendance/AllCheckInAttendances?page=${serverOptions.value.page}`
         );
+  
         // attendanceList.value = data;
-        if (data.items.length > 0) {
+        if (data && data.data.length > 0) {
           emit("pagedattendance", data);
         }
         paginatedTableLoading.value = false;
@@ -258,7 +259,7 @@ export default {
       }
     };
     watch(
-      serverOptions,
+      serverOptions.value,
       () => {
         getAttendancePage();
       },
@@ -459,21 +460,6 @@ export default {
     });
 
     const currentPage = ref(0);
-    const getPeopleByPage = async (page) => {
-      if (page < 0) return false;
-      try {
-        const { data } = await axios.get(
-          `/api/CheckInAttendance/AllCheckInAttendances?page=${page}`
-        );
-        if (data.items.length > 0) {
-          emit("pagedattendance", data);
-        }
-        
-        currentPage.value = page;
-      } catch (error) {
-        console.log(error);
-      }
-    };
 
     return {
       modal,
@@ -494,7 +480,6 @@ export default {
       searchText,
       searchAttendance,
       currentPage,
-      getPeopleByPage,
       serverOptions,
       getAttendancePage,
       serverItemsLength,

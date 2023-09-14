@@ -39,7 +39,7 @@ const saveCheckAttendanceItem = async (body) => {
 
 const getItems = async () => {
     return new Promise((resolve, reject) => {
-        axios.get(`/api/CheckInAttendance/AllCheckInAttendances?page=0`)
+        axios.get(`/api/CheckInAttendance/AllCheckInAttendances?page=1`)
             .then(res => {
                 resolve(res.data);
             })

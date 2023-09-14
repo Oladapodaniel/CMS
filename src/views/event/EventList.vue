@@ -590,7 +590,7 @@ export default {
 
     const serverOptions = ref({
       page: 1,
-      rowsPerPage: 100,
+      rowsPerPage: 50,
     });
 
     const showConfirmModal = (id, index) => {
@@ -708,7 +708,7 @@ export default {
         const { data } = await axios.get(
           `/api/eventreports/eventReports?page=${serverOptions.value.page}`
         );
-        if (data.activities.length > 0) {
+        if (data && data.data.length > 0) {
           filterEvents.value = [];
           emit("activity-per-page", data.data);
           currentPage.value = serverOptions.value.page;

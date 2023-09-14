@@ -83,9 +83,9 @@ const communicationService = {
         }
     },
 
-    async getSentEmails() {
+    async getSentEmails(page) {
         try {
-            const { data } = await axios.get(`/api/Messaging/getAllSentEmails?page=1`);
+            const { data } = await axios.get(`/api/Messaging/getAllSentEmails?page=${page}`);
             return data;
         } catch (error) {
             stopProgressBar();
@@ -163,7 +163,7 @@ const communicationService = {
     },
     getAllSentVoice() {
         return new Promise((resolve, reject) => {
-            axios.get('api/Messaging/getAllSentVoice')
+            axios.get('api/Messaging/getAllSentVoice?Page=1')
                 .then(res => {
                     resolve(res.data);
                 })

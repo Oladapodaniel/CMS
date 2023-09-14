@@ -344,11 +344,11 @@ export default {
     ]);
     const serverOptions = ref({
       page: 1,
-      rowsPerPage: 100,
+      rowsPerPage: 50,
     });
 
     watch(
-      serverOptions,
+      serverOptions.value,
       () => {
         getPeopleByPage();
       },
@@ -564,7 +564,7 @@ export default {
           `/api/Financials/Contributions/Transactions?page=${serverOptions.value.page}`
         );
         console.log(data, 'bbb');
-        if (data && data.length > 0) {
+        if (data && data.data.length > 0) {
           emit("get-pages", data);
           currentPage.value = serverOptions.value.page;
         }

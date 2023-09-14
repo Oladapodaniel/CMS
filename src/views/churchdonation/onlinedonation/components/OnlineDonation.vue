@@ -419,7 +419,7 @@ export default {
         );
         if (data) {
           emit("get-pages", data);
-          currentPage.value = page;
+          currentPage.value = serverOptions.value.page;
         }
       } catch (error) {
       
@@ -428,10 +428,10 @@ export default {
 
     const serverOptions = ref({
       page: 1,
-      rowsPerPage: 100,
+      rowsPerPage: 50,
     });
 
-    watch(serverOptions, () => {
+    watch(serverOptions.value, () => {
       getPeopleByPage();
     },
       { deep: true }

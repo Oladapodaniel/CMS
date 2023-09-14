@@ -77,7 +77,7 @@
 </template>
 
 <script>
-    import axios from '@/gateway/backendapi'
+    // import axios from '@/gateway/backendapi'
     import { ref, onMounted, inject } from 'vue'
     import EventList from './EventList'
     import Loader from '../accounting/offering/SkeletonLoader'

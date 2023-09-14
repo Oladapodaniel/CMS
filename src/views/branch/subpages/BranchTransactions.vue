@@ -117,8 +117,8 @@
                 v-model:current-page="serverOptions.page"
                 v-model:page-size="serverOptions.rowsPerPage"
                 background
-                layout="prev, pager, next, jumper"
-                :total="searchBranchTransactions.length"
+                layout="total, prev, pager, next, jumper"
+                :total="totalItems"
                 @size-change="handleSizeChange"
                 @current-change="handleCurrentChange"
               />
@@ -153,7 +153,7 @@ export default {
     const searchText = ref("");
     const loading = ref(false);
     const branchId = ref("");
-    const totalItem = ref(0);
+    const totalItems = ref();
     const branchID = ref(localStorage.getItem("branchId"));
     const branchTransactionHeaders = ref([
       { name: "DATE", value: "date" },
@@ -169,13 +169,12 @@ export default {
       branchId.value = payload.id;
       try {
         let { data } = await axios.get(
-          `/api/Branching/${payload.id}/transactions`
+          `/api/Branching/${payload.id}/transactions?page=1`
         );
         loading.value = false;
-        console.log(data);
-        branchTransactions.value = data.returnObject.contribution;
-        totalItem.value = data.returnObject.totalItem;
-        if (data.returnObject.contribution.length === 0) {
+        branchTransactions.value = data.data;
+        totalItems.value = data.totalItems;
+        if (data.data.length === 0) {
           ElMessage({
             type: "warning",
             message: "There are no transaction in this branch yet.",
@@ -198,20 +197,20 @@ export default {
     };
     const serverOptions = ref({
       page: 1,
-      rowsPerPage: 100,
+      rowsPerPage: 50,
     });
 
     const getTransactionList = async () => {
       loading.value = true;
       try {
         let { data } = await axios.get(
-          `/api/Branching/${branchID.value}/transactions`
+          `/api/Branching/${branchID.value}/transactions?page=1`
         );
         loading.value = false;
         console.log(data);
-        branchTransactions.value = data.returnObject.contribution;
-        totalItem.value = data.returnObject.totalItem;
-        if (data.returnObject.contribution.length === 0) {
+        branchTransactions.value = data.data;
+        totalItems.value = data.totalItems;
+        if (data.data.length === 0) {
           ElMessage({
             type: "warning",
             message: "There are no transaction in this branch yet.",
@@ -253,8 +252,9 @@ export default {
           `/api/Branching/${branchID.value}/transactions?page=${serverOptions.value.page}`
         );
         console.log(data);
-        branchTransactions.value = data.returnObject.contribution;
-        currentPage.value = page;
+        branchTransactions.value = data.data;
+        totalItems.value = data.totalItems
+        currentPage.value = serverOptions.value.page;
       } catch (error) {
         console.log(error);
       }
@@ -342,7 +342,7 @@ export default {
       branchID,
       branchId,
       currentPage,
-      totalItem,
+      totalItems,
     };
   },
 };

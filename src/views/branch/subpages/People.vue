@@ -153,8 +153,8 @@
                 v-model:current-page="serverOptions.page"
                 v-model:page-size="serverOptions.rowsPerPage"
                 background
-                layout="prev, pager, next, jumper"
-                :total="searchBranchMember.length"
+                layout="total, prev, pager, next, jumper"
+                :total="totalItems"
                 @size-change="handleSizeChange"
                 @current-change="handleCurrentChange"
               />
@@ -188,6 +188,7 @@ export default {
     const marked = ref([]);
     const loading = ref(false);
     const branchId = ref("");
+    const totalItems = ref();
     const branchID = ref(localStorage.getItem("branchId"));
     const branchMemberHeaders = ref([
       { name: "PICTURE", value: "pictureUrl" },
@@ -203,7 +204,7 @@ export default {
 
     const serverOptions = ref({
       page: 1,
-      rowsPerPage: 100,
+      rowsPerPage: 50,
     });
 
     const handleSizeChange = (val) => {
@@ -222,11 +223,12 @@ export default {
       branchId.value = payload.id;
       try {
         let { data } = await axios.get(
-          `/api/BranchNetwork/People?branchID=${payload.id}`
+          `/api/BranchNetwork/People?page=1&branchID=${payload.id}`
         );
         loading.value = false;
         console.log(data);
-        branchMembers.value = data;
+        branchMembers.value = data.data;
+        totalItems.value = data.totalItems
         if (data.length === 0) {
           ElMessage({
             type: "warning",
@@ -245,10 +247,11 @@ export default {
       // const branchID = localStorage.getItem('branchId')
       try {
         let { data } = await axios.get(
-          `/api/BranchNetwork/People?branchID=${branchID.value}`
+          `/api/BranchNetwork/People?page=1&branchID=${branchID.value}`
         );
         console.log(data);
-        branchMembers.value = data;
+        branchMembers.value = data.data;
+        totalItems.value = data.totalItems;
          loading.value = false;
         if (data.length === 0) {
           ElMessage({
@@ -362,6 +365,7 @@ export default {
       branchMemberHeaders,
       branchID,
       handleSelectionChange,
+      totalItems,
       serverOptions,
       searchIsVisible,
       toggleFilterFormVissibility,

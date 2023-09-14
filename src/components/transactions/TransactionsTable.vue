@@ -261,7 +261,7 @@ export default {
 
     const serverOptions = ref({
       page: 1,
-      rowsPerPage: 100,
+      rowsPerPage: 50,
     });
 
      watch(serverOptions, () => {
@@ -277,7 +277,6 @@ export default {
           `/api/Financials/Accounts/v2/Transactions?page=${serverOptions.value.page}`
         );
         allTransactions.value = data.records;
-        console.log(allTransactions.value, "khkhkjhk");
         paginatedTableLoading.value = false
       } catch (error) {
         paginatedTableLoading.value = false
