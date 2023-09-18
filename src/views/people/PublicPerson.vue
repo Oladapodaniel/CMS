@@ -1379,15 +1379,10 @@
 <script>
 import moment from "moment";
 import { ref, reactive, computed, inject } from "vue";
-// import router from "@/router/index";
-// import store from "../../store/store"
 import axios from "@/gateway/backendapi";
 import { useRoute } from "vue-router";
-// import { getCurrentInstance } from "vue";
-import Calendar from "primevue/calendar";
-import Dropdown from "primevue/dropdown";
 import { useStore } from "vuex";
-import { ElMessage, ElMessageBox } from "element-plus";
+import { ElMessage } from "element-plus";
 import membershipService from "../../services/membership/membershipservice";
 import collector from "../../services/groupArray/mapTree";
 import flatten from "../../services/groupArray/flatTree";
@@ -1395,15 +1390,10 @@ import swal from "sweetalert";
 // import lookupService from "../../services/lookup/lookupservice";
 
 export default {
-  components: {
-    Dropdown,
-    Calendar,
-  },
   setup() {
     const primarycolor = inject("primarycolor");
     const store = useStore();
     const hideCelebTab = ref(false);
-    // const confirm = useConfirm();
     const hideAddInfoTab = ref(true);
     const showCelebTab = () => (hideCelebTab.value = !hideCelebTab.value);
     const showAddInfoTab = () => (hideAddInfoTab.value = !hideAddInfoTab.value);
@@ -1425,12 +1415,6 @@ export default {
     const addToGroupLoading = ref(false);
     const churchLogo = ref("");
     const churchName = ref("");
-
-    console.log(route.query.tenantId, "hhhhhhh");
-    console.log(route.query.groupID, "httttt");
-    // console.log(route.papersonId, 'httttt');
-    // console.log(route.params.id, 'httttt');
-
     const loading = ref(false);
     const months = [
       "January",
@@ -1470,9 +1454,7 @@ export default {
     getCustomFields();
 
     const birthDaysArr = computed(() => {
-      console.log(birthDate.month(), "month");
       const arrOfDays = [];
-      console.log(daysInBirthMonth.value, "dm");
       for (let i = 1; i <= daysInBirthMonth.value; i++) {
         arrOfDays.push(i);
       }
@@ -1685,7 +1667,6 @@ export default {
             `/PublicMemberRegister?tenantID=${route.query.tenantId}&groupId=${route.query.groupID}`,
             formData
           );
-          console.log(response);
           disableClick.value = false;
 
           if (response.status === 200 || response.status === 201) {
@@ -1712,7 +1693,6 @@ export default {
           person.yearOfWedding = "";
           person.occupation = "";
         } catch (err) {
-          console.log(err);
           loading.value = false;
           if (err.toString().toLowerCase().includes("network error")) {
             ElMessage({
@@ -1743,7 +1723,6 @@ export default {
             `/PublicMemberRegister?tenantID=${route.query.tenantId}`,
             formData
           );
-          console.log(response);
           disableClick.value = false;
 
           if (response.status === 200 || response.status === 201) {
@@ -1770,7 +1749,6 @@ export default {
           person.yearOfWedding = "";
           person.occupation = "";
         } catch (err) {
-          console.log(err);
           loading.value = false;
           if (err.toString().toLowerCase().includes("network error")) {
             ElMessage({
@@ -1827,7 +1805,6 @@ export default {
         );
         const { data } = response;
         memberships.value = data;
-        console.log(memberships.value, "ms");
         // peopleClassifications.value = data.map((i) => i.name);
         // getPersonPeopleClassificationId();
       } catch (err) {
@@ -1842,7 +1819,6 @@ export default {
         .then((res) => {
           ageGroups.value = res.data;
           // getPersonAgeGroupId();
-          console.log(ageGroups.value);
         })
         .catch((err) => console.log(err.response));
     };
@@ -1906,7 +1882,6 @@ export default {
     // };
 
     // const populatePersonDetails = (data) => {
-    //   console.log(data, "🛒🛒🛒🛒🛒🛒")
     //   person.firstName = data.firstName;
     //   person.email = data.email;
     //   person.lastName = data.lastName;
@@ -1940,7 +1915,6 @@ export default {
     //     getPersonMaritalStatusId();
     //     getPersonPeopleClassificationId();
     //     getPersonAgeGroupId();
-    //     console.log(res);
     //     routeParams.value = route.params.personId;
     //   });
     // };
@@ -1959,10 +1933,8 @@ export default {
         const res = await axios.get(
           `/TenantInfo?tenantID=${route.query.tenantId}`
         );
-        console.log(res.data, "public member😎😎🤦‍♀️");
         churchLogo.value = res.data.logo;
         churchName.value = res.data.name;
-        console.log(churchLogo.value, "😎");
       } catch (error) {
         console.log(error);
       }
@@ -1974,7 +1946,6 @@ export default {
         let groups = await axios.get(
           `/public/groups?tenantId=${route.query.tenantId}`
         );
-        console.log(groups);
         allGroups.value = groups.data;
         let data = { children: allGroups.value };
         const { children } = collector(data);
@@ -1992,11 +1963,6 @@ export default {
     const dismissAddToGroupModal = ref("");
 
     const addMemberToGroup = async () => {
-      console.log(
-        "personId:" + route.params.personId,
-        "groupId:" + groupToAddTo.value.id,
-        groupToAddTo.value.id
-      );
       addToGroupError.value = false;
       if (!groupToAddTo.value || !groupToAddTo.value.id) {
         addToGroupError.value = true;
@@ -2020,7 +1986,6 @@ export default {
             personInfo,
             groupToAddTo.value.id
           );
-          console.log("RESPONSE", response);
           ElMessage({
             type: "success",
             message: `Member add to ${groupToAddTo.value.name}`,
@@ -2043,7 +2008,6 @@ export default {
           
         }
       } else {
-        console.log(groupToAddTo.value);
         peopleInGroupIDs.value.push({
           name: groupToAddTo.value.name,
           groupId: groupToAddTo.value.id,
