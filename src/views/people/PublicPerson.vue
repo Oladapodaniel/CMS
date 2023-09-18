@@ -1,13 +1,39 @@
 <template>
-  <!-- <div> -->
-    <!-- <div class="head-text">
+  <div class="container">
+    <div class="row">
+      <div class="col-md-12 d-flex justify-content-center my-3">
+        <div class="col-md-3 mt-4 d-flex align-items-center">
+          <div class="pl-2">
+            <img
+              :src="churchLogo"
+              v-if="churchLogo"
+              class="link-image"
+              alt=""
+              style="width: 60px"
+            />
+            <img
+              src="../../assets/dashboardlinks/churchcloud.png"
+              v-else
+              class="link-image"
+              alt=""
+            />
+          </div>
+          <span
+            ><h4 class="font-weight-bold mt-3">
+              {{ churchName ? churchName : "Churchplus" }}
+            </h4></span
+          >
+        </div>
+      </div>
+    </div>
+    <div class="head-text">
       <div>Add Contact</div>
     </div>
 
     <div class="bio-div mt-2">
       <p class="form-section-header">Bio:</p>
-    </div> -->
-    <!-- <el-container>
+    </div>
+    <el-container>
       <el-row :gutter="15" class="w-100 m-0">
         <el-col class="d-block d-md-none">
           <div class="grey-bg">
@@ -328,14 +354,15 @@
             <div class="d-flex align-items-center">
               <div class="font-weight-700">Additional~Information:</div>
               <el-divider> </el-divider>
-              <div>
+              <!-- <div>
                 <el-icon class="angle-icon" @click="showAddInfo = !showAddInfo">
                   <ArrowDownBold />
                 </el-icon>
-              </div>
+              </div> -->
             </div>
-            <el-collapse-transition>
-              <div v-show="showAddInfo">
+            <!-- <el-collapse-transition> -->
+              <!-- <div v-show="showAddInfo"> -->
+              <div>
                 <el-form-item>
                   <div
                     class="d-flex flex-column flex-lg-row justify-content-end w-100"
@@ -445,7 +472,7 @@
                   </div>
                 </el-form-item>
               </div>
-            </el-collapse-transition>
+            <!-- </el-collapse-transition> -->
             <div
               class="d-flex flex-column flex-lg-row justify-content-end w-100"
             >
@@ -523,9 +550,9 @@
           </div>
         </el-col>
       </el-row>
-    </el-container> -->
+    </el-container>
 
-    <!-- <div
+    <div
       class="modal fade"
       id="addToGroup"
       tabindex="-1"
@@ -617,10 +644,9 @@
           </div>
         </div>
       </div>
-    </div> -->
+    </div>
 
-
-    <!-- <div
+    <div
       class="modal fade"
       id="personNote"
       tabindex="-1"
@@ -699,9 +725,9 @@
           </div>
         </div>
       </div>
-    </div> -->
-  <!-- </div> -->
-  <div class="container container-top">
+    </div>
+  </div>
+  <!-- <div class="container container-top">
     <div class="col-md-12 d-flex justify-content-center my-3">
       <div class="col-md-3 mt-4 d-flex align-items-center">
         <div class="pl-2">
@@ -861,19 +887,9 @@
                       size="default"
                       v-if="item.controlType == 3"
                     />
-                    <!-- <Calendar
-                      v-if="item.controlType == 3"
-                      id="time24"
-                      v-model="item.data"
-                      :showTime="true"
-                      :showSeconds="true"
-                      style="width: 100%"
-                    /> -->
                   </div>
                 </div>
               </div>
-              <!-- </div> -->
-
               <div class="input-field">
                 <label for=""></label>
                 <div class="status-n-gender">
@@ -994,7 +1010,6 @@
                         placeholder="Day"
                         style="width: 100%"
                       />
-                      <!-- <SelectElem :typ="'membership'" name="birthday" :options="['Day', ...birthDaysArr ]" value="Day" @input="itemSelected"/> -->
                     </div>
                   </div>
 
@@ -1009,7 +1024,6 @@
                         "
                         style="width: 100%"
                       />
-                      <!-- <SelectElem :typ="'membership'" name="birthmonth" :options="['Month', ...months]" value="Month" @input="itemSelected"/> -->
                     </div>
                   </div>
 
@@ -1021,8 +1035,6 @@
                         placeholder="Year"
                         style="width: 100%"
                       />
-
-                      <!-- <SelectElem :typ="'membership'" name="birthyear" :options="['Year', ...birthYearsArr]" value="Year" @input="itemSelected"/> -->
                     </div>
                   </div>
                 </div>
@@ -1038,7 +1050,6 @@
                         :options="annDaysArr"
                         style="width: 100%"
                       />
-                      <!-- <SelectElem :typ="'membership'" name="annday" :options="['Day', ...annDaysArr]" value="Day" @input="itemSelected"/> -->
                     </div>
                   </div>
 
@@ -1053,7 +1064,6 @@
                         "
                         style="width: 100%"
                       />
-                      <!-- <SelectElem :typ="'membership'" name="annmonth" :options="['Month', ...months]" value="Month" @input="itemSelected"/> -->
                     </div>
                   </div>
 
@@ -1065,7 +1075,6 @@
                         placeholder="Year"
                         style="width: 100%"
                       />
-                      <!-- <SelectElem :typ="'membership'" name="annyear" :options="['Year', ...birthYearsArr]" value="Year" @input="itemSelected"/> -->
                     </div>
                   </div>
                 </div>
@@ -1073,7 +1082,6 @@
             </div>
 
             <div class="image-div other">
-              <!-- Empty space -->
             </div>
           </div>
         </div>
@@ -1082,14 +1090,6 @@
             <span class="tab-header col-3">Additional information:</span>
             <span class="h-rule col-7">
               <hr class="hr" />
-            </span>
-            <span class="col-2">
-              <!-- <span class="tb-icon-span"
-                ><i
-                  class="pi pi-angle-down tbb-icon"
-                  :class="{ 'tb-icon': !hideAddInfoTab }"
-                ></i
-              ></span> -->
             </span>
           </span>
           <div class="bio-info">
@@ -1114,27 +1114,13 @@
                       placeholder="--Select age range--"
                       style="width: 100%"
                     />
-                    <!-- <SelectElem name="agegroup" :options="['-Select age range', ...groupsByAge]" value="-Select age range" @input="itemSelected"/> -->
                   </div>
                 </div>
               </div>
             </div>
-
-            <div class="image-div other">
-              <!-- white space -->
-            </div>
           </div>
         </div>
 
-        <!-- DISABLED -->
-        <!-- <div
-          v-if="true"
-          class="add-info--con"
-          :class="{
-            'hide-tab': hideAddInfoTab,
-            'show-addinfo-tab': !hideAddInfoTab,
-          }"
-        > -->
         <div v-if="!route.query.groupID" class="">
           <div class="inputs">
             <div class="input-field pr-0 pr-md-1">
@@ -1158,119 +1144,7 @@
               </div>
             </div>
           </div>
-
-          <!-- <div class="label-text-box">
-            <p>Related information</p>
-            <small
-              >Including small groups and cell/house fellowship
-              membership</small
-            >
-          </div> -->
-          <!-- <div class="d-flex flex-column flex-lg-row justify-content-center w-100">
-                <label for="firstName" class="mr-3 font-weight-600">Which Group[s] Do You Belong To?</label>
-                <div class="input-width">
-                  <div class="p-2 border add-group bg-white">
-                    <div v-for="(item, index) in peopleInGroupIDs" :key="index">
-                      <div class="pt-1">{{ index + 1 }}. {{ item.name }}</div>
-                    </div>
-                    <div v-if="peopleInGroupIDs.length === 0">
-                      No group added yet
-                    </div>
-                    <div class="
-                      font-weight-700
-                      text-primary
-                      border-top
-                      text-center
-                      c-pointer
-                    " data-toggle="modal" data-target="#addToGroup">
-                      Choose group
-                    </div>
-                  </div>
-                </div>
-              </div> -->
-          <!-- <div class="info-box">
-            <div class="nav-bar">
-              <div
-                class="groups box"
-                @click.prevent="() => (areaInView = 'groups')"
-                :class="{ 'white-bg': areaInView === 'groups' }"
-              >
-                <a class="tab">Groups</a>
-              </div>
-              <div
-                class="notes box"
-                @click.prevent="() => (areaInView = 'notes')"
-                :class="{ 'white-bg': areaInView === 'notes' }"
-              >
-                <a class="tab">Notes</a>
-              </div>
-              <div
-                v-if="false"
-                class="follow-up box"
-                @click.prevent="() => (areaInView = 'followup')"
-                :class="{ 'white-bg': areaInView === 'followup' }"
-              >
-                <a class="tab">Follow-up</a>
-              </div>
-            </div>
-            <div class="info-box-body py-3">
-              <div
-                class="font-weight-700"
-                v-if="peopleInGroupIDs.length > 0 && areaInView === 'groups'"
-              >
-                Groups added
-              </div>
-              <div v-if="areaInView === 'groups'">
-                <span v-for="item in peopleInGroupIDs" :key="item.id"
-                  >| &nbsp;
-                  <span class="text-grey"
-                    >{{ item.name }} &nbsp;
-                    <i
-                      v-if="!routeParams"
-                      class="pi pi-times-circle text-danger c-pointer"
-                      @click="removeFromGroup(index)"
-                    ></i></span
-                  >&nbsp; | &nbsp;
-                </span>
-              </div>
-              <div v-if="areaInView === 'notes'">
-                <div v-for="(item, index) in personNotes" :key="index">
-                  <div class="font-weight-700">{{ item.title }}</div>
-                  <div class="mb-2">{{ item.description }}</div>
-                </div>
-              </div>
-              <button
-                @click.prevent="uploadImage"
-                class="info-btn"
-                v-if="areaInView === 'groups'"
-                data-toggle="modal"
-                data-target="#addToGroup"
-              >
-                Add to Group
-              </button>
-              <button
-                @click.prevent="uploadImage"
-                class="info-btn"
-                v-if="areaInView === 'fellowship'"
-              >
-                Add to House fellowship
-              </button>
-              <button
-                @click.prevent="uploadImage"
-                class="info-btn"
-                v-if="areaInView === 'notes'"
-                data-toggle="modal"
-                data-target="#personNote"
-              >
-                New Notes
-              </button>
-            </div>
-          </div> -->
         </div>
-
-        <!-- <div class="error-div">
-          <p v-show="!loading && showError">{{ errMessage }}</p>
-        </div> -->
         <div class="submit-div">
           <button
             class="primary-bg px-md-4 outline-none default-btn text-white border-0"
@@ -1299,94 +1173,6 @@
         </div>
       </div>
     </div>
-
-    <!-- Modal
-    <div
-      class="modal fade"
-      id="addToGroup"
-      tabindex="-1"
-      role="dialog"
-      aria-labelledby="addToGroup"
-      aria-hidden="true"
-    >
-      <div class="modal-dialog modal-lg" role="document">
-        <div class="modal-content">
-          <div class="modal-header" style="background: #ebeff4">
-            <h5 class="modal-title font-weight-bold" id="addToGroup">
-              Group Membership
-            </h5>
-            <button
-              type="button"
-              class="close"
-              data-dismiss="modal"
-              aria-label="Close"
-            >
-              <span aria-hidden="true">&times;</span>
-            </button>
-          </div>
-          <div class="modal-body">
-            <div class="row my-4">
-              <div class="col-md-4 text-md-right">
-                <label for="" class="font-weight-600">Name</label>
-              </div>
-              <div class="col-md-7">
-                <Dropdown
-                  v-model="groupToAddTo"
-                  :options="allGroups"
-                  style="width: 100%"
-                  :filter="false"
-                  placeholder="Select a group"
-                  optionLabel="name"
-                />
-              </div>
-            </div>
-
-            <div class="row">
-              <div class="col-md-4 text-md-right">
-                <label for="" class="font-weight-600">Position</label>
-              </div>
-              <div class="col-md-7">
-                <input
-                  type="text"
-                  v-model="position"
-                  class="form-control"
-                  placeholder="e.g Member"
-                />
-              </div>
-            </div>
-
-            <div class="row">
-              <div class="col-md-4">
-                <label for="" class="font-weight-600"></label>
-              </div>
-
-              <div class="col-md-7">
-                <div class="col-md-12 mt-3 text-center">
-                  <p class="my-1 text-danger" v-if="addToGroupError">
-                    Please select a group
-                  </p>
-                </div>
-                <div class="row mt-2">
-                  <div class="col-6 d-md-flex justify-content-end">
-                    <button class="default-btn" data-dismiss="modal">Cancel</button>
-                  </div>
-                  <div class="col-6">
-                    <button
-                      class="default-btn primary-bg border-0 contn-btn text-white"
-                      :data-dismiss="dismissAddToGroupModal"
-                      @click="addMemberToGroup"
-                    >
-                      Save
-                    </button>
-                  </div>
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
-    </div> -->
-    <!-- Group Modal -->
     <div
       class="modal fade"
       id="addToGroup"
@@ -1507,8 +1293,6 @@
         </div>
       </div>
     </div>
-
-    <!-- Note Modal -->
     <div
       class="modal fade"
       id="personNote"
@@ -1589,7 +1373,7 @@
         </div>
       </div>
     </div>
-  </div>
+  </div> -->
 </template>
 
 <script>
@@ -1605,6 +1389,8 @@ import Dropdown from "primevue/dropdown";
 import { useStore } from "vuex";
 import { ElMessage, ElMessageBox } from "element-plus";
 import membershipService from "../../services/membership/membershipservice";
+import collector from "../../services/groupArray/mapTree";
+import flatten from "../../services/groupArray/flatTree";
 import swal from "sweetalert";
 // import lookupService from "../../services/lookup/lookupservice";
 
@@ -1625,11 +1411,18 @@ export default {
     const peopleInGroupIDs = ref([]);
     const route = useRoute();
     const searchGroupText = ref("");
+    const showAddInfo = ref(false);
     const searchRef = ref(null);
     const memberClassificationId = ref(null);
+    const ageGroupId = ref(null);
+    const selectedTree = ref();
+    const showCelebration = ref(true);
     const personNotes = ref([]);
     const dynamicCustomFields = ref([]);
     const noteDetails = ref({});
+    const groupMappedTree = ref([]);
+    const flattenedTree = ref([]);
+    const addToGroupLoading = ref(false);
     const churchLogo = ref("");
     const churchName = ref("");
 
@@ -1761,9 +1554,15 @@ export default {
     const showError = ref(false);
     const disableClick = ref(false);
 
-   const setSelectedMem = () => {
+    const setSelectedMem = () => {
       selectedMembership.value = memberships.value.find((i) => {
         return i.id == memberClassificationId.value;
+      });
+    };
+
+    const setSelectedAgeGroup = () => {
+      selectedAgeGroup.value = ageGroups.value.find((i) => {
+        return i.id == ageGroupId.value;
       });
     };
 
@@ -1778,6 +1577,20 @@ export default {
         return i.id == genderId.value;
       });
     };
+
+    const setGroupValue = () => {
+      const response = flattenedTree.value.find(
+        (i) => i.value == selectedTree.value
+      );
+      groupToAddTo.value = {
+        name: response.label,
+        id: response.value,
+      };
+    };
+
+    const filterNodeMethod = (value, data) =>
+      data.label.toLowerCase().includes(value.toLowerCase());
+
 
     const addPerson = async () => {
       disableClick.value = true;
@@ -2163,6 +1976,12 @@ export default {
         );
         console.log(groups);
         allGroups.value = groups.data;
+        let data = { children: allGroups.value };
+        const { children } = collector(data);
+        groupMappedTree.value = children;
+        if (groupMappedTree.value && groupMappedTree.value.length > 0) {
+          flattenedTree.value = groupMappedTree.value.flatMap(flatten());
+        }
       } catch (error) {
         console.log(error);
       }
@@ -2181,6 +2000,7 @@ export default {
       addToGroupError.value = false;
       if (!groupToAddTo.value || !groupToAddTo.value.id) {
         addToGroupError.value = true;
+        addToGroupLoading.value = true;
         return false;
       }
       dismissAddToGroupModal.value = "modal";
@@ -2206,6 +2026,7 @@ export default {
             message: `Member add to ${groupToAddTo.value.name}`,
             duration: 6000,
           });
+          addToGroupLoading.value = false;
 
           peopleInGroupIDs.value.push({
             name: groupToAddTo.value.name,
@@ -2214,9 +2035,12 @@ export default {
           });
 
           groupToAddTo.value = {};
+          selectedTree.value = "";
           position.value = "";
         } catch (error) {
           console.log(error);
+          addToGroupLoading.value = false;
+          
         }
       } else {
         console.log(groupToAddTo.value);
@@ -2273,21 +2097,28 @@ export default {
       startingYear,
       memberClassificationId,
       daysInBirthMonth,
+      groupMappedTree,
       daysInAnnMonth,
       editBirthDateValue,
       editAnnDateValue,
       birthMonth,
       route,
+      setGroupValue,
       birthDay,
       birthYear,
       annMonth,
       annDay,
       annYear,
       areaInView,
+      setSelectedAgeGroup,
       person,
+      addToGroupLoading,
       addPerson,
       peopleClassifications,
-      setSelectedGender, setSelectedMem,
+      ageGroupId,
+      setSelectedGender,
+      setSelectedMem,
+      flattenedTree,
       genderId,
       url,
       memberToEdit,
@@ -2295,6 +2126,7 @@ export default {
       uploadImage,
       loading,
       birthDaysArr,
+      filterNodeMethod,
       birthYearsArr,
       annDaysArr,
       errMessage,
@@ -2302,6 +2134,7 @@ export default {
       showCelebTab,
       hideAddInfoTab,
       showAddInfoTab,
+      showAddInfo,
       genders,
       maritalStatus,
       gendersArr,
@@ -2315,6 +2148,7 @@ export default {
       getAgeGroups,
       showError,
       groupToAddTo,
+      selectedTree,
       position,
       allGroups,
       addMemberToGroup,
@@ -2327,6 +2161,7 @@ export default {
       setSelectedMaritalStatus,
       maritalStatusId,
       focusInput,
+      showCelebration,
       searchRef,
       selectGroup,
       removeFromGroup,
