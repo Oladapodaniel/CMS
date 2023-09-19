@@ -73,10 +73,10 @@
             <div class="col-md-12 px-0">
                 <label for="" class="font-weight-600">And message</label>
             </div>
-            <div class="col-md-12">{{ item.message }}
+            <div class="col-md-12">
               <!-- <div id="app">
               </div> -->
-              <DecoupledEditor v-model="item.message" @change="handleMessage" :loadedMessage="loadedMessage"  :label="'you find me'" />
+              <DecoupledEditor v-model="editorData" :loadedMessage="loadedMessage"  :label="'you find me'" />
                 <!-- <textarea name="" id="" class="w-100 form-control" rows="3" v-model="item.message" @change="handleMessage"></textarea> -->
             </div>
         </div>
@@ -89,6 +89,7 @@ import { watchEffect } from '@vue/runtime-core';
 import DecoupledEditor from '@/components/RichEditor';
 export default {
     props: [ "selectedActionIndex", "parameters", "selectEmailList" ],
+    inheritAttrs: false,
     components: { 
     DecoupledEditor,
   },
@@ -98,6 +99,7 @@ export default {
         const person = ref(false);
         const removeOthers = ref([])
         const loadedMessage = ref("")
+        const editorData = ref("")
         const handleSendPersonMail = () => {
 
             if (data[props.selectedActionIndex]) {
@@ -247,23 +249,22 @@ export default {
         }
         const message = ref('');
         const handleMessage = () => {
-            console.log('jjjjjj');
-            if (data[props.selectedActionIndex]) {
-                data[props.selectedActionIndex].JSONActionParameters.message = removeOthers.value[0].message;
-                loadedMessage.value = removeOthers.value[0].message
-            }   else {
-                data[props.selectedActionIndex] = new Object()
-                data[props.selectedActionIndex].JSONActionParameters = new Object()
-                data[props.selectedActionIndex].JSONActionParameters.message = removeOthers.value[0].message;
-                loadedMessage.value = removeOthers.value[0].message
-            }
-
-            console.log(data[props.selectedActionIndex]);
-            emit('updateaction', data, props.selectedActionIndex, actionType);
+            
         }
 
         const parsedData = ref({ })
         watchEffect(() => {
+            if (editorData.value) {
+            if (data[props.selectedActionIndex]) {
+                data[props.selectedActionIndex].JSONActionParameters.message = editorData.value;
+            }   else {
+                data[props.selectedActionIndex] = new Object()
+                data[props.selectedActionIndex].JSONActionParameters = new Object()
+                data[props.selectedActionIndex].JSONActionParameters.message = removeOthers.value[0].message;
+            }
+
+            emit('updateaction', data, props.selectedActionIndex, actionType);
+            }
 
             if (props.selectEmailList) {
                 removeOthers.value = props.selectEmailList.filter((i,index) => {
@@ -313,6 +314,7 @@ export default {
 
                 removeOthers.value[0].message = parsedData.value.message;
                 data[props.selectedActionIndex].JSONActionParameters.message = parsedData.value.message;
+                loadedMessage.value = parsedData.value.message;
 
                 console.log(parsedData.value, 'dataaaa')
             }
@@ -347,7 +349,8 @@ export default {
             handleSubject,
             message,
             handleMessage,
-            removeOthers
+            removeOthers,
+            editorData
         }
     }
 }
