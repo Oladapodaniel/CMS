@@ -3,7 +3,7 @@ import axios from "@/gateway/backendapi";
 
 const getContributionList = async () => {
     return new Promise((resolve, reject) => {
-        axios.get("/api/Financials/Contributions/Transactions")
+        axios.get("/api/Financials/Contributions/Transactions?page=1")
             .then(res => {
                 resolve(res.data);
             })

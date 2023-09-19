@@ -95,7 +95,7 @@
       </div>
     </div>
     <div class="d-flex flex-column flex-md-row justify-content-md-center">
-      <el-icon v-if="(firstTimersList.length == 0 && loading )" class="is-loading" :size="30">
+      <el-icon v-if="( loading )" class="is-loading" :size="30">
         <Loading />
       </el-icon>
     </div>
@@ -147,20 +147,20 @@
         </div>
     </el-dialog>
     
-    <div v-if="firstTimersList.length > 0 && !loading && !networkError && showFirsttimer" class="event-list">
-      <FirstTimersList :firstTimersList="firstTimersList" />
+    <div v-if="!loading && !networkError && showFirsttimer" class="event-list">
+      <FirstTimersList :firstTimersList="firstTimersList" :totalItems="totalItems" />
     </div>
     <div v-if="newConvertList.length > 0 && !loading && !networkError && showNewConvert" class="event-list">
       <NewConvertList :newConvertList="newConvertList" />
     </div>
-    <div v-if="firstTimersList.length === 0 && !loading && !networkError && showFirsttimer" class="no-person">
+    <div v-if="!loading && !networkError && showFirsttimerPage && firstTimersList === 0" class="no-person">
       <div class="empty-img">
         <p><img src="../../assets/people/people-empty.svg" alt="" /></p>
          <p class="tip">You haven't added any First timer yet</p>
          <el-button :color="primarycolor" @click="addNewFirsttimer" class="ml-2 header-btn" round>Add First Timers</el-button>
       </div>
     </div>
-    <div v-if="newConvertList.length === 0 && !loading && !networkError && showNewConvert" class="no-person">
+    <div v-if="(newConvertList.length === 0) && !loading && !networkError && showNewConvertPage" class="no-person">
       <div class="empty-img">
         <p><img src="../../assets/people/people-empty.svg" alt="" /></p>
         <p class="tip">You haven't added any New convert yet</p>
@@ -172,7 +172,7 @@
       <div>Opps, Your internet connection was disrupted</div>
     </div>
 
-    <el-skeleton class="w-100" animated v-if="loading ">
+    <el-skeleton class="w-100" animated v-if="loading && firstTimersList === 0 ">
       <template #template>
         <div style="display: flex;
                 align-items: center;
@@ -205,12 +205,15 @@ export default {
   components: { FirstTimersList, NewConvertList },
   setup() {
     const primarycolor = inject('primarycolor')
-    const firstTimersList = ref(store.getters['membership/allFirstTimers'])
+    const firstTimersList = ref(store.getters['membership/allFirstTimers'].data)
+    const totalItems = ref(store.getters['membership/allFirstTimers'].totalItems)
     const loading = ref(false)
     const tenantID = ref("")
     const selectedLink = ref(null)
     const showFirsttimer = ref(true)
+    const showFirsttimerPage = ref(true)
     const showNewConvert = ref(false)
+    const showNewConverPage = ref(false)
     const newConvertList = ref(store.getters['membership/allNewConverts'])
     const importFile = ref("")
     const image = ref("");
@@ -227,12 +230,24 @@ export default {
     const addNewConvert = () => {
       router.push('/tenant/people/addnewconvert')
     }
+    const getlistfii = async () =>{
+      try {
+        const data = await axios.get('/api/People/GetAllFirstTimers?page=1')
+        console.log(data, 'jjjj');
+      } catch (error) {
+        
+      }
+    }
+    getlistfii()
 
     const getFirstTmersList = async () => {
       try {
         loading.value = true
+        // showFirsttimerPage.value = false
         store.dispatch('membership/setFirstTimerData').then(response => {
-          firstTimersList.value = response
+          firstTimersList.value = response.data
+          totalItems.value = response.totalItems
+          // showFirsttimerPage.value = true
           loading.value = false
         })
       } catch (error) {
@@ -246,7 +261,7 @@ export default {
         loading.value = false
       }
     }
-    if (firstTimersList.value.length == 0) getFirstTmersList()
+    
 
     const getAllNewConvert = async () =>{
       loading.value = true
@@ -460,6 +475,8 @@ export default {
     onMounted(() => {
       if (newConvertList.value && newConvertList.value.length == 0)
         getAllNewConvert();
+      if ((!firstTimersList.value) || (firstTimersList.value && firstTimersList.value.data && firstTimersList.value.data.length == 0))
+         getFirstTmersList()
     });
 
     // const setLoading = (payload) => {
@@ -470,7 +487,7 @@ export default {
     //   loading.value = payload
     // }
 
-    return { firstTimersList, newConvertLink, copylink2,  importNewConvert, getQrCode2, newConvertList, QRCodeDialog, xsOnly, qrCode, getQrCode, copylink, selectedLink, tenantID, getUser, firstTimerLink,  addNewFirsttimer, addNewConvert,  newConvertDetail, firttimerDetail, showFirsttimer, showNewConvert, getFirstTmersList, loading, fileUpload, imageSelected, image, displayModal, importFile, firstTimerData, addToFirstTimers, closeModal, importFirstTimer, networkError, setFirsttimer, mdAndUp, lgAndUp, xlAndUp, primarycolor };
+    return { firstTimersList, showNewConverPage,  showNewConverPage, totalItems, showFirsttimerPage, newConvertLink, copylink2,  importNewConvert, getQrCode2, newConvertList, QRCodeDialog, xsOnly, qrCode, getQrCode, copylink, selectedLink, tenantID, getUser, firstTimerLink,  addNewFirsttimer, addNewConvert,  newConvertDetail, firttimerDetail, showFirsttimer, showNewConvert, getFirstTmersList, loading, fileUpload, imageSelected, image, displayModal, importFile, firstTimerData, addToFirstTimers, closeModal, importFirstTimer, networkError, setFirsttimer, mdAndUp, lgAndUp, xlAndUp, primarycolor };
   },
 };
 

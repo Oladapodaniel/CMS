@@ -268,7 +268,7 @@ const getTransactionsByAccount = (id) => {
 const getDonationTransaction = () => {
     return new Promise((resolve, reject) => {
         axios
-            .get("/api/Financials/Donation/Transactions")
+            .get("/api/Financials/Donation/Transactions?page=1")
             .then(res => {
                 resolve(res.data);
             })

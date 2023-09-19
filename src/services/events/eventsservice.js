@@ -94,7 +94,7 @@ const eventsService = {
     },
     getEventItems() {
         return new Promise((resolve, reject) => {
-            axios.get('/api/eventreports/eventReports')
+            axios.get('/api/EventReports/EventReports?page=1')
                 .then(res => {
                     resolve( res.data );
                 })
@@ -109,6 +109,25 @@ const eventsService = {
                 })
         })
     },
+
+    getEventReportSummary() {
+        return new Promise((resolve, reject) => {
+            axios.get('/api/EventReports/EventReportDashboard?page=1')
+                .then(res => {
+                    resolve( res.data );
+                })
+                .catch(error => {
+                     /*eslint no-undef: "warn"*/
+                     NProgress.done();
+                    if (error.response) {
+                        reject(error.response);
+                    } else {
+                        reject(error);
+                    }
+                })
+        })
+    },
+
     approveServiceReport(body) {
         return new Promise((resolve, reject) => {
             axios.put('/api/Events/approveservicetoggle', body)

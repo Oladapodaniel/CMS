@@ -112,7 +112,7 @@
 <script>
 import { ref, inject, onMounted } from "vue";
 import store from "../../../store/store";
-import axios from "@/gateway/backendapi";
+// import axios from "@/gateway/backendapi";
 // import OfferingList from './OfferingList'
 import OnlineDonation from "./components/OnlineDonation";
 import deviceBreakpoint from "../../../mixins/deviceBreakpoint";
@@ -122,9 +122,9 @@ export default {
   },
   setup() {
     const donationTransactions = ref(
-      store.getters["donation/donationItem"].contribution
+      store.getters["donation/donationItem"].data
     );
-    const totalItem = ref(store.getters["donation/donationItem"].totalItem);
+    const totalItem = ref(store.getters["donation/donationItem"].totalItems);
     const loading = ref(false);
     const networkError = ref(false);
     const { lgAndUp, xlAndUp } = deviceBreakpoint();
@@ -136,9 +136,9 @@ export default {
         .dispatch("donation/setDonationTransaction")
         .then((res) => {
           loading.value = false;
-          donationTransactions.value = res.contribution;
+          donationTransactions.value = res.data;
 
-          totalItem.value = res.totalItem;
+          totalItem.value = res.totalItems;
         })
 
         .catch((err) => {
@@ -156,15 +156,15 @@ export default {
       if (
         !donationTransactions.value ||
         (donationTransactions.value &&
-          donationTransactions.value.contribution &&
-          donationTransactions.value.contribution.length == 0)
+          donationTransactions.value.data &&
+          donationTransactions.value.data.length == 0)
       ) {
         getDonationTransaction();
       }
     });
 
     const getOfferingPages = (payload) => {
-      donationTransactions.value = payload.returnObject.contribution;
+      donationTransactions.value = payload.data
     };
 
     const updateTransac = (payload) => {

@@ -28,19 +28,19 @@
           <div class="font-weight-bold col-md-12 px-0">
             <div class="font-weight-bold h5">Things You Can Do</div>
             <div class="mt-2">
-              <router-link class="primary--text" to="/tenant/people/add"
+              <router-link class="primary--text text-decoration-none" to="/tenant/people/add"
                 >Add Member</router-link
               >
             </div>
-            <div class="mt-2 h6 font-weight-bold">
+            <div class="mt-2 h6 font-weight-bold ">
               <router-link
-                class="primary--text"
+                class="primary--text text-decoration-none cursor-pointer "
                 to="/tenant/people/addfirsttimer"
                 >Add First Timer</router-link
               >
             </div>
             <div
-              class="mt-2 h6 font-weight-bold primary--text"
+              class="mt-2 h6 font-weight-bold primary--text cursor-pointer"
               @click="sendMarkedMemberSms"
             >
               <!-- <router-link class="primary--text" to="/tenant/sms/compose"
@@ -50,12 +50,12 @@
               > -->
             </div>
             <div
-              class="mt-2 h6 font-weight-bold primary--text"
+              class="mt-2 h6 font-weight-bold primary--text cursor-pointer"
               @click="sendMarkedBranchEmail"
             >
               Send Email
             </div>
-            <div class="mt-2 h6 font-weight-bold">
+            <div class="mt-2 h6 font-weight-bold cursor-pointer" >
               <div @click="displayWhatsappDrawer" class="primary--text">
                 Send Whatsap
               </div>
@@ -248,7 +248,7 @@
               </div>
 
               <div class="font-weight-bold h5 mt-2" v-if="openHideAmonut">
-                NGN {{ getAllAverageIncome }}
+                 {{ getAllAverageIncome }}
               </div>
               <div
                 class="font-weight-bold mt-2 text-secondary h5"
@@ -640,13 +640,13 @@
                     <div class="mt-2">
                       Average Income :
                       <span class="font-weight-bold"
-                        >NGN {{ branchProfile.currentYearAverageIncome }}</span
+                        > {{ branchProfile.currentYearAverageIncome }}</span
                       >
                     </div>
                     <div class="mt-2">
                       Average Expenses :
                       <span class="font-weight-bold"
-                        >NGN {{ branchProfile.currentYearAverageExpense }}</span
+                        > {{ branchProfile.currentYearAverageExpense }}</span
                       >
                     </div>
                   </div>
@@ -731,13 +731,13 @@
                   <div class="mt-2">
                     Average Income :
                     <span class="font-weight-bold"
-                      >NGN {{ branchProfile.currentYearAverageIncome }}</span
+                      > {{branchProfile.currency.symbol}} {{ branchProfile.currentYearAverageIncome }}</span
                     >
                   </div>
                   <div class="mt-2">
                     Average Expenses :
                     <span class="font-weight-bold"
-                      >NGN {{ branchProfile.currentYearAverageExpense }}</span
+                      > {{branchProfile.currency.symbol}} {{ branchProfile.currentYearAverageExpense }}</span
                     >
                   </div>
                 </div>
@@ -859,11 +859,24 @@
       v-model="showWhatsapp"
       :size="mdAndUp || lgAndUp || xlAndUp ? '70%' : '100%'"
       direction="rtl"
+    >
+      <template #default>
+        <div>
+          <whatSappComponent :allBranchDetail="allBranchDetail" @closesidemodal="() => (showWhatsapp = false)" />
+          <!-- <emailComponent :selectedGroupMembers="markedMembers" @closesidemodal="() => showEmail = false" /> -->
+        </div>
+      </template>
+      
+    </el-drawer>
+    <!-- <el-drawer
+      v-model="showWhatsapp"
+      :size="mdAndUp || lgAndUp || xlAndUp ? '70%' : '100%'"
+      direction="rtl"
       class="whatsappdrawer"
     >
       <template #header> </template>
       <template #default>
-        <div v-if="whatsappClientState">
+        <div v-if="!whatsappClientState">
           <div class="d-flex justify-content-center align-items-center">
             <img src="../../assets/whatsappwhiteoutline.svg" />
             <h4 class="font-weight-700 text-dark mb-0 ml-2">
@@ -878,8 +891,7 @@
             }}
           </h4>
         </div>
-        <div v-if="false">
-          <!-- <div v-if="whatsappClientState"> -->
+          <div v-if="whatsappClientState">
           <div>
             <div>
               Recipient{{ sendWhatsappToMultiple ? "s" : "" }}
@@ -926,7 +938,6 @@
               {{ marked.length - 10 > 1 ? "others" : "other" }}
             </div>
           </div>
-          <!-- <div class="mt-3">Message</div> -->
           <div class="mt-4">
             <el-input
               type="textarea"
@@ -949,7 +960,7 @@
           >Send <img src="../../assets/send-jet.svg" class="ml-2"
         /></el-button>
       </template>
-    </el-drawer>
+    </el-drawer> -->
     <!-- <el-skeleton class="w-100" animated v-if="loading">
       <template #template>
         <div
@@ -992,6 +1003,7 @@ import axios from "@/gateway/backendapi";
 import DonutChart from "../../components/charts/DonutChart.vue";
 import RadialChart from "../../components/charts/RadialChart.vue";
 import ColumnChart from "@/components/charts/BranchColumnChart.vue";
+import whatSappComponent from "../groups/component/whatSappComponent.vue";
 import smsComponent from "../groups/component/smsComponent.vue";
 import emailComponent from "../groups/component/emailComponent.vue";
 import store from "../../store/store";
@@ -1004,6 +1016,7 @@ export default {
     DonutChart,
     BranchSettings,
     emailComponent,
+    whatSappComponent,
     AuthenticateWhatsapp,
     smsComponent,
     RadialChart,
@@ -1098,6 +1111,7 @@ export default {
       showBranchDetail.value = true;
       showbranchHierachy.value = false;
       store.dispatch("setCurrentBranch", item);
+      console.log(item, 'jjkjk');
     };
 
     onMounted(() => {

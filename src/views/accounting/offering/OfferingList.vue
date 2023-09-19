@@ -270,14 +270,14 @@
         <div class="text-danger d-flex justify-content-center" v-else>
           No records found
         </div>
-        <div class="table-footer">
+        <!-- <div class="table-footer">
           <Pagination
             @getcontent="getPeopleByPage"
             :itemsCount="totalOfferingCount"
             :currentPage="currentPage"
           />
-        </div>
-        <!-- <div class="d-flex justify-content-end my-3">
+        </div> -->
+        <div class="d-flex justify-content-end my-3">
           <el-pagination
             v-model:current-page="serverOptions.page"
             v-model:page-size="serverOptions.rowsPerPage"
@@ -287,7 +287,7 @@
             @size-change="handleSizeChange"
             @current-change="handleCurrentChange"
           />
-        </div> -->
+        </div>
       </div>
     </div>
   </div>
@@ -344,11 +344,11 @@ export default {
     ]);
     const serverOptions = ref({
       page: 1,
-      rowsPerPage: 100,
+      rowsPerPage: 50,
     });
 
     watch(
-      serverOptions,
+      serverOptions.value,
       () => {
         getPeopleByPage();
       },
@@ -558,15 +558,15 @@ export default {
         });
     };
     const currentPage = ref(0);
-    const getPeopleByPage = async (page) => {
+    const getPeopleByPage = async () => {
       try {
         const { data } = await axios.get(
-          `/api/Financials/Contributions/Transactions?page=${page}`
+          `/api/Financials/Contributions/Transactions?page=${serverOptions.value.page}`
         );
         console.log(data, 'bbb');
-        if (data && data.returnObject.contribution.length > 0) {
+        if (data && data.data.length > 0) {
           emit("get-pages", data);
-          currentPage.value = page;
+          currentPage.value = serverOptions.value.page;
         }
       } catch (error) {
         console.log(error);

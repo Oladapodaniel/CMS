@@ -107,7 +107,7 @@
           <div @click="showMemberRow(item)" class="c-pointer">{{ item.phoneNumber }}</div>
         </template>
         <template v-slot:howDidYouAboutUsName="{ item }">
-          <div @click="showMemberRow(item)" class="c-pointer">{{ item.howDidYouAboutUsName.replaceAll(" ", "_") }}</div>
+          <div @click="showMemberRow(item)" class="c-pointer">{{ item.howDidYouAboutUsName }}</div>
         </template>
         <template v-slot:interestedInJoining="{ item }">
           <div @click="showMemberRow(item)" class="c-pointer">{{ item.interestedInJoining }}</div>
@@ -257,7 +257,7 @@ import deviceBreakpoint from "../../mixins/deviceBreakpoint";
 import Table from "@/components/table/Table"
 
 export default {
-  props: ['firstTimersList'],
+  props: [ 'firstTimersList', 'totalItems' ],
   components: {
     FirstTimersChartArea,
     smsComponent,
@@ -280,6 +280,8 @@ export default {
     const tenantID = ref("")
     const selectedLink = ref(null)
     const totalFirstTimer = ref("")
+    const totalItems = ref(props.totalItems)
+    console.log(totalItems.value, 'jjjj');
     const showSMS = ref(false)
     const showEmail = ref(false)
     const paginatedTableLoading = ref(false)
@@ -354,9 +356,11 @@ export default {
     const totalFirsttimersCount = computed(() => {
       if (
         !totalFirstTimer.value
+      //  !totalItems.value
       )
         return 0;
       return totalFirstTimer.value;
+      // return totalItems.value;
     });
 
     const deleteMember = (id) => {
@@ -807,6 +811,7 @@ export default {
       contacts,
       disableBtn,
       hide,
+      totalItems,
       setFirsttimer,
       firstTimerLink,
       markedFirsttimers,

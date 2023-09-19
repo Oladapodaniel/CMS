@@ -21,13 +21,6 @@
               <template #dropdown>
                 <el-dropdown-menu>
                   <el-dropdown-item>
-                    <!-- <router-link
-                      class="w-100 text-dark text-decoration-none"
-                      :to="`/tenant/sms/compose?id=${singleBranchInfo.id}`"
-                    >
-                      <el-icon class="text-primary"><ChatDotRound /></el-icon>
-                      Send SMS
-                    </router-link> -->
                     <div
                       class="w-100 text-dark text-decoration-none"
                       @click="toggleSMS(singleBranchInfo.id)"
@@ -44,23 +37,8 @@
                       <el-icon class="text-primary"><Message /></el-icon>
                       Send Email
                     </div>
-                    <!-- <router-link
-                      class="w-100 text-dark text-decoration-none"
-                      to="/tenant/email/compose"
-                    >
-                      <el-icon class="text-primary"><Message /></el-icon>
-                      Send Email
-                    </router-link> -->
                   </el-dropdown-item>
                   <el-dropdown-item>
-                    <!-- <router-link
-                      class="w-100 text-dark text-decoration-none"
-                      to="/tenant/whatsapp/auth"
-                    >
-                      <el-icon class="text-primary"><ChatRound /></el-icon>
-                      Send Whatsap
-                    </router-link> -->
-
                     <div @click="displayWhatsappDrawer(singleBranchInfo)">
                       <el-icon class="text-primary"><ChatRound /></el-icon>
                       Send Whatsap
@@ -150,7 +128,7 @@
               class="col-md-12 mt-4 pt-2 font-weight-bold h4 text-right"
               v-loading="loading"
             >
-              {{ singleBranchInfo.currentYearAverageIncome }}
+             {{ singleBranchInfo.currentYearAverageIncome }}
             </div>
             <div
               class="total-bg col-md-12 py-3 font-weight-bold px-0 box-bottom text-center"
@@ -346,11 +324,24 @@
       v-model="showWhatsapp"
       :size="mdAndUp || lgAndUp || xlAndUp ? '70%' : '100%'"
       direction="rtl"
+    >
+      <template #default>
+        <div>
+          <whatSappComponent @closesidemodal="() => (showWhatsapp = false)" />
+          <!-- <emailComponent :selectedGroupMembers="markedMembers" @closesidemodal="() => showEmail = false" /> -->
+        </div>
+      </template>
+      
+    </el-drawer>
+    <!-- <el-drawer
+      v-model="showWhatsapp"
+      :size="mdAndUp || lgAndUp || xlAndUp ? '70%' : '100%'"
+      direction="rtl"
       class="whatsappdrawer"
     >
       <template #header> </template>
       <template #default>
-        <div v-if="whatsappClientState">
+        <div v-if="!whatsappClientState">
           <div class="d-flex justify-content-center align-items-center">
             <img src="../../assets/whatsappwhiteoutline.svg" />
             <h4 class="font-weight-700 text-dark mb-0 ml-2">
@@ -365,8 +356,7 @@
             }}
           </h4>
         </div>
-        <div v-if="false">
-          <!-- <div v-if="whatsappClientState"> -->
+          <div v-if="whatsappClientState">
           <div>
             <div>
               Recipient{{ sendWhatsappToMultiple ? "s" : "" }}
@@ -413,7 +403,6 @@
               {{ marked.length - 10 > 1 ? "others" : "other" }}
             </div>
           </div>
-          <!-- <div class="mt-3">Message</div> -->
           <div class="mt-4">
             <el-input
               type="textarea"
@@ -436,7 +425,7 @@
           >Send <img src="../../assets/send-jet.svg" class="ml-2"
         /></el-button>
       </template>
-    </el-drawer>
+    </el-drawer> -->
   </div>
 </template>
 
@@ -446,6 +435,7 @@ import ColumnChart from "@/components/charts/BranchColumnChart.vue";
 import axios from "@/gateway/backendapi";
 import smsComponent from "../groups/component/smsComponent.vue";
 import emailComponent from "../groups/component/emailComponent.vue";
+import whatSappComponent from "../groups/component/whatSappComponent.vue";
 import { socket } from "@/socket";
 // import { ElMessage } from "element-plus";
 import AuthenticateWhatsapp from "../../components/whatsapp/AuthenticateWhatsapp.vue";
@@ -455,6 +445,7 @@ import swal from "sweetalert";
 export default {
   components: {
     ColumnChart,
+    whatSappComponent,
     smsComponent,
     emailComponent,
     AuthenticateWhatsapp,

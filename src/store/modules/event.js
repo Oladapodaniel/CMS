@@ -6,7 +6,8 @@ const defaultState = (() => ({
           eventData: {},
           eventList: [],
           reportData: {},
-          eventItems : {}
+          eventItems : {},
+          eventReportSummary : {}
       }))
 
 export default {
@@ -20,6 +21,9 @@ export default {
     SET_EVENTITEMS (state, payload) {
       state.eventItems = payload
     },
+    SET_EVENTREPORTSUMMARY (state, payload) {
+      state.eventReportSummary = payload
+    },
     eventList(state, payload) {
       state.eventList = payload
     },
@@ -27,7 +31,7 @@ export default {
       state.eventItems.push(payload);
     },
     removeEventItem(state, payload) {
-      state.eventItems.activities = state.eventItems.activities.filter(
+      state.eventItems.data = state.eventItems.data.filter(
         (item) => item.id !== payload
       );
     },
@@ -56,6 +60,12 @@ export default {
           return response
       })
     },
+    setEventReportSummary ({ commit }) {
+      return eventitems.getEventReportSummary().then(response => {  
+          commit('SET_EVENTREPORTSUMMARY', response)
+          return response
+      })
+    },
     removeEventItemFromStore({ commit }, payload) {
       commit("removeEventItem", payload)
   },
@@ -64,7 +74,7 @@ export default {
     },
     async eventList({ commit }) {
       try {
-        const { data } = await axios.get("/api/eventreports/eventReports");
+        const { data } = await axios.get("/api/EventReports/EventReports?page=1");
         commit("eventList", data);
       } catch (error) {
         console.log(error);
@@ -82,6 +92,9 @@ export default {
   getters: {
     geteventitems: (state) => {
       return state.eventItems
+  },
+    geteventreportsummary: (state) => {
+      return state.eventReportSummary
   },
     eventData: state => state.currentUser,
     eventList: state => state.eventList,

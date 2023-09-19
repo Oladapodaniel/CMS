@@ -56,7 +56,7 @@
         </el-skeleton>
 
         <div v-if="(eventList && eventList.length > 0) && !loading && !networkError" class="container-fluid">
-            <EventList :eventList="eventList" :eventSummary="eventSummary" @activity-per-page="getPageActivity" @delete-event="deleteFromView"/>
+            <EventList :eventList="eventList" :eventSummary="eventSummary" :totalItems="totalItems" @activity-per-page="getPageActivity" @delete-event="deleteFromView"/>
         </div>
         <div v-else-if="(eventList && eventList.length === 0) && !loading &!networkError" class="no-person" >
         <div class="empty-img">
@@ -95,19 +95,42 @@ export default {
   setup() {
       const primarycolor = inject('primarycolor')
       const { lgAndUp, xlAndUp } = deviceBreakpoint();
-      const eventSummary = ref(store.getters["event/geteventitems"])
+      const eventSummary = ref(store.getters["event/geteventreportsummary"])
+      console.log(eventSummary.value, 'hhh');
       const loading = ref(false);
       const networkError = ref(false);
-      const eventList = ref(store.getters["event/geteventitems"].activities);
+      const eventList = ref(store.getters["event/geteventitems"].data);
+      const totalItems = ref(store.getters["event/geteventitems"].totalItems);
 
       const getEventList = async () => {
           loading.value = true;
           try {
             await store.dispatch("event/setEventItems").then((res) => {
               finish();
-              eventList.value = res.activities
+              eventList.value = res.data
+              totalItems.value = res.totalItems
+              loading.value = false
+              finish()
+            });
+          } catch (err) {
+            console.log(err)
+            loading.value = false
+            finish()
+             if(err.toString().toLowerCase().includes("network error")) {
+                networkError.value = true
+              } else {
+                networkError.value = false
+              }
+          }
+        };
+
+
+      const getEventReportSummary = async () => {
+          loading.value = true;
+          try {
+            await store.dispatch("event/setEventReportSummary").then((res) => {
+              finish();
               eventSummary.value = res
-              console.log(res.data)
               loading.value = false
               finish()
             });
@@ -130,12 +153,14 @@ export default {
       eventList.value.splice(payload, 1)
     }
     onMounted(() => {
-      if ((!eventList.value) || (eventList.value && eventList.value.activities && eventList.value.activities.length == 0)){
+      if ((!eventList.value) || (eventList.value && eventList.value.data && eventList.value.data.length == 0)){
         getEventList();
       }
+       if (eventSummary.value && Object.keys(eventSummary.value).length == 0)
+       getEventReportSummary()
     });
   
-    return { eventList, getEventList, lgAndUp, xlAndUp, loading, eventSummary, getPageActivity, networkError, deleteFromView, primarycolor };
+    return { eventList, totalItems, getEventList, lgAndUp, xlAndUp, loading, eventSummary, getPageActivity, networkError, deleteFromView, primarycolor };
 
   },
 };

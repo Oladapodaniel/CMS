@@ -271,17 +271,26 @@
             class="d-flex flex-wrap px-1 mb-0 m-dd-item"
             @click="() => memberSelectInput.focus()"
           >
-            <li
+            <!-- <li
               style="list-style: none; min-width: 100px"
+              class="email-destination d-flex justify-content-between m-1"
+            > -->
+            <!-- v-for="(member, indx) in selectedMembers"
+              :key="indx" -->
+            <el-tag
+              class="mx-1 my-1"
+              size="large"
+              closable
               v-for="(member, indx) in selectedMembers"
               :key="indx"
-              class="email-destination d-flex justify-content-between m-1"
+              @close="selectedMembers.splice(indx, 1)"
+              >{{ member.name }}</el-tag
             >
-              <span>{{ member.name }}</span>
+            <!-- <span>{{ member.name }}</span>
               <span class="ml-2 remove-email" @click="removeMember(indx)"
                 >x</span
-              >
-            </li>
+              > -->
+            <!-- </li> -->
             <li style="list-style: none" class="m-dd-item">
               <input
                 type="text"
@@ -354,7 +363,7 @@
                 class="d-flex justify-content-between border-contribution w-100"
               >
                 <div class="w-100">
-                  <span v-if="selectedBranch.length > 0 ">
+                  <span v-if="selectedBranch.length > 0">
                     <el-tag
                       class="mx-1"
                       size="large"
@@ -365,7 +374,7 @@
                       >{{ item.name }}</el-tag
                     >
                   </span>
-                  <span  v-else> Select Branch </span>
+                  <span v-else> Select Branch </span>
                 </div>
                 <span class="text-right">
                   <el-icon class="el-icon--right">
@@ -609,8 +618,8 @@
           <span class="font-weight-600 small-text">Sender: </span>
         </div>
         <div class="p-0 col-md-10">
-          <el-dropdown trigger="click" class="w-100">
-            <el-button class="w-100">
+          <el-dropdown trigger="click" class="w-100 border rounded">
+            <el-button class="">
               <div class="d-flex justify-content-between">
                 <div>
                   {{
@@ -746,7 +755,12 @@
                 <el-dropdown-item @click="showScheduleModal"
                   >Schedule</el-dropdown-item
                 >
-                <el-dropdown-item @click="draftMessage"
+                <el-dropdown-item
+                  v-if="
+                    !route.fullPath == '/tenant/branch/mainbranchsummary' ||
+                    !route.fullPath == '/tenant/branches/summary'
+                  "
+                  @click="draftMessage"
                   >Save as draft</el-dropdown-item
                 >
               </el-dropdown-menu>
@@ -1144,7 +1158,7 @@ export default {
       if (index === 0) {
         sendToAllBranches.value = true;
         selectedGroups.value.push({
-          data: "membership_00000000-0000-0000-0000-000000000000",
+          data: "branch_00000000-0000-0000-0000-000000000000",
           name: "All branches",
         });
       }
@@ -1219,25 +1233,51 @@ export default {
     });
     const memberSearchResults = ref([]);
     const searchForPerson = (e) => {
-      if (e.target.value.length >= 3) {
-        memberSearchResults.value = [];
-        loading.value = true;
-        composerObj
-          .searchMemberDB("/api/Membership/GetSearchedUSers", e.target.value)
-          .then((res) => {
-            loading.value = false;
-            memberSearchResults.value = res.filter((i) => {
-              const memberInExistingCollection = selectedMembers.value.find(
-                (j) => j.id === i.id
-              );
+      const branchID = localStorage.getItem("branchId");
+      if (route.fullPath == "/tenant/branches/summary") {
+        if (e.target.value.length >= 3) {
+          memberSearchResults.value = [];
+          loading.value = true;
+          axios
+            .get(
+              `/api/BranchNetwork/GetSearchedUSers?searchText=${e.target.value}&BranchdId=${branchID}`
+            )
+            .then((res) => {
+              loading.value = false;
+              memberSearchResults.value = res.data.filter((i) => {
+                const memberInExistingCollection = selectedMembers.value.find(
+                  (j) => j.id === i.id
+                );
 
-              if (memberInExistingCollection && memberInExistingCollection.id)
-                return false;
-              return true;
+                if (memberInExistingCollection && memberInExistingCollection.id)
+                  return false;
+                return true;
+              });
             });
-          });
+        } else {
+          memberSearchResults.value = [];
+        }
       } else {
-        memberSearchResults.value = [];
+        if (e.target.value.length >= 3) {
+          memberSearchResults.value = [];
+          loading.value = true;
+          composerObj
+            .searchMemberDB("/api/Membership/GetSearchedUSers", e.target.value)
+            .then((res) => {
+              loading.value = false;
+              memberSearchResults.value = res.filter((i) => {
+                const memberInExistingCollection = selectedMembers.value.find(
+                  (j) => j.id === i.id
+                );
+
+                if (memberInExistingCollection && memberInExistingCollection.id)
+                  return false;
+                return true;
+              });
+            });
+        } else {
+          memberSearchResults.value = [];
+        }
       }
     };
 
@@ -1277,90 +1317,155 @@ export default {
         invalidMessage.value = true;
         return false;
       }
-
-      toast.add({
-        severity: "info",
-        summary: "Sending SMS",
-        detail: "SMS is being sent....",
-        life: 3000,
-      });
+      ElMessage({
+            type: "info",
+            message: "SMS is being sent....",
+            duration: 5000,
+          });
 
       disableBtn.value = true;
-      composeService
-        .sendMessage("/api/Messaging/sendSms", data)
-        .then((res) => {
-          // disableBtn.value = false;
-          sendSMSLoading.value = false;
-          sendSMSDialog.value = false;
-          if (res.status == 200 && res.data.status) {
-            toast.add({
-              severity: "success",
-              summary: "SMS Sent",
-              detail: `SMS Sent successfully`,
-              life: 7000,
-            });
+      if (
+        route.fullPath == "/tenant/branches/summary" ||
+        route.fullPath == "/tenant/branch/mainbranchsummary"
+      ) {
+        axios
+          .post("/api/BranchNetwork/sendSms", data)
+          .then((res) => {
+            // disableBtn.value = false;
+            sendSMSLoading.value = false;
+            sendSMSDialog.value = false;
+            if (res.status == 200 && res.data.status) {
+              ElMessage({
+                type: "success",
+                message: "SMS Sent successfully",
+                duration: 5000,
+              });
 
-            // Save the res to store in other to get it in the view sent sms page
-            // let sentObj = {
-            //   message: res.data.message,
-            //   id: res.data.channel,
-            //   smsUnitsUsed: res.data.unitsUsed,
-            //   dateSent: "",
-            //   deliveryReport: [{ report: "-" }],
-            // };
-            // console.log(sentObj);
-            // store.dispatch("communication/addSmsToSentList", sentObj);
-          } else if (
-            res &&
-            res.data &&
-            res.data.message &&
-            res.data.message.includes("You do not have")
-          ) {
-            toast.add({
-              severity: "warn",
-              summary: "Insufficient Unit",
-              detail: `${res.data.message}`,
-              life: 6000,
-            });
-          } else {
-            toast.add({
-              severity: "warn",
-              summary: "",
-              detail: `Message not sent, Try again`,
-              life: 6000,
-            });
-          }
-        })
-        .catch((err) => {
-          stopProgressBar();
-          // disableBtn.value = false;
-          sendSMSLoading.value = false;
-          toast.removeAllGroups();
-          console.log(err);
-          if (err.toString().toLowerCase().includes("network error")) {
-            toast.add({
-              severity: "warn",
-              summary: "You 're Offline",
-              detail: "Please ensure you have internet access",
-              life: 4000,
-            });
-          } else if (err.toString().toLowerCase().includes("timeout")) {
-            toast.add({
-              severity: "warn",
-              summary: "Request Delayed",
-              detail:
-                "SMS took too long, please check your network and try again",
-              life: 4000,
-            });
-          } else {
-            toast.add({
-              severity: "warn",
-              summary: "Failed operation",
-              detail: "SMS sending failed, Please try again",
-              life: 400,
-            });
-          }
-        });
+              // Save the res to store in other to get it in the view sent sms page
+              // let sentObj = {
+              //   message: res.data.message,
+              //   id: res.data.channel,
+              //   smsUnitsUsed: res.data.unitsUsed,
+              //   dateSent: "",
+              //   deliveryReport: [{ report: "-" }],
+              // };
+              // console.log(sentObj);
+              // store.dispatch("communication/addSmsToSentList", sentObj);
+            } else if (
+              res &&
+              res.data &&
+              res.data.message &&
+              res.data.message.includes("You do not have")
+            ) {
+              ElMessage({
+                type: "warning",
+                message: res.data.message,
+                duration: 5000,
+              });
+            } else {
+              ElMessage({
+                type: "warning",
+                message: "Message not sent, Try again",
+                duration: 5000,
+              });
+            }
+          })
+          .catch((err) => {
+            stopProgressBar();
+            // disableBtn.value = false;
+            sendSMSLoading.value = false;
+            toast.removeAllGroups();
+            console.log(err);
+            if (err.toString().toLowerCase().includes("network error")) {
+              ElMessage({
+                type: "warning",
+                message: "Please ensure you have internet access",
+                duration: 5000,
+              });
+            } else if (err.toString().toLowerCase().includes("timeout")) {
+              ElMessage({
+                type: "warning",
+                message: "SMS took too long, please check your network and try again",
+                duration: 5000,
+              });
+            } else {
+              ElMessage({
+                type: "error",
+                message: "SMS sending failed, Please try again",
+                duration: 5000,
+              });
+            }
+          });
+      } else {
+        composeService
+          .sendMessage("/api/Messaging/sendSms", data)
+          .then((res) => {
+            // disableBtn.value = false;
+            sendSMSLoading.value = false;
+            sendSMSDialog.value = false;
+            if (res.status == 200 && res.data.status) {
+              ElMessage({
+                type: "success",
+                message: "SMS Sent successfully",
+                duration: 5000,
+              });
+
+              // Save the res to store in other to get it in the view sent sms page
+              // let sentObj = {
+              //   message: res.data.message,
+              //   id: res.data.channel,
+              //   smsUnitsUsed: res.data.unitsUsed,
+              //   dateSent: "",
+              //   deliveryReport: [{ report: "-" }],
+              // };
+              // console.log(sentObj);
+              // store.dispatch("communication/addSmsToSentList", sentObj);
+            } else if (
+              res &&
+              res.data &&
+              res.data.message &&
+              res.data.message.includes("You do not have")
+            ) {
+               ElMessage({
+                type: "warning",
+                message: res.data.message,
+                duration: 5000,
+              });
+            } else {
+               ElMessage({
+                type: "warning",
+                message: 'Message not sent, Try again',
+                duration: 5000,
+              });
+            }
+          })
+          .catch((err) => {
+            stopProgressBar();
+            // disableBtn.value = false;
+            sendSMSLoading.value = false;
+            toast.removeAllGroups();
+            console.log(err);
+            if (err.toString().toLowerCase().includes("network error")) {
+               ElMessage({
+                type: "warning",
+                message: 'Please ensure you have internet access',
+                duration: 5000,
+              });
+            } else if (err.toString().toLowerCase().includes("timeout")) {
+               ElMessage({
+                type: "warning",
+                message: 'SMS took too long, please check your network and try again',
+                duration: 5000,
+              });
+            } else {
+              ElMessage({
+                type: "error",
+                message: 'SMS sending failed, Please try again',
+                duration: 5000,
+              });
+            }
+          });
+      }
     };
 
     const draftMessage = async () => {
@@ -1373,21 +1478,18 @@ export default {
           "/api/Messaging/PostSmsDraft"
         );
         store.dispatch("communication/getSMSDrafts");
-
-        toast.add({
-          severity: "success",
-          summary: "Draft Saved",
-          detail: "Message saved as draft",
-          life: 2500,
-        });
+      ElMessage({
+                type: "success",
+                message: 'Draft Saved',
+                duration: 5000,
+              });
       } catch (error) {
         console.log(error, "drafting error");
-        toast.add({
-          severity: "warn",
-          summary: "Failed",
-          detail: "Message not saved as draft",
-          life: 2500,
-        });
+        ElMessage({
+                type: "error",
+                message: 'Failed, Message not saved as draft',
+                duration: 5000,
+              });
       }
     };
 
@@ -1397,7 +1499,9 @@ export default {
         message: editorData.value,
         contacts: [],
         isPersonalized: isPersonalized.value,
-        groupedContacts: selectedGroups.value.map((i) => i.data),
+        groupedContacts: selectedGroups.value
+          ? selectedGroups.value.map((i) => i.data)
+          : "",
         // toContacts: sendToAll./value ? "allcontacts_00000000-0000-0000-0000-000000000000" : "",
         isoCode: isoCode.value,
         category: "",
@@ -1428,6 +1532,15 @@ export default {
           })
           .join();
       }
+      if (route.fullPath == "/tenant/branches/summary") {
+        const branchID = localStorage.getItem("branchId");
+        data.tenantID = branchID;
+      }
+
+      if (route.fullPath == "/tenant/branch/mainbranchsummary") {
+        data.tenantID = tenantId.value;
+      }
+
       if (selectedBranch.value.length > 0) {
         data.ToContacts =
           data && data.ToContacts
@@ -1435,11 +1548,14 @@ export default {
               ? ","
               : ""
             : "";
-        data.ToContacts += selectedBranch.value
-          .map((i) => {
-            if (i.id) return i.id;
-          })
-          .join();
+        // data.ToContacts += selectedBranch.value.map((i) => {if (i.id) return i.id; }).join();
+        data.groupedContacts = [
+          selectedBranch.value
+            .map((i) => {
+              if (i.id) return `branch_${i.id}`;
+            })
+            .join(),
+        ];
       }
 
       if (subject.value) {
@@ -1454,11 +1570,11 @@ export default {
           sendSMS(data);
         }
       } else {
-        toast.add({
-          severity: "warn",
-          summary: "No sender id selected",
-          detail: `Kindly select a sender id and try again`,
-        });
+        ElMessage({
+                type: "warning",
+                message: 'Kindly select a sender id and try again',
+                duration: 5000,
+              });
       }
     };
 
@@ -1470,28 +1586,55 @@ export default {
       scheduleLoading.value = true;
       const formattedDate = dateFormatter.monthDayTime(data.executionDate);
 
-      try {
-        const response = await composerObj.sendMessage(
-          "/api/Messaging/saveSmsSchedule",
-          data
-        );
-        scheduleLoading.value = false;
-        display.value = false;
-        console.log(response);
+      if (
+        route.fullPath == "/tenant/branches/summary" ||
+        route.fullPath == "/tenant/branch/mainbranchsummary"
+      ) {
+        try {
+          const response = await axios.post(
+            "/api/BranchNetwork/saveSmsSchedule",
+            data
+          );
+          scheduleLoading.value = false;
+          display.value = false;
+          ElMessage({
+            type: "success",
+            message: `Message scheduled for${formattedDate}`,
+            duration: 5000,
+          });
+        } catch (error) {
+          console.log(error);
+          scheduleLoading.value = false;
+          ElMessage({
+            type: "error",
+            message: "Schedule Failed",
+            duration: 5000,
+          });
+        }
+      } else {
+        try {
+          const response = await composerObj.sendMessage(
+            "/api/Messaging/saveSmsSchedule",
+            data
+          );
+          scheduleLoading.value = false;
+          display.value = false;
+          console.log(response);
 
-        ElMessage({
-          type: "success",
-          message: `Message scheduled for${formattedDate}`,
-          duration: 5000,
-        });
-      } catch (error) {
-        console.log(error);
-        scheduleLoading.value = false;
-        toast.add({
-          severity: "error",
-          summary: "Schedule Failed",
-          detail: "Could not schedule message",
-        });
+          ElMessage({
+            type: "success",
+            message: `Message scheduled for${formattedDate}`,
+            duration: 5000,
+          });
+        } catch (error) {
+          console.log(error);
+          scheduleLoading.value = false;
+          ElMessage({
+            type: "error",
+            message: "Schedule Failed",
+            duration: 5000,
+          });
+        }
       }
     };
 
@@ -1506,20 +1649,18 @@ export default {
       try {
         let { data } = await axios.post("/api/messaging/upload", formData);
 
-        toast.add({
-          severity: "success",
-          summary: "Success",
-          detail: data.response,
-          life: 5000,
-        });
+        ElMessage({
+            type: "success",
+            message: data.response,
+            duration: 5000,
+          });
       } catch (err) {
         console.log(err);
-        toast.add({
-          severity: "error",
-          summary: "Not sent",
-          detail: "Sending failed, please try again",
-          life: 5000,
-        });
+        ElMessage({
+            type: "error",
+            message: "Sending failed, please try again",
+            duration: 5000,
+          });
       }
     };
 
@@ -1553,14 +1694,14 @@ export default {
     if (store.getters.currentUser && store.getters.currentUser.isoCode) {
       isoCode.value = store.getters.currentUser.isoCode;
       userCountry.value = store.getters.currentUser.country;
-      tenantId.value = store.getters.tenantId;
+      tenantId.value = store.getters.currentUser.tenantId;
     } else {
       axios
         .get("/api/Membership/GetCurrentSignedInUser")
         .then((res) => {
           isoCode.value = res.data.isoCode;
           userCountry.value = res.data.country;
-          tenantId.value = store.getters.tenantId;
+          tenantId.value = store.getters.currentUser.tenantId;
         })
         .catch((err) => console.log(err));
     }
@@ -1600,16 +1741,31 @@ export default {
 
     const allGroups = ref([]);
     const categories = ref([]);
-    onMounted(() => {
-      composeService
-        .getCommunicationGroups()
-        .then((res) => {
-          for (let prop in res) {
-            categories.value.push(prop);
-            allGroups.value.push(res[prop]);
-          }
-        })
-        .catch((err) => console.log(err));
+    onMounted(async () => {
+      if (route.fullPath == "/tenant/branches/summary") {
+        const branchID = localStorage.getItem("branchId");
+        try {
+          const { data } = await axios.get(
+            `/api/BranchNetwork/getCommunicationGroups?TenantId=${branchID}`
+          );
+          for (let prop in data) {
+              categories.value.push(prop);
+              allGroups.value.push(data[prop]);
+            }
+            console.log(allGroups.value, 'allgroupsss');
+        
+        } catch (error) {}
+      } else {
+        composeService
+          .getCommunicationGroups()
+          .then((res) => {
+            for (let prop in res) {
+              categories.value.push(prop);
+              allGroups.value.push(res[prop]);
+            }
+          })
+          .catch((err) => console.log(err));
+      }
     });
 
     const display = ref(false);
@@ -1670,11 +1826,11 @@ export default {
         subject.value = subj;
       } catch (error) {
         console.log(error);
-        toast.add({
-          severity: "error",
-          summary: "Error",
-          detail: "Could not load message!",
-        });
+        ElMessage({
+            type: "error",
+            message: "Error, Could not load message!",
+            duration: 5000,
+          });
       }
     };
 
@@ -1687,13 +1843,25 @@ export default {
     };
 
     const getSenderId = async () => {
-      try {
-        let { data } = await axios.get(
-          `/api/Messaging/RetrieveTenantSenderIDs`
-        );
-        senderIDs.value = data.returnObject;
-      } catch (err) {
-        console.log(err);
+      if (route.fullPath == "/tenant/branches/summary") {
+        const branchID = localStorage.getItem("branchId");
+        try {
+          const { data } = await axios.get(
+            `/api/BranchNetwork/RetrieveTenantSenderIDs?TenantId=${branchID}`
+          );
+          senderIDs.value = data.returnObject;
+        } catch (error) {
+          console.log(error);
+        }
+      } else {
+        try {
+          let { data } = await axios.get(
+            `/api/Messaging/RetrieveTenantSenderIDs`
+          );
+          senderIDs.value = data.returnObject;
+        } catch (err) {
+          console.log(err);
+        }
       }
     };
     getSenderId();
@@ -1709,34 +1877,28 @@ export default {
           payload
         );
         if (data.status === 0) {
-          toast.add({
-            severity: "warn",
-            summary: "Pending",
-            detail:
-              "Sender id is pending for approval, when it is approved, you will see it among the sender id list",
-            life: 5000,
+          ElMessage({
+            type: "warning",
+            message: "Sender id is pending for approval, when it is approved, you will see it among the sender id list",
+            duration: 5000,
           });
         } else if (data.status === 1) {
-          toast.add({
-            severity: "warn",
-            summary: "Processing",
-            detail:
-              "Sender id is processing for approval, when it is approved, you will see it among the sender id list",
-            life: 5000,
+          ElMessage({
+            type: "warning",
+            message: "Sender id is processing for approval, when it is approved, you will see it among the sender id list",
+            duration: 5000,
           });
         } else if (data.status === 2) {
-          toast.add({
-            severity: "success",
-            summary: "Approved",
-            detail: "Sender id is approved!",
-            life: 6000,
+          ElMessage({
+            type: "success",
+            message: "Sender id is approved!",
+            duration: 5000,
           });
         } else {
-          toast.add({
-            severity: "warn",
-            summary: "Not Approved",
-            detail: "Sender id is not approved, create another one.",
-            life: 4000,
+          ElMessage({
+            type: "warning",
+            message: "Not Approved, create another one",
+            duration: 5000,
           });
         }
         senderIdText.value = "";

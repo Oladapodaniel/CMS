@@ -32,7 +32,7 @@
                 to="/tenant/branches/branchattendance"
               >
                 <el-icon class="rounded-circle p-1 icon" :size="30"><Memo /></el-icon>
-                <div class="mt-1">Attendance</div>
+                <div class="mt-1"> Attendance</div>
               </router-link>
               <router-link @click="toggleFinancial"
                 class="py-3  col-md-12  text-decoration-none"  :class="{'side-icon' : showFinancial, 'text-dark' : !showFinancial }"

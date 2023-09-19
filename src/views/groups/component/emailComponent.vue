@@ -308,7 +308,16 @@
             class="d-flex flex-wrap px-1 mb-0 m-dd-item small-text"
             @click="() => memberSelectInput.focus()"
           >
-            <li
+            <el-tag
+              class="mx-1 my-1"
+              size="large"
+              closable
+              v-for="(member, indx) in selectedMembers"
+              :key="indx"
+              @close="selectedMembers.splice(indx, 1)"
+              >{{ member.name }}</el-tag
+            >
+            <!-- <li
               style="list-style: none; min-width: 100px"
               v-for="(member, indx) in selectedMembers"
               :key="indx"
@@ -318,7 +327,7 @@
               <span class="ml-2 remove-email" @click="removeMember(indx)"
                 >x</span
               >
-            </li>
+            </li> -->
             <li style="list-style: none" class="m-dd-item">
               <input
                 type="text"
@@ -392,7 +401,7 @@
                 class="d-flex justify-content-between border-contribution w-100"
               >
                 <div class="w-100">
-                  <span v-if="selectedBranch.length > 0 ">
+                  <span v-if="selectedBranch.length > 0">
                     <el-tag
                       class="mx-1"
                       size="large"
@@ -403,7 +412,7 @@
                       >{{ item.name }}</el-tag
                     >
                   </span>
-                  <span  v-else> Select Branch </span>
+                  <span v-else> Select Branch </span>
                 </div>
                 <span class="text-right">
                   <el-icon class="el-icon--right">
@@ -598,7 +607,8 @@
           phoneNumberSelectionTab ||
           membershipSelectionTab ||
           groupSelectionTab ||
-          emailSelectionTab || branchesSelectionTab
+          emailSelectionTab ||
+          branchesSelectionTab
         "
       >
         <div class="col-md-12 pr-0">
@@ -691,7 +701,7 @@
                 <el-dropdown-item @click="showScheduleModal"
                   >Schedule</el-dropdown-item
                 >
-                <el-dropdown-item @click="draftMessage"
+                <el-dropdown-item v-if=" !route.fullPath == '/tenant/branch/mainbranchsummary' ||  !route.fullPath == '/tenant/branches/summary' " @click="draftMessage"
                   >Save as draft</el-dropdown-item
                 >
               </el-dropdown-menu>
@@ -760,6 +770,11 @@ export default {
     const email = ref("");
     const { mdAndUp, lgAndUp, xlAndUp, xsOnly } = deviceBreakpoint();
     const scheduleLoading = ref(false);
+    const tenantId = ref(
+      store.getters.currentUser && store.getters.currentUser.tenantId
+        ? store.getters.currentUser.tenantId
+        : 0
+    );
 
     const toggleGroupsVissibility = () => {
       groupsAreVissible.value = !groupsAreVissible.value;
@@ -791,8 +806,8 @@ export default {
       if (index === 0) {
         sendToAllBranches.value = true;
         selectedGroups.value.push({
-          data: "membership_00000000-0000-0000-0000-000000000000",
-          name: "All Branch(s)",
+          data: "branch_00000000-0000-0000-0000-000000000000",
+          name: "All Branches",
         });
       }
     };
@@ -811,7 +826,7 @@ export default {
         memberListShown.value = false;
       }
     };
-    const selectedBranch = ref([])
+    const selectedBranch = ref([]);
     const selectBranch = (item) => {
       selectedBranch.value.push(item);
     };
@@ -867,27 +882,53 @@ export default {
     });
     const memberSearchResults = ref([]);
     const searchForPerson = (e) => {
-      if (e.target.value.length >= 3) {
-        memberSearchResults.value = [];
-        loading.value = true;
-        composerObj
-          .searchMemberDB("/api/Membership/GetSearchedUSers", e.target.value)
-          .then((res) => {
-            loading.value = false;
-            memberSearchResults.value = res.filter((i) => {
-              const memberInExistingCollection = selectedMembers.value.find(
-                (j) => j.id === i.id
-              );
-              console.log(memberInExistingCollection, "em");
-              if (memberInExistingCollection && memberInExistingCollection.id)
-                return false;
-              return true;
+      const branchID = localStorage.getItem("branchId");
+      if (route.fullPath == "/tenant/branches/summary") {
+        if (e.target.value.length >= 3) {
+          memberSearchResults.value = [];
+          loading.value = true;
+          axios
+            .get(
+              `/api/BranchNetwork/GetSearchedUSers?searchText=${e.target.value}&BranchdId=${branchID}`
+            )
+            .then((res) => {
+              loading.value = false;
+              memberSearchResults.value = res.data.filter((i) => {
+                const memberInExistingCollection = selectedMembers.value.find(
+                  (j) => j.id === i.id
+                );
+
+                if (memberInExistingCollection && memberInExistingCollection.id)
+                  return false;
+                return true;
+              });
             });
-            console.log(memberSearchResults.value, "res");
-          });
-        console.log(memberSearchResults.value);
+        } else {
+          memberSearchResults.value = [];
+        }
       } else {
-        memberSearchResults.value = [];
+        if (e.target.value.length >= 3) {
+          memberSearchResults.value = [];
+          loading.value = true;
+          composerObj
+            .searchMemberDB("/api/Membership/GetSearchedUSers", e.target.value)
+            .then((res) => {
+              loading.value = false;
+              memberSearchResults.value = res.filter((i) => {
+                const memberInExistingCollection = selectedMembers.value.find(
+                  (j) => j.id === i.id
+                );
+                console.log(memberInExistingCollection, "em");
+                if (memberInExistingCollection && memberInExistingCollection.id)
+                  return false;
+                return true;
+              });
+              console.log(memberSearchResults.value, "res");
+            });
+          console.log(memberSearchResults.value);
+        } else {
+          memberSearchResults.value = [];
+        }
       }
     };
 
@@ -926,35 +967,102 @@ export default {
         message: "Email is being sent....",
         duration: 5000,
       });
-      composeService
-        .sendMessage("/api/Messaging/sendEmail", data)
-        .then((res) => {
-          if (res.status === 200) {
-            store.dispatch("communication/addToSentEmail", res.data.mail);
+      if (
+        route.fullPath == "/tenant/branches/summary" ||
+        route.fullPath == "/tenant/branch/mainbranchsummary"
+      ) {
+        axios
+          .post("/api/BranchNetwork/sendEmail", data)
+          .then((res) => {
+            if (res.data.status) {
+              // store.dispatch("communication/addToSentEmail", res.data.mail);
+              ElMessage({
+                type: "success",
+                message: res.data.response,
+                duration: 5000,
+              });
+            } else if (
+            res.data &&
+            !res.data.status
+
+          ) {
             ElMessage({
-              type: "success",
-              message: "Email sent successfully",
-              duration: 5000,
-            });
-          }
-        })
-        .catch((err) => {
-          stopProgressBar();
-          if (err.toString().toLowerCase().includes("network error")) {
-            ElMessage({
+              message: res.data.message || "An error Occur" ,
               type: "warning",
-              message: "Please ensure you have internet access",
-              duration: 5000,
+              duration: 6000,
             });
           } else {
             ElMessage({
-              type: "error",
-              message: "Email sending failed",
-              duration: 5000,
+              type: "warning",
+              message: "Message not sent, please try again",
+              duration: 6000,
             });
-            console.log(err);
-          }
-        });
+          }     
+          })
+          .catch((err) => {
+            stopProgressBar();
+            if (err.toString().toLowerCase().includes("network error")) {
+              ElMessage({
+                type: "warning",
+                message: "Please ensure you have internet access",
+                duration: 5000,
+              });
+            } else {
+              ElMessage({
+                type: "error",
+                message: "Email sending failed",
+                duration: 5000,
+              });
+              console.log(err);
+            }
+          });
+      } else {
+        composeService
+          .sendMessage("/api/Messaging/sendEmail", data)
+          .then((res) => {
+            if (res.data.status) {
+              store.dispatch("communication/addToSentEmail", res.data.mail);
+              ElMessage({
+                type: "success",
+                message: res.data.response,
+                duration: 5000,
+              });
+            } else if (
+            res.data &&
+            !res.data.status
+
+          ) {
+            ElMessage({
+              message: res.data.message || "An error Occur" ,
+              type: "warning",
+              duration: 6000,
+            });
+          } else {
+            ElMessage({
+              type: "warning",
+              message: "Message not sent, please try again",
+              duration: 6000,
+            });
+          }      
+          })
+          .catch((err) => {
+            stopProgressBar();
+            if (err.toString().toLowerCase().includes("network error")) {
+              ElMessage({
+                type: "warning",
+                message: "Please ensure you have internet access",
+                duration: 5000,
+              });
+            } else {
+              ElMessage({
+                type: "error",
+                message: "Email sending failed",
+                duration: 5000,
+              });
+              console.log(err);
+            }
+          });
+      }
     };
 
     const contructScheduleMessageBody = (sendOrSchedule) => {
@@ -1018,6 +1126,14 @@ export default {
           .join();
       }
 
+      if(route.fullPath == "/tenant/branches/summary"){
+        const branchID = localStorage.getItem("branchId");
+        data.tenantID = branchID
+      }
+
+      if(route.fullPath == "/tenant/branch/mainbranchsummary"){
+        data.tenantID = tenantId.value
+      }
       if (selectedBranch.value.length > 0) {
         data.ToContacts =
           data && data.ToContacts
@@ -1025,11 +1141,7 @@ export default {
               ? ","
               : ""
             : "";
-        data.ToContacts += selectedBranch.value
-          .map((i) => {
-            if (i.id) return i.id;
-          })
-          .join();
+        data.groupedContacts = [selectedBranch.value.map((i) => { if (i.id) return `branch_${i.id}`; }).join()];
       }
 
       if (sendOrSchedule == 2) {
@@ -1049,24 +1161,52 @@ export default {
     const scheduleMessage = async (data) => {
       scheduleLoading.value = true;
       const formattedDate = dateFormatter.monthDayTime(data.executionDate);
-      try {
-        await composerObj.sendMessage("/api/Messaging/saveEmailSchedule", data);
-        display.value = false;
-        scheduleLoading.value = false;
-        ElMessage({
-          type: "success",
-          message: `Message scheduled for${formattedDate}`,
-          duration: 5000,
-        });
-      } catch (error) {
-        console.log(error);
-        display.value = false;
-        scheduleLoading.value = false;
-        ElMessage({
-          type: "error",
-          message: "Could not schedule message",
-          duration: 5000,
-        });
+      if (
+        route.fullPath == "/tenant/branches/summary" ||
+        route.fullPath == "/tenant/branch/mainbranchsummary"
+      ) {
+        try {
+          await axios.post("/api/BranchNetwork/saveEmailSchedule", data);
+          display.value = false;
+          scheduleLoading.value = false;
+          ElMessage({
+            type: "success",
+            message: `Message scheduled for${formattedDate}`,
+            duration: 5000,
+          });
+        } catch (error) {
+          console.log(error);
+          display.value = false;
+          scheduleLoading.value = false;
+          ElMessage({
+            type: "error",
+            message: "Could not schedule message",
+            duration: 5000,
+          });
+        }
+      } else {
+        try {
+          await composerObj.sendMessage(
+            "/api/Messaging/saveEmailSchedule",
+            data
+          );
+          display.value = false;
+          scheduleLoading.value = false;
+          ElMessage({
+            type: "success",
+            message: `Message scheduled for${formattedDate}`,
+            duration: 5000,
+          });
+        } catch (error) {
+          console.log(error);
+          display.value = false;
+          scheduleLoading.value = false;
+          ElMessage({
+            type: "error",
+            message: "Could not schedule message",
+            duration: 5000,
+          });
+        }
       }
     };
 
@@ -1155,16 +1295,30 @@ export default {
     const closeModal = () => {
       emit("closesidemodal");
     };
-    onMounted(() => {
-      composeService
-        .getCommunicationGroups()
-        .then((res) => {
-          for (let prop in res) {
-            categories.value.push(prop);
-            allGroups.value.push(res[prop]);
-          }
-        })
-        .catch((err) => console.log(err));
+    onMounted(async () => {
+      if (route.fullPath == "/tenant/branches/summary") {
+        const branchID = localStorage.getItem("branchId");
+        try {
+          const { data } = await axios.get(
+            `/api/BranchNetwork/getCommunicationGroups?TenantId=${branchID}`
+          );
+          for (let prop in data) {
+              categories.value.push(prop);
+              allGroups.value.push(data[prop]);
+            }
+        
+        } catch (error) {}
+      } else {
+        composeService
+          .getCommunicationGroups()
+          .then((res) => {
+            for (let prop in res) {
+              categories.value.push(prop);
+              allGroups.value.push(res[prop]);
+            }
+          })
+          .catch((err) => console.log(err));
+      }
     });
 
     const display = ref(false);
@@ -1244,6 +1398,7 @@ export default {
       emailSelectionTab,
       route,
       subject,
+      tenantId,
       sendOptionsIsShown,
       toggleSendOptionsDisplay,
       selectBranch,

@@ -81,10 +81,10 @@ export default {
         OfferingList
     },
     setup () {
-        const contributionTransactions = ref(store.getters["contributions/contributionsList"].contribution)
+        const contributionTransactions = ref(store.getters["contributions/contributionsList"].data)
         const { lgAndUp, xlAndUp } = deviceBreakpoint();
         const primarycolor = inject('primarycolor')
-        const totalItem = ref(store.getters["contributions/contributionsList"].totalItem)
+        const totalItem = ref(store.getters["contributions/contributionsList"].totalItems)
         const loading = ref(false)
         const networkError = ref(false)
 
@@ -101,8 +101,8 @@ export default {
                 try {
                       loading.value = true
                       await store.dispatch("contributions/setContributionList").then((res) => {
-                        contributionTransactions.value = res.contribution;
-                        totalItem.value = res.totalItem
+                        contributionTransactions.value = res.data;
+                        totalItem.value = res.totalItems
                         loading.value = false;
                       });
                     } catch (error) {
@@ -123,7 +123,7 @@ export default {
     });
 
     const getOfferingPages = (payload) => {
-      contributionTransactions.value = payload.returnObject.contribution
+      contributionTransactions.value = payload.data
     }
 
     const updateTransac = (payload) => {

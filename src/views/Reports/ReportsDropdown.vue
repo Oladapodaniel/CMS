@@ -1,27 +1,32 @@
 <template>
   <div class="">
-    <button
-      class="form-control d-flex justify-content-between align-items-center exempt-hide"
-      @click="setGroupProp"
+    <div
+      class=" border-contribution bg-white d-flex  justify-content-between align-items-center exempt-hide"
+      @click="setGroupProp" :class="{ 'dropdown-height' : showHeight}"
     >
       <span class="exempt-hide">
         <span v-if="selectedMember.length > 0 && selectedMember.length <= 2">
-          <span v-for="item in selectedMember" :key="item.id">
-            <span v-if="item.name" class="eachGroup">{{ item.name }}</span>
-            <span v-else class="eachGroup">{{ item.text }}</span>
-          </span>
+        <el-tag class="mx-1 mt-1" type="info" v-for="item in selectedMember.slice(0, 3)" :key="item.id">
+            <span v-if="item.name" class="">{{ item.name }}</span>
+            <span v-else class="">{{ item.text }}</span>
+        </el-tag>
+        
         </span>
         <span v-if="selectedMember.length > 0 && selectedMember.length > 2">
-          <span v-for="item in selectedMember.slice(0, 2)" :key="item.id">
+          <el-tag class="mx-1 mt-1" type="info" v-for="item in selectedMember.slice(0, 3)" :key="item.id">
+            <span v-if="item.name" class="">{{ item.name }}</span>
+            <span v-else class="">{{ item.text }}</span>
+          </el-tag>
+          <!-- <span v-for="item in selectedMember.slice(0, 2)" :key="item.id">
             <span v-if="item.name" class="eachGroup">{{ item.name }}</span>
             <span v-else class="eachGroup">{{ item.text }}</span>
-          </span>
+          </span> -->
           ...
         </span>
         <span v-if="selectedMember.length === 0">Select</span>
       </span>
       <el-icon class="exemple-hide"><ArrowDown /></el-icon>
-    </button>
+    </div>
     <div
       class="div-card p-2 exempt-hide"
       :class="{
@@ -97,6 +102,7 @@ export default {
     const displayCheck = ref(false);
     const searchMemberRef = ref();
     const selectedMember = ref([]);
+    const showHeight = ref(true)
     const hideDiv = ref(true);
     const selectItem = ref([]);
     const searchMemberText = ref("");
@@ -106,6 +112,11 @@ export default {
       nextTick(() => {
         searchMemberRef.value.focus();
       });
+      if(selectedMember.value.length > 0){
+        showHeight.value = false
+      }else{
+        showHeight.value = true
+      }
     };
     const checkAll = () => {
       props.items.forEach((i) => {
@@ -156,6 +167,7 @@ export default {
       displayCheck,
       selectItem,
       selectedMember,
+      showHeight,
     };
   },
 };
@@ -170,6 +182,14 @@ li li:hover {
   /* border: 2px solid red; */
   background: rgba(224, 223, 223, 0.46);
 }
+
+.dropdown-height{
+  height: 2.69rem;
+}
+.Hide-height{
+  height: 0px;
+}
+
 .div-card {
   position: absolute;
   background: white;

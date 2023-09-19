@@ -638,7 +638,8 @@ export default {
               life: 3000,
             });
             setTimeout(() => {
-              router.push("/tenant/branch/branchsummary");
+              router.push("/tenant/branch/mainbranchsummary");
+              // router.push("/tenant/branch/branchsummary");
             }, 3000);
           }
         } catch (err) {

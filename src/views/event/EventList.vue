@@ -493,24 +493,24 @@
         </Table>
         <!-- {{membersCount}} {{currentPage}} -->
 
-        <div class="table-footer">
+        <!-- <div class="table-footer">
           <PaginationButtons
             @getcontent="getPeopleByPage"
             :itemsCount="membersCount"
             :currentPage="currentPage"
           />
-        </div>
-        <!-- <div class="d-flex justify-content-end my-3">
+        </div> -->
+        <div class="d-flex justify-content-end my-3">
           <el-pagination
             v-model:current-page="serverOptions.page"
             v-model:page-size="serverOptions.rowsPerPage"
             background
             layout="total, prev, pager, next, jumper"
-            :total="filterEvents.length"
+            :total="totalItems"
             @size-change="handleSizeChange"
             @current-change="handleCurrentChange"
           />
-        </div> -->
+        </div>
       </div>
     </div>
   </div>
@@ -534,7 +534,7 @@ export default {
     PaginationButtons,
     Table,
   },
-  props: ["eventList", "eventSummary"],
+  props: ["eventList", "eventSummary",  "totalItems"],
   setup(props, { emit }) {
     const primarycolor = inject("primarycolor");
     const filterFormIsVissible = ref(false);
@@ -543,6 +543,7 @@ export default {
     const userCurrency = ref(store.getters.currency);
     const searchText = ref("");
     const monthlyActiveBtn = ref(true);
+    const totalItems = ref(props.totalItems);
     const yearlyActiveBtn = ref(false);
     const allTimeActiveBtn = ref(false);
     const searchingMember = ref(true);
@@ -589,7 +590,7 @@ export default {
 
     const serverOptions = ref({
       page: 1,
-      rowsPerPage: 100,
+      rowsPerPage: 50,
     });
 
     const showConfirmModal = (id, index) => {
@@ -694,23 +695,23 @@ export default {
     };
 
     watch(
-      serverOptions,
+      serverOptions.value,
       () => {
         getPeopleByPage();
       },
       { deep: true }
     );
 
-    const getPeopleByPage = async (page) => {
-      if (page < 0) return false;
+    const getPeopleByPage = async () => {
+      // if (page < 0) return false;
       try {
         const { data } = await axios.get(
-          `/api/eventreports/eventReports?page=${page}`
+          `/api/eventreports/eventReports?page=${serverOptions.value.page}`
         );
-        if (data.activities.length > 0) {
+        if (data && data.data.length > 0) {
           filterEvents.value = [];
-          emit("activity-per-page", data.activities);
-          currentPage.value = page;
+          emit("activity-per-page", data.data);
+          currentPage.value = serverOptions.value.page;
         }
       } catch (error) {
         console.log(error);
@@ -786,6 +787,7 @@ export default {
       moment,
       userCurrency,
       filterEvents,
+      totalItems,
       searchText,
       showConfirmModal,
       deleteMember,
