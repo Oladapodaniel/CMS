@@ -1195,7 +1195,7 @@ export default {
     const getAllCustomFields = async () => {
       try {
         let data = await allCustomFields.allCustomFields();
-        dynamicCustomFields.value = data.filter((i) => i.entityType === 1);
+        dynamicCustomFields.value = data.filter((i) => i.entityType === 1).sort((a, b) => a.order - b.order);;
       } catch (err) {
         console.log(err);
       }
