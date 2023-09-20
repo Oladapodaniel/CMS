@@ -1,19 +1,24 @@
 
 
+const defaultState = (() => ({
+    currentBranch: {},
+}))
+
 export default {
-    state: {
-        currentBranch: {},
-    },
+    // state: {
+    //     currentBranch: {},
+    // },
+    namespaced: true,
+    state: defaultState(),
 
     mutations: {
         setCurrentBranch(state, payload) {
             state.currentBranch = payload;
         },
 
-
         clearState(state) {
-            for (var prop in state) delete state[prop];
-        }
+            Object.assign(state, defaultState())
+          }
     },
 
     actions: {

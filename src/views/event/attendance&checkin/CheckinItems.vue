@@ -91,7 +91,7 @@ export default {
     }
     }
     const removeCheckin = (payload) => {
-      items.value.splice(payload, 1);
+      items.value = items.value.filter((i) => i.id !== payload);
     };
 
     const removeMultipleCheckin = (payload) => {

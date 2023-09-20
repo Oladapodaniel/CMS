@@ -21,7 +21,7 @@ export default {
 
     mutations: {
         setAllSentSMS(state, payload) {
-            state.allSentSMS = payload;
+            state.allSentSMS = payload; 
         },
 
         setSMSReplies(state, payload) {
@@ -44,20 +44,17 @@ export default {
             state.emailDrafts = payload;
         },
         addSmsToSentList(state, payload) {
-            // state.addSmsToSentList = payload
-            if (state.allSentSMS) {
-                state.allSentSMS.unshift(payload)
+            if (state.allSentSMS.data) {
+                state.allSentSMS.data.unshift(payload)
             }
         },
         addToSentEmail(state, payload) {
-            // state.sentEmails.pop()
             state.sentEmails.unshift(payload)
-            // state.addToSentEmail = payload
         },
         removeSentSMS(state, payload) {
-            const x = state.allSentSMS.findIndex(i => i.id === payload);
+            const x = state.allSentSMS.data.findIndex(i => i.id === payload);
             if (x >= 0) {
-                state.allSentSMS.splice(x, 1);
+                state.allSentSMS.data.splice(x, 1);
             }
         },
         removeSentReplies(state, payload) {

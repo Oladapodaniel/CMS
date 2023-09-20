@@ -57,7 +57,7 @@
             </div>
             <div class="mt-2 h6 font-weight-bold cursor-pointer" >
               <div @click="displayWhatsappDrawer" class="primary--text">
-                Send Whatsap
+                Send Whatsapp
               </div>
             </div>
           </div>

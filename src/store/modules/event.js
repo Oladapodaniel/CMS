@@ -28,7 +28,7 @@ export default {
       state.eventList = payload
     },
     addEventItem(state, payload) {
-      state.eventItems.push(payload);
+      state.eventItems.data.push(payload);
     },
     removeEventItem(state, payload) {
       state.eventItems.data = state.eventItems.data.filter(
