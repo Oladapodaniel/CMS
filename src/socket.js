@@ -13,7 +13,7 @@ export const state = reactive({
 const URL = process.env.NODE_ENV === "production" ? 'https://churchplus-whatsapp-server.azurewebsites.net' : "http://localhost:3001";
 // const URL = process.env.NODE_ENV === "production" ? 'https://whatsapp-server-venom.azurewebsites.net' : "http://localhost:3001";
 // const URL = process.env.NODE_ENV === "production" ? 'https://whatsapp-web-server-production.up.railway.app' : "http://localhost:3001";
-// const URL = process.env.NODE_ENV === "production" ? 'http://churchplus-venom-server.eu-4.evennode.com' : "http://localhost:3001";
+const URL = process.env.NODE_ENV === "production" ? 'https://whatsappserver.churchpluswebsite.com' : "http://localhost:3001";
 console.log(process.env.NODE_ENV, URL)
 
 export const socket = io(URL, {transports: ['websocket'], upgrade: false});

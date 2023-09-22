@@ -46,130 +46,140 @@
             </div>
           </div>
 
-          <div class="row py-2" v-for="(type, index) in types" :key="index">
-            <div class="col-md-12">
-              <div class="row">
-                <div
-                  class="
-                    col-md-7
-                    d-flex
-                    px-md-0 px-5
-                    justify-content-between
-                    align-items-center
-                    mb-md-0 mb-5
-                  "
-                >
-                  <span class="py-2 hidden-header">NAME</span>
-                  <span
-                    class="py-2 text-xs-left mr-md-0 mr-4 mr-md-0 ml-md-3 mr-4"
-                    >{{ type.name }}</span
+          <draggable item-key="id" class="list-group" v-model="types" ghost-class="ghost"
+             @start="dragging = true" @end="(dragging = false),(reorderAgeGroups())" v-loading="reorderloading">
+            <template #item="{ element, index }">
+              <div class="col-md-12 graggable">
+                <div class="row">
+                  <div
+                    class="
+                      col-md-5
+                      col-lg-7
+                      d-flex
+                      px-md-0 px-5
+                      justify-content-between
+                      align-items-center
+                      mb-md-0 mb-5
+                    "
                   >
-                </div>
-                <div
-                  class="
-                    col-md-5
-                    mb-md-0 mb-2
-                    col-12
-                    d-flex
-                    justify-md-content-end justify-content-start
-                    align-items-end
-                  "
-                >
-                  <span class="py-md-4 hidden-header hidden-header1"
-                    >ACTION</span
+                    <span class="py-2 hidden-header">NAME</span>
+                    <span
+                      class="py-2 text-xs-left mr-md-0 mr-4 mr-md-0 ml-md-3 mr-4"
+                      >{{ element.name }}</span
+                    >
+                  </div>
+                  <div
+                    class="
+                      col-md-7
+                      col-lg-5
+                      mb-md-0 mb-2
+                      col-12
+                      d-flex
+                      justify-md-content-end justify-content-start
+                      align-items-end
+                    "
                   >
-                  <div class="row py-2">
-                    <div class="col-md-6 col-6 d-flex justify-content-start">
-                      <el-button
-                        class=" secondary-btn  py-1 px-4"
-                        color="#EBEFF4"
-                        @click="openType(index)"
-                        round
-                      >
-                        View
-                      </el-button>
-                    </div>
-                    <div class="col-md-6 col-6 d-flex justify-content-end">
-                      <el-button
-                        class="delbtn   py-1 px-3 primary-btn"
-                        @click="deletePop(type.id)"
-                        round
-                      >
-                        Delete
-                      </el-button>
+                    <span class="py-md-4 hidden-header hidden-header1"
+                      >ACTION</span
+                    >
+                    <div class="d-flex justify-content-between py-2 w-100">
+                      <div class="d-flex">
+                        <div class="">
+                        <el-button
+                          class=" secondary-btn  py-1 px-4"
+                          color="#EBEFF4"
+                          @click="openType(index)"
+                          round
+                        >
+                          View
+                        </el-button>
+                      </div>
+                      <div class="">
+                        <el-button
+                          class="delbtn   py-1 px-3 primary-btn"
+                          @click="deletePop(element.id)"
+                          round
+                        >
+                          Delete
+                        </el-button>
+                      </div>
+                      </div>
+                      <img src="../../assets/drag-and-drop.png" />
                     </div>
                   </div>
                 </div>
-              </div>
-
-              <div
-                class="row grey-background mt-2 py-2"
-                v-if="vissibleTab === `tab_${index}`"
-              >
+    
                 <div
-                  class="
-                    col-md-7
-                    d-flex
-                    justify-content-between
-                    align-items-center
-                  "
+                  class="row grey-background mt-2 py-2"
+                  v-if="vissibleTab === `tab_${index}`"
                 >
-                  <label for="" class="d-flex mt-4">
-                    <span class="mr-2">Name</span>
-                    <el-input
-                      type="text"
-                      class="w-100  "
-                      v-model="typeName"
-                    />
-                  </label>
-                </div>
-                <div
-                  class="
-                    col-md-5
-                    d-flex
-                    justify-content-end
-                    align-items-center
-                    mt-0
-                  "
-                >
-                  <div class="row">
-                    <div class="col-md-6 col-6">
-                      <el-button
-                        class="save-btn text-white  py-1 px-4 ml-md-0 ml-5"
-                        @click="updateAge(type.id, index)"
-                        round
-                        :loading="loading"
-                      >
-                        Save
-                      </el-button>
-                    </div>
-                    <div class="col-md-6 col-6">
-                      <el-button
-                        class=" secondary-btn py-1 px-3"
-                        @click="discard"
-                        color="#EBEFF4"
-                        round
-                      >
-                        Discard
-                      </el-button>
+                  <div
+                    class="
+                      col-md-7
+                      d-flex
+                      justify-content-between
+                      align-items-center
+                    "
+                  >
+                    <label for="" class="d-flex mt-4">
+                      <span class="mr-2">Name</span>
+                      <el-input
+                        type="text"
+                        class="w-100  "
+                        v-model="typeName"
+                      />
+                    </label>
+                  </div>
+                  <div
+                    class="
+                      col-md-5
+                      d-flex
+                      justify-content-end
+                      align-items-center
+                      mt-0
+                    "
+                  >
+                    <div class="row">
+                      <div class="col-md-6 col-6">
+                        <el-button
+                          class="save-btn text-white  py-1 px-4 ml-md-0 ml-5"
+                          @click="updateAge(element.id, index)"
+                          round
+                          :loading="loading"
+                        >
+                          Save
+                        </el-button>
+                      </div>
+                      <div class="col-md-6 col-6">
+                        <el-button
+                          class=" secondary-btn py-1 px-3"
+                          @click="discard"
+                          color="#EBEFF4"
+                          round
+                        >
+                          Discard
+                        </el-button>
+                      </div>
                     </div>
                   </div>
                 </div>
-              </div>
-
-              <div class="row">
-                <div class="col-md-12 px-0">
-                  <hr class="hr my-0" />
+    
+                <div class="row">
+                  <div class="col-md-12 px-0">
+                    <hr class="hr my-0" />
+                  </div>
                 </div>
               </div>
-            </div>
+            </template>
+          </draggable>
+          <!-- <div class="row py-2" v-for="(type, index) in types" :key="index">
           </div>
           <div class="col-12 text-center p-5" v-if="loading">
             <i
               class="pi pi-spin pi-spinner text-center text-primary"
               style="fontsize: 3rem"
             ></i>
-          </div>
+          </div> -->
         </div>
       </div>
     </div>
@@ -181,9 +191,12 @@ import axios from "@/gateway/backendapi";
 import { ElMessage, ElMessageBox } from "element-plus";
 import membershipService from "../../services/membership/membershipservice";
 import finish from "../../services/progressbar/progress";
+import draggable from 'vuedraggable'
 
 export default {
-  components: {},
+  components: {
+    draggable
+  },
   inject: ['primarycolor'],
   data() {
     return {
@@ -194,6 +207,8 @@ export default {
       ageGroup: "",
       tenantId: "",
       loading: false,
+      dragging: false,
+      reorderloading: false
     };
   },
 
@@ -211,7 +226,10 @@ export default {
     async saveAge() {
       this.loading = true
       try {
-        await axios.post("/api/Settings/CreateTenantAgeGroup/" + this.ageGroup);
+        await axios.post("/api/Settings/CreateTenantAgeGroup/" + this.ageGroup, {
+          name: this.ageGroup,
+          order: this.types.length + 1
+        });
         this.getGroup();
         this.ageGroup = "";
         ElMessage({
@@ -290,6 +308,27 @@ export default {
     discard() {
       this.vissibleTab = "";
     },
+     async reorderAgeGroups () {
+      this.reorderloading = true
+      let payload = this.types.map((i, index) => {
+        i.order = index
+        return i
+      })
+      try {
+        let data = await axios.put("/api/Settings/updateAgeGroupOrder", payload)
+        console.log(data)
+        this.reorderloading = false
+        ElMessage({
+          type: "success",
+          message: "Age groups reordered successfully",
+          duration: 5000
+        });
+      }
+      catch (error) {
+        console.error(error)
+        this.reorderloading = false
+      }
+    }
   },
 
   created() {
@@ -392,5 +431,12 @@ input::placeholder {
     color: #02172e;
     opacity: 1;
   }
+}
+
+.graggable {
+    cursor: move; /* fallback if grab cursor is unsupported */
+    cursor: grab;
+    cursor: -moz-grab;
+    cursor: -webkit-grab;
 }
 </style>
