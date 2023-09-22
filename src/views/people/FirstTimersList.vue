@@ -191,7 +191,7 @@
     </div>
       <div class="d-flex justify-content-end my-3">
         <el-pagination v-model:current-page="serverOptions.page" v-model:page-size="serverOptions.rowsPerPage" background
-          layout="total, sizes, prev, pager, next, jumper" :total="totalFirsttimersCount" @size-change="handleSizeChange"
+          layout="total, sizes, prev, pager, next, jumper" :total="totalItems" @size-change="handleSizeChange"
           @current-change="handleCurrentChange" />
       </div>
     </div>
@@ -285,7 +285,6 @@ export default {
     const selectedLink = ref(null)
     const totalFirstTimer = ref("")
     const totalItems = ref(props.totalItems)
-    console.log(totalItems.value, 'jjjj');
     const showSMS = ref(false)
     const showEmail = ref(false)
     const paginatedTableLoading = ref(false)
@@ -332,9 +331,18 @@ export default {
       paginatedTableLoading.value = true
       try {
         const { data } = await axios.get(
-          `/api/people/getPaginatedFirstTimer?page=${serverOptions.value.page}`
+          `/api/People/GetAllFirstTimers?page=${serverOptions.value.page}`
+          // `/api/people/getPaginatedFirstTimer?page=${serverOptions.value.page}`
         );
-        churchMembers.value = data.data;
+        if(data && data.response.data.length > 0 ) {
+          churchMembers.value = data.response.data;
+        }else{
+          ElMessage({
+              type: 'warning',
+              message: "Page not Found, Pls Go back to the Previous one",
+              duration: 5000
+            })
+        }  
         paginatedTableLoading.value = false
       } catch (error) {
         paginatedTableLoading.value = false

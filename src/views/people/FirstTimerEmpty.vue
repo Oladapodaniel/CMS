@@ -230,29 +230,17 @@ export default {
     const addNewConvert = () => {
       router.push('/tenant/people/addnewconvert')
     }
-    const getlistfii = async () =>{
-      try {
-        const data = await axios.get('/api/People/GetAllFirstTimers?page=1')
-        console.log(data, 'jjjj');
-      } catch (error) {
-        
-      }
-    }
-    getlistfii()
 
     const getFirstTmersList = async () => {
       try {
         loading.value = true
-        // showFirsttimerPage.value = false
         store.dispatch('membership/setFirstTimerData').then(response => {
           firstTimersList.value = response.data
           totalItems.value = response.totalItems
-          // showFirsttimerPage.value = true
           loading.value = false
         })
       } catch (error) {
         finish()
-        console.log(err)
         if (err.toString().toLowerCase().includes("network error")) {
           networkError.value = true
         } else {
@@ -269,12 +257,8 @@ export default {
         try{
           store.dispatch('membership/setNewConvertData').then(response => {
           newConvertList.value = response
-          console.log(newConvertList.value, "kljk");
           loading.value = false
         })
-            // const res = await axios.get('api/People/GetAllNewConverts?page=1')
-            // newConvertList.value = res.data.response
-            // loading.value = false
         }
         catch(err){
             finish();
@@ -334,7 +318,6 @@ export default {
       }
       catch (err) {
         finish()
-        console.log(err)
         if (err.status === 404 || err.response.status === 404) {
           ElMessage({
             type: 'warning',
@@ -392,7 +375,6 @@ export default {
             duration: 8000
           })
         }
-        console.log(err)
       }
     }
 
@@ -608,12 +590,6 @@ export default {
     width: 95%;
     /* max-width: 1021px; */
     margin: 0 auto;
-  }
-}
-
-@media (max-width: 1500px) {
-  .table {
-    /* border: 2px solid red; */
   }
 }
 
