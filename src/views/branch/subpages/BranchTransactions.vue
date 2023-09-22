@@ -131,7 +131,7 @@
 </template>
 
 <script>
-import { ref, computed } from "@vue/runtime-core";
+import { ref, computed, watch } from "@vue/runtime-core";
 import BranchSelect from "../component/BranchSelect.vue";
 import axios from "@/gateway/backendapi";
 import dateFormatter from "../../../services/dates/dateformatter";
@@ -200,6 +200,12 @@ export default {
       rowsPerPage: 50,
     });
 
+     watch(serverOptions.value, () => {
+      getTransactionByPage();
+    },
+      { deep: true }
+    );
+
     const getTransactionList = async () => {
       loading.value = true;
       try {
@@ -245,18 +251,31 @@ export default {
     };
 
     const currentPage = ref(0);
-    const getPeopleByPage = async () => {
+    const getTransactionByPage = async () => {
       // if (page < 0) return false;
       try {
         const { data } = await axios.get(
           `/api/Branching/${branchID.value}/transactions?page=${serverOptions.value.page}`
         );
-        console.log(data);
-        branchTransactions.value = data.data;
-        totalItems.value = data.totalItems
-        currentPage.value = serverOptions.value.page;
+        if (data && data.data.length > 0) {
+          branchTransactions.value = data.data;
+           totalItems.value = data.totalItems
+        } else {
+          ElMessage({
+          type: 'warning',
+          message: `Page ${serverOptions.value.page} cannot be found`,
+          duration: 5000
+        })
+        }
+        loading.value = false;
       } catch (error) {
         console.log(error);
+        loading.value = false;
+        ElMessage({
+          type: 'error',
+          message: `Could not generate page ${serverOptions.value.page}, please try again`,
+          duration: 5000
+        })
       }
     };
 
@@ -338,7 +357,6 @@ export default {
       // deleteMember,
       loading,
       formatDate,
-      getPeopleByPage,
       branchID,
       branchId,
       currentPage,

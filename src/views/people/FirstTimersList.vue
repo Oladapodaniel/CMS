@@ -113,13 +113,16 @@
           <div @click="showMemberRow(item)" class="c-pointer">{{ item.interestedInJoining }}</div>
         </template>
         <template v-slot:date="{ item }">
+          <div @click="showMemberRow(item)" class="c-pointer">{{ formatDate(item.date) }}</div>
+        </template>
+        <!-- <template v-slot:date="{ item }">
           <div @click="showMemberRow(item)" class="c-pointer">{{ moment
             .parseZone(
               new Date(item.date).toDateString(),
               "YYYY MM DD HH ZZ"
             )
             ._i.substr(4, 11).replaceAll(" ", "_") }}</div>
-        </template>
+        </template> -->
         <template v-slot:movement="{ item }">
           <div @click="showMemberRow(item)" class="c-pointer">{{ item.movement }}</div>
         </template>
@@ -248,6 +251,7 @@ import emailComponent from "../groups/component/emailComponent.vue";
 import FirstTimersChartArea from "./FirstTimersChartArea.vue"
 import axios from "@/gateway/backendapi";
 import { useRoute } from "vue-router";
+import dateFormatter from "../../services/dates/dateformatter";
 import moment from "moment";
 import stopProgressBar from "../../services/progressbar/progress";
 import { useStore } from 'vuex'
@@ -314,11 +318,11 @@ export default {
 
     const serverOptions = ref({
       page: 1,
-      rowsPerPage: 100,
+      rowsPerPage: 50,
     });
 
 
-    watch(serverOptions, () => {
+    watch(serverOptions.value, () => {
       getPeopleByPage();
     },
       { deep: true }
@@ -330,7 +334,7 @@ export default {
         const { data } = await axios.get(
           `/api/people/getPaginatedFirstTimer?page=${serverOptions.value.page}`
         );
-        churchMembers.value = data;
+        churchMembers.value = data.data;
         paginatedTableLoading.value = false
       } catch (error) {
         paginatedTableLoading.value = false
@@ -511,6 +515,10 @@ export default {
         return Math.ceil(totalFirstTimer.value / 100);
       return 1;
     });
+
+    const formatDate = (date) => {
+      return dateFormatter.monthDayYear(date);
+    };
 
     const clearInput = () => {
       searchText.value = "";
@@ -780,6 +788,7 @@ export default {
       filterFormIsVissible,
       toggleFilterFormVissibility,
       moment,
+      formatDate,
       applyFilter,
       filter,
       toggleSearch,

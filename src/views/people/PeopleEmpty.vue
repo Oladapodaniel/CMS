@@ -1,6 +1,6 @@
 <template>
-  <PeopleList :list="peopleInStore" :totalItems="totalItems" v-if="!loading && (peopleInStore.length > 0 || errorGettingPeople)" />
-  <div class="no-person mt-5" v-else-if="!loading && peopleInStore.length === 0 && !errorGettingPeople">
+  <PeopleList :list="peopleInStore" :totalItems="totalItems" v-if="!loading && (peopleInStore && peopleInStore.length > 0 || errorGettingPeople)" />
+  <div class="no-person mt-5" v-else-if="!loading && peopleInStore && peopleInStore.length === 0 && !errorGettingPeople">
     <div class="container">
       <div class="row">
         <div class="col-md-12">
@@ -10,7 +10,7 @@
     </div>
   </div>
 
-  <el-skeleton class="w-100" animated v-if="loading && peopleInStore.length === 0">
+  <el-skeleton class="w-100" animated v-if="loading && peopleInStore && peopleInStore.length === 0">
     <template #template>
       <div style="display: flex;
             align-items: center;
@@ -56,7 +56,7 @@ export default {
     
 
     onMounted(() => {
-      if ( (!peopleInStore.value) || (peopleInStore.value && peopleInStore.value.data && peopleInStore.value.data.length == 0)) {
+      if ( (!peopleInStore.value) || (peopleInStore.value  && peopleInStore.value.length == 0)) {
         getMembers()
       }
     });

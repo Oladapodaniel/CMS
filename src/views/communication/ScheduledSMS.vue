@@ -95,9 +95,7 @@ export default {
     const getScheduledSMS = async () => {
       try {
         loading.value = true;
-        const res = await communicationService.getSchedules(
-          `/api/Messaging/getSmsSchedules`
-        );
+        const res = await communicationService.getSchedules();
         loading.value = false;
         schedules.value = res;
       } catch (error) {

@@ -5,13 +5,97 @@
     </div>
     <div class="row">
       <div class="col-md-12">
+        <div class="table-top p-3 mt-5">
+      <div class="d-flex flex-column flex-sm-row justify-content-sm-between">
+        <div>
+          <!-- <el-tooltip
+            class="box-item"
+            effect="dark"
+            v-if="marked.length > 0"
+            content="Add to group"
+            placement="top-start"
+          >
+            <el-icon
+              class="ml-2 c-pointer"
+              :size="20"
+              @click="addToGroupSingle = true"
+            >
+              <User />
+            </el-icon>
+          </el-tooltip> -->
+          <el-tooltip
+            class="box-item"
+            effect="dark"
+            v-if="marked.length > 0"
+            content="Unarchive member(s)"
+            placement="top-start"
+          >
+            <el-icon
+              class="c-pointer"
+              :size="20"
+              @click="displayPositionArchive = true"
+              v-if="marked.length > 0"
+            >
+              <DocumentAdd />
+            </el-icon>
+
+            
+          </el-tooltip>
+          <!-- <el-tooltip
+            class="box-item"
+            effect="dark"
+            v-if="marked.length > 0"
+            content="Delete member(s)"
+            placement="top-start"
+          >
+            <el-icon
+              :size="20"
+              class="ml-2 c-pointer"
+              v-if="marked.length > 0"
+              @click="showConfirmModal1"
+            >
+              <Delete />
+            </el-icon>
+          </el-tooltip> -->
+        </div>
+        <div class="d-flex flex-column flex-sm-row justify-content-sm-end">
+          
+          <el-input
+            size="small"
+            v-model="searchText"
+            placeholder="Search..."
+            @keyup.enter.prevent="searchArchiveInDB"
+            class="input-with-select"
+          >
+            <template #suffix>
+              <el-button
+                style="padding: 5px; height: 22px"
+                @click.prevent="searchText = ''"
+              >
+                <el-icon :size="13">
+                  <Close />
+                </el-icon>
+              </el-button>
+            </template>
+            <template #append>
+              <el-button @click.prevent="searchArchiveInDB">
+                <el-icon :size="13">
+                  <Search />
+                </el-icon>
+              </el-button>
+            </template>
+          </el-input>
+        </div>
+        
+      </div>
+    </div>
         <Table
-          :data="archivedMember"
+          :data="searchArchive"
           :headers="archivedHeaders"
           :checkMultipleItem="true"
           @checkedrow="handleSelectionChange"
           v-loading="paginatedTableLoading"
-          v-if="archivedMember.length > 0"
+          v-if="searchArchive.length > 0"
         >
           <template v-slot:name="{ item }">
             <div class="c-pointer">
@@ -73,6 +157,34 @@
           </template>
         </Table>
       </div>
+      <el-dialog
+      v-model="displayPositionArchive"
+      title="Archive member(s)"
+      :width="mdAndUp || lgAndUp || xlAndUp ? `50%` : `90%`"
+      align-center
+    >
+      <p class="p-m-0">
+        You are about to archive your member(s). Do you want to continue ?
+      </p>
+      <template #footer>
+        <span class="dialog-footer">
+          <el-button
+            class="secondary-button"
+            @click="displayPositionArchive = false"
+            round
+            >No</el-button
+          >
+          <el-button
+            :color="primarycolor"
+            :loading="archiveLoading"
+            @click="unArchiveAll"
+            round
+          >
+            Yes
+          </el-button>
+        </span>
+      </template>
+    </el-dialog>
 
       <!-- <div class="container-fluid  d-none d-md-block">
           <div class="row t-header mt-5   font-weight-bold">
@@ -221,10 +333,11 @@
 </template>
 
 <script>
-import { ref } from "vue";
+import { ref, inject, computed } from "vue";
 import axios from "@/gateway/backendapi";
 import store from "../../store/store";
 import Table from "@/components/table/Table";
+import deviceBreakpoint from "../../mixins/deviceBreakpoint";
 import { ElMessage, ElMessageBox } from "element-plus";
 // import { useRoute } from "vue-router";
 export default {
@@ -235,9 +348,15 @@ export default {
     // const ArchivedMember = ref([]);
     const archivedMember = ref([]);
     const churchMembers = ref([]);
+    const searchText = ref("");
     const unarchiveMembers = ref([]);
     const membershipSummary = ref([]);
+    const marked = ref([]);
     const paginatedTableLoading = ref(false);
+    const displayPositionArchive = ref(false);
+    const { mdAndUp, lgAndUp, xlAndUp, xsOnly } = deviceBreakpoint();
+    const primarycolor = inject("primarycolor");
+    const archiveLoading = ref(false);
     const archivedHeaders = ref([
       { name: "NAME", value: "name" },
       { name: "PHONE", value: "phoneNumber" },
@@ -246,8 +365,20 @@ export default {
       { name: "ACTION", value: "action" },
     ]);
 
+    // const handleSelectionChange = (val) => {
+    //   checkedFirstTimer.value = val
+    // };
+
     const handleSelectionChange = (val) => {
-      // checkedFirstTimer.value = val
+      console.log(val, 'jjjjj');
+      marked.value = val
+      // marked.value = val.map((i) => {
+      //   i.mobilePhone =
+      //     i.mobilePhone && i.mobilePhone.substring(0, 1) == "0"
+      //       ? `+${tenantCountry.value.phoneCode}${i.mobilePhone.substring(1)}`
+      //       : `${i.mobilePhone}`;
+      //   return i;
+      // });
     };
 
     const getArchivedPeople = () => {
@@ -265,6 +396,58 @@ export default {
         });
     };
     getArchivedPeople();
+
+    const searchArchive = computed(() => {
+      if (searchText.value !== "" && archivedMember.value.length > 0) {
+        return archivedMember.value.filter((i) => {
+          if (i.firstName)
+            return i.firstName
+              .toLowerCase()
+              .includes(searchText.value.toLowerCase());
+        });
+      } else {
+        return archivedMember.value;
+      }
+    });
+
+    const searchArchiveInDB = () => {
+      if (searchText.value !== "" && archivedMember.value.length > 0) {
+        return archivedMember.value.filter((i) => {
+          if (i.firstName)
+            return i.firstName
+              .toLowerCase()
+              .includes(searchText.value.toLowerCase());
+        });
+      } else {
+        return archivedMember.value;
+      }
+    };
+
+    const unArchiveAll = async () => {
+      archiveLoading.value = true;
+      let archiveBody = marked.value.map((i) => i.id);
+      try {
+        const { data } = await axios.post("api/People/unarchiveall", archiveBody);
+        archiveLoading.value = false;
+        displayPositionArchive.value = false;
+        if (data) {
+          archivedMember.value = archivedMember.value.filter((item) => {
+            let y = marked.value.findIndex((j) => j.id == item.id);
+            if (y >= 0) return false;
+            return true;
+          });
+          ElMessage({
+            message: "Members Unarchived succesfully",
+            type: "success",
+            duration: 7000,
+          });
+        }
+      } catch (err) {
+        archiveLoading.value = false;
+        displayPositionArchive.value = false;
+        console.log(err);
+      }
+    };
 
     const showConfirmModall = (id, index) => {
       ElMessageBox.confirm(
@@ -314,7 +497,7 @@ export default {
         .delete(`/api/People/DeleteOnePerson/${id}`)
         .then((res) => {
           console.log(res);
-          churchMembers.value = churchMembers.value.filter(
+          archivedMember.value = archivedMember.value.filter(
             (item) => item.id !== id
           );
           if (res.data.response.includes("@")) {
@@ -351,7 +534,7 @@ export default {
         .post(`/api/People/unarchive/${id}`)
         .then((res) => {
           console.log(res);
-          unarchiveMembers.value = unarchiveMembers.value.filter(
+          archivedMember.value = archivedMember.value.filter(
             (item) => item.id !== id
           );
           ElMessage({
@@ -375,13 +558,25 @@ export default {
       showConfirmModall,
       unarchiveMembers,
       paginatedTableLoading,
+      displayPositionArchive,
+      archiveLoading,
       archivedHeaders,
+      searchArchiveInDB,
+      searchArchive,
       unarchiveMember,
       deleteMember,
       churchMembers,
       showConfirmModal,
+      mdAndUp, 
+      lgAndUp, 
+      xlAndUp, 
+      xsOnly,
+      unArchiveAll,
+      primarycolor,
       archivedMember,
       membershipSummary,
+      searchText,
+      marked,
       handleSelectionChange,
       // ArchivedMember,
     };
@@ -411,10 +606,12 @@ export default {
   color: #136acd;
   cursor: pointer;
 }
-
 .table-top {
   font-weight: 800;
   font-size: 12px;
+  background: #fff;
+  border: 1px solid #d4dde3;
+  border-bottom: none;
 }
 
 .table-top label:hover,
