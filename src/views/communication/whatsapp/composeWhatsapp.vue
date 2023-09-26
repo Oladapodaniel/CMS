@@ -782,7 +782,7 @@ export default {
       // }
 
       // Send to selectedGroups || All contacts
-      if (groupMembersData.value.length > 0) {
+      if (groupMembersData.value && groupMembersData.value.length > 0) {
         const recipients = groupMembersData.value.map(i => ({
           phoneNumber: i.phone ? i.phone.substring(0, 1) == '0' ? `+${tenantCountry.value.phoneCode}${i.phone.substring(1)}` : `${i.phone}` : null,
           name: i.name ? i.name : ""
@@ -1099,12 +1099,18 @@ export default {
       //   chatRecipients.value = chatRecipients.value.concat(recipients)
       // }
 
-      // Send to selectedGroups || All contacts || Phone Numbers
-      if (groupMembersData.value.length > 0 || phoneNumber.value) {
-        const recipients = groupMembersData.value.length > 0 ? groupMembersData.value.map(i => ({
+     // Send to selectedGroups || All contacts
+     if (groupMembersData.value && groupMembersData.value.length > 0) {
+        const recipients = groupMembersData.value.map(i => ({
           phoneNumber: i.phone ? i.phone.substring(0, 1) == '0' ? `+${tenantCountry.value.phoneCode}${i.phone.substring(1)}` : `${i.phone}` : null,
           name: i.name ? i.name : ""
-        })).filter(i => i.phoneNumber) : phoneNumber.value ? [{ name: "", phoneNumber: phoneNumber.value.replaceAll(" ", "").trim() }] : []
+        })).filter(i => i.phoneNumber)
+        chatRecipients.value = chatRecipients.value.concat(recipients)
+      }
+      
+      // Phone Number
+      if (phoneNumber.value) {
+        const recipients = phoneNumber.value ? [{ name: "", phoneNumber: phoneNumber.value.replaceAll(" ", "").trim() }] : []
         chatRecipients.value = chatRecipients.value.concat(recipients)
       }
 
