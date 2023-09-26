@@ -264,7 +264,7 @@ export default {
       rowsPerPage: 50,
     });
 
-     watch(serverOptions, () => {
+     watch(serverOptions.value, () => {
       getTransactionByPage();
     },
       { deep: true }

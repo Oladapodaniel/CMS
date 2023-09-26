@@ -1,6 +1,6 @@
 <template>
   <!-- <testing /> -->
-  <div @click="hideEmojiWrapper">
+  <div @click="hideEmojiWrapper" v-if="whatsappClientState">
     <div class="container">
       <!-- <div class="container" @click="closeDropdownIfOpen"> -->
       <div class="row">
@@ -128,8 +128,7 @@
                 (sendToAllBranches = false),
                   (selectedGroups = selectedGroups.filter(
                     (i) =>
-                      i.data !==
-                      'branch_00000000-0000-0000-0000-000000000000'
+                      i.data !== 'branch_00000000-0000-0000-0000-000000000000'
                   )),
                   getMemberPhoneNumber()
               "
@@ -267,8 +266,7 @@
                       closable
                       v-for="(item, index) in selectedBranch"
                       :key="item.id"
-                      @close="selectedBranch.splice(index, 1)
-                      "
+                      @close="selectedBranch.splice(index, 1)"
                       >{{ item.name }}</el-tag
                     >
                   </span>
@@ -492,7 +490,10 @@
       <div
         class="row mt-1"
         v-if="
-          phoneNumberSelectionTab || membershipSelectionTab || groupSelectionTab ||  branchesSelectionTab
+          phoneNumberSelectionTab ||
+          membershipSelectionTab ||
+          groupSelectionTab ||
+          branchesSelectionTab
         "
       >
         <div class="col-md-12 pr-0">
@@ -680,6 +681,9 @@
       </template>
     </el-dialog>
   </div>
+  <div v-else class="mt-5">
+    <AuthenticateWhatsapp />
+  </div>
 </template>
 
 <script>
@@ -690,6 +694,7 @@ import { useRoute } from "vue-router";
 import store from "../../../store/store";
 import axios from "@/gateway/backendapi";
 import communicationService from "../../../services/communication/communicationservice";
+import AuthenticateWhatsapp from "../../../components/whatsapp/AuthenticateWhatsapp.vue";
 import moment from "moment";
 import VueQrcode from "vue-qrcode";
 import swal from "sweetalert";
@@ -705,6 +710,7 @@ export default {
   components: {
     VueQrcode,
     VuemojiPicker,
+    AuthenticateWhatsapp,
     // testing
   },
   beforeRouteEnter(to, from, next) {
@@ -749,7 +755,7 @@ export default {
     const membershipSelectionTab = ref(false);
     const phoneNumberSelectionTab = ref(false);
     const whatsappGroupSelectionTab = ref(false);
-     const sendToAllBranches = ref(false);
+    const sendToAllBranches = ref(false);
     const selectedGroups = ref([]);
     const displayEmoji = ref(false);
     const branchesSelectionTab = ref(false);
@@ -814,28 +820,27 @@ export default {
     };
 
     const showSection2 = (index) => {
-        if (index === 0) {
+      if (index === 0) {
         sendToAllBranches.value = true;
         selectedGroups.value.push({
           data: "branch_00000000-0000-0000-0000-000000000000",
           name: "All branches",
         });
       }
-      
+
       //   if (index === 2) whatsappGroupSelectionTab.value = true;
       if (index === 1) branchesSelectionTab.value = true;
       getMemberPhoneNumber();
       if (index === 2) phoneNumberSelectionTab.value = true;
       //   if (index === 3) contactUpload.value = true;
-    
     };
-    console.log(selectedBranch.value, 'kjjllklk');
+    console.log(selectedBranch.value, "kjjllklk");
 
     const getMemberPhoneNumber = async () => {
       memberdataloading.value = true;
       if (route.fullPath == "/tenant/branches/summary") {
-         const branchID = localStorage.getItem("branchId");
-         const payload = {
+        const branchID = localStorage.getItem("branchId");
+        const payload = {
           subject: "",
           message: editorData.value,
           tenantID: branchID,
@@ -850,17 +855,16 @@ export default {
           toOthers: toOthers.value.length > 0 ? toOthers.value.join(",") : "",
         };
         try {
-        let { data } = await axios.post(
-          "/api/BranchNetwork/getCommunicationAudience",
-          payload
-        );
-        memberdataloading.value = false;
-        groupMembersData.value = data.contacts;
-      } catch (err) {
-        console.log(err);
-        memberdataloading.value = false;
-      }
-        
+          let { data } = await axios.post(
+            "/api/BranchNetwork/getCommunicationAudience",
+            payload
+          );
+          memberdataloading.value = false;
+          groupMembersData.value = data.contacts;
+        } catch (err) {
+          console.log(err);
+          memberdataloading.value = false;
+        }
       } else {
         const payload = {
           subject: "",
@@ -868,7 +872,16 @@ export default {
           tenantID: tenantId.value,
           contacts: [],
           isPersonalized: false,
-          groupedContacts: selectedBranch.value.length > 0 ? [selectedBranch.value.map((i) => {if (i.id) return `branch_${i.id}`;}).join(),] : selectedGroups.value.map((i) => i.data) ,
+          groupedContacts:
+            selectedBranch.value.length > 0
+              ? [
+                  selectedBranch.value
+                    .map((i) => {
+                      if (i.id) return `branch_${i.id}`;
+                    })
+                    .join(),
+                ]
+              : selectedGroups.value.map((i) => i.data),
           isoCode: "",
           category: "",
           emailAddress: "",
@@ -877,22 +890,20 @@ export default {
           toOthers: toOthers.value.length > 0 ? toOthers.value.join(",") : "",
         };
         try {
-        let { data } = await axios.post(
-          "/api/BranchNetwork/getCommunicationAudience",
-          payload
-        );
-        memberdataloading.value = false;
-        groupMembersData.value = data.contacts;
-      } catch (err) {
-        console.log(err);
-        memberdataloading.value = false;
+          let { data } = await axios.post(
+            "/api/BranchNetwork/getCommunicationAudience",
+            payload
+          );
+          memberdataloading.value = false;
+          groupMembersData.value = data.contacts;
+        } catch (err) {
+          console.log(err);
+          memberdataloading.value = false;
+        }
       }
-      }
-      
-     
 
       // if (route.fullPath == "/tenant/branch/mainbranchsummary") {
-        
+
       // }
       // if (selectedBranch.value.length > 0) {
       //   payload.groupedContacts = [
@@ -903,7 +914,6 @@ export default {
       //       .join(),
       //   ];
       // }
-
     };
 
     const allcountries = ref([]);
@@ -912,7 +922,7 @@ export default {
 
     const selectBranch = (item) => {
       selectedBranch.value.push(item);
-      getMemberPhoneNumber()
+      getMemberPhoneNumber();
     };
 
     watchEffect(() => {
@@ -1126,16 +1136,15 @@ export default {
       isoCode.value = store.getters.currentUser.isoCode;
       userCountry.value = store.getters.currentUser.country;
       tenantId.value = store.getters.currentUser.tenantId;
-  console.log(tenantId.value, 'kkkkkkkkkkk');
+      console.log(tenantId.value, "kkkkkkkkkkk");
     } else {
       axios
         .get("/api/Membership/GetCurrentSignedInUser")
         .then((res) => {
           isoCode.value = res.data.isoCode;
           userCountry.value = res.data.country;
-        console.log(res.data, ';jjjj');
+          console.log(res.data, ";jjjj");
           tenantId.value = store.getters.tenantId;
-          
         })
         .catch((err) => console.log(err));
     }
@@ -1150,10 +1159,9 @@ export default {
             `/api/BranchNetwork/getCommunicationGroups?TenantId=${branchID}`
           );
           for (let prop in data) {
-              categories.value.push(prop);
-              allGroups.value.push(data[prop]);
-            }
-        
+            categories.value.push(prop);
+            allGroups.value.push(data[prop]);
+          }
         } catch (error) {}
       } else {
         composeService

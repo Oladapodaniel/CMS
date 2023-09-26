@@ -26,12 +26,12 @@ export default {
             state.eventRegItemData = payload;
         },
         removeAttendance(state, payload) {
-            state.attendanceService = state.attendanceService.filter(
+            state.attendanceService.data = state.attendanceService.data.filter(
               (item) => item.id !== payload
             );
           },
           addAttendanceCheckin(state, payload) {
-            state.attendanceService.push(payload);
+            state.attendanceService.data.push(payload);
           },
 
         // clearState(state) {

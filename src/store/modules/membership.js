@@ -36,13 +36,13 @@ export default {
     },
 
     removeMember(state, payload) {
-      state.members = state.members.filter(i => i.id !== payload);
+      state.members.data = state.members.data.filter(i => i.id !== payload);
     },
     setMembershipSummary(state, payload) {
       state.membershipSummary = payload
     },
     removeFirstTimer(state, payload) {
-      state.firstTimers = state.firstTimers.filter(
+      state.firstTimers.data = state.firstTimers.data.filter(
         (item) => item.id !== payload
       );
     },

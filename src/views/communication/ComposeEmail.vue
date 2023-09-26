@@ -874,7 +874,10 @@ export default {
             })
             .then((willDelete) => {
               if (willDelete) {
-                router.push({ name: 'SentEmails' })
+                store.dispatch("communication/addToSentEmail").then(() => {
+                  router.push({ name: 'SentEmails' })
+                });
+                
               }
             });
             

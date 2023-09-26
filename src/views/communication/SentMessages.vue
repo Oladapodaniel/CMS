@@ -148,11 +148,10 @@
 
 <script>
 import axios from "@/gateway/backendapi";
-import { computed, ref, watch } from "vue";
-import communicationService from "../../services/communication/communicationservice";
+import { computed, ref, onMounted, watch } from "vue";
 import { useStore } from "vuex";
+// import store from "../../store/store";
 import UnitsArea from "../../components/units/UnitsArea";
-import PaginationButtons from "../../components/pagination/PaginationButtons";
 import stopProgressBar from "../../services/progressbar/progress";
 import { ElMessage, ElMessageBox } from 'element-plus'
 import Table from "@/components/table/Table"
@@ -160,16 +159,14 @@ import Table from "@/components/table/Table"
 export default {
   components: {
     UnitsArea,
-    PaginationButtons,
     Table
   },
   setup() {
     const loading = ref(false);
     const store = useStore();
-    const sentSMS = ref(store.getters["communication/allSentSMS"].data);
-    // const currentPage = ref(0);
+    const sentSMS = ref(store.getters["communication/getSentSMS"].data);
     const searchText = ref("");
-    const totalItems = ref(store.getters["communication/allSentSMS"].totalItems)
+    const totalItems = ref(store.getters["communication/getSentSMS"].totalItems)
     const SMSHeaders = ref([
       { name: ' MESSAGE', value: 'message' },
       { name: ' DATE', value: 'dateSent' },
@@ -191,17 +188,15 @@ export default {
 
 
     const getSentSMS = async () => {
+        loading.value = true
       try {
-        loading.value = true;
-        const data = await communicationService.getAllSentSMS(1);
-        loading.value = false;
-        if (data) {
-          sentSMS.value = data.data;
-          // console.log(sentSMS.value, "senjjiik");
-          totalItems.value = data.totalItems
-        }
+        await store.dispatch("communication/getAllSMS").then((res) => {
+           loading.value = false;
+          sentSMS.value = res.data;
+          totalItems.value = res.totalItems
+        });
       } catch (error) {
-        loading.value = false;
+         loading.value = false;
         console.log(error);
       }
     };
@@ -209,12 +204,11 @@ export default {
     const getSMSByPage = async () => {
       loading.value = true;
       try {
-        const data = await communicationService.getAllSentSMS(serverOptions.value.page);
+        const data = await axios.get(`/api/Messaging/getAllSentSms?page=${serverOptions.value.page}`);
         loading.value = false;
         if (data) {
-          sentSMS.value = data.data;
-          totalItems.value = data.totalItems
-          // currentPage.value = serverOptions.value.page;
+          sentSMS.value = data.data.data;
+          totalItems.value = data.data.totalItems
           isSortedByStatus.value = true;
         }
       } catch (error) {
@@ -228,18 +222,10 @@ export default {
       }
     };
 
-    if (
-      !sentSMS.value ||
-      sentSMS.value == undefined ||
-      sentSMS.value.length === 0 ||
-      !sentSMS.value[0]
-    )
-      getSentSMS();
-
-    const itemsCount = computed(() => {
-      if (!sentSMS.value || sentSMS.value.length === 0) return 0;
-      return sentSMS.value.length;
-    });
+    // const itemsCount = computed(() => {
+    //   if (!sentSMS.value || sentSMS.value.length === 0) return 0;
+    //   return sentSMS.value.length;
+    // });
 
     const messages = computed(() => {
       if (!sentSMS.value || sentSMS.value.length === 0) return [];
@@ -352,6 +338,7 @@ export default {
     const handleSelectionChange = (val) => {
       marked.value = val
     }
+    
 
     const handleSizeChange = (val) => {
       console.log(`${val} items per page`)
@@ -360,16 +347,19 @@ export default {
       console.log(`current page: ${val}`)
     }
 
+    onMounted(() => {
+      if ( (!sentSMS.value) || (sentSMS.value && sentSMS.value.length == 0)) {
+         getSentSMS();
+      }
+    });
+
     return {
       sentSMS,
       loading,
-      itemsCount,
-      // currentPage,
-      getSMSByPage,
-      messages,
       searchText,
       searchedMessages,
       marked,
+      store,
       // mark1Item,
       markAllItem,
       deleteSingleItem,

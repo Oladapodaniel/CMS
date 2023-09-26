@@ -3,15 +3,14 @@ import stopProgressBar from "../../services/progressbar/progress"
 
 
 const communicationService = {
-    async getAllSentSMS(page) {
+    async getAllSentSMS() {
         try {
-            const { data } = await axios.get(`/api/Messaging/getAllSentSms?page=${page}`);
+            const { data } = await axios.get(`/api/Messaging/getAllSentSms?page=1`);
             return data;
         } catch (error) {
             
             stopProgressBar();
             console.log(error);
-            console.log(error.response, "ERROR");
             return false;
         }
     },
@@ -83,15 +82,32 @@ const communicationService = {
         }
     },
 
-    async getSentEmails(page) {
-        try {
-            const { data } = await axios.get(`/api/Messaging/getAllSentEmails?page=${page}`);
-            return data;
-        } catch (error) {
-            stopProgressBar();
-            console.log(error);
-            return false;
-        }
+    // async getSentEmails() {
+    //     try {
+    //         const { data } = await axios.get('/api/Messaging/getAllSentEmails?page=1');
+    //         return data;
+    //     } catch (error) {
+    //         stopProgressBar();
+    //         console.log(error);
+    //         return false;
+    //     }
+    // },
+    getSentEmails() {
+        return new Promise((resolve, reject) => {
+            axios.get('/api/Messaging/getAllSentEmails?page=1')
+                .then(res => {
+                    resolve( res.data );
+                })
+                .catch(error => {
+                     /*eslint no-undef: "warn"*/
+                     NProgress.done();
+                    if (error.response) {
+                        reject(error.response);
+                    } else {
+                        reject(error);
+                    }
+                })
+        })
     },
 
     async getSMSReplies(page) {
@@ -122,7 +138,7 @@ const communicationService = {
 
     getSchedules(url) {
         return new Promise((resolve, reject) => {
-            axios.get(url)
+            axios.get('/api/Messaging/getSmsSchedules')
                 .then(res => {
                     console.log(res);
                     resolve(res.data);

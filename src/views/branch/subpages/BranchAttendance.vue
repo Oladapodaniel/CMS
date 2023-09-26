@@ -207,7 +207,7 @@
 </template>
 
 <script>
-import { ref, computed } from "@vue/runtime-core";
+import { ref, computed, watch } from "@vue/runtime-core";
 import BranchSelect from "../component/BranchSelect.vue";
 import axios from "@/gateway/backendapi";
 import dateFormatter from "../../../services/dates/dateformatter";
@@ -275,7 +275,7 @@ export default {
       loading.value = true;
       try {
         let { data } = await axios.get(
-          `/api/checkinattendance/allcheckinattendances?branchId=${branchID.value}`
+          `/api/checkinattendance/allcheckinattendances?page=1&branchId=${branchID.value}`
         );
         branchAttendance.value = data.data;
         totalItem.value = data.totalItems;
@@ -318,20 +318,36 @@ export default {
       rowsPerPage: 50,
     });
 
-    const currentPage = ref(0);
-    const getPeopleByPage = async () => {
+    watch(serverOptions.value, () => {
+      getAttendanceByPage();
+    },
+      { deep: true }
+    );
+
+    const getAttendanceByPage = async () => {
       loading.value = true;
       try {
         const { data } = await axios.get(
-          `/api/Branching/${branchID.value}/transactions?page=${serverOptions.value.page}`
-        );
-
-        branchAttendance.value = data.data;
-        currentPage.value = page;
+          `/api/checkinattendance/allcheckinattendances?page=${serverOptions.value.page}&branchId=${branchID.value}`
+        );  
+        if (data && data.data.length > 0) {
+          branchAttendance.value = data.data;
+        } else {
+          ElMessage({
+          type: 'warning',
+          message: `Page ${serverOptions.value.page} cannot be found`,
+          duration: 5000
+        })
+        }
         loading.value = false;
       } catch (error) {
         console.log(error);
         loading.value = false;
+        ElMessage({
+          type: 'error',
+          message: `Could not generate page ${serverOptions.value.page}, please try again`,
+          duration: 5000
+        })
       }
     };
 
@@ -418,9 +434,7 @@ export default {
       loading,
       branchID,
       formatDate,
-      getPeopleByPage,
       branchId,
-      currentPage,
       totalItem,
     };
   },
