@@ -306,34 +306,15 @@
                 style="position: absolute; z-index: 1000" />
             </transition>
 
-            <!-- action="https://run.mocky.io/v3/9d059bf9-4660-45f2-925d-ce80ad6c4d15" -->
-            <!-- :on-exceed="handleExceed" -->
-            <!-- :on-preview="handlePreview"
-            :on-remove="handleRemove"
-            :before-remove="beforeRemove" -->
-            <el-upload class="upload-demo" multiple :limit="1" :on-change="chooseFile" accept="image/*"  :on-remove="handleRemove"
+
+            <!-- <el-upload class="upload-demo" multiple :limit="1" :on-change="chooseFile" accept="image/*"  :on-remove="handleRemove"
               :auto-upload="false">
               <el-icon class="ml-2" style="font-size: 20px; color: #7d7d7d;">
                 <Paperclip />
               </el-icon>
-              <!-- <template #tip>
-                <div class="el-upload__tip">
-                  jpg/png files with a size less than 500KB.
-                </div>
-              </template> -->
-            </el-upload>
+            </el-upload> -->
           </div>
-          <!-- "image/png" -->
-          <!-- "audio/mpeg" -->
-          <!-- "video/mp4" -->
-          <!-- "application/pdf" -->
-          <!-- <el-progress
-            v-if="chunkProgress > 0"
-            :text-inside="true"
-            :stroke-width="24"
-            :percentage="chunkProgress"
-            status="success"
-          /> -->
+ 
           <el-progress type="circle" :percentage="chunkProgress" v-if="chunkProgress > 0" />
           <img :src="selectedFileUrl" v-show="fileImage" class="mt-2" style="width: 50%" />
           <audio ref="audioPlayer" controls class="mt-2" style="width: 100%;" v-show="fileAudio">
@@ -800,15 +781,20 @@ export default {
       //   chatRecipients.value = chatRecipients.value.concat(recipients)
       // }
 
-      // Send to selectedGroups || All contacts || Phone Numbers
-      if (groupMembersData.value.length > 0 || phoneNumber.value) {
-        const recipients = groupMembersData.value.length > 0 ? groupMembersData.value.map(i => ({
+      // Send to selectedGroups || All contacts
+      if (groupMembersData.value.length > 0) {
+        const recipients = groupMembersData.value.map(i => ({
           phoneNumber: i.phone ? i.phone.substring(0, 1) == '0' ? `+${tenantCountry.value.phoneCode}${i.phone.substring(1)}` : `${i.phone}` : null,
           name: i.name ? i.name : ""
-        })).filter(i => i.phoneNumber) : phoneNumber.value ? [{ name: "", phoneNumber: phoneNumber.value.replaceAll(" ", "").trim() }] : []
+        })).filter(i => i.phoneNumber)
         chatRecipients.value = chatRecipients.value.concat(recipients)
       }
-
+      
+      // Phone Number
+      if (phoneNumber.value) {
+        const recipients = phoneNumber.value ? [{ name: "", phoneNumber: phoneNumber.value.replaceAll(" ", "").trim() }] : []
+        chatRecipients.value = chatRecipients.value.concat(recipients)
+      }
 
       // Selected members recipients
       if (selectedMembers.value.length > 0) {
