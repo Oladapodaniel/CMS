@@ -187,46 +187,6 @@
               </el-dropdown-menu>
             </template>
           </el-dropdown>
-
-
-          <!-- <ul class="d-flex flex-wrap px-1 mb-0 m-dd-item" @click="() => memberSelectInput.focus()">
-            <li style="list-style: none; min-width: 100px" v-for="(member, indx) in selectedMembers" :key="indx"
-              class="email-destination d-flex justify-content-between m-1">
-              
-              <span>{{ member.name }}</span>
-              <span class="ml-2 remove-email" @click="removeMember(indx)">x</span>
-              
-            </li>
-            <li style="list-style: none" class="m-dd-item">
-              <input type="text" class="border-0 m-dd-item text" ref="memberSelectInput" @input="searchForPerson" :class="{
-                'w-100': selectedMembers.length === 0,
-                'minimized-input-width': selectedMembers.length > 0,
-              }" @focus="showMemberList" @click="showMemberList" v-model="searchText" style="padding: 0.5rem"
-                :placeholder="`${selectedMembers.length > 0 ? '' : 'Select from members'
-                  }`" />
-            </li>
-          </ul>
-          <div class="col-md-12 px-0 select-groups-dropdown m-dd-item" v-if="memberListShown">
-            <div class="dropdownmenu pt-0 w-100 m-dd-item">
-              <a class="dropdown-item px-1 c-pointer m-dd-item" v-for="(member, index) in memberSearchResults"
-                :key="index" @click="selectMember(member, index)">{{ member.name }}</a>
-              <p class="bg-secondary p-1 mb-0 disable m-dd-item" v-if="searchText.length < 3 &&
-                loading == false &&
-                memberSearchResults.length === 0
-                ">
-                Enter 3 or more characters
-              </p>
-              <p aria-disabled="true" class="btn btn-default p-1 mb-0 disable m-dd-item" v-if="memberSearchResults.length === 0 &&
-                searchText.length >= 3 &&
-                !loading
-                ">
-                No match found
-              </p>
-              <p class="btn btn-default p-1 mb-0 disable m-dd-item" v-if="loading && searchText.length >= 3">
-                <i class="fas fa-circle-notch fa-spin m-dd-item"></i>
-              </p>
-            </div>
-          </div> -->
         </div>
       </div>
 
@@ -506,7 +466,8 @@ export default {
       try {
         let { data } = await axios.post("/api/Messaging/getCommunicationAudience", payload)
         memberdataloading.value = false
-        groupMembersData.value = data.contacts
+        groupMembersData.value = data.result.contacts
+        console.log(data);
       }
       catch (err) {
         console.log(err);
@@ -607,10 +568,11 @@ export default {
     const selectMember = (selectedMember, index) => {
       selectedMembers.value.push(selectedMember);
       memberSearchResults.value.splice(index, 1);
-      memberListShown.value = false;
       searchText.value = "";
       memberSearchResults.value = [];
-      console.log(selectedMembers, "selected members");
+      console.log(selectedMember, "selected member");
+      toOthers.value.push(selectedMember.phone);
+      getMemberPhoneNumber()
     };
     const removeMember = (index) => {
       selectedMembers.value.splice(index, 1);
@@ -750,16 +712,7 @@ export default {
         .catch((err) => console.log(err));
     })
 
-    // const groupListShown = ref(false);
-    // const showGroupList = () => {
-    //   // groupListShown.value = true;
-    //   console.log(groupSelectInput.value);
-    // };
 
-    const memberListShown = ref(false);
-    const showMemberList = () => {
-      memberListShown.value = true;
-    };
     const groupSelectInput = ref(null);
     const memberSelectInput = ref(null);
 
@@ -782,6 +735,7 @@ export default {
       // }
 
       // Send to selectedGroups || All contacts
+      console.log(groupMembersData.value);
       if (groupMembersData.value.length > 0) {
         const recipients = groupMembersData.value.map(i => ({
           phoneNumber: i.phone ? i.phone.substring(0, 1) == '0' ? `+${tenantCountry.value.phoneCode}${i.phone.substring(1)}` : `${i.phone}` : null,
@@ -1099,12 +1053,18 @@ export default {
       //   chatRecipients.value = chatRecipients.value.concat(recipients)
       // }
 
-      // Send to selectedGroups || All contacts || Phone Numbers
-      if (groupMembersData.value.length > 0 || phoneNumber.value) {
-        const recipients = groupMembersData.value.length > 0 ? groupMembersData.value.map(i => ({
+     // Send to selectedGroups || All contacts
+     if (groupMembersData.value && groupMembersData.value.length > 0) {
+        const recipients = groupMembersData.value.map(i => ({
           phoneNumber: i.phone ? i.phone.substring(0, 1) == '0' ? `+${tenantCountry.value.phoneCode}${i.phone.substring(1)}` : `${i.phone}` : null,
           name: i.name ? i.name : ""
-        })).filter(i => i.phoneNumber) : phoneNumber.value ? [{ name: "", phoneNumber: phoneNumber.value.replaceAll(" ", "").trim() }] : []
+        })).filter(i => i.phoneNumber)
+        chatRecipients.value = chatRecipients.value.concat(recipients)
+      }
+      
+      // Phone Number
+      if (phoneNumber.value) {
+        const recipients = phoneNumber.value ? [{ name: "", phoneNumber: phoneNumber.value.replaceAll(" ", "").trim() }] : []
         chatRecipients.value = chatRecipients.value.concat(recipients)
       }
 
@@ -1194,8 +1154,6 @@ export default {
       // groupListShown,
       // showGroupList,
       groupSelectInput,
-      memberListShown,
-      showMemberList,
       memberSelectInput,
       invalidDestination,
       invalidMessage,
