@@ -120,7 +120,7 @@
           </el-dropdown>
         </div>
       </div>
-      <div v-if="route.fullPath == '/tenant/branches/summary'" class="row">
+      <div v-if="route.fullPath == '/tenant/branches/branch_communication' " class="row">
         <div class="col-md-2 pr-md-0 col-lg-2 align-self-center">
           <span class="small-text">Send to : </span>
         </div>
@@ -701,7 +701,7 @@
                 <el-dropdown-item @click="showScheduleModal"
                   >Schedule</el-dropdown-item
                 >
-                <el-dropdown-item v-if=" !route.fullPath == '/tenant/branch/mainbranchsummary' ||  !route.fullPath == '/tenant/branches/summary' " @click="draftMessage"
+                <el-dropdown-item v-if=" !route.fullPath == '/tenant/branch/mainbranchsummary' ||  !route.fullPath == '/tenant/branches/branch_communication' " @click="draftMessage"
                   >Save as draft</el-dropdown-item
                 >
               </el-dropdown-menu>
@@ -883,7 +883,7 @@ export default {
     const memberSearchResults = ref([]);
     const searchForPerson = (e) => {
       const branchID = localStorage.getItem("branchId");
-      if (route.fullPath == "/tenant/branches/summary") {
+      if (route.fullPath == "/tenant/branches/branch_communication") {
         if (e.target.value.length >= 3) {
           memberSearchResults.value = [];
           loading.value = true;
@@ -968,7 +968,7 @@ export default {
         duration: 5000,
       });
       if (
-        route.fullPath == "/tenant/branches/summary" ||
+        route.fullPath == "/tenant/branches/branch_communication" ||
         route.fullPath == "/tenant/branch/mainbranchsummary"
       ) {
         axios
@@ -1126,7 +1126,7 @@ export default {
           .join();
       }
 
-      if(route.fullPath == "/tenant/branches/summary"){
+      if(route.fullPath == "/tenant/branches/branch_communication"){
         const branchID = localStorage.getItem("branchId");
         data.tenantID = branchID
       }
@@ -1162,7 +1162,7 @@ export default {
       scheduleLoading.value = true;
       const formattedDate = dateFormatter.monthDayTime(data.executionDate);
       if (
-        route.fullPath == "/tenant/branches/summary" ||
+        route.fullPath == "/tenant/branches/branch_communication" ||
         route.fullPath == "/tenant/branch/mainbranchsummary"
       ) {
         try {
@@ -1296,7 +1296,7 @@ export default {
       emit("closesidemodal");
     };
     onMounted(async () => {
-      if (route.fullPath == "/tenant/branches/summary") {
+      if (route.fullPath == "/tenant/branches/branch_communication") {
         const branchID = localStorage.getItem("branchId");
         try {
           const { data } = await axios.get(

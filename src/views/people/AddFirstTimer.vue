@@ -123,7 +123,7 @@
                     </div>
                     <div class="
                       font-weight-700
-                      text-primary
+                      primary--text
                       border-top
                       text-center
                       c-pointer

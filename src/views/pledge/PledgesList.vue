@@ -114,12 +114,20 @@
       v-if="allPledgeList.length > 0 && !loading && !networkError"
     >
       <div class="col-12 col-md-6 col-lg-2 pr-lg-1">
+        <div class="mb-1">Select Member</div>
         <MembersSearch
           @memberdetail="chooseContact"
           :currentMember="selectedContact"
         />
       </div>
       <div class="col-12 col-md-6 col-lg-2 mt-3 mt-md-0 mt-lg-0 px-lg-1">
+        <div class="mb-1">Select Category</div>
+        <!-- <div>
+          <SelectAllDropdown
+            :items="allPledgeDefinitionList"
+            @selected-item="setSelectedCategory"
+          />
+        </div> -->
         <el-select-v2
           v-model="selectedCategoryID"
           @change="setSelectedCategory"
@@ -132,11 +140,18 @@
         />
       </div>
       <div class="col-12 col-md-6 col-lg-2 mt-3 mt-lg-0 px-lg-1">
+        <div class="mb-1">Select Status</div>
+        <!-- <div>
+          <SelectAllDropdown
+            :items="allPledgeStatus"
+            @selected-item="setSelectedStatus"
+          />
+        </div> -->
         <el-select-v2
           v-model="selectedStatusID"
           @change="setSelectedStatus"
           :options="
-            allPledgeStatus.map((i) => ({ label: i.status, value: i.status }))
+            allPledgeStatus.map((i) => ({ label: i.name, value: i.id }))
           "
           placeholder=" Select Status"
           size="large"
@@ -144,6 +159,7 @@
         />
       </div>
       <div class="col-12 col-md-6 col-lg-2 mt-3 mt-lg-0 px-lg-1">
+        <div class="mb-1">Start Date</div>
         <el-date-picker
           v-model="startDate"
           type="date"
@@ -154,6 +170,7 @@
         />
       </div>
       <div class="col-12 col-md-6 col-lg-2 mt-3 mt-lg-0 px-lg-1">
+        <div class="mb-1">End Date</div>
         <el-date-picker
           v-model="endDate"
           type="date"
@@ -166,10 +183,10 @@
       <div
         class="col-12 col-md-6 d-flex col-lg-2 mt-3 pl-lg-0 text-sm-center mt-lg-0"
       >
-        <div @click="reSet" class="mt-2 c-pointer pr-2 text-primary">Reset</div>
+        <div @click="reSet" class="mt-2 c-pointer pr-2 mt-md-4 mt-0 pt-md-2 pt-0 text-primary">Reset</div>
         <el-button
           :loading="filterLoading"
-          class=""
+          class=" mt-4"
           @click="filterPledge"
           round
           :color="primarycolor"
@@ -315,6 +332,7 @@
 <script>
 import { ref, computed, onMounted, inject } from "vue";
 import MembersSearch from "../../components/membership/MembersSearch.vue";
+import SelectAllDropdown from "../Reports/ReportsDropdown.vue";
 import axios from "@/gateway/backendapi";
 import pledge from "../../services/pledgemodule/pledgemodule";
 import { useRoute } from "vue-router";
@@ -327,6 +345,7 @@ import store from "../../store/store";
 export default {
   components: {
     MembersSearch,
+    SelectAllDropdown,
     Table,
   },
   setup() {
@@ -337,16 +356,16 @@ export default {
     const selectedCategoryID = ref(null);
     const filterLoading = ref(false);
     const allPledgeStatus = ref([
-      { status: "Paid" },
-      { status: "Over Due" },
-      { status: "No Payment" },
-      { status: "Partial" },
-      { status: "---" },
+      { name: "Paid", id: '1' },
+      { name: "Over Due", id: '2' },
+      { name: "No Payment", id: '3' },
+      { name: "Partial",  id: '4' },
+      { name: "---", id: '5' },
     ]);
     const allPledgeDefinitionList = ref([]);
     const selectedCategory = ref({});
     const filterResult = ref([]);
-    const selectedStatus = ref("");
+    const selectedStatus = ref({});
     const loading = ref(false);
     const searchText = ref("");
     const selectedPledge = ref("");
@@ -393,6 +412,9 @@ export default {
     };
 
     const setSelectedCategory = () => {
+      // console.log(payload, 'ggggg');
+      // selectedCategory.value = payload
+
       selectedCategory.value = allPledgeDefinitionList.value.find((i) => {
         return i.id == selectedCategoryID.value;
       });
@@ -414,8 +436,10 @@ export default {
     };
 
     const setSelectedStatus = () => {
+      // console.log(payload,'kkkkkk');
+      // selectedStatus.value = payload;
       selectedStatus.value = allPledgeStatus.value.find((i) => {
-        return i.status == selectedStatusID.value;
+        return i.id == selectedStatusID.value;
       });
     };
 
@@ -450,14 +474,17 @@ export default {
         selectedContact.value && selectedContact.value.id
           ? selectedContact.value.id
           : "";
+      // let selectedCategoryValue = selectedCategory.value.map((i) => i.id);
+        
       let selectedCategoryValue =
         selectedCategory.value && selectedCategory.value.id
           ? selectedCategory.value.id
           : "";
       let selectedStatusValue =
-        selectedStatus.value && selectedStatus.value.status
-          ? selectedStatus.value.status
+        selectedStatus.value && selectedStatus.value.name
+          ? selectedStatus.value.name
           : "";
+      // let selectedStatusValue =  selectedStatus.value.map((i) => i.name);
       let startDateValue = startDate.value
         ? new Date(startDate.value).toLocaleDateString("en-US")
         : "";
@@ -532,7 +559,7 @@ export default {
       } else if (
         filterResult.value.length > 0 &&
         (selectedContact.value.name ||
-          selectedStatus.value.status ||
+          selectedStatus.value.name ||
           selectedCategory.value.name ||
           endDate.value ||
           startDate.value)

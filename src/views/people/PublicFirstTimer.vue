@@ -283,8 +283,8 @@
                 <label for="firstName" class="mr-3 font-weight-600"
                   >Which Group[s] Do You Belong To?</label
                 >
-                <div class="input-width">
-                  <div class="p-2 border add-group bg-white">
+                <div class="input-width  border">
+                  <div class="p-2  add-group bg-white">
                     <div
                       v-for="(item, index) in firstTimerInGroup"
                       :key="index"
@@ -295,7 +295,7 @@
                       No group added yet
                     </div>
                     <div
-                      class="font-weight-700 text-primary border-top text-center c-pointer"
+                      class="font-weight-700 primary--text  border-top text-center c-pointer"
                       data-toggle="modal"
                       data-target="#addToGroup"
                     >
@@ -376,7 +376,7 @@
                 </div>
               </div>
             </el-form-item>
-            <!-- <div class="d-flex align-items-center">
+            <div class="d-flex align-items-center">
               <div class="font-weight-700">Insights:</div>
               <el-divider> </el-divider>
               <span>
@@ -387,8 +387,8 @@
                   <ArrowDownBold />
                 </el-icon>
               </span>
-            </div> -->
-            <!-- <el-collapse-transition>
+            </div>
+            <el-collapse-transition>
               <div v-show="showAddInfo">
                 <el-form-item>
                   <div
@@ -463,7 +463,7 @@
                   </div>
                 </el-form-item>
               </div>
-            </el-collapse-transition> -->
+            </el-collapse-transition>
             <el-form-item>
               <div
                 class="d-flex flex-column flex-lg-row justify-content-end w-100"
@@ -1210,7 +1210,6 @@
       </div>
     </div>
   </div> -->
-  <Toast />
 
   <!-- <div class="row">
       <span class="celeb-tab col-12 my-3" @click="showCelebTab">
@@ -1343,11 +1342,12 @@ export default {
     const selectedEventAttended = ref({});
     const searchGroupText = ref("");
     const howDidYouAboutUs = ref([]);
-    const selectedAboutUsSource = ref(null);
+    const selectedAboutUsSource = ref('');
     const searchRef = ref(null);
     const selectedFollowUp = ref(null);
     const maritalStatusId = ref(null);
     const genderId = ref(null);
+    const sourceId = ref(null);
     const firstTimersObj = ref({
       sendWelcomeSMS: false,
       sendWelcomeEmail: true,
@@ -1371,6 +1371,7 @@ export default {
     const groupToAddTo = ref({});
     const position = ref("");
     const addToGroupError = ref(false);
+    const showAddInfo = ref(false);
     const dismissAddToGroupModal = ref("");
     const route = useRoute();
     const { mdAndUp, lgAndUp, xlAndUp, xsOnly } = deviceBreakpoint()
@@ -1416,6 +1417,13 @@ export default {
         return i.id == genderId.value
       })
     }
+
+    const setSelectedSource = () => {
+      selectedAboutUsSource.value = howDidYouAboutUs.value.find(i => {
+        return i.id === sourceId.value
+      })
+    }  
+    
      const closeManualModalIfOpen = (e) => {
       if (!e.target.classList.contains("dd")) {
         // showEventList.value = false;
@@ -2017,6 +2025,7 @@ export default {
       selectedMaritalStatus,
       selectedEventAttended,
       selectedAboutUsSource,
+      sourceId,
       selectedCommunicationMeans,
       selectedJoinInterest,
       selectedVisitOption,
@@ -2061,6 +2070,7 @@ export default {
       displayModal,
       openModal,
       closeModal,
+      showAddInfo,
       createNewCat,
       validateRules,
       newEventCategoryName,
@@ -2086,6 +2096,7 @@ export default {
       selectedTree,
       dismissAddToGroupModal,
       addMemberToGroup,
+      setSelectedSource
     };
   },
 };
@@ -2098,6 +2109,17 @@ export default {
 }
 .contn-btn:disabled {
   opacity: 0.3;
+}
+
+.tb-icon-span {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  border: 1px solid #dde2e6;
+  height: 30px;
+  width: 30px;
+  border-radius: 50%;
+  opacity: 0.5;
 }
 
 .show-tab {
