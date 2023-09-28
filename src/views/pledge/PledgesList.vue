@@ -151,7 +151,7 @@
           v-model="selectedStatusID"
           @change="setSelectedStatus"
           :options="
-            allPledgeStatus.map((i) => ({ label: i.status, value: i.status }))
+            allPledgeStatus.map((i) => ({ label: i.name, value: i.id }))
           "
           placeholder=" Select Status"
           size="large"
@@ -183,10 +183,10 @@
       <div
         class="col-12 col-md-6 d-flex col-lg-2 mt-3 pl-lg-0 text-sm-center mt-lg-0"
       >
-        <div @click="reSet" class="mt-2 c-pointer pr-2 text-primary">Reset</div>
+        <div @click="reSet" class="mt-2 c-pointer pr-2 mt-md-4 mt-0 pt-md-2 pt-0 text-primary">Reset</div>
         <el-button
           :loading="filterLoading"
-          class=""
+          class=" mt-4"
           @click="filterPledge"
           round
           :color="primarycolor"
@@ -439,7 +439,7 @@ export default {
       // console.log(payload,'kkkkkk');
       // selectedStatus.value = payload;
       selectedStatus.value = allPledgeStatus.value.find((i) => {
-        return i.status == selectedStatusID.value;
+        return i.id == selectedStatusID.value;
       });
     };
 
