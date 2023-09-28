@@ -1,6 +1,6 @@
 <template>
   <!-- <testing /> -->
-  <div @click="hideEmojiWrapper" v-if="whatsappClientState">
+  <div @click="hideEmojiWrapper" v-if="whatsappClientState" >
     <div class="container">
       <!-- <div class="container" @click="closeDropdownIfOpen"> -->
       <div class="row">
@@ -713,16 +713,9 @@ export default {
     AuthenticateWhatsapp,
     // testing
   },
-  beforeRouteEnter(to, from, next) {
-    const whatsappClientState = computed(() => {
-      return store.getters["communication/isWhatsappClientReady"];
-    });
-    if (!whatsappClientState.value && to.fullPath == "/tenant/whatsapp") {
-      next({ path: "/tenant/whatsapp/auth" });
-    } else {
-      next();
-    }
-  },
+  // beforeRouteEnter(to, from, next) {
+   
+  // },
   setup(props) {
     const session = ref("");
     const qrCode = ref("");
@@ -819,6 +812,11 @@ export default {
       // if (index === 4) contactUpload.value = true;
     };
 
+
+     const whatsappClientState = computed(() => {
+      return store.getters["communication/isWhatsappClientReady"];
+    });
+
     const showSection2 = (index) => {
       if (index === 0) {
         sendToAllBranches.value = true;
@@ -838,7 +836,7 @@ export default {
 
     const getMemberPhoneNumber = async () => {
       memberdataloading.value = true;
-      if (route.fullPath == "/tenant/branches/summary") {
+      if (route.fullPath == "/tenant/branches/branch_communication") {
         const branchID = localStorage.getItem("branchId");
         const payload = {
           subject: "",
@@ -1032,7 +1030,7 @@ export default {
     });
     const memberSearchResults = ref([]);
     const searchForPerson = (e) => {
-      if (route.fullPath == "/tenant/branches/summary") {
+      if (route.fullPath == "/tenant/branches/branch_communication") {
         if (e.target.value.length >= 3) {
           memberSearchResults.value = [];
           loading.value = true;
@@ -1152,7 +1150,7 @@ export default {
     const allGroups = ref([]);
     const categories = ref([]);
     onMounted(async () => {
-      if (route.fullPath == "/tenant/branches/summary") {
+      if (route.fullPath == "/tenant/branches/branch_communication") {
         const branchID = localStorage.getItem("branchId");
         try {
           const { data } = await axios.get(
@@ -1742,6 +1740,7 @@ export default {
       toOthers,
       memberdataloading,
       chunkProgress,
+       whatsappClientState,
     };
   },
 };

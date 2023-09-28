@@ -482,6 +482,17 @@ const routes = [
                 },
                 {
 
+                    path: 'branch_communication',
+                    name: "BranchCommunication",
+                    meta: {
+                        title: 'Churchplus - Branch',
+                    },
+                    component: () =>
+                        import( /* webpackChunkName: "addfirsttimer" */ '../views/branch/subpages/BranchCommunication.vue')
+
+                },
+                {
+
                     path: 'branchattendance',
                     name: "BranchAttendanc",
                     meta: {

@@ -14,8 +14,8 @@
           >
             {{ formatDate(item.value[0].activityDate) }}
           </th>
-          <th class="rotate-text">Total Absent</th>
-          <th class="rotate-text">Total Present</th>
+          <th class="rotate-text">Absent</th>
+          <th class="rotate-text">Present</th>
           <th class="rotate-text">Percentages</th>
         </tr>
         <tr class="table-row-bg font-weight-bold">
@@ -23,16 +23,40 @@
           <th class="text-right text-primary" colspan="3">
             Total Present / Total absent
           </th>
+          <!-- <th class="text-primary" v-for="(item, index) in holdThePresentee" :key="index">
+            <span >
+                {{
+                Object.values(item).filter(
+                  (i) => i.attendance.toLowerCase() === "p"
+                ).length
+              }} /
+              {{
+                Object.values(item).filter((i) => i.attendance.includes("--"))
+                  .length
+              }}
+            </span>
+
+          </th> -->
+          <!-- <th class="text-primary">
+            <span v-for="(itemm, index) in holdAllAbsentee" :key="index">/ 
+              {{
+                Object.values(itemm).filter((i) => i.attendance.includes("--"))
+                  .length
+              }}
+            </span>/
+          </th> -->
           <th
             class="text-primary"
             v-for="(item, index) in groupedReportByDate"
             :key="index"
           >
             {{
-              item.value.filter((i) => i.attendance.toLowerCase() == "p").length
+              item.value.filter((i) => (i.attendance).toLowerCase() == "p").length
             }}
-            / {{ item.value.filter((i) => i.attendance.includes("--")).length }}
+            / 
+            {{ item.value.filter((i) => i.attendance.includes("--")).length }}
           </th>
+
           <th class=""></th>
           <th class=""></th>
           <th class=""></th>
@@ -59,6 +83,13 @@
             {{ attendance(item.value[0].personId, 2) }}
           </td>
           <td>{{ attendance(item.value[0].personId, 3) }}</td>
+
+          <!-- <td class="text-success">
+            {{(attendance(item.value[0].personId, 2)) + (attendance(item.value[0].personId, 2)) }}
+          </td>
+           <td class="text-danger">
+            {{ (attendance(item.value[0].personId, 1)) + (attendance(item.value[0].personId, 1)) }} 
+          </td> -->
         </tr>
       </tbody>
     </table>
@@ -66,14 +97,14 @@
 </template>
 
 <script>
-import { ref, watchEffect } from "vue";
+import { onMounted, ref, watchEffect } from "vue";
 
 import dateFormatter from "../../../services/dates/dateformatter";
 // import { find } from 'highcharts';
 export default {
   props: ["groupedReport", "groupedReportByDate"],
   emits: ["data-to-export", "data-header-to-export"],
-  
+
   setup(props, { emit }) {
     const searchText = ref("");
     const searchIsVisible = ref(false);
@@ -87,6 +118,36 @@ export default {
     const toggleFilterFormVissibility = () => {
       filterFormIsVissible.value = !filterFormIsVissible.value;
     };
+    const holdThePresentee = ref([]);
+    const holdAllAbsentee = ref([]);
+    onMounted(() => {
+      props.groupedReportByDate.forEach((i) => {
+        let findPresentee = i.value.filter(
+          (i) => i.attendance.toLowerCase() === "p"
+        );
+        console.log(findPresentee, "i love Jesus");
+        const uniqueObjects = {};
+        for (const object of findPresentee) {
+          if (!uniqueObjects.hasOwnProperty(object.name)) {
+            uniqueObjects[object.name] = object;
+          }
+        }
+        return holdThePresentee.value.push(uniqueObjects);
+      });
+
+      props.groupedReportByDate.forEach((i) => {
+        let findAbsentee = i.value.filter((i) => i.attendance.includes("--"));
+        console.log(findAbsentee, "i love God");
+        const uniqueObjects = {};
+        for (const object of findAbsentee) {
+          if (!uniqueObjects.hasOwnProperty(object.name)) {
+            uniqueObjects[object.name] = object;
+          }
+        }
+        return holdThePresentee.value.push(uniqueObjects);
+      });
+      console.log(holdThePresentee.value, "llllll");
+    });
 
     const attendance = (personId, type) => {
       let attendance = [];
@@ -108,8 +169,18 @@ export default {
           presentee.push(i);
         }
       });
+
+      // const getAttendance = () => {
+
+      // }
+      // getAttendance()
+
       let percentage = (+presentee.length / +filteredAttendance.length) * 100;
-      console.log(percentage);
+      // const letaArray =  []
+      // letaArray.push(presentee)
+      // console.log(letaArray, 'kkkkk');
+      //  console.log(presentee, 'presentee');
+      //   console.log(absentee, 'absentee');
       if (type === 1) return absentee.length;
       if (type === 2) return presentee.length;
       if (type === 3)
@@ -199,10 +270,12 @@ export default {
     return {
       searchIsVisible,
       toggleSearch,
+      holdThePresentee,
       searchText,
       filterFormIsVissible,
       toggleFilterFormVissibility,
       filterGroupReport,
+      holdAllAbsentee,
       formatDate,
       attendanceGrouped,
       attendance,

@@ -2,7 +2,7 @@
   <div class="row">
     <div class="container-fluid">
       <div class="py-5 px-3 row flex-wrap justify-content-around branch-corner">
-        <div class="col-md-12 d-flex justify-content-end pb-3">
+        <!-- <div class="col-md-12 d-flex justify-content-end pb-3">
           <div>
             <el-dropdown trigger="click" class="w-100">
               <span class="el-dropdown-link w-100">
@@ -48,7 +48,7 @@
               </template>
             </el-dropdown>
           </div>
-        </div>
+        </div> -->
         <div class="col-md-3 mt-3 mt-md-0 font-weight-bold">
           <div class="row card-summary shadow">
             <div class="col-md-2">
@@ -141,39 +141,6 @@
     </div>
     <div class="container-fluid">
       <div class="row border mt-4" v-loading="loading">
-        <!-- <div class="col-md-12 d-flex justify-content-end py-3">
-          <div>
-            <el-dropdown trigger="click" class="w-100">
-              <span class="el-dropdown-link w-100">
-                <div
-                  class="d-flex justify-content-between h5 text-secondary w-100"
-                  size="large"
-                >
-                  <span>{{
-                    selectedMonthly && selectedMonthly.name
-                      ? selectedMonthly.name
-                      : selectedMonthly
-                  }}</span>
-                  <div>
-                    <el-icon class="el-icon--right">
-                      <arrow-down />
-                    </el-icon>
-                  </div>
-                </div>
-              </span>
-              <template #dropdown>
-                <el-dropdown-menu>
-                  <el-dropdown-item
-                    v-for="(itm, indx) in chartItemdropdown"
-                    :key="indx"
-                    @click="selectedType1(itm)"
-                    >{{ itm.name }}
-                  </el-dropdown-item>
-                </el-dropdown-menu>
-              </template>
-            </el-dropdown>
-          </div>
-        </div> -->
         <div class="col-md-12">
           <ColumnChart
             domId="chart1"
@@ -288,6 +255,13 @@
             :header="MemberAttendanceHeader"
           />
         </div>
+      </div>
+    </div>
+    <div v-if="!loading && !networkError  && tenantInfo && tenantInfo.length === 0" class="no-person">
+      <div class="empty-img">
+        <p><img src="../../assets/people/people-empty.svg" alt="" /></p>
+         <p class="tip">No Record Found for this branch</p>
+         <!-- <el-button :color="primarycolor" @click="addNewFirsttimer" class="ml-2 header-btn" round>Add First Timers</el-button> -->
       </div>
     </div>
     <el-drawer
@@ -456,6 +430,7 @@ export default {
     const MemberAttendanceHeader = ref("Members Attendance");
     const selectedMonthly = ref("Monthly");
     const selectedWeekly = ref("Monthly");
+    const primarycolor = inject("primarycolor");
     const branchesAnalytics = ref({});
     const IncomeExpHeader = ref("Income & Expenses");
     const branchId = ref("");
@@ -479,6 +454,7 @@ export default {
     const attendancerWeeklyAtt = ref(false);
     const attendancerMonthlyAtt = ref(false);
     const sendWhatsappToMultiple = ref(false);
+    const networkError = ref(false)
     const xAxis = ref([])
     const firstTimerMonthlyAtt = ref(true);
     const firstTimerData = ref([]);
@@ -573,12 +549,6 @@ export default {
     watchEffect(() => {
       socket.on("messagesent", (data) => {
         console.log(data, "status");
-        // ElMessage({
-        //   type: 'success',
-        //   message: 'Whatsapp message sent successfully 🎉',
-        //   duration: 8000
-        // })
-
         swal(" Success", "Whatsapp message sent successfully!", "success");
         showWhatsapp.value = false;
         sendingwhatsappmessage.value = false;
@@ -621,7 +591,14 @@ export default {
           });
 
         console.log(data, "DashboardTenant");
-      } catch (error) {}
+      } catch (error) {
+        if (error.toString().toLowerCase().includes("network error")) {
+          networkError.value = true
+        } else {
+          networkError.value = false
+        }
+        loading.value = false
+      }
     };
     getBranchTenantDashboard();
 
@@ -822,6 +799,7 @@ export default {
       tenantInfoAttendanceMonthly,
       branchId,
       selectedType2,
+      
       selectedType3,
       firstTimerMonthlyAtt,
       firstTimerWeeklyAtt,
@@ -834,6 +812,7 @@ export default {
       firstTimerDataExist,
       weeklyAttendanceObj,
       sendWhatsappToMultiple,
+      networkError,
       mdAndUp,
       lgAndUp,
       xlAndUp,
@@ -874,6 +853,7 @@ export default {
       IncomeExpHeader,
       mainIncomeExpenseData,
       toggleSMS,
+      primarycolor
     };
   },
 };
@@ -884,6 +864,12 @@ export default {
   border-radius: 0.5rem;
   background: #f3f3f3;
 }
+.no-person {
+  height: 100%;
+  display: flex;
+  text-align: center;
+}
+
 .border-round {
   border-radius: 5rem;
 }
@@ -909,6 +895,14 @@ export default {
   background: #ffff;
   border-radius: 0.5rem;
 }
+
+@media screen and (min-width: 1400px) {
+
+  .no-person {
+    height: calc(100% - 90px);
+  }
+}
+
 @media (max-width: 767px) {
   .adjust-view {
     position: relative;
