@@ -218,7 +218,9 @@
                 <CirclePlusFilled />
               </el-icon>&nbsp;Add
             </el-button>
-            <div><code style="color: black;"><small>NB: Make sure you click the add button to include the number to the tray of recipient numbers.</small></code></div>
+            <div><code
+                style="color: black;"><small>NB: Make sure you click the add button to include the number to the tray of recipient numbers.</small></code>
+            </div>
           </div>
         </div>
       </div>
@@ -250,42 +252,45 @@
         </div>
         <div class="col-md-10 px-0">
           <!-- <textarea rows="10" class="text-area my-2 small-text" v-model="editorData"></textarea> -->
-          <el-input
-            v-model="editorData"
-            :rows="10"
-            class="w-100 my-2"
-            type="textarea"
-            placeholder="Type your message ..."
-          />
-          <div><span class="font-weight-bold">NB:</span> To personalise your message, type <span class="font-weight-bold">#name#</span> where you want the recipient's name to appear in your message content</div>
+          <el-input v-model="editorData" :rows="10" class="w-100 my-2" type="textarea"
+            placeholder="Type your message ..." />
+          <div><span class="font-weight-bold">NB:</span> To personalise your message, type <span
+              class="font-weight-bold">#name#</span> where you want the recipient's name to appear in your message content
+          </div>
           <div class="d-flex align-items-start mt-3">
             <img src="../../../assets/smiling-face.png" width="20" class="c-pointer emoji-wrapper"
-            @click="displayEmoji = !displayEmoji" />
+              @click="displayEmoji = !displayEmoji" />
             <transition name="el-fade-in-linear">
               <VuemojiPicker v-show="displayEmoji" @emojiClick="handleEmojiClick" class="mt-2 emoji-wrapper "
                 style="position: absolute; z-index: 1000" />
             </transition>
 
-
-            <!-- <el-upload class="upload-demo" multiple :limit="1" :on-change="chooseFile" accept="image/*"  :on-remove="handleRemove"
+            <!-- accept="image/*"  -->
+            <el-upload class="upload-demo" multiple :limit="1" :on-change="chooseFile" :on-remove="handleRemove"
               :auto-upload="false">
               <el-icon class="ml-2" style="font-size: 20px; color: #7d7d7d;">
                 <Paperclip />
               </el-icon>
-            </el-upload> -->
+            </el-upload>
           </div>
- 
-          <el-progress type="circle" :percentage="chunkProgress" v-if="chunkProgress > 0" />
-          <img :src="selectedFileUrl" v-show="fileImage" class="mt-2" style="width: 50%" />
-          <audio ref="audioPlayer" controls class="mt-2" style="width: 100%;" v-show="fileAudio">
-            <source src="" type="audio/mpeg">
-            Your browser does not support the audio element.
-          </audio>
-          <video ref="videoPlayer" style="width: 100%" height="240" controls v-show="fileVideo">
-            <source src="" />
-            <!-- <source src="movie.mp4" type="video/mp4"> -->
-            Your browser does not support the video tag.
-          </video>
+
+          <div class="row align-items-center">
+            <div class="col-2">
+              <el-progress type="circle" :percentage="chunkProgress" :width="60" v-if="chunkProgress > 0" />
+            </div>
+            <div class="col-10">
+              <img :src="selectedFileUrl" v-show="fileImage" class="mt-2" style="width: 50%" />
+              <audio ref="audioPlayer" controls class="mt-2" style="width: 100%;" v-show="fileAudio">
+                <source src="" type="audio/mpeg">
+                Your browser does not support the audio element.
+              </audio>
+              <video ref="videoPlayer" style="width: 100%" height="240" controls v-show="fileVideo">
+                <source src="" />
+                <!-- <source src="movie.mp4" type="video/mp4"> -->
+                Your browser does not support the video tag.
+              </video>
+            </div>
+          </div>
         </div>
       </div>
 
@@ -512,6 +517,13 @@ export default {
       socket.on('fileready', () => {
         fileReady.value = true
       })
+
+      // if (!connected.value) {
+      //   if (route.fullPath == '/tenant/whatsapp') {
+      //         router.push('/tenant/whatsapp/auth')
+      //         console.log('routed back because socket got disconnected');
+      //     }
+      // }
     })
 
     const connected = computed(() => {
@@ -718,24 +730,9 @@ export default {
 
 
     const sendWhatsappMessage = () => {
-      console.log(selectedMembers.value, 'selected memener');
-      console.log(allSelectedNumbers.value, 'phnennumber');
-      console.log(userWhatsappGroupsId.value)
-      console.log(whatsappAttachment.value)
       chatRecipients.value = new Array();
 
-      // Phone numbers recipients
-      // if (allSelectedNumbers.value.length > 0 || phoneNumber.value) {
-      //   // const recipients = allSelectedNumbers.value.length > 0 ? allSelectedNumbers.value : [phoneNumber.value.replaceAll(" ", "").trim()]
-      //   const recipients = groupMembersData.value.map(i => ({
-      //     phoneNumber: i.phone ? i.phone.substring(0, 1) == '0' ? `+${tenantCountry.value.phoneCode}${i.phone.substring(1)}` : `${i.phone}` : null,
-      //     name: i.name ? i.name : ""
-      //   })).filter(i => i.phoneNumber)
-      //   chatRecipients.value = chatRecipients.value.concat(recipients)
-      // }
-
       // Send to selectedGroups || All contacts
-      console.log(groupMembersData.value);
       if (groupMembersData.value.length > 0) {
         const recipients = groupMembersData.value.map(i => ({
           phoneNumber: i.phone ? i.phone.substring(0, 1) == '0' ? `+${tenantCountry.value.phoneCode}${i.phone.substring(1)}` : `${i.phone}` : null,
@@ -743,7 +740,7 @@ export default {
         })).filter(i => i.phoneNumber)
         chatRecipients.value = chatRecipients.value.concat(recipients)
       }
-      
+
       // Phone Number
       if (phoneNumber.value) {
         const recipients = phoneNumber.value ? [{ name: "", phoneNumber: phoneNumber.value.replaceAll(" ", "").trim() }] : []
@@ -786,41 +783,26 @@ export default {
         })
       }
 
-      // // // Send to phoneNumbers
-      // if (allSelectedNumbers.value.length > 0 || phoneNumber.value) {
-      //   const recipients = allSelectedNumbers.value.length > 0 ? allSelectedNumbers.value : [phoneNumber.value.replaceAll(" ", "").trim()]
-      //   socket.emit('sendwhatsappmessage', {
-      //     id: clientSessionId.value,
-      //     phone_number: recipients,
-      //     message: editorData.value,
-      //     whatsappAttachment: whatsappAttachment.value,
-      //   })
-      // }
-      // // Send to selectedMembers
-      // if (selectedMembers.value.length > 0) {
-      //   const recipients = selectedMembers.value.map(i => i.phone ? i.phone.substring(0, 1) == '0' ? `+${tenantCountry.value.phoneCode}${i.phone.substring(1)}` : `${i.phone}` : null).filter(i => i)
-      //   socket.emit('sendwhatsappmessage', {
-      //     id: clientSessionId.value,
-      //     phone_number: recipients,
-      //     message: editorData.value,
-      //     whatsappAttachment: whatsappAttachment.value,
-      //   })
-      // }
-
-      // if (groupMembersData.value.length > 0) {
-      //   const recipients = groupMembersData.value.map(i => i.phone ? i.phone.substring(0, 1) == '0' ? `+${tenantCountry.value.phoneCode}${i.phone.substring(1)}` : `${i.phone}` : null).filter(i => i)
-      //   socket.emit('sendwhatsappmessage', {
-      //     id: clientSessionId.value,
-      //     phone_number: recipients,
-      //     message: editorData.value,
-      //     whatsappAttachment: whatsappAttachment.value,
-      //   })
-      // }
       swal({
         title: "Success",
         text: "Your Whatsapp message is being sent!",
         icon: "success",
       })
+
+      // Reset data on page
+      phoneNumber.value = "";
+      selectedMembers.value = new Array();
+      editorData.value = "";
+      userWhatsappGroupsId.value = new Array();
+      allSelectedNumbers.value = new Array();
+      chatRecipients.value = new Array();
+      sendToAll.value = false;
+      groupSelectionTab.value = false;
+      membershipSelectionTab.value = false;
+      phoneNumberSelectionTab.value = false;
+      whatsappGroupSelectionTab.value = false;
+      groupMultipleIDs.value = new Array();
+      handleRemove();
     }
 
     const getAllCountries = async () => {
@@ -859,11 +841,8 @@ export default {
 
     const chooseFile = (e) => {
       // uploadPicture(e.raw)
-      console.log(e.raw)
       if (e.raw.type.includes('image')) {
-        fileAudio.value = false
-        fileVideo.value = false
-        fileImage.value = true
+        console.log(e.raw)
         selectedFileUrl.value = URL.createObjectURL(e.raw);
 
         const file = e.raw;
@@ -873,11 +852,11 @@ export default {
           base64String.value = f.target.result;
           const chunkSize = 1024; // Specify your desired chunk size
 
-          socket.emit('resetmediaobject', 
-          {
-            data: "",
-            id: clientSessionId.value
-          });
+          socket.emit('resetmediaobject',
+            {
+              data: "",
+              id: clientSessionId.value
+            });
 
           sendBase64InChunks(base64String.value, chunkSize);
           whatsappAttachment.value = {
@@ -889,14 +868,18 @@ export default {
 
         reader.readAsDataURL(file);
 
+        fileAudio.value = false
+        fileVideo.value = false
+        fileImage.value = true
+
       } else if (e.raw.type.includes('audio')) {
         const reader = new FileReader();
         reader.addEventListener("load", function (f) {
           audioPlayer.value.src = reader.result;
-          base64String.value = f.target.result.split(",")[1];
+          base64String.value = f.target.result;
           const chunkSize = 1024; // Specify your desired chunk size
 
-          socket.emit('resetmediaobject', 
+          socket.emit('resetmediaobject',
             {
               data: "",
               id: clientSessionId.value
@@ -917,15 +900,15 @@ export default {
         if (e.raw) {
           reader.readAsDataURL(e.raw);
         }
-        console.log(whatsappAttachment.value, "attachment");
+        // console.log(whatsappAttachment.value, "attachment");
       } else if (e.raw.type.includes('video')) {
         const reader = new FileReader();
         reader.addEventListener("load", function (f) {
           videoPlayer.value.src = reader.result;
-          base64String.value = f.target.result.split(",")[1];
+          base64String.value = f.target.result;
           const chunkSize = 1024; // Specify your desired chunk size
 
-          socket.emit('resetmediaobject', 
+          socket.emit('resetmediaobject',
             {
               data: "",
               id: clientSessionId.value
@@ -947,12 +930,11 @@ export default {
         if (e.raw) {
           reader.readAsDataURL(e.raw);
         }
-
       } else {
         const reader = new FileReader();
         reader.addEventListener("load", function (f) {
           // selectedFileUrl.value.src = reader.result;
-          base64String.value = f.target.result.split(",")[1];
+          base64String.value = f.target.result;
           const chunkSize = 1024; // Specify your desired chunk size
 
           socket.emit('resetmediaobject',
@@ -969,15 +951,14 @@ export default {
           console.log(whatsappAttachment.value, "attachment");
           fileAudio.value = false
           fileVideo.value = false
-          fileImage.value = true
+          fileImage.value = false
         });
 
         if (e.raw) {
           reader.readAsDataURL(e.raw);
         }
-        console.log('Different file type')
       }
-      console.log(whatsappAttachment.value, "attachmenthere");
+      // console.log(whatsappAttachment.value, "attachmenthere");
     }
 
     const handleRemove = () => {
@@ -996,22 +977,12 @@ export default {
 
 
     const sendBase64InChunks = (base64String, chunkSize) => {
-      console.log(base64String, 'great')
-      // socket.emit('chunk', 
-      // {
-      //   base64String,
-      //   // uploadedChunks,
-      //   // totalChunks,
-      //   id: clientSessionId.value
-      // });
-
       const totalChunks = Math.ceil(base64String.length / chunkSize);
       let uploadedChunks = 0;
       for (let i = 0; i < totalChunks; i++) {
         const start = i * chunkSize;
         const end = start + chunkSize;
         const chunk = base64String.substring(start, end);
-        console.log('==== \n' + chunk + '\n=====')
         uploadedChunks++; // Increment the uploadedChunks count
         socket.emit('chunk',
           {
@@ -1020,17 +991,12 @@ export default {
             totalChunks,
             id: clientSessionId.value
           });
-
-        // socket.emit('chunkprogress', {
-        //   uploadedChunks,
-        //   totalChunks
-        // })
       }
     }
 
     const hideEmojiWrapper = (e) => {
       console.log(e)
-      if (!e.target.className.includes('emoji-wrapper') && (!e.target.className.includes('light') && (e.target.localName.toLowerCase() !== 'emoji-picker'))) {
+      if (e && e.target && e.target.className && !e.target.className.includes('emoji-wrapper') && (e && e.target && e.target.className && !e.target.className.includes('light') && (e.target.localName.toLowerCase() !== 'emoji-picker'))) {
         displayEmoji.value = false
       }
     }
@@ -1053,15 +1019,15 @@ export default {
       //   chatRecipients.value = chatRecipients.value.concat(recipients)
       // }
 
-     // Send to selectedGroups || All contacts
-     if (groupMembersData.value && groupMembersData.value.length > 0) {
+      // Send to selectedGroups || All contacts
+      if (groupMembersData.value && groupMembersData.value.length > 0) {
         const recipients = groupMembersData.value.map(i => ({
           phoneNumber: i.phone ? i.phone.substring(0, 1) == '0' ? `+${tenantCountry.value.phoneCode}${i.phone.substring(1)}` : `${i.phone}` : null,
           name: i.name ? i.name : ""
         })).filter(i => i.phoneNumber)
         chatRecipients.value = chatRecipients.value.concat(recipients)
       }
-      
+
       // Phone Number
       if (phoneNumber.value) {
         const recipients = phoneNumber.value ? [{ name: "", phoneNumber: phoneNumber.value.replaceAll(" ", "").trim() }] : []
@@ -1111,6 +1077,21 @@ export default {
           text: `Your Whatsapp message has been scheduled for\n${dateFormatter.monthDayTime(scheduledWhatsappDate.value)}`,
           icon: "success",
         })
+
+        // Reset data on page
+        phoneNumber.value = "";
+        selectedMembers.value = new Array();
+        editorData.value = "";
+        userWhatsappGroupsId.value = new Array();
+        allSelectedNumbers.value = new Array();
+        chatRecipients.value = new Array();
+        sendToAll.value = false;
+        groupSelectionTab.value = false;
+        membershipSelectionTab.value = false;
+        phoneNumberSelectionTab.value = false;
+        whatsappGroupSelectionTab.value = false;
+        groupMultipleIDs.value = new Array();
+        handleRemove();
       }
       catch (err) {
         scheduleloading.value = false
@@ -1473,4 +1454,5 @@ input:focus {
   padding: 10px;
   border-radius: 5px;
   background: #eee;
-}</style>
+}
+</style>
