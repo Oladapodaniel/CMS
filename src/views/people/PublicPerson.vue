@@ -1817,8 +1817,7 @@ export default {
       axios
         .get(`/public/AgeGroups?tenantId=${route.query.tenantId}`)
         .then((res) => {
-          ageGroups.value = res.data;
-          // getPersonAgeGroupId();
+          ageGroups.value = res.data.sort((a, b) => a.order - b.order);
         })
         .catch((err) => console.log(err.response));
     };

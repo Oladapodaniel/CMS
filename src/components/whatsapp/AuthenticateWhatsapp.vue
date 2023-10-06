@@ -13,7 +13,7 @@
             </el-button>
         </div>
     </div>
-    <el-dialog v-model="QRCodeDialog" title="" :width="mdAndUp || lgAndUp || xlAndUp ? '50%' : '90%' " class="QRCodeDialog" :close-on-click-modal="false"
+    <el-dialog v-model="QRCodeDialog" title="" :width="mdAndUp || lgAndUp || xlAndUp ? '50%' : '90%' " class="QRCodeDialog" :close-on-click-modal="true"
         :close-on-press-escape="false" :show-close="false" align-center>
 
         <div class="d-flex align-items-center flex-column" v-if="isClientReady">
@@ -167,19 +167,20 @@ export default {
                 connectingExistingSession.value = false
                 store.dispatch('communication/isWhatsappClientReady', isClientReady.value)
                 QRCodeDialog.value = true
-
-                // if (route.fullPath == '/tenant/whatsapp/auth') {
-                //     router.push('/tenant/whatsapp')
-                // }
-            })
-
-            socket.on('remotesessionsaved', (data) => {
-                console.log(data, 'Remote session saved')
-                // if the get session endpoint returned no session, then save the current to backend
+                setTimeout(() => {
+                    if (route.fullPath == '/tenant/whatsapp/auth') {
+                        router.push('/tenant/whatsapp')
+                    }   
+                }, 3000);
                 if (sessionStatus.value == 'noSession') {
                     saveSessionIdonAuthSuccess();
                 }
             })
+
+            // socket.on('remotesessionsaved', (data) => {
+            //     console.log(data, 'Remote session saved')
+            //     // if the get session endpoint returned no session, then save the current to backend
+            // })
 
             socket.on('allchats', (data) => {
                 store.dispatch('communication/allClientChat', data.chats)
@@ -208,7 +209,6 @@ export default {
             if (socketconnected.value) {
                 console.log('socket connected')
                 if (!isClientReady.value) getSessionIdFromBackend();
-
             } else {
                 console.log('socket not connected')
                 connectingExistingSession.value = false;
