@@ -420,7 +420,7 @@
       <el-dialog v-model="sendSMSDialog" title="" :width="mdAndUp || lgAndUp || xlAndUp ? `50%` : xsOnly ? `90%` : `70%`"
         align-center class="px-4">
         <div class="row" v-if="!nigerian">
-          <div class="col-md-12 text-center">{{ disableBtn }}
+          <div class="col-md-12 text-center">
             <el-button :loading="loading" :disabled="disableBtn" :color="primarycolor" class="w-100" @click="contructScheduleMessageBody(1, '')" round>Send SMS
               now</el-button>
             <!-- <button class=" primary-btn default-btn px-4 my-2 border-0 primary-bg text-white outline-none extra-btn"
@@ -456,7 +456,7 @@
                       <label for="" class="small-text font-weight-600 py-2">NEW** HYBRID BULK SMS - 100% SMS DELIVERY
                         (SENDER ID AND DEDICATED)</label>
                     </div> -->
-                    <div class=" col-md-12 send-now-div py-2 my-2 d-flex justify-content-center">{{ disableBtn }}
+                    <div class=" col-md-12 send-now-div py-2 my-2 d-flex justify-content-center">
                       <el-button :loading="loading" :disabled="disableBtn" :color="primarycolor" class="w-100"
                         @click="contructScheduleMessageBody(1, 'hybridKonnect')" round>Send SMS now</el-button>
                       <!-- <button class=" primary-btn default-btn border-0 primary-bg px-4 my-2 font-weight-600 outline-none"
