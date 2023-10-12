@@ -54,27 +54,18 @@
             <div class="col-md-2">
               <div class="row">
                 <div class="text-primary col-md-2 mt-2">
-                  <img
-                    src="../../assets/users4.png"
-                    class="rounded-circle p-1 icon"
-                    alt=""
-                  />
+                  <img src="../../assets/users4.png" class="rounded-circle p-1 icon" alt="" />
                   <!-- <el-icon :size="35" class="rounded-circle p-1 icon"
                     ><UserFilled
                   /></el-icon> -->
                 </div>
               </div>
             </div>
-            <div
-              class="col-md-12 mt-4 pt-2 font-weight-bold h4 text-right"
-              v-loading="loading"
-            >
+            <div class="col-md-12 mt-4 pt-2 font-weight-bold h4 text-right" v-loading="loading">
               <!-- {{getTotalPeople}} -->
               {{ tenantInfo.memberCount }}
             </div>
-            <div
-              class="total-bg col-md-12 py-3 font-weight-bold px-0 box-bottom text-center"
-            >
+            <div class="total-bg col-md-12 py-3 font-weight-bold px-0 box-bottom text-center">
               Total People
             </div>
           </div>
@@ -84,26 +75,17 @@
             <div class="col-md-2">
               <div class="row">
                 <div class="text-primary col-md-2 mt-2">
-                  <img
-                    src="../../assets/Vector.png"
-                    class="rounded-circle p-1 icon"
-                    alt=""
-                  />
+                  <img src="../../assets/Vector.png" class="rounded-circle p-1 icon" alt="" />
                   <!-- <el-icon :size="35" class="rounded-circle p-1 icon"
                     ><Notebook
                   /></el-icon> -->
                 </div>
               </div>
             </div>
-            <div
-              class="col-md-12 mt-4 pt-2 font-weight-bold h4 text-right"
-              v-loading="loading"
-            >
+            <div class="col-md-12 mt-4 pt-2 font-weight-bold h4 text-right" v-loading="loading">
               {{ getAllAverageAttendance }}
             </div>
-            <div
-              class="total-bg col-md-12 py-3 font-weight-bold px-0 box-bottom text-center"
-            >
+            <div class="total-bg col-md-12 py-3 font-weight-bold px-0 box-bottom text-center">
               Average Attendance
             </div>
           </div>
@@ -113,41 +95,28 @@
             <div class="col-md-2">
               <div class="row">
                 <div class="text-primary col-md-2 mt-2">
-                  <img
-                    src="../../assets/money.png"
-                    class="rounded-circle p-1 icon"
-                    alt=""
-                  />
+                  <img src="../../assets/money.png" class="rounded-circle p-1 icon" alt="" />
                   <!-- <el-icon :size="35" class="rounded-circle p-1 icon"
                     ><TrendCharts
                   /></el-icon> -->
                 </div>
               </div>
             </div>
-            <div
-              class="col-md-12 mt-4 pt-2 font-weight-bold h4 text-right"
-              v-loading="loading"
-            >
-             {{ singleBranchInfo.currentYearAverageIncome }}
+            <div class="col-md-12 mt-4 pt-2 font-weight-bold h4 text-right" v-loading="loading">
+              {{ singleBranchInfo.currentYearAverageIncome }}
             </div>
-            <div
-              class="total-bg col-md-12 py-3 font-weight-bold px-0 box-bottom text-center"
-            >
+            <div class="total-bg col-md-12 py-3 font-weight-bold px-0 box-bottom text-center">
               Average Income
             </div>
           </div>
         </div>
       </div>
     </div>
-    <div class="container-fluid">
+    <!-- <div>{{ tenantInfo }}</div> -->
+    <div class="container-fluid" v-show="!loading && tenantInfo && tenantInfo.churchName">
       <div class="row border mt-4" v-loading="loading">
         <div class="col-md-12">
-          <ColumnChart
-            domId="chart1"
-            :data="incomeExpenseChart"
-            :series="series"
-            :header="IncomeExpHeader"
-          />
+          <ColumnChart domId="chart1" :data="incomeExpenseChart" :series="series" :header="IncomeExpHeader" />
         </div>
       </div>
       <div class="row border mt-4" v-loading="loading" v-if="tenantInfoFirstTimerWeekly && firstTimerDataExist">
@@ -155,14 +124,11 @@
           <div>
             <el-dropdown trigger="click" class="w-100">
               <span class="el-dropdown-link w-100">
-                <div
-                  class="d-flex justify-content-between h5 text-secondary w-100"
-                  size="large"
-                >
+                <div class="d-flex justify-content-between h5 text-secondary w-100" size="large">
                   <span>{{
                     selectedWeekly && selectedWeekly.name
-                      ? selectedWeekly.name
-                      : selectedWeekly
+                    ? selectedWeekly.name
+                    : selectedWeekly
                   }}</span>
                   <div>
                     <el-icon class="el-icon--right">
@@ -173,34 +139,21 @@
               </span>
               <template #dropdown>
                 <el-dropdown-menu>
-                  <el-dropdown-item
-                    v-for="(itm, indx) in chartItemdropdown"
-                    :key="indx"
-                    @click="selectedType2(itm)"
-                    >{{ itm.name }}
+                  <el-dropdown-item v-for="(itm, indx) in chartItemdropdown" :key="indx" @click="selectedType2(itm)">{{
+                    itm.name }}
                   </el-dropdown-item>
                 </el-dropdown-menu>
               </template>
             </el-dropdown>
           </div>
         </div>
-        <div class="col-md-12" v-if="firstTimerWeeklyAtt">
-          <ColumnChart
-            domId="chart2"
-            :data="weeklyFirstTimerObj"
-            :series="series2"
-            title="First Timer InFlow"
-            :header="firstTimerHeader"
-          />
+        <div class="col-md-12" v-if="firstTimerWeeklyAtt" v-loading="loading">
+          <ColumnChart domId="chart2" :data="weeklyFirstTimerObj" :series="series2" title="First Timer InFlow"
+            :header="firstTimerHeader" />
         </div>
-        <div class="col-md-12" v-if="firstTimerMonthlyAtt">
-          <ColumnChart
-            domId="chart2"
-            :data="monthlyFirstTimerObj"
-            :series="series2"
-            title="First Timer InFlow"
-            :header="firstTimerHeader"
-          />
+        <div class="col-md-12" v-if="firstTimerMonthlyAtt" v-loading="loading">
+          <ColumnChart domId="chart2" :data="monthlyFirstTimerObj" :series="series2" title="First Timer InFlow"
+            :header="firstTimerHeader" />
         </div>
       </div>
       <div class="row border mt-4" v-loading="loading" v-if="tenantInfoAttendanceMonthly && MemberAttDataExist">
@@ -208,14 +161,11 @@
           <div>
             <el-dropdown trigger="click" class="w-100">
               <span class="el-dropdown-link w-100">
-                <div
-                  class="d-flex justify-content-between h5 text-secondary w-100"
-                  size="large"
-                >
+                <div class="d-flex justify-content-between h5 text-secondary w-100" size="large">
                   <span>{{
                     selectedMonthly && selectedMonthly.name
-                      ? selectedMonthly.name
-                      : selectedMonthly
+                    ? selectedMonthly.name
+                    : selectedMonthly
                   }}</span>
                   <div>
                     <el-icon class="el-icon--right">
@@ -226,49 +176,37 @@
               </span>
               <template #dropdown>
                 <el-dropdown-menu>
-                  <el-dropdown-item
-                    v-for="(itm, indx) in chartItemdropdown2"
-                    :key="indx"
-                    @click="selectedType3(itm)"
-                    >{{ itm.name }}
+                  <el-dropdown-item v-for="(itm, indx) in chartItemdropdown2" :key="indx" @click="selectedType3(itm)">{{
+                    itm.name }}
                   </el-dropdown-item>
                 </el-dropdown-menu>
               </template>
             </el-dropdown>
           </div>
         </div>
-        <div class="col-md-12" v-if="attendancerWeeklyAtt">
-          <ColumnChart
-            domId="chart3"
-            :data="weeklyAttendanceObj"
-            :series="series1"
-            title="Event Attendance" subtitle="Weekly Attendance of Events"
-            :header="MemberAttendanceHeader"
-          />
+        <div class="col-md-12" v-if="attendancerWeeklyAtt" v-loading="loading">
+          <ColumnChart domId="chart3" :data="weeklyAttendanceObj" :series="series1" title="Event Attendance"
+            subtitle="Weekly Attendance of Events" :header="MemberAttendanceHeader" />
         </div>
-        <div class="col-md-12" v-if="attendancerMonthlyAtt">
-          <ColumnChart
-            domId="chart3"
-            :data="monthlyAttendanceObj"
-            :series="series1"
-            title="Event Attendance" subtitle="Monthly Attendance of Events"
-            :header="MemberAttendanceHeader"
-          />
+        <div class="col-md-12" v-if="attendancerMonthlyAtt" v-loading="loading">
+          <ColumnChart domId="chart3" :data="monthlyAttendanceObj" :series="series1" title="Event Attendance"
+            subtitle="Monthly Attendance of Events" :header="MemberAttendanceHeader" />
         </div>
       </div>
     </div>
-    <div v-if="!loading && !networkError  && tenantInfo && tenantInfo.length === 0" class="no-person">
+
+    <div v-if="!loading && !networkError && !tenantInfo" class="no-person  w-100 mt-4">
       <div class="empty-img">
         <p><img src="../../assets/people/people-empty.svg" alt="" /></p>
-         <p class="tip">No Record Found for this branch</p>
-         <!-- <el-button :color="primarycolor" @click="addNewFirsttimer" class="ml-2 header-btn" round>Add First Timers</el-button> -->
+        <p class="tip">No Record Found for this branch</p>
+        <!-- <el-button :color="primarycolor" @click="addNewFirsttimer" class="ml-2 header-btn" round>Add First Timers</el-button> -->
       </div>
     </div>
-    <el-drawer
-      v-model="showSMS"
-      :size="mdAndUp || lgAndUp || xlAndUp ? '70%' : '100%'"
-      direction="rtl"
-    >
+    <div class="adjust-network" v-else-if="networkError">
+      <img src="../../assets/network-disconnected.png" />
+      <div>Opps, Your internet connection was disrupted</div>
+    </div>
+    <el-drawer v-model="showSMS" :size="mdAndUp || lgAndUp || xlAndUp ? '70%' : '100%'" direction="rtl">
       <template #header>
         <h4>Send SMS</h4>
       </template>
@@ -279,11 +217,7 @@
         </div>
       </template>
     </el-drawer>
-    <el-drawer
-      v-model="showEmail"
-      :size="mdAndUp || lgAndUp || xlAndUp ? '70%' : '100%'"
-      direction="rtl"
-    >
+    <el-drawer v-model="showEmail" :size="mdAndUp || lgAndUp || xlAndUp ? '70%' : '100%'" direction="rtl">
       <template #header>
         <h4>Send Email</h4>
       </template>
@@ -294,18 +228,14 @@
         </div>
       </template>
     </el-drawer>
-    <el-drawer
-      v-model="showWhatsapp"
-      :size="mdAndUp || lgAndUp || xlAndUp ? '70%' : '100%'"
-      direction="rtl"
-    >
+    <el-drawer v-model="showWhatsapp" :size="mdAndUp || lgAndUp || xlAndUp ? '70%' : '100%'" direction="rtl">
       <template #default>
         <div>
           <whatSappComponent @closesidemodal="() => (showWhatsapp = false)" />
           <!-- <emailComponent :selectedGroupMembers="markedMembers" @closesidemodal="() => showEmail = false" /> -->
         </div>
       </template>
-      
+
     </el-drawer>
     <!-- <el-drawer
       v-model="showWhatsapp"
@@ -510,12 +440,12 @@ export default {
     getBranchesAnalytics();
 
     const series1 = computed(() => {
-      if (attendancerWeeklyAtt.value === true ) return xAxis.value;
+      if (attendancerWeeklyAtt.value === true) return xAxis.value;
       return monthXaxis.value;
     });
 
     const series2 = computed(() => {
-      if (firstTimerWeeklyAtt.value === true ) return xAxis.value;
+      if (firstTimerWeeklyAtt.value === true) return xAxis.value;
       return monthXaxis.value;
     });
 
@@ -523,11 +453,11 @@ export default {
       for (let i = 1; i <= 52; i++) {
         xAxis.value.push(i);
       }
-      if(selectedWeekly.value === "Monthly"){
+      if (selectedWeekly.value === "Monthly") {
         firstTimerMonthlyAtt.value = true
         getBranchTenantDashboard()
       }
-      if(selectedMonthly.value === "Monthly"){
+      if (selectedMonthly.value === "Monthly") {
         attendancerMonthlyAtt.value = true
         getBranchTenantAttendance()
       }
@@ -573,24 +503,24 @@ export default {
     // }
 
     const getBranchTenantDashboard = async () => {
+      loading.value = true
       const branchID = localStorage.getItem("branchId");
       try {
         const { data } = await axios.get(
           `/DashboardForTenant?_TenantId=${branchID}`
         );
-        tenantInfo.value = data 
+        tenantInfo.value = data
         tenantInfoFirstTimerWeekly.value =
           data.firstTimerSummary.firstTimerWeekly;
         tenantInfoFirstTimerMonthly.value =
           data.firstTimerSummary.firstTimerMonthly;
 
-          tenantInfoFirstTimerMonthly.value[0].data.forEach((element) => {
-            if (element > 0) {
-              firstTimerDataExist.value = true;
-            }
-          });
-
-        console.log(data, "DashboardTenant");
+        tenantInfoFirstTimerMonthly.value[0].data.forEach((element) => {
+          if (element > 0) {
+            firstTimerDataExist.value = true;
+          }
+        });
+        loading.value = false
       } catch (error) {
         if (error.toString().toLowerCase().includes("network error")) {
           networkError.value = true
@@ -621,11 +551,12 @@ export default {
           `/Dashboard/CelebrationsForTenant?_TenantId=${branchID}`
         );
         console.log(data, "DashboardCelebrant");
-      } catch (error) {}
+      } catch (error) { }
     };
     getBranchTenantCelebrants();
 
     const getBranchTenantAttendance = async () => {
+      loading.value = true
       const branchID = localStorage.getItem("branchId");
       try {
         const { data } = await axios.get(
@@ -635,12 +566,19 @@ export default {
         tenantInfoAttendanceMonthly.value = data.returnObject.eventAttendanceChartDataMonthly;
 
         tenantInfoAttendanceMonthly.value[0].data.forEach((element) => {
-            if (element > 0) {
-              MemberAttDataExist.value = true;
-            }
-          });
-        console.log(data, "DashboardAttendance");
-      } catch (error) {}
+          if (element > 0) {
+            MemberAttDataExist.value = true;
+          }
+        });
+        loading.value = false
+      } catch (error) {
+        if (error.toString().toLowerCase().includes("network error")) {
+          networkError.value = true
+        } else {
+          networkError.value = false
+        }
+        loading.value = false
+      }
     };
     getBranchTenantAttendance();
 
@@ -761,12 +699,12 @@ export default {
 
     const selectedType2 = (item) => {
       selectedWeekly.value = item;
-      if(item.name === "Weekly"){
+      if (item.name === "Weekly") {
         firstTimerWeeklyAtt.value = true
         firstTimerMonthlyAtt.value = false
         getBranchTenantDashboard()
       }
-      if(item.name === "Monthly"){
+      if (item.name === "Monthly") {
         firstTimerWeeklyAtt.value = false
         firstTimerMonthlyAtt.value = true
         getBranchTenantDashboard()
@@ -774,12 +712,12 @@ export default {
     }
     const selectedType3 = (item) => {
       selectedMonthly.value = item;
-      if(item.name === "Weekly"){
+      if (item.name === "Weekly") {
         attendancerWeeklyAtt.value = true
         attendancerMonthlyAtt.value = false
         getBranchTenantAttendance()
       }
-      if(item.name === "Monthly"){
+      if (item.name === "Monthly") {
         attendancerWeeklyAtt.value = false
         attendancerMonthlyAtt.value = true
         getBranchTenantAttendance()
@@ -799,7 +737,7 @@ export default {
       tenantInfoAttendanceMonthly,
       branchId,
       selectedType2,
-      
+
       selectedType3,
       firstTimerMonthlyAtt,
       firstTimerWeeklyAtt,
@@ -864,52 +802,69 @@ export default {
   border-radius: 0.5rem;
   background: #f3f3f3;
 }
+
+
 .no-person {
-  height: 100%;
+  height: 80vh;
   display: flex;
   text-align: center;
+}
+
+.empty-img {
+  width: 85%;
+  /* min-width: 397px; */
+  margin: auto;
+}
+
+.empty-img img {
+  width: 100%;
+  max-width: 200px;
 }
 
 .border-round {
   border-radius: 5rem;
 }
+
 .box-bottom {
   background: #f1f5f8;
   box-shadow: 0px 11px 17px rgba(206, 205, 205, 0.360784);
   border-radius: 0px 0px 15px 15px;
 }
+
 .icon {
   background: #c0dbfacc;
   /* padding: 1rem; */
 }
+
 .adjust-view {
   position: relative;
   top: 35px;
   right: 10px;
   z-index: 1;
 }
+
 .total-bg {
   background: #f1f5f8;
 }
+
 .card-summary {
   background: #ffff;
   border-radius: 0.5rem;
 }
 
-@media screen and (min-width: 1400px) {
+/* @media screen and (min-width: 1400px) {
 
   .no-person {
-    height: calc(100% - 90px);
+    height: calc(100% - 20px);
   }
-}
+} */
 
 @media (max-width: 767px) {
   .adjust-view {
     position: relative;
-      top: 0px;
-      z-index: 1;
-      padding-top: 2rem;
+    top: 0px;
+    z-index: 1;
+    padding-top: 2rem;
   }
 }
-
 </style>

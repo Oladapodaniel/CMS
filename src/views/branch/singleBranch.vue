@@ -68,11 +68,12 @@
                   }"
                   to="/tenant/branches/branch_communication"
                 >
-                  <img
+                  <!-- <img
                     class="rounded-circle p-1 icon"
                     src="../../assets/dashboardlinks/people.svg"
                     alt=""
-                  />
+                  /> -->
+                  <el-icon :size="23" class="rounded-circle ml-1 icon " ><ChatLineRound /></el-icon>
                   <div class="ml-1">Communication</div>
                 </router-link>
                 <router-link

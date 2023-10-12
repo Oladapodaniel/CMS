@@ -409,6 +409,13 @@ const routes = [
                         import( /* webpackChunkName: "addfirsttimer" */ '../views/Reports/Financialreport/FinancialOfferingReport.vue')
                 },
                 {
+                    path: 'financialpledgesreport',
+                    name: "FinancialPledgesReport",
+                    component: () =>
+
+                        import( /* webpackChunkName: "addfirsttimer" */ '../views/Reports/Financialreport/FinancialPledgesReport.vue')
+                },
+                {
                     path: 'financialactivitiesbalance',
                     name: "financialActivitiesBalance",
                     meta: {
