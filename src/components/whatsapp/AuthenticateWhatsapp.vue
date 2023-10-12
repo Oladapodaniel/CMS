@@ -16,6 +16,7 @@
       type="warning"
       description="The server is currently processing request for another user, please try again later"
       effect="dark"
+      :closable="false"
       show-icon
     />
     <div class="d-flex justify-content-center">
