@@ -3,7 +3,9 @@
     <div class="container p-0">
       <div class="row mt-4">
         <div class="col-md-12">
-          <h2 class="font-weight-bold text-white position-absolute mt-3 ml-4">Whatsapp</h2>
+          <h2 class="font-weight-bold text-white position-absolute mt-3 ml-4">
+            Whatsapp
+          </h2>
           <img src="../../assets/whatsappbg.svg" class="w-100" />
         </div>
       </div>
@@ -16,25 +18,42 @@
             <div class="col-md-3" id="side-menu">
               <div class="row">
                 <div class="col-md-12 d-flex justify-content-center mt-4 mb-5">
-                  <div class=" ml-3 mt-2 toggle">
+                  <div class="ml-3 mt-2 toggle">
                     <i class="pi pi-bars" @click="toggleMenu"></i>
                   </div>
-                  <router-link to="/tenant/whatsapp"  v-if="whatsappClientState"
-                    class="btn compose-btn border-0 font-weight-bold default-btn border-none">Compose Whatsapp</router-link>
-                  <router-link to="" v-else
-                    class="btn compose-btn border-0 font-weight-bold default-btn border-none">Connect Whatsapp</router-link>
+                  <router-link
+                    to="/tenant/whatsapp"
+                    v-if="whatsappClientState"
+                    class="btn compose-btn border-0 font-weight-bold default-btn border-none"
+                    >Compose Whatsapp</router-link
+                  >
+                  <router-link
+                    to=""
+                    v-else
+                    class="btn compose-btn border-0 font-weight-bold default-btn border-none"
+                    >Connect Whatsapp</router-link
+                  >
                 </div>
               </div>
-              <div class="row mb-3" :class="{ 'show': menuShouldShow, 'links-menu': !menuShouldShow }">
-                <div class="col-md-12 ">
-                  <div class="row menu-item-con py-2" :class="{
-                    'active-link':
-                      route.path.includes('/tenant/sms/sent'),
-                  }"  v-if="whatsappClientState">
+              <div
+                class="row mb-3"
+                :class="{ show: menuShouldShow, 'links-menu': !menuShouldShow }"
+              >
+                <div class="col-md-12">
+                  <div
+                    class="row menu-item-con py-2"
+                    :class="{
+                      'active-link': route.path.includes('/tenant/sms/sent'),
+                    }"
+                    v-if="whatsappClientState"
+                  >
                     <div class="col-md-12 menu-item-div m-auto">
                       <a class="btn btn-default font-weight-bold">
                         <span class="menu-item">
-                          <router-link class="r-link text-decoration-none" to="/tenant/sms/sent">
+                          <router-link
+                            class="r-link text-decoration-none"
+                            to="/tenant/sms/sent"
+                          >
                             <i class="pi pi-arrow-circle-up mr-3 menu-icon"></i>
                             <span class="active">Sent</span>
                           </router-link>
@@ -43,15 +62,20 @@
                     </div>
                   </div>
 
-
-                  <div class="row menu-item-con py-2" :class="{
-                    'active-link':
-                      route.path === '/tenant/sms/scheduled',
-                  }"  v-if="whatsappClientState">
+                  <div
+                    class="row menu-item-con py-2"
+                    :class="{
+                      'active-link': route.path === '/tenant/sms/scheduled',
+                    }"
+                    v-if="whatsappClientState"
+                  >
                     <div class="col-md-12 menu-item-div m-auto">
                       <a class="btn btn-default font-weight-bold">
                         <span class="menu-item">
-                          <router-link class="r-link text-decoration-none" to="/tenant/whatsapp/scheduledmessages">
+                          <router-link
+                            class="r-link text-decoration-none"
+                            to="/tenant/whatsapp/scheduledmessages"
+                          >
                             <!-- <i class="pi pi-list mr-3 menu-icon"></i> -->
                             <i class="pi pi-clock mr-3 menu-icon" aria-hidden="true"></i>
                             <span class="active">Scheduled</span>
@@ -64,8 +88,12 @@
                     <div class="col-md-12 menu-item-div m-auto">
                       <a class="btn btn-default font-weight-bold">
                         <span class="menu-item">
-                            <img src="../../assets/greyoutlinewhatsapp.svg" class="mr-3" width="22" />
-                            <span class="active">Not connected</span>
+                          <img
+                            src="../../assets/greyoutlinewhatsapp.svg"
+                            class="mr-3"
+                            width="22"
+                          />
+                          <span class="active">Not connected</span>
                         </span>
                       </a>
                     </div>
@@ -74,11 +102,19 @@
                     <div class="col-md-12 menu-item-div m-auto">
                       <a class="btn btn-default font-weight-bold">
                         <span class="menu-item">
-                            <img src="../../assets/utlinewhatsapp.svg" class="mr-3" width="22" />
-                            <span style="color: #078E2D">Connected</span>
-                            <span>
-                            <img src="../../assets/checkvector.svg" class="ml-3" width="20" />
-                            </span>
+                          <img
+                            src="../../assets/utlinewhatsapp.svg"
+                            class="mr-3"
+                            width="22"
+                          />
+                          <span style="color: #078e2d">Connected</span>
+                          <span>
+                            <img
+                              src="../../assets/checkvector.svg"
+                              class="ml-3"
+                              width="20"
+                            />
+                          </span>
                         </span>
                       </a>
                     </div>
@@ -110,11 +146,8 @@
 
 <script>
 import { ref, computed } from "@vue/reactivity";
-// import { watchEffect } from "vue";
 import { useRoute } from "vue-router";
 import store from "../../store/store";
-// import axios from "@/gateway/backendapi";
-// import { socket } from "@/socket";
 // import { ElMessage, ElMessageBox } from 'element-plus'
 export default {
   setup() {
@@ -122,33 +155,33 @@ export default {
     const menuShouldShow = ref(false);
     const sessionId = ref("");
     const toggleMenu = () => {
-      menuShouldShow.value = !menuShouldShow.value
+      menuShouldShow.value = !menuShouldShow.value;
     };
 
     const whatsappClientState = computed(() => {
-      return store.getters["communication/isWhatsappClientReady"]
-    })
+      return store.getters["communication/isWhatsappClientReady"];
+    });
 
-  //   const confirmDelete = () => {
-  //     ElMessageBox.confirm(
-  //   'proxy will permanently delete the file. Continue?',
-  //   'Warning',
-  //   {
-  //     confirmButtonText: 'OK',
-  //     cancelButtonText: 'Cancel',
-  //     type: 'warning',
-  //   }
-  // )
-  //   .then(() => {
-  //     logoutWhatsappSession()
-  //   })
-  //   .catch(() => {
-  //     ElMessage({
-  //       type: 'info',
-  //       message: 'Delete canceled',
-  //     })
-  //   })
-  //   }
+    //   const confirmDelete = () => {
+    //     ElMessageBox.confirm(
+    //   'proxy will permanently delete the file. Continue?',
+    //   'Warning',
+    //   {
+    //     confirmButtonText: 'OK',
+    //     cancelButtonText: 'Cancel',
+    //     type: 'warning',
+    //   }
+    // )
+    //   .then(() => {
+    //     logoutWhatsappSession()
+    //   })
+    //   .catch(() => {
+    //     ElMessage({
+    //       type: 'info',
+    //       message: 'Delete canceled',
+    //     })
+    //   })
+    //   }
 
     // const logoutWhatsappSession = () => {
     //   socket.emit('deleteremotesession', {
@@ -157,7 +190,6 @@ export default {
     //   })
     // }
 
-      
     // const getSessionIdFromBackend = async () => {
     //         try {
     //             let { data } = await axios.get("/api/Settings/GetWhatsAppSession");
@@ -182,8 +214,6 @@ export default {
     //         }
     //     }
     //     getSessionId()
-    
-    
 
     return {
       route,

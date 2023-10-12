@@ -761,7 +761,7 @@ export default {
       console.log(chatRecipients.value,);
       // Remove object with duplicate recipient numbers
       const ids = chatRecipients.value.map(o => o.phoneNumber)
-      const removeDuplicate = chatRecipients.value.filter(({ phoneNumber }, index) => !ids.includes(phoneNumber, index + 1))
+      let removeDuplicate = chatRecipients.value.filter(({ phoneNumber }, index) => !ids.includes(phoneNumber, index + 1))
       console.log(removeDuplicate)
       // const uniqueNumbers = new Set(chatRecipients.value.phoneNumber);
       // console.log(Array.from(uniqueNumbers));
@@ -802,6 +802,7 @@ export default {
       phoneNumberSelectionTab.value = false;
       whatsappGroupSelectionTab.value = false;
       groupMultipleIDs.value = new Array();
+      removeDuplicate = new Array()
       handleRemove();
     }
 
@@ -1049,7 +1050,7 @@ export default {
       // console.log(chatRecipients.value, );
       // Remove object with duplicate recipient numbers
       const ids = chatRecipients.value.map(o => o.phoneNumber)
-      const removeDuplicate = chatRecipients.value.filter(({ phoneNumber }, index) => !ids.includes(phoneNumber, index + 1))
+      let removeDuplicate = chatRecipients.value.filter(({ phoneNumber }, index) => !ids.includes(phoneNumber, index + 1))
       console.log(removeDuplicate)
 
       // console.log(chatRecipients.value);
@@ -1091,6 +1092,7 @@ export default {
         phoneNumberSelectionTab.value = false;
         whatsappGroupSelectionTab.value = false;
         groupMultipleIDs.value = new Array();
+        removeDuplicate = new Array()
         handleRemove();
       }
       catch (err) {
