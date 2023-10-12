@@ -2067,6 +2067,13 @@ const routes = [
             import( /* webpackChunkName: "sentemails" */ '@/components/expiredpages/BuyUnitsExpired'),
 
     },
+    {
+        path: '/feedbackform',
+        name: 'FollowUpFeedbackForm',
+        component: () =>
+            import( /* webpackChunkName: "followupfeedback" */ '@/views/people/followup/FollowUpFeedbackForm'),
+
+    },
 ]
 
 const router = createRouter({
