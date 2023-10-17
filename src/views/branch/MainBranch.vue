@@ -56,8 +56,8 @@
                   </div>
                 </div>
               </div>
-              <div class="col-md-12 mt-4 pt-2 font-weight-bold h4 text-right" v-loading="loading">
-                {{ getTotalBranches }}
+              <div class="col-md-12 mt-4 pt-2 font-weight-bold h4 text-right" v-loading="branchLoading">
+                {{ allBranchDetail.length }}
               </div>
               <div class="total-bg col-md-12 py-3 font-weight-bold px-0 box-bottom text-center">
                 Total Branches
@@ -320,6 +320,8 @@
           </div>
         </div>
       </div>
+
+
       <div class="container-fluid mt-4">
         <div class="row border ">
           <div class="col-md-6">
@@ -670,29 +672,16 @@
     </el-drawer>
     <el-skeleton class="w-100" animated v-if="loading">
       <template #template>
-        <div
-          style="
+        <div style="
             display: flex;
             align-items: center;
             justify-content: space-between;
             margin-top: 20px;
-          "
-        >
-          <el-skeleton-item
-            variant="text"
-            style="width: 240px; height: 240px"
-          />
-          <el-skeleton-item
-            variant="text"
-            style="width: 240px; height: 240px"
-          />
+          ">
+          <el-skeleton-item variant="text" style="width: 240px; height: 240px" />
+          <el-skeleton-item variant="text" style="width: 240px; height: 240px" />
         </div>
-        <el-skeleton
-          class="w-100 mt-5"
-          style="height: 25px"
-          :rows="20"
-          animated
-        />
+        <el-skeleton class="w-100 mt-5" style="height: 25px" :rows="20" animated />
       </template>
     </el-skeleton>
   </div>
@@ -755,8 +744,9 @@ export default {
     const averageIncomeChartResult = ref([]);
     const colorChange = ref(false);
     const loading = ref(false);
-    const allBranchDetail = ref([]);
-    // const allBranchDetail = ref(store.getters["branch/getbranches"]);
+    const branchLoading = ref(false);
+    const branchChatDetail = ref([]);
+    const allBranchDetail = ref(store.getters["branch/getbranches"]);
     const series = ref([]);
     const joinmodalBtn = ref();
     const firstTimerData = ref([]);
@@ -887,8 +877,8 @@ export default {
     };
 
     const membersAttendanceChart = computed(() => {
-      if (allBranchDetail.value.length === 0) return [];
-      allBranchDetail.value.forEach((i) => {
+      if (branchChatDetail.value.length === 0) return [];
+      branchChatDetail.value.forEach((i) => {
         let membersIndex = Object.keys(i).findIndex(
           (i) => i === "membershipSize"
         );
@@ -927,8 +917,8 @@ export default {
     };
 
     const incomeExpenseChart = computed(() => {
-      if (allBranchDetail.value.length === 0) return [];
-      allBranchDetail.value.forEach((i) => {
+      if (branchChatDetail.value.length === 0) return [];
+      branchChatDetail.value.forEach((i) => {
         let incomeIndex = Object.keys(i).findIndex(
           (i) => i === "currentYearIncome"
         );
@@ -957,8 +947,8 @@ export default {
     });
 
     const firstTimerChart = computed(() => {
-      if (allBranchDetail.value.length === 0) return [];
-      allBranchDetail.value.forEach((i) => {
+      if (branchChatDetail.value.length === 0) return [];
+      branchChatDetail.value.forEach((i) => {
         let firstTimersIndex = Object.keys(i).findIndex(
           (i) => i === "firstTimerCount"
         );
@@ -976,7 +966,7 @@ export default {
     });
 
     const getFirtTimerSeris = () => {
-      allBranchDetail.value.forEach((i) => {
+      branchChatDetail.value.forEach((i) => {
         let serviceIndex = Object.keys(i).findIndex((i) => i === "name");
         let serviceValue = Object.values(i)[serviceIndex];
         // let serviceValue = serviceIndex
@@ -1029,94 +1019,117 @@ export default {
       return store.getters["communication/isWhatsappClientReady"];
     });
 
+
+
     const getBranches = async () => {
-      loading.value = true;
+      branchLoading.value = true;
 
       try {
         // let { data } = await axios.get("/api/Branching");
         await store.dispatch("branch/getBranches").then((res) => {
           console.log(res, "kkkk");
           allBranchDetail.value = res;
-          getAllAverageIncome.value = allBranchDetail.value
-            .map((i) => i.currentYearAverageIncome)
-            .reduce((b, a) => b + a, 0);
-          getAllAverageAttendance.value = allBranchDetail.value
-            .map((i) => i.currentYearAverageAttendance)
-            .reduce((b, a) => b + a, 0)
-            .toFixed(0);
-          getTotalPeople.value = allBranchDetail.value
-            .map((i) => i.membershipSize)
-            .reduce((b, a) => b + a, 0);
           getTotalBranches.value = allBranchDetail.value.length;
-          getAverageIncomeChart.value = allBranchDetail.value.map((i) => ({
-            name: i.name,
-            value: i.currentYearAverageIncome,
-          }));
-          getAverageAttendanceItem.value = allBranchDetail.value.map((i) => ({
-            name: i.name,
-            value: i.currentYearAverageAttendance,
-          }));
-          mappedBranch.value = allBranchDetail.value.map((i) => {
-            return {
-              mainID: i.id,
-              data: { name: i.name, avatar: i.logo, label: "CEO" },
-              parent: i.parentID,
-              styleClass: "p-person",
-            };
-          });
-          let matchedValues = [];
 
-          const allIDs = mappedBranch.value.map((i) => i.mainID);
-          let sum = 0;
-          allIDs.forEach((i) => {
-            mappedBranch.value.forEach((j, ind) => {
-              if (i == j.parent) {
-                j.id = ind;
-                j.parentid = sum;
-                matchedValues.push(j);
-              }
-            });
-            sum++;
-          });
-          const unflatten = function (array, parent, tree) {
-            tree = typeof tree !== "undefined" ? tree : [];
-            parent = typeof parent !== "undefined" ? parent : { id: 0 };
-            var children = _.filter(array, function (child) {
-              return child.parentid == parent.id;
-            });
-            if (!_.isEmpty(children)) {
-              if (parent.id == 0) {
-                tree = children;
-              } else {
-                parent["children"] = children;
-              }
-              _.each(children, function (child) {
-                unflatten(array, child);
-              });
-            }
-            return tree;
-          };
-          let treeConstruted = unflatten(matchedValues);
-          const HQ = res.find((i) =>
-            i.parentID.includes("00000000-000")
-          );
-          const belowHQ = res[0];
-          let treeData = {
-            key: "0",
-            type: "person",
-            styleClass: "p-hq",
-            data: {
-              label: HQ ? HQ : belowHQ,
-              name: HQ && HQ.name ? HQ.name : belowHQ.name,
-              avatar: HQ && HQ.logo ? HQ.logo : belowHQ.logo,
-            },
-            children: treeConstruted,
-          };
-          data1.value = treeData;
-          averageIncomeChart(allBranchDetail.value, "currentYearAverageIncome");
-          getFirtTimerSeris();
-          loading.value = false;
+          branchLoading.value = false;
         });
+      } catch (error) {
+        console.log(error, 'sssddsd');
+        branchLoading.value = false;
+        networkError.value = true;
+        if (error.toString().toLowerCase().includes("network error")) {
+          networkError.value = true;
+        } else {
+          networkError.value = false;
+        }
+      }
+    };
+
+    const getBranchChartDetail = async () => {
+      loading.value = true;
+
+      try {
+        let { data } = await axios.get("/api/Branching");
+        console.log(data, "kkkk");
+        branchChatDetail.value = data.returnObject
+        getAllAverageIncome.value = data.returnObject
+          .map((i) => i.currentYearAverageIncome)
+          .reduce((b, a) => b + a, 0);
+        getAllAverageAttendance.value = data.returnObject
+          .map((i) => i.currentYearAverageAttendance)
+          .reduce((b, a) => b + a, 0)
+          .toFixed(0);
+        getTotalPeople.value = data.returnObject
+          .map((i) => i.membershipSize)
+          .reduce((b, a) => b + a, 0);
+        getAverageIncomeChart.value = data.returnObject.map((i) => ({
+          name: i.name,
+          value: i.currentYearAverageIncome,
+        }));
+        getAverageAttendanceItem.value = data.returnObject.map((i) => ({
+          name: i.name,
+          value: i.currentYearAverageAttendance,
+        }));
+        mappedBranch.value = branchChatDetail.value.map((i) => {
+          return {
+            mainID: i.id,
+            data: { name: i.name, avatar: i.logo, label: "CEO" },
+            parent: i.parentID,
+            styleClass: "p-person",
+          };
+        });
+        let matchedValues = [];
+
+        const allIDs = mappedBranch.value.map((i) => i.mainID);
+        let sum = 0;
+        allIDs.forEach((i) => {
+          mappedBranch.value.forEach((j, ind) => {
+            if (i == j.parent) {
+              j.id = ind;
+              j.parentid = sum;
+              matchedValues.push(j);
+            }
+          });
+          sum++;
+        });
+        const unflatten = function (array, parent, tree) {
+          tree = typeof tree !== "undefined" ? tree : [];
+          parent = typeof parent !== "undefined" ? parent : { id: 0 };
+          var children = _.filter(array, function (child) {
+            return child.parentid == parent.id;
+          });
+          if (!_.isEmpty(children)) {
+            if (parent.id == 0) {
+              tree = children;
+            } else {
+              parent["children"] = children;
+            }
+            _.each(children, function (child) {
+              unflatten(array, child);
+            });
+          }
+          return tree;
+        };
+        let treeConstruted = unflatten(matchedValues);
+        const HQ = branchChatDetail.value.find((i) =>
+          i.parentID.includes("00000000-000")
+        );
+        const belowHQ = branchChatDetail.value[0];
+        let treeData = {
+          key: "0",
+          type: "person",
+          styleClass: "p-hq",
+          data: {
+            label: HQ ? HQ : belowHQ,
+            name: HQ && HQ.name ? HQ.name : belowHQ.name,
+            avatar: HQ && HQ.logo ? HQ.logo : belowHQ.logo,
+          },
+          children: treeConstruted,
+        };
+        data1.value = treeData;
+        getFirtTimerSeris();
+        averageIncomeChart(data.returnObject, "currentYearAverageIncome");
+        loading.value = false;
       } catch (error) {
         console.log(error, 'sssddsd');
         loading.value = false;
@@ -1128,7 +1141,8 @@ export default {
         }
       }
     };
-    getBranches();
+    getBranchChartDetail();
+
 
     const getBranchesAnalytics = async () => {
       try {
@@ -1163,10 +1177,10 @@ export default {
       }
     };
 
-    // onMounted(() => {
-    //   if (allBranchDetail.value && allBranchDetail.value.length == 0)
-    //     getBranches();
-    // });
+    onMounted(() => {
+      if (allBranchDetail.value && allBranchDetail.value.length == 0)
+        getBranches();
+    });
 
     const hideOpen = () => {
       openHideAmonut.value = !openHideAmonut.value;
@@ -1212,6 +1226,7 @@ export default {
       viewBranch,
       networkError,
       loading,
+      branchLoading,
       firstTimerHeader,
       selectedBranches,
       showbranchHierachy,
@@ -1230,6 +1245,7 @@ export default {
       hierarchies,
       showSMS,
       code,
+      branchChatDetail,
       expenseData,
       averageIncomeChartResult,
       getAllAverageIncome,

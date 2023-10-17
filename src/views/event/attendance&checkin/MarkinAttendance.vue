@@ -112,13 +112,13 @@
       <div class="col-md-3"></div>
       <div class="col-md-5">
         <div class="loading-div my-5" v-if="showLoading">
-          <el-icon class="is-loading " >
+          <el-icon class="is-loading" size="30" >
             <Loading />
           </el-icon>
-          <i
+          <!-- <i
             class="pi pi-spin pi-spinner loading-indicator"
             style="fontsize: 2rem"
-          ></i>
+          ></i> -->
           <p>Fetching your details...</p>
         </div>
         <!-- v-if="autosearch && !person.name" -->
@@ -348,7 +348,6 @@
             </span>
           </div>
         </div>
-       
        
         <div v-for="(item, index) in dynamicCustomFields" :key="index" class="row my-3" >
           <div
@@ -820,6 +819,7 @@ export default {
         )
         .then((res) => {
           eventData.value = res.data;
+          getAllCustomFields();
           console.log(eventData);
           console.log(res, "response");
         })
@@ -875,14 +875,13 @@ export default {
 
     const getAllCustomFields = async () => {
       try {
-        let data = await allCustomFields.allCustomFields();
-        dynamicCustomFields.value = data.filter(i => i.entityType === 5).sort((a, b) => a.order - b.order)
+        let { data } = await axios.get(`/GetAllCustomFields?entityType=5&&tenantID=${eventData.value.tenantID}`);
+        dynamicCustomFields.value = data.sort((a, b) => a.order - b.order)
       }
       catch (err) {
         console.log(err)
       }
     }
-    getAllCustomFields()
 
     return {
       toggleBase,
@@ -959,7 +958,8 @@ export default {
 
 .loading-div {
   display: flex;
-  justify-content: center;
+  flex-direction: column;
+  /* justify-content: center; */
   align-items: center;
 }
 

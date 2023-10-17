@@ -150,7 +150,7 @@
                                 <td></td>
                                 <td class="gross-total responsive-horizontalrule">
                                     <!-- NGN -->
-                                    {{ pledgesInNaira && pledgesInNaira[0].currencySymbol === "₦" ?
+                                    {{ pledgesInNaira && pledgesInNaira.length  > 0 && pledgesInNaira[0].currencySymbol === "₦" ?
                                         pledgesInNaira[0].currencySymbol : "" }}
                                     {{
                                         sumTotal && sumTotal.amount
@@ -172,7 +172,7 @@
                                 <td></td>
                                 <td class="gross-total responsive-horizontalrule">
 
-                                    {{ pledgesInDollars && pledgesInDollars[0].currencySymbol === "$" ?
+                                    {{ pledgesInDollars && pledgesInDollars.length > 0 && pledgesInDollars[0].currencySymbol === "$" ?
                                         pledgesInDollars[0].currencySymbol : "" }}
                                     {{
                                         sumTotalInDollars && sumTotalInDollars.amount
