@@ -84,7 +84,8 @@
                     <div class="col-12">
                         <div class="row d-flex justify-content-end">
                             <el-button class="mr-2 secondary-button" data-dismiss="modal" round>Cancel</el-button>
-                            <el-button :color="primarycolor" data-dismiss="modal" @click="createPerson" round>Save</el-button>
+                            <el-button :color="primarycolor" data-dismiss="modal" @click="createPerson"
+                                round>Save</el-button>
                         </div>
                     </div>
 
@@ -98,6 +99,7 @@
 import { ref, inject } from "vue"
 import { watchEffect } from '@vue/runtime-core'
 import axios from "@/gateway/backendapi";
+import { ElMessage, ElMessageBox } from "element-plus";
 export default {
     props: ['family', 'memberRoles', 'showWardModal', 'fullEventData'],
     emits: ['newmember', 'nofamilynewmember'],
@@ -128,6 +130,20 @@ export default {
                         axios.post("/createPublicPerson", createPerson)
                             .then(res => {
                                 console.log(res)
+                                if (res && res.data && res.data.status === true) {
+                                    ElMessage({
+                                        type: "success",
+                                        message: "Ward Created Sucessfully",
+                                        duration: 3000
+                                    });
+                                } else {
+                                    ElMessage({
+                                        type: "warning",
+                                        message: res.data.response,
+                                        duration: 3000
+                                    });
+                                }
+
                                 resolve(res.data);
                                 let newPerson = {
                                     name: res.data.returnObject.firstName,
@@ -160,6 +176,19 @@ export default {
                         axios.post("/createPublicPerson", createPerson)
                             .then(res => {
                                 console.log(res)
+                                if (res && res.data && res.data.status === true) {
+                                    ElMessage({
+                                        type: "success",
+                                        message: "Ward Created Sucessfully",
+                                        duration: 3000
+                                    });
+                                } else {
+                                    ElMessage({
+                                        type: "warning",
+                                        message: res.data.response,
+                                        duration: 3000
+                                    });
+                                }
                                 resolve(res.data);
                                 let newPerson = {
                                     name: res.data.returnObject.firstName,
