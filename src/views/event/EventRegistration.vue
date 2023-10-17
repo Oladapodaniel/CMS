@@ -443,7 +443,7 @@
                   <div class="col-md-7">
                     <el-input
                       v-if="item.controlType == 0"
-                      class="w-100 border"
+                      class="w-100"
                       type="text"
                       aria-required=""
                       v-model="item.data"
