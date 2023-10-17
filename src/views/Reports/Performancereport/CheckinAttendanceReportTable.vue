@@ -8,6 +8,13 @@
           <th class="">Email</th>
           <th class="">Group</th>
           <th
+            class="centralize"
+            v-for="(item, index) in dynamicCustomFields"
+            :key="index"
+          >
+            {{ item.label }}
+          </th>
+          <th
             class="rotate-text"
             v-for="(item, index) in groupedReportByDate"
             :key="index"
@@ -23,43 +30,19 @@
           <th class="text-right text-primary" colspan="3">
             Total Present / Total absent
           </th>
-          <!-- <th class="text-primary" v-for="(item, index) in holdThePresentee" :key="index">
-            <span >
-                {{
-                Object.values(item).filter(
-                  (i) => i.attendance.toLowerCase() === "p"
-                ).length
-              }} /
-              {{
-                Object.values(item).filter((i) => i.attendance.includes("--"))
-                  .length
-              }}
-            </span>
-
-          </th> -->
-          <!-- <th class="text-primary">
-            <span v-for="(itemm, index) in holdAllAbsentee" :key="index">/ 
-              {{
-                Object.values(itemm).filter((i) => i.attendance.includes("--"))
-                  .length
-              }}
-            </span>/
-          </th> -->
           <th
             class="text-primary"
             v-for="(item, index) in groupedReportByDate"
             :key="index"
           >
-            {{
-              item.value.filter((i) => (i.attendance).toLowerCase() == "p").length
-            }}
-            / 
+            {{ item.value.filter((i) => i.attendance.toLowerCase() == "p").length }}
+            /
             {{ item.value.filter((i) => i.attendance.includes("--")).length }}
           </th>
 
           <th class=""></th>
           <th class=""></th>
-          <th class=""></th>
+          <th class="" :colspan="dynamicCustomFields.length + 1"></th>
         </tr>
       </thead>
       <tbody class="small-text font-weight-bold text-nowrap">
@@ -68,6 +51,20 @@
           <td>{{ item.value[0].phone }}</td>
           <td>{{ item.value[0].email }}</td>
           <td>{{ item.value[0].groupName }}</td>
+          <td
+            v-show="item.value[0].customAttributeData.length > 0"
+            v-for="(itemm, index) in dynamicCustomFields"
+            :key="index"
+          >
+            {{ getMemberCustomAttributeData(item.value[0].customAttributeData, itemm) }}
+          </td>
+          <td
+            v-show="item.value[0].customAttributeData.length === 0"
+            v-for="(itemm, index) in dynamicCustomFields.length"
+            :key="index"
+          >
+            {{ "--" }}
+          </td>
           <td v-for="(itemm, index) in groupedReportByDate" :key="index">
             {{
               itemm.value.find((i) => i.personId === item.value[0].personId)
@@ -98,9 +95,8 @@
 
 <script>
 import { onMounted, ref, watchEffect } from "vue";
-
-import dateFormatter from "../../../services/dates/dateformatter";
-// import { find } from 'highcharts';
+import allCustomFields from "../../../services/customfield/customField";
+import dateFormatter from "../../../services/dates/dateformatter"
 export default {
   props: ["groupedReport", "groupedReportByDate"],
   emits: ["data-to-export", "data-header-to-export"],
@@ -122,9 +118,7 @@ export default {
     const holdAllAbsentee = ref([]);
     onMounted(() => {
       props.groupedReportByDate.forEach((i) => {
-        let findPresentee = i.value.filter(
-          (i) => i.attendance.toLowerCase() === "p"
-        );
+        let findPresentee = i.value.filter((i) => i.attendance.toLowerCase() === "p");
         console.log(findPresentee, "i love Jesus");
         const uniqueObjects = {};
         for (const object of findPresentee) {
@@ -196,9 +190,7 @@ export default {
     const attendanceGrouped = (array, key) => {
       let result = array.reduce((result, currentValue) => {
         // If an array already present for key, push it to the array. Else create an array and push the object
-        (result[currentValue[key]] = result[currentValue[key]] || []).push(
-          currentValue
-        );
+        (result[currentValue[key]] = result[currentValue[key]] || []).push(currentValue);
         // Return the current iteration `result` value, this will be taken as next iteration `result` value and accumulate
         return result;
       }, {}); // empty object is the initial value for result object
@@ -267,6 +259,27 @@ export default {
       }
     });
 
+    const dynamicCustomFields = ref([]);
+    const getCustomFields = async () => {
+      try {
+        let data = await allCustomFields.allCustomFields();
+        dynamicCustomFields.value = data.filter((i) => i.entityType === 4);
+      } catch (err) {
+        console.log(err);
+      }
+    };
+    getCustomFields();
+
+    const getMemberCustomAttributeData = (memberCustomData, singleCustomField) => {
+      console.log(memberCustomData, 'er');
+      if (memberCustomData && memberCustomData.length === 0) return "--";
+      const findData = memberCustomData.findIndex(
+        (i) => i.customAttribute.id === singleCustomField.id
+      );
+      if (findData >= 0) return memberCustomData[findData].data;
+      return "--";
+    };
+
     return {
       searchIsVisible,
       toggleSearch,
@@ -279,6 +292,8 @@ export default {
       formatDate,
       attendanceGrouped,
       attendance,
+      dynamicCustomFields,
+      getMemberCustomAttributeData,
     };
   },
 };
@@ -301,7 +316,8 @@ export default {
 .table thead th:nth-child(1),
 .table thead th:nth-child(2),
 .table thead th:nth-child(3),
-.table thead th:nth-child(4) {
+.table thead th:nth-child(4),
+.centralize {
   vertical-align: middle;
   border-bottom: 2px solid #dee2e6;
 }
