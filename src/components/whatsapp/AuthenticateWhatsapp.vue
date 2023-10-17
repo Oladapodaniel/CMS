@@ -166,6 +166,8 @@ export default {
         console.log("QR RECEIVED", data);
         const { qr } = data;
         console.log(qr);
+        QRCodeDialog.value = true;
+        serverBusy.value = false;
         qrloading.value = false;
         qrCode.value = qr;
 
