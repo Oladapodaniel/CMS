@@ -369,7 +369,7 @@
               <Dropdown
                 v-model="item.data"
                 :options="item.parameterValues.split(',')"
-                placeholder="--Select age range--"
+                :placeholder="item.label"
                 style="width: 100%"
               />
             </span>
@@ -875,8 +875,8 @@ export default {
 
     const getAllCustomFields = async () => {
       try {
-        let data = await allCustomFields.allCustomFields()
-         dynamicCustomFields.value = data.filter(i => i.entityType === 5).sort((a, b) => a.order - b.order)
+        let data = await allCustomFields.allCustomFields();
+        dynamicCustomFields.value = data.filter(i => i.entityType === 5).sort((a, b) => a.order - b.order)
       }
       catch (err) {
         console.log(err)
