@@ -182,11 +182,9 @@
       <div class="row my-2" v-if="whatsappGroupSelectionTab">
         <div class="col-md-2"></div>
         <div class="col-md-10 px-0">
-          <el-select-v2 v-model="userWhatsappGroupsId" :options="userWhatsappGroups.map((i) => ({
-            value: i.id.user,
-            label: i.formattedTitle,
-          }))
-            " placeholder="Select whatsapp group" size="large" class="w-100" filterable multiple />
+          <el-select-v2 v-model="userWhatsappGroupsId"
+            :options="userWhatsappGroups.map(i => ({ value: i.id.user, label: i.name }))"
+            placeholder="Select whatsapp group" size="large" class="w-100" filterable multiple />
           <el-icon class="is-loading" v-if="whatsappGroupsLoading">
             <Loading />
           </el-icon>
@@ -344,9 +342,9 @@
             </el-button>
             <div>
               <code style="color: black"><small
-                      >NB: Make sure you click the add button to include the number
-                      to the tray of recipient numbers.</small
-                    ></code>
+                          >NB: Make sure you click the add button to include the number
+                          to the tray of recipient numbers.</small
+                        ></code>
             </div>
           </div>
         </div>
@@ -399,46 +397,30 @@
               <VuemojiPicker v-show="displayEmoji" @emojiClick="handleEmojiClick" class="mt-2 emoji-wrapper"
                 style="position: absolute; z-index: 1000" />
             </transition>
-
-            <!-- action="https://run.mocky.io/v3/9d059bf9-4660-45f2-925d-ce80ad6c4d15" -->
-            <!-- :on-exceed="handleExceed" -->
-            <!-- :on-preview="handlePreview"
-            :on-remove="handleRemove"
-            :before-remove="beforeRemove" -->
-            <el-upload class="upload-demo" multiple :limit="1" :on-change="chooseFile" accept="image/*"
-              :on-remove="handleRemove" :auto-upload="false">
+            <el-upload class="upload-demo" multiple :limit="1" :on-change="chooseFile" :on-remove="handleRemove"
+              :auto-upload="false">
               <el-icon class="ml-2" style="font-size: 20px; color: #7d7d7d">
                 <Paperclip />
               </el-icon>
-              <!-- <template #tip>
-                <div class="el-upload__tip">
-                  jpg/png files with a size less than 500KB.
-                </div>
-              </template> -->
             </el-upload>
           </div>
-          <!-- "image/png" -->
-          <!-- "audio/mpeg" -->
-          <!-- "video/mp4" -->
-          <!-- "application/pdf" -->
-          <!-- <el-progress
-            v-if="chunkProgress > 0"
-            :text-inside="true"
-            :stroke-width="24"
-            :percentage="chunkProgress"
-            status="success"
-          /> -->
-          <el-progress type="circle" :percentage="chunkProgress" v-if="chunkProgress > 0" />
-          <img :src="selectedFileUrl" v-show="fileImage" class="mt-2" style="width: 50%" />
-          <audio ref="audioPlayer" controls class="mt-2" style="width: 100%" v-show="fileAudio">
-            <source src="" type="audio/mpeg" />
-            Your browser does not support the audio element.
-          </audio>
-          <video ref="videoPlayer" style="width: 100%" height="240" controls v-show="fileVideo">
-            <source src="" />
-            <!-- <source src="movie.mp4" type="video/mp4"> -->
-            Your browser does not support the video tag.
-          </video>
+          <div class="row align-items-center">
+            <div class="col-2">
+              <el-progress type="circle" :percentage="chunkProgress" :width="60" v-if="chunkProgress > 0" />
+            </div>
+            <div class="col-10">
+              <img :src="selectedFileUrl" v-show="fileImage" class="mt-2" style="width: 50%" />
+              <audio ref="audioPlayer" controls class="mt-2" style="width: 100%;" v-show="fileAudio">
+                <source src="" type="audio/mpeg">
+                Your browser does not support the audio element.
+              </audio>
+              <video ref="videoPlayer" style="width: 100%" height="240" controls v-show="fileVideo">
+                <source src="" />
+                <!-- <source src="movie.mp4" type="video/mp4"> -->
+                Your browser does not support the video tag.
+              </video>
+            </div>
+          </div>
         </div>
       </div>
 
@@ -590,18 +572,13 @@ export default {
       return store.getters["communication/whatsappSessionId"];
     });
     const userWhatsappGroups = computed(() => {
-      if (
-        store.getters["communication/allClientWhatsappChat"] &&
-        store.getters["communication/allClientWhatsappChat"].length > 0
-      ) {
-        whatsappGroupsLoading.value = false;
-        return store.getters["communication/allClientWhatsappChat"].filter(
-          (i) => i.isGroup
-        );
+      if (store.getters["communication/allClientWhatsappChat"] && store.getters["communication/allClientWhatsappChat"].length > 0) {
+        whatsappGroupsLoading.value = false
+        return store.getters["communication/allClientWhatsappChat"].filter(i => i.isGroup)
       } else {
-        return [];
+        return []
       }
-    });
+    })
     // const toggleGroupsVissibility = () => {
     //   groupsAreVissible.value = !groupsAreVissible.value;
     // };
@@ -667,7 +644,7 @@ export default {
             payload
           );
           memberdataloading.value = false;
-          groupMembersData.value = data.contacts;
+          groupMembersData.value = data.result.contacts;
         } catch (err) {
           console.log(err);
           memberdataloading.value = false;
@@ -702,7 +679,7 @@ export default {
             payload
           );
           memberdataloading.value = false;
-          groupMembersData.value = data.contacts;
+          groupMembersData.value = data.result.contacts;
         } catch (err) {
           console.log(err);
           memberdataloading.value = false;
@@ -840,6 +817,7 @@ export default {
     const memberSearchResults = ref([]);
     const searchForPerson = (e) => {
       if (route.fullPath == "/tenant/branches/branch_communication") {
+        const branchID = localStorage.getItem("branchId");
         if (e.target.value.length >= 3) {
           memberSearchResults.value = [];
           loading.value = true;
@@ -849,7 +827,7 @@ export default {
             )
             .then((res) => {
               loading.value = false;
-              memberSearchResults.value = res.filter((i) => {
+              memberSearchResults.value = res.data.filter((i) => {
                 const memberInExistingCollection = selectedMembers.value.find(
                   (j) => j.id === i.id
                 );
@@ -997,21 +975,7 @@ export default {
     const memberSelectInput = ref(null);
 
     const sendWhatsappMessage = () => {
-      console.log(selectedMembers.value, "selected memener");
-      console.log(allSelectedNumbers.value, "phnennumber");
-      console.log(userWhatsappGroupsId.value);
-      console.log(whatsappAttachment.value);
       chatRecipients.value = new Array();
-
-      // Phone numbers recipients
-      // if (allSelectedNumbers.value.length > 0 || phoneNumber.value) {
-      //   // const recipients = allSelectedNumbers.value.length > 0 ? allSelectedNumbers.value : [phoneNumber.value.replaceAll(" ", "").trim()]
-      //   const recipients = groupMembersData.value.map(i => ({
-      //     phoneNumber: i.phone ? i.phone.substring(0, 1) == '0' ? `+${tenantCountry.value.phoneCode}${i.phone.substring(1)}` : `${i.phone}` : null,
-      //     name: i.name ? i.name : ""
-      //   })).filter(i => i.phoneNumber)
-      //   chatRecipients.value = chatRecipients.value.concat(recipients)
-      // }
 
       // Send to selectedGroups || All contacts || Phone Numbers
       if (groupMembersData.value && groupMembersData.value.length > 0) {
@@ -1023,25 +987,17 @@ export default {
       }
       // Selected members recipients
       if (selectedMembers.value.length > 0) {
-        const recipients = selectedMembers.value
-          .map((i) => ({
-            phoneNumber: i.phone
-              ? i.phone.substring(0, 1) == "0"
-                ? `+${tenantCountry.value.phoneCode}${i.phone.substring(1)}`
-                : `${i.phone}`
-              : null,
-            name: i.name ? i.name : "",
-          }))
-          .filter((i) => i.phoneNumber);
-        chatRecipients.value = chatRecipients.value.concat(recipients);
+        const recipients = selectedMembers.value.map(i => ({
+          phoneNumber: i.phone ? i.phone.substring(0, 1) == '0' ? `+${tenantCountry.value.phoneCode}${i.phone.substring(1)}` : `${i.phone}` : null,
+          name: i.name ? i.name : ""
+        })).filter(i => i.phoneNumber)
+        chatRecipients.value = chatRecipients.value.concat(recipients)
       }
 
-      console.log(chatRecipients.value);
+      console.log(chatRecipients.value,);
       // Remove object with duplicate recipient numbers
       const ids = chatRecipients.value.map((o) => o.phoneNumber);
-      const removeDuplicate = chatRecipients.value.filter(
-        ({ phoneNumber }, index) => !ids.includes(phoneNumber, index + 1)
-      );
+      let removeDuplicate = chatRecipients.value.filter(({ phoneNumber }, index) => !ids.includes(phoneNumber, index + 1))
       console.log(removeDuplicate);
       // const uniqueNumbers = new Set(chatRecipients.value.phoneNumber);
       // console.log(Array.from(uniqueNumbers));
@@ -1063,16 +1019,6 @@ export default {
         });
       }
 
-      // // // Send to phoneNumbers
-      // if (allSelectedNumbers.value.length > 0 || phoneNumber.value) {
-      //   const recipients = allSelectedNumbers.value.length > 0 ? allSelectedNumbers.value : [phoneNumber.value.replaceAll(" ", "").trim()]
-      //   socket.emit('sendwhatsappmessage', {
-      //     id: clientSessionId.value,
-      //     phone_number: recipients,
-      //     message: editorData.value,
-      //     whatsappAttachment: whatsappAttachment.value,
-      //   })
-      // }
       // // Send to selectedMembers
       // if (selectedMembers.value.length > 0) {
       //   const recipients = selectedMembers.value.map(i => i.phone ? i.phone.substring(0, 1) == '0' ? `+${tenantCountry.value.phoneCode}${i.phone.substring(1)}` : `${i.phone}` : null).filter(i => i)
@@ -1084,20 +1030,26 @@ export default {
       //   })
       // }
 
-      // if (groupMembersData.value.length > 0) {
-      //   const recipients = groupMembersData.value.map(i => i.phone ? i.phone.substring(0, 1) == '0' ? `+${tenantCountry.value.phoneCode}${i.phone.substring(1)}` : `${i.phone}` : null).filter(i => i)
-      //   socket.emit('sendwhatsappmessage', {
-      //     id: clientSessionId.value,
-      //     phone_number: recipients,
-      //     message: editorData.value,
-      //     whatsappAttachment: whatsappAttachment.value,
-      //   })
-      // }
       swal({
         title: "Success",
         text: "Your Whatsapp message is being sent!",
         icon: "success",
       });
+
+      phoneNumber.value = "";
+      selectedMembers.value = new Array();
+      editorData.value = "";
+      userWhatsappGroupsId.value = new Array();
+      allSelectedNumbers.value = new Array();
+      chatRecipients.value = new Array();
+      sendToAll.value = false;
+      groupSelectionTab.value = false;
+      membershipSelectionTab.value = false;
+      phoneNumberSelectionTab.value = false;
+      whatsappGroupSelectionTab.value = false;
+      groupMultipleIDs.value = new Array();
+      removeDuplicate = new Array()
+      handleRemove();
     };
 
     const getAllCountries = async () => {
@@ -1376,9 +1328,7 @@ export default {
       // console.log(chatRecipients.value, );
       // Remove object with duplicate recipient numbers
       const ids = chatRecipients.value.map((o) => o.phoneNumber);
-      const removeDuplicate = chatRecipients.value.filter(
-        ({ phoneNumber }, index) => !ids.includes(phoneNumber, index + 1)
-      );
+      let removeDuplicate = chatRecipients.value.filter(({ phoneNumber }, index) => !ids.includes(phoneNumber, index + 1))
       console.log(removeDuplicate);
 
       // console.log(chatRecipients.value);
@@ -1412,6 +1362,22 @@ export default {
           )}`,
           icon: "success",
         });
+
+        phoneNumber.value = "";
+        selectedMembers.value = new Array();
+        editorData.value = "";
+        userWhatsappGroupsId.value = new Array();
+        allSelectedNumbers.value = new Array();
+        chatRecipients.value = new Array();
+        sendToAll.value = false;
+        groupSelectionTab.value = false;
+        membershipSelectionTab.value = false;
+        phoneNumberSelectionTab.value = false;
+        whatsappGroupSelectionTab.value = false;
+        groupMultipleIDs.value = new Array();
+        removeDuplicate = new Array()
+        handleRemove()
+
       } catch (err) {
         scheduleloading.value = false;
         console.error(err);

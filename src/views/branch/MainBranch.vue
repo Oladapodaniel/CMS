@@ -79,7 +79,7 @@
                 </div>
               </div>
               <div class="col-md-12 mt-4 pt-2 font-weight-bold h4 text-right" v-loading="loading">
-                {{ getTotalPeople }}
+                {{ getTotalPeopleBch }}
               </div>
               <div class="total-bg col-md-12 py-3 font-weight-bold px-0 box-bottom text-center">
                 Total People
@@ -747,6 +747,7 @@ export default {
     const branchLoading = ref(false);
     const branchChatDetail = ref([]);
     const allBranchDetail = ref(store.getters["branch/getbranches"]);
+    console.log(allBranchDetail.value, 'ddgagsg')
     const series = ref([]);
     const joinmodalBtn = ref();
     const firstTimerData = ref([]);
@@ -758,11 +759,7 @@ export default {
     const firstTimerAttendanceData = ref([]);
     const mappedBranch = ref([]);
     const branchProfile = ref({});
-    const getAllAverageIncome = ref("");
-    const getAllAverageAttendance = ref("");
     const closeJoinNetworkModal = ref();
-    const getTotalPeople = ref("");
-    const getTotalBranches = ref("");
     const selection = ref({});
     const getAverageIncomeChart = ref([]);
     const hierarchies = ref([]);
@@ -786,6 +783,35 @@ export default {
       }
     };
     getRoute();
+
+    const getTotalPeopleBch = computed(() => {
+      if (allBranchDetail.value && allBranchDetail.value.length > 0) {
+        loading.value = false;
+        return allBranchDetail.value.map((i) => i.membershipSize)
+          .reduce((b, a) => b + a, 0);
+      } else {
+        return 0;
+      }
+    })
+    const getAllAverageAttendance = computed(() => {
+      if (allBranchDetail.value && allBranchDetail.value.length > 0) {
+        loading.value = false;
+        return allBranchDetail.value
+          .map((i) => i.currentYearAverageAttendance)
+          .reduce((b, a) => b + a, 0)
+          .toFixed(0);
+      } else {
+        return 0;
+      }
+    })
+    const getAllAverageIncome = computed(() => {
+      if (allBranchDetail.value && allBranchDetail.value.length > 0) {
+        return allBranchDetail.value.map((i) => i.currentYearAverageIncome)
+          .reduce((b, a) => b + a, 0);
+      } else {
+        return 0;
+      }
+    })
     const sendMarkedMemberSms = () => {
       // contacts.value = marked.value.filter((i) => i.mobilePhone).map((i) => i.mobilePhone).join()
       showSMS.value = true;
@@ -822,6 +848,8 @@ export default {
       { name: "Weekly", id: 2 },
       { name: "Monthly", id: 3 },
     ]);
+
+
 
     // const sendWhatsapp = () => {
     //   sendingwhatsappmessage.value = true
@@ -1027,10 +1055,8 @@ export default {
       try {
         // let { data } = await axios.get("/api/Branching");
         await store.dispatch("branch/getBranches").then((res) => {
-          console.log(res, "kkkk");
+          console.log(res, "kkkek");
           allBranchDetail.value = res;
-          getTotalBranches.value = allBranchDetail.value.length;
-
           branchLoading.value = false;
         });
       } catch (error) {
@@ -1052,16 +1078,6 @@ export default {
         let { data } = await axios.get("/api/Branching");
         console.log(data, "kkkk");
         branchChatDetail.value = data.returnObject
-        getAllAverageIncome.value = data.returnObject
-          .map((i) => i.currentYearAverageIncome)
-          .reduce((b, a) => b + a, 0);
-        getAllAverageAttendance.value = data.returnObject
-          .map((i) => i.currentYearAverageAttendance)
-          .reduce((b, a) => b + a, 0)
-          .toFixed(0);
-        getTotalPeople.value = data.returnObject
-          .map((i) => i.membershipSize)
-          .reduce((b, a) => b + a, 0);
         getAverageIncomeChart.value = data.returnObject.map((i) => ({
           name: i.name,
           value: i.currentYearAverageIncome,
@@ -1250,8 +1266,7 @@ export default {
       averageIncomeChartResult,
       getAllAverageIncome,
       getAllAverageAttendance,
-      getTotalPeople,
-      getTotalBranches,
+      getTotalPeopleBch,
       mainMembersData,
       allBranchDetail,
       branchHierachy,

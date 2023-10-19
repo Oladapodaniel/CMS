@@ -126,6 +126,7 @@ export default {
     const showWhatsapp = ref(false);
     const singleBranchInfo = ref({});
     const sendWhatsappToMultiple = ref(false);
+    const sendingwhatsappmessage = ref(false);
 
 
      const toggleSMS = (id) => {
@@ -185,6 +186,7 @@ export default {
         showEmail,
         showWhatsapp,
         singleBranchInfo,
+        sendingwhatsappmessage,
         loading,
         toggleEMAIL,
         toggleSMS,
