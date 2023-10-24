@@ -68,7 +68,7 @@ import { ref, onMounted } from "vue";
 export default {
   components: { List },
   async setup() {
-    const items = ref(store.getters["attendance/attendanceserviceitem"].items );
+    const items = ref(store.getters["attendance/attendanceserviceitem"].data );
     const loading = ref(false);
     const errorOccurred = ref(false);
     const cantGetItems = ref(false);
@@ -78,7 +78,7 @@ export default {
       loading.value = true;
       cantGetItems.value = false
       await store.dispatch("attendance/setAttendanceItemData").then((res) => {
-        items.value = res.items
+        items.value = res.data
         totalItems.value = res.totalItems
         loading.value = false;
         cantGetItems.value = false;
@@ -91,7 +91,7 @@ export default {
     }
     }
     const removeCheckin = (payload) => {
-      items.value.splice(payload, 1);
+      items.value = items.value.filter((i) => i.id !== payload);
     };
 
     const removeMultipleCheckin = (payload) => {

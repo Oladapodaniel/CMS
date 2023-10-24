@@ -25,7 +25,7 @@ export default {
             state.contributionsItem = payload
         },
         saveList(state, payload) {
-            state.contributionList = payload.returnObject.contribution
+            state.contributionList = payload.data
         },
         contributionItems(state, payload) {
             state.contributionItems = payload
@@ -65,8 +65,8 @@ export default {
     actions: {
         setContributionList ({ commit }) {
             return contributionservice.getContributionList().then(response => {  
-                commit('SET_CONTRIBUTION', response.returnObject)
-                return response.returnObject
+                commit('SET_CONTRIBUTION', response)
+                return response
             })
         },
         setContributionItem ({ commit }) {
@@ -91,7 +91,7 @@ export default {
 
         async contributionList({ commit }) {
                 try {
-                    const { data } = await axios.get("/api/Financials/Contributions/Transactions");
+                    const { data } = await axios.get("/api/Financials/Contributions/Transactions?page=1");
                     commit("saveList", data);
                 } catch (error) {
                     console.log(error);

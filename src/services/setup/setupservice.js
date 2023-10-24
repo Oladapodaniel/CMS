@@ -4,9 +4,10 @@ import store from "../../store/store"
 
 const setupService = {
     setup() {
-        store.dispatch("communication/getAllSentSMS");
+        // store.dispatch("communication/getAllSentSMS");
+        store.dispatch("communication/getAllSMS");
         store.dispatch("communication/getSMSReplies");
-        store.dispatch("communication/getSentEmails");
+        store.dispatch("communication/getAllSentEmails");
         store.dispatch("communication/getEmailDrafts");
         store.dispatch("communication/getSMSDrafts");
         store.dispatch("lookups/setup");

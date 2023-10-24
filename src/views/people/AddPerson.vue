@@ -226,13 +226,16 @@
                         v-for="(item, index) in peopleInGroupIDs"
                         :key="index"
                       >
-                        <div class="pt-1">{{ index + 1 }}. {{ item.name }}</div>
+                      <div class="d-flex justify-content-between align-items-center">
+                        <div class="pt-1"><span class="text-secondary">{{ index + 1 }}.</span> <span class="font-weight-700">{{ item.name }}</span></div>
+                        <el-icon class="text-danger" @click="showConfirmModal(index, item)"><CircleClose /></el-icon>
+                      </div>
                       </div>
                       <div v-if="peopleInGroupIDs.length === 0">
                         No group added yet
                       </div>
                       <div
-                        class="font-weight-700 text-primary border-top text-center c-pointer"
+                        class="pt-2 mt-2 font-weight-700 text-primary border-top text-center c-pointer"
                         data-toggle="modal"
                         data-target="#addToGroup"
                       >
@@ -635,6 +638,7 @@
                 <div class="col-12 p-0">
                   <div class="d-flex justify-content-end">
                     <el-button
+                      ref="closegroupmodal"
                       class="secondary-button"
                       data-dismiss="modal"
                       round
@@ -724,6 +728,7 @@
                   </div>
                   <div class="col-6">
                     <button
+                    
                       class="default-btn primary-bg border-0 text-white"
                       :data-dismiss="dismissAddToGroupModal"
                       @click="savePersonNote"
@@ -1133,7 +1138,7 @@ export default {
       axios
         .get("/api/Settings/GetTenantAgeGroups")
         .then((res) => {
-          ageGroups.value = res.data;
+          ageGroups.value = res.data.sort((a, b) => a.order - b.order);
           getPersonAgeGroupId();
         })
         .catch((err) => console.log(err.response));
@@ -1316,6 +1321,7 @@ export default {
 
     const addToGroupError = ref(false);
     const dismissAddToGroupModal = ref("");
+    const closegroupmodal = ref(null);
 
     const addMemberToGroup = async () => {
       let groupObj = groupToAddTo.value;
@@ -1324,7 +1330,6 @@ export default {
         addToGroupError.value = true;
         return false;
       }
-      dismissAddToGroupModal.value = "modal";
       if (route.params.personId) {
         addToGroupLoading.value = true;
         let personInfo = {
@@ -1344,11 +1349,12 @@ export default {
           );
           ElMessage({
             type: "success",
-            message: `Member added to ${groupToAddTo.value.name}`,
+            message: `${person.firstName} is added to ${groupToAddTo.value.name}`,
             duration: 5000,
           });
           addToGroupLoading.value = false;
           dismissAddToGroupModal.value = "modal";
+          closegroupmodal.value.ref.click();
 
           peopleInGroupIDs.value.push({
             name: groupObj.name,
@@ -1413,10 +1419,10 @@ export default {
     };
 
     const showConfirmModal = (index, item) => {
-      ElMessageBox.confirm("Are you sure you want to proceed?", "Warning", {
+      ElMessageBox.confirm("Are you sure you want to proceed?", "Confirm delete", {
         confirmButtonText: "OK",
         cancelButtonText: "Cancel",
-        type: "warning",
+        type: "error",
       })
         .then(() => {
           removeFromGroup(index, item);
@@ -1451,7 +1457,7 @@ export default {
     const getCustomFields = async () => {
       try {
         let data = await allCustomFields.allCustomFields();
-        dynamicCustomFields.value = data.filter((i) => i.entityType === 0);
+        dynamicCustomFields.value = data.filter((i) => i.entityType === 0).sort((a, b) => a.order - b.order);
       } catch (err) {
         console.log(err);
       }
@@ -1556,6 +1562,7 @@ export default {
       addMemberToGroup,
       addToGroupError,
       dismissAddToGroupModal,
+      closegroupmodal,
       routeParams,
       peopleInGroupIDs,
       setContact,

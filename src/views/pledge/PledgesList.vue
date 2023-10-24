@@ -1,8 +1,6 @@
 <template>
   <div>
-    <div
-      class="d-flex flex-wrap flex-column flex-sm-row justify-content-between"
-    >
+    <div class="d-flex flex-wrap flex-column flex-sm-row justify-content-between">
       <div class="">
         <div class="head-text">Dues, Pledges and Partnership</div>
       </div>
@@ -13,29 +11,17 @@
           </el-button>
         </router-link>
         <router-link class="" to="/tenant/pledge/makepledge">
-          <el-button
-            :color="primarycolor"
-            class="header-btn w-100 mt-3 mt-sm-0"
-            round
-          >
+          <el-button :color="primarycolor" class="header-btn w-100 mt-3 mt-sm-0" round>
             New Partnership/Pledge
-          </el-button></router-link
-        >
+          </el-button></router-link>
       </div>
     </div>
-    <div
-      class="d-flex flex-wrap flex-column flex-sm-row row"
-      v-if="route.fullPath == '/tenant/pledge/pledgeslist'"
-    >
+    <div class="d-flex flex-wrap flex-column flex-sm-row row" v-if="route.fullPath == '/tenant/pledge/pledgeslist'">
       <div class="col-12 py-md-4 mt-3">
         <div class="font-weight-bold">Copy and Share the link</div>
         <div class="p-inputgroup form-group mt-2">
-          <el-input
-            v-model="memberlink"
-            placeholder="Click the copy button when the link appears"
-            ref="selectedLink"
-            class="input-with-select"
-          >
+          <el-input v-model="memberlink" placeholder="Click the copy button when the link appears" ref="selectedLink"
+            class="input-with-select">
             <template #append>
               <el-button @click="copylink">
                 <el-icon>
@@ -47,15 +33,10 @@
         </div>
       </div>
     </div>
-    <div
-      class="container-fluid"
-      v-if="allPledgeList.length > 0 && !loading && !networkError"
-    >
-      <div
-        class="row border   mt-3 rounded"
-      >
+    <div class="container-fluid" v-if="allPledgeList.length > 0 && !loading && !networkError">
+      <div class="row border   mt-3 rounded">
         <div class="col-md-12 pt-3 py-2 border-remove px-0 d-flex flex-wrap" v-for="(item, index) in pledgesSummary"
-        :key="index">
+          :key="index">
           <div class="col-sm-6 col-lg-4">
             <div class="text-secondary font-weight-bold small">
               Total pledge
@@ -106,21 +87,20 @@
             </h3>
           </div>
         </div>
-        
+
       </div>
     </div>
-    <div
-      class="row mt-4 mb-4"
-      v-if="allPledgeList.length > 0 && !loading && !networkError"
-    >
+    <div class="row mt-4 mb-4" v-if="allPledgeList.length > 0 && !loading && !networkError">
       <div class="col-12 col-md-6 col-lg-2 pr-lg-1">
-        <MembersSearch
-          @memberdetail="chooseContact"
-          :currentMember="selectedContact"
-        />
+        <div class="mb-1">Select Member</div>
+        <MembersSearch @memberdetail="chooseContact" :currentMember="selectedContact" />
       </div>
       <div class="col-12 col-md-6 col-lg-2 mt-3 mt-md-0 mt-lg-0 px-lg-1">
-        <el-select-v2
+        <div class="mb-1">Select Category</div>
+        <div>
+          <SelectAllDropdown :items="allPledgeDefinitionList" @selected-item="setSelectedCategory" />
+        </div>
+        <!-- <el-select-v2
           v-model="selectedCategoryID"
           @change="setSelectedCategory"
           :options="
@@ -129,67 +109,43 @@
           placeholder="Select category"
           size="large"
           class="w-100"
-        />
+        /> -->
       </div>
       <div class="col-12 col-md-6 col-lg-2 mt-3 mt-lg-0 px-lg-1">
-        <el-select-v2
+        <div class="mb-1">Select Status</div>
+        <div>
+          <SelectAllDropdown :items="allPledgeStatus" @selected-item="setSelectedStatus" />
+        </div>
+        <!-- <el-select-v2
           v-model="selectedStatusID"
           @change="setSelectedStatus"
           :options="
-            allPledgeStatus.map((i) => ({ label: i.status, value: i.status }))
+            allPledgeStatus.map((i) => ({ label: i.name, value: i.id }))
           "
           placeholder=" Select Status"
           size="large"
           class="w-100"
-        />
+        /> -->
       </div>
       <div class="col-12 col-md-6 col-lg-2 mt-3 mt-lg-0 px-lg-1">
-        <el-date-picker
-          v-model="startDate"
-          type="date"
-          placeholder="From"
-          format="DD/MM/YYYY"
-          size="large"
-          class="w-100"
-        />
+        <div class="mb-1">Start Date</div>
+        <el-date-picker v-model="startDate" type="date" placeholder="From" format="DD/MM/YYYY" size="large"
+          class="w-100" />
       </div>
       <div class="col-12 col-md-6 col-lg-2 mt-3 mt-lg-0 px-lg-1">
-        <el-date-picker
-          v-model="endDate"
-          type="date"
-          placeholder="To"
-          format="DD/MM/YYYY"
-          size="large"
-          class="w-100"
-        />
+        <div class="mb-1">End Date</div>
+        <el-date-picker v-model="endDate" type="date" placeholder="To" format="DD/MM/YYYY" size="large" class="w-100" />
       </div>
-      <div
-        class="col-12 col-md-6 d-flex col-lg-2 mt-3 pl-lg-0 text-sm-center mt-lg-0"
-      >
-        <div @click="reSet" class="mt-2 c-pointer pr-2 text-primary">Reset</div>
-        <el-button
-          :loading="filterLoading"
-          class=""
-          @click="filterPledge"
-          round
-          :color="primarycolor"
-          size="large"
-        >
+      <div class="col-12 col-md-6 d-flex col-lg-2 mt-3 pl-lg-0 text-sm-center mt-lg-0">
+        <div @click="reSet" class="mt-2 c-pointer pr-2 mt-md-4 mt-0 pt-md-2 pt-0 text-primary">Reset</div>
+        <el-button :loading="filterLoading" class=" mt-4" @click="filterPledge" round :color="primarycolor" size="large">
           Apply
         </el-button>
       </div>
     </div>
-    <div
-      v-if="
-        searchPledges && searchPledges.length > 0 && !loading && !networkError
-      "
-    >
-      <Table
-        :data="searchPledges"
-        :headers="pledgeHeaders"
-        :checkMultipleItem="false"
-        v-loading="loading"
-      >
+    <div v-if="searchPledges && searchPledges.length > 0 && !loading && !networkError
+      ">
+      <Table :data="searchPledges" :headers="pledgeHeaders" :checkMultipleItem="false" v-loading="loading">
         <template v-slot:status="{ item }">
           <div class="c-pointer" @click="pledgeListClick(item.id)">
             {{ item.status }}
@@ -235,24 +191,14 @@
             <template #dropdown>
               <el-dropdown-menu>
                 <el-dropdown-item>
-                  <router-link
-                    :to="`/tenant/pledge/pledgemaking?pledgeTypeID=${item.id}`"
-                    class="text-color"
-                    >Make Payment</router-link
-                  >
+                  <router-link :to="`/tenant/pledge/pledgemaking?pledgeTypeID=${item.id}`" class="text-color">Make
+                    Payment</router-link>
                 </el-dropdown-item>
                 <el-dropdown-item>
-                  <router-link
-                    :to="`/tenant/pledge/makepledge?id=${item.id}`"
-                    class="text-color"
-                    >Edit</router-link
-                  >
+                  <router-link :to="`/tenant/pledge/makepledge?id=${item.id}`" class="text-color">Edit</router-link>
                 </el-dropdown-item>
                 <el-dropdown-item>
-                  <div
-                    @click.prevent="showConfirmModal(item.id, index)"
-                    class="text-color"
-                  >
+                  <div @click.prevent="showConfirmModal(item.id, index)" class="text-color">
                     Delete
                   </div>
                 </el-dropdown-item>
@@ -264,42 +210,24 @@
     </div>
     <el-skeleton class="w-100" animated v-if="loading">
       <template #template>
-        <div
-          style="
+        <div style="
             display: flex;
             align-items: center;
             justify-content: space-between;
             margin-top: 20px;
-          "
-        >
-          <el-skeleton-item
-            variant="text"
-            style="width: 240px; height: 240px"
-          />
-          <el-skeleton-item
-            variant="text"
-            style="width: 240px; height: 240px"
-          />
+          ">
+          <el-skeleton-item variant="text" style="width: 240px; height: 240px" />
+          <el-skeleton-item variant="text" style="width: 240px; height: 240px" />
         </div>
-        <el-skeleton
-          class="w-100 mt-5"
-          style="height: 25px"
-          :rows="20"
-          animated
-        />
+        <el-skeleton class="w-100 mt-5" style="height: 25px" :rows="20" animated />
       </template>
     </el-skeleton>
-    <div
-      class="no-person"
-      v-if="searchPledges.length == 0 && !loading && !networkError"
-    >
+    <div class="no-person" v-if="searchPledges.length == 0 && !loading && !networkError">
       <div class="empty-img">
         <p><img src="../../assets/people/people-empty.svg" alt="" /></p>
         <p class="tip">You haven't added any pledge yet</p>
-        <div
-          class="c-pointer primary-bg col-sm-6 col-md-4 offset-sm-3 offset-md-4 default-btn border-0 text-white"
-          @click="navigateToMakePledge"
-        >
+        <div class="c-pointer primary-bg col-sm-6 col-md-4 offset-sm-3 offset-md-4 default-btn border-0 text-white"
+          @click="navigateToMakePledge">
           Add Pledge
         </div>
       </div>
@@ -315,6 +243,7 @@
 <script>
 import { ref, computed, onMounted, inject } from "vue";
 import MembersSearch from "../../components/membership/MembersSearch.vue";
+import SelectAllDropdown from "../Reports/ReportsDropdown.vue";
 import axios from "@/gateway/backendapi";
 import pledge from "../../services/pledgemodule/pledgemodule";
 import { useRoute } from "vue-router";
@@ -327,6 +256,7 @@ import store from "../../store/store";
 export default {
   components: {
     MembersSearch,
+    SelectAllDropdown,
     Table,
   },
   setup() {
@@ -337,16 +267,16 @@ export default {
     const selectedCategoryID = ref(null);
     const filterLoading = ref(false);
     const allPledgeStatus = ref([
-      { status: "Paid" },
-      { status: "Over Due" },
-      { status: "No Payment" },
-      { status: "Partial" },
-      { status: "---" },
+      { name: "Paid", id: '1' },
+      { name: "Over Due", id: '2' },
+      { name: "No Payment", id: '3' },
+      { name: "Partial", id: '4' },
+      { name: "---", id: '5' },
     ]);
     const allPledgeDefinitionList = ref([]);
-    const selectedCategory = ref({});
+    const selectedCategory = ref([]);
     const filterResult = ref([]);
-    const selectedStatus = ref("");
+    const selectedStatus = ref([]);
     const loading = ref(false);
     const searchText = ref("");
     const selectedPledge = ref("");
@@ -392,10 +322,13 @@ export default {
       showUpload.value = false;
     };
 
-    const setSelectedCategory = () => {
-      selectedCategory.value = allPledgeDefinitionList.value.find((i) => {
-        return i.id == selectedCategoryID.value;
-      });
+    const setSelectedCategory = (payload) => {
+      console.log(payload, 'ggggg');
+      selectedCategory.value = payload
+
+      // selectedCategory.value = allPledgeDefinitionList.value.find((i) => {
+      //   return i.id == selectedCategoryID.value;
+      // });
     };
     const copylink = () => {
       selectedLink.value.input.setSelectionRange(
@@ -413,10 +346,12 @@ export default {
       });
     };
 
-    const setSelectedStatus = () => {
-      selectedStatus.value = allPledgeStatus.value.find((i) => {
-        return i.status == selectedStatusID.value;
-      });
+    const setSelectedStatus = (payload) => {
+      console.log(payload, 'kkkkkk');
+      selectedStatus.value = payload;
+      // selectedStatus.value = allPledgeStatus.value.find((i) => {
+      //   return i.id == selectedStatusID.value;
+      // });
     };
 
     const navigateToMakePledge = () => {
@@ -446,28 +381,55 @@ export default {
     const getAllTotalBalance = ref([]);
     const filterPledge = async () => {
       filterLoading.value = true;
-      let selectedContactValue =
-        selectedContact.value && selectedContact.value.id
-          ? selectedContact.value.id
-          : "";
-      let selectedCategoryValue =
-        selectedCategory.value && selectedCategory.value.id
-          ? selectedCategory.value.id
-          : "";
-      let selectedStatusValue =
-        selectedStatus.value && selectedStatus.value.status
-          ? selectedStatus.value.status
-          : "";
-      let startDateValue = startDate.value
-        ? new Date(startDate.value).toLocaleDateString("en-US")
-        : "";
-      let endDateValue = endDate.value
-        ? new Date(endDate.value).toLocaleDateString("en-US")
-        : "";
+      // let selectedContactValue =
+      //   selectedContact.value && selectedContact.value.id
+      //     ? selectedContact.value.id
+      //     : "";
+      // let selectedCategoryValue = selectedCategory.value.map((i) => i.id);
+
+      // let selectedCategoryValue =
+      //   selectedCategory.value && selectedCategory.value.id
+      //     ? selectedCategory.value.id
+      //     : "";
+      // let selectedStatusValue =
+      //   selectedStatus.value && selectedStatus.value.name
+      //     ? selectedStatus.value.name
+      //     : "";
+      // let selectedStatusValue =  selectedStatus.value.map((i) => i.name);
+      // let startDateValue = startDate.value
+      //   ? new Date(startDate.value).toLocaleDateString("en-US")
+      //   : "";
+      // let endDateValue = endDate.value
+      //   ? new Date(endDate.value).toLocaleDateString("en-US")
+      //   : "";
+
+      const payload = {
+        personId: selectedContact.value && selectedContact.value.id ? selectedContact.value.id : "",
+        status: selectedStatus.value.map((i) => i.name),
+        // status :  selectedStatus.value && selectedStatus.value.length > 0  ? selectedStatus.value.map((i) => i.name) : "",
+        pledgeItemIDs: selectedCategory.value.map((i) => i.id),
+        // pledgeItemIDs : selectedCategory.value && selectedCategory.value.length > 0 ? selectedCategory.value.map((i) => i.id) : '' ,
+        startDate: startDate.value ? new Date(startDate.value).toLocaleDateString("en-US") : "",
+        endDate: endDate.value ? new Date(endDate.value).toLocaleDateString("en-US") : ""
+
+
+
+      }
       try {
-        const res = await axios.get(
-          `/api/Pledge/GetAllPledgesSearch?personId=${selectedContactValue}&status=${selectedStatusValue}&pledgeItemID=${selectedCategoryValue}&startDate=${startDateValue}&endDate=${endDateValue}`
+        const res = await axios.post(
+          '/api/Pledge/GetAllPledgesSearch', payload
         );
+        // const res = await axios.get(
+        //   `/api/Pledge/GetAllPledgesSearch?personId=${selectedContactValue}&status=${selectedStatusValue}&pledgeItemID=${selectedCategoryValue}&startDate=${startDateValue}&endDate=${endDateValue}`
+        // );
+        console.log(res.data, 'gjhgjhfhg');
+        if (res.data && res.data.returnObject.length == 0) {
+          ElMessage({
+            type: "warning",
+            message: "No Data Found",
+            duration: 5000,
+          });
+        }
         filterResult.value = res.data.returnObject;
         getAllPledgeAmount.value = res.data.returnObject
           .map((i) => i.amount)
@@ -495,9 +457,11 @@ export default {
       ) {
         startDate.value = "";
         endDate.value = "";
-        selectedCategory.value = new Object();
+        selectedCategory.value = [];
+        // selectedCategory.value = new Object();
         selectedContact.value = new Object();
-        selectedStatus.value = new Object();
+        selectedStatus.value = [];
+        // selectedStatus.value = new Object();
         selectedCategoryID.value = null;
         selectedStatusID.value = null;
         getAllTotalBalance.value = [];
@@ -532,8 +496,8 @@ export default {
       } else if (
         filterResult.value.length > 0 &&
         (selectedContact.value.name ||
-          selectedStatus.value.status ||
-          selectedCategory.value.name ||
+          selectedStatus.value.length > 0 ||
+          selectedCategory.value.length > 0 ||
           endDate.value ||
           startDate.value)
       ) {
@@ -561,7 +525,7 @@ export default {
         await store.dispatch("pledge/getPledgeSummary").then((res) => {
           pledgesSummary.value = res;
         });
-      } catch (error) {}
+      } catch (error) { }
     };
 
     const getAllPledges = async () => {
@@ -724,13 +688,16 @@ export default {
   display: flex;
   text-align: center;
 }
+
 .more-btn {
   background: #dde2e6;
 }
+
 .text-color {
   color: #212529;
   text-decoration: none;
 }
+
 .text-color:hover {
   color: #007bff;
 }
@@ -745,12 +712,15 @@ export default {
   width: 100%;
   max-width: 200px;
 }
+
 .events {
   font: normal normal 800 29px Nunito sans;
 }
+
 .dropdown-menu a {
   color: #02172e;
 }
+
 .link a {
   text-decoration: none;
 }
@@ -758,10 +728,12 @@ export default {
 .link a:hover {
   color: #fff;
 }
+
 .border-remove {
   border-bottom: 1px solid rgb(189, 189, 189) !important;
 }
-.border-remove:last-child{
+
+.border-remove:last-child {
   border: none !important;
 }
 
@@ -773,12 +745,14 @@ export default {
   text-align: left;
   margin-bottom: auto !important;
 }
+
 .table-top {
   font-weight: 800;
   font-size: 12px;
   display: flex;
   justify-content: flex-end;
 }
+
 .table-top label:hover,
 .table-top p:hover {
   cursor: pointer;
@@ -788,9 +762,11 @@ export default {
   .theader {
     width: 23%;
   }
+
   .table-body .check {
     width: 3%;
   }
+
   .action {
     width: 5%;
   }
@@ -800,15 +776,18 @@ export default {
   .my-con {
     flex-direction: column;
   }
+
   .table {
     width: 98%;
     margin: 24px auto;
   }
+
   .summary {
     width: 98%;
     margin: auto;
   }
 }
+
 .input-width {
   width: 100%;
 }
@@ -834,6 +813,7 @@ export default {
   font-size: 11px;
   font-weight: 700;
 }
+
 .table-body {
   padding: 12px;
   border-bottom: 1.5px solid #6d6d6d19;
@@ -850,9 +830,11 @@ export default {
   box-shadow: 0px 3px 6px #2c28281c;
   background: #dde2e6 0% 0% no-repeat padding-box;
 }
+
 .desc-head {
   font-weight: 700;
 }
+
 .desc {
   color: #9b9a9c;
 }

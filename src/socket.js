@@ -10,10 +10,11 @@ export const state = reactive({
 // "undefined" means the URL will be computed from the `window.location` object
 // const URL = process.env.NODE_ENV === "production" ? 'https://churchplus-whatsapp-server.azurewebsites.net' : "http://localhost:3001";
 // const URL = process.env.NODE_ENV === "production" ? 'https://app-0816c2a3-8f36-422d-987b-4773c2e36f3b.cleverapps.io' : "http://localhost:3001";
-const URL = process.env.NODE_ENV === "production" ? 'https://churchplus-whatsapp-server.azurewebsites.net' : "http://localhost:3001";
+// const URL = process.env.NODE_ENV === "production" ? 'https://churchplus-whatsapp-server.azurewebsites.net' : "http://localhost:3001";
 // const URL = process.env.NODE_ENV === "production" ? 'https://whatsapp-server-venom.azurewebsites.net' : "http://localhost:3001";
-// const URL = process.env.NODE_ENV === "production" ? 'https://whatsapp-web-server-production.up.railway.app' : "http://localhost:3001";
-// const URL = process.env.NODE_ENV === "production" ? 'https://venom-whatsapp-server.onrender.com' : "http://localhost:3001";
+// const URL = process.env.NODE_ENV === "production" ? 'https://churchplus-venom-server-production.up.railway.app' : "http://localhost:3001";
+// const URL = process.env.NODE_ENV === "production" ? 'https://whatsappserver.churchpluswebsite.com' : "http://localhost:3001";
+const URL = process.env.NODE_ENV === "production" ? 'https://churchplusserver-churchpluss.koyeb.app' : "http://localhost:3001";
 console.log(process.env.NODE_ENV, URL)
 
 export const socket = io(URL, {transports: ['websocket'], upgrade: false});

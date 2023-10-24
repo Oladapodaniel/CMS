@@ -137,6 +137,43 @@
         </div>
       </div>
     </div>
+    <div class="row mt-5">
+      <div class="col-md-12 col-12 px-0 text-center">
+        <div
+          class="row tabl border-0 report d-flex justify-content-between p-2 p-md-4"
+        >
+          <div class="col-md-6 col-12 pr-md-4 p-0">
+            <h4 class="ju header4">Pledges and Partnership</h4>
+            <p class="ju paragraph1">
+              See an overview of how pledges are made in your ministry
+            </p>
+          </div>
+          <div class="col-md-5 col-12">
+            <router-link :to="{ name: 'FinancialPledgesReport' }">
+              <div
+                class="row d-md-flex justify-content-md-between d-flex justify-content-between"
+              >
+                <h4
+                  class="ju header4 d-md-flex justify-content-md-start"
+                  style="color: #136acd"
+                >
+                  Pledges/Partnership Report
+                </h4>
+                <span
+                  ><el-icon :color="primarycolor" :size="24"
+                    ><ArrowRightBold /></el-icon
+                ></span>
+              </div>
+            </router-link>
+            <div class="row">
+              <p class="ju mb-3 paragraph1">
+                Snapshot of pledges/partnership  made to your church
+              </p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
     <!--border 2-->
     <!--border 3-->
     <div class="row mt-5 mb-5">

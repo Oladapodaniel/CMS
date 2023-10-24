@@ -1,28 +1,31 @@
-import axios from "@/gateway/backendapi";
+
 import communicationService from "../../services/communication/communicationservice"
+
+const defaultState = (() => ({
+    allSentSMS: [],
+    sentSMS: {},
+    smsReplies: [],
+    smsDrafts: [],
+    emailDrafts: [],
+    sentEmails: {},
+    addSmsToSentList: {},
+    addToSentEmail: {},
+    sentVoiceList: [],
+    whatsappSessionId: "",
+    isWhatsappClientReady: false,
+    allClientWhatsappChat: [],
+    scheduledWhatsappList: []
+}))
 
 export default {
     namespaced: true,
-
-    state: {
-        allSentSMS: [],
-        smsReplies: [],
-        smsDrafts: [],
-        emailDrafts: [],
-        sentEmails: [],
-        addSmsToSentList: {},
-        addToSentEmail: {},
-        sentVoiceList: [],
-        whatsappSessionId: "",
-        isWhatsappClientReady: false,
-        allClientWhatsappChat: [],
-        scheduledWhatsappList: []
-    },
+    state: defaultState(),
 
     mutations: {
         setAllSentSMS(state, payload) {
             state.allSentSMS = payload;
         },
+        
 
         setSMSReplies(state, payload) {
             state.smsReplies = payload;
@@ -36,28 +39,28 @@ export default {
             state.smsDrafts.push(payload);
         },
 
-        setSentEmails(state, payload) {
+        SET_SENTEMAILS(state, payload) {
             state.sentEmails = payload;
+        },
+        SET_SENTSMS(state, payload) {
+            state.sentSMS = payload;
         },
 
         setEmailDrafts(state, payload) {
             state.emailDrafts = payload;
         },
         addSmsToSentList(state, payload) {
-            // state.addSmsToSentList = payload
-            if (state.allSentSMS) {
-                state.allSentSMS.unshift(payload)
+            if (state.sentSMS.data) {
+                state.sentSMS.data.unshift(payload)
             }
         },
         addToSentEmail(state, payload) {
-            // state.sentEmails.pop()
-            state.sentEmails.unshift(payload)
-            // state.addToSentEmail = payload
+            state.sentEmails.data.unshift(payload)
         },
         removeSentSMS(state, payload) {
-            const x = state.allSentSMS.findIndex(i => i.id === payload);
+            const x = state.sentSMS.data.findIndex(i => i.id === payload);
             if (x >= 0) {
-                state.allSentSMS.splice(x, 1);
+                state.sentSMS.data.splice(x, 1);
             }
         },
         removeSentReplies(state, payload) {
@@ -80,7 +83,7 @@ export default {
         },
 
         removeSentEmails(state, payload) {
-            state.sentEmails = state.sentEmails.filter(i => i.id !== payload);
+            state.sentEmails.data = state.sentEmails.data.filter(i => i.id !== payload);
 
         },
 
@@ -100,18 +103,21 @@ export default {
             state.scheduledWhatsappList = payload
         },
 
+        // clearState(state) {
+        //     state.allSentSMS = []
+        //     state.smsReplies = []
+        //     state.smsDrafts = []
+        //     state.emailDrafts = []
+        //     state.sentEmails = []
+        //     state.addSmsToSentList = {}
+        //     state.addToSentEmail = {}
+        //     state.sentVoiceList = []
+        //     state.whatsappSessionId = "",
+        //         state.isWhatsappClientReady = false,
+        //         state.allClientWhatsappChat = []
+        // }
         clearState(state) {
-            state.allSentSMS = []
-            state.smsReplies = []
-            state.smsDrafts = []
-            state.emailDrafts = []
-            state.sentEmails = []
-            state.addSmsToSentList = {}
-            state.addToSentEmail = {}
-            state.sentVoiceList = []
-            state.whatsappSessionId = "",
-                state.isWhatsappClientReady = false,
-                state.allClientWhatsappChat = []
+            Object.assign(state, defaultState())
         }
     },
 
@@ -138,18 +144,11 @@ export default {
             commit("addToSentEmail", payload)
         },
 
-        async getAllSentSMS({ commit }) {
-            try {
-                const { data } = await axios.get("/api/Messaging/getAllSentSms?page=0");
-                commit("setAllSentSMS", data.sentSMS);
-            } catch (error) {
-                console.log(error);
-            }
-        },
+        
 
         async getSMSReplies({ commit }) {
             try {
-                const data = await communicationService.getSMSReplies(0);
+                const data = await communicationService.getSMSReplies(1);
                 if (data) commit("setSMSReplies", data);
             } catch (error) {
                 console.log(error);
@@ -165,14 +164,21 @@ export default {
             }
         },
 
-        async getSentEmails({ commit }) {
-            try {
-                const data = await communicationService.getSentEmails(0);
-                if (data) commit("setSentEmails", data);
-            } catch (error) {
-                console.log(error);
-            }
+        getAllSentEmails({ commit }) {
+            return communicationService.getSentEmails().then(response => {
+                commit('SET_SENTEMAILS', response)
+                return response
+            })
         },
+
+        getAllSMS({ commit }) {
+            return communicationService.getAllSentSMS().then(response => {
+                commit('SET_SENTSMS', response)
+                return response
+            })
+        },
+        
+
 
         async getEmailDrafts({ commit }) {
             try {
@@ -217,7 +223,7 @@ export default {
             commit('SET_CLIENT_CHAT', payload)
             console.log(payload, 'hhhhh');
         },
-        async setScheduledWhatsappMessages ({ commit }) {
+        async setScheduledWhatsappMessages({ commit }) {
             return communicationService.getAllScheduledWhatsappMessage().then(response => {
                 console.log(response)
                 commit("setScheduledWhatsappMessage", response)
@@ -231,11 +237,16 @@ export default {
 
     getters: {
         allSentSMS: state => state.allSentSMS,
-        getById: (state) => (id) => state.allSentSMS.find(i => i && i.id === id),
+        getSentSMS: (state) => {
+            return state.sentSMS
+        },
+        getById: (state) => (id) => state.sentSMS.find(i => i && i.id === id),
         smsReplies: state => state.smsReplies,
         smsDrafts: state => state.smsDrafts,
         emailDrafts: state => state.emailDrafts,
-        sentEmails: state => state.sentEmails,
+        getSentEmail: (state) => {
+            return state.sentEmails
+        },
         getEmailDraftById: state => id => state.emailDrafts.find(i => i.id === id),
         addSmsToSentList: state => state.addSmsToSentList,
         addToSentEmail: state => state.addToSentEmail,

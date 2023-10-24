@@ -409,6 +409,13 @@ const routes = [
                         import( /* webpackChunkName: "addfirsttimer" */ '../views/Reports/Financialreport/FinancialOfferingReport.vue')
                 },
                 {
+                    path: 'financialpledgesreport',
+                    name: "FinancialPledgesReport",
+                    component: () =>
+
+                        import( /* webpackChunkName: "addfirsttimer" */ '../views/Reports/Financialreport/FinancialPledgesReport.vue')
+                },
+                {
                     path: 'financialactivitiesbalance',
                     name: "financialActivitiesBalance",
                     meta: {
@@ -478,6 +485,17 @@ const routes = [
                     },
                     component: () =>
                         import( /* webpackChunkName: "addfirsttimer" */ '../views/branch/subpages/People.vue')
+
+                },
+                {
+
+                    path: 'branch_communication',
+                    name: "BranchCommunication",
+                    meta: {
+                        title: 'Churchplus - Branch',
+                    },
+                    component: () =>
+                        import( /* webpackChunkName: "addfirsttimer" */ '../views/branch/subpages/BranchCommunication.vue')
 
                 },
                 {
@@ -2047,6 +2065,13 @@ const routes = [
         name: 'BuyUnitsExpired',
         component: () =>
             import( /* webpackChunkName: "sentemails" */ '@/components/expiredpages/BuyUnitsExpired'),
+
+    },
+    {
+        path: '/feedbackform',
+        name: 'FollowUpFeedbackForm',
+        component: () =>
+            import( /* webpackChunkName: "followupfeedback" */ '@/views/people/followup/FollowUpFeedbackForm'),
 
     },
 ]

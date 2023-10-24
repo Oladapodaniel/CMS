@@ -15,9 +15,7 @@
           </div>
           <h4 class="total">{{ membershipSummary.totalMember }}</h4>
           <p>
-            <span class="primary--text"
-              >+{{ membershipSummary.percentageGrowth }}%
-            </span>
+            <span class="primary--text">+{{ membershipSummary.percentageGrowth }}% </span>
             <span> Since last month</span>
           </p>
         </div>
@@ -59,10 +57,7 @@
       />
       <template #footer>
         <span class="dialog-footer">
-          <el-button
-            class="secondary-button"
-            @click="addToGroupDialog = false"
-            round
+          <el-button class="secondary-button" @click="addToGroupDialog = false" round
             >Cancel</el-button
           >
           <el-button
@@ -94,10 +89,7 @@
       />
       <template #footer>
         <span class="dialog-footer">
-          <el-button
-            class="secondary-button"
-            @click="addToGroupSingle = false"
-            round
+          <el-button class="secondary-button" @click="addToGroupSingle = false" round
             >Cancel</el-button
           >
           <el-button
@@ -151,11 +143,7 @@
             content="Add all members to group"
             placement="top-start"
           >
-            <el-icon
-              :size="20"
-              class="c-pointer"
-              @click="addToGroupDialog = true"
-            >
+            <el-icon :size="20" class="c-pointer" @click="addToGroupDialog = true">
               <CirclePlus />
             </el-icon>
           </el-tooltip>
@@ -166,11 +154,7 @@
             content="Add to group"
             placement="top-start"
           >
-            <el-icon
-              class="ml-2 c-pointer"
-              :size="20"
-              @click="addToGroupSingle = true"
-            >
+            <el-icon class="ml-2 c-pointer" :size="20" @click="addToGroupSingle = true">
               <User />
             </el-icon>
           </el-tooltip>
@@ -294,17 +278,12 @@
         </div>
       </div>
     </div>
-    <div
-      class="filter-options"
-      :class="{ 'filter-options-shown': filterFormIsVissible }"
-    >
+    <div class="filter-options" :class="{ 'filter-options-shown': filterFormIsVissible }">
       <div class="container-fluid">
         <div class="row">
           <div class="col-md-9">
             <div class="row">
-              <div
-                class="col-12 col-sm-6 offset-sm-3 offset-md-0 form-group inp w-100"
-              >
+              <div class="col-12 col-sm-6 offset-sm-3 offset-md-0 form-group inp w-100">
                 <el-input
                   placeholder="First name"
                   class="w-100"
@@ -332,9 +311,7 @@
               >Apply</el-button
             >
             <span class="mt-2">
-              <el-button @click="clearAll" class="mr-2" text
-                >Clear all</el-button
-              >
+              <el-button @click="clearAll" class="mr-2" text>Clear all</el-button>
               <el-button @click="hide" class="mx-2" text>Hide</el-button>
             </span>
           </div>
@@ -419,11 +396,7 @@
               <li>
                 <a class="dropdown-item" href="#">
                   <router-link
-                    :to="
-                      item.email
-                        ? `/tenant/email/compose?phone=${item.email}`
-                        : ''
-                    "
+                    :to="item.email ? `/tenant/email/compose?phone=${item.email}` : ''"
                     :class="{
                       'fade-text': !item.email,
                       'text-color': item.email,
@@ -452,9 +425,7 @@
               </li>
               <li>
                 <a class="dropdown-item" href="#">
-                  <router-link
-                    :to="`/tenant/people/add/${item.id}`"
-                    class="text-color"
+                  <router-link :to="`/tenant/people/add/${item.id}`" class="text-color"
                     >Edit</router-link
                   >
                 </a>
@@ -488,8 +459,8 @@
         v-model:current-page="serverOptions.page"
         v-model:page-size="serverOptions.rowsPerPage"
         background
-        layout="prev, pager, next, jumper"
-        :total="serverItemsLength"
+        layout="total, prev, pager, next, jumper"
+        :total="totalItems"
         @size-change="handleSizeChange"
         @current-change="handleCurrentChange"
       />
@@ -520,9 +491,7 @@
               "
               v-if="selectedImage.mobilePhone"
             >
-              <el-button @click="imageDialog = false" round>
-                Send SMS
-              </el-button>
+              <el-button @click="imageDialog = false" round> Send SMS </el-button>
             </router-link>
             <router-link
               :to="
@@ -588,15 +557,11 @@
         <div v-if="whatsappClientState">
           <div class="d-flex justify-content-center align-items-center">
             <img src="../../assets/whatsappwhiteoutline.svg" />
-            <h4 class="font-weight-700 text-dark mb-0 ml-2">
-              Send Whatsapp message to
-            </h4>
+            <h4 class="font-weight-700 text-dark mb-0 ml-2">Send Whatsapp message to</h4>
           </div>
           <h4 class="text-center text-secondary font-weight-600">
             {{
-              sendWhatsappToMultiple
-                ? "Selected Members"
-                : whatsappRecipient.firstName
+              sendWhatsappToMultiple ? "Selected Members" : whatsappRecipient.firstName
             }}
           </h4>
         </div>
@@ -624,9 +589,7 @@
                 class="mx-1"
                 size="large"
                 closable
-                v-for="(item, index) in marked
-                  .filter((i) => i.mobilePhone)
-                  .splice(0, 10)"
+                v-for="(item, index) in marked.filter((i) => i.mobilePhone).splice(0, 10)"
                 :key="item.id"
                 @close="marked.splice(index, 1)"
                 >{{ item.mobilePhone }}</el-tag
@@ -703,7 +666,7 @@ import AuthenticateWhatsapp from "../../components/whatsapp/AuthenticateWhatsapp
 import swal from "sweetalert";
 
 export default {
-  props: ["list", "peopleCount"],
+  props: ["list", "totalItems"],
   components: {
     ByGenderChart,
     ByMaritalStatusChart,
@@ -728,6 +691,7 @@ export default {
     const showSMS = ref(false);
     const showEmail = ref(false);
     const showWhatsapp = ref(false);
+    const totalItems = ref(props.totalItems);
     const contacts = ref([]);
     const markedMembers = ref([]);
     const chooseGrouptoMoveAllMembers = ref();
@@ -745,7 +709,7 @@ export default {
     const serverItemsLength = ref(0);
     const serverOptions = ref({
       page: 1,
-      rowsPerPage: 100,
+      rowsPerPage: 50,
     });
     const paginatedTableLoading = ref(false);
     const selectedImage = ref({});
@@ -758,9 +722,6 @@ export default {
     const archiveLoading = ref(false);
     const applyLoading = ref(false);
     const searchingMember = ref(true);
-    // const socket = io('https://whatsapp-web-server-production.up.railway.app');
-    // const socket = io('https://whatsapp-web-server-pposictoc-oladapodaniel.vercel.app/');
-    // const socket = io('http://localhost:3001');
     const whatsappmessage = ref("");
     const whatsappRecipient = ref("");
     const sendWhatsappToMultiple = ref(false);
@@ -769,7 +730,7 @@ export default {
     const sendingwhatsappmessage = ref(false);
 
     watch(
-      serverOptions,
+      serverOptions.value,
       () => {
         getPeopleByPage();
       },
@@ -798,9 +759,7 @@ export default {
     const toggleFilterFormVissibility = () =>
       (filterFormIsVissible.value = !filterFormIsVissible.value);
 
-    const membershipSummary = ref(
-      store.getters["membership/membershipSummary"]
-    );
+    const membershipSummary = ref(store.getters["membership/membershipSummary"]);
 
     const chooseGroupto = (items) => {
       chooseGrouptoMoveto.value = items;
@@ -814,9 +773,7 @@ export default {
       axios
         .delete(`/api/People/DeleteOnePerson/${id}`)
         .then((res) => {
-          churchMembers.value = churchMembers.value.filter(
-            (item) => item.id !== id
-          );
+          churchMembers.value = churchMembers.value.filter((item) => item.id !== id);
           if (res.data.response.includes("@")) {
             let disRes = res.data.response.split("@");
 
@@ -833,20 +790,11 @@ export default {
           store.dispatch("membership/removeMember", id);
           store.dispatch("dashboard/getDashboard");
 
-          if (
-            filterResult.value.length > 0 &&
-            filtered.value &&
-            filter.value.name
-          ) {
-            filterResult.value = filterResult.value.filter(
-              (item) => item.id !== id
-            );
+          if (filterResult.value.length > 0 && filtered.value && filter.value.name) {
+            filterResult.value = filterResult.value.filter((item) => item.id !== id);
           }
 
-          if (
-            searchText.value !== "" &&
-            searchPeopleNamesInDB.value.length > 0
-          ) {
+          if (searchText.value !== "" && searchPeopleNamesInDB.value.length > 0) {
             searchPeopleNamesInDB.value = searchPeopleNamesInDB.value.filter(
               (item) => item.id !== id
             );
@@ -873,15 +821,11 @@ export default {
     };
 
     const showConfirmModal = (id, index) => {
-      ElMessageBox.confirm(
-        "Are you sure you want to proceed?",
-        "Confirm delete",
-        {
-          confirmButtonText: "OK",
-          cancelButtonText: "Cancel",
-          type: "error",
-        }
-      )
+      ElMessageBox.confirm("Are you sure you want to proceed?", "Confirm delete", {
+        confirmButtonText: "OK",
+        cancelButtonText: "Cancel",
+        type: "error",
+      })
         .then(() => {
           deleteMember(id, index);
         })
@@ -899,7 +843,7 @@ export default {
         const { data } = await axios.get(
           `/api/People/GetPeopleBasicInfo?page=${serverOptions.value.page}`
         );
-        churchMembers.value = data;
+        churchMembers.value = data.data;
         paginatedTableLoading.value = false;
       } catch (error) {
         paginatedTableLoading.value = false;
@@ -1046,8 +990,7 @@ export default {
 
     const applyFilter = () => {
       applyLoading.value = true;
-      filter.value.name =
-        filter.value.name == undefined ? "" : filter.value.name;
+      filter.value.name = filter.value.name == undefined ? "" : filter.value.name;
       filter.value.phoneNumber =
         filter.value.phoneNumber == undefined ? "" : filter.value.phoneNumber;
 
@@ -1131,17 +1074,9 @@ export default {
         !searchingMember.value
       ) {
         return [];
-      } else if (
-        filterResult.value.length > 0 &&
-        filtered.value &&
-        filter.value.name
-      ) {
+      } else if (filterResult.value.length > 0 && filtered.value && filter.value.name) {
         return filterResult.value;
-      } else if (
-        filterResult.value.length == 0 &&
-        filtered.value &&
-        filter.value.name
-      ) {
+      } else if (filterResult.value.length == 0 && filtered.value && filter.value.name) {
         return [];
       } else {
         return churchMembers.value;
@@ -1256,8 +1191,7 @@ export default {
     const getUser = computed(() => {
       if (
         !store.getters.currentUser ||
-        (store.getters.currentUser &&
-          Object.keys(store.getters.currentUser).length == 0)
+        (store.getters.currentUser && Object.keys(store.getters.currentUser).length == 0)
       )
         return "";
       return store.getters.currentUser;
@@ -1383,6 +1317,8 @@ export default {
 
     getAllCountries();
 
+    
+
     return {
       churchMembers,
       chooseGroupto,
@@ -1443,6 +1379,7 @@ export default {
       paginatedTableLoading,
       selectedImage,
       imageDialog,
+      totalItems,
       mdAndUp,
       lgAndUp,
       xlAndUp,
@@ -1469,7 +1406,7 @@ export default {
       allcountries,
       tenantCountry,
       sendingwhatsappmessage,
-      clientSessionId,
+      clientSessionId
     };
   },
 };

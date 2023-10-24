@@ -153,8 +153,8 @@
                 v-model:current-page="serverOptions.page"
                 v-model:page-size="serverOptions.rowsPerPage"
                 background
-                layout="prev, pager, next, jumper"
-                :total="searchBranchMember.length"
+                layout="total, prev, pager, next, jumper"
+                :total="totalItems"
                 @size-change="handleSizeChange"
                 @current-change="handleCurrentChange"
               />
@@ -167,9 +167,10 @@
 </template>
 
 <script>
-import { ref, computed } from "@vue/runtime-core";
+import { ref, computed, watch } from "@vue/runtime-core";
 import BranchSelect from "../component/BranchSelect.vue";
 import Table from "@/components/table/Table";
+import store from "../../../store/store";
 import axios from "@/gateway/backendapi";
 import { ElMessage, ElMessageBox } from "element-plus";
 
@@ -188,6 +189,7 @@ export default {
     const marked = ref([]);
     const loading = ref(false);
     const branchId = ref("");
+    const totalItems = ref();
     const branchID = ref(localStorage.getItem("branchId"));
     const branchMemberHeaders = ref([
       { name: "PICTURE", value: "pictureUrl" },
@@ -203,8 +205,14 @@ export default {
 
     const serverOptions = ref({
       page: 1,
-      rowsPerPage: 100,
+      rowsPerPage: 50,
     });
+
+     watch(serverOptions.value, () => {
+      getPeopleByPage();
+    },
+      { deep: true }
+    );
 
     const handleSizeChange = (val) => {
       console.log(`${val} items per page`);
@@ -222,11 +230,12 @@ export default {
       branchId.value = payload.id;
       try {
         let { data } = await axios.get(
-          `/api/BranchNetwork/People?branchID=${payload.id}`
+          `/api/BranchNetwork/People?page=1&branchID=${payload.id}`
         );
         loading.value = false;
         console.log(data);
-        branchMembers.value = data;
+        branchMembers.value = data.data;
+        totalItems.value = data.totalItems
         if (data.length === 0) {
           ElMessage({
             type: "warning",
@@ -245,10 +254,11 @@ export default {
       // const branchID = localStorage.getItem('branchId')
       try {
         let { data } = await axios.get(
-          `/api/BranchNetwork/People?branchID=${branchID.value}`
+          `/api/BranchNetwork/People?page=1&branchID=${branchID.value}`
         );
         console.log(data);
-        branchMembers.value = data;
+        branchMembers.value = data.data;
+        totalItems.value = data.totalItems;
          loading.value = false;
         if (data.length === 0) {
           ElMessage({
@@ -285,9 +295,7 @@ export default {
         .delete(`/api/People/DeleteOnePerson/${id}`)
         .then((res) => {
           console.log(res);
-          branchMembers.value = branchMembers.value.filter(
-            (item) => item.id !== id
-          );
+          
           if (res.data.response.includes("@")) {
             let disRes = res.data.response.split("@");
             ElMessage({
@@ -295,13 +303,27 @@ export default {
               message: disRes[0],
               duration: 5000,
             });
-          } else {
+          } else if(res.data.response.includes('record')){
+
             ElMessage({
-              type: "success",
-              message: "Member Deleted",
+              type: "warning",
+              message: res.data.response,
               duration: 5000,
             });
+
+          } else {
+
+            branchMembers.value = branchMembers.value.filter(
+            (item) => item.id !== id
+          );
+            
+           ElMessage({
+              type: "success",
+              message: "Member deleted successfully",
+            });
           }
+          
+          store.dispatch("membership/removeMember", id);
         })
         .catch((err) => {
           ElMessage({
@@ -336,20 +358,30 @@ export default {
 
     const currentPage = ref(0);
     const getPeopleByPage = async () => {
-      // if (page < 0) return false;
       loading.value = true
       try {
         const { data } = await axios.get(
           `/api/BranchNetwork/People?branchID=${branchID.value}&page=${serverOptions.value.page}`
-          // `/api/BranchNetwork/People?branchID=${branchId.value}&page=${page}`
         );
-        console.log(data);
-        branchMembers.value = data;
-        currentPage.value = page;
+        if (data && data.data.length > 0) {
+          branchMembers.value = data.data;
+           totalItems.value = data.totalItems
+        } else {
+          ElMessage({
+          type: 'warning',
+          message: `Page ${serverOptions.value.page} cannot be found`,
+          duration: 5000
+        })
+        }
         loading.value = false
       } catch (error) {
         console.log(error);
-        loading.value = false
+        loading.value = false;
+        ElMessage({
+          type: 'error',
+          message: `Could not generate page ${serverOptions.value.page}, please try again`,
+          duration: 5000
+        })
       }
     };
 
@@ -362,6 +394,7 @@ export default {
       branchMemberHeaders,
       branchID,
       handleSelectionChange,
+      totalItems,
       serverOptions,
       searchIsVisible,
       toggleFilterFormVissibility,
@@ -373,7 +406,6 @@ export default {
       showConfirmModal,
       deleteMember,
       loading,
-      getPeopleByPage,
       branchId,
       currentPage,
     };

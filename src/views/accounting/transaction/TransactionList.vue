@@ -65,8 +65,10 @@
                           v-for="(cash, index) in accountsAndBalancesList"
                           :key="index"
                            @click="selectAnAccount(cash, index)"
+                           class="d-flex justify-content-between font-weight-700"
                           >
                           <div class="close-modal">{{ cash.text }}</div>
+                          <div>&nbsp;&nbsp;</div>
                           <div class="close-modal">{{ cash.currency && cash.currency.shortCode ? cash.currency.shortCode : currentUser.currency }}{{ cash.balance }}</div>
                         </el-dropdown-item>
                         <el-dropdown-item

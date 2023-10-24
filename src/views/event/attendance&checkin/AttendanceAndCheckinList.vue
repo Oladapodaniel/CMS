@@ -157,7 +157,7 @@
                 </el-dropdown-item> -->
                 <el-dropdown-item>
                   <div
-                    @click.prevent="showConfirmModal(item.id, index)"
+                    @click.prevent="showConfirmModal(item.id)"
                     class="text-color"
                   >
                     Delete
@@ -197,6 +197,7 @@ import { ref, computed, watch, watchEffect } from "vue";
 import dateFormatter from "../../../services/dates/dateformatter";
 import stopProgressBar from "../../../services/progressbar/progress";
 import axios from "@/gateway/backendapi";
+import store from "../../../store/store";
 import Table from "@/components/table/Table";
 import { ElMessage, ElMessageBox } from "element-plus";
 
@@ -217,7 +218,7 @@ export default {
     ]);
     const serverOptions = ref({
       page: 1,
-      rowsPerPage: 100,
+      rowsPerPage: 50,
     });
 
     const serverItemsLength = ref(0);
@@ -247,8 +248,9 @@ export default {
         const { data } = await axios.get(
           `api/CheckInAttendance/AllCheckInAttendances?page=${serverOptions.value.page}`
         );
+  
         // attendanceList.value = data;
-        if (data.items.length > 0) {
+        if (data && data.data.length > 0) {
           emit("pagedattendance", data);
         }
         paginatedTableLoading.value = false;
@@ -258,7 +260,7 @@ export default {
       }
     };
     watch(
-      serverOptions,
+      serverOptions.value,
       () => {
         getAttendancePage();
       },
@@ -325,7 +327,7 @@ export default {
         });
     };
 
-    const deleteAttendance = (id, index) => {
+    const deleteAttendance = (id) => {
       axios
         .delete(`/api/CheckInAttendance/checkout?attendanceId=${id}`)
         .then((res) => {
@@ -335,7 +337,7 @@ export default {
             message: res.data,
             duration: 5000,
           });
-            emit("attendance-checkin", index);
+            emit("attendance-checkin", id);
             store.dispatch('attendance/removeAttendanceFromStore', id)
           } else {
             ElMessage({
@@ -412,7 +414,7 @@ export default {
       }
     };
 
-    const showConfirmModal = (id, index) => {
+    const showConfirmModal = (id) => {
       ElMessageBox.confirm(
         "Are you sure you want to proceed?",
         "Confirm delete",
@@ -423,7 +425,7 @@ export default {
         }
       )
         .then(() => {
-          deleteAttendance(id, index);
+          deleteAttendance(id);
         })
         .catch(() => {
           ElMessage({
@@ -459,21 +461,6 @@ export default {
     });
 
     const currentPage = ref(0);
-    const getPeopleByPage = async (page) => {
-      if (page < 0) return false;
-      try {
-        const { data } = await axios.get(
-          `/api/CheckInAttendance/AllCheckInAttendances?page=${page}`
-        );
-        if (data.items.length > 0) {
-          emit("pagedattendance", data);
-        }
-        
-        currentPage.value = page;
-      } catch (error) {
-        console.log(error);
-      }
-    };
 
     return {
       modal,
@@ -494,7 +481,6 @@ export default {
       searchText,
       searchAttendance,
       currentPage,
-      getPeopleByPage,
       serverOptions,
       getAttendancePage,
       serverItemsLength,

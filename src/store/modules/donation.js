@@ -31,8 +31,8 @@ export default {
   actions: {
     setDonationTransaction({ commit }) {
         return donationTransaction.getDonationTransaction().then(response => {
-            commit('SET_DONATION', response.returnObject)
-          return response.returnObject
+            commit('SET_DONATION', response)
+          return response
         })
       },
    

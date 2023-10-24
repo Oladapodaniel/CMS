@@ -84,7 +84,7 @@
                           index,
                           indx
                         )
-                      " :key="indx">
+                        " :key="indx">
                       {{ group.name }}
                     </a>
                   </div>
@@ -124,18 +124,16 @@
             <div class="dropdownmenu pt-0 w-100 m-dd-item">
               <a class="dropdown-item px-1 c-pointer m-dd-item" v-for="(member, index) in memberSearchResults"
                 :key="index" @click="selectMember(member, index)">{{ member.name }}</a>
-              <p class="bg-secondary p-1 mb-0 disable m-dd-item" v-if="
-                searchText.length < 3 &&
+              <p class="bg-secondary p-1 mb-0 disable m-dd-item" v-if="searchText.length < 3 &&
                 loading == false &&
                 memberSearchResults.length === 0
-              ">
+                ">
                 Enter 3 or more characters
               </p>
-              <p aria-disabled="true" class="btn btn-default p-1 mb-0 disable m-dd-item" v-if="
-                memberSearchResults.length === 0 &&
+              <p aria-disabled="true" class="btn btn-default p-1 mb-0 disable m-dd-item" v-if="memberSearchResults.length === 0 &&
                 searchText.length >= 3 &&
                 !loading
-              ">
+                ">
                 No match found
               </p>
               <p class="btn btn-default p-1 mb-0 disable m-dd-item" v-if="loading && searchText.length >= 3">
@@ -173,18 +171,16 @@
               <div class="dropdown-menu pt-0 w-100" aria-labelledby="dropdownMenu">
                 <a class="dropdown-item px-1 c-pointer" v-for="(member, index) in memberSearchResults" :key="index"
                   @click="selectMember(member, index)">{{ member.name }}</a>
-                <p class="bg-secondary p-1 mb-0 disable small-text" v-if="
-                  searchText.length < 3 &&
+                <p class="bg-secondary p-1 mb-0 disable small-text" v-if="searchText.length < 3 &&
                   loading == false &&
                   memberSearchResults.length === 0
-                ">
+                  ">
                   Enter 3 or more characters
                 </p>
-                <p aria-disabled="true" class="btn btn-default p-1 mb-0 disable small-text" v-if="
-                  memberSearchResults.length === 0 &&
+                <p aria-disabled="true" class="btn btn-default p-1 mb-0 disable small-text" v-if="memberSearchResults.length === 0 &&
                   searchText.length >= 3 &&
                   !loading
-                ">
+                  ">
                   No match found
                 </p>
                 <p class="btn btn-default p-1 mb-0 disable" v-if="loading && searchText.length >= 3">
@@ -253,9 +249,8 @@
         </div>
       </div>
 
-      <div class="row mt-1" v-if="
-        phoneNumberSelectionTab || membershipSelectionTab || groupSelectionTab
-      ">
+      <div class="row mt-1" v-if="phoneNumberSelectionTab || membershipSelectionTab || groupSelectionTab
+        ">
         <div class="col-md-12 pr-0">
           <hr class="hr my-1" />
         </div>
@@ -390,7 +385,7 @@
           <router-link class="no-decoration" :to="route.fullPath.includes('/tenant/sms/compose')
             ? '/tenant/sms/sent'
             : '/errorpage/expiredSubscription'
-          ">
+            ">
             <el-button class="ml-3 secondary-button" round>Discard</el-button>
           </router-link>
 
@@ -422,11 +417,12 @@
       </div>
 
       <!-- Send SMS modal -->
-      <el-dialog v-model="sendSMSDialog" title=""
-        :width="mdAndUp || lgAndUp || xlAndUp ? `50%` : xsOnly ? `90%` : `70%`" align-center class="px-4">
+      <el-dialog v-model="sendSMSDialog" title="" :width="mdAndUp || lgAndUp || xlAndUp ? `50%` : xsOnly ? `90%` : `70%`"
+        align-center class="px-4">
         <div class="row" v-if="!nigerian">
           <div class="col-md-12 text-center">
-            <el-button :color="primarycolor" class="w-100" @click="contructScheduleMessageBody(1, '')" round>Send SMS now</el-button>
+            <el-button :loading="loading" :disabled="disableBtn" :color="primarycolor" class="w-100" @click="contructScheduleMessageBody(1, '')" round>Send SMS
+              now</el-button>
             <!-- <button class=" primary-btn default-btn px-4 my-2 border-0 primary-bg text-white outline-none extra-btn"
               data-dismiss="modal" @click="contructScheduleMessageBody(1, '')">
               Send SMS Now
@@ -439,7 +435,8 @@
             <div class="row">
               <div class="col-md-12 px-1">
                 <p>
-                 <strong> Multi-Layered SMS Send:</strong>  We leverage 3 channels to ensure you get the best delivery for your SMS. 👏🥳
+                  <strong> Multi-Layered SMS Send:</strong> We leverage 3 channels to ensure you get the best delivery
+                  for your SMS. 👏🥳
 
                 </p>
               </div>
@@ -460,8 +457,8 @@
                         (SENDER ID AND DEDICATED)</label>
                     </div> -->
                     <div class=" col-md-12 send-now-div py-2 my-2 d-flex justify-content-center">
-                      <el-button :color="primarycolor" class="w-100" @click="contructScheduleMessageBody(1, 'hybridKonnect')" round>Send 
-                        SMS now</el-button>
+                      <el-button :loading="loading" :disabled="disableBtn" :color="primarycolor" class="w-100"
+                        @click="contructScheduleMessageBody(1, 'hybridKonnect')" round>Send SMS now</el-button>
                       <!-- <button class=" primary-btn default-btn border-0 primary-bg px-4 my-2 font-weight-600 outline-none"
                         data-dismiss="modal" @click="contructScheduleMessageBody(1, 'hybridKonnect')">
                         Send SMS Now
@@ -513,9 +510,9 @@
               <div class="col-md-12 small-text mt-2 notecolour font-weight-bold">
                 <span class="text-dark font-weight-bold "> NB :</span>
                 <span>
-                 Messages should be sent between 8am to 8pm (By NCC). 
-                 Messages sent after 8pm will be delivered the next day by 8am. 
-                 This affects MTN, GLO and 9Mobile
+                  Messages should be sent between 8am to 8pm (By NCC).
+                  Messages sent after 8pm will be delivered the next day by 8am.
+                  This affects MTN, GLO and 9Mobile
                 </span>
                 <!-- <span>
                   Messages sent between <span class="text-secondary"> 8pm to 8am (Night
@@ -532,11 +529,12 @@
 
       <!-- Schedudle SMS modal -->
 
-      <el-dialog v-model="display" title=""
-        :width="mdAndUp || lgAndUp || xlAndUp ? `50%` : xsOnly ? `90%` : `70%`" align-center class="p-4">
+      <el-dialog v-model="display" title="" :width="mdAndUp || lgAndUp || xlAndUp ? `50%` : xsOnly ? `90%` : `70%`"
+        align-center class="p-4">
         <div class="row">
           <!-- <el-date-picker v-model="executionDate" type="datetime" class="w-100" placeholder="Select date and time" /> -->
-          <input type="datetime-local" class="form-control my-3" v-model="executionDate" placeholder="Select date and time" />
+          <input type="datetime-local" class="form-control my-3" v-model="executionDate"
+            placeholder="Select date and time" />
         </div>
         <template #footer>
           <span class="dialog-footer">
@@ -624,6 +622,7 @@ export default {
     const router = useRouter();
     const editorData = ref("");
     const disableBtn = ref(false);
+    const loading = ref(false);
     const editorConfig = {
       // The configuration of the editor.
       height: "800",
@@ -659,25 +658,25 @@ export default {
       groupsAreVissible.value = !groupsAreVissible.value;
     };
 
-    
 
-  watchEffect(() =>{
-      if(executionDate.value){
-       iSoStringFormat.value = dateFormatter.getISOStringGMT(executionDate.value)
+
+    watchEffect(() => {
+      if (executionDate.value) {
+        iSoStringFormat.value = dateFormatter.getISOStringGMT(executionDate.value)
       }
-  })
+    })
 
-  const getAllBranches = async () => {
-    try {
-      let { data } = await axios.get("/api/Branching");
-      console.log(data, 'lllll')
-    } catch (error) {
-      
+    const getAllBranches = async () => {
+      try {
+        let { data } = await axios.get("/api/Branching");
+        console.log(data, 'lllll')
+      } catch (error) {
+
+      }
     }
-  }
-  getAllBranches()
-    
-   
+    getAllBranches()
+
+
 
     const showSection = (index) => {
       if (index === 1) groupSelectionTab.value = true;
@@ -777,7 +776,7 @@ export default {
 
     const subject = ref("");
     const phoneNumber = ref("");
-    const loading = ref(false);
+    
     // const isPersonalized = ref(false);
 
     const isoCode = ref("");
@@ -788,11 +787,20 @@ export default {
     const setSelectedSenderIdCheckin = (payload) => {
       searchSenderText.value = payload
       subject.value = payload;
+      if(searchSenderIDs.value || subject.value ){
+        disableBtn.value = false
+      }else{
+        disableBtn.value = true
+      }
     }
 
     const sendSMS = (data) => {
+      
+      // disableBtn.value = true;
+      
       invalidDestination.value = false;
       invalidMessage.value = false;
+      loading.value = true
 
       if (
         selectedGroups.value.length === 0 &&
@@ -815,13 +823,13 @@ export default {
       });
 
       // if (selectedMembers.value.length > 0) data.contacts = selectedMembers.value;
-      disableBtn.value = true;
+      // disableBtn.value = true;
       composeService
         .sendMessage("/api/Messaging/sendSms", data)
         .then((res) => {
-          disableBtn.value = false;
+          loading.value = false
+          sendSMSDialog.value = false;
           if (res.data.status) {
-
             swal({
               title: "Success!",
               text: "Your sms has been sent successfully!",
@@ -830,6 +838,7 @@ export default {
               confirmButtonColor: '#8CD4F5',
               dangerMode: true,
             })
+            disableBtn.value = false;
 
           } else if (
             res.data &&
@@ -837,7 +846,7 @@ export default {
 
           ) {
             ElMessage({
-              message: res.data.message || "An error Occur" ,
+              message: res.data.message || "An error Occur",
               type: "warning",
               duration: 6000,
             });
@@ -867,9 +876,9 @@ export default {
           };
           store.dispatch("communication/addSmsToSentList", sentObj);
           setTimeout(() => {
-            if(route.fullPath === '/sendsmsexpired'){
+            if (route.fullPath === '/sendsmsexpired') {
               router.push('/errorpage/expiredSubscription')
-            }else{
+            } else {
               router.push({ name: "SentMessages" });
             }
           }, 3500);
@@ -878,6 +887,7 @@ export default {
         .catch((err) => {
           stopProgressBar();
           disableBtn.value = false;
+          loading.value = false
           toast.removeAllGroups();
           console.log(err);
           if (err.toString().toLowerCase().includes("network error")) {
@@ -927,6 +937,8 @@ export default {
     };
 
     const contructScheduleMessageBody = (sendOrSchedule, gateway) => {
+      disableBtn.value = true
+      console.log(disableBtn.value, 'disablesd')
       const data = {
         subject: subject.value,
         message: editorData.value,

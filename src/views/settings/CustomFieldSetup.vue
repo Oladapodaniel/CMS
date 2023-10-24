@@ -46,7 +46,7 @@
                                     <CircleClose />
                                   </el-icon></i>
                               </div>
-                              <input class="inputt  py-2 " v-model="currentInput" @keypress.enter="saveChip"
+                              <input class="inputt  py-2 " v-model="currentInput" @keypress.enter="saveChip" @input="checkComma"
                                 @keydown.delete="backspaceDelete">
                             </div>
                           </div>
@@ -335,6 +335,12 @@ export default {
     }
     const backspaceDelete = ({ which }) => {
       which == 8 && currentInput.value === '' && dropdownList.value.splice(dropdownList.value.length - 1);
+    }
+
+    const checkComma = (e) => {
+      if(e.data == ',') {
+        saveChip();
+      }
     }
     const setcustomEntityType = () => {
       setcustomControlType
@@ -635,7 +641,8 @@ export default {
       loadingfields,
       reorderCustomField,
       dragging,
-      reoderloading
+      reoderloading,
+      checkComma
     };
   },
 };

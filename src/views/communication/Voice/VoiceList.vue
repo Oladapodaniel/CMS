@@ -85,7 +85,7 @@ export default {
             voiceLoading.value = true
             await store.dispatch("communication/getAllSentVoice").then(res => {
                 voiceLoading.value = false
-                sentVoiceList.value = res.sentSMS
+                sentVoiceList.value = res.data
                 totalSentVoiceList.value = res.totalItems
                 paginationPage.value = res.page
                 // console.log(sentVoiceList.value, "jhgjhgjkkgkjj")
@@ -95,7 +95,7 @@ export default {
 
     const serverOptions = ref({
       page: 1,
-      rowsPerPage: 100,
+      rowsPerPage: 50,
     });
 
      watch(serverOptions, () => {
@@ -119,7 +119,7 @@ export default {
           `api/Messaging/getAllSentVoice?Page=${serverOptions.value.page}`
         );
         voiceLoading.value = false
-        sentVoiceList.value = data.sentSMS;
+        sentVoiceList.value = data.data;
         totalSentVoiceList.value = data.totalItems
         paginationPage.value = data.page
         console.log(sentVoiceList.value, "khkhkjhk");

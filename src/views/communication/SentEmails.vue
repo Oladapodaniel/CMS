@@ -8,7 +8,7 @@
             <div class="col-md-12 px-0">
               <div class="row d-md-flex align-items-center mt-3 mb-4">
                 <div class="col-md-6 col-sm-12">
-                  <div class="search-div d-flex  align-items-center">
+                  <div class="search-div d-flex align-items-center">
                     <span class="mr-2"
                       ><el-icon><Search /></el-icon
                     ></span>
@@ -21,7 +21,11 @@
                   </div>
                 </div>
               </div>
-              <div class="table-options" v-loading="loading" v-if="markedMail.length > 0">
+              <div
+                class="table-options"
+                v-loading="loading"
+                v-if="markedMail.length > 0"
+              >
                 <el-tooltip
                   class="box-item"
                   effect="dark"
@@ -46,6 +50,7 @@
                 :checkMultipleItem="true"
                 @checkedrow="handleSelectionChange"
                 v-loading="loading"
+                v-if="searchEmails && searchEmails.length > 0"
               >
                 <template #message="{ item }">
                   <div>
@@ -56,41 +61,18 @@
                       }"
                       class="no-decoration primary--text"
                     >
-                      <!-- <el-tooltip
-                        class="box-item"
-                        effect="dark"
-                        :content="item.subject"
-                        placement="top-start"
-                      > -->
-                        <!-- <div class="font-weight-600 text-dark">{{
-                          item.subject && item.subject.length > 25
-                            ? `${item.subject
+                      <div class="font-weight-600">
+                        {{
+                          item.message && item.message.length > 25
+                            ? `${item.message
                                 .split("")
                                 .slice(0, 25)
                                 .join("")}...`
-                            : item.subject
-                            ? item.subject
+                            : item.message
+                            ? item.message
                             : ""
-                        }}</div> -->
-                      <!-- </el-tooltip> -->
-                      <!-- <el-tooltip
-                        class="box-item"
-                        effect="dark"
-                        :content="item.message"
-                        placement="top-start"
-                      > -->
-                        <div class="font-weight-600">
-                          {{
-                            item.message && item.message.length > 25
-                              ? `${item.message
-                                  .split("")
-                                  .slice(0, 25)
-                                  .join("")}...`
-                              : item.message
-                              ? item.message
-                              : ""
-                          }}</div
-                        >
+                        }}
+                      </div>
                       <!-- </el-tooltip> -->
                     </router-link>
                   </div>
@@ -128,18 +110,18 @@
                 </template>
                 <template #delete="{ item }">
                   <span class="small-text">
-                      <el-icon
-                        :size="20"
-                        class="ml-2 color-deleteicon pt-2 c-pointer"
-                        style="font-size: 20px"
-                        @click="showConfirmModal(item.id)"
-                      >
-                        <Delete />
-                      </el-icon>
-                    </span>
+                    <el-icon
+                      :size="20"
+                      class="ml-2 color-deleteicon pt-2 c-pointer"
+                      style="font-size: 20px"
+                      @click="showConfirmModal(item.id)"
+                    >
+                      <Delete />
+                    </el-icon>
+                  </span>
                 </template>
               </Table>
-              <div class="row" v-if="emails.length === 0 && !loading">
+              <div class="row" v-if="emails && emails.length === 0 && !loading">
                 <div class="col-md-12 d-flex justify-content-center">
                   <span class="my-4 font-weight-bold">No sent mesages</span>
                 </div>
@@ -150,11 +132,14 @@
         <div class="conatiner">
           <div class="row">
             <div class="col-md-12 mb-3 pagination-container">
-              <PaginationButtons
-                @getcontent="getEmailsByPage"
-                :itemsCount="itemsCount"
-                :currentPage="currentPage"
-                
+              <el-pagination
+                v-model:current-page="serverOptions.page"
+                v-model:page-size="serverOptions.rowsPerPage"
+                background
+                layout="total, prev, pager, next, jumper"
+                :total="totalItems"
+                @size-change="handleSizeChange"
+                @current-change="handleCurrentChange"
               />
             </div>
           </div>
@@ -165,9 +150,7 @@
 </template>
 
 <script>
-import { computed, ref } from "vue";
-import communicationService from "../../services/communication/communicationservice";
-import PaginationButtons from "../../components/pagination/PaginationButtons";
+import { computed, ref, onMounted, watch  } from "vue";
 import axios from "@/gateway/backendapi";
 import Loading from "../../components/loading/LoadingComponent";
 import stopProgressBar from "../../services/progressbar/progress";
@@ -177,40 +160,45 @@ import { ElMessage, ElMessageBox } from "element-plus";
 import Table from "@/components/table/Table";
 
 export default {
-  components: { PaginationButtons, Loading, Table },
-  directives: {},
+  components: { Loading, Table },
   setup() {
-    const emails = ref([]);
-    const emailsInStore = ref(store.getters["communication/sentEmails"]);
-    emails.value =
-      emailsInStore.value && emailsInStore.value.length > 0
-        ? emailsInStore.value
-        : [];
-    const currentPage = ref(0);
-    const loading = ref(true);
+    const emails = ref(store.getters["communication/getSentEmail"].data);
+    const totalItems = ref( store.getters["communication/getSentEmail"].totalItems);
+    const loading = ref(false);
     const searchMail = ref("");
     const EmailHeaders = ref([
       { name: " MESSAGE", value: "message" },
       { name: " DATE", value: "dateSent" },
       { name: " UNIT", value: "smsUnitsUsed" },
       { name: " SENTBY", value: "sentBy" },
-      { name: '', value: 'delete' },
+      { name: "", value: "delete" },
     ]);
 
     const getSentEmails = async () => {
+      loading.value = true;
       try {
-        loading.value = true;
-        const data = await communicationService.getSentEmails(0);
-        loading.value = false;
-        if (data && data.length > 0) {
-          emails.value = data;
-        }
+        await store.dispatch("communication/getAllSentEmails").then((res) => {
+          emails.value = res.data;
+          totalItems.value = res.totalItems;
+          loading.value = false;
+        });
       } catch (error) {
         loading.value = false;
         console.log(error);
       }
     };
-    getSentEmails();
+
+    
+
+    const serverOptions = ref({
+      page: 1,
+      rowsPerPage: 50,
+    });
+    watch(serverOptions.value, () => {
+      getEmailsByPage();
+    },
+      { deep: true }
+    );
 
     const handleSelectionChange = (val) => {
       markedMail.value = val;
@@ -228,37 +216,42 @@ export default {
       return `${formatted}`;
     };
 
-    const getEmailsByPage = async (page) => {
+    const getEmailsByPage = async () => {
       try {
-        const data = await communicationService.getSentEmails(page);
+        const  { data } = await  axios.get(`/api/Messaging/getAllSentEmails?page=${ serverOptions.value.page}`) 
         if (data) {
-          emails.value = data;
-          currentPage.value = page;
+          emails.value = data.data;
+          totalItems.value = data.totalItems;
         }
       } catch (error) {
         console.log(error);
       }
     };
 
-    const itemsCount = computed(() => {
-      const allEmails = emails.value;
-      if (!allEmails.value || allEmails.value.length === 0) return 0;
-      return allEmails.value.length;
-    });
+    // const itemsCount = computed(() => {
+    //   const allEmails = emails.value;
+    //   if (!allEmails.value || allEmails.value.length === 0) return 0;
+    //   return allEmails.value.length;
+    // });
 
     const createElementFromHTML = (htmlString) => {
       var div = document.createElement("div");
       div.innerHTML = htmlString;
       return div.textContent;
     };
+   
 
     const searchEmails = computed(() => {
-      if (searchMail.value === "" && emails.value.length > 0) {
+      if (searchMail.value !== "" && emails.value &&  emails.value.length > 0) {
+        return emails.value.filter((i) => {
+          if (i.subject)
+            return i.subject
+              .toLowerCase()
+              .includes(searchText.value.toLowerCase());
+        });
+      } else {
         return emails.value;
       }
-      return emails.value.filter((i) =>
-        i.subject.toLowerCase().includes(searchMail.value.toLowerCase())
-      );
     });
 
     // Function to check a single item
@@ -305,8 +298,10 @@ export default {
         if (data.deleted) {
           ElMessage({
             type: "success",
-            message: `${markedMail.value.length > 1 ? '' : 'Email has' } been deleted successfully`,
-            duration: 5000
+            message: `${
+              markedMail.value.length > 1 ? "" : "Email has"
+            } been deleted successfully`,
+            duration: 5000,
           });
           emails.value = !id
             ? removeDeletedEmailsFromEmailList(markedMail.value)
@@ -327,8 +322,10 @@ export default {
         console.log(error);
         ElMessage({
           type: "error",
-          message: `${markedMail.value.length > 1 ? 'Selected Emails' : 'Email'} could not be deleted, Please try reloading`,
-          duration: 5000
+          message: `${
+            markedMail.value.length > 1 ? "Selected Emails" : "Email"
+          } could not be deleted, Please try reloading`,
+          duration: 5000,
         });
         stopProgressBar();
       }
@@ -371,16 +368,31 @@ export default {
         });
     };
 
+    const handleSizeChange = (val) => {
+      console.log(`${val} items per page`);
+    };
+    const handleCurrentChange = (val) => {
+      console.log(`current page: ${val}`);
+    };
+    
+    onMounted(() => {
+      if ((!emails.value) || (emails.value && emails.value.data && emails.value.data.length == 0)){
+        getSentEmails();
+      }
+    })
+
     return {
+      handleSizeChange,
+      handleCurrentChange,
       emails,
       EmailHeaders,
       handleSelectionChange,
       Search,
+      totalItems,
       formatMessage,
-      getEmailsByPage,
-      itemsCount,
-      currentPage,
+      // currentPage,
       loading,
+      serverOptions,
       createElementFromHTML,
       searchMail,
       searchEmails,
@@ -401,7 +413,7 @@ export default {
 .table-options {
   border: 1px solid rgb(212, 221, 227);
   border-bottom: none;
-  padding: 7px 7px 0 7px
+  padding: 7px 7px 0 7px;
 }
 .search-div {
   /* width: fit-content; */

@@ -107,19 +107,22 @@
           <div @click="showMemberRow(item)" class="c-pointer">{{ item.phoneNumber }}</div>
         </template>
         <template v-slot:howDidYouAboutUsName="{ item }">
-          <div @click="showMemberRow(item)" class="c-pointer">{{ item.howDidYouAboutUsName.replaceAll(" ", "_") }}</div>
+          <div @click="showMemberRow(item)" class="c-pointer">{{ item.howDidYouAboutUsName }}</div>
         </template>
         <template v-slot:interestedInJoining="{ item }">
           <div @click="showMemberRow(item)" class="c-pointer">{{ item.interestedInJoining }}</div>
         </template>
         <template v-slot:date="{ item }">
+          <div @click="showMemberRow(item)" class="c-pointer">{{ formatDate(item.date) }}</div>
+        </template>
+        <!-- <template v-slot:date="{ item }">
           <div @click="showMemberRow(item)" class="c-pointer">{{ moment
             .parseZone(
               new Date(item.date).toDateString(),
               "YYYY MM DD HH ZZ"
             )
             ._i.substr(4, 11).replaceAll(" ", "_") }}</div>
-        </template>
+        </template> -->
         <template v-slot:movement="{ item }">
           <div @click="showMemberRow(item)" class="c-pointer">{{ item.movement }}</div>
         </template>
@@ -188,7 +191,7 @@
     </div>
       <div class="d-flex justify-content-end my-3">
         <el-pagination v-model:current-page="serverOptions.page" v-model:page-size="serverOptions.rowsPerPage" background
-          layout="total, sizes, prev, pager, next, jumper" :total="totalFirsttimersCount" @size-change="handleSizeChange"
+          layout="total, sizes, prev, pager, next, jumper" :total="totalItems" @size-change="handleSizeChange"
           @current-change="handleCurrentChange" />
       </div>
     </div>
@@ -248,6 +251,7 @@ import emailComponent from "../groups/component/emailComponent.vue";
 import FirstTimersChartArea from "./FirstTimersChartArea.vue"
 import axios from "@/gateway/backendapi";
 import { useRoute } from "vue-router";
+import dateFormatter from "../../services/dates/dateformatter";
 import moment from "moment";
 import stopProgressBar from "../../services/progressbar/progress";
 import { useStore } from 'vuex'
@@ -257,7 +261,7 @@ import deviceBreakpoint from "../../mixins/deviceBreakpoint";
 import Table from "@/components/table/Table"
 
 export default {
-  props: ['firstTimersList'],
+  props: [ 'firstTimersList', 'totalItems' ],
   components: {
     FirstTimersChartArea,
     smsComponent,
@@ -280,6 +284,7 @@ export default {
     const tenantID = ref("")
     const selectedLink = ref(null)
     const totalFirstTimer = ref("")
+    const totalItems = ref(props.totalItems)
     const showSMS = ref(false)
     const showEmail = ref(false)
     const paginatedTableLoading = ref(false)
@@ -312,11 +317,11 @@ export default {
 
     const serverOptions = ref({
       page: 1,
-      rowsPerPage: 100,
+      rowsPerPage: 50,
     });
 
 
-    watch(serverOptions, () => {
+    watch(serverOptions.value, () => {
       getPeopleByPage();
     },
       { deep: true }
@@ -326,9 +331,18 @@ export default {
       paginatedTableLoading.value = true
       try {
         const { data } = await axios.get(
-          `/api/people/getPaginatedFirstTimer?page=${serverOptions.value.page}`
+          `/api/People/GetAllFirstTimers?page=${serverOptions.value.page}`
+          // `/api/people/getPaginatedFirstTimer?page=${serverOptions.value.page}`
         );
-        churchMembers.value = data;
+        if(data && data.response.data.length > 0 ) {
+          churchMembers.value = data.response.data;
+        }else{
+          ElMessage({
+              type: 'warning',
+              message: "Page not Found, Pls Go back to the Previous one",
+              duration: 5000
+            })
+        }  
         paginatedTableLoading.value = false
       } catch (error) {
         paginatedTableLoading.value = false
@@ -354,9 +368,11 @@ export default {
     const totalFirsttimersCount = computed(() => {
       if (
         !totalFirstTimer.value
+      //  !totalItems.value
       )
         return 0;
       return totalFirstTimer.value;
+      // return totalItems.value;
     });
 
     const deleteMember = (id) => {
@@ -507,6 +523,10 @@ export default {
         return Math.ceil(totalFirstTimer.value / 100);
       return 1;
     });
+
+    const formatDate = (date) => {
+      return dateFormatter.monthDayYear(date);
+    };
 
     const clearInput = () => {
       searchText.value = "";
@@ -776,6 +796,7 @@ export default {
       filterFormIsVissible,
       toggleFilterFormVissibility,
       moment,
+      formatDate,
       applyFilter,
       filter,
       toggleSearch,
@@ -807,6 +828,7 @@ export default {
       contacts,
       disableBtn,
       hide,
+      totalItems,
       setFirsttimer,
       firstTimerLink,
       markedFirsttimers,
