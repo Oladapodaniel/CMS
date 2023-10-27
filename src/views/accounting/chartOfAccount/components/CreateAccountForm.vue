@@ -77,7 +77,11 @@
                 <div class="row my-3" v-if="currency">
                   <div class="col-md-4 text-md-right">Account Currency</div>
                   <div class="col-md-7" id="currencySelect">
-                    <el-select-v2
+                    <el-select v-model="selectedCurrencyID" placeholder="Select" class="w-100"
+                      @change="setSelectedCurrency" filterable>
+                      <el-option v-for="item in accountCurrencies" :label="item.displayName" :value="item.id"  :key="item.id" />
+                    </el-select>
+                    <!-- <el-select-v2
                       v-model="selectedCurrencyID"
                       class="w-100 font-weight-normal"
                       :options="
@@ -89,7 +93,7 @@
                       placeholder="Select account currency"
                       @change="setSelectedCurrency"
                       size="large"
-                    />
+                    /> -->
                   </div>
                 </div>
 
