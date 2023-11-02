@@ -38,8 +38,8 @@
           <div class="col-md-12">
             <div class="row">
               <div
-                class="border animate col-4 scroll-div scr-height our-grey-bg"
-                style="height: 400px"
+                class="border animate col-12 scroll-div scr-height our-grey-bg"
+                :style="`min-height: ${ showTriggers ? '400px' : '80px'}`"
                 :class="{
                   'col-md-4':
                     showTriggers || done || selectedTriggerIndex === null,
@@ -48,9 +48,10 @@
               >
                 <div class="row h-100" style="overflow-y: scroll">
                   <div
-                    class="col-md-12 py-3 c-pointer border"
+                    class="col-4 col-md-12 py-3 c-pointer border"
                     :class="{
                       'active-trigger': selectedTrigger.id === trigger.id,
+                      'pb-5 pb-md-3': index == workflow.triggers.length - 1
                     }"
                     v-for="(trigger, index) in workflow.triggers"
                     :key="index"
@@ -66,9 +67,9 @@
                           justify-content-center
                         "
                       >
+                            <!-- class="mr-3" -->
                         <span
                           ><i
-                            class="mr-3"
                             :class="[
                               trigger.icon,
                               {
@@ -164,7 +165,7 @@
                 </div>
               </div>
               <div
-                class="col-8 border animate"
+                class="col-12 border animate"
                 :class="{
                   'col-md-8': showTriggers || done,
                   'col-md-11':
@@ -322,16 +323,12 @@
                   >
                     <div class="row ani">
                       <div
-                        class="col-12 border px-0 scr-height our-grey-bg"
-                        style="height: 400px"
+                        class="col-12 border scr-height our-grey-bg"
+                        :style="`min-height: ${showActions ? '400px' : '80px'}`"
                         :class="{ 'col-md-6': actionSelected }"
                       >
-                        <div class="row h-100 scroll-div">
-                          <div class="col-md-12">
-                            <ul class="list-group w-100">
-                              <li
-                                class="list-group-item c-pointer py-4 border"
-                                style="border: 2px solid red"
+                        <div class="row ">
+                          <div class="col-4 col-md-12 py-3 border"
                                 :class="{
                                   'bg-white':
                                     selectedAction &&
@@ -340,11 +337,11 @@
                                     selectedAction &&
                                     i.id !== selectedAction.id,
                                   'd-none': showActions,
+                                  'pb-5 pb-md-3': j == triggerActions.length - 1
                                 }"
                                 v-for="(i, j) in triggerActions"
                                 :key="j"
-                                @click="setActiveAction(i, j)"
-                              >
+                                @click="setActiveAction(i, j)">
                                 <h5 class="mb-0">
                                   <span class="mr-2"
                                     ><i
@@ -354,8 +351,14 @@
                                   ></span>
                                   <span class="font-weight">{{ i.name }}</span>
                                 </h5>
+                            <!-- <ul class="list-group d-flex">
+                              <li
+                                class="list-group-item c-pointer py-4 border"
+                                
+                              >
+                               
                               </li>
-                            </ul>
+                            </ul> -->
                           </div>
                         </div>
                         <div
@@ -390,7 +393,7 @@
                               </div>
                             </div>
                           </div>
-                          <div class="col-md-12 trigger-btn-div">
+                          <div class="col-md-12 px-0 trigger-btn-div">
                             <button
                               class="
                                 btn btn-secondary
@@ -1355,8 +1358,10 @@ export default {
   max-width: 100% !important;
 }
 
-.scr-height {
-  height: calc(100vh - 373px) !important;
+@media(min-width: 768px) {
+  .scr-height {
+    height: calc(100vh - 373px) !important;
+  }
 }
 
 .animate {
