@@ -328,7 +328,7 @@
                         :class="{ 'col-md-6': actionSelected }"
                       >
                         <div class="row ">
-                          <div class="col-4 col-md-12 py-3 border"
+                          <div class="col-6 col-sm-4 col-md-12 py-3 border"
                                 :class="{
                                   'bg-white':
                                     selectedAction &&
