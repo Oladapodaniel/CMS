@@ -25,8 +25,7 @@
 </template>
 
 <script>
-import { ref, computed, onUpdated } from "vue"
-// import Dropdown from 'primevue/dropdown';
+import { ref, computed } from "vue"
 import axios from "@/gateway/backendapi"
 export default {
     components: {
@@ -38,7 +37,6 @@ export default {
         const currencyText = ref("")
         const selectedDestinationCurrencyRate = ref("")
         const search = ref("")
-        // const selectedToCurrency = ref("")
         const currencyRates = ref({})
 
 
@@ -87,7 +85,6 @@ export default {
         })
 
         const addCurrency = (e, index, item) => {
-            // selectedToCurrency.value = `${item.name} - ${item.country}`
             selectedDestinationCurrencyRate.value = `${item.name}`
             console.log(e, index, item)
             showCurrency.value = false
@@ -109,22 +106,9 @@ export default {
 
         const showCurrencyList = () => {
             showCurrency.value = !showCurrency.value
-            // if (!showCurrency.value) {
-                // nextTick(() => {
                     search.value.focus()
-                // })
-            // }
-            
             console.log(showCurrency.value)
         }
-
-        onUpdated(() => {
-            
-            
-            // emit('display-currency-status', showCurrency.value)
-            
-
-        })
 
 
         return {

@@ -1,13 +1,32 @@
-import axios from "@/gateway/backendapi";
+
 import store from '../../store/store'
+import axios from "@/gateway/backendapi";
 
 const membershipService = {
     getMembers() {
         return new Promise((resolve, reject) => {
-            axios.get("/api/People/GetPeopleBasicInfo")
+            axios.get("/api/People/GetPeopleBasicInfo?page=1")
                 .then(res => {
                     resolve(res.data);
-                    store.dispatch("setMembers", res.data);
+                    // store.dispatch("setMembers", res.data);
+                })
+                .catch(error => {
+                    /*eslint no-undef: "warn"*/
+                    NProgress.done();
+                    if (error.response) {
+                        reject(error.response);
+                    } else {
+                        reject(error);
+                    }
+                })
+        })
+    },
+    getNewConverts() {
+        return new Promise((resolve, reject) => {
+            axios.get("api/People/GetAllNewConverts?page=1")
+                .then(res => {
+                    resolve(res.data);
+                    // store.dispatch("setMembers", res.data);
                 })
                 .catch(error => {
                     /*eslint no-undef: "warn"*/
@@ -59,10 +78,9 @@ const membershipService = {
 
     getFirstTimers() {
         return new Promise((resolve, reject) => {
-            axios.get("/api/People/FirstTimer")
+            axios.get("/api/People/GetAllFirstTimers?page=1")
                 .then(res => {
                     resolve(res.data);
-                    store.dispatch("setFirstTimers", res.data);
                 })
                 .catch(error => {
                     /*eslint no-undef: "warn"*/
@@ -87,7 +105,6 @@ const membershipService = {
             axios.post(`/api/People/DeletePeople`, data)
                 .then(res => {
                     resolve(res.data);
-                    console.log(res.data)
                 })
                 .catch(error => {
                     /*eslint no-undef: "warn"*/
@@ -105,7 +122,6 @@ const membershipService = {
         return new Promise((resolve, reject) => {
             axios.put(`/api/AssignPeopleToGroup/${groupId}`, data)
                 .then(res => {
-                    console.log(res)
                     resolve(res.data);
                 })
                 .catch(error => {
@@ -172,7 +188,41 @@ const membershipService = {
 
             store.dispatch("membership/updateMember", person);
         }
-    }
+    },
+    getMembershipSummary() {
+        return new Promise((resolve, reject) => {
+            axios.get("/api/People/GetMembershipSummary")
+                .then(res => {
+                    resolve(res.data);
+                })
+                .catch(error => {
+                    /*eslint no-undef: "warn"*/
+                    NProgress.done();
+                    if (error.response) {
+                        reject(error.response);
+                    } else {
+                        reject(error);
+                    }
+                })
+        })
+    },
+    getAllFamilies() {
+        return new Promise((resolve, reject) => {
+            axios.get("/api/family/allfamilies")
+                .then(res => {
+                    resolve(res.data);
+                })
+                .catch(error => {
+                    /*eslint no-undef: "warn"*/
+                    NProgress.done();
+                    if (error.response) {
+                        reject(error.response);
+                    } else {
+                        reject(error);
+                    }
+                })
+        })
+    },
 
 }
 

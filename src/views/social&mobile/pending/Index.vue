@@ -281,7 +281,7 @@ import membershipService from '../../../services/membership/membershipservice';
 import dateFormatter from '../../../services/dates/dateformatter';
 import Chart from "./components/DoughnutChart";
 import { useToast } from "primevue/usetoast";
-import { useConfirm } from "primevue/useConfirm";
+import { useConfirm } from "primevue/useconfirm";
 
 export default {
     components: { Chart },

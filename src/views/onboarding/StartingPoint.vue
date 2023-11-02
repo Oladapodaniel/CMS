@@ -5,7 +5,7 @@
         <div class="welcome-onboard">
           <div class="welcome-intro">
             <div v-if="!processing">
-              <h1>Hey {{ name }}</h1>
+              <h1>Hey {{ userDetails.firstName ? userDetails.firstName : "" }}</h1>
               <h2>What would you like to do in Churchplus?</h2>
             </div>
           </div>
@@ -14,26 +14,78 @@
 
       <div class="options-div" :class="{ box2: processing }">
         <div class="options-container" v-if="screenWidth > 990 || !processing">
-          <div class="step-count">
+          <div class="step-count mt-4">
             <h3>STEP 2 OF 2</h3>
           </div>
 
-          <div class="start-text">
+          <div class="start-text hidden-sm-and-down">
             <h2>Choose a starting point</h2>
           </div>
 
-          <div class="more-later">
+          <div class="more-later hidden-sm-and-down">
             <span>You can do more later</span>
           </div>
 
+          <div class="start-text hidden-md-and-up">
+            <h2>Hey {{ userDetails.firstName ? userDetails.firstName : "" }}</h2>
+          </div>
+
+          <div class="more-later hidden-md-and-up">
+            <span>What would you like to do in churchplus</span>
+          </div>
+
+
           <div class="all-options">
-            <router-link :to="{ name: 'ProcessRequest', params: { option: '/tenant/sms/compose' }}" class="start-option">
+            <div class=" w-100 ml-2 ">
+              <el-dropdown class="w-100" trigger="click">
+                <el-button type="primary" class="start-option">
+                  <span class="icon  ">
+                    <img class="link-icon " src="../../assets/claim-sms-offer.png" alt="Sms Icon" />
+                  </span>
+                  <span class="font-weight-bold text-warning">
+
+                    <a class="start-link text-success">Claim your 500 unit now</a>
+                  </span>
+                  <span class="d-flex justify-content-end  font-weight-bold adjust-width">
+                    <!-- <i class="fas fa-angle-down "></i> -->
+                    <i class="fas fa-angle-right " :class="{ 'tbb-icon-rotate': smsOfferDropped }"></i>
+                  </span>
+                  <!-- Dropdown List<el-icon class="el-icon--right"><arrow-down /></el-icon> -->
+                </el-button>
+                <template #dropdown>
+                  <el-dropdown-menu>
+                    <p class="font-weight-bold px-3 pt-3" style="font-size: 1.2em">Terms and Conditions</p>
+                    <p style="font-size: 1.2em" class="px-3">
+                      <el-icon color="green">
+                        <CircleCheck />
+                      </el-icon> Buy 1000 units or above and get 500units free <br> <br>
+                      <el-icon color="green">
+                        <CircleCheck />
+                      </el-icon> Offer is
+                      open
+                      to both new and existing customers <br> <br>
+                      <el-icon color="green">
+                        <CircleCheck />
+                      </el-icon> This is a one time offer for the duration of this
+                      campaign
+                    </p>
+                    <el-dropdown-item>
+                      <router-link :to="{ name: 'BuyUnits', params: { option: '/tenant/units' } }"
+                        class="d-flex justify-content-between text-primary font-weight-bold w-100 align-items-center">
+                        <span>Buy SMS now</span>
+                        <el-icon class="el-icon--right">
+                          <arrow-right />
+                        </el-icon>
+                      </router-link>
+                    </el-dropdown-item>
+                  </el-dropdown-menu>
+                </template>
+              </el-dropdown>
+            </div>
+            <router-link :to="{ name: 'ProcessRequest', params: { option: '/tenant/sms/compose' } }"
+              class="start-option">
               <div class="icon">
-                <img
-                  class="link-icon"
-                  src="../../assets/sms-email.svg"
-                  alt="Sms Icon"
-                />
+                <img class="link-icon" src="../../assets/sms-email.svg" alt="Sms Icon" />
               </div>
               <div class="link-n-icon">
                 <a class="start-link">Send Email/SMS</a>
@@ -41,16 +93,11 @@
               </div>
             </router-link>
 
-            <router-link
-              class="start-option"
-              :to="{ name: 'ProcessRequest', params: { option: '/tenant/people/add' }}"
-            >
+            <router-link class="start-option"
+              :to="{ name: 'ProcessRequest', params: { option: '/tenant/people/add' } }">
               <div class="icon">
-                <img
-                  class="link-icon link-icon-no-bg"
-                  src="../../assets/people/add-church-members.svg"
-                  alt="Add member Icon"
-                />
+                <img class="link-icon link-icon-no-bg" src="../../assets/people/add-church-members.svg"
+                  alt="Add member Icon" />
               </div>
               <div class="link-n-icon">
                 <a class="start-link">Add church members</a>
@@ -58,16 +105,10 @@
               </div>
             </router-link>
 
-            <router-link
-              class="start-option"
-              :to="{ name: 'ProcessRequest', params: { option: '/tenant/people/addfirsttimer' }}"
-            >
+            <router-link class="start-option"
+              :to="{ name: 'ProcessRequest', params: { option: '/tenant/people/addfirsttimer' } }">
               <div class="icon">
-                <img
-                  class="link-icon"
-                  src="../../assets/first-timers.svg"
-                  alt="First Timers Icon"
-                />
+                <img class="link-icon" src="../../assets/first-timers.svg" alt="First Timers Icon" />
               </div>
               <div class="link-n-icon">
                 <a class="start-link">Add first timers</a>
@@ -75,13 +116,9 @@
               </div>
             </router-link>
 
-            <router-link class="start-option" :to="{ name: 'ProcessRequest', params: { option: '/next' }}">
+            <router-link class="start-option" :to="{ name: 'ProcessRequest', params: { option: '/next' } }">
               <div class="icon">
-                <img
-                  class="link-icon"
-                  src="../../assets/not-sure.svg"
-                  alt="Question Icon"
-                />
+                <img class="link-icon" src="../../assets/not-sure.svg" alt="Question Icon" />
               </div>
               <div class="link-n-icon">
                 <a class="start-link">Not sure yet</a>
@@ -108,14 +145,18 @@ export default {
 
   data() {
     return {
+      smsOfferDropped: false,
       processing: false,
-      name: "",
       screenWidth: window.innerWidth,
       userId: "",
+      userDetails: {}
     };
   },
 
   methods: {
+    toggleSmsOffer() {
+      this.smsOfferDropped = !this.smsOfferDropped
+    },
     onboardUser(url) {
       const userData = this.$store.getters.onboardingData;
       axios
@@ -136,19 +177,9 @@ export default {
     },
   },
 
-  // async created() {
-  //   const currentUser = this.$store.getters.currentUser;
-  //   if (currentUser.tenantId) {
-  //     this.userId = currentUser.tenantId;
-  //   } else {
-  //     try {
-  //       const res = await axios.get("/api/Membership/GetCurrentSignedInUser");
-  //       this.userId = res.data.tenantId
-  //   } catch (err) {
-  //       console.log(err, "in store");
-  //     }
-  //   }
-  // },
+  async created() {
+    this.userDetails = this.$store.getters.onboardingData
+  },
 
   mounted() {
     this.$store.dispatch("setUserUp", true);
@@ -160,6 +191,13 @@ export default {
 </script>
 
 <style scoped>
+.tbb-icon-rotate {
+  transition: all 0.5s ease-in-out;
+  transform: rotate(90deg);
+  color: #190138;
+  font-size: 20px;
+}
+
 .main {
   position: relative;
   height: 100vh;
@@ -264,6 +302,7 @@ a {
 .start-option {
   display: flex;
   align-items: center;
+  justify-content: start;
   justify-self: center;
   width: 97%;
   text-align: center;
@@ -308,6 +347,14 @@ a {
   text-decoration: none;
   text-transform: capitalize;
   color: #215fc4;
+}
+
+.claim-offer {
+  font-weight: 900;
+  padding: 0 1rem;
+  text-decoration: none;
+  text-transform: capitalize;
+  color: #f39d34;
 }
 
 .loading-div {
@@ -368,6 +415,11 @@ a {
   .main {
     margin-top: 0;
   }
+
+  .adjust-width {
+    font-size: 25px;
+    width: 25%;
+  }
 }
 
 @media screen and (min-width: 991px) {
@@ -381,6 +433,11 @@ a {
 
   .all-options {
     max-width: 330px;
+  }
+
+  .adjust-width {
+    font-size: 25px;
+    width: 13%;
   }
 }
 </style>

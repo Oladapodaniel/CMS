@@ -1,4 +1,6 @@
 <template>
+  <!-- This component is not currently in use in production environment, it will be removed in the future eventually -->
+  
   <div>
     <!-- navigation section -->
     <div class="row trowc mx-0 py-2 sticky-top">
@@ -394,6 +396,9 @@
   import axios from "@/gateway/backendapi";
 
   export default {
+    components: {
+      Dropdown
+    },
     setup() {
       const date = ref(new Date().toISOString().substr(0, 10));
       const selectedPeriodOptions = ref("");
@@ -437,7 +442,6 @@
       return {
         periods,
         funds,
-        Dropdown,
         selectedPeriodOptions,
         selectedContributionType,
         date,

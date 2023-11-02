@@ -9,10 +9,10 @@
 </template>
 
 <script>
-    import Chart from 'primevue/chart';
+    // import Chart from 'primevue/chart';
     export default {
         props: [ 'approved', 'pending' ],
-        components: { Chart },
+        // components: { Chart },
         setup(props) {
             const chartData = {
 				labels: ['Approved','Pending'],

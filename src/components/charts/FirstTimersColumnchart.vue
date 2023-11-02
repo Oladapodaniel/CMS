@@ -1,13 +1,5 @@
 <template>
   <div>
-    <div class="chart-header" v-if="header">
-      <div class="icon-div">
-        <img src="../../assets/people/members-icon.svg" alt="" />
-      </div>
-      <div class="header-text">
-        <p>{{ header }}</p>
-      </div>
-    </div>
   </div>
   <div class="wrapper">
     <div
@@ -73,11 +65,7 @@ export default {
       };
       chart.value = new Highcharts.chart(highchartsOptions);
     });
-
-    onUpdated(() => {
-      console.log(props.columndata)
-    })
-
+    
     return {
       chart,
       headerText,

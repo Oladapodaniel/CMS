@@ -1,19 +1,19 @@
 <template>
-<div class="container-wide container-top">
+<div class="container-top" :class="{ 'container-slim': lgAndUp || xlAndUp }">
       <div class="row my-3">
       <div class="col-md-4 first-timers-text">
-        <h2 class="page-header">Payment Forms</h2>
+        <h2 class="head-text">Payment Forms</h2>
       </div>
 
       <div class="col-md-8 d-flex head-button">
         <!-- <router-link to="/tenant/offeringcategory"> -->
           <button class="more-btn h-100 button align-items-center default-btn border-0" v-if="false">
-              More
-              <span><i class="pi pi-angle-down btn-icon"></i></span>
-            </button>
+            More
+            <span><i class="pi pi-angle-down btn-icon"></i></span>
+          </button>
         <!-- </router-link> -->
-        <router-link to="/tenant/payments" class="add-person-btn no-underline button default-btn border-0 ml-3">
-          Add Payment Form
+        <router-link to="/tenant/payments" class="text-decoration-none ml-3">
+           <el-button :color="primarycolor" class="ml-2 header-btn" round>Add Payment Form</el-button>
         </router-link>
       </div>
     </div>
@@ -23,10 +23,19 @@
             <hr class="hr" />
         </div>
       </div>
-
-      <div v-if="loading">
-        <Loader />
-    </div>
+    <el-skeleton class="w-100" animated v-if="loading ">
+      <template #template>
+        <div style="display: flex;
+                align-items: center;
+                justify-content: space-between;
+                margin-top: 20px
+              ">
+          <el-skeleton-item variant="text" style="width: 240px; height: 240px" />
+          <el-skeleton-item variant="text" style="width: 240px; height: 240px" />
+        </div>
+        <el-skeleton class="w-100 mt-5" style="height: 25px" :rows="20" animated />
+      </template>
+    </el-skeleton>
 
     <div v-if="paymentList.length > 0 && !loading && !networkError">
         <PaymentList :paymentList="paymentList" @delete-payment="deletePayment"/>
@@ -46,45 +55,54 @@
 </template>
 
 <script>
-import { ref } from 'vue'
+import { ref, inject, onMounted } from 'vue'
 // import { useStore } from 'vuex'
-// import { store } from "../../../store/store"
-import axios from "@/gateway/backendapi"
+import store from "../../store/store"
+// import axios from "@/gateway/backendapi"
+import deviceBreakpoint from "../../mixins/deviceBreakpoint";
 import PaymentList from './PaymentList'
-import Loader from '../accounting/offering/SkeletonLoader'
+// import Loader from '../accounting/offering/SkeletonLoader'
 export default {
     components: {
-         Loader, PaymentList
+         PaymentList
     },
     setup () {
-        const paymentList = ref([])
+        const paymentList = ref(store.getters["payment/getpayments"]);
         const loading = ref(false)
         const networkError = ref(false)
+        const primarycolor = inject('primarycolor')
+        const { lgAndUp, xlAndUp } = deviceBreakpoint()
 
 
-        const getPaymentList = () => {
+        const getPaymentList = async () => {
+              try {
+                loading.value = true
+                      store.dispatch('payment/getPayments').then(response => {
+                      paymentList.value = response
+                      console.log(paymentList.value, "kljk");
+                      loading.value = false
+                })
+              } catch (error) {
+                console.log(error);
+                 loading.value = false
+                        if(error.toString().toLowerCase().includes("network error")) {
+                          networkError.value = true
+                        } else {
+                          networkError.value = false
+                        }
+              }
             // let store = useStore()
             // console.log(store.getters['contributions/paymentList'])
             // if (store.getters['contributions/paymentList'].length > 0) {
             //     paymentList.value = store.getters['contributions/paymentList']
             // } else {
-                loading.value = true
-                axios
-                    .get("/api/PaymentForm/GetAll")
-                    .then((res) => {
-                        loading.value = false
-                    paymentList.value = res.data;
-                    console.log(res.data);
-                    })
-                    .catch((err) => {
-                        loading.value = false
-                        console.log(err)
-                        if(err.toString().toLowerCase().includes("network error")) {
-                          networkError.value = true
-                        } else {
-                          networkError.value = false
-                        }
-                    });
+                // axios
+                //     .get("/api/PaymentForm/GetAll")
+                    // .then((res) => {
+                    //     loading.value = false
+                    // paymentList.value = res.data;
+                    // console.log(res.data);
+                    // })
             // }
     
     // get from  to store
@@ -92,15 +110,18 @@ export default {
     // savev to sstore
     // store.dispatch('contributions/contributionList')
     };
-    getPaymentList();
 
     const deletePayment = (payload) => {
       paymentList.value = paymentList.value.filter(
                   (item) => item.id !== payload
                 );
     }
+    onMounted(() => {
+      if (paymentList.value && paymentList.value.length == 0)
+       getPaymentList()
+    });
         return  {
-            paymentList, loading, deletePayment, networkError
+            paymentList, loading, deletePayment, networkError, primarycolor, lgAndUp, xlAndUp
         }
     }
 }

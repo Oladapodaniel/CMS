@@ -2,7 +2,7 @@
     <div class="container-fluid">
         <!-- <div>{{attendanceId}}iughyuibui</div> -->
         <div class="row">
-            <DataRow :isKioskMode="isKiosk" v-for="(person, index) in listOfPeople" :key="index" :person="person" @togglecheckout="toggleCheckout" @togglecheckin="toggleCheckin" />
+            <DataRow :isKioskMode="isKiosk" v-for="(person, index) in listOfPeople" :key="index" @attendancepersonid="attendancePersonId" :person="person" @togglecheckout="toggleCheckout" @togglecheckin="toggleCheckin" />
         </div>
 
         <div class="row pb-4" v-if="listOfPeople.length === 0" >
@@ -10,20 +10,23 @@
             <p class="my-2">No records found</p>
           </div>
           <div class="col-md-12 d-flex justify-content-center mt-4">
-            <button
-              class="default-btn primary-bg border-0 text-white"
+            <el-button
+              class=" border-0 text-white"
+              :color="primarycolor"
               data-toggle="modal"
               data-target="#exampleModal"
+              size="large"
+              round
             >
               Add member
-            </button>
+            </el-button>
           </div>
         </div>
     </div>
 </template>
 
 <script>
-import { computed, ref, watchEffect } from 'vue';
+import { computed, ref, inject } from 'vue';
 import { useRoute } from 'vue-router';
 import DataRow from "./MarkAttendanceRow";
 import attendanceservice from '../../services/attendance/attendanceservice';
@@ -32,6 +35,7 @@ import attendanceservice from '../../services/attendance/attendanceservice';
         props: [ "isKiosk", "searchText", "fetchUsers","attendanceId" ],
         components: { DataRow },
         async setup(props, { emit }) {
+            const primarycolor = inject('primarycolor')
             const route = useRoute();
             const people = ref([ ])
             const id = ref(route.query.id ? route.query.id : props.attendanceId)
@@ -52,6 +56,10 @@ import attendanceservice from '../../services/attendance/attendanceservice';
                 if (!props.searchText) return people.value;
                 return people.value.filter(i => i.name.toLowerCase().includes(props.searchText.toLowerCase()))
             })
+
+            const attendancePersonId = (payload) =>{
+                people.value = people.value.filter((i) => i.id !== payload)
+            }
 
             const toggleCheckin = data => {
                 const userIndex = people.value.findIndex(i => i.id === data.id);
@@ -78,10 +86,12 @@ import attendanceservice from '../../services/attendance/attendanceservice';
             }
 
             return {
+                primarycolor,
                 people,
                 listOfPeople,
                 toggleCheckin,
                 toggleCheckout,
+                attendancePersonId,
             }
         }
     }

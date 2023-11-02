@@ -12,62 +12,52 @@
                     Account Type <span class="text-danger">*</span>
                   </div>
                   <div class="col-md-7">
-                    <div class="dropdown">
-                      <button
-                        class="btn btn-white w-100 border text-left"
-                        type="button"
-                        id="dropdownMenuButton"
-                        data-toggle="dropdown"
-                        aria-haspopup="true"
-                        aria-expanded="false"
-                      >
-                        <!-- :disabled="accountGroupId" -->
-                        {{
-                          !selectedAccountType || !selectedAccountType.name
-                            ? "Select account type"
-                            : selectedAccountType.name
-                        }}
-                      </button>
-                      <div
-                        class="dropdown-menu w-100"
-                        style="max-height: 300px; overflow: auto"
-                        aria-labelledby="dropdownMenuButton"
-                      >
-                        <div class="container">
-                          <div
-                            class="row"
+                    <el-dropdown trigger="click" class="w-100 mt-2">
+                      <span class="el-dropdown-link w-100">
+                        <div
+                          class="d-flex justify-content-between border-contribution w-100"
+                          size="large"
+                        >
+                          <div>
+                            {{
+                              !selectedAccountType || !selectedAccountType.name
+                                ? "Select account type"
+                                : selectedAccountType.name
+                            }}
+                          </div>
+                          <div>
+                            <el-icon class="el-icon--right">
+                              <arrow-down />
+                            </el-icon>
+                          </div>
+                        </div>
+                      </span>
+                      <template #dropdown>
+                        <el-dropdown-menu>
+                          <el-dropdown-item
                             v-for="(accounts, index) in transactionalAccounts"
                             :key="index"
                           >
                             <div class="col-md-12 px-2">
-                              <h6
-                                class="mb-0 text-capitalize font-weight-bold"
+                              <div
                                 v-if="accounts.length > 0"
+                                class="py-2 font-weight-700 border-bottom"
                               >
                                 {{ accountTypes[index] }}
-                              </h6>
-                            </div>
-                            <div class="col-md-12">
-                              <a
-                                class="dropdown-item px-1 px-14"
-                                href="#"
+                              </div>
+                              <div
                                 v-for="(account, indx) in accounts"
                                 :key="indx"
                                 @click="selectAccountType(account)"
-                                >{{ account.name }}</a
+                                class="c-pointer py-2"
                               >
+                                {{ account.name }}
+                              </div>
                             </div>
-                          </div>
-                        </div>
-                      </div>
-                    </div>
-                    <!-- <Dropdown :options="cities" optionLabel="label" optionGroupLabel="label" optionGroupChildren="items">
-                  <template #optiongroup="slotProps">
-                      <div class="p-d-flex p-ai-center country-item">
-                          <div>{{slotProps.option.label}}</div>
-                      </div>
-                  </template>
-              </Dropdown> -->
+                          </el-dropdown-item>
+                        </el-dropdown-menu>
+                      </template>
+                    </el-dropdown>
                   </div>
                 </div>
 
@@ -76,10 +66,10 @@
                     Account Name <span class="text-danger">*</span>
                   </div>
                   <div class="col-md-7">
-                    <input
+                    <el-input
                       type="text"
                       v-model="newAccount.name"
-                      class="form-control"
+                      class="w-100"
                     />
                   </div>
                 </div>
@@ -87,36 +77,40 @@
                 <div class="row my-3" v-if="currency">
                   <div class="col-md-4 text-md-right">Account Currency</div>
                   <div class="col-md-7" id="currencySelect">
-                    <Dropdown
-                      v-model="selectedCurrency"
-                      :options="accountCurrencies"
-                      optionLabel="displayName"
+                    <el-select v-model="selectedCurrencyID" placeholder="Select" class="w-100"
+                      @change="setSelectedCurrency" filterable>
+                      <el-option v-for="item in accountCurrencies" :label="item.displayName" :value="item.id"  :key="item.id" />
+                    </el-select>
+                    <!-- <el-select-v2
+                      v-model="selectedCurrencyID"
+                      class="w-100 font-weight-normal"
+                      :options="
+                        accountCurrencies.map((i) => ({
+                          label: i.displayName,
+                          value: i.id,
+                        }))
+                      "
                       placeholder="Select account currency"
-                      style="width: 100%"
-                      :filter="true"
-                    />
+                      @change="setSelectedCurrency"
+                      size="large"
+                    /> -->
                   </div>
                 </div>
-
-                <!-- <div class="row my-3">
-                  <div class="col-md-4 text-md-right">Account ID</div>
-                  <div class="col-md-7">
-                    <input
-                      type="text"
-                      v-model="newAccount.accountID"
-                      class="form-control"
-                    />
-                  </div>
-                </div> -->
 
                 <div class="row my-3" v-if="showFundsField">
                   <div class="col-md-4 text-md-right">Fund</div>
                   <div class="col-md-7">
-                    <Dropdown
-                      v-model="selectedFund"
-                      :options="funds"
-                      optionLabel="name"
-                      style="width: 100%"
+                    <el-select-v2
+                      v-model="selectedFundID"
+                      class="w-100 font-weight-normal"
+                      :options="
+                        funds.map((i) => ({
+                          label: i.name,
+                          value: i.id,
+                        }))
+                      "
+                      @change="setSelectedFund"
+                      size="large"
                     />
                   </div>
                 </div>
@@ -124,22 +118,21 @@
                 <div class="row my-3">
                   <div class="col-md-4 text-md-right">Description</div>
                   <div class="col-md-7">
-                    <textarea
+                    <el-input
                       v-model="newAccount.description"
-                      name=""
-                      id=""
-                      cols="30"
-                      rows="5"
-                      class="form-control"
-                    ></textarea>
+                      :rows="5"
+                      type="textarea"
+                      class="w-100"
+                    />
                   </div>
                 </div>
               </div>
             </div>
-
             <div class="row my-4" v-if="savingAccount">
               <div class="col-md-12 text-center">
-                <i class="pi pi-spin pi-spinner" style="fontSize: 3rem"></i>
+                <el-icon :size="20" class="is-loading">
+                  <Loading />
+                </el-icon>
               </div>
             </div>
 
@@ -153,15 +146,18 @@
             </div>
             <div class="row" style="border-top: 1px solid #dee2e6">
               <div class="col-md-12 d-flex justify-content-end mt-3">
-                <button class="default-btn mr-3" data-dismiss="modal">
+                <el-button round class="mr-3" data-dismiss="modal">
                   Cancel
-                </button>
-                <button
+                </el-button>
+                <el-button
                   @click="onSave"
-                  class="default-btn primary-bg border-0 text-white"
+                  round
+                  :loading="savingAccount"
+                  :color="primarycolor"
+                  class="border-0 text-white"
                 >
                   Save
-                </button>
+                </el-button>
               </div>
             </div>
           </div>
@@ -173,13 +169,12 @@
 </template>
 
 <script>
-import Dropdown from "primevue/dropdown";
-import { computed, ref, watch } from "vue";
+import { computed, ref, inject, watch } from "vue";
 import transactionals from "../utilities/transactionals";
 import chart_of_accounts from "../../../../services/financials/chart_of_accounts";
-import { useToast } from "primevue/usetoast";
-import membershipService from '../../../../services/membership/membershipservice';
-import { useStore } from "vuex"
+import membershipService from "../../../../services/membership/membershipservice";
+import { useStore } from "vuex";
+import { ElMessage } from "element-plus";
 
 export default {
   props: [
@@ -193,20 +188,36 @@ export default {
     "account",
     "currency",
   ],
-  components: { Dropdown },
+  components: {},
   setup(props, { emit }) {
-    const toast = useToast();
     const store = useStore();
+    const loading = ref(false);
+    const primarycolor = inject("primarycolor");
 
     const selectedAccountType = ref({});
     const selectedCurrency = ref({});
     const selectedFund = ref({});
     const newAccount = ref({});
-    const userCurrency = ref(store.getters.currentUser.currency);
+    const selectedCurrencyID = ref(null);
+    const selectedFundID = ref(null);
+    const userCurrency = ref(
+      store.getters.currentUser ? store.getters.currentUser.currency : ""
+    );
 
     const selectAccountType = (account) => {
       selectedAccountType.value = account;
-      console.log(selectedAccountType.value, "selected");
+    };
+
+    const setSelectedCurrency = () => {
+      selectedCurrency.value = accountCurrencies.value.find(
+        (i) => i.id == selectedCurrencyID.value
+      );
+    };
+
+    const setSelectedFund = () => {
+      selectedFund.value = funds.value.find(
+        (i) => i.id == selectedFundID.value
+      );
     };
 
     const filteredCurrencies = computed(() => {
@@ -229,26 +240,43 @@ export default {
 
     const edit = async (body) => {
       try {
-        const response = await chart_of_accounts.editAccount(body)
+        const response = await chart_of_accounts.editAccount(body);
         savingAccount.value = false;
-        toast.add({severity:'success', summary:'Account Updated', detail:`${response.response}`, life: 2500});
-        newAccount.value = { };
-        emit("save-account", { success: true, type: props.financialAccountType });
+        loading.value = false;
+        ElMessage({
+          type: "success",
+          message: `${response.response}`,
+          duration: 3000,
+        });
+        newAccount.value = {};
+        emit("save-account", {
+          success: true,
+          type: props.financialAccountType,
+        });
       } catch (error) {
         savingAccount.value = false;
-        toast.add({severity:'error', summary:'Account Update Failed', detail:`An error occurred, please try again`, life: 3000});
-        newAccount.value = { };
-        emit("save-account", { success: true, type: props.financialAccountType });
+        loading.value = false;
+        ElMessage({
+          type: "error",
+          message: "Account Update Failed",
+          duration: 3000,
+        });
+        newAccount.value = {};
+        emit("save-account", {
+          success: true,
+          type: props.financialAccountType,
+        });
         transactionals.getTransactionalAccounts(true);
         console.log(error);
       }
-    }
+    };
 
     const savingAccount = ref(false);
     const saveAccount = async (body) => {
       try {
         savingAccount.value = true;
-        let response = { };
+        loading.value = true;
+        let response = {};
         if (props.account && props.account.name) {
           const x = {
             name: body.name,
@@ -256,26 +284,41 @@ export default {
             accountType: props.account.accountType,
             description: body.description,
             id: props.account.id,
-            financialAccountGroupID: selectedAccountType.value.id
+            financialAccountGroupID: selectedAccountType.value.id,
             // financialFundID: body.financialFundID
-           }
+          };
           response = edit(x);
         } else {
           response = await chart_of_accounts.saveAccount(body);
           savingAccount.value = false;
+          loading.value = false;
           if (!response.status) {
-              emit("save-account", { success: false, type: props.financialAccountType });
-              toast.add({severity:'error', summary:'Account Creation Failed', detail:`An error occurred, please try again`, life: 3000});
+            emit("save-account", {
+              success: false,
+              type: props.financialAccountType,
+            });
+            ElMessage({
+              type: "error",
+              message: "Account Creation Failed",
+              duration: 3000,
+            });
           } else {
-              toast.add({severity:'success', summary:'Account Created', detail:`The account ${newAccount.value.name} was created successfully`, life: 2500});
-              newAccount.value = { };
-              savingAccount.value = false;
-              emit("save-account", { success: true, type: props.financialAccountType });
-              transactionals.getTransactionalAccounts(true);
-              selectedFund.value = { }
+            ElMessage({
+              type: "success",
+              message: `The account ${newAccount.value.name} was created successfully`,
+              duration: 3000,
+            });
+            newAccount.value = {};
+            savingAccount.value = false;
+            loading.value = false;
+            emit("save-account", {
+              success: true,
+              type: props.financialAccountType,
+            });
+            transactionals.getTransactionalAccounts(true);
+            selectedFund.value = {};
           }
         }
-        
       } catch (error) {
         savingAccount.value = false;
         console.log(error);
@@ -293,68 +336,91 @@ export default {
         invalidAccountDetails.value = true;
         return false;
       }
-    
+
       newAccount.value.financialAccountGroupID = selectedAccountType.value.id;
       if (selectedCurrency.value && selectedCurrency.value.id) {
-        newAccount.value.currencyID =  selectedCurrency.value.id;
+        newAccount.value.currencyID = selectedCurrency.value.id;
       }
 
       // if (selectedFund.value && selectedFund.value.id) {
-        newAccount.value.financialFundID = selectedFund.value && selectedFund.value.id ? selectedFund.value.id : "";
+      newAccount.value.financialFundID =
+        selectedFund.value && selectedFund.value.id
+          ? selectedFund.value.id
+          : "";
       // }
       saveAccount(newAccount.value);
     };
 
     const initializeCurrency = () => {
       if (!userCurrency.value) {
-        membershipService.getSignedInUser()
-          .then(res => {
-            selectedCurrency.value = accountCurrencies.value.find(i => i.name === res.currency);
+        membershipService
+          .getSignedInUser()
+          .then((res) => {
+            selectedCurrency.value = accountCurrencies.value.find(
+              (i) => i.name === res.currency
+            );
           })
-          .catch(err => console.log(err));
+          .catch((err) => console.log(err));
       } else {
-        selectedCurrency.value = accountCurrencies.value.find(i => {
+        selectedCurrency.value = accountCurrencies.value.find((i) => {
           return i.name.includes(userCurrency.value);
-        })
+        });
       }
-    }
+    };
 
     const updateSelectedCurrency = () => {
-      selectedCurrency.value = accountCurrencies.value.find(i => i.id === props.account.id);
-      
-    }
+      selectedCurrency.value = accountCurrencies.value.find(
+        (i) => i.id === props.account.id
+      );
+    };
 
     const accountCurrencies = ref([]);
     const getCurrencies = async () => {
       try {
         const response = await transactionals.getCurrencies();
         accountCurrencies.value = response;
-        if (!props.account || !props.account.name ) {
-          initializeCurrency()
+        if (!props.account || !props.account.name) {
+          initializeCurrency();
         } else {
           updateSelectedCurrency();
         }
       } catch (error) {
         console.log(error);
       }
-    }
+    };
     getCurrencies();
 
     watch(() => {
-      if (props.accountGroupId) {
-        selectedAccountType.value = props.transactionalAccounts[props.index].find(i => i.name === props.accountGroupId)
+      if (props.accountGroupId && props.transactionalAccounts && props.index) {
+        selectedAccountType.value = props.transactionalAccounts[
+          props.index
+        ].find((i) => i.name === props.accountGroupId);
       }
       if (props.account) {
-        console.log(props.account);
         newAccount.value.name = props.account ? props.account.name : "";
-        newAccount.value.description = props.account ? props.account.description : "";
-        selectedFund.value = funds.value.find(i => i.id === props.account.financialFundID);
+        newAccount.value.description = props.account
+          ? props.account.description
+          : "";
+        selectedFund.value = funds.value.find(
+          (i) => i.id === props.account.financialFundID
+        );
       }
-    })
-    
+    });
+
+    const setFundValue = (item) => {
+      selectedFund.value = item;
+    };
+
+    const setCurrencyValue = (item) => {
+      selectedCurrency.value = item;
+    };
 
     return {
       selectAccountType,
+      setSelectedFund,
+      selectedFundID,
+      selectedCurrencyID,
+      setSelectedCurrency,
       selectedAccountType,
       filteredCurrencies,
       funds,
@@ -365,6 +431,10 @@ export default {
       invalidAccountDetails,
       savingAccount,
       accountCurrencies,
+      setFundValue,
+      setCurrencyValue,
+      primarycolor,
+      loading,
     };
   },
 };
@@ -373,5 +443,10 @@ export default {
 <style scoped>
 .p-dropdown-items {
   width: 100px !important;
+}
+
+.dropdown-menu {
+  max-height: 400px;
+  overflow: scroll;
 }
 </style>

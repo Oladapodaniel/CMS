@@ -7,7 +7,7 @@ export default axios.create({
     // baseURL: 'https://14b8-129-56-60-247.ngrok.io',
     
     // baseURL: 'https://unionfaith.azurewebsites.net/',
-    timeout: 100000,
+    timeout: 500000,
     headers: {
         'Content-Type': 'application/json',
     }

@@ -1,192 +1,148 @@
 <template>
-  <div class="container-fluid px-5">
+  <div class="container-fluid">
     <!-- header area -->
-    <div class="container">
-      <div
-        class="
-          row
-          d-flex
-          flex-row
-          justify-content-between
-          mt-5
-          align-items-center
-        "
-      >
-        <div class="centered-items">
-          <h3 class="heading-text ml-n1">Income Statement Report</h3>
-        </div>
-
-        <!-- <div class="centered-items pr-3">
-          <button class="default-btn font-weight-normal"
-          @click="() => (showExport = !showExport)">
-            Export &nbsp; &nbsp; <i class="pi pi-angle-down"></i>
-          </button>
-        </div> -->
-
-        <!-- <div
-          class="default-btn font-weight-normal c-pointer"
-          @click="() => (showExport = !showExport)"
-          style="width: fixed; position:relative">
-                   Export As &nbsp; &nbsp; <i class="pi pi-angle-down" ></i>
-                   <div
-                        class=" c-pointer"
-                        style="width: 6rem; z-index:1000; position:absolute"
-                        v-if="showExport">
-
-                         <Listbox
-                         @click="downloadFile"
-                         v-model="selectedFileType"
-                         :options="bookTypeList"
-                         optionLabel="name"/>
-                    </div>
-              </div> -->
+    <div class="row flex-row justify-content-between align-items-center">
+      <div class="centered-items">
+        <h3 class="head-text">Income Statement Report</h3>
       </div>
-      <div>
-        <p class="ml-n3">
-          A detailed report of all incomes and expenses of the ministry in a
-          given period.
-        </p>
-      </div>
-
-      <!-- name="fade" -->
-      <!-- <transition
-      name="move" mode="out-in">
-     <div class="row my-4" v-if="showExport">
-        <div class="col-sm-5">
-          <span class="p-float-label ml-n1">
-            <InputText
-              id="inputtext"
-              class="w-100"
-              type="text"
-              v-model="fileName"
-            />
-            <label for="inputtext">Enter file name</label>
-          </span>
-        </div>
-        <div class="col-sm-4">
-          <Dropdown
-            v-model="selectedFileType"
-            class="w-100"
-            :options="bookTypeList"
-            placeholder="Select file type"
-          />
-        </div>
-        <div @click="downloadFile" class="col-sm-2 offset-sm-1">
+      <div class="c-pointer my-sm-0 my-2">
+        <el-dropdown trigger="click" class="w-100">
           <div
-		class="
-			default-btn
-			d-flex
-			align-items-center
-			justify-content-center
-			c-pointer
-			generate-report
-		"
+            class="d-flex justify-content-between default-btn text-dark w-100"
+            size="large"
           >
-            Download
+            <span class="mt-1">Export</span>
+            <div class="mt-1">
+              <el-icon class="el-icon--right">
+                <arrow-down />
+              </el-icon>
+            </div>
           </div>
-        </div>
+          <template #dropdown>
+            <el-dropdown-menu>
+              <el-dropdown-item
+                v-for="(bookType, index) in bookTypeList"
+                :key="index"
+              >
+                <a
+                  class="no-decoration text-dark"
+                  @click="downloadFile(bookType)"
+                >
+                  {{ bookType.name }}
+                </a>
+              </el-dropdown-item>
+            </el-dropdown-menu>
+          </template>
+        </el-dropdown>
       </div>
-
-    </transition> -->
     </div>
+    <div>
+      <p class="">
+        A detailed report of all incomes and expenses of the ministry in a given
+        period.
+      </p>
+    </div>
+
     <!--end of header area -->
     <!-- date area -->
-    <div class="container-fluid bg-area my-3">
-      <div class="row px-4 w-100 ml-md-5 px-sm-4 mt-sm-3">
-        <div class="col-md-4 col-sm-12 px-md-0">
-          <div class="p-field p-col-12 pt-md-2 pb-2">
-            <div>
-              <label for="icon" class="mb-0 font-weight-bold">Start Date</label>
-            </div>
-            <Calendar
-              class="w-100"
-              id="icon"
-              v-model="startDate"
-              :showIcon="true"
-              dateFormat="dd/mm/yy"
-            />
+    <div class="row pl-1 pl-md-5 bg-area mt-sm-3">
+      <div class="col-md-4 col-sm-12 px-md-0">
+        <div class="p-field p-col-12 pt-md-2 pb-2">
+          <div>
+            <label for="icon" class="mb-0 font-weight-bold">Start Date</label>
           </div>
+          <el-date-picker
+            v-model="startDate"
+            type="date"
+            format="DD/MM/YYYY"
+            size="large"
+            class="w-100"
+          />
         </div>
-        <div class="col-md-4 col-sm-12 pr-md-0">
-          <div class="p-field p-col-12 pt-md-2">
-            <div>
-              <label for="icon" class="mb-0 font-weight-bold">End Date</label>
-            </div>
-            <Calendar
-              class="w-100"
-              id="icon"
-              v-model="endDate"
-              :showIcon="true"
-              dateFormat="dd/mm/yy"
-            />
+      </div>
+      <div class="col-md-4 col-sm-12 pr-md-0">
+        <div class="p-field p-col-12 pt-md-2">
+          <div>
+            <label for="icon" class="mb-0 font-weight-bold">End Date</label>
           </div>
+          <el-date-picker
+            v-model="endDate"
+            type="date"
+            format="DD/MM/YYYY"
+            size="large"
+            class="w-100"
+          />
         </div>
-        <div class="col-md-4 col-sm-12 pr-md-0">
-          <div class="p-field p-col-12 pt-md-2">
-            <button
-              class="
-                default-btn
-                generate-report
-                c-pointer
-                font-weight-normal
-                mt-4
-              "
-              @click="generateReport"
-            >
-              Generate Report
-            </button>
-          </div>
+      </div>
+      <div class="col-md-4 col-sm-12 pr-md-0">
+        <div class="p-field p-col-12 pt-md-2">
+          <el-button
+            class="c-pointer mt-4"
+            :color="primarycolor"
+            round
+            :loading="loading"
+            @click="generateReport"
+          >
+            Generate Report
+          </el-button>
         </div>
       </div>
     </div>
+
+  </div>
     <!--end of date area -->
-
-    <section>
-      <!-- chart area -->
+    <div id="element-to-print" class="">
       <div
-        class="chart row d-flex"
-        :class="
-          incomeStatement && incomeStatement.length > 0 ? 'graph-area' : ''
-        "
-      >
-        <div class="col-12 col-md-6">
-          <IncomeStatementChart
-            domId="chart"
-            title=""
-            distance="5"
-            :titleMargin="10"
-            :summary="groupofIcomeAndExpense"
-          />
-        </div>
-
-        <div class=" col-12 col-md-6">
-          <IncomeStatmentColumnChart
-            domId="chart1"
-            title=""
-            distance="5"
-            :titleMargin="10"
-            :data="columnChart"
-            subtitle=""
-            :series="['Income', 'Expense']"
-            yAxisText="Amount"
-          />
-        </div>
-      </div>
-      <!--end of chart area-->
-    </section>
-
-    <section>
-      <!-- table header -->
-      <div v-if="groupedIncomeItemToDisplay.length > 0">
+      class="container-fluid d-flex justify-content-center my-2"
+      v-if="displayTitle"
+    >
+      <div class="head-text">Income Statement Report</div>
+    </div>
+      <section class="container-fluid  " :class="
+            incomeStatement && incomeStatement.length > 0 ? 'graph-area' : ''
+          ">
+        <!-- chart area -->
         <div
-          class="
-            mt-2
-            container-fluid
-            table-main
-            px-0
-            remove-styles2 remove-border
-            responsiveness
-          "
+          id=""
+          class="  row"
+          
+        >
+          <div class="col-12 col-md-6">
+            <IncomeStatementChart
+              domId="chart"
+              title=""
+              distance="5"
+              :titleMargin="10"
+              :summary="groupofIcomeAndExpense"
+            />
+          </div>
+
+          <div
+            class="col-12 col-md-6"
+            :class="{ 'show-report': showReport, 'hide-report': !showReport }"
+          >
+            <IncomeStatmentColumnChart
+              domId="chart1"
+              title=""
+              distance="5"
+              :titleMargin="10"
+              :data="columnChart"
+              subtitle=""
+              :series="['Income', 'Expense']"
+              yAxisText="Amount"
+            />
+          </div>
+        </div>
+        <!--end of chart area-->
+      </section>
+
+      <section class="container-fluid ">
+        <!-- table header -->
+        <div class="row">
+        <div
+          id=""
+          v-if="groupedIncomeItemToDisplay.length > 0"
+          class="mt-2 container-fluid table-main remove-styles2 remove-border responsiveness"
         >
           <table id="table" class="table remove-styles mt-0 table-header-area">
             <thead class="table-header-area-main">
@@ -194,7 +150,7 @@
                 class="small-text text-capitalize text-nowrap font-weight-bold"
                 style="border-bottom: 0; font-size: medium"
               >
-                <!-- <th scope="col">Fund</th> -->
+              
                 <th scope="col">Account Category</th>
                 <th scope="col">Account Name</th>
                 <th scope="col">Description</th>
@@ -213,7 +169,7 @@
                 <td class="fundType-color" style="font-size: medium">
                   {{ row }}
                 </td>
-                <!-- <td></td> -->
+              
                 <td></td>
                 <td></td>
                 <td></td>
@@ -223,59 +179,74 @@
                 v-for="(account, indx) in tableData[row].expenses"
                 :key="indx"
               >
-                <!-- <td></td> -->
+             
                 <td class="accounType-color">
                   {{ indx === 0 ? account.accountCategory : "" }}
                 </td>
                 <td>{{ account.accountName }}</td>
                 <td>{{ account.description }}</td>
-                <td>({{ Math.abs(account.amount).toLocaleString() }}.00)</td>
+                <td>
+                  {{
+                    account.currency && account.currency.symbol
+                      ? account.currency.symbol
+                      : ""
+                  }}
+                  {{ Math.abs(account.amount).toLocaleString() }}.00
+                </td>
                 <td>{{ formatDate(account.date) }}</td>
               </tr>
               <tr class="answer-row" v-if="tableData[row].incomes.length > 0">
                 <td class="subtotal">Subtotal</td>
-                <!-- <td></td> -->
+       
                 <td></td>
                 <td></td>
                 <td class="subtotal">
-                  NGN{{ sum(tableData[row].expenses).toLocaleString() }}.00
+                  {{ currentUser.currencySymbol }}
+                  {{ sum(tableData[row].expenses).toLocaleString() }}.00
                 </td>
                 <td></td>
               </tr>
               <tr v-for="(account, indx) in tableData[row].incomes" :key="indx">
-                <!-- <td></td> -->
+          
                 <td class="accounType-color">
                   {{ indx === 0 ? account.accountCategory : "" }}
                 </td>
                 <td>{{ account.accountName }}</td>
                 <td>{{ account.description }}</td>
-                <td>{{ Math.abs(account.amount).toLocaleString() }}.00</td>
+                <td>
+                  {{
+                    account.currency && account.currency.symbol
+                      ? account.currency.symbol
+                      : ""
+                  }}
+                  {{ Math.abs(account.amount).toLocaleString() }}.00
+                </td>
                 <td>{{ formatDate(account.date) }}</td>
               </tr>
               <tr class="answer-row" v-if="tableData[row].incomes.length > 0">
                 <td class="subtotal">Subtotal</td>
-                <!-- <td></td> -->
+  
                 <td></td>
                 <td></td>
                 <td class="subtotal">
-                  NGN{{ sum(tableData[row].incomes).toLocaleString() }}.00
+                  {{ currentUser.currencySymbol }}
+                  {{ sum(tableData[row].incomes).toLocaleString() }}.00
                 </td>
                 <td></td>
               </tr>
               <tr class="answer-row" v-if="tableData[row].incomes.length > 0">
                 <td class="total-answer">Total</td>
-                <!-- <td></td> -->
+                
                 <td></td>
                 <td></td>
                 <td class="total-answer">
-                  NGN{{
-                    sumOfDiffAcctInFunds(tableData[row]).toLocaleString()
-                  }}.00
+                  {{ currentUser.currencySymbol }}
+                  {{ sumOfDiffAcctInFunds(tableData[row]).toLocaleString() }}.00
                 </td>
                 <td></td>
               </tr>
               <tr style="background-color: #fff">
-                <!-- <td>&nbsp;</td> -->
+       
                 <td>&nbsp;</td>
                 <td>&nbsp;</td>
                 <td>&nbsp;</td>
@@ -287,34 +258,34 @@
               style="font-size: small"
             >
               <tr class="answer-row2">
-                <td class="gross-total">Gross Total</td>
-                <!-- <td></td> -->
+                <td class="gross-total">Net Total</td>
+            
                 <td></td>
                 <td></td>
                 <td class="gross-total responsive-horizontalrule">
-                  NGN{{
-                    Math.abs(diffBtwIncomeAndExpenses).toLocaleString()
-                  }}.00
+                  <span
+                    >{{ currentUser.currencySymbol }}
+                    {{
+                      Math.abs(diffBtwIncomeAndExpenses).toLocaleString()
+                    }}.00</span
+                  >
                   <hr class="horizontal-rule" />
                 </td>
                 <td></td>
               </tr>
             </tbody>
           </table>
-          <div class="table-foot d-flex justify-content-end mt-3">
-            <!-- <PaginationButtons /> -->
-          </div>
         </div>
-      </div>
 
-      <!--end table header -->
-    </section>
-  </div>
+        </div>
+
+        <!--end table header -->
+      </section>
+    </div>
 </template>
 
 <script>
-import { ref, computed } from "vue";
-import Calendar from "primevue/calendar";
+import { ref, computed, inject } from "vue";
 import IncomeStatementChart from "@/components/charts/ReportPieChart.vue";
 import IncomeStatmentColumnChart from "../../../components/charts/ReportColumnChart.vue";
 import axios from "@/gateway/backendapi";
@@ -322,22 +293,16 @@ import dateFormatter from "../../../services/dates/dateformatter";
 import printJS from "print-js";
 import exportService from "../../../services/exportFile/exportserviceforincomestatement.js";
 import groupResponse from "../../../services/groupArray/groupResponse.js";
-// import PaginationButtons from "../../../components/pagination/PaginationButtons";
 import incomeExpenseHelper from "./Helper/Incomeexpenses-helper.js";
-// import Listbox from 'primevue/listbox';
+import { useStore } from "vuex";
 
 export default {
   components: {
-    Calendar,
     IncomeStatementChart,
     IncomeStatmentColumnChart,
-    // NegativeChart,
-    // Dropdown,
-    // InputText,
-    // Listbox,
-    // PaginationButtons,
   },
   setup() {
+    const store = useStore();
     const startDate = ref("");
     const endDate = ref("");
     const incomeStatement = ref([]);
@@ -349,19 +314,29 @@ export default {
     // const mappedIncomeAndExpense = ref([])
     const allIncomeAndExpenses = ref([]);
     const incomeStatementData = ref([]);
+    const primarycolor = inject("primarycolor");
+    const loading = ref(false);
     const showExport = ref(false);
-    const fileName = ref("");
+    const showReport = ref(false);
+    const displayTitle = ref(false);
+    const fileName = ref("Income Statement Report");
     const bookTypeList = ref([
       { name: "xlsx" },
       { name: "csv" },
       { name: "txt" },
-      { name: "" },
+      { name: "pdf" },
     ]);
     const selectedFileType = ref("");
     const fileHeaderToExport = ref([]);
     const fileToExport = ref([]);
     const fundType = ref([]);
     const funds = ref([]);
+
+    const currentUser = computed(() => {
+      if (store && Object.keys(store.getters.currentUser).length > 0)
+        return store.getters.currentUser;
+      return "";
+    });
 
     const tableData = ref({});
     const tableRows = computed(() => {
@@ -397,7 +372,6 @@ export default {
       let incomeres = item.incomes.reduce((a, b) => {
         return { amount: +a.amount + +b.amount };
       });
-      console.log(incomeres.amount);
 
       let expenseres =
         item.expenses.length > 0
@@ -405,15 +379,14 @@ export default {
               return { amount: +a.amount + +b.amount };
             })
           : 0;
-      console.log(expenseres.amount);
 
       const subtractValue =
         Math.abs(incomeres.amount || 0) - Math.abs(expenseres.amount || 0);
-      console.log(subtractValue);
       return subtractValue;
     };
 
     const generateReport = () => {
+      loading.value = true;
       axios
         .get(
           `/api/Reports/financials/getIncomeStatementReport?startDate=${new Date(
@@ -423,12 +396,15 @@ export default {
           ).toLocaleDateString("en-US")}`
         )
         .then((res) => {
-          console.log(res, "🎄🎄🎄");
           tableData.value = incomeExpenseHelper.formatAccounts(res.data);
           incomeStatement.value = res.data.filter((i) => i !== null);
-          console.log(incomeStatement.value);
-          console.log(tableData.value, "TABLE DATA");
-          console.log(tableRows.value, "TABLE ROWS");
+
+          if (incomeStatement.value.length > 0) {
+            showReport.value = true;
+          } else {
+            showReport.value = false;
+          }
+
           let response = res.data;
           chartForIcomeAndExpense.value = response;
           churchIncomes(incomeStatement.value, "accountCategory");
@@ -447,9 +423,11 @@ export default {
             );
           }, 1000);
           /* End function to call service and populate table */
+          loading.value = false;
         })
         .catch((err) => {
           console.log(err);
+          loading.value = false;
         });
     };
 
@@ -458,7 +436,6 @@ export default {
       for (const prop in fundType.value) {
         funds.value.push({ name: prop, value: fundType.value[prop] });
       }
-      console.log(funds.value, "🎼🎼🎉🎉");
     };
     groupedFundType();
 
@@ -472,15 +449,19 @@ export default {
           value: categoryType[prop],
         });
       }
-      console.log(category, "🎵🎵");
       return category;
     };
     groupAccountCategoery();
 
     /* Code For Exporting File */
-    const downloadFile = () => {
+    const downloadFile = (item) => {
+      if (item.name === "pdf") {
+        displayTitle.value = true;
+      } else {
+        displayTitle.value = false;
+      }
       exportService.downLoadExcel(
-        selectedFileType.value,
+        item.name,
         document.getElementById("element-to-print"),
         fileName.value,
         fileHeaderToExport.value,
@@ -499,10 +480,8 @@ export default {
         // Return the current iteration `result` value, this will be taken as next iteration `result` value and accumulate
         return result;
       }, {}); // empty object is the initial value for result object
-      console.log(result);
       groupofIcomeAndExpense.value = [];
       for (const prop in result) {
-        console.log(prop, result[prop]);
         groupofIcomeAndExpense.value.push({
           name: prop,
           value: result[prop].reduce((acc, cur) => {
@@ -510,25 +489,21 @@ export default {
           }, 0),
         });
       }
-
-      console.log(groupofIcomeAndExpense.value);
     };
 
     const columnChart = computed(() => {
-      if (groupofIcomeAndExpense.value.length === 0)   return [];
-        allIncomeAndExpenses.value.push({
-          name: "Income",
-          //  color: '#002044',
-          data: [groupofIcomeAndExpense.value[0].value],
-        });
+      if (groupofIcomeAndExpense.value.length === 0) return [];
+      allIncomeAndExpenses.value.push({
+        name: "Income",
+        //  color: '#002044',
+        data: [groupofIcomeAndExpense.value[0].value],
+      });
 
-        allIncomeAndExpenses.value.push({
-          name: "Expense",
-          //  color: '#002044',
-          data: [groupofIcomeAndExpense.value[1].value],
-        });
-
-      console.log(allIncomeAndExpenses.value);
+      allIncomeAndExpenses.value.push({
+        name: "Expense",
+        //  color: '#002044',
+        data: [groupofIcomeAndExpense.value[1].value],
+      });
       return allIncomeAndExpenses.value;
     });
     /*End of Chart Area */
@@ -540,23 +515,18 @@ export default {
         (result[currentValue[key]] = result[currentValue[key]] || []).push(
           currentValue
         );
-        // console.log(result, currentValue, key)
         // Return the current iteration `result` value, this will be taken as next iteration `result` value and accumulate
 
         return result;
       }, {}); // empty object is the initial value for result object
-      console.log(result);
       groupedIncomeStatements.value = [];
       for (const prop in result) {
-        console.log(prop, result[prop]);
         groupedIncomeStatements.value.push({
           name: prop,
           value: result[prop],
         });
       }
       groupedIncomeItemToDisplay.value = groupedIncomeStatements.value[0].value;
-
-      console.log(groupedIncomeItemToDisplay.value, "💐💐")
     };
 
     const churchExpense = (array, key) => {
@@ -566,10 +536,8 @@ export default {
         );
         return result;
       }, {});
-      console.log(result);
       groupedExpenseStatements.value = [];
       for (const prop in result) {
-        console.log(prop, result[prop]);
         groupedExpenseStatements.value.push({
           name: prop,
           value: result[prop],
@@ -577,8 +545,6 @@ export default {
       }
       groupedExpenseItemToDisplay.value =
         groupedExpenseStatements.value[1].value;
-
-      console.log(groupedExpenseItemToDisplay.value, "💐💐")
     };
 
     const fundSum = computed(() => {
@@ -595,8 +561,9 @@ export default {
     return {
       sumOfDiffAcctInFunds,
       groupAccountCategoery,
+      primarycolor,
+      loading,
       fundSum,
-      Calendar,
       startDate,
       endDate,
       incomeStatement,
@@ -604,6 +571,7 @@ export default {
       formatDate,
       groupedIncomeStatements,
       groupedExpenseStatements,
+      displayTitle,
       churchIncomes,
       churchExpense,
       groupedIncomeItemToDisplay,
@@ -614,6 +582,7 @@ export default {
       incomeStatementData,
       printJS,
       showExport,
+      showReport,
       fileName,
       bookTypeList,
       selectedFileType,
@@ -626,8 +595,7 @@ export default {
       sum,
       diffBtwIncomeAndExpenses,
       columnChart,
-      // incomeAndExpenseChart,
-      // groupedExpenseAndIncomeStatements
+      currentUser,
     };
   },
 };
@@ -684,6 +652,12 @@ export default {
 
 .table-header-area-main {
   background-color: #ebeff4;
+}
+.show-report {
+  display: block;
+}
+.hide-report {
+  display: none;
 }
 
 .table-main {
@@ -757,6 +731,7 @@ export default {
   color: #136acd;
   font-size: larger;
 }
+
 .accounType-color {
   font-size: medium;
 }

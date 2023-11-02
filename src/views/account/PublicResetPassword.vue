@@ -96,7 +96,7 @@ export default {
     const loading = ref(false);
     const toast = useToast();
     let passwordChanged = ref(false);
-    let pattern = /^\w+@[a-zA-Z_]+?\.[a-zA-Z]{2,3}$/;
+    let pattern =  /^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@[a-zA-Z0-9-]+(?:\.[a-zA-Z0-9-]+)*$/
     const emailIsInvalid = ref(false);
 
     const getResetToken = () => {
@@ -123,12 +123,23 @@ export default {
         })
         .catch((err) => {
           loading.value = false;
-          toast.add({
-            severity: "info",
-            summary: "Email Not Verified",
-            detail: "Enter Correct Email",
+          if (err.response.data.message.toLowerCase().includes('account')) {
+            toast.add({
+            severity: "warn",
+            summary: "Account not Found",
+            detail: err.response.data.message,
             life: 4000,
           });
+          }else{
+              toast.add({
+              severity: "info",
+              summary: "Email Not Verified",
+              detail: "Enter Correct Email",
+              life: 4000,
+            });
+          }
+          
+          
           console.log(err);
         });
     };

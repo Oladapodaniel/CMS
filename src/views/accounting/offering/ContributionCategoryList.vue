@@ -1,110 +1,178 @@
 <template>
- <div class="row">
-          <div class="col-12 table px-0">
-            <div class="top-con" id="ignore2">
-          <div class="table-top">
-
-            <div class="filter col-2">
-              <p @click="toggleFilterFormVissibility" class="mt-2">
-                <i class="fas fa-filter"></i>
-                FILTER
-              </p>
-            </div>
-            <div class="col-2">
-              <p @click="toggleSearch" class="search-text w-100 mt-2">
-                <i class="pi pi-search"></i> SEARCH
-              </p>
-            </div>
-
-            <div class="search d-flex ml-2">
-              <label
-                class="label-search d-flex"
-                :class="{
-                  'show-search': searchIsVisible,
-                  'hide-search': !searchIsVisible,
-                }"
-              >
-                <input
-                  type="text"
-                  placeholder="Search by name"
-                  v-model="searchText"
-                />
-                <span class="empty-btn">x</span>
-                <span class="search-btn">
-                  <i class="pi pi-search"></i>
-                </span>
-              </label>
-            </div>
+  <div class="row">
+    <div class="col-12 px-0">
+      <!-- <div class="top-con" id="ignore2"> -->
+        <!-- <div class="table-top mt-4">
+          <div class="filter col-2">
+            <p @click="toggleFilterFormVissibility" class="mt-2">
+              <i class="fas fa-filter"></i>
+              FILTER
+            </p>
           </div>
-        </div>
-        <div
-          class="filter-options"
-          :class="{ 'filter-options-shown': filterFormIsVissible }"
-        >
-          <div class="container-fluid">
-            <div class="row">
-              <div class="col-md-9">
-                <div class="row">
-                  <div
-                    class="col-12 col-sm-6 col-md-4 offset-sm-3 offset-md-0 form-group inp w-100"
-                  >
+          <div class="col-2">
+            <p @click="toggleSearch" class="search-text w-100 mt-2">
+              <i class="pi pi-search"></i> SEARCH
+            </p>
+          </div>
 
-                    <input
-                      type="text"
-                      class="input w-100"
-                      placeholder="Name"
-                      v-model="filter.name"
-                    />
-                  </div>
+          <div class="search d-flex ml-2">
+            <label
+              class="label-search d-flex"
+              :class="{
+                'show-search': searchIsVisible,
+                'hide-search': !searchIsVisible,
+              }"
+            >
+              <input
+                type="text"
+                placeholder="Search by name"
+                v-model="searchText"
+              />
+              <span class="empty-btn">x</span>
+              <span class="search-btn">
+                <i class="pi pi-search"></i>
+              </span>
+            </label>
+          </div>
+        </div> -->
+        <div class="table-top p-3 mt-5">
+          <div class="d-flex flex-column flex-sm-row justify-content-sm-between">
+            <div>
+              <p @click="toggleFilterFormVissibility" class="mb-0 mr-3 d-flex my-3 my-sm-0 c-pointer">
+                <el-icon :size="13">
+                  <Filter />
+                </el-icon>
+                <span class="ml-1"> FILTER</span>
+              </p>
+            </div>
+            <el-input size="small" v-model="searchText" placeholder="Search..."  @keyup.enter.prevent="searchContributionInDB"
+              class="input-with-select">
+              <template #suffix>
+              <el-button style="padding: 5px; height: 22px;" @click.prevent="searchText = ''">
+                <el-icon :size="13">
+                  <Close />
+                </el-icon>
+              </el-button>
+            </template>
+              <template #append>
+                <el-button @click.prevent="searchContributionInDB">
+                  <el-icon :size="13">
+                    <Search />
+                  </el-icon>
+                </el-button>
+              </template>
+            </el-input>
+          </div>
+      </div>
+      <!-- </div> -->
+      <div
+        class="filter-options"
+        :class="{ 'filter-options-shown': filterFormIsVissible }"
+      >
+        <div class="container-fluid">
+          <div class="row">
+            <div class="col-md-9">
+              <div class="row">
+                <div
+                  class="col-12 col-sm-6 col-md-4 offset-sm-3 offset-md-0 form-group inp w-100"
+                >
+                  <el-input
+                    type="text"
+                    class=" w-100"
+                    placeholder="Name"
+                    v-model="filter.name"
+                  />
+                </div>
 
-                  <div class="col-12 col-md-4 form-group d-none d-md-block">
-                    <input
-                      type="text"
-                      class="input w-100"
-                      placeholder="Cash Account"
-                      v-model="filter.cashAccount"
-                    />
-                  </div>
+                <div class="col-12 col-md-4 form-group d-none d-md-block">
+                  <el-input
+                    type="text"
+                    class=" w-100"
+                    placeholder="Cash Account"
+                    v-model="filter.cashAccount"
+                  />
+                </div>
 
-                  <div class="col-12 col-md-4 form-group d-none d-md-block">
-                    <input
-                      type="text"
-                      class="input w-100"
-                      placeholder="Income Account"
-                      v-model="filter.incomeAccount"
-                    />
-                  </div>
+                <div class="col-12 col-md-4 form-group d-none d-md-block">
+                  <el-input
+                    type="text"
+                    class=" w-100"
+                    placeholder="Income Account"
+                    v-model="filter.incomeAccount"
+                  />
                 </div>
               </div>
+            </div>
 
-              <div class="col-md-3 d-flex flex-column align-items-center">
-                <button class="apply-btn text-white" @click="applyFilter">
-                  Apply
-                </button>
-                <span class="mt-2">
-                  <a class="clear-link mr-2" @click="clearAll">Clear all</a>
-                  <span class="mx-2"
-                    ><i class="fas fa-circle" style="font-size: 4px"></i></span
-                  ><a class="hide-link ml-2" @click="hide">Hide</a>
-                </span>
-              </div>
+            <div class="col-md-3 d-flex flex-column align-items-center">
+              <el-button round :color="primarycolor" class=" text-white" >
+                Apply
+              </el-button>
+              <span class="mt-2">
+                <a class="clear-link mr-2" @click="clearAll">Clear all</a>
+                <span class="mx-2"
+                  ><i class="fas fa-circle" style="font-size: 4px"></i></span
+                ><a class="hide-link ml-2" @click="hide">Hide</a>
+              </span>
             </div>
           </div>
         </div>
-
-            <div class="container-fluid d-none d-md-block">
-            <div class="row t-header">
-              <!-- <div class="col-12 parent-desc first p-2 pl-4"> -->
-                <div class="col-md-1 px-3"></div>
-                <div class="small-text text-capitalize col-md-3 font-weight-bold">Name</div>
-                <div class="small-text text-capitalize col-md-3 font-weight-bold">Cash Account</div>
-                <div class="small-text text-capitalize col-md-3 font-weight-bold">Income Account</div>
-                <div class="small-text text-capitalize col-md-2 font-weight-bold">Action</div>
-              <!-- </div> -->
+      </div>
+        <Table
+          :data="searchContribution"
+          :headers="offeringItemsHeader"
+          :checkMultipleItem="true"
+          @checkedrow="handleSelectionChange"
+          v-if="searchContribution.length > 0"
+        >
+          <template v-slot:name="{ item }">
+            <div class="c-pointer" @click="contributionItemClick(item.id)">
+              {{ item.name }}
             </div>
-          </div>
-            <div class="row" style="margin:0;">
-            <div
+          </template>
+          <template v-slot:cashaccount="{ item }">
+            <div class="c-pointer" @click="contributionItemClick(item.id)">
+              {{ item.cashBankAccount }}
+            </div>
+          </template>
+          <template v-slot:incomeaccount="{ item }">
+            <div class="c-pointer" @click="contributionItemClick(item.id)" >
+              {{ item.incomeAccount }}
+            </div>
+          </template>
+          <template v-slot:action="{ item }">
+            <el-dropdown trigger="click">
+              <el-icon>
+                <MoreFilled />
+              </el-icon>
+              <template #dropdown>
+                <el-dropdown-menu>
+                  <el-dropdown-item>
+                    <router-link
+                      class="remove-text-decoration text-decoration-none"
+                      :to="{
+                        name: 'OfferingCategory',
+                        params: { offId: item.id },
+                      }"
+                    >
+                      <div class="text-decoration-none text-color">Edit</div>
+                    </router-link>
+                  </el-dropdown-item>
+
+                  <el-dropdown-item>
+                    <div
+                      class="text-decoration-none text-color"
+                      @click="showConfirmModal(item.id, index)"
+                    >
+                      Delete
+                    </div>
+                  </el-dropdown-item>
+                </el-dropdown-menu>
+              </template>
+            </el-dropdown>
+          </template>
+        </Table>
+        <!-- <div
               class="col-12 parent-desc py-2 px-0 c-pointer tr-border-bottom"
               v-for="(item, index) in searchContribution"
               :key="item.id"
@@ -138,7 +206,6 @@
                   <router-link  :to="{ name: 'OfferingCategory', params: { offId: item.id } }" class="desc-head small-text col-md-3 remove-text-decoration">
                     <p class="mb-0 d-flex justify-content-between">
                       <span class="text-dark font-weight-bold d-flex d-md-none">Income Account</span>
-                      <!-- <span>{{ amountWithCommas(Math.abs(item.amount)) }}</span> -->
                       <span>{{ item.incomeAccount}}</span>
                     </p>
                   </router-link>
@@ -146,10 +213,6 @@
 
 
                   <div class="small-text col-md-2">
-                    <!-- <p class="mb-0 d-flex justify-content-between">
-                      <span class="text-dark font-weight-bold d-flex d-md-none">Mark</span>
-                      <span>Marked</span>
-                    </p> -->
                     <div class="action data action-icon">
                       <div class="dropdown">
                         <i
@@ -175,49 +238,44 @@
                     </div>
                   </div>
                 </div>
-              </div>
-            </div>
-            <div class="col-12">
-                    <div class="table-footer">
-                      <Pagination  @getcontent="getPeopleByPage" :itemsCount="offeringCount" :currentPage="currentPage"/>
-                    </div>
-                </div>
+              </div> -->
 
-            <ConfirmDialog />
-            <Toast />
-
-          </div>
-
+      <div class="col-12">
+        <!-- <div class="table-footer">
+          <Pagination
+            @getcontent="getPeopleByPage"
+            :itemsCount="offeringCount"
+            :currentPage="currentPage"
+          />
+        </div> -->
+      </div>
     </div>
-
+  </div>
 </template>
 
 <script>
-import { ref, computed } from "vue";
+import { ref, inject, computed } from "vue";
 import axios from "@/gateway/backendapi";
-// import { useStore } from 'vuex'
-// import { store } from "../../../store/store"
+import store from "../../../store/store"
 import Pagination from "../../../components/pagination/PaginationButtons";
-// import { useRoute } from "vue-router";
 import moment from "moment";
-import { useConfirm } from "primevue/useConfirm";
-import { useToast } from "primevue/usetoast";
-import finish from '../../../services/progressbar/progress'
+import Table from "@/components/table/Table";
+import { ElMessage, ElMessageBox } from 'element-plus'
+import finish from "../../../services/progressbar/progress";
 
 export default {
   props: ["contributionItems"],
   components: {
-    // ByGenderChart,
-    // ByMaritalStatusChart,
+    Table,
     Pagination,
   },
 
   setup(props, { emit }) {
     const searchIsVisible = ref(false);
-    // const filterResult = ref([]);
-    // const noRecords = ref(false);
+    const primarycolor = inject('primarycolor')
+    const marked = ref([]);
     const searchText = ref("");
-    const filter = ref({})
+    const filter = ref({});
     const filterFormIsVissible = ref(false);
     const toggleFilterFormVissibility = () =>
       (filterFormIsVissible.value = !filterFormIsVissible.value);
@@ -226,12 +284,38 @@ export default {
       searchIsVisible.value = !searchIsVisible.value;
     };
 
+    const searchContributionInDB = () => {
+      if (searchText.value !== "" && props.contributionItems.length > 0) {
+        return props.contributionItems.filter((i) => {
+          if (i.name)
+            return i.name
+              .toLowerCase()
+              .includes(searchText.value.toLowerCase());
+        });
+      } else {
+        return props.contributionItems;
+      }
+    };
+
+    const contributionItemClick = (id) => {
+      router.push(`/tenant/offeringcategory/${id}`);
+    };
+
+    const handleSelectionChange = (val) => {
+      marked.value = val;
+    };
+
+    const offeringItemsHeader = ref([
+      { name: "NAME", value: "name" },
+      { name: "CASH ACCOUNT", value: "cashaccount" },
+      { name: "INCOME ACCOUNT", value: "incomeaccount" },
+      { name: "ACTION", value: "action" },
+    ]);
+
     const searchContribution = computed(() => {
       if (searchText.value !== "") {
         return props.contributionItems.filter((i) => {
-          return i.name
-            .toLowerCase()
-            .includes(searchText.value.toLowerCase());
+          return i.name.toLowerCase().includes(searchText.value.toLowerCase());
         });
       } else {
         return props.contributionItems;
@@ -239,63 +323,60 @@ export default {
     });
 
     const deleteOffering = (id, index) => {
-
       axios
         .delete(`/api/Financials/Contributions/Delete?ID=${id}`)
         .then((res) => {
-          console.log(res);
           if (res.data.status) {
-            toast.add({
-            severity: "success",
-            summary: "Delete Successful",
-            detail: `${res.data.response}`,
-            life: 3000,
-          });
-          emit('contri-items', index)
+            ElMessage({
+              type: 'success',
+              showClose: true,
+              message: `${res.data.response}`,
+              duration: 5000
+            })
+            store.dispatch("contributions/removeContributionItemFromStore", id);
+            emit("contri-items", index);
           } else {
-            toast.add({
-            severity: "warn",
-            summary: "Delete Failed",
-            detail: `${res.data.response}`,
-            life: 3000,
-          });
+            ElMessage({
+              type: 'warning',
+              showClose: true,
+              message: `${res.data.response}`,
+              duration: 5000
+            })
           }
         })
         .catch((err) => {
-          finish()
+          finish();
           if (err.response) {
-            toast.add({
-              severity: "error",
-              summary: "Unable to delete",
-              detail: `${err.response}`,
-              life: 3000,
-            });
+            ElMessage({
+              type: 'error',
+              showClose: true,
+              message: `${res.response}`,
+              duration: 5000
+            })
           }
         });
     };
 
-    const confirm = useConfirm();
-    let toast = useToast();
     const showConfirmModal = (id, index) => {
-      confirm.require({
-        message: "Are you sure you want to proceed?",
-        header: "Confirmation",
-        icon: "pi pi-exclamation-triangle",
-        acceptClass: "confirm-delete",
-        rejectClass: "cancel-delete",
-        accept: () => {
+      ElMessageBox.confirm(
+        "Are you sure you want to proceed?",
+        "Confirm delete",
+        {
+          confirmButtonText: "OK",
+          cancelButtonText: "Cancel",
+          type: "error",
+        }
+      )
+        .then(() => {
           deleteOffering(id, index);
-          // toast.add({severity:'info', summary:'Confirmed', detail:'Member Deleted', life: 3000});
-        },
-        reject: () => {
-          toast.add({
-            severity: "info",
-            summary: "Rejected",
-            detail: "You have rejected",
-            life: 3000,
+        })
+        .catch(() => {
+          ElMessage({
+            type: "info",
+            message: "Delete canceled",
+            duration: 5000,
           });
-        },
-      });
+        });
     };
     const currentPage = ref(1);
 
@@ -305,11 +386,7 @@ export default {
         const { data } = await axios.get(
           `/api/people/getPaginatedFirstTimer?page=${page}`
         );
-        // filterResult.value = [ ];
-        // searchMember.value = [ ];
-        // noRecords.value = false;
-        // props.contributionTransactions = data;
-        emit('get-pages', data)
+        emit("get-pages", data);
         currentPage.value = page;
       } catch (error) {
         console.log(error);
@@ -317,40 +394,42 @@ export default {
     };
 
     const offeringCount = computed(() => {
-      if (props.contributionItems.length > 100) return Math.ceil(props.contributionItems.length / 100);
+      if (props.contributionItems.length > 100)
+        return Math.ceil(props.contributionItems.length / 100);
       return 1;
-    })
+    });
 
     const clearAll = () => {
-      filter.value = {}
-    }
+      filter.value = {};
+    };
 
     const hide = () => {
-      filterFormIsVissible.value = false
-    }
-
+      filterFormIsVissible.value = false;
+    };
 
     return {
-      // contributionTransactions,
+      offeringItemsHeader,
+      primarycolor,
+      searchContributionInDB,
+      contributionItemClick,
       deleteOffering,
       filterFormIsVissible,
       toggleFilterFormVissibility,
       moment,
+      marked,
       clearAll,
       // applyFilter,
       filter,
       toggleSearch,
       searchIsVisible,
-      // filterResult,
-      // noRecords,
       searchText,
       searchContribution,
+      handleSelectionChange,
       showConfirmModal,
-      // deleteMember,
       offeringCount,
       currentPage,
       getPeopleByPage,
-      hide
+      hide,
     };
   },
 };
@@ -362,8 +441,8 @@ export default {
   color: #02172e;
 }
 
-.remove-text-decoration{
-text-decoration: none;
+.remove-text-decoration {
+  text-decoration: none;
 }
 
 .data-value a {
@@ -377,12 +456,8 @@ text-decoration: none;
   font-size: 1.7rem;
 }
 
-
-
 .summary {
-  /* width: 20%; */
   border-radius: 30px;
-  /* box-shadow: 0px 3px 6px #2c28281c; */
   padding: 24px 10px;
   background: #fff;
   box-shadow: 0px 3px 6px #2c28281c;
@@ -401,8 +476,6 @@ text-decoration: none;
 .boards {
   display: flex;
 }
-
-
 
 .board-top {
   display: flex;
@@ -468,9 +541,12 @@ text-decoration: none;
 }
 
 .filter-options-shown {
-  height: 120px !important;
+  height: 80px !important;
   overflow: hidden;
   transition: all 0.5s ease-in-out;
+  background: #ffffff;
+  border-right: 1px solid #E0E0E0;
+  border-left: 1px solid #E0E0E0;
 }
 
 .clear-link,
@@ -481,8 +557,11 @@ text-decoration: none;
 .table-top {
   font-weight: 800;
   font-size: 12px;
+  background: #fff;
+  border: 1px solid #e0e0e0;
+  border-bottom: none;
+  justify-content: flex-end;
   display: flex;
-  justify-content: flex-end
 }
 
 .table-top label:hover,
@@ -496,9 +575,8 @@ text-decoration: none;
   }
 }
 
-
 .header {
-  background: #DDE2E6 0% 0% no-repeat padding-box;
+  background: #dde2e6 0% 0% no-repeat padding-box;
   font: normal normal bold 13px/13px Nunito Sans;
   letter-spacing: 0px;
   color: #002044;
@@ -508,7 +586,7 @@ text-decoration: none;
   color: #8898aa;
   font-size: 11px;
   box-shadow: 0px 3px 6px #2c28281c;
-  background: #DDE2E6 0% 0% no-repeat padding-box;
+  background: #dde2e6 0% 0% no-repeat padding-box;
 }
 
 .select-all input {
@@ -516,11 +594,11 @@ text-decoration: none;
 }
 
 .currency {
-  background: #DDE2E6 0% 0% no-repeat padding-box;
-  border: 1px solid #C5D9F2;
+  background: #dde2e6 0% 0% no-repeat padding-box;
+  border: 1px solid #c5d9f2;
   border-radius: 5px;
   letter-spacing: 0px;
-  color: #1C252C;
+  color: #1c252c;
   padding: 5px;
 }
 
@@ -569,13 +647,9 @@ text-decoration: none;
   border-radius: 10px;
 }
 
-
-
 .board.members-count {
   padding: 24px;
 }
-
-
 
 .no-record {
   color: rgba(184, 5, 5, 0.726);
@@ -591,17 +665,15 @@ text-decoration: none;
   color: #136acd;
 }
 
-
- @media (max-width: 767px) {
-
-   .first-timers-text {
+@media (max-width: 767px) {
+  .first-timers-text {
     text-align: center;
   }
   .head-button {
     display: flex;
-    justify-content: center
+    justify-content: center;
   }
- }
+}
 
 @media screen and (max-width: 500px) {
   .board {
@@ -634,7 +706,7 @@ text-decoration: none;
   }
 
   .add-btn {
-    margin-top: 10px
+    margin-top: 10px;
   }
 }
 
@@ -650,8 +722,6 @@ text-decoration: none;
   .more {
     margin-top: 10px;
   } */
-
-
 }
 
 @media screen and (min-width: 501px) and (max-width: 768px) {
@@ -731,17 +801,15 @@ text-decoration: none;
 }
 
 .table-header {
-    padding: 12px;
-    color: black;
-    box-shadow: none;
-    font-size: 16px;
+  padding: 12px;
+  color: black;
+  box-shadow: none;
+  font-size: 16px;
 }
 
 .table-body {
-    padding: 12px;
-    border-bottom: 1.5px solid #6d6d6d19
-
-
+  padding: 12px;
+  border-bottom: 1.5px solid #6d6d6d19;
 }
 
 .itemroute-color {
@@ -752,11 +820,10 @@ text-decoration: none;
   text-decoration: none;
 }
 
-
 .t-header {
   background: #dde2e6 0% 0% no-repeat padding-box;
   font-size: 16px;
-  padding: .5rem 0;
+  padding: 0.5rem 0;
 }
 </style>
 

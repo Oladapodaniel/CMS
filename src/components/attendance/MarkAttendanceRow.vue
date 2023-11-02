@@ -3,7 +3,7 @@
     <div class="row over-con">
       <div class="col-md-12">
         <div class="row py-2 tb-row" :class="{ 'kiosk-tb-size': isKioskMode }">
-          <div class="col-md-3" :class="{ 'order-3': isKioskMode }">
+          <div class="col-md-2" :class="{ 'order-3': isKioskMode }">
             <span class="d-flex justify-content-between">
               <span class="hidden-header hide font-weight-700">Name</span>
               <span
@@ -11,7 +11,7 @@
               >
             </span>
           </div>
-          <div class="col-md-3" :class="{ 'order-4': isKioskMode }">
+          <div class="col-md-2" :class="{ 'order-4': isKioskMode }">
             <span class="d-flex justify-content-between">
               <span class="hidden-header hide font-weight-700"
                 >Phone Number</span
@@ -31,21 +31,8 @@
             <span class="d-flex justify-content-between">
               <span class="hidden-header hide font-weight-700">Check in</span>
               <span>
-                <!-- <Checkbox
-                  id="binary"
-                  :value="person.isPresent"
-                  @change="checkin"
-                  :binary="true"
-                /> -->
-                <input
-                  type="checkbox"
-                  name=""
-                  class="custom-checkbox"
-                  :checked="person.isPresent"
-                  id=""
-                  @change="checkin($event, 1)"
-                  :disabled="checking"
-                />
+                 <el-checkbox class="custom-checkbox"  :checked="person.isPresent" @change="checkin($event, 1)"
+                  :disabled="checking"  />
               </span>
             </span>
           </div>
@@ -73,15 +60,21 @@
                   id="binary"
                   :value="person.isCheckedOut"
                   :binary="true"/> -->
-                <input
-                  type="checkbox"
-                  name=""
-                  class="custom-checkbox"
-                  id=""
-                  :checked="person.isCheckedOut"
-                  @change="checkin($event, 2)"
-                  :disabled="checking"
-                />
+                  <el-checkbox class="custom-checkbox"  :checked="person.isCheckedOut" @change="checkin($event, 2)"
+                  :disabled="checking"  />
+              </span>
+            </span>
+          </div>
+          <div class="col-md-2" :class="{ 'd-none': isKioskMode }">
+            <span class="d-flex justify-content-between">
+              <span class="hidden-header hide font-weight-700">Action</span>
+              <span>
+                <div
+                      class="text-decoration-none"
+                      @click="showConfirmModal(person)"
+                    >
+                     <el-icon class="text-danger" ><Delete /></el-icon>
+                    </div>
               </span>
             </span>
           </div>
@@ -89,20 +82,14 @@
 
         <div class="row">
           <div class="col-md-12">
-            <Dialog
-              header="Print Tag"
-              v-model:visible="display"
-              :style="{ width: '70vw', maxWidth: '600px' }"
-              :modal="true"
-              position="top"
-            >
+            <el-dialog v-model="display" title="Print Tag"
+              :width="mdAndUp || lgAndUp || xlAndUp ? `50%` : `90%`">
               <div class="row">
-                <div class="col-md-12">
+                <div class="col-md-8">
                   <MemberTag />
                 </div>
               </div>
-            </Dialog>
-            <Toast />
+            </el-dialog>
           </div>
         </div>
       </div>
@@ -113,8 +100,11 @@
 <script>
 import { ref } from "vue";
 import MemberTag from "../../views/event/attendance&checkin/AttendanceTag";
+import axios from "@/gateway/backendapi";
 import attendanceservice from "../../services/attendance/attendanceservice";
-import { useToast } from "primevue/usetoast";
+import finish from "../../services/progressbar/progress";
+import deviceBreakpoint from "../../mixins/deviceBreakpoint";
+import { ElMessage, ElMessageBox } from 'element-plus'
 
 export default {
   props: ["isKioskMode", "person"],
@@ -123,10 +113,11 @@ export default {
     const checkedIn = ref(false);
     const checkedOut = ref(false);
     const display = ref(false);
-    const toast = useToast();
     const checking = ref(false);
+    const { mdAndUp, lgAndUp, xlAndUp, xsOnly } = deviceBreakpoint()
 
     const checkin = async (e, option) => {
+      console.log(option, "hhjjjjj");
       let response = {};
       if (option === 1) {
         try {
@@ -138,20 +129,22 @@ export default {
             value: !props.person.isPresent,
             id: props.person.id,
           });
-          toast.add({
-            severity: `${e.target.checked ? "success" : "info"}`,
-            summary: `${
-              e.target.checked ? "Checked" : "Unchecked"
-            } Successfully`,
-            detail: `Member marked ${e.target.checked ? "present" : "absent"}`,
-            life: 3000,
+
+          ElMessage({
+            type: `${e ? "success" : "info"}`,
+            message: `${ e ? "Checked" : "Unchecked" } Successfully`,
+            duration: 5000,
+          });
+          ElMessage({
+            type: `${e ? "success" : "info"}`,
+            message: `Member marked ${e ? "present" : "absent"}`,
+            duration: 5000,
           });
         } catch (error) {
-          toast.add({
-            severity: "error",
-            summary: "Checkin Error",
-            detail: "Checkin was not successful",
-            life: 3000,
+          ElMessage({
+            type: "error",
+            message: "Checkin was not successful",
+            duration: 5000,
           });
           emit("togglecheckin", {
             value: props.person.isPresent,
@@ -168,12 +161,10 @@ export default {
           checking.value = false;
 
           if (response.trim() === "User Was Not Checked In Earlier") {
-            console.log(response, "RESPE");
-            toast.add({
-              severity: "info",
-              summary: "Checkin Error",
-              detail: response,
-              life: 3000,
+             ElMessage({
+              type: "info",
+              message: response,
+              duration: 5000,
             });
 
             emit("togglecheckout", { value: false, id: props.person.id });
@@ -182,23 +173,19 @@ export default {
               value: !props.person.isCheckedOut,
               id: props.person.id,
             });
-            toast.add({
-              severity: `${e.target.checked ? "success" : "info"}`,
-              summary: "Checkin Successful",
-              detail: `Member has ${
-                e.target.checked ? "checked out" : "not checked out"
-              }`,
-              life: 3000,
+            ElMessage({
+              type: `${e ? "success" : "info"}`,
+              message: `${response} , Member has ${ e ? "checked out" : "not checked out" }`,
+              duration: 5000,
             });
           }
         } catch (error) {
           checking.value = false;
-          toast.add({
-            severity: "error",
-            summary: "Checkin Error",
-            detail: "Checkin was not successful",
-            life: 3000,
-          });
+          ElMessage({
+              type: "error",
+              message: "Checkin was not successful",
+              duration: 5000,
+            });
           emit("togglecheckout", {
             value: props.person.isCheckedOut,
             id: props.person.id,
@@ -207,13 +194,76 @@ export default {
       }
       console.log(response, "rrr");
     };
+    const showConfirmModal = (item) => {
+      console.log(item, "nnjnnjnjk");
+       ElMessageBox.confirm(
+        "Are you sure you want to proceed?",
+        "Confirm delete",
+        {
+          confirmButtonText: "OK",
+          cancelButtonText: "Cancel",
+          type: "error",
+        }
+      )
+        .then(() => {
+          deleteCheckinAttendance(item);
+        })
+        .catch(() => {
+          ElMessage({
+            type: "info",
+            message: "Rejected",
+            duration: 5000,
+          });
+        });
+    };
+
+    const deleteCheckinAttendance = (item) => {
+      axios
+        .delete(`/api/CheckInAttendance/DeletePersonEventAttendance?id=${item.id}&checkInAttendanceId=${item.attendanceID}`)
+        .then((res) => {
+          if (res.data) {
+            ElMessage({
+                type: "success",
+                message: "CheckInAttendance Deleted",
+                duration: 5000,
+              });
+              // props.person.filter((i) => i.id !== item.id);
+            emit("attendancepersonid", item.id);
+          } else {
+            ElMessage({
+                type: "warning",
+                message: "Delete Failed, Please Try Again",
+                duration: 5000,
+              });
+          }
+        })
+        .catch((err) => {
+          console.log(err)
+          finish();
+          // if (err.response)
+          //  {
+            ElMessage({
+                type: "error",
+                message:  "Delete Failed, Please Try Again",
+                duration: 5000,
+              });
+          // }
+        });
+    };
 
     const checkout = () => {
       console.log(checkedOut.value, "checked in");
     };
 
+
     return {
       checkedIn,
+      deleteCheckinAttendance,
+      showConfirmModal,
+      mdAndUp, 
+      lgAndUp, 
+      xlAndUp, 
+      xsOnly,
       checkin,
       checkedOut,
       checkout,
@@ -225,10 +275,10 @@ export default {
 </script>
 
 <style scoped>
-* {
+/* * {
   color: #02172e;
-  /* font-family: Nunito Sans !important; */
-}
+  font-family: Nunito Sans !important;
+} */
 
 .hide {
   display: none !important;
@@ -290,7 +340,7 @@ export default {
 }
 
 .custom-checkbox {
-  border: 2px solid red !important;
+  /* border: 2px solid red !important; */
   background: #ffffff;
   width: 20px !important;
   height: 20px;

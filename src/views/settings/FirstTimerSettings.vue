@@ -24,20 +24,21 @@
                 <div class="col-md-12 py-5 grey-background">
                   <div class="row d-md-flex justify-content-around">
                     <div class="col-md-7">
-                      <input
+                      <el-input
                         type="text"
-                        class="form-control"
+                        class="w-100"
                         placeholder="Add Your New Guest Life Cycle"
                         v-model="firstTimerTypes"
+                        size="large"
                       />
                     </div>
                     <div class="col-md-3 justify-content-end">
-                      <button class="btn primary-btn text-white px-md-5 px-4 py-1 bold  mt-sm-3 mt-lg-0 mt-xl-0 mt-md-0 mt-3" @click="saveFirstTimer">Save</button>
+                      <el-button round size="large" :color="primarycolor" class=" font-weight-bold primary-btn text-white px-md-4 px-3 py-1 bold  mt-sm-3 mt-lg-0 mt-xl-0 mt-md-0 mt-3" @click="saveFirstTimer">Save</el-button>
                     </div>
                   </div>
                   <div class="row mt-2 d-flex justify-content-around">
                     <div class="col-md-7">
-                    <Checkbox v-model="isDefault" :binary="true" />
+                    <el-checkbox v-model="isDefault" :binary="true" />
                     <span class="ml-4 mt-2">Mark As Default</span>
                       
                     </div>
@@ -51,7 +52,7 @@
               </div>
             </div>
           </div>
-          <span>You can re-arrange your New Guest Life Cycle by dragging to the position you desired </span>
+          <!-- <span>You can re-arrange your New Guest Life Cycle by dragging to the position you desired </span> -->
 
 
           <div class="row table-header-row py-2 mt-5">
@@ -64,64 +65,50 @@
            
           </div>
          
-          <div class="row table-header-row py-2 mt-5">
+          <div class="row ">
             <div class=" col-12 text-center p-5" v-if="loading">
-             <i class="pi pi-spin pi-spinner text-center text-primary" style="fontSize: 3rem"></i>
-         </div>
-            
+                <i class="pi pi-spin pi-spinner text-center text-primary" style="fontSize: 3rem"></i>
+            </div>
           </div>
-          <!-- test -->
-          <draggable
-        :list="firstTimerData"
-        :disabled="!enabled"
-        tag="transition"
-        item-key="name"
-        class="list-group"
-        ghost-class="ghost"
-        :move="checkMove"
-        @start="dragging = true"
-        @end="dragging = false"
-      >
-        <template #item="{ element }">
-          <div class="list-group-item" :class="{ 'not-draggable': !enabled }" @drop="handleDrop"> 
+          <div class="list-group-item list-group row" v-for="(firstTimer, indx) in firstTimerData" :key="indx" @drop="handleDrop"> 
             <div class="col-md-12">
               <div class="row">   
                 <div
-                   class="col-md-7 px-md-0 px-5 d-flex justify-content-between align-items-center mb-md-0 mb-5"
+                   class="col-md-7 px-0  d-flex justify-content-between align-items-center mb-md-0 mb-5"
                 >
                   <span class="py-2 hidden-header">NAME</span>
                    
-                  <span  class="py-2 text-xs-left mr-md-0 ml-md-3 mr-4">{{ element.name }}</span>
+                  <span  class="py-2 text-xs-left mr-md-0 ml-md-3 mr-4">{{ firstTimer.name }}</span>
                   
                 </div>
                   
                 
                 <div
-                  class="col-md-5 mb-md-0 mb-2 col-12 d-flex justify-md-content-end justify-content-start align-items-end"
+                  class="col-md-5 px-0 mb-md-0 mb-2 col-12 d-flex justify-content-end align-items-end"
                 >
                   <span class="py-md-4 hidden-header hidden-header1">ACTION</span>
                   <div class="row">
                     <div class="col-md-6 col-6 d-flex justify-content-center">
-                      <button class="btn secondary-btn py-1 px-4" @click="openClassification(element.index)">View</button>
+                      <el-button round  color="#EBEFF4" class="secondary-btn py-1 px-4" @click="openClassification(firstTimer.index)">View</el-button>
                     </div>
                     <div class="col-md-6 col-6 d-flex justify-content-start">
-                      <button class="btn btn-danger py-1 primary-btn delete-btn" @click="deletePop(element.id)" >Delete</button>
+                      <el-button round class=" btn-danger py-1 primary-btn delete-btn" @click="deletePop(firstTimer.id)" >Delete</el-button>
                     </div>
                   </div>
                 </div>
               </div>
 
-              <div class="row grey-background py-2 mt-2" v-if="vissibleTab === `tab_${element.index}`">
+              <div class="row grey-background py-2 mt-2" v-if="vissibleTab === `tab_${firstTimer.index}`">
                 <div
                   class="col-md-7 d-flex justify-content-between align-items-center mb-md-0 mb-2"
                 >
                   <label for="" class="d-flex mt-4">
                     <span class="mr-2">Name</span>
-                    <input type="text" class="form-control" v-model="element.name">
+                    <el-input  type="text" class="w-100" v-model="firstTimer.name" />
                   </label>
                   <label for="" class="d-flex mt-4">
                     <span class="mr-2">Mark As Default</span>
-                    <Checkbox v-model="element.isDefault" :binary="true" />
+                    <el-checkbox v-model="firstTimer.isDefault" :binary="true" />
                   </label>
                 </div>
                 <div
@@ -129,19 +116,16 @@
                 >
                   <div class="row">
                     <div class="col-md-6 col-6 d-flex justify-content-start">
-                      <button class="btn primary-btn save-btn py-1 px-4 ml-md-0 ml-5" @click="updateFirstTimer(element, element.index)">Save</button>
+                      <el-button round class=" primary-btn text-white save-btn py-1 px-4 ml-md-0 ml-5" @click="updateFirstTimer(firstTimer, firstTimer.index)">Save</el-button>
                     </div>
                     <div class="col-md-6 col-6 d-flex justify-content-end">
-                      <button class="btn secondary-btn py-1 px-3" @click="discard">Discard</button>
+                      <el-button round  color="#EBEFF4" class=" secondary-btn py-1 px-3" @click="discard">Discard</el-button>
                     </div>
                   </div>
                 </div>
               </div>
             </div>
           </div>
-        </template>
-        
-      </draggable>
         </div>
       </div>
     </div>
@@ -150,27 +134,23 @@
 
 <script>
 import axios from "@/gateway/backendapi";
-import Toast from 'primevue/toast';
-import ConfirmDialog from 'primevue/confirmdialog';
+import { ElMessage, ElMessageBox } from 'element-plus';
 import Checkbox from 'primevue/checkbox';
 import membershipService from '../../services/membership/membershipservice';
 import finish from '../../services/progressbar/progress';
-import draggable from 'vuedraggable';
 import Tooltip from 'primevue/tooltip';
 
 export default {
    name: "simple",
   display: "Simple",
   components:{
-    Toast,
-    ConfirmDialog,
-    draggable,
     Checkbox
 
   },
   directives: {
     'tooltip': Tooltip
 },
+inject: ['primarycolor'],
   data() {
     return {
       firstTimerData: [ ],
@@ -214,7 +194,11 @@ export default {
      const response = await axios.put('/firsttimercycle/orderstages', ordered);
       console.log(response)
        this.loading = false
-      this.$toast.add({severity:'success', summary: '', detail:' New Guest Life Cycle Order Updated Successfully', life: 3000});  
+       ElMessage({
+              type: 'success',
+              message: 'New Guest Life Cycle Order Updated Successfully',
+              duration: 5000
+            })
       console.log(ordered, "ORDERED");
       
       }, 1000)
@@ -236,7 +220,11 @@ export default {
         this.getFirstTimerCyles()
         this.firstTimerTypes = ""
         this.isDefault = false
-         this.$toast.add({severity:'success', summary: '', detail:'New Guest Life Cycle Save Successfully', life: 3000});
+        ElMessage({
+              type: 'success',
+              message: 'New Guest Life Cycle Save Successfully',
+              duration: 5000
+            })
       }catch(error){
         finish()
         console.log(error)
@@ -247,9 +235,13 @@ export default {
       try{
         console.log(item, "item")
         await axios.put(`/firsttimercycle/${item.id}/edit`, {...item, name : item.name, isDefault: item.isDefault});
-        // this.firstTimerData[index].name = item.name
         this.discard()
-        this.$toast.add({severity:'success', summary: '', detail:'New Guest Life Cycle Updated Successfully', life: 3000});
+         ElMessage({
+              type: 'success',
+              message: 'New Guest Life Cycle Updated Successfully',
+              duration: 5000
+            })
+
       }catch (error){
         finish()
         console.log(error)
@@ -262,7 +254,11 @@ export default {
         let data = await axios.delete(`/firsttimercycle/${id}/delete`);
         console.log(data)
         this.firstTimerData = this.firstTimerData.filter(i => i.id !== id);
-         this.$toast.add({severity:'success', summary: '', detail:'Delete Successfully', life: 3000});
+        ElMessage({
+              type: 'success',
+              message: 'Delete Successfully',
+              duration: 5000
+            })
       } catch (error){
         finish()
         console.log(error);
@@ -270,20 +266,25 @@ export default {
     },
     //pop Alert
       deletePop(id) {
-            this.$confirm.require({
-                message: 'Are you sure you want to Delete?',
-                header: 'Delete Confirmation',
-                icon: 'pi pi-exclamation-circle',
-                acceptClass: 'confirm-delete',
-                rejectClass: 'cancel-delete',
-                accept: () => {
-                  this.deleteFirstTimer(id)
-                    //callback to execute when user confirms the action
-                },
-                reject: () => {
-                    'No internet'
-                }
-            });
+         ElMessageBox.confirm(
+        'Are you sure you want to Delete?',
+        'Confirm delete',
+        {
+          confirmButtonText: 'OK',
+          cancelButtonText: 'Cancel',
+          type: 'error',
+        }
+      )
+      .then(() => {
+          this.deleteFirstTimer(id)
+        })
+        .catch(() => {
+          ElMessage({
+            type: 'info',
+            message: 'Delete canceled',
+            duration: 5000
+          })
+        })
         },
 
 
@@ -328,9 +329,9 @@ export default {
 .list-group {
   min-height: 20px;
 }
-.list-group-item {
+/* .list-group-item {
   cursor: move;
-}
+} */
 .list-group-item i {
   cursor: pointer;
 }

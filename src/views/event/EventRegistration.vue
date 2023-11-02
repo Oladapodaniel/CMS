@@ -1,337 +1,689 @@
 
 <template>
-  <div
-    class="container-slim p-3 mb-5 mt-5"
-  >
-    <div class="row mt-2">
-      <div class="col-md-6 offset-md-3 mb-3"></div>
-    </div>
+  <div class="container-fluid">
     <div class="row">
-      <div class="col-12 col-sm-5 offset-sm-4 p-0">
-        <img :src="bannerUrl" class="w-100">
-      </div>
-    </div>
-
-    <!-- top Address -->
-    <div class="row mt-5">
-      <div
-        class="col-md-3 d-md-flex align-items-center justify-content-end text-md-right mt-1 font-weight-700"
-      ></div>
-      <div class="col-md-7 mb-3 text-center">
-        <span class="font-weight-bold" style="font-size: 1.2em">
-          {{ eventData.name }}
-        </span>
-        <span v-if="fullEventData.registrationAmount"> - {{ tenantCurrency }} {{ fullEventData.registrationAmount }}</span>
-        <div class="">Event Registration</div>
-        <div class="italicize">{{ eventData.date }}</div>
-      </div>
-    </div>
-
-    <!--end top Address -->
-
-    <!-- top area -->
-    <div class="row">
-      <div class="col-md-3"></div>
-      <div class="col-md-7">
-        <p
-          class="font-weight-600 text-center primary-text"
-          v-if="person.personId && loaded && !showLoading"
+      <div class="col-md-6">
+        <!-- top Address -->
+        <div
+          class="row vh-100 justify-content-center align-items-md-center align-items-start"
         >
-          Your details were found, please confirm to register.
-        </p>
-        <p
-          class="font-weight-600 text-center primary-text"
-          v-if="!person.personId && !showLoading && loaded && !fetchingFailed"
-        >
-          Please fill the form and confirm the registration
-        </p>
-        <!-- v-if="autosearch && !person.name" -->
-      </div>
-    </div>
-
-    <div class="row">
-      <div
-        class="col-md-3 d-md-flex align-items-center justify-content-end text-md-right mt-1 font-weight-700"
-      >
-        <label for="">Phone Number</label>
-      </div>
-      <div class="col-md-7">
-        <span class="p-input-icon-left w-100">
-          <i class="pi pi-phone icon" />
-          <InputText
-            @blur="checkCharacter"
-            class="w-100"
-            type="text"
-            v-model="enteredValue"
-            aria-required=""
-            placeholder="Enter your phone number"
-          />
-        </span>
-        <!-- v-if="autosearch && !person.name" -->
-      </div>
-      <div class="col-3 offset-3 offset-sm-4 offset-md-5 mt-4" v-if="!names">
-        <div class="default-btn primary-bg text-white border-0 text-center c-pointer">Register</div>
-      </div>
-    </div>
-    <div class="row mb-4">
-      <div class="col-md-3"></div>
-      <div class="col-md-5 offset-1">
-        <div class="loading-div my-5" v-if="showLoading">
-          <i
-            class="pi pi-spin pi-spinner loading-indicator"
-            style="fontsize: 2rem"
-          ></i>
-          <p>Fetching your details...</p>
-        </div>
-        <!-- v-if="autosearch && !person.name" -->
-      </div>
-    </div>
-    <!-- end of top area -->
-
-    <!--start of top area button -->
-    <div class="row" :class="{ 'mb-4': showLoading }" v-if="false">
-      <div class="col-md-3 text-md-right"></div>
-      <div
-        class="col-md-5 text-center col-sm-2"
-        :class="{ 'mt-4': showLoading }"
-      >
-        <p
-          class="text-danger"
-          v-if="showNoPhoneError"
-          :class="{ 'my-1': showLoading }"
-        >
-          Please enter your phone number
-        </p>
-        <button
-          class="default-btn add-btn"
-          @click="checkCharacter"
-          ref="submitBtn"
-          v-if="!appltoggle && !showLoading"
-        >
-          <!-- <i class="fas fa-circle-notch fa-spin" v-if="loading"></i> -->
-          Submit
-        </button>
-      </div>
-    </div>
-    <!--end of top area button -->
-
-    <!-- start of bottom area -->
-    <div class="row" v-if="appltoggle && !showLoading">
-      <div class="col-md-12">
-        <div class="row mt-n2 my-2">
-          <div
-            class="col-md-3 d-md-flex align-items-center justify-content-end text-md-right mt-2 font-weight-700"
-          >
-            <label for="">Name</label>
-          </div>
-          <div class="col-md-7">
-            <span class="p-input-icon-left w-100">
-              <i class="pi pi-users icon" />
-              <InputText
-                class="w-100"
-                placeholder="Name"
-                type="text"
-                aria-required=""
-                v-model="person.name"
-                :disabled="disabled"
-              />
-            </span>
-          </div>
-        </div>
-
-        <div class="row">
-          <div
-            class="col-md-3 d-md-flex align-items-center justify-content-end text-md-right mt-2 font-weight-700"
-          >
-            <label for="">Email</label>
-          </div>
-          <div class="col-md-7">
-            <span class="p-input-icon-left w-100 my-md-3">
-              <i class="pi pi-envelope icon" />
-              <InputText
-                class="w-100"
-                placeholder="Email"
-                type="text"
-                aria-required=""
-                v-model="person.email"
-                :disabled="person.personId && person.email"
-              />
-            </span>
-          </div>
-        </div>
-
-        <div class="row my-2">
-          <div
-            class="col-md-3 d-md-flex align-items-center justify-content-end text-md-right mt-2 font-weight-700"
-          >
-            <label for="">Chapter / Sex</label>
-          </div>
-          <div class="col-md-7">
-            <span class="p-input-icon-left w-100">
-              <i class="pi pi-map-marker icon" />
-              <InputText
-                class="w-100 border"
-                placeholder="Chapter / Sex"
-                type="text"
-                aria-required=""
-                v-model="person.address"
-                :disabled="personHasAddress"
-              />
-            </span>
-            <p
-              class="font-weight-7 small-text text-danger mb-0"
-              v-if="person.personId && !person.address"
+          <div class="col-md-12">
+            <div
+              class="row eventpictbg justify-content-center d-block d-md-none"
             >
-              school is required
-            </p>
-          </div>
-        </div>
-
-        <div class="row my-3" v-if="!personData.dayOfBirth && personData.monthOfBirth">
-          <div
-            class="col-md-3 d-md-flex align-items-center justify-content-end text-md-right mt-2 font-weight-700"
-          >
-            <label for="">Birthday</label>
-          </div>
-          <div class="col-md-7">
-            <div class="row">
-              <div class="col-6">
-                <Dropdown
-                  v-model="birthDay"
-                  :options="days"
-                  style="width: 100%"
-                  placeholder="Day"
-                   v-if="!personData.dayOfBirth"
-                />
-              </div>
-              <div class="col-6">
-                <Dropdown
-                  v-model="birthMonth"
-                  :options="months"
-                  style="width: 100%"
-                  placeholder="Month"
-                  
-                />
+              <div class="col-md-12 d-flex justify-content-center mb-4">
+                <img :src="bannerUrl" class="col-10 col-md-12" />
               </div>
             </div>
-          </div>
-        </div>
-        
-        <div class="row">
-          <div class="col-md-8 offset-md-3 mt-3 align-self-center"><Checkbox v-model="displayFamily" :binary="true" /> <span class="ml-3">Do you want to register your family for this event?</span></div>
-        </div>
+            <div class="row mt-3">
+              <div class="col-md-12 mb-3 text-center">
+                <span class="font-weight-bold h4 primary--text">
+                  {{ eventData.name }}
+                </span>
+                <span v-if="fullEventData.registrationAmount">
+                  - {{ tenantCurrency }}
+                  {{ fullEventData.registrationAmount }}</span
+                >
+                <div class="font-weight-bold">Event Registration</div>
+                <div class="italicize">{{ eventData.date }}</div>
+              </div>
+            </div>
 
-        <div class="row mt-4" v-if="displayFamily">
-          <FamilyWards :family="familyWards" :memberRoles="memberRoles" :fullEventData="fullEventData" @newmember="setNewMember" @nofamilynewmember="setMemberDetails"/>
-        </div>
-
-        <div class="row my-2">
-          <div class="col-md-3"></div>
-          <div class="col-md-7 py-4 text-center">
-            <button class="default-btn mr-3" @click="notme">Not Me</button>
-            <button
-              class="default-btn add-btn mt-3 mt-sm-0"
-              @click="confirmToRegister"
-              :disabled="
-                !person.name || person.name.length < 1 || disableClick
+            <div
+              class="row d-flex justify-content-center"
+              v-if="
+                fullEventData.registrationCutOffTime &&
+                new Date().toISOString() >=
+                  new Date(fullEventData.registrationCutOffTime).toISOString()
               "
             >
-              {{ fullEventData.paymentFormId ? 'Make payment to register' : 'Confirm to register' }}
-            </button>
-            <button ref="makePaymentRef" data-toggle="modal" data-target="#PaymentOptionModal" hidden>Toggle modal</button>
+              <img
+                src="../../assets/registration_closed.jpeg"
+                class="event-closed"
+              />
+            </div>
+
+            <!--end top Address -->
+
+            <!-- top area -->
+            <div class="row">
+              <div class="col-md-3"></div>
+              <div class="col-md-7">
+                <p
+                  class="font-weight-600 text-center primary-text"
+                  v-if="person.personId && loaded && !showLoading"
+                >
+                  Your details were found, please confirm to register.
+                </p>
+                <p
+                  class="font-weight-600 text-center primary-text"
+                  v-if="
+                    !person.personId &&
+                    !showLoading &&
+                    loaded &&
+                    !fetchingFailed
+                  "
+                >
+                  Please fill the form and confirm the registration
+                </p>
+              </div>
+            </div>
+
+            <div
+              class="row"
+              v-if="
+                !fullEventData.registrationCutOffTime ||
+                new Date().toISOString() <=
+                  new Date(fullEventData.registrationCutOffTime).toISOString()
+              "
+            >
+              <div
+                class="col-md-3 d-md-flex align-items-center justify-content-end text-md-right mt-1 font-weight-700"
+              >
+                <label for="">Phone Number</label>
+              </div>
+              <div class="col-md-7">
+                <span class="p-input-icon-left w-100">
+                  <!-- <i class="pi pi-phone icon" /> -->
+                  <!-- <input @blur="checkCharacter" @input="CheckXterAfterEleven" class="form-control w-100" type="text"
+                  v-model="enteredValue" aria-required="" placeholder="Enter your phone number" /> -->
+                  <el-input
+                    @blur="checkCharacter"
+                    class="w-100"
+                    type="number"
+                    v-model="enteredValue"
+                    aria-required=""
+                    placeholder="Enter your phone number"
+                  >
+                    <template #prefix>
+                      <el-icon class="el-input__icon">
+                        <PhoneFilled />
+                      </el-icon>
+                    </template>
+                  </el-input>
+                </span>
+                <!-- v-if="autosearch && !person.name" -->
+              </div>
+              <div
+                class="col-3 offset-3 offset-sm-4 offset-md-5 mt-4"
+                v-if="!names"
+              >
+                <el-button
+                  size="large"
+                  round
+                  :color="primarycolor"
+                  class="w-100 text-white border-0 text-center c-pointer"
+                  >Register</el-button
+                >
+              </div>
+            </div>
+
+            <div class="row mb-4">
+              <div class="col-md-3"></div>
+              <div class="col-md-5 offset-1">
+                <div class="loading-div my-5" v-if="showLoading">
+                  <div style="width: 3rem; height: 3rem" role="status">
+                    <el-icon class="is-loading">
+                      <Loading />
+                    </el-icon>
+                  </div>
+                  <p>Fetching your details...</p>
+                </div>
+                <!-- v-if="autosearch && !person.name" -->
+              </div>
+            </div>
+            <!-- end of top area -->
+
+            <!--start of top area button -->
+            <div class="row" :class="{ 'mb-4': showLoading }" v-if="false">
+              <div class="col-md-3 text-md-right"></div>
+              <div
+                class="col-md-5 text-center col-sm-2"
+                :class="{ 'mt-4': showLoading }"
+              >
+                <p
+                  class="text-danger"
+                  v-if="showNoPhoneError"
+                  :class="{ 'my-1': showLoading }"
+                >
+                  Please enter your phone number
+                </p>
+                <el-button
+                  class="default-btn add-btn"
+                  @click="checkCharacter"
+                  ref="submitBtn"
+                  v-if="!appltoggle && !showLoading"
+                  round
+                >
+                  <!-- <i class="fas fa-circle-notch fa-spin" v-if="loading"></i> -->
+                  Submit
+                </el-button>
+              </div>
+            </div>
+            <!--end of top area button -->
+
+            <!-- start of bottom area -->
+            <div class="row" v-if="appltoggle && !showLoading">
+              <div class="col-md-12">
+                <div
+                  class="row"
+                  v-if="
+                    selectedCustomField.find(
+                      (i) => i.toLowerCase() == 'card/checkin number'
+                    )
+                  "
+                >
+                  <div
+                    class="col-md-3 d-md-flex align-items-center justify-content-end text-md-right mt-2 font-weight-700"
+                  >
+                    <label for="">Card number</label>
+                  </div>
+                  <div class="col-md-7">
+                    <el-input
+                      class="w-100 border"
+                      placeholder="Card Number"
+                      type="text"
+                      aria-required=""
+                      v-model="checkinCode"
+                    />
+                  </div>
+                </div>
+
+                <div class="row mt-2 my-2">
+                  <div
+                    class="col-md-3 d-md-flex align-items-center justify-content-end text-md-right mt-2 font-weight-700"
+                  >
+                    <label for="">Name</label>
+                  </div>
+                  <div class="col-md-7">
+                    <span class="p-input-icon-left w-100">
+                      <el-input
+                        class="w-100"
+                        type="text"
+                        v-model="person.name"
+                        aria-required=""
+                        :disabled="disabled"
+                        placeholder="Name"
+                      >
+                        <template #prefix>
+                          <el-icon class="el-input__icon">
+                            <User />
+                          </el-icon>
+                        </template>
+                      </el-input>
+                    </span>
+                  </div>
+                </div>
+                <div class="row">
+                  <div
+                    class="col-md-3 d-md-flex align-items-center justify-content-end text-md-right mt-2 font-weight-700"
+                  >
+                    <label for="">Email</label>
+                  </div>
+                  <div class="col-md-7">
+                    <span class="p-input-icon-left w-100 my-md-3">
+                      <el-input
+                        class="w-100"
+                        type="text"
+                        v-model="person.email"
+                        aria-required=""
+                        :disabled="
+                          (person.personId && personData.email) ||
+                          (personData.email !== '' && personData.email !== null)
+                        "
+                        placeholder="Email"
+                      >
+                        <template #prefix>
+                          <el-icon class="el-input__icon">
+                            <Message />
+                          </el-icon>
+                        </template>
+                      </el-input>
+                    </span>
+                  </div>
+                </div>
+
+                <div
+                  class="row my-2"
+                  v-if="
+                    selectedCustomField.find(
+                      (i) => i.toLowerCase() == 'address'
+                    )
+                  "
+                >
+                  <div
+                    class="col-md-3 d-md-flex align-items-center justify-content-end text-md-right mt-2 font-weight-700"
+                  >
+                    <label for="">Address</label>
+                  </div>
+                  <div class="col-md-7">
+                    <span class="p-input-icon-left w-100">
+                      <el-input
+                        class="w-100 border"
+                        type="text"
+                        v-model="person.address"
+                        aria-required=""
+                        :disabled="personHasAddress"
+                        placeholder="Address"
+                      >
+                        <template #prefix>
+                          <el-icon class="el-input__icon">
+                            <Location />
+                          </el-icon>
+                        </template>
+                      </el-input>
+                    </span>
+                  </div>
+                </div>
+
+                <div
+                  class="row my-3"
+                  v-if="
+                    selectedCustomField.find(
+                      (i) => i.toLowerCase() == 'birthday'
+                    )
+                  "
+                >
+                  <div
+                    class="col-md-3 d-md-flex align-items-center justify-content-end text-md-right mt-2 font-weight-700"
+                  >
+                    <label for="">Birthday</label>
+                  </div>
+                  <div class="col-md-7">
+                    <div class="row">
+                      <div class="col-6">
+                        <el-select-v2
+                          v-model="birthDay"
+                          class="w-100"
+                          placeholder="Day"
+                          :options="[
+                            { label: 'Day', value: 0 },
+                            ...days.map((i) => ({ label: i, value: i })),
+                          ]"
+                          size="large"
+                        />
+                      </div>
+                      <div class="col-6">
+                        <el-select-v2
+                          v-model="birthMonth"
+                          class="w-100"
+                          placeholder="Month"
+                          :options="[
+                            { label: 'Month', value: 0 },
+                            ...months.map((i) => ({ label: i, value: i })),
+                          ]"
+                          size="large"
+                        />
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                <div
+                  class="row my-3"
+                  v-if="
+                    selectedCustomField.find(
+                      (i) => i.toLowerCase() == 'wedding'
+                    )
+                  "
+                >
+                  <div
+                    class="col-md-3 d-md-flex align-items-center justify-content-end text-md-right mt-2 font-weight-700"
+                  >
+                    <label for="">Wedding</label>
+                  </div>
+                  <div class="col-md-7">
+                    <div class="row">
+                      <div class="col-4">
+                        <el-select-v2
+                          v-model="dayOfWedding"
+                          class="w-100"
+                          placeholder="Day"
+                          :options="[
+                            { label: 'Day', value: 0 },
+                            ...days.map((i) => ({ label: i, value: i })),
+                          ]"
+                          size="large"
+                        />
+                      </div>
+                      <div class="col-4">
+                        <el-select-v2
+                          v-model="monthOfWedding"
+                          class="w-100"
+                          placeholder="Month"
+                          :options="[
+                            { label: 'Month', value: 0 },
+                            ...months.map((i) => ({ label: i, value: i })),
+                          ]"
+                          size="large"
+                        />
+                      </div>
+                      <div class="col-4">
+                        <el-select-v2
+                          v-model="yearOfWedding"
+                          class="w-100"
+                          placeholder="Year"
+                          :options="[
+                            { label: 'Year', value: 0 },
+                            ...weddingYearsArr.map((i) => ({
+                              label: i,
+                              value: i,
+                            })),
+                          ]"
+                          size="large"
+                        />
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                <div
+                  class="row my-3"
+                  v-if="
+                    selectedCustomField.find(
+                      (i) => i.toLowerCase() == 'marital status'
+                    )
+                  "
+                >
+                  <div
+                    class="col-md-3 d-md-flex align-items-center justify-content-end text-md-right mt-2 font-weight-700"
+                  >
+                    <label for="">Marital Status</label>
+                  </div>
+                  <div class="col-md-7">
+                    <el-select-v2
+                      v-model="maritalStatusId"
+                      @change="setSelectedMaritalStatus"
+                      :options="
+                        maritalStatus.map((i) => ({
+                          label: i.value,
+                          value: i.id,
+                        }))
+                      "
+                      placeholder="Marital status"
+                      size="large"
+                      class="w-100"
+                    />
+                  </div>
+                </div>
+                <div
+                  class="row my-3"
+                  v-if="
+                    selectedCustomField.find((i) => i.toLowerCase() == 'gender')
+                  "
+                >
+                  <div
+                    class="col-md-3 d-md-flex align-items-center justify-content-end text-md-right mt-2 font-weight-700"
+                  >
+                    <label for="">Gender</label>
+                  </div>
+                  <div class="col-md-7">
+                    <el-select-v2
+                      v-model="genderId"
+                      @change="setSelectedGender"
+                      :options="
+                        gender && gender.length > 0
+                          ? gender.map((i) => ({ label: i.value, value: i.id }))
+                          : []
+                      "
+                      placeholder="Gender"
+                      size="large"
+                      class="w-100"
+                    />
+                  </div>
+                </div>
+                <div
+                  class="row my-3"
+                  v-for="item in dynamicCustomFields"
+                  :key="item.id"
+                >
+                  <div
+                    class="col-md-3 d-md-flex align-items-center justify-content-end text-md-right mt-2 font-weight-700"
+                  >
+                    <label for="">{{ item.label }}</label>
+                  </div>
+                  <div class="col-md-7">
+                    <el-input
+                      v-if="item.controlType == 0"
+                      class="w-100"
+                      type="text"
+                      aria-required=""
+                      v-model="item.data"
+                    />
+                    <el-select-v2
+                      v-else-if="item.controlType == 1"
+                      v-model="item.data"
+                      :options="
+                        item.parameterValues
+                          .split(',')
+                          .map((i) => ({ label: i, value: i }))
+                      "
+                      placeholder="Select option"
+                      size="large"
+                      class="w-100"
+                    />
+                    <el-checkbox
+                      v-else-if="item.controlType == 2"
+                      v-model="item.data"
+                    />
+                    <el-date-picker
+                      v-if="item.controlType == 3"
+                      v-model="item.data"
+                      type="datetime"
+                      format="DD/MM/YYYY hh:mm:ss"
+                      size="large"
+                      class="w-100"
+                    />
+                    <el-input
+                      v-if="item.controlType == 4"
+                      class="w-100 border"
+                      type="email"
+                      aria-required=""
+                      v-model="item.data"
+                    />
+                    <input
+                      v-if="item.controlType == 5"
+                      class="w-100 border"
+                      type="file"
+                      aria-required=""
+                    />
+                    <el-input
+                      v-if="item.controlType == 6"
+                      class="w-100 border"
+                      type="number"
+                      aria-required=""
+                      v-model="item.data"
+                    />
+                  </div>
+                </div>
+                <div class="row">
+                  <div class="col-md-8 offset-md-3 mt-3 align-self-center">
+                    <el-checkbox v-model="displayFamily" />
+                    <span class="ml-3"
+                      >Do you want to register your family for this event?</span
+                    >
+                  </div>
+                </div>
+
+                <div class="row mt-4" v-if="displayFamily">
+                  <FamilyWards
+                    :family="familyWards"
+                    :memberRoles="memberRoles"
+                    :fullEventData="fullEventData"
+                    @newmember="setNewMember"
+                    @nofamilynewmember="setMemberDetails"
+                  />
+                </div>
+
+                <div class="row my-2">
+                  <div class="col-md-12">
+                    <div class="row justify-content-center">
+                      <div
+                        class="col-md-5 d-flex justify-content-center cursor-pointer"
+                      >
+                        <div class="font-weight-bold" round @click="notme">
+                          <u>Not Me</u>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="col-md-12 py-3 text-center">
+                    <div class="row justify-content-center">
+                      <div class="col-md-6">
+                        <el-button
+                          data-toggle="modal"
+                          class="w-100"
+                          data-target="#PaymentOptionModal"
+                          :color="primarycolor"
+                          @click="confirmCheck()"
+                          v-if="fullEventData.paymentFormId"
+                          :disabled="
+                            !person.name ||
+                            person.name.length < 1 ||
+                            !person.email ||
+                            disableClick
+                          "
+                          round
+                        >
+                          Make payment to register
+                        </el-button>
+                        <el-button
+                          size="large"
+                          class="mt-3 w-100 mt-sm-0 text-white"
+                          :color="primarycolor"
+                          @click="confirmToRegister"
+                          :disabled="
+                            !person.name ||
+                            person.name.length < 1 ||
+                            disableClick
+                          "
+                          round
+                          v-else
+                        >
+                          Confirm to register
+                        </el-button>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div
+              class="row justify-content-center"
+              v-if="
+                fullEventData.registrationCutOffTime &&
+                new Date().toISOString() <=
+                  new Date(fullEventData.registrationCutOffTime).toISOString()
+              "
+            >
+              <div class="col-10  col-md-5 text-center ">
+                <!-- Button code -->
+                <div title="Add to Calendar" class="addeventatc w-100">
+                  Add to Calendar
+                  <span class="start">{{ fullEventData.eventDate }}</span>
+                  <span class="timezone">{{
+                    Intl.DateTimeFormat().resolvedOptions().timeZone
+                  }}</span>
+                  <span class="title">{{ eventData.name }}</span>
+                  <span class="description">{{
+                    fullEventData.eventDetails
+                  }}</span>
+                </div>
+              </div>
+            </div>
+
+            <div class="row mt-3">
+              <div
+                class="col-md-3 d-md-flex align-items-center justify-content-end text-md-right mt-3 font-weight-700"
+              ></div>
+              <div class="col-md-7 mt-2">
+                <p class="text-center fw-normal" style="color: #136acd">
+                  Powered by CHURCHPLUS
+                </p>
+              </div>
+              <!-- Modal -->
+              <div
+                class="modal fade"
+                id="PaymentOptionModal"
+                tabindex="-1"
+                role="dialog"
+                aria-labelledby="exampleModalCenterTitle"
+                aria-hidden="true"
+              >
+                <div class="modal-dialog modal-dialog-centered" role="document">
+                  <div class="modal-content">
+                    <div class="modal-header bg-modal">
+                      <h5 class="modal-title" id="exampleModalLongTitle">
+                        Payment methods
+                      </h5>
+                      <button
+                        type="button"
+                        class="close"
+                        data-dismiss="modal"
+                        aria-label="Close"
+                      >
+                        <span aria-hidden="true" ref="close">&times;</span>
+                      </button>
+                    </div>
+                    <div class="modal-body p-0 bg-modal pb-5">
+                      <PaymentOptionModal
+                        :formData="eventPaymentForm"
+                        :close="close"
+                        :donation="donationObj"
+                        @selectedgateway="setGateway"
+                        :currency="paymentFormCurrency"
+                        @donationconfirmed="setConfirmDonation"
+                        :initializePaymentResponse="initializePaymentResponse"
+                        :callPayment="callPayment"
+                        @resetcallpaymentprops="resetCallPayment"
+                      />
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="col-md-6 eventpictbg d-none d-md-block">
+        <div class="row vh-100 justify-content-center align-items-center">
+          <div class="col-md-11">
+            <img :src="bannerUrl" class="w-100" />
           </div>
         </div>
       </div>
     </div>
-
-    <!-- <div class="row">
-      <div class="offset-5">
-        <div ref="authorizebutton" style="display: none" class="default-btn text-center"><img src="../../assets/preview.jpeg" style="width: 30px"/>Add event to google calendar</div>
-        <div ref="signout" style="display: none" class="default-btn">Sign Out</div>
-      </div>
-    </div> -->
-    
-    <div class="row">
-      <div class="col-10 offset-1 col-md-3 offset-md-5">
-        <!-- Button code -->
-          <div title="Add to Calendar" class="addeventatc w-100">
-              Add to Calendar
-              <span class="start">{{ fullEventData.eventDate }}</span>
-              <!-- <span class="end">2021-11-04T10:34:29.746Z</span> -->
-              <span class="timezone">{{ Intl.DateTimeFormat().resolvedOptions().timeZone }}</span>
-              <span class="title">{{ eventData.name }}</span>
-              <span class="description">{{ fullEventData.eventDetails }}</span>
-          </div>
-      </div>
-    </div>
-    
-    <div class="row mt-3">
-      <div
-        class="col-md-3 d-md-flex align-items-center justify-content-end text-md-right mt-3 font-weight-700"
-      ></div>
-      <div class="col-md-7 mt-2">
-        <p class="text-center fw-normal" style="color: #136acd">
-          Powered by CHURCHPLUS
-        </p>
-      </div>
-       <!-- Modal -->
-          <div class="modal fade" id="PaymentOptionModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
-            <div class="modal-dialog modal-dialog-centered" role="document">
-              <div class="modal-content">
-                <div class="modal-header bg-modal">
-                  <h5 class="modal-title" id="exampleModalLongTitle">Payment methods</h5>
-                  <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                    <span aria-hidden="true" ref="close">&times;</span>
-                  </button>
-                </div>
-                <div class="modal-body p-0 bg-modal pb-5">
-                  <PaymentOptionModal :close="close" :donation="donationObj" @selected-gateway="setGateway" @donation-confirmed="setConfirmDonation" @set-props="setDonationProperties"/>
-                  <!-- :orderId="formResponse.orderId" :donation="donationObj"  :name="name" :amount="amount" :converted="convertedAmount" :email="email" @payment-successful="successfulPayment" :gateways="formResponse.paymentGateWays" :currency="dfaultCurrency.shortCode" @selected-gateway="gatewaySelected" -->
-                </div>
-                <!-- <div class="modal-footer bg-modal">
-                  <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-                  <button type="button" class="btn btn-primary">Save changes</button>
-                </div> -->
-                </div>
-              </div>
-            </div>
-      <ConfirmDialog />
-      <Toast />
-    </div>
   </div>
-   
-  <pre ref="content" style="white-space: pre-wrap;"></pre>
 
-  <!-- <div @click="callIt">edicaoc</div> -->
+  <pre ref="content" style="white-space: pre-wrap"></pre>
 </template>
 
 
 <script>
-import { computed, ref } from "vue";
+import { computed, ref, inject } from "vue";
 import axios from "@/gateway/backendapi";
 // import router from "../../router/index";
-import InputText from "primevue/inputtext";
 import { useRoute } from "vue-router";
 import dateFormatter from "@/services/dates/dateformatter";
-import { useToast } from "primevue/usetoast";
 import stopProgressBar from "../../services/progressbar/progress";
 import swal from "sweetalert";
-import Dropdown from "primevue/dropdown";
-import PaymentOptionModal from "../../components/paymentoption/EventRegPayment.vue"
-import finish from '../../services/progressbar/progress';
-import store from '../../store/store';
-import FamilyWards from './component/EventRegFamilyWards.vue'
-// import Calendarjs from "../../services/google/calendarAPI"
-// import Dialog from 'primevue/dialog';
-
+import PaymentOptionModal from "../../components/paymentoption/EventRegPayment.vue";
+import finish from "../../services/progressbar/progress";
+import store from "../../store/store";
+import FamilyWards from "./component/EventRegFamilyWards.vue";
+import { ElMessage } from "element-plus";
+import { ElLoading } from "element-plus";
 export default {
   components: {
-    Dropdown,
     PaymentOptionModal,
-    FamilyWards
+    FamilyWards,
   },
   setup() {
+    const primarycolor = inject("primarycolor");
     const connectName = ref("");
+    const yearOfWedding = ref(null);
+    const monthOfWedding = ref(null);
+    const dayOfWedding = ref(null);
+    const selectedMaritalStatus = ref("");
+    const selectedGender = ref("");
     const appltoggle = ref(false);
     const names = ref("");
     const emails = ref("");
@@ -341,29 +693,29 @@ export default {
     const autosearch = ref(false);
     const noError = ref(true);
     const person = ref({});
-    const checkedIn = ref(false);
+    const maritalStatus = ref({});
     const route = useRoute();
-    const toast = useToast();
     const submitBtn = ref(null);
     const loaded = ref(false);
-    const close = ref("")
-    const donationObj = ref({})
-    const fullEventData = ref({})
-    const selectedGateway = ref("")
-    const currentUser = ref(store.getters.currentUser)
-    const displayFamily = ref(false)
-    const memberRoles = ref([])
-    const familyWards = ref({ familyMembers: [] })
-    const familyMembers = ref([])
-    const authorizebutton = ref()
-    const signout = ref()
-    const content = ref()
-    const disableClick = ref(false)
-    const makePaymentRef = ref()
-    const usedPaymentGateway = ref("")
-    const donationNewProps = ref({})
-
+    const close = ref("");
+    const donationObj = ref({});
+    const fullEventData = ref({});
+    const selectedGateway = ref("");
+    const currentUser = ref(store.getters.currentUser);
+    const displayFamily = ref(false);
+    const memberRoles = ref([]);
+    const familyWards = ref({ familyMembers: [] });
+    const familyMembers = ref([]);
+    const authorizebutton = ref();
+    const signout = ref();
+    const content = ref();
+    const disableClick = ref(false);
+    const usedPaymentGateway = ref("");
+    const donationNewProps = ref({});
+    const maritalStatusId = ref(null);
     const birthMonth = ref("");
+    const gender = ref({});
+    const genderId = ref(null);
     const months = [
       "January",
       "February",
@@ -378,40 +730,36 @@ export default {
       "November",
       "December",
     ];
-
     const birthDay = ref("");
     const days = ref([
-      1,
-      2,
-      3,
-      4,
-      5,
-      6,
-      7,
-      8,
-      9,
-      10,
-      11,
-      12,
-      13,
-      14,
-      15,
-      16,
-      17,
-      18,
-      19,
-      20,
-      22,
-      23,
-      24,
-      25,
-      26,
-      27,
-      28,
-      29,
-      30,
-      31,
+      1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 22,
+      23, 24, 25, 26, 27, 28, 29, 30, 31,
     ]);
+    const eventPaymentForm = ref({});
+    const callPayment = ref(false);
+    const initializePaymentResponse = ref({});
+    const paymentFormCurrency = ref({});
+
+    const setSelectedMaritalStatus = () => {
+      selectedMaritalStatus.value = maritalStatus.value.find((i) => {
+        return i.id == maritalStatusId.value;
+      });
+    };
+
+    const setSelectedGender = () => {
+      selectedGender.value = gender.value.find((i) => {
+        return i.id == genderId.value;
+      });
+    };
+    const weddingYearsArr = computed(() => {
+      const arrOfYears = [];
+      let currentYear = new Date().getFullYear();
+      while (arrOfYears.length <= 100) {
+        arrOfYears.push(currentYear);
+        currentYear = currentYear - 1;
+      }
+      return arrOfYears;
+    });
 
     const toggleBase = () => {
       appltoggle.value = !appltoggle.value;
@@ -435,29 +783,39 @@ export default {
     const fetchingFailed = ref(false);
     const personHasAddress = ref(false);
     const personData = ref({});
-    const bannerUrl = ref("")
-    const tenantCurrency = ref("")
-
-
-
+    const bannerUrl = ref("");
+    const tenantCurrency = ref("");
+    const selectedCustomField = ref([]);
+    const checkinCode = ref("");
+    const dynamicCustomFields = ref([]);
+    const date7 = ref();
 
     const getTenantCurrency = () => {
-      axios.get(`/api/Lookup/TenantCurrency?tenantID=${fullEventData.value.tenantID}`)
-        .then(res => {
-          console.log(res)
-          tenantCurrency.value = res.data.currency
+      axios
+        .get(
+          `/api/Lookup/TenantCurrency?tenantID=${fullEventData.value.tenantID}`
+        )
+        .then((res) => {
+          tenantCurrency.value = res.data.currency;
         })
-        .catch(err => console.log(err))
-    }
-   
+        .catch((err) => console.log(err));
+    };
 
+    const GetAllCurrencies = () => {
+      axios
+        .get("/api/LookUp/GetAllCurrencies")
+        .then((res) => {
+          // Get the payment form currency
+          paymentFormCurrency.value = res.data.find(
+            (i) => i.id == fullEventData.value.currencyID
+          );
+
+          console.log(paymentFormCurrency.value);
+        })
+        .catch((err) => console.log(err.response));
+    };
 
     const checkCharacter = () => {
-      // if (e.target.value.length < 11) {
-      //   person.value = {};
-      //   personHasAddress.value = false;
-      //   return false;
-      // }
       loaded.value = false;
       personHasAddress.value = false;
       fetchingFailed.value = false;
@@ -466,50 +824,55 @@ export default {
         showNoPhoneError.value = true;
         return false;
       }
-
-      console.log(route.params.eventId)
-      // if (e.target.value.length > 0) {
       loading.value = true;
       autosearch.value = true;
       axios
         .get(
-          `/searchregistrationbyphone?searchtext=${enteredValue.value}&&eventId=${route.params.eventId}`
+          `/searchregistrationbyphone?searchtext=${enteredValue.value}&id=${route.params.checkinId}`
         )
 
         .then((res) => {
-          const x = { ...res}
-          console.log(x, "RESPONSE");
           loading.value = false;
           autosearch.value = false;
           loaded.value = true;
           names.value = res.data;
-          personData.value.firstName = res.data[0] ? res.data[0].name : "";
-          personData.value.email = res.data[0] ? res.data[0].email : "";
-          personData.value.homeAddress = res.data[0] ? res.data[0].address : "";
-          personData.value.personId = res.data[0] ? res.data[0].personId : "";
-          personData.value.dayOfBirth = res.data[0] ? res.data[0].dayOfBirth : null;
-          personData.value.monthOfBirth = res.data[0] ? res.data[0].monthOfBirth : null;
-          personData.value.mobilePhone = enteredValue.value;
-          person.value = res.data[0] ? res.data[0] : {};
-          birthDay.value = res.data[0] && res.data[0].dayOfBirth ? Number(res.data[0].dayOfBirth) : 0;
-          birthMonth.value = res.data[0] && res.data[0].monthOfBirth ? months[Number(res.data[0].monthOfBirth)] : 0;
+          personData.value.firstName =
+            res.data.length > 0 ? res.data[0].name.split(" ")[0] : "";
+          personData.value.lastName =
+            res.data.length > 0 ? res.data[0].name.split(" ")[1] : "";
+          personData.value.email = res.data.length > 0 ? res.data[0].email : "";
+          personData.value.homeAddress =
+            res.data.length > 0 ? res.data[0].address : "";
+          personData.value.personId =
+            res.data.length > 0 ? res.data[0].personId : "";
+          personData.value.dayOfBirth =
+            res.data.length > 0 ? res.data[0].dayOfBirth : "";
+          personData.value.monthOfBirth =
+            res.data.length > 0 ? res.data[0].monthOfBirth : "";
+          personData.value.mobilePhone =
+            res.data.length > 0 ? res.data[0].phoneNumber : "";
+          person.value = res.data.length > 0 ? res.data[0] : {};
+          birthDay.value =
+            res.data.length > 0 && res.data[0].dayOfBirth
+              ? Number(res.data[0].dayOfBirth)
+              : 0;
+          birthMonth.value =
+            res.data.length > 0 && res.data[0].monthOfBirth
+              ? months[Number(res.data[0].monthOfBirth) - 1]
+              : 0;
 
-          getFamilyDetails(personData.value.personId)
-          console.log(personData.value.personId)
+          getFamilyDetails(personData.value.personId);
           if (
             person.value.personId &&
             person.value.address &&
             person.value.address !== null &&
             person.value.address !== "" &&
             person.value.address.length >= 1
-          )
-          {
+          ) {
             personHasAddress.value = true;
           }
           populateInputfields(person.value);
           if (person.value) appltoggle.value = true;
-
-          
         })
         .catch((err) => {
           fetchingFailed.value = true;
@@ -519,39 +882,33 @@ export default {
           autosearch.value = false;
 
           if (err.toString().toLowerCase().includes("network error")) {
-            toast.add({
-              severity: "error",
-              summary: "Checkin Error",
-              detail: "Ensure you have internet access and try again",
-              life: 3000,
+            ElMessage({
+              type: "error",
+              message: "Ensure you have internet access and try again",
+              duration: 5000,
             });
           } else if (err.message.includes("timeout")) {
-            toast.add({
-              severity: "error",
-              summary: "Checkin Error",
-              detail:
+            ElMessage({
+              type: "error",
+              message:
                 "The request was taking too long, please reload and try again",
-              life: 3000,
+              duration: 5000,
             });
           } else {
-            toast.add({
-              severity: "error",
-              summary: "Checkin Error",
-              detail: "An error occurred, reload and try again",
-              life: 3000,
+            ElMessage({
+              type: "error",
+              message: "An error occurred, reload and try again",
+              duration: 5000,
             });
           }
-          // appltoggle.value = true;
           console.log(err);
         });
-      // }
     };
     //end of searching through the attendance details
 
     // populate input fields
     const populateInputfields = (obj) => {
       person.value = obj;
-      console.log(person);
     };
 
     const disabled = computed(() => {
@@ -562,7 +919,6 @@ export default {
     // function to disable edit
     const disableEdit = (e) => {
       e.preventDefault();
-      console.log("hello there");
     };
 
     // confirm status
@@ -574,10 +930,12 @@ export default {
           person: {
             personId: personData.value.personId,
             mobilePhone: enteredValue.value,
-            homeAddress: personData.value.homeAddress ? personData.value.homeAddress : '',
-            email: personData.value.email ? person.value.email : '',
+            homeAddress: personData.value.homeAddress
+              ? personData.value.homeAddress
+              : "",
+            email: personData.value.email ? person.value.email : "",
           },
-          activityID: route.params.eventId
+          id: route.params.checkinId,
         };
       } else {
         newPerson = {
@@ -587,17 +945,24 @@ export default {
             homeAddress: person.value.address,
             mobilePhone: enteredValue.value,
           },
-          activityID: route.params.eventId
+          id: route.params.checkinId,
         };
-        newPerson.person.personId = idOfNewPerson ? idOfNewPerson : ""
+        newPerson.person.personId = idOfNewPerson ? idOfNewPerson : "";
       }
-      newPerson.person.monthOfBirth = birthMonth.value && !personData.value.monthOfBirth
-        ? months.indexOf(birthMonth.value) + 1
-        : null;
-      newPerson.person.dayOfBirth = birthDay.value && !personData.value.monthOfBirth ? birthDay.value : null;
-
-      console.log(personData.value, "p data");
-      console.log(newPerson);
+      newPerson.person.monthOfBirth = months.indexOf(birthMonth.value) + 1;
+      newPerson.person.dayOfBirth = birthDay.value;
+      newPerson.checkinCode = fullEventData.value.checkinCode;
+      newPerson.person.maritalStatusID = selectedMaritalStatus.value.id;
+      newPerson.person.genderID = selectedGender.value.id;
+      newPerson.person.yearOfWedding = yearOfWedding.value;
+      newPerson.person.monthOfWedding =
+        months.indexOf(monthOfWedding.value) + 1;
+      newPerson.person.dayOfWedding = dayOfWedding.value;
+      newPerson.customAttributeData = dynamicCustomFields.value.map((i) => ({
+        customAttributeID: i.id,
+        data: i.data,
+        entityID: person.value.personId ? person.value.personId : idOfNewPerson,
+      }));
       loading.value = true;
       autosearch.value = true;
       noError.value = true;
@@ -607,16 +972,13 @@ export default {
           loading.value = false;
           autosearch.value = false;
           disableClick.value = false;
-          console.log(res, "tosin");
 
-          if (newPerson) checkedIn.value = true;
           swal(
             "Registration Successful!",
             "You have registered for this event successfully!",
             "success"
           );
           appltoggle.value = false;
-          checkedIn.value = true;
           loaded.value = false;
         })
         .catch((err) => {
@@ -625,20 +987,20 @@ export default {
           autosearch.value = false;
           console.log(err);
           noError.value = false;
-          
-          if (err.toString().toLowerCase().includes('network error')) {
-            toast.add({
-              severity: "error",
-              summary: "Network Error",
-              detail: "Please ensure you have a strong internet connection and try again",
-              life: 4000,
+
+          if (err.toString().toLowerCase().includes("network error")) {
+            ElMessage({
+              type: "error",
+              message:
+                "Please ensure you have a strong internet connection and try again",
+              duration: 5000,
             });
-          } else if (err.toString().toLowerCase().includes('timeout')) {
-            toast.add({
-              severity:"warn",
-              summary: "Request took too long",
-              detail: "Please reload the page and try again",
-              life: 4000,
+          } else if (err.toString().toLowerCase().includes("timeout")) {
+            ElMessage({
+              type: "warning",
+              message:
+                "Request took too long, Please reload the page and try again",
+              duration: 5000,
             });
           }
         });
@@ -647,271 +1009,328 @@ export default {
     // confirm button check
 
     const confirmCheck = () => {
-      
       donationObj.value = {
-            name: person.value.name,
-            email: person.value.email,
-            phone: enteredValue.value,
-            paymentFormId: fullEventData.value.paymentFormId,
-            tenantID: fullEventData.value.paymentForm.tenantID,
-            orderID: fullEventData.value.paymentFormOrderID,
-            currencyID: fullEventData.value.currencyID,
-            paymentGateway: fullEventData.value.paymentForm.paymentGateWays,
-            usedPaymentGateway: usedPaymentGateway.value,
-            contributionItems: fullEventData.value.paymentForm.contributionItems.map(i => {
+        attendanceCode: fullEventData.value.attendanceCode,
+        activityId: fullEventData.value.eventID,
+        phone: enteredValue.value,
+        email: person.value.email,
+        checkInCode: fullEventData.value.checkinCode,
+        id: fullEventData.value.id,
+        person: person.value.personId
+          ? personData.value
+          : {
+              mobilePhone: enteredValue.value,
+              firstName: person.value.name.split(" ")[0]
+                ? person.value.name.split(" ")[0]
+                : "",
+              lastName: person.value.name.split(" ")[1]
+                ? person.value.name.split(" ")[1]
+                : "",
+              email: person.value.email ? person.value.email : "",
+            },
+        customAttributeData: dynamicCustomFields.value.map((i) => ({
+          customAttributeID: i.id,
+          data: i.data,
+          entityID: person.value.personId
+            ? person.value.personId
+            : "00000000-0000-0000-0000-000000000000",
+        })),
+        donation: {
+          name: person.value.name,
+          email: person.value.email,
+          phone: enteredValue.value,
+          paymentFormId: fullEventData.value.paymentFormId,
+          tenantID: fullEventData.value.paymentForm.tenantID,
+          orderID: fullEventData.value.paymentFormOrderID,
+          currencyID: fullEventData.value.currencyID,
+          paymentGateway: usedPaymentGateway.value,
+          paymentGateWays: fullEventData.value.paymentForm.paymentGateWays,
+          amount: fullEventData.value.registrationAmount,
+          contributionItems:
+            fullEventData.value.paymentForm.contributionItems.map((i) => {
               return {
                 contributionItemId: i.financialContribution.id,
                 contributionCurrencyId: fullEventData.value.currencyID,
                 contributionItemName: i.financialContribution.name,
-                amount: fullEventData.value.registrationAmount
-              }
+                amount: fullEventData.value.registrationAmount,
+              };
             }),
-
-          }
-          if (Object.keys(donationNewProps.value).length > 0) {
-              donationObj.value.transactionReference = donationNewProps.value.transactionReference,
-              donationObj.value.amount = donationNewProps.value.amount,
-              donationObj.value.gateway = donationNewProps.value.gateway
-          }
+        },
+      };
     };
 
-    const initializePayment = async() => {
+    const initializePayment = async () => {
+      const loading = ElLoading.service({
+        lock: true,
+        text: "Please wait...",
+        background: "rgba(255, 255, 255, 0.9)",
+      });
       try {
-              let  res = await axios.post('/initailizedonationpayment', donationObj.value)
-              console.log(res)
-            
-              finish()
-            }
-            catch (error) {
-              finish()
-              console.log(error)
-            }
-    }
+        let { data } = await axios.post(
+          "/initializeEventRegistrationPayment",
+          donationObj.value
+        );
+        if (data.status) {
+          initializePaymentResponse.value = data;
+          callPayment.value = true;
+        } else {
+          ElMessage({
+            type: "error",
+            message: "Could not initialise payment, please try again",
+            duration: 5000,
+          });
+        }
+        loading.close();
+        finish();
+      } catch (error) {
+        finish();
+        loading.close();
+        callPayment.value = false;
+        console.log(error);
+      }
+    };
 
     const confirmToRegister = () => {
       disableClick.value = true;
-      if (!fullEventData.value.paymentFormId) {
-        
-        // Scenerio when the person exist and we want to create family
-        if (personData.value.personId && !familyWards.value.id) {
-          console.log('found in church but no family')
-            if (displayFamily.value) {
-              console.log('intends to add family')
-              let familyDetails = {
-                fatherId: personData.value.personId,
-                familyName: personData.value.firstName,
-                familyMembers: familyMembers.value.map(i => {
-                  delete i.name
-                  return i
-                }),
-                tenantId: fullEventData.value.tenantID
-              }
-              console.log(familyDetails)
-              axios.post('/createFamily', familyDetails)
-                .then(res => console.log(res))
-                .catch(err => console.log(err))
+      // Scenerio when the person exist and we want to create family
+      if (personData.value.personId && !familyWards.value.id) {
+        if (displayFamily.value) {
+          // Create his family
+          let familyDetails = {
+            fatherId: personData.value.personId,
+            familyName: personData.value.firstName,
+            familyMembers: familyMembers.value.map((i) => {
+              delete i.name;
+              return i;
+            }),
+            tenantId: fullEventData.value.tenantID,
+          };
+          axios
+            .post("/createFamily", familyDetails)
+            .then((res) => console.log(res))
+            .catch((err) => console.log(err));
 
-                let newFamily = {
-                  person: {
-                    personId: personData.value.personId,
-                    mobilePhone: enteredValue.value,
-                    homeAddress: personData.value.homeAddress ? personData.value.homeAddress : '',
-                    email: personData.value.email ? personData.value.email : person.value.email,
-                  },
-                  // familyMembers: familyWards.value.familyMembers.filter(i => {
-                  //   return i.checkMember
-                  // }).map(i => {
-                  //   return { personId: i.person.id }
-                  // }),
-                  activityID: route.params.eventId
-                };
-                console.log(newFamily)
-
-                // Register Family members individually
-                  familyWards.value.familyMembers.forEach(i => {
-                    console.log(i)
-                      if(i.checkMember) {
-                        let regFamMembers = {
-                          person: {
-                            personId: i.person.id
-                          },
-                          activityID: route.params.eventId
-                        }
-                        axios.post("/EventRegistration", regFamMembers).then(res => {
-                          console.log(res)
-                          disableClick.value = false;
-                        })
-                        .catch(err => {
-                          console.log(err)
-                        })
-                      }
-                    })
-
-                registerMember(newFamily)
-
-            } else {
-              console.log('does not intend to add family')
-              confirm()
+          // Register Family members individually
+          familyWards.value.familyMembers.forEach((i) => {
+            if (i.checkMember) {
+              let regFamMembers = {
+                person: {
+                  personId: i.person.id,
+                },
+                id: route.params.checkinId,
+              };
+              axios
+                .post("/EventRegistration", regFamMembers)
+                .then((res) => {
+                  console.log(res);
+                })
+                .catch((err) => {
+                  console.log(err);
+                });
             }
-        } else if (personData.value.personId && familyWards.value.id) {
-            console.log('found in church and a family')
-            if (displayFamily.value) {
-              console.log(' intends to add family')
-                let newFamily = {
-                  person: {
-                    personId: personData.value.personId,
-                    mobilePhone: enteredValue.value,
-                    homeAddress: personData.value.homeAddress ? personData.value.homeAddress : '',
-                    email: personData.value.email ? personData.value.email : person.value.email,
-                  },
-                  // familyMembers: familyWards.value.familyMembers.filter(i => {
-                  //   return i.checkMember
-                  // }).map(i => {
-                  //   return { personId: i.person.id }
-                  // }),
-                  activityID: route.params.eventId
-                };
-                console.log(newFamily)
-
-                // Register Family members individually
-                familyWards.value.familyMembers.forEach(i => {
-                  console.log(i)
-                    if(i.checkMember) {
-                      let regFamMembers = {
-                        person: {
-                          personId: i.person.id
-                        },
-                        activityID: route.params.eventId
-                      }
-                      axios.post("/EventRegistration", regFamMembers).then(res => {
-                        console.log(res)
-                        disableClick.value = false;
-                      })
-                      .catch(err => {
-                        console.log(err)
-                      })
-                    }
-                  })
-
-                registerMember(newFamily)
-
-            } else {
-              console.log('does not intent to add family')
-              confirm()
-            }
-          } else {
-            console.log('not found in church and no family')
-          createNewPerson()
-        }
-
-        
-
-
-      } 
-      if (fullEventData.value.paymentFormId) {
-        makePaymentRef.value.click()
-        confirmCheck()
-      }
-    }
-
-    const createNewPerson = async() => {
-      let createNewPerson = {
-              firstName: person.value.name,
-              email: person.value.email,
-              homeAddress: person.value.address,
+          });
+          let newFamily = {
+            person: {
+              personId: personData.value.personId,
               mobilePhone: enteredValue.value,
-              tenantId: fullEventData.value.tenantID
-            }
+              homeAddress: personData.value.homeAddress
+                ? personData.value.homeAddress
+                : "",
+              email: personData.value.email
+                ? personData.value.email
+                : person.value.email,
+            },
+            id: route.params.checkinId,
+          };
+          registerMember(newFamily);
 
-          try {
-            let { data } = await axios.post("/createPublicPerson", createNewPerson)
-              console.log(data)
-              if (displayFamily.value) {
-                createNewFamily(data.returnObject.id)
-              } else {
-                confirm(data.returnObject.id)
-              }
-              
-          }
-          catch (error ) {
-            console.log(error)
-          }
-    }
+          // // Register Family members individually
+          // familyWards.value.familyMembers.forEach(i => {
+          //   if (i.checkMember) {
+          //     let regFamMembers = {
+          //       person: {
+          //         personId: i.person.id
+          //       },
+          //       id: route.params.checkinId
+          //     }
+          //     axios.post("/EventRegistration", regFamMembers).then(res => {
+          //       console.log(res)
+          //     })
+          //       .catch(err => {
+          //         console.log(err)
+          //       })
+          //   }
+          // })
+          // let newFamily = {
+          //   person: {
+          //     personId: personData.value.personId,
+          //     mobilePhone: enteredValue.value,
+          //     homeAddress: personData.value.homeAddress ? personData.value.homeAddress : '',
+          //     email: personData.value.email ? personData.value.email : person.value.email,
+          //   },
+          //   id: route.params.checkinId
+          // };
+          // registerMember(newFamily)
+        } else {
+          confirm();
+        }
+      } else if (personData.value.personId && familyWards.value.id) {
+        if (displayFamily.value) {
+          // Register Family members individually
+          familyWards.value.familyMembers.forEach((i) => {
+            if (i.checkMember) {
+              let regFamMembers = {
+                person: {
+                  personId: i.person.id,
+                },
+                id: route.params.checkinId,
+              };
+              axios
+                .post("/EventRegistration", regFamMembers)
+                .then((res) => {
+                  console.log(res);
+                })
+                .catch((err) => {
+                  console.log(err);
+                });
+            }
+          });
+
+          let newFamily = {
+            person: {
+              personId: personData.value.personId,
+              mobilePhone: enteredValue.value,
+              homeAddress: personData.value.homeAddress
+                ? personData.value.homeAddress
+                : "",
+              email: personData.value.email
+                ? personData.value.email
+                : person.value.email,
+            },
+            id: route.params.checkinId,
+          };
+          registerMember(newFamily);
+        } else {
+          confirm();
+        }
+      } else {
+        // If the person doesnt exist in the church's DB
+        createNewPerson();
+      }
+    };
+
+    const createNewPerson = async () => {
+      let createNewPerson = {
+        firstName: person.value.name,
+        email: person.value.email,
+        homeAddress: person.value.address,
+        mobilePhone: enteredValue.value,
+        tenantId: fullEventData.value.tenantID,
+      };
+
+      try {
+        let { data } = await axios.post("/createPublicPerson", createNewPerson);
+        if (displayFamily.value) {
+          createNewFamily(data.returnObject.id);
+        } else {
+          confirm(data.returnObject.id);
+        }
+      } catch (error) {
+        console.log(error);
+      }
+    };
+
+    const getGender = async () => {
+      try {
+        let { data } = await axios.get("/api/LookUp/GetAllLookUps");
+        gender.value = data.find((i) => i.type === "Gender").lookUps;
+      } catch (err) {
+        console.log(err);
+      }
+    };
+    getGender();
+
+    const getMaritalStatus = async () => {
+      try {
+        let { data } = await axios.get("/api/LookUp/GetAllLookUps");
+        maritalStatus.value = data.find(
+          (i) => i.type === "MaritalStatus"
+        ).lookUps;
+      } catch (err) {
+        console.log(err);
+      }
+    };
+    getMaritalStatus();
 
     const createNewFamily = (id) => {
       disableClick.value = true;
       let familyDetails = {
-            fatherId: id,
-            familyName: person.value.name,
-            familyMembers: familyMembers.value.map(i => {
-              delete i.name
-              return i
-            }),
-            tenantId: fullEventData.value.tenantID
-          }
-          console.log(familyDetails)
-          axios.post('/createFamily', familyDetails)
-            .then(res => console.log(res))
-            .catch(err => console.log(err))
+        fatherId: id,
+        familyName: person.value.name,
+        familyMembers: familyMembers.value.map((i) => {
+          delete i.name;
+          return i;
+        }),
+        tenantId: fullEventData.value.tenantID,
+      };
+      axios
+        .post("/createFamily", familyDetails)
+        .then((res) => console.log(res))
+        .catch((err) => console.log(err));
 
-            let newFamily = {
-                  person: {
-                    personId: id,
-                    mobilePhone: enteredValue.value,
-                    homeAddress: personData.value.homeAddress ? personData.value.homeAddress : '',
-                    email: personData.value.email ? personData.value.email : person.value.email,
-                  },
-                  // familyMembers: familyWards.value.familyMembers.filter(i => {
-                  //   return i.checkMember
-                  // }).map(i => {
-                  //   return { personId: i.person.id }
-                  // }),
-                  activityID: route.params.eventId
-                };
-                // console.log(newFamily)
+      // Register Family members individually
+      familyWards.value.familyMembers.forEach((i) => {
+        if (i.checkMember) {
+          let regFamMembers = {
+            person: {
+              personId: i.person.id,
+            },
+            id: route.params.checkinId,
+          };
+          axios
+            .post("/EventRegistration", regFamMembers)
+            .then((res) => {
+              console.log(res);
+              disableClick.value = false;
+            })
+            .catch((err) => {
+              console.log(err);
+            });
+        }
+      });
 
-                // Register Family members individually
-                familyWards.value.familyMembers.forEach(i => {
-                  console.log(i)
-                  if (i.checkMember) {
-                    let regFamMembers = {
-                      person: {
-                        personId: i.person.id
-                      },
-                      activityID: route.params.eventId
-                    }
-                    axios.post("/EventRegistration", regFamMembers).then(res => {
-                      console.log(res)
-                      disableClick.value = false;
-                    })
-                    .catch(err => {
-                      console.log(err)
-                    })
-                  }
-                })
+      let newFamily = {
+        person: {
+          personId: id,
+          mobilePhone: enteredValue.value,
+          homeAddress: personData.value.homeAddress
+            ? personData.value.homeAddress
+            : "",
+          email: personData.value.email
+            ? personData.value.email
+            : person.value.email,
+        },
+        id: route.params.checkinId,
+      };
+      registerMember(newFamily);
+    };
 
-                registerMember(newFamily)
-    }
-
-
-    const registerMember = async(registerData) => {
+    const registerMember = async (registerData) => {
       disableClick.value = true;
       try {
-        let res = await axios.post("/EventRegistration", registerData)
-          console.log(res)
-          disableClick.value = false;
-          swal(
-            "Registration Successful!",
-            "You have registered for this event successfully!",
-            "success"
-          );
-          displayFamily.value = false
-          familyWards.value.familyMembers = []
+        let res = await axios.post("/EventRegistration", registerData);
+        disableClick.value = false;
+        swal(
+          "Registration Successful!",
+          "You have registered for this event successfully!",
+          "success"
+        );
+        displayFamily.value = false;
+        familyWards.value.familyMembers = [];
+      } catch (error) {
+        console.log(error);
       }
-      catch (error) {
-        console.log(error)
-      }
-    }
+    };
 
     // function to clear input
     const clearNames = () => {
@@ -928,17 +1347,17 @@ export default {
     const getDateAndEvent = () => {
       axios
         .get(
-          `/api/publiccontent/WebRegistrationEventDetails?activityId=${route.params.eventId}`
+          `/api/publiccontent/WebRegistrationEventDetails?id=${route.params.checkinId}`
         )
         .then((res) => {
           eventData.value.name = res.data.fullEventName;
           eventData.value.date = dateFormatter.monthDayYear(res.data.eventDate);
-          bannerUrl.value = res.data.bannerUrl
-
-          fullEventData.value = res.data
-          console.log(eventData);
-          console.log(res, "response");
-           getTenantCurrency()
+          bannerUrl.value = res.data.bannerUrl;
+          fullEventData.value = res.data;
+          eventPaymentForm.value = fullEventData.value.paymentForm;
+          getTenantCurrency();
+          getCustomFields();
+          GetAllCurrencies();
         })
         .catch((err) => {
           console.log(err);
@@ -989,86 +1408,105 @@ export default {
     });
 
     const setGateway = (payload) => {
-      usedPaymentGateway.value = payload // Get the gateway used
-      confirmCheck() // Update the donationObj with the used gateway
-      initializePayment() // make initialize payment call
-      
-    }
+      usedPaymentGateway.value = payload; // Get the gateway used
+      confirmCheck(); // Update the donationObj with the used gateway
+      initializePayment(); // make initialize payment call
+    };
 
     const setConfirmDonation = () => {
-      confirm()
-    }
+      swal(
+        "Registration Successful!",
+        "You have registered for this event successfully!",
+        "success"
+      );
+    };
 
-
-    const getFamilyDetails = async(id) => {
-      console.log(id)
-     
+    const getFamilyDetails = async (id) => {
       if (id) {
         try {
-                    // const res = await axios.get(`/api/Family/family?personId=${id}`)
-                    const res = await axios.get(`/family?tenantID=${fullEventData.value.tenantID}&&personId=${id}`)
-                    console.log(res)
-                    familyWards.value = res.data
-                    familyWards.value.familyMembers.map(i => {
-                      i.checkMember = true
-                      return i
-                    })
-
-                    console.log(familyWards.value.familyMembers)
-                }
-                catch (error) {
-                    console.log(error)
-                }
-      } else {
-        console.log('no id')
+          const res = await axios.get(
+            `/family?tenantID=${fullEventData.value.tenantID}&&personId=${id}`
+          );
+          familyWards.value = res.data;
+          if (familyWards.value) {
+            familyWards.value.familyMembers.map((i) => {
+              i.checkMember = true;
+              return i;
+            });
+          }
+        } catch (error) {
+          console.log(error);
+        }
       }
-    }
+    };
 
     const getFamilyRoles = async () => {
-        try {
-            let { data } = await axios.get('/getfamilyroles')
-            console.log(data)
-            memberRoles.value = data.result
-            getFamilyDetails()
-        }
-        catch (err) {
-            console.log(err)
-        }
-    }
-    getFamilyRoles()
+      try {
+        let { data } = await axios.get("/getfamilyroles");
+        memberRoles.value = data.result;
+      } catch (err) {
+        console.log(err);
+      }
+    };
+    getFamilyRoles();
 
     const setNewMember = (payload) => {
-      familyWards.value.familyMembers.push(payload)
-    }
+      familyWards.value.familyMembers.push(payload);
+    };
 
     const setMemberDetails = (payload) => {
-      familyMembers.value.push(payload)
-      console.log(payload)
+      familyMembers.value.push(payload);
       let pushMemberToView = {
         person: {
           firstName: payload.name,
           id: payload.personId,
         },
         familyRoleID: payload.familyRoleId,
-        checkMember: payload.checkMember
+        checkMember: payload.checkMember,
+      };
+      familyWards.value.familyMembers.push(pushMemberToView);
+    };
+
+    // const setDonationProperties = (payload) => {
+    //   donationNewProps.value = payload
+    //   confirmCheck()
+    // }
+
+    const getAllRouteQueries = () => {
+      for (let i in route.query) {
+        if (route.query[i] == "true") {
+          selectedCustomField.value.push(i);
+        }
       }
-      // familyWards.value.familyMembers = new Array()
-      familyWards.value.familyMembers.push(pushMemberToView)
+    };
+    getAllRouteQueries();
 
-    }
+    const getCustomFields = async () => {
+      try {
+        let { data } = await axios.get(
+          `/GetAllCustomFields?entityType=4&&tenantID=${fullEventData.value.tenantID}`
+        );
+        dynamicCustomFields.value = data.sort((a, b) => a.order - b.order);
+      } catch (err) {
+        console.log(err);
+      }
+    };
 
-    const setDonationProperties = (payload) => {
-      console.log(payload)
-      donationNewProps.value = payload
-      confirmCheck()
-    }
+    const resetCallPayment = (payload) => {
+      callPayment.value = payload;
+    };
 
     return {
+      primarycolor,
+      paymentFormCurrency,
       disableClick,
+      setSelectedGender,
+      genderId,
+      setSelectedMaritalStatus,
+      maritalStatusId,
       toggleBase,
       checkCharacter,
       populateInputfields,
-      InputText,
       appltoggle,
       names,
       emails,
@@ -1084,7 +1522,6 @@ export default {
       route,
       eventData,
       dateFormatter,
-      checkedIn,
       confirmCheck,
       disabled,
       connectName,
@@ -1092,6 +1529,7 @@ export default {
       maskEmail,
       name,
       email,
+      maritalStatus,
       userAddress,
       showNoPhoneError,
       notme,
@@ -1102,6 +1540,7 @@ export default {
       fetchingFailed,
       personHasAddress,
       months,
+      gender,
       days,
       birthMonth,
       birthDay,
@@ -1126,12 +1565,25 @@ export default {
       authorizebutton,
       signout,
       content,
-      makePaymentRef,
       usedPaymentGateway,
       initializePayment,
-      setDonationProperties,
-      donationNewProps
-      // callIt
+      // setDonationProperties,
+      donationNewProps,
+      selectedCustomField,
+      checkinCode,
+      selectedMaritalStatus,
+      selectedGender,
+      weddingYearsArr,
+      dayOfWedding,
+      monthOfWedding,
+      yearOfWedding,
+      // controlType,
+      dynamicCustomFields,
+      date7,
+      eventPaymentForm,
+      callPayment,
+      initializePaymentResponse,
+      resetCallPayment,
     };
   },
 };
@@ -1146,6 +1598,9 @@ export default {
   border: none;
 }
 
+.eventpictbg {
+  background: #ebeff4;
+}
 .add-btn2 {
   background: none;
 }
@@ -1165,5 +1620,15 @@ export default {
 .italicize {
   font-style: italic;
   font-size: 15px;
+}
+
+.event-closed {
+  width: 50%;
+}
+
+@media (max-width: 400px) {
+  .event-closed {
+    width: 100%;
+  }
 }
 </style>

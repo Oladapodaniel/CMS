@@ -2,81 +2,124 @@
   <div class="container-fluid">
     <div class="row">
       <div class="col-md-12">
-
-        <!-- <hr class="hr" /> -->
-        <div class="no-person" v-if="items.length === 0 && !errorOccurred">
+        <div class="no-person" v-if="(items && items.length === 0) && !errorOccurred  && !loading">
           <div class="empty-img mt-5">
             <p><img src="../../../assets/people/people-empty.svg" alt="" /></p>
             <p class="tip">You have no attendance yet</p>
           </div>
         </div>
 
-        <div class="row" v-if="items.length > 0 && !loading">
+        <div class="row" v-if="(items && items.length > 0 ) && !loading">
           <div class="col-md-12 px-0">
-            <List :list="items" :errorOcurred="errorOccurred" @attendance-checkin="removeCheckin" :totalItems="totalItems" @pagedattendance="setPagedAttendance" />
+            <List
+              :list="items"
+              @checkedattendance="removeMultipleCheckin"
+              :errorOcurred="errorOccurred"
+              @attendance-checkin="removeCheckin"
+              :totalItems="totalItems"
+              @pagedattendance="setPagedAttendance"
+            />
           </div>
         </div>
+        <div class="row">
+              <el-skeleton class="w-100" animated v-if="loading">
+                <template #template>
+                  <div
+                    style="
+                      display: flex;
+                      align-items: center;
+                      justify-content: space-between;
+                      margin-top: 20px;
+                    "
+                  >
+                    <el-skeleton-item
+                      variant="text"
+                      style="width: 240px; height: 240px"
+                    />
+                    <el-skeleton-item
+                      variant="text"
+                      style="width: 240px; height: 240px"
+                    />
+                  </div>
+                  <el-skeleton
+                    class="w-100 mt-5"
+                    style="height: 25px"
+                    :rows="20"
+                    animated
+                  />
+                </template>
+              </el-skeleton>
+            </div>
         <div class="row" v-if="cantGetItems">
           <div class="col-md-12">
             <p>Error getting items, please reload</p>
           </div>
         </div>
       </div>
-
-      
     </div>
   </div>
 </template>
 
 <script>
 import List from "../../../views/event/attendance&checkin/AttendanceAndCheckinList";
-import attendanceservice from '../../../services/attendance/attendanceservice';
-import { ref } from 'vue';
+import store from "../../../store/store";
+import { ref, onMounted } from "vue";
 
 export default {
   components: { List },
   async setup() {
-    const items = ref([ ]);
+    const items = ref(store.getters["attendance/attendanceserviceitem"].data );
     const loading = ref(false);
     const errorOccurred = ref(false);
-    const cantGetItems = ref(true);
-    const totalItems = ref(0);
-
-    // const getAttendanceItems = async () => {
-      try {
+    const cantGetItems = ref(false);
+    const totalItems = ref(store.getters["attendance/attendanceserviceitem"].totalItems  );
+    const getAttendanceItems = async () => {
+    try {
+      loading.value = true;
+      cantGetItems.value = false
+      await store.dispatch("attendance/setAttendanceItemData").then((res) => {
+        items.value = res.data
+        totalItems.value = res.totalItems
+        loading.value = false;
         cantGetItems.value = false;
-        loading.value = true;
-        const response = await attendanceservice.getItems();
-        console.log(response, "checkins");
-        items.value = items.value ? response.items : [ ];
-        totalItems.value = response.totalItems
-        loading.value = false;
-      } catch (error) {
-        cantGetItems.value = true;
-        console.log(error);
-        loading.value = false;
-        errorOccurred.value = true;
-      }
-      console.log(errorOccurred.value);
-    // }
-    // getAttendanceItems();
-
-    const removeCheckin = (payload) => {
-        items.value.splice(payload, 1)
+      });
+    } catch (error) {
+      cantGetItems.value = true;
+      console.log(error);
+      loading.value = false;
+      errorOccurred.value = true;
     }
+    }
+    const removeCheckin = (payload) => {
+      items.value = items.value.filter((i) => i.id !== payload);
+    };
+
+    const removeMultipleCheckin = (payload) => {
+      items.value = items.value.filter((item) => {
+        const y = payload.findIndex((i) => i.id === item.id);
+        if (y >= 0) return false;
+        return true;
+      });
+    };
 
     const setPagedAttendance = (payload) => {
-      items.value = payload.items
-    }
+      items.value = payload.items;
+    };
+    onMounted(() => {
+      if ((!items.value) || (items.value && items.value.items && items.value.items.length == 0)){
+        getAttendanceItems();
+      }
+    });
 
     return {
       items,
+      removeMultipleCheckin,
       loading,
       errorOccurred,
       cantGetItems,
       removeCheckin,
       totalItems,
-      setPagedAttendance
+      setPagedAttendance,
     };
   },
 };

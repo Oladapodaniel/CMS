@@ -1,125 +1,139 @@
 <template>
-    <div class="container-fluid">
-        <Toast></Toast>
-        <ConfirmDialog />
-        <div class="row border">
-            <div class="col-md-8 p-2 font-weight-bold">
-                Name
-            </div>
-            <div class="col-md-2 p-2 font-weight-bold">
-                Active
-            </div>
-            <div class="col-md-2 p-2 font-weight-bold">
-                Action
-            </div>
+  <div class="container-fluid">
+    <div class="row">
+      <div class="col-md-12 mb-3 px-0">
+        <div class="text-primary c-pointer px-0 col-md-2" @click="previousPage">
+          <el-icon><DArrowLeft /></el-icon> Back
         </div>
-
-        <div class="row border" v-if="loading">
-            <div class="col-12">
-                <LoadingComponent :loading="loading" />
-            </div>
-        </div>
-
-        <div v-else class="row border" v-for="(workflow, index) in workflows" :key="index">
-            <div class="col-md-8 p-2">
-                <router-link class="text-decoration-none text-primary font-weight-700" :to="`/tenant/workflow/add?workflowId=${workflow.id}&fw=true`">
-                    {{ workflow.name }}
-                </router-link>
-            </div>
-            <div class="col-md-2 p-2">
-                {{ workflow.isActive ? 'Yes' : 'No' }}
-            </div>
-            <div class="col-md-2 p-2">
-                <i class="pi pi-trash" style="font-size:1.5rem" @click="confirmDelete(workflow.id)"></i>
-            </div>
-        </div>
+      </div>
     </div>
+    <div class="row">
+      <div class="col-md-12 px-0 mt-3">
+        <Table
+          :data="workflows"
+          :headers="headers"
+          :checkMultipleItem="false"
+          v-loading="loading"
+        >
+          <template v-slot:name="{ item }">
+            <div class="c-pointer">
+              <router-link
+                class="text-decoration-none text-primary font-weight-700"
+                :to="`/tenant/workflow/add?workflowId=${item.id}&fw=true`"
+              >
+                {{ item.name }}
+              </router-link>
+            </div>
+          </template>
+          <template v-slot:isActive="{ item }">
+            <div class="c-pointer">
+              <router-link
+                class="text-decoration-none text-primary font-weight-700"
+                :to="`/tenant/workflow/add?workflowId=${item.id}&fw=true`"
+              >
+                {{ item.isActive ? "Yes" : "No" }}
+              </router-link>
+            </div>
+          </template>
+          <template v-slot:action="{ item }">
+            <div class="c-pointer">
+              <el-icon class="text-danger" @click="confirmDelete(item.id)"
+                ><Delete
+              /></el-icon>
+            </div>
+          </template>
+        </Table>
+      </div>
+    </div>
+  </div>
 </template>
 
 <script>
-import { ref } from '@vue/reactivity'
-import LoadingComponent from "../../../components/loading/LoadingComponent.vue"
-import workflowFunctions from '../utlity/workflow_service'
-import { useConfirm } from "primevue/useConfirm";
-import { useToast } from "primevue/usetoast";
-import axios from 'axios';
+import { ref } from "@vue/reactivity";
+import workflowFunctions from "../utlity/workflow_service";
+import axios from "@/gateway/backendapi";
+import router from "../../../router";
+import Table from "@/components/table/Table";
+import { ElMessage, ElMessageBox } from "element-plus";
 
 export default {
-    components: { 
-        LoadingComponent
-    },
+  components: {
+    Table,
+  },
 
-    setup () {
-        const toast = useToast()
-        const confirm = useConfirm()
-        
-        const loading = ref(false)
-        const workflows = ref([
-            { name: 'Hello', active: true },
-            { name: 'jhbvjh,e e,jhkers', active: false },
-            { name: 'Hello erikje', active: true }
-        ])
+  setup() {
 
-        const getWorkflows = async () => {
-            try {
-                loading.value = true;
-                const { returnObject: data } = await workflowFunctions.getWorkflows();
-                console.log(data, 'cj test');
-                workflows.value = data;
-                loading.value = false;
-            } catch (error) {
-                loading.value = false;
-                console.log(error);
-            }
-        }
-        getWorkflows();
+    const loading = ref(false);
+    const workflows = ref([]);
 
-        const deleteWorkflow = id => {
-            if(id) {
-                axios
-                    .delete(`/api/workflow=${id}`)
-                    .then(res => {
-                        console.log(res, 'delete response');
-                    })
-                      workflows.value = workflows.value.filter(i => i.id !== id);
-           }
-        }
+    const previousPage = () => {
+      router.push("/tenant/settings");
+    };
 
-        const confirmDelete = (id, index) => {
-            confirm.require({
-                message: "Are you sure you want to proceed?",
-                header: "Confirmation",
-                icon: "pi pi-exclamation-triangle",
-                acceptClass: "confirm-delete",
-                rejectClass: "cancel-delete",
-                accept: () => {
-                    deleteWorkflow(id);
-                    toast.add({
-                        severity: "success",
-                        summary: "Deleted",
-                        detail: "Workflow deleted successfully",
-                        life: 2500,
-                    });
-                },
-                reject: () => {
-                toast.add({
-                    severity: "info",
-                    summary: "Rejected",
-                    life: 3000,
-                });
-                },
+    const headers = ref([
+      { name: "NAME", value: "name" },
+      { name: "ACTIVE", value: "isActive" },
+      { name: "ACTION", value: "action" },
+    ]);
+
+    const getWorkflows = async () => {
+      try {
+        loading.value = true;
+        const { returnObject: data } = await workflowFunctions.getWorkflows();
+        console.log(data);
+        workflows.value = data;
+        loading.value = false;
+      } catch (error) {
+        loading.value = false;
+        console.log(error);
+      }
+    };
+    getWorkflows();
+
+    const deleteWorkflow = (id) => {
+      if (id) {
+        loading.value = true
+        axios.delete(`/api/workflow?id=${id}`).then((res) => {
+            workflows.value = workflows.value.filter((i) => i.id !== id);
+            loading.value = false
+            ElMessage({
+                type: "success",
+                message: "Workflow deleted successfully",
+                showClose: true,
+                duration: 5000,
             });
-        }
-
-        return {
-            workflows,
-            loading,
-            confirmDelete,
-        }
+        });
     }
-}
+};
+
+const confirmDelete = (id) => {
+    ElMessageBox.confirm("Are you sure you want to proceed?", "Confirm delete", {
+        confirmButtonText: "OK",
+        cancelButtonText: "Cancel",
+        type: "error",
+    })
+    .then(() => {
+        deleteWorkflow(id);
+    })
+    .catch(() => {
+            loading.value = false
+          ElMessage({
+            type: "info",
+            message: "Rejected",
+            duration: 5000,
+          });
+        });
+    };
+
+    return {
+      workflows,
+      previousPage,
+      loading,
+      confirmDelete,
+      headers,
+    };
+  },
+};
 </script>
 
-<style lang="scss" scoped>
-
-</style>
+<style lang="scss" scoped></style>

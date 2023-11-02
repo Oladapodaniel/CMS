@@ -91,6 +91,59 @@ const eventsService = {
                     }
                 })
         })
+    },
+    getEventItems() {
+        return new Promise((resolve, reject) => {
+            axios.get('/api/EventReports/EventReports?page=1')
+                .then(res => {
+                    resolve( res.data );
+                })
+                .catch(error => {
+                     /*eslint no-undef: "warn"*/
+                     NProgress.done();
+                    if (error.response) {
+                        reject(error.response);
+                    } else {
+                        reject(error);
+                    }
+                })
+        })
+    },
+
+    getEventReportSummary() {
+        return new Promise((resolve, reject) => {
+            axios.get('/api/EventReports/EventReportDashboard?page=1')
+                .then(res => {
+                    resolve( res.data );
+                })
+                .catch(error => {
+                     /*eslint no-undef: "warn"*/
+                     NProgress.done();
+                    if (error.response) {
+                        reject(error.response);
+                    } else {
+                        reject(error);
+                    }
+                })
+        })
+    },
+
+    approveServiceReport(body) {
+        return new Promise((resolve, reject) => {
+            axios.put('/api/Events/approveservicetoggle', body)
+                .then(res => {
+                    resolve( res.data );
+                })
+                .catch(error => {
+                     /*eslint no-undef: "warn"*/
+                     NProgress.done();
+                    if (error.response) {
+                        reject(error.response);
+                    } else {
+                        reject(error);
+                    }
+                })
+        })
     }
 }
 

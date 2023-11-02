@@ -81,13 +81,8 @@
         <div class="container-fluid mb-3 ">
             <div class="row">
                 <div class="col-12 domId p-3" v-show="mappedBranch.length > 0">
-                    <!-- <div class="dhx_sample-container">
-                        <div class="dhx_sample-widget w-100" ref="editor"></div>
-                    </div> -->
-                    <!-- <Organisation domId="orgchart2" :data="mappedBranch"/> -->
                     <OrganizationChart :value="data1" :collapsible="true" class="company" selectionMode="single" v-model:selectionKeys="selection">
                         <template #person="slotProps">
-                            <!-- <div class="node-header ui-corner-top">{{slotProps.node.data.label}}</div> -->
                             <div class="node-content">
                                 <img :src="slotProps.node.data.label.logo" width="32">
                                 <div>{{slotProps.node.data.name}}</div>
@@ -191,7 +186,7 @@
 </template>
 
 <script>
-import { computed, onMounted, ref } from "vue";
+import { computed, ref } from "vue";
 import Dropdown from "primevue/dropdown";
 import Organisation from "../../components/charts/OrgChart2.vue"
 import BranchSettings from "../settings/BranchLevelSettings.vue"
@@ -289,7 +284,6 @@ export default {
                 let treeConstruted = unflatten(matchedValues)
                 const HQ = data.returnObject.find(i => i.parentID.includes('00000000-000'))
                 const belowHQ = data.returnObject[0]
-                console.log(belowHQ)
                 let treeData = {
                         key: '0',
                         type: 'person',
@@ -325,18 +319,14 @@ export default {
 
         const showBranchItem = async () => {
             if (!currentUserID.value) await  getCurrentUserID()
-             let y;
-                 
-             console.log(currentUserID, "userid");
              const x = branches.value.find(i => {
                  let a = i.children.find(j => j.id === currentUserID.value);
                  if (a) return i;
                 //  return i;
              })
-             console.log(x, "XXXXXXXXX");
              if (x)  {
                  selectedBranch.value = x.children.find(j => j.id === currentUserID.value)
-                 console.log(selectedBranch.value,'Ogbara');
+
              }
          }
          
@@ -346,7 +336,6 @@ export default {
                         axios
                         .get("/api/Branching/hierarchieswithbranches")
                         .then( async (res) => {
-                            console.log(res.data);
                             branches.value = res.data.returnObject.map(i => {
                                 return {
                                     label: i.name,
@@ -361,8 +350,6 @@ export default {
                             })
                             await showBranchItem()
                             getBranchAnalytics()
-
-                            console.log(branches.value, "ggggooostar")
                         })
                         .catch((err) => console.log(err));
                     } catch (err) {
@@ -419,10 +406,8 @@ export default {
         }
 
         const getBranchAnalytics = async() => {
-            console.log(selectedBranch.value)
             try {
                 let { data } = await axios.get(`/api/Branching/analytics?startDate=${selectedPeriod.value.code}&endDate=${new Date().toLocaleDateString("en-US")}&branchID=${selectedBranch.value.id}`)
-                console.log(data)
                 branchAnalytics.value = data
             }
             catch (err) {

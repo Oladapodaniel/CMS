@@ -1,5 +1,7 @@
 
 <template>
+<!-- This component is not currently in use in production environment, it will be removed in the future eventually -->
+
   <div class="bg">
     <!-- start of nav-header area -->
     <section class="header hcolor sticky-top">
@@ -276,6 +278,9 @@
 import { ref } from "vue";
 import Dropdown from "primevue/dropdown";
 export default {
+  components: {
+    Dropdown,
+  },
   setup() {
     const hideTabOne = ref(true);
 
@@ -333,7 +338,6 @@ export default {
       toggleTabOne,
       funds,
       toggleTabTwo,
-      Dropdown,
       selectedContributionType,
       date,
       givingOften,

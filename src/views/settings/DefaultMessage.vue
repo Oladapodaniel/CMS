@@ -23,10 +23,10 @@
           <span class="py-2 font-weight-bold">Subject</span>
         </div>
         <div class="col-md-3">
-          <span class="py-2 font-weight-bold">Type</span>
+          <span class="py-2 font-weight-bold">Category</span>
         </div>
         <div class="col-md-1">
-          <span class="py-2 font-weight-bold">Category</span>
+          <span class="py-2 font-weight-bold">Type</span>
         </div>
         <div class="col-md-1">
           <span class="py-2 font-weight-bold"></span> 
@@ -41,36 +41,40 @@
               class="col-md-4 d-flex justify-content-between align-items-center"
             >
               <span class="py-2 hidden-header">MESSAGE</span>
-              <span class="py-2" v-if="allMessages.message.length < 18"><router-link class="route" :to="{path:'/tenant/settings/adddefaultmessage',query:{messageId:allMessages.id}}">{{allMessages.message}}</router-link></span>
-              <span v-else v-tooltip.top="`${allMessages.message}`"><router-link class="route" :to="{path:'/tenant/settings/adddefaultmessage',query:{messageId:allMessages.id}}">{{allMessages.message.substring(0,18)+"..."}}</router-link></span>
-               <!-- <span class="py-2 text-xs-left"  v-if="churchMem.email.length<10">{{ churchMem.email}}</span>
-              <span v-else v-tooltip.top="`${churchMem.email}`">{{churchMem.email.substring(0,10)+ "..."}}</span> -->
+              <span class="py-2" v-if="allMessages && allMessages.message && allMessages.message.length < 18"><router-link class="route" :to="{path:'/tenant/settings/adddefaultmessage',query:{messageId:allMessages.id}}">{{allMessages.message}}</router-link></span>
+              <el-tooltip v-else :content="`${allMessages.message}`" placement="top" >
+                <router-link class="route" :to="{path:'/tenant/settings/adddefaultmessage',query:{messageId:allMessages.id}}">{{allMessages.message ? allMessages.message.substring(0,18)+"..." : "---"}}</router-link>
+              </el-tooltip>
             </div>
             <div
               class="col-md-3 d-flex justify-content-between align-items-center"
             >
               <span class="py-2 hidden-header">SUBJECT</span>
-              <span class="py-2 text-xs-left" v-if="allMessages.subject.length < 18"> <router-link class="route" :to="{path:'/tenant/settings/adddefaultmessage',query:{messageId:allMessages.id}}">{{allMessages.subject}}</router-link></span>
-              <span v-else v-tooltip.top="`${allMessages.subject}`">{{allMessages.subject.substring(0,)+ "..."}}</span>
+              <span class="py-2 text-xs-left" v-if="allMessages && allMessages.subject && allMessages.subject.length < 18"> <router-link class="route" :to="{path:'/tenant/settings/adddefaultmessage',query:{messageId:allMessages.id}}">{{allMessages.subject}}</router-link></span>
+              <el-tooltip v-else :content="`${allMessages.subject}`" placement="top" >
+                {{allMessages.subject ? allMessages.subject.substring(0,)+ "..." : "---"}}
+              </el-tooltip>
             </div>
-            <div
+             <div
               class="col-md-3 d-flex justify-content-between align-items-center"
-            >
-              <span class="py-4 hidden-header">TYPE</span>
-              <span class="py-2" v-if="messageName(allMessages.messageType).length < 18"> <router-link class="route" :to="{path:'/tenant/settings/adddefaultmessage',query:{messageId:allMessages.id}}">{{messageName(allMessages.messageType)}}</router-link></span>
-              <span v-else v-tooltip.top="`${messageName(allMessages.messageType)}`"> <router-link class="route" :to="{path:'/tenant/settings/adddefaultmessage',query:{messageId:allMessages.id}}">{{messageName(allMessages.messageType).substring(0,18) + "..."}}</router-link></span>
-              
-              
-             
-            </div>
-            <div
-              class="col-md-1 d-flex justify-content-between align-items-center"
             >
               <span class="py-4 hidden-header">CATEGORY</span>
               <span class="py-2"><router-link class="route" :to="{path:'/tenant/settings/adddefaultmessage',query:{messageId:allMessages.id}}">{{categoryName(allMessages.category)}}</router-link></span>
               
               
             </div>
+            <div
+              class="col-md-1 d-flex justify-content-between align-items-center"
+            >
+              <span class="py-4 hidden-header">TYPE</span>
+              <span class="py-2" v-if="allMessages && allMessages.messageType && messageName(allMessages.messageType).length < 18"> <router-link class="route" :to="{path:'/tenant/settings/adddefaultmessage',query:{messageId:allMessages.id}}">{{messageName(allMessages.messageType)}}</router-link></span>
+              <el-tooltip v-else :content="`${messageName(allMessages.messageType)}`" placement="top" >
+              <span> <router-link class="route" :to="{path:'/tenant/settings/adddefaultmessage',query:{messageId:allMessages.id}}">{{messageName(allMessages.messageType).substring(0,18) + "..."}}</router-link></span>
+              </el-tooltip>
+              
+             
+            </div>
+           
             <div
               class="col-sm-12 d-flex col-12 justify-content-sm-end col-md-1 col-lg-1 col-xl-1 d-flex justify-content-end align-items-center"
             >
@@ -95,14 +99,6 @@
               </div>
             </div>
           </div>
-          <Toast/>
-          <ConfirmDialog/>
-
-          <!-- <div class="row">
-            <div class="col-md-12 px-0">
-              <hr class="hr my-0" />
-            </div>
-          </div> -->
         </div>
         <div class=" col-12 text-center p-5" v-if="loading">
              <i class="pi pi-spin pi-spinner text-center text-primary" style="fontSize: 3rem"></i>
@@ -117,19 +113,11 @@
 <script>
 import axios from "@/gateway/backendapi";
 import messageOptions from '../../services/defaultmessage/default_message_service';
-import Toast from 'primevue/toast';
-import ConfirmDialog from 'primevue/confirmdialog';
-import Tooltip from 'primevue/tooltip';
 import finish from '../../services/progressbar/progress'
+import { ElMessage, ElMessageBox } from 'element-plus'
 export default {
   components:{
-    Toast,
-    ConfirmDialog
-
   },
-    directives: {
-    'tooltip': Tooltip
-},
   data(){
     return{
     selectCategory: null,
@@ -142,26 +130,35 @@ export default {
   },
   methods: {
        deletePop(id) {
-            this.$confirm.require({
-                message: 'Are you sure you want to Delete?',
-                header: 'Delete Confirmation',
-                icon: 'pi pi-exclamation-circle',
-                acceptClass: 'confirm-delete',
-                rejectClass: 'cancel-delete',
-                accept: () => {
-                  this.deleteDefaultmessage(id)
-                    //callback to execute when user confirms the action
-                },
-                reject: () => {
-                    'No internet'
-                }
-            });
+        ElMessageBox.confirm(
+        'Are you sure you want to proceed?',
+        'Confirm delete',
+        {
+          confirmButtonText: 'OK',
+          cancelButtonText: 'Cancel',
+          type: 'error',
+        }
+      )
+        .then(() => {
+          this.deleteDefaultmessage(id)
+        })
+        .catch(() => {
+          ElMessage({
+            type: 'error',
+            message: 'Delete canceled',
+            duration: 5000
+          })
+        })
         },
     async deleteDefaultmessage(id){
       try {
         await axios.delete('/api/Settings/DeleteDefaultMessage/'+id);
         this.defaultMessage = this.defaultMessage.filter(i => i.id !== id);
-         this.$toast.add({severity:'success', summary: '', detail:'Message Deleted Successfully', life: 3000});
+        ElMessage({
+              type: 'success',
+              message: 'Message Deleted Successfully',
+              duration: 5000
+            })
       } catch (error){
         finish()
         console.log(error);
@@ -173,18 +170,17 @@ export default {
         const  {data} = await axios.get('/api/Settings/AllDefaultMessages')
         this.defaultMessage = data.returnObject;
         this.loading = false
-        console.log(this.defaultMessage)
       }catch(error){
         console.log(error)
       }
     },
     
     messageName(value){
-      return messageOptions.Membership[value].name
+      return messageOptions.Sms[value] ? messageOptions.Sms[value].name : ""
     },
      categoryName(value){
-       console.log(messageOptions.Sms[value]);
-      return messageOptions.Sms[value] ? messageOptions.Sms[value].name : ""
+      return messageOptions.Membership[value].name
+       
     },
 
     

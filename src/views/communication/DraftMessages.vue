@@ -1,4 +1,4 @@
-!<template>
+<template>
   <div>
     <div class="container">
       <!-- Content Box -->
@@ -7,17 +7,12 @@
           <div class="row px-0">
             <div class="col-md-12 px-0">
               <div class="row d-md-flex align-items-center mt-3 mb-4">
-                <div class="col-md-8 col-sm-12 pl-0">
+                <div class="col-md-8 col-sm-12">
                   <div class="search-div">
-                    <span><i class="pi pi-search mr-1"></i></span>
-                    <input
-                      type="text"
-                      placeholder="Search here..."
-                      v-model="searchDrafts"
-                    />
-                    <span class="mx-2"> | </span>
-                    <span class="mx-2">Sort By</span>
-                    <span class="font-weight-bold"> Newest</span>
+                    <el-icon style="vertical-align: middle" class="search-sms mr-1">
+                      <Search />
+                    </el-icon>
+                    <input type="text" placeholder="Search here..." v-model="searchDrafts" class="w-100 pl-4" />
                   </div>
                 </div>
                 <div class="col-sm-5 col-md-4 mt-sm-2 units-container">
@@ -25,118 +20,39 @@
                 </div>
               </div>
 
-              <i
-                class="pi pi-trash text-danger ml-n4 mb-2 c-pointer d-flex align-items-center px-4"
-                style="font-size: 15px"
-                v-if="markedDraft ? markedDraft.length > 0 : ''"
-                @click="showConfirmModal(null)"
-              >
-              </i>
-              <div class="row">
-                <div class="col-md-12">
-                  <div class="row header-row">
-                    <div class="col-md-12">
-                      <div class="row light-grey-bg py-2 tr-border-bottom">
-                        <div class="col-md-1" v-if="drafts.length > 0">
-                          <input
-                            type="checkbox"
-                            name="all"
-                            id="all"
-                            @change="markAllDrafts"
-                            :checked="markedDraft.length === drafts.length"
-                          />
-                        </div>
-                        <div class="col-md-7">
-                          <span class="th">Message</span>
-                        </div>
-                        <div class="col-md-3">
-                          <span class="th">Date & Time</span>
-                        </div>
-                        <div class="col-md-1">
-                          <span class="th"></span>
-                        </div>
-                      </div>
-                    </div>
-                  </div>
-                  <div
-                    class="row tr-border-bottom"
-                    v-for="(draft, index) in searchDraftMessage"
-                    :key="index"
-                  >
-                    <div class="col-md-12 py-2">
-                      <div class="row py-1">
-                        <div class="col-md-1">
-                          <input
-                            type="checkbox"
-                            name=""
-                            id=""
-                            @change="mark1Draft(draft)"
-                            :checked="
-                              markedDraft.findIndex((i) => i.id === draft.id) >=
-                              0
-                            "
-                          />
-                        </div>
-                        <div
-                          class="col-md-7 col-ms-12 d-flex justify-content-between"
-                        >
-                          <span class="hidden-header font-weight-bold"
-                            >Message:
-                          </span>
-                          <span
-                            ><router-link
-                              class="small-text text-decoration-none font-weight-700"
-                              :to="{
-                                name: 'SendMessage',
-                                query: { draftId: draft.id },
-                              }"
-                              >{{ draft.body.length > 50 ? `${ draft.body.slice(0, 50) }...` : draft.body }}</router-link
-                            ></span
-                          >
-                        </div>
-                        <div
-                          class="col-md-3 col-ms-12 d-flex justify-content-between"
-                        >
-                          <span class="hidden-header font-weight-bold"
-                            >Date & Time
-                          </span>
-                          <span class="small-text">{{
-                            new Date(draft.dateModified).toLocaleDateString()
-                          }}</span>
-                        </div>
-                        <div
-                          class="col-md-1 col-ms-12 d-flex justify-content-between"
-                        >
-                          <span class="small-text">
-                            <i
-                              class="c-pointer pi pi-trash delete-icon"
-                              @click="showConfirmModal(draft)"
-                            >
-                            </i
-                          ></span>
-                        </div>
-                      </div>
-                    </div>
-                  </div>
-                  
-                  <div class="row">
-                    <div class="col-md-12">
-                      <Loading :loading="loading" />
-                    </div>
-                  </div>
-
-                  <div class="row" v-if="!loading && searchDraftMessage.length === 0">
-                    <div class="col-md-12 text-center py-3">
-                      <p class="font-weight-700">No Drafts</p>
-                    </div>
-                  </div>
-                </div>
+              <div class="table-options" v-if="markedDraft.length > 0">
+                <el-icon class="text-danger c-pointer" @click="showConfirmModal">
+                  <Delete />
+                </el-icon>
               </div>
+              <Table :data="searchDraftMessage" :headers="DraftHeaders" :checkMultipleItem="true"
+                @checkedrow="handleSelectionChange" v-loading="loading">
+                <template #body="{ item }">
+                  <div>
+                    <router-link class="font-weight-600 no-decoration primary--text" :to="{
+                      name: 'SendMessage',
+                      query: { draftId: item.id },
+                    }">{{ item.body.length > 50 ? `${item.body.slice(0, 50)}...` : item.body }}</router-link>
+                  </div>
+                </template>
+                <template #dateModified="{ item }">
+                  <div class="small-text">
+                    {{ formatDate(item.dateModified) }}
+                  </div>
+                </template>
+                <template v-slot:action="{ item }">
+                  <div>
+                    <span class="small-text">
+                      <el-icon class="text-danger c-pointer" @click="showConfirmModal(item)">
+                        <Delete />
+                      </el-icon>
+                    </span>
+                  </div>
+                </template>
+              </Table>
             </div>
           </div>
         </div>
-        <ConfirmDialog />
-        <Toast />
       </main>
     </div>
   </div>
@@ -144,26 +60,28 @@
 
 <script>
 import { ref, computed } from "vue";
-import router from "@/router/index";
 import UnitsArea from "../../components/units/UnitsArea";
-import { useConfirm } from "primevue/useConfirm";
 import axios from "@/gateway/backendapi";
 import communicationService from "../../services/communication/communicationservice";
 import store from "../../store/store";
-import { useToast } from "primevue/usetoast";
 import stopProgressBar from "../../services/progressbar/progress";
 import Loading from "../../components/loading/LoadingComponent"
+import { ElMessage, ElMessageBox } from 'element-plus'
+import dateFormatter from "../../services/dates/dateformatter";
+import Table from "@/components/table/Table"
 
 export default {
-  components: { UnitsArea, Loading },
+  components: { UnitsArea, Loading, Table },
 
   setup() {
     const loading = ref(true);
     const searchDrafts = ref("");
     const drafts = ref([]);
-    const payWithPaystack = () => {
-      router.push("/tenant/units");
-    };
+    const DraftHeaders = ref([
+      { name: 'MESSAGE', value: 'body' },
+      { name: 'DATE', value: 'dateModified' },
+      { name: 'ACTION', value: 'action' },
+    ])
 
     const getDrafts = async () => {
       try {
@@ -193,7 +111,7 @@ export default {
       );
     });
 
-// Function to delete messages
+    // Function to delete messages
     const handler = (f) => {
       return f.map((i) => i.id).join(",");
     };
@@ -206,8 +124,7 @@ export default {
       if (draft && draft.id) url = `/api/Messaging/DeleteSmsDraft?SMSDraftIdList=${draft.id}`;
       axios
         .delete(url)
-        .then((res) => {
-          console.log(res);
+        .then(() => {
           if (!draft || !draft.id) {
             drafts.value = drafts.value.filter((item) => {
               const t = markedDraft.value.findIndex((i) => i.id === item.id);
@@ -222,97 +139,75 @@ export default {
             store.dispatch("communication/removeSmsDrafts", draft.id);
           }
 
-          toast.add({
-            severity: "success",
-            summary: "Confirmed",
-            detail: "Draft Deleted",
-            life: 3000,
-          });
-          
+          ElMessage({
+            type: 'success',
+            message: 'Draft deleted successfully',
+            duration: 5000
+          })
+
           markedDraft.value = [];
 
         })
         .catch((err) => {
           stopProgressBar();
-          toast.add({
-            severity: "error",
-            summary: "Delete Error",
-            detail: "Deleting Draft failed",
-            life: 3000,
-          });
+          ElMessage({
+            type: 'error',
+            message: 'Draft delete failed',
+            duration: 5000
+          })
           console.log(err);
         });
     };
 
-
-
-    const confirm = useConfirm();
-    let toast = useToast();
     const showConfirmModal = (id) => {
-      confirm.require({
-        message: "Are you sure you want to proceed?",
-        header: "Confirmation",
-        icon: "pi pi-exclamation-triangle",
-        acceptClass: "confirm-delete",
-        rejectClass: "cancel-delete",
-        accept: () => {
+      ElMessageBox.confirm(
+        'This delete action cannot be reversed. do you want to continue?',
+        'Confirm delete',
+        {
+          confirmButtonText: 'OK',
+          cancelButtonText: 'Cancel',
+          type: 'error',
+        }
+      )
+        .then(() => {
           if (!id) {
             deleteDraft()
           } else {
             deleteDraft(id)
           }
-        },
-        reject: () => {
-          //  toast.add({severity:'info', summary:'Rejected',
-          //  detail:'You have rejected', life: 3000});
-        },
-      });
+        })
+        .catch(() => {
+          ElMessage({
+            type: 'info',
+            message: 'Delete canceled',
+          })
+        })
     };
 
     // code to mark single item in draft
     const markedDraft = ref([]);
-    const mark1Draft = (draftItem) => {
-      const draftIndex = markedDraft.value.findIndex(
-        (i) => i.id === draftItem.id
-      );
-      if (draftIndex < 0) {
-        markedDraft.value.push(draftItem);
-      } else {
-        markedDraft.value.splice(draftIndex, 1);
-      }
-      console.log(markedDraft.value, "You are awesome");
+
+    const formatDate = (date) => {
+      return dateFormatter.monthDayYear(date);
     };
 
-    // code to mark multiple item in draft
-    const markAllDrafts = () => {
-      if (markedDraft.value.length < drafts.value.length) {
-        drafts.value.forEach((i) => {
-          const draftInMarked = markedDraft.value.findIndex(
-            (d) => d.id === i.id
-          );
-          if (draftInMarked < 0) {
-            markedDraft.value.push(i);
-          }
-        });
-      } else {
-        markedDraft.value = [];
-      }
-      console.log(markedDraft.value, "You are Super awesome");
-    };
+    const handleSelectionChange = (val) => {
+      markedDraft.value = val
+    }
 
     return {
       drafts,
-      payWithPaystack,
       getDrafts,
       searchDraftMessage,
       searchDrafts,
       markedDraft,
-      mark1Draft,
-      markAllDrafts,
       handler,
       deleteDraft,
       showConfirmModal,
       loading,
+      DraftHeaders,
+      formatDate,
+      handleSelectionChange
     };
   },
 };
@@ -320,10 +215,15 @@ export default {
 
 <style scoped>
 .search-div {
-  width: fit-content;
+  /* width: fit-content; */
   padding: 10px;
   background: #f5f8f9;
   border-radius: 200px;
+}
+
+.search-sms {
+  position: absolute;
+  top: 14px;
 }
 
 .search-div input {
@@ -332,8 +232,15 @@ export default {
   outline: transparent;
 }
 
+.table-options {
+  border: 1px solid rgb(212, 221, 227);
+  border-bottom: none;
+  padding: 7px 7px 0 7px
+}
+
 .brief-message {
   color: #4762f0;
+  font-size: 14px;
 }
 
 .compose-btn {

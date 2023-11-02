@@ -25,7 +25,7 @@ let converter = {
     let toIndex = propertyArr.indexOf(toDestinationCurrencyRate);
     let toRate = valueArr[toIndex];
     let result = (amount / fromRate) * toRate;
-    console.log(result);
+    console.log(result, currencyRate, fromCurrencyRate, fromIndex, fromRate, toIndex, toRate);
     return result;
   },
   async convertCurrencyTo(amount, fromCurrencyRate, toDestinationCurrencyRate) {
@@ -65,7 +65,6 @@ let converter = {
         axios
           .get("/fxRates")
           .then((res) => {
-            console.log(res, "Blah");
             vm.conversionData = res.data;
             resolve(res.data);
           })

@@ -16,6 +16,7 @@
 
 <script>
     import DecoupledDocument from '@ckeditor/ckeditor5-build-decoupled-document';
+    // import ClassicEditor from '@ckeditor/ckeditor5-build-classic';
     import MyUploadAdapter from "@/services/editor/editor_uploader"
 import { ref, watchEffect } from '@vue/runtime-core';
 
@@ -141,6 +142,8 @@ import { ref, watchEffect } from '@vue/runtime-core';
 
         /* Center the "page". */
         margin: 0 auto;
+
+        min-height: 300px
     }
 
     /* Set the default font for the "page" of the content. */

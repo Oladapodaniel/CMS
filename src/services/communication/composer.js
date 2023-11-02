@@ -7,6 +7,22 @@ const composerObj = {
         "All contacts",
         "Select group from database",
         "Select person from membership database",
+        "Emails",
+        
+    ],
+    possibleBranchSMSDestinations: [
+        "All branches",
+        "Choose branch(s)",
+        "Phone numbers",
+        "Upload contacts",
+    ],
+    
+    possibleBranchEMAIlDestinations: [
+        "All branch",
+        "Choose branch(s)",
+        "Emails",
+        
+        
     ],
 
     possibleSMSDestinations: [
@@ -14,7 +30,7 @@ const composerObj = {
         "Select group from database",
         "Select person from membership database",
         "Phone numbers",
-        "Upload contacts"
+        "Upload contacts",
     ],
 
     getCommunicationGroups() {
@@ -68,14 +84,11 @@ const composerObj = {
 
     saveDraft(data, url) {
         return new Promise((resolve, reject) => {
-            /*eslint no-undef: "warn"*/
-            NProgress.start();
             axios.post(url, data)
                 .then(res => {
                     resolve(res.data);
                 })
                 .catch(error => {
-                    NProgress.done();
                     if (error.response) reject(error.response);
                     if (!error.response) reject(error);
                 })
@@ -84,14 +97,12 @@ const composerObj = {
 
     getSMSById(id) {
         return new Promise((resolve, reject) => {
-            NProgress.start();
             axios.get(`/api/Messaging/getSentSMSbyId?CommReportId=${id}`)
                 .then(res => {
                     console.log(res);
                     resolve(res.data);
                 })
                 .catch(error => {
-                    NProgress.done();
                     if (error.response) reject(error.response);
                     if (!error.response) reject(error);
                 })

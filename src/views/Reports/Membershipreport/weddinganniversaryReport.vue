@@ -1,150 +1,124 @@
 <template>
-  <div class="container-fluid px-5">
+  <div class="container-fluid">
     <!-- header area -->
-    <div class="container">
-      <div
-        class="
-          row
-          d-flex
-          flex-row
-          justify-content-between
-          mt-5
-          align-items-center
-        "
-      >
-        <div class="centered-items">
-          <h3 class="heading-text ml-2">Wedding Anniversary Report</h3>
-        </div>
-
-        <!-- <div class="centered-items pr-3">
-          <button
-            class="default-btn font-weight-normal"
-            @click="() => (showExport = !showExport)"
-          >
-            Export &nbsp; &nbsp; <i class="pi pi-angle-down"></i>
-          </button>
-        </div> -->
-
-         <div
-          class="default-btn font-weight-normal c-pointer "
-          @click="() => (showExport = !showExport)"
-          style="width: fixed; position:relative">
-                   Export &nbsp; &nbsp; <i class="pi pi-angle-down" ></i>
-                   <div
-                        class=" c-pointer"
-                        style="width: 6rem; z-index:1000; position:absolute"
-                        v-if="showExport">
-
-                         <Listbox
-                         @click="downloadFile"
-                         v-model="selectedFileType"
-                         :options="bookTypeList"
-                         optionLabel="name"/>
-                    </div>
-              </div>
-
+    <!-- <div class="container"> -->
+    <div class="row flex-row justify-content-between align-items-center">
+      <div class="centered-items">
+        <div class="head-text">Wedding Anniversary Report</div>
       </div>
-
-      <!-- <transition name="move" mode="out-in">
-        <div class="row my-4" v-if="showExport">
-          <div class="col-sm-5">
-            <span class="p-float-label ml-n3">
-              <InputText
-                id="inputtext"
-                class="w-100"
-                type="text"
-                v-model="fileName"
-              />
-              <label for="inputtext">Enter file name</label>
-            </span>
-          </div>
-          <div class="col-sm-4">
-            <Dropdown
-              v-model="selectedFileType"
-              class="w-100"
-              :options="bookTypeList"
-              placeholder="Select file type"
-            />
-          </div> -->
-          <!-- <div class="">Export</div> -->
-          <!-- <div @click="downloadFile" class="col-sm-2 offset-sm-1">
-            <div
-              class="
-                default-btn
-                d-flex
-                align-items-center
-                justify-content-center
-                c-pointer
-                generate-report
-              "
-            >
-              Download
+      <div class="c-pointer my-sm-0 my-2">
+        <el-dropdown trigger="click" class="w-100">
+          <div
+            class="d-flex justify-content-between default-btn text-dark w-100"
+            size="large"
+          >
+            <span class="mt-1">Export</span>
+            <div class="mt-1">
+              <el-icon class="el-icon--right">
+                <arrow-down />
+              </el-icon>
             </div>
           </div>
-        </div>
-      </transition> -->
+          <template #dropdown>
+            <el-dropdown-menu>
+              <el-dropdown-item
+                v-for="(bookType, index) in bookTypeList"
+                :key="index"
+              >
+                <a
+                  class="no-decoration text-dark"
+                  @click="downloadFile(bookType)"
+                >
+                  {{ bookType.name }}
+                </a>
+              </el-dropdown-item>
+            </el-dropdown-menu>
+          </template>
+        </el-dropdown>
+      </div>
     </div>
+    <!-- </div> -->
     <!--end of header area -->
 
     <!-- date area -->
-        <div class="container-fluid bg-area my-3">
-        <div class="row px-4 w-100 ml-md-5 px-sm-4 mt-sm-3 ">
-              <div class="col-md-4 col-sm-12 px-md-0">
-                  <div class="p-field p-col-12 pt-md-2 pb-2">
-                    <div>
-                      <label for="icon" class="mb-0 font-weight-bold">Start Date</label>
-                    </div>
-                    <Calendar class="w-100" id="icon" v-model="startDate" :showIcon="true" dateFormat="dd/mm/yy"/>
-                  </div>
-              </div>
-              <div class="col-md-4 col-sm-12 pr-md-0">
-                  <div class="p-field p-col-12 pt-md-2">
-                    <div>
-                      <label for="icon" class="mb-0 font-weight-bold">End Date</label>
-                    </div>
-                    <Calendar class="w-100" id="icon" v-model="endDate" :showIcon="true" dateFormat="dd/mm/yy"/>
-                  </div>
-              </div>
-            <div class="col-md-4 col-sm-12 pr-md-0">
-                  <div class="p-field p-col-12 pt-md-2">
-                    <button
-                            class="default-btn generate-report c-pointer font-weight-normal mt-4"
-                            @click="generateWeddingAnniversaryReport">
-                            Generate Report
-                    </button>
-                  </div>
-              </div>
+    <!-- <div class="container-fluid bg-area my-3"> -->
+    <div class="row pl-1 pl-md-5 bg-area mt-sm-3">
+      <div class="col-md-4 col-sm-12 px-md-0">
+        <div class="p-field p-col-12 pt-md-2 pb-2">
+          <div>
+            <label for="icon" class="mb-0 font-weight-bold">Start Date</label>
+          </div>
+
+          <el-date-picker
+            v-model="startDate"
+            type="date"
+            format="DD/MM/YYYY"
+            size="large"
+            class="w-100"
+          />
         </div>
       </div>
+      <div class="col-md-4 col-sm-12 pr-md-0">
+        <div class="p-field p-col-12 pt-md-2">
+          <div>
+            <label for="icon" class="mb-0 font-weight-bold">End Date</label>
+          </div>
+
+          <el-date-picker
+            v-model="endDate"
+            type="date"
+            format="DD/MM/YYYY"
+            size="large"
+            class="w-100"
+          />
+        </div>
+      </div>
+      <div class="col-md-4 col-sm-12 pr-md-0">
+        <div class="p-field p-col-12 pt-md-2">
+          <el-button
+            class="c-pointer mt-4"
+            round
+            :color="primarycolor"
+            :loading="loading"
+            @click="generateWeddingAnniversaryReport"
+          >
+            Generate Report
+          </el-button>
+        </div>
+      </div>
+    </div>
+    <!-- </div> -->
     <!--end of date area -->
     <div id="element-to-print">
-      <section >
+      <section class="row">
         <!-- chart area -->
         <div
-          class="chart row"
+          class="chart container-fluid"
           :class="
             weddingAnniversary && weddingAnniversary.length > 0
               ? 'graph-area'
               : ''
           "
         >
-          <div class="chart1 col-12 col-md-6">
-            <ByGenderChart
-              domId="chart"
-              title="Gender"
-              distance="5"
-              :titleMargin="10"
-              :summary="membershipByGender"
-            />
-          </div>
-          <div class="chart1 col-12 col-md-6">
-            <ByGenderChart
-              domId="chart2"
-              title="Marital Status"
-              distance="5"
-              :titleMargin="10"
-              :summary="membershipMaritalStatus"
-            />
+          <div class="row">
+            <div class="chart1 col-12 col-md-6">
+              <ByGenderChart
+                domId="chart"
+                title="Gender"
+                distance="5"
+                :titleMargin="10"
+                :summary="membershipByGender"
+              />
+            </div>
+            <div class="chart1 col-12 col-md-6">
+              <ByGenderChart
+                domId="chart2"
+                title="Marital Status"
+                distance="5"
+                :titleMargin="10"
+                :summary="membershipMaritalStatus"
+              />
+            </div>
           </div>
         </div>
         <!-- <div
@@ -179,16 +153,9 @@
 
       <section>
         <!-- table header -->
-        <div v-if="weddingAnniversary.length > 0">
+        <div v-if="weddingAnniversary.length > 0" class="row">
           <div
-            class="
-              mt-2
-              container-fluid
-              table-main
-              px-0
-              remove-styles2 remove-border
-              responsiveness
-            "
+            class="mt-2 container-fluid table-main px-0 remove-styles2 remove-border responsiveness"
           >
             <table
               id="table"
@@ -197,7 +164,7 @@
               <thead class="table-header-area-main">
                 <tr
                   class="small-text text-capitalize text-nowrap font-weight-bold"
-                  style="border-bottom: 0; font-size:medium"
+                  style="border-bottom: 0; font-size: medium"
                 >
                   <th scope="col">First Name</th>
                   <th scope="col">Last Name</th>
@@ -211,13 +178,16 @@
                   <th scope="col">Home Address</th> -->
                 </tr>
               </thead>
-              <tbody class="font-weight-bold text-nowrap"  style="font-size: small">
+              <tbody
+                class="font-weight-bold text-nowrap"
+                style="font-size: small"
+              >
                 <tr
                   v-for="(anniversary, index) in weddingAnniversary"
                   :key="index"
                 >
-                  <td>{{ anniversary.FirstName }}</td>
-                  <td>{{ anniversary.LastName }}</td>
+                  <td>{{ anniversary.firstName }}</td>
+                  <td>{{ anniversary.lastName }}</td>
                   <td>{{ formatDate(anniversary.weddingDay) }}</td>
                   <td>{{ anniversary.mobilePhone }}</td>
                   <td>{{ anniversary.email }}</td>
@@ -230,8 +200,8 @@
               </tbody>
             </table>
             <div class="table-foot d-flex justify-content-end mt-3">
-            <!-- <PaginationButtons /> -->
-          </div>
+              <!-- <PaginationButtons /> -->
+            </div>
           </div>
         </div>
         <!--end table header -->
@@ -241,26 +211,20 @@
 </template>
 
 <script>
-import { ref } from "vue";
-import Calendar from "primevue/calendar";
+import { ref, inject } from "vue";
+
 import ByGenderChart from "@/components/charts/PieChart.vue";
-// import PaginationButtons from "../../../components/pagination/PaginationButtons";
+
 import axios from "@/gateway/backendapi";
 import dateFormatter from "../../../services/dates/dateformatter";
-// import Dropdown from "primevue/dropdown";
-// import InputText from "primevue/inputtext";
-import Listbox from 'primevue/listbox';
+import { ElMessage } from "element-plus";
+
 import printJS from "print-js";
 import exportService from "../../../services/exportFile/exportservice";
 
 export default {
   components: {
-    Calendar,
     ByGenderChart,
-    Listbox
-    // Dropdown,
-    // InputText,
-    // PaginationButtons,
   },
   setup() {
     const startDate = ref("");
@@ -269,15 +233,23 @@ export default {
     const membershipByGender = ref([]);
     const membershipMaritalStatus = ref([]);
     const membershipDistribution = ref([]);
+    const primarycolor = inject("primarycolor");
     const membershipAgeGroup = ref([]);
     const showExport = ref(false);
-    const fileName = ref("");
+    const loading = ref(false);
+    const fileName = ref("Wedding Anniversary Report");
     // const bookTypeList = ref(["xlsx", "csv", "txt"]);
-    const bookTypeList = ref([{name: "xlsx" }, {name: "csv" }, {name: "txt" }, {name: "" }]);
+    const bookTypeList = ref([
+      { name: "xlsx" },
+      { name: "csv" },
+      { name: "txt" },
+      { name: "" },
+    ]);
     const selectedFileType = ref({});
     const fileHeaderToExport = ref([]);
     const fileToExport = ref([]);
     const generateWeddingAnniversaryReport = () => {
+      loading.value = true;
       axios
         .get(
           `/api/Reports/people/getWeddingsReport?startDate=${new Date(
@@ -293,6 +265,14 @@ export default {
           membershipMaritalStatus.value = membershipMaritalStatusChart(
             res.data
           );
+          if (weddingAnniversary.value.length == 0) {
+            ElMessage({
+              type: "warning",
+              showClose: true,
+              message: "No data for this date range",
+              duration: 5000,
+            });
+          }
           membershipDistribution.value = membershipStatusChart(res.data);
           membershipAgeGroup.value = membershipAgeGroupChart(res.data);
           /* function to call service and populate table */
@@ -304,17 +284,28 @@ export default {
               document.getElementById("table")
             );
           }, 1000);
+
           /* End function to call service and populate table */
+          loading.value = false;
         })
         .catch((err) => {
           console.log(err);
+          loading.value = false;
+          ElMessage({
+            type: "error",
+            showClose: true,
+            message: "Failed, please try again",
+            duration: 5000,
+          });
         });
     };
 
     /* Code For Exporting File */
-    const downloadFile = () => {
+    const downloadFile = (item) => {
       exportService.downLoadExcel(
-        selectedFileType.value.name,
+        // selectedFileType.value.name,
+        item.name,
+
         document.getElementById("element-to-print"),
         fileName.value,
         fileHeaderToExport.value,
@@ -368,8 +359,9 @@ export default {
     };
 
     return {
-      Calendar,
       startDate,
+      primarycolor,
+      loading,
       endDate,
       weddingAnniversary,
       generateWeddingAnniversaryReport,
@@ -406,18 +398,18 @@ export default {
 } */
 
 .default-btn {
-    font-weight: 600;
-    white-space: initial;
-    font-size: 1rem;
-    border-radius: 3rem;
-    border: 1px solid #002044;
-    padding: .5rem 1.25rem;
-    width: auto;
-	/* border:none; */
-    /* outline: transparent !important; */
-    max-height: 40px;
-    /* background: #6c757d47 !important; */
-    min-width: 121px;
+  font-weight: 600;
+  white-space: initial;
+  font-size: 1rem;
+  border-radius: 3rem;
+  border: 1px solid #002044;
+  padding: 0.5rem 1.25rem;
+  width: auto;
+  /* border:none; */
+  /* outline: transparent !important; */
+  max-height: 40px;
+  /* background: #6c757d47 !important; */
+  min-width: 121px;
 }
 
 .generate-report {
@@ -506,10 +498,10 @@ export default {
 }
 
 .move-enter-active {
-  animation: move-in .8s;
+  animation: move-in 0.8s;
 }
 .move-leave-active {
-  animation: move-in .8s reverse;
+  animation: move-in 0.8s reverse;
 }
 @keyframes move-in {
   0% {
@@ -520,6 +512,5 @@ export default {
     transform: translateX(0);
     opacity: 1;
   }
-
 }
 </style>

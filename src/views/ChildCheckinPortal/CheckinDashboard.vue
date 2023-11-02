@@ -231,7 +231,7 @@ import { ref, computed } from 'vue'
 // import { useRoute } from "vue-router"
 import axios from "@/gateway/backendapi";
 import ProgressSpinner from 'primevue/progressspinner';
-import { useConfirm } from "primevue/useConfirm";
+import { useConfirm } from "primevue/useconfirm";
 import { useToast } from "primevue/usetoast";
 import dateFormatter from '../../services/dates/dateformatter';
 import ByGenderChart from "@/components/charts/PieChart2";

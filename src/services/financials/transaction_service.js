@@ -52,13 +52,13 @@ const saveAccount = (body) => {
 const testPoint = () => {
     return new Promise((resolve, reject) => {
         axios.get("/api/Financials/Accounts/GetCashBankAccounts")
-        // axios.get("/api/Financials/Accounts/Transactions/GetIncomeAndExpense")\
+            // axios.get("/api/Financials/Accounts/Transactions/GetIncomeAndExpense")\
 
             .then(res => {
                 resolve(res.data);
             })
             .catch(err => {
-            
+
                 if (err.response) {
                     reject(err.response);
                 } else {
@@ -76,7 +76,7 @@ const getCurrencies = () => {
                 resolve(res.data);
             })
             .catch(err => {
-            
+
                 if (err.response) {
                     reject(err.response);
                 } else {
@@ -104,7 +104,8 @@ const getCashAndBank = () => {
 
 const getTransactions = () => {
     return new Promise((resolve, reject) => {
-        axios.get("/api/Financials/Accounts/Transactions")
+        // axios.get("/api/Financials/Accounts/Transactions?page=1")
+        axios.get("/api/Financials/Accounts/v2/Transactions?page=1")
             .then(res => {
                 resolve(res.data);
             })
@@ -261,14 +262,61 @@ const getTransactionsByAccount = (id) => {
                 }
             })
     })
+
+}
+
+const getDonationTransaction = () => {
+    return new Promise((resolve, reject) => {
+        axios
+            .get("/api/Financials/Donation/Transactions?page=1")
+            .then(res => {
+                resolve(res.data);
+            })
+            .catch(err => {
+                if (err.response) {
+                    reject(err.response);
+                } else {
+                    reject(err)
+                }
+            })
+    })
+}
+
+const approveFinancialReport = (payload) => {
+    return new Promise((resolve, reject) => {
+        axios
+            .post("api/Financials/accounts/Transactions/ApproveTransactionToggle", payload)
+            .then(res => {
+                resolve(res.data);
+            })
+            .catch(err => {
+                if (err.response) {
+                    reject(err.response);
+                } else {
+                    reject(err)
+                }
+            })
+    })
 }
 
 
-
-
-export default { getTransactionalAccounts, testPoint, getTransactions, getCashAndBank, saveAccount, getIncomeAccounts, getExpenseAccounts, saveExpense, saveIncome, getCurrencies, getAccountHeads, getCashAndBankAccountBalances,
+export default {
+    getTransactionalAccounts, 
+    testPoint, 
+    getTransactions,
+     getCashAndBank, 
+    saveAccount, 
+    getIncomeAccounts, 
+    getExpenseAccounts, 
+    saveExpense, 
+    saveIncome, 
+    getCurrencies, 
+    getAccountHeads, 
+    getCashAndBankAccountBalances,
     saveJournalTransaction,
     deleteTransaction,
     getEditTransactions,
-    getTransactionsByAccount,
+    getTransactionsByAccount, 
+    getDonationTransaction,
+    approveFinancialReport
 };

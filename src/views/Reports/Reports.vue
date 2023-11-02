@@ -1,13 +1,19 @@
 <template>
-    <div class="container-fluid">
-        <router-view class="view" />
+    <div class="container-top" :class="{ 'container-slim': lgAndUp || xlAndUp }">
+        <router-view />
     </div>
 </template>
 
 <script>
+import deviceBreakpoint from "../../mixins/deviceBreakpoint";
 export default {
     setup() {
-        
+        const { lgAndUp, xlAndUp } = deviceBreakpoint()
+
+        return {
+            lgAndUp,
+            xlAndUp
+        }
     },
 }
 </script>

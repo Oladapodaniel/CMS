@@ -1,77 +1,38 @@
 <template>
-  <div
-    class="container-wide"
-    v-if="!loading && (people.length > 0 || errorGettingPeople)"
-  >
-    <PeopleList :list="people" :peopleCount="people.length" :membershipSummary="membershipSummary" />
-  </div>
-
-  <div
-    class="no-person mt-5"
-    v-else-if="!loading && people.length === 0 && !errorGettingPeople"
-  >
-    <!-- <div class="empty-img">
-      <p><img src="../../assets/people/people-empty.svg" alt="" /></p>
-      <p class="tip">You haven't added any member yet</p>
-    </div> -->
+  <PeopleList :list="peopleInStore" :totalItems="totalItems" v-if="!loading && (peopleInStore && peopleInStore.length > 0 || errorGettingPeople)" />
+  <div class="no-person mt-5" v-else-if="!loading && peopleInStore && peopleInStore.length === 0 && !errorGettingPeople">
     <div class="container">
       <div class="row">
         <div class="col-md-12">
-          <ImportPeople @people-list="getMemberData" />
+          <ImportPeople />
         </div>
       </div>
     </div>
   </div>
 
-  <div class="row container-wide" v-if="loading && people.length === 0">
-    <div class="col-md-12">
-      <div class="row my-2 d-md-flex justify-content-between">
-        <div class="col-md-4">
-          <Skeleton width="100%" height="200px" shape="circle" />
+  <el-skeleton class="w-100" animated v-if="loading && peopleInStore && peopleInStore.length === 0">
+    <template #template>
+      <div style="display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin-top: 20px
+          "
+        >
+          <el-skeleton-item variant="text" style="width: 240px; height: 240px" />
+          <el-skeleton-item variant="text" style="width: 240px; height: 240px" />
         </div>
-        <div class="col-md-4">
-          <Skeleton width="100%" height="200px" shape="circle" />
-        </div>
-        <div class="col-md-4">
-          <Skeleton width="100%" height="200px" shape="circle" />
-        </div>
-      </div>
-
-      <div
-        class="row my-2 d-md-flex justify-content-center"
-        v-for="i in 10"
-        :key="i"
-      >
-        <div class="col-md-2 my-2">
-          <Skeleton width="100%" height="2rem" borderRadius="16px" />
-        </div>
-        <div class="col-md-2 my-2">
-          <Skeleton width="100%" height="2rem" borderRadius="16px" />
-        </div>
-        <div class="col-md-2 my-2">
-          <Skeleton width="100%" height="2rem" borderRadius="16px" />
-        </div>
-        <div class="col-md-2 my-2">
-          <Skeleton width="100%" height="2rem" borderRadius="16px" />
-        </div>
-        <div class="col-md-2 my-2">
-          <Skeleton width="100%" height="2rem" borderRadius="16px" />
-        </div>
-        <div class="col-md-2 my-2">
-          <Skeleton width="100%" height="2rem" borderRadius="16px" />
-        </div>
-      </div>
-    </div>
-  </div>
-
+        <!-- <el-skeleton-item variant="text" class="w-100" style="height: 25px" :rows="10"/> -->
+        <el-skeleton class="w-100 mt-5" style="height: 25px"  :rows="20" animated />
+    </template>
+  </el-skeleton>
 </template>
 
 <script>
 import { ref, onMounted } from "vue";
-import axios from "@/gateway/backendapi";
 import PeopleList from "@/views/people/PeopleList.vue";
 import ImportPeople from "@/views/people/ImportPeople.vue";
 import { useStore } from 'vuex';
+import store from '../../store/store'
 
 export default {
   components: { PeopleList, ImportPeople },
@@ -81,58 +42,32 @@ export default {
     const loading = ref(false);
     const errorGettingPeople = ref(false);
     const dataStore = useStore();
-    const membershipSummary = ref({})
+    const totalItems = ref(dataStore.getters['membership/members'].totalItems)
+    const peopleInStore = ref(dataStore.getters['membership/members'].data)
 
     const getMembers = async () => {
-      try {
-        loading.value = true;
-         /*eslint no-undef: "warn"*/
-         NProgress.start()
-        const { data } = await axios.get("/api/People/GetPeopleBasicInfo");
-        people.value = data;
-        loading.value = false;
-      } catch (err) {
-        NProgress.done()
-        loading.value = false;
-        errorGettingPeople.value = true;
-        console.log(err);
-      }
+      loading.value = true
+      store.dispatch('membership/setMembers').then(res => {
+        peopleInStore.value = res.data
+        totalItems.value = res.totalItems
+        loading.value = false
+      })
     }
-
-    const peopleInStore =  ref(dataStore.getters['membership/members'])
+    
 
     onMounted(() => {
-      if (peopleInStore.value.length > 0) {
-      // if (store.getters.members && store.getters.members.length > 0) {
-        console.log(peopleInStore, 'pis');
-        people.value = peopleInStore.value;
-        // people.value = store.getters.members;
-      } else {
+      if ( (!peopleInStore.value) || (peopleInStore.value  && peopleInStore.value.length == 0)) {
         getMembers()
       }
-
     });
 
-    const  getMemberData = () => {
-      // people.value = payload
-      axios
-        .get(`/api/People/GetMembershipSummary`)
-        .then((res) => {
-          console.log(res, "new chart");
-          membershipSummary.value = res.data;
-        })
-        .catch((err) => {
-          console.log(err)
-        })
-    }
 
     return {
       people,
       peopleInStore,
+      totalItems,
       loading,
       errorGettingPeople,
-      getMemberData,
-      membershipSummary
     };
   },
 };

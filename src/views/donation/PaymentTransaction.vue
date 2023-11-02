@@ -1,5 +1,5 @@
 <template>
-    <div class="container-wide container-top">
+    <div class="container-top" :class="{ 'container-slim': lgAndUp || xlAndUp }">
         <div class="row">
             <div class="col-12  d-flex justify-content-between">
                 <div class="page-header">{{ header ? header : "Payment Form" }}</div>
@@ -23,7 +23,7 @@
                     <div>Name</div>
                 </div>
                 <div class="pl-md-0 col-12 col-sm-10 offset-sm-1 offset-md-0 col-md-6 col-lg-5 pl-md-0 mt-3" style="height: 43px;">
-                        <input class="form-control h-100" placeholder="Enter name" v-model="newContribution.name" type="text" required>
+                        <el-input class="w-100" placeholder="Enter name" v-model="newContribution.name" type="text" required />
                     </div>
                </div>
             <div class="row mt-2" v-for="(item, index) in newContribution.payment"  :key="index">
@@ -33,25 +33,49 @@
 
 
                 <div class="col-10 offset-sm-1 offset-md-0 col-md-6 col-lg-5 pl-md-0 mt-3">
+                    <el-dropdown trigger="click" class="w-100">
+                    <span class="el-dropdown-link w-100">
+                      <div
+                        class="d-flex justify-content-between border-contribution  w-100"
+                        size="large"
+                      >
+                        <span class="text-secondary">{{
+                         item && item.financialContribution ? item.financialContribution.name : "Select"
+                        }}</span>
+                        <div>
+                          <el-icon class="el-icon--right">
+                            <arrow-down />
+                          </el-icon>
+                        </div>
+                      </div>
+                    </span>
+                    <template #dropdown>
+                      <el-dropdown-menu>
+                        <el-dropdown-item
+                          v-for="(itm, indx) in contributionItems"
+                          :key="indx"
+                          @click="selectContribution(itm, index)"
+                          >{{ itm.name }}
+                        </el-dropdown-item>
+                        <el-dropdown-item
+                          data-toggle="modal"
+                          data-target="#exampleModalCenter"
+                          class="text-center"
+                          divided
+                          ><a
+                            class="font-weight-bold small-text d-flex justify-content-center py-2 text-decoration-none primary-text"
+                            style="color: #136acd"
+                          >
+                            <el-icon size="large">
+                              <CirclePlus />
+                            </el-icon>
+                            Create new contribution item
+                          </a></el-dropdown-item
+                        >
+                      </el-dropdown-menu>
+                    </template>
+                  </el-dropdown>
                 <!-- <button
-                v-if="!routeParams"
-                class="default-btn w-100 text-left pr-1"
-                type="button"
-                style="
-                  border-radius: 4px;
-                  border: 1px solid #ced4da;
-                  color: #6c757d;
-                "
-                id="dropdownMenuButton"
-                data-toggle="dropdown"
-                aria-haspopup="true"
-                aria-expanded="false"
-              >
-                    {{ item.name ? item.name : "Select" }}
-                <i class="pi pi-chevron-down manual-dd-icon float-right pr-1"></i>
-              </button> -->
-              <!-- {{item}} -->
-                <button
 
                 class="default-btn w-100 text-left pr-1"
                 type="button"
@@ -67,8 +91,8 @@
               >
                     {{ item && item.financialContribution ? item.financialContribution.name : "Select" }}
                 <i class="pi pi-chevron-down manual-dd-icon float-right pr-1"></i>
-              </button>
-              <div
+              </button> -->
+              <!-- <div
                 class="dropdown-menu w-100"
                 aria-labelledby="dropdownMenuButton"
               >
@@ -89,7 +113,7 @@
                     <i class="pi pi-plus-circle mr-2 d-flex align-items-center" style="color: #136ACD;"></i>
                   Create new Contribution Item
                   </a>
-              </div>
+              </div> -->
                 </div>
 
                 <!-- Modal -->
@@ -98,9 +122,9 @@
             <div class="modal-content">
               <div class="modal-header" style="border: none">
                 <h5 class="modal-title" id="exampleModalLongTitle">Add Contribution</h5>
-                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                  <span aria-hidden="true">&times;</span>
-                </button>
+                <el-button round class="close mt-0" data-dismiss="modal" aria-label="Close">
+                  <el-icon  :size="20"><Close /></el-icon>
+                </el-button>
               </div>
               <div class="modal-body">
                 <ContributionItems @item-name="newConItems" @show-update-modal="toggleDisplayModal"/>
@@ -110,18 +134,31 @@
           </div>
         </div>
                 <div class="col-1 align-self-center">
-                    <i class="pi pi-trash" v-tooltip.bottom="'delete'" @click="showConfirmModal(item.id, index)"></i>
+                    <el-tooltip
+                        class="box-item"
+                        effect="dark"
+                        content="Delete"
+                        placement="bottom"
+                    >
+                        <el-icon :size="18" @click="showConfirmModal(item.id, index)"><Delete /></el-icon>
+                    </el-tooltip>
                 </div>
             </div>
             <div class="col-8 col-md-5 offset-sm-1 offset-md-3 pl-0 offset-lg-4 mt-3">
-                    <button
+                    <el-button
                         style="margin-left: -3px"
+                        round
                         v-on:click.prevent="addContribution"
-                        class="btn btnIcons btn-secondary"
+                        class=" btnIcons btn-secondary"
                         >
-                        <i class="pi pi-plus-circle icons" aria-hidden="true"></i>
+                        <el-icon size="large">
+                            <CirclePlus />
+                        </el-icon>
+                        <!-- <i class="pi pi-plus-circle icons" aria-hidden="true"></i> -->
+
+                        &nbsp;
                         Add
-                        </button>
+                    </el-button>
                 </div>
             <div class="row">
                 <div class="col-12">
@@ -132,8 +169,26 @@
                     <div>Choose Bank</div>
                 </div>
                 <div class="col-12 col-sm-10 offset-sm-1 offset-md-0 col-md-6 col-lg-5 pl-md-0 mt-3" style="height: 43px;">
-                        <Dropdown v-model="selectedBank" class="w-100" :options="nigerianBanks" optionLabel="name" :filter="false" :placeholder="selectedBank ? selectedBank.name : 'Select'" :showClear="false">
-                        </Dropdown>
+                     <el-dropdown trigger="click" class="w-100">
+                      <span class="el-dropdown-link w-100">
+                        <el-input
+                          type="text"
+                          placeholder='Select Bank'
+                          v-model="bankSearchText"
+                        />
+                      </span>
+                      <template #dropdown>
+                        <el-dropdown-menu>
+                          <el-dropdown-item
+                            v-for="item in filteredBanks"
+                            :key="item.id"
+                            @click="setBank(item)"
+                          >
+                            {{ item ? item.name : "" }}
+                          </el-dropdown-item>
+                        </el-dropdown-menu>
+                      </template>
+                    </el-dropdown>
                 </div>
                 <div class="col-2 d-none d-sm-block"></div>
 
@@ -141,7 +196,7 @@
                     <div>Enter account number</div>
                 </div>
                 <div class="col-12 col-sm-10 offset-sm-1 offset-md-0 col-md-6 col-lg-5 pl-md-0 mt-3" style="height: 43px;">
-                    <input class="form-control h-100" type="number" v-model="accountNumber" @blur="resolveCustomerDetail">
+                    <el-input class="w-100" type="text" v-model="accountNumber" @blur="resolveCustomerDetail" />
                 </div>
                 <div class="col-2 d-none d-sm-block"></div>
 
@@ -149,17 +204,22 @@
                     <div>Account Name</div>
                 </div>
                 <div class="col-12 col-sm-10 offset-sm-1 offset-md-0 col-md-6 col-lg-5 pl-md-0 mt-3" style="height: 43px;">
-                    <input type="text" v-model="accountName" placeholder="Account name" ref="accNameRef" class="form-control h-100" />
+                    <el-input type="text" v-model="accountName" placeholder="Account name" ref="accNameRef" class="w-100" disabled/>
                     <div class="mt-1">
                         <em class="mt-1">This will automatically come up, kindly confirm before clicking on save.</em>
                     </div>
 
                 </div>
-                <div class="col-sm-3 align-self-end" v-if="loading">
-                    <div class="spinner-border" style="width: 3rem; height: 3rem;" role="status">
-                    <span class="sr-only">Loading...</span>
+                <div
+                    class="col-sm-2 col-lg-3 align-self-center mt-4"
+                    v-if="loading"
+                  >
+                    <div style="width: 3rem; height: 3rem" role="status">
+                      <el-icon :size="20" class="is-loading">
+                        <Loading />
+                      </el-icon>
                     </div>
-                </div>
+                  </div>
 
                 <div class="col-10 col-md-12 mt-5">
                     <hr class="mt-4"/>
@@ -189,7 +249,8 @@
                     <div class="d-flex">
                         <h5 class="header-contri my-3">Choose the form template you desire</h5>
                         <hr style="width: 60%"/>
-                        <i class="pi pi-angle-up angle-icon mt-3" :class="{ 'rollIcon' : templateDisplay, 'closeIcon' : !templateDisplay }" @click="toggleTemplate" ></i>
+                        <el-icon :class="{ 'rollIcon' : templateDisplay, 'closeIcon' : !templateDisplay }" @click="toggleTemplate"><ArrowUp /></el-icon>
+                        <!-- <i class="pi pi-angle-up angle-icon mt-3" :class="{ 'rollIcon' : templateDisplay, 'closeIcon' : !templateDisplay }" @click="toggleTemplate" ></i> -->
                     </div>
 
                     <div class="row img-row hide-tem mt-4" :class="{ 'show-tem': templateDisplay, 'hide-tem' : !templateDisplay }">
@@ -238,25 +299,19 @@
             <div class="row">
 
                 <div class="col-12 col-sm-10 col-md-6 col-lg-5 offset-sm-1 offset-md-3 offset-lg-4 pl-0 mt-3">
-                <button
-                  class="button border-0 w-100"
+                <el-button
+                  class="button border-0 w-100 text-white"
+                  round
+                  :loading="loadingSave"
                   :class="{ 'disabled-bg' : disabled, 'primary-bg' : !disabled }"
                   @click.prevent="saveAndContinue"
                   style="margin-left: 2px"
 
                 >
-                  <i
-                    class="fas fa-circle-notch fa-spin mr-2 text-white"
-                    v-if="loadingSave"
-                  ></i>
-                  <span class="text-white">Save and Continue</span>
-                  <span></span>
-                </button>
+                  Save and Continue
+                </el-button>
 
             </div>
-            <!-- <div class="col-12 col-sm-10 offset-sm-1 col-md-5 offset-md-4 mt-5">
-                    <img src="../../assets/payment-options.png" class="w-100" style="opacity: 0.9">
-            </div> -->
             <div class="col-12 col-sm-10 col-md-6 col-lg-5 offset-sm-1 offset-md-3 offset-lg-4 pl-0 mt-5">
                     <div class="row">
                         <div class="col-4">
@@ -272,54 +327,54 @@
             </div>
             </div>
         </form>
-        <ConfirmDialog />
-        <Toast />
-        <Dialog v-model:visible="displayResponsive" :breakpoints="{'960px': '75vw', '640px': '100vw'}" :style="{width: '80vw'}">
-            <p>You have no income account to create a offering item, go to Chart of Account and click 'Update Account' to update your accounts.</p>
+        <el-dialog v-model="displayResponsive" title="" 
+          :width="mdAndUp || lgAndUp || xlAndUp ? `50%` : `90%`">
+            <div class="row">
+                <div class="col-md-12">
+                    <p>You have no income account to create a offering item, go to Chart of Account and click 'Update Account' to update your accounts.</p>
+                </div>
+            </div>
             <template #footer>
                 <!-- <Button label="No" icon="pi pi-times" @click="closeResponsive" class="p-button-text"/> -->
-                <Button label="Go to Chart Of Accounts" icon="pi pi-check" @click="closeResponsive" autofocus />
+                <el-button round class="w-100 text-white primary-bg" label="Go to Chart Of Accounts" @click="closeResponsive" autofocus >Go to Chart Of Accounts<el-icon><Check /></el-icon> </el-button>
             </template>
-        </Dialog>
+        </el-dialog>
     </div>
 </template>
 
 <script>
 import { ref,  computed } from 'vue'
-import Dropdown from 'primevue/dropdown';
-import Tooltip from 'primevue/tooltip';
 import axios from "@/gateway/backendapi";
 import finish from '../../services/progressbar/progress'
+
 import axio from  'axios'
 import { useStore } from 'vuex'
 import router from "@/router/index";
 import { useRoute } from "vue-router"
 // import Store from "../../store/store"
-import { useToast } from "primevue/usetoast";
+import deviceBreakpoint from "../../mixins/deviceBreakpoint";
 import store from '../../store/store';
 import ContributionItems from "@/components/firsttimer/contributionItemModal"
 import ImageModal from './ImageModal'
 import ToggleButton from './toggleButton'
-import { useConfirm } from "primevue/useConfirm";
+import { ElMessage, ElMessageBox } from "element-plus";
 
 export default {
     components: {
-        Dropdown, ContributionItems, ImageModal, ToggleButton
+        ContributionItems, ImageModal, ToggleButton
     },
     props: [ "header"],
-    directives: {
-        'tooltip': Tooltip
-    },
     setup (prop, { emit }) {
         const contributionItems = ref([])
         const newContribution = ref({ payment: [{}]})
         const nigerianBanks = ref([])
+        const { lgAndUp, xlAndUp, mdAndUp } = deviceBreakpoint()
         const selectedBank = ref("")
+        const bankSearchText = ref("")
         const accountNumber = ref("")
         const selectedContribution = ref("")
         const accountName = ref("")
         const accNameRef = ref("")
-        const toast = useToast()
         const loading = ref(false)
         const disabled = ref(true)
         const route = useRoute()
@@ -388,7 +443,6 @@ export default {
         getBanks()
 
         const getGateWays = () => {
-            // if (!route.params.editPayment) {
                 axios.get('/api/Financials/GetPaymentGateways')
                 .then(res => {
                     console.log(res)
@@ -402,53 +456,40 @@ export default {
                             isChecked: false
                         }
                     })
-                // nigerianBanks.value = res.data.data
                 finish()
                 })
                 .catch(err => {
                     finish()
                     console.log(err)
-                     toast.add({severity:'info', summary: 'Unable to get banks', detail:'Please ensure you have a strong internet connection and reload the  page', life: 5000});
+                    ElMessage({
+                        type: "info",
+                        message: "Please ensure you have a strong internet connection and reload the  page",
+                        duration: 3000,
+                        })
                 })
             }
         //   }
         getGateWays()
 
-        // const deleteContribution = (item, index) => {
-        //
-            // if (route.params.editPayment) {
-            //     console.log(item)
-            //     removeContributionIDs.value.push(item.id)
-
-            //     console.log(removeContributionIDs.value)
-            // }
-
-
-
-        // }
-
-     const confirm = useConfirm();
     const showConfirmModal = (id, index) => {
-      confirm.require({
-        message: "Are you sure you want to proceed?",
-        header: "Confirmation",
-        icon: "pi pi-exclamation-triangle",
-        acceptClass: "confirm-delete",
-        rejectClass: "cancel-delete",
-        accept: () => {
-            console.log(id, index)
+        ElMessageBox.confirm(
+        "Are you sure you want to proceed?",
+        "Confirm delete",
+        {
+          confirmButtonText: "OK",
+          cancelButtonText: "Cancel",
+          type: "error",
+        }
+      )
+        .then(() => {
           deleteContribution(id, index);
-          // toast.add({severity:'info', summary:'Confirmed', detail:'Member Deleted', life: 3000});
-        },
-        reject: () => {
-          toast.add({
-            severity: "info",
-            summary: "Rejected",
-            detail: "You have rejected",
-            life: 3000,
+        })
+        .catch(() => {
+          ElMessage({
+            type: "info",
+            message: "Delete canceled",
           });
-        },
-      });
+        });
     };
 
     const deleteContribution = (id, index) => {
@@ -460,98 +501,57 @@ export default {
           console.log(res);
           newContribution.value.payment.splice(index, 1)
           if (res.data) {
-            toast.add({
-            severity: "success",
-            summary: "Delete Successful",
-            detail: `Contribution item deleted`,
-            life: 4000,
-          });
+             ElMessage({
+              type: "success",
+              message: "Contribution item deleted",
+              duration: 3000,
+            });
           } else {
-            toast.add({
-            severity: "warn",
-            summary: "Delete Failed",
-            detail: `Please Try Again`,
-            life: 4000,
-          });
+             ElMessage({
+              type: "warning",
+              message: "Delete Failed",
+              duration: 3000,
+            })
           }
         })
         .catch((err) => {
           finish()
           if (err.response) {
-            console.log(err.response)
-            toast.add({
-              severity: "warn",
-              summary: "Unable to delete",
-              detail: `${err.response}`,
-              life: 3000,
-            });
+             ElMessage({
+              type: "warning",
+              message: err.response,
+              duration: 3000,
+            })
           } else if (err.toString().toLowerCase().includes('network error')) {
-              toast.add({
-              severity: "warn",
-              summary: "Network Error",
-              detail: `Please Ensure you have a strong internet connection`,
-              life: 3000,
-            });
+            ElMessage({
+              type: "warning",
+              message: "Network Error, Please Ensure you have a strong internet connection",
+              duration: 3000,
+            })
           } else if (err.toString().toLowerCase().includes('timeout')) {
-              toast.add({
-              severity: 'warn',
-              summary: "Request Delayed",
-              detail: "Make sure you have a strong internet connection",
-              life: 3000,
-            });
+            ElMessage({
+              type: "warning",
+              message: "Request Delayed,Make sure you have a strong internet connection",
+              duration: 3000,
+            })
           } else {
-            toast.add({
-            severity: "warn",
-            summary: "Delete Failed",
-            detail: `Please Try Again`,
-            life: 3000,
-          });
+             ElMessage({
+              type: "warning",
+              message: "Delete Failed",
+              duration: 3000,
+            })
           }
         console.log(err)
         });
       } else {
           newContribution.value.payment.splice(index, 1)
-          toast.add({
-            severity: "success",
-            summary: "Delete Successful",
-            detail: `Contribution item deleted`,
-            life: 4000,
-          });
+          ElMessage({
+              type: "success",
+              message: "Contribution item deleted",
+              duration: 3000,
+            });
       }
     };
-
-        // const getPaymentDetails = async() => {
-        //     try {
-        //         const res = await axios.post("/api/PaymentForm/Save", );
-        //         console.log(res)
-        //     }
-        //     catch (err) {
-        //         console.log(err)
-        //     }
-        // }
-        // getPaymentDetails()
-
-
-        // const getCurrentlySignedInUser = async() => {
-        //     try {
-        //         const res = await axios.get("/api/Membership/GetCurrentSignedInUser");
-        //         console.log(res.data.country)
-                // if(res.data.country == "Nigeria") {
-                //     isPaystackChecked.value = true
-                //     isFlutterwave.value = true
-                //     isPaypal.value = true
-                // } else {
-                //     isPaypal.value = true
-                //     isFlutterwave.value = true
-                // }
-
-        //     } catch (err) {
-        //         /*eslint no-undef: "warn"*/
-        //         NProgress.done();
-        //         console.log(err);
-        //     }
-        // }
-        // getCurrentlySignedInUser()
 
         const resolveCustomerDetail = async() => {
             console.log(accountNumber.value)
@@ -562,42 +562,16 @@ export default {
 
                 let { data } = await axio.get(`https://api.paystack.co/bank/resolve?account_number=${accountNumber.value}&bank_code=${selectedBank.value.code}`, header)
                 console.log(data)
-                // accountName.value = data.data.account_name
-                // accNameRef.value.focus()
-                // disabled.value = false
-
-                // loading.value = false
-
-                // toast.add({severity:'success', summary: 'Account Check Successful', detail:'The account check was successful', life: 4000});
-
             }
             catch (error) {
                 finish()
                 console.log(error)
-                // if (error.toString().includes('422') || error.toString().includes('400')) {
-                //     console.log('didnt verify')
-                //     const gateway = gateways.value.find(i => i.name.toLowerCase().includes('paystack'))
-                //     if (gateway) {
-                //         paymentGateWaysDb.value = gateways.value.filter(i => gateway.name !== i.name)
-                //     }   else {
-                //         console.log('already removed')
-                //     }
-                    
-                // }   else {
-                //     // if (!accountNumber.value || accountNumber.value === "") {
-                //     //     toast.add({severity:'warn', summary: 'No account number found', detail:'Please enter your account number', life: 4000});
-                //     // }   else {
-                //     //     toast.add({severity:'error', summary: 'Account Check Error', detail:'Please check your banks details again', life: 4000});
-                //     // }
-                // }
                 loading.value = false
 
                 
             }
             
             try {
-                let header = { headers: { Authorization: `Bearer ${process.env.VUE_APP_PAYSTACK_SECRET_KEY}` }}
-                console.log(header, "header");
 
                 let { data } = await axio.post(`https://api.ravepay.co/flwv3-pug/getpaidx/api/resolve_account`, {
                     recipientaccount: accountNumber.value,
@@ -611,19 +585,17 @@ export default {
                 loading.value = false
 
                 if (data.data.data.responsemessage.toLowerCase().includes('sorry')) {
-                    toast.add({
-                    severity:'warn', 
-                    summary: 'Unable to verify', 
-                    detail: data.data.data.responsemessage, 
-                    life: 8000
-                });
+                    ElMessage({
+                        type: "warning",
+                        message: data.data.data.responsemessage,
+                        duration: 3000,
+                    });
                 }   else {
-                    toast.add({
-                    severity:'success', 
-                    summary: 'Account Check Successful', 
-                    detail:'The account check was successful', 
-                    life: 8000
-                });
+                    ElMessage({
+                        type: "success",
+                        message: "Account Check Successful",
+                        duration: 3000,
+                    });
                 }
 
             }
@@ -632,16 +604,18 @@ export default {
                 console.log(error)
 
                 loading.value = false
-
-                // if (error.toString().includes('422') || error.toString().includes('400')) {
-                //     console.log('didnt verify')
-                //     const gatewayIndex = gateways.value.findIndex(i => i.name.toLowerCase().includes('flutterwave'))
-                //     gateways.value.splice(gatewayIndex, 1)
-                // }   else {
                     if (!accountNumber.value || accountNumber.value === "") {
-                        toast.add({severity:'warn', summary: 'No account number found', detail:'Please enter your account number', life: 4000});
+                        ElMessage({
+                        type: "warning",
+                        message: "Please enter your account number",
+                        duration: 3000,
+                    });
                     }   else {
-                        toast.add({severity:'error', summary: 'Account Check Error', detail:'Please check your banks details again', life: 4000});
+                         ElMessage({
+                        type: "error",
+                        message: "Please check your banks details again",
+                        duration: 3000,
+                        });
                     }
                 // }
 
@@ -658,44 +632,46 @@ export default {
                 if (item.name.toLowerCase().includes('flutterwave')) {
                         try {
                             axios.get(`/api/PaymentForm/subaccounts?accountNumber=${accountNumber.value}`).then(res => {
-                                console.log(res.data)
                                 if (res.data.length > 0) {
-                                    confirm.require({
-                                        message: `This account details has been recorded with Flutterwave as ${res.data[0].meta[0].meta_name}, Do you want to use it?`,
-                                        header: 'Account Confirmation',
-                                        icon: 'pi pi-info-circle',
-                                        acceptClass: 'p-button-danger',
-                                        accept: () => {
-                                            toast.add({
-                                                severity:'success', 
-                                                summary:'Confirmed', 
-                                                detail:'The selected acount is now in use.', 
-                                                life: 8000
-                                            });
-                                            item.subAccountID = res.data[0].subaccount_id
-                                            paymentGateWays.value.push(item)
-                                        },
-                                        reject: () => {
-                                            toast.add({
-                                                severity:'info', 
-                                                summary:'You have declined to use the account details for Flutterwave', 
-                                                detail:'Please enter another bank account details to enable Flutterwave subaccount integration', 
-                                                life: 8000
-                                            });
-                                            accountNumber.value = ""
-                                            accountName.value = ""
-                                            selectedBank.value = new Object()
-                                        }
-                                    });
+                                    ElMessageBox.confirm(
+                                                `This account details has been recorded with Flutterwave as ${res.data[0].meta[0].meta_name}, Do you want to use it?`,
+                                                // "Confirm delete",
+                                                {
+                                                confirmButtonText: "OK",
+                                                cancelButtonText: "Cancel",
+                                                type: "info",
+                                                }
+                                            )
+                                                .then(() => {
+                                                ElMessage({
+                                                    type: "success",
+                                                    message: "Confirmed, The selected acount is now in use",
+                                                    duration: 3000,
+                                                    });
+                                                    item.subAccountID = res.data[0].subaccount_id
+                                                    paymentGateWays.value.push(item)
+                                                })
+                                                .catch(() => {
+                                                ElMessage({
+                                                    type: "info",
+                                                    message: "Please enter another bank account details to enable Flutterwave subaccount integration",
+                                                    duration: 3000,
+                                                });
+                                                    accountNumber.value = ""
+                                                    accountName.value = ""
+                                                    selectedBank.value = new Object()
+                                                });
+                                }   else {
+                                    paymentGateWays.value.push(item)
                                 }
                             })                   
                         }
                         catch (err) {
                             console.log(err)
                         }
-                    } else {
-                    paymentGateWays.value.push(item)
-                }
+                    }   else {
+                        paymentGateWays.value.push(item)
+                    }
             } else {
                 paymentGateWays.value = paymentGateWays.value.filter(i => {
                     return i.id !== item.id
@@ -703,6 +679,17 @@ export default {
                     removePaymentGatewayIDs.value.push(item.id)
             }
         }
+
+        const filteredBanks = computed(() => {
+            if (!bankSearchText.value) return nigerianBanks.value;
+            return nigerianBanks.value.filter((i) =>
+                i.name.toLowerCase().includes(bankSearchText.value.toLowerCase())
+            );
+            });
+            const setBank = (item) => {
+                bankSearchText.value = item.name;
+                selectedBank.value = item;
+            };
 
         const saveAndContinue = async() => {
             loadingSave.value = true
@@ -745,14 +732,19 @@ export default {
                     const res = await axios.post("/api/PaymentForm/newpaymentform", paymentForm);
                     console.log(res)
                     loadingSave.value = false
-                    // toast.add({severity:'success', summary: 'Account Check Error', detail:'Please check your banks details again', life: 3000});
                     store.dispatch('contributions/paymentData', res.data)
 
 
                     if (route.fullPath === "/tenant/payments") {
-                        router.push({ name: 'PaymentOption', params: { paymentId: res.data.id } })
+                        store.dispatch("payment/getPayments").then(() => {
+                           router.push({ name: 'PaymentOption', params: { paymentId: res.data.id } })
+                        });
+                        // router.push({ name: 'PaymentOption', params: { paymentId: res.data.id } })
                     } else if (route.fullPath === "/donationsetup") {
-                        router.push({ name: 'OnboardingSuccessful' })
+                         store.dispatch("payment/getPayments").then(() => {
+                          router.push({ name: 'OnboardingSuccessful' })
+                        });
+                        // router.push({ name: 'OnboardingSuccessful' })
                     }
                     finish()
                 }
@@ -760,20 +752,11 @@ export default {
                     finish()
                     console.log(err)
                     loadingSave.value = false
-
-                    // toast.add({severity:'error', summary: '', detail:'Please check your banks details again', life: 3000});
                 }
             } else {
                 paymentForm.contributionItems = newContribution.value.payment.map(i => {
                     return { financialContributionID: i.financialContribution.id }
                 }),
-                // paymentForm.contributionItems = theContributionItems.value.map(i => {
-                //     return {
-                //         financialContributionID: i.financialContributionID,
-                //         id: i.id,
-                //         paymentFormID: i.paymentFormID
-                //     }
-                // })
                 paymentForm.id = route.params.editPayment
                 paymentForm.removeContributionIDs = removeContributionIDs.value
                 paymentForm.removePaymentGatewayIDs = removePaymentGatewayIDs.value
@@ -789,33 +772,12 @@ export default {
                     console.log(err)
                     loadingSave.value = false
                     finish()
-
-                    // toast.add({severity:'error', summary: '', detail:'Please check your banks details again', life: 3000});
                 }
             }
         }
         const selectContribution = (item, index) => {
-            // if (newContribution.value.payment.findIndex(i => i.id === item.id) < 0) {
-                // newContribution.value.payment[newContribution.value.payment.length - 1] = item
                 newContribution.value.payment[index].financialContribution = item
-            // }   else {
-                console.log("Youve selected this, please select another")
-            // }
-            // newContribution.value.offType = e.target.innerText
-                // newContribution.value.payment.push(item)
-            console.log(item, index, newContribution.value.payment)
         }
-
-        // const getSavedPayments = async () => {
-        //     try {
-        //         const res = await axios.get("/api/PaymentForm/GetAll");
-        //         console.log(res)
-        //     }
-        //     catch (err) {
-        //         console.log(err)
-        //     }
-        // }
-        // getSavedPayments()
 
         const active = (payload) => {
             isActive.value = payload
@@ -833,7 +795,7 @@ export default {
                     newContribution.value.payment = res.data.contributionItems.map(i => i)
                     accountNumber.value = res.data.accountNumber
                     accountName.value = res.data.accountName
-                    selectedBank.value = { name: nigerianBanks.value.find(i => i.code == res.data.bankCode).name, code: res.data.bankCode },
+                    bankSearchText.value = nigerianBanks.value.find(i => i.code == res.data.bankCode).name, 
                     isActive.value = res.data.isActive
                     paymentGateWays.value = res.data.paymentGateWays.map(i => {
                         return {
@@ -853,7 +815,11 @@ export default {
                 catch (err) {
                     console.log(err)
                     finish()
-                     toast.add({severity:'error', summary: 'Network Error', detail:'Please ensure you have a strong internet connection', life: 6000});
+                    ElMessage({
+                        type: "error",
+                        message: "Network Error, Please ensure you have a strong internet connection",
+                        duration: 3000,
+                    });
                 }
             }else {
                 isActive.value = true
@@ -873,8 +839,6 @@ export default {
                 // alert(i)
                 return i.name.toLowerCase().includes("paystack") || i.name.toLowerCase().includes("flutterwave")
             })
-            // const x = paymentGateWaysDb.value.filter(i => (paymentGateWays.value.findIndex(j => j.paymentGateWayID === i.id)) >= 0)
-            // console.log(x, "XXX");
 
             return x;
         })
@@ -946,8 +910,8 @@ export default {
             getSubAccounts()
 
         return {
-            contributionItems, newContribution, addContribution,
-            deleteContribution, nigerianBanks, selectedBank, resolveCustomerDetail,
+            contributionItems, newContribution, addContribution, lgAndUp, mdAndUp, xlAndUp,filteredBanks, setBank,
+            deleteContribution, nigerianBanks, selectedBank, resolveCustomerDetail, bankSearchText,
             accountNumber, saveAndContinue, selectContribution, selectedContribution, accountName,
             accNameRef, loading, loadingSave, loadingEdit, disabled,  newConItems, firstTemplate,
             secondTemplate, thirdTemplate, toggleFirstTemplate, toggleSecondTemplate,

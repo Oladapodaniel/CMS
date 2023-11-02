@@ -1,5 +1,7 @@
 
 <template>
+  <!-- This component is not currently in use in production environment, it will be removed in the future eventually -->
+  
   <div>
     <!-- nav section area -->
     <div class="container-fluid nav-color sticky-top">
@@ -375,6 +377,9 @@ import { ref } from "vue";
 import Dropdown from "primevue/dropdown";
 import axios from "@/gateway/backendapi";
 export default {
+  components: {
+    Dropdown
+  },
   setup() {
     const hideTabOne = ref(true);
 
@@ -459,7 +464,6 @@ export default {
       toggleTabOne,
       funds,
       toggleTabTwo,
-      Dropdown,
       selectedContributionType,
       date,
       givingOften,

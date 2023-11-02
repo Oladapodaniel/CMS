@@ -515,7 +515,7 @@ import axios from "@/gateway/backendapi";
 import store from "../../../store/store";
 import { useToast } from "primevue/usetoast";
 import stopProgressBar from "../../../services/progressbar/progress";
-import { useConfirm } from "primevue/useConfirm";
+import { useConfirm } from "primevue/useconfirm";
 // import { useStore } from "vuex"
 
 export default {
@@ -729,7 +729,7 @@ export default {
     };
 
     const getTenantId = async () => {
-      if (Object.keys(store.getters.currentUser).length > 0) {
+      if (store && store.getters && store.getters.currentUser && Object.keys(store.getters.currentUser).length > 0) {
         console.log(store.getters.currentUser);
         tenantId.value = store.getters.currentUser.tenantId;
       } else {

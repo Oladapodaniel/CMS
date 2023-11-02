@@ -1,61 +1,66 @@
 <template>
   <div class="pb-4">
-    <div class="row table">
-      <div class="col-12 mt-4 w-100">
-        <div class="row">
-          <!-- {{contributionSummary}} -->
-          <div class="col-12 col-md-4">
-            <div class="col-12 mb-5">
-              <Dropdown
-                v-model="selectedPeriod"
-                :options="periods"
-                optionLabel="name"
-                placeholder="Select a period "
-                class="w-100"
-              />
-            </div>
-            <div class="col-12 w-100">
-              <h2 class="font-weight-bold py-3 mb-3">
-                {{ tenantCurrency.currency }}
-                {{
-                  chartData ? amountWithCommas(Math.round(chartData.income)) : 0
-                }}
-              </h2>
-            </div>
-          </div>
-
-          <div class="col-12 col-md-4">
-            <ContributionPieChart
-              domId="chart"
-              distance="5"
-              :titleMargin="10"
-              :summary="pieChart"
-            />
-          </div>
-          <div class="col-12 col-md-4">
-            <ContributionAreaChart
-              elemId="chart"
-              domId="areaChart3"
-              title="So Far"
-              lineColor="#002044"
-              :subtitle="chartData.name"
-              :series="
-                chartData && chartData.barChart ? chartData.barChart.data : {}
-              "
-              :attendanceSeries="attendanceSeries"
-              :xAxis="LineGraphXAxis"
-            />
-          </div>
+    <div class="row mt-5">
+      <div class="col-12 p-0 col-md-4">
+        <div class="col-12 p-0 mb-5">
+          <el-select-v2
+            v-model="selectedPeriodId"
+            :options="periods.map((i) => ({ label: i.name, value: i.name }))"
+            @change="setSelectedPeriod"
+            placeholder="Select a period"
+            size="large"
+            class="w-100"
+          />
         </div>
+        <div class="col-12 w-100">
+          <h2 class="font-weight-bold py-3 mb-3">
+            {{ tenantCurrency.currencySymbol }}
+            {{ chartData ? amountWithCommas(Math.round(chartData.income)) : 0 }}
+          </h2>
+        </div>
+      </div>
+
+      <div class="col-12 col-md-4">
+        <ContributionPieChart
+          domId="chart"
+          distance="5"
+          :titleMargin="10"
+          :summary="pieChart"
+        />
+      </div>
+      <div class="col-12 col-md-4">
+        <ContributionAreaChart
+          elemId="chart"
+          domId="areaChart3"
+          title="So Far"
+          lineColor="#002044"
+          :subtitle="chartData.name"
+          :series="
+            chartData && chartData.barChart ? chartData.barChart.data : {}
+          "
+          :attendanceSeries="attendanceSeries"
+          :xAxis="LineGraphXAxis"
+        />
       </div>
     </div>
 
-    <div class="row table">
-      <div class="col-12 px-0" id="table">
-        <div class="top-con" id="ignore2">
-          <div class="table-top">
+    <div class="row">
+      <div class="col-12 p-0 mt-5">
+        <div class="table-top p-3 mt-5">
+          <div
+            class="row d-flex flex-column flex-sm-row justify-content-sm-end"
+          >
+            <span
+              ><el-icon
+                :size="20"
+                class="c-pointer"
+                v-if="marked.length > 0"
+                @click="modal"
+              >
+                <Delete /> </el-icon
+            ></span>
             <div
-              class="filter col-2"
+              class="filter col-md-2"
               @click="
                 printJS({
                   ignoreElements: ['ignore1', 'ignore2'],
@@ -73,425 +78,294 @@
                 })
               "
             >
-              <p class="mt-2">
-                <i class="pi pi-print"></i>
-                PRINT
+              <p class="mb-0 mr-3 d-flex my-3 my-sm-0">
+                <el-icon :size="20"><Printer /></el-icon>
+                <span class="ml-1"> PRINT</span>
               </p>
             </div>
-            <div class="filter col-2">
-              <p @click="toggleFilterFormVissibility" class="mt-2">
-                <i class="fas fa-filter"></i>
-                FILTER
-              </p>
-            </div>
-            <div class="col-2">
-              <p @click="toggleSearch" class="search-text w-100 mt-2">
-                <i class="pi pi-search"></i> SEARCH
-              </p>
-            </div>
-
-            <div class="search d-flex ml-2">
-              <label
-                class="label-search d-flex"
-                :class="{
-                  'show-search': searchIsVisible,
-                  'hide-search': !searchIsVisible,
-                }"
+            <div class="col-md-2">
+              <p
+                @click="toggleFilterFormVissibility"
+                class="mb-0 mr-3 d-flex my-3 my-sm-0 c-pointer"
               >
-                <input
-                  type="text"
-                  placeholder="Search..."
-                  v-model="searchText"
-                  @input="searchOfferingInDB"
-                />
-                <span class="empty-btn">x</span>
-                <span class="search-btn">
-                  <i class="pi pi-search"></i>
-                </span>
-              </label>
+                <el-icon :size="20">
+                  <Filter />
+                </el-icon>
+                <span class="ml-1"> FILTER</span>
+              </p>
             </div>
-          </div>
-        </div>
-        <div
-          class="filter-options"
-          :class="{ 'filter-options-shown': filterFormIsVissible }"
-          id="ignore1"
-        >
-          <div class="container-fluid">
-            <div class="row">
-              <div class="col-md-9">
-                <div class="row">
-                  <div
-                    class="
-                      col-12 col-sm-6 col-md-4
-                      offset-sm-3 offset-md-0
-                      form-group
-                      inp
-                      w-100
-                    "
+            <div class="col-md-5">
+              <el-input
+                size="small"
+                v-model="searchText"
+                placeholder="Search..."
+                @input="searchOfferingInDB"
+                @keyup.enter.prevent="searchOfferingInDB"
+                class="input-with-select"
+              >
+                <template #suffix>
+                  <el-button
+                    style="padding: 5px; height: 22px"
+                    @click.prevent="searchText = ''"
                   >
-                    <!-- <div class="input-field"> -->
+                    <el-icon :size="13">
+                      <Close />
+                    </el-icon>
+                  </el-button>
+                </template>
+                <template #append>
+                  <el-button @click.prevent="searchOfferingInDB">
+                    <el-icon :size="13">
+                      <Search />
+                    </el-icon>
+                  </el-button>
+                </template>
+              </el-input>
+            </div>
+          </div>
+          <div
+            class="filter-options mt-3"
+            :class="{ 'filter-options-shown': filterFormIsVissible }"
+            id="ignore1"
+          >
+            <div class="container-fluid">
+              <div class="row">
+                <div class="col-md-9">
+                  <div class="row">
+                    <div
+                      class="col-12 col-sm-6 col-md-4 offset-sm-3 offset-md-0 form-group inp w-100"
+                    >
+                      <el-input
+                        type="text"
+                        class="w-100"
+                        placeholder="Offering"
+                        v-model="filter.contribution"
+                      />
+                    </div>
 
-                    <input
-                      type="text"
-                      class="input w-100"
-                      placeholder="Offering"
-                      v-model="filter.contribution"
-                    />
-                  </div>
-
-                  <div class="col-12 col-md-4 form-group d-none d-md-block">
-                    <input
-                      type="text"
-                      class="input w-100"
-                      placeholder="donor"
-                      v-model="filter.donor"
-                    />
+                    <div class="col-12 col-md-4 form-group d-none d-md-block">
+                      <el-input
+                        type="text"
+                        class="w-100"
+                        placeholder="donor"
+                        v-model="filter.donor"
+                      />
+                    </div>
                   </div>
                 </div>
-              </div>
 
-              <div class="col-md-3 d-flex flex-column align-items-center">
-                <button class="apply-btn text-white" @click="applyFilter">
-                  Apply
-                </button>
-                <span class="mt-2">
-                  <a class="clear-link mr-2" @click="clearAll">Clear all</a>
-                  <span class="mx-2"
-                    ><i class="fas fa-circle" style="font-size: 4px"></i></span
-                  ><a class="hide-link ml-2" @click="hide">Hide</a>
-                </span>
+                <div class="col-md-3 d-flex flex-column align-items-center">
+                  <el-button
+                    round
+                    :color="primarycolor"
+                    class="text-white"
+                    @click="applyFilter"
+                  >
+                    Apply
+                  </el-button>
+                  <span class="mt-2">
+                    <a class="clear-link mr-2" @click="clearAll">Clear all</a>
+                    <span class="mx-2"
+                      ><i
+                        class="fas fa-circle"
+                        style="font-size: 4px"
+                      ></i></span
+                    ><a class="hide-link ml-2" @click="hide">Hide</a>
+                  </span>
+                </div>
               </div>
             </div>
           </div>
         </div>
-
-        <!-- contribution -->
-
- <div v-if="searchContribution.length > 0">
-          <div class="container-fluid d-none d-md-block">
-            <div class="row t-header">
-              <div class="col-md-1"></div>
-              <div class="small-text text-capitalize col-md-2 font-weight-bold">
-                Date
+        <div v-if="searchContribution.length > 0">
+          <Table
+            :data="searchContribution"
+            :headers="offeringHeaders"
+            :checkMultipleItem="true"
+            v-loading="loading"
+            @checkedrow="handleSelectionChange"
+          >
+            <template v-slot:date="{ item }">
+              <div class="c-pointer" @click="offeringDetails(item.id)">
+                {{ date(item.date) }}
               </div>
-              <div class="small-text text-capitalize col-md-2 font-weight-bold">
-                Offering
+            </template>
+            <template v-slot:offering="{ item }">
+              <div class="c-pointer" @click="offeringDetails(item.id)">
+                {{ item.contribution }}
               </div>
-              <div class="small-text text-capitalize col-md-2 font-weight-bold">
-                Amount
+            </template>
+            <template v-slot:amount="{ item }">
+              <div class="c-pointer" @click="offeringDetails(item.id)">
+                {{ item.currencyName
+                }}{{ Math.abs(item.amount).toLocaleString() }}.00
               </div>
-              <div class="small-text text-capitalize col-md-2 font-weight-bold">
-                Source
+            </template>
+            <template v-slot:source="{ item }">
+              <div class="c-pointer" @click="offeringDetails(item.id)">
+                {{ item.channel }}
               </div>
-              <div class="small-text text-capitalize col-md-2 font-weight-bold">
-                Donor
+            </template>
+            <template v-slot:donor="{ item }">
+              <div class="c-pointer" @click="offeringDetails(item.id)">
+                {{ item.donor }}
               </div>
-              <div class="small-text text-capitalize col-md-1 font-weight-bold">
-                Action
-              </div>
-            </div>
-          </div>
-
-        <loadingComponent :loading="loading" />
-        <div v-if="!loading">
-          <div class="row" style="margin: 0">
-            <div
-              class="
-                col-12
-                parent-desc
-                py-2
-                px-0
-                c-pointer
-                tr-border-bottom
-                hover
-              "
-              v-for="(item, index) in searchContribution"
-              :key="item.id"
-            >
-              <div class="row w-100" style="margin: 0">
-                <div
-                  class="col-md-1 d-flex d-md-block px-3 justify-content-end"
-                >
-                  <input
-                    type="checkbox"
-                    v-model="item.check"
-                    class="form-check"
-                  />
-                </div>
-
-                <div class="desc small-text col-md-2 px-1">
-                  <p class="mb-0 d-flex justify-content-between">
-                    <span
-                      class="
-                        text-dark
-                        font-weight-bold
-                        d-flex d-md-none
-                        fontIncrease
-                      "
-                      >Date</span
-                    >
-                    <router-link
-                      class="text-decoration-none fontIncrease"
-                      :to="{ name: 'AddOffering', params: { offId: item.id } }"
-                      ><span class="text-decoration-none">{{
-                        date(item.date)
-                      }}</span></router-link
-                    >
-                  </p>
-                </div>
-
-                <div class="col-md-2 px-1">
-                  <div class="d-flex small justify-content-between">
-                    <span
-                      class="
-                        text-dark
-                        font-weight-bold
-                        d-flex d-md-none
-                        fontIncrease
-                      "
-                      >Offering</span
-                    >
-                    <div>
-                      <div class="desc small-text text-right text-md-left">
-                        <router-link
-                          class="text-decoration-none fontIncrease"
-                          :to="{
-                            name: 'AddOffering',
-                            params: { offId: item.id },
-                          }"
-                          >{{ item.contribution }}</router-link
-                        >
+            </template>
+            <template v-slot:action="{ item }">
+              <el-dropdown trigger="click">
+                <el-icon>
+                  <MoreFilled />
+                </el-icon>
+                <template #dropdown>
+                  <el-dropdown-menu>
+                    <el-dropdown-item>
+                      <router-link
+                        class="text-decoration-none"
+                        :to="
+                          !item.activityId ||
+                          item.activityId ===
+                            '00000000-0000-0000-0000-000000000000'
+                            ? {
+                                name: 'OfferingReport',
+                                query: {
+                                  report: item.date.split('T')[0],
+                                },
+                              }
+                            : {
+                                name: 'OfferingReport',
+                                query: {
+                                  report: item.date.split('T')[0],
+                                  activityID: item.activityId,
+                                },
+                              }
+                        "
+                      >
+                        View Report
+                      </router-link>
+                    </el-dropdown-item>
+                    <el-dropdown-item>
+                      <router-link
+                        :to="{
+                          name: 'AddOffering',
+                          params: { offId: item.id },
+                        }"
+                      >
+                        Edit
+                      </router-link>
+                    </el-dropdown-item>
+                    <el-dropdown-item>
+                      <div
+                        @click="showConfirmModal(item.id, index)"
+                        class="text-color"
+                      >
+                        Delete
                       </div>
-                    </div>
-                  </div>
-                </div>
-
-                <div class="desc-head small-text col-md-2 px-1">
-                  <p class="mb-0 d-flex justify-content-between">
-                    <span
-                      class="
-                        text-dark
-                        font-weight-bold
-                        d-flex d-md-none
-                        fontIncrease
-                      "
-                      >Amount</span
-                    >
-                    <span
-                      ><router-link
-                        class="text-decoration-none ml-3 fontIncrease"
-                        :to="{
-                          name: 'AddOffering',
-                          params: { offId: item.id },
-                        }"
-                        >{{ item.currencyName }} {{ item.amount }}</router-link
-                      ></span
-                    >
-                  </p>
-                </div>
-                
-                <div class="desc-head small-text col-md-2 px-1">
-                  <p class="mb-0 d-flex justify-content-between">
-                    <span
-                      class="
-                        text-dark
-                        font-weight-bold
-                        d-flex d-md-none
-                        fontIncrease
-                      "
-                      >Source</span
-                    >
-                    <span
-                      ><router-link
-                        class="text-decoration-none ml-3 fontIncrease"
-                        :to="{
-                          name: 'AddOffering',
-                          params: { offId: item.id },
-                        }"
-                        >{{ item.channel }}</router-link
-                      ></span
-                    >
-                  </p>
-                </div>
-
-                <div class="small-text col-md-2 px-1">
-                  <p class="mb-0 d-flex justify-content-between">
-                    <span
-                      class="
-                        text-dark
-                        font-weight-bold
-                        d-flex d-md-none
-                        fontIncrease
-                      "
-                      >Donor</span
-                    >
-                    <span
-                      ><span class="primary-text c-pointer"
-                        ><router-link
-                          class="text-decoration-none fontIncrease"
-                          :to="{
-                            name: 'AddOffering',
-                            params: { offId: item.id },
-                          }"
-                          >{{ item.donor }}</router-link
-                        ></span
-                      ></span
-                    >
-                  </p>
-                </div>
-
-                <div class="col-md-1">
-                  <div>
-                    <div class="dropdown">
-                      <span class="d-flex justify-content-between">
-                        <span class="d-md-none d-sm-flex"></span>
-                        <span class="d-sm-flex small">
-                          <i
-                            class="
-                              fas
-                              fa-ellipsis-v
-                              cursor-pointer
-                              ml-2
-                              fontIncrease
-                            "
-                            id="dropdownMenuButton"
-                            data-toggle="dropdown"
-                            aria-haspopup="true"
-                            aria-expanded="false"
-                          ></i>
-                          <div
-                            class="dropdown-menu"
-                            aria-labelledby="dropdownMenuButton"
-                          >
-                            <router-link
-                              :to="
-                                !item.activityId ||
-                                item.activityId ===
-                                  '00000000-0000-0000-0000-000000000000'
-                                  ? {
-                                      name: 'OfferingReport',
-                                      query: {
-                                        report: item.date.split('T')[0],
-                                      },
-                                    }
-                                  : {
-                                      name: 'OfferingReport',
-                                      query: {
-                                        report: item.date.split('T')[0],
-                                        activityID: item.activityId,
-                                      },
-                                    }
-                              "
-                            >
-                              <a class="dropdown-item elipsis-items">
-                                View Report
-                              </a>
-                            </router-link>
-                            <router-link
-                              :to="{
-                                name: 'AddOffering',
-                                params: { offId: item.id },
-                              }"
-                            >
-                              <a class="dropdown-item elipsis-items"> Edit </a>
-                            </router-link>
-                            <a
-                              class="dropdown-item elipsis-items cursor-pointer"
-                              @click="showConfirmModal(item.id, index)"
-                              >Delete</a
-                            >
-                          </div>
-                        </span>
-                      </span>
-                    </div>
-                  </div>
-                </div>
-              </div>
-            </div>
-          </div>
+                    </el-dropdown-item>
+                  </el-dropdown-menu>
+                </template>
+              </el-dropdown>
+            </template>
+          </Table>
         </div>
-
-</div>
-
-
-         <!-- <div
-          class="col-md-12 col py-3"
-          v-if="
-            listOfOfferingItems.length === 0 &&
-            props.contributionTransactions.length !== 0 &&
-            !loading
-          "
-        >
-          <p class="text-danger d-flex justify-content-center">
-            Record not available in database
-          </p>
+        <div class="text-danger d-flex justify-content-center" v-else>
+          No records found
+        </div>
+        <!-- <div class="table-footer">
+          <Pagination
+            @getcontent="getPeopleByPage"
+            :itemsCount="totalOfferingCount"
+            :currentPage="currentPage"
+          />
         </div> -->
-        <div class="text-danger d-flex justify-content-center" v-else>No records found</div>
-
-        <div class="col-12">
-          <div class="table-footer">
-            <Pagination
-              @getcontent="getPeopleByPage"
-              :itemsCount="50"
-              :currentPage="currentPage"
-              :totalItems="totalItem"
-            />
-          </div>
+        <div class="d-flex justify-content-end my-3">
+          <el-pagination
+            v-model:current-page="serverOptions.page"
+            v-model:page-size="serverOptions.rowsPerPage"
+            background
+            layout="total, prev, pager, next, jumper"
+            :total="totalOfferingCount"
+            @size-change="handleSizeChange"
+            @current-change="handleCurrentChange"
+          />
         </div>
-
-        <ConfirmDialog />
-        <Toast />
       </div>
     </div>
   </div>
 </template>
 
 <script>
-import { ref, computed } from "vue";
+import { ref, computed, watch, inject } from "vue";
 import axios from "@/gateway/backendapi";
-// import { useStore } from 'vuex'
-// import { store } from "../../../store/store"
+import Table from "@/components/table/Table";
+import router from "../../../router";
 import Pagination from "../../../components/pagination/PaginationButtons";
 import { useRoute } from "vue-router";
 import moment from "moment";
-import { useConfirm } from "primevue/useConfirm";
-import { useToast } from "primevue/usetoast";
 import finish from "../../../services/progressbar/progress";
 import monthDayYear from "../../../services/dates/dateformatter";
 import printJS from "print-js";
-import Dropdown from "primevue/dropdown";
-// import ContributionColumnChart from "../../../components/charts/ColumnChart.vue";
 import ContributionPieChart from "../../../components/charts/PieChart.vue";
 import ContributionAreaChart from "../../../components/charts/AreaChart.vue";
 import numbers_formatter from "../../../services/numbers/numbers_formatter";
 import store from "../../../store/store";
 import loadingComponent from "@/components/loading/LoadingComponent";
+import stopProgressBar from "../../../services/progressbar/progress";
+import { ElMessage, ElMessageBox } from "element-plus";
 export default {
   props: ["contributionTransactions", "totalItem"],
+  emits: ["marked"],
   components: {
-    // ByGenderChart,
-    // ByMaritalStatusChart,
+    Table,
     Pagination,
     ContributionAreaChart,
     ContributionPieChart,
-    Dropdown,
     loadingComponent,
   },
   setup(props, { emit }) {
-    // const contributionTransactions = ref([]);
-    // const getFirstTimerSummary = ref({});
     const filter = ref({});
-    const searchIsVisible = ref(false);
+    const primarycolor = inject("primarycolor");
+    const selectedPeriodId = ref(null);
     const filterResult = ref([]);
     const noRecords = ref(false);
     const searchText = ref("");
     const tenantCurrency = ref({});
+    const offeringHeaders = ref([
+      { name: "Date", value: "date" },
+      { name: "OFFERING", value: "offering" },
+      { name: "AMOUNT", value: "amount" },
+      { name: "SOURCE", value: "source" },
+      { name: "DONOR", value: "donor" },
+      { name: "ACTION", value: "action" },
+    ]);
     const Allsummary = ref([
       { name: "Not Sure", y: 20 },
       { name: "Male", y: 16 },
       { name: "Female", y: 3 },
     ]);
+    const serverOptions = ref({
+      page: 1,
+      rowsPerPage: 50,
+    });
+
+    watch(
+      serverOptions.value,
+      () => {
+        getPeopleByPage();
+      },
+      { deep: true }
+    );
+    const handleSizeChange = (val) => {
+      console.log(`${val} items per page`);
+    };
+    const handleCurrentChange = (val) => {
+      console.log(`current page: ${val}`);
+    };
+
+    const totalOfferingCount = computed(() => {
+      if (!props.totalItem) return 0;
+      return props.totalItem;
+    });
+
     const chartClass = ref(true);
     const periods = ref([
       { name: "One Week" },
@@ -511,23 +385,120 @@ export default {
     const filterFormIsVissible = ref(false);
     const toggleFilterFormVissibility = () =>
       (filterFormIsVissible.value = !filterFormIsVissible.value);
-    const toggleSearch = () => {
-      searchIsVisible.value = !searchIsVisible.value;
-    };
     const getRoute = () => {
-      console.log(route.fullPath);
       if (route.fullPath === "/tenant/offering") {
         chartClass.value = true;
       }
     };
     getRoute();
 
+    const offeringDetails = (id) => {
+      router.push(`/tenant/addoffering/${id}`);
+    };
+    selectedPeriodId.value = selectedPeriod.value.name;
+    const setSelectedPeriod = () => {
+      selectedPeriod.value = periods.value.find(
+        (i) => i.name == selectedPeriodId.value
+      );
+    };
+
+    const marked = ref([]);
+
+    const convert = (x) => {
+      return x.map((i) => i.id);
+    };
+
+    const deleteMarked = () => {
+      let dft = convert(marked.value);
+      axios
+        .post(`/api/Financials/Contributions/Transactions/DeleteMultiple`, dft)
+        .then((res) => {
+          let incomingRes = res.data.response;
+          ElMessage({
+            type: "success",
+            message: `Offering(s) deleted ${incomingRes}`,
+            duration: 4000,
+          });
+          emit("marked", marked.value);
+        })
+        .catch((err) => {
+          stopProgressBar();
+          if (err.toString().toLowerCase().includes("network error")) {
+            ElMessage({
+              type: "warning",
+              message:
+                "Network Error,Please ensure you have a strong internet connection",
+              duration: 5000,
+            });
+          } else if (err.toString().toLowerCase().includes("timeout")) {
+            ElMessage({
+              type: "warning",
+              message: "Request took too long to respond",
+              duration: 5000,
+            });
+          } else {
+            ElMessage({
+              type: "warning",
+              message: "Unable to delete attendance",
+              duration: 5000,
+            });
+          }
+          console.log(err);
+        });
+    };
+
+    const modal = () => {
+      ElMessageBox.confirm(
+        "Are you sure you want to proceed?",
+        "Confirm delete",
+        {
+          confirmButtonText: "OK",
+          cancelButtonText: "Cancel",
+          type: "error",
+        }
+      )
+        .then(() => {
+          deleteMarked();
+        })
+        .catch(() => {
+          ElMessage({
+            type: "info",
+            message: "Rejected",
+            duration: 5000,
+          });
+        });
+    };
+    const handleSelectionChange = (val) => {
+      marked.value = val;
+    };
+
+    const markOne = (item) => {
+      const offeringIdx = marked.value.findIndex((i) => i.id === item.id);
+      if (offeringIdx < 0) {
+        marked.value.push(item);
+      } else {
+        marked.value.splice(offeringIdx, 1);
+      }
+    };
+
+    const markAll = () => {
+      if (marked.value.length < props.contributionTransactions.length) {
+        props.contributionTransactions.forEach((i) => {
+          const memberInmarked = marked.value.findIndex((j) => j.id === i.id);
+          if (memberInmarked < 0) {
+            marked.value.push(i);
+          }
+        });
+      } else {
+        marked.value = [];
+      }
+    };
+
     const printContribution = computed(() => {
       if (props.contributionTransactions.length === 0) return [];
       return props.contributionTransactions.map((i) => {
         return {
           DATE: monthDayYear.monthDayYear(i.eventDate),
-          // EVENT: i.eventName,
           OFFERING: i.contribution,
           AMOUNT: i.amount,
           DONOR: i.donor ? i.donor : "",
@@ -538,72 +509,64 @@ export default {
       axios
         .delete(`/api/Financials/Contributions/Transactions/Delete?ID=${id}`)
         .then((res) => {
-          console.log(res);
           if (res.data.status) {
-            toast.add({
-              severity: "success",
-              summary: "Delete Successful",
-              detail: `Offering Transaction Deleted`,
-              life: 3000,
+            ElMessage({
+              type: "success",
+              message: "Offering Transaction Deleted",
+              duration: 5000,
             });
             emit("contri-transac", index);
+            store.dispatch("contributions/removeContributionFromStore", id);
           } else {
-            toast.add({
-              severity: "warn",
-              summary: "Delete Failed",
-              detail: `Please Try Again`,
-              life: 3000,
+            ElMessage({
+              type: "warning",
+              message: "Delete Failed, Please Try Again",
+              duration: 5000,
             });
           }
         })
         .catch((err) => {
           finish();
           if (err.response) {
-            console.log(err.response);
-            toast.add({
-              severity: "error",
-              summary: "Unable to delete",
-              detail: `${err.response}`,
-              life: 3000,
+            ElMessage({
+              type: "error",
+              message: `${err.response}`,
+              duration: 5000,
             });
           }
         });
     };
-    const confirm = useConfirm();
-    let toast = useToast();
     const showConfirmModal = (id, index) => {
-      confirm.require({
-        message: "Are you sure you want to proceed?",
-        header: "Confirmation",
-        icon: "pi pi-exclamation-triangle",
-        acceptClass: "confirm-delete",
-        rejectClass: "cancel-delete",
-        accept: () => {
+      ElMessageBox.confirm(
+        "Are you sure you want to proceed?",
+        "Confirm delete",
+        {
+          confirmButtonText: "OK",
+          cancelButtonText: "Cancel",
+          type: "error",
+        }
+      )
+        .then(() => {
           deleteOffering(id, index);
-          // toast.add({severity:'info', summary:'Confirmed', detail:'Member Deleted', life: 3000});
-        },
-        reject: () => {
-          toast.add({
-            severity: "info",
-            summary: "Rejected",
-            detail: "You have rejected",
-            life: 3000,
+        })
+        .catch(() => {
+          ElMessage({
+            type: "info",
+            message: "Rejected",
+            duration: 5000,
           });
-        },
-      });
+        });
     };
     const currentPage = ref(0);
-    const getPeopleByPage = async (page) => {
-      console.log(page);
-      // if (page < 1) return false;
+    const getPeopleByPage = async () => {
       try {
         const { data } = await axios.get(
-          `/api/Financials/Contributions/Transactions?page=${page}`
+          `/api/Financials/Contributions/Transactions?page=${serverOptions.value.page}`
         );
-        if (data) {
-          console.log(data);
+        console.log(data, 'bbb');
+        if (data && data.data.length > 0) {
           emit("get-pages", data);
-          currentPage.value = page;
+          currentPage.value = serverOptions.value.page;
         }
       } catch (error) {
         console.log(error);
@@ -640,9 +603,7 @@ export default {
       axios
         .get(url)
         .then((res) => {
-          // noRecords.value = true;
           filterResult.value = res.data;
-          console.log(res.data);
           if (res.data.length === 0) {
             noRecords.value = true;
           } else {
@@ -655,18 +616,16 @@ export default {
     // Tosin
     const loading = ref(false);
     const searchOfferingsInDB = ref([]);
-    const searchOfferingInDB = (event) => {
+    const searchOfferingInDB = () => {
       loading.value = true;
       let url =
         "/api/Financials/Contributions/FilteredTransactions?contribution=" +
-        event.target.value;
+        searchText.value;
       axios
         .get(url)
         .then((res) => {
           loading.value = false;
-          console.log(res);
           searchOfferingsInDB.value = res.data;
-          console.log(searchOfferingsInDB.value, "🎁🎁");
         })
         .catch((err) => {
           console.log(err);
@@ -679,24 +638,19 @@ export default {
       return props.contributionTransactions;
     });
 
-  const clearAll = () => {
-    filter.value.contribution ="";
-     filter.value.donor = "";
+    const clearAll = () => {
+      filter.value.contribution = "";
+      filter.value.donor = "";
     };
 
-     const hide = () => {
+    const hide = () => {
       filterFormIsVissible.value = false;
     };
     // Tosin
 
- const searchContribution = computed(() => {
-      if (searchText.value !== "" && searchOfferingsInDB.value.length > 0 ) {
-             return searchOfferingsInDB.value
-        // return props.contributionTransactions.filter((i) => {
-        //   return i.contribution
-        //     .toLowerCase()
-        //     .includes(searchText.value.toLowerCase());
-        // });
+    const searchContribution = computed(() => {
+      if (searchText.value !== "" && searchOfferingsInDB.value.length > 0) {
+        return searchOfferingsInDB.value;
       } else if (
         filterResult.value.length > 0 &&
         (filter.value.contribution || filter.value.event || filter.value.donor)
@@ -712,7 +666,6 @@ export default {
         let { data } = await axios.get(
           "/api/financials/contributions/transactions/summary"
         );
-        console.log(data);
         contributionSummary.value = data;
       } catch (err) {
         console.log(err);
@@ -727,7 +680,6 @@ export default {
           .get(`/api/Lookup/TenantCurrency?tenantID=${res.data.tenantId}`)
           .then((res) => {
             tenantCurrency.value = res.data;
-            console.log(res.data);
           })
           .catch((err) => console.log(err));
       } catch (err) {
@@ -859,45 +811,49 @@ export default {
       return [];
     });
     const LineGraphXAxis = computed(() => {
-      if (selectedPeriod.value.name === "This Week")
+      if (
+        selectedPeriod.value.name === "This Week" ||
+        selectedPeriod.value.name === "One Week" ||
+        selectedPeriod.value.name === "Last Week" ||
+        selectedPeriod.value.name === "This Month" ||
+        selectedPeriod.value.name === "Last Month" ||
+        selectedPeriod.value.name === "Last 30days" ||
+        selectedPeriod.value.name === "Last 90days" ||
+        selectedPeriod.value.name === "One Year"
+      )
         return [1, 2, 3, 4, 5, 6, 7];
-      if (selectedPeriod.value.name === "One Week")
-        return [1, 2, 3, 4, 5, 6, 7];
-      if (selectedPeriod.value.name === "Last Week")
-        return [1, 2, 3, 4, 5, 6, 7];
-      if (selectedPeriod.value.name === "This Month")
-        return [1, 2, 3, 4, 5, 6, 7];
-      if (selectedPeriod.value.name === "Last Month")
-        return [1, 2, 3, 4, 5, 6, 7];
-      if (selectedPeriod.value.name === "Last 30days")
-        return [1, 2, 3, 4, 5, 6, 7];
-      if (selectedPeriod.value.name === "Last 90days")
-        return [1, 2, 3, 4, 5, 6, 7];
-      if (selectedPeriod.value.name === "One Year")
-        return [1, 2, 3, 4, 5, 6, 7];
+      return [];
     });
 
     const amountWithCommas = (amount) =>
       numbers_formatter.amountWithCommas(amount);
 
     return {
-      // contributionTransactions,
+      deleteMarked,
+      primarycolor,
+      handleSizeChange,
+      totalOfferingCount,
+      handleCurrentChange,
+      serverOptions,
+      offeringDetails,
+      offeringHeaders,
+      setSelectedPeriod,
+      selectedPeriodId,
+      markAll,
+      modal,
+      markOne,
+      marked,
       deleteOffering,
       filterFormIsVissible,
       toggleFilterFormVissibility,
       moment,
-      // firstTimerSummary,
-      // getFirstTimerSummary,
       applyFilter,
       filter,
-      toggleSearch,
-      searchIsVisible,
       filterResult,
       noRecords,
       searchText,
       searchContribution,
       showConfirmModal,
-      // deleteMember,
       offeringCount,
       currentPage,
       getPeopleByPage,
@@ -913,6 +869,7 @@ export default {
       series,
       attendanceSeries,
       pieChart,
+      handleSelectionChange,
       LineGraphXAxis,
       amountWithCommas,
       tenantCurrency,
@@ -922,7 +879,7 @@ export default {
       searchOfferingInDB,
       listOfOfferingItems,
       clearAll,
-        hide
+      hide,
     };
   },
 };
@@ -941,6 +898,17 @@ export default {
   color: #136acd;
   text-decoration: none;
   width: 241px;
+}
+.table-top {
+  font-weight: 800;
+  font-size: 12px;
+  background: #fff;
+  border: 1px solid #d4dde3;
+  border-bottom: none;
+}
+.table-top label:hover,
+.table-top p:hover {
+  cursor: pointer;
 }
 .page-header {
   font-weight: 700;
@@ -1025,16 +993,7 @@ export default {
 .hide-link {
   color: #136acd;
 }
-.table-top {
-  font-weight: 800;
-  font-size: 12px;
-  display: flex;
-  justify-content: flex-end;
-}
-.table-top label:hover,
-.table-top p:hover {
-  cursor: pointer;
-}
+
 @media (max-width: 660px) {
   .select-all {
     display: none;
@@ -1096,6 +1055,10 @@ export default {
 }
 .fa-ellipsis-v:hover {
   cursor: pointer;
+}
+
+.fa-ellipsis-v {
+  padding: 10px;
 }
 #chart {
   width: 48%;

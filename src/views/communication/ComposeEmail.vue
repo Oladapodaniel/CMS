@@ -1,49 +1,31 @@
 <template>
   <div>
     <div class="container" @click="closeDropdownIfOpen">
-      <!-- <div class="container" @click="closeDropdownIfOpen"> -->
       <div class="row">
         <div class="col-md-12 mb-3 mt-3 offset-3 offset-md-0">
           <h4 class="font-weight-bold">Compose Email</h4>
-          <Toast />
-
-          <Dialog
-            header="Select Date and Time"
-            v-model:visible="display"
-            :style="{ width: '50vw', maxWidth: '600px' }"
-            :modal="true"
+          <el-dialog
+            title="Select Date and Time"
+            v-model="display"
+           :width="
+              mdAndUp || lgAndUp || xlAndUp ? `50%` : xsOnly ? `90%` : `70%`
+            "
+            align-center
           >
             <div class="row">
               <div class="col-md-12">
-                <input
-                  type="datetime-local"
-                  id="birthdaytime"
-                  class="form-control"
-                  name="birthdaytime"
-                  v-model="executionDate"
-                />
+                <input type="datetime-local" class="form-control my-3" v-model="executionDate" placeholder="Select date and time" />
               </div>
             </div>
             <template #footer>
-              <Button
-                label="Cancel"
-                icon="pi pi-times"
-                @click="() => (display = false)"
-                class="p-button-raised p-button-text p-button-plain mr-3"
-                style="
-                  color: #136acd;
-                  background: #fff !important;
-                  border-radius: 22px;
-                "
-              />
-              <Button
-                label="Schedule"
-                class="p-button-rounded"
-                style="background: #136acd"
-                @click="contructScheduleMessageBody(2)"
-              />
+              <span class="dialog-footer">
+                <el-button round @click="() => (display = false)"><el-icon><Close /></el-icon>Cancel</el-button>
+                <el-button round color='#136acd' :loading="loading" @click="contructScheduleMessageBody(2)">
+                  Schedule
+                </el-button>
+              </span>
             </template>
-          </Dialog>
+          </el-dialog>
         </div>
       </div>
 
@@ -54,13 +36,13 @@
       </div>
 
       <div class="row">
-        <div class="col-3 col-lg-2 align-self-center">
+        <div class="col-md-2 pr-md-0 col-lg-2 align-self-center">
           <span class="small-text">Send to : </span>
         </div>
-        <div class="col-9 col-lg-10 form-group mb-0">
-          <div class="dropdown">
+        <div class="p-0 col-md-10 col-lg-10 form-group mb-0">
+          <!-- <div class="dropdown">
             <button
-              class="btn btn-default dropdown-toggle small-text"
+              class="btn btn-default border dropdown-toggle small-text"
               type="button"
               id="dropdownMenuButton"
               data-toggle="dropdown"
@@ -82,7 +64,26 @@
                 >{{ destination }}</a
               >
             </div>
-          </div>
+          </div> -->
+          <el-dropdown trigger="click" class="w-100">
+            <div class="d-flex justify-content-between border-contribution text-dark w-100" size="large">
+              <span>Select Destination</span>
+              <div>
+                <el-icon class="el-icon--right">
+                  <arrow-down />
+                </el-icon>
+              </div>
+            </div>
+            <template #dropdown>
+              <el-dropdown-menu>
+                <el-dropdown-item v-for="(destination, index) in possibleEmailDestinations" :key="index">
+                  <a class="no-decoration text-dark" @click="showSection(index)">
+                    {{ destination }}
+                  </a>
+                </el-dropdown-item>
+              </el-dropdown-menu>
+            </template>
+          </el-dropdown>
         </div>
       </div>
 
@@ -92,23 +93,7 @@
         </div>
       </div>
 
-      <div class="row" v-if="sendToAll">
-        <div class="col-md-2"></div>
-        <div class="col-md-10 px-0">
-          <span>
-            <input
-              class="form-control dropdown-toggle my-1 px-1 small-text"
-              type="text"
-              id="dropdownMenu"
-              value="All Contacts"
-              disabled
-            />
-            <span class="close-allcontacts c-pointer" @click="() => sendToAll = false">x</span>
-          </span>
-        </div>
-      </div>
 
-      <!-- Start TEst -->
       <div class="row mb-2" v-if="groupSelectionTab">
         <div class="col-md-2"></div>
         <div class="col-md-10 px-0 grey-rounded-border">
@@ -120,17 +105,12 @@
               style="list-style: none; min-width: 100px"
               v-for="(group, index) in selectedGroups"
               :key="index"
-              class="email-destination d-flex justify-content-between m-1 small-text"
+              class="email-destination d-flex justify-content-between m-1 small-text align-items-center"
             >
-              <!-- <span
-              class="email-destination m-1"
-              
-            > -->
               <span class="small-text">{{ group.name }}</span>
               <span class="ml-2 remove-email" @click="removeGroup(index)"
                 >x</span
               >
-              <!-- </span> -->
             </li>
             <li style="list-style: none" class="">
               <input
@@ -209,15 +189,10 @@
               :key="indx"
               class="email-destination d-flex justify-content-between m-1"
             >
-              <!-- <span
-              class="email-destination m-1"
-              
-            > -->
               <span>{{ member.name }}</span>
               <span class="ml-2 remove-email" @click="removeMember(indx)"
                 >x</span
               >
-              <!-- </span> -->
             </li>
             <li style="list-style: none" class="m-dd-item">
               <input
@@ -301,18 +276,6 @@
             </span>
 
             <div class="dropdown">
-              <!-- <input
-                placeholder="Select persons"
-                class="border-none dropdown-toggle my-1 px-1"
-                type="text"
-                id="dropdownMenu"
-                @input="searchForPerson"
-                v-model="searchText"
-                data-toggle="dropdown"
-                aria-haspopup="true"
-                aria-expanded="false"
-              /> -->
-
               <div
                 class="dropdown-menu pt-0 w-100"
                 aria-labelledby="dropdownMenu"
@@ -421,10 +384,51 @@
         </div>
       </div>
 
+      <!-- Enter your Emails -->
+      <div class="col-md-12 my-1 px-0" v-if="emailSelectionTab">
+        <div class="row">
+          <div class="col-md-2"></div>
+          <div class="col-md-10 py-2 px-0">
+            <el-input
+              class=" w-100 "
+              :rows="2"
+              type="textarea"
+              placeholder="Enter email(s)"
+              v-model="email"
+            />
+          </div>
+          <div
+            class="col-md-12 grey-rounded-border groups"
+            :class="{ hide: !groupsAreVissible }"
+          >
+            <div
+              class="row"
+              v-for="(category, index) in categories"
+              :key="index"
+            >
+              <div class="col-md-12">
+                <div class="row">
+                  <div class="col-md-12">
+                    <h4>{{ category }}</h4>
+                    <p
+                      v-for="(group, indx) in allGroups[index]"
+                      @click="selectGroup(group.category, group.id, group.name)"
+                      :key="indx"
+                    >
+                      {{ group.name }}
+                    </p>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
       <div
         class="row mt-1"
         v-if="
-          phoneNumberSelectionTab || membershipSelectionTab || groupSelectionTab
+          phoneNumberSelectionTab || membershipSelectionTab || groupSelectionTab || emailSelectionTab
         "
       >
         <div class="col-md-12 pr-0">
@@ -437,9 +441,8 @@
           <span class="font-weight-600 small-text">Subject: </span>
         </div>
         <div class="col-md-10 px-0">
-          <input
-            type="text"
-            class="input p-0 mx-0 grey-rounded-border pl-2 px-14"
+          <el-input
+            class="w-100 p-0 mx-0 mb-2 px-14"
             style="border-radius: 4px"
             v-model="subject"
           />
@@ -451,57 +454,26 @@
           <span class="font-weight-600 small-text">Message: </span>
         </div>
         <div class="col-md-10 px-0">
-          <!-- <textarea
-            rows="10"
-            class="text-area my-2"
-            v-model="editorData"
-          ></textarea> -->
-
           <div class="row">
             <div class="col-md-12">
               <div id="app">
-                <!-- <ckeditor
-                  :editor="editor"
-                  v-model="editorData"
-                  :config="editorConfig"
-                ></ckeditor> -->
-                <!-- <Editor v-model="editorData" @input="changed" editorStyle="height: 320px" /> -->
-
-                <!-- <ckeditor id="ckeditor"
-                  :editor="editor"
-                  @ready="onReady"
-                  v-model="editorData"
-                  :config="editorConfig">
-                </ckeditor> -->
-                
               </div>
               <DecoupledEditor v-model="editorData" :loadedMessage="loadedMessage" :label="'you find me'" />
             </div>
           </div>
-
-          <!-- <div class="col-md-12 px-0">
-            <p
-              class="bg-success mb-0 p-1 text-white font-weight-700 small-text"
-              v-if="editorData.length > 0"
-              :class="{ amber: charactersCount > 160 }"
-            >
-              <span>Characters count {{ charactersCount }}</span>
-              <span class="float-right">Page {{ pageCount }}</span>
-            </p>
-          </div> -->
         </div>
       </div>
 
       <div class="row my-3">
-        <div class="col-md-12 form-group">
+        <!-- <div class="col-md-12 form-group">
           <div class="row">
             <div class="col-md-2"></div>
             <div class="col-md-10 pl-0">
-              <input type="checkbox" v-model="isPersonalized" class="mr-3" />
+              <el-checkbox  v-model="isPersonalized" class="mr-3" />
               <span class="font-weight-700 px-14">Personal Message</span>
             </div>
           </div>
-        </div>
+        </div> -->
         <div class="col-md-12">
           <div class="row">
             <div class="col-md-2"></div>
@@ -533,23 +505,23 @@
         </div>
         <div class="col-md-12 d-flex justify-content-end">
           <span>
-            <SplitButton
-              label="Send"
-              :model="sendOptions"
-              @click="contructScheduleMessageBody(1)"
-            ></SplitButton>
-            <!-- <SplitButton
-              label="Send"
-              :model="sendOptions"
-              data-toggle="modal"
-              data-target="#sendsmsbtn"
-            ></SplitButton> -->
+            <el-dropdown size="large"  trigger="click" class="split-button"  @click="contructScheduleMessageBody(1)" split-button >
+                Send
+                <template #dropdown>
+                  <el-dropdown-menu>
+                    <el-dropdown-item @click="showScheduleModal"><el-icon><Clock /></el-icon>Schedule</el-dropdown-item>
+                    <el-dropdown-item @click="draftMessage"><el-icon><MessageBox /></el-icon>Safe as Draft</el-dropdown-item>
+                  </el-dropdown-menu>
+                </template>
+              </el-dropdown>
           </span>
           <router-link
           to="/tenant/email/sent"
-            class="default-btn d-flex justify-content-center short-btn align-items-center ml-3 text-decoration-none text-dark"
+            class="no-decoration"
           >
-            Discard
+            <el-button class="ml-3 secondary-button" size="large" @click="closeModal" round
+              >Discard</el-button
+            >
           </router-link>
         </div>
 
@@ -690,9 +662,6 @@
                       </div>
                     </div>
                   </div>
-                  <!-- <div class="modal-footer">
-                    
-                  </div> -->
                 </div>
               </div>
             </div>
@@ -704,8 +673,7 @@
 </template>
 
 <script>
-// import ClassicEditor from "@ckeditor/ckeditor5-build-classic";
-import { computed, onMounted, ref } from "vue";
+import { computed, onMounted, ref, watchEffect } from "vue";
 import composeService from "../../services/communication/composer";
 import composerObj from "../../services/communication/composer";
 import { useRoute } from "vue-router";
@@ -716,25 +684,22 @@ import axios from "@/gateway/backendapi";
 import stopProgressBar from "../../services/progressbar/progress";
 import communicationService from '../../services/communication/communicationservice';
 import dateFormatter from "../../services/dates/dateformatter";
-// import Editor from 'primevue/editor';
-
+import deviceBreakpoint from "../../mixins/deviceBreakpoint";
 import swal from "sweetalert";
-// import CKEditor from "@ckeditor/ckeditor5-vue";
 import MyUploadAdapter from "../../services/editor/editor_uploader"
-// import ImageResize from '@ckeditor/ckeditor5-image/src/imageresize';
+import { ElMessage } from 'element-plus'
 
 import DecoupledEditor from '@/components/RichEditor';
 
 export default {
   components: { 
-    // Editor
-    // ckeditor: CKEditor.component,
     DecoupledEditor,
   },
   setup() {
     const router = useRouter()
     const toast = useToast();
     const editorData = ref("");
+    const { mdAndUp, lgAndUp, xlAndUp, xsOnly } = deviceBreakpoint();
 
     const onReady = (editor) => {
       // Customize upload picture plugin
@@ -748,20 +713,28 @@ export default {
     const groupSelectionTab = ref(false);
     const membershipSelectionTab = ref(false);
     const phoneNumberSelectionTab = ref(false);
+    const emailSelectionTab = ref(false);
+    const email = ref("")
     const selectedGroups = ref([]);
-    const sendToAll = ref(false);
     const executionDate = ref('');
+    const iSoStringFormat = ref('')
 
     const toggleGroupsVissibility = () => {
       groupsAreVissible.value = !groupsAreVissible.value;
     };
+      watchEffect(() =>{
+      if(executionDate.value){
+       iSoStringFormat.value = dateFormatter.getISOStringGMT(executionDate.value)
+      }
+  })
 
     const showSection = (index) => {
       if (index === 1) groupSelectionTab.value = true;
       if (index === 2) membershipSelectionTab.value = true;
-      if (index === 3) phoneNumberSelectionTab.value = true;
+      if (index === 3) emailSelectionTab.value = true;
+      if (index === 4) phoneNumberSelectionTab.value = true;
       if (index === 0) {
-        sendToAll.value = true;
+        groupSelectionTab.value = true;
         selectedGroups.value.push({ data: "membership_00000000-0000-0000-0000-000000000000", name: "All Contacts"
         })
       }
@@ -812,7 +785,6 @@ export default {
       memberListShown.value = false;
       searchText.value = "";
       memberSearchResults.value = [];
-      console.log(selectedMembers, "selected members");
     };
     const removeMember = (index) => {
       selectedMembers.value.splice(index, 1);
@@ -868,9 +840,8 @@ export default {
 
       if (
         selectedGroups.value.length === 0 &&
-        !phoneNumber.value &&
-        selectedMembers.value.length === 0 &&
-        !sendToAll.value
+        !phoneNumber.value && !email.value &&
+        selectedMembers.value.length === 0
       ) {
         invalidDestination.value = true;
         return false;
@@ -881,21 +852,21 @@ export default {
         return false;
       }
 
-      toast.add({
-        severity: "info",
-        summary: "Sending Email",
-        detail: "Email is being sent....",
-        life: 2500,
-      });
+      ElMessage({
+              type: 'info',
+              message: 'Email is being sent....',
+              duration: 5000
+            })
       
       composeService
         .sendMessage("/api/Messaging/sendEmail", data)
         .then((res) => {
-          if (res.status === 200) {
-            store.dispatch('communication/addToSentEmail', res.data.mail)
+
+          if (res.data.status ) {
+            // store.dispatch('communication/addToSentEmail', res.data.mail)
             swal({
               title: "Success!",
-              text: "Your email has been sent successfully!",
+              text: res.data.response,
               icon: "success",
               buttons: ["Send another", "Good"],
               confirmButtonColor: '#8CD4F5',
@@ -903,29 +874,46 @@ export default {
             })
             .then((willDelete) => {
               if (willDelete) {
-                router.push({ name: 'SentEmails' })
+                store.dispatch("communication/addToSentEmail").then(() => {
+                  router.push({ name: 'SentEmails' })
+                });
+                
               }
             });
             
-          }          
+          } else if (
+            res.data &&
+            !res.data.status
+
+          ) {
+            ElMessage({
+              message: res.data.message || "An error Occur" ,
+              type: "warning",
+              duration: 6000,
+            });
+          } else {
+            ElMessage({
+              type: "warning",
+              message: "Message not sent, please try again",
+              duration: 6000,
+            });
+          }      
         })
         .catch((err) => {
           stopProgressBar();
           toast.removeAllGroups();
           if (err.toString().toLowerCase().includes('network error')) {
-            toast.add({
-              severity: "warn",
-              summary: "You 're Offline",
-              detail: "Please ensure you have internet access",
-              life: 2500,
-            });
+             ElMessage({
+              type: 'warning',
+              message: "Please ensure you have internet access",
+              duration: 5000,
+            })
           } else {
-            toast.add({
-              severity: "error",
-              summary: "Not Sent",
-              detail: "Email sending failed",
-              life: 2500,
-            });
+            ElMessage({
+              type: 'error',
+              message: "Email sending failed",
+              duration: 5000,
+            })
             console.log(err)
           }
         });
@@ -947,33 +935,19 @@ export default {
               <div id="email-body">${editorData.value} </div>
             </body>
           </html>`,
-          // #email-body img {
-          //         width: 100% !important;
-          //         max-width: 1000px !important;
-          //         margin-left: auto;
-          //         margin-right: auto;
-          //         max-height: 300px;
-          //         object-fit: contain;
-          //         display: flex;
-          //         justify-content: center;
-          //       }
-                
-          //       #email-body img {
-          //         display: flex;
-          //         justify-content: center;
-          //       }
-                
-          //       #email-body figure {
-          //         margin: auto;
-          //       }
-        // contacts: [],
-        // contacts: selectedMembers.value.map(i => {
-        //   return { email: i.email }
-        // }),
         isPersonalized: isPersonalized.value,
         groupedContacts: selectedGroups.value.map((i) => i.data),
-        // toContacts: sendToAll.value ? 'allcontacts_00000000-0000-0000-0000-000000000000' : '',
+
       };
+
+      const emails = [];
+      email.value.split(",").forEach((i) => {
+        i.split("\n").forEach((j) => {
+          if (j) emails.push(j);
+        });
+      });
+
+      data.toOthers = emails.join();
 
       if (selectedMembers.value.length > 0) {
         data.ToContacts = data && data.ToContacts ? data.ToContacts.length > 0 ? "," : "" : "";
@@ -986,12 +960,15 @@ export default {
 
 
       if (sendOrSchedule == 2) {
-        data.executionDate = executionDate.value;
+        data.executionDate = iSoStringFormat.value;
+        data.date = iSoStringFormat.value;
+        data.time = iSoStringFormat.value.split("T")[1];
         scheduleMessage(data);
       } else {
         sendSMS(data);
       }
     };
+
 
     const showScheduleModal = () => {
       display.value = true;
@@ -1005,18 +982,19 @@ export default {
           "/api/Messaging/saveEmailSchedule",
           data
         );
-        toast.add({
-          severity: "success",
-          summary: "message Scheduled",
-          detail: `Message scheduled for ${formattedDate}`,
-        });
+        router.push('/tenant/email/schedules')
+        ElMessage({
+              type: 'success',
+              message: `message Scheduled for  ${formattedDate}` ,
+              duration: 5000
+            })
       } catch (error) {
         console.log(error);
-        toast.add({
-          severity: "error",
-          summary: "Schedule Failed",
-          detail: "Could not schedule message",
-        });
+        ElMessage({
+              type: 'error',
+              message: "Could not Schedule message",
+              duration: 5000
+            })
       }
     };
 
@@ -1028,20 +1006,18 @@ export default {
           isDefaultBirthDayMessage: false,
         });
         store.dispatch("communication/getEmailDrafts");
-        toast.add({
-          severity: "success",
-          summary: "Draft Saved",
-          detail: "Message saved as draft",
-          life: 2500,
-        });
+        ElMessage({
+              type: 'success',
+              message: "Message saved as draft",
+              duration: 5000
+            })
       } catch (error) {
         console.log(error, "drafting error");
-        toast.add({
-          severity: "warn",
-          summary: "Error",
-          detail: "Message not saved as draft",
-          life: 2500,
-        });
+        ElMessage({
+              type: 'warning',
+              message: "Message not saved as draft",
+              duration: 5000,
+            })
       }
     };
 
@@ -1052,6 +1028,10 @@ export default {
       phoneNumber.value = route.query.phone;
       phoneNumberSelectionTab.value = true;
     }
+    if(route.query.email){
+      email.value = route.query.email
+      emailSelectionTab.value = true
+    }
 
     if (route.query.group) {
       groupSelectionTab.value = true;
@@ -1060,6 +1040,7 @@ export default {
         name: route.query.group,
       });
       phoneNumberSelectionTab.value = true;
+      emailSelectionTab.value = true
     }
 
     
@@ -1100,29 +1081,6 @@ export default {
       if (userCountry.value === "Nigeria") return true;
       return false;
     });
-
-    const sendOptions = [
-      {
-        label: "Schedule",
-        icon: "pi pi-clock",
-        command: () => {
-          showScheduleModal();
-        },
-      },
-      {
-        label: "Save as Draft",
-        icon: "pi pi-save",
-        command: () => {
-          draftMessage();
-        },
-      },
-      // {
-      //   label: "Upload",
-      //   icon: "pi pi-upload",
-      //   to: "/fileupload",
-      // },
-    ];
-
     const allGroups = ref([]);
     const categories = ref([]);
     onMounted(() => {
@@ -1159,16 +1117,14 @@ export default {
       try {
           const { message, subject: subj } = await composeService.getSMSById(messageId);
           loadedMessage.value = message;
-          // console.log( loadedMessage.value, 'MESSAGESSS');
           subject.value = subj;
-          //  console.log( subject.value, 'SUBJECTSS');
       } catch (error) {
           console.log(error)
-          toast.add({
-          severity: "error",
-          summary: "Error",
-          detail: "Could not load email!",
-          });
+          ElMessage({
+              type: 'error',
+              message: "Could not load email",
+              duration: 5000,
+            })
       }
     }
 
@@ -1178,6 +1134,8 @@ export default {
 
     return {
       loadedMessage,
+      iSoStringFormat,
+      showScheduleModal,
       editorData,
       possibleEmailDestinations,
       groupsAreVissible,
@@ -1189,6 +1147,8 @@ export default {
       groupSelectionTab,
       membershipSelectionTab,
       phoneNumberSelectionTab,
+      emailSelectionTab,
+      email,
       categories,
       allGroups,
       selectedMembers,
@@ -1208,7 +1168,6 @@ export default {
       display,
       showDateTimeSelectionModal,
       scheduleMessage,
-      sendOptions,
       draftMessage,
       groupListShown,
       showGroupList,
@@ -1218,14 +1177,16 @@ export default {
       memberSelectInput,
       invalidDestination,
       invalidMessage,
-      sendToAll,
       sendModalHeader,
       nigerian,
       onEditorReady,
       contructScheduleMessageBody,
       executionDate,
       isPersonalized,
-
+      mdAndUp,
+      lgAndUp,
+      xlAndUp,
+      xsOnly,
       onReady,
     };
   },
@@ -1244,8 +1205,6 @@ export default {
   color: #495057;
   background-color: #fff;
   background-clip: padding-box;
-  /* border: none; */
-  /* transition: border-color .15s ease-in-out,box-shadow .15s ease-in-out; */
 }
 
 input:focus {

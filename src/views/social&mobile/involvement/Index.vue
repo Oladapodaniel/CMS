@@ -164,10 +164,10 @@
 
 <script>
 //  import Map from 'vue-world-map';
-import Chart from 'primevue/chart';
+// import Chart from 'primevue/chart';
     export default {
         components:{
-            Chart,
+            // Chart,
             // Map
         },
         data(){

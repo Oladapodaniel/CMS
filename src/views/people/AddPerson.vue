@@ -1,441 +1,571 @@
 <template>
-  <div class="my-con container-top">
-    <div class="header">
-      <h3 class="header-text font-weight-bold">Add Contact</h3>
-      <Toast />
+  <div>
+    <div class="head-text">
+      <div>Add Contact</div>
     </div>
 
-    <div class="form-div">
-      <form @submit.prevent="addPerson">
-        <div class="bio-div mt-2">
-          <p class="form-section-header">Bio:</p>
-          <div class="bio-info">
-            <div class="inputs">
-               <div class="input-field">
-                <label for="" class="label">Membership</label>
-                <div class="cstm-select input border-0 p-0">
-          
-                     <Dropdown
-                      v-model="selectedMembership"
-                      :options="memberships"
-                      optionLabel="name"
-                      placeholder="--Select membership--"
-                      style="width: 100%"
-                    />
-              
-                </div>
+    <div class="bio-div mt-2">
+      <p class="form-section-header">Bio:</p>
+    </div>
+    <el-container>
+      <el-row :gutter="15" class="w-100 m-0">
+        <el-col class="d-block d-md-none">
+          <div class="grey-bg">
+            <div v-if="routeParams">
+              <div class="person-img">
+                <img
+                  v-if="!memberToEdit.pictureUrl"
+                  src="../../assets/people/phone-import.svg"
+                  alt="Uploaded Image"
+                />
+                <img
+                  v-else
+                  :src="memberToEdit.pictureUrl"
+                  alt="Uploaded Image"
+                  style="
+                    width: 110px;
+                    height: 110px;
+                    border-radius: 50%;
+                    object-fit: cover;
+                  "
+                />
               </div>
-              <div class="input-field">
-                <label for="" class="label"
+            </div>
+            <div v-else>
+              <div class="person-img">
+                <img
+                  v-if="!url"
+                  src="../../assets/people/phone-import.svg"
+                  alt="Uploaded Image"
+                />
+                <img
+                  v-else
+                  :src="url"
+                  alt="Uploaded Image"
+                  style="
+                    width: 110px;
+                    height: 110px;
+                    border-radius: 50%;
+                    object-fit: cover;
+                  "
+                />
+              </div>
+            </div>
+            <div>
+              <div class="cs-input">
+                <label for="imgUpload" class="choose-file">
+                  Choose image
+                  <input
+                    type="file"
+                    class="input file-input"
+                    placeholder=""
+                    id="imgUpload"
+                    @change="imageSelected"
+                  />
+                </label>
+              </div>
+            </div>
+          </div>
+        </el-col>
+        <el-col :sm="16" :md="16" :lg="16" :xl="16" class="p-0">
+          <el-form :model="person" style="width: 100%">
+            <el-form-item>
+              <div
+                class="d-flex flex-column flex-lg-row justify-content-end w-100"
+              >
+                <label for="firstName" class="mr-3 font-weight-600"
+                  >Membership</label
+                >
+                <el-select-v2
+                  v-model="memberClassificationId"
+                  @change="setSelectedMem"
+                  :options="
+                    memberships.map((i) => ({ label: i.name, value: i.id }))
+                  "
+                  placeholder="--Select membership--"
+                  size="large"
+                  class="input-width"
+                />
+              </div>
+            </el-form-item>
+            <el-form-item>
+              <div
+                class="d-flex flex-column flex-lg-row justify-content-end w-100"
+              >
+                <label for="firstName" class="mr-3 font-weight-600"
                   >Firstname<span style="color: red"> *</span></label
                 >
-                <input
+                <el-input
                   type="text"
-                  class="input"
-                  placeholder=""
+                  class="input-width"
                   v-model="person.firstName"
-                  required
+                  placeholder="First name"
                 />
               </div>
-              <div class="input-field">
-                <label for="" class="label">Surname</label>
-                <input
+            </el-form-item>
+            <el-form-item>
+              <div
+                class="d-flex flex-column flex-lg-row justify-content-end w-100"
+              >
+                <label for="firstName" class="mr-3 font-weight-600"
+                  >Surname</label
+                >
+                <el-input
                   type="text"
-                  class="input"
-                  placeholder=""
+                  class="input-width"
                   v-model="person.lastName"
+                  placeholder="Last name"
                 />
               </div>
-              <div class="input-field">
-                <label for="" class="label">Phone number</label>
-                <input
-                  type="text"
-                  class="input"
-                  placeholder=""
+            </el-form-item>
+            <el-form-item>
+              <div
+                class="d-flex flex-column flex-lg-row justify-content-end w-100"
+              >
+                <label for="firstName" class="mr-3 font-weight-600"
+                  >Phone number</label
+                >
+                <!-- <el-input type="number" class="input-width" v-model="person.mobilePhone" placeholder="Phone number" /> -->
+                <vue-tel-input
+                  style="height: 40px"
+                  class="input-width"
                   v-model="person.mobilePhone"
-                />
+                  mode="international"
+                ></vue-tel-input>
               </div>
-              <div class="input-field">
-                <label for="" class="label">Email</label>
-                <input
+            </el-form-item>
+            <el-form-item>
+              <div
+                class="d-flex flex-column flex-lg-row justify-content-end w-100"
+              >
+                <label for="firstName" class="mr-3 font-weight-600"
+                  >Email</label
+                >
+                <el-input
                   type="text"
-                  class="input"
-                  placeholder=""
+                  class="input-width"
                   v-model="person.email"
+                  placeholder="Email"
                 />
               </div>
-              <div class="input-field">
-                <label for="" class="label">Address</label>
-                <input
+            </el-form-item>
+            <el-form-item>
+              <div
+                class="d-flex flex-column flex-lg-row justify-content-end w-100"
+              >
+                <label for="firstName" class="mr-3 font-weight-600"
+                  >Address</label
+                >
+                <el-input
                   type="text"
-                  class="input"
-                  placeholder=""
+                  class="input-width"
                   v-model="person.address"
+                  placeholder="Address"
                 />
               </div>
-               <div class="input-field">
-                <label for="" class="label">Choose contact owner</label>
-                <div class="input p-0 border-0">
-                  <SearchMembers @memberdetail="setContact" :currentMember="currentContact"/>
+            </el-form-item>
+            <el-form-item>
+              <div
+                class="d-flex flex-column flex-lg-row justify-content-end w-100"
+              >
+                <label for="firstName" class="mr-3 font-weight-600"
+                  >Person to follow-up</label
+                >
+                <div class="input-width">
+                  <SearchMembers
+                    @memberdetail="setContact"
+                    :currentMember="currentContact"
+                  />
                 </div>
               </div>
-              <div class="input-field">
-                <label for=""></label>
-                <div class="status-n-gender">
-                  <div class="status cstm-select">
-                    <div class="cs-select">
-                      <Dropdown
-                        v-model="selectedMaritalStatus"
-                        :options="maritalStatus"
-                        optionLabel="value"
-                        placeholder="Marital status"
-                        style="width: 100%"
-                      />
-                      <!-- <SelectElem :typ="'membership'" name="status" :options="['Marital status', ...maritalStatusArr]" value="Marital status" @input="itemSelected"/> -->
-                    </div>
-                  </div>
-                  <div class="gender cstm-select">
-                    <div class="cs-select">
-                      <Dropdown
-                        v-model="selectedGender"
-                        :options="genders"
-                        optionLabel="value"
-                        placeholder="Gender"
-                        style="width: 100%"
-                      />
-                      <!-- <SelectElem :typ="'membership'" name="gender" :options="['Gender', ...gendersArr]" value="Gender" @input="itemSelected"/> -->
-                    </div>
-                  </div>
+            </el-form-item>
+            <el-form-item>
+              <div
+                class="d-flex flex-column flex-lg-row justify-content-end w-100"
+              >
+                <div class="input-width d-flex">
+                  <el-select-v2
+                    v-model="maritalStatusId"
+                    @change="setSelectedMaritalStatus"
+                    :options="
+                      maritalStatus.map((i) => ({
+                        label: i.value,
+                        value: i.id,
+                      }))
+                    "
+                    placeholder="Marital status"
+                    size="large"
+                    class="w-100 mr-1"
+                  />
+                  <el-select-v2
+                    v-model="genderId"
+                    @change="setSelectedGender"
+                    :options="
+                      genders && genders.length > 0
+                        ? genders.map((i) => ({ label: i.value, value: i.id }))
+                        : []
+                    "
+                    placeholder="Gender"
+                    size="large"
+                    class="w-100 ml-1"
+                  />
                 </div>
               </div>
-             
+            </el-form-item>
+            <el-form-item>
+              <div
+                class="d-flex flex-column flex-lg-row justify-content-end w-100"
+              >
+                <label for="" class="font-weight-600 related-info"
+                  >Which Group[s] Do You Belong To?
+                </label>
+                <div class="input-width d-flex">
+                  <el-tabs type="border-card" class="w-100">
+                    <div class="  add-group bg-white">
+                      <div
+                        v-for="(item, index) in peopleInGroupIDs"
+                        :key="index"
+                      >
+                      <div class="d-flex justify-content-between align-items-center">
+                        <div class="pt-1"><span class="text-secondary">{{ index + 1 }}.</span> <span class="font-weight-700">{{ item.name }}</span></div>
+                        <el-icon class="text-danger" @click="showConfirmModal(index, item)"><CircleClose /></el-icon>
+                      </div>
+                      </div>
+                      <div v-if="peopleInGroupIDs.length === 0">
+                        No group added yet
+                      </div>
+                      <div
+                        class="pt-2 mt-2 font-weight-700 text-primary border-top text-center c-pointer"
+                        data-toggle="modal"
+                        data-target="#addToGroup"
+                      >
+                        Choose group
+                      </div>
+                    </div>
+                    <!-- <el-tab-pane label="Group">
+                          <span v-for="(item, index) in peopleInGroupIDs" :key="item.id">| &nbsp;
+                            <span class="text-grey">{{ item.name }} &nbsp; <i
+                                class="pi pi-times-circle text-danger c-pointer"
+                                @click="showConfirmModal(index, item)"></i></span>&nbsp; | &nbsp;
+                          </span>
+                          <div>
+                            <button class="info-btn" data-toggle="modal" data-target="#addToGroup" @click.prevent="">
+                              Add to Group
+                            </button>
+                          </div>
+                        </el-tab-pane> -->
+                    <!-- <el-tab-pane label="Note">
+                          <div v-for="(item, index) in personNotes" :key="index">
+                            <div class="font-weight-700">{{ item.title }}</div>
+                            <div class="mb-2">{{ item.description }}</div>
+                          </div>
+                          <button class="info-btn" data-toggle="modal" data-target="#personNote" @click.prevent="">
+                            New Notes
+                          </button>
+                        </el-tab-pane> -->
+                  </el-tabs>
+                </div>
+              </div>
+            </el-form-item>
+            <div class="d-flex align-items-center">
+              <div class="font-weight-700">Celebrations</div>
+              <el-divider> </el-divider>
+              <div>
+                <el-icon
+                  class="angle-icon"
+                  @click="showCelebration = !showCelebration"
+                >
+                  <ArrowDownBold />
+                </el-icon>
+              </div>
             </div>
-            <div class="image-div other">
-              <div class="grey-bg">
-                <div v-if="routeParams">
-                  <div class="person-img">
-                    <img
-                      v-if="!memberToEdit.pictureUrl"
-                      src="../../assets/people/phone-import.svg"
-                      alt="Uploaded Image"
-                    />
-                    <img
-                      v-else
-                      :src="memberToEdit.pictureUrl"
-                      alt="Uploaded Image"
-                      style="width: 110px; height: 110px; border-radius: 50%; object-fit: cover"
+            <el-collapse-transition>
+              <div v-show="showCelebration">
+                <el-form-item>
+                  <div
+                    class="d-flex flex-column flex-lg-row justify-content-end w-100"
+                  >
+                    <div class="mr-3 font-weight-600">Birthday</div>
+                    <div class="input-width d-flex">
+                      <el-select-v2
+                        v-model="person.dayOfBirth"
+                        :options="[
+                          { label: 'Day', value: 0 },
+                          ...birthDaysArr.map((i) => ({ label: i, value: i })),
+                        ]"
+                        placeholder="Day"
+                        size="large"
+                        class="w-100 mr-1"
+                      />
+                      <el-select-v2
+                        v-model="person.monthOfBirth"
+                        :options="[
+                          { label: 'Month', value: 0 },
+                          ...months.map((i) => ({ label: i, value: i })),
+                        ]"
+                        placeholder="Month"
+                        size="large"
+                        class="w-100 ml-1"
+                      />
+                      <el-select-v2
+                        v-model="person.yearOfBirth"
+                        :options="[
+                          { label: 'Year', value: 0 },
+                          ...birthYearsArr.map((i) => ({ label: i, value: i })),
+                        ]"
+                        placeholder="Year"
+                        size="large"
+                        class="w-100 ml-1"
+                      />
+                    </div>
+                  </div>
+                </el-form-item>
+                <el-form-item>
+                  <div
+                    class="d-flex flex-column flex-lg-row justify-content-end w-100"
+                  >
+                    <div class="mr-3 font-weight-600">Wedding Anniversary</div>
+                    <div class="input-width d-flex">
+                      <el-select-v2
+                        v-model="person.dayOfWedding"
+                        :options="[
+                          { label: 'Day', value: 0 },
+                          ...annDaysArr.map((i) => ({ label: i, value: i })),
+                        ]"
+                        placeholder="Day"
+                        size="large"
+                        class="w-100 mr-1"
+                      />
+                      <el-select-v2
+                        v-model="person.monthOfWedding"
+                        @change="
+                          editAnnDateValue('month', person.monthOfWedding)
+                        "
+                        :options="[
+                          { label: 'Month', value: 0 },
+                          ...months.map((i) => ({ label: i, value: i })),
+                        ]"
+                        placeholder="Month"
+                        size="large"
+                        class="w-100 ml-1"
+                      />
+                      <el-select-v2
+                        v-model="person.yearOfWedding"
+                        :options="[
+                          { label: 'Year', value: 0 },
+                          ...birthYearsArr.map((i) => ({ label: i, value: i })),
+                        ]"
+                        placeholder="Year"
+                        size="large"
+                        class="w-100 ml-1"
+                      />
+                    </div>
+                  </div>
+                </el-form-item>
+              </div>
+            </el-collapse-transition>
+
+            <div class="d-flex align-items-center">
+              <div class="font-weight-700">Additional~Information:</div>
+              <el-divider> </el-divider>
+              <div>
+                <el-icon class="angle-icon" @click="showAddInfo = !showAddInfo">
+                  <ArrowDownBold />
+                </el-icon>
+              </div>
+            </div>
+            <el-collapse-transition>
+              <div v-show="showAddInfo">
+                <el-form-item>
+                  <div
+                    class="d-flex flex-column flex-lg-row justify-content-end w-100"
+                  >
+                    <label for="occupation" class="mr-3 font-weight-600"
+                      >Occupation</label
+                    >
+                    <el-input
+                      type="text"
+                      class="input-width"
+                      v-model="person.occupation"
+                      placeholder="Occupation"
                     />
                   </div>
-                </div>
-                <div v-else>
-                  <div class="person-img">
-                    <img
-                      v-if="!url"
-                      src="../../assets/people/phone-import.svg"
-                      alt="Uploaded Image"
-                    />
-                    <img
-                      v-else
-                      :src="url"
-                      alt="Uploaded Image"
-                      style="width: 110px; height: 110px; border-radius: 50%; object-fit: cover"
-                    />
+                </el-form-item>
+                <el-form-item>
+                  <div
+                    class="d-flex flex-column flex-lg-row justify-content-end w-100"
+                  >
+                    <div class="mr-3 font-weight-600">Age group</div>
+                    <div class="input-width d-flex">
+                      <el-select-v2
+                        v-model="ageGroupId"
+                        @change="setSelectedAgeGroup"
+                        :options="
+                          ageGroups.map((i) => ({ label: i.name, value: i.id }))
+                        "
+                        placeholder="Age group"
+                        size="large"
+                        class="w-100 mr-1"
+                      />
+                    </div>
                   </div>
-                </div>
-                <div>
-                  <div class="cs-input">
-                    <label for="imgUpload" class="choose-file">
-                      Choose file
+                </el-form-item>
+                <el-form-item
+                  v-for="(item, index) in dynamicCustomFields"
+                  :key="index"
+                >
+                  <div
+                    class="d-flex flex-column flex-lg-row justify-content-end w-100"
+                  >
+                    <label for="occupation" class="mr-3 font-weight-600">{{
+                      item.label
+                    }}</label>
+                    <div
+                      class="input-width d-flex"
+                      v-if="item.controlType == 1"
+                    >
+                      <el-select-v2
+                        v-model="item.data"
+                        :options="
+                          item.parameterValues
+                            .split(',')
+                            .map((i) => ({ label: i, value: i }))
+                        "
+                        :placeholder="item.label"
+                        size="large"
+                        class="w-100 mr-1"
+                      />
+                    </div>
+                    <el-input
+                      type="text"
+                      class="input-width"
+                      v-model="item.data"
+                      :placeholder="item.label"
+                      v-if="item.controlType == 0"
+                    />
+                    <el-input
+                      type="number"
+                      class="input-width"
+                      v-model="item.data"
+                      :placeholder="item.label"
+                      v-if="item.controlType == 7"
+                    />
+                    <el-input
+                      type="email"
+                      class="input-width"
+                      v-model="item.data"
+                      :placeholder="item.label"
+                      v-if="item.controlType == 4"
+                    />
+                    <div class="input-width" v-if="item.controlType == 2">
+                      <el-checkbox v-model="item.data" size="large" />
+                    </div>
+                    <el-date-picker
+                      v-model="item.data"
+                      class="input-width"
+                      type="date"
+                      :placeholder="item.label"
+                      size="default"
+                      v-if="item.controlType == 3"
+                    />
+                    <div
+                      class="d-flex align-items-center"
+                      v-if="item.controlType == 6"
+                    >
                       <input
                         type="file"
-                        class="input file-input"
-                        placeholder=""
-                        id="imgUpload"
-                        @change="imageSelected"
+                        class="form-control input-width"
+                        @change="uploadImage($event, index)"
+                        :placeholder="item.label"
                       />
-                    </label>
+                      <el-icon class="is-loading ml-2" v-if="customFileLoading">
+                        <Loading />
+                      </el-icon>
+                    </div>
                   </div>
-                </div>
-                <!-- <div>
-                  <button
-                    class="upload-btn outline-none"
-                    @click.prevent="uploadImage"
-                  >
-                    Upload
-                  </button>
-                </div> -->
+                </el-form-item>
+              </div>
+            </el-collapse-transition>
+            <div
+              class="d-flex flex-column flex-lg-row justify-content-end w-100"
+            >
+              <div></div>
+              <div class="input-width d-flex justify-content-center my-4">
+                <el-button
+                  :loading="loading"
+                  :disabled="loading || !person.firstName"
+                  :color="primarycolor"
+                  class="w-100"
+                  @click="addPerson"
+                  round
+                  >Save</el-button
+                >
               </div>
             </div>
-          </div>
-        </div>
-        <!-- <hr class="hr"> -->
-
-        <div class="bio-div">
-          <span class="celeb-tab row" @click="showCelebTab">
-            <span class="tab-header col-3">Celebrations:</span>
-            <span class="h-rule col-7"><hr class="hr" /></span>
-            <span class="col-2">
-              <span class="tb-icon-span"
-                ><i
-                  class="pi pi-angle-down tbb-icon"
-                  :class="{ 'tb-icon': !hideCelebTab }"
-                ></i
-              ></span>
-            </span>
-          </span>
-          <div
-            class="bio-info celeb-info"
-            :class="{ 'hide-tab': hideCelebTab, showtab: !hideCelebTab }"
-          >
-            <div class="inputs">
-              <div class="input-field">
-                <label for="" class="label">Birthday</label>
-                <div class="status-n-gender">
-                    <div class="cstm-select">
-                      <div class="cs-select day">
-                        <Dropdown
-                          v-model="person.dayOfBirth"
-                          :options="['Day', ...birthDaysArr ]"
-                          placeholder="Day"
-                          style="width: 100%"
-                        />
-                        <!-- <SelectElem :typ="'membership'" name="birthday" :options="['Day', ...birthDaysArr ]" value="Day" @input="itemSelected"/> -->
-                      </div>
-                    </div>
-
-                    <div class="cstm-select">
-                      <div class="cs-select month">
-                        <Dropdown
-                          v-model="person.monthOfBirth"
-                          :options="['Month', ...months]"
-                          placeholder="Month"
-                          @change="
-                            editBirthDateValue('month', person.monthOfBirth)
-                          "
-                          style="width: 100%"
-                        />
-                        <!-- <SelectElem :typ="'membership'" name="birthmonth" :options="['Month', ...months]" value="Month" @input="itemSelected"/> -->
-                      </div>
-                    </div>
-
-                    <div class="cstm-select">
-                      <div class="cs-select year">
-                        <Dropdown
-                          v-model="person.yearOfBirth"
-                          :options="['Year', ...birthYearsArr]"
-                          placeholder="Year"
-                          style="width: 100%"
-                        />
-
-                        <!-- <SelectElem :typ="'membership'" name="birthyear" :options="['Year', ...birthYearsArr]" value="Year" @input="itemSelected"/> -->
-                      </div>
-                    </div>
-                </div>
-              </div>
-              <div class="input-field">
-                <label for="" class="label">Wedding Anniversary</label>
-                <div class="status-n-gender">
-                    <div class="cstm-select">
-                      <div class="cs-select day">
-                        <Dropdown
-                          placeholder="Day"
-                          v-model="person.dayOfWedding"
-                          :options="['Day', ...annDaysArr]"
-                          style="width: 100%"
-                        />
-                        <!-- <SelectElem :typ="'membership'" name="annday" :options="['Day', ...annDaysArr]" value="Day" @input="itemSelected"/> -->
-                      </div>
-                    </div>
-
-                    <div class="cstm-select">
-                      <div class="cs-select month">
-                        <Dropdown
-                          v-model="person.monthOfWedding"
-                          :options="['Month', ...months]"
-                          placeholder="Month"
-                          @change="
-                            editAnnDateValue('month', person.monthOfWedding)
-                          "
-                          style="width: 100%"
-                        />
-                        <!-- <SelectElem :typ="'membership'" name="annmonth" :options="['Month', ...months]" value="Month" @input="itemSelected"/> -->
-                      </div>
-                    </div>
-
-                    <div class="cstm-select">
-                      <div class="cs-select year">
-                        <Dropdown
-                          v-model="person.yearOfWedding"
-                          :options="['Year', ...birthYearsArr]"
-                          placeholder="Year"
-                          style="width: 100%"
-                        />
-                        <!-- <SelectElem :typ="'membership'" name="annyear" :options="['Year', ...birthYearsArr]" value="Year" @input="itemSelected"/> -->
-                      </div>
-                    </div>
-                </div>
-              </div>
-            </div>
-
-            <div class="image-div other">
-              <!-- Empty space -->
-            </div>
-          </div>
-        </div>
-        <div class="bio-div">
-          <span class="celeb-tab row" @click="showAddInfoTab">
-            <span class="tab-header col-3">Additional information:</span>
-            <span class="h-rule col-7"><hr class="hr" /></span>
-            <span class="col-2">
-              <span class="tb-icon-span"
-                ><i
-                  class="pi pi-angle-down tbb-icon"
-                  :class="{ 'tb-icon': !hideAddInfoTab }"
-                ></i
-              ></span>
-            </span>
-          </span>
-          <div
-            class="bio-info"
-            :class="{
-              'hide-tab': hideAddInfoTab,
-              'show-occ-tab': !hideAddInfoTab,
-            }"
-          >
-            <div class="inputs">
-              <div class="input-field">
-                <label for="" class="label">Occupation</label>
-                <input
-                  type="text"
-                  class="input"
-                  placeholder=""
-                  v-model="person.occupation"
+          </el-form>
+        </el-col>
+        <el-col :xs="24" :sm="8" :md="8" :lg="8" :xl="8">
+          <div class="grey-bg d-none d-md-block">
+            <div v-if="routeParams">
+              <div class="person-img">
+                <img
+                  v-if="!memberToEdit.pictureUrl"
+                  src="../../assets/people/phone-import.svg"
+                  alt="Uploaded Image"
+                />
+                <img
+                  v-else
+                  :src="memberToEdit.pictureUrl"
+                  alt="Uploaded Image"
+                  style="
+                    width: 110px;
+                    height: 110px;
+                    border-radius: 50%;
+                    object-fit: cover;
+                  "
                 />
               </div>
-              <div class="input-field">
-                <label for="" class="label">Age</label>
-                <div class="cstm-select search-box">
-                  <div class="cs-select" style="width: 330px">
-                    <Dropdown
-                      v-model="selectedAgeGroup"
-                      :options="ageGroups"
-                      optionLabel="name"
-                      placeholder="--Select age range--"
-                      style="width: 100%"
-                    />
-                    <!-- <SelectElem name="agegroup" :options="['-Select age range', ...groupsByAge]" value="-Select age range" @input="itemSelected"/> -->
-                  </div>
-                </div>
+            </div>
+            <div v-else>
+              <div class="person-img">
+                <img
+                  v-if="!url"
+                  src="../../assets/people/phone-import.svg"
+                  alt="Uploaded Image"
+                />
+                <img
+                  v-else
+                  :src="url"
+                  alt="Uploaded Image"
+                  style="
+                    width: 110px;
+                    height: 110px;
+                    border-radius: 50%;
+                    object-fit: cover;
+                  "
+                />
               </div>
             </div>
-
-            <div class="image-div other">
-              <!-- white space -->
-            </div>
-          </div>
-        </div>
-
-        <!-- DISABLED -->
-        <div
-          v-if="true"
-          class="add-info--con"
-          :class="{
-            'hide-tab': hideAddInfoTab,
-            'show-addinfo-tab': !hideAddInfoTab,
-          }"
-        >
-          <div class="label-text-box">
-            <p>Related information</p>
-            <small
-              >Including small groups and cell/house fellowship
-              membership</small
-            >
-          </div>
-          <div class="info-box">
-            <div class="nav-bar">
-              <div
-                class="groups box"
-                @click.prevent="() => (areaInView = 'groups')"
-                :class="{ 'white-bg': areaInView === 'groups' }"
-              >
-                <a class="tab">Groups</a>
+            <div>
+              <div class="cs-input">
+                <label for="imgUpload" class="choose-file">
+                  Choose image
+                  <input
+                    type="file"
+                    class="input file-input"
+                    placeholder=""
+                    id="imgUpload"
+                    @change="imageSelected"
+                  />
+                </label>
               </div>
-              <div
-                class="notes box"
-                @click.prevent="() => (areaInView = 'notes')"
-                :class="{ 'white-bg': areaInView === 'notes' }"
-              >
-                <a class="tab">Notes</a>
-              </div>
-              <div
-                v-if="false"
-                class="follow-up box"
-                @click.prevent="() => (areaInView = 'followup')"
-                :class="{ 'white-bg': areaInView === 'followup' }"
-              >
-                <a class="tab">Follow-up</a>
-              </div>
-            </div>
-            <div class="info-box-body py-3">
-            <div class="font-weight-700 " v-if="peopleInGroupIDs.length > 0 && areaInView === 'groups'">Groups added</div>
-              <div v-if="areaInView === 'groups'">
-                <span v-for="item in peopleInGroupIDs" :key="item.id" >| &nbsp;
-                <span class="text-grey">{{ item.name }}</span>&nbsp; | &nbsp;
-              </span>
-              </div>
-              <button
-                @click.prevent="uploadImage"
-                class="info-btn"
-                v-if="areaInView === 'groups'"
-                data-toggle="modal"
-                data-target="#addToGroup"
-              >
-                Add to Group
-              </button>
-              <button
-                @click.prevent="uploadImage"
-                class="info-btn"
-                v-if="areaInView === 'fellowship'"
-              >
-                Add to House fellowship
-              </button>
-              <button
-                @click.prevent="uploadImage"
-                class="info-btn"
-                v-if="areaInView === 'notes'"
-              >
-                New Notes
-              </button>
             </div>
           </div>
-        </div>
+        </el-col>
+      </el-row>
+    </el-container>
 
-        <!-- <div class="error-div">
-          <p v-show="!loading && showError">{{ errMessage }}</p>
-        </div> -->
-        <div class="submit-div">
-          <button
-            class="primary-bg px-md-4 outline-none default-btn text-white border-0"
-            :disabled="loading"
-          >
-            <i class="fas fa-circle-notch fa-spin mr-2" v-if="loading"></i>
-            <span>Save</span>
-            <span></span>
-          </button>
-          <!-- <button
-            class="primary-bg px-md-4 outline-none default-btn text-white border-0"
-            :class="{ 'btn-loading': loading }"
-            :disabled="loading"
-          >
-            <i class="fas fa-circle-notch fa-spin mr-2" v-if="loading"></i>
-            <span>Save</span>
-            <span></span>
-          </button> -->
-        </div>
-      </form>
-    </div>
-
-    <!-- Modal -->
+    <!-- Group Modal -->
     <div
       class="modal fade"
       id="addToGroup"
@@ -455,27 +585,31 @@
               class="close"
               data-dismiss="modal"
               aria-label="Close"
+              ref="closeAddToGroup"
             >
               <span aria-hidden="true">&times;</span>
             </button>
           </div>
           <div class="modal-body">
+            <div class="row my-4"></div>
             <div class="row my-4">
               <div class="col-md-4 text-md-right">
                 <label for="" class="font-weight-600">Name</label>
               </div>
               <div class="col-md-7">
-                <Dropdown
-                  v-model="groupToAddTo"
-                  :options="allGroups"
-                  style="width: 100%"
-                  :filter="false"
-                  placeholder="Select a group"
-                  optionLabel="name"
+                <el-tree-select
+                  v-model="selectedTree"
+                  class="w-100"
+                  placeholder="Select group"
+                  :data="groupMappedTree"
+                  :render-after-expand="false"
+                  :filter-node-method="filterNodeMethod"
+                  @change="setGroupValue"
+                  filterable
+                  check-strictly
                 />
               </div>
             </div>
-
             <div class="row">
               <div class="col-md-4 text-md-right">
                 <label for="" class="font-weight-600">Position</label>
@@ -501,15 +635,103 @@
                     Please select a group
                   </p>
                 </div>
-                <div class="row mt-2">
-                  <div class="col-md-6 d-md-flex justify-content-end">
-                    <button class="default-btn" data-dismiss="modal">Cancel</button>
-                  </div>
-                  <div class="col-md-6">
-                    <button
-                      class="default-btn primary-bg border-0 text-white"
+                <div class="col-12 p-0">
+                  <div class="d-flex justify-content-end">
+                    <el-button
+                      ref="closegroupmodal"
+                      class="secondary-button"
+                      data-dismiss="modal"
+                      round
+                      >Cancel</el-button
+                    >
+                    <el-button
+                      :color="primarycolor"
+                      :loading="addToGroupLoading"
                       :data-dismiss="dismissAddToGroupModal"
                       @click="addMemberToGroup"
+                      round
+                      >Save</el-button
+                    >
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Note Modal -->
+    <div
+      class="modal fade"
+      id="personNote"
+      tabindex="-1"
+      role="dialog"
+      aria-labelledby="personNote"
+      aria-hidden="true"
+    >
+      <div class="modal-dialog modal-lg" role="document">
+        <div class="modal-content">
+          <div class="modal-header" style="background: #ebeff4">
+            <h5 class="modal-title font-weight-bold" id="personNote">
+              Add Note
+            </h5>
+            <button
+              type="button"
+              class="close"
+              data-dismiss="modal"
+              aria-label="Close"
+            >
+              <span aria-hidden="true">&times;</span>
+            </button>
+          </div>
+          <div class="modal-body">
+            <div class="row my-4">
+              <div class="col-md-4 text-md-right">
+                <label for="" class="font-weight-600">Title</label>
+              </div>
+              <div class="col-md-7">
+                <input
+                  type="text"
+                  class="form-control"
+                  v-model="noteDetails.noteTitle"
+                  placeholder="Enter title"
+                />
+              </div>
+            </div>
+
+            <div class="row">
+              <div class="col-md-4 text-md-right">
+                <label for="" class="font-weight-600">Description</label>
+              </div>
+              <div class="col-md-7">
+                <textarea
+                  rows="5"
+                  class="form-control"
+                  v-model="noteDetails.noteDesc"
+                  placeholder="Enter note description"
+                ></textarea>
+              </div>
+            </div>
+
+            <div class="row">
+              <div class="col-md-4">
+                <label for="" class="font-weight-600"></label>
+              </div>
+
+              <div class="col-md-7 mt-3">
+                <div class="row mt-2 d-flex justify-content-end">
+                  <div class="col-6">
+                    <button class="default-btn" data-dismiss="modal">
+                      Cancel
+                    </button>
+                  </div>
+                  <div class="col-6">
+                    <button
+                    
+                      class="default-btn primary-bg border-0 text-white"
+                      :data-dismiss="dismissAddToGroupModal"
+                      @click="savePersonNote"
                     >
                       Save
                     </button>
@@ -526,61 +748,76 @@
 
 <script>
 import moment from "moment";
-import { ref, reactive, computed, onUpdated } from "vue";
+import { ref, reactive, computed, inject, watchEffect } from "vue";
 import router from "@/router/index";
-// import store from "../../store/store"
 import axios from "@/gateway/backendapi";
 import { useRoute } from "vue-router";
-// import { getCurrentInstance } from "vue";
-import Dropdown from "primevue/dropdown";
-import { useToast } from "primevue/usetoast";
 import { useStore } from "vuex";
 import membershipService from "../../services/membership/membershipservice";
 import grousService from "../../services/groups/groupsservice";
-// import lookupService from "../../services/lookup/lookupservice";
-import SearchMembers from "../../components/membership/MembersSearch.vue"
-
+import SearchMembers from "../../components/membership/MembersSearch.vue";
+import allCustomFields from "../../services/customfield/customField";
+import { ElMessage, ElMessageBox } from "element-plus";
+import collector from "../../services/groupArray/mapTree";
+import flatten from "../../services/groupArray/flatTree";
 export default {
   components: {
-    Dropdown,
-    SearchMembers
+    SearchMembers,
   },
   setup() {
-    // const $toast = getCurrentInstance().ctx.$toast;
-    const toast = useToast();
+    const primarycolor = inject("primarycolor");
     const store = useStore();
     const hideCelebTab = ref(false);
     const hideAddInfoTab = ref(true);
     const showCelebTab = () => (hideCelebTab.value = !hideCelebTab.value);
     const showAddInfoTab = () => (hideAddInfoTab.value = !hideAddInfoTab.value);
     const routeParams = ref("");
-    const peopleInGroupIDs = ref([])
-    const followupPerson = ref({})
-    const currentContact = ref({})
-
+    const peopleInGroupIDs = ref([]);
+    const followupPerson = ref({});
+    const currentContact = ref({});
+    const personNotes = ref([]);
+    const noteDetails = ref({});
+    const searchGroupText = ref("");
+    const closeAddToGroup = ref(null);
+    const memberClassificationId = ref(null);
+    const maritalStatusId = ref(null);
+    const genderId = ref(null);
+    const showCelebration = ref(true);
+    const showAddInfo = ref(false);
+    const ageGroupId = ref(null);
+    const customFileLoading = ref(false);
+    const selectedTree = ref();
+    const groupMappedTree = ref([]);
+    const flattenedTree = ref([]);
+    const addToGroupLoading = ref(false);
     const loading = ref(false);
-    // const day = ref([ 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30, 31 ]);
-    const months = [ "January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December" ];
-
+    const months = [
+      "January",
+      "February",
+      "March",
+      "April",
+      "May",
+      "June",
+      "July",
+      "August",
+      "September",
+      "October",
+      "November",
+      "December",
+    ];
     const birthMonth = ref(1);
     const birthDay = ref(1);
     const birthYear = ref(1922);
-
     const startingYear = 1920;
     const numberofYears = 100;
-
     const birthDate = moment();
     const daysInBirthMonth = ref(birthDate.daysInMonth());
-    const daysinMonth = ref([ 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30, 31 ]);
+    const daysinMonth = ref([
+      1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21,
+      22, 23, 24, 25, 26, 27, 28, 29, 30, 31,
+    ]);
     const birthDaysArr = computed(() => {
-      // console.log(birthDate.month(), "month");
-      // const arrOfDays = [];
-      // console.log(daysInBirthMonth.value, "dm");
-      // for (let i = 1; i <= daysInBirthMonth.value; i++) {
-      //   arrOfDays.push(i);
-      // }
-      // return arrOfDays;
-      return daysinMonth.value
+      return daysinMonth.value;
     });
     const birthYearsArr = computed(() => {
       const arrOfYears = [];
@@ -611,17 +848,8 @@ export default {
     const anniversaryDate = moment();
     const daysInAnnMonth = ref(anniversaryDate.daysInMonth());
     const annDaysArr = computed(() => {
-      // const arrOfDays = [];
-      // for (let i = 1; i <= daysInAnnMonth.value; i++) {
-      //   arrOfDays.push(i);
-      // }
-      // return arrOfDays;
-      return daysinMonth.value
+      return daysinMonth.value;
     });
-
-    onUpdated(() => {
-      console.log(moment().daysInMonth())
-    })
 
     const editAnnDateValue = (unit, val) => {
       anniversaryDate.set(unit, val);
@@ -655,18 +883,10 @@ export default {
       yearOfWedding: null,
     });
 
-    const uploadImage = () => {};
-
     const errMessage = ref("");
     const showError = ref(false);
 
-    // const peopleInGroups = computed(() => {
-    //   if (!route.params.personId) return {
-
-    //   } 
-    // })
-
-    const addPerson = async() => {
+    const addPerson = async () => {
       const personObj = { ...person };
       errMessage.value = "";
 
@@ -679,46 +899,66 @@ export default {
       formData.append("picture", image.value ? image.value : "");
       formData.append(
         "mobilePhone",
-        personObj.mobilePhone ? personObj.mobilePhone : ""
+        personObj.mobilePhone
+          ? personObj.mobilePhone.trim().replaceAll(" ", "")
+          : ""
       );
       formData.append("email", personObj.email ? personObj.email : "");
       formData.append(
         "occupation",
         personObj.occupation ? personObj.occupation : ""
       );
-      formData.append("dayOfBirth", personObj.dayOfBirth > 0 ? +personObj.dayOfBirth : 0);
+      formData.append(
+        "dayOfBirth",
+        personObj.dayOfBirth > 0 ? +personObj.dayOfBirth : 0
+      );
       formData.append(
         "monthOfBirth",
         months.indexOf(personObj.monthOfBirth) >= 0
           ? months.indexOf(personObj.monthOfBirth) + 1
           : 0
       );
-      formData.append("yearOfBirth", personObj.yearOfBirth > 0 ? +personObj.yearOfBirth : 0);
+      formData.append(
+        "yearOfBirth",
+        personObj.yearOfBirth > 0 ? +personObj.yearOfBirth : 0
+      );
       formData.append(
         "occupation",
         personObj.occupation ? personObj.occupation : ""
       );
-      formData.append("yearOfWedding", personObj.yearOfWedding > 0 ? +personObj.yearOfWedding : 0);
+      formData.append(
+        "yearOfWedding",
+        personObj.yearOfWedding > 0 ? +personObj.yearOfWedding : 0
+      );
       formData.append(
         "monthOfWedding",
         months.indexOf(personObj.monthOfWedding) >= 0
           ? months.indexOf(personObj.monthOfWedding) + 1
           : 0
       );
-      formData.append("dayOfWedding", personObj.dayOfWedding > 0 ? +personObj.dayOfWedding : 0);
+      formData.append(
+        "dayOfWedding",
+        personObj.dayOfWedding > 0 ? +personObj.dayOfWedding : 0
+      );
       formData.append(
         "peopleClassificationID",
         selectedMembership.value ? selectedMembership.value.id : ""
       );
       formData.append(
         "personGroups",
-        peopleInGroupIDs.value.length > 0 ? JSON.stringify(peopleInGroupIDs.value.map(i => {
-          delete i.name
-          return i
-        }) ) : []
+        peopleInGroupIDs.value.length > 0
+          ? JSON.stringify(
+              peopleInGroupIDs.value.map((i) => {
+                delete i.name;
+                return i;
+              })
+            )
+          : []
       );
-      formData.append("homeAddress", personObj.address ? personObj.address : "");
-      // formData.append("picture", image.value ? image.value : "");
+      formData.append(
+        "homeAddress",
+        personObj.address ? personObj.address : ""
+      );
       formData.append(
         "maritalStatusID",
         selectedMaritalStatus.value ? selectedMaritalStatus.value.id : ""
@@ -733,107 +973,116 @@ export default {
       );
       formData.append(
         "followupPersonID",
-        followupPerson.value.id ? followupPerson.value.id : "00000000-0000-0000-0000-000000000000"
+        followupPerson.value.id
+          ? followupPerson.value.id
+          : "00000000-0000-0000-0000-000000000000"
       );
-      console.log(formData);
-      /*eslint no-undef: "warn"*/
-      NProgress.start();
+      formData.append(
+        "note",
+        personNotes.value ? JSON.stringify(personNotes.value) : []
+      );
+
+      formData.append(
+        "customAttributeDataString",
+        JSON.stringify(
+          dynamicCustomFields.value.map((i) => {
+            if (route.params.personId) {
+              return {
+                customAttributeID: i.id,
+                data: i.data,
+                entityID: i.entityID,
+              };
+            } else {
+              return {
+                customAttributeID: i.id,
+                data: i.data,
+              };
+            }
+          })
+        )
+      );
       if (route.params.personId) {
         try {
           loading.value = true;
-          const response =  await axios.put(
+          const response = await axios.put(
             `/api/People/UpdatePerson/${route.params.personId}`,
             formData
           );
-          console.log(response, "response");
           if (response.status === 200 || response.status === 201) {
-            membershipService.updatePersonInStore(
-              response.data.person,
-              route.params.personId
-            );
-            // store.dispatch("membership/getMembers")
             loading.value = false;
-            router.push("/tenant/people");
+            store.dispatch("dashboard/getDashboard");
+            store.dispatch("membership/setMembers").then(() => {
+              router.push("/tenant/people");
+            });
           }
         } catch (err) {
           console.log(err);
           loading.value = false;
-          NProgress.done();
           if (err.toString().toLowerCase().includes("network error")) {
-            toast.add({
-              severity: "warn",
-              summary: "You 're Offline",
-              detail: "Please ensure you have internet access",
-              life: 6000,
+            ElMessage({
+              type: "warning",
+              message: "Please ensure you have internet access",
+              duration: 5000,
             });
           } else if (err.toString().toLowerCase().includes("timeout")) {
-            toast.add({
-                severity: "warn",
-                summary: "Request Delayed",
-                detail: "Request took too long to respond",
-                life: 6000,
-              });
-            }else {
-              showError.value = true;
-              errMessage.value =
-                err.response && err.response.data.messsage
-                  ? err.response.data.messsage
-                  : "Update operation was not succesfull";
-              toast.add({
-                severity: "warn",
-                summary: "Update Failed",
-                detail: errMessage.value
-                  ? errMessage.value
-                  : "Update operation failed",
-                life: 6000,
-              });
+            ElMessage({
+              type: "warning",
+              message: "Request took too long to respond",
+              duration: 5000,
+            });
+          } else {
+            showError.value = true;
+            errMessage.value =
+              err.response && err.response.data.messsage
+                ? err.response.data.messsage
+                : "Update operation was not succesfull";
+            ElMessage({
+              type: "warning",
+              message: errMessage.value
+                ? errMessage.value
+                : "Update operation failed",
+              duration: 5000,
+            });
           }
           showError.value = true;
           console.log(err.response);
         }
       } else {
-
         try {
           loading.value = true;
-          let response = await axios.post(
-            "/api/people/createperson",
-            formData
-          );
-          console.log(response)
-
+          let response = await axios.post("/api/people/createperson", formData);
 
           if (response.status === 200 || response.status === 201) {
-            // store.dispatch("membership/getMembers")
-            console.log(response, "response");
-            membershipService.addPersonToStore(response.data.person);
+            // membershipService.addPersonToStore(response.data.person);
+
             loading.value = false;
-            router.push("/tenant/people");
-          } 
-        } catch (err) {
-          console.log(err)
-          loading.value = false;
-          NProgress.done();
-          if (err.toString().toLowerCase().includes("network error")) {
-            toast.add({
-              severity: "warn",
-              summary: "You 're Offline",
-              detail: "Please ensure you have internet access",
-              life: 6000,
+            store.dispatch("dashboard/getDashboard");
+            store.dispatch("membership/setMembers").then(() => {
+              router.push("/tenant/people");
             });
-          } 
-          else {
+          }
+        } catch (err) {
+          console.log(err);
+          loading.value = false;
+          // NProgress.done();
+          if (err.toString().toLowerCase().includes("network error")) {
+            ElMessage({
+              type: "warning",
+              message: "Please ensure you have internet access",
+              duration: 5000,
+            });
+          } else {
             showError.value = true;
             loading.value = false;
             if (err.response && err.response.status === 400) {
-              errMessage.value = err.response.data.message;          
-            toast.add({
-              severity: "warn",
-              summary: "Attention!",
-              detail: errMessage.value
-                ? errMessage.value
-                : "Save operation failed",
-              life: 6000,
-            });
+              errMessage.value = err.response.data.message;
+              ElMessage({
+                type: "warning",
+                message: errMessage.value
+                  ? errMessage.value
+                  : "Save operation failed",
+                duration: 5000,
+              });
             }
           }
         }
@@ -849,33 +1098,19 @@ export default {
     const selectedGender = ref(null);
     const selectedAgeGroup = ref(null);
 
+    const dynamicCustomFields = ref([]);
+
     const getLookUps = () => {
       axios
         .get("/api/LookUp/GetAllLookUps")
         .then((res) => {
-          console.log(res, "lksa");
           genders.value = res.data.find(
             (i) => i.type.toLowerCase() === "gender"
           ).lookUps;
-          // try {
-          //   selectedGender.value = genders.value.find(
-          //     (i) => i.id === memberToEdit.value.genderID
-          //   );
-          // } catch (error) {
-          //   console.log(error);
-          // }
 
           maritalStatus.value = res.data.find(
             (i) => i.type.toLowerCase() === "maritalstatus"
           ).lookUps;
-          // try {
-          //   selectedMaritalStatus.value = maritalStatus.value.find(
-          //     (i) => i.id === memberToEdit.value.maritalStatusID
-          //   );
-          // } catch (error) {
-          //   console.log(error);
-          // }
-          console.log(maritalStatus, "MS");
         })
         .catch((err) => console.log(err.response));
     };
@@ -887,7 +1122,6 @@ export default {
         );
         const { data } = response;
         memberships.value = data;
-        console.log(memberships.value, "ms");
         peopleClassifications.value = data.map((i) => i.name);
         getPersonPeopleClassificationId();
       } catch (err) {
@@ -901,21 +1135,17 @@ export default {
     };
 
     const getAgeGroups = () => {
-      console.log("Calling age");
       axios
         .get("/api/Settings/GetTenantAgeGroups")
         .then((res) => {
-          ageGroups.value = res.data;
+          ageGroups.value = res.data.sort((a, b) => a.order - b.order);
           getPersonAgeGroupId();
-          console.log(ageGroups.value);
         })
         .catch((err) => console.log(err.response));
     };
 
     if (!genders.value || genders.value.length === 0) getLookUps();
     if (!ageGroups.value || ageGroups.value.length === 0) getAgeGroups();
-    // if (!memberships.value || memberships.value.length === 0)
-    // getPeopleClassifications();
 
     const gendersArr = computed(() => {
       return genders.value.map((i) => i.value);
@@ -925,7 +1155,7 @@ export default {
     });
 
     const route = useRoute();
-    const memberToEdit = ref("");
+    const memberToEdit = ref({});
 
     const getPersonGenderId = () => {
       if (memberToEdit.value && memberToEdit.value.personId) {
@@ -933,6 +1163,11 @@ export default {
           selectedGender.value = genders.value.find(
             (i) => i.id === memberToEdit.value.genderID
           );
+          if (memberToEdit.value.genderID) {
+            genderId.value = genders.value.find(
+              (i) => i.id === memberToEdit.value.genderID
+            ).id;
+          }
         } else {
           getLookUps();
         }
@@ -944,6 +1179,12 @@ export default {
         selectedMaritalStatus.value = maritalStatus.value.find(
           (i) => i.id === memberToEdit.value.maritalStatusID
         );
+
+        if (memberToEdit.value.maritalStatusID) {
+          maritalStatusId.value = maritalStatus.value.find(
+            (i) => i.id === memberToEdit.value.maritalStatusID
+          ).id;
+        }
       }
     };
 
@@ -953,6 +1194,11 @@ export default {
           selectedMembership.value = memberships.value.find(
             (i) => i.id === memberToEdit.value.peopleClassificationID
           );
+          if (memberToEdit.value.peopleClassificationID) {
+            memberClassificationId.value = memberships.value.find(
+              (i) => i.id === memberToEdit.value.peopleClassificationID
+            ).id;
+          }
         } else {
           getPeopleClassifications();
         }
@@ -965,6 +1211,11 @@ export default {
           selectedAgeGroup.value = ageGroups.value.find(
             (i) => i.id === memberToEdit.value.ageGroupID
           );
+          if (memberToEdit.value.ageGroupID) {
+            ageGroupId.value = ageGroups.value.find(
+              (i) => i.id === memberToEdit.value.ageGroupID
+            ).id;
+          }
         } else {
           getAgeGroups();
         }
@@ -976,30 +1227,41 @@ export default {
       person.email = data.email;
       person.lastName = data.lastName;
       person.firstName = data.firstName;
-      person.mobilePhone = data.mobilePhone;
+      person.mobilePhone = data.mobilePhone ? data.mobilePhone : "";
       person.address = data.homeAddress;
       person.occupation = data.occupation;
-      person.dayOfBirth = data.dayOfBirth;
+      person.dayOfBirth = data.dayOfBirth == 0 ? null : data.dayOfBirth;
       person.monthOfBirth = data.monthOfBirth
         ? months[data.monthOfBirth - 1]
         : null;
-      person.dayOfWedding = data.dayOfWedding;
-      person.yearOfBirth = data.yearOfBirth;
+      person.dayOfWedding = data.dayOfWedding == 0 ? null : data.dayOfWedding;
+      person.yearOfBirth = data.yearOfBirth == 0 ? null : data.yearOfBirth;
       person.monthOfWedding = data.monthOfWedding
         ? months[data.monthOfWedding - 1]
         : null;
-      person.yearOfWedding = data.yearOfWedding;
-      peopleInGroupIDs.value = data.personSpecificGroups.map(i => {
+      person.yearOfWedding =
+        data.yearOfWedding == 0 ? null : data.yearOfWedding;
+      peopleInGroupIDs.value = data.personSpecificGroups.map((i) => {
         return {
           groupId: i.id,
-          name: i.name
-        }
-      })
-
+          name: i.name,
+          personInGroupID: i.personInGroupID,
+        };
+      });
       currentContact.value = {
-          name: `${data.followupPersonName}`,
-          id: data.followupPersonID
-        }
+        name: `${data.followupPersonName}`,
+        id: data.followupPersonID,
+      };
+      dynamicCustomFields.value = data.customAttributeData.map((i) => {
+        i.customAttribute.data =
+          i.data == "true" ? true : i.data == "false" ? false : i.data;
+        i.customAttribute.entityID = i.entityID;
+        return i.customAttribute;
+      });
+
+      if (dynamicCustomFields.value.length === 0) {
+        getCustomFields();
+      }
     };
 
     const getMemberToEdit = () => {
@@ -1010,7 +1272,6 @@ export default {
         getPersonMaritalStatusId();
         getPersonPeopleClassificationId();
         getPersonAgeGroupId();
-        console.log(res);
         routeParams.value = route.params.personId;
       });
     };
@@ -1024,94 +1285,232 @@ export default {
     const groupToAddTo = ref({});
     const allGroups = ref([]);
 
+    const setGroupValue = () => {
+      const response = flattenedTree.value.find(
+        (i) => i.value == selectedTree.value
+      );
+      groupToAddTo.value = {
+        name: response.label,
+        id: response.value,
+      };
+    };
+
     const getGroups = async () => {
       try {
         let groups = store.getters["groups/groups"];
-
         if (groups && groups.length > 0) {
           allGroups.value = groups;
-          return true;
         } else {
           let group = await grousService.getGroups();
-          if (group) {
-            allGroups.value = group;
+          if (group.response && group.response.groupResonseDTO) {
+            allGroups.value = group.response.groupResonseDTO;
           }
+        }
+        let data = { children: allGroups.value };
+        const { children } = collector(data);
+        groupMappedTree.value = children;
+        if (groupMappedTree.value && groupMappedTree.value.length > 0) {
+          flattenedTree.value = groupMappedTree.value.flatMap(flatten());
         }
       } catch (error) {
         console.log(error);
       }
     };
+
     getGroups();
 
     const addToGroupError = ref(false);
     const dismissAddToGroupModal = ref("");
+    const closegroupmodal = ref(null);
 
     const addMemberToGroup = async () => {
-      console.log('personId:'+ route.params.personId, "groupId:"+ groupToAddTo.value.id,
-          groupToAddTo.value.id)
+      let groupObj = groupToAddTo.value;
       addToGroupError.value = false;
       if (!groupToAddTo.value || !groupToAddTo.value.id) {
         addToGroupError.value = true;
         return false;
       }
-      dismissAddToGroupModal.value = "modal";
       if (route.params.personId) {
-      let personInfo = {
-      people: [
-          {
-            groupId: groupToAddTo.value.id ,
-            position: position.value,
-            personId: route.params.personId
-          }
-        ]
-      }
+        addToGroupLoading.value = true;
+        let personInfo = {
+          people: [
+            {
+              groupId: groupToAddTo.value.id,
+              position: position.value,
+              personId: route.params.personId,
+            },
+          ],
+        };
 
         try {
-        const response = await membershipService.addMemberToGroup(
-          personInfo, groupToAddTo.value.id
-        );
-        console.log("RESPONSE", response);
-        toast.add({
-          severity: "success",
-          summary: "Added Successfully",
-          detail: `Member add to ${groupToAddTo.value.name}`,
-          life: 3000,
-        });
+          await membershipService.addMemberToGroup(
+            personInfo,
+            groupToAddTo.value.id
+          );
+          ElMessage({
+            type: "success",
+            message: `${person.firstName} is added to ${groupToAddTo.value.name}`,
+            duration: 5000,
+          });
+          addToGroupLoading.value = false;
+          dismissAddToGroupModal.value = "modal";
+          closegroupmodal.value.ref.click();
 
-        peopleInGroupIDs.value.push({
-          name: groupToAddTo.value.name,
-          groupId: groupToAddTo.value.id,
-          position: position.value
-        })
+          peopleInGroupIDs.value.push({
+            name: groupObj.name,
+            groupId: groupObj.id,
+            position: position.value,
+          });
 
-        groupToAddTo.value = {}
-        position.value = ""
+          selectedTree.value = "";
+          groupToAddTo.value = {};
+          position.value = "";
         } catch (error) {
           console.log(error);
+          addToGroupLoading.value = false;
         }
       } else {
-        console.log(groupToAddTo.value)
         peopleInGroupIDs.value.push({
-          name: groupToAddTo.value.name,
-          groupId: groupToAddTo.value.id,
-          position: position.value
-        })
+          name: groupObj.name,
+          groupId: groupObj.id,
+          position: position.value,
+        });
+        groupToAddTo.value = {};
+        position.value = "";
       }
-      console.log(peopleInGroupIDs.value)
-      
     };
 
     const setContact = (payload) => {
-        if (!payload.email) {
-          toast.add({
-              severity: "warn",
-              summary: "No email associate with the person",
-              detail: "This contact does not have any email, communicate with this person to create him as a user",
-              life: 15000,
-            });
-        }
-        followupPerson.value = payload
+      if (!payload.email) {
+        ElMessage({
+          type: "warning",
+          message:
+            "This contact does not have any email, communicate with this person to create him as a user",
+          duration: 10000,
+        });
       }
+      followupPerson.value = payload;
+    };
+
+    const removeFromGroup = (index, item) => {
+      if (!route.params.personId) {
+        peopleInGroupIDs.value.splice(index, 1);
+      } else {
+        let body = {
+          groupId: item.groupId,
+          personIds: [item.personInGroupID],
+        };
+
+        grousService
+          .removeFromGroup(item.groupId, body)
+          .then((res) => {
+            if (res !== false) {
+              peopleInGroupIDs.value.splice(index, 1);
+              ElMessage({
+                type: "success",
+                message: `${person.firstName} is removed from ${item.name} group`,
+              });
+            }
+          })
+          .catch((err) => {
+            console.log(err);
+          });
+      }
+    };
+
+    const showConfirmModal = (index, item) => {
+      ElMessageBox.confirm("Are you sure you want to proceed?", "Confirm delete", {
+        confirmButtonText: "OK",
+        cancelButtonText: "Cancel",
+        type: "error",
+      })
+        .then(() => {
+          removeFromGroup(index, item);
+        })
+        .catch(() => {
+          ElMessage({
+            type: "info",
+            message: "Delete canceled",
+          });
+        });
+    };
+
+    const savePersonNote = () => {
+      personNotes.value.push({
+        title: noteDetails.value.noteTitle,
+        description: noteDetails.value.noteDesc,
+      });
+      noteDetails.value = {};
+      dismissAddToGroupModal.value = "modal";
+    };
+
+    const searchAllGroups = computed(() => {
+      if (!searchGroupText.value && allGroups.value > 0) return allGroups.value;
+      return allGroups.value.filter((i) => {
+        if (i.name)
+          return i.name
+            .toLowerCase()
+            .includes(searchGroupText.value.toLowerCase());
+      });
+    });
+
+    const getCustomFields = async () => {
+      try {
+        let data = await allCustomFields.allCustomFields();
+        dynamicCustomFields.value = data.filter((i) => i.entityType === 0).sort((a, b) => a.order - b.order);
+      } catch (err) {
+        console.log(err);
+      }
+    };
+    if (!route.params.personId) getCustomFields();
+
+    const setCloseGroupModal = () => {
+      closeAddToGroup.value.click();
+    };
+
+    const setSelectedMem = () => {
+      selectedMembership.value = memberships.value.find((i) => {
+        return i.id == memberClassificationId.value;
+      });
+    };
+
+    const setSelectedMaritalStatus = () => {
+      selectedMaritalStatus.value = maritalStatus.value.find((i) => {
+        return i.id == maritalStatusId.value;
+      });
+    };
+
+    const setSelectedGender = () => {
+      selectedGender.value = genders.value.find((i) => {
+        return i.id == genderId.value;
+      });
+    };
+
+    const setSelectedAgeGroup = () => {
+      selectedAgeGroup.value = ageGroups.value.find((i) => {
+        return i.id == ageGroupId.value;
+      });
+    };
+
+    const uploadImage = (e, index) => {
+      customFileLoading.value = true;
+      let formData = new FormData();
+      formData.append("mediaFileImage", e.target.files[0]);
+
+      axios
+        .post("/api/Media/UploadProfilePicture", formData)
+        .then((res) => {
+          customFileLoading.value = false;
+          dynamicCustomFields.value[index].data = res.data.pictureUrl;
+        })
+        .catch((err) => {
+          customFileLoading.value = false;
+          console.log(err);
+        });
+    };
+
+    const filterNodeMethod = (value, data) =>
+      data.label.toLowerCase().includes(value.toLowerCase());
 
     return {
       months,
@@ -1163,11 +1562,40 @@ export default {
       addMemberToGroup,
       addToGroupError,
       dismissAddToGroupModal,
+      closegroupmodal,
       routeParams,
       peopleInGroupIDs,
       setContact,
       followupPerson,
-      currentContact
+      currentContact,
+      removeFromGroup,
+      personNotes,
+      noteDetails,
+      savePersonNote,
+      searchGroupText,
+      searchAllGroups,
+      showConfirmModal,
+      closeAddToGroup,
+      setCloseGroupModal,
+      dynamicCustomFields,
+      memberClassificationId,
+      setSelectedMem,
+      maritalStatusId,
+      genderId,
+      setSelectedMaritalStatus,
+      setSelectedGender,
+      showCelebration,
+      showAddInfo,
+      setSelectedAgeGroup,
+      ageGroupId,
+      customFileLoading,
+      groupMappedTree,
+      selectedTree,
+      filterNodeMethod,
+      setGroupValue,
+      flattenedTree,
+      addToGroupLoading,
+      primarycolor,
     };
   },
 };
@@ -1179,89 +1607,30 @@ export default {
   box-sizing: border-box;
 }
 
-.cs-select.month {
-  width: 111px;
-}
-
-.cs-select.day {
-  width: 87px;
-}
-
-.cs-select.year {
-  width: 113px;
-}
-
 .modal-lg {
   max-width: 600px;
 }
 
-.showtab {
-  transition: all 0.5s ease-in-out;
-  height: 166px;
-  /* overflow: hidden; */
+.input-width {
+  width: 100%;
 }
 
-@media (min-width: 769px) {
-  .celeb-tab {
-    margin-right: 147px;
-  }
-}
-
-@media (min-width: 676px) and (max-width: 768px) {
-  .showtab {
-    height: 113px;
-  }
-}
-/* @media (max-width: 676px) and (max-width: 768px) {
-  .submit-div {
-    float: right;
-  }
-} */
-
-@media (min-width: 663px) and (max-width: 667px) {
-  /* .bio-info.celeb-info {
-
-  } */
-}
-
-/* @media (min-width: 377px) and (max-width: 662px) {
-  .bio-info.celeb-info {
-    margin-top: 70px;
-  }
-}*/
-
-@media screen and (max-width: 620px) {
-  .input {
-      width: 100%
-    }
-}
-
-@media (max-width: 376px) {
-  /* .bio-info.celeb-info {
-    margin-top: 80px;
-  } */
-
-  .cs-select.month {
-    width: 85px;
+@media (min-width: 992px) {
+  .input-width {
+    width: 350px;
   }
 
-  .cs-select.day {
-    width: 85px;
-  }
-
-  .cs-select.year {
-    width: 90px;
+  .related-info {
+    width: 137px;
   }
 }
 
-@media (min-width: 867px) {
-  .showtab {
-    height: 100px;
-  }
-}
-
-
-.text-grey {
-  color: rgb(90, 90, 90)
+.angle-icon {
+  border: 1px solid #dde2e6;
+  padding: 2px;
+  border-radius: 50%;
+  height: 30px;
+  width: 30px;
+  color: #91949c;
 }
 </style>

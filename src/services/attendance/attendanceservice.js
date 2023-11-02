@@ -39,7 +39,7 @@ const saveCheckAttendanceItem = async (body) => {
 
 const getItems = async () => {
     return new Promise((resolve, reject) => {
-        axios.get(`/api/CheckInAttendance/AllCheckInAttendances?page=0`)
+        axios.get(`/api/CheckInAttendance/AllCheckInAttendances?page=1`)
             .then(res => {
                 resolve(res.data);
             })
@@ -108,7 +108,40 @@ const checkin = async (body) => {
 const checkout = async (body) => {
     return new Promise((resolve, reject) => {
         axios.post(`/api/CheckInAttendance/CheckOut`, body)
-        // axios.post(`/api/CheckInAttendance/MarkAttendance?CheckInAttendanceID=${id}`, body)
+            .then(res => {
+                resolve(res.data);
+            })
+            .catch(error => {
+                stopProgressBar();
+                if (error.response) {
+                    reject(error.response);
+                } else {
+                    reject(error);
+                }
+            })
+    })
+}
+
+const getAttendanceItemsByGroupID = async (id) => {
+    return new Promise((resolve, reject) => {
+        axios.get(`/api/CheckInAttendance/GetAttendanceItemsByGroupID?groupID=${id}`)
+            .then(res => {
+                resolve(res.data);
+            })
+            .catch(error => {
+                stopProgressBar();
+                if (error.response) {
+                    reject(error.response);
+                } else {
+                    reject(error);
+                }
+            })
+    })
+}
+
+const checkinAllMembers = async (payload) => {
+    return new Promise((resolve, reject) => {
+        axios.post(`/api/CheckinAttendance/MarkAllAttendance`, payload)
             .then(res => {
                 resolve(res.data);
             })
@@ -129,7 +162,7 @@ const generateEventReportDefaultMessage = (eventAnalysisData) => {
     let message = `SERVICE REPORT\n          ======\n${eventAnalysisData.activityToday.name}\nDate: ${new Date(eventAnalysisData.activityToday.activityDate).toLocaleDateString()}\n\nTotal Attendance: ${eventAnalysisData.todayAttendance}\nTotal Offering: ${eventAnalysisData.tenantCurrencyName} ${eventAnalysisData.todayOffering}`;
 
     if (eventAnalysisData.todayVsLastWeekAttendancePercentage > 0) {
-        message += `\n\nWe recorded a ${eventAnalysisData.todayVsLastWeekAttendancePercentage}% increase in attendance since last week.`;
+        message += `\n\nWe recorded a ${eventAnalysisData.todayVsLastWeekAttendancePercentage.toFixed(2)}% increase in attendance since last week.`;
     } else if (eventAnalysisData.todayVsLastWeekAttendancePercentage < 0) {
         message += `\n\nThere was a ${Math.abs(eventAnalysisData.todayVsLastWeekAttendancePercentage).toFixed(2)}% decrease in attendance since last week.`;
     } else {
@@ -137,7 +170,7 @@ const generateEventReportDefaultMessage = (eventAnalysisData) => {
     }
 
     if (eventAnalysisData.todayVsLastweekOfferingPercentage > 0) {
-        message += `\n\nWe recorded ${eventAnalysisData.todayVsLastweekOfferingPercentage}% increase in offering since last week.`;
+        message += `\n\nWe recorded ${eventAnalysisData.todayVsLastweekOfferingPercentage.toFixed(2)}% increase in offering since last week.`;
     } else if (eventAnalysisData.todayVsLastweekOfferingPercentage < 0) {
         message += `\n\nThere was a ${Math.abs(eventAnalysisData.todayVsLastweekOfferingPercentage).toFixed(2)}% decrease in offering since last week.`;
         // message += `\nThere was a ${Number.parseFloat(Math.abs(eventAnalysisData.todayVsLastweekOfferingPercentage)).toPrecision(4)}% decrease in offering since last week`;
@@ -149,12 +182,12 @@ const generateEventReportDefaultMessage = (eventAnalysisData) => {
     }
     if (eventAnalysisData.todayContributions) {
         // let message = `OFFERING REPORT\n          ======\n\nTotal Offering: ${eventAnalysisData.totalToday}`
-        let message = `OFFERING REPORT\n          ======\n${eventAnalysisData.todayContributions[0].eventName}\nDate: ${new Date(eventAnalysisData.todayContributions[0].date).toLocaleDateString()}\n\nTotal Amount: ${eventAnalysisData.todayContributions[0].amount}\nTotal Offering: ${eventAnalysisData.tenantCurrency} ${eventAnalysisData.totalToday}`;
+        let message = `OFFERING REPORT\n          ======\n${eventAnalysisData.todayContributions[0].eventName}\nDate: ${new Date(eventAnalysisData.todayContributions[0].date).toLocaleDateString()}\n\nTotal Offering: ${eventAnalysisData.tenantCurrency} ${Math.abs(eventAnalysisData.totalToday).toLocaleString()}`;
 
 
-    if (eventAnalysisData.todayVsLastWeek > 0) {
+    if (eventAnalysisData.totalToday > 0) {
         message += `\n\nWe recorded ${eventAnalysisData.todayVsLastWeek.toFixed(2)}% increase in offering since last week.`;
-    } else if (eventAnalysisData.todayVsLastWeek < 0) {
+    } else if (eventAnalysisData.totalToday < 0) {
         message += `\n\nThere was a ${Math.abs(eventAnalysisData.todayVsLastWeek).toFixed(2)}% decrease in offering since last week.`;
         // message += `\nThere was a ${Number.parseFloat(Math.abs(eventAnalysisData.todayVsLastweekOfferingPercentage)).toPrecision(4)}% decrease in offering since last week`;
     } else {
@@ -166,4 +199,4 @@ const generateEventReportDefaultMessage = (eventAnalysisData) => {
 }
 
 
-export default { saveCheckAttendanceItem, startCheckinProces, getItems, getItemByCode, getReport, checkin, checkout, generateEventReportDefaultMessage };
+export default { saveCheckAttendanceItem, startCheckinProces, getItems, getItemByCode, getReport, checkin, checkout, checkinAllMembers, generateEventReportDefaultMessage, getAttendanceItemsByGroupID };

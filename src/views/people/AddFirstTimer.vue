@@ -1,641 +1,343 @@
 <template>
+  <div class="head-text">
+    <div>Add First Timers</div>
+  </div>
   <div class="my-con container-top" @click="closeManualModalIfOpen">
-    <div class="header mt-2">
-      <h3 class="header-text font-weight-bold">Add First timers</h3>
-      <Toast />
-    </div>
-
-    <div class="form-div">
-      
-      <form @submit.prevent="onSubmit">
-        <div class="bio-div mt-2">
-          <p class="form-section-header">Bio:</p>
-          <div class="bio-info">
-            <div class="inputs">
-              <div class="input-field">
-                <label for="" class="label"
-                  >Firstname<span style="color: red"> *</span></label
-                >
-                <input
-                  type="text"
-                  class="input form-control"
-                  v-model="firstTimersObj.firstName"
-                  name=""
-                  id="firstname"
-                  required
-                />
-              </div>
-              <div class="input-field">
-                <label for="" class="label">Surname</label>
-                <input
-                  type="text"
-                  class="input form-control"
-                  placeholder=""
-                  v-model="firstTimersObj.lastName"
-                  name=""
-                />
-              </div>
-              <div class="input-field">
-                <label for="" class="label">Phone number</label>
-                <div class="d-flex flex-column widen">
-                    <input
-                    class="input form-control"
-                    placeholder=""
-                    v-model="firstTimersObj.phoneNumber"
-                    type="text"
-                    :class="{ 'is-invalid' : !isPhoneValid }"
-                    id="phone number"
-                    ref="validatePhone"
-                    @blur="checkForDuplicatePhone"
-                  />
-                  <div class="invalid-feedback text-danger pl-2">
-                    Phone number exist, type a unique phone number.
-                  </div>
-                </div>
-
-              </div>
-              <div class="input-field">
-                <label for=""></label>
-                <div class="status-n-gender">
-                  <div class="status cstm-select">
-                    <div class="cs-select">
-                      <Dropdown
-                        v-model="selectedMaritalStatus"
-                        :options="maritalStatusArr"
-                        optionLabel="value"
-                        placeholder="Marital status"
-                        style="width: 100%"
-                      />
-                    </div>
-                  </div>
-                  <div class="gender cstm-select">
-                    <div class="cs-select">
-                      <Dropdown
-                        v-model="selectedGender"
-                        :options="genderArr"
-                        optionLabel="value"
-                        placeholder="Gender"
-                        style="width: 100%"
-                      />
-                    </div>
-                  </div>
-                </div>
-              </div>
-              <div class="input-field">
-                <label for="" class="label">Email</label>
-                  <div class="d-flex flex-column widen">
-                    <input
-                    class="input form-control"
-                    placeholder=""
-                    v-model="firstTimersObj.email"
-                    type="email"
-                    :class="{ 'is-invalid' : !isEmailValid}"
-                    id="email"
-                    ref="validateEmail"
-                    @blur="checkForDuplicateEmail"
-                  />
-                  <div class="invalid-feedback text-danger pl-2">
-                    Email exist, type a unique email.
-                  </div>
-                </div>
-              </div>
-
-              <!-- Test -->
-              <div class="input-field">
-                <label for="" class="label">Event or Service Attended</label>
-                <i class="pi pi-chevron-down dd manual-dd-icon" @click="selectEventAttended"></i>
-
-                <button
-                  @click.prevent="selectEventAttended"
-                  class="form-control input dd small-text widen"
-                >
-                  {{ selectedEventAttended ? selectedEventAttended.name : "Select service attended" }}
-                  {{ newEvent.activity.date }}
-                </button>
-              </div>
-              <div class="input-field manual-dd-con" v-if="showEventList">
-                <div class="manual-dd dd">
-                  <div
-                    class="container-fluid dd dd-search-con"
-                    v-if="eventsAttended.length > 5"
-                  >
-                    <div class="row dd">
-                      <div class="col-md-12 dd px-0 py-1">
-                        <input
-                          type="text"
-                          class="form-control dd dd-search-field"
-                          v-model="eventsSearchString"
-                          placeholder="search for event"
-                        />
-                      </div>
-                    </div>
-                  </div>
-
-                  <div class="container-fluid dd-list-con">
-                    <div class="row">
-                      <div class="col-md-12">
-                        <p
-                          class="px-1 manual-dd-item mb-0 py-2 dd"
-                          v-for="(event, index) in filteredEvents"
-                          :key="index"
-                          @click="eventAttendedSelected(event)"
-                        >
-                          {{ event.name }}
-                        </p>
-                        <p
-                          class="text-center mb-1 mt-1"
-                          v-if="
-                            eventsSearchString &&
-                            eventsAttended.length > 0 &&
-                            filteredEvents.length === 0
-                          "
-                        >
-                          No match found
-                        </p>
-                      </div>
-                    </div>
-                    <div class="row">
-                      <div
-                        class="col-md-12 py-2 px-0"
-                        v-if="eventsAttended.length > 0"
-                      >
-                        <hr class="hr" />
-                      </div>
-                      <div class="col-md-12 create-event py-2 text-center">
-                        <a
-                          class="craete-event-btn font-weight-bold"
-                          data-toggle="modal"
-                          data-target="#eventModal"
-                          >Create new event</a
-                        >
-                      </div>
-                    </div>
-                  </div>
-                </div>
-              </div>
-              <!-- <div class="input-field">
-                <label for="" class="label">Events or Service Attended</label>
-                <div class="gender cstm-select">
-                  <div class="cs-select" style="width: 330px">
-                    <Dropdown
-                      v-model="selectedEventAttended"
-                      :options="eventsAttended"
-                      optionLabel="name"
-                      :filter="true"
-                      filterPlaceholder="Find event"
-                      placeholder="Select from events and activities"
-                      style="width: 100%"
-                    />
-                  </div>
-                </div>
-              </div> -->
-              <div class="input-field">
-                <label for="" class="label">Address</label>
-                <input
-                  type="text"
-                  class="input form-control"
-                  placeholder=""
-                  v-model="firstTimersObj.address"
-                />
-              </div>
-
-              <div class="input-field">
-                <label for="" class="label">Birthday</label>
-                <div class="status-n-gender">
-                    <div class="cstm-select">
-                      <div class="cs-select" style="width: 87px">
-                        <Dropdown
-                          v-model="firstTimersObj.birthday"
-                          :options="day"
-                          placeholder="Day"
-                          style="width: 100%"
-                        />
-                        <!-- <SelectElem :typ="'membership'" name="birthday" :options="['Day', ...birthDaysArr ]" value="Day" @input="itemSelected"/> -->
-                      </div>
-                    </div>
-                    <div class="cstm-select">
-                      <div class="cs-select" style="width: 111px">
-                        <Dropdown
-                          v-model="birthMonth"
-                          :options="month"
-                          placeholder="Month"
-                          style="width: 100%"
-                        />
-                      </div>
-                    </div>
-
-                    <div class="cstm-select">
-                      <div class="cs-select" style="width: 113px">
-                        <Dropdown
-                          v-model="firstTimersObj.birthYear"
-                          :options="year"
-                          placeholder="Year"
-                          style="width: 100%"
-                        />
-                      </div>
-                    </div>
-                </div>
-              </div>
-              <div class="input-field">
-                <label for="" class="label">Choose contact owner</label>
-                <div class="input p-0 border-0 widen">
-                  <SearchMembers v-bind:currentMember="firstTimersObj" @memberdetail="setContact"/>
-                </div>
-              </div>
-              <div class="input-field">
-                <label for="" class="label">Add to group</label>
-                <div class="p-2 border add-group">
-                  <div v-for="(item, index) in firstTimerInGroup" :key='index'>
-                    <div class="pt-1">{{ index + 1 }}. {{ item.name }}</div>
-                  </div>
-                  <div v-if="firstTimerInGroup.length === 0">No group added yet</div>
-                  <div class="font-weight-700 text-primary border-top text-center c-pointer" data-toggle="modal" data-target="#addToGroup">Add</div>
-                </div>
+    <el-container>
+      <el-row :gutter="15" class="w-100 m-0">
+        <el-col class="d-block d-md-none">
+            <div class="grey-bg">
+            <div>
+              <div class="person-img">
+                <img v-if="!url" src="../../assets/people/phone-import.svg" alt="Uploaded Image" />
+                <img v-else :src="url" alt="Uploaded Image"
+                  style="width: 110px; height: 110px; border-radius: 50%; object-fit: cover" />
               </div>
             </div>
-            <div style="width: 225px; margin: 0 auto">
-              <ImageForm @pictureurl="setImageToUrl" />
+            <div>
+              <div class="cs-input">
+                <label for="imgUpload" class="choose-file">
+                  Choose image
+                  <input type="file" class="input file-input" placeholder="" id="imgUpload" @change="imageSelected" />
+                </label>
+              </div>
             </div>
           </div>
-        </div>
-        <!-- <hr class="hr"> -->
+        </el-col>
+        <el-col :sm="16" :md="16" :lg="16" :xl="16" class="p-0">
+          <el-form :model="firstTimersObj" ref="ruleForm" :rules="validateRules" style="width: 100%">
+            <el-form-item>
+              <div class="d-flex flex-column flex-lg-row justify-content-end w-100">
+                <label for="firstName" class="mr-3 font-weight-600">Firstname<span style="color: red"> *</span></label>
+                <el-input type="text" class="input-width" v-model="firstTimersObj.firstName" placeholder="First name" />
+              </div>
+            </el-form-item>
+            <el-form-item>
+              <div class="d-flex flex-column flex-lg-row justify-content-end w-100">
+                <label for="firstName" class="mr-3 font-weight-600">Surname</label>
+                <el-input type="text" class="input-width" v-model="firstTimersObj.lastName" placeholder="Last name" />
+              </div>
+            </el-form-item>
+            <el-form-item prop="phoneNumber" class="validate-phone">
+              <div class="d-flex flex-column flex-lg-row justify-content-end w-100">
+                <label for="firstName" class="mr-3 font-weight-600">Phone number</label>
+                <el-input type="number" ref="validatePhone" @blur="checkForDuplicatePhone" class="input-width"
+                  v-model="firstTimersObj.phoneNumber" placeholder="Phone number" />
+              </div>
+            </el-form-item>
+            <el-form-item prop="email" class="validate-email">
+              <div class="d-flex flex-column flex-lg-row justify-content-end w-100">
+                <label for="firstName" class="mr-3 font-weight-600">Email</label>
+                <el-input type="text" class="input-width" v-model="firstTimersObj.email" placeholder="Email" />
+              </div>
+            </el-form-item>
+            <el-form-item>
+              <div class="d-flex flex-column flex-lg-row justify-content-end w-100">
+                <div class="input-width d-flex">
+                  <el-select-v2 v-model="maritalStatusId" @change="setSelectedMaritalStatus"
+                    :options="maritalStatusArr.map(i => ({ label: i.value, value: i.id }))" placeholder="Marital status"
+                    size="large" class="w-100 mr-1" />
+                  <el-select-v2 v-model="genderId" @change="setSelectedGender"
+                    :options="genderArr && genderArr.length > 0 ? genderArr.map(i => ({ label: i.value, value: i.id })) : []"
+                    placeholder="Gender" size="large" class="w-100 ml-1" />
+                </div>
+              </div>
+            </el-form-item>
+            <el-form-item>
+              <div class="d-flex flex-column flex-lg-row justify-content-end w-100">
+                <label for="firstName" class="mr-3 font-weight-600">Event or service attended</label>
+                <div class="input-width">
+                  <el-dropdown class="w-100" trigger="click">
+                    <el-input class="w-100" placeholder="Search for events" v-model="selectedEventAttended.name" />
+                    <template #dropdown>
+                      <el-dropdown-menu class="menu-height">
+                        <el-dropdown-item v-for="(event, index) in filteredEvents" :key="index"
+                          @click="eventAttendedSelected(event)">{{ event.name }}</el-dropdown-item>
+                        <el-dropdown-item class="d-flex justify-content-center text-primary font-weight-700"
+                          data-toggle="modal" data-target="#eventModal" divided><el-icon>
+                            <CirclePlus />
+                          </el-icon> Create new event</el-dropdown-item>
+                      </el-dropdown-menu>
+                    </template>
+                  </el-dropdown>
+                </div>
+              </div>
+            </el-form-item>
+            <el-form-item>
+              <div class="d-flex flex-column flex-lg-row justify-content-end w-100">
+                <label for="firstName" class="mr-3 font-weight-600">Address</label>
+                <el-input type="text" class="input-width" v-model="firstTimersObj.address" placeholder="Address" />
+              </div>
+            </el-form-item>
+            <el-form-item>
+              <div class="d-flex flex-column flex-lg-row justify-content-end w-100">
+                <div class="mr-3 font-weight-600">Birthday</div>
+                <div class="input-width d-flex">
+                  <el-select-v2 v-model="firstTimersObj.birthday" :options="day.map(i => ({ label: i, value: i }))"
+                    placeholder="Day" size="large" class="w-100 mr-1" />
+                  <el-select-v2 v-model="birthMonth" :options="month.map(i => ({ label: i, value: i }))"
+                    placeholder="Month" size="large" class="w-100 ml-1" />
+                  <el-select-v2 v-model="firstTimersObj.birthYear" :options="year.map(i => ({ label: i, value: i }))"
+                    placeholder="Year" size="large" class="w-100 ml-1" />
+                </div>
+              </div>
+            </el-form-item>
+            <el-form-item>
+              <div class="d-flex flex-column flex-lg-row justify-content-end w-100">
+                <label for="firstName" class="mr-3 font-weight-600">Person to follow-up</label>
+                <div class="input-width">
+                  <SearchMembers @memberdetail="setContact" :currentMember="firstTimersObj" />
+                </div>
+              </div>
+            </el-form-item>
+            <el-form-item>
+              <div class="d-flex flex-column flex-lg-row justify-content-end w-100">
+                <label for="firstName" class="mr-3 font-weight-600">Which Group[s] Do You Belong To?</label>
+                <div class="input-width">
+                  <div class="p-2 border add-group bg-white">
+                    <div v-for="(item, index) in firstTimerInGroup" :key="index">
+                      <div class="pt-1">{{ index + 1 }}. {{ item.name }}</div>
+                    </div>
+                    <div v-if="firstTimerInGroup.length === 0">
+                      No group added yet
+                    </div>
+                    <div class="
+                      font-weight-700
+                      primary--text
+                      border-top
+                      text-center
+                      c-pointer
+                    " data-toggle="modal" data-target="#addToGroup">
+                      Choose group
+                    </div>
+                  </div>
+                </div>
+              </div>
 
-        <div class="">
-          <span class="celeb-tab row" @click="showCelebTab">
-            <span class="tab-header col-sm-3">Insights:</span>
-            <span class="h-rule col-sm-7 pl-0"><hr class="hr" /></span>
-            <span class="col-sm-2">
-              <span class="tb-icon-span"
-              ><i
-                class="pi pi-angle-down tbb-icon"
-                :class="{ 'tb-icon': !hideCelebTab }"
-              ></i
-            ></span>
-            </span>
-          </span>
-          <div
-            class="bio-info celeb-info"
-            :class="{ 'hide-tab': hideCelebTab, 'show-tab': !hideCelebTab }"
-          >
-            <div class="inputs mt-3">
-              <div class="input-field">
-                <div class="gender cstm-select widen">
-                  <div class="cs-select input-dropdown">
-                    <Dropdown
-                      v-model="selectedAboutUsSource"
-                      :options="howDidYouAboutUs"
-                      optionLabel="name"
-                      placeholder="How did you hear about us?"
-                      style="width: 100%"
-                    />
+            </el-form-item>
+            <el-form-item v-for="(item, index) in dynamicCustomFields" :key="index">
+              <div class="d-flex flex-column flex-lg-row justify-content-end w-100">
+                <label for="occupation" class="mr-3 font-weight-600">{{ item.label }}</label>
+                <div class="input-width d-flex" v-if="(item.controlType == 1)">
+                  <el-select-v2 v-model="item.data"
+                    :options="item.parameterValues.split(',').map(i => ({ label: i, value: i }))"
+                    :placeholder="item.label" size="large" class="w-100 mr-1" />
+                </div>
+                <el-input type="text" class="input-width" v-model="item.data" :placeholder="item.label"
+                  v-if="(item.controlType == 0)" />
+                <el-input type="number" class="input-width" v-model="item.data" :placeholder="item.label"
+                  v-if="(item.controlType == 7)" />
+                <el-input type="email" class="input-width" v-model="item.data" :placeholder="item.label"
+                  v-if="(item.controlType == 4)" />
+                <div class="input-width" v-if="(item.controlType == 2)">
+                  <el-checkbox v-model="item.data" size="large" />
+                </div>
+                <el-date-picker v-model="item.data" class="input-width" type="date" :placeholder="item.label"
+                  size="default" v-if="(item.controlType == 3)" />
+                <div class="d-flex align-items-center" v-if="(item.controlType == 6)">
+                  <input type="file" class="form-control input-width" @change="uploadImage($event, index)"
+                    :placeholder="item.label" />
+                  <el-icon class="is-loading ml-2" v-if="customFileLoading">
+                    <Loading />
+                  </el-icon>
+                </div>
+              </div>
+            </el-form-item>
+            <div class="d-flex align-items-center">
+              <div class="font-weight-700">Insights: </div>
+              <el-divider>
+              </el-divider>
+              <span>
+                <el-icon class="angle-icon tb-icon-span" @click="(showAddInfo = !showAddInfo)">
+                  <ArrowDownBold />
+                </el-icon>
+              </span>
+            </div>
+            <el-collapse-transition>
+              <div v-show="showAddInfo">
+                <el-form-item>
+                  <div class="d-flex flex-column flex-lg-row justify-content-end w-100">
+                    <div class="input-width">
+                      <el-select-v2 v-model="sourceId" @change="setSelectedSource"
+                        :options="howDidYouAboutUs.map(i => ({ label: i.name, value: i.id }))"
+                        placeholder="How did you hear about us?" size="large" class="w-100 mr-1" />
+                    </div>
+                  </div>
+                </el-form-item>
+                <el-form-item>
+                  <div class="d-flex flex-column flex-lg-row justify-content-end w-100">
+                    <div class="input-width">
+                      <el-select-v2 v-model="selectedCommunicationMeans"
+                        :options="comMeansArr.map(i => ({ label: i, value: i }))" placeholder="Means of communication"
+                        size="large" class="w-100 mr-1" />
+                    </div>
+                  </div>
+                </el-form-item>
+                <el-form-item>
+                  <div class="d-flex flex-column flex-lg-row justify-content-end w-100">
+                    <div class="input-width">
+                      <el-select-v2 v-model="selectedJoinInterest"
+                        :options="joinInterestArr.map(i => ({ label: i, value: i }))"
+                        placeholder="Interested in joining us?" size="large" class="w-100 mr-1" />
+                    </div>
+                  </div>
+                </el-form-item>
+                <el-form-item>
+                  <div class="d-flex flex-column flex-lg-row justify-content-end w-100">
+                    <div class="input-width">
+                      <el-select-v2 v-model="selectedVisitOption"
+                        :options="wantVisitArr.map(i => ({ label: i, value: i }))" placeholder="Want to be visited?"
+                        size="large" class="w-100 mr-1" />
+                    </div>
+                  </div>
+                </el-form-item>
+              </div>
+            </el-collapse-transition>
+            <el-form-item>
+              <div class="d-flex flex-column flex-lg-row justify-content-end w-100">
+                <div class="input-width">
+                  <div class="d-flex flex-column">
+                    <el-button class="secondary-button" @click.prevent="onCancel" round>Cancel</el-button>
+                    <el-button @click.prevent="onSubmit" :loading="loading" class="secondary-button my-3 mx-0"
+                      round>Save and add another</el-button>
+                    <el-button class="mx-0 mx-sm-2" :color="primarycolor" :loading="loadingtwo" @click.prevent="saveAndRoute"
+                      round>Save</el-button>
                   </div>
                 </div>
               </div>
-              <div class="input-field">
-                <!-- <label for="" class="label">Events or Service Attended</label> -->
-                <div class="gender cstm-select widen">
-                  <div class="cs-select input-dropdown">
-                    <Dropdown
-                      v-model="selectedCommunicationMeans"
-                      :options="comMeansArr"
-                      placeholder="Means of communication"
-                      style="width: 100%"
-                    />
-                  </div>
-                </div>
-              </div>
-              <div class="input-field">
-                <!-- <label for="" class="label">Events or Service Attended</label> -->
-                <div class="gender cstm-select widen">
-                  <div class="cs-select input-dropdown">
-                    <Dropdown
-                      v-model="selectedJoinInterest"
-                      :options="joinInterestArr"
-                      placeholder="Interested in joining us?"
-                      style="width: 100%"
-                    />
-                  </div>
-                </div>
-              </div>
-              <div class="input-field">
-                <!-- <label for="" class="label">Events or Service Attended</label> -->
-                <div class="gender cstm-select widen">
-                  <div class="cs-select input-dropdown">
-                    <Dropdown
-                      v-model="selectedVisitOption"
-                      :options="wantVisitArr"
-                      placeholder="Want to be visited?"
-                      style="width: 100%"
-                    />
-                  </div>
-                </div>
+            </el-form-item>
+
+          </el-form>
+
+        </el-col>
+        <el-col :xs="24" :sm="8" :md="8" :lg="8" :xl="8">
+          <div class="grey-bg d-none d-md-block">
+            <div class="grey-bg">
+            <div>
+              <div class="person-img">
+                <img v-if="!url" src="../../assets/people/phone-import.svg" alt="Uploaded Image" />
+                <img v-else :src="url" alt="Uploaded Image"
+                  style="width: 110px; height: 110px; border-radius: 50%; object-fit: cover" />
               </div>
             </div>
-
-            <div class="image-div other">
-              <!-- Empty space -->
+            <div>
+              <div class="cs-input">
+                <label for="imgUpload" class="choose-file">
+                  Choose image
+                  <input type="file" class="input file-input" placeholder="" id="imgUpload" @change="imageSelected" />
+                </label>
+              </div>
             </div>
           </div>
-        </div>
-      
-        <div class="inputs mt-2">
-          <div class="submit-div">
-            <button class="default-btn cancel-btn btn ml-sm-3 mt-3" @click.prevent="onCancel">
-              Cancel
-            </button>
-            <button
-                class="default-btn outline-none ml-sm-3 mt-3"
-                :class="{ 'btn-loading': loading }"
-                :disabled="loading"     
-              >
-                <i
-                  class="fas fa-circle-notch fa-spin mr-2"
-                  v-if="loading"
-                ></i>
-                <span>Save and add another</span>
-                <span></span>
-              </button>
-            <button class="ml-sm-3 mt-3  submit-btn text-white btn" @click.prevent="saveAndRoute">
-              Save
+          </div>
+        </el-col>
+      </el-row>
+    </el-container>
+
+    <div class="modal fade" id="eventModal" tabindex="-1" role="dialog" aria-labelledby="eventModalLabel"
+      aria-hidden="true">
+      <div class="modal-dialog" role="document">
+        <div class="modal-content py-2 px-2">
+          <div class="modal-header">
+            <h5 class="modal-title font-weight-bold" id="exampleModalLabel">
+              Create New Event
+            </h5>
+            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+              <span aria-hidden="true">&times;</span>
             </button>
           </div>
-        </div>
+          <div class="modal-body new-event-modal">
+            <div class="row my-4">
+              <div class="col-md-4 text-md-right align-self-center">
+                <label for="" class="label font-weight-bold">Event name</label>
+              </div>
+              <div class="col-md-7">
+                <div class="input-width">
+                  <el-dropdown class="w-100" trigger="click">
+                    <el-input class="w-100" placeholder="Search for events" v-model="selectEvent" />
+                    <template #dropdown>
+                      <el-dropdown-menu class="menu-height">
+                        <el-dropdown-item v-for="(eventCategory, index) in filterEventCategory" :key="index"
+                          @click="individualEvent(eventCategory)">{{ eventCategory.name }}</el-dropdown-item>
+                        <el-dropdown-item class="d-flex justify-content-center text-primary font-weight-700"
+                          v-if="filterEventCategory.length >= 1" @click="openModal" divided><el-icon>
+                            <CirclePlus />
+                          </el-icon> Add new event</el-dropdown-item>
+                        <el-dropdown-item class="text-primary font-weight-700" v-else @click="createNewCat(1)"
+                          divided><el-icon>
+                            <CirclePlus />
+                          </el-icon> Create "{{ selectEvent }}" event</el-dropdown-item>
+                      </el-dropdown-menu>
+                    </template>
+                  </el-dropdown>
+                </div>
 
-        <div class="container">
-          <div class="row">
-            <div class="col-md-12 py-4">
-              <div
-                class="modal fade"
-                id="eventModal"
-                tabindex="-1"
-                role="dialog"
-                aria-labelledby="eventModalLabel"
-                aria-hidden="true"
-              >
-                <div class="modal-dialog" role="document">
-                  <div class="modal-content py-2 px-2">
-                    <div class="modal-header">
-                      <h5
-                        class="modal-title font-weight-bold"
-                        id="exampleModalLabel"
-                      >
-                        Create New Event
-                      </h5>
-                      <button
-                        type="button"
-                        class="close"
-                        data-dismiss="modal"
-                        aria-label="Close"
-                      >
-                        <span aria-hidden="true">&times;</span>
-                      </button>
+                <el-dialog v-model="displayModal" title="Add New Event"
+                  :width="mdAndUp || lgAndUp || xlAndUp ? `50%` : `90%`">
+                  <div class="row">
+                    <div class="col-sm-3 align-self-center text-sm-right">
+                      Event Name
                     </div>
-                    <div class="modal-body new-event-modal">
-                      <div class="row my-4">
-                        <div class="col-md-4 text-md-right align-self-center">
-                          <label for="" class="label font-weight-bold"
-                            >Event name</label
-                          >
-                        </div>
-                        <div class="col-md-7">
-                          <div
-                            class="select-elem-con pointer d-flex justify-content-space-between"
-                            @click="showCategory = !showCategory"
-                          >
-                            <span class="ofering">{{ selectEvent }}</span
-                            ><span>
-                              <!-- :class="{ roll3: showForm3 }" -->
-                              <i
-                                class="pi pi-angle-down"
-
-                                aria-hidden="true"
-                              ></i
-                            ></span>
-                          </div>
-                          <div
-                            class="ofering"
-                            :class="{ 'style-category': showCategory }"
-                            v-if="showCategory"
-                          >
-                            <input
-                              type="text"
-                              placeholder="Search..."
-                              class="form-control ofering mb-3"
-                              v-model="eventText"
-                            />
-                            <div
-                              v-for="(
-                                eventCategory, index
-                              ) in filterEventCategory"
-                              :key="index"
-                              class="ofering"
-                            >
-                              <div
-                                class="ofering py-1"
-                                @click="individualEvent(eventCategory)"
-                              >
-                                {{ eventCategory.name }}
-                              </div>
-                            </div>
-                            <div
-                              v-if="filterEventCategory.length >= 1"
-                              @click="openModal"
-                              class="create cat ofering"
-                            >
-                              Add New Event
-                            </div>
-                            <div
-                              v-else
-                              class="create mt-3"
-                              @click="createNewCat(1)"
-                            >
-                              Create "{{ eventText }}" event
-                            </div>
-                          </div>
-
-                          <!-- <Button label="Show" icon="pi pi-external-link" @click="openModal" /> -->
-                          <Dialog
-                            header="Add New Event"
-                            v-model:visible="displayModal"
-                            :style="{ width: '50vw' }"
-                            :modal="true"
-                          >
-                            <div class="row">
-                              <div class="col-sm-3 align-self-center">
-                                Event Name
-                              </div>
-                              <div class="col-sm-9">
-                                <input
-                                  type="text"
-                                  class="form-control"
-                                  v-model="newEventCategoryName"
-                                />
-                              </div>
-                            </div>
-                            <template #footer>
-                              <!-- <Button label="No" icon="pi pi-times" @click="closeModal" class="p-button-text"/>
-                                        <Button label="Yes" icon="pi pi-check" @click="closeModal" autofocus /> -->
-                              <div
-                                class="col-md-12 d-md-flex justify-content-end p-0"
-                              >
-                                <button
-                                  type="button"
-                                  class="btn secondary-btn px-4"
-                                  @click="closeModal"
-                                >
-                                  Close
-                                </button>
-                                <button
-                                  type="button"
-                                  class="btn primary-btn px-4 mr-0 text-white"
-                                  @click="createNewCat(2)"
-                                >
-                                  Save
-                                </button>
-                              </div>
-                            </template>
-                          </Dialog>
-                        </div>
-                      </div>
-                      <div class="row mt-4 mb-4">
-                        <div class="col-md-4 text-md-right align-self-center">
-                          <label for="" class="label font-weight-bold"
-                            >Event date</label
-                          >
-                        </div>
-                        <div class="col-md-7">
-                          <input
-                            type="date"
-                            class="form-control"
-                            v-model="newEvent.activity.date"
-                          />
-                        </div>
-                      </div>
-                    </div>
-                    <div class="modal-footer">
-                      <div class="container">
-                        <div class="row">
-                          <div class="col-md-4"></div>
-                          <div class="col-md-7">
-                            <div class="row">
-                              <div class="col-md-12 text-md-right">
-                                <p
-                                  class="mb-1 text-danger"
-                                  v-if="invalidEventDetails"
-                                >
-                                  Enter event name and date
-                                </p>
-                              </div>
-                              <div
-                                class="col-md-12 d-md-flex justify-content-end"
-                              >
-                                <button
-                                  type="button"
-                                  class="btn secondary-btn px-4"
-                                  data-dismiss="modal"
-                                >
-                                  Close
-                                </button>
-                                <button
-                                  type="button"
-                                  class="btn primary-btn px-4 text-white"
-                                  data-dismiss="modal"
-                                  @click="createNewEvent"
-                                >
-                                  Save
-                                </button>
-                              </div>
-                            </div>
-                          </div>
-                        </div>
-                      </div>
+                    <div class="col-sm-9">
+                      <el-input type="text" v-model="newEventCategoryName" />
                     </div>
                   </div>
-                </div>
+                  <template #footer>
+                    <span class="dialog-footer d-flex justify-content-end text-center">
+                      <el-button class="secondary-button" @click="displayModal = false" round>Cancel</el-button>
+                      <el-button :color="primarycolor" :loading="createCatLoading" @click="createNewCat(2)" round>
+                        Save
+                      </el-button>
+                    </span>
+                  </template>
+                </el-dialog>
+              </div>
+            </div>
+            <div class="row mt-4 mb-4">
+              <div class="col-md-4 text-md-right align-self-center">
+                <label for="" class="label font-weight-bold">Event date</label>
+              </div>
+              <div class="col-md-7 pr-0">
+                <input type="date" class="form-control" v-model="newEvent.activity.date" />
               </div>
             </div>
           </div>
-        </div>
-
-         <!-- Modal -->
-        <div
-          class="modal fade"
-          id="addToGroup"
-          tabindex="-1"
-          role="dialog"
-          aria-labelledby="addToGroup"
-          aria-hidden="true"
-        >
-          <div class="modal-dialog modal-lg" role="document">
-            <div class="modal-content">
-              <div class="modal-header" style="background: #ebeff4">
-                <h5 class="modal-title font-weight-bold" id="addToGroup">
-                  Group Membership
-                </h5>
-                <button
-                  type="button"
-                  class="close"
-                  data-dismiss="modal"
-                  aria-label="Close"
-                >
-                  <span aria-hidden="true">&times;</span>
-                </button>
-              </div>
-              <div class="modal-body">
-                <div class="row my-4">
-                  <div class="col-md-4 text-md-right">
-                    <label for="" class="font-weight-600">Name</label>
-                  </div>
-                  <div class="col-md-7">
-                    <Dropdown
-                      v-model="groupToAddTo"
-                      :options="allGroups"
-                      style="width: 100%"
-                      :filter="false"
-                      placeholder="Select a group"
-                      optionLabel="name"
-                    />
-                  </div>
-                </div>
-
-                <div class="row">
-                  <div class="col-md-4 text-md-right">
-                    <label for="" class="font-weight-600">Position</label>
-                  </div>
-                  <div class="col-md-7">
-                    <input
-                      type="text"
-                      v-model="position"
-                      class="form-control"
-                      placeholder="e.g Member"
-                    />
-                  </div>
-                </div>
-
-                <div class="row">
-                  <div class="col-md-4">
-                    <label for="" class="font-weight-600"></label>
-                  </div>
-
-                  <div class="col-md-7">
-                    <div class="col-md-12 mt-3 text-center">
-                      <p class="my-1 text-danger" v-if="addToGroupError">
-                        Please select a group
+          <div class="modal-footer">
+            <div class="container">
+              <div class="row">
+                <div class="col-md-4"></div>
+                <div class="col-md-7">
+                  <div class="row">
+                    <div class="col-md-12 text-md-right">
+                      <p class="mb-1 text-danger" v-if="invalidEventDetails">
+                        Enter event name and date
                       </p>
                     </div>
-                    <div class="row mt-2">
-                      <div class="col-md-6 d-md-flex justify-content-end">
-                        <button class="default-btn" data-dismiss="modal">Cancel</button>
-                      </div>
-                      <div class="col-md-6">
-                        <button
-                          class="default-btn primary-bg border-0 text-white"
-                          :data-dismiss="dismissAddToGroupModal"
-                          @click="addMemberToGroup"
-                        >
-                          Save
-                        </button>
-                      </div>
+                    <div class="pr-0 col-md-12 d-md-flex justify-content-end">
+                      <el-button class="secondary-button" data-dismiss="modal" round>Cancel</el-button>
+                      <el-button :color="primarycolor" data-dismiss="modal" @click="createNewEvent" round>
+                        Save
+                      </el-button>
                     </div>
                   </div>
                 </div>
@@ -643,33 +345,100 @@
             </div>
           </div>
         </div>
-      </form>
+      </div>
+    </div>
+
+    <!-- Modal -->
+    <div class="modal fade" id="addToGroup" tabindex="-1" role="dialog" aria-labelledby="addToGroup" aria-hidden="true"
+      @click="hideGroupModal">
+      <div class="modal-dialog modal-lg" role="document">
+        <div class="modal-content">
+          <div class="modal-header" style="background: #ebeff4">
+            <h5 class="modal-title font-weight-bold" id="addToGroup">
+              Group Membership
+            </h5>
+            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+              <span aria-hidden="true">&times;</span>
+            </button>
+          </div>
+          <div class="modal-body">
+            <div class="row my-4">
+              <div class="col-md-4 text-md-right">
+                <label for="" class="font-weight-600">Name</label>
+              </div>
+              <div class="col-md-7">
+                <el-tree-select v-model="selectedTree" class="w-100" placeholder="Select group" :data="groupMappedTree"
+                  :render-after-expand="false" :filter-node-method="filterNodeMethod" @change="setGroupValue" filterable
+                  check-strictly />
+              </div>
+            </div>
+
+            <div class="row">
+              <div class="col-md-4 text-md-right">
+                <label for="" class="font-weight-600">Position</label>
+              </div>
+              <div class="col-md-7">
+                <input type="text" v-model="position" class="form-control" placeholder="e.g Member" />
+              </div>
+            </div>
+
+            <div class="row">
+              <div class="col-md-4">
+                <label for="" class="font-weight-600"></label>
+              </div>
+
+              <div class="col-md-7">
+                <div class="col-md-12 mt-3 text-center">
+                  <p class="my-1 text-danger" v-if="addToGroupError">
+                    Please select a group
+                  </p>
+                </div>
+                <div class="row mt-2 d-md-flex justify-content-end">
+                  <el-button class="secondary-button" data-dismiss="modal" round>Cancel</el-button>
+                  <el-button :color="primarycolor" :data-dismiss="dismissAddToGroupModal" @click="addMemberToGroup"
+                    round>Save</el-button>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
     </div>
   </div>
 </template>
 
 <script>
-import { ref, onMounted, computed } from "vue";
+import { ref, reactive, onMounted, computed, nextTick, inject } from "vue";
 import axios from "@/gateway/backendapi";
 import router from "@/router/index";
 import Dropdown from "primevue/dropdown";
 import { useRoute } from "vue-router";
-import { useToast } from "primevue/usetoast";
 import Dialog from "primevue/dialog";
-import finish from "../../services/progressbar/progress"
-import setupService from '../../services/setup/setupservice';
-import ImageForm from '../../components/membership/ImageForm.vue';
-import SearchMembers from '../../components/membership/MembersSearch.vue';
+import finish from "../../services/progressbar/progress";
+import setupService from "../../services/setup/setupservice";
+import ImageForm from "../../components/membership/ImageForm.vue";
+import SearchMembers from "../../components/membership/MembersSearch.vue";
 import grousService from "../../services/groups/groupsservice";
-import { useStore } from "vuex"
+import { useStore } from "vuex";
+import allCustomFields from "../../services/customfield/customField";
+import GroupTree from "../groups/component/GroupTree.vue";
+import collector from "../../services/groupArray/mapTree";
+import flatten from "../../services/groupArray/flatTree";
+import deviceBreakpoint from "../../mixins/deviceBreakpoint";
+import { ElMessage } from 'element-plus'
 
 export default {
-  components: { Dropdown, Dialog, ImageForm, SearchMembers },
+  components: {
+    Dropdown,
+    Dialog,
+    ImageForm,
+    SearchMembers,
+    "group-tree": GroupTree,
+  },
 
   setup() {
-    // const $toast = getCurrentInstance().ctx.$toast;
-    const toast = useToast();
-    const store = useStore()
+    const primarycolor = inject('primarycolor')
+    const store = useStore();
     const showEventList = ref(false);
     const selectEventAttended = () => {
       showEventList.value = !showEventList.value;
@@ -681,8 +450,24 @@ export default {
       e.preventDefault();
     };
 
-    const day = ref([ 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30, 31 ]);
-    const month = ref([ "January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December" ]);
+    const day = ref([
+      1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21,
+      22, 23, 24, 25, 26, 27, 28, 29, 30, 31,
+    ]);
+    const month = ref([
+      "January",
+      "February",
+      "March",
+      "April",
+      "May",
+      "June",
+      "July",
+      "August",
+      "September",
+      "October",
+      "November",
+      "December",
+    ]);
     const maritalStatusArr = ref([]);
     const selectedMaritalStatus = ref(null);
     const genderArr = ref([]);
@@ -698,37 +483,52 @@ export default {
     const howDidYouAboutUs = ref([]);
     const selectedAboutUsSource = ref(null);
     const selectedFollowUp = ref(null);
-    const firstTimersObj = ref({ sendWelcomeSMS: false, sendWelcomeEmail: true });
+    const firstTimersObj = ref({
+      sendWelcomeSMS: false,
+      sendWelcomeEmail: true,
+    });
     const showCategory = ref(false);
     const eventText = ref("");
     const displayModal = ref(false);
-    const selectEvent = ref("Select Event");
-    const isPhoneValid = ref(true)
-    const isEmailValid = ref(true)
-    const validatePhone = ref("")
-    const validateEmail = ref("")
-    const firstTimerPhone = ref("")
-    const firstTimerEmail = ref("")
-    const routeToFRM = ref(false)
-    const firstTimerInGroup = ref([])
+    const selectEvent = ref("");
+    const validatePhone = ref("");
+    const validateEmail = ref("");
+    const firstTimerPhone = ref("");
+    const firstTimerEmail = ref("");
+    const routeToFRM = ref(false);
+    const firstTimerInGroup = ref([]);
     const allGroups = ref([]);
-    const groupToAddTo = ref({})
-    const position = ref("")
+    const groupToAddTo = ref({});
+    const position = ref("");
     const addToGroupError = ref(false);
     const dismissAddToGroupModal = ref("");
-
+    const dynamicCustomFields = ref([]);
+    const searchGroupText = ref("");
+    const searchRef = ref(null)
+    const hideDiv = ref(true)
+    const ruleForm = ref()
+    const maritalStatusId = ref(null)
+    const genderId = ref(null)
+    const selectedTree = ref()
+    const flattenedTree = ref([])
+    const groupMappedTree = ref([])
+    const sourceId = ref()
+    const showAddInfo = ref(false)
+    const customFileLoading = ref(false)
+    const loadingtwo = ref(false)
+    const { mdAndUp, lgAndUp, xlAndUp, xsOnly } = deviceBreakpoint()
+    const createCatLoading = ref(false)
+    const contactOwner = ref({})
 
     const eventName = computed(() => {
       return newEvents.value.map((i) => i.name);
     });
 
     const filterEventCategory = computed(() => {
-      // let x;
       let arr = [];
       if (newEvents.value.length > 0) {
-        console.log(newEvents.value, "new events");
         arr = newEvents.value.filter((i) => {
-          return i.name.toLowerCase().includes(eventText.value.toLowerCase());
+          return i.name.toLowerCase().includes(selectEvent.value.toLowerCase());
         });
       } else {
         return newEvents.value;
@@ -740,22 +540,15 @@ export default {
       displayModal.value = true;
     };
 
-    const closeModal = () => {
-      displayModal.value = false;
-    };
-
     const newEventCategoryName = ref("");
 
     const individualEvent = (obj) => {
       selectEvent.value = obj.name;
       newEvent.value.activity.eventCategoryId = obj.id;
       showCategory.value = false;
-      console.log(obj);
     };
 
-    const birthMonth = ref(null);
-
-    // const birthMonth = ref(null)
+    const birthMonth = ref();
 
     const hideCelebTab = ref(true);
     const hideAddInfoTab = ref(true);
@@ -765,79 +558,142 @@ export default {
     const loading = ref(false);
 
     const onSubmit = async () => {
-      // firstTimersObj.value.followUpTypeId =
-      //   "00000000-0000-0000-0000-000000000000";
-      firstTimersObj.value.genderId = selectedGender.value
-        ? selectedGender.value.id
-        : 0;
-      firstTimersObj.value.maritalStatusId = selectedMaritalStatus.value
-        ? selectedMaritalStatus.value.id
-        : 0;
-      firstTimersObj.value.activityID = selectedEventAttended.value
-        ? selectedEventAttended.value.activityID
-        : "00000000-0000-0000-0000-000000000000";
-      firstTimersObj.value.howDidYouAboutUsId = selectedAboutUsSource.value
-        ? selectedAboutUsSource.value.id
-        : "00000000-0000-0000-0000-000000000000";
-      firstTimersObj.value.communicationMeans = selectedCommunicationMeans.value
-        ? comMeansArr.value.indexOf(selectedCommunicationMeans.value) + 1
-        : 0;
-      firstTimersObj.value.interestedInJoining = selectedJoinInterest.value
-        ? joinInterestArr.value.indexOf(selectedJoinInterest.value) + 1
-        : 0;
-      firstTimersObj.value.wantToBeVisited = selectedVisitOption.value
-        ? wantVisitArr.value.indexOf(selectedVisitOption.value) + 1
-        : 0;
-      firstTimersObj.value.groups = firstTimerInGroup.value.length > 0 ? firstTimerInGroup.value.map(i => {
-        return {
-          groupId: i.groupId,
-          position: i.position
-        }
-      }) : []
-      
+      let formData = new FormData();
+      formData.append('firstName', firstTimersObj.value && firstTimersObj.value.firstName ? firstTimersObj.value.firstName : "")
+      formData.append('lastName', firstTimersObj.value && firstTimersObj.value.lastName ? firstTimersObj.value.lastName : "")
+      formData.append('phoneNumber', firstTimersObj.value && firstTimersObj.value.phoneNumber ? firstTimersObj.value.phoneNumber : "")
+      formData.append('email', firstTimersObj.value && firstTimersObj.value.email ? firstTimersObj.value.email : "")
+      formData.append('genderId', selectedGender.value ? selectedGender.value.id : 0)
+      formData.append('maritalStatusId', selectedMaritalStatus.value ? selectedMaritalStatus.value.id : 0)
+      formData.append('activityID', selectedEventAttended.value && selectedEventAttended.value.activityID ? selectedEventAttended.value.activityID : "" )
+      formData.append('howDidYouAboutUsId', selectedAboutUsSource.value ? selectedAboutUsSource.value.id : "00000000-0000-0000-0000-000000000000")
+      formData.append('communicationMeans', selectedCommunicationMeans.value ? comMeansArr.value.indexOf(selectedCommunicationMeans.value) + 1 : 0)
+      formData.append('interestedInJoining', selectedJoinInterest.value ? joinInterestArr.value.indexOf(selectedJoinInterest.value) + 1 : 0)
+      formData.append('wantToBeVisited', selectedVisitOption.value ? wantVisitArr.value.indexOf(selectedVisitOption.value) + 1 : 0)
+      formData.append('groupsString', firstTimerInGroup.value.length > 0 ? JSON.stringify(firstTimerInGroup.value.map((i) => ({ groupId: i.groupId, position: i.position }))) : [])
+      formData.append('contactOwnerId', Object.keys(contactOwner.value).length > 0 ? contactOwner.value.id : "00000000-0000-0000-0000-000000000000")
+      formData.append('imageUrl', firstTimersObj.value && firstTimersObj.value.imageUrl ? firstTimersObj.value.imageUrl : "")
+
+      // firstTimersObj.value.genderId = selectedGender.value
+      //   ? selectedGender.value.id
+      //   : 0;
+      // firstTimersObj.value.maritalStatusId = selectedMaritalStatus.value
+      //   ? selectedMaritalStatus.value.id
+      //   : 0;
+      // firstTimersObj.value.activityID = selectedEventAttended.value
+      //   ? selectedEventAttended.value.activityID
+      //   : "00000000-0000-0000-0000-000000000000";
+      // firstTimersObj.value.howDidYouAboutUsId = selectedAboutUsSource.value
+      //   ? selectedAboutUsSource.value.id
+      //   : "00000000-0000-0000-0000-000000000000";
+      // firstTimersObj.value.communicationMeans = selectedCommunicationMeans.value
+      //   ? comMeansArr.value.indexOf(selectedCommunicationMeans.value) + 1
+      //   : 0;
+      // firstTimersObj.value.interestedInJoining = selectedJoinInterest.value
+      //   ? joinInterestArr.value.indexOf(selectedJoinInterest.value) + 1
+      //   : 0;
+      // firstTimersObj.value.wantToBeVisited = selectedVisitOption.value
+      //   ? wantVisitArr.value.indexOf(selectedVisitOption.value) + 1
+      //   : 0;
+      // firstTimersObj.value.groups =
+        // firstTimerInGroup.value.length > 0
+        //   ? firstTimerInGroup.value.map((i) => {
+        //     return {
+        //       groupId: i.groupId,
+        //       position: i.position,
+        //     };
+        //   })
+        //   : [];
+
       switch (birthMonth.value) {
         case "January":
-          firstTimersObj.value.birthMonth = "1";
+          formData.append('birthMonth', "1")
+          // firstTimersObj.value.birthMonth = "1";
           break;
-        case "February":
-          firstTimersObj.value.birthMonth = "2";
+          case "February":
+          formData.append('birthMonth', "2")
+          // firstTimersObj.value.birthMonth = "2";
           break;
-        case "March":
-          firstTimersObj.value.birthMonth = "3";
+          case "March":
+          formData.append('birthMonth', "3")
+          // firstTimersObj.value.birthMonth = "3";
           break;
-        case "April":
-          firstTimersObj.value.birthMonth = "4";
+          case "April":
+          formData.append('birthMonth', "4")
+          // firstTimersObj.value.birthMonth = "4";
           break;
-        case "May":
-          firstTimersObj.value.birthMonth = "5";
+          case "May":
+          formData.append('birthMonth', "5")
+          // firstTimersObj.value.birthMonth = "5";
           break;
-        case "June":
-          firstTimersObj.value.birthMonth = "6";
+          case "June":
+          formData.append('birthMonth', "6")
+          // firstTimersObj.value.birthMonth = "6";
           break;
-        case "July":
-          firstTimersObj.value.birthMonth = "7";
+          case "July":
+          formData.append('birthMonth', "7")
+          // firstTimersObj.value.birthMonth = "7";
           break;
-        case "August":
-          firstTimersObj.value.birthMonth = "8";
+          case "August":
+            formData.append('birthMonth', "8")
+            // firstTimersObj.value.birthMonth = "8";
+            break;
+            case "September":
+          formData.append('birthMonth', "9")
+          // firstTimersObj.value.birthMonth = "9";
           break;
-        case "September":
-          firstTimersObj.value.birthMonth = "9";
+          case "October":
+          formData.append('birthMonth', "10")
+          // firstTimersObj.value.birthMonth = "10";
           break;
-        case "October":
-          firstTimersObj.value.birthMonth = "10";
-          break;
-        case "November":
-          firstTimersObj.value.birthMonth = "11";
-          break;
-        case "December":
-          firstTimersObj.value.birthMonth = "12";
-          break;
-        default:
-          // firstTimersObj.value.birthMonth = "12";
-          console.log("No month chosen");
-          break;
-      }
+          case "November":
+            formData.append('birthMonth', "11")
+            // firstTimersObj.value.birthMonth = "11";
+            break;
+            case "December":
+              formData.append('birthMonth', "12")
+              // firstTimersObj.value.birthMonth = "12";
+              break;
+              default:
+                break;
+              }
+              
+      formData.append('customAttributeDataString', JSON.stringify(dynamicCustomFields.value.map(
+        (i) => {
+          if (route.params.personId) {
+            return {
+              customAttributeID: i.id,
+              data: i.data,
+              entityID: route.params.personId,
+              }
+          } else {
+            return {
+              customAttributeID: i.id,
+              data: i.data,
+            }
+          }
+        }
+      )))
+      // firstTimersObj.value.customAttributeDataString = JSON.stringify(dynamicCustomFields.value.map(
+      //   (i) => {
+      //     if (route.params.personId) {
+      //       return {
+      //         customAttributeID: i.id,
+      //         data: i.data,
+      //         entityID: route.params.personId,
+      //         }
+      //     } else {
+      //       return {
+      //         customAttributeID: i.id,
+      //         data: i.data,
+      //       }
+      //     }
+      //   }
+      // ));
 
+      if (!routeToFRM.value) {
+        loading.value = true;
+      }
 
       if (route.params.firstTimerId) {
         let updateMember = {
@@ -845,15 +701,14 @@ export default {
           lastName: firstTimersObj.value.lastName,
           phoneNumber: firstTimersObj.value.phoneNumber,
           email: firstTimersObj.value.email,
-          // maritalStatusId: firstTimersObj.value.maritalStatusId,
-          // genderId: firstTimersObj.value.genderId,
-          activityID: firstTimersObj.value.activityID,
+          activityID: firstTimersObj.value && firstTimersObj.value.activityID ? firstTimersObj.value.activityID : "",
           address: firstTimersObj.value.address,
           birthday: firstTimersObj.value.birthday,
           birthMonth: firstTimersObj.value.birthMonth,
           birthYear: firstTimersObj.value.birthYear,
-          howDidYouAboutUsId: selectedAboutUsSource.value ? selectedAboutUsSource.value.id : null,
-          // howDidYouAboutUsId: firstTimersObj.value.howDidYouAboutUsId,
+          howDidYouAboutUsId: selectedAboutUsSource.value
+            ? selectedAboutUsSource.value.id
+            : null,
           communicationMeans: firstTimersObj.value.communicationMeans,
           interestedInJoining: firstTimersObj.value.interestedInJoining,
           wantsToBeVisited: firstTimersObj.value.wantToBeVisited,
@@ -866,116 +721,99 @@ export default {
           updateMember.genderId = firstTimersObj.value.genderId;
         if (firstTimersObj.value.maritalStatusId)
           updateMember.maritalStatusId = firstTimersObj.value.maritalStatusId;
-          console.log(updateMember)
-
-          // router.push('/tenant/people/firsttimerworkflow')
 
         try {
-          loading.value = true;
           const response = await axios.put(
             `/api/People/EditFirstTimer`,
-            // {firstName: "Baba", personId: firstTimersObj.value.personId}
             updateMember
-            // firstTimersObj.value
           );
 
           if (response.status === 200 || response.status === 201) {
             loading.value = false;
-            // if(!routeToFRM.value) {
-              router.push("/tenant/firsttimerslist");
-            // } else {
-            //   router.push(`/tenant/firsttimermanagement/${res.data.personId}`)
-            //   routeToFRM.value = false
-            // }
-
-            console.log(firstTimersObj);
-            toast.add({
-              severity: "success",
-              summary: "Update Succesful",
-              detail: "Update operation was succesful",
-              life: 2500,
-            });
+            loadingtwo.value = false;
+            router.push("/tenant/firsttimerslist");
+            ElMessage({
+              type: 'success',
+              message: "Your update was successful",
+              duration: 3000
+            })
+            store.dispatch('membership/setFirstTimerData');
           }
         } catch (err) {
           loading.value = false;
-          finish()
+          loadingtwo.value = false;
+          finish();
           if (err.toString().toLowerCase().includes("network error")) {
-            toast.add({
-              severity: "warn",
-              summary: "You 're Offline",
-              detail: "Please ensure you have internet access",
-              life: 2500,
-            });
+            ElMessage({
+              type: 'warning',
+              message: "Please ensure you have internet access",
+              duration: 5000
+            })
           } else {
             showError.value = true;
-            toast.add({
-              severity: "warn",
-              summary: "Update Failed",
-              detail:
-                err.response && err.response.data.messsage
-                  ? err.response.data.messsage
-                  : "Update operation was not succesful",
-              life: 2500,
-            });
+            ElMessage({
+              type: 'warning',
+              message: err.response && err.response.data.messsage ? err.response.data.messsage : "Update operation was not succesful",
+              duration: 5000
+            })
           }
           showError.value = true;
-          console.log(err.response);
         }
       } else {
         axios
-          .post("/api/people/firsttimer", firstTimersObj.value)
+          .post("/api/people/firsttimer", formData)
           .then((res) => {
-            finish()
-            console.log(res.data);
+            finish();
             loading.value = false;
-            
-            toast.add({
-                severity: "success",
-                summary: "Successful",
-                detail: "First timer created successfully",
-                life: 2000,
-              });
-              
-            if(!routeToFRM.value) {
-              // router.push("/tenant/firsttimerslist");
-              firstTimersObj.value = {}
-              selectedGender.value = {}
-              selectedMaritalStatus.value = {}
-              selectedEventAttended.value = {}
-              selectedAboutUsSource.value = {}
-              selectedCommunicationMeans.value = {}
-              selectedJoinInterest.value = {}
-              selectedVisitOption.value = {}
-              birthMonth.value = ""
+            loadingtwo.value = false;
+            ElMessage({
+              type: 'success',
+              message: "First timer created successfully",
+              duration: 5000
+            })
+            store.dispatch('membership/setFirstTimerData');
+            store.dispatch('dashboard/getDashboard');
 
-              validatePhone.value.classList.remove('is-valid')
-              validateEmail.value.classList.remove('is-valid')
-              validatePhone.value.classList.remove('is-invalid')
-              validateEmail.value.classList.remove('is-invalid')
+            if (!routeToFRM.value) {
+              firstTimersObj.value = {};
+              selectedGender.value = {};
+              selectedMaritalStatus.value = {};
+              selectedEventAttended.value = {};
+              selectedAboutUsSource.value = {};
+              selectedCommunicationMeans.value = {};
+              selectedJoinInterest.value = {};
+              selectedVisitOption.value = {};
+              birthMonth.value = "";
+
+              validatePhone.value.classList.remove("is-valid");
+              validateEmail.value.classList.remove("is-valid");
+              validatePhone.value.classList.remove("is-invalid");
+              validateEmail.value.classList.remove("is-invalid");
             } else {
               setTimeout(() => {
-                router.push(`/tenant/firsttimermanagement/${res.data.personID}?memberType=0`)
-                routeToFRM.value = false
-              }, 2000)
+                router.push(
+                  `/tenant/firsttimermanagement/${res.data.personID}?memberType=0`
+                );
+                routeToFRM.value = false;
+              }, 2000);
             }
           })
           .catch((err) => {
-            finish()
+            finish();
             loading.value = false;
+            loadingtwo.value = false;
             if (err.response && err.response.data) {
-              toast.add({
-              severity: "warn",
-              summary: "Sorry",
-              detail: `${err.response.data.message}`,
-              life: 8000,
-            });
+              ElMessage({
+                type: 'warning',
+                message: `${err.response.data}`,
+                duration: 8000
+              })
             } else {
-              toast.add({
-              severity: "error",
-              summary: "Network Error",
-              detail: `Please ensure you have a strong internet  connection`,
-              life: 4000,
-            });
+              ElMessage({
+                type: 'error',
+                message: "Please ensure you have a strong internet connection",
+                duration: 5000
+              })
             }
             console.log(err.response);
           });
@@ -983,9 +821,10 @@ export default {
     };
 
     const saveAndRoute = () => {
-      routeToFRM.value = true
-      onSubmit()
-    }
+      loadingtwo.value = true
+      routeToFRM.value = true;
+      onSubmit();
+    };
 
     const onCancel = () => {
       router.back();
@@ -1000,14 +839,13 @@ export default {
 
     const eventsSearchString = ref("");
     const filteredEvents = computed(() => {
-      if (!eventsSearchString.value) return eventsAttended.value;
+      if (!selectedEventAttended.value.name) return eventsAttended.value;
       return eventsAttended.value.filter((i) =>
-        i.name.toLowerCase().includes(eventsSearchString.value.toLowerCase())
+        i.name.toLowerCase().includes(selectedEventAttended.value.name.toLowerCase())
       );
     });
 
     const eventAttendedSelected = (eventObj) => {
-      console.log(eventObj);
       selectedEventAttended.value = eventObj;
       showEventList.value = false;
       eventsSearchString.value = "";
@@ -1022,74 +860,62 @@ export default {
     const firstTimer = ref({});
 
     const createNewCat = async (eventParams) => {
+      createCatLoading.value = true
       try {
         let data;
         const theText =
-          eventParams === 1 ? eventText.value : newEventCategoryName.value;
+          eventParams === 1 ? selectEvent.value : newEventCategoryName.value;
         data = await axios.post(`/api/EventCategory?name=${theText}`);
-        console.log(data.data);
         newEvents.value = data.data;
 
-        toast.add({
-          severity: "success",
-          summary: "Event created",
-          detail: "Your new event was created successfully",
-          life: 2500,
-        });
+        createCatLoading.value = false
+        displayModal.value = false;
+        newEventCategoryName.value = "";
+
+        ElMessage({
+          type: 'success',
+          message: 'Your event has been created succesfully',
+          duration: 5000
+        })
       } catch (error) {
-        toast.add({
-          severity: "error",
-          summary: "Event not created",
-          detail: error.response.data,
-          life: 5000,
-        });
+        createCatLoading.value = false
+        ElMessage({
+          type: 'error',
+          message: error.response.data,
+          duration: 5000
+        })
       }
-      displayModal.value = false;
-      console.log(newEventCategoryName.value);
-      newEventCategoryName.value = "";
     };
 
     const createNewEvent = async () => {
-      // console.log(eventsAttended.value);
       invalidEventDetails.value = false;
       if (newEvent.value.activity.date) {
         try {
           savingNewEvent.value = true;
-          console.log(newEvent.value);
           const { data } = await axios.post(
             "/api/Events/CreateActivity",
             newEvent.value
           );
-          console.log(data);
           selectedEventAttended.value.activityID = data.currentEvent.id;
           selectedEventAttended.value.name = data.currentEvent.name
             ? data.currentEvent.name
             : "New event selected";
-          // console.log(selectedEventAttended, "SAE");
-
-          toast.add({
-            severity: "success",
-            summary: "Event created",
-            detail: "Your new event was created successfully",
-            life: 2500,
-          });
-          // newEvent.value.date = "";
-          // newEvent.value.preEvent.name = "";
-
-          console.log(data, "data");
+          ElMessage({
+            type: 'success',
+            message: 'Your new event has been created successfully',
+            duration: 5000
+          })
         } catch (error) {
-          if (error.response.data == "An Event with this name already exist") {
-            toast.add({
-              severity: "error",
-              summary: "Event exist already",
-              detail: error.response.data,
-              life: 2500,
-            });
+          if (error && error.response && error.response.data.includes("An Event with this name already exist")) {
+            ElMessage({
+              type: 'error',
+              message: error.response.data,
+              duration: 5000
+            })
           }
           /*eslint no-undef: "warn"*/
           NProgress.done();
           savingNewEvent.value = false;
-          console.log(error.response);
         }
       } else {
         invalidEventDetails.value = true;
@@ -1114,7 +940,6 @@ export default {
       axios
         .get("/api/LookUp/GetAllLookUps")
         .then((res) => {
-          console.log(res.data, 'all lkups')
           res.data.find((i) => {
             if (i.type.toLowerCase() === "gender") {
               genderArr.value = i.lookUps;
@@ -1122,14 +947,18 @@ export default {
             if (i.type.toLowerCase() === "maritalstatus") {
               maritalStatusArr.value = i.lookUps;
               if (ftimerId.value) {
-                selectedMaritalStatus.value = maritalStatusArr.value.find(i => i.id === firstTimersObj.value.maritalStatusId);
-                selectedGender.value = genderArr.value.find(i => i.id === firstTimersObj.value.genderId);
+                selectedMaritalStatus.value = maritalStatusArr.value.find(
+                  (i) => i.id === firstTimersObj.value.maritalStatusId
+                );
+                selectedGender.value = genderArr.value.find(
+                  (i) => i.id === firstTimersObj.value.genderId
+                );
               }
             }
           });
         })
         .catch((err) => {
-          finish()
+          finish();
           if (err.response && err.response.status === 401) {
             localStorage.setItem("token", "");
             setupService.clearStore();
@@ -1141,78 +970,104 @@ export default {
         howDidYouAboutUs.value = res.data.map((i) => {
           return { name: i.name, id: i.id };
         });
-        console.log(res.data, "HYH")
       });
 
-      console.log(route.params.firstTimerId);
       if (route.params.firstTimerId) {
         axios
           .get(`/api/People/firstTimer/${route.params.firstTimerId}`)
           .then((res) => {
-            console.log(res.data, "DFGHG");
             ftimerId.value = res.data.personId;
 
             firstTimersObj.value = res.data;
             firstTimersObj.value.sendWelcomeSMS = res.data.sendSms;
             firstTimersObj.value.sendWelcomeEmail = res.data.sendEmail;
+            firstTimerEmail.value = res.data.email
+            firstTimerPhone.value = res.data.phoneNumber
 
-            selectedGender.value = res.data.genderId ? genderArr.value.find(i => i.id === res.data.genderId) : { };
+            selectedGender.value = res.data.genderId
+              ? genderArr.value.find((i) => i.id === res.data.genderId)
+              : {};
 
-            selectedMaritalStatus.value = res.data.maritalStatusId ? maritalStatusArr.value.find(i => i.id === res.data.maritalStatusId) : { };
+            selectedMaritalStatus.value = res.data.maritalStatusId
+              ? maritalStatusArr.value.find(
+                (i) => i.id === res.data.maritalStatusId
+              )
+              : {};
 
-            selectedAboutUsSource.value = getUserSource(res.data.howDidYouAboutUsId)
+            selectedAboutUsSource.value = getUserSource(
+              res.data.howDidYouAboutUsId
+            );
 
-            selectedCommunicationMeans.value = res.data.communicationMeans ? comMeansArr.value[res.data.communicationMeans - 1] : ""
+            selectedCommunicationMeans.value = res.data.communicationMeans
+              ? comMeansArr.value[res.data.communicationMeans - 1]
+              : "";
 
-            selectedJoinInterest.value = res.data.interestedInJoining ? joinInterestArr.value[res.data.interestedInJoining - 1] : ""
+            selectedJoinInterest.value = res.data.interestedInJoining
+              ? joinInterestArr.value[res.data.interestedInJoining - 1]
+              : "";
 
-            selectedVisitOption.value = res.data.wantsToBeVisited ? wantVisitArr.value[res.data.wantsToBeVisited - 1] : ""
-            console.log(wantVisitArr.value[res.data.wantsToBeVisited - 1], res.data.wantsToBeVisited)
+            selectedVisitOption.value = res.data.wantsToBeVisited
+              ? wantVisitArr.value[res.data.wantsToBeVisited - 1]
+              : "";
 
-            firstTimersObj.value.birthday = res.data.birthday ? Number(res.data.birthday) : "";
+            firstTimersObj.value.birthday = res.data.birthday
+              ? Number(res.data.birthday)
+              : "";
 
-            firstTimersObj.value.birthYear = res.data.birthYear ? +res.data.birthYear : "";
+            firstTimersObj.value.birthYear = res.data.birthYear
+              ? +res.data.birthYear
+              : "";
 
-            birthMonth.value = res.data.birthMonth ? month.value[Number(res.data.birthMonth) - 1] : "";
-            console.log(eventsAttended.value, "EA");
+            birthMonth.value = res.data.birthMonth
+              ? month.value[Number(res.data.birthMonth) - 1]
+              : "";
 
-            selectedEventAttended.value = getEventUserAttended(res.data.activityID)
+            selectedEventAttended.value = getEventUserAttended(
+              res.data.activityID
+            );
           })
-          .catch(err => {
-            finish()
-            console.log(err)
-            toast.add({
-              severity: "error",
-              summary: "Error getting details",
-              detail: "Unable to get person details, ensure you have a strong network connection",
-              life: 5000,
-            });
-          })
+          .catch((err) => {
+            finish();
+            console.log(err);
+            ElMessage({
+              type: 'error',
+              message: "Unable to get person details, ensure you have a strong network connection",
+              duration: 6000
+            })
+          });
       }
     });
 
-    const getUserSource = sourceId => {
-      if (sourceId && howDidYouAboutUs.value && howDidYouAboutUs.value.length > 0) return howDidYouAboutUs.value.find(i => i.id === sourceId);
+    const getUserSource = (sourceId) => {
+      if (
+        sourceId &&
+        howDidYouAboutUs.value &&
+        howDidYouAboutUs.value.length > 0
+      )
+        return howDidYouAboutUs.value.find((i) => i.id === sourceId);
       if (!sourceId) {
         axios.get("/api/membership/howyouheardaboutus").then((res) => {
           howDidYouAboutUs.value = res.data.map((i) => {
             return { name: i.name, id: i.id };
           });
-          return howDidYouAboutUs.value.find(i => i.id === res.data.howDidYouAboutUsId);
+          return howDidYouAboutUs.value.find(
+            (i) => i.id === res.data.howDidYouAboutUsId
+          );
         });
       } else {
         return null;
       }
-    }
+    };
 
-    const getEventUserAttended = userEventId => {
-      if (!userEventId) return { };
-      if (eventsAttended.value && eventsAttended.value.length > 0) return eventsAttended.value.find(i => i.activityID === userEventId);
+    const getEventUserAttended = (userEventId) => {
+      if (!userEventId) return {};
+      if (eventsAttended.value && eventsAttended.value.length > 0)
+        return eventsAttended.value.find((i) => i.activityID === userEventId);
       axios.get("/api/Events/EventActivity").then((res) => {
         eventsAttended.value = res.data;
-        return eventsAttended.value.find(i => i.activityID === userEventId);
+        return eventsAttended.value.find((i) => i.activityID === userEventId);
       });
-    }
+    };
 
     const year = computed(() => {
       const arrOfYears = [];
@@ -1224,100 +1079,90 @@ export default {
       return arrOfYears;
     });
 
-    const checkForDuplicatePhone = async() => {
-          if (route.params.firstTimerId) {
-            try {
-              let { data } = await axios.get(`/api/People/firstTimer/${route.params.firstTimerId}`)
-              firstTimerPhone.value = data.phoneNumber
-              firstTimerEmail.value = data.email
-            }
-            catch (err) {
-              console.log(err)
-            }
+    const checkForDuplicatePhone = async (rule, value, callback) => {
+      if (firstTimersObj.value.phoneNumber !== firstTimerPhone.value) {
+        try {
+          let { data } = await axios.get(
+            `api/People/checkDuplicate?phoneNumber=${firstTimersObj.value.phoneNumber}`
+          );
+          if (data === "phone number") {
+            return callback(new Error('Phone number already exist, try another'))
+          } else if (data === "email and phone number") {
+            return callback(new Error('Phone number and email already exist, try another'))
           }
-            if (firstTimersObj.value.phoneNumber !== firstTimerPhone.value) {
-              try {
-
-            let { data } = await axios.get(`api/People/checkDuplicate?phoneNumber=${firstTimersObj.value.phoneNumber}`)
-            console.log(data, validatePhone.value)
-              if (data === "phone number") {
-              isPhoneValid.value = false
-            } else if (data === "email and phone number") {
-              isPhoneValid.value = false
-              isEmailValid.value = false
-            } else {
-              isPhoneValid.value = true
-              validatePhone.value.classList.add('is-valid')
-
-            }
-          }
-          catch (error) {
-            console.log(error)
-          }
+        } catch (error) {
+          console.error(error);
         }
       }
+    };
 
-      const checkForDuplicateEmail = async() => {
-
-        if (route.params.firstTimerId) {
-            try {
-              let { data } = await axios.get(`/api/People/firstTimer/${route.params.firstTimerId}`)
-              firstTimerEmail.value = data.email
-            }
-            catch (err) {
-              console.log(err)
-            }
+    const checkForDuplicateEmail = async (rule, value, callback) => {
+      if (firstTimersObj.value.email !== firstTimerEmail.value) {
+        try {
+          let { data } = await axios.get(
+            `api/People/checkDuplicate?email=${firstTimersObj.value.email}`
+          );
+          if (data === "email") {
+            return callback(new Error('Email already exist, try another'))
+          } else if (data === "email and phone number") {
+            return callback(new Error('Email and phone number already exist, try another'))
           }
-
-          if (firstTimersObj.value.email !== firstTimerEmail.value) {
-          try {
-            let { data } = await axios.get(`api/People/checkDuplicate?email=${firstTimersObj.value.email}`)
-            console.log(data)
-              if (data === "email") {
-                isEmailValid.value = false
-              } else if (data === "email and phone number") {
-                isEmailValid.value = false
-                isPhoneValid.value = false
-              } else {
-                isEmailValid.value = true
-                validateEmail.value.classList.add('is-valid')
-              }
-            }
-          catch (error) {
-            console.log(error)
-          }
+        } catch (error) {
+          console.log(error);
         }
       }
+    };
 
-      const setImageToUrl = (payload) => {
-        firstTimersObj.value.imageUrl = payload
+    const validateRules = reactive({
+      email: [
+        { validator: checkForDuplicateEmail, required: false, trigger: 'blur' },
+      ],
+      phoneNumber: [
+        { validator: checkForDuplicatePhone, required: true, trigger: 'blur' },
+      ],
+    })
+
+    const imageSelected = async(e) => {
+      url.value = URL.createObjectURL(e.target.files[0]);
+      await uploadImage(e)
+      console.log(url.value)
+    }
+
+    const setContact = (payload) => {
+      if (!payload.email) {
+        ElMessage({
+          type: 'warning',
+          message: "This contact does not have any email records, communicate with this person to create him as a user",
+          duration: 15000
+        })
       }
-
-      const setContact = (payload) => {
-        if (!payload.email) {
-          toast.add({
-              severity: "warn",
-              summary: "No email associate with the person",
-              detail: "This contact does not have any email records, communicate with this person to create him as a user",
-              life: 15000,
-            });
-        }
-        firstTimersObj.value.contactOwnerId = payload.id
-      }
-
-     
+      contactOwner.value = payload
+      // firstTimersObj.value.contactOwnerId = payload.id;
+    };
 
     const getGroups = async () => {
       try {
         let groups = store.getters["groups/groups"];
-
         if (groups && groups.length > 0) {
           allGroups.value = groups;
+          let data = { children: allGroups.value }
+          const { children } = collector(data);
+          groupMappedTree.value = children
+          if (groupMappedTree.value && groupMappedTree.value.length > 0) {
+            flattenedTree.value = groupMappedTree.value.flatMap(flatten());
+          }
           return true;
-        } else {
+        }
+        else {
           let group = await grousService.getGroups();
-          if (group) {
-            allGroups.value = group;
+          if (group.response.groupResonseDTO) {
+            allGroups.value = group.response.groupResonseDTO;
+            let data = { children: allGroups.value }
+            const { children } = collector(data);
+            groupMappedTree.value = children
+            if (groupMappedTree.value && groupMappedTree.value.length > 0) {
+              flattenedTree.value = groupMappedTree.value.flatMap(flatten());
+            }
           }
         }
       } catch (error) {
@@ -1333,53 +1178,99 @@ export default {
         return false;
       }
       dismissAddToGroupModal.value = "modal";
-      // if (route.params.personId) {
-      // let personInfo = {
-      // people: [
-      //     {
-      //       groupId: groupToAddTo.value.id ,
-      //       position: position.value,
-      //       personId: route.params.personId
-      //     }
-      //   ]
-      // }
+      firstTimerInGroup.value.push({
+        name: groupToAddTo.value.name,
+        groupId: groupToAddTo.value.id,
+        position: position.value,
+      });
 
-      //   try {
-      //   const response = await membershipService.addMemberToGroup(
-      //     personInfo, groupToAddTo.value.id
-      //   );
-      //   console.log("RESPONSE", response);
-      //   toast.add({
-      //     severity: "success",
-      //     summary: "Added Successfully",
-      //     detail: `Member add to ${groupToAddTo.value.name}`,
-      //     life: 3000,
-      //   });
-
-      //   firstTimerInGroup.value.push({
-      //     name: groupToAddTo.value.name,
-      //     groupId: groupToAddTo.value.id,
-      //     position: position.value
-      //   })
-
-      //   groupToAddTo.value = {}
-      //   position.value = ""
-      //   } catch (error) {
-      //     console.log(error);
-      //   }
-      // } else {
-        console.log(groupToAddTo.value)
-        firstTimerInGroup.value.push({
-          name: groupToAddTo.value.name,
-          groupId: groupToAddTo.value.id,
-          position: position.value
-        })
-
-        groupToAddTo.value = {}
-        position.value = ""
-      // }
-      console.log(firstTimerInGroup.value)
+      groupToAddTo.value = {};
+      position.value = "";
     };
+
+    const setSelectedGroup = (item) => {
+      groupToAddTo.value = item;
+    };
+
+    const getAllCustomFields = async () => {
+      try {
+        let data = await allCustomFields.allCustomFields();
+        dynamicCustomFields.value = data.filter((i) => i.entityType === 1).sort((a, b) => a.order - b.order);;
+      } catch (err) {
+        console.log(err);
+      }
+    };
+    getAllCustomFields();
+
+    const searchAllGroups = computed(() => {
+      if (!searchGroupText.value && allGroups.value > 0) return allGroups.value
+      return allGroups.value.filter(i => {
+        if (i.name) return i.name.toLowerCase().includes(searchGroupText.value.toLowerCase())
+      })
+    })
+
+    const setGroupProp = () => {
+      hideDiv.value = !hideDiv.value;
+      nextTick(() => {
+        searchRef.value.focus()
+      })
+    };
+
+    const hideGroupModal = (e) => {
+      if (!e.target.classList.contains("exempt-hide")) {
+        hideDiv.value = true
+      }
+    }
+
+    const setSelectedMaritalStatus = () => {
+      selectedMaritalStatus.value = maritalStatusArr.value.find(i => {
+        return i.id == maritalStatusId.value
+      })
+    }
+
+    const setSelectedGender = () => {
+      selectedGender.value = genderArr.value.find(i => {
+        return i.id == genderId.value
+      })
+    }
+
+    const setGroupValue = () => {
+      const response = flattenedTree.value.find(i => i.value == selectedTree.value)
+      groupToAddTo.value = {
+        name: response.label,
+        id: response.value
+      }
+    }
+
+    const filterNodeMethod = (value, data) => data.label.toLowerCase().includes(value.toLowerCase())
+
+    const setSelectedSource = () => {
+      selectedAboutUsSource.value = howDidYouAboutUs.value.find(i => {
+        return i.id === sourceId.value
+      })
+    }
+
+    const url = ref("")
+
+    const uploadImage = async (e, index) => {
+      customFileLoading.value = true
+      let formData = new FormData()
+      formData.append("mediaFileImage", e.target.files[0])
+
+      try {
+        await axios.post("/api/Media/UploadProfilePicture", formData).then(res => {
+          if (index) {
+              customFileLoading.value = false
+              dynamicCustomFields.value[index].data = res.data.pictureUrl
+            }
+            firstTimersObj.value.imageUrl = res.data.pictureUrl;
+        })
+      }
+      catch (err) {
+        console.error(err)
+        customFileLoading.value = false
+      }
+    }
 
     return {
       onSubmit,
@@ -1430,22 +1321,18 @@ export default {
       eventText,
       displayModal,
       openModal,
-      closeModal,
       createNewCat,
       newEventCategoryName,
       selectEvent,
       individualEvent,
       checkForDuplicatePhone,
       checkForDuplicateEmail,
-      isPhoneValid,
-      isEmailValid,
       validatePhone,
       validateEmail,
       firstTimerPhone,
       firstTimerEmail,
       routeToFRM,
       saveAndRoute,
-      setImageToUrl,
       setContact,
       firstTimerInGroup,
       allGroups,
@@ -1453,7 +1340,39 @@ export default {
       position,
       addToGroupError,
       dismissAddToGroupModal,
-      addMemberToGroup
+      addMemberToGroup,
+      setSelectedGroup,
+      dynamicCustomFields,
+      searchAllGroups,
+      searchRef,
+      setGroupProp,
+      hideDiv,
+      hideGroupModal,
+      ruleForm,
+      validateRules,
+      maritalStatusId,
+      genderId,
+      setSelectedMaritalStatus,
+      setSelectedGender,
+      selectedTree,
+      setGroupValue,
+      flattenedTree,
+      filterNodeMethod,
+      groupMappedTree,
+      sourceId,
+      setSelectedSource,
+      showAddInfo,
+      uploadImage,
+      customFileLoading,
+      loadingtwo,
+      xlAndUp,
+      mdAndUp,
+      lgAndUp,
+      createCatLoading,
+      imageSelected,
+      url,
+      primarycolor,
+      contactOwner
     };
   },
 };
@@ -1462,358 +1381,23 @@ export default {
 <style scoped>
 * {
   box-sizing: border-box;
-  color: #02172e;
 }
 
-.show-tab {
-  transition: all 0.5s ease-in-out;
-  height: 220px;
-  /* overflow: hidden; */
+.input-width {
+  width: 100%
 }
 
-.show-occ-tab {
-  transition: all 0.5s ease-in-out;
-  height: 100px;
-  /* overflow: hidden; */
+.input-width {
+  width: 100%
 }
 
- @media (max-width: 620px) {
-    .show-occ-tab {
-      height: 144px;
-    }   
+@media (min-width: 992px) {
+  .input-width {
+    width: 350px
   }
 
-.submit-div {
-  margin-left: 14em;
 }
 
-.inputs {
-  width: 70%;
-}
-
-.manual-dd-con {
-  position: relative;
-}
-
-.manual-dd {
-  width: 330px;
-  border: 1px solid #b9c5cf;
-  position: absolute;
-  background: white;
-  z-index: 2;
-  top: -13px;
-  margin-right: 0.5rem;
-  box-shadow: 0 2px 4px -1px rgba(0, 0, 0, 0.2), 0 4px 5px 0 rgba(0, 0, 0, 0.14),
-    0 1px 10px 0 rgba(0, 0, 0, 0.12);
-  max-height: 400px;
-  overflow: auto;
-}
-
-.manual-dd::-webkit-scrollbar {
-  display: none;
-}
-
-/* Hide scrollbar for IE, Edge and Firefox */
-.manual-dd {
-  -ms-overflow-style: none; /* IE and Edge */
-  scrollbar-width: none; /* Firefox */
-}
-
-.manual-dd-item {
-  color: #495057;
-}
-
-.manual-dd-item:hover {
-  background: #e9ecef;
-  cursor: pointer;
-}
-
-.dd-search-field {
-  border-radius: 20px;
-}
-
-.create-event a {
-  color: #136acd !important;
-  text-decoration: none;
-}
-
-.create-new-event {
-  text-align: center;
-  font: normal normal bold 16px/22px Nunito Sans;
-  letter-spacing: 0px;
-  color: #136acd;
-}
-
-.create-event a:hover {
-  cursor: pointer;
-  padding: 8px;
-}
-
-.create {
-  text-align: center;
-  font: normal normal bold 16px/22px Nunito Sans;
-  letter-spacing: 0px;
-  color: #136acd;
-}
-
-/* .select-dropdown option{
-  padding: 20px 10px;
-  border: none
-}
-
-.select-dropdown option:hover{
-  background: rgb(162, 197, 238)
-} */
-
-.select-elem-con {
-  padding: 5px 10px;
-  border: 1px solid #ced4da;
-  border-radius: 4px;
-  justify-content: space-between;
-}
-
-.pointer {
-  cursor: pointer;
-}
-
-.style-category {
-  padding: 10px;
-  box-shadow: 0px 3px 15px #797e8159;
-  position: absolute;
-  /* top: 10px; */
-  background: white;
-  z-index: 1;
-  width: 80%;
-  max-height: 20em;
-  overflow-y: scroll;
-}
-.style-category div:hover {
-  background-color: #ecf0f3;
-  cursor: pointer;
-}
-
-.cat {
-  padding: 5px;
-  border-top: 1px solid #ecf0f3;
-}
-
-.form-control.input.dd {
-  text-align: left;
-}
-
-.manual-dd-icon {
-  position: absolute;
-  margin-right: 1rem;
-  margin-top: 16px;
-}
-
-.dd-search-con {
-  max-height: 40px;
-}
-
-.dd-list-con {
-  max-height: 360px;
-  overflow: auto;
-}
-
-.modal-footer {
-  border-top: none !important;
-}
-
-.add-group {
-  width: 330px; 
-  margin: 4px 8px; 
-  border-radius: 3px
-}
-
-.input-dropdown {
-  width: 330px
-}
-
-@media (max-width: 620px) {
-  .submit-div {
-    margin-left: 1em;
-    flex-direction: column-reverse;
-  }
-
-  .manual-dd-icon {
-    margin-top: 3rem;
-    right: 10px;
-  }
-
-  .widen {
-    width: 100%
-  }
-
-  .add-group {
-      width: 100%;
-    }
-
-  .input-dropdown {
-    width: 100%;
-  }
-}
-
-@media (min-width: 621px) and (max-width: 900px) {
-  .submit-div {
-    margin-left: 9em;
-  }
-}
-
-.page-header {
-  margin-bottom: 21px;
-  margin-top: 15px;
-}
-
-.page-header h2 {
-  color: #02172e;
-  font-weight: 800;
-  font-size: 30px;
-}
-
-.sub-header {
-  color: #002044;
-  font-size: 20px;
-  font-weight: 700;
-}
-
-.form-container {
-  margin-bottom: 44px;
-}
-
-.input {
-  height: 40px;
-  border: 1px solid #b9c5cf;
-}
-
-.first-row {
-  margin-top: 10px;
-}
-
-.day-inp {
-  border-radius: 8px 0 0 8px;
-}
-
-.month-inp {
-  border-radius: 0;
-}
-
-.year-inp {
-  border-radius: 0 8px 8px 0;
-}
-
-/* .select-elem {
-  height: 50px !important;
-} */
-
-#welcomeSms,
-#welcomeEmail {
-  margin-top: 6px;
-  margin-left: 10px;
-}
-
-.check-box {
-  width: 1.2em;
-  height: 1em;
-  background-color: white;
-  border-radius: 50%;
-  vertical-align: middle;
-  border: 1px solid #b9c5cf;
-  -webkit-appearance: none;
-  outline: none;
-  cursor: pointer;
-}
-
-.action-btn {
-  background: #fff;
-  border: 1px solid #002044;
-  border-radius: 22px;
-  width: 104px;
-  /* height: 49px; */
-  outline: transparent;
-}
-
-.save-btn {
-  background: #136acd;
-  border: none;
-  outline: transparent;
-  /* padding: 8px 10px; */
-  /* color: #fff; */
-  /* width: 40px; */
-  /* min-width: 104px; */
-  color: #fff;
-  font-size: 16px;
-  border-radius: 22px;
-}
-
-.drop-it.placeholder {
-  /* Chrome/Opera/Safari */
-  /* color: pink; */
-  border: 2px solid red;
-}
-
-template.p-dropdown-parent {
-  border: 2px solid red;
-}
-
-.roll1 {
-  transition: all 0.5s ease-in-out;
-  transform: rotate(180deg);
-}
-
-.slide-down1 {
-  height: 200px;
-  transition: all 0.5s ease-in-out;
-}
-.close-slide1 {
-  height: 0;
-  overflow: hidden;
-  transition: all 0.5s ease-in-out;
-}
-
-.required {
-  color: #ef0535;
-}
-
-.modal-body.new-event-modal {
-  padding: 0;
-}
-
-@media screen and (max-width: 767px) {
-  .select-elem {
-    height: auto !important;
-  }
-
-  .select-div {
-    padding: 0.8rem !important;
-  }
-}
-
-.check-box:checked {
-  background-color: #0f529f;
-}
-
-@media screen and (max-width: 770px) {
-  .follow-up-header {
-    flex-direction: column;
-    justify-content: flex-start;
-  }
-
-  .followup-hr-span,
-  .hr-span {
-    width: 100% !important;
-  }
-
-  .sub-header {
-    width: 100%;
-  }
-}
-
-@media screen and (min-width: 770px) and (max-width: 1190px) {
-  .followup-hr-span {
-    width: 60% !important;
-  }
-}
 
 @media (min-width: 576px) {
   .modal-dialog {
@@ -1821,5 +1405,38 @@ template.p-dropdown-parent {
     margin: 1.75rem auto;
     /* padding: 32px; */
   }
+
+  .dropdown-menu {
+    max-height: 300px;
+    overflow: scroll;
+    box-shadow: 0 2px 4px -1px rgb(0 0 0 / 20%), 0 4px 5px 0 rgb(0 0 0 / 14%),
+      0 1px 10px 0 rgb(0 0 0 / 12%);
+  }
+}
+
+.div-card {
+  position: absolute;
+  background: white;
+  z-index: 1;
+  width: 100%;
+  box-shadow: 0 0 11px rgba(33, 33, 33, 0.2);
+  max-height: 400px;
+  overflow: scroll;
+}
+
+.menu-height {
+  max-height: 400px;
+  overflow: scroll;
+}
+
+.tb-icon-span {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  border: 1px solid #dde2e6;
+  height: 30px;
+  width: 30px;
+  border-radius: 50%;
+  opacity: 0.5;
 }
 </style>

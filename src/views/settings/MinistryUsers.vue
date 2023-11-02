@@ -22,19 +22,50 @@
       </div>
         
  
- <div class="row header1 mt-5">
+ <div class="row table mt-5">
+  <div class="col-12 px-0" id="table">
+    <div class="top-con" id="ignore2">
+        <div class="table-top">
+          <div class="col-4">
+            <p @click="toggleSearch" class="search-text w-100 mt-2 d-flex justify-content-center">
+              <i class="pi pi-search"></i>SEARCH
+            </p>
+          </div>
+
+          <div class="search d-flex ml-2 mr-3"
+          >
+            <label
+              class="label-search d-flex"
+              :class="{
+                'show-search': searchIsVisible,
+                'hide-search': !searchIsVisible,
+              }"
+            >
+              <el-input
+                type="text"
+                class="w-100"
+                placeholder="Search..."
+                v-model="searchText"
+              />
+              <span class="empty-btn"
+                    @click="clearInput">
+                    <i class="pi pi-times"></i
+            ></span>
+              <span class="search-btn"
+              @click="removeSearchText">
+                <i class="pi pi-search"></i>
+              </span>
+            </label>
+          </div>
+        </div>
+    </div>
+  </div>
    <div class="col-md-12">
      <div class="border-0 bg-danger">
       <div class="row table-header-row py-2  small-text">
-        <!-- <div class="col-md-3">
-          <span class="py-2 font-weight-bold">Name</span>
-        </div> -->
           <div class="col-md-4">
-          <span class="py-3 font-weight-bold">Username</span>
+          <span class="py-3 font-weight-bold">Email</span>
         </div>
-        <!-- <div class="col-md-3">
-          <span class="py-2 font-weight-bold">Phone</span>
-        </div> -->
         <div class="col-md-4">
           <span class="py-2 font-weight-bold">Status</span>
         </div>
@@ -48,29 +79,16 @@
  </div>
    </div>
    <div class="col-md-12">
-      <div class="row small-text tr-border-bottom py-1 header2" v-for="(churchMem, index) in churchUsers.users" :key="index">
-            <!-- <div
-              class="col-md-3 d-flex justify-content-between"
-            >
-              <span class="py-2 hidden-header">NAME</span>
-               <span class="py-2" v-if="churchMem.name && churchMem.name.length<20"> <router-link class="route" :to="{path:'/tenant/settings/invitenewuser', query:{ email:churchMem.email } }" >{{ churchMem.name}}</router-link></span>
-              <span v-else v-tooltip.top="`${churchMem.name}`" class="route"> <router-link  class="route" :to="{path:'/tenant/settings/invitenewuser', query:{ email:churchMem.email } }" >{{ churchMem.name && churchMem.name.substring(0,20)+ "..."}}</router-link></span>
-            </div> -->
+      <div class="row small-text tr-border-bottom py-1 header2" v-for="(churchMem, index) in searchChurchUser" :key="index">
              <div
               class="col-md-4 d-flex justify-content-between align-items-center"
             >
-              <span class="py-2 hidden-header">USERNAME</span>
+              <span class="py-2 hidden-header">EMAIL</span>
               <span class="py-2 text-xs-left"  v-if=" churchMem.email && churchMem.email.length<10"> <router-link class="route" :to="{path:'/tenant/settings/invitenewuser', query:{ email:churchMem.email } }">{{ churchMem.email}}</router-link></span>
-              <span v-else v-tooltip.top="`${churchMem.email}`"> <router-link class="route" :to="{path:'/tenant/settings/invitenewuser', query:{ email:churchMem.email } }" >{{ churchMem.email && churchMem.email.substring(0,10)+ "..."}} </router-link></span>
+              <el-tooltip v-else :content="`${churchMem.email}`" placement="top">
+                <router-link class="route" :to="{path:'/tenant/settings/invitenewuser', query:{ email:churchMem.email } }" >{{ churchMem.email && churchMem.email}} </router-link>
+              </el-tooltip>
             </div>
-             <!-- <div
-              class="col-md-4 d-flex justify-content-between align-items-center"
-            >
-              <span class="py-2 hidden-header">PHONE</span>
-              <span class="py-2" v-if=" churchMem.phone && churchMem.phone.length < 11"> <router-link class="route" :to="{path:'/tenant/settings/invitenewuser', query:{ email:churchMem.email } }">{{ churchMem.phone}}</router-link></span>
-              <span v-else v-tooltip.top="`${churchMem.phone}`"> <router-link class="route" :to="{path:'/tenant/settings/invitenewuser', query:{ email:churchMem.email } }" >{{ churchMem.phone && churchMem.phone.substring(0,11)+ "..."}}</router-link></span>
-            </div> -->
-           
             <div
               class="col-md-4 d-flex justify-content-between align-items-center"
             >
@@ -81,12 +99,10 @@
               class="col-md-3 d-flex justify-content-between align-items-center"
             >
               <span class="py-2 hidden-header">ROLES</span>
-              <span class="py-2" v-tooltip.top="`${churchMem.roles.join(', ')}`"
-              > <router-link class="route" :to="{path:'/tenant/settings/invitenewuser', query:{ email:churchMem.email } }" >{{ `${churchMem && churchMem.roles[0] ? churchMem.roles[0].length > 10 ? churchMem.roles[0].substring(0,10)+ ".." : churchMem.roles[0] : ""}` }}</router-link></span>
-              <!-- <span v-else>{{ churchMem ? churchMem.roles ? churchMem.roles[0].substring(0,14)+ ".." : '' : '' }}</span> -->
-              <!-- "churchMem ? churchMem.roles ? churchMem.roles[0].length<14 : '' : '' " -->
+              <el-tooltip  class="py-2" :content="`${churchMem.roles.join(', ')}`" placement="top" >
+                <router-link class="route" :to="{path:'/tenant/settings/invitenewuser', query:{ email:churchMem.email } }" >{{ `${churchMem && churchMem.roles[0] ? churchMem.roles[0].length > 10 ? churchMem.roles[0].substring(0,10)+ ".." : churchMem.roles[0] : ""}` }}</router-link>
+              </el-tooltip>
             </div>
-            <!-- {{churchMem && churchMem.roles[0] ? churchMem.roles[0]? churchMem.roles[0] : '' : '' }} -->
             <div
               class="col-sm-12 d-flex col-12 justify-content-sm-end col-md-1 col-lg-1 col-xl-1 d-flex justify-content-end align-items-center"
             >
@@ -111,7 +127,7 @@
                     >
                   </a>
                   <a class="dropdown-item"><router-link :to="{path:'/tenant/settings/invitenewuser', query:{ email:churchMem.email } }"> Edit</router-link></a>
-                  <a class="dropdown-item" @click="deletePop(churchMem.email)"> <router-link to="" v-if="churchMem.email !== getCurrentUser.userEmail"> Delete </router-link></a>
+                  <a class="dropdown-item" @click="deletePop(churchMem.email)"> <router-link to="" v-if="churchMem.email !== getCurrentUser.userEmail" > Delete  </router-link></a>
                   <a class="dropdown-item" @click="deactivateChurchUser(churchMem.email, index)"> <router-link to=""> Inactive </router-link></a>
                   <a class="dropdown-item" @click="activateChurchUser(churchMem.email, index)"> <router-link to=""> Active </router-link></a>
                 </div>
@@ -124,62 +140,52 @@
     </div>
 
  </div>
-      <!-- <div
-        class="row py-2"
-        
-      > -->
-      <Toast/>
-      <ConfirmDialog/>
-        <!-- <div class="col-md-12"> -->
-         
-
-          <!-- <div class="row">
-            <div class="col-md-12 px-0">
-              <hr class="hr my-0" />
-            </div>
-          </div> -->
-        <!-- </div> -->
-
-
-       <!-- </div> -->
-      <!-- </div> -->
     </div>
   </div>
 </template>
 
 <script>
 import store from '@/store/store';
-import Tooltip from 'primevue/tooltip';
-import Toast from 'primevue/toast';
-import ConfirmDialog from 'primevue/confirmdialog'
+import { ElMessage, ElMessageBox } from 'element-plus';
 import axios from "@/gateway/backendapi";
 import finish from "../../services/progressbar/progress";
 export default {
-  components:{
-    Toast,
-    ConfirmDialog
-
-  },
-    directives: {
-    'tooltip': Tooltip
-},
   data(){
     return{
-      getCurrentUser: store.getters.currentUser,
+      getCurrentUser: {},
       churchProfile: '',
+      searchText: '',
       churchUsers: [],
       churchNames: {},
       loading: false,
+      searchIsVisible: false
     }
   },
-  computed:{
-    // churchProfile(){
-    //   if(!this.getCurrentUser || !this.getCurrentUser.churchName) return "";
-    //   return this.getCurrentUser.churchName;
-    // }
 
+  computed:{
+
+    searchChurchUser(){
+      if (this.churchUsers && this.churchUsers.users && this.churchUsers.users.length > 0 && this.searchText == '' ) return this.churchUsers.users;
+       this.churchUsers && this.churchUsers.users ? this.churchUsers.users.forEach((i, index) => {
+         if (i.email == null) {
+           this.churchUsers.users.splice(index,1)
+         }
+       }) : []
+      return this.churchUsers && this.churchUsers.users ? this.churchUsers.users.filter(i => i.email.toLowerCase().includes(this.searchText.toLowerCase())) : []
+    }
   },
   methods:{
+
+      toggleSearch (){
+       this.searchIsVisible = !this.searchIsVisible;
+     },
+      removeSearchText (){
+        this.searchText = '';
+    },
+      clearInput (){
+        this.searchText = '';
+    },
+
     async churchUser(){
       this.loading = true
       try{
@@ -196,7 +202,11 @@ export default {
         let response = await axios.post(`/api/Settings/ActivateChurchUser?churchUserEmail=${email}`);
         console.log(response);
          this.churchUsers.users[index].status = "Active";
-        this.$toast.add({severity:'success', summary: '', detail:'Status Make Active', life: 3000});
+         ElMessage({
+              type: 'success',
+              message: 'Status Make Active',
+              duration: 5000
+            })
       }catch(error){
         finish()
         console.log(error);
@@ -208,7 +218,11 @@ export default {
          let response = await axios.post(`/api/Settings/DeactivateChurchUser?churchUserEmail=${email}`);
          console.log(response);
         this.churchUsers.users[index].status = "Inactive";
-        this.$toast.add({severity:'success', summary: '', detail:'Status Make Inactive', life: 3000});
+        ElMessage({
+              type: 'success',
+              message: 'Status Make Inactive',
+              duration: 5000
+            })
 
       }catch(error){
         finish()
@@ -222,34 +236,43 @@ export default {
       try {
         await axios.post(`/api/Settings/DeleteChurchUser?churchUserEmail=${email}`);
         this.churchUsers.users = this.churchUsers.users.filter(i => i.email !== email);
-         this.$toast.add({severity:'success', summary: '', detail:'Church User Deleted Successfully', life: 3000});
+        ElMessage({
+              type: 'success',
+              message: 'Church User Deleted Successfully',
+              duration: 5000
+            })
+
       } catch (error){
         finish()
         console.log(error);
       }
     },
      deletePop(email) {
-            this.$confirm.require({
-                message: 'Are you sure you want to Delete?',
-                header: 'Delete Confirmation',
-                icon: 'pi pi-exclamation-circle',
-                acceptClass: 'confirm-delete',
-                rejectClass: 'cancel-delete',
-                accept: () => {
-                  this.deleteChurchUser(email)
-                    //callback to execute when user confirms the action
-                },
-                reject: () => {
-                    'No internet'
-                }
-            });
+      ElMessageBox.confirm(
+        'Are you sure you want to proceed?',
+        'Confirm delete',
+        {
+          confirmButtonText: 'OK',
+          cancelButtonText: 'Cancel',
+          type: 'error',
+        }
+      )
+      .then(() => {
+          this.deleteChurchUser(email)
+        })
+        .catch(() => {
+          ElMessage({
+            type: 'info',
+            message: 'Delete canceled',
+            duration: 5000
+          })
+        })
         },
         async currentUser () {
-          if(!store.getters.currentUser){
+          if(!store.getters.currentUser || !this.getCurrentUser ){
              try{
                 const { data } = await axios.get('/api/Membership/GetCurrentSignedInUser')
-                this.getCurrentUser = data;
-                console.log(this.getCurrentUser)
+                this.getCurrentUser = data ;
               }catch(error){
                 console.log(error)
               }    
@@ -295,6 +318,15 @@ export default {
 
 }
 
+.table {
+  width: 100% !important;
+  box-shadow: 0px 1px 4px #02172e45;
+  border: 1px solid #dde2e6;
+  border-radius: 30px;
+  text-align: left;
+  margin-bottom: auto !important;
+}
+
 .route:hover{
   color: #136acd!important;
 
@@ -316,6 +348,18 @@ export default {
   cursor: pointer;
 
 }
+
+.table-top {
+  font-weight: 800;
+  font-size: 12px;
+  display: flex;
+  justify-content: flex-end;
+}
+.table-top label:hover,
+.table-top p:hover {
+  cursor: pointer;
+}
+
 .header2:hover{
   background-color: #eee;
 }
@@ -361,4 +405,19 @@ color: white!important;
 }
   
 }
+
+@media screen and (max-width: 1024px) {
+  .my-con {
+    flex-direction: column;
+  }
+  .table {
+    width: 98%;
+    margin: 24px auto;
+  }
+  .summary {
+    width: 98%;
+    margin: auto;
+  }
+}
+
 </style>
