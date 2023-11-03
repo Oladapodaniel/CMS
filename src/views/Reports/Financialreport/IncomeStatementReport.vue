@@ -187,8 +187,8 @@
                 <td>{{ account.description }}</td>
                 <td>
                   {{
-                    account.currency && account.currency.shortCode
-                      ? account.currency.shortCode
+                    account.currency && account.currency.symbol
+                      ? account.currency.symbol
                       : ""
                   }}
                   {{ Math.abs(account.amount).toLocaleString() }}.00
@@ -201,7 +201,7 @@
                 <td></td>
                 <td></td>
                 <td class="subtotal">
-                  {{ currentUser.currency }}
+                  {{ currentUser.currencySymbol }}
                   {{ sum(tableData[row].expenses).toLocaleString() }}.00
                 </td>
                 <td></td>
@@ -215,8 +215,8 @@
                 <td>{{ account.description }}</td>
                 <td>
                   {{
-                    account.currency && account.currency.shortCode
-                      ? account.currency.shortCode
+                    account.currency && account.currency.symbol
+                      ? account.currency.symbol
                       : ""
                   }}
                   {{ Math.abs(account.amount).toLocaleString() }}.00
@@ -229,7 +229,7 @@
                 <td></td>
                 <td></td>
                 <td class="subtotal">
-                  {{ currentUser.currency }}
+                  {{ currentUser.currencySymbol }}
                   {{ sum(tableData[row].incomes).toLocaleString() }}.00
                 </td>
                 <td></td>
@@ -240,7 +240,7 @@
                 <td></td>
                 <td></td>
                 <td class="total-answer">
-                  {{ currentUser.currency }}
+                  {{ currentUser.currencySymbol }}
                   {{ sumOfDiffAcctInFunds(tableData[row]).toLocaleString() }}.00
                 </td>
                 <td></td>
@@ -264,7 +264,7 @@
                 <td></td>
                 <td class="gross-total responsive-horizontalrule">
                   <span
-                    >{{ currentUser.currency }}
+                    >{{ currentUser.currencySymbol }}
                     {{
                       Math.abs(diffBtwIncomeAndExpenses).toLocaleString()
                     }}.00</span

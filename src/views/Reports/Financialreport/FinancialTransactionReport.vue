@@ -141,10 +141,10 @@
                   <td></td>
                   <td></td>
                   <td class="text-success fund-answer">
-                    NGN{{ total(fund.value, "debit").toLocaleString() }}.00
+                    {{ currentUser.currencySymbol }} {{ total(fund.value, "debit").toLocaleString() }}.00
                   </td>
                   <td class="text-danger fund-answer">
-                    NGN({{
+                    {{ currentUser.currencySymbol }} ({{
                       Math.abs(total(fund.value, "credit")).toLocaleString()
                     }}.00)
                   </td>
@@ -168,11 +168,11 @@
                   <td></td>
                   <td></td>
                   <td class="gross-total responsive-horizontalrule">
-                    NGN{{ sumOfCreditAndDebit("debit").toLocaleString() }}.00
+                    {{ currentUser.currencySymbol }} {{ sumOfCreditAndDebit("debit").toLocaleString() }}.00
                     <hr class="horizontal-rule" />
                   </td>
                   <td class="gross-total responsive-horizontalrule">
-                    NGN({{
+                    {{ currentUser.currencySymbol }} ({{
                       Math.abs(sumOfCreditAndDebit("credit")).toLocaleString()
                     }}.00)
                     <hr class="horizontal-rule" />
@@ -191,19 +191,21 @@
 </template>
 
 <script>
-import { ref, inject } from "vue";
+import { ref, inject, computed } from "vue";
 import ByGenderChart from "@/components/charts/PieChart.vue";
 import axios from "@/gateway/backendapi";
 import dateFormatter from "../../../services/dates/dateformatter";
 import printJS from "print-js";
 import exportService from "../../../services/exportFile/exportservice";
 import groupResponse from "../../../services/groupArray/groupResponse.js";
+import { useStore } from "vuex"
 
 export default {
   components: {
     ByGenderChart,
   },
   setup() {
+    const store = useStore();
     const startDate = ref("");
     const primarycolor = inject("primarycolor");
     const loading = ref(false);
@@ -310,6 +312,12 @@ export default {
       }, 0);
     };
 
+    const currentUser = computed(() => {
+      if (store && Object.keys(store.getters.currentUser).length > 0)
+        return store.getters.currentUser;
+      return "";
+    });
+
     return {
       total,
       loading,
@@ -330,6 +338,7 @@ export default {
       printJS,
       selectedFileType,
       firstTimerChart,
+      currentUser
     };
   },
 };

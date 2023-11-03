@@ -2,35 +2,28 @@
   <div class="container-fluid  mb-4">
     <div class="row">
       <div class="col-md-12 mb-3 px-0">
-          <div class="text-primary c-pointer px-0 col-md-2" @click="previousPage">
+          <div class="text-primary c-pointer px-0 col-md-2 mt-3" @click="previousPage">
+          <el-button class="text-primary" plain>
             <el-icon><DArrowLeft /></el-icon> Back
+          </el-button>
           </div>
       </div>
       <Toast></Toast>
       <div class="col-md-12">
         <div class="row">
-          <div class="col-md-6 pl-md-0">
+          <div class="col-md-6 px-0">
             <label for="name" class="font-weight-600">Name</label>
-            <input type="text" class="form-control border" v-model="name" />
+            <el-input type="text" v-model="name" />
             <div class="row mt-2">
               <div class="col-md-12">
-                <input
-                  type="checkbox"
-                  class="mr-2 border"
-                  v-model="isActive"
-                  name=""
-                  id=""
-                />
+                <el-checkbox class="mr-2" size="large" v-model="isActive" />
                 Active
               </div>
             </div>
           </div>
-          <div class="col-md-6 pr-md-0">
+          <div class="col-md-6 px-0">
             <label for="name" class="font-weight-600">Description</label>
-            <input type="text" class="form-control" />
-            <!-- <textarea name="" id="" class="w-100 border" rows="3" 
-                            style="border-color: #ced4da"
-                        ></textarea> -->
+            <el-input type="text" />
           </div>
         </div>
 
@@ -38,8 +31,8 @@
           <div class="col-md-12">
             <div class="row">
               <div
-                class="border animate col-4 scroll-div scr-height our-grey-bg"
-                style="height: 400px"
+                class="border animate col-12 scroll-div scr-height our-grey-bg"
+                :style="`min-height: ${ showTriggers ? '400px' : '80px'}`"
                 :class="{
                   'col-md-4':
                     showTriggers || done || selectedTriggerIndex === null,
@@ -48,9 +41,10 @@
               >
                 <div class="row h-100" style="overflow-y: scroll">
                   <div
-                    class="col-md-12 py-3 c-pointer border"
+                    class="col-4 col-md-12 py-3 c-pointer border"
                     :class="{
                       'active-trigger': selectedTrigger.id === trigger.id,
+                      'pb-5 pb-md-3': index == workflow.triggers.length - 1
                     }"
                     v-for="(trigger, index) in workflow.triggers"
                     :key="index"
@@ -66,9 +60,10 @@
                           justify-content-center
                         "
                       >
+                            <!-- class="mr-3" -->
                         <span
-                          ><i
-                            class="mr-3"
+                          >
+                          <i
                             :class="[
                               trigger.icon,
                               {
@@ -164,7 +159,7 @@
                 </div>
               </div>
               <div
-                class="col-8 border animate"
+                class="col-12 border animate"
                 :class="{
                   'col-md-8': showTriggers || done,
                   'col-md-11':
@@ -195,6 +190,7 @@
                       :selectedTriggerIndex="selectedTriggerIndex"
                       :groups="groups"
                       v-if="selectedTrigger.triggerType === 0"
+                      :groupMappedTree="groupMappedTree"
                       @updatetrigger="updateTrigger"
                       @removetrigger="removeTrigger"
                       :contributionItems="contributionItems"
@@ -322,16 +318,12 @@
                   >
                     <div class="row ani">
                       <div
-                        class="col-12 border px-0 scr-height our-grey-bg"
-                        style="height: 400px"
+                        class="col-12 border scr-height our-grey-bg"
+                        :style="`min-height: ${showActions ? '400px' : '80px'}`"
                         :class="{ 'col-md-6': actionSelected }"
                       >
-                        <div class="row h-100 scroll-div">
-                          <div class="col-md-12">
-                            <ul class="list-group w-100">
-                              <li
-                                class="list-group-item c-pointer py-4 border"
-                                style="border: 2px solid red"
+                        <div class="row ">
+                          <div class="col-6 col-sm-4 col-md-12 py-3 border"
                                 :class="{
                                   'bg-white':
                                     selectedAction &&
@@ -340,11 +332,11 @@
                                     selectedAction &&
                                     i.id !== selectedAction.id,
                                   'd-none': showActions,
+                                  'pb-5 pb-md-3': j == triggerActions.length - 1
                                 }"
                                 v-for="(i, j) in triggerActions"
                                 :key="j"
-                                @click="setActiveAction(i, j)"
-                              >
+                                @click="setActiveAction(i, j)">
                                 <h5 class="mb-0">
                                   <span class="mr-2"
                                     ><i
@@ -354,8 +346,14 @@
                                   ></span>
                                   <span class="font-weight">{{ i.name }}</span>
                                 </h5>
+                            <!-- <ul class="list-group d-flex">
+                              <li
+                                class="list-group-item c-pointer py-4 border"
+                                
+                              >
+                               
                               </li>
-                            </ul>
+                            </ul> -->
                           </div>
                         </div>
                         <div
@@ -390,7 +388,7 @@
                               </div>
                             </div>
                           </div>
-                          <div class="col-md-12 trigger-btn-div">
+                          <div class="col-md-12 px-0 trigger-btn-div">
                             <button
                               class="
                                 btn btn-secondary
@@ -955,13 +953,17 @@ export default {
     const updateTrigger = (data, selectedTriggerIndex) => {
       let parsed = JSON.parse(data)
       let foo;
-      if (parsed.pledges && parsed.pledges.length > 0) parsed.pledges = parsed.pledges.join(",")
+      if (parsed.pledges && parsed.pledges.length > 0) {
+        parsed.pledges = parsed.pledges.join(",")
+      }
       if (typeof parsed.groups !== 'string') {
         parsed.groups = parsed.groups.join(",")
-        foo = JSON.stringify(parsed)
       } else {
-        foo = data
+        console.log(2);
+        parsed = data
       }
+      foo = JSON.stringify(parsed)
+      console.log(foo);
       workflow.value.triggers[selectedTriggerIndex].jsonCondition = foo;
     };
 
@@ -1355,8 +1357,10 @@ export default {
   max-width: 100% !important;
 }
 
-.scr-height {
-  height: calc(100vh - 373px) !important;
+@media(min-width: 768px) {
+  .scr-height {
+    height: calc(100vh - 373px) !important;
+  }
 }
 
 .animate {

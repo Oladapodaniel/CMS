@@ -208,8 +208,7 @@
             >
               <tr
                 v-for="(OfferingList, index) in offeringInChurch"
-                :key="index"
-              >
+                :key="index">
                 <td>{{ OfferingList.contributionName }}</td>
                 <td>{{ OfferingList.eventName }}</td>
                 <td>{{ OfferingList.contactName }}</td>
@@ -227,7 +226,7 @@
                 <td></td>
                 <td></td>
                 <td class="gross-total responsive-horizontalrule">
-                  NGN
+                  {{ currentUser.currencySymbol }}
                   {{
                     sumTotal && sumTotal.amount
                       ? sumTotal.amount.toLocaleString()
@@ -260,6 +259,7 @@ import SelectAllDropdown from "../ReportsDropdown.vue";
 import MembersSearch from "../../../components/membership/MembersSearch.vue";
 import exportService from "../../../services/exportFile/exportservice";
 import groupArray from "../../../services/groupArray/groupResponse";
+import { useStore } from "vuex";
 
 export default {
   components: {
@@ -270,6 +270,7 @@ export default {
     groupArray,
   },
   setup() {
+    const store = useStore();
     const Categories = ref([]);
     const selectedCategories = ref([]);
     const showReport = ref(false);
@@ -469,6 +470,12 @@ export default {
       return dateFormatter.normalDate(date);
     };
 
+    const currentUser = computed(() => {
+      if (store && Object.keys(store.getters.currentUser).length > 0)
+        return store.getters.currentUser;
+      return "";
+    });
+
     return {
       mainOfferingData,
       displayTitle,
@@ -480,7 +487,6 @@ export default {
       mappedOfferingCol,
       offeringChartResult,
       setSelectedAgeGroup,
-
       startDate,
       formatDate,
       selectedContact,
@@ -488,7 +494,6 @@ export default {
       primarycolor,
       selectedCategories,
       Categories,
-
       offeringPersonID,
       offeringInChurch,
       endDate,
@@ -499,16 +504,14 @@ export default {
       fileToExport,
       fileHeaderToExport,
       sumTotal,
-
       printJS,
-
       downloadFile,
-
       genarateReport,
       showReport,
       selectedofferingCategory,
       offeringColumnChartResult,
       columnData,
+      currentUser
     };
   },
 };
