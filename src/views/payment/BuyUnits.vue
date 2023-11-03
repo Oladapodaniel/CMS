@@ -453,6 +453,7 @@ export default {
       totalSMSUnits,
       invalidAmount,
       purchaseIsSuccessful,
+      showTransferDetail,
       closeModal,
       currentUser,
       payWithFlutterwave,
