@@ -2,9 +2,9 @@
   <div class="container-top" :class="{ 'container-slim': lgAndUp || xlAndUp }">
     <div class="row mt-4">
       <div class="col-md-6">
-        <div class="head-text mt-1">Ministry Workflows</div>
+        <div class="header-btn head-text mt-1">Ministry Workflows</div>
       </div>
-      <div class="col-md-6 d-flex justify-content-end">
+      <div class="col-md-6 d-flex justify-content-md-end mt-2 mt-md-0">
         <router-link
           to="/tenant/workflow/add?fw=true"
           class="text-decoration-none font-weight-bold"

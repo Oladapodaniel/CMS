@@ -2,35 +2,28 @@
   <div class="container-fluid  mb-4">
     <div class="row">
       <div class="col-md-12 mb-3 px-0">
-          <div class="text-primary c-pointer px-0 col-md-2" @click="previousPage">
+          <div class="text-primary c-pointer px-0 col-md-2 mt-3" @click="previousPage">
+          <el-button class="text-primary" plain>
             <el-icon><DArrowLeft /></el-icon> Back
+          </el-button>
           </div>
       </div>
       <Toast></Toast>
       <div class="col-md-12">
         <div class="row">
-          <div class="col-md-6 pl-md-0">
+          <div class="col-md-6 px-0">
             <label for="name" class="font-weight-600">Name</label>
-            <input type="text" class="form-control border" v-model="name" />
+            <el-input type="text" v-model="name" />
             <div class="row mt-2">
               <div class="col-md-12">
-                <input
-                  type="checkbox"
-                  class="mr-2 border"
-                  v-model="isActive"
-                  name=""
-                  id=""
-                />
+                <el-checkbox class="mr-2" size="large" v-model="isActive" />
                 Active
               </div>
             </div>
           </div>
-          <div class="col-md-6 pr-md-0">
+          <div class="col-md-6 px-0">
             <label for="name" class="font-weight-600">Description</label>
-            <input type="text" class="form-control" />
-            <!-- <textarea name="" id="" class="w-100 border" rows="3" 
-                            style="border-color: #ced4da"
-                        ></textarea> -->
+            <el-input type="text" />
           </div>
         </div>
 
@@ -69,7 +62,8 @@
                       >
                             <!-- class="mr-3" -->
                         <span
-                          ><i
+                          >
+                          <i
                             :class="[
                               trigger.icon,
                               {
@@ -196,6 +190,7 @@
                       :selectedTriggerIndex="selectedTriggerIndex"
                       :groups="groups"
                       v-if="selectedTrigger.triggerType === 0"
+                      :groupMappedTree="groupMappedTree"
                       @updatetrigger="updateTrigger"
                       @removetrigger="removeTrigger"
                       :contributionItems="contributionItems"
@@ -958,13 +953,17 @@ export default {
     const updateTrigger = (data, selectedTriggerIndex) => {
       let parsed = JSON.parse(data)
       let foo;
-      if (parsed.pledges && parsed.pledges.length > 0) parsed.pledges = parsed.pledges.join(",")
+      if (parsed.pledges && parsed.pledges.length > 0) {
+        parsed.pledges = parsed.pledges.join(",")
+      }
       if (typeof parsed.groups !== 'string') {
         parsed.groups = parsed.groups.join(",")
-        foo = JSON.stringify(parsed)
       } else {
-        foo = data
+        console.log(2);
+        parsed = data
       }
+      foo = JSON.stringify(parsed)
+      console.log(foo);
       workflow.value.triggers[selectedTriggerIndex].jsonCondition = foo;
     };
 
