@@ -69,7 +69,7 @@
                           >
                           <div class="close-modal">{{ cash.text }}</div>
                           <div>&nbsp;&nbsp;</div>
-                          <div class="close-modal">{{ cash.currency && cash.currency.shortCode ? cash.currency.shortCode : currentUser.currency }}{{ cash.balance }}</div>
+                          <div class="close-modal">{{ cash.currency && cash.currency.symbol ? cash.currency.symbol : currentUser.currencySymbol }}{{ cash.balance }}</div>
                         </el-dropdown-item>
                         <el-dropdown-item
                           class="text-center"
@@ -551,10 +551,10 @@ export default {
     const selectAnAccount = (account, index) => {
       selectedTransaction.value = {
         type: account.text,
-        amount: account.currency ? `${account.currency.shortCode}${amountWithCommas(account.balance)}` : `${amountWithCommas(account.balance)}`
+        amount: account.currency ? `${account.currency.symbol}${amountWithCommas(account.balance)}` : `${amountWithCommas(account.balance)}`
       }
       accountDisplay.value = false;
-      console.log(index);
+      console.log(index, account);
       selectedTransactionType.value = account.id ? account.id : "";
     }
 
@@ -594,8 +594,8 @@ export default {
         let index = response.findIndex(i => i.text === "All Accounts")
 
         if (index >= 0) {
-          selectedTransaction.value.amount = `${currentUser.value && currentUser.value.currency ? currentUser.value.currency: ''}${accountsAndBalances.value[index] && accountsAndBalances.value[index].balance ? amountWithCommas(accountsAndBalances.value[index].balance) : 0}`;
-          accountsAndBalances.value[index].currency = { shortCode: currentUser.value ? currentUser.value.currency : '' };
+          selectedTransaction.value.amount = `${currentUser.value && currentUser.value.currencySymbol ? currentUser.value.currencySymbol: ''}${accountsAndBalances.value[index] && accountsAndBalances.value[index].balance ? amountWithCommas(accountsAndBalances.value[index].balance) : 0}`;
+          accountsAndBalances.value[index].currency = { symbol: currentUser.value ? currentUser.value.currencySymbol : '' };
         }
         loading.value = false;
         // if (!currentUser.value || !currentUser.value.tenantId) await getCurrentUser();
