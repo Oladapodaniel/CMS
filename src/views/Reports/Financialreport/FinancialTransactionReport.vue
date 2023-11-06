@@ -2,9 +2,7 @@
   <div class="container-fluid">
     <!-- header area -->
 
-    <div
-      class="row d-flex flex-row justify-content-between mt-5 align-items-center"
-    >
+    <div class="row d-flex flex-row justify-content-between mt-5 align-items-center">
       <div class="centered-items">
         <h3 class="heading-text ml-2">Accounting Transactions Report</h3>
       </div>
@@ -19,13 +17,7 @@
           <div>
             <label for="icon" class="mb-0 font-weight-bold">Start Date</label>
           </div>
-          <el-date-picker
-            v-model="startDate"
-            type="date"
-            format="DD/MM/YYYY"
-            size="large"
-            class="w-100"
-          />
+          <el-date-picker v-model="startDate" type="date" format="DD/MM/YYYY" size="large" class="w-100" />
         </div>
       </div>
       <div class="col-md-4 col-sm-12 pr-md-0">
@@ -34,24 +26,12 @@
             <label for="icon" class="mb-0 font-weight-bold">End Date</label>
           </div>
 
-          <el-date-picker
-            v-model="endDate"
-            type="date"
-            format="DD/MM/YYYY"
-            size="large"
-            class="w-100"
-          />
+          <el-date-picker v-model="endDate" type="date" format="DD/MM/YYYY" size="large" class="w-100" />
         </div>
       </div>
       <div class="col-md-4 col-sm-12 pr-md-0">
         <div class="p-field p-col-12 pt-md-2">
-          <el-button
-            class="c-pointer mt-4"
-            :color="primarycolor"
-            round
-            :loading="loading"
-            @click="generateReport"
-          >
+          <el-button class="c-pointer mt-4" :color="primarycolor" round :loading="loading" @click="generateReport">
             Generate Report
           </el-button>
           <!-- <button
@@ -68,13 +48,7 @@
       <section class="">
         <div class="chart">
           <div style="width: 45%" class="ml-md-4 chart1">
-            <ByGenderChart
-              domId="chart"
-              title="By Gender"
-              distance="5"
-              :titleMargin="10"
-              :summary="firstTimerChart"
-            />
+            <ByGenderChart domId="chart" title="By Gender" distance="5" :titleMargin="10" :summary="firstTimerChart" />
           </div>
         </div>
       </section>
@@ -82,15 +56,10 @@
       <section class="col-md-12 px-0">
         <!-- table header -->
         <div v-if="accountTransaction.length > 0">
-          <div
-            class="mt-2 container-fluid table-main px-0 remove-styles2 remove-border responsiveness"
-          >
+          <div class="mt-2 container-fluid table-main px-0 remove-styles2 remove-border responsiveness">
             <table class="table remove-styles mt-0 table-header-area">
               <thead class="table-header-area-main">
-                <tr
-                  class="text-capitalize text-nowrap font-weight-bold"
-                  style="border-bottom: 0; font-size: medium"
-                >
+                <tr class="text-capitalize text-nowrap font-weight-bold" style="border-bottom: 0; font-size: medium">
                   <th scope="col">Account Name</th>
                   <th scope="col">Reference Number</th>
                   <th scope="col">Description</th>
@@ -99,19 +68,11 @@
                   <th scope="col">Date</th>
                 </tr>
               </thead>
-              <tbody
-                class="font-weight-bold text-nowrap mt-4"
-                style="font-size: small"
-                v-for="(fund, index) in funds"
-                :key="index"
-              >
+              <tbody class="font-weight-bold text-nowrap mt-4" style="font-size: small" v-for="(fund, index) in funds"
+                :key="index">
                 <tr>
                   <!-- v-if="fund.name !== 'null' " -->
-                  <td
-                    v-if="fund.name !== 'null'"
-                    class="fundType-color"
-                    style="font-size: medium"
-                  >
+                  <td v-if="fund.name !== 'null'" class="fundType-color" style="font-size: medium">
                     {{ fund.name }}
                   </td>
                   <td></td>
@@ -128,11 +89,11 @@
                   <td>{{ account.refNumber }}</td>
                   <td>{{ account.description }}</td>
                   <td class="text-success font-weight-bolder">
-                    {{ account.debit.toLocaleString() }}.00
+                    {{ account.currency ? account.currency.symbol : "" }}{{ account.debit.toLocaleString() }}.00
                   </td>
                   <!-- <td class="credit" v-if="account.credit === 0 ? account.value : (account.value) ">({{ account.credit }}.00)</td> -->
                   <td class="text-danger font-weight-bolder">
-                    ({{ Math.abs(account.credit).toLocaleString() }}.00)
+                    {{ account.currency ? account.currency.symbol : "" }}{{ Math.abs(account.credit).toLocaleString() }}.00
                   </td>
                   <td>{{ formatDate(account.date) }}</td>
                 </tr>
@@ -159,10 +120,7 @@
                   <td>&nbsp;</td>
                 </tr>
               </tbody>
-              <tbody
-                class="font-weight-bolder text-nowrap"
-                style="font-size: small"
-              >
+              <tbody class="font-weight-bolder text-nowrap" style="font-size: small">
                 <tr class="answer-row2">
                   <td class="gross-total">Total</td>
                   <td></td>
@@ -369,6 +327,7 @@ export default {
 .answer-row2 {
   background-color: #136acd;
 }
+
 .horizontal-rule {
   /* border: 0.1875rem solid #ffe50f; */
   /* border: 0.1875rem solid #ebeff4; */
