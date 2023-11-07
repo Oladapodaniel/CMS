@@ -130,11 +130,7 @@
               class="d-flex justify-content-between border-eldropdown w-100"
               size="large"
             >
-              <span class="text-secondary">{{
-                givingTime
-                  ? givingTime
-                  : "Select"
-              }}</span>
+              <span class="text-secondary">{{ givingTime ? givingTime : "Select" }}</span>
               <div>
                 <el-icon class="el-icon--right">
                   <arrow-down />
@@ -189,15 +185,11 @@ export default {
     ]);
 
     const groupSelected = (e) => {
-      // const allGroupsIndex = selectedGroup.value.findIndex(i => i === "00000000-0000-0000-0000-000000000000");
       emit("updatetrigger", JSON.stringify(data.value), props.selectedTriggerIndex);
     };
 
-    // const selectedRange = ref('')
     const selectedLogicalOperator = ref({});
     const rangeSelected = (item) => {
-      // data.logicalOperator = e.value === 'Greater than' ? '>' : '<';
-      // data.logicalOperator = e.value;
       selectedLogicalOperator.value = item;
       data.value.logicalOperator = logicalOperatorList.value.find(
         (i) => i.id == item.id
@@ -215,10 +207,8 @@ export default {
 
     const category = ref({});
     const categorySelected = (item) => {
-      console.log(item);
       category.value = item;
       data.value.financialContributionID = item.id;
-      // data.financialContributionID = e.value.id;
       emit("updatetrigger", JSON.stringify(data.value), props.selectedTriggerIndex);
     };
 
@@ -261,7 +251,7 @@ export default {
         selectedLogicalOperator.value = logicalOperatorList.value.find(
           (i) => i.name == parsedData.value.logicalOperator
         );
-        data.logicalOperator = parsedData.value.logicalOperator;
+        data.value.logicalOperator = parsedData.value.logicalOperator;
 
         amount.value = parsedData.value.amount;
         data.amount = parsedData.value.amount;
@@ -270,16 +260,18 @@ export default {
           props.groups.length > 0
             ? workflow_util.getGroups(parsedData.value.groups, props.groups)
             : [];
-        data.groups = parsedData.value.groups;
+        data.value.groups = parsedData.value.groups
+          ? parsedData.value.groups.split(",")
+          : [];
 
         category.value = workflow_util.getGroup(
           parsedData.value.financialContributionID,
           props.contributionItems
         );
-        data.financialContributionID = parsedData.value.financialContributionID;
+        data.value.financialContributionID = parsedData.value.financialContributionID;
 
         givingTime.value = parsedData.value.singleOrLast;
-        data.singleOrLast = parsedData.value.singleOrLast;
+        data.value.singleOrLast = parsedData.value.singleOrLast;
       }
     });
 
