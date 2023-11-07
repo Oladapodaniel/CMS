@@ -71,9 +71,9 @@ export default {
       emit("updatetrigger", JSON.stringify(data), props.selectedTriggerIndex);
     };
 
-    const selectedPledges = ref([])
+    const selectedPledges = ref([]);
     const handleSelectedPledges = () => {
-        data.pledges = selectedPledges.value.join(",");
+      data.pledges = selectedPledges.value.join(",");
       emit("updatetrigger", JSON.stringify(data), props.selectedTriggerIndex);
     };
 
