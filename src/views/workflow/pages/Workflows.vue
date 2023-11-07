@@ -2,8 +2,10 @@
   <div class="container-fluid">
     <div class="row">
       <div class="col-md-12 mb-3 px-0">
-        <div class="text-primary c-pointer px-0 col-md-2" @click="previousPage">
-          <el-icon><DArrowLeft /></el-icon> Back
+        <div class="text-primary c-pointer px-0 col-md-2 mt-2" @click="previousPage">
+          <el-button class="text-primary" plain>
+            <el-icon><DArrowLeft /></el-icon> Back
+          </el-button>
         </div>
       </div>
     </div>

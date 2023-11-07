@@ -228,6 +228,7 @@
                     />
                     <NewMember
                       :groups="groups"
+                      :groupMappedTree="groupMappedTree"
                       v-else-if="selectedTrigger.triggerType === 6"
                       @updatetrigger="updateTrigger"
                       @removetrigger="removeTrigger"
