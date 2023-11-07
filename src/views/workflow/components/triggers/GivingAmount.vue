@@ -174,10 +174,10 @@ export default {
     "groupMappedTree",
   ],
   components: { TriggerDescription },
+  emits: ["updatetrigger", "removetrigger"],
 
   setup(props, { emit }) {
     const store = useStore();
-
     const currentUser = ref(store.getters.currentUser);
 
     const data = ref({});
