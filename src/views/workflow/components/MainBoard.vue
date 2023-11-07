@@ -208,6 +208,7 @@
                     />
                     <NoLongerGiving
                       :groups="groups"
+                      :groupMappedTree="groupMappedTree"
                       v-else-if="selectedTrigger.triggerType === 2"
                       :selectedTriggerIndex="selectedTriggerIndex"
                       @updatetrigger="updateTrigger"
