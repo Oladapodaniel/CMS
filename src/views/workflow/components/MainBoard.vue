@@ -189,8 +189,8 @@
                     <GivingAmount
                       :selectedTriggerIndex="selectedTriggerIndex"
                       :groups="groups"
-                      v-if="selectedTrigger.triggerType === 0"
                       :groupMappedTree="groupMappedTree"
+                      v-if="selectedTrigger.triggerType === 0"
                       @updatetrigger="updateTrigger"
                       @removetrigger="removeTrigger"
                       :contributionItems="contributionItems"
@@ -199,6 +199,7 @@
                     <GivingNewRegular
                       :selectedTriggerIndex="selectedTriggerIndex"
                       :groups="groups"
+                      :groupMappedTree="groupMappedTree"
                       v-else-if="selectedTrigger.triggerType === 1"
                       @updatetrigger="updateTrigger"
                       @removetrigger="removeTrigger"
