@@ -118,10 +118,7 @@ export default {
     "groupMappedTree",
     "allPledgeDefinitionList",
   ],
-<<<<<<< HEAD
   emits: ["updatetrigger", "removetrigger"],
-=======
->>>>>>> a0bb479c (removed comments and formatted pages II)
   setup(props, { emit }) {
     const data = reactive({});
 
