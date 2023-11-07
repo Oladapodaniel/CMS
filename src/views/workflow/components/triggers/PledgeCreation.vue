@@ -118,6 +118,7 @@ export default {
     "groupMappedTree",
     "allPledgeDefinitionList",
   ],
+  emits: ["updatetrigger", "removetrigger"],
   setup(props, { emit }) {
     const data = reactive({});
 
@@ -190,7 +191,6 @@ export default {
               ? parsedData.value.pledges
               : parsedData.value.pledges.split(",")
             : [];
-        // currentNumOfMonths.value = parsedData.value.givenForTheLastMonth;
       }
     });
 
