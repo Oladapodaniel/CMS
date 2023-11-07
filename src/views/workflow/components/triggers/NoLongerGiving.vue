@@ -140,14 +140,12 @@
 </template>
 
 <script>
-import Dropdown from "primevue/dropdown";
 import TriggerDescription from "../TriggerDescription.vue";
 import { reactive, ref } from "@vue/reactivity";
-import MultiSelect from "primevue/multiselect";
 import { computed, watchEffect } from "@vue/runtime-core";
 import workflow_util from "../../utlity/workflow_util";
 export default {
-  components: { Dropdown, TriggerDescription, MultiSelect },
+  components: { TriggerDescription },
   props: [
     "groups",
     "contributionItems",
@@ -165,13 +163,13 @@ export default {
     };
 
     const givenAtLeastTimes = ref([]);
-    const handleGivenAtLeastTimes = (e) => {
+    const handleGivenAtLeastTimes = () => {
       data.value.givenAtLeastTimes = givenAtLeastTimes.value;
       emit("updatetrigger", JSON.stringify(data.value), props.selectedTriggerIndex);
     };
 
     const givenForTheLastMonth = ref([]);
-    const handleGivenForTheLastMonth = (e) => {
+    const handleGivenForTheLastMonth = () => {
       data.value.givenForTheLastMonth = givenForTheLastMonth.value;
       emit("updatetrigger", JSON.stringify(data.value), props.selectedTriggerIndex);
     };
