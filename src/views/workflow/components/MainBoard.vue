@@ -237,6 +237,7 @@
                     />
                     <FirstTimer
                       :groups="groups"
+                      :groupMappedTree="groupMappedTree"
                       v-else-if="selectedTrigger.triggerType === 9"
                       @updatetrigger="updateTrigger"
                       @removetrigger="removeTrigger"
