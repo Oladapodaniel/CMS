@@ -28,7 +28,6 @@
           class="w-100"
           @change="groupSelected"
         />
-        <!-- <MultiSelect @change="groupSelected" v-model="selectedGroup" :options="groups" optionLabel="name" placeholder="Select groups" class="w-100"  display="chip" /> -->
       </div>
     </div>
 
@@ -66,7 +65,6 @@
             </el-dropdown-menu>
           </template>
         </el-dropdown>
-        <!-- <Dropdown @change="rangeSelected" v-model="selectedRange" :options="[ 'Greater than', 'Less than' ]" class="w-100" /> -->
       </div>
     </div>
 
@@ -118,7 +116,6 @@
             </el-dropdown-menu>
           </template>
         </el-dropdown>
-        <!-- <Dropdown :options="contributionItems" optionLabel="name" class="w-100" @change="categorySelected" v-model="category" /> -->
       </div>
     </div>
 
@@ -156,20 +153,12 @@
             </el-dropdown-menu>
           </template>
         </el-dropdown>
-        <!-- <Dropdown
-          @change="givingTimeSelected"
-          v-model="givingTime"
-          :options="['A single gift', 'The last']"
-          class="w-100"
-        /> -->
       </div>
     </div>
   </div>
 </template>
 
 <script>
-import Dropdown from "primevue/dropdown";
-import MultiSelect from "primevue/multiselect";
 import TriggerDescription from "../TriggerDescription.vue";
 import { reactive, ref } from "@vue/reactivity";
 import { computed, watchEffect } from "@vue/runtime-core";
@@ -184,7 +173,7 @@ export default {
     "condition",
     "groupMappedTree",
   ],
-  components: { Dropdown, TriggerDescription, MultiSelect },
+  components: { TriggerDescription },
 
   setup(props, { emit }) {
     const store = useStore();
