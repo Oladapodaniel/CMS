@@ -21,7 +21,7 @@
                 <label for="" class="font-weight-600">With pledges</label>
             </div>
             <div class="col-md-12 mb-2">
-                <el-tree-select v-model="data.pledges" :data="allPledgeDefinitionList" :render-after-expand="false" check-strictly
+                <el-tree-select v-model="selectedPledges" :data="allPledgeDefinitionList" :render-after-expand="false" check-strictly
                     multiple show-checkbox check-on-click-node class="w-100" @change="handleSelectedPledges" />
             </div>
         </div>
@@ -86,6 +86,7 @@ export default {
         const data = reactive({});
 
         const selectedGroups = ref([]);
+        const selectedPledges = ref([])
         // const logicalOperatorId = ref(null);
         const logicalOperatorList = ref([
             { name: 'Greater than', id: 1 },
@@ -107,6 +108,9 @@ export default {
         }
         
         const handleSelectedPledges = () => {
+            // selectedPledges.value = data.pledges.join(',')
+            // console.log(selectedPledges.value);
+            data.pledges = selectedPledges.value.join(",")
             emit('updatetrigger', JSON.stringify(data), props.selectedTriggerIndex)
         }
 
@@ -131,6 +135,7 @@ export default {
 
         const parsedData = ref({})
         watchEffect(() => {
+            
             if (props.condition.jsonCondition) {
                 parsedData.value = JSON.parse(props.condition.jsonCondition);
                 logicalOperator.value = parsedData.value.logicalOperator;
@@ -139,18 +144,17 @@ export default {
 
                 amount.value = parsedData.value.amount;
                 data.amount = parsedData.value.amount;
-
-                // selectedGroups.value = props.groups.length > 0 ? workflow_util.getGroups(parsedData.value.groups, props.groups) : [];
+                selectedGroups.value = props.groups.length > 0 ? workflow_util.getGroups(parsedData.value.groups, props.groups) : [];
                 data.groups = parsedData.value.groups ? parsedData.value.groups.split(",") : [];
-                data.pledges = parsedData.value.pledges ? parsedData.value.pledges.split(",") : [];
+                selectedPledges.value = data.pledges = parsedData.value.pledges && parsedData.value.pledges.length > 0 ? typeof parsedData.value.pledges !== "string" ? parsedData.value.pledges : parsedData.value.pledges.split(",") : [];
                 // currentNumOfMonths.value = parsedData.value.givenForTheLastMonth;
-                // console.log(parsedData.value)
             }
         })
 
         return {
             handleSelectedGroups,
             selectedGroups,
+            selectedPledges,
             handleLogicalOperator,
             logicalOperator,
             amount,

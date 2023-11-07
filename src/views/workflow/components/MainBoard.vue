@@ -952,10 +952,12 @@ export default {
 
     const updateTrigger = (data, selectedTriggerIndex) => {
       let parsed = JSON.parse(data)
+      console.log(parsed);
       let foo;
-      if (parsed.pledges && parsed.pledges.length > 0) {
-        parsed.pledges = parsed.pledges.join(",")
-      }
+      // if (parsed.pledges && parsed.pledges.length > 0) {
+      //   parsed.pledges = parsed.pledges.join(",")
+      //   console.log('reaching');
+      // }
       if (typeof parsed.groups !== 'string') {
         parsed.groups = parsed.groups.join(",")
       } else {
