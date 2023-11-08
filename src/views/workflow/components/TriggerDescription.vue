@@ -1,7 +1,7 @@
 <template>
   <div class="container-fluid">
     <div v-if="!hideHeader" class="row">
-      <div class="col-md-4 d-flex justify-content-end">
+      <div class="col-md-12 d-flex justify-content-end">
         <el-dropdown trigger="click">
           <span class="el-dropdown-link">
             <el-icon :size="30"><MoreFilled /></el-icon>
