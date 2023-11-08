@@ -132,6 +132,7 @@ import eventsService from "../../../../services/events/eventsservice";
 
 export default {
   components: { TriggerDescription },
+  emits: ["updatetrigger", "removetrigger"],
   props: [
     "groups",
     "contributionItems",

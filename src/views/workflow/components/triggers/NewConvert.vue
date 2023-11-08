@@ -39,6 +39,7 @@ import workflow_util from "../../utlity/workflow_util";
 export default {
   props: ["groups", "selectedTriggerIndex", "condition", "groupMappedTree"],
   components: { TriggerDescription },
+  emits: ["updatetrigger", "removetrigger"],
 
   setup(props, { emit }) {
     const data = ref({});
