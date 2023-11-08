@@ -247,6 +247,7 @@
                     />
                     <AttendanceTrigger
                       :groups="groups"
+                      :groupMappedTree="groupMappedTree"
                       v-else-if="selectedTrigger.triggerType === 12"
                       @updatetrigger="updateTrigger"
                       @removetrigger="removeTrigger"
