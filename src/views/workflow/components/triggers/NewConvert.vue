@@ -26,7 +26,6 @@
           class="w-100"
           @change="groupSelected"
         />
-        <!-- <MultiSelect @change="groupSelected" v-model="selectedGroups" :options="groups" optionLabel="name" placeholder="Select groups" class="w-100"  display="chip" /> -->
       </div>
     </div>
   </div>

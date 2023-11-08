@@ -15,14 +15,16 @@
         <label for="" class="font-weight-600">A member of</label>
       </div>
       <div class="col-md-12 mb-2 mt-1">
-        <MultiSelect
-          @change="groupSelected"
-          v-model="selectedGroups"
-          optionLabel="name"
-          :options="groups"
-          placeholder="Select group"
+        <el-tree-select
+          v-model="data.groups"
+          :data="groupMappedTree"
+          :render-after-expand="false"
+          check-strictly
+          multiple
+          show-checkbox
+          check-on-click-node
           class="w-100"
-          display="chip"
+          @change="groupSelected"
         />
       </div>
 
@@ -30,52 +32,91 @@
         <label for="" class="font-weight-600">Is marked</label>
       </div>
       <div class="col-md-12 mb-2 mt-1">
-        <Dropdown
-          @change="handleStatus"
-          v-model="selectedStatus"
-          :options="['Present', 'Absent']"
-          placeholder="Select status"
-          class="w-100"
-        />
+        <el-dropdown trigger="click" class="w-100">
+          <span class="el-dropdown-link w-100">
+            <div
+              class="d-flex justify-content-between border-eldropdown w-100"
+              size="large"
+            >
+              <span class="text-secondary">{{
+                selectedStatus ? selectedStatus : "Select status"
+              }}</span>
+              <div>
+                <el-icon class="el-icon--right">
+                  <arrow-down />
+                </el-icon>
+              </div>
+            </div>
+          </span>
+          <template #dropdown>
+            <el-dropdown-menu>
+              <el-dropdown-item
+                v-for="(item, index) in ['Present', 'Absent']"
+                :key="index"
+                @click="handleStatus(item)"
+                >{{ item }}
+              </el-dropdown-item>
+            </el-dropdown-menu>
+          </template>
+        </el-dropdown>
       </div>
 
       <div class="col-md-12 mt-3">
         <label for="" class="font-weight-600">In</label>
       </div>
       <div class="col-md-12 mb-2 mt-1">
-        <Dropdown
-          @change="handleEvent"
-          v-model="selectedEvent"
-          :options="eventCategories"
-          optionLabel="name"
-          placeholder="Select event"
-          class="w-100"
-        />
+        <el-dropdown trigger="click" class="w-100">
+          <span class="el-dropdown-link w-100">
+            <div
+              class="d-flex justify-content-between border-eldropdown w-100"
+              size="large"
+            >
+              <span class="text-secondary">{{
+                selectedEvent && Object.keys(selectedEvent).length > 0
+                  ? selectedEvent.name
+                  : "Select event"
+              }}</span>
+              <div>
+                <el-icon class="el-icon--right">
+                  <arrow-down />
+                </el-icon>
+              </div>
+            </div>
+          </span>
+          <template #dropdown>
+            <el-dropdown-menu>
+              <el-dropdown-item
+                v-for="(item, index) in eventCategories"
+                :key="index"
+                @click="handleEvent(item)"
+                >{{ item.name }}
+              </el-dropdown-item>
+            </el-dropdown-menu>
+          </template>
+        </el-dropdown>
       </div>
 
       <div class="col-md-12 mt-3">
         <label for="" class="font-weight-600">Time(s)</label>
       </div>
       <div class="col-md-12 mb-2">
-        <input
+        <el-input
           type="text"
-          v-model="times"
-          @change="handleTimes"
-          class="form-control"
+          placeholder="Enter time number"
+          v-model.number="times"
+          @input="handleTimes"
         />
       </div>
 
       <div class="col-md-12 mt-4">
-        <label for="" class="font-weight-600"
-          >In the last (how many days?)</label
-        >
+        <label for="" class="font-weight-600">In the last (how many days?)</label>
       </div>
       <div class="col-md-12 mb-2">
-        <input
+        <el-input
           type="text"
-          class="form-control"
+          placeholder="Enter days number"
           v-model.number="days"
-          @change="handleDays"
+          @input="handleDays"
         />
       </div>
     </div>
@@ -83,8 +124,6 @@
 </template>
 
 <script>
-import Dropdown from "primevue/dropdown";
-import MultiSelect from "primevue/multiselect";
 import TriggerDescription from "../TriggerDescription.vue";
 import { reactive, ref } from "@vue/reactivity";
 import { computed, watchEffect } from "@vue/runtime-core";
@@ -92,47 +131,46 @@ import workflow_util from "../../utlity/workflow_util";
 import eventsService from "../../../../services/events/eventsservice";
 
 export default {
-  components: { Dropdown, TriggerDescription, MultiSelect },
-  props: ["groups", "contributionItems", "selectedTriggerIndex", "condition"],
+  components: { TriggerDescription },
+  props: [
+    "groups",
+    "contributionItems",
+    "selectedTriggerIndex",
+    "condition",
+    "groupMappedTree",
+  ],
   setup(props, { emit }) {
-    const data = reactive({});
+    const data = ref({});
     const eventCategories = ref([]);
 
-    const selectedStatus = ref([]);
-    const handleStatus = (e) => {
-      data.attendanceStatus = e.value;
-      emit("updatetrigger", JSON.stringify(data), props.selectedTriggerIndex);
+    const selectedStatus = ref("");
+    const handleStatus = (item) => {
+      data.value.attendanceStatus = item;
+      emit("updatetrigger", JSON.stringify(data.value), props.selectedTriggerIndex);
     };
 
     const days = ref(0);
-    const handleDays = (e) => {
-      data.days = e.target.value;
-      emit("updatetrigger", JSON.stringify(data), props.selectedTriggerIndex);
+    const handleDays = () => {
+      data.value.days = days.value;
+      emit("updatetrigger", JSON.stringify(data.value), props.selectedTriggerIndex);
     };
 
     const times = ref([]);
-    const handleTimes = (e) => {
-      data.times = e.target.value;
-      emit("updatetrigger", JSON.stringify(data), props.selectedTriggerIndex);
+    const handleTimes = () => {
+      data.value.times = times.value;
+      emit("updatetrigger", JSON.stringify(data.value), props.selectedTriggerIndex);
     };
 
     const selectedGroups = ref([]);
-    const groupSelected = (e) => {
-      const allGroupsIndex = selectedGroups.value.findIndex(
-        (i) => i.id === "00000000-0000-0000-0000-000000000000"
-      );
-      data.groups =
-        allGroupsIndex < 0
-          ? e.value.map((i) => i.id).join(",")
-          : "00000000-0000-0000-0000-000000000000";
-
-      emit("updatetrigger", JSON.stringify(data), props.selectedTriggerIndex);
+    const groupSelected = () => {
+      emit("updatetrigger", JSON.stringify(data.value), props.selectedTriggerIndex);
     };
 
     const selectedEvent = ref({});
-    const handleEvent = () => {
-      data.eventID = selectedEvent.value.id;
-      emit("updatetrigger", JSON.stringify(data), props.selectedTriggerIndex);
+    const handleEvent = (item) => {
+      selectedEvent.value = item;
+      data.value.eventID = selectedEvent.value.id;
+      emit("updatetrigger", JSON.stringify(data.value), props.selectedTriggerIndex);
     };
 
     const description = computed(() => {
@@ -160,9 +198,11 @@ export default {
       if (props.condition.jsonCondition) {
         parsedData.value = JSON.parse(props.condition.jsonCondition);
         selectedStatus.value = parsedData.value.attendanceStatus;
-        data.attendanceStatus = parsedData.value.attendanceStatus;
+        data.value.attendanceStatus = parsedData.value.attendanceStatus;
 
-        data.groups = parsedData.value.groups;
+        data.value.groups = parsedData.value.groups
+          ? parsedData.value.groups.split(",")
+          : [];
         selectedGroups.value =
           props.groups.length > 0
             ? workflow_util.getGroups(
@@ -171,15 +211,15 @@ export default {
               )
             : [];
 
-        data.eventID = parsedData.value.eventID;
+        data.value.eventID = parsedData.value.eventID;
         selectedEvent.value = eventCategories.value.find(
           (i) => i.id === parsedData.value.eventID
         );
 
-        data.times = parsedData.value.times;
+        data.value.times = parsedData.value.times;
         times.value = parsedData.value.times;
 
-        data.days = parsedData.value.days;
+        data.value.days = parsedData.value.days;
         days.value = parsedData.value.days;
       }
     });
@@ -204,6 +244,7 @@ export default {
       eventCategories,
       selectedEvent,
       handleEvent,
+      data,
     };
   },
 };
