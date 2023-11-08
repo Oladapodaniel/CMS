@@ -8,7 +8,6 @@
           </el-button>
         </div>
       </div>
-      <Toast></Toast>
       <div class="col-md-12">
         <div class="row">
           <div class="col-md-6 px-0">
@@ -535,12 +534,16 @@
 
         <div class="row mt-3">
           <div class="col-md-12 px-0 d-flex justify-content-center my-3">
-            <button
-              class="default-btn border-0 primary-bg font-weight-700 text-white"
+            <el-button
+              :color="primarycolor"
+              :loading="loading"
+              round
+              size="large"
+              class="border-0 text-white text-center"
               @click="saveWorkflow"
             >
-              <i class="pi pi-spin pi-spinner mr-1" v-if="loading"></i>Save
-            </button>
+              Save
+            </el-button>
           </div>
         </div>
       </div>
@@ -550,6 +553,7 @@
 
 <script>
 import { ref } from "@vue/reactivity";
+import { inject } from "@vue/runtime-core";
 import GivingAmount from "./triggers/GivingAmount";
 import GroupMembershipDuration from "./triggers/GroupMembershipDuration";
 import GroupAddOrRemove from "./triggers/GroupAddOrRemove";
@@ -581,11 +585,11 @@ import AssignTask from "./actions/AssignTask";
 import MemberBirthday from "./triggers/MemberBirthday.vue";
 import grousService from "../../../services/groups/groupsservice";
 import workflow_service from "../utlity/workflow_service";
-import { useToast } from "primevue/usetoast";
 import { useRoute } from "vue-router";
 import { useRouter } from "vue-router";
 import collector from "../../../services/groupArray/mapTree";
 import { useStore } from "vuex";
+import { ElMessage } from "element-plus";
 
 import descriptionHelper from "../helper/description";
 import TriggerDescription from "./TriggerDescription.vue";
@@ -623,7 +627,6 @@ export default {
     TriggerDescription,
   },
   setup() {
-    const toast = useToast();
     const route = useRoute();
     const router = useRouter();
     const loading = ref(false);
@@ -631,7 +634,6 @@ export default {
 
     const showTriggers = ref(false);
     const showActions = ref(false);
-    // const triggersIsVissible = ref(false);
     const triggers = [
       {
         name: "Giving- amount",
@@ -781,6 +783,7 @@ export default {
       },
     ];
 
+    const primarycolor = inject("primarycolor");
     const workflow = ref({ triggers: [] });
 
     const selectedTriggers = ref([]);
@@ -799,11 +802,6 @@ export default {
       const index = workflow.value.triggers.findIndex((t) => t.name === trigger.name);
       return index >= 0 ? true : false;
     };
-    // const checkIfActionIsAlreadySelected = trigger => {
-    //     if (!workflow.value.triggers[selectedTriggerIndex.value].triggerActions) return false;
-    //     const index = workflow.value.triggers[selectedTriggerIndex.value].triggerActions.findIndex(t => t.name === trigger.name);
-    //     return index >= 0 ? true : false;
-    // }
 
     const selectTrigger = (trigger) => {
       if (!checkIfAlreadySelected(trigger)) {
@@ -879,14 +877,9 @@ export default {
       let parsed = JSON.parse(data);
       console.log(parsed);
       let foo;
-      // if (parsed.pledges && parsed.pledges.length > 0) {
-      //   parsed.pledges = parsed.pledges.join(",")
-      //   console.log('reaching');
-      // }
       if (typeof parsed.groups !== "string") {
         parsed.groups = parsed.groups.join(",");
       } else {
-        console.log(2);
         parsed = data;
       }
       foo = JSON.stringify(parsed);
@@ -1010,30 +1003,35 @@ export default {
         const { status, response } = await workflow_service.saveWorkflow(reqBody);
         loading.value = false;
         if (status) {
-          toast.add({
-            severity: "success",
-            summary: "Workflow Saved",
-            detail: "Workflow was created successfully",
-            life: 2000,
+          ElMessage({
+            type: "success",
+            message: "Workflow created successfully",
+            duration: 3000,
           });
           setTimeout(() => {
             router.push("/tenant/workflow/list");
-          }, 2200);
+          }, 3200);
         } else {
-          toast.add({
-            severity: "error",
-            summary: "Workflow Error",
-            detail: `${
+          ElMessage({
+            type: "error",
+            message: `${
               response && response.length < 50
                 ? response
                 : "Workflow could not be created"
             }`,
-            life: 2000,
+            duration: 3000,
           });
         }
       } catch (error) {
         loading.value = false;
-        console.log(error);
+        if (error.status === 500) {
+          ElMessage({
+            type: "warning",
+            message: "Please ensure that you have added an action to this trigger",
+            duration: 10000,
+            showClose: true,
+          });
+        }
       }
     };
 
@@ -1043,28 +1041,34 @@ export default {
         const { status, response } = await workflow_service.editWorkflow(reqBody);
         loading.value = false;
         if (status) {
-          toast.add({
-            severity: "success",
-            summary: "Workflow Saved",
-            detail: "Workflow was update successfully",
-            life: 2000,
+          ElMessage({
+            type: "success",
+            message: "Workflow created successfully",
+            duration: 3000,
           });
           setTimeout(() => {
             router.push("/tenant/workflow/list");
-          }, 2200);
+          }, 3200);
         } else {
-          toast.add({
-            severity: "error",
-            summary: "Workflow Error",
-            detail: `${
+          ElMessage({
+            type: "error",
+            message: `${
               response && response.length < 50 ? response : "Workflow could not be update"
             }`,
-            life: 2000,
+            duration: 3000,
           });
         }
       } catch (error) {
         loading.value = false;
         console.log(error);
+        if (error.status === 500) {
+          ElMessage({
+            type: "warning",
+            message: "Please ensure that you have added an action to this trigger",
+            duration: 10000,
+            showClose: true,
+          });
+        }
       }
     };
 
@@ -1107,11 +1111,10 @@ export default {
       try {
         const { returnObject: data, status } = await workflow_service.getById(id);
         if (!status) {
-          toast.add({
-            severity: "error",
-            summary: "Workflow Saved",
-            detail: "Error getting workflow",
-            life: 2000,
+          ElMessage({
+            type: "error",
+            message: "Error getting workflow",
+            duration: 3000,
           });
           return false;
         }
@@ -1228,6 +1231,7 @@ export default {
       loading,
       groupMappedTree,
       allPledgeDefinitionList,
+      primarycolor,
     };
   },
 };
