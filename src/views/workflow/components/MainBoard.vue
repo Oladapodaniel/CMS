@@ -216,6 +216,7 @@
                     />
                     <NewConvert
                       :groups="groups"
+                      :groupMappedTree="groupMappedTree"
                       v-else-if="selectedTrigger.triggerType === 8"
                       @updatetrigger="updateTrigger"
                       @removetrigger="removeTrigger"
