@@ -236,6 +236,7 @@
                       @removetrigger="removeTrigger"
                     />
                     <GroupMembershipDuration
+                      :groupMappedTree="groupMappedTree"
                       :groups="groups"
                       v-else-if="selectedTrigger.triggerType === 11"
                       @updatetrigger="updateTrigger"
