@@ -82,7 +82,6 @@ export default {
     const days = ref("");
     const handleDays = (item) => {
       const selectedDuration = item;
-      console.log(days.value);
       data.value.days = selectedDuration.type.includes("day")
         ? selectedDuration.length
         : selectedDuration.type.includes("week")
