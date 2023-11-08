@@ -47,11 +47,23 @@
             <el-divider>
               or
             </el-divider>
-            <div class="facebook-btn btn-logo sign-in-btn" @click="facebookLogin">
+            <!-- <div class="facebook-btn btn-logo sign-in-btn" @click="facebookLogin">
               <img src="../../assets/facebook-small.png" class="fb-icon" alt="Facebook Icon" />
               <span>Sign in with Facebook</span>
               <span></span>
-            </div>
+            </div> -->
+          </el-form-item>
+          <el-form-item class="row">
+              <div class="col-md-12 col-12 d-flex justify-content-center      ">
+                <a class="text-decoration-none googleplay  " target="_blank" href="https://play.google.com/store/apps/details?id=com.complustech.co">
+                  <img src="../../assets/mobileonboarding/Google-play-logo.png" alt="">
+                </a>
+              </div>
+              <!-- <div class="col-sm-6 col-12 mt-2 mt-sm-0 d-flex justify-content-center   justify-content-sm-end  ">
+                <a class="text-decoration-none apple-store" target="_blank" href="https://www.apple.com/safari/">
+                  <img src="../../assets/mobileonboarding/app-store-logo.png" alt="">
+                </a>
+              </div> -->
           </el-form-item>
         </el-form>
 
@@ -201,9 +213,31 @@ export default {
 </script>
 
 <style scoped>
+
+.apple-store img{
+  width: 170px;
+  cursor: pointer;
+  height: 3.4rem;
+}
+
+.googleplay img{
+  width: 170px;
+  cursor: pointer;
+}
 .logo-con {
   display: flex;
   margin-top: 42px 0;
+}
+
+.apple-store img{
+  width: 170px;
+  cursor: pointer;
+  height: 3.4rem;
+}
+
+.googleplay img{
+  width: 170px;
+  cursor: pointer;
 }
 
 .logo-link {
