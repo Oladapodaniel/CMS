@@ -258,6 +258,7 @@
                     <Individual
                       v-else-if="selectedTrigger.triggerType === 7"
                       :groups="groups"
+                      :groupMappedTree="groupMappedTree"
                       @updatetrigger="updateTrigger"
                       @removetrigger="removeTrigger"
                       :selectedTriggerIndex="selectedTriggerIndex"
