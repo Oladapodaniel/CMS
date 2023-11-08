@@ -34,7 +34,7 @@
 <script>
 import TriggerDescription from "../TriggerDescription.vue";
 import { reactive, ref } from "@vue/reactivity";
-import { computed, watch } from "@vue/runtime-core";
+import { computed, watchEffect } from "@vue/runtime-core";
 import workflow_util from "../../utlity/workflow_util";
 export default {
   props: ["groups", "selectedTriggerIndex", "condition", "groupMappedTree"],
@@ -44,7 +44,7 @@ export default {
   setup(props, { emit }) {
     const data = ref({});
     const selectedGroups = ref("");
-    const groupSelected = (e) => {
+    const groupSelected = () => {
       emit("updatetrigger", JSON.stringify(data.value), props.selectedTriggerIndex);
     };
 
@@ -62,7 +62,7 @@ export default {
     };
 
     const parsedData = ref({});
-    watch(() => {
+    watchEffect(() => {
       if (props.condition.jsonCondition) {
         parsedData.value = JSON.parse(props.condition.jsonCondition);
         selectedGroups.value =

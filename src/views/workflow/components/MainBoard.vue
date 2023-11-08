@@ -10,7 +10,7 @@
       </div>
       <div class="col-md-12">
         <div class="row">
-          <div class="col-md-6 px-0">
+          <div class="col-md-6 px-0 pr-md-2">
             <label for="name" class="font-weight-600">Name</label>
             <el-input type="text" v-model="name" />
             <div class="row mt-2">
@@ -20,7 +20,7 @@
               </div>
             </div>
           </div>
-          <div class="col-md-6 px-0">
+          <div class="col-md-6 px-0 pl-md-2">
             <label for="name" class="font-weight-600">Description</label>
             <el-input type="text" />
           </div>
