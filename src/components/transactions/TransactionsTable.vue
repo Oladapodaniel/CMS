@@ -4,14 +4,13 @@
       <div class="row">
         <div class="col-md-12 px-0">
           <div class="parent-table">
-            <div class=" px-0 container-fluid mt-4" style="height: fit-content" :class="{ 'bordered': !showEditTransaction , 'removeTable': showEditTransaction}">
+            <div class=" px-0 container-fluid mt-4" style="height: fit-content"
+              :class="{ 'bordered': !showEditTransaction, 'removeTable': showEditTransaction }">
               <div class="container-fluid table-top  py-3">
                 <div class="row justify-content-end">
                   <div class="col-md-3 col-lg-3 col-8  py-md-0 d-flex align-items-center justify-content-end">
-                    <p
-                      @click="toggleFilterFormVissibility"
-                      class="mb-0 c-pointer mt-2 mt-sm-0 mt-md-0 mt-lg-0 font-weight-700"
-                    >
+                    <p @click="toggleFilterFormVissibility"
+                      class="mb-0 c-pointer mt-2 mt-sm-0 mt-md-0 mt-lg-0 font-weight-700">
                       <el-icon :size="13">
                         <Filter />
                       </el-icon>
@@ -19,19 +18,10 @@
                     </p>
                   </div>
                   <div class=" col-md-5  col-12  d-flex align-items-center justify-content-center mt-2 py-2 py-md-0">
-                    <el-input
-                      size="small"
-                      v-model="searchText"
-                      placeholder="Search..."
-                      @input="searchingMember = true"
-                      @keyup.enter.prevent="searchTrancInDB"
-                      class="input-with-select"
-                    >
+                    <el-input size="small" v-model="searchText" placeholder="Search..." @input="searchingMember = true"
+                      @keyup.enter.prevent="searchTrancInDB" class="input-with-select">
                       <template #suffix>
-                        <el-button
-                          style="padding: 5px; height: 22px"
-                          @click.prevent="searchText = ''"
-                        >
+                        <el-button style="padding: 5px; height: 22px" @click.prevent="searchText = ''">
                           <el-icon :size="13">
                             <Close />
                           </el-icon>
@@ -47,164 +37,167 @@
                     </el-input>
                   </div>
                 </div>
-                <div
-                class="filter-options"
-                :class="{ 'filter-options-shown': filterFormIsVissible }"
-              >
-                <div class="container-fluid">
-                  <div class="row mt-3">
-                    <div class="col-md-9 ">
-                      <div class="row">
-                        <div
-                          class="col-12 col-sm-12 col-md-6 offset-sm-0 offset-md-0 inp w-100"
-                        >
-                          <el-input
-                            type="text"
-                            class="w-100"
-                            placeholder="Category"
-                          />
+                <div class="filter-options" :class="{ 'filter-options-shown': filterFormIsVissible }">
+                  <div class="container-fluid">
+                    <div class="row mt-3">
+                      <div class="col-md-9 ">
+                        <div class="row">
+                          <div class="col-12 col-sm-12 col-md-6 offset-sm-0 offset-md-0 inp w-100">
+                            <el-input type="text" class="w-100" placeholder="Category" />
+                          </div>
+
+                          <div class="col-12 col-sm-6  d-none d-md-block">
+                            <el-date-picker v-model="datete" type="date" placeholder="Date" size="large" class="w-100"
+                              format="MM/DD/YYYY" value-format="MM-DD-YYYY" />
+                          </div>
                         </div>
 
-                        <div
-                          class="col-12 col-sm-6  d-none d-md-block"
-                        >
-                        <el-date-picker
-                          v-model="datete"
-                          type="date"
-                          placeholder="Date"
-                          size="large"
-                          class="w-100"
-                          format="MM/DD/YYYY"
-                          value-format="MM-DD-YYYY"
-                        />
+                        <div class="row">
+                          <div class="col-12 col-sm-6  d-none d-md-block">
+                            <el-input type="text" class="w-100" placeholder="Description" />
+                          </div>
+
+                          <div class="col-12 col-sm-6 d-none d-md-block">
+                          </div>
                         </div>
                       </div>
 
-                      <div class="row">
-                        <div
-                          class="col-12 col-sm-6  d-none d-md-block"
-                        >
-                          <el-input
-                            type="text"
-                            class="w-100"
-                            placeholder="Description"
-                          />
-                        </div>
-
-                        <div
-                          class="col-12 col-sm-6 d-none d-md-block"
-                        >
-                        </div>
+                      <div class="col-md-3 d-flex flex-column align-items-center">
+                        <button class="apply-btn text-white" @click="applyFilter">
+                          Apply
+                        </button>
+                        <span class="mt-2">
+                          <a class="clear-link mr-2" @click="clearAll">Clear all</a>
+                          <span class="mx-2"><i class="fas fa-circle" style="font-size: 4px"></i></span><a
+                            class="hide-link ml-2" @click="hide">Hide</a>
+                        </span>
                       </div>
-                    </div>
-
-                    <div class="col-md-3 d-flex flex-column align-items-center">
-                      <button class="apply-btn text-white" @click="applyFilter">
-                        Apply
-                      </button>
-                      <span class="mt-2">
-                        <a class="clear-link mr-2" @click="clearAll"
-                          >Clear all</a
-                        >
-                        <span class="mx-2"
-                          ><i
-                            class="fas fa-circle"
-                            style="font-size: 4px"
-                          ></i></span
-                        ><a class="hide-link ml-2" @click="hide">Hide</a>
-                      </span>
                     </div>
                   </div>
                 </div>
               </div>
-              </div>
               <div class="row mt-3" v-if="refreshing && !loading">
-               <div class="col-md-12 d-flex justify-conter-center">
+                <div class="col-md-12 d-flex justify-conter-center">
                   <el-icon class="is-loading" :size="20">
-                  <Loading />
+                    <Loading />
                   </el-icon>
-               </div>
+                </div>
               </div>
               <Table :data="selectedTransactions" :headers="transactionHeaders" :checkMultipleItem="true"
-                @checkedrow="handleSelectionChange" v-loading="loading" >
-                  <template v-slot:date="{ item }">
-                    <div @click="rowSelected(item)" class="c-pointer">{{ formatDate(item.date) }}</div>
-                  </template>
-                  <template v-slot:description="{ item }">
-                    <div @click="rowSelected(item)" class="c-pointer">{{ item.narration }}</div>
-                  </template>
-                  <template v-slot:amount="{ item }">
-                    <div @click="rowSelected(item)" class="c-pointer" :class="{ 'text-danger': item.amount < 0, 'text-success': item.amount > 0 }">{{ item.currency ? item.currency.symbol : "" }}{{ amountWithCommas(Math.abs(item.amount)) }}</div>
-                  </template>
-                  <template v-slot:category="{ item }">
-                    <div @click="rowSelected(item)" class="c-pointer primary-text">{{ item.category }}</div>
-                  </template>
-                  <template v-slot:approve="{ item }">
-                    <div class="c-pointer">
-                        <div class="spinner-border text-primary" style="font-size: 10px; width: 26px; height: 26px;" role="status"
-                          v-show="item.approvingServiceReport">
-                          <span class="sr-only">Loading...</span>
-                        </div>
-                        <div v-if="!item.approved && !item.approvingServiceReport" @click="approveReport(item, 1)">
-                          <el-icon size="27">
-                            <CircleCheck />
-                          </el-icon>
-                        </div>
-                        <video height="30" autoplay @click="approveReport(item, 2)" class="approveservicereport" v-if="item.approved && !item.approvingServiceReport">
-                          <source src="../../assets/check_animated.mp4" type="video/mp4" />
-                          Your browser does not support the video tag.
-                        </video>
+                @checkedrow="handleSelectionChange" v-loading="loading">
+                <template v-slot:date="{ item }">
+                  <div @click="rowSelected(item)" class="c-pointer">{{ formatDate(item.date) }}</div>
+                </template>
+                <template v-slot:description="{ item }">
+                  <div @click="rowSelected(item)" class="c-pointer">{{ item.narration }}</div>
+                </template>
+                <template v-slot:amount="{ item }">
+                  <div @click="rowSelected(item)" class="c-pointer"
+                    :class="{ 'text-danger': item.amount < 0, 'text-success': item.amount > 0 }">{{ item.currency ?
+                      item.currency.symbol : "" }}{{ amountWithCommas(Math.abs(item.amount)) }}</div>
+                </template>
+                <template v-slot:category="{ item }">
+                  <div @click="rowSelected(item)" class="c-pointer primary-text">{{ item.category }}</div>
+                </template>
+                <template v-slot:approve="{ item }">
+                  <div class="c-pointer">
+                    <div class="spinner-border text-primary" style="font-size: 10px; width: 26px; height: 26px;"
+                      role="status" v-show="item.approvingServiceReport">
+                      <span class="sr-only">Loading...</span>
                     </div>
-                  </template>
-                  <template v-slot:action="{ item }">
-                    <el-dropdown trigger="click">
-                      <el-icon>
-                        <MoreFilled />
+                    <div v-if="!item.approved && !item.approvingServiceReport" @click="approveReport(item, 1)">
+                      <el-icon size="27">
+                        <CircleCheck />
                       </el-icon>
-                      <template #dropdown>
-                        <el-dropdown-menu>
-                          <el-dropdown-item>
-                            <div
-                              @click.prevent="showConfirmModal(item.id, index)"
-                              class="text-color"
-                            >
-                              Delete
-                            </div>
-                          </el-dropdown-item>
-                        </el-dropdown-menu>
-                      </template>
-                    </el-dropdown>
-                  </template>
+                    </div>
+                    <video height="30" autoplay @click="approveReport(item, 2)" class="approveservicereport"
+                      v-if="item.approved && !item.approvingServiceReport">
+                      <source src="../../assets/check_animated.mp4" type="video/mp4" />
+                      Your browser does not support the video tag.
+                    </video>
+                  </div>
+                </template>
+                <template v-slot:action="{ item }">
+                  <el-dropdown trigger="click">
+                    <el-icon>
+                      <MoreFilled />
+                    </el-icon>
+                    <template #dropdown>
+                      <el-dropdown-menu>
+                        <el-dropdown-item>
+                          <div @click.prevent="showConfirmModal(item.id, index)" class="text-color">
+                            Delete
+                          </div>
+                        </el-dropdown-item>
+                      </el-dropdown-menu>
+                      <!-- <el-dropdown-menu>
+                        <el-dropdown-item>
+                          <div @click.prevent="showReciept" class="text-color">
+                            Upload reciept
+                          </div>
+                        </el-dropdown-item>
+                      </el-dropdown-menu> -->
+                    </template>
+                  </el-dropdown>
+                </template>
               </Table>
-              <div class="d-flex justify-content-center my-2 " v-if="(allTransactions && allTransactions.length === 0)  && !loading">
+              <div class="d-flex justify-content-center my-2 "
+                v-if="(allTransactions && allTransactions.length === 0) && !loading">
                 <div>No data</div>
               </div>
               <div class="d-flex justify-content-end my-3">
-                <el-pagination v-model:current-page="serverOptions.page" v-model:page-size="serverOptions.rowsPerPage" background
-                  layout="total, sizes, prev, pager, next, jumper" :total="totalTransaction" @size-change="handleSizeChange"
-                  @current-change="handleCurrentChange" />
+                <el-pagination v-model:current-page="serverOptions.page" v-model:page-size="serverOptions.rowsPerPage"
+                  background layout="total, sizes, prev, pager, next, jumper" :total="totalTransaction"
+                  @size-change="handleSizeChange" @current-change="handleCurrentChange" />
               </div>
             </div>
 
-            <div class="table edit-transac col-12 border col-sm-10 col-md-8 w-100 w-sm-50 w-md-50 w-lg-50 col-lg-4 mobile-form mywidt " v-if="showEditTransaction">
-              <TransactionForm
-                v-if="transactionDetails.type !== 'ledger'"
-                @close-it="closeIt"
-                @transac-obj="transacObj"
-                :transactionDetails="transactionDetails"
-                :showEditTransaction="showEditTransaction"
-                @reload="getTransactions"
-                :gettingSelectedTrsn="gettingSelectedTrsn"
-              />
-              <LedgerForm
-                v-else
-                @entrysaved="journalEntrySaved"
-                @close-ledger="closeLedgerForm"
-                :journalEntry="journalEntry"
-                :gettingSelectedTrsn="gettingSelectedTrsn"
-              />
+            <div
+              class="table edit-transac col-12 border col-sm-10 col-md-8 w-100 w-sm-50 w-md-50 w-lg-50 col-lg-4 mobile-form mywidt "
+              v-if="showEditTransaction">
+              <TransactionForm v-if="transactionDetails.type !== 'ledger'" @close-it="closeIt" @transac-obj="transacObj"
+                :transactionDetails="transactionDetails" :showEditTransaction="showEditTransaction"
+                @reload="getTransactions" :gettingSelectedTrsn="gettingSelectedTrsn" />
+              <LedgerForm v-else @entrysaved="journalEntrySaved" @close-ledger="closeLedgerForm"
+                :journalEntry="journalEntry" :gettingSelectedTrsn="gettingSelectedTrsn" />
             </div>
           </div>
+          <!-- <el-dialog v-model="displayReciept" title="Print Tag" :width="mdAndUp || lgAndUp || xlAndUp ? `50%` : `90%`">
+            <div class="row">
+              <div class="col-md-8">
+                <el-upload  class="upload-demo"
+                  multiple
+                   :on-change="chooseFile" :on-remove="handleRemove" :auto-upload="false"  :limit="3">
+                  <el-button type="primary">Click to upload</el-button>
+                  <template #tip>
+                    <div class="el-upload__tip">
+                      jpg/png files with a size less than 500KB.
+                    </div>
+                  </template>
+                </el-upload>
+                <el-upload v-model:file-list="fileList" class="upload-demo"
+                  action="https://run.mocky.io/v3/9d059bf9-4660-45f2-925d-ce80ad6c4d15" multiple
+                  :on-preview="handlePreview" :on-remove="handleRemove" :before-remove="beforeRemove" :limit="3"
+                  :on-exceed="handleExceed">
+                  <el-button type="primary">Click to upload</el-button>
+                  <template #tip>
+                    <div class="el-upload__tip">
+                      jpg/png files with a size less than 500KB.
+                    </div>
+                  </template>
+                </el-upload>
+              </div>
+            </div>
+            <template #footer>
+              <span class="dialog-footer">
+                <el-button @click="displayReciept = false">Cancel</el-button>
+                <el-button @click="displayReciept = false">Change</el-button>
+                <el-button type="primary" @click="displayReciept = false">
+                  Save
+                </el-button>
+              </span>
+            </template>
+          </el-dialog> -->
 
         </div>
       </div>
@@ -222,6 +215,7 @@ import dateFormatter from "../../services/dates/dateformatter";
 import LedgerForm from "../../views/accounting/transaction/components/LedgerForm";
 import numbers_formatter from "../../services/numbers/numbers_formatter"
 import Table from "@/components/table/Table"
+import deviceBreakpoint from "../../mixins/deviceBreakpoint";
 import store from "../../store/store";
 import { ElMessage, ElMessageBox } from 'element-plus'
 
@@ -242,8 +236,10 @@ export default {
     const allTransactions = ref(store.getters["transaction/gettransactions"].records);
     const totalTransaction = ref(store.getters["transaction/gettransactions"].totalItems);
     const datete = ref('');
+    const { lgAndUp, xlAndUp, mdAndUp } = deviceBreakpoint();
     const searchingMember = ref(true);
     const paginatedTableLoading = ref(false);
+    const displayReciept = ref(false);
     // const totalTransaction = ref(0)
     const transactionHeaders = ref([
       { name: 'DATE', value: 'date' },
@@ -257,14 +253,27 @@ export default {
     const handleSelectionChange = (val) => {
       // checkedFirstTimer.value = val
     }
+
+    const showReciept = () => {
+      displayReciept.value = true
+    }
+
+    const handleRemove = () => {
+
+    }
     
+    const chooseFile = (e) => {
+      console.log(e)
+    }
+  
+
 
     const serverOptions = ref({
       page: 1,
       rowsPerPage: 50,
     });
 
-     watch(serverOptions.value, () => {
+    watch(serverOptions.value, () => {
       getTransactionByPage();
     },
       { deep: true }
@@ -440,15 +449,15 @@ export default {
     const getTransactions = async () => {
       loading.value = true;
       emit("tableloading", loading.value)
-         try {
-            refreshing.value = true;
-              await store.dispatch("transaction/getTransaction").then((res) => {
+      try {
+        refreshing.value = true;
+        await store.dispatch("transaction/getTransaction").then((res) => {
           finish();
-            loading.value = false;
-            emit("tableloading", loading.value)
-            refreshing.value = false;
-            allTransactions.value = res.records;
-            totalTransaction.value = res.totalItems
+          loading.value = false;
+          emit("tableloading", loading.value)
+          refreshing.value = false;
+          allTransactions.value = res.records;
+          totalTransaction.value = res.totalItems
         });
       } catch (error) {
         console.log(error);
@@ -486,9 +495,9 @@ export default {
       try {
         gettingSelectedTrsn.value = true;
         if (item.category === "Journal") {
-          emit("select-journal", { });
+          emit("select-journal", {});
         } else {
-          emit("select-row", { });
+          emit("select-row", {});
         }
         const response = await transaction_service.getEditTransactions(item.transactionNumber);
         gettingSelectedTrsn.value = false;
@@ -531,7 +540,7 @@ export default {
 
 
     const delTransaction = async (id, index) => {
-       refreshing.value = true;
+      refreshing.value = true;
       try {
         const response = await transaction_service.deleteTransaction(id);
         if (response.data.status) {
@@ -545,8 +554,8 @@ export default {
             message: response.data.response,
             duration: 3000,
           });
-           refreshing.value = false;
-        store.dispatch('transaction/removeTransactionFromStore', id)
+          refreshing.value = false;
+          store.dispatch('transaction/removeTransactionFromStore', id)
         } else {
           ElMessage({
             type: "error",
@@ -555,13 +564,13 @@ export default {
           });
         }
       } catch (error) {
-         refreshing.value = false;
+        refreshing.value = false;
         console.log(error);
-         ElMessage({
-            type: "error",
-            message: "Delete Failed",
-            duration: 3000,
-          });
+        ElMessage({
+          type: "error",
+          message: "Delete Failed",
+          duration: 3000,
+        });
       }
     }
 
@@ -598,11 +607,11 @@ export default {
       emit('reload-accounts');
     }
     onMounted(() => {
-      if ((!allTransactions.value) || (allTransactions.value && allTransactions.value.records && allTransactions.value.records.length == 0)){
+      if ((!allTransactions.value) || (allTransactions.value && allTransactions.value.records && allTransactions.value.records.length == 0)) {
         getTransactions();
       }
     });
-  
+
     const approveReport = async (item, type) => {
       const index = selectedTransactions.value.findIndex(i => i.id == item.id)
       selectedTransactions.value[index].approvingServiceReport = true
@@ -611,9 +620,9 @@ export default {
         approved: type == 1 ? true : false,
         memo: item.narration
       }
-      
+
       try {
-        await transaction_service.approveFinancialReport(payload)       
+        await transaction_service.approveFinancialReport(payload)
         if (index >= 0) {
           selectedTransactions.value[index].approved = type == 1 ? true : false
         }
@@ -625,25 +634,27 @@ export default {
         });
       }
       catch (err) {
-          selectedTransactions.value[index].approvingServiceReport = false
-          console.error(err);
-          ElMessage({
-            type: "error",
-            message: `Report not successfully approved, please try again`,
-            duration: 5000,
-          });
-        }
+        selectedTransactions.value[index].approvingServiceReport = false
+        console.error(err);
+        ElMessage({
+          type: "error",
+          message: `Report not successfully approved, please try again`,
+          duration: 5000,
+        });
+      }
     }
-    
+
 
     return {
       transactions,
       allTransactions,
       handleCurrentChange,
+      chooseFile,
       handleSizeChange,
       serverOptions,
       handleSelectionChange,
       paginatedTableLoading,
+      lgAndUp, xlAndUp, mdAndUp,
       datete,
       transactionHeaders,
       filterFormIsVissible,
@@ -656,6 +667,8 @@ export default {
       accountDisplay,
       toggleAccount,
       hideModals,
+      handleRemove,
+      
       searchingMember,
       selectedTransaction,
       transactionItem,
@@ -666,6 +679,7 @@ export default {
       totalTransaction,
       accountType,
       liabilities,
+      displayReciept,
       getCurrenciesFromCountries,
       currencyList,
       showCurrency,
@@ -679,6 +693,7 @@ export default {
       //   showEditTransaction,
       closeIt,
       transacObj,
+      showReciept,
       selectedTransactions,
       formatDate,
       rowSelected,
@@ -711,6 +726,7 @@ html {
 .events {
   font: normal normal 800 29px Nunito sans;
 }
+
 .whole-con {
   display: flex;
   /* background: #f1f5f8; */
@@ -795,6 +811,7 @@ html {
   overflow: hidden;
   transition: all 0.5 ease-in-out;
 }
+
 .label-search input {
   border: transparent;
   background: transparent;
@@ -845,17 +862,19 @@ html {
     transition: all 0.5s ease-in-out;
   }
 }
+
 @media screen and (max-width: 991px) {
 
-  .removeTable{
-        display: none;
+  .removeTable {
+    display: none;
   }
 
 }
+
 @media screen and (max-width: 991px) {
 
-  .table.edit-transac{
-        border-radius: 22px;
+  .table.edit-transac {
+    border-radius: 22px;
   }
 
 }
@@ -974,6 +993,7 @@ html {
   max-height: 14em;
   overflow-y: scroll;
 }
+
 .style-account div div:hover {
   /* background-color: #ecf0f3; */
   cursor: pointer;
@@ -1040,6 +1060,7 @@ html {
     /* flex-direction: column */
   }
 }
+
 @media screen and (max-width: 767px) {
   .action {
     display: flex;
@@ -1047,7 +1068,8 @@ html {
     /* justify-content: end; */
     /* flex-direction: column */
   }
-  .mywidt{
+
+  .mywidt {
     width: 100%;
     /* display: flex; */
   }

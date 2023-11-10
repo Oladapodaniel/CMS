@@ -32,9 +32,9 @@
           <el-form-item>
             <el-button size="large" :color="primarycolor" @click="login" class="w-100" :loading="signInLoading" round>Sign
               In</el-button>
-            <el-divider>
+            <!-- <el-divider>
               or
-            </el-divider>
+            </el-divider> -->
             <!-- <div class="facebook-btn btn-logo sign-in-btn" @click="facebookLogin">
               <img src="../../assets/facebook-small.png" class="fb-icon" alt="Facebook Icon" />
               <span>Sign in with Facebook</span>
