@@ -231,6 +231,29 @@
                 </label>
                 <div class="input-width d-flex">
                   <el-tabs type="border-card" class="w-100">
+                    <div class="  add-group bg-white">
+                      <div
+                        v-for="(item, index) in peopleInGroupIDs"
+                        :key="index"
+                      >
+                      <div class="d-flex justify-content-between align-items-center">
+                        <div class="pt-1"><span class="text-secondary">{{ index + 1 }}.</span> <span class="font-weight-700">{{ item.name }}</span></div>
+                        <el-icon class="text-danger" @click="showConfirmModal(index, item)"><CircleClose /></el-icon>
+                      </div>
+                      </div>
+                      <div v-if="peopleInGroupIDs.length === 0">
+                        No group added yet
+                      </div>
+                      <div
+                        class="pt-2 mt-2 font-weight-700 text-primary border-top text-center c-pointer"
+                        data-toggle="modal"
+                        data-target="#addToGroup"
+                      >
+                        Choose group
+                      </div>
+                    </div>
+                  </el-tabs>
+                  <!-- <el-tabs type="border-card" class="w-100">
                     <div class="add-group bg-white">
                       <div
                         v-for="(item, index) in peopleInGroupIDs"
@@ -249,7 +272,7 @@
                         Choose group
                       </div>
                     </div>
-                  </el-tabs>
+                  </el-tabs> -->
                 </div>
               </div>
             </el-form-item>
@@ -1382,7 +1405,7 @@ import { ref, reactive, computed, inject } from "vue";
 import axios from "@/gateway/backendapi";
 import { useRoute } from "vue-router";
 import { useStore } from "vuex";
-import { ElMessage } from "element-plus";
+import { ElMessageBox, ElMessage } from "element-plus";
 import membershipService from "../../services/membership/membershipservice";
 import collector from "../../services/groupArray/mapTree";
 import flatten from "../../services/groupArray/flatTree";
@@ -1498,6 +1521,49 @@ export default {
       return arrOfDays;
     });
 
+    const removeFromGroup = (index, item) => {
+      if (!route.params.personId) {
+        peopleInGroupIDs.value.splice(index, 1);
+      } else {
+        let body = {
+          groupId: item.groupId,
+          personIds: [item.personInGroupID],
+        };
+
+        grousService
+          .removeFromGroup(item.groupId, body)
+          .then((res) => {
+            if (res !== false) {
+              peopleInGroupIDs.value.splice(index, 1);
+              ElMessage({
+                type: "success",
+                message: `${person.firstName} is removed from ${item.name} group`,
+              });
+            }
+          })
+          .catch((err) => {
+            console.log(err);
+          });
+      }
+    };
+
+    const showConfirmModal = (index, item) => {
+      ElMessageBox.confirm("Are you sure you want to proceed?", "Confirm delete", {
+        confirmButtonText: "OK",
+        cancelButtonText: "Cancel",
+        type: "error",
+      })
+        .then(() => {
+          removeFromGroup(index, item);
+        })
+        .catch(() => {
+          ElMessage({
+            type: "info",
+            message: "Delete canceled",
+          });
+        });
+    };
+
     const editAnnDateValue = (unit, val) => {
       anniversaryDate.set(unit, val);
       daysInAnnMonth.value = anniversaryDate.daysInMonth();
@@ -1529,6 +1595,8 @@ export default {
       dayOfWedding: null,
       yearOfWedding: null,
     });
+
+    
 
     const uploadImage = () => {};
 
@@ -2040,9 +2108,9 @@ export default {
       groupToAddTo.value = item;
     };
 
-    const removeFromGroup = (index) => {
-      peopleInGroupIDs.value.splice(index, 1);
-    };
+    // const removeFromGroup = (index) => {
+    //   peopleInGroupIDs.value.splice(index, 1);
+    // };
 
     const savePersonNote = () => {
       personNotes.value.push({
@@ -2064,6 +2132,7 @@ export default {
       daysInAnnMonth,
       editBirthDateValue,
       editAnnDateValue,
+      showConfirmModal,
       birthMonth,
       route,
       setGroupValue,
